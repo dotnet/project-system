@@ -409,14 +409,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 if (projectCatalogSnapshot.NamedCatalogs.TryGetValue(PropertyPageContexts.File, out IPropertyPagesCatalog fileCatalog))
                     itemType = fileCatalog.GetSchema(schemaName)?.DataSource.ItemType;
 
-                if (itemType == null)
+                if (itemType is null ||
+                   !itemTypes.Contains(itemType) ||
+                   !projectChange.Difference.AnyChanges && !itemTypesChanged || 
+                   projectChange.After.Items.Count == 0 && projectChange.Difference.RemovedItems.Count == 0)
+                {
                     continue;
-                if (!itemTypes.Contains(itemType))
-                    continue;
-                if (!itemTypesChanged && !projectChange.Difference.AnyChanges)
-                    continue;
-                if (projectChange.After.Items.Count == 0)
-                    continue;
+                }
 
                 ImmutableArray<(string Path, string? TargetPath, BuildUpToDateCheck.CopyType)> before = ImmutableArray<(string Path, string? TargetPath, BuildUpToDateCheck.CopyType)>.Empty;
                 if (itemsByItemTypeBuilder.TryGetValue(itemType, out ImmutableArray<(string Path, string? TargetPath, BuildUpToDateCheck.CopyType CopyType)> beforeItems))
