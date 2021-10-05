@@ -201,8 +201,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Subscriptions
                     throw new ObjectDisposedException(nameof(DependenciesSnapshotProvider));
                 }
 
-                _commonServices.Project.ProjectUnloading += OnUnconfiguredProjectUnloadingAsync;
-
                 foreach (Lazy<IProjectDependenciesSubTreeProvider, IOrderPrecedenceMetadataView> provider in _subTreeProviders)
                 {
                     provider.Value.DependenciesChanged += OnSubtreeProviderDependenciesChanged;
@@ -212,8 +210,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Subscriptions
                     new DisposableDelegate(
                         () =>
                         {
-                            _commonServices.Project.ProjectUnloading -= OnUnconfiguredProjectUnloadingAsync;
-
                             foreach (Lazy<IProjectDependenciesSubTreeProvider, IOrderPrecedenceMetadataView> provider in _subTreeProviders)
                             {
                                 provider.Value.DependenciesChanged -= OnSubtreeProviderDependenciesChanged;
@@ -222,14 +218,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Subscriptions
             }
 
             return;
-
-            Task OnUnconfiguredProjectUnloadingAsync(object? sender, EventArgs args)
-            {
-                // If our project unloads, we have no more work to do
-                DisposeCore();
-
-                return Task.CompletedTask;
-            }
 
             void OnSubtreeProviderDependenciesChanged(object? sender, DependenciesChangedEventArgs e)
             {

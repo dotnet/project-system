@@ -78,8 +78,8 @@
         <note />
       </trans-unit>
       <trans-unit id="Category|Resources|DisplayName">
-        <source>Resources</source>
-        <target state="translated">Prostředky</target>
+        <source>Win32 Resources</source>
+        <target state="needs-review-translation">Prostředky</target>
         <note />
       </trans-unit>
       <trans-unit id="DynamicEnumProperty|InterceptedTargetFramework|Description">

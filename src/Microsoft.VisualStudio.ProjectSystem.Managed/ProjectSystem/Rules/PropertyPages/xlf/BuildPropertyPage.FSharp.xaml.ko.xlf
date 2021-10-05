@@ -4,97 +4,97 @@
     <body>
       <trans-unit id="BoolProperty|FSharpPrefer64BitTools|Description">
         <source>Use a 64-bit compiler on systems that support both 32-bit and 64-bit compilers.</source>
-        <target state="new">Use a 64-bit compiler on systems that support both 32-bit and 64-bit compilers.</target>
+        <target state="translated">32비트 및 64비트 컴파일러를 모두 지원하는 시스템에서 64비트 컴파일러를 사용합니다.</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|FSharpPrefer64BitTools|DisplayName">
         <source>Prefer 64 bit tools</source>
-        <target state="new">Prefer 64 bit tools</target>
+        <target state="translated">64비트 도구 선호</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|FSharpPreferNetFrameworkTools|Description">
         <source>Prefer .NET Framework version of the compiler when available.</source>
-        <target state="new">Prefer .NET Framework version of the compiler when available.</target>
+        <target state="translated">사용 가능한 경우 .NET Framework 버전의 컴파일러를 선호합니다.</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|FSharpPreferNetFrameworkTools|DisplayName">
         <source>Framework tools</source>
-        <target state="new">Framework tools</target>
+        <target state="translated">프레임워크 도구</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|Optimize|Description">
         <source>Enable compiler optimizations for smaller, faster, and more efficient output.</source>
-        <target state="new">Enable compiler optimizations for smaller, faster, and more efficient output.</target>
+        <target state="translated">더 작고 빠르며 더 효율적인 출력을 위해 컴파일러 최적화를 사용하도록 설정합니다.</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|Optimize|DisplayName">
         <source>Optimize code</source>
-        <target state="new">Optimize code</target>
+        <target state="translated">코드 최적화</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|Optimize|Metadata|SearchTerms">
         <source>optimise;optimisation</source>
-        <target state="new">optimise;optimisation</target>
+        <target state="translated">최적화하다;최적화</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|Tailcalls|Description">
         <source>Enable tail call generation.</source>
-        <target state="new">Enable tail call generation.</target>
+        <target state="translated">비상 호출 생성을 사용하도록 설정합니다.</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|Tailcalls|DisplayName">
         <source>Generate tail calls</source>
-        <target state="new">Generate tail calls</target>
+        <target state="translated">마무리 호출 생성</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|Tailcalls|Metadata|SearchTerms">
         <source>tailcall</source>
-        <target state="new">tailcall</target>
+        <target state="translated">tailcall</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumProperty|DebugType|Description">
         <source>Specifies the kind of debug symbols produced during build.</source>
-        <target state="new">Specifies the kind of debug symbols produced during build.</target>
+        <target state="translated">빌드하는 동안 생성된 디버그 기호의 종류를 지정합니다.</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumProperty|DebugType|DisplayName">
         <source>Debug symbols</source>
-        <target state="new">Debug symbols</target>
+        <target state="translated">디버그 기호</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumProperty|DebugType|Metadata|SearchTerms">
         <source>debug type</source>
-        <target state="new">debug type</target>
+        <target state="translated">디버그 형식</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|DebugType.embedded|DisplayName">
         <source>Embedded in DLL/EXE, portable across platforms</source>
-        <target state="new">Embedded in DLL/EXE, portable across platforms</target>
+        <target state="translated">DLL/EXE에 포함됨, 플랫폼 간에 이동 가능</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|DebugType.full|DisplayName">
         <source>PDB file, current platform</source>
-        <target state="new">PDB file, current platform</target>
+        <target state="translated">PDB 파일, 현재 플랫폼</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|DebugType.none|DisplayName">
         <source>No symbols are emitted</source>
-        <target state="new">No symbols are emitted</target>
+        <target state="translated">내보낸 기호 없음</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|DebugType.portable|DisplayName">
         <source>PDB file, portable across platforms</source>
-        <target state="new">PDB file, portable across platforms</target>
+        <target state="translated">PDB 파일, 플랫폼 간에 이동 가능</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|OtherFlags|Description">
         <source>Additional compiler flags. Separate flags with whitespace.</source>
-        <target state="new">Additional compiler flags. Separate flags with whitespace.</target>
+        <target state="translated">추가 컴파일러 플래그입니다. 공백으로 플래그를 구분합니다.</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|OtherFlags|DisplayName">
         <source>Other flags</source>
-        <target state="new">Other flags</target>
+        <target state="translated">다른 플래그</target>
         <note />
       </trans-unit>
     </body>

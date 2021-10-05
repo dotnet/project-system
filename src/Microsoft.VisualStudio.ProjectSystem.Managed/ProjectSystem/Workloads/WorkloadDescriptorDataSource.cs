@@ -62,10 +62,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.Workloads
                 string workloadName = item.Key;
 
                 if (!string.IsNullOrWhiteSpace(workloadName)
-                    && item.Value.TryGetValue(SuggestedWorkload.VisualStudioComponentIdProperty, out string vsComponentId)
-                    && !string.IsNullOrWhiteSpace(vsComponentId))
+                    && (item.Value.TryGetStringProperty(SuggestedWorkload.VisualStudioComponentIdsProperty, out string? vsComponentIds)
+                     || item.Value.TryGetStringProperty(SuggestedWorkload.VisualStudioComponentIdProperty, out vsComponentIds)))
                 {
-                    return new WorkloadDescriptor(workloadName, vsComponentId);
+                    return new WorkloadDescriptor(workloadName, vsComponentIds);
                 }
 
                 return WorkloadDescriptor.Empty;

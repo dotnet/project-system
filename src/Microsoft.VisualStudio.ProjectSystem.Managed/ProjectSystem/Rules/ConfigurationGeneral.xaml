@@ -332,6 +332,12 @@
                   ReadOnly="True"
                   Visible="False" />
 
+  <BoolProperty Name="UseWindowsForms"
+                Visible="False" />
+
+  <BoolProperty Name="UseWPF"
+                Visible="False" />
+
   <StringProperty Name="VCInstallDir"
                   Visible="False" />
 

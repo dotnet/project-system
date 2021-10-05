@@ -17,4 +17,8 @@
                   ReadOnly="True"
                   Visible="False" />
 
+  <StringListProperty Name="VisualStudioComponentIds"
+                      ReadOnly="True"
+                      Visible="False" />
+
 </Rule>

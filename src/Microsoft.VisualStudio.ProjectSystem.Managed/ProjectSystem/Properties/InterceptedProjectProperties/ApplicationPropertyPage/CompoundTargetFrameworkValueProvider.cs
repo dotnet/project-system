@@ -21,7 +21,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
             TargetPlatformVersionProperty
         },
         ExportInterceptingPropertyValueProviderFile.ProjectFile)]
-    internal sealed class ComplexTargetFrameworkValueProvider : InterceptingPropertyValueProviderBase
+    internal sealed class CompoundTargetFrameworkValueProvider : InterceptingPropertyValueProviderBase
     {
         private const string InterceptedTargetFrameworkProperty = "InterceptedTargetFramework";
         private const string TargetPlatformProperty = ConfigurationGeneral.TargetPlatformIdentifierProperty;
@@ -31,6 +31,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
 
         private readonly ProjectProperties _properties;
         private readonly ConfiguredProject _configuredProject;
+        private bool? _useWPFProperty;
+        private bool? _useWindowsFormsProperty;
 
         private struct ComplexTargetFramework
         {
@@ -41,36 +43,56 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         }
 
         [ImportingConstructor]
-        public ComplexTargetFrameworkValueProvider(ProjectProperties properties, ConfiguredProject configuredProject)
+        public CompoundTargetFrameworkValueProvider(ProjectProperties properties, ConfiguredProject configuredProject)
         {
             _properties = properties;
             _configuredProject = configuredProject;
         }
 
-        public override async Task<string?> OnSetPropertyValueAsync(string propertyName, string unevaluatedPropertyValue, IProjectProperties defaultProperties, IReadOnlyDictionary<string, string>? dimensionalConditions = null)
+        private async Task<ComplexTargetFramework> GetStoredPropertiesAsync()
         {
             ConfigurationGeneral configuration = await _properties.GetConfigurationGeneralPropertiesAsync();
-            ComplexTargetFramework storedValues = await GetStoredComplexTargetFrameworkAsync(configuration);
+            return await GetStoredComplexTargetFrameworkAsync(configuration);
+        }
 
-            if (storedValues.TargetFrameworkMoniker != null)
+        public override async Task<string?> OnSetPropertyValueAsync(string propertyName, string unevaluatedPropertyValue, IProjectProperties defaultProperties, IReadOnlyDictionary<string, string>? dimensionalConditions = null)
+        {
+            ComplexTargetFramework storedProperties = await GetStoredPropertiesAsync();
+
+            if (storedProperties.TargetFrameworkMoniker != null)
             {
+                // Changing the Target Framework Moniker
                 if (StringComparers.PropertyLiteralValues.Equals(propertyName, InterceptedTargetFrameworkProperty))
                 {
-                    storedValues.TargetFrameworkMoniker = unevaluatedPropertyValue;
+                    // Delete stored platform properties
+                    storedProperties.TargetPlatformIdentifier = null;
+                    storedProperties.TargetPlatformVersion = null;
+                    await ResetPlatformPropertiesAsync(defaultProperties);
+
+                    storedProperties.TargetFrameworkMoniker = unevaluatedPropertyValue;
                 }
+
+                // Changing the Target Platform Identifier
                 else if (StringComparers.PropertyLiteralValues.Equals(propertyName, TargetPlatformProperty))
                 {
-                    if (unevaluatedPropertyValue != storedValues.TargetPlatformIdentifier)
+                    if (unevaluatedPropertyValue != storedProperties.TargetPlatformIdentifier)
                     {
-                        storedValues.TargetPlatformIdentifier = unevaluatedPropertyValue;
+                        // Delete stored platform properties
+                        storedProperties.TargetPlatformIdentifier = null;
+                        storedProperties.TargetPlatformVersion = null;
                         await ResetPlatformPropertiesAsync(defaultProperties);
+
+                        storedProperties.TargetPlatformIdentifier = unevaluatedPropertyValue;
                     }
                 }
+
+                // Changing the Target Platform Version
                 else if (StringComparers.PropertyLiteralValues.Equals(propertyName, TargetPlatformVersionProperty))
                 {
-                    storedValues.TargetPlatformVersion = unevaluatedPropertyValue;
+                    storedProperties.TargetPlatformVersion = unevaluatedPropertyValue;
                 }
-                await defaultProperties.SetPropertyValueAsync(TargetFrameworkProperty, await ComputeValueAsync(storedValues));
+
+                await defaultProperties.SetPropertyValueAsync(TargetFrameworkProperty, await ComputeValueAsync(storedProperties));
             }
 
             return null;
@@ -129,8 +151,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
 
         /// <summary>
         /// Combines the three values that make up the TargetFramework property.
-        /// I.e. { net5.0, windows, 10.0 } => net5.0-windows10.0
-        /// { net5.0, null, null } => net5.0
+        /// In order to save the correct value, we make calls to retrieve the alias for the target framework and platform 
+        /// (.NET 5.0 => net5.0, .NET Core 3.1 => netcoreapp3.1, Windows => windows).
+        /// Examples: 
+        /// { .NET 5.0, Windows, 10.0 } => net5.0-windows10.0
+        /// { .NET 5.0, null, null } => net5.0
         /// { null, null, null } => String.Empty
         /// </summary>
         /// <param name="complexTargetFramework">A struct with each property.</param>
@@ -154,7 +179,19 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
                 }
             }
 
-            if (!string.IsNullOrEmpty(complexTargetFramework.TargetPlatformIdentifier) && complexTargetFramework.TargetPlatformIdentifier != null)
+            // Check if the project requires an explicit platform.
+            if (IsNetCore5OrHigher(targetFrameworkAlias) && await IsWindowsPlatformNeededAsync())
+            {
+                // Ideally we would set the complexTargetFramework.TargetPlatformIdentifier = "Windows",
+                // but we're in a difficult position right now to retrieve the correct TargetPlatformAlias from GetTargetPlatformAliasAsync below,
+                // reason being it calls for the previous TargetFramework, not the new one that is being set.
+                // Therefore, in the case where we are going from a TargetFramework with no need of platform, like netcoreapp3.1,
+                // to one that does, like net5.0, we would be querying the list of TargetPlatformAlias for netcoreapp3.1 and get an empty list.
+                // I have to revisit this approach, but for now we can pass the TargetPlatformAlias that should be.
+                return targetFrameworkAlias + "-windows" + complexTargetFramework.TargetPlatformVersion;
+            }
+
+            if (!Strings.IsNullOrEmpty(complexTargetFramework.TargetPlatformIdentifier))
             {
                 string targetPlatformAlias = await GetTargetPlatformAliasAsync(complexTargetFramework.TargetPlatformIdentifier);
 
@@ -167,6 +204,31 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
             }
 
             return targetFrameworkAlias;
+        }
+
+        private static bool IsNetCore5OrHigher(string targetFrameworkAlias)
+        {
+            return targetFrameworkAlias.Contains("5.0") || targetFrameworkAlias.Contains("6.0");
+        }
+
+        private async Task<bool> IsWindowsPlatformNeededAsync()
+        {
+            // Checks if the project has either UseWPF or UseWindowsForms properties.
+            ConfigurationGeneral configuration = await _properties.GetConfigurationGeneralPropertiesAsync();
+            _useWPFProperty = (bool?)await configuration.UseWPF.GetValueAsync();
+            _useWindowsFormsProperty = (bool?)await configuration.UseWindowsForms.GetValueAsync();
+
+            if (_useWPFProperty is not null)
+            {
+                return (bool)_useWPFProperty;
+            }
+
+            if (_useWindowsFormsProperty is not null)
+            {
+                return (bool)_useWindowsFormsProperty;
+            }
+
+            return false;
         }
 
         /// <summary>

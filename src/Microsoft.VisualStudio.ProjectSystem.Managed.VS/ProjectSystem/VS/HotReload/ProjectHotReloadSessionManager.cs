@@ -15,7 +15,7 @@ using Microsoft.VisualStudio.Threading;
 namespace Microsoft.VisualStudio.ProjectSystem.VS.HotReload
 {
     [Export(typeof(IProjectHotReloadSessionManager))]
-    internal class ProjectHotReloadSessionManager : IProjectHotReloadSessionManager
+    internal class ProjectHotReloadSessionManager : OnceInitializedOnceDisposedAsync, IProjectHotReloadSessionManager
     {
         private readonly UnconfiguredProject _project;
         private readonly IProjectFaultHandlerService _projectFaultHandlerService;
@@ -35,10 +35,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.HotReload
         [ImportingConstructor]
         public ProjectHotReloadSessionManager(
             UnconfiguredProject project,
+            IProjectThreadingService threadingService,
             IProjectFaultHandlerService projectFaultHandlerService,
             IActiveDebugFrameworkServices activeDebugFrameworkServices,
             Lazy<IProjectHotReloadAgent> projectHotReloadAgent,
             Lazy<IHotReloadDiagnosticOutputService> hotReloadDiagnosticOutputService)
+            : base(threadingService.JoinableTaskContext)
         {
             _project = project;
             _projectFaultHandlerService = projectFaultHandlerService;
@@ -97,25 +99,53 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.HotReload
             using AsyncSemaphore.Releaser semaphoreReleaser = await _semaphore.EnterAsync();
 
             if (await DebugFrameworkSupportsHotReloadAsync()
-                && await GetDebugFrameworkVersionAsync() is string frameworkVersion
-                && await DebugFrameworkSupportsStartupHooksAsync())
+                && await GetDebugFrameworkVersionAsync() is string frameworkVersion)
             {
-                string name = $"{Path.GetFileNameWithoutExtension(_project.FullPath)}:{_nextUniqueId++}";
-                HotReloadState state = new(this);
-                IProjectHotReloadSession? projectHotReloadSession = _projectHotReloadAgent.Value.CreateHotReloadSession(name, frameworkVersion, state);
-
-                if (projectHotReloadSession is not null)
+                if (await DebugFrameworkSupportsStartupHooksAsync())
                 {
-                    state.Session = projectHotReloadSession;
-                    await projectHotReloadSession.ApplyLaunchVariablesAsync(environmentVariables, default);
-                    _pendingSessionState = state;
+                    string name = $"{Path.GetFileNameWithoutExtension(_project.FullPath)}:{_nextUniqueId++}";
+                    HotReloadState state = new(this);
+                    IProjectHotReloadSession? projectHotReloadSession = _projectHotReloadAgent.Value.CreateHotReloadSession(name, frameworkVersion, state);
 
-                    return true;
+                    if (projectHotReloadSession is not null)
+                    {
+                        state.Session = projectHotReloadSession;
+                        await projectHotReloadSession.ApplyLaunchVariablesAsync(environmentVariables, default);
+                        _pendingSessionState = state;
+
+                        return true;
+                    }
+                }
+                else
+                {
+                    // If startup hooks are not supported then tell the user why Hot Reload isn't available.
+                    await WriteOutputMessageAsync(string.Format(VSResources.ProjectHotReloadSessionManager_StartupHooksDisabled, Path.GetFileNameWithoutExtension(_project.FullPath)));
                 }
             }
 
             _pendingSessionState = null;
             return false;
+        }
+
+        protected override Task InitializeCoreAsync(CancellationToken cancellationToken)
+        {
+            return Task.CompletedTask;
+        }
+
+        protected override async Task DisposeCoreAsync(bool initialized)
+        {
+            using AsyncSemaphore.Releaser semaphoreRelease = await _semaphore.EnterAsync();
+
+            foreach (HotReloadState sessionState in _activeSessions.Values)
+            {
+                Assumes.NotNull(sessionState.Process);
+                Assumes.NotNull(sessionState.Session);
+
+                sessionState.Process.Exited -= sessionState.OnProcessExited;
+                _projectFaultHandlerService.Forget(sessionState.Session.StopSessionAsync(default), _project);
+            }
+
+            _activeSessions.Clear();
         }
 
         private Task WriteOutputMessageAsync(string outputMessage) => _hotReloadDiagnosticOutputService.Value.WriteLineAsync(outputMessage);
@@ -197,6 +227,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.HotReload
             await WriteOutputMessageAsync(string.Format(VSResources.ProjectHotReloadSessionManager_ProcessExited, hotReloadState.Session.Name));
 
             await StopProjectAsync(hotReloadState, default);
+
+            hotReloadState.Process.Exited -= hotReloadState.OnProcessExited;
         }
 
         private IDeltaApplier? GetDeltaApplier(HotReloadState hotReloadState)

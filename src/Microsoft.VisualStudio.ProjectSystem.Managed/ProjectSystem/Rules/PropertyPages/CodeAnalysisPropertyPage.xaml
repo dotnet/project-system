@@ -24,31 +24,31 @@
   <BoolProperty Name="RunAnalyzersDuringBuild"
                 DisplayName="Run on build"
                 Description="Always run code analysis on build."
-                HelpUrl="https://docs.microsoft.com/visualstudio/code-quality/disable-code-analysis"
+                HelpUrl="https://go.microsoft.com/fwlink/?linkid=2173147"
                 Category="AllAnalyzers" />
 
   <BoolProperty Name="RunAnalyzersDuringLiveAnalysis"
                 DisplayName="Run on live analysis"
                 Description="Run code analysis live in the editor as you type."
-                HelpUrl="https://docs.microsoft.com/visualstudio/code-quality/disable-code-analysis"
+                HelpUrl="https://go.microsoft.com/fwlink/?linkid=2173147"
                 Category="AllAnalyzers" />
 
   <BoolProperty Name="EnforceCodeStyleInBuild"
                 DisplayName="Enforce code style on build (experimental)"
                 Description="Produce diagnostics about code style on build."
-                HelpUrl="https://docs.microsoft.com/visualstudio/ide/code-styles-and-code-cleanup"
+                HelpUrl="https://go.microsoft.com/fwlink/?linkid=2172995"
                 Category="NetAnalyzers" />
 
   <BoolProperty Name="EnableNETAnalyzers"
                 DisplayName="Enable .NET analyzers"
                 Description="Run .NET analyzers to help with API usage."
-                HelpUrl="https://docs.microsoft.com/visualstudio/code-quality/install-net-analyzers"
+                HelpUrl="https://go.microsoft.com/fwlink/?linkid=2173090"
                 Category="NetAnalyzers" />
 
   <EnumProperty Name="AnalysisLevel"
                 DisplayName="Analysis level"
                 Description="The set of analyzers that should be run in the project."
-                HelpUrl="https://docs.microsoft.com/dotnet/fundamentals/code-analysis/overview"
+                HelpUrl="https://go.microsoft.com/fwlink/?linkid=2173091"
                 Category="NetAnalyzers">
     <EnumValue Name="none"
                DisplayName="None" />
