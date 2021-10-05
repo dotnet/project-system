@@ -15,9 +15,9 @@ namespace Microsoft.VisualStudio.ProjectSystem
         {
             var instance = CreateInstance();
 
-            Assert.Throws<ArgumentNullException>(() =>
+            Assert.ThrowsAsync<ArgumentNullException>(() =>
             {
-                instance.ExecuteUnderLockAsync(null!, CancellationToken.None);
+                return instance.ExecuteUnderLockAsync(null!, CancellationToken.None);
             });
         }
 
@@ -26,9 +26,9 @@ namespace Microsoft.VisualStudio.ProjectSystem
         {
             var instance = CreateInstance();
 
-            Assert.Throws<ArgumentNullException>(() =>
+            Assert.ThrowsAsync<ArgumentNullException>(() =>
             {
-                instance.ExecuteUnderLockAsync<string>(null!, CancellationToken.None);
+                return instance.ExecuteUnderLockAsync<string>(null!, CancellationToken.None);
             });
         }
 

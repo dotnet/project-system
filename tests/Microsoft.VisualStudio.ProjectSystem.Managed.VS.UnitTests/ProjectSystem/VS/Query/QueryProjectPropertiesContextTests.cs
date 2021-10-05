@@ -25,7 +25,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
             Assert.False(a.GetHashCode() == b.GetHashCode());
         }
 
-        public static IEnumerable<IProjectPropertiesContext[]> ContextsThatAreEqual()
+        public static IEnumerable<object[]> ContextsThatAreEqual()
         {
             return new QueryProjectPropertiesContext[][]
             {
