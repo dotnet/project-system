@@ -6,9 +6,12 @@ using System.Threading.Tasks;
 
 namespace Microsoft.VisualStudio.ProjectSystem.Properties
 {
-    [ExportInterceptingPropertyValueProvider("PlatformTarget", ExportInterceptingPropertyValueProviderFile.ProjectFile)]
+    [ExportInterceptingPropertyValueProvider(ConfiguredBrowseObject.PlatformTargetProperty, ExportInterceptingPropertyValueProviderFile.ProjectFile)]
     internal sealed class DefaultPlatformPropertyValueProvider : InterceptingPropertyValueProviderBase
     {
+        private const string AnyCpuPlatformName = "AnyCPU";
+        private const string AnyCpuDisplayName = "Any CPU";
+
         private readonly ConfiguredProject _configuredProject;
 
         [ImportingConstructor]
@@ -27,19 +30,19 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
             return Task.FromResult(GetPlatformValue(unevaluatedPropertyValue));
         }
 
-        private string GetPlatformValue(string unevaluatedPropertyValue)
+        private string GetPlatformValue(string value)
         {
-            if (string.IsNullOrEmpty(unevaluatedPropertyValue) && _configuredProject.ProjectConfiguration.Dimensions.TryGetValue("Platform", out string platform))
+            if (string.IsNullOrEmpty(value) && _configuredProject.ProjectConfiguration.Dimensions.TryGetValue("Platform", out string platform))
             {
-                unevaluatedPropertyValue = platform;
+                value = platform;
             }
 
-            return unevaluatedPropertyValue.Equals("AnyCPU") ? "Any CPU" : unevaluatedPropertyValue;
+            return value.Equals(AnyCpuPlatformName) ? AnyCpuDisplayName : value;
         }
 
         public override Task<string?> OnSetPropertyValueAsync(string propertyName, string unevaluatedPropertyValue, IProjectProperties defaultProperties, IReadOnlyDictionary<string, string>? dimensionalConditions = null)
         {
-            return Task.FromResult<string?>(unevaluatedPropertyValue.Equals("Any CPU") ? "AnyCPU" : unevaluatedPropertyValue);
+            return Task.FromResult<string?>(unevaluatedPropertyValue.Equals(AnyCpuDisplayName) ? AnyCpuPlatformName : unevaluatedPropertyValue);
         }
     }
 }
