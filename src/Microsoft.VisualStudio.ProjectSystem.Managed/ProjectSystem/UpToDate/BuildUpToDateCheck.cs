@@ -202,7 +202,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 {
                     log.Fail("Outputs", "The set of project items was changed more recently ({0}) than the earliest output '{1}' ({2}), not up to date.", state.LastItemsChangedAtUtc, earliestOutputPath, earliestOutputTime);
 
-                    if (log.Level <= LogLevel.Info)
+                    if (log.Level >= LogLevel.Info)
                     {
                         foreach ((bool isAdd, string itemType, string path, string? targetPath, CopyType copyType) in state.LastItemChanges.OrderBy(change => change.ItemType).ThenBy(change => change.Path))
                         {
@@ -256,7 +256,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                     hasInput = true;
                 }
 
-                if (log.Level <= LogLevel.Info)
+                if (log.Level >= LogLevel.Info)
                 {
                     if (!hasInput)
                     {
@@ -477,7 +477,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                     return false;
                 }
 
-                if (log.Level == LogLevel.Verbose)
+                if (log.Level >= LogLevel.Verbose)
                 {
                     foreach (string path in items)
                     {
@@ -506,7 +506,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
             string markerFile = _configuredProject.UnconfiguredProject.MakeRooted(state.CopyUpToDateMarkerItem);
 
-            if (log.Level <= LogLevel.Verbose)
+            if (log.Level >= LogLevel.Verbose)
             {
                 log.Verbose("Adding input reference copy markers:");
 
