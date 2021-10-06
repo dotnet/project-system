@@ -167,7 +167,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 DateTime earliestOutputTime = DateTime.MaxValue;
                 string? earliestOutputPath = null;
                 bool hasOutput = false;
-                bool hasInput = false;
 
                 foreach (string output in outputs)
                 {
@@ -224,6 +223,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 }
 #endif
 
+                (string Path, DateTime? Time)? latestInput = null;
+
                 foreach ((string input, bool isRequired) in inputs)
                 {
                     token.ThrowIfCancellationRequested();
@@ -253,22 +254,25 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                         return log.Fail("Outputs", "Input '{0}' ({1}) has been modified since the last up-to-date check ({2}), not up to date.", input, inputTime.Value, lastCheckedAtUtc);
                     }
 
-                    hasInput = true;
+                    if (latestInput is null || inputTime > latestInput.Value.Time)
+                    {
+                        latestInput = (input, inputTime);
+                    }
                 }
 
                 if (log.Level >= LogLevel.Info)
                 {
-                    if (!hasInput)
+                    if (latestInput is null)
                     {
                         log.Info(setName == DefaultSetName ? "No inputs defined." : "No inputs defined in set '{0}'.", setName);
                     }
                     else if (setName == DefaultSetName)
                     {
-                        log.Info("No inputs are newer than earliest output '{0}' ({1}).", earliestOutputPath, earliestOutputTime);
+                        log.Info("No inputs are newer than earliest output '{0}' ({1}). Newest input is '{2}' ({3}).", earliestOutputPath, earliestOutputTime, latestInput.Value.Path, latestInput.Value.Time ?? (object)"null");
                     }
                     else
                     {
-                        log.Info("In set '{0}', no inputs are newer than earliest output '{1}' ({2}).", setName, earliestOutputPath, earliestOutputTime);
+                        log.Info("In set '{0}', no inputs are newer than earliest output '{1}' ({2}). Newest input is '{3}' ({4}).", setName, earliestOutputPath, earliestOutputTime, latestInput.Value.Path, latestInput.Value.Time ?? (object)"null");
                     }
                 }
 
