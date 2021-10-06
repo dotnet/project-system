@@ -99,7 +99,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.HotReload
             using AsyncSemaphore.Releaser semaphoreReleaser = await _semaphore.EnterAsync();
 
             if (await DebugFrameworkSupportsHotReloadAsync()
-                && await GetDebugFrameworkVersionAsync() is string frameworkVersion)
+                && await GetDebugFrameworkVersionAsync() is string frameworkVersion
+                && !string.IsNullOrWhiteSpace(frameworkVersion))
             {
                 if (await DebugFrameworkSupportsStartupHooksAsync())
                 {

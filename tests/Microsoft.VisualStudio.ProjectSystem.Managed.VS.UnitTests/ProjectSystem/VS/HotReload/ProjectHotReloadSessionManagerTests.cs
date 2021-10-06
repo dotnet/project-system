@@ -46,7 +46,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.HotReload
             Assert.False(sessionCreated);
         }
 
-        [Fact(Skip = "Bug: if TargetFrameworkVersion is not defined we still get a session")]
+        [Fact]
         public async Task WhenTheTargetFrameworkVersionIsNotDefined_APendingSessionIsNotCreated()
         {
             var capabilities = new[] { "SupportsHotReload" };
