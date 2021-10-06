@@ -16,7 +16,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.HotReload
             var capabilities = new[] { "SupportsHotReload" };
             var propertyNamesAndValues = new Dictionary<string, string?>()
             {
-                { "TargetFrameworkVersion", "v6.0" }
+                { "TargetFrameworkVersion", "v6.0" },
+                { "DebugSymbols", "true" },
+                // Note: "Optimize" is not included here. The compilers do not optimize by default;
+                // so if the property isn't set that's OK.
             };
 
             var activeConfiguredProject = CreateConfiguredProject(capabilities, propertyNamesAndValues);
@@ -34,7 +37,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.HotReload
             var capabilities = new[] { "ARandomCapabilityUnrelatedToHotReload" };
             var propertyNamesAndValues = new Dictionary<string, string?>()
             {
-                { "TargetFrameworkVersion", "v6.0" }
+                { "TargetFrameworkVersion", "v6.0" },
+                { "DebugSymbols", "true" }
             };
 
             var activeConfiguredProject = CreateConfiguredProject(capabilities, propertyNamesAndValues);
@@ -52,7 +56,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.HotReload
             var capabilities = new[] { "SupportsHotReload" };
             var propertyNamesAndValues = new Dictionary<string, string?>()
             {
-                { "ARandomProperty", "WithARandomValue" }
+                { "ARandomProperty", "WithARandomValue" },
+                { "DebugSymbols", "true" }
             };
 
             var activeConfiguredProject = CreateConfiguredProject(capabilities, propertyNamesAndValues);
@@ -71,7 +76,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.HotReload
             var propertyNamesAndValues = new Dictionary<string, string?>()
             {
                 { "TargetFrameworkVersion", "v6.0" },
-                { "StartupHookSupport", "false" }
+                { "StartupHookSupport", "false" },
+                { "DebugSymbols", "true" }
             };
 
             var activeConfiguredProject = CreateConfiguredProject(capabilities, propertyNamesAndValues);
@@ -84,6 +90,63 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.HotReload
 
             Assert.False(sessionCreated);
             Assert.True(outputServiceCalled);
+        }
+
+        [Fact]
+        public async Task WhenOptimizationIsEnabled_APendingSessionIsNotCreated()
+        {
+            var capabilities = new[] { "SupportsHotReload" };
+            var propertyNamesAndValues = new Dictionary<string, string?>()
+            {
+                { "TargetFrameworkVersion", "v6.0" },
+                { "DebugSymbols", "true" },
+                { "Optimize", "true" }
+            };
+
+            var activeConfiguredProject = CreateConfiguredProject(capabilities, propertyNamesAndValues);
+            var manager = CreateHotReloadSessionManager(activeConfiguredProject);
+
+            var environmentVariables = new Dictionary<string, string>();
+            var sessionCreated = await manager.TryCreatePendingSessionAsync(environmentVariables);
+
+            Assert.False(sessionCreated);
+        }
+
+        [Fact]
+        public async Task WhenDebugSymbolsIsNotSpecified_APendingSessionIsNotCreated()
+        {
+            var capabilities = new[] { "SupportsHotReload" };
+            var propertyNamesAndValues = new Dictionary<string, string?>()
+            {
+                { "TargetFrameworkVersion", "v6.0" }
+            };
+
+            var activeConfiguredProject = CreateConfiguredProject(capabilities, propertyNamesAndValues);
+            var manager = CreateHotReloadSessionManager(activeConfiguredProject);
+
+            var environmentVariables = new Dictionary<string, string>();
+            var sessionCreated = await manager.TryCreatePendingSessionAsync(environmentVariables);
+
+            Assert.False(sessionCreated);
+        }
+
+        [Fact]
+        public async Task WhenDebugSymbolsIsFalse_APendingSessionIsNotCreated()
+        {
+            var capabilities = new[] { "SupportsHotReload" };
+            var propertyNamesAndValues = new Dictionary<string, string?>()
+            {
+                { "TargetFrameworkVersion", "v6.0" },
+                { "DebugSymbols", "false" }
+            };
+
+            var activeConfiguredProject = CreateConfiguredProject(capabilities, propertyNamesAndValues);
+            var manager = CreateHotReloadSessionManager(activeConfiguredProject);
+
+            var environmentVariables = new Dictionary<string, string>();
+            var sessionCreated = await manager.TryCreatePendingSessionAsync(environmentVariables);
+
+            Assert.False(sessionCreated);
         }
 
         private static ProjectHotReloadSessionManager CreateHotReloadSessionManager(ConfiguredProject activeConfiguredProject, Action<string>? outputServiceCallback = null)

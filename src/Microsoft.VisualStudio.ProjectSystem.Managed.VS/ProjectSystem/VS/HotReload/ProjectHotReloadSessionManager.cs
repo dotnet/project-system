@@ -158,13 +158,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.HotReload
         /// </summary>
         private async Task<bool> DebugFrameworkSupportsHotReloadAsync()
         {
-            ConfiguredProject? configuredProjectForDebug = await GetConfiguredProjectForDebugAsync();
-            if (configuredProjectForDebug is null)
-            {
-                return false;
-            }
-
-            return configuredProjectForDebug.Capabilities.AppliesTo("SupportsHotReload");
+            return await ConfiguredProjectForDebugHasHotReloadCapabilityAsync()
+                && await DebugSymbolsEnabledInConfiguredProjectForDebugAsync()
+                && !await OptimizeEnabledInConfiguredProjectForDebugAsync();
         }
 
         private Task<ConfiguredProject?> GetConfiguredProjectForDebugAsync() =>
@@ -198,6 +194,45 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.HotReload
             }
 
             return true;
+        }
+
+        /// <summary>
+        /// Returns whether or not the project configuration targeted for debugging/launch
+        /// optimizes binaries. Defaults to false if the property is not defined.
+        /// </summary>
+        private async Task<bool> OptimizeEnabledInConfiguredProjectForDebugAsync()
+        {
+            if (await GetPropertyFromDebugFrameworkAsync("Optimize") is string optimize)
+            {
+                return StringComparers.PropertyLiteralValues.Equals(optimize, "true");
+            }
+
+            return false;
+        }
+
+        /// <summary>
+        /// Returns whether or not the project configuration targeted for debugging/launch
+        /// emits debug symbols. Defaults to false if the property is not defined.
+        /// </summary>
+        private async Task<bool> DebugSymbolsEnabledInConfiguredProjectForDebugAsync()
+        {
+            if (await GetPropertyFromDebugFrameworkAsync("DebugSymbols") is string debugSymbols)
+            {
+                return StringComparers.PropertyLiteralValues.Equals(debugSymbols, "true");
+            }
+
+            return false;
+        }
+
+        private async Task<bool> ConfiguredProjectForDebugHasHotReloadCapabilityAsync()
+        {
+            ConfiguredProject? configuredProjectForDebug = await GetConfiguredProjectForDebugAsync();
+            if (configuredProjectForDebug is null)
+            {
+                return false;
+            }
+
+            return configuredProjectForDebug.Capabilities.AppliesTo("SupportsHotReload");
         }
 
         private async Task<string?> GetPropertyFromDebugFrameworkAsync(string propertyName)
