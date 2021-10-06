@@ -47,7 +47,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Rules
                 // Remove the "TargetPath" element for these types
                 var targetPathElement = none.XPathSelectElement(@"/msb:Rule/msb:StringProperty[@Name=""TargetPath""]", namespaceManager);
                 Assert.NotNull(targetPathElement);
-                targetPathElement!.Remove();
+                targetPathElement.Remove();
             }
 
             AssertXmlEqual(none, rule);

@@ -25,7 +25,7 @@ namespace Microsoft.VisualStudio.Shell.Interop
             {
                 int onBuildStartedWithReturn()
                 {
-                    solutionEventsListener!.UpdateSolution_Begin(It.IsAny<int>());
+                    solutionEventsListener.UpdateSolution_Begin(It.IsAny<int>());
 
                     if (cancelBuild)
                     {

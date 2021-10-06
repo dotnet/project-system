@@ -592,7 +592,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies
         {
             Assert.NotNull(resultTree);
 
-            string actual = ToTestDataString((TestProjectTree)resultTree!);
+            string actual = ToTestDataString((TestProjectTree)resultTree);
 
             if (expected != actual)
             {

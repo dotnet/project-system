@@ -233,7 +233,7 @@ Project
             var result = await provider.GetSpecificEditorAsync(@"C:\Foo.cs");
 
             Assert.NotNull(result);
-            Assert.NotEmpty(result!.DisplayName);
+            Assert.NotEmpty(result.DisplayName);
             Assert.Equal(VSConstants.LOGVIEWID.Designer_guid, result.DefaultView);
             Assert.Equal(useDesignerByDefault, result.IsDefaultEditor);
             Assert.Equal(defaultEditorFactory, result.EditorFactory);

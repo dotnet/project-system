@@ -102,12 +102,12 @@
 
     <!-- Tests -->
     <PackageReference Update="Moq"                                                                    Version="4.12.0"/>
-    <PackageReference Update="xunit"                                                                  Version="2.4.1" />
-    <PackageReference Update="xunit.assert"                                                           Version="2.4.1" />
-    <PackageReference Update="xunit.extensibility.core"                                               Version="2.4.1" />
+    <PackageReference Update="xunit"                                                                  Version="2.4.2-pre.13" />
+    <PackageReference Update="xunit.assert"                                                           Version="2.4.2-pre.13" />
+    <PackageReference Update="xunit.extensibility.core"                                               Version="2.4.2-pre.13" />
     <PackageReference Update="xunit.runner.visualstudio"                                              Version="2.4.3" />
     <PackageReference Update="xunit.runner.console"                                                   Version="2.4.1" />
-    <PackageReference Update="xunit.analyzers"                                                        Version="0.10.0"/>
+    <PackageReference Update="xunit.analyzers"                                                        Version="0.12.0-pre.19"/>
 
     <!-- Integration Tests -->
     <PackageReference Update="MSTest.TestFramework"                                                   Version="2.1.2" />

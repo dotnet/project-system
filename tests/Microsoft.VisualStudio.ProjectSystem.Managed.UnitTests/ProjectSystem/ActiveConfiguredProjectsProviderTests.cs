@@ -98,7 +98,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
             var activeConfigs = ProjectConfigurationFactory.CreateMany(expected.Split(';'));
 
             Assert.NotNull(result);
-            Assert.Equal(activeConfigs.OrderBy(c => c.Name), result!.Objects.OrderBy(c => c.Name));
+            Assert.Equal(activeConfigs.OrderBy(c => c.Name), result.Objects.OrderBy(c => c.Name));
             Assert.Equal(new[] { "TargetFramework" }, result.DimensionNames);
         }
 
@@ -123,7 +123,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
             var result = await provider.GetActiveConfiguredProjectsAsync();
 
             Assert.NotNull(result);
-            Assert.Single(result!.Objects);
+            Assert.Single(result.Objects);
             Assert.Equal(activeConfiguration, result.Objects[0].ProjectConfiguration.Name);
             Assert.Empty(result.DimensionNames);
         }

@@ -17,9 +17,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
         {
             var command = CreateInstance();
 
-            Assert.Throws<ArgumentNullException>("nodes", () =>
+            Assert.ThrowsAsync<ArgumentNullException>("nodes", () =>
             {
-                command.GetCommandStatusAsync(null!, TestAddItemCommand.CommandId, true, "commandText", CommandStatus.Enabled);
+                return command.GetCommandStatusAsync(null!, TestAddItemCommand.CommandId, true, "commandText", CommandStatus.Enabled);
             });
         }
 
