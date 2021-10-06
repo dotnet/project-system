@@ -7,12 +7,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
 {
     internal static class IProjectHotReloadAgentFactory
     {
-        public static IProjectHotReloadAgent Create()
+        public static IProjectHotReloadAgent Create(IProjectHotReloadSession? session = null)
         {
             var mock = new Mock<IProjectHotReloadAgent>();
 
+            if (session is null)
+            {
+                session = IProjectHotReloadSessionFactory.Create();
+            }
+
             mock.Setup(agent => agent.CreateHotReloadSession(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<IProjectHotReloadSessionCallback>()))
-                .Returns((IProjectHotReloadSession)null!);
+                .Returns(session);
 
             return mock.Object;
         }
