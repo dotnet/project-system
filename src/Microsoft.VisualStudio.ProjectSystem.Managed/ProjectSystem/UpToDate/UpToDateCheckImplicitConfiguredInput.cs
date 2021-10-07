@@ -411,8 +411,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
                 if (itemType is null ||
                    !itemTypes.Contains(itemType) ||
-                   !projectChange.Difference.AnyChanges && !itemTypesChanged || 
-                   projectChange.After.Items.Count == 0 && projectChange.Difference.RemovedItems.Count == 0)
+                   (!projectChange.Difference.AnyChanges && !itemTypesChanged) || 
+                   (projectChange.After.Items.Count == 0 && projectChange.Difference.RemovedItems.Count == 0))
                 {
                     continue;
                 }

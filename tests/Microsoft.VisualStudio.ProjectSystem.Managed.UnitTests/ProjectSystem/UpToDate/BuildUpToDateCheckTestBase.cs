@@ -97,7 +97,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                     foreach ((string schemaName, IProjectRuleSnapshotModel model) in snapshotBySchemaName)
                     {
                         IProjectRuleSnapshotModel beforeModel = itemRemovedFromSnapshot ? model : new IProjectRuleSnapshotModel();
-                        IProjectRuleSnapshotModel afterModel = itemRemovedFromSnapshot? new IProjectRuleSnapshotModel() : model;
+                        IProjectRuleSnapshotModel afterModel = itemRemovedFromSnapshot ? new IProjectRuleSnapshotModel() : model;
                         IProjectChangeDiffModel differenceModel = itemRemovedFromSnapshot ? 
                             new IProjectChangeDiffModel { AnyChanges = true, RemovedItems = model.Items.Select(a => a.Key).ToImmutableHashSet() } 
                             : new IProjectChangeDiffModel { AnyChanges = true };

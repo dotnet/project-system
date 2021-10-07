@@ -115,10 +115,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             UpToDateCheckImplicitConfiguredInput? upToDateCheckImplicitConfiguredInput = null,
             bool itemRemovedFromSourceSnapshot = false)
         {
-            if (upToDateCheckImplicitConfiguredInput is null)
-            {
-                upToDateCheckImplicitConfiguredInput = UpToDateCheckImplicitConfiguredInput.Empty;
-            }
+            upToDateCheckImplicitConfiguredInput ??= UpToDateCheckImplicitConfiguredInput.Empty;
+
             _lastCheckTimeAtUtc = lastCheckTimeAtUtc ?? DateTime.MinValue;
             
             dependentTimeFiles ??= Enumerable.Empty<(string FilePath, DateTime Time)>();
@@ -331,15 +329,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             _fileSystem.AddFile("C:\\Dev\\Solution\\Project\\ItemPath1", inputTime);
             _fileSystem.AddFile("C:\\Dev\\Solution\\Project\\BuildDefault", buildTime);
 
-            var prioState = await SetupAsync(
+            var priorState = await SetupAsync(
                 projectSnapshot,
                 sourceSnapshot,
                 lastCheckTimeAtUtc: lastCheckTime,
                 lastItemsChangedAtUtc: itemChangeTime);
 
-
             await AssertUpToDateAsync(
-                $"No inputs are newer than earliest output 'C:\\Dev\\Solution\\Project\\BuildDefault' ({buildTime.ToLocalTime()}).");
+                $"No inputs are newer than earliest output 'C:\\Dev\\Solution\\Project\\BuildDefault' ({buildTime.ToLocalTime()}). Newest input is 'C:\\Dev\\Solution\\Project\\ItemPath1' ({inputTime.ToLocalTime()}).");
 
             lastCheckTime = DateTime.UtcNow.AddMinutes(-1);
             itemChangeTime = DateTime.UtcNow.AddMinutes(0);
@@ -349,12 +346,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 sourceSnapshot,
                 lastCheckTimeAtUtc: lastCheckTime,
                 lastItemsChangedAtUtc: itemChangeTime,
-                upToDateCheckImplicitConfiguredInput: prioState,
+                upToDateCheckImplicitConfiguredInput: priorState,
                 itemRemovedFromSourceSnapshot: true);
 
             await AssertNotUpToDateAsync(new[] {
-    $"The set of project items was changed more recently ({itemChangeTime.ToLocalTime()}) than the earliest output 'C:\\Dev\\Solution\\Project\\BuildDefault' ({buildTime.ToLocalTime()}), not up to date.",
-    "    Compile item removed \'ItemPath1\' (CopyType=CopyNever)"}, "Outputs");
+                $"The set of project items was changed more recently ({itemChangeTime.ToLocalTime()}) than the earliest output 'C:\\Dev\\Solution\\Project\\BuildDefault' ({buildTime.ToLocalTime()}), not up to date.",
+                "    Compile item removed \'ItemPath1\' (CopyType=CopyNever)"}, "Outputs");
         }
 
         [Fact]
