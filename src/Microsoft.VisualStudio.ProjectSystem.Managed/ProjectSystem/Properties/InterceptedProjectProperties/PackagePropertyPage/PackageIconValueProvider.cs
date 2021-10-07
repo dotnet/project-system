@@ -80,7 +80,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties.Package
             string relativePath = PathHelper.MakeRelative(_unconfiguredProject, unevaluatedPropertyValue);
             string existingPropertyValue = await defaultProperties.GetEvaluatedPropertyValueAsync(PackageIconPropertyName);
             IProjectItem? existingItem = await GetExistingNoneItemAsync(existingPropertyValue);
-            string packagePath = string.Empty;
+            // This default was string.Empty but caused issues for files already part of the project via globbing in the AddAsync call. It would not add the necessary
+            // <PackagePath></PackagePath> node, which causes the value during pack to default to 'content;contentFiles' which is not the intended directory.
+            // See discussion here for more details: https://github.com/dotnet/project-system/issues/7642
+            string packagePath = "\\";
             if (existingItem != null)
             {
                 packagePath = await existingItem.Metadata.GetEvaluatedPropertyValueAsync(PackagePathMetadataName);
