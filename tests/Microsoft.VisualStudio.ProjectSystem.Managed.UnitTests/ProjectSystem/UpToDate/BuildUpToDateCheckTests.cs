@@ -103,7 +103,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
         public void Dispose() => _buildUpToDateCheck.Dispose();
 
-        private async Task SetupAsync(
+        private async Task<UpToDateCheckImplicitConfiguredInput> SetupAsync(
             Dictionary<string, IProjectRuleSnapshotModel>? projectSnapshot = null,
             Dictionary<string, IProjectRuleSnapshotModel>? sourceSnapshot = null,
             bool disableFastUpToDateCheck = false,
@@ -111,8 +111,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             string outDir = _outputPath,
             DateTime? lastCheckTimeAtUtc = null,
             DateTime? lastItemsChangedAtUtc = null,
-            DateTime? lastAdditionalDependentFileTimesChangedAtUtc = null)
+            DateTime? lastAdditionalDependentFileTimesChangedAtUtc = null,
+            UpToDateCheckImplicitConfiguredInput? upToDateCheckImplicitConfiguredInput = null,
+            bool itemRemovedFromSourceSnapshot = false)
         {
+            if (upToDateCheckImplicitConfiguredInput is null)
+            {
+                upToDateCheckImplicitConfiguredInput = UpToDateCheckImplicitConfiguredInput.Empty;
+            }
             _lastCheckTimeAtUtc = lastCheckTimeAtUtc ?? DateTime.MinValue;
             
             dependentTimeFiles ??= Enumerable.Empty<(string FilePath, DateTime Time)>();
@@ -133,13 +139,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             }
 
             UpToDateCheckImplicitConfiguredInput configuredInput = UpdateState(
-                UpToDateCheckImplicitConfiguredInput.Empty,
+                upToDateCheckImplicitConfiguredInput,
                 projectSnapshot,
                 sourceSnapshot,
                 dependentTimeFiles.ToImmutableDictionary(
                     item => item.FilePath,
                     item => item.Time,
-                    StringComparers.Paths));
+                    StringComparers.Paths),
+                itemRemovedFromSourceSnapshot: itemRemovedFromSourceSnapshot);
 
             if (lastItemsChangedAtUtc != null)
             {
@@ -166,6 +173,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             await _buildUpToDateCheck.ActivateAsync();
             
             _buildUpToDateCheck.TestAccess.SetSubscription(subscription.Object);
+
+            return configuredInput;
         }
 
         [Theory]
@@ -299,6 +308,53 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             await AssertNotUpToDateAsync(
                 "Output 'C:\\Dev\\Solution\\Project\\BuiltOutputPath1' does not exist, not up to date.",
                 "Outputs");
+        }
+
+        [Fact]
+        public async Task IsUpToDateAsync_False_ZeroFilesInProjectAfterItemDeletion()
+        {
+            var projectSnapshot = new Dictionary<string, IProjectRuleSnapshotModel>
+            {
+                [UpToDateCheckBuilt.SchemaName] = SimpleItems("BuildDefault"),
+            };
+
+            var sourceSnapshot = new Dictionary<string, IProjectRuleSnapshotModel>
+            {
+                [Compile.SchemaName] = SimpleItems("ItemPath1")
+            };
+
+            var inputTime = DateTime.UtcNow.AddMinutes(-5);
+            var itemChangeTime = DateTime.UtcNow.AddMinutes(-4);
+            var lastCheckTime = DateTime.UtcNow.AddMinutes(-3);
+            var buildTime = DateTime.UtcNow.AddMinutes(-2);
+
+            _fileSystem.AddFile("C:\\Dev\\Solution\\Project\\ItemPath1", inputTime);
+            _fileSystem.AddFile("C:\\Dev\\Solution\\Project\\BuildDefault", buildTime);
+
+            var prioState = await SetupAsync(
+                projectSnapshot,
+                sourceSnapshot,
+                lastCheckTimeAtUtc: lastCheckTime,
+                lastItemsChangedAtUtc: itemChangeTime);
+
+
+            await AssertUpToDateAsync(
+                $"No inputs are newer than earliest output 'C:\\Dev\\Solution\\Project\\BuildDefault' ({buildTime.ToLocalTime()}).");
+
+            lastCheckTime = DateTime.UtcNow.AddMinutes(-1);
+            itemChangeTime = DateTime.UtcNow.AddMinutes(0);
+
+            await SetupAsync(
+                projectSnapshot,
+                sourceSnapshot,
+                lastCheckTimeAtUtc: lastCheckTime,
+                lastItemsChangedAtUtc: itemChangeTime,
+                upToDateCheckImplicitConfiguredInput: prioState,
+                itemRemovedFromSourceSnapshot: true);
+
+            await AssertNotUpToDateAsync(new[] {
+    $"The set of project items was changed more recently ({itemChangeTime.ToLocalTime()}) than the earliest output 'C:\\Dev\\Solution\\Project\\BuildDefault' ({buildTime.ToLocalTime()}), not up to date.",
+    "    Compile item removed \'ItemPath1\' (CopyType=CopyNever)"}, "Outputs");
         }
 
         [Fact]
