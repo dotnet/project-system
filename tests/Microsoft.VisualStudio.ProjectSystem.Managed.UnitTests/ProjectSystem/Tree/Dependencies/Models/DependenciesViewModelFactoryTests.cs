@@ -73,8 +73,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Models
 
             Assert.NotNull(result.GroupNodeViewModel);
             Assert.Equal(DependencyTreeFlags.ProjectDependencyGroup, result.GroupNodeFlag);
-            Assert.Equal("ZzzDependencyRoot", result.GroupNodeViewModel!.Caption);
-            Assert.Equal(KnownMonikers.AboutBox, result.GroupNodeViewModel!.Icon);
+            Assert.Equal("ZzzDependencyRoot", result.GroupNodeViewModel.Caption);
+            Assert.Equal(KnownMonikers.AboutBox, result.GroupNodeViewModel.Icon);
         }
 
         [Fact]

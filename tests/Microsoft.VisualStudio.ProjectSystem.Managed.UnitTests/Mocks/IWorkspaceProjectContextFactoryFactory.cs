@@ -18,7 +18,7 @@ namespace Microsoft.VisualStudio.LanguageServices.ProjectSystem
             var mock = new Mock<IWorkspaceProjectContextFactory>();
 
             mock.Setup(c => c.CreateProjectContextAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<Guid>(), It.IsAny<object?>(), It.IsAny<string?>(), It.IsAny<string?>(), It.IsAny<CancellationToken>()))
-                .ReturnsAsync(action!);
+                .ReturnsAsync(action);
 
             return mock.Object;
         }

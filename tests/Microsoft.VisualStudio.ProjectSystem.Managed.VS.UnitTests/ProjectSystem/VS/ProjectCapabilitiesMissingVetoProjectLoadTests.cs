@@ -25,7 +25,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                 return veto.AllowProjectLoadAsync(true, ProjectConfigurationFactory.Create("Debug|AnyCPU"), CancellationToken.None);
             });
 
-            Assert.Equal(result.HResult, VSConstants.E_FAIL);
+            Assert.Equal(VSConstants.E_FAIL, result.HResult);
         }
 
         [Theory]

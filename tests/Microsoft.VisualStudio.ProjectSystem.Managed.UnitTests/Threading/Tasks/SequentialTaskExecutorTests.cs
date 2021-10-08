@@ -115,7 +115,7 @@ namespace Microsoft.VisualStudio.Threading.Tasks
         {
             var sequencer = new SequentialTaskExecutor(new(_joinableTaskContext), "UnitTests");
             sequencer.Dispose();
-            Assert.Throws<ObjectDisposedException>(() => { sequencer.ExecuteTask(() => Task.CompletedTask); });
+            Assert.ThrowsAsync<ObjectDisposedException>(() => sequencer.ExecuteTask(() => Task.CompletedTask));
         }
 
         [Fact]

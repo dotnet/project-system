@@ -132,7 +132,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
             await viewModel.Object.InitializeAsync();
 
             Assert.NotNull(viewModelData.FirstSnapshotComplete);
-            await viewModelData.FirstSnapshotComplete!.Task;
+            await viewModelData.FirstSnapshotComplete.Task;
 
             Assert.True(viewModel.Object.HasProfiles);
             Assert.True(viewModel.Object.IsProfileSelected);
