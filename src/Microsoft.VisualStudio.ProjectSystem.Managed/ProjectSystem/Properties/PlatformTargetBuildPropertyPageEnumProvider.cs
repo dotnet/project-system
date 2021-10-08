@@ -17,6 +17,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
     [AppliesTo(ProjectCapability.DotNet)]
     internal class PlatformTargetBuildPropertyPageEnumProvider : IDynamicEnumValuesProvider, IDynamicEnumValuesGenerator
     {
+        private const string AnyCpuPlatformName = "AnyCPU";
+        private const string AnyCpuDisplayName = "Any CPU";
+
         private readonly ProjectProperties _properties;
 
         [ImportingConstructor]
@@ -37,7 +40,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
 
             foreach (string platformTarget in new LazyStringSplit(availablePlatformsTargets, ','))
             {
-                result.Add(new PageEnumValue(new EnumValue() { Name = platformTarget, DisplayName = platformTarget.Equals("AnyCPU") ? "Any CPU" : platformTarget }));
+                result.Add(new PageEnumValue(new EnumValue() { Name = platformTarget, DisplayName = platformTarget.Equals(AnyCpuPlatformName) ? AnyCpuDisplayName : platformTarget }));
             }
 
             return result;

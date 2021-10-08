@@ -6,11 +6,12 @@ using System.Threading.Tasks;
 
 namespace Microsoft.VisualStudio.ProjectSystem.Properties
 {
-    [ExportInterceptingPropertyValueProvider("PlatformTarget", ExportInterceptingPropertyValueProviderFile.ProjectFile)]
+    [ExportInterceptingPropertyValueProvider(ConfiguredBrowseObject.PlatformTargetProperty, ExportInterceptingPropertyValueProviderFile.ProjectFile)]
     internal sealed class DefaultPlatformPropertyValueProvider : InterceptingPropertyValueProviderBase
     {
-        private const string AnyCPUCsproj = "AnyCPU";
-        private const string AnyCPUPropertyPages = "Any CPU";
+        private const string AnyCpuPlatformName = "AnyCPU";
+        private const string AnyCpuDisplayName = "Any CPU";
+
         private readonly ConfiguredProject _configuredProject;
 
         [ImportingConstructor]
@@ -36,12 +37,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
                 value = platform;
             }
 
-            return value.Equals(AnyCPUCsproj) ? AnyCPUPropertyPages : value;
+            return value.Equals(AnyCpuPlatformName) ? AnyCpuDisplayName : value;
         }
 
         public override Task<string?> OnSetPropertyValueAsync(string propertyName, string unevaluatedPropertyValue, IProjectProperties defaultProperties, IReadOnlyDictionary<string, string>? dimensionalConditions = null)
         {
-            return Task.FromResult<string?>(unevaluatedPropertyValue.Equals(AnyCPUPropertyPages) ? AnyCPUCsproj : unevaluatedPropertyValue);
+            return Task.FromResult<string?>(unevaluatedPropertyValue.Equals(AnyCpuDisplayName) ? AnyCpuPlatformName : unevaluatedPropertyValue);
         }
     }
 }
