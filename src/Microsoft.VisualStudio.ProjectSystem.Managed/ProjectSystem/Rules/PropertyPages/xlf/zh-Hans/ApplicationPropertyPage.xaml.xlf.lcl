@@ -32,7 +32,7 @@
         <Str Cat="Text">
           <Val><![CDATA[Allow publishing outside of Visual Studio, such as via "dotnet publish".]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[允许在 Visual Studio 外部发布，例如通过“dotnet 发布”。]]></Val>
+            <Val><![CDATA[允许在 Visual Studio 外部发布，例如通过“dotnet publish”。]]></Val>
           </Tgt>
         </Str>
         <Disp Icon="Str" />
