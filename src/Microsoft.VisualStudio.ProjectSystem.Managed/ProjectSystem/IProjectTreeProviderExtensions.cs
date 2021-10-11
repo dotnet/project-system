@@ -8,7 +8,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
     /// <summary>
     ///     Provides <see langword="static"/> extensions for <see cref="IProjectTreeProvider"/> instances.
     /// </summary>
-    internal static class ProjectTreeProviderExtensions
+    internal static class IProjectTreeProviderExtensions
     {
         /// <summary>
         ///     Returns a rooted directory that new files should added to the project under when the user
