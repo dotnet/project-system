@@ -303,7 +303,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
                     HResult hr = browseObj.GetProjectItem(out IVsHierarchy hier, out uint itemid);
                     if (hr.IsOK && itemid == VSConstants.VSITEMID_ROOT)
                     {
-                        UnconfiguredProject = hier.GetUnconfiguredProject();
+                        UnconfiguredProject = hier.AsUnconfiguredProject();
 
                         // We need to save ThreadHandling because the appdesigner will call SetObjects with null, and then call
                         // Deactivate(). We need to run Async code during Deactivate() which requires ThreadHandling.

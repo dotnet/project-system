@@ -79,27 +79,6 @@ namespace Microsoft.VisualStudio.Shell.Interop
         }
 
         /// <summary>
-        /// Convenient way to get to the UnconfiguredProject from the hierarchy
-        /// </summary>
-        public static UnconfiguredProject? GetUnconfiguredProject(this IVsHierarchy hierarchy)
-        {
-            UIThreadHelper.VerifyOnUIThread();
-
-            var context = hierarchy as IVsBrowseObjectContext;
-
-            if (context == null)
-            {
-                EnvDTE.Project? dteProject = hierarchy.GetDTEProject();
-                if (dteProject != null)
-                {
-                    context = dteProject.Object as IVsBrowseObjectContext;
-                }
-            }
-
-            return context?.UnconfiguredProject;
-        }
-
-        /// <summary>
         /// Returns EnvDTE.Project object for the hierarchy
         /// </summary>
         public static EnvDTE.Project? GetDTEProject(this IVsHierarchy hierarchy)
