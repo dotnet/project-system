@@ -112,7 +112,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
 
                     computedProfile ??= !Profiles.IsEmpty ? Profiles[0] : null;
 
-                    Interlocked.CompareExchange(ref _activeProfile, computedProfile, null);
+                    Interlocked.CompareExchange(ref _activeProfile, value: computedProfile, comparand: null);
                 }
 
                 return _activeProfile;
