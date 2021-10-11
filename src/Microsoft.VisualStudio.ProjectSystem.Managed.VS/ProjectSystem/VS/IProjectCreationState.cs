@@ -2,6 +2,7 @@
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS
 {
+    [ProjectSystemContract(ProjectSystemContractScope.UnconfiguredProject, ProjectSystemContractProvider.System)]
     internal interface IProjectCreationState
     {
         bool WasNewlyCreated { get; }
