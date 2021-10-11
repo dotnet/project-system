@@ -8,7 +8,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
     /// <summary>
     ///     Provides extension methods for <see cref="IProperty"/> instances.
     /// </summary>
-    internal static class PropertyExtensions
+    internal static class IPropertyExtensions
     {
         /// <summary>
         ///     Returns the value of the specific <see cref="IProperty"/> as <see cref="Guid"/>
