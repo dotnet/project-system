@@ -310,8 +310,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
 
                         if (UnconfiguredProject != null)
                         {
-                            IUnconfiguredProjectVsServices projectVsServices = UnconfiguredProject.Services.ExportProvider.GetExportedValue<IUnconfiguredProjectVsServices>();
-                            _threadHandling = projectVsServices.ThreadingService;
+                            _threadHandling = UnconfiguredProject.Services.ThreadingPolicy;
                         }
                     }
                 }
