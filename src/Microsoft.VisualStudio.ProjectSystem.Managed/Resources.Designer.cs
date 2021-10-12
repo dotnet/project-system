@@ -19,7 +19,7 @@ namespace Microsoft.VisualStudio {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     internal class Resources {
@@ -156,6 +156,24 @@ namespace Microsoft.VisualStudio {
         internal static string MsBuildMissingValueToRename {
             get {
                 return ResourceManager.GetString("MsBuildMissingValueToRename", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to My In-Memory Page 😀.
+        /// </summary>
+        internal static string MyPropertyPage_DisplayName {
+            get {
+                return ResourceManager.GetString("MyPropertyPage_DisplayName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 🎉 Put anything you want here! It doesn&apos;t matter! 🎉.
+        /// </summary>
+        internal static string MyPropertyPage_PropertyDescription {
+            get {
+                return ResourceManager.GetString("MyPropertyPage_PropertyDescription", resourceCulture);
             }
         }
         

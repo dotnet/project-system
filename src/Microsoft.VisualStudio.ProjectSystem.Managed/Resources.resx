@@ -194,4 +194,10 @@ This project was loaded using the wrong project type, likely as a result of rena
     <value>(None)</value>
     <comment>Special value to show in the project property pages when a property has no value.</comment>
   </data>
+  <data name="MyPropertyPage_DisplayName" xml:space="preserve">
+    <value>My In-Memory Page 😀</value>
+  </data>
+  <data name="MyPropertyPage_PropertyDescription" xml:space="preserve">
+    <value>🎉 Put anything you want here! It doesn't matter! 🎉</value>
+  </data>
 </root>

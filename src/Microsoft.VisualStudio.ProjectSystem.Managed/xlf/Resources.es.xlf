@@ -12,6 +12,16 @@
         <target state="translated">Importaciones</target>
         <note />
       </trans-unit>
+      <trans-unit id="MyPropertyPage_DisplayName">
+        <source>My In-Memory Page 😀</source>
+        <target state="new">My In-Memory Page 😀</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="MyPropertyPage_PropertyDescription">
+        <source>🎉 Put anything you want here! It doesn't matter! 🎉</source>
+        <target state="new">🎉 Put anything you want here! It doesn't matter! 🎉</target>
+        <note />
+      </trans-unit>
       <trans-unit id="NeutralLanguage_DisplayNameFormatString">
         <source>{0} - {1}</source>
         <target state="translated">{0} - {1}</target>
