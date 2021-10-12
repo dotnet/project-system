@@ -3,7 +3,6 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
-using System.Linq;
 using System.Threading.Tasks;
 using System.Threading.Tasks.Dataflow;
 using Microsoft.Build.Framework.XamlTypes;
@@ -21,21 +20,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Frameworks
     {
         protected IProjectSubscriptionService SubscriptionService { get; }
 
-        protected abstract string RuleName { get; }
-
-        /// <summary>
-        /// Specifies if a 'None' value should be added to the resulting list.
-        /// </summary>
-        private readonly bool _useNoneValue;
+        protected abstract string[] RuleNames { get; }
 
         protected SupportedValuesProvider(
             ConfiguredProject project,
-            IProjectSubscriptionService subscriptionService,
-            bool useNoneValue = false)
+            IProjectSubscriptionService subscriptionService)
             : base(project, synchronousDisposal: false, registerDataSource: false)
         {
             SubscriptionService = subscriptionService;
-            _useNoneValue = useNoneValue;
         }
 
         protected override IDisposable? LinkExternalInput(ITargetBlock<EnumCollectionProjectValue> targetBlock)
@@ -46,7 +38,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Frameworks
             DisposableValue<ISourceBlock<EnumCollectionProjectValue>> transformBlock = source.SourceBlock.TransformWithNoDelta(
                 update => update.Derive(Transform),
                 suppressVersionOnlyUpdates: false,
-                ruleNames: RuleName);
+                ruleNames: RuleNames);
 
             // Set the link up so that we publish changes to target block.
             transformBlock.Value.LinkTo(targetBlock, DataflowOption.PropagateCompletion);
@@ -58,26 +50,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Frameworks
             return transformBlock;
         }
 
-        protected EnumCollection Transform(IProjectSubscriptionUpdate input)
-        {
-            IProjectRuleSnapshot snapshot = input.CurrentState[RuleName];
-
-            int capacity = _useNoneValue ? 1 + snapshot.Items.Count : snapshot.Items.Count;
-            var list = new List<IEnumValue>(capacity);
-
-            if (_useNoneValue)
-            {
-                list.Add(new PageEnumValue(new EnumValue()
-                {
-                    Name = string.Empty,
-                    DisplayName = Resources.Property_NoneValue
-                }));
-            }
-
-            list.AddRange(snapshot.Items.Select(ToEnumValue));
-            list.Sort(SortValues); // TODO: This is a hotfix for item ordering. Remove this when completing: https://github.com/dotnet/project-system/issues/7025
-            return list;
-        }
+        protected abstract EnumCollection Transform(IProjectSubscriptionUpdate input);
 
         protected abstract int SortValues(IEnumValue a, IEnumValue b);
 

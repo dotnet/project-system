@@ -463,7 +463,39 @@
       <DependentUpon>SupportedTargetFramework.xaml</DependentUpon>
     </Compile>
     <XamlPropertyRule Include="ProjectSystem\Rules\SupportedTargetFramework.xaml">
-      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+      <XlfInput>false</XlfInput>
+      <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
+      <SubType>Designer</SubType>
+      <DataAccess>None</DataAccess>
+      <RuleInjection>None</RuleInjection>
+    </XamlPropertyRule>
+
+    <Compile Update="ProjectSystem\Rules\SupportedNETCoreAppTargetFramework.cs">
+      <DependentUpon>SupportedNETCoreAppTargetFramework.xaml</DependentUpon>
+    </Compile>
+    <XamlPropertyRule Include="ProjectSystem\Rules\SupportedNETCoreAppTargetFramework.xaml">
+      <XlfInput>false</XlfInput>
+      <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
+      <SubType>Designer</SubType>
+      <DataAccess>None</DataAccess>
+      <RuleInjection>None</RuleInjection>
+    </XamlPropertyRule>
+
+    <Compile Update="ProjectSystem\Rules\SupportedNETStandardTargetFramework.cs">
+      <DependentUpon>SupportedNETStandardTargetFramework.xaml</DependentUpon>
+    </Compile>
+    <XamlPropertyRule Include="ProjectSystem\Rules\SupportedNETStandardTargetFramework.xaml">
+      <XlfInput>false</XlfInput>
+      <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
+      <SubType>Designer</SubType>
+      <DataAccess>None</DataAccess>
+      <RuleInjection>None</RuleInjection>
+    </XamlPropertyRule>
+
+    <Compile Update="ProjectSystem\Rules\SupportedNETFrameworkTargetFramework.cs">
+      <DependentUpon>SupportedNETFrameworkTargetFramework.xaml</DependentUpon>
+    </Compile>
+    <XamlPropertyRule Include="ProjectSystem\Rules\SupportedNETFrameworkTargetFramework.xaml">
       <XlfInput>false</XlfInput>
       <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
       <SubType>Designer</SubType>

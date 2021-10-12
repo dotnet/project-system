@@ -245,6 +245,18 @@
     <PropertyPageSchema Include="$(ManagedXamlNeutralResourcesDirectory)SupportedTargetFrameworkAlias.xaml">
       <Context>Project</Context>
     </PropertyPageSchema>
+    
+    <PropertyPageSchema Include="$(ManagedXamlNeutralResourcesDirectory)SupportedNETCoreAppTargetFramework.xaml">
+      <Context>Project</Context>
+    </PropertyPageSchema>
+    
+    <PropertyPageSchema Include="$(ManagedXamlNeutralResourcesDirectory)SupportedNETStandardTargetFramework.xaml">
+      <Context>Project</Context>
+    </PropertyPageSchema>
+    
+    <PropertyPageSchema Include="$(ManagedXamlNeutralResourcesDirectory)SupportedNETFrameworkTargetFramework.xaml">
+      <Context>Project</Context>
+    </PropertyPageSchema>
 
   </ItemGroup>
 

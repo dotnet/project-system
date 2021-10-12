@@ -13,15 +13,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Frameworks
     /// </summary>
     [ExportDynamicEnumValuesProvider("SdkSupportedTargetPlatformVersionEnumProvider")]
     [AppliesTo(ProjectCapability.DotNet)]
-    internal class SdkSupportedTargetPlatformVersionEnumProvider : SupportedValuesProvider
+    internal class SdkSupportedTargetPlatformVersionEnumProvider : SingleRuleSupportedValuesProvider
     {
-        protected override string RuleName => SdkSupportedTargetPlatformVersion.SchemaName;
-
         [ImportingConstructor]
         public SdkSupportedTargetPlatformVersionEnumProvider(
             ConfiguredProject project, 
             IProjectSubscriptionService subscriptionService) 
-            : base(project, subscriptionService) {}
+            : base(project, subscriptionService, ruleName: SdkSupportedTargetPlatformVersion.SchemaName) {}
 
         protected override IEnumValue ToEnumValue(KeyValuePair<string, IImmutableDictionary<string, string>> item)
         {
