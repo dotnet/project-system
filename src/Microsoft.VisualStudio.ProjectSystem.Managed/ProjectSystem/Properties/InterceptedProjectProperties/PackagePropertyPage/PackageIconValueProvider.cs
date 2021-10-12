@@ -23,7 +23,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties.Package
     //   </None>
     // </ItemGroup>
     [ExportInterceptingPropertyValueProvider(PackageIconPropertyName, ExportInterceptingPropertyValueProviderFile.ProjectFile)]
-    internal sealed class PackageIconValueProvider : PackageFileProviderBase
+    internal sealed class PackageIconValueProvider : PackageFilePropertyValueProviderBase
     {
         private const string PackageIconPropertyName = "PackageIcon";
 

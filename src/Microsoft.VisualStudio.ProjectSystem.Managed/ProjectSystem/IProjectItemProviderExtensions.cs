@@ -19,5 +19,18 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
             return null;
         }
+
+        public static async Task<IProjectItem?> GetItemAsync(this IProjectItemProvider provider, string itemType, Predicate<IProjectItem> condition)
+        {
+            foreach (IProjectItem item in await provider.GetItemsAsync(itemType))
+            {
+                if (condition(item))
+                {
+                    return item;
+                }
+            }
+
+            return null;
+        }
     }
 }

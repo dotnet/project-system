@@ -24,7 +24,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties.Package
     //     <PackagePath>content</PackagePath>
     //   </None>
     // </ItemGroup>
-    internal class PackageFileProviderBase : InterceptingPropertyValueProviderBase
+    internal abstract class PackageFilePropertyValueProviderBase : InterceptingPropertyValueProviderBase
     {
         private const string PackMetadataName = "Pack";
         private const string PackagePathMetadataName = "PackagePath";
@@ -33,7 +33,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties.Package
         private readonly UnconfiguredProject _unconfiguredProject;
         private readonly string _propertyName;
 
-        public PackageFileProviderBase(string propertyName, IProjectItemProvider sourceItemsProvider, UnconfiguredProject unconfiguredProject)
+        protected PackageFilePropertyValueProviderBase(string propertyName, IProjectItemProvider sourceItemsProvider, UnconfiguredProject unconfiguredProject)
         {
             _propertyName = propertyName;
             _sourceItemsProvider = sourceItemsProvider;
@@ -53,8 +53,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties.Package
             return Path.Combine(packagePath, filename);
         }
 
-        private async Task<IProjectItem?> GetExistingNoneItemAsync(string existingPropertyValue) =>
-            await _sourceItemsProvider.GetItemAsync(None.SchemaName, async ni =>
+        private async Task<IProjectItem?> GetExistingNoneItemAsync(string existingPropertyValue)
+        {
+            return await _sourceItemsProvider.GetItemAsync(None.SchemaName, async ni =>
             {
                 string pack = await ni.Metadata.GetEvaluatedPropertyValueAsync(PackMetadataName);
                 // Instead of doing pure equality between a calcuated item's property value and the existing property value,
@@ -63,6 +64,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties.Package
                 return bool.TryParse(pack, out bool packValue) && packValue &&
                     Path.GetFileName(ni.EvaluatedInclude).Equals(Path.GetFileName(existingPropertyValue), StringComparisons.PropertyLiteralValues);
             });
+        }
 
         public override async Task<string?> OnSetPropertyValueAsync(string propertyName, string unevaluatedPropertyValue, IProjectProperties defaultProperties, IReadOnlyDictionary<string, string>? dimensionalConditions = null)
         {
@@ -90,7 +92,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties.Package
             }
             else
             {
-                await _sourceItemsProvider.AddAsync(None.SchemaName, relativePath, new Dictionary<string, string> {
+                await _sourceItemsProvider.AddAsync(None.SchemaName, relativePath, new Dictionary<string, string>
+                {
                     { PackMetadataName, bool.TrueString },
                     { PackagePathMetadataName, packagePath }
                 });

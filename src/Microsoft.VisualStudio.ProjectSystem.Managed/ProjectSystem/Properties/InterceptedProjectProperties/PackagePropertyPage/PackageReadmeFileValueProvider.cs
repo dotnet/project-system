@@ -23,7 +23,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties.Package
     //   </None>
     // </ItemGroup>
     [ExportInterceptingPropertyValueProvider(PackageReadmeFilePropertyName, ExportInterceptingPropertyValueProviderFile.ProjectFile)]
-    internal sealed class PackageReadmeFileValueProvider : PackageFileProviderBase
+    internal sealed class PackageReadmeFileValueProvider : PackageFilePropertyValueProviderBase
     {
         private const string PackageReadmeFilePropertyName = "PackageReadmeFile";
 

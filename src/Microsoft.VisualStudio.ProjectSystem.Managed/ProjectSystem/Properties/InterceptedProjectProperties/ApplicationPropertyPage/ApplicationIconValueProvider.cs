@@ -87,10 +87,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties.Package
             return propertyValue;
         }
 
-        private async Task<IProjectItem?> GetExistingContentItemAsync(string existingPropertyValue) =>
-            await _sourceItemsProvider.GetItemAsync(Content.SchemaName, ci =>
+        private async Task<IProjectItem?> GetExistingContentItemAsync(string existingPropertyValue)
+        {
+            return await _sourceItemsProvider.GetItemAsync(Content.SchemaName, ci =>
                 // If the filename of this item and the filename of the property's value match, consider those to be related to one another.
-                Task.FromResult(ci.PropertiesContext.IsProjectFile &&
-                    Path.GetFileName(ci.EvaluatedInclude).Equals(Path.GetFileName(existingPropertyValue), StringComparisons.PropertyLiteralValues)));
+                ci.PropertiesContext.IsProjectFile &&
+                    Path.GetFileName(ci.EvaluatedInclude).Equals(Path.GetFileName(existingPropertyValue), StringComparisons.PropertyLiteralValues));
+        }
     }
 }
