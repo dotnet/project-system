@@ -1,5 +1,6 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.Linq;
@@ -67,10 +68,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
 
         public async Task<ICollection<IEnumValue>> GetListedValuesAsync()
         {
-            Project project = _workspace.CurrentSolution.Projects.First(p => PathHelper.IsSamePath(p.FilePath!, _unconfiguredProject.FullPath));
-            Compilation? compilation = await project.GetCompilationAsync();
+            Project? project = _workspace.CurrentSolution.Projects.FirstOrDefault(p => PathHelper.IsSamePath(p.FilePath!, _unconfiguredProject.FullPath));
+            if (project is null)
+            {
+                return Array.Empty<IEnumValue>();
+            }
 
             List<IEnumValue> enumValues = new();
+
+            Compilation? compilation = await project.GetCompilationAsync();
+
             if (_includeEmptyValue)
             {
                 enumValues.Add(new PageEnumValue(new EnumValue { Name = "", DisplayName = VSResources.StartupObjectNotSet }));
