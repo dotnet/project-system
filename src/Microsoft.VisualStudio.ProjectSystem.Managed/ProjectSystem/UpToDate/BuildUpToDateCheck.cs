@@ -13,14 +13,20 @@ using Microsoft.VisualStudio.IO;
 using Microsoft.VisualStudio.ProjectSystem.Build;
 using Microsoft.VisualStudio.Telemetry;
 using Microsoft.VisualStudio.Text;
+using Microsoft.VisualStudio.Threading;
 
 namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 {
     [AppliesTo(AppliesToExpression)]
     [Export(typeof(IBuildUpToDateCheckProvider))]
+    [Export(typeof(IBuildUpToDateCheckValidator))]
     [Export(typeof(IActiveConfigurationComponent))]
     [ExportMetadata("BeforeDrainCriticalTasks", true)]
-    internal sealed partial class BuildUpToDateCheck : IBuildUpToDateCheckProvider2, IActiveConfigurationComponent, IDisposable
+    internal sealed partial class BuildUpToDateCheck
+        : IBuildUpToDateCheckProvider2,
+          IBuildUpToDateCheckValidator,
+          IActiveConfigurationComponent,
+          IDisposable
     {
         internal const string AppliesToExpression = ProjectCapability.DotNet + "+ !" + ProjectCapabilities.SharedAssetsProject;
 
@@ -45,8 +51,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
         private readonly IFileSystem _fileSystem;
         private readonly IUpToDateCheckHost _upToDateCheckHost;
 
-        private ISubscription _subscription;
+        private IImmutableDictionary<string, string> _lastGlobalProperties = ImmutableStringDictionary<string>.EmptyOrdinal;
+        private string _lastFailureReason = "";
 
+        private ISubscription _subscription;
         private int _isDisposed;
 
         [ImportingConstructor]
@@ -660,7 +668,22 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             return IsUpToDateAsync(buildAction, logWriter, ImmutableDictionary<string, string>.Empty, cancellationToken);
         }
 
-        public async Task<bool> IsUpToDateAsync(BuildAction buildAction, TextWriter logWriter, IImmutableDictionary<string, string> globalProperties, CancellationToken cancellationToken = default)
+        async Task<(bool IsUpToDate, string? FailureReason)> IBuildUpToDateCheckValidator.ValidateUpToDateAsync(
+            BuildAction buildAction,
+            CancellationToken cancellationToken)
+        {
+            bool isUpToDate = await IsUpToDateInternalAsync(TextWriter.Null, _lastGlobalProperties, updateLastCheckedAt: false, cancellationToken);
+
+            string failureReason = isUpToDate ? "" : _lastFailureReason;
+
+            return (isUpToDate, failureReason);
+        }
+
+        public Task<bool> IsUpToDateAsync(
+            BuildAction buildAction,
+            TextWriter logWriter,
+            IImmutableDictionary<string, string> globalProperties,
+            CancellationToken cancellationToken = default)
         {
             if (Volatile.Read(ref _isDisposed) != 0)
             {
@@ -669,19 +692,32 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
             if (buildAction != BuildAction.Build)
             {
-                return false;
+                return TaskResult.False;
             }
 
+            return IsUpToDateInternalAsync(logWriter, globalProperties, updateLastCheckedAt: true, cancellationToken);
+        }
+
+        private async Task<bool> IsUpToDateInternalAsync(
+            TextWriter logWriter,
+            IImmutableDictionary<string, string> globalProperties,
+            bool updateLastCheckedAt,
+            CancellationToken cancellationToken)
+        {
             cancellationToken.ThrowIfCancellationRequested();
+
+            // Cache the last-used set of global properties. We may be asked to validate this up-to-date check
+            // once the build has completed, and will need to know the same set of global properties.
+            _lastGlobalProperties = globalProperties;
 
             // Start the stopwatch now, so we include any lock acquisition in the timing
             var sw = Stopwatch.StartNew();
 
             ISubscription subscription = Volatile.Read(ref _subscription);
 
-            return await subscription.RunAsync(IsUpToDateInternalAsync, cancellationToken);
+            return await subscription.RunAsync(CheckAsync, updateLastCheckedAt, cancellationToken);
 
-            async Task<bool> IsUpToDateInternalAsync(UpToDateCheckConfiguredInput state, DateTime lastCheckedAtUtc, CancellationToken token)
+            async Task<bool> CheckAsync(UpToDateCheckConfiguredInput state, DateTime lastCheckedAtUtc, CancellationToken token)
             {
                 token.ThrowIfCancellationRequested();
 
@@ -726,6 +762,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 finally
                 {
                     logger.Verbose("Up to date check completed in {0:N1} ms", sw.Elapsed.TotalMilliseconds);
+
+                    _lastFailureReason = logger.FailureReason ?? "";
                 }
             }
         }

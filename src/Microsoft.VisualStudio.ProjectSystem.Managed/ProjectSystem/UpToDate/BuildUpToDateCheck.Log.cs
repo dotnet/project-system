@@ -20,6 +20,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
             public LogLevel Level { get; }
 
+            public string? FailureReason { get; private set; }
+
             public Log(TextWriter writer, LogLevel requestedLogLevel, Stopwatch stopwatch, TimestampCache timestampCache, string projectPath, ITelemetryService telemetryService, UpToDateCheckConfiguredInput upToDateCheckConfiguredInput)
             {
                 _writer = writer;
@@ -113,6 +115,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                     (TelemetryPropertyName.UpToDateCheckFileCount, _timestampCache.Count),
                     (TelemetryPropertyName.UpToDateCheckConfigurationCount, _upToDateCheckConfiguredInput.ImplicitInputs.Length)
                 });
+
+                // Remember the failure reason for use in IncrementalBuildFailureDetector.
+                FailureReason = reason;
 
                 return false;
             }
