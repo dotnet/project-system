@@ -55,7 +55,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build
             await JoinableFactory.SwitchToMainThreadAsync(cancellationToken);
 
             _solutionBuildManager = await _solutionBuildManagerService.GetValueAsync(cancellationToken);
-            ErrorHandler.ThrowOnFailure(((IVsSolutionBuildManager2)_solutionBuildManager).AdviseUpdateSolutionEvents(this, out _cookie));
+            (_solutionBuildManager as IVsSolutionBuildManager2)?.AdviseUpdateSolutionEvents(this, out _cookie);
             ErrorHandler.ThrowOnFailure(_solutionBuildManager.AdviseUpdateSolutionEvents3(this, out _cookie3));
 
             _skipAnalyzersForImplicitlyTriggeredBuild = await _options.GetSkipAnalyzersForImplicitlyTriggeredBuildAsync(cancellationToken);
@@ -66,8 +66,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build
         {
             if (initialized)
             {
-                ((IVsSolutionBuildManager2)_solutionBuildManager!).UnadviseUpdateSolutionEvents(_cookie);
-                _solutionBuildManager.UnadviseUpdateSolutionEvents3(_cookie3);
+                (_solutionBuildManager as IVsSolutionBuildManager2)?.UnadviseUpdateSolutionEvents(_cookie);
+                _solutionBuildManager!.UnadviseUpdateSolutionEvents3(_cookie3);
 
                 _options.UnregisterOptionChangedEventHandler(OnOptionChangedAsync);
             }
