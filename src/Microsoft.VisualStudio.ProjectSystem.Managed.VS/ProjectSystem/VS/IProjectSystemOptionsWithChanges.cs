@@ -12,11 +12,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         /// <summary>
         /// Registers the given <paramref name="handler"/> as a callback for option changes.
         /// </summary>
-        public void RegisterOptionChangedEventHandler(PropertyChangedAsyncEventHandler handler);
+        void RegisterOptionChangedEventHandler(PropertyChangedAsyncEventHandler handler);
 
         /// <summary>
         /// Unregsiters the given <paramref name="handler"/> from option change callbacks.
         /// </summary>
-        public void UnregisterOptionChangedEventHandler(PropertyChangedAsyncEventHandler handler);
+        void UnregisterOptionChangedEventHandler(PropertyChangedAsyncEventHandler handler);
     }
 }

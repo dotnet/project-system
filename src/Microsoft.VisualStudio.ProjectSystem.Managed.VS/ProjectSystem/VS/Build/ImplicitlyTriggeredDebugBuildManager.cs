@@ -8,6 +8,7 @@ using Microsoft.VisualStudio.Composition;
 using Microsoft.VisualStudio.ProjectSystem.Build;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
+using Microsoft.VisualStudio.Threading;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Build
 {
@@ -15,8 +16,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build
     /// Tracks implicitly builds triggered as part of F5/Shift+F5 debugging commands and
     /// skips analyzer execution for these builds by invoking into <see cref="IImplicitlyTriggeredBuildManager"/>.
     /// </summary>
-    [Export(typeof(ImplicitlyTriggeredDebugBuildManager))]
-    internal class ImplicitlyTriggeredDebugBuildManager : OnceInitializedOnceDisposedAsync, IVsUpdateSolutionEvents2, IVsUpdateSolutionEvents3
+    [Export(ExportContractNames.Scopes.UnconfiguredProject, typeof(IProjectDynamicLoadComponent))]
+    [AppliesTo(ProjectCapability.DotNet)]
+    internal class ImplicitlyTriggeredDebugBuildManager : OnceInitializedOnceDisposedAsync, IProjectDynamicLoadComponent, IVsUpdateSolutionEvents2, IVsUpdateSolutionEvents3
     {
         private readonly IProjectSystemOptionsWithChanges _options;
         private readonly IVsService<IVsSolutionBuildManager3> _solutionBuildManagerService;
@@ -44,10 +46,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build
             _implicitlyTriggeredBuildManager = implicitlyTriggeredBuildManager;
         }
 
-        public Task InitializeAsync() => base.InitializeAsync();
+        public Task LoadAsync() => InitializeAsync();
+        public Task UnloadAsync() => DisposeAsync();
 
         protected override async Task InitializeCoreAsync(CancellationToken cancellationToken)
         {
+            // AdviseUpdateSolutionEvents call needs UI thread.
+            await JoinableFactory.SwitchToMainThreadAsync(cancellationToken);
+
             _solutionBuildManager = await _solutionBuildManagerService.GetValueAsync(cancellationToken);
             ErrorHandler.ThrowOnFailure(((IVsSolutionBuildManager2)_solutionBuildManager).AdviseUpdateSolutionEvents(this, out _cookie));
             ErrorHandler.ThrowOnFailure(_solutionBuildManager.AdviseUpdateSolutionEvents3(this, out _cookie3));
