@@ -66,5 +66,10 @@ namespace Microsoft.VisualStudio.Telemetry
         ///    the project's incremental build is working correctly. When a build completes, it should be up-to-date.
         /// </remarks>
         public const string IncrementalBuildValidationFailure = Prefix + "/incrementalbuild/validationfailure";
+        
+        /// <summary>
+        ///     Indicates that the user was notified of the suspected incremental build failure.
+        /// </summary>
+        public const string IncrementalBuildValidationFailureDisplayed = Prefix + "/incrementalbuild/validationfailure/displayed";
     }
 }

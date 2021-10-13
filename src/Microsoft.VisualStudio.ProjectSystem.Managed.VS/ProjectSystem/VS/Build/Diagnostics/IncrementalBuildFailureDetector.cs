@@ -1,9 +1,9 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
+using System;
 using System.ComponentModel.Composition;
 using System.Threading;
 using System.Threading.Tasks;
-using Microsoft.Internal.VisualStudio.Shell.Interop;
 using Microsoft.VisualStudio.ProjectSystem.Build;
 using Microsoft.VisualStudio.ProjectSystem.UpToDate;
 using Microsoft.VisualStudio.Shell;
@@ -39,20 +39,27 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build.Diagnostics
     internal sealed partial class IncrementalBuildFailureDetector
         : OnceInitializedOnceDisposedAsync,
           IVsUpdateSolutionEvents2,
+          IVsRunningDocTableEvents,
           IPackageService
     {
-        private readonly IVsUIService<SVsFeatureFlags, IVsFeatureFlags> _featureFlagsService;
+        private readonly IVsService<SVsRunningDocumentTable, IVsRunningDocumentTable> _rdtService;
 
         private IVsSolutionBuildManager2? _solutionBuildManager;
-        private uint _cookie;
+        private IVsRunningDocumentTable? _rdt;
+
+        private uint _sbmCookie;
+        private uint _rdtCookie;
+        
+        private DateTime _lastSavedAtUtc = DateTime.MinValue;
+        private DateTime _lastBuildStartedAtUtc = DateTime.MinValue;
 
         [ImportingConstructor]
         public IncrementalBuildFailureDetector(
-            IVsUIService<SVsFeatureFlags, IVsFeatureFlags> featureFlagsService,
+            IVsService<SVsRunningDocumentTable, IVsRunningDocumentTable> rdtService,
             JoinableTaskContext joinableTaskContext)
             : base(new(joinableTaskContext))
         {
-            _featureFlagsService = featureFlagsService;
+            _rdtService = rdtService;
         }
 
         async Task IPackageService.InitializeAsync(IAsyncServiceProvider asyncServiceProvider)
@@ -60,8 +67,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build.Diagnostics
             await JoinableFactory.SwitchToMainThreadAsync();
 
             _solutionBuildManager = await asyncServiceProvider.GetServiceAsync<SVsSolutionBuildManager, IVsSolutionBuildManager2>();
+            _rdt = await _rdtService.GetValueAsync();
 
-            HResult.Verify(_solutionBuildManager.AdviseUpdateSolutionEvents(this, out _cookie), $"Error advising solution events in {typeof(IncrementalBuildFailureDetector)}.");
+            HResult.Verify(_rdt.AdviseRunningDocTableEvents(this, out _rdtCookie), $"Error advising RDT events in {typeof(IncrementalBuildFailureDetector)}.");
+            HResult.Verify(_solutionBuildManager.AdviseUpdateSolutionEvents(this, out _sbmCookie), $"Error advising solution events in {typeof(IncrementalBuildFailureDetector)}.");
 
             await InitializeAsync();
         }
@@ -76,40 +85,22 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build.Diagnostics
         protected override Task DisposeCoreAsync(bool initialized)
         {
             Assumes.NotNull(_solutionBuildManager);
+            Assumes.NotNull(_rdt);
 
-            if (_cookie != 0)
+            if (_rdtCookie != 0)
             {
-                HResult.Verify(_solutionBuildManager.UnadviseUpdateSolutionEvents(_cookie), $"Error unadvising solution events in {typeof(IncrementalBuildFailureDetector)}.");
-                _cookie = 0;
+                HResult.Verify(_rdt.UnadviseRunningDocTableEvents(_sbmCookie), $"Error unadvising RDT events in {typeof(IncrementalBuildFailureDetector)}.");
+                _sbmCookie = 0;
+            }
+
+            if (_rdtCookie != 0)
+            {
+                HResult.Verify(_solutionBuildManager.UnadviseUpdateSolutionEvents(_rdtCookie), $"Error unadvising solution events in {typeof(IncrementalBuildFailureDetector)}.");
+                _rdtCookie = 0;
             }
 
             return Task.CompletedTask;
         }
-
-        /// <summary>
-        /// Called before any build actions have begun. This is the last chance to cancel the build before any building begins.
-        /// </summary>
-        int IVsUpdateSolutionEvents2.UpdateSolution_Begin(ref int pfCancelUpdate) => HResult.OK;
-
-        /// <summary>
-        /// Called when a build is completed.
-        /// </summary>
-        int IVsUpdateSolutionEvents2.UpdateSolution_Done(int fSucceeded, int fModified, int fCancelCommand) => HResult.OK;
-
-        /// <summary>
-        /// Called before the first project configuration is about to be built.
-        /// </summary>
-        int IVsUpdateSolutionEvents2.UpdateSolution_StartUpdate(ref int pfCancelUpdate) => HResult.OK;
-
-        /// <summary>
-        /// Called when a build is being cancelled.
-        /// </summary>
-        int IVsUpdateSolutionEvents2.UpdateSolution_Cancel() => HResult.OK;
-
-        /// <summary>
-        /// Called right before a project configuration begins to build.
-        /// </summary>
-        int IVsUpdateSolutionEvents2.UpdateProjectCfg_Begin(IVsHierarchy pHierProj, IVsCfg pCfgProj, IVsCfg pCfgSln, uint dwAction, ref int pfCancel) => HResult.OK;
 
         /// <summary>
         /// Called right after a project configuration is finished building.
@@ -118,37 +109,18 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build.Diagnostics
         {
             if (fSuccess != 0 && fCancel == 0)
             {
-                bool telemetryEnabled = _featureFlagsService.Value.IsFeatureEnabled("ManagedProjectSystem.EnableIncrementalBuildFailureOutputLogging", defaultValue: false);
-                bool loggingEnabled = _featureFlagsService.Value.IsFeatureEnabled("ManagedProjectSystem.EnableIncrementalBuildFailureTelemetry", defaultValue: false);
-
-                if (!telemetryEnabled && !loggingEnabled)
+                if (_lastSavedAtUtc > _lastBuildStartedAtUtc)
                 {
+                    // Something was saved since the last build.
+                    // This can cause the project to appear out-of-date in a way that does not indicate
+                    // broken incrementality. In such cases, disable the check here altogether for
+                    // the build.
                     return HResult.OK;
                 }
 
-                UnconfiguredProject? unconfiguredProject = pHierProj.AsUnconfiguredProject();
+                IProjectChecker? checker = pHierProj.AsUnconfiguredProject()?.Services.ExportProvider.GetExportedValueOrDefault<IProjectChecker>();
 
-                if (unconfiguredProject is not null)
-                {
-                    IProjectChecker? checker = unconfiguredProject.Services.ExportProvider.GetExportedValueOrDefault<IProjectChecker>();
-                    IProjectAsynchronousTasksService? projectAsynchronousTasksService = unconfiguredProject.Services.ExportProvider.GetExportedValueOrDefault<IProjectAsynchronousTasksService>(ExportContractNames.Scopes.UnconfiguredProject);
-
-                    if (checker is not null && projectAsynchronousTasksService is not null)
-                    {
-                        unconfiguredProject.Services.ThreadingPolicy.RunAndForget(
-                            async () =>
-                            {
-                                await TaskScheduler.Default;
-
-                                await checker.CheckAsync(
-                                    GetBuildActionFromUpToDateOptions(dwAction),
-                                    telemetryEnabled,
-                                    loggingEnabled,
-                                    projectAsynchronousTasksService.UnloadCancellationToken);
-                            },
-                            unconfiguredProject: unconfiguredProject);
-                    }
-                }
+                checker?.OnProjectBuildCompleted(buildAction: GetBuildActionFromUpToDateOptions(dwAction));
             }
 
             return HResult.OK;
@@ -159,7 +131,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build.Diagnostics
                 {
                     return BuildAction.Package;
                 }
-                
+
                 if ((options & VSConstants.VSUTDCF_REBUILD) == VSConstants.VSUTDCF_REBUILD)
                 {
                     return BuildAction.Rebuild;
@@ -170,17 +142,46 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build.Diagnostics
         }
 
         /// <summary>
-        /// Called when the active project configuration for a project in the solution has changed.
+        /// Called before the first project configuration is about to be built.
         /// </summary>
-        int IVsUpdateSolutionEvents2.OnActiveProjectCfgChange(IVsHierarchy pIVsHierarchy) => HResult.OK;
+        int IVsUpdateSolutionEvents.UpdateSolution_StartUpdate(ref int pfCancelUpdate)
+        {
+            _lastBuildStartedAtUtc = DateTime.UtcNow;
+            return HResult.OK;
+        }
+
+        /// <summary>
+        /// Called after saving a document in the Running Document Table.
+        /// </summary>
+        int IVsRunningDocTableEvents.OnAfterSave(uint docCookie)
+        {
+            _lastSavedAtUtc = DateTime.UtcNow;
+            return HResult.OK;
+        }
 
         #region IVsUpdateSolutionEvents stubs
 
         int IVsUpdateSolutionEvents.UpdateSolution_Begin(ref int pfCancelUpdate) => HResult.OK;
         int IVsUpdateSolutionEvents.UpdateSolution_Done(int fSucceeded, int fModified, int fCancelCommand) => HResult.OK;
-        int IVsUpdateSolutionEvents.UpdateSolution_StartUpdate(ref int pfCancelUpdate) => HResult.OK;
         int IVsUpdateSolutionEvents.UpdateSolution_Cancel() => HResult.OK;
         int IVsUpdateSolutionEvents.OnActiveProjectCfgChange(IVsHierarchy pIVsHierarchy) => HResult.OK;
+
+        int IVsUpdateSolutionEvents2.OnActiveProjectCfgChange(IVsHierarchy pIVsHierarchy) => HResult.OK;
+        int IVsUpdateSolutionEvents2.UpdateSolution_Begin(ref int pfCancelUpdate) => HResult.OK;
+        int IVsUpdateSolutionEvents2.UpdateSolution_Done(int fSucceeded, int fModified, int fCancelCommand) => HResult.OK;
+        int IVsUpdateSolutionEvents2.UpdateSolution_StartUpdate(ref int pfCancelUpdate) => HResult.OK;
+        int IVsUpdateSolutionEvents2.UpdateSolution_Cancel() => HResult.OK;
+        int IVsUpdateSolutionEvents2.UpdateProjectCfg_Begin(IVsHierarchy pHierProj, IVsCfg pCfgProj, IVsCfg pCfgSln, uint dwAction, ref int pfCancel) => HResult.OK;
+
+        #endregion
+
+        #region IVsRunningDocTableEvents stubs
+
+        int IVsRunningDocTableEvents.OnAfterFirstDocumentLock(uint docCookie, uint dwRDTLockType, uint dwReadLocksRemaining, uint dwEditLocksRemaining) => HResult.OK;
+        int IVsRunningDocTableEvents.OnBeforeLastDocumentUnlock(uint docCookie, uint dwRDTLockType, uint dwReadLocksRemaining, uint dwEditLocksRemaining) => HResult.OK;
+        int IVsRunningDocTableEvents.OnAfterAttributeChange(uint docCookie, uint grfAttribs) => HResult.OK;
+        int IVsRunningDocTableEvents.OnBeforeDocumentWindowShow(uint docCookie, int fFirstShow, IVsWindowFrame pFrame) => HResult.OK;
+        int IVsRunningDocTableEvents.OnAfterDocumentWindowHide(uint docCookie, IVsWindowFrame pFrame) => HResult.OK;
 
         #endregion
     }

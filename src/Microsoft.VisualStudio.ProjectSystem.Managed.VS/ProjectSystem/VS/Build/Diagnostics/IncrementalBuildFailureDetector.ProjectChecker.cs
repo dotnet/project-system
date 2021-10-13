@@ -1,102 +1,118 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
 using System;
+using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.Diagnostics;
-using System.Runtime.InteropServices;
 using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.Internal.VisualStudio.Shell.Interop;
+using Microsoft.VisualStudio.Composition;
 using Microsoft.VisualStudio.ProjectSystem.Build;
 using Microsoft.VisualStudio.ProjectSystem.UpToDate;
 using Microsoft.VisualStudio.Shell.Interop;
-using Microsoft.VisualStudio.Telemetry;
+using Microsoft.VisualStudio.Threading;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Build.Diagnostics
 {
     internal sealed partial class IncrementalBuildFailureDetector
     {
+        /// <summary>
+        /// Unconfigured project scoped data related to incremental build failure detection.
+        /// </summary>
         [Export(typeof(IProjectChecker))]
-        internal sealed class ProjectChecker : IProjectChecker
+        private sealed class ProjectChecker : IProjectChecker
         {
             private readonly UnconfiguredProject _project;
             private readonly IActiveConfiguredValue<IBuildUpToDateCheckProvider> _upToDateCheckProvider;
             private readonly IActiveConfiguredValue<IBuildUpToDateCheckValidator> _upToDateCheckValidator;
-            private readonly IVsUIService<SVsOutputWindow, IVsOutputWindow> _outputWindow;
+            private readonly IProjectAsynchronousTasksService _projectAsynchronousTasksService;
 
-            private bool _hasBeenReportedViaTelemetry;
+            [ImportMany]
+            private OrderPrecedenceImportCollection<IIncrementalBuildFailureReporter> Reporters { get; }
 
             [ImportingConstructor]
             public ProjectChecker(
                 UnconfiguredProject project,
+                IVsUIService<SVsFeatureFlags, IVsFeatureFlags> featureFlagsService,
                 IActiveConfiguredValue<IBuildUpToDateCheckProvider> upToDateCheckProvider,
                 IActiveConfiguredValue<IBuildUpToDateCheckValidator> upToDateCheckValidator,
+                [Import(ExportContractNames.Scopes.UnconfiguredProject)] IProjectAsynchronousTasksService projectAsynchronousTasksService,
                 IVsUIService<SVsOutputWindow, IVsOutputWindow> outputWindow)
             {
                 _project = project;
                 _upToDateCheckProvider = upToDateCheckProvider;
                 _upToDateCheckValidator = upToDateCheckValidator;
-                _outputWindow = outputWindow;
+                _projectAsynchronousTasksService = projectAsynchronousTasksService;
+                
+                Reporters = new OrderPrecedenceImportCollection<IIncrementalBuildFailureReporter>(projectCapabilityCheckProvider: project);
             }
 
-            public async Task CheckAsync(
-                BuildAction buildAction,
-                bool telemetryEnabled,
-                bool outputLoggingEnabled,
-                CancellationToken cancellationToken)
+            public void OnProjectBuildCompleted(BuildAction buildAction)
             {
-                Assumes.True(telemetryEnabled || outputLoggingEnabled);
+                _project.Services.ThreadingPolicy.RunAndForget(
+                    async () =>
+                    {
+                        await TaskScheduler.Default;
 
-                if (!outputLoggingEnabled && _hasBeenReportedViaTelemetry)
-                {
-                    return;
-                }
-
-                var sw = Stopwatch.StartNew();
-
-                if (!await _upToDateCheckProvider.Value.IsUpToDateCheckEnabledAsync(cancellationToken))
-                {
-                    // The fast up-to-date check has been disabled. We can't know the reason why.
-                    // We currently do not flag errors in this case, so stop processing immediately.
-                    return;
-                }
-
-                (bool isUpToDate, string? failureReason) = await _upToDateCheckValidator.Value.ValidateUpToDateAsync(buildAction, cancellationToken);
-
-                if (isUpToDate)
-                {
-                    // The project is up-to-date, as expected. Nothing more to do.
-                    return;
-                }
-
-                if (telemetryEnabled && !_hasBeenReportedViaTelemetry)
-                {
-                    // We currently report once per project per solution lifetime.
-
-                    var telemetryEvent = new TelemetryEvent(TelemetryEventName.IncrementalBuildValidationFailure);
-                    telemetryEvent.Properties.Add(TelemetryPropertyName.IncrementalBuildFailureReason, failureReason);
-                    telemetryEvent.Properties.Add(TelemetryPropertyName.IncrementalBuildValidationDurationMillis, sw.Elapsed.TotalMilliseconds);
-                    TelemetryService.DefaultSession.PostEvent(telemetryEvent);
-                    _hasBeenReportedViaTelemetry = true;
-                }
-
-                if (outputLoggingEnabled)
-                {
-                    await LogWarningInBuildOutputAsync();
-                }
+                        await CheckAsync(_projectAsynchronousTasksService.UnloadCancellationToken);
+                    },
+                    unconfiguredProject: _project);
 
                 return;
 
-                async Task LogWarningInBuildOutputAsync()
+                async Task CheckAsync(CancellationToken cancellationToken)
                 {
-                    await _project.Services.ThreadingPolicy.SwitchToUIThread(cancellationToken);
+                    var sw = Stopwatch.StartNew();
 
-                    Guid outputPaneGuid = VSConstants.GUID_BuildOutputWindowPane;
-
-                    if (_outputWindow.Value.GetPane(ref outputPaneGuid, out IVsOutputWindowPane? outputPane) == HResult.OK && outputPane != null)
+                    if (!await _upToDateCheckProvider.Value.IsUpToDateCheckEnabledAsync(cancellationToken))
                     {
-                        string message = string.Format(VSResources.IncrementalBuildFailureWarningMessage, System.IO.Path.GetFileName(_project.FullPath));
+                        // The fast up-to-date check has been disabled. We can't know the reason why.
+                        // We currently do not flag errors in this case, so stop processing immediately.
+                        return;
+                    }
 
-                        Marshal.ThrowExceptionForHR(outputPane.OutputStringThreadSafe(message));
+                    List<IIncrementalBuildFailureReporter>? reporters = await GetEnabledReportersAsync();
+
+                    if (reporters is null)
+                    {
+                        // No reporter is enabled, so return immediately without checking anything
+                        return;
+                    }
+
+                    (bool isUpToDate, string? failureReason) = await _upToDateCheckValidator.Value.ValidateUpToDateAsync(buildAction, cancellationToken);
+
+                    if (isUpToDate)
+                    {
+                        // The project is up-to-date, as expected. Nothing more to do.
+                        return;
+                    }
+
+                    Assumes.NotNull(failureReason);
+
+                    TimeSpan checkDuration = sw.Elapsed;
+
+                    foreach (IIncrementalBuildFailureReporter reporter in reporters)
+                    {
+                        await reporter.ReportFailureAsync(failureReason, checkDuration, cancellationToken);
+                    }
+
+                    return;
+
+                    async Task<List<IIncrementalBuildFailureReporter>?> GetEnabledReportersAsync()
+                    {
+                        List<IIncrementalBuildFailureReporter>? reporters = null;
+
+                        foreach (IIncrementalBuildFailureReporter reporter in Reporters.ExtensionValues())
+                        {
+                            if (await reporter.IsEnabledAsync(cancellationToken))
+                            {
+                                reporters ??= new();
+                                reporters.Add(reporter);
+                            }
+                        }
+
+                        return reporters;
                     }
                 }
             }
