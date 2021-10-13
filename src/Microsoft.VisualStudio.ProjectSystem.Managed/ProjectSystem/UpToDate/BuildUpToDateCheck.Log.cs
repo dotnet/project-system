@@ -91,12 +91,21 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             public void Verbose(string message, object arg0) => Write(LogLevel.Verbose, message, arg0);
             public void Verbose(string message, params object[] values) => Write(LogLevel.Verbose, message, values);
 
+            /// <summary>
+            /// Publishes the up-to-date failure via telemetry and the output window.
+            /// </summary>
+            /// <param name="reason">A string that uniquely identifies the kind of failure. Must not contain any PII such as file system data.</param>
+            /// <param name="message">A string that clearly describes the reason for the failure. May contain PII, as this string is only displayed on screen.</param>
+            /// <param name="values">Optional format arguments to be applied to <paramref name="message"/>.</param>
+            /// <returns><see langword="false"/>, which may be returned directly in <see cref="BuildUpToDateCheck"/>.</returns>
             public bool Fail(string reason, string message, params object[] values)
             {
                 _stopwatch.Stop();
 
+                // Minimal logging only includes failures.
                 Minimal(message, values);
 
+                // Send telemetry.
                 _telemetryService.PostProperties(TelemetryEventName.UpToDateCheckFail, new[]
                 {
                     (TelemetryPropertyName.UpToDateCheckFailReason, (object)reason),
@@ -112,6 +121,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             {
                 _stopwatch.Stop();
 
+                // Send telemetry.
                 _telemetryService.PostProperties(TelemetryEventName.UpToDateCheckSuccess, new[]
                 {
                     (TelemetryPropertyName.UpToDateCheckDurationMillis, (object)_stopwatch.Elapsed.TotalMilliseconds),
