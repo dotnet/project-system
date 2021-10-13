@@ -9,7 +9,7 @@
 
 [![Join the chat at https://gitter.im/dotnet/project-system](https://badges.gitter.im/dotnet/project-system.svg)](https://gitter.im/dotnet/project-system?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
-This repository contains the new .NET Project System that has been rewritten on top of the [Common Project System (CPS)](https://github.com/microsoft/vsprojectsystem). In Visual Studio 2017 and [Visual Studio 2019](https://www.visualstudio.com/vs/), this project system is used by default for Shared Projects (C# and Visual Basic), and .NET Core (C#, F# and Visual Basic) project types, however, [long term](docs/repo/roadmap.md) it will be the basis of all C#, F# and Visual Basic project types. For a list of feature differences between the project systems, see [Feature Comparison](docs/feature-comparison.md).
+This repository contains the new .NET Project System that has been rewritten on top of the [Common Project System (CPS)](https://github.com/microsoft/vsprojectsystem). In Visual Studio 2017, [Visual Studio 2019](https://www.visualstudio.com/vs/), and Visual Studio 2022, this project system is used by default for Shared Projects (C# and Visual Basic), and .NET Core (C#, F# and Visual Basic) project types, however, [long term](docs/repo/roadmap.md) it will be the basis of all C#, F# and Visual Basic project types. For a list of feature differences between the project systems, see [Feature Comparison](docs/feature-comparison.md).
 
 The legacy C# and Visual Basic project systems (csproj.dll and msvbprj.dll) first shipped with Visual Studio .NET in 2002. They have served us well but are:
 
