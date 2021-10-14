@@ -7,27 +7,34 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
     internal static class ProjectPropertiesExtensions
     {
         /// <summary>
-        /// Saves the unevaluated value of <paramref name="propertyName"/>, if any, to <paramref name="storage"/>.
+        /// Saves the unevaluated value of <paramref name="propertyName"/>, if defined in context, to <paramref name="storage"/>.
         /// </summary>
         public static async Task SaveValueIfCurrentlySetAsync(this IProjectProperties properties, string propertyName, ITemporaryPropertyStorage storage)
         {
-            string? currentPropertyValue = await properties.GetUnevaluatedPropertyValueAsync(propertyName);
-            if (!Strings.IsNullOrEmpty(currentPropertyValue))
+            if (!await properties.IsValueInheritedAsync(propertyName))
             {
-                storage.AddOrUpdatePropertyValue(propertyName, currentPropertyValue);
+                string? currentPropertyValue = await properties.GetUnevaluatedPropertyValueAsync(propertyName);
+                if (!Strings.IsNullOrEmpty(currentPropertyValue))
+                {
+                    storage.AddOrUpdatePropertyValue(propertyName, currentPropertyValue);
+                }
             }
         }
 
         /// <summary>
-        /// If <paramref name="propertyName"/> is not currently set restores the saved value, if any, from <paramref name="storage"/>.
+        /// Restores the saved value of <paramref name="propertyName"/>, if not defined in context, from <paramref name="storage"/>.
         /// </summary>
         public static async Task RestoreValueIfNotCurrentlySetAsync(this IProjectProperties properties, string propertyName, ITemporaryPropertyStorage storage)
         {
-            string? currentPropertyValue = await properties.GetUnevaluatedPropertyValueAsync(propertyName);
-            if (string.IsNullOrEmpty(currentPropertyValue)
-                && storage.GetPropertyValue(propertyName) is string previousValue)
+            if (storage.GetPropertyValue(propertyName) is string previousValue)
             {
-                await properties.SetPropertyValueAsync(propertyName, previousValue);
+                bool inherited = await properties.IsValueInheritedAsync(propertyName);
+                string? currentPropertyValue = await properties.GetUnevaluatedPropertyValueAsync(propertyName);
+
+                if (inherited || string.IsNullOrEmpty(currentPropertyValue))
+                {
+                    await properties.SetPropertyValueAsync(propertyName, previousValue);
+                }
             }
         }
     }

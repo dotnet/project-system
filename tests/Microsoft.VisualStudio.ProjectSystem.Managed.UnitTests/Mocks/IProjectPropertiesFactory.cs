@@ -30,7 +30,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
             return MockWithPropertiesAndValues(new Dictionary<string, string?>() { { propertyName, setValue } });
         }
 
-        public static Mock<IProjectProperties> MockWithPropertiesAndValues(Dictionary<string, string?> propertyNameAndValues)
+        public static Mock<IProjectProperties> MockWithPropertiesAndValues(Dictionary<string, string?> propertyNameAndValues, HashSet<string>? inheritedPropertyNames = null)
         {
             var mock = MockWithProperties(propertyNameAndValues.Keys);
 
@@ -48,6 +48,12 @@ namespace Microsoft.VisualStudio.ProjectSystem
                  .Returns<string, string, IReadOnlyDictionary<string, string>>((k, v, d) =>
                     {
                         propertyNameAndValues[k] = v;
+
+                        if (inheritedPropertyNames is not null)
+                        {
+                            inheritedPropertyNames.Remove(k);
+                        }
+
                         return Task.CompletedTask;
                     });
 
@@ -60,6 +66,13 @@ namespace Microsoft.VisualStudio.ProjectSystem
                         return Task.CompletedTask;
                     });
 
+            if (inheritedPropertyNames is not null)
+            {
+                mock.Setup(t => t.IsValueInheritedAsync(
+                    It.IsIn<string>(propertyNameAndValues.Keys)))
+                    .Returns<string>(k => Task.FromResult(inheritedPropertyNames.Contains(k)));
+            }
+
             return mock;
         }
 
@@ -69,7 +82,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
         public static IProjectProperties CreateWithPropertyAndValue(string propertyName, string setValue)
             => MockWithPropertyAndValue(propertyName, setValue).Object;
 
-        public static IProjectProperties CreateWithPropertiesAndValues(Dictionary<string, string?> propertyNameAndValues)
-            => MockWithPropertiesAndValues(propertyNameAndValues).Object;
+        public static IProjectProperties CreateWithPropertiesAndValues(Dictionary<string, string?> propertyNameAndValues, HashSet<string>? inheritedPropertyNames = null)
+            => MockWithPropertiesAndValues(propertyNameAndValues, inheritedPropertyNames).Object;
     }
 }
