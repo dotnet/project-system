@@ -572,7 +572,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 }
                 else
                 {
-                    return log.Fail("CopySourceNotFound", "Source '{0}' does not exist, not up to date.", source);
+                    return log.Fail("CopySourceNotFound", "Source '{0}' does not exist for copy to '{1}', not up to date.", source, destination);
                 }
 
                 DateTime? destinationTime = timestampCache.GetTimestampUtc(destination);
@@ -583,7 +583,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 }
                 else
                 {
-                    return log.Fail("CopyDestinationNotFound", "Destination '{0}' does not exist, not up to date.", destination);
+                    return log.Fail("CopyDestinationNotFound", "Destination '{0}' does not exist for copy from '{1}', not up to date.", destination, source);
                 }
 
                 if (destinationTime < sourceTime)

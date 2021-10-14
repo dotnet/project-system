@@ -1067,7 +1067,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 {
                     "No build outputs defined.",
                     $"Checking copied output ({UpToDateCheckBuilt.SchemaName} with {UpToDateCheckBuilt.OriginalProperty} property) file '{sourcePath}':",
-                    $"Source '{sourcePath}' does not exist, not up to date."
+                    $"Source '{sourcePath}' does not exist for copy to '{destinationPath}', not up to date."
                 },
                 "CopySourceNotFound");
         }
@@ -1100,7 +1100,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                     "No build outputs defined.",
                     $"Checking copied output ({UpToDateCheckBuilt.SchemaName} with {UpToDateCheckBuilt.OriginalProperty} property) file '{sourcePath}':",
                     $"    Source {sourceTime.ToLocalTime()}: '{sourcePath}'.",
-                    $"Destination '{destinationPath}' does not exist, not up to date."
+                    $"Destination '{destinationPath}' does not exist for copy from '{sourcePath}', not up to date."
                 },
                 "CopyDestinationNotFound");
         }
