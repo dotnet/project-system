@@ -210,6 +210,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                 }
             }
 
+            if (vsComponentIdsToRegister.Count == 0)
+            {
+                return null;
+            }
+
             return vsComponentIdsToRegister;
         }
 
