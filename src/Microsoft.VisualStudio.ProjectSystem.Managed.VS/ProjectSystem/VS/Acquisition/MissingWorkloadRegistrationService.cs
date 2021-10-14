@@ -3,16 +3,19 @@
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.ComponentModel.Composition;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.ServiceHub.Framework;
 using Microsoft.VisualStudio.ProjectSystem.Utilities;
+using Microsoft.VisualStudio.ProjectSystem.VS.Interop;
 using Microsoft.VisualStudio.ProjectSystem.Workloads;
 using Microsoft.VisualStudio.RpcContracts.Setup;
 using Microsoft.VisualStudio.Shell.Interop;
 using Microsoft.VisualStudio.Shell.ServiceBroker;
+using Microsoft.VisualStudio.Threading;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS
 {
@@ -22,10 +25,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
     [Export(typeof(IMissingWorkloadRegistrationService))]
     internal class MissingWorkloadRegistrationService : IMissingWorkloadRegistrationService, IVsSolutionEvents, IDisposable
     {
+        private const string WasmToolsWorkloadName = "wasm-tools";
+
+        private static readonly ImmutableHashSet<string> s_supportedReleaseChannelWorkloads = ImmutableHashSet.Create(StringComparers.WorkloadNames, WasmToolsWorkloadName);
+
         private readonly ConcurrentDictionary<Guid, IConcurrentHashSet<WorkloadDescriptor>> _projectGuidToWorkloadDescriptorsMap;
         private readonly ConcurrentDictionary<Guid, IConcurrentHashSet<ProjectConfiguration>> _projectGuidToProjectConfigurationsMap;
         private readonly IVsService<SVsBrokeredServiceContainer, IBrokeredServiceContainer> _serviceBrokerContainer;
         private readonly IVsService<IVsSolution> _vsSolutionService;
+        private readonly IVsService<IVsAppId> _vsAppIdService;
+        private readonly Lazy<IVsShellUtilitiesHelper> _shellUtilitiesHelper;
         private readonly Lazy<IProjectThreadingService> _threadHandling;
         private readonly IProjectFaultHandlerService _projectFaultHandlerService;
         private readonly object _displayPromptLock = new();
@@ -33,11 +42,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         private ConcurrentDictionary<string, IConcurrentHashSet<ProjectConfiguration>>? _projectPathToProjectConfigurationsMap;
         private uint _solutionCookie = VSConstants.VSCOOKIE_NIL;
         private IVsSolution? _vsSolution;
+        private bool? _isVSFromPreviewChannel;
 
         [ImportingConstructor]
         public MissingWorkloadRegistrationService(
             IVsService<SVsBrokeredServiceContainer, IBrokeredServiceContainer> serviceBrokerContainer,
             IVsService<SVsSolution, IVsSolution> vsSolutionService,
+            IVsService<SVsAppId, IVsAppId> vsAppIdService,
+            Lazy<IVsShellUtilitiesHelper> vsShellUtilitiesHelper,
             Lazy<IProjectThreadingService> threadHandling,
             IProjectFaultHandlerService projectFaultHandlerService)
         {
@@ -48,6 +60,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             _vsSolutionService = vsSolutionService;
             _threadHandling = threadHandling;
             _projectFaultHandlerService = projectFaultHandlerService;
+            _vsAppIdService = vsAppIdService;
+            _shellUtilitiesHelper = vsShellUtilitiesHelper;
         }
 
         private ConcurrentDictionary<string, IConcurrentHashSet<ProjectConfiguration>> ProjectPathToProjectConfigurationsMap
@@ -145,7 +159,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
 
         private async Task DisplayMissingComponentsPromptAsync()
         {
-            if (_projectGuidToWorkloadDescriptorsMap.Count == 0)
+            if (!_isVSFromPreviewChannel.HasValue)
+            {
+                _isVSFromPreviewChannel = await _shellUtilitiesHelper.Value.IsVSFromPreviewChannelAsync(_vsAppIdService);
+                await TaskScheduler.Default;
+            }
+
+            IReadOnlyDictionary<Guid, IReadOnlyCollection<string>>? vsComponentIdsToRegister = ComputeVsComponentIdsToRegister();
+            if (vsComponentIdsToRegister == null)
             {
                 return;
             }
@@ -164,22 +185,29 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             {
                 if (missingWorkloadRegistrationService != null)
                 {
-                    IReadOnlyDictionary<Guid, IReadOnlyCollection<string>> vsComponentIdsToRegister = ComputeVsComponentIdsToRegister();
-
                     await missingWorkloadRegistrationService.RegisterMissingComponentsAsync(vsComponentIdsToRegister, cancellationToken: default);
                 }
             }
         }
 
-        private IReadOnlyDictionary<Guid, IReadOnlyCollection<string>> ComputeVsComponentIdsToRegister()
+        private IReadOnlyDictionary<Guid, IReadOnlyCollection<string>>? ComputeVsComponentIdsToRegister()
         {
+            if (_projectGuidToWorkloadDescriptorsMap.Count == 0)
+            {
+                return null;
+            }
+
             Dictionary<Guid, IReadOnlyCollection<string>> vsComponentIdsToRegister = new();
 
             foreach (var (projectGuid, vsComponents) in _projectGuidToWorkloadDescriptorsMap)
             {
-                var vsComponentIds = vsComponents.SelectMany(workloadDescriptor => workloadDescriptor.VisualStudioComponentIds).ToArray();
+                var vsComponentIds = vsComponents.Where(descriptor => IsSupportedWorkload(descriptor.WorkloadName))
+                                                 .SelectMany(workloadDescriptor => workloadDescriptor.VisualStudioComponentIds).ToArray();
 
-                vsComponentIdsToRegister[projectGuid] = vsComponentIds;
+                if (vsComponentIds.Length > 0)
+                {
+                    vsComponentIdsToRegister[projectGuid] = vsComponentIds;
+                }
             }
 
             return vsComponentIdsToRegister;
@@ -243,6 +271,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
 
             _vsSolution = await _vsSolutionService.GetValueAsync();
 
+            _isVSFromPreviewChannel = await _shellUtilitiesHelper.Value.IsVSFromPreviewChannelAsync(_vsAppIdService);
+
             Verify.HResult(_vsSolution.AdviseSolutionEvents(this, out _solutionCookie));
         }
 
@@ -261,6 +291,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                     _vsSolution = null;
                 }
             }
+        }
+
+        private bool IsSupportedWorkload(string workloadName)
+        {
+            return !string.IsNullOrWhiteSpace(workloadName)
+                && (s_supportedReleaseChannelWorkloads.Contains(workloadName)
+                    || (_isVSFromPreviewChannel.HasValue && _isVSFromPreviewChannel.Value));
         }
     }
 }
