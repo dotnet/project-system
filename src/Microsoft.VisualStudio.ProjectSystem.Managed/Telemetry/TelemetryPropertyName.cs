@@ -15,7 +15,7 @@ namespace Microsoft.VisualStudio.Telemetry
         /// <summary>
         ///     Indicates the reason that a project's last build is considered out-of-date.
         /// </summary>
-        public static readonly string UpToDateCheckFailReason = BuildPropertyName(TelemetryEventName.UpToDateCheckFail, "Reason");
+        public static readonly string UpToDateCheckFailReason = BuildPropertyName(TelemetryEventName.UpToDateCheckFail, "Reason2");
 
         /// <summary>
         ///     Indicates the duration of the up-to-date check, in milliseconds.
