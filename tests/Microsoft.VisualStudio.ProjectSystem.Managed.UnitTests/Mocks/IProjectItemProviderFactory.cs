@@ -1,6 +1,7 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.Threading;
@@ -19,6 +20,15 @@ namespace Microsoft.VisualStudio.ProjectSystem
         {
             var mock = new Mock<IProjectItemProvider>();
             mock.Setup(p => p.AddAsync(It.IsAny<string>()))
+                .ReturnsAsync(action);
+
+            return mock.Object;
+        }
+
+        public static IProjectItemProvider AddItemAsync(Func<string, string, IEnumerable<KeyValuePair<string, string>>?, IProjectItem> action)
+        {
+            var mock = new Mock<IProjectItemProvider>();
+            mock.Setup(p => p.AddAsync(It.IsAny<string>(), It.IsAny<string>(), null))
                 .ReturnsAsync(action);
 
             return mock.Object;
