@@ -85,7 +85,7 @@ namespace Microsoft.VisualStudio.Shell.Interop
             if (vsAppId != null && ErrorHandler.Succeeded(vsAppId.GetProperty((int)VSAPropID.VSAPROPID_ProductSemanticVersion, out object oVersion)) &&
                 oVersion is string semVersion)
             {
-                int index = semVersion.IndexOfAny(Delimiter.Minus);
+                int index = semVersion.IndexOf('-');
                 return (index != -1);
             }
 
