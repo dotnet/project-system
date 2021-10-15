@@ -720,6 +720,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                     logger.UpToDate();
                     return true;
                 }
+                catch (Exception ex)
+                {
+                    return logger.Fail("Exception", "Up-to-date check threw an exception. Not up-to-date. {0}", ex);
+                }
                 finally
                 {
                     logger.Verbose("Up to date check completed in {0:N1} ms", sw.Elapsed.TotalMilliseconds);
