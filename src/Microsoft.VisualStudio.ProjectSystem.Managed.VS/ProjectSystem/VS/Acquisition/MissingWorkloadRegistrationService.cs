@@ -302,7 +302,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         {
             return !string.IsNullOrWhiteSpace(workloadName)
                 && (s_supportedReleaseChannelWorkloads.Contains(workloadName)
-                    || (_isVSFromPreviewChannel.HasValue && _isVSFromPreviewChannel.Value));
+                    || _isVSFromPreviewChannel == true);
         }
     }
 }
