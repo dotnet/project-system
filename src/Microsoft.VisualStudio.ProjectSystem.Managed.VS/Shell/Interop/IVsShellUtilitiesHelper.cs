@@ -30,7 +30,6 @@ namespace Microsoft.VisualStudio.Shell.Interop
         /// <summary>
         /// Determines whether Visual Studio was installed from a preview channel.
         /// </summary>
-        /// <returns></returns>
         Task<bool> IsVSFromPreviewChannelAsync(IVsService<IVsAppId> vsAppIdService);
     }
 }
