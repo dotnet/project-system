@@ -237,7 +237,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
             if (isDisabled)
             {
-                return UpToDateCheckImplicitConfiguredInput.Disabled;
+                return Disabled;
             }
 
             string? msBuildProjectFullPath = jointRuleUpdate.CurrentState.GetPropertyOrDefault(ConfigurationGeneral.SchemaName, ConfigurationGeneral.MSBuildProjectFullPathProperty, MSBuildProjectFullPath);
