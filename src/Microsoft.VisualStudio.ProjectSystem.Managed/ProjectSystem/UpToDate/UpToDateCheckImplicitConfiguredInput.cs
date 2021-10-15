@@ -457,12 +457,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
                 foreach ((string path, string? targetPath, BuildUpToDateCheck.CopyType copyType) in diff.Added)
                 {
-                    changes.Add((true, itemType, path, targetPath, copyType));
+                    changes.Add((IsAdd: true, itemType, path, targetPath, copyType));
                 }
 
                 foreach ((string path, string? targetPath, BuildUpToDateCheck.CopyType copyType) in diff.Removed)
                 {
-                    changes.Add((false, itemType, path, targetPath, copyType));
+                    changes.Add((IsAdd: false, itemType, path, targetPath, copyType));
                 }
 
                 itemsByItemTypeBuilder[itemType] = after.ToImmutableArray();
