@@ -26,7 +26,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
         internal const string FastUpToDateCheckIgnoresKindsGlobalPropertyName = "FastUpToDateCheckIgnoresKinds";
 
-        internal const string Link = "Link";
         internal const string DefaultSetName = "";
         internal const string DefaultKindName = "";
 
