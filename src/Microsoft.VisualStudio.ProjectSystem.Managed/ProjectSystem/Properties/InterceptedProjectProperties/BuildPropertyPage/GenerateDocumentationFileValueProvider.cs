@@ -30,7 +30,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
                 }
                 else
                 {
-                    await defaultProperties.RestoreValueIfNotCurrentlySetAsync(DocumentationFileMSBuildProperty, _temporaryPropertyStorage);
+                    await defaultProperties.RestoreValueIfNotCurrentlySetAsync(DocumentationFileMSBuildProperty, _temporaryPropertyStorage, dimensionalConditions);
                 }
             }
 
