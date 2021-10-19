@@ -29,12 +29,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Frameworks
         {
             IProjectRuleSnapshot snapshot = input.CurrentState[_ruleName];
 
-            int capacity = _useNoneValue ? 1 + snapshot.Items.Count : snapshot.Items.Count;
+            int capacity = snapshot.Items.Count + (_useNoneValue ? 1 + : 0);
             var list = new List<IEnumValue>(capacity);
 
             if (_useNoneValue)
             {
-                list.Add(new PageEnumValue(new EnumValue()
+                list.Add(new PageEnumValue(new EnumValue
                 {
                     Name = string.Empty,
                     DisplayName = Resources.Property_NoneValue

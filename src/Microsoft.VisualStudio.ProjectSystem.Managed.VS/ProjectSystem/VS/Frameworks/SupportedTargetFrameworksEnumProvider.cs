@@ -59,7 +59,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Frameworks
                 // This is the case where the TargetFrameworkProperty has a user-defined value.
                 if (!Strings.IsNullOrEmpty(targetframework))
                 {
-                    returnList.Add(new PageEnumValue(new EnumValue()
+                    returnList.Add(new PageEnumValue(new EnumValue
                     {
                         Name = targetframework,
                         DisplayName = targetframework
