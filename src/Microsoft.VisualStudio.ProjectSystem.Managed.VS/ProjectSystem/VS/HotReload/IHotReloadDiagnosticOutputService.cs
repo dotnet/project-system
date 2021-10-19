@@ -1,7 +1,5 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
-using System.Threading.Tasks;
-
 namespace Microsoft.VisualStudio.ProjectSystem.VS.HotReload
 {
     /// <summary>
@@ -14,6 +12,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.HotReload
         /// Writes a message to the Hot Reload diagnostic output window.
         /// </summary>
         /// <param name="outputMessage">The message to write.</param>
-        Task WriteLineAsync(string outputMessage);
+        void WriteLine(string outputMessage);
     }
 }

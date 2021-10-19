@@ -75,5 +75,21 @@ namespace Microsoft.VisualStudio.Shell.Interop
 
             return null;
         }
+
+        public async Task<bool> IsVSFromPreviewChannelAsync(IVsService<IVsAppId> vsAppIdService)
+        {
+            await _threadingService.SwitchToUIThread();
+
+            IVsAppId vsAppId = await vsAppIdService.GetValueAsync();
+
+            if (vsAppId != null && ErrorHandler.Succeeded(vsAppId.GetProperty((int)VSAPropID.VSAPROPID_ProductSemanticVersion, out object oVersion)) &&
+                oVersion is string semVersion)
+            {
+                int index = semVersion.IndexOf('-');
+                return (index != -1);
+            }
+
+            return false;
+        }
     }
 }

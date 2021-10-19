@@ -8,28 +8,29 @@ For a list of behavior differences; see [Compatibility](compatibility.md).
 ---|:---:|:---:|---
 **Platforms**                                                               |
 .NET Standard                                                               |          | ●
-.NET Core                                                                   |          | ●
+.NET Core                                                                   |          | ●  | Includes .NET 5.0 and later
 .NET Framework                                                              | ●        | ◖  | No ASP.NET AppModel support in new project system
 **App Models**                                                              |
 ASP.NET Core (.NET Framework & .NET Core)                                   |          | ●
 ASP.NET                                                                     | ●        |   
-Xamarin                                                                     | ●        |   
+Xamarin                                                                     | ●        | ● (17.0)
 Universal Windows Platform (UWP)                                            | ●        |
-Windows Presentation Framework (WPF)                                        | ●        | 16.3
-Windows Forms                                                               | ●        | 16.3
+Windows Presentation Framework (WPF)                                        | ●        | ● (16.3)
+Windows Forms                                                               | ●        | ● (16.3)
 Windows Workflow Foundation (WWF)                                           | ●        |
 **Build**|
 Target multiple frameworks (multi-target) from single project               |          | ●
 Show build (design-time) errors & warnings in Error List as you make them   |          | ●
-**Debug**|
+**Debug/Run**                                                               |
 Debug multiple frameworks from single project                               |          | ●
 Debug with multiple environments from single project ("launch profiles")    |          | ●
 Debug settings persistence                                                  |project.csproj.user|launchsettings.json
 Influence environment variables on debug                                    |          | ● 
 Launch with native debugging                                                | ●        | ●
-Launch with SQL Server debugging                                            | ●        | 16.4
-Launch with remote debugging                                                | ●        | 16.5
+Launch with SQL Server debugging                                            | ●        | ● (16.4)
+Launch with remote debugging                                                | ●        | ● (16.5)
 Launch with Azure Snapshot Debugger                                         |          | ●
+Hot Reload                                                                  |          | ● (17.0)
 **Publish**                                                                 |
 Publish to Azure                                                            |          | ●
 ClickOnce Publish                                                           | ●        | 
@@ -54,7 +55,7 @@ Generate NuGet package on build                                             |   
 **Features**|
 Add Service Reference                                                       | ●        | 
 Add Web Reference                                                           | ●        | 
-Add Data Source                                                             | ●        | 16.4
+Add Data Source                                                             | ●        | ● (16.4)
 Settings Designer                                                           | ●        | ● | Added support for .NET Core 3.0 in 16.7
 DataSet Designer                                                            | ●        | ●
 "Initialize Interactive Window with Project"                                | ●        | ● | Only when targeting .NET Framework.
@@ -62,6 +63,6 @@ Class Diagrams                                                              | �
 Code Analysis                                                               | ●        | 
 Code Metrics                                                                | ●        | ● 
 Code Clones                                                                 | ●        | ●
-Fakes                                                                       | ●        | 16.7
+Fakes                                                                       | ●        | ● (16.7)
 T4 Templates                                                                | ●        | 
 [Automation Extenders](https://msdn.microsoft.com/en-us/library/0y92k2w2.aspx)| ●      | ●

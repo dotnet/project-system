@@ -144,7 +144,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Rules
             }
         }
 
-        private static IEnumerable<object[]> GetAllRules()
+        public static IEnumerable<object[]> GetAllRules()
         {
             return Project(GetRules(suffix: string.Empty, recursive: true));
         }

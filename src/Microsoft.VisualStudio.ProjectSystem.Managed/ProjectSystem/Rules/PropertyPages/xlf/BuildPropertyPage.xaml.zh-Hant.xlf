@@ -187,6 +187,16 @@
         <target state="translated">強式命名</target>
         <note />
       </trans-unit>
+      <trans-unit id="DynamicEnumProperty|PlatformTarget|Description">
+        <source>Specifies the processor to be targeted by the output file. Choose 'Any CPU' to specify that any processor is acceptable, allowing the application to run on the broadest range of hardware.</source>
+        <target state="new">Specifies the processor to be targeted by the output file. Choose 'Any CPU' to specify that any processor is acceptable, allowing the application to run on the broadest range of hardware.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="DynamicEnumProperty|PlatformTarget|DisplayName">
+        <source>Platform target</source>
+        <target state="new">Platform target</target>
+        <note />
+      </trans-unit>
       <trans-unit id="EnumProperty|DebugType|Description">
         <source>Specifies the kind of debug symbols produced during build.</source>
         <target state="translated">指定在建置期間產生的偵錯工具符號類型。</target>
@@ -230,16 +240,6 @@
       <trans-unit id="EnumProperty|Nullable|DisplayName">
         <source>Nullable</source>
         <target state="translated">可為 Null</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="EnumProperty|PlatformTarget|Description">
-        <source>Specifies the processor to be targeted by the output file. Choose 'x86' for any 32-bit Intel-compatible processor, choose 'x64' for any 64-bit Intel-compatible processor, or choose 'Any CPU' to specify that any processor is acceptable. 'Any CPU' is the default value for projects, because it allows the application to run on the broadest range of hardware.</source>
-        <target state="translated">指定輸出檔案要設為目標的處理器。對於任何 32 位元的 Intel 相容處理器，請選擇 [x86]; 對於任何 64 位元的 Intel 相容處理器，請選擇 [x64]，或選擇 [任何 CPU] 來指定可接受任何處理器。[任何 CPU] 是專案的預設值，因為此選項可讓應用程式在最廣泛的硬體上執行。</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="EnumProperty|PlatformTarget|DisplayName">
-        <source>Platform target</source>
-        <target state="translated">平台目標</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumProperty|RunPostBuildEvent|Description">
@@ -345,21 +345,6 @@
       <trans-unit id="EnumValue|Nullable.warnings|DisplayName">
         <source>Warnings</source>
         <target state="translated">警告</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="EnumValue|PlatformTarget.AnyCPU|DisplayName">
-        <source>Any CPU</source>
-        <target state="translated">任何 CPU</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="EnumValue|PlatformTarget.x64|DisplayName">
-        <source>x64</source>
-        <target state="translated">x64</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="EnumValue|PlatformTarget.x86|DisplayName">
-        <source>x86</source>
-        <target state="translated">x86</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|RunPostBuildEvent.Always|DisplayName">

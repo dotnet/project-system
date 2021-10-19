@@ -73,3 +73,12 @@ steps:
   inputs:
     GdnPublishTsaOnboard: true
     GdnPublishTsaConfigFile: '$(Build.SourcesDirectory)\build\ci\TSAConfig.gdntsa'  # All relevant settings are in this file.
+  continueOnError: true
+
+- task: PublishSecurityAnalysisLogs@3
+  displayName: Publishing analysis artifacts
+  inputs:
+    ArtifactName: 'CodeAnalysisLogs'
+    ArtifactType: 'Container'           # Associate the artifacts with the build.
+    AllTools: true                      # Look for logs from all tools.
+    ToolLogsNotFoundAction: 'Standard'  # If a log is not found just output a message to that effect.

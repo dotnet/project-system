@@ -43,5 +43,10 @@ namespace Microsoft.VisualStudio.ProjectSystem
         ///     Sets a value indicating whether the designer view is the default editor for the specified designer category.
         /// </summary>
         Task SetUseDesignerByDefaultAsync(string designerCategory, bool value, CancellationToken cancellationToken = default);
+
+        /// <summary>
+        ///     Gets a value indicating if analyzers should be skipped for implicitly triggered build.
+        /// </summary>
+        Task<bool> GetSkipAnalyzersForImplicitlyTriggeredBuildAsync(CancellationToken cancellationToken = default);
     }
 }

@@ -24,7 +24,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
 
             Assert.NotNull(part);
 
-            foreach ((ImportDefinitionBinding import, IReadOnlyList<ExportDefinitionBinding> exports) in part!.SatisfyingExports)
+            foreach ((ImportDefinitionBinding import, IReadOnlyList<ExportDefinitionBinding> exports) in part.SatisfyingExports)
             {
                 var importingProperty = import.ImportingMember as PropertyInfo;
                 if (importingProperty == null)  // We don't verify ImportingConstructor, only check properties.
@@ -84,7 +84,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
 
             // Gather the appliesTo metadata from all exports of the same part.
             var appliesToMetadata = new List<string>();
-            foreach (KeyValuePair<MemberRef?, ExportDefinition> exportDefinitionPair in definition!.ExportDefinitions)
+            foreach (KeyValuePair<MemberRef?, ExportDefinition> exportDefinitionPair in definition.ExportDefinitions)
             {
                 if (exportDefinitionPair.Key?.IsStatic == true)
                     continue;
@@ -117,10 +117,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             Assert.NotNull(definition);
 
             // BUG: https://github.com/dotnet/project-system/issues/5519
-            if (definition!.Type.FullName == "Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Subscriptions.DependenciesSnapshotProvider")
+            if (definition.Type.FullName == "Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Subscriptions.DependenciesSnapshotProvider")
                 return;
 
-            foreach (KeyValuePair<MemberRef?, ExportDefinition> exportDefinitionPair in definition!.ExportDefinitions)
+            foreach (KeyValuePair<MemberRef?, ExportDefinition> exportDefinitionPair in definition.ExportDefinitions)
             {
                 ExportDefinition export = exportDefinitionPair.Value;
                 if (contractsWithFixedCapabilities.Contains(export.ContractName) &&
@@ -189,7 +189,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
 
             Assert.NotNull(definition);
 
-            foreach (KeyValuePair<MemberRef?, ExportDefinition> export in definition!.ExportDefinitions)
+            foreach (KeyValuePair<MemberRef?, ExportDefinition> export in definition.ExportDefinitions)
             {
                 var contractsRequiringMetadata = ComponentComposition.Instance.ContractsRequiringAppliesTo;
 
@@ -233,7 +233,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
 
             Assert.NotNull(definition);
 
-            foreach (ImportDefinitionBinding import in definition!.Imports)
+            foreach (ImportDefinitionBinding import in definition.Imports)
             {
                 ImportDefinition importDefinition = import.ImportDefinition;
                 if (contracts.TryGetValue(importDefinition.ContractName, out ComponentComposition.ContractMetadata contractMetadata))
@@ -256,7 +256,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
 
             Assert.NotNull(definition);
 
-            foreach (ImportDefinitionBinding import in definition!.Imports)
+            foreach (ImportDefinitionBinding import in definition.Imports)
             {
                 ImportDefinition importDefinition = import.ImportDefinition;
                 if (importDefinition.ExportFactorySharingBoundaries.Count > 0)
@@ -291,7 +291,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
 
             Assert.NotNull(definition);
 
-            foreach (ImportDefinitionBinding import in definition!.Imports)
+            foreach (ImportDefinitionBinding import in definition.Imports)
             {
                 ImportDefinition importDefinition = import.ImportDefinition;
                 if (!CheckContractHasMetadata(GetContractName(importDefinition), definition, ComponentComposition.Instance.Contracts, ComponentComposition.Instance.InterfaceNames))
@@ -311,7 +311,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
 
             Assert.NotNull(definition);
 
-            foreach (KeyValuePair<MemberRef?, ExportDefinition> export in definition!.ExportDefinitions)
+            foreach (KeyValuePair<MemberRef?, ExportDefinition> export in definition.ExportDefinitions)
             {
                 ExportDefinition exportDefinition = export.Value;
                 if (!CheckContractHasMetadata(exportDefinition.ContractName, definition, ComponentComposition.Instance.Contracts, ComponentComposition.Instance.InterfaceNames))

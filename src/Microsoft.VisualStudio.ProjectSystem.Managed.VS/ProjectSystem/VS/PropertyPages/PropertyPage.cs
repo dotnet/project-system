@@ -19,7 +19,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
         private IVsDebugger? _debugger;
         private uint _debuggerCookie;
         private bool _isActivated;
-        private IProjectThreadingService? _threadHandling;
 
         // WIN32 Constants
         private const int SW_HIDE = 0;
@@ -90,9 +89,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
         /// </summary>
         public int Apply()
         {
-            Assumes.NotNull(_threadHandling);
+            Assumes.NotNull(UnconfiguredProject);
 
-            return _threadHandling.ExecuteSynchronously(OnApplyAsync);
+            return UnconfiguredProject.Services.ThreadingPolicy.ExecuteSynchronously(OnApplyAsync);
         }
 
         /// <summary>
@@ -102,9 +101,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
         {
             if (_isActivated)
             {
-                Assumes.NotNull(_threadHandling);
+                Assumes.NotNull(UnconfiguredProject);
 
-                _threadHandling.ExecuteSynchronously(OnDeactivateAsync);
+                UnconfiguredProject.Services.ThreadingPolicy.ExecuteSynchronously(OnDeactivateAsync);
                 UnadviseDebugger();
             }
 
@@ -178,9 +177,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
         /// </summary>
         internal void SetObjects(bool isClosing)
         {
-            Assumes.NotNull(_threadHandling);
+            Assumes.NotNull(UnconfiguredProject);
 
-            _threadHandling.ExecuteSynchronously(() => OnSetObjectsAsync(isClosing));
+            UnconfiguredProject.Services.ThreadingPolicy.ExecuteSynchronously(() => OnSetObjectsAsync(isClosing));
         }
 
         /// <summary>
@@ -280,17 +279,20 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
 
         public void SetObjects(uint cObjects, object[] ppunk)
         {
-            UnconfiguredProject = null;
             if (cObjects == 0)
             {
                 // If we have never configured anything (maybe a failure occurred on open so app designer is closing us). In this case
                 // do nothing
-                if (_threadHandling != null)
+                if (UnconfiguredProject != null)
                 {
                     SetObjects(isClosing: true);
+                    UnconfiguredProject = null;
                 }
+
                 return;
             }
+
+            UnconfiguredProject = null;
 
             if (ppunk.Length < cObjects)
                 throw new ArgumentOutOfRangeException(nameof(cObjects));
@@ -301,18 +303,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
                 if (ppunk[i] is IVsBrowseObject browseObj)
                 {
                     HResult hr = browseObj.GetProjectItem(out IVsHierarchy hier, out uint itemid);
+
                     if (hr.IsOK && itemid == VSConstants.VSITEMID_ROOT)
                     {
-                        UnconfiguredProject = hier.GetUnconfiguredProject();
-
-                        // We need to save ThreadHandling because the appdesigner will call SetObjects with null, and then call
-                        // Deactivate(). We need to run Async code during Deactivate() which requires ThreadHandling.
-
-                        if (UnconfiguredProject != null)
-                        {
-                            IUnconfiguredProjectVsServices projectVsServices = UnconfiguredProject.Services.ExportProvider.GetExportedValue<IUnconfiguredProjectVsServices>();
-                            _threadHandling = projectVsServices.ThreadingService;
-                        }
+                        UnconfiguredProject = hier.AsUnconfiguredProject();
                     }
                 }
             }

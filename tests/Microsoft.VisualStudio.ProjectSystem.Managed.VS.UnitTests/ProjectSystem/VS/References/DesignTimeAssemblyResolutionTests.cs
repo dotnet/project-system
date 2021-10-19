@@ -19,7 +19,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.References
 
             var result = resolution.GetTargetFramework(out string _);
 
-            Assert.Equal(result, VSConstants.E_INVALIDARG);
+            Assert.Equal(VSConstants.E_INVALIDARG, result);
         }
 
         [Fact]

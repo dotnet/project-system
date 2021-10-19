@@ -19,8 +19,10 @@ namespace Microsoft.VisualStudio.Telemetry
             var guid = Guid.NewGuid();
             var version = "42.42.42.42";
             var (success, result) = await CreateComponentAndGetResult(guid, version);
+            Assert.NotNull(result);
+            Assert.NotNull(result.Properties);
             Assert.True(success);
-            Assert.Equal("vs/projectsystem/managed/sdkversion", result!.EventName);
+            Assert.Equal("vs/projectsystem/managed/sdkversion", result.EventName);
             Assert.Collection(result.Properties,
                 args =>
                 {

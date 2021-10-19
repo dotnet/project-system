@@ -61,14 +61,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.HotReload
                 {
                     Process? process = Process.GetProcessById(processId);
 
-                    await WriteOutputMessageAsync(string.Format(VSResources.ProjectHotReloadSessionManager_AttachingToProcess, _pendingSessionState.Session.Name, processId));
+                    WriteOutputMessage(string.Format(VSResources.ProjectHotReloadSessionManager_AttachingToProcess, _pendingSessionState.Session.Name, processId));
 
                     process.Exited += _pendingSessionState.OnProcessExited;
                     process.EnableRaisingEvents = true;
 
                     if (process.HasExited)
                     {
-                        await WriteOutputMessageAsync(string.Format(VSResources.ProjectHotReloadSessionManager_ProcessAlreadyExited, _pendingSessionState.Session.Name));
+                        WriteOutputMessage(string.Format(VSResources.ProjectHotReloadSessionManager_ProcessAlreadyExited, _pendingSessionState.Session.Name));
                         process.Exited -= _pendingSessionState.OnProcessExited;
                         process = null;
                     }
@@ -77,12 +77,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.HotReload
                 }
                 catch (Exception ex)
                 {
-                    await WriteOutputMessageAsync(string.Format(VSResources.ProjectHotReloadSessionManager_ErrorAttachingToProcess, _pendingSessionState.Session.Name, processId, ex.GetType(), ex.Message));
+                    WriteOutputMessage(string.Format(VSResources.ProjectHotReloadSessionManager_ErrorAttachingToProcess, _pendingSessionState.Session.Name, processId, ex.GetType(), ex.Message));
                 }
 
                 if (_pendingSessionState.Process is null)
                 {
-                    await WriteOutputMessageAsync(string.Format(VSResources.ProjectHotReloadSessionManager_NoActiveProcess, _pendingSessionState.Session.Name));
+                    WriteOutputMessage(string.Format(VSResources.ProjectHotReloadSessionManager_NoActiveProcess, _pendingSessionState.Session.Name));
                 }
                 else
                 {
@@ -99,7 +99,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.HotReload
             using AsyncSemaphore.Releaser semaphoreReleaser = await _semaphore.EnterAsync();
 
             if (await DebugFrameworkSupportsHotReloadAsync()
-                && await GetDebugFrameworkVersionAsync() is string frameworkVersion)
+                && await GetDebugFrameworkVersionAsync() is string frameworkVersion
+                && !string.IsNullOrWhiteSpace(frameworkVersion))
             {
                 if (await DebugFrameworkSupportsStartupHooksAsync())
                 {
@@ -119,7 +120,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.HotReload
                 else
                 {
                     // If startup hooks are not supported then tell the user why Hot Reload isn't available.
-                    await WriteOutputMessageAsync(string.Format(VSResources.ProjectHotReloadSessionManager_StartupHooksDisabled, Path.GetFileNameWithoutExtension(_project.FullPath)));
+                    WriteOutputMessage(string.Format(VSResources.ProjectHotReloadSessionManager_StartupHooksDisabled, Path.GetFileNameWithoutExtension(_project.FullPath)));
                 }
             }
 
@@ -148,7 +149,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.HotReload
             _activeSessions.Clear();
         }
 
-        private Task WriteOutputMessageAsync(string outputMessage) => _hotReloadDiagnosticOutputService.Value.WriteLineAsync(outputMessage);
+        private void WriteOutputMessage(string outputMessage) => _hotReloadDiagnosticOutputService.Value.WriteLine(outputMessage);
 
         /// <summary>
         /// Checks if the project configuration targeted for debugging/launch meets the
@@ -157,13 +158,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.HotReload
         /// </summary>
         private async Task<bool> DebugFrameworkSupportsHotReloadAsync()
         {
-            ConfiguredProject? configuredProjectForDebug = await GetConfiguredProjectForDebugAsync();
-            if (configuredProjectForDebug is null)
-            {
-                return false;
-            }
-
-            return configuredProjectForDebug.Capabilities.AppliesTo("SupportsHotReload");
+            return await ConfiguredProjectForDebugHasHotReloadCapabilityAsync()
+                && await DebugSymbolsEnabledInConfiguredProjectForDebugAsync()
+                && !await OptimizeEnabledInConfiguredProjectForDebugAsync();
         }
 
         private Task<ConfiguredProject?> GetConfiguredProjectForDebugAsync() =>
@@ -199,6 +196,45 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.HotReload
             return true;
         }
 
+        /// <summary>
+        /// Returns whether or not the project configuration targeted for debugging/launch
+        /// optimizes binaries. Defaults to false if the property is not defined.
+        /// </summary>
+        private async Task<bool> OptimizeEnabledInConfiguredProjectForDebugAsync()
+        {
+            if (await GetPropertyFromDebugFrameworkAsync("Optimize") is string optimize)
+            {
+                return StringComparers.PropertyLiteralValues.Equals(optimize, "true");
+            }
+
+            return false;
+        }
+
+        /// <summary>
+        /// Returns whether or not the project configuration targeted for debugging/launch
+        /// emits debug symbols. Defaults to false if the property is not defined.
+        /// </summary>
+        private async Task<bool> DebugSymbolsEnabledInConfiguredProjectForDebugAsync()
+        {
+            if (await GetPropertyFromDebugFrameworkAsync("DebugSymbols") is string debugSymbols)
+            {
+                return StringComparers.PropertyLiteralValues.Equals(debugSymbols, "true");
+            }
+
+            return false;
+        }
+
+        private async Task<bool> ConfiguredProjectForDebugHasHotReloadCapabilityAsync()
+        {
+            ConfiguredProject? configuredProjectForDebug = await GetConfiguredProjectForDebugAsync();
+            if (configuredProjectForDebug is null)
+            {
+                return false;
+            }
+
+            return configuredProjectForDebug.Capabilities.AppliesTo("SupportsHotReload");
+        }
+
         private async Task<string?> GetPropertyFromDebugFrameworkAsync(string propertyName)
         {
             ConfiguredProject? configuredProjectForDebug = await GetConfiguredProjectForDebugAsync();
@@ -224,7 +260,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.HotReload
             Assumes.NotNull(hotReloadState.Session);
             Assumes.NotNull(hotReloadState.Process);
 
-            await WriteOutputMessageAsync(string.Format(VSResources.ProjectHotReloadSessionManager_ProcessExited, hotReloadState.Session.Name));
+            WriteOutputMessage(string.Format(VSResources.ProjectHotReloadSessionManager_ProcessExited, hotReloadState.Session.Name));
 
             await StopProjectAsync(hotReloadState, default);
 
@@ -272,7 +308,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.HotReload
             }
             catch (Exception ex)
             {
-                await WriteOutputMessageAsync(string.Format(VSResources.ProjectHotReloadSessionManager_ErrorStoppingTheSession, hotReloadState.Session.Name, ex.GetType(), ex.Message));
+                WriteOutputMessage(string.Format(VSResources.ProjectHotReloadSessionManager_ErrorStoppingTheSession, hotReloadState.Session.Name, ex.GetType(), ex.Message));
             }
 
             return true;

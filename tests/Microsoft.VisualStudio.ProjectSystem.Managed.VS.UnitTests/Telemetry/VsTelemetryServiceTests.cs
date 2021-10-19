@@ -153,7 +153,7 @@ namespace Microsoft.VisualStudio.Telemetry
             service.PostProperty(TelemetryEventName.UpToDateCheckFail, TelemetryPropertyName.UpToDateCheckFailReason, "Reason");
 
             Assert.NotNull(result);
-            Assert.Equal(TelemetryEventName.UpToDateCheckFail, result!.Name);
+            Assert.Equal(TelemetryEventName.UpToDateCheckFail, result.Name);
             Assert.Contains(new KeyValuePair<string, object>(TelemetryPropertyName.UpToDateCheckFailReason, "Reason"), result.Properties);
         }
 
@@ -170,7 +170,7 @@ namespace Microsoft.VisualStudio.Telemetry
             });
 
             Assert.NotNull(result);
-            Assert.Equal(TelemetryEventName.DesignTimeBuildComplete, result!.Name);
+            Assert.Equal(TelemetryEventName.DesignTimeBuildComplete, result.Name);
             Assert.Contains(new KeyValuePair<string, object>(TelemetryPropertyName.DesignTimeBuildCompleteSucceeded, true), result.Properties);
             Assert.Contains(new KeyValuePair<string, object>(TelemetryPropertyName.DesignTimeBuildCompleteTargets, "Compile"), result.Properties);
         }

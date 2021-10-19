@@ -30,6 +30,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
         private const string _msBuildAllProjects = "Project1;Project2";
         private const string _outputPath = "NewOutputPath";
 
+        private readonly DateTime _projectFileTimeUtc = new(1999, 1, 1, 0, 0, 0, DateTimeKind.Utc);
+
         private readonly List<ITelemetryServiceFactory.TelemetryParameters> _telemetryEvents = new();
         private readonly BuildUpToDateCheck _buildUpToDateCheck;
         private readonly ITestOutputHelper _output;
@@ -81,10 +83,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             projectAsynchronousTasksService.SetupGet(s => s.UnloadCancellationToken).Returns(CancellationToken.None);
             projectAsynchronousTasksService.Setup(s => s.IsTaskQueueEmpty(ProjectCriticalOperation.Build)).Returns(() => _isTaskQueueEmpty);
 
-            var lastWriteTimeUtc = new DateTime(1999, 1, 1, 0, 0, 0, DateTimeKind.Utc);
             _fileSystem = new IFileSystemMock();
-            _fileSystem.AddFile(_msBuildProjectFullPath, lastWriteTimeUtc);
-            _fileSystem.AddFile("Project1", lastWriteTimeUtc);
+            _fileSystem.AddFile(_msBuildProjectFullPath, _projectFileTimeUtc);
+            _fileSystem.AddFile("Project1", _projectFileTimeUtc);
             _fileSystem.AddFolder(_msBuildProjectDirectory);
             _fileSystem.AddFolder(_outputPath);
 
@@ -102,7 +103,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
         public void Dispose() => _buildUpToDateCheck.Dispose();
 
-        private async Task SetupAsync(
+        private async Task<UpToDateCheckImplicitConfiguredInput> SetupAsync(
             Dictionary<string, IProjectRuleSnapshotModel>? projectSnapshot = null,
             Dictionary<string, IProjectRuleSnapshotModel>? sourceSnapshot = null,
             bool disableFastUpToDateCheck = false,
@@ -110,8 +111,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             string outDir = _outputPath,
             DateTime? lastCheckTimeAtUtc = null,
             DateTime? lastItemsChangedAtUtc = null,
-            DateTime? lastAdditionalDependentFileTimesChangedAtUtc = null)
+            DateTime? lastAdditionalDependentFileTimesChangedAtUtc = null,
+            UpToDateCheckImplicitConfiguredInput? upToDateCheckImplicitConfiguredInput = null,
+            bool itemRemovedFromSourceSnapshot = false)
         {
+            upToDateCheckImplicitConfiguredInput ??= UpToDateCheckImplicitConfiguredInput.Empty;
+
             _lastCheckTimeAtUtc = lastCheckTimeAtUtc ?? DateTime.MinValue;
             
             dependentTimeFiles ??= Enumerable.Empty<(string FilePath, DateTime Time)>();
@@ -132,13 +137,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             }
 
             UpToDateCheckImplicitConfiguredInput configuredInput = UpdateState(
-                UpToDateCheckImplicitConfiguredInput.Empty,
+                upToDateCheckImplicitConfiguredInput,
                 projectSnapshot,
                 sourceSnapshot,
                 dependentTimeFiles.ToImmutableDictionary(
                     item => item.FilePath,
                     item => item.Time,
-                    StringComparers.Paths));
+                    StringComparers.Paths),
+                itemRemovedFromSourceSnapshot: itemRemovedFromSourceSnapshot);
 
             if (lastItemsChangedAtUtc != null)
             {
@@ -165,6 +171,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             await _buildUpToDateCheck.ActivateAsync();
             
             _buildUpToDateCheck.TestAccess.SetSubscription(subscription.Object);
+
+            return configuredInput;
         }
 
         [Theory]
@@ -245,7 +253,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                     "    Content item added 'ItemPath1' (CopyType=CopyNever)",
                     "    Content item added 'ItemPath2' (CopyType=CopyNever)",
                 },
-                "Outputs");
+                "ProjectItemsChangedSinceEarliestOutput");
         }
 
         [Fact]
@@ -297,7 +305,54 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
             await AssertNotUpToDateAsync(
                 "Output 'C:\\Dev\\Solution\\Project\\BuiltOutputPath1' does not exist, not up to date.",
-                "Outputs");
+                "OutputNotFound");
+        }
+
+        [Fact]
+        public async Task IsUpToDateAsync_False_ZeroFilesInProjectAfterItemDeletion()
+        {
+            var projectSnapshot = new Dictionary<string, IProjectRuleSnapshotModel>
+            {
+                [UpToDateCheckBuilt.SchemaName] = SimpleItems("BuildDefault"),
+            };
+
+            var sourceSnapshot = new Dictionary<string, IProjectRuleSnapshotModel>
+            {
+                [Compile.SchemaName] = SimpleItems("ItemPath1")
+            };
+
+            var inputTime = DateTime.UtcNow.AddMinutes(-5);
+            var itemChangeTime = DateTime.UtcNow.AddMinutes(-4);
+            var lastCheckTime = DateTime.UtcNow.AddMinutes(-3);
+            var buildTime = DateTime.UtcNow.AddMinutes(-2);
+
+            _fileSystem.AddFile("C:\\Dev\\Solution\\Project\\ItemPath1", inputTime);
+            _fileSystem.AddFile("C:\\Dev\\Solution\\Project\\BuildDefault", buildTime);
+
+            var priorState = await SetupAsync(
+                projectSnapshot,
+                sourceSnapshot,
+                lastCheckTimeAtUtc: lastCheckTime,
+                lastItemsChangedAtUtc: itemChangeTime);
+
+            await AssertUpToDateAsync(
+                $"No inputs are newer than earliest output 'C:\\Dev\\Solution\\Project\\BuildDefault' ({buildTime.ToLocalTime()}). Newest input is 'C:\\Dev\\Solution\\Project\\ItemPath1' ({inputTime.ToLocalTime()}).");
+
+            lastCheckTime = DateTime.UtcNow.AddMinutes(-1);
+            itemChangeTime = DateTime.UtcNow.AddMinutes(0);
+
+            await SetupAsync(
+                projectSnapshot,
+                sourceSnapshot,
+                lastCheckTimeAtUtc: lastCheckTime,
+                lastItemsChangedAtUtc: itemChangeTime,
+                upToDateCheckImplicitConfiguredInput: priorState,
+                itemRemovedFromSourceSnapshot: true);
+
+            await AssertNotUpToDateAsync(new[] {
+                $"The set of project items was changed more recently ({itemChangeTime.ToLocalTime()}) than the earliest output 'C:\\Dev\\Solution\\Project\\BuildDefault' ({buildTime.ToLocalTime()}), not up to date.",
+                "    Compile item removed \'ItemPath1\' (CopyType=CopyNever)"},
+                "ProjectItemsChangedSinceEarliestOutput");
         }
 
         [Fact]
@@ -327,7 +382,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
             await AssertNotUpToDateAsync(
                 "Input 'C:\\Dev\\Solution\\Project\\ItemPath1' does not exist and is required, not up to date.",
-                "Outputs");
+                "InputNotFound");
         }
 
         [Fact]
@@ -359,7 +414,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
             await AssertNotUpToDateAsync(
                 $"Input 'C:\\Dev\\Solution\\Project\\ItemPath1' is newer ({inputTime.ToLocalTime()}) than earliest output 'C:\\Dev\\Solution\\Project\\BuiltOutputPath1' ({outputTime.ToLocalTime()}), not up to date.",
-                "Outputs");
+                "InputNewerThanEarliestOutput");
         }
 
         [Fact]
@@ -396,7 +451,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
             await AssertNotUpToDateAsync(
                 $"Input '{itemPath}' is newer ({t0.ToLocalTime()}) than earliest output 'C:\\Dev\\Solution\\Project\\BuiltOutputPath1' ({t0.AddMinutes(-1).ToLocalTime()}), not up to date.",
-                "Outputs");
+                "InputNewerThanEarliestOutput");
 
             await Task.Delay(50);
 
@@ -415,7 +470,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             // Run check again (t4)
             await AssertNotUpToDateAsync(
                 $"Input 'C:\\Dev\\Solution\\Project\\ItemPath1' ({t2.ToLocalTime()}) has been modified since the last up-to-date check ({_lastCheckTimeAtUtc.ToLocalTime()}), not up to date.",
-                "Outputs");
+                "InputModifiedSinceLastCheck");
         }
 
         [Fact]
@@ -447,7 +502,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
             await AssertNotUpToDateAsync(
                 $"Input 'C:\\Dev\\Solution\\Project\\ItemPath1' is newer ({compileItemTime.ToLocalTime()}) than earliest output 'C:\\Dev\\Solution\\Project\\CustomOutputPath1' ({outputTime.ToLocalTime()}), not up to date.",
-                "Outputs");
+                "InputNewerThanEarliestOutput");
         }
 
         [Fact]
@@ -488,7 +543,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                     $"Write timestamp on output marker is {outputTime.ToLocalTime()} on 'C:\\Dev\\Solution\\Project\\Marker'.",
                     "Input marker is newer than output marker, not up to date."
                 },
-                "Marker");
+                "InputMarkerNewerThanOutputMarker");
         }
 
         [Fact]
@@ -518,7 +573,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
             await AssertNotUpToDateAsync(
                 $"Input '{analyzerItem}' is newer ({inputTime.ToLocalTime()}) than earliest output '{outputItem}' ({outputTime.ToLocalTime()}), not up to date.",
-                "Outputs");
+                "InputNewerThanEarliestOutput");
         }
 
         [Fact]
@@ -552,7 +607,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
             await AssertNotUpToDateAsync(
                 $"Input 'C:\\Dev\\Solution\\Project\\Reference1ResolvedPath' is newer ({inputTime.ToLocalTime()}) than earliest output 'C:\\Dev\\Solution\\Project\\BuiltOutputPath1' ({outputTime.ToLocalTime()}), not up to date.",
-                "Outputs");
+                "InputNewerThanEarliestOutput");
         }
 
         [Fact]
@@ -580,7 +635,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
             await AssertNotUpToDateAsync(
                 $"Input 'C:\\Dev\\Solution\\Project\\Item1' is newer ({inputTime.ToLocalTime()}) than earliest output 'C:\\Dev\\Solution\\Project\\BuiltOutputPath1' ({outputTime.ToLocalTime()}), not up to date.",
-                "Outputs");
+                "InputNewerThanEarliestOutput");
         }
 
         [Fact]
@@ -610,10 +665,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             await AssertNotUpToDateAsync(
                 new[]
                 {
-                    $"No inputs are newer than earliest output 'C:\\Dev\\Solution\\Project\\BuildDefault' ({outputTime.ToLocalTime()}).",
+                    $"No inputs are newer than earliest output 'C:\\Dev\\Solution\\Project\\BuildDefault' ({outputTime.ToLocalTime()}). Newest input is '{_msBuildProjectFullPath}' ({_projectFileTimeUtc.ToLocalTime()}).",
                     $"Input 'C:\\Dev\\Solution\\Project\\Input1' is newer ({inputTime.ToLocalTime()}) than earliest output 'C:\\Dev\\Solution\\Project\\Output1' ({outputTime.ToLocalTime()}), not up to date."
                 },
-                "Outputs");
+                "InputNewerThanEarliestOutput");
         }
 
         [Fact]
@@ -645,9 +700,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             _fileSystem.AddFile("C:\\Dev\\Solution\\Project\\BuildDefault", outputTime1);
 
             await AssertUpToDateAsync(
-                $"No inputs are newer than earliest output 'C:\\Dev\\Solution\\Project\\BuildDefault' ({outputTime1.ToLocalTime()}).",
-                $"In set 'Set1', no inputs are newer than earliest output 'C:\\Dev\\Solution\\Project\\Output1' ({outputTime1.ToLocalTime()}).",
-                $"In set 'Set2', no inputs are newer than earliest output 'C:\\Dev\\Solution\\Project\\Output2' ({outputTime2.ToLocalTime()}).");
+                $"No inputs are newer than earliest output 'C:\\Dev\\Solution\\Project\\BuildDefault' ({outputTime1.ToLocalTime()}). Newest input is '{_msBuildProjectFullPath}' ({_projectFileTimeUtc.ToLocalTime()}).",
+                $"In set 'Set1', no inputs are newer than earliest output 'C:\\Dev\\Solution\\Project\\Output1' ({outputTime1.ToLocalTime()}). Newest input is 'C:\\Dev\\Solution\\Project\\Input1' ({inputTime1.ToLocalTime()}).",
+                $"In set 'Set2', no inputs are newer than earliest output 'C:\\Dev\\Solution\\Project\\Output2' ({outputTime2.ToLocalTime()}). Newest input is 'C:\\Dev\\Solution\\Project\\Input2' ({inputTime2.ToLocalTime()}).");
         }
 
         [Fact]
@@ -681,11 +736,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             await AssertNotUpToDateAsync(
                 new[]
                 {
-                    $"No inputs are newer than earliest output 'C:\\Dev\\Solution\\Project\\BuildDefault' ({outputTime1.ToLocalTime()}).",
-                    $"In set 'Set1', no inputs are newer than earliest output 'C:\\Dev\\Solution\\Project\\Output1' ({outputTime1.ToLocalTime()}).",
+                    $"No inputs are newer than earliest output 'C:\\Dev\\Solution\\Project\\BuildDefault' ({outputTime1.ToLocalTime()}). Newest input is '{_msBuildProjectFullPath}' ({_projectFileTimeUtc.ToLocalTime()}).",
+                    $"In set 'Set1', no inputs are newer than earliest output 'C:\\Dev\\Solution\\Project\\Output1' ({outputTime1.ToLocalTime()}). Newest input is 'C:\\Dev\\Solution\\Project\\Input1' ({inputTime1.ToLocalTime()}).",
                     $"Input 'C:\\Dev\\Solution\\Project\\Input2' is newer ({inputTime2.ToLocalTime()}) than earliest output 'C:\\Dev\\Solution\\Project\\Output2' ({outputTime2.ToLocalTime()}), not up to date."
                 },
-                "Outputs");
+                "InputNewerThanEarliestOutput");
         }
 
         [Fact]
@@ -716,11 +771,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             await AssertNotUpToDateAsync(
                 new[]
                 {
-                    $"No inputs are newer than earliest output 'C:\\Dev\\Solution\\Project\\BuildDefault' ({outputTime1.ToLocalTime()}).",
-                    $"In set 'Set1', no inputs are newer than earliest output 'C:\\Dev\\Solution\\Project\\Output1' ({outputTime1.ToLocalTime()}).",
+                    $"No inputs are newer than earliest output 'C:\\Dev\\Solution\\Project\\BuildDefault' ({outputTime1.ToLocalTime()}). Newest input is '{_msBuildProjectFullPath}' ({_projectFileTimeUtc.ToLocalTime()}).",
+                    $"In set 'Set1', no inputs are newer than earliest output 'C:\\Dev\\Solution\\Project\\Output1' ({outputTime1.ToLocalTime()}). Newest input is 'C:\\Dev\\Solution\\Project\\Input' ({inputTime.ToLocalTime()}).",
                     $"Input 'C:\\Dev\\Solution\\Project\\Input' is newer ({inputTime.ToLocalTime()}) than earliest output 'C:\\Dev\\Solution\\Project\\Output2' ({outputTime2.ToLocalTime()}), not up to date."
                 },
-                "Outputs");
+                "InputNewerThanEarliestOutput");
         }
 
         [Fact]
@@ -746,7 +801,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             _fileSystem.AddFile("C:\\Dev\\Solution\\Project\\BuildDefault", buildTime);
 
             await AssertUpToDateAsync(
-                $"No inputs are newer than earliest output 'C:\\Dev\\Solution\\Project\\BuildDefault' ({buildTime.ToLocalTime()}).",
+                $"No inputs are newer than earliest output 'C:\\Dev\\Solution\\Project\\BuildDefault' ({buildTime.ToLocalTime()}). Newest input is '{_msBuildProjectFullPath}' ({_projectFileTimeUtc.ToLocalTime()}).",
                 "No build outputs defined in set 'Set1'.");
         }
 
@@ -772,7 +827,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             _fileSystem.AddFile("C:\\Dev\\Solution\\Project\\BuildDefault", outputTime);
 
             await AssertUpToDateAsync(
-                $"No inputs are newer than earliest output 'C:\\Dev\\Solution\\Project\\BuildDefault' ({outputTime.ToLocalTime()}).",
+                $"No inputs are newer than earliest output 'C:\\Dev\\Solution\\Project\\BuildDefault' ({outputTime.ToLocalTime()}). Newest input is '{_msBuildProjectFullPath}' ({_projectFileTimeUtc.ToLocalTime()}).",
                 "No inputs defined in set 'Set1'.");
         }
 
@@ -806,7 +861,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                     "Ignoring up-to-date check items with kinds: Ignored",
                     $"Input 'C:\\Dev\\Solution\\Project\\Input' is newer ({inputTime.ToLocalTime()}) than earliest output 'C:\\Dev\\Solution\\Project\\Output' ({outputTime.ToLocalTime()}), not up to date.",
                 },
-                "Outputs",
+                "InputNewerThanEarliestOutput",
                 ignoreKinds: "Ignored");
         }
 
@@ -841,7 +896,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
             await AssertNotUpToDateAsync(
                 $"Input 'C:\\Dev\\Solution\\Project\\Input' is newer ({input1Time.ToLocalTime()}) than earliest output 'C:\\Dev\\Solution\\Project\\Output' ({output1Time.ToLocalTime()}), not up to date.",
-                "Outputs",
+                "InputNewerThanEarliestOutput",
                 ignoreKinds: "");
         }
 
@@ -873,7 +928,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 new[]
                 {
                     "Ignoring up-to-date check items with kinds: Ignored",
-                    $"No inputs are newer than earliest output 'C:\\Dev\\Solution\\Project\\Output' ({outputTime.ToLocalTime()})."
+                    $"No inputs are newer than earliest output 'C:\\Dev\\Solution\\Project\\Output' ({outputTime.ToLocalTime()}). Newest input is 'C:\\Dev\\Solution\\Project\\Input' ({inputTime.ToLocalTime()})."
                 },
                 ignoreKinds: "Ignored");
         }
@@ -909,7 +964,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             _fileSystem.AddFile("C:\\Dev\\Solution\\Project\\TaggedBuilt",  output1Time);
 
             await AssertUpToDateAsync(
-                new[] { $"No inputs are newer than earliest output 'C:\\Dev\\Solution\\Project\\Output' ({output4Time.ToLocalTime()})." },
+                new[] { $"No inputs are newer than earliest output 'C:\\Dev\\Solution\\Project\\Output' ({output4Time.ToLocalTime()}). Newest input is 'C:\\Dev\\Solution\\Project\\TaggedInput' ({inputTime.ToLocalTime()})." },
                 ignoreKinds: "");
         }
 
@@ -946,7 +1001,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                     $"    Destination {destinationTime.ToLocalTime()}: '{destinationPath}'.",
                     "Source is newer than build output destination, not up to date."
                 },
-                "CopyOutput");
+                "CopySourceNewer");
         }
 
         [Fact]
@@ -987,7 +1042,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                     $"    Destination {destinationTime.ToLocalTime()}: '{destinationPath}'.",
                     $"PreserveNewest source '{sourcePath}' is newer than destination '{destinationPath}', not up to date."
                 },
-                "CopyToOutputDirectory");
+                "CopyToOutputDirectorySourceNewer");
         }
 
         [Fact]
@@ -1012,9 +1067,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 {
                     "No build outputs defined.",
                     $"Checking copied output ({UpToDateCheckBuilt.SchemaName} with {UpToDateCheckBuilt.OriginalProperty} property) file '{sourcePath}':",
-                    $"Source '{sourcePath}' does not exist, not up to date."
+                    $"Source '{sourcePath}' does not exist for copy to '{destinationPath}', not up to date."
                 },
-                "CopyOutput");
+                "CopySourceNotFound");
         }
 
         [Fact]
@@ -1045,9 +1100,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                     "No build outputs defined.",
                     $"Checking copied output ({UpToDateCheckBuilt.SchemaName} with {UpToDateCheckBuilt.OriginalProperty} property) file '{sourcePath}':",
                     $"    Source {sourceTime.ToLocalTime()}: '{sourcePath}'.",
-                    $"Destination '{destinationPath}' does not exist, not up to date."
+                    $"Destination '{destinationPath}' does not exist for copy from '{sourcePath}', not up to date."
                 },
-                "CopyOutput");
+                "CopyDestinationNotFound");
         }
 
         [Fact]
@@ -1083,7 +1138,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                     $"    Destination {destinationTime.ToLocalTime()}: '{destinationPath}'.",
                     $"PreserveNewest source '{sourcePath}' is newer than destination '{destinationPath}', not up to date."
                 },
-                "CopyToOutputDirectory");
+                "CopyToOutputDirectorySourceNewer");
         }
 
         [Fact]
@@ -1119,7 +1174,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                     $"    Destination {destinationTime.ToLocalTime()}: '{destinationPath}'.",
                     $"PreserveNewest source '{sourcePath}' is newer than destination '{destinationPath}', not up to date."
                 },
-                "CopyToOutputDirectory");
+                "CopyToOutputDirectorySourceNewer");
         }
 
         [Fact]
@@ -1155,7 +1210,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                     $"    Destination {destinationTime.ToLocalTime()}: '{destinationPath}'.",
                     $"PreserveNewest source '{sourcePath}' is newer than destination '{destinationPath}', not up to date."
                 },
-                "CopyToOutputDirectory");
+                "CopyToOutputDirectorySourceNewer");
         }
 
         [Fact]
@@ -1193,7 +1248,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                     $"    Destination {destinationTime.ToLocalTime()}: '{destinationPath}'.",
                     $"PreserveNewest source '{sourcePath}' is newer than destination '{destinationPath}', not up to date."
                 },
-                "CopyToOutputDirectory");
+                "CopyToOutputDirectorySourceNewer");
         }
 
         [Fact]
@@ -1225,7 +1280,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                     $"Checking PreserveNewest file '{sourcePath}':",
                     $"Source '{sourcePath}' does not exist, not up to date."
                 },
-                "CopyToOutputDirectory");
+                "CopyToOutputDirectorySourceNotFound");
         }
 
         [Fact]
@@ -1258,7 +1313,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                     $"    Source {sourceTime.ToLocalTime()}: '{sourcePath}'.",
                     $"Destination '{destinationPath}' does not exist, not up to date."
                 },
-                "CopyToOutputDirectory");
+                "CopyToOutputDirectoryDestinationNotFound");
         }
 
         [Fact(Skip = "TODO fix #6227")]
@@ -1398,7 +1453,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             _fileSystem.AddFile(outputPath, outputTime);
 
             await AssertUpToDateAsync(
-                $"No inputs are newer than earliest output '{outputPath}' ({outputTime.ToLocalTime()}).");
+                $"No inputs are newer than earliest output '{outputPath}' ({outputTime.ToLocalTime()}). Newest input is '{_msBuildProjectFullPath}' ({_projectFileTimeUtc.ToLocalTime()}).");
         }
 
         [Fact]
@@ -1429,7 +1484,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             _fileSystem.AddFile(outputPath, outputTime);
 
             await AssertUpToDateAsync(
-                $"No inputs are newer than earliest output '{outputPath}' ({outputTime.ToLocalTime()}).");
+                $"No inputs are newer than earliest output '{outputPath}' ({outputTime.ToLocalTime()}). Newest input is '{_msBuildProjectFullPath}' ({_projectFileTimeUtc.ToLocalTime()}).");
         }
 
         [Fact]
@@ -1520,7 +1575,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
             Assert.Equal(TelemetryEventName.UpToDateCheckFail, telemetryEvent.EventName);
             Assert.NotNull(telemetryEvent.Properties);
-            Assert.Equal(4, telemetryEvent.Properties!.Count);
+            Assert.Equal(4, telemetryEvent.Properties.Count);
 
             var reasonProp = Assert.Single(telemetryEvent.Properties.Where(p => p.propertyName == TelemetryPropertyName.UpToDateCheckFailReason));
             Assert.Equal(reason, reasonProp.propertyValue);
@@ -1547,7 +1602,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             Assert.Equal(TelemetryEventName.UpToDateCheckSuccess, telemetryEvent.EventName);
 
             Assert.NotNull(telemetryEvent.Properties);
-            Assert.Equal(3, telemetryEvent.Properties!.Count);
+            Assert.Equal(3, telemetryEvent.Properties.Count);
 
             var durationProp = Assert.Single(telemetryEvent.Properties.Where(p => p.propertyName == TelemetryPropertyName.UpToDateCheckDurationMillis));
             var duration = Assert.IsType<double>(durationProp.propertyValue);

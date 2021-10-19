@@ -26,7 +26,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Input.Commands
             var result = await debugFrameworkSvcs.GetProjectFrameworksAsync();
 
             Assert.NotNull(result);
-            Assert.Equal(expectedOrder.Length, result!.Count);
+            Assert.Equal(expectedOrder.Length, result.Count);
             for (int i = 0; i < result.Count; i++)
             {
                 Assert.Equal(expectedOrder[i], result[i]);
@@ -101,7 +101,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Input.Commands
             var debugFrameworkSvcs = new ActiveDebugFrameworkServices(projectConfigProvider.Object, commonServices);
             var activeConfiguredProject = await debugFrameworkSvcs.GetConfiguredProjectForActiveFrameworkAsync();
             Assert.NotNull(activeConfiguredProject);
-            Assert.Equal(selectedConfigFramework, activeConfiguredProject!.ProjectConfiguration.Dimensions.GetValueOrDefault("TargetFramework"));
+            Assert.Equal(selectedConfigFramework, activeConfiguredProject.ProjectConfiguration.Dimensions.GetValueOrDefault("TargetFramework"));
         }
     }
 }

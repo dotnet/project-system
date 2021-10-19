@@ -321,9 +321,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
 
             var launchSettings = await provider.ReadSettingsFileFromDiskTestAsync();
 
-            AssertEx.CollectionLength(launchSettings.Profiles!, 2);
+            Assert.NotNull(launchSettings.Profiles);
+            AssertEx.CollectionLength(launchSettings.Profiles, 2);
+            
+            Assert.NotNull(launchSettings.OtherSettings);
             Assert.Single(launchSettings.OtherSettings);
-            Assert.True(launchSettings.OtherSettings!["iisSettings"] is JObject);
+            Assert.True(launchSettings.OtherSettings["iisSettings"] is JObject);
         }
 
         [Fact]
@@ -337,10 +340,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             SetJsonSerializationProviders(provider);
 
             var launchSettings = await provider.ReadSettingsFileFromDiskTestAsync();
-
-            AssertEx.CollectionLength(launchSettings.Profiles!, 2);
+            
+            Assert.NotNull(launchSettings.Profiles);
+            AssertEx.CollectionLength(launchSettings.Profiles, 2);
+            
+            Assert.NotNull(launchSettings.OtherSettings);
             Assert.Single(launchSettings.OtherSettings);
-            Assert.True(launchSettings.OtherSettings!["iisSettings"] is IISSettingsData);
+            Assert.True(launchSettings.OtherSettings["iisSettings"] is IISSettingsData);
         }
 
         [Fact]
@@ -777,7 +783,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
 
             // Check snapshot
             Assert.True(provider.CurrentSnapshot.GlobalSettings.TryGetValue("iisSettings", out object? updatedSettings));
-            Assert.True(((IISSettingsData)updatedSettings!).WindowsAuthentication);
+            Assert.True(((IISSettingsData)updatedSettings).WindowsAuthentication);
             Assert.True(((IVersionedLaunchSettings)provider.CurrentSnapshot).Version >= 123);
         }
 
@@ -813,7 +819,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
 
             // Check snapshot
             Assert.True(provider.CurrentSnapshot.GlobalSettings.TryGetValue("iisSettings", out object? updatedSettings));
-            Assert.True(((IISSettingsData)updatedSettings!).WindowsAuthentication);
+            Assert.True(((IISSettingsData)updatedSettings).WindowsAuthentication);
             Assert.True(((IVersionedLaunchSettings)provider.CurrentSnapshot).Version >= 123);
         }
 
@@ -849,7 +855,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             // Check snapshot
             AssertEx.CollectionLength(provider.CurrentSnapshot.GlobalSettings, 2);
             Assert.True(provider.CurrentSnapshot.GlobalSettings.TryGetValue("iisSettings", out object? updatedSettings));
-            Assert.True(((IISSettingsData)updatedSettings!).WindowsAuthentication);
+            Assert.True(((IISSettingsData)updatedSettings).WindowsAuthentication);
             Assert.True(((IVersionedLaunchSettings)provider.CurrentSnapshot).Version >= 123);
         }
 
@@ -889,7 +895,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             // Check snapshot
             AssertEx.CollectionLength(provider.CurrentSnapshot.GlobalSettings, 2);
             Assert.True(provider.CurrentSnapshot.GlobalSettings.TryGetValue("iisSettings", out object? updatedSettings));
-            Assert.True(((IISSettingsData)updatedSettings!).WindowsAuthentication);
+            Assert.True(((IISSettingsData)updatedSettings).WindowsAuthentication);
             Assert.True(((IVersionedLaunchSettings)provider.CurrentSnapshot).Version >= 123);
         }
 

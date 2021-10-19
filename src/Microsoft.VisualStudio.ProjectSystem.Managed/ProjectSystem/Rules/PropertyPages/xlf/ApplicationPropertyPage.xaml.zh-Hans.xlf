@@ -14,7 +14,7 @@
       </trans-unit>
       <trans-unit id="BoolProperty|IsPublishable|Description">
         <source>Allow publishing outside of Visual Studio, such as via "dotnet publish".</source>
-        <target state="translated">允许在 Visual Studio 外部发布，例如通过“dotnet 发布”。</target>
+        <target state="translated">允许在 Visual Studio 外部发布，例如通过“dotnet publish”。</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|IsPublishable|DisplayName">
@@ -79,7 +79,7 @@
       </trans-unit>
       <trans-unit id="Category|Resources|DisplayName">
         <source>Win32 Resources</source>
-        <target state="needs-review-translation">资源</target>
+        <target state="new">Win32 Resources</target>
         <note />
       </trans-unit>
       <trans-unit id="DynamicEnumProperty|InterceptedTargetFramework|Description">

@@ -52,7 +52,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.VersionCompatibility
 }}";
             var data = VersionCompatibilityData.DeserializeVersionData(versionDataString);
             Assert.NotNull(data);
-            Assert.False(data!.TryGetValue(new Version("15.5"), out _));
+            Assert.False(data.TryGetValue(new Version("15.5"), out _));
             Assert.True(data.TryGetValue(new Version("15.6"), out _));
             Assert.True(data.TryGetValue(new Version("15.8"), out _));
             Assert.True(data.TryGetValue(new Version("16.0"), out _));
@@ -78,7 +78,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.VersionCompatibility
 }}";
             var data = VersionCompatibilityData.DeserializeVersionData(versionDataString);
             Assert.NotNull(data);
-            Assert.True(data!.TryGetValue(new Version("16.1"), out var compatibilityData));
+            Assert.True(data.TryGetValue(new Version("16.1"), out var compatibilityData));
             Assert.Null(compatibilityData.SupportedVersion);
             Assert.Null(compatibilityData.UnsupportedVersion);
             Assert.Null(compatibilityData.OpenSupportedMessage);

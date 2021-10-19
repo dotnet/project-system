@@ -51,15 +51,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Models
             Assert.True(IDependencyModelEqualityComparer.Instance.Equals(null, null));
 
             Assert.Equal(
-                IDependencyModelEqualityComparer.Instance.GetHashCode(model1!),
+                IDependencyModelEqualityComparer.Instance.GetHashCode(model1),
                 IDependencyModelEqualityComparer.Instance.GetHashCode(model2));
 
             Assert.NotEqual(
-                IDependencyModelEqualityComparer.Instance.GetHashCode(model1!),
+                IDependencyModelEqualityComparer.Instance.GetHashCode(model1),
                 IDependencyModelEqualityComparer.Instance.GetHashCode(model3));
 
             Assert.NotEqual(
-                IDependencyModelEqualityComparer.Instance.GetHashCode(model1!),
+                IDependencyModelEqualityComparer.Instance.GetHashCode(model1),
                 IDependencyModelEqualityComparer.Instance.GetHashCode(model4));
 
             Assert.NotEqual(

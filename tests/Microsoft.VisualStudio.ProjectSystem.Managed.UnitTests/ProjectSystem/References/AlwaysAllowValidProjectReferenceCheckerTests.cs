@@ -14,9 +14,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.References
         {
             var checker = CreateInstance();
 
-            Assert.Throws<ArgumentNullException>("referencedProject", () =>
+            Assert.ThrowsAsync<ArgumentNullException>("referencedProject", () =>
             {
-                checker.CanAddProjectReferenceAsync((object)null!);
+                return checker.CanAddProjectReferenceAsync((object)null!);
             });
         }
 
@@ -25,9 +25,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.References
         {
             var checker = CreateInstance();
 
-            Assert.Throws<ArgumentNullException>("referencedProjects", () =>
+            Assert.ThrowsAsync<ArgumentNullException>("referencedProjects", () =>
             {
-                checker.CanAddProjectReferencesAsync((IImmutableSet<object>)null!);
+                return checker.CanAddProjectReferencesAsync((IImmutableSet<object>)null!);
             });
         }
 
@@ -36,9 +36,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.References
         {
             var checker = CreateInstance();
 
-            Assert.Throws<ArgumentException>("referencedProjects", () =>
+            Assert.ThrowsAsync<ArgumentException>("referencedProjects", () =>
             {
-                checker.CanAddProjectReferencesAsync(ImmutableHashSet<object>.Empty);
+                return checker.CanAddProjectReferencesAsync(ImmutableHashSet<object>.Empty);
             });
         }
 
@@ -47,9 +47,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.References
         {
             var checker = CreateInstance();
 
-            Assert.Throws<ArgumentNullException>("referencingProject", () =>
+            Assert.ThrowsAsync<ArgumentNullException>("referencingProject", () =>
             {
-                checker.CanBeReferencedAsync((object)null!);
+                return checker.CanBeReferencedAsync((object)null!);
             });
         }
 

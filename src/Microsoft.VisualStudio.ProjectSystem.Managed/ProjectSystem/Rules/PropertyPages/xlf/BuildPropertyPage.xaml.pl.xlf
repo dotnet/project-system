@@ -187,6 +187,16 @@
         <target state="translated">Nadawanie silnych nazw</target>
         <note />
       </trans-unit>
+      <trans-unit id="DynamicEnumProperty|PlatformTarget|Description">
+        <source>Specifies the processor to be targeted by the output file. Choose 'Any CPU' to specify that any processor is acceptable, allowing the application to run on the broadest range of hardware.</source>
+        <target state="new">Specifies the processor to be targeted by the output file. Choose 'Any CPU' to specify that any processor is acceptable, allowing the application to run on the broadest range of hardware.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="DynamicEnumProperty|PlatformTarget|DisplayName">
+        <source>Platform target</source>
+        <target state="new">Platform target</target>
+        <note />
+      </trans-unit>
       <trans-unit id="EnumProperty|DebugType|Description">
         <source>Specifies the kind of debug symbols produced during build.</source>
         <target state="translated">Określa rodzaj symboli debugowania utworzonych podczas kompilacji.</target>
@@ -230,16 +240,6 @@
       <trans-unit id="EnumProperty|Nullable|DisplayName">
         <source>Nullable</source>
         <target state="translated">Dopuszczający wartość null</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="EnumProperty|PlatformTarget|Description">
-        <source>Specifies the processor to be targeted by the output file. Choose 'x86' for any 32-bit Intel-compatible processor, choose 'x64' for any 64-bit Intel-compatible processor, or choose 'Any CPU' to specify that any processor is acceptable. 'Any CPU' is the default value for projects, because it allows the application to run on the broadest range of hardware.</source>
-        <target state="translated">Określa docelowy procesor dla pliku wyjściowego. Wybierz wartość „x86” na potrzeby dowolnego procesora zgodnego z 32-bitową architekturą Intel, wybierz wartość „x64” na potrzeby dowolnego procesora zgodnego z 64-bitową architekturą Intel lub wybierz wartość „Dowolny procesor CPU”, aby określić, że dozwolony jest dowolny procesor. „Dowolny procesor CPU” to wartość domyślna w projektach, ponieważ umożliwia uruchamianie aplikacji na największej ilości różnego sprzętu.</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="EnumProperty|PlatformTarget|DisplayName">
-        <source>Platform target</source>
-        <target state="translated">Platforma docelowa</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumProperty|RunPostBuildEvent|Description">
@@ -345,21 +345,6 @@
       <trans-unit id="EnumValue|Nullable.warnings|DisplayName">
         <source>Warnings</source>
         <target state="translated">Ostrzeżenia</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="EnumValue|PlatformTarget.AnyCPU|DisplayName">
-        <source>Any CPU</source>
-        <target state="translated">Dowolny procesor CPU</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="EnumValue|PlatformTarget.x64|DisplayName">
-        <source>x64</source>
-        <target state="translated">x64</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="EnumValue|PlatformTarget.x86|DisplayName">
-        <source>x86</source>
-        <target state="translated">x86</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|RunPostBuildEvent.Always|DisplayName">

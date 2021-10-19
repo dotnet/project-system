@@ -137,7 +137,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
             await provider.OnDimensionValueChangedAsync(args);
             var property = BuildUtilities.GetProperty(rootElement, PropertyName);
             Assert.NotNull(property);
-            Assert.Equal("A;B;C", property!.Value);
+            Assert.Equal("A;B;C", property.Value);
 
             // On ChangeEventStage.Before the property should be added
             args = new ProjectConfigurationDimensionValueChangedEventArgs(
@@ -149,7 +149,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
             await provider.OnDimensionValueChangedAsync(args);
             property = BuildUtilities.GetProperty(rootElement, PropertyName);
             Assert.NotNull(property);
-            Assert.Equal("A;B;C;Added", property!.Value);
+            Assert.Equal("A;B;C;Added", property.Value);
         }
 
         [Fact]
@@ -178,7 +178,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
             await provider.OnDimensionValueChangedAsync(args);
             var property = BuildUtilities.GetProperty(rootElement, PropertyName);
             Assert.NotNull(property);
-            Assert.Equal("A;B;C", property!.Value);
+            Assert.Equal("A;B;C", property.Value);
 
             // On ChangeEventStage.Before the property should be removed
             args = new ProjectConfigurationDimensionValueChangedEventArgs(
@@ -190,7 +190,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
             await provider.OnDimensionValueChangedAsync(args);
             property = BuildUtilities.GetProperty(rootElement, PropertyName);
             Assert.NotNull(property);
-            Assert.Equal("A;C", property!.Value);
+            Assert.Equal("A;C", property.Value);
         }
 
         [Fact]
@@ -218,7 +218,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
             await Assert.ThrowsAsync<ArgumentException>(() => provider.OnDimensionValueChangedAsync(args));
             var property = BuildUtilities.GetProperty(rootElement, PropertyName);
             Assert.NotNull(property);
-            Assert.Equal("A;B;C", property!.Value);
+            Assert.Equal("A;B;C", property.Value);
         }
 
         [Fact]
@@ -248,7 +248,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
             await provider.OnDimensionValueChangedAsync(args);
             var property = BuildUtilities.GetProperty(rootElement, PropertyName);
             Assert.NotNull(property);
-            Assert.Equal("A;B;C", property!.Value);
+            Assert.Equal("A;B;C", property.Value);
 
             // On ChangeEventStage.Before the property should be renamed
             args = new ProjectConfigurationDimensionValueChangedEventArgs(
@@ -261,7 +261,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
             await provider.OnDimensionValueChangedAsync(args);
             property = BuildUtilities.GetProperty(rootElement, PropertyName);
             Assert.NotNull(property);
-            Assert.Equal("A;Renamed;C", property!.Value);
+            Assert.Equal("A;Renamed;C", property.Value);
         }
 
         [Fact]
@@ -290,7 +290,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
             await Assert.ThrowsAsync<ArgumentException>(() => provider.OnDimensionValueChangedAsync(args));
             var property = BuildUtilities.GetProperty(rootElement, PropertyName);
             Assert.NotNull(property);
-            Assert.Equal("A;B;C", property!.Value);
+            Assert.Equal("A;B;C", property.Value);
         }
 
         [Theory]

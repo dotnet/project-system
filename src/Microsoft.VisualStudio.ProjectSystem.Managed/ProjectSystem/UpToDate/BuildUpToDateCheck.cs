@@ -26,7 +26,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
         internal const string FastUpToDateCheckIgnoresKindsGlobalPropertyName = "FastUpToDateCheckIgnoresKinds";
 
-        internal const string Link = "Link";
         internal const string DefaultSetName = "";
         internal const string DefaultKindName = "";
 
@@ -167,7 +166,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 DateTime earliestOutputTime = DateTime.MaxValue;
                 string? earliestOutputPath = null;
                 bool hasOutput = false;
-                bool hasInput = false;
 
                 foreach (string output in outputs)
                 {
@@ -177,7 +175,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
                     if (outputTime == null)
                     {
-                        return log.Fail("Outputs", "Output '{0}' does not exist, not up to date.", output);
+                        return log.Fail("OutputNotFound", "Output '{0}' does not exist, not up to date.", output);
                     }
 
                     if (outputTime < earliestOutputTime)
@@ -200,9 +198,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
                 if (earliestOutputTime < state.LastItemsChangedAtUtc)
                 {
-                    log.Fail("Outputs", "The set of project items was changed more recently ({0}) than the earliest output '{1}' ({2}), not up to date.", state.LastItemsChangedAtUtc, earliestOutputPath, earliestOutputTime);
+                    log.Fail("ProjectItemsChangedSinceEarliestOutput", "The set of project items was changed more recently ({0}) than the earliest output '{1}' ({2}), not up to date.", state.LastItemsChangedAtUtc, earliestOutputPath, earliestOutputTime);
 
-                    if (log.Level <= LogLevel.Info)
+                    if (log.Level >= LogLevel.Info)
                     {
                         foreach ((bool isAdd, string itemType, string path, string? targetPath, CopyType copyType) in state.LastItemChanges.OrderBy(change => change.ItemType).ThenBy(change => change.Path))
                         {
@@ -224,6 +222,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 }
 #endif
 
+                (string Path, DateTime? Time)? latestInput = null;
+
                 foreach ((string input, bool isRequired) in inputs)
                 {
                     token.ThrowIfCancellationRequested();
@@ -234,7 +234,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                     {
                         if (isRequired)
                         {
-                            return log.Fail("Outputs", "Input '{0}' does not exist and is required, not up to date.", input);
+                            return log.Fail("InputNotFound", "Input '{0}' does not exist and is required, not up to date.", input);
                         }
                         else
                         {
@@ -244,31 +244,34 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
                     if (inputTime > earliestOutputTime)
                     {
-                        return log.Fail("Outputs", "Input '{0}' is newer ({1}) than earliest output '{2}' ({3}), not up to date.", input, inputTime.Value, earliestOutputPath, earliestOutputTime);
+                        return log.Fail("InputNewerThanEarliestOutput", "Input '{0}' is newer ({1}) than earliest output '{2}' ({3}), not up to date.", input, inputTime.Value, earliestOutputPath, earliestOutputTime);
                     }
 
                     if (inputTime > lastCheckedAtUtc && lastCheckedAtUtc != DateTime.MinValue)
                     {
                         // Bypass this test if no check has yet been performed. We handle that in CheckGlobalConditions.
-                        return log.Fail("Outputs", "Input '{0}' ({1}) has been modified since the last up-to-date check ({2}), not up to date.", input, inputTime.Value, lastCheckedAtUtc);
+                        return log.Fail("InputModifiedSinceLastCheck", "Input '{0}' ({1}) has been modified since the last up-to-date check ({2}), not up to date.", input, inputTime.Value, lastCheckedAtUtc);
                     }
 
-                    hasInput = true;
+                    if (latestInput is null || inputTime > latestInput.Value.Time)
+                    {
+                        latestInput = (input, inputTime);
+                    }
                 }
 
-                if (log.Level <= LogLevel.Info)
+                if (log.Level >= LogLevel.Info)
                 {
-                    if (!hasInput)
+                    if (latestInput is null)
                     {
                         log.Info(setName == DefaultSetName ? "No inputs defined." : "No inputs defined in set '{0}'.", setName);
                     }
                     else if (setName == DefaultSetName)
                     {
-                        log.Info("No inputs are newer than earliest output '{0}' ({1}).", earliestOutputPath, earliestOutputTime);
+                        log.Info("No inputs are newer than earliest output '{0}' ({1}). Newest input is '{2}' ({3}).", earliestOutputPath, earliestOutputTime, latestInput.Value.Path, latestInput.Value.Time ?? (object)"null");
                     }
                     else
                     {
-                        log.Info("In set '{0}', no inputs are newer than earliest output '{1}' ({2}).", setName, earliestOutputPath, earliestOutputTime);
+                        log.Info("In set '{0}', no inputs are newer than earliest output '{1}' ({2}). Newest input is '{3}' ({4}).", setName, earliestOutputPath, earliestOutputTime, latestInput.Value.Path, latestInput.Value.Time ?? (object)"null");
                     }
                 }
 
@@ -477,7 +480,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                     return false;
                 }
 
-                if (log.Level == LogLevel.Verbose)
+                if (log.Level >= LogLevel.Verbose)
                 {
                     foreach (string path in items)
                     {
@@ -506,7 +509,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
             string markerFile = _configuredProject.UnconfiguredProject.MakeRooted(state.CopyUpToDateMarkerItem);
 
-            if (log.Level <= LogLevel.Verbose)
+            if (log.Level >= LogLevel.Verbose)
             {
                 log.Verbose("Adding input reference copy markers:");
 
@@ -543,7 +546,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
             if (outputMarkerTime < latestInputMarkerTime)
             {
-                return log.Fail("Marker", "Input marker is newer than output marker, not up to date.");
+                return log.Fail("InputMarkerNewerThanOutputMarker", "Input marker is newer than output marker, not up to date.");
             }
 
             return true;
@@ -568,7 +571,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 }
                 else
                 {
-                    return log.Fail("CopyOutput", "Source '{0}' does not exist, not up to date.", source);
+                    return log.Fail("CopySourceNotFound", "Source '{0}' does not exist for copy to '{1}', not up to date.", source, destination);
                 }
 
                 DateTime? destinationTime = timestampCache.GetTimestampUtc(destination);
@@ -579,12 +582,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 }
                 else
                 {
-                    return log.Fail("CopyOutput", "Destination '{0}' does not exist, not up to date.", destination);
+                    return log.Fail("CopyDestinationNotFound", "Destination '{0}' does not exist for copy from '{1}', not up to date.", destination, source);
                 }
 
                 if (destinationTime < sourceTime)
                 {
-                    return log.Fail("CopyOutput", "Source is newer than build output destination, not up to date.");
+                    return log.Fail("CopySourceNewer", "Source is newer than build output destination, not up to date.");
                 }
             }
 
@@ -627,7 +630,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                     }
                     else
                     {
-                        return log.Fail("CopyToOutputDirectory", "Source '{0}' does not exist, not up to date.", rootedPath);
+                        return log.Fail("CopyToOutputDirectorySourceNotFound", "Source '{0}' does not exist, not up to date.", rootedPath);
                     }
 
                     string destination = Path.Combine(outputFullPath, filename);
@@ -639,12 +642,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                     }
                     else
                     {
-                        return log.Fail("CopyToOutputDirectory", "Destination '{0}' does not exist, not up to date.", destination);
+                        return log.Fail("CopyToOutputDirectoryDestinationNotFound", "Destination '{0}' does not exist, not up to date.", destination);
                     }
 
                     if (destinationTime < itemTime)
                     {
-                        return log.Fail("CopyToOutputDirectory", "PreserveNewest source '{0}' is newer than destination '{1}', not up to date.", rootedPath, destination);
+                        return log.Fail("CopyToOutputDirectorySourceNewer", "PreserveNewest source '{0}' is newer than destination '{1}', not up to date.", rootedPath, destination);
                     }
                 }
             }
@@ -715,6 +718,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
                     logger.UpToDate();
                     return true;
+                }
+                catch (Exception ex)
+                {
+                    return logger.Fail("Exception", "Up-to-date check threw an exception. Not up-to-date. {0}", ex);
                 }
                 finally
                 {

@@ -26,6 +26,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.HotReload
             _outputWindowPane = new AsyncLazy<IVsOutputWindowPane?>(CreateOutputWindowPaneAsync, threadingService.JoinableTaskFactory);
         }
 
+        public void WriteLine(string outputMessage)
+        {
+            _threadingService.RunAndForget(() => WriteLineAsync(outputMessage), unconfiguredProject: null);
+        }
+
         private async Task<IVsOutputWindowPane?> CreateOutputWindowPaneAsync()
         {
             await _threadingService.SwitchToUIThread();
@@ -60,14 +65,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.HotReload
             return pane;
         }
 
-        public async Task WriteLineAsync(string outputMessage)
+        private async Task WriteLineAsync(string outputMessage)
         {
             await _threadingService.SwitchToUIThread();
 
             IVsOutputWindowPane? pane = await _outputWindowPane.GetValueAsync();
             if (pane is not null)
             {
-                pane.OutputString(outputMessage + Environment.NewLine);
+                pane.OutputStringNoPump(outputMessage + Environment.NewLine);
             }
         }
     }

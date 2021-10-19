@@ -33,9 +33,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
 
             var designerService = CreateInstance(vsProjectDesignerPageService);
 
-            Assert.Throws<InvalidOperationException>(() =>
+            Assert.ThrowsAsync<InvalidOperationException>(() =>
             {
-                designerService.ShowProjectDesignerAsync();
+                return designerService.ShowProjectDesignerAsync();
             });
         }
 
