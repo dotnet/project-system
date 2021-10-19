@@ -19,54 +19,50 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Frameworks
     {
         protected override string[] RuleNames => new [] { SupportedNETCoreAppTargetFramework.SchemaName, SupportedNETFrameworkTargetFramework.SchemaName, SupportedNETStandardTargetFramework.SchemaName, ConfigurationGeneral.SchemaName };
 
-        protected ProjectProperties Properties;
-
         [ImportingConstructor]
         public SupportedTargetFrameworksEnumProvider(
             ConfiguredProject project,
-            IProjectSubscriptionService subscriptionService,
-            ProjectProperties properties)
+            IProjectSubscriptionService subscriptionService)
             : base(project, subscriptionService) {
-            Properties = properties;
         }
 
         protected override EnumCollection Transform(IProjectSubscriptionUpdate input)
         {
-            IProjectRuleSnapshot? configurationgeneral = input.CurrentState[ConfigurationGeneral.SchemaName];
+            IProjectRuleSnapshot? configurationGeneral = input.CurrentState[ConfigurationGeneral.SchemaName];
             
-            string? targetframeworkidentifier = configurationgeneral.Properties[ConfigurationGeneral.TargetFrameworkIdentifierProperty];
+            string? targetFrameworkIdentifier = configurationGeneral.Properties[ConfigurationGeneral.TargetFrameworkIdentifierProperty];
 
             string ruleName;
 
-            if (StringComparers.FrameworkIdentifiers.Equals(targetframeworkidentifier, TargetFrameworkIdentifiers.NetCoreApp))
+            if (StringComparers.FrameworkIdentifiers.Equals(targetFrameworkIdentifier, TargetFrameworkIdentifiers.NetCoreApp))
             {
                 ruleName = SupportedNETCoreAppTargetFramework.SchemaName;
             }
-            else if (StringComparers.FrameworkIdentifiers.Equals(targetframeworkidentifier, TargetFrameworkIdentifiers.NetFramework))
+            else if (StringComparers.FrameworkIdentifiers.Equals(targetFrameworkIdentifier, TargetFrameworkIdentifiers.NetFramework))
             {
                 ruleName = SupportedNETFrameworkTargetFramework.SchemaName;
             }
-            else if (StringComparers.FrameworkIdentifiers.Equals(targetframeworkidentifier, TargetFrameworkIdentifiers.NetStandard))
+            else if (StringComparers.FrameworkIdentifiers.Equals(targetFrameworkIdentifier, TargetFrameworkIdentifiers.NetStandard))
             {
                 ruleName = SupportedNETStandardTargetFramework.SchemaName;
             }
             else
             {
-                string? targetframework = configurationgeneral.Properties[ConfigurationGeneral.TargetFrameworkProperty];
+                string? targetFramework = configurationGeneral.Properties[ConfigurationGeneral.TargetFrameworkProperty];
 
-                var returnList = new List<IEnumValue>();
+                var result = new List<IEnumValue>();
 
                 // This is the case where the TargetFrameworkProperty has a user-defined value.
-                if (!Strings.IsNullOrEmpty(targetframework))
+                if (!Strings.IsNullOrEmpty(targetFramework))
                 {
-                    returnList.Add(new PageEnumValue(new EnumValue
+                    result.Add(new PageEnumValue(new EnumValue
                     {
-                        Name = targetframework,
-                        DisplayName = targetframework
+                        Name = targetFramework,
+                        DisplayName = targetFramework
                     }));
                 }
                 
-                return returnList;
+                return result;
             }
 
             IProjectRuleSnapshot snapshot = input.CurrentState[ruleName];

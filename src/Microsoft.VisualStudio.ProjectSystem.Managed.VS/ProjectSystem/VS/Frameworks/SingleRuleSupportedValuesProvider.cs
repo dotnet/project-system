@@ -29,7 +29,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Frameworks
         {
             IProjectRuleSnapshot snapshot = input.CurrentState[_ruleName];
 
-            int capacity = snapshot.Items.Count + (_useNoneValue ? 1 + : 0);
+            int capacity = snapshot.Items.Count + (_useNoneValue ? 1 : 0);
             var list = new List<IEnumValue>(capacity);
 
             if (_useNoneValue)
@@ -45,6 +45,5 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Frameworks
             list.Sort(SortValues); // TODO: This is a hotfix for item ordering. Remove this when completing: https://github.com/dotnet/project-system/issues/7025
             return list;
         }
-
     }
 }
