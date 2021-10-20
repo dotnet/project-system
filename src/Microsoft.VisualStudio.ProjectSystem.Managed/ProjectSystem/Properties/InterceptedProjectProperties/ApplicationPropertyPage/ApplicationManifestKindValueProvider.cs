@@ -100,7 +100,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
             {
                 _temporaryPropertyStorage.AddOrUpdatePropertyValue(ApplicationManifestKindProperty, CustomManifestValue);
 
-                await defaultProperties.RestoreValueIfNotCurrentlySetAsync(ApplicationManifestMSBuildProperty, _temporaryPropertyStorage);
+                await defaultProperties.RestoreValueIfNotCurrentlySetAsync(ApplicationManifestMSBuildProperty, _temporaryPropertyStorage, dimensionalConditions);
                 await defaultProperties.DeletePropertyAsync(NoManifestMSBuildProperty);
             }
 

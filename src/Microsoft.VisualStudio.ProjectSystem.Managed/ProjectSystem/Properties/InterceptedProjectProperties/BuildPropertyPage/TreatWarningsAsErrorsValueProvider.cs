@@ -32,7 +32,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
 
             await defaultProperties.SaveValueIfCurrentlySetAsync(removePropertyName, _temporaryPropertyStorage);
             await defaultProperties.DeletePropertyAsync(removePropertyName, dimensionalConditions);
-            await defaultProperties.RestoreValueIfNotCurrentlySetAsync(restorePropertyName, _temporaryPropertyStorage);
+            await defaultProperties.RestoreValueIfNotCurrentlySetAsync(restorePropertyName, _temporaryPropertyStorage, dimensionalConditions);
 
             return unevaluatedPropertyValue;
         }
