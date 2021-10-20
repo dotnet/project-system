@@ -42,7 +42,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
         private readonly IFileSystem _fileSystem;
         private readonly IEnvironmentHelper _environment;
         private readonly IActiveDebugFrameworkServices _activeDebugFramework;
-        private readonly ProjectProperties _properties;
         private readonly IProjectThreadingService _threadingService;
         private readonly IVsUIService<IVsDebugger10> _debugger;
         private readonly IRemoteDebuggerAuthenticationService _remoteDebuggerAuthenticationService;
@@ -126,10 +125,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             ConfigurationGeneral configuration = await _properties.GetConfigurationGeneralPropertiesAsync();
 
             var actualOutputType = (IEnumValue?)await configuration.OutputType.GetValueAsync();
-
-            Assumes.NotNull(actualOutputType);
-
-            return StringComparers.PropertyLiteralValues.Equals(actualOutputType.Name, outputType);
+                        
+            return actualOutputType is not null && StringComparers.PropertyLiteralValues.Equals(actualOutputType.Name, outputType);
         }
 
         public async Task<bool> CanBeStartupProjectAsync(DebugLaunchOptions launchOptions, ILaunchProfile profile)
