@@ -69,5 +69,14 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
             return mock.Object;
         }
+
+        public static IProjectItemProvider GetItemsAsync(Func<string, IEnumerable<IProjectItem>> action)
+        {
+            var mock = new Mock<IProjectItemProvider>();
+            mock.Setup(p => p.GetItemsAsync(It.IsAny<string>()))
+                .ReturnsAsync(action);
+
+            return mock.Object;
+        }
     }
 }
