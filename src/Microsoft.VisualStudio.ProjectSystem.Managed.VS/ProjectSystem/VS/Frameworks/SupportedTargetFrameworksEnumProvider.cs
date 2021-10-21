@@ -48,17 +48,20 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Frameworks
             }
             else
             {
-                string? targetFramework = configurationGeneral.Properties[ConfigurationGeneral.TargetFrameworkProperty];
+                string? storedTargetFramework = configurationGeneral.Properties[ConfigurationGeneral.TargetFrameworkProperty];
+                string? storedTargetFrameworkIdentifier = configurationGeneral.Properties[ConfigurationGeneral.TargetFrameworkIdentifierProperty];
+                string? storedTargetFrameworkMoniker = configurationGeneral.Properties[ConfigurationGeneral.TargetFrameworkMonikerProperty];
 
                 var result = new List<IEnumValue>();
 
-                // This is the case where the TargetFrameworkProperty has a user-defined value.
-                if (!Strings.IsNullOrEmpty(targetFramework))
+                // This is the case where the TargetFrameworkProperty has a value we recognize but it's not in the supported lists the SDK sends us.
+                // We decided we will show it in the UI.
+                if (!Strings.IsNullOrEmpty(storedTargetFramework))
                 {
                     result.Add(new PageEnumValue(new EnumValue
                     {
-                        Name = targetFramework,
-                        DisplayName = targetFramework
+                        Name = (!Strings.IsNullOrEmpty(storedTargetFrameworkMoniker))? storedTargetFrameworkMoniker : storedTargetFramework,
+                        DisplayName = (!Strings.IsNullOrEmpty(storedTargetFrameworkIdentifier)) ? storedTargetFrameworkIdentifier : storedTargetFramework
                     }));
                 }
                 
