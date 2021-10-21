@@ -47,6 +47,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
         private readonly IRemoteDebuggerAuthenticationService _remoteDebuggerAuthenticationService;
         private readonly Lazy<IProjectHotReloadSessionManager> _hotReloadSessionManager;
         private readonly Lazy<IDebuggerSettings> _debuggerSettings;
+        private readonly OutputTypeChecker _outputTypeChecker;
 
         [ImportingConstructor]
         public ProjectLaunchTargetsProvider(
@@ -69,12 +70,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             _fileSystem = fileSystem;
             _environment = environment;
             _activeDebugFramework = activeDebugFramework;
-            _properties = properties;
             _threadingService = threadingService;
             _debugger = debugger;
             _remoteDebuggerAuthenticationService = remoteDebuggerAuthenticationService;
             _hotReloadSessionManager = hotReloadSessionManager;
             _debuggerSettings = debuggerSettings;
+
+            _outputTypeChecker = new OutputTypeChecker(properties);
         }
 
         private Task<ConfiguredProject?> GetConfiguredProjectForDebugAsync() =>
@@ -112,21 +114,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             bool runningUnderDebugger = (launchOptions & DebugLaunchOptions.NoDebug) != DebugLaunchOptions.NoDebug;
 
             await _hotReloadSessionManager.Value.ActivateSessionAsync((int)processInfos[0].dwProcessId, runningUnderDebugger);
-        }
-
-        private Task<bool> IsClassLibraryAsync() => IsOutputTypeAsync(ConfigurationGeneral.OutputTypeValues.Library);
-
-        private Task<bool> IsConsoleAppAsync() => IsOutputTypeAsync(ConfigurationGeneral.OutputTypeValues.Exe);
-
-        private async Task<bool> IsOutputTypeAsync(string outputType)
-        {
-            // Used by default Windows debugger to figure out whether to add an extra
-            // pause to end of window when CTRL+F5'ing a console application
-            ConfigurationGeneral configuration = await _properties.GetConfigurationGeneralPropertiesAsync();
-
-            var actualOutputType = (IEnumValue?)await configuration.OutputType.GetValueAsync();
-                        
-            return actualOutputType is not null && StringComparers.PropertyLiteralValues.Equals(actualOutputType.Name, outputType);
         }
 
         public async Task<bool> CanBeStartupProjectAsync(DebugLaunchOptions launchOptions, ILaunchProfile profile)
@@ -385,7 +372,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             }
 
             bool useCmdShell = false;
-            if (await IsConsoleAppAsync())
+            if (await _outputTypeChecker.IsConsoleAsync())
             {
                 if (await IsIntegratedConsoleEnabledAsync())
                 {
@@ -527,7 +514,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             if (Strings.IsNullOrEmpty(runCommand))
             {
                 // If we're launching for debug purposes, prevent someone F5'ing a class library
-                if (validateSettings && await IsClassLibraryAsync())
+                if (validateSettings && await _outputTypeChecker.IsLibraryAsync())
                 {
                     return null;
                 }
