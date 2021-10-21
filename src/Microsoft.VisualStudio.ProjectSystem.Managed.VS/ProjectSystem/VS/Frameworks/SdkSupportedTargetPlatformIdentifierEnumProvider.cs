@@ -14,15 +14,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Frameworks
     /// </summary>
     [ExportDynamicEnumValuesProvider("SdkSupportedTargetPlatformIdentifierEnumProvider")]
     [AppliesTo(ProjectCapability.DotNet)]
-    internal class SdkSupportedTargetPlatformIdentifierEnumProvider : SupportedValuesProvider
+    internal class SdkSupportedTargetPlatformIdentifierEnumProvider : SingleRuleSupportedValuesProvider
     {
-        protected override string RuleName => SdkSupportedTargetPlatformIdentifier.SchemaName;
-
         [ImportingConstructor]
         public SdkSupportedTargetPlatformIdentifierEnumProvider(
             ConfiguredProject project,
             IProjectSubscriptionService subscriptionService)
-            : base(project, subscriptionService, useNoneValue: true) { }
+            : base(project, subscriptionService, ruleName: SdkSupportedTargetPlatformIdentifier.SchemaName, useNoneValue: true) { }
 
         protected override IEnumValue ToEnumValue(KeyValuePair<string, IImmutableDictionary<string, string>> item)
         {

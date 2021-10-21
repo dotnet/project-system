@@ -43,6 +43,33 @@ namespace Microsoft.VisualStudio.ProjectSystem.Rules
             public static int SupportedTargetFrameworkRule;
 
             /// <summary>
+            ///     Represents the evaluation items containing the supported (possible) .NET Core target frameworks
+            ///     for a project.
+            /// </summary>
+            [ExportRule(nameof(SupportedNETCoreAppTargetFramework), PropertyPageContexts.ProjectSubscriptionService)]
+            [AppliesTo(ProjectCapability.DotNet)]
+            [Order(Order.Default)]
+            public static int SupportedNETCoreAppTargetFrameworkRule;
+
+            /// <summary>
+            ///     Represents the evaluation items containing the supported (possible) .NET Framework target frameworks
+            ///     for a project.
+            /// </summary>
+            [ExportRule(nameof(SupportedNETFrameworkTargetFramework), PropertyPageContexts.ProjectSubscriptionService)]
+            [AppliesTo(ProjectCapability.DotNet)]
+            [Order(Order.Default)]
+            public static int SupportedNETFrameworkTargetFrameworkRule;
+
+            /// <summary>
+            ///     Represents the evaluation items containing the supported (possible) .NET Standard target frameworks
+            ///     for a project.
+            /// </summary>
+            [ExportRule(nameof(SupportedNETStandardTargetFramework), PropertyPageContexts.ProjectSubscriptionService)]
+            [AppliesTo(ProjectCapability.DotNet)]
+            [Order(Order.Default)]
+            public static int SupportedNETStandardTargetFrameworkRule;
+
+            /// <summary>
             ///     Represents the evaluation items containing the supported (possible) target platforms
             ///     for a project.
             /// </summary>

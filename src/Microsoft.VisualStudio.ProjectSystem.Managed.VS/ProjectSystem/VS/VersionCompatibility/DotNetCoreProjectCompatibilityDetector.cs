@@ -343,11 +343,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                 if (!string.IsNullOrEmpty(tfm))
                 {
                     var fw = new FrameworkName(tfm);
-                    if (fw.Identifier.Equals(".NETCoreApp", StringComparisons.FrameworkIdentifiers))
+                    if (fw.Identifier.Equals(TargetFrameworkIdentifiers.NetCoreApp, StringComparisons.FrameworkIdentifiers))
                     {
                         return GetCompatibilityLevelFromVersion(fw.Version, compatData, isPreviewSDKInUse);
                     }
-                    else if (fw.Identifier.Equals(".NETFramework", StringComparisons.FrameworkIdentifiers))
+                    else if (fw.Identifier.Equals(TargetFrameworkIdentifiers.NetFramework, StringComparisons.FrameworkIdentifiers))
                     {
                         // The interesting case here is Asp.Net Core on full framework
                         Assumes.Present(activeConfiguredProject.Services.PackageReferences);
