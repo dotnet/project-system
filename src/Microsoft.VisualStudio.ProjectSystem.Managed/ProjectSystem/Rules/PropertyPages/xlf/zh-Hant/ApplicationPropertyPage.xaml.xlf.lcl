@@ -153,10 +153,13 @@
       </Item>
       <Item ItemId=";Category|Resources|DisplayName" ItemType="0" PsrId="308" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Resources]]></Val>
+          <Val><![CDATA[Win32 Resources]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[資源]]></Val>
+            <Val><![CDATA[Win32 資源]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[Resources]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
