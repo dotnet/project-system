@@ -178,7 +178,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         // This method is overridden in test code
         protected virtual async Task<bool> IsPreviewSDKInUseAsync()
         {
-            if (await IsPrereleaseAsync())
+            if (await _shellUtilitiesHelper.Value.IsVSFromPreviewChannelAsync())
             {
                 return true;
             }
@@ -197,16 +197,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         protected virtual bool IsCapabilityMatch(IVsHierarchy hierarchy)
         {
             return hierarchy.IsCapabilityMatch(RequiredProjectCapabilities);
-        }
-
-        private async Task<bool> IsPrereleaseAsync()
-        {
-            await _threadHandling.Value.SwitchToUIThread();
-            ISetupConfiguration setupConfiguration = new SetupConfiguration();
-            ISetupInstance setupInstance = setupConfiguration.GetInstanceForCurrentProcess();
-            // NOTE: this explicit cast is necessary for the subsequent COM QI to succeed. 
-            var setupInstanceCatalog = (ISetupInstanceCatalog)setupInstance;
-            return setupInstanceCatalog.IsPrerelease();
         }
 
         // This method is overridden in test code

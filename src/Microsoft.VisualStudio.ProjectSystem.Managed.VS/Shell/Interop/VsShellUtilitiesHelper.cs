@@ -2,10 +2,13 @@
 
 using System;
 using System.ComponentModel.Composition;
+using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.ProjectSystem;
+using Microsoft.VisualStudio.ProjectSystem.Utilities;
 using Microsoft.VisualStudio.ProjectSystem.VS;
 using Microsoft.VisualStudio.ProjectSystem.VS.Interop;
+using Microsoft.VisualStudio.Setup.Configuration;
 
 namespace Microsoft.VisualStudio.Shell.Interop
 {
@@ -76,20 +79,23 @@ namespace Microsoft.VisualStudio.Shell.Interop
             return null;
         }
 
-        public async Task<bool> IsVSFromPreviewChannelAsync(IVsService<IVsAppId> vsAppIdService)
+        public async Task<bool> IsVSFromPreviewChannelAsync()
         {
             await _threadingService.SwitchToUIThread();
 
-            IVsAppId vsAppId = await vsAppIdService.GetValueAsync();
-
-            if (vsAppId != null && ErrorHandler.Succeeded(vsAppId.GetProperty((int)VSAPropID.VSAPROPID_ProductSemanticVersion, out object oVersion)) &&
-                oVersion is string semVersion)
+            try
             {
-                int index = semVersion.IndexOf('-');
-                return (index != -1);
+                ISetupConfiguration vsSetupConfig = new SetupConfiguration();
+                var setupInstance = vsSetupConfig.GetInstanceForCurrentProcess();
+                // NOTE: this explicit cast is necessary for the subsequent COM QI to succeed. 
+                var setupInstanceCatalog = (ISetupInstanceCatalog)setupInstance;
+                return setupInstanceCatalog.IsPrerelease();
             }
-
-            return false;
+            catch (COMException ex)
+            {
+                TraceUtilities.TraceError("Failed to determine whether setup instance catalog is prerelease: {0}", ex.ToString());
+                return false;
+            }
         }
     }
 }
