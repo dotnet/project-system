@@ -372,7 +372,7 @@ dotnet_diagnostic.RS0010.severity = warning
                                                   # Name:                                         Before:                                             After:
 dotnet_diagnostic.IDE0001.severity = warning      # Simplify names                                System.Version version;                             Version version;
 dotnet_diagnostic.IDE0002.severity = warning      # Simplify (member access)                      System.Version.Equals("1", "2");                    Version.Equals("1", "2");
-dotnet_diagnostic.IDE0005.severity = warning      # Using directive is unnecessary                using System.Text;
+dotnet_diagnostic.IDE0005.severity = error        # Using directive is unnecessary                using System.Text;
 dotnet_diagnostic.IDE0030.severity = warning      # Use coalesce expression (nullable)            int? y = x.HasValue ? x.Value : 0                   int? y = x ?? 0;
 dotnet_diagnostic.IDE0030WithoutSuggestion.severity = error
 dotnet_diagnostic.IDE0079.severity = warning      # Unused suppresion
