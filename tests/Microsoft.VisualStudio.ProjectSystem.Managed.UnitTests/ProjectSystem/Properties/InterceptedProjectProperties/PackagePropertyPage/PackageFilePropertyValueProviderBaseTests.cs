@@ -2,7 +2,6 @@
 
 using System.Collections.Generic;
 using System.Collections.Immutable;
-using System.ComponentModel.Composition;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.ProjectSystem.Properties.Package;
@@ -12,27 +11,24 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties.InterceptedProjectProp
 {
     public class PackageFilePropertyValueProviderBaseTests
     {
-        private const string TestPropertyName = "Caketown";
+        private const string TestPropertyName = "Example";
+        private const string ProjectPath = @"C:\Test\Path\Here";
+        private static readonly IProjectProperties EmptyProjectProperties = IProjectPropertiesFactory.CreateWithPropertiesAndValues(ImmutableDictionary<string, string?>.Empty);
 
         [Theory]
-        //          Expression  File                Stored value   Expected value
-        //[InlineData(null, null, null, "None")]
-        //[InlineData(null, null, "File", "File")]
-        //[InlineData(null, @"C:\license.txt", null, "File")]
-        //[InlineData(null, @"C:\license.txt", "Expression", "File")]
-        //[InlineData("alpha", null, null, "Expression")]
-        //[InlineData("alpha", @"C:\license.txt", null, "Expression")]
         [InlineData(null, null, null, null)]
         [InlineData(null, null, @"Test.txt", @"Test.txt")]
         [InlineData(@"..\..\..\Test.txt", "True", @"Test.txt", @"..\..\..\Test.txt")]
         [InlineData(@"..\..\..\Test.txt", "False", @"docs\Test.txt", @"docs\Test.txt")]
         [InlineData(@"..\..\..\Test.txt", null, @"docs\Test.txt", @"docs\Test.txt")]
-        [InlineData(@"..\..\..\NotTest.txt", "True", @"docs\Test.txt", @"docs\Test.txt")]
+        [InlineData(@"TotallyDifferentFile.txt", "True", @"docs\Test.txt", @"docs\Test.txt")]
         [InlineData(@"..\..\..\Test.txt", "True", @"docs\Test.txt", @"..\..\..\Test.txt")]
         [InlineData(@"Documents\Test.txt", "True", @"docs\Test.txt", @"Documents\Test.txt")]
         [InlineData(@"Test.txt", "True", @"Test.txt", @"Test.txt")]
+        [InlineData(ProjectPath + @"\Test.txt", "True", @"Test.txt", ProjectPath + @"\Test.txt")]
+        [InlineData(@"C:\Test.txt", "True", @"Test.txt", @"C:\Test.txt")]
         //public async Task GetPackageLicenseKind(string? expressionPropertyValue, string? filePropertyValue, string? storedValue, string expectedValue)
-        public async Task GetPackageFilePropertyValue(string? existingInclude, string? pack, string? propertyValue, string expectedValue)
+        public async Task GetPackageFilePropertyValue(string? existingInclude, string? pack, string? propertyValue, string? expectedValue)
         {
             //var projectTree = IProjectTreeProviderFactory.Create();
             //var projectItemProvider = IProjectItemProviderFactory.Create();
@@ -45,13 +41,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties.InterceptedProjectProp
             //        { "PackagePath", packagePath }
             //    } : null;
             //await projectItemProvider.AddAsync(None.SchemaName, include, metadata);
-            var projectItemProvider = IProjectItemProviderFactory.GetItemsAsync(itemType => existingInclude is not null ? new[]
+            var projectItemProvider = IProjectItemProviderFactory.GetItemsAsync(() => existingInclude is not null ? new[]
             {
                 IProjectItemFactory.Create(existingInclude, pack is not null
                     ? IProjectPropertiesFactory.CreateWithPropertyAndValue("Pack", pack)
-                    : IProjectPropertiesFactory.CreateWithPropertiesAndValues(ImmutableDictionary<string, string?>.Empty))
+                    : EmptyProjectProperties)
             } : Enumerable.Empty<IProjectItem>());
-            var unconfiguredProject = UnconfiguredProjectFactory.Create();
+            var unconfiguredProject = UnconfiguredProjectFactory.Create(fullPath: ProjectPath);
             var provider = new TestValueProvider(TestPropertyName, projectItemProvider, unconfiguredProject);
 
             var unevaluatedActualValue = await provider.OnGetUnevaluatedPropertyValueAsync(string.Empty, propertyValue!, null!);
@@ -61,38 +57,58 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties.InterceptedProjectProp
             Assert.Equal(expected: expectedValue, actual: evaluatedActualValue);
         }
 
-        //[Theory]
-        //          New value      Current     Current             Expected    Expected            Expected
-        //                         Expression  File                Expression  File                stored value
-        //[InlineData("Expression", null, null, null, null, "Expression")]
-        //[InlineData("Expression", "alpha", null, "alpha", null, "Expression")]
-        //[InlineData("Expression", null, @"C:\license.txt", null, null, "Expression")]
-        //[InlineData("File", null, null, null, null, "File")]
-        //[InlineData("File", "alpha", @"C:\license.txt", null, @"C:\license.txt", "File")]
-        //[InlineData("File", "alpha", null, null, null, "File")]
-        //[InlineData("None", "alpha", null, null, null, "None")]
-        //[InlineData("None", null, @"C:\license.txt", null, null, "None")]
-        //public async Task SetPackageLicenseKind(string newValue, string? currentExpressionPropertyValue, string? currentFilePropertyValue, string? expectedExpressionPropertyValue, string? expectedFilePropertyValue, string? expectedStoredValue)
-        //{
-        //    Dictionary<string, string> storageDictionary = new();
-        //    var storage = ITemporaryPropertyStorageFactory.Create(storageDictionary);
+        [Theory]
+        [InlineData("Expression", null, null, null, null, "Expression")]
+        [InlineData("Expression", "alpha", null, "alpha", null, "Expression")]
+        [InlineData("Expression", null, @"C:\license.txt", null, null, "Expression")]
+        [InlineData("File", null, null, null, null, "File")]
+        [InlineData("File", "alpha", @"C:\license.txt", null, @"C:\license.txt", "File")]
+        [InlineData("File", "alpha", null, null, null, "File")]
+        [InlineData("None", "alpha", null, null, null, "None")]
+        [InlineData("None", null, @"C:\license.txt", null, null, "None")]
+        public async Task SetPackageFilePropertyValue(string? existingInclude, string? existingPropertyValue, string? pack, string? packagePath, string? newPropertyValue, string expectedValue)
+        {
+            //Dictionary<string, string> storageDictionary = new();
+            //var storage = ITemporaryPropertyStorageFactory.Create(storageDictionary);
 
-        //    Dictionary<string, string?> defaultPropertiesDictionary = new();
-        //    defaultPropertiesDictionary["PackageLicenseExpression"] = currentExpressionPropertyValue;
-        //    defaultPropertiesDictionary["PackageLicenseFile"] = currentFilePropertyValue;
-        //    var defaultProperties = IProjectPropertiesFactory.CreateWithPropertiesAndValues(defaultPropertiesDictionary);
+            //Dictionary<string, string?> defaultPropertiesDictionary = new();
+            //defaultPropertiesDictionary["PackageLicenseExpression"] = currentExpressionPropertyValue;
+            //defaultPropertiesDictionary["PackageLicenseFile"] = currentFilePropertyValue;
+            //var defaultProperties = IProjectPropertiesFactory.CreateWithPropertiesAndValues(defaultPropertiesDictionary);
 
-        //    var provider = new TestValueProvider(storage);
-        //    await provider.OnSetPropertyValueAsync("", newValue, defaultProperties);
+            //var provider = new TestValueProvider(storage);
+            //await provider.OnSetPropertyValueAsync("", newValue, defaultProperties);
 
-        //    defaultPropertiesDictionary.TryGetValue("PackageLicenseExpression", out string? finalExpressionPropertyValue);
-        //    defaultPropertiesDictionary.TryGetValue("PackageLicenseFile", out string? finalFilePropertyValue);
-        //    storageDictionary.TryGetValue("PackageLicenseKind", out string? finalStoredValue);
+            //defaultPropertiesDictionary.TryGetValue("PackageLicenseExpression", out string? finalExpressionPropertyValue);
+            //defaultPropertiesDictionary.TryGetValue("PackageLicenseFile", out string? finalFilePropertyValue);
+            //storageDictionary.TryGetValue("PackageLicenseKind", out string? finalStoredValue);
 
-        //    Assert.Equal(expectedExpressionPropertyValue, finalExpressionPropertyValue);
-        //    Assert.Equal(expectedFilePropertyValue, finalFilePropertyValue);
-        //    Assert.Equal(expectedStoredValue, finalStoredValue);
-        //}
+            //Assert.Equal(expectedExpressionPropertyValue, finalExpressionPropertyValue);
+            //Assert.Equal(expectedFilePropertyValue, finalFilePropertyValue);
+            //Assert.Equal(expectedStoredValue, finalStoredValue);
+
+            var existingMetadata = new Dictionary<string, string?>();
+            if(pack is not null)
+            {
+                existingMetadata.Add("Pack", pack);
+            }
+            if (packagePath is not null)
+            {
+                existingMetadata.Add("PackagePath", packagePath);
+            }
+            var projectItemProvider = IProjectItemProviderFactory.GetItemsAsync(() => existingInclude is not null ? new[]
+            {
+                IProjectItemFactory.Create(existingInclude, IProjectPropertiesFactory.CreateWithPropertiesAndValues(existingMetadata))
+            } : Enumerable.Empty<IProjectItem>());
+            var unconfiguredProject = UnconfiguredProjectFactory.Create(fullPath: ProjectPath);
+            var provider = new TestValueProvider(TestPropertyName, projectItemProvider, unconfiguredProject);
+
+            var existingProperties = existingPropertyValue is not null
+                ? IProjectPropertiesFactory.CreateWithPropertyAndValue(TestPropertyName, existingPropertyValue)
+                : EmptyProjectProperties;
+            var actualValue = await provider.OnSetPropertyValueAsync(string.Empty, newPropertyValue!, existingProperties);
+            Assert.Equal(expected: expectedValue, actual: actualValue);
+        }
 
         private class TestValueProvider : PackageFilePropertyValueProviderBase
         {

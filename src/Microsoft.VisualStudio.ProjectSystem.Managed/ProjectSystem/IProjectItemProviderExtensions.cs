@@ -7,11 +7,11 @@ namespace Microsoft.VisualStudio.ProjectSystem
 {
     internal static class IProjectItemProviderExtensions
     {
-        public static async Task<IProjectItem?> GetItemAsync(this IProjectItemProvider provider, string itemType, Func<IProjectItem, Task<bool>> condition)
+        public static async Task<IProjectItem?> GetItemAsync(this IProjectItemProvider provider, string itemType, Func<IProjectItem, Task<bool>> predicate)
         {
             foreach (IProjectItem item in await provider.GetItemsAsync(itemType))
             {
-                if (await condition(item))
+                if (await predicate(item))
                 {
                     return item;
                 }
@@ -20,11 +20,11 @@ namespace Microsoft.VisualStudio.ProjectSystem
             return null;
         }
 
-        public static async Task<IProjectItem?> GetItemAsync(this IProjectItemProvider provider, string itemType, Predicate<IProjectItem> condition)
+        public static async Task<IProjectItem?> GetItemAsync(this IProjectItemProvider provider, string itemType, Func<IProjectItem, bool> predicate)
         {
             foreach (IProjectItem item in await provider.GetItemsAsync(itemType))
             {
-                if (condition(item))
+                if (predicate(item))
                 {
                     return item;
                 }
