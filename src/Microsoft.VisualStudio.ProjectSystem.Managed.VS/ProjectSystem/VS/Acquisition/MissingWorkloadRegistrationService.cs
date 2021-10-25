@@ -10,7 +10,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.ServiceHub.Framework;
 using Microsoft.VisualStudio.ProjectSystem.Utilities;
-using Microsoft.VisualStudio.ProjectSystem.VS.Interop;
 using Microsoft.VisualStudio.ProjectSystem.Workloads;
 using Microsoft.VisualStudio.RpcContracts.Setup;
 using Microsoft.VisualStudio.Shell.Interop;
@@ -33,7 +32,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         private readonly ConcurrentDictionary<Guid, IConcurrentHashSet<ProjectConfiguration>> _projectGuidToProjectConfigurationsMap;
         private readonly IVsService<SVsBrokeredServiceContainer, IBrokeredServiceContainer> _serviceBrokerContainer;
         private readonly IVsService<IVsSolution> _vsSolutionService;
-        private readonly IVsService<IVsAppId> _vsAppIdService;
         private readonly Lazy<IVsShellUtilitiesHelper> _shellUtilitiesHelper;
         private readonly Lazy<IProjectThreadingService> _threadHandling;
         private readonly IProjectFaultHandlerService _projectFaultHandlerService;
@@ -48,7 +46,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         public MissingWorkloadRegistrationService(
             IVsService<SVsBrokeredServiceContainer, IBrokeredServiceContainer> serviceBrokerContainer,
             IVsService<SVsSolution, IVsSolution> vsSolutionService,
-            IVsService<SVsAppId, IVsAppId> vsAppIdService,
             Lazy<IVsShellUtilitiesHelper> vsShellUtilitiesHelper,
             Lazy<IProjectThreadingService> threadHandling,
             IProjectFaultHandlerService projectFaultHandlerService)
@@ -60,7 +57,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             _vsSolutionService = vsSolutionService;
             _threadHandling = threadHandling;
             _projectFaultHandlerService = projectFaultHandlerService;
-            _vsAppIdService = vsAppIdService;
             _shellUtilitiesHelper = vsShellUtilitiesHelper;
         }
 
@@ -161,7 +157,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         {
             if (!_isVSFromPreviewChannel.HasValue)
             {
-                _isVSFromPreviewChannel = await _shellUtilitiesHelper.Value.IsVSFromPreviewChannelAsync(_vsAppIdService);
+                _isVSFromPreviewChannel = await _shellUtilitiesHelper.Value.IsVSFromPreviewChannelAsync();
                 await TaskScheduler.Default;
             }
 
@@ -275,8 +271,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             await _threadHandling.Value.SwitchToUIThread();
 
             _vsSolution = await _vsSolutionService.GetValueAsync();
-
-            _isVSFromPreviewChannel = await _shellUtilitiesHelper.Value.IsVSFromPreviewChannelAsync(_vsAppIdService);
 
             Verify.HResult(_vsSolution.AdviseSolutionEvents(this, out _solutionCookie));
         }
