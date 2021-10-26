@@ -25,15 +25,6 @@ namespace Microsoft.VisualStudio.ProjectSystem
             return mock.Object;
         }
 
-        public static IProjectItemProvider AddItemAsync(Func<string, string, IEnumerable<KeyValuePair<string, string>>?, IProjectItem> action)
-        {
-            var mock = new Mock<IProjectItemProvider>();
-            mock.Setup(p => p.AddAsync(It.IsAny<string>(), It.IsAny<string>(), null))
-                .ReturnsAsync(action);
-
-            return mock.Object;
-        }
-
         public static IProjectItemProvider CreateWithAdd(IProjectTree inputTree)
         {
             var mock = new Mock<IProjectItemProvider>();
