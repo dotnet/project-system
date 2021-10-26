@@ -19,6 +19,29 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
     {
         public static UpToDateCheckImplicitConfiguredInput Empty { get; } = new();
 
+        public static UpToDateCheckImplicitConfiguredInput Disabled { get; } = new UpToDateCheckImplicitConfiguredInput(
+            msBuildProjectFullPath:                       null,
+            msBuildProjectDirectory:                      null,
+            copyUpToDateMarkerItem:                       null,
+            outputRelativeOrFullPath:                     null,
+            newestImportInput:                            null,
+            isDisabled:                                   true,
+            itemTypes:                                    ImmutableArray<string>.Empty,
+            itemsByItemType:                              ImmutableDictionary<string, ImmutableArray<(string, string?, BuildUpToDateCheck.CopyType)>>.Empty,
+            upToDateCheckInputItemsByKindBySetName:       ImmutableDictionary<string, ImmutableDictionary<string, ImmutableArray<string>>>.Empty,
+            upToDateCheckOutputItemsByKindBySetName:      ImmutableDictionary<string, ImmutableDictionary<string, ImmutableArray<string>>>.Empty,
+            upToDateCheckBuiltItemsByKindBySetName:       ImmutableDictionary<string, ImmutableDictionary<string, ImmutableArray<string>>>.Empty,
+            copiedOutputFiles:                            ImmutableArray<(string DestinationRelative, string SourceRelative)>.Empty,
+            resolvedAnalyzerReferencePaths:               ImmutableArray<string>.Empty,
+            resolvedCompilationReferencePaths:            ImmutableArray<string>.Empty,
+            copyReferenceInputs:                          ImmutableArray<string>.Empty,
+            additionalDependentFileTimes:                 ImmutableDictionary<string, DateTime>.Empty,
+            lastAdditionalDependentFileTimesChangedAtUtc: DateTime.MinValue,
+            lastItemsChangedAtUtc:                        DateTime.MinValue,
+            lastItemChanges:                              ImmutableArray<(bool IsAdd, string ItemType, string Path, string? TargetPath, BuildUpToDateCheck.CopyType CopyType)>.Empty,
+            itemHash:                                     null,
+            wasStateRestored:                             false);
+
         public string? MSBuildProjectFullPath { get; }
 
         public string? MSBuildProjectDirectory { get; }
@@ -211,6 +234,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             IProjectCatalogSnapshot projectCatalogSnapshot)
         {
             bool isDisabled = jointRuleUpdate.CurrentState.IsPropertyTrue(ConfigurationGeneral.SchemaName, ConfigurationGeneral.DisableFastUpToDateCheckProperty, defaultValue: false);
+
+            if (isDisabled)
+            {
+                return Disabled;
+            }
 
             string? msBuildProjectFullPath = jointRuleUpdate.CurrentState.GetPropertyOrDefault(ConfigurationGeneral.SchemaName, ConfigurationGeneral.MSBuildProjectFullPathProperty, MSBuildProjectFullPath);
             string? msBuildProjectDirectory = jointRuleUpdate.CurrentState.GetPropertyOrDefault(ConfigurationGeneral.SchemaName, ConfigurationGeneral.MSBuildProjectDirectoryProperty, MSBuildProjectDirectory);
@@ -429,12 +457,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
                 foreach ((string path, string? targetPath, BuildUpToDateCheck.CopyType copyType) in diff.Added)
                 {
-                    changes.Add((true, itemType, path, targetPath, copyType));
+                    changes.Add((IsAdd: true, itemType, path, targetPath, copyType));
                 }
 
                 foreach ((string path, string? targetPath, BuildUpToDateCheck.CopyType copyType) in diff.Removed)
                 {
-                    changes.Add((false, itemType, path, targetPath, copyType));
+                    changes.Add((IsAdd: false, itemType, path, targetPath, copyType));
                 }
 
                 itemsByItemTypeBuilder[itemType] = after.ToImmutableArray();

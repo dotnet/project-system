@@ -1,8 +1,6 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
 using System;
-using Microsoft.VisualStudio.ProjectSystem;
-using Microsoft.VisualStudio.ProjectSystem.Properties;
 using Microsoft.VisualStudio.ProjectSystem.VS;
 using Microsoft.VisualStudio.ProjectSystem.VS.Utilities;
 
@@ -76,27 +74,6 @@ namespace Microsoft.VisualStudio.Shell.Interop
 
             result = default!;
             return hr;
-        }
-
-        /// <summary>
-        /// Convenient way to get to the UnconfiguredProject from the hierarchy
-        /// </summary>
-        public static UnconfiguredProject? GetUnconfiguredProject(this IVsHierarchy hierarchy)
-        {
-            UIThreadHelper.VerifyOnUIThread();
-
-            var context = hierarchy as IVsBrowseObjectContext;
-
-            if (context == null)
-            {
-                EnvDTE.Project? dteProject = hierarchy.GetDTEProject();
-                if (dteProject != null)
-                {
-                    context = dteProject.Object as IVsBrowseObjectContext;
-                }
-            }
-
-            return context?.UnconfiguredProject;
         }
 
         /// <summary>

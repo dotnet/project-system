@@ -10,6 +10,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
     {
         private ImmutableDictionary<string, string> _properties = ImmutableDictionary<string, string>.Empty;
 
+        /// <remarks>
+        /// We only need <paramref name="project"/> to force the creation of one of these per
+        /// <see cref="ConfiguredProject"/>. Otherwise we end up sharing them between
+        /// configurations/projects when we don't want to.
+        /// </remarks>
+        [ImportingConstructor]
+        public TemporaryPropertyStorage(ConfiguredProject project)
+        {
+        }
+
         public void AddOrUpdatePropertyValue(string propertyName, string propertyValue)
         {
             ImmutableInterlocked.AddOrUpdate(ref _properties, propertyName, propertyValue, (_, _) => propertyValue);

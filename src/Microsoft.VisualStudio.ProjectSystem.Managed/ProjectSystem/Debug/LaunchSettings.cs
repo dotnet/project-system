@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
+using System.Threading;
 using Newtonsoft.Json;
 
 namespace Microsoft.VisualStudio.ProjectSystem.Debug
@@ -101,13 +102,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             {
                 if (_activeProfile == null)
                 {
+                    ILaunchProfile? computedProfile = null;
+
                     // If no active profile specified, or the active one is no longer valid, assume the first one
                     if (!Strings.IsNullOrWhiteSpace(_activeProfileName))
                     {
-                        _activeProfile = Profiles.FirstOrDefault(p => LaunchProfile.IsSameProfileName(p.Name, _activeProfileName));
+                        computedProfile = Profiles.FirstOrDefault(p => LaunchProfile.IsSameProfileName(p.Name, _activeProfileName));
                     }
 
-                    _activeProfile ??= !Profiles.IsEmpty ? Profiles[0] : null;
+                    computedProfile ??= !Profiles.IsEmpty ? Profiles[0] : null;
+
+                    Interlocked.CompareExchange(ref _activeProfile, value: computedProfile, comparand: null);
                 }
 
                 return _activeProfile;

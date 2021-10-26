@@ -14,7 +14,6 @@ using Microsoft.VisualStudio.ProjectSystem.VS.Interop;
 using Microsoft.VisualStudio.ProjectSystem.VS.UI;
 using Microsoft.VisualStudio.ProjectSystem.VS.Utilities;
 using Microsoft.VisualStudio.Settings;
-using Microsoft.VisualStudio.Setup.Configuration;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 using Microsoft.VisualStudio.Threading;
@@ -178,7 +177,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         // This method is overridden in test code
         protected virtual async Task<bool> IsPreviewSDKInUseAsync()
         {
-            if (await IsPrereleaseAsync())
+            if (await _shellUtilitiesHelper.Value.IsVSFromPreviewChannelAsync())
             {
                 return true;
             }
@@ -197,16 +196,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         protected virtual bool IsCapabilityMatch(IVsHierarchy hierarchy)
         {
             return hierarchy.IsCapabilityMatch(RequiredProjectCapabilities);
-        }
-
-        private async Task<bool> IsPrereleaseAsync()
-        {
-            await _threadHandling.Value.SwitchToUIThread();
-            ISetupConfiguration setupConfiguration = new SetupConfiguration();
-            ISetupInstance setupInstance = setupConfiguration.GetInstanceForCurrentProcess();
-            // NOTE: this explicit cast is necessary for the subsequent COM QI to succeed. 
-            var setupInstanceCatalog = (ISetupInstanceCatalog)setupInstance;
-            return setupInstanceCatalog.IsPrerelease();
         }
 
         // This method is overridden in test code
@@ -343,11 +332,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                 if (!string.IsNullOrEmpty(tfm))
                 {
                     var fw = new FrameworkName(tfm);
-                    if (fw.Identifier.Equals(".NETCoreApp", StringComparisons.FrameworkIdentifiers))
+                    if (fw.Identifier.Equals(TargetFrameworkIdentifiers.NetCoreApp, StringComparisons.FrameworkIdentifiers))
                     {
                         return GetCompatibilityLevelFromVersion(fw.Version, compatData, isPreviewSDKInUse);
                     }
-                    else if (fw.Identifier.Equals(".NETFramework", StringComparisons.FrameworkIdentifiers))
+                    else if (fw.Identifier.Equals(TargetFrameworkIdentifiers.NetFramework, StringComparisons.FrameworkIdentifiers))
                     {
                         // The interesting case here is Asp.Net Core on full framework
                         Assumes.Present(activeConfiguredProject.Services.PackageReferences);

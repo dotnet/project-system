@@ -85,6 +85,9 @@ namespace Microsoft.VisualStudio.IO
             catch (UnauthorizedAccessException)
             {
             }
+            catch (NotSupportedException)
+            {
+            }
 
             result = null;
             return false;

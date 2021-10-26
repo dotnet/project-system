@@ -26,5 +26,10 @@ namespace Microsoft.VisualStudio.Shell.Interop
         /// Returns the virtual registry root as defined by <see cref="__VSSPROPID.VSSPROPID_VirtualRegistryRoot"/>.
         /// </summary>
         Task<string?> GetRegistryRootAsync(IVsService<IVsShell> vsShellService);
+
+        /// <summary>
+        /// Determines whether Visual Studio was installed from a preview channel.
+        /// </summary>
+        Task<bool> IsVSFromPreviewChannelAsync();
     }
 }

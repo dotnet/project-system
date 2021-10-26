@@ -142,7 +142,7 @@
       </trans-unit>
       <trans-unit id="ProjectHotReloadSessionManager_StartupHooksDisabled">
         <source>{0}: Hot Reload is not available because startup hooks have been disabled, possibly due to trimming.</source>
-        <target state="new">{0}: Hot Reload is not available because startup hooks have been disabled, possibly due to trimming.</target>
+        <target state="translated">{0}: Hot Reload ist nicht verfügbar, da Starthooks deaktiviert wurden, möglicherweise aufgrund von Kürzungen.</target>
         <note>{0} is the project name.</note>
       </trans-unit>
       <trans-unit id="RenameSymbolFailed">

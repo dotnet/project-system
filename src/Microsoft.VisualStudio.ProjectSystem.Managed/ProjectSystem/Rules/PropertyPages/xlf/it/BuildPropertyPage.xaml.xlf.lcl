@@ -364,6 +364,24 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
+      <Item ItemId=";DynamicEnumProperty|PlatformTarget|Description" ItemType="0" PsrId="308" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[Specifies the processor to be targeted by the output file. Choose 'Any CPU' to specify that any processor is acceptable, allowing the application to run on the broadest range of hardware.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Specifica il processore impostato come destinazione per il file di output. Scegliere 'Any CPU' per specificare che qualsiasi processore è accettabile, in modo da consentire l'esecuzione dell'applicazione nella più ampia gamma di dispositivi hardware.]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";DynamicEnumProperty|PlatformTarget|DisplayName" ItemType="0" PsrId="308" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[Platform target]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Destinazione piattaforma]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
       <Item ItemId=";EnumProperty|DebugType|Description" ItemType="0" PsrId="308" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[Specifies the kind of debug symbols produced during build.]]></Val>
@@ -444,24 +462,6 @@
           <Val><![CDATA[Nullable]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
             <Val><![CDATA[Nullable]]></Val>
-          </Tgt>
-        </Str>
-        <Disp Icon="Str" />
-      </Item>
-      <Item ItemId=";EnumProperty|PlatformTarget|Description" ItemType="0" PsrId="308" Leaf="true">
-        <Str Cat="Text">
-          <Val><![CDATA[Specifies the processor to be targeted by the output file. Choose 'x86' for any 32-bit Intel-compatible processor, choose 'x64' for any 64-bit Intel-compatible processor, or choose 'Any CPU' to specify that any processor is acceptable. 'Any CPU' is the default value for projects, because it allows the application to run on the broadest range of hardware.]]></Val>
-          <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Specifica il processore impostato come destinazione per il file di output. Scegliere 'x86' per qualsiasi processore compatibile con Intel a 32 bit, 'x64' per qualsiasi processore compatibile con Intel a 64 bit o 'Any CPU' per specificare che qualsiasi processore è accettabile. 'Any CPU' è il valore predefinito per i progetti, perché consente di eseguire l'applicazione in una vasta gamma di dispositivi hardware.]]></Val>
-          </Tgt>
-        </Str>
-        <Disp Icon="Str" />
-      </Item>
-      <Item ItemId=";EnumProperty|PlatformTarget|DisplayName" ItemType="0" PsrId="308" Leaf="true">
-        <Str Cat="Text">
-          <Val><![CDATA[Platform target]]></Val>
-          <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Destinazione piattaforma]]></Val>
           </Tgt>
         </Str>
         <Disp Icon="Str" />
@@ -651,33 +651,6 @@
           <Val><![CDATA[Warnings]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
             <Val><![CDATA[Avvisi]]></Val>
-          </Tgt>
-        </Str>
-        <Disp Icon="Str" />
-      </Item>
-      <Item ItemId=";EnumValue|PlatformTarget.AnyCPU|DisplayName" ItemType="0" PsrId="308" Leaf="true">
-        <Str Cat="Text">
-          <Val><![CDATA[Any CPU]]></Val>
-          <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Qualsiasi CPU]]></Val>
-          </Tgt>
-        </Str>
-        <Disp Icon="Str" />
-      </Item>
-      <Item ItemId=";EnumValue|PlatformTarget.x64|DisplayName" ItemType="0" PsrId="308" Leaf="true">
-        <Str Cat="Text">
-          <Val><![CDATA[x64]]></Val>
-          <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[x64]]></Val>
-          </Tgt>
-        </Str>
-        <Disp Icon="Str" />
-      </Item>
-      <Item ItemId=";EnumValue|PlatformTarget.x86|DisplayName" ItemType="0" PsrId="308" Leaf="true">
-        <Str Cat="Text">
-          <Val><![CDATA[x86]]></Val>
-          <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[x86]]></Val>
           </Tgt>
         </Str>
         <Disp Icon="Str" />

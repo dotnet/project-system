@@ -5,7 +5,7 @@ using Microsoft.VisualStudio.Collections;
 
 namespace Microsoft.VisualStudio.ProjectSystem.Debug
 {
-    internal static class WritableLaunchSettingsExtension
+    internal static class WritableLaunchSettingsExtensions
     {
         public static bool SettingsDiffer(this IWritableLaunchSettings launchSettings, IWritableLaunchSettings settingsToCompare)
         {

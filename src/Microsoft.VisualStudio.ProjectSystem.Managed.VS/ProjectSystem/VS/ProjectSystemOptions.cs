@@ -9,11 +9,17 @@ using Microsoft.VisualStudio.Threading;
 namespace Microsoft.VisualStudio.ProjectSystem.VS
 {
     [Export(typeof(IProjectSystemOptions))]
-    internal class ProjectSystemOptions : IProjectSystemOptions
+    [Export(typeof(IProjectSystemOptionsWithChanges))]
+    internal class ProjectSystemOptions : IProjectSystemOptionsWithChanges
     {
         private const string FastUpToDateEnabledSettingKey = @"ManagedProjectSystem\FastUpToDateCheckEnabled";
         private const string FastUpToDateLogLevelSettingKey = @"ManagedProjectSystem\FastUpToDateLogLevel";
         private const string UseDesignerByDefaultSettingKey = @"ManagedProjectSystem\UseDesignerByDefault";
+
+        // This setting exists as an option in Roslyn repo: 'FeatureOnOffOptions.SkipAnalyzersForImplicitlyTriggeredBuilds'.
+        // Do not change this setting key unless the Roslyn option name is changed.
+        internal const string SkipAnalyzersForImplicitlyTriggeredBuildSettingKey = "TextEditor.SkipAnalyzersForImplicitlyTriggeredBuilds";
+
         private readonly IVsUIService<ISettingsManager> _settingsManager;
         private readonly JoinableTaskContext _joinableTaskContext;
 
@@ -44,6 +50,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             return SetSettingValueAsync(UseDesignerByDefaultSettingKey + "\\" + designerCategory, value, cancellationToken);
         }
 
+        public Task<bool> GetSkipAnalyzersForImplicitlyTriggeredBuildAsync(CancellationToken cancellationToken = default)
+        {
+            return GetSettingValueOrDefaultAsync(SkipAnalyzersForImplicitlyTriggeredBuildSettingKey, defaultValue: true, cancellationToken);
+        }
+
         private async Task<T> GetSettingValueOrDefaultAsync<T>(string name, T defaultValue, CancellationToken cancellationToken)
         {
             await _joinableTaskContext.Factory.SwitchToMainThreadAsync(cancellationToken);
@@ -56,6 +67,24 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             await _joinableTaskContext.Factory.SwitchToMainThreadAsync(cancellationToken);
 
             await _settingsManager.Value.SetValueAsync(name, value, isMachineLocal: false);
+        }
+
+        public void RegisterOptionChangedEventHandler(PropertyChangedAsyncEventHandler handler)
+        {
+            ISettingsSubset? settingsSubset = _settingsManager.Value.GetSubset("*");
+            if (settingsSubset != null)
+            {
+                settingsSubset.SettingChangedAsync += handler;
+            }
+        }
+
+        public void UnregisterOptionChangedEventHandler(PropertyChangedAsyncEventHandler handler)
+        {
+            ISettingsSubset? settingsSubset = _settingsManager.Value.GetSubset("*");
+            if (settingsSubset != null)
+            {
+                settingsSubset.SettingChangedAsync -= handler;
+            }
         }
     }
 }

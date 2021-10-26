@@ -2,10 +2,13 @@
 
 using System;
 using System.ComponentModel.Composition;
+using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.ProjectSystem;
+using Microsoft.VisualStudio.ProjectSystem.Utilities;
 using Microsoft.VisualStudio.ProjectSystem.VS;
 using Microsoft.VisualStudio.ProjectSystem.VS.Interop;
+using Microsoft.VisualStudio.Setup.Configuration;
 
 namespace Microsoft.VisualStudio.Shell.Interop
 {
@@ -74,6 +77,25 @@ namespace Microsoft.VisualStudio.Shell.Interop
             }
 
             return null;
+        }
+
+        public async Task<bool> IsVSFromPreviewChannelAsync()
+        {
+            await _threadingService.SwitchToUIThread();
+
+            try
+            {
+                ISetupConfiguration vsSetupConfig = new SetupConfiguration();
+                var setupInstance = vsSetupConfig.GetInstanceForCurrentProcess();
+                // NOTE: this explicit cast is necessary for the subsequent COM QI to succeed. 
+                var setupInstanceCatalog = (ISetupInstanceCatalog)setupInstance;
+                return setupInstanceCatalog.IsPrerelease();
+            }
+            catch (COMException ex)
+            {
+                TraceUtilities.TraceError("Failed to determine whether setup instance catalog is prerelease: {0}", ex.ToString());
+                return false;
+            }
         }
     }
 }
