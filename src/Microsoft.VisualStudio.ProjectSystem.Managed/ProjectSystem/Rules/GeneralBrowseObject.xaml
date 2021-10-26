@@ -11,6 +11,8 @@
     <Category Name="General"
               Description="General"
               DisplayName="General" />
+    <Category Name="Misc"
+              DisplayName="Misc" />
   </Rule.Categories>
 
   <Rule.DataSource>

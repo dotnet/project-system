@@ -6,6 +6,11 @@
       PageTemplate="generic"
       PropertyPagesHidden="true"
       xmlns="http://schemas.microsoft.com/build/2009/properties">
+  <Rule.Categories>
+    <Category Name="Misc"
+              DisplayName="Misc" />
+  </Rule.Categories>
+
   <Rule.DataSource>
     <DataSource HasConfigurationCondition="False"
                 ItemType="Folder"
