@@ -68,7 +68,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties.Package
 
         public override async Task<string?> OnSetPropertyValueAsync(string propertyName, string unevaluatedPropertyValue, IProjectProperties defaultProperties, IReadOnlyDictionary<string, string>? dimensionalConditions = null)
         {
-            string relativePath = PathHelper.MakeRelative(_unconfiguredProject, unevaluatedPropertyValue);
+            bool isEmptyValue = string.IsNullOrEmpty(unevaluatedPropertyValue);
+            string relativePath = !isEmptyValue ? PathHelper.MakeRelative(_unconfiguredProject, unevaluatedPropertyValue) : string.Empty;
             string existingPropertyValue = await defaultProperties.GetEvaluatedPropertyValueAsync(_propertyName);
             IProjectItem? existingItem = await GetExistingNoneItemAsync(existingPropertyValue);
             // This default was string.Empty but caused issues for files already part of the project via globbing in the AddAsync call. It would not add the necessary
@@ -88,7 +89,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties.Package
             // None items outside of the project file cannot be updated.
             if (existingItem?.PropertiesContext.IsProjectFile ?? false)
             {
-                await existingItem.SetUnevaluatedIncludeAsync(relativePath);
+                if (!isEmptyValue)
+                {
+                    await existingItem.SetUnevaluatedIncludeAsync(relativePath);
+                }
+                else
+                {
+                    await existingItem.RemoveAsync();
+                }
             }
             else
             {
@@ -99,7 +107,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties.Package
                 });
             }
 
-            return CreatePropertyValue(relativePath, packagePath);
+            return !isEmptyValue ? CreatePropertyValue(relativePath, packagePath) : string.Empty;
         }
 
         private async Task<string> GetItemIncludeValueAsync(string propertyValue)

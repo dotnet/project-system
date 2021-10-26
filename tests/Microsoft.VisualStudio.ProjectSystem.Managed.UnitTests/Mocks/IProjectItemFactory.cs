@@ -19,6 +19,8 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
             projectItem.Setup(o => o.SetUnevaluatedIncludeAsync(It.IsAny<string>()))
                 .Returns(Task.CompletedTask);
+            projectItem.Setup(o => o.RemoveAsync(It.IsAny<DeleteOptions>()))
+                .Returns(Task.CompletedTask);
             var propertiesContext = IProjectPropertiesContextFactory.Create(isProjectFile);
             projectItem.SetupGet(o => o.PropertiesContext)
                 .Returns(propertiesContext);
