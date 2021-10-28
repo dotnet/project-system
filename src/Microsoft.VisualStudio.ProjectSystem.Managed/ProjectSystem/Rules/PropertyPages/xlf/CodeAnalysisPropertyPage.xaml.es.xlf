@@ -62,29 +62,89 @@
         <target state="translated">Nivel de análisis</target>
         <note />
       </trans-unit>
+      <trans-unit id="EnumValue|AnalysisLevel.5.0-all|DisplayName">
+        <source>5.0 (All)</source>
+        <target state="new">5.0 (All)</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|AnalysisLevel.5.0-minimum|DisplayName">
+        <source>5.0 (Default + Highly recommended)</source>
+        <target state="new">5.0 (Default + Highly recommended)</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|AnalysisLevel.5.0-recommended|DisplayName">
+        <source>5.0 (Default + Recommended)</source>
+        <target state="new">5.0 (Default + Recommended)</target>
+        <note />
+      </trans-unit>
       <trans-unit id="EnumValue|AnalysisLevel.5.0|DisplayName">
-        <source>5.0</source>
-        <target state="translated">5.0</target>
+        <source>5.0 (Default)</source>
+        <target state="needs-review-translation">5.0</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|AnalysisLevel.6.0-all|DisplayName">
+        <source>6.0 (All)</source>
+        <target state="new">6.0 (All)</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|AnalysisLevel.6.0-minimum|DisplayName">
+        <source>6.0 (Default + Highly recommended)</source>
+        <target state="new">6.0 (Default + Highly recommended)</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|AnalysisLevel.6.0-recommended|DisplayName">
+        <source>6.0 (Default + Recommended)</source>
+        <target state="new">6.0 (Default + Recommended)</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|AnalysisLevel.6.0|DisplayName">
-        <source>6.0</source>
-        <target state="translated">6.0</target>
+        <source>6.0 (Default)</source>
+        <target state="needs-review-translation">6.0</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|AnalysisLevel.latest-all|DisplayName">
+        <source>Latest (All)</source>
+        <target state="new">Latest (All)</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|AnalysisLevel.latest-minimum|DisplayName">
+        <source>Latest (Default + Highly recommended)</source>
+        <target state="new">Latest (Default + Highly recommended)</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|AnalysisLevel.latest-recommended|DisplayName">
+        <source>Latest (Default + Recommended)</source>
+        <target state="new">Latest (Default + Recommended)</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|AnalysisLevel.latest|DisplayName">
-        <source>Latest</source>
-        <target state="translated">Último</target>
+        <source>Latest (Default)</source>
+        <target state="needs-review-translation">Último</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|AnalysisLevel.none|DisplayName">
-        <source>None</source>
-        <target state="translated">Ninguno</target>
+        <source>None (No analyzers)</source>
+        <target state="needs-review-translation">Ninguno</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|AnalysisLevel.preview-all|DisplayName">
+        <source>Preview (All)</source>
+        <target state="new">Preview (All)</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|AnalysisLevel.preview-minimum|DisplayName">
+        <source>Preview (Default + Highly recommended)</source>
+        <target state="new">Preview (Default + Highly recommended)</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|AnalysisLevel.preview-recommended|DisplayName">
+        <source>Preview (Default + Recommended)</source>
+        <target state="new">Preview (Default + Recommended)</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|AnalysisLevel.preview|DisplayName">
-        <source>Preview</source>
-        <target state="translated">Vista previa</target>
+        <source>Preview (Default)</source>
+        <target state="needs-review-translation">Vista previa</target>
         <note />
       </trans-unit>
       <trans-unit id="Rule|CodeAnalysisPropertyPage|Description">

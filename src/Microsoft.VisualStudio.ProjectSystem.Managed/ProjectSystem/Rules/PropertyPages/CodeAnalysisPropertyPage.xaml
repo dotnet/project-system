@@ -51,15 +51,39 @@
                 HelpUrl="https://go.microsoft.com/fwlink/?linkid=2173091"
                 Category="NetAnalyzers">
     <EnumValue Name="none"
-               DisplayName="None" />
+               DisplayName="None (No analyzers)" />
     <EnumValue Name="preview"
-               DisplayName="Preview" />
+               DisplayName="Preview (Default)" />
     <EnumValue Name="latest"
-               DisplayName="Latest" />
+               DisplayName="Latest (Default)" />
     <EnumValue Name="5.0"
-               DisplayName="5.0" />
+               DisplayName="5.0 (Default)" />
     <EnumValue Name="6.0"
-               DisplayName="6.0" />
+               DisplayName="6.0 (Default)" />
+    <EnumValue Name="preview-minimum"
+               DisplayName="Preview (Default + Highly recommended)" />
+    <EnumValue Name="latest-minimum"
+               DisplayName="Latest (Default + Highly recommended)" />
+    <EnumValue Name="5.0-minimum"
+               DisplayName="5.0 (Default + Highly recommended)" />
+    <EnumValue Name="6.0-minimum"
+               DisplayName="6.0 (Default + Highly recommended)" />
+    <EnumValue Name="preview-recommended"
+               DisplayName="Preview (Default + Recommended)" />
+    <EnumValue Name="latest-recommended"
+               DisplayName="Latest (Default + Recommended)" />
+    <EnumValue Name="5.0-recommended"
+               DisplayName="5.0 (Default + Recommended)" />
+    <EnumValue Name="6.0-recommended"
+               DisplayName="6.0 (Default + Recommended)" />
+    <EnumValue Name="preview-all"
+               DisplayName="Preview (All)" />
+    <EnumValue Name="latest-all"
+               DisplayName="Latest (All)" />
+    <EnumValue Name="5.0-all"
+               DisplayName="5.0 (All)" />
+    <EnumValue Name="6.0-all"
+               DisplayName="6.0 (All)" />
   </EnumProperty>
 
 </Rule>
