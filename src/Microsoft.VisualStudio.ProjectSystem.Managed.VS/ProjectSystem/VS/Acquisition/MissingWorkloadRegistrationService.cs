@@ -32,6 +32,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         private readonly ConcurrentDictionary<Guid, IConcurrentHashSet<ProjectConfiguration>> _projectGuidToProjectConfigurationsMap;
         private readonly IVsService<SVsBrokeredServiceContainer, IBrokeredServiceContainer> _serviceBrokerContainer;
         private readonly IVsService<IVsSolution> _vsSolutionService;
+        private readonly IVsService<SVsSetupCompositionService, IVsSetupCompositionService> _vsSetupCompositionService;
         private readonly Lazy<IVsShellUtilitiesHelper> _shellUtilitiesHelper;
         private readonly Lazy<IProjectThreadingService> _threadHandling;
         private readonly IProjectFaultHandlerService _projectFaultHandlerService;
@@ -46,6 +47,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         public MissingWorkloadRegistrationService(
             IVsService<SVsBrokeredServiceContainer, IBrokeredServiceContainer> serviceBrokerContainer,
             IVsService<SVsSolution, IVsSolution> vsSolutionService,
+            IVsService<SVsSetupCompositionService, IVsSetupCompositionService> vsSetupCompositionService,
             Lazy<IVsShellUtilitiesHelper> vsShellUtilitiesHelper,
             Lazy<IProjectThreadingService> threadHandling,
             IProjectFaultHandlerService projectFaultHandlerService)
@@ -55,6 +57,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
 
             _serviceBrokerContainer = serviceBrokerContainer;
             _vsSolutionService = vsSolutionService;
+            _vsSetupCompositionService = vsSetupCompositionService;
             _threadHandling = threadHandling;
             _projectFaultHandlerService = projectFaultHandlerService;
             _shellUtilitiesHelper = vsShellUtilitiesHelper;
@@ -161,7 +164,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                 await TaskScheduler.Default;
             }
 
-            IReadOnlyDictionary<Guid, IReadOnlyCollection<string>>? vsComponentIdsToRegister = ComputeVsComponentIdsToRegister();
+            var setupCompositionService = await _vsSetupCompositionService.GetValueAsync();
+
+            IReadOnlyDictionary<Guid, IReadOnlyCollection<string>>? vsComponentIdsToRegister = ComputeVsComponentIdsToRegister(setupCompositionService);
             if (vsComponentIdsToRegister == null)
             {
                 return;
@@ -186,7 +191,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             }
         }
 
-        private IReadOnlyDictionary<Guid, IReadOnlyCollection<string>>? ComputeVsComponentIdsToRegister()
+        private IReadOnlyDictionary<Guid, IReadOnlyCollection<string>>? ComputeVsComponentIdsToRegister(IVsSetupCompositionService setupCompositionService)
         {
             if (_projectGuidToWorkloadDescriptorsMap.Count == 0)
             {
@@ -198,7 +203,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             foreach (var (projectGuid, vsComponents) in _projectGuidToWorkloadDescriptorsMap)
             {
                 var vsComponentIds = vsComponents.Where(descriptor => IsSupportedWorkload(descriptor.WorkloadName))
-                                                 .SelectMany(workloadDescriptor => workloadDescriptor.VisualStudioComponentIds).ToArray();
+                                                 .SelectMany(workloadDescriptor => workloadDescriptor.VisualStudioComponentIds)
+                                                 .Where(vsComponentId => !setupCompositionService.IsPackageInstalled(vsComponentId))
+                                                 .ToArray();
 
                 if (vsComponentIds.Length > 0)
                 {
