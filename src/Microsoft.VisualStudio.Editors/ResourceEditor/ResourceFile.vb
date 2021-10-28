@@ -98,7 +98,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ' job is to translate the .NET Framework 4.x types known to VS into .NET Framework
         ' 2.x/3.x types to be persisted into the .resx file for use by the application at
         ' run time. It largely assumes that VS is running on the newest .NET Framework,
-        ' and thus will inherently understand (thanks to type forwarding) and 2.x/3.x
+        ' and thus will inherently understand (thanks to type forwarding) any 2.x/3.x
         ' types it comes across.
         ' This completely falls over when the project is targeting anything newer than
         ' .NET Framework 4.x. The service will translate the Framework types known to VS
