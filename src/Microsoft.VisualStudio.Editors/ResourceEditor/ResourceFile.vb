@@ -10,6 +10,7 @@ Imports System.Resources
 Imports System.Windows.Forms
 Imports System.Xml
 
+Imports Microsoft.Internal.VisualStudio.Shell.Interop
 Imports Microsoft.VisualStudio.Designer.Interfaces
 Imports Microsoft.VisualStudio.Editors.Common
 Imports Microsoft.VisualStudio.Shell
@@ -91,7 +92,23 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ' If it is true, we are adding a collection of resources to the file
         Private _inBatchAdding As Boolean
 
+        ' Despite the name, the MultiTargetService does not support projects that target
+        ' multiple frameworks. Rather, it is meant to support projects targeting an older
+        ' version of the .NET Framework than the one in use by VS, and a large part of its
+        ' job is to translate the .NET Framework 4.x types known to VS into .NET Framework
+        ' 2.x/3.x types to be persisted into the .resx file for use by the application at
+        ' run time. It largely assumes that VS is running on the newest .NET Framework,
+        ' and thus will inherently understand (thanks to type forwarding) any 2.x/3.x
+        ' types it comes across.
+        ' This completely falls over when the project is targeting anything newer than
+        ' .NET Framework 4.x. The service will translate the Framework types known to VS
+        ' into equivalent .NET Core type, the designer will persist those in the .resx
+        ' file, and then promptly fail when reading them back. Instead, we should use and
+        ' persist the "native" types, on the assumption that they will be understood by
+        ' the .NET Core process at run time.
+        ' We will need to revisit this if/when VS moves to run on .NET Core.
         Private ReadOnly _multiTargetService As MultiTargetService
+        Private ReadOnly _useCurrentProcessFrameworkForTypes As Boolean = False
 
         Private ReadOnly _allowMOTW As Boolean
 #End Region
@@ -137,6 +154,16 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                     If Interop.NativeMethods.Succeeded(hr) AndAlso Not pUnk = IntPtr.Zero Then
                         _resxService = DirectCast(System.Runtime.InteropServices.Marshal.GetObjectForIUnknown(pUnk), IResXResourceService)
                         System.Runtime.InteropServices.Marshal.Release(pUnk)
+                    End If
+                End If
+
+                ' If we're in the context of a .NET project using the CPS-based project system
+                ' then use VS types rather than project types on the assumption that the project
+                ' is .NET Core-based.
+                If hierarchy.IsCapabilityMatch("CPS & .NET") Then
+                    Dim featureFlags = ServiceProvider.GetService(Of SVsFeatureFlags, IVsFeatureFlags)(throwOnFailure:=False)
+                    If featureFlags IsNot Nothing Then
+                        _useCurrentProcessFrameworkForTypes = featureFlags.IsFeatureEnabled("ResourceDesigner.UseImprovedTypeResolution", defaultValue:=False)
                     End If
                 End If
             End If
@@ -812,7 +839,9 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
 
         Public Function TypeNameConverter(runtimeType As Type) As String
             Debug.Assert(runtimeType IsNot Nothing, "runtimeType cannot be Nothing!")
-            If _multiTargetService Is Nothing Then
+
+            If _useCurrentProcessFrameworkForTypes OrElse
+                _multiTargetService Is Nothing Then
                 Return runtimeType.AssemblyQualifiedName
             Else
                 Return _multiTargetService.TypeNameConverter(runtimeType)
