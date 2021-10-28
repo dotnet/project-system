@@ -3,7 +3,6 @@
 using System;
 using System.ComponentModel.Composition;
 using System.IO;
-using System.Runtime.InteropServices;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Internal.VisualStudio.Shell.Interop;
@@ -76,7 +75,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build.Diagnostics
             {
                 string message = string.Format(VSResources.IncrementalBuildFailureWarningMessage, Path.GetFileName(_project.FullPath));
 
-                Marshal.ThrowExceptionForHR(outputPane.OutputStringThreadSafe(message));
+                outputPane.OutputStringNoPump(message);
             }
         }
     }

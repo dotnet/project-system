@@ -87,7 +87,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build.Diagnostics
             Assumes.NotNull(_solutionBuildManager);
             Assumes.NotNull(_rdt);
 
-            if (_rdtCookie != 0)
+            if (_sbmCookie != 0)
             {
                 HResult.Verify(_rdt.UnadviseRunningDocTableEvents(_sbmCookie), $"Error unadvising RDT events in {typeof(IncrementalBuildFailureDetector)}.");
                 _sbmCookie = 0;
@@ -113,8 +113,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build.Diagnostics
                 {
                     // Something was saved since the last build.
                     // This can cause the project to appear out-of-date in a way that does not indicate
-                    // broken incrementality. In such cases, disable the check here altogether for
-                    // the build.
+                    // broken incrementality. In such cases, avoid the check here altogether for
+                    // this project build.
                     return HResult.OK;
                 }
 
