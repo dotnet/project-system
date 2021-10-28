@@ -10,7 +10,6 @@ resources:
 pool:
   name: NetCore1ESPool-Svc-Public
   demands: ImageOverride -equals Build.Windows.10.Amd64.VS2019.Pre.Open
-  demands: Cmd
   timeoutInMinutes: 15
 variables:
   DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true
