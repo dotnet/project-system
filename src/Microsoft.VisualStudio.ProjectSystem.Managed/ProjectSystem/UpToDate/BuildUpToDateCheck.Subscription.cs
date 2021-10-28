@@ -80,7 +80,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 _host = host;
             }
 
-            public async Task<bool> RunAsync(Func<UpToDateCheckConfiguredInput, DateTime, CancellationToken, Task<bool>> func, CancellationToken cancellationToken)
+            public async Task<bool> RunAsync(
+                Func<UpToDateCheckConfiguredInput, DateTime, CancellationToken, Task<bool>> func,
+                bool updateLastCheckedAt,
+                CancellationToken cancellationToken)
             {
                 using var cts = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken, _disposeTokenSource.Token);
 
@@ -123,7 +126,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
                 bool result = await func(state.Value, _lastCheckedAtUtc, token);
 
-                _lastCheckedAtUtc = DateTime.UtcNow;
+                if (updateLastCheckedAt)
+                {
+                    _lastCheckedAtUtc = DateTime.UtcNow;
+                }
 
                 return result;
             }
@@ -181,6 +187,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
             Task<bool> RunAsync(
                 Func<UpToDateCheckConfiguredInput, DateTime, CancellationToken, Task<bool>> func,
+                bool updateLastCheckedAt,
                 CancellationToken cancellationToken);
         }
     }

@@ -322,6 +322,15 @@ namespace Microsoft.VisualStudio {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to WARNING: Potential incremental build failure in &apos;{0}&apos;. See: https://aka.ms/incremental-build-failure.
+        /// </summary>
+        internal static string IncrementalBuildFailureWarningMessage {
+            get {
+                return ResourceManager.GetString("IncrementalBuildFailureWarningMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Learn more.
         /// </summary>
         internal static string LearnMore {

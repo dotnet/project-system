@@ -160,8 +160,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
             var subscription = new Mock<BuildUpToDateCheck.ISubscription>(MockBehavior.Strict);
             subscription.Setup(s => s.EnsureInitialized());
-            subscription.Setup(s => s.RunAsync(It.IsAny<Func<UpToDateCheckConfiguredInput, DateTime, CancellationToken, Task<bool>>>(), It.IsAny<CancellationToken>()))
-                .Returns((Func<UpToDateCheckConfiguredInput, DateTime, CancellationToken, Task<bool>>  func, CancellationToken token) =>
+            subscription.Setup(s => s.RunAsync(It.IsAny<Func<UpToDateCheckConfiguredInput, DateTime, CancellationToken, Task<bool>>>(), It.IsAny<bool>(), It.IsAny<CancellationToken>()))
+                .Returns((Func<UpToDateCheckConfiguredInput, DateTime, CancellationToken, Task<bool>>  func, bool updateLastCheckedAt, CancellationToken token) =>
                 {
                     Assumes.NotNull(_state);
                     return func(_state, _lastCheckTimeAtUtc, token);

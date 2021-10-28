@@ -56,5 +56,20 @@ namespace Microsoft.VisualStudio.Telemetry
         ///     Indicates that the summary of a project's dependencies is being reported during project unload.
         /// </summary>
         public const string ProjectUnloadDependencies = Prefix + "/projectunload/dependencies";
+
+        /// <summary>
+        ///    Indicates that project was not up-to-date after build, meaning that incremental build is not
+        ///    working correctly for the project.
+        /// </summary>
+        /// <remarks>
+        ///    In some cases, we run the up-to-date check <i>after</i> a build completes, to determine whether
+        ///    the project's incremental build is working correctly. When a build completes, it should be up-to-date.
+        /// </remarks>
+        public const string IncrementalBuildValidationFailure = Prefix + "/incrementalbuild/validationfailure";
+        
+        /// <summary>
+        ///     Indicates that the user was notified of the suspected incremental build failure.
+        /// </summary>
+        public const string IncrementalBuildValidationFailureDisplayed = Prefix + "/incrementalbuild/validationfailure/displayed";
     }
 }

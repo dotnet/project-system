@@ -138,6 +138,16 @@ namespace Microsoft.VisualStudio.Telemetry
         /// </summary>
         public static readonly string TempPECompileDuration = BuildPropertyName(TelemetryEventName.TempPEProcessQueue, "Duration");
 
+        /// <summary>
+        ///     Indicates the reason the project was not up-to-date immediately after build.
+        /// </summary>
+        public static readonly string IncrementalBuildFailureReason = BuildPropertyName(TelemetryEventName.IncrementalBuildValidationFailure, "Reason");
+
+        /// <summary>
+        ///     Indicates the duration of the up-to-date check performed immediately after build to find incremental build breaks.
+        /// </summary>
+        public static readonly string IncrementalBuildValidationDurationMillis = BuildPropertyName(TelemetryEventName.IncrementalBuildValidationFailure, "DurationMillis");
+
         private static string BuildPropertyName(string eventName, string propertyName)
         {
             // Property names use the event names, but with slashes replaced by periods.

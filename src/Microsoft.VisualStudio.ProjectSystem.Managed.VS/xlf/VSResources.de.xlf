@@ -102,6 +102,11 @@
         <target state="translated">{0} – Import kommt von der Zieldatei. Dieser Import kann nicht entfernt werden.</target>
         <note />
       </trans-unit>
+      <trans-unit id="IncrementalBuildFailureWarningMessage">
+        <source>WARNING: Potential incremental build failure in '{0}'. See: https://aka.ms/incremental-build-failure</source>
+        <target state="new">WARNING: Potential incremental build failure in '{0}'. See: https://aka.ms/incremental-build-failure</target>
+        <note>{0} is the file name of the project.</note>
+      </trans-unit>
       <trans-unit id="ProjectHotReloadSessionManager_AttachingToProcess">
         <source>{0}: Attaching to process '{1}'.</source>
         <target state="translated">{0}: Wird an den Prozess "{1}" angefügt.</target>
