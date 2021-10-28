@@ -189,12 +189,12 @@
       </trans-unit>
       <trans-unit id="DynamicEnumProperty|PlatformTarget|Description">
         <source>Specifies the processor to be targeted by the output file. Choose 'Any CPU' to specify that any processor is acceptable, allowing the application to run on the broadest range of hardware.</source>
-        <target state="new">Specifies the processor to be targeted by the output file. Choose 'Any CPU' to specify that any processor is acceptable, allowing the application to run on the broadest range of hardware.</target>
+        <target state="translated">출력 파일의 대상으로 지정할 프로세서를 지정합니다. 애플리케이션이 가장 광범위한 하드웨어에서 실행되도록 모든 프로세서를 수락하도록 지정하려면 '모든 CPU'를 선택합니다.</target>
         <note />
       </trans-unit>
       <trans-unit id="DynamicEnumProperty|PlatformTarget|DisplayName">
         <source>Platform target</source>
-        <target state="new">Platform target</target>
+        <target state="translated">플랫폼 대상</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumProperty|DebugType|Description">

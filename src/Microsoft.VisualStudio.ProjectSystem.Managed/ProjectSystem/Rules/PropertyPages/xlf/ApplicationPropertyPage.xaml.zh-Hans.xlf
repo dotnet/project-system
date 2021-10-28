@@ -19,7 +19,7 @@
       </trans-unit>
       <trans-unit id="BoolProperty|IsPublishable|DisplayName">
         <source>Publishing</source>
-        <target state="translated">正在发布</target>
+        <target state="translated">发布</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|TargetMultipleFrameworks|Description">
@@ -69,7 +69,7 @@
       </trans-unit>
       <trans-unit id="Category|Packaging|DisplayName">
         <source>Packaging</source>
-        <target state="translated">正在打包</target>
+        <target state="translated">打包</target>
         <note />
       </trans-unit>
       <trans-unit id="Category|Resources|Description">
@@ -79,7 +79,7 @@
       </trans-unit>
       <trans-unit id="Category|Resources|DisplayName">
         <source>Win32 Resources</source>
-        <target state="new">Win32 Resources</target>
+        <target state="translated">Win32 资源</target>
         <note />
       </trans-unit>
       <trans-unit id="DynamicEnumProperty|InterceptedTargetFramework|Description">
