@@ -89,17 +89,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties.Package
 
         private async Task<IProjectItem?> GetExistingContentItemAsync(string existingPropertyValue)
         {
-            foreach (IProjectItem item in await _sourceItemsProvider.GetItemsAsync(Content.SchemaName))
-            {
+            return await _sourceItemsProvider.GetItemAsync(Content.SchemaName, ci =>
                 // If the filename of this item and the filename of the property's value match, consider those to be related to one another.
-                if (item.PropertiesContext.IsProjectFile &&
-                    Path.GetFileName(item.EvaluatedInclude).Equals(Path.GetFileName(existingPropertyValue), StringComparisons.PropertyLiteralValues))
-                {
-                    return item;
-                }
-            }
-
-            return null;
+                ci.PropertiesContext.IsProjectFile &&
+                    Path.GetFileName(ci.EvaluatedInclude).Equals(Path.GetFileName(existingPropertyValue), StringComparisons.PropertyLiteralValues));
         }
     }
 }

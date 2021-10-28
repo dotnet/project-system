@@ -12,7 +12,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         public async Task WhenThePropertyIsSetInTheProject_TheValueIsSavedInTemporaryStorage()
         {
             IProjectProperties projectProperties = IProjectPropertiesFactory.CreateWithPropertiesAndValues(
-                propertyNameAndValues: new()
+                propertyNameAndValues: new Dictionary<string, string?>()
                 {
                     { "MyProperty", "Alpha" }
                 },
@@ -30,7 +30,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         public async Task WhenThePropertyIsInherited_TheValueIsNotSavedInTemporaryStorage()
         {
             IProjectProperties projectProperties = IProjectPropertiesFactory.CreateWithPropertiesAndValues(
-                propertyNameAndValues: new()
+                propertyNameAndValues: new Dictionary<string, string?>()
                 {
                     { "MyProperty", "Alpha" }
                 },
