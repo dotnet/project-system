@@ -21,11 +21,11 @@ namespace Microsoft.VisualStudio.Shell.Interop
 
             if (pane is IVsOutputWindowPaneNoPump noPumpPane)
             {
-                noPumpPane.OutputStringNoPump(pszOutputString);
+                noPumpPane.OutputStringNoPump(pszOutputString + Environment.NewLine);
             }
             else
             {
-                Verify.HResult(pane.OutputStringThreadSafe(pszOutputString));
+                Verify.HResult(pane.OutputStringThreadSafe(pszOutputString + Environment.NewLine));
             }
         }
     }
