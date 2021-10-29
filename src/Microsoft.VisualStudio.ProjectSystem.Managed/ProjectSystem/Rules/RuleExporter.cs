@@ -250,5 +250,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.Rules
             [Order(Order.Default)]
             public static int SuggestedWorkloadRule;
         }
+
+        private static class MissingSdkRuntimeRules
+        {
+            /// <summary>
+            ///     Represents a DTB items representing the missing Sdk runtimes.
+            /// </summary>
+            [ExportRule(nameof(MissingSdkRuntime), PropertyPageContexts.ProjectSubscriptionService)]
+            [AppliesTo(ProjectCapability.DotNet)]
+            [Order(Order.Default)]
+            public static int MissingSdkRuntimeRule;
+        }
     }
 }

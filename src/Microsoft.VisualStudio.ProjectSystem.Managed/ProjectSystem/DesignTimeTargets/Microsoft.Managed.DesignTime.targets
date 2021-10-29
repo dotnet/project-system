@@ -396,6 +396,12 @@
           DependsOnTargets="GetSuggestedWorkloads"
           Condition="'@(MissingWorkloadPack)' != '' And '$(UsingMicrosoftNETSdk)' == 'true'" />
 
+  <!-- This target is used to collect the MissingSdkRuntime items in the project.-->
+  <Target Name="CollectMissingSdkRuntimes"
+          Returns="@(MissingSdkRuntime)"
+          DependsOnTargets="GetMissingSdkRuntimes"
+          Condition="'$(UsingMicrosoftNETSdk)' == 'true'" />
+		  
   <!-- Validates that the correct properties have been set for design-time compiles  -->
   <Target Name="_CheckCompileDesignTimePrerequisite">
 
