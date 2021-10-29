@@ -9,9 +9,9 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.ServiceHub.Framework;
+using Microsoft.VisualStudio.ProjectSystem.Runtimes;
 using Microsoft.VisualStudio.ProjectSystem.Utilities;
 using Microsoft.VisualStudio.ProjectSystem.Workloads;
-using Microsoft.VisualStudio.RpcContracts.Setup;
 using Microsoft.VisualStudio.Shell.Interop;
 using Microsoft.VisualStudio.Shell.ServiceBroker;
 using Microsoft.VisualStudio.Threading;
@@ -21,14 +21,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
     /// <summary>
     ///     Tracks the set of missing workload packs for each .NET project in a solution.
     /// </summary>
-    [Export(typeof(IMissingWorkloadRegistrationService))]
-    internal class MissingWorkloadRegistrationService : IMissingWorkloadRegistrationService, IVsSolutionEvents, IDisposable
+    [Export(typeof(IMissingSetupComponentRegistrationService))]
+    internal class MissingSetupComponentRegistrationService : IMissingSetupComponentRegistrationService, IVsSolutionEvents, IDisposable
     {
         private const string WasmToolsWorkloadName = "wasm-tools";
 
         private static readonly ImmutableHashSet<string> s_supportedReleaseChannelWorkloads = ImmutableHashSet.Create(StringComparers.WorkloadNames, WasmToolsWorkloadName);
 
         private readonly ConcurrentDictionary<Guid, IConcurrentHashSet<WorkloadDescriptor>> _projectGuidToWorkloadDescriptorsMap;
+        private readonly ConcurrentDictionary<Guid, RuntimeDescriptor> _projectGuidToRuntimeDescriptorMap;
         private readonly ConcurrentDictionary<Guid, IConcurrentHashSet<ProjectConfiguration>> _projectGuidToProjectConfigurationsMap;
         private readonly IVsService<SVsBrokeredServiceContainer, IBrokeredServiceContainer> _serviceBrokerContainer;
         private readonly IVsService<IVsSolution> _vsSolutionService;
@@ -44,7 +45,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         private bool? _isVSFromPreviewChannel;
 
         [ImportingConstructor]
-        public MissingWorkloadRegistrationService(
+        public MissingSetupComponentRegistrationService(
             IVsService<SVsBrokeredServiceContainer, IBrokeredServiceContainer> serviceBrokerContainer,
             IVsService<SVsSolution, IVsSolution> vsSolutionService,
             IVsService<SVsSetupCompositionService, IVsSetupCompositionService> vsSetupCompositionService,
@@ -54,6 +55,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         {
             _projectGuidToWorkloadDescriptorsMap = new();
             _projectGuidToProjectConfigurationsMap = new();
+            _projectGuidToRuntimeDescriptorMap = new();
 
             _serviceBrokerContainer = serviceBrokerContainer;
             _vsSolutionService = vsSolutionService;
@@ -78,6 +80,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
 
         private void ClearMissingWorkloadMetadata()
         {
+            _projectGuidToRuntimeDescriptorMap.Clear();
             _projectGuidToWorkloadDescriptorsMap.Clear();
             _projectGuidToProjectConfigurationsMap.Clear();
             _projectPathToProjectConfigurationsMap?.Clear();
@@ -90,6 +93,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                 var workloadDescriptorSet = _projectGuidToWorkloadDescriptorsMap.GetOrAdd(projectGuid, guid => new ConcurrentHashSet<WorkloadDescriptor>());
                 workloadDescriptorSet.AddRange(workloadDescriptors);
             }
+
+            UnregisterProjectConfiguration(projectGuid, project);
+        }
+
+        public void RegisterMissingSdkRuntimes(Guid projectGuid, ConfiguredProject project, RuntimeDescriptor runtimeDescriptor)
+        {
+            _projectGuidToRuntimeDescriptorMap.GetOrAdd(projectGuid, runtimeDescriptor);
 
             UnregisterProjectConfiguration(projectGuid, project);
         }
@@ -149,7 +159,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         {
             lock (_displayPromptLock)
             {
-                return _projectGuidToWorkloadDescriptorsMap.Count > 0
+                return (_projectGuidToWorkloadDescriptorsMap.Count > 0 || _projectGuidToRuntimeDescriptorMap.Count > 0)
                     && _projectGuidToProjectConfigurationsMap.Values.All(projectConfigurationSet => projectConfigurationSet?.Count == 0)
                     && (_projectPathToProjectConfigurationsMap == null ||
                         _projectPathToProjectConfigurationsMap.Values.All(projectConfigurationSet => projectConfigurationSet?.Count == 0));
@@ -179,7 +189,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                 return;
             }
 
-            var missingWorkloadRegistrationService = await serviceBroker.GetProxyAsync<IMissingComponentRegistrationService>(
+            var missingWorkloadRegistrationService = await serviceBroker.GetProxyAsync<RpcContracts.Setup.IMissingComponentRegistrationService>(
                 serviceDescriptor: VisualStudioServices.VS2022.MissingComponentRegistrationService);
 
             using (missingWorkloadRegistrationService as IDisposable)
@@ -193,7 +203,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
 
         private IReadOnlyDictionary<Guid, IReadOnlyCollection<string>>? ComputeVsComponentIdsToRegister(IVsSetupCompositionService setupCompositionService)
         {
-            if (_projectGuidToWorkloadDescriptorsMap.Count == 0)
+            if (_projectGuidToWorkloadDescriptorsMap.Count == 0 && _projectGuidToRuntimeDescriptorMap.Count == 0)
             {
                 return null;
             }
@@ -213,12 +223,36 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                 }
             }
 
+            AddMissingSdkRuntimeComponentIds(setupCompositionService, vsComponentIdsToRegister);
+
             if (vsComponentIdsToRegister.Count == 0)
             {
                 return null;
             }
 
             return vsComponentIdsToRegister;
+        }
+
+        private void AddMissingSdkRuntimeComponentIds(IVsSetupCompositionService setupCompositionService, Dictionary<Guid, IReadOnlyCollection<string>> vsComponentIdsToRegister)
+        {
+            //foreach (var (projectGuid, runtimeDescriptor) in _projectGuidToRuntimeDescriptorMap.Where(p => !setupCompositionService.IsPackageInstalled(p.Value.SdkRuntime)))
+            foreach (var (projectGuid, runtimeDescriptor) in _projectGuidToRuntimeDescriptorMap)
+            {
+                vsComponentIdsToRegister.TryGetValue(projectGuid, out IReadOnlyCollection<string>? workloadVsComponent);
+                if (workloadVsComponent != null)
+                {
+                    var workloadAndRuntimeVsComponents = workloadVsComponent.Append(runtimeDescriptor.SdkRuntime);
+                    vsComponentIdsToRegister[projectGuid] = workloadAndRuntimeVsComponents.ToImmutableList();
+                }
+                else
+                {
+                    List<string> runtimeVsComponents = new();
+
+                    runtimeVsComponents.Add(runtimeDescriptor.SdkRuntime);
+
+                    vsComponentIdsToRegister[projectGuid] = runtimeVsComponents.ToImmutableList();
+                }
+            }
         }
 
         public int OnAfterOpenProject(IVsHierarchy pHierarchy, int fAdded)
