@@ -72,7 +72,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.HotReload
             IVsOutputWindowPane? pane = await _outputWindowPane.GetValueAsync();
             if (pane is not null)
             {
-                pane.OutputStringNoPump(outputMessage + Environment.NewLine);
+                pane.OutputStringNoPump(outputMessage);
             }
         }
     }
