@@ -6,9 +6,8 @@ using System.ComponentModel.Composition;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.ProjectSystem.VS;
-using Microsoft.VisualStudio.ProjectSystem.Workloads;
 
-namespace Microsoft.VisualStudio.ProjectSystem
+namespace Microsoft.VisualStudio.ProjectSystem.Workloads
 {
     /// <summary>
     ///     Tracks the set of missing .NET workloads for a configured project.
