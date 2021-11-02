@@ -8,6 +8,7 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Threading.Tasks.Dataflow;
+using Microsoft.VisualStudio.Collections;
 using Microsoft.VisualStudio.Imaging;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
 using Microsoft.VisualStudio.ProjectSystem.Utilities;
@@ -282,7 +283,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.ProjectImports
 
                                 Dictionary<string, string> GetCaptionByProjectPath()
                                 {
-                                    var result = CreateProjectPathDictionaryFromImports();
+                                    // Creates a map from each import's project path to the filename of that project path.
+                                    // Although LINQ's Enumerable.ToDictionary extension method can be used to create such
+                                    // a map, that implementation fails when there are duplicate entries in the imports.
+                                    // Therefore, an extension method that allows duplicate keys to be ignored
+                                    // is used to create the map.
+                                    var result = imports.ToDictionary(i => i.ProjectPath, i => Path.GetFileName(i.ProjectPath), StringComparers.Paths, ignoreDuplicateKeys: true);
 
                                     var isDuplicateByFileName = new Dictionary<string, bool>(StringComparers.Paths);
 
@@ -302,22 +308,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.ProjectImports
                                     }
 
                                     return result;
-
-                                    // Creates a map from each import's project path to the filename of that project path.
-                                    // Although LINQ's Enumerable.ToDictionary extension method can be used to create such
-                                    // a map, that implementation fails when there are duplicate entries in the imports.
-                                    // Therefore, this implementation loops through the imports to create the map.
-                                    Dictionary<string, string> CreateProjectPathDictionaryFromImports()
-                                    {
-                                        Dictionary<string, string> result = new(StringComparers.Paths);
-
-                                        foreach (var importAtIndex in imports)
-                                        {
-                                            result[importAtIndex.ProjectPath] = Path.GetFileName(importAtIndex.ProjectPath);
-                                        }
-
-                                        return result;
-                                    }
                                 }
                             }
                         }
