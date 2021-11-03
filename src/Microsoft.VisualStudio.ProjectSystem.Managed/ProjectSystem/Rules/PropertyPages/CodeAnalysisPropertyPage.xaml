@@ -52,14 +52,38 @@
                 Category="NetAnalyzers">
     <EnumValue Name="none"
                DisplayName="None" />
-    <EnumValue Name="preview"
-               DisplayName="Preview" />
     <EnumValue Name="latest"
                DisplayName="Latest" />
+    <EnumValue Name="latest-minimum"
+               DisplayName="Latest Minimum" />
+    <EnumValue Name="latest-recommended"
+               DisplayName="Latest Recommended" />
+    <EnumValue Name="latest-all"
+               DisplayName="Latest All" />
+    <EnumValue Name="preview"
+               DisplayName="Preview" />
+    <EnumValue Name="preview-minimum"
+               DisplayName="Preview Minimum" />
+    <EnumValue Name="preview-recommended"
+               DisplayName="Preview Recommended" />
+    <EnumValue Name="preview-all"
+               DisplayName="Preview All" />
     <EnumValue Name="5.0"
                DisplayName="5.0" />
+    <EnumValue Name="5.0-minimum"
+               DisplayName="5.0 Minimum" />
+    <EnumValue Name="5.0-recommended"
+               DisplayName="5.0 Recommended" />
+    <EnumValue Name="5.0-all"
+               DisplayName="5.0 All" />
     <EnumValue Name="6.0"
                DisplayName="6.0" />
+    <EnumValue Name="6.0-minimum"
+               DisplayName="6.0 Minimum" />
+    <EnumValue Name="6.0-recommended"
+               DisplayName="6.0 Recommended" />
+    <EnumValue Name="6.0-all"
+               DisplayName="6.0 All" />
   </EnumProperty>
 
 </Rule>
