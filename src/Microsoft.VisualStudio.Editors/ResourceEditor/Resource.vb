@@ -2453,7 +2453,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                 If FixedName = "" Then
                     'ResGen wasn't able to create a valid identifier out of the ID (e.g. something like "$")
                     If CheckForFatallyInvalidIDs Then
-                        Exception = NewException(My.Resources.Microsoft_VisualStudio_Editors_Designer.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.RSE_Err_BadIdentifier_2Arg, TrimmedName, FindInvalidCharactersInIdentifier(TrimmedName, CodeDomProvider)), HelpIDs.Err_InvalidName)
+                        Exception = NewException(My.Resources.Microsoft_VisualStudio_Editors_Designer.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.RSE_Err_BadIdentifier_2Arg, FindInvalidCharactersInIdentifier(TrimmedName, CodeDomProvider)), HelpIDs.Err_InvalidName)
                         Return False
                     End If
                 Else
