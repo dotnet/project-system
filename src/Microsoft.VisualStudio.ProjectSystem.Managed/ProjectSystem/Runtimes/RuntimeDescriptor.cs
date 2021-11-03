@@ -6,9 +6,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Runtimes
     {
         internal static readonly RuntimeDescriptor Empty = new(string.Empty);
 
-        public RuntimeDescriptor(string sdkRuntime)
+        public RuntimeDescriptor(string? sdkRuntime)
         {
-            SdkRuntime = sdkRuntime;
+            SdkRuntime = sdkRuntime ?? string.Empty;
         }
 
         public string SdkRuntime { get; }

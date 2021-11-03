@@ -14,6 +14,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.Runtimes
     [AppliesTo(ProjectCapability.DotNet)]
     internal sealed class RuntimeDescriptorDataSource : ChainedProjectValueDataSourceBase<ISet<RuntimeDescriptor>>, IRuntimeDescriptorDataSource
     {
+        private static readonly ImmutableHashSet<string> s_validPackages =
+            ImmutableHashSet.Create("Microsoft.AspNetCore.All", "Microsoft.AspNetCore.App", "Microsoft.NETCore.App", "Microsoft.WindowsDesktop.App");
+
+        private static readonly ImmutableDictionary<int, string> s_packageVertionToComponentId = ImmutableDictionary.Create<int, string>()
+            .Add(2, "Microsoft.Net.Core.Component.SDK.2.1")
+            .Add(3, "Microsoft.NetCore.Component.Runtime.3.1")
+            .Add(5, "Microsoft.NetCore.Component.Runtime.5.0");
+
         private static readonly ImmutableHashSet<string> s_rules = Empty.OrdinalIgnoreCaseStringSet
                                                                         .Add(MissingSdkRuntime.SchemaName);
 
@@ -59,10 +67,45 @@ namespace Microsoft.VisualStudio.ProjectSystem.Runtimes
 
             var runtimeDescriptors = missingSdkRuntimes.Items.Select(item =>
             {
-                return new RuntimeDescriptor(item.Key);
+                item.Value.TryGetStringProperty(MissingSdkRuntime.VersionProperty, out string? packageVersion);
+                string? componentId = MapPackageNameToComponentId(item.Key, packageVersion);
+                return new RuntimeDescriptor(componentId);
             });
 
+            // We should only see one runtime version to install.
+            // VS should be able to handle it if the numbers are different.
             return new HashSet<RuntimeDescriptor>(runtimeDescriptors);
+        }
+
+        private string? MapPackageNameToComponentId(string packageName, string? packageVersion)
+        {
+            string compomentId = string.Empty;
+            // This will return these for other .NET Core versions such as 3.1.0, 2.1.0, etc.
+            // If VS doesn't have those as installation options, it should either ignore those items,
+            // or possibly generate a message or warning somewhere but not prompt for IAP
+            if (string.IsNullOrEmpty(packageVersion))
+            {
+                return compomentId;
+            }
+
+            (int major, int _) = GetPackageMajorMinorVersionNumbers(packageVersion!);
+
+            if (s_validPackages.Contains(packageName))
+            {
+                compomentId = s_packageVertionToComponentId[major];
+            }
+
+            return compomentId;
+        }
+
+        private static (int, int) GetPackageMajorMinorVersionNumbers(string packageVersion)
+        {
+            // Ignore patch number
+            var versionNumbers = packageVersion.Split('.');
+            int major = int.Parse(versionNumbers[0]);
+            int minor = int.Parse(versionNumbers[1]);
+            
+            return (major, minor);
         }
     }
 }

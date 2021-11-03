@@ -13,9 +13,7 @@
                 SourceType="TargetResults" />
   </Rule.DataSource>
 
-  <!-- METADATA from SDK -->
-  <!-- TODO : change this to match SDK when they implement the target -->
-  <StringProperty Name="MissingRuntime"
+  <StringProperty Name="Version"
                   ReadOnly="True"
                   Visible="False" />
 </Rule>

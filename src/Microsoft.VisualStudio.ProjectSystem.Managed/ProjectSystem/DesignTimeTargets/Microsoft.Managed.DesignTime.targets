@@ -400,9 +400,7 @@
   <Target Name="CollectMissingSdkRuntimes"
           Returns="@(MissingSdkRuntime)"
           DependsOnTargets="GetMissingSdkRuntimes"
-          Condition="'$(UsingMicrosoftNETSdk)' == 'true'" />
-          <!-- TO-DO: Remove or apply conditions as needed. GetMissingSdkRuntimes will only exist in Net 6.0 and greater -->
-          <!--Condition="'$(UsingMicrosoftNETSdk)' == 'true' and '$(_TargetFrameworkVersionWithoutV)' >= '6.0'" />-->
+          Condition="'$(UsingMicrosoftNETSdk)' == 'true' and $([MSBuild]::VersionGreaterThanOrEquals('$(TargetFrameworkVersion)', '6.0'))" />
 
   <!-- Validates that the correct properties have been set for design-time compiles  -->
   <Target Name="_CheckCompileDesignTimePrerequisite">

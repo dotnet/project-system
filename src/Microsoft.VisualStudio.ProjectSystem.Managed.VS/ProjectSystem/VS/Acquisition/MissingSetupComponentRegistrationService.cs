@@ -19,7 +19,8 @@ using Microsoft.VisualStudio.Threading;
 namespace Microsoft.VisualStudio.ProjectSystem.VS
 {
     /// <summary>
-    ///     Tracks the set of missing workload packs for each .NET project in a solution.
+    ///     Tracks the set of missing workload packs and sdk runtimes the .NET projects in a solution
+    ///     need to improve the development experience.
     /// </summary>
     [Export(typeof(IMissingSetupComponentRegistrationService))]
     internal class MissingSetupComponentRegistrationService : IMissingSetupComponentRegistrationService, IVsSolutionEvents, IDisposable
@@ -235,23 +236,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
 
         private void AddMissingSdkRuntimeComponentIds(IVsSetupCompositionService setupCompositionService, Dictionary<Guid, IReadOnlyCollection<string>> vsComponentIdsToRegister)
         {
-            //foreach (var (projectGuid, runtimeDescriptor) in _projectGuidToRuntimeDescriptorMap.Where(p => !setupCompositionService.IsPackageInstalled(p.Value.SdkRuntime)))
             foreach (var (projectGuid, runtimeDescriptor) in _projectGuidToRuntimeDescriptorMap)
             {
                 vsComponentIdsToRegister.TryGetValue(projectGuid, out IReadOnlyCollection<string>? workloadVsComponent);
-                if (workloadVsComponent != null)
-                {
-                    var workloadAndRuntimeVsComponents = workloadVsComponent.Append(runtimeDescriptor.SdkRuntime);
-                    vsComponentIdsToRegister[projectGuid] = workloadAndRuntimeVsComponents.ToImmutableList();
-                }
-                else
-                {
-                    List<string> runtimeVsComponents = new();
 
-                    runtimeVsComponents.Add(runtimeDescriptor.SdkRuntime);
+                IEnumerable<string> runtimeVsComponents = workloadVsComponent is not null ?
+                     workloadVsComponent.Append(runtimeDescriptor.SdkRuntime)
+                     : new List<string>() { runtimeDescriptor.SdkRuntime };
 
-                    vsComponentIdsToRegister[projectGuid] = runtimeVsComponents.ToImmutableList();
-                }
+                vsComponentIdsToRegister[projectGuid] = runtimeVsComponents.ToImmutableList();
             }
         }
 

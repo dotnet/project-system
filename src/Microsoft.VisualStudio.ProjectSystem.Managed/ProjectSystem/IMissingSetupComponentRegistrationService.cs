@@ -10,7 +10,8 @@ using Microsoft.VisualStudio.ProjectSystem.Workloads;
 namespace Microsoft.VisualStudio.ProjectSystem
 {
     /// <summary>
-    ///     Tracks the set of missing workload packs the .NET projects in a solution.
+    ///     Tracks the set of missing workload packs and sdk runtimes the .NET projects in a solution
+    ///     need to improve the development experience.
     /// </summary>
     internal interface IMissingSetupComponentRegistrationService
     {
