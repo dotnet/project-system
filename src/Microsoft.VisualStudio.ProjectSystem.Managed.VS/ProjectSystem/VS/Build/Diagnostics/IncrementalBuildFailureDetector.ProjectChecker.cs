@@ -24,7 +24,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build.Diagnostics
         private sealed class ProjectChecker : IProjectChecker
         {
             private readonly UnconfiguredProject _project;
-            private readonly IActiveConfiguredValue<IBuildUpToDateCheckProvider> _upToDateCheckProvider;
             private readonly IActiveConfiguredValue<IBuildUpToDateCheckValidator> _upToDateCheckValidator;
             private readonly IProjectAsynchronousTasksService _projectAsynchronousTasksService;
 
@@ -35,13 +34,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build.Diagnostics
             public ProjectChecker(
                 UnconfiguredProject project,
                 IVsUIService<SVsFeatureFlags, IVsFeatureFlags> featureFlagsService,
-                IActiveConfiguredValue<IBuildUpToDateCheckProvider> upToDateCheckProvider,
                 IActiveConfiguredValue<IBuildUpToDateCheckValidator> upToDateCheckValidator,
                 [Import(ExportContractNames.Scopes.UnconfiguredProject)] IProjectAsynchronousTasksService projectAsynchronousTasksService,
                 IVsUIService<SVsOutputWindow, IVsOutputWindow> outputWindow)
             {
                 _project = project;
-                _upToDateCheckProvider = upToDateCheckProvider;
                 _upToDateCheckValidator = upToDateCheckValidator;
                 _projectAsynchronousTasksService = projectAsynchronousTasksService;
                 
@@ -65,11 +62,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build.Diagnostics
                 {
                     var sw = Stopwatch.StartNew();
 
-                    if (!await _upToDateCheckProvider.Value.IsUpToDateCheckEnabledAsync(cancellationToken))
+                    IBuildUpToDateCheckValidator validator = _upToDateCheckValidator.Value;
+
+                    if (validator is IBuildUpToDateCheckProvider provider)
                     {
-                        // The fast up-to-date check has been disabled. We can't know the reason why.
-                        // We currently do not flag errors in this case, so stop processing immediately.
-                        return;
+                        if (!await provider.IsUpToDateCheckEnabledAsync(cancellationToken))
+                        {
+                            // The fast up-to-date check has been disabled. We can't know the reason why.
+                            // We currently do not flag errors in this case, so stop processing immediately.
+                            return;
+                        }
                     }
 
                     List<IIncrementalBuildFailureReporter>? reporters = await GetEnabledReportersAsync();
@@ -80,7 +82,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build.Diagnostics
                         return;
                     }
 
-                    (bool isUpToDate, string? failureReason) = await _upToDateCheckValidator.Value.ValidateUpToDateAsync(buildAction, cancellationToken);
+                    (bool isUpToDate, string? failureReason) = await validator.ValidateUpToDateAsync(buildAction, cancellationToken);
 
                     if (isUpToDate)
                     {
