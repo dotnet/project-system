@@ -517,8 +517,10 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                 Else
                     Debug.Fail("Couldn't find resource from index")
                 End If
-            Catch ex As Exception When ReportWithoutCrash(ex, NameOf(OnAfterLabelEdit), NameOf(ResourceListView))
+            Catch ex As Exception
+                'We decided not to send the exception to our telemetry through ReportWithoutCrash handler to avoid storing user data.
                 ParentView.DsMsgBox(ex)
+                Debug.Fail($"Exception: {ex}")
             End Try
         End Sub
 
