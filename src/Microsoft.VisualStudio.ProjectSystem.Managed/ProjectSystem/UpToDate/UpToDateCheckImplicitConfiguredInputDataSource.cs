@@ -119,11 +119,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                     projectItemSchema: e.Value.Item4,
                     projectCatalogSnapshot: e.Value.Item5);
 
-                if (_persistentState != null && (priorItemHash != state.ItemHash || priorLastItemsChangedAtUtc != state.LastItemsChangedAtUtc))
+                if (state.ItemHash is not null && _persistentState is not null && (priorItemHash != state.ItemHash || priorLastItemsChangedAtUtc != state.LastItemsChangedAtUtc))
                 {
-                    // The input hash is always non-null after calling Update.
-                    Assumes.NotNull(state.ItemHash);
-
                     _persistentState.StoreState(_configuredProject.UnconfiguredProject.FullPath, _configuredProject.ProjectConfiguration.Dimensions, state.ItemHash.Value, state.LastItemsChangedAtUtc);
                 }
 
