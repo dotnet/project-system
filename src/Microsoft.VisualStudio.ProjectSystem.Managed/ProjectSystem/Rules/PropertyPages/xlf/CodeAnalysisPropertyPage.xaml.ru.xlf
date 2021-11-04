@@ -62,14 +62,59 @@
         <target state="translated">Уровень анализа</target>
         <note />
       </trans-unit>
+      <trans-unit id="EnumValue|AnalysisLevel.5.0-all|DisplayName">
+        <source>5.0 All</source>
+        <target state="new">5.0 All</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|AnalysisLevel.5.0-minimum|DisplayName">
+        <source>5.0 Minimum</source>
+        <target state="new">5.0 Minimum</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|AnalysisLevel.5.0-recommended|DisplayName">
+        <source>5.0 Recommended</source>
+        <target state="new">5.0 Recommended</target>
+        <note />
+      </trans-unit>
       <trans-unit id="EnumValue|AnalysisLevel.5.0|DisplayName">
         <source>5.0</source>
         <target state="translated">5.0</target>
         <note />
       </trans-unit>
+      <trans-unit id="EnumValue|AnalysisLevel.6.0-all|DisplayName">
+        <source>6.0 All</source>
+        <target state="new">6.0 All</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|AnalysisLevel.6.0-minimum|DisplayName">
+        <source>6.0 Minimum</source>
+        <target state="new">6.0 Minimum</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|AnalysisLevel.6.0-recommended|DisplayName">
+        <source>6.0 Recommended</source>
+        <target state="new">6.0 Recommended</target>
+        <note />
+      </trans-unit>
       <trans-unit id="EnumValue|AnalysisLevel.6.0|DisplayName">
         <source>6.0</source>
         <target state="translated">6.0</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|AnalysisLevel.latest-all|DisplayName">
+        <source>Latest All</source>
+        <target state="new">Latest All</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|AnalysisLevel.latest-minimum|DisplayName">
+        <source>Latest Minimum</source>
+        <target state="new">Latest Minimum</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|AnalysisLevel.latest-recommended|DisplayName">
+        <source>Latest Recommended</source>
+        <target state="new">Latest Recommended</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|AnalysisLevel.latest|DisplayName">
@@ -80,6 +125,21 @@
       <trans-unit id="EnumValue|AnalysisLevel.none|DisplayName">
         <source>None</source>
         <target state="translated">Нет</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|AnalysisLevel.preview-all|DisplayName">
+        <source>Preview All</source>
+        <target state="new">Preview All</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|AnalysisLevel.preview-minimum|DisplayName">
+        <source>Preview Minimum</source>
+        <target state="new">Preview Minimum</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|AnalysisLevel.preview-recommended|DisplayName">
+        <source>Preview Recommended</source>
+        <target state="new">Preview Recommended</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|AnalysisLevel.preview|DisplayName">
