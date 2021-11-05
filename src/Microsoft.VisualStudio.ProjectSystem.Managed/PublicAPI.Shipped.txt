@@ -2,6 +2,7 @@
 const Microsoft.VisualStudio.ProjectSystem.Debug.UIProfilePropertyName.Arguments = "Arguments" -> string!
 const Microsoft.VisualStudio.ProjectSystem.Debug.UIProfilePropertyName.EnvironmentVariables = "EnvironmentVariables" -> string!
 const Microsoft.VisualStudio.ProjectSystem.Debug.UIProfilePropertyName.Executable = "Executable" -> string!
+const Microsoft.VisualStudio.ProjectSystem.Debug.UIProfilePropertyName.JSWebView2Debugging = "JSWebView2Debugging" -> string!
 const Microsoft.VisualStudio.ProjectSystem.Debug.UIProfilePropertyName.LaunchUrl = "LaunchUrl" -> string!
 const Microsoft.VisualStudio.ProjectSystem.Debug.UIProfilePropertyName.WorkingDirectory = "WorkingDirectory" -> string!
 Microsoft.VisualStudio.ProjectSystem.Configuration.IConfigurationDimensionDescriptionMetadataView
@@ -15,6 +16,8 @@ Microsoft.VisualStudio.ProjectSystem.Debug.IActiveDebugFrameworkServices.SetActi
 Microsoft.VisualStudio.ProjectSystem.Debug.IDebugTokenReplacer
 Microsoft.VisualStudio.ProjectSystem.Debug.IDebugTokenReplacer.ReplaceTokensInProfileAsync(Microsoft.VisualStudio.ProjectSystem.Debug.ILaunchProfile! profile) -> System.Threading.Tasks.Task<Microsoft.VisualStudio.ProjectSystem.Debug.ILaunchProfile!>!
 Microsoft.VisualStudio.ProjectSystem.Debug.IDebugTokenReplacer.ReplaceTokensInStringAsync(string! rawString, bool expandEnvironmentVars) -> System.Threading.Tasks.Task<string!>!
+Microsoft.VisualStudio.ProjectSystem.Debug.IDefaultLaunchProfileProvider
+Microsoft.VisualStudio.ProjectSystem.Debug.IDefaultLaunchProfileProvider.CreateDefaultProfile() -> Microsoft.VisualStudio.ProjectSystem.Debug.ILaunchProfile?
 Microsoft.VisualStudio.ProjectSystem.Debug.IJsonSection
 Microsoft.VisualStudio.ProjectSystem.Debug.IJsonSection.JsonSection.get -> string!
 Microsoft.VisualStudio.ProjectSystem.Debug.IJsonSection.SerializationType.get -> System.Type!
@@ -47,6 +50,9 @@ Microsoft.VisualStudio.ProjectSystem.Debug.ILaunchSettingsProvider.UpdateAndSave
 Microsoft.VisualStudio.ProjectSystem.Debug.ILaunchSettingsProvider.WaitForFirstSnapshot(int timeout) -> System.Threading.Tasks.Task<Microsoft.VisualStudio.ProjectSystem.Debug.ILaunchSettings?>!
 Microsoft.VisualStudio.ProjectSystem.Debug.ILaunchSettingsProvider2
 Microsoft.VisualStudio.ProjectSystem.Debug.ILaunchSettingsProvider2.GetLaunchSettingsFilePathAsync() -> System.Threading.Tasks.Task<string!>!
+Microsoft.VisualStudio.ProjectSystem.Debug.ILaunchSettingsProvider3
+Microsoft.VisualStudio.ProjectSystem.Debug.ILaunchSettingsProvider3.TryUpdateProfileAsync(string! profileName, System.Action<Microsoft.VisualStudio.ProjectSystem.Debug.IWritableLaunchProfile!>! updateAction) -> System.Threading.Tasks.Task<bool>!
+Microsoft.VisualStudio.ProjectSystem.Debug.ILaunchSettingsProvider3.UpdateGlobalSettingsAsync(System.Func<System.Collections.Immutable.ImmutableDictionary<string!, object!>!, System.Collections.Immutable.ImmutableDictionary<string!, object?>!>! updateFunction) -> System.Threading.Tasks.Task!
 Microsoft.VisualStudio.ProjectSystem.Debug.ILaunchSettingsSerializationProvider
 Microsoft.VisualStudio.ProjectSystem.Debug.ILaunchSettingsUIProvider
 Microsoft.VisualStudio.ProjectSystem.Debug.ILaunchSettingsUIProvider.CommandName.get -> string!
@@ -93,11 +99,26 @@ Microsoft.VisualStudio.ProjectSystem.Properties.ExportInterceptingPropertyValueP
 Microsoft.VisualStudio.ProjectSystem.Properties.ExportInterceptingPropertyValueProviderFile.ProjectFile = 0 -> Microsoft.VisualStudio.ProjectSystem.Properties.ExportInterceptingPropertyValueProviderFile
 Microsoft.VisualStudio.ProjectSystem.Properties.ExportInterceptingPropertyValueProviderFile.UserFile = 1 -> Microsoft.VisualStudio.ProjectSystem.Properties.ExportInterceptingPropertyValueProviderFile
 Microsoft.VisualStudio.ProjectSystem.Properties.ExportInterceptingPropertyValueProviderFile.UserFileWithXamlDefaults = 2 -> Microsoft.VisualStudio.ProjectSystem.Properties.ExportInterceptingPropertyValueProviderFile
+Microsoft.VisualStudio.ProjectSystem.Properties.ExportLaunchProfileExtensionValueProviderAttribute
+Microsoft.VisualStudio.ProjectSystem.Properties.ExportLaunchProfileExtensionValueProviderAttribute.ExportLaunchProfileExtensionValueProviderAttribute(string! propertyName, Microsoft.VisualStudio.ProjectSystem.Properties.ExportLaunchProfileExtensionValueProviderScope scope) -> void
+Microsoft.VisualStudio.ProjectSystem.Properties.ExportLaunchProfileExtensionValueProviderAttribute.ExportLaunchProfileExtensionValueProviderAttribute(string![]! propertyNames, Microsoft.VisualStudio.ProjectSystem.Properties.ExportLaunchProfileExtensionValueProviderScope scope) -> void
+Microsoft.VisualStudio.ProjectSystem.Properties.ExportLaunchProfileExtensionValueProviderAttribute.PropertyNames.get -> string![]!
+Microsoft.VisualStudio.ProjectSystem.Properties.ExportLaunchProfileExtensionValueProviderScope
+Microsoft.VisualStudio.ProjectSystem.Properties.ExportLaunchProfileExtensionValueProviderScope.GlobalSettings = 1 -> Microsoft.VisualStudio.ProjectSystem.Properties.ExportLaunchProfileExtensionValueProviderScope
+Microsoft.VisualStudio.ProjectSystem.Properties.ExportLaunchProfileExtensionValueProviderScope.LaunchProfile = 0 -> Microsoft.VisualStudio.ProjectSystem.Properties.ExportLaunchProfileExtensionValueProviderScope
+Microsoft.VisualStudio.ProjectSystem.Properties.IGlobalSettingExtensionValueProvider
+Microsoft.VisualStudio.ProjectSystem.Properties.IGlobalSettingExtensionValueProvider.OnGetPropertyValue(string! propertyName, System.Collections.Immutable.ImmutableDictionary<string!, object!>! globalSettings, Microsoft.Build.Framework.XamlTypes.Rule? rule) -> string!
+Microsoft.VisualStudio.ProjectSystem.Properties.IGlobalSettingExtensionValueProvider.OnSetPropertyValue(string! propertyName, string! propertyValue, System.Collections.Immutable.ImmutableDictionary<string!, object!>! globalSettings, Microsoft.Build.Framework.XamlTypes.Rule? rule) -> System.Collections.Immutable.ImmutableDictionary<string!, object?>!
 Microsoft.VisualStudio.ProjectSystem.Properties.IInterceptingPropertyValueProvider
 Microsoft.VisualStudio.ProjectSystem.Properties.IInterceptingPropertyValueProvider.OnGetEvaluatedPropertyValueAsync(string! propertyName, string! evaluatedPropertyValue, Microsoft.VisualStudio.ProjectSystem.Properties.IProjectProperties! defaultProperties) -> System.Threading.Tasks.Task<string!>!
 Microsoft.VisualStudio.ProjectSystem.Properties.IInterceptingPropertyValueProvider.OnGetUnevaluatedPropertyValueAsync(string! propertyName, string! unevaluatedPropertyValue, Microsoft.VisualStudio.ProjectSystem.Properties.IProjectProperties! defaultProperties) -> System.Threading.Tasks.Task<string!>!
 Microsoft.VisualStudio.ProjectSystem.Properties.IInterceptingPropertyValueProvider.OnSetPropertyValueAsync(string! propertyName, string! unevaluatedPropertyValue, Microsoft.VisualStudio.ProjectSystem.Properties.IProjectProperties! defaultProperties, System.Collections.Generic.IReadOnlyDictionary<string!, string!>? dimensionalConditions = null) -> System.Threading.Tasks.Task<string?>!
 Microsoft.VisualStudio.ProjectSystem.Properties.IInterceptingPropertyValueProviderMetadata.PropertyNames.get -> string![]!
+Microsoft.VisualStudio.ProjectSystem.Properties.ILaunchProfileExtensionValueProvider
+Microsoft.VisualStudio.ProjectSystem.Properties.ILaunchProfileExtensionValueProvider.OnGetPropertyValue(string! propertyName, Microsoft.VisualStudio.ProjectSystem.Debug.ILaunchProfile! launchProfile, System.Collections.Immutable.ImmutableDictionary<string!, object!>! globalSettings, Microsoft.Build.Framework.XamlTypes.Rule? rule) -> string!
+Microsoft.VisualStudio.ProjectSystem.Properties.ILaunchProfileExtensionValueProvider.OnSetPropertyValue(string! propertyName, string! propertyValue, Microsoft.VisualStudio.ProjectSystem.Debug.IWritableLaunchProfile! launchProfile, System.Collections.Immutable.ImmutableDictionary<string!, object!>! globalSettings, Microsoft.Build.Framework.XamlTypes.Rule? rule) -> void
+Microsoft.VisualStudio.ProjectSystem.Properties.ILaunchProfileExtensionValueProviderMetadata
+Microsoft.VisualStudio.ProjectSystem.Properties.ILaunchProfileExtensionValueProviderMetadata.PropertyNames.get -> string![]!
 Microsoft.VisualStudio.ProjectSystem.Properties.InterceptingPropertyValueProviderBase
 Microsoft.VisualStudio.ProjectSystem.Properties.InterceptingPropertyValueProviderBase.InterceptingPropertyValueProviderBase() -> void
 Microsoft.VisualStudio.ProjectSystem.Properties.LaunchSettingsValueProviderBase
