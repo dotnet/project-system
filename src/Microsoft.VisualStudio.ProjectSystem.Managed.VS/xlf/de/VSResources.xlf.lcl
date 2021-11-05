@@ -271,6 +271,15 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
+      <Item ItemId=";IncrementalBuildFailureWarningMessage" ItemType="0" PsrId="308" InstFlg="true" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[WARNING: Potential incremental build failure in '{0}'. See: https://aka.ms/incremental-build-failure]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[WARNUNG: Potenzieller inkrementeller Buildfehler in "{0}". Siehe: https://aka.ms/incremental-build-failure]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
       <Item ItemId=";LearnMore" ItemType="0" PsrId="308" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[Learn more]]></Val>
