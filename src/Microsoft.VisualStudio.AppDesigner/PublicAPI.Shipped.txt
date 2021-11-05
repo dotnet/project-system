@@ -455,6 +455,7 @@ Microsoft.VisualStudio.Editors.PropertyPages.PropertyControlData.New(id As Integ
 Microsoft.VisualStudio.Editors.PropertyPages.PropertyControlData.ObjectsPropertyDescriptorsArray() -> System.ComponentModel.PropertyDescriptorCollection()
 Microsoft.VisualStudio.Editors.PropertyPages.PropertyControlData.PropDesc -> System.ComponentModel.PropertyDescriptor
 Microsoft.VisualStudio.Editors.PropertyPages.PropertyControlData.PropertyName() -> String
+Microsoft.VisualStudio.Editors.PropertyPages.PropertyControlData.PropertyName(value As String) -> Void
 Microsoft.VisualStudio.Editors.PropertyPages.PropertyControlData.PropPage() -> Microsoft.VisualStudio.Editors.PropertyPages.PropPageUserControlBase
 Microsoft.VisualStudio.Editors.PropertyPages.PropertyControlData.SetCallback -> Microsoft.VisualStudio.Editors.PropertyPages.PropertyControlData.SetDelegate
 Microsoft.VisualStudio.Editors.PropertyPages.PropertyControlData.SetControlValue(value As Object) -> Void
