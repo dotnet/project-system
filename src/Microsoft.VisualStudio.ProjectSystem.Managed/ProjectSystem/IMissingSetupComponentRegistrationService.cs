@@ -4,13 +4,12 @@ using System;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
-using Microsoft.VisualStudio.ProjectSystem.Runtimes;
 using Microsoft.VisualStudio.ProjectSystem.Workloads;
 
 namespace Microsoft.VisualStudio.ProjectSystem
 {
     /// <summary>
-    ///     Tracks the set of missing workload packs and sdk runtimes the .NET projects in a solution
+    ///     Tracks the set of missing workload packs and SDK runtimes the .NET projects in a solution
     ///     need to improve the development experience.
     /// </summary>
     internal interface IMissingSetupComponentRegistrationService
@@ -19,7 +18,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
         void RegisterMissingWorkloads(Guid projectGuid, ConfiguredProject project, ISet<WorkloadDescriptor> workloadDescriptors);
 
-        void RegisterMissingSdkRuntimes(Guid projectGuid, ConfiguredProject project, RuntimeDescriptor workloadDescriptors);
+        void RegisterMissingSdkRuntimeComponentId(Guid projectGuid, ConfiguredProject project, string runtimeComponentId);
 
         void RegisterProjectConfiguration(Guid projectGuid, ConfiguredProject project);
 

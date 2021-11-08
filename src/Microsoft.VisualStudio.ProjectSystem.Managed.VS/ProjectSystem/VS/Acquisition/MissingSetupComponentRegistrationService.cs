@@ -9,7 +9,6 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.ServiceHub.Framework;
-using Microsoft.VisualStudio.ProjectSystem.Runtimes;
 using Microsoft.VisualStudio.ProjectSystem.Utilities;
 using Microsoft.VisualStudio.ProjectSystem.Workloads;
 using Microsoft.VisualStudio.Shell.Interop;
@@ -19,7 +18,7 @@ using Microsoft.VisualStudio.Threading;
 namespace Microsoft.VisualStudio.ProjectSystem.VS
 {
     /// <summary>
-    ///     Tracks the set of missing workload packs and sdk runtimes the .NET projects in a solution
+    ///     Tracks the set of missing workload packs and SDK runtimes the .NET projects in a solution
     ///     need to improve the development experience.
     /// </summary>
     [Export(typeof(IMissingSetupComponentRegistrationService))]
@@ -30,7 +29,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         private static readonly ImmutableHashSet<string> s_supportedReleaseChannelWorkloads = ImmutableHashSet.Create(StringComparers.WorkloadNames, WasmToolsWorkloadName);
 
         private readonly ConcurrentDictionary<Guid, IConcurrentHashSet<WorkloadDescriptor>> _projectGuidToWorkloadDescriptorsMap;
-        private readonly ConcurrentDictionary<Guid, RuntimeDescriptor> _projectGuidToRuntimeDescriptorMap;
+        private readonly ConcurrentDictionary<Guid, string> _projectGuidToRuntimeDescriptorMap;
         private readonly ConcurrentDictionary<Guid, IConcurrentHashSet<ProjectConfiguration>> _projectGuidToProjectConfigurationsMap;
         private readonly IVsService<SVsBrokeredServiceContainer, IBrokeredServiceContainer> _serviceBrokerContainer;
         private readonly IVsService<IVsSolution> _vsSolutionService;
@@ -98,9 +97,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             UnregisterProjectConfiguration(projectGuid, project);
         }
 
-        public void RegisterMissingSdkRuntimes(Guid projectGuid, ConfiguredProject project, RuntimeDescriptor runtimeDescriptor)
+        public void RegisterMissingSdkRuntimeComponentId(Guid projectGuid, ConfiguredProject project, string runtimeComponentId)
         {
-            _projectGuidToRuntimeDescriptorMap.GetOrAdd(projectGuid, runtimeDescriptor);
+            _projectGuidToRuntimeDescriptorMap.GetOrAdd(projectGuid, runtimeComponentId);
 
             UnregisterProjectConfiguration(projectGuid, project);
         }
@@ -236,13 +235,18 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
 
         private void AddMissingSdkRuntimeComponentIds(IVsSetupCompositionService setupCompositionService, Dictionary<Guid, IReadOnlyCollection<string>> vsComponentIdsToRegister)
         {
-            foreach (var (projectGuid, runtimeDescriptor) in _projectGuidToRuntimeDescriptorMap)
+            foreach (var (projectGuid, runtimeComponentId) in _projectGuidToRuntimeDescriptorMap)
             {
+                if (setupCompositionService.IsPackageInstalled(runtimeComponentId))
+                {
+                    continue;
+                }
+
                 vsComponentIdsToRegister.TryGetValue(projectGuid, out IReadOnlyCollection<string>? workloadVsComponent);
 
                 IEnumerable<string> runtimeVsComponents = workloadVsComponent is not null ?
-                     workloadVsComponent.Append(runtimeDescriptor.SdkRuntime)
-                     : new List<string>() { runtimeDescriptor.SdkRuntime };
+                     workloadVsComponent.Append(runtimeComponentId)
+                     : new List<string>() { runtimeComponentId };
 
                 vsComponentIdsToRegister[projectGuid] = runtimeVsComponents.ToImmutableList();
             }
