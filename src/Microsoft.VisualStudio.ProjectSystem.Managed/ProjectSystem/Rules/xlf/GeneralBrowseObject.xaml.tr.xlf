@@ -4,7 +4,7 @@
     <body>
       <trans-unit id="Category|Misc|DisplayName">
         <source>Misc</source>
-        <target state="translated">Çeşitli</target>
+        <target state="new">Misc</target>
         <note />
       </trans-unit>
       <trans-unit id="Rule|ConfigurationGeneralBrowseObject|DisplayName">

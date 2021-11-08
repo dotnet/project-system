@@ -189,12 +189,12 @@
       </trans-unit>
       <trans-unit id="DynamicEnumProperty|PlatformTarget|Description">
         <source>Specifies the processor to be targeted by the output file. Choose 'Any CPU' to specify that any processor is acceptable, allowing the application to run on the broadest range of hardware.</source>
-        <target state="new">Specifies the processor to be targeted by the output file. Choose 'Any CPU' to specify that any processor is acceptable, allowing the application to run on the broadest range of hardware.</target>
+        <target state="translated">Určuje procesor, na který má výstupní soubor cílit. Pokud chcete určit, že je přijatelný libovolný procesor, zvolte možnost Jakýkoli procesor, aby se aplikace dala spustit na maximální škále hardwaru.</target>
         <note />
       </trans-unit>
       <trans-unit id="DynamicEnumProperty|PlatformTarget|DisplayName">
         <source>Platform target</source>
-        <target state="new">Platform target</target>
+        <target state="translated">Cílová platforma</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumProperty|DebugType|Description">

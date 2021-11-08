@@ -79,7 +79,7 @@
       </trans-unit>
       <trans-unit id="Category|Resources|DisplayName">
         <source>Win32 Resources</source>
-        <target state="new">Win32 Resources</target>
+        <target state="translated">Ресурсы Win32</target>
         <note />
       </trans-unit>
       <trans-unit id="DynamicEnumProperty|InterceptedTargetFramework|Description">
