@@ -45,7 +45,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build.Diagnostics
                 Reporters = new OrderPrecedenceImportCollection<IIncrementalBuildFailureReporter>(projectCapabilityCheckProvider: project);
             }
 
-            public void OnProjectBuildCompleted(BuildAction buildAction)
+            public void OnProjectBuildCompleted()
             {
                 IBuildUpToDateCheckValidator? validator = _upToDateCheckValidator.Value;
 
@@ -88,7 +88,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build.Diagnostics
                         return;
                     }
 
-                    (bool isUpToDate, string? failureReason) = await validator.ValidateUpToDateAsync(buildAction, cancellationToken);
+                    (bool isUpToDate, string? failureReason) = await validator.ValidateUpToDateAsync(cancellationToken);
 
                     if (isUpToDate)
                     {
