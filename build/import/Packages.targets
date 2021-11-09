@@ -45,7 +45,7 @@
     <PackageReference Update="Microsoft.VisualStudio.DataDesign.Common"                               Version="17.0.0-preview-2-31223-026"/>
     <PackageReference Update="Microsoft.VisualStudio.Data.Services"                                   Version="17.0.0-preview-2-31223-026" />
     <PackageReference Update="Microsoft.VisualStudio.DataTools.Interop"                               Version="17.0.0-preview-2-31223-026" />
-    <PackageReference Update="Microsoft.VisualStudio.Debugger.Contracts"                              Version="17.2.0" />
+    <PackageReference Update="Microsoft.VisualStudio.Debugger.Contracts"                              Version="17.2.0-beta.21378.1" />
     <PackageReference Update="Microsoft.VisualStudio.Designer.Interfaces"                             Version="17.0.0-preview-2-31223-026" />
     <PackageReference Update="Microsoft.VisualStudio.ImageCatalog"                                    Version="17.0.0-previews-2-31421-281" />
     <PackageReference Update="Microsoft.VisualStudio.Interop"                                         Version="17.0.0-previews-2-31423-289"/>
@@ -77,8 +77,8 @@
     <PackageReference Update="Microsoft.VisualStudio.ProjectSystem.SDK.Tools"                         Version="17.0.1304-pre" />
 
     <!-- Roslyn -->
-    <PackageReference Update="Microsoft.VisualStudio.LanguageServices"                                Version="4.1.0-2.21558.8" />
-    <PackageReference Update="Microsoft.CodeAnalysis"                                                 Version="4.1.0-2.21558.8" />
+    <PackageReference Update="Microsoft.VisualStudio.LanguageServices"                                Version="4.0.0-2.21302.13" />
+    <PackageReference Update="Microsoft.CodeAnalysis"                                                 Version="4.0.0-2.21302.13" />
     <PackageReference Update="Microsoft.VisualStudio.IntegrationTest.Utilities"                       Version="2.6.0-beta1-62113-02" />
     <PackageReference Update="Microsoft.CSharp"                                                       Version="4.7.0" />
 
