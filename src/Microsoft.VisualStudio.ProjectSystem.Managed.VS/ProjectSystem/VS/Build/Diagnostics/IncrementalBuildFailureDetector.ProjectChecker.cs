@@ -20,11 +20,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build.Diagnostics
         /// <summary>
         /// Unconfigured project scoped data related to incremental build failure detection.
         /// </summary>
+        [AppliesTo(BuildUpToDateCheck.AppliesToExpression)]
         [Export(typeof(IProjectChecker))]
         private sealed class ProjectChecker : IProjectChecker
         {
             private readonly UnconfiguredProject _project;
-            private readonly IActiveConfiguredValue<IBuildUpToDateCheckValidator?> _upToDateCheckValidator;
+            private readonly IActiveConfiguredValue<IBuildUpToDateCheckValidator> _upToDateCheckValidator;
             private readonly IProjectAsynchronousTasksService _projectAsynchronousTasksService;
 
             [ImportMany]
@@ -34,7 +35,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build.Diagnostics
             public ProjectChecker(
                 UnconfiguredProject project,
                 IVsUIService<SVsFeatureFlags, IVsFeatureFlags> featureFlagsService,
-                IActiveConfiguredValue<IBuildUpToDateCheckValidator?> upToDateCheckValidator,
+                IActiveConfiguredValue<IBuildUpToDateCheckValidator> upToDateCheckValidator,
                 [Import(ExportContractNames.Scopes.UnconfiguredProject)] IProjectAsynchronousTasksService projectAsynchronousTasksService,
                 IVsUIService<SVsOutputWindow, IVsOutputWindow> outputWindow)
             {
@@ -47,14 +48,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build.Diagnostics
 
             public void OnProjectBuildCompleted()
             {
-                IBuildUpToDateCheckValidator? validator = _upToDateCheckValidator.Value;
-
-                if (validator is null)
-                {
-                    // Occurs for .vcxproj
-                    return;
-                }
-
                 _project.Services.ThreadingPolicy.RunAndForget(
                     async () =>
                     {
@@ -69,6 +62,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build.Diagnostics
                 async Task CheckAsync(CancellationToken cancellationToken)
                 {
                     var sw = Stopwatch.StartNew();
+
+                    IBuildUpToDateCheckValidator validator = _upToDateCheckValidator.Value;
 
                     if (validator is IBuildUpToDateCheckProvider provider)
                     {

@@ -28,7 +28,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
           IActiveConfigurationComponent,
           IDisposable
     {
-        internal const string AppliesToExpression = ProjectCapability.DotNet + "+ !" + ProjectCapabilities.SharedAssetsProject;
+        internal const string AppliesToExpression = ProjectCapability.DotNet + " + !" + ProjectCapabilities.SharedAssetsProject;
 
         internal const string FastUpToDateCheckIgnoresKindsGlobalPropertyName = "FastUpToDateCheckIgnoresKinds";
 
