@@ -18,7 +18,7 @@ However, the mechanism used by the VS Platform is not sufficient for some of the
 
 ## Capabilities
 
-What follows are requirements of IPA for .NET projects. The requirements from a UI standpoint are already quite possible and/or already work today, such as grouping multuple actions and listing all applicable projects for a given action.
+What follows are requirements of IPA for .NET projects. The requirements from a UI standpoint are already quite possible and/or already work today, such as grouping multiple actions and listing all applicable projects for a given action.
 
 ### Detection
 
