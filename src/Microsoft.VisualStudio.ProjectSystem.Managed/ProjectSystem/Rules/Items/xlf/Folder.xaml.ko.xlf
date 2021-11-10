@@ -4,7 +4,7 @@
     <body>
       <trans-unit id="Category|Misc|DisplayName">
         <source>Misc</source>
-        <target state="new">Misc</target>
+        <target state="translated">기타</target>
         <note />
       </trans-unit>
       <trans-unit id="Rule|Folder|DisplayName">
