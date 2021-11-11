@@ -41,6 +41,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build.Diagnostics
           IVsRunningDocTableEvents,
           IPackageService
     {
+        private readonly IVsService<SVsSolutionBuildManager, IVsSolutionBuildManager2> _solutionBuildManagerService;
         private readonly IVsService<SVsRunningDocumentTable, IVsRunningDocumentTable> _rdtService;
 
         private IVsSolutionBuildManager2? _solutionBuildManager;
@@ -54,18 +55,20 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build.Diagnostics
 
         [ImportingConstructor]
         public IncrementalBuildFailureDetector(
+            IVsService<SVsSolutionBuildManager, IVsSolutionBuildManager2> solutionBuildManagerService,
             IVsService<SVsRunningDocumentTable, IVsRunningDocumentTable> rdtService,
             JoinableTaskContext joinableTaskContext)
             : base(new(joinableTaskContext))
         {
+            _solutionBuildManagerService = solutionBuildManagerService;
             _rdtService = rdtService;
         }
 
-        async Task IPackageService.InitializeAsync(IAsyncServiceProvider asyncServiceProvider)
+        async Task IPackageService.InitializeAsync(IAsyncServiceProvider _)
         {
             await JoinableFactory.SwitchToMainThreadAsync();
 
-            _solutionBuildManager = await asyncServiceProvider.GetServiceAsync<SVsSolutionBuildManager, IVsSolutionBuildManager2>();
+            _solutionBuildManager = await _solutionBuildManagerService.GetValueAsync();
             _rdt = await _rdtService.GetValueAsync();
 
             HResult.Verify(_rdt.AdviseRunningDocTableEvents(this, out _rdtCookie), $"Error advising RDT events in {typeof(IncrementalBuildFailureDetector)}.");
