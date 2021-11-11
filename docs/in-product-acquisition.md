@@ -134,7 +134,7 @@ If a `global.json` is present and it specifies an SDK version that the user does
 
 ## UX
 
-A user could attempt to load many projects with differing dependencies on different VS Workloads or VS Components. We also want to avoid multiple "trips" where the user installs something, reloads VS, tries to load a project, has to isntall something, etc. This implies a different UI than what the system-wide IPA mechanism offers today. It will likely be based on the Windows developer UI here:
+A user could attempt to load many projects with differing dependencies on different VS Workloads or VS Components. We also want to avoid multiple "trips" where the user installs something, reloads VS, tries to load a project, has to install something, etc. This implies a different UI than what the system-wide IPA mechanism offers today. It will likely be based on the Windows developer UI here:
 
 ![](img/uwp-retarget.png)
 
