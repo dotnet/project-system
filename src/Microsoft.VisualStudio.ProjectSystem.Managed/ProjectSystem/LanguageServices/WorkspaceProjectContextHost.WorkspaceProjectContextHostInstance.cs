@@ -217,7 +217,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
                 }
                 finally
                 {
-                    context.EndBatch();
+                    await context.EndBatchAsync();
 
                     NotifyOutputDataCalculated(change.DataSourceVersions, handlerType);
                 }
