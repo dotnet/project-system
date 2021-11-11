@@ -29,6 +29,14 @@ steps:
 - task: ms-vseng.MicroBuildTasks.32f78468-e895-4f47-962c-58a699361df8.MicroBuildSwixPlugin@1
   displayName: Install Swix Plugin
 
+- task: MicroBuildOptProfPlugin@6
+  inputs:
+    ProfilingInputsDropName: 'ProfilingInputs/$(System.TeamProject)/$(Build.Repository.Name)/$(Build.SourceBranchName)/$(Build.BuildId)'
+    OptimizationInputsLookupMethod: 'GitTag'
+    AccessToken: '$(System.AccessToken)'
+    feedSource: 'https://devdiv.pkgs.visualstudio.com/DefaultCollection/_packaging/MicroBuildToolset/nuget/v3/index.json'
+  displayName: 'Install OptProf Plugin'
+
 - task: NuGetCommand@2
   displayName: Restore 'Microsoft.DotNet.IBCMerge' package
   inputs:
@@ -102,7 +110,27 @@ steps:
     ArtifactName: symbols
     publishLocation: Container
   displayName: 'Publish Artifact: symbols'
-        
+
+- task: ms-vscs-artifact.build-tasks.artifactDropTask-1.artifactDropTask@0
+  inputs:
+    dropServiceURI: 'https://devdiv.artifacts.visualstudio.com'
+    buildNumber: 'ProfilingInputs/$(System.TeamProject)/$(Build.Repository.Name)/$(Build.SourceBranchName)/$(Build.BuildId)'
+    sourcePath: '$(Build.ArtifactStagingDirectory)\OptProf\ProfilingInputs'
+    toLowerCase: false
+    usePat: true
+    AccessToken: '$(System.AccessToken)'
+  displayName: 'Publish to Artifact Services - ProfilingInputs'
+  condition: succeeded()
+
+- task: ms-vseng.MicroBuildTasks.0e9d0d4d-71ec-4e4e-ae40-db9896f1ae74.MicroBuildBuildVSBootstrapper@2
+  inputs:
+    vsMajorVersion: 17
+    channelName: 'int.main'
+    manifests: '$(Build.ArtifactStagingDirectory)\drop\artifacts\$(BuildConfiguration)\VSSetup\Insertion\Microsoft.VisualStudio.ProjectSystem.Managed.vsman'
+    outputFolder: $(Build.ArtifactStagingDirectory)\drop\artifacts\$(BuildConfiguration)\VSSetup\Insertion
+  displayName: Build VS bootstrapper
+  condition: succeeded()
+
 - task: MicroBuildUploadVstsDropFolder@1
   displayName: Upload VSTS Drop
   inputs:
