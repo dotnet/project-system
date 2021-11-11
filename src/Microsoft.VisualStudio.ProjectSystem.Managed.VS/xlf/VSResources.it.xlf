@@ -104,7 +104,7 @@
       </trans-unit>
       <trans-unit id="IncrementalBuildFailureWarningMessage">
         <source>WARNING: Potential incremental build failure in '{0}'. See: https://aka.ms/incremental-build-failure</source>
-        <target state="new">WARNING: Potential incremental build failure in '{0}'. See: https://aka.ms/incremental-build-failure</target>
+        <target state="translated">AVVISO: possibile errore di compilazione incrementale in '{0}'. Vedere: https://aka.ms/incremental-build-failure</target>
         <note>{0} is the file name of the project.</note>
       </trans-unit>
       <trans-unit id="ProjectHotReloadSessionManager_AttachingToProcess">
