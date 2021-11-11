@@ -18,11 +18,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
         /// that this method will not mutate any internal state. If in future that method is made idempotent, then
         /// this method (and probably the whole interface) could be removed.
         /// </remarks>
-        /// <param name="buildAction">The build action to perform.</param>
         /// <param name="cancellationToken">A token that is cancelled if the caller loses interest in the result.</param>
         /// <returns></returns>
-        Task<(bool IsUpToDate, string? FailureReason)> ValidateUpToDateAsync(
-            BuildAction buildAction,
-            CancellationToken cancellationToken = default);
+        Task<(bool IsUpToDate, string? FailureReason)> ValidateUpToDateAsync(CancellationToken cancellationToken = default);
     }
 }

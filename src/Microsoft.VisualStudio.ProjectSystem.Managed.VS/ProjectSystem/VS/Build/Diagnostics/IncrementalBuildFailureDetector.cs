@@ -4,7 +4,6 @@ using System;
 using System.ComponentModel.Composition;
 using System.Threading;
 using System.Threading.Tasks;
-using Microsoft.VisualStudio.ProjectSystem.Build;
 using Microsoft.VisualStudio.ProjectSystem.UpToDate;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
@@ -118,26 +117,26 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build.Diagnostics
                     return HResult.OK;
                 }
 
-                IProjectChecker? checker = pHierProj.AsUnconfiguredProject()?.Services.ExportProvider.GetExportedValueOrDefault<IProjectChecker>();
+                if (IsRelevantBuild(dwAction))
+                {
+                    IProjectChecker? checker = pHierProj.AsUnconfiguredProject()?.Services.ExportProvider.GetExportedValueOrDefault<IProjectChecker>();
 
-                checker?.OnProjectBuildCompleted(buildAction: GetBuildActionFromUpToDateOptions(dwAction));
+                    checker?.OnProjectBuildCompleted();
+                }
             }
 
             return HResult.OK;
 
-            static BuildAction GetBuildActionFromUpToDateOptions(uint options)
+            static bool IsRelevantBuild(uint options)
             {
-                if ((options & VSConstants.VSUTDCF_PACKAGE) == VSConstants.VSUTDCF_PACKAGE)
+                var operation = (VSSOLNBUILDUPDATEFLAGS)options;
+
+                if ((operation & VSSOLNBUILDUPDATEFLAGS.SBF_OPERATION_BUILD) == VSSOLNBUILDUPDATEFLAGS.SBF_OPERATION_BUILD)
                 {
-                    return BuildAction.Package;
+                    return true;
                 }
 
-                if ((options & VSConstants.VSUTDCF_REBUILD) == VSConstants.VSUTDCF_REBUILD)
-                {
-                    return BuildAction.Rebuild;
-                }
-
-                return BuildAction.Build;
+                return false;
             }
         }
 

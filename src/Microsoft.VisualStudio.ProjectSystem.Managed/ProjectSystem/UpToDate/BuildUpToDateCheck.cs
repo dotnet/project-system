@@ -668,9 +668,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             return IsUpToDateAsync(buildAction, logWriter, ImmutableDictionary<string, string>.Empty, cancellationToken);
         }
 
-        async Task<(bool IsUpToDate, string? FailureReason)> IBuildUpToDateCheckValidator.ValidateUpToDateAsync(
-            BuildAction buildAction,
-            CancellationToken cancellationToken)
+        async Task<(bool IsUpToDate, string? FailureReason)> IBuildUpToDateCheckValidator.ValidateUpToDateAsync(CancellationToken cancellationToken)
         {
             bool isUpToDate = await IsUpToDateInternalAsync(TextWriter.Null, _lastGlobalProperties, updateLastCheckedAt: false, cancellationToken);
 
