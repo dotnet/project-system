@@ -18,8 +18,8 @@
   </RunConfiguration>
   <TestConfiguration>
     <TestStores>
-      <TestStore Uri="vstsdrop:ProfilingInputs/DevDiv/CPS/main/5425317" />
-      <TestStore Uri="vstsdrop:Tests/DevDiv/VS/fc9439b73f2cabc003709c196c6f3fd67f204926/4614ff14-c952-b0ff-2142-476b7b721712" />
+      <!-- <TestStore Uri="vstsdrop:ProfilingInputs/DevDiv/CPS/main/5425317" />
+      <TestStore Uri="vstsdrop:Tests/DevDiv/VS/fc9439b73f2cabc003709c196c6f3fd67f204926/4614ff14-c952-b0ff-2142-476b7b721712" /> -->
     </TestStores>
     <TestContainers>
       <TestContainer FileName="Microsoft.VisualStudio.ProjectSystem.DDRIT.dll" />
