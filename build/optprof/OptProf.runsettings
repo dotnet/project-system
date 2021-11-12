@@ -18,14 +18,12 @@
   </RunConfiguration>
   <TestConfiguration>
     <TestStores>
-      <!-- <TestStore Uri="vstsdrop:ProfilingInputs/DevDiv/CPS/main/5425317" />
-      <TestStore Uri="vstsdrop:Tests/DevDiv/VS/fc9439b73f2cabc003709c196c6f3fd67f204926/4614ff14-c952-b0ff-2142-476b7b721712" /> -->
     </TestStores>
     <TestContainers>
       <TestContainer FileName="Microsoft.VisualStudio.ProjectSystem.DDRIT.dll" />
       <TestContainer FileName="VSPE.dll" />
     </TestContainers>
-    <TestCaseFilter>FullyQualifiedName=Microsoft.VisualStudio.ProjectSystem.DDRIT.OptProfOpenCloseTest.OpenAndCloseProjectWithCacheTestSolution|FullyQualifiedName=VSPE.OptProfTests.vs_perf_designtime_solution_build_vc_auto7|FullyQualifiedName=VSPE.OptProfTests.vs_perf_designtime_solution_loadclose_vc_auto7</TestCaseFilter>
+    <TestCaseFilter>FullyQualifiedName=Microsoft.VisualStudio.ProjectSystem.DDRIT.OptProfOpenCloseTest.OpenAndCloseProjectWithCacheTestSolution</TestCaseFilter>
     <TestIterations>1</TestIterations>
   </TestConfiguration>
   <VisualStudioConfiguration>
