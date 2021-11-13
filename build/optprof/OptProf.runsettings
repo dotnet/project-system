@@ -17,8 +17,7 @@
     <TreatTestAdapterErrorsAsWarnings>False</TreatTestAdapterErrorsAsWarnings>
   </RunConfiguration>
   <TestConfiguration>
-    <TestStores>
-    </TestStores>
+    <TestStores />
     <TestContainers>
       <TestContainer FileName="Microsoft.VisualStudio.ProjectSystem.DDRIT.dll" />
       <TestContainer FileName="VSPE.dll" />
