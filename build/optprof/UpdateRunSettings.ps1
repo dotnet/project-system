@@ -1,6 +1,6 @@
 param ([Parameter(Mandatory=$true)] [String] $profilingInputsPath, [String] $bootstrapperInfoPath, [String] $buildDropPath)
 
-$runsettingsPath = (Get-Item 'OptProf.runsettings').FullName
+$runsettingsPath = (Get-Item "$PSScriptRoot\OptProf.runsettings").FullName
 $runsettingsXml = [Xml.XmlDocument](Get-Content $runsettingsPath)
 $testStores = $runsettingsXml.RunSettings.TestConfiguration.TestStores
 
