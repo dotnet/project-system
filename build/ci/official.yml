@@ -126,8 +126,8 @@ steps:
   inputs:
     vsMajorVersion: 17
     channelName: 'int.main'
-    manifests: '$(Build.ArtifactStagingDirectory)\artifacts\$(BuildConfiguration)\VSSetup\Insertion\Microsoft.VisualStudio.ProjectSystem.Managed.vsman'
-    outputFolder: $(Build.ArtifactStagingDirectory)\artifacts\$(BuildConfiguration)\VSSetup\Insertion
+    manifests: '$(Build.SourcesDirectory)\artifacts\$(BuildConfiguration)\VSSetup\Insertion\Microsoft.VisualStudio.ProjectSystem.Managed.vsman'
+    outputFolder: $(Build.SourcesDirectory)\artifacts\$(BuildConfiguration)\VSSetup\Insertion
   displayName: Build VS bootstrapper
   condition: succeeded()
 
