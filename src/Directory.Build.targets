@@ -2,4 +2,13 @@
 <Project>
   <Import Project="..\Directory.Build.targets" />
   <Import Project="..\build\import\VisualStudio.XamlRules.targets"/>
+
+  <!--
+    Copies the contents of PublicAPI.Unshipped.txt into PublicAPI.Shipped.txt on build.
+    It assumes that the project directory contains these files (PublicApiAnalyzers also makes this assumption).
+    Uses AppendAllText instead of Add-Content since that cmdlet adds an empty line at the end of the file.
+  -->
+  <Target Name="FlushUnshippedAPI" AfterTargets="Build">
+    <Exec Command="powershell.exe -NonInteractive -NoLogo -NoProfile -Command &quot;$unshipped = '$(MSBuildProjectDirectory)\PublicAPI.Unshipped.txt'; $content = Get-Content $unshipped -Raw; if(-Not [String]::IsNullOrWhiteSpace($content)) { [IO.File]::AppendAllText('$(MSBuildProjectDirectory)\PublicAPI.Shipped.txt', [Environment]::NewLine + $content); Clear-Content $unshipped }&quot;" />
+  </Target>
 </Project>
