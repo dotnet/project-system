@@ -31,7 +31,7 @@ jobs:
     configuration: Debug
     pool:
       name: NetCore1ESPool-Public
-      demands: ImageOverride -equals Build.Windows.10.Amd64.VS2019.Pre.Open
+      demands: ImageOverride -equals Build.Windows.10.Amd64.VS2022.Pre.Open
 
 - template: unit-tests-template.yml
   parameters:
@@ -39,7 +39,7 @@ jobs:
     configuration: Release
     pool:
       name: NetCore1ESPool-Public
-      demands: ImageOverride -equals Build.Windows.10.Amd64.VS2019.Pre.Open
+      demands: ImageOverride -equals Build.Windows.10.Amd64.VS2022.Pre.Open
 
 - template: unit-tests-template.yml
   parameters:
@@ -47,4 +47,4 @@ jobs:
     configuration: Debug
     pool: 
       name: NetCore1ESPool-Public
-      demands: ImageOverride -equals Build.Windows.Amd64.VS2019.Pre.ES.Open
+      demands: ImageOverride -equals Build.Windows.Amd64.VS2022.Pre.ES.Open
