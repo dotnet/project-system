@@ -11,7 +11,7 @@ resources:
 - repo: self
   clean: true
 queue:
-  name: VSEngSS-MicroBuild2019-1ES
+  name: VSEngSS-MicroBuild2022-1ES
   demands: Cmd
   timeoutInMinutes: 90
 variables:
