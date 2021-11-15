@@ -142,7 +142,7 @@ steps:
   inputs:
     dropServiceURI: 'https://devdiv.artifacts.visualstudio.com'
     buildNumber: 'RunSettings/$(System.TeamProject)/$(Build.Repository.Name)/$(Build.SourceBranchName)/$(Build.BuildId)'
-    sourcePath: '$(Build.SourcesDirectory)\build\optprof\OptProf.runsettings'
+    sourcePath: '$(Build.SourcesDirectory)\build\optprof'
     toLowerCase: false
     usePat: true
     AccessToken: '$(System.AccessToken)'

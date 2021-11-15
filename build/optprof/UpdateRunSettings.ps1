@@ -1,5 +1,6 @@
 param ([Parameter(Mandatory=$true)] [String] $profilingInputsPath, [String] $bootstrapperInfoPath, [String] $buildDropPath)
 
+Write-Host 'Inputs:'
 Write-Host "profilingInputsPath: $profilingInputsPath"
 Write-Host "bootstrapperInfoPath: $bootstrapperInfoPath"
 Write-Host "buildDropPath: $buildDropPath"
@@ -29,3 +30,6 @@ $buildDropStore.SetAttribute('Uri', $buildDropPath)
 $testStores.AppendChild($buildDropStore)
 
 $runsettingsXml.Save($runsettingsPath)
+Write-Host 'Saved Output:'
+Write-Host "profilingInputsStore: $profilingInputsStore"
+Write-Host "buildDropStore: $buildDropStore"
