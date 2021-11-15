@@ -150,6 +150,14 @@ steps:
   displayName: 'Publish to Artifact Services - RunSettings'
   condition: succeeded()
 
+- task: PublishBuildArtifacts@1
+  inputs:
+    PathtoPublish: $(Build.StagingDirectory)\MicroBuild\Output
+    ArtifactName: MicroBuildOutputs
+    ArtifactType: Container
+  displayName: 'Publish Artifact: MicroBuildOutputs'
+  condition: succeededOrFailed()
+
 - task: MicroBuildUploadVstsDropFolder@1
   displayName: Upload VSTS Drop
   inputs:
