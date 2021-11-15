@@ -16,7 +16,7 @@ $testStores.AppendChild($profilingInputsStore)
 $buildDropStore = $runsettingsXml.CreateElement('TestStore')
 if(-not $buildDropPath)
 {
-  if(-not (Test-Path $bootstrapperInfoPath))
+  if((-not $bootstrapperInfoPath) -or (-not (Test-Path $bootstrapperInfoPath)))
   {
     Write-Host "Invalid bootstrapperInfoPath: $bootstrapperInfoPath"
     exit -1

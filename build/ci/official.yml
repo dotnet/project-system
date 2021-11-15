@@ -134,7 +134,7 @@ steps:
 - task: PowerShell@2
   inputs:
     filePath: build\optprof\UpdateRunSettings.ps1
-    arguments: '-profilingInputsPath "ProfilingInputs/$(System.TeamProject)/$(Build.Repository.Name)/$(Build.SourceBranchName)/$(Build.BuildId)"'
+    arguments: '-profilingInputsPath "ProfilingInputs/$(System.TeamProject)/$(Build.Repository.Name)/$(Build.SourceBranchName)/$(Build.BuildId)" -bootstrapperInfoPath "$(Build.StagingDirectory)\MicroBuild\Output\BootstrapperInfo.json"'
     failOnStderr: true
   displayName: Set RunSettings data from Bootstrapper
 
