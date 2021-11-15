@@ -37,13 +37,13 @@ steps:
 #     feedSource: 'https://devdiv.pkgs.visualstudio.com/DefaultCollection/_packaging/MicroBuildToolset/nuget/v3/index.json'
 #   displayName: 'Install OptProf Plugin'
 
-# - task: NuGetCommand@2
-#   displayName: Restore 'Microsoft.DotNet.IBCMerge' package
-#   inputs:
-#     command: restore
-#     feedsToUse: config
-#     restoreSolution: 'build\proj\internal\RestoreIBCMerge.csproj'
-#     nugetConfigPath: 'NuGet.config'
+- task: NuGetCommand@2
+  displayName: Restore 'Microsoft.DotNet.IBCMerge' package
+  inputs:
+    command: restore
+    feedsToUse: config
+    restoreSolution: 'build\proj\internal\RestoreIBCMerge.csproj'
+    nugetConfigPath: 'NuGet.config'
 
 # TODO: Merged PIAs - reset to /ibc once private feeds are removed and Microsoft.DotNet.IBCMerge is reset
 - script: $(Build.SourcesDirectory)\build.cmd /build /test /ci /diagnostic /no-deploy /no-integration /no-ibc /no-clearnugetcache /configuration $(BuildConfiguration)
