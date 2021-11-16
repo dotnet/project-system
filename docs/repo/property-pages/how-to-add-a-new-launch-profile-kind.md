@@ -288,7 +288,7 @@ namespace RuleObjectProviderDemo
 Important points:
 - The `Rule.Name` must be unique.
 - The `Rule.PageTemplate` property must have the value `"commandNameBasedDebugger"`.
-- The `Rule.Metadata` dictionary must include a value for `CommandName`: this is the debug command name (also known as a debug target) corresponding to this UI. Debug commands and how they are handled by VS are beyond the scope of this document,
+- The `Rule.Metadata` dictionary must include a value for `CommandName`: this is the debug command name (also known as a debug target) corresponding to this UI. Debug commands and how they are handled by VS are beyond the scope of this document.
 - The `ImageMonikerGuid` and `ImageMonikerId` in `Rule.Metadata` together define an ImageMoniker designating the icon to show for this Launch Profile UI. These are optional and if they are not defined a default icon will be supplied.
 - The `Rule.DataSource` property must be specified as shown above.
   - The `ItemType` property indicates that this `Rule` only pertains to launch profiles, as opposed to other types of items that are typically found in a project (`Compile`, `Reference`, etc.).
@@ -298,6 +298,8 @@ Important points:
   - The `context` paraemter should always be "Project".
 - The `AppliesTo` attribute is required. The `Rule` will only be available to projects with the matching capability.
 - The `Order` attribute is also required. Generally an `orderPrecedence` of "0" is fine, unless you are going to return a `Rule` object that extends an existing `Rule` from a different `IRuleObjectProvider`. In that case the `Order` of your `IRuleObjectProvider` must be higher than the other one.
+- The set of `Rule` objects and the `Rule`s themselves should not depend on any VS state. That is, _do not_ dynamically generate different sets of `Rule`s, properties, etc., in the `GetRules` method based on the state of your project or any VS setting. They should be static in the same way that `Rule`s loaded from .xaml files are static.
+  - Exception: It is fine for user-facing strings to vary based on the VS locale settings, as the locale cannot change while VS is running.
 
 ### Step 3: Add the assembly as MEF asset
 
