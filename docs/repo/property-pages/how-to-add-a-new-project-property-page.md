@@ -130,44 +130,45 @@ namespace RuleObjectProviderDemo
     [Order(0)]
     public class MyRuleObjectProvider : IRuleObjectProvider
     {
-        private List<Rule> rules;
+        private Lazy<List<Rule>> rules = new Lazy<List<Rule>>(CreateRules);
+
+        private static List<Rule> CreateRules()
+        {
+            Rule rule = new Rule();
+
+            rule.BeginInit();
+
+            rule.Name = "MyPropertyPage";
+            rule.Description = "A description of my project properties page.";
+            rule.DisplayName = "My Properties";
+            rule.PageTemplate = "generic";
+            rule.Order = 500;
+
+            rule.DataSource = new DataSource
+            {
+                Persistence = "ProjectFile",
+                HasConfigurationCondition = false,
+                SourceOfDefaultValue = DefaultValueSourceLocation.AfterContext
+            };
+
+            rule.Properties.Add(new StringProperty
+            {
+                Name = "MyProperty",
+                DisplayName = "My property",
+                Description = "A property that writes to the project file.",
+            });
+
+            rule.EndInit();
+
+            List<Rule> rules = new List<Rule>();
+            rules.Add(rule);
+
+            return rules;
+        }
 
         public IReadOnlyCollection<Rule> GetRules()
         {
-            if (this.rules == null)
-            {
-                this.rules = new List<Rule>();
-
-                Rule rule = new Rule();
-
-                rule.BeginInit();
-
-                rule.Name = "MyPropertyPage";
-                rule.Description = "A description of my project properties page.";
-                rule.DisplayName = "My Properties";
-                rule.PageTemplate = "generic";
-                rule.Order = 500;
-
-                rule.DataSource = new DataSource
-                {
-                    Persistence = "ProjectFile",
-                    HasConfigurationCondition = false,
-                    SourceOfDefaultValue = DefaultValueSourceLocation.AfterContext
-                };
-
-                rule.Properties.Add(new StringProperty
-                {
-                    Name = "MyProperty",
-                    DisplayName = "My property",
-                    Description = "A property that writes to the project file.",
-                });
-
-                rule.EndInit();
-
-                rules.Add(rule);
-            }
-
-            return this.rules;
+            return this.rules.Value;
         }
     }
 }
@@ -184,6 +185,7 @@ Important points:
 - The `Order` attribute is also required. Generally an `orderPrecedence` of "0" is fine, unless you are going to return a `Rule` object that extends an existing `Rule` from a different `IRuleObjectProvider`. In that case the `Order` of your `IRuleObjectProvider` must be higher than the other one.
 - The set of `Rule` objects and the `Rule`s themselves should not depend on any VS state. That is, _do not_ dynamically generate different sets of `Rule`s, properties, etc., in the `GetRules` method based on the state of your project or any VS setting. They should be static in the same way that `Rule`s loaded from .xaml files are static.
   - Exception: It is fine for user-facing strings to vary based on the VS locale settings, as the locale cannot change while VS is running.
+- `CreateRules` must handle concurrent access, hence the use of `System.Lazy` in the example above.
 
 ### Step 3: Add the assembly as MEF asset
 

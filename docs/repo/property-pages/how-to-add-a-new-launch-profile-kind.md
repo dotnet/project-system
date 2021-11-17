@@ -233,52 +233,53 @@ namespace RuleObjectProviderDemo
     [Order(0)]
     public class MyRuleObjectProvider : IRuleObjectProvider
     {
-        private List<Rule> rules;
+        private Lazy<List<Rule>> rules = new Lazy<List<Rule>>(CreateRules);
+
+        private static List<Rule> CreateRules()
+        {
+            Rule rule = new Rule();
+
+            rule.BeginInit();
+
+            rule.Name = "MyLaunchProfile";
+            rule.Description = "Properties associated with launching and debugging a custom debug target.";
+            rule.DisplayName = "My Custom Debug Target";
+            rule.PageTemplate = "commandNameBasedDebugger";
+
+            rule.Metadata["CommandName"] = "MyCustomDebugTarget";
+
+            // KnownImageIds.ImageCatalogGuid
+            rule.Metadata["ImageMonikerGuid"] = Guid.Parse("AE27A6B0-E345-4288-96DF-5EAF394EE369");
+
+            // KnownImageIds.Execute
+            rule.Metadata["ImageMonikerId"] = 1173;
+
+            rule.DataSource = new DataSource
+            {
+                Persistence = "LaunchProfile",
+                HasConfigurationCondition = false,
+                ItemType = "LaunchProfile"
+            };
+
+            rule.Properties.Add(new StringProperty
+            {
+                Name = "ExecutablePath",
+                DisplayName = "Executable",
+                Description = "Path to the executable to run.",
+                Subtype = "file"
+            });
+
+            rule.EndInit();
+
+            List<Rule> rules = new List<Rule>();
+            rules.Add(rule);
+
+            return rules;
+        }
 
         public IReadOnlyCollection<Rule> GetRules()
         {
-            if (this.rules == null)
-            {
-                this.rules = new List<Rule>();
-
-                Rule rule = new Rule();
-
-                rule.BeginInit();
-
-                rule.Name = "MyLaunchProfile";
-                rule.Description = "Properties associated with launching and debugging a custom debug target.";
-                rule.DisplayName = "My Custom Debug Target";
-                rule.PageTemplate = "commandNameBasedDebugger";
-
-                rule.Metadata["CommandName"] = "MyCustomDebugTarget";
-
-                // KnownImageIds.ImageCatalogGuid
-                rule.Metadata["ImageMonikerGuid"] = Guid.Parse("AE27A6B0-E345-4288-96DF-5EAF394EE369");
-
-                // KnownImageIds.Execute
-                rule.Metadata["ImageMonikerId"] = 1173;
-
-                rule.DataSource = new DataSource
-                {
-                    Persistence = "LaunchProfile",
-                    HasConfigurationCondition = false,
-                    ItemType = "LaunchProfile"
-                };
-
-                rule.Properties.Add(new StringProperty
-                {
-                    Name = "ExecutablePath",
-                    DisplayName = "Executable",
-                    Description = "Path to the executable to run.",
-                    Subtype = "file"
-                });
-
-                rule.EndInit();
-
-                rules.Add(rule);
-            }
-
-            return this.rules;
+            return this.rules.Value;
         }
     }
 }
@@ -300,6 +301,7 @@ Important points:
 - The `Order` attribute is also required. Generally an `orderPrecedence` of "0" is fine, unless you are going to return a `Rule` object that extends an existing `Rule` from a different `IRuleObjectProvider`. In that case the `Order` of your `IRuleObjectProvider` must be higher than the other one.
 - The set of `Rule` objects and the `Rule`s themselves should not depend on any VS state. That is, _do not_ dynamically generate different sets of `Rule`s, properties, etc., in the `GetRules` method based on the state of your project or any VS setting. They should be static in the same way that `Rule`s loaded from .xaml files are static.
   - Exception: It is fine for user-facing strings to vary based on the VS locale settings, as the locale cannot change while VS is running.
+- `CreateRules` must handle concurrent access, hence the use of `System.Lazy` in the example above.
 
 ### Step 3: Add the assembly as MEF asset
 
