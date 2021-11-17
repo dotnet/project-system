@@ -17,7 +17,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Workloads
     internal class MissingWorkloadDetector : OnceInitializedOnceDisposedAsync, IProjectDynamicLoadComponent
     {
         private readonly ConfiguredProject _project;
-        private readonly IMissingWorkloadRegistrationService _missingWorkloadRegistrationService;
+        private readonly IMissingSetupComponentRegistrationService _missingSetupComponentRegistrationService;
         private readonly IWorkloadDescriptorDataSource _workloadDescriptorDataSource;
         private readonly IProjectFaultHandlerService _projectFaultHandlerService;
         private readonly IProjectSubscriptionService _projectSubscriptionService;
@@ -34,7 +34,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Workloads
         public MissingWorkloadDetector(
             ConfiguredProject project,
             IWorkloadDescriptorDataSource workloadDescriptorDataSource,
-            IMissingWorkloadRegistrationService missingWorkloadRegistrationService,
+            IMissingSetupComponentRegistrationService missingSetupComponentRegistrationService,
             IProjectThreadingService threadingService,
             IProjectFaultHandlerService projectFaultHandlerService,
             IProjectSubscriptionService projectSubscriptionService)
@@ -42,7 +42,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Workloads
         {
             _project = project;
             _workloadDescriptorDataSource = workloadDescriptorDataSource;
-            _missingWorkloadRegistrationService = missingWorkloadRegistrationService;
+            _missingSetupComponentRegistrationService = missingSetupComponentRegistrationService;
             _projectFaultHandlerService = projectFaultHandlerService;
             _projectSubscriptionService = projectSubscriptionService;
         }
@@ -58,7 +58,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Workloads
         {
             _enabled = false;
 
-            _missingWorkloadRegistrationService.UnregisterProjectConfiguration(_projectGuid, _project);
+            _missingSetupComponentRegistrationService.UnregisterProjectConfiguration(_projectGuid, _project);
 
             return Task.CompletedTask;
         }
@@ -76,7 +76,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Workloads
             _projectGuid = await _project.UnconfiguredProject.GetProjectGuidAsync();
             _joinedDataSources = ProjectDataSources.JoinUpstreamDataSources(JoinableFactory, _projectFaultHandlerService, _projectSubscriptionService.ProjectSource, _workloadDescriptorDataSource);
 
-            _missingWorkloadRegistrationService.RegisterProjectConfiguration(_projectGuid, _project);
+            _missingSetupComponentRegistrationService.RegisterProjectConfiguration(_projectGuid, _project);
 
             Action<IProjectVersionedValue<ValueTuple<IProjectSnapshot, ISet<WorkloadDescriptor>>>> action = OnWorkloadDescriptorsComputed;
 
@@ -108,7 +108,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Workloads
                 }
             }
 
-            _missingWorkloadRegistrationService.RegisterMissingWorkloads(_projectGuid, _project, pair.Value.workloadDescriptors);
+            _missingSetupComponentRegistrationService.RegisterMissingWorkloads(_projectGuid, _project, pair.Value.workloadDescriptors);
         }
     }
 }

@@ -7,26 +7,26 @@ using Microsoft.VisualStudio.Shell;
 namespace Microsoft.VisualStudio.ProjectSystem.VS
 {
     /// <summary>
-    /// Initializes the exported <see cref="IMissingWorkloadRegistrationService"/> when the package loads.
+    /// Initializes the exported <see cref="IMissingSetupComponentRegistrationService"/> when the package loads.
     /// </summary>
     [Export(typeof(IPackageService))]
-    internal sealed class MissingWorkloadRegistrationServiceInitializer : IPackageService
+    internal sealed class MissingSetupComponentRegistrationServiceInitializer : IPackageService
     {
         private readonly IProjectServiceAccessor _projectServiceAccessor;
 
         [ImportingConstructor]
-        public MissingWorkloadRegistrationServiceInitializer(IProjectServiceAccessor projectServiceAccessor)
+        public MissingSetupComponentRegistrationServiceInitializer(IProjectServiceAccessor projectServiceAccessor)
         {
             _projectServiceAccessor = projectServiceAccessor;
         }
 
         public Task InitializeAsync(IAsyncServiceProvider asyncServiceProvider)
         {
-            IMissingWorkloadRegistrationService missingWorkloadRegistrationService = _projectServiceAccessor
+            IMissingSetupComponentRegistrationService missingWorkloadRegistrationService = _projectServiceAccessor
                 .GetProjectService()
                 .Services
                 .ExportProvider
-                .GetExport<IMissingWorkloadRegistrationService>()
+                .GetExport<IMissingSetupComponentRegistrationService>()
                 .Value;
 
             return missingWorkloadRegistrationService.InitializeAsync();
