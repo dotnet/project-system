@@ -49,6 +49,22 @@ steps:
 - script: $(Build.SourcesDirectory)\build.cmd /build /test /ci /diagnostic /no-deploy /no-integration /no-ibc /no-clearnugetcache /configuration $(BuildConfiguration)
   displayName: Build ProjectSystem.sln
 
+- task: PublishBuildArtifacts@1
+  inputs:
+    PathtoPublish: $(Build.StagingDirectory)\artifacts\Release\obj\Microsoft.VisualStudio.AppDesigner\
+    ArtifactName: AppDesignerObjFolder
+    ArtifactType: Container
+  displayName: 'Publish Artifact: AppDesigner Obj folder'
+  condition: succeededOrFailed()
+
+- task: PublishBuildArtifacts@1
+  inputs:
+    PathtoPublish: $(Build.StagingDirectory)\artifacts\Release\obj\Microsoft.VisualStudio.Editors\
+    ArtifactName: EditorsObjFolder
+    ArtifactType: Container
+  displayName: 'Publish Artifact: Editors Obj folder'
+  condition: succeededOrFailed()
+
 # - task: Ref12.ref12-analyze-task.ref12-analyze-task.Ref12Analyze@0
 #   displayName: Produce Codex index for http://index
 #   inputs:
