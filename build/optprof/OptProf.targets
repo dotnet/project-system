@@ -1,0 +1,22 @@
+<!-- Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information. -->
+
+<!-- OptProf targets for OptProf optimization -->
+<!-- Configure OptProf and select tests. Adding or removing tests requires a change to OptProf.runsettings. -->
+<Project>
+  <PropertyGroup>
+    <InstallationPath Condition="'$(InstallationPath)' == ''">Common7\IDE\CommonExtensions\Microsoft\Project\$(TargetName).dll</InstallationPath>
+  </PropertyGroup>
+  <ItemGroup Label="OptProf Configuration">
+    <OptProf Include="$(OutputPath)$(AssemblyName).dll">
+      <Technology>IBC</Technology>
+      <InstallationPath>$(InstallationPath)</InstallationPath>
+      <InstrumentationArguments>/ExeConfig:"%VisualStudio.InstallationUnderTest.Path%\Common7\IDE\vsn.exe"</InstrumentationArguments>
+      <Scenarios>
+        <TestContainer Name="Microsoft.VisualStudio.ProjectSystem.DDRIT">
+          <TestCase Order="1" FullyQualifiedName="Microsoft.VisualStudio.ProjectSystem.DDRIT.OptProfOpenCloseTest.OpenAndCloseProjectTestSolution" />
+        </TestContainer>
+      </Scenarios>
+    </OptProf>
+  </ItemGroup>
+
+</Project>

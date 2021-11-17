@@ -2,4 +2,5 @@
 <Project>
   <Import Project="..\Directory.Build.targets" />
   <Import Project="..\build\import\VisualStudio.XamlRules.targets"/>
+  <Import Project="..\build\optprof\OptProf.targets" />
 </Project>
