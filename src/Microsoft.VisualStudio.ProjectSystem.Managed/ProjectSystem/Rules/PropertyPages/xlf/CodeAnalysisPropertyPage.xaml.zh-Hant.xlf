@@ -64,17 +64,17 @@
       </trans-unit>
       <trans-unit id="EnumValue|AnalysisLevel.5.0-all|DisplayName">
         <source>5.0 All</source>
-        <target state="new">5.0 All</target>
+        <target state="translated">5.0 全部</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|AnalysisLevel.5.0-minimum|DisplayName">
         <source>5.0 Minimum</source>
-        <target state="new">5.0 Minimum</target>
+        <target state="translated">最小 5.0</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|AnalysisLevel.5.0-recommended|DisplayName">
         <source>5.0 Recommended</source>
-        <target state="new">5.0 Recommended</target>
+        <target state="translated">建議 5.0</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|AnalysisLevel.5.0|DisplayName">
@@ -84,17 +84,17 @@
       </trans-unit>
       <trans-unit id="EnumValue|AnalysisLevel.6.0-all|DisplayName">
         <source>6.0 All</source>
-        <target state="new">6.0 All</target>
+        <target state="translated">6.0 全部</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|AnalysisLevel.6.0-minimum|DisplayName">
         <source>6.0 Minimum</source>
-        <target state="new">6.0 Minimum</target>
+        <target state="translated">最小 6.0</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|AnalysisLevel.6.0-recommended|DisplayName">
         <source>6.0 Recommended</source>
-        <target state="new">6.0 Recommended</target>
+        <target state="translated">建議 6.0</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|AnalysisLevel.6.0|DisplayName">
@@ -104,17 +104,17 @@
       </trans-unit>
       <trans-unit id="EnumValue|AnalysisLevel.latest-all|DisplayName">
         <source>Latest All</source>
-        <target state="new">Latest All</target>
+        <target state="translated">全部最新</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|AnalysisLevel.latest-minimum|DisplayName">
         <source>Latest Minimum</source>
-        <target state="new">Latest Minimum</target>
+        <target state="translated">最新的最小值</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|AnalysisLevel.latest-recommended|DisplayName">
         <source>Latest Recommended</source>
-        <target state="new">Latest Recommended</target>
+        <target state="translated">最新的建議</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|AnalysisLevel.latest|DisplayName">
@@ -129,17 +129,17 @@
       </trans-unit>
       <trans-unit id="EnumValue|AnalysisLevel.preview-all|DisplayName">
         <source>Preview All</source>
-        <target state="new">Preview All</target>
+        <target state="translated">全部預覽</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|AnalysisLevel.preview-minimum|DisplayName">
         <source>Preview Minimum</source>
-        <target state="new">Preview Minimum</target>
+        <target state="translated">預覽最小值</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|AnalysisLevel.preview-recommended|DisplayName">
         <source>Preview Recommended</source>
-        <target state="new">Preview Recommended</target>
+        <target state="translated">建議的預覽</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|AnalysisLevel.preview|DisplayName">
