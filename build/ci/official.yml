@@ -51,7 +51,7 @@ steps:
 
 - task: PublishBuildArtifacts@1
   inputs:
-    PathtoPublish: $(Build.StagingDirectory)\artifacts\Release\obj\Microsoft.VisualStudio.AppDesigner\
+    PathtoPublish: $(Build.SourcesDirectory)\artifacts\Release\obj\Microsoft.VisualStudio.AppDesigner\
     ArtifactName: AppDesignerObjFolder
     ArtifactType: Container
   displayName: 'Publish Artifact: AppDesigner Obj folder'
@@ -59,7 +59,7 @@ steps:
 
 - task: PublishBuildArtifacts@1
   inputs:
-    PathtoPublish: $(Build.StagingDirectory)\artifacts\Release\obj\Microsoft.VisualStudio.Editors\
+    PathtoPublish: $(Build.SourcesDirectory)\artifacts\Release\obj\Microsoft.VisualStudio.Editors\
     ArtifactName: EditorsObjFolder
     ArtifactType: Container
   displayName: 'Publish Artifact: Editors Obj folder'
