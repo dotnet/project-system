@@ -23,6 +23,7 @@
     <MicrosoftDotNetIBCMergeVersion>5.1.0-beta.21473.1</MicrosoftDotNetIBCMergeVersion>
     <MicrosoftDiaSymReaderPdb2PdbVersion>1.1.0-beta1-62624-01</MicrosoftDiaSymReaderPdb2PdbVersion>
     <MicroBuildPluginsSwixBuildVersion>1.0.147</MicroBuildPluginsSwixBuildVersion>
+    <MicroBuildVisualStudioVersion>2.0.61</MicroBuildVisualStudioVersion>
     <CodecovVersion>1.12.4</CodecovVersion>
 
     <!-- VS SDK -->

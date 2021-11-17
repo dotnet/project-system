@@ -31,6 +31,7 @@ steps:
 
 # This requires the OptimizationInputs via the 'Publish OptimizationInputs drop' step in the release pipeline.
 # To generate ProfilingInputs for the first time, set this input: ShouldSkipOptimize: true
+# This plugin will restore MicroBuild.Plugins.OptProf which runs the target GenerateProfilingInputs on each project
 - task: MicroBuildOptProfPlugin@6
   inputs:
     ProfilingInputsDropName: 'ProfilingInputs/$(System.TeamProject)/$(Build.Repository.Name)/$(Build.SourceBranchName)/$(Build.BuildId)'
