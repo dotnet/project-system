@@ -11,7 +11,7 @@ $runsettingsXml = [Xml.XmlDocument](Get-Content $runsettingsPath)
 $testStores = $runsettingsXml.RunSettings.TestConfiguration.SelectSingleNode('TestStores')
 
 $profilingInputsStore = $runsettingsXml.CreateElement('TestStore')
-$profilingInputsStore.SetAttribute('Uri', $profilingInputsPath)
+$profilingInputsStore.SetAttribute('Uri', "vstsdrop:$profilingInputsPath")
 $testStores.AppendChild($profilingInputsStore)
 
 $buildDropStore = $runsettingsXml.CreateElement('TestStore')
@@ -24,7 +24,7 @@ if(-not $buildDropPath)
   }
   $buildDropJson = Get-Content $bootstrapperInfoPath | ConvertFrom-Json
   $dropHashAndGuid = $buildDropJson[0].BuildDrop.TrimStart('https://vsdrop.corp.microsoft.com/file/v1/Products/DevDiv/VS/')
-  $buildDropPath = "Tests/DevDiv/VS/$dropHashAndGuid"
+  $buildDropPath = "vstsdrop:Tests/DevDiv/VS/$dropHashAndGuid"
 }
 $buildDropStore.SetAttribute('Uri', $buildDropPath)
 $testStores.AppendChild($buildDropStore)
