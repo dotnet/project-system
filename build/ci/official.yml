@@ -127,7 +127,7 @@ steps:
 #     publishLocation: Container
 #   displayName: 'Publish Artifact: symbols'
 
-# - task: ms-vscs-artifact.build-tasks.artifactDropTask-1.artifactDropTask@0
+- task: ms-vscs-artifact.build-tasks.artifactDropTask-1.artifactDropTask@0
   inputs:
     dropServiceURI: 'https://devdiv.artifacts.visualstudio.com'
     buildNumber: 'ProfilingInputs/$(System.TeamProject)/$(Build.Repository.Name)/$(Build.SourceBranchName)/$(Build.BuildId)'
