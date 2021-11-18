@@ -194,7 +194,7 @@
       </trans-unit>
       <trans-unit id="DynamicEnumProperty|PlatformTarget|DisplayName">
         <source>Platform target</source>
-        <target state="translated">平台目标</target>
+        <target state="translated">目标平台</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumProperty|DebugType|Description">
