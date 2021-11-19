@@ -2,8 +2,6 @@
 
 This documentation details the updated Project Properties UI and associated back end, added to Visual Studio in 2021.
 
-⚠ This feature is still under development. These documents may talk about features as if they already exist, though they may not yet be available in public builds.
-
 ## Goals
 
 1. Metadata-driven design. The existing property pages are mostly a series of custom WinForms- and/or WPF-based controls, often with custom code for accessing underlying property information. Adding a new page or even a new property is difficult and time-consuming, and properly enforcing visual consistency, theming, accessibility, and extensibility is almost impossible. With the new pages we take the approach of defining pages and properties in a declarative manner, and having the system generate the corresponding UI using metadata on the properties. Similarly, property metadata drives the retrieval and storage of property values.
