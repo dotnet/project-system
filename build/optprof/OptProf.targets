@@ -7,6 +7,7 @@
     <InstallationPath Condition="'$(InstallationPath)' == ''">Common7\IDE\CommonExtensions\Microsoft\Project\$(TargetName).dll</InstallationPath>
   </PropertyGroup>
   <ItemGroup Label="OptProf Configuration">
+    <PackageReference Include="MicroBuild.VisualStudio" PrivateAssets="all" />
     <OptProf Include="$(OutputPath)$(AssemblyName).dll">
       <Technology>IBC</Technology>
       <InstallationPath>$(InstallationPath)</InstallationPath>
