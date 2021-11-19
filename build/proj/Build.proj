@@ -48,7 +48,8 @@
         Test=$(Test);
         Sign=$(Sign);
         IntegrationTest=$(IntegrationTest);
-      </CoreBuildProperties>      
+        SignType="test";
+      </CoreBuildProperties>
     </PropertyGroup>
 
     <MSBuild
