@@ -31,7 +31,8 @@ steps:
 
 # This requires the OptimizationInputs via the 'Publish OptimizationInputs drop' step in the release pipeline.
 # To generate ProfilingInputs for the first time, set this input: ShouldSkipOptimize: true
-# This plugin will restore MicroBuild.Plugins.OptProf which runs the target GenerateProfilingInputs on each project
+# This plugin will restore MicroBuild.Plugins.OptProf which is required to create ProfilingInputs data.
+# The MicroBuild.VisualStudio package uses MicroBuild.Plugins.OptProf to run the target GenerateProfilingInputs on each project.
 - task: MicroBuildOptProfPlugin@6
   inputs:
     ProfilingInputsDropName: 'ProfilingInputs/$(System.TeamProject)/$(Build.Repository.Name)/$(Build.SourceBranchName)/$(Build.BuildId)'
@@ -41,13 +42,14 @@ steps:
     ShouldSkipOptimize: true
   displayName: 'Install OptProf Plugin'
 
-- task: NuGetCommand@2
-  displayName: Restore 'Microsoft.DotNet.IBCMerge' package
-  inputs:
-    command: restore
-    feedsToUse: config
-    restoreSolution: 'build\proj\internal\RestoreIBCMerge.csproj'
-    nugetConfigPath: 'NuGet.config'
+# NOTE: Shouldn't need this for now since this was for manual IBC merging in the AppDesigner/Editors projects.
+# - task: NuGetCommand@2
+#   displayName: Restore 'Microsoft.DotNet.IBCMerge' package
+#   inputs:
+#     command: restore
+#     feedsToUse: config
+#     restoreSolution: 'build\proj\internal\RestoreIBCMerge.csproj'
+#     nugetConfigPath: 'NuGet.config'
 
 # TODO: Merged PIAs - reset to /ibc once private feeds are removed and Microsoft.DotNet.IBCMerge is reset
 - script: $(Build.SourcesDirectory)\build.cmd /build /test /ci /diagnostic /no-deploy /no-integration /no-ibc /no-sign /no-clearnugetcache /configuration $(BuildConfiguration)
