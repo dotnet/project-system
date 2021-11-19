@@ -14,7 +14,7 @@
   <Import Project="..\import\NuGet.props" />
   <Import Project="..\import\RepoLayout.props" />
 
-  <!-- <Target Name="Sign">
+  <Target Name="Sign">
 
     <PropertyGroup>
       <_MSBuildExePath>$(VSINSTALLDIR)\MSBuild\$(MSBuildToolsVersion)\Bin\msbuild.exe</_MSBuildExePath>
@@ -32,6 +32,6 @@
     
     <Exec Command="$(NuGetPackageRoot)roslyntools.signtool\$(RoslynToolsSignToolVersion)\tools\SignTool.exe @(SignToolArgs, ' ')"
           LogStandardErrorAsError="true" />
-  </Target> -->
+  </Target>
 
 </Project>
