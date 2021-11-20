@@ -23,7 +23,7 @@ if(-not $buildDropPath)
     exit -1
   }
   $buildDropJson = Get-Content $bootstrapperInfoPath | ConvertFrom-Json
-  $dropHashAndGuid = $buildDropJson[0].BuildDrop.TrimStart('https://vsdrop.corp.microsoft.com/file/v1/Products/DevDiv/VS/')
+  $dropHashAndGuid = $buildDropJson[0].BuildDrop.Replace('https://vsdrop.corp.microsoft.com/file/v1/Products/DevDiv/VS/', '')
   $buildDropPath = "vstsdrop:Tests/DevDiv/VS/$dropHashAndGuid"
 }
 $buildDropStore.SetAttribute('Uri', $buildDropPath)

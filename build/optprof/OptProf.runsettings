@@ -20,7 +20,6 @@
     <TestStores />
     <TestContainers>
       <TestContainer FileName="Microsoft.VisualStudio.ProjectSystem.DDRIT.dll" />
-      <TestContainer FileName="VSPE.dll" />
     </TestContainers>
     <TestCaseFilter>FullyQualifiedName=Microsoft.VisualStudio.ProjectSystem.DDRIT.OptProfOpenCloseTest.OpenAndCloseProjectTestSolution</TestCaseFilter>
     <TestIterations>1</TestIterations>

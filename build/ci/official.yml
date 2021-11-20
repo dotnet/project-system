@@ -159,6 +159,7 @@ steps:
     channelName: 'int.main'
     manifests: '$(Build.SourcesDirectory)\artifacts\$(BuildConfiguration)\VSSetup\Insertion\Microsoft.VisualStudio.ProjectSystem.Managed.vsman'
     outputFolder: $(Build.SourcesDirectory)\artifacts\$(BuildConfiguration)\VSSetup\Insertion
+    bootstrapperCoreVersion: '1.15.76-develop-g446ca603'
   displayName: Build VS bootstrapper
   condition: succeeded()
 
@@ -193,6 +194,7 @@ steps:
   displayName: Upload VSTS Drop
   inputs:
     DropFolder: 'artifacts\$(BuildConfiguration)\VSSetup\Insertion'
+    DropName: 'Products/$(System.TeamProject)/$(Build.Repository.Name)/$(Build.SourceBranchName)/$(Build.BuildId)'
     AccessToken: $(System.AccessToken)
 
 - task: CopyFiles@2
