@@ -1,6 +1,6 @@
 ﻿# Project Property Pages
 
-This documentation details the updated Project Properties UI and associated back end, added to Visual Studio in 2021.
+This documentation details the updated Project Properties UI and associated back end, first released in Visual Studio 2022.
 
 ## Goals
 
