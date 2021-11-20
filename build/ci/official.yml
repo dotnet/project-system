@@ -190,11 +190,11 @@ steps:
   displayName: 'Publish Artifact: MicroBuildOutputs'
   condition: succeededOrFailed()
 
+# TODO: DropName: 'Products/$(System.TeamProject)/$(Build.Repository.Name)/$(Build.SourceBranchName)/$(Build.BuildId)'
 - task: MicroBuildUploadVstsDropFolder@1
   displayName: Upload VSTS Drop
   inputs:
     DropFolder: 'artifacts\$(BuildConfiguration)\VSSetup\Insertion'
-    DropName: 'Products/$(System.TeamProject)/$(Build.Repository.Name)/$(Build.SourceBranchName)/$(Build.BuildId)'
     AccessToken: $(System.AccessToken)
 
 - task: CopyFiles@2
