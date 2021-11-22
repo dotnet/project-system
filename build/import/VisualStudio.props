@@ -9,10 +9,10 @@
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xaml" />
-    <Reference Include="WindowsFormsIntegration" />    
+    <Reference Include="WindowsFormsIntegration" />
     
     <!-- Toolset -->
-    <PackageReference Include="RoslynTools.ModifyVsixManifest" PrivateAssets="All"/>    
+    <PackageReference Include="RoslynTools.ModifyVsixManifest" PrivateAssets="All"/>
     <PackageReference Include="Microsoft.VSSDK.BuildTools" PrivateAssets="All" />
 
     <!-- VS SDK -->
@@ -32,5 +32,5 @@
     <!-- Explicitly referenced to prevent upstream packages from bringing in old PIAs -->
     <PackageReference Include="EnvDTE" Pack="false" ExcludeAssets="compile" PrivateAssets="all" />
   </ItemGroup>
- 
+
 </Project>
