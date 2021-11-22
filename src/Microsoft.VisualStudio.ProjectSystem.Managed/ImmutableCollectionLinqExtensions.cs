@@ -41,17 +41,6 @@ namespace Microsoft.VisualStudio
             return false;
         }
 
-        public static bool Any<T>(this ImmutableArray<T> source, Func<T, bool> predicate)
-        {
-            foreach (T obj in source)
-            {
-                if (predicate(obj))
-                    return true;
-            }
-
-            return false;
-        }
-
         public static T? FirstOrDefault<T, TArg>(this ImmutableArray<T> source, Func<T, TArg, bool> predicate, TArg arg)
         {
             foreach (T obj in source)
