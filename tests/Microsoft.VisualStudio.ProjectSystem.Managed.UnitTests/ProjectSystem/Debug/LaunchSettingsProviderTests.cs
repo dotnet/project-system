@@ -32,8 +32,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             var specialFilesManager = IActiveConfiguredValueFactory.ImplementValue<IAppDesignerFolderSpecialFileProvider?>(() => IAppDesignerFolderSpecialFileProviderFactory.ImplementGetFile(appDesignerFolder));
             var project = UnconfiguredProjectFactory.Create(fullPath: @"c:\test\Project1\Project1.csproj");
             var properties = ProjectPropertiesFactory.Create(project, new[] { debuggerData });
-            var commonServices = IUnconfiguredProjectCommonServicesFactory.Create(project, IProjectThreadingServiceFactory.Create(), null, properties);
-            var projectServices = IUnconfiguredProjectServicesFactory.Create(IProjectAsynchronousTasksServiceFactory.Create());
+            var threadingService = IProjectThreadingServiceFactory.Create();
+            var commonServices = IUnconfiguredProjectCommonServicesFactory.Create(project, threadingService, null, properties);
+            var projectServices = IUnconfiguredProjectServicesFactory.Create(
+                IProjectAsynchronousTasksServiceFactory.Create(),
+                projectService: IProjectServiceFactory.Create(
+                    services: ProjectServicesFactory.Create(
+                        threadingService: threadingService)));
             var projectFaultHandlerService = IProjectFaultHandlerServiceFactory.Create();
             var joinableTaskContext = new JoinableTaskContext();
             var provider = new LaunchSettingsUnderTest(project, projectServices, fileSystem ?? new IFileSystemMock(), commonServices, null, specialFilesManager, projectFaultHandlerService, new DefaultLaunchProfileProvider(project), joinableTaskContext);
