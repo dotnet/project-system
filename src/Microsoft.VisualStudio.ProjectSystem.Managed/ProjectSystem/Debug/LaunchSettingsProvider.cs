@@ -230,22 +230,26 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         /// </summary>
         protected async Task ProjectRuleBlock_ChangedAsync(IProjectVersionedValue<ValueTuple<IProjectSubscriptionUpdate, IProjectCapabilitiesSnapshot>> projectSnapshot)
         {
-            if (projectSnapshot.Value.Item1.CurrentState.TryGetValue(ProjectDebugger.SchemaName, out IProjectRuleSnapshot ruleSnapshot))
+            // Need to use JTF.RunAsync here to ensure that this task can coordinate with others.
+            await JoinableFactory.RunAsync(async () =>
             {
-                ruleSnapshot.Properties.TryGetValue(ProjectDebugger.ActiveDebugProfileProperty, out string activeProfile);
-                ILaunchSettings snapshot = CurrentSnapshot;
-                if (snapshot == null || !LaunchProfile.IsSameProfileName(activeProfile, snapshot.ActiveProfile?.Name))
+                if (projectSnapshot.Value.Item1.CurrentState.TryGetValue(ProjectDebugger.SchemaName, out IProjectRuleSnapshot ruleSnapshot))
                 {
-                    // Updates need to be sequenced
-                    await _sequentialTaskQueue.ExecuteTask(async () =>
+                    ruleSnapshot.Properties.TryGetValue(ProjectDebugger.ActiveDebugProfileProperty, out string activeProfile);
+                    ILaunchSettings snapshot = CurrentSnapshot;
+                    if (snapshot == null || !LaunchProfile.IsSameProfileName(activeProfile, snapshot.ActiveProfile?.Name))
                     {
-                        using (ProjectCapabilitiesContext.CreateIsolatedContext(_commonProjectServices.Project, projectSnapshot.Value.Item2))
+                        // Updates need to be sequenced
+                        await _sequentialTaskQueue.ExecuteTask(async () =>
                         {
-                            await UpdateActiveProfileInSnapshotAsync(activeProfile);
-                        }
-                    });
+                            using (ProjectCapabilitiesContext.CreateIsolatedContext(_commonProjectServices.Project, projectSnapshot.Value.Item2))
+                            {
+                                await UpdateActiveProfileInSnapshotAsync(activeProfile);
+                            }
+                        });
+                    }
                 }
-            }
+            });
         }
 
         /// <summary>
