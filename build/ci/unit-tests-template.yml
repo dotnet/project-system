@@ -4,6 +4,16 @@ jobs:
   pool: ${{ parameters.pool }}
   timeoutInMinutes: 20
   steps:
+    - checkout: none
+
+    - script: |
+        @echo on
+        @git version
+        git init
+        git fetch --no-auto-gc --no-recurse-submodules --no-show-forced-updates --no-tags --depth=1 "$(Build.Repository.Uri)" "$(Build.SourceVersion)"
+        git -c advice.detachedHead=false checkout --no-progress "$(Build.SourceVersion)"
+      displayName: Shallow Checkout
+
     - script: $(Build.SourcesDirectory)\build.cmd /build /test /ci /sign /diagnostic /clearnugetcache /no-deploy /no-integration /no-ibc /configuration ${{ parameters.configuration }}
       displayName: Build ProjectSystem.sln
 
