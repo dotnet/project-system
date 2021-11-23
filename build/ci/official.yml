@@ -24,7 +24,7 @@ steps:
 - task: ms-vseng.MicroBuildTasks.30666190-6959-11e5-9f96-f56098202fef.MicroBuildSigningPlugin@1
   displayName: Install Signing Plugin
   inputs:
-    signType: test
+    signType: real
     esrpSigning: true
 
 - task: ms-vseng.MicroBuildTasks.32f78468-e895-4f47-962c-58a699361df8.MicroBuildSwixPlugin@1
@@ -211,13 +211,13 @@ steps:
   displayName: Copy Drop
   condition: succeededOrFailed()
 
-- task: PublishBuildArtifacts@1
-  inputs:
-    PathtoPublish: '$(Build.ArtifactStagingDirectory)/drop/artifacts/$(BuildConfiguration)'
-    ArtifactName: '$(Build.BuildNumber)'
-    publishLocation: Container
-  displayName: 'Publish Artifact: drop'
-  condition: succeededOrFailed()
+# - task: PublishBuildArtifacts@1
+#   inputs:
+#     PathtoPublish: '$(Build.ArtifactStagingDirectory)/drop/artifacts/$(BuildConfiguration)'
+#     ArtifactName: '$(Build.BuildNumber)'
+#     publishLocation: Container
+#   displayName: 'Publish Artifact: drop'
+#   condition: succeededOrFailed()
 
 - task: ms-vseng.MicroBuildShipTasks.7c429315-71ba-4cb3-94bb-f829c95f7915.MicroBuildCodesignVerify@2
   displayName: Verify Signed Files
