@@ -3,8 +3,4 @@
   <Import Project="$(MSBuildThisFileDirectory)..\build\optprof\OptProf.targets" />
   <Import Project="$(MSBuildThisFileDirectory)..\Directory.Build.targets" />
   <Import Project="$(MSBuildThisFileDirectory)..\build\import\VisualStudio.XamlRules.targets"/>
-
-  <PropertyGroup>
-    <MicroBuild_DoNotStrongNameSign>true</MicroBuild_DoNotStrongNameSign>
-  </PropertyGroup>
 </Project>

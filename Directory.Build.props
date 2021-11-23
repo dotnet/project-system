@@ -5,6 +5,7 @@
     <IsIntegrationTestProject Condition="'$(IsIntegrationTestProject)' == ''">false</IsIntegrationTestProject>
     <IsTestProject Condition="'$(IsTestProject)' == ''">false</IsTestProject>
     <OutDirName Condition="'$(OutDirName)' == ''">Dlls</OutDirName>
+    <MicroBuild_DoNotStrongNameSign>true</MicroBuild_DoNotStrongNameSign>
   </PropertyGroup>
 
   <Import Project="build\import\NuGet.props"/>
