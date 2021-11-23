@@ -145,7 +145,7 @@ Enabling up-to-date check logging for old-style (non-SDK) projects is a little m
 
 Run the same command with a `0` instead of a `1` to disable this logging.
 
-Note that `"%cd%"` evaluates to the current directory. When you first open a Developer Prompt, this path will be correct. To execute this command from arbitrary locations, you'll need to substitute the relevant quoted path, such as `"C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise"`, with no trailing `/` or `>` character.
+Note that `"%cd%"` evaluates to the current directory. When you first open a Developer Prompt, this path will be correct. To execute this command from arbitrary locations, you'll need to substitute the relevant quoted path, such as `"C:\Program Files\Microsoft Visual Studio\2022\Enterprise"`, with no trailing `/` or `>` character.
 
 You can change this value while VS is running and it will take effect immediately.
 
