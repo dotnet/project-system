@@ -5,14 +5,14 @@ using Microsoft.VisualStudio.Composition;
 namespace Microsoft.VisualStudio.ProjectSystem.Debug
 {
     /// <summary>
-    /// A variant of <see cref="ILaunchSettingsProvider.SourceBlock"/> that provides
-    /// versioned data and is joinable. Ideally, everywhere <see cref="ILaunchSettingsProvider.SourceBlock"/>
+    /// An update of <see cref="ILaunchSettingsProvider"/> that provides versioned data
+    /// and is joinable. Ideally, everywhere <see cref="ILaunchSettingsProvider.SourceBlock"/>
     /// provides data that feeds into another data flow block we should use this instead,
     /// as joinable data flow blocks can coordinate their work in such a way as to avoid
     /// deadlocks.
     /// </summary>
     [ProjectSystemContract(ProjectSystemContractScope.UnconfiguredProject, ProjectSystemContractProvider.Private, Cardinality = ImportCardinality.ExactlyOne)]
-    internal interface IVersionedLaunchSettingsProvider : IProjectValueDataSource<ILaunchSettings>
+    internal interface IVersionedLaunchSettingsProvider : IProjectValueDataSource<ILaunchSettings>, ILaunchSettingsProvider3
     {
     }
 }

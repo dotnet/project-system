@@ -68,7 +68,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
         /// </summary>
         public Task<IDynamicEnumValuesGenerator> GetProviderAsync(IList<NameValuePair>? options)
             => Task.FromResult<IDynamicEnumValuesGenerator>(
-                new DebugProfileEnumValuesGenerator((ILaunchSettingsProvider)LaunchSettingProvider, ProjectThreadingService));
+                new DebugProfileEnumValuesGenerator(LaunchSettingProvider, ProjectThreadingService));
 
         protected override void Initialize()
         {
@@ -84,7 +84,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
 
             IBroadcastBlock<IProjectVersionedValue<IReadOnlyList<IEnumValue>>> broadcastBlock = DataflowBlockSlim.CreateBroadcastBlock<IProjectVersionedValue<IReadOnlyList<IEnumValue>>>();
 
-            _launchProfileProviderLink = LaunchSettingProvider.SourceBlock.LinkTo(
+            // The interface has two definitions of SourceBlock: one from
+            // ILaunchSettingsProvider, and one from IProjectValueDataSource<T> (via
+            // IVersionedLaunchSettingsProvider). We need the cast to pick the proper one.
+            _launchProfileProviderLink = ((IProjectValueDataSource<ILaunchSettings>)LaunchSettingProvider).SourceBlock.LinkTo(
                 debugProfilesBlock,
                 linkOptions: DataflowOption.PropagateCompletion);
 
