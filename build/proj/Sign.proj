@@ -21,7 +21,7 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <SignToolArgs Include='-outputconfig "$(OutputConfigFile)"' Condition="'$(OutputConfigFile)' != ''" />      
+      <SignToolArgs Include='-outputconfig "$(OutputConfigFile)"' Condition="'$(OutputConfigFile)' != ''" />
       <SignToolArgs Include='-nugetPackagesPath "$(NuGetPackageRoot)\"' />
       <SignToolArgs Include='-intermediateOutputPath "$(ArtifactsObjDir)\"' />
       <SignToolArgs Include='-config "$(ConfigFile)"' />
@@ -29,9 +29,8 @@
       <SignToolArgs Include='-msbuildpath "$(_MSBuildExePath)"' Condition="'$(RealSign)' == 'true'"/>
       <SignToolArgs Include='"$(ArtifactsConfigurationDir)\"' />
     </ItemGroup>
-    
-    <Exec Command="$(NuGetPackageRoot)roslyntools.signtool\$(RoslynToolsSignToolVersion)\tools\SignTool.exe @(SignToolArgs, ' ')"
-          LogStandardErrorAsError="true" />
+
+    <Exec Command="$(NuGetPackageRoot)roslyntools.signtool\$(RoslynToolsSignToolVersion)\tools\SignTool.exe @(SignToolArgs, ' ')" LogStandardErrorAsError="true" />
   </Target>
 
 </Project>
