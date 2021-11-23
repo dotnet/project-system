@@ -192,11 +192,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         {
             base.Initialize();
 
-            // Create our broadcast block for subscribers to ILaunchSettingsProvider to get new ILaunchProfiles information
+            // Create our broadcast block for subscribers to ILaunchSettingsProvider to get new ILaunchSettings information
             _broadcastBlock = DataflowBlockSlim.CreateBroadcastBlock<ILaunchSettings>();
             _changedSourceBlock = _broadcastBlock.SafePublicize();
 
-            // Create our broadcast block for subscribers to IVersionedLaunchSettingsProvider to get new ILaunchProfiles information
+            // Create our broadcast block for subscribers to IVersionedLaunchSettingsProvider to get new ILaunchSettings information
             _versionedBroadcastBlock = DataflowBlockSlim.CreateBroadcastBlock<IProjectVersionedValue<ILaunchSettings>>();
             _versionedChangedSourceBlock = _versionedBroadcastBlock.SafePublicize();
 
