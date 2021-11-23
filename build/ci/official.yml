@@ -53,7 +53,7 @@ steps:
 #     nugetConfigPath: 'NuGet.config'
 
 # TODO: Merged PIAs - reset to /ibc once private feeds are removed and Microsoft.DotNet.IBCMerge is reset
-- script: $(Build.SourcesDirectory)\build.cmd /build /test /ci /diagnostic /no-deploy /no-integration /no-ibc /no-sign /no-clearnugetcache /configuration $(BuildConfiguration)
+- script: $(Build.SourcesDirectory)\build.cmd /build /test /ci /diagnostic /no-deploy /no-integration /no-ibc /no-clearnugetcache /configuration $(BuildConfiguration)
   displayName: Build ProjectSystem.sln
 
 # - task: PublishBuildArtifacts@1
@@ -219,11 +219,11 @@ steps:
   displayName: 'Publish Artifact: drop'
   condition: succeededOrFailed()
 
-# - task: ms-vseng.MicroBuildShipTasks.7c429315-71ba-4cb3-94bb-f829c95f7915.MicroBuildCodesignVerify@2
-#   displayName: Verify Signed Files
-#   inputs:
-#     TargetFolders: $(Build.SourcesDirectory)/artifacts/$(BuildConfiguration)/packages
-#     WhiteListPathForCerts: $(Build.SourcesDirectory)\build\ci\no_authenticode.txt
+- task: ms-vseng.MicroBuildShipTasks.7c429315-71ba-4cb3-94bb-f829c95f7915.MicroBuildCodesignVerify@2
+  displayName: Verify Signed Files
+  inputs:
+    TargetFolders: $(Build.SourcesDirectory)/artifacts/$(BuildConfiguration)/packages
+    WhiteListPathForCerts: $(Build.SourcesDirectory)\build\ci\no_authenticode.txt
 
 # - task: NuGetToolInstaller@0
 #   inputs:
