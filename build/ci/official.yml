@@ -53,7 +53,7 @@ steps:
 #     nugetConfigPath: 'NuGet.config'
 
 # TODO: Merged PIAs - reset to /ibc once private feeds are removed and Microsoft.DotNet.IBCMerge is reset
-- script: $(Build.SourcesDirectory)\build.cmd /build /test /ci /diagnostic /no-deploy /no-integration /no-ibc /no-clearnugetcache /configuration $(BuildConfiguration)
+- script: $(Build.SourcesDirectory)\build.cmd /build /test /ci /sign /diagnostic /no-deploy /no-integration /no-ibc /no-clearnugetcache /configuration $(BuildConfiguration)
   displayName: Build ProjectSystem.sln
 
 # - task: PublishBuildArtifacts@1

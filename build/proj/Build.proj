@@ -48,7 +48,6 @@
         Test=$(Test);
         Sign=$(Sign);
         IntegrationTest=$(IntegrationTest);
-        SignType="test";
       </CoreBuildProperties>
     </PropertyGroup>
 
