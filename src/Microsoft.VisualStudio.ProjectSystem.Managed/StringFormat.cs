@@ -84,19 +84,14 @@ namespace Microsoft.VisualStudio
 
                 // Making sure we call through the non-params array version of String.Format 
                 // where possible to avoid "params" array allocation.
-                if (length == 0)
-                    return Format;
-
-                if (length == 1)
-                    return string.Format(CultureInfo.CurrentCulture, Format, Argument1);
-
-                if (length == 2)
-                    return string.Format(CultureInfo.CurrentCulture, Format, Argument1, Argument2);
-
-                if (length == 3)
-                    return string.Format(CultureInfo.CurrentCulture, Format, Argument1, Argument2, Argument3);
-
-                return string.Format(CultureInfo.CurrentCulture, Format, Arguments);
+                return length switch
+                {
+                    0 => Format,
+                    1 => string.Format(CultureInfo.CurrentCulture, Format, Argument1),
+                    2 => string.Format(CultureInfo.CurrentCulture, Format, Argument1, Argument2),
+                    3 => string.Format(CultureInfo.CurrentCulture, Format, Argument1, Argument2, Argument3),
+                    _ => string.Format(CultureInfo.CurrentCulture, Format, Arguments)
+                };
             }
         }
     }

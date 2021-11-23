@@ -27,25 +27,23 @@ namespace Microsoft.VisualStudio.Text
 
             int length = format.Length;
 
-            if (length == 0)
+            switch (length)
             {
-                builder.Append(format.Format);
-            }
-            else if (length == 1)
-            {
-                builder.AppendFormat(format.Format, format.Argument1);
-            }
-            else if (length == 2)
-            {
-                builder.AppendFormat(format.Format, format.Argument1, format.Argument2);
-            }
-            else if (length == 3)
-            {
-                builder.AppendFormat(format.Format, format.Argument1, format.Argument2, format.Argument3);
-            }
-            else
-            {
-                builder.AppendFormat(format.Format, format.Arguments);
+                case 0:
+                    builder.Append(format.Format);
+                    break;
+                case 1:
+                    builder.AppendFormat(format.Format, format.Argument1);
+                    break;
+                case 2:
+                    builder.AppendFormat(format.Format, format.Argument1, format.Argument2);
+                    break;
+                case 3:
+                    builder.AppendFormat(format.Format, format.Argument1, format.Argument2, format.Argument3);
+                    break;
+                default:
+                    builder.AppendFormat(format.Format, format.Arguments);
+                    break;
             }
         }
 
