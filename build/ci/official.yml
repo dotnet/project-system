@@ -135,16 +135,16 @@ steps:
 #   displayName: 'Publish Artifact: symbols'
 
 # This is required to deploy the tests to devdiv.artifacts.visualstudio.com for the 'Deploy tests' step in the release pipeline.
-# - task: ms-vscs-artifact.build-tasks.artifactDropTask-1.artifactDropTask@0
-#   inputs:
-#     dropServiceURI: 'https://devdiv.artifacts.visualstudio.com'
-#     buildNumber: 'ProfilingInputs/$(System.TeamProject)/$(Build.Repository.Name)/$(Build.SourceBranchName)/$(Build.BuildId)'
-#     sourcePath: '$(Build.ArtifactStagingDirectory)\OptProf\ProfilingInputs'
-#     toLowerCase: false
-#     usePat: true
-#     AccessToken: '$(System.AccessToken)'
-#   displayName: 'Publish to Artifact Services - ProfilingInputs'
-#   condition: succeeded()
+- task: ms-vscs-artifact.build-tasks.artifactDropTask-1.artifactDropTask@0
+  inputs:
+    dropServiceURI: 'https://devdiv.artifacts.visualstudio.com'
+    buildNumber: 'ProfilingInputs/$(System.TeamProject)/$(Build.Repository.Name)/$(Build.SourceBranchName)/$(Build.BuildId)'
+    sourcePath: '$(Build.ArtifactStagingDirectory)\OptProf\ProfilingInputs'
+    toLowerCase: false
+    usePat: true
+    AccessToken: '$(System.AccessToken)'
+  displayName: 'Publish to Artifact Services - ProfilingInputs'
+  condition: succeeded()
 
 # This is needed for signjson.exe used by MicroBuildBuildVSBootstrapper.
 # - task: ms-vseng.MicroBuildTasks.30666190-6959-11e5-9f96-f56098202fef.MicroBuildSigningPlugin@1
@@ -153,42 +153,42 @@ steps:
 #     signType: test
 #     esrpSigning: true
 
-# - task: ms-vseng.MicroBuildTasks.0e9d0d4d-71ec-4e4e-ae40-db9896f1ae74.MicroBuildBuildVSBootstrapper@2
-#   inputs:
-#     vsMajorVersion: 17
-#     channelName: 'int.main'
-#     manifests: '$(Build.SourcesDirectory)\artifacts\$(BuildConfiguration)\VSSetup\Insertion\Microsoft.VisualStudio.ProjectSystem.Managed.vsman'
-#     outputFolder: $(Build.SourcesDirectory)\artifacts\$(BuildConfiguration)\VSSetup\Insertion
-#     bootstrapperCoreVersion: '1.15.76-develop-g446ca603'
-#   displayName: Build VS bootstrapper
-#   condition: succeeded()
+- task: ms-vseng.MicroBuildTasks.0e9d0d4d-71ec-4e4e-ae40-db9896f1ae74.MicroBuildBuildVSBootstrapper@2
+  inputs:
+    vsMajorVersion: 17
+    channelName: 'int.main'
+    manifests: '$(Build.SourcesDirectory)\artifacts\$(BuildConfiguration)\VSSetup\Insertion\Microsoft.VisualStudio.ProjectSystem.Managed.vsman'
+    outputFolder: $(Build.SourcesDirectory)\artifacts\$(BuildConfiguration)\VSSetup\Insertion
+    bootstrapperCoreVersion: '1.15.76-develop-g446ca603'
+  displayName: Build VS bootstrapper
+  condition: succeeded()
 
-# - task: PowerShell@2
-#   inputs:
-#     filePath: build\optprof\UpdateRunSettings.ps1
-#     arguments: '-profilingInputsPath "ProfilingInputs/$(System.TeamProject)/$(Build.Repository.Name)/$(Build.SourceBranchName)/$(Build.BuildId)" -bootstrapperInfoPath "$(Build.StagingDirectory)\MicroBuild\Output\BootstrapperInfo.json"'
-#     failOnStderr: true
-#   displayName: Set RunSettings data from Bootstrapper
+- task: PowerShell@2
+  inputs:
+    filePath: build\optprof\UpdateRunSettings.ps1
+    arguments: '-profilingInputsPath "ProfilingInputs/$(System.TeamProject)/$(Build.Repository.Name)/$(Build.SourceBranchName)/$(Build.BuildId)" -bootstrapperInfoPath "$(Build.StagingDirectory)\MicroBuild\Output\BootstrapperInfo.json"'
+    failOnStderr: true
+  displayName: Set RunSettings data from Bootstrapper
 
-# - task: ms-vscs-artifact.build-tasks.artifactDropTask-1.artifactDropTask@0
-#   inputs:
-#     dropServiceURI: 'https://devdiv.artifacts.visualstudio.com'
-#     buildNumber: 'RunSettings/$(System.TeamProject)/$(Build.Repository.Name)/$(Build.SourceBranchName)/$(Build.BuildId)'
-#     sourcePath: '$(Build.SourcesDirectory)\build\optprof'
-#     toLowerCase: false
-#     usePat: true
-#     AccessToken: '$(System.AccessToken)'
-#     dropMetadataContainerName: RunSettings
-#   displayName: 'Publish to Artifact Services - RunSettings'
-#   condition: succeeded()
+- task: ms-vscs-artifact.build-tasks.artifactDropTask-1.artifactDropTask@0
+  inputs:
+    dropServiceURI: 'https://devdiv.artifacts.visualstudio.com'
+    buildNumber: 'RunSettings/$(System.TeamProject)/$(Build.Repository.Name)/$(Build.SourceBranchName)/$(Build.BuildId)'
+    sourcePath: '$(Build.SourcesDirectory)\build\optprof'
+    toLowerCase: false
+    usePat: true
+    AccessToken: '$(System.AccessToken)'
+    dropMetadataContainerName: RunSettings
+  displayName: 'Publish to Artifact Services - RunSettings'
+  condition: succeeded()
 
-# - task: PublishBuildArtifacts@1
-#   inputs:
-#     PathtoPublish: $(Build.StagingDirectory)\MicroBuild\Output
-#     ArtifactName: MicroBuildOutputs
-#     ArtifactType: Container
-#   displayName: 'Publish Artifact: MicroBuildOutputs'
-#   condition: succeededOrFailed()
+- task: PublishBuildArtifacts@1
+  inputs:
+    PathtoPublish: $(Build.StagingDirectory)\MicroBuild\Output
+    ArtifactName: MicroBuildOutputs
+    ArtifactType: Container
+  displayName: 'Publish Artifact: MicroBuildOutputs'
+  condition: succeededOrFailed()
 
 # TODO: DropName: 'Products/$(System.TeamProject)/$(Build.Repository.Name)/$(Build.SourceBranchName)/$(Build.BuildId)'
 - task: MicroBuildUploadVstsDropFolder@1
