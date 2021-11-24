@@ -8,29 +8,9 @@ namespace Microsoft.VisualStudio
     internal static class Delimiter
     {
         /// <summary>
-        /// Single, static instance of an array that contains a comma ',', which is used to split strings.
-        /// </summary>
-        internal static readonly char[] Comma = new char[] { ',' };
-
-        /// <summary>
-        /// Single, static instance of an array that contains a period '.', which is used to split strings.
-        /// </summary>
-        internal static readonly char[] Period = new char[] { '.' };
-
-        /// <summary>
         /// Single, static instance of an array that contains a semi-colon ';', which is used to split strings.
         /// </summary>
         internal static readonly char[] Semicolon = new char[] { ';' };
-
-        /// <summary>
-        /// Single, static instance of an array that contains a forward slash '/', which is used to split strings.
-        /// </summary>
-        internal static readonly char[] ForwardSlash = new char[] { '/' };
-
-        /// <summary>
-        /// Single, static instance of an array that contains a back slash '\', which is used to split strings.
-        /// </summary>
-        internal static readonly char[] BackSlash = new char[] { '\\' };
 
         /// <summary>
         /// Single, static instance of an array that contains '+' and '-' characters.
