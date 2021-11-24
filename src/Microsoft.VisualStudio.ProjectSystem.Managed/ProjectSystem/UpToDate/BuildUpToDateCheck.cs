@@ -167,7 +167,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             // Validation passed
             return true;
 
-            bool CheckInputsAndOutputs(IEnumerable<(string Path, bool IsRequired)> inputs, IEnumerable<string> outputs, in TimestampCache timestampCache, string setName)
+            bool CheckInputsAndOutputs(IEnumerable<(string Path, string? ItemType, bool IsRequired)> inputs, IEnumerable<string> outputs, in TimestampCache timestampCache, string setName)
             {
                 // We assume there are fewer outputs than inputs, so perform a full scan of outputs to find the earliest.
                 // This increases the chance that we may return sooner in the case we are not up to date.
@@ -232,7 +232,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
                 (string Path, DateTime? Time)? latestInput = null;
 
-                foreach ((string input, bool isRequired) in inputs)
+                foreach ((string input, string? itemType, bool isRequired) in inputs)
                 {
                     token.ThrowIfCancellationRequested();
 
@@ -242,7 +242,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                     {
                         if (isRequired)
                         {
-                            return log.Fail("InputNotFound", "Input '{0}' does not exist and is required, not up to date.", input);
+                            string prefix = itemType is null ? "Input " : $"Input {itemType} item ";
+                            return log.Fail("InputNotFound", "{0}'{1}' does not exist and is required, not up to date.", prefix, input);
                         }
                         else
                         {
@@ -252,13 +253,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
                     if (inputTime > earliestOutputTime)
                     {
-                        return log.Fail("InputNewerThanEarliestOutput", "Input '{0}' is newer ({1}) than earliest output '{2}' ({3}), not up to date.", input, inputTime.Value, earliestOutputPath, earliestOutputTime);
+                        string prefix = itemType is null ? "Input " : $"Input {itemType} item ";
+                        return log.Fail("InputNewerThanEarliestOutput", "{0}'{1}' is newer ({2}) than earliest output '{3}' ({4}), not up to date.", prefix, input, inputTime.Value, earliestOutputPath, earliestOutputTime);
                     }
 
                     if (inputTime > lastCheckedAtUtc && lastCheckedAtUtc != DateTime.MinValue)
                     {
                         // Bypass this test if no check has yet been performed. We handle that in CheckGlobalConditions.
-                        return log.Fail("InputModifiedSinceLastCheck", "Input '{0}' ({1}) has been modified since the last up-to-date check ({2}), not up to date.", input, inputTime.Value, lastCheckedAtUtc);
+                        string prefix = itemType is null ? "Input " : $"Input {itemType} item ";
+                        return log.Fail("InputModifiedSinceLastCheck", "{0}'{1}' ({2}) has been modified since the last up-to-date check ({3}), not up to date.", prefix, input, inputTime.Value, lastCheckedAtUtc);
                     }
 
                     if (latestInput is null || inputTime > latestInput.Value.Time)
@@ -286,20 +289,20 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 return true;
             }
 
-            IEnumerable<(string Path, bool IsRequired)> CollectDefaultInputs()
+            IEnumerable<(string Path, string? ItemType, bool IsRequired)> CollectDefaultInputs()
             {
                 if (state.MSBuildProjectFullPath != null)
                 {
                     log.Verbose("Adding project file inputs:");
                     log.Verbose("    '{0}'", state.MSBuildProjectFullPath);
-                    yield return (Path: state.MSBuildProjectFullPath, IsRequired: true);
+                    yield return (Path: state.MSBuildProjectFullPath, ItemType: null, IsRequired: true);
                 }
 
                 if (state.NewestImportInput != null)
                 {
                     log.Verbose("Adding newest import input:");
                     log.Verbose("    '{0}'", state.NewestImportInput);
-                    yield return (Path: state.NewestImportInput, IsRequired: true);
+                    yield return (Path: state.NewestImportInput, ItemType: null, IsRequired: true);
                 }
 
                 foreach ((string itemType, ImmutableArray<(string path, string? targetPath, CopyType copyType)> changes) in state.ItemsByItemType)
@@ -312,7 +315,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                         {
                             string absolutePath = _configuredProject.UnconfiguredProject.MakeRooted(path);
                             log.Verbose("    '{0}'", absolutePath);
-                            yield return (Path: absolutePath, IsRequired: true);
+                            yield return (Path: absolutePath, itemType, IsRequired: true);
                         }
                     }
                 }
@@ -324,7 +327,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                     {
                         string absolutePath = _configuredProject.UnconfiguredProject.MakeRooted(path);
                         log.Verbose("    '{0}'", absolutePath);
-                        yield return (Path: absolutePath, IsRequired: true);
+                        yield return (Path: absolutePath, ItemType: ResolvedAnalyzerReference.SchemaName, IsRequired: true);
                     }
                 }
 
@@ -335,7 +338,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                     {
                         System.Diagnostics.Debug.Assert(Path.IsPathRooted(path), "ResolvedCompilationReference path should be rooted");
                         log.Verbose("    '{0}'", path);
-                        yield return (Path: path, IsRequired: true);
+                        yield return (Path: path, ItemType: ResolvedCompilationReference.SchemaName, IsRequired: true);
                     }
                 }
 
@@ -353,7 +356,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                         {
                             string absolutePath = _configuredProject.UnconfiguredProject.MakeRooted(path);
                             log.Verbose("    '{0}'", absolutePath);
-                            yield return (Path: absolutePath, IsRequired: true);
+                            yield return (Path: absolutePath, ItemType: UpToDateCheckInput.SchemaName, IsRequired: true);
                         }
                     }
                 }
@@ -416,7 +419,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 }
             }
 
-            IEnumerable<(string Path, bool IsRequired)> CollectSetInputs(string setName)
+            IEnumerable<(string Path, string? ItemType, bool IsRequired)> CollectSetInputs(string setName)
             {
                 if (state.UpToDateCheckInputItemsByKindBySetName.TryGetValue(setName, out ImmutableDictionary<string, ImmutableArray<string>>? upToDateCheckInputItems))
                 {
@@ -432,7 +435,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                         {
                             string absolutePath = _configuredProject.UnconfiguredProject.MakeRooted(path);
                             log.Verbose("    '{0}'", absolutePath);
-                            yield return (Path: absolutePath, IsRequired: true);
+                            yield return (Path: absolutePath, ItemType: UpToDateCheckInput.SchemaName, IsRequired: true);
                         }
                     }
                 }
