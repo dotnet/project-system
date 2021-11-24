@@ -7,7 +7,7 @@ using Xunit;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
 {
-    public class PostBuildEventValueProviderTests
+    public static class PostBuildEventValueProviderTests
     {
         private static readonly PostBuildEventValueProvider.PostBuildEventHelper systemUnderTest =
             new();
