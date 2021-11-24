@@ -80,15 +80,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation.VisualBasic
 
         public void Remove(object index)
         {
-            string? importToRemove = null;
-            if (index is int indexInt && _importsList.IsPresent(indexInt))
+            string? importToRemove = index switch
             {
-                importToRemove = _importsList.Item(indexInt);
-            }
-            else if (index is string removeImport && _importsList.IsPresent(removeImport))
-            {
-                importToRemove = removeImport;
-            }
+                int indexInt when _importsList.IsPresent(indexInt) => _importsList.Item(indexInt),
+                string removeImport when _importsList.IsPresent(removeImport) => removeImport,
+                _ => null
+            };
 
             if (importToRemove != null)
             {

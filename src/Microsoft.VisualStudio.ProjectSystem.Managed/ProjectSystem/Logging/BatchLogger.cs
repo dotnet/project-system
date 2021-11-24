@@ -58,25 +58,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             }
         }
 
-        public void WriteLine(in StringFormat format)
-        {
-            if (IsEnabled)
-            {
-                _builder ??= new StringBuilder();
-
-                // Need to factor in that when we eventually write to the logger
-                // it's going to append a new line to the string we write, so we 
-                // only append the new line just before we write another string.
-                if (_builder.Length != 0)
-                {
-                    _builder.AppendLine();
-                }
-
-                _builder.Append(' ', 4 * _indentLevel);
-                _builder.Append(format);
-            }
-        }
-
         public void WriteLine(string text)
         {
             if (IsEnabled)

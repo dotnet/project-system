@@ -34,15 +34,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
 
 #pragma warning disable RS0030 // IProjectGuidService is banned
             IProjectGuidService? projectGuidService = ProjectGuidServices.FirstOrDefault()?.Value;
-            if (projectGuidService == null)
-                return Guid.Empty;
-
-            if (projectGuidService is IProjectGuidService2 projectGuidService2)
+            return projectGuidService switch
             {
-                return await projectGuidService2.GetProjectGuidAsync();
-            }
-
-            return projectGuidService.ProjectGuid;
+                null => Guid.Empty,
+                IProjectGuidService2 projectGuidService2 => await projectGuidService2.GetProjectGuidAsync(),
+                _ => projectGuidService.ProjectGuid
+            };
 #pragma warning restore RS0030
         }
     }
