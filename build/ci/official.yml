@@ -182,13 +182,13 @@ steps:
   displayName: 'Publish to Artifact Services - RunSettings'
   condition: succeeded()
 
-# - task: PublishBuildArtifacts@1
-#   inputs:
-#     PathtoPublish: $(Build.StagingDirectory)\MicroBuild\Output
-#     ArtifactName: MicroBuildOutputs
-#     ArtifactType: Container
-#   displayName: 'Publish Artifact: MicroBuildOutputs'
-#   condition: succeededOrFailed()
+- task: PublishBuildArtifacts@1
+  inputs:
+    PathtoPublish: $(Build.StagingDirectory)\MicroBuild\Output
+    ArtifactName: MicroBuildOutputs
+    ArtifactType: Container
+  displayName: 'Publish Artifact: MicroBuildOutputs'
+  condition: succeededOrFailed()
 
 # TODO: DropName: 'Products/$(System.TeamProject)/$(Build.Repository.Name)/$(Build.SourceBranchName)/$(Build.BuildId)'
 - task: MicroBuildUploadVstsDropFolder@1
