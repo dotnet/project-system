@@ -37,9 +37,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedColl
             }
             else if (relationName == KnownRelationships.ContainedBy)
             {
-                if (item is IRelatableItem relatableItem && relatableItem.ContainedByCollection != null)
+                if (item is IRelatableItem { ContainedByCollection: { } containedByCollection } relatableItem)
                 {
-                    return new AggregateRelationCollectionSource(relatableItem, relatableItem.ContainedByCollection);
+                    return new AggregateRelationCollectionSource(relatableItem, containedByCollection);
                 }
             }
 
