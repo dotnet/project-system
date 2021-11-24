@@ -59,30 +59,6 @@ namespace Microsoft.VisualStudio.Threading.Tasks
         }
 
         [Fact]
-        public async Task RunAsyncTask_SkipsPendingTasks()
-        {
-            using var scheduler = new TaskDelayScheduler(TimeSpan.FromMilliseconds(250), IProjectThreadingServiceFactory.Create(), CancellationToken.None);
-            bool taskRan = false;
-            var task = scheduler.ScheduleAsyncTask(ct =>
-            {
-                taskRan = true;
-                return Task.CompletedTask;
-            });
-
-            bool immediateTaskRan = false;
-            var task2 = scheduler.RunAsyncTask(ct =>
-            {
-                immediateTaskRan = true;
-                return Task.CompletedTask;
-            });
-
-            await task;
-            await task2;
-            Assert.False(taskRan);
-            Assert.True(immediateTaskRan);
-        }
-
-        [Fact]
         public async Task Dispose_SkipsPendingTasks()
         {
             using var scheduler = new TaskDelayScheduler(TimeSpan.FromMilliseconds(250), IProjectThreadingServiceFactory.Create(), CancellationToken.None);
