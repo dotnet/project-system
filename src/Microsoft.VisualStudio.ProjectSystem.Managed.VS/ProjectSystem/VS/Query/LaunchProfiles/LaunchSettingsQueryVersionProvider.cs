@@ -1,7 +1,5 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
-using System;
-using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.ComponentModel.Composition;
 
@@ -23,7 +21,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
     {
         private readonly object _lock = new();
 
-        private readonly Dictionary<string, LaunchSettingsTracker> _allLaunchSettingsTrackers = new(StringComparer.Ordinal);
         private ImmutableDictionary<string, long> _versions = ImmutableStringDictionary<long>.EmptyOrdinal;
 
         private ILaunchSettingsVersionPublisher? _versionPublisher;
@@ -50,7 +47,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
             {
                 string key = tracker.VersionKey;
 
-                _allLaunchSettingsTrackers.Add(key, tracker);
                 _versions = _versions.SetItem(key, tracker.CurrentVersion);
 
                 _versionPublisher?.UpdateVersions(_versions);
@@ -79,7 +75,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
                 string key = tracker.VersionKey;
 
                 _versions = _versions.Remove(key);
-                _allLaunchSettingsTrackers.Remove(key);
 
                 _versionPublisher?.UpdateVersions(_versions);
             }
