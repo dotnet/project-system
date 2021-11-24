@@ -86,14 +86,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
 #pragma warning disable RS0030 // Do not used banned APIs
             var registerRestoreInfoSourceTask = Task.Run(async () =>
             {
-                try
-                {
-                    await _solutionRestoreService4.RegisterRestoreInfoSourceAsync(this, _projectAsynchronousTasksService.UnloadCancellationToken);
-                }
-                catch (Exception ex)
-                {
-                    throw ex;
-                }
+                await _solutionRestoreService4.RegisterRestoreInfoSourceAsync(this, _projectAsynchronousTasksService.UnloadCancellationToken);
             });
 #pragma warning restore RS0030 // Do not used banned APIs
 
