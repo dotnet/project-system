@@ -8,5 +8,9 @@
     
     <!-- Workaround: https://github.com/dotnet/sdk/issues/12739 -->
     <ImportFrameworkWinFXTargets>true</ImportFrameworkWinFXTargets>
+
+    <MicroBuild_DoNotStrongNameSign>true</MicroBuild_DoNotStrongNameSign>
+    <MicroBuild_SigningEnabled>false</MicroBuild_SigningEnabled>
+    <Nonshipping>true</Nonshipping>
   </PropertyGroup>
 </Project>
