@@ -34,7 +34,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
         [ImportingConstructor]
         public DebugProfileDebugTargetGenerator(
             UnconfiguredProject project,
-            ILaunchSettingsProvider launchSettingProvider,
+            IVersionedLaunchSettingsProvider launchSettingProvider,
             IProjectThreadingService threadingService)
             : base(project.Services)
         {
@@ -60,7 +60,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             }
         }
 
-        private ILaunchSettingsProvider LaunchSettingProvider { get; }
+        private IVersionedLaunchSettingsProvider LaunchSettingProvider { get; }
         private IProjectThreadingService ProjectThreadingService { get; }
 
         /// <summary>
@@ -72,11 +72,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
 
         protected override void Initialize()
         {
-            IPropagatorBlock<ILaunchSettings, IProjectVersionedValue<IReadOnlyList<IEnumValue>>> debugProfilesBlock = DataflowBlockSlim.CreateTransformBlock<ILaunchSettings, IProjectVersionedValue<IReadOnlyList<IEnumValue>>>(
+            IPropagatorBlock<IProjectVersionedValue<ILaunchSettings>, IProjectVersionedValue<IReadOnlyList<IEnumValue>>> debugProfilesBlock = DataflowBlockSlim.CreateTransformBlock<IProjectVersionedValue<ILaunchSettings>, IProjectVersionedValue<IReadOnlyList<IEnumValue>>>(
                 update =>
                 {
                     // Compute the new enum values from the profile provider
-                    var generatedResult = DebugProfileEnumValuesGenerator.GetEnumeratorEnumValues(update).ToImmutableList();
+                    var generatedResult = DebugProfileEnumValuesGenerator.GetEnumeratorEnumValues(update.Value).ToImmutableList();
                     _dataSourceVersion++;
                     ImmutableDictionary<NamedIdentity, IComparable> dataSources = ImmutableDictionary<NamedIdentity, IComparable>.Empty.Add(DataSourceKey, DataSourceVersion);
                     return new ProjectVersionedValue<IReadOnlyList<IEnumValue>>(generatedResult, dataSources);
@@ -84,9 +84,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
 
             IBroadcastBlock<IProjectVersionedValue<IReadOnlyList<IEnumValue>>> broadcastBlock = DataflowBlockSlim.CreateBroadcastBlock<IProjectVersionedValue<IReadOnlyList<IEnumValue>>>();
 
-            _launchProfileProviderLink = LaunchSettingProvider.SourceBlock.LinkTo(
+            // The interface has two definitions of SourceBlock: one from
+            // ILaunchSettingsProvider, and one from IProjectValueDataSource<T> (via
+            // IVersionedLaunchSettingsProvider). We need the cast to pick the proper one.
+            _launchProfileProviderLink = ((IProjectValueDataSource<ILaunchSettings>)LaunchSettingProvider).SourceBlock.LinkTo(
                 debugProfilesBlock,
                 linkOptions: DataflowOption.PropagateCompletion);
+
+            JoinUpstreamDataSources(LaunchSettingProvider);
 
             _debugProviderLink = debugProfilesBlock.LinkTo(broadcastBlock, DataflowOption.PropagateCompletion);
 

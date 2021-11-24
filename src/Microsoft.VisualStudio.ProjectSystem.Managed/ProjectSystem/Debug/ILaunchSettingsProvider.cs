@@ -13,6 +13,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
     [ProjectSystemContract(ProjectSystemContractScope.UnconfiguredProject, ProjectSystemContractProvider.Private, Cardinality = ImportCardinality.ExactlyOne)]
     public interface ILaunchSettingsProvider
     {
+        /// <remarks>
+        /// If the <see cref="ILaunchSettings"/> provided by this block are going to feed
+        /// into another data flow block, strongly consider using <see cref="IVersionedLaunchSettingsProvider"/>
+        /// instead as that provides a joinable variant.
+        /// </remarks>
         IReceivableSourceBlock<ILaunchSettings> SourceBlock { get; }
 
         ILaunchSettings? CurrentSnapshot { get; }
