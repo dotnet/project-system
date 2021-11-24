@@ -27,7 +27,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Rules
         [MemberData(nameof(GetAllExportedMembers))]
         public void ExportedRulesMustBeStaticFields(MemberInfo member)
         {
-            Assert.True(member is FieldInfo field && field.IsStatic, $"'{GetTypeQualifiedName(member)}' must be a static field.");
+            Assert.True(member is FieldInfo { IsStatic: true }, $"'{GetTypeQualifiedName(member)}' must be a static field.");
         }
 
         [Theory]

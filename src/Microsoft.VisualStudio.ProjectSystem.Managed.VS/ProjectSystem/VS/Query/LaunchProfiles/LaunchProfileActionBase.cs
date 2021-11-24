@@ -113,13 +113,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
                     {
                         if (await handler.RetrieveLaunchProfileEntityAsync(request.QueryExecutionContext, addedProfileId, s_requestedLaunchProfileProperties) is IEntityValue launchProfileEntity)
                         {
-                            if (launchProfileEntity is IEntityValueFromProvider launchProfileEntityFromProvider
-                                && launchProfileEntityFromProvider.ProviderState is ContextAndRuleProviderState state)
+                            if (launchProfileEntity is IEntityValueFromProvider { ProviderState: ContextAndRuleProviderState state })
                             {
                                 // This is a bit of a hack. We can safely assume that we should update the query
                                 // with the entity for the new launch profile. However, there is no way for us to
                                 // know which properties or child entities are desired. Here we make the somewhat
-                                // arbitrary decision to include the categories and properties, but not the propery
+                                // arbitrary decision to include the categories and properties, but not the property
                                 // values. We already requested the non-entity properties when creating the entity
                                 // for the launch profile.
 

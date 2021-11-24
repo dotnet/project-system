@@ -61,8 +61,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
                 editor,
                 properties);
 
-            Assert.Contains(results, entity => entity is UIEditorMetadataValue metadata && metadata.Name == "Alpha" && metadata.Value == "A");
-            Assert.Contains(results, entity => entity is UIEditorMetadataValue metadata && metadata.Name == "Beta" && metadata.Value == "B");
+            Assert.Contains(results, entity => entity is UIEditorMetadataValue { Name: "Alpha", Value: "A" });
+            Assert.Contains(results, entity => entity is UIEditorMetadataValue { Name: "Beta",  Value: "B" });
         }
     }
 }
