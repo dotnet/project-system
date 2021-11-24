@@ -25,6 +25,7 @@
   <ItemGroup>
     <!-- Needed to break assembly conflict on StreamJsonRpc between microsoft.visualstudio.projectsystem.query and microsoft.visualstudio.languageservices -->
     <PackageReference Include="Microsoft.VisualStudio.RpcContracts" />
+    <PackageReference Include="MicroBuild.VisualStudio" PrivateAssets="all" />
   </ItemGroup>
 
   <!-- Dependencies -->
