@@ -9,7 +9,7 @@ using Moq;
 
 namespace Microsoft.VisualStudio.Mocks
 {
-    internal class ILaunchProfileExtensionValueProviderFactory
+    internal static class ILaunchProfileExtensionValueProviderFactory
     {
         public static ILaunchProfileExtensionValueProvider Create(
             Func<string, ILaunchProfile, ImmutableDictionary<string, object>, Rule?, string>? onGetPropertyValue = null,

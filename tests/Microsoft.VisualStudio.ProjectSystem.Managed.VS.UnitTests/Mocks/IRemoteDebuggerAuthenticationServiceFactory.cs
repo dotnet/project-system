@@ -6,7 +6,7 @@ using Moq;
 
 namespace Microsoft.VisualStudio.Mocks
 {
-    public class IRemoteDebuggerAuthenticationServiceFactory
+    public static class IRemoteDebuggerAuthenticationServiceFactory
     {
         internal static IRemoteDebuggerAuthenticationService Create(params IRemoteAuthenticationProvider[] providers)
         {

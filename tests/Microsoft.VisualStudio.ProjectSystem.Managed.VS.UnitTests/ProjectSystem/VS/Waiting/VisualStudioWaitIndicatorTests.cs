@@ -11,7 +11,7 @@ using Xunit;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Waiting
 {
-    public class VisualStudioWaitIndicatorTests
+    public static class VisualStudioWaitIndicatorTests
     {
         [Fact]
         public static void Run_WhenAsyncMethodThrows_Throws()

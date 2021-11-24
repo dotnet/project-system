@@ -11,7 +11,7 @@ using static Microsoft.VisualStudio.Telemetry.ITelemetryServiceFactory;
 
 namespace Microsoft.VisualStudio.Telemetry
 {
-    public class SDKVersionTelemetryTests
+    public static class SDKVersionTelemetryTests
     {
         [Fact]
         public static async Task TestCreateComponentSDKVersionDefined()

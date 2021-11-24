@@ -5,7 +5,7 @@ using Moq;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS
 {
-    internal class IDebuggerSettingsFactory
+    internal static class IDebuggerSettingsFactory
     {
         internal static IDebuggerSettings Create(bool encEnabled = true, bool nonDebugHotReloadEnabled = true)
         {

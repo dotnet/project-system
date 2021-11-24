@@ -7,7 +7,7 @@ using Xunit;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Waiting
 {
-    public class VisualStudioWaitContextTests
+    public static class VisualStudioWaitContextTests
     {
         [Fact]
         public static void SetPropertyAllowCancel_Test()
