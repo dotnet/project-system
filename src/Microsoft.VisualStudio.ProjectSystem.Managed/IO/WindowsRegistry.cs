@@ -10,17 +10,16 @@ namespace Microsoft.VisualStudio.IO
     {
         public object? ReadValueForCurrentUser(string keyPath, string name)
         {
-            using (RegistryKey registryKey = Registry.CurrentUser.OpenSubKey(keyPath))
+            using RegistryKey? registryKey = Registry.CurrentUser.OpenSubKey(keyPath);
+
+            if (registryKey is not null)
             {
-                if (registryKey is not null)
+                try
                 {
-                    try
-                    {
-                        return registryKey.GetValue(name);
-                    }
-                    catch
-                    {
-                    }
+                    return registryKey.GetValue(name);
+                }
+                catch
+                {
                 }
             }
 

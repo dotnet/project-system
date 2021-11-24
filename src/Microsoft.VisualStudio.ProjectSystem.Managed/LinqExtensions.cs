@@ -24,25 +24,24 @@ namespace Microsoft.VisualStudio
         [Pure]
         public static T? SingleOrDefault<T, TArg>(this IEnumerable<T> source, Func<T, TArg, bool> predicate, TArg arg)
         {
-            using (IEnumerator<T> enumerator = source.GetEnumerator())
+            using IEnumerator<T> enumerator = source.GetEnumerator();
+
+            while (enumerator.MoveNext())
             {
-                while (enumerator.MoveNext())
+                T match = enumerator.Current;
+
+                if (predicate(match, arg))
                 {
-                    T match = enumerator.Current;
-
-                    if (predicate(match, arg))
+                    // Check all remaining items to ensure there is only a single match
+                    while (enumerator.MoveNext())
                     {
-                        // Check all remaining items to ensure there is only a single match
-                        while (enumerator.MoveNext())
+                        if (predicate(enumerator.Current, arg))
                         {
-                            if (predicate(enumerator.Current, arg))
-                            {
-                                throw new InvalidOperationException("More than one element matches predicate.");
-                            }
+                            throw new InvalidOperationException("More than one element matches predicate.");
                         }
-
-                        return match;
                     }
+
+                    return match;
                 }
             }
 
