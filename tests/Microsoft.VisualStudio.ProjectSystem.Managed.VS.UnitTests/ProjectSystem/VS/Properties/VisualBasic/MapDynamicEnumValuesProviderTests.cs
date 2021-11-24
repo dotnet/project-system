@@ -117,9 +117,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties.VisualBasic
 
         private static IEnumerable<PageEnumValue> CreateEnumValueInstances(List<Tuple<string, string, bool>> pageEnumValues)
         {
-            foreach (var item in pageEnumValues)
+            foreach ((string name, string displayName, bool isDefault) in pageEnumValues)
             {
-                yield return CreateEnumValueInstance(item.Item1, item.Item2, item.Item3);
+                yield return CreateEnumValueInstance(name, displayName, isDefault);
             }
         }
 

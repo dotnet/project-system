@@ -45,10 +45,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
             var project = UnconfiguredProjectFactory.Create(configuredProject: ConfiguredProjectFactory.Create());
             var values = await provider.GetDefaultValuesForDimensionsAsync(project);
 
-            Assert.Single(values);
-            var value = values.First();
-            Assert.Equal(DimensionName, value.Key);
-            Assert.Equal("A", value.Value);
+            var (key, value) = Assert.Single(values);
+            Assert.Equal(DimensionName, key);
+            Assert.Equal("A", value);
         }
 
         [Theory]
@@ -84,10 +83,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
             var project = UnconfiguredProjectFactory.Create(configuredProject: ConfiguredProjectFactory.Create());
             var values = await provider.GetProjectConfigurationDimensionsAsync(project);
 
-            Assert.Single(values);
-            var value = values.First();
-            Assert.Equal(DimensionName, value.Key);
-            string[] dimensionValues = value.Value.ToArray();
+            var (key, value) = Assert.Single(values);
+            Assert.Equal(DimensionName, key);
+            string[] dimensionValues = value.ToArray();
             AssertEx.CollectionLength(dimensionValues, 3);
             Assert.Equal("A", dimensionValues[0]);
             Assert.Equal("B", dimensionValues[1]);

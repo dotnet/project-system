@@ -84,12 +84,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
 
             // Gather the appliesTo metadata from all exports of the same part.
             var appliesToMetadata = new List<string>();
-            foreach (KeyValuePair<MemberRef?, ExportDefinition> exportDefinitionPair in definition.ExportDefinitions)
+            foreach ((MemberRef? memberRef, ExportDefinition exportDefinition) in definition.ExportDefinitions)
             {
-                if (exportDefinitionPair.Key?.IsStatic == true)
+                if (memberRef?.IsStatic == true)
                     continue;
 
-                ExportDefinition exportDefinition = exportDefinitionPair.Value;
                 exportDefinition.Metadata.TryGetValue(nameof(AppliesToAttribute.AppliesTo), out object? metadata);
                 if (null != metadata)
                     appliesToMetadata.Add((string)metadata);
@@ -189,12 +188,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
 
             Assert.NotNull(definition);
 
-            foreach (KeyValuePair<MemberRef?, ExportDefinition> export in definition.ExportDefinitions)
+            foreach ((MemberRef? memberRef, ExportDefinition exportDefinition) in definition.ExportDefinitions)
             {
                 var contractsRequiringMetadata = ComponentComposition.Instance.ContractsRequiringAppliesTo;
 
                 // If the exports has already had the metadata, it is good.
-                ExportDefinition exportDefinition = export.Value;
                 if (exportDefinition.Metadata.ContainsKey(nameof(AppliesToAttribute.AppliesTo)))
                 {
                     return;
@@ -205,13 +203,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                 if (contractsRequiringMetadata.TryGetValue(exportDefinition.ContractName, out ISet<Type> contractTypes))
                 {
                     Type exportType;
-                    if (export.Key == null)
+                    if (memberRef == null)
                     {
                         exportType = definition.Type;
                     }
                     else
                     {
-                        exportType = export.Key.DeclaringType.Resolve();
+                        exportType = memberRef.DeclaringType.Resolve();
                     }
 
                     if (contractTypes.Any(t => t.IsAssignableFrom(exportType)))
