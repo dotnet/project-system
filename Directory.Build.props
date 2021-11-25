@@ -67,6 +67,7 @@
     <CheckForOverflowUnderflow>false</CheckForOverflowUnderflow>
     <LangVersion>10.0</LangVersion>
     <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
     <Features>strict</Features>
   </PropertyGroup>
 
