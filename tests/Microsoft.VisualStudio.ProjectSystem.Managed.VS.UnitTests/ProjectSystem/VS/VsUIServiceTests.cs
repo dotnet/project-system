@@ -3,9 +3,7 @@
 #pragma warning disable VSSDK005 // Avoid instantiating JoinableTaskContext
 #pragma warning disable VSTHRD012 // Provide JoinableTaskFactory where allowed
 
-using System;
 using System.Runtime.InteropServices;
-using System.Threading.Tasks;
 using Microsoft.VisualStudio.Threading;
 using Xunit;
 
