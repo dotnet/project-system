@@ -7,11 +7,6 @@ using IOleServiceProvider = Microsoft.VisualStudio.OLE.Interop.IServiceProvider;
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Interop
 {
     [Guid("1EAA526A-0898-11d3-B868-00C04F79F802"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-    internal interface SVsAppId
-    {
-    }
-
-    [Guid("1EAA526A-0898-11d3-B868-00C04F79F802"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
     internal interface IVsAppId
     {
         [PreserveSig]
@@ -35,16 +30,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Interop
 
         [PreserveSig]
         int Initialize();  // called after main initialization and before command executing and entering main loop
-    }
-
-    [Flags]
-    internal enum AppidLoadResult
-    {
-        Failed = 0x0001,
-        Allowed = 0x0002,
-        Skipped = 0x0004,
-        InternalPackage = 0x0010,
-        ExternalPackage = 0x0020
     }
 
     internal enum VSAPropID
@@ -243,47 +228,5 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Interop
         VSAPROPID_AppHostVersion                        = -8647,     // VT_BSTR. The AppId's host version, preferred by _DTE.Version property.
         VSAPROPID_SKUName                               = -8648,     // VT_BSTR. The SkuName, unlocalized and sent with Telemetry.
         VSAPROPID_BranchName                            = -8649      // VT_BSTR. The branch name of the build.
-    }
-
-    internal enum VSASKUEdition
-    {
-        None = 0,
-        Standard = 1000,
-        Professional = 2000,
-        AcademicStudent = 2100,
-        AcademicProfessional = AcademicStudent, // OBSOLETTE, use AcademicStudent
-        // Book is OBSOLETE! This will never, ever be returned to you by
-        // the shell, as the SKU was cut!
-        Book = 2400,
-        DownloadTrial = 2500, //OBSOLETE
-        Enterprise = 3000, //Team
-        Express = 500,
-        VSTO = 1500,
-        BizApps = 1600,
-        Community = 1800,
-        TeamExplorer = 1400,
-        SQL = 9192
-    }
-
-    internal enum VSASubSKUEdition
-    {
-        None = 0x0,
-        VC = 0x1,
-        VB = 0x2,
-        CSharp = 0x4,
-        Architect = 0x8,
-        IDE = 0x10,
-        JSharp = 0x20,
-        Web = 0x40,
-        Developer = 0x80,
-        Test = 0x100,
-        TFC = 0x200,
-        Data = 0x400,
-        VSLS = 0x800,
-        Phone = 0x1000,
-        SQLTools = 0x2000,
-        VSWin = 0x4000,
-        VSWinDesktop = 0x8000,
-        Team_Suite = Test | Developer | Architect
     }
 }

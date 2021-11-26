@@ -209,21 +209,6 @@ In order to debug this project, add an executable project to this solution which
         <target state="translated">Рабочий каталог "{0}", указанный в профиле отладки "{1}", не существует.</target>
         <note />
       </trans-unit>
-      <trans-unit id="NoMigratedCSProjFound">
-        <source>Expected to find migrated cpsroj in {0}, but did not find any.</source>
-        <target state="translated">Ожидался перенесенный CPSROJ-файл в {0}, однако найти его не удалось.</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="EditProjectFileCommand">
-        <source>Edit {0}</source>
-        <target state="translated">Изменить {0}</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="NoRunCommandSpecifiedInProject">
-        <source>Unable to run your project. The "RunCommand" property is not defined.</source>
-        <target state="translated">Не удается выполнить проект. Свойство RunCommand не определено.</target>
-        <note />
-      </trans-unit>
       <trans-unit id="MultiTFEditNotSupported">
         <source>Editing of multiple target framework is not supported.</source>
         <target state="translated">Изменение нескольких целевых платформ не поддерживается.</target>
@@ -244,34 +229,9 @@ In order to debug this project, add an executable project to this solution which
         <target state="translated">Платформа ({0})</target>
         <note />
       </trans-unit>
-      <trans-unit id="OutputWindowPaneTitle">
-        <source>Project</source>
-        <target state="translated">Проект</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="PartialSupportedDotNetCoreProject">
-        <source>A newer version of Visual Studio is recommended for projects targeting .NET Core {0}.{1}.</source>
-        <target state="translated">Для проектов, предназначенных для .NET Core {0}.{1}, рекомендуется использовать более новую версию Visual Studio.</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="NotSupportedDotNetCoreProject">
-        <source>Projects targeting .NET Core {0}.{1} or newer are not supported by this version of Visual Studio.</source>
-        <target state="translated">Проекты, предназначенные для .NET Core {0}.{1} или более поздней версии, не поддерживаются в этой версии Visual Studio.</target>
-        <note />
-      </trans-unit>
       <trans-unit id="DontShowAgain">
         <source>Don't show again</source>
         <target state="translated">Больше не показывать</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="LearnMore">
-        <source>Learn more</source>
-        <target state="translated">Дополнительные сведения</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="OKButtonText">
-        <source>OK</source>
-        <target state="translated">ОК</target>
         <note />
       </trans-unit>
       <trans-unit id="Restore_PropertyWithInconsistentValues">
