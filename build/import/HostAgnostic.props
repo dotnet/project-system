@@ -66,6 +66,7 @@
 
   <ItemGroup Condition="'$(IsUnitTestProject)' == 'true'" >
     <PackageReference Include="Moq" />
+    <PackageReference Include="Verify.Xunit" />
     <PackageReference Include="xunit.analyzers" />
     <PackageReference Include="xunit.assert" />
     <PackageReference Include="xunit.combinatorial" />
