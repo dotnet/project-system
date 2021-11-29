@@ -34,88 +34,74 @@
     <Compile Update="ProjectSystem\Rules\Dependencies\AnalyzerReference.xaml.cs">
       <DependentUpon>AnalyzerReference.xaml</DependentUpon>
     </Compile>
-    <XamlPropertyRule Include="ProjectSystem\Rules\Dependencies\AnalyzerReference.xaml">
-    </XamlPropertyRule>
+    <XamlPropertyRule Include="ProjectSystem\Rules\Dependencies\AnalyzerReference.xaml" />
     <Compile Update="ProjectSystem\Rules\Dependencies\ResolvedAnalyzerReference.xaml.cs">
       <DependentUpon>ResolvedAnalyzerReference.xaml</DependentUpon>
     </Compile>
-    <XamlPropertyRule Include="ProjectSystem\Rules\Dependencies\ResolvedAnalyzerReference.xaml">
-    </XamlPropertyRule>
+    <XamlPropertyRule Include="ProjectSystem\Rules\Dependencies\ResolvedAnalyzerReference.xaml" />
 
     <!-- Assembly Reference -->
     <Compile Update="ProjectSystem\Rules\Dependencies\AssemblyReference.cs">
       <DependentUpon>AssemblyReference.xaml</DependentUpon>
     </Compile>
-    <XamlPropertyRule Include="ProjectSystem\Rules\Dependencies\AssemblyReference.xaml">
-    </XamlPropertyRule>
+    <XamlPropertyRule Include="ProjectSystem\Rules\Dependencies\AssemblyReference.xaml" />
     <Compile Update="ProjectSystem\Rules\Dependencies\ResolvedAssemblyReference.cs">
       <DependentUpon>ResolvedAssemblyReference.xaml</DependentUpon>
     </Compile>
-    <XamlPropertyRule Include="ProjectSystem\Rules\Dependencies\ResolvedAssemblyReference.xaml">
-    </XamlPropertyRule>
+    <XamlPropertyRule Include="ProjectSystem\Rules\Dependencies\ResolvedAssemblyReference.xaml" />
 
     <!-- COM Reference -->
     <Compile Update="ProjectSystem\Rules\Dependencies\COMReference.cs">
       <DependentUpon>COMReference.xaml</DependentUpon>
     </Compile>
-    <XamlPropertyRule Include="ProjectSystem\Rules\Dependencies\COMReference.xaml">
-    </XamlPropertyRule>
+    <XamlPropertyRule Include="ProjectSystem\Rules\Dependencies\COMReference.xaml" />
     <Compile Update="ProjectSystem\Rules\Dependencies\ResolvedCOMReference.cs">
       <DependentUpon>ResolvedCOMReference.xaml</DependentUpon>
     </Compile>
-    <XamlPropertyRule Include="ProjectSystem\Rules\Dependencies\ResolvedCOMReference.xaml">
-    </XamlPropertyRule>
+    <XamlPropertyRule Include="ProjectSystem\Rules\Dependencies\ResolvedCOMReference.xaml" />
 
     <!-- Framework Reference -->
     <Compile Update="ProjectSystem\Rules\Dependencies\FrameworkReference.cs">
       <DependentUpon>FrameworkReference.xaml</DependentUpon>
     </Compile>
-    <XamlPropertyRule Include="ProjectSystem\Rules\Dependencies\FrameworkReference.xaml">
-    </XamlPropertyRule>
+    <XamlPropertyRule Include="ProjectSystem\Rules\Dependencies\FrameworkReference.xaml" />
     <Compile Update="ProjectSystem\Rules\Dependencies\ResolvedFrameworkReference.cs">
       <DependentUpon>ResolvedFrameworkReference.xaml</DependentUpon>
     </Compile>
-    <XamlPropertyRule Include="ProjectSystem\Rules\Dependencies\ResolvedFrameworkReference.xaml">
-    </XamlPropertyRule>
+    <XamlPropertyRule Include="ProjectSystem\Rules\Dependencies\ResolvedFrameworkReference.xaml" />
 
     <!-- Package Reference -->
     <Compile Update="ProjectSystem\Rules\Dependencies\PackageReference.cs">
       <DependentUpon>PackageReference.xaml</DependentUpon>
     </Compile>
-    <XamlPropertyRule Include="ProjectSystem\Rules\Dependencies\PackageReference.xaml">
-    </XamlPropertyRule>
+    <XamlPropertyRule Include="ProjectSystem\Rules\Dependencies\PackageReference.xaml" />
     <XamlPropertyRule Include="ProjectSystem\Rules\SuggestedWorkload.xaml">
       <XlfInput>false</XlfInput>
     </XamlPropertyRule>
     <Compile Update="ProjectSystem\Rules\Dependencies\ResolvedPackageReference.cs">
       <DependentUpon>ResolvedPackageReference.xaml</DependentUpon>
     </Compile>
-    <XamlPropertyRule Include="ProjectSystem\Rules\Dependencies\ResolvedPackageReference.xaml">
-    </XamlPropertyRule>
+    <XamlPropertyRule Include="ProjectSystem\Rules\Dependencies\ResolvedPackageReference.xaml" />
 
     <!-- Project Reference -->
     <Compile Update="ProjectSystem\Rules\Dependencies\ProjectReference.cs">
       <DependentUpon>ProjectReference.xaml</DependentUpon>
     </Compile>
-    <XamlPropertyRule Include="ProjectSystem\Rules\Dependencies\ProjectReference.xaml">
-    </XamlPropertyRule>
+    <XamlPropertyRule Include="ProjectSystem\Rules\Dependencies\ProjectReference.xaml" />
     <Compile Update="ProjectSystem\Rules\Dependencies\ResolvedProjectReference.cs">
       <DependentUpon>ResolvedProjectReference.xaml</DependentUpon>
     </Compile>
-    <XamlPropertyRule Include="ProjectSystem\Rules\Dependencies\ResolvedProjectReference.xaml">
-    </XamlPropertyRule>
+    <XamlPropertyRule Include="ProjectSystem\Rules\Dependencies\ResolvedProjectReference.xaml" />
 
     <!-- SDK Reference -->
     <Compile Update="ProjectSystem\Rules\Dependencies\SdkReference.xaml.cs">
       <DependentUpon>SdkReference.xaml</DependentUpon>
     </Compile>
-    <XamlPropertyRule Include="ProjectSystem\Rules\Dependencies\SdkReference.xaml">
-    </XamlPropertyRule>
+    <XamlPropertyRule Include="ProjectSystem\Rules\Dependencies\SdkReference.xaml" />
     <Compile Update="ProjectSystem\Rules\Dependencies\ResolvedSdkReference.cs">
       <DependentUpon>ResolvedSdkReference.xaml</DependentUpon>
     </Compile>
-    <XamlPropertyRule Include="ProjectSystem\Rules\Dependencies\ResolvedSdkReference.xaml">
-    </XamlPropertyRule>
+    <XamlPropertyRule Include="ProjectSystem\Rules\Dependencies\ResolvedSdkReference.xaml" />
     
     <!-- Property Pages -->
     <XamlPropertyRuleNoCodeBehind Include="ProjectSystem\Rules\PropertyPages\ApplicationPropertyPage.xaml" />
@@ -176,8 +162,7 @@
     <Compile Update="ProjectSystem\Rules\Items\Folder.cs">
       <DependentUpon>Folder.xaml</DependentUpon>
     </Compile>
-    <XamlPropertyRule Include="ProjectSystem\Rules\Items\Folder.xaml">
-    </XamlPropertyRule>
+    <XamlPropertyRule Include="ProjectSystem\Rules\Items\Folder.xaml" />
 
     <Compile Update="ProjectSystem\Rules\Items\None.cs">
       <DependentUpon>None.xaml</DependentUpon>
