@@ -28,79 +28,44 @@
     <PackageReference Include="Microsoft.VisualStudio.RpcContracts" />
   </ItemGroup>
 
+  <ItemGroup>
+    <!-- Add 'DependentUpon' metadata based on file names. This causes .cs files to nest beneath .xaml files in Solution Explorer. -->
+    <Compile Update="ProjectSystem\Rules\**\*.cs">
+      <DependentUpon>%(Filename).xaml</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  
   <!-- Dependencies -->
   <ItemGroup>
     <!-- Analyzer Reference -->
-    <Compile Update="ProjectSystem\Rules\Dependencies\AnalyzerReference.xaml.cs">
-      <DependentUpon>AnalyzerReference.xaml</DependentUpon>
-    </Compile>
     <XamlPropertyRule Include="ProjectSystem\Rules\Dependencies\AnalyzerReference.xaml" />
-    <Compile Update="ProjectSystem\Rules\Dependencies\ResolvedAnalyzerReference.xaml.cs">
-      <DependentUpon>ResolvedAnalyzerReference.xaml</DependentUpon>
-    </Compile>
     <XamlPropertyRule Include="ProjectSystem\Rules\Dependencies\ResolvedAnalyzerReference.xaml" />
 
     <!-- Assembly Reference -->
-    <Compile Update="ProjectSystem\Rules\Dependencies\AssemblyReference.cs">
-      <DependentUpon>AssemblyReference.xaml</DependentUpon>
-    </Compile>
     <XamlPropertyRule Include="ProjectSystem\Rules\Dependencies\AssemblyReference.xaml" />
-    <Compile Update="ProjectSystem\Rules\Dependencies\ResolvedAssemblyReference.cs">
-      <DependentUpon>ResolvedAssemblyReference.xaml</DependentUpon>
-    </Compile>
     <XamlPropertyRule Include="ProjectSystem\Rules\Dependencies\ResolvedAssemblyReference.xaml" />
 
     <!-- COM Reference -->
-    <Compile Update="ProjectSystem\Rules\Dependencies\COMReference.cs">
-      <DependentUpon>COMReference.xaml</DependentUpon>
-    </Compile>
     <XamlPropertyRule Include="ProjectSystem\Rules\Dependencies\COMReference.xaml" />
-    <Compile Update="ProjectSystem\Rules\Dependencies\ResolvedCOMReference.cs">
-      <DependentUpon>ResolvedCOMReference.xaml</DependentUpon>
-    </Compile>
     <XamlPropertyRule Include="ProjectSystem\Rules\Dependencies\ResolvedCOMReference.xaml" />
 
     <!-- Framework Reference -->
-    <Compile Update="ProjectSystem\Rules\Dependencies\FrameworkReference.cs">
-      <DependentUpon>FrameworkReference.xaml</DependentUpon>
-    </Compile>
     <XamlPropertyRule Include="ProjectSystem\Rules\Dependencies\FrameworkReference.xaml" />
-    <Compile Update="ProjectSystem\Rules\Dependencies\ResolvedFrameworkReference.cs">
-      <DependentUpon>ResolvedFrameworkReference.xaml</DependentUpon>
-    </Compile>
     <XamlPropertyRule Include="ProjectSystem\Rules\Dependencies\ResolvedFrameworkReference.xaml" />
 
     <!-- Package Reference -->
-    <Compile Update="ProjectSystem\Rules\Dependencies\PackageReference.cs">
-      <DependentUpon>PackageReference.xaml</DependentUpon>
-    </Compile>
     <XamlPropertyRule Include="ProjectSystem\Rules\Dependencies\PackageReference.xaml" />
     <XamlPropertyRule Include="ProjectSystem\Rules\SuggestedWorkload.xaml">
       <XlfInput>false</XlfInput>
     </XamlPropertyRule>
-    <Compile Update="ProjectSystem\Rules\Dependencies\ResolvedPackageReference.cs">
-      <DependentUpon>ResolvedPackageReference.xaml</DependentUpon>
-    </Compile>
     <XamlPropertyRule Include="ProjectSystem\Rules\Dependencies\ResolvedPackageReference.xaml" />
 
     <!-- Project Reference -->
-    <Compile Update="ProjectSystem\Rules\Dependencies\ProjectReference.cs">
-      <DependentUpon>ProjectReference.xaml</DependentUpon>
-    </Compile>
     <XamlPropertyRule Include="ProjectSystem\Rules\Dependencies\ProjectReference.xaml" />
-    <Compile Update="ProjectSystem\Rules\Dependencies\ResolvedProjectReference.cs">
-      <DependentUpon>ResolvedProjectReference.xaml</DependentUpon>
-    </Compile>
     <XamlPropertyRule Include="ProjectSystem\Rules\Dependencies\ResolvedProjectReference.xaml" />
 
     <!-- SDK Reference -->
-    <Compile Update="ProjectSystem\Rules\Dependencies\SdkReference.xaml.cs">
-      <DependentUpon>SdkReference.xaml</DependentUpon>
-    </Compile>
     <XamlPropertyRule Include="ProjectSystem\Rules\Dependencies\SdkReference.xaml" />
-    <Compile Update="ProjectSystem\Rules\Dependencies\ResolvedSdkReference.cs">
-      <DependentUpon>ResolvedSdkReference.xaml</DependentUpon>
-    </Compile>
     <XamlPropertyRule Include="ProjectSystem\Rules\Dependencies\ResolvedSdkReference.xaml" />
     
     <!-- Property Pages -->
@@ -121,9 +86,6 @@
 
   <!-- Items -->
   <ItemGroup>
-    <Compile Update="ProjectSystem\Rules\Items\Compile.cs">
-      <DependentUpon>Compile.xaml</DependentUpon>
-    </Compile>
     <XamlPropertyRule Include="ProjectSystem\Rules\Items\Compile.xaml">
       <XlfInput>false</XlfInput>
     </XamlPropertyRule>
@@ -132,9 +94,6 @@
     </XamlPropertyRuleNoCodeBehind>
     <XamlPropertyRuleNoCodeBehind Include="ProjectSystem\Rules\Items\Compile.BrowseObject.xaml" />
 
-    <Compile Update="ProjectSystem\Rules\Items\Content.cs">
-      <DependentUpon>Content.xaml</DependentUpon>
-    </Compile>
     <XamlPropertyRule Include="ProjectSystem\Rules\Items\Content.xaml">
       <XlfInput>false</XlfInput>
     </XamlPropertyRule>
@@ -159,14 +118,8 @@
     </XamlPropertyRuleNoCodeBehind>
     <XamlPropertyRuleNoCodeBehind Include="ProjectSystem\Rules\Items\EmbeddedResource.BrowseObject.xaml" />
 
-    <Compile Update="ProjectSystem\Rules\Items\Folder.cs">
-      <DependentUpon>Folder.xaml</DependentUpon>
-    </Compile>
     <XamlPropertyRule Include="ProjectSystem\Rules\Items\Folder.xaml" />
 
-    <Compile Update="ProjectSystem\Rules\Items\None.cs">
-      <DependentUpon>None.xaml</DependentUpon>
-    </Compile>
     <XamlPropertyRule Include="ProjectSystem\Rules\Items\None.xaml">
       <XlfInput>false</XlfInput>
     </XamlPropertyRule>
@@ -178,9 +131,6 @@
 
   <!-- Others -->
   <ItemGroup>
-    <Compile Update="ProjectSystem\Rules\AppDesigner.xaml.cs">
-      <DependentUpon>AppDesigner.xaml</DependentUpon>
-    </Compile>
     <XamlPropertyRule Include="ProjectSystem\Rules\AppDesigner.xaml">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
       <XlfOutputItem>EmbeddedResource</XlfOutputItem>
@@ -189,55 +139,36 @@
       <RuleInjection>ProjectLevel</RuleInjection>
     </XamlPropertyRule>
 
-    <Compile Update="ProjectSystem\Rules\CollectedFrameworkReference.cs">
-      <DependentUpon>CollectedFrameworkReference.xaml</DependentUpon>
-    </Compile>
     <XamlPropertyRule Include="ProjectSystem\Rules\CollectedFrameworkReference.xaml">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
       <XlfOutputItem>EmbeddedResource</XlfOutputItem>
       <XlfInput>false</XlfInput>
     </XamlPropertyRule>
 
-
-    <Compile Update="ProjectSystem\Rules\CollectedPackageDownload.cs">
-      <DependentUpon>CollectedPackageDownload.xaml</DependentUpon>
-    </Compile>
     <XamlPropertyRule Include="ProjectSystem\Rules\CollectedPackageDownload.xaml">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
       <XlfOutputItem>EmbeddedResource</XlfOutputItem>
       <XlfInput>false</XlfInput>
     </XamlPropertyRule>
     
-    <Compile Update="ProjectSystem\Rules\CollectedPackageReference.cs">
-      <DependentUpon>CollectedPackageReference.xaml</DependentUpon>
-    </Compile>
     <XamlPropertyRule Include="ProjectSystem\Rules\CollectedPackageReference.xaml">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
       <XlfOutputItem>EmbeddedResource</XlfOutputItem>
       <XlfInput>false</XlfInput>
     </XamlPropertyRule>
 
-    <Compile Update="ProjectSystem\Rules\CollectedPackageVersion.cs">
-      <DependentUpon>CollectedPackageVersion.xaml</DependentUpon>
-    </Compile>
     <XamlPropertyRule Include="ProjectSystem\Rules\CollectedPackageVersion.xaml">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
       <XlfOutputItem>EmbeddedResource</XlfOutputItem>
       <XlfInput>false</XlfInput>
     </XamlPropertyRule>
 
-    <Compile Update="ProjectSystem\Rules\CompilerCommandLineArgs.cs">
-      <DependentUpon>CompilerCommandLineArgs.xaml</DependentUpon>
-    </Compile>
     <XamlPropertyRule Include="ProjectSystem\Rules\CompilerCommandLineArgs.xaml">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
       <XlfOutputItem>EmbeddedResource</XlfOutputItem>
       <XlfInput>false</XlfInput>
     </XamlPropertyRule>
 
-    <Compile Update="ProjectSystem\Rules\ConfigurationGeneral.xaml.cs">
-      <DependentUpon>ConfigurationGeneral.xaml</DependentUpon>
-    </Compile>
     <XamlPropertyRule Include="ProjectSystem\Rules\ConfigurationGeneral.xaml">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
       <XlfOutputItem>EmbeddedResource</XlfOutputItem>
@@ -247,18 +178,12 @@
     </XamlPropertyRule>
 
     <!-- TODO reconcile mismatched file names -->
-    <Compile Update="ProjectSystem\Rules\ConfiguredBrowseObject.cs">
-      <DependentUpon>GeneralConfiguredBrowseObject.xaml</DependentUpon>
-    </Compile>
     <XamlPropertyRule Include="ProjectSystem\Rules\GeneralConfiguredBrowseObject.xaml">
       <XlfInput>false</XlfInput>
       <DataAccess>IRule</DataAccess>
       <RuleInjection>ProjectLevel</RuleInjection>
     </XamlPropertyRule>
 
-    <Compile Update="ProjectSystem\Rules\CopyUpToDateMarker.cs">
-      <DependentUpon>CopyUpToDateMarker.xaml</DependentUpon>
-    </Compile>
     <XamlPropertyRule Include="ProjectSystem\Rules\CopyUpToDateMarker.xaml">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
       <XlfOutputItem>EmbeddedResource</XlfOutputItem>
@@ -267,51 +192,33 @@
 
     <XamlPropertyRuleNoCodeBehind Include="ProjectSystem\Rules\DebuggerGeneral.xaml" />
 
-    <Compile Update="ProjectSystem\Rules\DotNetCliToolReference.cs">
-      <DependentUpon>DotNetCliToolReference.xaml</DependentUpon>
-    </Compile>
     <XamlPropertyRule Include="ProjectSystem\Rules\DotNetCliToolReference.xaml">
       <XlfInput>false</XlfInput>
     </XamlPropertyRule>
 
-    <Compile Update="ProjectSystem\Rules\GeneralBrowseObject.cs">
-      <DependentUpon>GeneralBrowseObject.xaml</DependentUpon>
-    </Compile>
     <XamlPropertyRule Include="ProjectSystem\Rules\GeneralBrowseObject.xaml">
       <DataAccess>IRule</DataAccess>
       <RuleInjection>ProjectLevel</RuleInjection>
     </XamlPropertyRule>
 
-    <Compile Update="ProjectSystem\Rules\LanguageService.cs">
-      <DependentUpon>LanguageService.xaml</DependentUpon>
-    </Compile>
     <XamlPropertyRule Include="ProjectSystem\Rules\LanguageService.xaml">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
       <XlfOutputItem>EmbeddedResource</XlfOutputItem>
       <XlfInput>false</XlfInput>
     </XamlPropertyRule>
 
-    <Compile Update="ProjectSystem\Rules\NuGetRestore.cs">
-      <DependentUpon>NuGetRestore.xaml</DependentUpon>
-    </Compile>
     <XamlPropertyRule Include="ProjectSystem\Rules\NuGetRestore.xaml">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
       <XlfOutputItem>EmbeddedResource</XlfOutputItem>
       <XlfInput>false</XlfInput>
     </XamlPropertyRule>
 
-    <Compile Update="ProjectSystem\Rules\ProjectDebugger.xaml.cs">
-      <DependentUpon>ProjectDebugger.xaml</DependentUpon>
-    </Compile>
     <XamlPropertyRule Include="ProjectSystem\Rules\ProjectDebugger.xaml">
       <XlfInput>false</XlfInput>
       <DataAccess>IRule</DataAccess>
       <RuleInjection>ProjectLevel</RuleInjection>
     </XamlPropertyRule>
 
-    <Compile Update="ProjectSystem\Rules\ResolvedCompilationReference.cs">
-      <DependentUpon>ResolvedCompilationReference.xaml</DependentUpon>
-    </Compile>
     <XamlPropertyRule Include="ProjectSystem\Rules\ResolvedCompilationReference.xaml">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
       <XlfOutputItem>EmbeddedResource</XlfOutputItem>
@@ -324,96 +231,60 @@
       <XlfInput>false</XlfInput>
     </XamlPropertyRule>
     
-    <Compile Update="ProjectSystem\Rules\SupportedTargetFrameworkAlias.cs">
-      <DependentUpon>SupportedTargetFrameworkAlias.xaml</DependentUpon>
-    </Compile>
     <XamlPropertyRule Include="ProjectSystem\Rules\SupportedTargetFrameworkAlias.xaml">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
       <XlfOutputItem>EmbeddedResource</XlfOutputItem>
       <XlfInput>false</XlfInput>
     </XamlPropertyRule>
     
-    <Compile Update="ProjectSystem\Rules\SupportedTargetFramework.cs">
-      <DependentUpon>SupportedTargetFramework.xaml</DependentUpon>
-    </Compile>
     <XamlPropertyRule Include="ProjectSystem\Rules\SupportedTargetFramework.xaml">
       <XlfInput>false</XlfInput>
     </XamlPropertyRule>
 
-    <Compile Update="ProjectSystem\Rules\SupportedNETCoreAppTargetFramework.cs">
-      <DependentUpon>SupportedNETCoreAppTargetFramework.xaml</DependentUpon>
-    </Compile>
     <XamlPropertyRule Include="ProjectSystem\Rules\SupportedNETCoreAppTargetFramework.xaml">
       <XlfInput>false</XlfInput>
     </XamlPropertyRule>
 
-    <Compile Update="ProjectSystem\Rules\SupportedNETStandardTargetFramework.cs">
-      <DependentUpon>SupportedNETStandardTargetFramework.xaml</DependentUpon>
-    </Compile>
     <XamlPropertyRule Include="ProjectSystem\Rules\SupportedNETStandardTargetFramework.xaml">
       <XlfInput>false</XlfInput>
     </XamlPropertyRule>
 
-    <Compile Update="ProjectSystem\Rules\SupportedNETFrameworkTargetFramework.cs">
-      <DependentUpon>SupportedNETFrameworkTargetFramework.xaml</DependentUpon>
-    </Compile>
     <XamlPropertyRule Include="ProjectSystem\Rules\SupportedNETFrameworkTargetFramework.xaml">
       <XlfInput>false</XlfInput>
     </XamlPropertyRule>
 
-    <Compile Update="ProjectSystem\Rules\SdkSupportedTargetPlatformIdentifier.cs">
-      <DependentUpon>SdkSupportedTargetPlatformIdentifier.xaml</DependentUpon>
-    </Compile>
     <XamlPropertyRule Include="ProjectSystem\Rules\SdkSupportedTargetPlatformIdentifier.xaml">
       <XlfInput>false</XlfInput>
     </XamlPropertyRule>
 
-    <Compile Update="ProjectSystem\Rules\SdkSupportedTargetPlatformVersion.cs">
-      <DependentUpon>SdkSupportedTargetPlatformVersion.xaml</DependentUpon>
-    </Compile>
     <XamlPropertyRule Include="ProjectSystem\Rules\SdkSupportedTargetPlatformVersion.xaml">
       <XlfInput>false</XlfInput>
     </XamlPropertyRule>
     
-    <Compile Update="ProjectSystem\Rules\UpToDateCheckBuilt.cs">
-      <DependentUpon>UpToDateCheckBuilt.xaml</DependentUpon>
-    </Compile>
     <XamlPropertyRule Include="ProjectSystem\Rules\UpToDateCheckBuilt.xaml">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
       <XlfOutputItem>EmbeddedResource</XlfOutputItem>
       <XlfInput>false</XlfInput>
     </XamlPropertyRule>
 
-    <Compile Update="ProjectSystem\Rules\UpToDateCheckInput.cs">
-      <DependentUpon>UpToDateCheckInput.xaml</DependentUpon>
-    </Compile>
     <XamlPropertyRule Include="ProjectSystem\Rules\UpToDateCheckInput.xaml">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
       <XlfOutputItem>EmbeddedResource</XlfOutputItem>
       <XlfInput>false</XlfInput>
     </XamlPropertyRule>
 
-    <Compile Update="ProjectSystem\Rules\WindowsFormsConfiguration.cs">
-      <DependentUpon>WindowsFormsConfiguration.xaml</DependentUpon>
-    </Compile>
     <XamlPropertyRule Include="ProjectSystem\Rules\WindowsFormsConfiguration.xaml">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
       <XlfOutputItem>EmbeddedResource</XlfOutputItem>
       <XlfInput>false</XlfInput>
     </XamlPropertyRule>
 
-    <Compile Update="ProjectSystem\Rules\UpToDateCheckOutput.cs">
-      <DependentUpon>UpToDateCheckOutput.xaml</DependentUpon>
-    </Compile>
     <XamlPropertyRule Include="ProjectSystem\Rules\UpToDateCheckOutput.xaml">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
       <XlfOutputItem>EmbeddedResource</XlfOutputItem>
       <XlfInput>false</XlfInput>
     </XamlPropertyRule>
 
-    <Compile Update="ProjectSystem\Rules\VisualBasic.NamespaceImport.cs">
-      <DependentUpon>VisualBasic.NamespaceImport.xaml</DependentUpon>
-    </Compile>
     <XamlPropertyRule Include="ProjectSystem\Rules\VisualBasic.NamespaceImport.xaml">
       <XlfInput>false</XlfInput>
     </XamlPropertyRule>
