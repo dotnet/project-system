@@ -71,6 +71,7 @@
     <PackageReference Include="xunit.assert" />
     <PackageReference Include="xunit.combinatorial" />
     <PackageReference Include="xunit.extensibility.core" />
+    <PackageReference Include="xunit.extensibility.execution" />
     <PackageReference Include="xunit.runner.console" GeneratePathProperty="true" />
     <PackageReference Include="xunit.runner.visualstudio" GeneratePathProperty="true" />
     <InternalsVisibleTo Include="DynamicProxyGenAssembly2" Key="$(MoqPublicKey)" />
