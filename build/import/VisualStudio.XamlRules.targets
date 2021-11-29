@@ -9,6 +9,8 @@
       <LogicalName>XamlRuleToCode:%(Filename)%(Extension)</LogicalName>
       <SubType>Designer</SubType>
       <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
+      <!-- 'None' or 'IRule'. IRule adds APIs for accessing the properties, such as contributing code in the ProjectProperties partial class. -->
+      <DataAccess>None</DataAccess>
     </XamlPropertyRule>
     <XamlPropertyRuleNoCodeBehind>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

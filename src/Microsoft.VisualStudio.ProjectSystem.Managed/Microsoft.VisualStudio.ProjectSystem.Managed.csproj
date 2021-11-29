@@ -35,14 +35,12 @@
       <DependentUpon>AnalyzerReference.xaml</DependentUpon>
     </Compile>
     <XamlPropertyRule Include="ProjectSystem\Rules\Dependencies\AnalyzerReference.xaml">
-      <DataAccess>None</DataAccess>
       <RuleInjection>None</RuleInjection>
     </XamlPropertyRule>
     <Compile Update="ProjectSystem\Rules\Dependencies\ResolvedAnalyzerReference.xaml.cs">
       <DependentUpon>ResolvedAnalyzerReference.xaml</DependentUpon>
     </Compile>
     <XamlPropertyRule Include="ProjectSystem\Rules\Dependencies\ResolvedAnalyzerReference.xaml">
-      <DataAccess>None</DataAccess>
       <RuleInjection>None</RuleInjection>
     </XamlPropertyRule>
 
@@ -51,14 +49,12 @@
       <DependentUpon>AssemblyReference.xaml</DependentUpon>
     </Compile>
     <XamlPropertyRule Include="ProjectSystem\Rules\Dependencies\AssemblyReference.xaml">
-      <DataAccess>None</DataAccess>
       <RuleInjection>None</RuleInjection>
     </XamlPropertyRule>
     <Compile Update="ProjectSystem\Rules\Dependencies\ResolvedAssemblyReference.cs">
       <DependentUpon>ResolvedAssemblyReference.xaml</DependentUpon>
     </Compile>
     <XamlPropertyRule Include="ProjectSystem\Rules\Dependencies\ResolvedAssemblyReference.xaml">
-      <DataAccess>None</DataAccess>
       <RuleInjection>None</RuleInjection>
     </XamlPropertyRule>
 
@@ -67,14 +63,12 @@
       <DependentUpon>COMReference.xaml</DependentUpon>
     </Compile>
     <XamlPropertyRule Include="ProjectSystem\Rules\Dependencies\COMReference.xaml">
-      <DataAccess>None</DataAccess>
       <RuleInjection>None</RuleInjection>
     </XamlPropertyRule>
     <Compile Update="ProjectSystem\Rules\Dependencies\ResolvedCOMReference.cs">
       <DependentUpon>ResolvedCOMReference.xaml</DependentUpon>
     </Compile>
     <XamlPropertyRule Include="ProjectSystem\Rules\Dependencies\ResolvedCOMReference.xaml">
-      <DataAccess>None</DataAccess>
       <RuleInjection>None</RuleInjection>
     </XamlPropertyRule>
 
@@ -83,14 +77,12 @@
       <DependentUpon>FrameworkReference.xaml</DependentUpon>
     </Compile>
     <XamlPropertyRule Include="ProjectSystem\Rules\Dependencies\FrameworkReference.xaml">
-      <DataAccess>None</DataAccess>
       <RuleInjection>None</RuleInjection>
     </XamlPropertyRule>
     <Compile Update="ProjectSystem\Rules\Dependencies\ResolvedFrameworkReference.cs">
       <DependentUpon>ResolvedFrameworkReference.xaml</DependentUpon>
     </Compile>
     <XamlPropertyRule Include="ProjectSystem\Rules\Dependencies\ResolvedFrameworkReference.xaml">
-      <DataAccess>None</DataAccess>
       <RuleInjection>None</RuleInjection>
     </XamlPropertyRule>
 
@@ -99,19 +91,16 @@
       <DependentUpon>PackageReference.xaml</DependentUpon>
     </Compile>
     <XamlPropertyRule Include="ProjectSystem\Rules\Dependencies\PackageReference.xaml">
-      <DataAccess>None</DataAccess>
       <RuleInjection>None</RuleInjection>
     </XamlPropertyRule>
     <XamlPropertyRule Include="ProjectSystem\Rules\SuggestedWorkload.xaml">
       <XlfInput>false</XlfInput>
-      <DataAccess>None</DataAccess>
       <RuleInjection>None</RuleInjection>
     </XamlPropertyRule>
     <Compile Update="ProjectSystem\Rules\Dependencies\ResolvedPackageReference.cs">
       <DependentUpon>ResolvedPackageReference.xaml</DependentUpon>
     </Compile>
     <XamlPropertyRule Include="ProjectSystem\Rules\Dependencies\ResolvedPackageReference.xaml">
-      <DataAccess>None</DataAccess>
       <RuleInjection>None</RuleInjection>
     </XamlPropertyRule>
 
@@ -120,14 +109,12 @@
       <DependentUpon>ProjectReference.xaml</DependentUpon>
     </Compile>
     <XamlPropertyRule Include="ProjectSystem\Rules\Dependencies\ProjectReference.xaml">
-      <DataAccess>None</DataAccess>
       <RuleInjection>None</RuleInjection>
     </XamlPropertyRule>
     <Compile Update="ProjectSystem\Rules\Dependencies\ResolvedProjectReference.cs">
       <DependentUpon>ResolvedProjectReference.xaml</DependentUpon>
     </Compile>
     <XamlPropertyRule Include="ProjectSystem\Rules\Dependencies\ResolvedProjectReference.xaml">
-      <DataAccess>None</DataAccess>
       <RuleInjection>None</RuleInjection>
     </XamlPropertyRule>
 
@@ -136,14 +123,12 @@
       <DependentUpon>SdkReference.xaml</DependentUpon>
     </Compile>
     <XamlPropertyRule Include="ProjectSystem\Rules\Dependencies\SdkReference.xaml">
-      <DataAccess>None</DataAccess>
       <RuleInjection>None</RuleInjection>
     </XamlPropertyRule>
     <Compile Update="ProjectSystem\Rules\Dependencies\ResolvedSdkReference.cs">
       <DependentUpon>ResolvedSdkReference.xaml</DependentUpon>
     </Compile>
     <XamlPropertyRule Include="ProjectSystem\Rules\Dependencies\ResolvedSdkReference.xaml">
-      <DataAccess>None</DataAccess>
       <RuleInjection>None</RuleInjection>
     </XamlPropertyRule>
     
@@ -170,7 +155,6 @@
     </Compile>
     <XamlPropertyRule Include="ProjectSystem\Rules\Items\Compile.xaml">
       <XlfInput>false</XlfInput>
-      <DataAccess>None</DataAccess>
       <RuleInjection>None</RuleInjection>
     </XamlPropertyRule>
     <XamlPropertyRuleNoCodeBehind Include="ProjectSystem\Rules\Items\Compile.FSharp.xaml">
@@ -183,7 +167,6 @@
     </Compile>
     <XamlPropertyRule Include="ProjectSystem\Rules\Items\Content.xaml">
       <XlfInput>false</XlfInput>
-      <DataAccess>None</DataAccess>
       <RuleInjection>None</RuleInjection>
     </XamlPropertyRule>
     <XamlPropertyRuleNoCodeBehind Include="ProjectSystem\Rules\Items\Content.FSharp.xaml">
@@ -211,7 +194,6 @@
       <DependentUpon>Folder.xaml</DependentUpon>
     </Compile>
     <XamlPropertyRule Include="ProjectSystem\Rules\Items\Folder.xaml">
-      <DataAccess>None</DataAccess>
       <RuleInjection>None</RuleInjection>
     </XamlPropertyRule>
 
@@ -220,7 +202,6 @@
     </Compile>
     <XamlPropertyRule Include="ProjectSystem\Rules\Items\None.xaml">
       <XlfInput>false</XlfInput>
-      <DataAccess>None</DataAccess>
       <RuleInjection>None</RuleInjection>
     </XamlPropertyRule>
     <XamlPropertyRuleNoCodeBehind Include="ProjectSystem\Rules\Items\None.FSharp.xaml">
@@ -238,6 +219,7 @@
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
       <XlfOutputItem>EmbeddedResource</XlfOutputItem>
       <XlfInput>false</XlfInput>
+      <DataAccess>IRule</DataAccess>
     </XamlPropertyRule>
 
     <Compile Update="ProjectSystem\Rules\CollectedFrameworkReference.cs">
@@ -247,7 +229,6 @@
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
       <XlfOutputItem>EmbeddedResource</XlfOutputItem>
       <XlfInput>false</XlfInput>
-      <DataAccess>None</DataAccess>
       <RuleInjection>None</RuleInjection>
     </XamlPropertyRule>
 
@@ -259,7 +240,6 @@
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
       <XlfOutputItem>EmbeddedResource</XlfOutputItem>
       <XlfInput>false</XlfInput>
-      <DataAccess>None</DataAccess>
       <RuleInjection>None</RuleInjection>
     </XamlPropertyRule>
     
@@ -270,7 +250,6 @@
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
       <XlfOutputItem>EmbeddedResource</XlfOutputItem>
       <XlfInput>false</XlfInput>
-      <DataAccess>None</DataAccess>
       <RuleInjection>None</RuleInjection>
     </XamlPropertyRule>
 
@@ -281,7 +260,6 @@
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
       <XlfOutputItem>EmbeddedResource</XlfOutputItem>
       <XlfInput>false</XlfInput>
-      <DataAccess>None</DataAccess>
       <RuleInjection>None</RuleInjection>
     </XamlPropertyRule>
 
@@ -292,7 +270,6 @@
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
       <XlfOutputItem>EmbeddedResource</XlfOutputItem>
       <XlfInput>false</XlfInput>
-      <DataAccess>None</DataAccess>
       <RuleInjection>None</RuleInjection>
     </XamlPropertyRule>
 
@@ -302,6 +279,7 @@
     <XamlPropertyRule Include="ProjectSystem\Rules\ConfigurationGeneral.xaml">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
       <XlfOutputItem>EmbeddedResource</XlfOutputItem>
+      <DataAccess>IRule</DataAccess>
       <XlfInput>false</XlfInput>
     </XamlPropertyRule>
 
@@ -311,6 +289,7 @@
     </Compile>
     <XamlPropertyRule Include="ProjectSystem\Rules\GeneralConfiguredBrowseObject.xaml">
       <XlfInput>false</XlfInput>
+      <DataAccess>IRule</DataAccess>
     </XamlPropertyRule>
 
     <Compile Update="ProjectSystem\Rules\CopyUpToDateMarker.cs">
@@ -320,7 +299,6 @@
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
       <XlfOutputItem>EmbeddedResource</XlfOutputItem>
       <XlfInput>false</XlfInput>
-      <DataAccess>None</DataAccess>
       <RuleInjection>None</RuleInjection>
     </XamlPropertyRule>
 
@@ -331,7 +309,6 @@
     </Compile>
     <XamlPropertyRule Include="ProjectSystem\Rules\DotNetCliToolReference.xaml">
       <XlfInput>false</XlfInput>
-      <DataAccess>None</DataAccess>
       <RuleInjection>None</RuleInjection>
     </XamlPropertyRule>
 
@@ -339,6 +316,7 @@
       <DependentUpon>GeneralBrowseObject.xaml</DependentUpon>
     </Compile>
     <XamlPropertyRule Include="ProjectSystem\Rules\GeneralBrowseObject.xaml">
+      <DataAccess>IRule</DataAccess>
     </XamlPropertyRule>
 
     <Compile Update="ProjectSystem\Rules\LanguageService.cs">
@@ -348,7 +326,6 @@
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
       <XlfOutputItem>EmbeddedResource</XlfOutputItem>
       <XlfInput>false</XlfInput>
-      <DataAccess>None</DataAccess>
       <RuleInjection>None</RuleInjection>
     </XamlPropertyRule>
 
@@ -359,7 +336,6 @@
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
       <XlfOutputItem>EmbeddedResource</XlfOutputItem>
       <XlfInput>false</XlfInput>
-      <DataAccess>None</DataAccess>
       <RuleInjection>None</RuleInjection>
     </XamlPropertyRule>
 
@@ -368,6 +344,7 @@
     </Compile>
     <XamlPropertyRule Include="ProjectSystem\Rules\ProjectDebugger.xaml">
       <XlfInput>false</XlfInput>
+      <DataAccess>IRule</DataAccess>
     </XamlPropertyRule>
 
     <Compile Update="ProjectSystem\Rules\ResolvedCompilationReference.cs">
@@ -377,7 +354,6 @@
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
       <XlfOutputItem>EmbeddedResource</XlfOutputItem>
       <XlfInput>false</XlfInput>
-      <DataAccess>None</DataAccess>
       <RuleInjection>None</RuleInjection>
     </XamlPropertyRule>
 
@@ -385,7 +361,6 @@
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
       <XlfOutputItem>EmbeddedResource</XlfOutputItem>
       <XlfInput>false</XlfInput>
-      <DataAccess>None</DataAccess>
       <RuleInjection>None</RuleInjection>
     </XamlPropertyRule>
     
@@ -396,7 +371,6 @@
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
       <XlfOutputItem>EmbeddedResource</XlfOutputItem>
       <XlfInput>false</XlfInput>
-      <DataAccess>None</DataAccess>
       <RuleInjection>None</RuleInjection>
     </XamlPropertyRule>
     
@@ -405,7 +379,6 @@
     </Compile>
     <XamlPropertyRule Include="ProjectSystem\Rules\SupportedTargetFramework.xaml">
       <XlfInput>false</XlfInput>
-      <DataAccess>None</DataAccess>
       <RuleInjection>None</RuleInjection>
     </XamlPropertyRule>
 
@@ -414,7 +387,6 @@
     </Compile>
     <XamlPropertyRule Include="ProjectSystem\Rules\SupportedNETCoreAppTargetFramework.xaml">
       <XlfInput>false</XlfInput>
-      <DataAccess>None</DataAccess>
       <RuleInjection>None</RuleInjection>
     </XamlPropertyRule>
 
@@ -423,7 +395,6 @@
     </Compile>
     <XamlPropertyRule Include="ProjectSystem\Rules\SupportedNETStandardTargetFramework.xaml">
       <XlfInput>false</XlfInput>
-      <DataAccess>None</DataAccess>
       <RuleInjection>None</RuleInjection>
     </XamlPropertyRule>
 
@@ -432,7 +403,6 @@
     </Compile>
     <XamlPropertyRule Include="ProjectSystem\Rules\SupportedNETFrameworkTargetFramework.xaml">
       <XlfInput>false</XlfInput>
-      <DataAccess>None</DataAccess>
       <RuleInjection>None</RuleInjection>
     </XamlPropertyRule>
 
@@ -441,7 +411,6 @@
     </Compile>
     <XamlPropertyRule Include="ProjectSystem\Rules\SdkSupportedTargetPlatformIdentifier.xaml">
       <XlfInput>false</XlfInput>
-      <DataAccess>None</DataAccess>
       <RuleInjection>None</RuleInjection>
     </XamlPropertyRule>
 
@@ -450,7 +419,6 @@
     </Compile>
     <XamlPropertyRule Include="ProjectSystem\Rules\SdkSupportedTargetPlatformVersion.xaml">
       <XlfInput>false</XlfInput>
-      <DataAccess>None</DataAccess>
       <RuleInjection>None</RuleInjection>
     </XamlPropertyRule>
     
@@ -461,7 +429,6 @@
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
       <XlfOutputItem>EmbeddedResource</XlfOutputItem>
       <XlfInput>false</XlfInput>
-      <DataAccess>None</DataAccess>
       <RuleInjection>None</RuleInjection>
     </XamlPropertyRule>
 
@@ -472,7 +439,6 @@
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
       <XlfOutputItem>EmbeddedResource</XlfOutputItem>
       <XlfInput>false</XlfInput>
-      <DataAccess>None</DataAccess>
       <RuleInjection>None</RuleInjection>
     </XamlPropertyRule>
 
@@ -483,7 +449,6 @@
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
       <XlfOutputItem>EmbeddedResource</XlfOutputItem>
       <XlfInput>false</XlfInput>
-      <DataAccess>None</DataAccess>
       <RuleInjection>None</RuleInjection>
     </XamlPropertyRule>
 
@@ -494,7 +459,6 @@
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
       <XlfOutputItem>EmbeddedResource</XlfOutputItem>
       <XlfInput>false</XlfInput>
-      <DataAccess>None</DataAccess>
       <RuleInjection>None</RuleInjection>
     </XamlPropertyRule>
 
@@ -503,7 +467,6 @@
     </Compile>
     <XamlPropertyRule Include="ProjectSystem\Rules\VisualBasic.NamespaceImport.xaml">
       <XlfInput>false</XlfInput>
-      <DataAccess>None</DataAccess>
       <RuleInjection>None</RuleInjection>
     </XamlPropertyRule>
   </ItemGroup>
