@@ -274,6 +274,7 @@
     </Compile>
     <XamlPropertyRule Include="ProjectSystem\Rules\AppDesigner.xaml">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+      <XlfOutputItem>EmbeddedResource</XlfOutputItem>
       <XlfInput>false</XlfInput>
       <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
       <SubType>Designer</SubType>
@@ -284,6 +285,7 @@
     </Compile>
     <XamlPropertyRule Include="ProjectSystem\Rules\CollectedFrameworkReference.xaml">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+      <XlfOutputItem>EmbeddedResource</XlfOutputItem>
       <XlfInput>false</XlfInput>
       <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
       <SubType>Designer</SubType>
@@ -297,6 +299,7 @@
     </Compile>
     <XamlPropertyRule Include="ProjectSystem\Rules\CollectedPackageDownload.xaml">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+      <XlfOutputItem>EmbeddedResource</XlfOutputItem>
       <XlfInput>false</XlfInput>
       <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
       <SubType>Designer</SubType>
@@ -309,6 +312,7 @@
     </Compile>
     <XamlPropertyRule Include="ProjectSystem\Rules\CollectedPackageReference.xaml">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+      <XlfOutputItem>EmbeddedResource</XlfOutputItem>
       <XlfInput>false</XlfInput>
       <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
       <SubType>Designer</SubType>
@@ -321,6 +325,7 @@
     </Compile>
     <XamlPropertyRule Include="ProjectSystem\Rules\CollectedPackageVersion.xaml">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+      <XlfOutputItem>EmbeddedResource</XlfOutputItem>
       <XlfInput>false</XlfInput>
       <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
       <SubType>Designer</SubType>
@@ -333,6 +338,7 @@
     </Compile>
     <XamlPropertyRule Include="ProjectSystem\Rules\CompilerCommandLineArgs.xaml">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+      <XlfOutputItem>EmbeddedResource</XlfOutputItem>
       <XlfInput>false</XlfInput>
       <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
       <SubType>Designer</SubType>
@@ -345,6 +351,7 @@
     </Compile>
     <XamlPropertyRule Include="ProjectSystem\Rules\ConfigurationGeneral.xaml">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+      <XlfOutputItem>EmbeddedResource</XlfOutputItem>
       <XlfInput>false</XlfInput>
       <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
       <SubType>Designer</SubType>
@@ -365,6 +372,7 @@
     </Compile>
     <XamlPropertyRule Include="ProjectSystem\Rules\CopyUpToDateMarker.xaml">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+      <XlfOutputItem>EmbeddedResource</XlfOutputItem>
       <XlfInput>false</XlfInput>
       <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
       <SubType>Designer</SubType>
@@ -398,6 +406,7 @@
     </Compile>
     <XamlPropertyRule Include="ProjectSystem\Rules\LanguageService.xaml">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+      <XlfOutputItem>EmbeddedResource</XlfOutputItem>
       <XlfInput>false</XlfInput>
       <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
       <SubType>Designer</SubType>
@@ -410,6 +419,7 @@
     </Compile>
     <XamlPropertyRule Include="ProjectSystem\Rules\NuGetRestore.xaml">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+      <XlfOutputItem>EmbeddedResource</XlfOutputItem>
       <XlfInput>false</XlfInput>
       <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
       <SubType>Designer</SubType>
@@ -431,6 +441,7 @@
     </Compile>
     <XamlPropertyRule Include="ProjectSystem\Rules\ResolvedCompilationReference.xaml">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+      <XlfOutputItem>EmbeddedResource</XlfOutputItem>
       <XlfInput>false</XlfInput>
       <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
       <SubType>Designer</SubType>
@@ -440,6 +451,7 @@
 
     <XamlPropertyRule Include="ProjectSystem\Rules\SourceControl.xaml">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+      <XlfOutputItem>EmbeddedResource</XlfOutputItem>
       <XlfInput>false</XlfInput>
       <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
       <SubType>Designer</SubType>
@@ -452,6 +464,7 @@
     </Compile>
     <XamlPropertyRule Include="ProjectSystem\Rules\SupportedTargetFrameworkAlias.xaml">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+      <XlfOutputItem>EmbeddedResource</XlfOutputItem>
       <XlfInput>false</XlfInput>
       <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
       <SubType>Designer</SubType>
@@ -530,6 +543,7 @@
     </Compile>
     <XamlPropertyRule Include="ProjectSystem\Rules\UpToDateCheckBuilt.xaml">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+      <XlfOutputItem>EmbeddedResource</XlfOutputItem>
       <XlfInput>false</XlfInput>
       <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
       <SubType>Designer</SubType>
@@ -542,6 +556,7 @@
     </Compile>
     <XamlPropertyRule Include="ProjectSystem\Rules\UpToDateCheckInput.xaml">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+      <XlfOutputItem>EmbeddedResource</XlfOutputItem>
       <XlfInput>false</XlfInput>
       <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
       <SubType>Designer</SubType>
@@ -554,6 +569,7 @@
     </Compile>
     <XamlPropertyRule Include="ProjectSystem\Rules\WindowsFormsConfiguration.xaml">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+      <XlfOutputItem>EmbeddedResource</XlfOutputItem>
       <XlfInput>false</XlfInput>
       <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
       <SubType>Designer</SubType>
@@ -566,6 +582,7 @@
     </Compile>
     <XamlPropertyRule Include="ProjectSystem\Rules\UpToDateCheckOutput.xaml">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+      <XlfOutputItem>EmbeddedResource</XlfOutputItem>
       <XlfInput>false</XlfInput>
       <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
       <SubType>Designer</SubType>

@@ -6,17 +6,14 @@
       <Namespace>Microsoft.VisualStudio.ProjectSystem</Namespace>
       <RuleInjectionClassName>$(XamlPropertyRuleInjectionClassName)</RuleInjectionClassName>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      <XlfOutputItem>EmbeddedResource</XlfOutputItem>
       <LogicalName>XamlRuleToCode:%(Filename)%(Extension)</LogicalName>
     </XamlPropertyRule>
     <XamlPropertyRuleNoCodeBehind>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      <XlfOutputItem>EmbeddedResource</XlfOutputItem>
       <LogicalName>XamlRuleToCode:%(Filename)%(Extension)</LogicalName>
     </XamlPropertyRuleNoCodeBehind>
     <XamlPropertyProjectItemsSchema>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      <XlfOutputItem>EmbeddedResource</XlfOutputItem>
       <LogicalName>XamlRuleToCode:%(Filename)%(Extension)</LogicalName>
     </XamlPropertyProjectItemsSchema>
     <DesignTimeTargetsFile>
