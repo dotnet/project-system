@@ -36,7 +36,6 @@
     </Compile>
     <XamlPropertyRule Include="ProjectSystem\Rules\Dependencies\AnalyzerReference.xaml">
       <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
-      <SubType>Designer</SubType>
       <DataAccess>None</DataAccess>
       <RuleInjection>None</RuleInjection>
     </XamlPropertyRule>
@@ -45,7 +44,6 @@
     </Compile>
     <XamlPropertyRule Include="ProjectSystem\Rules\Dependencies\ResolvedAnalyzerReference.xaml">
       <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
-      <SubType>Designer</SubType>
       <DataAccess>None</DataAccess>
       <RuleInjection>None</RuleInjection>
     </XamlPropertyRule>
@@ -56,7 +54,6 @@
     </Compile>
     <XamlPropertyRule Include="ProjectSystem\Rules\Dependencies\AssemblyReference.xaml">
       <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
-      <SubType>Designer</SubType>
       <DataAccess>None</DataAccess>
       <RuleInjection>None</RuleInjection>
     </XamlPropertyRule>
@@ -65,7 +62,6 @@
     </Compile>
     <XamlPropertyRule Include="ProjectSystem\Rules\Dependencies\ResolvedAssemblyReference.xaml">
       <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
-      <SubType>Designer</SubType>
       <DataAccess>None</DataAccess>
       <RuleInjection>None</RuleInjection>
     </XamlPropertyRule>
@@ -76,7 +72,6 @@
     </Compile>
     <XamlPropertyRule Include="ProjectSystem\Rules\Dependencies\COMReference.xaml">
       <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
-      <SubType>Designer</SubType>
       <DataAccess>None</DataAccess>
       <RuleInjection>None</RuleInjection>
     </XamlPropertyRule>
@@ -85,7 +80,6 @@
     </Compile>
     <XamlPropertyRule Include="ProjectSystem\Rules\Dependencies\ResolvedCOMReference.xaml">
       <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
-      <SubType>Designer</SubType>
       <DataAccess>None</DataAccess>
       <RuleInjection>None</RuleInjection>
     </XamlPropertyRule>
@@ -96,7 +90,6 @@
     </Compile>
     <XamlPropertyRule Include="ProjectSystem\Rules\Dependencies\FrameworkReference.xaml">
       <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
-      <SubType>Designer</SubType>
       <DataAccess>None</DataAccess>
       <RuleInjection>None</RuleInjection>
     </XamlPropertyRule>
@@ -105,7 +98,6 @@
     </Compile>
     <XamlPropertyRule Include="ProjectSystem\Rules\Dependencies\ResolvedFrameworkReference.xaml">
       <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
-      <SubType>Designer</SubType>
       <DataAccess>None</DataAccess>
       <RuleInjection>None</RuleInjection>
     </XamlPropertyRule>
@@ -116,13 +108,11 @@
     </Compile>
     <XamlPropertyRule Include="ProjectSystem\Rules\Dependencies\PackageReference.xaml">
       <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
-      <SubType>Designer</SubType>
       <DataAccess>None</DataAccess>
       <RuleInjection>None</RuleInjection>
     </XamlPropertyRule>
     <XamlPropertyRule Include="ProjectSystem\Rules\SuggestedWorkload.xaml">
       <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
-      <SubType>Designer</SubType>
       <XlfInput>false</XlfInput>
       <DataAccess>None</DataAccess>
       <RuleInjection>None</RuleInjection>
@@ -132,7 +122,6 @@
     </Compile>
     <XamlPropertyRule Include="ProjectSystem\Rules\Dependencies\ResolvedPackageReference.xaml">
       <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
-      <SubType>Designer</SubType>
       <DataAccess>None</DataAccess>
       <RuleInjection>None</RuleInjection>
     </XamlPropertyRule>
@@ -143,7 +132,6 @@
     </Compile>
     <XamlPropertyRule Include="ProjectSystem\Rules\Dependencies\ProjectReference.xaml">
       <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
-      <SubType>Designer</SubType>
       <DataAccess>None</DataAccess>
       <RuleInjection>None</RuleInjection>
     </XamlPropertyRule>
@@ -152,7 +140,6 @@
     </Compile>
     <XamlPropertyRule Include="ProjectSystem\Rules\Dependencies\ResolvedProjectReference.xaml">
       <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
-      <SubType>Designer</SubType>
       <DataAccess>None</DataAccess>
       <RuleInjection>None</RuleInjection>
     </XamlPropertyRule>
@@ -163,7 +150,6 @@
     </Compile>
     <XamlPropertyRule Include="ProjectSystem\Rules\Dependencies\SdkReference.xaml">
       <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
-      <SubType>Designer</SubType>
       <DataAccess>None</DataAccess>
       <RuleInjection>None</RuleInjection>
     </XamlPropertyRule>
@@ -172,7 +158,6 @@
     </Compile>
     <XamlPropertyRule Include="ProjectSystem\Rules\Dependencies\ResolvedSdkReference.xaml">
       <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
-      <SubType>Designer</SubType>
       <DataAccess>None</DataAccess>
       <RuleInjection>None</RuleInjection>
     </XamlPropertyRule>
@@ -201,7 +186,6 @@
     <XamlPropertyRule Include="ProjectSystem\Rules\Items\Compile.xaml">
       <XlfInput>false</XlfInput>
       <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
-      <SubType>Designer</SubType>
       <DataAccess>None</DataAccess>
       <RuleInjection>None</RuleInjection>
     </XamlPropertyRule>
@@ -216,7 +200,6 @@
     <XamlPropertyRule Include="ProjectSystem\Rules\Items\Content.xaml">
       <XlfInput>false</XlfInput>
       <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
-      <SubType>Designer</SubType>
       <DataAccess>None</DataAccess>
       <RuleInjection>None</RuleInjection>
     </XamlPropertyRule>
@@ -246,7 +229,6 @@
     </Compile>
     <XamlPropertyRule Include="ProjectSystem\Rules\Items\Folder.xaml">
       <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
-      <SubType>Designer</SubType>
       <DataAccess>None</DataAccess>
       <RuleInjection>None</RuleInjection>
     </XamlPropertyRule>
@@ -256,7 +238,6 @@
     </Compile>
     <XamlPropertyRule Include="ProjectSystem\Rules\Items\None.xaml">
       <XlfInput>false</XlfInput>
-      <SubType>Designer</SubType>
       <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
       <DataAccess>None</DataAccess>
       <RuleInjection>None</RuleInjection>
@@ -277,7 +258,6 @@
       <XlfOutputItem>EmbeddedResource</XlfOutputItem>
       <XlfInput>false</XlfInput>
       <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
-      <SubType>Designer</SubType>
     </XamlPropertyRule>
 
     <Compile Update="ProjectSystem\Rules\CollectedFrameworkReference.cs">
@@ -288,7 +268,6 @@
       <XlfOutputItem>EmbeddedResource</XlfOutputItem>
       <XlfInput>false</XlfInput>
       <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
-      <SubType>Designer</SubType>
       <DataAccess>None</DataAccess>
       <RuleInjection>None</RuleInjection>
     </XamlPropertyRule>
@@ -302,7 +281,6 @@
       <XlfOutputItem>EmbeddedResource</XlfOutputItem>
       <XlfInput>false</XlfInput>
       <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
-      <SubType>Designer</SubType>
       <DataAccess>None</DataAccess>
       <RuleInjection>None</RuleInjection>
     </XamlPropertyRule>
@@ -315,7 +293,6 @@
       <XlfOutputItem>EmbeddedResource</XlfOutputItem>
       <XlfInput>false</XlfInput>
       <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
-      <SubType>Designer</SubType>
       <DataAccess>None</DataAccess>
       <RuleInjection>None</RuleInjection>
     </XamlPropertyRule>
@@ -328,7 +305,6 @@
       <XlfOutputItem>EmbeddedResource</XlfOutputItem>
       <XlfInput>false</XlfInput>
       <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
-      <SubType>Designer</SubType>
       <DataAccess>None</DataAccess>
       <RuleInjection>None</RuleInjection>
     </XamlPropertyRule>
@@ -341,7 +317,6 @@
       <XlfOutputItem>EmbeddedResource</XlfOutputItem>
       <XlfInput>false</XlfInput>
       <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
-      <SubType>Designer</SubType>
       <DataAccess>None</DataAccess>
       <RuleInjection>None</RuleInjection>
     </XamlPropertyRule>
@@ -354,7 +329,6 @@
       <XlfOutputItem>EmbeddedResource</XlfOutputItem>
       <XlfInput>false</XlfInput>
       <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
-      <SubType>Designer</SubType>
     </XamlPropertyRule>
 
     <!-- TODO reconcile mismatched file names -->
@@ -363,7 +337,6 @@
     </Compile>
     <XamlPropertyRule Include="ProjectSystem\Rules\GeneralConfiguredBrowseObject.xaml">
       <XlfInput>false</XlfInput>
-      <SubType>Designer</SubType>
       <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
     </XamlPropertyRule>
 
@@ -375,7 +348,6 @@
       <XlfOutputItem>EmbeddedResource</XlfOutputItem>
       <XlfInput>false</XlfInput>
       <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
-      <SubType>Designer</SubType>
       <DataAccess>None</DataAccess>
       <RuleInjection>None</RuleInjection>
     </XamlPropertyRule>
@@ -388,7 +360,6 @@
     <XamlPropertyRule Include="ProjectSystem\Rules\DotNetCliToolReference.xaml">
       <XlfInput>false</XlfInput>
       <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
-      <SubType>Designer</SubType>
       <DataAccess>None</DataAccess>
       <RuleInjection>None</RuleInjection>
     </XamlPropertyRule>
@@ -397,7 +368,6 @@
       <DependentUpon>GeneralBrowseObject.xaml</DependentUpon>
     </Compile>
     <XamlPropertyRule Include="ProjectSystem\Rules\GeneralBrowseObject.xaml">
-      <SubType>Designer</SubType>
       <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
     </XamlPropertyRule>
 
@@ -409,7 +379,6 @@
       <XlfOutputItem>EmbeddedResource</XlfOutputItem>
       <XlfInput>false</XlfInput>
       <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
-      <SubType>Designer</SubType>
       <DataAccess>None</DataAccess>
       <RuleInjection>None</RuleInjection>
     </XamlPropertyRule>
@@ -422,7 +391,6 @@
       <XlfOutputItem>EmbeddedResource</XlfOutputItem>
       <XlfInput>false</XlfInput>
       <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
-      <SubType>Designer</SubType>
       <DataAccess>None</DataAccess>
       <RuleInjection>None</RuleInjection>
     </XamlPropertyRule>
@@ -433,7 +401,6 @@
     <XamlPropertyRule Include="ProjectSystem\Rules\ProjectDebugger.xaml">
       <XlfInput>false</XlfInput>
       <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
-      <SubType>Designer</SubType>
     </XamlPropertyRule>
 
     <Compile Update="ProjectSystem\Rules\ResolvedCompilationReference.cs">
@@ -444,7 +411,6 @@
       <XlfOutputItem>EmbeddedResource</XlfOutputItem>
       <XlfInput>false</XlfInput>
       <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
-      <SubType>Designer</SubType>
       <DataAccess>None</DataAccess>
       <RuleInjection>None</RuleInjection>
     </XamlPropertyRule>
@@ -454,7 +420,6 @@
       <XlfOutputItem>EmbeddedResource</XlfOutputItem>
       <XlfInput>false</XlfInput>
       <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
-      <SubType>Designer</SubType>
       <DataAccess>None</DataAccess>
       <RuleInjection>None</RuleInjection>
     </XamlPropertyRule>
@@ -467,7 +432,6 @@
       <XlfOutputItem>EmbeddedResource</XlfOutputItem>
       <XlfInput>false</XlfInput>
       <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
-      <SubType>Designer</SubType>
       <DataAccess>None</DataAccess>
       <RuleInjection>None</RuleInjection>
     </XamlPropertyRule>
@@ -478,7 +442,6 @@
     <XamlPropertyRule Include="ProjectSystem\Rules\SupportedTargetFramework.xaml">
       <XlfInput>false</XlfInput>
       <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
-      <SubType>Designer</SubType>
       <DataAccess>None</DataAccess>
       <RuleInjection>None</RuleInjection>
     </XamlPropertyRule>
@@ -489,7 +452,6 @@
     <XamlPropertyRule Include="ProjectSystem\Rules\SupportedNETCoreAppTargetFramework.xaml">
       <XlfInput>false</XlfInput>
       <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
-      <SubType>Designer</SubType>
       <DataAccess>None</DataAccess>
       <RuleInjection>None</RuleInjection>
     </XamlPropertyRule>
@@ -500,7 +462,6 @@
     <XamlPropertyRule Include="ProjectSystem\Rules\SupportedNETStandardTargetFramework.xaml">
       <XlfInput>false</XlfInput>
       <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
-      <SubType>Designer</SubType>
       <DataAccess>None</DataAccess>
       <RuleInjection>None</RuleInjection>
     </XamlPropertyRule>
@@ -511,7 +472,6 @@
     <XamlPropertyRule Include="ProjectSystem\Rules\SupportedNETFrameworkTargetFramework.xaml">
       <XlfInput>false</XlfInput>
       <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
-      <SubType>Designer</SubType>
       <DataAccess>None</DataAccess>
       <RuleInjection>None</RuleInjection>
     </XamlPropertyRule>
@@ -522,7 +482,6 @@
     <XamlPropertyRule Include="ProjectSystem\Rules\SdkSupportedTargetPlatformIdentifier.xaml">
       <XlfInput>false</XlfInput>
       <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
-      <SubType>Designer</SubType>
       <DataAccess>None</DataAccess>
       <RuleInjection>None</RuleInjection>
     </XamlPropertyRule>
@@ -533,7 +492,6 @@
     <XamlPropertyRule Include="ProjectSystem\Rules\SdkSupportedTargetPlatformVersion.xaml">
       <XlfInput>false</XlfInput>
       <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
-      <SubType>Designer</SubType>
       <DataAccess>None</DataAccess>
       <RuleInjection>None</RuleInjection>
     </XamlPropertyRule>
@@ -546,7 +504,6 @@
       <XlfOutputItem>EmbeddedResource</XlfOutputItem>
       <XlfInput>false</XlfInput>
       <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
-      <SubType>Designer</SubType>
       <DataAccess>None</DataAccess>
       <RuleInjection>None</RuleInjection>
     </XamlPropertyRule>
@@ -559,7 +516,6 @@
       <XlfOutputItem>EmbeddedResource</XlfOutputItem>
       <XlfInput>false</XlfInput>
       <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
-      <SubType>Designer</SubType>
       <DataAccess>None</DataAccess>
       <RuleInjection>None</RuleInjection>
     </XamlPropertyRule>
@@ -572,7 +528,6 @@
       <XlfOutputItem>EmbeddedResource</XlfOutputItem>
       <XlfInput>false</XlfInput>
       <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
-      <SubType>Designer</SubType>
       <DataAccess>None</DataAccess>
       <RuleInjection>None</RuleInjection>
     </XamlPropertyRule>
@@ -585,7 +540,6 @@
       <XlfOutputItem>EmbeddedResource</XlfOutputItem>
       <XlfInput>false</XlfInput>
       <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
-      <SubType>Designer</SubType>
       <DataAccess>None</DataAccess>
       <RuleInjection>None</RuleInjection>
     </XamlPropertyRule>
@@ -596,7 +550,6 @@
     <XamlPropertyRule Include="ProjectSystem\Rules\VisualBasic.NamespaceImport.xaml">
       <XlfInput>false</XlfInput>
       <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
-      <SubType>Designer</SubType>
       <DataAccess>None</DataAccess>
       <RuleInjection>None</RuleInjection>
     </XamlPropertyRule>
