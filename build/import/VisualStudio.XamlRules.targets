@@ -11,6 +11,8 @@
       <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
       <!-- 'None' or 'IRule'. IRule adds APIs for accessing the properties, such as contributing code in the ProjectProperties partial class. -->
       <DataAccess>None</DataAccess>
+      <!-- 'None' or 'ProjectLevel'. None means no class is generated. 'ProjectLevel' is required to contribute code in the ProjectProperties partial class. -->
+      <RuleInjection>None</RuleInjection>
     </XamlPropertyRule>
     <XamlPropertyRuleNoCodeBehind>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
