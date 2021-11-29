@@ -132,46 +132,39 @@
   <!-- Others -->
   <ItemGroup>
     <XamlPropertyRule Include="ProjectSystem\Rules\AppDesigner.xaml">
-      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-      <XlfOutputItem>EmbeddedResource</XlfOutputItem>
+      <IsEmbedded>true</IsEmbedded>
       <XlfInput>false</XlfInput>
       <DataAccess>IRule</DataAccess>
       <RuleInjection>ProjectLevel</RuleInjection>
     </XamlPropertyRule>
 
     <XamlPropertyRule Include="ProjectSystem\Rules\CollectedFrameworkReference.xaml">
-      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-      <XlfOutputItem>EmbeddedResource</XlfOutputItem>
+      <IsEmbedded>true</IsEmbedded>
       <XlfInput>false</XlfInput>
     </XamlPropertyRule>
 
     <XamlPropertyRule Include="ProjectSystem\Rules\CollectedPackageDownload.xaml">
-      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-      <XlfOutputItem>EmbeddedResource</XlfOutputItem>
+      <IsEmbedded>true</IsEmbedded>
       <XlfInput>false</XlfInput>
     </XamlPropertyRule>
-    
+
     <XamlPropertyRule Include="ProjectSystem\Rules\CollectedPackageReference.xaml">
-      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-      <XlfOutputItem>EmbeddedResource</XlfOutputItem>
+      <IsEmbedded>true</IsEmbedded>
       <XlfInput>false</XlfInput>
     </XamlPropertyRule>
 
     <XamlPropertyRule Include="ProjectSystem\Rules\CollectedPackageVersion.xaml">
-      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-      <XlfOutputItem>EmbeddedResource</XlfOutputItem>
+      <IsEmbedded>true</IsEmbedded>
       <XlfInput>false</XlfInput>
     </XamlPropertyRule>
 
     <XamlPropertyRule Include="ProjectSystem\Rules\CompilerCommandLineArgs.xaml">
-      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-      <XlfOutputItem>EmbeddedResource</XlfOutputItem>
+      <IsEmbedded>true</IsEmbedded>
       <XlfInput>false</XlfInput>
     </XamlPropertyRule>
 
     <XamlPropertyRule Include="ProjectSystem\Rules\ConfigurationGeneral.xaml">
-      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-      <XlfOutputItem>EmbeddedResource</XlfOutputItem>
+      <IsEmbedded>true</IsEmbedded>
       <DataAccess>IRule</DataAccess>
       <RuleInjection>ProjectLevel</RuleInjection>
       <XlfInput>false</XlfInput>
@@ -185,8 +178,7 @@
     </XamlPropertyRule>
 
     <XamlPropertyRule Include="ProjectSystem\Rules\CopyUpToDateMarker.xaml">
-      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-      <XlfOutputItem>EmbeddedResource</XlfOutputItem>
+      <IsEmbedded>true</IsEmbedded>
       <XlfInput>false</XlfInput>
     </XamlPropertyRule>
 
@@ -202,14 +194,12 @@
     </XamlPropertyRule>
 
     <XamlPropertyRule Include="ProjectSystem\Rules\LanguageService.xaml">
-      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-      <XlfOutputItem>EmbeddedResource</XlfOutputItem>
+      <IsEmbedded>true</IsEmbedded>
       <XlfInput>false</XlfInput>
     </XamlPropertyRule>
 
     <XamlPropertyRule Include="ProjectSystem\Rules\NuGetRestore.xaml">
-      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-      <XlfOutputItem>EmbeddedResource</XlfOutputItem>
+      <IsEmbedded>true</IsEmbedded>
       <XlfInput>false</XlfInput>
     </XamlPropertyRule>
 
@@ -220,23 +210,20 @@
     </XamlPropertyRule>
 
     <XamlPropertyRule Include="ProjectSystem\Rules\ResolvedCompilationReference.xaml">
-      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-      <XlfOutputItem>EmbeddedResource</XlfOutputItem>
+      <IsEmbedded>true</IsEmbedded>
       <XlfInput>false</XlfInput>
     </XamlPropertyRule>
 
     <XamlPropertyRule Include="ProjectSystem\Rules\SourceControl.xaml">
-      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-      <XlfOutputItem>EmbeddedResource</XlfOutputItem>
+      <IsEmbedded>true</IsEmbedded>
       <XlfInput>false</XlfInput>
     </XamlPropertyRule>
-    
+
     <XamlPropertyRule Include="ProjectSystem\Rules\SupportedTargetFrameworkAlias.xaml">
-      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-      <XlfOutputItem>EmbeddedResource</XlfOutputItem>
+      <IsEmbedded>true</IsEmbedded>
       <XlfInput>false</XlfInput>
     </XamlPropertyRule>
-    
+
     <XamlPropertyRule Include="ProjectSystem\Rules\SupportedTargetFramework.xaml">
       <XlfInput>false</XlfInput>
     </XamlPropertyRule>
@@ -260,28 +247,24 @@
     <XamlPropertyRule Include="ProjectSystem\Rules\SdkSupportedTargetPlatformVersion.xaml">
       <XlfInput>false</XlfInput>
     </XamlPropertyRule>
-    
+
     <XamlPropertyRule Include="ProjectSystem\Rules\UpToDateCheckBuilt.xaml">
-      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-      <XlfOutputItem>EmbeddedResource</XlfOutputItem>
+      <IsEmbedded>true</IsEmbedded>
       <XlfInput>false</XlfInput>
     </XamlPropertyRule>
 
     <XamlPropertyRule Include="ProjectSystem\Rules\UpToDateCheckInput.xaml">
-      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-      <XlfOutputItem>EmbeddedResource</XlfOutputItem>
+      <IsEmbedded>true</IsEmbedded>
       <XlfInput>false</XlfInput>
     </XamlPropertyRule>
 
     <XamlPropertyRule Include="ProjectSystem\Rules\WindowsFormsConfiguration.xaml">
-      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-      <XlfOutputItem>EmbeddedResource</XlfOutputItem>
+      <IsEmbedded>true</IsEmbedded>
       <XlfInput>false</XlfInput>
     </XamlPropertyRule>
 
     <XamlPropertyRule Include="ProjectSystem\Rules\UpToDateCheckOutput.xaml">
-      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-      <XlfOutputItem>EmbeddedResource</XlfOutputItem>
+      <IsEmbedded>true</IsEmbedded>
       <XlfInput>false</XlfInput>
     </XamlPropertyRule>
 

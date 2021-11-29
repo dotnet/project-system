@@ -27,6 +27,16 @@
     </DesignTimeTargetsFile>
   </ItemDefinitionGroup>
 
+  <ItemGroup>
+    <!-- Use our project-internal 'IsEmbedded' metadata to set require metadata on XAML rule items in order to embed them correctly. -->
+    <XamlPropertyRule Update="@(XamlPropertyRule->WithMetadataValue('IsEmbedded', 'true'))">
+      <!-- Localised rule files must be embedded resources. -->
+      <XlfOutputItem>EmbeddedResource</XlfOutputItem>
+      <!-- Do not copy these to the output directory, otherwise they will end up in the VSIX. -->
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </XamlPropertyRule>
+  </ItemGroup>
+
   <!-- Copy XAML rule files and design targets files for testing and setup authoring purposes -->
   <Target Name="CopyXamlRulesToOutputDirectory" AfterTargets="CopyFilesToOutputDirectory">
 
