@@ -8,6 +8,7 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       <LogicalName>XamlRuleToCode:%(Filename)%(Extension)</LogicalName>
       <SubType>Designer</SubType>
+      <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
     </XamlPropertyRule>
     <XamlPropertyRuleNoCodeBehind>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
