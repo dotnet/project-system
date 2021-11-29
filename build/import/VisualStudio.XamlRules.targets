@@ -35,6 +35,13 @@
       <!-- Do not copy these to the output directory, otherwise they will end up in the VSIX. -->
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </XamlPropertyRule>
+
+    <!-- Use our project-internal 'GenerateProjectPropertiesClass' metadata to set require metadata on XAML rule items in order to generate code that contributes to the ProjectProperties partial class correctly. -->
+    <XamlPropertyRule Update="@(XamlPropertyRule->WithMetadataValue('GenerateProjectPropertiesClass', 'true'))">
+      <DataAccess>IRule</DataAccess>
+      <RuleInjection>ProjectLevel</RuleInjection>
+      <RuleInjectionClassName>ProjectProperties</RuleInjectionClassName>
+    </XamlPropertyRule>
   </ItemGroup>
 
   <!-- Copy XAML rule files and design targets files for testing and setup authoring purposes -->

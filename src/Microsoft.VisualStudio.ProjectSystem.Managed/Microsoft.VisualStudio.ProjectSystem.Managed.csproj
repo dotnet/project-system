@@ -132,10 +132,9 @@
   <!-- Others -->
   <ItemGroup>
     <XamlPropertyRule Include="ProjectSystem\Rules\AppDesigner.xaml">
+      <GenerateProjectPropertiesClass>true</GenerateProjectPropertiesClass>
       <IsEmbedded>true</IsEmbedded>
       <XlfInput>false</XlfInput>
-      <DataAccess>IRule</DataAccess>
-      <RuleInjection>ProjectLevel</RuleInjection>
     </XamlPropertyRule>
 
     <XamlPropertyRule Include="ProjectSystem\Rules\CollectedFrameworkReference.xaml">
@@ -164,17 +163,15 @@
     </XamlPropertyRule>
 
     <XamlPropertyRule Include="ProjectSystem\Rules\ConfigurationGeneral.xaml">
+      <GenerateProjectPropertiesClass>true</GenerateProjectPropertiesClass>
       <IsEmbedded>true</IsEmbedded>
-      <DataAccess>IRule</DataAccess>
-      <RuleInjection>ProjectLevel</RuleInjection>
       <XlfInput>false</XlfInput>
     </XamlPropertyRule>
 
     <!-- TODO reconcile mismatched file names -->
     <XamlPropertyRule Include="ProjectSystem\Rules\GeneralConfiguredBrowseObject.xaml">
+      <GenerateProjectPropertiesClass>true</GenerateProjectPropertiesClass>
       <XlfInput>false</XlfInput>
-      <DataAccess>IRule</DataAccess>
-      <RuleInjection>ProjectLevel</RuleInjection>
     </XamlPropertyRule>
 
     <XamlPropertyRule Include="ProjectSystem\Rules\CopyUpToDateMarker.xaml">
@@ -189,8 +186,7 @@
     </XamlPropertyRule>
 
     <XamlPropertyRule Include="ProjectSystem\Rules\GeneralBrowseObject.xaml">
-      <DataAccess>IRule</DataAccess>
-      <RuleInjection>ProjectLevel</RuleInjection>
+      <GenerateProjectPropertiesClass>true</GenerateProjectPropertiesClass>
     </XamlPropertyRule>
 
     <XamlPropertyRule Include="ProjectSystem\Rules\LanguageService.xaml">
@@ -204,9 +200,8 @@
     </XamlPropertyRule>
 
     <XamlPropertyRule Include="ProjectSystem\Rules\ProjectDebugger.xaml">
+      <GenerateProjectPropertiesClass>true</GenerateProjectPropertiesClass>
       <XlfInput>false</XlfInput>
-      <DataAccess>IRule</DataAccess>
-      <RuleInjection>ProjectLevel</RuleInjection>
     </XamlPropertyRule>
 
     <XamlPropertyRule Include="ProjectSystem\Rules\ResolvedCompilationReference.xaml">
