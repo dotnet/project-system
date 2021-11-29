@@ -34,7 +34,26 @@
       <DependentUpon>%(Filename).xaml</DependentUpon>
     </Compile>
   </ItemGroup>
-  
+
+  <!--
+    NOTE ON XAML RULES
+
+    We use one of two item types for XAML rule files:
+
+    - "XamlPropertyRule" for rules that require a generated class. Useful when working with Dataflow project rule sources.
+    - "XamlPropertyRuleNoCodeBehind" for rules that do not require a generated class.
+
+    In addition to the above, there are two metadata that control how rules are treated during build:
+
+    - "XlfInput" controls whether display strings in the rule file should be localised. Defaults to true.
+    - "IsEmbedded" indicates that the rule is embedded (see RuleExporter.cs).
+    - "GenerateProjectPropertiesClass" indicates that code generation should contribute to the partial "ProjectProperties" class.
+    
+    If you are looking at this file as a reference for another project/solution, the "IsEmbedded" and "GenerateProjectPropertiesClass"
+    metadata items will not work in your case. Look in VisualStudio.XamlRules.targets to see what these metadata do in this solution,
+    and replicate that in your project as you see fit.
+  -->
+
   <!-- Dependencies -->
   <ItemGroup>
     <!-- Analyzer Reference -->
