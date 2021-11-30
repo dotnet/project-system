@@ -209,21 +209,6 @@ Per eseguire il debug del progetto, aggiungere a questa soluzione un progetto es
         <target state="translated">La directory di lavoro '{0}' specificata nel profilo di debug '{1}' non esiste.</target>
         <note />
       </trans-unit>
-      <trans-unit id="NoMigratedCSProjFound">
-        <source>Expected to find migrated cpsroj in {0}, but did not find any.</source>
-        <target state="translated">In {0} era previsto il file cpsroj di cui è stata eseguita la migrazione, ma non ne è stato trovato nessuno.</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="EditProjectFileCommand">
-        <source>Edit {0}</source>
-        <target state="translated">Modifica {0}</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="NoRunCommandSpecifiedInProject">
-        <source>Unable to run your project. The "RunCommand" property is not defined.</source>
-        <target state="translated">Non è possibile eseguire il progetto. La proprietà "RunCommand" non è definita.</target>
-        <note />
-      </trans-unit>
       <trans-unit id="MultiTFEditNotSupported">
         <source>Editing of multiple target framework is not supported.</source>
         <target state="translated">La modifica di più framework di destinazione non è supportata.</target>
@@ -244,34 +229,9 @@ Per eseguire il debug del progetto, aggiungere a questa soluzione un progetto es
         <target state="translated">Framework ({0})</target>
         <note />
       </trans-unit>
-      <trans-unit id="OutputWindowPaneTitle">
-        <source>Project</source>
-        <target state="translated">Progetto</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="PartialSupportedDotNetCoreProject">
-        <source>A newer version of Visual Studio is recommended for projects targeting .NET Core {0}.{1}.</source>
-        <target state="translated">Per i progetti destinati a .NET Core {0}.{1} è consigliata una versione più recente di Visual Studio.</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="NotSupportedDotNetCoreProject">
-        <source>Projects targeting .NET Core {0}.{1} or newer are not supported by this version of Visual Studio.</source>
-        <target state="translated">I progetti destinati a .NET Core {0}.{1} o versione successiva non sono supportate in questa versione di Visual Studio.</target>
-        <note />
-      </trans-unit>
       <trans-unit id="DontShowAgain">
         <source>Don't show again</source>
         <target state="translated">Non visualizzare più questo messaggio</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="LearnMore">
-        <source>Learn more</source>
-        <target state="translated">Altre informazioni</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="OKButtonText">
-        <source>OK</source>
-        <target state="translated">OK</target>
         <note />
       </trans-unit>
       <trans-unit id="Restore_PropertyWithInconsistentValues">

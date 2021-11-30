@@ -209,21 +209,6 @@ In order to debug this project, add an executable project to this solution which
         <target state="translated">'{1}' デバッグ プロファイルに指定した作業ディレクトリ '{0}' が存在しません。</target>
         <note />
       </trans-unit>
-      <trans-unit id="NoMigratedCSProjFound">
-        <source>Expected to find migrated cpsroj in {0}, but did not find any.</source>
-        <target state="translated">移行された cpsroj が {0} に見つかる必要がありましたが、何も見つかりませんでした。</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="EditProjectFileCommand">
-        <source>Edit {0}</source>
-        <target state="translated">{0} を編集する</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="NoRunCommandSpecifiedInProject">
-        <source>Unable to run your project. The "RunCommand" property is not defined.</source>
-        <target state="translated">プロジェクトを実行できません。"RunCommand" プロパティが定義されていません。</target>
-        <note />
-      </trans-unit>
       <trans-unit id="MultiTFEditNotSupported">
         <source>Editing of multiple target framework is not supported.</source>
         <target state="translated">複数のターゲット フレームワークの編集はサポートされていません。</target>
@@ -244,34 +229,9 @@ In order to debug this project, add an executable project to this solution which
         <target state="translated">フレームワーク ({0})</target>
         <note />
       </trans-unit>
-      <trans-unit id="OutputWindowPaneTitle">
-        <source>Project</source>
-        <target state="translated">プロジェクト</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="PartialSupportedDotNetCoreProject">
-        <source>A newer version of Visual Studio is recommended for projects targeting .NET Core {0}.{1}.</source>
-        <target state="translated">.NET Core {0}.{1} をターゲットとしたプロジェクトには、より新しいバージョンの Visual Studio をお勧めします。</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="NotSupportedDotNetCoreProject">
-        <source>Projects targeting .NET Core {0}.{1} or newer are not supported by this version of Visual Studio.</source>
-        <target state="translated">.NET Core {0}.{1} 以上をターゲットとしたプロジェクトは、このバージョンの Visual Studio ではサポートされていません。</target>
-        <note />
-      </trans-unit>
       <trans-unit id="DontShowAgain">
         <source>Don't show again</source>
         <target state="translated">今後表示しない</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="LearnMore">
-        <source>Learn more</source>
-        <target state="translated">詳細を表示</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="OKButtonText">
-        <source>OK</source>
-        <target state="translated">OK</target>
         <note />
       </trans-unit>
       <trans-unit id="Restore_PropertyWithInconsistentValues">

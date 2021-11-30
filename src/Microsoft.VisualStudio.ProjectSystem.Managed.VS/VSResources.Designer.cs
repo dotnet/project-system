@@ -124,15 +124,6 @@ namespace Microsoft.VisualStudio {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Edit {0}.
-        /// </summary>
-        internal static string EditProjectFileCommand {
-            get {
-                return ResourceManager.GetString("EditProjectFileCommand", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to An error in the launch settings file needs to be corrected before you can run the &apos;{0}&apos; project . Please see the error list for details..
         /// </summary>
         internal static string ErrorInProfilesFile {
@@ -331,15 +322,6 @@ namespace Microsoft.VisualStudio {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Learn more.
-        /// </summary>
-        internal static string LearnMore {
-            get {
-                return ResourceManager.GetString("LearnMore", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Editing of multiple target framework is not supported..
         /// </summary>
         internal static string MultiTFEditNotSupported {
@@ -358,51 +340,6 @@ namespace Microsoft.VisualStudio {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Expected to find migrated cpsroj in {0}, but did not find any..
-        /// </summary>
-        internal static string NoMigratedCSProjFound {
-            get {
-                return ResourceManager.GetString("NoMigratedCSProjFound", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Unable to run your project. The &quot;RunCommand&quot; property is not defined..
-        /// </summary>
-        internal static string NoRunCommandSpecifiedInProject {
-            get {
-                return ResourceManager.GetString("NoRunCommandSpecifiedInProject", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Projects targeting .NET Core {0}.{1} or newer are not supported by this version of Visual Studio..
-        /// </summary>
-        internal static string NotSupportedDotNetCoreProject {
-            get {
-                return ResourceManager.GetString("NotSupportedDotNetCoreProject", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to OK.
-        /// </summary>
-        internal static string OKButtonText {
-            get {
-                return ResourceManager.GetString("OKButtonText", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Project.
-        /// </summary>
-        internal static string OutputWindowPaneTitle {
-            get {
-                return ResourceManager.GetString("OutputWindowPaneTitle", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to &amp;Pack.
         /// </summary>
         internal static string PackCommand {
@@ -417,15 +354,6 @@ namespace Microsoft.VisualStudio {
         internal static string PackSelectedProjectCommand {
             get {
                 return ResourceManager.GetString("PackSelectedProjectCommand", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to A newer version of Visual Studio is recommended for projects targeting .NET Core {0}.{1}..
-        /// </summary>
-        internal static string PartialSupportedDotNetCoreProject {
-            get {
-                return ResourceManager.GetString("PartialSupportedDotNetCoreProject", resourceCulture);
             }
         }
         

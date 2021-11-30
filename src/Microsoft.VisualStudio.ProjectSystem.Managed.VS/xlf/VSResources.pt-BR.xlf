@@ -209,21 +209,6 @@ Para depurar esse projeto, adicione um projeto executável a essa solução que 
         <target state="translated">O diretório de trabalho '{0}' especificado no perfil de depuração '{1}' não existe.</target>
         <note />
       </trans-unit>
-      <trans-unit id="NoMigratedCSProjFound">
-        <source>Expected to find migrated cpsroj in {0}, but did not find any.</source>
-        <target state="translated">Era esperada a localização do cpsroj migrado no {0}, mas nenhum foi localizado.</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="EditProjectFileCommand">
-        <source>Edit {0}</source>
-        <target state="translated">Editar {0}</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="NoRunCommandSpecifiedInProject">
-        <source>Unable to run your project. The "RunCommand" property is not defined.</source>
-        <target state="translated">Não foi possível executar seu projeto. A propriedade "RunCommand" não está definida.</target>
-        <note />
-      </trans-unit>
       <trans-unit id="MultiTFEditNotSupported">
         <source>Editing of multiple target framework is not supported.</source>
         <target state="translated">Não há suporte para a edição da estrutura de vários destinos.</target>
@@ -244,34 +229,9 @@ Para depurar esse projeto, adicione um projeto executável a essa solução que 
         <target state="translated">Estrutura ({0})</target>
         <note />
       </trans-unit>
-      <trans-unit id="OutputWindowPaneTitle">
-        <source>Project</source>
-        <target state="translated">Projeto</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="PartialSupportedDotNetCoreProject">
-        <source>A newer version of Visual Studio is recommended for projects targeting .NET Core {0}.{1}.</source>
-        <target state="translated">Recomenda-se uma versão mais recente do Visual Studio para projetos de direcionamento para .NET Core {0}.{1}.</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="NotSupportedDotNetCoreProject">
-        <source>Projects targeting .NET Core {0}.{1} or newer are not supported by this version of Visual Studio.</source>
-        <target state="translated">Os projetos destinados ao .NET Core {0}.{1} ou mais recente não são suportados por esta versão do Visual Studio.</target>
-        <note />
-      </trans-unit>
       <trans-unit id="DontShowAgain">
         <source>Don't show again</source>
         <target state="translated">Não mostrar novamente</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="LearnMore">
-        <source>Learn more</source>
-        <target state="translated">Saiba mais</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="OKButtonText">
-        <source>OK</source>
-        <target state="translated">OK</target>
         <note />
       </trans-unit>
       <trans-unit id="Restore_PropertyWithInconsistentValues">
