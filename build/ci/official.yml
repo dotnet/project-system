@@ -183,6 +183,7 @@ steps:
   displayName: 'Publish to Artifact Services - RunSettings'
   condition: succeeded()
 
+# TODO: Duplicate MicroBuild\Output publishing at bottom of file
 - task: PublishBuildArtifacts@1
   inputs:
     PathtoPublish: $(Build.StagingDirectory)\MicroBuild\Output
@@ -218,6 +219,15 @@ steps:
     ArtifactName: '$(Build.BuildNumber)'
     publishLocation: Container
   displayName: 'Publish Artifact: drop'
+  condition: succeededOrFailed()
+
+# TODO: Temp to investigate
+- task: PublishBuildArtifacts@1
+  inputs:
+    PathtoPublish: '$(Build.SourcesDirectory)\artifacts\$(BuildConfiguration)\obj'
+    ArtifactName: 'obj'
+    publishLocation: Container
+  displayName: 'Publish Artifact: obj'
   condition: succeededOrFailed()
 
 - task: ms-vseng.MicroBuildShipTasks.7c429315-71ba-4cb3-94bb-f829c95f7915.MicroBuildCodesignVerify@2
@@ -257,6 +267,7 @@ steps:
   displayName: Perform Cleanup Tasks
   condition: always()
 
+# TODO: Duplicate MicroBuild\Output publishing at midway through file
 - task: PublishBuildArtifacts@1
   displayName: Publish MicroBuild Outputs
   inputs:
