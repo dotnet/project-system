@@ -34,7 +34,11 @@
       <OptimizedDlls Include="$(ArtifactsObjDir)\Microsoft.VisualStudio.ProjectSystem.Managed\Microsoft.VisualStudio.ProjectSystem.Managed.dll;$(ArtifactsObjDir)\Microsoft.VisualStudio.ProjectSystem.Managed.VS\Microsoft.VisualStudio.ProjectSystem.Managed.VS.dll"/>
     </ItemGroup>
 
-    <Copy SourceFiles="@(OptimizedDlls)" DestinationFolder="$(OutDir)" />
+    <Message Text="BaseOutputPath: $(BaseOutputPath)" />
+    <Message Text="OutDir: $(OutDir)" />
+    <Message Text="OutDirName: $(OutDirName)" />
+    <Message Text="ArtifactsConfigurationDir: $(ArtifactsConfigurationDir)" />
+    <Copy SourceFiles="@(OptimizedDlls)" DestinationFolder="$(ArtifactsConfigurationDir)\$(OutDirName)" />
 
     <Exec Command="$(NuGetPackageRoot)roslyntools.signtool\$(RoslynToolsSignToolVersion)\tools\SignTool.exe @(SignToolArgs, ' ')" LogStandardErrorAsError="true" />
   </Target>

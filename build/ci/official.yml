@@ -222,13 +222,13 @@ steps:
   condition: succeededOrFailed()
 
 # TODO: Temp to investigate
-- task: PublishBuildArtifacts@1
-  inputs:
-    PathtoPublish: '$(Build.SourcesDirectory)\artifacts\$(BuildConfiguration)\obj'
-    ArtifactName: 'obj'
-    publishLocation: Container
-  displayName: 'Publish Artifact: obj'
-  condition: succeededOrFailed()
+# - task: PublishBuildArtifacts@1
+#   inputs:
+#     PathtoPublish: '$(Build.SourcesDirectory)\artifacts\$(BuildConfiguration)\obj'
+#     ArtifactName: 'obj'
+#     publishLocation: Container
+#   displayName: 'Publish Artifact: obj'
+#   condition: succeededOrFailed()
 
 - task: ms-vseng.MicroBuildShipTasks.7c429315-71ba-4cb3-94bb-f829c95f7915.MicroBuildCodesignVerify@2
   displayName: Verify Signed Files
