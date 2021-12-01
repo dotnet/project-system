@@ -35,7 +35,7 @@
     </ItemGroup>
 
     <!-- TODO: 'Hardcode' this path for now. -->
-    <Copy SourceFiles="@(OptimizedDlls)" DestinationFolder="$(ArtifactsConfigurationDir)Dlls" />
+    <Copy SourceFiles="@(OptimizedDlls)" DestinationFolder="$(ArtifactsBinDir)Dlls" />
 
     <Exec Command="$(NuGetPackageRoot)roslyntools.signtool\$(RoslynToolsSignToolVersion)\tools\SignTool.exe @(SignToolArgs, ' ')" LogStandardErrorAsError="true" />
   </Target>
