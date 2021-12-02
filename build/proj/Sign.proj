@@ -30,12 +30,12 @@
       <SignToolArgs Include='"$(ArtifactsConfigurationDir)\"' />
     </ItemGroup>
 
-    <ItemGroup>
+    <!-- <ItemGroup>
       <OptimizedDlls Include="$(ArtifactsObjDir)\Microsoft.VisualStudio.ProjectSystem.Managed\Microsoft.VisualStudio.ProjectSystem.Managed.dll;$(ArtifactsObjDir)\Microsoft.VisualStudio.ProjectSystem.Managed.VS\Microsoft.VisualStudio.ProjectSystem.Managed.VS.dll"/>
-    </ItemGroup>
+    </ItemGroup> -->
 
     <!-- TODO: 'Hardcode' this path for now. -->
-    <Copy SourceFiles="@(OptimizedDlls)" DestinationFolder="$(ArtifactsBinDir)Dlls" />
+    <!-- <Copy SourceFiles="@(OptimizedDlls)" DestinationFolder="$(ArtifactsBinDir)Dlls" /> -->
 
     <Exec Command="$(NuGetPackageRoot)roslyntools.signtool\$(RoslynToolsSignToolVersion)\tools\SignTool.exe @(SignToolArgs, ' ')" LogStandardErrorAsError="true" />
   </Target>
