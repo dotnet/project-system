@@ -25,14 +25,14 @@ namespace Microsoft.VisualStudio.Shell
 
             uint cookie = _lastCookie++;
             _watchedFiles.Add(cookie, filename);
-            return System.Threading.Tasks.Task.FromResult(cookie);
+            return Task.FromResult(cookie);
         }
 
         public Task<string> UnadviseFileChangeAsync(uint cookie, CancellationToken cancellationToken = default)
         {
             string file = _watchedFiles[cookie];
             _watchedFiles.Remove(cookie);
-            return System.Threading.Tasks.Task.FromResult(file);
+            return Task.FromResult(file);
         }
 
         public Task<uint> AdviseDirChangeAsync(string directory, bool watchSubdirectories, IVsFreeThreadedFileChangeEvents2 sink, CancellationToken cancellationToken = default)
@@ -40,17 +40,17 @@ namespace Microsoft.VisualStudio.Shell
             throw new NotImplementedException();
         }
 
-        public System.Threading.Tasks.Task IgnoreDirAsync(string directory, bool ignore, CancellationToken cancellationToken = default)
+        public Task IgnoreDirAsync(string directory, bool ignore, CancellationToken cancellationToken = default)
         {
             throw new NotImplementedException();
         }
 
-        public System.Threading.Tasks.Task IgnoreFileAsync(uint cookie, string filename, bool ignore, CancellationToken cancellationToken = default)
+        public Task IgnoreFileAsync(uint cookie, string filename, bool ignore, CancellationToken cancellationToken = default)
         {
             throw new NotImplementedException();
         }
 
-        public System.Threading.Tasks.Task SyncFileAsync(string filename, CancellationToken cancellationToken = default)
+        public Task SyncFileAsync(string filename, CancellationToken cancellationToken = default)
         {
             throw new NotImplementedException();
         }
@@ -60,7 +60,17 @@ namespace Microsoft.VisualStudio.Shell
             throw new NotImplementedException();
         }
 
-        public System.Threading.Tasks.Task FilterDirectoryChangesAsync(uint cookie, string[] extensions, CancellationToken cancellationToken)
+        public Task FilterDirectoryChangesAsync(uint cookie, string[] extensions, CancellationToken cancellationToken)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<string[]> UnadviseFileChangesAsync(IReadOnlyCollection<uint> cookies, CancellationToken cancellationToken = default)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<string[]> UnadviseDirChangesAsync(IReadOnlyCollection<uint> cookies, CancellationToken cancellationToken = default)
         {
             throw new NotImplementedException();
         }
