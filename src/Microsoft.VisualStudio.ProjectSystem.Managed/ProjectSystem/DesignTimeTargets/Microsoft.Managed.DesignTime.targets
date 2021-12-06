@@ -436,9 +436,11 @@
       <!-- app.config -->
       <!-- The property AppConfig, created in PrepareForBuild, is used instead of AppConfigWithTargetPath because GenerateSupportedRuntime
            rewrites AppConfigWithTargetPath to point to the intermediate filename. This is needed because Fast up-to-date needs to compare
-           the timestamp of the source filename (AppConfig) with destination filename. 
-           https://github.com/microsoft/msbuild/blob/64c8e4a18e7cf7f064fbad304ea7ed877cdaa0a1/src/Tasks/Microsoft.Common.CurrentVersion.targets#L1109-L1122 -->
-      <UpToDateCheckBuilt Condition=" '@(AppConfigWithTargetPath)' != '' " Include="@(AppConfigWithTargetPath->'$(OutDir)%(TargetPath)')" Original="$(AppConfig)"/>
+           the timestamp of the source filename (AppConfig) with destination filename.
+           https://github.com/microsoft/msbuild/blob/64c8e4a18e7cf7f064fbad304ea7ed877cdaa0a1/src/Tasks/Microsoft.Common.CurrentVersion.targets#L1109-L1122
+           We skip this check if AppConfig is empty, which occurs for .NET Framework console apps. See https://github.com/dotnet/project-system/issues/6758.
+      -->
+      <UpToDateCheckBuilt Condition=" '@(AppConfigWithTargetPath)' != '' and '@(AppConfig)' != '' " Include="@(AppConfigWithTargetPath->'$(OutDir)%(TargetPath)')" Original="$(AppConfig)"/>
     </ItemGroup>
   </Target>
 
