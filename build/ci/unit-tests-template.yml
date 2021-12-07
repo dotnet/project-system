@@ -41,11 +41,11 @@ jobs:
 
     - task: PublishTestResults@2
       inputs:
-        testRunner: 'xUnit'	
-        testResultsFiles: '**/*.xml' 	
-        searchFolder: '$(Build.SourcesDirectory)\artifacts\${{ parameters.configuration }}\TestResults'	
-        configuration: '${{ parameters.configuration }}'	
-        publishRunAttachments: true	
+        testRunner: 'xUnit'
+        testResultsFiles: '**/*.xml'
+        searchFolder: '$(Build.SourcesDirectory)\artifacts\${{ parameters.configuration }}\TestResults'
+        configuration: '${{ parameters.configuration }}'
+        publishRunAttachments: true
         failTaskOnFailedTests: true
       continueOnError: true
       condition: always()  

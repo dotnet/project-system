@@ -15,7 +15,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
 
         public override bool PreProcessMessage(ref Message msg)
         {
-            if (msg.Msg >= WM_KEYFIRST && msg.Msg <= WM_KEYLAST)
+            if (msg.Msg is >= WM_KEYFIRST and <= WM_KEYLAST)
             {
                 var filterKeys = (IVsFilterKeys2)ServiceProvider.GlobalProvider.GetService(typeof(SVsFilterKeys));
                 var oleMSG = new OLE.Interop.MSG() { hwnd = msg.HWnd, lParam = msg.LParam, wParam = msg.WParam, message = (uint)msg.Msg };

@@ -23,8 +23,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build.Diagnostics
             /// <summary>
             /// Checks for incremental build failure.
             /// </summary>
-            /// <param name="buildAction">The build action being requested.</param>
-            void OnProjectBuildCompleted(BuildAction buildAction);
+            void OnProjectBuildCompleted();
         }
     }
 }

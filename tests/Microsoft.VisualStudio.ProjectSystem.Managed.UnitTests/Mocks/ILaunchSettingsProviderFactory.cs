@@ -11,7 +11,7 @@ using Moq;
 
 namespace Microsoft.VisualStudio.ProjectSystem
 {
-    internal class ILaunchSettingsProviderFactory
+    internal static class ILaunchSettingsProviderFactory
     {
         /// <summary>
         /// Creates a mock <see cref="ILaunchSettingsProvider"/> for testing purposes.

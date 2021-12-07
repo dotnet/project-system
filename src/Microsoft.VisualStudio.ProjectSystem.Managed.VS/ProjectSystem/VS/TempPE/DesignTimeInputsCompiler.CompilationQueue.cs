@@ -63,11 +63,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
                     }
 
                     // now go through our queue and make sure we aren't tracking items that aren't in the master list
-                    foreach (KeyValuePair<string, QueueItem> item in queue)
+                    foreach ((string? key, _) in queue)
                     {
-                        if (!masterListOfItems.Contains(item.Key))
+                        if (!masterListOfItems.Contains(key))
                         {
-                            queue = queue.Remove(item.Key);
+                            queue = queue.Remove(key);
                         }
                     }
 

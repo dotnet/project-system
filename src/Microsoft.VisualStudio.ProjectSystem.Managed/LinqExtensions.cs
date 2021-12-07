@@ -24,25 +24,24 @@ namespace Microsoft.VisualStudio
         [Pure]
         public static T? SingleOrDefault<T, TArg>(this IEnumerable<T> source, Func<T, TArg, bool> predicate, TArg arg)
         {
-            using (IEnumerator<T> enumerator = source.GetEnumerator())
+            using IEnumerator<T> enumerator = source.GetEnumerator();
+
+            while (enumerator.MoveNext())
             {
-                while (enumerator.MoveNext())
+                T match = enumerator.Current;
+
+                if (predicate(match, arg))
                 {
-                    T match = enumerator.Current;
-
-                    if (predicate(match, arg))
+                    // Check all remaining items to ensure there is only a single match
+                    while (enumerator.MoveNext())
                     {
-                        // Check all remaining items to ensure there is only a single match
-                        while (enumerator.MoveNext())
+                        if (predicate(enumerator.Current, arg))
                         {
-                            if (predicate(enumerator.Current, arg))
-                            {
-                                throw new InvalidOperationException("More than one element matches predicate.");
-                            }
+                            throw new InvalidOperationException("More than one element matches predicate.");
                         }
-
-                        return match;
                     }
+
+                    return match;
                 }
             }
 
@@ -56,31 +55,6 @@ namespace Microsoft.VisualStudio
             {
                 if (item != null)
                     yield return item;
-            }
-        }
-
-        /// <summary>
-        ///     Returns distinct elements from a sequence by using a specified key selector and <see cref="IEqualityComparer{T}"/> to compare values.
-        /// </summary>
-        public static IEnumerable<TSource> Distinct<TSource, TKey>(this IEnumerable<TSource> source, Func<TSource, TKey> keySelector, IEqualityComparer<TKey> comparer)
-        {
-            return DistinctIterator(source, keySelector, comparer);
-        }
-
-        private static IEnumerable<TSource> DistinctIterator<TSource, TKey>(IEnumerable<TSource> source, Func<TSource, TKey> keySelector, IEqualityComparer<TKey> comparer)
-        {
-            HashSet<TKey>? set = null;
-            foreach (TSource element in source)
-            {
-                // Avoid allocating unless needed
-                set ??= new HashSet<TKey>(comparer);
-
-                TKey key = keySelector(element);
-
-                if (set.Add(key))
-                {
-                    yield return element;
-                }
             }
         }
 

@@ -26,8 +26,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
     [Export(typeof(ILaunchSettingsProvider))]
     [Export(typeof(ILaunchSettingsProvider2))]
     [Export(typeof(ILaunchSettingsProvider3))]
+    [Export(typeof(IVersionedLaunchSettingsProvider))]
     [AppliesTo(ProjectCapability.LaunchProfiles)]
-    internal class LaunchSettingsProvider : OnceInitializedOnceDisposed, ILaunchSettingsProvider3
+    internal class LaunchSettingsProvider : ProjectValueDataSourceBase<ILaunchSettings>, ILaunchSettingsProvider3, IVersionedLaunchSettingsProvider
     {
         public const string LaunchSettingsFilename = "launchSettings.json";
         public const string ProfilesSectionName = "profiles";
@@ -55,6 +56,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         private readonly Lazy<ILaunchProfile?> _defaultLaunchProfile;
         private IReceivableSourceBlock<ILaunchSettings>? _changedSourceBlock;
         private IBroadcastBlock<ILaunchSettings>? _broadcastBlock;
+        private IReceivableSourceBlock<IProjectVersionedValue<ILaunchSettings>>? _versionedChangedSourceBlock;
+        private IBroadcastBlock<IProjectVersionedValue<ILaunchSettings>>? _versionedBroadcastBlock;
         private ILaunchSettings? _currentSnapshot;
         private IDisposable? _projectRuleSubscriptionLink;
         private long _nextVersion;
@@ -69,6 +72,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             IActiveConfiguredValue<IAppDesignerFolderSpecialFileProvider?> appDesignerSpecialFileProvider,
             IProjectFaultHandlerService projectFaultHandler,
             JoinableTaskContext joinableTaskContext)
+            : base(projectServices, synchronousDisposal: false, registerDataSource: false)
         {
             _project = project;
             _projectServices = projectServices;
@@ -131,7 +135,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         /// <summary>
         /// Link to this source block to be notified when the snapshot is changed.
         /// </summary>
-        public IReceivableSourceBlock<ILaunchSettings> SourceBlock
+        IReceivableSourceBlock<ILaunchSettings> ILaunchSettingsProvider.SourceBlock
         {
             get
             {
@@ -164,6 +168,21 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             }
         }
 
+        public override NamedIdentity DataSourceKey { get; } = new NamedIdentity(nameof(LaunchSettingsProvider));
+
+        // _nextVersion represents the version we will use in the future, so we need to
+        // subtract 1 to get the current version.
+        public override IComparable DataSourceVersion => _nextVersion - 1;
+
+        public override IReceivableSourceBlock<IProjectVersionedValue<ILaunchSettings>> SourceBlock
+        {
+            get
+            {
+                EnsureInitialized();
+                return _versionedChangedSourceBlock!;
+            }
+        }
+
         /// <summary>
         /// The LaunchSettingsProvider sinks 2 sets of information:
         /// 1. Changes to the launchsettings.json file on disk
@@ -171,9 +190,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         /// </summary>
         protected override void Initialize()
         {
-            // Create our broadcast block for subscribers to get new ILaunchProfiles Information
+            base.Initialize();
+
+            // Create our broadcast block for subscribers to ILaunchSettingsProvider to get new ILaunchSettings information
             _broadcastBlock = DataflowBlockSlim.CreateBroadcastBlock<ILaunchSettings>();
             _changedSourceBlock = _broadcastBlock.SafePublicize();
+
+            // Create our broadcast block for subscribers to IVersionedLaunchSettingsProvider to get new ILaunchSettings information
+            _versionedBroadcastBlock = DataflowBlockSlim.CreateBroadcastBlock<IProjectVersionedValue<ILaunchSettings>>();
+            _versionedChangedSourceBlock = _versionedBroadcastBlock.SafePublicize();
 
             // Subscribe to changes to the broadcast block using the idle scheduler. This should filter out a lot of the intermediate
             // states that files can be in.
@@ -191,6 +216,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
                     _commonProjectServices.Project.Capabilities.SourceBlock.SyncLinkOptions(),
                     projectChangesBlock,
                     linkOptions: DataflowOption.PropagateCompletion);
+
+                JoinUpstreamDataSources(_projectSubscriptionService.ProjectRuleSource, _commonProjectServices.Project.Capabilities);
             }
 
             // Make sure we are watching the file at this point
@@ -203,22 +230,26 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         /// </summary>
         protected async Task ProjectRuleBlock_ChangedAsync(IProjectVersionedValue<ValueTuple<IProjectSubscriptionUpdate, IProjectCapabilitiesSnapshot>> projectSnapshot)
         {
-            if (projectSnapshot.Value.Item1.CurrentState.TryGetValue(ProjectDebugger.SchemaName, out IProjectRuleSnapshot ruleSnapshot))
+            // Need to use JTF.RunAsync here to ensure that this task can coordinate with others.
+            await JoinableFactory.RunAsync(async () =>
             {
-                ruleSnapshot.Properties.TryGetValue(ProjectDebugger.ActiveDebugProfileProperty, out string activeProfile);
-                ILaunchSettings snapshot = CurrentSnapshot;
-                if (snapshot == null || !LaunchProfile.IsSameProfileName(activeProfile, snapshot.ActiveProfile?.Name))
+                if (projectSnapshot.Value.Item1.CurrentState.TryGetValue(ProjectDebugger.SchemaName, out IProjectRuleSnapshot ruleSnapshot))
                 {
-                    // Updates need to be sequenced
-                    await _sequentialTaskQueue.ExecuteTask(async () =>
+                    ruleSnapshot.Properties.TryGetValue(ProjectDebugger.ActiveDebugProfileProperty, out string activeProfile);
+                    ILaunchSettings snapshot = CurrentSnapshot;
+                    if (snapshot == null || !LaunchProfile.IsSameProfileName(activeProfile, snapshot.ActiveProfile?.Name))
                     {
-                        using (ProjectCapabilitiesContext.CreateIsolatedContext(_commonProjectServices.Project, projectSnapshot.Value.Item2))
+                        // Updates need to be sequenced
+                        await _sequentialTaskQueue.ExecuteTask(async () =>
                         {
-                            await UpdateActiveProfileInSnapshotAsync(activeProfile);
-                        }
-                    });
+                            using (ProjectCapabilitiesContext.CreateIsolatedContext(_commonProjectServices.Project, projectSnapshot.Value.Item2))
+                            {
+                                await UpdateActiveProfileInSnapshotAsync(activeProfile);
+                            }
+                        });
+                    }
                 }
-            }
+            });
         }
 
         /// <summary>
@@ -394,6 +425,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             // rather than depending on inheriting it from the data flow.
             using (_commonProjectServices.ThreadingService.SuppressProjectExecutionContext())
             {
+                var versionedLaunchSettings = (IVersionedLaunchSettings)newSnapshot;
+                _versionedBroadcastBlock?.Post(new ProjectVersionedValue<ILaunchSettings>(
+                    newSnapshot,
+                    Empty.ProjectValueVersions.Add(DataSourceKey, versionedLaunchSettings.Version)));
                 _broadcastBlock?.Post(newSnapshot);
             }
         }
@@ -692,6 +727,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
                 }
 
                 _sequentialTaskQueue.Dispose();
+
+                if (_versionedBroadcastBlock != null)
+                {
+                    _versionedBroadcastBlock.Complete();
+                    _versionedBroadcastBlock = null;
+                }
 
                 if (_broadcastBlock != null)
                 {

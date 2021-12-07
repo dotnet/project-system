@@ -9,13 +9,16 @@ using Microsoft.VisualStudio.ProjectSystem.Workloads;
 namespace Microsoft.VisualStudio.ProjectSystem
 {
     /// <summary>
-    ///     Tracks the set of missing workload packs the .NET projects in a solution.
+    ///     Tracks the set of missing workload packs and SDK runtimes the .NET projects in a solution
+    ///     need to improve the development experience.
     /// </summary>
-    internal interface IMissingWorkloadRegistrationService
+    internal interface IMissingSetupComponentRegistrationService
     {
         Task InitializeAsync(CancellationToken cancellationToken = default);
 
         void RegisterMissingWorkloads(Guid projectGuid, ConfiguredProject project, ISet<WorkloadDescriptor> workloadDescriptors);
+
+        void RegisterMissingSdkRuntimeComponentId(Guid projectGuid, ConfiguredProject project, string runtimeComponentId);
 
         void RegisterProjectConfiguration(Guid projectGuid, ConfiguredProject project);
 

@@ -5,7 +5,7 @@ using Moq;
 
 namespace Microsoft.VisualStudio.Mocks
 {
-    internal class ILaunchProfileExtensionValueProviderMetadataFactory
+    internal static class ILaunchProfileExtensionValueProviderMetadataFactory
     {
         public static ILaunchProfileExtensionValueProviderMetadata Create(string[]? propertyNames = null)
         {

@@ -18,7 +18,7 @@ However, the mechanism used by the VS Platform is not sufficient for some of the
 
 ## Capabilities
 
-What follows are requirements of IPA for .NET projects. The requirements from a UI standpoint are already quite possible and/or already work today, such as grouping multuple actions and listing all applicable projects for a given action.
+What follows are requirements of IPA for .NET projects. The requirements from a UI standpoint are already quite possible and/or already work today, such as grouping multiple actions and listing all applicable projects for a given action.
 
 ### Detection
 
@@ -134,7 +134,7 @@ If a `global.json` is present and it specifies an SDK version that the user does
 
 ## UX
 
-A user could attempt to load many projects with differing dependencies on different VS Workloads or VS Components. We also want to avoid multiple "trips" where the user installs something, reloads VS, tries to load a project, has to isntall something, etc. This implies a different UI than what the system-wide IPA mechanism offers today. It will likely be based on the Windows developer UI here:
+A user could attempt to load many projects with differing dependencies on different VS Workloads or VS Components. We also want to avoid multiple "trips" where the user installs something, reloads VS, tries to load a project, has to install something, etc. This implies a different UI than what the system-wide IPA mechanism offers today. It will likely be based on the Windows developer UI here:
 
 ![](img/uwp-retarget.png)
 

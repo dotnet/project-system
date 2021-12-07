@@ -90,8 +90,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
                 queryExecutionContext.ReportInputDataVersion(versionKey, versionNumber);
 
                 if (await project.GetProjectLevelPropertyPagesCatalogAsync() is IPropertyPagesCatalog projectCatalog
-                    && projectCatalog.GetSchema(propertyPageName) is Rule rule
-                    && !rule.PropertyPagesHidden)
+                    && projectCatalog.GetSchema(propertyPageName) is { PropertyPagesHidden: false } rule)
                 {
                     IProjectState projectState = new PropertyPageProjectState(project);
                     IEntityValue propertyPageValue = CreatePropertyPageValue(queryExecutionContext, id, projectState, propertiesContext, rule, requestedProperties);
@@ -121,10 +120,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
                 QueryProjectPropertiesContext propertiesContext = new QueryProjectPropertiesContext(isProjectFile: true, project.FullPath, itemType: null, itemName: null);
                 foreach (string schemaName in projectCatalog.GetProjectLevelPropertyPagesSchemas())
                 {
-                    if (projectCatalog.GetSchema(schemaName) is Rule rule
-                        && !rule.PropertyPagesHidden)
+                    if (projectCatalog.GetSchema(schemaName) is { PropertyPagesHidden: false } rule)
                     {
-                        if (rule.Name == "RazorGeneral" || rule.Name == "RazorExtension")
+                        if (rule.Name is "RazorGeneral" or "RazorExtension")
                         {
                             // Some versions of the .NET SDK include a Razor property page that appears
                             // in the UI. This page is not intended for display.

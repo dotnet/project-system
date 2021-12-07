@@ -37,7 +37,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
         /// </summary>
         public ImmutableArray<T> GetExportFromDotNetStartupProjects<T>(string capabilityMatch) where T : class
         {
-            if (_dte.Value.Solution.SolutionBuild.StartupProjects is Array startupProjects && startupProjects.Length > 0)
+            if (_dte.Value.Solution.SolutionBuild.StartupProjects is Array { Length: > 0 } startupProjects)
             {
                 var results = PooledArray<T>.GetInstance();
 

@@ -201,12 +201,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.References
         {
             ISet<T> references = new HashSet<T>();
 
-            foreach (var data in assemblies)
+            foreach ((string include, string evaluatedValue) in assemblies)
             {
                 var item = new Mock<T>();
-                item.Setup(c => c.EvaluatedInclude).Returns(data.Item1);
+                item.Setup(c => c.EvaluatedInclude).Returns(include);
                 item.As<IProjectItem>().Setup(c => c.Metadata.GetEvaluatedPropertyValueAsync(ProjectReference.TreatAsUsedProperty))
-                    .ReturnsAsync(data.Item2);
+                    .ReturnsAsync(evaluatedValue);
 
                 if (s_item == null && item is Mock<IUnresolvedPackageReference> packageItem)
                 {

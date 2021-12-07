@@ -1,7 +1,5 @@
 ﻿# UI Architecture
 
-⚠ This feature is still under development. These documents may talk about features as if they already exist, though they may not yet be available in public builds.
-
 Several components and concepts come together to produce the UI for the new Project Property UI. This document provides an outline of these elements and shows how they relate to one another. Where necessary, links to further information are provided. The source code for the UI is Microsoft internal, so if there are details you believe to be useful that are omitted here, please file an issue in this repo so that clarifications can be made.
 
 ## Editor Factory

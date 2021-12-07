@@ -50,9 +50,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
             var results = ConfigurationDimensionDataProducer.CreateProjectConfigurationDimensions(parentEntity, configuration, property, properties);
 
             // We can't guarantee an order for the dimensions, so just check that all the expected values are present.
-            Assert.Contains(results, entity => entity is ConfigurationDimensionValue dimension && dimension.Name == "Alpha" && dimension.Value == "A");
-            Assert.Contains(results, entity => entity is ConfigurationDimensionValue dimension && dimension.Name == "Beta" && dimension.Value == "B");
-            Assert.Contains(results, entity => entity is ConfigurationDimensionValue dimension && dimension.Name == "Gamma" && dimension.Value == "C");
+            Assert.Contains(results, entity => entity is ConfigurationDimensionValue { Name: "Alpha", Value: "A" });
+            Assert.Contains(results, entity => entity is ConfigurationDimensionValue { Name: "Beta",  Value: "B" });
+            Assert.Contains(results, entity => entity is ConfigurationDimensionValue { Name: "Gamma", Value: "C" });
         }
 
         [Fact]

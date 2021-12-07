@@ -5,7 +5,7 @@ using Moq;
 
 namespace Microsoft.VisualStudio.Mocks
 {
-    public class IRemoteAuthenticationProviderFactory
+    public static class IRemoteAuthenticationProviderFactory
     {
         internal static IRemoteAuthenticationProvider Create(string name, string displayName)
         {

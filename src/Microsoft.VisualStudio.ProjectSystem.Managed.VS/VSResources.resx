@@ -149,17 +149,8 @@ In order to debug this project, add an executable project to this solution which
   <data name="WorkingDirecotryInvalid" xml:space="preserve">
     <value>The working directory '{0}' specified in the '{1}' debug profile does not exist.</value>
   </data>
-  <data name="NoMigratedCSProjFound" xml:space="preserve">
-    <value>Expected to find migrated cpsroj in {0}, but did not find any.</value>
-  </data>
-  <data name="EditProjectFileCommand" xml:space="preserve">
-    <value>Edit {0}</value>
-  </data>
   <data name="PackCommand" xml:space="preserve">
     <value>&amp;Pack</value>
-  </data>
-  <data name="NoRunCommandSpecifiedInProject" xml:space="preserve">
-    <value>Unable to run your project. The "RunCommand" property is not defined.</value>
   </data>
   <data name="MultiTFEditNotSupported" xml:space="preserve">
     <value>Editing of multiple target framework is not supported.</value>
@@ -170,23 +161,8 @@ In order to debug this project, add an executable project to this solution which
   <data name="DebugFrameworkMenuText" xml:space="preserve">
     <value>Framework ({0})</value>
   </data>
-  <data name="OutputWindowPaneTitle" xml:space="preserve">
-    <value>Project</value>
-  </data>
-  <data name="PartialSupportedDotNetCoreProject" xml:space="preserve">
-    <value>A newer version of Visual Studio is recommended for projects targeting .NET Core {0}.{1}.</value>
-  </data>
-  <data name="NotSupportedDotNetCoreProject" xml:space="preserve">
-    <value>Projects targeting .NET Core {0}.{1} or newer are not supported by this version of Visual Studio.</value>
-  </data>
   <data name="DontShowAgain" xml:space="preserve">
     <value>Don't show again</value>
-  </data>
-  <data name="LearnMore" xml:space="preserve">
-    <value>Learn more</value>
-  </data>
-  <data name="OKButtonText" xml:space="preserve">
-    <value>OK</value>
   </data>
   <data name="ImportsFromTargetCannotBeDeleted" xml:space="preserve">
     <value>{0} - Import comes fom target file. This import cannot be removed.</value>

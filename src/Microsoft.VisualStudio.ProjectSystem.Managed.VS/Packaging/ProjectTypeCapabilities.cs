@@ -13,7 +13,7 @@ namespace Microsoft.VisualStudio.Packaging
     ///     defined in Microsoft.Managed.DesignTime.targets, but could come from other locations such
     ///     as packages or other target files.
     /// </remarks>
-    internal class ProjectTypeCapabilities
+    internal static class ProjectTypeCapabilities
     {
         /// <summary>
         ///     Represent set of capabilities for all .NET-based project that are always present ("fixed").

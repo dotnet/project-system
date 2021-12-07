@@ -20,6 +20,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build.Diagnostics
         /// <summary>
         /// Unconfigured project scoped data related to incremental build failure detection.
         /// </summary>
+        [AppliesTo(BuildUpToDateCheck.AppliesToExpression)]
         [Export(typeof(IProjectChecker))]
         private sealed class ProjectChecker : IProjectChecker
         {
@@ -45,7 +46,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build.Diagnostics
                 Reporters = new OrderPrecedenceImportCollection<IIncrementalBuildFailureReporter>(projectCapabilityCheckProvider: project);
             }
 
-            public void OnProjectBuildCompleted(BuildAction buildAction)
+            public void OnProjectBuildCompleted()
             {
                 _project.Services.ThreadingPolicy.RunAndForget(
                     async () =>
@@ -82,7 +83,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build.Diagnostics
                         return;
                     }
 
-                    (bool isUpToDate, string? failureReason) = await validator.ValidateUpToDateAsync(buildAction, cancellationToken);
+                    (bool isUpToDate, string? failureReason) = await validator.ValidateUpToDateAsync(cancellationToken);
 
                     if (isUpToDate)
                     {

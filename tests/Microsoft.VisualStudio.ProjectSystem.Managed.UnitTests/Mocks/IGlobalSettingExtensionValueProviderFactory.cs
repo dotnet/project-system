@@ -8,7 +8,7 @@ using Moq;
 
 namespace Microsoft.VisualStudio.Mocks
 {
-    internal class IGlobalSettingExtensionValueProviderFactory
+    internal static class IGlobalSettingExtensionValueProviderFactory
     {
         public static IGlobalSettingExtensionValueProvider Create(
             Func<string, ImmutableDictionary<string, object>, Rule?, string>? onGetPropertyValue = null,

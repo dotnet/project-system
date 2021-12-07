@@ -4,7 +4,6 @@ using System;
 using System.ComponentModel.Composition;
 using System.Threading;
 using System.Threading.Tasks;
-using Microsoft.VisualStudio.ProjectSystem.Build;
 using Microsoft.VisualStudio.ProjectSystem.UpToDate;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
@@ -42,6 +41,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build.Diagnostics
           IVsRunningDocTableEvents,
           IPackageService
     {
+        private readonly IVsService<SVsSolutionBuildManager, IVsSolutionBuildManager2> _solutionBuildManagerService;
         private readonly IVsService<SVsRunningDocumentTable, IVsRunningDocumentTable> _rdtService;
 
         private IVsSolutionBuildManager2? _solutionBuildManager;
@@ -55,18 +55,20 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build.Diagnostics
 
         [ImportingConstructor]
         public IncrementalBuildFailureDetector(
+            IVsService<SVsSolutionBuildManager, IVsSolutionBuildManager2> solutionBuildManagerService,
             IVsService<SVsRunningDocumentTable, IVsRunningDocumentTable> rdtService,
             JoinableTaskContext joinableTaskContext)
             : base(new(joinableTaskContext))
         {
+            _solutionBuildManagerService = solutionBuildManagerService;
             _rdtService = rdtService;
         }
 
-        async Task IPackageService.InitializeAsync(IAsyncServiceProvider asyncServiceProvider)
+        async Task IPackageService.InitializeAsync(IAsyncServiceProvider _)
         {
             await JoinableFactory.SwitchToMainThreadAsync();
 
-            _solutionBuildManager = await asyncServiceProvider.GetServiceAsync<SVsSolutionBuildManager, IVsSolutionBuildManager2>();
+            _solutionBuildManager = await _solutionBuildManagerService.GetValueAsync();
             _rdt = await _rdtService.GetValueAsync();
 
             HResult.Verify(_rdt.AdviseRunningDocTableEvents(this, out _rdtCookie), $"Error advising RDT events in {typeof(IncrementalBuildFailureDetector)}.");
@@ -118,26 +120,26 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build.Diagnostics
                     return HResult.OK;
                 }
 
-                IProjectChecker? checker = pHierProj.AsUnconfiguredProject()?.Services.ExportProvider.GetExportedValueOrDefault<IProjectChecker>();
+                if (IsRelevantBuild(dwAction))
+                {
+                    IProjectChecker? checker = pHierProj.AsUnconfiguredProject()?.Services.ExportProvider.GetExportedValueOrDefault<IProjectChecker>();
 
-                checker?.OnProjectBuildCompleted(buildAction: GetBuildActionFromUpToDateOptions(dwAction));
+                    checker?.OnProjectBuildCompleted();
+                }
             }
 
             return HResult.OK;
 
-            static BuildAction GetBuildActionFromUpToDateOptions(uint options)
+            static bool IsRelevantBuild(uint options)
             {
-                if ((options & VSConstants.VSUTDCF_PACKAGE) == VSConstants.VSUTDCF_PACKAGE)
+                var operation = (VSSOLNBUILDUPDATEFLAGS)options;
+
+                if ((operation & VSSOLNBUILDUPDATEFLAGS.SBF_OPERATION_BUILD) == VSSOLNBUILDUPDATEFLAGS.SBF_OPERATION_BUILD)
                 {
-                    return BuildAction.Package;
+                    return true;
                 }
 
-                if ((options & VSConstants.VSUTDCF_REBUILD) == VSConstants.VSUTDCF_REBUILD)
-                {
-                    return BuildAction.Rebuild;
-                }
-
-                return BuildAction.Build;
+                return false;
             }
         }
 

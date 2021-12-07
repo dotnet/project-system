@@ -43,6 +43,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedColl
     /// Search results for top-level dependencies occurs via the hierarchy, so those items need not be included here.
     /// </para>
     /// </remarks>
+    [AppliesToProject(ProjectCapability.DependenciesTree)]
     [Export(typeof(ISearchProvider))]
     [Name("DependenciesTreeSearchProvider")]
     [VisualStudio.Utilities.Order(Before = "GraphSearchProvider")]

@@ -51,7 +51,7 @@ project-system> build.cmd
 This builds, runs tests and deploys to an experimental instance of Visual Studio.
 
 ### Visual Studio
-From within [Visual Studio 2019](https://visualstudio.microsoft.com/downloads/), open _ProjectSystem.sln_.
+From within [Visual Studio 2022](https://visualstudio.microsoft.com/downloads/), open _ProjectSystem.sln_.
 
 Inside Visual Studio, you can build, run tests and deploy.
 

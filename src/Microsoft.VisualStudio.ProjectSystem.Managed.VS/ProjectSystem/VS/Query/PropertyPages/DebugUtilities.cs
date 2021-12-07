@@ -19,9 +19,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
         {
             foreach (string schemaName in projectCatalog.GetPropertyPagesSchemas(itemType: "LaunchProfile"))
             {
-                if (projectCatalog.GetSchema(schemaName) is Rule possibleChildRule
-                    && !possibleChildRule.PropertyPagesHidden
-                    && possibleChildRule.PageTemplate == CommandNameBasedDebuggerPageTemplate)
+                if (projectCatalog.GetSchema(schemaName) is { PropertyPagesHidden: false, PageTemplate: CommandNameBasedDebuggerPageTemplate } possibleChildRule)
                 {
                     yield return possibleChildRule;
                 }

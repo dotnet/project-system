@@ -13,10 +13,12 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Moq" />
+    <PackageReference Include="Verify.Xunit" />
     <PackageReference Include="xunit" />
     <PackageReference Include="xunit.assert" />
     <PackageReference Include="xunit.combinatorial" />
     <PackageReference Include="xunit.extensibility.core" />
+    <PackageReference Include="xunit.extensibility.execution" />
     <PackageReference Include="xunit.runner.visualstudio" />
     <PackageReference Include="xunit.runner.console" />
   </ItemGroup>
