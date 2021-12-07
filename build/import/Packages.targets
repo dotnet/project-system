@@ -12,6 +12,7 @@
       https://pkgs.dev.azure.com/dnceng/public/_packaging/dotnet-eng/nuget/v3/index.json;
       https://pkgs.dev.azure.com/dnceng/public/_packaging/dotnet-public/nuget/v3/index.json;
       https://pkgs.dev.azure.com/dnceng/public/_packaging/nuget-build/nuget/v3/index.json;
+      https://pkgs.dev.azure.com/devdiv/_packaging/VSIDE-RealSigned-Release/nuget/v3/index.json
     </RestoreSources>
   </PropertyGroup>
 
@@ -71,10 +72,10 @@
     <PackageReference Include="StreamJsonRpc"                                                         Version="2.8.28" />
 
     <!-- CPS -->
-    <PackageReference Update="Microsoft.VisualStudio.ProjectSystem"                                   Version="17.1.111-pre-g765e5baae0" />
-    <PackageReference Update="Microsoft.VisualStudio.ProjectSystem.Analyzers"                         Version="17.1.111-pre-g765e5baae0" />
-    <PackageReference Update="Microsoft.VisualStudio.ProjectSystem.Query"                             Version="17.1.111-pre-g765e5baae0" />
-    <PackageReference Update="Microsoft.VisualStudio.ProjectSystem.SDK.Tools"                         Version="17.1.111-pre-g765e5baae0" />
+    <PackageReference Update="Microsoft.VisualStudio.ProjectSystem"                                   Version="17.1.122-pre-g4a40630e36" />
+    <PackageReference Update="Microsoft.VisualStudio.ProjectSystem.Analyzers"                         Version="17.1.122-pre-g4a40630e36" />
+    <PackageReference Update="Microsoft.VisualStudio.ProjectSystem.Query"                             Version="17.1.122-pre-g4a40630e36" />
+    <PackageReference Update="Microsoft.VisualStudio.ProjectSystem.SDK.Tools"                         Version="17.1.122-pre-g4a40630e36" />
 
     <!-- Roslyn -->
     <PackageReference Update="Microsoft.VisualStudio.LanguageServices"                                Version="4.1.0-2.21558.8" />
