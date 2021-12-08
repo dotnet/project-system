@@ -56,30 +56,28 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
         /// </summary>
         public async Task<bool> CanBeStartupProjectAsync(DebugLaunchOptions launchOptions)
         {
-            ILaunchProfile activeProfile = await GetActiveProfileAsync();
-
-            // Now find the DebugTargets provider for this profile
-            IDebugProfileLaunchTargetsProvider? launchProvider = GetLaunchTargetsProvider(activeProfile);
-
-            if (launchProvider is IDebugProfileLaunchTargetsProvider3 provider3)
+            if (await GetActiveProfileAsync() is ILaunchProfile activeProfile)
             {
-                return await provider3.CanBeStartupProjectAsync(launchOptions, activeProfile);
+                // Now find the DebugTargets provider for this profile
+                IDebugProfileLaunchTargetsProvider? launchProvider = GetLaunchTargetsProvider(activeProfile);
+
+                if (launchProvider is IDebugProfileLaunchTargetsProvider3 provider3)
+                {
+                    return await provider3.CanBeStartupProjectAsync(launchOptions, activeProfile);
+                }
+
+                // Maintain backwards compat
+                return true;
             }
 
-            // Maintain backwards compat
-            return true;
+            // If we can't identify the active launch profile, we can't start the project.
+            return false;
         }
 
-        private async Task<ILaunchProfile> GetActiveProfileAsync()
+        private async Task<ILaunchProfile?> GetActiveProfileAsync()
         {
             ILaunchSettings currentProfiles = await _launchSettingsProvider.WaitForFirstSnapshot();
             ILaunchProfile? activeProfile = currentProfiles.ActiveProfile;
-
-            // Should have a profile
-            if (activeProfile == null)
-            {
-                throw new Exception(VSResources.ActiveLaunchProfileNotFound);
-            }
 
             return activeProfile;
         }
@@ -98,7 +96,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
         /// </summary>
         private async Task<IReadOnlyList<IDebugLaunchSettings>> QueryDebugTargetsInternalAsync(DebugLaunchOptions launchOptions, bool fromDebugLaunch)
         {
-            ILaunchProfile activeProfile = await GetActiveProfileAsync();
+            ILaunchProfile? activeProfile = await GetActiveProfileAsync();
+
+            if (activeProfile is null)
+            {
+                throw new Exception(VSResources.ActiveLaunchProfileNotFound);
+            }
 
             // Now find the DebugTargets provider for this profile
             IDebugProfileLaunchTargetsProvider launchProvider = GetLaunchTargetsProvider(activeProfile) ??
