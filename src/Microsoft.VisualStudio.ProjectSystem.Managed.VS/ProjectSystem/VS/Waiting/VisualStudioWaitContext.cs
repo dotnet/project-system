@@ -13,7 +13,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Waiting
 
         private readonly string _title;
         private string _message;
-        private bool _allowCancel;
         private readonly CancellationTokenSource? _cancellationTokenSource;
         private readonly IVsThreadedWaitDialog3 _dialog;
 
@@ -24,8 +23,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Waiting
         {
             _title = title;
             _message = message;
-            _allowCancel = allowCancel;
-            if (_allowCancel)
+
+            if (allowCancel)
             {
                 _cancellationTokenSource = new CancellationTokenSource();
             }
@@ -48,7 +47,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Waiting
                 szProgressText: null,
                 varStatusBmpAnim: null,
                 szStatusBarText: null,
-                fIsCancelable: _allowCancel,
+                fIsCancelable: _cancellationTokenSource is not null,
                 iDelayToShowDialog: DelayToShowDialogSecs,
                 fShowProgress: false,
                 iTotalSteps: 0,
@@ -77,16 +76,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Waiting
                                                     ? CancellationToken.None
                                                     : _cancellationTokenSource.Token;
 
-        public bool AllowCancel
-        {
-            get => _allowCancel;
-            set
-            {
-                _allowCancel = value;
-                UpdateDialog();
-            }
-        }
-
         public string Message
         {
             get => _message;
@@ -105,7 +94,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Waiting
                 szStatusBarText: null,
                 iCurrentStep: 0,
                 iTotalSteps: 0,
-                fDisableCancel: !_allowCancel,
+                fDisableCancel: _cancellationTokenSource is null,
                 pfCanceled: out _);
         }
 
