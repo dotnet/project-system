@@ -39,7 +39,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Waiting
             Assumes.NotNull(dialog2);
 
             var dialog3 = (IVsThreadedWaitDialog3)dialog2;
-            var callback = new Callback(this);
+            var callback = new Callback(_cancellationTokenSource);
 
             dialog3.StartWaitDialogWithCallback(
                 szWaitCaption: _title,
@@ -59,16 +59,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Waiting
 
         private class Callback : IVsThreadedWaitDialogCallback
         {
-            private readonly VisualStudioWaitContext _waitContext;
+            private readonly CancellationTokenSource? _cancellationTokenSource;
 
-            public Callback(VisualStudioWaitContext waitContext)
+            public Callback(CancellationTokenSource? cancellationTokenSource)
             {
-                _waitContext = waitContext;
+                _cancellationTokenSource = cancellationTokenSource;
             }
 
             public void OnCanceled()
             {
-                _waitContext.OnCanceled();
+                _cancellationTokenSource?.Cancel();
             }
         }
 
@@ -100,11 +100,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Waiting
         {
             _dialog.EndWaitDialog(out _);
             _cancellationTokenSource?.Dispose();
-        }
-
-        private void OnCanceled()
-        {
-            _cancellationTokenSource?.Cancel();
         }
     }
 }
