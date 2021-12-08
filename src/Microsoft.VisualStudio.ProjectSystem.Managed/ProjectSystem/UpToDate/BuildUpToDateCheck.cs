@@ -108,7 +108,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             subscription.Dispose();
         }
 
-        private bool CheckGlobalConditions(Log log, DateTime lastCheckedAtUtc, UpToDateCheckImplicitConfiguredInput state)
+        private bool CheckGlobalConditions(Log log, DateTime lastCheckedAtUtc, bool validateFirstRun, UpToDateCheckImplicitConfiguredInput state)
         {
             if (!_tasksService.IsTaskQueueEmpty(ProjectCriticalOperation.Build))
             {
@@ -120,7 +120,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 return log.Fail("Disabled", "The 'DisableFastUpToDateCheck' property is true, not up to date.");
             }
 
-            if (!state.WasStateRestored && lastCheckedAtUtc == DateTime.MinValue)
+            if (validateFirstRun && !state.WasStateRestored && lastCheckedAtUtc == DateTime.MinValue)
             {
                 // We had no persisted state, and this is the first run. We cannot know if the project is up-to-date
                 // or not, so schedule a build.
@@ -673,7 +673,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
         async Task<(bool IsUpToDate, string? FailureReason)> IBuildUpToDateCheckValidator.ValidateUpToDateAsync(CancellationToken cancellationToken)
         {
-            bool isUpToDate = await IsUpToDateInternalAsync(TextWriter.Null, _lastGlobalProperties, updateLastCheckedAt: false, cancellationToken);
+            bool isUpToDate = await IsUpToDateInternalAsync(TextWriter.Null, _lastGlobalProperties, isValidationRun: true, cancellationToken);
 
             string failureReason = isUpToDate ? "" : _lastFailureReason;
 
@@ -696,13 +696,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 return TaskResult.False;
             }
 
-            return IsUpToDateInternalAsync(logWriter, globalProperties, updateLastCheckedAt: true, cancellationToken);
+            return IsUpToDateInternalAsync(logWriter, globalProperties, isValidationRun: false, cancellationToken);
         }
 
         private async Task<bool> IsUpToDateInternalAsync(
             TextWriter logWriter,
             IImmutableDictionary<string, string> globalProperties,
-            bool updateLastCheckedAt,
+            bool isValidationRun,
             CancellationToken cancellationToken)
         {
             cancellationToken.ThrowIfCancellationRequested();
@@ -717,7 +717,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
             ISubscription subscription = Volatile.Read(ref _subscription);
 
-            return await subscription.RunAsync(CheckAsync, updateLastCheckedAt, cancellationToken);
+            return await subscription.RunAsync(CheckAsync, updateLastCheckedAt: !isValidationRun, cancellationToken);
 
             async Task<bool> CheckAsync(UpToDateCheckConfiguredInput state, DateTime lastCheckedAtUtc, CancellationToken token)
             {
@@ -744,7 +744,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
                     foreach (UpToDateCheckImplicitConfiguredInput implicitState in state.ImplicitInputs)
                     {
-                        if (!CheckGlobalConditions(logger, lastCheckedAtUtc, implicitState) ||
+                        if (!CheckGlobalConditions(logger, lastCheckedAtUtc, validateFirstRun: !isValidationRun, implicitState) ||
                             !CheckInputsAndOutputs(logger, lastCheckedAtUtc, timestampCache, implicitState, ignoreKinds, token) ||
                             !CheckMarkers(logger, timestampCache, implicitState) ||
                             !CheckCopyToOutputDirectoryFiles(logger, timestampCache, implicitState, token) ||
