@@ -37,7 +37,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Waiting
         [Fact]
         public static void CreateWrongType_Test()
         {
-            Assert.Throws<ArgumentNullException>(() => _ = CreateWrongType(string.Empty, string.Empty, false));
+            Assert.ThrowsAny<Exception>(() => _ = CreateWrongType(string.Empty, string.Empty, false));
         }
 
         private delegate void CreateInstanceCallback(out IVsThreadedWaitDialog2 ppIVsThreadedWaitDialog);

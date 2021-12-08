@@ -1,6 +1,5 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
-using System;
 using System.Runtime.InteropServices;
 using System.Threading;
 using Microsoft.VisualStudio.ProjectSystem.Waiting;
@@ -37,8 +36,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Waiting
         private IVsThreadedWaitDialog3 CreateDialog(IVsThreadedWaitDialogFactory dialogFactory)
         {
             Marshal.ThrowExceptionForHR(dialogFactory.CreateInstance(out IVsThreadedWaitDialog2 dialog2));
-            if (dialog2 == null)
-                throw new ArgumentNullException(nameof(dialog2));
+
+            Assumes.NotNull(dialog2);
 
             var dialog3 = (IVsThreadedWaitDialog3)dialog2;
             var callback = new Callback(this);
