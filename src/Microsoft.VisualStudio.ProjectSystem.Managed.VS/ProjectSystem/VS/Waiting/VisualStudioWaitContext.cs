@@ -72,9 +72,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Waiting
             }
         }
 
-        public CancellationToken CancellationToken => _cancellationTokenSource is null
-                                                    ? CancellationToken.None
-                                                    : _cancellationTokenSource.Token;
+        public CancellationToken CancellationToken => _cancellationTokenSource?.Token ?? CancellationToken.None;
 
         public string Message
         {
