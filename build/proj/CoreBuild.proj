@@ -1,5 +1,5 @@
 <!-- Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information. -->
-<Project DefaultTargets="LogInitialMessage;Restore;Build;GenerateDependentAssemblyVersionsFile;Sign;GenerateVSManifest" LocalProperty="SolutionPath">
+<Project DefaultTargets="LogInitialMessage;Restore;Build;GenerateDependentAssemblyVersionsFile;GenerateVSManifest" LocalProperty="SolutionPath">
 
   <!--
   Required parameters:
