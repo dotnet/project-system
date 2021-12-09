@@ -71,10 +71,10 @@
     <PackageReference Include="StreamJsonRpc"                                                         Version="2.8.28" />
 
     <!-- CPS -->
-    <PackageReference Update="Microsoft.VisualStudio.ProjectSystem"                                   Version="17.0.1304-pre" />
-    <PackageReference Update="Microsoft.VisualStudio.ProjectSystem.Analyzers"                         Version="17.0.1304-pre" />
-    <PackageReference Update="Microsoft.VisualStudio.ProjectSystem.Query"                             Version="17.0.1304-pre" />
-    <PackageReference Update="Microsoft.VisualStudio.ProjectSystem.SDK.Tools"                         Version="17.0.1304-pre" />
+    <PackageReference Update="Microsoft.VisualStudio.ProjectSystem"                                   Version="17.1.221-pre" />
+    <PackageReference Update="Microsoft.VisualStudio.ProjectSystem.Analyzers"                         Version="17.1.221-pre" />
+    <PackageReference Update="Microsoft.VisualStudio.ProjectSystem.Query"                             Version="17.1.221-pre" />
+    <PackageReference Update="Microsoft.VisualStudio.ProjectSystem.SDK.Tools"                         Version="17.1.221-pre" />
 
     <!-- Roslyn -->
     <PackageReference Update="Microsoft.VisualStudio.LanguageServices"                                Version="4.1.0-2.21558.8" />
