@@ -113,6 +113,27 @@
 
   </Target> -->
 
+  <ItemGroup>
+    <FilesToSign Include="$(VisualStudioSetupOutputPath)ProjectSystem.vsix">
+      <Authenticode>VsixSHA2</Authenticode>
+    </FilesToSign>
+    <FilesToSign Include="$(VisualStudioSetupOutputPath)VisualStudioEditorsSetup.vsix">
+      <Authenticode>VsixSHA2</Authenticode>
+    </FilesToSign>
+    <FilesToSign Include="$(VisualStudioSetupInsertionPath)ProjectSystem.vsix">
+      <Authenticode>VsixSHA2</Authenticode>
+    </FilesToSign>
+    <FilesToSign Include="$(VisualStudioSetupInsertionPath)VisualStudioEditorsSetup.vsix">
+      <Authenticode>VsixSHA2</Authenticode>
+    </FilesToSign>
+    <FilesToSign Include="$(VisualStudioSetupInsertionPath)Microsoft.VisualStudio.ProjectSystem.Managed.CommonFiles.vsix">
+      <Authenticode>VsixSHA2</Authenticode>
+    </FilesToSign>
+    <FilesToSign Include="$(PackageOutputPath)*.nupkg">
+      <Authenticode>NuGet</Authenticode>
+    </FilesToSign>
+  </ItemGroup>
+
   <Target
     Name="GenerateVSManifest"
     Condition="'$(BuildOrRebuild)' == 'true'">
