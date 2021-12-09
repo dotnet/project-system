@@ -193,7 +193,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             var instance = new StartupProjectRegistrar(
                 project,
                 IUnconfiguredProjectTasksServiceFactory.Create(),
-                IVsServiceFactory.Create<SVsStartupProjectsListService, IVsStartupProjectsListService>(vsStartupProjectsListService!),
+                IVsServiceFactory.Create<SVsStartupProjectsListService, IVsStartupProjectsListService?>(vsStartupProjectsListService!),
                 threadingService ?? IProjectThreadingServiceFactory.Create(),
                 projectGuidService ?? ISafeProjectGuidServiceFactory.ImplementGetProjectGuidAsync(Guid.NewGuid()),
                 projectSubscriptionService ?? IActiveConfiguredProjectSubscriptionServiceFactory.Create(),
