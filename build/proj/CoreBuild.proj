@@ -96,22 +96,22 @@
 
   </Target>
 
-  <Target
+  <!-- <Target
     Name="Sign"
     Condition="'$(Sign)' == 'true'">
 
     <PropertyGroup>
       <RealSign>false</RealSign>
       <RealSign Condition="'$(SignType)' == 'real'">true</RealSign>
-    </PropertyGroup>
+    </PropertyGroup> -->
 
     <!--Available certificates are outlined here: https://devdiv.visualstudio.com/DevDiv/_wiki/wikis/DevDiv.wiki/659/Signing-Certificates -->
-    <MSBuild 
+    <!-- <MSBuild 
       Projects="Sign.proj"
       Properties="@(CommonBuildProperty);RealSign=$(RealSign);ConfigFile=$(RepoRoot)build\ci\SignToolData.json"
       />
-    
-  </Target>
+
+  </Target> -->
 
   <Target
     Name="GenerateVSManifest"
