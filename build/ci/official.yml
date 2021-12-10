@@ -20,8 +20,7 @@ variables:
   DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true
 
 steps:
-# TODO: Moving this for now to not interfere with the build.
-- task: ms-vseng.MicroBuildTasks.30666190-6959-11e5-9f96-f56098202fef.MicroBuildSigningPlugin@1
+- task: MicroBuildSigningPlugin@4
   displayName: Install Signing Plugin
   inputs:
     signType: real
