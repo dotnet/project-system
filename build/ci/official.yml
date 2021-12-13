@@ -26,7 +26,7 @@ steps:
     signType: real
     esrpSigning: true
 
-- task: ms-vseng.MicroBuildTasks.32f78468-e895-4f47-962c-58a699361df8.MicroBuildSwixPlugin@1
+- task: MicroBuildSwixPlugin@4
   displayName: Install Swix Plugin
 
 # This requires the OptimizationInputs via the 'Publish OptimizationInputs drop' step in the release pipeline.
@@ -135,7 +135,7 @@ steps:
 #   displayName: 'Publish Artifact: symbols'
 
 # This is required to deploy the tests to devdiv.artifacts.visualstudio.com for the 'Deploy tests' step in the release pipeline.
-- task: ms-vscs-artifact.build-tasks.artifactDropTask-1.artifactDropTask@0
+- task: artifactDropTask@0
   inputs:
     dropServiceURI: 'https://devdiv.artifacts.visualstudio.com'
     buildNumber: 'ProfilingInputs/$(System.TeamProject)/$(Build.Repository.Name)/$(Build.SourceBranchName)/$(Build.BuildId)'
@@ -153,7 +153,7 @@ steps:
 #     signType: test
 #     esrpSigning: true
 
-- task: ms-vseng.MicroBuildTasks.0e9d0d4d-71ec-4e4e-ae40-db9896f1ae74.MicroBuildBuildVSBootstrapper@2
+- task: MicroBuildBuildVSBootstrapper@2
   inputs:
     vsMajorVersion: 17
     channelName: 'int.main'
@@ -170,7 +170,7 @@ steps:
     failOnStderr: true
   displayName: Set RunSettings data from Bootstrapper
 
-- task: ms-vscs-artifact.build-tasks.artifactDropTask-1.artifactDropTask@0
+- task: artifactDropTask@0
   inputs:
     dropServiceURI: 'https://devdiv.artifacts.visualstudio.com'
     buildNumber: 'RunSettings/$(System.TeamProject)/$(Build.Repository.Name)/$(Build.SourceBranchName)/$(Build.BuildId)'
@@ -229,7 +229,7 @@ steps:
 #   displayName: 'Publish Artifact: obj'
 #   condition: succeededOrFailed()
 
-- task: ms-vseng.MicroBuildShipTasks.7c429315-71ba-4cb3-94bb-f829c95f7915.MicroBuildCodesignVerify@2
+- task: MicroBuildCodesignVerify@3
   displayName: Verify Signed Files
   inputs:
     TargetFolders: $(Build.SourcesDirectory)/artifacts/$(BuildConfiguration)/packages
@@ -262,7 +262,7 @@ steps:
 #     publishVstsFeed: '97a41293-2972-4f48-8c0e-05493ae82010'
 #     allowPackageConflicts: true
 
-- task: ms-vseng.MicroBuildTasks.521a94ea-9e68-468a-8167-6dcf361ea776.MicroBuildCleanup@1
+- task: MicroBuildCleanup@1
   displayName: Perform Cleanup Tasks
   condition: always()
 
