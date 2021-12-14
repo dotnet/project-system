@@ -12,4 +12,12 @@
   <Target Name="FlushUnshippedAPI" AfterTargets="Build">
     <Exec Command="powershell.exe -NonInteractive -NoLogo -NoProfile -Command &quot;$unshipped = '$(MSBuildProjectDirectory)\PublicAPI.Unshipped.txt'; $content = Get-Content $unshipped -Raw; if(-Not [String]::IsNullOrWhiteSpace($content)) { [IO.File]::AppendAllText('$(MSBuildProjectDirectory)\PublicAPI.Shipped.txt', [Environment]::NewLine + $content); Clear-Content $unshipped }&quot;" />
   </Target>
+
+  <Target Name="RemoveStrongNameFromSatellites" BeforeTargets="SignFiles">
+    <Message Text="ArtifactsBinDir: $(ArtifactsBinDir)" />
+    <Message Text="OutDirName: $(OutDirName)" />
+    <Message Text="AssemblyName: $(AssemblyName)" />
+
+    <Exec Command="$(ArtifactsBinDir)\$(OutDirName)\StrongNameRemover\StrongNameRemover.exe &quot;$(ArtifactsBinDir)$(OutDirName)\$(AssemblyName).dll&quot;" />
+  </Target>
 </Project>

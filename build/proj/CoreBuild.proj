@@ -40,11 +40,7 @@
   </ItemGroup>
 
   <Target Name="LogInitialMessage">
-
-    <Message
-      Text="Building $(SolutionFileName) [$(Configuration)]...%0a"
-      Importance="high" />
-
+    <Message Text="Building $(SolutionFileName) [$(Configuration)]...%0a" Importance="high" />
   </Target>
 
   <Target Name="Restore">

@@ -45,6 +45,12 @@ steps:
     ShouldSkipOptimize: false
   displayName: 'Install OptProf Plugin'
 
+- task: MSBuild@1
+  displayName: Build Strong Name Remover
+  inputs:
+    solution: '$(Build.SourcesDirectory)\build\script\StrongNameRemover\StrongNameRemover.sln'
+    configuration: $(BuildConfiguration)
+
 # NOTE: Shouldn't need this for now since this was for manual IBC merging in the AppDesigner/Editors projects.
 # - task: NuGetCommand@2
 #   displayName: Restore 'Microsoft.DotNet.IBCMerge' package
