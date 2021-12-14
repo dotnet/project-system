@@ -19,10 +19,10 @@
     <!-- Toolset -->
     <PackageReference Include="Nerdbank.Streams"                          ExcludeAssets="all" />
     <PackageReference Include="System.IO.Pipelines"                       ExcludeAssets="all" />
-    <PackageReference Include="MicroBuild.Core.Sentinel"                  ExcludeAssets="all" />
-    <PackageReference Include="Microsoft.VisualStudioEng.MicroBuild.Core" ExcludeAssets="all" />
+    <PackageReference Include="MicroBuild.Core.Sentinel" />
+    <PackageReference Include="Microsoft.VisualStudioEng.MicroBuild.Core" />
     <!-- <PackageReference Include="MicroBuild.Core"                           ExcludeAssets="all" /> -->
-    <PackageReference Include="MicroBuild.Plugins.SwixBuild" ExcludeAssets="all" />
+    <PackageReference Include="MicroBuild.Plugins.SwixBuild"              ExcludeAssets="all" />
     <!-- <PackageReference Include="MicroBuild.Plugins.Signing"                ExcludeAssets="all" />
     <PackageReference Include="MicroBuild.Plugins.OptProf"                ExcludeAssets="all" /> -->
     <!-- <PackageReference Include="MicroBuild.VisualStudio"             PrivateAssets="all" /> -->
