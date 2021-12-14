@@ -624,7 +624,7 @@
       <Authenticode>MicrosoftSHA2</Authenticode>
       <StrongName>MsSharedLib72</StrongName>
     </FilesToSign>
-    <FilesToSign Include="$(ArtifactsBinDir)$(OutDirName)\*\$(AssemblyName).resources.dll">
+    <FilesToSign Include="$(ArtifactsBinDir)$(OutDirName)\**\$(AssemblyName).resources.dll">
       <Authenticode>MicrosoftSHA2</Authenticode>
       <StrongName>MsSharedLib72</StrongName>
     </FilesToSign>

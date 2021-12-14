@@ -58,6 +58,12 @@ steps:
 - script: $(Build.SourcesDirectory)\build.cmd /build /test /ci /sign /diagnostic /no-deploy /no-integration /no-ibc /no-clearnugetcache /configuration $(BuildConfiguration)
   displayName: Build ProjectSystem.sln
 
+- task: MicroBuildCodesignVerify@3
+  displayName: Verify Signed Files
+  inputs:
+    TargetFolders: $(Build.SourcesDirectory)/artifacts/$(BuildConfiguration)/packages
+    WhiteListPathForCerts: $(Build.SourcesDirectory)\build\ci\no_authenticode.txt
+
 # - task: PublishBuildArtifacts@1
 #   inputs:
 #     PathtoPublish: $(Build.SourcesDirectory)\artifacts\Release\obj\Microsoft.VisualStudio.AppDesigner\
@@ -161,7 +167,7 @@ steps:
     channelName: 'int.main'
     manifests: '$(Build.SourcesDirectory)\artifacts\$(BuildConfiguration)\VSSetup\Insertion\Microsoft.VisualStudio.ProjectSystem.Managed.vsman'
     outputFolder: $(Build.SourcesDirectory)\artifacts\$(BuildConfiguration)\VSSetup\Insertion
-    bootstrapperCoreVersion: '1.15.76-develop-g446ca603'
+    # bootstrapperCoreVersion: '1.15.76-develop-g446ca603'
   displayName: Build VS bootstrapper
   condition: succeeded()
 
@@ -231,11 +237,12 @@ steps:
 #   displayName: 'Publish Artifact: obj'
 #   condition: succeededOrFailed()
 
-- task: MicroBuildCodesignVerify@3
-  displayName: Verify Signed Files
-  inputs:
-    TargetFolders: $(Build.SourcesDirectory)/artifacts/$(BuildConfiguration)/packages
-    WhiteListPathForCerts: $(Build.SourcesDirectory)\build\ci\no_authenticode.txt
+# TODO: Old sign verify location
+# - task: MicroBuildCodesignVerify@3
+#   displayName: Verify Signed Files
+#   inputs:
+#     TargetFolders: $(Build.SourcesDirectory)/artifacts/$(BuildConfiguration)/packages
+#     WhiteListPathForCerts: $(Build.SourcesDirectory)\build\ci\no_authenticode.txt
 
 # - task: NuGetToolInstaller@0
 #   inputs:
