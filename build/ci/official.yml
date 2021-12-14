@@ -45,11 +45,17 @@ steps:
     ShouldSkipOptimize: false
   displayName: 'Install OptProf Plugin'
 
-- task: MSBuild@1
+# - task: MSBuild@1
+#   displayName: Build Strong Name Remover
+#   inputs:
+#     solution: '$(Build.SourcesDirectory)\build\script\StrongNameRemover\StrongNameRemover.sln'
+#     configuration: $(BuildConfiguration)
+
+- task: DotNetCoreCLI@2
   displayName: Build Strong Name Remover
   inputs:
-    solution: '$(Build.SourcesDirectory)\build\script\StrongNameRemover\StrongNameRemover.sln'
-    configuration: $(BuildConfiguration)
+    command: 'build'
+    projects: '$(Build.SourcesDirectory)\build\script\StrongNameRemover\StrongNameRemover.sln'
 
 # NOTE: Shouldn't need this for now since this was for manual IBC merging in the AppDesigner/Editors projects.
 # - task: NuGetCommand@2
