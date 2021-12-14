@@ -62,7 +62,7 @@ steps:
   displayName: Verify Signed Files
   inputs:
     TargetFolders: $(Build.SourcesDirectory)/artifacts/$(BuildConfiguration)/packages
-    WhiteListPathForCerts: $(Build.SourcesDirectory)\build\ci\no_authenticode.txt
+    ApprovalListPathForCerts: $(Build.SourcesDirectory)\build\ci\no_authenticode.txt
 
 # - task: PublishBuildArtifacts@1
 #   inputs:
