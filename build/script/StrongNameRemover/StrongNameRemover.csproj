@@ -5,6 +5,7 @@
     <TargetFramework>net4.7.2</TargetFramework>
     <!--<ImplicitUsings>enable</ImplicitUsings>-->
     <Nullable>enable</Nullable>
+    <LangVersion>latest</LangVersion>
   </PropertyGroup>
 
   <ItemGroup>
