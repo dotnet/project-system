@@ -8,6 +8,7 @@
     <!-- <MicroBuild_DoNotStrongNameSign>true</MicroBuild_DoNotStrongNameSign>
     <MicroBuild_SigningEnabled>false</MicroBuild_SigningEnabled>
     <Nonshipping>true</Nonshipping> -->
+    <DelaySign>false</DelaySign>
   </PropertyGroup>
 
   <Import Project="build\import\NuGet.props"/>
