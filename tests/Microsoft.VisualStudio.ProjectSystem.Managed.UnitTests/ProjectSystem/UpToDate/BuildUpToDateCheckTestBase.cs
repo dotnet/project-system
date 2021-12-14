@@ -77,13 +77,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             UpToDateCheckImplicitConfiguredInput priorState,
             Dictionary<string, IProjectRuleSnapshotModel>? projectRuleSnapshot = null,
             Dictionary<string, IProjectRuleSnapshotModel>? sourceRuleSnapshot = null,
-            IImmutableDictionary<string, DateTime>? dependentFileTimes = null,
             bool itemRemovedFromSourceSnapshot = false)
         {
             return priorState.Update(
                 CreateUpdate(projectRuleSnapshot),
                 CreateUpdate(sourceRuleSnapshot, itemRemovedFromSourceSnapshot),
-                IProjectSnapshot2Factory.Create(dependentFileTimes),
                 IProjectItemSchemaFactory.Create(_itemTypes),
                 IProjectCatalogSnapshotFactory.CreateWithDefaultMapping(_itemTypes));
 
