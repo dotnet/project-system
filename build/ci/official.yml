@@ -54,9 +54,9 @@ steps:
 - task: DotNetCoreCLI@2
   displayName: Build Strong Name Remover
   inputs:
-    command: 'build'
+    command: 'publish'
     projects: '$(Build.SourcesDirectory)\build\script\StrongNameRemover\StrongNameRemover.sln'
-    arguments: '-c $(BuildConfiguration)'
+    arguments: '-c $(BuildConfiguration) -r win-x64'
 
 # NOTE: Shouldn't need this for now since this was for manual IBC merging in the AppDesigner/Editors projects.
 # - task: NuGetCommand@2
