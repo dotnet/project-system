@@ -57,6 +57,7 @@ steps:
     command: 'publish'
     projects: '$(Build.SourcesDirectory)\build\script\StrongNameRemover\StrongNameRemover.sln'
     arguments: '-c $(BuildConfiguration) -r win-x64'
+    publishWebProjects: false
 
 # NOTE: Shouldn't need this for now since this was for manual IBC merging in the AppDesigner/Editors projects.
 # - task: NuGetCommand@2
