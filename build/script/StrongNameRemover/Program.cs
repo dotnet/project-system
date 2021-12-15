@@ -8,11 +8,18 @@ using System.Reflection.PortableExecutable;
 
 namespace StrongNameRemover
 {
+    /// <summary>
+    /// The main program class of the application.
+    /// </summary>
     public static class Program
     {
-        // This program removes the strong name signature from satellite (localized) assemblies.
-        // The only requirement is to provide the path to the primary assembly as a parameter.
-        // Code based on: https://github.com/dotnet/roslyn-tools/blob/main/src/SignTool/SignTool/SignTool.RealSignTool.cs
+        /// <summary>
+        /// This program removes the strong name signature from satellite (localized) assemblies.
+        /// The only requirement is to provide the path to the primary assembly as a parameter.
+        /// Code based on: https://github.com/dotnet/roslyn-tools/blob/main/src/SignTool/SignTool/SignTool.RealSignTool.cs
+        /// </summary>
+        /// <param name="args">The arguments for the application.</param>
+        /// <returns>0 on success. 1 (or exception) on failure.</returns>
         public static int Main(string[] args)
         {
             if(!args.Any() || args[0] is not string assemblyPath || !File.Exists(assemblyPath))
