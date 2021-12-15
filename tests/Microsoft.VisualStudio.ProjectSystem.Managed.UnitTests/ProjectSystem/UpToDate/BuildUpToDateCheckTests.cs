@@ -961,7 +961,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
         {
             var projectSnapshot = new Dictionary<string, IProjectRuleSnapshotModel>
             {
-                [UpToDateCheckBuilt.SchemaName] = ItemWithMetadata("CopiedOutputDestination", "Original", "CopiedOutputSource")
+                [UpToDateCheckBuilt.SchemaName] = ItemWithMetadata("CopiedOutputDestination", UpToDateCheckBuilt.OriginalProperty, "CopiedOutputSource")
             };
 
             var destinationPath = @"C:\Dev\Solution\Project\CopiedOutputDestination";
@@ -1038,7 +1038,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
         {
             var projectSnapshot = new Dictionary<string, IProjectRuleSnapshotModel>
             {
-                [UpToDateCheckBuilt.SchemaName] = ItemWithMetadata("CopiedOutputDestination", "Original", "CopiedOutputSource")
+                [UpToDateCheckBuilt.SchemaName] = ItemWithMetadata("CopiedOutputDestination", UpToDateCheckBuilt.OriginalProperty, "CopiedOutputSource")
             };
 
             var lastCheckTime = DateTime.UtcNow.AddMinutes(-1);
@@ -1065,7 +1065,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
         {
             var projectSnapshot = new Dictionary<string, IProjectRuleSnapshotModel>
             {
-                [UpToDateCheckBuilt.SchemaName] = ItemWithMetadata("CopiedOutputDestination", "Original", "CopiedOutputSource")
+                [UpToDateCheckBuilt.SchemaName] = ItemWithMetadata("CopiedOutputDestination", UpToDateCheckBuilt.OriginalProperty, "CopiedOutputSource")
             };
 
             var destinationPath = @"C:\Dev\Solution\Project\CopiedOutputDestination";
