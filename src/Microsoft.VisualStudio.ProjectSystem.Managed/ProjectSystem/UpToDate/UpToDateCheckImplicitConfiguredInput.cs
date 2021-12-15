@@ -245,11 +245,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             }
 
             ImmutableDictionary<string, ImmutableDictionary<string, ImmutableArray<string>>> upToDateCheckOutputItemsByKindBySetName;
-            if (sourceItemsUpdate.ProjectChanges.TryGetValue(UpToDateCheckOutput.SchemaName, out change) && change.Difference.AnyChanges)
-            {
-                upToDateCheckOutputItemsByKindBySetName = BuildItemsByKindBySetName(change, UpToDateCheckOutput.KindProperty, UpToDateCheckOutput.SetProperty);
-            }
-            else if (jointRuleUpdate.ProjectChanges.TryGetValue(UpToDateCheckOutput.SchemaName, out change) && change.Difference.AnyChanges)
+            if (jointRuleUpdate.ProjectChanges.TryGetValue(UpToDateCheckOutput.SchemaName, out change) && change.Difference.AnyChanges)
             {
                 upToDateCheckOutputItemsByKindBySetName = BuildItemsByKindBySetName(change, UpToDateCheckOutput.KindProperty, UpToDateCheckOutput.SetProperty);
             }
