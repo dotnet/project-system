@@ -18,6 +18,6 @@
     <Message Text="OutDirName: $(OutDirName)" />
     <Message Text="AssemblyName: $(AssemblyName)" />
 
-    <Exec Command="$(ArtifactsBinDir)\$(OutDirName)\StrongNameRemover\StrongNameRemover.exe &quot;$(ArtifactsBinDir)$(OutDirName)\$(AssemblyName).dll&quot;" />
+    <Exec Command="$(ArtifactsBinDir)$(OutDirName)\StrongNameRemover.exe &quot;$(ArtifactsBinDir)$(OutDirName)\$(AssemblyName).dll&quot;" />
   </Target>
 </Project>
