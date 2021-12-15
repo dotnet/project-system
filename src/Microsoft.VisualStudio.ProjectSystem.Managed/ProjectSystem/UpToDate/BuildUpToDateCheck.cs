@@ -222,14 +222,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                     return false;
                 }
 
-#if FALSE // https://github.com/dotnet/project-system/issues/6227
-
-                if (_enableAdditionalDependentFile && earliestOutputTime < state.LastAdditionalDependentFileTimesChangedAtUtc)
-                {
-                    return log.Fail("Outputs", "The set of AdditionalDependentFileTimes was changed more recently ({0}) than the earliest output '{1}' ({2}), not up to date.", state.LastAdditionalDependentFileTimesChangedAtUtc, earliestOutputPath, earliestOutputTime);
-                }
-#endif
-
                 (string Path, DateTime? Time)? latestInput = null;
 
                 foreach ((string input, string? itemType, bool isRequired) in inputs)

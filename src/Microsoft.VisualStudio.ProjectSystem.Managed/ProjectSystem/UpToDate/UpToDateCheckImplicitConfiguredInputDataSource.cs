@@ -12,7 +12,6 @@ using Microsoft.VisualStudio.ProjectSystem.Utilities;
 using UpdateValues = System.ValueTuple<
     Microsoft.VisualStudio.ProjectSystem.IProjectSubscriptionUpdate,
     Microsoft.VisualStudio.ProjectSystem.IProjectSubscriptionUpdate,
-    Microsoft.VisualStudio.ProjectSystem.IProjectSnapshot,
     Microsoft.VisualStudio.ProjectSystem.IProjectItemSchema,
     Microsoft.VisualStudio.ProjectSystem.Properties.IProjectCatalogSnapshot>;
 
@@ -63,9 +62,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
             IProjectValueDataSource<IProjectSubscriptionUpdate> source1 = _configuredProject.Services.ProjectSubscription.JointRuleSource;
             IProjectValueDataSource<IProjectSubscriptionUpdate> source2 = _configuredProject.Services.ProjectSubscription.SourceItemsRuleSource;
-            IProjectValueDataSource<IProjectSnapshot> source3 = _configuredProject.Services.ProjectSubscription.ProjectSource;
-            IProjectItemSchemaService source4 = _projectItemSchemaService;
-            IProjectValueDataSource<IProjectCatalogSnapshot> source5 = _configuredProject.Services.ProjectSubscription.ProjectCatalogSource;
+            IProjectItemSchemaService source3 = _projectItemSchemaService;
+            IProjectValueDataSource<IProjectCatalogSnapshot> source4 = _configuredProject.Services.ProjectSubscription.ProjectCatalogSource;
 
             return new DisposableBag
             {
@@ -75,7 +73,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                     source2.SourceBlock.SyncLinkOptions(),
                     source3.SourceBlock.SyncLinkOptions(),
                     source4.SourceBlock.SyncLinkOptions(),
-                    source5.SourceBlock.SyncLinkOptions(),
                     target: transformBlock,
                     linkOptions: DataflowOption.PropagateCompletion,
                     CancellationToken.None),
@@ -83,7 +80,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 // Link the transform block to our target block
                 transformBlock.LinkTo(targetBlock, DataflowOption.PropagateCompletion),
 
-                JoinUpstreamDataSources(source1, source2, source3, source4, source5)
+                JoinUpstreamDataSources(source1, source2, source3, source4)
             };
 
             async Task<IProjectVersionedValue<UpToDateCheckImplicitConfiguredInput>> TransformAsync(IProjectVersionedValue<UpdateValues> e)
@@ -109,15 +106,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 int? priorItemHash = state.ItemHash;
                 DateTime priorLastItemsChangedAtUtc = state.LastItemsChangedAtUtc;
 
-                var snapshot = e.Value.Item3 as IProjectSnapshot2;
-                Assumes.NotNull(snapshot);
-
                 state = state.Update(
                     jointRuleUpdate: e.Value.Item1,
                     sourceItemsUpdate: e.Value.Item2,
-                    projectSnapshot: snapshot,
-                    projectItemSchema: e.Value.Item4,
-                    projectCatalogSnapshot: e.Value.Item5);
+                    projectItemSchema: e.Value.Item3,
+                    projectCatalogSnapshot: e.Value.Item4);
 
                 if (state.ItemHash is not null && _persistentState is not null && (priorItemHash != state.ItemHash || priorLastItemsChangedAtUtc != state.LastItemsChangedAtUtc))
                 {

@@ -35,8 +35,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             resolvedAnalyzerReferencePaths:               ImmutableArray<string>.Empty,
             resolvedCompilationReferencePaths:            ImmutableArray<string>.Empty,
             copyReferenceInputs:                          ImmutableArray<string>.Empty,
-            additionalDependentFileTimes:                 ImmutableDictionary<string, DateTime>.Empty,
-            lastAdditionalDependentFileTimesChangedAtUtc: DateTime.MinValue,
             lastItemsChangedAtUtc:                        DateTime.MinValue,
             lastItemChanges:                              ImmutableArray<(bool IsAdd, string ItemType, string Path, string? TargetPath, BuildUpToDateCheck.CopyType CopyType)>.Empty,
             itemHash:                                     null,
@@ -112,39 +110,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
         /// </summary>
         public ImmutableArray<string> CopyReferenceInputs { get; }
 
-        /// <summary>
-        /// Contains files such as:
-        /// <list type="bullet">
-        ///   <item>Potential <c>.editorconfig</c> paths</item>
-        ///   <item>Potential <c>global.json</c> paths</item>
-        ///   <item>Potential <c>Directory.Build.props</c> paths</item>
-        ///   <item>Potential <c>Directory.Build.targets</c> paths</item>
-        ///   <item><c>project.assets.json</c></item>
-        /// </list>
-        /// <para>
-        /// We need all <em>potential</em> paths for files which may start affecting build if they were to be added.
-        /// Any files not found on disk have MinValue dates.
-        /// </para>
-        /// </summary>
-        /// <remarks>
-        /// The <see cref="DateTime"/> values here do not update dynamically.
-        /// </remarks>
-        public IImmutableDictionary<string, DateTime> AdditionalDependentFileTimes { get; }
-
-        /// <summary>
-        /// Gets the time at which the set of items with non-<see cref="DateTime.MinValue"/> times
-        /// in <see cref="AdditionalDependentFileTimes"/> changed (files added or removed).
-        /// </summary>
-        /// <remarks>
-        /// <para>
-        /// This property is not updated until after the first query occurs. Until that time it will
-        /// equal <see cref="DateTime.MinValue"/> which represents the fact that we do not know when
-        /// the set of items was last added or removed, so we cannot base any decisions on this data
-        /// property.
-        /// </para>
-        /// </remarks>
-        public DateTime LastAdditionalDependentFileTimesChangedAtUtc { get; }
-
         private UpToDateCheckImplicitConfiguredInput()
         {
             var emptyItemBySetName = ImmutableDictionary.Create<string, ImmutableDictionary<string, ImmutableArray<string>>>(BuildUpToDateCheck.SetNameComparer);
@@ -160,8 +125,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             ResolvedAnalyzerReferencePaths = ImmutableArray<string>.Empty;
             ResolvedCompilationReferencePaths = ImmutableArray<string>.Empty;
             CopyReferenceInputs = ImmutableArray<string>.Empty;
-            AdditionalDependentFileTimes = ImmutableDictionary.Create<string, DateTime>(StringComparers.Paths);
-            LastAdditionalDependentFileTimesChangedAtUtc = DateTime.MinValue;
             WasStateRestored = false;
         }
 
@@ -181,8 +144,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             ImmutableArray<string> resolvedAnalyzerReferencePaths,
             ImmutableArray<string> resolvedCompilationReferencePaths,
             ImmutableArray<string> copyReferenceInputs,
-            IImmutableDictionary<string, DateTime> additionalDependentFileTimes,
-            DateTime lastAdditionalDependentFileTimesChangedAtUtc,
             DateTime lastItemsChangedAtUtc,
             ImmutableArray<(bool IsAdd, string ItemType, string Path, string? TargetPath, BuildUpToDateCheck.CopyType CopyType)> lastItemChanges,
             int? itemHash,
@@ -204,8 +165,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             ResolvedCompilationReferencePaths = resolvedCompilationReferencePaths;
             CopyReferenceInputs = copyReferenceInputs;
             LastItemsChangedAtUtc = lastItemsChangedAtUtc;
-            AdditionalDependentFileTimes = additionalDependentFileTimes;
-            LastAdditionalDependentFileTimesChangedAtUtc = lastAdditionalDependentFileTimesChangedAtUtc;
             LastItemChanges = lastItemChanges;
             ItemHash = itemHash;
             WasStateRestored = wasStateRestored;
@@ -229,7 +188,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
         public UpToDateCheckImplicitConfiguredInput Update(
             IProjectSubscriptionUpdate jointRuleUpdate,
             IProjectSubscriptionUpdate sourceItemsUpdate,
-            IProjectSnapshot2 projectSnapshot,
             IProjectItemSchema projectItemSchema,
             IProjectCatalogSnapshot projectCatalogSnapshot)
         {
@@ -492,8 +450,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 lastItemsChangedAtUtc = DateTime.UtcNow;
             }
 
-            DateTime lastAdditionalDependentFileTimesChangedAtUtc = GetLastTimeAdditionalDependentFilesAddedOrRemoved();
-
             return new(
                 msBuildProjectFullPath,
                 msBuildProjectDirectory,
@@ -510,27 +466,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 resolvedAnalyzerReferencePaths: resolvedAnalyzerReferencePaths,
                 resolvedCompilationReferencePaths: resolvedCompilationReferencePaths,
                 copyReferenceInputs: copyReferenceInputs,
-                additionalDependentFileTimes: projectSnapshot.AdditionalDependentFileTimes,
-                lastAdditionalDependentFileTimesChangedAtUtc: lastAdditionalDependentFileTimesChangedAtUtc,
                 lastItemsChangedAtUtc: lastItemsChangedAtUtc,
                 changes.ToImmutableArray(),
                 itemHash,
                 WasStateRestored);
-
-            DateTime GetLastTimeAdditionalDependentFilesAddedOrRemoved()
-            {
-                var lastExistingAdditionalDependentFiles = AdditionalDependentFileTimes.Where(pair => pair.Value != DateTime.MinValue)
-                    .Select(pair => pair.Key)
-                    .ToImmutableHashSet();
-
-                IEnumerable<string> currentExistingAdditionalDependentFiles = projectSnapshot.AdditionalDependentFileTimes
-                    .Where(pair => pair.Value != DateTime.MinValue)
-                    .Select(pair => pair.Key);
-
-                bool additionalDependentFilesChanged = !lastExistingAdditionalDependentFiles.SetEquals(currentExistingAdditionalDependentFiles);
-
-                return additionalDependentFilesChanged && !lastExistingAdditionalDependentFiles.IsEmpty ? DateTime.UtcNow : LastAdditionalDependentFileTimesChangedAtUtc;
-            }
 
             static BuildUpToDateCheck.CopyType GetCopyType(IImmutableDictionary<string, string> itemMetadata)
             {
@@ -649,38 +588,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 ResolvedAnalyzerReferencePaths,
                 ResolvedCompilationReferencePaths,
                 CopyReferenceInputs,
-                AdditionalDependentFileTimes,
-                LastAdditionalDependentFileTimesChangedAtUtc,
                 lastItemsChangedAtUtc,
-                LastItemChanges,
-                ItemHash,
-                WasStateRestored);
-        }
-
-        /// <summary>
-        /// For unit tests only.
-        /// </summary>
-        internal UpToDateCheckImplicitConfiguredInput WithLastAdditionalDependentFilesChangedAtUtc(DateTime lastAdditionalDependentFileTimesChangedAtUtc)
-        {
-            return new(
-                MSBuildProjectFullPath,
-                MSBuildProjectDirectory,
-                CopyUpToDateMarkerItem,
-                OutputRelativeOrFullPath,
-                NewestImportInput,
-                IsDisabled,
-                ItemTypes,
-                ItemsByItemType,
-                UpToDateCheckInputItemsByKindBySetName,
-                UpToDateCheckOutputItemsByKindBySetName,
-                UpToDateCheckBuiltItemsByKindBySetName,
-                CopiedOutputFiles,
-                ResolvedAnalyzerReferencePaths,
-                ResolvedCompilationReferencePaths,
-                CopyReferenceInputs,
-                AdditionalDependentFileTimes,
-                lastAdditionalDependentFileTimesChangedAtUtc,
-                LastItemsChangedAtUtc,
                 LastItemChanges,
                 ItemHash,
                 WasStateRestored);
@@ -704,8 +612,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 ResolvedAnalyzerReferencePaths,
                 ResolvedCompilationReferencePaths,
                 CopyReferenceInputs,
-                AdditionalDependentFileTimes,
-                LastAdditionalDependentFileTimesChangedAtUtc,
                 lastInputsChangedAtUtc,
                 LastItemChanges,
                 itemHash,
