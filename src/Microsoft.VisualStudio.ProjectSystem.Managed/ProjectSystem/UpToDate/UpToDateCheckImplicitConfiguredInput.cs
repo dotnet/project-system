@@ -390,15 +390,18 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
             foreach ((string schemaName, IProjectChangeDescription projectChange) in sourceItemsUpdate.ProjectChanges)
             {
+                if ((!projectChange.Difference.AnyChanges && !itemTypesChanged) ||
+                   (projectChange.After.Items.Count == 0 && projectChange.Difference.RemovedItems.Count == 0))
+                {
+                    continue;
+                }
+
                 // ProjectChanges is keyed by the rule name which is usually the same as the item type, but not always (eg, in auto-generated rules)
                 string? itemType = null;
-                if (projectCatalogSnapshot.NamedCatalogs.TryGetValue(PropertyPageContexts.File, out IPropertyPagesCatalog fileCatalog))
+                if (projectCatalogSnapshot.NamedCatalogs.TryGetValue(PropertyPageContexts.File, out IPropertyPagesCatalog? fileCatalog))
                     itemType = fileCatalog.GetSchema(schemaName)?.DataSource.ItemType;
 
-                if (itemType is null ||
-                   !itemTypes.Contains(itemType) ||
-                   (!projectChange.Difference.AnyChanges && !itemTypesChanged) || 
-                   (projectChange.After.Items.Count == 0 && projectChange.Difference.RemovedItems.Count == 0))
+                if (itemType is null || !itemTypes.Contains(itemType))
                 {
                     continue;
                 }
