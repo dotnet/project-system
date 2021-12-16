@@ -630,55 +630,55 @@
     </FilesToSign> -->
     <FilesToSign Include="$(ArtifactsBinDir)$(OutDirName)\cs\$(AssemblyName).resources.dll">
       <Authenticode>MicrosoftSHA2</Authenticode>
-      <StrongName>67</StrongName>
+      <StrongName>MsSharedLib72</StrongName>
     </FilesToSign>
     <FilesToSign Include="$(ArtifactsBinDir)$(OutDirName)\de\$(AssemblyName).resources.dll">
       <Authenticode>MicrosoftSHA2</Authenticode>
-      <StrongName>67</StrongName>
+      <StrongName>MsSharedLib72</StrongName>
     </FilesToSign>
     <FilesToSign Include="$(ArtifactsBinDir)$(OutDirName)\es\$(AssemblyName).resources.dll">
       <Authenticode>MicrosoftSHA2</Authenticode>
-      <StrongName>67</StrongName>
+      <StrongName>MsSharedLib72</StrongName>
     </FilesToSign>
     <FilesToSign Include="$(ArtifactsBinDir)$(OutDirName)\fr\$(AssemblyName).resources.dll">
       <Authenticode>MicrosoftSHA2</Authenticode>
-      <StrongName>67</StrongName>
+      <StrongName>MsSharedLib72</StrongName>
     </FilesToSign>
     <FilesToSign Include="$(ArtifactsBinDir)$(OutDirName)\it\$(AssemblyName).resources.dll">
       <Authenticode>MicrosoftSHA2</Authenticode>
-      <StrongName>67</StrongName>
+      <StrongName>MsSharedLib72</StrongName>
     </FilesToSign>
     <FilesToSign Include="$(ArtifactsBinDir)$(OutDirName)\ja\$(AssemblyName).resources.dll">
       <Authenticode>MicrosoftSHA2</Authenticode>
-      <StrongName>67</StrongName>
+      <StrongName>MsSharedLib72</StrongName>
     </FilesToSign>
     <FilesToSign Include="$(ArtifactsBinDir)$(OutDirName)\ko\$(AssemblyName).resources.dll">
       <Authenticode>MicrosoftSHA2</Authenticode>
-      <StrongName>67</StrongName>
+      <StrongName>MsSharedLib72</StrongName>
     </FilesToSign>
     <FilesToSign Include="$(ArtifactsBinDir)$(OutDirName)\pl\$(AssemblyName).resources.dll">
       <Authenticode>MicrosoftSHA2</Authenticode>
-      <StrongName>67</StrongName>
+      <StrongName>MsSharedLib72</StrongName>
     </FilesToSign>
     <FilesToSign Include="$(ArtifactsBinDir)$(OutDirName)\pt-br\$(AssemblyName).resources.dll">
       <Authenticode>MicrosoftSHA2</Authenticode>
-      <StrongName>67</StrongName>
+      <StrongName>MsSharedLib72</StrongName>
     </FilesToSign>
     <FilesToSign Include="$(ArtifactsBinDir)$(OutDirName)\ru\$(AssemblyName).resources.dll">
       <Authenticode>MicrosoftSHA2</Authenticode>
-      <StrongName>67</StrongName>
+      <StrongName>MsSharedLib72</StrongName>
     </FilesToSign>
     <FilesToSign Include="$(ArtifactsBinDir)$(OutDirName)\tr\$(AssemblyName).resources.dll">
       <Authenticode>MicrosoftSHA2</Authenticode>
-      <StrongName>67</StrongName>
+      <StrongName>MsSharedLib72</StrongName>
     </FilesToSign>
     <FilesToSign Include="$(ArtifactsBinDir)$(OutDirName)\zh-hans\$(AssemblyName).resources.dll">
       <Authenticode>MicrosoftSHA2</Authenticode>
-      <StrongName>67</StrongName>
+      <StrongName>MsSharedLib72</StrongName>
     </FilesToSign>
     <FilesToSign Include="$(ArtifactsBinDir)$(OutDirName)\zh-hant\$(AssemblyName).resources.dll">
       <Authenticode>MicrosoftSHA2</Authenticode>
-      <StrongName>67</StrongName>
+      <StrongName>MsSharedLib72</StrongName>
     </FilesToSign>
   </ItemGroup>
 
