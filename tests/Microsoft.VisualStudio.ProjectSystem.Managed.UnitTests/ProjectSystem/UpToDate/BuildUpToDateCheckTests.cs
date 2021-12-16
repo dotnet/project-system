@@ -1330,7 +1330,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             {
                 var itemsByItemType = items.ToImmutableDictionary(
                     i => i.itemType,
-                    i => i.paths.Select(p => (p, (string?)null, BuildUpToDateCheck.CopyType.CopyNever)).ToImmutableArray());
+                    i => i.paths.Select(p => new UpToDateCheckInputItem(p, null, BuildUpToDateCheck.CopyType.CopyNever)).ToImmutableArray());
 
                 return BuildUpToDateCheck.ComputeItemHash(itemsByItemType);
             }
