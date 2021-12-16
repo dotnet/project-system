@@ -13,11 +13,11 @@
     <Exec Command="powershell.exe -NonInteractive -NoLogo -NoProfile -Command &quot;$unshipped = '$(MSBuildProjectDirectory)\PublicAPI.Unshipped.txt'; $content = Get-Content $unshipped -Raw; if(-Not [String]::IsNullOrWhiteSpace($content)) { [IO.File]::AppendAllText('$(MSBuildProjectDirectory)\PublicAPI.Shipped.txt', [Environment]::NewLine + $content); Clear-Content $unshipped }&quot;" />
   </Target>
 
-  <Target Name="RemoveStrongNameFromSatellites" BeforeTargets="SignFiles">
+  <!-- <Target Name="RemoveStrongNameFromSatellites" BeforeTargets="SignFiles">
     <Message Text="ArtifactsBinDir: $(ArtifactsBinDir)" />
     <Message Text="OutDirName: $(OutDirName)" />
     <Message Text="AssemblyName: $(AssemblyName)" />
 
     <Exec Command="$(ArtifactsBinDir)$(OutDirName)\win-x64\publish\StrongNameRemover.exe &quot;$(ArtifactsBinDir)$(OutDirName)\$(AssemblyName).dll&quot;" />
-  </Target>
+  </Target> -->
 </Project>
