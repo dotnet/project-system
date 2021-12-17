@@ -30,10 +30,16 @@
     <Message Text="AssemblyName: $(AssemblyName)" />
     <Message Text="ArtifactsObjDir: $(ArtifactsObjDir)" />
 
-    <!-- <ItemGroup>
-      <OptimizedDlls Include="$(ArtifactsObjDir)\Microsoft.VisualStudio.ProjectSystem.Managed\Microsoft.VisualStudio.ProjectSystem.Managed.dll;$(ArtifactsObjDir)\Microsoft.VisualStudio.ProjectSystem.Managed.VS\Microsoft.VisualStudio.ProjectSystem.Managed.VS.dll"/>
-    </ItemGroup> -->
+    <!-- https://stackoverflow.com/a/8331202/294804 -->
+    <!-- https://stackoverflow.com/a/10818869/294804 -->
+    <ItemGroup>
+      <ResourceDllsToCopy Include="$(OutputPath)**\$(AssemblyName).resources.dll" />
+      <ResourceDllsToCopy2 Include="#(ResourceDllsToCopy)">
+        <LanguageDir>$([System.IO.Path]::GetDirectoryName(%(ResourceDllsToCopy.RecursiveDir)))</LanguageDir>
+      </ResourceDllsToCopy2>
+    </ItemGroup>
 
-    <Copy SourceFiles="$(OutputPath)$(AssemblyName).dll;$(OutputPath)**\$(AssemblyName).resources.dll" DestinationFolder="$(ArtifactsObjDir)\$(AssemblyName)" />
+    <Copy SourceFiles="(OutputPath)$(AssemblyName).dll" DestinationFolder="$(ArtifactsObjDir)\$(AssemblyName)" />
+    <Copy SourceFiles="@(ResourceDllsToCopy2)" DestinationFolder="$(ArtifactsObjDir)\$(AssemblyName)\%(LanguageDir)" />
   </Target>
 </Project>
