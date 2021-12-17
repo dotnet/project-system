@@ -184,6 +184,9 @@ steps:
     manifests: '$(Build.SourcesDirectory)\artifacts\$(BuildConfiguration)\VSSetup\Insertion\Microsoft.VisualStudio.ProjectSystem.Managed.vsman'
     outputFolder: $(Build.SourcesDirectory)\artifacts\$(BuildConfiguration)\VSSetup\Insertion
     # bootstrapperCoreVersion: '1.15.76-develop-g446ca603'
+    bootstrapperCoreFeedSource: 'https://devdiv.pkgs.visualstudio.com/_packaging/Setup/nuget/v3/index.json'
+    bootstrapperCoreDependenciesFeedSource: 'https://devdiv.pkgs.visualstudio.com/_packaging/Setup-Dependencies/nuget/v3/index.json'
+    nugetOrgPublicFeedSource: 'https://api.nuget.org/v3/index.json'
   displayName: Build VS bootstrapper
   condition: succeeded()
 

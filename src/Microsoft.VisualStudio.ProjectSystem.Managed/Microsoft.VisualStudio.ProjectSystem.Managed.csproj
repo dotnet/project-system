@@ -27,7 +27,6 @@
   <ItemGroup>
     <!-- Needed to break assembly conflict on StreamJsonRpc between microsoft.visualstudio.projectsystem.query and microsoft.visualstudio.languageservices -->
     <PackageReference Include="Microsoft.VisualStudio.RpcContracts" />
-    <!-- <PackageReference Include="Microsoft.VisualStudio.Internal.MicroBuild.VisualStudio" PrivateAssets="all" /> -->
   </ItemGroup>
 
   <!-- Dependencies -->
@@ -617,69 +616,6 @@
   <ItemGroup>
     <AdditionalFiles Include="PublicAPI.Shipped.txt" />
     <AdditionalFiles Include="PublicAPI.Unshipped.txt" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <FilesToSign Include="$(ArtifactsBinDir)$(OutDirName)\$(AssemblyName).dll">
-      <Authenticode>MicrosoftSHA2</Authenticode>
-      <StrongName>MsSharedLib72</StrongName>
-    </FilesToSign>
-    <!-- <FilesToSign Include="$(ArtifactsBinDir)$(OutDirName)\**\$(AssemblyName).resources.dll">
-      <Authenticode>MicrosoftSHA2</Authenticode>
-      <StrongName>MsSharedLib72</StrongName>
-    </FilesToSign> -->
-    <FilesToSign Include="$(ArtifactsBinDir)$(OutDirName)\cs\$(AssemblyName).resources.dll">
-      <Authenticode>MicrosoftSHA2</Authenticode>
-      <StrongName>MsSharedLib72</StrongName>
-    </FilesToSign>
-    <FilesToSign Include="$(ArtifactsBinDir)$(OutDirName)\de\$(AssemblyName).resources.dll">
-      <Authenticode>MicrosoftSHA2</Authenticode>
-      <StrongName>MsSharedLib72</StrongName>
-    </FilesToSign>
-    <FilesToSign Include="$(ArtifactsBinDir)$(OutDirName)\es\$(AssemblyName).resources.dll">
-      <Authenticode>MicrosoftSHA2</Authenticode>
-      <StrongName>MsSharedLib72</StrongName>
-    </FilesToSign>
-    <FilesToSign Include="$(ArtifactsBinDir)$(OutDirName)\fr\$(AssemblyName).resources.dll">
-      <Authenticode>MicrosoftSHA2</Authenticode>
-      <StrongName>MsSharedLib72</StrongName>
-    </FilesToSign>
-    <FilesToSign Include="$(ArtifactsBinDir)$(OutDirName)\it\$(AssemblyName).resources.dll">
-      <Authenticode>MicrosoftSHA2</Authenticode>
-      <StrongName>MsSharedLib72</StrongName>
-    </FilesToSign>
-    <FilesToSign Include="$(ArtifactsBinDir)$(OutDirName)\ja\$(AssemblyName).resources.dll">
-      <Authenticode>MicrosoftSHA2</Authenticode>
-      <StrongName>MsSharedLib72</StrongName>
-    </FilesToSign>
-    <FilesToSign Include="$(ArtifactsBinDir)$(OutDirName)\ko\$(AssemblyName).resources.dll">
-      <Authenticode>MicrosoftSHA2</Authenticode>
-      <StrongName>MsSharedLib72</StrongName>
-    </FilesToSign>
-    <FilesToSign Include="$(ArtifactsBinDir)$(OutDirName)\pl\$(AssemblyName).resources.dll">
-      <Authenticode>MicrosoftSHA2</Authenticode>
-      <StrongName>MsSharedLib72</StrongName>
-    </FilesToSign>
-    <FilesToSign Include="$(ArtifactsBinDir)$(OutDirName)\pt-br\$(AssemblyName).resources.dll">
-      <Authenticode>MicrosoftSHA2</Authenticode>
-      <StrongName>MsSharedLib72</StrongName>
-    </FilesToSign>
-    <FilesToSign Include="$(ArtifactsBinDir)$(OutDirName)\ru\$(AssemblyName).resources.dll">
-      <Authenticode>MicrosoftSHA2</Authenticode>
-      <StrongName>MsSharedLib72</StrongName>
-    </FilesToSign>
-    <FilesToSign Include="$(ArtifactsBinDir)$(OutDirName)\tr\$(AssemblyName).resources.dll">
-      <Authenticode>MicrosoftSHA2</Authenticode>
-      <StrongName>MsSharedLib72</StrongName>
-    </FilesToSign>
-    <FilesToSign Include="$(ArtifactsBinDir)$(OutDirName)\zh-hans\$(AssemblyName).resources.dll">
-      <Authenticode>MicrosoftSHA2</Authenticode>
-      <StrongName>MsSharedLib72</StrongName>
-    </FilesToSign>
-    <FilesToSign Include="$(ArtifactsBinDir)$(OutDirName)\zh-hant\$(AssemblyName).resources.dll">
-      <Authenticode>MicrosoftSHA2</Authenticode>
-      <StrongName>MsSharedLib72</StrongName>
-    </FilesToSign>
   </ItemGroup>
 
 </Project>
