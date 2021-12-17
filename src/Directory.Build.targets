@@ -25,7 +25,7 @@
     When creating the Visx, the assembles in the obj folder are used. These assemblies are not signed and are not optimized (OptProf).
     This target copies the updated assemblies from the Dlls back into the obj folder so the correct files are put into the Visx.
   -->
-  <Target Name="ReplaceObjAssembliesForVisx" BeforeTargets="CreateVsixContainer">
+  <Target Name="ReplaceObjAssembliesForVisx" AfterTargets="SignFiles">
     <Message Text="OutputPath: $(OutputPath)" />
     <Message Text="AssemblyName: $(AssemblyName)" />
     <Message Text="ArtifactsObjDir: $(ArtifactsObjDir)" />
