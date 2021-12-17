@@ -127,13 +127,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 return log.Fail("FirstRun", "The up-to-date check has not yet run for this project. Not up-to-date.");
             }
 
-            foreach ((_, ImmutableArray<(string Path, string? TargetPath, CopyType CopyType)> items) in state.ItemsByItemType)
+            foreach ((_, ImmutableArray<UpToDateCheckInputItem> items) in state.InputSourceItemsByItemType)
             {
-                foreach ((string path, _, CopyType copyType) in items)
+                foreach (UpToDateCheckInputItem item in items)
                 {
-                    if (copyType == CopyType.CopyAlways)
+                    if (item.CopyType == CopyType.CopyAlways)
                     {
-                        return log.Fail("CopyAlwaysItemExists", "Item '{0}' has CopyToOutputDirectory set to 'Always', not up to date.", _configuredProject.UnconfiguredProject.MakeRooted(path));
+                        return log.Fail("CopyAlwaysItemExists", "Item '{0}' has CopyToOutputDirectory set to 'Always', not up to date.", _configuredProject.UnconfiguredProject.MakeRooted(item.Path));
                     }
                 }
             }
@@ -210,12 +210,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
                     if (log.Level >= LogLevel.Info)
                     {
-                        foreach ((bool isAdd, string itemType, string path, string? targetPath, CopyType copyType) in state.LastItemChanges.OrderBy(change => change.ItemType).ThenBy(change => change.Path))
+                        foreach ((bool isAdd, string itemType, UpToDateCheckInputItem item) in state.LastItemChanges.OrderBy(change => change.ItemType).ThenBy(change => change.Item.Path))
                         {
-                            if (Strings.IsNullOrEmpty(targetPath))
-                                log.Info("    {0} item {1} '{2}' (CopyType={3})", itemType, isAdd ? "added" : "removed", path, copyType);
+                            if (Strings.IsNullOrEmpty(item.TargetPath))
+                                log.Info("    {0} item {1} '{2}' (CopyType={3})", itemType, isAdd ? "added" : "removed", item.Path, item.CopyType);
                             else
-                                log.Info("    {0} item {1} '{2}' (CopyType={3}, TargetPath='{4}')", itemType, isAdd ? "added" : "removed", path, copyType, targetPath);
+                                log.Info("    {0} item {1} '{2}' (CopyType={3}, TargetPath='{4}')", itemType, isAdd ? "added" : "removed", item.Path, item.CopyType, item.TargetPath);
                         }
                     }
 
@@ -297,15 +297,20 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                     yield return (Path: state.NewestImportInput, ItemType: null, IsRequired: true);
                 }
 
-                foreach ((string itemType, ImmutableArray<(string path, string? targetPath, CopyType copyType)> changes) in state.ItemsByItemType)
+                foreach ((string itemType, ImmutableArray<UpToDateCheckInputItem> items) in state.InputSourceItemsByItemType)
                 {
+                    // Skip certain input item types (None, Content). These items do not contribute to build outputs,
+                    // and so changes to them are not expected to produce updated outputs during build.
+                    //
+                    // These items may have CopyToOutputDirectory metadata, which is why we don't exclude them earlier.
+                    // The need to schedule a build in order to copy files is handled separately.
                     if (!NonCompilationItemTypes.Contains(itemType))
                     {
                         log.Verbose("Adding {0} inputs:", itemType);
 
-                        foreach ((string path, _, _) in changes)
+                        foreach (UpToDateCheckInputItem item in items)
                         {
-                            string absolutePath = _configuredProject.UnconfiguredProject.MakeRooted(path);
+                            string absolutePath = _configuredProject.UnconfiguredProject.MakeRooted(item.Path);
                             log.Verbose("    '{0}'", absolutePath);
                             yield return (Path: absolutePath, itemType, IsRequired: true);
                         }
@@ -601,20 +606,20 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
         {
             string outputFullPath = Path.Combine(state.MSBuildProjectDirectory, state.OutputRelativeOrFullPath);
 
-            foreach ((_, ImmutableArray<(string Path, string? TargetPath, CopyType CopyType)> items) in state.ItemsByItemType)
+            foreach ((_, ImmutableArray<UpToDateCheckInputItem> items) in state.InputSourceItemsByItemType)
             {
-                foreach ((string path, string? targetPath, CopyType copyType) in items)
+                foreach (UpToDateCheckInputItem item in items)
                 {
                     // Only consider items with CopyType of CopyIfNewer
-                    if (copyType != CopyType.CopyIfNewer)
+                    if (item.CopyType != CopyType.CopyIfNewer)
                     {
                         continue;
                     }
 
                     token.ThrowIfCancellationRequested();
 
-                    string rootedPath = _configuredProject.UnconfiguredProject.MakeRooted(path);
-                    string filename = Strings.IsNullOrEmpty(targetPath) ? rootedPath : targetPath;
+                    string rootedPath = _configuredProject.UnconfiguredProject.MakeRooted(item.Path);
+                    string filename = Strings.IsNullOrEmpty(item.TargetPath) ? rootedPath : item.TargetPath;
 
                     if (string.IsNullOrEmpty(filename))
                     {
