@@ -19,7 +19,7 @@ namespace Microsoft.VisualStudio {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     internal class Resources {
@@ -120,6 +120,465 @@ namespace Microsoft.VisualStudio {
         internal static string FrameworkNodeName {
             get {
                 return ResourceManager.GetString("FrameworkNodeName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Adding input reference copy markers:.
+        /// </summary>
+        internal static string FUTD_AddingInputReferenceCopyMarkers {
+            get {
+                return ResourceManager.GetString("FUTD_AddingInputReferenceCopyMarkers", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Adding newest import input:.
+        /// </summary>
+        internal static string FUTD_AddingNewestImportInput {
+            get {
+                return ResourceManager.GetString("FUTD_AddingNewestImportInput", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Adding output reference copy marker:.
+        /// </summary>
+        internal static string FUTD_AddingOutputReferenceCopyMarker {
+            get {
+                return ResourceManager.GetString("FUTD_AddingOutputReferenceCopyMarker", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Adding project file inputs:.
+        /// </summary>
+        internal static string FUTD_AddingProjectFileInputs {
+            get {
+                return ResourceManager.GetString("FUTD_AddingProjectFileInputs", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Adding {0} inputs:.
+        /// </summary>
+        internal static string FUTD_AddingTypedInputs_1 {
+            get {
+                return ResourceManager.GetString("FUTD_AddingTypedInputs_1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Adding {0} inputs in Set=&quot;{1}&quot;:.
+        /// </summary>
+        internal static string FUTD_AddingTypedInputsInSet_2 {
+            get {
+                return ResourceManager.GetString("FUTD_AddingTypedInputsInSet_2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Adding {0} outputs:.
+        /// </summary>
+        internal static string FUTD_AddingTypedOutputs_1 {
+            get {
+                return ResourceManager.GetString("FUTD_AddingTypedOutputs_1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Adding {0} outputs in Set=&quot;{1}&quot;:.
+        /// </summary>
+        internal static string FUTD_AddingTypedOutputsInSet_2 {
+            get {
+                return ResourceManager.GetString("FUTD_AddingTypedOutputsInSet_2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0} item added &apos;{1}&apos; (CopyType={2}, TargetPath=&apos;{3}&apos;).
+        /// </summary>
+        internal static string FUTD_ChangedItemsAddition_4 {
+            get {
+                return ResourceManager.GetString("FUTD_ChangedItemsAddition_4", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0} item removed &apos;{1}&apos; (CopyType={2}, TargetPath=&apos;{3}&apos;).
+        /// </summary>
+        internal static string FUTD_ChangedItemsRemoval_4 {
+            get {
+                return ResourceManager.GetString("FUTD_ChangedItemsRemoval_4", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Checking copied output (UpToDateCheckBuilt with Original property) file:.
+        /// </summary>
+        internal static string FUTD_CheckingCopiedOutputFile {
+            get {
+                return ResourceManager.GetString("FUTD_CheckingCopiedOutputFile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Destination &apos;{0}&apos; does not exist for copy from &apos;{1}&apos;, not up-to-date..
+        /// </summary>
+        internal static string FUTD_CheckingCopiedOutputFileDestinationNotFound_2 {
+            get {
+                return ResourceManager.GetString("FUTD_CheckingCopiedOutputFileDestinationNotFound_2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Source is newer than build output destination, not up-to-date..
+        /// </summary>
+        internal static string FUTD_CheckingCopiedOutputFileSourceNewer {
+            get {
+                return ResourceManager.GetString("FUTD_CheckingCopiedOutputFileSourceNewer", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Source &apos;{0}&apos; does not exist for copy to &apos;{1}&apos;, not up-to-date..
+        /// </summary>
+        internal static string FUTD_CheckingCopiedOutputFileSourceNotFound_2 {
+            get {
+                return ResourceManager.GetString("FUTD_CheckingCopiedOutputFileSourceNotFound_2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Checking PreserveNewest file &apos;{0}&apos;:.
+        /// </summary>
+        internal static string FUTD_CheckingPreserveNewestFile_1 {
+            get {
+                return ResourceManager.GetString("FUTD_CheckingPreserveNewestFile_1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Destination &apos;{0}&apos; does not exist, not up-to-date..
+        /// </summary>
+        internal static string FUTD_CheckingPreserveNewestFileDestinationNotFound_1 {
+            get {
+                return ResourceManager.GetString("FUTD_CheckingPreserveNewestFileDestinationNotFound_1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Source &apos;{0}&apos; does not exist, not up-to-date..
+        /// </summary>
+        internal static string FUTD_CheckingPreserveNewestFileSourceNotFound_1 {
+            get {
+                return ResourceManager.GetString("FUTD_CheckingPreserveNewestFileSourceNotFound_1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to PreserveNewest source &apos;{0}&apos; is newer than destination &apos;{1}&apos;, not up-to-date..
+        /// </summary>
+        internal static string FUTD_CheckingPreserveNewestSourceNewerThanDestination_2 {
+            get {
+                return ResourceManager.GetString("FUTD_CheckingPreserveNewestSourceNewerThanDestination_2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Comparing timestamps of inputs and outputs in Set=&quot;{0}&quot;:.
+        /// </summary>
+        internal static string FUTD_ComparingInputOutputTimestamps_1 {
+            get {
+                return ResourceManager.GetString("FUTD_ComparingInputOutputTimestamps_1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Up-to-date check completed in {0:N1} ms.
+        /// </summary>
+        internal static string FUTD_Completed {
+            get {
+                return ResourceManager.GetString("FUTD_Completed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Item &apos;{0}&apos; has CopyToOutputDirectory set to &apos;Always&apos;, not up-to-date..
+        /// </summary>
+        internal static string FUTD_CopyAlwaysItemExists_1 {
+            get {
+                return ResourceManager.GetString("FUTD_CopyAlwaysItemExists_1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Critical build tasks are running, not up-to-date..
+        /// </summary>
+        internal static string FUTD_CriticalBuildTasksRunning {
+            get {
+                return ResourceManager.GetString("FUTD_CriticalBuildTasksRunning", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Destination {0}: &apos;{1}&apos;.
+        /// </summary>
+        internal static string FUTD_DestinationFileTimeAndPath_2 {
+            get {
+                return ResourceManager.GetString("FUTD_DestinationFileTimeAndPath_2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The &apos;DisableFastUpToDateCheck&apos; property is &apos;true&apos;, not up-to-date..
+        /// </summary>
+        internal static string FUTD_DisableFastUpToDateCheckTrue {
+            get {
+                return ResourceManager.GetString("FUTD_DisableFastUpToDateCheckTrue", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Up-to-date check threw an exception. Not up-to-date. {0}.
+        /// </summary>
+        internal static string FUTD_Exception_1 {
+            get {
+                return ResourceManager.GetString("FUTD_Exception_1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The up-to-date check has not yet run for this project. Not up-to-date..
+        /// </summary>
+        internal static string FUTD_FirstRun {
+            get {
+                return ResourceManager.GetString("FUTD_FirstRun", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ignoring up-to-date check items with Kind=&quot;{0}&quot;.
+        /// </summary>
+        internal static string FUTD_IgnoringKinds_1 {
+            get {
+                return ResourceManager.GetString("FUTD_IgnoringKinds_1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Input marker is newer than output marker, not up-to-date..
+        /// </summary>
+        internal static string FUTD_InputMarkerNewerThanOutputMarker {
+            get {
+                return ResourceManager.GetString("FUTD_InputMarkerNewerThanOutputMarker", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Input &apos;{0}&apos; ({1}) has been modified since the last up-to-date check ({2}), not up-to-date..
+        /// </summary>
+        internal static string FUTD_InputModifiedSinceLastCheck_3 {
+            get {
+                return ResourceManager.GetString("FUTD_InputModifiedSinceLastCheck_3", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Input &apos;{0}&apos; is newer ({1}) than earliest output &apos;{2}&apos; ({3}), not up-to-date..
+        /// </summary>
+        internal static string FUTD_InputNewerThanOutput_4 {
+            get {
+                return ResourceManager.GetString("FUTD_InputNewerThanOutput_4", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Latest write timestamp on input marker is {0} on &apos;{1}&apos;..
+        /// </summary>
+        internal static string FUTD_LatestWriteTimeOnInputMarker_2 {
+            get {
+                return ResourceManager.GetString("FUTD_LatestWriteTimeOnInputMarker_2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No build outputs defined..
+        /// </summary>
+        internal static string FUTD_NoBuildOutputDefined {
+            get {
+                return ResourceManager.GetString("FUTD_NoBuildOutputDefined", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No build outputs defined in Set=&quot;{0}&quot;..
+        /// </summary>
+        internal static string FUTD_NoBuildOutputDefinedInSet_1 {
+            get {
+                return ResourceManager.GetString("FUTD_NoBuildOutputDefinedInSet_1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No input markers exist, skipping marker check..
+        /// </summary>
+        internal static string FUTD_NoInputMarkersExist {
+            get {
+                return ResourceManager.GetString("FUTD_NoInputMarkersExist", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No inputs defined..
+        /// </summary>
+        internal static string FUTD_NoInputsDefined {
+            get {
+                return ResourceManager.GetString("FUTD_NoInputsDefined", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No inputs defined in Set=&quot;{0}&quot;..
+        /// </summary>
+        internal static string FUTD_NoInputsDefinedInSet_1 {
+            get {
+                return ResourceManager.GetString("FUTD_NoInputsDefinedInSet_1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No inputs are newer than earliest output &apos;{0}&apos; ({1}). Newest input is &apos;{2}&apos; ({3})..
+        /// </summary>
+        internal static string FUTD_NoInputsNewerThanEarliestOutput_4 {
+            get {
+                return ResourceManager.GetString("FUTD_NoInputsNewerThanEarliestOutput_4", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to In Set=&quot;{4}&quot;, no inputs are newer than earliest output &apos;{0}&apos; ({1}). Newest input is &apos;{2}&apos; ({3})..
+        /// </summary>
+        internal static string FUTD_NoInputsNewerThanEarliestOutputInSet_5 {
+            get {
+                return ResourceManager.GetString("FUTD_NoInputsNewerThanEarliestOutputInSet_5", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Input &apos;{0}&apos; does not exist, but is not required..
+        /// </summary>
+        internal static string FUTD_NonRequiredInputNotFound_1 {
+            get {
+                return ResourceManager.GetString("FUTD_NonRequiredInputNotFound_1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Input {1} item &apos;{0}&apos; does not exist, but is not required..
+        /// </summary>
+        internal static string FUTD_NonRequiredTypedInputNotFound_2 {
+            get {
+                return ResourceManager.GetString("FUTD_NonRequiredTypedInputNotFound_2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Output marker &apos;{0}&apos; does not exist, skipping marker check..
+        /// </summary>
+        internal static string FUTD_NoOutputMarkerExists_1 {
+            get {
+                return ResourceManager.GetString("FUTD_NoOutputMarkerExists_1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Output &apos;{0}&apos; does not exist, not up-to-date..
+        /// </summary>
+        internal static string FUTD_OutputDoesNotExist_1 {
+            get {
+                return ResourceManager.GetString("FUTD_OutputDoesNotExist_1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Input &apos;{0}&apos; does not exist and is required, not up-to-date..
+        /// </summary>
+        internal static string FUTD_RequiredInputNotFound_1 {
+            get {
+                return ResourceManager.GetString("FUTD_RequiredInputNotFound_1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Input {1} item &apos;{0}&apos; does not exist and is required, not up-to-date..
+        /// </summary>
+        internal static string FUTD_RequiredTypedInputNotFound_2 {
+            get {
+                return ResourceManager.GetString("FUTD_RequiredTypedInputNotFound_2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The set of project items was changed more recently ({0}) than the earliest output &apos;{1}&apos; ({2}), not up-to-date..
+        /// </summary>
+        internal static string FUTD_SetOfItemsChangedMoreRecentlyThanOutput_3 {
+            get {
+                return ResourceManager.GetString("FUTD_SetOfItemsChangedMoreRecentlyThanOutput_3", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Skipping &apos;{0}&apos; with ignored Kind=&quot;{1}&quot;.
+        /// </summary>
+        internal static string FUTD_SkippingIgnoredKindItem_2 {
+            get {
+                return ResourceManager.GetString("FUTD_SkippingIgnoredKindItem_2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Source {0}: &apos;{1}&apos;.
+        /// </summary>
+        internal static string FUTD_SourceFileTimeAndPath_2 {
+            get {
+                return ResourceManager.GetString("FUTD_SourceFileTimeAndPath_2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Input {3} item &apos;{0}&apos; ({1}) has been modified since the last up-to-date check ({2}), not up-to-date..
+        /// </summary>
+        internal static string FUTD_TypedInputModifiedSinceLastCheck_4 {
+            get {
+                return ResourceManager.GetString("FUTD_TypedInputModifiedSinceLastCheck_4", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Input {4} item &apos;{0}&apos; is newer ({1}) than earliest output &apos;{2}&apos; ({3}), not up-to-date..
+        /// </summary>
+        internal static string FUTD_TypedInputNewerThanOutput_5 {
+            get {
+                return ResourceManager.GetString("FUTD_TypedInputNewerThanOutput_5", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Project is up-to-date..
+        /// </summary>
+        internal static string FUTD_UpToDate {
+            get {
+                return ResourceManager.GetString("FUTD_UpToDate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Write timestamp on output marker is {0} on &apos;{1}&apos;..
+        /// </summary>
+        internal static string FUTD_WriteTimeOnOutputMarker_2 {
+            get {
+                return ResourceManager.GetString("FUTD_WriteTimeOnOutputMarker_2", resourceCulture);
             }
         }
         

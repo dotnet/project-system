@@ -7,7 +7,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 {
     internal sealed partial class BuildUpToDateCheck
     {
-        public static int ComputeItemHash(ImmutableDictionary<string, ImmutableArray<(string Path, string? TargetPath, CopyType CopyType)>> itemsByItemType)
+        public static int ComputeItemHash(ImmutableDictionary<string, ImmutableArray<UpToDateCheckInputItem>> itemsByItemType)
         {
             int hash = 0;
 
@@ -17,13 +17,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             // This approach also assumes each path is only included once in the data structure. If a path
             // were to exist twice, its hash would be XORed with itself, which produces zero net change.
 
-            foreach ((string itemType, ImmutableArray<(string Path, string? TargetPath, CopyType CopyType)> items) in itemsByItemType)
+            foreach ((string itemType, ImmutableArray<UpToDateCheckInputItem> items) in itemsByItemType)
             {
                 int itemHash = 0;
 
-                foreach ((string path, _, _) in items)
+                foreach (UpToDateCheckInputItem item in items)
                 {
-                    itemHash ^= path.GetHashCode();
+                    itemHash ^= item.Path.GetHashCode();
                 }
 
                 // Multiply by the item type hash, so that if an item changes type the hash will change.
