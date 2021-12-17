@@ -357,20 +357,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                         }
                     }
                 }
-
-#if FALSE // https://github.com/dotnet/project-system/issues/6227
-
-                if (_enableAdditionalDependentFile && state.AdditionalDependentFileTimes.Count != 0)
-                {
-                    log.Verbose("Adding " + nameof(state.AdditionalDependentFileTimes) + " inputs:");
-                    foreach ((string path, DateTime _) in state.AdditionalDependentFileTimes)
-                    {
-                        System.Diagnostics.Debug.Assert(Path.IsPathRooted(path), "AdditionalDependentFileTimes path should be rooted");
-                        log.Verbose("    '{0}'", path);
-                        yield return (Path: path, IsRequired: false);
-                    }
-                }
-#endif
             }
 
             IEnumerable<string> CollectDefaultOutputs()
