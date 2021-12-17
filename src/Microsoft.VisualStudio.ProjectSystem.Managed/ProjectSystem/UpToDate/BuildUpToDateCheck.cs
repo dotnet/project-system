@@ -299,6 +299,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
                 foreach ((string itemType, ImmutableArray<UpToDateCheckInputItem> items) in state.InputSourceItemsByItemType)
                 {
+                    // Skip certain input item types (None, Content). These items do not contribute to build outputs,
+                    // and so changes to them are not expected to produce updated outputs during build.
+                    //
+                    // These items may have CopyToOutputDirectory metadata, which is why we don't exclude them earlier.
+                    // The need to schedule a build in order to copy files is handled separately.
                     if (!NonCompilationItemTypes.Contains(itemType))
                     {
                         log.Verbose("Adding {0} inputs:", itemType);

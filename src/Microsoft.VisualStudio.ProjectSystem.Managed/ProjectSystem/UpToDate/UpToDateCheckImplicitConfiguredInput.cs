@@ -79,6 +79,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
         public bool WasStateRestored { get; }
 
+        /// <summary>
+        /// Gets the set of source item types known to be up-to-date check inputs.
+        /// </summary>
+        /// <remarks>
+        /// Items of these types are available in <see cref="InputSourceItemsByItemType"/>.
+        /// </remarks>
         public ImmutableArray<string> InputSourceItemTypes { get; }
 
         public ImmutableDictionary<string, ImmutableArray<UpToDateCheckInputItem>> InputSourceItemsByItemType { get; }
@@ -102,6 +108,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
         public ImmutableArray<string> ResolvedAnalyzerReferencePaths { get; }
 
+        /// <summary>
+        /// Absolute (rooted) paths to <see cref="ResolvedCompilationReference"/> items in the project.
+        /// </summary>
         public ImmutableArray<string> ResolvedCompilationReferencePaths { get; }
 
         /// <summary>
