@@ -34,7 +34,7 @@
     <!-- https://stackoverflow.com/a/10818869/294804 -->
     <ItemGroup>
       <ResourceDllsToCopy Include="$(OutputPath)**\$(AssemblyName).resources.dll" />
-      <ResourceDllsToCopy2 Include="#(ResourceDllsToCopy)">
+      <ResourceDllsToCopy2 Include="@(ResourceDllsToCopy)">
         <LanguageDir>$([System.IO.Path]::GetDirectoryName(%(ResourceDllsToCopy.RecursiveDir)))</LanguageDir>
       </ResourceDllsToCopy2>
     </ItemGroup>
