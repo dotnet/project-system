@@ -4,7 +4,6 @@
   <!--
   Required parameters:
     Configuration                   Build configuration: "Debug", "Release", etc.
-                                    
   Optional parameters:              
     CIBuild                         "true" when building on CI server
     Build                           "true" to build solution
@@ -12,8 +11,6 @@
     Deploy                          "true" to deploy assets (e.g. VSIXes)
     Test                            "true" to run tests
     IntegrationTest                 "true" to run integration tests
-    Sign                            "true" to sign built binaries
-    SignType                        "real" to send binaries to signing service, "test" to only validate signing configuration.
   -->
 
   <Import Project="..\import\Versions.props"/>
@@ -84,23 +81,6 @@
   <Target Name="GenerateDependentAssemblyVersionsFile" Condition="'$(BuildOrRebuild)' == 'true'">
     <MSBuild Projects="GenerateDependentAssemblyVersionFile.proj" BuildInParallel="true" />
   </Target>
-
-  <!-- <Target
-    Name="Sign"
-    Condition="'$(Sign)' == 'true'">
-
-    <PropertyGroup>
-      <RealSign>false</RealSign>
-      <RealSign Condition="'$(SignType)' == 'real'">true</RealSign>
-    </PropertyGroup> -->
-
-    <!--Available certificates are outlined here: https://devdiv.visualstudio.com/DevDiv/_wiki/wikis/DevDiv.wiki/659/Signing-Certificates -->
-    <!-- <MSBuild 
-      Projects="Sign.proj"
-      Properties="@(CommonBuildProperty);RealSign=$(RealSign);ConfigFile=$(RepoRoot)build\ci\SignToolData.json"
-      />
-
-  </Target> -->
 
   <ItemGroup>
     <FilesToSign Include="$(VisualStudioSetupOutputPath)ProjectSystem.vsix">

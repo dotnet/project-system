@@ -5,6 +5,7 @@
 <Project>
   <PropertyGroup>
     <InstallationPath Condition="'$(IsProjectSystem)' != 'false' And '$(InstallationPath)' == ''">Common7\IDE\Extensions\Microsoft\ManagedProjectSystem\$(TargetName).dll</InstallationPath>
+    <!-- TODO: This condition is unused as we don't have tests for Editors/AppDesigner. However, this is the correct path once we hook up optimization for those assemblies. -->
     <InstallationPath Condition="'$(IsProjectSystem)' == 'false' And '$(InstallationPath)' == ''">Common7\IDE\CommonExtensions\Microsoft\VisualStudio\Editors\$(TargetName).dll</InstallationPath>
   </PropertyGroup>
   <ItemGroup Label="OptProf Configuration" Condition="'$(IsProjectSystem)' != 'false'">
@@ -19,16 +20,5 @@
       </Scenarios>
     </OptProf>
   </ItemGroup>
-  <!-- <Target Name="ReplaceOptimizedObjAssemblies" AfterTargets="PostBuildOptimize" Condition="'$(IsProjectSystem)' != 'false'">
-    <Message Text="OutputPath: $(OutputPath)" />
-    <Message Text="AssemblyName: $(AssemblyName)" />
-    <Message Text="ArtifactsObjDir: $(ArtifactsObjDir)" /> -->
-
-    <!-- <ItemGroup>
-      <OptimizedDlls Include="$(ArtifactsObjDir)\Microsoft.VisualStudio.ProjectSystem.Managed\Microsoft.VisualStudio.ProjectSystem.Managed.dll;$(ArtifactsObjDir)\Microsoft.VisualStudio.ProjectSystem.Managed.VS\Microsoft.VisualStudio.ProjectSystem.Managed.VS.dll"/>
-    </ItemGroup> -->
-
-    <!-- <Copy SourceFiles="$(OutputPath)$(AssemblyName).dll" DestinationFolder="$(ArtifactsObjDir)\$(AssemblyName)" />
-  </Target> -->
 
 </Project>

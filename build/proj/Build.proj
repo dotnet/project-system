@@ -23,7 +23,7 @@
     <MakeDir Directories="$(ArtifactsBinDir);$(ArtifactsLogDir);$(ArtifactsTestResultsDir);$(VisualStudioSetupOutputPath)" />
   </Target>
 
-  <!-- Delegate onto CoreBuild.proj, which will will actually restore, build, test, pack and sign our solution -->
+  <!-- Delegate onto CoreBuild.proj, which will will actually restore, build, test, and pack our solution -->
   <Target Name="CoreBuild">
     <PropertyGroup>
       <CoreBuildProperties>
@@ -35,7 +35,6 @@
         Rebuild=$(Rebuild);
         Deploy=$(Deploy);
         Test=$(Test);
-        Sign=$(Sign);
         IntegrationTest=$(IntegrationTest);
       </CoreBuildProperties>
     </PropertyGroup>

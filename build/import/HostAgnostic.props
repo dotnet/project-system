@@ -16,23 +16,21 @@
     <Reference Include="System.Xml.Linq" />
     <Reference Include="WindowsBase" />
 
-    <!-- Toolset -->
-    <PackageReference Include="Nerdbank.Streams"                          ExcludeAssets="all" />
-    <PackageReference Include="System.IO.Pipelines"                       ExcludeAssets="all" />
+    <!-- Infrastructure -->
     <PackageReference Include="MicroBuild.Core.Sentinel" />
     <PackageReference Include="Microsoft.VisualStudioEng.MicroBuild.Core" />
-    <!-- <PackageReference Include="MicroBuild.Core"                           ExcludeAssets="all" /> -->
-    <PackageReference Include="MicroBuild.Plugins.SwixBuild"              ExcludeAssets="all" />
-    <!-- <PackageReference Include="MicroBuild.Plugins.Signing"                ExcludeAssets="all" />
-    <PackageReference Include="MicroBuild.Plugins.OptProf"                ExcludeAssets="all" /> -->
-    <!-- <PackageReference Include="MicroBuild.VisualStudio"             PrivateAssets="all" /> -->
+
+    <!-- Toolset -->
+    <PackageReference Include="Nerdbank.Streams"                    ExcludeAssets="all" />
+    <PackageReference Include="System.IO.Pipelines"                 ExcludeAssets="all" />
+    <PackageReference Include="MicroBuild.Plugins.SwixBuild"        ExcludeAssets="all" />
     <PackageReference Include="Microsoft.Net.Compilers.Toolset" />
-    <PackageReference Include="XliffTasks"                                PrivateAssets="all" />
-    <PackageReference Include="RoslynTools.SignTool"                      PrivateAssets="all" />
-    <PackageReference Include="RoslynTools.RepoToolset"                   ExcludeAssets="all" />
-    <PackageReference Include="Codecov"                                   ExcludeAssets="all" />
-    <PackageReference Include="OpenCover"                                 ExcludeAssets="all" />
-    <PackageReference Include="Microsoft.DiaSymReader.Pdb2Pdb"            ExcludeAssets="all" />
+    <PackageReference Include="XliffTasks"                          PrivateAssets="all" />
+    <PackageReference Include="RoslynTools.SignTool"                PrivateAssets="all" />
+    <PackageReference Include="RoslynTools.RepoToolset"             ExcludeAssets="all" />
+    <PackageReference Include="Codecov"                             ExcludeAssets="all" />
+    <PackageReference Include="OpenCover"                           ExcludeAssets="all" />
+    <PackageReference Include="Microsoft.DiaSymReader.Pdb2Pdb"      ExcludeAssets="all" />
 
     <!-- CPS -->
     <PackageReference Include="Microsoft.VisualStudio.ProjectSystem" />

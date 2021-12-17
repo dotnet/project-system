@@ -1,4 +1,6 @@
 ﻿<!-- Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information. -->
+
+<!-- TODO: This file only relates to merging optimization data for Editors/AppDesigner, which is currently not being used. This file can be deleted once proper OptProf usage is done for Editors/AppDesigner. -->
 <Project Sdk="Microsoft.NET.Sdk">
   <!-- This project is needed to explicitly restore IBCMerge package during signed builds. This package
        comes from an authenticated package source which isn't supported by <RestoreSources/>. -->
