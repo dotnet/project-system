@@ -367,7 +367,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 upToDateCheckInputItemsByKindBySetName:  UpdateItemsByKindBySetName(UpToDateCheckInputItemsByKindBySetName,  jointRuleUpdate, UpToDateCheckInput.SchemaName,  UpToDateCheckInput.KindProperty,  UpToDateCheckInput.SetProperty),
                 upToDateCheckOutputItemsByKindBySetName: UpdateItemsByKindBySetName(UpToDateCheckOutputItemsByKindBySetName, jointRuleUpdate, UpToDateCheckOutput.SchemaName, UpToDateCheckOutput.KindProperty, UpToDateCheckOutput.SetProperty),
                 upToDateCheckBuiltItemsByKindBySetName:  UpdateItemsByKindBySetName(UpToDateCheckBuiltItemsByKindBySetName,  jointRuleUpdate, UpToDateCheckBuilt.SchemaName,  UpToDateCheckBuilt.KindProperty,  UpToDateCheckBuilt.SetProperty, metadata => !metadata.TryGetValue(UpToDateCheckBuilt.OriginalProperty, out string source) || string.IsNullOrEmpty(source)),
-                copiedOutputFiles: UpdateCopiedItems(jointRuleUpdate),
+                copiedOutputFiles: UpdateCopiedItems(),
                 resolvedAnalyzerReferencePaths: UpdateResolvedAnalyzerReferencePaths(),
                 resolvedCompilationReferencePaths: resolvedCompilationReferencePaths,
                 copyReferenceInputs: copyReferenceInputs,
@@ -448,7 +448,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 }
             }
 
-            ImmutableArray<(string DestinationRelative, string SourceRelative)> UpdateCopiedItems(IProjectSubscriptionUpdate jointRuleUpdate)
+            ImmutableArray<(string DestinationRelative, string SourceRelative)> UpdateCopiedItems()
             {
                 if (jointRuleUpdate.ProjectChanges.TryGetValue(UpToDateCheckBuilt.SchemaName, out IProjectChangeDescription? change) && change.Difference.AnyChanges)
                 {
