@@ -112,19 +112,19 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
         {
             if (!_tasksService.IsTaskQueueEmpty(ProjectCriticalOperation.Build))
             {
-                return log.Fail("CriticalTasks", "Critical build tasks are running, not up to date.");
+                return log.Fail("CriticalTasks", nameof(Resources.FUTD_CriticalBuildTasksRunning));
             }
 
             if (state.IsDisabled)
             {
-                return log.Fail("Disabled", "The 'DisableFastUpToDateCheck' property is true, not up to date.");
+                return log.Fail("Disabled", nameof(Resources.FUTD_DisableFastUpToDateCheckTrue));
             }
 
             if (validateFirstRun && !state.WasStateRestored && lastCheckedAtUtc == DateTime.MinValue)
             {
                 // We had no persisted state, and this is the first run. We cannot know if the project is up-to-date
                 // or not, so schedule a build.
-                return log.Fail("FirstRun", "The up-to-date check has not yet run for this project. Not up-to-date.");
+                return log.Fail("FirstRun", nameof(Resources.FUTD_FirstRun));
             }
 
             foreach ((_, ImmutableArray<UpToDateCheckInputItem> items) in state.InputSourceItemsByItemType)
@@ -133,7 +133,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 {
                     if (item.CopyType == CopyType.CopyAlways)
                     {
-                        return log.Fail("CopyAlwaysItemExists", "Item '{0}' has CopyToOutputDirectory set to 'Always', not up to date.", _configuredProject.UnconfiguredProject.MakeRooted(item.Path));
+                        return log.Fail("CopyAlwaysItemExists", nameof(Resources.FUTD_CopyAlwaysItemExists_1), _configuredProject.UnconfiguredProject.MakeRooted(item.Path));
                     }
                 }
             }
@@ -156,11 +156,20 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             // Second, validate the relationships between inputs and outputs in specific sets, if any.
             foreach (string setName in state.SetNames)
             {
-                log.Verbose("Comparing timestamps of inputs and outputs in set '{0}':", setName);
+                if (log.Level >= LogLevel.Verbose)
+                {
+                    log.Verbose(nameof(Resources.FUTD_ComparingInputOutputTimestamps_1), setName);
+                    log.Indent++;
+                }
 
                 if (!CheckInputsAndOutputs(CollectSetInputs(setName), CollectSetOutputs(setName), timestampCache, setName))
                 {
                     return false;
+                }
+
+                if (log.Level >= LogLevel.Verbose)
+                {
+                    log.Indent--;
                 }
             }
 
@@ -183,7 +192,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
                     if (outputTime == null)
                     {
-                        return log.Fail("OutputNotFound", "Output '{0}' does not exist, not up to date.", output);
+                        return log.Fail("OutputNotFound", nameof(Resources.FUTD_OutputDoesNotExist_1), output);
                     }
 
                     if (outputTime < earliestOutputTime)
@@ -197,7 +206,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
                 if (!hasOutput)
                 {
-                    log.Info(setName == DefaultSetName ? "No build outputs defined." : "No build outputs defined in set '{0}'.", setName);
+                    log.Info(setName == DefaultSetName ? nameof(Resources.FUTD_NoBuildOutputDefined) : nameof(Resources.FUTD_NoBuildOutputDefinedInSet_1), setName);
 
                     return true;
                 }
@@ -206,17 +215,18 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
                 if (earliestOutputTime < state.LastItemsChangedAtUtc)
                 {
-                    log.Fail("ProjectItemsChangedSinceEarliestOutput", "The set of project items was changed more recently ({0}) than the earliest output '{1}' ({2}), not up to date.", state.LastItemsChangedAtUtc, earliestOutputPath, earliestOutputTime);
+                    log.Fail("ProjectItemsChangedSinceEarliestOutput", nameof(Resources.FUTD_SetOfItemsChangedMoreRecentlyThanOutput_3), state.LastItemsChangedAtUtc, earliestOutputPath, earliestOutputTime);
 
                     if (log.Level >= LogLevel.Info)
                     {
+                        log.Indent++;
+
                         foreach ((bool isAdd, string itemType, UpToDateCheckInputItem item) in state.LastItemChanges.OrderBy(change => change.ItemType).ThenBy(change => change.Item.Path))
                         {
-                            if (Strings.IsNullOrEmpty(item.TargetPath))
-                                log.Info("    {0} item {1} '{2}' (CopyType={3})", itemType, isAdd ? "added" : "removed", item.Path, item.CopyType);
-                            else
-                                log.Info("    {0} item {1} '{2}' (CopyType={3}, TargetPath='{4}')", itemType, isAdd ? "added" : "removed", item.Path, item.CopyType, item.TargetPath);
+                            log.Info(isAdd ? nameof(Resources.FUTD_ChangedItemsAddition_4) : nameof(Resources.FUTD_ChangedItemsRemoval_4), itemType, item.Path, item.CopyType, item.TargetPath ?? "");
                         }
+
+                        log.Indent--;
                     }
 
                     return false;
@@ -234,26 +244,23 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                     {
                         if (isRequired)
                         {
-                            string prefix = itemType is null ? "Input " : $"Input {itemType} item ";
-                            return log.Fail("InputNotFound", "{0}'{1}' does not exist and is required, not up to date.", prefix, input);
+                            return log.Fail("InputNotFound", itemType is null ? nameof(Resources.FUTD_RequiredInputNotFound_1) : nameof(Resources.FUTD_RequiredTypedInputNotFound_2), input, itemType ?? "");
                         }
                         else
                         {
-                            log.Verbose("Input '{0}' does not exist, but is not required.", input);
+                            log.Verbose(itemType is null ? nameof(Resources.FUTD_NonRequiredInputNotFound_1) : nameof(Resources.FUTD_NonRequiredTypedInputNotFound_2), input, itemType ?? "");
                         }
                     }
 
                     if (inputTime > earliestOutputTime)
                     {
-                        string prefix = itemType is null ? "Input " : $"Input {itemType} item ";
-                        return log.Fail("InputNewerThanEarliestOutput", "{0}'{1}' is newer ({2}) than earliest output '{3}' ({4}), not up to date.", prefix, input, inputTime.Value, earliestOutputPath, earliestOutputTime);
+                        return log.Fail("InputNewerThanEarliestOutput", itemType is null ? nameof(Resources.FUTD_InputNewerThanOutput_4) : nameof(Resources.FUTD_TypedInputNewerThanOutput_5), input, inputTime.Value, earliestOutputPath, earliestOutputTime, itemType ?? "");
                     }
 
                     if (inputTime > lastCheckedAtUtc && lastCheckedAtUtc != DateTime.MinValue)
                     {
                         // Bypass this test if no check has yet been performed. We handle that in CheckGlobalConditions.
-                        string prefix = itemType is null ? "Input " : $"Input {itemType} item ";
-                        return log.Fail("InputModifiedSinceLastCheck", "{0}'{1}' ({2}) has been modified since the last up-to-date check ({3}), not up to date.", prefix, input, inputTime.Value, lastCheckedAtUtc);
+                        return log.Fail("InputModifiedSinceLastCheck", itemType is null ? nameof(Resources.FUTD_InputModifiedSinceLastCheck_3) : nameof(Resources.FUTD_TypedInputModifiedSinceLastCheck_4), input, inputTime.Value, lastCheckedAtUtc, itemType ?? "");
                     }
 
                     if (latestInput is null || inputTime > latestInput.Value.Time)
@@ -266,15 +273,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 {
                     if (latestInput is null)
                     {
-                        log.Info(setName == DefaultSetName ? "No inputs defined." : "No inputs defined in set '{0}'.", setName);
-                    }
-                    else if (setName == DefaultSetName)
-                    {
-                        log.Info("No inputs are newer than earliest output '{0}' ({1}). Newest input is '{2}' ({3}).", earliestOutputPath, earliestOutputTime, latestInput.Value.Path, latestInput.Value.Time ?? (object)"null");
+                        log.Info(setName == DefaultSetName ? nameof(Resources.FUTD_NoInputsDefined) : nameof(Resources.FUTD_NoInputsDefinedInSet_1), setName);
                     }
                     else
                     {
-                        log.Info("In set '{0}', no inputs are newer than earliest output '{1}' ({2}). Newest input is '{3}' ({4}).", setName, earliestOutputPath, earliestOutputTime, latestInput.Value.Path, latestInput.Value.Time ?? (object)"null");
+                        log.Info(setName == DefaultSetName ? nameof(Resources.FUTD_NoInputsNewerThanEarliestOutput_4) : nameof(Resources.FUTD_NoInputsNewerThanEarliestOutputInSet_5), earliestOutputPath, earliestOutputTime, latestInput.Value.Path, latestInput.Value.Time ?? (object)"null", setName);
                     }
                 }
 
@@ -285,15 +288,19 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             {
                 if (state.MSBuildProjectFullPath != null)
                 {
-                    log.Verbose("Adding project file inputs:");
-                    log.Verbose("    '{0}'", state.MSBuildProjectFullPath);
+                    log.Verbose(nameof(Resources.FUTD_AddingProjectFileInputs));
+                    log.Indent++;
+                    log.VerboseLiteral(state.MSBuildProjectFullPath);
+                    log.Indent--;
                     yield return (Path: state.MSBuildProjectFullPath, ItemType: null, IsRequired: true);
                 }
 
                 if (state.NewestImportInput != null)
                 {
-                    log.Verbose("Adding newest import input:");
-                    log.Verbose("    '{0}'", state.NewestImportInput);
+                    log.Verbose(nameof(Resources.FUTD_AddingNewestImportInput));
+                    log.Indent++;
+                    log.VerboseLiteral(state.NewestImportInput);
+                    log.Indent--;
                     yield return (Path: state.NewestImportInput, ItemType: null, IsRequired: true);
                 }
 
@@ -306,42 +313,55 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                     // The need to schedule a build in order to copy files is handled separately.
                     if (!NonCompilationItemTypes.Contains(itemType))
                     {
-                        log.Verbose("Adding {0} inputs:", itemType);
+                        log.Verbose(nameof(Resources.FUTD_AddingTypedInputs_1), itemType);
+                        log.Indent++;
 
                         foreach (UpToDateCheckInputItem item in items)
                         {
                             string absolutePath = _configuredProject.UnconfiguredProject.MakeRooted(item.Path);
-                            log.Verbose("    '{0}'", absolutePath);
+                            log.VerboseLiteral(absolutePath);
                             yield return (Path: absolutePath, itemType, IsRequired: true);
                         }
+
+                        log.Indent--;
                     }
                 }
 
                 if (!state.ResolvedAnalyzerReferencePaths.IsEmpty)
                 {
-                    log.Verbose("Adding " + ResolvedAnalyzerReference.SchemaName + " inputs:");
+                    log.Verbose(nameof(Resources.FUTD_AddingTypedInputs_1), ResolvedAnalyzerReference.SchemaName);
+                    log.Indent++;
+
                     foreach (string path in state.ResolvedAnalyzerReferencePaths)
                     {
                         string absolutePath = _configuredProject.UnconfiguredProject.MakeRooted(path);
-                        log.Verbose("    '{0}'", absolutePath);
+                        log.VerboseLiteral(absolutePath);
                         yield return (Path: absolutePath, ItemType: ResolvedAnalyzerReference.SchemaName, IsRequired: true);
                     }
+
+                    log.Indent--;
                 }
 
                 if (!state.ResolvedCompilationReferencePaths.IsEmpty)
                 {
-                    log.Verbose("Adding " + ResolvedCompilationReference.SchemaName + " inputs:");
+                    log.Verbose(nameof(Resources.FUTD_AddingTypedInputs_1), ResolvedCompilationReference.SchemaName);
+                    log.Indent++;
+
                     foreach (string path in state.ResolvedCompilationReferencePaths)
                     {
                         System.Diagnostics.Debug.Assert(Path.IsPathRooted(path), "ResolvedCompilationReference path should be rooted");
-                        log.Verbose("    '{0}'", path);
+                        log.VerboseLiteral(path);
                         yield return (Path: path, ItemType: ResolvedCompilationReference.SchemaName, IsRequired: true);
                     }
+
+                    log.Indent--;
                 }
 
                 if (state.UpToDateCheckInputItemsByKindBySetName.TryGetValue(DefaultSetName, out ImmutableDictionary<string, ImmutableArray<string>>? upToDateCheckInputItems))
                 {
-                    log.Verbose("Adding " + UpToDateCheckInput.SchemaName + " inputs:");
+                    log.Verbose(nameof(Resources.FUTD_AddingTypedInputs_1), UpToDateCheckInput.SchemaName);
+                    log.Indent++;
+
                     foreach ((string kind, ImmutableArray<string> items) in upToDateCheckInputItems)
                     {
                         if (ShouldIgnoreItems(kind, items))
@@ -352,32 +372,21 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                         foreach (string path in items)
                         {
                             string absolutePath = _configuredProject.UnconfiguredProject.MakeRooted(path);
-                            log.Verbose("    '{0}'", absolutePath);
+                            log.VerboseLiteral(absolutePath);
                             yield return (Path: absolutePath, ItemType: UpToDateCheckInput.SchemaName, IsRequired: true);
                         }
                     }
-                }
 
-#if FALSE // https://github.com/dotnet/project-system/issues/6227
-
-                if (_enableAdditionalDependentFile && state.AdditionalDependentFileTimes.Count != 0)
-                {
-                    log.Verbose("Adding " + nameof(state.AdditionalDependentFileTimes) + " inputs:");
-                    foreach ((string path, DateTime _) in state.AdditionalDependentFileTimes)
-                    {
-                        System.Diagnostics.Debug.Assert(Path.IsPathRooted(path), "AdditionalDependentFileTimes path should be rooted");
-                        log.Verbose("    '{0}'", path);
-                        yield return (Path: path, IsRequired: false);
-                    }
+                    log.Indent--;
                 }
-#endif
             }
 
             IEnumerable<string> CollectDefaultOutputs()
             {
                 if (state.UpToDateCheckOutputItemsByKindBySetName.TryGetValue(DefaultSetName, out ImmutableDictionary<string, ImmutableArray<string>>? upToDateCheckOutputItems))
                 {
-                    log.Verbose("Adding " + UpToDateCheckOutput.SchemaName + " outputs:");
+                    log.Verbose(nameof(Resources.FUTD_AddingTypedOutputs_1), UpToDateCheckOutput.SchemaName);
+                    log.Indent++;
 
                     foreach ((string kind, ImmutableArray<string> items) in upToDateCheckOutputItems)
                     {
@@ -389,15 +398,18 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                         foreach (string path in items)
                         {
                             string absolutePath = _configuredProject.UnconfiguredProject.MakeRooted(path);
-                            log.Verbose("    '{0}'", absolutePath);
+                            log.VerboseLiteral(absolutePath);
                             yield return absolutePath;
                         }
                     }
+
+                    log.Indent--;
                 }
 
                 if (state.UpToDateCheckBuiltItemsByKindBySetName.TryGetValue(DefaultSetName, out ImmutableDictionary<string, ImmutableArray<string>>? upToDateCheckBuiltItems))
                 {
-                    log.Verbose("Adding " + UpToDateCheckBuilt.SchemaName + " outputs:");
+                    log.Verbose(nameof(Resources.FUTD_AddingTypedOutputs_1), UpToDateCheckBuilt.SchemaName);
+                    log.Indent++;
 
                     foreach ((string kind, ImmutableArray<string> items) in upToDateCheckBuiltItems)
                     {
@@ -409,10 +421,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                         foreach (string path in items)
                         {
                             string absolutePath = _configuredProject.UnconfiguredProject.MakeRooted(path);
-                            log.Verbose("    '{0}'", absolutePath);
+                            log.VerboseLiteral(absolutePath);
                             yield return absolutePath;
                         }
                     }
+
+                    log.Indent--;
                 }
             }
 
@@ -420,7 +434,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             {
                 if (state.UpToDateCheckInputItemsByKindBySetName.TryGetValue(setName, out ImmutableDictionary<string, ImmutableArray<string>>? upToDateCheckInputItems))
                 {
-                    log.Verbose("Adding " + UpToDateCheckInput.SchemaName + " inputs in set '{0}':", setName);
+                    log.Verbose(nameof(Resources.FUTD_AddingTypedInputsInSet_2), UpToDateCheckInput.SchemaName, setName);
+                    log.Indent++;
+
                     foreach ((string kind, ImmutableArray<string> items) in upToDateCheckInputItems)
                     {
                         if (ShouldIgnoreItems(kind, items))
@@ -431,10 +447,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                         foreach (string path in items)
                         {
                             string absolutePath = _configuredProject.UnconfiguredProject.MakeRooted(path);
-                            log.Verbose("    '{0}'", absolutePath);
+                            log.VerboseLiteral(absolutePath);
                             yield return (Path: absolutePath, ItemType: UpToDateCheckInput.SchemaName, IsRequired: true);
                         }
                     }
+
+                    log.Indent--;
                 }
             }
 
@@ -442,7 +460,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             {
                 if (state.UpToDateCheckOutputItemsByKindBySetName.TryGetValue(setName, out ImmutableDictionary<string, ImmutableArray<string>>? upToDateCheckOutputItems))
                 {
-                    log.Verbose("Adding " + UpToDateCheckOutput.SchemaName + " outputs in set '{0}':", setName);
+                    log.Verbose(nameof(Resources.FUTD_AddingTypedOutputsInSet_2), UpToDateCheckOutput.SchemaName, setName);
+                    log.Indent++;
 
                     foreach ((string kind, ImmutableArray<string> items) in upToDateCheckOutputItems)
                     {
@@ -454,15 +473,18 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                         foreach (string path in items)
                         {
                             string absolutePath = _configuredProject.UnconfiguredProject.MakeRooted(path);
-                            log.Verbose("    '{0}'", absolutePath);
+                            log.VerboseLiteral(absolutePath);
                             yield return absolutePath;
                         }
                     }
+
+                    log.Indent--;
                 }
 
                 if (state.UpToDateCheckBuiltItemsByKindBySetName.TryGetValue(setName, out ImmutableDictionary<string, ImmutableArray<string>>? upToDateCheckBuiltItems))
                 {
-                    log.Verbose("Adding " + UpToDateCheckBuilt.SchemaName + " outputs in set '{0}':", setName);
+                    log.Verbose(nameof(Resources.FUTD_AddingTypedOutputsInSet_2), UpToDateCheckBuilt.SchemaName, setName);
+                    log.Indent++;
 
                     foreach ((string kind, ImmutableArray<string> items) in upToDateCheckBuiltItems)
                     {
@@ -474,10 +496,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                         foreach (string path in items)
                         {
                             string absolutePath = _configuredProject.UnconfiguredProject.MakeRooted(path);
-                            log.Verbose("    '{0}'", absolutePath);
+                            log.VerboseLiteral(absolutePath);
                             yield return absolutePath;
                         }
                     }
+
+                    log.Indent--;
                 }
             }
 
@@ -490,11 +514,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
                 if (log.Level >= LogLevel.Verbose)
                 {
+                    log.Indent++;
+                   
                     foreach (string path in items)
                     {
                         string absolutePath = _configuredProject.UnconfiguredProject.MakeRooted(path);
-                        log.Verbose("    Skipping '{0}' with ignored kind '{1}'", absolutePath, kind);
+                        log.Verbose(nameof(Resources.FUTD_SkippingIgnoredKindItem_2), absolutePath, kind);
                     }
+
+                    log.Indent--;
                 }
 
                 return true;
@@ -519,24 +547,30 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
             if (log.Level >= LogLevel.Verbose)
             {
-                log.Verbose("Adding input reference copy markers:");
+                log.Verbose(nameof(Resources.FUTD_AddingInputReferenceCopyMarkers));
+
+                log.Indent++;
 
                 foreach (string referenceMarkerFile in state.CopyReferenceInputs)
                 {
-                    log.Verbose("    '{0}'", referenceMarkerFile);
+                    log.VerboseLiteral(referenceMarkerFile);
                 }
 
-                log.Verbose("Adding output reference copy marker:");
-                log.Verbose("    '{0}'", markerFile);
+                log.Indent--;
+
+                log.Verbose(nameof(Resources.FUTD_AddingOutputReferenceCopyMarker));
+                log.Indent++;
+                log.VerboseLiteral(markerFile);
+                log.Indent--;
             }
 
             if (timestampCache.TryGetLatestInput(state.CopyReferenceInputs, out string? latestInputMarkerPath, out DateTime latestInputMarkerTime))
             {
-                log.Info("Latest write timestamp on input marker is {0} on '{1}'.", latestInputMarkerTime, latestInputMarkerPath);
+                log.Info(nameof(Resources.FUTD_LatestWriteTimeOnInputMarker_2), latestInputMarkerTime, latestInputMarkerPath);
             }
             else
             {
-                log.Info("No input markers exist, skipping marker check.");
+                log.Info(nameof(Resources.FUTD_NoInputMarkersExist));
                 return true;
             }
 
@@ -544,17 +578,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
             if (outputMarkerTime != null)
             {
-                log.Info("Write timestamp on output marker is {0} on '{1}'.", outputMarkerTime, markerFile);
+                log.Info(nameof(Resources.FUTD_WriteTimeOnOutputMarker_2), outputMarkerTime, markerFile);
             }
             else
             {
-                log.Info("Output marker '{0}' does not exist, skipping marker check.", markerFile);
+                log.Info(nameof(Resources.FUTD_NoOutputMarkerExists_1), markerFile);
                 return true;
             }
 
             if (outputMarkerTime < latestInputMarkerTime)
             {
-                return log.Fail("InputMarkerNewerThanOutputMarker", "Input marker is newer than output marker, not up to date.");
+                return log.Fail("InputMarkerNewerThanOutputMarker", nameof(Resources.FUTD_InputMarkerNewerThanOutputMarker));
             }
 
             return true;
@@ -569,33 +603,37 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 string source = _configuredProject.UnconfiguredProject.MakeRooted(sourceRelative);
                 string destination = _configuredProject.UnconfiguredProject.MakeRooted(destinationRelative);
 
-                log.Info("Checking copied output (" + UpToDateCheckBuilt.SchemaName + " with " + UpToDateCheckBuilt.OriginalProperty + " property) file '{0}':", source);
+                log.Info(nameof(Resources.FUTD_CheckingCopiedOutputFile), source);
 
                 DateTime? sourceTime = timestampCache.GetTimestampUtc(source);
 
                 if (sourceTime != null)
                 {
-                    log.Info("    Source {0}: '{1}'.", sourceTime, source);
+                    log.Indent++;
+                    log.Info(nameof(Resources.FUTD_SourceFileTimeAndPath_2), sourceTime, source);
+                    log.Indent--;
                 }
                 else
                 {
-                    return log.Fail("CopySourceNotFound", "Source '{0}' does not exist for copy to '{1}', not up to date.", source, destination);
+                    return log.Fail("CopySourceNotFound", nameof(Resources.FUTD_CheckingCopiedOutputFileSourceNotFound_2), source, destination);
                 }
 
                 DateTime? destinationTime = timestampCache.GetTimestampUtc(destination);
 
                 if (destinationTime != null)
                 {
-                    log.Info("    Destination {0}: '{1}'.", destinationTime, destination);
+                    log.Indent++;
+                    log.Info(nameof(Resources.FUTD_DestinationFileTimeAndPath_2), destinationTime, destination);
+                    log.Indent--;
                 }
                 else
                 {
-                    return log.Fail("CopyDestinationNotFound", "Destination '{0}' does not exist for copy from '{1}', not up to date.", destination, source);
+                    return log.Fail("CopyDestinationNotFound", nameof(Resources.FUTD_CheckingCopiedOutputFileDestinationNotFound_2), destination, source);
                 }
 
                 if (destinationTime < sourceTime)
                 {
-                    return log.Fail("CopySourceNewer", "Source is newer than build output destination, not up to date.");
+                    return log.Fail("CopySourceNewer", nameof(Resources.FUTD_CheckingCopiedOutputFileSourceNewer));
                 }
             }
 
@@ -610,7 +648,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             {
                 foreach (UpToDateCheckInputItem item in items)
                 {
-                    // Only consider items with CopyType of CopyIfNewer
+                    // Only consider items with CopyType of CopyIfNewer (PreserveNewest)
                     if (item.CopyType != CopyType.CopyIfNewer)
                     {
                         continue;
@@ -628,17 +666,19 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
                     filename = _configuredProject.UnconfiguredProject.MakeRelative(filename);
 
-                    log.Info("Checking PreserveNewest file '{0}':", rootedPath);
+                    log.Info(nameof(Resources.FUTD_CheckingPreserveNewestFile_1), rootedPath);
 
                     DateTime? itemTime = timestampCache.GetTimestampUtc(rootedPath);
 
                     if (itemTime != null)
                     {
-                        log.Info("    Source {0}: '{1}'.", itemTime, rootedPath);
+                        log.Indent++;
+                        log.Info(nameof(Resources.FUTD_SourceFileTimeAndPath_2), itemTime, rootedPath);
+                        log.Indent--;
                     }
                     else
                     {
-                        return log.Fail("CopyToOutputDirectorySourceNotFound", "Source '{0}' does not exist, not up to date.", rootedPath);
+                        return log.Fail("CopyToOutputDirectorySourceNotFound", nameof(Resources.FUTD_CheckingPreserveNewestFileSourceNotFound_1), rootedPath);
                     }
 
                     string destination = Path.Combine(outputFullPath, filename);
@@ -646,16 +686,18 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
                     if (destinationTime != null)
                     {
-                        log.Info("    Destination {0}: '{1}'.", destinationTime, destination);
+                        log.Indent++;
+                        log.Info(nameof(Resources.FUTD_DestinationFileTimeAndPath_2), destinationTime, destination);
+                        log.Indent--;
                     }
                     else
                     {
-                        return log.Fail("CopyToOutputDirectoryDestinationNotFound", "Destination '{0}' does not exist, not up to date.", destination);
+                        return log.Fail("CopyToOutputDirectoryDestinationNotFound", nameof(Resources.FUTD_CheckingPreserveNewestFileDestinationNotFound_1), destination);
                     }
 
                     if (destinationTime < itemTime)
                     {
-                        return log.Fail("CopyToOutputDirectorySourceNewer", "PreserveNewest source '{0}' is newer than destination '{1}', not up to date.", rootedPath, destination);
+                        return log.Fail("CopyToOutputDirectorySourceNewer", nameof(Resources.FUTD_CheckingPreserveNewestSourceNewerThanDestination_2), rootedPath, destination);
                     }
                 }
             }
@@ -735,7 +777,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
                         if (requestedLogLevel >= LogLevel.Info && ignoreKinds.Count != 0)
                         {
-                            logger.Info("Ignoring up-to-date check items with kinds: {0}", ignoreKindsString);
+                            logger.Info(nameof(Resources.FUTD_IgnoringKinds_1), ignoreKindsString);
                         }
                     }
 
@@ -756,11 +798,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 }
                 catch (Exception ex)
                 {
-                    return logger.Fail("Exception", "Up-to-date check threw an exception. Not up-to-date. {0}", ex);
+                    return logger.Fail("Exception", nameof(Resources.FUTD_Exception_1), ex);
                 }
                 finally
                 {
-                    logger.Verbose("Up to date check completed in {0:N1} ms", sw.Elapsed.TotalMilliseconds);
+                    logger.Verbose(nameof(Resources.FUTD_Completed), sw.Elapsed.TotalMilliseconds);
 
                     _lastFailureReason = logger.FailureReason ?? "";
                 }
