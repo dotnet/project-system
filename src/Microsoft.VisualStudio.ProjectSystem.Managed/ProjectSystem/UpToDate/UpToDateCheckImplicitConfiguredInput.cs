@@ -202,28 +202,26 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             string? msBuildProjectDirectory = jointRuleUpdate.CurrentState.GetPropertyOrDefault(ConfigurationGeneral.SchemaName, ConfigurationGeneral.MSBuildProjectDirectoryProperty, MSBuildProjectDirectory);
             string? msBuildProjectOutputPath = jointRuleUpdate.CurrentState.GetPropertyOrDefault(ConfigurationGeneral.SchemaName, ConfigurationGeneral.OutputPathProperty, OutputRelativeOrFullPath);
             string? outputRelativeOrFullPath = jointRuleUpdate.CurrentState.GetPropertyOrDefault(ConfigurationGeneral.SchemaName, ConfigurationGeneral.OutDirProperty, msBuildProjectOutputPath);
-            string nuGetPackageFolders = jointRuleUpdate.CurrentState.GetPropertyOrDefault(ConfigurationGeneral.SchemaName, ConfigurationGeneral.NuGetPackageFoldersProperty, "");
             string msBuildAllProjects = jointRuleUpdate.CurrentState.GetPropertyOrDefault(ConfigurationGeneral.SchemaName, ConfigurationGeneral.MSBuildAllProjectsProperty, "");
-
-            // We identify non-modifiable inputs (i.e. anything in Program Files, the VS install dir, or NuGet cache folders)
-            // and exclude them from the set of inputs we scan when an up-to-date query is made.
-            //
-            // For a .NET 5 xUnit project, this cuts the number of file timestamps checked from 187 to 17. Most of those are
-            // reference assemblies for the framework, which clearly aren't expected to change over time.
-            var projectFileClassifier = new ProjectFileClassifier
-            {
-                NuGetPackageFolders = nuGetPackageFolders
-            };
 
             // The first item in this semicolon-separated list of project files will always be the one
             // with the newest timestamp. As we are only interested in timestamps on these files, we can
             // save memory and time by only considering this first path (dotnet/project-system#4333).
             string? newestImportInput = new LazyStringSplit(msBuildAllProjects, ';').FirstOrDefault();
 
+            ProjectFileClassifier? projectFileClassifier = null;
+
             ImmutableArray<string> resolvedCompilationReferencePaths;
             ImmutableArray<string> copyReferenceInputs;
             if (jointRuleUpdate.ProjectChanges.TryGetValue(ResolvedCompilationReference.SchemaName, out IProjectChangeDescription? change) && change.Difference.AnyChanges)
             {
+                // We identify non-modifiable inputs (i.e. anything in Program Files, the VS install dir, or NuGet cache folders)
+                // and exclude them from the set of inputs we scan when an up-to-date query is made.
+                //
+                // For a .NET 5 xUnit project, this cuts the number of file timestamps checked from 187 to 17. Most of those are
+                // reference assemblies for the framework, which clearly aren't expected to change over time.
+                projectFileClassifier ??= BuildClassifier();
+
                 HashSet<string> resolvedCompilationReferencePathsBuilder = new(StringComparers.Paths);
                 HashSet<string> copyReferenceInputsBuilder = new(StringComparers.Paths);
 
@@ -478,6 +476,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             {
                 if (jointRuleUpdate.ProjectChanges.TryGetValue(ResolvedAnalyzerReference.SchemaName, out IProjectChangeDescription? change) && change.Difference.AnyChanges)
                 {
+                    projectFileClassifier ??= BuildClassifier();
+
                     return change.After.Items
                         .Select(item => item.Value[ResolvedAnalyzerReference.ResolvedPathProperty])
                         .Where(path => !projectFileClassifier.IsNonModifiable(path))
@@ -486,6 +486,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 }
 
                 return ResolvedAnalyzerReferencePaths;
+            }
+
+            ProjectFileClassifier BuildClassifier()
+            {
+                return new ProjectFileClassifier
+                {
+                    NuGetPackageFolders = jointRuleUpdate.CurrentState.GetPropertyOrDefault(ConfigurationGeneral.SchemaName, ConfigurationGeneral.NuGetPackageFoldersProperty, "")
+                };
             }
         }
 
