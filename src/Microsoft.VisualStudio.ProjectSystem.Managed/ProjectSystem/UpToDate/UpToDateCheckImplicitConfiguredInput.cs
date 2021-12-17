@@ -26,8 +26,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             outputRelativeOrFullPath:                     null,
             newestImportInput:                            null,
             isDisabled:                                   true,
-            itemTypes:                                    ImmutableArray<string>.Empty,
-            itemsByItemType:                              ImmutableDictionary<string, ImmutableArray<UpToDateCheckInputItem>>.Empty,
+            inputSourceItemTypes:                         ImmutableArray<string>.Empty,
+            inputSourceItemsByItemType:                   ImmutableDictionary<string, ImmutableArray<UpToDateCheckInputItem>>.Empty,
             upToDateCheckInputItemsByKindBySetName:       ImmutableDictionary<string, ImmutableDictionary<string, ImmutableArray<string>>>.Empty,
             upToDateCheckOutputItemsByKindBySetName:      ImmutableDictionary<string, ImmutableDictionary<string, ImmutableArray<string>>>.Empty,
             upToDateCheckBuiltItemsByKindBySetName:       ImmutableDictionary<string, ImmutableDictionary<string, ImmutableArray<string>>>.Empty,
@@ -79,9 +79,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
         public bool WasStateRestored { get; }
 
-        public ImmutableArray<string> ItemTypes { get; }
+        public ImmutableArray<string> InputSourceItemTypes { get; }
 
-        public ImmutableDictionary<string, ImmutableArray<UpToDateCheckInputItem>> ItemsByItemType { get; }
+        public ImmutableDictionary<string, ImmutableArray<UpToDateCheckInputItem>> InputSourceItemsByItemType { get; }
 
         public ImmutableArray<string> SetNames { get; }
 
@@ -115,8 +115,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             var emptyItemBySetName = ImmutableDictionary.Create<string, ImmutableDictionary<string, ImmutableArray<string>>>(BuildUpToDateCheck.SetNameComparer);
 
             LastItemsChangedAtUtc = DateTime.MinValue;
-            ItemTypes = ImmutableArray<string>.Empty;
-            ItemsByItemType = ImmutableDictionary.Create<string, ImmutableArray<UpToDateCheckInputItem>>(StringComparers.ItemTypes);
+            InputSourceItemTypes = ImmutableArray<string>.Empty;
+            InputSourceItemsByItemType = ImmutableDictionary.Create<string, ImmutableArray<UpToDateCheckInputItem>>(StringComparers.ItemTypes);
             SetNames = ImmutableArray<string>.Empty;
             UpToDateCheckInputItemsByKindBySetName = emptyItemBySetName;
             UpToDateCheckOutputItemsByKindBySetName = emptyItemBySetName;
@@ -135,8 +135,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             string? outputRelativeOrFullPath,
             string? newestImportInput,
             bool isDisabled,
-            ImmutableArray<string> itemTypes,
-            ImmutableDictionary<string, ImmutableArray<UpToDateCheckInputItem>> itemsByItemType,
+            ImmutableArray<string> inputSourceItemTypes,
+            ImmutableDictionary<string, ImmutableArray<UpToDateCheckInputItem>> inputSourceItemsByItemType,
             ImmutableDictionary<string, ImmutableDictionary<string, ImmutableArray<string>>> upToDateCheckInputItemsByKindBySetName,
             ImmutableDictionary<string, ImmutableDictionary<string, ImmutableArray<string>>> upToDateCheckOutputItemsByKindBySetName,
             ImmutableDictionary<string, ImmutableDictionary<string, ImmutableArray<string>>> upToDateCheckBuiltItemsByKindBySetName,
@@ -155,8 +155,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             OutputRelativeOrFullPath = outputRelativeOrFullPath;
             NewestImportInput = newestImportInput;
             IsDisabled = isDisabled;
-            ItemTypes = itemTypes;
-            ItemsByItemType = itemsByItemType;
+            InputSourceItemTypes = inputSourceItemTypes;
+            InputSourceItemsByItemType = inputSourceItemsByItemType;
             UpToDateCheckInputItemsByKindBySetName = upToDateCheckInputItemsByKindBySetName;
             UpToDateCheckOutputItemsByKindBySetName = upToDateCheckOutputItemsByKindBySetName;
             UpToDateCheckBuiltItemsByKindBySetName = upToDateCheckBuiltItemsByKindBySetName;
@@ -283,14 +283,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             }
 
             // Not all item types are up-to-date check inputs. Filter to the set that are.
-            var itemTypes = projectItemSchema
+            var inputSourceItemTypes = projectItemSchema
                 .GetKnownItemTypes()
                 .Where(itemType => projectItemSchema.GetItemType(itemType).UpToDateCheckInput)
                 .ToHashSet(StringComparers.ItemTypes);
 
-            var itemTypeDiff = new SetDiff<string>(ItemTypes, itemTypes, StringComparers.ItemTypes);
+            var itemTypeDiff = new SetDiff<string>(InputSourceItemTypes, inputSourceItemTypes, StringComparers.ItemTypes);
 
-            var itemsByItemTypeBuilder = ItemsByItemType.ToBuilder();
+            var inputSourceItemsByItemTypeBuilder = InputSourceItemsByItemType.ToBuilder();
 
             bool itemTypesChanged = false;
 
@@ -301,14 +301,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             {
                 itemTypesChanged = true;
 
-                if (itemsByItemTypeBuilder.TryGetValue(removedItemType, out ImmutableArray<UpToDateCheckInputItem> removedItems))
+                if (inputSourceItemsByItemTypeBuilder.TryGetValue(removedItemType, out ImmutableArray<UpToDateCheckInputItem> removedItems))
                 {
                     foreach (UpToDateCheckInputItem item in removedItems)
                     {
                         changes.Add((false, removedItemType, item));
                     }
 
-                    itemsByItemTypeBuilder.Remove(removedItemType);
+                    inputSourceItemsByItemTypeBuilder.Remove(removedItemType);
                 }
             }
 
@@ -329,13 +329,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 if (projectCatalogSnapshot.NamedCatalogs.TryGetValue(PropertyPageContexts.File, out IPropertyPagesCatalog? fileCatalog))
                     itemType = fileCatalog.GetSchema(schemaName)?.DataSource.ItemType;
 
-                if (itemType is null || !itemTypes.Contains(itemType))
+                if (itemType is null || !inputSourceItemTypes.Contains(itemType))
                 {
                     continue;
                 }
 
                 ImmutableArray<UpToDateCheckInputItem> before = ImmutableArray<UpToDateCheckInputItem>.Empty;
-                if (itemsByItemTypeBuilder.TryGetValue(itemType, out ImmutableArray<UpToDateCheckInputItem> beforeItems))
+                if (inputSourceItemsByItemTypeBuilder.TryGetValue(itemType, out ImmutableArray<UpToDateCheckInputItem> beforeItems))
                     before = beforeItems;
 
                 var after = projectChange.After.Items
@@ -354,13 +354,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                     changes.Add((IsAdd: false, itemType, item));
                 }
 
-                itemsByItemTypeBuilder[itemType] = after.ToImmutableArray();
+                inputSourceItemsByItemTypeBuilder[itemType] = after.ToImmutableArray();
                 itemsChanged = true;
             }
 
-            ImmutableDictionary<string, ImmutableArray<UpToDateCheckInputItem>> itemsByItemType = itemsByItemTypeBuilder.ToImmutable();
+            ImmutableDictionary<string, ImmutableArray<UpToDateCheckInputItem>> inputSourceItemsByItemType = inputSourceItemsByItemTypeBuilder.ToImmutable();
 
-            int itemHash = BuildUpToDateCheck.ComputeItemHash(itemsByItemType);
+            int itemHash = BuildUpToDateCheck.ComputeItemHash(inputSourceItemsByItemType);
 
             DateTime lastItemsChangedAtUtc = LastItemsChangedAtUtc;
 
@@ -372,7 +372,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 // actually changes.
                 lastItemsChangedAtUtc = DateTime.UtcNow;
             }
-            else if (itemsChanged && !ItemTypes.IsEmpty)
+            else if (itemsChanged && !InputSourceItemTypes.IsEmpty)
             {
                 // When we previously had zero item types, we can surmise that the project has just been loaded. In such
                 // a case it is not correct to assume that the items changed, and so we do not update the timestamp.
@@ -388,8 +388,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 outputRelativeOrFullPath,
                 newestImportInput,
                 isDisabled: isDisabled,
-                itemTypes: itemTypes.ToImmutableArray(),
-                itemsByItemType: itemsByItemType,
+                inputSourceItemTypes: inputSourceItemTypes.ToImmutableArray(),
+                inputSourceItemsByItemType: inputSourceItemsByItemType,
                 upToDateCheckInputItemsByKindBySetName:  BuildItemsByKindBySetName(UpToDateCheckInputItemsByKindBySetName,  jointRuleUpdate, UpToDateCheckInput.SchemaName,  UpToDateCheckInput.KindProperty,  UpToDateCheckInput.SetProperty),
                 upToDateCheckOutputItemsByKindBySetName: BuildItemsByKindBySetName(UpToDateCheckOutputItemsByKindBySetName, jointRuleUpdate, UpToDateCheckOutput.SchemaName, UpToDateCheckOutput.KindProperty, UpToDateCheckOutput.SetProperty),
                 upToDateCheckBuiltItemsByKindBySetName:  BuildItemsByKindBySetName(UpToDateCheckBuiltItemsByKindBySetName,  jointRuleUpdate, UpToDateCheckBuilt.SchemaName,  UpToDateCheckBuilt.KindProperty,  UpToDateCheckBuilt.SetProperty, metadata => !metadata.TryGetValue(UpToDateCheckBuilt.OriginalProperty, out string source) || string.IsNullOrEmpty(source)),
@@ -501,8 +501,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 OutputRelativeOrFullPath,
                 NewestImportInput,
                 IsDisabled,
-                ItemTypes,
-                ItemsByItemType,
+                InputSourceItemTypes,
+                InputSourceItemsByItemType,
                 UpToDateCheckInputItemsByKindBySetName,
                 UpToDateCheckOutputItemsByKindBySetName,
                 UpToDateCheckBuiltItemsByKindBySetName,
@@ -525,8 +525,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 OutputRelativeOrFullPath,
                 NewestImportInput,
                 IsDisabled,
-                ItemTypes,
-                ItemsByItemType,
+                InputSourceItemTypes,
+                InputSourceItemsByItemType,
                 UpToDateCheckInputItemsByKindBySetName,
                 UpToDateCheckOutputItemsByKindBySetName,
                 UpToDateCheckBuiltItemsByKindBySetName,

@@ -127,7 +127,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 return log.Fail("FirstRun", "The up-to-date check has not yet run for this project. Not up-to-date.");
             }
 
-            foreach ((_, ImmutableArray<UpToDateCheckInputItem> items) in state.ItemsByItemType)
+            foreach ((_, ImmutableArray<UpToDateCheckInputItem> items) in state.InputSourceItemsByItemType)
             {
                 foreach (UpToDateCheckInputItem item in items)
                 {
@@ -297,7 +297,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                     yield return (Path: state.NewestImportInput, ItemType: null, IsRequired: true);
                 }
 
-                foreach ((string itemType, ImmutableArray<UpToDateCheckInputItem> items) in state.ItemsByItemType)
+                foreach ((string itemType, ImmutableArray<UpToDateCheckInputItem> items) in state.InputSourceItemsByItemType)
                 {
                     if (!NonCompilationItemTypes.Contains(itemType))
                     {
@@ -601,7 +601,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
         {
             string outputFullPath = Path.Combine(state.MSBuildProjectDirectory, state.OutputRelativeOrFullPath);
 
-            foreach ((_, ImmutableArray<UpToDateCheckInputItem> items) in state.ItemsByItemType)
+            foreach ((_, ImmutableArray<UpToDateCheckInputItem> items) in state.InputSourceItemsByItemType)
             {
                 foreach (UpToDateCheckInputItem item in items)
                 {
