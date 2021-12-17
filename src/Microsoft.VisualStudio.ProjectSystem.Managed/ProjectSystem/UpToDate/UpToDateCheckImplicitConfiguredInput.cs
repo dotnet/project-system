@@ -220,33 +220,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             // save memory and time by only considering this first path (dotnet/project-system#4333).
             string? newestImportInput = new LazyStringSplit(msBuildAllProjects, ';').FirstOrDefault();
 
-            ImmutableArray<string> resolvedAnalyzerReferencePaths;
-            if (jointRuleUpdate.ProjectChanges.TryGetValue(ResolvedAnalyzerReference.SchemaName, out IProjectChangeDescription change) && change.Difference.AnyChanges)
-            {
-                resolvedAnalyzerReferencePaths = change.After.Items
-                    .Select(item => item.Value[ResolvedAnalyzerReference.ResolvedPathProperty])
-                    .Where(path => !projectFileClassifier.IsNonModifiable(path))
-                    .Distinct(StringComparers.Paths)
-                    .ToImmutableArray();
-            }
-            else
-            {
-                resolvedAnalyzerReferencePaths = ResolvedAnalyzerReferencePaths;
-            }
-
-            string? copyUpToDateMarkerItem;
-            if (jointRuleUpdate.ProjectChanges.TryGetValue(CopyUpToDateMarker.SchemaName, out change) && change.Difference.AnyChanges)
-            {
-                copyUpToDateMarkerItem = change.After.Items.Count == 1 ? change.After.Items.Single().Key : null;
-            }
-            else
-            {
-                copyUpToDateMarkerItem = CopyUpToDateMarkerItem;
-            }
-
             ImmutableArray<string> resolvedCompilationReferencePaths;
             ImmutableArray<string> copyReferenceInputs;
-            if (jointRuleUpdate.ProjectChanges.TryGetValue(ResolvedCompilationReference.SchemaName, out change) && change.Difference.AnyChanges)
+            if (jointRuleUpdate.ProjectChanges.TryGetValue(ResolvedCompilationReference.SchemaName, out IProjectChangeDescription? change) && change.Difference.AnyChanges)
             {
                 HashSet<string> resolvedCompilationReferencePathsBuilder = new(StringComparers.Paths);
                 HashSet<string> copyReferenceInputsBuilder = new(StringComparers.Paths);
@@ -384,17 +360,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             return new(
                 msBuildProjectFullPath,
                 msBuildProjectDirectory,
-                copyUpToDateMarkerItem,
+                copyUpToDateMarkerItem: UpdateCopyUpToDateMarkerItem(),
                 outputRelativeOrFullPath,
                 newestImportInput,
                 isDisabled: isDisabled,
                 inputSourceItemTypes: inputSourceItemTypes.ToImmutableArray(),
                 inputSourceItemsByItemType: inputSourceItemsByItemType,
-                upToDateCheckInputItemsByKindBySetName:  BuildItemsByKindBySetName(UpToDateCheckInputItemsByKindBySetName,  jointRuleUpdate, UpToDateCheckInput.SchemaName,  UpToDateCheckInput.KindProperty,  UpToDateCheckInput.SetProperty),
-                upToDateCheckOutputItemsByKindBySetName: BuildItemsByKindBySetName(UpToDateCheckOutputItemsByKindBySetName, jointRuleUpdate, UpToDateCheckOutput.SchemaName, UpToDateCheckOutput.KindProperty, UpToDateCheckOutput.SetProperty),
-                upToDateCheckBuiltItemsByKindBySetName:  BuildItemsByKindBySetName(UpToDateCheckBuiltItemsByKindBySetName,  jointRuleUpdate, UpToDateCheckBuilt.SchemaName,  UpToDateCheckBuilt.KindProperty,  UpToDateCheckBuilt.SetProperty, metadata => !metadata.TryGetValue(UpToDateCheckBuilt.OriginalProperty, out string source) || string.IsNullOrEmpty(source)),
-                copiedOutputFiles: BuildCopiedItems(jointRuleUpdate),
-                resolvedAnalyzerReferencePaths: resolvedAnalyzerReferencePaths,
+                upToDateCheckInputItemsByKindBySetName:  UpdateItemsByKindBySetName(UpToDateCheckInputItemsByKindBySetName,  jointRuleUpdate, UpToDateCheckInput.SchemaName,  UpToDateCheckInput.KindProperty,  UpToDateCheckInput.SetProperty),
+                upToDateCheckOutputItemsByKindBySetName: UpdateItemsByKindBySetName(UpToDateCheckOutputItemsByKindBySetName, jointRuleUpdate, UpToDateCheckOutput.SchemaName, UpToDateCheckOutput.KindProperty, UpToDateCheckOutput.SetProperty),
+                upToDateCheckBuiltItemsByKindBySetName:  UpdateItemsByKindBySetName(UpToDateCheckBuiltItemsByKindBySetName,  jointRuleUpdate, UpToDateCheckBuilt.SchemaName,  UpToDateCheckBuilt.KindProperty,  UpToDateCheckBuilt.SetProperty, metadata => !metadata.TryGetValue(UpToDateCheckBuilt.OriginalProperty, out string source) || string.IsNullOrEmpty(source)),
+                copiedOutputFiles: UpdateCopiedItems(jointRuleUpdate),
+                resolvedAnalyzerReferencePaths: UpdateResolvedAnalyzerReferencePaths(),
                 resolvedCompilationReferencePaths: resolvedCompilationReferencePaths,
                 copyReferenceInputs: copyReferenceInputs,
                 lastItemsChangedAtUtc: lastItemsChangedAtUtc,
@@ -402,7 +378,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 itemHash,
                 WasStateRestored);
 
-            static ImmutableDictionary<string, ImmutableDictionary<string, ImmutableArray<string>>> BuildItemsByKindBySetName(
+            string? UpdateCopyUpToDateMarkerItem()
+            {
+                if (jointRuleUpdate.ProjectChanges.TryGetValue(CopyUpToDateMarker.SchemaName, out IProjectChangeDescription? change) && change.Difference.AnyChanges)
+                {
+                    return change.After.Items.Count == 1 ? change.After.Items.Single().Key : null;
+                }
+
+                return CopyUpToDateMarkerItem;
+            }
+
+            static ImmutableDictionary<string, ImmutableDictionary<string, ImmutableArray<string>>> UpdateItemsByKindBySetName(
                 ImmutableDictionary<string, ImmutableDictionary<string, ImmutableArray<string>>> prior,
                 IProjectSubscriptionUpdate update,
                 string itemSchemaName,
@@ -464,9 +450,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 }
             }
 
-            ImmutableArray<(string DestinationRelative, string SourceRelative)> BuildCopiedItems(IProjectSubscriptionUpdate jointRuleUpdate)
+            ImmutableArray<(string DestinationRelative, string SourceRelative)> UpdateCopiedItems(IProjectSubscriptionUpdate jointRuleUpdate)
             {
-                if (jointRuleUpdate.ProjectChanges.TryGetValue(UpToDateCheckBuilt.SchemaName, out change) && change.Difference.AnyChanges)
+                if (jointRuleUpdate.ProjectChanges.TryGetValue(UpToDateCheckBuilt.SchemaName, out IProjectChangeDescription? change) && change.Difference.AnyChanges)
                 {
                     var copiedOutputFilesBuilder = new Dictionary<string, string>(StringComparers.Paths);
 
@@ -486,6 +472,20 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 {
                     return CopiedOutputFiles;
                 }
+            }
+
+            ImmutableArray<string> UpdateResolvedAnalyzerReferencePaths()
+            {
+                if (jointRuleUpdate.ProjectChanges.TryGetValue(ResolvedAnalyzerReference.SchemaName, out IProjectChangeDescription? change) && change.Difference.AnyChanges)
+                {
+                    return change.After.Items
+                        .Select(item => item.Value[ResolvedAnalyzerReference.ResolvedPathProperty])
+                        .Where(path => !projectFileClassifier.IsNonModifiable(path))
+                        .Distinct(StringComparers.Paths)
+                        .ToImmutableArray();
+                }
+
+                return ResolvedAnalyzerReferencePaths;
             }
         }
 
