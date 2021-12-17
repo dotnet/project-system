@@ -36,6 +36,11 @@
     <SolutionRestoreAndBuildProperty Include="__DeployProjectOutput=$(Deploy)" Condition="'$(Deploy)' != ''" />
   </ItemGroup>
 
+  <!-- <ItemGroup>
+    <PackageReference Include="MicroBuild.Core.Sentinel" />
+    <PackageReference Include="Microsoft.VisualStudioEng.MicroBuild.Core" />
+  </ItemGroup> -->
+
   <Target Name="LogInitialMessage">
     <Message Text="Building $(SolutionFileName) [$(Configuration)]...%0a" Importance="high" />
   </Target>
@@ -77,31 +82,26 @@
 
   </Target>
 
+  <!-- <Target Name="AddFilesToSign">
+    <ItemGroup>
+      <FilesToSign Include="
+        $(VisualStudioSetupOutputPath)ProjectSystem.vsix;
+        $(VisualStudioSetupOutputPath)VisualStudioEditorsSetup.vsix;
+        $(VisualStudioSetupInsertionPath)ProjectSystem.vsix;
+        $(VisualStudioSetupInsertionPath)VisualStudioEditorsSetup.vsix;
+        $(VisualStudioSetupInsertionPath)Microsoft.VisualStudio.ProjectSystem.Managed.CommonFiles.vsix">
+        <Authenticode>VsixSHA2</Authenticode>
+      </FilesToSign>
+      <FilesToSign Include="$(PackageOutputPath)*.nupkg">
+        <Authenticode>NuGet</Authenticode>
+      </FilesToSign>
+    </ItemGroup>
+  </Target> -->
+
   <!-- Generate insertion assets -->
   <Target Name="GenerateDependentAssemblyVersionsFile" Condition="'$(BuildOrRebuild)' == 'true'">
     <MSBuild Projects="GenerateDependentAssemblyVersionFile.proj" BuildInParallel="true" />
   </Target>
-
-  <ItemGroup>
-    <FilesToSign Include="$(VisualStudioSetupOutputPath)ProjectSystem.vsix">
-      <Authenticode>VsixSHA2</Authenticode>
-    </FilesToSign>
-    <FilesToSign Include="$(VisualStudioSetupOutputPath)VisualStudioEditorsSetup.vsix">
-      <Authenticode>VsixSHA2</Authenticode>
-    </FilesToSign>
-    <FilesToSign Include="$(VisualStudioSetupInsertionPath)ProjectSystem.vsix">
-      <Authenticode>VsixSHA2</Authenticode>
-    </FilesToSign>
-    <FilesToSign Include="$(VisualStudioSetupInsertionPath)VisualStudioEditorsSetup.vsix">
-      <Authenticode>VsixSHA2</Authenticode>
-    </FilesToSign>
-    <FilesToSign Include="$(VisualStudioSetupInsertionPath)Microsoft.VisualStudio.ProjectSystem.Managed.CommonFiles.vsix">
-      <Authenticode>VsixSHA2</Authenticode>
-    </FilesToSign>
-    <FilesToSign Include="$(PackageOutputPath)*.nupkg">
-      <Authenticode>NuGet</Authenticode>
-    </FilesToSign>
-  </ItemGroup>
 
   <!-- TODO: This file, VisualStudio.Insertion.proj, doesn't exist in the latest RepoToolset version. -->
   <Target Name="GenerateVSManifest" Condition="'$(BuildOrRebuild)' == 'true'">
