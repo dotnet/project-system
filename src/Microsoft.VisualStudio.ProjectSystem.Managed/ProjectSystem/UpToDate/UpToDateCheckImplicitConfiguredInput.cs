@@ -211,51 +211,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
             ProjectFileClassifier? projectFileClassifier = null;
 
-            ImmutableArray<string> resolvedCompilationReferencePaths;
-            ImmutableArray<string> copyReferenceInputs;
-            if (jointRuleUpdate.ProjectChanges.TryGetValue(ResolvedCompilationReference.SchemaName, out IProjectChangeDescription? change) && change.Difference.AnyChanges)
-            {
-                // We identify non-modifiable inputs (i.e. anything in Program Files, the VS install dir, or NuGet cache folders)
-                // and exclude them from the set of inputs we scan when an up-to-date query is made.
-                //
-                // For a .NET 5 xUnit project, this cuts the number of file timestamps checked from 187 to 17. Most of those are
-                // reference assemblies for the framework, which clearly aren't expected to change over time.
-                projectFileClassifier ??= BuildClassifier();
-
-                HashSet<string> resolvedCompilationReferencePathsBuilder = new(StringComparers.Paths);
-                HashSet<string> copyReferenceInputsBuilder = new(StringComparers.Paths);
-
-                foreach (IImmutableDictionary<string, string> itemMetadata in change.After.Items.Values)
-                {
-                    string originalPath = itemMetadata[ResolvedCompilationReference.OriginalPathProperty];
-                    string resolvedPath = itemMetadata[ResolvedCompilationReference.ResolvedPathProperty];
-                    string copyReferenceInput = itemMetadata[CopyUpToDateMarker.SchemaName];
-
-                    if (!projectFileClassifier.IsNonModifiable(resolvedPath))
-                    {
-                        resolvedCompilationReferencePathsBuilder.Add(resolvedPath);
-                    }
-
-                    if (!string.IsNullOrWhiteSpace(originalPath))
-                    {
-                        copyReferenceInputsBuilder.Add(originalPath);
-                    }
-
-                    if (!string.IsNullOrWhiteSpace(copyReferenceInput))
-                    {
-                        copyReferenceInputsBuilder.Add(copyReferenceInput);
-                    }
-                }
-
-                resolvedCompilationReferencePaths = resolvedCompilationReferencePathsBuilder.ToImmutableArray();
-                copyReferenceInputs = copyReferenceInputsBuilder.ToImmutableArray();
-            }
-            else
-            {
-                resolvedCompilationReferencePaths = ResolvedCompilationReferencePaths;
-                copyReferenceInputs = CopyReferenceInputs;
-            }
-
             // Not all item types are up-to-date check inputs. Filter to the set that are.
             var inputSourceItemTypes = projectItemSchema
                 .GetKnownItemTypes()
@@ -354,6 +309,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 // causing redundant builds until that time. See https://github.com/dotnet/project-system/issues/5386.
                 lastItemsChangedAtUtc = DateTime.UtcNow;
             }
+
+            (ImmutableArray<string> resolvedCompilationReferencePaths, ImmutableArray<string> copyReferenceInputs) = UpdateResolvedCompilationReferences();
 
             return new(
                 msBuildProjectFullPath,
@@ -486,6 +443,50 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 }
 
                 return ResolvedAnalyzerReferencePaths;
+            }
+
+            (ImmutableArray<string> ResolvedCompilationReferencePaths, ImmutableArray<string> CopyReferenceInputs) UpdateResolvedCompilationReferences()
+            {
+                if (jointRuleUpdate.ProjectChanges.TryGetValue(ResolvedCompilationReference.SchemaName, out IProjectChangeDescription? change) && change.Difference.AnyChanges)
+                {
+                    // We identify non-modifiable inputs (i.e. anything in Program Files, the VS install dir, or NuGet cache folders)
+                    // and exclude them from the set of inputs we scan when an up-to-date query is made.
+                    //
+                    // For a .NET 5 xUnit project, this cuts the number of file timestamps checked from 187 to 17. Most of those are
+                    // reference assemblies for the framework, which clearly aren't expected to change over time.
+                    projectFileClassifier ??= BuildClassifier();
+
+                    HashSet<string> resolvedCompilationReferencePathsBuilder = new(StringComparers.Paths);
+                    HashSet<string> copyReferenceInputsBuilder = new(StringComparers.Paths);
+
+                    foreach (IImmutableDictionary<string, string> itemMetadata in change.After.Items.Values)
+                    {
+                        string originalPath = itemMetadata[ResolvedCompilationReference.OriginalPathProperty];
+                        string resolvedPath = itemMetadata[ResolvedCompilationReference.ResolvedPathProperty];
+                        string copyReferenceInput = itemMetadata[CopyUpToDateMarker.SchemaName];
+
+                        if (!projectFileClassifier.IsNonModifiable(resolvedPath))
+                        {
+                            resolvedCompilationReferencePathsBuilder.Add(resolvedPath);
+                        }
+
+                        if (!string.IsNullOrWhiteSpace(originalPath))
+                        {
+                            copyReferenceInputsBuilder.Add(originalPath);
+                        }
+
+                        if (!string.IsNullOrWhiteSpace(copyReferenceInput))
+                        {
+                            copyReferenceInputsBuilder.Add(copyReferenceInput);
+                        }
+                    }
+
+                    return (resolvedCompilationReferencePathsBuilder.ToImmutableArray(), copyReferenceInputsBuilder.ToImmutableArray());
+                }
+                else
+                {
+                    return (ResolvedCompilationReferencePaths, CopyReferenceInputs);
+                }
             }
 
             ProjectFileClassifier BuildClassifier()
