@@ -20,6 +20,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
             public LogLevel Level { get; }
 
+            public int Indent { get; set; }
+
             public string? FailureReason { get; private set; }
 
             public Log(TextWriter writer, LogLevel requestedLogLevel, Stopwatch stopwatch, TimestampCache timestampCache, string projectPath, ITelemetryService telemetryService, UpToDateCheckConfiguredInput upToDateCheckConfiguredInput)
@@ -33,7 +35,18 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 _fileName = Path.GetFileNameWithoutExtension(projectPath);
             }
 
-            private void Write(LogLevel level, string message, object arg0)
+            private string Preamble()
+            {
+                return Indent switch
+                {
+                    0 => "FastUpToDate: ",
+                    1 => "FastUpToDate:     ",
+                    2 => "FastUpToDate:         ",
+                    _ => "FastUpToDate: " + new string(' ', Indent * 4)
+                };
+            }
+
+            private void Write(LogLevel level, string resourceName, object arg0)
             {
                 if (level <= Level)
                 {
@@ -41,11 +54,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                     // they correspond with dates/times that Explorer, etc shows
                     ConvertToLocalTime(ref arg0);
 
-                    _writer.WriteLine($"FastUpToDate: {string.Format(message, arg0)} ({_fileName})");
+                    string message = Resources.ResourceManager.GetString(resourceName, Resources.Culture);
+
+                    _writer.WriteLine($"{Preamble()}{string.Format(message, arg0)} ({_fileName})");
                 }
             }
 
-            private void Write(LogLevel level, string message, object arg0, object arg1)
+            private void Write(LogLevel level, string resourceName, object arg0, object arg1)
             {
                 if (level <= Level)
                 {
@@ -54,11 +69,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                     ConvertToLocalTime(ref arg0);
                     ConvertToLocalTime(ref arg1);
 
-                    _writer.WriteLine($"FastUpToDate: {string.Format(message, arg0, arg1)} ({_fileName})");
+                    string message = Resources.ResourceManager.GetString(resourceName, Resources.Culture);
+
+                    _writer.WriteLine($"{Preamble()}{string.Format(message, arg0, arg1)} ({_fileName})");
                 }
             }
 
-            private void Write(LogLevel level, string message, params object[] values)
+            private void Write(LogLevel level, string resourceName, params object[] values)
             {
                 if (level <= Level)
                 {
@@ -66,7 +83,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                     // they correspond with dates/times that Explorer, etc shows
                     ConvertToLocalTimes(values);
 
-                    _writer.WriteLine($"FastUpToDate: {string.Format(message, values)} ({_fileName})");
+                    string message = Resources.ResourceManager.GetString(resourceName, Resources.Culture);
+
+                    _writer.WriteLine($"{Preamble()}{string.Format(message, values)} ({_fileName})");
+                }
+            }
+
+            private void WriteLiteral(LogLevel level, string message)
+            {
+                if (level <= Level)
+                {
+                    _writer.WriteLine($"{Preamble()}{message} ({_fileName})");
                 }
             }
 
@@ -86,26 +113,31 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 }
             }
 
-            public void Minimal(string message, params object[] values) => Write(LogLevel.Minimal, message, values);
-            public void Info(string message, object arg0) => Write(LogLevel.Info, message, arg0);
-            public void Info(string message, object arg0, object arg1) => Write(LogLevel.Info, message, arg0, arg1);
-            public void Info(string message, params object[] values) => Write(LogLevel.Info, message, values);
-            public void Verbose(string message, object arg0) => Write(LogLevel.Verbose, message, arg0);
-            public void Verbose(string message, params object[] values) => Write(LogLevel.Verbose, message, values);
+            public void Minimal(string resourceName, params object[] values) => Write(LogLevel.Minimal, resourceName, values);
+            public void Info(string resourceName, object arg0) => Write(LogLevel.Info, resourceName, arg0);
+            public void Info(string resourceName, object arg0, object arg1) => Write(LogLevel.Info, resourceName, arg0, arg1);
+            public void Info(string resourceName, params object[] values) => Write(LogLevel.Info, resourceName, values);
+            public void Verbose(string resourceName, object arg0) => Write(LogLevel.Verbose, resourceName, arg0);
+            public void Verbose(string resourceName, params object[] values) => Write(LogLevel.Verbose, resourceName, values);
+            public void VerboseLiteral(string message) => WriteLiteral(LogLevel.Verbose, message);
 
             /// <summary>
             /// Publishes the up-to-date failure via telemetry and the output window.
             /// </summary>
             /// <param name="reason">A string that uniquely identifies the kind of failure. Must not contain any PII such as file system data.</param>
-            /// <param name="message">A string that clearly describes the reason for the failure. May contain PII, as this string is only displayed on screen.</param>
-            /// <param name="values">Optional format arguments to be applied to <paramref name="message"/>.</param>
+            /// <param name="resourceName">The name of a resource string that clearly describes the reason for the failure. That string may contain PII, as this string is only displayed on screen.</param>
+            /// <param name="values">Optional format arguments to be applied to the string resource with name <paramref name="resourceName"/>.</param>
             /// <returns><see langword="false"/>, which may be returned directly in <see cref="BuildUpToDateCheck"/>.</returns>
-            public bool Fail(string reason, string message, params object[] values)
+            public bool Fail(string reason, string resourceName, params object[] values)
             {
                 _stopwatch.Stop();
 
+                // We may be indented when a failure is identified. Set the indent to zero so
+                // we always flush-align the failure message.
+                Indent = 0;
+
                 // Minimal logging only includes failures.
-                Minimal(message, values);
+                Minimal(resourceName, values);
 
                 // Send telemetry.
                 _telemetryService.PostProperties(TelemetryEventName.UpToDateCheckFail, new[]
@@ -134,7 +166,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                     (TelemetryPropertyName.UpToDateCheckConfigurationCount, _upToDateCheckConfiguredInput.ImplicitInputs.Length)
                 });
 
-                Info("Project is up to date.");
+                Info(nameof(Resources.FUTD_UpToDate));
             }
         }
     }
