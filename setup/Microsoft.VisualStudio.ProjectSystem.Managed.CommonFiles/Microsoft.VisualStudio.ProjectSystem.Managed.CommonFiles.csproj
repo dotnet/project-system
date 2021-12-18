@@ -27,9 +27,13 @@
     <Message Text="VisualStudioSetupInsertionPath: $(VisualStudioSetupInsertionPath)" />
     <Message Text="AssemblyName: $(AssemblyName)" />
     <Message Text="OutDir: $(OutDir)" />
+    <Message Text="ArtifactsObjDir: $(ArtifactsObjDir)" />
 
     <ItemGroup>
-      <FilesToSign Include="$(VisualStudioSetupInsertionPath)$(AssemblyName).vsix">
+      <!-- <FilesToSign Include="$(VisualStudioSetupInsertionPath)$(AssemblyName).vsix">
+        <Authenticode>VsixSHA2</Authenticode>
+      </FilesToSign> -->
+      <FilesToSign Include="$(ArtifactsObjDir)$(AssemblyName).vsix">
         <Authenticode>VsixSHA2</Authenticode>
       </FilesToSign>
     </ItemGroup>
