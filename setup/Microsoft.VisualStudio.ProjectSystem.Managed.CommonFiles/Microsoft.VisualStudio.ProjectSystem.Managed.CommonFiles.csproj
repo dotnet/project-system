@@ -33,7 +33,7 @@
       <!-- <FilesToSign Include="$(VisualStudioSetupInsertionPath)$(AssemblyName).vsix">
         <Authenticode>VsixSHA2</Authenticode>
       </FilesToSign> -->
-      <FilesToSign Include="$(ArtifactsObjDir)$(AssemblyName).vsix">
+      <FilesToSign Include="$(OutDir)$(AssemblyName).vsix">
         <Authenticode>VsixSHA2</Authenticode>
       </FilesToSign>
     </ItemGroup>
