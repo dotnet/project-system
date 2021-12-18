@@ -21,4 +21,17 @@
   <Target Name="Build" DependsOnTargets="ResolveProjectReferences">
     <MakeDir Directories="$(IntermediateOutputPath)" ContinueOnError="True" />
   </Target>
+  <!-- Adds the appropriate vsix files for signing. -->
+  <Target Name="AddVsixForSigning" BeforeTargets="SignFiles">
+    <Message Text="VisualStudioSetupOutputPath: $(VisualStudioSetupOutputPath)" />
+    <Message Text="VisualStudioSetupInsertionPath: $(VisualStudioSetupInsertionPath)" />
+    <Message Text="AssemblyName: $(AssemblyName)" />
+    <Message Text="OutDir: $(OutDir)" />
+
+    <ItemGroup>
+      <FilesToSign Include="$(VisualStudioSetupInsertionPath)$(AssemblyName).vsix">
+        <Authenticode>VsixSHA2</Authenticode>
+      </FilesToSign>
+    </ItemGroup>
+  </Target>
 </Project>

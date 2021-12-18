@@ -46,4 +46,17 @@
       <Link>ProvideCodeBaseBindingRedirection.cs</Link>
     </Compile>
   </ItemGroup>
+  <!-- Adds the appropriate vsix files for signing. -->
+  <Target Name="AddVsixForSigning" BeforeTargets="SignFiles">
+    <Message Text="VisualStudioSetupOutputPath: $(VisualStudioSetupOutputPath)" />
+    <Message Text="VisualStudioSetupInsertionPath: $(VisualStudioSetupInsertionPath)" />
+    <Message Text="AssemblyName: $(AssemblyName)" />
+    <Message Text="OutDir: $(OutDir)" />
+
+    <ItemGroup>
+      <FilesToSign Include="$(VisualStudioSetupOutputPath)$(AssemblyName).vsix;$(VisualStudioSetupInsertionPath)$(AssemblyName).vsix">
+        <Authenticode>VsixSHA2</Authenticode>
+      </FilesToSign>
+    </ItemGroup>
+  </Target>
 </Project>
