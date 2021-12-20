@@ -189,7 +189,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 
             string baseDirectory = Path.GetDirectoryName(_project.UnconfiguredProject.FullPath);
 
-            BuildOptions added = parser!.Parse(differences.AddedItems, baseDirectory);
+            BuildOptions added = parser.Parse(differences.AddedItems, baseDirectory);
             BuildOptions removed = parser.Parse(differences.RemovedItems, baseDirectory);
 
             return ProcessCommandLineHandlersAsync(version, added, removed, state, cancellationToken);
