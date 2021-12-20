@@ -193,7 +193,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 
                 IWorkspaceProjectContext context = _contextAccessor.Context;
                 bool isActiveEditorContext = _activeWorkspaceProjectContextTracker.IsActiveEditorContext(_contextAccessor.ContextId);
-                bool isActiveConfiguration = change.Project == _project;
+                bool isActiveConfiguration = change.ActiveConfiguredProject == _project;
 
                 var state = new ContextState(isActiveEditorContext, isActiveConfiguration);
 
