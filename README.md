@@ -30,11 +30,11 @@ A project system sits between a project file on disk (for example, .csproj and .
 
 There are many technologies that come together to make up the .NET Project System:
 
-- [MSBuild](https://github.com/microsoft/msbuild) provides the build engine and file format.
+- [MSBuild](https://github.com/dotnet/msbuild) provides the build engine and file format.
 - [SDK](https://github.com/dotnet/sdk) provides the command-line interface for building, running and interacting with .NET projects, along with the necessary MSBuild tasks and targets.
 - [Common Project System](https://github.com/microsoft/vsprojectsystem) provides the base building blocks for the project system including (but not limited to) project tree, build and debugger coordination and Visual Studio integration.
 - [Roslyn](https://github.com/dotnet/roslyn) provides C# and Visual Basic language support including compilers, IntelliSense, refactorings, analyzers and code fixes.
-- [Visual F# tools](https://github.com/Microsoft/visualfsharp) provides F# language support.
+- [Visual F# tools](https://github.com/dotnet/fsharp) provides F# language support.
 
 ![image](docs/repo/images/solution-explorer.png)
 
