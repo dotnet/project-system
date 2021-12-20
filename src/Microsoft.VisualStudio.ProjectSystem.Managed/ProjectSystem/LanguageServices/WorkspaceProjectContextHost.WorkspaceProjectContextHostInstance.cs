@@ -121,16 +121,18 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
                         linkOptions: DataflowOption.PropagateCompletion,
                         cancellationToken: cancellationToken),
                 };
-            }
 
-            private StandardRuleDataflowLinkOptions GetProjectEvaluationOptions()
-            {
-                return DataflowOption.WithRuleNames(_applyChangesToWorkspaceContext!.Value.GetProjectEvaluationRules());
-            }
+                return;
 
-            private StandardRuleDataflowLinkOptions GetProjectBuildOptions()
-            {
-                return DataflowOption.WithRuleNames(_applyChangesToWorkspaceContext!.Value.GetProjectBuildRules());
+                StandardRuleDataflowLinkOptions GetProjectEvaluationOptions()
+                {
+                    return DataflowOption.WithRuleNames(_applyChangesToWorkspaceContext.Value.GetProjectEvaluationRules());
+                }
+
+                StandardRuleDataflowLinkOptions GetProjectBuildOptions()
+                {
+                    return DataflowOption.WithRuleNames(_applyChangesToWorkspaceContext.Value.GetProjectBuildRules());
+                }
             }
 
             protected override async Task DisposeCoreUnderLockAsync(bool initialized)
