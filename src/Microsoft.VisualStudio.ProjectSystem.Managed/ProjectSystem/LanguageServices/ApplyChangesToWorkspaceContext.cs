@@ -59,7 +59,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
             EnsureInitialized();
         }
 
-        public async Task ApplyProjectBuildAsync(IProjectVersionedValue<IProjectSubscriptionUpdate> update,
+        public async Task ApplyProjectBuildAsync(
+            IProjectVersionedValue<IProjectSubscriptionUpdate> update,
             IProjectBuildSnapshot buildSnapshot,
             ContextState state,
             CancellationToken cancellationToken)

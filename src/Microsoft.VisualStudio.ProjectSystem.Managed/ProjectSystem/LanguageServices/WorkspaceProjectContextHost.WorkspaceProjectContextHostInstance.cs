@@ -93,33 +93,33 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
                     ProjectDataSources.SyncLinkTo(
                         _activeConfiguredProjectProvider.ActiveConfiguredProjectBlock.SyncLinkOptions(),
                         _projectSubscriptionService.ProjectRuleSource.SourceBlock.SyncLinkOptions(GetProjectEvaluationOptions()),
-                            target: DataflowBlockFactory.CreateActionBlock<IProjectVersionedValue<ValueTuple<ConfiguredProject, IProjectSubscriptionUpdate>>>(e =>
-                                OnProjectChangedAsync(new ProjectChange(e), WorkspaceContextHandlerType.Evaluation),
-                                _project.UnconfiguredProject,
-                                ProjectFaultSeverity.LimitedFunctionality),
-                            linkOptions: DataflowOption.PropagateCompletion,
-                            cancellationToken: cancellationToken),
+                        target: DataflowBlockFactory.CreateActionBlock<IProjectVersionedValue<ValueTuple<ConfiguredProject, IProjectSubscriptionUpdate>>>(
+                            e => OnProjectChangedAsync(new ProjectChange(e), WorkspaceContextHandlerType.Evaluation),
+                            _project.UnconfiguredProject,
+                            ProjectFaultSeverity.LimitedFunctionality),
+                        linkOptions: DataflowOption.PropagateCompletion,
+                        cancellationToken: cancellationToken),
 
                     ProjectDataSources.SyncLinkTo(
                         _activeConfiguredProjectProvider.ActiveConfiguredProjectBlock.SyncLinkOptions(),
                         _projectSubscriptionService.ProjectBuildRuleSource.SourceBlock.SyncLinkOptions(GetProjectBuildOptions()),
                         _projectBuildSnapshotService.SourceBlock.SyncLinkOptions(),
-                            target: DataflowBlockFactory.CreateActionBlock<IProjectVersionedValue<ValueTuple<ConfiguredProject, IProjectSubscriptionUpdate, IProjectBuildSnapshot>>>(e =>
-                                OnProjectChangedAsync(new ProjectChange(e), WorkspaceContextHandlerType.ProjectBuild),
-                                _project.UnconfiguredProject,
-                                ProjectFaultSeverity.LimitedFunctionality),
-                            linkOptions: DataflowOption.PropagateCompletion,
-                            cancellationToken: cancellationToken),
+                        target: DataflowBlockFactory.CreateActionBlock<IProjectVersionedValue<ValueTuple<ConfiguredProject, IProjectSubscriptionUpdate, IProjectBuildSnapshot>>>(
+                            e => OnProjectChangedAsync(new ProjectChange(e), WorkspaceContextHandlerType.ProjectBuild),
+                            _project.UnconfiguredProject,
+                            ProjectFaultSeverity.LimitedFunctionality),
+                        linkOptions: DataflowOption.PropagateCompletion,
+                        cancellationToken: cancellationToken),
 
                     ProjectDataSources.SyncLinkTo(
                         _activeConfiguredProjectProvider.ActiveConfiguredProjectBlock.SyncLinkOptions(),
                         _projectSubscriptionService.SourceItemsRuleSource.SourceBlock.SyncLinkOptions(),
-                            target: DataflowBlockFactory.CreateActionBlock<IProjectVersionedValue<ValueTuple<ConfiguredProject, IProjectSubscriptionUpdate>>>(e =>
-                                OnProjectChangedAsync(new ProjectChange(e), WorkspaceContextHandlerType.SourceItems),
-                                _project.UnconfiguredProject,
-                                ProjectFaultSeverity.LimitedFunctionality),
-                            linkOptions: DataflowOption.PropagateCompletion,
-                            cancellationToken: cancellationToken),
+                        target: DataflowBlockFactory.CreateActionBlock<IProjectVersionedValue<ValueTuple<ConfiguredProject, IProjectSubscriptionUpdate>>>(
+                            e => OnProjectChangedAsync(new ProjectChange(e), WorkspaceContextHandlerType.SourceItems),
+                            _project.UnconfiguredProject,
+                            ProjectFaultSeverity.LimitedFunctionality),
+                        linkOptions: DataflowOption.PropagateCompletion,
+                        cancellationToken: cancellationToken),
                 };
             }
 
