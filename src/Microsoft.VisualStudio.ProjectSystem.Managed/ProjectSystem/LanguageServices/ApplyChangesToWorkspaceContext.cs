@@ -20,8 +20,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
     /// </summary>
     /// <remarks>
     ///     This class is not thread-safe and it is up to callers to prevent overlapping of calls to
-    ///     <see cref="ApplyProjectBuildAsync(IProjectVersionedValue{IProjectSubscriptionUpdate}, IProjectBuildSnapshot, ContextState, CancellationToken)"/> and
-    ///     <see cref="ApplyProjectEvaluationAsync(IProjectVersionedValue{IProjectSubscriptionUpdate}, ContextState, CancellationToken)"/>.
+    ///     <see cref="ApplyProjectBuildAsync(IProjectVersionedValue{IProjectSubscriptionUpdate}, IProjectBuildSnapshot, ContextState, CancellationToken)"/>,
+    ///     <see cref="ApplyProjectEvaluationAsync(IProjectVersionedValue{IProjectSubscriptionUpdate}, ContextState, CancellationToken)"/> and
+    ///     <see cref="ApplySourceItemsAsync(IProjectVersionedValue{IProjectSubscriptionUpdate}, ContextState, CancellationToken)"/>
     /// </remarks>
     [Export(typeof(IApplyChangesToWorkspaceContext))]
     internal class ApplyChangesToWorkspaceContext : OnceInitializedOnceDisposed, IApplyChangesToWorkspaceContext
