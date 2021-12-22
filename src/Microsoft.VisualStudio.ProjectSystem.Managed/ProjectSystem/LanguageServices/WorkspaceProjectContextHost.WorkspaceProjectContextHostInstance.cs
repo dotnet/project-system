@@ -229,20 +229,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
             {
                 // Notify operation progress that we've now processed these versions of our input, if they are
                 // up-to-date with the latest version that produced, then we no longer considered "in progress".
-                switch (handlerType)
+                IDataProgressTrackerServiceRegistration? registration = handlerType switch
                 {
-                    case WorkspaceContextHandlerType.Evaluation:
-                        _evaluationProgressRegistration!.NotifyOutputDataCalculated(dataSourceVersions);
-                        break;
+                    WorkspaceContextHandlerType.Evaluation => _evaluationProgressRegistration,
+                    WorkspaceContextHandlerType.ProjectBuild => _projectBuildProgressRegistration,
+                    WorkspaceContextHandlerType.SourceItems => _sourceItemsProgressRegistration
+                };
 
-                    case WorkspaceContextHandlerType.ProjectBuild:
-                        _projectBuildProgressRegistration!.NotifyOutputDataCalculated(dataSourceVersions);
-                        break;
-
-                    case WorkspaceContextHandlerType.SourceItems:
-                        _sourceItemsProgressRegistration!.NotifyOutputDataCalculated(dataSourceVersions);
-                        break;
-                }
+                registration!.NotifyOutputDataCalculated(dataSourceVersions);
             }
 
             [MemberNotNull(nameof(_contextAccessor))]
