@@ -8,9 +8,6 @@ using System.Threading.Tasks.Dataflow;
 
 namespace Microsoft.VisualStudio.ProjectSystem
 {
-    /// <summary>
-    ///     Provides common well-known project flags.
-    /// </summary>
     internal static class DataflowUtilities
     {
         /// <summary>
