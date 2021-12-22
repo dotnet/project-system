@@ -1,7 +1,6 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
 using System;
-using System.Collections.Immutable;
 using System.ComponentModel.Composition;
 using System.Diagnostics.CodeAnalysis;
 using System.Threading;
@@ -221,22 +220,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
                 {
                     await context.EndBatchAsync();
 
-                    NotifyOutputDataCalculated(change.DataSourceVersions, handlerType);
+                    // Notify operation progress that we've now processed these versions of our input, if they are
+                    // up-to-date with the latest version that produced, then we no longer considered "in progress".
+                    IDataProgressTrackerServiceRegistration? registration = handlerType switch
+                    {
+                        WorkspaceContextHandlerType.Evaluation => _evaluationProgressRegistration,
+                        WorkspaceContextHandlerType.ProjectBuild => _projectBuildProgressRegistration,
+                        WorkspaceContextHandlerType.SourceItems => _sourceItemsProgressRegistration
+                    };
+
+                    registration!.NotifyOutputDataCalculated(change.DataSourceVersions);
                 }
-            }
-
-            private void NotifyOutputDataCalculated(IImmutableDictionary<NamedIdentity, IComparable> dataSourceVersions, WorkspaceContextHandlerType handlerType)
-            {
-                // Notify operation progress that we've now processed these versions of our input, if they are
-                // up-to-date with the latest version that produced, then we no longer considered "in progress".
-                IDataProgressTrackerServiceRegistration? registration = handlerType switch
-                {
-                    WorkspaceContextHandlerType.Evaluation => _evaluationProgressRegistration,
-                    WorkspaceContextHandlerType.ProjectBuild => _projectBuildProgressRegistration,
-                    WorkspaceContextHandlerType.SourceItems => _sourceItemsProgressRegistration
-                };
-
-                registration!.NotifyOutputDataCalculated(dataSourceVersions);
             }
 
             [MemberNotNull(nameof(_contextAccessor))]
