@@ -3,6 +3,7 @@
 using System;
 using System.ComponentModel.Composition;
 using System.Diagnostics.CodeAnalysis;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.LanguageServices.ProjectSystem;
@@ -36,6 +37,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
             private DisposableBag? _disposables;
             private IWorkspaceProjectContextAccessor? _contextAccessor;
             private ExportLifetimeContext<IApplyChangesToWorkspaceContext>? _applyChangesToWorkspaceContext;
+            private ContextState? _lastContextState = null;
 
             public WorkspaceProjectContextHostInstance(ConfiguredProject project,
                                                        IProjectThreadingService threadingService,
@@ -189,11 +191,26 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
                 // NOTE we cannot call CheckForInitialized here, as this method may be invoked during initialization
                 Assumes.NotNull(_contextAccessor);
 
-                IWorkspaceProjectContext context = _contextAccessor.Context;
                 bool isActiveEditorContext = _activeWorkspaceProjectContextTracker.IsActiveEditorContext(_contextAccessor.ContextId);
                 bool isActiveConfiguration = change.ActiveConfiguredProject == _project;
 
+                bool hasChange =
+                    change.Subscription.Value.ProjectChanges.Any(c => c.Value.Difference.AnyChanges) ||
+                    change.CommandLineArgumentsSnapshot?.IsChanged == true ||
+                    _lastContextState?.IsActiveConfiguration != isActiveConfiguration ||
+                    _lastContextState?.IsActiveEditorContext != isActiveEditorContext;
+
+                // Avoid starting a batch when nothing has actually changed
+                if (!hasChange)
+                {
+                    return;
+                }
+
                 var state = new ContextState(isActiveEditorContext, isActiveConfiguration);
+
+                _lastContextState = state;
+
+                IWorkspaceProjectContext context = _contextAccessor.Context;
 
                 context.StartBatch();
 
