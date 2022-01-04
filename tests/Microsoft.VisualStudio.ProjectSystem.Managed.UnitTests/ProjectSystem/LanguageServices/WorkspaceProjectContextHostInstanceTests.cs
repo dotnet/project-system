@@ -161,9 +161,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 
             var applyChangesToWorkspaceContext = handlerType switch
             {
-                WorkspaceContextHandlerType.Evaluation => IApplyChangesToWorkspaceContextFactory.ImplementApplyProjectEvaluationAsync(ApplyProjectEvaluation),
-                WorkspaceContextHandlerType.ProjectBuild => IApplyChangesToWorkspaceContextFactory.ImplementApplyProjectBuildAsync(ApplyProjectBuild),
-                WorkspaceContextHandlerType.SourceItems => IApplyChangesToWorkspaceContextFactory.ImplementApplySourceItemsAsync(ApplyProjectEvaluation), // ApplyProjectEvaluation works for source items as they share a signature
+                WorkspaceContextHandlerType.Evaluation => IApplyChangesToWorkspaceContextFactory.ImplementApplyProjectEvaluation(ApplyProjectEvaluation),
+                WorkspaceContextHandlerType.ProjectBuild => IApplyChangesToWorkspaceContextFactory.ImplementApplyProjectBuild(ApplyProjectBuild),
+                WorkspaceContextHandlerType.SourceItems => IApplyChangesToWorkspaceContextFactory.ImplementApplySourceItems(ApplyProjectEvaluation), // ApplyProjectEvaluation works for source items as they share a signature
                 _ => throw new NotImplementedException()
             };
 
@@ -204,9 +204,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 
             var applyChangesToWorkspaceContext = handlerType switch
             {
-                WorkspaceContextHandlerType.Evaluation => IApplyChangesToWorkspaceContextFactory.ImplementApplyProjectEvaluationAsync(ApplyProjectEvaluation),
-                WorkspaceContextHandlerType.ProjectBuild => IApplyChangesToWorkspaceContextFactory.ImplementApplyProjectBuildAsync(ApplyProjectBuild),
-                WorkspaceContextHandlerType.SourceItems => IApplyChangesToWorkspaceContextFactory.ImplementApplySourceItemsAsync(ApplyProjectEvaluation), // ApplyProjectEvaluation works for source items as they share a signature
+                WorkspaceContextHandlerType.Evaluation => IApplyChangesToWorkspaceContextFactory.ImplementApplyProjectEvaluation(ApplyProjectEvaluation),
+                WorkspaceContextHandlerType.ProjectBuild => IApplyChangesToWorkspaceContextFactory.ImplementApplyProjectBuild(ApplyProjectBuild),
+                WorkspaceContextHandlerType.SourceItems => IApplyChangesToWorkspaceContextFactory.ImplementApplySourceItems(ApplyProjectEvaluation), // ApplyProjectEvaluation works for source items as they share a signature
                 _ => throw new NotImplementedException()
             };
 
@@ -241,9 +241,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 
             var applyChangesToWorkspaceContext = handlerType switch
             {
-                WorkspaceContextHandlerType.Evaluation => IApplyChangesToWorkspaceContextFactory.ImplementApplyProjectEvaluationAsync(ApplyProjectEvaluation),
-                WorkspaceContextHandlerType.ProjectBuild => IApplyChangesToWorkspaceContextFactory.ImplementApplyProjectBuildAsync(ApplyProjectBuild),
-                WorkspaceContextHandlerType.SourceItems => IApplyChangesToWorkspaceContextFactory.ImplementApplySourceItemsAsync(ApplyProjectEvaluation), // ApplyProjectEvaluation works for source items as they share a signature
+                WorkspaceContextHandlerType.Evaluation => IApplyChangesToWorkspaceContextFactory.ImplementApplyProjectEvaluation(ApplyProjectEvaluation),
+                WorkspaceContextHandlerType.ProjectBuild => IApplyChangesToWorkspaceContextFactory.ImplementApplyProjectBuild(ApplyProjectBuild),
+                WorkspaceContextHandlerType.SourceItems => IApplyChangesToWorkspaceContextFactory.ImplementApplySourceItems(ApplyProjectEvaluation), // ApplyProjectEvaluation works for source items as they share a signature
                 _ => throw new NotImplementedException()
             };
 
@@ -281,9 +281,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
             var activeWorkspaceProjectContextTracker = IActiveEditorContextTrackerFactory.ImplementIsActiveEditorContext(context => isActiveContext);
             var applyChangesToWorkspaceContext = handlerType switch
             {
-                WorkspaceContextHandlerType.Evaluation => IApplyChangesToWorkspaceContextFactory.ImplementApplyProjectEvaluationAsync(ApplyProjectEvaluation),
-                WorkspaceContextHandlerType.ProjectBuild => IApplyChangesToWorkspaceContextFactory.ImplementApplyProjectBuildAsync(ApplyProjectBuild),
-                WorkspaceContextHandlerType.SourceItems => IApplyChangesToWorkspaceContextFactory.ImplementApplySourceItemsAsync(ApplyProjectEvaluation), // ApplyProjectEvaluation works for source items as they share a signature
+                WorkspaceContextHandlerType.Evaluation => IApplyChangesToWorkspaceContextFactory.ImplementApplyProjectEvaluation(ApplyProjectEvaluation),
+                WorkspaceContextHandlerType.ProjectBuild => IApplyChangesToWorkspaceContextFactory.ImplementApplyProjectBuild(ApplyProjectBuild),
+                WorkspaceContextHandlerType.SourceItems => IApplyChangesToWorkspaceContextFactory.ImplementApplySourceItems(ApplyProjectEvaluation), // ApplyProjectEvaluation works for source items as they share a signature
                 _ => throw new NotImplementedException()
             };
 

@@ -2,7 +2,6 @@
 
 using System;
 using System.Threading;
-using System.Threading.Tasks;
 using Moq;
 
 namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
@@ -14,32 +13,29 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
             return Mock.Of<IApplyChangesToWorkspaceContext>();
         }
 
-        public static IApplyChangesToWorkspaceContext ImplementApplyProjectBuildAsync(Action<IProjectVersionedValue<IProjectSubscriptionUpdate>, CommandLineArgumentsSnapshot, ContextState, CancellationToken> action)
+        public static IApplyChangesToWorkspaceContext ImplementApplyProjectBuild(Action<IProjectVersionedValue<IProjectSubscriptionUpdate>, CommandLineArgumentsSnapshot, ContextState, CancellationToken> action)
         {
             var mock = new Mock<IApplyChangesToWorkspaceContext>();
-            mock.Setup(c => c.ApplyProjectBuildAsync(It.IsAny<IProjectVersionedValue<IProjectSubscriptionUpdate>>(), It.IsAny<CommandLineArgumentsSnapshot>(), It.IsAny<ContextState>(), It.IsAny<CancellationToken>()))
-                .Callback(action)
-                .Returns(Task.CompletedTask);
+            mock.Setup(c => c.ApplyProjectBuild(It.IsAny<IProjectVersionedValue<IProjectSubscriptionUpdate>>(), It.IsAny<CommandLineArgumentsSnapshot>(), It.IsAny<ContextState>(), It.IsAny<CancellationToken>()))
+                .Callback(action);
 
             return mock.Object;
         }
 
-        public static IApplyChangesToWorkspaceContext ImplementApplyProjectEvaluationAsync(Action<IProjectVersionedValue<IProjectSubscriptionUpdate>, ContextState, CancellationToken> action)
+        public static IApplyChangesToWorkspaceContext ImplementApplyProjectEvaluation(Action<IProjectVersionedValue<IProjectSubscriptionUpdate>, ContextState, CancellationToken> action)
         {
             var mock = new Mock<IApplyChangesToWorkspaceContext>();
-            mock.Setup(c => c.ApplyProjectEvaluationAsync(It.IsAny<IProjectVersionedValue<IProjectSubscriptionUpdate>>(), It.IsAny<ContextState>(), It.IsAny<CancellationToken>()))
-                .Callback(action)
-                .Returns(Task.CompletedTask);
+            mock.Setup(c => c.ApplyProjectEvaluation(It.IsAny<IProjectVersionedValue<IProjectSubscriptionUpdate>>(), It.IsAny<ContextState>(), It.IsAny<CancellationToken>()))
+                .Callback(action);
 
             return mock.Object;
         }
 
-        public static IApplyChangesToWorkspaceContext ImplementApplySourceItemsAsync(Action<IProjectVersionedValue<IProjectSubscriptionUpdate>, ContextState, CancellationToken> action)
+        public static IApplyChangesToWorkspaceContext ImplementApplySourceItems(Action<IProjectVersionedValue<IProjectSubscriptionUpdate>, ContextState, CancellationToken> action)
         {
             var mock = new Mock<IApplyChangesToWorkspaceContext>();
-            mock.Setup(c => c.ApplySourceItemsAsync(It.IsAny<IProjectVersionedValue<IProjectSubscriptionUpdate>>(), It.IsAny<ContextState>(), It.IsAny<CancellationToken>()))
-                .Callback(action)
-                .Returns(Task.CompletedTask);
+            mock.Setup(c => c.ApplySourceItems(It.IsAny<IProjectVersionedValue<IProjectSubscriptionUpdate>>(), It.IsAny<ContextState>(), It.IsAny<CancellationToken>()))
+                .Callback(action);
 
             return mock.Object;
         }

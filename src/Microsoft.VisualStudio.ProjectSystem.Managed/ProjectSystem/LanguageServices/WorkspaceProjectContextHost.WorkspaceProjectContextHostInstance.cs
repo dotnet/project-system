@@ -219,16 +219,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
                     switch (handlerType)
                     {
                         case WorkspaceContextHandlerType.Evaluation:
-                            await _applyChangesToWorkspaceContext!.Value.ApplyProjectEvaluationAsync(change.Subscription, state, cancellationToken);
+                            _applyChangesToWorkspaceContext!.Value.ApplyProjectEvaluation(change.Subscription, state, cancellationToken);
                             break;
 
                         case WorkspaceContextHandlerType.ProjectBuild:
                             Assumes.NotNull(change.CommandLineArgumentsSnapshot);
-                            await _applyChangesToWorkspaceContext!.Value.ApplyProjectBuildAsync(change.Subscription, change.CommandLineArgumentsSnapshot, state, cancellationToken);
+                            _applyChangesToWorkspaceContext!.Value.ApplyProjectBuild(change.Subscription, change.CommandLineArgumentsSnapshot, state, cancellationToken);
                             break;
 
                         case WorkspaceContextHandlerType.SourceItems:
-                            await _applyChangesToWorkspaceContext!.Value.ApplySourceItemsAsync(change.Subscription, state, cancellationToken);
+                            _applyChangesToWorkspaceContext!.Value.ApplySourceItems(change.Subscription, state, cancellationToken);
                             break;
                     }
                 }
