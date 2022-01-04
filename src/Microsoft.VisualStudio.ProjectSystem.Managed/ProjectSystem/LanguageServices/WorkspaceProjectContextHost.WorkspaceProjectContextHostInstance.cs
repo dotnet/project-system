@@ -92,7 +92,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
                     ProjectDataSources.SyncLinkTo(
                         _activeConfiguredProjectProvider.ActiveConfiguredProjectBlock.SyncLinkOptions(),
                         _projectSubscriptionService.ProjectRuleSource.SourceBlock.SyncLinkOptions(GetProjectEvaluationOptions()),
-                        target: DataflowBlockFactory.CreateActionBlock<IProjectVersionedValue<ValueTuple<ConfiguredProject, IProjectSubscriptionUpdate>>>(
+                        target: DataflowBlockFactory.CreateActionBlock<IProjectVersionedValue<(ConfiguredProject, IProjectSubscriptionUpdate)>>(
                             e => OnProjectChangedAsync(new ProjectChange(e), WorkspaceContextHandlerType.Evaluation),
                             _project.UnconfiguredProject,
                             ProjectFaultSeverity.LimitedFunctionality),
@@ -103,7 +103,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
                         _activeConfiguredProjectProvider.ActiveConfiguredProjectBlock.SyncLinkOptions(),
                         _projectSubscriptionService.ProjectBuildRuleSource.SourceBlock.SyncLinkOptions(GetProjectBuildOptions()),
                         _projectBuildSnapshotService.SourceBlock.SyncLinkOptions(),
-                        target: DataflowBlockFactory.CreateActionBlock<IProjectVersionedValue<ValueTuple<ConfiguredProject, IProjectSubscriptionUpdate, IProjectBuildSnapshot>>>(
+                        target: DataflowBlockFactory.CreateActionBlock<IProjectVersionedValue<(ConfiguredProject, IProjectSubscriptionUpdate, IProjectBuildSnapshot)>>(
                             e => OnProjectChangedAsync(new ProjectChange(e), WorkspaceContextHandlerType.ProjectBuild),
                             _project.UnconfiguredProject,
                             ProjectFaultSeverity.LimitedFunctionality),
@@ -113,7 +113,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
                     ProjectDataSources.SyncLinkTo(
                         _activeConfiguredProjectProvider.ActiveConfiguredProjectBlock.SyncLinkOptions(),
                         _projectSubscriptionService.SourceItemsRuleSource.SourceBlock.SyncLinkOptions(),
-                        target: DataflowBlockFactory.CreateActionBlock<IProjectVersionedValue<ValueTuple<ConfiguredProject, IProjectSubscriptionUpdate>>>(
+                        target: DataflowBlockFactory.CreateActionBlock<IProjectVersionedValue<(ConfiguredProject, IProjectSubscriptionUpdate)>>(
                             e => OnProjectChangedAsync(new ProjectChange(e), WorkspaceContextHandlerType.SourceItems),
                             _project.UnconfiguredProject,
                             ProjectFaultSeverity.LimitedFunctionality),
