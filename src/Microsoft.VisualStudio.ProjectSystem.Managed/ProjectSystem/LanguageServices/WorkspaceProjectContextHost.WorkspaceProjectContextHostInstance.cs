@@ -6,7 +6,6 @@ using System.Diagnostics.CodeAnalysis;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.LanguageServices.ProjectSystem;
-using Microsoft.VisualStudio.ProjectSystem.Build;
 using Microsoft.VisualStudio.ProjectSystem.OperationProgress;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
 using Microsoft.VisualStudio.ProjectSystem.Utilities;
@@ -29,7 +28,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
             private readonly IActiveConfiguredProjectProvider _activeConfiguredProjectProvider;
             private readonly ExportFactory<IApplyChangesToWorkspaceContext> _applyChangesToWorkspaceContextFactory;
             private readonly IDataProgressTrackerService _dataProgressTrackerService;
-            private readonly IProjectBuildSnapshotService _projectBuildSnapshotService;
+            private readonly ICommandLineArgumentsProvider _commandLineArgumentsProvider;
 
             private IDataProgressTrackerServiceRegistration? _evaluationProgressRegistration;
             private IDataProgressTrackerServiceRegistration? _projectBuildProgressRegistration;
@@ -47,7 +46,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
                                                        IActiveConfiguredProjectProvider activeConfiguredProjectProvider,
                                                        ExportFactory<IApplyChangesToWorkspaceContext> applyChangesToWorkspaceContextFactory,
                                                        IDataProgressTrackerService dataProgressTrackerService,
-                                                       IProjectBuildSnapshotService projectBuildSnapshotService)
+                                                       ICommandLineArgumentsProvider commandLineArgumentsProvider)
                 : base(threadingService.JoinableTaskContext)
             {
                 _project = project;
@@ -58,7 +57,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
                 _activeConfiguredProjectProvider = activeConfiguredProjectProvider;
                 _applyChangesToWorkspaceContextFactory = applyChangesToWorkspaceContextFactory;
                 _dataProgressTrackerService = dataProgressTrackerService;
-                _projectBuildSnapshotService = projectBuildSnapshotService;
+                _commandLineArgumentsProvider = commandLineArgumentsProvider;
             }
 
             public Task InitializeAsync()
@@ -102,8 +101,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
                     ProjectDataSources.SyncLinkTo(
                         _activeConfiguredProjectProvider.ActiveConfiguredProjectBlock.SyncLinkOptions(),
                         _projectSubscriptionService.ProjectBuildRuleSource.SourceBlock.SyncLinkOptions(GetProjectBuildOptions()),
-                        _projectBuildSnapshotService.SourceBlock.SyncLinkOptions(),
-                        target: DataflowBlockFactory.CreateActionBlock<IProjectVersionedValue<(ConfiguredProject, IProjectSubscriptionUpdate, IProjectBuildSnapshot)>>(
+                        _commandLineArgumentsProvider.SourceBlock.SyncLinkOptions(),
+                        target: DataflowBlockFactory.CreateActionBlock<IProjectVersionedValue<(ConfiguredProject, IProjectSubscriptionUpdate, CommandLineArgumentsSnapshot)>>(
                             e => OnProjectChangedAsync(new ProjectChange(e), WorkspaceContextHandlerType.ProjectBuild),
                             _project.UnconfiguredProject,
                             ProjectFaultSeverity.LimitedFunctionality),
@@ -207,8 +206,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
                             break;
 
                         case WorkspaceContextHandlerType.ProjectBuild:
-                            Assumes.NotNull(change.BuildSnapshot);
-                            await _applyChangesToWorkspaceContext!.Value.ApplyProjectBuildAsync(change.Subscription, change.BuildSnapshot, state, cancellationToken);
+                            Assumes.NotNull(change.CommandLineArgumentsSnapshot);
+                            await _applyChangesToWorkspaceContext!.Value.ApplyProjectBuildAsync(change.Subscription, change.CommandLineArgumentsSnapshot, state, cancellationToken);
                             break;
 
                         case WorkspaceContextHandlerType.SourceItems:

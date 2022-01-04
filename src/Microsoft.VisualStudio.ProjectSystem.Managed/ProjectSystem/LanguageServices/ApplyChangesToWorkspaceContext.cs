@@ -2,14 +2,12 @@
 
 using System;
 using System.Collections.Generic;
-using System.Collections.Immutable;
 using System.ComponentModel.Composition;
 using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.LanguageServices.ProjectSystem;
-using Microsoft.VisualStudio.ProjectSystem.Build;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
 using Microsoft.VisualStudio.ProjectSystem.VS;
 
@@ -20,7 +18,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
     /// </summary>
     /// <remarks>
     ///     This class is not thread-safe and it is up to callers to prevent overlapping of calls to
-    ///     <see cref="ApplyProjectBuildAsync(IProjectVersionedValue{IProjectSubscriptionUpdate}, IProjectBuildSnapshot, ContextState, CancellationToken)"/>,
+    ///     <see cref="ApplyProjectBuildAsync(IProjectVersionedValue{IProjectSubscriptionUpdate}, CommandLineArgumentsSnapshot, ContextState, CancellationToken)"/>,
     ///     <see cref="ApplyProjectEvaluationAsync(IProjectVersionedValue{IProjectSubscriptionUpdate}, ContextState, CancellationToken)"/> and
     ///     <see cref="ApplySourceItemsAsync(IProjectVersionedValue{IProjectSubscriptionUpdate}, ContextState, CancellationToken)"/>
     /// </remarks>
@@ -61,12 +59,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 
         public async Task ApplyProjectBuildAsync(
             IProjectVersionedValue<IProjectSubscriptionUpdate> update,
-            IProjectBuildSnapshot buildSnapshot,
+            CommandLineArgumentsSnapshot commandLineArgumentsSnapshot,
             ContextState state,
             CancellationToken cancellationToken)
         {
-            Requires.NotNull(buildSnapshot, nameof(buildSnapshot));
             Requires.NotNull(update, nameof(update));
+            Requires.NotNull(commandLineArgumentsSnapshot, nameof(commandLineArgumentsSnapshot));
 
             VerifyInitializedAndNotDisposed();
 
@@ -76,29 +74,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
             {
                 IComparable version = GetConfiguredProjectVersion(update);
 
-                ProcessOptions(buildSnapshot);
+                Assumes.NotNull(_context);
+
+                // We just need to pass all options to Roslyn
+                _context.SetOptions(commandLineArgumentsSnapshot.Arguments);
+
                 await ProcessCommandLineAsync(version, projectChange.Difference, state, cancellationToken);
                 ProcessProjectBuildFailure(projectChange.After);
             }
-        }
-
-        private void ProcessOptions(IProjectBuildSnapshot buildSnapshot)
-        {
-            Assumes.NotNull(_context);
-
-            Assumes.True(buildSnapshot.TargetOutputs.TryGetValue(
-                "CompileDesignTime",
-                out IImmutableList<KeyValuePair<string, IImmutableDictionary<string, string>>> targetOutputs));
-
-            var options = ImmutableArray.CreateBuilder<string>(targetOutputs.Count);
-
-            foreach ((string option, _) in targetOutputs)
-            {
-                options.Add(option);
-            }
-
-            // We just need to pass all options to Roslyn
-            _context.SetOptions(options.MoveToImmutable());
         }
 
         public Task ApplyProjectEvaluationAsync(IProjectVersionedValue<IProjectSubscriptionUpdate> update, ContextState state, CancellationToken cancellationToken)

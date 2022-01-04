@@ -2,7 +2,6 @@
 
 using System;
 using System.Collections.Immutable;
-using Microsoft.VisualStudio.ProjectSystem.Build;
 
 namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 {
@@ -17,14 +16,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
             {
                 public ConfiguredProject ActiveConfiguredProject { get; }
                 public IProjectVersionedValue<IProjectSubscriptionUpdate> Subscription { get; }
-                public IProjectBuildSnapshot? BuildSnapshot { get; }
+                public CommandLineArgumentsSnapshot? CommandLineArgumentsSnapshot { get; }
                 public IImmutableDictionary<NamedIdentity, IComparable> DataSourceVersions { get; }
 
-                public ProjectChange(IProjectVersionedValue<(ConfiguredProject project, IProjectSubscriptionUpdate subscription, IProjectBuildSnapshot buildSnapshot)> update)
+                public ProjectChange(IProjectVersionedValue<(ConfiguredProject project, IProjectSubscriptionUpdate subscription, CommandLineArgumentsSnapshot commandLineArguments)> update)
                 {
                     ActiveConfiguredProject = update.Value.project;
                     Subscription = update.Derive(u => u.subscription);
-                    BuildSnapshot = update.Value.buildSnapshot;
+                    CommandLineArgumentsSnapshot = update.Value.commandLineArguments;
                     DataSourceVersions = update.DataSourceVersions;
                 }
 
