@@ -226,7 +226,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
                     {
                         WorkspaceContextHandlerType.Evaluation => _evaluationProgressRegistration,
                         WorkspaceContextHandlerType.ProjectBuild => _projectBuildProgressRegistration,
-                        WorkspaceContextHandlerType.SourceItems => _sourceItemsProgressRegistration
+                        WorkspaceContextHandlerType.SourceItems => _sourceItemsProgressRegistration,
+                        _ => throw new NotImplementedException()
                     };
 
                     registration!.NotifyOutputDataCalculated(change.DataSourceVersions);
