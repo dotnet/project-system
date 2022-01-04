@@ -155,8 +155,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         {
             Assumes.NotNull(_context);
 
-            _handlers = _workspaceContextHandlerFactories.Select(h => h.CreateExport())
-                                                         .ToArray();
+            _handlers = _workspaceContextHandlerFactories.SelectArray(h => h.CreateExport());
 
             foreach (ExportLifetimeContext<IWorkspaceContextHandler> handler in _handlers)
             {

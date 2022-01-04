@@ -86,5 +86,17 @@ namespace Microsoft.VisualStudio
 
             return builder.MoveToImmutable();
         }
+
+        public static TOut[] SelectArray<TIn, TOut>(this TIn[] array, Func<TIn, TOut> selector)
+        {
+            TOut[] output = new TOut[array.Length];
+
+            for (int i = 0; i < array.Length; i++)
+            {
+                output[i] = selector(array[i]);
+            }
+
+            return output;
+        }
     }
 }
