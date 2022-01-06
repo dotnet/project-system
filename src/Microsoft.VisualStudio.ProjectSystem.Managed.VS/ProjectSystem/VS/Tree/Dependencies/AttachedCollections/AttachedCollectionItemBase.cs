@@ -101,14 +101,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedColl
 
         TPattern IInteractionPatternProvider.GetPattern<TPattern>() where TPattern : class
         {
-#pragma warning disable CS8603 // Possible null reference return. (https://github.com/dotnet/roslyn/issues/43619)
             if (s_supportedPatterns.Contains(typeof(TPattern)))
             {
                 return this as TPattern;
             }
 
             return null;
-#pragma warning restore CS8603 // Possible null reference return.
         }
 
         public virtual int CompareTo(object obj)
