@@ -414,3 +414,4 @@ abstract Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedColle
 abstract Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections.RelationBase<TParent, TChild>.UpdateContainsCollection(TParent! parent, Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections.AggregateContainsRelationCollectionSpan! span) -> void
 ~static Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages.PropertyPageResources.JSWebView2DebuggingAdditionalText.get -> string
 ~static Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages.PropertyPageResources.chkJSWebView2DebuggingText.get -> string
+virtual Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections.AttachedCollectionItemBase.GetPattern<TPattern>() -> TPattern?

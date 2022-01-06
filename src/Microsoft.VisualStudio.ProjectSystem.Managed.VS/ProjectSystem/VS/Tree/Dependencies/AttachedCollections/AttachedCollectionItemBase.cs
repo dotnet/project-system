@@ -99,7 +99,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedColl
 
         protected virtual IContextMenuController? ContextMenuController => null;
 
-        TPattern IInteractionPatternProvider.GetPattern<TPattern>() where TPattern : class
+        public virtual TPattern? GetPattern<TPattern>() where TPattern : class
         {
             if (s_supportedPatterns.Contains(typeof(TPattern)))
             {
