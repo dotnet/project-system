@@ -27,7 +27,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedColl
     {
         // Other patterns we may wish to utilise in future are:
         //
-        // - IInvocationPattern
         // - ISupportExpansionEvents
         // - ISupportExpansionState
         // - IDragDropSourcePattern
@@ -43,7 +42,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedColl
         {
             typeof(ITreeDisplayItem),
             typeof(IBrowsablePattern),
-            typeof(IContextMenuPattern)
+            typeof(IContextMenuPattern),
+            typeof(IInvocationPattern)
         };
 
         public event PropertyChangedEventHandler? PropertyChanged;
