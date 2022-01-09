@@ -106,6 +106,20 @@ When specifying `Original` metadata, the `Set` property has no effect. Each copi
 looking only at the timestamps of the source and destination. Sets are used to compare groups of items, so these
 features do not compose. If both `Set` and `Original` metadata are present, `Original` will take effect and `Set` is ignored.
 
+### Transformed files
+
+Cases where a single input file produces a single output file during build should be modelled in the same way as copied files above. The fast up-to-date check only inspects the timestamps of copied files, not their contents.
+
+To model this, use:
+
+```xml
+<UpToDateCheckBuilt Include="Source\MyFile.ts" Original="Destination\MyFile.js" />
+```
+
+The same details apply regarding `Set` metadata as described for copied files.
+
+When multiple inputs produce one or more outputs, use `BuildUpToDateCheckInput` and `BuildUpToDateCheckOutput` items with `Set` metadata, as described earlier in this document.
+
 ---
 
 ## Debugging
