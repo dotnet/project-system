@@ -134,7 +134,7 @@ build output.
 - `Minimal` produces a single message per out-of-date project.
 - `Info` and `Verbose` provide increasingly detailed information about the inner workings of the check, which are useful for debugging.
 
-### .NET Framework projects
+### .NET Framework (non-SDK-style) projects
 
 Enabling up-to-date check logging for old-style (non-SDK) projects is a little more manual:
 
