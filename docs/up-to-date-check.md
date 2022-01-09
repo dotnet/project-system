@@ -38,8 +38,8 @@ Alternatively, you may override the MSBuild targets that Visual Studio calls to 
 allows custom logic to be executed when determining the set of items. The relevant targets are defined in
 `Microsoft.Managed.DesignTime.targets` with names:
 
-- `CollectUpToDateCheckInputDesignTime`
-- `CollectUpToDateCheckBuiltDesignTime`
+- [`CollectUpToDateCheckInputDesignTime`](https://github.com/dotnet/project-system/blob/255712176d4b5dc4be054a45a5f63048aa89f4de/src/Microsoft.VisualStudio.ProjectSystem.Managed/ProjectSystem/DesignTimeTargets/Microsoft.Managed.DesignTime.targets#L414-L415)
+- [`CollectUpToDateCheckBuiltDesignTime`](https://github.com/dotnet/project-system/blob/255712176d4b5dc4be054a45a5f63048aa89f4de/src/Microsoft.VisualStudio.ProjectSystem.Managed/ProjectSystem/DesignTimeTargets/Microsoft.Managed.DesignTime.targets#L420-L445)
 
 Note that changes to inputs **must** result in changes to outputs. If this rule is not observed, then an input may
 have a timestamp after all outputs, which leads the up-to-date check to consider the project out-of-date after building
