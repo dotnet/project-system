@@ -21,16 +21,15 @@ check work correctly.
 For customized builds, you may add to the following item types:
 
 - `UpToDateCheckInput` &mdash; Describes an input file that MSBuild would not otherwise know about
-- `UpToDateCheckBuilt` &mdash; Describes an output file that MSBuild would not otherwise know about
-
-Note that `UpToDateCheckOutput` exists but is deprecated and only maintained for backwards compatability.
-Projects should use to `UpToDateCheckBuilt` instead.
+- `UpToDateCheckOutput` &mdash; Describes an output file that MSBuild would not otherwise know about
+- `UpToDateCheckBuilt` &mdash; Describes an output file that's produced from a single input file, that MSBuild would not otherwise know about
 
 You may add to these item types declaratively. For example:
 
 ```xml
 <ItemGroup>
   <UpToDateCheckInput Include="MyCustomBuildInput.abc" />
+  <UpToDateCheckOutput Include="MyCustomBuildOutput.def" />
 </ItemGroup>
 ```
 
@@ -39,6 +38,7 @@ allows custom logic to be executed when determining the set of items. The releva
 `Microsoft.Managed.DesignTime.targets` with names:
 
 - [`CollectUpToDateCheckInputDesignTime`](https://github.com/dotnet/project-system/blob/255712176d4b5dc4be054a45a5f63048aa89f4de/src/Microsoft.VisualStudio.ProjectSystem.Managed/ProjectSystem/DesignTimeTargets/Microsoft.Managed.DesignTime.targets#L414-L415)
+- [`CollectUpToDateCheckOutputDesignTime`](https://github.com/dotnet/project-system/blob/255712176d4b5dc4be054a45a5f63048aa89f4de/src/Microsoft.VisualStudio.ProjectSystem.Managed/ProjectSystem/DesignTimeTargets/Microsoft.Managed.DesignTime.targets#L417-L418)
 - [`CollectUpToDateCheckBuiltDesignTime`](https://github.com/dotnet/project-system/blob/255712176d4b5dc4be054a45a5f63048aa89f4de/src/Microsoft.VisualStudio.ProjectSystem.Managed/ProjectSystem/DesignTimeTargets/Microsoft.Managed.DesignTime.targets#L420-L445)
 
 Note that changes to inputs **must** result in changes to outputs. If this rule is not observed, then an input may
