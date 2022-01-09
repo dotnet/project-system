@@ -104,7 +104,7 @@ To model this, use:
 
 When specifying `Original` metadata, the `Set` property has no effect. Each copied file is considered in isolation,
 looking only at the timestamps of the source and destination. Sets are used to compare groups of items, so these
-features do not compose. If both properties are present, `Original` will take effect and `Set` is ignored.
+features do not compose. If both `Set` and `Original` metadata are present, `Original` will take effect and `Set` is ignored.
 
 ## Debugging
 
