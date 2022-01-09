@@ -106,6 +106,8 @@ When specifying `Original` metadata, the `Set` property has no effect. Each copi
 looking only at the timestamps of the source and destination. Sets are used to compare groups of items, so these
 features do not compose. If both `Set` and `Original` metadata are present, `Original` will take effect and `Set` is ignored.
 
+---
+
 ## Debugging
 
 ### SDK-Style projects
@@ -160,6 +162,8 @@ If you wish to enable this logging for a particular hive (this is an advanced sc
 ```text
 vsregedit set "%cd%" Exp HKCU General U2DCheckVerbosity dword 1
 ```
+
+---
 
 ## Disabling the Up-to-date Check
 
