@@ -183,8 +183,8 @@ vsregedit set "%cd%" Exp HKCU General U2DCheckVerbosity dword 1
 
 If you do not wish to use the fast up-to-date check, preferring to always call MSBuild, you can disable it by either:
 
-- Unchecking "Don't call MSBuild if a project appears to be up to date" (shown above), or
-- Adding property `<DisableFastUpToDateCheck>True</DisableFastUpToDateCheck>` to your project
+- unchecking "Don't call MSBuild if a project appears to be up to date" (shown above), or
+- adding property `<DisableFastUpToDateCheck>True</DisableFastUpToDateCheck>` to your project.
 
 Note that in both cases this only disables Visual Studio's up-to-date check. MSBuild will still perform its own
 determination as to whether the project should be rebuilt.
