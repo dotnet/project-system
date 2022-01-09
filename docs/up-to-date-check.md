@@ -1,4 +1,4 @@
-# Up-to-date Check
+﻿# Up-to-date Check
 
 The Project System's _Fast Up-to-date Check_ saves developers time by quickly assessing whether a project needs to be
 built or not. If not, Visual Studio can avoid a comparatively expensive call to MSBuild.
@@ -189,5 +189,6 @@ If you do not wish to use the fast up-to-date check, preferring to always call M
 Note that in both cases this only disables Visual Studio's up-to-date check. MSBuild will still perform its own
 determination as to whether the project should be rebuilt.
 
+⚠️ We do not recommend disabling this! It can have a significant negative impact on your productivity.
 If you are disabling the check because you feel it is not behaving correctly, please file an issue in this repo and
 include details from the verbose log so that we can improve the feature.
