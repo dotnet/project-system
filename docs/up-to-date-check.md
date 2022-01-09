@@ -150,7 +150,9 @@ build output.
 
 ### .NET Framework (non-SDK-style) projects
 
-Enabling up-to-date check logging for old-style (non-SDK) projects is a little more manual:
+There is no built-in way to enable up-to-date check logging for old-style (non-SDK) projects. The [Tweakster extension](https://github.com/madskristensen/Tweakster#up-to-date-check-verbose) provides a UI option for this, however.
+
+Alternatively, to enable logging manually:
 
 1. Open a "Developer Command Prompt" for the particular version of Visual Studio you are using.
 2. Enter command:
