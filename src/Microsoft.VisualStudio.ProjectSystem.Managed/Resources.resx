@@ -386,4 +386,8 @@ This project was loaded using the wrong project type, likely as a result of rena
     <value>Up-to-date check completed in {0:N1} ms</value>
     <comment>{0} is a duration in milliseconds. "ms" refers to "milliseconds". Leave the "{0:N1}" string as-is, for correct formatting of the number.</comment>
   </data>
+  <data name="FUTD_CheckingConfiguration_1" xml:space="preserve">
+    <value>Checking configuration {0}:</value>
+    <comment>{0} is a description of the project's configuration, such as "Debug|AnyCPU|net6.0".</comment>
+  </data>
 </root>

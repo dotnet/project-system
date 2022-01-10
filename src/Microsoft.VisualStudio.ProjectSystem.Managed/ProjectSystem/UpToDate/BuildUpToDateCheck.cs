@@ -781,8 +781,19 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                         }
                     }
 
+                    bool logConfigurations = state.ImplicitInputs.Length > 1 && logger.Level >= LogLevel.Info;
+
                     foreach (UpToDateCheckImplicitConfiguredInput implicitState in state.ImplicitInputs)
                     {
+                        if (logConfigurations)
+                        {
+                            // Only null when the FUTD check is disabled. If we get here, we are not disabled.
+                            Assumes.NotNull(implicitState.ProjectConfiguration);
+
+                            logger.Info(nameof(Resources.FUTD_CheckingConfiguration_1), implicitState.ProjectConfiguration.GetDisplayString());
+                            logger.Indent++;
+                        }
+
                         if (!CheckGlobalConditions(logger, lastCheckedAtUtc, validateFirstRun: !isValidationRun, implicitState) ||
                             !CheckInputsAndOutputs(logger, lastCheckedAtUtc, timestampCache, implicitState, ignoreKinds, token) ||
                             !CheckMarkers(logger, timestampCache, implicitState) ||
@@ -790,6 +801,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                             !CheckCopiedOutputFiles(logger, timestampCache, implicitState, token))
                         {
                             return false;
+                        }
+
+                        if (logConfigurations)
+                        {
+                            logger.Indent--;
                         }
                     }
 

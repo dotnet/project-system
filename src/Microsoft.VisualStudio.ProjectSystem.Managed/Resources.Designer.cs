@@ -214,6 +214,15 @@ namespace Microsoft.VisualStudio {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Checking configuration {0}:.
+        /// </summary>
+        internal static string FUTD_CheckingConfiguration_1 {
+            get {
+                return ResourceManager.GetString("FUTD_CheckingConfiguration_1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Checking copied output (UpToDateCheckBuilt with Original property) file:.
         /// </summary>
         internal static string FUTD_CheckingCopiedOutputFile {
