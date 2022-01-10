@@ -14,4 +14,5 @@ The first release of the project system ("15.0") was heavily focused on supporti
 |[16.11](https://github.com/dotnet/project-system/milestone/37)|[dev16.11.x](https://github.com/dotnet/project-system/tree/dev16.11.x)|Visual Studio 2019|This release is considered done, and only impactful bugs, crashes, and hangs that block _major_ scenarios will be taken.
 |[17.0](https://github.com/dotnet/project-system/milestone/36)|[dev17.0.x](https://github.com/dotnet/project-system/tree/dev17.0.x)|Visual Studio 2022|This release is focused on support for 64-bit Visual Studio, support for .NET 6.0, and new project property pages and launch profiles UI.
 |[17.1](https://github.com/dotnet/project-system/milestone/38)|N/A|Visual Studio 2022|_Planning for this release is in progress._
+|[17.2](https://github.com/dotnet/project-system/milestone/40)|N/A|Visual Studio 2022|_Planning for this release is in progress._
 |[Backlog](https://github.com/dotnet/project-system/milestone/5)|none| |Uncommitted features/bugs.
