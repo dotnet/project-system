@@ -55,7 +55,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
             // Initial state is empty. We will evolve this reference over time, updating it iteratively
             // on each new data update.
-            UpToDateCheckImplicitConfiguredInput state = UpToDateCheckImplicitConfiguredInput.Empty;
+            UpToDateCheckImplicitConfiguredInput state = UpToDateCheckImplicitConfiguredInput.CreateEmpty(_configuredProject.ProjectConfiguration);
 
             IPropagatorBlock<IProjectVersionedValue<UpdateValues>, IProjectVersionedValue<UpToDateCheckImplicitConfiguredInput>> transformBlock
                 = DataflowBlockSlim.CreateTransformBlock<IProjectVersionedValue<UpdateValues>, IProjectVersionedValue<UpToDateCheckImplicitConfiguredInput>>(TransformAsync);

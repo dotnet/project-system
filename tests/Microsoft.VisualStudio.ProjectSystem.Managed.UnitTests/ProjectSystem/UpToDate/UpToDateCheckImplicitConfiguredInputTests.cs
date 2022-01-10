@@ -33,7 +33,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 [Compile.SchemaName] = SimpleItems("ItemPath1", "ItemPath2")
             };
 
-            var state = UpToDateCheckImplicitConfiguredInput.Empty;
+            var state = UpToDateCheckImplicitConfiguredInput.CreateEmpty(ProjectConfigurationFactory.Create("testConfiguration"));
 
             Assert.Equal(DateTime.MinValue, state.LastItemsChangedAtUtc);
 
