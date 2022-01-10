@@ -108,7 +108,8 @@
                 DisplayName="Target OS"
                 Description="Specifies the operating system that this project will target."
                 Category="General"
-                EnumProvider="SdkSupportedTargetPlatformIdentifierEnumProvider">
+                EnumProvider="SdkSupportedTargetPlatformIdentifierEnumProvider"
+                HelpUrl="https://go.microsoft.com/fwlink/?linkid=2184943">
     <DynamicEnumProperty.DataSource>
       <DataSource Persistence="ProjectFileWithInterception"
                   HasConfigurationCondition="False" />
@@ -129,7 +130,8 @@
                 DisplayName="Target OS version"
                 Description="Specifies the version of the operating system this project will target."
                 Category="General"
-                EnumProvider="SdkSupportedTargetPlatformVersionEnumProvider">
+                EnumProvider="SdkSupportedTargetPlatformVersionEnumProvider"
+                HelpUrl="https://go.microsoft.com/fwlink/?linkid=2185153">
     <DynamicEnumProperty.DataSource>
       <DataSource Persistence="ProjectFileWithInterception"
                   HasConfigurationCondition="False" />
