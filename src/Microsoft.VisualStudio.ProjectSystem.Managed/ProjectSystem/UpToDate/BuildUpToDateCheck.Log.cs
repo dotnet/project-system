@@ -46,6 +46,18 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 };
             }
 
+            private static string GetResourceString(string resourceName)
+            {
+                string? message = Resources.ResourceManager.GetString(resourceName, Resources.Culture);
+
+                if (message is null)
+                {
+                    Assumes.Fail($"Resource with name '{resourceName}' not found.");
+                }
+
+                return message;
+            }
+
             private void Write(LogLevel level, string resourceName, object arg0)
             {
                 if (level <= Level)
@@ -54,7 +66,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                     // they correspond with dates/times that Explorer, etc shows
                     ConvertToLocalTime(ref arg0);
 
-                    string message = Resources.ResourceManager.GetString(resourceName, Resources.Culture);
+                    string message = GetResourceString(resourceName);
 
                     _writer.WriteLine($"{Preamble()}{string.Format(message, arg0)} ({_fileName})");
                 }
@@ -69,7 +81,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                     ConvertToLocalTime(ref arg0);
                     ConvertToLocalTime(ref arg1);
 
-                    string message = Resources.ResourceManager.GetString(resourceName, Resources.Culture);
+                    string message = GetResourceString(resourceName);
 
                     _writer.WriteLine($"{Preamble()}{string.Format(message, arg0, arg1)} ({_fileName})");
                 }
@@ -83,7 +95,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                     // they correspond with dates/times that Explorer, etc shows
                     ConvertToLocalTimes(values);
 
-                    string message = Resources.ResourceManager.GetString(resourceName, Resources.Culture);
+                    string message = GetResourceString(resourceName);
 
                     _writer.WriteLine($"{Preamble()}{string.Format(message, values)} ({_fileName})");
                 }
