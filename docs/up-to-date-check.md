@@ -179,6 +179,20 @@ If you wish to enable this logging for a particular hive (this is an advanced sc
 vsregedit set "%cd%" Exp HKCU General U2DCheckVerbosity dword 1
 ```
 
+### Binary logs
+
+The fast up-to-date check logging will explain the reason for the failure at a high level. Often it's necessary to dig
+deeper into the build to understand why the failure occurs.
+
+The best technique for this is to:
+
+1. Capture a binary build log (also called a "binlog"), and
+1. view it with the [MSBuild structured log viewer](https://msbuildlog.com/).
+
+The [Project System Tools](https://github.com/dotnet/project-system-tools) extension enables capturing binlogs for builds that happen within Visual Studio.
+
+The logs captured by that tool are usually adequate to diagnose build problems. They exclude some detail however, for performance reasons. If more data is required, see [this technique to get full-fidelity logs](https://github.com/dotnet/project-system-tools#getting-higher-fidelity-logs-from-vs).
+
 ---
 
 ## Disabling the Up-to-date Check
