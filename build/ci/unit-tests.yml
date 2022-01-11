@@ -30,7 +30,7 @@ jobs:
     name: Windows_Debug
     configuration: Debug
     pool:
-      name: NetCore1ESPool-Svc-Public
+      name: NetCore1ESPool-Public
       demands: ImageOverride -equals Build.Windows.10.Amd64.VS2019.Pre.Open
 
 - template: unit-tests-template.yml
@@ -38,7 +38,7 @@ jobs:
     name: Windows_Release
     configuration: Release
     pool:
-      name: NetCore1ESPool-Svc-Public
+      name: NetCore1ESPool-Public
       demands: ImageOverride -equals Build.Windows.10.Amd64.VS2019.Pre.Open
 
 - template: unit-tests-template.yml
@@ -46,5 +46,5 @@ jobs:
     name: Spanish
     configuration: Debug
     pool: 
-      name: NetCore1ESPool-Svc-Public
+      name: NetCore1ESPool-Public
       demands: ImageOverride -equals Build.Windows.Amd64.VS2019.Pre.ES.Open
