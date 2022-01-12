@@ -1,4 +1,4 @@
-# Up-to-date Check
+﻿# Up-to-date Check
 
 The Project System's _Fast Up-to-date Check_ saves developers time by quickly assessing whether a project needs to be
 built or not. If not, Visual Studio can avoid a comparatively expensive call to MSBuild.
@@ -21,16 +21,15 @@ check work correctly.
 For customized builds, you may add to the following item types:
 
 - `UpToDateCheckInput` &mdash; Describes an input file that MSBuild would not otherwise know about
-- `UpToDateCheckBuilt` &mdash; Describes an output file that MSBuild would not otherwise know about
-
-Note that `UpToDateCheckOutput` exists but is deprecated and only maintained for backwards compatability.
-Projects should use to `UpToDateCheckBuilt` instead.
+- `UpToDateCheckOutput` &mdash; Describes an output file that MSBuild would not otherwise know about
+- `UpToDateCheckBuilt` &mdash; Describes an output file that's produced from a single input file, that MSBuild would not otherwise know about
 
 You may add to these item types declaratively. For example:
 
 ```xml
 <ItemGroup>
   <UpToDateCheckInput Include="MyCustomBuildInput.abc" />
+  <UpToDateCheckOutput Include="MyCustomBuildOutput.def" />
 </ItemGroup>
 ```
 
@@ -38,8 +37,9 @@ Alternatively, you may override the MSBuild targets that Visual Studio calls to 
 allows custom logic to be executed when determining the set of items. The relevant targets are defined in
 `Microsoft.Managed.DesignTime.targets` with names:
 
-- `CollectUpToDateCheckInputDesignTime`
-- `CollectUpToDateCheckBuiltDesignTime`
+- [`CollectUpToDateCheckInputDesignTime`](https://github.com/dotnet/project-system/blob/255712176d4b5dc4be054a45a5f63048aa89f4de/src/Microsoft.VisualStudio.ProjectSystem.Managed/ProjectSystem/DesignTimeTargets/Microsoft.Managed.DesignTime.targets#L414-L415)
+- [`CollectUpToDateCheckOutputDesignTime`](https://github.com/dotnet/project-system/blob/255712176d4b5dc4be054a45a5f63048aa89f4de/src/Microsoft.VisualStudio.ProjectSystem.Managed/ProjectSystem/DesignTimeTargets/Microsoft.Managed.DesignTime.targets#L417-L418)
+- [`CollectUpToDateCheckBuiltDesignTime`](https://github.com/dotnet/project-system/blob/255712176d4b5dc4be054a45a5f63048aa89f4de/src/Microsoft.VisualStudio.ProjectSystem.Managed/ProjectSystem/DesignTimeTargets/Microsoft.Managed.DesignTime.targets#L420-L445)
 
 Note that changes to inputs **must** result in changes to outputs. If this rule is not observed, then an input may
 have a timestamp after all outputs, which leads the up-to-date check to consider the project out-of-date after building
@@ -104,7 +104,23 @@ To model this, use:
 
 When specifying `Original` metadata, the `Set` property has no effect. Each copied file is considered in isolation,
 looking only at the timestamps of the source and destination. Sets are used to compare groups of items, so these
-features do not compose. If both properties are present, `Original` will take effect and `Set` is ignored.
+features do not compose. If both `Set` and `Original` metadata are present, `Original` will take effect and `Set` is ignored.
+
+### Transformed files
+
+Cases where a single input file produces a single output file during build should be modelled in the same way as copied files above. The fast up-to-date check only inspects the timestamps of copied files, not their contents.
+
+To model this, use:
+
+```xml
+<UpToDateCheckBuilt Include="Source\MyFile.ts" Original="Destination\MyFile.js" />
+```
+
+The same details apply regarding `Set` metadata as described for copied files.
+
+When multiple inputs produce one or more outputs, use `BuildUpToDateCheckInput` and `BuildUpToDateCheckOutput` items with `Set` metadata, as described earlier in this document.
+
+---
 
 ## Debugging
 
@@ -132,9 +148,11 @@ build output.
 - `Minimal` produces a single message per out-of-date project.
 - `Info` and `Verbose` provide increasingly detailed information about the inner workings of the check, which are useful for debugging.
 
-### .NET Framework projects
+### .NET Framework (non-SDK-style) projects
 
-Enabling up-to-date check logging for old-style (non-SDK) projects is a little more manual:
+There is no built-in way to enable up-to-date check logging for old-style (non-SDK) projects. The [Tweakster extension](https://github.com/madskristensen/Tweakster#up-to-date-check-verbose) provides a UI option for this, however.
+
+Alternatively, to enable logging manually:
 
 1. Open a "Developer Command Prompt" for the particular version of Visual Studio you are using.
 2. Enter command:
@@ -161,15 +179,32 @@ If you wish to enable this logging for a particular hive (this is an advanced sc
 vsregedit set "%cd%" Exp HKCU General U2DCheckVerbosity dword 1
 ```
 
+### Binary logs
+
+The fast up-to-date check logging will explain the reason for the failure at a high level. Often it's necessary to dig
+deeper into the build to understand why the failure occurs.
+
+The best technique for this is to:
+
+1. Capture a binary build log (also called a "binlog"), and
+1. view it with the [MSBuild structured log viewer](https://msbuildlog.com/).
+
+The [Project System Tools](https://github.com/dotnet/project-system-tools) extension enables capturing binlogs for builds that happen within Visual Studio.
+
+The logs captured by that tool are usually adequate to diagnose build problems. They exclude some detail however, for performance reasons. If more data is required, see [this technique to get full-fidelity logs](https://github.com/dotnet/project-system-tools#getting-higher-fidelity-logs-from-vs).
+
+---
+
 ## Disabling the Up-to-date Check
 
 If you do not wish to use the fast up-to-date check, preferring to always call MSBuild, you can disable it by either:
 
-- Unchecking "Don't call MSBuild if a project appears to be up to date" (shown above), or
-- Adding property `<DisableFastUpToDateCheck>True</DisableFastUpToDateCheck>` to your project
+- unchecking "Don't call MSBuild if a project appears to be up to date" (shown above), or
+- adding property `<DisableFastUpToDateCheck>True</DisableFastUpToDateCheck>` to your project.
 
 Note that in both cases this only disables Visual Studio's up-to-date check. MSBuild will still perform its own
 determination as to whether the project should be rebuilt.
 
+⚠️ We do not recommend disabling this! It can have a significant negative impact on your productivity.
 If you are disabling the check because you feel it is not behaving correctly, please file an issue in this repo and
 include details from the verbose log so that we can improve the feature.
