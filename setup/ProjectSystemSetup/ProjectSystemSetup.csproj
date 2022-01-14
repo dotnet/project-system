@@ -47,7 +47,7 @@
     </Compile>
   </ItemGroup>
   <!-- Adds the appropriate vsix files for signing. -->
-  <Target Name="AddVsixForSigning" BeforeTargets="SignFiles">
+  <!-- <Target Name="AddVsixForSigning" BeforeTargets="SignFiles">
     <Message Text="VisualStudioSetupOutputPath: $(VisualStudioSetupOutputPath)" />
     <Message Text="VisualStudioSetupInsertionPath: $(VisualStudioSetupInsertionPath)" />
     <Message Text="AssemblyName: $(AssemblyName)" />
@@ -58,5 +58,5 @@
         <Authenticode>VsixSHA2</Authenticode>
       </FilesToSign>
     </ItemGroup>
-  </Target>
+  </Target> -->
 </Project>
