@@ -24,7 +24,8 @@
   <!-- Adds the appropriate vsix files for signing. -->
   <!-- <Target Name="AddVsixForSigning" BeforeTargets="SignFiles"> -->
   <!-- <Target Name="AddVsixForSigning" AfterTargets="CreateVsixContainer"> -->
-  <Target Name="AddVsixForSigning" AfterTargets="FinalizeInsertionVsixFiles">
+  <!-- <Target Name="AddVsixForSigning" AfterTargets="FinalizeInsertionVsixFiles"> -->
+  <Target Name="AddVsixForSigning" AfterTargets="SwixBuild">
     <Message Text="VisualStudioSetupOutputPath: $(VisualStudioSetupOutputPath)" />
     <Message Text="VisualStudioSetupInsertionPath: $(VisualStudioSetupInsertionPath)" />
     <Message Text="AssemblyName: $(AssemblyName)" />
