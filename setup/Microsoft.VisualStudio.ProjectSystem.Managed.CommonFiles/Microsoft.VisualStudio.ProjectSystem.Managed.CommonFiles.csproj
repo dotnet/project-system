@@ -25,8 +25,8 @@
   <!-- <Target Name="AddVsixForSigning" BeforeTargets="SignFiles"> -->
   <!-- <Target Name="AddVsixForSigning" AfterTargets="CreateVsixContainer"> -->
   <!-- <Target Name="AddVsixForSigning" AfterTargets="FinalizeInsertionVsixFiles"> -->
-  <Target Name="AddVsixForSigning" AfterTargets="SwixBuild">
-  <!-- <Target Name="AddVsixForSigning" AfterTargets="Build"> -->
+  <!-- <Target Name="AddVsixForSigning" DependsOnTargets="SwixBuild"> -->
+  <Target Name="AddVsixForSigning" AfterTargets="Build" BeforeTargets="SignFiles">
     <Message Text="VisualStudioSetupOutputPath: $(VisualStudioSetupOutputPath)" />
     <Message Text="VisualStudioSetupInsertionPath: $(VisualStudioSetupInsertionPath)" />
     <Message Text="AssemblyName: $(AssemblyName)" />
@@ -44,7 +44,7 @@
     </ItemGroup>
   </Target>
 
-  <!-- <Target Name="CopyVsixAfterSigning" AfterTargets="SignFiles">
+  <Target Name="CopyVsixAfterSigning" DependsOnTargets="SignFiles">
     <Message Text="VisualStudioSetupOutputPath: $(VisualStudioSetupOutputPath)" />
     <Message Text="VisualStudioSetupInsertionPath: $(VisualStudioSetupInsertionPath)" />
     <Message Text="AssemblyName: $(AssemblyName)" />
@@ -52,5 +52,5 @@
     <Message Text="ArtifactsObjDir: $(ArtifactsObjDir)" />
 
     <Copy SourceFiles="$(OutDir)$(AssemblyName).vsix" DestinationFolder="$(VisualStudioSetupInsertionPath)" />
-  </Target> -->
+  </Target>
 </Project>
