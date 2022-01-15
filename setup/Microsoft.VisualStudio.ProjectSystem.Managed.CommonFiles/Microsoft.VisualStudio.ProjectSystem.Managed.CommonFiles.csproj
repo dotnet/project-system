@@ -25,15 +25,15 @@
   <!-- <Target Name="AddVsixForSigning" BeforeTargets="SignFiles"> -->
   <!-- <Target Name="AddVsixForSigning" AfterTargets="CreateVsixContainer"> -->
   <!-- <Target Name="AddVsixForSigning" AfterTargets="FinalizeInsertionVsixFiles"> -->
-  <!-- <Target Name="AddVsixForSigning" AfterTargets="SwixBuild"> -->
-  <Target Name="AddVsixForSigning" AfterTargets="Build">
+  <Target Name="AddVsixForSigning" AfterTargets="SwixBuild">
+  <!-- <Target Name="AddVsixForSigning" AfterTargets="Build"> -->
     <Message Text="VisualStudioSetupOutputPath: $(VisualStudioSetupOutputPath)" />
     <Message Text="VisualStudioSetupInsertionPath: $(VisualStudioSetupInsertionPath)" />
     <Message Text="AssemblyName: $(AssemblyName)" />
     <Message Text="OutDir: $(OutDir)" />
     <Message Text="ArtifactsObjDir: $(ArtifactsObjDir)" />
 
-    <Copy SourceFiles="$(VisualStudioSetupInsertionPath)$(AssemblyName).dll" DestinationFolder="$(OutDir)" />
+    <Copy SourceFiles="$(VisualStudioSetupInsertionPath)$(AssemblyName).vsix" DestinationFolder="$(OutDir)" />
     <ItemGroup>
       <!-- <FilesToSign Include="$(VisualStudioSetupInsertionPath)$(AssemblyName).vsix">
         <Authenticode>VsixSHA2</Authenticode>
