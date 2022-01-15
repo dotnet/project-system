@@ -15,11 +15,13 @@ namespace Microsoft.VisualStudio.Setup
     [UsesVerify]
     public sealed class PackageContentTests
     {
+        private const string XmlSignature = "package/services/digital-signature/xml-signature";
+
         [Fact]
         public Task ProjectSystem()
         {
             IEnumerable<string> files = GetPackageContents("ProjectSystem.vsix");
-            VerifierSettings.SortPropertiesAlphabetically();
+            VerifierSettings.ScrubLinesContaining(XmlSignature);
             return Verifier.Verify(files);
         }
 
@@ -27,7 +29,7 @@ namespace Microsoft.VisualStudio.Setup
         public Task VisualStudioEditorsSetup()
         {
             IEnumerable<string> files = GetPackageContents("VisualStudioEditorsSetup.vsix");
-            VerifierSettings.SortPropertiesAlphabetically();
+            VerifierSettings.ScrubLinesContaining(XmlSignature);
             return Verifier.Verify(files);
         }
 
@@ -35,7 +37,7 @@ namespace Microsoft.VisualStudio.Setup
         public Task CommonFiles()
         {
             IEnumerable<string> files = GetPackageContents("Microsoft.VisualStudio.ProjectSystem.Managed.CommonFiles.vsix");
-            VerifierSettings.SortPropertiesAlphabetically();
+            VerifierSettings.ScrubLinesContaining(XmlSignature);
             return Verifier.Verify(files);
         }
 
@@ -63,7 +65,7 @@ namespace Microsoft.VisualStudio.Setup
             
             using var archive = ZipFile.OpenRead(vsixPath);
             
-            return archive.Entries.Select(entry => entry.FullName);
+            return archive.Entries.Select(entry => entry.FullName).OrderBy(fn => fn);
         }
     }
 }
