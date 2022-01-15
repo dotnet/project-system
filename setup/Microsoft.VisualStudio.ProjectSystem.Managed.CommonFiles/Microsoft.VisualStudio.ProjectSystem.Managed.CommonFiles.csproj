@@ -21,6 +21,7 @@
   <Target Name="Build" DependsOnTargets="ResolveProjectReferences">
     <MakeDir Directories="$(IntermediateOutputPath)" ContinueOnError="True" />
   </Target>
+
   <!-- Adds the appropriate vsix files for signing. -->
   <!-- <Target Name="AddVsixForSigning" BeforeTargets="SignFiles"> -->
   <!-- <Target Name="AddVsixForSigning" AfterTargets="CreateVsixContainer"> -->
@@ -35,9 +36,6 @@
 
     <Copy SourceFiles="$(VisualStudioSetupInsertionPath)$(AssemblyName).vsix" DestinationFolder="$(OutDir)" />
     <ItemGroup>
-      <!-- <FilesToSign Include="$(VisualStudioSetupInsertionPath)$(AssemblyName).vsix">
-        <Authenticode>VsixSHA2</Authenticode>
-      </FilesToSign> -->
       <FilesToSign Include="$(OutDir)$(AssemblyName).vsix">
         <Authenticode>VsixSHA2</Authenticode>
       </FilesToSign>
