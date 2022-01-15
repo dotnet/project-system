@@ -1,7 +1,7 @@
 [
+  [Content_Types].xml,
   _rels/.rels,
   _rels/manifest.json.rels,
-  [Content_Types].xml,
   Contents/MSBuild/Microsoft/VisualStudio/Managed/AnalyzerReference.xaml,
   Contents/MSBuild/Microsoft/VisualStudio/Managed/ApplicationPropertyPage.xaml,
   Contents/MSBuild/Microsoft/VisualStudio/Managed/AssemblyReference.xaml,

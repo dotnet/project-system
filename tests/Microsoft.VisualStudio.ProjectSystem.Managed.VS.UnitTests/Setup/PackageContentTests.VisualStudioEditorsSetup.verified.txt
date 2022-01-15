@@ -1,6 +1,6 @@
 [
-  _rels/.rels,
   [Content_Types].xml,
+  _rels/.rels,
   catalog.json,
   cs/Microsoft.VisualStudio.AppDesigner.resources.dll,
   cs/Microsoft.VisualStudio.Editors.resources.dll,

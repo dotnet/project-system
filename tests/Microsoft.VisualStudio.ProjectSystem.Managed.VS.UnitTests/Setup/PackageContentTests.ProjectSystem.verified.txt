@@ -1,6 +1,6 @@
 [
-  _rels/.rels,
   [Content_Types].xml,
+  _rels/.rels,
   catalog.json,
   cs/Microsoft.VisualStudio.ProjectSystem.Managed.resources.dll,
   cs/Microsoft.VisualStudio.ProjectSystem.Managed.VS.resources.dll,
