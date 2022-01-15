@@ -526,5 +526,5 @@
   Contents/MSBuild/Microsoft/VisualStudio/Managed/zh-Hant/SettingsPropertyPage.xaml,
   manifest.json,
   package/services/digital-signature/_rels/origin.psdor.rels,
-  package/services/digital-signature/origin.psdor
+  package/services/digital-signature/origin.psdor,
 ]
