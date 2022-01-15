@@ -44,7 +44,7 @@
     </ItemGroup>
   </Target>
 
-  <Target Name="CopyVsixAfterSigning" DependsOnTargets="SignFiles">
+  <Target Name="CopyVsixAfterSigning" DependsOnTargets="AddVsixForSigning" AfterTargets="SignFiles">
     <Message Text="VisualStudioSetupOutputPath: $(VisualStudioSetupOutputPath)" />
     <Message Text="VisualStudioSetupInsertionPath: $(VisualStudioSetupInsertionPath)" />
     <Message Text="AssemblyName: $(AssemblyName)" />
