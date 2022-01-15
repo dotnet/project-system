@@ -50,5 +50,6 @@
     <Message Text="ArtifactsObjDir: $(ArtifactsObjDir)" />
 
     <Copy SourceFiles="$(OutDir)$(AssemblyName).vsix" DestinationFolder="$(VisualStudioSetupInsertionPath)" />
+    <Copy SourceFiles="$(OutDir)$(AssemblyName).vsix" DestinationFolder="$(VisualStudioSetupOutputPath)" />
   </Target>
 </Project>
