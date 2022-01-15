@@ -26,9 +26,9 @@ steps:
     signType: real
     esrpSigning: true
 
+# This is use as a PackageReference with ExcludeAssets="all", which means it is not executed.
+# RepoToolset has custom logic to run the contents of this plugin, so it is not executed normally.
 - task: MicroBuildSwixPlugin@1
-  # inputs:
-  #   version: '1.1.224'
   displayName: Install Swix Plugin
 
 # This requires the OptimizationInputs via the 'Publish OptimizationInputs drop' step in the release pipeline.
@@ -36,6 +36,7 @@ steps:
 # This plugin will restore MicroBuild.Plugins.OptProf which is required to create ProfilingInputs data.
 # The MicroBuild.VisualStudio package uses MicroBuild.Plugins.OptProf to run the target GenerateProfilingInputs on each project.
 - task: MicroBuildOptProfPlugin@6
+  displayName: Install OptProf Plugin
   inputs:
     ProfilingInputsDropName: 'ProfilingInputs/$(System.TeamProject)/$(Build.Repository.Name)/$(Build.SourceBranchName)/$(Build.BuildId)'
     OptimizationInputsLookupMethod: 'DropPrefix'
@@ -44,22 +45,6 @@ steps:
     feedSource: 'https://devdiv.pkgs.visualstudio.com/DefaultCollection/_packaging/MicroBuildToolset/nuget/v3/index.json'
     ShouldSkipOptimize: false
     NumberCommitsToSearch: '100'
-  displayName: 'Install OptProf Plugin'
-
-# - task: MSBuild@1
-#   displayName: Build Strong Name Remover
-#   inputs:
-#     solution: '$(Build.SourcesDirectory)\build\script\StrongNameRemover\StrongNameRemover.sln'
-#     configuration: $(BuildConfiguration)
-
-# - task: DotNetCoreCLI@2
-#   displayName: Build Strong Name Remover
-#   inputs:
-#     command: 'publish'
-#     projects: '$(Build.SourcesDirectory)\build\script\StrongNameRemover\StrongNameRemover.sln'
-#     arguments: '-c $(BuildConfiguration) -r win-x64'
-#     publishWebProjects: false
-#     zipAfterPublish: false
 
 # NOTE: Shouldn't need this for now since this was for manual IBC merging in the AppDesigner/Editors projects.
 # - task: NuGetCommand@2
@@ -74,27 +59,12 @@ steps:
 - script: $(Build.SourcesDirectory)\build.cmd /build /test /ci /sign /diagnostic /no-deploy /no-integration /no-ibc /no-clearnugetcache /configuration $(BuildConfiguration)
   displayName: Build ProjectSystem.sln
 
+# Note: Does not verify that .vsix files are signed.
 - task: MicroBuildCodesignVerify@3
   displayName: Verify Signed Files
   inputs:
     TargetFolders: $(Build.SourcesDirectory)/artifacts/$(BuildConfiguration)/packages
     ApprovalListPathForCerts: $(Build.SourcesDirectory)\build\ci\no_authenticode.txt
-
-# - task: PublishBuildArtifacts@1
-#   inputs:
-#     PathtoPublish: $(Build.SourcesDirectory)\artifacts\Release\obj\Microsoft.VisualStudio.AppDesigner\
-#     ArtifactName: AppDesignerObjFolder
-#     ArtifactType: Container
-#   displayName: 'Publish Artifact: AppDesigner Obj folder'
-#   condition: succeededOrFailed()
-
-# - task: PublishBuildArtifacts@1
-#   inputs:
-#     PathtoPublish: $(Build.SourcesDirectory)\artifacts\Release\obj\Microsoft.VisualStudio.Editors\
-#     ArtifactName: EditorsObjFolder
-#     ArtifactType: Container
-#   displayName: 'Publish Artifact: Editors Obj folder'
-#   condition: succeededOrFailed()
 
 # - task: Ref12.ref12-analyze-task.ref12-analyze-task.Ref12Analyze@0
 #   displayName: Produce Codex index for http://index
@@ -116,28 +86,31 @@ steps:
     testRunTitle: 'Unit Test Results'
   condition: succeededOrFailed()
 
-- task: PowerShell@2
-  inputs:
-    filePath: build\variables\_vsts.ps1
-    failOnStderr: true
-  displayName: Set VSTS variables based on source
+###################################################################################################################################################################
+
+# TODO: Test if this is actually doing anything.
+# - task: PowerShell@2
+#   displayName: Set VSTS variables based on source
+#   inputs:
+#     filePath: build\variables\_vsts.ps1
+#     failOnStderr: true
 
 # Symbols is the one thing we cannot declare in the ps1 artifact scripts due to the extra steps
 # needed and the specific order it has to be performed in. Copy -> Publish Symbols -> Publish
 # Artifact -> publish to symweb
 
-- task: CopyFiles@2
-  inputs:
-    SourceFolder: '$(Build.SourcesDirectory)\artifacts\$(BuildConfiguration)'
-    Contents: |
-      **/Microsoft.VisualStudio.ProjectSystem.Managed?(*.pdb|*.dll|*.xml)
-      **/Microsoft.VisualStudio.AppDesigner?(*.pdb|*.dll|*.xml)
-      **/Microsoft.VisualStudio.Editors?(*.pdb|*.dll|*.xml)
-    TargetFolder: $(Build.ArtifactStagingDirectory)/symbols
-  displayName: Copy symbols
+# - task: CopyFiles@2
+#   displayName: Copy symbols
+#   inputs:
+#     SourceFolder: '$(Build.SourcesDirectory)\artifacts\$(BuildConfiguration)'
+#     Contents: |
+#       **/Microsoft.VisualStudio.ProjectSystem.Managed?(*.pdb|*.dll|*.xml)
+#       **/Microsoft.VisualStudio.AppDesigner?(*.pdb|*.dll|*.xml)
+#       **/Microsoft.VisualStudio.Editors?(*.pdb|*.dll|*.xml)
+#     TargetFolder: $(Build.ArtifactStagingDirectory)/symbols
 
 # - task: PublishSymbols@2
-#   displayName: Archive symbols to VSTS
+#   displayName: Publish symbols to VSTS
 #   inputs:
 #     SymbolsFolder: $(Build.ArtifactStagingDirectory)/symbols
 #     SearchPattern:
@@ -152,14 +125,17 @@ steps:
 #   continueOnError: true
 
 # - task: PublishBuildArtifacts@1
+#   displayName: 'Publish Artifact: symbols'
 #   inputs:
 #     PathtoPublish: '$(Build.ArtifactStagingDirectory)/symbols'
 #     ArtifactName: symbols
 #     publishLocation: Container
-#   displayName: 'Publish Artifact: symbols'
+
+###################################################################################################################################################################
 
 # This is required to deploy the tests to devdiv.artifacts.visualstudio.com for the 'Deploy tests' step in the release pipeline.
 - task: artifactDropTask@0
+  displayName: 'Publish to Artifact Services: ProfilingInputs'
   inputs:
     dropServiceURI: 'https://devdiv.artifacts.visualstudio.com'
     buildNumber: 'ProfilingInputs/$(System.TeamProject)/$(Build.Repository.Name)/$(Build.SourceBranchName)/$(Build.BuildId)'
@@ -167,37 +143,31 @@ steps:
     toLowerCase: false
     usePat: true
     AccessToken: '$(System.AccessToken)'
-  displayName: 'Publish to Artifact Services - ProfilingInputs'
   condition: succeeded()
 
-# This is needed for signjson.exe used by MicroBuildBuildVSBootstrapper.
-# - task: ms-vseng.MicroBuildTasks.30666190-6959-11e5-9f96-f56098202fef.MicroBuildSigningPlugin@1
-#   displayName: Install Signing Plugin
-#   inputs:
-#     signType: test
-#     esrpSigning: true
-
+# MicroBuildBuildVSBootstrapper requires MicroBuildSigningPlugin for signjson.exe to run.
 - task: MicroBuildBuildVSBootstrapper@2
+  displayName: Build VS Bootstrapper
   inputs:
     vsMajorVersion: 17
     channelName: 'int.main'
     manifests: '$(Build.SourcesDirectory)\artifacts\$(BuildConfiguration)\VSSetup\Insertion\Microsoft.VisualStudio.ProjectSystem.Managed.vsman'
     outputFolder: $(Build.SourcesDirectory)\artifacts\$(BuildConfiguration)\VSSetup\Insertion
-    # bootstrapperCoreVersion: '1.15.76-develop-g446ca603'
+    bootstrapperCoreVersion: '1.15.76-develop-g446ca603'
     bootstrapperCoreFeedSource: 'https://devdiv.pkgs.visualstudio.com/_packaging/Setup/nuget/v3/index.json'
     bootstrapperCoreDependenciesFeedSource: 'https://devdiv.pkgs.visualstudio.com/_packaging/Setup-Dependencies/nuget/v3/index.json'
     nugetOrgPublicFeedSource: 'https://api.nuget.org/v3/index.json'
-  displayName: Build VS bootstrapper
   condition: succeeded()
 
 - task: PowerShell@2
+  displayName: Update RunSettings via Bootstrapper data
   inputs:
     filePath: build\optprof\UpdateRunSettings.ps1
     arguments: '-profilingInputsPath "ProfilingInputs/$(System.TeamProject)/$(Build.Repository.Name)/$(Build.SourceBranchName)/$(Build.BuildId)" -bootstrapperInfoPath "$(Build.StagingDirectory)\MicroBuild\Output\BootstrapperInfo.json"'
     failOnStderr: true
-  displayName: Set RunSettings data from Bootstrapper
 
 - task: artifactDropTask@0
+  displayName: 'Publish to Artifact Services: RunSettings'
   inputs:
     dropServiceURI: 'https://devdiv.artifacts.visualstudio.com'
     buildNumber: 'RunSettings/$(System.TeamProject)/$(Build.Repository.Name)/$(Build.SourceBranchName)/$(Build.BuildId)'
@@ -206,62 +176,49 @@ steps:
     usePat: true
     AccessToken: '$(System.AccessToken)'
     dropMetadataContainerName: RunSettings
-  displayName: 'Publish to Artifact Services - RunSettings'
   condition: succeeded()
 
-# TODO: Duplicate MicroBuild\Output publishing at bottom of file
 - task: PublishBuildArtifacts@1
+  displayName: 'Publish Artifact: MicroBuildOutputs'
   inputs:
     PathtoPublish: $(Build.StagingDirectory)\MicroBuild\Output
     ArtifactName: MicroBuildOutputs
     ArtifactType: Container
-  displayName: 'Publish Artifact: MicroBuildOutputs'
   condition: succeededOrFailed()
+
+###################################################################################################################################################################
 
 # TODO: DropName: 'Products/$(System.TeamProject)/$(Build.Repository.Name)/$(Build.SourceBranchName)/$(Build.BuildId)'
 - task: MicroBuildUploadVstsDropFolder@1
-  displayName: Upload VSTS Drop
+  displayName: Publish VS Setup
   inputs:
     DropFolder: 'artifacts\$(BuildConfiguration)\VSSetup\Insertion'
     AccessToken: $(System.AccessToken)
 
 - task: CopyFiles@2
+  displayName: Copy Artifacts
   inputs:
     SourceFolder: '$(Build.SourcesDirectory)'
     Contents: |
-     artifacts\$(BuildConfiguration)\bin\**
-     artifacts\$(BuildConfiguration)\DevDivInsertionFiles\**
-     artifacts\$(BuildConfiguration)\log\**
-     artifacts\$(BuildConfiguration)\packages\**
-     artifacts\$(BuildConfiguration)\VSSetup\**
-     artifacts\$(BuildConfiguration)\TestResults\**
-    TargetFolder: $(Build.ArtifactStagingDirectory)/drop
-  displayName: Copy Drop
+      artifacts\$(BuildConfiguration)\bin\Dlls\*
+      artifacts\$(BuildConfiguration)\DevDivInsertionFiles\**
+      artifacts\$(BuildConfiguration)\log\**
+      artifacts\$(BuildConfiguration)\packages\**
+      artifacts\$(BuildConfiguration)\VSSetup\*
+      artifacts\$(BuildConfiguration)\VSSetup\Insertion\*
+      artifacts\$(BuildConfiguration)\TestResults\**
+    TargetFolder: $(Build.ArtifactStagingDirectory)/ArtifactsDrop
   condition: succeededOrFailed()
 
 - task: PublishBuildArtifacts@1
+  displayName: Publish Artifacts
   inputs:
-    PathtoPublish: '$(Build.ArtifactStagingDirectory)/drop/artifacts/$(BuildConfiguration)'
-    ArtifactName: '$(Build.BuildNumber)'
+    PathtoPublish: '$(Build.ArtifactStagingDirectory)/ArtifactsDrop/artifacts/$(BuildConfiguration)'
+    ArtifactName: Artifacts
     publishLocation: Container
-  displayName: 'Publish Artifact: drop'
   condition: succeededOrFailed()
 
-# TODO: Temp to investigate
-# - task: PublishBuildArtifacts@1
-#   inputs:
-#     PathtoPublish: '$(Build.SourcesDirectory)\artifacts\$(BuildConfiguration)\obj'
-#     ArtifactName: 'obj'
-#     publishLocation: Container
-#   displayName: 'Publish Artifact: obj'
-#   condition: succeededOrFailed()
-
-# TODO: Old sign verify location
-# - task: MicroBuildCodesignVerify@3
-#   displayName: Verify Signed Files
-#   inputs:
-#     TargetFolders: $(Build.SourcesDirectory)/artifacts/$(BuildConfiguration)/packages
-#     WhiteListPathForCerts: $(Build.SourcesDirectory)\build\ci\no_authenticode.txt
+###################################################################################################################################################################
 
 # - task: NuGetToolInstaller@0
 #   inputs:
@@ -291,14 +248,5 @@ steps:
 #     allowPackageConflicts: true
 
 - task: MicroBuildCleanup@1
-  displayName: Perform Cleanup Tasks
+  displayName: Perform Cleanup
   condition: always()
-
-# TODO: Duplicate MicroBuild\Output publishing at midway through file
-- task: PublishBuildArtifacts@1
-  displayName: Publish MicroBuild Outputs
-  inputs:
-    PathtoPublish: '$(Build.StagingDirectory)\MicroBuild\Output'
-    ArtifactName: '$(Build.BuildNumber)'
-    publishLocation: Container
-  condition: succeededOrFailed()
