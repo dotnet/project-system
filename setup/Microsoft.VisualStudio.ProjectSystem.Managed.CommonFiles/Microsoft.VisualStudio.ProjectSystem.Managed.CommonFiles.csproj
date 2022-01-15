@@ -44,7 +44,7 @@
     </ItemGroup>
   </Target>
 
-  <Target Name="CopyVsixAfterSigning" AfterTargets="SignFiles">
+  <!-- <Target Name="CopyVsixAfterSigning" AfterTargets="SignFiles">
     <Message Text="VisualStudioSetupOutputPath: $(VisualStudioSetupOutputPath)" />
     <Message Text="VisualStudioSetupInsertionPath: $(VisualStudioSetupInsertionPath)" />
     <Message Text="AssemblyName: $(AssemblyName)" />
@@ -52,5 +52,5 @@
     <Message Text="ArtifactsObjDir: $(ArtifactsObjDir)" />
 
     <Copy SourceFiles="$(OutDir)$(AssemblyName).vsix" DestinationFolder="$(VisualStudioSetupInsertionPath)" />
-  </Target>
+  </Target> -->
 </Project>
