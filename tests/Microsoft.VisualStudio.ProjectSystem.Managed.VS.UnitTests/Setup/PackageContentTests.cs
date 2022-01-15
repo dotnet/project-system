@@ -6,6 +6,7 @@ using System.IO.Compression;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.Utilities;
+using VerifyTests;
 using VerifyXunit;
 using Xunit;
 
@@ -18,7 +19,7 @@ namespace Microsoft.VisualStudio.Setup
         public Task ProjectSystem()
         {
             IEnumerable<string> files = GetPackageContents("ProjectSystem.vsix");
-
+            VerifierSettings.SortPropertiesAlphabetically();
             return Verifier.Verify(files);
         }
 
@@ -26,7 +27,7 @@ namespace Microsoft.VisualStudio.Setup
         public Task VisualStudioEditorsSetup()
         {
             IEnumerable<string> files = GetPackageContents("VisualStudioEditorsSetup.vsix");
-
+            VerifierSettings.SortPropertiesAlphabetically();
             return Verifier.Verify(files);
         }
 
@@ -34,7 +35,7 @@ namespace Microsoft.VisualStudio.Setup
         public Task CommonFiles()
         {
             IEnumerable<string> files = GetPackageContents("Microsoft.VisualStudio.ProjectSystem.Managed.CommonFiles.vsix");
-
+            VerifierSettings.SortPropertiesAlphabetically();
             return Verifier.Verify(files);
         }
 
