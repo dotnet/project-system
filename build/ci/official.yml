@@ -279,15 +279,21 @@ steps:
     # publishVstsFeed: 'DevDiv/VS'
     allowPackageConflicts: true
 
-# Publish to https://dev.azure.com/DevDiv/DevDiv/_artifacts/feed/VS-CoreXtFeeds
-- task: NuGetCommand@2
-  displayName: Publish Packages to DevDiv/VS-CoreXtFeeds
-  inputs:
-    command: push
-    packagesToPush: 'artifacts\$(BuildConfiguration)\packages\*.nupkg'
-    # https://pkgs.dev.azure.com/devdiv/_packaging/VS-CoreXtFeeds/nuget/v3/index.json via VssFeedId
-    publishVstsFeed: '37a181e8-5ec9-4e8d-a499-07b754f9b4f8'
-    allowPackageConflicts: true
+# TODO: This causes an error:
+#
+# 'Microsoft.VisualStudio.ProjectSystem.Managed 17.2.0-beta1-20116-04' cannot be published to the feed because it exists in at least one of the feed's upstream sources.
+# Publishing this copy would prevent you from using 'Microsoft.VisualStudio.ProjectSystem.Managed 17.2.0-beta1-20116-04' from 'devdiv-VS@local'.
+# For more information, see https://go.microsoft.com/fwlink/?linkid=864880
+#
+# # Publish to https://dev.azure.com/DevDiv/DevDiv/_artifacts/feed/VS-CoreXtFeeds
+# - task: NuGetCommand@2
+#   displayName: Publish Packages to DevDiv/VS-CoreXtFeeds
+#   inputs:
+#     command: push
+#     packagesToPush: 'artifacts\$(BuildConfiguration)\packages\*.nupkg'
+#     # https://pkgs.dev.azure.com/devdiv/_packaging/VS-CoreXtFeeds/nuget/v3/index.json via VssFeedId
+#     publishVstsFeed: '37a181e8-5ec9-4e8d-a499-07b754f9b4f8'
+#     allowPackageConflicts: true
 
 ###################################################################################################################################################################
 # CLEANUP
