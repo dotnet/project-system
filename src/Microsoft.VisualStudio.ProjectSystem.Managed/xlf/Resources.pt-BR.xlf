@@ -9,257 +9,257 @@
       </trans-unit>
       <trans-unit id="FUTD_AddingInputReferenceCopyMarkers">
         <source>Adding input reference copy markers:</source>
-        <target state="new">Adding input reference copy markers:</target>
+        <target state="translated">Adicionando marcadores de cópia de referência de entrada:</target>
         <note />
       </trans-unit>
       <trans-unit id="FUTD_AddingNewestImportInput">
         <source>Adding newest import input:</source>
-        <target state="new">Adding newest import input:</target>
+        <target state="translated">Adicionando entrada de importação mais recente:</target>
         <note />
       </trans-unit>
       <trans-unit id="FUTD_AddingOutputReferenceCopyMarker">
         <source>Adding output reference copy marker:</source>
-        <target state="new">Adding output reference copy marker:</target>
+        <target state="translated">Adicionando marcador de cópia de referência de saída:</target>
         <note />
       </trans-unit>
       <trans-unit id="FUTD_AddingProjectFileInputs">
         <source>Adding project file inputs:</source>
-        <target state="new">Adding project file inputs:</target>
+        <target state="translated">Adicionando entradas de arquivo de projeto:</target>
         <note />
       </trans-unit>
       <trans-unit id="FUTD_AddingTypedInputsInSet_2">
         <source>Adding {0} inputs in Set="{1}":</source>
-        <target state="new">Adding {0} inputs in Set="{1}":</target>
+        <target state="translated">Adicionando {0} entradas em Set="{1}":</target>
         <note>{0} is an MSBuild item type. {1} is the name of the set.</note>
       </trans-unit>
       <trans-unit id="FUTD_AddingTypedInputs_1">
         <source>Adding {0} inputs:</source>
-        <target state="new">Adding {0} inputs:</target>
+        <target state="translated">Adicionando {0} entradas:</target>
         <note>{0} is an MSBuild item type.</note>
       </trans-unit>
       <trans-unit id="FUTD_AddingTypedOutputsInSet_2">
         <source>Adding {0} outputs in Set="{1}":</source>
-        <target state="new">Adding {0} outputs in Set="{1}":</target>
+        <target state="translated">Adicionando saídas {0} em Set="{1}":</target>
         <note>{0} is an MSBuild item type. {1} is the name of the set.</note>
       </trans-unit>
       <trans-unit id="FUTD_AddingTypedOutputs_1">
         <source>Adding {0} outputs:</source>
-        <target state="new">Adding {0} outputs:</target>
+        <target state="translated">Adicionando {0} saídas:</target>
         <note>{0} is an MSBuild item type.</note>
       </trans-unit>
       <trans-unit id="FUTD_ChangedItemsAddition_4">
         <source>{0} item added '{1}' (CopyType={2}, TargetPath='{3}')</source>
-        <target state="new">{0} item added '{1}' (CopyType={2}, TargetPath='{3}')</target>
+        <target state="translated">{0} item adicionado '{1}' (CopyType={2}, TargetPath='{3}')</target>
         <note>Do not translate 'CopyType' or 'TargetPath'. {0} is an MSBuild item type. {1} is a file path. {2} and {3} are metadata values.</note>
       </trans-unit>
       <trans-unit id="FUTD_ChangedItemsRemoval_4">
         <source>{0} item removed '{1}' (CopyType={2}, TargetPath='{3}')</source>
-        <target state="new">{0} item removed '{1}' (CopyType={2}, TargetPath='{3}')</target>
+        <target state="translated">{0} item removido '{1}' (CopyType={2}, TargetPath='{3}')</target>
         <note>Do not translate 'CopyType' or 'TargetPath'. {0} is an MSBuild item type. {1} is a file path. {2} and {3} are metadata values.</note>
       </trans-unit>
       <trans-unit id="FUTD_CheckingCopiedOutputFile">
         <source>Checking copied output (UpToDateCheckBuilt with Original property) file:</source>
-        <target state="new">Checking copied output (UpToDateCheckBuilt with Original property) file:</target>
+        <target state="translated">Verificando o arquivo de saída copiado (UpToDateCheckBuilt com propriedade Original):</target>
         <note>Do not translate UpToDateCheckBuilt or Original.</note>
       </trans-unit>
       <trans-unit id="FUTD_CheckingCopiedOutputFileDestinationNotFound_2">
         <source>Destination '{0}' does not exist for copy from '{1}', not up-to-date.</source>
-        <target state="new">Destination '{0}' does not exist for copy from '{1}', not up-to-date.</target>
+        <target state="translated">O destino '{0}' não existe para a cópia de '{1}', não atualizado.</target>
         <note>{0} and {1} are file paths.</note>
       </trans-unit>
       <trans-unit id="FUTD_CheckingCopiedOutputFileSourceNewer">
         <source>Source is newer than build output destination, not up-to-date.</source>
-        <target state="new">Source is newer than build output destination, not up-to-date.</target>
+        <target state="translated">A origem é mais recente do que o destino de saída do build, não atualizada.</target>
         <note />
       </trans-unit>
       <trans-unit id="FUTD_CheckingCopiedOutputFileSourceNotFound_2">
         <source>Source '{0}' does not exist for copy to '{1}', not up-to-date.</source>
-        <target state="new">Source '{0}' does not exist for copy to '{1}', not up-to-date.</target>
+        <target state="translated">A origem '{0}' não existe para copiar para '{1}', não atualizado.</target>
         <note>{0} and {1} are file paths.</note>
       </trans-unit>
       <trans-unit id="FUTD_CheckingPreserveNewestFileDestinationNotFound_1">
         <source>Destination '{0}' does not exist, not up-to-date.</source>
-        <target state="new">Destination '{0}' does not exist, not up-to-date.</target>
+        <target state="translated">O destino '{0}' não existe, não atualizado.</target>
         <note>{0} is a file path.</note>
       </trans-unit>
       <trans-unit id="FUTD_CheckingPreserveNewestFileSourceNotFound_1">
         <source>Source '{0}' does not exist, not up-to-date.</source>
-        <target state="new">Source '{0}' does not exist, not up-to-date.</target>
+        <target state="translated">A origem '{0}' não existe, não atualizada.</target>
         <note>{0} is a file path.</note>
       </trans-unit>
       <trans-unit id="FUTD_CheckingPreserveNewestFile_1">
         <source>Checking PreserveNewest file '{0}':</source>
-        <target state="new">Checking PreserveNewest file '{0}':</target>
+        <target state="translated">Verificando o arquivo PreserveNewest '{0}':</target>
         <note>Do not translate PreserveNewest. {0} is a file path.</note>
       </trans-unit>
       <trans-unit id="FUTD_CheckingPreserveNewestSourceNewerThanDestination_2">
         <source>PreserveNewest source '{0}' is newer than destination '{1}', not up-to-date.</source>
-        <target state="new">PreserveNewest source '{0}' is newer than destination '{1}', not up-to-date.</target>
+        <target state="translated">A origem PreserveNewest '{0}' é mais recente do que o destino '{1}', não atualizada.</target>
         <note>Do not translate PreserveNewest. {0} and {1} are file paths.</note>
       </trans-unit>
       <trans-unit id="FUTD_ComparingInputOutputTimestamps_1">
         <source>Comparing timestamps of inputs and outputs in Set="{0}":</source>
-        <target state="new">Comparing timestamps of inputs and outputs in Set="{0}":</target>
+        <target state="translated">Comparando carimbos de data/hora de entradas e saídas em Set="{0}":</target>
         <note>Do not translate 'Set' as this name is used in code. {0} is the name of the set.</note>
       </trans-unit>
       <trans-unit id="FUTD_Completed">
         <source>Up-to-date check completed in {0:N1} ms</source>
-        <target state="new">Up-to-date check completed in {0:N1} ms</target>
+        <target state="translated">Verificação de atualização concluída em {0:N1} ms</target>
         <note>{0} is a duration in milliseconds. "ms" refers to "milliseconds". Leave the "{0:N1}" string as-is, for correct formatting of the number.</note>
       </trans-unit>
       <trans-unit id="FUTD_CopyAlwaysItemExists_1">
         <source>Item '{0}' has CopyToOutputDirectory set to 'Always', not up-to-date.</source>
-        <target state="new">Item '{0}' has CopyToOutputDirectory set to 'Always', not up-to-date.</target>
+        <target state="translated">O item '{0}' tem CopyToOutputDirectory definido como 'Always', não atualizado.</target>
         <note>Do not translate 'CopyToOutputDirectory' or 'Always'. {0} is a file path.</note>
       </trans-unit>
       <trans-unit id="FUTD_CriticalBuildTasksRunning">
         <source>Critical build tasks are running, not up-to-date.</source>
-        <target state="new">Critical build tasks are running, not up-to-date.</target>
+        <target state="translated">Tarefas críticas de build estão em execução, não atualizadas.</target>
         <note />
       </trans-unit>
       <trans-unit id="FUTD_DestinationFileTimeAndPath_2">
         <source>Destination {0}: '{1}'</source>
-        <target state="new">Destination {0}: '{1}'</target>
+        <target state="translated">Destino {0}: '{1}'</target>
         <note>{0} is a datetime. {1} is a file path.</note>
       </trans-unit>
       <trans-unit id="FUTD_DisableFastUpToDateCheckTrue">
         <source>The 'DisableFastUpToDateCheck' property is 'true', not up-to-date.</source>
-        <target state="new">The 'DisableFastUpToDateCheck' property is 'true', not up-to-date.</target>
+        <target state="translated">A propriedade 'DisableFastUpToDateCheck' é 'true', não atualizada.</target>
         <note>Do not translate 'DisableFastUpToDateCheck' or 'true'.</note>
       </trans-unit>
       <trans-unit id="FUTD_Exception_1">
         <source>Up-to-date check threw an exception. Not up-to-date. {0}</source>
-        <target state="new">Up-to-date check threw an exception. Not up-to-date. {0}</target>
+        <target state="translated">A verificação de atualização a gerou uma exceção. Não atualizada. {0}</target>
         <note>{0} is the exception message.</note>
       </trans-unit>
       <trans-unit id="FUTD_FirstRun">
         <source>The up-to-date check has not yet run for this project. Not up-to-date.</source>
-        <target state="new">The up-to-date check has not yet run for this project. Not up-to-date.</target>
+        <target state="translated">A verificação de atualização ainda não foi executada para este projeto. Não atualizada.</target>
         <note />
       </trans-unit>
       <trans-unit id="FUTD_IgnoringKinds_1">
         <source>Ignoring up-to-date check items with Kind="{0}"</source>
-        <target state="new">Ignoring up-to-date check items with Kind="{0}"</target>
+        <target state="translated">Ignorando itens de verificação atualizados com Kind="{0}”</target>
         <note>Do not translate Kind. {0} is the kind name.</note>
       </trans-unit>
       <trans-unit id="FUTD_InputMarkerNewerThanOutputMarker">
         <source>Input marker is newer than output marker, not up-to-date.</source>
-        <target state="new">Input marker is newer than output marker, not up-to-date.</target>
+        <target state="translated">O marcador de entrada é mais recente do que o marcador de saída, não atualizado.</target>
         <note />
       </trans-unit>
       <trans-unit id="FUTD_InputModifiedSinceLastCheck_3">
         <source>Input '{0}' ({1}) has been modified since the last up-to-date check ({2}), not up-to-date.</source>
-        <target state="new">Input '{0}' ({1}) has been modified since the last up-to-date check ({2}), not up-to-date.</target>
+        <target state="translated">A entrada '{0}' ({1}) foi modificada desde a última verificação de atualização ({2}), não atualizada.</target>
         <note>{0} is a file path. {1} and {2} are datetimes.</note>
       </trans-unit>
       <trans-unit id="FUTD_InputNewerThanOutput_4">
         <source>Input '{0}' is newer ({1}) than earliest output '{2}' ({3}), not up-to-date.</source>
-        <target state="new">Input '{0}' is newer ({1}) than earliest output '{2}' ({3}), not up-to-date.</target>
+        <target state="translated">A entrada '{0}' é mais recente ({1}) do que a saída mais antiga '{2}' ({3}), não atualizada.</target>
         <note>{0} and {2} are file paths. {1} and {3} are datetimes.</note>
       </trans-unit>
       <trans-unit id="FUTD_LatestWriteTimeOnInputMarker_2">
         <source>Latest write timestamp on input marker is {0} on '{1}'.</source>
-        <target state="new">Latest write timestamp on input marker is {0} on '{1}'.</target>
+        <target state="translated">O carimbo de data/hora no marcador de entrada é {0} em '{1}'.</target>
         <note>{0} is a datetime. {1} is a file path.</note>
       </trans-unit>
       <trans-unit id="FUTD_NoBuildOutputDefined">
         <source>No build outputs defined.</source>
-        <target state="new">No build outputs defined.</target>
+        <target state="translated">Nenhuma saída de build definida.</target>
         <note />
       </trans-unit>
       <trans-unit id="FUTD_NoBuildOutputDefinedInSet_1">
         <source>No build outputs defined in Set="{0}".</source>
-        <target state="new">No build outputs defined in Set="{0}".</target>
+        <target state="translated">Nenhuma saída de build definida em Set="{0}”.</target>
         <note>Do not translate 'Set' as this name is used in code. {0} is the name of the set.</note>
       </trans-unit>
       <trans-unit id="FUTD_NoInputMarkersExist">
         <source>No input markers exist, skipping marker check.</source>
-        <target state="new">No input markers exist, skipping marker check.</target>
+        <target state="translated">Não há marcadores de entrada, ignorando a verificação de marcador.</target>
         <note />
       </trans-unit>
       <trans-unit id="FUTD_NoInputsDefined">
         <source>No inputs defined.</source>
-        <target state="new">No inputs defined.</target>
+        <target state="translated">Nenhuma entrada definida.</target>
         <note />
       </trans-unit>
       <trans-unit id="FUTD_NoInputsDefinedInSet_1">
         <source>No inputs defined in Set="{0}".</source>
-        <target state="new">No inputs defined in Set="{0}".</target>
+        <target state="translated">Nenhuma entrada definida em Set="{0}”.</target>
         <note>Do not translate 'Set' as this name is used in code. {0} is the name of the set.</note>
       </trans-unit>
       <trans-unit id="FUTD_NoInputsNewerThanEarliestOutputInSet_5">
         <source>In Set="{4}", no inputs are newer than earliest output '{0}' ({1}). Newest input is '{2}' ({3}).</source>
-        <target state="new">In Set="{4}", no inputs are newer than earliest output '{0}' ({1}). Newest input is '{2}' ({3}).</target>
+        <target state="translated">Em Set="{4}", nenhuma entrada é mais recente do que a saída mais antiga '{0}' ({1}). A entrada mais recente é '{2}' ({3}).</target>
         <note>Do not translate 'Set' as this name is used in code. {0} and {2} are file paths. {1} and {2} are datetimes. {4} is the name of the set.</note>
       </trans-unit>
       <trans-unit id="FUTD_NoInputsNewerThanEarliestOutput_4">
         <source>No inputs are newer than earliest output '{0}' ({1}). Newest input is '{2}' ({3}).</source>
-        <target state="new">No inputs are newer than earliest output '{0}' ({1}). Newest input is '{2}' ({3}).</target>
+        <target state="translated">Nenhuma entrada é mais recente do que a saída mais antiga '{0}' ({1}). A entrada mais recente é '{2}' ({3}).</target>
         <note>{0} and {2} are file paths. {1} and {2} are datetimes.</note>
       </trans-unit>
       <trans-unit id="FUTD_NoOutputMarkerExists_1">
         <source>Output marker '{0}' does not exist, skipping marker check.</source>
-        <target state="new">Output marker '{0}' does not exist, skipping marker check.</target>
+        <target state="translated">O marcador de saída '{0}' não existe, ignorando a verificação de marcador.</target>
         <note>{0} is a file path.</note>
       </trans-unit>
       <trans-unit id="FUTD_NonRequiredInputNotFound_1">
         <source>Input '{0}' does not exist, but is not required.</source>
-        <target state="new">Input '{0}' does not exist, but is not required.</target>
+        <target state="translated">A entrada '{0}' não existe, mas não é necessária.</target>
         <note>{0} is a file path.</note>
       </trans-unit>
       <trans-unit id="FUTD_NonRequiredTypedInputNotFound_2">
         <source>Input {1} item '{0}' does not exist, but is not required.</source>
-        <target state="new">Input {1} item '{0}' does not exist, but is not required.</target>
+        <target state="translated">O item '{0}' de entrada {1} não existe, mas não é necessário.</target>
         <note>{0} is a file path. {1} is an MSBuild item type.</note>
       </trans-unit>
       <trans-unit id="FUTD_OutputDoesNotExist_1">
         <source>Output '{0}' does not exist, not up-to-date.</source>
-        <target state="new">Output '{0}' does not exist, not up-to-date.</target>
+        <target state="translated">A saída '{0}' não existe, não atualizada.</target>
         <note>{0} is a file path.</note>
       </trans-unit>
       <trans-unit id="FUTD_RequiredInputNotFound_1">
         <source>Input '{0}' does not exist and is required, not up-to-date.</source>
-        <target state="new">Input '{0}' does not exist and is required, not up-to-date.</target>
+        <target state="translated">A entrada '{0}' e é necessária, não atualizada.</target>
         <note>{0} is a file path.</note>
       </trans-unit>
       <trans-unit id="FUTD_RequiredTypedInputNotFound_2">
         <source>Input {1} item '{0}' does not exist and is required, not up-to-date.</source>
-        <target state="new">Input {1} item '{0}' does not exist and is required, not up-to-date.</target>
+        <target state="translated">O item '{0}' de entrada {1} não existe e é necessário, não atualizado.</target>
         <note>{0} is a file path. {1} is an MSBuild item type.</note>
       </trans-unit>
       <trans-unit id="FUTD_SetOfItemsChangedMoreRecentlyThanOutput_3">
         <source>The set of project items was changed more recently ({0}) than the earliest output '{1}' ({2}), not up-to-date.</source>
-        <target state="new">The set of project items was changed more recently ({0}) than the earliest output '{1}' ({2}), not up-to-date.</target>
+        <target state="translated">O conjunto de itens de projeto foi alterado mais recentemente ({0}) do que a saída mais antiga '{1}' ({2}), não atualizada.</target>
         <note>{0} and {2} are datetimes. {1} is a file path.</note>
       </trans-unit>
       <trans-unit id="FUTD_SkippingIgnoredKindItem_2">
         <source>Skipping '{0}' with ignored Kind="{1}"</source>
-        <target state="new">Skipping '{0}' with ignored Kind="{1}"</target>
+        <target state="translated">Ignorando '{0}' com Kind="{1}"</target>
         <note>Do not translate 'Kind' as this name is used in code. {0} is a file path. {2} is the name of the kind.</note>
       </trans-unit>
       <trans-unit id="FUTD_SourceFileTimeAndPath_2">
         <source>Source {0}: '{1}'</source>
-        <target state="new">Source {0}: '{1}'</target>
+        <target state="translated">Origem {0}: '{1}'</target>
         <note>{0} is a datetime. {1} is a file path.</note>
       </trans-unit>
       <trans-unit id="FUTD_TypedInputModifiedSinceLastCheck_4">
         <source>Input {3} item '{0}' ({1}) has been modified since the last up-to-date check ({2}), not up-to-date.</source>
-        <target state="new">Input {3} item '{0}' ({1}) has been modified since the last up-to-date check ({2}), not up-to-date.</target>
+        <target state="translated">O item '{0}' de entrada {3} ({1}) foi modificado desde a última verificação de atualização ({2}), não atualizado.</target>
         <note>{0} is a file path. {1} and {2} are datetimes. {3} is an MSBuild item type.</note>
       </trans-unit>
       <trans-unit id="FUTD_TypedInputNewerThanOutput_5">
         <source>Input {4} item '{0}' is newer ({1}) than earliest output '{2}' ({3}), not up-to-date.</source>
-        <target state="new">Input {4} item '{0}' is newer ({1}) than earliest output '{2}' ({3}), not up-to-date.</target>
+        <target state="translated">O item '{0}' de entrada {4} é mais recente ({1}) do que a saída mais antiga '{2}' ({3}), não atualizado.</target>
         <note>{0} and {2} are file paths. {1} and {3} are datetimes. {4} is an MSBuild item type.</note>
       </trans-unit>
       <trans-unit id="FUTD_UpToDate">
         <source>Project is up-to-date.</source>
-        <target state="new">Project is up-to-date.</target>
+        <target state="translated">O projeto está atualizado.</target>
         <note />
       </trans-unit>
       <trans-unit id="FUTD_WriteTimeOnOutputMarker_2">
         <source>Write timestamp on output marker is {0} on '{1}'.</source>
-        <target state="new">Write timestamp on output marker is {0} on '{1}'.</target>
+        <target state="translated">O carimbo de data/hora de gravação no marcador de saída é {0} em '{1}'.</target>
         <note>{0} is a datetime. {1} is a file path.</note>
       </trans-unit>
       <trans-unit id="ImportsTreeNodeName">
