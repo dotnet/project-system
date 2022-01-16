@@ -129,7 +129,8 @@ steps:
       **/*.pdb
       **/*.dll
       **/*.exe
-    IndexSources: true
+    # NOTE: This produces a warning about indexing (if enabled) but will still publish the symbols. See: https://github.com/microsoft/azure-pipelines-tasks/issues/15605
+    IndexSources: false
     PublishSymbols: true
     SymbolServerType: 'TeamServices'
     SymbolsProduct: 'DotNet Project System'

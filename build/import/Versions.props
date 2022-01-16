@@ -18,6 +18,9 @@
     <RoslynToolsRepoToolsetVersion>1.0.0-beta-62705-01</RoslynToolsRepoToolsetVersion>
     <RoslynToolsModifyVsixManifestVersion>1.0.0-beta-62327-02</RoslynToolsModifyVsixManifestVersion>
     <RoslynToolsSignToolVersion>1.1.0-beta3.21260.1</RoslynToolsSignToolVersion>
+    <!-- Feed: https://dev.azure.com/DevDiv/DevDiv/_artifacts/feed/dotnet-aggregate -->
+    <!-- Feed Endpoint: https://devdiv.pkgs.visualstudio.com/_packaging/dotnet-aggregate/nuget/v3/index.json -->
+    <!-- Package: https://devdiv.visualstudio.com/DevDiv/_artifacts/feed/dotnet-aggregate/NuGet/RoslynDependencies.ProjectSystem.OptimizationData/2.6.0-beta1-62205-02/overview -->
     <RoslynDependenciesProjectSystemOptimizationDataVersion>2.6.0-beta1-62205-02</RoslynDependenciesProjectSystemOptimizationDataVersion>
     <!-- TODO: IBCMerge was only used for Editors/AppDesigner optimization. Need to re-evaluate how to optimize these assemblies. -->
     <!-- TODO: Merged PIAs - evaluate the need of this upgrade https://github.com/dotnet/project-system/issues/7191 -->
