@@ -26,4 +26,6 @@
     <MakeDir Directories="$(IntermediateOutputPath)" ContinueOnError="True" />
   </Target>
 
+  <Import Project="..\..\build\import\VsixSigning.targets" />
+
 </Project>

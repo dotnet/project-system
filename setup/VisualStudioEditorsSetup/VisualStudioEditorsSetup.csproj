@@ -41,4 +41,6 @@
     </Compile>
   </ItemGroup>
 
+  <Import Project="..\..\build\import\VsixSigning.targets" />
+
 </Project>
