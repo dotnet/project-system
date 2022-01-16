@@ -124,16 +124,17 @@ steps:
 - task: PublishSymbols@2
   displayName: Publish Symbols to Azure Artifacts
   inputs:
-    SymbolsFolder: $(Build.ArtifactStagingDirectory)/Symbols
-    SearchPattern:
-      '**/*.pdb
+    SymbolsFolder: '$(Build.ArtifactStagingDirectory)/Symbols'
+    SearchPattern: |
+      **/*.pdb
       **/*.dll
-      **/*.exe'
-    publishSymbols: true
-    SymbolServerType: TeamServices
+      **/*.exe
+    IndexSources: true
+    PublishSymbols: true
+    SymbolServerType: 'TeamServices'
     SymbolsProduct: 'DotNet Project System'
     SymbolsVersion: '$(Build.BuildNumber)'
-    SymbolsArtifactName: Symbols
+    SymbolsArtifactName: 'Symbols'
   continueOnError: true
 
 # TODO: Most of these files are already published via 'Publish Artifacts' section
