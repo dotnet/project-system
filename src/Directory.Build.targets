@@ -1,5 +1,6 @@
 <!-- Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information. -->
 <Project>
+
   <Import Project="$(MSBuildThisFileDirectory)..\build\optprof\OptProf.targets" />
   <Import Project="$(MSBuildThisFileDirectory)..\Directory.Build.targets" />
   <Import Project="$(MSBuildThisFileDirectory)..\build\import\VisualStudio.XamlRules.targets"/>
@@ -46,4 +47,5 @@
     <Copy SourceFiles="$(OutputPath)$(AssemblyName).dll" DestinationFolder="$(ArtifactsObjDir)\$(AssemblyName)" />
     <Copy SourceFiles="@(ResourceDllsToCopy2)" DestinationFolder="$(ArtifactsObjDir)\$(AssemblyName)\%(LanguageDir)" />
   </Target>
+
 </Project>

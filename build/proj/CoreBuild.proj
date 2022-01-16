@@ -36,11 +36,6 @@
     <SolutionRestoreAndBuildProperty Include="__DeployProjectOutput=$(Deploy)" Condition="'$(Deploy)' != ''" />
   </ItemGroup>
 
-  <!-- <ItemGroup>
-    <PackageReference Include="MicroBuild.Core.Sentinel" />
-    <PackageReference Include="Microsoft.VisualStudioEng.MicroBuild.Core" />
-  </ItemGroup> -->
-
   <Target Name="LogInitialMessage">
     <Message Text="Building $(SolutionFileName) [$(Configuration)]...%0a" Importance="high" />
   </Target>
@@ -81,22 +76,6 @@
       Condition="'@(SolutionBuildTarget)' != ''" />
 
   </Target>
-
-  <!-- <Target Name="AddFilesToSign">
-    <ItemGroup>
-      <FilesToSign Include="
-        $(VisualStudioSetupOutputPath)ProjectSystem.vsix;
-        $(VisualStudioSetupOutputPath)VisualStudioEditorsSetup.vsix;
-        $(VisualStudioSetupInsertionPath)ProjectSystem.vsix;
-        $(VisualStudioSetupInsertionPath)VisualStudioEditorsSetup.vsix;
-        $(VisualStudioSetupInsertionPath)Microsoft.VisualStudio.ProjectSystem.Managed.CommonFiles.vsix">
-        <Authenticode>VsixSHA2</Authenticode>
-      </FilesToSign>
-      <FilesToSign Include="$(PackageOutputPath)*.nupkg">
-        <Authenticode>NuGet</Authenticode>
-      </FilesToSign>
-    </ItemGroup>
-  </Target> -->
 
   <!-- Generate insertion assets -->
   <Target Name="GenerateDependentAssemblyVersionsFile" Condition="'$(BuildOrRebuild)' == 'true'">

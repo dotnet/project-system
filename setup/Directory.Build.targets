@@ -1,5 +1,6 @@
 <!-- Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information. -->
 <Project>
+
   <Import Project="..\Directory.Build.targets" />
 
   <!-- 
@@ -12,15 +13,31 @@
   </Target>
 
   <!-- Adds the appropriate vsix files for signing. -->
-  <!-- <Target Name="AddVsixForSigning" BeforeTargets="SignFiles">
+  <Target Name="AddVsixForSigning" DependsOnTargets="SwixBuild" BeforeTargets="SignFiles">
     <Message Text="VisualStudioSetupOutputPath: $(VisualStudioSetupOutputPath)" />
     <Message Text="VisualStudioSetupInsertionPath: $(VisualStudioSetupInsertionPath)" />
     <Message Text="AssemblyName: $(AssemblyName)" />
+    <Message Text="OutDir: $(OutDir)" />
+    <Message Text="ArtifactsObjDir: $(ArtifactsObjDir)" />
 
+    <Copy SourceFiles="$(VisualStudioSetupInsertionPath)$(AssemblyName).vsix" DestinationFolder="$(OutDir)" />
     <ItemGroup>
-      <FilesToSign Include="$(VisualStudioSetupOutputPath)$(AssemblyName).vsix;$(VisualStudioSetupInsertionPath)$(AssemblyName).vsix">
+      <FilesToSign Include="$(OutDir)$(AssemblyName).vsix">
         <Authenticode>VsixSHA2</Authenticode>
       </FilesToSign>
     </ItemGroup>
-  </Target> -->
+  </Target>
+
+  <!-- Copies the vsix files after they've been signed to the different output folders. -->
+  <Target Name="CopyVsixAfterSigning" DependsOnTargets="AddVsixForSigning" AfterTargets="SignFiles">
+    <Message Text="VisualStudioSetupOutputPath: $(VisualStudioSetupOutputPath)" />
+    <Message Text="VisualStudioSetupInsertionPath: $(VisualStudioSetupInsertionPath)" />
+    <Message Text="AssemblyName: $(AssemblyName)" />
+    <Message Text="OutDir: $(OutDir)" />
+    <Message Text="ArtifactsObjDir: $(ArtifactsObjDir)" />
+
+    <Copy SourceFiles="$(OutDir)$(AssemblyName).vsix" DestinationFolder="$(VisualStudioSetupInsertionPath)" />
+    <Copy SourceFiles="$(OutDir)$(AssemblyName).vsix" DestinationFolder="$(VisualStudioSetupOutputPath)" />
+  </Target>
+
 </Project>

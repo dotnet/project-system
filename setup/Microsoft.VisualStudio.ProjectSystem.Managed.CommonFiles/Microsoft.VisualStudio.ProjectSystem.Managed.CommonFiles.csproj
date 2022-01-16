@@ -22,34 +22,4 @@
     <MakeDir Directories="$(IntermediateOutputPath)" ContinueOnError="True" />
   </Target>
 
-  <!-- Adds the appropriate vsix files for signing. -->
-  <!-- <Target Name="AddVsixForSigning" BeforeTargets="SignFiles"> -->
-  <!-- <Target Name="AddVsixForSigning" AfterTargets="CreateVsixContainer"> -->
-  <!-- <Target Name="AddVsixForSigning" AfterTargets="FinalizeInsertionVsixFiles"> -->
-  <!-- <Target Name="AddVsixForSigning" DependsOnTargets="SwixBuild"> -->
-  <Target Name="AddVsixForSigning" DependsOnTargets="SwixBuild" BeforeTargets="SignFiles">
-    <Message Text="VisualStudioSetupOutputPath: $(VisualStudioSetupOutputPath)" />
-    <Message Text="VisualStudioSetupInsertionPath: $(VisualStudioSetupInsertionPath)" />
-    <Message Text="AssemblyName: $(AssemblyName)" />
-    <Message Text="OutDir: $(OutDir)" />
-    <Message Text="ArtifactsObjDir: $(ArtifactsObjDir)" />
-
-    <Copy SourceFiles="$(VisualStudioSetupInsertionPath)$(AssemblyName).vsix" DestinationFolder="$(OutDir)" />
-    <ItemGroup>
-      <FilesToSign Include="$(OutDir)$(AssemblyName).vsix">
-        <Authenticode>VsixSHA2</Authenticode>
-      </FilesToSign>
-    </ItemGroup>
-  </Target>
-
-  <Target Name="CopyVsixAfterSigning" DependsOnTargets="AddVsixForSigning" AfterTargets="SignFiles">
-    <Message Text="VisualStudioSetupOutputPath: $(VisualStudioSetupOutputPath)" />
-    <Message Text="VisualStudioSetupInsertionPath: $(VisualStudioSetupInsertionPath)" />
-    <Message Text="AssemblyName: $(AssemblyName)" />
-    <Message Text="OutDir: $(OutDir)" />
-    <Message Text="ArtifactsObjDir: $(ArtifactsObjDir)" />
-
-    <Copy SourceFiles="$(OutDir)$(AssemblyName).vsix" DestinationFolder="$(VisualStudioSetupInsertionPath)" />
-    <Copy SourceFiles="$(OutDir)$(AssemblyName).vsix" DestinationFolder="$(VisualStudioSetupOutputPath)" />
-  </Target>
 </Project>
