@@ -6,6 +6,10 @@
 # NOTE: triggers for this build are defined in the Web UI instead of here in the YAML file so they
 #       apply to all branches.
 
+###################################################################################################################################################################
+# PIPELINE METADATA
+###################################################################################################################################################################
+
 resources:
 - repo: self
   clean: true
@@ -18,6 +22,10 @@ variables:
   TeamName: DotNet-Project-System
   BuildPlatform: any cpu
   DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true
+
+###################################################################################################################################################################
+# INSTALLATION
+###################################################################################################################################################################
 
 steps:
 - task: MicroBuildSigningPlugin@4
@@ -55,6 +63,10 @@ steps:
 #     restoreSolution: 'build\proj\internal\RestoreIBCMerge.csproj'
 #     nugetConfigPath: 'NuGet.config'
 
+###################################################################################################################################################################
+# BUILD SOLUTION
+###################################################################################################################################################################
+
 # TODO: Merged PIAs - reset to /ibc once private feeds are removed and Microsoft.DotNet.IBCMerge is reset
 - script: $(Build.SourcesDirectory)\build.cmd /build /test /ci /sign /diagnostic /no-deploy /no-integration /no-ibc /no-clearnugetcache /configuration $(BuildConfiguration)
   displayName: Build ProjectSystem.sln
@@ -66,17 +78,17 @@ steps:
     TargetFolders: $(Build.SourcesDirectory)/artifacts/$(BuildConfiguration)/packages
     ApprovalListPathForCerts: $(Build.SourcesDirectory)\build\ci\no_authenticode.txt
 
-# - task: Ref12.ref12-analyze-task.ref12-analyze-task.Ref12Analyze@0
-#   displayName: Produce Codex index for http://index
-#   inputs:
-#     workflowArguments: |
-#      /sourcesDirectory:$(Build.SourcesDirectory)
-#      /codexRepoUrl:$(Build.Repository.Uri)
-#      /repoName:$(Build.Repository.Name)
-#      /additionalCodexArguments:-bld
-#      /additionalCodexArguments:$(Build.SourcesDirectory)\artifacts\Release\log
-#   condition: succeeded()
-#   continueOnError: true
+- task: Ref12Analyze@0
+  displayName: Create Codex Index
+  inputs:
+    workflowArguments: |
+     /sourcesDirectory:$(Build.SourcesDirectory)
+     /codexRepoUrl:$(Build.Repository.Uri)
+     /repoName:$(Build.Repository.Name)
+     /additionalCodexArguments:-bld
+     /additionalCodexArguments:$(Build.SourcesDirectory)\artifacts\Release\log
+  condition: succeeded()
+  continueOnError: true
 
 - task: PublishTestResults@2
   displayName: Publish Test Results
@@ -87,6 +99,8 @@ steps:
   condition: succeededOrFailed()
 
 ###################################################################################################################################################################
+# PUBLISH SYMBOLS
+###################################################################################################################################################################
 
 # TODO: Test if this is actually doing anything.
 # - task: PowerShell@2
@@ -95,42 +109,44 @@ steps:
 #     filePath: build\variables\_vsts.ps1
 #     failOnStderr: true
 
-# Symbols is the one thing we cannot declare in the ps1 artifact scripts due to the extra steps
-# needed and the specific order it has to be performed in. Copy -> Publish Symbols -> Publish
-# Artifact -> publish to symweb
+# Symbols is the one thing we cannot declare in the ps1 artifact scripts due to the extra steps needed and the specific order it has to be performed in.
+# Copy -> Publish Symbols -> Publish Artifact -> Publish to SymWeb
+- task: CopyFiles@2
+  displayName: Copy Symbols
+  inputs:
+    SourceFolder: '$(Build.SourcesDirectory)\artifacts\$(BuildConfiguration)'
+    Contents: |
+      **/Microsoft.VisualStudio.ProjectSystem.Managed?(*.pdb|*.dll|*.xml)
+      **/Microsoft.VisualStudio.AppDesigner?(*.pdb|*.dll|*.xml)
+      **/Microsoft.VisualStudio.Editors?(*.pdb|*.dll|*.xml)
+    TargetFolder: $(Build.ArtifactStagingDirectory)/Symbols
 
-# - task: CopyFiles@2
-#   displayName: Copy symbols
-#   inputs:
-#     SourceFolder: '$(Build.SourcesDirectory)\artifacts\$(BuildConfiguration)'
-#     Contents: |
-#       **/Microsoft.VisualStudio.ProjectSystem.Managed?(*.pdb|*.dll|*.xml)
-#       **/Microsoft.VisualStudio.AppDesigner?(*.pdb|*.dll|*.xml)
-#       **/Microsoft.VisualStudio.Editors?(*.pdb|*.dll|*.xml)
-#     TargetFolder: $(Build.ArtifactStagingDirectory)/symbols
+# https://docs.microsoft.com/azure/devops/pipelines/tasks/build/index-sources-publish-symbols
+- task: PublishSymbols@2
+  displayName: Publish Symbols to Azure Artifacts
+  inputs:
+    SymbolsFolder: $(Build.ArtifactStagingDirectory)/Symbols
+    SearchPattern:
+      '**/*.pdb
+      **/*.dll
+      **/*.exe'
+    publishSymbols: true
+    SymbolServerType: TeamServices
+    SymbolsProduct: 'DotNet Project System'
+    SymbolsVersion: '$(Build.BuildNumber)'
+    SymbolsArtifactName: Symbols
+  continueOnError: true
 
-# - task: PublishSymbols@2
-#   displayName: Publish symbols to VSTS
-#   inputs:
-#     SymbolsFolder: $(Build.ArtifactStagingDirectory)/symbols
-#     SearchPattern:
-#       '**/*.pdb
-#       **/*.dll
-#       **/*.exe'
-#     publishSymbols: true
-#     SymbolServerType: TeamServices
-#     SymbolsProduct: 'Roslyn Project System'
-#     SymbolsVersion: '$(Build.BuildNumber)'
-#     SymbolsArtifactName: Symbols
-#   continueOnError: true
+# TODO: These files are already published via 'Publish Artifacts' section
+- task: PublishBuildArtifacts@1
+  displayName: 'Publish Artifact: Symbols'
+  inputs:
+    PathtoPublish: '$(Build.ArtifactStagingDirectory)/Symbols'
+    ArtifactName: Symbols
+    publishLocation: Container
 
-# - task: PublishBuildArtifacts@1
-#   displayName: 'Publish Artifact: symbols'
-#   inputs:
-#     PathtoPublish: '$(Build.ArtifactStagingDirectory)/symbols'
-#     ArtifactName: symbols
-#     publishLocation: Container
-
+###################################################################################################################################################################
+# PUBLISH OPTPROF METADATA
 ###################################################################################################################################################################
 
 # This is required to deploy the tests to devdiv.artifacts.visualstudio.com for the 'Deploy tests' step in the release pipeline.
@@ -187,6 +203,8 @@ steps:
   condition: succeededOrFailed()
 
 ###################################################################################################################################################################
+# PUBLISH ARTIFACTS
+###################################################################################################################################################################
 
 # TODO: DropName: 'Products/$(System.TeamProject)/$(Build.Repository.Name)/$(Build.SourceBranchName)/$(Build.BuildId)'
 - task: MicroBuildUploadVstsDropFolder@1
@@ -219,33 +237,44 @@ steps:
   condition: succeededOrFailed()
 
 ###################################################################################################################################################################
+# PUBLISH PACKAGE
+###################################################################################################################################################################
 
-# - task: NuGetToolInstaller@0
-#   inputs:
-#     versionSpec: '4.9.2'
+- task: NuGetToolInstaller@0
+  displayName: Install NuGet
+  inputs:
+    versionSpec: '4.9.2'
 
-# # Authenticate with service connections to be able to publish packages to external nuget feeds.
-# - task: NuGetAuthenticate@0
-#   inputs:
-#     nuGetServiceConnections: azure-public/vs-impl
+# Authenticate with a service connection to be able to publish packages to external (different DevOps organization) NuGet feeds.
+- task: NuGetAuthenticate@0
+  displayName: Authenticate NuGet
+  inputs:
+    nuGetServiceConnections: azure-public/vs-impl
 
-# # Publishes the packages to https://dev.azure.com/azure-public/vside/_packaging?_a=feed&feed=vs-impl
-# # For documentation purposes the old feeds are stored in https://dev.azure.com/dnceng/public/_packaging?_a=feed&feed=myget-legacy%40Local
-# - task: NuGetCommand@2
-#   displayName: NuGet push - vs-impl
-#   inputs:
-#     command: push
-#     packagesToPush: 'artifacts\$(BuildConfiguration)\packages\*.nupkg'
-#     nuGetFeedType: 'external'
-#     publishFeedCredentials: azure-public/vs-impl
+# Publishes the packages to https://dev.azure.com/azure-public/vside/_packaging?_a=feed&feed=vs-impl
+# For documentation purposes the old feeds are stored in https://dev.azure.com/dnceng/public/_packaging?_a=feed&feed=myget-legacy%40Local
+- task: NuGetCommand@2
+  displayName: Publish Packages to azure-public/vs-impl
+  inputs:
+    command: push
+    packagesToPush: 'artifacts\$(BuildConfiguration)\packages\*.nupkg'
+    nuGetFeedType: 'external'
+    publishFeedCredentials: azure-public/vs-impl
 
-# - task: NuGetCommand@2
-#   displayName: NuGet CoreXT publish
-#   inputs:
-#     command: push
-#     packagesToPush: 'artifacts\$(BuildConfiguration)\packages\*.nupkg'
-#     publishVstsFeed: '97a41293-2972-4f48-8c0e-05493ae82010'
-#     allowPackageConflicts: true
+# Publish to https://dev.azure.com/DevDiv/DevDiv/_artifacts/feed/VS
+- task: NuGetCommand@2
+  displayName: Publish Packages to DevDiv/VS
+  inputs:
+    command: push
+    packagesToPush: 'artifacts\$(BuildConfiguration)\packages\*.nupkg'
+    # https://devdiv.pkgs.visualstudio.com/_packaging/VS/nuget/v3/index.json via VssFeedId
+    # publishVstsFeed: '97a41293-2972-4f48-8c0e-05493ae82010'
+    publishVstsFeed: 'DevDiv/VS'
+    allowPackageConflicts: true
+
+###################################################################################################################################################################
+# CLEANUP
+###################################################################################################################################################################
 
 - task: MicroBuildCleanup@1
   displayName: Perform Cleanup
