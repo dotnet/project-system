@@ -1,10 +1,9 @@
+# Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
+
 # Name: DotNet-Project-System
 # URL: https://dev.azure.com/devdiv/DevDiv/_build?definitionId=9675
-#
-# Responsible for producing the signed product build for insertion into the Visual Studio repository
-#
-# NOTE: triggers for this build are defined in the Web UI instead of here in the YAML file so they
-#       apply to all branches.
+# Produces the signed product build for insertion into the Visual Studio repository
+# NOTE: Triggers for this build are defined in the Web UI instead of here in the YAML file so they apply to all branches.
 
 ###################################################################################################################################################################
 # PIPELINE METADATA
@@ -137,7 +136,8 @@ steps:
     SymbolsArtifactName: Symbols
   continueOnError: true
 
-# TODO: These files are already published via 'Publish Artifacts' section
+# TODO: Most of these files are already published via 'Publish Artifacts' section
+# TODO: Investigate publish consolidation
 - task: PublishBuildArtifacts@1
   displayName: 'Publish Artifact: Symbols'
   inputs:
