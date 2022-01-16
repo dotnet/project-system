@@ -268,8 +268,10 @@ steps:
     command: push
     packagesToPush: 'artifacts\$(BuildConfiguration)\packages\*.nupkg'
     # https://devdiv.pkgs.visualstudio.com/_packaging/VS/nuget/v3/index.json via VssFeedId
-    # publishVstsFeed: '97a41293-2972-4f48-8c0e-05493ae82010'
-    publishVstsFeed: 'DevDiv/VS'
+    # Requires VssFeedId despite documentation here: https://docs.microsoft.com/en-us/azure/devops/pipelines/artifacts/nuget?view=azure-devops&tabs=yaml#publish-a-package
+    publishVstsFeed: '97a41293-2972-4f48-8c0e-05493ae82010'
+    # Shows: Microsoft.VisualStudio.Services.Common.VssServiceException: The feed with ID 'VS' doesn't exist.
+    # publishVstsFeed: 'DevDiv/VS'
     allowPackageConflicts: true
 
 ###################################################################################################################################################################
