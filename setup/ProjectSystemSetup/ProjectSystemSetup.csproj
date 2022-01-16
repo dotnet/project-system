@@ -52,6 +52,14 @@
     </Compile>
   </ItemGroup>
 
-  <Import Project="..\..\build\import\VsixSigning.targets" />
+  <!-- Adds the appropriate vsix files for signing. -->
+  <Target Name="AddVsixForSigning" DependsOnTargets="FinalizeInsertionVsixFiles" BeforeTargets="SignFiles">
+    <Copy SourceFiles="$(VisualStudioSetupInsertionPath)$(AssemblyName).vsix" DestinationFolder="$(OutDir)" />
+    <ItemGroup>
+      <FilesToSign Include="$(OutDir)$(AssemblyName).vsix">
+        <Authenticode>VsixSHA2</Authenticode>
+      </FilesToSign>
+    </ItemGroup>
+  </Target>
 
 </Project>

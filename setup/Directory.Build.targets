@@ -12,4 +12,10 @@
   <Target Name="IncludeTransitiveProjectReferences" >
   </Target>
 
+  <!-- Copies the vsix files after they've been signed to the different output folders. -->
+  <Target Name="CopyVsixAfterSigning" DependsOnTargets="AddVsixForSigning" AfterTargets="SignFiles">
+    <Copy SourceFiles="$(OutDir)$(AssemblyName).vsix" DestinationFolder="$(VisualStudioSetupInsertionPath)" />
+    <Copy SourceFiles="$(OutDir)$(AssemblyName).vsix" DestinationFolder="$(VisualStudioSetupOutputPath)" />
+  </Target>
+
 </Project>
