@@ -219,13 +219,13 @@ steps:
   displayName: Copy Artifacts
   inputs:
     SourceFolder: '$(Build.SourcesDirectory)'
+    # NOTE: The copied contents are directly used by the RoslynInsertionTool to create the insertion PR.
     Contents: |
-      artifacts\$(BuildConfiguration)\bin\Dlls\*
+      artifacts\$(BuildConfiguration)\bin\**
       artifacts\$(BuildConfiguration)\DevDivInsertionFiles\**
       artifacts\$(BuildConfiguration)\log\**
       artifacts\$(BuildConfiguration)\packages\**
-      artifacts\$(BuildConfiguration)\VSSetup\*
-      artifacts\$(BuildConfiguration)\VSSetup\Insertion\*
+      artifacts\$(BuildConfiguration)\VSSetup\**
       artifacts\$(BuildConfiguration)\TestResults\**
     TargetFolder: $(Build.ArtifactStagingDirectory)/ArtifactsDrop
   condition: succeededOrFailed()
@@ -234,7 +234,10 @@ steps:
   displayName: Publish Artifacts
   inputs:
     PathtoPublish: '$(Build.ArtifactStagingDirectory)/ArtifactsDrop/artifacts/$(BuildConfiguration)'
-    ArtifactName: Artifacts
+    # NOTE: Artifact name is required to be Build.BuildNumber.
+    # The build-number named artifact is used for the RoslynInsertionTool to find the build for the insertion PR.
+    # Code here: https://github.com/dotnet/roslyn-tools/blob/1f64f56b4ea9a0c119bbe840c39b935acc60e4b8/src/RoslynInsertionTool/RoslynInsertionTool/RoslynInsertionTool.VisualStudioTeamServices.cs#L174
+    ArtifactName: '$(Build.BuildNumber)'
     publishLocation: Container
   condition: succeededOrFailed()
 
@@ -274,6 +277,16 @@ steps:
     publishVstsFeed: '97a41293-2972-4f48-8c0e-05493ae82010'
     # Shows: Microsoft.VisualStudio.Services.Common.VssServiceException: The feed with ID 'VS' doesn't exist.
     # publishVstsFeed: 'DevDiv/VS'
+    allowPackageConflicts: true
+
+# Publish to https://dev.azure.com/DevDiv/DevDiv/_artifacts/feed/VS-CoreXtFeeds
+- task: NuGetCommand@2
+  displayName: Publish Packages to DevDiv/VS-CoreXtFeeds
+  inputs:
+    command: push
+    packagesToPush: 'artifacts\$(BuildConfiguration)\packages\*.nupkg'
+    # https://pkgs.dev.azure.com/devdiv/_packaging/VS-CoreXtFeeds/nuget/v3/index.json via VssFeedId
+    publishVstsFeed: '37a181e8-5ec9-4e8d-a499-07b754f9b4f8'
     allowPackageConflicts: true
 
 ###################################################################################################################################################################
