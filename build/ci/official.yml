@@ -41,7 +41,7 @@ steps:
 # This requires the OptimizationInputs via the 'Publish OptimizationInputs drop' step in the release pipeline.
 # To generate ProfilingInputs for the first time, set this input: ShouldSkipOptimize: true
 # This plugin will restore MicroBuild.Plugins.OptProf which is required to create ProfilingInputs data.
-# The MicroBuild.VisualStudio package uses MicroBuild.Plugins.OptProf to run the target GenerateProfilingInputs on each project.
+# The projects include OptProf.targets which uses MicroBuild.Plugins.OptProf to run the target GenerateProfilingInputs on each project.
 - task: MicroBuildOptProfPlugin@6
   displayName: Install OptProf Plugin
   inputs:
@@ -92,13 +92,6 @@ steps:
 # PUBLISH SYMBOLS
 ###################################################################################################################################################################
 
-# TODO: Test if this is actually doing anything.
-# - task: PowerShell@2
-#   displayName: Set VSTS variables based on source
-#   inputs:
-#     filePath: build\variables\_vsts.ps1
-#     failOnStderr: true
-
 # Symbols is the one thing we cannot declare in the ps1 artifact scripts due to the extra steps needed and the specific order it has to be performed in.
 # Copy -> Publish Symbols -> Publish Artifact -> Publish to SymWeb
 - task: CopyFiles@2
@@ -129,8 +122,7 @@ steps:
     SymbolsArtifactName: Symbols
   continueOnError: true
 
-# TODO: Most of these files are already published via 'Publish Artifacts' section
-# TODO: Investigate publish consolidation
+# TODO: Most of these files are already published via 'Publish Artifacts' section. Investigate publish consolidation.
 - task: PublishBuildArtifacts@1
   displayName: 'Publish Artifact: Symbols'
   inputs:
@@ -166,10 +158,6 @@ steps:
     channelName: 'int.main'
     manifests: '$(Build.SourcesDirectory)\artifacts\$(BuildConfiguration)\VSSetup\Insertion\Microsoft.VisualStudio.ProjectSystem.Managed.vsman'
     outputFolder: $(Build.SourcesDirectory)\artifacts\$(BuildConfiguration)\VSSetup\Insertion
-    # bootstrapperCoreVersion: '1.15.76-develop-g446ca603'
-    # bootstrapperCoreFeedSource: 'https://devdiv.pkgs.visualstudio.com/_packaging/Setup/nuget/v3/index.json'
-    # bootstrapperCoreDependenciesFeedSource: 'https://devdiv.pkgs.visualstudio.com/_packaging/Setup-Dependencies/nuget/v3/index.json'
-    # nugetOrgPublicFeedSource: 'https://api.nuget.org/v3/index.json'
   condition: succeeded()
 
 - task: PowerShell@2
@@ -203,7 +191,6 @@ steps:
 # PUBLISH ARTIFACTS
 ###################################################################################################################################################################
 
-# TODO: DropName: 'Products/$(System.TeamProject)/$(Build.Repository.Name)/$(Build.SourceBranchName)/$(Build.BuildId)'
 - task: MicroBuildUploadVstsDropFolder@1
   displayName: Publish VS Setup
   inputs:
@@ -261,17 +248,16 @@ steps:
     nuGetFeedType: 'external'
     publishFeedCredentials: azure-public/vs-impl
 
-# Publish to https://dev.azure.com/DevDiv/DevDiv/_artifacts/feed/VS
+# Publishes the packages to https://dev.azure.com/DevDiv/DevDiv/_artifacts/feed/VS
+# The RoslynInsertionTool will republish these contents from the VS feed to https://dev.azure.com/DevDiv/DevDiv/_artifacts/feed/VS-CoreXtFeeds
 - task: NuGetCommand@2
   displayName: Publish Packages to DevDiv/VS
   inputs:
     command: push
     packagesToPush: 'artifacts\$(BuildConfiguration)\packages\*.nupkg'
-    # https://devdiv.pkgs.visualstudio.com/_packaging/VS/nuget/v3/index.json via VssFeedId
+    # Feed Endpoint: https://devdiv.pkgs.visualstudio.com/_packaging/VS/nuget/v3/index.json
     # Requires VssFeedId despite documentation here: https://docs.microsoft.com/en-us/azure/devops/pipelines/artifacts/nuget?view=azure-devops&tabs=yaml#publish-a-package
     publishVstsFeed: '97a41293-2972-4f48-8c0e-05493ae82010'
-    # Shows: Microsoft.VisualStudio.Services.Common.VssServiceException: The feed with ID 'VS' doesn't exist.
-    # publishVstsFeed: 'DevDiv/VS'
     allowPackageConflicts: true
 
 ###################################################################################################################################################################

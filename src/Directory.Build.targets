@@ -16,11 +16,6 @@
 
   <!-- Adds the appropriate assemblies for signing. -->
   <Target Name="AddAssembliesForSigning" BeforeTargets="SignFiles">
-    <Message Text="ArtifactsBinDir: $(ArtifactsBinDir)" />
-    <Message Text="OutDirName: $(OutDirName)" />
-    <Message Text="AssemblyName: $(AssemblyName)" />
-    <Message Text="IsProjectSystem: $(IsProjectSystem)" />
-
     <ItemGroup>
       <FilesToSign Include="$(ArtifactsBinDir)$(OutDirName)\$(AssemblyName).dll;$(ArtifactsBinDir)$(OutDirName)\**\$(AssemblyName).resources.dll">
         <Authenticode>MicrosoftSHA2</Authenticode>
