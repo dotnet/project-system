@@ -30,7 +30,6 @@
         UseOpenCover=$(IsCodeCoverageBuild);
         Configuration=$(Configuration);
         CIBuild=$(CIBuild);
-        EnableIbc=$(EnableIbc);
         Build=$(Build);
         Rebuild=$(Rebuild);
         Deploy=$(Deploy);

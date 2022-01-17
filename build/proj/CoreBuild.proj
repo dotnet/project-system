@@ -40,23 +40,15 @@
     <Message Text="Building $(SolutionFileName) [$(Configuration)]...%0a" Importance="high" />
   </Target>
 
+  <!--
+    Run solution restore separately from the other targets, in a different build phase.
+    Since restore brings in new .props and .targets files we need to rerun evaluation.
+
+    Note: msbuild caches the metaproject for the solution (see https://github.com/Microsoft/msbuild/issues/1695)
+    We invalidate the cache by changing the value of __BuildPhase property.
+  -->
   <Target Name="Restore">
-
-    <!--
-      Run solution restore separately from the other targets, in a different build phase.
-      Since restore brings in new .props and .targets files we need to rerun evaluation.
-
-      Note: msbuild caches the metaproject for the solution (see https://github.com/Microsoft/msbuild/issues/1695)
-      We invalidate the cache by changing the value of __BuildPhase property.
-    -->
-
-    <MSBuild 
-      Projects="$(SolutionPath)"
-      Properties="@(SolutionRestoreAndBuildProperty);__BuildPhase=SolutionRestore"
-      Targets="Restore"
-      BuildInParallel="true"
-      />
-
+    <MSBuild Projects="$(SolutionPath)" Properties="@(SolutionRestoreAndBuildProperty);__BuildPhase=SolutionRestore" Targets="Restore" BuildInParallel="true" />
   </Target>
 
   <Target Name="Build">
@@ -67,14 +59,7 @@
       <SolutionBuildTarget Include="IntegrationTest" Condition="'$(IntegrationTest)' == 'true'" />
       <SolutionBuildTarget Include="Pack" Condition="'$(BuildOrRebuild)' == 'true'" />
     </ItemGroup>
-
-    <MSBuild 
-      Projects="$(SolutionPath)"
-      Properties="@(SolutionRestoreAndBuildProperty);__BuildPhase=SolutionBuild"
-      Targets="@(SolutionBuildTarget)"
-      BuildInParallel="true"
-      Condition="'@(SolutionBuildTarget)' != ''" />
-
+    <MSBuild Projects="$(SolutionPath)" Properties="@(SolutionRestoreAndBuildProperty);__BuildPhase=SolutionBuild" Targets="@(SolutionBuildTarget)" BuildInParallel="true" Condition="'@(SolutionBuildTarget)' != ''" />
   </Target>
 
   <!-- Generate insertion assets -->
@@ -84,8 +69,10 @@
 
   <!-- TODO: This file, VisualStudio.Insertion.proj, doesn't exist in the latest RepoToolset version. -->
   <Target Name="GenerateVSManifest" Condition="'$(BuildOrRebuild)' == 'true'">
-    <!-- Because multiple projects can contribute to a single insertion component we package them in a separate phase.
-         Also due to insertion manifests containing hashes of references VSIXes, so we need to run this after signing  -->
+    <!--
+      Because multiple projects can contribute to a single insertion component we package them in a separate phase.
+      Also due to insertion manifests containing hashes of references VSIXes, so we need to run this after signing.
+    -->
     <MSBuild Projects="$(ToolsetPath)VisualStudio.Insertion.proj" Properties="@(CommonBuildProperty)" Targets="Pack" />
   </Target>
 </Project>

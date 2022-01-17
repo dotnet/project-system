@@ -53,20 +53,10 @@ steps:
     ShouldSkipOptimize: false
     NumberCommitsToSearch: '100'
 
-# NOTE: Shouldn't need this for now since this was for manual IBC merging in the AppDesigner/Editors projects.
-# - task: NuGetCommand@2
-#   displayName: Restore 'Microsoft.DotNet.IBCMerge' package
-#   inputs:
-#     command: restore
-#     feedsToUse: config
-#     restoreSolution: 'build\proj\internal\RestoreIBCMerge.csproj'
-#     nugetConfigPath: 'NuGet.config'
-
 ###################################################################################################################################################################
 # BUILD SOLUTION
 ###################################################################################################################################################################
 
-# TODO: Merged PIAs - reset to /ibc once private feeds are removed and Microsoft.DotNet.IBCMerge is reset
 - script: $(Build.SourcesDirectory)\build.cmd /build /test /ci /sign /diagnostic /no-deploy /no-integration /no-ibc /no-clearnugetcache /configuration $(BuildConfiguration)
   displayName: Build ProjectSystem.sln
 
