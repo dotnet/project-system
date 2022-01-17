@@ -1,7 +1,6 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
 using System;
-using System.Collections.Immutable;
 using System.ComponentModel.Composition;
 using System.Diagnostics.CodeAnalysis;
 using System.Threading;
@@ -93,44 +92,46 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
                     ProjectDataSources.SyncLinkTo(
                         _activeConfiguredProjectProvider.ActiveConfiguredProjectBlock.SyncLinkOptions(),
                         _projectSubscriptionService.ProjectRuleSource.SourceBlock.SyncLinkOptions(GetProjectEvaluationOptions()),
-                            target: DataflowBlockFactory.CreateActionBlock<IProjectVersionedValue<ValueTuple<ConfiguredProject, IProjectSubscriptionUpdate>>>(e =>
-                                OnProjectChangedAsync(new ProjectChange(e), WorkspaceContextHandlerType.Evaluation),
-                                _project.UnconfiguredProject,
-                                ProjectFaultSeverity.LimitedFunctionality),
-                            linkOptions: DataflowOption.PropagateCompletion,
-                            cancellationToken: cancellationToken),
+                        target: DataflowBlockFactory.CreateActionBlock<IProjectVersionedValue<(ConfiguredProject, IProjectSubscriptionUpdate)>>(
+                            e => OnProjectChangedAsync(new ProjectChange(e), WorkspaceContextHandlerType.Evaluation),
+                            _project.UnconfiguredProject,
+                            ProjectFaultSeverity.LimitedFunctionality),
+                        linkOptions: DataflowOption.PropagateCompletion,
+                        cancellationToken: cancellationToken),
 
                     ProjectDataSources.SyncLinkTo(
                         _activeConfiguredProjectProvider.ActiveConfiguredProjectBlock.SyncLinkOptions(),
                         _projectSubscriptionService.ProjectBuildRuleSource.SourceBlock.SyncLinkOptions(GetProjectBuildOptions()),
                         _projectBuildSnapshotService.SourceBlock.SyncLinkOptions(),
-                            target: DataflowBlockFactory.CreateActionBlock<IProjectVersionedValue<ValueTuple<ConfiguredProject, IProjectSubscriptionUpdate, IProjectBuildSnapshot>>>(e =>
-                                OnProjectChangedAsync(new ProjectChange(e), WorkspaceContextHandlerType.ProjectBuild),
-                                _project.UnconfiguredProject,
-                                ProjectFaultSeverity.LimitedFunctionality),
-                            linkOptions: DataflowOption.PropagateCompletion,
-                            cancellationToken: cancellationToken),
+                        target: DataflowBlockFactory.CreateActionBlock<IProjectVersionedValue<(ConfiguredProject, IProjectSubscriptionUpdate, IProjectBuildSnapshot)>>(
+                            e => OnProjectChangedAsync(new ProjectChange(e), WorkspaceContextHandlerType.ProjectBuild),
+                            _project.UnconfiguredProject,
+                            ProjectFaultSeverity.LimitedFunctionality),
+                        linkOptions: DataflowOption.PropagateCompletion,
+                        cancellationToken: cancellationToken),
 
                     ProjectDataSources.SyncLinkTo(
                         _activeConfiguredProjectProvider.ActiveConfiguredProjectBlock.SyncLinkOptions(),
                         _projectSubscriptionService.SourceItemsRuleSource.SourceBlock.SyncLinkOptions(),
-                            target: DataflowBlockFactory.CreateActionBlock<IProjectVersionedValue<ValueTuple<ConfiguredProject, IProjectSubscriptionUpdate>>>(e =>
-                                OnProjectChangedAsync(new ProjectChange(e), WorkspaceContextHandlerType.SourceItems),
-                                _project.UnconfiguredProject,
-                                ProjectFaultSeverity.LimitedFunctionality),
-                            linkOptions: DataflowOption.PropagateCompletion,
-                            cancellationToken: cancellationToken),
+                        target: DataflowBlockFactory.CreateActionBlock<IProjectVersionedValue<(ConfiguredProject, IProjectSubscriptionUpdate)>>(
+                            e => OnProjectChangedAsync(new ProjectChange(e), WorkspaceContextHandlerType.SourceItems),
+                            _project.UnconfiguredProject,
+                            ProjectFaultSeverity.LimitedFunctionality),
+                        linkOptions: DataflowOption.PropagateCompletion,
+                        cancellationToken: cancellationToken),
                 };
-            }
 
-            private StandardRuleDataflowLinkOptions GetProjectEvaluationOptions()
-            {
-                return DataflowOption.WithRuleNames(_applyChangesToWorkspaceContext!.Value.GetProjectEvaluationRules());
-            }
+                return;
 
-            private StandardRuleDataflowLinkOptions GetProjectBuildOptions()
-            {
-                return DataflowOption.WithRuleNames(_applyChangesToWorkspaceContext!.Value.GetProjectBuildRules());
+                StandardRuleDataflowLinkOptions GetProjectEvaluationOptions()
+                {
+                    return DataflowOption.WithRuleNames(_applyChangesToWorkspaceContext.Value.GetProjectEvaluationRules());
+                }
+
+                StandardRuleDataflowLinkOptions GetProjectBuildOptions()
+                {
+                    return DataflowOption.WithRuleNames(_applyChangesToWorkspaceContext.Value.GetProjectBuildRules());
+                }
             }
 
             protected override async Task DisposeCoreUnderLockAsync(bool initialized)
@@ -191,7 +192,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 
                 IWorkspaceProjectContext context = _contextAccessor.Context;
                 bool isActiveEditorContext = _activeWorkspaceProjectContextTracker.IsActiveEditorContext(_contextAccessor.ContextId);
-                bool isActiveConfiguration = change.Project == _project;
+                bool isActiveConfiguration = change.ActiveConfiguredProject == _project;
 
                 var state = new ContextState(isActiveEditorContext, isActiveConfiguration);
 
@@ -219,27 +220,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
                 {
                     await context.EndBatchAsync();
 
-                    NotifyOutputDataCalculated(change.DataSourceVersions, handlerType);
-                }
-            }
+                    // Notify operation progress that we've now processed these versions of our input, if they are
+                    // up-to-date with the latest version that produced, then we no longer considered "in progress".
+                    IDataProgressTrackerServiceRegistration? registration = handlerType switch
+                    {
+                        WorkspaceContextHandlerType.Evaluation => _evaluationProgressRegistration,
+                        WorkspaceContextHandlerType.ProjectBuild => _projectBuildProgressRegistration,
+                        WorkspaceContextHandlerType.SourceItems => _sourceItemsProgressRegistration,
+                        _ => throw new NotImplementedException()
+                    };
 
-            private void NotifyOutputDataCalculated(IImmutableDictionary<NamedIdentity, IComparable> dataSourceVersions, WorkspaceContextHandlerType handlerType)
-            {
-                // Notify operation progress that we've now processed these versions of our input, if they are
-                // up-to-date with the latest version that produced, then we no longer considered "in progress".
-                switch (handlerType)
-                {
-                    case WorkspaceContextHandlerType.Evaluation:
-                        _evaluationProgressRegistration!.NotifyOutputDataCalculated(dataSourceVersions);
-                        break;
-
-                    case WorkspaceContextHandlerType.ProjectBuild:
-                        _projectBuildProgressRegistration!.NotifyOutputDataCalculated(dataSourceVersions);
-                        break;
-
-                    case WorkspaceContextHandlerType.SourceItems:
-                        _sourceItemsProgressRegistration!.NotifyOutputDataCalculated(dataSourceVersions);
-                        break;
+                    registration!.NotifyOutputDataCalculated(change.DataSourceVersions);
                 }
             }
 
