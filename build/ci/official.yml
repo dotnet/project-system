@@ -133,10 +133,10 @@ steps:
     # NOTE: This produces a warning about indexing (if enabled) but will still publish the symbols. See: https://github.com/microsoft/azure-pipelines-tasks/issues/15605
     IndexSources: false
     PublishSymbols: true
-    SymbolServerType: 'TeamServices'
+    SymbolServerType: TeamServices
     SymbolsProduct: 'DotNet Project System'
     SymbolsVersion: '$(Build.BuildNumber)'
-    SymbolsArtifactName: 'Symbols'
+    SymbolsArtifactName: Symbols
   continueOnError: true
 
 # TODO: Most of these files are already published via 'Publish Artifacts' section
@@ -145,7 +145,11 @@ steps:
   displayName: 'Publish Artifact: Symbols'
   inputs:
     PathtoPublish: '$(Build.ArtifactStagingDirectory)/Symbols'
-    ArtifactName: Symbols
+    # The artifact name specifically has to be 'symbols' with that casing.
+    # This artifact is downloaded by the release pipeline's 'Publish Symbols' task.
+    # The lowercase 'symbols' is specified in the 'Agent job' settings for that task.
+    # If this artifact name is changed, all release pipelines that have this task need to have these settings changed.
+    ArtifactName: symbols
     publishLocation: Container
 
 ###################################################################################################################################################################
