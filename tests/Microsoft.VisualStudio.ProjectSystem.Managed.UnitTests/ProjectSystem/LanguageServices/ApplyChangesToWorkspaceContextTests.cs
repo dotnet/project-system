@@ -16,6 +16,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
     public class ApplyChangesToWorkspaceContextTests
     {
         private readonly CommandLineArgumentsSnapshot _unchangedCommandLineArguments = new(ImmutableArray.Create("A", "B"), isChanged: false);
+        private readonly CommandLineArgumentsSnapshot _changedCommandLineArguments = new(ImmutableArray.Create("A", "B"), isChanged: true);
 
         [Fact]
         public async Task DisposeAsync_WhenNotInitialized_DoesNotThrow()
@@ -121,7 +122,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         {
             var applyChangesToWorkspace = CreateInstance();
 
-            var update = Mock.Of<IProjectVersionedValue<IProjectSubscriptionUpdate>>();
+            var update = Mock.Of<IProjectVersionedValue<(IProjectSubscriptionUpdate ProjectUpdate, IProjectSubscriptionUpdate SourceItemsUpdate)>>();
 
             Assert.Throws<InvalidOperationException>(() =>
             {
@@ -134,11 +135,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         {
             var applyChangesToWorkspace = CreateInstance();
 
-            var update = Mock.Of<IProjectVersionedValue<IProjectSubscriptionUpdate>>();
+            var update = Mock.Of<IProjectVersionedValue<(IProjectSubscriptionUpdate ProjectUpdate, CommandLineArgumentsSnapshot CommandLineArgumentsSnapshot)>>();
 
             Assert.Throws<InvalidOperationException>(() =>
             {
-                applyChangesToWorkspace.ApplyProjectBuild(update, _unchangedCommandLineArguments, new ContextState(), CancellationToken.None);
+                applyChangesToWorkspace.ApplyProjectBuild(update, new ContextState(), CancellationToken.None);
             });
         }
 
@@ -189,7 +190,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 
             await applyChangesToWorkspace.DisposeAsync();
 
-            var update = Mock.Of<IProjectVersionedValue<IProjectSubscriptionUpdate>>();
+            var update = Mock.Of<IProjectVersionedValue<(IProjectSubscriptionUpdate ProjectUpdate, IProjectSubscriptionUpdate SourceItemsUpdate)>>();
 
             Assert.Throws<ObjectDisposedException>(() =>
             {
@@ -204,11 +205,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 
             await applyChangesToWorkspace.DisposeAsync();
 
-            var update = Mock.Of<IProjectVersionedValue<IProjectSubscriptionUpdate>>();
+            var update = Mock.Of<IProjectVersionedValue<(IProjectSubscriptionUpdate ProjectUpdate, CommandLineArgumentsSnapshot CommandLineArgumentsSnapshot)>>();
 
             Assert.Throws<ObjectDisposedException>(() =>
             {
-                applyChangesToWorkspace.ApplyProjectBuild(update, _unchangedCommandLineArguments, new ContextState(), CancellationToken.None);
+                applyChangesToWorkspace.ApplyProjectBuild(update, new ContextState(), CancellationToken.None);
             });
         }
 
@@ -243,7 +244,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 
             var applyChangesToWorkspace = CreateInitializedInstance(handlers: new[] { handler });
 
-            var update = IProjectVersionedValueFactory.FromJson(
+            var projectUpdate = IProjectSubscriptionUpdateFactory.FromJson(
 @"{
    ""ProjectChanges"": {
         ""RuleName"": {
@@ -254,20 +255,33 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
     }
 }");
 
+            var sourceItemsUpdate = IProjectSubscriptionUpdateFactory.FromJson(
+@"{
+   ""ProjectChanges"": {
+        ""RuleName"": {
+            ""Difference"": { 
+                ""AnyChanges"": false
+            },
+        }
+    }
+}");
+
+            var update = IProjectVersionedValueFactory.Create((projectUpdate, sourceItemsUpdate), ProjectDataSources.ConfiguredProjectVersion, 1);
+
             applyChangesToWorkspace.ApplyProjectEvaluation(update, new ContextState(true, false), CancellationToken.None);
 
             Assert.Equal(0, callCount);
         }
 
         [Fact]
-        public void ApplyProjectBuild_WhenNoCompilerCommandLineArgsRuleChanges_DoesNotCallHandler()
+        public void ApplyProjectBuild_WhenNoCompilerCommandLineArgsRuleChanges_Throws()
         {
             int callCount = 0;
             var handler = ICommandLineHandlerFactory.ImplementHandle((version, added, removed, state, logger) => { callCount++; });
 
             var applyChangesToWorkspace = CreateInitializedInstance(handlers: new[] { handler });
 
-            var update = IProjectVersionedValueFactory.FromJson(
+            var projectUpdate = IProjectSubscriptionUpdateFactory.FromJson(
 @"{
    ""ProjectChanges"": {
         ""CompilerCommandLineArgs"": {
@@ -278,7 +292,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
     }
 }");
 
-            applyChangesToWorkspace.ApplyProjectBuild(update, _unchangedCommandLineArguments, new ContextState(), CancellationToken.None);
+            var update = IProjectVersionedValueFactory.Create((projectUpdate, _unchangedCommandLineArguments));
+
+            Assert.ThrowsAny<Exception>(() => applyChangesToWorkspace.ApplyProjectBuild(update, new ContextState(), CancellationToken.None));
 
             Assert.Equal(0, callCount);
         }
@@ -295,7 +311,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 
             var applyChangesToWorkspace = CreateInitializedInstance(handlers: new[] { handler });
 
-            var update = IProjectVersionedValueFactory.FromJson(version: 2,
+            var projectUpdate = IProjectSubscriptionUpdateFactory.FromJson(
 @"{
    ""ProjectChanges"": {
         ""RuleName"": {
@@ -305,9 +321,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         }
     }
 }");
+
+            var sourceItemsUpdate = IProjectSubscriptionUpdateFactory.CreateEmpty();
+            int version = 2;
+
+            var update = IProjectVersionedValueFactory.Create((projectUpdate, sourceItemsUpdate), ProjectDataSources.ConfiguredProjectVersion, version);
+
             applyChangesToWorkspace.ApplyProjectEvaluation(update, new ContextState(isActiveEditorContext: true, isActiveConfiguration: true), CancellationToken.None);
 
-            Assert.Equal(2, result.version);
+            Assert.Equal(version, result.version);
             Assert.NotNull(result.description);
             Assert.True(result.state.IsActiveEditorContext);
             Assert.True(result.state.IsActiveConfiguration);
@@ -328,7 +350,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 
             var applyChangesToWorkspace = CreateInitializedInstance(commandLineParser: parser, handlers: new[] { handler });
 
-            var update = IProjectVersionedValueFactory.FromJson(version: 2,
+            var projectUpdate = IProjectSubscriptionUpdateFactory.FromJson(
 @"{
    ""ProjectChanges"": {
         ""CompilerCommandLineArgs"": {
@@ -340,9 +362,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         }
     }
 }");
-            applyChangesToWorkspace.ApplyProjectBuild(update, _unchangedCommandLineArguments, new ContextState(isActiveEditorContext: true, isActiveConfiguration: false), CancellationToken.None);
+            int version = 2;
 
-            Assert.Equal(2, result.version);
+            var update = IProjectVersionedValueFactory.Create((projectUpdate, _changedCommandLineArguments), ProjectDataSources.ConfiguredProjectVersion, version);
+
+            applyChangesToWorkspace.ApplyProjectBuild(update, new ContextState(isActiveEditorContext: true, isActiveConfiguration: false), CancellationToken.None);
+
+            Assert.Equal(version, result.version);
             Assert.True(result.state.IsActiveEditorContext);
             Assert.NotNull(result.logger);
 
@@ -355,20 +381,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         {
             var cancellationTokenSource = new CancellationTokenSource();
 
-            var handler1 = IEvaluationHandlerFactory.ImplementHandle("RuleName1", (version, description, state, logger) =>
-            {
-                cancellationTokenSource.Cancel();
-            });
-
             int callCount = 0;
-            var handler2 = IEvaluationHandlerFactory.ImplementHandle("RuleName2", (version, description, state, logger) =>
-            {
-                callCount++;
-            });
+
+            var handler1 = IEvaluationHandlerFactory.ImplementHandle("RuleName1", delegate { cancellationTokenSource.Cancel(); });
+            var handler2 = IEvaluationHandlerFactory.ImplementHandle("RuleName2", delegate { callCount++; });
 
             var applyChangesToWorkspace = CreateInitializedInstance(handlers: new[] { handler1, handler2 });
 
-            var update = IProjectVersionedValueFactory.FromJson(
+            var projectUpdate = IProjectSubscriptionUpdateFactory.FromJson(
 @"{
    ""ProjectChanges"": {
         ""RuleName1"": {
@@ -383,6 +403,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         }
     }
 }");
+
+            var sourceItemsUpdate = IProjectSubscriptionUpdateFactory.CreateEmpty();
+
+            var update = IProjectVersionedValueFactory.Create((projectUpdate, sourceItemsUpdate), ProjectDataSources.ConfiguredProjectVersion, 1);
+
             Assert.Throws<OperationCanceledException>(() =>
             {
                 applyChangesToWorkspace.ApplyProjectEvaluation(update, new ContextState(isActiveEditorContext: true, isActiveConfiguration: false), cancellationTokenSource.Token);
@@ -397,20 +422,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         {
             var cancellationTokenSource = new CancellationTokenSource();
 
-            var handler1 = ICommandLineHandlerFactory.ImplementHandle((version, added, removed, state, logger) =>
-            {
-                cancellationTokenSource.Cancel();
-            });
-
             int callCount = 0;
-            var handler2 = ICommandLineHandlerFactory.ImplementHandle((version, added, removed, state, logger) =>
-            {
-                callCount++;
-            });
+
+            var handler1 = ICommandLineHandlerFactory.ImplementHandle(delegate { cancellationTokenSource.Cancel(); });
+            var handler2 = ICommandLineHandlerFactory.ImplementHandle(delegate { callCount++; });
 
             var applyChangesToWorkspace = CreateInitializedInstance(handlers: new[] { handler1, handler2 });
 
-            var update = IProjectVersionedValueFactory.FromJson(
+            var projectUpdate = IProjectSubscriptionUpdateFactory.FromJson(
 @"{
    ""ProjectChanges"": {
         ""CompilerCommandLineArgs"": {
@@ -420,9 +439,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         }
     }
 }");
+            var update = IProjectVersionedValueFactory.Create((projectUpdate, _changedCommandLineArguments), ProjectDataSources.ConfiguredProjectVersion, 1);
+
             Assert.Throws<OperationCanceledException>(() =>
             {
-                applyChangesToWorkspace.ApplyProjectBuild(update, _unchangedCommandLineArguments, new ContextState(isActiveEditorContext: true, isActiveConfiguration: false), cancellationTokenSource.Token);
+                applyChangesToWorkspace.ApplyProjectBuild(update, new ContextState(isActiveEditorContext: true, isActiveConfiguration: false), cancellationTokenSource.Token);
             });
 
             Assert.True(cancellationTokenSource.IsCancellationRequested);
@@ -437,7 +458,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 
             var applyChangesToWorkspace = CreateInitializedInstance(handlers: new[] { handler });
 
-            var update = IProjectVersionedValueFactory.FromJson(
+            var projectUpdate = IProjectSubscriptionUpdateFactory.FromJson(
 @"{
    ""ProjectChanges"": {
         ""CompilerCommandLineArgs"": {
@@ -452,6 +473,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         }
     }
 }");
+
+            var sourceItemsUpdate = IProjectSubscriptionUpdateFactory.CreateEmpty();
+
+            var update = IProjectVersionedValueFactory.Create((projectUpdate, sourceItemsUpdate), ProjectDataSources.ConfiguredProjectVersion, 1);
+
             applyChangesToWorkspace.ApplyProjectEvaluation(update, new ContextState(isActiveEditorContext: true, isActiveConfiguration: false), CancellationToken.None);
 
             Assert.Equal(0, callCount);
@@ -465,7 +491,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 
             var applyChangesToWorkspace = CreateInitializedInstance(handlers: new[] { handler });
 
-            var update = IProjectVersionedValueFactory.FromJson(
+            var projectUpdate = IProjectSubscriptionUpdateFactory.FromJson(
 @"{
    ""ProjectChanges"": {
         ""CompilerCommandLineArgs"": {
@@ -480,7 +506,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         }
     }
 }");
-            applyChangesToWorkspace.ApplyProjectBuild(update, _unchangedCommandLineArguments, new ContextState(isActiveEditorContext: true, isActiveConfiguration: false), CancellationToken.None);
+            var update = IProjectVersionedValueFactory.Create((projectUpdate, _changedCommandLineArguments), ProjectDataSources.ConfiguredProjectVersion, 1);
+
+            applyChangesToWorkspace.ApplyProjectBuild(update, new ContextState(isActiveEditorContext: true, isActiveConfiguration: false), CancellationToken.None);
 
             Assert.Equal(0, callCount);
         }
@@ -491,7 +519,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
             var applyChangesToWorkspace = CreateInitializedInstance(out var context);
             context.LastDesignTimeBuildSucceeded = true;
 
-            var update = IProjectVersionedValueFactory.FromJson(
+            var projectUpdate = IProjectSubscriptionUpdateFactory.FromJson(
 @"{
    ""ProjectChanges"": {
         ""CompilerCommandLineArgs"": {
@@ -504,8 +532,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         }
     }
 }");
+            var update = IProjectVersionedValueFactory.Create((projectUpdate, _changedCommandLineArguments), ProjectDataSources.ConfiguredProjectVersion, 1);
 
-            applyChangesToWorkspace.ApplyProjectBuild(update, _unchangedCommandLineArguments, new ContextState(), CancellationToken.None);
+            applyChangesToWorkspace.ApplyProjectBuild(update, new ContextState(), CancellationToken.None);
 
             Assert.False(context.LastDesignTimeBuildSucceeded);
         }
@@ -515,7 +544,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         {
             var applyChangesToWorkspace = CreateInitializedInstance(out var context);
 
-            var update = IProjectVersionedValueFactory.FromJson(
+            var projectUpdate = IProjectSubscriptionUpdateFactory.FromJson(
 @"{
    ""ProjectChanges"": {
         ""CompilerCommandLineArgs"": {
@@ -528,8 +557,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         }
     }
 }");
+            var update = IProjectVersionedValueFactory.Create((projectUpdate, _changedCommandLineArguments), ProjectDataSources.ConfiguredProjectVersion, 1);
 
-            applyChangesToWorkspace.ApplyProjectBuild(update, _unchangedCommandLineArguments, new ContextState(true, false), CancellationToken.None);
+            applyChangesToWorkspace.ApplyProjectBuild(update, new ContextState(true, false), CancellationToken.None);
 
             Assert.True(context.LastDesignTimeBuildSucceeded);
         }

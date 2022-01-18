@@ -13,28 +13,19 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
             return Mock.Of<IApplyChangesToWorkspaceContext>();
         }
 
-        public static IApplyChangesToWorkspaceContext ImplementApplyProjectBuild(Action<IProjectVersionedValue<IProjectSubscriptionUpdate>, CommandLineArgumentsSnapshot, ContextState, CancellationToken> action)
+        public static IApplyChangesToWorkspaceContext ImplementApplyProjectBuild(Action<IProjectVersionedValue<(IProjectSubscriptionUpdate ProjectUpdate, CommandLineArgumentsSnapshot CommandLineArgumentsSnapshot)>, ContextState, CancellationToken> action)
         {
             var mock = new Mock<IApplyChangesToWorkspaceContext>();
-            mock.Setup(c => c.ApplyProjectBuild(It.IsAny<IProjectVersionedValue<IProjectSubscriptionUpdate>>(), It.IsAny<CommandLineArgumentsSnapshot>(), It.IsAny<ContextState>(), It.IsAny<CancellationToken>()))
+            mock.Setup(c => c.ApplyProjectBuild(It.IsAny<IProjectVersionedValue<(IProjectSubscriptionUpdate ProjectUpdate, CommandLineArgumentsSnapshot CommandLineArgumentsSnapshot)>>(), It.IsAny<ContextState>(), It.IsAny<CancellationToken>()))
                 .Callback(action);
 
             return mock.Object;
         }
 
-        public static IApplyChangesToWorkspaceContext ImplementApplyProjectEvaluation(Action<IProjectVersionedValue<IProjectSubscriptionUpdate>, ContextState, CancellationToken> action)
+        public static IApplyChangesToWorkspaceContext ImplementApplyProjectEvaluation(Action<IProjectVersionedValue<(IProjectSubscriptionUpdate ProjectUpdate, IProjectSubscriptionUpdate SourceItemsUpdate)>, ContextState, CancellationToken> action)
         {
             var mock = new Mock<IApplyChangesToWorkspaceContext>();
-            mock.Setup(c => c.ApplyProjectEvaluation(It.IsAny<IProjectVersionedValue<IProjectSubscriptionUpdate>>(), It.IsAny<ContextState>(), It.IsAny<CancellationToken>()))
-                .Callback(action);
-
-            return mock.Object;
-        }
-
-        public static IApplyChangesToWorkspaceContext ImplementApplySourceItems(Action<IProjectVersionedValue<IProjectSubscriptionUpdate>, ContextState, CancellationToken> action)
-        {
-            var mock = new Mock<IApplyChangesToWorkspaceContext>();
-            mock.Setup(c => c.ApplySourceItems(It.IsAny<IProjectVersionedValue<IProjectSubscriptionUpdate>>(), It.IsAny<ContextState>(), It.IsAny<CancellationToken>()))
+            mock.Setup(c => c.ApplyProjectEvaluation(It.IsAny<IProjectVersionedValue<(IProjectSubscriptionUpdate ProjectUpdate, IProjectSubscriptionUpdate SourceItemsUpdate)>>(), It.IsAny<ContextState>(), It.IsAny<CancellationToken>()))
                 .Callback(action);
 
             return mock.Object;
