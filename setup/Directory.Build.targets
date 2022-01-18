@@ -3,13 +3,23 @@
 
   <Import Project="..\Directory.Build.targets" />
 
-  <!-- 
+  <!--
     Defining this target will disable the new SDK behavior of implicit transitive project
     references. This is a fine feature in general but the current implementation breaks VSIX 
     construction by including a number of projects that should not be included. 
     https://github.com/dotnet/sdk/issues/1366
   -->
   <Target Name="IncludeTransitiveProjectReferences" >
+  </Target>
+
+  <!-- Adds the appropriate vsix files for signing. -->
+  <Target Name="AddVsixForSigning" DependsOnTargets="$(VsixSigningDependencyTarget)" BeforeTargets="SignFiles">
+    <Copy SourceFiles="$(VisualStudioSetupInsertionPath)$(AssemblyName).vsix" DestinationFolder="$(OutDir)" />
+    <ItemGroup>
+      <FilesToSign Include="$(OutDir)$(AssemblyName).vsix">
+        <Authenticode>VsixSHA2</Authenticode>
+      </FilesToSign>
+    </ItemGroup>
   </Target>
 
   <!-- Copies the vsix files after they've been signed to the different output folders. -->

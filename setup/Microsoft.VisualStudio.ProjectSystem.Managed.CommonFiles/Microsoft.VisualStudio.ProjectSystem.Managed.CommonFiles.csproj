@@ -4,6 +4,9 @@
   <Import Project="..\..\build\import\VisualStudio.props" />
 
   <PropertyGroup>
+    <!-- VSIX -->
+    <VsixSigningDependencyTarget>SwixBuild</VsixSigningDependencyTarget>
+
     <!-- VS Insertion -->
     <VisualStudioInsertionComponent>Microsoft.VisualStudio.ProjectSystem.Managed</VisualStudioInsertionComponent>
   </PropertyGroup>
@@ -24,16 +27,6 @@
 
   <Target Name="Build" DependsOnTargets="ResolveProjectReferences">
     <MakeDir Directories="$(IntermediateOutputPath)" ContinueOnError="True" />
-  </Target>
-
-  <!-- Adds the appropriate vsix files for signing. -->
-  <Target Name="AddVsixForSigning" DependsOnTargets="SwixBuild" BeforeTargets="SignFiles">
-    <Copy SourceFiles="$(VisualStudioSetupInsertionPath)$(AssemblyName).vsix" DestinationFolder="$(OutDir)" />
-    <ItemGroup>
-      <FilesToSign Include="$(OutDir)$(AssemblyName).vsix">
-        <Authenticode>VsixSHA2</Authenticode>
-      </FilesToSign>
-    </ItemGroup>
   </Target>
 
 </Project>
