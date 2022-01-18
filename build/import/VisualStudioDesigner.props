@@ -5,7 +5,7 @@
     <BannedSymbolsOptOut>true</BannedSymbolsOptOut>
   </PropertyGroup>
 
-  <Import Project="$(MSBuildThisFileDirectory)VisualStudio.props" />
+  <Import Project="VisualStudio.props" />
 
   <ItemGroup>
     <PackageReference Include="Microsoft.VisualStudio.Data.Core" />
