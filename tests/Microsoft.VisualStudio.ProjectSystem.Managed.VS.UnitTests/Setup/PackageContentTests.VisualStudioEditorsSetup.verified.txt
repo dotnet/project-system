@@ -1,6 +1,5 @@
 [
   [Content_Types].xml,
-  _rels/.rels,
   catalog.json,
   cs/Microsoft.VisualStudio.AppDesigner.resources.dll,
   cs/Microsoft.VisualStudio.Editors.resources.dll,
@@ -21,8 +20,6 @@
   Microsoft.VisualStudio.AppDesigner.dll,
   Microsoft.VisualStudio.Editors.dll,
   Microsoft.VisualStudio.Editors.pkgdef,
-  package/services/digital-signature/_rels/origin.psdor.rels,
-  package/services/digital-signature/origin.psdor,
   pl/Microsoft.VisualStudio.AppDesigner.resources.dll,
   pl/Microsoft.VisualStudio.Editors.resources.dll,
   pt-BR/Microsoft.VisualStudio.AppDesigner.resources.dll,

@@ -1,6 +1,5 @@
 [
   [Content_Types].xml,
-  _rels/.rels,
   catalog.json,
   cs/Microsoft.VisualStudio.ProjectSystem.Managed.resources.dll,
   cs/Microsoft.VisualStudio.ProjectSystem.Managed.VS.resources.dll,
@@ -21,8 +20,6 @@
   Microsoft.VisualStudio.ProjectSystem.Managed.dll,
   Microsoft.VisualStudio.ProjectSystem.Managed.VS.dll,
   Microsoft.VisualStudio.ProjectSystem.Managed.VS.pkgdef,
-  package/services/digital-signature/_rels/origin.psdor.rels,
-  package/services/digital-signature/origin.psdor,
   pl/Microsoft.VisualStudio.ProjectSystem.Managed.resources.dll,
   pl/Microsoft.VisualStudio.ProjectSystem.Managed.VS.resources.dll,
   ProjectSelectors.pkgdef,
