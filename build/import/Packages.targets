@@ -2,7 +2,7 @@
 <Project>
 
   <PropertyGroup>
-    <!-- TODO: Keep in-sync with NuGet.config at repo root -->
+    <!-- NOTE: Keep in-sync with NuGet.config at repo root -->
     <RestoreSources>
       $(RestoreSources);
       https://pkgs.dev.azure.com/azure-public/vside/_packaging/vs-impl/nuget/v3/index.json;

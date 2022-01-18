@@ -33,7 +33,7 @@ steps:
     signType: real
     esrpSigning: true
 
-# This is use as a PackageReference with ExcludeAssets="all", which means it is not executed.
+# This is used as a PackageReference with ExcludeAssets="all", which means it is not executed.
 # RepoToolset has custom logic to run the contents of this plugin, so it is not executed normally.
 - task: MicroBuildSwixPlugin@1
   displayName: Install Swix Plugin
@@ -117,7 +117,7 @@ steps:
     IndexSources: false
     PublishSymbols: true
     SymbolServerType: TeamServices
-    SymbolsProduct: 'DotNet Project System'
+    SymbolsProduct: '.NET Project System'
     SymbolsVersion: '$(Build.BuildNumber)'
     SymbolsArtifactName: Symbols
   continueOnError: true
