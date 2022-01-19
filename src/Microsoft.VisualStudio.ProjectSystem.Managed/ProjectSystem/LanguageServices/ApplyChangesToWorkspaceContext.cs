@@ -65,6 +65,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
             ContextState state,
             CancellationToken cancellationToken)
         {
+            Requires.NotNull(buildSnapshot, nameof(buildSnapshot));
             Requires.NotNull(update, nameof(update));
 
             VerifyInitializedAndNotDisposed();
@@ -85,9 +86,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         {
             Assumes.NotNull(_context);
 
-            buildSnapshot.TargetOutputs.TryGetValue(
+            Assumes.True(buildSnapshot.TargetOutputs.TryGetValue(
                 "CompileDesignTime",
-                out IImmutableList<KeyValuePair<string, IImmutableDictionary<string, string>>> targetOutputs);
+                out IImmutableList<KeyValuePair<string, IImmutableDictionary<string, string>>> targetOutputs));
 
             var options = ImmutableArray.CreateBuilder<string>(targetOutputs.Count);
 
