@@ -3,10 +3,8 @@
 using System;
 using System.Collections.Generic;
 using System.Threading;
-using System.Threading.Tasks;
 using Microsoft.VisualStudio.Composition;
 using Microsoft.VisualStudio.LanguageServices.ProjectSystem;
-using Microsoft.VisualStudio.ProjectSystem.Build;
 
 namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 {
@@ -18,13 +16,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
     {
         /// <summary>
         ///     Returns an enumerable of project evaluation rules that should passed to
-        ///     <see cref="ApplyProjectEvaluationAsync(IProjectVersionedValue{IProjectSubscriptionUpdate}, ContextState, CancellationToken)"/>.
+        ///     <see cref="ApplyProjectEvaluation(IProjectVersionedValue{IProjectSubscriptionUpdate}, ContextState, CancellationToken)"/>.
         /// </summary>
         IEnumerable<string> GetProjectEvaluationRules();
 
         /// <summary>
         ///     Returns an enumerable of project build rules that should passed to
-        ///     <see cref="ApplyProjectBuildAsync(IProjectVersionedValue{IProjectSubscriptionUpdate}, IProjectBuildSnapshot, ContextState, CancellationToken)"/>.
+        ///     <see cref="ApplyProjectBuild(IProjectVersionedValue{IProjectSubscriptionUpdate}, CommandLineArgumentsSnapshot, ContextState, CancellationToken)"/>.
         /// </summary>
         IEnumerable<string> GetProjectBuildRules();
 
@@ -60,7 +58,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         ///     to the project snapshot state. The cancellation token should only be cancelled with the
         ///     intention that the <see cref="IWorkspaceProjectContext"/> will be immediately disposed.
         /// </remarks>
-        Task ApplyProjectEvaluationAsync(IProjectVersionedValue<IProjectSubscriptionUpdate> update, ContextState state, CancellationToken cancellationToken);
+        void ApplyProjectEvaluation(IProjectVersionedValue<IProjectSubscriptionUpdate> update, ContextState state, CancellationToken cancellationToken);
 
         /// <summary>
         ///     Applies project build changes to the underlying <see cref="IWorkspaceProjectContext"/>.
@@ -83,7 +81,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         ///     to the project snapshot state. The cancellation token should only be cancelled with the
         ///     intention that the <see cref="IWorkspaceProjectContext"/> will be immediately disposed.
         /// </remarks>
-        Task ApplyProjectBuildAsync(IProjectVersionedValue<IProjectSubscriptionUpdate> update, IProjectBuildSnapshot buildSnapshot, ContextState state, CancellationToken cancellationToken);
+        void ApplyProjectBuild(IProjectVersionedValue<IProjectSubscriptionUpdate> update, CommandLineArgumentsSnapshot commandLineArgumentsSnapshot, ContextState state, CancellationToken cancellationToken);
 
         /// <summary>
         ///     Applies source items changes to the underlying <see cref="IWorkspaceProjectContext"/>.
@@ -106,6 +104,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         ///     to the project snapshot state. The cancellation token should only be cancelled with the
         ///     intention that the <see cref="IWorkspaceProjectContext"/> will be immediately disposed.
         /// </remarks>
-        Task ApplySourceItemsAsync(IProjectVersionedValue<IProjectSubscriptionUpdate> update, ContextState state, CancellationToken cancellationToken);
+        void ApplySourceItems(IProjectVersionedValue<IProjectSubscriptionUpdate> update, ContextState state, CancellationToken cancellationToken);
     }
 }
