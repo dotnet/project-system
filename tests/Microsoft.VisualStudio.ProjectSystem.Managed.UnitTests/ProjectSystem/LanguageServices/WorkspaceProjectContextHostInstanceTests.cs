@@ -196,10 +196,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         [Fact]
         internal async Task OnProjectChangedAsync_CallsApplyFuncOnlyWhenChangeExists()
         {
+            IImmutableDictionary<NamedIdentity, IComparable>? seenVersions = null;
+
             var instance = await CreateInitializedInstanceAsync();
-            var registration = IDataProgressTrackerServiceRegistrationFactory.Create();
+            var registration = IDataProgressTrackerServiceRegistrationFactory.ImplementNotifyOutputDataCalculated(versions => seenVersions = versions);
             var activeConfiguredProject = ConfiguredProjectFactory.Create();
-            var dataSourceVersions = ImmutableDictionary<NamedIdentity, IComparable>.Empty;
+            var versions1 = ImmutableDictionary<NamedIdentity, IComparable>.Empty;
+            var versions2 = ImmutableDictionary<NamedIdentity, IComparable>.Empty;
+            var versions3 = ImmutableDictionary<NamedIdentity, IComparable>.Empty;
             var lastContextState = new StrongBox<ContextState?>();
             var callCount = 0;
 
@@ -208,33 +212,36 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
                 registration,
                 activeConfiguredProject,
                 lastContextState,
-                dataSourceVersions,
+                versions1,
                 hasChange: () => false, // no change
                 applyFunc: (state, token) => callCount++);
 
             Assert.Equal(1, callCount);
+            Assert.Same(versions1, seenVersions);
 
             // Apply func will NOT be called here as the context state is unchanged, and we claim to change to other data items
             await instance.OnProjectChangedAsync(
                 registration,
                 activeConfiguredProject,
                 lastContextState,
-                dataSourceVersions,
+                versions2,
                 hasChange: () => false, // no change
                 applyFunc: (state, token) => callCount++);
 
             Assert.Equal(1, callCount);
+            Assert.Same(versions2, seenVersions);
 
             // Apply func will be called as hasChange returns true, despite the context state being unchanged
             await instance.OnProjectChangedAsync(
                 registration,
                 activeConfiguredProject,
                 lastContextState,
-                dataSourceVersions,
+                versions3,
                 hasChange: () => true, // change
                 applyFunc: (state, token) => callCount++);
 
             Assert.Equal(2, callCount);
+            Assert.Same(versions3, seenVersions);
         }
 
         [Theory]
