@@ -203,6 +203,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
                 // Avoid starting a batch when nothing has actually changed
                 if (!hasChange)
                 {
+                    // Even though we will skip the batch, we must still notify operation progress of the
+                    // version we are up to. Without this, operation progress might not complete.
+                    UpdateProgressRegistration();
                     return;
                 }
 
@@ -236,6 +239,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
                 {
                     await context.EndBatchAsync();
 
+                    UpdateProgressRegistration();
+                }
+
+                void UpdateProgressRegistration()
+                {
                     // Notify operation progress that we've now processed these versions of our input, if they are
                     // up-to-date with the latest version that produced, then we no longer considered "in progress".
                     IDataProgressTrackerServiceRegistration? registration = handlerType switch
