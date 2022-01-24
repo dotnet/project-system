@@ -71,6 +71,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
         /// </summary>
         public string? NewestImportInput { get; }
 
+        /// <summary>
+        /// Gets whether the fast up-to-date check has been disabled via the <c>DisableFastUpToDateCheck</c>
+        /// property.
+        /// </summary>
+        /// <remarks>
+        /// When <see langword="true"/>, other properties on this snapshot will not be used, and so
+        /// are not populated.
+        /// </remarks>
         public bool IsDisabled { get; }
 
         /// <summary>
