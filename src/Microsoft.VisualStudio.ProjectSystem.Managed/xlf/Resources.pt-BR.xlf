@@ -232,6 +232,11 @@
         <target state="translated">O item '{0}' de entrada {1} não existe e é necessário, não atualizado.</target>
         <note>{0} is a file path. {1} is an MSBuild item type.</note>
       </trans-unit>
+      <trans-unit id="FUTD_SetOfChangedItemsIsEmpty">
+        <source>The set of changed items is empty.</source>
+        <target state="new">The set of changed items is empty.</target>
+        <note />
+      </trans-unit>
       <trans-unit id="FUTD_SetOfItemsChangedMoreRecentlyThanOutput_3">
         <source>The set of project items was changed more recently ({0}) than the earliest output '{1}' ({2}), not up-to-date.</source>
         <target state="translated">O conjunto de itens de projeto foi alterado mais recentemente ({0}) do que a saída mais antiga '{1}' ({2}), não atualizada.</target>

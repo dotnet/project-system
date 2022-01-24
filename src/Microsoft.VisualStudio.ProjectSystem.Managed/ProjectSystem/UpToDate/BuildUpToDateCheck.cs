@@ -224,9 +224,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                     {
                         log.Indent++;
 
-                        foreach ((bool isAdd, string itemType, UpToDateCheckInputItem item) in state.LastItemChanges.OrderBy(change => change.ItemType).ThenBy(change => change.Item.Path))
+                        if (state.LastItemChanges.Length == 0)
                         {
-                            log.Info(isAdd ? nameof(Resources.FUTD_ChangedItemsAddition_4) : nameof(Resources.FUTD_ChangedItemsRemoval_4), itemType, item.Path, item.CopyType, item.TargetPath ?? "");
+                            log.Info(nameof(Resources.FUTD_SetOfChangedItemsIsEmpty));
+                        }
+                        else
+                        {
+                            foreach ((bool isAdd, string itemType, UpToDateCheckInputItem item) in state.LastItemChanges.OrderBy(change => change.ItemType).ThenBy(change => change.Item.Path))
+                            {
+                                log.Info(isAdd ? nameof(Resources.FUTD_ChangedItemsAddition_4) : nameof(Resources.FUTD_ChangedItemsRemoval_4), itemType, item.Path, item.CopyType, item.TargetPath ?? "");
+                            }
                         }
 
                         log.Indent--;

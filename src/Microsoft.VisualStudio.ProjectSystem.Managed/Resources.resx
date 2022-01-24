@@ -230,6 +230,9 @@ This project was loaded using the wrong project type, likely as a result of rena
     <value>The set of project items was changed more recently ({0}) than the earliest output '{1}' ({2}), not up-to-date.</value>
     <comment>{0} and {2} are datetimes. {1} is a file path.</comment>
   </data>
+  <data name="FUTD_SetOfChangedItemsIsEmpty" xml:space="preserve">
+    <value>The set of changed items is empty.</value>
+  </data>
   <data name="FUTD_ChangedItemsAddition_4" xml:space="preserve">
     <value>{0} item added '{1}' (CopyType={2}, TargetPath='{3}')</value>
     <comment>Do not translate 'CopyType' or 'TargetPath'. {0} is an MSBuild item type. {1} is a file path. {2} and {3} are metadata values.</comment>

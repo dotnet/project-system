@@ -529,6 +529,15 @@ namespace Microsoft.VisualStudio {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The set of changed items is empty..
+        /// </summary>
+        internal static string FUTD_SetOfChangedItemsIsEmpty {
+            get {
+                return ResourceManager.GetString("FUTD_SetOfChangedItemsIsEmpty", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The set of project items was changed more recently ({0}) than the earliest output &apos;{1}&apos; ({2}), not up-to-date..
         /// </summary>
         internal static string FUTD_SetOfItemsChangedMoreRecentlyThanOutput_3 {
