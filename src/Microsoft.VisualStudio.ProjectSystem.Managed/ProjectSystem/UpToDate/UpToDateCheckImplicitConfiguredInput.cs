@@ -262,7 +262,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 {
                     foreach (UpToDateCheckInputItem item in removedItems)
                     {
-                        lastItemChanges.Add((false, removedItemType, item));
+                        lastItemChanges.Add((IsAdd: false, removedItemType, item));
                     }
 
                     inputSourceItemsByItemTypeBuilder.Remove(removedItemType);
