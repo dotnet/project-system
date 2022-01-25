@@ -14,7 +14,8 @@ namespace Microsoft.VisualStudio.ProjectSystem
     internal abstract class AbstractMultiLifetimeComponent<T> : OnceInitializedOnceDisposedAsync
         where T : class, IMultiLifetimeInstance
     {
-        private readonly object _lock = new();
+        private readonly SemaphoreSlim _semLock = new(1, 1);
+
         private TaskCompletionSource<(T instance, JoinableTask initializeAsyncTask)> _instanceTaskSource = new(TaskCreationOptions.RunContinuationsAsynchronously);
 
         protected AbstractMultiLifetimeComponent(JoinableTaskContextNode joinableTaskContextNode)
@@ -62,54 +63,52 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
         public async Task LoadCoreAsync()
         {
-            JoinableTask initializeAsyncTask;
+            await _semLock.WaitAsync();
 
-            lock (_lock)
+            if (!_instanceTaskSource.Task.IsCompleted)
             {
-                if (!_instanceTaskSource.Task.IsCompleted)
-                {
-                    (T instance, JoinableTask initializeAsyncTask) result = CreateInitializedInstance();
-                    _instanceTaskSource.SetResult(result);
-                }
-
-                Assumes.True(_instanceTaskSource.Task.IsCompleted);
-
-                // Should throw TaskCanceledException if already cancelled in Dispose
-                (_, initializeAsyncTask) = _instanceTaskSource.Task.GetAwaiter().GetResult();
+                (T instance, JoinableTask initializeAsyncTask) result = CreateInitializedInstance();
+                _instanceTaskSource.SetResult(result);
             }
 
-            await initializeAsyncTask;
+            Assumes.True(_instanceTaskSource.Task.IsCompleted);
+
+            // Should throw TaskCanceledException if already cancelled in Dispose
+            (T instance, JoinableTask initializeAsyncTask)? oldInstanceTask = await _instanceTaskSource.Task;
+
+            _semLock.Release();
+
+            await oldInstanceTask.Value.initializeAsyncTask;
         }
 
-        public Task UnloadAsync()
+        public async Task UnloadAsync()
         {
-            T? instance = null;
-            lock (_lock)
+            (T instance, JoinableTask initializeAsyncTask)? oldInstanceTask = null;
+
+            await _semLock.WaitAsync();
+
+            if (_instanceTaskSource.Task.IsCompleted)
             {
-                if (_instanceTaskSource.Task.IsCompleted)
-                {
-                    // Should throw TaskCanceledException if already cancelled in Dispose
-                    (instance, _) = _instanceTaskSource.Task.GetAwaiter().GetResult();
-                    _instanceTaskSource = new TaskCompletionSource<(T instance, JoinableTask initializeAsyncTask)>(TaskCreationOptions.RunContinuationsAsynchronously);
-                }
+                // Should throw TaskCanceledException if already cancelled in Dispose
+                oldInstanceTask = await _instanceTaskSource.Task;
+                _instanceTaskSource = new TaskCompletionSource<(T instance, JoinableTask initializeAsyncTask)>(TaskCreationOptions.RunContinuationsAsynchronously);
             }
 
-            if (instance != null)
+            if (oldInstanceTask != null && oldInstanceTask.Value.instance != null)
             {
-                return instance.DisposeAsync();
+                await oldInstanceTask.Value.instance.DisposeAsync();
             }
-
-            return Task.CompletedTask;
         }
 
         protected override async Task DisposeCoreAsync(bool initialized)
         {
             await UnloadAsync();
 
-            lock (_lock)
-            {
-                _instanceTaskSource.TrySetCanceled();
-            }
+            await _semLock.WaitAsync();
+
+            _instanceTaskSource.TrySetCanceled();
+
+            _semLock.Release();
         }
 
         protected override Task InitializeCoreAsync(CancellationToken cancellationToken)
