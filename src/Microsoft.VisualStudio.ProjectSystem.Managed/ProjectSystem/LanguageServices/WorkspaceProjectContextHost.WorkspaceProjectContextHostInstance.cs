@@ -1,7 +1,6 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
 using System;
-using System.Collections.Immutable;
 using System.ComponentModel.Composition;
 using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
@@ -131,9 +130,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
                         _evaluationProgressRegistration,
                         e.Value.ActiveConfiguredProject,
                         lastEvaluationContextState,
-                        e.DataSourceVersions,
-                        hasChange: () => e.Value.ProjectUpdate.ProjectChanges.HasChange() || e.Value.SourceItemsUpdate.ProjectChanges.HasChange(),
-                        applyFunc: (contextState, token) => _applyChangesToWorkspaceContext.Value.ApplyProjectEvaluation(e.Derive(v => (v.ProjectUpdate, v.SourceItemsUpdate)), contextState, cancellationToken));
+                        e,
+                        hasChange: static e => e.Value.ProjectUpdate.ProjectChanges.HasChange() || e.Value.SourceItemsUpdate.ProjectChanges.HasChange(),
+                        applyFunc: static (e, applyChangesToWorkspaceContext, contextState, token) => applyChangesToWorkspaceContext.ApplyProjectEvaluation(e.Derive(v => (v.ProjectUpdate, v.SourceItemsUpdate)), contextState, token));
                 }
 
                 Task OnBuildUpdateAsync(IProjectVersionedValue<(ConfiguredProject ActiveConfiguredProject, IProjectSubscriptionUpdate BuildUpdate, CommandLineArgumentsSnapshot CommandLineArgumentsUpdate)> e)
@@ -142,9 +141,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
                         _projectBuildProgressRegistration,
                         e.Value.ActiveConfiguredProject,
                         lastBuildContextState,
-                        e.DataSourceVersions,
-                        hasChange: () => e.Value.BuildUpdate.ProjectChanges.HasChange() || e.Value.CommandLineArgumentsUpdate.IsChanged,
-                        applyFunc: (contextState, token) => _applyChangesToWorkspaceContext.Value.ApplyProjectBuild(e.Derive(v => (v.BuildUpdate, v.CommandLineArgumentsUpdate)), contextState, cancellationToken));
+                        e,
+                        hasChange: static e => e.Value.BuildUpdate.ProjectChanges.HasChange() || e.Value.CommandLineArgumentsUpdate.IsChanged,
+                        applyFunc: static (e, applyChangesToWorkspaceContext, contextState, token) => applyChangesToWorkspaceContext.ApplyProjectBuild(e.Derive(v => (v.BuildUpdate, v.CommandLineArgumentsUpdate)), contextState, token));
                 }
             }
 
@@ -194,13 +193,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
                 }
             }
 
-            internal Task OnProjectChangedAsync(
+            internal Task OnProjectChangedAsync<T>(
                 IDataProgressTrackerServiceRegistration registration,
                 ConfiguredProject activeConfiguredProject,
                 StrongBox<ContextState?> lastContextState,
-                IImmutableDictionary<NamedIdentity, IComparable> dataSourceVersions,
-                Func<bool> hasChange,
-                Action<ContextState, CancellationToken> applyFunc)
+                IProjectVersionedValue<T> update,
+                Func<IProjectVersionedValue<T>, bool> hasChange,
+                Action<IProjectVersionedValue<T>, IApplyChangesToWorkspaceContext, ContextState, CancellationToken> applyFunc)
             {
                 return ExecuteUnderLockAsync(ApplyProjectChangesUnderLockAsync, _tasksService.UnloadCancellationToken);
 
@@ -208,10 +207,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
                 {
                     // NOTE we cannot call CheckForInitialized here, as this method may be invoked during initialization
                     Assumes.NotNull(_contextAccessor);
+                    Assumes.NotNull(_applyChangesToWorkspaceContext);
 
                     (ContextState contextState, bool stateChanged) = GetContextState(lastContextState);
 
-                    if (!stateChanged && !hasChange())
+                    if (!stateChanged && !hasChange(update))
                     {
                         // No change since the last update. We must still update operation progress, but can skip creating a batch.
                         UpdateProgressRegistration();
@@ -228,7 +228,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 
                         try
                         {
-                            applyFunc(contextState, cancellationToken);
+                            applyFunc(update, _applyChangesToWorkspaceContext.Value, contextState, cancellationToken);
                         }
                         finally
                         {
@@ -263,7 +263,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
                     {
                         // Notify operation progress that we've now processed these versions of our input, if they are
                         // up-to-date with the latest version that produced, then we no longer considered "in progress".
-                        registration.NotifyOutputDataCalculated(dataSourceVersions);
+                        registration.NotifyOutputDataCalculated(update.DataSourceVersions);
                     }
                 }
             }

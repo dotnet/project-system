@@ -26,6 +26,19 @@ namespace Microsoft.VisualStudio.ProjectSystem
             return mock.Object;
         }
 
+        internal static IProjectVersionedValue<T> Create<T>(T value, IImmutableDictionary<NamedIdentity, IComparable> dataSourceVersions)
+        {
+            var mock = new Mock<IProjectVersionedValue<T>>();
+
+            mock.SetupGet(p => p.Value)
+                .Returns(value);
+
+            mock.SetupGet(p => p.DataSourceVersions)
+                .Returns(dataSourceVersions);
+
+            return mock.Object;
+        }
+
         internal static IProjectVersionedValue<T> Create<T>(T value, NamedIdentity identity, IComparable version)
         {
             var mock = new Mock<IProjectVersionedValue<T>>();

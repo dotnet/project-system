@@ -145,7 +145,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 
             var registration = IDataProgressTrackerServiceRegistrationFactory.Create();
             var activeConfiguredProject = ConfiguredProjectFactory.Create();
-            var dataSourceVersions = ImmutableDictionary<NamedIdentity, IComparable>.Empty;
+            var update = IProjectVersionedValueFactory.CreateEmpty();
             var lastContextState = new StrongBox<ContextState?>();
 
             await Assert.ThrowsAsync<OperationCanceledException>(() =>
@@ -154,9 +154,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
                     registration,
                     activeConfiguredProject,
                     lastContextState,
-                    dataSourceVersions,
-                    hasChange: () => true,
-                    applyFunc: (state, token) =>
+                    update,
+                    hasChange: _ => true,
+                    applyFunc: (_, _, _, token) =>
                     {
                         // Simulate project unload during callback
                         unloadSource.Cancel();
@@ -172,7 +172,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
             var instance = await CreateInitializedInstanceAsync();
             var registration = IDataProgressTrackerServiceRegistrationFactory.Create();
             var activeConfiguredProject = ConfiguredProjectFactory.Create();
-            var dataSourceVersions = ImmutableDictionary<NamedIdentity, IComparable>.Empty;
+            var update = IProjectVersionedValueFactory.CreateEmpty();
             var lastContextState = new StrongBox<ContextState?>();
 
             await Assert.ThrowsAsync<OperationCanceledException>(() =>
@@ -181,9 +181,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
                     registration,
                     activeConfiguredProject,
                     lastContextState,
-                    dataSourceVersions,
-                    hasChange: () => true,
-                    applyFunc: (state, token) =>
+                    update,
+                    hasChange: _ => true,
+                    applyFunc: (_, _, state, token) =>
                     {
                         // Dispose the instance underneath us
                         instance!.DisposeAsync().Wait();
@@ -204,6 +204,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
             var versions1 = ImmutableDictionary<NamedIdentity, IComparable>.Empty;
             var versions2 = ImmutableDictionary<NamedIdentity, IComparable>.Empty;
             var versions3 = ImmutableDictionary<NamedIdentity, IComparable>.Empty;
+            var update1 = IProjectVersionedValueFactory.Create(versions1);
+            var update2 = IProjectVersionedValueFactory.Create(versions2);
+            var update3 = IProjectVersionedValueFactory.Create(versions3);
             var lastContextState = new StrongBox<ContextState?>();
             var callCount = 0;
 
@@ -212,9 +215,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
                 registration,
                 activeConfiguredProject,
                 lastContextState,
-                versions1,
-                hasChange: () => false, // no change
-                applyFunc: (state, token) => callCount++);
+                update1,
+                hasChange: _ => false, // no change
+                applyFunc: (_, _, state, token) => callCount++);
 
             Assert.Equal(1, callCount);
             Assert.Same(versions1, seenVersions);
@@ -224,9 +227,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
                 registration,
                 activeConfiguredProject,
                 lastContextState,
-                versions2,
-                hasChange: () => false, // no change
-                applyFunc: (state, token) => callCount++);
+                update2,
+                hasChange: _ => false, // no change
+                applyFunc: (_, _, state, token) => callCount++);
 
             Assert.Equal(1, callCount);
             Assert.Same(versions2, seenVersions);
@@ -236,9 +239,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
                 registration,
                 activeConfiguredProject,
                 lastContextState,
-                versions3,
-                hasChange: () => true, // change
-                applyFunc: (state, token) => callCount++);
+                update3,
+                hasChange: _ => true, // change
+                applyFunc: (_, _, state, token) => callCount++);
 
             Assert.Equal(2, callCount);
             Assert.Same(versions3, seenVersions);
@@ -255,11 +258,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 
             var instance = await CreateInitializedInstanceAsync(project: project, activeWorkspaceProjectContextTracker: activeWorkspaceProjectContextTracker);
 
-            var subscriptionUpdate = IProjectSubscriptionUpdateFactory.Implement();
-            var update = IProjectVersionedValueFactory.Create<(ConfiguredProject, IProjectSubscriptionUpdate, CommandLineArgumentsSnapshot)>((default!, subscriptionUpdate, _emptyCommandLineArguments));
-
             var registration = IDataProgressTrackerServiceRegistrationFactory.Create();
-            var dataSourceVersions = ImmutableDictionary<NamedIdentity, IComparable>.Empty;
+            var update = IProjectVersionedValueFactory.CreateEmpty();
             var lastContextState = new StrongBox<ContextState?>();
 
             ContextState? observedState = null;
@@ -268,9 +268,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
                 registration,
                 activeConfiguredProject,
                 lastContextState,
-                dataSourceVersions,
-                hasChange: () => true,
-                applyFunc: (state, token) => observedState = state);
+                update,
+                hasChange: _ => true,
+                applyFunc: (_, _, state, token) => observedState = state);
 
             Assert.NotNull(observedState);
             Assert.Equal(isActiveEditorContext, observedState.Value.IsActiveEditorContext);
