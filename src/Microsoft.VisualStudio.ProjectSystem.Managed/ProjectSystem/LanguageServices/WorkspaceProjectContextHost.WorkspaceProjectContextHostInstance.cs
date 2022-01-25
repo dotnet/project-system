@@ -3,7 +3,7 @@
 using System;
 using System.ComponentModel.Composition;
 using System.Diagnostics.CodeAnalysis;
-using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.LanguageServices.ProjectSystem;
@@ -33,11 +33,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 
             private IDataProgressTrackerServiceRegistration? _evaluationProgressRegistration;
             private IDataProgressTrackerServiceRegistration? _projectBuildProgressRegistration;
-            private IDataProgressTrackerServiceRegistration? _sourceItemsProgressRegistration;
             private DisposableBag? _disposables;
             private IWorkspaceProjectContextAccessor? _contextAccessor;
             private ExportLifetimeContext<IApplyChangesToWorkspaceContext>? _applyChangesToWorkspaceContext;
-            private ContextState? _lastContextState = null;
 
             public WorkspaceProjectContextHostInstance(ConfiguredProject project,
                                                        IProjectThreadingService threadingService,
@@ -81,20 +79,22 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 
                 _evaluationProgressRegistration = _dataProgressTrackerService.RegisterForIntelliSense(this, _project, nameof(WorkspaceProjectContextHostInstance) + ".Evaluation");
                 _projectBuildProgressRegistration = _dataProgressTrackerService.RegisterForIntelliSense(this, _project, nameof(WorkspaceProjectContextHostInstance) + ".ProjectBuild");
-                _sourceItemsProgressRegistration = _dataProgressTrackerService.RegisterForIntelliSense(this, _project, nameof(WorkspaceProjectContextHostInstance) + ".SourceItems");
+
+                StrongBox<ContextState?> lastEvaluationContextState = new();
+                StrongBox<ContextState?> lastBuildContextState = new();
 
                 _disposables = new DisposableBag
                 {
                     _applyChangesToWorkspaceContext,
                     _evaluationProgressRegistration,
                     _projectBuildProgressRegistration,
-                    _sourceItemsProgressRegistration,
 
                     ProjectDataSources.SyncLinkTo(
                         _activeConfiguredProjectProvider.ActiveConfiguredProjectBlock.SyncLinkOptions(),
                         _projectSubscriptionService.ProjectRuleSource.SourceBlock.SyncLinkOptions(GetProjectEvaluationOptions()),
-                        target: DataflowBlockFactory.CreateActionBlock<IProjectVersionedValue<(ConfiguredProject, IProjectSubscriptionUpdate)>>(
-                            e => OnProjectChangedAsync(new ProjectChange(e), WorkspaceContextHandlerType.Evaluation),
+                        _projectSubscriptionService.SourceItemsRuleSource.SourceBlock.SyncLinkOptions(),
+                        target: DataflowBlockFactory.CreateActionBlock<IProjectVersionedValue<(ConfiguredProject, IProjectSubscriptionUpdate, IProjectSubscriptionUpdate)>>(
+                            OnEvaluationUpdateAsync,
                             _project.UnconfiguredProject,
                             ProjectFaultSeverity.LimitedFunctionality),
                         linkOptions: DataflowOption.PropagateCompletion,
@@ -105,21 +105,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
                         _projectSubscriptionService.ProjectBuildRuleSource.SourceBlock.SyncLinkOptions(GetProjectBuildOptions()),
                         _commandLineArgumentsProvider.SourceBlock.SyncLinkOptions(),
                         target: DataflowBlockFactory.CreateActionBlock<IProjectVersionedValue<(ConfiguredProject, IProjectSubscriptionUpdate, CommandLineArgumentsSnapshot)>>(
-                            e => OnProjectChangedAsync(new ProjectChange(e), WorkspaceContextHandlerType.ProjectBuild),
+                            OnBuildUpdateAsync,
                             _project.UnconfiguredProject,
                             ProjectFaultSeverity.LimitedFunctionality),
                         linkOptions: DataflowOption.PropagateCompletion,
-                        cancellationToken: cancellationToken),
-
-                    ProjectDataSources.SyncLinkTo(
-                        _activeConfiguredProjectProvider.ActiveConfiguredProjectBlock.SyncLinkOptions(),
-                        _projectSubscriptionService.SourceItemsRuleSource.SourceBlock.SyncLinkOptions(),
-                        target: DataflowBlockFactory.CreateActionBlock<IProjectVersionedValue<(ConfiguredProject, IProjectSubscriptionUpdate)>>(
-                            e => OnProjectChangedAsync(new ProjectChange(e), WorkspaceContextHandlerType.SourceItems),
-                            _project.UnconfiguredProject,
-                            ProjectFaultSeverity.LimitedFunctionality),
-                        linkOptions: DataflowOption.PropagateCompletion,
-                        cancellationToken: cancellationToken),
+                        cancellationToken: cancellationToken)
                 };
 
                 return;
@@ -132,6 +122,28 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
                 StandardRuleDataflowLinkOptions GetProjectBuildOptions()
                 {
                     return DataflowOption.WithRuleNames(_applyChangesToWorkspaceContext.Value.GetProjectBuildRules());
+                }
+
+                Task OnEvaluationUpdateAsync(IProjectVersionedValue<(ConfiguredProject ActiveConfiguredProject, IProjectSubscriptionUpdate ProjectUpdate, IProjectSubscriptionUpdate SourceItemsUpdate)> e)
+                {
+                    return OnProjectChangedAsync(
+                        _evaluationProgressRegistration,
+                        e.Value.ActiveConfiguredProject,
+                        lastEvaluationContextState,
+                        e,
+                        hasChange: static e => e.Value.ProjectUpdate.ProjectChanges.HasChange() || e.Value.SourceItemsUpdate.ProjectChanges.HasChange(),
+                        applyFunc: static (e, applyChangesToWorkspaceContext, contextState, token) => applyChangesToWorkspaceContext.ApplyProjectEvaluation(e.Derive(v => (v.ProjectUpdate, v.SourceItemsUpdate)), contextState, token));
+                }
+
+                Task OnBuildUpdateAsync(IProjectVersionedValue<(ConfiguredProject ActiveConfiguredProject, IProjectSubscriptionUpdate BuildUpdate, CommandLineArgumentsSnapshot CommandLineArgumentsUpdate)> e)
+                {
+                    return OnProjectChangedAsync(
+                        _projectBuildProgressRegistration,
+                        e.Value.ActiveConfiguredProject,
+                        lastBuildContextState,
+                        e,
+                        hasChange: static e => e.Value.BuildUpdate.ProjectChanges.HasChange() || e.Value.CommandLineArgumentsUpdate.IsChanged,
+                        applyFunc: static (e, applyChangesToWorkspaceContext, contextState, token) => applyChangesToWorkspaceContext.ApplyProjectBuild(e.Derive(v => (v.BuildUpdate, v.CommandLineArgumentsUpdate)), contextState, token));
                 }
             }
 
@@ -181,80 +193,78 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
                 }
             }
 
-            internal Task OnProjectChangedAsync(ProjectChange change, WorkspaceContextHandlerType handlerType)
+            internal Task OnProjectChangedAsync<T>(
+                IDataProgressTrackerServiceRegistration registration,
+                ConfiguredProject activeConfiguredProject,
+                StrongBox<ContextState?> lastContextState,
+                IProjectVersionedValue<T> update,
+                Func<IProjectVersionedValue<T>, bool> hasChange,
+                Action<IProjectVersionedValue<T>, IApplyChangesToWorkspaceContext, ContextState, CancellationToken> applyFunc)
             {
-                return ExecuteUnderLockAsync(ct => ApplyProjectChangesUnderLockAsync(change, handlerType, ct), _tasksService.UnloadCancellationToken);
-            }
+                return ExecuteUnderLockAsync(ApplyProjectChangesUnderLockAsync, _tasksService.UnloadCancellationToken);
 
-            private async Task ApplyProjectChangesUnderLockAsync(ProjectChange change, WorkspaceContextHandlerType handlerType, CancellationToken cancellationToken)
-            {
-                // NOTE we cannot call CheckForInitialized here, as this method may be invoked during initialization
-                Assumes.NotNull(_contextAccessor);
-
-                bool isActiveEditorContext = _activeWorkspaceProjectContextTracker.IsActiveEditorContext(_contextAccessor.ContextId);
-                bool isActiveConfiguration = change.ActiveConfiguredProject == _project;
-
-                bool hasChange =
-                    change.Subscription.Value.ProjectChanges.Any(c => c.Value.Difference.AnyChanges) ||
-                    change.CommandLineArgumentsSnapshot?.IsChanged == true ||
-                    _lastContextState?.IsActiveConfiguration != isActiveConfiguration ||
-                    _lastContextState?.IsActiveEditorContext != isActiveEditorContext;
-
-                // Avoid starting a batch when nothing has actually changed
-                if (!hasChange)
+                Task ApplyProjectChangesUnderLockAsync(CancellationToken cancellationToken)
                 {
-                    // Even though we will skip the batch, we must still notify operation progress of the
-                    // version we are up to. Without this, operation progress might not complete.
-                    UpdateProgressRegistration();
-                    return;
-                }
+                    // NOTE we cannot call CheckForInitialized here, as this method may be invoked during initialization
+                    Assumes.NotNull(_contextAccessor);
+                    Assumes.NotNull(_applyChangesToWorkspaceContext);
 
-                var state = new ContextState(isActiveEditorContext, isActiveConfiguration);
+                    (ContextState contextState, bool stateChanged) = GetContextState(lastContextState);
 
-                _lastContextState = state;
-
-                IWorkspaceProjectContext context = _contextAccessor.Context;
-
-                context.StartBatch();
-
-                try
-                {
-                    switch (handlerType)
+                    if (!stateChanged && !hasChange(update))
                     {
-                        case WorkspaceContextHandlerType.Evaluation:
-                            _applyChangesToWorkspaceContext!.Value.ApplyProjectEvaluation(change.Subscription, state, cancellationToken);
-                            break;
-
-                        case WorkspaceContextHandlerType.ProjectBuild:
-                            Assumes.NotNull(change.CommandLineArgumentsSnapshot);
-                            _applyChangesToWorkspaceContext!.Value.ApplyProjectBuild(change.Subscription, change.CommandLineArgumentsSnapshot, state, cancellationToken);
-                            break;
-
-                        case WorkspaceContextHandlerType.SourceItems:
-                            _applyChangesToWorkspaceContext!.Value.ApplySourceItems(change.Subscription, state, cancellationToken);
-                            break;
+                        // No change since the last update. We must still update operation progress, but can skip creating a batch.
+                        UpdateProgressRegistration();
+                        return Task.CompletedTask;
                     }
-                }
-                finally
-                {
-                    await context.EndBatchAsync();
 
-                    UpdateProgressRegistration();
-                }
+                    return ApplyInBatchAsync();
 
-                void UpdateProgressRegistration()
-                {
-                    // Notify operation progress that we've now processed these versions of our input, if they are
-                    // up-to-date with the latest version that produced, then we no longer considered "in progress".
-                    IDataProgressTrackerServiceRegistration? registration = handlerType switch
+                    async Task ApplyInBatchAsync()
                     {
-                        WorkspaceContextHandlerType.Evaluation => _evaluationProgressRegistration,
-                        WorkspaceContextHandlerType.ProjectBuild => _projectBuildProgressRegistration,
-                        WorkspaceContextHandlerType.SourceItems => _sourceItemsProgressRegistration,
-                        _ => throw new NotImplementedException()
-                    };
+                        IWorkspaceProjectContext context = _contextAccessor.Context;
 
-                    registration!.NotifyOutputDataCalculated(change.DataSourceVersions);
+                        context.StartBatch();
+
+                        try
+                        {
+                            applyFunc(update, _applyChangesToWorkspaceContext.Value, contextState, cancellationToken);
+                        }
+                        finally
+                        {
+                            await context.EndBatchAsync();
+
+                            UpdateProgressRegistration();
+                        }
+                    }
+
+                    (ContextState ContextState, bool StateChanged) GetContextState(StrongBox<ContextState?> lastContextState)
+                    {
+                        bool isActiveConfiguration = activeConfiguredProject == _project;
+                        bool isActiveEditorContext = _activeWorkspaceProjectContextTracker.IsActiveEditorContext(_contextAccessor.ContextId);
+                        
+                        ContextState newState = new(isActiveEditorContext, isActiveConfiguration);
+
+                        bool stateChanged = false;
+
+                        if (lastContextState.Value is null ||
+                            lastContextState.Value.Value.IsActiveConfiguration != newState.IsActiveConfiguration ||
+                            lastContextState.Value.Value.IsActiveEditorContext != newState.IsActiveEditorContext)
+                        {
+                            // The state has changed
+                            lastContextState.Value = newState;
+                            stateChanged = true;
+                        }
+
+                        return (newState, stateChanged);
+                    }
+
+                    void UpdateProgressRegistration()
+                    {
+                        // Notify operation progress that we've now processed these versions of our input, if they are
+                        // up-to-date with the latest version that produced, then we no longer considered "in progress".
+                        registration.NotifyOutputDataCalculated(update.DataSourceVersions);
+                    }
                 }
             }
 

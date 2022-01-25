@@ -16,13 +16,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
     {
         /// <summary>
         ///     Returns an enumerable of project evaluation rules that should passed to
-        ///     <see cref="ApplyProjectEvaluation(IProjectVersionedValue{IProjectSubscriptionUpdate}, ContextState, CancellationToken)"/>.
+        ///     <see cref="ApplyProjectEvaluation"/> as part of its project update.
         /// </summary>
         IEnumerable<string> GetProjectEvaluationRules();
 
         /// <summary>
         ///     Returns an enumerable of project build rules that should passed to
-        ///     <see cref="ApplyProjectBuild(IProjectVersionedValue{IProjectSubscriptionUpdate}, CommandLineArgumentsSnapshot, ContextState, CancellationToken)"/>.
+        ///     <see cref="ApplyProjectBuild"/> as part of its project update.
         /// </summary>
         IEnumerable<string> GetProjectBuildRules();
 
@@ -58,7 +58,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         ///     to the project snapshot state. The cancellation token should only be cancelled with the
         ///     intention that the <see cref="IWorkspaceProjectContext"/> will be immediately disposed.
         /// </remarks>
-        void ApplyProjectEvaluation(IProjectVersionedValue<IProjectSubscriptionUpdate> update, ContextState state, CancellationToken cancellationToken);
+        void ApplyProjectEvaluation(
+            IProjectVersionedValue<(IProjectSubscriptionUpdate ProjectUpdate, IProjectSubscriptionUpdate SourceItemsUpdate)> update,
+            ContextState state,
+            CancellationToken cancellationToken);
 
         /// <summary>
         ///     Applies project build changes to the underlying <see cref="IWorkspaceProjectContext"/>.
@@ -81,29 +84,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         ///     to the project snapshot state. The cancellation token should only be cancelled with the
         ///     intention that the <see cref="IWorkspaceProjectContext"/> will be immediately disposed.
         /// </remarks>
-        void ApplyProjectBuild(IProjectVersionedValue<IProjectSubscriptionUpdate> update, CommandLineArgumentsSnapshot commandLineArgumentsSnapshot, ContextState state, CancellationToken cancellationToken);
-
-        /// <summary>
-        ///     Applies source items changes to the underlying <see cref="IWorkspaceProjectContext"/>.
-        /// </summary>
-        /// <exception cref="ArgumentNullException">
-        ///     <paramref name="update"/> is <see langword="null"/>.
-        /// </exception>
-        /// <exception cref="InvalidOperationException">
-        ///     <see cref="Initialize(IWorkspaceProjectContext)"/> has not been called.
-        /// </exception>
-        /// <exception cref="ObjectDisposedException">
-        ///     The <see cref="IApplyChangesToWorkspaceContext"/> has been disposed of.
-        /// </exception>
-        /// <exception cref="OperationCanceledException">
-        ///     The result is awaited and <paramref name="cancellationToken"/> is cancelled.
-        /// </exception>
-        /// <remarks>
-        ///     Note: Cancelling the <paramref name="cancellationToken"/> may result in the underlying
-        ///     <see cref="IWorkspaceProjectContext"/> to be left in an inconsistent state with respect
-        ///     to the project snapshot state. The cancellation token should only be cancelled with the
-        ///     intention that the <see cref="IWorkspaceProjectContext"/> will be immediately disposed.
-        /// </remarks>
-        void ApplySourceItems(IProjectVersionedValue<IProjectSubscriptionUpdate> update, ContextState state, CancellationToken cancellationToken);
+        void ApplyProjectBuild(
+            IProjectVersionedValue<(IProjectSubscriptionUpdate ProjectUpdate, CommandLineArgumentsSnapshot CommandLineArgumentsSnapshot)> update,
+            ContextState state,
+            CancellationToken cancellationToken);
     }
 }
