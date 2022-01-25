@@ -40,12 +40,16 @@ namespace Microsoft.VisualStudio.ProjectSystem
         /// </remarks>
         protected async Task<T> WaitForLoadedAsync(CancellationToken cancellationToken = default)
         {
+            await _semLock.WaitAsync();
+
             // Wait until LoadAsync has been called, force switching to thread-pool in case
             // there's already someone waiting for us on the UI thread.
 #pragma warning disable RS0030 // Do not used banned APIs
             (T instance, JoinableTask initializeAsyncTask) = await _instanceTaskSource.Task.WithCancellation(cancellationToken)
                                                                                            .ConfigureAwait(false);
 #pragma warning restore RS0030
+
+            _semLock.Release();
 
             // Now join Instance.InitializeAsync so that if someone is waiting on the UI thread for us, 
             // the instance is allowed to switch to that thread to complete if needed.
@@ -65,38 +69,58 @@ namespace Microsoft.VisualStudio.ProjectSystem
         {
             await _semLock.WaitAsync();
 
-            if (!_instanceTaskSource.Task.IsCompleted)
+            try
             {
-                (T instance, JoinableTask initializeAsyncTask) result = CreateInitializedInstance();
-                _instanceTaskSource.SetResult(result);
+                if (!_instanceTaskSource.Task.IsCompleted)
+                {
+                    (T instance, JoinableTask initializeAsyncTask) result = CreateInitializedInstance();
+                    _instanceTaskSource.SetResult(result);
+                }
+
+                Assumes.True(_instanceTaskSource.Task.IsCompleted);
+
+                // Should throw TaskCanceledException if already cancelled in Dispose
+                (T instance, JoinableTask initializeAsyncTask)? oldInstanceTask = await _instanceTaskSource.Task;
+
+                await oldInstanceTask.Value.initializeAsyncTask;
             }
-
-            Assumes.True(_instanceTaskSource.Task.IsCompleted);
-
-            // Should throw TaskCanceledException if already cancelled in Dispose
-            (T instance, JoinableTask initializeAsyncTask)? oldInstanceTask = await _instanceTaskSource.Task;
-
-            _semLock.Release();
-
-            await oldInstanceTask.Value.initializeAsyncTask;
+            catch (Exception)
+            {
+                throw;
+            }
+            finally
+            {
+                _semLock.Release();
+            }
         }
 
         public async Task UnloadAsync()
         {
-            (T instance, JoinableTask initializeAsyncTask)? oldInstanceTask = null;
-
             await _semLock.WaitAsync();
 
-            if (_instanceTaskSource.Task.IsCompleted)
+            try
             {
-                // Should throw TaskCanceledException if already cancelled in Dispose
-                oldInstanceTask = await _instanceTaskSource.Task;
-                _instanceTaskSource = new TaskCompletionSource<(T instance, JoinableTask initializeAsyncTask)>(TaskCreationOptions.RunContinuationsAsynchronously);
-            }
+                (T instance, JoinableTask initializeAsyncTask)? oldInstanceTask = null;
 
-            if (oldInstanceTask != null && oldInstanceTask.Value.instance != null)
+                if (_instanceTaskSource.Task.IsCompleted)
+                {
+                    // Should throw TaskCanceledException if already cancelled in Dispose
+                    oldInstanceTask = await _instanceTaskSource.Task;
+                    _instanceTaskSource = new TaskCompletionSource<(T instance, JoinableTask initializeAsyncTask)>(TaskCreationOptions.RunContinuationsAsynchronously);
+                }
+
+                if (oldInstanceTask != null && oldInstanceTask.Value.instance != null)
+                {
+                    await oldInstanceTask.Value.instance.DisposeAsync();
+                }
+            }
+            catch (Exception)
             {
-                await oldInstanceTask.Value.instance.DisposeAsync();
+                throw;
+            }
+            finally
+            {
+                _semLock.Release();
             }
         }
 
