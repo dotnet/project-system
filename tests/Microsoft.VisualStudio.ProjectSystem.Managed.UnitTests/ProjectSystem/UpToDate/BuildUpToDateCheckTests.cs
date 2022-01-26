@@ -113,7 +113,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             UpToDateCheckImplicitConfiguredInput? upToDateCheckImplicitConfiguredInput = null,
             bool itemRemovedFromSourceSnapshot = false)
         {
-            upToDateCheckImplicitConfiguredInput ??= UpToDateCheckImplicitConfiguredInput.Empty;
+            upToDateCheckImplicitConfiguredInput ??= UpToDateCheckImplicitConfiguredInput.CreateEmpty(ProjectConfigurationFactory.Create("testConfiguration"));
 
             _lastCheckTimeAtUtc = lastCheckTimeAtUtc ?? DateTime.MinValue;
             

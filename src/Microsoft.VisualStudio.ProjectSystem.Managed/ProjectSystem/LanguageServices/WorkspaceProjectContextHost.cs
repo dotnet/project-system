@@ -5,7 +5,6 @@ using System.ComponentModel.Composition;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.LanguageServices.ProjectSystem;
-using Microsoft.VisualStudio.ProjectSystem.Build;
 
 namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 {
@@ -27,7 +26,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         private readonly IActiveConfiguredProjectProvider _activeConfiguredProjectProvider;
         private readonly ExportFactory<IApplyChangesToWorkspaceContext> _applyChangesToWorkspaceContextFactory;
         private readonly IDataProgressTrackerService _dataProgressTrackerService;
-        private readonly IProjectBuildSnapshotService _projectBuildSnapshotService;
+        private readonly ICommandLineArgumentsProvider _commandLineArgumentsProvider;
 
         [ImportingConstructor]
         public WorkspaceProjectContextHost(ConfiguredProject project,
@@ -39,7 +38,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
                                            IActiveConfiguredProjectProvider activeConfiguredProjectProvider,
                                            ExportFactory<IApplyChangesToWorkspaceContext> applyChangesToWorkspaceContextFactory,
                                            IDataProgressTrackerService dataProgressTrackerService,
-                                           IProjectBuildSnapshotService projectBuildSnapshotService)
+                                           ICommandLineArgumentsProvider commandLineArgumentsProvider)
             : base(threadingService.JoinableTaskContext)
         {
             _project = project;
@@ -51,7 +50,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
             _activeConfiguredProjectProvider = activeConfiguredProjectProvider;
             _applyChangesToWorkspaceContextFactory = applyChangesToWorkspaceContextFactory;
             _dataProgressTrackerService = dataProgressTrackerService;
-            _projectBuildSnapshotService = projectBuildSnapshotService;
+            _commandLineArgumentsProvider = commandLineArgumentsProvider;
         }
 
         public Task ActivateAsync()
@@ -101,7 +100,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
                 _activeConfiguredProjectProvider,
                 _applyChangesToWorkspaceContextFactory,
                 _dataProgressTrackerService,
-                _projectBuildSnapshotService);
+                _commandLineArgumentsProvider);
         }
     }
 }

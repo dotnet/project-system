@@ -1,6 +1,5 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
-using System;
 using System.Runtime.InteropServices;
 using System.Threading;
 using Microsoft.VisualStudio.ProjectSystem.Waiting;
@@ -14,7 +13,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Waiting
 
         private readonly string _title;
         private string _message;
-        private bool _allowCancel;
         private readonly CancellationTokenSource? _cancellationTokenSource;
         private readonly IVsThreadedWaitDialog3 _dialog;
 
@@ -25,8 +23,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Waiting
         {
             _title = title;
             _message = message;
-            _allowCancel = allowCancel;
-            if (_allowCancel)
+
+            if (allowCancel)
             {
                 _cancellationTokenSource = new CancellationTokenSource();
             }
@@ -37,11 +35,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Waiting
         private IVsThreadedWaitDialog3 CreateDialog(IVsThreadedWaitDialogFactory dialogFactory)
         {
             Marshal.ThrowExceptionForHR(dialogFactory.CreateInstance(out IVsThreadedWaitDialog2 dialog2));
-            if (dialog2 == null)
-                throw new ArgumentNullException(nameof(dialog2));
+
+            Assumes.NotNull(dialog2);
 
             var dialog3 = (IVsThreadedWaitDialog3)dialog2;
-            var callback = new Callback(this);
+            var callback = new Callback(_cancellationTokenSource);
 
             dialog3.StartWaitDialogWithCallback(
                 szWaitCaption: _title,
@@ -49,7 +47,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Waiting
                 szProgressText: null,
                 varStatusBmpAnim: null,
                 szStatusBarText: null,
-                fIsCancelable: _allowCancel,
+                fIsCancelable: _cancellationTokenSource is not null,
                 iDelayToShowDialog: DelayToShowDialogSecs,
                 fShowProgress: false,
                 iTotalSteps: 0,
@@ -61,32 +59,20 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Waiting
 
         private class Callback : IVsThreadedWaitDialogCallback
         {
-            private readonly VisualStudioWaitContext _waitContext;
+            private readonly CancellationTokenSource? _cancellationTokenSource;
 
-            public Callback(VisualStudioWaitContext waitContext)
+            public Callback(CancellationTokenSource? cancellationTokenSource)
             {
-                _waitContext = waitContext;
+                _cancellationTokenSource = cancellationTokenSource;
             }
 
             public void OnCanceled()
             {
-                _waitContext.OnCanceled();
+                _cancellationTokenSource?.Cancel();
             }
         }
 
-        public CancellationToken CancellationToken => _cancellationTokenSource is null
-                                                    ? CancellationToken.None
-                                                    : _cancellationTokenSource.Token;
-
-        public bool AllowCancel
-        {
-            get => _allowCancel;
-            set
-            {
-                _allowCancel = value;
-                UpdateDialog();
-            }
-        }
+        public CancellationToken CancellationToken => _cancellationTokenSource?.Token ?? CancellationToken.None;
 
         public string Message
         {
@@ -106,7 +92,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Waiting
                 szStatusBarText: null,
                 iCurrentStep: 0,
                 iTotalSteps: 0,
-                fDisableCancel: !_allowCancel,
+                fDisableCancel: _cancellationTokenSource is null,
                 pfCanceled: out _);
         }
 
@@ -114,11 +100,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Waiting
         {
             _dialog.EndWaitDialog(out _);
             _cancellationTokenSource?.Dispose();
-        }
-
-        private void OnCanceled()
-        {
-            _cancellationTokenSource?.Cancel();
         }
     }
 }

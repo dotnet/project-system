@@ -57,6 +57,11 @@
         <target state="translated">{0} usunięto element „{1}” (CopyType={2}, TargetPath=”{3}”)</target>
         <note>Do not translate 'CopyType' or 'TargetPath'. {0} is an MSBuild item type. {1} is a file path. {2} and {3} are metadata values.</note>
       </trans-unit>
+      <trans-unit id="FUTD_CheckingConfiguration_1">
+        <source>Checking configuration {0}:</source>
+        <target state="new">Checking configuration {0}:</target>
+        <note>{0} is a description of the project's configuration, such as "Debug|AnyCPU|net6.0".</note>
+      </trans-unit>
       <trans-unit id="FUTD_CheckingCopiedOutputFile">
         <source>Checking copied output (UpToDateCheckBuilt with Original property) file:</source>
         <target state="translated">Sprawdzanie skopiowanego pliku wyjściowego (UpToDateCheckBuilt z właściwością Original):</target>

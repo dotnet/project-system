@@ -17,9 +17,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
     /// </remarks>
     internal sealed class UpToDateCheckImplicitConfiguredInput
     {
-        public static UpToDateCheckImplicitConfiguredInput Empty { get; } = new();
+        public static UpToDateCheckImplicitConfiguredInput CreateEmpty(ProjectConfiguration projectConfiguration)
+        {
+            return new UpToDateCheckImplicitConfiguredInput(projectConfiguration);
+        }
 
         public static UpToDateCheckImplicitConfiguredInput Disabled { get; } = new UpToDateCheckImplicitConfiguredInput(
+            projectConfiguration:                         null,
             msBuildProjectFullPath:                       null,
             msBuildProjectDirectory:                      null,
             copyUpToDateMarkerItem:                       null,
@@ -39,6 +43,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             lastItemChanges:                              ImmutableArray<(bool IsAdd, string ItemType, UpToDateCheckInputItem)>.Empty,
             itemHash:                                     null,
             wasStateRestored:                             false);
+
+        /// <summary>
+        /// Gets the project configuration for this configured data snapshot.
+        /// </summary>
+        /// <remarks>
+        /// Useful when a project multi-targets and we want to differentiate targets in log output.
+        /// <see langword="null"/> when the up-to-date check is disabled.
+        /// </remarks>
+        public ProjectConfiguration? ProjectConfiguration { get; }
 
         public string? MSBuildProjectFullPath { get; }
 
@@ -119,10 +132,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
         /// </summary>
         public ImmutableArray<string> CopyReferenceInputs { get; }
 
-        private UpToDateCheckImplicitConfiguredInput()
+        private UpToDateCheckImplicitConfiguredInput(ProjectConfiguration? projectConfiguration)
         {
             var emptyItemBySetName = ImmutableDictionary.Create<string, ImmutableDictionary<string, ImmutableArray<string>>>(BuildUpToDateCheck.SetNameComparer);
 
+            ProjectConfiguration = projectConfiguration;
             LastItemsChangedAtUtc = DateTime.MinValue;
             InputSourceItemTypes = ImmutableArray<string>.Empty;
             InputSourceItemsByItemType = ImmutableDictionary.Create<string, ImmutableArray<UpToDateCheckInputItem>>(StringComparers.ItemTypes);
@@ -138,6 +152,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
         }
 
         private UpToDateCheckImplicitConfiguredInput(
+            ProjectConfiguration? projectConfiguration,
             string? msBuildProjectFullPath,
             string? msBuildProjectDirectory,
             string? copyUpToDateMarkerItem,
@@ -158,6 +173,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             int? itemHash,
             bool wasStateRestored)
         {
+            ProjectConfiguration = projectConfiguration;
             MSBuildProjectFullPath = msBuildProjectFullPath;
             MSBuildProjectDirectory = msBuildProjectDirectory;
             CopyUpToDateMarkerItem = copyUpToDateMarkerItem;
@@ -322,6 +338,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             (ImmutableArray<string> resolvedCompilationReferencePaths, ImmutableArray<string> copyReferenceInputs) = UpdateResolvedCompilationReferences();
 
             return new(
+                ProjectConfiguration,
                 msBuildProjectFullPath,
                 msBuildProjectDirectory,
                 copyUpToDateMarkerItem: UpdateCopyUpToDateMarkerItem(),
@@ -513,6 +530,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
         internal UpToDateCheckImplicitConfiguredInput WithLastItemsChangedAtUtc(DateTime lastItemsChangedAtUtc)
         {
             return new(
+                ProjectConfiguration,
                 MSBuildProjectFullPath,
                 MSBuildProjectDirectory,
                 CopyUpToDateMarkerItem,
@@ -537,6 +555,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
         public UpToDateCheckImplicitConfiguredInput WithRestoredState(int itemHash, DateTime lastInputsChangedAtUtc)
         {
             return new(
+                ProjectConfiguration,
                 MSBuildProjectFullPath,
                 MSBuildProjectDirectory,
                 CopyUpToDateMarkerItem,

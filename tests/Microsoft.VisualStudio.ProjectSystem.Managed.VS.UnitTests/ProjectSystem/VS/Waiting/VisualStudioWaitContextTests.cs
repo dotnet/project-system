@@ -10,15 +10,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Waiting
     public static class VisualStudioWaitContextTests
     {
         [Fact]
-        public static void SetPropertyAllowCancel_Test()
+        public static void CancellationToken()
         {
-            string title = "Test001";
-            string message = "Testing001";
-            bool isCancelable = true;
-            var context = Create(title, message, isCancelable);
-            Assert.True(context.AllowCancel);
-            context.AllowCancel = false;
-            Assert.False(context.AllowCancel);
+            var cancellable = Create("Title", "Message", allowCancel: true);
+
+            Assert.True(cancellable.CancellationToken.CanBeCanceled);
+
+            var nonCancellable = Create("Title", "Message", allowCancel: false);
+
+            Assert.False(nonCancellable.CancellationToken.CanBeCanceled);
         }
 
         [Fact]
@@ -37,7 +37,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Waiting
         [Fact]
         public static void CreateWrongType_Test()
         {
-            Assert.Throws<ArgumentNullException>(() => _ = CreateWrongType(string.Empty, string.Empty, false));
+            Assert.ThrowsAny<Exception>(() => _ = CreateWrongType(string.Empty, string.Empty, false));
         }
 
         private delegate void CreateInstanceCallback(out IVsThreadedWaitDialog2 ppIVsThreadedWaitDialog);

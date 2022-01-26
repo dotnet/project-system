@@ -1,12 +1,12 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
 using System;
+using System.Collections.Immutable;
 using System.ComponentModel.Composition;
+using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.LanguageServices.ProjectSystem;
-using Microsoft.VisualStudio.ProjectSystem.Build;
-using Moq;
 using Xunit;
 using static Microsoft.VisualStudio.ProjectSystem.LanguageServices.WorkspaceProjectContextHost;
 
@@ -14,6 +14,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 {
     public class WorkspaceProjectContextHostInstanceTests
     {
+        private readonly CommandLineArgumentsSnapshot _emptyCommandLineArguments = new(ImmutableArray<string>.Empty, isChanged: false);
+
         [Fact]
         public async Task Dispose_WhenNotInitialized_DoesNotThrow()
         {
@@ -133,165 +135,146 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
             Assert.Equal("ContextId", result);
         }
 
-        [Theory]
-        [InlineData(WorkspaceContextHandlerType.Evaluation)]
-        [InlineData(WorkspaceContextHandlerType.ProjectBuild)]
-        [InlineData(WorkspaceContextHandlerType.SourceItems)]
-        internal async Task OnProjectChangedAsync_WhenProjectUnloaded_TriggersCancellation(WorkspaceContextHandlerType handlerType)
+        [Fact]
+        internal async Task OnProjectChangedAsync_WhenProjectUnloaded_TriggersCancellation()
         {
             var unloadSource = new CancellationTokenSource();
-            var tasksService = IUnconfiguredProjectTasksServiceFactory.ImplementUnloadCancellationToken(unloadSource.Token);
+            
+            var instance = await CreateInitializedInstanceAsync(
+                tasksService: IUnconfiguredProjectTasksServiceFactory.ImplementUnloadCancellationToken(unloadSource.Token));
 
-            void ApplyProjectBuild(IProjectVersionedValue<IProjectSubscriptionUpdate> _, IProjectBuildSnapshot projectBuildSnapshot, ContextState __, CancellationToken cancellationToken)
-            {
-                // Unload project
-                unloadSource.Cancel();
+            var registration = IDataProgressTrackerServiceRegistrationFactory.Create();
+            var activeConfiguredProject = ConfiguredProjectFactory.Create();
+            var update = IProjectVersionedValueFactory.CreateEmpty();
+            var lastContextState = new StrongBox<ContextState?>();
 
-                cancellationToken.ThrowIfCancellationRequested();
-            }
-
-            void ApplyProjectEvaluation(IProjectVersionedValue<IProjectSubscriptionUpdate> _, ContextState __, CancellationToken cancellationToken)
-            {
-                // Unload project
-                unloadSource.Cancel();
-
-                cancellationToken.ThrowIfCancellationRequested();
-            }
-
-            var applyChangesToWorkspaceContext = handlerType switch
-            {
-                WorkspaceContextHandlerType.Evaluation => IApplyChangesToWorkspaceContextFactory.ImplementApplyProjectEvaluationAsync(ApplyProjectEvaluation),
-                WorkspaceContextHandlerType.ProjectBuild => IApplyChangesToWorkspaceContextFactory.ImplementApplyProjectBuildAsync(ApplyProjectBuild),
-                WorkspaceContextHandlerType.SourceItems => IApplyChangesToWorkspaceContextFactory.ImplementApplySourceItemsAsync(ApplyProjectEvaluation), // ApplyProjectEvaluation works for source items as they share a signature
-                _ => throw new NotImplementedException()
-            };
-
-            var instance = await CreateInitializedInstanceAsync(tasksService: tasksService, applyChangesToWorkspaceContext: applyChangesToWorkspaceContext);
-
-            var update = IProjectVersionedValueFactory.Create<(ConfiguredProject, IProjectSubscriptionUpdate, IProjectBuildSnapshot)>((default!, default!, Mock.Of<IProjectBuildSnapshot>()));
-            var change = new WorkspaceProjectContextHostInstance.ProjectChange(update);
             await Assert.ThrowsAsync<OperationCanceledException>(() =>
             {
-                return instance.OnProjectChangedAsync(change, handlerType);
+                return instance.OnProjectChangedAsync(
+                    registration,
+                    activeConfiguredProject,
+                    lastContextState,
+                    update,
+                    hasChange: _ => true,
+                    applyFunc: (_, _, _, token) =>
+                    {
+                        // Simulate project unload during callback
+                        unloadSource.Cancel();
+
+                        token.ThrowIfCancellationRequested();
+                    });
             });
         }
 
-        [Theory]
-        [InlineData(WorkspaceContextHandlerType.Evaluation)]
-        [InlineData(WorkspaceContextHandlerType.ProjectBuild)]
-        [InlineData(WorkspaceContextHandlerType.SourceItems)]
-        internal async Task OnProjectChangedAsync_WhenInstanceDisposed_TriggersCancellation(WorkspaceContextHandlerType handlerType)
+        [Fact]
+        internal async Task OnProjectChangedAsync_WhenInstanceDisposed_TriggersCancellation()
         {
-            WorkspaceProjectContextHostInstance? instance = null;
+            var instance = await CreateInitializedInstanceAsync();
+            var registration = IDataProgressTrackerServiceRegistrationFactory.Create();
+            var activeConfiguredProject = ConfiguredProjectFactory.Create();
+            var update = IProjectVersionedValueFactory.CreateEmpty();
+            var lastContextState = new StrongBox<ContextState?>();
 
-            void ApplyProjectBuild(IProjectVersionedValue<IProjectSubscriptionUpdate> _, IProjectBuildSnapshot buildSnapshot, ContextState __, CancellationToken cancellationToken)
-            {
-                // Dispose the instance underneath us
-                instance!.DisposeAsync().Wait();
-
-                cancellationToken.ThrowIfCancellationRequested();
-            }
-
-            void ApplyProjectEvaluation(IProjectVersionedValue<IProjectSubscriptionUpdate> _, ContextState __, CancellationToken cancellationToken)
-            {
-                // Dispose the instance underneath us
-                instance!.DisposeAsync().Wait();
-
-                cancellationToken.ThrowIfCancellationRequested();
-            }
-
-            var applyChangesToWorkspaceContext = handlerType switch
-            {
-                WorkspaceContextHandlerType.Evaluation => IApplyChangesToWorkspaceContextFactory.ImplementApplyProjectEvaluationAsync(ApplyProjectEvaluation),
-                WorkspaceContextHandlerType.ProjectBuild => IApplyChangesToWorkspaceContextFactory.ImplementApplyProjectBuildAsync(ApplyProjectBuild),
-                WorkspaceContextHandlerType.SourceItems => IApplyChangesToWorkspaceContextFactory.ImplementApplySourceItemsAsync(ApplyProjectEvaluation), // ApplyProjectEvaluation works for source items as they share a signature
-                _ => throw new NotImplementedException()
-            };
-
-            instance = await CreateInitializedInstanceAsync(applyChangesToWorkspaceContext: applyChangesToWorkspaceContext);
-
-            var update = IProjectVersionedValueFactory.Create<(ConfiguredProject, IProjectSubscriptionUpdate, IProjectBuildSnapshot)>((default!, default!, Mock.Of<IProjectBuildSnapshot>()));
-            var change = new WorkspaceProjectContextHostInstance.ProjectChange(update);
             await Assert.ThrowsAsync<OperationCanceledException>(() =>
             {
-                return instance.OnProjectChangedAsync(change, handlerType);
+                return instance.OnProjectChangedAsync(
+                    registration,
+                    activeConfiguredProject,
+                    lastContextState,
+                    update,
+                    hasChange: _ => true,
+                    applyFunc: (_, _, state, token) =>
+                    {
+                        // Dispose the instance underneath us
+                        instance!.DisposeAsync().Wait();
+
+                        token.ThrowIfCancellationRequested();
+                    });
             });
         }
 
-        [Theory]
-        [InlineData(WorkspaceContextHandlerType.Evaluation)]
-        [InlineData(WorkspaceContextHandlerType.ProjectBuild)]
-        [InlineData(WorkspaceContextHandlerType.SourceItems)]
-        internal async Task OnProjectChangedAsync_PassesProjectUpdate(WorkspaceContextHandlerType handlerType)
+        [Fact]
+        internal async Task OnProjectChangedAsync_CallsApplyFuncOnlyWhenChangeExists()
         {
-            IProjectVersionedValue<IProjectSubscriptionUpdate>? subscriptionResult = null;
+            IImmutableDictionary<NamedIdentity, IComparable>? seenVersions = null;
 
-            void ApplyProjectBuild(IProjectVersionedValue<IProjectSubscriptionUpdate> u, IProjectBuildSnapshot projectBuildSnapshot, ContextState _, CancellationToken __)
-            {
-                subscriptionResult = u;
-            }
+            var instance = await CreateInitializedInstanceAsync();
+            var registration = IDataProgressTrackerServiceRegistrationFactory.ImplementNotifyOutputDataCalculated(versions => seenVersions = versions);
+            var activeConfiguredProject = ConfiguredProjectFactory.Create();
+            var versions1 = ImmutableDictionary<NamedIdentity, IComparable>.Empty;
+            var versions2 = ImmutableDictionary<NamedIdentity, IComparable>.Empty;
+            var versions3 = ImmutableDictionary<NamedIdentity, IComparable>.Empty;
+            var update1 = IProjectVersionedValueFactory.Create(versions1);
+            var update2 = IProjectVersionedValueFactory.Create(versions2);
+            var update3 = IProjectVersionedValueFactory.Create(versions3);
+            var lastContextState = new StrongBox<ContextState?>();
+            var callCount = 0;
 
-            void ApplyProjectEvaluation(IProjectVersionedValue<IProjectSubscriptionUpdate> u, ContextState _, CancellationToken __)
-            {
-                subscriptionResult = u;
-            }
+            // Apply func will be called here as the last context state differs
+            await instance.OnProjectChangedAsync(
+                registration,
+                activeConfiguredProject,
+                lastContextState,
+                update1,
+                hasChange: _ => false, // no change
+                applyFunc: (_, _, state, token) => callCount++);
 
-            var applyChangesToWorkspaceContext = handlerType switch
-            {
-                WorkspaceContextHandlerType.Evaluation => IApplyChangesToWorkspaceContextFactory.ImplementApplyProjectEvaluationAsync(ApplyProjectEvaluation),
-                WorkspaceContextHandlerType.ProjectBuild => IApplyChangesToWorkspaceContextFactory.ImplementApplyProjectBuildAsync(ApplyProjectBuild),
-                WorkspaceContextHandlerType.SourceItems => IApplyChangesToWorkspaceContextFactory.ImplementApplySourceItemsAsync(ApplyProjectEvaluation), // ApplyProjectEvaluation works for source items as they share a signature
-                _ => throw new NotImplementedException()
-            };
+            Assert.Equal(1, callCount);
+            Assert.Same(versions1, seenVersions);
 
-            var instance = await CreateInitializedInstanceAsync(applyChangesToWorkspaceContext: applyChangesToWorkspaceContext);
+            // Apply func will NOT be called here as the context state is unchanged, and we claim to change to other data items
+            await instance.OnProjectChangedAsync(
+                registration,
+                activeConfiguredProject,
+                lastContextState,
+                update2,
+                hasChange: _ => false, // no change
+                applyFunc: (_, _, state, token) => callCount++);
 
-            var buildSnapshot = Mock.Of<IProjectBuildSnapshot>();
-            var subscription = IProjectSubscriptionUpdateFactory.CreateEmpty();
-            var update = IProjectVersionedValueFactory.Create<(ConfiguredProject, IProjectSubscriptionUpdate, IProjectBuildSnapshot)>((null!, subscription, buildSnapshot));
-            var change = new WorkspaceProjectContextHostInstance.ProjectChange(update);
-            await instance.OnProjectChangedAsync(change, handlerType);
+            Assert.Equal(1, callCount);
+            Assert.Same(versions2, seenVersions);
 
-            Assert.Same(subscriptionResult!.Value, subscription);
+            // Apply func will be called as hasChange returns true, despite the context state being unchanged
+            await instance.OnProjectChangedAsync(
+                registration,
+                activeConfiguredProject,
+                lastContextState,
+                update3,
+                hasChange: _ => true, // change
+                applyFunc: (_, _, state, token) => callCount++);
+
+            Assert.Equal(2, callCount);
+            Assert.Same(versions3, seenVersions);
         }
 
-        [Theory] // Evaluation/Project Build       IsActiveContext
-        [InlineData(WorkspaceContextHandlerType.Evaluation, true)]
-        [InlineData(WorkspaceContextHandlerType.Evaluation, false)]
-        [InlineData(WorkspaceContextHandlerType.ProjectBuild, true)]
-        [InlineData(WorkspaceContextHandlerType.ProjectBuild, false)]
-        [InlineData(WorkspaceContextHandlerType.SourceItems, true)]
-        [InlineData(WorkspaceContextHandlerType.SourceItems, false)]
-        internal async Task OnProjectChangedAsync_RespectsIsActiveContext(WorkspaceContextHandlerType handlerType, bool isActiveContext)
+        [Theory]
+        [CombinatorialData]
+        internal async Task OnProjectChangedAsync_RespectsIsActiveContext(bool isActiveEditorContext, bool isActiveConfiguration)
         {
-            bool? isActiveContextResult = null;
+            var activeWorkspaceProjectContextTracker = IActiveEditorContextTrackerFactory.ImplementIsActiveEditorContext(context => isActiveEditorContext);
 
-            void ApplyProjectBuild(IProjectVersionedValue<IProjectSubscriptionUpdate> u, IProjectBuildSnapshot projectBuildSnapshot, ContextState iac, CancellationToken _)
-            {
-                isActiveContextResult = iac.IsActiveEditorContext;
-            }
+            var project = ConfiguredProjectFactory.Create();
+            var activeConfiguredProject = isActiveConfiguration ? project : ConfiguredProjectFactory.Create();
 
-            void ApplyProjectEvaluation(IProjectVersionedValue<IProjectSubscriptionUpdate> u, ContextState iac, CancellationToken _)
-            {
-                isActiveContextResult = iac.IsActiveEditorContext;
-            }
+            var instance = await CreateInitializedInstanceAsync(project: project, activeWorkspaceProjectContextTracker: activeWorkspaceProjectContextTracker);
 
-            var activeWorkspaceProjectContextTracker = IActiveEditorContextTrackerFactory.ImplementIsActiveEditorContext(context => isActiveContext);
-            var applyChangesToWorkspaceContext = handlerType switch
-            {
-                WorkspaceContextHandlerType.Evaluation => IApplyChangesToWorkspaceContextFactory.ImplementApplyProjectEvaluationAsync(ApplyProjectEvaluation),
-                WorkspaceContextHandlerType.ProjectBuild => IApplyChangesToWorkspaceContextFactory.ImplementApplyProjectBuildAsync(ApplyProjectBuild),
-                WorkspaceContextHandlerType.SourceItems => IApplyChangesToWorkspaceContextFactory.ImplementApplySourceItemsAsync(ApplyProjectEvaluation), // ApplyProjectEvaluation works for source items as they share a signature
-                _ => throw new NotImplementedException()
-            };
+            var registration = IDataProgressTrackerServiceRegistrationFactory.Create();
+            var update = IProjectVersionedValueFactory.CreateEmpty();
+            var lastContextState = new StrongBox<ContextState?>();
 
-            var instance = await CreateInitializedInstanceAsync(applyChangesToWorkspaceContext: applyChangesToWorkspaceContext, activeWorkspaceProjectContextTracker: activeWorkspaceProjectContextTracker);
+            ContextState? observedState = null;
 
-            var update = IProjectVersionedValueFactory.Create<(ConfiguredProject, IProjectSubscriptionUpdate, IProjectBuildSnapshot)>((default!, default!, Mock.Of<IProjectBuildSnapshot>()));
-            var change = new WorkspaceProjectContextHostInstance.ProjectChange(update);
-            await instance.OnProjectChangedAsync(change, handlerType);
+            await instance.OnProjectChangedAsync(
+                registration,
+                activeConfiguredProject,
+                lastContextState,
+                update,
+                hasChange: _ => true,
+                applyFunc: (_, _, state, token) => observedState = state);
 
-            Assert.Equal(isActiveContext, isActiveContextResult);
+            Assert.NotNull(observedState);
+            Assert.Equal(isActiveEditorContext, observedState.Value.IsActiveEditorContext);
+            Assert.Equal(isActiveConfiguration, observedState.Value.IsActiveConfiguration);
         }
 
         private static async Task<WorkspaceProjectContextHostInstance> CreateInitializedInstanceAsync(ConfiguredProject? project = null, IProjectThreadingService? threadingService = null, IUnconfiguredProjectTasksService? tasksService = null, IProjectSubscriptionService? projectSubscriptionService = null, IActiveEditorContextTracker? activeWorkspaceProjectContextTracker = null, IWorkspaceProjectContextProvider? workspaceProjectContextProvider = null, IApplyChangesToWorkspaceContext? applyChangesToWorkspaceContext = null)
@@ -314,7 +297,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
             applyChangesToWorkspaceContext ??= IApplyChangesToWorkspaceContextFactory.Create();
             IActiveConfiguredProjectProvider activeConfiguredProjectProvider = IActiveConfiguredProjectProviderFactory.Create();
             IDataProgressTrackerService dataProgressTrackerService = IDataProgressTrackerServiceFactory.Create();
-            IProjectBuildSnapshotService projectBuildSnapshotService = IProjectBuildSnapshotServiceFactory.Create();
+            ICommandLineArgumentsProvider commandLineArgumentsProvider = ICommandLineArgumentsProviderFactory.Create();
 
             return new WorkspaceProjectContextHostInstance(project,
                                                            threadingService,
@@ -325,7 +308,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
                                                            activeConfiguredProjectProvider,
                                                            ExportFactoryFactory.ImplementCreateValueWithAutoDispose(() => applyChangesToWorkspaceContext),
                                                            dataProgressTrackerService,
-                                                           projectBuildSnapshotService);
+                                                           commandLineArgumentsProvider);
         }
     }
 }

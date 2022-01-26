@@ -90,7 +90,7 @@ You can force Visual Studio to show the results of a design-time build using the
 
 #### Visual Studio 2017 or later
 
-1. Install the [Project System Tools](https://marketplace.visualstudio.com/items?itemName=VisualStudioProductTeam.ProjectSystemTools) extension
+1. Install the [Project System Tools](https://github.com/dotnet/project-system-tools#project-system-tools) extension
 2. In Visual Studio, choose the `View > Other Windows > Build Logging` menu item.
 3. Click on the "play" button.
 
