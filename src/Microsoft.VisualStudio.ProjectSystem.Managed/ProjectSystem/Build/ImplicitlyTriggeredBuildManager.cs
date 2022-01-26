@@ -10,14 +10,19 @@ namespace Microsoft.VisualStudio.ProjectSystem.Managed.Build
     /// Build manager for implicitly triggered builds from commands such as Run/Debug Tests, Start Debugging, etc.
     /// </summary>
     [Export(typeof(IImplicitlyTriggeredBuildManager))]
+    [Export(typeof(IImplicitlyTriggeredBuildState))]
     [AppliesTo(ProjectCapability.DotNet)]
-    internal sealed partial class ImplicitlyTriggeredBuildManager : IImplicitlyTriggeredBuildManager
+    internal sealed partial class ImplicitlyTriggeredBuildManager : IImplicitlyTriggeredBuildManager, IImplicitlyTriggeredBuildState
 #pragma warning restore CS0618 // Type or member is obsolete
     {
+        private bool _isImplicitlyTriggeredBuild;
+
+        public bool IsImplicitlyTriggeredBuild => _isImplicitlyTriggeredBuild;
+
         public void OnBuildStart()
-            => GlobalPropertiesStore.Instance.OnBuildStart();
+            => _isImplicitlyTriggeredBuild = true;
 
         public void OnBuildEndOrCancel()
-            => GlobalPropertiesStore.Instance.OnBuildEndOrCancel();
+            => _isImplicitlyTriggeredBuild = false;
     }
 }

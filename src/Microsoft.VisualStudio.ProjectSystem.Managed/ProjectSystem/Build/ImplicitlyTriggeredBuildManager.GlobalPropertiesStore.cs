@@ -19,8 +19,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Managed.Build
             private readonly ImmutableDictionary<string, string> _regularBuildProperties;
             private readonly ImmutableDictionary<string, string> _implicitTriggeredBuildProperties;
 
-            private bool _isImplicitlyTriggeredBuild;
-
             public static readonly GlobalPropertiesStore Instance = new();
 
             private GlobalPropertiesStore()
@@ -32,22 +30,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.Managed.Build
                     .Add(FastUpToDateCheckIgnoresKindsGlobalPropertyName, FastUpToDateCheckIgnoresKindsGlobalPropertyValue);
             }
 
-            internal ImmutableDictionary<string, string> GetProperties()
-            {
-                return _isImplicitlyTriggeredBuild
-                    ? _implicitTriggeredBuildProperties
-                    : _regularBuildProperties;
-            }
+            internal ImmutableDictionary<string, string> GetRegularBuildProperties()
+                => _regularBuildProperties;
 
-            public void OnBuildStart()
-            {
-                _isImplicitlyTriggeredBuild = true;
-            }
-
-            public void OnBuildEndOrCancel()
-            {
-                _isImplicitlyTriggeredBuild = false;
-            }
+            internal ImmutableDictionary<string, string> GetImplicitlyTriggeredBuildProperties()
+                => _implicitTriggeredBuildProperties;
         }
     }
 }
