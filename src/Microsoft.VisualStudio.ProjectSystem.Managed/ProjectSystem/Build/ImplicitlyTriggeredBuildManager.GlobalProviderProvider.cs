@@ -20,15 +20,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.Managed.Build
         /// </remarks>
         [ExportBuildGlobalPropertiesProvider]
         [AppliesTo(ProjectCapability.DotNet)]
-        private sealed class GlobalProviderProvider : StaticGlobalPropertiesProviderBase
+        private sealed class GlobalPropertiesProvider : StaticGlobalPropertiesProviderBase
         {
             private readonly IImplicitlyTriggeredBuildState _implicitlyTriggeredBuildState;
 
             /// <summary>
-            /// Initializes a new instance of the <see cref="GlobalProviderProvider"/> class.
+            /// Initializes a new instance of the <see cref="GlobalPropertiesProvider"/> class.
             /// </summary>
             [ImportingConstructor]
-            public GlobalProviderProvider(UnconfiguredProject unconfiguredProject,
+            public GlobalPropertiesProvider(UnconfiguredProject unconfiguredProject,
                 IImplicitlyTriggeredBuildState implicitlyTriggeredBuildState)
                 : base(unconfiguredProject.Services)
             {
