@@ -20,15 +20,19 @@ namespace Microsoft.VisualStudio.ProjectSystem.Managed.Build
         /// </remarks>
         [ExportBuildGlobalPropertiesProvider]
         [AppliesTo(ProjectCapability.DotNet)]
-        private sealed class GlobalProviderProvider : StaticGlobalPropertiesProviderBase
+        private sealed class GlobalPropertiesProvider : StaticGlobalPropertiesProviderBase
         {
+            private readonly IImplicitlyTriggeredBuildState _implicitlyTriggeredBuildState;
+
             /// <summary>
-            /// Initializes a new instance of the <see cref="GlobalProviderProvider"/> class.
+            /// Initializes a new instance of the <see cref="GlobalPropertiesProvider"/> class.
             /// </summary>
             [ImportingConstructor]
-            public GlobalProviderProvider(UnconfiguredProject unconfiguredProject)
+            public GlobalPropertiesProvider(UnconfiguredProject unconfiguredProject,
+                IImplicitlyTriggeredBuildState implicitlyTriggeredBuildState)
                 : base(unconfiguredProject.Services)
             {
+                _implicitlyTriggeredBuildState = implicitlyTriggeredBuildState;
             }
 
             /// <summary>
@@ -37,7 +41,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.Managed.Build
             /// <value>A new dictionary whose keys are case insensitive.  Never null, but may be empty.</value>
             public override Task<IImmutableDictionary<string, string>> GetGlobalPropertiesAsync(CancellationToken cancellationToken)
             {
-                return Task.FromResult<IImmutableDictionary<string, string>>(GlobalPropertiesStore.Instance.GetProperties());
+                ImmutableDictionary<string, string> globalProperties = _implicitlyTriggeredBuildState.IsImplicitlyTriggeredBuild
+                    ? GlobalPropertiesStore.Instance.GetImplicitlyTriggeredBuildProperties()
+                    : GlobalPropertiesStore.Instance.GetRegularBuildProperties();
+
+                return Task.FromResult<IImmutableDictionary<string, string>>(globalProperties);
             }
         }
     }
