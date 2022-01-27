@@ -7,7 +7,7 @@
     <RootNamespace>Microsoft.VisualStudio</RootNamespace>
     <!-- The value of RuleInjectionClassName of XamlPropertyRule items defined by this project -->
     <XamlPropertyRuleInjectionClassName>ProjectProperties</XamlPropertyRuleInjectionClassName>
-    <IsProjectSystem>true</IsProjectSystem>
+    <IsManagedProjectSystemProject>true</IsManagedProjectSystemProject>
 
     <!-- Nuget -->
     <IsPackable>true</IsPackable>

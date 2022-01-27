@@ -5,7 +5,7 @@
 
   <PropertyGroup>
     <RootNamespace>Microsoft.VisualStudio</RootNamespace>
-    <IsProjectSystem>true</IsProjectSystem>
+    <IsManagedProjectSystemProject>true</IsManagedProjectSystemProject>
 
     <!-- VSIX -->
     <GeneratePkgDefFile>true</GeneratePkgDefFile>

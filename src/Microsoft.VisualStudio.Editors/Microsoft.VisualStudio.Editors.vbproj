@@ -12,7 +12,7 @@
     <GeneratePkgDefFile>true</GeneratePkgDefFile>
     <!-- TODO: Function/Property doesn't return a value on all code paths (https://github.com/dotnet/project-system/issues/2592) -->
     <NoWarn>$(NoWarn);42353;42355;42105;NU5125</NoWarn>
-    <IsProjectSystem>false</IsProjectSystem>
+    <IsManagedProjectSystemProject>false</IsManagedProjectSystemProject>
     <!-- Nuget -->
     <IsPackable>true</IsPackable>
     <Description>Implementation of some designers and project property page editors in VisualStudio.</Description>

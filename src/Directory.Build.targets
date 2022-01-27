@@ -19,8 +19,8 @@
     <ItemGroup>
       <FilesToSign Include="$(ArtifactsBinDir)$(OutDirName)\$(AssemblyName).dll;$(ArtifactsBinDir)$(OutDirName)\**\$(AssemblyName).resources.dll">
         <Authenticode>MicrosoftSHA2</Authenticode>
-        <StrongName Condition="'$(IsProjectSystem)' != 'false'">MsSharedLib72</StrongName>
-        <StrongName Condition="'$(IsProjectSystem)' == 'false'">67</StrongName>
+        <StrongName Condition="'$(IsManagedProjectSystemProject)' != 'false'">MsSharedLib72</StrongName>
+        <StrongName Condition="'$(IsManagedProjectSystemProject)' == 'false'">67</StrongName>
       </FilesToSign>
     </ItemGroup>
   </Target>
