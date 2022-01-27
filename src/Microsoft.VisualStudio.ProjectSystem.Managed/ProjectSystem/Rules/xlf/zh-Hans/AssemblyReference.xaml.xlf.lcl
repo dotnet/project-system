@@ -10,7 +10,7 @@
     <Disp Icon="Expand" Expand="true" Disp="true" LocTbl="false" />
     <Item ItemId=";Xliff Resources" ItemType="0" PsrId="308" Leaf="false">
       <Disp Icon="Str" Disp="true" LocTbl="false" />
-      <Item ItemId=";BoolProperty|CopyLocal|Description" ItemType="0" PsrId="308" Leaf="true">
+      <Item ItemId=";BoolProperty|Private|Description" ItemType="0" PsrId="308" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[Indicates whether the reference will be copied to the output directory.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
@@ -19,7 +19,7 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";BoolProperty|CopyLocal|DisplayName" ItemType="0" PsrId="308" Leaf="true">
+      <Item ItemId=";BoolProperty|Private|DisplayName" ItemType="0" PsrId="308" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[Copy Local]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">

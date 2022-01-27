@@ -32,12 +32,12 @@
         <target state="translated">この参照へのエイリアスのコンマ区切りのリストです。</target>
         <note />
       </trans-unit>
-      <trans-unit id="BoolProperty|CopyLocal|DisplayName">
+      <trans-unit id="BoolProperty|Private|DisplayName">
         <source>Copy Local</source>
         <target state="translated">ローカルにコピー</target>
         <note />
       </trans-unit>
-      <trans-unit id="BoolProperty|CopyLocal|Description">
+      <trans-unit id="BoolProperty|Private|Description">
         <source>Indicates whether the reference will be copied to the output directory.</source>
         <target state="translated">参照が出力ディレクトリにコピーされるかどうかを示します。</target>
         <note />

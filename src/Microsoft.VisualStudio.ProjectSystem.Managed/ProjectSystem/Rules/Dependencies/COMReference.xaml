@@ -24,13 +24,12 @@
     </StringListProperty.DataSource>
   </StringListProperty>
 
-  <BoolProperty Name="CopyLocal"
+  <BoolProperty Name="Private"
                 Description="Indicates whether the reference will be copied to the output directory."
                 DisplayName="Copy Local">
     <BoolProperty.DataSource>
       <DataSource HasConfigurationCondition="False"
                   ItemType="COMReference"
-                  PersistedName="Private"
                   Persistence="ProjectFile"
                   SourceOfDefaultValue="AfterContext" />
     </BoolProperty.DataSource>
