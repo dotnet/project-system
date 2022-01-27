@@ -62,15 +62,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build
             await _options.RegisterOptionChangedEventHandlerAsync(OnOptionChangedAsync);
         }
 
-        protected override async Task DisposeCoreAsync(bool initialized)
+        protected override Task DisposeCoreAsync(bool initialized)
         {
             if (initialized)
             {
                 (_solutionBuildManager as IVsSolutionBuildManager2)?.UnadviseUpdateSolutionEvents(_cookie);
                 _solutionBuildManager!.UnadviseUpdateSolutionEvents3(_cookie3);
 
-                await _options.UnregisterOptionChangedEventHandlerAsync(OnOptionChangedAsync);
+                return _options.UnregisterOptionChangedEventHandlerAsync(OnOptionChangedAsync);
             }
+
+            return Task.CompletedTask;
         }
 
         private async Task OnOptionChangedAsync(object sender, PropertyChangedEventArgs args)
