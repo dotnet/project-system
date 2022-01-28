@@ -11,7 +11,7 @@
     <IncludeAssemblyInVSIXContainer>false</IncludeAssemblyInVSIXContainer>
     <ExtensionInstallationRoot>CommonExtensions</ExtensionInstallationRoot>
     <ExtensionInstallationFolder>Microsoft\VisualStudio\Editors</ExtensionInstallationFolder>
-    <VsixSigningDependencyTarget>FinalizeInsertionVsixFiles</VsixSigningDependencyTarget>
+    <AddVsixForSigningDependsOn>FinalizeInsertionVsixFiles</AddVsixForSigningDependsOn>
 
     <!-- VS Setup -->
     <VisualStudioInsertionComponent>Microsoft.VisualStudio.Editors</VisualStudioInsertionComponent>

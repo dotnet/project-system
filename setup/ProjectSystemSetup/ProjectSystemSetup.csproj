@@ -12,7 +12,7 @@
     <IncludeAssemblyInVSIXContainer>false</IncludeAssemblyInVSIXContainer>
     <ExtensionInstallationRoot>Extensions</ExtensionInstallationRoot>
     <ExtensionInstallationFolder>Microsoft\ManagedProjectSystem</ExtensionInstallationFolder>
-    <VsixSigningDependencyTarget>FinalizeInsertionVsixFiles</VsixSigningDependencyTarget>
+    <AddVsixForSigningDependsOn>FinalizeInsertionVsixFiles</AddVsixForSigningDependsOn>
 
     <!-- VS Insertion -->
     <VisualStudioInsertionComponent>Microsoft.VisualStudio.ProjectSystem.Managed</VisualStudioInsertionComponent>

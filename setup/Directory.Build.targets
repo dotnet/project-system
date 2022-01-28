@@ -13,7 +13,7 @@
   </Target>
 
   <!-- Adds the appropriate vsix files for signing. -->
-  <Target Name="AddVsixForSigning" DependsOnTargets="$(VsixSigningDependencyTarget)" BeforeTargets="SignFiles">
+  <Target Name="AddVsixForSigning" DependsOnTargets="$(AddVsixForSigningDependsOn)" BeforeTargets="SignFiles">
     <Copy SourceFiles="$(VisualStudioSetupInsertionPath)$(AssemblyName).vsix" DestinationFolder="$(OutDir)" />
     <ItemGroup>
       <FilesToSign Include="$(OutDir)$(AssemblyName).vsix">

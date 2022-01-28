@@ -5,7 +5,7 @@
 
   <PropertyGroup>
     <!-- VSIX -->
-    <VsixSigningDependencyTarget>SwixBuild</VsixSigningDependencyTarget>
+    <AddVsixForSigningDependsOn>SwixBuild</AddVsixForSigningDependsOn>
 
     <!-- VS Insertion -->
     <VisualStudioInsertionComponent>Microsoft.VisualStudio.ProjectSystem.Managed</VisualStudioInsertionComponent>
