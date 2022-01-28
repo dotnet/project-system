@@ -24,6 +24,7 @@ variables:
 parameters:
 - name: SignType
   displayName: Sign Type
+  type: string
   default: real
   values:
   - real
