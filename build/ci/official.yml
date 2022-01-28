@@ -21,6 +21,13 @@ variables:
   TeamName: DotNet-Project-System
   BuildPlatform: any cpu
   DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true
+parameters:
+- name: SignType
+  displayName: Sign Type
+  default: real
+  values:
+  - real
+  - test
 
 ###################################################################################################################################################################
 # INSTALLATION
@@ -30,7 +37,7 @@ steps:
 - task: MicroBuildSigningPlugin@4
   displayName: Install Signing Plugin
   inputs:
-    signType: real
+    signType: ${{ parameters.SignType }}
     esrpSigning: true
 
 # This is used as a PackageReference with ExcludeAssets="all", which means it is not executed.
