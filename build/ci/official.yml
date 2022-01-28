@@ -137,6 +137,8 @@ steps:
 ###################################################################################################################################################################
 # PUBLISH OPTPROF METADATA
 ###################################################################################################################################################################
+# The published OptProf metadata is consumed by the release pipeline that profiles the assemblies to create the optimization data.
+# Release Pipeline URL: https://devdiv.visualstudio.com/DevDiv/_release?definitionId=3197
 
 # This is required to deploy the tests to devdiv.artifacts.visualstudio.com for the 'Deploy tests' step in the release pipeline.
 - task: artifactDropTask@0
