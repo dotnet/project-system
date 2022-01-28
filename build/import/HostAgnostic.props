@@ -17,8 +17,8 @@
     <Reference Include="WindowsBase" />
 
     <!-- Infrastructure -->
-    <PackageReference Include="MicroBuild.Core.Sentinel" />
-    <PackageReference Include="Microsoft.VisualStudioEng.MicroBuild.Core" />
+    <PackageReference Include="MicroBuild.Core.Sentinel"            PrivateAssets="all"/>
+    <PackageReference Include="Microsoft.VisualStudioEng.MicroBuild.Core" PrivateAssets="all"/>
 
     <!-- Toolset -->
     <PackageReference Include="Nerdbank.Streams"                    ExcludeAssets="all" />
