@@ -68,7 +68,6 @@ steps:
 - script: $(Build.SourcesDirectory)\build.cmd /build /test /ci /sign /diagnostic /no-deploy /no-integration /no-ibc /no-clearnugetcache /configuration $(BuildConfiguration)
   displayName: Build ProjectSystem.sln
 
-# Note: Does not verify that .vsix files are signed.
 - task: MicroBuildCodesignVerify@3
   displayName: Verify Signed Files
   inputs:
