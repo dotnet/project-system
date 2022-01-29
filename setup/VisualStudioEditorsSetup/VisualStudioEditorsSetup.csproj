@@ -1,18 +1,22 @@
 ﻿<!-- Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information. -->
 <Project Sdk="Microsoft.NET.Sdk">
+
   <Import Project="..\..\build\import\VisualStudioDesigner.props" />
+
   <PropertyGroup>
     <RootNamespace>Microsoft.VisualStudio</RootNamespace>
     <PublishOutputToSymStore>false</PublishOutputToSymStore>
-    
+
     <!-- VSIX -->
     <IncludeAssemblyInVSIXContainer>false</IncludeAssemblyInVSIXContainer>
     <ExtensionInstallationRoot>CommonExtensions</ExtensionInstallationRoot>
     <ExtensionInstallationFolder>Microsoft\VisualStudio\Editors</ExtensionInstallationFolder>
+    <AddVsixForSigningDependsOn>FinalizeInsertionVsixFiles</AddVsixForSigningDependsOn>
 
     <!-- VS Setup -->
     <VisualStudioInsertionComponent>Microsoft.VisualStudio.Editors</VisualStudioInsertionComponent>
   </PropertyGroup>
+
   <ItemGroup>
     <ProjectReference Include="..\..\src\Microsoft.VisualStudio.AppDesigner\Microsoft.VisualStudio.AppDesigner.vbproj">
       <Name>Microsoft.VisualStudio.AppDesigner</Name>
@@ -31,9 +35,11 @@
       <NgenPriority>3</NgenPriority>
     </ProjectReference>
   </ItemGroup>
+
   <ItemGroup>
     <Compile Include="..\Common\ProvideCodeBaseBindingRedirection.cs">
       <Link>ProvideCodeBaseBindingRedirection.cs</Link>
     </Compile>
   </ItemGroup>
+
 </Project>

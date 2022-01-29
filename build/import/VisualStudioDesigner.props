@@ -4,8 +4,8 @@
     <!-- Banned symbols are very project-system centric, and not applicable to AppDesigner/Editors -->
     <BannedSymbolsOptOut>true</BannedSymbolsOptOut>
   </PropertyGroup>
-  
-  <Import Project="VisualStudio.props"/>
+
+  <Import Project="VisualStudio.props" />
 
   <ItemGroup>
     <PackageReference Include="Microsoft.VisualStudio.Data.Core" />

@@ -1,0 +1,111 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<RunSettings>
+  <RunConfiguration>
+    <ResultsDirectory>C:\Test\Results</ResultsDirectory>
+    <TargetPlatform>X86</TargetPlatform>
+    <MaxCpuCount>1</MaxCpuCount>
+    <BatchSize>10</BatchSize>
+    <TestSessionTimeout>21600000</TestSessionTimeout>
+    <DesignMode>False</DesignMode>
+    <InIsolation>False</InIsolation>
+    <CollectSourceInformation>False</CollectSourceInformation>
+    <DisableAppDomain>False</DisableAppDomain>
+    <DisableParallelization>False</DisableParallelization>
+    <TargetFrameworkVersion>.NETFramework,Version=v4.0</TargetFrameworkVersion>
+    <ExecutionThreadApartmentState>STA</ExecutionThreadApartmentState>
+    <TestAdaptersPaths>%SystemDrive%\Test</TestAdaptersPaths>
+    <TreatTestAdapterErrorsAsWarnings>False</TreatTestAdapterErrorsAsWarnings>
+  </RunConfiguration>
+  <TestConfiguration>
+    <TestStores />
+    <TestContainers>
+      <TestContainer FileName="Microsoft.VisualStudio.ProjectSystem.DDRIT.dll" />
+    </TestContainers>
+    <TestCaseFilter>FullyQualifiedName=Microsoft.VisualStudio.ProjectSystem.DDRIT.OptProfOpenCloseTest.OpenAndCloseProjectTestSolution</TestCaseFilter>
+    <TestIterations>1</TestIterations>
+  </TestConfiguration>
+  <VisualStudioConfiguration>
+    <InstallationUnderTest>
+      <Components All="false">
+        <Include ID="Microsoft.VisualStudio.Workload.Webcrossplat" />
+        <Include ID="Microsoft.VisualStudio.Component.VC.CLI.Support" />
+        <Include ID="Microsoft.VisualStudio.Component.Windows81SDK" />
+        <Include ID="Microsoft.VisualStudio.ComponentGroup.UWP.VC" />
+        <Include ID="Microsoft.VisualStudio.Component.Windows10SDK.15063.UWP" />
+        <Include ID="Microsoft.VisualStudio.Component.Windows10SDK.17134" />
+        <Include ID="Microsoft.VisualStudio.Component.VC.ATLMFC" />
+        <Include ID="Microsoft.VisualStudio.Component.Windows10SDK.17134.Desktop" />
+        <Include ID="Microsoft.Net.ComponentGroup.4.7.2.DeveloperTools" />
+        <Exclude ID="Microsoft.VisualStudio.Component.AspNet45" />
+        <Exclude ID="Component.Incredibuild" />
+        <Exclude ID="Component.JavaJDK" />
+      </Components>
+      <Workloads All="false" IncludeComponents="Recommended">
+        <Include ID="Microsoft.VisualStudio.Workload.CoreEditor" IncludeComponents="Required" />
+        <Include ID="Microsoft.VisualStudio.Workload.ManagedDesktop" IncludeComponents="Required" />
+        <Include ID="Microsoft.VisualStudio.Workload.NativeCrossPlat" IncludeComponents="Required" />
+        <Include ID="Microsoft.VisualStudio.Workload.NativeDesktop" IncludeComponents="Required" />
+        <Include ID="Microsoft.VisualStudio.Workload.NetWeb" IncludeComponents="Required" />
+        <Include ID="Microsoft.VisualStudio.Workload.Office" IncludeComponents="Required" />
+        <Include ID="Microsoft.VisualStudio.Workload.Universal" IncludeComponents="Required" />
+        <Include ID="Microsoft.VisualStudio.Workload.VisualStudioExtension" IncludeComponents="Required" />
+      </Workloads>
+      <Languages />
+    </InstallationUnderTest>
+  </VisualStudioConfiguration>
+  <DataCollectionRunSettings>
+    <DataCollectors>
+      <DataCollector uri="datacollector://microsoft/DevDiv/TestExtensions/ProcDumpCollector/v1" friendlyName="ProcDump Collector" enabled="True">
+        <Configuration>
+          <RootDumpDirectory>C:\Test\Dumps</RootDumpDirectory>
+          <Deployment PackageName="Microsoft.DevDiv.TestExtensions.ProcDumpCollector" />
+        </Configuration>
+      </DataCollector>
+      <DataCollector uri="datacollector://microsoft/DevDiv/TestExtensions/LingeringProcessCollector/v1" friendlyName="Lingering Process Collector" enabled="True">
+        <Configuration>
+          <KillLingeringProcesses>true</KillLingeringProcesses>
+          <LoggingBehavior>Warning</LoggingBehavior>
+          <WhiteList>
+            <ProcessName>conhost</ProcessName>
+            <ProcessName>MSBuild</ProcessName>
+            <ProcessName>MSpdbsrv</ProcessName>
+            <ProcessName>node</ProcessName>
+            <ProcessName>PerfWatson2</ProcessName>
+            <ProcessName>ServiceHub.DataWarehouseHost</ProcessName>
+            <ProcessName>ServiceHub.Host.CLR.x86</ProcessName>
+            <ProcessName>ServiceHub.Host.Node.x86</ProcessName>
+            <ProcessName>ServiceHub.IdentityHost</ProcessName>
+            <ProcessName>ServiceHub.RoslynCodeAnalysisService32</ProcessName>
+            <ProcessName>ServiceHub.SettingsHost</ProcessName>
+            <ProcessName>ServiceHub.VSDetouredHost</ProcessName>
+            <ProcessName>VBCSCompiler</ProcessName>
+            <ProcessName>VCTip</ProcessName>
+            <ProcessName>VSTestVideoRecorder</ProcessName>
+            <ProcessName>wermgr</ProcessName>
+          </WhiteList>
+          <Deployment PackageName="Microsoft.DevDiv.TestExtensions.LingeringProcessCollector" />
+        </Configuration>
+      </DataCollector>
+      <DataCollector uri="datacollector://microsoft/DevDiv/VideoRecorder/2.0" friendlyName="Screen and Voice Recorder" enabled="True">
+        <Configuration>
+          <Deployment PackageName="Microsoft.DevDiv.Validation.MediaRecorder" />
+        </Configuration>
+      </DataCollector>
+    </DataCollectors>
+  </DataCollectionRunSettings>
+  <InProcDataCollectionRunSettings>
+    <InProcDataCollectors>
+      <InProcDataCollector uri="datacollector://microsoft/DevDiv/TestExtensions/OptProfDataCollector/v2" assemblyQualifiedName="Microsoft.DevDiv.TestExtensions.OptProfDataCollector, Microsoft.DevDiv.TestExtensions.OptProfDataCollector, Version=2.0.0.0, Culture=neutral, PublicKeyToken=null" friendlyName="OptProf Data Collector" enabled="True" codebase="C:\Test\Extensions\Microsoft.DevDiv.TestExtensions.OptProfDataCollector\lib\net461\Microsoft.DevDiv.TestExtensions.OptProfDataCollector.dll">
+        <Configuration>
+          <WorkingDirectory>C:\OptProf</WorkingDirectory>
+          <ProfilesDirectory>C:\Profiles</ProfilesDirectory>
+          <Deployment PackageName="Microsoft.DevDiv.TestExtensions.OptProfDataCollector" />
+        </Configuration>
+      </InProcDataCollector>
+    </InProcDataCollectors>
+  </InProcDataCollectionRunSettings>
+  <LoggerRunSettings>
+    <Loggers />
+  </LoggerRunSettings>
+  <TestRunParameters />
+</RunSettings>

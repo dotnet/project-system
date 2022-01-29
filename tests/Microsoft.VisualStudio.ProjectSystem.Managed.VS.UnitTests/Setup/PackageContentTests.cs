@@ -6,6 +6,7 @@ using System.IO.Compression;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.Utilities;
+using VerifyTests;
 using VerifyXunit;
 using Xunit;
 
@@ -14,11 +15,15 @@ namespace Microsoft.VisualStudio.Setup
     [UsesVerify]
     public sealed class PackageContentTests
     {
+        // These files are only added as part of signing.
+        private const string DigitalSignature = "package/services/digital-signature";
+        private const string Rels = "_rels/.rels";
+
         [Fact]
         public Task ProjectSystem()
         {
             IEnumerable<string> files = GetPackageContents("ProjectSystem.vsix");
-
+            VerifierSettings.ScrubLinesContaining(DigitalSignature, Rels);
             return Verifier.Verify(files);
         }
 
@@ -26,7 +31,7 @@ namespace Microsoft.VisualStudio.Setup
         public Task VisualStudioEditorsSetup()
         {
             IEnumerable<string> files = GetPackageContents("VisualStudioEditorsSetup.vsix");
-
+            VerifierSettings.ScrubLinesContaining(DigitalSignature, Rels);
             return Verifier.Verify(files);
         }
 
@@ -34,7 +39,10 @@ namespace Microsoft.VisualStudio.Setup
         public Task CommonFiles()
         {
             IEnumerable<string> files = GetPackageContents("Microsoft.VisualStudio.ProjectSystem.Managed.CommonFiles.vsix");
-
+            VerifierSettings.ScrubLinesContaining(DigitalSignature);
+            // manifest.json is the last line for non-signed builds.
+            // It will not contain a comma in this situation, so we need special logic for that.
+            VerifierSettings.ScrubLinesWithReplace(s => s.EndsWith("manifest.json") ? "  manifest.json," : s);
             return Verifier.Verify(files);
         }
 
@@ -62,7 +70,7 @@ namespace Microsoft.VisualStudio.Setup
             
             using var archive = ZipFile.OpenRead(vsixPath);
             
-            return archive.Entries.Select(entry => entry.FullName);
+            return archive.Entries.Select(entry => entry.FullName).OrderBy(fn => fn);
         }
     }
 }

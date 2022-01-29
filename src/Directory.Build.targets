@@ -1,7 +1,9 @@
 <!-- Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information. -->
 <Project>
+
+  <Import Project="..\build\optprof\OptProf.targets" />
   <Import Project="..\Directory.Build.targets" />
-  <Import Project="..\build\import\VisualStudio.XamlRules.targets"/>
+  <Import Project="..\build\import\VisualStudio.XamlRules.targets" />
 
   <!--
     Copies the contents of PublicAPI.Unshipped.txt into PublicAPI.Shipped.txt on build.
@@ -11,4 +13,34 @@
   <Target Name="FlushUnshippedAPI" AfterTargets="Build">
     <Exec Command="powershell.exe -NonInteractive -NoLogo -NoProfile -Command &quot;$unshipped = '$(MSBuildProjectDirectory)\PublicAPI.Unshipped.txt'; $content = Get-Content $unshipped -Raw; if(-Not [String]::IsNullOrWhiteSpace($content)) { [IO.File]::AppendAllText('$(MSBuildProjectDirectory)\PublicAPI.Shipped.txt', [Environment]::NewLine + $content); Clear-Content $unshipped }&quot;" />
   </Target>
+
+  <!-- Adds the appropriate assemblies for signing. -->
+  <Target Name="AddAssembliesForSigning" BeforeTargets="SignFiles">
+    <ItemGroup>
+      <FilesToSign Include="$(ArtifactsBinDir)$(OutDirName)\$(AssemblyName).dll;$(ArtifactsBinDir)$(OutDirName)\**\$(AssemblyName).resources.dll">
+        <Authenticode>MicrosoftSHA2</Authenticode>
+        <StrongName Condition="'$(IsManagedProjectSystemProject)' != 'false'">MsSharedLib72</StrongName>
+        <StrongName Condition="'$(IsManagedProjectSystemProject)' == 'false'">67</StrongName>
+      </FilesToSign>
+    </ItemGroup>
+  </Target>
+
+  <!--
+    When creating the Vsix, the assembles in the obj folder are used. These assemblies are not signed and are not optimized (OptProf).
+    This target copies the updated assemblies from the Dlls back into the obj folder so the correct files are put into the Vsix.
+  -->
+  <Target Name="ReplaceObjAssembliesForVsix" AfterTargets="SignFiles">
+    <!-- https://stackoverflow.com/a/8331202/294804 -->
+    <!-- https://stackoverflow.com/a/10818869/294804 -->
+    <ItemGroup>
+      <ResourceDllsToCopy Include="$(OutputPath)**\$(AssemblyName).resources.dll" />
+      <ResourceDllsToCopy2 Include="@(ResourceDllsToCopy)">
+        <LanguageDir>$([System.IO.Path]::GetDirectoryName(%(ResourceDllsToCopy.RecursiveDir)))</LanguageDir>
+      </ResourceDllsToCopy2>
+    </ItemGroup>
+
+    <Copy SourceFiles="$(OutputPath)$(AssemblyName).dll" DestinationFolder="$(ArtifactsObjDir)\$(AssemblyName)" />
+    <Copy SourceFiles="@(ResourceDllsToCopy2)" DestinationFolder="$(ArtifactsObjDir)\$(AssemblyName)\%(LanguageDir)" />
+  </Target>
+
 </Project>

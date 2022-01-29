@@ -2,6 +2,7 @@
 <Project>
 
   <PropertyGroup>
+    <!-- NOTE: Keep in-sync with NuGet.config at repo root -->
     <RestoreSources>
       $(RestoreSources);
       https://pkgs.dev.azure.com/azure-public/vside/_packaging/vs-impl/nuget/v3/index.json;
@@ -16,6 +17,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <!-- Infrastructure -->
+    <PackageReference Update="MicroBuild.Core.Sentinel"                                               Version="1.0.0" />
+    <PackageReference Update="Microsoft.VisualStudioEng.MicroBuild.Core"                              Version="1.0.0" />
+
     <!-- Toolset -->
     <PackageReference Update="Nerdbank.Streams"                                                       Version="2.6.81" />
     <PackageReference Update="System.IO.Pipelines"                                                    Version="5.0.1" />
@@ -23,14 +28,10 @@
     <PackageReference Update="RoslynTools.ModifyVsixManifest"                                         Version="$(RoslynToolsModifyVsixManifestVersion)" />
     <PackageReference Update="RoslynTools.SignTool"                                                   Version="$(RoslynToolsSignToolVersion)" />
     <PackageReference Update="XliffTasks"                                                             Version="1.0.0-beta.20574.1" />
-    <PackageReference Update="RoslynDependencies.ProjectSystem.OptimizationData"                      Version="$(RoslynDependenciesProjectSystemOptimizationDataVersion)" />
-    <PackageReference Update="Microsoft.DotNet.IBCMerge"                                              Version="[$(MicrosoftDotNetIBCMergeVersion)]" />
     <PackageReference Update="Microsoft.DiaSymReader.Pdb2Pdb"                                         Version="$(MicrosoftDiaSymReaderPdb2PdbVersion)" />
     <PackageReference Update="Microsoft.Net.Compilers.Toolset"                                        Version="3.11.0" />
     <PackageReference Update="OpenCover"                                                              Version="4.7.1138-rc" />
     <PackageReference Update="Codecov"                                                                Version="$(CodecovVersion)" />
-    <PackageReference Update="MicroBuild.Core"                                                        Version="0.2.0" />
-    <PackageReference Update="MicroBuild.Core.Sentinel"                                               Version="1.0.0" />
     <PackageReference Update="MicroBuild.Plugins.SwixBuild"                                           Version="$(MicroBuildPluginsSwixBuildVersion)" />
     <PackageReference Update="Microsoft.DevDiv.Validation.MediaRecorder"                              Version="15.0.199" />
 

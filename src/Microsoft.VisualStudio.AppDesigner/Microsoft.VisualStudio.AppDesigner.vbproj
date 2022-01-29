@@ -1,17 +1,21 @@
 ﻿<!-- Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information. -->
 <Project Sdk="Microsoft.NET.Sdk">
+
   <Import Project="..\..\build\import\VisualStudioDesigner.props" />
+
   <PropertyGroup>
     <!-- TODO: Function doesn't return a value on all code paths (https://github.com/dotnet/project-system/issues/2592) -->
     <NoWarn>$(NoWarn);42353;NU5125</NoWarn>
     <StrongNameKeyId>Microsoft</StrongNameKeyId>
     <TargetFramework>net472</TargetFramework>
+    <IsManagedProjectSystemProject>false</IsManagedProjectSystemProject>
     <!-- Nuget -->
     <IsPackable>true</IsPackable>
     <Description>This package implements the AppDesigner, which is the designer host used for project property pages among other things in Visual Studio</Description>
     <Summary>AppDesigner designer host implementation for Visual Studio project property pages</Summary>
     <PackageTags>Roslyn Project AppDesigner VisualStudio</PackageTags>
   </PropertyGroup>
+
   <ItemGroup>
     <Compile Include="..\Common\ManagedCodeMarkers.vb">
       <Link>ManagedCodeMarkers.vb</Link>
@@ -70,8 +74,9 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Designer.resx</DependentUpon>
-    </Compile>    
+    </Compile>
   </ItemGroup>
+
   <ItemGroup>
     <EmbeddedResource Update="ApplicationDesigner\ApplicationDesignerView.resx">
       <DependentUpon>ApplicationDesignerView.vb</DependentUpon>
@@ -107,11 +112,14 @@
       <LogicalName>Microsoft.VisualStudio.Editors.ApplicationDesigner.OverflowImage</LogicalName>
     </EmbeddedResource>
   </ItemGroup>
+
   <ItemGroup>
     <None Include="**\*.xlf" />
   </ItemGroup>
+
   <ItemGroup>
     <AdditionalFiles Include="PublicAPI.Shipped.txt" />
     <AdditionalFiles Include="PublicAPI.Unshipped.txt" />
   </ItemGroup>
+
 </Project>

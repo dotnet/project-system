@@ -1,31 +1,38 @@
 ﻿<!-- Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information. -->
 <Project Sdk="Microsoft.NET.Sdk">
+
   <Import Project="..\..\build\import\VisualStudio.props" />
+
   <PropertyGroup>
     <RootNamespace>Microsoft.VisualStudio</RootNamespace>
-    
+    <IsManagedProjectSystemProject>true</IsManagedProjectSystemProject>
+
     <!-- VSIX -->
     <GeneratePkgDefFile>true</GeneratePkgDefFile>
     <CreateVsixContainer>false</CreateVsixContainer>
     <UseCodebase>false</UseCodebase>
-    
+
     <!-- Nuget -->
     <IsPackable>true</IsPackable>
     <Description>Microsoft VisualStudio ProjectSystem for Managed Languages Project hosts that interact with VisualStudio interfaces.</Description>
     <Summary>Microsoft VisualStudio Managed Project System VS Components</Summary>
     <PackageTags>Roslyn Managed Project System VisualStudio</PackageTags>
-    <NoWarn>$(NoWarn);NU5125</NoWarn>    
+    <NoWarn>$(NoWarn);NU5125</NoWarn>
   </PropertyGroup>
+
   <ItemGroup>
     <ProjectReference Include="..\Microsoft.VisualStudio.ProjectSystem.Managed\Microsoft.VisualStudio.ProjectSystem.Managed.csproj" />
   </ItemGroup>
+
   <ItemGroup>
     <PackageReference Include="Microsoft.VisualStudio.HotReload.Components" />
   </ItemGroup>
+
   <ItemGroup>
     <InternalsVisibleTo Include="Microsoft.VisualStudio.ProjectSystem.Managed.VS.UnitTests" />
     <InternalsVisibleTo Include="DynamicProxyGenAssembly2" Key="$(MoqPublicKey)" />
   </ItemGroup>
+
   <ItemGroup>
     <Compile Update="ProjectSystem\VS\LanguageServices\CSharp\CSharpCodeDomProvider.cs">
       <SubType>Component</SubType>
@@ -64,6 +71,7 @@
       <DependentUpon>VSResources.resx</DependentUpon>
     </Compile>
   </ItemGroup>
+
   <ItemGroup>
     <Page Include="ProjectSystem\VS\PropertyPages\DebugPageControl.xaml">
       <SubType>Designer</SubType>
@@ -78,6 +86,7 @@
       <SubType>Designer</SubType>
     </Page>
   </ItemGroup>
+
   <ItemGroup>
     <None Include="**\*.xlf" />
     <EmbeddedResource Update="ProjectSystem\VS\PropertyPages\PropertyPageResources.resx">
@@ -92,14 +101,17 @@
       <MergeWithCTO>true</MergeWithCTO>
     </EmbeddedResource>
   </ItemGroup>
+
   <ItemGroup>
     <VSCTCompile Include="Menus.vsct">
       <ResourceName>Menus.ctmenu</ResourceName>
       <SubType>Designer</SubType>
     </VSCTCompile>
   </ItemGroup>
+
   <ItemGroup>
     <AdditionalFiles Include="PublicAPI.Shipped.txt" />
     <AdditionalFiles Include="PublicAPI.Unshipped.txt" />
   </ItemGroup>
+
 </Project>

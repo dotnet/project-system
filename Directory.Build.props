@@ -13,7 +13,7 @@
   <PropertyGroup>
     <Configuration Condition="'$(Configuration)' == ''">Debug</Configuration>
 
-    <!--  
+    <!--
       RepoToolset props and targets are conditionally imported based on whether RepoToolsetDir is set or not
       to allow VS to load packages and perform automatic package restore. 
       TODO: Remove once we can use a custom SDK (https://github.com/Microsoft/msbuild/issues/1493)
@@ -40,7 +40,7 @@
     <ProduceReferenceAssembly>true</ProduceReferenceAssembly>
   </PropertyGroup>
 
-  <!-- 
+  <!--
     TODO: Import layout props so that design-time build executed before package restore is finished doesn't
     product artifacts into wrong obj directories. Remove once we can use a custom SDK (https://github.com/Microsoft/msbuild/issues/1493)
   -->
@@ -50,14 +50,14 @@
   <Import Project="build\import\OverrideRepoToolsetVersions.props"/>
 
   <Import Project="build\import\Workarounds.props"/>
-    
+
   <PropertyGroup>
     <_IsVisualStudioDeveloperBuild Condition="'$(OfficialBuild)' != 'true' AND '$(CIBuild)' != 'true' AND '$(BuildingInsideVisualStudio)' == 'true'">true</_IsVisualStudioDeveloperBuild>
 
     <!-- Code Coverage doesn't currently work for portable/embedded PDBs - force to full inside Visual Studio builds -->
     <DebugType Condition="'$(_IsVisualStudioDeveloperBuild)' == 'true'">full</DebugType>
   </PropertyGroup>
-  
+
   <PropertyGroup>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <MinimumVisualStudioVersion>16.0</MinimumVisualStudioVersion>
@@ -78,11 +78,7 @@
   </PropertyGroup>
 
   <PropertyGroup>
-    <!-- Use IBC optimization data if available -->
-    <IbcOptimizationDataDir Condition="$(EnableIbc) == 'true'">$(NuGetPackageRoot)\RoslynDependencies.ProjectSystem.OptimizationData\$(RoslynDependenciesProjectSystemOptimizationDataVersion)\content\OptimizationData\</IbcOptimizationDataDir>
-
     <UseCommonOutputDirectory Condition="'$(UseCommonOutputDirectory)' == ''">true</UseCommonOutputDirectory>
-     
     <NoWarn>$(NoWarn);NU5125</NoWarn>
   </PropertyGroup>
 

@@ -7,7 +7,8 @@
     <RootNamespace>Microsoft.VisualStudio</RootNamespace>
     <!-- The value of RuleInjectionClassName of XamlPropertyRule items defined by this project -->
     <XamlPropertyRuleInjectionClassName>ProjectProperties</XamlPropertyRuleInjectionClassName>
-    
+    <IsManagedProjectSystemProject>true</IsManagedProjectSystemProject>
+
     <!-- Nuget -->
     <IsPackable>true</IsPackable>
     <Description>Microsoft VisualStudio ProjectSystem for Managed languages Projects</Description>
@@ -290,7 +291,6 @@
       <DataAccess>None</DataAccess>
       <RuleInjection>None</RuleInjection>
     </XamlPropertyRule>
-
 
     <Compile Update="ProjectSystem\Rules\CollectedPackageDownload.cs">
       <DependentUpon>CollectedPackageDownload.xaml</DependentUpon>

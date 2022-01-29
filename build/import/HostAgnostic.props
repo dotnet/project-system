@@ -16,15 +16,17 @@
     <Reference Include="System.Xml.Linq" />
     <Reference Include="WindowsBase" />
 
+    <!-- Infrastructure -->
+    <PackageReference Include="MicroBuild.Core.Sentinel"            PrivateAssets="all"/>
+    <PackageReference Include="Microsoft.VisualStudioEng.MicroBuild.Core" PrivateAssets="all"/>
+
     <!-- Toolset -->
-    <PackageReference Include="Nerdbank.Streams"                    ExcludeAssets="All" />
-    <PackageReference Include="System.IO.Pipelines"                 ExcludeAssets="All" />
-    <PackageReference Include="MicroBuild.Core"                     ExcludeAssets="All" />
-    <PackageReference Include="MicroBuild.Core.Sentinel"            ExcludeAssets="All" />
-    <PackageReference Include="MicroBuild.Plugins.SwixBuild"        ExcludeAssets="All"/>
+    <PackageReference Include="Nerdbank.Streams"                    ExcludeAssets="all" />
+    <PackageReference Include="System.IO.Pipelines"                 ExcludeAssets="all" />
+    <PackageReference Include="MicroBuild.Plugins.SwixBuild"        ExcludeAssets="all" />
     <PackageReference Include="Microsoft.Net.Compilers.Toolset" />
-    <PackageReference Include="XliffTasks"                          PrivateAssets="All" />
-    <PackageReference Include="RoslynTools.SignTool"                PrivateAssets="All" />
+    <PackageReference Include="XliffTasks"                          PrivateAssets="all" />
+    <PackageReference Include="RoslynTools.SignTool"                PrivateAssets="all" />
     <PackageReference Include="RoslynTools.RepoToolset"             ExcludeAssets="all" />
     <PackageReference Include="Codecov"                             ExcludeAssets="all" />
     <PackageReference Include="OpenCover"                           ExcludeAssets="all" />

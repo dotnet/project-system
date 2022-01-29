@@ -1,10 +1,9 @@
 <!-- Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information. -->
-<Project DefaultTargets="LogInitialMessage;Restore;Build;GenerateDependentAssemblyVersionsFile;Sign;GenerateVSManifest" LocalProperty="SolutionPath">
+<Project DefaultTargets="LogInitialMessage;Restore;Build;GenerateDependentAssemblyVersionsFile;GenerateVSManifest" LocalProperty="SolutionPath">
 
   <!--
   Required parameters:
     Configuration                   Build configuration: "Debug", "Release", etc.
-                                    
   Optional parameters:              
     CIBuild                         "true" when building on CI server
     Build                           "true" to build solution
@@ -12,10 +11,8 @@
     Deploy                          "true" to deploy assets (e.g. VSIXes)
     Test                            "true" to run tests
     IntegrationTest                 "true" to run integration tests
-    Sign                            "true" to sign built binaries
-    SignType                        "real" to send binaries to signing service, "test" to only validate signing configuration.
   -->
-  
+
   <Import Project="..\import\Versions.props"/>
   <Import Project="..\import\NuGet.props"/>
   <Import Project="..\import\RepoLayout.props" />
@@ -28,42 +25,30 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <CommonBuildProperty Include="Configuration=$(Configuration)"/>
-    <CommonBuildProperty Include="CIBuild=$(CIBuild)"/>
-    <CommonBuildProperty Include="RepoRoot=$(RepoRoot)"/>
-    <CommonBuildProperty Include="VersionsPropsPath=$(RepoRoot)build\import\Versions.props"/>
+    <CommonBuildProperty Include="Configuration=$(Configuration)" />
+    <CommonBuildProperty Include="CIBuild=$(CIBuild)" />
+    <CommonBuildProperty Include="RepoRoot=$(RepoRoot)" />
+    <CommonBuildProperty Include="VersionsPropsPath=$(RepoRoot)build\import\Versions.props" />
   </ItemGroup>
-  
+
   <ItemGroup>
     <SolutionRestoreAndBuildProperty Include="@(CommonBuildProperty)"/>
-    <SolutionRestoreAndBuildProperty Include="__DeployProjectOutput=$(Deploy)" Condition="'$(Deploy)' != ''"/>
+    <SolutionRestoreAndBuildProperty Include="__DeployProjectOutput=$(Deploy)" Condition="'$(Deploy)' != ''" />
   </ItemGroup>
 
   <Target Name="LogInitialMessage">
-
-    <Message
-      Text="Building $(SolutionFileName) [$(Configuration)]...%0a"
-      Importance="high" />
-
+    <Message Text="Building $(SolutionFileName) [$(Configuration)]...%0a" Importance="high" />
   </Target>
 
-  <Target Name="Restore">
+  <!--
+    Run solution restore separately from the other targets, in a different build phase.
+    Since restore brings in new .props and .targets files we need to rerun evaluation.
 
-    <!--
-      Run solution restore separately from the other targets, in a different build phase.
-      Since restore brings in new .props and .targets files we need to rerun evaluation.
-      
-      Note: msbuild caches the metaproject for the solution (see https://github.com/Microsoft/msbuild/issues/1695)
-      We invalidate the cache by changing the value of __BuildPhase property.
-    -->
-    
-    <MSBuild 
-      Projects="$(SolutionPath)"
-      Properties="@(SolutionRestoreAndBuildProperty);__BuildPhase=SolutionRestore"
-      Targets="Restore"
-      BuildInParallel="true"
-      />
-    
+    Note: msbuild caches the metaproject for the solution (see https://github.com/Microsoft/msbuild/issues/1695)
+    We invalidate the cache by changing the value of __BuildPhase property.
+  -->
+  <Target Name="Restore">
+    <MSBuild Projects="$(SolutionPath)" Properties="@(SolutionRestoreAndBuildProperty);__BuildPhase=SolutionRestore" Targets="Restore" BuildInParallel="true" />
   </Target>
 
   <Target Name="Build">
@@ -74,56 +59,20 @@
       <SolutionBuildTarget Include="IntegrationTest" Condition="'$(IntegrationTest)' == 'true'" />
       <SolutionBuildTarget Include="Pack" Condition="'$(BuildOrRebuild)' == 'true'" />
     </ItemGroup>
-
-    <MSBuild 
-      Projects="$(SolutionPath)"
-      Properties="@(SolutionRestoreAndBuildProperty);__BuildPhase=SolutionBuild"
-      Targets="@(SolutionBuildTarget)"
-      BuildInParallel="true"
-      Condition="'@(SolutionBuildTarget)' != ''" />
-
+    <MSBuild Projects="$(SolutionPath)" Properties="@(SolutionRestoreAndBuildProperty);__BuildPhase=SolutionBuild" Targets="@(SolutionBuildTarget)" BuildInParallel="true" Condition="'@(SolutionBuildTarget)' != ''" />
   </Target>
 
   <!-- Generate insertion assets -->
-  <Target 
-    Name="GenerateDependentAssemblyVersionsFile"
-    Condition="'$(BuildOrRebuild)' == 'true'">
-
-    <MSBuild
-      Projects="GenerateDependentAssemblyVersionFile.proj"
-      BuildInParallel="true"
-      />
-
+  <Target Name="GenerateDependentAssemblyVersionsFile" Condition="'$(BuildOrRebuild)' == 'true'">
+    <MSBuild Projects="GenerateDependentAssemblyVersionFile.proj" BuildInParallel="true" />
   </Target>
 
-  <Target
-    Name="Sign"
-    Condition="'$(Sign)' == 'true'">
-
-    <PropertyGroup>
-      <RealSign>false</RealSign>
-      <RealSign Condition="'$(SignType)' == 'real'">true</RealSign>
-    </PropertyGroup>
-
-    <!--Available certificates are outlined here: https://devdiv.visualstudio.com/DevDiv/_wiki/wikis/DevDiv.wiki/659/Signing-Certificates -->
-    <MSBuild 
-      Projects="Sign.proj"
-      Properties="@(CommonBuildProperty);RealSign=$(RealSign);ConfigFile=$(RepoRoot)build\ci\SignToolData.json"
-      />
-    
-  </Target>
-
-  <Target
-    Name="GenerateVSManifest"
-    Condition="'$(BuildOrRebuild)' == 'true'">
-
-    <!-- Because multiple projects can contribute to a single insertion component we package them in a separate phase.
-         Also due to insertion manifests containing hashes of references VSIXes, so we need to run this after signing  -->
-    <MSBuild 
-      Projects="$(ToolsetPath)VisualStudio.Insertion.proj"
-      Properties="@(CommonBuildProperty)"
-      Targets="Pack"
-      />
-    
+  <!-- TODO: This file, VisualStudio.Insertion.proj, doesn't exist in the latest RepoToolset version. -->
+  <Target Name="GenerateVSManifest" Condition="'$(BuildOrRebuild)' == 'true'">
+    <!--
+      Because multiple projects can contribute to a single insertion component we package them in a separate phase.
+      Also due to insertion manifests containing hashes of references VSIXes, so we need to run this after signing.
+    -->
+    <MSBuild Projects="$(ToolsetPath)VisualStudio.Insertion.proj" Properties="@(CommonBuildProperty)" Targets="Pack" />
   </Target>
 </Project>
