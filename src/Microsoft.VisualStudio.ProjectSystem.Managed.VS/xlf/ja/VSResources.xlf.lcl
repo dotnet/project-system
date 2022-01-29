@@ -73,15 +73,6 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";EditProjectFileCommand" ItemType="0" PsrId="308" Leaf="true">
-        <Str Cat="Text">
-          <Val><![CDATA[Edit {0}]]></Val>
-          <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[{0} を編集する]]></Val>
-          </Tgt>
-        </Str>
-        <Disp Icon="Str" />
-      </Item>
       <Item ItemId=";ErrorInProfilesFile" ItemType="0" PsrId="308" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[An error in the launch settings file needs to be corrected before you can run the '{0}' project . Please see the error list for details.]]></Val>
@@ -280,15 +271,6 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";LearnMore" ItemType="0" PsrId="308" Leaf="true">
-        <Str Cat="Text">
-          <Val><![CDATA[Learn more]]></Val>
-          <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[詳細を表示]]></Val>
-          </Tgt>
-        </Str>
-        <Disp Icon="Str" />
-      </Item>
       <Item ItemId=";MultiTFEditNotSupported" ItemType="0" PsrId="308" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[Editing of multiple target framework is not supported.]]></Val>
@@ -307,51 +289,6 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";NoMigratedCSProjFound" ItemType="0" PsrId="308" Leaf="true">
-        <Str Cat="Text">
-          <Val><![CDATA[Expected to find migrated cpsroj in {0}, but did not find any.]]></Val>
-          <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[移行された cpsroj が {0} に見つかる必要がありましたが、何も見つかりませんでした。]]></Val>
-          </Tgt>
-        </Str>
-        <Disp Icon="Str" />
-      </Item>
-      <Item ItemId=";NoRunCommandSpecifiedInProject" ItemType="0" PsrId="308" Leaf="true">
-        <Str Cat="Text">
-          <Val><![CDATA[Unable to run your project. The "RunCommand" property is not defined.]]></Val>
-          <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[プロジェクトを実行できません。"RunCommand" プロパティが定義されていません。]]></Val>
-          </Tgt>
-        </Str>
-        <Disp Icon="Str" />
-      </Item>
-      <Item ItemId=";NotSupportedDotNetCoreProject" ItemType="0" PsrId="308" Leaf="true">
-        <Str Cat="Text">
-          <Val><![CDATA[Projects targeting .NET Core {0}.{1} or newer are not supported by this version of Visual Studio.]]></Val>
-          <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[.NET Core {0}.{1} 以上をターゲットとしたプロジェクトは、このバージョンの Visual Studio ではサポートされていません。]]></Val>
-          </Tgt>
-        </Str>
-        <Disp Icon="Str" />
-      </Item>
-      <Item ItemId=";OKButtonText" ItemType="0" PsrId="308" Leaf="true">
-        <Str Cat="Text">
-          <Val><![CDATA[OK]]></Val>
-          <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[OK]]></Val>
-          </Tgt>
-        </Str>
-        <Disp Icon="Str" />
-      </Item>
-      <Item ItemId=";OutputWindowPaneTitle" ItemType="0" PsrId="308" Leaf="true">
-        <Str Cat="Text">
-          <Val><![CDATA[Project]]></Val>
-          <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[プロジェクト]]></Val>
-          </Tgt>
-        </Str>
-        <Disp Icon="Str" />
-      </Item>
       <Item ItemId=";PackCommand" ItemType="0" PsrId="308" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[&Pack]]></Val>
@@ -366,15 +303,6 @@
           <Val><![CDATA[&Pack {0}]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
             <Val><![CDATA[パッケージ {0}(&P)]]></Val>
-          </Tgt>
-        </Str>
-        <Disp Icon="Str" />
-      </Item>
-      <Item ItemId=";PartialSupportedDotNetCoreProject" ItemType="0" PsrId="308" Leaf="true">
-        <Str Cat="Text">
-          <Val><![CDATA[A newer version of Visual Studio is recommended for projects targeting .NET Core {0}.{1}.]]></Val>
-          <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[.NET Core {0}.{1} をターゲットとしたプロジェクトには、より新しいバージョンの Visual Studio をお勧めします。]]></Val>
           </Tgt>
         </Str>
         <Disp Icon="Str" />
@@ -464,7 +392,7 @@
         <Str Cat="Text">
           <Val><![CDATA[You are renaming a file. Would you also like to perform a rename in this project of all references to the code element '{0}'?]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[ファイルの名前を変更しようとしています。このプロジェクトのすべての参照をコード要素 '{0}' に名前を変更しますか?]]></Val>
+            <Val><![CDATA[ファイルの名前を変更しようとしています。このプロジェクト内に存在するコード要素 '{0}' へのすべての参照に対しても、名前を変更しますか?]]></Val>
           </Tgt>
         </Str>
         <Disp Icon="Str" />

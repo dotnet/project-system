@@ -66,7 +66,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
             IProjectChangeDescription projectChange = update.Value.ProjectUpdate.ProjectChanges[ProjectBuildRuleName];
 
             // There should always be some change to publish, as we have already called BeginBatch by this point
-            Assumes.True(projectChange.Difference.AnyChanges && update.Value.CommandLineArgumentsSnapshot.IsChanged);
+            // TODO understand why the CLA snapshot's changed state differs from the project update, as they are supposed to travel together in sync
+            //Assumes.True(projectChange.Difference.AnyChanges && update.Value.CommandLineArgumentsSnapshot.IsChanged);
 
             IComparable version = GetConfiguredProjectVersion(update);
 
