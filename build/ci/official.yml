@@ -29,6 +29,10 @@ parameters:
   values:
   - real
   - test
+- name: SkipOptimize
+  displayName: Skip OptProf Optimization
+  type: boolean
+  default: false
 
 ###################################################################################################################################################################
 # INSTALLATION
@@ -58,7 +62,7 @@ steps:
     DropNamePrefix: 'OptimizationInputs/$(System.TeamProject)/$(Build.Repository.Name)'
     AccessToken: '$(System.AccessToken)'
     feedSource: 'https://devdiv.pkgs.visualstudio.com/DefaultCollection/_packaging/MicroBuildToolset/nuget/v3/index.json'
-    ShouldSkipOptimize: false
+    ShouldSkipOptimize: ${{ parameters.SkipOptimize }}
     NumberCommitsToSearch: '100'
 
 ###################################################################################################################################################################
