@@ -72,7 +72,9 @@ steps:
 - task: MicroBuildCodesignVerify@3
   displayName: Verify Signed Files
   inputs:
-    TargetFolders: $(Build.SourcesDirectory)/artifacts/$(BuildConfiguration)/packages
+    TargetFolders: |
+      $(Build.SourcesDirectory)/artifacts/$(BuildConfiguration)/packages
+      $(Build.SourcesDirectory)/artifacts/$(BuildConfiguration)/VSSetup/Insertion
     # Filters out certain files (usually by extension) in the provided file.
     ApprovalListPathForCerts: $(Build.SourcesDirectory)\build\ci\no_authenticode.txt
 
