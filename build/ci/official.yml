@@ -58,7 +58,7 @@ steps:
     DropNamePrefix: 'OptimizationInputs/$(System.TeamProject)/$(Build.Repository.Name)'
     AccessToken: '$(System.AccessToken)'
     feedSource: 'https://devdiv.pkgs.visualstudio.com/DefaultCollection/_packaging/MicroBuildToolset/nuget/v3/index.json'
-    ShouldSkipOptimize: false
+    ShouldSkipOptimize: true
     NumberCommitsToSearch: '100'
 
 ###################################################################################################################################################################
