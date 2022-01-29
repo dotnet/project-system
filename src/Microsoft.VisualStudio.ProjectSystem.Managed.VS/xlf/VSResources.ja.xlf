@@ -157,7 +157,7 @@
       </trans-unit>
       <trans-unit id="RenameSymbolPrompt">
         <source>You are renaming a file. Would you also like to perform a rename in this project of all references to the code element '{0}'?</source>
-        <target state="translated">ファイルの名前を変更しようとしています。このプロジェクトのすべての参照をコード要素 '{0}' に名前を変更しますか?</target>
+        <target state="translated">ファイルの名前を変更しようとしています。このプロジェクト内に存在するコード要素 '{0}' へのすべての参照に対しても、名前を変更しますか?</target>
         <note />
       </trans-unit>
       <trans-unit id="ActiveLaunchProfileNotFound">
