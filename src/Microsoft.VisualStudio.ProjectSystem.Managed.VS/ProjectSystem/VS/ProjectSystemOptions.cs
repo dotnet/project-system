@@ -4,7 +4,6 @@ using System.ComponentModel.Composition;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.Settings;
-using Microsoft.VisualStudio.Threading;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS
 {
@@ -20,14 +19,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         // Do not change this setting key unless the Roslyn option name is changed.
         internal const string SkipAnalyzersForImplicitlyTriggeredBuildSettingKey = "TextEditor.SkipAnalyzersForImplicitlyTriggeredBuilds";
 
-        private readonly IVsUIService<ISettingsManager> _settingsManager;
-        private readonly JoinableTaskContext _joinableTaskContext;
+        private readonly IVsService<ISettingsManager> _settingsManager;
 
         [ImportingConstructor]
-        public ProjectSystemOptions(IVsUIService<SVsSettingsPersistenceManager, ISettingsManager> settingsManager, JoinableTaskContext joinableTaskContext)
+        public ProjectSystemOptions(IVsService<SVsSettingsPersistenceManager, ISettingsManager> settingsManager)
         {
             _settingsManager = settingsManager;
-            _joinableTaskContext = joinableTaskContext;
         }
 
         public Task<bool> GetIsFastUpToDateCheckEnabledAsync(CancellationToken cancellationToken = default)
@@ -57,30 +54,34 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
 
         private async Task<T> GetSettingValueOrDefaultAsync<T>(string name, T defaultValue, CancellationToken cancellationToken)
         {
-            await _joinableTaskContext.Factory.SwitchToMainThreadAsync(cancellationToken);
+            ISettingsManager settingsManager = await _settingsManager.GetValueAsync(cancellationToken);
 
-            return _settingsManager.Value.GetValueOrDefault(name, defaultValue);
+            return settingsManager.GetValueOrDefault(name, defaultValue);
         }
 
         private async Task SetSettingValueAsync(string name, object value, CancellationToken cancellationToken)
         {
-            await _joinableTaskContext.Factory.SwitchToMainThreadAsync(cancellationToken);
+            ISettingsManager settingsManager = await _settingsManager.GetValueAsync(cancellationToken);
 
-            await _settingsManager.Value.SetValueAsync(name, value, isMachineLocal: false);
+            await settingsManager.SetValueAsync(name, value, isMachineLocal: false);
         }
 
-        public void RegisterOptionChangedEventHandler(PropertyChangedAsyncEventHandler handler)
+        public async Task RegisterOptionChangedEventHandlerAsync(PropertyChangedAsyncEventHandler handler)
         {
-            ISettingsSubset? settingsSubset = _settingsManager.Value.GetSubset("*");
+            ISettingsManager settingsManager = await _settingsManager.GetValueAsync();
+
+            ISettingsSubset? settingsSubset = settingsManager.GetSubset("*");
             if (settingsSubset != null)
             {
                 settingsSubset.SettingChangedAsync += handler;
             }
         }
 
-        public void UnregisterOptionChangedEventHandler(PropertyChangedAsyncEventHandler handler)
+        public async Task UnregisterOptionChangedEventHandlerAsync(PropertyChangedAsyncEventHandler handler)
         {
-            ISettingsSubset? settingsSubset = _settingsManager.Value.GetSubset("*");
+            ISettingsManager settingsManager = await _settingsManager.GetValueAsync();
+
+            ISettingsSubset? settingsSubset = settingsManager.GetSubset("*");
             if (settingsSubset != null)
             {
                 settingsSubset.SettingChangedAsync -= handler;

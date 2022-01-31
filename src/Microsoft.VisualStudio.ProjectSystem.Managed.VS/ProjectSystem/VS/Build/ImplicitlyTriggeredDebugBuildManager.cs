@@ -59,7 +59,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build
             ErrorHandler.ThrowOnFailure(_solutionBuildManager.AdviseUpdateSolutionEvents3(this, out _cookie3));
 
             _skipAnalyzersForImplicitlyTriggeredBuild = await _options.GetSkipAnalyzersForImplicitlyTriggeredBuildAsync(cancellationToken);
-            _options.RegisterOptionChangedEventHandler(OnOptionChangedAsync);
+            await _options.RegisterOptionChangedEventHandlerAsync(OnOptionChangedAsync);
         }
 
         protected override Task DisposeCoreAsync(bool initialized)
@@ -69,7 +69,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build
                 (_solutionBuildManager as IVsSolutionBuildManager2)?.UnadviseUpdateSolutionEvents(_cookie);
                 _solutionBuildManager!.UnadviseUpdateSolutionEvents3(_cookie3);
 
-                _options.UnregisterOptionChangedEventHandler(OnOptionChangedAsync);
+                return _options.UnregisterOptionChangedEventHandlerAsync(OnOptionChangedAsync);
             }
 
             return Task.CompletedTask;
