@@ -42,12 +42,12 @@
         <target state="translated">참조 대상의 위성 어셈블리를 이 프로젝트의 출력 디렉터리에 복사해야 하는지 여부를 나타냅니다.</target>
         <note />
       </trans-unit>
-      <trans-unit id="BoolProperty|CopyLocal|DisplayName">
+      <trans-unit id="BoolProperty|Private|DisplayName">
         <source>Copy Local</source>
         <target state="translated">로컬 복사</target>
         <note />
       </trans-unit>
-      <trans-unit id="BoolProperty|CopyLocal|Description">
+      <trans-unit id="BoolProperty|Private|Description">
         <source>Indicates whether the reference will be copied to the output directory.</source>
         <target state="translated">참조를 출력 디렉터리에 복사할지 여부를 나타냅니다.</target>
         <note />

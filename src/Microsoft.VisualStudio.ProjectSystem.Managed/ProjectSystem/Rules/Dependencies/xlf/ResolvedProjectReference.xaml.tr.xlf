@@ -32,12 +32,12 @@
         <target state="translated">Bu başvurunun diğer adlarına yönelik virgülle ayrılmış bir liste.</target>
         <note />
       </trans-unit>
-      <trans-unit id="BoolProperty|CopyLocal|DisplayName">
+      <trans-unit id="BoolProperty|Private|DisplayName">
         <source>Copy Local</source>
         <target state="translated">Yereli Kopyala</target>
         <note />
       </trans-unit>
-      <trans-unit id="BoolProperty|CopyLocal|Description">
+      <trans-unit id="BoolProperty|Private|Description">
         <source>Indicates whether the reference will be copied to the output directory.</source>
         <target state="translated">Başvurunun çıkış dizinine kopyalanıp kopyalanmayacağını gösterir.</target>
         <note />
