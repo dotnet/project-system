@@ -31,5 +31,14 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
             return mock.Object;
         }
+
+        public static IProjectSystemOptions ImplementGetSkipAnalyzersForImplicitlyTriggeredBuildAsync(Func<CancellationToken, bool> result)
+        {
+            var mock = new Mock<IProjectSystemOptions>();
+            mock.Setup(o => o.GetSkipAnalyzersForImplicitlyTriggeredBuildAsync(It.IsAny<CancellationToken>()))
+                .ReturnsAsync(result);
+
+            return mock.Object;
+        }
     }
 }
