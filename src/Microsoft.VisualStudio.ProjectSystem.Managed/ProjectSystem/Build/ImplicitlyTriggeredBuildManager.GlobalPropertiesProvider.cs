@@ -12,6 +12,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Managed.Build
     {
         /// <summary>
         /// Global properties provider for implicitly triggered builds from commands such as Run/Debug Tests, Start Debugging, etc.
+        /// that should skip running analyzers in order to reduce build times.
         /// This provider does not affect the property collection for design time builds.
         /// </summary>
         /// <remarks>
@@ -23,29 +24,35 @@ namespace Microsoft.VisualStudio.ProjectSystem.Managed.Build
         private sealed class GlobalPropertiesProvider : StaticGlobalPropertiesProviderBase
         {
             private readonly IImplicitlyTriggeredBuildState _implicitlyTriggeredBuildState;
+            private readonly IProjectSystemOptions _projectSystemOptions;
 
             /// <summary>
             /// Initializes a new instance of the <see cref="GlobalPropertiesProvider"/> class.
             /// </summary>
             [ImportingConstructor]
             public GlobalPropertiesProvider(UnconfiguredProject unconfiguredProject,
-                IImplicitlyTriggeredBuildState implicitlyTriggeredBuildState)
+                IImplicitlyTriggeredBuildState implicitlyTriggeredBuildState,
+                IProjectSystemOptions projectSystemOptions)
                 : base(unconfiguredProject.Services)
             {
                 _implicitlyTriggeredBuildState = implicitlyTriggeredBuildState;
+                _projectSystemOptions = projectSystemOptions;
             }
 
             /// <summary>
             /// Gets the set of global properties that should apply to the project(s) in this scope.
             /// </summary>
             /// <value>A new dictionary whose keys are case insensitive.  Never null, but may be empty.</value>
-            public override Task<IImmutableDictionary<string, string>> GetGlobalPropertiesAsync(CancellationToken cancellationToken)
+            public override async Task<IImmutableDictionary<string, string>> GetGlobalPropertiesAsync(CancellationToken cancellationToken)
             {
-                ImmutableDictionary<string, string> globalProperties = _implicitlyTriggeredBuildState.IsImplicitlyTriggeredBuild
+                bool useImplicitlyTriggeredBuildProperties = _implicitlyTriggeredBuildState.IsImplicitlyTriggeredBuild
+                    && await _projectSystemOptions.GetSkipAnalyzersForImplicitlyTriggeredBuildAsync(cancellationToken);
+
+                ImmutableDictionary<string, string> globalProperties = useImplicitlyTriggeredBuildProperties
                     ? GlobalPropertiesStore.Instance.GetImplicitlyTriggeredBuildProperties()
                     : GlobalPropertiesStore.Instance.GetRegularBuildProperties();
 
-                return Task.FromResult<IImmutableDictionary<string, string>>(globalProperties);
+                return globalProperties;
             }
         }
     }

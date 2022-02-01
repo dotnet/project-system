@@ -15,7 +15,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build
         public async Task TestImplicitlySkipAnalyzersForDebugBuilds(
             bool startDebuggingBuild,
             bool startWithoutDebuggingBuild,
-            bool skipAnalyzersForImplicitBuildsOption,
             bool cancelBuild)
         {
             var implicitBuildStartInvoked = false;
@@ -24,11 +23,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build
             Action onImplicitBuildEndOrCancel = () => implicitBuildEndOrCancelInvoked = true;
 
             var buildManager = await CreateInitializedInstanceAsync(
-                onImplicitBuildStart, onImplicitBuildEndOrCancel, startDebuggingBuild, startWithoutDebuggingBuild, skipAnalyzersForImplicitBuildsOption);
+                onImplicitBuildStart, onImplicitBuildEndOrCancel, startDebuggingBuild, startWithoutDebuggingBuild);
 
             RunBuild(buildManager, cancelBuild);
             
-            if ((startDebuggingBuild || startWithoutDebuggingBuild) && skipAnalyzersForImplicitBuildsOption)
+            if ((startDebuggingBuild || startWithoutDebuggingBuild))
             {
                 Assert.True(implicitBuildStartInvoked);
                 Assert.True(implicitBuildEndOrCancelInvoked);
@@ -44,8 +43,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build
             Action? onImplicitBuildStart = null,
             Action? onImplicitBuildEndOrCancel = null,
             bool startDebuggingBuild = false,
-            bool startWithoutDebuggingBuild = false,
-            bool skipAnalyzersForImplicitBuildsOption = true)
+            bool startWithoutDebuggingBuild = false)
         {
             var buildFlags = VSSOLNBUILDUPDATEFLAGS.SBF_OPERATION_NONE;
             if (startDebuggingBuild)
@@ -63,7 +61,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build
 
             var instance = new ImplicitlyTriggeredDebugBuildManager(
                 IProjectThreadingServiceFactory.Create(),
-                IProjectSystemOptionsWithChangesFactory.ImplementGetSkipAnalyzersForImplicitlyTriggeredBuildAsync(_ => skipAnalyzersForImplicitBuildsOption),
                 serviceProvider,
                 IImplicitlyTriggeredBuildManagerFactory.Create(onImplicitBuildStart, onImplicitBuildEndOrCancel));
             
