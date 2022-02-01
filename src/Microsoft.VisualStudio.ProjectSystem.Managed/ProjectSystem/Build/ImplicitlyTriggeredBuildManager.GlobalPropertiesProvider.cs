@@ -8,52 +8,49 @@ using Microsoft.VisualStudio.ProjectSystem.Build;
 
 namespace Microsoft.VisualStudio.ProjectSystem.Managed.Build
 {
-    internal sealed partial class ImplicitlyTriggeredBuildManager
+    /// <summary>
+    /// Global properties provider for implicitly triggered builds from commands such as Run/Debug Tests, Start Debugging, etc.
+    /// that should skip running analyzers in order to reduce build times.
+    /// This provider does not affect the property collection for design time builds.
+    /// </summary>
+    /// <remarks>
+    /// Currently, the provider is only for CPS based SDK-style projects, not for legacy csproj projects.
+    /// https://github.com/dotnet/project-system/issues/7346 tracks implementing the project system support for legacy csproj projects.
+    /// </remarks>
+    [ExportBuildGlobalPropertiesProvider]
+    [AppliesTo(ProjectCapability.DotNet)]
+    internal sealed partial class SkipAnalyzersGlobalPropertiesProvider : StaticGlobalPropertiesProviderBase
     {
+        private readonly IImplicitlyTriggeredBuildState _implicitlyTriggeredBuildState;
+        private readonly IProjectSystemOptions _projectSystemOptions;
+
         /// <summary>
-        /// Global properties provider for implicitly triggered builds from commands such as Run/Debug Tests, Start Debugging, etc.
-        /// that should skip running analyzers in order to reduce build times.
-        /// This provider does not affect the property collection for design time builds.
+        /// Initializes a new instance of the <see cref="SkipAnalyzersGlobalPropertiesProvider"/> class.
         /// </summary>
-        /// <remarks>
-        /// Currently, the provider is only for CPS based SDK-style projects, not for legacy csproj projects.
-        /// https://github.com/dotnet/project-system/issues/7346 tracks implementing the project system support for legacy csproj projects.
-        /// </remarks>
-        [ExportBuildGlobalPropertiesProvider]
-        [AppliesTo(ProjectCapability.DotNet)]
-        private sealed class GlobalPropertiesProvider : StaticGlobalPropertiesProviderBase
+        [ImportingConstructor]
+        public SkipAnalyzersGlobalPropertiesProvider(UnconfiguredProject unconfiguredProject,
+            IImplicitlyTriggeredBuildState implicitlyTriggeredBuildState,
+            IProjectSystemOptions projectSystemOptions)
+            : base(unconfiguredProject.Services)
         {
-            private readonly IImplicitlyTriggeredBuildState _implicitlyTriggeredBuildState;
-            private readonly IProjectSystemOptions _projectSystemOptions;
+            _implicitlyTriggeredBuildState = implicitlyTriggeredBuildState;
+            _projectSystemOptions = projectSystemOptions;
+        }
 
-            /// <summary>
-            /// Initializes a new instance of the <see cref="GlobalPropertiesProvider"/> class.
-            /// </summary>
-            [ImportingConstructor]
-            public GlobalPropertiesProvider(UnconfiguredProject unconfiguredProject,
-                IImplicitlyTriggeredBuildState implicitlyTriggeredBuildState,
-                IProjectSystemOptions projectSystemOptions)
-                : base(unconfiguredProject.Services)
-            {
-                _implicitlyTriggeredBuildState = implicitlyTriggeredBuildState;
-                _projectSystemOptions = projectSystemOptions;
-            }
+        /// <summary>
+        /// Gets the set of global properties that should apply to the project(s) in this scope.
+        /// </summary>
+        /// <value>A new dictionary whose keys are case insensitive.  Never null, but may be empty.</value>
+        public override async Task<IImmutableDictionary<string, string>> GetGlobalPropertiesAsync(CancellationToken cancellationToken)
+        {
+            bool useImplicitlyTriggeredBuildProperties = _implicitlyTriggeredBuildState.IsImplicitlyTriggeredBuild
+                && await _projectSystemOptions.GetSkipAnalyzersForImplicitlyTriggeredBuildAsync(cancellationToken);
 
-            /// <summary>
-            /// Gets the set of global properties that should apply to the project(s) in this scope.
-            /// </summary>
-            /// <value>A new dictionary whose keys are case insensitive.  Never null, but may be empty.</value>
-            public override async Task<IImmutableDictionary<string, string>> GetGlobalPropertiesAsync(CancellationToken cancellationToken)
-            {
-                bool useImplicitlyTriggeredBuildProperties = _implicitlyTriggeredBuildState.IsImplicitlyTriggeredBuild
-                    && await _projectSystemOptions.GetSkipAnalyzersForImplicitlyTriggeredBuildAsync(cancellationToken);
+            ImmutableDictionary<string, string> globalProperties = useImplicitlyTriggeredBuildProperties
+                ? GlobalPropertiesStore.Instance.GetImplicitlyTriggeredBuildProperties()
+                : GlobalPropertiesStore.Instance.GetRegularBuildProperties();
 
-                ImmutableDictionary<string, string> globalProperties = useImplicitlyTriggeredBuildProperties
-                    ? GlobalPropertiesStore.Instance.GetImplicitlyTriggeredBuildProperties()
-                    : GlobalPropertiesStore.Instance.GetRegularBuildProperties();
-
-                return globalProperties;
-            }
+            return globalProperties;
         }
     }
 }

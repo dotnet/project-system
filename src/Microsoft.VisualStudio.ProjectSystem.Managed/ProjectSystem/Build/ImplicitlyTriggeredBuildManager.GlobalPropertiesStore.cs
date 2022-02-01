@@ -5,7 +5,7 @@ using System.Collections.Immutable;
 
 namespace Microsoft.VisualStudio.ProjectSystem.Managed.Build
 {
-    internal sealed partial class ImplicitlyTriggeredBuildManager
+    internal sealed partial class SkipAnalyzersGlobalPropertiesProvider
     {
         /// <summary>
         /// Global properties store for implicitly triggered builds from commands such as Run/Debug Tests, Start Debugging, etc.
