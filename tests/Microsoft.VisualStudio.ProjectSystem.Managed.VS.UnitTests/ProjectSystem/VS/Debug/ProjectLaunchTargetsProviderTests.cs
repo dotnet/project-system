@@ -7,6 +7,7 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Build.Framework.XamlTypes;
+using Microsoft.VisualStudio.Debugger.UI.Interfaces.HotReload;
 using Microsoft.VisualStudio.IO;
 using Microsoft.VisualStudio.ProjectSystem.Debug;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
@@ -732,7 +733,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             ProjectProperties? properties = null,
             IProjectThreadingService? threadingService = null,
             IVsDebugger10? debugger = null,
-            IDebuggerSettings? debuggerSettings = null)
+            IHotReloadOptionService? hotReloadSettings = null)
         {
             environment ??= Mock.Of<IEnvironmentHelper>();
             tokenReplacer ??= IDebugTokenReplacerFactory.Create();
@@ -756,7 +757,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
                 IVsUIServiceFactory.Create<SVsShellDebugger, IVsDebugger10>(debugger),
                 remoteDebuggerAuthenticationService,
                 new Lazy<IProjectHotReloadSessionManager>(() => IProjectHotReloadSessionManagerFactory.Create()),
-                new Lazy<IDebuggerSettings>(() => debuggerSettings ?? IDebuggerSettingsFactory.Create()));
+                new Lazy<IHotReloadOptionService>(() => hotReloadSettings ?? IHotReloadOptionServiceFactory.Create()));
         }
     }
 }
