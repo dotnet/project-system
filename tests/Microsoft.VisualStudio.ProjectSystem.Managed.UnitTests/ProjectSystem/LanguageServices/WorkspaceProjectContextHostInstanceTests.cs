@@ -3,6 +3,7 @@
 using System;
 using System.Collections.Immutable;
 using System.ComponentModel.Composition;
+using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.LanguageServices.ProjectSystem;
@@ -145,12 +146,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
             var registration = IDataProgressTrackerServiceRegistrationFactory.Create();
             var activeConfiguredProject = ConfiguredProjectFactory.Create();
             var update = IProjectVersionedValueFactory.CreateEmpty();
+            var lastContextState = new StrongBox<ContextState?>();
 
             await Assert.ThrowsAsync<OperationCanceledException>(() =>
             {
                 return instance.OnProjectChangedAsync(
                     registration,
                     activeConfiguredProject,
+                    lastContextState,
                     update,
                     hasChange: _ => true,
                     applyFunc: (_, _, _, token) =>
@@ -170,12 +173,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
             var registration = IDataProgressTrackerServiceRegistrationFactory.Create();
             var activeConfiguredProject = ConfiguredProjectFactory.Create();
             var update = IProjectVersionedValueFactory.CreateEmpty();
+            var lastContextState = new StrongBox<ContextState?>();
 
             await Assert.ThrowsAsync<OperationCanceledException>(() =>
             {
                 return instance.OnProjectChangedAsync(
                     registration,
                     activeConfiguredProject,
+                    lastContextState,
                     update,
                     hasChange: _ => true,
                     applyFunc: (_, _, state, token) =>
@@ -202,39 +207,43 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
             var update1 = IProjectVersionedValueFactory.Create(versions1);
             var update2 = IProjectVersionedValueFactory.Create(versions2);
             var update3 = IProjectVersionedValueFactory.Create(versions3);
+            var lastContextState = new StrongBox<ContextState?>();
             var callCount = 0;
 
-            // Apply func not called as no change
+            // Apply func will be called here as the last context state differs
             await instance.OnProjectChangedAsync(
                 registration,
                 activeConfiguredProject,
+                lastContextState,
                 update1,
                 hasChange: _ => false, // no change
                 applyFunc: (_, _, state, token) => callCount++);
 
-            Assert.Equal(0, callCount);
+            Assert.Equal(1, callCount);
             Assert.Same(versions1, seenVersions);
 
-            // Apply func will be called as hasChange returns true, despite the context state being unchanged
+            // Apply func will NOT be called here as the context state is unchanged, and we claim to change to other data items
             await instance.OnProjectChangedAsync(
                 registration,
                 activeConfiguredProject,
+                lastContextState,
                 update2,
-                hasChange: _ => true, // change
+                hasChange: _ => false, // no change
                 applyFunc: (_, _, state, token) => callCount++);
 
             Assert.Equal(1, callCount);
             Assert.Same(versions2, seenVersions);
 
-            // Apply func not called as no change
+            // Apply func will be called as hasChange returns true, despite the context state being unchanged
             await instance.OnProjectChangedAsync(
                 registration,
                 activeConfiguredProject,
+                lastContextState,
                 update3,
-                hasChange: _ => false, // no change
+                hasChange: _ => true, // change
                 applyFunc: (_, _, state, token) => callCount++);
 
-            Assert.Equal(1, callCount);
+            Assert.Equal(2, callCount);
             Assert.Same(versions3, seenVersions);
         }
 
@@ -251,12 +260,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 
             var registration = IDataProgressTrackerServiceRegistrationFactory.Create();
             var update = IProjectVersionedValueFactory.CreateEmpty();
+            var lastContextState = new StrongBox<ContextState?>();
 
             ContextState? observedState = null;
 
             await instance.OnProjectChangedAsync(
                 registration,
                 activeConfiguredProject,
+                lastContextState,
                 update,
                 hasChange: _ => true,
                 applyFunc: (_, _, state, token) => observedState = state);
