@@ -9,7 +9,7 @@ using Microsoft.VisualStudio.ProjectSystem.VS.Extensibility;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 
-namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
+namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
 {
     /// <summary>
     /// Handles populating a menu command on the debug dropdown when the menu reflects the IEnumValues for
