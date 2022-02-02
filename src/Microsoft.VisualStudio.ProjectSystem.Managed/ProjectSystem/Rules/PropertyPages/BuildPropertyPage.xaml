@@ -152,7 +152,7 @@
                 HelpUrl="https://go.microsoft.com/fwlink/?linkid=2173089"
                 Category="General">
     <EnumProperty.DataSource>
-      <DataSource HasConfigurationCondition="False"
+      <DataSource HasConfigurationCondition="True"
                   Persistence="ProjectFileWithInterception" />
     </EnumProperty.DataSource>
     <EnumProperty.Metadata>
