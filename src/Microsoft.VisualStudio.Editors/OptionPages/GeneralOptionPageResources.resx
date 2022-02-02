@@ -144,4 +144,13 @@
   <data name="General_NestingSettings_Title" xml:space="preserve">
     <value>File Nesting Settings</value>
   </data>
+  <data name="General_MultiTargetingSettings_Title" xml:space="preserve">
+    <value>Multi-Targeting Settings</value>
+  </data>
+  <data name="General_PreferSingleTargetBuildsOnLaunch" xml:space="preserve">
+    <value>Prefer single-target builds when starting a project.</value>
+  </data>
+  <data name="General_PreferSingleTargetBuildsOnLaunchDescription" xml:space="preserve">
+    <value>Reduces build times by limiting the build of multi-targeting projects to a single target framework where possible.</value>
+  </data>
 </root>

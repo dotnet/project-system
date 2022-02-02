@@ -37,6 +37,11 @@
         <target state="translated">Kontroly aktuálnosti</target>
         <note />
       </trans-unit>
+      <trans-unit id="General_MultiTargetingSettings_Title">
+        <source>Multi-Targeting Settings</source>
+        <target state="new">Multi-Targeting Settings</target>
+        <note />
+      </trans-unit>
       <trans-unit id="General_NestingIgnoreSolutionAndProjectProfiles">
         <source>Ignore solution and project settings</source>
         <target state="translated">Ignorovat nastavení řešení a projektů</target>
@@ -45,6 +50,16 @@
       <trans-unit id="General_NestingSettings_Title">
         <source>File Nesting Settings</source>
         <target state="translated">Nastavení vnořování souborů</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="General_PreferSingleTargetBuildsOnLaunch">
+        <source>Prefer single-target builds when starting a project.</source>
+        <target state="new">Prefer single-target builds when starting a project.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="General_PreferSingleTargetBuildsOnLaunchDescription">
+        <source>Reduces build times by limiting the build of multi-targeting projects to a single target framework where possible.</source>
+        <target state="new">Reduces build times by limiting the build of multi-targeting projects to a single target framework where possible.</target>
         <note />
       </trans-unit>
     </body>
