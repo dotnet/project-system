@@ -1,6 +1,7 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
 using System;
+using System.Collections.Immutable;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.ProjectSystem.Build;
 using Microsoft.VisualStudio.Shell.Interop;
@@ -20,10 +21,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build
             var implicitBuildStartInvoked = false;
             var implicitBuildEndOrCancelInvoked = false;
             Action onImplicitBuildStart = () => implicitBuildStartInvoked = true;
+            Action<ImmutableArray<string>> onImplicitBuildStartWithStartupPaths = startupPaths => implicitBuildStartInvoked = true;
             Action onImplicitBuildEndOrCancel = () => implicitBuildEndOrCancelInvoked = true;
 
             var buildManager = await CreateInitializedInstanceAsync(
-                onImplicitBuildStart, onImplicitBuildEndOrCancel, startDebuggingBuild, startWithoutDebuggingBuild);
+                onImplicitBuildStart,
+                onImplicitBuildEndOrCancel,
+                onImplicitBuildStartWithStartupPaths,
+                startDebuggingBuild,
+                startWithoutDebuggingBuild);
 
             RunBuild(buildManager, cancelBuild);
             
@@ -42,6 +48,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build
         private static async Task<ImplicitlyTriggeredDebugBuildManager> CreateInitializedInstanceAsync(
             Action? onImplicitBuildStart = null,
             Action? onImplicitBuildEndOrCancel = null,
+            Action<ImmutableArray<string>>? onImplicitBuildStartWithStartupPaths = null,
             bool startDebuggingBuild = false,
             bool startWithoutDebuggingBuild = false)
         {
@@ -62,7 +69,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build
             var instance = new ImplicitlyTriggeredDebugBuildManager(
                 IProjectThreadingServiceFactory.Create(),
                 serviceProvider,
-                IImplicitlyTriggeredBuildManagerFactory.Create(onImplicitBuildStart, onImplicitBuildEndOrCancel));
+                IImplicitlyTriggeredBuildManagerFactory.Create(onImplicitBuildStart, onImplicitBuildEndOrCancel, onImplicitBuildStartWithStartupPaths),
+                IStartupProjectHelperFactory.Create());
             
             await instance.LoadAsync();
 

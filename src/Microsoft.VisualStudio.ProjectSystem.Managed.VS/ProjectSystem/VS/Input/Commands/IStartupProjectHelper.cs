@@ -5,11 +5,19 @@ using System.Collections.Immutable;
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
 {
     /// <summary>
-    /// Provides a mechanism to get an export from a DotNet project which is the only startup project. The capabilityMatch is
-    /// used to refine the projects that are considered
+    /// Provides a set of helper methods for interacting with designated start up projects.
     /// </summary>
     internal interface IStartupProjectHelper
     {
+        /// <summary>
+        /// Provides a mechanism to get an export from DotNet projects designated as startup projects. The <paramref name="capabilityMatch"/> is
+        /// used to refine the projects that are considered.
+        /// </summary>
         ImmutableArray<T> GetExportFromDotNetStartupProjects<T>(string capabilityMatch) where T : class;
+
+        /// <summary>
+        /// Retrieves the full paths to the designated startup projects.
+        /// </summary>
+        ImmutableArray<string> GetFullPathsOfStartupProjects();
     }
 }

@@ -66,5 +66,29 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
 
             return ImmutableArray<T>.Empty;
         }
+
+        public ImmutableArray<string> GetFullPathsOfStartupProjects()
+        {
+            if (_dte.Value.Solution.SolutionBuild.StartupProjects is Array { Length: > 0 } startupProjects)
+            {
+                var results = PooledArray<string>.GetInstance(startupProjects.Length);
+
+                foreach (string projectName in startupProjects)
+                {
+                    _solution.Value.GetProjectOfUniqueName(projectName, out IVsHierarchy hier);
+
+                    string? projectPath = hier?.GetProjectFilePath();
+
+                    if (projectPath != null)
+                    {
+                        results.Add(projectPath);
+                    }
+                }
+
+                return results.ToImmutableAndFree();
+            }
+
+            return ImmutableArray<string>.Empty;
+        }
     }
 }
