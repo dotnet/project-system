@@ -45,12 +45,30 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build
             }
         }
 
+        [Fact]
+        public async Task StartupProjectsArePassedThrough()
+        {
+            ImmutableArray<string> startupProjectPaths = ImmutableArray<string>.Empty;
+            Action<ImmutableArray<string>> onImplicitBuildStartWithStartPaths = paths => startupProjectPaths = paths;
+
+            var buildManager = await CreateInitializedInstanceAsync(
+                onImplicitBuildStartWithStartupPaths: onImplicitBuildStartWithStartPaths,
+                startWithoutDebuggingBuild: true,
+                startupProjectFullPaths: ImmutableArray.Create(@"C:\alpha\beta.csproj", @"C:\alpha\gamma.csproj"));
+
+            RunBuild(buildManager, cancelBuild: false);
+
+            Assert.Contains(@"C:\alpha\beta.csproj", startupProjectPaths);
+            Assert.Contains(@"C:\alpha\gamma.csproj", startupProjectPaths);
+        }
+
         private static async Task<ImplicitlyTriggeredDebugBuildManager> CreateInitializedInstanceAsync(
             Action? onImplicitBuildStart = null,
             Action? onImplicitBuildEndOrCancel = null,
             Action<ImmutableArray<string>>? onImplicitBuildStartWithStartupPaths = null,
             bool startDebuggingBuild = false,
-            bool startWithoutDebuggingBuild = false)
+            bool startWithoutDebuggingBuild = false,
+            ImmutableArray<string>? startupProjectFullPaths = null)
         {
             var buildFlags = VSSOLNBUILDUPDATEFLAGS.SBF_OPERATION_NONE;
             if (startDebuggingBuild)
@@ -70,7 +88,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build
                 IProjectThreadingServiceFactory.Create(),
                 serviceProvider,
                 IImplicitlyTriggeredBuildManagerFactory.Create(onImplicitBuildStart, onImplicitBuildEndOrCancel, onImplicitBuildStartWithStartupPaths),
-                IStartupProjectHelperFactory.Create());
+                IStartupProjectHelperFactory.Create(startupProjectFullPaths ?? ImmutableArray<string>.Empty));
             
             await instance.LoadAsync();
 
