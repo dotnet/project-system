@@ -1,0 +1,72 @@
+﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
+
+using System.Collections.Immutable;
+using System.ComponentModel.Composition;
+using System.Threading;
+using System.Threading.Tasks;
+using Microsoft.VisualStudio.ProjectSystem.Debug;
+using Microsoft.VisualStudio.ProjectSystem.Managed.Build;
+
+namespace Microsoft.VisualStudio.ProjectSystem.Build
+{
+    /// <summary>
+    /// Build properties provider for cross-targeting startup projects to ensure that
+    /// they build only for the target framework that will be run by F5/Ctrl+F5.
+    /// </summary>
+    /// <remarks>
+    /// The intent here is to speed up the inner-loop development cycle by only building
+    /// the target framework that is relevant to the user. Note that this overrides
+    /// global build properties in <see cref="TargetFrameworkGlobalBuildPropertyProvider"/>,
+    /// so it needs to have a higher <see cref="OrderAttribute"/> value.
+    /// </remarks>
+    [ExportBuildGlobalPropertiesProvider(designTimeBuildProperties: false)]
+    [AppliesTo(ProjectCapability.DotNet + " & " + ProjectCapability.SingleTargetBuildForStartupProjects)]
+    [Order(Order.BeforeDefault)]
+    internal class StartupProjectSingleTargetGlobalBuildPropertyProvider : StaticGlobalPropertiesProviderBase
+    {
+        private readonly ConfiguredProject _configuredProject;
+        private readonly IActiveDebugFrameworkServices _activeDebugFrameworkServices;
+        private readonly IImplicitlyTriggeredBuildState _implicitlyTriggeredBuildState;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="TargetFrameworkGlobalBuildPropertyProvider"/> class.
+        /// </summary>
+        [ImportingConstructor]
+        internal StartupProjectSingleTargetGlobalBuildPropertyProvider(
+            IProjectService projectService,
+            ConfiguredProject configuredProject,
+            IActiveDebugFrameworkServices activeDebugFrameworkServices,
+            IImplicitlyTriggeredBuildState implicitlyTriggeredBuildState)
+            : base(projectService.Services)
+        {
+            _configuredProject = configuredProject;
+            _activeDebugFrameworkServices = activeDebugFrameworkServices;
+            _implicitlyTriggeredBuildState = implicitlyTriggeredBuildState;
+        }
+
+        public override async Task<IImmutableDictionary<string, string>> GetGlobalPropertiesAsync(CancellationToken cancellationToken)
+        {
+            IImmutableDictionary<string, string> properties = Empty.PropertiesMap;
+
+            // Check:
+            //   - if this is a cross targeting project, i.e. project configuration has a "TargetFramework" dimension.
+            //   - if this is an implicitly-triggered build
+            //   - if there is a single startup project
+            //   - if this is the startup project in question
+            if (_configuredProject.ProjectConfiguration.IsCrossTargeting()
+                && _implicitlyTriggeredBuildState.IsImplicitlyTriggeredBuild
+                && _implicitlyTriggeredBuildState.StartupProjectFullPaths.Length == 1
+                && StringComparers.Paths.Equals(_implicitlyTriggeredBuildState.StartupProjectFullPaths[0], _configuredProject.UnconfiguredProject.FullPath))
+            {
+                // We only want to build this for the framework that we will launch.
+                string? activeDebuggingFramework = await _activeDebugFrameworkServices.GetActiveDebuggingFrameworkPropertyAsync();
+                if (activeDebuggingFramework is not null)
+                {
+                    properties = properties.Add(ConfigurationGeneral.TargetFrameworkProperty, activeDebuggingFramework);
+                }
+            }
+
+            return properties;
+        }
+    }
+}
