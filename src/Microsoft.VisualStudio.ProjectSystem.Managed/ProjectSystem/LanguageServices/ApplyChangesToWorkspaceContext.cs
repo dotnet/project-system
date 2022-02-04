@@ -92,6 +92,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
             IComparable version = GetConfiguredProjectVersion(update);
 
             ProcessProjectEvaluationHandlers(version, update.Value.ProjectUpdate, state, cancellationToken);
+            ProcessSourceItemsHandlers(version, update.Value.SourceItemsUpdate, state, cancellationToken);
         }
 
         public IEnumerable<string> GetProjectEvaluationRules()
@@ -194,6 +195,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 
                     evaluationHandler.Handle(version, projectChange, state, _logger);
                 }
+            }
+        }
+
+        private void ProcessSourceItemsHandlers(IComparable version, IProjectSubscriptionUpdate update, ContextState state, CancellationToken cancellationToken)
+        {
+            foreach (ExportLifetimeContext<IWorkspaceContextHandler> handler in _handlers)
+            {
+                cancellationToken.ThrowIfCancellationRequested();
 
                 if (handler.Value is ISourceItemsHandler sourceItemsHandler)
                 {
