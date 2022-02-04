@@ -58,8 +58,8 @@
         <note />
       </trans-unit>
       <trans-unit id="General_PreferSingleTargetBuildsOnLaunchDescription">
-        <source>Reduces build times by limiting the build of multi-targeting projects to a single target framework where possible.</source>
-        <target state="new">Reduces build times by limiting the build of multi-targeting projects to a single target framework where possible.</target>
+        <source>When starting a project that targets multiple .NET frameworks the build time can be reduced by limiting the build to a single framework.</source>
+        <target state="new">When starting a project that targets multiple .NET frameworks the build time can be reduced by limiting the build to a single framework.</target>
         <note />
       </trans-unit>
     </body>

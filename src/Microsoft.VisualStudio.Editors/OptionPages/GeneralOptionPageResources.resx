@@ -151,6 +151,6 @@
     <value>Prefer single-target builds when starting a project.</value>
   </data>
   <data name="General_PreferSingleTargetBuildsOnLaunchDescription" xml:space="preserve">
-    <value>Reduces build times by limiting the build of multi-targeting projects to a single target framework where possible.</value>
+    <value>When starting a project that targets multiple .NET frameworks the build time can be reduced by limiting the build to a single framework.</value>
   </data>
 </root>
