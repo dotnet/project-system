@@ -300,7 +300,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         }
 
         [Fact]
-        public void ApplyProjectEvaluation_CallsHandler()
+        public void ApplyProjectEvaluation_ProjectUpdate_CallsHandler()
         {
             (IComparable version, IProjectChangeDescription description, ContextState state, IProjectDiagnosticOutputService logger) result = default;
 
@@ -323,6 +323,42 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 }");
 
             var sourceItemsUpdate = IProjectSubscriptionUpdateFactory.CreateEmpty();
+            int version = 2;
+
+            var update = IProjectVersionedValueFactory.Create((projectUpdate, sourceItemsUpdate), ProjectDataSources.ConfiguredProjectVersion, version);
+
+            applyChangesToWorkspace.ApplyProjectEvaluation(update, new ContextState(isActiveEditorContext: true, isActiveConfiguration: true), CancellationToken.None);
+
+            Assert.Equal(version, result.version);
+            Assert.NotNull(result.description);
+            Assert.True(result.state.IsActiveEditorContext);
+            Assert.True(result.state.IsActiveConfiguration);
+            Assert.NotNull(result.logger);
+        }
+
+        [Fact]
+        public void ApplyProjectEvaluation_SourceItems_CallsHandler()
+        {
+            (IComparable version, IImmutableDictionary<string, IProjectChangeDescription> description, ContextState state, IProjectDiagnosticOutputService logger) result = default;
+
+            var handler = ISourceItemsHandlerFactory.ImplementHandle((version, description, state, logger) =>
+            {
+                result = (version, description, state, logger);
+            });
+
+            var applyChangesToWorkspace = CreateInitializedInstance(handlers: new[] { handler });
+
+            var projectUpdate = IProjectSubscriptionUpdateFactory.CreateEmpty();
+            var sourceItemsUpdate = IProjectSubscriptionUpdateFactory.FromJson(
+@"{
+   ""ProjectChanges"": {
+        ""RuleName"": {
+            ""Difference"": { 
+                ""AnyChanges"": true
+            },
+        }
+    }
+}");
             int version = 2;
 
             var update = IProjectVersionedValueFactory.Create((projectUpdate, sourceItemsUpdate), ProjectDataSources.ConfiguredProjectVersion, version);
