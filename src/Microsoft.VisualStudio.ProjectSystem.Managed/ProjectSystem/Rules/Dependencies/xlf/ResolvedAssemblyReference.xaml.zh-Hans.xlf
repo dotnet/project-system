@@ -34,12 +34,12 @@
       </trans-unit>
       <trans-unit id="BoolProperty|Private|DisplayName">
         <source>Copy Local</source>
-        <target state="translated">复制本地</target>
+        <target state="new">Copy Local</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|Private|Description">
         <source>Indicates whether the reference will be copied to the output directory.</source>
-        <target state="translated">指示是否将引用复制到输出目录。</target>
+        <target state="new">Indicates whether the reference will be copied to the output directory.</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|EmbedInteropTypes|DisplayName">
