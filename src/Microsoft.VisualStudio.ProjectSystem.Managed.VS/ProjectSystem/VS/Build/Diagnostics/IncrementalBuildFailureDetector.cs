@@ -43,8 +43,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build.Diagnostics
           IVsRunningDocTableEvents,
           IPackageService
     {
-        private readonly ISolutionBuildEvents _solutionBuildEvents;
-        private readonly IRunningDocumentTableEvents _rdtEvents;
+        private readonly ISolutionBuildManager _solutionBuildEvents;
+        private readonly IRunningDocumentTable _rdtEvents;
 
         private IAsyncDisposable? _solutionBuildEventsSubscription;
         private IAsyncDisposable? _rdtEventsSubscription;
@@ -54,8 +54,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build.Diagnostics
 
         [ImportingConstructor]
         public IncrementalBuildFailureDetector(
-            ISolutionBuildEvents solutionBuildEvents,
-            IRunningDocumentTableEvents rdtEvents,
+            ISolutionBuildManager solutionBuildEvents,
+            IRunningDocumentTable rdtEvents,
             JoinableTaskContext joinableTaskContext)
             : base(new(joinableTaskContext))
         {
@@ -70,8 +70,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build.Diagnostics
             await JoinableFactory.SwitchToMainThreadAsync();
 
             // We want to hook these early, so do this during package initialisation
-            _solutionBuildEventsSubscription = await _solutionBuildEvents.SubscribeAsync(this);
-            _rdtEventsSubscription = await _rdtEvents.SubscribeAsync(this);
+            _solutionBuildEventsSubscription = await _solutionBuildEvents.SubscribeSolutionEventsAsync(this);
+            _rdtEventsSubscription = await _rdtEvents.SubscribeEventsAsync(this);
 
             await InitializeAsync();
         }
@@ -86,17 +86,20 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build.Diagnostics
 
         protected override async Task DisposeCoreAsync(bool initialized)
         {
-            Assumes.NotNull(_solutionBuildEvents);
-            Assumes.NotNull(_rdtEventsSubscription);
-
-            if (_solutionBuildEventsSubscription is not null)
+            if (initialized)
             {
-                await _solutionBuildEventsSubscription.DisposeAsync().AsTask();
-            }
+                Assumes.NotNull(_solutionBuildEvents);
+                Assumes.NotNull(_rdtEventsSubscription);
 
-            if (_rdtEventsSubscription is not null)
-            {
-                await _rdtEventsSubscription.DisposeAsync().AsTask();
+                if (_solutionBuildEventsSubscription is not null)
+                {
+                    await _solutionBuildEventsSubscription.DisposeAsync().AsTask();
+                }
+
+                if (_rdtEventsSubscription is not null)
+                {
+                    await _rdtEventsSubscription.DisposeAsync().AsTask();
+                }
             }
         }
 

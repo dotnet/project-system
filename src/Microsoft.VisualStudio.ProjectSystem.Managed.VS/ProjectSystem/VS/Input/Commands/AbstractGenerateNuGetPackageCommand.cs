@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.ProjectSystem.Build;
 using Microsoft.VisualStudio.ProjectSystem.Input;
+using Microsoft.VisualStudio.ProjectSystem.VS.Build;
 using Microsoft.VisualStudio.Shell.Interop;
 using Task = System.Threading.Tasks.Task;
 
@@ -13,15 +14,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
     internal abstract class AbstractGenerateNuGetPackageCommand : AbstractSingleNodeProjectCommand, IVsUpdateSolutionEvents, IDisposable
     {
         private readonly IProjectThreadingService _threadingService;
-        private readonly IVsService<IVsSolutionBuildManager2> _vsSolutionBuildManagerService;
+        private readonly ISolutionBuildManager _solutionBuildManager;
         private readonly GeneratePackageOnBuildPropertyProvider _generatePackageOnBuildPropertyProvider;
-        private IVsSolutionBuildManager2? _buildManager;
-        private uint _solutionEventsCookie;
+        
+        private IAsyncDisposable? _subscription;
 
         protected AbstractGenerateNuGetPackageCommand(
             UnconfiguredProject project,
             IProjectThreadingService threadingService,
-            IVsService<SVsSolutionBuildManager, IVsSolutionBuildManager2> vsSolutionBuildManagerService,
+            ISolutionBuildManager vsSolutionBuildManagerService,
             GeneratePackageOnBuildPropertyProvider generatePackageOnBuildPropertyProvider)
         {
             Requires.NotNull(project, nameof(project));
@@ -31,7 +32,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
 
             Project = project;
             _threadingService = threadingService;
-            _vsSolutionBuildManagerService = vsSolutionBuildManagerService;
+            _solutionBuildManager = vsSolutionBuildManagerService;
             _generatePackageOnBuildPropertyProvider = generatePackageOnBuildPropertyProvider;
         }
 
@@ -58,7 +59,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
             // Ensure build manager is initialized.
             await EnsureBuildManagerInitializedAsync();
 
-            ErrorHandler.ThrowOnFailure(_buildManager!.QueryBuildManagerBusy(out int busy));
+            int busy = _solutionBuildManager.QueryBuildManagerBusy();
             return busy == 0;
         }
 
@@ -67,12 +68,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
             // Switch to UI thread for querying the build manager service.
             await _threadingService.SwitchToUIThread();
 
-            if (_buildManager == null)
+            if (_subscription is null)
             {
-                _buildManager = await _vsSolutionBuildManagerService.GetValueAsync();
-
-                // Register for solution build events.
-                _buildManager.AdviseUpdateSolutionEvents(this, out _solutionEventsCookie);
+                _subscription = await _solutionBuildManager.SubscribeSolutionEventsAsync(this);
             }
         }
 
@@ -92,10 +90,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
 
                 // Save documents before build.
                 var projectVsHierarchy = (IVsHierarchy)Project.Services.HostObject;
-                ErrorHandler.ThrowOnFailure(_buildManager!.SaveDocumentsBeforeBuild(projectVsHierarchy, (uint)VSConstants.VSITEMID.Root, docCookie: 0));
+                _solutionBuildManager.SaveDocumentsBeforeBuild(projectVsHierarchy, (uint)VSConstants.VSITEMID.Root, docCookie: 0);
 
                 // We need to make sure dependencies are built so they can go into the package
-                ErrorHandler.ThrowOnFailure(_buildManager.CalculateProjectDependencies());
+                _solutionBuildManager.CalculateProjectDependencies();
 
                 // Assembly our list of projects to build
                 var projects = new List<IVsHierarchy>
@@ -103,17 +101,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
                     projectVsHierarchy
                 };
 
-                // First we find out how many dependent projects there are
-                uint[] dependencyCounts = new uint[1];
-                ErrorHandler.ThrowOnFailure(_buildManager.GetProjectDependencies(projectVsHierarchy, 0, null, dependencyCounts));
-
-                if (dependencyCounts[0] > 0)
-                {
-                    // Get all of the dependent projects, and add them to our list
-                    var projectsArray = new IVsHierarchy[dependencyCounts[0]];
-                    ErrorHandler.ThrowOnFailure(_buildManager.GetProjectDependencies(projectVsHierarchy, dependencyCounts[0], projectsArray, dependencyCounts));
-                    projects.AddRange(projectsArray);
-                }
+                projects.AddRange(_solutionBuildManager.GetProjectDependencies(projectVsHierarchy));
 
                 // Turn off "GeneratePackageOnBuild" because otherwise the Pack target will not do a build, even if there is no built output
                 _generatePackageOnBuildPropertyProvider.OverrideGeneratePackageOnBuild(false);
@@ -125,14 +113,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
                 // Any dependent projects will just do a normal build
                 buildFlags[0] = VSConstants.VS_BUILDABLEPROJECTCFGOPTS_PACKAGE;
 
-                ErrorHandler.ThrowOnFailure(_buildManager.StartUpdateSpecificProjectConfigurations(cProjs: (uint)projects.Count,
-                                                                                                   rgpHier: projects.ToArray(),
-                                                                                                   rgpcfg: null,
-                                                                                                   rgdwCleanFlags: null,
-                                                                                                   rgdwBuildFlags: buildFlags,
-                                                                                                   rgdwDeployFlags: null,
-                                                                                                   dwFlags: dwFlags,
-                                                                                                   fSuppressUI: 0));
+                _solutionBuildManager.StartUpdateSpecificProjectConfigurations(projects.ToArray(), buildFlags, dwFlags);
             }
 
             return true;
@@ -174,18 +155,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
         {
             if (!_disposedValue)
             {
-                if (disposing && _buildManager != null)
+                if (disposing && _subscription != null)
                 {
                     // Build manager APIs require UI thread access.
                     _threadingService.ExecuteSynchronously(async () =>
                     {
                         await _threadingService.SwitchToUIThread();
 
-                        if (_buildManager != null)
+                        if (_subscription != null)
                         {
                             // Unregister solution build events.
-                            _buildManager.UnadviseUpdateSolutionEvents(_solutionEventsCookie);
-                            _buildManager = null;
+                            await _subscription.DisposeAsync();
                         }
                     });
                 }

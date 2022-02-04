@@ -11,13 +11,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Editor
     /// family of event handler interfaces.
     /// </summary>
     [ProjectSystemContract(ProjectSystemContractScope.Global, ProjectSystemContractProvider.System)]
-    internal interface IRunningDocumentTableEvents
+    internal interface IRunningDocumentTable
     {
         /// <summary>
         /// Creates a new subscription for RDT events that will call back via <paramref name="eventListener" />.
         /// </summary>
         /// <param name="eventListener">The callback for events. Note that it may also implement additional version(s) of this interface.</param>
         /// <returns>An object that unsubscribes when disposed.</returns>
-        Task<IAsyncDisposable> SubscribeAsync(IVsRunningDocTableEvents eventListener);
+        Task<IAsyncDisposable> SubscribeEventsAsync(IVsRunningDocTableEvents eventListener);
     }
 }

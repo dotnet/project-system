@@ -81,12 +81,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build
                 buildFlags |= VSSOLNBUILDUPDATEFLAGS.SBF_OPERATION_LAUNCH;
             }
 
-            var solutionBuildManager = IVsSolutionBuildManager3Factory.Create(buildFlags: buildFlags);
-            var serviceProvider = IVsServiceFactory.Create<SVsSolutionBuildManager, IVsSolutionBuildManager3>(solutionBuildManager);
+            var solutionBuildManager = ISolutionBuildManagerFactory.ImplementBusy(buildFlags);
 
             var instance = new ImplicitlyTriggeredDebugBuildManager(
                 IProjectThreadingServiceFactory.Create(),
-                serviceProvider,
+                solutionBuildManager,
                 IImplicitlyTriggeredBuildManagerFactory.Create(onImplicitBuildStart, onImplicitBuildEndOrCancel, onImplicitBuildStartWithStartupPaths),
                 IStartupProjectHelperFactory.Create(startupProjectFullPaths ?? ImmutableArray<string>.Empty));
             

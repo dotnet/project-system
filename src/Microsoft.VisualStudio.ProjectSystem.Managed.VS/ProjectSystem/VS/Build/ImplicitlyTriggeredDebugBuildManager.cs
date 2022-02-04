@@ -7,9 +7,8 @@ using System.Threading.Tasks;
 using Microsoft.VisualStudio.Composition;
 using Microsoft.VisualStudio.ProjectSystem.Build;
 using Microsoft.VisualStudio.ProjectSystem.VS.Debug;
-using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
-using Microsoft.VisualStudio.Threading;
+using IAsyncDisposable = System.IAsyncDisposable;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Build
 {
@@ -21,27 +20,26 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build
     [AppliesTo(ProjectCapability.DotNet)]
     internal class ImplicitlyTriggeredDebugBuildManager : OnceInitializedOnceDisposedAsync, IProjectDynamicLoadComponent, IVsUpdateSolutionEvents2, IVsUpdateSolutionEvents3
     {
-        private readonly IVsService<IVsSolutionBuildManager3> _solutionBuildManagerService;
         private readonly IStartupProjectHelper _startupProjectHelper;
+        private readonly ISolutionBuildManager _solutionBuildManager;
 
 #pragma warning disable CS0618 // Type or member is obsolete - IImplicitlyTriggeredBuildManager is marked obsolete as it may eventually be replaced with a different API.
         private readonly IImplicitlyTriggeredBuildManager _implicitlyTriggeredBuildManager;
 #pragma warning restore CS0618 // Type or member is obsolete
 
-        private IVsSolutionBuildManager3? _solutionBuildManager;
-        private uint _cookie, _cookie3;
+        private IAsyncDisposable? _solutionBuildEventsSubscription;
 
         [ImportingConstructor]
         public ImplicitlyTriggeredDebugBuildManager(
             IProjectThreadingService threadingService,
-            IVsService<SVsSolutionBuildManager, IVsSolutionBuildManager3> solutionBuildManagerService,
+            ISolutionBuildManager solutionBuildManager,
 #pragma warning disable CS0618 // Type or member is obsolete - IImplicitlyTriggeredBuildManager is marked obsolete as it may eventually be replaced with a different API.
             IImplicitlyTriggeredBuildManager implicitlyTriggeredBuildManager,
 #pragma warning restore CS0618 // Type or member is obsolete
             IStartupProjectHelper startupProjectHelper)
             : base(threadingService.JoinableTaskContext)
         {
-            _solutionBuildManagerService = solutionBuildManagerService;
+            _solutionBuildManager = solutionBuildManager;
             _implicitlyTriggeredBuildManager = implicitlyTriggeredBuildManager;
             _startupProjectHelper = startupProjectHelper;
         }
@@ -54,17 +52,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build
             // AdviseUpdateSolutionEvents call needs UI thread.
             await JoinableFactory.SwitchToMainThreadAsync(cancellationToken);
 
-            _solutionBuildManager = await _solutionBuildManagerService.GetValueAsync(cancellationToken);
-            (_solutionBuildManager as IVsSolutionBuildManager2)?.AdviseUpdateSolutionEvents(this, out _cookie);
-            ErrorHandler.ThrowOnFailure(_solutionBuildManager.AdviseUpdateSolutionEvents3(this, out _cookie3));
+            _solutionBuildEventsSubscription = await _solutionBuildManager.SubscribeSolutionEventsAsync(this);
         }
 
         protected override Task DisposeCoreAsync(bool initialized)
         {
             if (initialized)
             {
-                (_solutionBuildManager as IVsSolutionBuildManager2)?.UnadviseUpdateSolutionEvents(_cookie);
-                _solutionBuildManager!.UnadviseUpdateSolutionEvents3(_cookie3);
+                if (_solutionBuildEventsSubscription is not null)
+                {
+                    return _solutionBuildEventsSubscription.DisposeAsync().AsTask();
+                }
             }
 
             return Task.CompletedTask;
@@ -72,8 +70,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build
 
         private bool IsImplicitlyTriggeredBuild()
         {
-            ErrorHandler.ThrowOnFailure(_solutionBuildManager!.QueryBuildManagerBusyEx(out uint flags));
-            var buildFlags = (VSSOLNBUILDUPDATEFLAGS)flags;
+            Assumes.NotNull(_solutionBuildManager);
+
+            var buildFlags = (VSSOLNBUILDUPDATEFLAGS)_solutionBuildManager.QueryBuildManagerBusyEx();
+
             return (buildFlags & (VSSOLNBUILDUPDATEFLAGS.SBF_OPERATION_LAUNCH | VSSOLNBUILDUPDATEFLAGS.SBF_OPERATION_LAUNCHDEBUG)) != 0;
         }
 

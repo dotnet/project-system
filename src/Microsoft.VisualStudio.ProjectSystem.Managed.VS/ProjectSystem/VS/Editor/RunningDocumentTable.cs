@@ -8,29 +8,29 @@ using Microsoft.VisualStudio.Shell.Interop;
 using Microsoft.VisualStudio.Threading;
 using IAsyncDisposable = System.IAsyncDisposable;
 
-namespace Microsoft.VisualStudio.ProjectSystem.VS.Build
+namespace Microsoft.VisualStudio.ProjectSystem.VS.Editor
 {
-    [Export(typeof(ISolutionBuildEvents))]
-    internal sealed class SolutionBuildEvents : OnceInitializedOnceDisposedAsync, ISolutionBuildEvents
+    [Export(typeof(IRunningDocumentTable))]
+    internal sealed class RunningDocumentTable : OnceInitializedOnceDisposedAsync, IRunningDocumentTable
     {
-        private readonly IVsService<SVsSolutionBuildManager, IVsSolutionBuildManager2> _solutionBuildManagerService;
+        private readonly IVsService<SVsRunningDocumentTable, IVsRunningDocumentTable> _rdtService;
 
-        private IVsSolutionBuildManager2? _solutionBuildManager;
+        private IVsRunningDocumentTable? _rdt;
 
         [ImportingConstructor]
-        public SolutionBuildEvents(
-            IVsService<SVsSolutionBuildManager, IVsSolutionBuildManager2> solutionBuildManagerService,
+        public RunningDocumentTable(
+            IVsService<SVsRunningDocumentTable, IVsRunningDocumentTable> rdtService,
             JoinableTaskContext joinableTaskContext)
             : base(new(joinableTaskContext))
         {
-            _solutionBuildManagerService = solutionBuildManagerService;
+            _rdtService = rdtService;
         }
 
         protected override async Task InitializeCoreAsync(CancellationToken cancellationToken)
         {
             await JoinableFactory.SwitchToMainThreadAsync(cancellationToken);
 
-            _solutionBuildManager = await _solutionBuildManagerService.GetValueAsync(cancellationToken);
+            _rdt = await _rdtService.GetValueAsync(cancellationToken);
         }
 
         protected override Task DisposeCoreAsync(bool initialized)
@@ -38,23 +38,23 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build
             return Task.CompletedTask;
         }
 
-        public async Task<IAsyncDisposable> SubscribeAsync(IVsUpdateSolutionEvents eventListener)
+        public async Task<IAsyncDisposable> SubscribeEventsAsync(IVsRunningDocTableEvents eventListener)
         {
             await InitializeAsync();
 
-            Assumes.NotNull(_solutionBuildManager);
+            Assumes.NotNull(_rdt);
 
             HResult.Verify(
-                _solutionBuildManager.AdviseUpdateSolutionEvents(eventListener, out uint cookie),
-                $"Error advising solution events in {typeof(SolutionBuildEvents)}.");
+                _rdt.AdviseRunningDocTableEvents(eventListener, out uint cookie),
+                $"Error advising RDT events in {typeof(RunningDocumentTable)}.");
 
             return new AsyncDisposable(async () =>
             {
                 await JoinableFactory.SwitchToMainThreadAsync();
 
                 HResult.Verify(
-                    _solutionBuildManager.UnadviseUpdateSolutionEvents(cookie),
-                    $"Error unadvising solution events in {typeof(SolutionBuildEvents)}.");
+                    _rdt.UnadviseRunningDocTableEvents(cookie),
+                    $"Error unadvising RDT events in {typeof(RunningDocumentTable)}.");
             });
         }
     }

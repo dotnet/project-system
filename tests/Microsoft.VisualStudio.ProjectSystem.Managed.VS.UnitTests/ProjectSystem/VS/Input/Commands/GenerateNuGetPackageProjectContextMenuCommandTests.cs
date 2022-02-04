@@ -4,7 +4,7 @@ using System.Collections.Immutable;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.Input;
 using Microsoft.VisualStudio.ProjectSystem.Build;
-using Microsoft.VisualStudio.Shell.Interop;
+using Microsoft.VisualStudio.ProjectSystem.VS.Build;
 using Xunit;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
@@ -16,10 +16,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
         internal override AbstractGenerateNuGetPackageCommand CreateInstanceCore(
             UnconfiguredProject project,
             IProjectThreadingService threadingService,
-            IVsService<SVsSolutionBuildManager, IVsSolutionBuildManager2> vsSolutionBuildManagerService,
+            ISolutionBuildManager solutionBuildManager,
             GeneratePackageOnBuildPropertyProvider generatePackageOnBuildPropertyProvider)
         {
-            return new GenerateNuGetPackageProjectContextMenuCommand(project, threadingService, vsSolutionBuildManagerService, generatePackageOnBuildPropertyProvider);
+            return new GenerateNuGetPackageProjectContextMenuCommand(project, threadingService, solutionBuildManager, generatePackageOnBuildPropertyProvider);
         }
 
         [Fact]
