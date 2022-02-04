@@ -10,7 +10,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Build
     /// <summary>
     /// Build properties provider for cross targeting projects to ensure that they are build for all target frameworks when doing an explicit build, not just the active target framework.
     /// </summary>
-    /// <remarks>We specify attribute 'Order(Int32.MaxValue)` to ensure that this is the most preferred build properties provider, so it overrides target framework setting from prior providers.</remarks>
+    /// <remarks>Passes <see cref="Order.Default"/> to <see cref="OrderAttribute"/> as that will guarantee it has a higher priority than providers from CPS.</remarks>
     [ExportBuildGlobalPropertiesProvider(designTimeBuildProperties: false)]
     [AppliesTo(ProjectCapability.DotNet)]
     [Order(Order.Default)]

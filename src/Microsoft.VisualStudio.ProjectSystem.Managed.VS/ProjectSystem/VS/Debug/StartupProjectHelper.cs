@@ -9,7 +9,7 @@ using Microsoft.VisualStudio.ProjectSystem.VS.Extensibility;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 
-namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
+namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
 {
     /// <summary>
     /// Handles populating a menu command on the debug dropdown when the menu reflects the IEnumValues for
@@ -65,6 +65,30 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
             }
 
             return ImmutableArray<T>.Empty;
+        }
+
+        public ImmutableArray<string> GetFullPathsOfStartupProjects()
+        {
+            if (_dte.Value.Solution.SolutionBuild.StartupProjects is Array { Length: > 0 } startupProjects)
+            {
+                var results = PooledArray<string>.GetInstance(startupProjects.Length);
+
+                foreach (string projectName in startupProjects)
+                {
+                    _solution.Value.GetProjectOfUniqueName(projectName, out IVsHierarchy hier);
+
+                    string? projectPath = hier?.GetProjectFilePath();
+
+                    if (projectPath != null)
+                    {
+                        results.Add(projectPath);
+                    }
+                }
+
+                return results.ToImmutableAndFree();
+            }
+
+            return ImmutableArray<string>.Empty;
         }
     }
 }

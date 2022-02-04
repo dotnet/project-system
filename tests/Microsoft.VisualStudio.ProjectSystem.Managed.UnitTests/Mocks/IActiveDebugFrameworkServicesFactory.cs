@@ -11,5 +11,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
 
             return service.Object;
         }
+
+        public static IActiveDebugFrameworkServices ImplementGetActiveDebuggingFrameworkPropertyAsync(string? activeDebugFramework)
+        {
+            var service = new IActiveDebugFrameworkServicesMock();
+            service.ImplementGetActiveDebuggingFrameworkPropertyAsync(activeDebugFramework);
+
+            return service.Object;
+        }
     }
 }
