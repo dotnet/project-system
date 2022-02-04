@@ -3,7 +3,6 @@
 using System;
 using System.ComponentModel.Composition;
 using System.Diagnostics.CodeAnalysis;
-using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.LanguageServices.ProjectSystem;
@@ -80,9 +79,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
                 _evaluationProgressRegistration = _dataProgressTrackerService.RegisterForIntelliSense(this, _project, nameof(WorkspaceProjectContextHostInstance) + ".Evaluation");
                 _projectBuildProgressRegistration = _dataProgressTrackerService.RegisterForIntelliSense(this, _project, nameof(WorkspaceProjectContextHostInstance) + ".ProjectBuild");
 
-                StrongBox<ContextState?> lastEvaluationContextState = new();
-                StrongBox<ContextState?> lastBuildContextState = new();
-
                 _disposables = new DisposableBag
                 {
                     _applyChangesToWorkspaceContext,
@@ -129,7 +125,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
                     return OnProjectChangedAsync(
                         _evaluationProgressRegistration,
                         e.Value.ActiveConfiguredProject,
-                        lastEvaluationContextState,
                         e,
                         hasChange: static e => e.Value.ProjectUpdate.ProjectChanges.HasChange() || e.Value.SourceItemsUpdate.ProjectChanges.HasChange(),
                         applyFunc: static (e, applyChangesToWorkspaceContext, contextState, token) => applyChangesToWorkspaceContext.ApplyProjectEvaluation(e.Derive(v => (v.ProjectUpdate, v.SourceItemsUpdate)), contextState, token));
@@ -140,7 +135,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
                     return OnProjectChangedAsync(
                         _projectBuildProgressRegistration,
                         e.Value.ActiveConfiguredProject,
-                        lastBuildContextState,
                         e,
                         hasChange: static e => e.Value.BuildUpdate.ProjectChanges.HasChange() || e.Value.CommandLineArgumentsUpdate.IsChanged,
                         applyFunc: static (e, applyChangesToWorkspaceContext, contextState, token) => applyChangesToWorkspaceContext.ApplyProjectBuild(e.Derive(v => (v.BuildUpdate, v.CommandLineArgumentsUpdate)), contextState, token));
@@ -196,7 +190,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
             internal Task OnProjectChangedAsync<T>(
                 IDataProgressTrackerServiceRegistration registration,
                 ConfiguredProject activeConfiguredProject,
-                StrongBox<ContextState?> lastContextState,
                 IProjectVersionedValue<T> update,
                 Func<IProjectVersionedValue<T>, bool> hasChange,
                 Action<IProjectVersionedValue<T>, IApplyChangesToWorkspaceContext, ContextState, CancellationToken> applyFunc)
@@ -209,9 +202,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
                     Assumes.NotNull(_contextAccessor);
                     Assumes.NotNull(_applyChangesToWorkspaceContext);
 
-                    (ContextState contextState, bool stateChanged) = GetContextState(lastContextState);
-
-                    if (!stateChanged && !hasChange(update))
+                    if (!hasChange(update))
                     {
                         // No change since the last update. We must still update operation progress, but can skip creating a batch.
                         UpdateProgressRegistration();
@@ -222,6 +213,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 
                     async Task ApplyInBatchAsync()
                     {
+                        ContextState contextState = new(
+                            isActiveEditorContext: _activeWorkspaceProjectContextTracker.IsActiveEditorContext(_contextAccessor.ContextId),
+                            isActiveConfiguration: activeConfiguredProject == _project);
+
                         IWorkspaceProjectContext context = _contextAccessor.Context;
 
                         context.StartBatch();
@@ -236,27 +231,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 
                             UpdateProgressRegistration();
                         }
-                    }
-
-                    (ContextState ContextState, bool StateChanged) GetContextState(StrongBox<ContextState?> lastContextState)
-                    {
-                        bool isActiveConfiguration = activeConfiguredProject == _project;
-                        bool isActiveEditorContext = _activeWorkspaceProjectContextTracker.IsActiveEditorContext(_contextAccessor.ContextId);
-                        
-                        ContextState newState = new(isActiveEditorContext, isActiveConfiguration);
-
-                        bool stateChanged = false;
-
-                        if (lastContextState.Value is null ||
-                            lastContextState.Value.Value.IsActiveConfiguration != newState.IsActiveConfiguration ||
-                            lastContextState.Value.Value.IsActiveEditorContext != newState.IsActiveEditorContext)
-                        {
-                            // The state has changed
-                            lastContextState.Value = newState;
-                            stateChanged = true;
-                        }
-
-                        return (newState, stateChanged);
                     }
 
                     void UpdateProgressRegistration()
