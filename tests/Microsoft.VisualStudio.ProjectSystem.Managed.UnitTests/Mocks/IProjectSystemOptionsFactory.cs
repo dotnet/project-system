@@ -40,5 +40,14 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
             return mock.Object;
         }
+
+        public static IProjectSystemOptions ImplementGetPreferSingleTargetBuildsForStartupProjectsAsync(Func<CancellationToken, bool> result)
+        {
+            var mock = new Mock<IProjectSystemOptions>();
+            mock.Setup(o => o.GetPreferSingleTargetBuildsForStartupProjectsAsync(It.IsAny<CancellationToken>()))
+                .ReturnsAsync(result);
+
+            return mock.Object;
+        }
     }
 }
