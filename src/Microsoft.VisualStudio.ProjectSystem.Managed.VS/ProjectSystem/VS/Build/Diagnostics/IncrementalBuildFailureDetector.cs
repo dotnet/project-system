@@ -89,16 +89,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build.Diagnostics
             Assumes.NotNull(_solutionBuildManager);
             Assumes.NotNull(_rdt);
 
-            if (_sbmCookie != 0)
-            {
-                HResult.Verify(_rdt.UnadviseRunningDocTableEvents(_sbmCookie), $"Error unadvising RDT events in {typeof(IncrementalBuildFailureDetector)}.");
-                _sbmCookie = 0;
-            }
-
             if (_rdtCookie != 0)
             {
-                HResult.Verify(_solutionBuildManager.UnadviseUpdateSolutionEvents(_rdtCookie), $"Error unadvising solution events in {typeof(IncrementalBuildFailureDetector)}.");
+                HResult.Verify(_rdt.UnadviseRunningDocTableEvents(_rdtCookie), $"Error unadvising RDT events in {typeof(IncrementalBuildFailureDetector)}.");
                 _rdtCookie = 0;
+            }
+
+            if (_sbmCookie != 0)
+            {
+                HResult.Verify(_solutionBuildManager.UnadviseUpdateSolutionEvents(_sbmCookie), $"Error unadvising solution events in {typeof(IncrementalBuildFailureDetector)}.");
+                _sbmCookie = 0;
             }
 
             return Task.CompletedTask;
