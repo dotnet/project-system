@@ -27,6 +27,15 @@
                           IsChecked="{Binding Mode=TwoWay, Path=NestingIgnoreSolutionAndProjectProfiles}"/>
                 </StackPanel>
             </GroupBox>
+
+            <GroupBox x:Uid="MultiTargetingSettingsGroupBox" Header="{x:Static r:GeneralOptionPageResources.General_MultiTargetingSettings_Title}" VerticalAlignment="Top" Margin="0,8,0,0">
+                <StackPanel Orientation="Vertical">
+                    <CheckBox x:Name="PreferSingleTargetBuildsOnLaunch" x:Uid="General_PreferSingleTargetBuildsOnLaunch" Content="{x:Static r:GeneralOptionPageResources.General_PreferSingleTargetBuildsOnLaunch}" Margin="0"
+                          IsChecked="{Binding Mode=TwoWay, Path=PreferSingleTargetBuildsOnLaunch}" />
+                    <TextBlock x:Name="PreferSingleTargetBuildsOnLaunchDescription" x:Uid="General_PreferSingleTargetBuildsOnLaunchDescription" Text="{x:Static r:GeneralOptionPageResources.General_PreferSingleTargetBuildsOnLaunchDescription}" Margin="0,8,0,0"
+                               TextWrapping="Wrap"/>
+                </StackPanel>
+            </GroupBox>
         </StackPanel>
     </ScrollViewer>
 </UserControl>

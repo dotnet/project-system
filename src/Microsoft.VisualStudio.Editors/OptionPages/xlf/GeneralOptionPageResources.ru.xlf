@@ -37,6 +37,11 @@
         <target state="translated">Проверки наличия обновлений</target>
         <note />
       </trans-unit>
+      <trans-unit id="General_MultiTargetingSettings_Title">
+        <source>Multi-Targeting Settings</source>
+        <target state="new">Multi-Targeting Settings</target>
+        <note />
+      </trans-unit>
       <trans-unit id="General_NestingIgnoreSolutionAndProjectProfiles">
         <source>Ignore solution and project settings</source>
         <target state="translated">Игнорировать параметры решений и проектов</target>
@@ -45,6 +50,16 @@
       <trans-unit id="General_NestingSettings_Title">
         <source>File Nesting Settings</source>
         <target state="translated">Параметры вложения файлов</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="General_PreferSingleTargetBuildsOnLaunch">
+        <source>Prefer single-target builds when starting a project.</source>
+        <target state="new">Prefer single-target builds when starting a project.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="General_PreferSingleTargetBuildsOnLaunchDescription">
+        <source>When starting a project that targets multiple .NET frameworks, the build time can be reduced by limiting the build to a single framework.</source>
+        <target state="new">When starting a project that targets multiple .NET frameworks, the build time can be reduced by limiting the build to a single framework.</target>
         <note />
       </trans-unit>
     </body>

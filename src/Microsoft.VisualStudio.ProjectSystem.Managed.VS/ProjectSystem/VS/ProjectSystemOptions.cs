@@ -14,6 +14,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         private const string FastUpToDateEnabledSettingKey = @"ManagedProjectSystem\FastUpToDateCheckEnabled";
         private const string FastUpToDateLogLevelSettingKey = @"ManagedProjectSystem\FastUpToDateLogLevel";
         private const string UseDesignerByDefaultSettingKey = @"ManagedProjectSystem\UseDesignerByDefault";
+        private const string PreferSingleTargetBuildsForStartupProjects = @"ManagedProjectSystem\PreferSingleTargetBuilds";
 
         // This setting exists as an option in Roslyn repo: 'FeatureOnOffOptions.SkipAnalyzersForImplicitlyTriggeredBuilds'.
         // Do not change this setting key unless the Roslyn option name is changed.
@@ -50,6 +51,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         public Task<bool> GetSkipAnalyzersForImplicitlyTriggeredBuildAsync(CancellationToken cancellationToken = default)
         {
             return GetSettingValueOrDefaultAsync(SkipAnalyzersForImplicitlyTriggeredBuildSettingKey, defaultValue: true, cancellationToken);
+        }
+
+        public Task<bool> GetPreferSingleTargetBuildsForStartupProjectsAsync(CancellationToken cancellationToken = default)
+        {
+            return GetSettingValueOrDefaultAsync(PreferSingleTargetBuildsForStartupProjects, defaultValue: false, cancellationToken);
         }
 
         private async Task<T> GetSettingValueOrDefaultAsync<T>(string name, T defaultValue, CancellationToken cancellationToken)
