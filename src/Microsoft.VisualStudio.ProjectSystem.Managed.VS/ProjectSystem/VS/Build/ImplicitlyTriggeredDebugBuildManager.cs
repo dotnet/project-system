@@ -49,9 +49,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build
 
         protected override async Task InitializeCoreAsync(CancellationToken cancellationToken)
         {
-            // AdviseUpdateSolutionEvents call needs UI thread.
-            await JoinableFactory.SwitchToMainThreadAsync(cancellationToken);
-
             _solutionBuildEventsSubscription = await _solutionBuildManager.SubscribeSolutionEventsAsync(this);
         }
 
