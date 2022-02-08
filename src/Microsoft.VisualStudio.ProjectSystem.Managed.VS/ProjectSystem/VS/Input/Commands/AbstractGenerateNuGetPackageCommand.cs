@@ -7,7 +7,6 @@ using Microsoft.VisualStudio.ProjectSystem.Build;
 using Microsoft.VisualStudio.ProjectSystem.Input;
 using Microsoft.VisualStudio.ProjectSystem.VS.Build;
 using Microsoft.VisualStudio.Shell.Interop;
-using Task = System.Threading.Tasks.Task;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
 {
@@ -56,22 +55,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
 
         private async Task<bool> IsReadyToBuildAsync()
         {
-            // Ensure build manager is initialized.
-            await EnsureBuildManagerInitializedAsync();
-
-            int busy = _solutionBuildManager.QueryBuildManagerBusy();
-            return busy == 0;
-        }
-
-        private async Task EnsureBuildManagerInitializedAsync()
-        {
             // Switch to UI thread for querying the build manager service.
             await _threadingService.SwitchToUIThread();
 
-            if (_subscription is null)
-            {
-                _subscription = await _solutionBuildManager.SubscribeSolutionEventsAsync(this);
-            }
+            // Ensure build manager is initialized.
+            _subscription ??= await _solutionBuildManager.SubscribeSolutionEventsAsync(this);
+
+            int busy = _solutionBuildManager.QueryBuildManagerBusy();
+            return busy == 0;
         }
 
         protected override async Task<bool> TryHandleCommandAsync(IProjectTree node, bool focused, long commandExecuteOptions, IntPtr variantArgIn, IntPtr variantArgOut)
