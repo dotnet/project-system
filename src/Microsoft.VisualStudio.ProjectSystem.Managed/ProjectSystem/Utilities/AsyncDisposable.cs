@@ -8,9 +8,9 @@ namespace Microsoft.VisualStudio.ProjectSystem
 {
     internal sealed class AsyncDisposable : IAsyncDisposable
     {
-        private readonly Func<Task> _callback;
+        private readonly Func<ValueTask> _callback;
 
-        public AsyncDisposable(Func<Task> callback) => _callback = callback;
+        public AsyncDisposable(Func<ValueTask> callback) => _callback = callback;
 
         public async ValueTask DisposeAsync() => await _callback();
     }

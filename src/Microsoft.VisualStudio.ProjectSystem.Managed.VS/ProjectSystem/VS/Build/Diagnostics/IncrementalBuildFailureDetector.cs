@@ -93,12 +93,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build.Diagnostics
 
                 if (_solutionBuildEventsSubscription is not null)
                 {
-                    await _solutionBuildEventsSubscription.DisposeAsync().AsTask();
+                    await _solutionBuildEventsSubscription.DisposeAsync();
                 }
 
                 if (_rdtEventsSubscription is not null)
                 {
-                    await _rdtEventsSubscription.DisposeAsync().AsTask();
+                    await _rdtEventsSubscription.DisposeAsync();
                 }
             }
         }
