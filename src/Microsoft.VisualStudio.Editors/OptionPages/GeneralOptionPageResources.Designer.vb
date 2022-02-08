@@ -22,7 +22,7 @@ Namespace My.Resources
     '''<summary>
     '''  A strongly-typed resource class, for looking up localized strings, etc.
     '''</summary>
-    <Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0"),  _
+    <Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0"),  _
      Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
      Global.System.Runtime.CompilerServices.CompilerGeneratedAttribute()>  _
     Public Class GeneralOptionPageResources
@@ -128,6 +128,15 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to Multi-Targeting Settings.
+        '''</summary>
+        Public Shared ReadOnly Property General_MultiTargetingSettings_Title() As String
+            Get
+                Return ResourceManager.GetString("General_MultiTargetingSettings_Title", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to Ignore solution and project settings.
         '''</summary>
         Public Shared ReadOnly Property General_NestingIgnoreSolutionAndProjectProfiles() As String
@@ -142,6 +151,24 @@ Namespace My.Resources
         Public Shared ReadOnly Property General_NestingSettings_Title() As String
             Get
                 Return ResourceManager.GetString("General_NestingSettings_Title", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Prefer single-target builds when starting a project..
+        '''</summary>
+        Public Shared ReadOnly Property General_PreferSingleTargetBuildsOnLaunch() As String
+            Get
+                Return ResourceManager.GetString("General_PreferSingleTargetBuildsOnLaunch", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to When starting a project that targets multiple .NET frameworks the build time can be reduced by limiting the build to a single framework..
+        '''</summary>
+        Public Shared ReadOnly Property General_PreferSingleTargetBuildsOnLaunchDescription() As String
+            Get
+                Return ResourceManager.GetString("General_PreferSingleTargetBuildsOnLaunchDescription", resourceCulture)
             End Get
         End Property
     End Class

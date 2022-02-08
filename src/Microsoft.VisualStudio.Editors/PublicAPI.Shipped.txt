@@ -1080,3 +1080,6 @@ Shared My.Resources.GeneralOptionPageResources.General_FastUpToDateCheck_Title()
 Shared My.Resources.GeneralOptionPageResources.General_NestingIgnoreSolutionAndProjectProfiles() -> String
 Shared My.Resources.GeneralOptionPageResources.General_NestingSettings_Title() -> String
 Shared My.Resources.GeneralOptionPageResources.ResourceManager() -> System.Resources.ResourceManager
+Shared My.Resources.GeneralOptionPageResources.General_PreferSingleTargetBuildsOnLaunch() -> String
+Shared My.Resources.GeneralOptionPageResources.General_MultiTargetingSettings_Title() -> String
+Shared My.Resources.GeneralOptionPageResources.General_PreferSingleTargetBuildsOnLaunchDescription() -> String

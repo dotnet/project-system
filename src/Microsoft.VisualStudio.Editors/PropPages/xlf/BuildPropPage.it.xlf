@@ -152,6 +152,11 @@
         <target state="translated">Avvisi specifici da considerare come errori</target>
         <note />
       </trans-unit>
+      <trans-unit id="txtSupressWarnings.AccessibleName">
+        <source>Suppress Warnings</source>
+        <target state="new">Suppress Warnings</target>
+        <note />
+      </trans-unit>
       <trans-unit id="txtXMLDocumentationFile.AccessibleName">
         <source>XML Document File Path</source>
         <target state="translated">Percorso file di documentazione XML</target>

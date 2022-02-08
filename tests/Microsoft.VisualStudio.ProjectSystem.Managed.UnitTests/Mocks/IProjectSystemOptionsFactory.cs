@@ -31,5 +31,23 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
             return mock.Object;
         }
+
+        public static IProjectSystemOptions ImplementGetSkipAnalyzersForImplicitlyTriggeredBuildAsync(Func<CancellationToken, bool> result)
+        {
+            var mock = new Mock<IProjectSystemOptions>();
+            mock.Setup(o => o.GetSkipAnalyzersForImplicitlyTriggeredBuildAsync(It.IsAny<CancellationToken>()))
+                .ReturnsAsync(result);
+
+            return mock.Object;
+        }
+
+        public static IProjectSystemOptions ImplementGetPreferSingleTargetBuildsForStartupProjectsAsync(Func<CancellationToken, bool> result)
+        {
+            var mock = new Mock<IProjectSystemOptions>();
+            mock.Setup(o => o.GetPreferSingleTargetBuildsForStartupProjectsAsync(It.IsAny<CancellationToken>()))
+                .ReturnsAsync(result);
+
+            return mock.Object;
+        }
     }
 }

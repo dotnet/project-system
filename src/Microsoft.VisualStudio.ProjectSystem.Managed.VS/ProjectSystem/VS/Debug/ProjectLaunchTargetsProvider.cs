@@ -7,6 +7,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.Buffers.PooledObjects;
+using Microsoft.VisualStudio.Debugger.UI.Interfaces.HotReload;
 using Microsoft.VisualStudio.IO;
 using Microsoft.VisualStudio.ProjectSystem.Debug;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
@@ -46,7 +47,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
         private readonly IVsUIService<IVsDebugger10> _debugger;
         private readonly IRemoteDebuggerAuthenticationService _remoteDebuggerAuthenticationService;
         private readonly Lazy<IProjectHotReloadSessionManager> _hotReloadSessionManager;
-        private readonly Lazy<IDebuggerSettings> _debuggerSettings;
+        private readonly Lazy<IHotReloadOptionService> _debuggerSettings;
         private readonly OutputTypeChecker _outputTypeChecker;
 
         [ImportingConstructor]
@@ -62,7 +63,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             IVsUIService<SVsShellDebugger, IVsDebugger10> debugger,
             IRemoteDebuggerAuthenticationService remoteDebuggerAuthenticationService,
             Lazy<IProjectHotReloadSessionManager> hotReloadSessionManager,
-            Lazy<IDebuggerSettings> debuggerSettings)
+            Lazy<IHotReloadOptionService> debuggerSettings)
         {
             _project = project;
             _unconfiguredProjectVsServices = unconfiguredProjectVsServices;
@@ -446,9 +447,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
 
             if (hotReloadEnabledAtProjectLevel)
             {
-                bool hotReloadEnabledGlobally = (launchOptions & DebugLaunchOptions.NoDebug) == DebugLaunchOptions.NoDebug
-                    ? await _debuggerSettings.Value.IsNonDebugHotReloadEnabledAsync()
-                    : await _debuggerSettings.Value.IsEncEnabledAsync();
+                bool debugging = (launchOptions & DebugLaunchOptions.NoDebug) != DebugLaunchOptions.NoDebug;
+                bool hotReloadEnabledGlobally = await _debuggerSettings.Value.IsHotReloadEnabledAsync(debugging, default);
 
                 return hotReloadEnabledGlobally;
             }

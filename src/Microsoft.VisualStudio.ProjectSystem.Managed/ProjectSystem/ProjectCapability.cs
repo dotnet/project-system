@@ -32,6 +32,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
         public const string LanguageService = nameof(LanguageService);
         public const string DotNetLanguageService = DotNet + " & " + LanguageService;
         public const string UseProjectEvaluationCache = ProjectCapabilities.UseProjectEvaluationCache;
+        public const string SingleTargetBuildForStartupProjects = nameof(SingleTargetBuildForStartupProjects);
 
         /// <summary>
         /// Instructs CPS to order tree items according to the <see cref="IProjectTree2.DisplayOrder"/> property first.

@@ -915,6 +915,9 @@
   <data name="&gt;&gt;txtSupressWarnings.Name" xml:space="preserve">
     <value>txtSupressWarnings</value>
   </data>
+  <data name="txtSupressWarnings.AccessibleName" xml:space="preserve">
+    <value>Suppress Warnings</value>
+  </data>
   <data name="&gt;&gt;txtSupressWarnings.Type" xml:space="preserve">
     <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>

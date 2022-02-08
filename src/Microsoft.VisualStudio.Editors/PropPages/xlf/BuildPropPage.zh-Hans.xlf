@@ -152,6 +152,11 @@
         <target state="translated">要视为错误的特定警告</target>
         <note />
       </trans-unit>
+      <trans-unit id="txtSupressWarnings.AccessibleName">
+        <source>Suppress Warnings</source>
+        <target state="new">Suppress Warnings</target>
+        <note />
+      </trans-unit>
       <trans-unit id="txtXMLDocumentationFile.AccessibleName">
         <source>XML Document File Path</source>
         <target state="translated">XML 文档文件路径</target>

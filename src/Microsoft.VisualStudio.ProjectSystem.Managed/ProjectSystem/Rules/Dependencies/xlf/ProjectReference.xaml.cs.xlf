@@ -42,12 +42,12 @@
         <target state="translated">Určuje, zda se do výstupního adresáře tohoto projektu mají zkopírovat satelitní sestavení cíle odkazu.</target>
         <note />
       </trans-unit>
-      <trans-unit id="BoolProperty|CopyLocal|DisplayName">
+      <trans-unit id="BoolProperty|Private|DisplayName">
         <source>Copy Local</source>
         <target state="translated">Kopírovat místně</target>
         <note />
       </trans-unit>
-      <trans-unit id="BoolProperty|CopyLocal|Description">
+      <trans-unit id="BoolProperty|Private|Description">
         <source>Indicates whether the reference will be copied to the output directory.</source>
         <target state="translated">Určuje, jestli se odkaz zkopíruje do výstupního adresáře.</target>
         <note />

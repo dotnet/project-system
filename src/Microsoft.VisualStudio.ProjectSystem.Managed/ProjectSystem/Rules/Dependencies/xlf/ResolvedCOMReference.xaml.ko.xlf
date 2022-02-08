@@ -37,12 +37,12 @@
         <target state="translated">이 참조에 대한 쉼표로 구분된 별칭 목록입니다.</target>
         <note />
       </trans-unit>
-      <trans-unit id="BoolProperty|CopyLocal|DisplayName">
+      <trans-unit id="BoolProperty|Private|DisplayName">
         <source>Copy Local</source>
         <target state="translated">로컬 복사</target>
         <note />
       </trans-unit>
-      <trans-unit id="BoolProperty|CopyLocal|Description">
+      <trans-unit id="BoolProperty|Private|Description">
         <source>Indicates whether the reference will be copied to the output directory.</source>
         <target state="translated">참조를 출력 디렉터리에 복사할지 여부를 나타냅니다.</target>
         <note />

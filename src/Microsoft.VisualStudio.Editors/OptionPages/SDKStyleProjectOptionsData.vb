@@ -18,6 +18,7 @@ Namespace Microsoft.VisualStudio.Editors.OptionPages
         Private _fastUpToDateCheckEnabled As Boolean = True
         Private _fastUpToDateCheckLogLevel As LogLevel = LogLevel.None
         Private _nestingIgnoreSolutionAndProjectProfiles As Boolean
+        Private _preferSingleTargetBuildsOnLaunch As Boolean = False
 
         Public Function Clone() As SDKStyleProjectOptionsData
             Dim clonedData = New SDKStyleProjectOptionsData
@@ -29,6 +30,7 @@ Namespace Microsoft.VisualStudio.Editors.OptionPages
             FastUpToDateCheckEnabled = source.FastUpToDateCheckEnabled
             FastUpToDateCheckLogLevel = source.FastUpToDateCheckLogLevel
             NestingIgnoreSolutionAndProjectProfiles = source.NestingIgnoreSolutionAndProjectProfiles
+            PreferSingleTargetBuildsOnLaunch = source.PreferSingleTargetBuildsOnLaunch
         End Sub
 
         <SharedSettings("ManagedProjectSystem\FastUpToDateCheckEnabled", False)>
@@ -72,6 +74,21 @@ Namespace Microsoft.VisualStudio.Editors.OptionPages
                 End If
 
                 _fastUpToDateCheckLogLevel = value
+                SendPropertyChangedNotification()
+            End Set
+        End Property
+
+        <SharedSettings("ManagedProjectSystem\PreferSingleTargetBuilds", False)>
+        Public Property PreferSingleTargetBuildsOnLaunch As Boolean
+            Get
+                Return _preferSingleTargetBuildsOnLaunch
+            End Get
+            Set
+                If Value = _preferSingleTargetBuildsOnLaunch Then
+                    Return
+                End If
+
+                _preferSingleTargetBuildsOnLaunch = Value
                 SendPropertyChangedNotification()
             End Set
         End Property

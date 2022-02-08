@@ -42,12 +42,12 @@
         <target state="translated">Gibt an, ob die Satellitenassemblys des Verweisziels in das Ausgabeverzeichnis dieses Projekts kopiert werden sollen.</target>
         <note />
       </trans-unit>
-      <trans-unit id="BoolProperty|CopyLocal|DisplayName">
+      <trans-unit id="BoolProperty|Private|DisplayName">
         <source>Copy Local</source>
         <target state="translated">Lokale Kopie</target>
         <note />
       </trans-unit>
-      <trans-unit id="BoolProperty|CopyLocal|Description">
+      <trans-unit id="BoolProperty|Private|Description">
         <source>Indicates whether the reference will be copied to the output directory.</source>
         <target state="translated">Gibt an, ob der Verweis in das Ausgabeverzeichnis kopiert wird.</target>
         <note />

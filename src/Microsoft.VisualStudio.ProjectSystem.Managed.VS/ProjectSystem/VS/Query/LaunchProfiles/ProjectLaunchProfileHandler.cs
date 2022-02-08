@@ -239,6 +239,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
                 newLaunchProfile.Name = propertiesContext.ItemName;
             }
 
+            if (properties.DisplayName)
+            {
+                newLaunchProfile.DisplayName = propertiesContext.ItemName;
+            }
+
             if (properties.CommandName)
             {
                 if (rule.Metadata.TryGetValue(s_commandNameMetadataName, out object? commandNameObj)
