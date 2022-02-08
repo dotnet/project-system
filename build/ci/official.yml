@@ -52,6 +52,7 @@ steps:
 
 # This requires the OptimizationInputs via the 'Publish OptimizationInputs drop' step in the release pipeline.
 # To generate ProfilingInputs for the first time, set this input: ShouldSkipOptimize: true
+# See documentation here: https://devdiv.visualstudio.com/DevDiv/_wiki/wikis/DevDiv.wiki/2602/Build-With-Expired-(or-Without-Prior)-Optimization-Profiling-Data
 # This plugin will restore MicroBuild.Plugins.OptProf which is required to create ProfilingInputs data.
 # The projects include OptProf.targets which uses MicroBuild.Plugins.OptProf to run the target GenerateProfilingInputs on each project.
 - task: MicroBuildOptProfPlugin@6
