@@ -409,12 +409,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
         public async Task IsUpToDateAsync_False_InputChangedBetweenLastCheckAndEarliestOutput()
         {
             // This test covers a race condition described in https://github.com/dotnet/project-system/issues/4014
-            //
-            // t0 Modify input file
-            // t1 Check up-to-date (false) so start a build
-            // t2 Modify input file (during build)
-            // t3 Produce first (earliest) output DLL (from t0 input)
-            // t4 Check incorrectly claims everything up-to-date, as t3 > t2
 
             var projectSnapshot = new Dictionary<string, IProjectRuleSnapshotModel>
             {
@@ -426,38 +420,37 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 [Compile.SchemaName] = SimpleItems("ItemPath1")
             };
 
-            var lastCheckTime = DateTime.UtcNow.AddMinutes(-2);
-            var t0 = DateTime.UtcNow.AddMinutes(-1);
+            // The rule is that no input item should be modified since the last up-to-date check started.
 
-            var itemPath = "C:\\Dev\\Solution\\Project\\ItemPath1";
+            var t0 = DateTime.UtcNow.AddMinutes(-5); // t0 Output file timestamp
+            var t1 = DateTime.UtcNow.AddMinutes(-4); // t1 Input file timestamp
+            var t2 = DateTime.UtcNow.AddMinutes(-3); // t2 Check up-to-date (false) so start a build (setting last checked at time)
+            var t3 = DateTime.UtcNow.AddMinutes(-2); // t3 Modify input file (during build)
+            var t4 = DateTime.UtcNow.AddMinutes(-1); // t4 Produce first (earliest) output DLL (from t0 input)
+                                                     // t5 Check incorrectly claims everything up-to-date, as t3 > t2 (inputTime > lastCheckedTime)
 
-            _fileSystem.AddFile(itemPath, t0);
-            _fileSystem.AddFile("C:\\Dev\\Solution\\Project\\BuiltOutputPath1", t0.AddMinutes(-1));
+            var inputFile = "C:\\Dev\\Solution\\Project\\ItemPath1";
+            var outputPath = "C:\\Dev\\Solution\\Project\\BuiltOutputPath1";
 
-            // Run test (t1)
-            await SetupAsync(projectSnapshot, sourceSnapshot, lastCheckTimeAtUtc: lastCheckTime);
+            _fileSystem.AddFile(outputPath, t0);
+            _fileSystem.AddFile(inputFile, t1);
+
+            // Run test (t2)
+            await SetupAsync(projectSnapshot, sourceSnapshot, lastCheckTimeAtUtc: t2);
 
             await AssertNotUpToDateAsync(
-                $"Input Compile item '{itemPath}' is newer ({t0.ToLocalTime()}) than earliest output 'C:\\Dev\\Solution\\Project\\BuiltOutputPath1' ({t0.AddMinutes(-1).ToLocalTime()}), not up-to-date.",
+                $"Input Compile item '{inputFile}' is newer ({t1.ToLocalTime()}) than earliest output 'C:\\Dev\\Solution\\Project\\BuiltOutputPath1' ({t0.ToLocalTime()}), not up-to-date.",
                 "InputNewerThanEarliestOutput");
 
-            await Task.Delay(50);
+            // Modify input while build in progress (t3)
+            _fileSystem.AddFile(inputFile, t3);
 
-            // Modify input while build in progress (t2)
-            var t2 = DateTime.UtcNow;
-            _fileSystem.AddFile(itemPath, t2);
+            // Update write time of output (t4)
+            _fileSystem.AddFile(outputPath, t4);
 
-            await Task.Delay(50);
-
-            // Update write time of output (t3)
-            var t3 = DateTime.UtcNow;
-            _fileSystem.AddFile("C:\\Dev\\Solution\\Project\\BuiltOutputPath1", t3);
-
-            await Task.Delay(50);
-
-            // Run check again (t4)
+            // Run check again (t5)
             await AssertNotUpToDateAsync(
-                $"Input Compile item 'C:\\Dev\\Solution\\Project\\ItemPath1' ({t2.ToLocalTime()}) has been modified since the last up-to-date check ({_lastCheckTimeAtUtc.ToLocalTime()}), not up-to-date.",
+                $"Input Compile item '{inputFile}' ({t3.ToLocalTime()}) has been modified since the last up-to-date check ({t2.ToLocalTime()}), not up-to-date.",
                 "InputModifiedSinceLastCheck");
         }
 
