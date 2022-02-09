@@ -33,6 +33,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
         internal const string AppliesToExpression = ProjectCapability.DotNet + " + !" + ProjectCapabilities.SharedAssetsProject;
 
         internal const string FastUpToDateCheckIgnoresKindsGlobalPropertyName = "FastUpToDateCheckIgnoresKinds";
+        internal const string TargetFrameworkGlobalPropertyName = "TargetFramework";
 
         internal const string DefaultSetName = "";
         internal const string DefaultKindName = "";
@@ -714,6 +715,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             subscription.UpdateLastCheckedAtUtc();
         }
 
+        private static bool SkipCheckingConfiguration(UpToDateCheckImplicitConfiguredInput state, string? buildTargetFramework)
+        {
+            return !Strings.IsNullOrEmpty(buildTargetFramework) &&
+                state.ProjectConfiguration is not null &&
+                state.ProjectConfiguration.Dimensions.TryGetValue(TargetFrameworkGlobalPropertyName, out string? configurationTargetFramework) &&
+                !buildTargetFramework.Equals(configurationTargetFramework);
+        }
+
         Task<bool> IBuildUpToDateCheckProvider.IsUpToDateAsync(BuildAction buildAction, TextWriter logWriter, CancellationToken cancellationToken)
         {
             return IsUpToDateAsync(buildAction, logWriter, ImmutableDictionary<string, string>.Empty, cancellationToken);
@@ -790,6 +799,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                         }
                     }
 
+                    globalProperties.TryGetValue(TargetFrameworkGlobalPropertyName, out string? buildTargetFramework);
+
                     bool logConfigurations = state.ImplicitInputs.Length > 1 && logger.Level >= LogLevel.Info;
 
                     foreach (UpToDateCheckImplicitConfiguredInput implicitState in state.ImplicitInputs)
@@ -800,7 +811,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                             logger.Indent++;
                         }
 
-                        if (!CheckGlobalConditions(logger, lastCheckedAtUtc, validateFirstRun: !isValidationRun, implicitState) ||
+                        if (SkipCheckingConfiguration(implicitState, buildTargetFramework))
+                        {
+                            // This build is for a specific target framework, and that target framework does not
+                            // correspond to the set of configured input we're considering here. Skip any
+                            // further checks.
+                            if (logConfigurations)
+                            {
+                                logger.Info(nameof(Resources.FUTD_SkippingCheck));
+                            }
+                        }
+                        else if (!CheckGlobalConditions(logger, lastCheckedAtUtc, validateFirstRun: !isValidationRun, implicitState) ||
                             !CheckInputsAndOutputs(logger, lastCheckedAtUtc, timestampCache, implicitState, ignoreKinds, token) ||
                             !CheckMarkers(logger, timestampCache, implicitState) ||
                             !CheckCopyToOutputDirectoryFiles(logger, timestampCache, implicitState, token) ||

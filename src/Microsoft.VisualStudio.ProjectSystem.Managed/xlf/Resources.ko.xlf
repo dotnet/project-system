@@ -237,6 +237,11 @@
         <target state="translated">프로젝트 항목 집합이 최신이 아닌 가장 이른 출력 '{1}'({2})보다 최근에({0}) 변경되었습니다.</target>
         <note>{0} and {2} are datetimes. {1} is a file path.</note>
       </trans-unit>
+      <trans-unit id="FUTD_SkippingCheck">
+        <source>Skipping up-to-date check: not building this configuration.</source>
+        <target state="new">Skipping up-to-date check: not building this configuration.</target>
+        <note />
+      </trans-unit>
       <trans-unit id="FUTD_SkippingIgnoredKindItem_2">
         <source>Skipping '{0}' with ignored Kind="{1}"</source>
         <target state="translated">무시된 Kind="{1}"(으)로 '{0}' 건너뛰기</target>
