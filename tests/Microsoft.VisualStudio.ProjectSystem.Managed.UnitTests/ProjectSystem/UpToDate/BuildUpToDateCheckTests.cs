@@ -110,6 +110,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             string outDir = _outputPath,
             DateTime? lastCheckTimeAtUtc = null,
             DateTime? lastItemsChangedAtUtc = null,
+            DateTime? updateLastCheckedAtUtcValue = null,
             UpToDateCheckImplicitConfiguredInput? upToDateCheckImplicitConfiguredInput = null,
             bool itemRemovedFromSourceSnapshot = false)
         {
@@ -147,13 +148,21 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             _state = new UpToDateCheckConfiguredInput(ImmutableArray.Create(configuredInput));
 
             var subscription = new Mock<BuildUpToDateCheck.ISubscription>(MockBehavior.Strict);
+            
             subscription.Setup(s => s.EnsureInitialized());
-            subscription.Setup(s => s.RunAsync(It.IsAny<Func<UpToDateCheckConfiguredInput, DateTime, CancellationToken, Task<bool>>>(), It.IsAny<bool>(), It.IsAny<CancellationToken>()))
+
+            subscription
+                .Setup(s => s.UpdateLastCheckedAtUtc())
+                .Callback(() => _lastCheckTimeAtUtc = updateLastCheckedAtUtcValue ?? DateTime.UtcNow);
+            
+            subscription
+                .Setup(s => s.RunAsync(It.IsAny<Func<UpToDateCheckConfiguredInput, DateTime, CancellationToken, Task<bool>>>(), It.IsAny<bool>(), It.IsAny<CancellationToken>()))
                 .Returns((Func<UpToDateCheckConfiguredInput, DateTime, CancellationToken, Task<bool>>  func, bool updateLastCheckedAt, CancellationToken token) =>
                 {
                     Assumes.NotNull(_state);
                     return func(_state, _lastCheckTimeAtUtc, token);
                 });
+            
             subscription.Setup(s => s.Dispose());
 
             await _buildUpToDateCheck.ActivateAsync();
@@ -452,6 +461,56 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             await AssertNotUpToDateAsync(
                 $"Input Compile item '{inputFile}' ({t3.ToLocalTime()}) has been modified since the last up-to-date check ({t2.ToLocalTime()}), not up-to-date.",
                 "InputModifiedSinceLastCheck");
+        }
+
+        [Fact]
+        public async Task IsUpToDateAsync_True_RebuildUpdatesLastCheckedTime()
+        {
+            var projectSnapshot = new Dictionary<string, IProjectRuleSnapshotModel>
+            {
+                [UpToDateCheckBuilt.SchemaName] = SimpleItems("BuiltOutputPath1")
+            };
+
+            var sourceSnapshot = new Dictionary<string, IProjectRuleSnapshotModel>
+            {
+                [Compile.SchemaName] = SimpleItems("ItemPath1")
+            };
+
+            // The rule is that no input item should be modified since the last up-to-date check started.
+
+            var t0 = DateTime.UtcNow.AddMinutes(-6); // t0 Output file timestamp
+            var t1 = DateTime.UtcNow.AddMinutes(-5); // t1 Input file timestamp
+            var t2 = DateTime.UtcNow.AddMinutes(-4); // t2 Check up-to-date (false) so start a build (setting last checked at time)
+            var t3 = DateTime.UtcNow.AddMinutes(-3); // t3 Modify input file (during build)
+            var t4 = DateTime.UtcNow.AddMinutes(-2); // t4 start rebuild (setting lastCheckedTime)
+            var t5 = DateTime.UtcNow.AddMinutes(-1); // t5 Produce first (earliest) output DLL (from t0 input)
+                                                     // t6 Check incorrectly claims everything up-to-date, as t3 < t5
+
+            var inputFile = "C:\\Dev\\Solution\\Project\\ItemPath1";
+            var outputPath = "C:\\Dev\\Solution\\Project\\BuiltOutputPath1";
+
+            _fileSystem.AddFile(outputPath, t0);
+            _fileSystem.AddFile(inputFile, t1);
+
+            // Run test (t2)
+            await SetupAsync(projectSnapshot, sourceSnapshot, lastCheckTimeAtUtc: t2, updateLastCheckedAtUtcValue: t4);
+
+            await AssertNotUpToDateAsync(
+                $"Input Compile item '{inputFile}' is newer ({t1.ToLocalTime()}) than earliest output 'C:\\Dev\\Solution\\Project\\BuiltOutputPath1' ({t0.ToLocalTime()}), not up-to-date.",
+                "InputNewerThanEarliestOutput");
+
+            // Modify input while build in progress (t3)
+            _fileSystem.AddFile(inputFile, t3);
+
+            // Rebuild
+            ((IBuildUpToDateCheckProviderInternal)_buildUpToDateCheck).NotifyRebuildStarting();
+
+            // Update write time of output (t5)
+            _fileSystem.AddFile(outputPath, t5);
+
+            // Run check again (t6)
+            await AssertUpToDateAsync(
+                $"No inputs are newer than earliest output '{outputPath}' ({t5.ToLocalTime()}). Newest input is '{inputFile}' ({t3.ToLocalTime()}).");
         }
 
         [Fact]

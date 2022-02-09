@@ -128,10 +128,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
                 if (updateLastCheckedAt)
                 {
-                    _lastCheckedAtUtc = DateTime.UtcNow;
+                    UpdateLastCheckedAtUtc();
                 }
 
                 return result;
+            }
+
+            public void UpdateLastCheckedAtUtc()
+            {
+                _lastCheckedAtUtc = DateTime.UtcNow;
             }
 
             public void EnsureInitialized()
@@ -184,6 +189,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
         internal interface ISubscription : IDisposable
         {
             void EnsureInitialized();
+
+            void UpdateLastCheckedAtUtc();
 
             Task<bool> RunAsync(
                 Func<UpToDateCheckConfiguredInput, DateTime, CancellationToken, Task<bool>> func,

@@ -20,11 +20,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
     [AppliesTo(AppliesToExpression)]
     [Export(typeof(IBuildUpToDateCheckProvider))]
     [Export(typeof(IBuildUpToDateCheckValidator))]
+    [Export(typeof(IBuildUpToDateCheckProviderInternal))]
     [Export(typeof(IActiveConfigurationComponent))]
     [ExportMetadata("BeforeDrainCriticalTasks", true)]
     internal sealed partial class BuildUpToDateCheck
         : IBuildUpToDateCheckProvider2,
           IBuildUpToDateCheckValidator,
+          IBuildUpToDateCheckProviderInternal,
           IActiveConfigurationComponent,
           IDisposable
     {
@@ -703,6 +705,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             }
 
             return true;
+        }
+
+        void IBuildUpToDateCheckProviderInternal.NotifyRebuildStarting()
+        {
+            ISubscription subscription = Volatile.Read(ref _subscription);
+
+            subscription.UpdateLastCheckedAtUtc();
         }
 
         Task<bool> IBuildUpToDateCheckProvider.IsUpToDateAsync(BuildAction buildAction, TextWriter logWriter, CancellationToken cancellationToken)
