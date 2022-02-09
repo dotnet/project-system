@@ -553,7 +553,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 return true;
             }
 
-            string markerFile = _configuredProject.UnconfiguredProject.MakeRooted(state.CopyUpToDateMarkerItem);
+            string outputMarkerFile = _configuredProject.UnconfiguredProject.MakeRooted(state.CopyUpToDateMarkerItem);
 
             if (log.Level >= LogLevel.Verbose)
             {
@@ -570,7 +570,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
                 log.Verbose(nameof(Resources.FUTD_AddingOutputReferenceCopyMarker));
                 log.Indent++;
-                log.VerboseLiteral(markerFile);
+                log.VerboseLiteral(outputMarkerFile);
                 log.Indent--;
             }
 
@@ -584,15 +584,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 return true;
             }
 
-            DateTime? outputMarkerTime = timestampCache.GetTimestampUtc(markerFile);
+            DateTime? outputMarkerTime = timestampCache.GetTimestampUtc(outputMarkerFile);
 
             if (outputMarkerTime != null)
             {
-                log.Info(nameof(Resources.FUTD_WriteTimeOnOutputMarker_2), outputMarkerTime, markerFile);
+                log.Info(nameof(Resources.FUTD_WriteTimeOnOutputMarker_2), outputMarkerTime, outputMarkerFile);
             }
             else
             {
-                log.Info(nameof(Resources.FUTD_NoOutputMarkerExists_1), markerFile);
+                log.Info(nameof(Resources.FUTD_NoOutputMarkerExists_1), outputMarkerFile);
                 return true;
             }
 
