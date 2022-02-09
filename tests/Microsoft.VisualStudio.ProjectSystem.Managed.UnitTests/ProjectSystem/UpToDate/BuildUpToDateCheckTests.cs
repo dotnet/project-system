@@ -514,6 +514,42 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
         }
 
         [Fact]
+        public async Task IsUpToDateAsync_True_NewProjectRebuiltThenBuilt()
+        {
+            var projectSnapshot = new Dictionary<string, IProjectRuleSnapshotModel>
+            {
+                [UpToDateCheckBuilt.SchemaName] = SimpleItems("BuiltOutputPath1")
+            };
+
+            var sourceSnapshot = new Dictionary<string, IProjectRuleSnapshotModel>
+            {
+                [Compile.SchemaName] = SimpleItems("ItemPath1")
+            };
+
+            // The rule is that no input item should be modified since the last up-to-date check started.
+
+            var t0 = DateTime.UtcNow.AddMinutes(-3); // t0 Input file timestamp
+            var t1 = DateTime.UtcNow.AddMinutes(-2); // t1 Rebuild (sets output file timestamp)
+            var t2 = DateTime.UtcNow.AddMinutes(-1); // t2 Check up-to-date (true)
+
+            var inputFile = "C:\\Dev\\Solution\\Project\\ItemPath1";
+            var outputPath = "C:\\Dev\\Solution\\Project\\BuiltOutputPath1";
+
+            _fileSystem.AddFile(inputFile, t0);
+
+            _fileSystem.AddFile(outputPath, t1);
+
+            await SetupAsync(projectSnapshot, sourceSnapshot, updateLastCheckedAtUtcValue: t1);
+
+            // Rebuild (t1)
+            ((IBuildUpToDateCheckProviderInternal)_buildUpToDateCheck).NotifyRebuildStarting();
+
+            // Run test (t2)
+            await AssertUpToDateAsync(
+                $"No inputs are newer than earliest output '{outputPath}' ({t1.ToLocalTime()}). Newest input is '{inputFile}' ({t0.ToLocalTime()}).");
+        }
+
+        [Fact]
         public async Task IsUpToDateAsync_False_CompileItemNewerThanCustomOutput()
         {
             var projectSnapshot = new Dictionary<string, IProjectRuleSnapshotModel>
