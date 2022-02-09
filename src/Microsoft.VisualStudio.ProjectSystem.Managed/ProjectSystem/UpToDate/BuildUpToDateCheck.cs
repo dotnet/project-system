@@ -735,6 +735,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 return TaskResult.False;
             }
 
+            // Cache the last-used set of global properties. We may be asked to validate this up-to-date check
+            // once the build has completed (in ValidateUpToDateAsync), and will re-use the same set of global
+            // properties to ensure parity.
+            _lastGlobalProperties = globalProperties;
+
             return IsUpToDateInternalAsync(logWriter, globalProperties, isValidationRun: false, cancellationToken);
         }
 
@@ -745,11 +750,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             CancellationToken cancellationToken)
         {
             cancellationToken.ThrowIfCancellationRequested();
-
-            // Cache the last-used set of global properties. We may be asked to validate this up-to-date check
-            // once the build has completed (in ValidateUpToDateAsync), and will re-use the same set of global properties
-            // to ensure parity.
-            _lastGlobalProperties = globalProperties;
 
             // Start the stopwatch now, so we include any lock acquisition in the timing
             var sw = Stopwatch.StartNew();
