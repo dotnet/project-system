@@ -63,19 +63,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.Ordering
 
         private IProjectTree? GetNodeToAddTo(IProjectTree node)
         {
-            IProjectTree? target;
-            switch (Action)
+            return Action switch
             {
-                case OrderingMoveAction.MoveAbove:
-                case OrderingMoveAction.MoveBelow:
-                    target = node.Parent;
-                    break;
-                default:
-                    target = node;
-                    break;
-            }
-
-            return target;
+                OrderingMoveAction.MoveAbove or OrderingMoveAction.MoveBelow => node.Parent,
+                _ => node,
+            };
         }
     }
 }

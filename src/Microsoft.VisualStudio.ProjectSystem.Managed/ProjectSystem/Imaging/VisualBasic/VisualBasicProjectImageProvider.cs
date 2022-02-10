@@ -21,18 +21,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.Imaging.VisualBasic
         {
             Requires.NotNullOrEmpty(key, nameof(key));
 
-            switch (key)
+            return key switch
             {
-                case ProjectImageKey.ProjectRoot:
-                    return KnownMonikers.VBProjectNode.ToProjectSystemType();
-
-                case ProjectImageKey.SharedItemsImportFile:
-                case ProjectImageKey.SharedProjectRoot:
-                    return KnownMonikers.VBSharedProject.ToProjectSystemType();
-
-                default:
-                    return null;
-            }
+                ProjectImageKey.ProjectRoot => KnownMonikers.VBProjectNode.ToProjectSystemType(),
+                ProjectImageKey.SharedItemsImportFile or ProjectImageKey.SharedProjectRoot => KnownMonikers.VBSharedProject.ToProjectSystemType(),
+                _ => null
+            };
         }
     }
 }

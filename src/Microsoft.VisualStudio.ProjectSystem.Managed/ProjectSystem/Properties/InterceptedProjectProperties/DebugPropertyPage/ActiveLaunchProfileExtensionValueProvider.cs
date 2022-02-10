@@ -85,31 +85,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
 
         private static void UpdateActiveLaunchProfile(IWritableLaunchProfile activeProfile, string propertyName, string unevaluatedPropertyValue)
         {
-            switch (propertyName)
+            // TODO: Should the result (success or failure) be ignored?
+            bool _ = propertyName switch
             {
-                case AuthenticationModePropertyName:
-                    TrySetOtherProperty(activeProfile, LaunchProfileExtensions.RemoteAuthenticationModeProperty, unevaluatedPropertyValue, string.Empty);
-                    break;
-
-                case NativeDebuggingPropertyName:
-                    TrySetOtherProperty(activeProfile, LaunchProfileExtensions.NativeDebuggingProperty, bool.Parse(unevaluatedPropertyValue), false);
-                    break;
-
-                case RemoteDebugEnabledPropertyName:
-                    TrySetOtherProperty(activeProfile, LaunchProfileExtensions.RemoteDebugEnabledProperty, bool.Parse(unevaluatedPropertyValue), false);
-                    break;
-
-                case RemoteDebugMachinePropertyName:
-                    TrySetOtherProperty(activeProfile, LaunchProfileExtensions.RemoteDebugMachineProperty, unevaluatedPropertyValue, string.Empty);
-                    break;
-
-                case SqlDebuggingPropertyName:
-                    TrySetOtherProperty(activeProfile, LaunchProfileExtensions.SqlDebuggingProperty, bool.Parse(unevaluatedPropertyValue), false);
-                    break;
-
-                default:
-                    throw new InvalidOperationException($"{nameof(ActiveLaunchProfileExtensionValueProvider)} does not handle property '{propertyName}'.");
-            }
+                AuthenticationModePropertyName => TrySetOtherProperty(activeProfile, LaunchProfileExtensions.RemoteAuthenticationModeProperty, unevaluatedPropertyValue, string.Empty),
+                NativeDebuggingPropertyName =>    TrySetOtherProperty(activeProfile, LaunchProfileExtensions.NativeDebuggingProperty, bool.Parse(unevaluatedPropertyValue), false),
+                RemoteDebugEnabledPropertyName => TrySetOtherProperty(activeProfile, LaunchProfileExtensions.RemoteDebugEnabledProperty, bool.Parse(unevaluatedPropertyValue), false),
+                RemoteDebugMachinePropertyName => TrySetOtherProperty(activeProfile, LaunchProfileExtensions.RemoteDebugMachineProperty, unevaluatedPropertyValue, string.Empty),
+                SqlDebuggingPropertyName =>       TrySetOtherProperty(activeProfile, LaunchProfileExtensions.SqlDebuggingProperty, bool.Parse(unevaluatedPropertyValue), false),
+                _ => throw new InvalidOperationException($"{nameof(ActiveLaunchProfileExtensionValueProvider)} does not handle property '{propertyName}'."),
+            };
         }
 
         private static T GetOtherProperty<T>(ILaunchProfile? launchProfile, string propertyName, T defaultValue)

@@ -21,41 +21,27 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
             // The latter issue we can do nothing about, however, to address the former, map these types to a truer form it makes 
             // it easier on implementors and maintainers of this to understand the objects we're talking about.
 
-            switch (extenderCATIDType)
+            return extenderCATIDType switch
             {
-                case ExtenderCATIDType.HierarchyExtensionObject:                                // IVsHierarchy.GetProperty(VSITEMID.Root, VSHPROPID_ExtObjectCATID)
-                case ExtenderCATIDType.AutomationProject:                                       // DTE.Project
-                    return GetExtenderCATID(ExtendeeObject.Project);
+                ExtenderCATIDType.HierarchyExtensionObject or ExtenderCATIDType.AutomationProject => GetExtenderCATID(ExtendeeObject.Project),               // IVsHierarchy.GetProperty(VSITEMID.Root, VSHPROPID_ExtObjectCATID)
+                                                                                                                                                             // DTE.Project
+                ExtenderCATIDType.HierarchyBrowseObject or ExtenderCATIDType.ProjectBrowseObject => GetExtenderCATID(ExtendeeObject.ProjectBrowseObject),    // IVsHierarchy.GetProperty(VSHPROPID_BrowseObjectCATID)
+                                                                                                                                                             // EnvDTE.Project.Properties
+                ExtenderCATIDType.ConfigurationBrowseObject => GetExtenderCATID(ExtendeeObject.Configuration),                                               // IVsCfgProvider2.GetCfgProviderProperty(VSCFGPROPID_IntrinsicExtenderCATID)/DTE.Configuration
+                ExtenderCATIDType.HierarchyConfigurationBrowseObject or ExtenderCATIDType.ProjectConfigurationBrowseObject => GetExtenderCATID(ExtendeeObject.ConfigurationBrowseObject), // IVsHierarchy.GetProperty(VSHPROPID_CfgBrowseObjectCATID)
+                                                                                                                                                             // EnvDTE.Configuration.Properties
+                ExtenderCATIDType.AutomationProjectItem => GetExtenderCATID(ExtendeeObject.ProjectItem),                                                     // EnvDTE.ProjectItem
+                ExtenderCATIDType.AutomationReference or ExtenderCATIDType.ReferenceBrowseObject => GetExtenderCATID(ExtendeeObject.ReferenceBrowseObject),  // VSLangProject.Reference
+                                                                                                                                                             // EnvDTE.ProjectItem.Properties (when reference)
+                ExtenderCATIDType.FileBrowseObject => GetExtenderCATID(ExtendeeObject.FileBrowseObject),                                                     // EnvDTE.ProjectItem.Properties (when file)
+                ExtenderCATIDType.AutomationFolderProperties or ExtenderCATIDType.FolderBrowseObject => GetExtenderCATID(ExtendeeObject.FolderBrowseObject), // FolderProperties or EnvDTE.ProjectItem.Properties (when folder)
+                ExtenderCATIDType.Unknown or _ => UnknownOrDefault()                                                                                         // EnvDTE.ProjectItem.Properties (when not file, folder, reference)
+            };
 
-                case ExtenderCATIDType.HierarchyBrowseObject:                                   // IVsHierarchy.GetProperty(VSHPROPID_BrowseObjectCATID)
-                case ExtenderCATIDType.ProjectBrowseObject:                                     // EnvDTE.Project.Properties
-                    return GetExtenderCATID(ExtendeeObject.ProjectBrowseObject);
-
-                case ExtenderCATIDType.ConfigurationBrowseObject:                               // IVsCfgProvider2.GetCfgProviderProperty(VSCFGPROPID_IntrinsicExtenderCATID)/DTE.Configuration
-                    return GetExtenderCATID(ExtendeeObject.Configuration);
-
-                case ExtenderCATIDType.HierarchyConfigurationBrowseObject:                      // IVsHierarchy.GetProperty(VSHPROPID_CfgBrowseObjectCATID)
-                case ExtenderCATIDType.ProjectConfigurationBrowseObject:                        // EnvDTE.Configuration.Properties
-                    return GetExtenderCATID(ExtendeeObject.ConfigurationBrowseObject);
-
-                case ExtenderCATIDType.AutomationProjectItem:                                   // EnvDTE.ProjectItem
-                    return GetExtenderCATID(ExtendeeObject.ProjectItem);
-
-                case ExtenderCATIDType.AutomationReference:                                     // VSLangProject.Reference
-                case ExtenderCATIDType.ReferenceBrowseObject:                                   // EnvDTE.ProjectItem.Properties (when reference)
-                    return GetExtenderCATID(ExtendeeObject.ReferenceBrowseObject);
-
-                case ExtenderCATIDType.FileBrowseObject:                                        // EnvDTE.ProjectItem.Properties (when file)
-                    return GetExtenderCATID(ExtendeeObject.FileBrowseObject);
-
-                case ExtenderCATIDType.AutomationFolderProperties:                              // FolderProperties
-                case ExtenderCATIDType.FolderBrowseObject:                                      // EnvDTE.ProjectItem.Properties (when folder)
-                    return GetExtenderCATID(ExtendeeObject.FolderBrowseObject);
-
-                default:
-                case ExtenderCATIDType.Unknown:                                                 // EnvDTE.ProjectItem.Properties (when not file, folder, reference)
-                    BCLDebug.Assert(extenderCATIDType == ExtenderCATIDType.Unknown, $"Unrecognized CATID type {extenderCATIDType}");
-                    return null;
+            string? UnknownOrDefault()
+            {
+                BCLDebug.Assert(extenderCATIDType == ExtenderCATIDType.Unknown, $"Unrecognized CATID type {extenderCATIDType}");
+                return null;
             }
         }
 
