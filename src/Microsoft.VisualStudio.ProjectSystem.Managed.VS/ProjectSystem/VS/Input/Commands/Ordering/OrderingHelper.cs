@@ -34,7 +34,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.Ordering
                 ImmutableArray<ProjectItemElement> addedElements = GetAddedItemElements(previousIncludes, project);
 
                 // TODO: Should the result (success or failure) be ignored?
-                bool _ = action switch
+                _ = action switch
                 {
                     OrderingMoveAction.MoveToTop => TryMoveElementsToTop(project, addedElements, target),
                     OrderingMoveAction.MoveAbove => TryMoveElementsAbove(project, addedElements, target),
