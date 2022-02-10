@@ -72,7 +72,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         public void OnSetPropertyValue(string propertyName, string propertyValue, IWritableLaunchProfile launchProfile, ImmutableDictionary<string, object> globalSettings, Rule? rule)
         {
             // TODO: Should the result (success or failure) be ignored?
-            bool _ = propertyName switch
+            _ = propertyName switch
             {
                 AuthenticationModePropertyName => TrySetOtherProperty(launchProfile, LaunchProfileExtensions.RemoteAuthenticationModeProperty, propertyValue, string.Empty),
                 HotReloadEnabledPropertyName =>   TrySetOtherProperty(launchProfile, LaunchProfileExtensions.HotReloadEnabledProperty, bool.Parse(propertyValue), true),

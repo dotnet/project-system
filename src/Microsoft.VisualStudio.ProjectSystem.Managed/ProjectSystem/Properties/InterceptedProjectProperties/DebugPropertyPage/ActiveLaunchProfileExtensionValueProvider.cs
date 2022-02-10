@@ -86,7 +86,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         private static void UpdateActiveLaunchProfile(IWritableLaunchProfile activeProfile, string propertyName, string unevaluatedPropertyValue)
         {
             // TODO: Should the result (success or failure) be ignored?
-            bool _ = propertyName switch
+            _ = propertyName switch
             {
                 AuthenticationModePropertyName => TrySetOtherProperty(activeProfile, LaunchProfileExtensions.RemoteAuthenticationModeProperty, unevaluatedPropertyValue, string.Empty),
                 NativeDebuggingPropertyName =>    TrySetOtherProperty(activeProfile, LaunchProfileExtensions.NativeDebuggingProperty, bool.Parse(unevaluatedPropertyValue), false),

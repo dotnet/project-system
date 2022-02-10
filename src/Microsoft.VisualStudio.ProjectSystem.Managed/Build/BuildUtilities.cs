@@ -34,7 +34,11 @@ namespace Microsoft.VisualStudio.Build
             // <TargetFrameworks>net461;net452</TargetFrameworks>
             // <TargetFrameworks Condition = "'$(BuildingInsideVisualStudio)' == 'true'">net461</TargetFrameworks>
 
-            return element.Condition is "" or "true" or "'$(OS)' == 'Windows_NT'" or "'$(BuildingInsideVisualStudio)' == 'true'";
+            return element.Condition is
+                "" or
+                "true" or
+                "'$(OS)' == 'Windows_NT'" or
+                "'$(BuildingInsideVisualStudio)' == 'true'";
         }
 
         /// <summary>
