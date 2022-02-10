@@ -20,11 +20,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
     [AppliesTo(AppliesToExpression)]
     [Export(typeof(IBuildUpToDateCheckProvider))]
     [Export(typeof(IBuildUpToDateCheckValidator))]
+    [Export(typeof(IBuildUpToDateCheckProviderInternal))]
     [Export(typeof(IActiveConfigurationComponent))]
     [ExportMetadata("BeforeDrainCriticalTasks", true)]
     internal sealed partial class BuildUpToDateCheck
         : IBuildUpToDateCheckProvider2,
           IBuildUpToDateCheckValidator,
+          IBuildUpToDateCheckProviderInternal,
           IActiveConfigurationComponent,
           IDisposable
     {
@@ -705,6 +707,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             return true;
         }
 
+        void IBuildUpToDateCheckProviderInternal.NotifyRebuildStarting()
+        {
+            ISubscription subscription = Volatile.Read(ref _subscription);
+
+            subscription.UpdateLastCheckedAtUtc();
+        }
+
         Task<bool> IBuildUpToDateCheckProvider.IsUpToDateAsync(BuildAction buildAction, TextWriter logWriter, CancellationToken cancellationToken)
         {
             return IsUpToDateAsync(buildAction, logWriter, ImmutableDictionary<string, string>.Empty, cancellationToken);
@@ -735,6 +744,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 return TaskResult.False;
             }
 
+            // Cache the last-used set of global properties. We may be asked to validate this up-to-date check
+            // once the build has completed (in ValidateUpToDateAsync), and will re-use the same set of global
+            // properties to ensure parity.
+            _lastGlobalProperties = globalProperties;
+
             return IsUpToDateInternalAsync(logWriter, globalProperties, isValidationRun: false, cancellationToken);
         }
 
@@ -745,11 +759,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             CancellationToken cancellationToken)
         {
             cancellationToken.ThrowIfCancellationRequested();
-
-            // Cache the last-used set of global properties. We may be asked to validate this up-to-date check
-            // once the build has completed (in ValidateUpToDateAsync), and will re-use the same set of global properties
-            // to ensure parity.
-            _lastGlobalProperties = globalProperties;
 
             // Start the stopwatch now, so we include any lock acquisition in the timing
             var sw = Stopwatch.StartNew();
