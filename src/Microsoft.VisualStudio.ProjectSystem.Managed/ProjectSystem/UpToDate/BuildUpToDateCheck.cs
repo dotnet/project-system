@@ -9,6 +9,7 @@ using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.VisualStudio.Buffers.PooledObjects;
 using Microsoft.VisualStudio.IO;
 using Microsoft.VisualStudio.ProjectSystem.Build;
 using Microsoft.VisualStudio.Telemetry;
@@ -776,7 +777,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
             return await subscription.RunAsync(CheckAsync, updateLastCheckedAt: !isValidationRun, cancellationToken);
 
-            async Task<bool> CheckAsync(UpToDateCheckConfiguredInput state, DateTime lastCheckedAtUtc, CancellationToken token)
+            async Task<(bool, ImmutableArray<ProjectConfiguration>)> CheckAsync(UpToDateCheckConfiguredInput state, IReadOnlyDictionary<ProjectConfiguration, DateTime> lastCheckedAtUtc, CancellationToken token)
             {
                 token.ThrowIfCancellationRequested();
 
@@ -803,6 +804,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
                     bool logConfigurations = state.ImplicitInputs.Length > 1 && logger.Level >= LogLevel.Info;
 
+                    PooledArray<ProjectConfiguration> checkedConfigurationBuilder = PooledArray<ProjectConfiguration>.GetInstance(state.ImplicitInputs.Length);
+
                     foreach (UpToDateCheckImplicitConfiguredInput implicitState in state.ImplicitInputs)
                     {
                         if (logConfigurations)
@@ -821,13 +824,23 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                                 logger.Info(nameof(Resources.FUTD_SkippingCheck));
                             }
                         }
-                        else if (!CheckGlobalConditions(logger, lastCheckedAtUtc, validateFirstRun: !isValidationRun, implicitState) ||
-                            !CheckInputsAndOutputs(logger, lastCheckedAtUtc, timestampCache, implicitState, ignoreKinds, token) ||
-                            !CheckMarkers(logger, timestampCache, implicitState) ||
-                            !CheckCopyToOutputDirectoryFiles(logger, timestampCache, implicitState, token) ||
-                            !CheckCopiedOutputFiles(logger, timestampCache, implicitState, token))
+                        else
                         {
-                            return false;
+                            checkedConfigurationBuilder.Add(implicitState.ProjectConfiguration);
+                            
+                            if (!lastCheckedAtUtc.TryGetValue(implicitState.ProjectConfiguration, out DateTime configurationLastCheckedAtUtc))
+                            {
+                                configurationLastCheckedAtUtc = DateTime.MinValue;
+                            }
+
+                            if (!CheckGlobalConditions(logger, configurationLastCheckedAtUtc, validateFirstRun: !isValidationRun, implicitState) ||
+                                !CheckInputsAndOutputs(logger, configurationLastCheckedAtUtc, timestampCache, implicitState, ignoreKinds, token) ||
+                                !CheckMarkers(logger, timestampCache, implicitState) ||
+                                !CheckCopyToOutputDirectoryFiles(logger, timestampCache, implicitState, token) ||
+                                !CheckCopiedOutputFiles(logger, timestampCache, implicitState, token))
+                            {
+                                return (false, checkedConfigurationBuilder.ToImmutableAndFree());
+                            }
                         }
 
                         if (logConfigurations)
@@ -837,11 +850,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                     }
 
                     logger.UpToDate();
-                    return true;
+                    return (true, checkedConfigurationBuilder.ToImmutableAndFree());
                 }
                 catch (Exception ex)
                 {
-                    return logger.Fail("Exception", nameof(Resources.FUTD_Exception_1), ex);
+                    return (logger.Fail("Exception", nameof(Resources.FUTD_Exception_1), ex), ImmutableArray<ProjectConfiguration>.Empty);
                 }
                 finally
                 {

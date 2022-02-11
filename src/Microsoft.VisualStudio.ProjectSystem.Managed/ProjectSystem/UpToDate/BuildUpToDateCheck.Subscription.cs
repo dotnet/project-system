@@ -1,6 +1,8 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
 using System;
+using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Threading.Tasks.Dataflow;
@@ -58,7 +60,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             /// in that compilation. We use this property as a proxy for compilation start time, whereas
             /// the outputs represent compilation end time.
             /// </remarks>
-            private DateTime _lastCheckedAtUtc = DateTime.MinValue;
+            //private DateTime _lastCheckedAtUtc = DateTime.MinValue;
+            private ImmutableDictionary<ProjectConfiguration, DateTime> _lastCheckedAtUtc = ImmutableDictionary<ProjectConfiguration, DateTime>.Empty;
 
             /// <summary>
             /// Lazily constructed Dataflow subscription. Set back to <see langword="null"/> in <see cref="Dispose"/>.
@@ -81,7 +84,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             }
 
             public async Task<bool> RunAsync(
-                Func<UpToDateCheckConfiguredInput, DateTime, CancellationToken, Task<bool>> func,
+                Func<UpToDateCheckConfiguredInput, IReadOnlyDictionary<ProjectConfiguration, DateTime>, CancellationToken, Task<(bool UpToDate, ImmutableArray<ProjectConfiguration> CheckedConfigurations)>> func,
                 bool updateLastCheckedAt,
                 CancellationToken cancellationToken)
             {
@@ -124,19 +127,29 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                         cancellationToken: token);
                 }
 
-                bool result = await func(state.Value, _lastCheckedAtUtc, token);
+                (bool upToDate, ImmutableArray<ProjectConfiguration> checkedConfigurations) = await func(state.Value, _lastCheckedAtUtc, token);
 
                 if (updateLastCheckedAt)
                 {
-                    UpdateLastCheckedAtUtc();
+                    UpdateLastCheckedAtUtc(checkedConfigurations);
                 }
 
-                return result;
+                return upToDate;
             }
 
             public void UpdateLastCheckedAtUtc()
             {
-                _lastCheckedAtUtc = DateTime.UtcNow;
+                UpdateLastCheckedAtUtc(_lastCheckedAtUtc.Keys);
+            }
+
+            public void UpdateLastCheckedAtUtc(IEnumerable<ProjectConfiguration> checkedProjectConfigurations)
+            {
+                DateTime utcNow = DateTime.UtcNow;
+
+                foreach (ProjectConfiguration configuration in checkedProjectConfigurations)
+                {
+                    _lastCheckedAtUtc = _lastCheckedAtUtc.SetItem(configuration, utcNow);
+                }
             }
 
             public void EnsureInitialized()
@@ -192,8 +205,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
             void UpdateLastCheckedAtUtc();
 
+            void UpdateLastCheckedAtUtc(IEnumerable<ProjectConfiguration> checkedProjectConfigurations);
+
             Task<bool> RunAsync(
-                Func<UpToDateCheckConfiguredInput, DateTime, CancellationToken, Task<bool>> func,
+                Func<UpToDateCheckConfiguredInput, IReadOnlyDictionary<ProjectConfiguration, DateTime>, CancellationToken, Task<(bool UpToDate, ImmutableArray<ProjectConfiguration> CheckedConfigurations)>> func,
                 bool updateLastCheckedAt,
                 CancellationToken cancellationToken);
         }

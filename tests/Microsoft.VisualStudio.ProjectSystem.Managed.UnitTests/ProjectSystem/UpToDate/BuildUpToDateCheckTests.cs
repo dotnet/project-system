@@ -42,7 +42,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
         private bool _isFastUpToDateCheckEnabled = true;
 
         private UpToDateCheckConfiguredInput? _state;
-        private DateTime _lastCheckTimeAtUtc = DateTime.MinValue;
+        private Dictionary<ProjectConfiguration, DateTime> _lastCheckTimeAtUtc = new();
 
         public BuildUpToDateCheckTests(ITestOutputHelper output)
         {
@@ -116,7 +116,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
         {
             upToDateCheckImplicitConfiguredInput ??= UpToDateCheckImplicitConfiguredInput.CreateEmpty(ProjectConfigurationFactory.Create("testConfiguration"));
 
-            _lastCheckTimeAtUtc = lastCheckTimeAtUtc ?? DateTime.MinValue;
+            _lastCheckTimeAtUtc[upToDateCheckImplicitConfiguredInput.ProjectConfiguration] = lastCheckTimeAtUtc ?? DateTime.MinValue;
             
             projectSnapshot ??= new Dictionary<string, IProjectRuleSnapshotModel>();
 
@@ -153,14 +153,25 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
             subscription
                 .Setup(s => s.UpdateLastCheckedAtUtc())
-                .Callback(() => _lastCheckTimeAtUtc = updateLastCheckedAtUtcValue ?? DateTime.UtcNow);
-            
+                .Callback(() => _lastCheckTimeAtUtc[upToDateCheckImplicitConfiguredInput.ProjectConfiguration] = updateLastCheckedAtUtcValue ?? DateTime.UtcNow);
+
             subscription
-                .Setup(s => s.RunAsync(It.IsAny<Func<UpToDateCheckConfiguredInput, DateTime, CancellationToken, Task<bool>>>(), It.IsAny<bool>(), It.IsAny<CancellationToken>()))
-                .Returns((Func<UpToDateCheckConfiguredInput, DateTime, CancellationToken, Task<bool>>  func, bool updateLastCheckedAt, CancellationToken token) =>
+                .Setup(s => s.UpdateLastCheckedAtUtc(It.IsAny<IEnumerable<ProjectConfiguration>>()))
+                .Callback((IEnumerable<ProjectConfiguration> configs) =>
+                {
+                    foreach (var config in configs)
+                    {
+                        _lastCheckTimeAtUtc[config] = updateLastCheckedAtUtcValue ?? DateTime.UtcNow;
+                    }
+                });
+
+            subscription
+                .Setup(s => s.RunAsync(It.IsAny<Func<UpToDateCheckConfiguredInput, IReadOnlyDictionary<ProjectConfiguration, DateTime>, CancellationToken, Task<(bool, ImmutableArray<ProjectConfiguration>)>>>(), It.IsAny<bool>(), It.IsAny<CancellationToken>()))
+                .Returns(async (Func<UpToDateCheckConfiguredInput, IReadOnlyDictionary<ProjectConfiguration, DateTime>, CancellationToken, Task<(bool, ImmutableArray<ProjectConfiguration>)>>  func, bool updateLastCheckedAt, CancellationToken token) =>
                 {
                     Assumes.NotNull(_state);
-                    return func(_state, _lastCheckTimeAtUtc, token);
+                    var result = await func(_state, _lastCheckTimeAtUtc, token);
+                    return result.Item1;
                 });
             
             subscription.Setup(s => s.Dispose());
