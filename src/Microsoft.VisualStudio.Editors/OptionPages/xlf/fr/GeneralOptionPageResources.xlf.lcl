@@ -73,6 +73,15 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
+      <Item ItemId=";General_MultiTargetingSettings_Title" ItemType="0" PsrId="308" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[Multi-Targeting Settings]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Paramètres multi-ciblage]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
       <Item ItemId=";General_NestingIgnoreSolutionAndProjectProfiles" ItemType="0" PsrId="308" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[Ignore solution and project settings]]></Val>
@@ -87,6 +96,24 @@
           <Val><![CDATA[File Nesting Settings]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
             <Val><![CDATA[Paramètres d'imbrication de fichiers]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";General_PreferSingleTargetBuildsOnLaunch" ItemType="0" PsrId="308" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[Prefer single-target builds when starting a project.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Préférer les builds à cible unique lors du démarrage d’un projet.]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";General_PreferSingleTargetBuildsOnLaunchDescription" ItemType="0" PsrId="308" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[When starting a project that targets multiple .NET frameworks, the build time can be reduced by limiting the build to a single framework.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Lors du démarrage d’un projet qui cible plusieurs frameworks .NET, le temps de génération peut être réduit en limitant la génération à un seul framework.]]></Val>
           </Tgt>
         </Str>
         <Disp Icon="Str" />
