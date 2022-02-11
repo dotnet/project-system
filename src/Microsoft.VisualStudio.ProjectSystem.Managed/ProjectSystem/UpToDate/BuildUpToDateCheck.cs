@@ -796,9 +796,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                     {
                         if (logConfigurations)
                         {
-                            // Only null when the FUTD check is disabled. If we get here, we are not disabled.
-                            Assumes.NotNull(implicitState.ProjectConfiguration);
-
                             logger.Info(nameof(Resources.FUTD_CheckingConfiguration_1), implicitState.ProjectConfiguration.GetDisplayString());
                             logger.Indent++;
                         }

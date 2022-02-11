@@ -22,27 +22,30 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             return new UpToDateCheckImplicitConfiguredInput(projectConfiguration);
         }
 
-        public static UpToDateCheckImplicitConfiguredInput Disabled { get; } = new UpToDateCheckImplicitConfiguredInput(
-            projectConfiguration:                         null,
-            msBuildProjectFullPath:                       null,
-            msBuildProjectDirectory:                      null,
-            copyUpToDateMarkerItem:                       null,
-            outputRelativeOrFullPath:                     null,
-            newestImportInput:                            null,
-            isDisabled:                                   true,
-            inputSourceItemTypes:                         ImmutableArray<string>.Empty,
-            inputSourceItemsByItemType:                   ImmutableDictionary<string, ImmutableArray<UpToDateCheckInputItem>>.Empty,
-            upToDateCheckInputItemsByKindBySetName:       ImmutableDictionary<string, ImmutableDictionary<string, ImmutableArray<string>>>.Empty,
-            upToDateCheckOutputItemsByKindBySetName:      ImmutableDictionary<string, ImmutableDictionary<string, ImmutableArray<string>>>.Empty,
-            upToDateCheckBuiltItemsByKindBySetName:       ImmutableDictionary<string, ImmutableDictionary<string, ImmutableArray<string>>>.Empty,
-            copiedOutputFiles:                            ImmutableArray<(string DestinationRelative, string SourceRelative)>.Empty,
-            resolvedAnalyzerReferencePaths:               ImmutableArray<string>.Empty,
-            resolvedCompilationReferencePaths:            ImmutableArray<string>.Empty,
-            copyReferenceInputs:                          ImmutableArray<string>.Empty,
-            lastItemsChangedAtUtc:                        DateTime.MinValue,
-            lastItemChanges:                              ImmutableArray<(bool IsAdd, string ItemType, UpToDateCheckInputItem)>.Empty,
-            itemHash:                                     null,
-            wasStateRestored:                             false);
+        public static UpToDateCheckImplicitConfiguredInput CreateDisabled(ProjectConfiguration projectConfiguration)
+        {
+            return new UpToDateCheckImplicitConfiguredInput(
+                projectConfiguration: projectConfiguration,
+                msBuildProjectFullPath: null,
+                msBuildProjectDirectory: null,
+                copyUpToDateMarkerItem: null,
+                outputRelativeOrFullPath: null,
+                newestImportInput: null,
+                isDisabled: true,
+                inputSourceItemTypes: ImmutableArray<string>.Empty,
+                inputSourceItemsByItemType: ImmutableDictionary<string, ImmutableArray<UpToDateCheckInputItem>>.Empty,
+                upToDateCheckInputItemsByKindBySetName: ImmutableDictionary<string, ImmutableDictionary<string, ImmutableArray<string>>>.Empty,
+                upToDateCheckOutputItemsByKindBySetName: ImmutableDictionary<string, ImmutableDictionary<string, ImmutableArray<string>>>.Empty,
+                upToDateCheckBuiltItemsByKindBySetName: ImmutableDictionary<string, ImmutableDictionary<string, ImmutableArray<string>>>.Empty,
+                copiedOutputFiles: ImmutableArray<(string DestinationRelative, string SourceRelative)>.Empty,
+                resolvedAnalyzerReferencePaths: ImmutableArray<string>.Empty,
+                resolvedCompilationReferencePaths: ImmutableArray<string>.Empty,
+                copyReferenceInputs: ImmutableArray<string>.Empty,
+                lastItemsChangedAtUtc: DateTime.MinValue,
+                lastItemChanges: ImmutableArray<(bool IsAdd, string ItemType, UpToDateCheckInputItem)>.Empty,
+                itemHash: null,
+                wasStateRestored: false);
+        }
 
         /// <summary>
         /// Gets the project configuration for this configured data snapshot.
@@ -51,7 +54,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
         /// Useful when a project multi-targets and we want to differentiate targets in log output.
         /// <see langword="null"/> when the up-to-date check is disabled.
         /// </remarks>
-        public ProjectConfiguration? ProjectConfiguration { get; }
+        public ProjectConfiguration ProjectConfiguration { get; }
 
         public string? MSBuildProjectFullPath { get; }
 
@@ -132,7 +135,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
         /// </summary>
         public ImmutableArray<string> CopyReferenceInputs { get; }
 
-        private UpToDateCheckImplicitConfiguredInput(ProjectConfiguration? projectConfiguration)
+        private UpToDateCheckImplicitConfiguredInput(ProjectConfiguration projectConfiguration)
         {
             var emptyItemBySetName = ImmutableDictionary.Create<string, ImmutableDictionary<string, ImmutableArray<string>>>(BuildUpToDateCheck.SetNameComparer);
 
@@ -152,7 +155,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
         }
 
         private UpToDateCheckImplicitConfiguredInput(
-            ProjectConfiguration? projectConfiguration,
+            ProjectConfiguration projectConfiguration,
             string? msBuildProjectFullPath,
             string? msBuildProjectDirectory,
             string? copyUpToDateMarkerItem,
@@ -220,7 +223,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
             if (isDisabled)
             {
-                return Disabled;
+                return CreateDisabled(ProjectConfiguration);
             }
 
             string? msBuildProjectFullPath = jointRuleUpdate.CurrentState.GetPropertyOrDefault(ConfigurationGeneral.SchemaName, ConfigurationGeneral.MSBuildProjectFullPathProperty, MSBuildProjectFullPath);
