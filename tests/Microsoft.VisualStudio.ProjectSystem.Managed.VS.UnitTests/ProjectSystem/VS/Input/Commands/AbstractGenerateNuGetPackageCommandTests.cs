@@ -4,6 +4,7 @@ using System;
 using System.Collections.Immutable;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.ProjectSystem.Build;
+using Microsoft.VisualStudio.ProjectSystem.VS.Build;
 using Microsoft.VisualStudio.Shell.Interop;
 using Xunit;
 
@@ -14,13 +15,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
         [Fact]
         public void Constructor_NullAsUnconfiguredProject_ThrowsArgumentNull()
         {
-            Assert.Throws<ArgumentNullException>(() => CreateInstanceCore(null!, IProjectThreadingServiceFactory.Create(), IVsServiceFactory.Create<SVsSolutionBuildManager, IVsSolutionBuildManager2>(null!), CreateGeneratePackageOnBuildPropertyProvider()));
+            Assert.Throws<ArgumentNullException>(() => CreateInstanceCore(null!, IProjectThreadingServiceFactory.Create(), ISolutionBuildManagerFactory.Create(), CreateGeneratePackageOnBuildPropertyProvider()));
         }
 
         [Fact]
         public void Constructor_NullAsProjectThreadingServiceFactory_ThrowsArgumentNull()
         {
-            Assert.Throws<ArgumentNullException>(() => CreateInstanceCore(UnconfiguredProjectFactory.Create(), null!, IVsServiceFactory.Create<SVsSolutionBuildManager, IVsSolutionBuildManager2>(null!), CreateGeneratePackageOnBuildPropertyProvider()));
+            Assert.Throws<ArgumentNullException>(() => CreateInstanceCore(UnconfiguredProjectFactory.Create(), null!, ISolutionBuildManagerFactory.Create(), CreateGeneratePackageOnBuildPropertyProvider()));
         }
 
         [Fact]
@@ -32,7 +33,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
         [Fact]
         public void Constructor_NullAsGeneratePackageOnBuildPropertyProvider_ThrowsArgumentNull()
         {
-            Assert.Throws<ArgumentNullException>(() => CreateInstanceCore(UnconfiguredProjectFactory.Create(), IProjectThreadingServiceFactory.Create(), IVsServiceFactory.Create<SVsSolutionBuildManager, IVsSolutionBuildManager2>(null!), null!));
+            Assert.Throws<ArgumentNullException>(() => CreateInstanceCore(UnconfiguredProjectFactory.Create(), IProjectThreadingServiceFactory.Create(), ISolutionBuildManagerFactory.Create(), null!));
         }
 
         [Fact]
@@ -140,7 +141,7 @@ Root (flags: {ProjectRoot})
 
         internal AbstractGenerateNuGetPackageCommand CreateInstance(
             GeneratePackageOnBuildPropertyProvider? generatePackageOnBuildPropertyProvider = null,
-            IVsSolutionBuildManager2? buildManager = null,
+            ISolutionBuildManager? solutionBuildManager = null,
             IVsUpdateSolutionEvents? solutionEventsListener = null,
             bool isBuilding = false,
             bool cancelBuild = false)
@@ -148,11 +149,10 @@ Root (flags: {ProjectRoot})
             var hierarchy = IVsHierarchyFactory.Create();
             var project = UnconfiguredProjectFactory.Create(hierarchy);
             var threadingService = IProjectThreadingServiceFactory.Create();
-            buildManager ??= IVsSolutionBuildManager2Factory.Create(solutionEventsListener, hierarchy, isBuilding, cancelBuild);
-            var serviceProvider = IVsServiceFactory.Create<SVsSolutionBuildManager, IVsSolutionBuildManager2>(buildManager);
+            solutionBuildManager ??= ISolutionBuildManagerFactory.Create(solutionEventsListener, hierarchy, isBuilding, cancelBuild);
             generatePackageOnBuildPropertyProvider ??= CreateGeneratePackageOnBuildPropertyProvider();
 
-            return CreateInstanceCore(project, threadingService, serviceProvider, generatePackageOnBuildPropertyProvider);
+            return CreateInstanceCore(project, threadingService, solutionBuildManager, generatePackageOnBuildPropertyProvider);
         }
 
         private static GeneratePackageOnBuildPropertyProvider CreateGeneratePackageOnBuildPropertyProvider(IProjectService? projectService = null)
@@ -164,7 +164,7 @@ Root (flags: {ProjectRoot})
         internal abstract AbstractGenerateNuGetPackageCommand CreateInstanceCore(
             UnconfiguredProject project,
             IProjectThreadingService threadingService,
-            IVsService<SVsSolutionBuildManager, IVsSolutionBuildManager2> vsSolutionBuildManagerService,
+            ISolutionBuildManager solutionBuildManager,
             GeneratePackageOnBuildPropertyProvider generatePackageOnBuildPropertyProvider);
     }
 }

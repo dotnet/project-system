@@ -58,18 +58,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.FSharp
                     {
                         // not an option, should be a regular file
                         string extension = Path.GetExtension(arg).ToLowerInvariant();
-                        switch (extension)
+                        if (extension is
+                            ".fs" or
+                            ".fsi" or
+                            ".fsx" or
+                            ".fsscript" or
+                            ".ml" or
+                            ".mli")
                         {
-                            case ".fs":
-                            case ".fsi":
-                            case ".fsx":
-                            case ".fsscript":
-                            case ".ml":
-                            case ".mli":
-                                sourceFiles.Add(new CommandLineSourceFile(arg, isScript: (extension == ".fsx") || (extension == ".fsscript")));
-                                break;
-                            default:
-                                break;
+                            sourceFiles.Add(new CommandLineSourceFile(arg, isScript: (extension == ".fsx") || (extension == ".fsscript")));
                         }
                     }
                     else

@@ -11,7 +11,6 @@ using Microsoft.VisualStudio.Composition;
 using Microsoft.VisualStudio.ProjectSystem.Build;
 using Microsoft.VisualStudio.ProjectSystem.UpToDate;
 using Microsoft.VisualStudio.Shell.Interop;
-using Microsoft.VisualStudio.Threading;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Build.Diagnostics
 {
@@ -49,13 +48,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build.Diagnostics
             public void OnProjectBuildCompleted()
             {
                 _project.Services.ThreadingPolicy.RunAndForget(
-                    async () =>
-                    {
-                        await TaskScheduler.Default;
-
-                        await CheckAsync(_projectAsynchronousTasksService.UnloadCancellationToken);
-                    },
-                    unconfiguredProject: _project);
+                    () => CheckAsync(_projectAsynchronousTasksService.UnloadCancellationToken),
+                    unconfiguredProject: _project,
+                    options: ForkOptions.StartOnThreadPool | ForkOptions.CancelOnUnload | ForkOptions.NoAssistanceMask);
 
                 return;
 

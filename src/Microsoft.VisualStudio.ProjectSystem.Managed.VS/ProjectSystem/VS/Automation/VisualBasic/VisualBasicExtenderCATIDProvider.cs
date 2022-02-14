@@ -18,33 +18,22 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation.VisualBasic
 
         protected override string GetExtenderCATID(ExtendeeObject extendee)
         {
-            switch (extendee)
+            return extendee switch
             {
-                case ExtendeeObject.Project:
-                    return PrjCATID.prjCATIDProject;
+                ExtendeeObject.Project =>                   PrjCATID.prjCATIDProject,
+                ExtendeeObject.ProjectBrowseObject =>       PrjBrowseObjectCATID.prjCATIDVBProjectBrowseObject,
+                ExtendeeObject.Configuration =>             PrjBrowseObjectCATID.prjCATIDVBConfig,
+                ExtendeeObject.ConfigurationBrowseObject => PrjBrowseObjectCATID.prjCATIDVBProjectConfigBrowseObject,
+                ExtendeeObject.ProjectItem =>               PrjCATID.prjCATIDProjectItem,
+                ExtendeeObject.FolderBrowseObject =>        PrjBrowseObjectCATID.prjCATIDVBFolderBrowseObject,
+                ExtendeeObject.ReferenceBrowseObject =>     PrjBrowseObjectCATID.prjCATIDVBReferenceBrowseObject,
+                ExtendeeObject.FileBrowseObject or _ =>     FileBrowseObjectOrDefault()
+            };
 
-                case ExtendeeObject.ProjectBrowseObject:
-                    return PrjBrowseObjectCATID.prjCATIDVBProjectBrowseObject;
-
-                case ExtendeeObject.Configuration:
-                    return PrjBrowseObjectCATID.prjCATIDVBConfig;
-
-                case ExtendeeObject.ConfigurationBrowseObject:
-                    return PrjBrowseObjectCATID.prjCATIDVBProjectConfigBrowseObject;
-
-                case ExtendeeObject.ProjectItem:
-                    return PrjCATID.prjCATIDProjectItem;
-
-                case ExtendeeObject.FolderBrowseObject:
-                    return PrjBrowseObjectCATID.prjCATIDVBFolderBrowseObject;
-
-                case ExtendeeObject.ReferenceBrowseObject:
-                    return PrjBrowseObjectCATID.prjCATIDVBReferenceBrowseObject;
-
-                default:
-                case ExtendeeObject.FileBrowseObject:
-                    BCLDebug.Assert(extendee == ExtendeeObject.FileBrowseObject);
-                    return PrjBrowseObjectCATID.prjCATIDVBFileBrowseObject;
+            string FileBrowseObjectOrDefault()
+            {
+                BCLDebug.Assert(extendee == ExtendeeObject.FileBrowseObject);
+                return PrjBrowseObjectCATID.prjCATIDVBFileBrowseObject;
             }
         }
     }
