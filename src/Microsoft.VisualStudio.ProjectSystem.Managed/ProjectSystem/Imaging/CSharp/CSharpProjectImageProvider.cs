@@ -21,18 +21,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.Imaging.CSharp
         {
             Requires.NotNullOrEmpty(key, nameof(key));
 
-            switch (key)
+            return key switch
             {
-                case ProjectImageKey.ProjectRoot:
-                    return KnownMonikers.CSProjectNode.ToProjectSystemType();
-
-                case ProjectImageKey.SharedItemsImportFile:
-                case ProjectImageKey.SharedProjectRoot:
-                    return KnownMonikers.CSSharedProject.ToProjectSystemType();
-
-                default:
-                    return null;
-            }
+                ProjectImageKey.ProjectRoot => KnownMonikers.CSProjectNode.ToProjectSystemType(),
+                ProjectImageKey.SharedItemsImportFile or ProjectImageKey.SharedProjectRoot => KnownMonikers.CSSharedProject.ToProjectSystemType(),
+                _ => null
+            };
         }
     }
 }

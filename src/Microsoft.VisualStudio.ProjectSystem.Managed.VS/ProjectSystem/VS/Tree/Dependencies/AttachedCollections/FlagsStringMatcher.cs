@@ -21,19 +21,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedColl
             switch (flags.Count)
             {
                 case 0:
-                {
                     // We are testing against the empty set of flags, which always returns true
                     _regex = null;
                     break;
-                }
                 case 1:
-                {
                     // Find the single flag, using full-word search
                     _regex = new Regex($@"\b({flags.First()})\b", options);
                     break;
-                }
                 default:
-                {
                     // Find all flags, in any order, using full-word search
                     // https://regex101.com/r/LPVGgB/1
                     var pattern = new StringBuilder("^");
@@ -47,7 +42,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedColl
 
                     _regex = new Regex(pattern.ToString(), options);
                     break;
-                }
             }
         }
 

@@ -33,20 +33,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.Ordering
                 project.ReevaluateIfNecessary();
                 ImmutableArray<ProjectItemElement> addedElements = GetAddedItemElements(previousIncludes, project);
 
-                switch (action)
+                // TODO: Should the result (success or failure) be ignored?
+                _ = action switch
                 {
-                    case OrderingMoveAction.MoveToTop:
-                        TryMoveElementsToTop(project, addedElements, target);
-                        break;
-                    case OrderingMoveAction.MoveAbove:
-                        TryMoveElementsAbove(project, addedElements, target);
-                        break;
-                    case OrderingMoveAction.MoveBelow:
-                        TryMoveElementsBelow(project, addedElements, target);
-                        break;
-                    default:
-                        break;
-                }
+                    OrderingMoveAction.MoveToTop => TryMoveElementsToTop(project, addedElements, target),
+                    OrderingMoveAction.MoveAbove => TryMoveElementsAbove(project, addedElements, target),
+                    OrderingMoveAction.MoveBelow => TryMoveElementsBelow(project, addedElements, target),
+                    _ => false
+                };
             });
         }
 
