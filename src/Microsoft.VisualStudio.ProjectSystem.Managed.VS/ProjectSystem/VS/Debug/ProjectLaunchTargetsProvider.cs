@@ -267,6 +267,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
                 }
             }
 
+            var commandLineArgs = resolvedProfile.CommandLineArgs != null ? StripCommandLineArgs(resolvedProfile.CommandLineArgs) : null;
+
             // Is this profile just running the project? If so we ignore the exe
             if (IsRunProjectCommand(resolvedProfile))
             {
@@ -284,15 +286,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
                     defaultWorkingDir = workingDirectory;
                 }
 
-                if (!string.IsNullOrWhiteSpace(resolvedProfile.CommandLineArgs))
+                if (!string.IsNullOrWhiteSpace(commandLineArgs))
                 {
-                    arguments = arguments + " " + resolvedProfile.CommandLineArgs;
+                    arguments = arguments + " " + commandLineArgs;
                 }
             }
             else
             {
                 executable = resolvedProfile.ExecutablePath;
-                arguments = resolvedProfile.CommandLineArgs;
+                arguments = commandLineArgs;
             }
 
             string workingDir;
@@ -604,6 +606,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             }
 
             return null;
+        }
+
+        internal static string StripCommandLineArgs(string commandLineArgs)
+        {
+            return commandLineArgs.Replace(Environment.NewLine, " ");
         }
 
         /// <summary>
