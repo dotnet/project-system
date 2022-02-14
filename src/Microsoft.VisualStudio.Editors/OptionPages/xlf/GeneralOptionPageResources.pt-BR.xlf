@@ -39,7 +39,7 @@
       </trans-unit>
       <trans-unit id="General_MultiTargetingSettings_Title">
         <source>Multi-Targeting Settings</source>
-        <target state="new">Multi-Targeting Settings</target>
+        <target state="translated">Configurações de Segmentação Múltipla</target>
         <note />
       </trans-unit>
       <trans-unit id="General_NestingIgnoreSolutionAndProjectProfiles">
@@ -54,12 +54,12 @@
       </trans-unit>
       <trans-unit id="General_PreferSingleTargetBuildsOnLaunch">
         <source>Prefer single-target builds when starting a project.</source>
-        <target state="new">Prefer single-target builds when starting a project.</target>
+        <target state="translated">Prefira compilações de destino único ao iniciar um projeto.</target>
         <note />
       </trans-unit>
       <trans-unit id="General_PreferSingleTargetBuildsOnLaunchDescription">
         <source>When starting a project that targets multiple .NET frameworks, the build time can be reduced by limiting the build to a single framework.</source>
-        <target state="new">When starting a project that targets multiple .NET frameworks, the build time can be reduced by limiting the build to a single framework.</target>
+        <target state="translated">Ao iniciar um projeto direcionado a várias estruturas do .NET, o tempo de build pode ser reduzido limitando o build a uma única estrutura.</target>
         <note />
       </trans-unit>
     </body>
