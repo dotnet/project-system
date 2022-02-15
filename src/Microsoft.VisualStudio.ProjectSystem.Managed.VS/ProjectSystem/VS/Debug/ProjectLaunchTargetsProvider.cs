@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.Buffers.PooledObjects;
 using Microsoft.VisualStudio.Debugger.UI.Interfaces.HotReload;
@@ -267,7 +268,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
                 }
             }
 
-            var commandLineArgs = resolvedProfile.CommandLineArgs != null ? StripCommandLineArgs(resolvedProfile.CommandLineArgs) : null;
+            var commandLineArgs = resolvedProfile.CommandLineArgs != null ? Regex.Replace(resolvedProfile.CommandLineArgs, "[\r\n]+", " ") : null;
 
             // Is this profile just running the project? If so we ignore the exe
             if (IsRunProjectCommand(resolvedProfile))
@@ -606,11 +607,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             }
 
             return null;
-        }
-
-        internal static string StripCommandLineArgs(string commandLineArgs)
-        {
-            return commandLineArgs.Replace(Environment.NewLine, " ");
         }
 
         /// <summary>

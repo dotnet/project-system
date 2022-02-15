@@ -28,11 +28,11 @@
                   DisplayName="Command line arguments"
                   Description="Command line arguments to pass to the executable.">
     <StringProperty.ValueEditors>
-     <ValueEditor EditorType="MultiLineString">
-      <ValueEditor.Metadata>
-        <NameValuePair Name="UseMonospaceFont" Value="True" />
-      </ValueEditor.Metadata>
-    </ValueEditor>
+      <ValueEditor EditorType="MultiLineString">
+        <ValueEditor.Metadata>
+          <NameValuePair Name="UseMonospaceFont" Value="True" />
+        </ValueEditor.Metadata>
+      </ValueEditor>
     </StringProperty.ValueEditors>
   </StringProperty>
 
