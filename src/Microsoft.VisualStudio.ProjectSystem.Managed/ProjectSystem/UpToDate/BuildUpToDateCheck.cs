@@ -9,7 +9,6 @@ using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using Microsoft.VisualStudio.Buffers.PooledObjects;
 using Microsoft.VisualStudio.IO;
 using Microsoft.VisualStudio.ProjectSystem.Build;
 using Microsoft.VisualStudio.Telemetry;
@@ -716,12 +715,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             subscription.UpdateLastCheckedAtUtc();
         }
 
-        private static bool SkipCheckingConfiguration(UpToDateCheckImplicitConfiguredInput state, string? buildTargetFramework)
+        private static bool ConfiguredInputMatchesTargetFramework(UpToDateCheckImplicitConfiguredInput input, string buildTargetFramework)
         {
-            return !Strings.IsNullOrEmpty(buildTargetFramework) &&
-                state.ProjectConfiguration is not null &&
-                state.ProjectConfiguration.Dimensions.TryGetValue(TargetFrameworkGlobalPropertyName, out string? configurationTargetFramework) &&
-                !buildTargetFramework.Equals(configurationTargetFramework);
+            return input.ProjectConfiguration.Dimensions.TryGetValue(TargetFrameworkGlobalPropertyName, out string? configurationTargetFramework)
+                && buildTargetFramework.Equals(configurationTargetFramework);
         }
 
         Task<bool> IBuildUpToDateCheckProvider.IsUpToDateAsync(BuildAction buildAction, TextWriter logWriter, CancellationToken cancellationToken)
@@ -800,13 +797,20 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                         }
                     }
 
+                    // If we're limiting the build to a particular target framework, limit the set of
+                    // configured inputs we check to those that match the framework.
                     globalProperties.TryGetValue(TargetFrameworkGlobalPropertyName, out string? buildTargetFramework);
+                    IEnumerable<UpToDateCheckImplicitConfiguredInput> implicitStatesToCheck = Strings.IsNullOrEmpty(buildTargetFramework)
+                        ? state.ImplicitInputs
+                        : state.ImplicitInputs.Where(input => ConfiguredInputMatchesTargetFramework(input, buildTargetFramework));
+
+                    // Note that if we find a particular configuration is out of date and exit early,
+                    // all the configurations we're going to build still count as checked.
+                    ImmutableArray<ProjectConfiguration> checkedConfigurations = implicitStatesToCheck.Select(state => state.ProjectConfiguration).ToImmutableArray();
 
                     bool logConfigurations = state.ImplicitInputs.Length > 1 && logger.Level >= LogLevel.Info;
 
-                    PooledArray<ProjectConfiguration> checkedConfigurationBuilder = PooledArray<ProjectConfiguration>.GetInstance(state.ImplicitInputs.Length);
-
-                    foreach (UpToDateCheckImplicitConfiguredInput implicitState in state.ImplicitInputs)
+                    foreach (UpToDateCheckImplicitConfiguredInput implicitState in implicitStatesToCheck)
                     {
                         if (logConfigurations)
                         {
@@ -814,35 +818,20 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                             logger.Indent++;
                         }
 
-                        if (SkipCheckingConfiguration(implicitState, buildTargetFramework))
+                        if (!lastCheckedAtUtc.TryGetValue(implicitState.ProjectConfiguration, out DateTime configurationLastCheckedAtUtc))
                         {
-                            // This build is for a specific target framework, and that target framework does not
-                            // correspond to the set of configured input we're considering here. Skip any
-                            // further checks.
-                            if (logConfigurations)
-                            {
-                                logger.Info(nameof(Resources.FUTD_SkippingCheck));
-                            }
-                        }
-                        else
-                        {
-                            checkedConfigurationBuilder.Add(implicitState.ProjectConfiguration);
-                            
-                            if (!lastCheckedAtUtc.TryGetValue(implicitState.ProjectConfiguration, out DateTime configurationLastCheckedAtUtc))
-                            {
-                                configurationLastCheckedAtUtc = DateTime.MinValue;
-                            }
-
-                            if (!CheckGlobalConditions(logger, configurationLastCheckedAtUtc, validateFirstRun: !isValidationRun, implicitState) ||
-                                !CheckInputsAndOutputs(logger, configurationLastCheckedAtUtc, timestampCache, implicitState, ignoreKinds, token) ||
-                                !CheckMarkers(logger, timestampCache, implicitState) ||
-                                !CheckCopyToOutputDirectoryFiles(logger, timestampCache, implicitState, token) ||
-                                !CheckCopiedOutputFiles(logger, timestampCache, implicitState, token))
-                            {
-                                return (false, checkedConfigurationBuilder.ToImmutableAndFree());
-                            }
+                            configurationLastCheckedAtUtc = DateTime.MinValue;
                         }
 
+                        if (!CheckGlobalConditions(logger, configurationLastCheckedAtUtc, validateFirstRun: !isValidationRun, implicitState) ||
+                            !CheckInputsAndOutputs(logger, configurationLastCheckedAtUtc, timestampCache, implicitState, ignoreKinds, token) ||
+                            !CheckMarkers(logger, timestampCache, implicitState) ||
+                            !CheckCopyToOutputDirectoryFiles(logger, timestampCache, implicitState, token) ||
+                            !CheckCopiedOutputFiles(logger, timestampCache, implicitState, token))
+                        {
+                            return (false, checkedConfigurations);
+                        }
+                        
                         if (logConfigurations)
                         {
                             logger.Indent--;
@@ -850,7 +839,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                     }
 
                     logger.UpToDate();
-                    return (true, checkedConfigurationBuilder.ToImmutableAndFree());
+                    return (true, checkedConfigurations);
                 }
                 catch (Exception ex)
                 {

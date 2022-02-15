@@ -538,15 +538,6 @@ namespace Microsoft.VisualStudio {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Skipping up-to-date check: not building this configuration..
-        /// </summary>
-        internal static string FUTD_SkippingCheck {
-            get {
-                return ResourceManager.GetString("FUTD_SkippingCheck", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Skipping &apos;{0}&apos; with ignored Kind=&quot;{1}&quot;.
         /// </summary>
         internal static string FUTD_SkippingIgnoredKindItem_2 {

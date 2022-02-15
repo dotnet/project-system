@@ -237,11 +237,6 @@
         <target state="translated">L’ensemble d’éléments de projet a été modifié plus récemment ({0}) que le '{1}' de sortie le plus ancien ({2}). Il n’est pas à jour.</target>
         <note>{0} and {2} are datetimes. {1} is a file path.</note>
       </trans-unit>
-      <trans-unit id="FUTD_SkippingCheck">
-        <source>Skipping up-to-date check: not building this configuration.</source>
-        <target state="new">Skipping up-to-date check: not building this configuration.</target>
-        <note />
-      </trans-unit>
       <trans-unit id="FUTD_SkippingIgnoredKindItem_2">
         <source>Skipping '{0}' with ignored Kind="{1}"</source>
         <target state="translated">Ignorer '{0}' avec kind="{1}" ignoré</target>

@@ -390,7 +390,4 @@ This project was loaded using the wrong project type, likely as a result of rena
     <value>Checking configuration {0}:</value>
     <comment>{0} is a description of the project's configuration, such as "Debug|AnyCPU|net6.0".</comment>
   </data>
-  <data name="FUTD_SkippingCheck" xml:space="preserve">
-    <value>Skipping up-to-date check: not building this configuration.</value>
-  </data>
 </root>
