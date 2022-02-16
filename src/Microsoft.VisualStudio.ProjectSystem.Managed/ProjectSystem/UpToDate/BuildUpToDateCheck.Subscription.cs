@@ -60,7 +60,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             /// in that compilation. We use this property as a proxy for compilation start time, whereas
             /// the outputs represent compilation end time.
             /// </remarks>
-            private ImmutableDictionary<ProjectConfiguration, DateTime> _lastCheckedAtUtc = ImmutableDictionary<ProjectConfiguration, DateTime>.Empty;
+            private readonly Dictionary<ProjectConfiguration, DateTime> _lastCheckedAtUtc = new();
 
             /// <summary>
             /// Lazily constructed Dataflow subscription. Set back to <see langword="null"/> in <see cref="Dispose"/>.
@@ -147,7 +147,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
                 foreach (ProjectConfiguration configuration in checkedProjectConfigurations)
                 {
-                    _lastCheckedAtUtc = _lastCheckedAtUtc.SetItem(configuration, utcNow);
+                    _lastCheckedAtUtc[configuration] = utcNow;
                 }
             }
 
