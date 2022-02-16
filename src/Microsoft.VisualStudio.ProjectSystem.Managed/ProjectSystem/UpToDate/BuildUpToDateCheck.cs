@@ -823,11 +823,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                             configurationLastCheckedAtUtc = DateTime.MinValue;
                         }
 
-                        if (!CheckGlobalConditions(logger, configurationLastCheckedAtUtc, validateFirstRun: !isValidationRun, implicitState) ||
-                            !CheckInputsAndOutputs(logger, configurationLastCheckedAtUtc, timestampCache, implicitState, ignoreKinds, token) ||
-                            !CheckMarkers(logger, timestampCache, implicitState) ||
-                            !CheckCopyToOutputDirectoryFiles(logger, timestampCache, implicitState, token) ||
-                            !CheckCopiedOutputFiles(logger, timestampCache, implicitState, token))
+                        if (!CheckGlobalConditions(logger, configurationLastCheckedAtUtc, validateFirstRun: !isValidationRun, implicitState)
+                            || !CheckInputsAndOutputs(logger, configurationLastCheckedAtUtc, timestampCache, implicitState, ignoreKinds, token)
+                            || !CheckMarkers(logger, timestampCache, implicitState)
+                            || !CheckCopyToOutputDirectoryFiles(logger, timestampCache, implicitState, token)
+                            || !CheckCopiedOutputFiles(logger, timestampCache, implicitState, token))
                         {
                             return (false, checkedConfigurations);
                         }

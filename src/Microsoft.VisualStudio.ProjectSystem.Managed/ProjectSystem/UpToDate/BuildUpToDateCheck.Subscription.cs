@@ -60,7 +60,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             /// in that compilation. We use this property as a proxy for compilation start time, whereas
             /// the outputs represent compilation end time.
             /// </remarks>
-            //private DateTime _lastCheckedAtUtc = DateTime.MinValue;
             private ImmutableDictionary<ProjectConfiguration, DateTime> _lastCheckedAtUtc = ImmutableDictionary<ProjectConfiguration, DateTime>.Empty;
 
             /// <summary>
