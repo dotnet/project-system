@@ -236,7 +236,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
         /// of project.
         /// </summary>
         /// <returns><see langword="null"/> if the runnable project information is <see langword="null"/>. Otherwise, the debug launch settings.</returns>
-        private async Task<DebugLaunchSettings?> GetConsoleTargetForProfileAsync(ILaunchProfile resolvedProfile, DebugLaunchOptions launchOptions, bool validateSettings)
+        internal async Task<DebugLaunchSettings?> GetConsoleTargetForProfileAsync(ILaunchProfile resolvedProfile, DebugLaunchOptions launchOptions, bool validateSettings)
         {
             var settings = new DebugLaunchSettings(launchOptions);
 
@@ -268,7 +268,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
                 }
             }
 
-            var commandLineArgs = resolvedProfile.CommandLineArgs != null ? Regex.Replace(resolvedProfile.CommandLineArgs, "[\r\n]+", " ") : null;
+            string? commandLineArgs = resolvedProfile.CommandLineArgs?.Replace("\r\n", " ").Replace("\r", " ").Replace("\n", " ");
 
             // Is this profile just running the project? If so we ignore the exe
             if (IsRunProjectCommand(resolvedProfile))
