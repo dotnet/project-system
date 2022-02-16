@@ -73,6 +73,12 @@ steps:
 - script: $(Build.SourcesDirectory)\build.cmd /build /test /ci /sign /diagnostic /no-deploy /no-integration /no-ibc /no-clearnugetcache /configuration $(BuildConfiguration)
   displayName: Build ProjectSystem.sln
 
+- task: ManifestGeneratorTask@0
+  displayName: 'Generate SBOM'
+  inputs:
+    BuildDropPath: '$(Build.SourcesDirectory)\artifacts\$(BuildConfiguration)'
+    BuildComponentPath: '$(Build.SourcesDirectory)/artifacts/$(BuildConfiguration)/VSSetup/Insertion'
+
 - task: MicroBuildCodesignVerify@3
   displayName: Verify Signed Files
   inputs:
