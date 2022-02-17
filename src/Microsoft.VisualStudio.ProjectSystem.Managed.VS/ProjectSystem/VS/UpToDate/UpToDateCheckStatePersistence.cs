@@ -68,12 +68,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.UpToDate
             }
         }
 
-        public async Task<(int ItemHash, DateTime ItemsChangedAtUtc)?> RestoreStateAsync(string projectPath, IImmutableDictionary<string, string> configurationDimensions)
+        public async Task<(int ItemHash, DateTime ItemsChangedAtUtc)?> RestoreStateAsync(string projectPath, IImmutableDictionary<string, string> configurationDimensions, CancellationToken cancellationToken)
         {
-            await InitializeAsync();
-            await InitializeDataAsync();
+            await InitializeAsync(cancellationToken);
+            await InitializeDataAsync(cancellationToken);
 
-            using (await _lock.EnterAsync())
+            using (await _lock.EnterAsync(cancellationToken))
             {
                 Assumes.NotNull(_dataByConfiguredProject);
 
@@ -83,16 +83,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.UpToDate
                 return null;
             }
 
-            async Task InitializeDataAsync()
+            async Task InitializeDataAsync(CancellationToken cancellationToken)
             {
                 if (_cacheFilePath is null || _dataByConfiguredProject is null)
                 {
-                    string filePath = await GetCacheFilePathAsync(CancellationToken.None);
+                    string filePath = await GetCacheFilePathAsync(cancellationToken);
 
                     // Switch to a background thread before doing file I/O
                     await TaskScheduler.Default;
 
-                    using (await _lock.EnterAsync())
+                    using (await _lock.EnterAsync(cancellationToken))
                     {
                         if (_cacheFilePath is null || _dataByConfiguredProject is null)
                         {
@@ -125,9 +125,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.UpToDate
             }
         }
 
-        public async Task StoreStateAsync(string projectPath, IImmutableDictionary<string, string> configurationDimensions, int itemHash, DateTime itemsChangedAtUtc)
+        public async Task StoreStateAsync(string projectPath, IImmutableDictionary<string, string> configurationDimensions, int itemHash, DateTime itemsChangedAtUtc, CancellationToken cancellationToken)
         {
-            using (await _lock.EnterAsync())
+            using (await _lock.EnterAsync(cancellationToken))
             {
                 Assumes.NotNull(_dataByConfiguredProject);
 
