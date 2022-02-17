@@ -42,7 +42,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
         private bool _isFastUpToDateCheckEnabled = true;
 
         private UpToDateCheckConfiguredInput? _state;
-        private DateTime _lastCheckTimeAtUtc = DateTime.MinValue;
+        private Dictionary<ProjectConfiguration, DateTime> _lastCheckTimeAtUtc = new();
 
         public BuildUpToDateCheckTests(ITestOutputHelper output)
         {
@@ -116,7 +116,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
         {
             upToDateCheckImplicitConfiguredInput ??= UpToDateCheckImplicitConfiguredInput.CreateEmpty(ProjectConfigurationFactory.Create("testConfiguration"));
 
-            _lastCheckTimeAtUtc = lastCheckTimeAtUtc ?? DateTime.MinValue;
+            _lastCheckTimeAtUtc[upToDateCheckImplicitConfiguredInput.ProjectConfiguration] = lastCheckTimeAtUtc ?? DateTime.MinValue;
             
             projectSnapshot ??= new Dictionary<string, IProjectRuleSnapshotModel>();
 
@@ -153,14 +153,25 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
             subscription
                 .Setup(s => s.UpdateLastCheckedAtUtc())
-                .Callback(() => _lastCheckTimeAtUtc = updateLastCheckedAtUtcValue ?? DateTime.UtcNow);
-            
+                .Callback(() => _lastCheckTimeAtUtc[upToDateCheckImplicitConfiguredInput.ProjectConfiguration] = updateLastCheckedAtUtcValue ?? DateTime.UtcNow);
+
             subscription
-                .Setup(s => s.RunAsync(It.IsAny<Func<UpToDateCheckConfiguredInput, DateTime, CancellationToken, Task<bool>>>(), It.IsAny<bool>(), It.IsAny<CancellationToken>()))
-                .Returns((Func<UpToDateCheckConfiguredInput, DateTime, CancellationToken, Task<bool>>  func, bool updateLastCheckedAt, CancellationToken token) =>
+                .Setup(s => s.UpdateLastCheckedAtUtc(It.IsAny<IEnumerable<ProjectConfiguration>>()))
+                .Callback((IEnumerable<ProjectConfiguration> configs) =>
+                {
+                    foreach (var config in configs)
+                    {
+                        _lastCheckTimeAtUtc[config] = updateLastCheckedAtUtcValue ?? DateTime.UtcNow;
+                    }
+                });
+
+            subscription
+                .Setup(s => s.RunAsync(It.IsAny<Func<UpToDateCheckConfiguredInput, IReadOnlyDictionary<ProjectConfiguration, DateTime>, CancellationToken, Task<(bool, ImmutableArray<ProjectConfiguration>)>>>(), It.IsAny<bool>(), It.IsAny<CancellationToken>()))
+                .Returns(async (Func<UpToDateCheckConfiguredInput, IReadOnlyDictionary<ProjectConfiguration, DateTime>, CancellationToken, Task<(bool, ImmutableArray<ProjectConfiguration>)>>  func, bool updateLastCheckedAt, CancellationToken token) =>
                 {
                     Assumes.NotNull(_state);
-                    return func(_state, _lastCheckTimeAtUtc, token);
+                    var result = await func(_state, _lastCheckTimeAtUtc, token);
+                    return result.Item1;
                 });
             
             subscription.Setup(s => s.Dispose());
@@ -1424,6 +1435,41 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             }
         }
 
+        [Fact]
+        public async Task IsUpToDateAsync_True_InputNewerThatBuiltOutput_TargetFrameworkDoesNotMatchBuild()
+        {
+            var projectSnapshot = new Dictionary<string, IProjectRuleSnapshotModel>
+            {
+                [UpToDateCheckBuilt.SchemaName] = SimpleItems("BuiltOutputPath1")
+            };
+
+            var sourceSnapshot = new Dictionary<string, IProjectRuleSnapshotModel>
+            {
+                [Compile.SchemaName] = SimpleItems("ItemPath1")
+            };
+
+            var itemChangedTime = DateTime.UtcNow.AddMinutes(-4);
+            var outputTime = DateTime.UtcNow.AddMinutes(-3);
+            var inputTime = DateTime.UtcNow.AddMinutes(-2);
+            var lastCheckTime = DateTime.UtcNow.AddMinutes(-1);
+
+            var configuredInput = UpToDateCheckImplicitConfiguredInput.CreateEmpty(
+                ProjectConfigurationFactory.Create("TargetFramework", "alphaFramework"));
+
+            await SetupAsync(
+                projectSnapshot,
+                sourceSnapshot,
+                lastCheckTimeAtUtc: lastCheckTime,
+                lastItemsChangedAtUtc: itemChangedTime,
+                upToDateCheckImplicitConfiguredInput: configuredInput);
+
+            _fileSystem.AddFile("C:\\Dev\\Solution\\Project\\BuiltOutputPath1", outputTime);
+            _fileSystem.AddFile("C:\\Dev\\Solution\\Project\\ItemPath1", inputTime);
+
+            await AssertUpToDateAsync(Enumerable.Empty<string>(),
+                targetFramework: "betaFramework");
+        }
+
         #region Test helpers
 
         private Task AssertNotUpToDateAsync(string? logMessage = null, string? telemetryReason = null, BuildAction buildAction = BuildAction.Build, string ignoreKinds = "")
@@ -1431,7 +1477,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             return AssertNotUpToDateAsync(logMessage == null ? null : new[] { logMessage }, telemetryReason, buildAction, ignoreKinds);
         }
 
-        private async Task AssertNotUpToDateAsync(IReadOnlyList<string>? logMessages, string? telemetryReason = null, BuildAction buildAction = BuildAction.Build, string ignoreKinds = "")
+        private async Task AssertNotUpToDateAsync(IReadOnlyList<string>? logMessages, string? telemetryReason = null, BuildAction buildAction = BuildAction.Build, string ignoreKinds = "", string targetFramework = "")
         {
             var writer = new AssertWriter(_output);
 
@@ -1443,7 +1489,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 }
             }
 
-            Assert.False(await _buildUpToDateCheck.IsUpToDateAsync(buildAction, writer, CreateGlobalProperties(ignoreKinds)));
+            Assert.False(await _buildUpToDateCheck.IsUpToDateAsync(buildAction, writer, CreateGlobalProperties(ignoreKinds, targetFramework)));
 
             if (telemetryReason != null)
                 AssertTelemetryFailureEvent(telemetryReason);
@@ -1458,7 +1504,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             return AssertUpToDateAsync(logMessages, "");
         }
 
-        private async Task AssertUpToDateAsync(IEnumerable<string> logMessages, string ignoreKinds = "")
+        private async Task AssertUpToDateAsync(IEnumerable<string> logMessages, string ignoreKinds = "", string targetFramework = "")
         {
             var writer = new AssertWriter(_output);
 
@@ -1469,7 +1515,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
             writer.Add("Project is up-to-date.");
 
-            Assert.True(await _buildUpToDateCheck.IsUpToDateAsync(BuildAction.Build, writer, CreateGlobalProperties(ignoreKinds)));
+            Assert.True(await _buildUpToDateCheck.IsUpToDateAsync(BuildAction.Build, writer, CreateGlobalProperties(ignoreKinds, targetFramework)));
             AssertTelemetrySuccessEvent();
             writer.Assert();
         }
@@ -1524,13 +1570,18 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             _telemetryEvents.Clear();
         }
 
-        private static ImmutableDictionary<string, string> CreateGlobalProperties(string ignoreKinds)
+        private static ImmutableDictionary<string, string> CreateGlobalProperties(string ignoreKinds, string targetFramework)
         {
             var globalProperties = ImmutableDictionary<string, string>.Empty;
 
             if (ignoreKinds.Length != 0)
             {
                 globalProperties = globalProperties.SetItem(BuildUpToDateCheck.FastUpToDateCheckIgnoresKindsGlobalPropertyName, ignoreKinds);
+            }
+
+            if (targetFramework.Length != 0)
+            {
+                globalProperties = globalProperties.SetItem(BuildUpToDateCheck.TargetFrameworkGlobalPropertyName, targetFramework);
             }
 
             return globalProperties;
