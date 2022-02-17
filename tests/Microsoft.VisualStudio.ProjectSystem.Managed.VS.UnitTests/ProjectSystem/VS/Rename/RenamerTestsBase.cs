@@ -70,7 +70,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
             {
             }
 
-            protected override async Task CPSRenameAsync(IProjectTreeActionHandlerContext context, IProjectTree node, string value)
+            protected override async Task CpsFileRenameAsync(IProjectTreeActionHandlerContext context, IProjectTree node, string value)
             {
                 await Task.CompletedTask;
             }
