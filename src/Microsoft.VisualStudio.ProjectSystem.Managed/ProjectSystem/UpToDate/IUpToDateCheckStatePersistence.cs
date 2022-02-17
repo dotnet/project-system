@@ -28,6 +28,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
         /// <param name="configurationDimensions">The map of dimension names and values that describes the project configuration.</param>
         /// <param name="itemHash">The hash of items to be stored.</param>
         /// <param name="itemsChangedAtUtc">The time at which items were last known to have changed (in UTC).</param>
-        void StoreState(string projectPath, IImmutableDictionary<string, string> configurationDimensions, int itemHash, DateTime itemsChangedAtUtc);
+        Task StoreStateAsync(string projectPath, IImmutableDictionary<string, string> configurationDimensions, int itemHash, DateTime itemsChangedAtUtc);
     }
 }

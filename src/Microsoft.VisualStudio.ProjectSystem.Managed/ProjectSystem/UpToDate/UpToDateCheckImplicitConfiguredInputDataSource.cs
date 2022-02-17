@@ -114,7 +114,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
                 if (state.ItemHash is not null && _persistentState is not null && (priorItemHash != state.ItemHash || priorLastItemsChangedAtUtc != state.LastItemsChangedAtUtc))
                 {
-                    _persistentState.StoreState(_configuredProject.UnconfiguredProject.FullPath, _configuredProject.ProjectConfiguration.Dimensions, state.ItemHash.Value, state.LastItemsChangedAtUtc);
+                    await _persistentState.StoreStateAsync(_configuredProject.UnconfiguredProject.FullPath, _configuredProject.ProjectConfiguration.Dimensions, state.ItemHash.Value, state.LastItemsChangedAtUtc);
                 }
 
                 return new ProjectVersionedValue<UpToDateCheckImplicitConfiguredInput>(state, e.DataSourceVersions);

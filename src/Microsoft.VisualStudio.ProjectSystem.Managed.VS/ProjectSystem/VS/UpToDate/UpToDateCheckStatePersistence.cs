@@ -27,7 +27,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.UpToDate
     {
         private const string ProjectItemCacheFileName = ".futdcache.v1";
 
-        private readonly object _lock = new();
+        private readonly AsyncSemaphore _lock = new(initialCount: 1);
 
         private Dictionary<(string ProjectPath, IImmutableDictionary<string, string> ConfigurationDimensions), (int ItemHash, DateTime ItemsChangedAtUtc)>? _dataByConfiguredProject;
 
@@ -73,7 +73,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.UpToDate
             await InitializeAsync();
             await InitializeDataAsync();
 
-            lock (_lock)
+            using (await _lock.EnterAsync())
             {
                 Assumes.NotNull(_dataByConfiguredProject);
 
@@ -92,7 +92,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.UpToDate
                     // Switch to a background thread before doing file I/O
                     await TaskScheduler.Default;
 
-                    lock (_lock)
+                    using (await _lock.EnterAsync())
                     {
                         if (_cacheFilePath is null || _dataByConfiguredProject is null)
                         {
@@ -125,9 +125,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.UpToDate
             }
         }
 
-        public void StoreState(string projectPath, IImmutableDictionary<string, string> configurationDimensions, int itemHash, DateTime itemsChangedAtUtc)
+        public async Task StoreStateAsync(string projectPath, IImmutableDictionary<string, string> configurationDimensions, int itemHash, DateTime itemsChangedAtUtc)
         {
-            lock (_lock)
+            using (await _lock.EnterAsync())
             {
                 Assumes.NotNull(_dataByConfiguredProject);
 
@@ -223,16 +223,19 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.UpToDate
 
         public int OnAfterCloseSolution(object pUnkReserved)
         {
-            lock (_lock)
+            JoinableFactory.Run(async () =>
             {
-                if (_hasUnsavedChange && _cacheFilePath is not null && _dataByConfiguredProject is not null)
+                using (await _lock.EnterAsync())
                 {
-                    Serialize(_cacheFilePath, _dataByConfiguredProject);
-                }
+                    if (_hasUnsavedChange && _cacheFilePath is not null && _dataByConfiguredProject is not null)
+                    {
+                        Serialize(_cacheFilePath, _dataByConfiguredProject);
+                    }
 
-                _cacheFilePath = null;
-                _dataByConfiguredProject = null;
-            }
+                    _cacheFilePath = null;
+                    _dataByConfiguredProject = null;
+                }
+            });
 
             return HResult.OK;
         }
