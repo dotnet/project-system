@@ -379,8 +379,8 @@
   <!-- TODO: Shortlink for help URL -->
   <!--Description="Enable modern visual styling for control rendering using the latest Control Library (COMCTL)."-->
   <BoolProperty Name="EnableVisualStyles"
-                DisplayName="Visual styles"
-                Description="Enable the use the Windows XP styles for windows, controls, and so on."
+                DisplayName="Windows XP visual style"
+                Description="Enable the use the Windows XP styles for the application."
                 HelpUrl="https://docs.microsoft.com/dotnet/api/microsoft.visualbasic.applicationservices.windowsformsapplicationbase.enablevisualstyles"
                 Category="ApplicationFramework">
     <BoolProperty.Metadata>
@@ -412,8 +412,8 @@
 
   <!-- TODO: Shortlink for help URL -->
   <BoolProperty Name="SaveMySettingsOnExit"
-                DisplayName="Save My.Settings on exit"
-                Description="Allow the application to save the user settings on exit."
+                DisplayName="Save user settings on exit"
+                Description="Allow the application to save the user settings (My.Settings) on exit."
                 HelpUrl="https://docs.microsoft.com/dotnet/api/microsoft.visualbasic.applicationservices.windowsformsapplicationbase.savemysettingsonexit"
                 Category="ApplicationFramework">
     <BoolProperty.Metadata>
@@ -440,16 +440,22 @@
         </NameValuePair.Value>
       </NameValuePair>
     </EnumProperty.Metadata>
+    
+    <!-- DisplayName="100% scale factor (no DPI detection)" -->
     <EnumValue Name="DpiUnaware"
-               DisplayName="100% scale factor (no DPI detection)" />
+               DisplayName="DPI unaware" />
+    <!-- DisplayName="100% scale factor with improved GDI/GDI+ content quality (no DPI detection)" -->
     <EnumValue Name="DpiUnawareGdiScaled"
-               DisplayName="100% scale factor with improved GDI/GDI+ content quality (no DPI detection)" />
+               DisplayName="DPI unaware, GDI scaled" />
+    <!-- DisplayName="Primary monitor's scale factor is used for all monitors (DPI detected on-launch)" -->
     <EnumValue Name="SystemAware"
-               DisplayName="Primary monitor's scale factor is used for all monitors (DPI detected on-launch)" />
+               DisplayName="System aware" />
+    <!-- DisplayName="Dynamic scale factor (DPI detected on-launch and on-change)" -->
     <EnumValue Name="PerMonitor"
-               DisplayName="Dynamic scale factor (DPI detected on-launch and on-change)" />
+               DisplayName="Per monitor" />
+    <!-- DisplayName="Dynamic scale factor with improved comctl32 and dialog scaling (DPI detected on-launch and on-change including child windows)" -->
     <EnumValue Name="PerMonitorV2"
-               DisplayName="Dynamic scale factor with improved comctl32 and dialog scaling (DPI detected on-launch and on-change including child windows)" />
+               DisplayName="Per monitor V2" />
   </EnumProperty>
 
   <!-- TODO: Shortlink for help URL -->
@@ -467,12 +473,12 @@
       </NameValuePair>
     </EnumProperty.Metadata>
     <!-- TODO: Value provider logic needed to convert string enums to integer values -->
-    <!-- 0 -->
+    <!-- 0 - DisplayName="Windows authentication via My.User object" -->
     <EnumValue Name="Windows"
-               DisplayName="Windows authentication via My.User object" />
-    <!-- 1 -->
+               DisplayName="Windows" />
+    <!-- 1 - DisplayName="Custom authentication implemented within the application" -->
     <EnumValue Name="ApplicationDefined"
-               DisplayName="Custom authentication implemented within the application" />
+               DisplayName="Application-defined" />
   </EnumProperty>
 
   <!-- TODO: Shortlink for help URL -->
@@ -490,12 +496,12 @@
       </NameValuePair>
     </EnumProperty.Metadata>
     <!-- TODO: Value provider logic needed to convert string enums to integer values -->
-    <!-- 0 -->
+    <!-- 0 - DisplayName="Shut down when the main form closes" -->
     <EnumValue Name="AfterMainFormCloses"
-               DisplayName="Shut down when the main form closes" />
-    <!-- 1 -->
+               DisplayName="After main form closes" />
+    <!-- 1 - DisplayName="Shut down only after the last form closes" -->
     <EnumValue Name="AfterAllFormsClose"
-               DisplayName="Shut down only after the last form closes" />
+               DisplayName="After last form closes" />
   </EnumProperty>
 
   <!-- TODO: Shortlink for help URL -->

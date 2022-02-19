@@ -13,13 +13,13 @@
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|EnableVisualStyles|Description">
-        <source>Enable the use the Windows XP styles for windows, controls, and so on.</source>
-        <target state="new">Enable the use the Windows XP styles for windows, controls, and so on.</target>
+        <source>Enable the use the Windows XP styles for the application.</source>
+        <target state="new">Enable the use the Windows XP styles for the application.</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|EnableVisualStyles|DisplayName">
-        <source>Visual styles</source>
-        <target state="new">Visual styles</target>
+        <source>Windows XP visual style</source>
+        <target state="new">Windows XP visual style</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|IsPublishable|Description">
@@ -33,13 +33,13 @@
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|SaveMySettingsOnExit|Description">
-        <source>Allow the application to save the user settings on exit.</source>
-        <target state="new">Allow the application to save the user settings on exit.</target>
+        <source>Allow the application to save the user settings (My.Settings) on exit.</source>
+        <target state="new">Allow the application to save the user settings (My.Settings) on exit.</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|SaveMySettingsOnExit|DisplayName">
-        <source>Save My.Settings on exit</source>
-        <target state="new">Save My.Settings on exit</target>
+        <source>Save user settings on exit</source>
+        <target state="new">Save user settings on exit</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|SingleInstance|Description">
@@ -288,38 +288,38 @@
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|AuthenticationMode.ApplicationDefined|DisplayName">
-        <source>Custom authentication implemented within the application</source>
-        <target state="new">Custom authentication implemented within the application</target>
+        <source>Application-defined</source>
+        <target state="new">Application-defined</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|AuthenticationMode.Windows|DisplayName">
-        <source>Windows authentication via My.User object</source>
-        <target state="new">Windows authentication via My.User object</target>
+        <source>Windows</source>
+        <target state="new">Windows</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|HighDpiMode.DpiUnawareGdiScaled|DisplayName">
-        <source>100% scale factor with improved GDI/GDI+ content quality (no DPI detection)</source>
-        <target state="new">100% scale factor with improved GDI/GDI+ content quality (no DPI detection)</target>
+        <source>DPI unaware, GDI scaled</source>
+        <target state="new">DPI unaware, GDI scaled</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|HighDpiMode.DpiUnaware|DisplayName">
-        <source>100% scale factor (no DPI detection)</source>
-        <target state="new">100% scale factor (no DPI detection)</target>
+        <source>DPI unaware</source>
+        <target state="new">DPI unaware</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|HighDpiMode.PerMonitorV2|DisplayName">
-        <source>Dynamic scale factor with improved comctl32 and dialog scaling (DPI detected on-launch and on-change including child windows)</source>
-        <target state="new">Dynamic scale factor with improved comctl32 and dialog scaling (DPI detected on-launch and on-change including child windows)</target>
+        <source>Per monitor V2</source>
+        <target state="new">Per monitor V2</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|HighDpiMode.PerMonitor|DisplayName">
-        <source>Dynamic scale factor (DPI detected on-launch and on-change)</source>
-        <target state="new">Dynamic scale factor (DPI detected on-launch and on-change)</target>
+        <source>Per monitor</source>
+        <target state="new">Per monitor</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|HighDpiMode.SystemAware|DisplayName">
-        <source>Primary monitor's scale factor is used for all monitors (DPI detected on-launch)</source>
-        <target state="new">Primary monitor's scale factor is used for all monitors (DPI detected on-launch)</target>
+        <source>System aware</source>
+        <target state="new">System aware</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|OutputType.Exe|DisplayName">
@@ -348,13 +348,13 @@
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|ShutdownMode.AfterAllFormsClose|DisplayName">
-        <source>Shut down only after the last form closes</source>
-        <target state="new">Shut down only after the last form closes</target>
+        <source>After last form closes</source>
+        <target state="new">After last form closes</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|ShutdownMode.AfterMainFormCloses|DisplayName">
-        <source>Shut down when the main form closes</source>
-        <target state="new">Shut down when the main form closes</target>
+        <source>After main form closes</source>
+        <target state="new">After main form closes</target>
         <note />
       </trans-unit>
       <trans-unit id="Rule|Application|Description">
