@@ -14,6 +14,9 @@
     <Category Name="Resources"
               DisplayName="Win32 Resources"
               Description="Resource settings for the application." />
+    <Category Name="ApplicationFramework"
+              DisplayName="Application Framework"
+              Description="Application Framework settings for the application." />
     <Category Name="Packaging"
               DisplayName="Packaging"
               Description="Packaging settings for the application." />
@@ -175,6 +178,24 @@
       <NameValuePair Name="DependsOn" Value="Application::TargetPlatformIdentifier" />
     </DynamicEnumProperty.Metadata>
   </DynamicEnumProperty>
+
+  <!-- TODO: Shortlink for help URL -->
+  <BoolProperty Name="UseApplicationFramework"
+                DisplayName="Application Framework"
+                Description="Enable the Visual Basic Application Framework for this project."
+                HelpUrl="https://docs.microsoft.com/visualstudio/ide/reference/application-page-project-designer-visual-basic#enable-application-framework"
+                Category="General">
+    <BoolProperty.Metadata>
+      <NameValuePair Name="DependsOn" Value="Application::OutputType" />
+      <NameValuePair Name="VisibilityCondition">
+        <NameValuePair.Value>
+          (and
+            (has-evaluated-value "Application" "OutputType" "WinExe")
+            (not (has-csharp-lang-version-or-greater "1.0")))
+        </NameValuePair.Value>
+      </NameValuePair>
+    </BoolProperty.Metadata>
+  </BoolProperty>
 
   <BoolProperty Name="UseWindowsForms"
                 DisplayName="Windows Forms"
@@ -354,6 +375,150 @@
       </NameValuePair>
     </StringProperty.Metadata>
   </StringProperty>
+
+  <!-- TODO: Shortlink for help URL -->
+  <!--Description="Enable modern visual styling for control rendering using the latest Control Library (COMCTL)."-->
+  <BoolProperty Name="EnableVisualStyles"
+                DisplayName="Visual styles"
+                Description="Enable the use the Windows XP styles for windows, controls, and so on."
+                HelpUrl="https://docs.microsoft.com/dotnet/api/microsoft.visualbasic.applicationservices.windowsformsapplicationbase.enablevisualstyles"
+                Category="ApplicationFramework">
+    <BoolProperty.Metadata>
+      <NameValuePair Name="DependsOn" Value="Application::UseApplicationFramework" />
+      <NameValuePair Name="VisibilityCondition">
+        <NameValuePair.Value>
+          (has-evaluated-value "Application" "UseApplicationFramework" true)
+        </NameValuePair.Value>
+      </NameValuePair>
+    </BoolProperty.Metadata>
+  </BoolProperty>
+
+  <!-- TODO: Shortlink for help URL -->
+  <!-- Description="Disallow users from running multiple instances of the application." -->
+  <BoolProperty Name="SingleInstance"
+                DisplayName="Single-instance application"
+                Description="Disallow users from running multiple instances of the application."
+                HelpUrl="https://docs.microsoft.com/dotnet/api/microsoft.visualbasic.applicationservices.windowsformsapplicationbase.issingleinstance"
+                Category="ApplicationFramework">
+    <BoolProperty.Metadata>
+      <NameValuePair Name="DependsOn" Value="Application::UseApplicationFramework" />
+      <NameValuePair Name="VisibilityCondition">
+        <NameValuePair.Value>
+          (has-evaluated-value "Application" "UseApplicationFramework" true)
+        </NameValuePair.Value>
+      </NameValuePair>
+    </BoolProperty.Metadata>
+  </BoolProperty>
+
+  <!-- TODO: Shortlink for help URL -->
+  <BoolProperty Name="SaveMySettingsOnExit"
+                DisplayName="Save My.Settings on exit"
+                Description="Allow the application to save the user settings on exit."
+                HelpUrl="https://docs.microsoft.com/dotnet/api/microsoft.visualbasic.applicationservices.windowsformsapplicationbase.savemysettingsonexit"
+                Category="ApplicationFramework">
+    <BoolProperty.Metadata>
+      <NameValuePair Name="DependsOn" Value="Application::UseApplicationFramework" />
+      <NameValuePair Name="VisibilityCondition">
+        <NameValuePair.Value>
+          (has-evaluated-value "Application" "UseApplicationFramework" true)
+        </NameValuePair.Value>
+      </NameValuePair>
+    </BoolProperty.Metadata>
+  </BoolProperty>
+
+  <!-- TODO: Shortlink for help URL -->
+  <EnumProperty Name="HighDpiMode"
+                DisplayName="High DPI mode"
+                Description="Determines how the application is scaled based on the DPI mode of the operating system."
+                HelpUrl="https://docs.microsoft.com/dotnet/api/system.windows.forms.highdpimode"
+                Category="ApplicationFramework">
+    <EnumProperty.Metadata>
+      <NameValuePair Name="DependsOn" Value="Application::UseApplicationFramework" />
+      <NameValuePair Name="VisibilityCondition">
+        <NameValuePair.Value>
+          (has-evaluated-value "Application" "UseApplicationFramework" true)
+        </NameValuePair.Value>
+      </NameValuePair>
+    </EnumProperty.Metadata>
+    <EnumValue Name="DpiUnaware"
+               DisplayName="100% scale factor (no DPI detection)" />
+    <EnumValue Name="DpiUnawareGdiScaled"
+               DisplayName="100% scale factor with improved GDI/GDI+ content quality (no DPI detection)" />
+    <EnumValue Name="SystemAware"
+               DisplayName="Primary monitor's scale factor is used for all monitors (DPI detected on-launch)" />
+    <EnumValue Name="PerMonitor"
+               DisplayName="Dynamic scale factor (DPI detected on-launch and on-change)" />
+    <EnumValue Name="PerMonitorV2"
+               DisplayName="Dynamic scale factor with improved comctl32 and dialog scaling (DPI detected on-launch and on-change including child windows)" />
+  </EnumProperty>
+
+  <!-- TODO: Shortlink for help URL -->
+  <EnumProperty Name="AuthenticationMode"
+                DisplayName="Authentication mode"
+                Description="Method for identifying the currently logged-on user within the application."
+                HelpUrl="https://docs.microsoft.com/dotnet/api/microsoft.visualbasic.applicationservices.authenticationmode"
+                Category="ApplicationFramework">
+    <EnumProperty.Metadata>
+      <NameValuePair Name="DependsOn" Value="Application::UseApplicationFramework" />
+      <NameValuePair Name="VisibilityCondition">
+        <NameValuePair.Value>
+          (has-evaluated-value "Application" "UseApplicationFramework" true)
+        </NameValuePair.Value>
+      </NameValuePair>
+    </EnumProperty.Metadata>
+    <!-- TODO: Value provider logic needed to convert string enums to integer values -->
+    <!-- 0 -->
+    <EnumValue Name="Windows"
+               DisplayName="Windows authentication via My.User object" />
+    <!-- 1 -->
+    <EnumValue Name="ApplicationDefined"
+               DisplayName="Custom authentication implemented within the application" />
+  </EnumProperty>
+
+  <!-- TODO: Shortlink for help URL -->
+  <EnumProperty Name="ShutdownMode"
+                DisplayName="Shutdown mode"
+                Description="Indicates which condition causes the application to shut down."
+                HelpUrl="https://docs.microsoft.com/dotnet/api/microsoft.visualbasic.applicationservices.shutdownmode"
+                Category="ApplicationFramework">
+    <EnumProperty.Metadata>
+      <NameValuePair Name="DependsOn" Value="Application::UseApplicationFramework" />
+      <NameValuePair Name="VisibilityCondition">
+        <NameValuePair.Value>
+          (has-evaluated-value "Application" "UseApplicationFramework" true)
+        </NameValuePair.Value>
+      </NameValuePair>
+    </EnumProperty.Metadata>
+    <!-- TODO: Value provider logic needed to convert string enums to integer values -->
+    <!-- 0 -->
+    <EnumValue Name="AfterMainFormCloses"
+               DisplayName="Shut down when the main form closes" />
+    <!-- 1 -->
+    <EnumValue Name="AfterAllFormsClose"
+               DisplayName="Shut down only after the last form closes" />
+  </EnumProperty>
+
+  <!-- TODO: Shortlink for help URL -->
+  <DynamicEnumProperty Name="SplashScreen"
+                       DisplayName="Splash screen"
+                       Description="Sets the form to be used as a splash screen for the application."
+                       HelpUrl="https://docs.microsoft.com/dotnet/api/microsoft.visualbasic.applicationservices.windowsformsapplicationbase.splashscreen"
+                       Category="ApplicationFramework"
+                       EnumProvider="StartupObjectsEnumProvider">
+    <DynamicEnumProperty.Metadata>
+      <NameValuePair Name="DependsOn" Value="Application::UseApplicationFramework" />
+      <NameValuePair Name="VisibilityCondition">
+        <NameValuePair.Value>
+          (has-evaluated-value "Application" "UseApplicationFramework" true)
+        </NameValuePair.Value>
+      </NameValuePair>
+    </DynamicEnumProperty.Metadata>
+    <DynamicEnumProperty.ProviderSettings>
+      <!-- We want an explicit item representing the empty value. We can remove this setting
+           when the enum provider starts including it by default. -->
+      <NameValuePair Name="IncludeEmptyValue" Value="true" />
+    </DynamicEnumProperty.ProviderSettings>
+  </DynamicEnumProperty>
 
   <BoolProperty Name="IsPublishable"
                 DisplayName="Publishing"
