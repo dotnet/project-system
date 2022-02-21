@@ -9,6 +9,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Internal.VisualStudio.Shell.Interop;
+using Microsoft.VisualStudio.Packaging;
 using Microsoft.VisualStudio.ProjectSystem.UpToDate;
 using Microsoft.VisualStudio.Shell.Interop;
 using Microsoft.VisualStudio.Threading;
@@ -223,8 +224,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.UpToDate
 
         public int OnAfterCloseSolution(object pUnkReserved)
         {
-            JoinableFactory.Run(async () =>
+            // Schedule this async cleanup using the package's JTF so that it will complete before the
+            // process exits, without having to block the main thread here during solution close.
+            JoinableTaskFactory jtf = ManagedProjectSystemPackage.PackageJoinableTaskFactory ?? JoinableFactory;
+
+            _ = jtf.RunAsync(async () =>
             {
+                // Do not serialize on the main thread
+                await TaskScheduler.Default;
+
                 using (await _lock.EnterAsync())
                 {
                     if (_hasUnsavedChange && _cacheFilePath is not null && _dataByConfiguredProject is not null)
