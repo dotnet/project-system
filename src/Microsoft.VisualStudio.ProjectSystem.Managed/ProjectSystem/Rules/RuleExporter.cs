@@ -197,6 +197,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.Rules
             public static int CopyUpToDateMarkerRule;
 
             /// <summary>
+            ///     Models the items identified during build to be copied to the output directory.
+            /// </summary>
+            [ExportRule(nameof(CopyToOutputDirectoryItem), PropertyPageContexts.ProjectSubscriptionService)]
+            [AppliesTo(ProjectCapability.DotNet + "+ !" + ProjectCapabilities.SharedAssetsProject)]
+            [Order(Order.Default)]
+            public static int CopyToOutputDirectoryItemRule;
+
+            /// <summary>
             ///     Represents the design-time build items containing resolved references path.
             /// </summary>
             [ExportRule(nameof(ResolvedCompilationReference), PropertyPageContexts.ProjectSubscriptionService)]

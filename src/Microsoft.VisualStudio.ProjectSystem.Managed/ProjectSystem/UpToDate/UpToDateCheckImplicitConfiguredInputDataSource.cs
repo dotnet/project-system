@@ -32,6 +32,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             .Add(ResolvedAnalyzerReference.SchemaName)
             .Add(ResolvedCompilationReference.SchemaName)
             .Add(CopyUpToDateMarker.SchemaName)
+            .Add(CopyToOutputDirectoryItem.SchemaName)
             .Add(UpToDateCheckInput.SchemaName)
             .Add(UpToDateCheckOutput.SchemaName)
             .Add(UpToDateCheckBuilt.SchemaName);

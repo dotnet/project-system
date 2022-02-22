@@ -6,7 +6,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
     {
         internal enum CopyType
         {
-            CopyNever,
             CopyIfNewer,
             CopyAlways
         }

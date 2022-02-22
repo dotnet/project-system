@@ -41,11 +41,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
         internal static readonly StringComparer SetNameComparer = StringComparers.ItemNames;
         internal static readonly StringComparer KindNameComparer = StringComparers.ItemNames;
 
-        private static ImmutableHashSet<string> NonCompilationItemTypes => ImmutableHashSet<string>.Empty
-            .WithComparer(StringComparers.ItemTypes)
-            .Add(None.SchemaName)
-            .Add(Content.SchemaName);
-
         private readonly IUpToDateCheckConfiguredInputDataSource _inputDataSource;
         private readonly IProjectSystemOptions _projectSystemOptions;
         private readonly ConfiguredProject _configuredProject;
@@ -128,17 +123,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 // We had no persisted state, and this is the first run. We cannot know if the project is up-to-date
                 // or not, so schedule a build.
                 return log.Fail("FirstRun", nameof(Resources.FUTD_FirstRun));
-            }
-
-            foreach ((_, ImmutableArray<UpToDateCheckInputItem> items) in state.InputSourceItemsByItemType)
-            {
-                foreach (UpToDateCheckInputItem item in items)
-                {
-                    if (item.CopyType == CopyType.CopyAlways)
-                    {
-                        return log.Fail("CopyAlwaysItemExists", nameof(Resources.FUTD_CopyAlwaysItemExists_1), _configuredProject.UnconfiguredProject.MakeRooted(item.Path));
-                    }
-                }
             }
 
             return true;
@@ -230,9 +214,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                         }
                         else
                         {
-                            foreach ((bool isAdd, string itemType, UpToDateCheckInputItem item) in state.LastItemChanges.OrderBy(change => change.ItemType).ThenBy(change => change.Item.Path))
+                            foreach ((bool isAdd, string itemType, string item) in state.LastItemChanges.OrderBy(change => change.ItemType).ThenBy(change => change.Path))
                             {
-                                log.Info(isAdd ? nameof(Resources.FUTD_ChangedItemsAddition_4) : nameof(Resources.FUTD_ChangedItemsRemoval_4), itemType, item.Path, item.CopyType, item.TargetPath ?? "");
+                                log.Info(isAdd ? nameof(Resources.FUTD_ChangedItemsAddition_2) : nameof(Resources.FUTD_ChangedItemsRemoval_2), itemType, item);
                             }
                         }
 
@@ -314,27 +298,19 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                     yield return (Path: state.NewestImportInput, ItemType: null, IsRequired: true);
                 }
 
-                foreach ((string itemType, ImmutableArray<UpToDateCheckInputItem> items) in state.InputSourceItemsByItemType)
+                foreach ((string itemType, ImmutableArray<string> items) in state.InputSourceItemsByItemType)
                 {
-                    // Skip certain input item types (None, Content). These items do not contribute to build outputs,
-                    // and so changes to them are not expected to produce updated outputs during build.
-                    //
-                    // These items may have CopyToOutputDirectory metadata, which is why we don't exclude them earlier.
-                    // The need to schedule a build in order to copy files is handled separately.
-                    if (!NonCompilationItemTypes.Contains(itemType))
+                    log.Verbose(nameof(Resources.FUTD_AddingTypedInputs_1), itemType);
+                    log.Indent++;
+
+                    foreach (string item in items)
                     {
-                        log.Verbose(nameof(Resources.FUTD_AddingTypedInputs_1), itemType);
-                        log.Indent++;
-
-                        foreach (UpToDateCheckInputItem item in items)
-                        {
-                            string absolutePath = _configuredProject.UnconfiguredProject.MakeRooted(item.Path);
-                            log.VerboseLiteral(absolutePath);
-                            yield return (Path: absolutePath, itemType, IsRequired: true);
-                        }
-
-                        log.Indent--;
+                        string absolutePath = _configuredProject.UnconfiguredProject.MakeRooted(item);
+                        log.VerboseLiteral(absolutePath);
+                        yield return (Path: absolutePath, itemType, IsRequired: true);
                     }
+
+                    log.Indent--;
                 }
 
                 if (!state.ResolvedAnalyzerReferencePaths.IsEmpty)
@@ -598,15 +574,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
             if (outputMarkerTime < latestInputMarkerTime)
             {
-                return log.Fail("InputMarkerNewerThanOutputMarker", nameof(Resources.FUTD_InputMarkerNewerThanOutputMarker));
+                return log.Fail("InputMarkerNewerThanOutputMarker", nameof(Resources.FUTD_InputMarkerNewerThanOutputMarker_2), latestInputMarkerPath, outputMarkerFile);
             }
 
             return true;
         }
 
-        private bool CheckCopiedOutputFiles(Log log, in TimestampCache timestampCache, UpToDateCheckImplicitConfiguredInput state, CancellationToken token)
+        private bool CheckBuiltFromInputFiles(Log log, in TimestampCache timestampCache, UpToDateCheckImplicitConfiguredInput state, CancellationToken token)
         {
-            foreach ((string destinationRelative, string sourceRelative) in state.CopiedOutputFiles)
+            foreach ((string destinationRelative, string sourceRelative) in state.BuiltFromInputFiles)
             {
                 token.ThrowIfCancellationRequested();
 
@@ -635,81 +611,96 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                     log.Indent++;
                     log.Info(nameof(Resources.FUTD_DestinationFileTimeAndPath_2), destinationTime, destination);
                     log.Indent--;
+
+                    if (destinationTime < sourceTime)
+                    {
+                        return log.Fail("CopySourceNewer", nameof(Resources.FUTD_CheckingCopiedOutputFileSourceNewer));
+                    }
                 }
                 else
                 {
                     return log.Fail("CopyDestinationNotFound", nameof(Resources.FUTD_CheckingCopiedOutputFileDestinationNotFound_2), destination, source);
-                }
-
-                if (destinationTime < sourceTime)
-                {
-                    return log.Fail("CopySourceNewer", nameof(Resources.FUTD_CheckingCopiedOutputFileSourceNewer));
                 }
             }
 
             return true;
         }
 
-        private bool CheckCopyToOutputDirectoryFiles(Log log, in TimestampCache timestampCache, UpToDateCheckImplicitConfiguredInput state, CancellationToken token)
+        private bool CheckCopyToOutputDirectoryItems(Log log, in TimestampCache timestampCache, UpToDateCheckImplicitConfiguredInput state, CancellationToken token)
         {
             string outputFullPath = Path.Combine(state.MSBuildProjectDirectory, state.OutputRelativeOrFullPath);
 
-            foreach ((_, ImmutableArray<UpToDateCheckInputItem> items) in state.InputSourceItemsByItemType)
+            bool isLogging = log.Level >= LogLevel.Info && state.CopyToOutputDirectoryItems.Length != 0;
+
+            if (isLogging)
             {
-                foreach (UpToDateCheckInputItem item in items)
+                log.Info(nameof(Resources.FUTD_CheckingCopyToOutputDirectoryItems));
+                log.Indent++;
+            }
+
+            foreach (CopyItem item in state.CopyToOutputDirectoryItems)
+            {
+                token.ThrowIfCancellationRequested();
+
+                string source = _configuredProject.UnconfiguredProject.MakeRooted(item.Path);
+
+                switch (item.CopyType)
                 {
-                    // Only consider items with CopyType of CopyIfNewer (PreserveNewest)
-                    if (item.CopyType != CopyType.CopyIfNewer)
+                    case CopyType.CopyAlways:
                     {
-                        continue;
+                        return log.Fail("CopyAlwaysItemExists", nameof(Resources.FUTD_CopyAlwaysItemExists_1), _configuredProject.UnconfiguredProject.MakeRooted(item.Path));
                     }
 
-                    token.ThrowIfCancellationRequested();
-
-                    string rootedPath = _configuredProject.UnconfiguredProject.MakeRooted(item.Path);
-                    string filename = Strings.IsNullOrEmpty(item.TargetPath) ? rootedPath : item.TargetPath;
-
-                    if (string.IsNullOrEmpty(filename))
+                    case CopyType.CopyIfNewer:
                     {
-                        continue;
+                        log.Info(nameof(Resources.FUTD_CheckingPreserveNewestFile_1), source);
+
+                        DateTime? itemTime = timestampCache.GetTimestampUtc(source);
+
+                        if (itemTime != null)
+                        {
+                            log.Indent++;
+                            log.Info(nameof(Resources.FUTD_SourceFileTimeAndPath_2), itemTime, source);
+                            log.Indent--;
+                        }
+                        else
+                        {
+                            return log.Fail("CopyToOutputDirectorySourceNotFound", nameof(Resources.FUTD_CheckingPreserveNewestFileSourceNotFound_1), source);
+                        }
+
+                        string destination = Path.Combine(outputFullPath, item.TargetPath);
+                        DateTime? destinationTime = timestampCache.GetTimestampUtc(destination);
+
+                        if (destinationTime != null)
+                        {
+                            log.Indent++;
+                            log.Info(nameof(Resources.FUTD_DestinationFileTimeAndPath_2), destinationTime, destination);
+                            log.Indent--;
+                        }
+                        else
+                        {
+                            return log.Fail("CopyToOutputDirectoryDestinationNotFound", nameof(Resources.FUTD_CheckingPreserveNewestFileDestinationNotFound_1), destination);
+                        }
+
+                        if (destinationTime < itemTime)
+                        {
+                            return log.Fail("CopyToOutputDirectorySourceNewer", nameof(Resources.FUTD_CheckingPreserveNewestSourceNewerThanDestination_2), source, destination);
+                        }
+
+                        break;
                     }
 
-                    filename = _configuredProject.UnconfiguredProject.MakeRelative(filename);
-
-                    log.Info(nameof(Resources.FUTD_CheckingPreserveNewestFile_1), rootedPath);
-
-                    DateTime? itemTime = timestampCache.GetTimestampUtc(rootedPath);
-
-                    if (itemTime != null)
+                    default:
                     {
-                        log.Indent++;
-                        log.Info(nameof(Resources.FUTD_SourceFileTimeAndPath_2), itemTime, rootedPath);
-                        log.Indent--;
-                    }
-                    else
-                    {
-                        return log.Fail("CopyToOutputDirectorySourceNotFound", nameof(Resources.FUTD_CheckingPreserveNewestFileSourceNotFound_1), rootedPath);
-                    }
-
-                    string destination = Path.Combine(outputFullPath, filename);
-                    DateTime? destinationTime = timestampCache.GetTimestampUtc(destination);
-
-                    if (destinationTime != null)
-                    {
-                        log.Indent++;
-                        log.Info(nameof(Resources.FUTD_DestinationFileTimeAndPath_2), destinationTime, destination);
-                        log.Indent--;
-                    }
-                    else
-                    {
-                        return log.Fail("CopyToOutputDirectoryDestinationNotFound", nameof(Resources.FUTD_CheckingPreserveNewestFileDestinationNotFound_1), destination);
-                    }
-
-                    if (destinationTime < itemTime)
-                    {
-                        return log.Fail("CopyToOutputDirectorySourceNewer", nameof(Resources.FUTD_CheckingPreserveNewestSourceNewerThanDestination_2), rootedPath, destination);
+                        System.Diagnostics.Debug.Fail("Should only have copyable items here.");
+                        break;
                     }
                 }
+            }
+
+            if (isLogging)
+            {
+                log.Indent--;
             }
 
             return true;
@@ -819,6 +810,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
                     foreach (UpToDateCheckImplicitConfiguredInput implicitState in implicitStatesToCheck)
                     {
+                        token.ThrowIfCancellationRequested();
+
                         if (logConfigurations)
                         {
                             logger.Info(nameof(Resources.FUTD_CheckingConfiguration_1), implicitState.ProjectConfiguration.GetDisplayString());
@@ -830,11 +823,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                             configurationLastCheckedAtUtc = DateTime.MinValue;
                         }
 
-                        if (!CheckGlobalConditions(logger, configurationLastCheckedAtUtc, validateFirstRun: !isValidationRun, implicitState)
-                            || !CheckInputsAndOutputs(logger, configurationLastCheckedAtUtc, timestampCache, implicitState, ignoreKinds, token)
-                            || !CheckMarkers(logger, timestampCache, implicitState)
-                            || !CheckCopyToOutputDirectoryFiles(logger, timestampCache, implicitState, token)
-                            || !CheckCopiedOutputFiles(logger, timestampCache, implicitState, token))
+                        if (!CheckGlobalConditions(logger, configurationLastCheckedAtUtc, validateFirstRun: !isValidationRun, implicitState) ||
+                            !CheckInputsAndOutputs(logger, configurationLastCheckedAtUtc, timestampCache, implicitState, ignoreKinds, token) ||
+                            !CheckMarkers(logger, timestampCache, implicitState) ||
+                            !CheckCopyToOutputDirectoryItems(logger, timestampCache, implicitState, token) ||
+                            !CheckBuiltFromInputFiles(logger, timestampCache, implicitState, token))
                         {
                             return (false, checkedConfigurations);
                         }

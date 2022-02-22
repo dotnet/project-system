@@ -47,15 +47,15 @@
         <target state="translated">{0} 출력 추가:</target>
         <note>{0} is an MSBuild item type.</note>
       </trans-unit>
-      <trans-unit id="FUTD_ChangedItemsAddition_4">
-        <source>{0} item added '{1}' (CopyType={2}, TargetPath='{3}')</source>
-        <target state="translated">{0} 항목이 '{1}' 추가됨(CopyType={2}, TargetPath='{3}')</target>
-        <note>Do not translate 'CopyType' or 'TargetPath'. {0} is an MSBuild item type. {1} is a file path. {2} and {3} are metadata values.</note>
+      <trans-unit id="FUTD_ChangedItemsAddition_2">
+        <source>{0} item added '{1}'</source>
+        <target state="new">{0} item added '{1}'</target>
+        <note>{0} is an MSBuild item type. {1} is a file path.</note>
       </trans-unit>
-      <trans-unit id="FUTD_ChangedItemsRemoval_4">
-        <source>{0} item removed '{1}' (CopyType={2}, TargetPath='{3}')</source>
-        <target state="translated">{0} 항목이 '{1}'을(를) 제거함(CopyType={2}, TargetPath='{3}')</target>
-        <note>Do not translate 'CopyType' or 'TargetPath'. {0} is an MSBuild item type. {1} is a file path. {2} and {3} are metadata values.</note>
+      <trans-unit id="FUTD_ChangedItemsRemoval_2">
+        <source>{0} item removed '{1}'</source>
+        <target state="new">{0} item removed '{1}'</target>
+        <note>{0} is an MSBuild item type. {1} is a file path.</note>
       </trans-unit>
       <trans-unit id="FUTD_CheckingConfiguration_1">
         <source>Checking configuration {0}:</source>
@@ -63,8 +63,8 @@
         <note>{0} is a description of the project's configuration, such as "Debug|AnyCPU|net6.0".</note>
       </trans-unit>
       <trans-unit id="FUTD_CheckingCopiedOutputFile">
-        <source>Checking copied output (UpToDateCheckBuilt with Original property) file:</source>
-        <target state="translated">복사된 출력(Original 속성이 있는 UpToDateCheckBuilt) 파일 확인:</target>
+        <source>Checking built output (UpToDateCheckBuilt with Original property) file:</source>
+        <target state="needs-review-translation">복사된 출력(Original 속성이 있는 UpToDateCheckBuilt) 파일 확인:</target>
         <note>Do not translate UpToDateCheckBuilt or Original.</note>
       </trans-unit>
       <trans-unit id="FUTD_CheckingCopiedOutputFileDestinationNotFound_2">
@@ -81,6 +81,11 @@
         <source>Source '{0}' does not exist for copy to '{1}', not up-to-date.</source>
         <target state="translated">'{1}'(으)로 복사할 원본 '{0}'이(가) 존재하지 않으며 최신 상태가 아닙니다.</target>
         <note>{0} and {1} are file paths.</note>
+      </trans-unit>
+      <trans-unit id="FUTD_CheckingCopyToOutputDirectoryItems">
+        <source>Checking CopyToOutputDirectoryItems.</source>
+        <target state="new">Checking CopyToOutputDirectoryItems.</target>
+        <note>Do not translate CopyToOutputDirectoryItems.</note>
       </trans-unit>
       <trans-unit id="FUTD_CheckingPreserveNewestFileDestinationNotFound_1">
         <source>Destination '{0}' does not exist, not up-to-date.</source>
@@ -117,6 +122,11 @@
         <target state="translated">항목 '{0}'의 CopyToOutputDirectory가 최신 상태가 아닌 '항상'으로 설정되어 있습니다.</target>
         <note>Do not translate 'CopyToOutputDirectory' or 'Always'. {0} is a file path.</note>
       </trans-unit>
+      <trans-unit id="FUTD_CopyToOutputDirectoryItemSourceNewerThanDestination_2">
+        <source>CopyToOutputDirectoryItem '{0}' is newer than destination '{1}', not up-to-date.</source>
+        <target state="new">CopyToOutputDirectoryItem '{0}' is newer than destination '{1}', not up-to-date.</target>
+        <note>Do not translate CopyToOutputDirectoryItem. {0} and {1} are file paths.</note>
+      </trans-unit>
       <trans-unit id="FUTD_CriticalBuildTasksRunning">
         <source>Critical build tasks are running, not up-to-date.</source>
         <target state="translated">중요한 빌드 작업이 최신 상태가 아닌 실행 중입니다.</target>
@@ -147,10 +157,10 @@
         <target state="translated">Kind="{0}"인 최신 확인 항목 무시</target>
         <note>Do not translate Kind. {0} is the kind name.</note>
       </trans-unit>
-      <trans-unit id="FUTD_InputMarkerNewerThanOutputMarker">
-        <source>Input marker is newer than output marker, not up-to-date.</source>
-        <target state="translated">입력 마커가 최신이 아니라 출력 마커보다 최신입니다.</target>
-        <note />
+      <trans-unit id="FUTD_InputMarkerNewerThanOutputMarker_2">
+        <source>Input marker '{0}' is newer than output marker '{1}', not up-to-date.</source>
+        <target state="new">Input marker '{0}' is newer than output marker '{1}', not up-to-date.</target>
+        <note>{0} and {1} are file paths.</note>
       </trans-unit>
       <trans-unit id="FUTD_InputModifiedSinceLastCheck_3">
         <source>Input '{0}' ({1}) has been modified since the last up-to-date check ({2}), not up-to-date.</source>

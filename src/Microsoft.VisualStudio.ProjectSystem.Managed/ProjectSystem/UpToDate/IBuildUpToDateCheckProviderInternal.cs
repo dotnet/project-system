@@ -8,6 +8,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
     /// Interface through which components internal to the .NET Project System may
     /// interact with the fast up-to-date check.
     /// </summary>
+    [ProjectSystemContract(ProjectSystemContractScope.ConfiguredProject, ProjectSystemContractProvider.Private)]
     internal interface IBuildUpToDateCheckProviderInternal
     {
         /// <summary>

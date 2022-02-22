@@ -233,13 +233,13 @@ This project was loaded using the wrong project type, likely as a result of rena
   <data name="FUTD_SetOfChangedItemsIsEmpty" xml:space="preserve">
     <value>The set of changed items is empty.</value>
   </data>
-  <data name="FUTD_ChangedItemsAddition_4" xml:space="preserve">
-    <value>{0} item added '{1}' (CopyType={2}, TargetPath='{3}')</value>
-    <comment>Do not translate 'CopyType' or 'TargetPath'. {0} is an MSBuild item type. {1} is a file path. {2} and {3} are metadata values.</comment>
+  <data name="FUTD_ChangedItemsAddition_2" xml:space="preserve">
+    <value>{0} item added '{1}'</value>
+    <comment>{0} is an MSBuild item type. {1} is a file path.</comment>
   </data>
-  <data name="FUTD_ChangedItemsRemoval_4" xml:space="preserve">
-    <value>{0} item removed '{1}' (CopyType={2}, TargetPath='{3}')</value>
-    <comment>Do not translate 'CopyType' or 'TargetPath'. {0} is an MSBuild item type. {1} is a file path. {2} and {3} are metadata values.</comment>
+  <data name="FUTD_ChangedItemsRemoval_2" xml:space="preserve">
+    <value>{0} item removed '{1}'</value>
+    <comment>{0} is an MSBuild item type. {1} is a file path.</comment>
   </data>
   <data name="FUTD_RequiredInputNotFound_1" xml:space="preserve">
     <value>Input '{0}' does not exist and is required, not up-to-date.</value>
@@ -335,8 +335,13 @@ This project was loaded using the wrong project type, likely as a result of rena
     <value>Output marker '{0}' does not exist, skipping marker check.</value>
     <comment>{0} is a file path.</comment>
   </data>
-  <data name="FUTD_InputMarkerNewerThanOutputMarker" xml:space="preserve">
-    <value>Input marker is newer than output marker, not up-to-date.</value>
+  <data name="FUTD_InputMarkerNewerThanOutputMarker_2" xml:space="preserve">
+    <value>Input marker '{0}' is newer than output marker '{1}', not up-to-date.</value>
+    <comment>{0} and {1} are file paths.</comment>
+  </data>
+  <data name="FUTD_CopyToOutputDirectoryItemSourceNewerThanDestination_2" xml:space="preserve">
+    <value>CopyToOutputDirectoryItem '{0}' is newer than destination '{1}', not up-to-date.</value>
+    <comment>Do not translate CopyToOutputDirectoryItem. {0} and {1} are file paths.</comment>
   </data>
   <data name="FUTD_SourceFileTimeAndPath_2" xml:space="preserve">
     <value>Source {0}: '{1}'</value>
@@ -347,8 +352,12 @@ This project was loaded using the wrong project type, likely as a result of rena
     <comment>{0} is a datetime. {1} is a file path.</comment>
   </data>
   <data name="FUTD_CheckingCopiedOutputFile" xml:space="preserve">
-    <value>Checking copied output (UpToDateCheckBuilt with Original property) file:</value>
+    <value>Checking built output (UpToDateCheckBuilt with Original property) file:</value>
     <comment>Do not translate UpToDateCheckBuilt or Original.</comment>
+  </data>
+  <data name="FUTD_CheckingCopyToOutputDirectoryItems" xml:space="preserve">
+    <value>Checking CopyToOutputDirectoryItems.</value>
+    <comment>Do not translate CopyToOutputDirectoryItems.</comment>
   </data>
   <data name="FUTD_CheckingCopiedOutputFileSourceNotFound_2" xml:space="preserve">
     <value>Source '{0}' does not exist for copy to '{1}', not up-to-date.</value>

@@ -47,15 +47,15 @@
         <target state="translated">Ajout de sorties {0} :</target>
         <note>{0} is an MSBuild item type.</note>
       </trans-unit>
-      <trans-unit id="FUTD_ChangedItemsAddition_4">
-        <source>{0} item added '{1}' (CopyType={2}, TargetPath='{3}')</source>
-        <target state="translated">{0} élément ajouté '{1}' (CopyType={2}, TargetPath='{3}')</target>
-        <note>Do not translate 'CopyType' or 'TargetPath'. {0} is an MSBuild item type. {1} is a file path. {2} and {3} are metadata values.</note>
+      <trans-unit id="FUTD_ChangedItemsAddition_2">
+        <source>{0} item added '{1}'</source>
+        <target state="new">{0} item added '{1}'</target>
+        <note>{0} is an MSBuild item type. {1} is a file path.</note>
       </trans-unit>
-      <trans-unit id="FUTD_ChangedItemsRemoval_4">
-        <source>{0} item removed '{1}' (CopyType={2}, TargetPath='{3}')</source>
-        <target state="translated">{0} élément supprimé '{1}' (CopyType={2}, TargetPath='{3}')</target>
-        <note>Do not translate 'CopyType' or 'TargetPath'. {0} is an MSBuild item type. {1} is a file path. {2} and {3} are metadata values.</note>
+      <trans-unit id="FUTD_ChangedItemsRemoval_2">
+        <source>{0} item removed '{1}'</source>
+        <target state="new">{0} item removed '{1}'</target>
+        <note>{0} is an MSBuild item type. {1} is a file path.</note>
       </trans-unit>
       <trans-unit id="FUTD_CheckingConfiguration_1">
         <source>Checking configuration {0}:</source>
@@ -63,8 +63,8 @@
         <note>{0} is a description of the project's configuration, such as "Debug|AnyCPU|net6.0".</note>
       </trans-unit>
       <trans-unit id="FUTD_CheckingCopiedOutputFile">
-        <source>Checking copied output (UpToDateCheckBuilt with Original property) file:</source>
-        <target state="translated">Vérification de la sortie copiée (UpToDateCheckBuilt avec la propriété Original) du fichier :</target>
+        <source>Checking built output (UpToDateCheckBuilt with Original property) file:</source>
+        <target state="needs-review-translation">Vérification de la sortie copiée (UpToDateCheckBuilt avec la propriété Original) du fichier :</target>
         <note>Do not translate UpToDateCheckBuilt or Original.</note>
       </trans-unit>
       <trans-unit id="FUTD_CheckingCopiedOutputFileDestinationNotFound_2">
@@ -81,6 +81,11 @@
         <source>Source '{0}' does not exist for copy to '{1}', not up-to-date.</source>
         <target state="translated">Le '{0}' source n’existe pas pour la copie vers '{1}', pas à jour.</target>
         <note>{0} and {1} are file paths.</note>
+      </trans-unit>
+      <trans-unit id="FUTD_CheckingCopyToOutputDirectoryItems">
+        <source>Checking CopyToOutputDirectoryItems.</source>
+        <target state="new">Checking CopyToOutputDirectoryItems.</target>
+        <note>Do not translate CopyToOutputDirectoryItems.</note>
       </trans-unit>
       <trans-unit id="FUTD_CheckingPreserveNewestFileDestinationNotFound_1">
         <source>Destination '{0}' does not exist, not up-to-date.</source>
@@ -117,6 +122,11 @@
         <target state="translated">CopyToOutputDirectory est défini sur « Always », ce qui n’est pas à jour pour l’élément '{0}'.</target>
         <note>Do not translate 'CopyToOutputDirectory' or 'Always'. {0} is a file path.</note>
       </trans-unit>
+      <trans-unit id="FUTD_CopyToOutputDirectoryItemSourceNewerThanDestination_2">
+        <source>CopyToOutputDirectoryItem '{0}' is newer than destination '{1}', not up-to-date.</source>
+        <target state="new">CopyToOutputDirectoryItem '{0}' is newer than destination '{1}', not up-to-date.</target>
+        <note>Do not translate CopyToOutputDirectoryItem. {0} and {1} are file paths.</note>
+      </trans-unit>
       <trans-unit id="FUTD_CriticalBuildTasksRunning">
         <source>Critical build tasks are running, not up-to-date.</source>
         <target state="translated">Des tâches de build critiques sont en cours d’exécution et ne sont pas à jour.</target>
@@ -147,10 +157,10 @@
         <target state="translated">Éléments de vérification à jour avec Kind="{0}" ignorés</target>
         <note>Do not translate Kind. {0} is the kind name.</note>
       </trans-unit>
-      <trans-unit id="FUTD_InputMarkerNewerThanOutputMarker">
-        <source>Input marker is newer than output marker, not up-to-date.</source>
-        <target state="translated">Le marqueur d’entrée est plus récent que le marqueur de sortie, pas à jour.</target>
-        <note />
+      <trans-unit id="FUTD_InputMarkerNewerThanOutputMarker_2">
+        <source>Input marker '{0}' is newer than output marker '{1}', not up-to-date.</source>
+        <target state="new">Input marker '{0}' is newer than output marker '{1}', not up-to-date.</target>
+        <note>{0} and {1} are file paths.</note>
       </trans-unit>
       <trans-unit id="FUTD_InputModifiedSinceLastCheck_3">
         <source>Input '{0}' ({1}) has been modified since the last up-to-date check ({2}), not up-to-date.</source>

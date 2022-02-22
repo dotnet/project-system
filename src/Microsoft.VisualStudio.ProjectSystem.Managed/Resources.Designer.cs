@@ -196,20 +196,20 @@ namespace Microsoft.VisualStudio {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to {0} item added &apos;{1}&apos; (CopyType={2}, TargetPath=&apos;{3}&apos;).
+        ///   Looks up a localized string similar to {0} item added &apos;{1}&apos;.
         /// </summary>
-        internal static string FUTD_ChangedItemsAddition_4 {
+        internal static string FUTD_ChangedItemsAddition_2 {
             get {
-                return ResourceManager.GetString("FUTD_ChangedItemsAddition_4", resourceCulture);
+                return ResourceManager.GetString("FUTD_ChangedItemsAddition_2", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to {0} item removed &apos;{1}&apos; (CopyType={2}, TargetPath=&apos;{3}&apos;).
+        ///   Looks up a localized string similar to {0} item removed &apos;{1}&apos;.
         /// </summary>
-        internal static string FUTD_ChangedItemsRemoval_4 {
+        internal static string FUTD_ChangedItemsRemoval_2 {
             get {
-                return ResourceManager.GetString("FUTD_ChangedItemsRemoval_4", resourceCulture);
+                return ResourceManager.GetString("FUTD_ChangedItemsRemoval_2", resourceCulture);
             }
         }
         
@@ -223,7 +223,7 @@ namespace Microsoft.VisualStudio {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Checking copied output (UpToDateCheckBuilt with Original property) file:.
+        ///   Looks up a localized string similar to Checking built output (UpToDateCheckBuilt with Original property) file:.
         /// </summary>
         internal static string FUTD_CheckingCopiedOutputFile {
             get {
@@ -255,6 +255,15 @@ namespace Microsoft.VisualStudio {
         internal static string FUTD_CheckingCopiedOutputFileSourceNotFound_2 {
             get {
                 return ResourceManager.GetString("FUTD_CheckingCopiedOutputFileSourceNotFound_2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Checking CopyToOutputDirectoryItems..
+        /// </summary>
+        internal static string FUTD_CheckingCopyToOutputDirectoryItems {
+            get {
+                return ResourceManager.GetString("FUTD_CheckingCopyToOutputDirectoryItems", resourceCulture);
             }
         }
         
@@ -322,6 +331,15 @@ namespace Microsoft.VisualStudio {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to CopyToOutputDirectoryItem &apos;{0}&apos; is newer than destination &apos;{1}&apos;, not up-to-date..
+        /// </summary>
+        internal static string FUTD_CopyToOutputDirectoryItemSourceNewerThanDestination_2 {
+            get {
+                return ResourceManager.GetString("FUTD_CopyToOutputDirectoryItemSourceNewerThanDestination_2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Critical build tasks are running, not up-to-date..
         /// </summary>
         internal static string FUTD_CriticalBuildTasksRunning {
@@ -376,11 +394,11 @@ namespace Microsoft.VisualStudio {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Input marker is newer than output marker, not up-to-date..
+        ///   Looks up a localized string similar to Input marker &apos;{0}&apos; is newer than output marker &apos;{1}&apos;, not up-to-date..
         /// </summary>
-        internal static string FUTD_InputMarkerNewerThanOutputMarker {
+        internal static string FUTD_InputMarkerNewerThanOutputMarker_2 {
             get {
-                return ResourceManager.GetString("FUTD_InputMarkerNewerThanOutputMarker", resourceCulture);
+                return ResourceManager.GetString("FUTD_InputMarkerNewerThanOutputMarker_2", resourceCulture);
             }
         }
         
