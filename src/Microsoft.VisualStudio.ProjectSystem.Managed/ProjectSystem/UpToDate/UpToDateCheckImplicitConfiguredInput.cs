@@ -71,6 +71,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
         /// </summary>
         public string? NewestImportInput { get; }
 
+        /// <summary>
+        /// Gets whether the fast up-to-date check has been disabled via the <c>DisableFastUpToDateCheck</c>
+        /// property.
+        /// </summary>
+        /// <remarks>
+        /// When <see langword="true"/>, other properties on this snapshot will not be used, and so
+        /// are not populated.
+        /// </remarks>
         public bool IsDisabled { get; }
 
         /// <summary>
@@ -251,7 +259,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
             bool itemTypesChanged = false;
 
-            List<(bool IsAdd, string ItemType, UpToDateCheckInputItem)> changes = new();
+            List<(bool IsAdd, string ItemType, UpToDateCheckInputItem)> lastItemChanges = new();
 
             // If an item type was removed, remove all items of that type
             foreach (string removedItemType in itemTypeDiff.Removed)
@@ -262,7 +270,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 {
                     foreach (UpToDateCheckInputItem item in removedItems)
                     {
-                        changes.Add((false, removedItemType, item));
+                        lastItemChanges.Add((IsAdd: false, removedItemType, item));
                     }
 
                     inputSourceItemsByItemTypeBuilder.Remove(removedItemType);
@@ -303,12 +311,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
                 foreach (UpToDateCheckInputItem item in diff.Added)
                 {
-                    changes.Add((IsAdd: true, itemType, item));
+                    lastItemChanges.Add((IsAdd: true, itemType, item));
                 }
 
                 foreach (UpToDateCheckInputItem item in diff.Removed)
                 {
-                    changes.Add((IsAdd: false, itemType, item));
+                    lastItemChanges.Add((IsAdd: false, itemType, item));
                 }
 
                 inputSourceItemsByItemTypeBuilder[itemType] = after.ToImmutableArray();
@@ -358,7 +366,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 resolvedCompilationReferencePaths: resolvedCompilationReferencePaths,
                 copyReferenceInputs: copyReferenceInputs,
                 lastItemsChangedAtUtc: lastItemsChangedAtUtc,
-                changes.ToImmutableArray(),
+                lastItemChanges.ToImmutableArray(),
                 itemHash,
                 WasStateRestored);
 

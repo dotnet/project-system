@@ -168,6 +168,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
             public void UpToDate()
             {
+                Assumes.Null(FailureReason);
+
                 _stopwatch.Stop();
 
                 // Send telemetry.

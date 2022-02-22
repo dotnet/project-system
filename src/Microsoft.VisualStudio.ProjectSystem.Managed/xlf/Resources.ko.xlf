@@ -232,6 +232,11 @@
         <target state="translated">입력 {1} 항목 '{0}'이(가) 존재하지 않으며 필수 항목이며 최신 상태가 아닙니다.</target>
         <note>{0} is a file path. {1} is an MSBuild item type.</note>
       </trans-unit>
+      <trans-unit id="FUTD_SetOfChangedItemsIsEmpty">
+        <source>The set of changed items is empty.</source>
+        <target state="new">The set of changed items is empty.</target>
+        <note />
+      </trans-unit>
       <trans-unit id="FUTD_SetOfItemsChangedMoreRecentlyThanOutput_3">
         <source>The set of project items was changed more recently ({0}) than the earliest output '{1}' ({2}), not up-to-date.</source>
         <target state="translated">프로젝트 항목 집합이 최신이 아닌 가장 이른 출력 '{1}'({2})보다 최근에({0}) 변경되었습니다.</target>

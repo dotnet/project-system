@@ -232,6 +232,11 @@
         <target state="translated">輸入 {1} 項目 '{0}' 不存在且為必要項目，不是最新狀態。</target>
         <note>{0} is a file path. {1} is an MSBuild item type.</note>
       </trans-unit>
+      <trans-unit id="FUTD_SetOfChangedItemsIsEmpty">
+        <source>The set of changed items is empty.</source>
+        <target state="new">The set of changed items is empty.</target>
+        <note />
+      </trans-unit>
       <trans-unit id="FUTD_SetOfItemsChangedMoreRecentlyThanOutput_3">
         <source>The set of project items was changed more recently ({0}) than the earliest output '{1}' ({2}), not up-to-date.</source>
         <target state="translated">專案項目集的變更時間 ({0}) 比最早的輸出 '{1}' ({2}) 更近，不是最新狀態。</target>
