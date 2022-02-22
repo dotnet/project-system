@@ -36,6 +36,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.UpToDate
         private bool _hasUnsavedChange;
         private uint _cookie = VSConstants.VSCOOKIE_NIL;
         private string? _cacheFilePath;
+        private JoinableTask? _cleanupTask;
 
         [ImportingConstructor]
         public UpToDateCheckStatePersistence(
@@ -219,12 +220,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.UpToDate
         public int OnBeforeUnloadProject(IVsHierarchy pRealHierarchy, IVsHierarchy pStubHierarchy) => HResult.NotImplemented;
         public int OnAfterOpenSolution(object pUnkReserved, int fNewSolution) => HResult.NotImplemented;
         public int OnQueryCloseSolution(object pUnkReserved, ref int pfCancel) => HResult.NotImplemented;
-        public int OnBeforeCloseSolution(object pUnkReserved) => HResult.NotImplemented;
-
-        public int OnAfterCloseSolution(object pUnkReserved)
+        public int OnBeforeCloseSolution(object pUnkReserved)
         {
-            JoinableFactory.Run(async () =>
+            // Kick off clean up work now. We will join on it after solution close.
+            _cleanupTask = JoinableFactory.RunAsync(async () =>
             {
+                await TaskScheduler.Default;
+
                 using (await _lock.EnterAsync())
                 {
                     if (_hasUnsavedChange && _cacheFilePath is not null && _dataByConfiguredProject is not null)
@@ -236,6 +238,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.UpToDate
                     _dataByConfiguredProject = null;
                 }
             });
+
+            return HResult.OK;
+        }
+
+        public int OnAfterCloseSolution(object pUnkReserved)
+        {
+            // Wait for any async clean up to complete. We need to ensure this occurs before we close
+            // the solution so that if we are immediately re-opening the solution (e.g. during branch
+            // switching where the .sln file changed) we will restore the persisted state correctly.
+            _cleanupTask?.Join();
+            _cleanupTask = null;
 
             return HResult.OK;
         }
