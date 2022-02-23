@@ -91,13 +91,16 @@ The following table details the default set of visibility expression functions:
 | `not`                    | 1        | Computes logical NOT of argument                                                                |
 | `unevaluated`            | 2        | Returns the unevaluated value of property on page `arg0` with name `arg1`                       |
 | `has-evaluated-value`    | 3        | Returns true if property on page `arg0` with name `arg1` has an evaluated value matching `arg2` |
-| `is-codespaces-client`   | 0        | Returns true if the Project Properties UI is running in a Codespaces client                     |
 | `has-project-capability` | 1        | Returns true if the project has the specified capability.                                       |
 | `has-net-framework`                    | 0 | Returns true if the project targets .NET Framework in at least one configuration. |
 | `has-net-core-app`                     | 0 | Returns true if the project targets .NET Core or .NET 5+ in at least one configuration. |
 | `has-net-framework-version-or-greater` | 1 | Returns true if the project targets .NET Framework at the specified version or above in at least one configuration. |
 | `has-net-core-app-version-or-greater`  | 1 | Returns true if the project targets .NET Core or .NET 5+ at the specified version or above in at least one configuration. |
+| `is-csharp`                            | 0 | Returns true if this is a C# project. |
+| `is-vb`                                | 0 | Returns true if this is a VB project. |
 | `has-csharp-lang-version-or-greater`   | 1 | Returns true if this is a C# project and the language level is `latest`, `preview` or above the specified version. |
+| `has-vb-lang-version-or-greater`       | 1 | Returns true if this is a VB project and the language level is `latest`, `preview` or above the specified version. |
+| `has-platform`                         | 1 | Returns true if the project's target platform matches. Examples are `windows`, `android`, `ios`. |
 
 These functions are defined in class `VisibilityConditionEvaluator`.
 
