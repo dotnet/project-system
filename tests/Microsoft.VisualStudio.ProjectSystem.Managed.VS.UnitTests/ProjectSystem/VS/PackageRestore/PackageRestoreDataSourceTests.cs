@@ -94,7 +94,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
             solutionRestoreService ??= IVsSolutionRestoreServiceFactory.Create();
             IProjectDiagnosticOutputService logger = IProjectDiagnosticOutputServiceFactory.Create();
             IFileSystem fileSystem = IFileSystemFactory.Create();
-            var projectDependentFileChangeNotificationService = IProjectDependentFileChangeNotificationServiceFactory.Create();
             var vsSolutionRestoreService4 = IVsSolutionRestoreService4Factory.ImplementRegisterRestoreInfoSourceAsync();
             var sharedJoinableTaskCollection = new PackageRestoreSharedJoinableTaskCollection(IProjectThreadingServiceFactory.Create());
 
@@ -105,7 +104,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
                 solutionRestoreService,
                 fileSystem,
                 logger,
-                projectDependentFileChangeNotificationService,
                 vsSolutionRestoreService4,
                 sharedJoinableTaskCollection);
         }

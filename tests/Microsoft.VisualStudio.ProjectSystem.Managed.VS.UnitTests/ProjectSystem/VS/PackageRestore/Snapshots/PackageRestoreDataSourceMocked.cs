@@ -13,10 +13,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore.Snapshots
             IVsSolutionRestoreService3 solutionRestoreService, 
             IFileSystem fileSystem, 
             IProjectDiagnosticOutputService logger, 
-            IProjectDependentFileChangeNotificationService projectDependentFileChangeNotificationService, 
             IVsSolutionRestoreService4 solutionRestoreService4, 
             PackageRestoreSharedJoinableTaskCollection sharedJoinableTaskCollection) 
-            : base(project, dataSource, projectAsynchronousTasksService, solutionRestoreService, fileSystem, logger, projectDependentFileChangeNotificationService, solutionRestoreService4, sharedJoinableTaskCollection)
+            : base(project, dataSource, projectAsynchronousTasksService, solutionRestoreService, fileSystem, logger, solutionRestoreService4, sharedJoinableTaskCollection)
         {
         }
 
