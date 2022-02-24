@@ -169,6 +169,7 @@ steps:
 - task: MicroBuildBuildVSBootstrapper@2
   displayName: Build VS Bootstrapper
   inputs:
+    bootstrapperCoreVersion: 'latest'
     vsMajorVersion: 17
     channelName: 'int.main'
     manifests: '$(Build.SourcesDirectory)\artifacts\$(BuildConfiguration)\VSSetup\Insertion\Microsoft.VisualStudio.ProjectSystem.Managed.vsman'
