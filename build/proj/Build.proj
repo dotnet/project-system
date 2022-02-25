@@ -35,6 +35,8 @@
         Deploy=$(Deploy);
         Test=$(Test);
         IntegrationTest=$(IntegrationTest);
+        ProductProjects=$(ProductProjects);
+        PackageProjects=$(PackageProjects);
       </CoreBuildProperties>
     </PropertyGroup>
 

@@ -1,5 +1,5 @@
 <!-- Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information. -->
-<Project DefaultTargets="LogInitialMessage;Restore;Build;GenerateDependentAssemblyVersionsFile;GenerateVSManifest" LocalProperty="SolutionPath">
+<Project DefaultTargets="Restore;Build;GenerateDependentAssemblyVersionsFile;GenerateVSManifest" LocalProperty="SolutionPath">
 
   <!--
   Required parameters:
@@ -36,8 +36,27 @@
     <SolutionRestoreAndBuildProperty Include="__DeployProjectOutput=$(Deploy)" Condition="'$(Deploy)' != ''" />
   </ItemGroup>
 
-  <Target Name="LogInitialMessage">
-    <Message Text="Building $(SolutionFileName) [$(Configuration)]...%0a" Importance="high" />
+  <Target Name="GenerateSolutionForCI" BeforeTargets="Restore" Condition="'$(ProductProjects)' == 'true' OR '$(PackageProjects)' == 'true'">
+    <Message Text="Generating Solution file..." Importance="high" />
+
+    <Exec Command="dotnet --version" />
+    <Exec Command="dotnet new sln -n Generated -o $(RepoRoot)build --force" />
+
+    <ItemGroup Condition="$(ProductProjects) == 'true'">
+      <CsprojFiles Include="$(RepoRoot)src/**/*.csproj" />
+      <CsprojFiles Include="$(RepoRoot)tests/**/*.csproj" />
+    </ItemGroup>
+    <ItemGroup Condition="$(PackageProjects) == 'true'">
+      <CsprojFiles Include="$(RepoRoot)src/**/*.csproj" />
+      <CsprojFiles Include="$(RepoRoot)setup/**/*.csproj" />
+    </ItemGroup>
+    <!-- https://github.com/dotnet/cli/issues/6295#issuecomment-346973582 -->
+    <Exec Command="dotnet sln $(RepoRoot)build/Generated.sln add &quot;%(CsprojFiles.FullPath)&quot;" />
+
+    <PropertyGroup>
+      <SolutionFileName>Generated.sln</SolutionFileName>
+      <SolutionPath>$(RepoRoot)build/Generated.sln</SolutionPath>
+    </PropertyGroup>
   </Target>
 
   <!--
@@ -48,10 +67,12 @@
     We invalidate the cache by changing the value of __BuildPhase property.
   -->
   <Target Name="Restore">
+    <Message Text="Restoring $(SolutionFileName) [$(Configuration)]...%0a" Importance="high" />
     <MSBuild Projects="$(SolutionPath)" Properties="@(SolutionRestoreAndBuildProperty);__BuildPhase=SolutionRestore" Targets="Restore" BuildInParallel="true" />
   </Target>
 
   <Target Name="Build">
+    <Message Text="Building $(SolutionFileName) [$(Configuration)]...%0a" Importance="high" />
     <ItemGroup>
       <SolutionBuildTarget Include="Rebuild" Condition="'$(Rebuild)' == 'true'" />
       <SolutionBuildTarget Include="Build" Condition="'$(Build)' == 'true' and '$(Rebuild)' != 'true'" />
