@@ -95,6 +95,14 @@ steps:
     configuration: $(BuildConfiguration)
     msbuildArguments: '/m /warnaserror /nologo /clp:Summary /p:Build=true /p:Test=true /p:CIBuild=true /p:PackageProjects=true /v:normal /bl:$(Build.SourcesDirectory)\artifacts\$(BuildConfiguration)\log\Build.binlog'
 
+- task: MSBuild@1
+  displayName: Execute ProjectSystem tests
+  inputs:
+    solution: $(Build.SourcesDirectory)\build\proj\Build.proj
+    msbuildArchitecture: 'x64'
+    configuration: $(BuildConfiguration)
+    msbuildArguments: '/m /warnaserror /nologo /clp:Summary /p:Build=true /p:Test=true /p:CIBuild=true /p:TestProjects=true /v:normal /bl:$(Build.SourcesDirectory)\artifacts\$(BuildConfiguration)\log\Build.binlog'
+
 - task: MicroBuildCodesignVerify@3
   displayName: Verify Signed Files
   inputs:
