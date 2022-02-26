@@ -87,21 +87,24 @@ steps:
     BuildDropPath: '$(Build.SourcesDirectory)\artifacts\$(BuildConfiguration)'
     # BuildComponentPath: '$(Build.SourcesDirectory)/artifacts/$(BuildConfiguration)/VSSetup/Insertion'
 
-- task: MSBuild@1
-  displayName: Build ProjectSystem packages
-  inputs:
-    solution: $(Build.SourcesDirectory)\build\proj\Build.proj
-    msbuildArchitecture: 'x64'
-    configuration: $(BuildConfiguration)
-    msbuildArguments: '/m /warnaserror /nologo /clp:Summary /p:Build=true /p:Test=true /p:CIBuild=true /p:PackageProjects=true /v:normal /bl:$(Build.SourcesDirectory)\artifacts\$(BuildConfiguration)\log\Build.binlog'
+- script: $(Build.SourcesDirectory)\build.cmd /build /test /ci /sign /diagnostic /no-deploy /no-integration /no-ibc /no-clearnugetcache /configuration $(BuildConfiguration)
+  displayName: Build ProjectSystem.sln
 
-- task: MSBuild@1
-  displayName: Execute ProjectSystem tests
-  inputs:
-    solution: $(Build.SourcesDirectory)\build\proj\Build.proj
-    msbuildArchitecture: 'x64'
-    configuration: $(BuildConfiguration)
-    msbuildArguments: '/m /warnaserror /nologo /clp:Summary /p:Build=true /p:Test=true /p:CIBuild=true /p:TestProjects=true /v:normal /bl:$(Build.SourcesDirectory)\artifacts\$(BuildConfiguration)\log\Build.binlog'
+# - task: MSBuild@1
+#   displayName: Build ProjectSystem packages
+#   inputs:
+#     solution: $(Build.SourcesDirectory)\build\proj\Build.proj
+#     msbuildArchitecture: 'x64'
+#     configuration: $(BuildConfiguration)
+#     msbuildArguments: '/m /warnaserror /nologo /clp:Summary /p:Build=true /p:Test=true /p:CIBuild=true /p:PackageProjects=true /v:normal /bl:$(Build.SourcesDirectory)\artifacts\$(BuildConfiguration)\log\Build.binlog'
+
+# - task: MSBuild@1
+#   displayName: Execute ProjectSystem tests
+#   inputs:
+#     solution: $(Build.SourcesDirectory)\build\proj\Build.proj
+#     msbuildArchitecture: 'x64'
+#     configuration: $(BuildConfiguration)
+#     msbuildArguments: '/m /warnaserror /nologo /clp:Summary /p:Build=true /p:Test=true /p:CIBuild=true /p:TestProjects=true /v:normal /bl:$(Build.SourcesDirectory)\artifacts\$(BuildConfiguration)\log\Build.binlog'
 
 - task: MicroBuildCodesignVerify@3
   displayName: Verify Signed Files
