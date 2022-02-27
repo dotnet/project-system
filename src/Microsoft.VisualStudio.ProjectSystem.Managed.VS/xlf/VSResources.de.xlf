@@ -204,6 +204,11 @@ Um das Projekt zu debuggen, fügen Sie dieser Projektmappe ein ausführbares Pro
         <target state="translated">(Nicht festgelegt)</target>
         <note>Text to display to the user in the property page UI when the "startup object" property is not set.</note>
       </trans-unit>
+      <trans-unit id="UpdateNamespacePromptMessage">
+        <source>Adjust namespaces for moved files ?</source>
+        <target state="new">Adjust namespaces for moved files ?</target>
+        <note />
+      </trans-unit>
       <trans-unit id="WorkingDirecotryInvalid">
         <source>The working directory '{0}' specified in the '{1}' debug profile does not exist.</source>
         <target state="translated">Das im Debugprofil "{1}" angegebene Arbeitsverzeichnis "{0}" ist nicht vorhanden.</target>

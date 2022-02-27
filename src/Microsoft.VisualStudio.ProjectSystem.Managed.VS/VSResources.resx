@@ -293,4 +293,7 @@ In order to debug this project, add an executable project to this solution which
     <value>WARNING: Potential incremental build failure in '{0}'. See: https://aka.ms/incremental-build-failure</value>
     <comment>{0} is the file name of the project.</comment>
   </data>
+  <data name="UpdateNamespacePromptMessage" xml:space="preserve">
+    <value>Adjust namespaces for moved files ?</value>
+  </data>
 </root>
