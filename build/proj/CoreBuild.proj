@@ -40,7 +40,7 @@
     <Message Text="Generating Solution file..." Importance="high" />
 
     <Exec Command="dotnet --version" />
-    <Exec Condition="!Exists('$(RepoRoot)build\Generated.sln')" Command="dotnet new sln -n Generated -o $(RepoRoot)build --force" />
+    <Exec Command="dotnet new sln -n Generated -o $(RepoRoot)build --force" />
 
     <ItemGroup Condition="$(ProductProjects) == 'true'">
       <ProjFiles Include="$(RepoRoot)src/**/*.*proj" />
