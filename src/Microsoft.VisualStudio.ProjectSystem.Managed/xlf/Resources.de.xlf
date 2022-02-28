@@ -234,7 +234,7 @@
       </trans-unit>
       <trans-unit id="FUTD_SetOfChangedItemsIsEmpty">
         <source>The set of changed items is empty.</source>
-        <target state="new">The set of changed items is empty.</target>
+        <target state="translated">Der Satz geänderter Elemente ist leer.</target>
         <note />
       </trans-unit>
       <trans-unit id="FUTD_SetOfItemsChangedMoreRecentlyThanOutput_3">
