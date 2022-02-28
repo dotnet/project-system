@@ -15,7 +15,7 @@
   </Target>
 
   <!-- Adds the appropriate assemblies for signing. -->
-  <Target Name="AddAssembliesForSigning" BeforeTargets="SignFiles">
+  <Target Name="AddAssembliesForSigning" BeforeTargets="SignFiles" Condition="'$(ProductProjects)' == 'true'">
     <ItemGroup>
       <FilesToSign Include="$(ArtifactsBinDir)$(OutDirName)\$(AssemblyName).dll;$(ArtifactsBinDir)$(OutDirName)\**\$(AssemblyName).resources.dll">
         <Authenticode>MicrosoftSHA2</Authenticode>

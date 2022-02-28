@@ -29,6 +29,7 @@
     <CommonBuildProperty Include="CIBuild=$(CIBuild)" />
     <CommonBuildProperty Include="RepoRoot=$(RepoRoot)" />
     <CommonBuildProperty Include="VersionsPropsPath=$(RepoRoot)build\import\Versions.props" />
+    <CommonBuildProperty Include="ProductProjects=$(ProductProjects)" />
   </ItemGroup>
 
   <ItemGroup>
@@ -40,7 +41,7 @@
     <Message Text="Generating Solution file..." Importance="high" />
 
     <Exec Command="dotnet --version" />
-    <Exec Command="dotnet new sln -n Generated -o $(RepoRoot)build --force" />
+    <Exec Condition="!Exists('$(RepoRoot)build\Generated.sln')" Command="dotnet new sln -n Generated -o $(RepoRoot)build --force" />
 
     <ItemGroup Condition="$(ProductProjects) == 'true'">
       <ProjFiles Include="$(RepoRoot)src/**/*.*proj" />
