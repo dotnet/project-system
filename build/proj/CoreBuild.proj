@@ -43,16 +43,16 @@
     <Exec Condition="!Exists('$(RepoRoot)build\Generated.sln')" Command="dotnet new sln -n Generated -o $(RepoRoot)build --force" />
 
     <ItemGroup Condition="$(ProductProjects) == 'true'">
-      <CsprojFiles Include="$(RepoRoot)src/**/*.csproj" />
+      <ProjFiles Include="$(RepoRoot)src/**/*.*proj" />
     </ItemGroup>
     <ItemGroup Condition="$(PackageProjects) == 'true'">
-      <CsprojFiles Include="$(RepoRoot)setup/**/*.csproj" />
+      <ProjFiles Include="$(RepoRoot)setup/**/*.*proj" />
     </ItemGroup>
     <ItemGroup Condition="$(TestProjects) == 'true'">
-      <CsprojFiles Include="$(RepoRoot)tests/**/*.csproj" />
+      <ProjFiles Include="$(RepoRoot)tests/**/*.*proj" />
     </ItemGroup>
     <!-- https://github.com/dotnet/cli/issues/6295#issuecomment-346973582 -->
-    <Exec Command="dotnet sln $(RepoRoot)build/Generated.sln add &quot;%(CsprojFiles.FullPath)&quot;" />
+    <Exec Command="dotnet sln $(RepoRoot)build/Generated.sln add &quot;%(ProjFiles.FullPath)&quot;" />
 
     <PropertyGroup>
       <SolutionFileName>Generated.sln</SolutionFileName>
