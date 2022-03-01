@@ -8,6 +8,7 @@
     <AddVsixForSigningDependsOn>SwixBuild</AddVsixForSigningDependsOn>
 
     <!-- VS Insertion -->
+    <!-- NOTE: Having VisualStudioInsertionComponent defined is the condition for VisualStudio.SetupPackage.vsmanproj to be built (via FinalizeInsertionVsixFiles target in VisualStudio.Insertion.proj) in RepoToolset. -->
     <VisualStudioInsertionComponent>Microsoft.VisualStudio.ProjectSystem.Managed</VisualStudioInsertionComponent>
   </PropertyGroup>
 
@@ -22,6 +23,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <!-- NOTE: Having SwrFile defined is the condition for VisualStudio.SetupPackage.swixproj to be built (via SwixBuild target) in RepoToolset. -->
     <SwrFile Include="*.swr" />
   </ItemGroup>
 

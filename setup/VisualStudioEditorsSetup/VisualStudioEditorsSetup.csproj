@@ -14,6 +14,7 @@
     <AddVsixForSigningDependsOn>FinalizeInsertionVsixFiles</AddVsixForSigningDependsOn>
 
     <!-- VS Setup -->
+    <!-- NOTE: Having VisualStudioInsertionComponent defined is the condition for VisualStudio.SetupPackage.vsmanproj to be built (via FinalizeInsertionVsixFiles target in VisualStudio.Insertion.proj) in RepoToolset. -->
     <VisualStudioInsertionComponent>Microsoft.VisualStudio.Editors</VisualStudioInsertionComponent>
   </PropertyGroup>
 

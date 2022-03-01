@@ -80,7 +80,7 @@ steps:
     solution: $(Build.SourcesDirectory)\build\proj\Build.proj
     msbuildArchitecture: 'x64'
     configuration: $(BuildConfiguration)
-    msbuildArguments: '/m /warnaserror /nologo /clp:Summary /p:Build=true /p:Test=true /p:CIBuild=true /p:ProductProjects=true /v:normal /bl:$(Build.SourcesDirectory)\artifacts\$(BuildConfiguration)\log\Build.binlog'
+    msbuildArguments: '/m /warnaserror /nologo /clp:Summary /p:Build=true /p:CIBuild=true /p:ProductProjects=true /v:normal /bl:$(Build.SourcesDirectory)\artifacts\$(BuildConfiguration)\log\Build.binlog'
 
 - task: ManifestGeneratorTask@0
   displayName: 'Generate SBOM'
@@ -97,7 +97,7 @@ steps:
     solution: $(Build.SourcesDirectory)\build\proj\Build.proj
     msbuildArchitecture: 'x64'
     configuration: $(BuildConfiguration)
-    msbuildArguments: '/m /warnaserror /nologo /clp:Summary /p:Build=true /p:Test=true /p:CIBuild=true /p:PackageProjects=true /v:normal /bl:$(Build.SourcesDirectory)\artifacts\$(BuildConfiguration)\log\Build.binlog'
+    msbuildArguments: '/m /warnaserror /nologo /clp:Summary /p:Build=true /p:CIBuild=true /p:PackageProjects=true /v:normal /bl:$(Build.SourcesDirectory)\artifacts\$(BuildConfiguration)\log\Build.binlog'
 
 - task: MSBuild@1
   displayName: Execute ProjectSystem tests
