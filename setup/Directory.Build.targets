@@ -13,7 +13,7 @@
   </Target>
 
   <!-- Adds the appropriate vsix files for signing. -->
-  <Target Name="AddVsixForSigning" DependsOnTargets="$(AddVsixForSigningDependsOn)" BeforeTargets="SignFiles">
+  <Target Name="AddVsixForSigning" DependsOnTargets="$(AddVsixForSigningDependsOn)" BeforeTargets="SignFiles" Condition="'$(PackageProjects)' == 'true'">
     <Copy SourceFiles="$(VisualStudioSetupInsertionPath)$(AssemblyName).vsix" DestinationFolder="$(OutDir)" />
     <ItemGroup>
       <FilesToSign Include="$(OutDir)$(AssemblyName).vsix">
@@ -23,7 +23,7 @@
   </Target>
 
   <!-- Copies the vsix files after they've been signed to the different output folders. -->
-  <Target Name="CopyVsixAfterSigning" DependsOnTargets="AddVsixForSigning" AfterTargets="SignFiles">
+  <Target Name="CopyVsixAfterSigning" DependsOnTargets="AddVsixForSigning" AfterTargets="SignFiles" Condition="'$(PackageProjects)' == 'true'">
     <Copy SourceFiles="$(OutDir)$(AssemblyName).vsix" DestinationFolder="$(VisualStudioSetupInsertionPath)" />
     <Copy SourceFiles="$(OutDir)$(AssemblyName).vsix" DestinationFolder="$(VisualStudioSetupOutputPath)" />
   </Target>

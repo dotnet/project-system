@@ -29,7 +29,7 @@
     When creating the Vsix, the assembles in the obj folder are used. These assemblies are not signed and are not optimized (OptProf).
     This target copies the updated assemblies from the Dlls back into the obj folder so the correct files are put into the Vsix.
   -->
-  <Target Name="ReplaceObjAssembliesForVsix" AfterTargets="SignFiles">
+  <Target Name="ReplaceObjAssembliesForVsix" AfterTargets="SignFiles" Condition="'$(ProductProjects)' == 'true'">
     <!-- https://stackoverflow.com/a/8331202/294804 -->
     <!-- https://stackoverflow.com/a/10818869/294804 -->
     <ItemGroup>

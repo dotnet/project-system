@@ -30,6 +30,8 @@
     <CommonBuildProperty Include="RepoRoot=$(RepoRoot)" />
     <CommonBuildProperty Include="VersionsPropsPath=$(RepoRoot)build\import\Versions.props" />
     <CommonBuildProperty Include="ProductProjects=$(ProductProjects)" />
+    <CommonBuildProperty Include="PackageProjects=$(PackageProjects)" />
+    <CommonBuildProperty Include="TestProjects=$(TestProjects)" />
   </ItemGroup>
 
   <ItemGroup>
