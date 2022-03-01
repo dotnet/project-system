@@ -61,7 +61,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
         private readonly IVsSolutionRestoreService3 _solutionRestoreService;
         private readonly IFileSystem _fileSystem;
         private readonly IProjectDiagnosticOutputService _logger;
-        private readonly IProjectDependentFileChangeNotificationService _projectDependentFileChangeNotificationService;
         private readonly IVsSolutionRestoreService4 _solutionRestoreService4;
         private byte[]? _latestHash;
         private bool _enabled;
@@ -74,7 +73,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
             IVsSolutionRestoreService3 solutionRestoreService,
             IFileSystem fileSystem,
             IProjectDiagnosticOutputService logger,
-            IProjectDependentFileChangeNotificationService projectDependentFileChangeNotificationService,
             IVsSolutionRestoreService4 solutionRestoreService4,
             PackageRestoreSharedJoinableTaskCollection sharedJoinableTaskCollection)
             : base(project, sharedJoinableTaskCollection, synchronousDisposal: true, registerDataSource: false)
@@ -85,7 +83,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
             _solutionRestoreService = solutionRestoreService;
             _fileSystem = fileSystem;
             _logger = logger;
-            _projectDependentFileChangeNotificationService = projectDependentFileChangeNotificationService;
             _solutionRestoreService4 = solutionRestoreService4;
         }
 
@@ -163,8 +160,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
                 {
                     _restoreStarted = false;
                 }
-
-                HintProjectDependentFile(restoreInfo);
             }
             finally
             {
@@ -172,20 +167,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
             }
 
             return success;
-        }
-
-        private void HintProjectDependentFile(ProjectRestoreInfo restoreInfo)
-        {
-            if (restoreInfo.ProjectAssetsFilePath.Length != 0)
-            {
-                // Hint to CPS that the assets file "might" have changed and therefore
-                // reevaluate if it has. It already listens to file-changed events for it, 
-                // but can miss them during periods where the buffer is overflowed when 
-                // there are lots of changes.
-                _projectDependentFileChangeNotificationService.OnAfterDependentFilesChanged(
-                    fileFullPaths: new[] { restoreInfo.ProjectAssetsFilePath },
-                    project: ContainingProject);
-            }
         }
 
         private async Task<bool> NominateForRestoreAsync(ProjectRestoreInfo restoreInfo, CancellationToken cancellationToken)
