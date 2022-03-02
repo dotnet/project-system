@@ -134,7 +134,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
                             return;
                         }
 
-                        _roslynServices.ApplyChangesToSolution(currentSolution.Workspace, result.Result);
+                        bool applied = _roslynServices.ApplyChangesToSolution(currentSolution.Workspace, result.Result);
+
+                        System.Diagnostics.Debug.Assert(applied, "ApplyChangesToSolution returned false");
                     }
                     finally
                     {
