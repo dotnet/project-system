@@ -1,5 +1,6 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.Diagnostics.CodeAnalysis;
@@ -189,7 +190,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
         {
             string destinationFileRelative = _unconfiguredProject.MakeRelative(destinationFilePath);
             string destinationFolder = Path.GetDirectoryName(destinationFileRelative);
-            var documentFolders = destinationFolder.Split(new char[]{Path.AltDirectorySeparatorChar, Path.DirectorySeparatorChar}, System.StringSplitOptions.RemoveEmptyEntries);
+
+            string[] documentFolders = destinationFolder.Split(Delimiter.Path, StringSplitOptions.RemoveEmptyEntries);
 
             HashSet<Renamer.RenameDocumentActionSet> actions = new();
 
