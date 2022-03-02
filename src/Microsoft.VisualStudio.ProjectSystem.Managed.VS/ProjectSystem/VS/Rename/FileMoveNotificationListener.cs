@@ -52,7 +52,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
             IWaitIndicator waitService,
             IRoslynServices roslynServices,
             IVsService<SVsSettingsPersistenceManager, ISettingsManager> settingsManagerService)
-
         {
             _unconfiguredProject = unconfiguredProject;
             _userNotificationServices = userNotificationServices;
@@ -221,7 +220,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
             return actions;
         }
 
-        private Project? GetCurrentProject() =>
-            _workspace.CurrentSolution.Projects.FirstOrDefault(proj => StringComparers.Paths.Equals(proj.FilePath, _projectVsServices.Project.FullPath));
+        private Project? GetCurrentProject()
+        {
+            return _workspace.CurrentSolution.Projects.FirstOrDefault(
+                proj => StringComparers.Paths.Equals(proj.FilePath, _projectVsServices.Project.FullPath));
+        }
     }
 }
