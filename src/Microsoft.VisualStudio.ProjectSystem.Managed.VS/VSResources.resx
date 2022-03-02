@@ -294,6 +294,6 @@ In order to debug this project, add an executable project to this solution which
     <comment>{0} is the file name of the project.</comment>
   </data>
   <data name="UpdateNamespacePromptMessage" xml:space="preserve">
-    <value>Adjust namespaces for moved files ?</value>
+    <value>Adjust namespaces for moved files?</value>
   </data>
 </root>

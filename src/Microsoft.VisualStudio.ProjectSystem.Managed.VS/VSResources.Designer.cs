@@ -508,7 +508,7 @@ namespace Microsoft.VisualStudio {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Adjust namespaces for moved files ?.
+        ///   Looks up a localized string similar to Adjust namespaces for moved files?.
         /// </summary>
         internal static string UpdateNamespacePromptMessage {
             get {

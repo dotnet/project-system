@@ -205,8 +205,8 @@ Pour déboguer ce projet, ajoutez à cette solution un projet exécutable qui fa
         <note>Text to display to the user in the property page UI when the "startup object" property is not set.</note>
       </trans-unit>
       <trans-unit id="UpdateNamespacePromptMessage">
-        <source>Adjust namespaces for moved files ?</source>
-        <target state="new">Adjust namespaces for moved files ?</target>
+        <source>Adjust namespaces for moved files?</source>
+        <target state="new">Adjust namespaces for moved files?</target>
         <note />
       </trans-unit>
       <trans-unit id="WorkingDirecotryInvalid">
