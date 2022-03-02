@@ -119,27 +119,32 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
                 {
                     await _semaphore.WaitAsync();
 
-                    Solution currentSolution = await PublishLatestSolutionAsync(CancellationToken.None);
-
-                    string actionMessage = documentAction.ApplicableActions.First().GetDescription(CultureInfo.CurrentCulture);
-
-                    await _projectVsServices.ThreadingService.SwitchToUIThread();
-                    WaitIndicatorResult<Solution> result = _waitService.Run(
-                        title: VSResources.Renaming_Type,
-                        message: actionMessage,
-                        allowCancel: true,
-                        token => documentAction.UpdateSolutionAsync(currentSolution, token));
-
-                    // Do not warn the user if the rename was cancelled by the user
-                    if (result.IsCancelled)
+                    try
                     {
-                        return;
+                        Solution currentSolution = await PublishLatestSolutionAsync(CancellationToken.None);
+
+                        string actionMessage = documentAction.ApplicableActions.First().GetDescription(CultureInfo.CurrentCulture);
+
+                        await _projectVsServices.ThreadingService.SwitchToUIThread();
+
+                        WaitIndicatorResult<Solution> result = _waitService.Run(
+                            title: VSResources.Renaming_Type,
+                            message: actionMessage,
+                            allowCancel: true,
+                            token => documentAction.UpdateSolutionAsync(currentSolution, token));
+
+                        // Do not warn the user if the rename was cancelled by the user
+                        if (result.IsCancelled)
+                        {
+                            return;
+                        }
+
+                        _roslynServices.ApplyChangesToSolution(currentSolution.Workspace, result.Result);
                     }
-
-                    _roslynServices.ApplyChangesToSolution(currentSolution.Workspace, result.Result);
-
-                    _semaphore.Release();
-
+                    finally
+                    {
+                        _semaphore.Release();
+                    }
                 });
             }
         }
