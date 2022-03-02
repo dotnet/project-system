@@ -4,7 +4,6 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.Diagnostics.CodeAnalysis;
-using System.Globalization;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -27,8 +26,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
         private const string PromptNamespaceUpdate = "SolutionNavigator.PromptNamespaceUpdate";
         private const string EnableNamespaceUpdate = "SolutionNavigator.EnableNamespaceUpdate";
 
-        private readonly SemaphoreSlim _semaphore = new(1,1);
-
         private readonly UnconfiguredProject _unconfiguredProject;
         private readonly IUserNotificationServices _userNotificationServices;
         private readonly IUnconfiguredProjectVsServices _projectVsServices;
@@ -39,7 +36,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
         private readonly IRoslynServices _roslynServices;
         private readonly IVsService<SVsSettingsPersistenceManager, ISettingsManager> _settingsManagerService;
 
-        private HashSet<Renamer.RenameDocumentActionSet>? _actions;
+        private List<(Renamer.RenameDocumentActionSet, string)>? _actions;
 
         [ImportingConstructor]
         public FileMoveNotificationListener(
@@ -106,44 +103,41 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
             return filesToMove is not null;
         }
 
-        private void ApplyNamespaceUpdateActions(HashSet<Renamer.RenameDocumentActionSet> actions)
+        private void ApplyNamespaceUpdateActions(List<(Renamer.RenameDocumentActionSet Set, string FileName)> actions)
         {
-            foreach (Renamer.RenameDocumentActionSet documentAction in actions)
+            _ = _threadingService.JoinableTaskFactory.RunAsync(async () =>
             {
-                _ = _threadingService.JoinableTaskFactory.RunAsync(async () =>
-                {
-                    await _semaphore.WaitAsync();
+                await _projectVsServices.ThreadingService.SwitchToUIThread();
 
-                    try
+                string message = actions.First().Set.ApplicableActions.First().GetDescription();
+
+                _waitService.Run(
+                    title: "",
+                    message: message,
+                    allowCancel: true,
+                    async context =>
                     {
-                        Solution currentSolution = await PublishLatestSolutionAsync(CancellationToken.None);
+                        await TaskScheduler.Default;
 
-                        string actionMessage = documentAction.ApplicableActions.First().GetDescription(CultureInfo.CurrentCulture);
+                        Solution solution = await PublishLatestSolutionAsync(context.CancellationToken);
+
+                        int currentStep = 1;
+
+                        foreach ((Renamer.RenameDocumentActionSet action, string fileName) in actions)
+                        {
+                            context.Update(currentStep: currentStep++, progressText: fileName);
+
+                            solution = await action.UpdateSolutionAsync(solution, context.CancellationToken);
+                        }
 
                         await _projectVsServices.ThreadingService.SwitchToUIThread();
 
-                        WaitIndicatorResult<Solution> result = _waitService.Run(
-                            title: VSResources.Renaming_Type,
-                            message: actionMessage,
-                            allowCancel: true,
-                            token => documentAction.UpdateSolutionAsync(currentSolution, token));
-
-                        // Do not warn the user if the rename was cancelled by the user
-                        if (result.IsCancelled)
-                        {
-                            return;
-                        }
-
-                        bool applied = _roslynServices.ApplyChangesToSolution(currentSolution.Workspace, result.Result);
+                        bool applied = _roslynServices.ApplyChangesToSolution(solution.Workspace, solution);
 
                         System.Diagnostics.Debug.Assert(applied, "ApplyChangesToSolution returned false");
-                    }
-                    finally
-                    {
-                        _semaphore.Release();
-                    }
-                });
-            }
+                    },
+                    totalSteps: actions.Count);
+            });
         }
 
         private async Task<Solution> PublishLatestSolutionAsync(CancellationToken cancellationToken)
@@ -182,14 +176,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
             return confirmation;
         }
 
-        private async Task<HashSet<Renamer.RenameDocumentActionSet>> GetNamespaceUpdateActionsAsync(Project project, List<string> filesToMove, string destinationFilePath)
+        private async Task<List<(Renamer.RenameDocumentActionSet, string)>> GetNamespaceUpdateActionsAsync(Project project, List<string> filesToMove, string destinationFilePath)
         {
             string destinationFileRelative = _unconfiguredProject.MakeRelative(destinationFilePath);
             string destinationFolder = Path.GetDirectoryName(destinationFileRelative);
 
             string[] documentFolders = destinationFolder.Split(Delimiter.Path, StringSplitOptions.RemoveEmptyEntries);
 
-            HashSet<Renamer.RenameDocumentActionSet> actions = new();
+            List<(Renamer.RenameDocumentActionSet, string)> actions = new();
 
             foreach (string filenameWithPath in filesToMove)
             {
@@ -212,7 +206,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
                     continue;
                 }
 
-                actions.Add(documentAction);
+                actions.Add((documentAction, filename));
             }
 
             return actions;
