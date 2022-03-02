@@ -8,11 +8,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Waiting
     ///     Represents the result of <see cref="IWaitIndicator.Run{T}(string, string, bool, Func{System.Threading.CancellationToken, System.Threading.Tasks.Task{T}})"/>.
     /// </summary>
     internal readonly struct WaitIndicatorResult<T>
-        where T : class?
     {
-#pragma warning disable RS0038 // Prefer null literal
         public static readonly WaitIndicatorResult<T> Cancelled = new(isCancelled: true, result: default!);
-#pragma warning restore RS0038 
 
         private readonly bool _isCancelled;
         private readonly T _result;
@@ -41,7 +38,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Waiting
             {
                 Verify.Operation(!_isCancelled, "Cannot get the result of a cancelled operation.");
 
-                return _result!;
+                return _result;
             }
         }
 

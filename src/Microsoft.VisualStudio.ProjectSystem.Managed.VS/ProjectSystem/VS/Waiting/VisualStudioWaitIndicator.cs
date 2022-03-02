@@ -25,7 +25,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Waiting
             _waitDialogFactoryService = waitDialogFactoryService;
         }
 
-        public WaitIndicatorResult<T> Run<T>(string title, string message, bool allowCancel, Func<CancellationToken, Task<T>> asyncMethod) where T : class?
+        public WaitIndicatorResult<T> Run<T>(string title, string message, bool allowCancel, Func<CancellationToken, Task<T>> asyncMethod)
         {
             _joinableTaskContext.VerifyIsOnMainThread();
 
