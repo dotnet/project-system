@@ -66,15 +66,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
 
         public async Task OnBeforeFilesMovedAsync(IReadOnlyCollection<IFileMoveItem> items)
         {
-            _actions = new();
             Project? project = GetCurrentProject();
-            if (project is null)
-            {
-                return;
-            }
 
-            if (!TryGetFilesToMove(items, out List<string>? filesToMove, out string destination))
+            if (project is null || !TryGetFilesToMove(items, out List<string>? filesToMove, out string destination))
             {
+                _actions = null;
                 return;
             }
 
