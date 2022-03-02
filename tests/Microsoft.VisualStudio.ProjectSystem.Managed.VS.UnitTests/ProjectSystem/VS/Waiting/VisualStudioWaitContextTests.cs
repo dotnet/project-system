@@ -22,19 +22,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Waiting
         }
 
         [Fact]
-        public static void SetPropertyMessage_Test()
-        {
-            string title = "Test001";
-            string message = "Testing001";
-            bool isCancelable = true;
-            var context = Create(title, message, isCancelable);
-            Assert.Equal(message, context.Message);
-            var message2 = "Testing002";
-            context.Message = message2;
-            Assert.Equal(message2, context.Message);
-        }
-
-        [Fact]
         public static void CreateWrongType_Test()
         {
             Assert.ThrowsAny<Exception>(() => _ = CreateWrongType(string.Empty, string.Empty, false));

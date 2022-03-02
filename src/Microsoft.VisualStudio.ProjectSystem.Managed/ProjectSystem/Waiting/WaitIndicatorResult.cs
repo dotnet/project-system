@@ -5,7 +5,29 @@ using System;
 namespace Microsoft.VisualStudio.ProjectSystem.Waiting
 {
     /// <summary>
-    ///     Represents the result of <see cref="IWaitIndicator.Run{T}(string, string, bool, Func{System.Threading.CancellationToken, System.Threading.Tasks.Task{T}})"/>.
+    ///     Represents the result of <see cref="IWaitIndicator.Run(string, string, bool, Func{IWaitContext, System.Threading.Tasks.Task}, int)"/>.
+    /// </summary>
+    internal readonly struct WaitIndicatorResult
+    {
+        public static readonly WaitIndicatorResult Cancelled = new(isCancelled: true);
+        public static readonly WaitIndicatorResult Completed = new(isCancelled: false);
+
+        private readonly bool _isCancelled;
+
+        private WaitIndicatorResult(bool isCancelled)
+        {
+            _isCancelled = isCancelled;
+        }
+
+        /// <summary>
+        ///     Gets a value indicating whether the operation was cancelled, either 
+        ///     by the user or the operation itself.
+        /// </summary>
+        public bool IsCancelled => _isCancelled;
+    }
+
+    /// <summary>
+    ///     Represents the result of <see cref="IWaitIndicator.Run{T}(string, string, bool, Func{IWaitContext, System.Threading.Tasks.Task{T}}, int)"/>.
     /// </summary>
     internal readonly struct WaitIndicatorResult<T>
     {
