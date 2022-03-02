@@ -36,7 +36,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
         private readonly IRoslynServices _roslynServices;
         private readonly IVsService<SVsSettingsPersistenceManager, ISettingsManager> _settingsManagerService;
 
-        private List<(Renamer.RenameDocumentActionSet, string)>? _actions;
+        private List<(Renamer.RenameDocumentActionSet Set, string FileName)>? _actions;
 
         [ImportingConstructor]
         public FileMoveNotificationListener(
@@ -65,157 +65,163 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
         {
             Project? project = GetCurrentProject();
 
-            if (project is null || !TryGetFilesToMove(items, out List<string>? filesToMove, out string destination))
+            if (project is not null && TryGetFilesToMove(out List<string>? filesToMove, out string destination))
+            {
+                _actions = await GetNamespaceUpdateActionsAsync();
+            }
+            else
             {
                 _actions = null;
-                return;
             }
 
-            _actions = await GetNamespaceUpdateActionsAsync(project, filesToMove, destination);
+            return;
+
+            Project? GetCurrentProject()
+            {
+                return _workspace.CurrentSolution.Projects.FirstOrDefault(
+                    proj => StringComparers.Paths.Equals(proj.FilePath, _projectVsServices.Project.FullPath));
+            }
+
+            bool TryGetFilesToMove([NotNullWhen(returnValue: true)] out List<string>? filesToMove, out string destination)
+            {
+                destination = string.Empty;
+                filesToMove = null;
+
+                // TODO : Parse children in Folders
+                foreach (IFileMoveItem item in items)
+                {
+                    bool isCompileItem = StringComparers.ItemTypes.Equals(item.ItemType, Compile.SchemaName);
+
+                    if (item.WithinProject && isCompileItem && !item.IsLinked && !item.IsFolder)
+                    {
+                        filesToMove ??= new();
+                        filesToMove.Add(item.Source);
+                        destination = item.Destination;
+                    }
+                }
+
+                return filesToMove is not null;
+            }
+
+            async Task<List<(Renamer.RenameDocumentActionSet, string)>> GetNamespaceUpdateActionsAsync()
+            {
+                string destinationFileRelative = _unconfiguredProject.MakeRelative(destination);
+                string destinationFolder = Path.GetDirectoryName(destinationFileRelative);
+
+                string[] documentFolders = destinationFolder.Split(Delimiter.Path, StringSplitOptions.RemoveEmptyEntries);
+
+                List<(Renamer.RenameDocumentActionSet, string)> actions = new();
+
+                foreach (string filenameWithPath in filesToMove)
+                {
+                    string filename = Path.GetFileName(filenameWithPath);
+
+                    Document? oldDocument = project.Documents.FirstOrDefault(d => StringComparers.Paths.Equals(d.FilePath, filenameWithPath));
+
+                    if (oldDocument is null)
+                    {
+                        continue;
+                    }
+
+                    // This is a file item to another directory, it should only detect this a Update Namespace action.
+                    // TODO Upgrade this api to get rid of the exclamation sign
+                    Renamer.RenameDocumentActionSet documentAction = await Renamer.RenameDocumentAsync(oldDocument, null!, documentFolders);
+
+                    if (documentAction.ApplicableActions.IsEmpty ||
+                        documentAction.ApplicableActions.Any(a => !a.GetErrors().IsEmpty))
+                    {
+                        continue;
+                    }
+
+                    actions.Add((documentAction, filename));
+                }
+
+                return actions;
+            }
         }
 
         public async Task OnAfterFileMoveAsync()
         {
             if (_actions is { Count: not 0 } && await CheckUserConfirmationAsync())
             {
-                ApplyNamespaceUpdateActions(_actions);
+                ApplyNamespaceUpdateActions();
             }
-        }
 
-        private static bool TryGetFilesToMove(IReadOnlyCollection<IFileMoveItem> items, [NotNullWhen(returnValue: true)] out List<string>? filesToMove, out string destination)
-        {
-            destination = string.Empty;
-            filesToMove = null;
+            return;
 
-            // TODO : Parse children in Folders
-            foreach (IFileMoveItem item in items)
+            async Task<bool> CheckUserConfirmationAsync()
             {
-                bool isCompileItem = StringComparers.ItemTypes.Equals(item.ItemType, Compile.SchemaName);
+                ISettingsManager settings = await _settingsManagerService.GetValueAsync();
 
-                if (item.WithinProject && isCompileItem && !item.IsLinked && !item.IsFolder)
+                bool promptNamespaceUpdate = settings.GetValueOrDefault(PromptNamespaceUpdate, true);
+                bool enabledNamespaceUpdate = settings.GetValueOrDefault(EnableNamespaceUpdate, true);
+
+                if (!enabledNamespaceUpdate || !promptNamespaceUpdate)
                 {
-                    filesToMove ??= new();
-                    filesToMove.Add(item.Source);
-                    destination = item.Destination;
+                    return enabledNamespaceUpdate;
                 }
-            }
 
-            return filesToMove is not null;
-        }
-
-        private void ApplyNamespaceUpdateActions(List<(Renamer.RenameDocumentActionSet Set, string FileName)> actions)
-        {
-            _ = _threadingService.JoinableTaskFactory.RunAsync(async () =>
-            {
                 await _projectVsServices.ThreadingService.SwitchToUIThread();
 
-                string message = actions.First().Set.ApplicableActions.First().GetDescription();
+                bool confirmation = _userNotificationServices.Confirm(VSResources.UpdateNamespacePromptMessage, out promptNamespaceUpdate);
 
-                _waitService.Run(
-                    title: "",
-                    message: message,
-                    allowCancel: true,
-                    async context =>
-                    {
-                        await TaskScheduler.Default;
+                await settings.SetValueAsync(PromptNamespaceUpdate, !promptNamespaceUpdate, true);
 
-                        Solution solution = await PublishLatestSolutionAsync(context.CancellationToken);
+                return confirmation;
+            }
 
-                        int currentStep = 1;
+            void ApplyNamespaceUpdateActions()
+            {
+                _ = _threadingService.JoinableTaskFactory.RunAsync(async () =>
+                {
+                    await _projectVsServices.ThreadingService.SwitchToUIThread();
 
-                        foreach ((Renamer.RenameDocumentActionSet action, string fileName) in actions)
+                    string message = _actions.First().Set.ApplicableActions.First().GetDescription();
+
+                    _waitService.Run(
+                        title: "",
+                        message: message,
+                        allowCancel: true,
+                        async context =>
                         {
-                            context.Update(currentStep: currentStep++, progressText: fileName);
+                            await TaskScheduler.Default;
 
-                            solution = await action.UpdateSolutionAsync(solution, context.CancellationToken);
-                        }
+                            Solution solution = await PublishLatestSolutionAsync(context.CancellationToken);
 
-                        await _projectVsServices.ThreadingService.SwitchToUIThread();
+                            int currentStep = 1;
 
-                        bool applied = _roslynServices.ApplyChangesToSolution(solution.Workspace, solution);
+                            foreach ((Renamer.RenameDocumentActionSet action, string fileName) in _actions)
+                            {
+                                context.Update(currentStep: currentStep++, progressText: fileName);
 
-                        System.Diagnostics.Debug.Assert(applied, "ApplyChangesToSolution returned false");
-                    },
-                    totalSteps: actions.Count);
-            });
-        }
+                                solution = await action.UpdateSolutionAsync(solution, context.CancellationToken);
+                            }
 
-        private async Task<Solution> PublishLatestSolutionAsync(CancellationToken cancellationToken)
-        {
-            // WORKAROUND: We don't yet have a way to wait for the changes to propagate 
-            // to Roslyn (tracked by https://github.com/dotnet/project-system/issues/3425), so 
-            // instead we wait for the IntelliSense stage to finish for the entire solution
+                            await _projectVsServices.ThreadingService.SwitchToUIThread();
 
-            IVsOperationProgressStatusService operationProgressStatusService = await _operationProgressService.GetValueAsync(cancellationToken);
+                            bool applied = _roslynServices.ApplyChangesToSolution(solution.Workspace, solution);
 
-            IVsOperationProgressStageStatus stageStatus = operationProgressStatusService.GetStageStatus(CommonOperationProgressStageIds.Intellisense);
+                            System.Diagnostics.Debug.Assert(applied, "ApplyChangesToSolution returned false");
+                        },
+                        totalSteps: _actions.Count);
+                });
 
-            await stageStatus.WaitForCompletionAsync().WithCancellation(cancellationToken);
-
-            // The result of that wait, is basically a "new" published Solution, so grab it
-            return _workspace.CurrentSolution;
-        }
-
-        private async Task<bool> CheckUserConfirmationAsync()
-        {
-            ISettingsManager settings = await _settingsManagerService.GetValueAsync();
-            bool promptNamespaceUpdate = settings.GetValueOrDefault(PromptNamespaceUpdate, true);
-            bool enabledNamespaceUpdate = settings.GetValueOrDefault(EnableNamespaceUpdate, true);
-
-            if (!enabledNamespaceUpdate || !promptNamespaceUpdate)
-            {
-                return enabledNamespaceUpdate;
-            }
-
-            await _projectVsServices.ThreadingService.SwitchToUIThread();
-
-            bool confirmation = _userNotificationServices.Confirm(VSResources.UpdateNamespacePromptMessage, out promptNamespaceUpdate);
-
-            await settings.SetValueAsync(PromptNamespaceUpdate, !promptNamespaceUpdate, true);
-
-            return confirmation;
-        }
-
-        private async Task<List<(Renamer.RenameDocumentActionSet, string)>> GetNamespaceUpdateActionsAsync(Project project, List<string> filesToMove, string destinationFilePath)
-        {
-            string destinationFileRelative = _unconfiguredProject.MakeRelative(destinationFilePath);
-            string destinationFolder = Path.GetDirectoryName(destinationFileRelative);
-
-            string[] documentFolders = destinationFolder.Split(Delimiter.Path, StringSplitOptions.RemoveEmptyEntries);
-
-            List<(Renamer.RenameDocumentActionSet, string)> actions = new();
-
-            foreach (string filenameWithPath in filesToMove)
-            {
-                string filename = Path.GetFileName(filenameWithPath);
-
-                Document? oldDocument = project.Documents.FirstOrDefault(d => StringComparers.Paths.Equals(d.FilePath, filenameWithPath));
-
-                if (oldDocument is null)
+                async Task<Solution> PublishLatestSolutionAsync(CancellationToken cancellationToken)
                 {
-                    continue;
+                    // WORKAROUND: We don't yet have a way to wait for the changes to propagate 
+                    // to Roslyn (tracked by https://github.com/dotnet/project-system/issues/3425), so 
+                    // instead we wait for the IntelliSense stage to finish for the entire solution
+
+                    IVsOperationProgressStatusService operationProgressStatusService = await _operationProgressService.GetValueAsync(cancellationToken);
+
+                    IVsOperationProgressStageStatus stageStatus = operationProgressStatusService.GetStageStatus(CommonOperationProgressStageIds.Intellisense);
+
+                    await stageStatus.WaitForCompletionAsync().WithCancellation(cancellationToken);
+
+                    // The result of that wait, is basically a "new" published Solution, so grab it
+                    return _workspace.CurrentSolution;
                 }
-
-                // This is a file item to another directory, it should only detect this a Update Namespace action.
-                // TODO: Upgrade this api to get rid of the exclamation sign
-                Renamer.RenameDocumentActionSet documentAction = await Renamer.RenameDocumentAsync(oldDocument, null!, documentFolders);
-
-                if (documentAction.ApplicableActions.IsEmpty ||
-                    documentAction.ApplicableActions.Any(a => !a.GetErrors().IsEmpty))
-                {
-                    continue;
-                }
-
-                actions.Add((documentAction, filename));
             }
-
-            return actions;
-        }
-
-        private Project? GetCurrentProject()
-        {
-            return _workspace.CurrentSolution.Projects.FirstOrDefault(
-                proj => StringComparers.Paths.Equals(proj.FilePath, _projectVsServices.Project.FullPath));
         }
     }
 }
