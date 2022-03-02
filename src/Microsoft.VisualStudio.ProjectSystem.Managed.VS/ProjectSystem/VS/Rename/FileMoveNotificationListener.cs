@@ -63,7 +63,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
             _settingsManagerService = settingsManagerService;
         }
 
-        public async Task OnBeforeFilesMovedAsync(IReadOnlyCollection<IFileMoveInfo> items)
+        public async Task OnBeforeFilesMovedAsync(IReadOnlyCollection<IFileMoveItem> items)
         {
             _actions = new();
             Project? project = GetCurrentProject();
@@ -90,7 +90,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
             ApplyNamespaceUpdateActions(_actions!);
         }
 
-        private bool TryGetFilesToMove(IReadOnlyCollection<IFileMoveInfo> items, out List<string>? filesToMove, out string destination)
+        private bool TryGetFilesToMove(IReadOnlyCollection<IFileMoveItem> items, out List<string>? filesToMove, out string destination)
         {
             destination = string.Empty;
             filesToMove = null;
