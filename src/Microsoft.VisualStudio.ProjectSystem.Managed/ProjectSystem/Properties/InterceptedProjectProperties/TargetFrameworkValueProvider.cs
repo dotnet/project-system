@@ -2,6 +2,7 @@
 
 using System.ComponentModel.Composition;
 using System.Runtime.Versioning;
+using System.Threading.Tasks;
 
 namespace Microsoft.VisualStudio.ProjectSystem.Properties
 {

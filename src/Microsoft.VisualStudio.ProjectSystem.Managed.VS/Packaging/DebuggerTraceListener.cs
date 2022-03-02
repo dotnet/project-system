@@ -2,6 +2,7 @@
 
 #if DEBUG
 
+using System;
 using System.ComponentModel.Composition;
 using System.Diagnostics;
 using System.Reflection;

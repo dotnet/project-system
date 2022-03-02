@@ -1,7 +1,10 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
+using System;
 using System.Collections.Immutable;
 using System.ComponentModel.Composition;
+using System.Threading;
+using System.Threading.Tasks;
 using Microsoft.VisualStudio.LanguageServices.ProjectSystem;
 using Xunit;
 using static Microsoft.VisualStudio.ProjectSystem.LanguageServices.WorkspaceProjectContextHost;
@@ -10,6 +13,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 {
     public class WorkspaceProjectContextHostInstanceTests
     {
+        private readonly CommandLineArgumentsSnapshot _emptyCommandLineArguments = new(ImmutableArray<string>.Empty, isChanged: false);
+
         [Fact]
         public async Task Dispose_WhenNotInitialized_DoesNotThrow()
         {
