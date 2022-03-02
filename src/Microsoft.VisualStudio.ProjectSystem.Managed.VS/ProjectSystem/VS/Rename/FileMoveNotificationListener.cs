@@ -2,6 +2,7 @@
 
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
+using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Linq;
 using System.Threading;
@@ -77,7 +78,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
                 return;
             }
 
-            _actions = await GetNamespaceUpdateActionsAsync(project, filesToMove!, destination);
+            _actions = await GetNamespaceUpdateActionsAsync(project, filesToMove, destination);
         }
 
         public async Task OnAfterFileMoveAsync()
@@ -90,7 +91,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
             ApplyNamespaceUpdateActions(_actions!);
         }
 
-        private bool TryGetFilesToMove(IReadOnlyCollection<IFileMoveItem> items, out List<string>? filesToMove, out string destination)
+        private static bool TryGetFilesToMove(IReadOnlyCollection<IFileMoveItem> items, [NotNullWhen(returnValue: true)] out List<string>? filesToMove, out string destination)
         {
             destination = string.Empty;
             filesToMove = null;
