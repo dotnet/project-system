@@ -131,7 +131,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
                                 title: VSResources.Renaming_Type,
                                 message: renameOperationName,
                                 allowCancel: true,
-                                token => documentRenameResult.UpdateSolutionAsync(currentSolution, token));
+                                context => documentRenameResult.UpdateSolutionAsync(currentSolution, context.CancellationToken));
 
                 // Do not warn the user if the rename was cancelled by the user	
                 if (indicatorResult.IsCancelled)
