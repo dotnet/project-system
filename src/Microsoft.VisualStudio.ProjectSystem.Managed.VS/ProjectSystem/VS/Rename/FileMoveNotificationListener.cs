@@ -26,7 +26,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
         private const string PromptNamespaceUpdate = "SolutionNavigator.PromptNamespaceUpdate";
         private const string EnableNamespaceUpdate = "SolutionNavigator.EnableNamespaceUpdate";
 
-        private HashSet<Renamer.RenameDocumentActionSet>? _actions;
         private readonly SemaphoreSlim _semaphore = new(1,1);
 
         private readonly UnconfiguredProject _unconfiguredProject;
@@ -38,6 +37,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
         private readonly IWaitIndicator _waitService;
         private readonly IRoslynServices _roslynServices;
         private readonly IVsService<SVsSettingsPersistenceManager, ISettingsManager> _settingsManagerService;
+
+        private HashSet<Renamer.RenameDocumentActionSet>? _actions;
 
         [ImportingConstructor]
         public FileMoveNotificationListener(
