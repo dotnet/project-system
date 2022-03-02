@@ -2,7 +2,6 @@
 
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
-using System.Threading.Tasks;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
 {

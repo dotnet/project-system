@@ -29,7 +29,7 @@
     <PackageReference Update="RoslynTools.SignTool"                                                   Version="$(RoslynToolsSignToolVersion)" />
     <PackageReference Update="XliffTasks"                                                             Version="1.0.0-beta.20574.1" />
     <PackageReference Update="Microsoft.DiaSymReader.Pdb2Pdb"                                         Version="$(MicrosoftDiaSymReaderPdb2PdbVersion)" />
-    <PackageReference Update="Microsoft.Net.Compilers.Toolset"                                        Version="3.11.0" />
+    <PackageReference Update="Microsoft.Net.Compilers.Toolset"                                        Version="4.0.1" />
     <PackageReference Update="OpenCover"                                                              Version="4.7.1138-rc" />
     <PackageReference Update="Codecov"                                                                Version="$(CodecovVersion)" />
     <PackageReference Update="MicroBuild.Plugins.SwixBuild"                                           Version="$(MicroBuildPluginsSwixBuildVersion)" />
