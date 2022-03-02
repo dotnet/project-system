@@ -98,7 +98,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
             filesToMove = null;
 
             // TODO : Parse children in Folders
-            foreach (var item in items)
+            foreach (IFileMoveItem item in items)
             {
                 bool isCompileItem = StringComparers.ItemTypes.Equals(item.ItemType, Compile.SchemaName);
 
@@ -115,7 +115,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
 
         private void ApplyNamespaceUpdateActions(HashSet<Renamer.RenameDocumentActionSet> actions)
         {
-            foreach (var documentAction in actions)
+            foreach (Renamer.RenameDocumentActionSet documentAction in actions)
             {
                 _ = _threadingService.JoinableTaskFactory.RunAsync(async () =>
                 {
@@ -157,8 +157,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
             // to Roslyn (tracked by https://github.com/dotnet/project-system/issues/3425), so 
             // instead we wait for the IntelliSense stage to finish for the entire solution
 
-            var operationProgressStatusService = await _operationProgressService.GetValueAsync(cancellationToken);
-            var stageStatus = operationProgressStatusService.GetStageStatus(CommonOperationProgressStageIds.Intellisense);
+            IVsOperationProgressStatusService operationProgressStatusService = await _operationProgressService.GetValueAsync(cancellationToken);
+
+            IVsOperationProgressStageStatus stageStatus = operationProgressStatusService.GetStageStatus(CommonOperationProgressStageIds.Intellisense);
 
             await stageStatus.WaitForCompletionAsync().WithCancellation(cancellationToken);
 
@@ -195,11 +196,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
 
             HashSet<Renamer.RenameDocumentActionSet> actions = new();
 
-            foreach (var filenameWithPath in filesToMove)
+            foreach (string filenameWithPath in filesToMove)
             {
                 string filename = Path.GetFileName(filenameWithPath);
 
-                var oldDocument = project.Documents.FirstOrDefault(d => StringComparers.Paths.Equals(d.FilePath, filenameWithPath));
+                Document? oldDocument = project.Documents.FirstOrDefault(d => StringComparers.Paths.Equals(d.FilePath, filenameWithPath));
+
                 if (oldDocument is null)
                 {
                     continue;
