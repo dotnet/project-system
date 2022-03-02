@@ -23,7 +23,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
     [AppliesTo(ProjectCapability.CSharpOrVisualBasicLanguageService)]
     internal class FileMoveNotificationListener : IFileMoveNotificationListener
     {
-        private const string _compileItemType = "Compile";
         private const string PromptNamespaceUpdate = "SolutionNavigator.PromptNamespaceUpdate";
         private const string EnableNamespaceUpdate = "SolutionNavigator.EnableNamespaceUpdate";
 
@@ -99,7 +98,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
             // TODO : Parse children in Folders
             foreach (var item in items)
             {
-                bool isCompileItem = item.ItemType is not null && item.ItemType.Equals(_compileItemType, System.StringComparison.OrdinalIgnoreCase);
+                bool isCompileItem = StringComparers.ItemTypes.Equals(item.ItemType, Compile.SchemaName);
+
                 if (item.WithinProject && isCompileItem && !item.IsLinked && !item.IsFolder)
                 {
                     filesToMove ??= new();
