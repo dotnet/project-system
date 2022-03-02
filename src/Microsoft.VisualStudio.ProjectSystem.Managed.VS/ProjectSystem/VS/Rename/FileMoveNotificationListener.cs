@@ -84,12 +84,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
 
         public async Task OnAfterFileMoveAsync()
         {
-            if (_actions?.Count == 0 || !await CheckUserConfirmationAsync())
+            if (_actions is { Count: not 0 } && await CheckUserConfirmationAsync())
             {
-                return;
+                ApplyNamespaceUpdateActions(_actions);
             }
-
-            ApplyNamespaceUpdateActions(_actions!);
         }
 
         private static bool TryGetFilesToMove(IReadOnlyCollection<IFileMoveItem> items, [NotNullWhen(returnValue: true)] out List<string>? filesToMove, out string destination)
