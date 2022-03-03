@@ -2,7 +2,13 @@
 
 #pragma warning disable CS0618 // Type or member is obsolete
 
+using System;
+using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.IO;
+using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 using Microsoft.VisualStudio.IO;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
 using Microsoft.VisualStudio.ProjectSystem.SpecialFileProviders;

@@ -2,6 +2,7 @@
 
 using System.Collections.Immutable;
 using System.ComponentModel.Composition;
+using System.Threading.Tasks;
 
 namespace Microsoft.VisualStudio.ProjectSystem.References
 {

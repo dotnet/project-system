@@ -65,9 +65,8 @@
 
   <PropertyGroup Condition="'$(Language)' == 'C#'">
     <CheckForOverflowUnderflow>false</CheckForOverflowUnderflow>
-    <LangVersion>10.0</LangVersion>
+    <LangVersion>9.0</LangVersion>
     <Nullable>enable</Nullable>
-    <ImplicitUsings>enable</ImplicitUsings>
     <Features>strict</Features>
   </PropertyGroup>
 

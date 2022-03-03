@@ -1,5 +1,4 @@
 # Template used by unit-tests.yml
-
 jobs:
 - job: ${{ parameters.name }}
   pool: ${{ parameters.pool }}
