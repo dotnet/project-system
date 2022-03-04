@@ -93,14 +93,14 @@ steps:
   displayName: Update swixproj with SBOM manifest data
   inputs:
     filePath: build\script\UpdateVsixProjForSbom.ps1
-    arguments: '-projPath "$(NUGET_PACKAGES)\RoslynTools.RepoToolset\1.0.0-beta-62705-01\tools\VisualStudio.SetupPackage.swixproj" -manifestDirPath "$(Build.SourcesDirectory)\artifacts\$(BuildConfiguration)\bin" -destinationDirPath "$(Build.SourcesDirectory)\artifacts\$(BuildConfiguration)\VSSetup\Insertion"'
+    arguments: '-projPath "$(UserProfile)\.nuget\packages\RoslynTools.RepoToolset\1.0.0-beta-62705-01\tools\VisualStudio.SetupPackage.swixproj" -manifestDirPath "$(Build.SourcesDirectory)\artifacts\$(BuildConfiguration)\bin" -destinationDirPath "$(Build.SourcesDirectory)\artifacts\$(BuildConfiguration)\VSSetup\Insertion"'
     failOnStderr: true
 
 - task: PowerShell@2
   displayName: Update vsmanproj with SBOM manifest data
   inputs:
     filePath: build\script\UpdateVsixProjForSbom.ps1
-    arguments: '-projPath "$(NUGET_PACKAGES)\RoslynTools.RepoToolset\1.0.0-beta-62705-01\tools\VisualStudio.SetupPackage.vsmanproj" -manifestDirPath "$(Build.SourcesDirectory)\artifacts\$(BuildConfiguration)\bin" -destinationDirPath "$(Build.SourcesDirectory)\artifacts\$(BuildConfiguration)\VSSetup\Insertion"'
+    arguments: '-projPath "$(UserProfile)\.nuget\packages\RoslynTools.RepoToolset\1.0.0-beta-62705-01\tools\VisualStudio.SetupPackage.vsmanproj" -manifestDirPath "$(Build.SourcesDirectory)\artifacts\$(BuildConfiguration)\bin" -destinationDirPath "$(Build.SourcesDirectory)\artifacts\$(BuildConfiguration)\VSSetup\Insertion"'
     failOnStderr: true
 
 # - script: $(Build.SourcesDirectory)\build.cmd /build /test /ci /sign /diagnostic /no-deploy /no-integration /no-ibc /no-clearnugetcache /configuration $(BuildConfiguration)
