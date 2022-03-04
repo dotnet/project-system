@@ -37,5 +37,5 @@ $testStores.AppendChild($buildDropStore)
 
 $runsettingsXml.Save($runsettingsPath)
 Write-Host 'Saved Output:'
-Write-Host "profilingInputsStore: $profilingInputsStore"
-Write-Host "buildDropStore: $buildDropStore"
+Write-Host "profilingInputsStore: $($profilingInputsStore.Uri)"
+Write-Host "buildDropStore: $($buildDropStore.Uri)"

@@ -21,7 +21,7 @@ if($projExtension -eq '.swixproj')
     $mergeManifest.SetAttribute('Include', '')
     $mergeManifest.SetAttribute('SBOMFileLocation', "$manifestDirPath\$manifestFile")
     $mergeManifest.SetAttribute('SBOMFileDestPath', $destinationDirPath)
-    $itemGroup.AppendChild($mergeManifest)
+    $null = $itemGroup.AppendChild($mergeManifest)
 }
 
 if($projExtension -eq '.vsmanproj')

@@ -85,16 +85,16 @@ steps:
 - task: ManifestGeneratorTask@0
   displayName: 'Generate SBOM'
   inputs:
-    BuildDropPath: '$(Build.SourcesDirectory)\artifacts\$(BuildConfiguration)'
+    BuildDropPath: '$(Build.SourcesDirectory)\artifacts\$(BuildConfiguration)\bin\Dlls'
     ManifestDirPath: '$(Build.SourcesDirectory)\artifacts\$(BuildConfiguration)\bin'
     # BuildComponentPath: '$(Build.SourcesDirectory)/artifacts/$(BuildConfiguration)/VSSetup/Insertion'
 
-- task: PowerShell@2
-  displayName: Update swixproj with SBOM manifest data
-  inputs:
-    filePath: build\script\UpdateVsixProjForSbom.ps1
-    arguments: '-projPath "$(UserProfile)\.nuget\packages\RoslynTools.RepoToolset\1.0.0-beta-62705-01\tools\VisualStudio.SetupPackage.swixproj" -manifestDirPath "$(Build.SourcesDirectory)\artifacts\$(BuildConfiguration)\bin" -destinationDirPath "$(Build.SourcesDirectory)\artifacts\$(BuildConfiguration)\VSSetup\Insertion"'
-    failOnStderr: true
+# - task: PowerShell@2
+#   displayName: Update swixproj with SBOM manifest data
+#   inputs:
+#     filePath: build\script\UpdateVsixProjForSbom.ps1
+#     arguments: '-projPath "$(UserProfile)\.nuget\packages\RoslynTools.RepoToolset\1.0.0-beta-62705-01\tools\VisualStudio.SetupPackage.swixproj" -manifestDirPath "$(Build.SourcesDirectory)\artifacts\$(BuildConfiguration)\bin" -destinationDirPath "$(Build.SourcesDirectory)\artifacts\$(BuildConfiguration)\VSSetup\Insertion"'
+#     failOnStderr: true
 
 - task: PowerShell@2
   displayName: Update vsmanproj with SBOM manifest data
