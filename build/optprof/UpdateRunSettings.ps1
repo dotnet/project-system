@@ -14,11 +14,13 @@ $runsettingsXml = [Xml.XmlDocument](Get-Content $runsettingsPath)
 # https://stackoverflow.com/questions/33813700/empty-xml-node-rendered-as-string-in-powershell
 $testStores = $runsettingsXml.RunSettings.TestConfiguration.SelectSingleNode('TestStores')
 
-$profilingInputsStore = $runsettingsXml.CreateElement('TestStore')
+# https://stackoverflow.com/a/59090765/294804
+$profilingInputsStore = $runsettingsXml.CreateElement('TestStore', $runsettingsXml.DocumentElement.NamespaceURI)
 $profilingInputsStore.SetAttribute('Uri', "vstsdrop:$profilingInputsPath")
 $testStores.AppendChild($profilingInputsStore)
 
-$buildDropStore = $runsettingsXml.CreateElement('TestStore')
+# https://stackoverflow.com/a/59090765/294804
+$buildDropStore = $runsettingsXml.CreateElement('TestStore', $runsettingsXml.DocumentElement.NamespaceURI)
 if(-not $buildDropPath)
 {
   if((-not $bootstrapperInfoPath) -or (-not (Test-Path $bootstrapperInfoPath)))
