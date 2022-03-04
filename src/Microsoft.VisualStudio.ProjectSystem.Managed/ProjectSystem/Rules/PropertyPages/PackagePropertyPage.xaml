@@ -151,7 +151,11 @@
                   DisplayName="Release notes"
                   Description="A description of the changes made in this release of the package, often used in UI like the Updates tab of the Visual Studio Package Manager in place of the package description."
                   HelpUrl="https://go.microsoft.com/fwlink/?linkid=2147242"
-                  Category="General" />
+                  Category="General">
+    <StringProperty.ValueEditors>
+      <ValueEditor EditorType="MultiLineString" />
+    </StringProperty.ValueEditors>
+  </StringProperty>
 
   <DynamicEnumProperty Name="NeutralLanguage"
                        DisplayName="Assembly neutral language"
