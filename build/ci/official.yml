@@ -86,6 +86,7 @@ steps:
   displayName: 'Generate SBOM'
   inputs:
     BuildDropPath: '$(Build.SourcesDirectory)\artifacts\$(BuildConfiguration)'
+    ManifestDirPath: '$(Build.SourcesDirectory)\artifacts\$(BuildConfiguration)\bin'
     # BuildComponentPath: '$(Build.SourcesDirectory)/artifacts/$(BuildConfiguration)/VSSetup/Insertion'
 
 # - script: $(Build.SourcesDirectory)\build.cmd /build /test /ci /sign /diagnostic /no-deploy /no-integration /no-ibc /no-clearnugetcache /configuration $(BuildConfiguration)
@@ -107,14 +108,14 @@ steps:
     configuration: $(BuildConfiguration)
     msbuildArguments: '/m /warnaserror /nologo /clp:Summary /p:Build=true /p:Test=true /p:CIBuild=true /p:TestProjects=true /v:normal /bl:$(Build.SourcesDirectory)\artifacts\$(BuildConfiguration)\log\Build.binlog'
 
-- task: MicroBuildCodesignVerify@3
-  displayName: Verify Signed Files
-  inputs:
-    TargetFolders: |
-      $(Build.SourcesDirectory)/artifacts/$(BuildConfiguration)/packages
-      $(Build.SourcesDirectory)/artifacts/$(BuildConfiguration)/VSSetup/Insertion
-    # Filters out certain files (usually by extension) in the provided file.
-    ApprovalListPathForCerts: $(Build.SourcesDirectory)\build\ci\no_authenticode.txt
+# - task: MicroBuildCodesignVerify@3
+#   displayName: Verify Signed Files
+#   inputs:
+#     TargetFolders: |
+#       $(Build.SourcesDirectory)/artifacts/$(BuildConfiguration)/packages
+#       $(Build.SourcesDirectory)/artifacts/$(BuildConfiguration)/VSSetup/Insertion
+#     # Filters out certain files (usually by extension) in the provided file.
+#     ApprovalListPathForCerts: $(Build.SourcesDirectory)\build\ci\no_authenticode.txt
 
 - task: Ref12Analyze@0
   displayName: Create Codex Index
