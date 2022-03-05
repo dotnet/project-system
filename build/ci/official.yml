@@ -82,6 +82,9 @@ steps:
     configuration: $(BuildConfiguration)
     msbuildArguments: '/m /warnaserror /nologo /clp:Summary /p:Build=true /p:CIBuild=true /p:ProductProjects=true /v:normal /bl:$(Build.SourcesDirectory)\artifacts\$(BuildConfiguration)\log\Build.binlog'
 
+- powershell: Get-ChildItem "$(Build.SourcesDirectory)\artifacts\$(BuildConfiguration)\bin\Dlls"
+  displayName: 'Tell me what is in Dlls'
+
 - task: ManifestGeneratorTask@0
   displayName: 'Generate SBOM'
   inputs:
