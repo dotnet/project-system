@@ -4,6 +4,8 @@
 
 param ([Parameter(Mandatory=$true)] [String] $manifestJsonPath, [Parameter(Mandatory=$true)] [String] $sbomMetadataPath)
 
+$ErrorActionPreference = 'Stop'
+
 Write-Host 'Inputs:'
 Write-Host "manifestJsonPath: $manifestJsonPath"
 Write-Host "sbomMetadataPath: $sbomMetadataPath"
