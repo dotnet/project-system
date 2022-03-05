@@ -85,6 +85,7 @@ steps:
 - task: ManifestGeneratorTask@0
   displayName: 'Generate SBOM'
   inputs:
+    # TODO: bin\Dlls is different on-disk than what we publish as artifacts. We need to, somehow, get only what we publish as artifacts here.
     BuildDropPath: '$(Build.SourcesDirectory)\artifacts\$(BuildConfiguration)\bin\Dlls'
     ManifestDirPath: '$(Build.SourcesDirectory)\artifacts\$(BuildConfiguration)\bin'
     # BuildComponentPath: '$(Build.SourcesDirectory)/artifacts/$(BuildConfiguration)/VSSetup/Insertion'
