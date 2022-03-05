@@ -10,7 +10,7 @@ Write-Host 'Inputs:'
 Write-Host "manifestJsonPath: $manifestJsonPath"
 Write-Host "sbomMetadataPath: $sbomMetadataPath"
 
-$manifestJson = Get-Content $manifestJsonPath | ConvertFrom-Json -Depth 5
+$manifestJson = Get-Content $manifestJsonPath | ConvertFrom-Json
 $vsixPackageName = [IO.Path]::GetFileNameWithoutExtension($manifestJson.packages[0].payloads[0].fileName)
 $newSbomFileName = "$($vsixPackageName)_sbom.json"
 # https://stackoverflow.com/a/48601321/294804
