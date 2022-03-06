@@ -206,7 +206,7 @@ Pour déboguer ce projet, ajoutez à cette solution un projet exécutable qui fa
       </trans-unit>
       <trans-unit id="UpdateNamespacePromptMessage">
         <source>Adjust namespaces for moved files?</source>
-        <target state="new">Adjust namespaces for moved files?</target>
+        <target state="translated">Ajuster les espaces de noms pour les fichiers déplacés ?</target>
         <note />
       </trans-unit>
       <trans-unit id="WorkingDirecotryInvalid">

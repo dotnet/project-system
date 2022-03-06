@@ -206,7 +206,7 @@ Para depurar esse projeto, adicione um projeto executável a essa solução que 
       </trans-unit>
       <trans-unit id="UpdateNamespacePromptMessage">
         <source>Adjust namespaces for moved files?</source>
-        <target state="new">Adjust namespaces for moved files?</target>
+        <target state="translated">Ajustar namespaces para arquivos movidos?</target>
         <note />
       </trans-unit>
       <trans-unit id="WorkingDirecotryInvalid">
