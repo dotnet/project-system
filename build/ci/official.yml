@@ -71,32 +71,16 @@ steps:
 # BUILD SOLUTION
 ###################################################################################################################################################################
 
-# - script: $(Build.SourcesDirectory)\build.cmd /build /test /ci /sign /diagnostic /no-deploy /no-integration /no-ibc /no-clearnugetcache /configuration $(BuildConfiguration)
-#   displayName: Build ProjectSystem.sln
+- script: $(Build.SourcesDirectory)\build.cmd /build /test /ci /sign /diagnostic /no-deploy /no-integration /no-ibc /no-clearnugetcache /configuration $(BuildConfiguration)
+  displayName: Build ProjectSystem.sln
 
-- task: MSBuild@1
-  displayName: Build ProjectSystem products
-  inputs:
-    solution: $(Build.SourcesDirectory)\build\proj\Build.proj
-    msbuildArchitecture: 'x86'
-    configuration: $(BuildConfiguration)
-    msbuildArguments: '/m /warnaserror /nologo /clp:Summary /p:Build=true /p:CIBuild=true /p:ProductProjects=true /v:normal /bl:$(Build.SourcesDirectory)\artifacts\$(BuildConfiguration)\log\Build.binlog'
-
-- task: ManifestGeneratorTask@0
-  displayName: 'Generate SBOM'
-  inputs:
-    # TODO: bin\Dlls is different on-disk than what we publish as artifacts. We need to, somehow, get only what we publish as artifacts here.
-    BuildDropPath: '$(Build.SourcesDirectory)\artifacts\$(BuildConfiguration)\bin\Dlls'
-    ManifestDirPath: '$(Build.SourcesDirectory)\artifacts\$(BuildConfiguration)\bin'
-    # BuildComponentPath: '$(Build.SourcesDirectory)/artifacts/$(BuildConfiguration)/VSSetup/Insertion'
-
-- task: MSBuild@1
-  displayName: Build ProjectSystem packages
-  inputs:
-    solution: $(Build.SourcesDirectory)\build\proj\Build.proj
-    msbuildArchitecture: 'x86'
-    configuration: $(BuildConfiguration)
-    msbuildArguments: '/m /warnaserror /nologo /clp:Summary /p:Build=true /p:CIBuild=true /p:PackageProjects=true /v:normal /bl:$(Build.SourcesDirectory)\artifacts\$(BuildConfiguration)\log\Build.binlog'
+# - task: MSBuild@1
+#   displayName: Build ProjectSystem products
+#   inputs:
+#     solution: $(Build.SourcesDirectory)\build\proj\Build.proj
+#     msbuildArchitecture: 'x86'
+#     configuration: $(BuildConfiguration)
+#     msbuildArguments: '/m /warnaserror /nologo /clp:Summary /p:Build=true /p:CIBuild=true /p:ProductProjects=true /v:normal /bl:$(Build.SourcesDirectory)\artifacts\$(BuildConfiguration)\log\Build.binlog'
 
 - task: MicroBuildCodesignVerify@3
   displayName: Verify Signed Files
@@ -107,13 +91,41 @@ steps:
     # Filters out certain files (usually by extension) in the provided file.
     ApprovalListPathForCerts: $(Build.SourcesDirectory)\build\ci\no_authenticode.txt
 
-- task: MSBuild@1
-  displayName: Execute ProjectSystem tests
+- task: ManifestGeneratorTask@0
+  displayName: 'Generate SBOM'
   inputs:
-    solution: $(Build.SourcesDirectory)\build\proj\Build.proj
-    msbuildArchitecture: 'x86'
-    configuration: $(BuildConfiguration)
-    msbuildArguments: '/m /warnaserror /nologo /clp:Summary /p:Build=true /p:Test=true /p:CIBuild=true /p:TestProjects=true /v:normal /bl:$(Build.SourcesDirectory)\artifacts\$(BuildConfiguration)\log\Build.binlog'
+    # TODO: bin\Dlls is different on-disk than what we publish as artifacts. We need to, somehow, get only what we publish as artifacts here.
+    BuildDropPath: '$(Build.SourcesDirectory)\artifacts\$(BuildConfiguration)\bin\Dlls'
+    ManifestDirPath: '$(Build.SourcesDirectory)\artifacts\$(BuildConfiguration)\bin'
+    # BuildComponentPath: '$(Build.SourcesDirectory)/artifacts/$(BuildConfiguration)/VSSetup/Insertion'
+
+- script: $(Build.SourcesDirectory)\build.cmd /build /test /ci /sign /diagnostic /no-deploy /no-integration /no-ibc /no-clearnugetcache /configuration $(BuildConfiguration)
+  displayName: Build ProjectSystem.sln
+
+# - task: MSBuild@1
+#   displayName: Build ProjectSystem packages
+#   inputs:
+#     solution: $(Build.SourcesDirectory)\build\proj\Build.proj
+#     msbuildArchitecture: 'x86'
+#     configuration: $(BuildConfiguration)
+#     msbuildArguments: '/m /warnaserror /nologo /clp:Summary /p:Build=true /p:CIBuild=true /p:PackageProjects=true /v:normal /bl:$(Build.SourcesDirectory)\artifacts\$(BuildConfiguration)\log\Build.binlog'
+
+- task: MicroBuildCodesignVerify@3
+  displayName: Verify Signed Files
+  inputs:
+    TargetFolders: |
+      $(Build.SourcesDirectory)/artifacts/$(BuildConfiguration)/packages
+      $(Build.SourcesDirectory)/artifacts/$(BuildConfiguration)/VSSetup/Insertion
+    # Filters out certain files (usually by extension) in the provided file.
+    ApprovalListPathForCerts: $(Build.SourcesDirectory)\build\ci\no_authenticode.txt
+
+# - task: MSBuild@1
+#   displayName: Execute ProjectSystem tests
+#   inputs:
+#     solution: $(Build.SourcesDirectory)\build\proj\Build.proj
+#     msbuildArchitecture: 'x86'
+#     configuration: $(BuildConfiguration)
+#     msbuildArguments: '/m /warnaserror /nologo /clp:Summary /p:Build=true /p:Test=true /p:CIBuild=true /p:TestProjects=true /v:normal /bl:$(Build.SourcesDirectory)\artifacts\$(BuildConfiguration)\log\Build.binlog'
 
 - task: Ref12Analyze@0
   displayName: Create Codex Index
