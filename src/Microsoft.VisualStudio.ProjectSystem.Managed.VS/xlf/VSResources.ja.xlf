@@ -206,7 +206,7 @@ In order to debug this project, add an executable project to this solution which
       </trans-unit>
       <trans-unit id="UpdateNamespacePromptMessage">
         <source>Adjust namespaces for moved files?</source>
-        <target state="new">Adjust namespaces for moved files?</target>
+        <target state="translated">移動したファイルの名前空間を調整しますか?</target>
         <note />
       </trans-unit>
       <trans-unit id="WorkingDirecotryInvalid">

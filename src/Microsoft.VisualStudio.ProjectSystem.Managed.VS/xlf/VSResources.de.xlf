@@ -206,7 +206,7 @@ Um das Projekt zu debuggen, fügen Sie dieser Projektmappe ein ausführbares Pro
       </trans-unit>
       <trans-unit id="UpdateNamespacePromptMessage">
         <source>Adjust namespaces for moved files?</source>
-        <target state="new">Adjust namespaces for moved files?</target>
+        <target state="translated">Namespaces für verschobene Dateien anpassen?</target>
         <note />
       </trans-unit>
       <trans-unit id="WorkingDirecotryInvalid">

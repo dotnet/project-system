@@ -206,7 +206,7 @@ Bu projede hata ayıklamak için bu çözüme, kitaplık projesine başvuran bir
       </trans-unit>
       <trans-unit id="UpdateNamespacePromptMessage">
         <source>Adjust namespaces for moved files?</source>
-        <target state="new">Adjust namespaces for moved files?</target>
+        <target state="translated">Taşınan dosyalar için ad alanları ayarlansın mı?</target>
         <note />
       </trans-unit>
       <trans-unit id="WorkingDirecotryInvalid">
