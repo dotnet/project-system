@@ -88,12 +88,14 @@
   </Target>
 
   <!-- Generate insertion assets -->
-  <Target Name="GenerateDependentAssemblyVersionsFile" Condition="'$(BuildOrRebuild)' == 'true' AND '$(PackageProjects)' == 'true'">
+  <!-- <Target Name="GenerateDependentAssemblyVersionsFile" Condition="'$(BuildOrRebuild)' == 'true' AND '$(PackageProjects)' == 'true'"> -->
+  <Target Name="GenerateDependentAssemblyVersionsFile" Condition="'$(BuildOrRebuild)' == 'true'">
     <MSBuild Projects="GenerateDependentAssemblyVersionFile.proj" BuildInParallel="true" />
   </Target>
 
   <!-- TODO: This file, VisualStudio.Insertion.proj, doesn't exist in the latest RepoToolset version. -->
-  <Target Name="GenerateVSManifest" Condition="'$(BuildOrRebuild)' == 'true' AND '$(PackageProjects)' == 'true'">
+  <!-- <Target Name="GenerateVSManifest" Condition="'$(BuildOrRebuild)' == 'true' AND '$(PackageProjects)' == 'true'"> -->
+  <Target Name="GenerateVSManifest" Condition="'$(BuildOrRebuild)' == 'true'">
     <!--
       Because multiple projects can contribute to a single insertion component we package them in a separate phase.
       Also due to insertion manifests containing hashes of references VSIXes, so we need to run this after signing.
