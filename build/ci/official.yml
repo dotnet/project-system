@@ -82,9 +82,6 @@ steps:
     configuration: $(BuildConfiguration)
     msbuildArguments: '/m /warnaserror /nologo /clp:Summary /p:Build=true /p:CIBuild=true /p:ProductProjects=true /v:normal /bl:$(Build.SourcesDirectory)\artifacts\$(BuildConfiguration)\log\Build.binlog'
 
-- powershell: Get-ChildItem "$(Build.SourcesDirectory)\artifacts\$(BuildConfiguration)\bin\Dlls"
-  displayName: 'Tell me what is in Dlls'
-
 - task: ManifestGeneratorTask@0
   displayName: 'Generate SBOM'
   inputs:
@@ -92,23 +89,6 @@ steps:
     BuildDropPath: '$(Build.SourcesDirectory)\artifacts\$(BuildConfiguration)\bin\Dlls'
     ManifestDirPath: '$(Build.SourcesDirectory)\artifacts\$(BuildConfiguration)\bin'
     # BuildComponentPath: '$(Build.SourcesDirectory)/artifacts/$(BuildConfiguration)/VSSetup/Insertion'
-
-# - task: PowerShell@2
-#   displayName: Update swixproj with SBOM manifest data
-#   inputs:
-#     filePath: build\script\UpdateVsixProjForSbom.ps1
-#     arguments: '-projPath "$(UserProfile)\.nuget\packages\RoslynTools.RepoToolset\1.0.0-beta-62705-01\tools\VisualStudio.SetupPackage.swixproj" -manifestDirPath "$(Build.SourcesDirectory)\artifacts\$(BuildConfiguration)\bin" -destinationDirPath "$(Build.SourcesDirectory)\artifacts\$(BuildConfiguration)\VSSetup\Insertion"'
-#     failOnStderr: true
-
-# - task: PowerShell@2
-#   displayName: Update vsmanproj with SBOM manifest data
-#   inputs:
-#     filePath: build\script\UpdateVsixProjForSbom.ps1
-#     arguments: '-projPath "$(UserProfile)\.nuget\packages\RoslynTools.RepoToolset\1.0.0-beta-62705-01\tools\VisualStudio.SetupPackage.vsmanproj" -manifestDirPath "$(Build.SourcesDirectory)\artifacts\$(BuildConfiguration)\bin" -destinationDirPath "$(Build.SourcesDirectory)\artifacts\$(BuildConfiguration)\VSSetup\Insertion"'
-#     failOnStderr: true
-
-# - script: $(Build.SourcesDirectory)\build.cmd /build /test /ci /sign /diagnostic /no-deploy /no-integration /no-ibc /no-clearnugetcache /configuration $(BuildConfiguration)
-#   displayName: Build ProjectSystem.sln
 
 - task: MSBuild@1
   displayName: Build ProjectSystem packages
@@ -126,14 +106,14 @@ steps:
     configuration: $(BuildConfiguration)
     msbuildArguments: '/m /warnaserror /nologo /clp:Summary /p:Build=true /p:Test=true /p:CIBuild=true /p:TestProjects=true /v:normal /bl:$(Build.SourcesDirectory)\artifacts\$(BuildConfiguration)\log\Build.binlog'
 
-# - task: MicroBuildCodesignVerify@3
-#   displayName: Verify Signed Files
-#   inputs:
-#     TargetFolders: |
-#       $(Build.SourcesDirectory)/artifacts/$(BuildConfiguration)/packages
-#       $(Build.SourcesDirectory)/artifacts/$(BuildConfiguration)/VSSetup/Insertion
-#     # Filters out certain files (usually by extension) in the provided file.
-#     ApprovalListPathForCerts: $(Build.SourcesDirectory)\build\ci\no_authenticode.txt
+- task: MicroBuildCodesignVerify@3
+  displayName: Verify Signed Files
+  inputs:
+    TargetFolders: |
+      $(Build.SourcesDirectory)/artifacts/$(BuildConfiguration)/packages
+      $(Build.SourcesDirectory)/artifacts/$(BuildConfiguration)/VSSetup/Insertion
+    # Filters out certain files (usually by extension) in the provided file.
+    ApprovalListPathForCerts: $(Build.SourcesDirectory)\build\ci\no_authenticode.txt
 
 - task: Ref12Analyze@0
   displayName: Create Codex Index
