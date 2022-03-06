@@ -82,7 +82,7 @@
       <SolutionBuildTarget Include="Build" Condition="'$(Build)' == 'true' and '$(Rebuild)' != 'true'" />
       <SolutionBuildTarget Include="Test" Condition="'$(Test)' == 'true'" />
       <SolutionBuildTarget Include="IntegrationTest" Condition="'$(IntegrationTest)' == 'true'" />
-      <SolutionBuildTarget Include="Pack" Condition="'$(BuildOrRebuild)' == 'true' AND '$(PackageProjects)' == 'true'" />
+      <SolutionBuildTarget Include="Pack" Condition="'$(BuildOrRebuild)' == 'true'" />
     </ItemGroup>
     <MSBuild Projects="$(SolutionPath)" Properties="@(SolutionRestoreAndBuildProperty);__BuildPhase=SolutionBuild" Targets="@(SolutionBuildTarget)" BuildInParallel="true" Condition="'@(SolutionBuildTarget)' != ''" />
   </Target>
