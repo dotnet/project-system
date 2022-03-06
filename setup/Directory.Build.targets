@@ -21,7 +21,8 @@
         <Authenticode>VsixSHA2</Authenticode>
       </FilesToSign>
     </ItemGroup>
-    <Exec ContinueOnError="false" Command="powershell -NonInteractive -NoLogo -NoProfile -ExecutionPolicy Unrestricted -Command &quot;. $(RepoRoot)build\script\UpdateManifestJsonForSbom.ps1 -manifestJsonPath '$(VisualStudioSetupInsertionPath)$(VisualStudioInsertionComponent).json' -sbomMetadataPath '$(ArtifactsBinDir)spdx_2.2\manifest.spdx.json'&quot;" />
+    <!-- Command to update insertion manifests (json) for creating the vsman files for insertion. -->
+    <!-- <Exec ContinueOnError="false" Command="powershell -NonInteractive -NoLogo -NoProfile -ExecutionPolicy Unrestricted -Command &quot;. $(RepoRoot)build\script\UpdateManifestJsonForSbom.ps1 -manifestJsonPath '$(VisualStudioSetupInsertionPath)$(VisualStudioInsertionComponent).json' -sbomMetadataPath '$(ArtifactsBinDir)spdx_2.2\manifest.spdx.json'&quot;" /> -->
   </Target>
 
   <!-- Copies the vsix files after they've been signed to the different output folders. -->
