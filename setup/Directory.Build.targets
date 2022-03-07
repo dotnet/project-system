@@ -13,7 +13,6 @@
   </Target>
 
   <!-- Adds the appropriate vsix files for signing. -->
-  <!-- <Target Name="AddVsixForSigning" DependsOnTargets="$(AddVsixForSigningDependsOn)" BeforeTargets="SignFiles" Condition="'$(PackageProjects)' == 'true'"> -->
   <Target Name="AddVsixForSigning" DependsOnTargets="$(AddVsixForSigningDependsOn)" BeforeTargets="SignFiles">
     <Copy SourceFiles="$(VisualStudioSetupInsertionPath)$(AssemblyName).vsix" DestinationFolder="$(OutDir)" />
     <ItemGroup>
@@ -21,17 +20,14 @@
         <Authenticode>VsixSHA2</Authenticode>
       </FilesToSign>
     </ItemGroup>
-    <!-- Command to update insertion manifests (json) for creating the vsman files for insertion. -->
-    <!-- <Exec ContinueOnError="false" Command="powershell -NonInteractive -NoLogo -NoProfile -ExecutionPolicy Unrestricted -Command &quot;. $(RepoRoot)build\script\UpdateManifestJsonForSbom.ps1 -manifestJsonPath '$(VisualStudioSetupInsertionPath)$(VisualStudioInsertionComponent).json' -sbomMetadataPath '$(ArtifactsBinDir)spdx_2.2\manifest.spdx.json'&quot;" /> -->
   </Target>
 
-  <!-- Command to update insertion manifests (json) for creating the vsman files for insertion. -->
-  <Target Name="UpdateManifestJsonForSbom" AfterTargets="AddVsixForSigning" Condition="'$(ProductProjects)' != 'true'">
+  <!-- Updates insertion manifests (json) for creating the vsman files for insertion to include the SPDX SBOM json. -->
+  <Target Name="UpdateManifestJsonForSbom" AfterTargets="AddVsixForSigning" Condition="'$(QuickSrcBuild)' != 'true'">
     <Exec ContinueOnError="false" Command="powershell -NonInteractive -NoLogo -NoProfile -ExecutionPolicy Unrestricted -Command &quot;. $(RepoRoot)build\script\UpdateManifestJsonForSbom.ps1 -manifestJsonPath '$(VisualStudioSetupInsertionPath)$(VisualStudioInsertionComponent).json' -sbomMetadataPath '$(ArtifactsBinDir)spdx_2.2\manifest.spdx.json'&quot;" />
   </Target>
 
   <!-- Copies the vsix files after they've been signed to the different output folders. -->
-  <!-- <Target Name="CopyVsixAfterSigning" DependsOnTargets="AddVsixForSigning" AfterTargets="SignFiles" Condition="'$(PackageProjects)' == 'true'"> -->
   <Target Name="CopyVsixAfterSigning" DependsOnTargets="AddVsixForSigning" AfterTargets="SignFiles">
     <Copy SourceFiles="$(OutDir)$(AssemblyName).vsix" DestinationFolder="$(VisualStudioSetupInsertionPath)" />
     <Copy SourceFiles="$(OutDir)$(AssemblyName).vsix" DestinationFolder="$(VisualStudioSetupOutputPath)" />

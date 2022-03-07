@@ -29,9 +29,7 @@
     <CommonBuildProperty Include="CIBuild=$(CIBuild)" />
     <CommonBuildProperty Include="RepoRoot=$(RepoRoot)" />
     <CommonBuildProperty Include="VersionsPropsPath=$(RepoRoot)build\import\Versions.props" />
-    <CommonBuildProperty Include="ProductProjects=$(ProductProjects)" />
-    <CommonBuildProperty Include="PackageProjects=$(PackageProjects)" />
-    <CommonBuildProperty Include="TestProjects=$(TestProjects)" />
+    <CommonBuildProperty Include="QuickSrcBuild=$(QuickSrcBuild)" />
   </ItemGroup>
 
   <ItemGroup>
@@ -39,28 +37,23 @@
     <SolutionRestoreAndBuildProperty Include="__DeployProjectOutput=$(Deploy)" Condition="'$(Deploy)' != ''" />
   </ItemGroup>
 
-  <Target Name="GenerateSolutionForCI" BeforeTargets="Restore" Condition="'$(ProductProjects)' == 'true' OR '$(PackageProjects)' == 'true' OR '$(TestProjects)' == 'true'">
-    <Message Text="Generating Solution file..." Importance="high" />
+  <Target Name="GenerateSolutionForQuickSrcBuild" BeforeTargets="Restore" Condition="'$(QuickSrcBuild)' == 'true'">
+    <PropertyGroup>
+      <SolutionName>Src</SolutionName>
+      <SolutionFolder>$(RepoRoot)src/</SolutionFolder>
+      <SolutionFileName>$(SolutionName).sln</SolutionFileName>
+      <SolutionPath>$(SolutionFolder)$(SolutionFileName)</SolutionPath>
+    </PropertyGroup>
+    <Message Text="Generating Solution file [$(SolutionFileName)]..." Importance="high" />
 
     <Exec Command="dotnet --version" />
-    <Exec Condition="!Exists('$(RepoRoot)build\Generated.sln')" Command="dotnet new sln -n Generated -o $(RepoRoot)build --force" />
+    <Exec Command="dotnet new sln -n $(SolutionName) -o $(SolutionFolder) --force" />
 
-    <ItemGroup Condition="$(ProductProjects) == 'true'">
-      <ProjFiles Include="$(RepoRoot)src/**/*.*proj" />
-    </ItemGroup>
-    <ItemGroup Condition="$(PackageProjects) == 'true'">
-      <ProjFiles Include="$(RepoRoot)setup/**/*.*proj" />
-    </ItemGroup>
-    <ItemGroup Condition="$(TestProjects) == 'true'">
-      <ProjFiles Include="$(RepoRoot)tests/**/*.*proj" />
+    <ItemGroup>
+      <ProjFiles Include="$(SolutionFolder)**/*.*proj" />
     </ItemGroup>
     <!-- https://github.com/dotnet/cli/issues/6295#issuecomment-346973582 -->
-    <Exec Command="dotnet sln $(RepoRoot)build/Generated.sln add &quot;%(ProjFiles.FullPath)&quot;" />
-
-    <PropertyGroup>
-      <SolutionFileName>Generated.sln</SolutionFileName>
-      <SolutionPath>$(RepoRoot)build/Generated.sln</SolutionPath>
-    </PropertyGroup>
+    <Exec Command="dotnet sln $(SolutionPath) add &quot;%(ProjFiles.FullPath)&quot;" />
   </Target>
 
   <!--
@@ -80,21 +73,19 @@
     <ItemGroup>
       <SolutionBuildTarget Include="Rebuild" Condition="'$(Rebuild)' == 'true'" />
       <SolutionBuildTarget Include="Build" Condition="'$(Build)' == 'true' and '$(Rebuild)' != 'true'" />
-      <SolutionBuildTarget Include="Test" Condition="'$(Test)' == 'true' AND '$(ProductProjects)' != 'true'" />
-      <SolutionBuildTarget Include="IntegrationTest" Condition="'$(IntegrationTest)' == 'true' AND '$(ProductProjects)' != 'true'" />
-      <SolutionBuildTarget Include="Pack" Condition="'$(BuildOrRebuild)' == 'true' AND '$(ProductProjects)' != 'true'" />
+      <SolutionBuildTarget Include="Test" Condition="'$(Test)' == 'true'" />
+      <SolutionBuildTarget Include="IntegrationTest" Condition="'$(IntegrationTest)' == 'true'" />
+      <SolutionBuildTarget Include="Pack" Condition="'$(BuildOrRebuild)' == 'true' AND '$(QuickSrcBuild)' != 'true'" />
     </ItemGroup>
     <MSBuild Projects="$(SolutionPath)" Properties="@(SolutionRestoreAndBuildProperty);__BuildPhase=SolutionBuild" Targets="@(SolutionBuildTarget)" BuildInParallel="true" Condition="'@(SolutionBuildTarget)' != ''" />
   </Target>
 
   <!-- Generate insertion assets -->
-  <!-- <Target Name="GenerateDependentAssemblyVersionsFile" Condition="'$(BuildOrRebuild)' == 'true' AND '$(PackageProjects)' == 'true'"> -->
   <Target Name="GenerateDependentAssemblyVersionsFile" Condition="'$(BuildOrRebuild)' == 'true'">
     <MSBuild Projects="GenerateDependentAssemblyVersionFile.proj" BuildInParallel="true" />
   </Target>
 
   <!-- TODO: This file, VisualStudio.Insertion.proj, doesn't exist in the latest RepoToolset version. -->
-  <!-- <Target Name="GenerateVSManifest" Condition="'$(BuildOrRebuild)' == 'true' AND '$(PackageProjects)' == 'true'"> -->
   <Target Name="GenerateVSManifest" Condition="'$(BuildOrRebuild)' == 'true'">
     <!--
       Because multiple projects can contribute to a single insertion component we package them in a separate phase.
