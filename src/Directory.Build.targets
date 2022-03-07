@@ -15,7 +15,7 @@
   </Target>
 
   <!-- Adds the appropriate assemblies for signing. -->
-  <Target Name="AddAssembliesForSigning" BeforeTargets="SignFiles" Condition="'$(ProductProjects)' == 'true'">
+  <Target Name="AddAssembliesForSigning" BeforeTargets="SignFiles" Condition="'$(ProductProjects)' != 'true'">
   <!-- <Target Name="AddAssembliesForSigning" BeforeTargets="SignFiles"> -->
     <ItemGroup>
       <FilesToSign Include="$(ArtifactsBinDir)$(OutDirName)\$(AssemblyName).dll;$(ArtifactsBinDir)$(OutDirName)\**\$(AssemblyName).resources.dll">
