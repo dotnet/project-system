@@ -99,16 +99,16 @@ steps:
     ManifestDirPath: '$(Build.SourcesDirectory)\artifacts\$(BuildConfiguration)\bin'
     # BuildComponentPath: '$(Build.SourcesDirectory)/artifacts/$(BuildConfiguration)/VSSetup/Insertion'
 
-# - script: $(Build.SourcesDirectory)\build.cmd /build /test /ci /sign /diagnostic /no-deploy /no-integration /no-ibc /no-clearnugetcache /configuration $(BuildConfiguration)
-#   displayName: Build ProjectSystem.sln
+- script: $(Build.SourcesDirectory)\build.cmd /build /test /ci /sign /diagnostic /no-deploy /no-integration /no-ibc /no-clearnugetcache /configuration $(BuildConfiguration)
+  displayName: Build ProjectSystem.sln
 
-- task: MSBuild@1
-  displayName: Build ProjectSystem packages and tests
-  inputs:
-    solution: $(Build.SourcesDirectory)\build\proj\Build.proj
-    msbuildArchitecture: 'x86'
-    configuration: $(BuildConfiguration)
-    msbuildArguments: '/m /warnaserror /nologo /clp:Summary /p:Build=true /p:CIBuild=true /p:PackageProjects=true /p:TestProjects=true /v:minimal /bl:$(Build.SourcesDirectory)\artifacts\$(BuildConfiguration)\log\Build.binlog'
+# - task: MSBuild@1
+#   displayName: Build ProjectSystem packages and tests
+#   inputs:
+#     solution: $(Build.SourcesDirectory)\build\proj\Build.proj
+#     msbuildArchitecture: 'x86'
+#     configuration: $(BuildConfiguration)
+#     msbuildArguments: '/m /warnaserror /nologo /clp:Summary /p:Build=true /p:CIBuild=true /p:PackageProjects=true /p:TestProjects=true /v:minimal /bl:$(Build.SourcesDirectory)\artifacts\$(BuildConfiguration)\log\Build.binlog'
 
 # - task: MicroBuildCodesignVerify@3
 #   displayName: Verify Signed Files
