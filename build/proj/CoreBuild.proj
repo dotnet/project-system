@@ -80,9 +80,9 @@
     <ItemGroup>
       <SolutionBuildTarget Include="Rebuild" Condition="'$(Rebuild)' == 'true'" />
       <SolutionBuildTarget Include="Build" Condition="'$(Build)' == 'true' and '$(Rebuild)' != 'true'" />
-      <SolutionBuildTarget Include="Test" Condition="'$(Test)' == 'true'" />
-      <SolutionBuildTarget Include="IntegrationTest" Condition="'$(IntegrationTest)' == 'true'" />
-      <SolutionBuildTarget Include="Pack" Condition="'$(BuildOrRebuild)' == 'true'" />
+      <SolutionBuildTarget Include="Test" Condition="'$(Test)' == 'true' AND '$(ProductProjects)' != 'true'" />
+      <SolutionBuildTarget Include="IntegrationTest" Condition="'$(IntegrationTest)' == 'true' AND '$(ProductProjects)' != 'true'" />
+      <SolutionBuildTarget Include="Pack" Condition="'$(BuildOrRebuild)' == 'true' AND '$(ProductProjects)' != 'true'" />
     </ItemGroup>
     <MSBuild Projects="$(SolutionPath)" Properties="@(SolutionRestoreAndBuildProperty);__BuildPhase=SolutionBuild" Targets="@(SolutionBuildTarget)" BuildInParallel="true" Condition="'@(SolutionBuildTarget)' != ''" />
   </Target>

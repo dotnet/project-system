@@ -17,7 +17,7 @@ $testStores = $runsettingsXml.RunSettings.TestConfiguration.SelectSingleNode('Te
 # https://stackoverflow.com/a/59090765/294804
 $profilingInputsStore = $runsettingsXml.CreateElement('TestStore', $runsettingsXml.DocumentElement.NamespaceURI)
 $profilingInputsStore.SetAttribute('Uri', "vstsdrop:$profilingInputsPath")
-$testStores.AppendChild($profilingInputsStore)
+$null = $testStores.AppendChild($profilingInputsStore)
 
 # https://stackoverflow.com/a/59090765/294804
 $buildDropStore = $runsettingsXml.CreateElement('TestStore', $runsettingsXml.DocumentElement.NamespaceURI)
@@ -33,7 +33,7 @@ if(-not $buildDropPath)
   $buildDropPath = "vstsdrop:Tests/DevDiv/VS/$dropHashAndGuid"
 }
 $buildDropStore.SetAttribute('Uri', $buildDropPath)
-$testStores.AppendChild($buildDropStore)
+$null = $testStores.AppendChild($buildDropStore)
 
 $runsettingsXml.Save($runsettingsPath)
 Write-Host 'Saved Output:'

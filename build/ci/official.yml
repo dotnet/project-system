@@ -80,7 +80,7 @@ steps:
     solution: $(Build.SourcesDirectory)\build\proj\Build.proj
     msbuildArchitecture: 'x86'
     configuration: $(BuildConfiguration)
-    msbuildArguments: '/m /warnaserror /nologo /clp:Summary /p:Build=true /p:CIBuild=true /p:ProductProjects=true /v:minimal /bl:$(Build.SourcesDirectory)\artifacts\$(BuildConfiguration)\log\Build.binlog'
+    msbuildArguments: '/m /warnaserror /nologo /clp:Summary /p:Build=true /p:CIBuild=true /p:ProductProjects=true /v:normal /bl:$(Build.SourcesDirectory)\artifacts\$(BuildConfiguration)\log\QuickBuild.binlog'
 
 # - task: MicroBuildCodesignVerify@3
 #   displayName: Verify Signed Files
@@ -94,21 +94,19 @@ steps:
 - task: ManifestGeneratorTask@0
   displayName: 'Generate SBOM'
   inputs:
-    # TODO: bin\Dlls is different on-disk than what we publish as artifacts. We need to, somehow, get only what we publish as artifacts here.
     BuildDropPath: '$(Build.SourcesDirectory)\artifacts\$(BuildConfiguration)\bin\Dlls'
     ManifestDirPath: '$(Build.SourcesDirectory)\artifacts\$(BuildConfiguration)\bin'
-    # BuildComponentPath: '$(Build.SourcesDirectory)/artifacts/$(BuildConfiguration)/VSSetup/Insertion'
 
-- script: $(Build.SourcesDirectory)\build.cmd /build /test /ci /sign /diagnostic /no-deploy /no-integration /no-ibc /no-clearnugetcache /configuration $(BuildConfiguration)
-  displayName: Build ProjectSystem.sln
+# - script: $(Build.SourcesDirectory)\build.cmd /build /test /ci /sign /diagnostic /no-deploy /no-integration /no-ibc /no-clearnugetcache /configuration $(BuildConfiguration)
+#   displayName: Build ProjectSystem.sln
 
-# - task: MSBuild@1
-#   displayName: Build ProjectSystem packages and tests
-#   inputs:
-#     solution: $(Build.SourcesDirectory)\build\proj\Build.proj
-#     msbuildArchitecture: 'x86'
-#     configuration: $(BuildConfiguration)
-#     msbuildArguments: '/m /warnaserror /nologo /clp:Summary /p:Build=true /p:CIBuild=true /p:PackageProjects=true /p:TestProjects=true /v:minimal /bl:$(Build.SourcesDirectory)\artifacts\$(BuildConfiguration)\log\Build.binlog'
+- task: MSBuild@1
+  displayName: Build ProjectSystem packages and tests
+  inputs:
+    solution: $(Build.SourcesDirectory)\build\proj\Build.proj
+    msbuildArchitecture: 'x86'
+    configuration: $(BuildConfiguration)
+    msbuildArguments: '/m /warnaserror /nologo /clp:Summary /p:Build=true /p:Test=true /p:CIBuild=true /p:PackageProjects=true /p:TestProjects=true /v:normal /bl:$(Build.SourcesDirectory)\artifacts\$(BuildConfiguration)\log\Build.binlog'
 
 # - task: MicroBuildCodesignVerify@3
 #   displayName: Verify Signed Files
