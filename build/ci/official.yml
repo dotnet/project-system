@@ -80,7 +80,7 @@ steps:
     solution: $(Build.SourcesDirectory)\build\proj\Build.proj
     msbuildArchitecture: 'x86'
     configuration: $(BuildConfiguration)
-    msbuildArguments: '/m /warnaserror /nologo /clp:Summary /p:Build=true /p:CIBuild=true /p:ProductProjects=true /v:normal /bl:$(Build.SourcesDirectory)\artifacts\$(BuildConfiguration)\log\Build.binlog'
+    msbuildArguments: '/m /warnaserror /nologo /clp:Summary /p:Build=true /p:CIBuild=true /p:ProductProjects=true /v:minimal /bl:$(Build.SourcesDirectory)\artifacts\$(BuildConfiguration)\log\Build.binlog'
 
 # - task: MicroBuildCodesignVerify@3
 #   displayName: Verify Signed Files
@@ -103,29 +103,29 @@ steps:
 #   displayName: Build ProjectSystem.sln
 
 - task: MSBuild@1
-  displayName: Build ProjectSystem packages
+  displayName: Build ProjectSystem packages and tests
   inputs:
     solution: $(Build.SourcesDirectory)\build\proj\Build.proj
     msbuildArchitecture: 'x86'
     configuration: $(BuildConfiguration)
-    msbuildArguments: '/m /warnaserror /nologo /clp:Summary /p:Build=true /p:CIBuild=true /p:PackageProjects=true /v:normal /bl:$(Build.SourcesDirectory)\artifacts\$(BuildConfiguration)\log\Build.binlog'
+    msbuildArguments: '/m /warnaserror /nologo /clp:Summary /p:Build=true /p:CIBuild=true /p:PackageProjects=true /p:TestProjects=true /v:minimal /bl:$(Build.SourcesDirectory)\artifacts\$(BuildConfiguration)\log\Build.binlog'
 
-- task: MicroBuildCodesignVerify@3
-  displayName: Verify Signed Files
-  inputs:
-    TargetFolders: |
-      $(Build.SourcesDirectory)/artifacts/$(BuildConfiguration)/packages
-      $(Build.SourcesDirectory)/artifacts/$(BuildConfiguration)/VSSetup/Insertion
-    # Filters out certain files (usually by extension) in the provided file.
-    ApprovalListPathForCerts: $(Build.SourcesDirectory)\build\ci\no_authenticode.txt
+# - task: MicroBuildCodesignVerify@3
+#   displayName: Verify Signed Files
+#   inputs:
+#     TargetFolders: |
+#       $(Build.SourcesDirectory)/artifacts/$(BuildConfiguration)/packages
+#       $(Build.SourcesDirectory)/artifacts/$(BuildConfiguration)/VSSetup/Insertion
+#     # Filters out certain files (usually by extension) in the provided file.
+#     ApprovalListPathForCerts: $(Build.SourcesDirectory)\build\ci\no_authenticode.txt
 
-- task: MSBuild@1
-  displayName: Execute ProjectSystem tests
-  inputs:
-    solution: $(Build.SourcesDirectory)\build\proj\Build.proj
-    msbuildArchitecture: 'x86'
-    configuration: $(BuildConfiguration)
-    msbuildArguments: '/m /warnaserror /nologo /clp:Summary /p:Build=true /p:Test=true /p:CIBuild=true /p:TestProjects=true /v:normal /bl:$(Build.SourcesDirectory)\artifacts\$(BuildConfiguration)\log\Build.binlog'
+# - task: MSBuild@1
+#   displayName: Execute ProjectSystem tests
+#   inputs:
+#     solution: $(Build.SourcesDirectory)\build\proj\Build.proj
+#     msbuildArchitecture: 'x86'
+#     configuration: $(BuildConfiguration)
+#     msbuildArguments: '/m /warnaserror /nologo /clp:Summary /p:Build=true /p:Test=true /p:CIBuild=true /p:TestProjects=true /v:minimal /bl:$(Build.SourcesDirectory)\artifacts\$(BuildConfiguration)\log\Build.binlog'
 
 - task: MicroBuildCodesignVerify@3
   displayName: Verify Signed Files
