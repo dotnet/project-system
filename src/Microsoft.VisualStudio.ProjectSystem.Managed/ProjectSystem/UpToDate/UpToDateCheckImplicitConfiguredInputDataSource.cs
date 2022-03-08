@@ -25,6 +25,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
         private readonly ConfiguredProject _configuredProject;
         private readonly IProjectItemSchemaService _projectItemSchemaService;
         private readonly IUpToDateCheckStatePersistence? _persistentState;
+        private readonly IProjectAsynchronousTasksService _projectAsynchronousTasksService;
 
         private static ImmutableHashSet<string> ProjectPropertiesSchemas => ImmutableStringHashSet.EmptyOrdinal
             .Add(ConfigurationGeneral.SchemaName)
@@ -39,11 +40,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
         public UpToDateCheckImplicitConfiguredInputDataSource(
             ConfiguredProject containingProject,
             IProjectItemSchemaService projectItemSchemaService,
+            [Import(ExportContractNames.Scopes.UnconfiguredProject)] IProjectAsynchronousTasksService projectAsynchronousTasksService,
             [Import(AllowDefault = true)] IUpToDateCheckStatePersistence? persistentState)
             : base(containingProject, synchronousDisposal: false, registerDataSource: false)
         {
             _configuredProject = containingProject;
             _projectItemSchemaService = projectItemSchemaService;
+            _projectAsynchronousTasksService = projectAsynchronousTasksService;
             _persistentState = persistentState;
         }
 
@@ -94,7 +97,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                         // Restoring state requires the UI thread. We must use JTF.RunAsync here to ensure the UI
                         // thread is shared between related work and prevent deadlocks.
                         (int ItemHash, DateTime InputsChangedAtUtc)? restoredState =
-                            await JoinableFactory.RunAsync(() => _persistentState.RestoreStateAsync(_configuredProject.UnconfiguredProject.FullPath, _configuredProject.ProjectConfiguration.Dimensions));
+                            await JoinableFactory.RunAsync(() => _persistentState.RestoreStateAsync(_configuredProject.UnconfiguredProject.FullPath, _configuredProject.ProjectConfiguration.Dimensions, _projectAsynchronousTasksService.UnloadCancellationToken));
 
                         if (restoredState is not null)
                         {
@@ -114,7 +117,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
                 if (state.ItemHash is not null && _persistentState is not null && (priorItemHash != state.ItemHash || priorLastItemsChangedAtUtc != state.LastItemsChangedAtUtc))
                 {
-                    _persistentState.StoreState(_configuredProject.UnconfiguredProject.FullPath, _configuredProject.ProjectConfiguration.Dimensions, state.ItemHash.Value, state.LastItemsChangedAtUtc);
+                    await _persistentState.StoreStateAsync(_configuredProject.UnconfiguredProject.FullPath, _configuredProject.ProjectConfiguration.Dimensions, state.ItemHash.Value, state.LastItemsChangedAtUtc, _projectAsynchronousTasksService.UnloadCancellationToken);
                 }
 
                 return new ProjectVersionedValue<UpToDateCheckImplicitConfiguredInput>(state, e.DataSourceVersions);

@@ -7,22 +7,24 @@ using Microsoft.VisualStudio.Shell.Interop;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Waiting
 {
-    internal class VisualStudioWaitContext : IWaitContext
+    internal sealed class VisualStudioWaitContext : IWaitContext
     {
         private const int DelayToShowDialogSecs = 2;
 
         private readonly string _title;
-        private string _message;
         private readonly CancellationTokenSource? _cancellationTokenSource;
         private readonly IVsThreadedWaitDialog3 _dialog;
 
-        public VisualStudioWaitContext(IVsThreadedWaitDialogFactory waitDialogFactory,
-                                       string title,
-                                       string message,
-                                       bool allowCancel)
+        private string _message;
+        private string? _progressText;
+        private int _currentStep;
+        private int _totalSteps;
+
+        public VisualStudioWaitContext(IVsThreadedWaitDialogFactory waitDialogFactory, string title, string message, bool allowCancel, int totalSteps = 0)
         {
             _title = title;
             _message = message;
+            _totalSteps = totalSteps;
 
             if (allowCancel)
             {
@@ -49,8 +51,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Waiting
                 szStatusBarText: null,
                 fIsCancelable: _cancellationTokenSource is not null,
                 iDelayToShowDialog: DelayToShowDialogSecs,
-                fShowProgress: false,
-                iTotalSteps: 0,
+                fShowProgress: _totalSteps != 0,
+                iTotalSteps: _totalSteps,
                 iCurrentStep: 0,
                 pCallback: callback);
 
@@ -74,26 +76,47 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Waiting
 
         public CancellationToken CancellationToken => _cancellationTokenSource?.Token ?? CancellationToken.None;
 
-        public string Message
+        public void Update(string? message = null, int? currentStep = null, int? totalSteps = null, string? progressText = null)
         {
-            get => _message;
-            set
-            {
-                _message = value;
-                UpdateDialog();
-            }
-        }
+            bool hasChange = false;
 
-        private void UpdateDialog()
-        {
-            _dialog.UpdateProgress(
-                _message,
-                szProgressText: null,
-                szStatusBarText: null,
-                iCurrentStep: 0,
-                iTotalSteps: 0,
-                fDisableCancel: _cancellationTokenSource is null,
-                pfCanceled: out _);
+            if (message is not null && !Equals(_message, message))
+            {
+                _message = message;
+                hasChange = true;
+            }
+
+            if (totalSteps is not null && totalSteps != _totalSteps)
+            {
+                _totalSteps = totalSteps.Value;
+                hasChange = true;
+            }
+            
+            if (currentStep is not null && currentStep != _currentStep)
+            {
+                Requires.Argument(currentStep <= _totalSteps, nameof(currentStep), $"Must be less than or equal to the total number of steps.");
+
+                _currentStep = currentStep.Value;
+                hasChange = true;
+            }
+
+            if (!Equals(progressText, _progressText))
+            {
+                _progressText = progressText;
+                hasChange = true;
+            }
+
+            if (hasChange)
+            {
+                _dialog.UpdateProgress(
+                    _message,
+                    szProgressText: _progressText,
+                    szStatusBarText: null,
+                    iCurrentStep: _currentStep,
+                    iTotalSteps: _totalSteps,
+                    fDisableCancel: _cancellationTokenSource is null,
+                    pfCanceled: out _);
+            }
         }
 
         public void Dispose()

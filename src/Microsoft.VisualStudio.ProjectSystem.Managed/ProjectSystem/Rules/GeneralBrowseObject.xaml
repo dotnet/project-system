@@ -391,6 +391,9 @@
 
   <StringProperty Name="TargetFSharpCoreVersion"
                   Visible="False" />
+  
+  <StringProperty Name="ActiveDebugProfile"
+                  Visible="False" />
 
   <StringProperty Name="URL"
                   ReadOnly="True"

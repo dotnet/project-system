@@ -14,11 +14,21 @@ namespace Microsoft.VisualStudio.IO
     [ProjectSystemContract(ProjectSystemContractScope.Global, ProjectSystemContractProvider.Private, Cardinality = ImportCardinality.ExactlyOne)]
     internal interface IFileSystem
     {
+        /// <summary>
+        /// Creates or overwrites an empty file with the specified path.
+        /// </summary>
         void Create(string path);
 
+        /// <summary>
+        /// Gets whether <paramref name="path"/> is a file or directory that exists on disk.
+        /// </summary>
         bool PathExists(string path);
 
+        /// <summary>
+        /// Gets whether <paramref name="path"/> is a file that exists on disk.
+        /// </summary>
         bool FileExists(string path);
+
         void RemoveFile(string path);
         void CopyFile(string source, string destination, bool overwrite);
         Task<string> ReadAllTextAsync(string path);

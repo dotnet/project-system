@@ -508,6 +508,15 @@ namespace Microsoft.VisualStudio {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Adjust namespaces for moved files?.
+        /// </summary>
+        internal static string UpdateNamespacePromptMessage {
+            get {
+                return ResourceManager.GetString("UpdateNamespacePromptMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to User Control (Windows Forms) Designer.
         /// </summary>
         internal static string UserControlEditor_DisplayName {

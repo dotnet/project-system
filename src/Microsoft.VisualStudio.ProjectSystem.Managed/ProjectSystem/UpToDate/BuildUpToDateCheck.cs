@@ -33,6 +33,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
         internal const string AppliesToExpression = ProjectCapability.DotNet + " + !" + ProjectCapabilities.SharedAssetsProject;
 
         internal const string FastUpToDateCheckIgnoresKindsGlobalPropertyName = "FastUpToDateCheckIgnoresKinds";
+        internal const string TargetFrameworkGlobalPropertyName = "TargetFramework";
 
         internal const string DefaultSetName = "";
         internal const string DefaultKindName = "";
@@ -223,9 +224,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                     {
                         log.Indent++;
 
-                        foreach ((bool isAdd, string itemType, UpToDateCheckInputItem item) in state.LastItemChanges.OrderBy(change => change.ItemType).ThenBy(change => change.Item.Path))
+                        if (state.LastItemChanges.Length == 0)
                         {
-                            log.Info(isAdd ? nameof(Resources.FUTD_ChangedItemsAddition_4) : nameof(Resources.FUTD_ChangedItemsRemoval_4), itemType, item.Path, item.CopyType, item.TargetPath ?? "");
+                            log.Info(nameof(Resources.FUTD_SetOfChangedItemsIsEmpty));
+                        }
+                        else
+                        {
+                            foreach ((bool isAdd, string itemType, UpToDateCheckInputItem item) in state.LastItemChanges.OrderBy(change => change.ItemType).ThenBy(change => change.Item.Path))
+                            {
+                                log.Info(isAdd ? nameof(Resources.FUTD_ChangedItemsAddition_4) : nameof(Resources.FUTD_ChangedItemsRemoval_4), itemType, item.Path, item.CopyType, item.TargetPath ?? "");
+                            }
                         }
 
                         log.Indent--;
@@ -545,7 +553,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 return true;
             }
 
-            string markerFile = _configuredProject.UnconfiguredProject.MakeRooted(state.CopyUpToDateMarkerItem);
+            string outputMarkerFile = _configuredProject.UnconfiguredProject.MakeRooted(state.CopyUpToDateMarkerItem);
 
             if (log.Level >= LogLevel.Verbose)
             {
@@ -562,7 +570,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
                 log.Verbose(nameof(Resources.FUTD_AddingOutputReferenceCopyMarker));
                 log.Indent++;
-                log.VerboseLiteral(markerFile);
+                log.VerboseLiteral(outputMarkerFile);
                 log.Indent--;
             }
 
@@ -576,15 +584,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 return true;
             }
 
-            DateTime? outputMarkerTime = timestampCache.GetTimestampUtc(markerFile);
+            DateTime? outputMarkerTime = timestampCache.GetTimestampUtc(outputMarkerFile);
 
             if (outputMarkerTime != null)
             {
-                log.Info(nameof(Resources.FUTD_WriteTimeOnOutputMarker_2), outputMarkerTime, markerFile);
+                log.Info(nameof(Resources.FUTD_WriteTimeOnOutputMarker_2), outputMarkerTime, outputMarkerFile);
             }
             else
             {
-                log.Info(nameof(Resources.FUTD_NoOutputMarkerExists_1), markerFile);
+                log.Info(nameof(Resources.FUTD_NoOutputMarkerExists_1), outputMarkerFile);
                 return true;
             }
 
@@ -714,6 +722,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             subscription.UpdateLastCheckedAtUtc();
         }
 
+        private static bool ConfiguredInputMatchesTargetFramework(UpToDateCheckImplicitConfiguredInput input, string buildTargetFramework)
+        {
+            return input.ProjectConfiguration.Dimensions.TryGetValue(TargetFrameworkGlobalPropertyName, out string? configurationTargetFramework)
+                && buildTargetFramework.Equals(configurationTargetFramework);
+        }
+
         Task<bool> IBuildUpToDateCheckProvider.IsUpToDateAsync(BuildAction buildAction, TextWriter logWriter, CancellationToken cancellationToken)
         {
             return IsUpToDateAsync(buildAction, logWriter, ImmutableDictionary<string, string>.Empty, cancellationToken);
@@ -767,7 +781,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
             return await subscription.RunAsync(CheckAsync, updateLastCheckedAt: !isValidationRun, cancellationToken);
 
-            async Task<bool> CheckAsync(UpToDateCheckConfiguredInput state, DateTime lastCheckedAtUtc, CancellationToken token)
+            async Task<(bool, ImmutableArray<ProjectConfiguration>)> CheckAsync(UpToDateCheckConfiguredInput state, IReadOnlyDictionary<ProjectConfiguration, DateTime> lastCheckedAtUtc, CancellationToken token)
             {
                 token.ThrowIfCancellationRequested();
 
@@ -790,9 +804,20 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                         }
                     }
 
+                    // If we're limiting the build to a particular target framework, limit the set of
+                    // configured inputs we check to those that match the framework.
+                    globalProperties.TryGetValue(TargetFrameworkGlobalPropertyName, out string? buildTargetFramework);
+                    IEnumerable<UpToDateCheckImplicitConfiguredInput> implicitStatesToCheck = Strings.IsNullOrEmpty(buildTargetFramework)
+                        ? state.ImplicitInputs
+                        : state.ImplicitInputs.Where(input => ConfiguredInputMatchesTargetFramework(input, buildTargetFramework));
+
+                    // Note that if we find a particular configuration is out of date and exit early,
+                    // all the configurations we're going to build still count as checked.
+                    ImmutableArray<ProjectConfiguration> checkedConfigurations = implicitStatesToCheck.Select(state => state.ProjectConfiguration).ToImmutableArray();
+
                     bool logConfigurations = state.ImplicitInputs.Length > 1 && logger.Level >= LogLevel.Info;
 
-                    foreach (UpToDateCheckImplicitConfiguredInput implicitState in state.ImplicitInputs)
+                    foreach (UpToDateCheckImplicitConfiguredInput implicitState in implicitStatesToCheck)
                     {
                         if (logConfigurations)
                         {
@@ -800,15 +825,20 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                             logger.Indent++;
                         }
 
-                        if (!CheckGlobalConditions(logger, lastCheckedAtUtc, validateFirstRun: !isValidationRun, implicitState) ||
-                            !CheckInputsAndOutputs(logger, lastCheckedAtUtc, timestampCache, implicitState, ignoreKinds, token) ||
-                            !CheckMarkers(logger, timestampCache, implicitState) ||
-                            !CheckCopyToOutputDirectoryFiles(logger, timestampCache, implicitState, token) ||
-                            !CheckCopiedOutputFiles(logger, timestampCache, implicitState, token))
+                        if (!lastCheckedAtUtc.TryGetValue(implicitState.ProjectConfiguration, out DateTime configurationLastCheckedAtUtc))
                         {
-                            return false;
+                            configurationLastCheckedAtUtc = DateTime.MinValue;
                         }
 
+                        if (!CheckGlobalConditions(logger, configurationLastCheckedAtUtc, validateFirstRun: !isValidationRun, implicitState)
+                            || !CheckInputsAndOutputs(logger, configurationLastCheckedAtUtc, timestampCache, implicitState, ignoreKinds, token)
+                            || !CheckMarkers(logger, timestampCache, implicitState)
+                            || !CheckCopyToOutputDirectoryFiles(logger, timestampCache, implicitState, token)
+                            || !CheckCopiedOutputFiles(logger, timestampCache, implicitState, token))
+                        {
+                            return (false, checkedConfigurations);
+                        }
+                        
                         if (logConfigurations)
                         {
                             logger.Indent--;
@@ -816,11 +846,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                     }
 
                     logger.UpToDate();
-                    return true;
+                    return (true, checkedConfigurations);
                 }
                 catch (Exception ex)
                 {
-                    return logger.Fail("Exception", nameof(Resources.FUTD_Exception_1), ex);
+                    return (logger.Fail("Exception", nameof(Resources.FUTD_Exception_1), ex), ImmutableArray<ProjectConfiguration>.Empty);
                 }
                 finally
                 {
