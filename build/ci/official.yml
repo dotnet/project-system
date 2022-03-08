@@ -71,9 +71,6 @@ steps:
 # BUILD SOLUTION
 ###################################################################################################################################################################
 
-# - script: $(Build.SourcesDirectory)\build.cmd /build /test /ci /sign /diagnostic /no-deploy /no-integration /no-ibc /no-clearnugetcache /configuration $(BuildConfiguration)
-#   displayName: Build ProjectSystem.sln
-
 - task: MSBuild@1
   displayName: Build Src for SBOM
   inputs:
@@ -83,16 +80,13 @@ steps:
     msbuildArguments: '/m /warnaserror /nologo /clp:Summary /p:Build=true /p:CIBuild=true /p:QuickSrcBuild=true /v:normal /bl:$(Build.SourcesDirectory)\artifacts\$(BuildConfiguration)\log\QuickSrcBuild.binlog'
 
 - task: ManifestGeneratorTask@0
-  displayName: 'Generate SBOM'
+  displayName: Generate SBOM
   inputs:
     BuildDropPath: '$(Build.SourcesDirectory)\artifacts\$(BuildConfiguration)\bin\Dlls'
     ManifestDirPath: '$(Build.SourcesDirectory)\artifacts\$(BuildConfiguration)\bin'
 
-# - script: $(Build.SourcesDirectory)\build.cmd /build /test /ci /sign /diagnostic /no-deploy /no-integration /no-ibc /no-clearnugetcache /configuration $(BuildConfiguration)
-#   displayName: Build ProjectSystem.sln
-
 - task: MSBuild@1
-  displayName: Build ProjectSystem packages and tests
+  displayName: Build ProjectSystem.sln
   inputs:
     solution: $(Build.SourcesDirectory)\build\proj\Build.proj
     msbuildArchitecture: 'x86'

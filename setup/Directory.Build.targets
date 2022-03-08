@@ -23,7 +23,7 @@
   </Target>
 
   <!-- Updates insertion manifests (json) for creating the vsman files for insertion to include the SPDX SBOM json. -->
-  <Target Name="UpdateManifestJsonForSbom" AfterTargets="AddVsixForSigning" Condition="'$(QuickSrcBuild)' != 'true'">
+  <Target Name="UpdateManifestJsonForSbom" AfterTargets="AddVsixForSigning">
     <Exec ContinueOnError="false" Command="powershell -NonInteractive -NoLogo -NoProfile -ExecutionPolicy Unrestricted -Command &quot;. $(RepoRoot)build\script\UpdateManifestJsonForSbom.ps1 -manifestJsonPath '$(VisualStudioSetupInsertionPath)$(VisualStudioInsertionComponent).json' -sbomMetadataPath '$(ArtifactsBinDir)spdx_2.2\manifest.spdx.json'&quot;" />
   </Target>
 
