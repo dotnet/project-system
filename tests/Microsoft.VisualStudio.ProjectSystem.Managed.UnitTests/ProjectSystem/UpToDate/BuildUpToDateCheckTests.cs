@@ -33,6 +33,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
         private readonly DateTime _projectFileTimeUtc = new(1999, 1, 1, 0, 0, 0, DateTimeKind.Utc);
 
         private readonly List<ITelemetryServiceFactory.TelemetryParameters> _telemetryEvents = new();
+        private readonly Dictionary<ProjectConfiguration, DateTime> _lastCheckTimeAtUtc = new();
+
         private readonly BuildUpToDateCheck _buildUpToDateCheck;
         private readonly ITestOutputHelper _output;
         private readonly IFileSystemMock _fileSystem;
@@ -42,7 +44,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
         private bool _isFastUpToDateCheckEnabled = true;
 
         private UpToDateCheckConfiguredInput? _state;
-        private Dictionary<ProjectConfiguration, DateTime> _lastCheckTimeAtUtc = new();
 
         public BuildUpToDateCheckTests(ITestOutputHelper output)
         {
@@ -1425,11 +1426,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 HashItems(("Compile", new[] { "Path1" })),
                 HashItems(("Compile", new[] { "Path1", "Path2" })));
 
-            static int HashItems(params (string itemType, string[] paths)[] items)
+            static int HashItems(params (string ItemType, string[] Paths)[] items)
             {
                 var itemsByItemType = items.ToImmutableDictionary(
-                    i => i.itemType,
-                    i => i.paths.Select(p => new UpToDateCheckInputItem(p, null, BuildUpToDateCheck.CopyType.CopyNever)).ToImmutableArray());
+                    i => i.ItemType,
+                    i => i.Paths.Select(p => new UpToDateCheckInputItem(p, i.ItemType, ImmutableDictionary<string, string>.Empty)).ToImmutableArray());
 
                 return BuildUpToDateCheck.ComputeItemHash(itemsByItemType);
             }
