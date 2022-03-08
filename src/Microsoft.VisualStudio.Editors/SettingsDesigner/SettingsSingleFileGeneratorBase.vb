@@ -115,7 +115,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <param name="pcbOutput"></param>
         ''' <param name="pGenerateProgress"></param>
         Private Function Generate(wszInputFilePath As String, bstrInputFileContents As String, wszDefaultNamespace As String, rgbOutputFileContents() As IntPtr, ByRef pcbOutput As UInteger, pGenerateProgress As IVsGeneratorProgress) As Integer Implements IVsSingleFileGenerator.Generate
-
             Dim BufPtr As IntPtr = IntPtr.Zero
             Try
                 ' get the DesignTimeSettings from the file content
@@ -171,7 +170,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                     ' If this is the "default" settings file, we add the "My" module as well...
                     '
                     If shouldGenerateMyStuff Then
-                        AddMyModule(CompileUnit, projectRootNamespace, wszDefaultNamespace)
+                        AddMyModule(CompileUnit, projectRootNamespace, wszDefaultNamespace.Replace(" ", "_"))
                     End If
                 End If
 
@@ -587,6 +586,8 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
 
             Debug.Assert(typeName <> "", "we shouldn't have an empty type-name when generating a Settings class")
             fullTypeName &= typeName
+
+            fullTypeName = fullTypeName.Replace(" ", "_")
 
             Return fullTypeName
 
