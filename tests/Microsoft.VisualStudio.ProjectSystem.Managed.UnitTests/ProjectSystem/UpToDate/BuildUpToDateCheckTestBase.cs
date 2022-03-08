@@ -14,7 +14,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             .Add(new ItemType("None", true))
             .Add(new ItemType("Content", true))
             .Add(new ItemType("Compile", true))
-            .Add(new ItemType("Resource", true));
+            .Add(new ItemType("Resource", true))
+            .Add(new ItemType("EmbeddedResource", true));
 
         private protected static IProjectRuleSnapshotModel SimpleItems(params string[] items)
         {
