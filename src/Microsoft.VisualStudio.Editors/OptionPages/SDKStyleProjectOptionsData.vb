@@ -18,7 +18,7 @@ Namespace Microsoft.VisualStudio.Editors.OptionPages
         Private _fastUpToDateCheckEnabled As Boolean = True
         Private _fastUpToDateCheckLogLevel As LogLevel = LogLevel.None
         Private _nestingIgnoreSolutionAndProjectProfiles As Boolean
-        Private _preferSingleTargetBuildsOnLaunch As Boolean = False
+        Private _preferSingleTargetBuildsOnLaunch As Boolean = True
 
         Public Function Clone() As SDKStyleProjectOptionsData
             Dim clonedData = New SDKStyleProjectOptionsData
