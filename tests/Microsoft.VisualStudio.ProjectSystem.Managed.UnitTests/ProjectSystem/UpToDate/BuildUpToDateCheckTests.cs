@@ -288,30 +288,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 [UpToDateCheckBuilt.SchemaName] = SimpleItems("Output"),
             };
 
-            var testItems = ImmutableStringDictionary<IImmutableDictionary<string, string>>.EmptyOrdinal
-                .Add("ItemPath1", ImmutableStringDictionary<string>.EmptyOrdinal
-                    .Add("CopyToOutputDirectory", "Always")); // ALWAYS COPY THIS ITEM
-
-            var otherItems = ImmutableStringDictionary<IImmutableDictionary<string, string>>.EmptyOrdinal;
-
-            if (itemType == Compile.SchemaName)
-            {
-                testItems = testItems.Add("ItemPath2", ImmutableStringDictionary<string>.EmptyOrdinal);
-            }
-            else
-            {
-                otherItems = otherItems.Add("ItemPath2", ImmutableStringDictionary<string>.EmptyOrdinal);
-            }
-
-            var sourceSnapshot = new Dictionary<string, IProjectRuleSnapshotModel>
-            {
-                [itemType] = new IProjectRuleSnapshotModel { Items = testItems }
-            };
-
-            if (itemType != Compile.SchemaName)
-            {
-                sourceSnapshot[Compile.SchemaName] = new IProjectRuleSnapshotModel { Items = otherItems };
-            }
+            var sourceSnapshot = GetSourceSnapshot(itemType);
 
             var input1Time = DateTime.UtcNow.AddMinutes(-4);
             var input2Time = DateTime.UtcNow.AddMinutes(-3);
@@ -337,6 +314,35 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 await AssertNotUpToDateAsync(
                     "Item 'C:\\Dev\\Solution\\Project\\ItemPath1' has CopyToOutputDirectory set to 'Always', not up-to-date.",
                     "CopyAlwaysItemExists");
+            }
+
+            static Dictionary<string, IProjectRuleSnapshotModel> GetSourceSnapshot(string itemType)
+            {
+                // Create two items.
+                // 1. With the item type we are testing, marked CopyAlways.
+                // 2. With a different item type, with no copy specification.
+
+                var items = ImmutableStringDictionary<IImmutableDictionary<string, string>>.EmptyOrdinal
+                    .Add("ItemPath1", ImmutableStringDictionary<string>.EmptyOrdinal
+                        .Add("CopyToOutputDirectory", "Always")); // ALWAYS COPY THIS ITEM
+
+                var compileItems = ImmutableStringDictionary<IImmutableDictionary<string, string>>.EmptyOrdinal;
+
+                ref var items2 = ref (itemType == Compile.SchemaName ? ref items : ref compileItems);
+
+                items2 = items2.Add("ItemPath2", ImmutableStringDictionary<string>.EmptyOrdinal);
+
+                var sourceSnapshot = new Dictionary<string, IProjectRuleSnapshotModel>
+                {
+                    [itemType] = new IProjectRuleSnapshotModel { Items = items }
+                };
+
+                if (compileItems.Count != 0)
+                {
+                    sourceSnapshot[Compile.SchemaName] = new IProjectRuleSnapshotModel { Items = compileItems };
+                }
+
+                return sourceSnapshot;
             }
         }
 
