@@ -90,14 +90,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
             BuildUpToDateCheck.CopyType GetCopyType()
             {
-                if (metadata.TryGetValue(Compile.CopyToOutputDirectoryProperty, out string value))
+                if (metadata.TryGetValue(None.CopyToOutputDirectoryProperty, out string value))
                 {
-                    if (string.Equals(value, Compile.CopyToOutputDirectoryValues.Always, StringComparisons.PropertyLiteralValues))
+                    if (string.Equals(value, None.CopyToOutputDirectoryValues.Always, StringComparisons.PropertyLiteralValues))
                     {
                         return BuildUpToDateCheck.CopyType.CopyAlways;
                     }
 
-                    if (string.Equals(value, Compile.CopyToOutputDirectoryValues.PreserveNewest, StringComparisons.PropertyLiteralValues))
+                    if (string.Equals(value, None.CopyToOutputDirectoryValues.PreserveNewest, StringComparisons.PropertyLiteralValues))
                     {
                         return BuildUpToDateCheck.CopyType.CopyIfNewer;
                     }
