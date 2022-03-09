@@ -5,7 +5,6 @@ using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
-using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.Buffers.PooledObjects;
 using Microsoft.VisualStudio.Debugger.UI.Interfaces.HotReload;
