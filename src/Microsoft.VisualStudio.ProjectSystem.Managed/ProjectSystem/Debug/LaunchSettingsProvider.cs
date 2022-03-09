@@ -885,33 +885,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         }
 
         /// <summary>
-        /// Helper retrieves the current snapshot and if there were errors in the launchsettings.json file
-        /// or there isn't a snapshot, it throws an error. There should always be a snapshot of some kind returned.
-        /// </summary>
-        public async Task<ILaunchSettings> GetSnapshotThrowIfErrorsAsync()
-        {
-            ILaunchSettings? currentSettings = await WaitForFirstSnapshot(Timeout.Infinite);
-            Assumes.NotNull(currentSettings);
-
-            if (currentSettings.Profiles.Count == 1 && string.Equals(currentSettings.Profiles[0].CommandName, ErrorProfileCommandName, StringComparisons.LaunchProfileCommandNames))
-            {
-                string fileName = await GetLaunchSettingsFilePathAsync();
-
-                if (currentSettings.Profiles[0].OtherSettings is { } otherSettings
-                    && otherSettings.TryGetValue(ErrorProfileErrorMessageSettingsKey, out object? errorMessageObject))
-                {
-                    throw new Exception(string.Format(Resources.JsonErrorsNeedToBeCorrected_WithErrorMessage_2, fileName, errorMessageObject));
-                }
-                else
-                {
-                    throw new Exception(string.Format(Resources.JsonErrorsNeedToBeCorrected_1, fileName));
-                }
-            }
-
-            return currentSettings;
-        }
-
-        /// <summary>
         /// Sets the active profile. This just sets the property it does not validate that the setting matches an
         /// existing profile
         /// </summary>
@@ -935,6 +908,33 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
                 folder = Path.GetDirectoryName(_commonProjectServices.Project.FullPath);
 
             return Path.Combine(folder, LaunchSettingsFilename);
+        }
+
+        /// <summary>
+        /// Helper retrieves the current snapshot and if there were errors in the launchsettings.json file
+        /// or there isn't a snapshot, it throws an error. There should always be a snapshot of some kind returned.
+        /// </summary>
+        private async Task<ILaunchSettings> GetSnapshotThrowIfErrorsAsync()
+        {
+            ILaunchSettings? currentSettings = await WaitForFirstSnapshot(Timeout.Infinite);
+            Assumes.NotNull(currentSettings);
+
+            if (currentSettings.Profiles.Count == 1 && string.Equals(currentSettings.Profiles[0].CommandName, ErrorProfileCommandName, StringComparisons.LaunchProfileCommandNames))
+            {
+                string fileName = await GetLaunchSettingsFilePathAsync();
+
+                if (currentSettings.Profiles[0].OtherSettings is { } otherSettings
+                    && otherSettings.TryGetValue(ErrorProfileErrorMessageSettingsKey, out object? errorMessageObject))
+                {
+                    throw new Exception(string.Format(Resources.JsonErrorsNeedToBeCorrected_WithErrorMessage_2, fileName, errorMessageObject));
+                }
+                else
+                {
+                    throw new Exception(string.Format(Resources.JsonErrorsNeedToBeCorrected_1, fileName));
+                }
+            }
+
+            return currentSettings;
         }
 
         private long GetNextVersion() => _nextVersion++;
