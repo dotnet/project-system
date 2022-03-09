@@ -587,8 +587,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             Debug.Assert(typeName <> "", "we shouldn't have an empty type-name when generating a Settings class")
             fullTypeName &= typeName
 
-            fullTypeName = fullTypeName.Replace(" ", "_")
-
             Return fullTypeName
 
         End Function

@@ -200,7 +200,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                         End If
 
                         If Settings.UseSpecialClassName Then
-                            Return SpecialClassName.Replace(" ", "_")
+                            Return SpecialClassName
                         End If
                     Catch ex As Exception When Common.ReportWithoutCrash(ex, String.Format("Failed to crack open {0} to determine if we were supposed to use the ""Special"" settings class name", FullPath), NameOf(SettingsDesigner))
                     End Try
@@ -224,7 +224,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                 Debug.Fail("Can't get a class name from an empty path!")
                 Return ""
             End If
-            Return IO.Path.GetFileNameWithoutExtension(PathName).Replace(" ", "_")
+            Return IO.Path.GetFileNameWithoutExtension(PathName)
         End Function
 
         ''' <summary>
