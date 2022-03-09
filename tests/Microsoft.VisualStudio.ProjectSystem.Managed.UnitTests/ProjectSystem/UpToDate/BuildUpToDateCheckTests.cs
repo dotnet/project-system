@@ -24,11 +24,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 {
     public sealed class BuildUpToDateCheckTests : BuildUpToDateCheckTestBase, IDisposable
     {
-        private const string _projectFullPath = "C:\\Dev\\Solution\\Project\\Project.csproj";
-        private const string _msBuildProjectFullPath = "NewProjectFullPath";
-        private const string _msBuildProjectDirectory = "NewProjectDirectory";
-        private const string _msBuildAllProjects = "Project1;Project2";
-        private const string _outputPath = "NewOutputPath";
+        private const string _projectFullPath = @"C:\Dev\Solution\Project\Project.csproj";
+        private const string _msBuildProjectFullPath = @"C:\Dev\Solution\Project\Project.csproj";
+        private const string _msBuildProjectDirectory = @"C:\Dev\Solution\Project";
+        private const string _msBuildAllProjects = @"C:\Dev\Solution\Project\Project.csproj;C:\Dev\Solution\Project2\Project2.csproj";
+        private const string _outputPath = "Output";
 
         private readonly DateTime _projectFileTimeUtc = new(1999, 1, 1, 0, 0, 0, DateTimeKind.Utc);
 
@@ -41,7 +41,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
         // Values returned by mocks that may be modified in test cases as needed
         private bool _isTaskQueueEmpty = true;
-        private bool _isFastUpToDateCheckEnabled = true;
+        private bool _isFastUpToDateCheckEnabledInSettings = true;
 
         private UpToDateCheckConfiguredInput? _state;
 
@@ -60,7 +60,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             projectSystemOptions.Setup(o => o.GetFastUpToDateLoggingLevelAsync(It.IsAny<CancellationToken>()))
                 .ReturnsAsync(LogLevel.Info);
             projectSystemOptions.Setup(o => o.GetIsFastUpToDateCheckEnabledAsync(It.IsAny<CancellationToken>()))
-                .ReturnsAsync(() => _isFastUpToDateCheckEnabled);
+                .ReturnsAsync(() => _isFastUpToDateCheckEnabledInSettings);
 
             var projectCommonServices = IProjectCommonServicesFactory.CreateWithDefaultThreadingPolicy();
             var jointRuleSource = new ProjectValueDataSource<IProjectSubscriptionUpdate>(projectCommonServices);
@@ -108,6 +108,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             Dictionary<string, IProjectRuleSnapshotModel>? projectSnapshot = null,
             Dictionary<string, IProjectRuleSnapshotModel>? sourceSnapshot = null,
             bool disableFastUpToDateCheck = false,
+            bool disableFastUpToDateCopyAlwaysOptimization = false,
             string outDir = _outputPath,
             DateTime? lastCheckTimeAtUtc = null,
             DateTime? lastItemsChangedAtUtc = null,
@@ -131,7 +132,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                         .Add("MSBuildAllProjects", _msBuildAllProjects)
                         .Add("OutputPath", _outputPath)
                         .Add("OutDir", outDir)
-                        .Add("DisableFastUpToDateCheck", disableFastUpToDateCheck.ToString())
+                        .Add(ConfigurationGeneral.DisableFastUpToDateCheckProperty, disableFastUpToDateCheck.ToString())
+                        .Add(ConfigurationGeneral.DisableFastUpToDateCopyAlwaysOptimizationProperty, disableFastUpToDateCopyAlwaysOptimization.ToString())
                 };
             }
 
@@ -189,7 +191,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
         [InlineData(false)]
         public async Task IsUpToDateCheckEnabledAsync_DelegatesToProjectSystemOptions(bool isEnabled)
         {
-            _isFastUpToDateCheckEnabled = isEnabled;
+            _isFastUpToDateCheckEnabledInSettings = isEnabled;
 
             Assert.Equal(
                 isEnabled,
@@ -259,8 +261,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 new[]
                 {
                     $"The set of project items was changed more recently ({itemChangedTime.ToLocalTime()}) than the earliest output 'C:\\Dev\\Solution\\Project\\BuiltOutputPath1' ({outputTime.ToLocalTime()}), not up-to-date.",
-                    "    Content item added 'ItemPath1' (CopyType=CopyNever, TargetPath='')",
-                    "    Content item added 'ItemPath2' (CopyType=CopyNever, TargetPath='')",
+                    "    Content item added 'ItemPath1' (CopyToOutputDirectory=Never, TargetPath='')",
+                    "    Content item added 'ItemPath2' (CopyToOutputDirectory=Never, TargetPath='')",
                 },
                 "ProjectItemsChangedSinceEarliestOutput");
         }
@@ -276,43 +278,71 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
         }
 
         [Theory]
-        [InlineData(None.SchemaName,    false)]
-        [InlineData(Content.SchemaName, false)]
-        [InlineData(Compile.SchemaName, false)]
-        [InlineData("EmbeddedResource", false)]
-        [InlineData("RandomItemType",   true)]
-        public async Task IsUpToDateAsync_CopyAlwaysItemExists(string itemType, bool expectedUpToDate)
+        //          ItemType            Optimized  ExpectUpToDate  IsItemTypeCopied
+        [InlineData(None.SchemaName,    false,     false,          true)]
+        [InlineData(None.SchemaName,    true,      true,           true)]
+        [InlineData(Content.SchemaName, false,     false,          true)]
+        [InlineData(Content.SchemaName, true,      true,           true)]
+        [InlineData(Compile.SchemaName, false,     false,          true)]
+        [InlineData(Compile.SchemaName, true,      true,           true)]
+        [InlineData("EmbeddedResource", false,     false,          true)]
+        [InlineData("EmbeddedResource", true,      true,           true)]
+        [InlineData("RandomItemType",   false,     true,           false)]
+        [InlineData("RandomItemType",   true,      true,           false)]
+        public async Task IsUpToDateAsync_CopyAlwaysItemExists(string itemType, bool optimized, bool expectUpToDate, bool isItemTypeCopied)
         {
             var projectSnapshot = new Dictionary<string, IProjectRuleSnapshotModel>
             {
-                [UpToDateCheckBuilt.SchemaName] = SimpleItems("Output"),
+                [UpToDateCheckBuilt.SchemaName] = SimpleItems("Output")
             };
 
             var sourceSnapshot = GetSourceSnapshot(itemType);
 
-            var input1Time = DateTime.UtcNow.AddMinutes(-4);
-            var input2Time = DateTime.UtcNow.AddMinutes(-3);
+            var sourceTime = DateTime.UtcNow.AddMinutes(-4);
+            var targetTime = sourceTime;
+            var inputTime = DateTime.UtcNow.AddMinutes(-3);
             var outputTime = DateTime.UtcNow.AddMinutes(-2);
             var lastCheckTime = DateTime.UtcNow.AddMinutes(-1);
 
-            _fileSystem.AddFile("C:\\Dev\\Solution\\Project\\ItemPath1", input1Time);
-            _fileSystem.AddFile("C:\\Dev\\Solution\\Project\\ItemPath2", input2Time);
-            _fileSystem.AddFile("C:\\Dev\\Solution\\Project\\Output", outputTime);
+            var sourcePath = @"C:\Dev\Solution\Project\CopyMe";
+            var targetPath = @"C:\Dev\Solution\Project\Output\CopyMe";
+            var inputPath = @"C:\Dev\Solution\Project\OtherInput";
+            var outputPath = @"C:\Dev\Solution\Project\Output";
+
+            _fileSystem.AddFile(sourcePath, sourceTime);
+            _fileSystem.AddFile(inputPath, inputTime);
+            _fileSystem.AddFile(targetPath, targetTime);
+            _fileSystem.AddFile(outputPath, outputTime);
 
             await SetupAsync(
                 projectSnapshot: projectSnapshot,
                 sourceSnapshot: sourceSnapshot,
+                disableFastUpToDateCopyAlwaysOptimization: !optimized,
                 lastCheckTimeAtUtc: lastCheckTime);
 
-            if (expectedUpToDate)
+            if (expectUpToDate)
             {
-                await AssertUpToDateAsync(
-                    $"No inputs are newer than earliest output 'C:\\Dev\\Solution\\Project\\Output' ({outputTime.ToLocalTime()}). Newest input is 'C:\\Dev\\Solution\\Project\\ItemPath2' ({input2Time.ToLocalTime()}).");
+                if (optimized && isItemTypeCopied)
+                {
+                    await AssertUpToDateAsync(
+                        $"No inputs are newer than earliest output '{outputPath}' ({outputTime.ToLocalTime()}). Newest input is '{inputPath}' ({inputTime.ToLocalTime()}).",
+                        $"Checking {itemType} item with CopyToOutputDirectory=\"Always\" '{sourcePath}':",
+                        $"    Source {sourceTime.ToLocalTime()}: '{sourcePath}'",
+                        $"    Destination {targetTime.ToLocalTime()}: '{targetPath}'",
+                         "    Optimizing CopyToOutputDirectory=\"Always\" item. Disable this by setting DisableFastUpToDateCopyAlwaysOptimization to \"true\".");
+                }
+                else
+                {
+                    await AssertUpToDateAsync(
+                        $"No inputs are newer than earliest output '{outputPath}' ({outputTime.ToLocalTime()}). Newest input is '{inputPath}' ({inputTime.ToLocalTime()}).");
+                }
             }
             else
             {
+                Assert.False(optimized);
+
                 await AssertNotUpToDateAsync(
-                    "Item 'C:\\Dev\\Solution\\Project\\ItemPath1' has CopyToOutputDirectory set to 'Always', not up-to-date.",
+                    $"{itemType} item '{sourcePath}' has CopyToOutputDirectory set to 'Always', and the project has DisableFastUpToDateCopyAlwaysOptimization set to 'true', not up-to-date.",
                     "CopyAlwaysItemExists");
             }
 
@@ -323,14 +353,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 // 2. With a different item type, with no copy specification.
 
                 var items = ImmutableStringDictionary<IImmutableDictionary<string, string>>.EmptyOrdinal
-                    .Add("ItemPath1", ImmutableStringDictionary<string>.EmptyOrdinal
+                    .Add("CopyMe", ImmutableStringDictionary<string>.EmptyOrdinal
                         .Add("CopyToOutputDirectory", "Always")); // ALWAYS COPY THIS ITEM
 
                 var compileItems = ImmutableStringDictionary<IImmutableDictionary<string, string>>.EmptyOrdinal;
 
                 ref var items2 = ref (itemType == Compile.SchemaName ? ref items : ref compileItems);
 
-                items2 = items2.Add("ItemPath2", ImmutableStringDictionary<string>.EmptyOrdinal);
+                items2 = items2.Add("OtherInput", ImmutableStringDictionary<string>.EmptyOrdinal);
 
                 var sourceSnapshot = new Dictionary<string, IProjectRuleSnapshotModel>
                 {
@@ -406,7 +436,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
             await AssertNotUpToDateAsync(new[] {
                 $"The set of project items was changed more recently ({itemChangeTime.ToLocalTime()}) than the earliest output 'C:\\Dev\\Solution\\Project\\BuildDefault' ({buildTime.ToLocalTime()}), not up-to-date.",
-                "    Compile item removed \'ItemPath1\' (CopyType=CopyNever, TargetPath='')"},
+                "    Compile item removed \'ItemPath1\' (CopyToOutputDirectory=Never, TargetPath='')"},
                 "ProjectItemsChangedSinceEarliestOutput");
         }
 
@@ -1155,7 +1185,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
             await _buildUpToDateCheck.ActivateAsync();
 
-            var destinationPath = @"NewProjectDirectory\newOutDir\Item1";
+            var destinationPath = $@"C:\Dev\Solution\Project\{outDirSnapshot}\Item1";
             var sourcePath = @"C:\Dev\Solution\Project\Item1";
 
             var itemChangeTime = DateTime.UtcNow.AddMinutes(-4);
@@ -1182,10 +1212,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                     new[]
                     {
                         "No build outputs defined.",
-                        $"Checking PreserveNewest file '{sourcePath}':",
+                        $"Checking {itemType} item with CopyToOutputDirectory=\"PreserveNewest\" '{sourcePath}':",
                         $"    Source {sourceTime.ToLocalTime()}: '{sourcePath}'",
                         $"    Destination {destinationTime.ToLocalTime()}: '{destinationPath}'",
-                        $"PreserveNewest source '{sourcePath}' is newer than destination '{destinationPath}', not up-to-date."
+                        $"{itemType} item with CopyToOutputDirectory=\"PreserveNewest\" source '{sourcePath}' is newer than destination '{destinationPath}', not up-to-date."
                     },
                     "CopyToOutputDirectorySourceNewer");
             }
@@ -1259,7 +1289,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 [Content.SchemaName] = ItemWithMetadata("Item1", "CopyToOutputDirectory", "PreserveNewest")
             };
 
-            var destinationPath = @"NewProjectDirectory\NewOutputPath\Item1";
+            var destinationPath = @"C:\Dev\Solution\Project\Output\Item1";
             var sourcePath = @"C:\Dev\Solution\Project\Item1";
 
             var itemChangeTime  = DateTime.UtcNow.AddMinutes(-4);
@@ -1279,10 +1309,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 new[]
                 {
                     "No build outputs defined.",
-                    $"Checking PreserveNewest file '{sourcePath}':",
+                    $"Checking Content item with CopyToOutputDirectory=\"PreserveNewest\" '{sourcePath}':",
                     $"    Source {sourceTime.ToLocalTime()}: '{sourcePath}'",
                     $"    Destination {destinationTime.ToLocalTime()}: '{destinationPath}'",
-                    $"PreserveNewest source '{sourcePath}' is newer than destination '{destinationPath}', not up-to-date."
+                    $"Content item with CopyToOutputDirectory=\"PreserveNewest\" source '{sourcePath}' is newer than destination '{destinationPath}', not up-to-date."
                 },
                 "CopyToOutputDirectorySourceNewer");
         }
@@ -1295,7 +1325,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 [Content.SchemaName] = ItemWithMetadata("Item1", ("CopyToOutputDirectory", "PreserveNewest"), ("TargetPath", "TargetPath"))
             };
 
-            var destinationPath = @"NewProjectDirectory\NewOutputPath\TargetPath";
+            var destinationPath = @"C:\Dev\Solution\Project\Output\TargetPath";
             var sourcePath = @"C:\Dev\Solution\Project\Item1";
 
             var itemChangeTime = DateTime.UtcNow.AddMinutes(-4);
@@ -1315,10 +1345,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 new[]
                 {
                     "No build outputs defined.",
-                    $"Checking PreserveNewest file '{sourcePath}':",
+                    $"Checking Content item with CopyToOutputDirectory=\"PreserveNewest\" '{sourcePath}':",
                     $"    Source {sourceTime.ToLocalTime()}: '{sourcePath}'",
                     $"    Destination {destinationTime.ToLocalTime()}: '{destinationPath}'",
-                    $"PreserveNewest source '{sourcePath}' is newer than destination '{destinationPath}', not up-to-date."
+                    $"Content item with CopyToOutputDirectory=\"PreserveNewest\" source '{sourcePath}' is newer than destination '{destinationPath}', not up-to-date."
                 },
                 "CopyToOutputDirectorySourceNewer");
         }
@@ -1331,7 +1361,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 [Content.SchemaName] = ItemWithMetadata("Item1", ("CopyToOutputDirectory", "PreserveNewest"), ("Link", "LinkPath"))
             };
 
-            var destinationPath = @"NewProjectDirectory\NewOutputPath\LinkPath";
+            var destinationPath = @"C:\Dev\Solution\Project\Output\LinkPath";
             var sourcePath = @"C:\Dev\Solution\Project\Item1";
 
             var itemChangeTime = DateTime.UtcNow.AddMinutes(-4);
@@ -1351,10 +1381,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 new[]
                 {
                     "No build outputs defined.",
-                    $"Checking PreserveNewest file '{sourcePath}':",
+                    $"Checking Content item with CopyToOutputDirectory=\"PreserveNewest\" '{sourcePath}':",
                     $"    Source {sourceTime.ToLocalTime()}: '{sourcePath}'",
                     $"    Destination {destinationTime.ToLocalTime()}: '{destinationPath}'",
-                    $"PreserveNewest source '{sourcePath}' is newer than destination '{destinationPath}', not up-to-date."
+                    $"Content item with CopyToOutputDirectory=\"PreserveNewest\" source '{sourcePath}' is newer than destination '{destinationPath}', not up-to-date."
                 },
                 "CopyToOutputDirectorySourceNewer");
         }
@@ -1369,7 +1399,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 [Content.SchemaName] = ItemWithMetadata("Item1", ("CopyToOutputDirectory", "PreserveNewest"), ("Link", "LinkPath"), ("TargetPath", "TargetPath"))
             };
 
-            var destinationPath = @"NewProjectDirectory\NewOutputPath\TargetPath";
+            var destinationPath = @"C:\Dev\Solution\Project\Output\TargetPath";
             var sourcePath = @"C:\Dev\Solution\Project\Item1";
 
             var itemChangeTime = DateTime.UtcNow.AddMinutes(-4);
@@ -1389,10 +1419,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 new[]
                 {
                     "No build outputs defined.",
-                    $"Checking PreserveNewest file '{sourcePath}':",
+                    $"Checking Content item with CopyToOutputDirectory=\"PreserveNewest\" '{sourcePath}':",
                     $"    Source {sourceTime.ToLocalTime()}: '{sourcePath}'",
                     $"    Destination {destinationTime.ToLocalTime()}: '{destinationPath}'",
-                    $"PreserveNewest source '{sourcePath}' is newer than destination '{destinationPath}', not up-to-date."
+                    $"Content item with CopyToOutputDirectory=\"PreserveNewest\" source '{sourcePath}' is newer than destination '{destinationPath}', not up-to-date."
                 },
                 "CopyToOutputDirectorySourceNewer");
         }
@@ -1405,7 +1435,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 [Content.SchemaName] = ItemWithMetadata("Item1", "CopyToOutputDirectory", "PreserveNewest")
             };
 
-            var destinationPath = @"NewProjectDirectory\NewOutputPath\Item1";
+            var destinationPath = @"C:\Dev\Solution\Project\Output\Item1";
             var sourcePath = @"C:\Dev\Solution\Project\Item1";
 
             var itemChangeTime  = DateTime.UtcNow.AddMinutes(-4);
@@ -1423,7 +1453,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 new[]
                 {
                     "No build outputs defined.",
-                    $"Checking PreserveNewest file '{sourcePath}':",
+                    $"Checking Content item with CopyToOutputDirectory=\"PreserveNewest\" '{sourcePath}':",
                     $"Source '{sourcePath}' does not exist, not up-to-date."
                 },
                 "CopyToOutputDirectorySourceNotFound");
@@ -1437,7 +1467,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 [Content.SchemaName] = ItemWithMetadata("Item1", "CopyToOutputDirectory", "PreserveNewest")
             };
 
-            var destinationPath = @"NewProjectDirectory\NewOutputPath\Item1";
+            var destinationPath = @"C:\Dev\Solution\Project\Output\Item1";
             var sourcePath = @"C:\Dev\Solution\Project\Item1";
 
             var itemChangeTime = DateTime.UtcNow.AddMinutes(-4);
@@ -1455,7 +1485,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 new[]
                 {
                     "No build outputs defined.",
-                    $"Checking PreserveNewest file '{sourcePath}':",
+                    $"Checking Content item with CopyToOutputDirectory=\"PreserveNewest\" '{sourcePath}':",
                     $"    Source {sourceTime.ToLocalTime()}: '{sourcePath}'",
                     $"Destination '{destinationPath}' does not exist, not up-to-date."
                 },

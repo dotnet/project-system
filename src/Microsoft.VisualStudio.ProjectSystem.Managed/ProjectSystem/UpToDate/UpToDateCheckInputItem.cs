@@ -54,7 +54,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             bool isCopyToOutputDirectoryType = s_copyToOutputDirectoryItemTypes.Contains(itemType);
 
             TargetPath = isCopyToOutputDirectoryType ? GetTargetPath() : null;
-            CopyType = isCopyToOutputDirectoryType ? GetCopyType() : BuildUpToDateCheck.CopyType.CopyNever;
+            CopyType = isCopyToOutputDirectoryType ? GetCopyType() : BuildUpToDateCheck.CopyType.Never;
 
             string? GetTargetPath()
             {
@@ -94,16 +94,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 {
                     if (string.Equals(value, None.CopyToOutputDirectoryValues.Always, StringComparisons.PropertyLiteralValues))
                     {
-                        return BuildUpToDateCheck.CopyType.CopyAlways;
+                        return BuildUpToDateCheck.CopyType.Always;
                     }
 
                     if (string.Equals(value, None.CopyToOutputDirectoryValues.PreserveNewest, StringComparisons.PropertyLiteralValues))
                     {
-                        return BuildUpToDateCheck.CopyType.CopyIfNewer;
+                        return BuildUpToDateCheck.CopyType.PreserveNewest;
                     }
                 }
 
-                return BuildUpToDateCheck.CopyType.CopyNever;
+                return BuildUpToDateCheck.CopyType.Never;
             }
         }
 
