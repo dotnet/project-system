@@ -304,7 +304,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                     before = beforeItems;
 
                 var after = projectChange.After.Items
-                    .Select(item => new UpToDateCheckInputItem(path: item.Key, metadata: item.Value))
+                    .Select(item => new UpToDateCheckInputItem(path: item.Key, itemType, metadata: item.Value))
                     .ToHashSet(UpToDateCheckInputItem.PathComparer);
 
                 var diff = new SetDiff<UpToDateCheckInputItem>(before, after, UpToDateCheckInputItem.PathComparer);

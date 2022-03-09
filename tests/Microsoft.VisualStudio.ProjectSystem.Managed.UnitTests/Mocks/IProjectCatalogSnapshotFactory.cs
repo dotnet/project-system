@@ -26,7 +26,8 @@ namespace Microsoft.VisualStudio.ProjectSystem
             }
 
             var propertyPageCatalog = new Mock<IPropertyPagesCatalog>();
-            propertyPageCatalog.Setup(o => o.GetSchema(It.IsAny<string>())).Returns<string>(n => ruleNameToRule[n]);
+            propertyPageCatalog.Setup(o => o.GetSchema(It.IsAny<string>()))
+                .Returns<string>(ruleName => ruleNameToRule.TryGetValue(ruleName, out var rule) ? rule : new Rule { DataSource = new DataSource { ItemType = ruleName } });
 
             var namedCatalogs = ImmutableDictionary<string, IPropertyPagesCatalog>.Empty.Add("File", propertyPageCatalog.Object);
 
