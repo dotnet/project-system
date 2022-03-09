@@ -46,7 +46,6 @@
     </PropertyGroup>
     <Message Text="Generating Solution file [$(SolutionFileName)]..." Importance="high" />
 
-    <Exec Command="dotnet --version" />
     <Exec Command="dotnet new sln -n $(SolutionName) -o $(SolutionFolder) --force" />
 
     <ItemGroup>
