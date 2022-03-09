@@ -657,9 +657,19 @@ namespace Microsoft.VisualStudio {
         /// <summary>
         ///   Looks up a localized string similar to Errors in &apos;{0}&apos; need to be corrected before applying changes..
         /// </summary>
-        internal static string JsonErrorNeedToBeCorrected {
+        internal static string JsonErrorsNeedToBeCorrected_1 {
             get {
-                return ResourceManager.GetString("JsonErrorNeedToBeCorrected", resourceCulture);
+                return ResourceManager.GetString("JsonErrorsNeedToBeCorrected_1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Errors in &apos;{0}&apos; need to be corrected before applying changes. Error message:
+        ///{1}.
+        /// </summary>
+        internal static string JsonErrorsNeedToBeCorrected_WithErrorMessage_2 {
+            get {
+                return ResourceManager.GetString("JsonErrorsNeedToBeCorrected_WithErrorMessage_2", resourceCulture);
             }
         }
         

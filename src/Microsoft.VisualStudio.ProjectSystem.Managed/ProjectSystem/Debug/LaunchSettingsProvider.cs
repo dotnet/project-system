@@ -32,6 +32,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         // These are used internally to loop in debuggers to handle F5 when there are errors in
         // the launch settings file or when there are no profiles specified (like class libraries)
         public const string ErrorProfileCommandName = "ErrorProfile";
+        private const string ErrorProfileErrorMessageSettingsKey = "ErrorString";
 
         private readonly UnconfiguredProject _project;
         private readonly IActiveConfiguredValue<IAppDesignerFolderSpecialFileProvider?> _appDesignerSpecialFileProvider;
@@ -114,8 +115,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
 
         // Tracks when we last read or wrote to the file. Prevents picking up needless changes
         protected DateTime LastSettingsFileSyncTimeUtc { get; set; }
-
-        protected const int WaitForFirstSnapshotDelayMillis = 5000;
 
         [Obsolete("Use GetLaunchSettingsFilePathAsync instead.")]
         public string LaunchSettingsFile => _commonProjectServices.ThreadingService.ExecuteSynchronously(GetLaunchSettingsFilePathAsync);
@@ -325,7 +324,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
                         name: Resources.NoActionProfileName,
                         commandName: ErrorProfileCommandName,
                         doNotPersist: true,
-                        otherSettings: ImmutableArray.Create(("ErrorString", (object)ex.Message)));
+                        otherSettings: ImmutableArray.Create((ErrorProfileErrorMessageSettingsKey, (object)ex.Message)));
                     var snapshot = new LaunchSettings(new[] { errorProfile }, null, errorProfile.Name, version: GetNextVersion());
                     FinishUpdate(snapshot);
                 }
@@ -886,17 +885,27 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         }
 
         /// <summary>
-        /// Helper retrieves the current snapshot (waiting up to 5s) and if there were errors in the launchsettings.json file
-        /// or there isn't a snapshot, it throws an error. There should always be a snapshot of some kind returned
+        /// Helper retrieves the current snapshot and if there were errors in the launchsettings.json file
+        /// or there isn't a snapshot, it throws an error. There should always be a snapshot of some kind returned.
         /// </summary>
         public async Task<ILaunchSettings> GetSnapshotThrowIfErrorsAsync()
         {
-            ILaunchSettings? currentSettings = await WaitForFirstSnapshot(WaitForFirstSnapshotDelayMillis);
-            if (currentSettings == null || (currentSettings.Profiles.Count == 1 && string.Equals(currentSettings.Profiles[0].CommandName, ErrorProfileCommandName, StringComparisons.LaunchProfileCommandNames)))
+            ILaunchSettings? currentSettings = await WaitForFirstSnapshot(Timeout.Infinite);
+            Assumes.NotNull(currentSettings);
+
+            if (currentSettings.Profiles.Count == 1 && string.Equals(currentSettings.Profiles[0].CommandName, ErrorProfileCommandName, StringComparisons.LaunchProfileCommandNames))
             {
                 string fileName = await GetLaunchSettingsFilePathAsync();
 
-                throw new Exception(string.Format(Resources.JsonErrorNeedToBeCorrected, fileName));
+                if (currentSettings.Profiles[0].OtherSettings is { } otherSettings
+                    && otherSettings.TryGetValue(ErrorProfileErrorMessageSettingsKey, out object? errorMessageObject))
+                {
+                    throw new Exception(string.Format(Resources.JsonErrorsNeedToBeCorrected_WithErrorMessage_2, fileName, errorMessageObject));
+                }
+                else
+                {
+                    throw new Exception(string.Format(Resources.JsonErrorsNeedToBeCorrected_1, fileName));
+                }
             }
 
             return currentSettings;

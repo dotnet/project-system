@@ -302,6 +302,18 @@
         <target state="translated">Importaciones</target>
         <note />
       </trans-unit>
+      <trans-unit id="JsonErrorsNeedToBeCorrected_1">
+        <source>Errors in '{0}' need to be corrected before applying changes.</source>
+        <target state="new">Errors in '{0}' need to be corrected before applying changes.</target>
+        <note>{0} is the path to the malformed .json file.</note>
+      </trans-unit>
+      <trans-unit id="JsonErrorsNeedToBeCorrected_WithErrorMessage_2">
+        <source>Errors in '{0}' need to be corrected before applying changes. Error message:
+{1}</source>
+        <target state="new">Errors in '{0}' need to be corrected before applying changes. Error message:
+{1}</target>
+        <note>{0} is the path to the malformed .json file. {1} is an error message containing more details about the problems in the file.</note>
+      </trans-unit>
       <trans-unit id="NeutralLanguage_DisplayNameFormatString">
         <source>{0} - {1}</source>
         <target state="translated">{0} - {1}</target>
@@ -310,11 +322,6 @@
       <trans-unit id="NoActionProfileName">
         <source>Start</source>
         <target state="translated">Inicio</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="JsonErrorNeedToBeCorrected">
-        <source>Errors in '{0}' need to be corrected before applying changes.</source>
-        <target state="translated">Los errores de '{0}' deben corregirse antes de aplicar los cambios.</target>
         <note />
       </trans-unit>
       <trans-unit id="MsBuildMissingValueToRemove">

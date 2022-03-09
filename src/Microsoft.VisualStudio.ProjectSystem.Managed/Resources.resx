@@ -120,8 +120,14 @@
   <data name="NoActionProfileName" xml:space="preserve">
     <value>Start</value>
   </data>
-  <data name="JsonErrorNeedToBeCorrected" xml:space="preserve">
+  <data name="JsonErrorsNeedToBeCorrected_1" xml:space="preserve">
     <value>Errors in '{0}' need to be corrected before applying changes.</value>
+    <comment>{0} is the path to the malformed .json file.</comment>
+  </data>
+  <data name="JsonErrorsNeedToBeCorrected_WithErrorMessage_2" xml:space="preserve">
+    <value>Errors in '{0}' need to be corrected before applying changes. Error message:
+{1}</value>
+   <comment>{0} is the path to the malformed .json file. {1} is an error message containing more details about the problems in the file.</comment>
   </data>
   <data name="MsBuildMissingValueToRemove" xml:space="preserve">
     <value>The specified value to remove '{0}' was not present in the property '{1}'</value>
