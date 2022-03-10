@@ -32,7 +32,7 @@ parameters:
 - name: SkipOptimize
   displayName: Skip OptProf Optimization
   type: boolean
-  default: false
+  default: true
 
 ###################################################################################################################################################################
 # INSTALLATION
@@ -164,6 +164,7 @@ steps:
     usePat: true
     AccessToken: '$(System.AccessToken)'
   condition: succeeded()
+  enabled: false
 
 # MicroBuildBuildVSBootstrapper requires MicroBuildSigningPlugin for signjson.exe to run.
 - task: MicroBuildBuildVSBootstrapper@2
@@ -175,13 +176,15 @@ steps:
     manifests: '$(Build.SourcesDirectory)\artifacts\$(BuildConfiguration)\VSSetup\Insertion\Microsoft.VisualStudio.ProjectSystem.Managed.vsman'
     outputFolder: $(Build.SourcesDirectory)\artifacts\$(BuildConfiguration)\VSSetup\Insertion
   condition: succeeded()
+  enabled: false
 
 - task: PowerShell@2
   displayName: Update RunSettings via Bootstrapper data
   inputs:
     filePath: build\optprof\UpdateRunSettings.ps1
     arguments: '-profilingInputsPath "ProfilingInputs/$(System.TeamProject)/$(Build.Repository.Name)/$(Build.SourceBranchName)/$(Build.BuildId)" -bootstrapperInfoPath "$(Build.StagingDirectory)\MicroBuild\Output\BootstrapperInfo.json"'
-    failOnStderr: true
+    failOnStderr: true'
+  enabled: false
 
 - task: artifactDropTask@0
   displayName: 'Publish to Artifact Services: RunSettings'
@@ -194,6 +197,7 @@ steps:
     AccessToken: '$(System.AccessToken)'
     dropMetadataContainerName: RunSettings
   condition: succeeded()
+  enabled: false
 
 - task: PublishBuildArtifacts@1
   displayName: 'Publish Artifact: MicroBuildOutputs'
