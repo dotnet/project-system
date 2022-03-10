@@ -8,6 +8,7 @@ Imports System.Reflection
 Imports System.Runtime.InteropServices
 
 Imports Microsoft.VisualStudio.Designer.Interfaces
+Imports Microsoft.VisualStudio.Editors.DesignerFramework
 Imports Microsoft.VisualStudio.Editors.Interop
 Imports Microsoft.VisualStudio.OLE.Interop
 Imports Microsoft.VisualStudio.Shell
@@ -170,7 +171,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                     ' If this is the "default" settings file, we add the "My" module as well...
                     '
                     If shouldGenerateMyStuff Then
-                        AddMyModule(CompileUnit, projectRootNamespace, wszDefaultNamespace.Replace(" ", "_"))
+                        AddMyModule(CompileUnit, projectRootNamespace, DesignUtil.GenerateValidLanguageIndependentNamespace(wszDefaultNamespace))
                     End If
                 End If
 
