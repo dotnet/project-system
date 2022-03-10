@@ -184,7 +184,7 @@ steps:
   inputs:
     filePath: build\optprof\UpdateRunSettings.ps1
     arguments: '-profilingInputsPath "ProfilingInputs/$(System.TeamProject)/$(Build.Repository.Name)/$(Build.SourceBranchName)/$(Build.BuildId)" -bootstrapperInfoPath "$(Build.StagingDirectory)\MicroBuild\Output\BootstrapperInfo.json"'
-    failOnStderr: true'
+    failOnStderr: true
   enabled: false
 
 - task: artifactDropTask@0
