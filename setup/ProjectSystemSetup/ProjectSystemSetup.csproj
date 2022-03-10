@@ -17,6 +17,7 @@
     <!-- VS Insertion -->
     <!-- NOTE: Having VisualStudioInsertionComponent defined is the condition for VisualStudio.SetupPackage.vsmanproj to be built (via FinalizeInsertionVsixFiles target in VisualStudio.Insertion.proj) in RepoToolset. -->
     <VisualStudioInsertionComponent>Microsoft.VisualStudio.ProjectSystem.Managed</VisualStudioInsertionComponent>
+    <VsmanName>$(VisualStudioInsertionComponent)</VsmanName>
   </PropertyGroup>
 
   <ItemGroup>
