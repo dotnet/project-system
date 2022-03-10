@@ -208,7 +208,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
 
         private static bool IsNetCore5OrHigher(string targetFrameworkAlias)
         {
-            return targetFrameworkAlias.Contains("5.0") || targetFrameworkAlias.Contains("6.0");
+            return targetFrameworkAlias.Contains("5.0") || targetFrameworkAlias.Contains("6.0") || targetFrameworkAlias.Contains("7.0");
         }
 
         private async Task<bool> IsWindowsPlatformNeededAsync()

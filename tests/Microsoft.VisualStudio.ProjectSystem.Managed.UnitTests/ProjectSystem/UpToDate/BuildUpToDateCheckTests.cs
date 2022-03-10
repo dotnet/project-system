@@ -33,6 +33,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
         private readonly DateTime _projectFileTimeUtc = new(1999, 1, 1, 0, 0, 0, DateTimeKind.Utc);
 
         private readonly List<ITelemetryServiceFactory.TelemetryParameters> _telemetryEvents = new();
+        private readonly Dictionary<ProjectConfiguration, DateTime> _lastCheckTimeAtUtc = new();
+
         private readonly BuildUpToDateCheck _buildUpToDateCheck;
         private readonly ITestOutputHelper _output;
         private readonly IFileSystemMock _fileSystem;
@@ -42,7 +44,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
         private bool _isFastUpToDateCheckEnabled = true;
 
         private UpToDateCheckConfiguredInput? _state;
-        private Dictionary<ProjectConfiguration, DateTime> _lastCheckTimeAtUtc = new();
 
         public BuildUpToDateCheckTests(ITestOutputHelper output)
         {
@@ -274,29 +275,69 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 "Disabled");
         }
 
-        [Fact]
-        public async Task IsUpToDateAsync_False_CopyAlwaysItemExists()
+        [Theory]
+        [InlineData(None.SchemaName,    false)]
+        [InlineData(Content.SchemaName, false)]
+        [InlineData(Compile.SchemaName, false)]
+        [InlineData("EmbeddedResource", false)]
+        [InlineData("RandomItemType",   true)]
+        public async Task IsUpToDateAsync_CopyAlwaysItemExists(string itemType, bool expectedUpToDate)
         {
-            // TODO add a Content or None item as CopyAlways and verify (these are currently excluded by CollectInputs)
+            var projectSnapshot = new Dictionary<string, IProjectRuleSnapshotModel>
+            {
+                [UpToDateCheckBuilt.SchemaName] = SimpleItems("Output"),
+            };
+
+            var testItems = ImmutableStringDictionary<IImmutableDictionary<string, string>>.EmptyOrdinal
+                .Add("ItemPath1", ImmutableStringDictionary<string>.EmptyOrdinal
+                    .Add("CopyToOutputDirectory", "Always")); // ALWAYS COPY THIS ITEM
+
+            var otherItems = ImmutableStringDictionary<IImmutableDictionary<string, string>>.EmptyOrdinal;
+
+            if (itemType == Compile.SchemaName)
+            {
+                testItems = testItems.Add("ItemPath2", ImmutableStringDictionary<string>.EmptyOrdinal);
+            }
+            else
+            {
+                otherItems = otherItems.Add("ItemPath2", ImmutableStringDictionary<string>.EmptyOrdinal);
+            }
 
             var sourceSnapshot = new Dictionary<string, IProjectRuleSnapshotModel>
             {
-                [Content.SchemaName] = new IProjectRuleSnapshotModel
-                {
-                    Items = ImmutableStringDictionary<IImmutableDictionary<string, string>>.EmptyOrdinal
-                        .Add("ItemPath1", ImmutableStringDictionary<string>.EmptyOrdinal
-                            .Add("CopyToOutputDirectory", "Always")) // ALWAYS COPY THIS ITEM
-                        .Add("ItemPath2", ImmutableStringDictionary<string>.EmptyOrdinal)
-                }
+                [itemType] = new IProjectRuleSnapshotModel { Items = testItems }
             };
 
+            if (itemType != Compile.SchemaName)
+            {
+                sourceSnapshot[Compile.SchemaName] = new IProjectRuleSnapshotModel { Items = otherItems };
+            }
+
+            var input1Time = DateTime.UtcNow.AddMinutes(-4);
+            var input2Time = DateTime.UtcNow.AddMinutes(-3);
+            var outputTime = DateTime.UtcNow.AddMinutes(-2);
             var lastCheckTime = DateTime.UtcNow.AddMinutes(-1);
 
-            await SetupAsync(sourceSnapshot: sourceSnapshot, lastCheckTimeAtUtc: lastCheckTime);
+            _fileSystem.AddFile("C:\\Dev\\Solution\\Project\\ItemPath1", input1Time);
+            _fileSystem.AddFile("C:\\Dev\\Solution\\Project\\ItemPath2", input2Time);
+            _fileSystem.AddFile("C:\\Dev\\Solution\\Project\\Output", outputTime);
 
-            await AssertNotUpToDateAsync(
-                "Item 'C:\\Dev\\Solution\\Project\\ItemPath1' has CopyToOutputDirectory set to 'Always', not up-to-date.",
-                "CopyAlwaysItemExists");
+            await SetupAsync(
+                projectSnapshot: projectSnapshot,
+                sourceSnapshot: sourceSnapshot,
+                lastCheckTimeAtUtc: lastCheckTime);
+
+            if (expectedUpToDate)
+            {
+                await AssertUpToDateAsync(
+                    $"No inputs are newer than earliest output 'C:\\Dev\\Solution\\Project\\Output' ({outputTime.ToLocalTime()}). Newest input is 'C:\\Dev\\Solution\\Project\\ItemPath2' ({input2Time.ToLocalTime()}).");
+            }
+            else
+            {
+                await AssertNotUpToDateAsync(
+                    "Item 'C:\\Dev\\Solution\\Project\\ItemPath1' has CopyToOutputDirectory set to 'Always', not up-to-date.",
+                    "CopyAlwaysItemExists");
+            }
         }
 
         [Fact]
@@ -1091,14 +1132,19 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 "CopySourceNewer");
         }
 
-        [Fact]
-        public async Task IsUpToDateAsync_False_CopyToOutDirSourceIsNewerThanDestination()
+        [Theory]
+        [InlineData(None.SchemaName,    false)]
+        [InlineData(Content.SchemaName, false)]
+        [InlineData(Compile.SchemaName, false)]
+        [InlineData("EmbeddedResource", false)]
+        [InlineData("RandomItemType",   true)]
+        public async Task IsUpToDateAsync_CopyToOutDirSourceIsNewerThanDestination(string itemType, bool expectedUpToDate)
         {
             const string outDirSnapshot = "newOutDir";
 
             var sourceSnapshot = new Dictionary<string, IProjectRuleSnapshotModel>
             {
-                [Content.SchemaName] = ItemWithMetadata("Item1", "CopyToOutputDirectory", "PreserveNewest")
+                [itemType] = ItemWithMetadata("Item1", "CopyToOutputDirectory", "PreserveNewest")
             };
 
             await _buildUpToDateCheck.ActivateAsync();
@@ -1120,16 +1166,23 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             _fileSystem.AddFile(destinationPath, destinationTime);
             _fileSystem.AddFile(sourcePath, sourceTime);
 
-            await AssertNotUpToDateAsync(
-                new[]
-                {
-                    "No build outputs defined.",
-                    $"Checking PreserveNewest file '{sourcePath}':",
-                    $"    Source {sourceTime.ToLocalTime()}: '{sourcePath}'",
-                    $"    Destination {destinationTime.ToLocalTime()}: '{destinationPath}'",
-                    $"PreserveNewest source '{sourcePath}' is newer than destination '{destinationPath}', not up-to-date."
-                },
-                "CopyToOutputDirectorySourceNewer");
+            if (expectedUpToDate)
+            {
+                await AssertUpToDateAsync($"No build outputs defined.");
+            }
+            else
+            {
+                await AssertNotUpToDateAsync(
+                    new[]
+                    {
+                        "No build outputs defined.",
+                        $"Checking PreserveNewest file '{sourcePath}':",
+                        $"    Source {sourceTime.ToLocalTime()}: '{sourcePath}'",
+                        $"    Destination {destinationTime.ToLocalTime()}: '{destinationPath}'",
+                        $"PreserveNewest source '{sourcePath}' is newer than destination '{destinationPath}', not up-to-date."
+                    },
+                    "CopyToOutputDirectorySourceNewer");
+            }
         }
 
         [Fact]
@@ -1425,11 +1478,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 HashItems(("Compile", new[] { "Path1" })),
                 HashItems(("Compile", new[] { "Path1", "Path2" })));
 
-            static int HashItems(params (string itemType, string[] paths)[] items)
+            static int HashItems(params (string ItemType, string[] Paths)[] items)
             {
                 var itemsByItemType = items.ToImmutableDictionary(
-                    i => i.itemType,
-                    i => i.paths.Select(p => new UpToDateCheckInputItem(p, null, BuildUpToDateCheck.CopyType.CopyNever)).ToImmutableArray());
+                    i => i.ItemType,
+                    i => i.Paths.Select(p => new UpToDateCheckInputItem(p, i.ItemType, ImmutableDictionary<string, string>.Empty)).ToImmutableArray());
 
                 return BuildUpToDateCheck.ComputeItemHash(itemsByItemType);
             }
