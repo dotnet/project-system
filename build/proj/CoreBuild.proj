@@ -46,6 +46,8 @@
     </PropertyGroup>
     <Message Text="Generating Solution file [$(SolutionFileName)]..." Importance="high" />
 
+    <!-- https://docs.microsoft.com/en-us/dotnet/core/tools/dotnet-new#options -->
+    <!-- The 'force' flag ensures that if for any reason there is already a solution in the destination, the command will not fail. -->
     <Exec Command="dotnet new sln -n $(SolutionName) -o $(SolutionFolder) --force" />
 
     <ItemGroup>
