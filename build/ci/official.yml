@@ -32,7 +32,7 @@ parameters:
 - name: SkipOptimize
   displayName: Skip OptProf Optimization
   type: boolean
-  default: true
+  default: false
 
 ###################################################################################################################################################################
 # INSTALLATION
@@ -64,6 +64,7 @@ steps:
     feedSource: 'https://devdiv.pkgs.visualstudio.com/DefaultCollection/_packaging/MicroBuildToolset/nuget/v3/index.json'
     ShouldSkipOptimize: ${{ parameters.SkipOptimize }}
     NumberCommitsToSearch: '100'
+  enabled: false
 
 ###################################################################################################################################################################
 # BUILD SOLUTION
