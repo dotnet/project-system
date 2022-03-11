@@ -157,7 +157,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                     (TelemetryPropertyName.UpToDateCheckFailReason, (object)reason),
                     (TelemetryPropertyName.UpToDateCheckDurationMillis, _stopwatch.Elapsed.TotalMilliseconds),
                     (TelemetryPropertyName.UpToDateCheckFileCount, _timestampCache.Count),
-                    (TelemetryPropertyName.UpToDateCheckConfigurationCount, _upToDateCheckConfiguredInput.ImplicitInputs.Length)
+                    (TelemetryPropertyName.UpToDateCheckConfigurationCount, _upToDateCheckConfiguredInput.ImplicitInputs.Length),
+                    (TelemetryPropertyName.UpToDateCheckLogLevel, Level)
                 });
 
                 // Remember the failure reason for use in IncrementalBuildFailureDetector.
@@ -177,7 +178,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 {
                     (TelemetryPropertyName.UpToDateCheckDurationMillis, (object)_stopwatch.Elapsed.TotalMilliseconds),
                     (TelemetryPropertyName.UpToDateCheckFileCount, _timestampCache.Count),
-                    (TelemetryPropertyName.UpToDateCheckConfigurationCount, _upToDateCheckConfiguredInput.ImplicitInputs.Length)
+                    (TelemetryPropertyName.UpToDateCheckConfigurationCount, _upToDateCheckConfiguredInput.ImplicitInputs.Length),
+                    (TelemetryPropertyName.UpToDateCheckLogLevel, Level)
                 });
 
                 Info(nameof(Resources.FUTD_UpToDate));
