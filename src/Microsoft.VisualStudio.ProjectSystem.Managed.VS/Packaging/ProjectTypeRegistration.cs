@@ -16,7 +16,8 @@ using Microsoft.VisualStudio.ProjectSystem.VS;
     DisableAsynchronousProjectTreeLoad = true,
     PossibleProjectExtensions = "vbproj",
     NewProjectRequireNewFolderVsTemplate = true,
-    SupportsCodespaces = true)]
+    SupportsCodespaces = true,
+    SupportsReloadFreeBranchSwitch = true)]
 [assembly: ProvideDiffSupportedContentType(".vbproj", "")]   // Empty string because content type is not important, we just want to tell the diff that the file type is supported
 [assembly: ProvideEditorFactoryMapping("{f6819a78-a205-47b5-be1c-675b3c7f0b8e}", ".vbproj")] // Use the XML editor
 
@@ -32,7 +33,8 @@ using Microsoft.VisualStudio.ProjectSystem.VS;
     DisableAsynchronousProjectTreeLoad = true,
     PossibleProjectExtensions = "fsproj",
     NewProjectRequireNewFolderVsTemplate = true,
-    SupportsCodespaces = true)]
+    SupportsCodespaces = true,
+    SupportsReloadFreeBranchSwitch = true)]
 [assembly: ProvideDiffSupportedContentType(".fsproj", "")]   // Empty string because content type is not important, we just want to tell the diff that the file type is supported
 [assembly: ProvideEditorFactoryMapping("{f6819a78-a205-47b5-be1c-675b3c7f0b8e}", ".fsproj")] // Use the XML editor
 
@@ -48,6 +50,7 @@ using Microsoft.VisualStudio.ProjectSystem.VS;
     DisableAsynchronousProjectTreeLoad = true,
     PossibleProjectExtensions = "csproj",
     NewProjectRequireNewFolderVsTemplate = true,
-    SupportsCodespaces = true)]
+    SupportsCodespaces = true,
+    SupportsReloadFreeBranchSwitch = true)]
 [assembly: ProvideDiffSupportedContentType(".csproj", "")]   // Empty string because content type is not important, we just want to tell the diff that the file type is supported
 [assembly: ProvideEditorFactoryMapping("{f6819a78-a205-47b5-be1c-675b3c7f0b8e}", ".csproj")] // Use the XML editor
