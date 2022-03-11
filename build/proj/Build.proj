@@ -35,6 +35,7 @@
         Deploy=$(Deploy);
         Test=$(Test);
         IntegrationTest=$(IntegrationTest);
+        QuickSrcBuild=$(QuickSrcBuild);
       </CoreBuildProperties>
     </PropertyGroup>
 
