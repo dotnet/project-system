@@ -32,7 +32,7 @@ jobs:
     pool:
       name: NetCore1ESPool-Public
       # Image list: https://helix.dot.net/#1esPools
-      demands: ImageOverride -equals Build.Windows.10.Amd64.VS2022.Pre.Open
+      demands: ImageOverride -equals Build.Windows.Amd64.VS2022.Pre.Open
 
 - template: unit-tests-template.yml
   parameters:
@@ -41,7 +41,7 @@ jobs:
     pool:
       name: NetCore1ESPool-Public
       # Image list: https://helix.dot.net/#1esPools
-      demands: ImageOverride -equals Build.Windows.10.Amd64.VS2022.Pre.Open
+      demands: ImageOverride -equals Build.Windows.Amd64.VS2022.Pre.Open
 
 - template: unit-tests-template.yml
   parameters:
