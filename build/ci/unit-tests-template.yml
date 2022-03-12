@@ -9,8 +9,8 @@ jobs:
       inputs:
         solution: $(Build.SourcesDirectory)\build\proj\Build.proj
         msbuildArchitecture: x86
-        configuration: $(BuildConfiguration)
-        msbuildArguments: '/m /warnaserror /nologo /clp:Summary /p:Build=true /p:Test=true /p:CIBuild=true /v:normal /bl:$(Build.SourcesDirectory)\artifacts\$(BuildConfiguration)\log\Build.binlog'
+        configuration: ${{ parameters.configuration }}
+        msbuildArguments: '/m /warnaserror /nologo /clp:Summary /p:Build=true /p:Test=true /p:CIBuild=true /v:normal /bl:$(Build.SourcesDirectory)\artifacts\${{ parameters.configuration }}\log\Build.binlog'
 
     - task: PublishBuildArtifacts@1
       inputs:
