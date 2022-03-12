@@ -4,8 +4,13 @@ jobs:
   pool: ${{ parameters.pool }}
   timeoutInMinutes: 20
   steps:
-    - script: $(Build.SourcesDirectory)\build.cmd /build /test /ci /sign /diagnostic /clearnugetcache /no-deploy /no-integration /no-ibc /configuration ${{ parameters.configuration }}
+    - task: MSBuild@1
       displayName: Build ProjectSystem.sln
+      inputs:
+        solution: $(Build.SourcesDirectory)\build\proj\Build.proj
+        msbuildArchitecture: x86
+        configuration: $(BuildConfiguration)
+        msbuildArguments: '/m /warnaserror /nologo /clp:Summary /p:Build=true /p:Test=true /p:CIBuild=true /v:normal /bl:$(Build.SourcesDirectory)\artifacts\$(BuildConfiguration)\log\Build.binlog'
 
     - task: PublishBuildArtifacts@1
       inputs:

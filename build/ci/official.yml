@@ -13,7 +13,7 @@ resources:
 - repo: self
   clean: true
 queue:
-  name: VSEngSS-MicroBuild2019-1ES
+  name: VSEngSS-MicroBuild2022-1ES
   demands: Cmd
   timeoutInMinutes: 90
 variables:
@@ -76,7 +76,7 @@ steps:
   displayName: Build Src for SBOM
   inputs:
     solution: $(Build.SourcesDirectory)\build\proj\Build.proj
-    msbuildArchitecture: 'x86'
+    msbuildArchitecture: x86
     configuration: $(BuildConfiguration)
     msbuildArguments: '/m /warnaserror /nologo /clp:Summary /p:Build=true /p:CIBuild=true /p:QuickSrcBuild=true /v:normal /bl:$(Build.SourcesDirectory)\artifacts\$(BuildConfiguration)\log\QuickSrcBuild.binlog'
 
@@ -90,7 +90,7 @@ steps:
   displayName: Build ProjectSystem.sln
   inputs:
     solution: $(Build.SourcesDirectory)\build\proj\Build.proj
-    msbuildArchitecture: 'x86'
+    msbuildArchitecture: x86
     configuration: $(BuildConfiguration)
     msbuildArguments: '/m /warnaserror /nologo /clp:Summary /p:Build=true /p:Test=true /p:CIBuild=true /v:normal /bl:$(Build.SourcesDirectory)\artifacts\$(BuildConfiguration)\log\Build.binlog'
 
