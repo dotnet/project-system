@@ -1,5 +1,7 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
+using Microsoft.VisualStudio.ProjectSystem;
+
 namespace Microsoft.VisualStudio.Telemetry
 {
     /// <summary>
@@ -36,6 +38,11 @@ namespace Microsoft.VisualStudio.Telemetry
         ///     and for multi-targeting projects this will equal the number of target frameworks being targeted.
         /// </remarks>
         public const string UpToDateCheckConfigurationCount = Prefix + ".uptodatecheck.configurationcount";
+
+        /// <summary>
+        ///     Indicates the user's chosen logging level. Values from the <see cref="LogLevel"/> enum.
+        /// </summary>
+        public const string UpToDateCheckLogLevel = Prefix + ".uptodatecheck.loglevel";
 
         /// <summary>
         ///     Indicates the project when the dependency tree is updated with all resolved dependencies.

@@ -8,7 +8,15 @@
     <AddVsixForSigningDependsOn>SwixBuild</AddVsixForSigningDependsOn>
 
     <!-- VS Insertion -->
+    <!-- NOTE: Having VisualStudioInsertionComponent defined is the condition for VisualStudio.SetupPackage.vsmanproj to be built (via FinalizeInsertionVsixFiles target in VisualStudio.Insertion.proj) in RepoToolset. -->
+    <!--
+      This is set to `Microsoft.VisualStudio.ProjectSystem.Managed` so it will be merged into the same VSMAN file produced by the ProjectSystemSetup.csproj.
+      If this value is changed to 'Microsoft.VisualStudio.ProjectSystem.Managed.CommonFiles', a new VSMAN file will be produced and cause 2 packages that depend on the single VSMAN file to fail to acquire this package during insertion:
+        - Microsoft.VisualStudio.ComponentGroup.VisualStudioExtensionBuildTools.Prerequisites
+        - Microsoft.VisualStudio.Product.Server64
+    -->
     <VisualStudioInsertionComponent>Microsoft.VisualStudio.ProjectSystem.Managed</VisualStudioInsertionComponent>
+    <ManifestJsonName>$(VisualStudioInsertionComponent).CommonFiles</ManifestJsonName>
   </PropertyGroup>
 
   <ItemGroup>
@@ -22,6 +30,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <!-- NOTE: Having SwrFile defined is the condition for VisualStudio.SetupPackage.swixproj to be built (via SwixBuild target) in RepoToolset. -->
     <SwrFile Include="*.swr" />
   </ItemGroup>
 

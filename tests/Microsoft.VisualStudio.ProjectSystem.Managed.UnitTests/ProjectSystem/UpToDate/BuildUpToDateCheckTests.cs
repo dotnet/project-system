@@ -29,6 +29,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
         private const string _msBuildProjectDirectory = @"C:\Dev\Solution\Project";
         private const string _msBuildAllProjects = @"C:\Dev\Solution\Project\Project.csproj;C:\Dev\Solution\Project2\Project2.csproj";
         private const string _outputPath = "Output";
+        private const LogLevel _logLevel = LogLevel.Info;
 
         private readonly DateTime _projectFileTimeUtc = new(1999, 1, 1, 0, 0, 0, DateTimeKind.Utc);
 
@@ -58,7 +59,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             // Enable "Info" log level, as we assert logged messages in tests
             var projectSystemOptions = new Mock<IProjectSystemOptions>(MockBehavior.Strict);
             projectSystemOptions.Setup(o => o.GetFastUpToDateLoggingLevelAsync(It.IsAny<CancellationToken>()))
-                .ReturnsAsync(LogLevel.Info);
+                .ReturnsAsync(_logLevel);
             projectSystemOptions.Setup(o => o.GetIsFastUpToDateCheckEnabledAsync(It.IsAny<CancellationToken>()))
                 .ReturnsAsync(() => _isFastUpToDateCheckEnabledInSettings);
 
@@ -1615,7 +1616,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
             Assert.Equal(TelemetryEventName.UpToDateCheckFail, telemetryEvent.EventName);
             Assert.NotNull(telemetryEvent.Properties);
-            Assert.Equal(4, telemetryEvent.Properties.Count);
+            Assert.Equal(5, telemetryEvent.Properties.Count);
 
             var reasonProp = Assert.Single(telemetryEvent.Properties.Where(p => p.propertyName == TelemetryPropertyName.UpToDateCheckFailReason));
             Assert.Equal(reason, reasonProp.propertyValue);
@@ -1632,6 +1633,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             var configurationCount = Assert.IsType<int>(configurationCountProp.propertyValue);
             Assert.True(configurationCount == 1);
 
+            var logLevelProp = Assert.Single(telemetryEvent.Properties.Where(p => p.propertyName == TelemetryPropertyName.UpToDateCheckLogLevel));
+            var logLevel = Assert.IsType<LogLevel>(logLevelProp.propertyValue);
+            Assert.True(logLevel == _logLevel);
+
             _telemetryEvents.Clear();
         }
 
@@ -1642,7 +1647,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             Assert.Equal(TelemetryEventName.UpToDateCheckSuccess, telemetryEvent.EventName);
 
             Assert.NotNull(telemetryEvent.Properties);
-            Assert.Equal(3, telemetryEvent.Properties.Count);
+            Assert.Equal(4, telemetryEvent.Properties.Count);
 
             var durationProp = Assert.Single(telemetryEvent.Properties.Where(p => p.propertyName == TelemetryPropertyName.UpToDateCheckDurationMillis));
             var duration = Assert.IsType<double>(durationProp.propertyValue);
@@ -1655,6 +1660,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             var configurationCountProp = Assert.Single(telemetryEvent.Properties.Where(p => p.propertyName == TelemetryPropertyName.UpToDateCheckConfigurationCount));
             var configurationCount = Assert.IsType<int>(configurationCountProp.propertyValue);
             Assert.True(configurationCount == 1);
+
+            var logLevelProp = Assert.Single(telemetryEvent.Properties.Where(p => p.propertyName == TelemetryPropertyName.UpToDateCheckLogLevel));
+            var logLevel = Assert.IsType<LogLevel>(logLevelProp.propertyValue);
+            Assert.True(logLevel == _logLevel);
 
             _telemetryEvents.Clear();
         }

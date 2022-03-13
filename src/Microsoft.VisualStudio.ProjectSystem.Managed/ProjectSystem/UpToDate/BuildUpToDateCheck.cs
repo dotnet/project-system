@@ -820,7 +820,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 var timestampCache = new TimestampCache(_fileSystem);
 
                 LogLevel requestedLogLevel = await _projectSystemOptions.GetFastUpToDateLoggingLevelAsync(token);
-                var logger = new Log(logWriter, requestedLogLevel, sw, timestampCache, _configuredProject.UnconfiguredProject.FullPath ?? "", _telemetryService, state);
+                var logger = new Log(logWriter, requestedLogLevel, sw, timestampCache, _configuredProject.UnconfiguredProject.FullPath ?? "", isValidationRun ? null : _telemetryService, state);
 
                 try
                 {

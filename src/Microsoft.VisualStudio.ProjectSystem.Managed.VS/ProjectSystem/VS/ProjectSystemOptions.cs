@@ -8,8 +8,7 @@ using Microsoft.VisualStudio.Settings;
 namespace Microsoft.VisualStudio.ProjectSystem.VS
 {
     [Export(typeof(IProjectSystemOptions))]
-    [Export(typeof(IProjectSystemOptionsWithChanges))]
-    internal class ProjectSystemOptions : IProjectSystemOptionsWithChanges
+    internal class ProjectSystemOptions : IProjectSystemOptions
     {
         private const string FastUpToDateEnabledSettingKey = @"ManagedProjectSystem\FastUpToDateCheckEnabled";
         private const string FastUpToDateLogLevelSettingKey = @"ManagedProjectSystem\FastUpToDateLogLevel";
@@ -70,28 +69,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             ISettingsManager settingsManager = await _settingsManager.GetValueAsync(cancellationToken);
 
             await settingsManager.SetValueAsync(name, value, isMachineLocal: false);
-        }
-
-        public async Task RegisterOptionChangedEventHandlerAsync(PropertyChangedAsyncEventHandler handler)
-        {
-            ISettingsManager settingsManager = await _settingsManager.GetValueAsync();
-
-            ISettingsSubset? settingsSubset = settingsManager.GetSubset("*");
-            if (settingsSubset != null)
-            {
-                settingsSubset.SettingChangedAsync += handler;
-            }
-        }
-
-        public async Task UnregisterOptionChangedEventHandlerAsync(PropertyChangedAsyncEventHandler handler)
-        {
-            ISettingsManager settingsManager = await _settingsManager.GetValueAsync();
-
-            ISettingsSubset? settingsSubset = settingsManager.GetSubset("*");
-            if (settingsSubset != null)
-            {
-                settingsSubset.SettingChangedAsync -= handler;
-            }
         }
     }
 }

@@ -15,7 +15,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             private readonly Stopwatch _stopwatch;
             private readonly TimestampCache _timestampCache;
             private readonly string _fileName;
-            private readonly ITelemetryService _telemetryService;
+            private readonly ITelemetryService? _telemetryService;
             private readonly UpToDateCheckConfiguredInput _upToDateCheckConfiguredInput;
 
             public LogLevel Level { get; }
@@ -24,7 +24,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
             public string? FailureReason { get; private set; }
 
-            public Log(TextWriter writer, LogLevel requestedLogLevel, Stopwatch stopwatch, TimestampCache timestampCache, string projectPath, ITelemetryService telemetryService, UpToDateCheckConfiguredInput upToDateCheckConfiguredInput)
+            public Log(TextWriter writer, LogLevel requestedLogLevel, Stopwatch stopwatch, TimestampCache timestampCache, string projectPath, ITelemetryService? telemetryService, UpToDateCheckConfiguredInput upToDateCheckConfiguredInput)
             {
                 _writer = writer;
                 Level = requestedLogLevel;
@@ -152,12 +152,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 Minimal(resourceName, values);
 
                 // Send telemetry.
-                _telemetryService.PostProperties(TelemetryEventName.UpToDateCheckFail, new[]
+                _telemetryService?.PostProperties(TelemetryEventName.UpToDateCheckFail, new[]
                 {
                     (TelemetryPropertyName.UpToDateCheckFailReason, (object)reason),
                     (TelemetryPropertyName.UpToDateCheckDurationMillis, _stopwatch.Elapsed.TotalMilliseconds),
                     (TelemetryPropertyName.UpToDateCheckFileCount, _timestampCache.Count),
-                    (TelemetryPropertyName.UpToDateCheckConfigurationCount, _upToDateCheckConfiguredInput.ImplicitInputs.Length)
+                    (TelemetryPropertyName.UpToDateCheckConfigurationCount, _upToDateCheckConfiguredInput.ImplicitInputs.Length),
+                    (TelemetryPropertyName.UpToDateCheckLogLevel, Level)
                 });
 
                 // Remember the failure reason for use in IncrementalBuildFailureDetector.
@@ -173,11 +174,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 _stopwatch.Stop();
 
                 // Send telemetry.
-                _telemetryService.PostProperties(TelemetryEventName.UpToDateCheckSuccess, new[]
+                _telemetryService?.PostProperties(TelemetryEventName.UpToDateCheckSuccess, new[]
                 {
                     (TelemetryPropertyName.UpToDateCheckDurationMillis, (object)_stopwatch.Elapsed.TotalMilliseconds),
                     (TelemetryPropertyName.UpToDateCheckFileCount, _timestampCache.Count),
-                    (TelemetryPropertyName.UpToDateCheckConfigurationCount, _upToDateCheckConfiguredInput.ImplicitInputs.Length)
+                    (TelemetryPropertyName.UpToDateCheckConfigurationCount, _upToDateCheckConfiguredInput.ImplicitInputs.Length),
+                    (TelemetryPropertyName.UpToDateCheckLogLevel, Level)
                 });
 
                 Info(nameof(Resources.FUTD_UpToDate));
