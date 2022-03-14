@@ -11,7 +11,7 @@ resources:
 - repo: self
   clean: true
 queue:
-  name: VSEngSS-MicroBuild2019-1ES
+  name: VSEngSS-MicroBuild2022-1ES
   demands: Cmd
   timeoutInMinutes: 90
 variables:
@@ -21,8 +21,13 @@ variables:
   DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true
 
 steps:
-- script: $(Build.SourcesDirectory)\build.cmd /build /no-test /ci /sign /diagnostic /no-deploy /no-integration /no-ibc /no-clearnugetcache /configuration $(BuildConfiguration)
+- task: MSBuild@1
   displayName: Build ProjectSystem.sln
+  inputs:
+    solution: $(Build.SourcesDirectory)\build\proj\Build.proj
+    msbuildArchitecture: x86
+    configuration: $(BuildConfiguration)
+    msbuildArguments: '/m /warnaserror /nologo /clp:Summary /p:Build=true /p:CIBuild=true /v:normal /bl:$(Build.SourcesDirectory)\artifacts\$(BuildConfiguration)\log\Build.binlog'
 
 - task: PoliCheck@2
   # Scan for problematic terminology.

@@ -26,7 +26,8 @@ resources:
   clean: true
 pool:
   name: NetCore1ESPool-Public
-  demands: ImageOverride -equals Build.Windows.10.Amd64.VS2019.Pre.Open
+  # Image list: https://helix.dot.net/#1esPools
+  demands: ImageOverride -equals Build.Windows.Amd64.VS2022.Pre.Open
   timeoutInMinutes: 15
 variables:
   BuildConfiguration: Debug
@@ -35,8 +36,13 @@ variables:
   EnableRichCodeNavigation: true
 
 steps:
-- script: $(Build.SourcesDirectory)\build.cmd /build /ci /no-deploy /no-integration /ibc /no-clearnugetcache /configuration $(BuildConfiguration)
+- task: MSBuild@1
   displayName: Build ProjectSystem.sln
+  inputs:
+    solution: $(Build.SourcesDirectory)\build\proj\Build.proj
+    msbuildArchitecture: x86
+    configuration: $(BuildConfiguration)
+    msbuildArguments: '/m /warnaserror /nologo /clp:Summary /p:Build=true /p:CIBuild=true /v:normal /bl:$(Build.SourcesDirectory)\artifacts\$(BuildConfiguration)\log\Build.binlog'
 
 - task: RichCodeNavIndexer@0
   displayName: RichCodeNav Upload
