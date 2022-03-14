@@ -11,7 +11,8 @@ jobs:
 - job: Visual_Studio
   pool:
     name: NetCore1ESPool-Public
-    demands: ImageOverride -equals Build.windows.10.amd64.vs2019.pre.open
+    # Image list: https://helix.dot.net/#1esPools
+    demands: ImageOverride -equals Build.Windows.Amd64.VS2022.Pre.Open
   strategy:
     maxParallel: 2
     matrix:
@@ -19,8 +20,13 @@ jobs:
         _configuration: Debug
   timeoutInMinutes: 60
   steps:
-    - script: $(Build.SourcesDirectory)\build.cmd /build /no-test /integration /diagnostic /ci /no-sign /deploy /no-clearnugetcache /configuration $(_configuration)
+    - task: MSBuild@1
       displayName: Build ProjectSystem.sln
+      inputs:
+        solution: $(Build.SourcesDirectory)\build\proj\Build.proj
+        msbuildArchitecture: x86
+        configuration: $(_configuration)
+        msbuildArguments: '/m /warnaserror /nologo /clp:Summary /p:Build=true /p:IntegrationTest=true /p:Deploy=true /p:CIBuild=true /v:normal /bl:$(Build.SourcesDirectory)\artifacts\$(_configuration)\log\Build.binlog'
 
     - task: PublishBuildArtifacts@1
       inputs:

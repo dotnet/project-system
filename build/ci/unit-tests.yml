@@ -31,7 +31,8 @@ jobs:
     configuration: Debug
     pool:
       name: NetCore1ESPool-Public
-      demands: ImageOverride -equals Build.Windows.10.Amd64.VS2019.Pre.Open
+      # Image list: https://helix.dot.net/#1esPools
+      demands: ImageOverride -equals Build.Windows.Amd64.VS2022.Pre.Open
 
 - template: unit-tests-template.yml
   parameters:
@@ -39,7 +40,8 @@ jobs:
     configuration: Release
     pool:
       name: NetCore1ESPool-Public
-      demands: ImageOverride -equals Build.Windows.10.Amd64.VS2019.Pre.Open
+      # Image list: https://helix.dot.net/#1esPools
+      demands: ImageOverride -equals Build.Windows.Amd64.VS2022.Pre.Open
 
 - template: unit-tests-template.yml
   parameters:
@@ -47,4 +49,7 @@ jobs:
     configuration: Debug
     pool: 
       name: NetCore1ESPool-Public
-      demands: ImageOverride -equals Build.Windows.Amd64.VS2019.Pre.ES.Open
+      # Image list: https://helix.dot.net/#1esPools
+      # NOTE: There currently is no Spanish VS 2022 image. Previous image was: Build.Windows.Amd64.VS2019.Pre.ES.Open
+      # 'Scout' is the data-center image as to simply provide a different environment to test.
+      demands: ImageOverride -equals Build.Windows.Amd64.VS2022.Pre.Scout.Open
