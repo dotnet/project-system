@@ -3,6 +3,7 @@
 Imports System.ComponentModel.Design
 Imports System.IO
 Imports Microsoft.VisualStudio.Editors.Interop
+Imports Microsoft.VisualStudio.Editors.ResourceEditor
 Imports Microsoft.VisualStudio.Shell.Interop
 
 Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
@@ -224,7 +225,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                 Debug.Fail("Can't get a class name from an empty path!")
                 Return ""
             End If
-            Return IO.Path.GetFileNameWithoutExtension(PathName)
+            Return ResourceEditorView.GetGeneratedClassNameFromFileName(IO.Path.GetFileNameWithoutExtension(PathName))
         End Function
 
         ''' <summary>
