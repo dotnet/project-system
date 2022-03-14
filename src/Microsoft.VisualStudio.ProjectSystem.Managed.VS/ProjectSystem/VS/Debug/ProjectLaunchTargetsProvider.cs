@@ -267,7 +267,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
                 }
             }
 
-            string? commandLineArgs = resolvedProfile.CommandLineArgs?.Replace("\r\n", " ").Replace("\r", " ").Replace("\n", " ");
+            string? commandLineArgs = resolvedProfile.CommandLineArgs?
+                .Replace("\r\n", " ")
+                .Replace("\r", " ")
+                .Replace("\n", " ")
+                .Replace("\\r\\n", "\r\n")
+                .Replace("\\n", "\n");
 
             // Is this profile just running the project? If so we ignore the exe
             if (IsRunProjectCommand(resolvedProfile))
