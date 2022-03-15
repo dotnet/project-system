@@ -54,7 +54,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             bool isCopyToOutputDirectoryType = s_copyToOutputDirectoryItemTypes.Contains(itemType);
 
             TargetPath = isCopyToOutputDirectoryType ? GetTargetPath() : null;
-            CopyType = isCopyToOutputDirectoryType ? GetCopyType() : BuildUpToDateCheck.CopyType.CopyNever;
+            CopyType = isCopyToOutputDirectoryType ? GetCopyType() : BuildUpToDateCheck.CopyType.Never;
 
             string? GetTargetPath()
             {
@@ -90,20 +90,20 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
             BuildUpToDateCheck.CopyType GetCopyType()
             {
-                if (metadata.TryGetValue(Compile.CopyToOutputDirectoryProperty, out string value))
+                if (metadata.TryGetValue(None.CopyToOutputDirectoryProperty, out string value))
                 {
-                    if (string.Equals(value, Compile.CopyToOutputDirectoryValues.Always, StringComparisons.PropertyLiteralValues))
+                    if (string.Equals(value, None.CopyToOutputDirectoryValues.Always, StringComparisons.PropertyLiteralValues))
                     {
-                        return BuildUpToDateCheck.CopyType.CopyAlways;
+                        return BuildUpToDateCheck.CopyType.Always;
                     }
 
-                    if (string.Equals(value, Compile.CopyToOutputDirectoryValues.PreserveNewest, StringComparisons.PropertyLiteralValues))
+                    if (string.Equals(value, None.CopyToOutputDirectoryValues.PreserveNewest, StringComparisons.PropertyLiteralValues))
                     {
-                        return BuildUpToDateCheck.CopyType.CopyIfNewer;
+                        return BuildUpToDateCheck.CopyType.PreserveNewest;
                     }
                 }
 
-                return BuildUpToDateCheck.CopyType.CopyNever;
+                return BuildUpToDateCheck.CopyType.Never;
             }
         }
 

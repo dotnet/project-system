@@ -170,6 +170,18 @@ namespace Microsoft.VisualStudio.IO
             return false;
         }
 
+        public bool TryGetFileSizeBytes(string path, out long result)
+        {
+            if (Files.TryGetValue(path, out FileData value))
+            {
+                result = value.FileContents?.Length ?? 0;
+                return true;
+            }
+
+            result = default;
+            return false;
+        }
+
         public bool PathExists(string path)
         {
             throw new NotImplementedException();

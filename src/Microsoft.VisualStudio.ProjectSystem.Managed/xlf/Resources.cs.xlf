@@ -48,14 +48,14 @@
         <note>{0} is an MSBuild item type.</note>
       </trans-unit>
       <trans-unit id="FUTD_ChangedItemsAddition_4">
-        <source>{0} item added '{1}' (CopyType={2}, TargetPath='{3}')</source>
-        <target state="translated">Položka {0} přidána – {1} (CopyType={2}, TargetPath={3})</target>
-        <note>Do not translate 'CopyType' or 'TargetPath'. {0} is an MSBuild item type. {1} is a file path. {2} and {3} are metadata values.</note>
+        <source>{0} item added '{1}' (CopyToOutputDirectory={2}, TargetPath='{3}')</source>
+        <target state="needs-review-translation">Položka {0} přidána – {1} (CopyType={2}, TargetPath={3})</target>
+        <note>Do not translate 'CopyToOutputDirectory' or 'TargetPath'. {0} is an MSBuild item type. {1} is a file path. {2} and {3} are metadata values.</note>
       </trans-unit>
       <trans-unit id="FUTD_ChangedItemsRemoval_4">
-        <source>{0} item removed '{1}' (CopyType={2}, TargetPath='{3}')</source>
-        <target state="translated">Položka {0} odebrána – {1} (CopyType={2}, TargetPath={3})</target>
-        <note>Do not translate 'CopyType' or 'TargetPath'. {0} is an MSBuild item type. {1} is a file path. {2} and {3} are metadata values.</note>
+        <source>{0} item removed '{1}' (CopyToOutputDirectory={2}, TargetPath='{3}')</source>
+        <target state="needs-review-translation">Položka {0} odebrána – {1} (CopyType={2}, TargetPath={3})</target>
+        <note>Do not translate 'CopyToOutputDirectory' or 'TargetPath'. {0} is an MSBuild item type. {1} is a file path. {2} and {3} are metadata values.</note>
       </trans-unit>
       <trans-unit id="FUTD_CheckingConfiguration_1">
         <source>Checking configuration {0}:</source>
@@ -82,25 +82,25 @@
         <target state="translated">Zdroj {0} pro kopírování do {1} neexistuje. Není aktuální.</target>
         <note>{0} and {1} are file paths.</note>
       </trans-unit>
-      <trans-unit id="FUTD_CheckingPreserveNewestFileDestinationNotFound_1">
+      <trans-unit id="FUTD_CheckingCopyToOutputDirectoryItemDestinationNotFound_1">
         <source>Destination '{0}' does not exist, not up-to-date.</source>
-        <target state="translated">Cíl {0} neexistuje. Není aktuální.</target>
+        <target state="new">Destination '{0}' does not exist, not up-to-date.</target>
         <note>{0} is a file path.</note>
       </trans-unit>
-      <trans-unit id="FUTD_CheckingPreserveNewestFileSourceNotFound_1">
+      <trans-unit id="FUTD_CheckingCopyToOutputDirectoryItem_3">
+        <source>Checking {0} item with CopyToOutputDirectory="{1}" '{2}':</source>
+        <target state="new">Checking {0} item with CopyToOutputDirectory="{1}" '{2}':</target>
+        <note>Do not translate CopyToOutputDirectory. {0} is an MSBuild item type. {1} is from an enum of valid values. {2} a file path.</note>
+      </trans-unit>
+      <trans-unit id="FUTD_CheckingCopyToOutputDirectorySourceNewerThanDestination_4">
+        <source>{0} item with CopyToOutputDirectory="{1}" source '{2}' is newer than destination '{3}', not up-to-date.</source>
+        <target state="new">{0} item with CopyToOutputDirectory="{1}" source '{2}' is newer than destination '{3}', not up-to-date.</target>
+        <note>Do not translate CopyToOutputDirectory. {0} is an MSBuild item type. {1} is from an enum of valid values. {2} and {3} are file paths.</note>
+      </trans-unit>
+      <trans-unit id="FUTD_CheckingCopyToOutputDirectorySourceNotFound_1">
         <source>Source '{0}' does not exist, not up-to-date.</source>
-        <target state="translated">Zdroj {0} neexistuje. Není aktuální.</target>
+        <target state="new">Source '{0}' does not exist, not up-to-date.</target>
         <note>{0} is a file path.</note>
-      </trans-unit>
-      <trans-unit id="FUTD_CheckingPreserveNewestFile_1">
-        <source>Checking PreserveNewest file '{0}':</source>
-        <target state="translated">Kontroluje se souboru PreserveNetf {0}:</target>
-        <note>Do not translate PreserveNewest. {0} is a file path.</note>
-      </trans-unit>
-      <trans-unit id="FUTD_CheckingPreserveNewestSourceNewerThanDestination_2">
-        <source>PreserveNewest source '{0}' is newer than destination '{1}', not up-to-date.</source>
-        <target state="translated">Zdroj PreserveNewest {0} je novější než cíl {1}. Není aktuální.</target>
-        <note>Do not translate PreserveNewest. {0} and {1} are file paths.</note>
       </trans-unit>
       <trans-unit id="FUTD_ComparingInputOutputTimestamps_1">
         <source>Comparing timestamps of inputs and outputs in Set="{0}":</source>
@@ -112,10 +112,15 @@
         <target state="translated">Kontrola aktuálnosti dokončena za {0:N1} ms</target>
         <note>{0} is a duration in milliseconds. "ms" refers to "milliseconds". Leave the "{0:N1}" string as-is, for correct formatting of the number.</note>
       </trans-unit>
-      <trans-unit id="FUTD_CopyAlwaysItemExists_1">
-        <source>Item '{0}' has CopyToOutputDirectory set to 'Always', not up-to-date.</source>
-        <target state="translated">Položka {0} má vlastnost CopyToOutputDirectory nastavenou na hodnotu Always. Není aktuální.</target>
-        <note>Do not translate 'CopyToOutputDirectory' or 'Always'. {0} is a file path.</note>
+      <trans-unit id="FUTD_CopyAlwaysItemExists_2">
+        <source>{0} item '{1}' has CopyToOutputDirectory set to 'Always', and the project has DisableFastUpToDateCopyAlwaysOptimization set to 'true', not up-to-date.</source>
+        <target state="new">{0} item '{1}' has CopyToOutputDirectory set to 'Always', and the project has DisableFastUpToDateCopyAlwaysOptimization set to 'true', not up-to-date.</target>
+        <note>Do not translate 'CopyToOutputDirectory' or 'Always' or 'DisableFastUpToDateCopyAlwaysOptimization' or 'true'. {0} is an MSBuild item type. {1} is a file path.</note>
+      </trans-unit>
+      <trans-unit id="FUTD_CopyAlwaysItemsDiffer_7">
+        <source>{0} item with CopyToOutputDirectory="Always" source ('{1}' {2}, {3} bytes) differs from destination ('{4}' {5}, {6} bytes), not up-to-date.</source>
+        <target state="new">{0} item with CopyToOutputDirectory="Always" source ('{1}' {2}, {3} bytes) differs from destination ('{4}' {5}, {6} bytes), not up-to-date.</target>
+        <note>Do not translate CopyToOutputDirectory="Always". {0} is an MSBuild item type. {1} and {4} are file paths. {2} and {5} are date times. {3} and {6} are byte counts.</note>
       </trans-unit>
       <trans-unit id="FUTD_CriticalBuildTasksRunning">
         <source>Critical build tasks are running, not up-to-date.</source>
@@ -216,6 +221,11 @@
         <source>Input {1} item '{0}' does not exist, but is not required.</source>
         <target state="translated">Vstupní položka {1} {0} neexistuje, i když je povinná.</target>
         <note>{0} is a file path. {1} is an MSBuild item type.</note>
+      </trans-unit>
+      <trans-unit id="FUTD_OptimizingCopyAlwaysItem">
+        <source>Optimizing CopyToOutputDirectory="Always" item. Disable this by setting DisableFastUpToDateCopyAlwaysOptimization to "true".</source>
+        <target state="new">Optimizing CopyToOutputDirectory="Always" item. Disable this by setting DisableFastUpToDateCopyAlwaysOptimization to "true".</target>
+        <note>Do not translate "CopyToOutputDirectory", "Always", "DisableFastUpToDateCopyAlwaysOptimization" or "true".</note>
       </trans-unit>
       <trans-unit id="FUTD_OutputDoesNotExist_1">
         <source>Output '{0}' does not exist, not up-to-date.</source>

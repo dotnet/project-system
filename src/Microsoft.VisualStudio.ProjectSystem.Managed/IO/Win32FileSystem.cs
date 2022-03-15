@@ -93,6 +93,27 @@ namespace Microsoft.VisualStudio.IO
             return false;
         }
 
+        public bool TryGetFileSizeBytes(string path, out long result)
+        {
+            try
+            {
+                result = new FileInfo(path).Length;
+                return true;
+            }
+            catch (IOException)
+            {
+            }
+            catch (UnauthorizedAccessException)
+            {
+            }
+            catch (NotSupportedException)
+            {
+            }
+
+            result = default;
+            return false;
+        }
+
         public bool DirectoryExists(string dirPath)
         {
             return Directory.Exists(dirPath);

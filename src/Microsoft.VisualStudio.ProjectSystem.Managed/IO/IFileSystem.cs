@@ -47,7 +47,9 @@ namespace Microsoft.VisualStudio.IO
         /// <returns>
         ///     <see langword="true"/> if <paramref name="path"/> exists and is accessible; otherwise, <see langword="false"/>.
         /// </returns>
-        bool TryGetLastFileWriteTimeUtc(string path, [NotNullWhen(true)]out DateTime? result);
+        bool TryGetLastFileWriteTimeUtc(string path, [NotNullWhen(true)] out DateTime? result);
+
+        bool TryGetFileSizeBytes(string path, out long result);
 
         bool DirectoryExists(string path);
         void CreateDirectory(string path);
