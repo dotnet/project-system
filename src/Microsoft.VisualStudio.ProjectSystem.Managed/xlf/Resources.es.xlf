@@ -49,12 +49,12 @@
       </trans-unit>
       <trans-unit id="FUTD_ChangedItemsAddition_4">
         <source>{0} item added '{1}' (CopyToOutputDirectory={2}, TargetPath='{3}')</source>
-        <target state="needs-review-translation">{0} elemento agregado "{1}" (CopyType={2}, TargetPath='{3}')</target>
+        <target state="new">{0} item added '{1}' (CopyToOutputDirectory={2}, TargetPath='{3}')</target>
         <note>Do not translate 'CopyToOutputDirectory' or 'TargetPath'. {0} is an MSBuild item type. {1} is a file path. {2} and {3} are metadata values.</note>
       </trans-unit>
       <trans-unit id="FUTD_ChangedItemsRemoval_4">
         <source>{0} item removed '{1}' (CopyToOutputDirectory={2}, TargetPath='{3}')</source>
-        <target state="needs-review-translation">{0} elemento eliminado "{1}" (CopyType={2}, TargetPath='{3}')</target>
+        <target state="new">{0} item removed '{1}' (CopyToOutputDirectory={2}, TargetPath='{3}')</target>
         <note>Do not translate 'CopyToOutputDirectory' or 'TargetPath'. {0} is an MSBuild item type. {1} is a file path. {2} and {3} are metadata values.</note>
       </trans-unit>
       <trans-unit id="FUTD_CheckingConfiguration_1">
