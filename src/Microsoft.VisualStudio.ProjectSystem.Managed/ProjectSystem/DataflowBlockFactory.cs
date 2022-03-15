@@ -2,8 +2,6 @@
 
 #pragma warning disable RS0030 // Do not used banned APIs (wraps banned APIs)
 
-using System;
-using System.Threading.Tasks;
 using System.Threading.Tasks.Dataflow;
 
 namespace Microsoft.VisualStudio.ProjectSystem
