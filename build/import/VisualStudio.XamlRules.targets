@@ -66,4 +66,9 @@
     </Copy>
   </Target>
 
+  <ItemGroup>
+    <!-- XamlPropertyRuleNoCodeBehind are embedded during build. Changes to them must trigger builds. -->
+    <UpToDateCheckInput Include="@(XamlPropertyRuleNoCodeBehind)" />
+  </ItemGroup>
+
 </Project>
