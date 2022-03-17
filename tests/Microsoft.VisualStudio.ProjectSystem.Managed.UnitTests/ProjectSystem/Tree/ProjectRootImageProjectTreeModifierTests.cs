@@ -15,7 +15,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree
 
             Assert.Throws<ArgumentNullException>("propertyContext", () =>
             {
-                propertiesProvider.CalculatePropertyValues((IProjectTreeCustomizablePropertyContext)null!, propertyValues);
+                propertiesProvider.CalculatePropertyValues(null!, propertyValues);
             });
         }
 
@@ -27,7 +27,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree
 
             Assert.Throws<ArgumentNullException>("propertyValues", () =>
             {
-                propertiesProvider.CalculatePropertyValues(propertyContext, (IProjectTreeCustomizablePropertyValues)null!);
+                propertiesProvider.CalculatePropertyValues(propertyContext, null!);
             });
         }
 
@@ -193,12 +193,12 @@ Root (flags: {ProjectRoot})
 
         private static ProjectRootImageProjectTreePropertiesProvider CreateInstance()
         {
-            return CreateInstance((IProjectImageProvider)null!);
+            return CreateInstance(null!);
         }
 
         private static ProjectRootImageProjectTreePropertiesProvider CreateInstance(IProjectImageProvider imageProvider)
         {
-            return CreateInstance((IProjectCapabilitiesService)null!, imageProvider);
+            return CreateInstance(null!, imageProvider);
         }
 
         private static ProjectRootImageProjectTreePropertiesProvider CreateInstance(IProjectCapabilitiesService? capabilities, IProjectImageProvider? imageProvider)

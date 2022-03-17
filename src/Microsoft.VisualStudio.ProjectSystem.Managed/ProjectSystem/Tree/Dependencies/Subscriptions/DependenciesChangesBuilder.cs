@@ -36,8 +36,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Subscriptions
             }
 
             return new DependenciesChanges(
-                _added == null ? (IImmutableList<IDependencyModel>)ImmutableList<IDependencyModel>.Empty : ImmutableArray.CreateRange(_added),
-                _removed == null ? (IImmutableList<IDependencyModel>)ImmutableList<IDependencyModel>.Empty : ImmutableArray.CreateRange(_removed));
+                _added == null ? ImmutableList<IDependencyModel>.Empty : ImmutableArray.CreateRange(_added),
+                _removed == null ? ImmutableList<IDependencyModel>.Empty : ImmutableArray.CreateRange(_removed));
         }
 
         public override string ToString() => ToString(_added, _removed);

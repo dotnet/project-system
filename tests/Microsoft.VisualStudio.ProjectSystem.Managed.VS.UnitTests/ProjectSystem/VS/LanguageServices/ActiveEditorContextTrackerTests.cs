@@ -232,7 +232,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
 
         private static ActiveEditorContextTracker CreateInstance()
         {
-            return new ActiveEditorContextTracker((UnconfiguredProject?)null);
+            return new ActiveEditorContextTracker(null);
         }
     }
 }

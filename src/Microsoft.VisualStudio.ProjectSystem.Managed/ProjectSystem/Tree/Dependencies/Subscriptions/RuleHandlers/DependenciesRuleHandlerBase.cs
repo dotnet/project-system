@@ -63,7 +63,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Subscriptions.R
             // We only have resolved data if the update came via the JointRule data source.
             if (buildProjectChange != null)
             {
-                Func<string, bool>? isEvaluatedItemSpec = ResolvedItemRequiresEvaluatedItem ? evaluationProjectChange.After.Items.ContainsKey : (Func<string, bool>?)null;
+                Func<string, bool>? isEvaluatedItemSpec = ResolvedItemRequiresEvaluatedItem ? evaluationProjectChange.After.Items.ContainsKey : null;
 
                 HandleChangesForRule(
                     resolved: true,

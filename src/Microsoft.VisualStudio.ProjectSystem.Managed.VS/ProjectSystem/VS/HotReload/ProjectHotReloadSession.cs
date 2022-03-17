@@ -200,8 +200,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.HotReload
         {
             if (_deltaApplier is null)
             {
-                _deltaApplier = (IDeltaApplier)(_callback.GetDeltaApplier()
-                    ?? _deltaApplierCreator.Value.CreateManagedDeltaApplier(_runtimeVersion));
+                _deltaApplier = _callback.GetDeltaApplier()
+                    ?? _deltaApplierCreator.Value.CreateManagedDeltaApplier(_runtimeVersion);
             }
         }
     }

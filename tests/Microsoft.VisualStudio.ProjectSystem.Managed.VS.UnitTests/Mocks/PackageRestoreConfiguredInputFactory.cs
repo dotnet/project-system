@@ -7,7 +7,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
         public static IReadOnlyCollection<PackageRestoreConfiguredInput>? Create(ProjectRestoreInfo restoreInfo)
         {
             ProjectConfiguration projectConfiguration = ProjectConfigurationFactory.Create("Debug|x64");
-            IComparable projectVersion = (IComparable)0;
+            IComparable projectVersion = 0;
 
             return new PackageRestoreConfiguredInput[1]{new PackageRestoreConfiguredInput(projectConfiguration, restoreInfo, projectVersion)};
         }

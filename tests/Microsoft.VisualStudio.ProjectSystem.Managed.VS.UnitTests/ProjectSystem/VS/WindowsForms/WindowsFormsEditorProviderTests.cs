@@ -16,7 +16,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.WindowsForms
 
             await Assert.ThrowsAsync<ArgumentNullException>("documentMoniker", () =>
             {
-                return provider.GetSpecificEditorAsync((string)null!);
+                return provider.GetSpecificEditorAsync(null!);
             });
         }
 
@@ -27,7 +27,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.WindowsForms
 
             await Assert.ThrowsAsync<ArgumentNullException>("documentMoniker", () =>
             {
-                return provider.SetUseGlobalEditorAsync((string)null!, false);
+                return provider.SetUseGlobalEditorAsync(null!, false);
             });
         }
 

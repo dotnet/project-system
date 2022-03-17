@@ -21,7 +21,7 @@ Root (flags: {ProjectRoot}), FilePath: ""C:\Foo\testing.fsproj""
 
             var nodes = ImmutableHashSet.Create(tree.Children[0]); // test1.fs
 
-            var result = await command.GetCommandStatusAsync(nodes, GetCommandId(), true, "commandText", (CommandStatus)0);
+            var result = await command.GetCommandStatusAsync(nodes, GetCommandId(), true, "commandText", 0);
 
             Assert.True(result.Status.HasFlag(CommandStatus.Enabled));
             Assert.False(result.Status.HasFlag(CommandStatus.Ninched));
@@ -40,7 +40,7 @@ Root (flags: {ProjectRoot}), FilePath: ""C:\Foo\testing.fsproj""
 
             var nodes = ImmutableHashSet.Create(tree.Children[1]); // test2.fs
 
-            var result = await command.GetCommandStatusAsync(nodes, GetCommandId(), true, "commandText", (CommandStatus)0);
+            var result = await command.GetCommandStatusAsync(nodes, GetCommandId(), true, "commandText", 0);
 
             Assert.True(result.Status.HasFlag(CommandStatus.Ninched));
             Assert.False(result.Status.HasFlag(CommandStatus.Enabled));
@@ -62,7 +62,7 @@ Root (flags: {ProjectRoot}), FilePath: ""C:\Foo\testing.fsproj""
 
             var nodes = ImmutableHashSet.Create(tree.Children[2].Children[0]); // test3.fs
 
-            var result = await command.GetCommandStatusAsync(nodes, GetCommandId(), true, "commandText", (CommandStatus)0);
+            var result = await command.GetCommandStatusAsync(nodes, GetCommandId(), true, "commandText", 0);
 
             Assert.True(result.Status.HasFlag(CommandStatus.Enabled));
             Assert.False(result.Status.HasFlag(CommandStatus.Ninched));
@@ -84,7 +84,7 @@ Root (flags: {ProjectRoot}), FilePath: ""C:\Foo\testing.fsproj""
 
             var nodes = ImmutableHashSet.Create(tree.Children[2].Children[1]); // test4.fs
 
-            var result = await command.GetCommandStatusAsync(nodes, GetCommandId(), true, "commandText", (CommandStatus)0);
+            var result = await command.GetCommandStatusAsync(nodes, GetCommandId(), true, "commandText", 0);
 
             Assert.True(result.Status.HasFlag(CommandStatus.Ninched));
             Assert.False(result.Status.HasFlag(CommandStatus.Enabled));
@@ -109,7 +109,7 @@ Root (flags: {ProjectRoot}), FilePath: ""C:\Foo\testing.fsproj""
 
             var nodes = ImmutableHashSet.Create(tree.Children[2]); // first folder
 
-            var result = await command.GetCommandStatusAsync(nodes, GetCommandId(), true, "commandText", (CommandStatus)0);
+            var result = await command.GetCommandStatusAsync(nodes, GetCommandId(), true, "commandText", 0);
 
             Assert.True(result.Status.HasFlag(CommandStatus.Enabled));
             Assert.False(result.Status.HasFlag(CommandStatus.Ninched));
@@ -134,7 +134,7 @@ Root (flags: {ProjectRoot}), FilePath: ""C:\Foo\testing.fsproj""
 
             var nodes = ImmutableHashSet.Create(tree.Children[0]); // first folder
 
-            var result = await command.GetCommandStatusAsync(nodes, GetCommandId(), true, "commandText", (CommandStatus)0);
+            var result = await command.GetCommandStatusAsync(nodes, GetCommandId(), true, "commandText", 0);
 
             Assert.True(result.Status.HasFlag(CommandStatus.Enabled));
             Assert.False(result.Status.HasFlag(CommandStatus.Ninched));
@@ -157,7 +157,7 @@ Root (flags: {ProjectRoot}), FilePath: ""C:\Foo\testing.fsproj""
 
             var nodes = ImmutableHashSet.Create(tree.Children[1]); // second folder
 
-            var result = await command.GetCommandStatusAsync(nodes, GetCommandId(), true, "commandText", (CommandStatus)0);
+            var result = await command.GetCommandStatusAsync(nodes, GetCommandId(), true, "commandText", 0);
 
             Assert.True(result.Status.HasFlag(CommandStatus.Ninched));
             Assert.False(result.Status.HasFlag(CommandStatus.Enabled));
