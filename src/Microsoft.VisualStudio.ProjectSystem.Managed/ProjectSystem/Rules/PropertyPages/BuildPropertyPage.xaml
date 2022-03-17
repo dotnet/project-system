@@ -181,15 +181,15 @@
     <EnumValue Name="0"
                DisplayName="0 - Disable all warnings" />
     <EnumValue Name="1"
-               DisplayName="1 - Severe warnings" />
+               DisplayName="1 - Severe warning messages" />
     <EnumValue Name="2"
-               DisplayName="2 - Less severe warnings" />
+               DisplayName="2 - Less severe warnings, such as warnings about hiding class members" />
     <EnumValue Name="3"
-               DisplayName="3 - Less severe warnings" />
+               DisplayName="3 - Less severe warnings, such as warnings about expressions that always evaluate to true or false" />
     <EnumValue Name="4"
                DisplayName="4 - Informational warnings" />
     <EnumValue Name="5"
-               DisplayName="5 - Additional warnings from C# 9" />
+               DisplayName="5 - Warnings from C# 9" />
   </EnumProperty>
 
   <StringProperty Name="NoWarn"

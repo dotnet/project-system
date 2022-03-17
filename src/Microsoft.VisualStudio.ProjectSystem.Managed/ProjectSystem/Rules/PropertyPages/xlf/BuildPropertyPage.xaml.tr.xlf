@@ -368,17 +368,17 @@
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|WarningLevel.1|DisplayName">
-        <source>1 - Severe warnings</source>
+        <source>1 - Severe warning messages</source>
         <target state="needs-review-translation">1</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|WarningLevel.2|DisplayName">
-        <source>2 - Less severe warnings</source>
+        <source>2 - Less severe warnings, such as warnings about hiding class members</source>
         <target state="needs-review-translation">2</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|WarningLevel.3|DisplayName">
-        <source>3 - Less severe warnings</source>
+        <source>3 - Less severe warnings, such as warnings about expressions that always evaluate to true or false</source>
         <target state="needs-review-translation">3</target>
         <note />
       </trans-unit>
@@ -388,7 +388,7 @@
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|WarningLevel.5|DisplayName">
-        <source>5 - Additional warnings from C# 9</source>
+        <source>5 - Warnings from C# 9</source>
         <target state="needs-review-translation">5</target>
         <note />
       </trans-unit>
