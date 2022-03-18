@@ -85,7 +85,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Subscriptions.R
 
                 foreach (string changedItem in projectChange.Difference.ChangedItems)
                 {
-                    HandleChangedItem(projectFullPath, changedItem, resolved, projectChange, evaluationProjectChange.After, changesBuilder, targetFramework, isEvaluatedItemSpec);
+                    HandleAddedItem(projectFullPath, changedItem, resolved, projectChange, evaluationProjectChange.After, changesBuilder, targetFramework, isEvaluatedItemSpec);
                 }
 
                 foreach (string addedItem in projectChange.Difference.AddedItems)
@@ -132,27 +132,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Subscriptions.R
             if (isEvaluatedItemSpec == null || isEvaluatedItemSpec(dependencyId))
             {
                 changesBuilder.Removed(ProviderType, removedItem);
-            }
-        }
-
-        protected virtual void HandleChangedItem(
-            string projectFullPath,
-            string changedItem,
-            bool resolved,
-            IProjectChangeDescription projectChange,
-            IProjectRuleSnapshot evaluationRuleSnapshot,
-            DependenciesChangesBuilder changesBuilder,
-            TargetFramework targetFramework,
-            Func<string, bool>? isEvaluatedItemSpec)
-        {
-            IDependencyModel? model = CreateDependencyModelForRule(changedItem, evaluationRuleSnapshot, projectChange.After, resolved, projectFullPath);
-
-            if (model != null && (isEvaluatedItemSpec == null || isEvaluatedItemSpec(model.Id)))
-            {
-                // For changes we try to add new dependency. If it is a resolved dependency, it would just override
-                // old one with new properties. If it is unresolved dependency, it would be added only when there is
-                // no resolved version in the snapshot (due to UnresolvedDependenciesSnapshotFilter).
-                changesBuilder.Added(model);
             }
         }
 

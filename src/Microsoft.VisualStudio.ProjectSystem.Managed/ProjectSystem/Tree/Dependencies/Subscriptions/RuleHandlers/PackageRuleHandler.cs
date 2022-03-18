@@ -68,31 +68,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Subscriptions.R
             }
         }
 
-        protected override void HandleChangedItem(
-            string projectFullPath,
-            string changedItem,
-            bool resolved,
-            IProjectChangeDescription projectChange,
-            IProjectRuleSnapshot evaluationRuleSnapshot,
-            DependenciesChangesBuilder changesBuilder,
-            TargetFramework targetFramework,
-            Func<string, bool>? isEvaluatedItemSpec)
-        {
-            if (TryCreatePackageDependencyModel(
-                projectFullPath,
-                changedItem,
-                resolved,
-                properties: projectChange.After.GetProjectItemProperties(changedItem)!,
-                evaluationRuleSnapshot,
-                isEvaluatedItemSpec,
-                targetFramework,
-                out PackageDependencyModel? dependencyModel))
-            {
-                changesBuilder.Removed(ProviderTypeString, dependencyModel.OriginalItemSpec);
-                changesBuilder.Added(dependencyModel);
-            }
-        }
-
         protected override void HandleRemovedItem(
             string projectFullPath,
             string removedItem,
