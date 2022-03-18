@@ -42,14 +42,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Subscriptions.R
         protected override IDependencyModel CreateDependencyModel(
             string path,
             string originalItemSpec,
-            bool resolved,
+            bool isResolved,
             bool isImplicit,
             IImmutableDictionary<string, string> properties)
         {
             return new ProjectDependencyModel(
                 path,
                 originalItemSpec,
-                resolved,
+                isResolved,
                 isImplicit,
                 properties);
         }

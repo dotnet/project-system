@@ -218,7 +218,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Subscriptions.R
         protected virtual IDependencyModel CreateDependencyModel(
             string path,
             string originalItemSpec,
-            bool resolved,
+            bool isResolved,
             bool isImplicit,
             IImmutableDictionary<string, string> properties)
         {

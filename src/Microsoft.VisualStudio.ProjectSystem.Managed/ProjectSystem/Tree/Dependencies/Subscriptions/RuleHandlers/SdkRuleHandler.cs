@@ -42,7 +42,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Subscriptions.R
         protected override IDependencyModel CreateDependencyModel(
             string path,
             string originalItemSpec,
-            bool resolved,
+            bool isResolved,
             bool isImplicit,
             IImmutableDictionary<string, string> properties)
         {
@@ -53,7 +53,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Subscriptions.R
             return new SdkDependencyModel(
                 path,
                 originalItemSpec,
-                resolved && !isImplicit,
+                isResolved && !isImplicit,
                 isImplicit,
                 properties);
         }
