@@ -122,10 +122,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Subscriptions
             // Give each handler a chance to register dependency changes.
             foreach (Lazy<IDependenciesRuleHandler, IOrderPrecedenceMetadataView> handler in _handlers)
             {
-                IProjectChangeDescription evaluation = projectUpdate.ProjectChanges[handler.Value.EvaluatedRuleName];
-                IProjectChangeDescription? build = projectUpdate.ProjectChanges.GetValueOrDefault(handler.Value.ResolvedRuleName);
+                IProjectChangeDescription evaluationProjectChange = projectUpdate.ProjectChanges[handler.Value.EvaluatedRuleName];
+                IProjectChangeDescription? buildProjectChange = projectUpdate.ProjectChanges.GetValueOrDefault(handler.Value.ResolvedRuleName);
 
-                handler.Value.Handle(projectFullPath, evaluation, build, targetFrameworkToUpdate, changesBuilder);
+                handler.Value.Handle(projectFullPath, evaluationProjectChange, buildProjectChange, targetFrameworkToUpdate, changesBuilder);
             }
 
             IDependenciesChanges? changes = changesBuilder.TryBuildChanges();
