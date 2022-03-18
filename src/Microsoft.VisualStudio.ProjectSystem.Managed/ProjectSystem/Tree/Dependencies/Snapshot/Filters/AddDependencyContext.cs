@@ -59,9 +59,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot.Filter
         /// </remarks>
         public void AddOrUpdate(IDependency dependency)
         {
-            DependencyId key = dependency.GetDependencyId();
-            _dependencyById.Remove(key);
-            _dependencyById.Add(key, dependency);
+            _dependencyById[dependency.GetDependencyId()] = dependency;
+
             Changed = true;
         }
 
