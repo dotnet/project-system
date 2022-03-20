@@ -13,11 +13,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot.Filter
     [Export(typeof(IDependenciesSnapshotFilter))]
     [AppliesTo(ProjectCapability.DependenciesTree)]
     [Order(Order)]
-    internal sealed class DeduplicateCaptionsSnapshotFilter : DependenciesSnapshotFilterBase
+    internal sealed class DeduplicateCaptionsSnapshotFilter : IDependenciesSnapshotFilter
     {
         public const int Order = 101;
 
-        public override void BeforeAddOrUpdate(
+        public void BeforeAddOrUpdate(
             IDependency dependency,
             AddDependencyContext context)
         {
