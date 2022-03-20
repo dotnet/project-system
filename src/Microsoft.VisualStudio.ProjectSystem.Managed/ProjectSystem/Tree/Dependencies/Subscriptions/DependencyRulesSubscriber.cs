@@ -17,6 +17,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Subscriptions
     [AppliesTo(ProjectCapability.DependenciesTree)]
     internal sealed class DependencyRulesSubscriber : DependencyRulesSubscriberBase<EventData>
     {
+        private enum RuleSource
+        {
+            /// <summary>Rule data sourced by evaluation.</summary>
+            Evaluation,
+
+            /// <summary>Rule data sourced by both evaluation and design-time build, joined by project version to ensure consistency.</summary>
+            Joint
+        }
+
         public const string DependencyRulesSubscriberContract = "DependencyRulesSubscriberContract";
 
         private readonly IDependencyTreeTelemetryService _treeTelemetryService;
