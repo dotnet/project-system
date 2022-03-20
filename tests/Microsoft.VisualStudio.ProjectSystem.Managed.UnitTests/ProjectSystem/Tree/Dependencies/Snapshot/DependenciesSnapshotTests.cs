@@ -178,7 +178,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
                 ProviderType = "Xxx",
                 Id = "dependency1"
             };
-            targetChanges.Added(model);
+            targetChanges.Added(targetFramework, model);
 
             var snapshot = DependenciesSnapshot.FromChanges(
                 previousSnapshot,

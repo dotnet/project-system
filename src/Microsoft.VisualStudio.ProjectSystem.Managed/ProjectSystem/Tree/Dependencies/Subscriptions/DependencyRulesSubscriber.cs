@@ -27,6 +27,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Subscriptions
         private readonly Lazy<string[]> _watchedEvaluationRules;
         private readonly Lazy<string[]> _watchedJointRules;
 
+        private readonly HashSet<(TargetFramework TargetFramework, string ProviderType, string DependencyId)> _resolvedItems = new();
+
         [ImportingConstructor]
         public DependencyRulesSubscriber(
             IUnconfiguredProjectCommonServices commonServices,
@@ -117,7 +119,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Subscriptions
             }
 
             // Create an object to track dependency changes.
-            var changesBuilder = new DependenciesChangesBuilder();
+            var changesBuilder = new DependenciesChangesBuilder(_resolvedItems);
 
             // Give each handler a chance to register dependency changes.
             foreach (Lazy<IDependenciesRuleHandler, IOrderPrecedenceMetadataView> handler in _handlers)
