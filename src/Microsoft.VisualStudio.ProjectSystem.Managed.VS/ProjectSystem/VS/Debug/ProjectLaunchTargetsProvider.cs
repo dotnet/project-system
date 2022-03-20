@@ -231,7 +231,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
         /// of project.
         /// </summary>
         /// <returns><see langword="null"/> if the runnable project information is <see langword="null"/>. Otherwise, the debug launch settings.</returns>
-        private async Task<DebugLaunchSettings?> GetConsoleTargetForProfileAsync(ILaunchProfile resolvedProfile, DebugLaunchOptions launchOptions, bool validateSettings)
+        internal async Task<DebugLaunchSettings?> GetConsoleTargetForProfileAsync(ILaunchProfile resolvedProfile, DebugLaunchOptions launchOptions, bool validateSettings)
         {
             var settings = new DebugLaunchSettings(launchOptions);
 
@@ -263,6 +263,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
                 }
             }
 
+            string? commandLineArgs = resolvedProfile.CommandLineArgs?
+                .Replace("\r\n", " ")
+                .Replace("\r", " ")
+                .Replace("\n", " ")
+                .Replace("\\r\\n", "\r\n")
+                .Replace("\\n", "\n");
+
             // Is this profile just running the project? If so we ignore the exe
             if (IsRunProjectCommand(resolvedProfile))
             {
@@ -280,15 +287,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
                     defaultWorkingDir = workingDirectory;
                 }
 
-                if (!string.IsNullOrWhiteSpace(resolvedProfile.CommandLineArgs))
+                if (!string.IsNullOrWhiteSpace(commandLineArgs))
                 {
-                    arguments = arguments + " " + resolvedProfile.CommandLineArgs;
+                    arguments = arguments + " " + commandLineArgs;
                 }
             }
             else
             {
                 executable = resolvedProfile.ExecutablePath;
-                arguments = resolvedProfile.CommandLineArgs;
+                arguments = commandLineArgs;
             }
 
             string workingDir;

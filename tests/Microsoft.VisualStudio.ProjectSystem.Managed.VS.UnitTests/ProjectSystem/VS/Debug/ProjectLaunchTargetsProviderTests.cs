@@ -594,6 +594,22 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
         }
 
         [Fact]
+        public async Task CommandLineArgNewLines_AreStripped()
+        {
+            var provider = GetDebugTargetsProvider(
+                outputType: "dll",
+                properties: new Dictionary<string, string?>(),
+                debugger: null,
+                scope: null);
+
+            var activeProfile = new LaunchProfile { Name = "Name", CommandName = "Executable", CommandLineArgs = "-arg1\r\n-arg2 -arg3\n -arg4\r\n" };
+            var launchSettings = await provider.GetConsoleTargetForProfileAsync(activeProfile, DebugLaunchOptions.NoDebug, false);
+
+            Assert.Equal("-arg1 -arg2 -arg3  -arg4 ", launchSettings?.Arguments);
+
+        }
+
+        [Fact]
         public void ValidateSettings_WhenWorkingDirFound_DoesNotThrow()
         {
             string executable = "bar.exe";
