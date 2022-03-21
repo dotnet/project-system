@@ -1,14 +1,8 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
-using System;
-using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.ComponentModel.Composition;
 using System.Diagnostics;
-using System.IO;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
 using Microsoft.VisualStudio.IO;
 using Microsoft.VisualStudio.ProjectSystem.Build;
 using Microsoft.VisualStudio.Telemetry;
@@ -30,7 +24,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
           IActiveConfigurationComponent,
           IDisposable
     {
-        internal const string AppliesToExpression = ProjectCapability.DotNet + " + !" + ProjectCapabilities.SharedAssetsProject;
+        internal const string AppliesToExpression = $"{ProjectCapability.DotNet} + !{ProjectCapabilities.SharedAssetsProject}";
 
         internal const string FastUpToDateCheckIgnoresKindsGlobalPropertyName = "FastUpToDateCheckIgnoresKinds";
         internal const string TargetFrameworkGlobalPropertyName = "TargetFramework";
@@ -130,13 +124,19 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 return log.Fail("FirstRun", nameof(Resources.FUTD_FirstRun));
             }
 
-            foreach ((_, ImmutableArray<UpToDateCheckInputItem> items) in state.InputSourceItemsByItemType)
+            if (state.IsCopyAlwaysOptimizationDisabled)
             {
-                foreach (UpToDateCheckInputItem item in items)
+                // By default, we optimize CopyAlways to only copy if the time stamps or file sizes differ.
+                // If we got here, then the user has opted out of that optimisation, and we must fail if any CopyAlways items exist.
+
+                foreach ((string itemType, ImmutableArray<UpToDateCheckInputItem> items) in state.InputSourceItemsByItemType)
                 {
-                    if (item.CopyType == CopyType.CopyAlways)
+                    foreach (UpToDateCheckInputItem item in items)
                     {
-                        return log.Fail("CopyAlwaysItemExists", nameof(Resources.FUTD_CopyAlwaysItemExists_1), _configuredProject.UnconfiguredProject.MakeRooted(item.Path));
+                        if (item.CopyType == CopyType.Always)
+                        {
+                            return log.Fail("CopyAlwaysItemExists", nameof(Resources.FUTD_CopyAlwaysItemExists_2), itemType, _configuredProject.UnconfiguredProject.MakeRooted(item.Path));
+                        }
                     }
                 }
             }
@@ -654,20 +654,26 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
         {
             string outputFullPath = Path.Combine(state.MSBuildProjectDirectory, state.OutputRelativeOrFullPath);
 
-            foreach ((_, ImmutableArray<UpToDateCheckInputItem> items) in state.InputSourceItemsByItemType)
+            foreach ((string itemType, ImmutableArray<UpToDateCheckInputItem> items) in state.InputSourceItemsByItemType)
             {
                 foreach (UpToDateCheckInputItem item in items)
                 {
-                    // Only consider items with CopyType of CopyIfNewer (PreserveNewest)
-                    if (item.CopyType != CopyType.CopyIfNewer)
+                    token.ThrowIfCancellationRequested();
+
+                    if (item.CopyType == CopyType.Never)
                     {
+                        // Ignore items which are never copied. Only process Always and PreserveNewest items.
+                        //
+                        // Note that if we see Always items, then state.IsTreatCopyAlwaysAsPreserveNewestDisabled must
+                        // be false, as when it is true and any Always item exists, the check returns before this point.
+
                         continue;
                     }
 
-                    token.ThrowIfCancellationRequested();
+                    System.Diagnostics.Debug.Assert(item.CopyType != CopyType.Always || !state.IsCopyAlwaysOptimizationDisabled);
 
-                    string rootedPath = _configuredProject.UnconfiguredProject.MakeRooted(item.Path);
-                    string filename = Strings.IsNullOrEmpty(item.TargetPath) ? rootedPath : item.TargetPath;
+                    string sourcePath = _configuredProject.UnconfiguredProject.MakeRooted(item.Path);
+                    string filename = Strings.IsNullOrEmpty(item.TargetPath) ? sourcePath : item.TargetPath;
 
                     if (string.IsNullOrEmpty(filename))
                     {
@@ -676,39 +682,58 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
                     filename = _configuredProject.UnconfiguredProject.MakeRelative(filename);
 
-                    log.Info(nameof(Resources.FUTD_CheckingPreserveNewestFile_1), rootedPath);
+                    log.Info(nameof(Resources.FUTD_CheckingCopyToOutputDirectoryItem_3), itemType, item.CopyType.ToString(), sourcePath);
+                    log.Indent++;
 
-                    DateTime? itemTime = timestampCache.GetTimestampUtc(rootedPath);
+                    DateTime? sourceTime = timestampCache.GetTimestampUtc(sourcePath);
 
-                    if (itemTime != null)
+                    if (sourceTime != null)
                     {
-                        log.Indent++;
-                        log.Info(nameof(Resources.FUTD_SourceFileTimeAndPath_2), itemTime, rootedPath);
-                        log.Indent--;
+                        log.Info(nameof(Resources.FUTD_SourceFileTimeAndPath_2), sourceTime, sourcePath);
                     }
                     else
                     {
-                        return log.Fail("CopyToOutputDirectorySourceNotFound", nameof(Resources.FUTD_CheckingPreserveNewestFileSourceNotFound_1), rootedPath);
+                        return log.Fail("CopyToOutputDirectorySourceNotFound", nameof(Resources.FUTD_CheckingCopyToOutputDirectorySourceNotFound_1), sourcePath);
                     }
 
-                    string destination = Path.Combine(outputFullPath, filename);
-                    DateTime? destinationTime = timestampCache.GetTimestampUtc(destination);
+                    string destinationPath = Path.Combine(outputFullPath, filename);
+                    DateTime? destinationTime = timestampCache.GetTimestampUtc(destinationPath);
 
                     if (destinationTime != null)
                     {
-                        log.Indent++;
-                        log.Info(nameof(Resources.FUTD_DestinationFileTimeAndPath_2), destinationTime, destination);
-                        log.Indent--;
+                        log.Info(nameof(Resources.FUTD_DestinationFileTimeAndPath_2), destinationTime, destinationPath);
                     }
                     else
                     {
-                        return log.Fail("CopyToOutputDirectoryDestinationNotFound", nameof(Resources.FUTD_CheckingPreserveNewestFileDestinationNotFound_1), destination);
+                        return log.Fail("CopyToOutputDirectoryDestinationNotFound", nameof(Resources.FUTD_CheckingCopyToOutputDirectoryItemDestinationNotFound_1), destinationPath);
                     }
 
-                    if (destinationTime < itemTime)
+                    if (item.CopyType == CopyType.PreserveNewest)
                     {
-                        return log.Fail("CopyToOutputDirectorySourceNewer", nameof(Resources.FUTD_CheckingPreserveNewestSourceNewerThanDestination_2), rootedPath, destination);
+                        if (destinationTime < sourceTime)
+                        {
+                            return log.Fail("CopyToOutputDirectorySourceNewer", nameof(Resources.FUTD_CheckingCopyToOutputDirectorySourceNewerThanDestination_4), itemType, item.CopyType.ToString(), sourcePath, destinationPath);
+                        }
                     }
+                    else if (item.CopyType == CopyType.Always)
+                    {
+                        log.Info(nameof(Resources.FUTD_OptimizingCopyAlwaysItem));
+
+                        // We have already validated the presence of these files, so we don't expect these to return
+                        // false. If one of them does, the corresponding size would be zero, so we would schedule a build.
+                        // The odds of both source and destination disappearing between the gathering of the timestamps
+                        // above and these following statements is vanishingly small, and would suggest bigger problems
+                        // such as the entire project directory having been deleted.
+                        _fileSystem.TryGetFileSizeBytes(sourcePath, out long sourceSizeBytes);
+                        _fileSystem.TryGetFileSizeBytes(destinationPath, out long destinationSizeBytes);
+
+                        if (sourceTime != destinationTime || sourceSizeBytes != destinationSizeBytes)
+                        {
+                            return log.Fail("CopyAlwaysItemDiffers", nameof(Resources.FUTD_CopyAlwaysItemsDiffer_7), itemType, sourcePath, sourceTime, sourceSizeBytes, destinationPath, destinationTime, destinationSizeBytes);
+                        }
+                    }
+
+                    log.Indent--;
                 }
             }
 

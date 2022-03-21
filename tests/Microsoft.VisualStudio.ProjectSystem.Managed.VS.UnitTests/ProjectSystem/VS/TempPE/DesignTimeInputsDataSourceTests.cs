@@ -1,7 +1,5 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
-using System.Collections.Generic;
-using System.Threading.Tasks;
 using Xunit;
 
 // Nullable annotations don't add a lot of value to this class, and until https://github.com/dotnet/roslyn/issues/33199 is fixed

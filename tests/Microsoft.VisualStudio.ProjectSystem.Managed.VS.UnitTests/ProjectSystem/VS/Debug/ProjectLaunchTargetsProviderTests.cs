@@ -1,11 +1,6 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
-using System;
-using System.Collections.Generic;
 using System.Collections.Immutable;
-using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.Build.Framework.XamlTypes;
 using Microsoft.VisualStudio.Debugger.UI.Interfaces.HotReload;
 using Microsoft.VisualStudio.IO;
@@ -596,6 +591,22 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             {
                 debugger.ValidateSettings(executable, workingDir, profileName);
             });
+        }
+
+        [Fact]
+        public async Task CommandLineArgNewLines_AreStripped()
+        {
+            var provider = GetDebugTargetsProvider(
+                outputType: "dll",
+                properties: new Dictionary<string, string?>(),
+                debugger: null,
+                scope: null);
+
+            var activeProfile = new LaunchProfile { Name = "Name", CommandName = "Executable", CommandLineArgs = "-arg1\r\n-arg2 -arg3\n -arg4\r\n" };
+            var launchSettings = await provider.GetConsoleTargetForProfileAsync(activeProfile, DebugLaunchOptions.NoDebug, false);
+
+            Assert.Equal("-arg1 -arg2 -arg3  -arg4 ", launchSettings?.Arguments);
+
         }
 
         [Fact]

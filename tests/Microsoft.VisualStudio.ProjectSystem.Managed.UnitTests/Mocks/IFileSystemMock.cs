@@ -1,10 +1,6 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
-using System;
-using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
-using System.IO;
-using System.Threading.Tasks;
 
 namespace Microsoft.VisualStudio.IO
 {
@@ -167,6 +163,18 @@ namespace Microsoft.VisualStudio.IO
             }
 
             result = null;
+            return false;
+        }
+
+        public bool TryGetFileSizeBytes(string path, out long result)
+        {
+            if (Files.TryGetValue(path, out FileData value))
+            {
+                result = value.FileContents?.Length ?? 0;
+                return true;
+            }
+
+            result = default;
             return false;
         }
 

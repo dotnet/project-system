@@ -5,8 +5,8 @@
        deploy it as CopyToOutputDirectory item. Remove them both, xunit.extensibility.core carries the 
        version we will use.  -->
   <ItemGroup>
-    <None Remove="$(Pkgxunit_runner_visualstudio)\**\xunit.abstractions.dll" />
-    <None Remove="$(Pkgxunit_runner_console)\**\xunit.abstractions.dll" />
+    <None Remove="$(Pkgxunit_runner_visualstudio)\**\xunit.abstractions.dll" Condition="'$(Pkgxunit_runner_visualstudio)' != ''" />
+    <None Remove="$(Pkgxunit_runner_console)\**\xunit.abstractions.dll" Condition="'$(Pkgxunit_runner_console)' != ''"/>
   </ItemGroup>
 
   <PropertyGroup>

@@ -1,9 +1,6 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
-using System;
-using System.Collections.Generic;
 using System.Collections.Immutable;
-using System.Linq;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
 using Microsoft.VisualStudio.Text;
 
@@ -32,6 +29,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 outputRelativeOrFullPath: null,
                 newestImportInput: null,
                 isDisabled: true,
+                isCopyAlwaysOptimizationDisabled: false,
                 inputSourceItemTypes: ImmutableArray<string>.Empty,
                 inputSourceItemsByItemType: ImmutableDictionary<string, ImmutableArray<UpToDateCheckInputItem>>.Empty,
                 upToDateCheckInputItemsByKindBySetName: ImmutableDictionary<string, ImmutableDictionary<string, ImmutableArray<string>>>.Empty,
@@ -72,14 +70,35 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
         public string? NewestImportInput { get; }
 
         /// <summary>
-        /// Gets whether the fast up-to-date check has been disabled via the <c>DisableFastUpToDateCheck</c>
-        /// property.
+        /// Gets whether the fast up-to-date check has been disabled for this project.
         /// </summary>
         /// <remarks>
+        /// <para>
+        /// Customers disable the fast up-to-date check by setting the <c>DisableFastUpToDateCheck</c>
+        /// project property to <c>true</c>.
+        /// </para>
+        /// <para>
         /// When <see langword="true"/>, other properties on this snapshot will not be used, and so
         /// are not populated.
+        /// </para>
         /// </remarks>
         public bool IsDisabled { get; }
+
+        /// <summary>
+        /// Gets whether the fast up-to-date check should not optimize copy-always items.
+        /// </summary>
+        /// <remarks>
+        /// <para>
+        /// In VS17.2 we introduced an optimization for <c>CopyToOutputDirectory="Always"</c> items.
+        /// Previously, the presence of such an item in the project would cause the FUTD check to immediately
+        /// fail. With this optimization, we only fail if the timestamps or file sizes differ.
+        /// </para>
+        /// <para>
+        /// Customers can restore the old behaviour by setting the <c>DisableFastUpToDateCopyAlwaysOptimization</c>
+        /// project property to <c>true</c>.
+        /// </para>
+        /// </remarks>
+        public bool IsCopyAlwaysOptimizationDisabled { get; }
 
         /// <summary>
         /// Gets the time at which the set of items changed.
@@ -170,6 +189,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             string? outputRelativeOrFullPath,
             string? newestImportInput,
             bool isDisabled,
+            bool isCopyAlwaysOptimizationDisabled,
             ImmutableArray<string> inputSourceItemTypes,
             ImmutableDictionary<string, ImmutableArray<UpToDateCheckInputItem>> inputSourceItemsByItemType,
             ImmutableDictionary<string, ImmutableDictionary<string, ImmutableArray<string>>> upToDateCheckInputItemsByKindBySetName,
@@ -191,6 +211,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             OutputRelativeOrFullPath = outputRelativeOrFullPath;
             NewestImportInput = newestImportInput;
             IsDisabled = isDisabled;
+            IsCopyAlwaysOptimizationDisabled = isCopyAlwaysOptimizationDisabled;
             InputSourceItemTypes = inputSourceItemTypes;
             InputSourceItemsByItemType = inputSourceItemsByItemType;
             UpToDateCheckInputItemsByKindBySetName = upToDateCheckInputItemsByKindBySetName;
@@ -239,6 +260,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             string? msBuildProjectOutputPath = jointRuleUpdate.CurrentState.GetPropertyOrDefault(ConfigurationGeneral.SchemaName, ConfigurationGeneral.OutputPathProperty, OutputRelativeOrFullPath);
             string? outputRelativeOrFullPath = jointRuleUpdate.CurrentState.GetPropertyOrDefault(ConfigurationGeneral.SchemaName, ConfigurationGeneral.OutDirProperty, msBuildProjectOutputPath);
             string msBuildAllProjects = jointRuleUpdate.CurrentState.GetPropertyOrDefault(ConfigurationGeneral.SchemaName, ConfigurationGeneral.MSBuildAllProjectsProperty, "");
+            bool isCopyAlwaysOptimizationDisabled = jointRuleUpdate.CurrentState.IsPropertyTrue(ConfigurationGeneral.SchemaName, ConfigurationGeneral.DisableFastUpToDateCopyAlwaysOptimizationProperty, defaultValue: false);
 
             // The first item in this semicolon-separated list of project files will always be the one
             // with the newest timestamp. As we are only interested in timestamps on these files, we can
@@ -356,6 +378,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 outputRelativeOrFullPath,
                 newestImportInput,
                 isDisabled: isDisabled,
+                isCopyAlwaysOptimizationDisabled: isCopyAlwaysOptimizationDisabled,
                 inputSourceItemTypes: inputSourceItemTypes.ToImmutableArray(),
                 inputSourceItemsByItemType: inputSourceItemsByItemType,
                 upToDateCheckInputItemsByKindBySetName:  UpdateItemsByKindBySetName(UpToDateCheckInputItemsByKindBySetName,  jointRuleUpdate, UpToDateCheckInput.SchemaName,  UpToDateCheckInput.KindProperty,  UpToDateCheckInput.SetProperty),
@@ -548,6 +571,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 OutputRelativeOrFullPath,
                 NewestImportInput,
                 IsDisabled,
+                IsCopyAlwaysOptimizationDisabled,
                 InputSourceItemTypes,
                 InputSourceItemsByItemType,
                 UpToDateCheckInputItemsByKindBySetName,
@@ -573,6 +597,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 OutputRelativeOrFullPath,
                 NewestImportInput,
                 IsDisabled,
+                IsCopyAlwaysOptimizationDisabled,
                 InputSourceItemTypes,
                 InputSourceItemsByItemType,
                 UpToDateCheckInputItemsByKindBySetName,

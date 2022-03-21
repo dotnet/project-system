@@ -2,11 +2,7 @@
 
 using System.ComponentModel.Composition;
 using System.Globalization;
-using System.IO;
-using System.Linq;
 using System.Runtime.Remoting.Contexts;
-using System.Threading;
-using System.Threading.Tasks;
 using EnvDTE;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Rename;

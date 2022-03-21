@@ -1,7 +1,5 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
-using System;
-using System.Collections.Generic;
 using System.Collections.Immutable;
 using Microsoft.VisualStudio.Imaging.Interop;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies;
@@ -38,8 +36,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Subscriptions
             }
 
             return new DependenciesChanges(
-                _added == null ? (IImmutableList<IDependencyModel>)ImmutableList<IDependencyModel>.Empty : ImmutableArray.CreateRange(_added),
-                _removed == null ? (IImmutableList<IDependencyModel>)ImmutableList<IDependencyModel>.Empty : ImmutableArray.CreateRange(_removed));
+                _added == null ? ImmutableList<IDependencyModel>.Empty : ImmutableArray.CreateRange(_added),
+                _removed == null ? ImmutableList<IDependencyModel>.Empty : ImmutableArray.CreateRange(_removed));
         }
 
         public override string ToString() => ToString(_added, _removed);

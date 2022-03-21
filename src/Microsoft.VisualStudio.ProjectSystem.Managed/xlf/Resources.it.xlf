@@ -48,14 +48,14 @@
         <note>{0} is an MSBuild item type.</note>
       </trans-unit>
       <trans-unit id="FUTD_ChangedItemsAddition_4">
-        <source>{0} item added '{1}' (CopyType={2}, TargetPath='{3}')</source>
-        <target state="translated">{0} elemento aggiunto '{1}' (CopyType={2}, TargetPath='{3}')</target>
-        <note>Do not translate 'CopyType' or 'TargetPath'. {0} is an MSBuild item type. {1} is a file path. {2} and {3} are metadata values.</note>
+        <source>{0} item added '{1}' (CopyToOutputDirectory={2}, TargetPath='{3}')</source>
+        <target state="translated">Elemento {0} aggiunto '{1}' (CopyToOutputDirectory={2}, TargetPath='{3}')</target>
+        <note>Do not translate 'CopyToOutputDirectory' or 'TargetPath'. {0} is an MSBuild item type. {1} is a file path. {2} and {3} are metadata values.</note>
       </trans-unit>
       <trans-unit id="FUTD_ChangedItemsRemoval_4">
-        <source>{0} item removed '{1}' (CopyType={2}, TargetPath='{3}')</source>
-        <target state="translated">{0} elemento rimosso '{1}' (CopyType={2}, TargetPath='{3}')</target>
-        <note>Do not translate 'CopyType' or 'TargetPath'. {0} is an MSBuild item type. {1} is a file path. {2} and {3} are metadata values.</note>
+        <source>{0} item removed '{1}' (CopyToOutputDirectory={2}, TargetPath='{3}')</source>
+        <target state="translated">Elemento {0} rimosso '{1}' (CopyToOutputDirectory={2}, TargetPath='{3}')</target>
+        <note>Do not translate 'CopyToOutputDirectory' or 'TargetPath'. {0} is an MSBuild item type. {1} is a file path. {2} and {3} are metadata values.</note>
       </trans-unit>
       <trans-unit id="FUTD_CheckingConfiguration_1">
         <source>Checking configuration {0}:</source>
@@ -82,25 +82,25 @@
         <target state="translated">L'origine '{0}' non esiste per la copia in '{1}', non aggiornata.</target>
         <note>{0} and {1} are file paths.</note>
       </trans-unit>
-      <trans-unit id="FUTD_CheckingPreserveNewestFileDestinationNotFound_1">
+      <trans-unit id="FUTD_CheckingCopyToOutputDirectoryItemDestinationNotFound_1">
         <source>Destination '{0}' does not exist, not up-to-date.</source>
         <target state="translated">La destinazione '{0}' non esiste, non è aggiornata.</target>
         <note>{0} is a file path.</note>
       </trans-unit>
-      <trans-unit id="FUTD_CheckingPreserveNewestFileSourceNotFound_1">
+      <trans-unit id="FUTD_CheckingCopyToOutputDirectoryItem_3">
+        <source>Checking {0} item with CopyToOutputDirectory="{1}" '{2}':</source>
+        <target state="translated">Controllo di elemento {0} con CopyToOutputDirectory="{1}" '{2}':</target>
+        <note>Do not translate CopyToOutputDirectory. {0} is an MSBuild item type. {1} is from an enum of valid values. {2} a file path.</note>
+      </trans-unit>
+      <trans-unit id="FUTD_CheckingCopyToOutputDirectorySourceNewerThanDestination_4">
+        <source>{0} item with CopyToOutputDirectory="{1}" source '{2}' is newer than destination '{3}', not up-to-date.</source>
+        <target state="translated">Elemento {0} con CopyToOutputDirectory="{1}" origine '{2}' è più recente della destinazione '{3}', non aggiornato.</target>
+        <note>Do not translate CopyToOutputDirectory. {0} is an MSBuild item type. {1} is from an enum of valid values. {2} and {3} are file paths.</note>
+      </trans-unit>
+      <trans-unit id="FUTD_CheckingCopyToOutputDirectorySourceNotFound_1">
         <source>Source '{0}' does not exist, not up-to-date.</source>
         <target state="translated">L'origine '{0}' non esiste, non è aggiornata.</target>
         <note>{0} is a file path.</note>
-      </trans-unit>
-      <trans-unit id="FUTD_CheckingPreserveNewestFile_1">
-        <source>Checking PreserveNewest file '{0}':</source>
-        <target state="translated">Controllo del file PreserveNewest '{0}':</target>
-        <note>Do not translate PreserveNewest. {0} is a file path.</note>
-      </trans-unit>
-      <trans-unit id="FUTD_CheckingPreserveNewestSourceNewerThanDestination_2">
-        <source>PreserveNewest source '{0}' is newer than destination '{1}', not up-to-date.</source>
-        <target state="translated">L'origine PreserveNewest '{0}' è più recente della destinazione '{1}', non aggiornata.</target>
-        <note>Do not translate PreserveNewest. {0} and {1} are file paths.</note>
       </trans-unit>
       <trans-unit id="FUTD_ComparingInputOutputTimestamps_1">
         <source>Comparing timestamps of inputs and outputs in Set="{0}":</source>
@@ -112,10 +112,15 @@
         <target state="translated">Controllo aggiornato completato in {0:N1} ms</target>
         <note>{0} is a duration in milliseconds. "ms" refers to "milliseconds". Leave the "{0:N1}" string as-is, for correct formatting of the number.</note>
       </trans-unit>
-      <trans-unit id="FUTD_CopyAlwaysItemExists_1">
-        <source>Item '{0}' has CopyToOutputDirectory set to 'Always', not up-to-date.</source>
-        <target state="translated">L'elemento '{0}' ha CopyToOutputDirectory impostato su 'Always', non aggiornato.</target>
-        <note>Do not translate 'CopyToOutputDirectory' or 'Always'. {0} is a file path.</note>
+      <trans-unit id="FUTD_CopyAlwaysItemExists_2">
+        <source>{0} item '{1}' has CopyToOutputDirectory set to 'Always', and the project has DisableFastUpToDateCopyAlwaysOptimization set to 'true', not up-to-date.</source>
+        <target state="translated">Elemento {0} '{1}' ha CopyToOutputDirectory impostato su 'Always' e il progetto ha DisableFastUpToDateCopyAlwaysOptimization impostato su 'true', non aggiornato.</target>
+        <note>Do not translate 'CopyToOutputDirectory' or 'Always' or 'DisableFastUpToDateCopyAlwaysOptimization' or 'true'. {0} is an MSBuild item type. {1} is a file path.</note>
+      </trans-unit>
+      <trans-unit id="FUTD_CopyAlwaysItemsDiffer_7">
+        <source>{0} item with CopyToOutputDirectory="Always" source ('{1}' {2}, {3} bytes) differs from destination ('{4}' {5}, {6} bytes), not up-to-date.</source>
+        <target state="translated">Elemento {0} con origine CopyToOutputDirectory="Always" ('{1}' {2}, {3} byte) differisce dalla destinazione ('{4}' {5}, {6} byte), non aggiornato.</target>
+        <note>Do not translate CopyToOutputDirectory="Always". {0} is an MSBuild item type. {1} and {4} are file paths. {2} and {5} are date times. {3} and {6} are byte counts.</note>
       </trans-unit>
       <trans-unit id="FUTD_CriticalBuildTasksRunning">
         <source>Critical build tasks are running, not up-to-date.</source>
@@ -216,6 +221,11 @@
         <source>Input {1} item '{0}' does not exist, but is not required.</source>
         <target state="translated">L'input {1} 'elemento '{0}' non esiste, ma non è obbligatorio.</target>
         <note>{0} is a file path. {1} is an MSBuild item type.</note>
+      </trans-unit>
+      <trans-unit id="FUTD_OptimizingCopyAlwaysItem">
+        <source>Optimizing CopyToOutputDirectory="Always" item. Disable this by setting DisableFastUpToDateCopyAlwaysOptimization to "true".</source>
+        <target state="translated">Ottimizzazione dell'elemento CopyToOutputDirectory="Always". Disabilitare questa impostazione impostando DisableFastUpToDateCopyAlwaysOptimization su "true".</target>
+        <note>Do not translate "CopyToOutputDirectory", "Always", "DisableFastUpToDateCopyAlwaysOptimization" or "true".</note>
       </trans-unit>
       <trans-unit id="FUTD_OutputDoesNotExist_1">
         <source>Output '{0}' does not exist, not up-to-date.</source>

@@ -79,14 +79,10 @@
   </EnumProperty>
 
   <BoolProperty Name="DisableFastUpToDateCheck"
-                Visible="False">
-    <BoolProperty.DataSource>
-      <DataSource HasConfigurationCondition="False"
-                  PersistedName="DisableFastUpToDateCheck"
-                  Persistence="ProjectFile"
-                  SourceOfDefaultValue="AfterContext" />
-    </BoolProperty.DataSource>
-  </BoolProperty>
+                Visible="False" />
+
+  <BoolProperty Name="DisableFastUpToDateCopyAlwaysOptimization"
+                Visible="False" />
 
   <StringProperty Name="DocumentationFile"
                   Visible="False" />

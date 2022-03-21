@@ -196,7 +196,7 @@ namespace Microsoft.VisualStudio {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to {0} item added &apos;{1}&apos; (CopyType={2}, TargetPath=&apos;{3}&apos;).
+        ///   Looks up a localized string similar to {0} item added &apos;{1}&apos; (CopyToOutputDirectory={2}, TargetPath=&apos;{3}&apos;).
         /// </summary>
         internal static string FUTD_ChangedItemsAddition_4 {
             get {
@@ -205,7 +205,7 @@ namespace Microsoft.VisualStudio {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to {0} item removed &apos;{1}&apos; (CopyType={2}, TargetPath=&apos;{3}&apos;).
+        ///   Looks up a localized string similar to {0} item removed &apos;{1}&apos; (CopyToOutputDirectory={2}, TargetPath=&apos;{3}&apos;).
         /// </summary>
         internal static string FUTD_ChangedItemsRemoval_4 {
             get {
@@ -259,38 +259,38 @@ namespace Microsoft.VisualStudio {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Checking PreserveNewest file &apos;{0}&apos;:.
+        ///   Looks up a localized string similar to Checking {0} item with CopyToOutputDirectory=&quot;{1}&quot; &apos;{2}&apos;:.
         /// </summary>
-        internal static string FUTD_CheckingPreserveNewestFile_1 {
+        internal static string FUTD_CheckingCopyToOutputDirectoryItem_3 {
             get {
-                return ResourceManager.GetString("FUTD_CheckingPreserveNewestFile_1", resourceCulture);
+                return ResourceManager.GetString("FUTD_CheckingCopyToOutputDirectoryItem_3", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Destination &apos;{0}&apos; does not exist, not up-to-date..
         /// </summary>
-        internal static string FUTD_CheckingPreserveNewestFileDestinationNotFound_1 {
+        internal static string FUTD_CheckingCopyToOutputDirectoryItemDestinationNotFound_1 {
             get {
-                return ResourceManager.GetString("FUTD_CheckingPreserveNewestFileDestinationNotFound_1", resourceCulture);
+                return ResourceManager.GetString("FUTD_CheckingCopyToOutputDirectoryItemDestinationNotFound_1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0} item with CopyToOutputDirectory=&quot;{1}&quot; source &apos;{2}&apos; is newer than destination &apos;{3}&apos;, not up-to-date..
+        /// </summary>
+        internal static string FUTD_CheckingCopyToOutputDirectorySourceNewerThanDestination_4 {
+            get {
+                return ResourceManager.GetString("FUTD_CheckingCopyToOutputDirectorySourceNewerThanDestination_4", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Source &apos;{0}&apos; does not exist, not up-to-date..
         /// </summary>
-        internal static string FUTD_CheckingPreserveNewestFileSourceNotFound_1 {
+        internal static string FUTD_CheckingCopyToOutputDirectorySourceNotFound_1 {
             get {
-                return ResourceManager.GetString("FUTD_CheckingPreserveNewestFileSourceNotFound_1", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to PreserveNewest source &apos;{0}&apos; is newer than destination &apos;{1}&apos;, not up-to-date..
-        /// </summary>
-        internal static string FUTD_CheckingPreserveNewestSourceNewerThanDestination_2 {
-            get {
-                return ResourceManager.GetString("FUTD_CheckingPreserveNewestSourceNewerThanDestination_2", resourceCulture);
+                return ResourceManager.GetString("FUTD_CheckingCopyToOutputDirectorySourceNotFound_1", resourceCulture);
             }
         }
         
@@ -313,11 +313,20 @@ namespace Microsoft.VisualStudio {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Item &apos;{0}&apos; has CopyToOutputDirectory set to &apos;Always&apos;, not up-to-date..
+        ///   Looks up a localized string similar to {0} item &apos;{1}&apos; has CopyToOutputDirectory set to &apos;Always&apos;, and the project has DisableFastUpToDateCopyAlwaysOptimization set to &apos;true&apos;, not up-to-date..
         /// </summary>
-        internal static string FUTD_CopyAlwaysItemExists_1 {
+        internal static string FUTD_CopyAlwaysItemExists_2 {
             get {
-                return ResourceManager.GetString("FUTD_CopyAlwaysItemExists_1", resourceCulture);
+                return ResourceManager.GetString("FUTD_CopyAlwaysItemExists_2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0} item with CopyToOutputDirectory=&quot;Always&quot; source (&apos;{1}&apos; {2}, {3} bytes) differs from destination (&apos;{4}&apos; {5}, {6} bytes), not up-to-date..
+        /// </summary>
+        internal static string FUTD_CopyAlwaysItemsDiffer_7 {
+            get {
+                return ResourceManager.GetString("FUTD_CopyAlwaysItemsDiffer_7", resourceCulture);
             }
         }
         
@@ -498,6 +507,15 @@ namespace Microsoft.VisualStudio {
         internal static string FUTD_NoOutputMarkerExists_1 {
             get {
                 return ResourceManager.GetString("FUTD_NoOutputMarkerExists_1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Optimizing CopyToOutputDirectory=&quot;Always&quot; item. Disable this by setting DisableFastUpToDateCopyAlwaysOptimization to &quot;true&quot;..
+        /// </summary>
+        internal static string FUTD_OptimizingCopyAlwaysItem {
+            get {
+                return ResourceManager.GetString("FUTD_OptimizingCopyAlwaysItem", resourceCulture);
             }
         }
         
