@@ -99,7 +99,7 @@ in which case the project is out-of-date and a build will be allowed.
 To model this, use:
 
 ```xml
-<UpToDateCheckBuilt Include="Source\File.txt" Original="Destination\File.txt" />
+<UpToDateCheckBuilt Include="Destination\File.txt" Original="Source\File.txt" />
 ```
 
 When specifying `Original` metadata, the `Set` property has no effect. Each copied file is considered in isolation,
@@ -113,7 +113,7 @@ Cases where a single input file produces a single output file during build shoul
 To model this, use:
 
 ```xml
-<UpToDateCheckBuilt Include="Source\MyFile.ts" Original="Destination\MyFile.js" />
+<UpToDateCheckBuilt Include="Destination\MyFile.js" Original="Source\MyFile.ts" />
 ```
 
 The same details apply regarding `Set` metadata as described for copied files.
