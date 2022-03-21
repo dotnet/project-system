@@ -469,7 +469,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
                 else if (jToken is not null)
                 {
                     // Find the matching json serialization handler for this section
-                    Lazy<ILaunchSettingsSerializationProvider, IJsonSection> handler = JsonSerializationProviders.FirstOrDefault(sp => string.Equals(sp.Metadata.JsonSection, key));
+                    Lazy<ILaunchSettingsSerializationProvider, IJsonSection>? handler = JsonSerializationProviders.FirstOrDefault(sp => string.Equals(sp.Metadata.JsonSection, key));
                     if (handler != null)
                     {
                         object? sectionObject = JsonConvert.DeserializeObject(jToken.ToString(), handler.Metadata.SerializationType);
