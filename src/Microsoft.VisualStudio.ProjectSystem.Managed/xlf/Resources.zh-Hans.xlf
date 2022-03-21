@@ -49,12 +49,12 @@
       </trans-unit>
       <trans-unit id="FUTD_ChangedItemsAddition_4">
         <source>{0} item added '{1}' (CopyToOutputDirectory={2}, TargetPath='{3}')</source>
-        <target state="new">{0} item added '{1}' (CopyToOutputDirectory={2}, TargetPath='{3}')</target>
+        <target state="translated">{0} 项已添加'{1}' (CopyToOutputDirectory={2}, TargetPath='{3}')</target>
         <note>Do not translate 'CopyToOutputDirectory' or 'TargetPath'. {0} is an MSBuild item type. {1} is a file path. {2} and {3} are metadata values.</note>
       </trans-unit>
       <trans-unit id="FUTD_ChangedItemsRemoval_4">
         <source>{0} item removed '{1}' (CopyToOutputDirectory={2}, TargetPath='{3}')</source>
-        <target state="new">{0} item removed '{1}' (CopyToOutputDirectory={2}, TargetPath='{3}')</target>
+        <target state="translated">{0} 项已删除'{1}' (CopyToOutputDirectory={2}, TargetPath='{3}')</target>
         <note>Do not translate 'CopyToOutputDirectory' or 'TargetPath'. {0} is an MSBuild item type. {1} is a file path. {2} and {3} are metadata values.</note>
       </trans-unit>
       <trans-unit id="FUTD_CheckingConfiguration_1">
@@ -84,22 +84,22 @@
       </trans-unit>
       <trans-unit id="FUTD_CheckingCopyToOutputDirectoryItemDestinationNotFound_1">
         <source>Destination '{0}' does not exist, not up-to-date.</source>
-        <target state="new">Destination '{0}' does not exist, not up-to-date.</target>
+        <target state="translated">目标 '{0}' 不存在，不是最新的。</target>
         <note>{0} is a file path.</note>
       </trans-unit>
       <trans-unit id="FUTD_CheckingCopyToOutputDirectoryItem_3">
         <source>Checking {0} item with CopyToOutputDirectory="{1}" '{2}':</source>
-        <target state="new">Checking {0} item with CopyToOutputDirectory="{1}" '{2}':</target>
+        <target state="translated">正在检查具有 CopyToOutputDirectory="{1}" '{2}' 的 {0} 项:</target>
         <note>Do not translate CopyToOutputDirectory. {0} is an MSBuild item type. {1} is from an enum of valid values. {2} a file path.</note>
       </trans-unit>
       <trans-unit id="FUTD_CheckingCopyToOutputDirectorySourceNewerThanDestination_4">
         <source>{0} item with CopyToOutputDirectory="{1}" source '{2}' is newer than destination '{3}', not up-to-date.</source>
-        <target state="new">{0} item with CopyToOutputDirectory="{1}" source '{2}' is newer than destination '{3}', not up-to-date.</target>
+        <target state="translated">具有 CopyToOutputDirectory="{1}"源 '{2}' 的 {0} 项比目标 '{3}' 更新，不是最新版本。</target>
         <note>Do not translate CopyToOutputDirectory. {0} is an MSBuild item type. {1} is from an enum of valid values. {2} and {3} are file paths.</note>
       </trans-unit>
       <trans-unit id="FUTD_CheckingCopyToOutputDirectorySourceNotFound_1">
         <source>Source '{0}' does not exist, not up-to-date.</source>
-        <target state="new">Source '{0}' does not exist, not up-to-date.</target>
+        <target state="translated">源 '{0}' 不存在，不是最新的。</target>
         <note>{0} is a file path.</note>
       </trans-unit>
       <trans-unit id="FUTD_ComparingInputOutputTimestamps_1">
@@ -114,12 +114,12 @@
       </trans-unit>
       <trans-unit id="FUTD_CopyAlwaysItemExists_2">
         <source>{0} item '{1}' has CopyToOutputDirectory set to 'Always', and the project has DisableFastUpToDateCopyAlwaysOptimization set to 'true', not up-to-date.</source>
-        <target state="new">{0} item '{1}' has CopyToOutputDirectory set to 'Always', and the project has DisableFastUpToDateCopyAlwaysOptimization set to 'true', not up-to-date.</target>
+        <target state="translated">{0} 项'{1}'将 CopyToOutputDirectory 设置为“Always”，并且项目已将 DisableFastUpToDateCopyAlwaysOptimization 设置为“true”，不是最新版本。</target>
         <note>Do not translate 'CopyToOutputDirectory' or 'Always' or 'DisableFastUpToDateCopyAlwaysOptimization' or 'true'. {0} is an MSBuild item type. {1} is a file path.</note>
       </trans-unit>
       <trans-unit id="FUTD_CopyAlwaysItemsDiffer_7">
         <source>{0} item with CopyToOutputDirectory="Always" source ('{1}' {2}, {3} bytes) differs from destination ('{4}' {5}, {6} bytes), not up-to-date.</source>
-        <target state="new">{0} item with CopyToOutputDirectory="Always" source ('{1}' {2}, {3} bytes) differs from destination ('{4}' {5}, {6} bytes), not up-to-date.</target>
+        <target state="translated">具有 CopyToOutputDirectory="Always" 源的 {0} 项('{1}' {2}，{3} 字节)不同于目标('{4}' {5}，{6} 字节)，不是最新版本。</target>
         <note>Do not translate CopyToOutputDirectory="Always". {0} is an MSBuild item type. {1} and {4} are file paths. {2} and {5} are date times. {3} and {6} are byte counts.</note>
       </trans-unit>
       <trans-unit id="FUTD_CriticalBuildTasksRunning">
@@ -224,7 +224,7 @@
       </trans-unit>
       <trans-unit id="FUTD_OptimizingCopyAlwaysItem">
         <source>Optimizing CopyToOutputDirectory="Always" item. Disable this by setting DisableFastUpToDateCopyAlwaysOptimization to "true".</source>
-        <target state="new">Optimizing CopyToOutputDirectory="Always" item. Disable this by setting DisableFastUpToDateCopyAlwaysOptimization to "true".</target>
+        <target state="translated">正在优化 CopyToOutputDirectory="Always"项。通过将 DisableFastUpToDateCopyAlwaysOptimization 设置为"true"来禁用此功能。</target>
         <note>Do not translate "CopyToOutputDirectory", "Always", "DisableFastUpToDateCopyAlwaysOptimization" or "true".</note>
       </trans-unit>
       <trans-unit id="FUTD_OutputDoesNotExist_1">
