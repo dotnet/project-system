@@ -17,14 +17,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
     [AppliesTo(ProjectCapability.PackageReferences)]
     internal class PackageRestoreConfiguredInputDataSource : ChainedProjectValueDataSourceBase<PackageRestoreConfiguredInput>, IPackageRestoreConfiguredInputDataSource
     {
-        private static readonly ImmutableHashSet<string> s_rules = Empty.OrdinalIgnoreCaseStringSet
-                                                                        .Add(NuGetRestore.SchemaName)                       // Evaluation
-                                                                        .Add(ProjectReference.SchemaName)                   // Evaluation
-                                                                        .Add(DotNetCliToolReference.SchemaName)             // Evaluation
-                                                                        .Add(CollectedFrameworkReference.SchemaName)        // Project Build
-                                                                        .Add(CollectedPackageDownload.SchemaName)           // Project Build                                                                        
-                                                                        .Add(CollectedPackageVersion.SchemaName)            // Project Build
-                                                                        .Add(CollectedPackageReference.SchemaName);         // Project Build
+        private static readonly ImmutableHashSet<string> s_evaluationRuleNames = Empty.OrdinalIgnoreCaseStringSet
+            .Add(NuGetRestore.SchemaName)
+            .Add(ProjectReference.SchemaName)
+            .Add(DotNetCliToolReference.SchemaName);
+
+        private static readonly ImmutableHashSet<string> s_buildRuleNames = Empty.OrdinalIgnoreCaseStringSet
+            .Add(CollectedFrameworkReference.SchemaName)
+            .Add(CollectedPackageDownload.SchemaName)
+            .Add(CollectedPackageVersion.SchemaName)
+            .Add(CollectedPackageReference.SchemaName);
+
         private readonly UnconfiguredProject _containingProject;
         private readonly IProjectSubscriptionService _projectSubscriptionService;
 
@@ -46,9 +49,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
             IProjectValueDataSource<IProjectSubscriptionUpdate> source = _projectSubscriptionService.JointRuleSource;
 
             // Transform the changes from evaluation/design-time build -> restore data
-            DisposableValue<ISourceBlock<RestoreUpdate>> transformBlock = source.SourceBlock.TransformWithNoDelta(update => update.Derive(u => CreateRestoreInput(update, u.ProjectConfiguration, u.CurrentState)),
-                                                                                                suppressVersionOnlyUpdates: false,    // We need to coordinate these at the unconfigured-level
-                                                                                                ruleNames: s_rules);
+            DisposableValue<ISourceBlock<RestoreUpdate>> transformBlock = source.SourceBlock.TransformWithNoDelta(
+                update => update.Derive(u => CreateRestoreInput(update, u.ProjectConfiguration, u.CurrentState)),
+                suppressVersionOnlyUpdates: false,    // We need to coordinate these at the unconfigured-level
+                options: new JointRuleDataflowLinkOptions { EvaluationRuleNames = s_evaluationRuleNames, BuildRuleNames = s_buildRuleNames });
 
             // Set the link up so that we publish changes to target block
             transformBlock.Value.LinkTo(targetBlock, DataflowOption.PropagateCompletion);
