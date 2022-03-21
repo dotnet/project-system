@@ -88,7 +88,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.References
         {
             var resolution = CreateInstance();
 
-            var result = resolution.ResolveAssemblyPathInTargetFx((string[]?)null, 1, new VsResolvedAssemblyPath[1], out uint resolvedAssemblyPaths);
+            var result = resolution.ResolveAssemblyPathInTargetFx(null, 1, new VsResolvedAssemblyPath[1], out uint resolvedAssemblyPaths);
 
             Assert.Equal(VSConstants.E_INVALIDARG, result);
             Assert.Equal(0u, resolvedAssemblyPaths);
@@ -110,7 +110,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.References
         {
             var resolution = CreateInstance();
 
-            var result = resolution.ResolveAssemblyPathInTargetFx(new string[] { "mscorlib" }, 1, (VsResolvedAssemblyPath[]?)null, out uint resolvedAssemblyPaths);
+            var result = resolution.ResolveAssemblyPathInTargetFx(new string[] { "mscorlib" }, 1, null, out uint resolvedAssemblyPaths);
 
             Assert.Equal(VSConstants.E_INVALIDARG, result);
             Assert.Equal(0u, resolvedAssemblyPaths);

@@ -12,7 +12,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedColl
         {
             var detector = new FlagsStringMatcher(ProjectTreeFlags.Empty);
 
-            Assert.Throws<ArgumentNullException>(() => detector.Matches((string)null!));
+            Assert.Throws<ArgumentNullException>(() => detector.Matches(null!));
         }
 
         [Theory]

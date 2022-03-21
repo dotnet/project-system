@@ -225,7 +225,7 @@ Project (flags: {{ProjectRoot}}), FilePath: ""C:\Project\Project.csproj""
             object[] arguments = new object[3 + additionalArguments.Length];
             arguments[0] = specialFilesManager;
             arguments[1] = projectTree;
-            arguments[2] = (ICreateFileFromTemplateService)null!;
+            arguments[2] = null!;
             additionalArguments.CopyTo(arguments, 3);
 
             // We override CreateFileAsync to call the CreateEmptyFileAsync which makes writting tests in the base easier

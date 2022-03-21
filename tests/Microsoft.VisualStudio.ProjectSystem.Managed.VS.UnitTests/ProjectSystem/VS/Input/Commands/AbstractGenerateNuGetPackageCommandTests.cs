@@ -97,13 +97,13 @@ Root (flags: {ProjectRoot})
 
             // Command is enabled if there is no build in progress.
             var command = CreateInstance(isBuilding: false);
-            var results = await command.GetCommandStatusAsync(nodes, GetCommandId(), true, "commandText", (CommandStatus)0);
+            var results = await command.GetCommandStatusAsync(nodes, GetCommandId(), true, "commandText", 0);
             Assert.True(results.Handled);
             Assert.Equal(CommandStatus.Enabled | CommandStatus.Supported, results.Status);
 
             // Command is disabled if there is build in progress.
             command = CreateInstance(isBuilding: true);
-            results = await command.GetCommandStatusAsync(nodes, GetCommandId(), true, "commandText", (CommandStatus)0);
+            results = await command.GetCommandStatusAsync(nodes, GetCommandId(), true, "commandText", 0);
             Assert.True(results.Handled);
             Assert.Equal(CommandStatus.Supported, results.Status);
         }

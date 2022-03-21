@@ -108,7 +108,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
             hierarchy.ImplementGetGuid(VsHierarchyPropID.ProjectDesignerEditor, result: editorGuid);
 
             var project = (IVsProject4)hierarchy;
-            project.ImplementOpenItemWithSpecific(editorGuid, VSConstants.LOGVIEWID_Primary, (IVsWindowFrame?)null);
+            project.ImplementOpenItemWithSpecific(editorGuid, VSConstants.LOGVIEWID_Primary, null);
 
             var projectVsServices = IUnconfiguredProjectVsServicesFactory.Implement(() => hierarchy, () => project);
 
@@ -167,7 +167,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
 
         private static ProjectDesignerService CreateInstance(IVsProjectDesignerPageService vsProjectDesignerPageService)
         {
-            return CreateInstance((IUnconfiguredProjectVsServices?)null, vsProjectDesignerPageService);
+            return CreateInstance(null, vsProjectDesignerPageService);
         }
 
         private static ProjectDesignerService CreateInstance(IUnconfiguredProjectVsServices? projectVsServices, IVsProjectDesignerPageService? vsProjectDesignerPageService)

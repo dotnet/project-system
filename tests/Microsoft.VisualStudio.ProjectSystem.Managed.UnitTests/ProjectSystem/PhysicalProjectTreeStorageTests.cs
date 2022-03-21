@@ -14,7 +14,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
             await Assert.ThrowsAsync<ArgumentNullException>("path", () =>
             {
-                return storage.AddFileAsync((string?)null!);
+                return storage.AddFileAsync(null!);
             });
         }
 
@@ -36,7 +36,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
             await Assert.ThrowsAsync<ArgumentNullException>("path", () =>
             {
-                return storage.CreateEmptyFileAsync((string?)null!);
+                return storage.CreateEmptyFileAsync(null!);
             });
         }
 
@@ -58,7 +58,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
             await Assert.ThrowsAsync<ArgumentNullException>("path", async () =>
             {
-                await storage.CreateFolderAsync((string?)null!);
+                await storage.CreateFolderAsync(null!);
             });
         }
 
@@ -80,7 +80,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
             await Assert.ThrowsAsync<ArgumentNullException>("path", async () =>
             {
-                await storage.AddFolderAsync((string?)null!);
+                await storage.AddFolderAsync(null!);
             });
         }
 
