@@ -3,7 +3,6 @@
 using System.Collections.Immutable;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
 using Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Models;
-using Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot.Filters;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies;
 
 namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
@@ -28,11 +27,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
         public static TargetedDependenciesSnapshot FromChanges(
             TargetedDependenciesSnapshot previousSnapshot,
             IDependenciesChanges? changes,
-            IProjectCatalogSnapshot? catalogs,
-            ImmutableArray<IDependenciesSnapshotFilter> snapshotFilters)
+            IProjectCatalogSnapshot? catalogs)
         {
             Requires.NotNull(previousSnapshot, nameof(previousSnapshot));
-            Requires.Argument(!snapshotFilters.IsDefault, nameof(snapshotFilters), "Cannot be default.");
 
             bool anyChanges = false;
 
@@ -52,8 +49,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
 
             if (changes != null && changes.AddedNodes.Count != 0)
             {
-                var context = new AddDependencyContext(dependencyById);
-
                 foreach (IDependencyModel added in changes.AddedNodes)
                 {
 #pragma warning disable CS0618 // Type or member is obsolete
@@ -62,7 +57,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
                         continue;
 #pragma warning restore CS0618 // Type or member is obsolete
 
-                    Add(context, added);
+                    IDependency? dependency = new Dependency(added);
+
+                    DeduplicateCaptions(ref dependency, dependencyById);
+
+                    if (dependency != null)
+                    {
+                        // A dependency was accepted
+                        DependencyId id = added.GetDependencyId();
+                        dependencyById[id] = dependency;
+                        anyChanges = true;
+                    }
                 }
             }
 
@@ -81,42 +86,79 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
             }
 
             return previousSnapshot;
+        }
 
-            void Add(AddDependencyContext context, IDependencyModel dependencyModel)
+        /// <summary>
+        /// Deduplicates captions of top-level dependencies from the same provider. This is done by
+        /// appending the <see cref="IDependencyModel.OriginalItemSpec"/> to the caption in parentheses.
+        /// </summary>
+        private static void DeduplicateCaptions(
+            ref IDependency dependency,
+            Dictionary<DependencyId, IDependency> dependencyById)
+        {
+            IDependency? matchingDependency = null;
+            bool shouldApplyAlias = false;
+
+            foreach ((DependencyId _, IDependency other) in dependencyById)
             {
-                // Create the unfiltered dependency
-                IDependency? dependency = new Dependency(dependencyModel);
-
-                context.Reset();
-
-                foreach (IDependenciesSnapshotFilter filter in snapshotFilters)
+                if (StringComparers.DependencyTreeIds.Equals(other.Id, dependency.Id) ||
+                    !StringComparers.DependencyProviderTypes.Equals(other.ProviderType, dependency.ProviderType))
                 {
-                    filter.BeforeAddOrUpdate(
-                        dependency,
-                        context);
+                    continue;
+                }
 
-                    dependency = context.GetResult(filter);
-
-                    if (dependency == null)
+                if (other.Caption.StartsWith(dependency.Caption, StringComparisons.ProjectTreeCaptionIgnoreCase))
+                {
+                    if (other.Caption.Length == dependency.Caption.Length)
                     {
+                        // Exact match.
+                        matchingDependency = other;
+                        shouldApplyAlias = true;
                         break;
                     }
+
+                    // Prefix matches.
+                    // Check whether we have a match of form "Caption (Suffix)".
+                    string? suffix = GetSuffix(other);
+
+                    if (suffix != null)
+                    {
+                        int expectedItemSpecIndex = dependency.Caption.Length + 2; // " (".Length
+                        int expectedLength = expectedItemSpecIndex + suffix.Length + 1; // ")".Length
+
+                        if (other.Caption.Length == expectedLength &&
+                            string.Compare(other.Caption, expectedItemSpecIndex, suffix, 0, suffix.Length, StringComparisons.ProjectTreeCaptionIgnoreCase) == 0)
+                        {
+                            shouldApplyAlias = true;
+                        }
+                    }
+                }
+            }
+
+            if (shouldApplyAlias)
+            {
+                if (matchingDependency != null)
+                {
+                    // Change the matching dependency's caption too
+                    IDependency modifiedMatching = matchingDependency.WithCaption(caption: GetAlias(matchingDependency));
+                    dependencyById[modifiedMatching.GetDependencyId()] = modifiedMatching;
                 }
 
-                if (dependency != null)
-                {
-                    // A dependency was accepted
-                    DependencyId id = dependencyModel.GetDependencyId();
-                    dependencyById.Remove(id);
-                    dependencyById.Add(id, dependency);
-                    anyChanges = true;
-                }
-                else
-                {
-                    // Even though the dependency was rejected, it's possible that filters made
-                    // changes to other dependencies.
-                    anyChanges |= context.Changed;
-                }
+                // Use the alias for the caption
+                dependency = dependency.WithCaption(caption: GetAlias(dependency));
+            }
+
+            return;
+
+            static string? GetSuffix(IDependency dependency) => dependency.OriginalItemSpec ?? dependency.FilePath;
+
+            static string GetAlias(IDependency dependency)
+            {
+                string? suffix = GetSuffix(dependency);
+
+                return Strings.IsNullOrEmpty(suffix) || suffix.Equals(dependency.Caption, StringComparisons.ProjectTreeCaptionIgnoreCase)
+                    ? dependency.Caption
+                    : string.Concat(dependency.Caption, " (", suffix, ")");
             }
         }
 
