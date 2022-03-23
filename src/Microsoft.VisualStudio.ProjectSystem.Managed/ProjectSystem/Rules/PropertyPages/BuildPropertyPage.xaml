@@ -202,13 +202,7 @@
                   DisplayName="Suppress specific warnings"
                   Description="Blocks the compiler from generating the specified warnings. Separate multiple warning numbers with a comma (',') or semicolon (';')."
                   HelpUrl="https://go.microsoft.com/fwlink/?linkid=2147300"
-                  Category="ErrorsAndWarnings">
-    <StringProperty.Metadata>
-      <NameValuePair Name="VisibilityCondition">
-        <NameValuePair.Value>(not (has-evaluated-value "Build" "WarningLevel" "0"))</NameValuePair.Value>
-      </NameValuePair>
-    </StringProperty.Metadata>
-  </StringProperty>
+                  Category="ErrorsAndWarnings" />
 
   <BoolProperty Name="TreatWarningsAsErrors"
                 HelpUrl="https://go.microsoft.com/fwlink/?linkid=2147301"
@@ -218,11 +212,6 @@
     <BoolProperty.DataSource>
       <DataSource Persistence="ProjectFileWithInterception" />
     </BoolProperty.DataSource>
-    <BoolProperty.Metadata>
-      <NameValuePair Name="VisibilityCondition">
-        <NameValuePair.Value>(not (has-evaluated-value "Build" "WarningLevel" "0"))</NameValuePair.Value>
-      </NameValuePair>
-    </BoolProperty.Metadata>
   </BoolProperty>
 
   <StringProperty Name="WarningsAsErrors"
@@ -234,8 +223,7 @@
       <NameValuePair Name="DependsOn" Value="Build::TreatWarningsAsErrors" />
       <NameValuePair Name="VisibilityCondition">
         <NameValuePair.Value>
-          (and (has-evaluated-value "Build" "TreatWarningsAsErrors" false)
-               (not (has-evaluated-value "Build" "WarningLevel" "0")))
+          (has-evaluated-value "Build" "TreatWarningsAsErrors" false)
         </NameValuePair.Value>
       </NameValuePair>
     </StringProperty.Metadata>
@@ -250,8 +238,7 @@
       <NameValuePair Name="DependsOn" Value="Build::TreatWarningsAsErrors" />
       <NameValuePair Name="VisibilityCondition">
         <NameValuePair.Value>
-          (and (has-evaluated-value "Build" "TreatWarningsAsErrors" true)
-               (not (has-evaluated-value "Build" "WarningLevel" "0")))
+          (has-evaluated-value "Build" "TreatWarningsAsErrors" true)
         </NameValuePair.Value>
       </NameValuePair>
     </StringProperty.Metadata>
