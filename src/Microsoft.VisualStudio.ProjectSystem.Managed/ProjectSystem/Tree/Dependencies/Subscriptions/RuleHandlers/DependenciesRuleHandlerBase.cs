@@ -166,8 +166,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Subscriptions.R
 
             bool isImplicit = IsImplicit(projectFullPath, evaluationProperties);
 
-            // When we only have evaluation item, mark the dependency as resolved if we currently have a resolved item improve
-            // this, so that if a resolved item is known, we don't revert back to unresolved state.
+            // When we only have evaluation data, mark the dependency as resolved if we currently have a corresponding resolved item
             isResolved = isResolved || changesBuilder.HasResolvedItem(targetFramework, ProviderType, originalItemSpec);
 
             return CreateDependencyModel(
