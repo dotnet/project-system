@@ -57,17 +57,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
                         continue;
 #pragma warning restore CS0618 // Type or member is obsolete
 
-                    IDependency? dependency = new Dependency(added);
+                    IDependency dependency = new Dependency(added);
 
                     DeduplicateCaptions(ref dependency, dependencyById);
 
-                    if (dependency != null)
-                    {
-                        // A dependency was accepted
-                        DependencyId id = added.GetDependencyId();
-                        dependencyById[id] = dependency;
-                        anyChanges = true;
-                    }
+                    dependencyById[dependency.GetDependencyId()] = dependency;
+
+                    anyChanges = true;
                 }
             }
 
