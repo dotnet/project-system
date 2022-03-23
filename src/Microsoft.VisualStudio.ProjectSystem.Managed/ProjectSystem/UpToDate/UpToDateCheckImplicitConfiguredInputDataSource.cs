@@ -24,11 +24,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
         private readonly IUpToDateCheckStatePersistence? _persistentState;
         private readonly IProjectAsynchronousTasksService _projectAsynchronousTasksService;
 
-        private static ImmutableHashSet<string> ProjectPropertiesSchemas => ImmutableStringHashSet.EmptyOrdinal
+        private static readonly ImmutableHashSet<string> s_evaluationRuleNames = Empty.OrdinalIgnoreCaseStringSet
             .Add(ConfigurationGeneral.SchemaName)
+            .Add(CopyUpToDateMarker.SchemaName);
+
+        private static readonly ImmutableHashSet<string> s_buildRuleNames = Empty.OrdinalIgnoreCaseStringSet
             .Add(ResolvedAnalyzerReference.SchemaName)
             .Add(ResolvedCompilationReference.SchemaName)
-            .Add(CopyUpToDateMarker.SchemaName)
             .Add(UpToDateCheckInput.SchemaName)
             .Add(UpToDateCheckOutput.SchemaName)
             .Add(UpToDateCheckBuilt.SchemaName);
@@ -69,7 +71,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             {
                 // Sync-link various sources to our transform block
                 ProjectDataSources.SyncLinkTo(
-                    source1.SourceBlock.SyncLinkOptions(DataflowOption.WithRuleNames(ProjectPropertiesSchemas)),
+                    source1.SourceBlock.SyncLinkOptions(new JointRuleDataflowLinkOptions() { BuildRuleNames = s_buildRuleNames, EvaluationRuleNames = s_evaluationRuleNames }),
                     source2.SourceBlock.SyncLinkOptions(),
                     source3.SourceBlock.SyncLinkOptions(),
                     source4.SourceBlock.SyncLinkOptions(),
