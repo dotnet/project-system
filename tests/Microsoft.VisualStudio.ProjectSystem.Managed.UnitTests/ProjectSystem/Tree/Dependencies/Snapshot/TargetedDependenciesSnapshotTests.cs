@@ -129,8 +129,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
             };
 
             var changes = new DependenciesChangesBuilder();
-            changes.Added(resolved);
-            changes.Added(unresolved);
+            changes.Added(targetFramework, resolved);
+            changes.Added(targetFramework, unresolved);
 
             var snapshot = TargetedDependenciesSnapshot.FromChanges(
                 previousSnapshot,
@@ -180,7 +180,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
                 ImmutableArray.Create<IDependency>(dependency1));
 
             var changes = new DependenciesChangesBuilder();
-            changes.Added(dependencyModelNew1);
+            changes.Added(targetFramework, dependencyModelNew1);
 
             var snapshotFilter = new TestDependenciesSnapshotFilter()
                 .BeforeAddReject("Xxx", "newdependency1");
@@ -240,7 +240,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
                 ImmutableArray.Create<IDependency>(dependency1, dependency2));
 
             var changes = new DependenciesChangesBuilder();
-            changes.Added(dependencyModelNew1);
+            changes.Added(targetFramework, dependencyModelNew1);
 
             var filterAddedDependency = new TestDependency { Id = "unexpected" };
 
@@ -354,10 +354,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
                 ImmutableArray.Create<IDependency>(dependency1, dependency2, dependencyRemoved1));
 
             var changes = new DependenciesChangesBuilder();
-            changes.Added(dependencyModelAdded1);
-            changes.Added(dependencyModelAdded2);
-            changes.Added(dependencyModelAdded3);
-            changes.Removed("Xxx", "Removeddependency1");
+            changes.Added(targetFramework, dependencyModelAdded1);
+            changes.Added(targetFramework, dependencyModelAdded2);
+            changes.Added(targetFramework, dependencyModelAdded3);
+            changes.Removed(targetFramework, "Xxx", "Removeddependency1");
 
             var snapshotFilter = new TestDependenciesSnapshotFilter()
                 .BeforeAddReject("Xxx", "addeddependency1")
@@ -427,7 +427,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
                 ImmutableArray.Create<IDependency>(dependencyPrevious));
 
             var changes = new DependenciesChangesBuilder();
-            changes.Added(dependencyModelAdded);
+            changes.Added(targetFramework, dependencyModelAdded);
 
             var snapshotFilter = new TestDependenciesSnapshotFilter()
                     .BeforeAddAccept("Xxx", "dependency1", dependencyUpdated);
@@ -470,7 +470,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
                 ImmutableArray.Create<IDependency>(dependencyPrevious));
 
             var changes = new DependenciesChangesBuilder();
-            changes.Added(dependencyModelUpdated);
+            changes.Added(targetFramework, dependencyModelUpdated);
 
             var snapshot = TargetedDependenciesSnapshot.FromChanges(
                 previousSnapshot,

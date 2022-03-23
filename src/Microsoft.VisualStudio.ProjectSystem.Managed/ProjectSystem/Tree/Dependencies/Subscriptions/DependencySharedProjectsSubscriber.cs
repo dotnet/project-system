@@ -106,7 +106,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Subscriptions
                     isResolved: true,
                     isImplicit: false,
                     properties: ImmutableStringDictionary<string>.EmptyOrdinal);
-                changesBuilder.Added(added);
+                changesBuilder.Added(targetFramework, added);
             }
 
             // process removed nodes
@@ -117,6 +117,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Subscriptions
                 if (exists)
                 {
                     changesBuilder.Removed(
+                        targetFramework,
                         ProjectRuleHandler.ProviderTypeString,
                         dependencyId: removedSharedImportPath);
                 }

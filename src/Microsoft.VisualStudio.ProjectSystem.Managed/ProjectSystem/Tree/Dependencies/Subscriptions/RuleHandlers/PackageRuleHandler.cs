@@ -47,7 +47,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Subscriptions.R
         protected override void HandleAddedItem(
             string projectFullPath,
             string addedItem,
-            bool resolved,
             IProjectChangeDescription projectChange,
             IProjectRuleSnapshot evaluationRuleSnapshot,
             DependenciesChangesBuilder changesBuilder,
@@ -57,57 +56,33 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Subscriptions.R
             if (TryCreatePackageDependencyModel(
                 projectFullPath,
                 addedItem,
-                resolved,
                 properties: projectChange.After.GetProjectItemProperties(addedItem)!,
                 evaluationRuleSnapshot,
                 isEvaluatedItemSpec,
                 targetFramework,
+                changesBuilder,
                 out PackageDependencyModel? dependencyModel))
             {
-                changesBuilder.Added(dependencyModel);
-            }
-        }
-
-        protected override void HandleChangedItem(
-            string projectFullPath,
-            string changedItem,
-            bool resolved,
-            IProjectChangeDescription projectChange,
-            IProjectRuleSnapshot evaluationRuleSnapshot,
-            DependenciesChangesBuilder changesBuilder,
-            TargetFramework targetFramework,
-            Func<string, bool>? isEvaluatedItemSpec)
-        {
-            if (TryCreatePackageDependencyModel(
-                projectFullPath,
-                changedItem,
-                resolved,
-                properties: projectChange.After.GetProjectItemProperties(changedItem)!,
-                evaluationRuleSnapshot,
-                isEvaluatedItemSpec,
-                targetFramework,
-                out PackageDependencyModel? dependencyModel))
-            {
-                changesBuilder.Removed(ProviderTypeString, dependencyModel.OriginalItemSpec);
-                changesBuilder.Added(dependencyModel);
+                changesBuilder.Added(targetFramework, dependencyModel);
             }
         }
 
         protected override void HandleRemovedItem(
             string projectFullPath,
             string removedItem,
-            bool resolved,
             IProjectChangeDescription projectChange,
             IProjectRuleSnapshot evaluationRuleSnapshot,
             DependenciesChangesBuilder changesBuilder,
             TargetFramework targetFramework,
             Func<string, bool>? isEvaluatedItemSpec)
         {
-            string originalItemSpec = resolved
+            bool isResolvedItem = isEvaluatedItemSpec is not null;
+
+            string originalItemSpec = isResolvedItem
                 ? projectChange.Before.GetProjectItemProperties(removedItem)?.GetStringProperty(ProjectItemMetadata.Name) ?? removedItem
                 : removedItem;
 
-            changesBuilder.Removed(ProviderTypeString, originalItemSpec);
+            changesBuilder.Removed(targetFramework, ProviderTypeString, originalItemSpec);
         }
 
         public override IDependencyModel CreateRootDependencyNode() => s_groupModel;
@@ -117,40 +92,24 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Subscriptions.R
         private bool TryCreatePackageDependencyModel(
             string projectFullPath,
             string itemSpec,
-            bool isResolved,
             IImmutableDictionary<string, string> properties,
             IProjectRuleSnapshot evaluationRuleSnapshot,
             Func<string, bool>? isEvaluatedItemSpec,
             TargetFramework targetFramework,
+            DependenciesChangesBuilder changesBuilder,
             [NotNullWhen(returnValue: true)] out PackageDependencyModel? dependencyModel)
         {
             Requires.NotNullOrEmpty(itemSpec, nameof(itemSpec));
             Requires.NotNull(properties, nameof(properties));
+            Requires.NotNull(targetFramework, nameof(targetFramework));
 
-            // PackageReference uses Name rather than OriginalItemSpec.
-            string originalItemSpec = isResolved
-                ? properties.GetStringProperty(ProjectItemMetadata.Name) ?? itemSpec
-                : itemSpec;
+            bool isResolvedItem = isEvaluatedItemSpec is not null;
 
-            IImmutableDictionary<string, string>? evaluationProperties = evaluationRuleSnapshot.GetProjectItemProperties(originalItemSpec);
+            string originalItemSpec;
 
-            if (evaluationProperties == null)
-            {
-                // This package is present in build results, but not in evaluation.
-                // We disallow packages which are not present in evaluation.
-                dependencyModel = null;
-                return false;
-            }
-
-            bool isImplicit = IsImplicit(projectFullPath, evaluationProperties);
-
-            if (isResolved)
+            if (isEvaluatedItemSpec is not null)
             {
                 // We have design-time build data
-
-                Requires.NotNull(targetFramework, nameof(targetFramework));
-                Requires.NotNull(isEvaluatedItemSpec!, nameof(isEvaluatedItemSpec));
-
                 string? name = properties.GetStringProperty(ProjectItemMetadata.Name);
 
                 string? dependencyType = properties.GetStringProperty(ProjectItemMetadata.Type);
@@ -214,6 +173,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Subscriptions.R
                     return false;
                 }
 
+                // PackageReference uses Name rather than OriginalItemSpec.
                 originalItemSpec = name;
             }
             else
@@ -224,6 +184,21 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Subscriptions.R
 
                 originalItemSpec = itemSpec;
             }
+
+            IImmutableDictionary<string, string>? evaluationProperties = evaluationRuleSnapshot.GetProjectItemProperties(originalItemSpec);
+
+            if (evaluationProperties == null)
+            {
+                // This package is present in build results, but not in evaluation.
+                // We disallow packages which are not present in evaluation.
+                dependencyModel = null;
+                return false;
+            }
+
+            bool isImplicit = IsImplicit(projectFullPath, evaluationProperties);
+
+            // When we only have evaluation data, mark the dependency as resolved if we currently have a corresponding resolved item
+            bool isResolved = isResolvedItem || changesBuilder.HasResolvedItem(targetFramework, ProviderType, originalItemSpec);
 
             dependencyModel = new PackageDependencyModel(
                 originalItemSpec,
