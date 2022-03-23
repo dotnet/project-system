@@ -392,6 +392,21 @@
         <target state="needs-review-translation">5</target>
         <note />
       </trans-unit>
+      <trans-unit id="EnumValue|WarningLevel.6|DisplayName">
+        <source>6 - Warnings from C# 10</source>
+        <target state="new">6 - Warnings from C# 10</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|WarningLevel.7|DisplayName">
+        <source>7 - Warnings from C# 11</source>
+        <target state="new">7 - Warnings from C# 11</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|WarningLevel.9999|DisplayName">
+        <source>9999 - All warnings</source>
+        <target state="new">9999 - All warnings</target>
+        <note />
+      </trans-unit>
       <trans-unit id="Rule|Build|Description">
         <source>Specifies properties that control how the project builds.</source>
         <target state="translated">Especifica as propriedades que controlam como o projeto é compilado.</target>

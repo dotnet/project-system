@@ -190,6 +190,12 @@
                DisplayName="4 - Informational warnings" />
     <EnumValue Name="5"
                DisplayName="5 - Warnings from C# 9" />
+    <EnumValue Name="6"
+               DisplayName="6 - Warnings from C# 10" />
+    <EnumValue Name="7"
+               DisplayName="7 - Warnings from C# 11" />
+    <EnumValue Name="9999"
+               DisplayName="9999 - All warnings" />
   </EnumProperty>
 
   <StringProperty Name="NoWarn"
