@@ -43,7 +43,6 @@ This diagram gives an insight into the flow of data through the dependencies tre
 
 flowchart LR
   subgraph UnconfiguredProject Scope
-    filters[IDependenciesSnapshotFilter]
     handlers[IDependenciesRuleHandler]
     subgraph ConfiguredProject Scope
       direction TB
@@ -55,7 +54,6 @@ flowchart LR
     evaluation == "snapshot + delta" ==> DependencyRulesSubscriber
     design-time-build == "snapshot + delta" ==> DependencyRulesSubscriber
     handlers -- "import many" -.-> DependencyRulesSubscriber
-    filters -- "import many" -.-> DependencyRulesSubscriber
     DependencyRulesSubscriber -- "IDependenciesChanges (delta)" --> DependenciesSnapshotProvider
     IDependenciesTreeViewProvider["IDependenciesTreeViewProvider.BuildTreeAsync"]
     DependenciesSnapshotProvider == DependenciesSnapshot ==> IDependenciesTreeViewProvider
@@ -217,7 +215,6 @@ The _Web Tools Extensions_ project is a good example of a project flavor that do
 [IProjectDependenciesSubTreeProvider]:    /src/Microsoft.VisualStudio.ProjectSystem.Managed/ProjectSystem/Tree/Dependencies/IProjectDependenciesSubTreeProvider.cs "IProjectDependenciesSubTreeProvider.cs"
 [IDependencyViewModel]:                   /src/Microsoft.VisualStudio.ProjectSystem.Managed/ProjectSystem/Tree/Dependencies/Models/IDependencyViewModel.cs "IDependencyViewModel.cs"
 [DependenciesSnapshot]:                   /src/Microsoft.VisualStudio.ProjectSystem.Managed/ProjectSystem/Tree/Dependencies/Snapshot/DependenciesSnapshot.cs "DependenciesSnapshot.cs"
-[IDependenciesSnapshotFilter]:            /src/Microsoft.VisualStudio.ProjectSystem.Managed/ProjectSystem/Tree/Dependencies/Snapshot/Filters/IDependenciesSnapshotFilter.cs "IDependenciesSnapshotFilter.cs"
 [DependenciesSnapshot]:                   /src/Microsoft.VisualStudio.ProjectSystem.Managed/ProjectSystem/Tree/Dependencies/Snapshot/DependenciesSnapshot.cs "DependenciesSnapshot.cs"
 [IDependency]:                            /src/Microsoft.VisualStudio.ProjectSystem.Managed/ProjectSystem/Tree/Dependencies/Snapshot/IDependency.cs "IDependency.cs"
 [TargetedDependenciesSnapshot]:           /src/Microsoft.VisualStudio.ProjectSystem.Managed/ProjectSystem/Tree/Dependencies/Snapshot/TargetedDependenciesSnapshot.cs "TargetedDependenciesSnapshot.cs"
