@@ -38,9 +38,6 @@ Additionally, third parties may provide extensions (see [Extensibily model](#ext
 This diagram gives an insight into the flow of data through the dependencies tree subsystem for top-level dependencies obtained via MSBuild.
 
 ```mermaid
-%% TODO add click handlers:
-%%   click A "https://github.com/dotnet/project-system/..." "Click to view source"
-
 flowchart LR
   subgraph UnconfiguredProject Scope
     handlers[IDependenciesRuleHandler]
@@ -59,6 +56,11 @@ flowchart LR
     DependenciesSnapshotProvider == DependenciesSnapshot ==> IDependenciesTreeViewProvider
     IDependenciesTreeViewProvider -- IProjectTree --> ProjectTreeProviderBase.SubmitTreeUpdateAsync
   end
+
+  click handlers "https://github.com/dotnet/project-system/blob/main/src/Microsoft.VisualStudio.ProjectSystem.Managed/ProjectSystem/Tree/Dependencies/CrossTarget/IDependenciesRuleHandler.cs" "Click to view source"
+  click DependencyRulesSubscriber "https://github.com/dotnet/project-system/blob/main/src/Microsoft.VisualStudio.ProjectSystem.Managed/ProjectSystem/Tree/Dependencies/Subscriptions/DependencyRulesSubscriber.cs" "Click to view source"
+  click IDependenciesTreeViewProvider "https://github.com/dotnet/project-system/blob/main/src/src/Microsoft.VisualStudio.ProjectSystem.Managed/ProjectSystem/Tree/Dependencies/IDependenciesTreeViewProvider.cs" "Click to view source"
+  click DependenciesSnapshotProvider "https://github.com/dotnet/project-system/blob/main/src/src/src/Microsoft.VisualStudio.ProjectSystem.Managed/ProjectSystem/Tree/Dependencies/Subscriptions/DependenciesSnapshotProvider.cs" "Click to view source"
 ```
 
 Bold lines indicate Dataflow subscriptions.
