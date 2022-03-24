@@ -215,7 +215,6 @@ The _Web Tools Extensions_ project is a good example of a project flavor that do
 [IProjectDependenciesSubTreeProvider]:    /src/Microsoft.VisualStudio.ProjectSystem.Managed/ProjectSystem/Tree/Dependencies/IProjectDependenciesSubTreeProvider.cs "IProjectDependenciesSubTreeProvider.cs"
 [IDependencyViewModel]:                   /src/Microsoft.VisualStudio.ProjectSystem.Managed/ProjectSystem/Tree/Dependencies/Models/IDependencyViewModel.cs "IDependencyViewModel.cs"
 [DependenciesSnapshot]:                   /src/Microsoft.VisualStudio.ProjectSystem.Managed/ProjectSystem/Tree/Dependencies/Snapshot/DependenciesSnapshot.cs "DependenciesSnapshot.cs"
-[DependenciesSnapshot]:                   /src/Microsoft.VisualStudio.ProjectSystem.Managed/ProjectSystem/Tree/Dependencies/Snapshot/DependenciesSnapshot.cs "DependenciesSnapshot.cs"
 [IDependency]:                            /src/Microsoft.VisualStudio.ProjectSystem.Managed/ProjectSystem/Tree/Dependencies/Snapshot/IDependency.cs "IDependency.cs"
 [TargetedDependenciesSnapshot]:           /src/Microsoft.VisualStudio.ProjectSystem.Managed/ProjectSystem/Tree/Dependencies/Snapshot/TargetedDependenciesSnapshot.cs "TargetedDependenciesSnapshot.cs"
 [DependenciesRuleHandlerBase]:            /src/Microsoft.VisualStudio.ProjectSystem.Managed/ProjectSystem/Tree/Dependencies/Subscriptions/RuleHandlers/DependenciesRuleHandlerBase.cs "DependenciesRuleHandlerBase.cs"
