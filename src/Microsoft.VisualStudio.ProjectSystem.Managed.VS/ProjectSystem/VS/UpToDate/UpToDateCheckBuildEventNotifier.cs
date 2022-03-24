@@ -10,19 +10,19 @@ using IAsyncDisposable = System.IAsyncDisposable;
 namespace Microsoft.VisualStudio.ProjectSystem.VS.UpToDate
 {
     /// <summary>
-    /// Listens for rebuild events and notifies the fast up-to-date check of them
-    /// via <see cref="IBuildUpToDateCheckProviderInternal.NotifyRebuildStarting"/>.
+    /// Listens for build events and notifies the fast up-to-date check of them
+    /// via <see cref="IBuildUpToDateCheckProviderInternal"/>.
     /// </summary>
     [Export(ExportContractNames.Scopes.UnconfiguredProject, typeof(IProjectDynamicLoadComponent))]
     [AppliesTo(BuildUpToDateCheck.AppliesToExpression)]
-    internal sealed class BuildUpToDateCheckRebuildNotifier : OnceInitializedOnceDisposedAsync, IVsUpdateSolutionEvents2, IProjectDynamicLoadComponent
+    internal sealed class UpToDateCheckBuildEventNotifier : OnceInitializedOnceDisposedAsync, IVsUpdateSolutionEvents2, IProjectDynamicLoadComponent
     {
         private readonly ISolutionBuildManager _solutionBuildManager;
 
         private IAsyncDisposable? _solutionBuildEventsSubscription;
 
         [ImportingConstructor]
-        public BuildUpToDateCheckRebuildNotifier(
+        public UpToDateCheckBuildEventNotifier(
             JoinableTaskContext joinableTaskContext,
             ISolutionBuildManager solutionBuildManager)
             : base(new(joinableTaskContext))
@@ -56,48 +56,67 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.UpToDate
         /// </summary>
         int IVsUpdateSolutionEvents2.UpdateProjectCfg_Begin(IVsHierarchy pHierProj, IVsCfg pCfgProj, IVsCfg pCfgSln, uint dwAction, ref int pfCancel)
         {
-            if (IsRebuild(dwAction))
+            if (IsBuild(dwAction))
             {
                 foreach (IBuildUpToDateCheckProviderInternal provider in FindActiveConfiguredProviders(pHierProj))
                 {
-                    provider.NotifyRebuildStarting();
+                    provider.NotifyBuildStarting(DateTime.UtcNow);
                 }
             }
 
             return HResult.OK;
+        }
 
-            static bool IsRebuild(uint options)
+        /// <summary>
+        /// Called right after a project configuration is finished building.
+        /// </summary>
+        int IVsUpdateSolutionEvents2.UpdateProjectCfg_Done(IVsHierarchy pHierProj, IVsCfg pCfgProj, IVsCfg pCfgSln, uint dwAction, int fSuccess, int fCancel)
+        {
+            if (fCancel == 0 && IsBuild(dwAction))
             {
-                const VSSOLNBUILDUPDATEFLAGS flags = VSSOLNBUILDUPDATEFLAGS.SBF_OPERATION_BUILD | VSSOLNBUILDUPDATEFLAGS.SBF_OPERATION_FORCE_UPDATE;
-
-                var operation = (VSSOLNBUILDUPDATEFLAGS)options;
-
-                if ((operation & flags) == flags)
+                foreach (IBuildUpToDateCheckProviderInternal provider in FindActiveConfiguredProviders(pHierProj))
                 {
-                    return true;
+                    provider.NotifyBuildCompleted(wasSuccessful: fSuccess != 0);
                 }
-
-                return false;
             }
 
-            static IEnumerable<IBuildUpToDateCheckProviderInternal> FindActiveConfiguredProviders(IVsHierarchy vsHierarchy)
+            return HResult.OK;
+        }
+
+        /// <summary>
+        /// Returns <see langword="true"/> if <paramref name="options"/> indicates either a build or rebuild.
+        /// </summary>
+        private static bool IsBuild(uint options)
+        {
+            const VSSOLNBUILDUPDATEFLAGS flags = VSSOLNBUILDUPDATEFLAGS.SBF_OPERATION_BUILD;
+
+            var operation = (VSSOLNBUILDUPDATEFLAGS)options;
+
+            if ((operation & flags) == flags)
             {
-                UnconfiguredProject? unconfiguredProject = vsHierarchy.AsUnconfiguredProject();
-
-                if (unconfiguredProject is not null)
-                {
-                    IActiveConfiguredProjectProvider activeConfiguredProjectProvider = unconfiguredProject.Services.ExportProvider.GetExportedValue<IActiveConfiguredProjectProvider>();
-
-                    ConfiguredProject? configuredProject = activeConfiguredProjectProvider.ActiveConfiguredProject;
-
-                    if (configuredProject is not null)
-                    {
-                        return configuredProject.Services.ExportProvider.GetExportedValues<IBuildUpToDateCheckProviderInternal>();
-                    }
-                }
-
-                return Enumerable.Empty<IBuildUpToDateCheckProviderInternal>();
+                return true;
             }
+
+            return false;
+        }
+
+        private static IEnumerable<IBuildUpToDateCheckProviderInternal> FindActiveConfiguredProviders(IVsHierarchy vsHierarchy)
+        {
+            UnconfiguredProject? unconfiguredProject = vsHierarchy.AsUnconfiguredProject();
+
+            if (unconfiguredProject is not null)
+            {
+                IActiveConfiguredProjectProvider activeConfiguredProjectProvider = unconfiguredProject.Services.ExportProvider.GetExportedValue<IActiveConfiguredProjectProvider>();
+
+                ConfiguredProject? configuredProject = activeConfiguredProjectProvider.ActiveConfiguredProject;
+
+                if (configuredProject is not null)
+                {
+                    return configuredProject.Services.ExportProvider.GetExportedValues<IBuildUpToDateCheckProviderInternal>();
+                }
+            }
+
+            return Enumerable.Empty<IBuildUpToDateCheckProviderInternal>();
         }
 
         #region IVsUpdateSolutionEvents stubs
@@ -113,11 +132,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.UpToDate
         int IVsUpdateSolutionEvents2.UpdateSolution_Done(int fSucceeded, int fModified, int fCancelCommand) => HResult.OK;
         int IVsUpdateSolutionEvents2.UpdateSolution_StartUpdate(ref int pfCancelUpdate) => HResult.OK;
         int IVsUpdateSolutionEvents2.UpdateSolution_Cancel() => HResult.OK;
-
-        /// <summary>
-        /// Called right after a project configuration is finished building.
-        /// </summary>
-        int IVsUpdateSolutionEvents2.UpdateProjectCfg_Done(IVsHierarchy pHierProj, IVsCfg pCfgProj, IVsCfg pCfgSln, uint dwAction, int fSuccess, int fCancel) => HResult.OK;
 
         #endregion
     }
