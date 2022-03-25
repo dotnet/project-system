@@ -115,6 +115,30 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
                 newUIProperty.VisibilityCondition = visibilityCondition ?? string.Empty;
             }
 
+            if (requestedProperties.AllowedVaryByDimensions)
+            {
+                string? allowedVaryByDimensions = property.GetMetadataValueOrNull("AllowedVaryByDimensions");
+                newUIProperty.AllowedVaryByDimensions = allowedVaryByDimensions ?? string.Empty;
+            }
+            
+            if (requestedProperties.DisallowedVaryByDimensions)
+            {
+                string? disallowedVaryByDimensions = property.GetMetadataValueOrNull("DisallowedVaryByDimensions");
+                newUIProperty.DisallowedVaryByDimensions = disallowedVaryByDimensions ?? string.Empty;
+            }
+            
+            if (requestedProperties.AllowedDimensionalValues)
+            {
+                string? allowedDimensionalValues = property.GetMetadataValueOrNull("AllowedDimensionalValues");
+                newUIProperty.AllowedDimensionalValues = allowedDimensionalValues ?? string.Empty;
+            }
+
+            if (requestedProperties.DisallowedDimensionalValues)
+            {
+                string? disallowedDimensionalValues = property.GetMetadataValueOrNull("DisallowedDimensionalValues");
+                newUIProperty.DisallowedDimensionalValues = disallowedDimensionalValues ?? string.Empty;
+            }
+            
             ((IEntityValueFromProvider)newUIProperty).ProviderState = new PropertyProviderState(cache, property.ContainingRule, propertiesContext, property.Name);
 
             return newUIProperty;
