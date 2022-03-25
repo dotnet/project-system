@@ -63,10 +63,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Subscriptions
         protected void Subscribe(
             ConfiguredProject configuredProject,
             IProjectValueDataSource<IProjectSubscriptionUpdate> dataSource,
+            string[] ruleNames,
             string nameFormat,
-            Func<(ISourceBlock<IProjectVersionedValue<IProjectSubscriptionUpdate>> Intermediate, ITargetBlock<IProjectVersionedValue<T>> Action), IDisposable> syncLink,
-            string[]? ruleNames = null,
-            DataflowLinkOptions? options = null)
+            Func<(ISourceBlock<IProjectVersionedValue<IProjectSubscriptionUpdate>> Intermediate, ITargetBlock<IProjectVersionedValue<T>> Action), IDisposable> syncLink)
         {
             // Use an intermediate buffer block for project rule data to allow subsequent blocks
             // to only observe specific rule name(s).
@@ -85,9 +84,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Subscriptions
             _subscriptions.Add(
                 dataSource.SourceBlock.LinkTo(
                     intermediateBlock,
-                    ruleNames: ruleNames ?? Array.Empty<string>(),
+                    ruleNames: ruleNames,
                     suppressVersionOnlyUpdates: false,
-                    linkOptions: options ?? DataflowOption.PropagateCompletion));
+                    linkOptions: DataflowOption.PropagateCompletion));
 
             _subscriptions.Add(syncLink((intermediateBlock, actionBlock)));
         }

@@ -15,9 +15,9 @@ namespace Microsoft.VisualStudio.ProjectSystem
             IImmutableSet<string>? changedItems = null,
             IImmutableDictionary<string, string>? renamedItems = null)
         {
-            AddedItems = addedItems ?? Empty.OrdinalStringSet;
-            RemovedItems = removedItems ?? Empty.OrdinalStringSet;
-            ChangedItems = changedItems ?? Empty.OrdinalStringSet;
+            AddedItems = addedItems ?? ImmutableStringHashSet.EmptyOrdinal;
+            RemovedItems = removedItems ?? ImmutableStringHashSet.EmptyOrdinal;
+            ChangedItems = changedItems ?? ImmutableStringHashSet.EmptyOrdinal;
             RenamedItems = renamedItems ?? ImmutableStringDictionary<string>.EmptyOrdinal;
         }
 
@@ -31,7 +31,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
         public IImmutableSet<string> ChangedProperties
         {
-            get { return Empty.OrdinalStringSet; }
+            get { return ImmutableStringHashSet.EmptyOrdinal; }
         }
 
         public bool AnyChanges
