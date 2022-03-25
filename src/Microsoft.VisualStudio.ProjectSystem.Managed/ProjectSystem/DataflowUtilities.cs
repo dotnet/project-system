@@ -471,9 +471,6 @@ namespace Microsoft.VisualStudio.ProjectSystem
         /// <param name="ruleNames">
         ///     The names of the rules that describe the project data the caller is interested in.
         /// </param>
-        /// <param name="options">
-        ///     Optional link options. If null, completion will be propagated.
-        /// </param>
         /// <returns>
         ///     The transformed source block and a disposable value that terminates the link.
         /// </returns>
@@ -488,8 +485,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
             this ISourceBlock<IProjectVersionedValue<IProjectSubscriptionUpdate>> source,
             Func<IProjectVersionedValue<IProjectSubscriptionUpdate>, TOut> transform,
             bool suppressVersionOnlyUpdates,
-            IEnumerable<string>? ruleNames = null,
-            DataflowLinkOptions? options = null)
+            IEnumerable<string>? ruleNames = null)
         {
             Requires.NotNull(source, nameof(source));
             Requires.NotNull(transform, nameof(transform));
@@ -497,7 +493,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
             IPropagatorBlock<IProjectVersionedValue<IProjectSubscriptionUpdate>, TOut> transformBlock = DataflowBlockSlim.CreateTransformBlock(transform, skipIntermediateInputData: true, skipIntermediateOutputData: true);
 
             IDisposable link = source.LinkTo(transformBlock,
-                                             options ?? DataflowOption.PropagateCompletion,
+                                             DataflowOption.PropagateCompletion,
                                              initialDataAsNew: true,
                                              suppressVersionOnlyUpdates: suppressVersionOnlyUpdates,
                                              ruleNames: ruleNames);

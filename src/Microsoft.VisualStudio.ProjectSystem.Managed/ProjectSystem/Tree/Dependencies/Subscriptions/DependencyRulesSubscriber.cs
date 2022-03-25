@@ -24,10 +24,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Subscriptions
         [ImportMany(DependencyRulesSubscriberContract)]
         private readonly OrderPrecedenceImportCollection<IDependenciesRuleHandler> _handlers;
 
-        private readonly Lazy<ImmutableHashSet<string>> _evaluationRuleNames;
-        private readonly Lazy<ImmutableHashSet<string>> _buildRuleNames;
-        private readonly Lazy<string[]> _jointRuleNames;
-        private readonly Lazy<JointRuleDataflowLinkOptions> _jointRuleDataflowLinkOptions;
+        private readonly Lazy<string[]> _watchedEvaluationRules;
+        private readonly Lazy<string[]> _watchedJointRules;
 
         private readonly HashSet<(TargetFramework TargetFramework, string ProviderType, string DependencyId)> _resolvedItems = new();
 
@@ -43,30 +41,30 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Subscriptions
 
             _treeTelemetryService = treeTelemetryService;
 
-            // Call these lazily. We need to wait for MEF to initialize the handlers collection before we use it.
-            _evaluationRuleNames = new Lazy<ImmutableHashSet<string>>(() => GetRuleNames(isEvaluation: true));
-            _buildRuleNames = new Lazy<ImmutableHashSet<string>>(() => GetRuleNames(isEvaluation: false));
-            _jointRuleNames = new Lazy<string[]>(() => _evaluationRuleNames.Value.Concat(_buildRuleNames.Value).ToArray());
-            _jointRuleDataflowLinkOptions = new Lazy<JointRuleDataflowLinkOptions>(() => new() { EvaluationRuleNames = _evaluationRuleNames.Value, BuildRuleNames = _buildRuleNames.Value });
+            _watchedJointRules = new Lazy<string[]>(() => GetRuleNames(RuleSource.Joint));
+            _watchedEvaluationRules = new Lazy<string[]>(() => GetRuleNames(RuleSource.Evaluation));
 
-            ImmutableHashSet<string> GetRuleNames(bool isEvaluation)
+            string[] GetRuleNames(RuleSource source)
             {
-                ImmutableHashSet<string>.Builder rules = ImmutableHashSet.CreateBuilder<string>(StringComparers.RuleNames);
+                var rules = new HashSet<string>(StringComparers.RuleNames);
 
                 foreach (Lazy<IDependenciesRuleHandler, IOrderPrecedenceMetadataView> item in _handlers)
                 {
-                    rules.Add(isEvaluation
-                        ? item.Value.EvaluatedRuleName
-                        : item.Value.ResolvedRuleName);
+                    rules.Add(item.Value.EvaluatedRuleName);
+
+                    if (source == RuleSource.Joint)
+                    {
+                        rules.Add(item.Value.ResolvedRuleName);
+                    }
                 }
 
-                return rules.ToImmutable();
+                return rules.ToArray();
             }
         }
 
         public override void AddSubscriptions(AggregateCrossTargetProjectContext projectContext)
         {
-            _treeTelemetryService.InitializeTargetFrameworkRules(projectContext.TargetFrameworks, _jointRuleNames.Value);
+            _treeTelemetryService.InitializeTargetFrameworkRules(projectContext.TargetFrameworks, _watchedJointRules.Value);
 
             base.AddSubscriptions(projectContext);
         }
@@ -78,16 +76,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Subscriptions
             Subscribe(
                 configuredProject,
                 subscriptionService.ProjectRuleSource,
+                _watchedEvaluationRules.Value,
                 "CrossTarget Evaluation Input: {1}",
-                SyncLink,
-                ruleNames: _evaluationRuleNames.Value.ToArray());
+                SyncLink);
 
             Subscribe(
                 configuredProject,
                 subscriptionService.JointRuleSource,
+                _watchedJointRules.Value,
                 "CrossTarget Joint Input: {1}",
-                SyncLink,
-                options: _jointRuleDataflowLinkOptions.Value);
+                SyncLink);
 
             IDisposable SyncLink((ISourceBlock<IProjectVersionedValue<IProjectSubscriptionUpdate>> Intermediate, ITargetBlock<IProjectVersionedValue<EventData>> Action) blocks)
             {

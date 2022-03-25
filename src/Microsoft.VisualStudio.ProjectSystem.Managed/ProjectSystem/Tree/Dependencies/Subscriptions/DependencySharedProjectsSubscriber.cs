@@ -39,6 +39,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Subscriptions
             Subscribe(
                 configuredProject,
                 subscriptionService.ProjectRuleSource,
+                ruleNames: new[] { ConfigurationGeneral.SchemaName },
                 "Dependencies Shared Projects Input: {1}",
                 blocks => ProjectDataSources.SyncLinkTo(
                     blocks.Intermediate.SyncLinkOptions(),
@@ -46,8 +47,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Subscriptions
                     subscriptionService.ProjectCatalogSource.SourceBlock.SyncLinkOptions(),
                     configuredProject.Capabilities.SourceBlock.SyncLinkOptions(),
                     blocks.Action,
-                    linkOptions: DataflowOption.PropagateCompletion),
-                ruleNames: new[] { ConfigurationGeneral.SchemaName });
+                    linkOptions: DataflowOption.PropagateCompletion));
         }
 
         protected override IProjectCapabilitiesSnapshot GetCapabilitiesSnapshot(EventData e) => e.Item4;
