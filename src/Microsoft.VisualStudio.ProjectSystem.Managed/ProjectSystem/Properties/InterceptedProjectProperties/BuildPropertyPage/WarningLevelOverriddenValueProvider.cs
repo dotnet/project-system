@@ -34,8 +34,8 @@ internal class WarningLevelOverriddenValueProvider : InterceptingPropertyValuePr
         string effectiveAnalysisLevelString = await defaultProperties.GetEvaluatedPropertyValueAsync(EffectiveAnalysisLevelPropertyName);
 
         return
-            (float.TryParse(effectiveAnalysisLevelString, out float effectiveAnalysisLevel)
-             && effectiveAnalysisLevel >= 5.0f)
+            (decimal.TryParse(effectiveAnalysisLevelString, out decimal effectiveAnalysisLevel)
+             && effectiveAnalysisLevel >= 5.0m)
             ? bool.TrueString
             : bool.FalseString;
     }
