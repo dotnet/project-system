@@ -770,7 +770,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
         private static bool ConfiguredInputMatchesTargetFramework(UpToDateCheckImplicitConfiguredInput input, string buildTargetFramework)
         {
-            return input.ProjectConfiguration.Dimensions.TryGetValue(TargetFrameworkGlobalPropertyName, out string? configurationTargetFramework)
+            return input.ProjectConfiguration.Dimensions.TryGetValue(ConfigurationGeneral.TargetFrameworkProperty, out string? configurationTargetFramework)
                 && buildTargetFramework.Equals(configurationTargetFramework);
         }
 
