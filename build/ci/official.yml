@@ -51,6 +51,9 @@ steps:
 - task: MicroBuildSwixPlugin@1
   displayName: Install Swix Plugin
 
+- task: MicroBuildSwixPlugin@4
+  displayName: Install Swix Plugin
+
 # This requires the OptimizationInputs via the 'Publish OptimizationInputs drop' step in the release pipeline.
 # To generate ProfilingInputs for the first time, set this input: ShouldSkipOptimize: true
 # See documentation here: https://devdiv.visualstudio.com/DevDiv/_wiki/wikis/DevDiv.wiki/2602/Build-With-Expired-(or-Without-Prior)-Optimization-Profiling-Data
@@ -66,7 +69,6 @@ steps:
     feedSource: 'https://devdiv.pkgs.visualstudio.com/DefaultCollection/_packaging/MicroBuildToolset/nuget/v3/index.json'
     ShouldSkipOptimize: ${{ parameters.SkipOptimize }}
     NumberCommitsToSearch: '100'
-  enabled: false
 
 ###################################################################################################################################################################
 # BUILD SOLUTION
@@ -186,7 +188,6 @@ steps:
     usePat: true
     AccessToken: '$(System.AccessToken)'
   condition: succeeded()
-  enabled: false
 
 # MicroBuildBuildVSBootstrapper requires MicroBuildSigningPlugin for signjson.exe to run.
 - task: MicroBuildBuildVSBootstrapper@2
@@ -198,7 +199,6 @@ steps:
     manifests: '$(Build.SourcesDirectory)\artifacts\$(BuildConfiguration)\VSSetup\Insertion\Microsoft.VisualStudio.ProjectSystem.Managed.vsman'
     outputFolder: $(Build.SourcesDirectory)\artifacts\$(BuildConfiguration)\VSSetup\Insertion
   condition: succeeded()
-  enabled: false
 
 - task: PowerShell@2
   displayName: Update RunSettings via Bootstrapper data
@@ -206,7 +206,6 @@ steps:
     filePath: build\optprof\UpdateRunSettings.ps1
     arguments: '-profilingInputsPath "ProfilingInputs/$(System.TeamProject)/$(Build.Repository.Name)/$(Build.SourceBranchName)/$(Build.BuildId)" -bootstrapperInfoPath "$(Build.StagingDirectory)\MicroBuild\Output\BootstrapperInfo.json"'
     failOnStderr: true
-  enabled: false
 
 - task: artifactDropTask@0
   displayName: 'Publish to Artifact Services: RunSettings'
@@ -219,7 +218,6 @@ steps:
     AccessToken: '$(System.AccessToken)'
     dropMetadataContainerName: RunSettings
   condition: succeeded()
-  enabled: false
 
 - task: PublishBuildArtifacts@1
   displayName: 'Publish Artifact: MicroBuildOutputs'
