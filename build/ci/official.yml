@@ -46,14 +46,6 @@ steps:
     signType: ${{ parameters.SignType }}
     esrpSigning: true
 
-# This is used as a PackageReference with ExcludeAssets="all", which means it is not executed.
-# RepoToolset has custom logic to run the contents of this plugin, so it is not executed normally.
-# - task: MicroBuildSwixPlugin@1
-#   displayName: Install Swix Plugin
-
-- task: MicroBuildSwixPlugin@4
-  displayName: Install Swix Plugin
-
 # This requires the OptimizationInputs via the 'Publish OptimizationInputs drop' step in the release pipeline.
 # To generate ProfilingInputs for the first time, set this input: ShouldSkipOptimize: true
 # See documentation here: https://devdiv.visualstudio.com/DevDiv/_wiki/wikis/DevDiv.wiki/2602/Build-With-Expired-(or-Without-Prior)-Optimization-Profiling-Data
@@ -176,6 +168,12 @@ steps:
 ###################################################################################################################################################################
 # The published OptProf metadata is consumed by the release pipeline that profiles the assemblies to create the optimization data.
 # Release Pipeline URL: https://devdiv.visualstudio.com/DevDiv/_release?definitionId=3197
+
+# This is currently only used by the MicroBuildBuildVSBootstrapper task.
+# RepoToolset has custom logic to download the NuGet package of this plugin for an old version (1.1.37).
+# This plugin is not directly used by RepoToolset.
+- task: MicroBuildSwixPlugin@4
+  displayName: Install Swix Plugin
 
 # This is required to deploy the tests to devdiv.artifacts.visualstudio.com for the 'Deploy tests' step in the release pipeline.
 - task: artifactDropTask@0
