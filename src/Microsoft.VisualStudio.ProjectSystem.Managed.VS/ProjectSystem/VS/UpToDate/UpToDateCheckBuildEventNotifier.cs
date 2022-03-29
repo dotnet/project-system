@@ -92,12 +92,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.UpToDate
 
             var operation = (VSSOLNBUILDUPDATEFLAGS)options;
 
-            if ((operation & flags) == flags)
-            {
-                return true;
-            }
-
-            return false;
+            return (operation & flags) == flags;
         }
 
         private static IEnumerable<IBuildUpToDateCheckProviderInternal> FindActiveConfiguredProviders(IVsHierarchy vsHierarchy)
