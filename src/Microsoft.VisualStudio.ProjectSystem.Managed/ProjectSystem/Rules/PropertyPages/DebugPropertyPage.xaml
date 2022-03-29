@@ -7,6 +7,11 @@
       Order="1000"
       xmlns="http://schemas.microsoft.com/build/2009/properties">
 
+  <Rule.Categories>
+    <Category Name="General"
+              DisplayName="General" />
+  </Rule.Categories>
+
   <Rule.DataSource>
     <DataSource Persistence="ProjectFileWithInterception"
                 SourceOfDefaultValue="AfterContext"
@@ -15,7 +20,8 @@
 
   <StringProperty Name="DebugPagePlaceholderDescription"
                   DisplayName="Ignored"
-                  Description="The management of launch profiles has moved to a dedicated dialog. It may be accessed via the link below, via the Debug menu in the menu bar, or via the Debug Target command on the Standard tool bar.">
+                  Description="The management of launch profiles has moved to a dedicated dialog. It may be accessed via the link below, via the Debug menu in the menu bar, or via the Debug Target command on the Standard tool bar."
+                  Category="General">
     <StringProperty.Metadata>
       <NameValuePair Name="VisibilityCondition">
         <NameValuePair.Value>(has-project-capability "LaunchProfiles")</NameValuePair.Value>
@@ -28,7 +34,8 @@
   </StringProperty>
 
   <StringProperty Name="OpenLaunchProfilesEditor"
-                  DisplayName="Open debug launch profiles UI">
+                  DisplayName="Open debug launch profiles UI"
+                  Category="General">
     <StringProperty.Metadata>
       <NameValuePair Name="VisibilityCondition">
         <NameValuePair.Value>(has-project-capability "LaunchProfiles")</NameValuePair.Value>
