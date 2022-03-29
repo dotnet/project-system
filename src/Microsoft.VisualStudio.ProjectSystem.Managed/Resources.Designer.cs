@@ -394,11 +394,11 @@ namespace Microsoft.VisualStudio {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Input &apos;{0}&apos; ({1}) has been modified since the last up-to-date check ({2}), not up-to-date..
+        ///   Looks up a localized string similar to Input &apos;{0}&apos; ({1}) has been modified since the last successful build started ({2}), not up-to-date..
         /// </summary>
-        internal static string FUTD_InputModifiedSinceLastCheck_3 {
+        internal static string FUTD_InputModifiedSinceLastSuccessfulBuildStart_3 {
             get {
-                return ResourceManager.GetString("FUTD_InputModifiedSinceLastCheck_3", resourceCulture);
+                return ResourceManager.GetString("FUTD_InputModifiedSinceLastSuccessfulBuildStart_3", resourceCulture);
             }
         }
         
@@ -556,11 +556,11 @@ namespace Microsoft.VisualStudio {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The set of project items was changed more recently ({0}) than the earliest output &apos;{1}&apos; ({2}), not up-to-date..
+        ///   Looks up a localized string similar to The set of project items was changed more recently ({0}) than the last successful build start time ({1}), not up-to-date..
         /// </summary>
-        internal static string FUTD_SetOfItemsChangedMoreRecentlyThanOutput_3 {
+        internal static string FUTD_SetOfItemsChangedMoreRecentlyThanOutput_2 {
             get {
-                return ResourceManager.GetString("FUTD_SetOfItemsChangedMoreRecentlyThanOutput_3", resourceCulture);
+                return ResourceManager.GetString("FUTD_SetOfItemsChangedMoreRecentlyThanOutput_2", resourceCulture);
             }
         }
         
@@ -583,11 +583,11 @@ namespace Microsoft.VisualStudio {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Input {3} item &apos;{0}&apos; ({1}) has been modified since the last up-to-date check ({2}), not up-to-date..
+        ///   Looks up a localized string similar to Input {3} item &apos;{0}&apos; ({1}) has been modified since the last successful build started ({2}), not up-to-date..
         /// </summary>
-        internal static string FUTD_TypedInputModifiedSinceLastCheck_4 {
+        internal static string FUTD_TypedInputModifiedSinceLastSuccessfulBuildStart_4 {
             get {
-                return ResourceManager.GetString("FUTD_TypedInputModifiedSinceLastCheck_4", resourceCulture);
+                return ResourceManager.GetString("FUTD_TypedInputModifiedSinceLastSuccessfulBuildStart_4", resourceCulture);
             }
         }
         
