@@ -269,7 +269,7 @@
       </trans-unit>
       <trans-unit id="EnumProperty|WarningLevel|Description">
         <source>Specifies the level to display for compiler warnings. Higher levels produce more warnings, and include all warnings from lower levels.</source>
-        <target state="needs-review-translation">표시할 컴파일러 경고 수준을 지정합니다.</target>
+        <target state="new">Specifies the level to display for compiler warnings. Higher levels produce more warnings, and include all warnings from lower levels.</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumProperty|WarningLevel|DisplayName">
@@ -379,32 +379,32 @@
       </trans-unit>
       <trans-unit id="EnumValue|WarningLevel.0|DisplayName">
         <source>0 - Disable all warnings</source>
-        <target state="needs-review-translation">0</target>
+        <target state="new">0 - Disable all warnings</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|WarningLevel.1|DisplayName">
         <source>1 - Severe warning messages</source>
-        <target state="needs-review-translation">1</target>
+        <target state="new">1 - Severe warning messages</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|WarningLevel.2|DisplayName">
         <source>2 - Less severe warnings, such as warnings about hiding class members</source>
-        <target state="needs-review-translation">2</target>
+        <target state="new">2 - Less severe warnings, such as warnings about hiding class members</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|WarningLevel.3|DisplayName">
         <source>3 - Less severe warnings, such as warnings about expressions that always evaluate to true or false</source>
-        <target state="needs-review-translation">3</target>
+        <target state="new">3 - Less severe warnings, such as warnings about expressions that always evaluate to true or false</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|WarningLevel.4|DisplayName">
         <source>4 - Informational warnings</source>
-        <target state="needs-review-translation">4</target>
+        <target state="new">4 - Informational warnings</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|WarningLevel.5|DisplayName">
         <source>5 - Warnings from C# 9</source>
-        <target state="needs-review-translation">5</target>
+        <target state="new">5 - Warnings from C# 9</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|WarningLevel.6|DisplayName">

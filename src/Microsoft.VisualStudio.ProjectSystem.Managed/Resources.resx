@@ -226,9 +226,9 @@ This project was loaded using the wrong project type, likely as a result of rena
     <value>No build outputs defined in Set="{0}".</value>
     <comment>Do not translate 'Set' as this name is used in code. {0} is the name of the set.</comment>
   </data>
-  <data name="FUTD_SetOfItemsChangedMoreRecentlyThanOutput_3" xml:space="preserve">
-    <value>The set of project items was changed more recently ({0}) than the earliest output '{1}' ({2}), not up-to-date.</value>
-    <comment>{0} and {2} are datetimes. {1} is a file path.</comment>
+  <data name="FUTD_SetOfItemsChangedMoreRecentlyThanOutput_2" xml:space="preserve">
+    <value>The set of project items was changed more recently ({0}) than the last successful build start time ({1}), not up-to-date.</value>
+    <comment>{0} and {1} are datetimes.</comment>
   </data>
   <data name="FUTD_SetOfChangedItemsIsEmpty" xml:space="preserve">
     <value>The set of changed items is empty.</value>
@@ -265,12 +265,12 @@ This project was loaded using the wrong project type, likely as a result of rena
     <value>Input {4} item '{0}' is newer ({1}) than earliest output '{2}' ({3}), not up-to-date.</value>
     <comment>{0} and {2} are file paths. {1} and {3} are datetimes. {4} is an MSBuild item type.</comment>
   </data>
-  <data name="FUTD_InputModifiedSinceLastCheck_3" xml:space="preserve">
-    <value>Input '{0}' ({1}) has been modified since the last up-to-date check ({2}), not up-to-date.</value>
+  <data name="FUTD_InputModifiedSinceLastSuccessfulBuildStart_3" xml:space="preserve">
+    <value>Input '{0}' ({1}) has been modified since the last successful build started ({2}), not up-to-date.</value>
     <comment>{0} is a file path. {1} and {2} are datetimes.</comment>
   </data>
-  <data name="FUTD_TypedInputModifiedSinceLastCheck_4" xml:space="preserve">
-    <value>Input {3} item '{0}' ({1}) has been modified since the last up-to-date check ({2}), not up-to-date.</value>
+  <data name="FUTD_TypedInputModifiedSinceLastSuccessfulBuildStart_4" xml:space="preserve">
+    <value>Input {3} item '{0}' ({1}) has been modified since the last successful build started ({2}), not up-to-date.</value>
     <comment>{0} is a file path. {1} and {2} are datetimes. {3} is an MSBuild item type.</comment>
   </data>
   <data name="FUTD_NoInputsDefined" xml:space="preserve">

@@ -5,25 +5,40 @@ using Microsoft.VisualStudio.ProjectSystem.Build;
 namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 {
     /// <summary>
-    /// Interface through which components internal to the .NET Project System may
-    /// interact with the fast up-to-date check.
+    /// Interface through which components internal to the .NET Project System may interact with the fast up-to-date check.
     /// </summary>
+    /// <remarks>
+    /// The fast up-to-date check needs to know about build events for two reasons:
+    /// <list type="number">
+    ///     <item>
+    ///         An <see cref="IBuildUpToDateCheckProvider"/> is only invoked for builds, not for rebuilds. We need
+    ///         to know when rebuilds occur.
+    ///     </item>
+    ///     <item>
+    ///         A call to <see cref="IBuildUpToDateCheckProvider"/> does not necessarily guarantee a build will occur.
+    ///         We need to know the time at which the last successful build occurred.
+    ///     </item>
+    /// </list>
+    /// Members of this interface are called by <c>UpToDateCheckBuildEventNotifier</c> in the VS layer.
+    /// </remarks>
+    [ProjectSystemContract(ProjectSystemContractScope.ConfiguredProject, ProjectSystemContractProvider.Private, Cardinality = Composition.ImportCardinality.ExactlyOne)]
     internal interface IBuildUpToDateCheckProviderInternal
     {
         /// <summary>
-        /// Notifies the fast up-to-date check that a rebuild is starting.
+        /// Notifies the fast up-to-date check that a build is starting.
         /// </summary>
         /// <remarks>
-        /// <para>
-        /// An <see cref="IBuildUpToDateCheckProvider"/> is only invoked for builds, not for rebuilds.
-        /// Our implementation of this check keeps track of the last build time. For our purposes, that
-        /// includes the last rebuild time too.
-        /// </para>
-        /// <para>
-        /// This method allows an external component (<c>BuildUpToDateCheckRebuildNotifier</c>, in the VS layer)
-        /// to provide this information.
-        /// </para>
+        /// Must also be called for rebuilds.
         /// </remarks>
-        void NotifyRebuildStarting();
+        void NotifyBuildStarting(DateTime buildStartTimeUtc);
+
+        /// <summary>
+        /// Notifies the fast up-to-date check that a build completed, and whether it completed
+        /// successfully or not.
+        /// </summary>
+        /// <remarks>
+        /// Must also be called for rebuilds.
+        /// </remarks>
+        void NotifyBuildCompleted(bool wasSuccessful);
     }
 }

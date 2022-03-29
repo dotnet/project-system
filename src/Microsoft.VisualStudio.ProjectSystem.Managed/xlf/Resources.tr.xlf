@@ -157,9 +157,9 @@
         <target state="translated">Giriş işaretçisi, çıkış işaretçisinden daha yeni ancak güncel değil.</target>
         <note />
       </trans-unit>
-      <trans-unit id="FUTD_InputModifiedSinceLastCheck_3">
-        <source>Input '{0}' ({1}) has been modified since the last up-to-date check ({2}), not up-to-date.</source>
-        <target state="translated">'{0}' girişi ({1}) son güncelleştirme denetiminden ({2}) bu yana değiştirildi ancak güncel değil.</target>
+      <trans-unit id="FUTD_InputModifiedSinceLastSuccessfulBuildStart_3">
+        <source>Input '{0}' ({1}) has been modified since the last successful build started ({2}), not up-to-date.</source>
+        <target state="new">Input '{0}' ({1}) has been modified since the last successful build started ({2}), not up-to-date.</target>
         <note>{0} is a file path. {1} and {2} are datetimes.</note>
       </trans-unit>
       <trans-unit id="FUTD_InputNewerThanOutput_4">
@@ -247,10 +247,10 @@
         <target state="translated">Değiştirilen öğeler kümesi boş.</target>
         <note />
       </trans-unit>
-      <trans-unit id="FUTD_SetOfItemsChangedMoreRecentlyThanOutput_3">
-        <source>The set of project items was changed more recently ({0}) than the earliest output '{1}' ({2}), not up-to-date.</source>
-        <target state="translated">Proje öğeleri grubu, en eski '{1}' ({2}) çıkışından daha yakın zamanda ({0}) değiştirildi ancak güncel değil.</target>
-        <note>{0} and {2} are datetimes. {1} is a file path.</note>
+      <trans-unit id="FUTD_SetOfItemsChangedMoreRecentlyThanOutput_2">
+        <source>The set of project items was changed more recently ({0}) than the last successful build start time ({1}), not up-to-date.</source>
+        <target state="new">The set of project items was changed more recently ({0}) than the last successful build start time ({1}), not up-to-date.</target>
+        <note>{0} and {1} are datetimes.</note>
       </trans-unit>
       <trans-unit id="FUTD_SkippingIgnoredKindItem_2">
         <source>Skipping '{0}' with ignored Kind="{1}"</source>
@@ -262,9 +262,9 @@
         <target state="translated">{0} kaynağı: '{1}'</target>
         <note>{0} is a datetime. {1} is a file path.</note>
       </trans-unit>
-      <trans-unit id="FUTD_TypedInputModifiedSinceLastCheck_4">
-        <source>Input {3} item '{0}' ({1}) has been modified since the last up-to-date check ({2}), not up-to-date.</source>
-        <target state="translated">{3} girişinin '{0}' ({1}) öğesi son güncelleştirme denetiminden ({2}) bu yana değiştirildi ancak güncel değil.</target>
+      <trans-unit id="FUTD_TypedInputModifiedSinceLastSuccessfulBuildStart_4">
+        <source>Input {3} item '{0}' ({1}) has been modified since the last successful build started ({2}), not up-to-date.</source>
+        <target state="new">Input {3} item '{0}' ({1}) has been modified since the last successful build started ({2}), not up-to-date.</target>
         <note>{0} is a file path. {1} and {2} are datetimes. {3} is an MSBuild item type.</note>
       </trans-unit>
       <trans-unit id="FUTD_TypedInputNewerThanOutput_5">

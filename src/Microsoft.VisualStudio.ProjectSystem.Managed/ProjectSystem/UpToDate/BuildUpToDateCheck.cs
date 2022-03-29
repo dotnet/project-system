@@ -50,6 +50,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
         private IImmutableDictionary<string, string> _lastGlobalProperties = ImmutableStringDictionary<string>.EmptyOrdinal;
         private string _lastFailureReason = "";
+        private DateTime _lastBuildStartTimeUtc = DateTime.MinValue;
 
         private ISubscription _subscription;
         private int _isDisposed;
@@ -105,7 +106,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             subscription.Dispose();
         }
 
-        private bool CheckGlobalConditions(Log log, DateTime lastCheckedAtUtc, bool validateFirstRun, UpToDateCheckImplicitConfiguredInput state)
+        private bool CheckGlobalConditions(Log log, DateTime lastSuccessfulBuildStartTimeUtc, bool validateFirstRun, UpToDateCheckImplicitConfiguredInput state)
         {
             if (!_tasksService.IsTaskQueueEmpty(ProjectCriticalOperation.Build))
             {
@@ -117,7 +118,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 return log.Fail("Disabled", nameof(Resources.FUTD_DisableFastUpToDateCheckTrue));
             }
 
-            if (validateFirstRun && !state.WasStateRestored && lastCheckedAtUtc == DateTime.MinValue)
+            if (validateFirstRun && !state.WasStateRestored && lastSuccessfulBuildStartTimeUtc == DateTime.MinValue)
             {
                 // We had no persisted state, and this is the first run. We cannot know if the project is up-to-date
                 // or not, so schedule a build.
@@ -144,7 +145,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             return true;
         }
 
-        private bool CheckInputsAndOutputs(Log log, DateTime lastCheckedAtUtc, in TimestampCache timestampCache, UpToDateCheckImplicitConfiguredInput state, HashSet<string>? ignoreKinds, CancellationToken token)
+        private bool CheckInputsAndOutputs(Log log, DateTime lastSuccessfulBuildStartTimeUtc, in TimestampCache timestampCache, UpToDateCheckImplicitConfiguredInput state, HashSet<string>? ignoreKinds, CancellationToken token)
         {
             // UpToDateCheckInput/Output/Built items have optional 'Set' metadata that determine whether they
             // are treated separately or not. If omitted, such inputs/outputs are included in the default set,
@@ -216,9 +217,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
                 Assumes.NotNull(earliestOutputPath);
 
-                if (earliestOutputTime < state.LastItemsChangedAtUtc)
+                ISubscription subscription = Volatile.Read(ref _subscription);
+
+                if (lastSuccessfulBuildStartTimeUtc < state.LastItemsChangedAtUtc)
                 {
-                    log.Fail("ProjectItemsChangedSinceEarliestOutput", nameof(Resources.FUTD_SetOfItemsChangedMoreRecentlyThanOutput_3), state.LastItemsChangedAtUtc, earliestOutputPath, earliestOutputTime);
+                    log.Fail("ProjectItemsChangedSinceLastSuccessfulBuildStart", nameof(Resources.FUTD_SetOfItemsChangedMoreRecentlyThanOutput_2), state.LastItemsChangedAtUtc, lastSuccessfulBuildStartTimeUtc);
 
                     if (log.Level >= LogLevel.Info)
                     {
@@ -267,10 +270,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                         return log.Fail("InputNewerThanEarliestOutput", itemType is null ? nameof(Resources.FUTD_InputNewerThanOutput_4) : nameof(Resources.FUTD_TypedInputNewerThanOutput_5), input, inputTime.Value, earliestOutputPath, earliestOutputTime, itemType ?? "");
                     }
 
-                    if (inputTime > lastCheckedAtUtc && lastCheckedAtUtc != DateTime.MinValue)
+                    if (inputTime > lastSuccessfulBuildStartTimeUtc && lastSuccessfulBuildStartTimeUtc != DateTime.MinValue)
                     {
                         // Bypass this test if no check has yet been performed. We handle that in CheckGlobalConditions.
-                        return log.Fail("InputModifiedSinceLastCheck", itemType is null ? nameof(Resources.FUTD_InputModifiedSinceLastCheck_3) : nameof(Resources.FUTD_TypedInputModifiedSinceLastCheck_4), input, inputTime.Value, lastCheckedAtUtc, itemType ?? "");
+                        return log.Fail("InputModifiedSinceLastSuccessfulBuildStart", itemType is null ? nameof(Resources.FUTD_InputModifiedSinceLastSuccessfulBuildStart_3) : nameof(Resources.FUTD_TypedInputModifiedSinceLastSuccessfulBuildStart_4), input, inputTime.Value, lastSuccessfulBuildStartTimeUtc, itemType ?? "");
                     }
 
                     if (latestInput is null || inputTime > latestInput.Value.Time)
@@ -740,16 +743,34 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             return true;
         }
 
-        void IBuildUpToDateCheckProviderInternal.NotifyRebuildStarting()
+        void IBuildUpToDateCheckProviderInternal.NotifyBuildStarting(DateTime buildStartTimeUtc)
         {
-            ISubscription subscription = Volatile.Read(ref _subscription);
+            _lastBuildStartTimeUtc = buildStartTimeUtc;
+        }
 
-            subscription.UpdateLastCheckedAtUtc();
+        void IBuildUpToDateCheckProviderInternal.NotifyBuildCompleted(bool wasSuccessful)
+        {
+            if (_lastBuildStartTimeUtc == default)
+            {
+                // This should not happen
+                System.Diagnostics.Debug.Fail("Notification of build completion should follow notification of build starting.");
+
+                return;
+            }
+
+            if (wasSuccessful)
+            {
+                ISubscription subscription = Volatile.Read(ref _subscription);
+
+                subscription.UpdateLastSuccessfulBuildStartTimeUtc(_lastBuildStartTimeUtc);
+            }
+
+            _lastBuildStartTimeUtc = default;
         }
 
         private static bool ConfiguredInputMatchesTargetFramework(UpToDateCheckImplicitConfiguredInput input, string buildTargetFramework)
         {
-            return input.ProjectConfiguration.Dimensions.TryGetValue(TargetFrameworkGlobalPropertyName, out string? configurationTargetFramework)
+            return input.ProjectConfiguration.Dimensions.TryGetValue(ConfigurationGeneral.TargetFrameworkProperty, out string? configurationTargetFramework)
                 && buildTargetFramework.Equals(configurationTargetFramework);
         }
 
@@ -804,9 +825,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
             ISubscription subscription = Volatile.Read(ref _subscription);
 
-            return await subscription.RunAsync(CheckAsync, updateLastCheckedAt: !isValidationRun, cancellationToken);
+            return await subscription.RunAsync(CheckAsync, cancellationToken);
 
-            async Task<(bool, ImmutableArray<ProjectConfiguration>)> CheckAsync(UpToDateCheckConfiguredInput state, IReadOnlyDictionary<ProjectConfiguration, DateTime> lastCheckedAtUtc, CancellationToken token)
+            async Task<(bool, ImmutableArray<ProjectConfiguration>)> CheckAsync(UpToDateCheckConfiguredInput state, IReadOnlyDictionary<ProjectConfiguration, DateTime> lastSuccessfulBuildStartTimeUtcByConfiguration, CancellationToken token)
             {
                 token.ThrowIfCancellationRequested();
 
@@ -850,13 +871,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                             logger.Indent++;
                         }
 
-                        if (!lastCheckedAtUtc.TryGetValue(implicitState.ProjectConfiguration, out DateTime configurationLastCheckedAtUtc))
+                        if (!lastSuccessfulBuildStartTimeUtcByConfiguration.TryGetValue(implicitState.ProjectConfiguration, out DateTime lastSuccessfulBuildStartTimeUtc))
                         {
-                            configurationLastCheckedAtUtc = DateTime.MinValue;
+                            lastSuccessfulBuildStartTimeUtc = DateTime.MinValue;
                         }
 
-                        if (!CheckGlobalConditions(logger, configurationLastCheckedAtUtc, validateFirstRun: !isValidationRun, implicitState)
-                            || !CheckInputsAndOutputs(logger, configurationLastCheckedAtUtc, timestampCache, implicitState, ignoreKinds, token)
+                        if (!CheckGlobalConditions(logger, lastSuccessfulBuildStartTimeUtc, validateFirstRun: !isValidationRun, implicitState)
+                            || !CheckInputsAndOutputs(logger, lastSuccessfulBuildStartTimeUtc, timestampCache, implicitState, ignoreKinds, token)
                             || !CheckMarkers(logger, timestampCache, implicitState)
                             || !CheckCopyToOutputDirectoryFiles(logger, timestampCache, implicitState, token)
                             || !CheckCopiedOutputFiles(logger, timestampCache, implicitState, token))
