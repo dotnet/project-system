@@ -65,14 +65,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Subscriptions
             IProjectValueDataSource<IProjectSubscriptionUpdate> dataSource,
             string[] ruleNames,
             string nameFormat,
-            Func<(ISourceBlock<IProjectVersionedValue<IProjectSubscriptionUpdate>> Intermediate, ITargetBlock<IProjectVersionedValue<T>> Action), IDisposable> syncLink)
+            Func<(ISourceBlock<IProjectVersionedValue<IProjectSubscriptionUpdate>> Intermediate, ITargetBlock<IProjectVersionedValue<T>> Action, string[] RuleNames), IDisposable> syncLink)
         {
-            // Use an intermediate buffer block for project rule data to allow subsequent blocks
-            // to only observe specific rule name(s).
-
-            IPropagatorBlock<IProjectVersionedValue<IProjectSubscriptionUpdate>, IProjectVersionedValue<IProjectSubscriptionUpdate>>? intermediateBlock
-                = DataflowBlockSlim.CreateSimpleBufferBlock<IProjectVersionedValue<IProjectSubscriptionUpdate>>(nameFormat);
-
             ITargetBlock<IProjectVersionedValue<T>> actionBlock =
                 DataflowBlockFactory.CreateActionBlock<IProjectVersionedValue<T>>(
                     e => OnProjectChangedAsync(configuredProject, e.Value),
@@ -81,14 +75,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Subscriptions
 
             _subscriptions ??= new DisposableBag();
 
-            _subscriptions.Add(
-                dataSource.SourceBlock.LinkTo(
-                    intermediateBlock,
-                    ruleNames: ruleNames,
-                    suppressVersionOnlyUpdates: false,
-                    linkOptions: DataflowOption.PropagateCompletion));
-
-            _subscriptions.Add(syncLink((intermediateBlock, actionBlock)));
+            _subscriptions.Add(syncLink((dataSource.SourceBlock, actionBlock, ruleNames)));
         }
 
         private Task OnProjectChangedAsync(ConfiguredProject configuredProject, T e)

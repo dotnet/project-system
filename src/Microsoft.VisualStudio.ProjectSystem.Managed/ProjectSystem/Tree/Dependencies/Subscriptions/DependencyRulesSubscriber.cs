@@ -87,13 +87,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Subscriptions
                 "CrossTarget Joint Input: {1}",
                 SyncLink);
 
-            IDisposable SyncLink((ISourceBlock<IProjectVersionedValue<IProjectSubscriptionUpdate>> Intermediate, ITargetBlock<IProjectVersionedValue<EventData>> Action) blocks)
+            IDisposable SyncLink((ISourceBlock<IProjectVersionedValue<IProjectSubscriptionUpdate>> Source, ITargetBlock<IProjectVersionedValue<EventData>> Action, string[] RuleNames) state)
             {
                 return ProjectDataSources.SyncLinkTo(
-                    blocks.Intermediate.SyncLinkOptions(),
+                    state.Source.SyncLinkOptions(DataflowOption.WithRuleNames(state.RuleNames)),
                     subscriptionService.ProjectCatalogSource.SourceBlock.SyncLinkOptions(),
                     configuredProject.Capabilities.SourceBlock.SyncLinkOptions(),
-                    blocks.Action,
+                    state.Action,
                     linkOptions: DataflowOption.PropagateCompletion);
             }
         }
