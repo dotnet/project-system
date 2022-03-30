@@ -76,31 +76,34 @@ Now, the property will only be visible if _MyProperty_ has value _MyEnumValue_.
 
 The following table details the default set of visibility expression functions:
 
-| Function                               | Arity    | Description                                                                                                               |
-|----------------------------------------|----------|---------------------------------------------------------------------------------------------------------------------------|
-| `add`                                  | Variadic | Adds integer arguments                                                                                                    |
-| `concat`                               | Variadic | Concatenates string arguments                                                                                             |
-| `eq`                                   | 2        | Computes `arg0 == arg1`                                                                                                   |
-| `ne`                                   | 2        | Computes `arg0 != arg1`                                                                                                   |
-| `lt`                                   | 2        | Computes `arg0 <  arg1`                                                                                                   |
-| `lte`                                  | 2        | Computes `arg0 <= arg1`                                                                                                   |
-| `gt`                                   | 2        | Computes `arg0 >  arg1`                                                                                                   |
-| `gte`                                  | 2        | Computes `arg0 >= arg1`                                                                                                   |
-| `and`                                  | Variadic | Computes logical AND of arguments                                                                                         |
-| `or`                                   | Variadic | Computes logical OR of arguments                                                                                          |
-| `xor`                                  | 2        | Computes exclusive logical OR of arguments                                                                                |
-| `or`                                   | Variadic | Computes logical OR of arguments                                                                                          |
-| `list`                                 | Variadic | Returns a list of the arguments provided                                                                                  |
-| `if-else`                              | 3        | Evaluates the first parameter. If it is true, returns the second parameter, otherwise returns the third parameter         |
-| `unevaluated`                          | 2        | Returns the unevaluated value of property on page `arg0` with name `arg1`                                                 |
-| `has-evaluated-value`                  | 3        | Returns true if property on page `arg0` with name `arg1` has an evaluated value matching `arg2`                           |
-| `is-codespaces-client`                 | 0        | Returns true if the Project Properties UI is running in a Codespaces client                                               |
-| `has-project-capability`               | 1        | Returns true if the project has the specified capability.                                                                 |
-| `has-net-framework`                    | 0        | Returns true if the project targets .NET Framework in at least one configuration.                                         |
-| `has-net-core-app`                     | 0        | Returns true if the project targets .NET Core or .NET 5+ in at least one configuration.                                   |
-| `has-net-framework-version-or-greater` | 1        | Returns true if the project targets .NET Framework at the specified version or above in at least one configuration.       |
-| `has-net-core-app-version-or-greater`  | 1        | Returns true if the project targets .NET Core or .NET 5+ at the specified version or above in at least one configuration  |
-| `has-csharp-lang-version-or-greater`   | 1        | Returns true if this is a C# project and the language level is `latest`, `preview` or above the specified version.        |
+| Function                               | Arity    | Description                                                                                                                                                                    |
+|----------------------------------------|----------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `add`                                  | Variadic | Adds integer arguments                                                                                                                                                         |
+| `concat`                               | Variadic | Concatenates string arguments                                                                                                                                                  |
+| `eq`                                   | 2        | Computes `arg0 == arg1`                                                                                                                                                        |
+| `ne`                                   | 2        | Computes `arg0 != arg1`                                                                                                                                                        |
+| `lt`                                   | 2        | Computes `arg0 <  arg1`                                                                                                                                                        |
+| `lte`                                  | 2        | Computes `arg0 <= arg1`                                                                                                                                                        |
+| `gt`                                   | 2        | Computes `arg0 >  arg1`                                                                                                                                                        |
+| `gte`                                  | 2        | Computes `arg0 >= arg1`                                                                                                                                                        |
+| `and`                                  | Variadic | Computes logical AND of arguments                                                                                                                                              |
+| `or`                                   | Variadic | Computes logical OR of arguments                                                                                                                                               |
+| `xor`                                  | 2        | Computes exclusive logical OR of arguments                                                                                                                                     |
+| `or`                                   | Variadic | Computes logical OR of arguments                                                                                                                                               |
+| `list`                                 | Variadic | Returns a list of the arguments provided                                                                                                                                       |
+| `matches-configuration`                | 2        | Returns whether the regular expression defined as the second parameter matches the configured dimensional value (first parameter). Only available in AllowedDimensionalValues  |
+| `matches`                              | 2        | Returns whether the regular expression defined as the second parameter matches the first parameter, which is a string                                                          |
+| `this`                                 | 0        | Returns the current object in scope. Currently only available in AllowedVaryByDimensions, where it refers to each checked dimension name                                       |
+| `if-else`                              | 3        | Evaluates the first parameter. If it is true, returns the second parameter, otherwise returns the third parameter                                                              |
+| `unevaluated`                          | 2        | Returns the unevaluated value of property on page `arg0` with name `arg1`                                                                                                      |
+| `has-evaluated-value`                  | 3        | Returns true if property on page `arg0` with name `arg1` has an evaluated value matching `arg2`                                                                                |
+| `is-codespaces-client`                 | 0        | Returns true if the Project Properties UI is running in a Codespaces client                                                                                                    |
+| `has-project-capability`               | 1        | Returns true if the project has the specified capability.                                                                                                                      |
+| `has-net-framework`                    | 0        | Returns true if the project targets .NET Framework in at least one configuration.                                                                                              |
+| `has-net-core-app`                     | 0        | Returns true if the project targets .NET Core or .NET 5+ in at least one configuration.                                                                                        |
+| `has-net-framework-version-or-greater` | 1        | Returns true if the project targets .NET Framework at the specified version or above in at least one configuration.                                                            |
+| `has-net-core-app-version-or-greater`  | 1        | Returns true if the project targets .NET Core or .NET 5+ at the specified version or above in at least one configuration                                                       |
+| `has-csharp-lang-version-or-greater`   | 1        | Returns true if this is a C# project and the language level is `latest`, `preview` or above the specified version.                                                             |
 
 These functions are defined in class `VisibilityConditionEvaluator`.
 
