@@ -2,7 +2,6 @@
 
 using System.Threading.Tasks.Dataflow;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
-using Microsoft.VisualStudio.ProjectSystem.Utilities;
 using Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.CrossTarget;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies;
 
@@ -16,7 +15,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Subscriptions
         private readonly IUnconfiguredProjectTasksService _tasksService;
 
         private DependenciesSnapshotProvider? _provider;
-        private DisposableBag? _subscriptions;
+        private IDisposable? _subscriptions;
 
         public event EventHandler<DependencySubscriptionChangedEventArgs>? DependenciesChanged;
 
@@ -73,9 +72,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Subscriptions
                     configuredProject.UnconfiguredProject,
                     nameFormat: nameFormat);
 
-            _subscriptions ??= new DisposableBag();
-
-            _subscriptions.Add(syncLink((dataSource.SourceBlock, actionBlock, ruleNames)));
+            _subscriptions = syncLink((dataSource.SourceBlock, actionBlock, ruleNames));
         }
 
         private Task OnProjectChangedAsync(ConfiguredProject configuredProject, T e)
