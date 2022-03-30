@@ -3,6 +3,7 @@
 using System.Collections.Immutable;
 using System.ComponentModel.Composition;
 using System.Threading.Tasks.Dataflow;
+using Microsoft.VisualStudio.Composition;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
 using Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.CrossTarget;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies;
@@ -24,8 +25,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Subscriptions
         [ImportMany(DependencyRulesSubscriberContract)]
         private readonly OrderPrecedenceImportCollection<IDependenciesRuleHandler> _handlers;
 
-        private readonly Lazy<string[]> _watchedEvaluationRules;
-        private readonly Lazy<string[]> _watchedJointRules;
+        private (ImmutableArray<IDependenciesRuleHandler> Handlers, string[] EvaluationRuleNames, string[] JointRuleNames)? _state;
 
         private readonly HashSet<(TargetFramework TargetFramework, string ProviderType, string DependencyId)> _resolvedItems = new();
 
@@ -40,21 +40,33 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Subscriptions
                 projectCapabilityCheckProvider: commonServices.Project);
 
             _treeTelemetryService = treeTelemetryService;
+        }
 
-            _watchedJointRules = new Lazy<string[]>(() => GetRuleNames(RuleSource.Joint));
-            _watchedEvaluationRules = new Lazy<string[]>(() => GetRuleNames(RuleSource.Evaluation));
+        protected override Task InitializeCoreAsync(CancellationToken cancellationToken)
+        {
+            // Capture the set of handlers at this point and use that collection consistently from here on.
+            // The imported handlers may change over time in response to dynamic project capabilities.
+            ImmutableArray<IDependenciesRuleHandler> handlers = _handlers.ExtensionValues().ToImmutableArray();
 
-            string[] GetRuleNames(RuleSource source)
+            // Also capture the set of rule names from these handlers, for later use.
+            string[] evaluationRuleNames = GetRuleNames(includeResolved: false);
+            string[] jointRuleNames = GetRuleNames(includeResolved: true);
+
+            _state = (handlers, evaluationRuleNames, jointRuleNames);
+
+            return Task.CompletedTask;
+
+            string[] GetRuleNames(bool includeResolved)
             {
                 var rules = new HashSet<string>(StringComparers.RuleNames);
 
-                foreach (Lazy<IDependenciesRuleHandler, IOrderPrecedenceMetadataView> item in _handlers)
+                foreach (IDependenciesRuleHandler handler in handlers)
                 {
-                    rules.Add(item.Value.EvaluatedRuleName);
+                    rules.Add(handler.EvaluatedRuleName);
 
-                    if (source == RuleSource.Joint)
+                    if (includeResolved)
                     {
-                        rules.Add(item.Value.ResolvedRuleName);
+                        rules.Add(handler.ResolvedRuleName);
                     }
                 }
 
@@ -62,9 +74,21 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Subscriptions
             }
         }
 
+        protected override Task DisposeCoreUnderLockAsync(bool initialized)
+        {
+            if (initialized)
+            {
+                _state = null;
+            }
+
+            return base.DisposeCoreUnderLockAsync(initialized);
+        }
+
         public override void AddSubscriptions(AggregateCrossTargetProjectContext projectContext)
         {
-            _treeTelemetryService.InitializeTargetFrameworkRules(projectContext.TargetFrameworks, _watchedJointRules.Value);
+            Assumes.NotNull(_state);
+
+            _treeTelemetryService.InitializeTargetFrameworkRules(projectContext.TargetFrameworks, _state.Value.JointRuleNames);
 
             base.AddSubscriptions(projectContext);
         }
@@ -73,17 +97,19 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Subscriptions
             ConfiguredProject configuredProject,
             IProjectSubscriptionService subscriptionService)
         {
+            Assumes.NotNull(_state);
+
             Subscribe(
                 configuredProject,
                 subscriptionService.ProjectRuleSource,
-                _watchedEvaluationRules.Value,
+                _state.Value.EvaluationRuleNames,
                 "CrossTarget Evaluation Input: {1}",
                 SyncLink);
 
             Subscribe(
                 configuredProject,
                 subscriptionService.JointRuleSource,
-                _watchedJointRules.Value,
+                _state.Value.JointRuleNames,
                 "CrossTarget Joint Input: {1}",
                 SyncLink);
 
@@ -107,6 +133,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Subscriptions
             TargetFramework targetFrameworkToUpdate,
             EventData e)
         {
+            Assumes.NotNull(_state);
+
             IProjectSubscriptionUpdate projectUpdate = e.Item1;
             IProjectCatalogSnapshot catalogSnapshot = e.Item2;
 
@@ -122,12 +150,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Subscriptions
             var changesBuilder = new DependenciesChangesBuilder(_resolvedItems);
 
             // Give each handler a chance to register dependency changes.
-            foreach (Lazy<IDependenciesRuleHandler, IOrderPrecedenceMetadataView> handler in _handlers)
+            foreach (IDependenciesRuleHandler handler in _state.Value.Handlers)
             {
-                IProjectChangeDescription evaluationProjectChange = projectUpdate.ProjectChanges[handler.Value.EvaluatedRuleName];
-                IProjectChangeDescription? buildProjectChange = projectUpdate.ProjectChanges.GetValueOrDefault(handler.Value.ResolvedRuleName);
+                IProjectChangeDescription evaluationProjectChange = projectUpdate.ProjectChanges[handler.EvaluatedRuleName];
+                IProjectChangeDescription? buildProjectChange = projectUpdate.ProjectChanges.GetValueOrDefault(handler.ResolvedRuleName);
 
-                handler.Value.Handle(projectFullPath, evaluationProjectChange, buildProjectChange, targetFrameworkToUpdate, changesBuilder);
+                handler.Handle(projectFullPath, evaluationProjectChange, buildProjectChange, targetFrameworkToUpdate, changesBuilder);
             }
 
             IDependenciesChanges? changes = changesBuilder.TryBuildChanges();
