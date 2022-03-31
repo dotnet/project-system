@@ -2,7 +2,6 @@
 
 using System.Threading.Tasks.Dataflow;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
-using Microsoft.VisualStudio.ProjectSystem.Utilities;
 using Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.CrossTarget;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies;
 
@@ -16,7 +15,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Subscriptions
         private readonly IUnconfiguredProjectTasksService _tasksService;
 
         private DependenciesSnapshotProvider? _provider;
-        private DisposableBag? _subscriptions;
+        private IDisposable? _subscriptions;
 
         public event EventHandler<DependencySubscriptionChangedEventArgs>? DependenciesChanged;
 
@@ -65,30 +64,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Subscriptions
             IProjectValueDataSource<IProjectSubscriptionUpdate> dataSource,
             string[] ruleNames,
             string nameFormat,
-            Func<(ISourceBlock<IProjectVersionedValue<IProjectSubscriptionUpdate>> Intermediate, ITargetBlock<IProjectVersionedValue<T>> Action), IDisposable> syncLink)
+            Func<(ISourceBlock<IProjectVersionedValue<IProjectSubscriptionUpdate>> Intermediate, ITargetBlock<IProjectVersionedValue<T>> Action, string[] RuleNames), IDisposable> syncLink)
         {
-            // Use an intermediate buffer block for project rule data to allow subsequent blocks
-            // to only observe specific rule name(s).
-
-            IPropagatorBlock<IProjectVersionedValue<IProjectSubscriptionUpdate>, IProjectVersionedValue<IProjectSubscriptionUpdate>>? intermediateBlock
-                = DataflowBlockSlim.CreateSimpleBufferBlock<IProjectVersionedValue<IProjectSubscriptionUpdate>>(nameFormat);
-
             ITargetBlock<IProjectVersionedValue<T>> actionBlock =
                 DataflowBlockFactory.CreateActionBlock<IProjectVersionedValue<T>>(
                     e => OnProjectChangedAsync(configuredProject, e.Value),
                     configuredProject.UnconfiguredProject,
                     nameFormat: nameFormat);
 
-            _subscriptions ??= new DisposableBag();
-
-            _subscriptions.Add(
-                dataSource.SourceBlock.LinkTo(
-                    intermediateBlock,
-                    ruleNames: ruleNames,
-                    suppressVersionOnlyUpdates: false,
-                    linkOptions: DataflowOption.PropagateCompletion));
-
-            _subscriptions.Add(syncLink((intermediateBlock, actionBlock)));
+            _subscriptions = syncLink((dataSource.SourceBlock, actionBlock, ruleNames));
         }
 
         private Task OnProjectChangedAsync(ConfiguredProject configuredProject, T e)
