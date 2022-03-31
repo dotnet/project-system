@@ -131,7 +131,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Subscriptions
             string projectFullPath,
             AggregateCrossTargetProjectContext currentAggregateContext,
             TargetFramework targetFrameworkToUpdate,
-            EventData e)
+            EventData e,
+            CancellationToken cancellationToken)
         {
             Assumes.NotNull(_state);
 
@@ -159,6 +160,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Subscriptions
             }
 
             IDependenciesChanges? changes = changesBuilder.TryBuildChanges();
+
+            cancellationToken.ThrowIfCancellationRequested();
 
             // Notify subscribers of a change in dependency data.
             // NOTE even if changes is null, it's possible the catalog has changed. If we don't take the newer
