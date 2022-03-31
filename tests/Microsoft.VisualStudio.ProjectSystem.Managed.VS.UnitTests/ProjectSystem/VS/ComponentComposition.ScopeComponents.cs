@@ -2,7 +2,10 @@
 
 #pragma warning disable IDE0051 // Remove unused private members
 
-using System.Composition;
+using ImportAttribute = System.Composition.ImportAttribute;
+using ExportAttribute = System.Composition.ExportAttribute;
+using SharedAttribute = System.Composition.SharedAttribute;
+using SharingBoundaryAttribute = System.Composition.SharingBoundaryAttribute;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS
 {
@@ -16,7 +19,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         {
             [Import]
             [SharingBoundary(ExportContractNames.Scopes.ProjectService)]
-            private ExportFactory<IProjectService>? ProjectServiceFactory { get; set; }
+            private System.Composition.ExportFactory<IProjectService>? ProjectServiceFactory { get; set; }
         }
 
         [Export(typeof(IProjectService))]
