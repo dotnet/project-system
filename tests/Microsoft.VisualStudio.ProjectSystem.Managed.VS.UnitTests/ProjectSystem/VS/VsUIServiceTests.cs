@@ -5,7 +5,6 @@
 
 using System.Runtime.InteropServices;
 using Microsoft.VisualStudio.Threading;
-using Xunit;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS
 {

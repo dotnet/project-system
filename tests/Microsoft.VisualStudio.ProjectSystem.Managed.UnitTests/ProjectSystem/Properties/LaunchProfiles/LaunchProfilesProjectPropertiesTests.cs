@@ -3,7 +3,6 @@
 using Microsoft.Build.Framework.XamlTypes;
 using Microsoft.VisualStudio.Mocks;
 using Microsoft.VisualStudio.ProjectSystem.Debug;
-using Xunit;
 
 namespace Microsoft.VisualStudio.ProjectSystem.Properties
 {

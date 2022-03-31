@@ -2,7 +2,6 @@
 
 using System.Reflection;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
-using Xunit;
 
 namespace Microsoft.VisualStudio.ProjectSystem.Rules
 {

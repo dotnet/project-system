@@ -2,8 +2,6 @@
 
 using Microsoft.VisualStudio.ProjectSystem.Build;
 using Microsoft.VisualStudio.Shell.Interop;
-using Moq;
-using Xunit;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Build
 {

@@ -2,8 +2,6 @@
 
 using Microsoft.VisualStudio.LanguageServices.ProjectSystem;
 using Microsoft.VisualStudio.ProjectSystem.VS;
-using Moq;
-using Xunit;
 
 namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 {

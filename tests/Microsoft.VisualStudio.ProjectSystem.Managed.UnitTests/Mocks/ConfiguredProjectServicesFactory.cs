@@ -2,7 +2,6 @@
 
 using Microsoft.VisualStudio.ProjectSystem.Properties;
 using Microsoft.VisualStudio.ProjectSystem.References;
-using Moq;
 
 namespace Microsoft.VisualStudio.ProjectSystem
 {

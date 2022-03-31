@@ -6,9 +6,7 @@ using Microsoft.VisualStudio.PlatformUI;
 using Microsoft.VisualStudio.ProjectSystem.Debug;
 using Microsoft.VisualStudio.ProjectSystem.Utilities;
 using Microsoft.VisualStudio.Threading.Tasks;
-using Moq;
 using Moq.Protected;
-using Xunit;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
 {

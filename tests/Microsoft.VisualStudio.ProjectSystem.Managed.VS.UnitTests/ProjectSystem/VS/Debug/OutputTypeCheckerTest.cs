@@ -2,7 +2,6 @@
 
 using Microsoft.Build.Framework.XamlTypes;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
-using Xunit;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
 {

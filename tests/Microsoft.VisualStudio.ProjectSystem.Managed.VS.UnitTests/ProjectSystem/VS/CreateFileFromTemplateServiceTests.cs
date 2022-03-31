@@ -3,7 +3,6 @@
 using EnvDTE;
 using EnvDTE80;
 using Microsoft.VisualStudio.Shell.Interop;
-using Xunit;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS
 {

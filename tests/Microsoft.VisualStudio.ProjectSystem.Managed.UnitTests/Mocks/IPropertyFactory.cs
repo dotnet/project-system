@@ -2,7 +2,6 @@
 
 using System.Collections.ObjectModel;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
-using Moq;
 
 namespace Microsoft.VisualStudio.ProjectSystem
 {

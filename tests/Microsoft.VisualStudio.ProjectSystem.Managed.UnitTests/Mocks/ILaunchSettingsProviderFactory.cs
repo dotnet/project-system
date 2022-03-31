@@ -2,7 +2,6 @@
 
 using Microsoft.VisualStudio.ProjectSystem.Debug;
 using Microsoft.VisualStudio.Threading;
-using Moq;
 
 namespace Microsoft.VisualStudio.ProjectSystem
 {

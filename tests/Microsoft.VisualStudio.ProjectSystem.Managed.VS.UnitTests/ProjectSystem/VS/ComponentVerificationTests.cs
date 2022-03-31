@@ -4,7 +4,6 @@ using System.Reflection;
 using Microsoft.VisualStudio.Composition;
 using Microsoft.VisualStudio.Composition.Reflection;
 using Microsoft.VisualStudio.Packaging;
-using Xunit;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS
 {

@@ -2,7 +2,6 @@
 
 using Microsoft.Build.Execution;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
-using Moq;
 
 namespace Microsoft.VisualStudio.ProjectSystem
 {

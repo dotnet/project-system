@@ -2,7 +2,6 @@
 
 using Microsoft.VisualStudio.ProjectSystem.VS.Properties.InterceptedProjectProperties;
 using Microsoft.VisualStudio.ProjectSystem.VS.Utilities;
-using Xunit;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
 {

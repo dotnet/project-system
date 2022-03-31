@@ -3,7 +3,6 @@
 using Microsoft.VisualStudio.ProjectSystem;
 using Microsoft.VisualStudio.ProjectSystem.Query;
 using Microsoft.VisualStudio.ProjectSystem.Query.QueryExecution;
-using Moq;
 
 namespace Microsoft.VisualStudio
 {

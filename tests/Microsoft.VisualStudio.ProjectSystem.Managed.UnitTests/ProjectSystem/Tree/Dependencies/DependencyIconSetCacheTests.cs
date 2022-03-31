@@ -2,7 +2,6 @@
 
 using Microsoft.VisualStudio.Imaging;
 using Microsoft.VisualStudio.Imaging.Interop;
-using Xunit;
 
 namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies
 {

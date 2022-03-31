@@ -3,7 +3,6 @@
 using System.Collections;
 using Microsoft.VisualStudio.Collections;
 using Newtonsoft.Json.Linq;
-using Xunit;
 
 namespace Microsoft.VisualStudio.ProjectSystem.Debug
 {

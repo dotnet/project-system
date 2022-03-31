@@ -4,7 +4,6 @@ using System.IO.Compression;
 using Microsoft.VisualStudio.Utilities;
 using VerifyTests;
 using VerifyXunit;
-using Xunit;
 
 namespace Microsoft.VisualStudio.Setup
 {

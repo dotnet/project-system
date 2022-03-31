@@ -3,7 +3,6 @@
 using Microsoft.CodeAnalysis;
 using Microsoft.VisualStudio.ProjectSystem.Properties.Package;
 using Microsoft.VisualStudio.Workspaces;
-using Xunit;
 
 namespace Microsoft.VisualStudio.ProjectSystem.Properties
 {

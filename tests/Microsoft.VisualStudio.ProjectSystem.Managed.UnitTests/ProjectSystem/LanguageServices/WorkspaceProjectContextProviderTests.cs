@@ -2,9 +2,7 @@
 
 using Microsoft.VisualStudio.LanguageServices.ProjectSystem;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
-using Moq;
 using Moq.Protected;
-using Xunit;
 
 namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 {

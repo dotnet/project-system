@@ -3,8 +3,6 @@
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 using Microsoft.VisualStudio.Threading.Tasks;
-using Moq;
-using Xunit;
 using Xunit.Sdk;
 using Task = System.Threading.Tasks.Task;
 

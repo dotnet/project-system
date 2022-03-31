@@ -10,7 +10,6 @@ using Microsoft.VisualStudio.ProjectSystem.Refactor;
 using Microsoft.VisualStudio.ProjectSystem.Waiting;
 using Microsoft.VisualStudio.Settings;
 using Microsoft.VisualStudio.Shell.Interop;
-using Moq;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
 {

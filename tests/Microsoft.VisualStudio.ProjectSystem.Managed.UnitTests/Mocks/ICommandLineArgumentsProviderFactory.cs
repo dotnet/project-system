@@ -2,7 +2,6 @@
 
 using System.Threading.Tasks.Dataflow;
 using Microsoft.VisualStudio.ProjectSystem.LanguageServices;
-using Moq;
 
 namespace Microsoft.VisualStudio.ProjectSystem
 {

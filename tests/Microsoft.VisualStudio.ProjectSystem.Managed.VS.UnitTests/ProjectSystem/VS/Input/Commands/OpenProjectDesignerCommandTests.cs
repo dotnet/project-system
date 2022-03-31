@@ -2,7 +2,6 @@
 
 using Microsoft.VisualStudio.Input;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
-using Xunit;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
 {

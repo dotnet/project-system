@@ -2,7 +2,6 @@
 
 using Microsoft.Build.Construction;
 using Microsoft.VisualStudio.Build;
-using Xunit;
 
 namespace Microsoft.VisualStudio.ProjectSystem.Configuration
 {

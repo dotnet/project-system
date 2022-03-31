@@ -2,7 +2,6 @@
 
 using Microsoft.VisualStudio.ProjectSystem;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
-using Moq;
 
 namespace Microsoft.VisualStudio.Shell.Interop
 {

@@ -4,8 +4,6 @@ using Microsoft.Build.Exceptions;
 using Microsoft.VisualStudio.LanguageServices.ExternalAccess.ProjectSystem.Api;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
 using Microsoft.VisualStudio.ProjectSystem.References;
-using Moq;
-using Xunit;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.References
 {
