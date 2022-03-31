@@ -13,6 +13,14 @@
                   ReadOnly="True"
                   Visible="False" />
 
+  <StringProperty Name="CentralPackageTransitivePinningEnabled"
+                  ReadOnly="True"
+                  Visible="False" />
+
+  <StringProperty Name="CentralPackageVersionOverrideEnabled"
+                  ReadOnly="True"
+                  Visible="False" />
+
   <StringProperty Name="CLRSupport"
                   ReadOnly="True"
                   Visible="False" />
