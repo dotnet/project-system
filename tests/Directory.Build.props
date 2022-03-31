@@ -17,6 +17,13 @@
     <TestArchitectures>x86</TestArchitectures>
   </PropertyGroup>
 
+  <!-- Modify the set of implicit usings -->
+  <ItemGroup Condition="$(IsUnitTestProject)">
+    <!-- Top two namespaces imported in test code -->
+    <Using Include="Xunit" />
+    <Using Include="Moq" />
+  </ItemGroup>
+
   <ItemGroup>
     <None Include="$(MSBuildThisFileDirectory)Common\Test\App.config" CopyToOutputDirectory="PreserveNewest" Condition="'$(IsUnitTestProject)' == 'true'" />
     <None Include="$(MSBuildThisFileDirectory)Common\Integration\App.config" CopyToOutputDirectory="PreserveNewest" Condition="'$(IsIntegrationTestProject)' == 'true'" />
