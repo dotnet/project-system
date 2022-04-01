@@ -331,11 +331,11 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";FUTD_InputModifiedSinceLastCheck_3" ItemType="0" PsrId="308" InstFlg="true" Leaf="true">
+      <Item ItemId=";FUTD_InputModifiedSinceLastSuccessfulBuildStart_3" ItemType="0" PsrId="308" InstFlg="true" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Input '{0}' ({1}) has been modified since the last up-to-date check ({2}), not up-to-date.]]></Val>
+          <Val><![CDATA[Input '{0}' ({1}) has been modified since the last successful build started ({2}), not up-to-date.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[L''{0}' d’entrée ({1}) a été modifiée depuis la dernière vérification à jour ({2}), et non à jour.]]></Val>
+            <Val><![CDATA[L'entrée '{0}' ({1}) a été modifiée depuis le dernier lancement réussi de la construction ({2}), elle n'est pas à jour.]]></Val>
           </Tgt>
         </Str>
         <Disp Icon="Str" />
@@ -493,11 +493,11 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";FUTD_SetOfItemsChangedMoreRecentlyThanOutput_3" ItemType="0" PsrId="308" InstFlg="true" Leaf="true">
+      <Item ItemId=";FUTD_SetOfItemsChangedMoreRecentlyThanOutput_2" ItemType="0" PsrId="308" InstFlg="true" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[The set of project items was changed more recently ({0}) than the earliest output '{1}' ({2}), not up-to-date.]]></Val>
+          <Val><![CDATA[The set of project items was changed more recently ({0}) than the last successful build start time ({1}), not up-to-date.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[L’ensemble d’éléments de projet a été modifié plus récemment ({0}) que le '{1}' de sortie le plus ancien ({2}). Il n’est pas à jour.]]></Val>
+            <Val><![CDATA[L’ensemble d’éléments de projet a été modifié plus récemment ({0}) que l’heure de début de la dernière génération réussie ({1}), pas à jour.]]></Val>
           </Tgt>
         </Str>
         <Disp Icon="Str" />
@@ -520,11 +520,11 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";FUTD_TypedInputModifiedSinceLastCheck_4" ItemType="0" PsrId="308" InstFlg="true" Leaf="true">
+      <Item ItemId=";FUTD_TypedInputModifiedSinceLastSuccessfulBuildStart_4" ItemType="0" PsrId="308" InstFlg="true" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Input {3} item '{0}' ({1}) has been modified since the last up-to-date check ({2}), not up-to-date.]]></Val>
+          <Val><![CDATA[Input {3} item '{0}' ({1}) has been modified since the last successful build started ({2}), not up-to-date.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[L''{0}' d’élément de {3} d’entrée ({1}) a été modifiée depuis la dernière vérification à jour ({2}), et non à jour.]]></Val>
+            <Val><![CDATA[L'élément {3} d'entrée '{0}' ({1}) a été modifié depuis le dernier lancement réussi de la construction ({2}), il n'est pas à jour.]]></Val>
           </Tgt>
         </Str>
         <Disp Icon="Str" />
