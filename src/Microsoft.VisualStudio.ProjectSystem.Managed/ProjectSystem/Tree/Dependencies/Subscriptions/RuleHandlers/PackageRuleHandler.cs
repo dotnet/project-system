@@ -45,6 +45,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Subscriptions.R
         protected override void HandleAddedItem(
             string projectFullPath,
             string addedItem,
+            bool isResolvedItem,
             IProjectChangeDescription projectChange,
             IProjectRuleSnapshot evaluationRuleSnapshot,
             DependenciesChangesBuilder changesBuilder,
@@ -54,6 +55,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Subscriptions.R
             if (TryCreatePackageDependencyModel(
                 projectFullPath,
                 addedItem,
+                isResolvedItem,
                 properties: projectChange.After.GetProjectItemProperties(addedItem)!,
                 evaluationRuleSnapshot,
                 isEvaluatedItemSpec,
@@ -68,14 +70,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Subscriptions.R
         protected override void HandleRemovedItem(
             string projectFullPath,
             string removedItem,
+            bool isResolvedItem,
             IProjectChangeDescription projectChange,
             IProjectRuleSnapshot evaluationRuleSnapshot,
             DependenciesChangesBuilder changesBuilder,
             TargetFramework targetFramework,
             Func<string, bool>? isEvaluatedItemSpec)
         {
-            bool isResolvedItem = isEvaluatedItemSpec is not null;
-
             string originalItemSpec = isResolvedItem
                 ? projectChange.Before.GetProjectItemProperties(removedItem)?.GetStringProperty(ProjectItemMetadata.Name) ?? removedItem
                 : removedItem;
@@ -90,6 +91,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Subscriptions.R
         private bool TryCreatePackageDependencyModel(
             string projectFullPath,
             string itemSpec,
+            bool isResolvedItem,
             IImmutableDictionary<string, string> properties,
             IProjectRuleSnapshot evaluationRuleSnapshot,
             Func<string, bool>? isEvaluatedItemSpec,
@@ -100,8 +102,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Subscriptions.R
             Requires.NotNullOrEmpty(itemSpec, nameof(itemSpec));
             Requires.NotNull(properties, nameof(properties));
             Requires.NotNull(targetFramework, nameof(targetFramework));
-
-            bool isResolvedItem = isEvaluatedItemSpec is not null;
 
             string originalItemSpec;
 

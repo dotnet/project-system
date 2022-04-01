@@ -55,35 +55,35 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Subscriptions.R
         {
             bool hasResolvedData = buildProjectChange is not null;
 
-            HandleChangesForRule(evaluationProjectChange);
+            HandleChangesForRule(evaluationProjectChange, isResolvedItem: false);
 
             // We only have resolved data if the update came via the JointRule data source.
             if (hasResolvedData)
             {
                 Func<string, bool>? isEvaluatedItemSpec = ResolvedItemRequiresEvaluatedItem ? evaluationProjectChange.After.Items.ContainsKey : null;
 
-                HandleChangesForRule(evaluationProjectChange, buildProjectChange, isEvaluatedItemSpec);
+                HandleChangesForRule(evaluationProjectChange, isResolvedItem: true, buildProjectChange, isEvaluatedItemSpec);
             }
 
             return;
 
-            void HandleChangesForRule(IProjectChangeDescription evaluationProjectChange, IProjectChangeDescription? buildProjectChange = null, Func<string, bool>? isEvaluatedItemSpec = null)
+            void HandleChangesForRule(IProjectChangeDescription evaluationProjectChange, bool isResolvedItem, IProjectChangeDescription? buildProjectChange = null, Func<string, bool>? isEvaluatedItemSpec = null)
             {
                 IProjectChangeDescription projectChange = buildProjectChange ?? evaluationProjectChange;
 
                 foreach (string removedItem in projectChange.Difference.RemovedItems)
                 {
-                    HandleRemovedItem(projectFullPath, removedItem, projectChange, evaluationProjectChange.After, changesBuilder, targetFramework, isEvaluatedItemSpec);
+                    HandleRemovedItem(projectFullPath, removedItem, isResolvedItem, projectChange, evaluationProjectChange.After, changesBuilder, targetFramework, isEvaluatedItemSpec);
                 }
 
                 foreach (string changedItem in projectChange.Difference.ChangedItems)
                 {
-                    HandleAddedItem(projectFullPath, changedItem, projectChange, evaluationProjectChange.After, changesBuilder, targetFramework, isEvaluatedItemSpec);
+                    HandleAddedItem(projectFullPath, changedItem, isResolvedItem, projectChange, evaluationProjectChange.After, changesBuilder, targetFramework, isEvaluatedItemSpec);
                 }
 
                 foreach (string addedItem in projectChange.Difference.AddedItems)
                 {
-                    HandleAddedItem(projectFullPath, addedItem, projectChange, evaluationProjectChange.After, changesBuilder, targetFramework, isEvaluatedItemSpec);
+                    HandleAddedItem(projectFullPath, addedItem, isResolvedItem, projectChange, evaluationProjectChange.After, changesBuilder, targetFramework, isEvaluatedItemSpec);
                 }
 
                 System.Diagnostics.Debug.Assert(projectChange.Difference.RenamedItems.Count == 0, "Project rule diff should not contain renamed items");
@@ -93,15 +93,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Subscriptions.R
         protected virtual void HandleAddedItem(
             string projectFullPath,
             string addedItem,
+            bool isResolvedItem,
             IProjectChangeDescription projectChange,
             IProjectRuleSnapshot evaluationRuleSnapshot,
             DependenciesChangesBuilder changesBuilder,
             TargetFramework targetFramework,
             Func<string, bool>? isEvaluatedItemSpec)
         {
-            bool isResolved = isEvaluatedItemSpec is not null;
-
-            IDependencyModel? model = CreateDependencyModelForRule(addedItem, evaluationRuleSnapshot, projectChange.After, isResolved, changesBuilder, targetFramework, projectFullPath);
+            IDependencyModel? model = CreateDependencyModelForRule(addedItem, evaluationRuleSnapshot, projectChange.After, isResolvedItem, changesBuilder, targetFramework, projectFullPath);
 
             if (model != null && (isEvaluatedItemSpec == null || isEvaluatedItemSpec(model.Id)))
             {
@@ -112,6 +111,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Subscriptions.R
         protected virtual void HandleRemovedItem(
             string projectFullPath,
             string removedItem,
+            bool isResolvedItem,
             IProjectChangeDescription projectChange,
             IProjectRuleSnapshot evaluationRuleSnapshot,
             DependenciesChangesBuilder changesBuilder,
