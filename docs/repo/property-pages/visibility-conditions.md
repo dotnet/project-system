@@ -12,8 +12,8 @@ Visibility conditions are not interpreted by the back-end, which treats them as 
 
 There are three kinds of visibility conditions:
 - VisibilityCondition is a visibility condition on a property (whether the property should be shown).
-- AllowedVaryByDimensions is a visibility condition on a dimension name (whether users should be allowed to select to vary/unvary by the dimension.)
-- AllowedDimensionalValues is a visibility condition on a PropertyValue (whether the value for each individual dimensional configuration should be shown). For example, if a property varies by dimension but the value only applies to iOS, other targets can be hidden.
+- DimensionVisibilityCondition is a visibility condition on a dimension name (whether users should be allowed to select to vary/unvary by the dimension.)
+- ConfiguredValueVisibilityCondition is a visibility condition on a PropertyValue (whether the value for each individual dimensional configuration should be shown). For example, if a property varies by dimension but the value only applies to iOS, other targets can be hidden.
 
 In a XAML rule file, a visibility condition is specified as metadata on the property. For example:
 
@@ -23,10 +23,10 @@ In a XAML rule file, a visibility condition is specified as metadata on the prop
     <NameValuePair Name="VisibilityCondition">
       <NameValuePair.Value>(has-evaluated-value "MyPage" "MyProperty" "Foo")</NameValuePair.Value>
     </NameValuePair>
-    <NameValuePair Name="AllowedVaryByDimensions">
-        <NameValuePair.Value>(matches "Configuration" this)</NameValuePair.Value> <!-- 'this' refers to each dimension candidate -->
+    <NameValuePair Name="DimensionVisibilityCondition">
+        <NameValuePair.Value>(matches "Configuration" (dimension))</NameValuePair.Value> <!-- '(dimension)' refers to each dimension candidate -->
     </NameValuePair>
-    <NameValuePair Name="AllowedDimensionalValues">
+    <NameValuePair Name="ConfiguredValueVisibilityCondition">
         <NameValuePair.Value>(eq (evaluated "ConfigurationGeneralPage" "TargetPlatformIdentifier") "Android")</NameValuePair.Value> <!-- 'evaluated' function is allowed here -->
     </NameValuePair>
   </StringProperty.Metadata>
@@ -142,7 +142,7 @@ The `evaluated` function is defined in class `PropertyValueViewModelVisibilityCo
 
 Note that the `evaluated` function is not available in the VisibilityCondition property, as a Property may have multiple evaluated values, and as such it's not possible to reliably return a single value. Use `has-evaluated-value` instead in this case.
 
-However, it is available in an AllowedDimensionalValues expression, as these are run on each PropertyValue, in which there will be only one possible evaluated value for a property.
+However, it is available in an ConfiguredValueVisibilityCondition expression, as these are run on each PropertyValue, in which there will be only one possible evaluated value for a property.
 
 Functions that take a version number should be passed strings containing decimal values. Any leading `v` character is omitted. For example `"v5.0""` and `"1.2.3"` are both valid values.
 
