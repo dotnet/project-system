@@ -75,7 +75,19 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
                                                                                     data.AssemblyName,
                                                                                     CancellationToken.None);
 
-                context.LastDesignTimeBuildSucceeded = false;  // By default, turn off diagnostics until the first design time build succeeds for this project.
+                context.StartBatch();
+
+                try
+                {
+                    // Update LastDesignTimeBuildSucceeded within a batch to avoid thread pool starvation.
+                    // https://github.com/dotnet/project-system/issues/8027
+
+                    context.LastDesignTimeBuildSucceeded = false;  // By default, turn off diagnostics until the first design time build succeeds for this project.
+                }
+                finally
+                {
+                    await context.EndBatchAsync();
+                }
 
                 return context;
             }
