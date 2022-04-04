@@ -331,11 +331,11 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";FUTD_InputModifiedSinceLastCheck_3" ItemType="0" PsrId="308" InstFlg="true" Leaf="true">
+      <Item ItemId=";FUTD_InputModifiedSinceLastSuccessfulBuildStart_3" ItemType="0" PsrId="308" InstFlg="true" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Input '{0}' ({1}) has been modified since the last up-to-date check ({2}), not up-to-date.]]></Val>
+          <Val><![CDATA[Input '{0}' ({1}) has been modified since the last successful build started ({2}), not up-to-date.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[自上次最新检查 ({1})以来，已修改输入'{0}' ({2})，不是最新的。]]></Val>
+            <Val><![CDATA[自上次成功生成开始({2}) 以来，已对输入“{0}”进行了修改({1})，不是最新的。]]></Val>
           </Tgt>
         </Str>
         <Disp Icon="Str" />
@@ -493,11 +493,11 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";FUTD_SetOfItemsChangedMoreRecentlyThanOutput_3" ItemType="0" PsrId="308" InstFlg="true" Leaf="true">
+      <Item ItemId=";FUTD_SetOfItemsChangedMoreRecentlyThanOutput_2" ItemType="0" PsrId="308" InstFlg="true" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[The set of project items was changed more recently ({0}) than the earliest output '{1}' ({2}), not up-to-date.]]></Val>
+          <Val><![CDATA[The set of project items was changed more recently ({0}) than the last successful build start time ({1}), not up-to-date.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[项目项集最近更改的 ({0})早于最早输出'{1}' ({2})，不是最新的。]]></Val>
+            <Val><![CDATA[与上次成功的生成开始时间({1})相比，最近({0})对项目项集进行了更改，不是最新的。]]></Val>
           </Tgt>
         </Str>
         <Disp Icon="Str" />
@@ -520,11 +520,11 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";FUTD_TypedInputModifiedSinceLastCheck_4" ItemType="0" PsrId="308" InstFlg="true" Leaf="true">
+      <Item ItemId=";FUTD_TypedInputModifiedSinceLastSuccessfulBuildStart_4" ItemType="0" PsrId="308" InstFlg="true" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Input {3} item '{0}' ({1}) has been modified since the last up-to-date check ({2}), not up-to-date.]]></Val>
+          <Val><![CDATA[Input {3} item '{0}' ({1}) has been modified since the last successful build started ({2}), not up-to-date.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[输入{3}项'{0}' ({1}) 自上次最新检查 ({2})以来已修改，不是最新的。]]></Val>
+            <Val><![CDATA[自上次成功生成开始({2})以来，已对输入 {3} 项“{0}”({1})进行了修改，不是最新的。]]></Val>
           </Tgt>
         </Str>
         <Disp Icon="Str" />

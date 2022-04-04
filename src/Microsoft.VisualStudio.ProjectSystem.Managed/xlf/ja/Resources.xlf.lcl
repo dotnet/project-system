@@ -331,11 +331,11 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";FUTD_InputModifiedSinceLastCheck_3" ItemType="0" PsrId="308" InstFlg="true" Leaf="true">
+      <Item ItemId=";FUTD_InputModifiedSinceLastSuccessfulBuildStart_3" ItemType="0" PsrId="308" InstFlg="true" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Input '{0}' ({1}) has been modified since the last up-to-date check ({2}), not up-to-date.]]></Val>
+          <Val><![CDATA[Input '{0}' ({1}) has been modified since the last successful build started ({2}), not up-to-date.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[入力 '{0}' ({1}) は、前回の最新のチェック ({2}) 以降に変更されており、最新ではありません。]]></Val>
+            <Val><![CDATA[入力 '{0}' ({1}) は、前回の成功したビルドの開始 ({2}) 以降に変更されており、最新ではありません。]]></Val>
           </Tgt>
         </Str>
         <Disp Icon="Str" />
@@ -493,11 +493,11 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";FUTD_SetOfItemsChangedMoreRecentlyThanOutput_3" ItemType="0" PsrId="308" InstFlg="true" Leaf="true">
+      <Item ItemId=";FUTD_SetOfItemsChangedMoreRecentlyThanOutput_2" ItemType="0" PsrId="308" InstFlg="true" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[The set of project items was changed more recently ({0}) than the earliest output '{1}' ({2}), not up-to-date.]]></Val>
+          <Val><![CDATA[The set of project items was changed more recently ({0}) than the last successful build start time ({1}), not up-to-date.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[プロジェクト項目のセットは、最も前の出力 '{1}' ({2}) よりも最近 ({0}) に変更され、最新ではありませんでした。]]></Val>
+            <Val><![CDATA[プロジェクト項目のセットが、前回成功したビルド開始時刻 ({0}) よりも最近 ({1}) 変更されており、最新ではありません。]]></Val>
           </Tgt>
         </Str>
         <Disp Icon="Str" />
@@ -520,11 +520,11 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";FUTD_TypedInputModifiedSinceLastCheck_4" ItemType="0" PsrId="308" InstFlg="true" Leaf="true">
+      <Item ItemId=";FUTD_TypedInputModifiedSinceLastSuccessfulBuildStart_4" ItemType="0" PsrId="308" InstFlg="true" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Input {3} item '{0}' ({1}) has been modified since the last up-to-date check ({2}), not up-to-date.]]></Val>
+          <Val><![CDATA[Input {3} item '{0}' ({1}) has been modified since the last successful build started ({2}), not up-to-date.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[入力 {3} 項目 '{0}' ({1}) は、前回の最新のチェック ({2}) 以降に変更されており、最新ではありません。]]></Val>
+            <Val><![CDATA[入力 {3} 項目 '{0}' ({1}) は、前回の成功したビルドの開始 ({2}) 以降に変更されており、最新ではありません。]]></Val>
           </Tgt>
         </Str>
         <Disp Icon="Str" />

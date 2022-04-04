@@ -331,11 +331,11 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";FUTD_InputModifiedSinceLastCheck_3" ItemType="0" PsrId="308" InstFlg="true" Leaf="true">
+      <Item ItemId=";FUTD_InputModifiedSinceLastSuccessfulBuildStart_3" ItemType="0" PsrId="308" InstFlg="true" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Input '{0}' ({1}) has been modified since the last up-to-date check ({2}), not up-to-date.]]></Val>
+          <Val><![CDATA[Input '{0}' ({1}) has been modified since the last successful build started ({2}), not up-to-date.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[입력 '{0}'({1})이(가) 최신이 아닌 마지막 최신 확인({2}) 이후 수정되었습니다.]]></Val>
+            <Val><![CDATA[입력 '{0}'({1})이(가) 마지막으로 성공한 빌드가 시작된 이후({2}) 수정되었습니다. 최신 정보가 아닙니다.]]></Val>
           </Tgt>
         </Str>
         <Disp Icon="Str" />
@@ -493,11 +493,11 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";FUTD_SetOfItemsChangedMoreRecentlyThanOutput_3" ItemType="0" PsrId="308" InstFlg="true" Leaf="true">
+      <Item ItemId=";FUTD_SetOfItemsChangedMoreRecentlyThanOutput_2" ItemType="0" PsrId="308" InstFlg="true" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[The set of project items was changed more recently ({0}) than the earliest output '{1}' ({2}), not up-to-date.]]></Val>
+          <Val><![CDATA[The set of project items was changed more recently ({0}) than the last successful build start time ({1}), not up-to-date.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[프로젝트 항목 집합이 최신이 아닌 가장 이른 출력 '{1}'({2})보다 최근에({0}) 변경되었습니다.]]></Val>
+            <Val><![CDATA[프로젝트 항목 집합이 마지막 성공적인 빌드 시작 시간({1})보다 최근({0})에 변경되었습니다. 최신 정보가 아닙니다.]]></Val>
           </Tgt>
         </Str>
         <Disp Icon="Str" />
@@ -520,11 +520,11 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";FUTD_TypedInputModifiedSinceLastCheck_4" ItemType="0" PsrId="308" InstFlg="true" Leaf="true">
+      <Item ItemId=";FUTD_TypedInputModifiedSinceLastSuccessfulBuildStart_4" ItemType="0" PsrId="308" InstFlg="true" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Input {3} item '{0}' ({1}) has been modified since the last up-to-date check ({2}), not up-to-date.]]></Val>
+          <Val><![CDATA[Input {3} item '{0}' ({1}) has been modified since the last successful build started ({2}), not up-to-date.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[입력 {3} 항목 '{0}'({1})은(는) 최신이 아닌 마지막 최신 확인({2}) 이후에 수정되었습니다.]]></Val>
+            <Val><![CDATA[입력 {3} 항목 '{0}'({1})은(는) 마지막 빌드({2})가 시작된 이후 수정되었습니다. 최신 정보가 아닙니다.]]></Val>
           </Tgt>
         </Str>
         <Disp Icon="Str" />
