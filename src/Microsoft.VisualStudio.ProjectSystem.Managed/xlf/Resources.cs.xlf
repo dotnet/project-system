@@ -159,7 +159,7 @@
       </trans-unit>
       <trans-unit id="FUTD_InputModifiedSinceLastSuccessfulBuildStart_3">
         <source>Input '{0}' ({1}) has been modified since the last successful build started ({2}), not up-to-date.</source>
-        <target state="new">Input '{0}' ({1}) has been modified since the last successful build started ({2}), not up-to-date.</target>
+        <target state="translated">Vstup {0} ({1}) se od posledního úspěšného zahájení sestavení ({2}) změnil, takže není aktuální.</target>
         <note>{0} is a file path. {1} and {2} are datetimes.</note>
       </trans-unit>
       <trans-unit id="FUTD_InputNewerThanOutput_4">
@@ -249,7 +249,7 @@
       </trans-unit>
       <trans-unit id="FUTD_SetOfItemsChangedMoreRecentlyThanOutput_2">
         <source>The set of project items was changed more recently ({0}) than the last successful build start time ({1}), not up-to-date.</source>
-        <target state="new">The set of project items was changed more recently ({0}) than the last successful build start time ({1}), not up-to-date.</target>
+        <target state="translated">Sada položek projektu změněna ({0}), tedy před posledním úspěšným časem zahájení sestavení ({1}), takže není aktuální.</target>
         <note>{0} and {1} are datetimes.</note>
       </trans-unit>
       <trans-unit id="FUTD_SkippingIgnoredKindItem_2">
@@ -264,7 +264,7 @@
       </trans-unit>
       <trans-unit id="FUTD_TypedInputModifiedSinceLastSuccessfulBuildStart_4">
         <source>Input {3} item '{0}' ({1}) has been modified since the last successful build started ({2}), not up-to-date.</source>
-        <target state="new">Input {3} item '{0}' ({1}) has been modified since the last successful build started ({2}), not up-to-date.</target>
+        <target state="translated">Položka {0} ({1}) vstupu {3} se od posledního úspěšného zahájení sestavení ({2}) změnila, takže není aktuální.</target>
         <note>{0} is a file path. {1} and {2} are datetimes. {3} is an MSBuild item type.</note>
       </trans-unit>
       <trans-unit id="FUTD_TypedInputNewerThanOutput_5">

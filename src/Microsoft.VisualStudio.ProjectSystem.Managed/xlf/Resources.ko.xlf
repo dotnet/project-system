@@ -159,7 +159,7 @@
       </trans-unit>
       <trans-unit id="FUTD_InputModifiedSinceLastSuccessfulBuildStart_3">
         <source>Input '{0}' ({1}) has been modified since the last successful build started ({2}), not up-to-date.</source>
-        <target state="new">Input '{0}' ({1}) has been modified since the last successful build started ({2}), not up-to-date.</target>
+        <target state="translated">입력 '{0}'({1})이(가) 마지막으로 성공한 빌드가 시작된 이후({2}) 수정되었습니다. 최신 정보가 아닙니다.</target>
         <note>{0} is a file path. {1} and {2} are datetimes.</note>
       </trans-unit>
       <trans-unit id="FUTD_InputNewerThanOutput_4">
@@ -249,7 +249,7 @@
       </trans-unit>
       <trans-unit id="FUTD_SetOfItemsChangedMoreRecentlyThanOutput_2">
         <source>The set of project items was changed more recently ({0}) than the last successful build start time ({1}), not up-to-date.</source>
-        <target state="new">The set of project items was changed more recently ({0}) than the last successful build start time ({1}), not up-to-date.</target>
+        <target state="translated">프로젝트 항목 집합이 마지막 성공적인 빌드 시작 시간({1})보다 최근({0})에 변경되었습니다. 최신 정보가 아닙니다.</target>
         <note>{0} and {1} are datetimes.</note>
       </trans-unit>
       <trans-unit id="FUTD_SkippingIgnoredKindItem_2">
@@ -264,7 +264,7 @@
       </trans-unit>
       <trans-unit id="FUTD_TypedInputModifiedSinceLastSuccessfulBuildStart_4">
         <source>Input {3} item '{0}' ({1}) has been modified since the last successful build started ({2}), not up-to-date.</source>
-        <target state="new">Input {3} item '{0}' ({1}) has been modified since the last successful build started ({2}), not up-to-date.</target>
+        <target state="translated">입력 {3} 항목 '{0}'({1})은(는) 마지막 빌드({2})가 시작된 이후 수정되었습니다. 최신 정보가 아닙니다.</target>
         <note>{0} is a file path. {1} and {2} are datetimes. {3} is an MSBuild item type.</note>
       </trans-unit>
       <trans-unit id="FUTD_TypedInputNewerThanOutput_5">

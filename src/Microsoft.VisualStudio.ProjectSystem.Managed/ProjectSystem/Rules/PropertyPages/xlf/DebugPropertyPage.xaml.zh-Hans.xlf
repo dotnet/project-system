@@ -4,7 +4,7 @@
     <body>
       <trans-unit id="Category|General|DisplayName">
         <source>General</source>
-        <target state="new">常规</target>
+        <target state="translated">常规</target>
         <note />
       </trans-unit>
       <trans-unit id="Rule|DebugPropertyPage|Description">
