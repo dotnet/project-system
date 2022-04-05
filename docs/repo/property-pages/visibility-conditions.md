@@ -59,7 +59,6 @@ To make this language useful, we need the ability to perform operations with the
 | `(add 1 2 3)`          | `6`               |
 | `(concat "a" "b")`     | `"ab"`            |
 | `(concat "a" "b" "c")` | `"abc"`           |
-| `(list "a" "b" "c")`   | `["a", "b", "c"]` |
 
 The parentheses envelop a list of values. The evaluation of that list involves treating the first item as a function identifier, and passing the remainder of that list to that function as arguments. You'll notice that some functions accept one argument (`not`), others two arguments (`eq`, `lt`), while others accept an arbitrary number of arguments (`add`, `concat`, `and`, `or`). The number of arguments that a function accepts is its _arity_. Functions that accept an arbitrary number of arguments are known as _variadic_.
 
@@ -101,7 +100,6 @@ The following table details the default set of visibility expression functions:
 | `or`                                | Variadic | Computes logical OR of arguments                                                                                                                                      |
 | `xor`                               | 2        | Computes exclusive logical OR of arguments                                                                                                                            |
 | `or`                                | Variadic | Computes logical OR of arguments                                                                                                                                      |
-| `list`                              | Variadic | Returns a list of the arguments provided                                                                                                                              |
 | `matches`                           | 2        | Returns whether the regular expression defined as the second parameter matches the first parameter, which is a string                                                 |
 | `if`                                | 3        | Evaluates the first parameter. If it is true, returns the second parameter, otherwise returns the third parameter                                                     |
 | `unevaluated`                       | 2        | Returns the unevaluated value of property on page `arg0` with name `arg1`                                                                                             |
