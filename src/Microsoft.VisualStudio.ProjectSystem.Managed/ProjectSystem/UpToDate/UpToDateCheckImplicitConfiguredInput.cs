@@ -1,9 +1,5 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
-using System;
-using System.Collections.Generic;
-using System.Collections.Immutable;
-using System.Linq;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
 using Microsoft.VisualStudio.Text;
 
@@ -22,27 +18,31 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             return new UpToDateCheckImplicitConfiguredInput(projectConfiguration);
         }
 
-        public static UpToDateCheckImplicitConfiguredInput Disabled { get; } = new UpToDateCheckImplicitConfiguredInput(
-            projectConfiguration:                         null,
-            msBuildProjectFullPath:                       null,
-            msBuildProjectDirectory:                      null,
-            copyUpToDateMarkerItem:                       null,
-            outputRelativeOrFullPath:                     null,
-            newestImportInput:                            null,
-            isDisabled:                                   true,
-            inputSourceItemTypes:                         ImmutableArray<string>.Empty,
-            inputSourceItemsByItemType:                   ImmutableDictionary<string, ImmutableArray<UpToDateCheckInputItem>>.Empty,
-            upToDateCheckInputItemsByKindBySetName:       ImmutableDictionary<string, ImmutableDictionary<string, ImmutableArray<string>>>.Empty,
-            upToDateCheckOutputItemsByKindBySetName:      ImmutableDictionary<string, ImmutableDictionary<string, ImmutableArray<string>>>.Empty,
-            upToDateCheckBuiltItemsByKindBySetName:       ImmutableDictionary<string, ImmutableDictionary<string, ImmutableArray<string>>>.Empty,
-            copiedOutputFiles:                            ImmutableArray<(string DestinationRelative, string SourceRelative)>.Empty,
-            resolvedAnalyzerReferencePaths:               ImmutableArray<string>.Empty,
-            resolvedCompilationReferencePaths:            ImmutableArray<string>.Empty,
-            copyReferenceInputs:                          ImmutableArray<string>.Empty,
-            lastItemsChangedAtUtc:                        DateTime.MinValue,
-            lastItemChanges:                              ImmutableArray<(bool IsAdd, string ItemType, UpToDateCheckInputItem)>.Empty,
-            itemHash:                                     null,
-            wasStateRestored:                             false);
+        public static UpToDateCheckImplicitConfiguredInput CreateDisabled(ProjectConfiguration projectConfiguration)
+        {
+            return new UpToDateCheckImplicitConfiguredInput(
+                projectConfiguration: projectConfiguration,
+                msBuildProjectFullPath: null,
+                msBuildProjectDirectory: null,
+                copyUpToDateMarkerItem: null,
+                outputRelativeOrFullPath: null,
+                newestImportInput: null,
+                isDisabled: true,
+                isCopyAlwaysOptimizationDisabled: false,
+                inputSourceItemTypes: ImmutableArray<string>.Empty,
+                inputSourceItemsByItemType: ImmutableDictionary<string, ImmutableArray<UpToDateCheckInputItem>>.Empty,
+                upToDateCheckInputItemsByKindBySetName: ImmutableDictionary<string, ImmutableDictionary<string, ImmutableArray<string>>>.Empty,
+                upToDateCheckOutputItemsByKindBySetName: ImmutableDictionary<string, ImmutableDictionary<string, ImmutableArray<string>>>.Empty,
+                upToDateCheckBuiltItemsByKindBySetName: ImmutableDictionary<string, ImmutableDictionary<string, ImmutableArray<string>>>.Empty,
+                copiedOutputFiles: ImmutableArray<(string DestinationRelative, string SourceRelative)>.Empty,
+                resolvedAnalyzerReferencePaths: ImmutableArray<string>.Empty,
+                resolvedCompilationReferencePaths: ImmutableArray<string>.Empty,
+                copyReferenceInputs: ImmutableArray<string>.Empty,
+                lastItemsChangedAtUtc: DateTime.MinValue,
+                lastItemChanges: ImmutableArray<(bool IsAdd, string ItemType, UpToDateCheckInputItem)>.Empty,
+                itemHash: null,
+                wasStateRestored: false);
+        }
 
         /// <summary>
         /// Gets the project configuration for this configured data snapshot.
@@ -51,7 +51,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
         /// Useful when a project multi-targets and we want to differentiate targets in log output.
         /// <see langword="null"/> when the up-to-date check is disabled.
         /// </remarks>
-        public ProjectConfiguration? ProjectConfiguration { get; }
+        public ProjectConfiguration ProjectConfiguration { get; }
 
         public string? MSBuildProjectFullPath { get; }
 
@@ -68,7 +68,36 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
         /// </summary>
         public string? NewestImportInput { get; }
 
+        /// <summary>
+        /// Gets whether the fast up-to-date check has been disabled for this project.
+        /// </summary>
+        /// <remarks>
+        /// <para>
+        /// Customers disable the fast up-to-date check by setting the <c>DisableFastUpToDateCheck</c>
+        /// project property to <c>true</c>.
+        /// </para>
+        /// <para>
+        /// When <see langword="true"/>, other properties on this snapshot will not be used, and so
+        /// are not populated.
+        /// </para>
+        /// </remarks>
         public bool IsDisabled { get; }
+
+        /// <summary>
+        /// Gets whether the fast up-to-date check should not optimize copy-always items.
+        /// </summary>
+        /// <remarks>
+        /// <para>
+        /// In VS17.2 we introduced an optimization for <c>CopyToOutputDirectory="Always"</c> items.
+        /// Previously, the presence of such an item in the project would cause the FUTD check to immediately
+        /// fail. With this optimization, we only fail if the timestamps or file sizes differ.
+        /// </para>
+        /// <para>
+        /// Customers can restore the old behaviour by setting the <c>DisableFastUpToDateCopyAlwaysOptimization</c>
+        /// project property to <c>true</c>.
+        /// </para>
+        /// </remarks>
+        public bool IsCopyAlwaysOptimizationDisabled { get; }
 
         /// <summary>
         /// Gets the time at which the set of items changed.
@@ -132,7 +161,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
         /// </summary>
         public ImmutableArray<string> CopyReferenceInputs { get; }
 
-        private UpToDateCheckImplicitConfiguredInput(ProjectConfiguration? projectConfiguration)
+        private UpToDateCheckImplicitConfiguredInput(ProjectConfiguration projectConfiguration)
         {
             var emptyItemBySetName = ImmutableDictionary.Create<string, ImmutableDictionary<string, ImmutableArray<string>>>(BuildUpToDateCheck.SetNameComparer);
 
@@ -152,13 +181,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
         }
 
         private UpToDateCheckImplicitConfiguredInput(
-            ProjectConfiguration? projectConfiguration,
+            ProjectConfiguration projectConfiguration,
             string? msBuildProjectFullPath,
             string? msBuildProjectDirectory,
             string? copyUpToDateMarkerItem,
             string? outputRelativeOrFullPath,
             string? newestImportInput,
             bool isDisabled,
+            bool isCopyAlwaysOptimizationDisabled,
             ImmutableArray<string> inputSourceItemTypes,
             ImmutableDictionary<string, ImmutableArray<UpToDateCheckInputItem>> inputSourceItemsByItemType,
             ImmutableDictionary<string, ImmutableDictionary<string, ImmutableArray<string>>> upToDateCheckInputItemsByKindBySetName,
@@ -180,6 +210,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             OutputRelativeOrFullPath = outputRelativeOrFullPath;
             NewestImportInput = newestImportInput;
             IsDisabled = isDisabled;
+            IsCopyAlwaysOptimizationDisabled = isCopyAlwaysOptimizationDisabled;
             InputSourceItemTypes = inputSourceItemTypes;
             InputSourceItemsByItemType = inputSourceItemsByItemType;
             UpToDateCheckInputItemsByKindBySetName = upToDateCheckInputItemsByKindBySetName;
@@ -220,7 +251,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
             if (isDisabled)
             {
-                return Disabled;
+                return CreateDisabled(ProjectConfiguration);
             }
 
             string? msBuildProjectFullPath = jointRuleUpdate.CurrentState.GetPropertyOrDefault(ConfigurationGeneral.SchemaName, ConfigurationGeneral.MSBuildProjectFullPathProperty, MSBuildProjectFullPath);
@@ -228,6 +259,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             string? msBuildProjectOutputPath = jointRuleUpdate.CurrentState.GetPropertyOrDefault(ConfigurationGeneral.SchemaName, ConfigurationGeneral.OutputPathProperty, OutputRelativeOrFullPath);
             string? outputRelativeOrFullPath = jointRuleUpdate.CurrentState.GetPropertyOrDefault(ConfigurationGeneral.SchemaName, ConfigurationGeneral.OutDirProperty, msBuildProjectOutputPath);
             string msBuildAllProjects = jointRuleUpdate.CurrentState.GetPropertyOrDefault(ConfigurationGeneral.SchemaName, ConfigurationGeneral.MSBuildAllProjectsProperty, "");
+            bool isCopyAlwaysOptimizationDisabled = jointRuleUpdate.CurrentState.IsPropertyTrue(ConfigurationGeneral.SchemaName, ConfigurationGeneral.DisableFastUpToDateCopyAlwaysOptimizationProperty, defaultValue: false);
 
             // The first item in this semicolon-separated list of project files will always be the one
             // with the newest timestamp. As we are only interested in timestamps on these files, we can
@@ -248,7 +280,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
             bool itemTypesChanged = false;
 
-            List<(bool IsAdd, string ItemType, UpToDateCheckInputItem)> changes = new();
+            List<(bool IsAdd, string ItemType, UpToDateCheckInputItem)> lastItemChanges = new();
 
             // If an item type was removed, remove all items of that type
             foreach (string removedItemType in itemTypeDiff.Removed)
@@ -259,7 +291,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 {
                     foreach (UpToDateCheckInputItem item in removedItems)
                     {
-                        changes.Add((false, removedItemType, item));
+                        lastItemChanges.Add((IsAdd: false, removedItemType, item));
                     }
 
                     inputSourceItemsByItemTypeBuilder.Remove(removedItemType);
@@ -293,19 +325,19 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                     before = beforeItems;
 
                 var after = projectChange.After.Items
-                    .Select(item => new UpToDateCheckInputItem(path: item.Key, metadata: item.Value))
+                    .Select(item => new UpToDateCheckInputItem(path: item.Key, itemType, metadata: item.Value))
                     .ToHashSet(UpToDateCheckInputItem.PathComparer);
 
                 var diff = new SetDiff<UpToDateCheckInputItem>(before, after, UpToDateCheckInputItem.PathComparer);
 
                 foreach (UpToDateCheckInputItem item in diff.Added)
                 {
-                    changes.Add((IsAdd: true, itemType, item));
+                    lastItemChanges.Add((IsAdd: true, itemType, item));
                 }
 
                 foreach (UpToDateCheckInputItem item in diff.Removed)
                 {
-                    changes.Add((IsAdd: false, itemType, item));
+                    lastItemChanges.Add((IsAdd: false, itemType, item));
                 }
 
                 inputSourceItemsByItemTypeBuilder[itemType] = after.ToImmutableArray();
@@ -345,6 +377,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 outputRelativeOrFullPath,
                 newestImportInput,
                 isDisabled: isDisabled,
+                isCopyAlwaysOptimizationDisabled: isCopyAlwaysOptimizationDisabled,
                 inputSourceItemTypes: inputSourceItemTypes.ToImmutableArray(),
                 inputSourceItemsByItemType: inputSourceItemsByItemType,
                 upToDateCheckInputItemsByKindBySetName:  UpdateItemsByKindBySetName(UpToDateCheckInputItemsByKindBySetName,  jointRuleUpdate, UpToDateCheckInput.SchemaName,  UpToDateCheckInput.KindProperty,  UpToDateCheckInput.SetProperty),
@@ -355,7 +388,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 resolvedCompilationReferencePaths: resolvedCompilationReferencePaths,
                 copyReferenceInputs: copyReferenceInputs,
                 lastItemsChangedAtUtc: lastItemsChangedAtUtc,
-                changes.ToImmutableArray(),
+                lastItemChanges.ToImmutableArray(),
                 itemHash,
                 WasStateRestored);
 
@@ -537,6 +570,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 OutputRelativeOrFullPath,
                 NewestImportInput,
                 IsDisabled,
+                IsCopyAlwaysOptimizationDisabled,
                 InputSourceItemTypes,
                 InputSourceItemsByItemType,
                 UpToDateCheckInputItemsByKindBySetName,
@@ -562,6 +596,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 OutputRelativeOrFullPath,
                 NewestImportInput,
                 IsDisabled,
+                IsCopyAlwaysOptimizationDisabled,
                 InputSourceItemTypes,
                 InputSourceItemsByItemType,
                 UpToDateCheckInputItemsByKindBySetName,

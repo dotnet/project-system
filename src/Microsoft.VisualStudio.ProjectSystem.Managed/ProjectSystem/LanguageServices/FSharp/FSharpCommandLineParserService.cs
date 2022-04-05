@@ -1,10 +1,5 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
-using System;
-using System.Collections.Generic;
-using System.Collections.Immutable;
-using System.ComponentModel.Composition;
-using System.IO;
 using Microsoft.CodeAnalysis;
 using Microsoft.VisualStudio.Text;
 
@@ -58,18 +53,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.FSharp
                     {
                         // not an option, should be a regular file
                         string extension = Path.GetExtension(arg).ToLowerInvariant();
-                        switch (extension)
+                        if (extension is
+                            ".fs" or
+                            ".fsi" or
+                            ".fsx" or
+                            ".fsscript" or
+                            ".ml" or
+                            ".mli")
                         {
-                            case ".fs":
-                            case ".fsi":
-                            case ".fsx":
-                            case ".fsscript":
-                            case ".ml":
-                            case ".mli":
-                                sourceFiles.Add(new CommandLineSourceFile(arg, isScript: (extension == ".fsx") || (extension == ".fsscript")));
-                                break;
-                            default:
-                                break;
+                            sourceFiles.Add(new CommandLineSourceFile(arg, isScript: (extension == ".fsx") || (extension == ".fsscript")));
                         }
                     }
                     else

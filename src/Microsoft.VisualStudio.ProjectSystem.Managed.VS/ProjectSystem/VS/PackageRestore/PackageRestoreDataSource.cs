@@ -1,11 +1,5 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.Composition;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
 using System.Threading.Tasks.Dataflow;
 using Microsoft.Internal.Performance;
 using Microsoft.VisualStudio.IO;
@@ -61,7 +55,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
         private readonly IVsSolutionRestoreService3 _solutionRestoreService;
         private readonly IFileSystem _fileSystem;
         private readonly IProjectDiagnosticOutputService _logger;
-        private readonly IProjectDependentFileChangeNotificationService _projectDependentFileChangeNotificationService;
         private readonly IVsSolutionRestoreService4 _solutionRestoreService4;
         private byte[]? _latestHash;
         private bool _enabled;
@@ -74,7 +67,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
             IVsSolutionRestoreService3 solutionRestoreService,
             IFileSystem fileSystem,
             IProjectDiagnosticOutputService logger,
-            IProjectDependentFileChangeNotificationService projectDependentFileChangeNotificationService,
             IVsSolutionRestoreService4 solutionRestoreService4,
             PackageRestoreSharedJoinableTaskCollection sharedJoinableTaskCollection)
             : base(project, sharedJoinableTaskCollection, synchronousDisposal: true, registerDataSource: false)
@@ -85,7 +77,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
             _solutionRestoreService = solutionRestoreService;
             _fileSystem = fileSystem;
             _logger = logger;
-            _projectDependentFileChangeNotificationService = projectDependentFileChangeNotificationService;
             _solutionRestoreService4 = solutionRestoreService4;
         }
 
@@ -163,8 +154,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
                 {
                     _restoreStarted = false;
                 }
-
-                HintProjectDependentFile(restoreInfo);
             }
             finally
             {
@@ -172,20 +161,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
             }
 
             return success;
-        }
-
-        private void HintProjectDependentFile(ProjectRestoreInfo restoreInfo)
-        {
-            if (restoreInfo.ProjectAssetsFilePath.Length != 0)
-            {
-                // Hint to CPS that the assets file "might" have changed and therefore
-                // reevaluate if it has. It already listens to file-changed events for it, 
-                // but can miss them during periods where the buffer is overflowed when 
-                // there are lots of changes.
-                _projectDependentFileChangeNotificationService.OnAfterDependentFilesChanged(
-                    fileFullPaths: new[] { restoreInfo.ProjectAssetsFilePath },
-                    project: ContainingProject);
-            }
         }
 
         private async Task<bool> NominateForRestoreAsync(ProjectRestoreInfo restoreInfo, CancellationToken cancellationToken)

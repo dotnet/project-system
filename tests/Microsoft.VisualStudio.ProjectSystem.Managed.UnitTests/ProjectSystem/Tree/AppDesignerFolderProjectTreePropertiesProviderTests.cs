@@ -1,7 +1,5 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
-using System;
-using System.Collections.Immutable;
 using Microsoft.VisualStudio.ProjectSystem.Imaging;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
 using Xunit;
@@ -26,7 +24,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree
 
             Assert.Throws<ArgumentNullException>("ruleSnapshots", () =>
             {
-                propertiesProvider.UpdateProjectTreeSettings((IImmutableDictionary<string, IProjectRuleSnapshot>)null!, ref projectTreeSettings);
+                propertiesProvider.UpdateProjectTreeSettings(null!, ref projectTreeSettings);
             });
         }
 
@@ -51,7 +49,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree
 
             Assert.Throws<ArgumentNullException>("propertyContext", () =>
             {
-                propertiesProvider.CalculatePropertyValues((IProjectTreeCustomizablePropertyContext)null!, propertyValues);
+                propertiesProvider.CalculatePropertyValues(null!, propertyValues);
             });
         }
 
@@ -63,7 +61,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree
 
             Assert.Throws<ArgumentNullException>("propertyValues", () =>
             {
-                propertiesProvider.CalculatePropertyValues(propertyContext, (IProjectTreeCustomizablePropertyValues)null!);
+                propertiesProvider.CalculatePropertyValues(propertyContext, null!);
             });
         }
 
@@ -631,12 +629,12 @@ Root (flags: {ProjectRoot})
 
         private static AppDesignerFolderProjectTreePropertiesProvider CreateInstance()
         {
-            return CreateInstance((IProjectImageProvider?)null, (IProjectDesignerService?)null);
+            return CreateInstance(null, null);
         }
 
         private static AppDesignerFolderProjectTreePropertiesProvider CreateInstance(IProjectDesignerService designerService)
         {
-            return CreateInstance((IProjectImageProvider?)null, designerService);
+            return CreateInstance(null, designerService);
         }
 
         private static AppDesignerFolderProjectTreePropertiesProvider CreateInstance(IProjectImageProvider? imageProvider, IProjectDesignerService? designerService)

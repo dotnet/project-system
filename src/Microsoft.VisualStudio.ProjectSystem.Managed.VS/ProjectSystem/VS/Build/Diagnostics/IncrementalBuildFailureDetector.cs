@@ -1,13 +1,11 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
-using System;
-using System.ComponentModel.Composition;
-using System.Threading;
-using System.Threading.Tasks;
 using Microsoft.VisualStudio.ProjectSystem.UpToDate;
+using Microsoft.VisualStudio.ProjectSystem.VS.Editor;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 using Microsoft.VisualStudio.Threading;
+using IAsyncDisposable = System.IAsyncDisposable;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Build.Diagnostics
 {
@@ -41,67 +39,64 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build.Diagnostics
           IVsRunningDocTableEvents,
           IPackageService
     {
-        private readonly IVsService<SVsSolutionBuildManager, IVsSolutionBuildManager2> _solutionBuildManagerService;
-        private readonly IVsService<SVsRunningDocumentTable, IVsRunningDocumentTable> _rdtService;
+        private readonly ISolutionBuildManager _solutionBuildEvents;
+        private readonly IRunningDocumentTable _rdtEvents;
 
-        private IVsSolutionBuildManager2? _solutionBuildManager;
-        private IVsRunningDocumentTable? _rdt;
+        private IAsyncDisposable? _solutionBuildEventsSubscription;
+        private IAsyncDisposable? _rdtEventsSubscription;
 
-        private uint _sbmCookie;
-        private uint _rdtCookie;
-        
         private DateTime _lastSavedAtUtc = DateTime.MinValue;
         private DateTime _lastBuildStartedAtUtc = DateTime.MinValue;
 
         [ImportingConstructor]
         public IncrementalBuildFailureDetector(
-            IVsService<SVsSolutionBuildManager, IVsSolutionBuildManager2> solutionBuildManagerService,
-            IVsService<SVsRunningDocumentTable, IVsRunningDocumentTable> rdtService,
+            ISolutionBuildManager solutionBuildEvents,
+            IRunningDocumentTable rdtEvents,
             JoinableTaskContext joinableTaskContext)
             : base(new(joinableTaskContext))
         {
-            _solutionBuildManagerService = solutionBuildManagerService;
-            _rdtService = rdtService;
+            _solutionBuildEvents = solutionBuildEvents;
+            _rdtEvents = rdtEvents;
         }
 
         async Task IPackageService.InitializeAsync(IAsyncServiceProvider _)
         {
+            // These will both internally switch to the UI thread, so better to do the
+            // switch once so most of this will run synchronously without yielding.
             await JoinableFactory.SwitchToMainThreadAsync();
 
-            _solutionBuildManager = await _solutionBuildManagerService.GetValueAsync();
-            _rdt = await _rdtService.GetValueAsync();
-
-            HResult.Verify(_rdt.AdviseRunningDocTableEvents(this, out _rdtCookie), $"Error advising RDT events in {typeof(IncrementalBuildFailureDetector)}.");
-            HResult.Verify(_solutionBuildManager.AdviseUpdateSolutionEvents(this, out _sbmCookie), $"Error advising solution events in {typeof(IncrementalBuildFailureDetector)}.");
+            // We want to hook these early, so do this during package initialisation
+            _solutionBuildEventsSubscription = await _solutionBuildEvents.SubscribeSolutionEventsAsync(this);
+            _rdtEventsSubscription = await _rdtEvents.SubscribeEventsAsync(this);
 
             await InitializeAsync();
         }
 
         protected override Task InitializeCoreAsync(CancellationToken cancellationToken)
         {
-            Assumes.NotNull(_solutionBuildManager);
+            Assumes.NotNull(_solutionBuildEventsSubscription);
+            Assumes.NotNull(_rdtEventsSubscription);
 
             return Task.CompletedTask;
         }
 
-        protected override Task DisposeCoreAsync(bool initialized)
+        protected override async Task DisposeCoreAsync(bool initialized)
         {
-            Assumes.NotNull(_solutionBuildManager);
-            Assumes.NotNull(_rdt);
-
-            if (_sbmCookie != 0)
+            if (initialized)
             {
-                HResult.Verify(_rdt.UnadviseRunningDocTableEvents(_sbmCookie), $"Error unadvising RDT events in {typeof(IncrementalBuildFailureDetector)}.");
-                _sbmCookie = 0;
-            }
+                Assumes.NotNull(_solutionBuildEvents);
+                Assumes.NotNull(_rdtEventsSubscription);
 
-            if (_rdtCookie != 0)
-            {
-                HResult.Verify(_solutionBuildManager.UnadviseUpdateSolutionEvents(_rdtCookie), $"Error unadvising solution events in {typeof(IncrementalBuildFailureDetector)}.");
-                _rdtCookie = 0;
-            }
+                if (_solutionBuildEventsSubscription is not null)
+                {
+                    await _solutionBuildEventsSubscription.DisposeAsync();
+                }
 
-            return Task.CompletedTask;
+                if (_rdtEventsSubscription is not null)
+                {
+                    await _rdtEventsSubscription.DisposeAsync();
+                }
+            }
         }
 
         /// <summary>

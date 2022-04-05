@@ -1,9 +1,5 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
-using System.Collections.Immutable;
-using System.ComponentModel.Composition;
-using System.Threading;
-using System.Threading.Tasks;
 using Microsoft.VisualStudio.ProjectSystem.Debug;
 using Microsoft.VisualStudio.ProjectSystem.Managed.Build;
 
@@ -27,6 +23,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Build
         private readonly ConfiguredProject _configuredProject;
         private readonly IActiveDebugFrameworkServices _activeDebugFrameworkServices;
         private readonly IImplicitlyTriggeredBuildState _implicitlyTriggeredBuildState;
+        private readonly IProjectSystemOptions _projectSystemOptions;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="TargetFrameworkGlobalBuildPropertyProvider"/> class.
@@ -36,12 +33,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.Build
             IProjectService projectService,
             ConfiguredProject configuredProject,
             IActiveDebugFrameworkServices activeDebugFrameworkServices,
-            IImplicitlyTriggeredBuildState implicitlyTriggeredBuildState)
+            IImplicitlyTriggeredBuildState implicitlyTriggeredBuildState,
+            IProjectSystemOptions projectSystemOptions)
             : base(projectService.Services)
         {
             _configuredProject = configuredProject;
             _activeDebugFrameworkServices = activeDebugFrameworkServices;
             _implicitlyTriggeredBuildState = implicitlyTriggeredBuildState;
+            _projectSystemOptions = projectSystemOptions;
         }
 
         public override async Task<IImmutableDictionary<string, string>> GetGlobalPropertiesAsync(CancellationToken cancellationToken)
@@ -49,14 +48,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.Build
             IImmutableDictionary<string, string> properties = Empty.PropertiesMap;
 
             // Check:
-            //   - if this is a cross targeting project, i.e. project configuration has a "TargetFramework" dimension.
             //   - if this is an implicitly-triggered build
             //   - if there is a single startup project
             //   - if this is the startup project in question
-            if (_configuredProject.ProjectConfiguration.IsCrossTargeting()
-                && _implicitlyTriggeredBuildState.IsImplicitlyTriggeredBuild
+            //   - if this is a cross targeting project, i.e. project configuration has a "TargetFramework" dimension
+            //   - if the option to prefer single-target builds is turned on
+            if (_implicitlyTriggeredBuildState.IsImplicitlyTriggeredBuild
                 && _implicitlyTriggeredBuildState.StartupProjectFullPaths.Length == 1
-                && StringComparers.Paths.Equals(_implicitlyTriggeredBuildState.StartupProjectFullPaths[0], _configuredProject.UnconfiguredProject.FullPath))
+                && StringComparers.Paths.Equals(_implicitlyTriggeredBuildState.StartupProjectFullPaths[0], _configuredProject.UnconfiguredProject.FullPath)
+                && _configuredProject.ProjectConfiguration.IsCrossTargeting()
+                && await _projectSystemOptions.GetPreferSingleTargetBuildsForStartupProjectsAsync(cancellationToken))
             {
                 // We only want to build this for the framework that we will launch.
                 string? activeDebuggingFramework = await _activeDebugFrameworkServices.GetActiveDebuggingFrameworkPropertyAsync();

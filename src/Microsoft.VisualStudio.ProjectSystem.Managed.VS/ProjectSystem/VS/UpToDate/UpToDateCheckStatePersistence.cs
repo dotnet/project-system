@@ -1,13 +1,6 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
-using System;
-using System.Collections.Generic;
-using System.Collections.Immutable;
-using System.ComponentModel.Composition;
-using System.IO;
 using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
 using Microsoft.Internal.VisualStudio.Shell.Interop;
 using Microsoft.VisualStudio.ProjectSystem.UpToDate;
 using Microsoft.VisualStudio.Shell.Interop;
@@ -27,7 +20,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.UpToDate
     {
         private const string ProjectItemCacheFileName = ".futdcache.v1";
 
-        private readonly object _lock = new();
+        private readonly AsyncSemaphore _lock = new(initialCount: 1);
 
         private Dictionary<(string ProjectPath, IImmutableDictionary<string, string> ConfigurationDimensions), (int ItemHash, DateTime ItemsChangedAtUtc)>? _dataByConfiguredProject;
 
@@ -36,6 +29,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.UpToDate
         private bool _hasUnsavedChange;
         private uint _cookie = VSConstants.VSCOOKIE_NIL;
         private string? _cacheFilePath;
+        private JoinableTask? _cleanupTask;
 
         [ImportingConstructor]
         public UpToDateCheckStatePersistence(
@@ -68,12 +62,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.UpToDate
             }
         }
 
-        public async Task<(int ItemHash, DateTime ItemsChangedAtUtc)?> RestoreStateAsync(string projectPath, IImmutableDictionary<string, string> configurationDimensions)
+        public async Task<(int ItemHash, DateTime ItemsChangedAtUtc)?> RestoreStateAsync(string projectPath, IImmutableDictionary<string, string> configurationDimensions, CancellationToken cancellationToken)
         {
-            await InitializeAsync();
-            await InitializeDataAsync();
+            await InitializeAsync(cancellationToken);
+            await InitializeDataAsync(cancellationToken);
 
-            lock (_lock)
+            using (await _lock.EnterAsync(cancellationToken))
             {
                 Assumes.NotNull(_dataByConfiguredProject);
 
@@ -83,16 +77,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.UpToDate
                 return null;
             }
 
-            async Task InitializeDataAsync()
+            async Task InitializeDataAsync(CancellationToken cancellationToken)
             {
                 if (_cacheFilePath is null || _dataByConfiguredProject is null)
                 {
-                    string filePath = await GetCacheFilePathAsync(CancellationToken.None);
+                    string filePath = await GetCacheFilePathAsync(cancellationToken);
 
                     // Switch to a background thread before doing file I/O
                     await TaskScheduler.Default;
 
-                    lock (_lock)
+                    using (await _lock.EnterAsync(cancellationToken))
                     {
                         if (_cacheFilePath is null || _dataByConfiguredProject is null)
                         {
@@ -125,9 +119,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.UpToDate
             }
         }
 
-        public void StoreState(string projectPath, IImmutableDictionary<string, string> configurationDimensions, int itemHash, DateTime itemsChangedAtUtc)
+        public async Task StoreStateAsync(string projectPath, IImmutableDictionary<string, string> configurationDimensions, int itemHash, DateTime itemsChangedAtUtc, CancellationToken cancellationToken)
         {
-            lock (_lock)
+            using (await _lock.EnterAsync(cancellationToken))
             {
                 Assumes.NotNull(_dataByConfiguredProject);
 
@@ -219,20 +213,35 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.UpToDate
         public int OnBeforeUnloadProject(IVsHierarchy pRealHierarchy, IVsHierarchy pStubHierarchy) => HResult.NotImplemented;
         public int OnAfterOpenSolution(object pUnkReserved, int fNewSolution) => HResult.NotImplemented;
         public int OnQueryCloseSolution(object pUnkReserved, ref int pfCancel) => HResult.NotImplemented;
-        public int OnBeforeCloseSolution(object pUnkReserved) => HResult.NotImplemented;
+        public int OnBeforeCloseSolution(object pUnkReserved)
+        {
+            // Kick off clean up work now. We will join on it after solution close.
+            _cleanupTask = JoinableFactory.RunAsync(async () =>
+            {
+                await TaskScheduler.Default;
+
+                using (await _lock.EnterAsync())
+                {
+                    if (_hasUnsavedChange && _cacheFilePath is not null && _dataByConfiguredProject is not null)
+                    {
+                        Serialize(_cacheFilePath, _dataByConfiguredProject);
+                    }
+
+                    _cacheFilePath = null;
+                    _dataByConfiguredProject = null;
+                }
+            });
+
+            return HResult.OK;
+        }
 
         public int OnAfterCloseSolution(object pUnkReserved)
         {
-            lock (_lock)
-            {
-                if (_hasUnsavedChange && _cacheFilePath is not null && _dataByConfiguredProject is not null)
-                {
-                    Serialize(_cacheFilePath, _dataByConfiguredProject);
-                }
-
-                _cacheFilePath = null;
-                _dataByConfiguredProject = null;
-            }
+            // Wait for any async clean up to complete. We need to ensure this occurs before we close
+            // the solution so that if we are immediately re-opening the solution (e.g. during branch
+            // switching where the .sln file changed) we will restore the persisted state correctly.
+            _cleanupTask?.Join();
+            _cleanupTask = null;
 
             return HResult.OK;
         }

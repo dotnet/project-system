@@ -1,7 +1,5 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
-using System.IO;
-using System.Threading.Tasks;
 using Moq;
 using Moq.Protected;
 using Xunit;
@@ -227,7 +225,7 @@ Project (flags: {{ProjectRoot}}), FilePath: ""C:\Project\Project.csproj""
             object[] arguments = new object[3 + additionalArguments.Length];
             arguments[0] = specialFilesManager;
             arguments[1] = projectTree;
-            arguments[2] = (ICreateFileFromTemplateService)null!;
+            arguments[2] = null!;
             additionalArguments.CopyTo(arguments, 3);
 
             // We override CreateFileAsync to call the CreateEmptyFileAsync which makes writting tests in the base easier

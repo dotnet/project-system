@@ -40,6 +40,14 @@
     <ProduceReferenceAssembly>true</ProduceReferenceAssembly>
   </PropertyGroup>
 
+  <!-- Modify the set of implicit usings -->
+  <ItemGroup>
+    <!-- We use immutable collections extensively and expect no naming conflicts -->
+    <Using Include="System.Collections.Immutable" />
+    <!-- There are two namespaces via which MEF attributes are defined. This is the correct one. -->
+    <Using Include="System.ComponentModel.Composition" />
+  </ItemGroup>
+
   <!--
     TODO: Import layout props so that design-time build executed before package restore is finished doesn't
     product artifacts into wrong obj directories. Remove once we can use a custom SDK (https://github.com/Microsoft/msbuild/issues/1493)
@@ -65,8 +73,9 @@
 
   <PropertyGroup Condition="'$(Language)' == 'C#'">
     <CheckForOverflowUnderflow>false</CheckForOverflowUnderflow>
-    <LangVersion>9.0</LangVersion>
+    <LangVersion>10.0</LangVersion>
     <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
     <Features>strict</Features>
   </PropertyGroup>
 

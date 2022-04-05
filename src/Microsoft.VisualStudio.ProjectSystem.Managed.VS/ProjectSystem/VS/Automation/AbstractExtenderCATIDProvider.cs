@@ -21,41 +21,45 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
             // The latter issue we can do nothing about, however, to address the former, map these types to a truer form it makes 
             // it easier on implementors and maintainers of this to understand the objects we're talking about.
 
-            switch (extenderCATIDType)
+            return extenderCATIDType switch
             {
-                case ExtenderCATIDType.HierarchyExtensionObject:                                // IVsHierarchy.GetProperty(VSITEMID.Root, VSHPROPID_ExtObjectCATID)
-                case ExtenderCATIDType.AutomationProject:                                       // DTE.Project
-                    return GetExtenderCATID(ExtendeeObject.Project);
+                ExtenderCATIDType.HierarchyExtensionObject or                       // IVsHierarchy.GetProperty(VSITEMID.Root, VSHPROPID_ExtObjectCATID)
+                ExtenderCATIDType.AutomationProject =>                              // DTE.Project
+                    GetExtenderCATID(ExtendeeObject.Project),
 
-                case ExtenderCATIDType.HierarchyBrowseObject:                                   // IVsHierarchy.GetProperty(VSHPROPID_BrowseObjectCATID)
-                case ExtenderCATIDType.ProjectBrowseObject:                                     // EnvDTE.Project.Properties
-                    return GetExtenderCATID(ExtendeeObject.ProjectBrowseObject);
+                ExtenderCATIDType.HierarchyBrowseObject or                          // IVsHierarchy.GetProperty(VSHPROPID_BrowseObjectCATID)
+                ExtenderCATIDType.ProjectBrowseObject =>                            // EnvDTE.Project.Properties
+                    GetExtenderCATID(ExtendeeObject.ProjectBrowseObject),
 
-                case ExtenderCATIDType.ConfigurationBrowseObject:                               // IVsCfgProvider2.GetCfgProviderProperty(VSCFGPROPID_IntrinsicExtenderCATID)/DTE.Configuration
-                    return GetExtenderCATID(ExtendeeObject.Configuration);
+                ExtenderCATIDType.ConfigurationBrowseObject =>                      // IVsCfgProvider2.GetCfgProviderProperty(VSCFGPROPID_IntrinsicExtenderCATID)/DTE.Configuration
+                    GetExtenderCATID(ExtendeeObject.Configuration),
 
-                case ExtenderCATIDType.HierarchyConfigurationBrowseObject:                      // IVsHierarchy.GetProperty(VSHPROPID_CfgBrowseObjectCATID)
-                case ExtenderCATIDType.ProjectConfigurationBrowseObject:                        // EnvDTE.Configuration.Properties
-                    return GetExtenderCATID(ExtendeeObject.ConfigurationBrowseObject);
+                ExtenderCATIDType.HierarchyConfigurationBrowseObject or             // IVsHierarchy.GetProperty(VSHPROPID_CfgBrowseObjectCATID)
+                ExtenderCATIDType.ProjectConfigurationBrowseObject =>               // EnvDTE.Configuration.Properties
+                    GetExtenderCATID(ExtendeeObject.ConfigurationBrowseObject),
 
-                case ExtenderCATIDType.AutomationProjectItem:                                   // EnvDTE.ProjectItem
-                    return GetExtenderCATID(ExtendeeObject.ProjectItem);
+                ExtenderCATIDType.AutomationProjectItem =>                          // EnvDTE.ProjectItem
+                    GetExtenderCATID(ExtendeeObject.ProjectItem),
 
-                case ExtenderCATIDType.AutomationReference:                                     // VSLangProject.Reference
-                case ExtenderCATIDType.ReferenceBrowseObject:                                   // EnvDTE.ProjectItem.Properties (when reference)
-                    return GetExtenderCATID(ExtendeeObject.ReferenceBrowseObject);
+                ExtenderCATIDType.AutomationReference or                            // VSLangProject.Reference
+                ExtenderCATIDType.ReferenceBrowseObject =>                          // EnvDTE.ProjectItem.Properties (when reference)
+                    GetExtenderCATID(ExtendeeObject.ReferenceBrowseObject),
 
-                case ExtenderCATIDType.FileBrowseObject:                                        // EnvDTE.ProjectItem.Properties (when file)
-                    return GetExtenderCATID(ExtendeeObject.FileBrowseObject);
+                ExtenderCATIDType.FileBrowseObject =>                               // EnvDTE.ProjectItem.Properties (when file)
+                    GetExtenderCATID(ExtendeeObject.FileBrowseObject),
 
-                case ExtenderCATIDType.AutomationFolderProperties:                              // FolderProperties
-                case ExtenderCATIDType.FolderBrowseObject:                                      // EnvDTE.ProjectItem.Properties (when folder)
-                    return GetExtenderCATID(ExtendeeObject.FolderBrowseObject);
+                ExtenderCATIDType.AutomationFolderProperties or                     // FolderProperties
+                ExtenderCATIDType.FolderBrowseObject =>                             // EnvDTE.ProjectItem.Properties (when folder)
+                    GetExtenderCATID(ExtendeeObject.FolderBrowseObject),
 
-                default:
-                case ExtenderCATIDType.Unknown:                                                 // EnvDTE.ProjectItem.Properties (when not file, folder, reference)
-                    BCLDebug.Assert(extenderCATIDType == ExtenderCATIDType.Unknown, $"Unrecognized CATID type {extenderCATIDType}");
-                    return null;
+                ExtenderCATIDType.Unknown or _ =>                                   // EnvDTE.ProjectItem.Properties (when not file, folder, reference)
+                    UnknownOrDefault()
+            };
+
+            string? UnknownOrDefault()
+            {
+                BCLDebug.Assert(extenderCATIDType == ExtenderCATIDType.Unknown, $"Unrecognized CATID type {extenderCATIDType}");
+                return null;
             }
         }
 

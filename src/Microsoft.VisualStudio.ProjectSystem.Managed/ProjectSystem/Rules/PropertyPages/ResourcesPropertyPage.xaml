@@ -7,6 +7,11 @@
       Order="1100"
       xmlns="http://schemas.microsoft.com/build/2009/properties">
 
+  <Rule.Categories>
+    <Category Name="General"
+              DisplayName="General" />
+  </Rule.Categories>
+
   <Rule.DataSource>
     <DataSource Persistence="ProjectFileWithInterception"
                 SourceOfDefaultValue="AfterContext"
@@ -15,14 +20,16 @@
 
   <StringProperty Name="ResourcesPagePlaceholderDescription"
                   DisplayName="Ignored"
-                  Description="The management of assembly resources no longer occurs through project properties. Instead, open the RESX file directly from Solution Explorer. For convenience, you may access it via the link below.">
+                  Description="The management of assembly resources no longer occurs through project properties. Instead, open the RESX file directly from Solution Explorer. For convenience, you may access it via the link below."
+                  Category="General">
     <StringProperty.ValueEditors>
       <ValueEditor EditorType="Description" />
     </StringProperty.ValueEditors>
   </StringProperty>
 
   <StringProperty Name="CreateOrOpenAssemblyResources"
-                  DisplayName="Create or open assembly resources">
+                  DisplayName="Create or open assembly resources"
+                  Category="General">
     <StringProperty.ValueEditors>
       <ValueEditor EditorType="LinkAction">
         <ValueEditor.Metadata>

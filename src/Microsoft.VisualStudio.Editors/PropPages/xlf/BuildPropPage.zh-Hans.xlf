@@ -154,7 +154,7 @@
       </trans-unit>
       <trans-unit id="txtSupressWarnings.AccessibleName">
         <source>Suppress Warnings</source>
-        <target state="new">Suppress Warnings</target>
+        <target state="translated">抑制警告</target>
         <note />
       </trans-unit>
       <trans-unit id="txtXMLDocumentationFile.AccessibleName">

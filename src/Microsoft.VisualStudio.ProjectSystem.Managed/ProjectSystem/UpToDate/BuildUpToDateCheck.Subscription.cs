@@ -1,8 +1,5 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
-using System;
-using System.Threading;
-using System.Threading.Tasks;
 using System.Threading.Tasks.Dataflow;
 using Microsoft.VisualStudio.Threading;
 
@@ -18,9 +15,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
         /// As the parent <see cref="BuildUpToDateCheck"/> is an <see cref="IProjectDynamicLoadComponent"/>, it may have multiple lifetimes.
         /// This class contains all the state associated with such a lifetime: its Dataflow subscription, tracking the first value to arrive,
         /// and the <see cref="UpToDateCheckConfiguredInput"/> instance.
-        /// </para>
-        /// <para>
-        /// Initialization of the Dataflow subscription happens lazily, upon the first up-to-date check request.
         /// </para>
         /// <para>
         /// Destruction of the Dataflow subscription happens when the parent component is disposed or unloaded.
@@ -47,7 +41,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             private int _disposed;
 
             /// <summary>
-            /// Gets the time at which the last up-to-date check was made.
+            /// Gets the time at which the last successful build was started, per configuration.
             /// </summary>
             /// <remarks>
             /// This value is required in order to protect against a race condition described in
@@ -55,15 +49,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             /// modified during a compilation, but before that compilation's outputs are produced, then
             /// the changed input file's timestamp will be earlier than the compilation output, making
             /// it seem as though the compilation is up to date when in fact the input was not included
-            /// in that compilation. We use this property as a proxy for compilation start time, whereas
-            /// the outputs represent compilation end time.
+            /// in that compilation. Comparing against compilation start time fixes that issue.
             /// </remarks>
-            private DateTime _lastCheckedAtUtc = DateTime.MinValue;
+            private readonly Dictionary<ProjectConfiguration, DateTime> _lastSuccessfulBuildStartTimeUtcByConfiguration = new();
 
             /// <summary>
             /// Lazily constructed Dataflow subscription. Set back to <see langword="null"/> in <see cref="Dispose"/>.
             /// </summary>
             private IDisposable? _link;
+
+            private ImmutableArray<ProjectConfiguration> _lastCheckedConfigurations = ImmutableArray<ProjectConfiguration>.Empty;
 
             /// <summary>
             /// Cancelled when this instance is disposed.
@@ -81,8 +76,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             }
 
             public async Task<bool> RunAsync(
-                Func<UpToDateCheckConfiguredInput, DateTime, CancellationToken, Task<bool>> func,
-                bool updateLastCheckedAt,
+                Func<UpToDateCheckConfiguredInput, IReadOnlyDictionary<ProjectConfiguration, DateTime>, CancellationToken, Task<(bool UpToDate, ImmutableArray<ProjectConfiguration> CheckedConfigurations)>> func,
                 CancellationToken cancellationToken)
             {
                 using var cts = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken, _disposeTokenSource.Token);
@@ -107,8 +101,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                     return false;
                 }
 
-                Assumes.NotNull(_link);
-
                 // Prevent overlapping requests
                 using AsyncSemaphore.Releaser _ = await _semaphore.EnterAsync(token);
 
@@ -124,14 +116,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                         cancellationToken: token);
                 }
 
-                bool result = await func(state.Value, _lastCheckedAtUtc, token);
+                (bool upToDate, _lastCheckedConfigurations) = await func(state.Value, _lastSuccessfulBuildStartTimeUtcByConfiguration, token);
 
-                if (updateLastCheckedAt)
+                return upToDate;
+            }
+
+            public void UpdateLastSuccessfulBuildStartTimeUtc(DateTime lastBuildStartTimeUtc)
+            {
+                foreach (ProjectConfiguration configuration in _lastCheckedConfigurations)
                 {
-                    _lastCheckedAtUtc = DateTime.UtcNow;
+                    _lastSuccessfulBuildStartTimeUtcByConfiguration[configuration] = lastBuildStartTimeUtc;
                 }
-
-                return result;
             }
 
             public void EnsureInitialized()
@@ -181,13 +176,48 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             }
         }
 
+        /// <summary>
+        /// Holds state in the active configuration.
+        /// In a multi-targeting project (or one with any extra dimensions) this will be the first, in evaluation order.
+        /// Per-target state is modelled in individual UpToDateCheckConfiguredInput values.
+        /// </summary>
         internal interface ISubscription : IDisposable
         {
+            /// <summary>
+            /// Ensures the subscription has been initialized. Has no effect if the object has already been disposed.
+            /// </summary>
             void EnsureInitialized();
 
+            /// <summary>
+            /// Notifies the subscription of the most recent time a successful build started.
+            /// </summary>
+            /// <remarks>
+            /// Implementation must ensure only the most recently built configurations are updated.
+            /// The most recently built configurations should be obtained from the return value of the
+            /// function passed to <see cref="RunAsync"/>.
+            /// </remarks>
+            void UpdateLastSuccessfulBuildStartTimeUtc(DateTime timeUtc);
+
+            /// <summary>
+            /// Calls <paramref name="func"/> to determine whether the project is up-to-date or not.
+            /// </summary>
+            /// <param name="func">
+            /// A function that accepts three arguments:
+            /// <list type="number">
+            ///     <item>The current project state as an instance of <see cref="UpToDateCheckConfiguredInput"/>.</item>
+            ///     <item>A map from project configuration to the UTC date/time of the last successful build's start time.</item>
+            ///     <item>A cancellation token that may indicate a loss of interest in the result.</item>
+            /// </list>
+            /// And returns a tuple of:
+            /// <list type="number">
+            ///     <item>A boolean indicating whether the project is up-to-date or not.</item>
+            ///     <item>The list of project configurations actually checked.</item>
+            /// </list>
+            /// </param>
+            /// <param name="cancellationToken">Indicates a loss of interest in the result.</param>
+            /// <returns><see langword="true"/> if the project is up-to-date, otherwise <see langword="false"/>.</returns>
             Task<bool> RunAsync(
-                Func<UpToDateCheckConfiguredInput, DateTime, CancellationToken, Task<bool>> func,
-                bool updateLastCheckedAt,
+                Func<UpToDateCheckConfiguredInput, IReadOnlyDictionary<ProjectConfiguration, DateTime>, CancellationToken, Task<(bool UpToDate, ImmutableArray<ProjectConfiguration> CheckedConfigurations)>> func,
                 CancellationToken cancellationToken);
         }
     }

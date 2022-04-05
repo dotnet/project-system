@@ -1,11 +1,7 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
-using System;
-using System.Collections.Generic;
-using System.Collections.Immutable;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
 using Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Models;
-using Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot.Filters;
 using Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Subscriptions;
 using Xunit;
 
@@ -128,8 +124,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
                 changes: null,
                 catalogs,
                 targetFrameworks,
-                activeTargetFramework: targetFramework,
-                ImmutableArray<IDependenciesSnapshotFilter>.Empty);
+                activeTargetFramework: targetFramework);
 
             Assert.Same(previousSnapshot, snapshot);
         }
@@ -153,8 +148,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
                 changes: null,
                 updatedCatalogs,
                 targetFrameworks,
-                activeTargetFramework: targetFramework,
-                ImmutableArray<IDependenciesSnapshotFilter>.Empty);
+                activeTargetFramework: targetFramework);
 
             Assert.NotSame(previousSnapshot, snapshot);
             Assert.Same(targetFramework, snapshot.ActiveTargetFramework);
@@ -180,7 +174,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
                 ProviderType = "Xxx",
                 Id = "dependency1"
             };
-            targetChanges.Added(model);
+            targetChanges.Added(targetFramework, model);
 
             var snapshot = DependenciesSnapshot.FromChanges(
                 previousSnapshot,
@@ -188,8 +182,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
                 targetChanges.TryBuildChanges()!,
                 catalogs,
                 targetFrameworks: ImmutableArray.Create(targetFramework),
-                activeTargetFramework: targetFramework,
-                ImmutableArray<IDependenciesSnapshotFilter>.Empty);
+                activeTargetFramework: targetFramework);
 
             Assert.NotSame(previousSnapshot, snapshot);
             Assert.Same(targetFramework, snapshot.ActiveTargetFramework);

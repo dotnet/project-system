@@ -1,7 +1,5 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
-using System;
-using System.Collections.Immutable;
 using System.ComponentModel;
 using Microsoft.Build.Framework.XamlTypes;
 using Microsoft.VisualStudio.ProjectSystem.Debug;
@@ -71,39 +69,18 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
 
         public void OnSetPropertyValue(string propertyName, string propertyValue, IWritableLaunchProfile launchProfile, ImmutableDictionary<string, object> globalSettings, Rule? rule)
         {
-            switch (propertyName)
+            // TODO: Should the result (success or failure) be ignored?
+            _ = propertyName switch
             {
-                case AuthenticationModePropertyName:
-                    TrySetOtherProperty(launchProfile, LaunchProfileExtensions.RemoteAuthenticationModeProperty, propertyValue, string.Empty);
-                    break;
-
-                case HotReloadEnabledPropertyName:
-                    TrySetOtherProperty(launchProfile, LaunchProfileExtensions.HotReloadEnabledProperty, bool.Parse(propertyValue), true);
-                    break;
-
-                case NativeDebuggingPropertyName:
-                    TrySetOtherProperty(launchProfile, LaunchProfileExtensions.NativeDebuggingProperty, bool.Parse(propertyValue), false);
-                    break;
-
-                case RemoteDebugEnabledPropertyName:
-                    TrySetOtherProperty(launchProfile, LaunchProfileExtensions.RemoteDebugEnabledProperty, bool.Parse(propertyValue), false);
-                    break;
-
-                case RemoteDebugMachinePropertyName:
-                    TrySetOtherProperty(launchProfile, LaunchProfileExtensions.RemoteDebugMachineProperty, propertyValue, string.Empty);
-                    break;
-
-                case SqlDebuggingPropertyName:
-                    TrySetOtherProperty(launchProfile, LaunchProfileExtensions.SqlDebuggingProperty, bool.Parse(propertyValue), false);
-                    break;
-
-                case WebView2DebuggingPropertyName:
-                    TrySetOtherProperty(launchProfile, LaunchProfileExtensions.JSWebView2DebuggingProperty, bool.Parse(propertyValue), false);
-                    break;
-
-                default:
-                    throw new InvalidOperationException($"{nameof(ProjectLaunchProfileExtensionValueProvider)} does not handle property '{propertyName}'.");
-            }
+                AuthenticationModePropertyName => TrySetOtherProperty(launchProfile, LaunchProfileExtensions.RemoteAuthenticationModeProperty, propertyValue, string.Empty),
+                HotReloadEnabledPropertyName =>   TrySetOtherProperty(launchProfile, LaunchProfileExtensions.HotReloadEnabledProperty, bool.Parse(propertyValue), true),
+                NativeDebuggingPropertyName =>    TrySetOtherProperty(launchProfile, LaunchProfileExtensions.NativeDebuggingProperty, bool.Parse(propertyValue), false),
+                RemoteDebugEnabledPropertyName => TrySetOtherProperty(launchProfile, LaunchProfileExtensions.RemoteDebugEnabledProperty, bool.Parse(propertyValue), false),
+                RemoteDebugMachinePropertyName => TrySetOtherProperty(launchProfile, LaunchProfileExtensions.RemoteDebugMachineProperty, propertyValue, string.Empty),
+                SqlDebuggingPropertyName =>       TrySetOtherProperty(launchProfile, LaunchProfileExtensions.SqlDebuggingProperty, bool.Parse(propertyValue), false),
+                WebView2DebuggingPropertyName =>  TrySetOtherProperty(launchProfile, LaunchProfileExtensions.JSWebView2DebuggingProperty, bool.Parse(propertyValue), false),
+                _ => throw new InvalidOperationException($"{nameof(ProjectLaunchProfileExtensionValueProvider)} does not handle property '{propertyName}'."),
+            };
         }
 
         private static T GetOtherProperty<T>(ILaunchProfile launchProfile, string propertyName, T defaultValue)

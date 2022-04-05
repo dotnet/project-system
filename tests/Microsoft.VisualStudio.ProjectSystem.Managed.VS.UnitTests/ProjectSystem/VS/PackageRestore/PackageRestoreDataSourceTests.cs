@@ -1,6 +1,5 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
-using System.Threading.Tasks;
 using Microsoft.VisualStudio.IO;
 using Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore.Snapshots;
 using NuGet.SolutionRestoreManager;
@@ -94,7 +93,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
             solutionRestoreService ??= IVsSolutionRestoreServiceFactory.Create();
             IProjectDiagnosticOutputService logger = IProjectDiagnosticOutputServiceFactory.Create();
             IFileSystem fileSystem = IFileSystemFactory.Create();
-            var projectDependentFileChangeNotificationService = IProjectDependentFileChangeNotificationServiceFactory.Create();
             var vsSolutionRestoreService4 = IVsSolutionRestoreService4Factory.ImplementRegisterRestoreInfoSourceAsync();
             var sharedJoinableTaskCollection = new PackageRestoreSharedJoinableTaskCollection(IProjectThreadingServiceFactory.Create());
 
@@ -105,7 +103,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
                 solutionRestoreService,
                 fileSystem,
                 logger,
-                projectDependentFileChangeNotificationService,
                 vsSolutionRestoreService4,
                 sharedJoinableTaskCollection);
         }

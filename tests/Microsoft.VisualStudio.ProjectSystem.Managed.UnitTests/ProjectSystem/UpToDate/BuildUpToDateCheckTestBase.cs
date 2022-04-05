@@ -1,9 +1,5 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
-using System;
-using System.Collections.Generic;
-using System.Collections.Immutable;
-using System.Linq;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
 
 namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
@@ -11,10 +7,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
     public abstract class BuildUpToDateCheckTestBase
     {
         private static readonly IImmutableList<IItemType> _itemTypes = ImmutableList<IItemType>.Empty
-            .Add(new ItemType("None", true))
-            .Add(new ItemType("Content", true))
-            .Add(new ItemType("Compile", true))
-            .Add(new ItemType("Resource", true));
+            .Add(new ItemType("None",             upToDateCheckInput: true))
+            .Add(new ItemType("Content",          upToDateCheckInput: true))
+            .Add(new ItemType("Compile",          upToDateCheckInput: true))
+            .Add(new ItemType("Resource",         upToDateCheckInput: true))
+            .Add(new ItemType("EmbeddedResource", upToDateCheckInput: true));
 
         private protected static IProjectRuleSnapshotModel SimpleItems(params string[] items)
         {
@@ -94,18 +91,19 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 {
                     foreach ((string schemaName, IProjectRuleSnapshotModel model) in snapshotBySchemaName)
                     {
-                        IProjectRuleSnapshotModel beforeModel = itemRemovedFromSnapshot ? model : new IProjectRuleSnapshotModel();
-                        IProjectRuleSnapshotModel afterModel = itemRemovedFromSnapshot ? new IProjectRuleSnapshotModel() : model;
-                        IProjectChangeDiffModel differenceModel = itemRemovedFromSnapshot ? 
-                            new IProjectChangeDiffModel { AnyChanges = true, RemovedItems = model.Items.Select(a => a.Key).ToImmutableHashSet() } 
-                            : new IProjectChangeDiffModel { AnyChanges = true };
-
-                        var change = new IProjectChangeDescriptionModel
-                        {
-                            Before = beforeModel,
-                            After = afterModel,
-                            Difference = differenceModel
-                        };
+                        var change = itemRemovedFromSnapshot
+                            ? new IProjectChangeDescriptionModel
+                            {
+                                Before = model,
+                                After = new IProjectRuleSnapshotModel(),
+                                Difference = new IProjectChangeDiffModel { AnyChanges = true, RemovedItems = model.Items.Select(a => a.Key).ToImmutableHashSet() }
+                            }
+                            : new IProjectChangeDescriptionModel
+                            {
+                                Before = new IProjectRuleSnapshotModel(),
+                                After = model,
+                                Difference = new IProjectChangeDiffModel { AnyChanges = true }
+                            };
 
                         snapshots = snapshots.Add(schemaName, model.ToActualModel());
                         changes = changes.Add(schemaName, change.ToActualModel());

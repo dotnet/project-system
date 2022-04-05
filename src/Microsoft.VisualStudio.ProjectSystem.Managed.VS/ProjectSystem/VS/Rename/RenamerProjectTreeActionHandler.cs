@@ -1,12 +1,7 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
-using System.ComponentModel.Composition;
 using System.Globalization;
-using System.IO;
-using System.Linq;
 using System.Runtime.Remoting.Contexts;
-using System.Threading;
-using System.Threading.Tasks;
 using EnvDTE;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Rename;
@@ -25,6 +20,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
     [AppliesTo(ProjectCapability.CSharpOrVisualBasicLanguageService)]
     internal partial class RenamerProjectTreeActionHandler : ProjectTreeActionHandlerBase
     {
+        private const string SymbolicRenameName = "SolutionNavigator.EnableSymbolicRename";
+        private const string RenameSymbolCategory = "Environment";
+        private const string RenameSymbolPage = "ProjectsAndSolution";
+        private const string RenameSymbolOption = "PromptForRenameSymbol";
+
         private readonly IEnvironmentOptions _environmentOptions;
         private readonly IUnconfiguredProjectVsServices _projectVsServices;
         private readonly IProjectThreadingService _threadingService;
@@ -70,9 +70,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
             _settingsManagerService = settingsManagerService;
         }
 
-        protected virtual async Task CPSRenameAsync(IProjectTreeActionHandlerContext context, IProjectTree node, string value)
+        protected virtual Task CpsFileRenameAsync(IProjectTreeActionHandlerContext context, IProjectTree node, string value)
         {
-            await base.RenameAsync(context, node, value);
+            return base.RenameAsync(context, node, value);
         }
 
         public override async Task RenameAsync(IProjectTreeActionHandlerContext context, IProjectTree node, string value)
@@ -86,18 +86,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
             string newFileWithExtension = value;
             CodeAnalysis.Project? project = GetCurrentProject();
 
-            // Rename the file
-            await CPSRenameAsync(context, node, value);
+            await CpsFileRenameAsync(context, node, value);
 
-            if (await IsAutomationFunctionAsync() || node.IsFolder || _vsOnlineServices.ConnectedToVSOnline ||
+            if (project is null ||
+                await IsAutomationFunctionAsync() ||
+                node.IsFolder ||
+                _vsOnlineServices.ConnectedToVSOnline ||
                 FileChangedExtension(oldFilePath, newFileWithExtension))
             {
                 // Do not display rename Prompt
-                return;
-            }
-
-            if (project is null)
-            {
                 return;
             }
 
@@ -129,7 +126,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
                                 title: VSResources.Renaming_Type,
                                 message: renameOperationName,
                                 allowCancel: true,
-                                token => documentRenameResult.UpdateSolutionAsync(currentSolution, token));
+                                context => documentRenameResult.UpdateSolutionAsync(currentSolution, context.CancellationToken));
 
                 // Do not warn the user if the rename was cancelled by the user	
                 if (indicatorResult.IsCancelled)
@@ -156,7 +153,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
             // WORKAROUND: We don't yet have a way to wait for the rename changes to propagate 
             // to Roslyn (tracked by https://github.com/dotnet/project-system/issues/3425), so 
             // instead we wait for the IntelliSense stage to finish for the entire solution
-            // 
             IVsOperationProgressStatusService operationProgressStatusService = await _operationProgressService.GetValueAsync(cancellationToken);
             IVsOperationProgressStageStatus stageStatus = operationProgressStatusService.GetStageStatus(CommonOperationProgressStageIds.Intellisense);
 
@@ -238,11 +234,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
             ISettingsManager settings = await _settingsManagerService.GetValueAsync();
 
             // Default value needs to match the default value in the checkbox Tools|Options|Project and Solutions|Enable symbolic renaming.
-            bool enableSymbolicRename = settings.GetValueOrDefault("SolutionNavigator.EnableSymbolicRename", true);
+            bool enableSymbolicRename = settings.GetValueOrDefault(SymbolicRenameName, true);
 
             await _projectVsServices.ThreadingService.SwitchToUIThread();
 
-            bool userNeedPrompt = _environmentOptions.GetOption("Environment", "ProjectsAndSolution", "PromptForRenameSymbol", false);
+            bool userNeedPrompt = _environmentOptions.GetOption(RenameSymbolCategory, RenameSymbolPage, RenameSymbolOption, false);
 
             if (!enableSymbolicRename || !userNeedPrompt)
             {
@@ -253,7 +249,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
 
             bool userSelection = _userNotificationServices.Confirm(renamePromptMessage, out bool disablePromptMessage);
 
-            _environmentOptions.SetOption("Environment", "ProjectsAndSolution", "PromptForRenameSymbol", !disablePromptMessage);
+            _environmentOptions.SetOption(RenameSymbolCategory, RenameSymbolPage, RenameSymbolOption, !disablePromptMessage);
 
             return userSelection;
         }

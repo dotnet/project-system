@@ -1,8 +1,5 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
-using System.Collections.Generic;
-using System.Collections.Immutable;
-
 namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 {
     /// <summary>
@@ -11,6 +8,21 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
     internal readonly struct UpToDateCheckInputItem
     {
         public static readonly IEqualityComparer<UpToDateCheckInputItem> PathComparer = new UpToDateCheckInputItemPathComparer();
+
+        /// <summary>
+        /// The set of item types which are eligible to be copied to the project's output directory
+        /// when <c>CopyToOutputDirectory</c> metadata is present.
+        /// </summary>
+        /// <remarks>
+        /// Mirrors the items specified in MSBuild's <c>_GetCopyToOutputDirectoryItemsFromThisProject</c>
+        /// target.
+        /// </remarks>
+        private static readonly ImmutableHashSet<string> s_copyToOutputDirectoryItemTypes
+            = ImmutableHashSet<string>.Empty.WithComparer(StringComparers.ItemTypes)
+                .Add(None.SchemaName)
+                .Add(Content.SchemaName)
+                .Add(Compile.SchemaName)
+                .Add("EmbeddedResource");
 
         /// <summary>
         /// Gets the relative path to the item.
@@ -30,18 +42,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
         /// </summary>
         public BuildUpToDateCheck.CopyType CopyType { get; }
 
-        public UpToDateCheckInputItem(string path, string? targetPath, BuildUpToDateCheck.CopyType copyType)
+        public UpToDateCheckInputItem(string path, string itemType, IImmutableDictionary<string, string> metadata)
         {
             Path = path;
-            TargetPath = targetPath;
-            CopyType = copyType;
-        }
 
-        public UpToDateCheckInputItem(string path, IImmutableDictionary<string, string> metadata)
-        {
-            Path = path;
-            TargetPath = GetTargetPath();
-            CopyType = GetCopyType();
+            // We only track copies to a target path for certain item types.
+            // For other item types, set a null target path, and a copy type of "never".
+            bool isCopyToOutputDirectoryType = s_copyToOutputDirectoryItemTypes.Contains(itemType);
+
+            TargetPath = isCopyToOutputDirectoryType ? GetTargetPath() : null;
+            CopyType = isCopyToOutputDirectoryType ? GetCopyType() : BuildUpToDateCheck.CopyType.Never;
 
             string? GetTargetPath()
             {
@@ -77,20 +87,20 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
             BuildUpToDateCheck.CopyType GetCopyType()
             {
-                if (metadata.TryGetValue(Compile.CopyToOutputDirectoryProperty, out string value))
+                if (metadata.TryGetValue(None.CopyToOutputDirectoryProperty, out string value))
                 {
-                    if (string.Equals(value, Compile.CopyToOutputDirectoryValues.Always, StringComparisons.PropertyLiteralValues))
+                    if (string.Equals(value, None.CopyToOutputDirectoryValues.Always, StringComparisons.PropertyLiteralValues))
                     {
-                        return BuildUpToDateCheck.CopyType.CopyAlways;
+                        return BuildUpToDateCheck.CopyType.Always;
                     }
 
-                    if (string.Equals(value, Compile.CopyToOutputDirectoryValues.PreserveNewest, StringComparisons.PropertyLiteralValues))
+                    if (string.Equals(value, None.CopyToOutputDirectoryValues.PreserveNewest, StringComparisons.PropertyLiteralValues))
                     {
-                        return BuildUpToDateCheck.CopyType.CopyIfNewer;
+                        return BuildUpToDateCheck.CopyType.PreserveNewest;
                     }
                 }
 
-                return BuildUpToDateCheck.CopyType.CopyNever;
+                return BuildUpToDateCheck.CopyType.Never;
             }
         }
 

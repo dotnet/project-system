@@ -1,6 +1,5 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
-using System.ComponentModel.Composition;
 using Microsoft.VisualStudio.Imaging;
 
 namespace Microsoft.VisualStudio.ProjectSystem.Imaging.CSharp
@@ -21,18 +20,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.Imaging.CSharp
         {
             Requires.NotNullOrEmpty(key, nameof(key));
 
-            switch (key)
+            return key switch
             {
-                case ProjectImageKey.ProjectRoot:
-                    return KnownMonikers.CSProjectNode.ToProjectSystemType();
-
-                case ProjectImageKey.SharedItemsImportFile:
-                case ProjectImageKey.SharedProjectRoot:
-                    return KnownMonikers.CSSharedProject.ToProjectSystemType();
-
-                default:
-                    return null;
-            }
+                ProjectImageKey.ProjectRoot => KnownMonikers.CSProjectNode.ToProjectSystemType(),
+                ProjectImageKey.SharedItemsImportFile or ProjectImageKey.SharedProjectRoot => KnownMonikers.CSSharedProject.ToProjectSystemType(),
+                _ => null
+            };
         }
     }
 }

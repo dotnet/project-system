@@ -1,6 +1,5 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
-using System;
 using Microsoft.VisualStudio.ProjectSystem.Imaging;
 using Xunit;
 
@@ -16,7 +15,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree
 
             Assert.Throws<ArgumentNullException>("propertyContext", () =>
             {
-                propertiesProvider.CalculatePropertyValues((IProjectTreeCustomizablePropertyContext)null!, propertyValues);
+                propertiesProvider.CalculatePropertyValues(null!, propertyValues);
             });
         }
 
@@ -28,7 +27,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree
 
             Assert.Throws<ArgumentNullException>("propertyValues", () =>
             {
-                propertiesProvider.CalculatePropertyValues(propertyContext, (IProjectTreeCustomizablePropertyValues)null!);
+                propertiesProvider.CalculatePropertyValues(propertyContext, null!);
             });
         }
 
@@ -194,12 +193,12 @@ Root (flags: {ProjectRoot})
 
         private static ProjectRootImageProjectTreePropertiesProvider CreateInstance()
         {
-            return CreateInstance((IProjectImageProvider)null!);
+            return CreateInstance(null!);
         }
 
         private static ProjectRootImageProjectTreePropertiesProvider CreateInstance(IProjectImageProvider imageProvider)
         {
-            return CreateInstance((IProjectCapabilitiesService)null!, imageProvider);
+            return CreateInstance(null!, imageProvider);
         }
 
         private static ProjectRootImageProjectTreePropertiesProvider CreateInstance(IProjectCapabilitiesService? capabilities, IProjectImageProvider? imageProvider)

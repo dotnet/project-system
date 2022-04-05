@@ -13,7 +13,7 @@ resources:
 - repo: self
   clean: true
 queue:
-  name: VSEngSS-MicroBuild2019-1ES
+  name: VSEngSS-MicroBuild2022-1ES
   demands: Cmd
   timeoutInMinutes: 90
 variables:
@@ -21,6 +21,7 @@ variables:
   TeamName: DotNet-Project-System
   BuildPlatform: any cpu
   DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true
+  Packaging.EnableSBOMSigning: true
 parameters:
 - name: SignType
   displayName: Sign Type
@@ -45,13 +46,16 @@ steps:
     signType: ${{ parameters.SignType }}
     esrpSigning: true
 
-# This is used as a PackageReference with ExcludeAssets="all", which means it is not executed.
-# RepoToolset has custom logic to run the contents of this plugin, so it is not executed normally.
-- task: MicroBuildSwixPlugin@1
+# This is currently only used by the MicroBuildBuildVSBootstrapper task.
+# RepoToolset has custom logic to download the NuGet package of this plugin for an old version (1.1.37).
+# This plugin is not directly used by RepoToolset.
+# Moving this task down to the OptProf section will cause test verification in the OptProf release pipeline to fail stating that the Microsoft.VisualStudio.ProjectSystem.Managed(.VS).dll(s) do not exist.
+- task: MicroBuildSwixPlugin@4
   displayName: Install Swix Plugin
 
 # This requires the OptimizationInputs via the 'Publish OptimizationInputs drop' step in the release pipeline.
 # To generate ProfilingInputs for the first time, set this input: ShouldSkipOptimize: true
+# See documentation here: https://devdiv.visualstudio.com/DevDiv/_wiki/wikis/DevDiv.wiki/2602/Build-With-Expired-(or-Without-Prior)-Optimization-Profiling-Data
 # This plugin will restore MicroBuild.Plugins.OptProf which is required to create ProfilingInputs data.
 # The projects include OptProf.targets which uses MicroBuild.Plugins.OptProf to run the target GenerateProfilingInputs on each project.
 - task: MicroBuildOptProfPlugin@6
@@ -69,8 +73,27 @@ steps:
 # BUILD SOLUTION
 ###################################################################################################################################################################
 
-- script: $(Build.SourcesDirectory)\build.cmd /build /test /ci /sign /diagnostic /no-deploy /no-integration /no-ibc /no-clearnugetcache /configuration $(BuildConfiguration)
+- task: MSBuild@1
+  displayName: Build Src for SBOM
+  inputs:
+    solution: $(Build.SourcesDirectory)\build\proj\Build.proj
+    msbuildArchitecture: x86
+    configuration: $(BuildConfiguration)
+    msbuildArguments: '/m /warnaserror /nologo /clp:Summary /p:Build=true /p:CIBuild=true /p:QuickSrcBuild=true /v:normal /bl:$(Build.SourcesDirectory)\artifacts\$(BuildConfiguration)\log\QuickSrcBuild.binlog'
+
+- task: ManifestGeneratorTask@0
+  displayName: Generate SBOM
+  inputs:
+    BuildDropPath: '$(Build.SourcesDirectory)\artifacts\$(BuildConfiguration)\bin\Dlls'
+    ManifestDirPath: '$(Build.SourcesDirectory)\artifacts\$(BuildConfiguration)\bin'
+
+- task: MSBuild@1
   displayName: Build ProjectSystem.sln
+  inputs:
+    solution: $(Build.SourcesDirectory)\build\proj\Build.proj
+    msbuildArchitecture: x86
+    configuration: $(BuildConfiguration)
+    msbuildArguments: '/m /warnaserror /nologo /clp:Summary /p:Build=true /p:Test=true /p:CIBuild=true /v:normal /bl:$(Build.SourcesDirectory)\artifacts\$(BuildConfiguration)\log\Build.binlog'
 
 - task: MicroBuildCodesignVerify@3
   displayName: Verify Signed Files
@@ -169,6 +192,7 @@ steps:
 - task: MicroBuildBuildVSBootstrapper@2
   displayName: Build VS Bootstrapper
   inputs:
+    bootstrapperCoreVersion: 'latest'
     vsMajorVersion: 17
     channelName: 'int.main'
     manifests: '$(Build.SourcesDirectory)\artifacts\$(BuildConfiguration)\VSSetup\Insertion\Microsoft.VisualStudio.ProjectSystem.Managed.vsman'

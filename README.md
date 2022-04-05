@@ -5,6 +5,7 @@
 |[16.11][1611Branch]|[![Build Status][1611Debug]][1611Build]|[![Build Status][1611Release]][1611Build]|[![Build Status][1611Spanish]][1611Build]|
 |[17.0][170Branch]|[![Build Status][170Debug]][170Build]|[![Build Status][170Release]][170Build]|[![Build Status][170Spanish]][170Build]|
 |[17.1][171Branch]|[![Build Status][171Debug]][171Build]|[![Build Status][171Release]][171Build]|[![Build Status][171Spanish]][171Build]|
+|[17.2][172Branch]|[![Build Status][172Debug]][172Build]|[![Build Status][172Release]][172Build]|[![Build Status][172Spanish]][172Build]|
 |[main][MainBranch]|[![Build Status][MainDebug]][MainBuild]|[![Build Status][MainRelease]][MainBuild]|[![Build Status][MainSpanish]][MainBuild]|
 
 [![Join the chat at https://gitter.im/dotnet/project-system](https://badges.gitter.im/dotnet/project-system.svg)](https://gitter.im/dotnet/project-system?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
@@ -68,3 +69,9 @@ This project has adopted a code of conduct adapted from the [Contributor Covenan
 [171Release]: https://dev.azure.com/dnceng/public/_apis/build/status/dotnet/project-system/unit-tests?branchName=dev17.1.x&jobName=Windows_Release&%20Release&label=dev17.1.x
 [171Spanish]: https://dev.azure.com/dnceng/public/_apis/build/status/dotnet/project-system/unit-tests?branchName=dev17.1.x&jobName=Spanish&label=dev17.1.x
 [171Build]: https://dev.azure.com/dnceng/public/_build/latest?definitionId=406&branchName=dev17.1.x
+
+[172Branch]: https://github.com/dotnet/project-system/tree/dev17.2.x
+[172Debug]: https://dev.azure.com/dnceng/public/_apis/build/status/dotnet/project-system/unit-tests?branchName=dev17.2.x&jobName=Windows_Debug&%20Debug&label=dev17.2.x
+[172Release]: https://dev.azure.com/dnceng/public/_apis/build/status/dotnet/project-system/unit-tests?branchName=dev17.2.x&jobName=Windows_Release&%20Release&label=dev17.2.x
+[172Spanish]: https://dev.azure.com/dnceng/public/_apis/build/status/dotnet/project-system/unit-tests?branchName=dev17.2.x&jobName=Spanish&label=dev17.2.x
+[172Build]: https://dev.azure.com/dnceng/public/_build/latest?definitionId=406&branchName=dev17.2.x

@@ -1,9 +1,6 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
 //using System;
-using System;
-using System.ComponentModel.Composition;
-using System.Threading.Tasks;
 using EnvDTE;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Text;
@@ -70,7 +67,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
             {
             }
 
-            protected override async Task CPSRenameAsync(IProjectTreeActionHandlerContext context, IProjectTree node, string value)
+            protected override async Task CpsFileRenameAsync(IProjectTreeActionHandlerContext context, IProjectTree node, string value)
             {
                 await Task.CompletedTask;
             }

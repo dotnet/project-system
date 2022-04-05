@@ -99,7 +99,7 @@ in which case the project is out-of-date and a build will be allowed.
 To model this, use:
 
 ```xml
-<UpToDateCheckBuilt Include="Source\File.txt" Original="Destination\File.txt" />
+<UpToDateCheckBuilt Include="Destination\File.txt" Original="Source\File.txt" />
 ```
 
 When specifying `Original` metadata, the `Set` property has no effect. Each copied file is considered in isolation,
@@ -113,7 +113,7 @@ Cases where a single input file produces a single output file during build shoul
 To model this, use:
 
 ```xml
-<UpToDateCheckBuilt Include="Source\MyFile.ts" Original="Destination\MyFile.js" />
+<UpToDateCheckBuilt Include="Destination\MyFile.js" Original="Source\MyFile.ts" />
 ```
 
 The same details apply regarding `Set` metadata as described for copied files.
@@ -194,6 +194,21 @@ The [Project System Tools](https://github.com/dotnet/project-system-tools) exten
 The logs captured by that tool are usually adequate to diagnose build problems. They exclude some detail however, for performance reasons. If more data is required, see [this technique to get full-fidelity logs](https://github.com/dotnet/project-system-tools#getting-higher-fidelity-logs-from-vs).
 
 ---
+
+## CopyToOutputDirectory Always vs. PreserveNewest
+
+To copy items to the output directory during build, you have two options:
+
+1. `CopyToOutputDirectory="Always"` always copies source over destination.
+2. `CopyToOutputDirectory="PreserveNewest"` copies the file if the timestamp of the source is newer than the destination.
+
+Many users select `Always` when they really would be happy with `PreserveNewest`. Historically, having an `Always` item caused the fast up-to-date check to immediately schedule a build, even if the files were unchanged. This meant that accidentally selecting `Always` would break incremental build performance. This is a very common performance issue in real world projects.
+
+There is one valid use case for `Always`, which is to restore a data file in the output directory back to some initial state, in cases where the executable modifies that data file. If on the next launch the file should be restored to its previous state, then `Always` is the correct option. If not, you want `PreserveNewest`.
+
+In VS 17.2, we changed the fast up-to-date check to be less strict about `Always` items. With this new behaviour, the check verifies the size and timestamps of the source and destination files. If they differ a build will be scheduled. This change can have a massively positive impact on inner loop productivity, when `Always` items exist.
+
+To opt-out of this optimization and preserve the pre-17.2 behaviour, set the `DisableFastUpToDateCopyAlwaysOptimization` MSBuild property to `true` in your project. Consider also opening an issue on this repo to explain why the optimization doesn't work for you, to give us a chance to improve it further.
 
 ## Disabling the Up-to-date Check
 

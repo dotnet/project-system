@@ -1,17 +1,11 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.Composition;
 using System.Diagnostics;
-using System.Threading;
-using System.Threading.Tasks;
 using Microsoft.Internal.VisualStudio.Shell.Interop;
 using Microsoft.VisualStudio.Composition;
 using Microsoft.VisualStudio.ProjectSystem.Build;
 using Microsoft.VisualStudio.ProjectSystem.UpToDate;
 using Microsoft.VisualStudio.Shell.Interop;
-using Microsoft.VisualStudio.Threading;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Build.Diagnostics
 {
@@ -49,13 +43,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build.Diagnostics
             public void OnProjectBuildCompleted()
             {
                 _project.Services.ThreadingPolicy.RunAndForget(
-                    async () =>
-                    {
-                        await TaskScheduler.Default;
-
-                        await CheckAsync(_projectAsynchronousTasksService.UnloadCancellationToken);
-                    },
-                    unconfiguredProject: _project);
+                    () => CheckAsync(_projectAsynchronousTasksService.UnloadCancellationToken),
+                    unconfiguredProject: _project,
+                    options: ForkOptions.StartOnThreadPool | ForkOptions.CancelOnUnload | ForkOptions.NoAssistanceMask);
 
                 return;
 

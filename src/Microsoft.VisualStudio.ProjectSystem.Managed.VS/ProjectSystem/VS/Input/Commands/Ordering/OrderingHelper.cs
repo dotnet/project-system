@@ -1,11 +1,6 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
-using System;
-using System.Collections.Generic;
-using System.Collections.Immutable;
 using System.Diagnostics.CodeAnalysis;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.Build.Construction;
 using Microsoft.Build.Evaluation;
 using Microsoft.VisualStudio.Buffers.PooledObjects;
@@ -33,20 +28,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.Ordering
                 project.ReevaluateIfNecessary();
                 ImmutableArray<ProjectItemElement> addedElements = GetAddedItemElements(previousIncludes, project);
 
-                switch (action)
+                // TODO: Should the result (success or failure) be ignored?
+                _ = action switch
                 {
-                    case OrderingMoveAction.MoveToTop:
-                        TryMoveElementsToTop(project, addedElements, target);
-                        break;
-                    case OrderingMoveAction.MoveAbove:
-                        TryMoveElementsAbove(project, addedElements, target);
-                        break;
-                    case OrderingMoveAction.MoveBelow:
-                        TryMoveElementsBelow(project, addedElements, target);
-                        break;
-                    default:
-                        break;
-                }
+                    OrderingMoveAction.MoveToTop => TryMoveElementsToTop(project, addedElements, target),
+                    OrderingMoveAction.MoveAbove => TryMoveElementsAbove(project, addedElements, target),
+                    OrderingMoveAction.MoveBelow => TryMoveElementsBelow(project, addedElements, target),
+                    _ => false
+                };
             });
         }
 

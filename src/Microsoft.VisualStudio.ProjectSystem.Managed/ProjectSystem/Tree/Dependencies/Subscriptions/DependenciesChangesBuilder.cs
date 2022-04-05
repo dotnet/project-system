@@ -1,8 +1,5 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
-using System;
-using System.Collections.Generic;
-using System.Collections.Immutable;
 using Microsoft.VisualStudio.Imaging.Interop;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies;
 
@@ -10,24 +7,45 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Subscriptions
 {
     internal sealed class DependenciesChangesBuilder
     {
+        /// <summary>
+        /// Shared running set of resolved dependencies.
+        /// </summary>
+        /// <remarks>
+        /// Used in <see cref="HasResolvedItem"/>, where the caller wants to ensure we don't regress a resolved item to
+        /// unresolved state when we receive an evaluation-only update.
+        /// </remarks>
+        private readonly HashSet<(TargetFramework TargetFramework, string ProviderType, string DependencyId)>? _resolvedItems;
+
         private HashSet<IDependencyModel>? _added;
         private HashSet<IDependencyModel>? _removed;
 
-        public void Added(IDependencyModel model)
+        public DependenciesChangesBuilder(HashSet<(TargetFramework TargetFramework, string ProviderType, string DependencyId)>? resolvedItems = null)
+        {
+            _resolvedItems = resolvedItems;
+        }
+
+        public void Added(TargetFramework targetFramework, IDependencyModel model)
         {
             _added ??= new HashSet<IDependencyModel>(IDependencyModelEqualityComparer.Instance);
 
             _added.Remove(model);
             _added.Add(model);
+
+            if (model.Resolved)
+            {
+                _resolvedItems?.Add((targetFramework, model.ProviderType, model.Id));
+            }
         }
 
-        public void Removed(string providerType, string dependencyId)
+        public void Removed(TargetFramework targetFramework, string providerType, string dependencyId)
         {
             _removed ??= new HashSet<IDependencyModel>(IDependencyModelEqualityComparer.Instance);
 
             var identity = new RemovedDependencyModel(providerType, dependencyId);
             _removed.Remove(identity);
             _removed.Add(identity);
+
+            _resolvedItems?.Remove((targetFramework, providerType, dependencyId));
         }
 
         public IDependenciesChanges? TryBuildChanges()
@@ -38,8 +56,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Subscriptions
             }
 
             return new DependenciesChanges(
-                _added == null ? (IImmutableList<IDependencyModel>)ImmutableList<IDependencyModel>.Empty : ImmutableArray.CreateRange(_added),
-                _removed == null ? (IImmutableList<IDependencyModel>)ImmutableList<IDependencyModel>.Empty : ImmutableArray.CreateRange(_removed));
+                _added == null ? ImmutableList<IDependencyModel>.Empty : ImmutableArray.CreateRange(_added),
+                _removed == null ? ImmutableList<IDependencyModel>.Empty : ImmutableArray.CreateRange(_removed));
+        }
+
+        public bool HasResolvedItem(TargetFramework targetFramework, string providerType, string dependencyId)
+        {
+            return _resolvedItems?.Contains((targetFramework, providerType, dependencyId)) == true;
         }
 
         public override string ToString() => ToString(_added, _removed);

@@ -37,6 +37,11 @@
         <target state="translated">Aktualitätsprüfungen</target>
         <note />
       </trans-unit>
+      <trans-unit id="General_MultiTargetingSettings_Title">
+        <source>Multi-Targeting Settings</source>
+        <target state="translated">Einstellungen für Festlegung von Zielversionen</target>
+        <note />
+      </trans-unit>
       <trans-unit id="General_NestingIgnoreSolutionAndProjectProfiles">
         <source>Ignore solution and project settings</source>
         <target state="translated">Lösungs- und Projekteinstellungen ignorieren</target>
@@ -45,6 +50,16 @@
       <trans-unit id="General_NestingSettings_Title">
         <source>File Nesting Settings</source>
         <target state="translated">Einstellungen für Dateischachtelung</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="General_PreferSingleTargetBuildsOnLaunch">
+        <source>Prefer single-target builds when starting a project.</source>
+        <target state="translated">Bevorzugen Sie beim Starten eines Projekts Builds mit einem einzelnen Ziel.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="General_PreferSingleTargetBuildsOnLaunchDescription">
+        <source>When starting a project that targets multiple .NET frameworks, the build time can be reduced by limiting the build to a single framework.</source>
+        <target state="translated">Beim Starten eines Projekts, das auf mehrere .NET Frameworks ausgerichtet ist, kann die Buildzeit verringert werden, indem der Build auf ein einzelnes Framework beschränkt wird.</target>
         <note />
       </trans-unit>
     </body>

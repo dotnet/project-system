@@ -1,10 +1,5 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
-using System;
-using System.Collections.Immutable;
-using System.ComponentModel.Composition;
-using System.Threading;
-using System.Threading.Tasks;
 using Microsoft.VisualStudio.LanguageServices.ProjectSystem;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
 
@@ -80,7 +75,19 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
                                                                                     data.AssemblyName,
                                                                                     CancellationToken.None);
 
-                context.LastDesignTimeBuildSucceeded = false;  // By default, turn off diagnostics until the first design time build succeeds for this project.
+                context.StartBatch();
+
+                try
+                {
+                    // Update LastDesignTimeBuildSucceeded within a batch to avoid thread pool starvation.
+                    // https://github.com/dotnet/project-system/issues/8027
+
+                    context.LastDesignTimeBuildSucceeded = false;  // By default, turn off diagnostics until the first design time build succeeds for this project.
+                }
+                finally
+                {
+                    await context.EndBatchAsync();
+                }
 
                 return context;
             }

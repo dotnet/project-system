@@ -1,19 +1,16 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
-using System.ComponentModel.Composition;
-using System.Threading;
-using System.Threading.Tasks;
 using Microsoft.VisualStudio.Settings;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS
 {
     [Export(typeof(IProjectSystemOptions))]
-    [Export(typeof(IProjectSystemOptionsWithChanges))]
-    internal class ProjectSystemOptions : IProjectSystemOptionsWithChanges
+    internal class ProjectSystemOptions : IProjectSystemOptions
     {
         private const string FastUpToDateEnabledSettingKey = @"ManagedProjectSystem\FastUpToDateCheckEnabled";
         private const string FastUpToDateLogLevelSettingKey = @"ManagedProjectSystem\FastUpToDateLogLevel";
         private const string UseDesignerByDefaultSettingKey = @"ManagedProjectSystem\UseDesignerByDefault";
+        private const string PreferSingleTargetBuildsForStartupProjects = @"ManagedProjectSystem\PreferSingleTargetBuilds";
 
         // This setting exists as an option in Roslyn repo: 'FeatureOnOffOptions.SkipAnalyzersForImplicitlyTriggeredBuilds'.
         // Do not change this setting key unless the Roslyn option name is changed.
@@ -52,6 +49,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             return GetSettingValueOrDefaultAsync(SkipAnalyzersForImplicitlyTriggeredBuildSettingKey, defaultValue: true, cancellationToken);
         }
 
+        public Task<bool> GetPreferSingleTargetBuildsForStartupProjectsAsync(CancellationToken cancellationToken = default)
+        {
+            return GetSettingValueOrDefaultAsync(PreferSingleTargetBuildsForStartupProjects, defaultValue: false, cancellationToken);
+        }
+
         private async Task<T> GetSettingValueOrDefaultAsync<T>(string name, T defaultValue, CancellationToken cancellationToken)
         {
             ISettingsManager settingsManager = await _settingsManager.GetValueAsync(cancellationToken);
@@ -64,28 +66,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             ISettingsManager settingsManager = await _settingsManager.GetValueAsync(cancellationToken);
 
             await settingsManager.SetValueAsync(name, value, isMachineLocal: false);
-        }
-
-        public async Task RegisterOptionChangedEventHandlerAsync(PropertyChangedAsyncEventHandler handler)
-        {
-            ISettingsManager settingsManager = await _settingsManager.GetValueAsync();
-
-            ISettingsSubset? settingsSubset = settingsManager.GetSubset("*");
-            if (settingsSubset != null)
-            {
-                settingsSubset.SettingChangedAsync += handler;
-            }
-        }
-
-        public async Task UnregisterOptionChangedEventHandlerAsync(PropertyChangedAsyncEventHandler handler)
-        {
-            ISettingsManager settingsManager = await _settingsManager.GetValueAsync();
-
-            ISettingsSubset? settingsSubset = settingsManager.GetSubset("*");
-            if (settingsSubset != null)
-            {
-                settingsSubset.SettingChangedAsync -= handler;
-            }
         }
     }
 }

@@ -1,7 +1,5 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
-using System.Threading;
-using System.Threading.Tasks;
 using Microsoft.VisualStudio.ProjectSystem.Build;
 using Microsoft.VisualStudio.ProjectSystem.Debug;
 using Microsoft.VisualStudio.ProjectSystem.Managed.Build;
@@ -12,13 +10,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
     public sealed class StartupProjectSingleTargetGlobalBuildPropertyProviderTests
     {
         [Theory]
-        //          projectPath              crossTargeting  implicitlyTriggeredBuild  startupProjects                                  expectTargetFrameworkSet
-        [InlineData(@"C:\alpha.csproj",      true,           true,                     new[] { @"C:\alpha.csproj" },                    true)]
-        [InlineData(@"C:\alpha.csproj",      false,          true,                     new[] { @"C:\alpha.csproj" },                    false)]
-        [InlineData(@"C:\alpha.csproj",      true,           false,                    new[] { @"C:\alpha.csproj" },                    false)]
-        [InlineData(@"C:\beta.csproj",       true,           true,                     new[] { @"C:\alpha.csproj" },                    false)]
-        [InlineData(@"C:\alpha.csproj",      true,           true,                     new[] { @"C:\alpha.csproj", @"C:\beta.csproj" }, false)]
-        public async Task VerifyExpectedBehaviors(string projectPath, bool crossTargeting, bool implicitlyTriggeredBuild, string[] startupProjects, bool expectTargetFrameworkSet)
+        //          projectPath              crossTargeting  implicitlyTriggeredBuild  startupProjects                                  globalOptionEnabled expectTargetFrameworkSet
+        [InlineData(@"C:\alpha.csproj",      true,           true,                     new[] { @"C:\alpha.csproj" },                    true,               true)]
+        [InlineData(@"C:\alpha.csproj",      false,          true,                     new[] { @"C:\alpha.csproj" },                    true,               false)]
+        [InlineData(@"C:\alpha.csproj",      true,           false,                    new[] { @"C:\alpha.csproj" },                    true,               false)]
+        [InlineData(@"C:\beta.csproj",       true,           true,                     new[] { @"C:\alpha.csproj" },                    true,               false)]
+        [InlineData(@"C:\alpha.csproj",      true,           true,                     new[] { @"C:\alpha.csproj", @"C:\beta.csproj" }, true,               false)]
+        [InlineData(@"C:\alpha.csproj",      true,           true,                     new[] { @"C:\alpha.csproj" },                    false,              false)]
+        public async Task VerifyExpectedBehaviors(string projectPath, bool crossTargeting, bool implicitlyTriggeredBuild, string[] startupProjects, bool globalOptionEnabled, bool expectTargetFrameworkSet)
         {
             var projectService = IProjectServiceFactory.Create();
 
@@ -47,11 +46,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
 
             var implicitlyTriggeredBuildState = IImplicityTriggeredBuildStateFactory.Create(implicitlyTriggeredBuild, startupProjects);
 
+            var projectSystemOptions = IProjectSystemOptionsFactory.ImplementGetPreferSingleTargetBuildsForStartupProjectsAsync(ct => globalOptionEnabled);
+
             var provider = new StartupProjectSingleTargetGlobalBuildPropertyProvider(
                 projectService,
                 configuredProject,
                 activeDebugFrameworkServices,
-                implicitlyTriggeredBuildState);
+                implicitlyTriggeredBuildState,
+                projectSystemOptions);
 
             var globalProperties = await provider.GetGlobalPropertiesAsync(CancellationToken.None);
 

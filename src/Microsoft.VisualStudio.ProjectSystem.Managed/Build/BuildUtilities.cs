@@ -1,8 +1,5 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 using Microsoft.Build.Construction;
 using Microsoft.VisualStudio.Buffers.PooledObjects;
@@ -34,16 +31,11 @@ namespace Microsoft.VisualStudio.Build
             // <TargetFrameworks>net461;net452</TargetFrameworks>
             // <TargetFrameworks Condition = "'$(BuildingInsideVisualStudio)' == 'true'">net461</TargetFrameworks>
 
-            switch (element.Condition)
-            {
-                case "":
-                case "true":
-                case "'$(OS)' == 'Windows_NT'":
-                case "'$(BuildingInsideVisualStudio)' == 'true'":
-                    return true;
-            }
-
-            return false;
+            return element.Condition is
+                "" or
+                "true" or
+                "'$(OS)' == 'Windows_NT'" or
+                "'$(BuildingInsideVisualStudio)' == 'true'";
         }
 
         /// <summary>

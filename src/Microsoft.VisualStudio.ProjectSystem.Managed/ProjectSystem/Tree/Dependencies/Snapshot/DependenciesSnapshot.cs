@@ -1,11 +1,7 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
-using System.Collections.Generic;
-using System.Collections.Immutable;
-using System.Linq;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
 using Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Models;
-using Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot.Filters;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies;
 
 namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
@@ -29,10 +25,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
         ///   <item>the immutable <paramref name="previousSnapshot"/> if no changes were made.</item>
         /// </list>
         /// </summary>
-        /// <remarks>
-        /// As part of the update, each <see cref="IDependenciesSnapshotFilter"/> in <paramref name="snapshotFilters"/>
-        /// is given a chance to influence the addition and removal of dependency data in the returned snapshot.
-        /// </remarks>
         /// <returns>An updated snapshot, or <paramref name="previousSnapshot"/> if no changes occurred.</returns>
         public static DependenciesSnapshot FromChanges(
             DependenciesSnapshot previousSnapshot,
@@ -40,12 +32,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
             IDependenciesChanges? changes,
             IProjectCatalogSnapshot? catalogs,
             ImmutableArray<TargetFramework> targetFrameworks,
-            TargetFramework? activeTargetFramework,
-            ImmutableArray<IDependenciesSnapshotFilter> snapshotFilters)
+            TargetFramework? activeTargetFramework)
         {
             Requires.NotNull(previousSnapshot, nameof(previousSnapshot));
             Requires.NotNull(changedTargetFramework, nameof(changedTargetFramework));
-            Requires.Argument(!snapshotFilters.IsDefault, nameof(snapshotFilters), "Cannot be default.");
 
             var builder = previousSnapshot.DependenciesByTargetFramework.ToBuilder();
 
@@ -59,8 +49,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
             var newTargetedSnapshot = TargetedDependenciesSnapshot.FromChanges(
                 previousTargetedSnapshot,
                 changes,
-                catalogs,
-                snapshotFilters);
+                catalogs);
 
             if (!ReferenceEquals(previousTargetedSnapshot, newTargetedSnapshot))
             {

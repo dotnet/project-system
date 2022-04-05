@@ -1,7 +1,5 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
-using System;
-using System.Threading.Tasks;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
 using Moq;
 using Moq.Protected;
@@ -18,7 +16,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.WindowsForms
 
             await Assert.ThrowsAsync<ArgumentNullException>("documentMoniker", () =>
             {
-                return provider.GetSpecificEditorAsync((string)null!);
+                return provider.GetSpecificEditorAsync(null!);
             });
         }
 
@@ -29,7 +27,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.WindowsForms
 
             await Assert.ThrowsAsync<ArgumentNullException>("documentMoniker", () =>
             {
-                return provider.SetUseGlobalEditorAsync((string)null!, false);
+                return provider.SetUseGlobalEditorAsync(null!, false);
             });
         }
 

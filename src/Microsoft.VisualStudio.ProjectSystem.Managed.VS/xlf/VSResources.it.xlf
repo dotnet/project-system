@@ -204,6 +204,11 @@ Per eseguire il debug del progetto, aggiungere a questa soluzione un progetto es
         <target state="translated">(Non impostato)</target>
         <note>Text to display to the user in the property page UI when the "startup object" property is not set.</note>
       </trans-unit>
+      <trans-unit id="UpdateNamespacePromptMessage">
+        <source>Adjust namespaces for moved files?</source>
+        <target state="translated">Regolare gli spazi dei nomi per i file spostati??</target>
+        <note />
+      </trans-unit>
       <trans-unit id="WorkingDirecotryInvalid">
         <source>The working directory '{0}' specified in the '{1}' debug profile does not exist.</source>
         <target state="translated">La directory di lavoro '{0}' specificata nel profilo di debug '{1}' non esiste.</target>

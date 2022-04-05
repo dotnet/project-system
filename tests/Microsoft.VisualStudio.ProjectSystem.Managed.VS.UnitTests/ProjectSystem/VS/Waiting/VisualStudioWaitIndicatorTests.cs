@@ -2,9 +2,6 @@
 
 #pragma warning disable VSSDK005 // Avoid instantiating JoinableTaskContext
 
-using System;
-using System.Threading;
-using System.Threading.Tasks;
 using Microsoft.VisualStudio.Shell.Interop;
 using Microsoft.VisualStudio.Threading;
 using Xunit;
@@ -69,16 +66,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Waiting
             var (instance, userCancel) = CreateInstance(isCancelable: true);
 
             CancellationToken? result = default;
-            instance.Run("", "", true, token =>
+            instance.Run("", "", true, context =>
             {
                 userCancel();
 
-                result = token;
+                result = context.CancellationToken;
 
                 return TaskResult.EmptyString;
             });
 
-            Assert.True(result!.Value.IsCancellationRequested);
+            Assert.NotNull(result);
+            Assert.True(result.Value.IsCancellationRequested);
         }
 
         [Fact]
@@ -86,7 +84,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Waiting
         {
             var (instance, _) = CreateInstance();
 
-            var result = instance.Run("", "", false, token =>
+            var result = instance.Run("", "", false, _ =>
             {
                 return Task.FromResult("Hello");
             });

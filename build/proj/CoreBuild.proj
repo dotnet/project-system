@@ -1,5 +1,5 @@
 <!-- Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information. -->
-<Project DefaultTargets="LogInitialMessage;Restore;Build;GenerateDependentAssemblyVersionsFile;GenerateVSManifest" LocalProperty="SolutionPath">
+<Project DefaultTargets="Restore;Build;GenerateDependentAssemblyVersionsFile;GenerateVSManifest" LocalProperty="SolutionPath">
 
   <!--
   Required parameters:
@@ -29,6 +29,7 @@
     <CommonBuildProperty Include="CIBuild=$(CIBuild)" />
     <CommonBuildProperty Include="RepoRoot=$(RepoRoot)" />
     <CommonBuildProperty Include="VersionsPropsPath=$(RepoRoot)build\import\Versions.props" />
+    <CommonBuildProperty Include="QuickSrcBuild=$(QuickSrcBuild)" />
   </ItemGroup>
 
   <ItemGroup>
@@ -36,8 +37,24 @@
     <SolutionRestoreAndBuildProperty Include="__DeployProjectOutput=$(Deploy)" Condition="'$(Deploy)' != ''" />
   </ItemGroup>
 
-  <Target Name="LogInitialMessage">
-    <Message Text="Building $(SolutionFileName) [$(Configuration)]...%0a" Importance="high" />
+  <Target Name="GenerateSolutionForQuickSrcBuild" BeforeTargets="Restore" Condition="'$(QuickSrcBuild)' == 'true'">
+    <PropertyGroup>
+      <SolutionName>Src</SolutionName>
+      <SolutionFolder>$(RepoRoot)src/</SolutionFolder>
+      <SolutionFileName>$(SolutionName).sln</SolutionFileName>
+      <SolutionPath>$(SolutionFolder)$(SolutionFileName)</SolutionPath>
+    </PropertyGroup>
+    <Message Text="Generating Solution file [$(SolutionFileName)]..." Importance="high" />
+
+    <!-- https://docs.microsoft.com/en-us/dotnet/core/tools/dotnet-new#options -->
+    <!-- The 'force' flag ensures that if for any reason there is already a solution in the destination, the command will not fail. -->
+    <Exec Command="dotnet new sln -n $(SolutionName) -o $(SolutionFolder) --force" />
+
+    <ItemGroup>
+      <ProjFiles Include="$(SolutionFolder)**/*.*proj" />
+    </ItemGroup>
+    <!-- https://github.com/dotnet/cli/issues/6295#issuecomment-346973582 -->
+    <Exec Command="dotnet sln $(SolutionPath) add &quot;%(ProjFiles.FullPath)&quot;" />
   </Target>
 
   <!--
@@ -48,16 +65,18 @@
     We invalidate the cache by changing the value of __BuildPhase property.
   -->
   <Target Name="Restore">
+    <Message Text="Restoring $(SolutionFileName) [$(Configuration)]...%0a" Importance="high" />
     <MSBuild Projects="$(SolutionPath)" Properties="@(SolutionRestoreAndBuildProperty);__BuildPhase=SolutionRestore" Targets="Restore" BuildInParallel="true" />
   </Target>
 
   <Target Name="Build">
+    <Message Text="Building $(SolutionFileName) [$(Configuration)]...%0a" Importance="high" />
     <ItemGroup>
       <SolutionBuildTarget Include="Rebuild" Condition="'$(Rebuild)' == 'true'" />
       <SolutionBuildTarget Include="Build" Condition="'$(Build)' == 'true' and '$(Rebuild)' != 'true'" />
       <SolutionBuildTarget Include="Test" Condition="'$(Test)' == 'true'" />
       <SolutionBuildTarget Include="IntegrationTest" Condition="'$(IntegrationTest)' == 'true'" />
-      <SolutionBuildTarget Include="Pack" Condition="'$(BuildOrRebuild)' == 'true'" />
+      <SolutionBuildTarget Include="Pack" Condition="'$(BuildOrRebuild)' == 'true' AND '$(QuickSrcBuild)' != 'true'" />
     </ItemGroup>
     <MSBuild Projects="$(SolutionPath)" Properties="@(SolutionRestoreAndBuildProperty);__BuildPhase=SolutionBuild" Targets="@(SolutionBuildTarget)" BuildInParallel="true" Condition="'@(SolutionBuildTarget)' != ''" />
   </Target>

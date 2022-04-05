@@ -207,9 +207,9 @@ This project was loaded using the wrong project type, likely as a result of rena
   <data name="FUTD_FirstRun" xml:space="preserve">
     <value>The up-to-date check has not yet run for this project. Not up-to-date.</value>
   </data>
-  <data name="FUTD_CopyAlwaysItemExists_1" xml:space="preserve">
-    <value>Item '{0}' has CopyToOutputDirectory set to 'Always', not up-to-date.</value>
-    <comment>Do not translate 'CopyToOutputDirectory' or 'Always'. {0} is a file path.</comment>
+  <data name="FUTD_CopyAlwaysItemExists_2" xml:space="preserve">
+    <value>{0} item '{1}' has CopyToOutputDirectory set to 'Always', and the project has DisableFastUpToDateCopyAlwaysOptimization set to 'true', not up-to-date.</value>
+    <comment>Do not translate 'CopyToOutputDirectory' or 'Always' or 'DisableFastUpToDateCopyAlwaysOptimization' or 'true'. {0} is an MSBuild item type. {1} is a file path.</comment>
   </data>
   <data name="FUTD_ComparingInputOutputTimestamps_1" xml:space="preserve">
     <value>Comparing timestamps of inputs and outputs in Set="{0}":</value>
@@ -226,17 +226,20 @@ This project was loaded using the wrong project type, likely as a result of rena
     <value>No build outputs defined in Set="{0}".</value>
     <comment>Do not translate 'Set' as this name is used in code. {0} is the name of the set.</comment>
   </data>
-  <data name="FUTD_SetOfItemsChangedMoreRecentlyThanOutput_3" xml:space="preserve">
-    <value>The set of project items was changed more recently ({0}) than the earliest output '{1}' ({2}), not up-to-date.</value>
-    <comment>{0} and {2} are datetimes. {1} is a file path.</comment>
+  <data name="FUTD_SetOfItemsChangedMoreRecentlyThanOutput_2" xml:space="preserve">
+    <value>The set of project items was changed more recently ({0}) than the last successful build start time ({1}), not up-to-date.</value>
+    <comment>{0} and {1} are datetimes.</comment>
+  </data>
+  <data name="FUTD_SetOfChangedItemsIsEmpty" xml:space="preserve">
+    <value>The set of changed items is empty.</value>
   </data>
   <data name="FUTD_ChangedItemsAddition_4" xml:space="preserve">
-    <value>{0} item added '{1}' (CopyType={2}, TargetPath='{3}')</value>
-    <comment>Do not translate 'CopyType' or 'TargetPath'. {0} is an MSBuild item type. {1} is a file path. {2} and {3} are metadata values.</comment>
+    <value>{0} item added '{1}' (CopyToOutputDirectory={2}, TargetPath='{3}')</value>
+    <comment>Do not translate 'CopyToOutputDirectory' or 'TargetPath'. {0} is an MSBuild item type. {1} is a file path. {2} and {3} are metadata values.</comment>
   </data>
   <data name="FUTD_ChangedItemsRemoval_4" xml:space="preserve">
-    <value>{0} item removed '{1}' (CopyType={2}, TargetPath='{3}')</value>
-    <comment>Do not translate 'CopyType' or 'TargetPath'. {0} is an MSBuild item type. {1} is a file path. {2} and {3} are metadata values.</comment>
+    <value>{0} item removed '{1}' (CopyToOutputDirectory={2}, TargetPath='{3}')</value>
+    <comment>Do not translate 'CopyToOutputDirectory' or 'TargetPath'. {0} is an MSBuild item type. {1} is a file path. {2} and {3} are metadata values.</comment>
   </data>
   <data name="FUTD_RequiredInputNotFound_1" xml:space="preserve">
     <value>Input '{0}' does not exist and is required, not up-to-date.</value>
@@ -262,12 +265,12 @@ This project was loaded using the wrong project type, likely as a result of rena
     <value>Input {4} item '{0}' is newer ({1}) than earliest output '{2}' ({3}), not up-to-date.</value>
     <comment>{0} and {2} are file paths. {1} and {3} are datetimes. {4} is an MSBuild item type.</comment>
   </data>
-  <data name="FUTD_InputModifiedSinceLastCheck_3" xml:space="preserve">
-    <value>Input '{0}' ({1}) has been modified since the last up-to-date check ({2}), not up-to-date.</value>
+  <data name="FUTD_InputModifiedSinceLastSuccessfulBuildStart_3" xml:space="preserve">
+    <value>Input '{0}' ({1}) has been modified since the last successful build started ({2}), not up-to-date.</value>
     <comment>{0} is a file path. {1} and {2} are datetimes.</comment>
   </data>
-  <data name="FUTD_TypedInputModifiedSinceLastCheck_4" xml:space="preserve">
-    <value>Input {3} item '{0}' ({1}) has been modified since the last up-to-date check ({2}), not up-to-date.</value>
+  <data name="FUTD_TypedInputModifiedSinceLastSuccessfulBuildStart_4" xml:space="preserve">
+    <value>Input {3} item '{0}' ({1}) has been modified since the last successful build started ({2}), not up-to-date.</value>
     <comment>{0} is a file path. {1} and {2} are datetimes. {3} is an MSBuild item type.</comment>
   </data>
   <data name="FUTD_NoInputsDefined" xml:space="preserve">
@@ -358,21 +361,29 @@ This project was loaded using the wrong project type, likely as a result of rena
   <data name="FUTD_CheckingCopiedOutputFileSourceNewer" xml:space="preserve">
     <value>Source is newer than build output destination, not up-to-date.</value>
   </data>
-  <data name="FUTD_CheckingPreserveNewestFile_1" xml:space="preserve">
-    <value>Checking PreserveNewest file '{0}':</value>
-    <comment>Do not translate PreserveNewest. {0} is a file path.</comment>
+  <data name="FUTD_OptimizingCopyAlwaysItem" xml:space="preserve">
+    <value>Optimizing CopyToOutputDirectory="Always" item. Disable this by setting DisableFastUpToDateCopyAlwaysOptimization to "true".</value>
+    <comment>Do not translate "CopyToOutputDirectory", "Always", "DisableFastUpToDateCopyAlwaysOptimization" or "true".</comment>
   </data>
-  <data name="FUTD_CheckingPreserveNewestFileSourceNotFound_1" xml:space="preserve">
+  <data name="FUTD_CheckingCopyToOutputDirectoryItem_3" xml:space="preserve">
+    <value>Checking {0} item with CopyToOutputDirectory="{1}" '{2}':</value>
+    <comment>Do not translate CopyToOutputDirectory. {0} is an MSBuild item type. {1} is from an enum of valid values. {2} a file path.</comment>
+  </data>
+  <data name="FUTD_CheckingCopyToOutputDirectorySourceNotFound_1" xml:space="preserve">
     <value>Source '{0}' does not exist, not up-to-date.</value>
     <comment>{0} is a file path.</comment>
   </data>
-  <data name="FUTD_CheckingPreserveNewestFileDestinationNotFound_1" xml:space="preserve">
+  <data name="FUTD_CheckingCopyToOutputDirectoryItemDestinationNotFound_1" xml:space="preserve">
     <value>Destination '{0}' does not exist, not up-to-date.</value>
     <comment>{0} is a file path.</comment>
   </data>
-  <data name="FUTD_CheckingPreserveNewestSourceNewerThanDestination_2" xml:space="preserve">
-    <value>PreserveNewest source '{0}' is newer than destination '{1}', not up-to-date.</value>
-    <comment>Do not translate PreserveNewest. {0} and {1} are file paths.</comment>
+  <data name="FUTD_CheckingCopyToOutputDirectorySourceNewerThanDestination_4" xml:space="preserve">
+    <value>{0} item with CopyToOutputDirectory="{1}" source '{2}' is newer than destination '{3}', not up-to-date.</value>
+    <comment>Do not translate CopyToOutputDirectory. {0} is an MSBuild item type. {1} is from an enum of valid values. {2} and {3} are file paths.</comment>
+  </data>
+  <data name="FUTD_CopyAlwaysItemsDiffer_7" xml:space="preserve">
+    <value>{0} item with CopyToOutputDirectory="Always" source ('{1}' {2}, {3} bytes) differs from destination ('{4}' {5}, {6} bytes), not up-to-date.</value>
+    <comment>Do not translate CopyToOutputDirectory="Always". {0} is an MSBuild item type. {1} and {4} are file paths. {2} and {5} are date times. {3} and {6} are byte counts.</comment>
   </data>
   <data name="FUTD_IgnoringKinds_1" xml:space="preserve">
     <value>Ignoring up-to-date check items with Kind="{0}"</value>

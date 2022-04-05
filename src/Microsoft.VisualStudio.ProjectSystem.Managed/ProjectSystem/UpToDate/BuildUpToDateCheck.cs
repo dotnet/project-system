@@ -1,14 +1,6 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
-using System;
-using System.Collections.Generic;
-using System.Collections.Immutable;
-using System.ComponentModel.Composition;
 using System.Diagnostics;
-using System.IO;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
 using Microsoft.VisualStudio.IO;
 using Microsoft.VisualStudio.ProjectSystem.Build;
 using Microsoft.VisualStudio.Telemetry;
@@ -20,17 +12,20 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
     [AppliesTo(AppliesToExpression)]
     [Export(typeof(IBuildUpToDateCheckProvider))]
     [Export(typeof(IBuildUpToDateCheckValidator))]
+    [Export(typeof(IBuildUpToDateCheckProviderInternal))]
     [Export(typeof(IActiveConfigurationComponent))]
     [ExportMetadata("BeforeDrainCriticalTasks", true)]
     internal sealed partial class BuildUpToDateCheck
         : IBuildUpToDateCheckProvider2,
           IBuildUpToDateCheckValidator,
+          IBuildUpToDateCheckProviderInternal,
           IActiveConfigurationComponent,
           IDisposable
     {
-        internal const string AppliesToExpression = ProjectCapability.DotNet + " + !" + ProjectCapabilities.SharedAssetsProject;
+        internal const string AppliesToExpression = $"{ProjectCapability.DotNet} + !{ProjectCapabilities.SharedAssetsProject}";
 
         internal const string FastUpToDateCheckIgnoresKindsGlobalPropertyName = "FastUpToDateCheckIgnoresKinds";
+        internal const string TargetFrameworkGlobalPropertyName = "TargetFramework";
 
         internal const string DefaultSetName = "";
         internal const string DefaultKindName = "";
@@ -53,6 +48,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
         private IImmutableDictionary<string, string> _lastGlobalProperties = ImmutableStringDictionary<string>.EmptyOrdinal;
         private string _lastFailureReason = "";
+        private DateTime _lastBuildStartTimeUtc = DateTime.MinValue;
 
         private ISubscription _subscription;
         private int _isDisposed;
@@ -108,7 +104,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             subscription.Dispose();
         }
 
-        private bool CheckGlobalConditions(Log log, DateTime lastCheckedAtUtc, bool validateFirstRun, UpToDateCheckImplicitConfiguredInput state)
+        private bool CheckGlobalConditions(Log log, DateTime lastSuccessfulBuildStartTimeUtc, bool validateFirstRun, UpToDateCheckImplicitConfiguredInput state)
         {
             if (!_tasksService.IsTaskQueueEmpty(ProjectCriticalOperation.Build))
             {
@@ -120,20 +116,26 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 return log.Fail("Disabled", nameof(Resources.FUTD_DisableFastUpToDateCheckTrue));
             }
 
-            if (validateFirstRun && !state.WasStateRestored && lastCheckedAtUtc == DateTime.MinValue)
+            if (validateFirstRun && !state.WasStateRestored && lastSuccessfulBuildStartTimeUtc == DateTime.MinValue)
             {
                 // We had no persisted state, and this is the first run. We cannot know if the project is up-to-date
                 // or not, so schedule a build.
                 return log.Fail("FirstRun", nameof(Resources.FUTD_FirstRun));
             }
 
-            foreach ((_, ImmutableArray<UpToDateCheckInputItem> items) in state.InputSourceItemsByItemType)
+            if (state.IsCopyAlwaysOptimizationDisabled)
             {
-                foreach (UpToDateCheckInputItem item in items)
+                // By default, we optimize CopyAlways to only copy if the time stamps or file sizes differ.
+                // If we got here, then the user has opted out of that optimisation, and we must fail if any CopyAlways items exist.
+
+                foreach ((string itemType, ImmutableArray<UpToDateCheckInputItem> items) in state.InputSourceItemsByItemType)
                 {
-                    if (item.CopyType == CopyType.CopyAlways)
+                    foreach (UpToDateCheckInputItem item in items)
                     {
-                        return log.Fail("CopyAlwaysItemExists", nameof(Resources.FUTD_CopyAlwaysItemExists_1), _configuredProject.UnconfiguredProject.MakeRooted(item.Path));
+                        if (item.CopyType == CopyType.Always)
+                        {
+                            return log.Fail("CopyAlwaysItemExists", nameof(Resources.FUTD_CopyAlwaysItemExists_2), itemType, _configuredProject.UnconfiguredProject.MakeRooted(item.Path));
+                        }
                     }
                 }
             }
@@ -141,7 +143,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             return true;
         }
 
-        private bool CheckInputsAndOutputs(Log log, DateTime lastCheckedAtUtc, in TimestampCache timestampCache, UpToDateCheckImplicitConfiguredInput state, HashSet<string>? ignoreKinds, CancellationToken token)
+        private bool CheckInputsAndOutputs(Log log, DateTime lastSuccessfulBuildStartTimeUtc, in TimestampCache timestampCache, UpToDateCheckImplicitConfiguredInput state, HashSet<string>? ignoreKinds, CancellationToken token)
         {
             // UpToDateCheckInput/Output/Built items have optional 'Set' metadata that determine whether they
             // are treated separately or not. If omitted, such inputs/outputs are included in the default set,
@@ -213,17 +215,26 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
                 Assumes.NotNull(earliestOutputPath);
 
-                if (earliestOutputTime < state.LastItemsChangedAtUtc)
+                ISubscription subscription = Volatile.Read(ref _subscription);
+
+                if (lastSuccessfulBuildStartTimeUtc < state.LastItemsChangedAtUtc)
                 {
-                    log.Fail("ProjectItemsChangedSinceEarliestOutput", nameof(Resources.FUTD_SetOfItemsChangedMoreRecentlyThanOutput_3), state.LastItemsChangedAtUtc, earliestOutputPath, earliestOutputTime);
+                    log.Fail("ProjectItemsChangedSinceLastSuccessfulBuildStart", nameof(Resources.FUTD_SetOfItemsChangedMoreRecentlyThanOutput_2), state.LastItemsChangedAtUtc, lastSuccessfulBuildStartTimeUtc);
 
                     if (log.Level >= LogLevel.Info)
                     {
                         log.Indent++;
 
-                        foreach ((bool isAdd, string itemType, UpToDateCheckInputItem item) in state.LastItemChanges.OrderBy(change => change.ItemType).ThenBy(change => change.Item.Path))
+                        if (state.LastItemChanges.Length == 0)
                         {
-                            log.Info(isAdd ? nameof(Resources.FUTD_ChangedItemsAddition_4) : nameof(Resources.FUTD_ChangedItemsRemoval_4), itemType, item.Path, item.CopyType, item.TargetPath ?? "");
+                            log.Info(nameof(Resources.FUTD_SetOfChangedItemsIsEmpty));
+                        }
+                        else
+                        {
+                            foreach ((bool isAdd, string itemType, UpToDateCheckInputItem item) in state.LastItemChanges.OrderBy(change => change.ItemType).ThenBy(change => change.Item.Path))
+                            {
+                                log.Info(isAdd ? nameof(Resources.FUTD_ChangedItemsAddition_4) : nameof(Resources.FUTD_ChangedItemsRemoval_4), itemType, item.Path, item.CopyType, item.TargetPath ?? "");
+                            }
                         }
 
                         log.Indent--;
@@ -257,10 +268,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                         return log.Fail("InputNewerThanEarliestOutput", itemType is null ? nameof(Resources.FUTD_InputNewerThanOutput_4) : nameof(Resources.FUTD_TypedInputNewerThanOutput_5), input, inputTime.Value, earliestOutputPath, earliestOutputTime, itemType ?? "");
                     }
 
-                    if (inputTime > lastCheckedAtUtc && lastCheckedAtUtc != DateTime.MinValue)
+                    if (inputTime > lastSuccessfulBuildStartTimeUtc && lastSuccessfulBuildStartTimeUtc != DateTime.MinValue)
                     {
                         // Bypass this test if no check has yet been performed. We handle that in CheckGlobalConditions.
-                        return log.Fail("InputModifiedSinceLastCheck", itemType is null ? nameof(Resources.FUTD_InputModifiedSinceLastCheck_3) : nameof(Resources.FUTD_TypedInputModifiedSinceLastCheck_4), input, inputTime.Value, lastCheckedAtUtc, itemType ?? "");
+                        return log.Fail("InputModifiedSinceLastSuccessfulBuildStart", itemType is null ? nameof(Resources.FUTD_InputModifiedSinceLastSuccessfulBuildStart_3) : nameof(Resources.FUTD_TypedInputModifiedSinceLastSuccessfulBuildStart_4), input, inputTime.Value, lastSuccessfulBuildStartTimeUtc, itemType ?? "");
                     }
 
                     if (latestInput is null || inputTime > latestInput.Value.Time)
@@ -543,7 +554,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 return true;
             }
 
-            string markerFile = _configuredProject.UnconfiguredProject.MakeRooted(state.CopyUpToDateMarkerItem);
+            string outputMarkerFile = _configuredProject.UnconfiguredProject.MakeRooted(state.CopyUpToDateMarkerItem);
 
             if (log.Level >= LogLevel.Verbose)
             {
@@ -560,7 +571,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
                 log.Verbose(nameof(Resources.FUTD_AddingOutputReferenceCopyMarker));
                 log.Indent++;
-                log.VerboseLiteral(markerFile);
+                log.VerboseLiteral(outputMarkerFile);
                 log.Indent--;
             }
 
@@ -574,15 +585,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 return true;
             }
 
-            DateTime? outputMarkerTime = timestampCache.GetTimestampUtc(markerFile);
+            DateTime? outputMarkerTime = timestampCache.GetTimestampUtc(outputMarkerFile);
 
             if (outputMarkerTime != null)
             {
-                log.Info(nameof(Resources.FUTD_WriteTimeOnOutputMarker_2), outputMarkerTime, markerFile);
+                log.Info(nameof(Resources.FUTD_WriteTimeOnOutputMarker_2), outputMarkerTime, outputMarkerFile);
             }
             else
             {
-                log.Info(nameof(Resources.FUTD_NoOutputMarkerExists_1), markerFile);
+                log.Info(nameof(Resources.FUTD_NoOutputMarkerExists_1), outputMarkerFile);
                 return true;
             }
 
@@ -644,20 +655,26 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
         {
             string outputFullPath = Path.Combine(state.MSBuildProjectDirectory, state.OutputRelativeOrFullPath);
 
-            foreach ((_, ImmutableArray<UpToDateCheckInputItem> items) in state.InputSourceItemsByItemType)
+            foreach ((string itemType, ImmutableArray<UpToDateCheckInputItem> items) in state.InputSourceItemsByItemType)
             {
                 foreach (UpToDateCheckInputItem item in items)
                 {
-                    // Only consider items with CopyType of CopyIfNewer (PreserveNewest)
-                    if (item.CopyType != CopyType.CopyIfNewer)
+                    token.ThrowIfCancellationRequested();
+
+                    if (item.CopyType == CopyType.Never)
                     {
+                        // Ignore items which are never copied. Only process Always and PreserveNewest items.
+                        //
+                        // Note that if we see Always items, then state.IsTreatCopyAlwaysAsPreserveNewestDisabled must
+                        // be false, as when it is true and any Always item exists, the check returns before this point.
+
                         continue;
                     }
 
-                    token.ThrowIfCancellationRequested();
+                    System.Diagnostics.Debug.Assert(item.CopyType != CopyType.Always || !state.IsCopyAlwaysOptimizationDisabled);
 
-                    string rootedPath = _configuredProject.UnconfiguredProject.MakeRooted(item.Path);
-                    string filename = Strings.IsNullOrEmpty(item.TargetPath) ? rootedPath : item.TargetPath;
+                    string sourcePath = _configuredProject.UnconfiguredProject.MakeRooted(item.Path);
+                    string filename = Strings.IsNullOrEmpty(item.TargetPath) ? sourcePath : item.TargetPath;
 
                     if (string.IsNullOrEmpty(filename))
                     {
@@ -666,43 +683,93 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
                     filename = _configuredProject.UnconfiguredProject.MakeRelative(filename);
 
-                    log.Info(nameof(Resources.FUTD_CheckingPreserveNewestFile_1), rootedPath);
+                    log.Info(nameof(Resources.FUTD_CheckingCopyToOutputDirectoryItem_3), itemType, item.CopyType.ToString(), sourcePath);
+                    log.Indent++;
 
-                    DateTime? itemTime = timestampCache.GetTimestampUtc(rootedPath);
+                    DateTime? sourceTime = timestampCache.GetTimestampUtc(sourcePath);
 
-                    if (itemTime != null)
+                    if (sourceTime != null)
                     {
-                        log.Indent++;
-                        log.Info(nameof(Resources.FUTD_SourceFileTimeAndPath_2), itemTime, rootedPath);
-                        log.Indent--;
+                        log.Info(nameof(Resources.FUTD_SourceFileTimeAndPath_2), sourceTime, sourcePath);
                     }
                     else
                     {
-                        return log.Fail("CopyToOutputDirectorySourceNotFound", nameof(Resources.FUTD_CheckingPreserveNewestFileSourceNotFound_1), rootedPath);
+                        return log.Fail("CopyToOutputDirectorySourceNotFound", nameof(Resources.FUTD_CheckingCopyToOutputDirectorySourceNotFound_1), sourcePath);
                     }
 
-                    string destination = Path.Combine(outputFullPath, filename);
-                    DateTime? destinationTime = timestampCache.GetTimestampUtc(destination);
+                    string destinationPath = Path.Combine(outputFullPath, filename);
+                    DateTime? destinationTime = timestampCache.GetTimestampUtc(destinationPath);
 
                     if (destinationTime != null)
                     {
-                        log.Indent++;
-                        log.Info(nameof(Resources.FUTD_DestinationFileTimeAndPath_2), destinationTime, destination);
-                        log.Indent--;
+                        log.Info(nameof(Resources.FUTD_DestinationFileTimeAndPath_2), destinationTime, destinationPath);
                     }
                     else
                     {
-                        return log.Fail("CopyToOutputDirectoryDestinationNotFound", nameof(Resources.FUTD_CheckingPreserveNewestFileDestinationNotFound_1), destination);
+                        return log.Fail("CopyToOutputDirectoryDestinationNotFound", nameof(Resources.FUTD_CheckingCopyToOutputDirectoryItemDestinationNotFound_1), destinationPath);
                     }
 
-                    if (destinationTime < itemTime)
+                    if (item.CopyType == CopyType.PreserveNewest)
                     {
-                        return log.Fail("CopyToOutputDirectorySourceNewer", nameof(Resources.FUTD_CheckingPreserveNewestSourceNewerThanDestination_2), rootedPath, destination);
+                        if (destinationTime < sourceTime)
+                        {
+                            return log.Fail("CopyToOutputDirectorySourceNewer", nameof(Resources.FUTD_CheckingCopyToOutputDirectorySourceNewerThanDestination_4), itemType, item.CopyType.ToString(), sourcePath, destinationPath);
+                        }
                     }
+                    else if (item.CopyType == CopyType.Always)
+                    {
+                        log.Info(nameof(Resources.FUTD_OptimizingCopyAlwaysItem));
+
+                        // We have already validated the presence of these files, so we don't expect these to return
+                        // false. If one of them does, the corresponding size would be zero, so we would schedule a build.
+                        // The odds of both source and destination disappearing between the gathering of the timestamps
+                        // above and these following statements is vanishingly small, and would suggest bigger problems
+                        // such as the entire project directory having been deleted.
+                        _fileSystem.TryGetFileSizeBytes(sourcePath, out long sourceSizeBytes);
+                        _fileSystem.TryGetFileSizeBytes(destinationPath, out long destinationSizeBytes);
+
+                        if (sourceTime != destinationTime || sourceSizeBytes != destinationSizeBytes)
+                        {
+                            return log.Fail("CopyAlwaysItemDiffers", nameof(Resources.FUTD_CopyAlwaysItemsDiffer_7), itemType, sourcePath, sourceTime, sourceSizeBytes, destinationPath, destinationTime, destinationSizeBytes);
+                        }
+                    }
+
+                    log.Indent--;
                 }
             }
 
             return true;
+        }
+
+        void IBuildUpToDateCheckProviderInternal.NotifyBuildStarting(DateTime buildStartTimeUtc)
+        {
+            _lastBuildStartTimeUtc = buildStartTimeUtc;
+        }
+
+        void IBuildUpToDateCheckProviderInternal.NotifyBuildCompleted(bool wasSuccessful)
+        {
+            if (_lastBuildStartTimeUtc == default)
+            {
+                // This should not happen
+                System.Diagnostics.Debug.Fail("Notification of build completion should follow notification of build starting.");
+
+                return;
+            }
+
+            if (wasSuccessful)
+            {
+                ISubscription subscription = Volatile.Read(ref _subscription);
+
+                subscription.UpdateLastSuccessfulBuildStartTimeUtc(_lastBuildStartTimeUtc);
+            }
+
+            _lastBuildStartTimeUtc = default;
+        }
+
+        private static bool ConfiguredInputMatchesTargetFramework(UpToDateCheckImplicitConfiguredInput input, string buildTargetFramework)
+        {
+            return input.ProjectConfiguration.Dimensions.TryGetValue(ConfigurationGeneral.TargetFrameworkProperty, out string? configurationTargetFramework)
+                && buildTargetFramework.Equals(configurationTargetFramework);
         }
 
         Task<bool> IBuildUpToDateCheckProvider.IsUpToDateAsync(BuildAction buildAction, TextWriter logWriter, CancellationToken cancellationToken)
@@ -735,6 +802,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 return TaskResult.False;
             }
 
+            // Cache the last-used set of global properties. We may be asked to validate this up-to-date check
+            // once the build has completed (in ValidateUpToDateAsync), and will re-use the same set of global
+            // properties to ensure parity.
+            _lastGlobalProperties = globalProperties;
+
             return IsUpToDateInternalAsync(logWriter, globalProperties, isValidationRun: false, cancellationToken);
         }
 
@@ -746,19 +818,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
         {
             cancellationToken.ThrowIfCancellationRequested();
 
-            // Cache the last-used set of global properties. We may be asked to validate this up-to-date check
-            // once the build has completed (in ValidateUpToDateAsync), and will re-use the same set of global properties
-            // to ensure parity.
-            _lastGlobalProperties = globalProperties;
-
             // Start the stopwatch now, so we include any lock acquisition in the timing
             var sw = Stopwatch.StartNew();
 
             ISubscription subscription = Volatile.Read(ref _subscription);
 
-            return await subscription.RunAsync(CheckAsync, updateLastCheckedAt: !isValidationRun, cancellationToken);
+            return await subscription.RunAsync(CheckAsync, cancellationToken);
 
-            async Task<bool> CheckAsync(UpToDateCheckConfiguredInput state, DateTime lastCheckedAtUtc, CancellationToken token)
+            async Task<(bool, ImmutableArray<ProjectConfiguration>)> CheckAsync(UpToDateCheckConfiguredInput state, IReadOnlyDictionary<ProjectConfiguration, DateTime> lastSuccessfulBuildStartTimeUtcByConfiguration, CancellationToken token)
             {
                 token.ThrowIfCancellationRequested();
 
@@ -766,7 +833,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 var timestampCache = new TimestampCache(_fileSystem);
 
                 LogLevel requestedLogLevel = await _projectSystemOptions.GetFastUpToDateLoggingLevelAsync(token);
-                var logger = new Log(logWriter, requestedLogLevel, sw, timestampCache, _configuredProject.UnconfiguredProject.FullPath ?? "", _telemetryService, state);
+                var logger = new Log(logWriter, requestedLogLevel, sw, timestampCache, _configuredProject.UnconfiguredProject.FullPath ?? "", isValidationRun ? null : _telemetryService, state);
 
                 try
                 {
@@ -781,28 +848,41 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                         }
                     }
 
+                    // If we're limiting the build to a particular target framework, limit the set of
+                    // configured inputs we check to those that match the framework.
+                    globalProperties.TryGetValue(TargetFrameworkGlobalPropertyName, out string? buildTargetFramework);
+                    IEnumerable<UpToDateCheckImplicitConfiguredInput> implicitStatesToCheck = Strings.IsNullOrEmpty(buildTargetFramework)
+                        ? state.ImplicitInputs
+                        : state.ImplicitInputs.Where(input => ConfiguredInputMatchesTargetFramework(input, buildTargetFramework));
+
+                    // Note that if we find a particular configuration is out of date and exit early,
+                    // all the configurations we're going to build still count as checked.
+                    ImmutableArray<ProjectConfiguration> checkedConfigurations = implicitStatesToCheck.Select(state => state.ProjectConfiguration).ToImmutableArray();
+
                     bool logConfigurations = state.ImplicitInputs.Length > 1 && logger.Level >= LogLevel.Info;
 
-                    foreach (UpToDateCheckImplicitConfiguredInput implicitState in state.ImplicitInputs)
+                    foreach (UpToDateCheckImplicitConfiguredInput implicitState in implicitStatesToCheck)
                     {
                         if (logConfigurations)
                         {
-                            // Only null when the FUTD check is disabled. If we get here, we are not disabled.
-                            Assumes.NotNull(implicitState.ProjectConfiguration);
-
                             logger.Info(nameof(Resources.FUTD_CheckingConfiguration_1), implicitState.ProjectConfiguration.GetDisplayString());
                             logger.Indent++;
                         }
 
-                        if (!CheckGlobalConditions(logger, lastCheckedAtUtc, validateFirstRun: !isValidationRun, implicitState) ||
-                            !CheckInputsAndOutputs(logger, lastCheckedAtUtc, timestampCache, implicitState, ignoreKinds, token) ||
-                            !CheckMarkers(logger, timestampCache, implicitState) ||
-                            !CheckCopyToOutputDirectoryFiles(logger, timestampCache, implicitState, token) ||
-                            !CheckCopiedOutputFiles(logger, timestampCache, implicitState, token))
+                        if (!lastSuccessfulBuildStartTimeUtcByConfiguration.TryGetValue(implicitState.ProjectConfiguration, out DateTime lastSuccessfulBuildStartTimeUtc))
                         {
-                            return false;
+                            lastSuccessfulBuildStartTimeUtc = DateTime.MinValue;
                         }
 
+                        if (!CheckGlobalConditions(logger, lastSuccessfulBuildStartTimeUtc, validateFirstRun: !isValidationRun, implicitState)
+                            || !CheckInputsAndOutputs(logger, lastSuccessfulBuildStartTimeUtc, timestampCache, implicitState, ignoreKinds, token)
+                            || !CheckMarkers(logger, timestampCache, implicitState)
+                            || !CheckCopyToOutputDirectoryFiles(logger, timestampCache, implicitState, token)
+                            || !CheckCopiedOutputFiles(logger, timestampCache, implicitState, token))
+                        {
+                            return (false, checkedConfigurations);
+                        }
+                        
                         if (logConfigurations)
                         {
                             logger.Indent--;
@@ -810,11 +890,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                     }
 
                     logger.UpToDate();
-                    return true;
+                    return (true, checkedConfigurations);
                 }
                 catch (Exception ex)
                 {
-                    return logger.Fail("Exception", nameof(Resources.FUTD_Exception_1), ex);
+                    return (logger.Fail("Exception", nameof(Resources.FUTD_Exception_1), ex), ImmutableArray<ProjectConfiguration>.Empty);
                 }
                 finally
                 {

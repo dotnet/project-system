@@ -1,18 +1,11 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
-using System;
-using System.Collections.Immutable;
-using System.ComponentModel.Composition;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
 using System.Threading.Tasks.Dataflow;
 using Microsoft.VisualStudio.Composition;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
 using Microsoft.VisualStudio.ProjectSystem.Utilities;
 using Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.CrossTarget;
 using Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot;
-using Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot.Filters;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies;
 using Microsoft.VisualStudio.Threading;
 
@@ -40,7 +33,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Subscriptions
 
         [ImportMany] private readonly OrderPrecedenceImportCollection<IDependencyCrossTargetSubscriber> _dependencySubscribers;
         [ImportMany] private readonly OrderPrecedenceImportCollection<IProjectDependenciesSubTreeProvider> _subTreeProviders;
-        [ImportMany] private readonly OrderPrecedenceImportCollection<IDependenciesSnapshotFilter> _snapshotFilters;
 
         /// <summary>
         /// Disposable items to be disposed when this provider is no longer in use.
@@ -79,10 +71,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Subscriptions
             _dependencyTreeTelemetryService = dependencyTreeTelemetryService;
 
             _dependencySubscribers = new OrderPrecedenceImportCollection<IDependencyCrossTargetSubscriber>(
-                projectCapabilityCheckProvider: commonServices.Project);
-
-            _snapshotFilters = new OrderPrecedenceImportCollection<IDependenciesSnapshotFilter>(
-                ImportOrderPrecedenceComparer.PreferenceOrder.PreferredComesLast,
                 projectCapabilityCheckProvider: commonServices.Project);
 
             _subTreeProviders = new OrderPrecedenceImportCollection<IProjectDependenciesSubTreeProvider>(
@@ -269,8 +257,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Subscriptions
                     changes,
                     catalogs,
                     targetFrameworks,
-                    activeTargetFramework,
-                    _snapshotFilters.ToImmutableValueArray()),
+                    activeTargetFramework),
                 token);
 
             if (updatedSnapshot != null)

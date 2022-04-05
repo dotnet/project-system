@@ -22,6 +22,15 @@
     </ItemGroup>
   </Target>
 
+  <!--
+    Updates insertion manifests (json) for creating the vsman files for insertion to include the SPDX SBOM json.
+    Technically, this should be AfterTargets="$(AddVsixForSigningDependsOn)" as that value (target) indicates when VSIX packaging has completed.
+    Doing it as AfterTargets="AddVsixForSigning" unnecessarily binds the SBOM process to signing. But there is not currently a scenario where we wouldn't sign and generate an SBOM.
+  -->
+  <Target Name="UpdateManifestJsonForSbom" AfterTargets="AddVsixForSigning">
+    <Exec ContinueOnError="false" Command="powershell -NonInteractive -NoLogo -NoProfile -ExecutionPolicy Unrestricted -Command &quot;. $(RepoRoot)build\script\UpdateManifestJsonForSbom.ps1 -manifestJsonPath '$(VisualStudioSetupInsertionPath)$(ManifestJsonName).json' -sbomMetadataPath '$(ArtifactsBinDir)spdx_2.2\manifest.spdx.json'&quot;" />
+  </Target>
+
   <!-- Copies the vsix files after they've been signed to the different output folders. -->
   <Target Name="CopyVsixAfterSigning" DependsOnTargets="AddVsixForSigning" AfterTargets="SignFiles">
     <Copy SourceFiles="$(OutDir)$(AssemblyName).vsix" DestinationFolder="$(VisualStudioSetupInsertionPath)" />

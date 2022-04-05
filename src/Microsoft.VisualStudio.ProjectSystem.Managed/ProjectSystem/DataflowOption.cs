@@ -2,9 +2,6 @@
 
 #pragma warning disable RS0030 // Do not used banned APIs (we are wrapping them)
 
-using System;
-using System.Collections.Generic;
-using System.Collections.Immutable;
 using System.Threading.Tasks.Dataflow;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
 
