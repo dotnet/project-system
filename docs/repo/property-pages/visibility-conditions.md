@@ -10,6 +10,11 @@ Visibility conditions are not interpreted by the back-end, which treats them as 
 
 ## Specification
 
+There are three kinds of visibility conditions:
+- VisibilityCondition is a visibility condition on a property (whether the property should be shown).
+- DimensionVisibilityCondition is a visibility condition on a dimension name (whether users should be allowed to select to vary/unvary by the dimension.)
+- ConfiguredValueVisibilityCondition is a visibility condition on a PropertyValue (whether the value for each individual dimensional configuration should be shown). For example, if a property varies by dimension but the value only applies to iOS, other targets can be hidden.
+
 In a XAML rule file, a visibility condition is specified as metadata on the property. For example:
 
 ```xml
@@ -17,6 +22,12 @@ In a XAML rule file, a visibility condition is specified as metadata on the prop
   <StringProperty.Metadata>
     <NameValuePair Name="VisibilityCondition">
       <NameValuePair.Value>(has-evaluated-value "MyPage" "MyProperty" "Foo")</NameValuePair.Value>
+    </NameValuePair>
+    <NameValuePair Name="DimensionVisibilityCondition">
+        <NameValuePair.Value>(matches "Configuration" (dimension))</NameValuePair.Value> <!-- '(dimension)' refers to each dimension candidate -->
+    </NameValuePair>
+    <NameValuePair Name="ConfiguredValueVisibilityCondition">
+        <NameValuePair.Value>(eq (evaluated "ConfigurationGeneralPage" "TargetPlatformIdentifier") "Android")</NameValuePair.Value> <!-- 'evaluated' function is allowed here -->
     </NameValuePair>
   </StringProperty.Metadata>
 </StringProperty>
@@ -38,16 +49,16 @@ By way of example, the simplest expression is a literal value.
 
 To make this language useful, we need the ability to perform operations with these values. Here are some examples:
 
-| Expression             | Value   |
-|------------------------|---------|
-| `(not true)`           | `false` |
-| `(or true false)`      | `true`  |
-| `(eq 1 2)`             | `false` |
-| `(lt 1 2)`             | `true`  |
-| `(add 1 2)`            | `3`     |
-| `(add 1 2 3)`          | `6`     |
-| `(concat "a" "b")`     | `"ab"`  |
-| `(concat "a" "b" "c")` | `"abc"` |
+| Expression             | Value             |
+|------------------------|-------------------|
+| `(not true)`           | `false`           |
+| `(or true false)`      | `true`            |
+| `(eq 1 2)`             | `false`           |
+| `(lt 1 2)`             | `true`            |
+| `(add 1 2)`            | `3`               |
+| `(add 1 2 3)`          | `6`               |
+| `(concat "a" "b")`     | `"ab"`            |
+| `(concat "a" "b" "c")` | `"abc"`           |
 
 The parentheses envelop a list of values. The evaluation of that list involves treating the first item as a function identifier, and passing the remainder of that list to that function as arguments. You'll notice that some functions accept one argument (`not`), others two arguments (`eq`, `lt`), while others accept an arbitrary number of arguments (`add`, `concat`, `and`, `or`). The number of arguments that a function accepts is its _arity_. Functions that accept an arbitrary number of arguments are known as _variadic_.
 
@@ -75,36 +86,67 @@ Now, the property will only be visible if _MyProperty_ has value _MyEnumValue_.
 
 The following table details the default set of visibility expression functions:
 
-| Function                 | Arity    | Description                                                                                     |
-|--------------------------|----------|-------------------------------------------------------------------------------------------------|
-| `add`                    | Variadic | Adds integer arguments                                                                          |
-| `concat`                 | Variadic | Concatenates string arguments                                                                   |
-| `eq`                     | 2        | Computes `arg0 == arg1`                                                                         |
-| `ne`                     | 2        | Computes `arg0 != arg1`                                                                         |
-| `lt`                     | 2        | Computes `arg0 <  arg1`                                                                         |
-| `lte`                    | 2        | Computes `arg0 <= arg1`                                                                         |
-| `gt`                     | 2        | Computes `arg0 >  arg1`                                                                         |
-| `gte`                    | 2        | Computes `arg0 >= arg1`                                                                         |
-| `and`                    | Variadic | Computes logical AND of arguments                                                               |
-| `or`                     | Variadic | Computes logical OR of arguments                                                                |
-| `xor`                    | 2        | Computes exclusive logical OR of arguments                                                      |
-| `not`                    | 1        | Computes logical NOT of argument                                                                |
-| `unevaluated`            | 2        | Returns the unevaluated value of property on page `arg0` with name `arg1`                       |
-| `has-evaluated-value`    | 3        | Returns true if property on page `arg0` with name `arg1` has an evaluated value matching `arg2` |
-| `has-project-capability` | 1        | Returns true if the project has the specified capability.                                       |
-| `has-net-framework`                    | 0 | Returns true if the project targets .NET Framework in at least one configuration. |
-| `has-net-core-app`                     | 0 | Returns true if the project targets .NET Core or .NET 5+ in at least one configuration. |
-| `has-net-framework-version-or-greater` | 1 | Returns true if the project targets .NET Framework at the specified version or above in at least one configuration. |
-| `has-net-core-app-version-or-greater`  | 1 | Returns true if the project targets .NET Core or .NET 5+ at the specified version or above in at least one configuration. |
-| `is-csharp`                            | 0 | Returns true if this is a C# project. |
-| `is-vb`                                | 0 | Returns true if this is a VB project. |
-| `has-csharp-lang-version-or-greater`   | 1 | Returns true if this is a C# project and the language level is `latest`, `preview` or above the specified version. |
-| `has-vb-lang-version-or-greater`       | 1 | Returns true if this is a VB project and the language level is `latest`, `preview` or above the specified version. |
-| `has-platform`                         | 1 | Returns true if the project's target platform matches. Examples are `windows`, `android`, `ios`. |
+| Function                             | Arity    | Description                                                                                                           |
+|--------------------------------------|----------|-----------------------------------------------------------------------------------------------------------------------|
+| `add`                                | Variadic | Adds integer arguments                                                                                                |
+| `concat`                             | Variadic | Concatenates string arguments                                                                                         |
+| `eq`                                 | 2        | Computes `arg0 == arg1`                                                                                               |
+| `ne`                                 | 2        | Computes `arg0 != arg1`                                                                                               |
+| `lt`                                 | 2        | Computes `arg0 <  arg1`                                                                                               |
+| `lte`                                | 2        | Computes `arg0 <= arg1`                                                                                               |
+| `gt`                                 | 2        | Computes `arg0 >  arg1`                                                                                               |
+| `gte`                                | 2        | Computes `arg0 >= arg1`                                                                                               |
+| `and`                                | Variadic | Computes logical AND of arguments                                                                                     |
+| `or`                                 | Variadic | Computes logical OR of arguments                                                                                      |
+| `xor`                                | 2        | Computes exclusive logical OR of arguments                                                                            |
+| `or`                                 | Variadic | Computes logical OR of arguments                                                                                      |
+| `not`                                | 1        | Computes logical NOT of argument                                                                                      |
+| `matches`                            | 2        | Returns whether the regular expression defined as the second parameter matches the first parameter, which is a string |
+| `if`                                 | 3        | Evaluates the first parameter. If it is true, returns the second parameter, otherwise returns the third parameter     |
+| `unevaluated`                        | 2        | Returns the unevaluated value of property on page `arg0` with name `arg1`                                             |
+| `is-codespaces-client`               | 0        | Returns true if the Project Properties UI is running in a Codespaces client                                           |
+| `has-project-capability`             | 1        | Returns true if the project has the specified capability.                                                             |
+| `is-csharp`                          | 0        | Returns true if this is a C# project.                                                                                 |
+| `is-vb`                              | 0        | Returns true if this is a VB project.                                                                                 |
+| `has-csharp-lang-version-or-greater` | 1        | Returns true if this is a C# project and the language level is `latest`, `preview` or above the specified version.    |
+| `has-vb-lang-version-or-greater`     | 1        | Returns true if this is a VB project and the language level is `latest`, `preview` or above the specified version.    |
+| `has-platform`                       | 1        | Returns true if the project's target platform matches. Examples are `windows`, `android`, `ios`.                      |
 
 These functions are defined in class `VisibilityConditionEvaluator`.
 
-Note that there is no `evaluated` function. A property may have multiple evaluated values, and as such it's not possible to reliably return a single value. Use `has-evaluated-value` instead.
+#### Functions only available for `VisibilityCondition`
+
+| Function                               | Arity    | Description                                                                                                                                                           |
+|----------------------------------------|----------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `has-net-framework`                    | 0        | Returns true if the project targets .NET Framework in at least one configuration.                                                                                     |
+| `has-net-core-app`                     | 0        | Returns true if the project targets .NET Core or .NET 5+ in at least one configuration.                                                                               |
+| `has-net-framework-version-or-greater` | 1        | Returns true if the project targets .NET Framework at the specified version or above in at least one configuration.                                                   |
+| `has-net-core-app-version-or-greater`  | 1        | Returns true if the project targets .NET Core or .NET 5+ at the specified version or above in at least one configuration                                              |
+| `has-csharp-lang-version-or-greater`   | 1        | Returns true if this is a C# project and the language level is `latest`, `preview` or above the specified version.                                                    |
+| `has-evaluated-value`                  | 3        | Returns true if property on page `arg0` with name `arg1` has an evaluated value matching `arg2`                                                                       |
+
+#### Functions only available for `DimensionVisibilityCondition`
+These functions are defined in the `DimensionVisibilityConditionEvaluator` class
+
+| Function    | Arity    | Description                                   |
+|-------------|----------|-----------------------------------------------|
+| `dimension` | 0        | Returns the current dimension being evaluated |
+
+#### Functions only available for `ConfiguredValueVisibilityCondition`
+These functions are defined in the `ConfiguredValueVisibilityConditionEvaluator` class
+
+| Function    | Arity    | Description                                                               |
+|-------------|----------|---------------------------------------------------------------------------|
+| `evaluated` | 2        | Returns the evaluated value of property on page `arg0` with name `arg1`.  |
+
+
+
+The `this` function is defined in class `ThisAwareVisibilityConditionEvaluator`.
+The `evaluated` function is defined in class `PropertyValueViewModelVisibilityConditionEvaluator`.
+
+Note that the `evaluated` function is not available in the VisibilityCondition property, as a Property may have multiple evaluated values, and as such it's not possible to reliably return a single value. Use `has-evaluated-value` instead in this case.
+
+However, it is available in an ConfiguredValueVisibilityCondition expression, as these are run on each PropertyValue, in which there will be only one possible evaluated value for a property.
 
 Functions that take a version number should be passed strings containing decimal values. Any leading `v` character is omitted. For example `"v5.0""` and `"1.2.3"` are both valid values.
 

@@ -28,8 +28,8 @@
   <StringProperty Name="TargetFrameworkMoniker" Visible="False" ReadOnly="True" />
 
   <!-- eg: "net6.0-windows" -> "Windows"
-           "net6.0-ios"     -> "ios"
-           "net6.0-android" -> "android"
+           "net6.0-ios"     -> "iOS"
+           "net6.0-android" -> "Android"
            "net6.0"         -> ""
   -->
   <StringProperty Name="TargetPlatformIdentifier" Visible="False" ReadOnly="True" />
