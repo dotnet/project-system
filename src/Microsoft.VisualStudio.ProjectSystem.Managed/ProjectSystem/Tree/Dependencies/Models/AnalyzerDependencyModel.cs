@@ -8,9 +8,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Models
 {
     internal class AnalyzerDependencyModel : DependencyModel
     {
+        // NOTE we include ProjectTreeFlags.FileSystemEntity here so that Roslyn can
+        // correctly identify the analyzer's path in order to attach child nodes to
+        // these dependency items in Solution Explorer. Without this flag, CPS will
+        // remove whatever file path we pass during tree construction (for performance
+        // reasons).
+
         private static readonly DependencyFlagCache s_flagCache = new(
-            resolved: DependencyTreeFlags.AnalyzerDependency + DependencyTreeFlags.SupportsBrowse,
-            unresolved: DependencyTreeFlags.AnalyzerDependency + DependencyTreeFlags.SupportsBrowse);
+            resolved: DependencyTreeFlags.AnalyzerDependency + DependencyTreeFlags.SupportsBrowse + ProjectTreeFlags.FileSystemEntity,
+            unresolved: DependencyTreeFlags.AnalyzerDependency + DependencyTreeFlags.SupportsBrowse + ProjectTreeFlags.FileSystemEntity);
 
         private static readonly DependencyIconSet s_iconSet = new(
             icon: KnownMonikers.CodeInformation,
