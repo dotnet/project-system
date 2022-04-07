@@ -24,17 +24,17 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         Private Enum ResourcesFolderBehavior
             ''' <summary>
             ''' The Resource editor/picker do not try to add resource files into the project.  A relative 
-            '''   link is added into the resx file to the imported file�s original location on disk.  Same 
-            '''   behavior as when the resource editor is opened on a resx that�s not in a project in 
+            '''   link is added into the resx file to the imported file's original location on disk.  Same 
+            '''   behavior as when the resource editor is opened on a resx that's not in a project in 
             '''   the current solution.
             ''' </summary>
             AddNone = 0
 
             ''' <summary>
-            ''' Imported files are added into a �Resources� folder at the top level of the project.
+            ''' Imported files are added into a 'Resources' folder at the top level of the project.
             ''' </summary>
             ''' <remarks>
-            ''' If the file is in the project�s subdirectories, but not included 
+            ''' If the file is in the project's subdirectories, but not included 
             '''   in the project, it is added to the project in its current location.  
             ''' If the file is already in the project (in any subfolder), it is left where it is.
             ''' Otherwise, the file is added to the Resources folder (using ProjectItems.AddFromFileCopy)
@@ -48,7 +48,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             ''' Imported files are added to the root folder of the project
             ''' </summary>
             ''' <remarks>
-            ''' If the file is in the project�s subdirectories, but not included 
+            ''' If the file is in the project's subdirectories, but not included 
             '''   in the project, it is added to the project in its current location.  
             ''' If the file is already in the project (in any subfolder), it is left where it is.
             ''' Otherwise, the file is added to the top-level folder of the project (using ProjectItems.AddFromFileCopy).
@@ -60,7 +60,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             ''' Imported files are added to the same folder in the project where the ResX file is located
             ''' </summary>
             ''' <remarks>
-            ''' If the file is in the project�s subdirectories, but not included 
+            ''' If the file is in the project's subdirectories, but not included 
             '''   in the project, it is added to the project in its current location.  
             ''' If the file is already in the project (in any subfolder), it is left where it is.
             ''' Otherwise, the file is added to the same folder of the project where the ResX is located
