@@ -3,7 +3,6 @@
 using Microsoft.VisualStudio.ProjectSystem.Build;
 using Microsoft.VisualStudio.ProjectSystem.Debug;
 using Microsoft.VisualStudio.ProjectSystem.Managed.Build;
-using Xunit;
 
 namespace Microsoft.VisualStudio.ProjectSystem.Properties
 {

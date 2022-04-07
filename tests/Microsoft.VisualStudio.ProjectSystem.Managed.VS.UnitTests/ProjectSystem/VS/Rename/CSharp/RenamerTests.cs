@@ -4,8 +4,6 @@ using Microsoft.CodeAnalysis;
 using Microsoft.VisualStudio.Mocks;
 using Microsoft.VisualStudio.ProjectSystem.LanguageServices.CSharp;
 using Microsoft.VisualStudio.Settings;
-using Moq;
-using Xunit;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename.CSharp
 {

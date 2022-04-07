@@ -3,7 +3,6 @@
 using System.Xml;
 using System.Xml.Linq;
 using Microsoft.VisualStudio.Utilities;
-using Xunit;
 
 namespace Microsoft.VisualStudio.ProjectSystem.Rules
 {

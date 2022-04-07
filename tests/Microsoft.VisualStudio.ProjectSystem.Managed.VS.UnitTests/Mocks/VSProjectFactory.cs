@@ -2,7 +2,6 @@
 
 using System.Collections;
 using EnvDTE;
-using Moq;
 
 namespace VSLangProj
 {

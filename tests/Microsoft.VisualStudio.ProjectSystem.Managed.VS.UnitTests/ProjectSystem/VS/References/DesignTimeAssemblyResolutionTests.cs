@@ -5,7 +5,6 @@ using Microsoft.VisualStudio.Shell.Interop;
 using VSLangProj;
 using VSLangProj110;
 using VSLangProj80;
-using Xunit;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.References
 {

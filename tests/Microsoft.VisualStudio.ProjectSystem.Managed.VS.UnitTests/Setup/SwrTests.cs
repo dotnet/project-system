@@ -3,7 +3,6 @@
 using System.Text.RegularExpressions;
 using Microsoft.VisualStudio.ProjectSystem.Rules;
 using Microsoft.VisualStudio.Utilities;
-using Xunit;
 using Xunit.Abstractions;
 
 namespace Microsoft.VisualStudio.Setup

@@ -3,7 +3,6 @@
 using Microsoft.VisualStudio.ProjectSystem.Properties;
 using Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies;
 using Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot;
-using Moq;
 
 namespace Microsoft.VisualStudio.ProjectSystem
 {

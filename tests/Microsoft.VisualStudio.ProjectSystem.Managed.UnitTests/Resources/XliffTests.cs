@@ -5,7 +5,6 @@ using System.Xml;
 using System.Xml.Linq;
 using System.Xml.XPath;
 using Microsoft.VisualStudio.Utilities;
-using Xunit;
 
 namespace Microsoft.VisualStudio.Resources
 {

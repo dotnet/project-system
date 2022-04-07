@@ -4,7 +4,6 @@
 
 using Microsoft.VisualStudio.Shell.Interop;
 using Microsoft.VisualStudio.Threading;
-using Xunit;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Waiting
 {

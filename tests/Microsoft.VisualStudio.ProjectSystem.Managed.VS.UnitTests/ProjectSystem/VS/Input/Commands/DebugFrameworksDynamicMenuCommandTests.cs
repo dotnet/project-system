@@ -3,8 +3,6 @@
 using Microsoft.VisualStudio.ProjectSystem.Debug;
 using Microsoft.VisualStudio.ProjectSystem.VS.Debug;
 using Microsoft.VisualStudio.Threading;
-using Moq;
-using Xunit;
 
 #pragma warning disable VSSDK005 // Avoid instantiating JoinableTaskContext
 

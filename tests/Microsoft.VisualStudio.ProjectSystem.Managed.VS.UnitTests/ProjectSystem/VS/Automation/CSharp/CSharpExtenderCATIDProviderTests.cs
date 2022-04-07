@@ -2,7 +2,6 @@
 
 using Microsoft.VisualStudio.ProjectSystem.VS.Properties;
 using VSLangProj;
-using Xunit;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation.CSharp
 {

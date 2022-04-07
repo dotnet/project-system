@@ -2,7 +2,6 @@
 
 using Microsoft.VisualStudio.ProjectSystem.Debug;
 using Microsoft.VisualStudio.ProjectSystem.VS.Debug;
-using Moq;
 
 namespace Microsoft.VisualStudio.Mocks
 {

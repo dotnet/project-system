@@ -2,7 +2,6 @@
 
 using System.Xml.Linq;
 using System.Xml.XPath;
-using Xunit;
 
 namespace Microsoft.VisualStudio.ProjectSystem.Rules
 {

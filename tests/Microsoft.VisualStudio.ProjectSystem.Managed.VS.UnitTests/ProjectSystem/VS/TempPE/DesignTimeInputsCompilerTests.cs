@@ -5,8 +5,6 @@ using Microsoft.VisualStudio.LanguageServices.ProjectSystem;
 using Microsoft.VisualStudio.ProjectSystem.LanguageServices;
 using Microsoft.VisualStudio.Telemetry;
 using Microsoft.VisualStudio.Threading.Tasks;
-using Moq;
-using Xunit;
 using Xunit.Sdk;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE

@@ -6,8 +6,6 @@ using Microsoft.VisualStudio.IO;
 using Microsoft.VisualStudio.ProjectSystem.Build;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
 using Microsoft.VisualStudio.Telemetry;
-using Moq;
-using Xunit;
 using Xunit.Abstractions;
 
 #pragma warning disable IDE0055

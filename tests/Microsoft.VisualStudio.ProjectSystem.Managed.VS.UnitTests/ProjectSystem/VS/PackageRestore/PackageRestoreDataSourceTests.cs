@@ -3,7 +3,6 @@
 using Microsoft.VisualStudio.IO;
 using Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore.Snapshots;
 using NuGet.SolutionRestoreManager;
-using Xunit;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
 {

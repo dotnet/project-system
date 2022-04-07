@@ -5,7 +5,6 @@ using Microsoft.VisualStudio.Imaging;
 using Microsoft.VisualStudio.Imaging.Interop;
 using Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies;
-using Xunit;
 using Xunit.Abstractions;
 
 namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies
