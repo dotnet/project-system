@@ -1,11 +1,16 @@
 #nullable enable
+abstract Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections.AttachedCollectionItemBase.IconMoniker.get -> Microsoft.VisualStudio.Imaging.Interop.ImageMoniker
+abstract Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections.AttachedCollectionItemBase.Priority.get -> int
+abstract Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections.DependenciesAttachedCollectionSourceProviderBase.TryCreateCollectionSource(Microsoft.VisualStudio.Shell.IVsHierarchyItem! hierarchyItem, string! flagsString, string? target, Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections.IRelationProvider! relationProvider, out Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections.AggregateRelationCollectionSource? containsCollectionSource) -> bool
+abstract Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections.RelatableItemBase.Identity.get -> object!
+abstract Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections.RelationBase<TParent, TChild>.CreateContainedByItems(TChild! child) -> System.Collections.Generic.IEnumerable<TParent!>?
+abstract Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections.RelationBase<TParent, TChild>.HasContainedItems(TParent! parent) -> bool
+abstract Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections.RelationBase<TParent, TChild>.UpdateContainsCollection(TParent! parent, Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections.AggregateContainsRelationCollectionSpan! span) -> void
 const Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages.ProfileCommandNames.Executable = "Executable" -> string!
 const Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages.ProfileCommandNames.IISExpress = "IISExpress" -> string!
 const Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages.ProfileCommandNames.NoAction = "NoAction" -> string!
 const Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages.ProfileCommandNames.Project = "Project" -> string!
 Microsoft.VisualStudio.ProjectSystem.VS.Automation.VSProject
-Microsoft.VisualStudio.ProjectSystem.VS.Automation.VSProject.__id.get -> string!
-Microsoft.VisualStudio.ProjectSystem.VS.Automation.VSProject.__project.get -> object!
 Microsoft.VisualStudio.ProjectSystem.VS.Automation.VSProject.AbsoluteProjectDirectory.get -> string!
 Microsoft.VisualStudio.ProjectSystem.VS.Automation.VSProject.ActiveConfigurationSettings.get -> VSLangProj.ProjectConfigurationProperties!
 Microsoft.VisualStudio.ProjectSystem.VS.Automation.VSProject.ActiveFileSharePath.get -> string!
@@ -21,6 +26,8 @@ Microsoft.VisualStudio.ProjectSystem.VS.Automation.VSProject.AssemblyOriginatorK
 Microsoft.VisualStudio.ProjectSystem.VS.Automation.VSProject.AssemblyOriginatorKeyFile.set -> void
 Microsoft.VisualStudio.ProjectSystem.VS.Automation.VSProject.AssemblyOriginatorKeyMode.get -> VSLangProj.prjOriginatorKeyMode
 Microsoft.VisualStudio.ProjectSystem.VS.Automation.VSProject.AssemblyOriginatorKeyMode.set -> void
+Microsoft.VisualStudio.ProjectSystem.VS.Automation.VSProject.AuthenticationMode.get -> VSLangProj165.AuthenticationMode
+Microsoft.VisualStudio.ProjectSystem.VS.Automation.VSProject.AuthenticationMode.set -> void
 Microsoft.VisualStudio.ProjectSystem.VS.Automation.VSProject.AutoGenerateBindingRedirects.get -> bool
 Microsoft.VisualStudio.ProjectSystem.VS.Automation.VSProject.AutoGenerateBindingRedirects.set -> void
 Microsoft.VisualStudio.ProjectSystem.VS.Automation.VSProject.BuildManager.get -> VSLangProj.BuildManager!
@@ -49,8 +56,8 @@ Microsoft.VisualStudio.ProjectSystem.VS.Automation.VSProject.FileSharePath.set -
 Microsoft.VisualStudio.ProjectSystem.VS.Automation.VSProject.FindConnectionPoint(ref System.Guid riid, out Microsoft.VisualStudio.OLE.Interop.IConnectionPoint? ppCP) -> void
 Microsoft.VisualStudio.ProjectSystem.VS.Automation.VSProject.FullPath.get -> string!
 Microsoft.VisualStudio.ProjectSystem.VS.Automation.VSProject.GenerateKeyPairFiles(string! strPublicPrivateFile, string! strPublicOnlyFile = "0") -> void
-Microsoft.VisualStudio.ProjectSystem.VS.Automation.VSProject.get_Extender(string! ExtenderName) -> object!
 Microsoft.VisualStudio.ProjectSystem.VS.Automation.VSProject.GetUniqueFilename(object! pDispatch, string! bstrRoot, string! bstrDesiredExt) -> string!
+Microsoft.VisualStudio.ProjectSystem.VS.Automation.VSProject.get_Extender(string! ExtenderName) -> object!
 Microsoft.VisualStudio.ProjectSystem.VS.Automation.VSProject.Imports.get -> VSLangProj.Imports!
 Microsoft.VisualStudio.ProjectSystem.VS.Automation.VSProject.LinkRepair.get -> bool
 Microsoft.VisualStudio.ProjectSystem.VS.Automation.VSProject.LinkRepair.set -> void
@@ -89,6 +96,8 @@ Microsoft.VisualStudio.ProjectSystem.VS.Automation.VSProject.WebServer.get -> st
 Microsoft.VisualStudio.ProjectSystem.VS.Automation.VSProject.WebServerVersion.get -> string!
 Microsoft.VisualStudio.ProjectSystem.VS.Automation.VSProject.WorkOffline.get -> bool
 Microsoft.VisualStudio.ProjectSystem.VS.Automation.VSProject.WorkOffline.set -> void
+Microsoft.VisualStudio.ProjectSystem.VS.Automation.VSProject.__id.get -> string!
+Microsoft.VisualStudio.ProjectSystem.VS.Automation.VSProject.__project.get -> object!
 Microsoft.VisualStudio.ProjectSystem.VS.ConnectionPoint.ConnectionPointContainer
 Microsoft.VisualStudio.ProjectSystem.VS.Debug.IDebugProfileLaunchTargetsProvider
 Microsoft.VisualStudio.ProjectSystem.VS.Debug.IDebugProfileLaunchTargetsProvider.OnAfterLaunchAsync(Microsoft.VisualStudio.ProjectSystem.Debug.DebugLaunchOptions launchOptions, Microsoft.VisualStudio.ProjectSystem.Debug.ILaunchProfile! profile) -> System.Threading.Tasks.Task!
@@ -102,8 +111,6 @@ Microsoft.VisualStudio.ProjectSystem.VS.Debug.IDebugProfileLaunchTargetsProvider
 Microsoft.VisualStudio.ProjectSystem.VS.Debug.IDebugProfileLaunchTargetsProvider4
 Microsoft.VisualStudio.ProjectSystem.VS.Debug.IDebugProfileLaunchTargetsProvider4.OnAfterLaunchAsync(Microsoft.VisualStudio.ProjectSystem.Debug.DebugLaunchOptions launchOptions, Microsoft.VisualStudio.ProjectSystem.Debug.ILaunchProfile! profile, System.Collections.Generic.IReadOnlyList<Microsoft.VisualStudio.Shell.Interop.VsDebugTargetProcessInfo>! processInfos) -> System.Threading.Tasks.Task!
 Microsoft.VisualStudio.ProjectSystem.VS.Debug.IDebugProfileLaunchTargetsProvider4.OnBeforeLaunchAsync(Microsoft.VisualStudio.ProjectSystem.Debug.DebugLaunchOptions launchOptions, Microsoft.VisualStudio.ProjectSystem.Debug.ILaunchProfile! profile, System.Collections.Generic.IReadOnlyList<Microsoft.VisualStudio.ProjectSystem.VS.Debug.IDebugLaunchSettings!>! debugLaunchSettings) -> System.Threading.Tasks.Task!
-Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices.IVsContainedLanguageComponentsFactory
-Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices.IVsContainedLanguageComponentsFactory.GetContainedLanguageFactoryForFile(string! filePath, out Microsoft.VisualStudio.Shell.Interop.IVsHierarchy? hierarchy, out uint itemid, out Microsoft.VisualStudio.TextManager.Interop.IVsContainedLanguageFactory? containedLanguageFactory) -> int
 Microsoft.VisualStudio.ProjectSystem.VS.HotReload.IProjectHotReloadAgent
 Microsoft.VisualStudio.ProjectSystem.VS.HotReload.IProjectHotReloadAgent.CreateHotReloadSession(string! id, string! runtimeVersion, Microsoft.VisualStudio.ProjectSystem.VS.HotReload.IProjectHotReloadSessionCallback! callback) -> Microsoft.VisualStudio.ProjectSystem.VS.HotReload.IProjectHotReloadSession?
 Microsoft.VisualStudio.ProjectSystem.VS.HotReload.IProjectHotReloadSession
@@ -119,8 +126,9 @@ Microsoft.VisualStudio.ProjectSystem.VS.HotReload.IProjectHotReloadSessionCallba
 Microsoft.VisualStudio.ProjectSystem.VS.HotReload.IProjectHotReloadSessionCallback.RestartProjectAsync(System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<bool>!
 Microsoft.VisualStudio.ProjectSystem.VS.HotReload.IProjectHotReloadSessionCallback.StopProjectAsync(System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<bool>!
 Microsoft.VisualStudio.ProjectSystem.VS.HotReload.IProjectHotReloadSessionCallback.SupportsRestart.get -> bool
+Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices.IVsContainedLanguageComponentsFactory
+Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices.IVsContainedLanguageComponentsFactory.GetContainedLanguageFactoryForFile(string! filePath, out Microsoft.VisualStudio.Shell.Interop.IVsHierarchy? hierarchy, out uint itemid, out Microsoft.VisualStudio.TextManager.Interop.IVsContainedLanguageFactory? containedLanguageFactory) -> int
 Microsoft.VisualStudio.ProjectSystem.VS.Properties.AbstractProjectConfigurationProperties
-Microsoft.VisualStudio.ProjectSystem.VS.Properties.AbstractProjectConfigurationProperties.__id.get -> string!
 Microsoft.VisualStudio.ProjectSystem.VS.Properties.AbstractProjectConfigurationProperties.AllowUnsafeBlocks.get -> bool
 Microsoft.VisualStudio.ProjectSystem.VS.Properties.AbstractProjectConfigurationProperties.AllowUnsafeBlocks.set -> void
 Microsoft.VisualStudio.ProjectSystem.VS.Properties.AbstractProjectConfigurationProperties.BaseAddress.get -> uint
@@ -240,6 +248,11 @@ Microsoft.VisualStudio.ProjectSystem.VS.Properties.AbstractProjectConfigurationP
 Microsoft.VisualStudio.ProjectSystem.VS.Properties.AbstractProjectConfigurationProperties.UseVSHostingProcess.set -> void
 Microsoft.VisualStudio.ProjectSystem.VS.Properties.AbstractProjectConfigurationProperties.WarningLevel.get -> VSLangProj.prjWarningLevel
 Microsoft.VisualStudio.ProjectSystem.VS.Properties.AbstractProjectConfigurationProperties.WarningLevel.set -> void
+Microsoft.VisualStudio.ProjectSystem.VS.Properties.AbstractProjectConfigurationProperties.__id.get -> string!
+Microsoft.VisualStudio.ProjectSystem.VS.Properties.CSharp.CSharpProjectConfigurationProperties
+Microsoft.VisualStudio.ProjectSystem.VS.Properties.CSharp.CSharpProjectConfigurationProperties.ErrorReport.get -> string!
+Microsoft.VisualStudio.ProjectSystem.VS.Properties.CSharp.CSharpProjectConfigurationProperties.ErrorReport.set -> void
+Microsoft.VisualStudio.ProjectSystem.VS.Properties.VisualBasic.VisualBasicProjectConfigurationProperties
 Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages.GetProfileNameDialog
 Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages.GetProfileNameDialog.GetProfileNameDialog(Microsoft.VisualStudio.Shell.SVsServiceProvider! sp, Microsoft.VisualStudio.ProjectSystem.IProjectThreadingService! threadingService, string! suggestedName, System.Predicate<string!>! validator) -> void
 Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages.GetProfileNameDialog.InitializeComponent() -> void
@@ -261,6 +274,88 @@ Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages.PropertyPage.SetPageSite(M
 Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages.PropertyPage.Show(uint nCmdShow) -> void
 Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages.PropertyPage.TranslateAccelerator(Microsoft.VisualStudio.OLE.Interop.MSG[]! pMsg) -> int
 Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages.PropertyPageResources
+Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections.AggregateContainedByRelationCollection
+Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections.AggregateContainedByRelationCollection.Contains(object! value) -> bool
+Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections.AggregateContainedByRelationCollection.Count.get -> int
+Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections.AggregateContainedByRelationCollection.GetEnumerator() -> System.Collections.IEnumerator!
+Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections.AggregateContainedByRelationCollection.HasItems.get -> bool
+Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections.AggregateContainedByRelationCollection.IndexOf(object! value) -> int
+Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections.AggregateContainsRelationCollection
+Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections.AggregateContainsRelationCollection.OnStateUpdated() -> void
+Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections.AggregateContainsRelationCollectionSpan
+Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections.AggregateContainsRelationCollectionSpan.UpdateContainsItems<TData, TItem>(System.Collections.Generic.IEnumerable<TData>! sources, System.Func<TData, TItem!, int>! comparer, System.Func<TData, TItem!, bool>! update, System.Func<TData, TItem!>! factory) -> void
+Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections.AggregateRelationCollectionSource
+Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections.AggregateRelationCollectionSource.AggregateRelationCollectionSource(object! sourceItem, Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections.IAggregateRelationCollection? collection = null) -> void
+Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections.AggregateRelationCollectionSource.PropertyChanged -> System.ComponentModel.PropertyChangedEventHandler?
+Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections.AggregateRelationCollectionSource.SetCollection(Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections.IAggregateRelationCollection! collection) -> void
+Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections.AttachedCollectionItemBase
+Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections.AttachedCollectionItemBase.AttachedCollectionItemBase(string! name) -> void
+Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections.AttachedCollectionItemBase.IsCut.get -> bool
+Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections.AttachedCollectionItemBase.PropertyChanged -> System.ComponentModel.PropertyChangedEventHandler?
+Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections.AttachedCollectionItemBase.RaisePropertyChanged(System.ComponentModel.PropertyChangedEventArgs! e) -> void
+Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections.AttachedCollectionItemBase.Text.get -> string!
+Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections.AttachedCollectionItemBase.Text.set -> void
+Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections.AttachedCollectionItemBase.ToolTipText.get -> string!
+Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections.DependenciesAttachedCollectionSourceProviderBase
+Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections.DependenciesAttachedCollectionSourceProviderBase.DependenciesAttachedCollectionSourceProviderBase(Microsoft.VisualStudio.ProjectSystem.ProjectTreeFlags flags) -> void
+Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections.IAggregateRelationCollection
+Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections.IAggregateRelationCollection.EnsureMaterialized() -> void
+Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections.IAggregateRelationCollection.HasItems.get -> bool
+Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections.IAggregateRelationCollection.HasItemsChanged -> System.EventHandler!
+Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections.IDependenciesTreeConfiguredProjectSearchContext
+Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections.IDependenciesTreeConfiguredProjectSearchContext.CancellationToken.get -> System.Threading.CancellationToken
+Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections.IDependenciesTreeConfiguredProjectSearchContext.IsMatch(string! candidateText) -> bool
+Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections.IDependenciesTreeConfiguredProjectSearchContext.SubmitResult(Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections.IRelatableItem? item) -> void
+Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections.IDependenciesTreeProjectSearchContext
+Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections.IDependenciesTreeProjectSearchContext.CancellationToken.get -> System.Threading.CancellationToken
+Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections.IDependenciesTreeProjectSearchContext.ForConfiguredProjectAsync(Microsoft.VisualStudio.ProjectSystem.ConfiguredProject! configuredProject, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) -> System.Threading.Tasks.Task<Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections.IDependenciesTreeConfiguredProjectSearchContext?>!
+Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections.IDependenciesTreeProjectSearchContext.UnconfiguredProject.get -> Microsoft.VisualStudio.ProjectSystem.UnconfiguredProject!
+Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections.IDependenciesTreeSearchProvider
+Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections.IDependenciesTreeSearchProvider.SearchAsync(Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections.IDependenciesTreeProjectSearchContext! searchContext) -> System.Threading.Tasks.Task!
+Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections.IRelatableItem
+Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections.IRelatableItem.ContainedByCollection.get -> Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections.AggregateContainedByRelationCollection?
+Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections.IRelatableItem.ContainedByCollection.set -> void
+Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections.IRelatableItem.ContainsCollection.get -> Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections.AggregateContainsRelationCollection?
+Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections.IRelatableItem.Identity.get -> object!
+Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections.IRelatableItem.TryGetOrCreateContainsCollection(Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections.IRelationProvider! relationProvider, out Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections.AggregateContainsRelationCollection? relationCollection) -> bool
+Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections.IRelatableItem.TryGetProjectNode(Microsoft.VisualStudio.ProjectSystem.IProjectTree! targetRootNode, Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections.IRelatableItem! item, out Microsoft.VisualStudio.ProjectSystem.IProjectTree? projectTree) -> bool
+Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections.IRelation
+Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections.IRelation.CreateContainedByItems(Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections.IRelatableItem! child) -> System.Collections.Generic.IEnumerable<Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections.IRelatableItem!>?
+Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections.IRelation.HasContainedItem(Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections.IRelatableItem! parent) -> bool
+Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections.IRelation.SupportsContainedByFor(System.Type! childType) -> bool
+Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections.IRelation.SupportsContainsFor(System.Type! parentType) -> bool
+Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections.IRelation.UpdateContainsCollection(Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections.IRelatableItem! parent, Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections.AggregateContainsRelationCollectionSpan! span) -> void
+Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections.IRelationProvider
+Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections.IRelationProvider.GetContainedByRelationsFor(System.Type! childType) -> System.Collections.Immutable.ImmutableArray<Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections.IRelation!>
+Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections.IRelationProvider.GetContainsRelationsFor(System.Type! parentType) -> System.Collections.Immutable.ImmutableArray<Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections.IRelation!>
+Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections.RelatableItemBase
+Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections.RelatableItemBase.RelatableItemBase(string! name) -> void
+Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections.RelationBase<TParent, TChild>
+Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections.RelationBase<TParent, TChild>.RelationBase() -> void
+Microsoft.VisualStudio.ProjectSystem.VS.Tree.IFileIconProvider
+Microsoft.VisualStudio.ProjectSystem.VS.Tree.IFileIconProvider.GetFileExtensionImageMoniker(string! path) -> Microsoft.VisualStudio.Imaging.Interop.ImageMoniker
+Microsoft.VisualStudio.ProjectSystem.VS.Utilities.FocusAttacher
+Microsoft.VisualStudio.ProjectSystem.VS.Utilities.FocusAttacher.FocusAttacher() -> void
+override Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections.AggregateContainsRelationCollectionSpan.ToString() -> string!
+override Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections.AttachedCollectionItemBase.ToString() -> string!
+override Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections.RelatableItemBase.ContextMenuController.get -> Microsoft.Internal.VisualStudio.PlatformUI.IContextMenuController?
+static Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages.GetProfileNameDialog.DialogCaption.get -> string!
+static Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections.AggregateContainsRelationCollection.TryCreate(Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections.IRelatableItem! parentItem, Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections.IRelationProvider! relationProvider, out Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections.AggregateContainsRelationCollection? collection) -> bool
+static Microsoft.VisualStudio.ProjectSystem.VS.Utilities.FocusAttacher.GetFocus(System.Windows.DependencyObject! d) -> bool
+static Microsoft.VisualStudio.ProjectSystem.VS.Utilities.FocusAttacher.SetFocus(System.Windows.DependencyObject! d, bool value) -> void
+static readonly Microsoft.VisualStudio.ProjectSystem.VS.Utilities.FocusAttacher.FocusProperty -> System.Windows.DependencyProperty!
+virtual Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections.AttachedCollectionItemBase.CompareTo(object! obj) -> int
+virtual Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections.AttachedCollectionItemBase.ContextMenuController.get -> Microsoft.Internal.VisualStudio.PlatformUI.IContextMenuController?
+virtual Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections.AttachedCollectionItemBase.ExpandedIconMoniker.get -> Microsoft.VisualStudio.Imaging.Interop.ImageMoniker
+virtual Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections.AttachedCollectionItemBase.FontStyle.get -> System.Windows.FontStyle
+virtual Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections.AttachedCollectionItemBase.FontWeight.get -> System.Windows.FontWeight
+virtual Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections.AttachedCollectionItemBase.GetBrowseObject() -> object?
+virtual Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections.AttachedCollectionItemBase.GetPattern<TPattern>() -> TPattern?
+virtual Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections.AttachedCollectionItemBase.OverlayIconMoniker.get -> Microsoft.VisualStudio.Imaging.Interop.ImageMoniker
+virtual Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections.AttachedCollectionItemBase.StateIconMoniker.get -> Microsoft.VisualStudio.Imaging.Interop.ImageMoniker
+virtual Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections.AttachedCollectionItemBase.StateToolTipText.get -> string?
+virtual Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections.AttachedCollectionItemBase.ToolTipContent.get -> object?
+virtual Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections.RelatableItemBase.TryGetProjectNode(Microsoft.VisualStudio.ProjectSystem.IProjectTree! targetRootNode, Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections.IRelatableItem! item, out Microsoft.VisualStudio.ProjectSystem.IProjectTree? projectTree) -> bool
 ~static Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages.PropertyPageResources.AddBtn.get -> string
 ~static Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages.PropertyPageResources.AllFiles.get -> string
 ~static Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages.PropertyPageResources.ApplicationArguments.get -> string
@@ -269,21 +364,27 @@ Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages.PropertyPageResources
 ~static Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages.PropertyPageResources.BrowseBtn.get -> string
 ~static Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages.PropertyPageResources.CancelBtn.get -> string
 ~static Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages.PropertyPageResources.CancelBtnHelpText.get -> string
+~static Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages.PropertyPageResources.chkJSWebView2DebuggingText.get -> string
+~static Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages.PropertyPageResources.chkLaunchBrowserHelpText.get -> string
+~static Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages.PropertyPageResources.chkNativeCodeDebuggingText.get -> string
+~static Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages.PropertyPageResources.chkRemoteDebugEnabledHelpText.get -> string
+~static Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages.PropertyPageResources.chkSqlCodeDebuggingText.get -> string
 ~static Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages.PropertyPageResources.Culture.get -> System.Globalization.CultureInfo
 ~static Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages.PropertyPageResources.Culture.set -> void
 ~static Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages.PropertyPageResources.DebugPropertyPageTitle.get -> string
 ~static Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages.PropertyPageResources.DeleteBtn.get -> string
 ~static Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages.PropertyPageResources.DeleteBtnHelpText.get -> string
 ~static Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages.PropertyPageResources.DuplicateKey.get -> string
+~static Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages.PropertyPageResources.EnvironmentVariables.get -> string
 ~static Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages.PropertyPageResources.EnvVariableNameWatermark.get -> string
 ~static Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages.PropertyPageResources.EnvVariableValueWatermark.get -> string
-~static Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages.PropertyPageResources.EnvironmentVariables.get -> string
 ~static Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages.PropertyPageResources.ErrorsMustBeCorrectedPriorToSaving.get -> string
 ~static Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages.PropertyPageResources.Executable.get -> string
 ~static Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages.PropertyPageResources.ExecutableFiles.get -> string
 ~static Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages.PropertyPageResources.ExecutablePathWatermark.get -> string
 ~static Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages.PropertyPageResources.FindBtn.get -> string
 ~static Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages.PropertyPageResources.InvalidHostName.get -> string
+~static Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages.PropertyPageResources.JSWebView2DebuggingAdditionalText.get -> string
 ~static Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages.PropertyPageResources.Launch.get -> string
 ~static Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages.PropertyPageResources.LaunchURL.get -> string
 ~static Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages.PropertyPageResources.LaunchUrlWatermark.get -> string
@@ -312,106 +413,3 @@ Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages.PropertyPageResources
 ~static Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages.PropertyPageResources.ValueHeader.get -> string
 ~static Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages.PropertyPageResources.WorkingDirectory.get -> string
 ~static Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages.PropertyPageResources.WorkingDirectoryWatermark.get -> string
-~static Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages.PropertyPageResources.chkLaunchBrowserHelpText.get -> string
-~static Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages.PropertyPageResources.chkNativeCodeDebuggingText.get -> string
-~static Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages.PropertyPageResources.chkRemoteDebugEnabledHelpText.get -> string
-~static Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages.PropertyPageResources.chkSqlCodeDebuggingText.get -> string
-Microsoft.VisualStudio.ProjectSystem.VS.Utilities.FocusAttacher
-Microsoft.VisualStudio.ProjectSystem.VS.Utilities.FocusAttacher.FocusAttacher() -> void
-static Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages.GetProfileNameDialog.DialogCaption.get -> string!
-static Microsoft.VisualStudio.ProjectSystem.VS.Utilities.FocusAttacher.GetFocus(System.Windows.DependencyObject! d) -> bool
-static Microsoft.VisualStudio.ProjectSystem.VS.Utilities.FocusAttacher.SetFocus(System.Windows.DependencyObject! d, bool value) -> void
-static readonly Microsoft.VisualStudio.ProjectSystem.VS.Utilities.FocusAttacher.FocusProperty -> System.Windows.DependencyProperty!
-XamlGeneratedNamespace.GeneratedInternalTypeHelper
-XamlGeneratedNamespace.GeneratedInternalTypeHelper.GeneratedInternalTypeHelper() -> void
-Microsoft.VisualStudio.ProjectSystem.VS.Automation.VSProject.AuthenticationMode.get -> VSLangProj165.AuthenticationMode
-Microsoft.VisualStudio.ProjectSystem.VS.Automation.VSProject.AuthenticationMode.set -> void
-Microsoft.VisualStudio.ProjectSystem.VS.Properties.CSharp.CSharpProjectConfigurationProperties
-Microsoft.VisualStudio.ProjectSystem.VS.Properties.CSharp.CSharpProjectConfigurationProperties.ErrorReport.get -> string!
-Microsoft.VisualStudio.ProjectSystem.VS.Properties.CSharp.CSharpProjectConfigurationProperties.ErrorReport.set -> void
-Microsoft.VisualStudio.ProjectSystem.VS.Properties.VisualBasic.VisualBasicProjectConfigurationProperties
-Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections.AggregateContainsRelationCollection
-Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections.AggregateContainsRelationCollection.OnStateUpdated() -> void
-Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections.IAggregateRelationCollection.HasItemsChanged -> System.EventHandler!
-override Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections.RelatableItemBase.ContextMenuController.get -> Microsoft.Internal.VisualStudio.PlatformUI.IContextMenuController?
-static Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections.AggregateContainsRelationCollection.TryCreate(Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections.IRelatableItem! parentItem, Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections.IRelationProvider! relationProvider, out Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections.AggregateContainsRelationCollection? collection) -> bool
-Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections.AggregateContainsRelationCollectionSpan
-Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections.AggregateContainsRelationCollectionSpan.UpdateContainsItems<TData, TItem>(System.Collections.Generic.IEnumerable<TData>! sources, System.Func<TData, TItem!, int>! comparer, System.Func<TData, TItem!, bool>! update, System.Func<TData, TItem!>! factory) -> void
-override Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections.AggregateContainsRelationCollectionSpan.ToString() -> string!
-Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections.AggregateContainedByRelationCollection
-Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections.AggregateContainedByRelationCollection.Contains(object! value) -> bool
-Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections.AggregateContainedByRelationCollection.Count.get -> int
-Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections.AggregateContainedByRelationCollection.GetEnumerator() -> System.Collections.IEnumerator!
-Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections.AggregateContainedByRelationCollection.HasItems.get -> bool
-Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections.AggregateContainedByRelationCollection.IndexOf(object! value) -> int
-Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections.IDependenciesTreeProjectSearchContext
-Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections.IDependenciesTreeProjectSearchContext.CancellationToken.get -> System.Threading.CancellationToken
-Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections.IDependenciesTreeProjectSearchContext.ForConfiguredProjectAsync(Microsoft.VisualStudio.ProjectSystem.ConfiguredProject! configuredProject, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) -> System.Threading.Tasks.Task<Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections.IDependenciesTreeConfiguredProjectSearchContext?>!
-Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections.IDependenciesTreeProjectSearchContext.UnconfiguredProject.get -> Microsoft.VisualStudio.ProjectSystem.UnconfiguredProject!
-Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections.IDependenciesTreeConfiguredProjectSearchContext
-Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections.IDependenciesTreeConfiguredProjectSearchContext.CancellationToken.get -> System.Threading.CancellationToken
-Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections.IDependenciesTreeConfiguredProjectSearchContext.IsMatch(string! candidateText) -> bool
-Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections.IDependenciesTreeConfiguredProjectSearchContext.SubmitResult(Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections.IRelatableItem? item) -> void
-Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections.IDependenciesTreeSearchProvider
-Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections.IDependenciesTreeSearchProvider.SearchAsync(Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections.IDependenciesTreeProjectSearchContext! searchContext) -> System.Threading.Tasks.Task!
-Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections.IRelation
-Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections.IRelation.CreateContainedByItems(Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections.IRelatableItem! child) -> System.Collections.Generic.IEnumerable<Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections.IRelatableItem!>?
-Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections.IRelation.HasContainedItem(Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections.IRelatableItem! parent) -> bool
-Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections.IRelation.SupportsContainedByFor(System.Type! childType) -> bool
-Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections.IRelation.SupportsContainsFor(System.Type! parentType) -> bool
-Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections.IRelation.UpdateContainsCollection(Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections.IRelatableItem! parent, Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections.AggregateContainsRelationCollectionSpan! span) -> void
-Microsoft.VisualStudio.ProjectSystem.VS.Tree.IFileIconProvider
-Microsoft.VisualStudio.ProjectSystem.VS.Tree.IFileIconProvider.GetFileExtensionImageMoniker(string! path) -> Microsoft.VisualStudio.Imaging.Interop.ImageMoniker
-Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections.AggregateRelationCollectionSource
-Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections.AggregateRelationCollectionSource.AggregateRelationCollectionSource(object! sourceItem, Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections.IAggregateRelationCollection? collection = null) -> void
-Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections.AggregateRelationCollectionSource.PropertyChanged -> System.ComponentModel.PropertyChangedEventHandler?
-Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections.AggregateRelationCollectionSource.SetCollection(Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections.IAggregateRelationCollection! collection) -> void
-Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections.AttachedCollectionItemBase
-Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections.AttachedCollectionItemBase.AttachedCollectionItemBase(string! name) -> void
-Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections.AttachedCollectionItemBase.IsCut.get -> bool
-Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections.AttachedCollectionItemBase.PropertyChanged -> System.ComponentModel.PropertyChangedEventHandler?
-Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections.AttachedCollectionItemBase.RaisePropertyChanged(System.ComponentModel.PropertyChangedEventArgs! e) -> void
-Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections.AttachedCollectionItemBase.Text.get -> string!
-Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections.AttachedCollectionItemBase.Text.set -> void
-Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections.AttachedCollectionItemBase.ToolTipText.get -> string!
-abstract Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections.AttachedCollectionItemBase.IconMoniker.get -> Microsoft.VisualStudio.Imaging.Interop.ImageMoniker
-abstract Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections.AttachedCollectionItemBase.Priority.get -> int
-override Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections.AttachedCollectionItemBase.ToString() -> string!
-virtual Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections.AttachedCollectionItemBase.CompareTo(object! obj) -> int
-virtual Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections.AttachedCollectionItemBase.ContextMenuController.get -> Microsoft.Internal.VisualStudio.PlatformUI.IContextMenuController?
-virtual Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections.AttachedCollectionItemBase.ExpandedIconMoniker.get -> Microsoft.VisualStudio.Imaging.Interop.ImageMoniker
-virtual Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections.AttachedCollectionItemBase.FontStyle.get -> System.Windows.FontStyle
-virtual Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections.AttachedCollectionItemBase.FontWeight.get -> System.Windows.FontWeight
-virtual Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections.AttachedCollectionItemBase.GetBrowseObject() -> object?
-virtual Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections.AttachedCollectionItemBase.OverlayIconMoniker.get -> Microsoft.VisualStudio.Imaging.Interop.ImageMoniker
-virtual Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections.AttachedCollectionItemBase.StateIconMoniker.get -> Microsoft.VisualStudio.Imaging.Interop.ImageMoniker
-virtual Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections.AttachedCollectionItemBase.StateToolTipText.get -> string?
-Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections.DependenciesAttachedCollectionSourceProviderBase
-Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections.DependenciesAttachedCollectionSourceProviderBase.DependenciesAttachedCollectionSourceProviderBase(Microsoft.VisualStudio.ProjectSystem.ProjectTreeFlags flags) -> void
-abstract Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections.DependenciesAttachedCollectionSourceProviderBase.TryCreateCollectionSource(Microsoft.VisualStudio.Shell.IVsHierarchyItem! hierarchyItem, string! flagsString, string? target, Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections.IRelationProvider! relationProvider, out Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections.AggregateRelationCollectionSource? containsCollectionSource) -> bool
-Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections.IRelatableItem
-Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections.IRelatableItem.ContainsCollection.get -> Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections.AggregateContainsRelationCollection?
-Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections.IRelatableItem.ContainedByCollection.get -> Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections.AggregateContainedByRelationCollection?
-Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections.IRelatableItem.ContainedByCollection.set -> void
-Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections.IRelatableItem.Identity.get -> object!
-Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections.IRelatableItem.TryGetOrCreateContainsCollection(Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections.IRelationProvider! relationProvider, out Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections.AggregateContainsRelationCollection? relationCollection) -> bool
-Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections.IRelatableItem.TryGetProjectNode(Microsoft.VisualStudio.ProjectSystem.IProjectTree! targetRootNode, Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections.IRelatableItem! item, out Microsoft.VisualStudio.ProjectSystem.IProjectTree? projectTree) -> bool
-Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections.RelatableItemBase
-Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections.RelatableItemBase.RelatableItemBase(string! name) -> void
-abstract Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections.RelatableItemBase.Identity.get -> object!
-virtual Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections.AttachedCollectionItemBase.ToolTipContent.get -> object?
-virtual Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections.RelatableItemBase.TryGetProjectNode(Microsoft.VisualStudio.ProjectSystem.IProjectTree! targetRootNode, Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections.IRelatableItem! item, out Microsoft.VisualStudio.ProjectSystem.IProjectTree? projectTree) -> bool
-Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections.IAggregateRelationCollection
-Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections.IAggregateRelationCollection.EnsureMaterialized() -> void
-Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections.IAggregateRelationCollection.HasItems.get -> bool
-Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections.IRelationProvider
-Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections.IRelationProvider.GetContainedByRelationsFor(System.Type! childType) -> System.Collections.Immutable.ImmutableArray<Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections.IRelation!>
-Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections.IRelationProvider.GetContainsRelationsFor(System.Type! parentType) -> System.Collections.Immutable.ImmutableArray<Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections.IRelation!>
-Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections.RelationBase<TParent, TChild>
-Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections.RelationBase<TParent, TChild>.RelationBase() -> void
-abstract Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections.RelationBase<TParent, TChild>.CreateContainedByItems(TChild! child) -> System.Collections.Generic.IEnumerable<TParent!>?
-abstract Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections.RelationBase<TParent, TChild>.HasContainedItems(TParent! parent) -> bool
-abstract Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections.RelationBase<TParent, TChild>.UpdateContainsCollection(TParent! parent, Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections.AggregateContainsRelationCollectionSpan! span) -> void
-~static Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages.PropertyPageResources.JSWebView2DebuggingAdditionalText.get -> string
-~static Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages.PropertyPageResources.chkJSWebView2DebuggingText.get -> string
-virtual Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections.AttachedCollectionItemBase.GetPattern<TPattern>() -> TPattern?

@@ -1,9 +1,14 @@
 #nullable enable
+abstract Microsoft.VisualStudio.ProjectSystem.Properties.LaunchSettingsValueProviderBase.GetPropertyValue(string! propertyName, Microsoft.VisualStudio.ProjectSystem.Debug.ILaunchSettings! launchSettings) -> string?
+abstract Microsoft.VisualStudio.ProjectSystem.Properties.LaunchSettingsValueProviderBase.SetPropertyValue(string! propertyName, string! value, Microsoft.VisualStudio.ProjectSystem.Debug.IWritableLaunchSettings! launchSettings) -> bool
 const Microsoft.VisualStudio.ProjectSystem.Debug.UIProfilePropertyName.Arguments = "Arguments" -> string!
 const Microsoft.VisualStudio.ProjectSystem.Debug.UIProfilePropertyName.EnvironmentVariables = "EnvironmentVariables" -> string!
 const Microsoft.VisualStudio.ProjectSystem.Debug.UIProfilePropertyName.Executable = "Executable" -> string!
 const Microsoft.VisualStudio.ProjectSystem.Debug.UIProfilePropertyName.JSWebView2Debugging = "JSWebView2Debugging" -> string!
 const Microsoft.VisualStudio.ProjectSystem.Debug.UIProfilePropertyName.LaunchUrl = "LaunchUrl" -> string!
+const Microsoft.VisualStudio.ProjectSystem.Debug.UIProfilePropertyName.NativeDebugging = "NativeDebugging" -> string!
+const Microsoft.VisualStudio.ProjectSystem.Debug.UIProfilePropertyName.RemoteDebug = "RemoteDebug" -> string!
+const Microsoft.VisualStudio.ProjectSystem.Debug.UIProfilePropertyName.SqlDebugging = "SQLDebugging" -> string!
 const Microsoft.VisualStudio.ProjectSystem.Debug.UIProfilePropertyName.WorkingDirectory = "WorkingDirectory" -> string!
 Microsoft.VisualStudio.ProjectSystem.Configuration.IConfigurationDimensionDescriptionMetadataView
 Microsoft.VisualStudio.ProjectSystem.Configuration.IConfigurationDimensionDescriptionMetadataView.DimensionName.get -> string![]!
@@ -90,7 +95,6 @@ Microsoft.VisualStudio.ProjectSystem.Debug.IWritablePersistOption
 Microsoft.VisualStudio.ProjectSystem.Debug.IWritablePersistOption.DoNotPersist.get -> bool
 Microsoft.VisualStudio.ProjectSystem.Debug.IWritablePersistOption.DoNotPersist.set -> void
 Microsoft.VisualStudio.ProjectSystem.Debug.UIProfilePropertyName
-Microsoft.VisualStudio.ProjectSystem.Properties.IInterceptingPropertyValueProviderMetadata
 Microsoft.VisualStudio.ProjectSystem.Properties.ExportInterceptingPropertyValueProviderAttribute
 Microsoft.VisualStudio.ProjectSystem.Properties.ExportInterceptingPropertyValueProviderAttribute.ExportInterceptingPropertyValueProviderAttribute(string! propertyName, Microsoft.VisualStudio.ProjectSystem.Properties.ExportInterceptingPropertyValueProviderFile file) -> void
 Microsoft.VisualStudio.ProjectSystem.Properties.ExportInterceptingPropertyValueProviderAttribute.ExportInterceptingPropertyValueProviderAttribute(string![]! propertyNames, Microsoft.VisualStudio.ProjectSystem.Properties.ExportInterceptingPropertyValueProviderFile file) -> void
@@ -113,6 +117,7 @@ Microsoft.VisualStudio.ProjectSystem.Properties.IInterceptingPropertyValueProvid
 Microsoft.VisualStudio.ProjectSystem.Properties.IInterceptingPropertyValueProvider.OnGetEvaluatedPropertyValueAsync(string! propertyName, string! evaluatedPropertyValue, Microsoft.VisualStudio.ProjectSystem.Properties.IProjectProperties! defaultProperties) -> System.Threading.Tasks.Task<string!>!
 Microsoft.VisualStudio.ProjectSystem.Properties.IInterceptingPropertyValueProvider.OnGetUnevaluatedPropertyValueAsync(string! propertyName, string! unevaluatedPropertyValue, Microsoft.VisualStudio.ProjectSystem.Properties.IProjectProperties! defaultProperties) -> System.Threading.Tasks.Task<string!>!
 Microsoft.VisualStudio.ProjectSystem.Properties.IInterceptingPropertyValueProvider.OnSetPropertyValueAsync(string! propertyName, string! unevaluatedPropertyValue, Microsoft.VisualStudio.ProjectSystem.Properties.IProjectProperties! defaultProperties, System.Collections.Generic.IReadOnlyDictionary<string!, string!>? dimensionalConditions = null) -> System.Threading.Tasks.Task<string?>!
+Microsoft.VisualStudio.ProjectSystem.Properties.IInterceptingPropertyValueProviderMetadata
 Microsoft.VisualStudio.ProjectSystem.Properties.IInterceptingPropertyValueProviderMetadata.PropertyNames.get -> string![]!
 Microsoft.VisualStudio.ProjectSystem.Properties.ILaunchProfileExtensionValueProvider
 Microsoft.VisualStudio.ProjectSystem.Properties.ILaunchProfileExtensionValueProvider.OnGetPropertyValue(string! propertyName, Microsoft.VisualStudio.ProjectSystem.Debug.ILaunchProfile! launchProfile, System.Collections.Immutable.ImmutableDictionary<string!, object!>! globalSettings, Microsoft.Build.Framework.XamlTypes.Rule? rule) -> string!
@@ -162,11 +167,6 @@ Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.IProjectDependenciesSu
 Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.IProjectDependenciesSubTreeProvider.CreateRootDependencyNode() -> Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.IDependencyModel!
 Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.IProjectDependenciesSubTreeProvider.DependenciesChanged -> System.EventHandler<Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.DependenciesChangedEventArgs!>!
 Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.IProjectDependenciesSubTreeProvider.ProviderType.get -> string!
-abstract Microsoft.VisualStudio.ProjectSystem.Properties.LaunchSettingsValueProviderBase.GetPropertyValue(string! propertyName, Microsoft.VisualStudio.ProjectSystem.Debug.ILaunchSettings! launchSettings) -> string?
-abstract Microsoft.VisualStudio.ProjectSystem.Properties.LaunchSettingsValueProviderBase.SetPropertyValue(string! propertyName, string! value, Microsoft.VisualStudio.ProjectSystem.Debug.IWritableLaunchSettings! launchSettings) -> bool
-const Microsoft.VisualStudio.ProjectSystem.Debug.UIProfilePropertyName.NativeDebugging = "NativeDebugging" -> string!
-const Microsoft.VisualStudio.ProjectSystem.Debug.UIProfilePropertyName.RemoteDebug = "RemoteDebug" -> string!
-const Microsoft.VisualStudio.ProjectSystem.Debug.UIProfilePropertyName.SqlDebugging = "SQLDebugging" -> string!
 override Microsoft.VisualStudio.ProjectSystem.Properties.LaunchSettingsValueProviderBase.OnGetEvaluatedPropertyValueAsync(string! propertyName, string! evaluatedPropertyValue, Microsoft.VisualStudio.ProjectSystem.Properties.IProjectProperties! defaultProperties) -> System.Threading.Tasks.Task<string!>!
 override Microsoft.VisualStudio.ProjectSystem.Properties.LaunchSettingsValueProviderBase.OnGetUnevaluatedPropertyValueAsync(string! propertyName, string! unevaluatedPropertyValue, Microsoft.VisualStudio.ProjectSystem.Properties.IProjectProperties! defaultProperties) -> System.Threading.Tasks.Task<string!>!
 override Microsoft.VisualStudio.ProjectSystem.Properties.LaunchSettingsValueProviderBase.OnSetPropertyValueAsync(string! propertyName, string! unevaluatedPropertyValue, Microsoft.VisualStudio.ProjectSystem.Properties.IProjectProperties! defaultProperties, System.Collections.Generic.IReadOnlyDictionary<string!, string!>? dimensionalConditions = null) -> System.Threading.Tasks.Task<string?>!
