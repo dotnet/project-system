@@ -144,7 +144,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             {
                 var displayMissingComponentsTask = DisplayMissingComponentsPromptAsync();
 
-                _projectFaultHandlerService.Forget(displayMissingComponentsTask, project: null, ProjectFaultSeverity.LimitedFunctionality);
+                _projectFaultHandlerService.Forget(displayMissingComponentsTask, project: project.UnconfiguredProject, ProjectFaultSeverity.Recoverable);
             }
         }
 
