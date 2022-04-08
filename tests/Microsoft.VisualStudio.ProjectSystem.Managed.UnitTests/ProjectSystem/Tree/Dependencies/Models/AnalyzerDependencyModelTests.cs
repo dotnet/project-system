@@ -36,7 +36,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Models
             Assert.Equal(
                 DependencyTreeFlags.AnalyzerDependency +
                 DependencyTreeFlags.SupportsBrowse +
-                DependencyTreeFlags.ResolvedDependencyFlags,
+                DependencyTreeFlags.ResolvedDependencyFlags +
+                ProjectTreeFlags.FileSystemEntity,
                 model.Flags);
         }
 
@@ -68,7 +69,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Models
             Assert.Equal(
                 DependencyTreeFlags.AnalyzerDependency +
                 DependencyTreeFlags.SupportsBrowse +
-                DependencyTreeFlags.UnresolvedDependencyFlags,
+                DependencyTreeFlags.UnresolvedDependencyFlags +
+                ProjectTreeFlags.FileSystemEntity,
                 model.Flags);
         }
 
@@ -101,7 +103,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Models
                 DependencyTreeFlags.AnalyzerDependency +
                 DependencyTreeFlags.SupportsBrowse + 
                 DependencyTreeFlags.ResolvedDependencyFlags -
-                DependencyTreeFlags.SupportsRemove,
+                DependencyTreeFlags.SupportsRemove +
+                ProjectTreeFlags.FileSystemEntity,
                 model.Flags);
         }
     }
