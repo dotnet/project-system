@@ -77,25 +77,21 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Subscriptions
 
         private Task OnProjectChangedAsync(ConfiguredProject configuredProject, T e)
         {
-            if (IsDisposing || IsDisposed)
-            {
-                return Task.CompletedTask;
-            }
-
-            Assumes.True(IsInitialized);
-
             // Ensure updates don't overlap and that we aren't disposed during the update without cleaning up properly
-            return ExecuteUnderLockAsync(token =>
-            {
-                // Ensure the project doesn't unload during the update
-                return _tasksService.LoadedProjectAsync(async () =>
+            return ExecuteUnderLockAsync(
+                async cancellationToken =>
                 {
-                    // TODO pass TasksService.UnloadCancellationToken into Handle to reduce redundant work on unload
+                    if (IsDisposing || IsDisposed)
+                    {
+                        return;
+                    }
+
+                    Assumes.True(IsInitialized);
 
                     // Ensure the project's capabilities don't change during the update
                     using (ProjectCapabilitiesContext.CreateIsolatedContext(configuredProject, capabilities: GetCapabilitiesSnapshot(e)))
                     {
-                        AggregateCrossTargetProjectContext? currentAggregateContext = await _provider!.GetCurrentAggregateProjectContextAsync();
+                        AggregateCrossTargetProjectContext? currentAggregateContext = await _provider!.GetCurrentAggregateProjectContextAsync(cancellationToken);
 
                         if (currentAggregateContext == null)
                         {
@@ -110,13 +106,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Subscriptions
                             return;
                         }
 
-                        Handle(configuredProject.UnconfiguredProject.FullPath, currentAggregateContext, targetFrameworkToUpdate, e);
+                        Handle(configuredProject.UnconfiguredProject.FullPath, currentAggregateContext, targetFrameworkToUpdate, e, cancellationToken);
                     }
-                });
-            });
+                },
+                _tasksService.UnloadCancellationToken);
         }
 
-        protected abstract void Handle(string projectFullPath, AggregateCrossTargetProjectContext currentAggregateContext, TargetFramework targetFrameworkToUpdate, T e);
+        protected abstract void Handle(string projectFullPath, AggregateCrossTargetProjectContext currentAggregateContext, TargetFramework targetFrameworkToUpdate, T e, CancellationToken cancellationToken);
 
         protected abstract IProjectCapabilitiesSnapshot GetCapabilitiesSnapshot(T e);
         protected abstract ProjectConfiguration GetProjectConfiguration(T e);

@@ -266,14 +266,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Subscriptions
             }
         }
 
-        public async Task<AggregateCrossTargetProjectContext?> GetCurrentAggregateProjectContextAsync()
+        public async Task<AggregateCrossTargetProjectContext?> GetCurrentAggregateProjectContextAsync(CancellationToken cancellationToken)
         {
             if (IsDisposing || IsDisposed)
             {
                 return null;
             }
 
-            await InitializeAsync();
+            await InitializeAsync(cancellationToken);
 
             return _context.Current;
         }

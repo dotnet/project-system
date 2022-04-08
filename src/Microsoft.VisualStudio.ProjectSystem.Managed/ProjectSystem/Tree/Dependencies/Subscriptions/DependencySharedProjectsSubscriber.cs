@@ -55,7 +55,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Subscriptions
             string projectFullPath,
             AggregateCrossTargetProjectContext currentAggregateContext,
             TargetFramework targetFrameworkToUpdate,
-            EventData e)
+            EventData e,
+            CancellationToken cancellationToken)
         {
             IProjectSharedFoldersSnapshot sharedProjectsUpdate = e.Item2;
             IProjectCatalogSnapshot catalogs = e.Item3;
