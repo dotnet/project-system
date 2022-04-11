@@ -123,6 +123,32 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 return log.Fail("FirstRun", nameof(Resources.FUTD_FirstRun));
             }
 
+            if (lastSuccessfulBuildStartTimeUtc < state.LastItemsChangedAtUtc)
+            {
+                log.Fail("ProjectItemsChangedSinceLastSuccessfulBuildStart", nameof(Resources.FUTD_SetOfItemsChangedMoreRecentlyThanOutput_2), state.LastItemsChangedAtUtc, lastSuccessfulBuildStartTimeUtc);
+
+                if (log.Level >= LogLevel.Info)
+                {
+                    log.Indent++;
+
+                    if (state.LastItemChanges.Length == 0)
+                    {
+                        log.Info(nameof(Resources.FUTD_SetOfChangedItemsIsEmpty));
+                    }
+                    else
+                    {
+                        foreach ((bool isAdd, string itemType, UpToDateCheckInputItem item) in state.LastItemChanges.OrderBy(change => change.ItemType).ThenBy(change => change.Item.Path))
+                        {
+                            log.Info(isAdd ? nameof(Resources.FUTD_ChangedItemsAddition_4) : nameof(Resources.FUTD_ChangedItemsRemoval_4), itemType, item.Path, item.CopyType, item.TargetPath ?? "");
+                        }
+                    }
+
+                    log.Indent--;
+                }
+
+                return false;
+            }
+
             if (state.IsCopyAlwaysOptimizationDisabled)
             {
                 // By default, we optimize CopyAlways to only copy if the time stamps or file sizes differ.
@@ -214,34 +240,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 }
 
                 Assumes.NotNull(earliestOutputPath);
-
-                ISubscription subscription = Volatile.Read(ref _subscription);
-
-                if (lastSuccessfulBuildStartTimeUtc < state.LastItemsChangedAtUtc)
-                {
-                    log.Fail("ProjectItemsChangedSinceLastSuccessfulBuildStart", nameof(Resources.FUTD_SetOfItemsChangedMoreRecentlyThanOutput_2), state.LastItemsChangedAtUtc, lastSuccessfulBuildStartTimeUtc);
-
-                    if (log.Level >= LogLevel.Info)
-                    {
-                        log.Indent++;
-
-                        if (state.LastItemChanges.Length == 0)
-                        {
-                            log.Info(nameof(Resources.FUTD_SetOfChangedItemsIsEmpty));
-                        }
-                        else
-                        {
-                            foreach ((bool isAdd, string itemType, UpToDateCheckInputItem item) in state.LastItemChanges.OrderBy(change => change.ItemType).ThenBy(change => change.Item.Path))
-                            {
-                                log.Info(isAdd ? nameof(Resources.FUTD_ChangedItemsAddition_4) : nameof(Resources.FUTD_ChangedItemsRemoval_4), itemType, item.Path, item.CopyType, item.TargetPath ?? "");
-                            }
-                        }
-
-                        log.Indent--;
-                    }
-
-                    return false;
-                }
 
                 (string Path, DateTime? Time)? latestInput = null;
 
