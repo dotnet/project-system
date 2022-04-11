@@ -106,11 +106,11 @@ namespace Microsoft.VisualStudio {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The project doesn&apos;t know how to run the profile {0}..
+        ///   Looks up a localized string similar to The project doesn&apos;t know how to run the profile with name &apos;{0}&apos; and command &apos;{1}&apos;..
         /// </summary>
-        internal static string DontKnowHowToRunProfile {
+        internal static string DontKnowHowToRunProfile_2 {
             get {
-                return ResourceManager.GetString("DontKnowHowToRunProfile", resourceCulture);
+                return ResourceManager.GetString("DontKnowHowToRunProfile_2", resourceCulture);
             }
         }
         

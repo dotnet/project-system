@@ -126,8 +126,12 @@
   <data name="ActiveLaunchProfileNotFound" xml:space="preserve">
     <value>There aren't any active launch profiles configured for this project.</value>
   </data>
-  <data name="DontKnowHowToRunProfile" xml:space="preserve">
-    <value>The project doesn't know how to run the profile {0}.</value>
+  <data name="DontKnowHowToRunProfile_2" xml:space="preserve">
+    <value>The project doesn't know how to run the profile with name '{0}' and command '{1}'.</value>
+    <comment>
+      {0} is the profile name, which comes from the user.
+      {1} is the profile command, which is usually an internal string but is helpful when diagnosing issues here.
+    </comment>
   </data>
   <data name="ErrorInProfilesFile" xml:space="preserve">
     <value>An error in the launch settings file needs to be corrected before you can run the '{0}' project . Please see the error list for details.</value>

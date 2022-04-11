@@ -100,7 +100,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
 
             // Now find the DebugTargets provider for this profile
             IDebugProfileLaunchTargetsProvider launchProvider = GetLaunchTargetsProvider(activeProfile) ??
-                throw new Exception(string.Format(VSResources.DontKnowHowToRunProfile, activeProfile.Name));
+                throw new Exception(string.Format(VSResources.DontKnowHowToRunProfile_2, activeProfile.Name, activeProfile.CommandName));
 
             IReadOnlyList<IDebugLaunchSettings> launchSettings;
             if (fromDebugLaunch && launchProvider is IDebugProfileLaunchTargetsProvider2 launchProvider2)
