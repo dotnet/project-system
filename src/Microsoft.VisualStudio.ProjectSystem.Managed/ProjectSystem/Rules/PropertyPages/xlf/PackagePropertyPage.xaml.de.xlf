@@ -172,6 +172,16 @@
         <target state="translated">Lizenzdatei</target>
         <note />
       </trans-unit>
+      <trans-unit id="StringProperty|PackageOutputPath|Description">
+        <source>Determines the output path in which the package will be dropped.</source>
+        <target state="new">Determines the output path in which the package will be dropped.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|PackageOutputPath|DisplayName">
+        <source>Package Output Path</source>
+        <target state="new">Package Output Path</target>
+        <note />
+      </trans-unit>
       <trans-unit id="StringProperty|PackageProjectUrl|Description">
         <source>A URL for the package's home page, often shown in UI displays as well as nuget.org.</source>
         <target state="translated">Eine URL für die Homepage des NuGet-Pakets, die häufig in der Benutzeroberfläche und auf nuget.org angezeigt wird.</target>
