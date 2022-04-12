@@ -201,7 +201,6 @@
     </StringProperty.Metadata>
   </StringProperty>
 
-  <!-- TODO add a fwlink for this action URL -->
   <StringProperty Name="ReadAboutSpdxExpressions"
                   DisplayName="Read about SPDX license expressions"
                   Category="License">
