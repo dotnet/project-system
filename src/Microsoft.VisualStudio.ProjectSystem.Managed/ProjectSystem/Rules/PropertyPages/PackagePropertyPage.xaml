@@ -157,6 +157,23 @@
     </StringProperty.ValueEditors>
   </StringProperty>
 
+  <BoolProperty Name="PackAsTool"
+                DisplayName="Pack as a .NET tool"
+                Description="Packs this project as a special package that contains a console application that may be installed via the &quot;dotnet tool&quot; command."
+                HelpUrl="https://go.microsoft.com/fwlink/?linkid=2193012"
+                Category="General" />
+
+  <StringProperty Name="ToolCommandName"
+                  DisplayName=".NET tool command name"
+                  Description="The command name via which the .NET tool will be invoked on the command line."
+                  Category="General">
+    <StringProperty.Metadata>
+      <NameValuePair Name="VisibilityCondition">
+        <NameValuePair.Value>(has-evaluated-value "Package" "PackAsTool" true)</NameValuePair.Value>
+      </NameValuePair>
+    </StringProperty.Metadata>
+  </StringProperty>
+
   <DynamicEnumProperty Name="NeutralLanguage"
                        DisplayName="Assembly neutral language"
                        EnumProvider="NeutralLanguageEnumProvider"

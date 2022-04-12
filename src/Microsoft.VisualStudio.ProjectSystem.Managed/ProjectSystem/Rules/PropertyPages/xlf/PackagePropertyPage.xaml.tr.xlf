@@ -12,6 +12,16 @@
         <target state="translated">Derlemede NuGet paketi oluştur</target>
         <note />
       </trans-unit>
+      <trans-unit id="BoolProperty|PackAsTool|Description">
+        <source>Packs this project as a special package that contains a console application that may be installed via the "dotnet tool" command.</source>
+        <target state="new">Packs this project as a special package that contains a console application that may be installed via the "dotnet tool" command.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="BoolProperty|PackAsTool|DisplayName">
+        <source>Pack as a .NET tool</source>
+        <target state="new">Pack as a .NET tool</target>
+        <note />
+      </trans-unit>
       <trans-unit id="BoolProperty|PackageRequireLicenseAcceptance|Description">
         <source>Prompt the user to accept the license when installing this package.</source>
         <target state="translated">Bu paketi yüklerken kullanıcının lisansı kabul etmesini isteyin.</target>
@@ -230,6 +240,16 @@
       <trans-unit id="StringProperty|RepositoryUrl|DisplayName">
         <source>Repository URL</source>
         <target state="translated">Depo URL'si</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|ToolCommandName|Description">
+        <source>The command name via which the .NET tool will be invoked on the command line.</source>
+        <target state="new">The command name via which the .NET tool will be invoked on the command line.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|ToolCommandName|DisplayName">
+        <source>.NET tool command name</source>
+        <target state="new">.NET tool command name</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|Version|Description">
