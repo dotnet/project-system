@@ -13,19 +13,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         [InlineData(true)]
         public void LaunchProfileData_FromILaunchProfileTests(bool isInMemory)
         {
-            var profile = new LaunchProfile()
-            {
-                Name = "Test",
-                CommandName = "Test",
-                ExecutablePath = "c:\\this\\is\\a\\exe\\path",
-                CommandLineArgs = "args",
-                WorkingDirectory = "c:\\working\\directory\\",
-                LaunchBrowser = true,
-                LaunchUrl = "LaunchPage.html",
-                EnvironmentVariables = new Dictionary<string, string>() { { "var1", "Value1" }, { "var2", "Value2" } }.ToImmutableDictionary(),
-                OtherSettings = new Dictionary<string, object>(StringComparer.Ordinal) { { "setting1", true }, { "setting2", "mysetting" } }.ToImmutableDictionary(),
-                DoNotPersist = isInMemory
-            };
+            var profile = new LaunchProfile(
+                name: "Test",
+                commandName: "Test",
+                executablePath: "c:\\this\\is\\a\\exe\\path",
+                commandLineArgs: "args",
+                workingDirectory: "c:\\working\\directory\\",
+                launchBrowser: true,
+                launchUrl: "LaunchPage.html",
+                environmentVariables: new Dictionary<string, string>() { { "var1", "Value1" }, { "var2", "Value2" } },
+                otherSettings: new Dictionary<string, object>(StringComparer.Ordinal) { { "setting1", true }, { "setting2", "mysetting" } },
+                doNotPersist: isInMemory);
 
             var data = LaunchProfileData.FromILaunchProfile(profile);
 

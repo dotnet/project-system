@@ -525,13 +525,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         }
 
         [Fact]
-        public async Task EnvironmentVariables_OnGetPropertyValueAsync_VariablesAreSorted()
+        public async Task EnvironmentVariables_OnGetPropertyValueAsync_VariableOrderIsPreserved()
         {
             var activeProfileEnvironmentVariables = new Dictionary<string, string>
             {
-                { "var3", "value3" },
+                { "var1", "value1" },
                 { "var2", "value2" },
-                { "var1", "value1" }
+                { "var3", "value3" }
             };
 
             var settingsProvider = SetupLaunchSettingsProvider(activeProfileName: "One", activeProfileEnvironmentVariables: activeProfileEnvironmentVariables);

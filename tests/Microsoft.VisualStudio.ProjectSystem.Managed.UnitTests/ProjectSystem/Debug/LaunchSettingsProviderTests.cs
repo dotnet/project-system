@@ -77,7 +77,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         {
             string activeProfile = "MyCommand";
             var testProfiles = new Mock<ILaunchSettings>();
-            testProfiles.Setup(m => m.ActiveProfile).Returns(new LaunchProfile() { Name = activeProfile });
+            testProfiles.Setup(m => m.ActiveProfile).Returns(new LaunchProfile(activeProfile, null));
 
             using var provider = GetLaunchSettingsProvider(null);
             Assert.Null(provider.ActiveProfile);
@@ -181,9 +181,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             {
                 return new List<ILaunchProfile>()
                 {
-                        { new LaunchProfile() { Name = "IIS Express", CommandName="IISExpress", LaunchBrowser=true, DoNotPersist = true } },
-                        { new LaunchProfile() { Name = "InMemory1", DoNotPersist = true} },
-                        { new LaunchProfile() { Name = "ShouldNotBeIncluded", CommandName=LaunchSettingsProvider.ErrorProfileCommandName, DoNotPersist = true} }
+                    new LaunchProfile("IIS Express", "IISExpress", launchBrowser: true, doNotPersist: true),
+                    new LaunchProfile("InMemory1", null, doNotPersist: true),
+                    new LaunchProfile("ShouldNotBeIncluded", LaunchSettingsProvider.ErrorProfileCommandName, doNotPersist: true)
                 }.ToImmutableList();
             });
 
@@ -206,14 +206,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             var curProfiles = new Mock<ILaunchSettings>();
             curProfiles.Setup(m => m.Profiles).Returns(() =>
             {
-                return new List<ILaunchProfile>()
+                return new List<ILaunchProfile>
                 {
-                        { new LaunchProfile() { Name = "profile1", CommandName="IISExpress", LaunchBrowser=true} },
-                        { new LaunchProfile() { Name ="profile2", CommandName="IISExpress", LaunchBrowser=true} },
-                        { new LaunchProfile() { Name ="profile3", CommandName="IISExpress", LaunchBrowser=true} },
-                        { new LaunchProfile() { Name ="profile4", CommandName="IISExpress", LaunchBrowser=true} },
-                        { new LaunchProfile() { Name ="profile5", CommandName="IISExpress", LaunchBrowser=true} },
-                        { new LaunchProfile() { Name = "InMemory1", DoNotPersist = true} }
+                    new LaunchProfile("profile1", "IISExpress", launchBrowser: true),
+                    new LaunchProfile("profile2", "IISExpress", launchBrowser: true),
+                    new LaunchProfile("profile3", "IISExpress", launchBrowser: true),
+                    new LaunchProfile("profile4", "IISExpress", launchBrowser: true),
+                    new LaunchProfile("profile5", "IISExpress", launchBrowser: true),
+                    new LaunchProfile("InMemory1", null, doNotPersist: true)
                 }.ToImmutableList();
             });
 
@@ -237,17 +237,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             {
                 return new List<ILaunchProfile>()
                 {
-                        { new LaunchProfile() { Name = "IIS Express", CommandName="IISExpress", LaunchBrowser=true, DoNotPersist = true } },
-                        { new LaunchProfile() { Name = "InMemory1", DoNotPersist = true} }
+                    new LaunchProfile("IIS Express", "IISExpress", launchBrowser: true, doNotPersist: true),
+                    new LaunchProfile("InMemory1", null, doNotPersist: true)
                 }.ToImmutableList();
             });
             curProfiles.Setup(m => m.GlobalSettings).Returns(() =>
             {
                 return new Dictionary<string, object>()
                 {
-                        { "iisSettings", new IISSettingsData() {   AnonymousAuthentication=true, DoNotPersist = true } },
-                        { "SomeSettings", new IISSettingsData() {  AnonymousAuthentication = false,  DoNotPersist = false } },
-                        { "InMemoryUnique", new IISSettingsData() {  AnonymousAuthentication = false,  DoNotPersist = true } },
+                    { "iisSettings",    new IISSettingsData() { AnonymousAuthentication = true,  DoNotPersist = true } },
+                    { "SomeSettings",   new IISSettingsData() { AnonymousAuthentication = false, DoNotPersist = false } },
+                    { "InMemoryUnique", new IISSettingsData() { AnonymousAuthentication = false, DoNotPersist = true } },
                 }.ToImmutableDictionary();
             });
 
@@ -352,8 +352,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             using var provider = GetLaunchSettingsProvider(moqFS);
             var profiles = new List<ILaunchProfile>()
                 {
-                    { new LaunchProfile() { Name = "IIS Express", CommandName="IISExpress", LaunchBrowser=true } },
-                    {new LaunchProfile() { Name = "bar", ExecutablePath="c:\\test\\project\\bin\\test.exe", CommandLineArgs=@"-someArg"} }
+                    new LaunchProfile("IIS Express", "IISExpress", launchBrowser: true),
+                    new LaunchProfile("bar", null, executablePath: "c:\\test\\project\\bin\\test.exe", commandLineArgs: "-someArg")
                 };
 
             var testSettings = new Mock<ILaunchSettings>();
@@ -461,8 +461,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             using var provider = GetLaunchSettingsProvider(moqFS);
             var profiles = new List<ILaunchProfile>()
                 {
-                    {new LaunchProfile() { Name = "IIS Express", CommandName="IISExpress", LaunchBrowser=true } },
-                    {new LaunchProfile() { Name = "bar", ExecutablePath ="c:\\test\\project\\bin\\test.exe", CommandLineArgs=@"-someArg"} }
+                    new LaunchProfile("IIS Express", "IISExpress", launchBrowser: true),
+                    new LaunchProfile("bar", null, executablePath: "c:\\test\\project\\bin\\test.exe", commandLineArgs: "-someArg")
                 };
 
             var testSettings = new Mock<ILaunchSettings>();
@@ -519,12 +519,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             var moqFS = new IFileSystemMock();
             using var provider = GetLaunchSettingsProvider(moqFS, "Properties", "bar");
             var existingSettings = new Mock<ILaunchSettings>();
-            existingSettings.Setup(m => m.ActiveProfile).Returns(new LaunchProfile() { Name = "bar" });
+            existingSettings.Setup(m => m.ActiveProfile).Returns(new LaunchProfile("bar", null));
             provider.SetCurrentSnapshot(existingSettings.Object);
             var profiles = new List<ILaunchProfile>()
                 {
-                    {new LaunchProfile() { Name = "IIS Express", CommandName="IISExpress", LaunchBrowser=true } },
-                    {new LaunchProfile() { Name = "bar", ExecutablePath ="c:\\test\\project\\bin\\test.exe", CommandLineArgs=@"-someArg"} }
+                    new LaunchProfile("IIS Express", "IISExpress", launchBrowser: true),
+                    new LaunchProfile("bar", null, executablePath: "c:\\test\\project\\bin\\test.exe", commandLineArgs: "-someArg")
                 };
 
             var testSettings = new Mock<ILaunchSettings>();
@@ -548,12 +548,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             var moqFS = new IFileSystemMock();
             using var provider = GetLaunchSettingsProvider(moqFS, "Properties", "bar");
             var existingSettings = new Mock<ILaunchSettings>();
-            existingSettings.Setup(m => m.ActiveProfile).Returns(new LaunchProfile() { Name = "bar" });
+            existingSettings.Setup(m => m.ActiveProfile).Returns(new LaunchProfile("bar", null));
             provider.SetCurrentSnapshot(existingSettings.Object);
             var profiles = new List<ILaunchProfile>()
                 {
-                    {new LaunchProfile() { Name = "IIS Express", CommandName="IISExpress", LaunchBrowser=true } },
-                    {new LaunchProfile() { Name = "bar", ExecutablePath ="c:\\test\\project\\bin\\test.exe", CommandLineArgs=@"-someArg"} }
+                    new LaunchProfile("IIS Express", "IISExpress", launchBrowser: true),
+                    new LaunchProfile("bar", null, executablePath: "c:\\test\\project\\bin\\test.exe", commandLineArgs: "-someArg")
                 };
 
             var testSettings = new Mock<ILaunchSettings>();
@@ -589,8 +589,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             using var provider = GetLaunchSettingsProvider(moqFS);
             var profiles = new List<ILaunchProfile>()
                 {
-                    {new LaunchProfile() { Name = "IIS Express", CommandName="IISExpress", LaunchBrowser=true } },
-                    {new LaunchProfile() { Name = "bar", ExecutablePath ="c:\\test\\project\\bin\\test.exe", CommandLineArgs=@"-someArg"} }
+                    new LaunchProfile("IIS Express", "IISExpress", launchBrowser: true),
+                    new LaunchProfile("bar", null, executablePath: "c:\\test\\project\\bin\\test.exe", commandLineArgs: "-someArg")
                 };
 
             var testSettings = new Mock<ILaunchSettings>();
@@ -599,7 +599,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             provider.SetCurrentSnapshot(testSettings.Object);
             provider.SetNextVersionTest(123);
 
-            var newProfile = new LaunchProfile() { Name = "test", CommandName = "Test", DoNotPersist = isInMemory };
+            var newProfile = new LaunchProfile("test", "Test", doNotPersist: isInMemory);
 
             await provider.AddOrUpdateProfileAsync(newProfile, addToFront);
 
@@ -624,9 +624,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             using var provider = GetLaunchSettingsProvider(moqFS);
             var profiles = new List<ILaunchProfile>()
                 {
-                    {new LaunchProfile() { Name = "IIS Express", CommandName="IISExpress", LaunchBrowser=true } },
-                    {new LaunchProfile() { Name = "test", ExecutablePath ="c:\\test\\project\\bin\\test.exe", CommandLineArgs=@"-someArg", DoNotPersist = existingIsInMemory} },
-                    {new LaunchProfile() { Name = "bar", ExecutablePath ="c:\\test\\project\\bin\\bar.exe"} }
+                    new LaunchProfile("IIS Express", "IISExpress", launchBrowser: true),
+                    new LaunchProfile("test", null, executablePath: "c:\\test\\project\\bin\\test.exe", commandLineArgs: "-someArg", doNotPersist: existingIsInMemory),
+                    new LaunchProfile("bar", null, executablePath: "c:\\test\\project\\bin\\bar.exe")
                 };
 
             var testSettings = new Mock<ILaunchSettings>();
@@ -635,7 +635,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             provider.SetCurrentSnapshot(testSettings.Object);
             provider.SetNextVersionTest(123);
 
-            var newProfile = new LaunchProfile() { Name = "test", CommandName = "Test", DoNotPersist = isInMemory };
+            var newProfile = new LaunchProfile("test", "Test", doNotPersist: isInMemory);
 
             await provider.AddOrUpdateProfileAsync(newProfile, addToFront);
 
@@ -660,9 +660,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             using var provider = GetLaunchSettingsProvider(moqFS);
             var profiles = new List<ILaunchProfile>()
                 {
-                    {new LaunchProfile() { Name = "IIS Express", CommandName="IISExpress", LaunchBrowser=true } },
-                    {new LaunchProfile() { Name = "test", ExecutablePath ="c:\\test\\project\\bin\\test.exe", CommandLineArgs=@"-someArg", DoNotPersist = existingIsInMemory} },
-                    {new LaunchProfile() { Name = "bar", ExecutablePath ="c:\\test\\project\\bin\\bar.exe"} }
+                    new LaunchProfile("IIS Express", "IISExpress", launchBrowser: true),
+                    new LaunchProfile("test", null, executablePath: "c:\\test\\project\\bin\\test.exe", commandLineArgs: "-someArg", doNotPersist: existingIsInMemory),
+                    new LaunchProfile("bar", null, executablePath: "c:\\test\\project\\bin\\bar.exe")
                 };
 
             var testSettings = new Mock<ILaunchSettings>();
@@ -671,7 +671,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             provider.SetCurrentSnapshot(testSettings.Object);
             provider.SetNextVersionTest(123);
 
-            var newProfile = new LaunchProfile() { Name = "test", CommandName = "Test", DoNotPersist = isInMemory };
+            var newProfile = new LaunchProfile("test", "Test", doNotPersist: isInMemory);
 
             await provider.TryUpdateProfileAsync("test", p =>
             {
@@ -700,9 +700,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             using var provider = GetLaunchSettingsProvider(moqFS);
             var profiles = new List<ILaunchProfile>()
                 {
-                    {new LaunchProfile() { Name = "IIS Express", CommandName="IISExpress", LaunchBrowser=true } },
-                    {new LaunchProfile() { Name = "test", ExecutablePath ="c:\\test\\project\\bin\\test.exe", CommandLineArgs=@"-someArg", DoNotPersist = isInMemory} },
-                    {new LaunchProfile() { Name = "bar", ExecutablePath ="c:\\test\\project\\bin\\bar.exe"} }
+                    new LaunchProfile("IIS Express", "IISExpress", launchBrowser: true),
+                    new LaunchProfile("test", null, executablePath: "c:\\test\\project\\bin\\test.exe", commandLineArgs: "-someArg", doNotPersist: isInMemory),
+                    new LaunchProfile("bar", null, executablePath: "c:\\test\\project\\bin\\bar.exe")
                 };
 
             var testSettings = new Mock<ILaunchSettings>();
@@ -729,8 +729,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             using var provider = GetLaunchSettingsProvider(moqFS);
             var profiles = new List<ILaunchProfile>()
                 {
-                    {new LaunchProfile() { Name = "IIS Express", CommandName="IISExpress", LaunchBrowser=true } },
-                    {new LaunchProfile() { Name = "bar", ExecutablePath ="c:\\test\\project\\bin\\bar.exe"} }
+                    new LaunchProfile("IIS Express", "IISExpress", launchBrowser: true),
+                    new LaunchProfile("bar", null, executablePath: "c:\\test\\project\\bin\\bar.exe")
                 };
 
             var testSettings = new Mock<ILaunchSettings>();
@@ -760,7 +760,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             using var provider = GetLaunchSettingsProvider(moqFS);
             SetJsonSerializationProviders(provider);
 
-            var globalSettings = ImmutableStringDictionary<object>.EmptyOrdinal.Add("test", new LaunchProfile());
+            var globalSettings = ImmutableStringDictionary<object>.EmptyOrdinal.Add("test", new LaunchProfile(null, null));
 
             var testSettings = new Mock<ILaunchSettings>();
             testSettings.Setup(m => m.GlobalSettings).Returns(globalSettings);
@@ -792,7 +792,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             using var provider = GetLaunchSettingsProvider(moqFS);
             SetJsonSerializationProviders(provider);
 
-            var globalSettings = ImmutableStringDictionary<object>.EmptyOrdinal.Add("test", new LaunchProfile());
+            var globalSettings = ImmutableStringDictionary<object>.EmptyOrdinal.Add("test", new LaunchProfile(null, null));
 
             var testSettings = new Mock<ILaunchSettings>();
             testSettings.Setup(m => m.GlobalSettings).Returns(globalSettings);
@@ -831,7 +831,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             SetJsonSerializationProviders(provider);
 
             var globalSettings = ImmutableStringDictionary<object>.EmptyOrdinal
-                .Add("test", new LaunchProfile())
+                .Add("test", new LaunchProfile(null, null))
                 .Add("iisSettings", new IISSettingsData() { DoNotPersist = existingIsInMemory });
 
             var testSettings = new Mock<ILaunchSettings>();
@@ -867,7 +867,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             SetJsonSerializationProviders(provider);
 
             var globalSettings = ImmutableStringDictionary<object>.EmptyOrdinal
-                .Add("test", new LaunchProfile())
+                .Add("test", new LaunchProfile(null, null))
                 .Add("iisSettings", new IISSettingsData() { DoNotPersist = existingIsInMemory });
 
             var testSettings = new Mock<ILaunchSettings>();
@@ -902,7 +902,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             using var provider = GetLaunchSettingsProvider(moqFS);
             SetJsonSerializationProviders(provider);
 
-            var globalSettings = ImmutableStringDictionary<object>.EmptyOrdinal.Add("test", new LaunchProfile());
+            var globalSettings = ImmutableStringDictionary<object>.EmptyOrdinal.Add("test", new LaunchProfile(null, null));
 
             var testSettings = new Mock<ILaunchSettings>();
             testSettings.Setup(m => m.GlobalSettings).Returns(globalSettings);
@@ -931,7 +931,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             SetJsonSerializationProviders(provider);
 
             var globalSettings = ImmutableStringDictionary<object>.EmptyOrdinal
-                .Add("test", new LaunchProfile())
+                .Add("test", new LaunchProfile(null, null))
                 .Add("iisSettings", new IISSettingsData());
 
             var testSettings = new Mock<ILaunchSettings>();

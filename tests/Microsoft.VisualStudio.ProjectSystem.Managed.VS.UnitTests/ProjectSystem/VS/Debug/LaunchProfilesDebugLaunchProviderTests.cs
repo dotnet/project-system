@@ -57,10 +57,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
         public void GetLaunchTargetsProviderForProfileTestsAsync()
         {
             var provider = CreateInstance();
-            Assert.Equal(_mockWebProvider.Object, provider.GetLaunchTargetsProvider(new LaunchProfile { Name = "test", CommandName = "IISExpress" }));
-            Assert.Equal(_mockDockerProvider.Object, provider.GetLaunchTargetsProvider(new LaunchProfile { Name = "test", CommandName = "Docker" }));
-            Assert.Equal(_mockExeProvider.Object, provider.GetLaunchTargetsProvider(new LaunchProfile { Name = "test", CommandName = "Project" }));
-            Assert.Null(provider.GetLaunchTargetsProvider(new LaunchProfile { Name = "test", CommandName = "IIS" }));
+            Assert.Equal(_mockWebProvider.Object, provider.GetLaunchTargetsProvider(new LaunchProfile("test", "IISExpress")));
+            Assert.Equal(_mockDockerProvider.Object, provider.GetLaunchTargetsProvider(new LaunchProfile("test", "Docker")));
+            Assert.Equal(_mockExeProvider.Object, provider.GetLaunchTargetsProvider(new LaunchProfile("test", "Project")));
+            Assert.Null(provider.GetLaunchTargetsProvider(new LaunchProfile("test", "IIS")));
         }
 
         [Fact]
@@ -68,15 +68,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
         {
             var provider = CreateInstance();
 
-            _activeProfile = new LaunchProfile { Name = "test", CommandName = "IISExpress" };
+            _activeProfile = new LaunchProfile("test", "IISExpress");
             var result = await provider.QueryDebugTargetsAsync(0);
             Assert.Equal(_webProviderSettings, result);
 
-            _activeProfile = new LaunchProfile { Name = "test", CommandName = "Docker" };
+            _activeProfile = new LaunchProfile("test", "Docker");
             result = await provider.QueryDebugTargetsAsync(0);
             Assert.Equal(_dockerProviderSettings, result);
 
-            _activeProfile = new LaunchProfile { Name = "test", CommandName = "Project" };
+            _activeProfile = new LaunchProfile("test", "Project");
             result = await provider.QueryDebugTargetsAsync(0);
             Assert.Equal(_exeProviderSettings, result);
         }
@@ -94,7 +94,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
         public async Task QueryDebugTargetsAsync_WhenNoInstalledProvider_Throws()
         {
             var provider = CreateInstance();
-            _activeProfile = new LaunchProfile { Name = "NoActionProfile", CommandName = "SomeOtherExtension" };
+            _activeProfile = new LaunchProfile("NoActionProfile", "SomeOtherExtension");
 
             await Assert.ThrowsAsync<Exception>(() => provider.QueryDebugTargetsAsync(0));
         }

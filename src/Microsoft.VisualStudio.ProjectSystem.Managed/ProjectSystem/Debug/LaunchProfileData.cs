@@ -61,9 +61,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         public string? LaunchUrl { get; set; }
 
         [JsonProperty(PropertyName = Prop_environmentVariables)]
-        public IDictionary<string, string>? EnvironmentVariables { get; set; }
+        public Dictionary<string, string>? EnvironmentVariables { get; set; }
 
-        public IDictionary<string, object>? OtherSettings { get; set; }
+        public Dictionary<string, object>? OtherSettings { get; set; }
 
         /// <summary>
         /// To handle custom settings, we serialize using LaunchProfileData first and then walk the settings
@@ -178,7 +178,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
 
             if (profile.EnvironmentVariables != null)
             {
-                data.Add(Prop_environmentVariables, profile.EnvironmentVariables);
+                data.Add(Prop_environmentVariables, profile.GetEnvironmentVariablesDictionary()!);
             }
 
             if (profile.OtherSettings != null)
@@ -207,8 +207,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
                 WorkingDirectory = profile.WorkingDirectory,
                 LaunchBrowser = profile.LaunchBrowser,
                 LaunchUrl = profile.LaunchUrl,
-                EnvironmentVariables = profile.EnvironmentVariables,
-                OtherSettings = profile.OtherSettings,
+                EnvironmentVariables = profile.GetEnvironmentVariablesDictionary(),
+                OtherSettings = profile.GetOtherSettingsDictionary(),
                 InMemoryProfile = profile.IsInMemoryObject()
             };
 

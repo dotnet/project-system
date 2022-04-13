@@ -19,7 +19,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
 
         public ILaunchProfile? CreateDefaultProfile()
         {
-            return new LaunchProfile { Name = Path.GetFileNameWithoutExtension(_project.FullPath), CommandName = LaunchSettingsProvider.RunProjectCommandName };
+            return new LaunchProfile(
+                name: Path.GetFileNameWithoutExtension(_project.FullPath),
+                commandName: LaunchSettingsProvider.RunProjectCommandName);
         }
     }
 }

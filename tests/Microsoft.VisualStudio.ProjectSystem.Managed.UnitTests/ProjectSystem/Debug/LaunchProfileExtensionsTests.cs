@@ -9,10 +9,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         [InlineData(true)]
         public void IsInMemoryProfile_ILaunchProfile(bool isInMemory)
         {
-            var data = new LaunchProfile()
-            {
-                DoNotPersist = isInMemory
-            };
+            var data = new LaunchProfile(
+                name: null,
+                commandName: null,
+                doNotPersist: isInMemory);
 
             var lp = (ILaunchProfile)data;
             Assert.Equal(isInMemory, lp.IsInMemoryObject());
@@ -38,10 +38,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         [InlineData(null, false)]
         public void IsNativeDebuggingEnabled_ILaunchProfile(bool? value, bool expected)
         {
-            var data = new LaunchProfile
-            {
-                OtherSettings = value == null ? null : ImmutableStringDictionary<object>.EmptyOrdinal.Add(LaunchProfileExtensions.NativeDebuggingProperty, value.Value)
-            };
+            var data = new LaunchProfile(
+                name: null,
+                commandName: null,
+                otherSettings: value == null ? null : new Dictionary<string, object> { [LaunchProfileExtensions.NativeDebuggingProperty] = value.Value });
 
             Assert.Equal(expected, data.IsNativeDebuggingEnabled());
         }
@@ -52,10 +52,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         [InlineData(null, false)]
         public void IsSqlDebuggingEnabled_ILaunchProfile(bool? value, bool expected)
         {
-            var data = new LaunchProfile
-            {
-                OtherSettings = value == null ? null : ImmutableStringDictionary<object>.EmptyOrdinal.Add(LaunchProfileExtensions.SqlDebuggingProperty, value.Value)
-            };
+            var data = new LaunchProfile(
+                name: null,
+                commandName: null,
+                otherSettings: value == null ? null : new Dictionary<string, object> { [LaunchProfileExtensions.SqlDebuggingProperty] = value.Value});
 
             Assert.Equal(expected, data.IsSqlDebuggingEnabled());
         }
@@ -66,10 +66,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         [InlineData(null, false)]
         public void IsRemoteDebugEnabled_ILaunchProfile(bool? value, bool expected)
         {
-            var data = new LaunchProfile
-            {
-                OtherSettings = value == null ? null : ImmutableStringDictionary<object>.EmptyOrdinal.Add(LaunchProfileExtensions.RemoteDebugEnabledProperty, value.Value)
-            };
+            var data = new LaunchProfile(
+                name: null,
+                commandName: null,
+                otherSettings: value == null ? null : new Dictionary<string, object> { [LaunchProfileExtensions.RemoteDebugEnabledProperty] = value.Value});
 
             Assert.Equal(expected, data.IsRemoteDebugEnabled());
         }
@@ -80,10 +80,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         [InlineData(null, null)]
         public void RemoteDebugMachine_ILaunchProfile(string? value, string? expected)
         {
-            var data = new LaunchProfile
-            {
-                OtherSettings = value == null ? null : ImmutableStringDictionary<object>.EmptyOrdinal.Add(LaunchProfileExtensions.RemoteDebugMachineProperty, value)
-            };
+            var data = new LaunchProfile(
+                name: null,
+                commandName: null,
+                otherSettings: value == null ? null : new Dictionary<string, object> { [LaunchProfileExtensions.RemoteDebugMachineProperty] = value});
 
             Assert.Equal(expected, data.RemoteDebugMachine());
         }

@@ -1,5 +1,7 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
+using Microsoft.VisualStudio.Threading;
+
 namespace Microsoft.VisualStudio.ProjectSystem.Debug
 {
     /// <summary>
@@ -7,8 +9,130 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
     /// </summary>
     internal class LaunchProfile : ILaunchProfile, IPersistOption
     {
-        public LaunchProfile()
+        /// <summary>
+        /// Creates a copy of <paramref name="profile"/> in which tokens are replaced via <paramref name="replaceAsync"/>.
+        /// </summary>
+        /// <remarks>
+        /// Intended to replace tokens such as environment variables and MSBuild properties.
+        /// </remarks>
+        /// <param name="profile">The source profile to copy from.</param>
+        /// <param name="replaceAsync">A function that performs token substitution.</param>
+        /// <returns>A profile with tokens substituted.</returns>
+        internal static async Task<LaunchProfile> ReplaceTokensAsync(ILaunchProfile profile, Func<string, Task<string>> replaceAsync)
         {
+            ImmutableDictionary<string, string>? environmentVariables = profile.EnvironmentVariables;
+            ImmutableDictionary<string, object>? otherSettings = profile.OtherSettings;
+
+            if (environmentVariables != null)
+            {
+                foreach ((string key, string value) in environmentVariables)
+                {
+                    environmentVariables = environmentVariables.SetItem(key, await replaceAsync(value));
+                }
+            }
+
+            if (otherSettings != null)
+            {
+                foreach ((string key, object value) in otherSettings)
+                {
+                    if (value is string s)
+                    {
+                        otherSettings = otherSettings.SetItem(key, await replaceAsync(s));
+                    }
+                }
+            }
+
+            ImmutableArray<string> environmentVariablesKeyOrder;
+            ImmutableArray<string> otherSettingsKeyOrder;
+
+            if (profile is LaunchProfile launchProfile)
+            {
+                // Preserve the order of keys
+                environmentVariablesKeyOrder = launchProfile.EnvironmentVariablesKeyOrder;
+                otherSettingsKeyOrder = launchProfile.OtherSettingsKeyOrder;
+            }
+            else
+            {
+                // We don't know the order here, so just use dictionary order (which will be randomised by hash codes)
+                environmentVariablesKeyOrder = environmentVariables?.Keys.ToImmutableArray() ?? ImmutableArray<string>.Empty;
+                otherSettingsKeyOrder = otherSettings?.Keys.ToImmutableArray() ?? ImmutableArray<string>.Empty;
+            }
+
+            return new(
+                name: profile.Name,
+                commandName: profile.CommandName,
+                executablePath: await ReplaceOrNullAsync(profile.ExecutablePath),
+                commandLineArgs: await ReplaceOrNullAsync(profile.CommandLineArgs),
+                workingDirectory: await ReplaceOrNullAsync(profile.WorkingDirectory),
+                launchBrowser: profile.LaunchBrowser,
+                launchUrl: await ReplaceOrNullAsync(profile.LaunchUrl),
+                doNotPersist: profile.IsInMemoryObject(),
+                environmentVariables: environmentVariables,
+                otherSettings: otherSettings,
+                environmentVariablesKeyOrder: environmentVariablesKeyOrder,
+                otherSettingsKeyOrder: otherSettingsKeyOrder);
+
+            Task<string?> ReplaceOrNullAsync(string? s)
+            {
+                if (Strings.IsNullOrWhiteSpace(s))
+                {
+                    return TaskResult.Null<string>();
+                }
+
+                return replaceAsync(s)!;
+            }
+        }
+
+        public LaunchProfile(
+            string? name,
+            string? commandName,
+            string? executablePath = null,
+            string? commandLineArgs = null,
+            string? workingDirectory = null,
+            bool launchBrowser = false,
+            string? launchUrl = null,
+            bool doNotPersist = false,
+            Dictionary<string, string>? environmentVariables = null,
+            Dictionary<string, object>? otherSettings = null)
+        {
+            Name = name;
+            CommandName = commandName;
+            ExecutablePath = executablePath;
+            CommandLineArgs = commandLineArgs;
+            WorkingDirectory = workingDirectory;
+            LaunchBrowser = launchBrowser;
+            LaunchUrl = launchUrl;
+            DoNotPersist = doNotPersist;
+
+            AssignFromDictionaries(environmentVariables, otherSettings);
+        }
+
+        private LaunchProfile(
+            string? name,
+            string? commandName,
+            string? executablePath,
+            string? commandLineArgs,
+            string? workingDirectory,
+            bool launchBrowser,
+            string? launchUrl,
+            bool doNotPersist,
+            ImmutableDictionary<string, string>? environmentVariables,
+            ImmutableDictionary<string, object>? otherSettings,
+            ImmutableArray<string> environmentVariablesKeyOrder,
+            ImmutableArray<string> otherSettingsKeyOrder)
+        {
+            Name = name;
+            CommandName = commandName;
+            ExecutablePath = executablePath;
+            CommandLineArgs = commandLineArgs;
+            WorkingDirectory = workingDirectory;
+            LaunchBrowser = launchBrowser;
+            LaunchUrl = launchUrl;
+            DoNotPersist = doNotPersist;
+            EnvironmentVariables = environmentVariables;
+            OtherSettings = otherSettings;
+            EnvironmentVariablesKeyOrder = environmentVariablesKeyOrder;
+            OtherSettingsKeyOrder = otherSettingsKeyOrder;
         }
 
         public LaunchProfile(LaunchProfileData data)
@@ -20,9 +144,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             WorkingDirectory = data.WorkingDirectory;
             LaunchBrowser = data.LaunchBrowser ?? false;
             LaunchUrl = data.LaunchUrl;
-            EnvironmentVariables = data.EnvironmentVariables?.ToImmutableDictionary();
-            OtherSettings = data.OtherSettings?.ToImmutableDictionary();
             DoNotPersist = data.InMemoryProfile;
+
+            AssignFromDictionaries(data.EnvironmentVariables, data.OtherSettings);
         }
 
         /// <summary>
@@ -37,9 +161,24 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             WorkingDirectory = existingProfile.WorkingDirectory;
             LaunchBrowser = existingProfile.LaunchBrowser;
             LaunchUrl = existingProfile.LaunchUrl;
+            DoNotPersist = existingProfile.IsInMemoryObject();
+
             EnvironmentVariables = existingProfile.EnvironmentVariables;
             OtherSettings = existingProfile.OtherSettings;
-            DoNotPersist = existingProfile.IsInMemoryObject();
+
+            if (existingProfile is LaunchProfile launchProfile)
+            {
+                // Preserve the order of items.
+                EnvironmentVariablesKeyOrder = launchProfile.EnvironmentVariablesKeyOrder;
+                OtherSettingsKeyOrder = launchProfile.OtherSettingsKeyOrder;
+            }
+            else
+            {
+                // We are unable to preserve order on other implementations of ILaunchProfile.
+                // In future we could version the interface to support this.
+                EnvironmentVariablesKeyOrder = existingProfile.EnvironmentVariables?.Keys.ToImmutableArray() ?? ImmutableArray<string>.Empty;
+                OtherSettingsKeyOrder = existingProfile.OtherSettings?.Keys.ToImmutableArray() ?? ImmutableArray<string>.Empty;
+            }
         }
 
         public LaunchProfile(IWritableLaunchProfile writableProfile)
@@ -53,22 +192,39 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             LaunchUrl = writableProfile.LaunchUrl;
             DoNotPersist = writableProfile.IsInMemoryObject();
 
-            // If there are no env variables or settings we want to set them to null
-            EnvironmentVariables = writableProfile.EnvironmentVariables.Count == 0 ? null : writableProfile.EnvironmentVariables.ToImmutableDictionary();
-            OtherSettings = writableProfile.OtherSettings.Count == 0 ? null : writableProfile.OtherSettings.ToImmutableDictionary();
+            AssignFromDictionaries(writableProfile.EnvironmentVariables, writableProfile.OtherSettings);
         }
 
-        public string? Name { get; set; }
-        public string? CommandName { get; set; }
-        public string? ExecutablePath { get; set; }
-        public string? CommandLineArgs { get; set; }
-        public string? WorkingDirectory { get; set; }
-        public bool LaunchBrowser { get; set; }
-        public string? LaunchUrl { get; set; }
-        public bool DoNotPersist { get; set; }
+        private void AssignFromDictionaries(Dictionary<string, string>? environmentVariables, Dictionary<string, object>? otherSettings)
+        {
+            // If there are no env variables or settings we want to set them to null
+            EnvironmentVariables = environmentVariables is { Count: not 0 } envVars ? envVars.ToImmutableDictionary() : null;
+            OtherSettings = otherSettings is { Count: not 0 } others ? others.ToImmutableDictionary() : null;
 
-        public ImmutableDictionary<string, string>? EnvironmentVariables { get; set; }
-        public ImmutableDictionary<string, object>? OtherSettings { get; set; }
+            // Dictionary<,> maintains the order of its keys, while ImmutableDictionary<,> does not.
+            // We convert to immutable here, and also retain the keys in their original order.
+            // This allows us to round-trip these collections without reordering their values.
+            // Ideally we would have declared these properties as IImmutableDictionary<,> and used
+            // an order preserving implementation, but the interface is public and has already shipped
+            // so cannot be changed.
+            EnvironmentVariablesKeyOrder = environmentVariables?.Keys.ToImmutableArray() ?? ImmutableArray<string>.Empty;
+            OtherSettingsKeyOrder = otherSettings?.Keys.ToImmutableArray() ?? ImmutableArray<string>.Empty;
+        }
+
+        public string? Name { get; }
+        public string? CommandName { get; }
+        public string? ExecutablePath { get; }
+        public string? CommandLineArgs { get; }
+        public string? WorkingDirectory { get; }
+        public bool LaunchBrowser { get; }
+        public string? LaunchUrl { get; }
+        public bool DoNotPersist { get; }
+
+        public ImmutableDictionary<string, string>? EnvironmentVariables { get; private set; }
+        public ImmutableDictionary<string, object>? OtherSettings { get; private set; }
+
+        public ImmutableArray<string> EnvironmentVariablesKeyOrder { get; private set; }
+        public ImmutableArray<string> OtherSettingsKeyOrder { get; private set; }
 
         /// <summary>
         /// Compares two profile names. Using this function ensures case comparison consistency

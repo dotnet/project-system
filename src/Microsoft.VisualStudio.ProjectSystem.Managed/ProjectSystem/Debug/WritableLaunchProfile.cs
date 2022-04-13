@@ -26,12 +26,26 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
 
             if (profile.EnvironmentVariables != null)
             {
-                EnvironmentVariables = new Dictionary<string, string>(profile.EnvironmentVariables, StringComparer.Ordinal);
+                if (profile is LaunchProfile launchProfile)
+                {
+                    EnvironmentVariables = launchProfile.GetEnvironmentVariablesDictionary() ?? new(StringComparers.EnvironmentVariableNames);
+                }
+                else
+                {
+                    EnvironmentVariables = new Dictionary<string, string>(profile.EnvironmentVariables, StringComparers.EnvironmentVariableNames);
+                }
             }
 
             if (profile.OtherSettings != null)
             {
-                OtherSettings = new Dictionary<string, object>(profile.OtherSettings, StringComparers.LaunchProfileProperties);
+                if (profile is LaunchProfile launchProfile)
+                {
+                    OtherSettings = launchProfile.GetOtherSettingsDictionary() ?? new(StringComparers.LaunchProfileProperties);
+                }
+                else
+                {
+                    OtherSettings = new Dictionary<string, object>(profile.OtherSettings, StringComparers.LaunchProfileProperties);
+                }
             }
         }
 

@@ -353,12 +353,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             }
 
             // Apply environment variables.
-            if (resolvedProfile.EnvironmentVariables?.IsEmpty == false)
+            foreach ((string key, string value) in resolvedProfile.EnumerateEnvironmentVariables())
             {
-                foreach ((string key, string value) in resolvedProfile.EnvironmentVariables)
-                {
-                    settings.Environment[key] = value;
-                }
+                settings.Environment[key] = value;
             }
 
             settings.LaunchOperation = DebugLaunchOperation.CreateProcess;

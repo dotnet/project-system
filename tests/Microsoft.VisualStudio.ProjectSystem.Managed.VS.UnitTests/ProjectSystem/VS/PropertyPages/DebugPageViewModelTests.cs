@@ -103,7 +103,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
         {
             var profiles = new List<ILaunchProfile>()
             {
-                new LaunchProfile {Name="p1", CommandName="test", DoNotPersist = true}
+                new LaunchProfile(name: "p1", commandName: "test", doNotPersist: true)
             };
 
             var viewModelData = new ViewModelData()

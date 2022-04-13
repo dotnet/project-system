@@ -9,15 +9,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         {
             var profiles = new List<LaunchProfile>()
             {
-                new LaunchProfile(){Name="abc", CommandLineArgs="test"},
-                new LaunchProfile(){Name="def"},
-                new LaunchProfile(){Name="ghi"},
-                new LaunchProfile(){Name="foo"},
+                new LaunchProfile("abc", null, commandLineArgs: "test"),
+                new LaunchProfile("def", null),
+                new LaunchProfile("ghi", null),
+                new LaunchProfile("foo", null),
             };
+
             var globals = new Dictionary<string, object>()
             {
-                {"var1", true },
-                {"var2", "some string" }
+                { "var1", true },
+                { "var2", "some string" }
             };
 
             var settings = new LaunchSettings(profiles, null, null);
