@@ -14,6 +14,9 @@
     <Category Name="License"
               DisplayName="License"
               Description="Specifies the license for the package." />
+    <Category Name="Symbols"
+              DisplayName="Symbols"
+              Description="Specifies how symbols are added to the package." />
   </Rule.Categories>
 
   <Rule.DataSource>
@@ -270,5 +273,25 @@
       </NameValuePair>
     </BoolProperty.Metadata>
   </BoolProperty>
+
+  <BoolProperty Name="IncludeSymbols"
+                DisplayName="Produce a symbol package"
+                Description="Create an additional symbol package when the project is packed."
+                Category="Symbols" />
+
+  <EnumProperty Name="SymbolPackageFormat"
+                DisplayName="Symbol package format"
+                Description="Specifies the format of the symbols package."
+                Category="Symbols">
+    <EnumProperty.Metadata>
+      <NameValuePair Name="VisibilityCondition">
+        <NameValuePair.Value>(has-evaluated-value "Package" "IncludeSymbols" true)</NameValuePair.Value>
+      </NameValuePair>
+    </EnumProperty.Metadata>
+    <EnumValue Name="symbols.nupkg"
+               DisplayName="symbols.nupkg (legacy)" />
+    <EnumValue Name="snupkg"
+               DisplayName="snupkg" />
+  </EnumProperty>
 
 </Rule>
