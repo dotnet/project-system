@@ -91,4 +91,10 @@
     <NoWarn>$(NoWarn);NU5125</NoWarn>
   </PropertyGroup>
 
+  <PropertyGroup>
+    <!--
+      TODO: Suppress warnings about duplicate PackageReferences until we can remove them (https://github.com/dotnet/project-system/issues/8074)
+    -->
+    <NoWarn>$(NoWarn);NU1504</NoWarn>
+  </PropertyGroup>
 </Project>
