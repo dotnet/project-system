@@ -172,6 +172,16 @@
         <target state="translated">许可证文件</target>
         <note />
       </trans-unit>
+      <trans-unit id="StringProperty|PackageOutputPath|Description">
+        <source>Determines the output path in which the package will be dropped.</source>
+        <target state="new">Determines the output path in which the package will be dropped.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|PackageOutputPath|DisplayName">
+        <source>Package Output Path</source>
+        <target state="new">Package Output Path</target>
+        <note />
+      </trans-unit>
       <trans-unit id="StringProperty|PackageProjectUrl|Description">
         <source>A URL for the package's home page, often shown in UI displays as well as nuget.org.</source>
         <target state="translated">包主页的 URL，通常显示在 UI 和 nuget.org 中。</target>
