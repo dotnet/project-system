@@ -41,7 +41,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build.Diagnostics
     {
         private readonly ISolutionBuildManager _solutionBuildEvents;
         private readonly IRunningDocumentTable _rdtEvents;
-        private readonly IProjectService _projectService;
+        private readonly IProjectServiceAccessor _projectServiceAccessor;
 
         private IAsyncDisposable? _solutionBuildEventsSubscription;
         private IAsyncDisposable? _rdtEventsSubscription;
@@ -53,13 +53,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build.Diagnostics
         public IncrementalBuildFailureDetector(
             ISolutionBuildManager solutionBuildEvents,
             IRunningDocumentTable rdtEvents,
-            IProjectService projectService,
+            IProjectServiceAccessor projectServiceAccessor,
             JoinableTaskContext joinableTaskContext)
             : base(new(joinableTaskContext))
         {
             _solutionBuildEvents = solutionBuildEvents;
             _rdtEvents = rdtEvents;
-            _projectService = projectService;
+            _projectServiceAccessor = projectServiceAccessor;
         }
 
         async Task IPackageService.InitializeAsync(IAsyncServiceProvider _)
@@ -120,7 +120,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build.Diagnostics
 
                 if (IsRelevantBuild(dwAction))
                 {
-                    UnconfiguredProject? unconfiguredProject = _projectService.GetUnconfiguredProject(pHierProj, appliesToExpression: BuildUpToDateCheck.AppliesToExpression);
+                    UnconfiguredProject? unconfiguredProject = _projectServiceAccessor.GetProjectService().GetUnconfiguredProject(pHierProj, appliesToExpression: BuildUpToDateCheck.AppliesToExpression);
 
                     IProjectChecker? checker = unconfiguredProject?.Services.ExportProvider.GetExportedValueOrDefault<IProjectChecker>();
 
