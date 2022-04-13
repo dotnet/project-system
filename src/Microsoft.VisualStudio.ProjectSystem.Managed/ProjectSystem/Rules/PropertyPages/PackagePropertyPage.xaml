@@ -40,6 +40,11 @@
     </StringProperty.Metadata>
   </StringProperty>
 
+  <StringProperty Name="Title"
+                  DisplayName="Title"
+                  Description="A human-friendly title of the package, typically used in UI displays as on nuget.org and the Package Manager in Visual Studio."
+                  Category="General" />
+
   <StringProperty Name="Version"
                   DisplayName="Package Version"
                   Description="The version of the package, following the major.minor.patch pattern. Version numbers may include a pre-release suffix."

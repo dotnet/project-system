@@ -292,6 +292,16 @@
         <target state="translated">存储库 URL</target>
         <note />
       </trans-unit>
+      <trans-unit id="StringProperty|Title|Description">
+        <source>A human-friendly title of the package, typically used in UI displays as on nuget.org and the Package Manager in Visual Studio.</source>
+        <target state="new">A human-friendly title of the package, typically used in UI displays as on nuget.org and the Package Manager in Visual Studio.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|Title|DisplayName">
+        <source>Title</source>
+        <target state="new">Title</target>
+        <note />
+      </trans-unit>
       <trans-unit id="StringProperty|ToolCommandName|Description">
         <source>The command name via which the .NET tool will be invoked on the command line.</source>
         <target state="new">The command name via which the .NET tool will be invoked on the command line.</target>
