@@ -176,14 +176,12 @@
   <BoolProperty Name="WarningLevelOverridden"
                 DisplayName="WarningLevelOverridden"
                 Category="ErrorsAndWarnings"
-                ReadOnly="True">
+                ReadOnly="True"
+                Visible="False">
     <BoolProperty.DataSource>
       <DataSource HasConfigurationCondition="True"
                   Persistence="ProjectFileWithInterception" />
     </BoolProperty.DataSource>
-    <BoolProperty.Metadata>
-      <NameValuePair Name="VisibilityCondition" Value="false" />
-    </BoolProperty.Metadata>
   </BoolProperty>
   
   <EnumProperty Name="WarningLevel"
