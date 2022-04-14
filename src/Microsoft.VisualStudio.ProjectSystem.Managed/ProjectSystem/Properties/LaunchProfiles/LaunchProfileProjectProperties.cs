@@ -303,8 +303,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
             {
                 if (_rule?.GetProperty(propertyName) is BaseProperty property)
                 {
-                    string? valueString = null;
-                    valueString = property switch
+                    return property switch
                     {
                         BoolProperty => boolToString(valueObject),
                         IntProperty => intToString(valueObject),
@@ -313,8 +312,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
                         DynamicEnumProperty => valueObject as string,
                         _ => throw new InvalidOperationException($"{nameof(LaunchProfileProjectProperties)} does not know how to convert `{property.GetType()}` to a string.")
                     };
-
-                    return valueString;
                 }
 
                 return valueObject as string;

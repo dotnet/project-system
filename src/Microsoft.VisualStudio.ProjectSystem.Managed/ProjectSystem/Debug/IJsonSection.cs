@@ -5,7 +5,7 @@ using System.ComponentModel;
 namespace Microsoft.VisualStudio.ProjectSystem.Debug
 {
     /// <summary>
-    /// Used to get to the JsonString exported attribute by importers of ILaunchSettingsSerializationProvider
+    /// Used to get to the JsonString exported attribute by importers of <see cref="ILaunchSettingsSerializationProvider"/>.
     /// </summary>
     public interface IJsonSection : IOrderPrecedenceMetadataView
     {

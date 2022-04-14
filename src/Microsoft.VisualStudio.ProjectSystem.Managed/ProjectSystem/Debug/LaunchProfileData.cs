@@ -138,7 +138,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         }
 
         /// <summary>
-        /// Helper to convert an ILaunchProfile back to its serializable form. Basically, it
+        /// Helper to convert an <see cref="ILaunchProfile"/> back to its serializable form. Basically, it
         /// converts it to a dictionary of settings. This preserves custom values
         /// </summary>
         public static Dictionary<string, object> ToSerializableForm(ILaunchProfile profile)
@@ -198,7 +198,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         /// </summary>
         public static LaunchProfileData FromILaunchProfile(ILaunchProfile profile)
         {
-            var profileData = new LaunchProfileData
+            return new()
             {
                 Name = profile.Name,
                 ExecutablePath = profile.ExecutablePath,
@@ -211,8 +211,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
                 OtherSettings = profile.GetOtherSettingsDictionary(),
                 InMemoryProfile = profile.IsInMemoryObject()
             };
-
-            return profileData;
         }
     }
 }

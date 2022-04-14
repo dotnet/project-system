@@ -12,6 +12,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             {
                 foreach (ILaunchProfile profile in settings.Profiles)
                 {
+                    // Make a mutable/writable copy of each profile
                     Profiles.Add(new WritableLaunchProfile(profile));
                 }
             }

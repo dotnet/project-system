@@ -4,6 +4,9 @@ using Newtonsoft.Json;
 
 namespace Microsoft.VisualStudio.ProjectSystem.Debug
 {
+    /// <summary>
+    /// Immutable snapshot of data from the <c>launchSettings.json</c> file.
+    /// </summary>
     internal class LaunchSettings : ILaunchSettings, IVersionedLaunchSettings
     {
         private readonly string? _activeProfileName;

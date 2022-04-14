@@ -7,7 +7,7 @@ namespace Microsoft.VisualStudio.Collections
     /// </summary>
     /// <typeparam name="TKey">The type of key in the dictionaries to compare.</typeparam>
     /// <typeparam name="TValue">The type of value in the dictionaries to compare.</typeparam>
-    internal class DictionaryEqualityComparer<TKey, TValue> : IEqualityComparer<IImmutableDictionary<TKey, TValue>>
+    internal sealed class DictionaryEqualityComparer<TKey, TValue> : IEqualityComparer<Dictionary<TKey, TValue>>
         where TKey : notnull
     {
         /// <summary>
@@ -20,7 +20,7 @@ namespace Microsoft.VisualStudio.Collections
         /// <summary>
         /// Gets a dictionary equality comparer instance appropriate for dictionaries that use the default key comparer for the <typeparamref name="TKey"/> type.
         /// </summary>
-        internal static DictionaryEqualityComparer<TKey, TValue> Instance { get; } = new DictionaryEqualityComparer<TKey, TValue>();
+        internal static DictionaryEqualityComparer<TKey, TValue> Instance { get; } = new();
 
         /// <summary>
         /// Checks two dictionaries for equality.

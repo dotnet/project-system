@@ -171,6 +171,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             AssignFromDictionaries(data.EnvironmentVariables, data.OtherSettings);
         }
 
+        /// <summary>
+        /// Initializes a new instance of <see cref="LaunchProfile"/>,
+        /// copying data from the mutable <paramref name="writableProfile"/>.
+        /// </summary>
         public LaunchProfile(IWritableLaunchProfile writableProfile)
         {
             Name = writableProfile.Name;
