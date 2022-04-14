@@ -40,13 +40,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         /// <returns>An ordered enumeration of environment variable name/value pairs.</returns>
         public static IEnumerable<KeyValuePair<string, string>> EnumerateEnvironmentVariables(this ILaunchProfile profile)
         {
-            if (profile.EnvironmentVariables is null)
-                return Enumerable.Empty<KeyValuePair<string, string>>();
-            
-            if (profile is LaunchProfile lp)
-                return Enumerate(lp);
-            
-            return profile.EnvironmentVariables.OrderBy(pair => pair.Key, StringComparers.EnvironmentVariableNames);
+            return profile switch
+            {
+                { EnvironmentVariables: null or { Count: 0 } } => Enumerable.Empty<KeyValuePair<string, string>>(),
+                LaunchProfile launchProfile => Enumerate(launchProfile),
+                _ => profile.EnvironmentVariables.OrderBy(pair => pair.Key, StringComparers.EnvironmentVariableNames)
+            };
 
             static IEnumerable<KeyValuePair<string, string>> Enumerate(LaunchProfile profile)
             {
