@@ -89,7 +89,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 projectSystemOptions.Object,
                 configuredProject.Object,
                 projectAsynchronousTasksService.Object,
-                ITelemetryServiceFactory.Create(telemetryParameters => _telemetryEvents.Add(telemetryParameters)),
+                ITelemetryServiceFactory.Create(_telemetryEvents.Add),
                 _fileSystem,
                 upToDateCheckHost.Object);
         }

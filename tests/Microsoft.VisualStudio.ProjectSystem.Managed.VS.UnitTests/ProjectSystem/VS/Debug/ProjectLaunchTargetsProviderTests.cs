@@ -749,7 +749,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             threadingService ??= IProjectThreadingServiceFactory.Create();
             debugger ??= IVsDebugger10Factory.ImplementIsIntegratedConsoleEnabled(enabled: false);
 
-            IUnconfiguredProjectVsServices unconfiguredProjectVsServices = IUnconfiguredProjectVsServicesFactory.Implement(() => IVsHierarchyFactory.Create());
+            IUnconfiguredProjectVsServices unconfiguredProjectVsServices = IUnconfiguredProjectVsServicesFactory.Implement(IVsHierarchyFactory.Create);
 
             IRemoteDebuggerAuthenticationService remoteDebuggerAuthenticationService = Mock.Of<IRemoteDebuggerAuthenticationService>();
 
@@ -764,7 +764,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
                 threadingService,
                 IVsUIServiceFactory.Create<SVsShellDebugger, IVsDebugger10>(debugger),
                 remoteDebuggerAuthenticationService,
-                new Lazy<IProjectHotReloadSessionManager>(() => IProjectHotReloadSessionManagerFactory.Create()),
+                new Lazy<IProjectHotReloadSessionManager>(IProjectHotReloadSessionManagerFactory.Create),
                 new Lazy<IHotReloadOptionService>(() => hotReloadSettings ?? IHotReloadOptionServiceFactory.Create()));
         }
     }

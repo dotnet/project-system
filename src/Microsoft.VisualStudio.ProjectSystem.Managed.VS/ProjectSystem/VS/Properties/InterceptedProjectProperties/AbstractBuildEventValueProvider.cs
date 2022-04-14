@@ -66,7 +66,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties.InterceptedProjectP
                 return property ?? string.Empty;
             }
 
-            return await _projectAccessor.OpenProjectXmlForReadAsync(_unconfiguredProject, projectXml => _helper.TryGetValueFromTarget(projectXml)) ?? string.Empty;
+            return await _projectAccessor.OpenProjectXmlForReadAsync(_unconfiguredProject, _helper.TryGetValueFromTarget) ?? string.Empty;
         }
 
         public override async Task<string> OnGetEvaluatedPropertyValueAsync(
@@ -81,7 +81,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties.InterceptedProjectP
                 return property;
             }
 
-            return await _projectAccessor.OpenProjectXmlForReadAsync(_unconfiguredProject, projectXml => _helper.TryGetValueFromTarget(projectXml)) ?? string.Empty;
+            return await _projectAccessor.OpenProjectXmlForReadAsync(_unconfiguredProject, _helper.TryGetValueFromTarget) ?? string.Empty;
         }
 
         public override async Task<string?> OnSetPropertyValueAsync(

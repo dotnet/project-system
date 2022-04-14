@@ -268,7 +268,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.Ordering
         /// </summary>
         private static ImmutableArray<IProjectTree> GetChildren(IProjectTree projectTree)
         {
-            return projectTree.Children.Where(x => HasValidDisplayOrder(x)).OrderBy(x => GetDisplayOrder(x)).ToImmutableArray();
+            return projectTree.Children.Where(HasValidDisplayOrder).OrderBy(GetDisplayOrder).ToImmutableArray();
         }
 
         /// <summary>
