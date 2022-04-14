@@ -952,74 +952,85 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             Assert.True(((IVersionedLaunchSettings)provider.CurrentSnapshot).Version >= 123);
         }
 
-        private readonly string JsonString1 = @"{
-  ""profiles"": {
-  ""IIS Express"":
-    {
-      ""commandName"": ""IISExpress"",
-      ""launchUrl"": ""http://localhost:1234:/test.html"",
-      ""launchBrowser"": true
-    },
-    ""HasCustomValues"":
-    {
-      ""executablePath"": ""c:\\test\\project\\bin\\project.exe"",
-      ""workingDirectory"": ""c:\\test\\project"",
-      ""commandLineArgs"": ""--arg1 --arg2"",
-      ""custom1"": true,
-      ""custom2"": 124,
-      ""custom3"": ""mycustomVal""
-    },
-    ""Docker"":
-    {
-      ""commandName"": ""Docker"",
-      ""launchBrowser"": false,
-      ""dockerOption1"": ""some option in docker"",
-      ""dockerOption2"": ""Another option in docker""
-    },
-    ""web"":
-    {
-      ""commandName"": ""Project"",
-      ""launchBrowser"": true,
-      ""environmentVariables"": {
-        ""ASPNET_ENVIRONMENT"": ""Development"",
-        ""ASPNET_APPLICATIONBASE"": ""c:\\Users\\billhie\\Documents\\projects\\WebApplication8\\src\\WebApplication8""
-      }
-    }
-  }
-}";
-        private readonly string JsonStringWithWebSettings = @"{
-  ""iisSettings"": {
-    ""windowsAuthentication"": true,
-    ""anonymousAuthentication"": false,
-    ""iisExpress"": {
-      ""applicationUrl"": ""http://localhost:12345/"",
-      ""sslPort"": 44301
-    }
-  },
-  ""profiles"": {
-    ""IIS Express"": {
-      ""commandName"": ""IISExpress"",
-      ""launchBrowser"": true
-    },
-    ""bar"": {
-      ""executablePath"": ""c:\\test\\project\\bin\\test.exe"",
-      ""commandLineArgs"": ""-someArg""
-    }
-  }
-}";
-        private readonly string BadJsonString = @"{
-  ""profiles"": {
-    {
-      ""name"": ""IIS Express"",
-      ""launchBrowser"": ""True""
-    },
-    },
-    {
-      ""Name"": ""bar"",
-      ""launchBrowser"": ""False""
-    }
-  }
-}";
+        private readonly string JsonString1 =
+            """
+            {
+              "profiles": {
+              "IIS Express":
+                {
+                  "commandName": "IISExpress",
+                  "launchUrl": "http://localhost:1234:/test.html",
+                  "launchBrowser": true
+                },
+                "HasCustomValues":
+                {
+                  "executablePath": "c:\\test\\project\\bin\\project.exe",
+                  "workingDirectory": "c:\\test\\project",
+                  "commandLineArgs": "--arg1 --arg2",
+                  "custom1": true,
+                  "custom2": 124,
+                  "custom3": "mycustomVal"
+                },
+                "Docker":
+                {
+                  "commandName": "Docker",
+                  "launchBrowser": false,
+                  "dockerOption1": "some option in docker",
+                  "dockerOption2": "Another option in docker"
+                },
+                "web":
+                {
+                  "commandName": "Project",
+                  "launchBrowser": true,
+                  "environmentVariables": {
+                    "ASPNET_ENVIRONMENT": "Development",
+                    "ASPNET_APPLICATIONBASE": "c:\\Users\\billhie\\Documents\\projects\\WebApplication8\\src\\WebApplication8"
+                  }
+                }
+              }
+            }
+            """;
+
+        private readonly string JsonStringWithWebSettings =
+            """
+            {
+              "iisSettings": {
+                "windowsAuthentication": true,
+                "anonymousAuthentication": false,
+                "iisExpress": {
+                  "applicationUrl": "http://localhost:12345/",
+                  "sslPort": 44301
+                }
+              },
+              "profiles": {
+                "IIS Express": {
+                  "commandName": "IISExpress",
+                  "launchBrowser": true
+                },
+                "bar": {
+                  "executablePath": "c:\\test\\project\\bin\\test.exe",
+                  "commandLineArgs": "-someArg"
+                }
+              }
+            }
+            """;
+
+        private readonly string BadJsonString =
+            """
+            {
+              "profiles": {
+                {
+                  "name": "IIS Express",
+                  "launchBrowser": "True"
+                },
+                },
+                {
+                  "Name": "bar",
+                  "launchBrowser": "False"
+                }
+              }
+            }
+            """;
     }
 
     // Derives from base class to be able to set protected members

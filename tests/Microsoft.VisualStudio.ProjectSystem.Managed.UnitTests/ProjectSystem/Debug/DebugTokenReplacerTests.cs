@@ -91,16 +91,19 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             activeDebugFramework.Setup(s => s.GetConfiguredProjectForActiveFrameworkAsync())
                 .Returns(() => Task.FromResult<ConfiguredProject?>(ConfiguredProjectFactory.Create()));
 
-            string projectFile = @"<Project>
-                <PropertyGroup>
-                    <msbuildProperty1>Property1</msbuildProperty1>
-                    <msbuildProperty2>Property2</msbuildProperty2>
-                    <msbuildProperty3>Property3</msbuildProperty3>
-                    <msbuildProperty4>Property4</msbuildProperty4>
-                    <msbuildProperty5>Property5</msbuildProperty5>
-                    <msbuildProperty6>Property6</msbuildProperty6>
-                </PropertyGroup>
-                </Project>";
+            string projectFile =
+                """
+                <Project>
+                    <PropertyGroup>
+                        <msbuildProperty1>Property1</msbuildProperty1>
+                        <msbuildProperty2>Property2</msbuildProperty2>
+                        <msbuildProperty3>Property3</msbuildProperty3>
+                        <msbuildProperty4>Property4</msbuildProperty4>
+                        <msbuildProperty5>Property5</msbuildProperty5>
+                        <msbuildProperty6>Property6</msbuildProperty6>
+                    </PropertyGroup>
+                </Project>
+                """;
 
             return new DebugTokenReplacer(environmentHelper, activeDebugFramework.Object, IProjectAccessorFactory.Create(projectFile));
         }
