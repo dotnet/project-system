@@ -102,7 +102,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
                 name: "MyApplication",
                 commandName: "Project",
                 commandLineArgs: "--someArgs",
-                otherSettings: new Dictionary<string, object> { { LaunchProfileExtensions.NativeDebuggingProperty, true } });
+                otherSettings: ImmutableArray.Create<(string, object)>((LaunchProfileExtensions.NativeDebuggingProperty, (object)true)));
             var targets = await debugger.QueryDebugTargetsAsync(0, activeProfile);
             Assert.Single(targets);
             Assert.Equal(@"c:\program files\dotnet\dotnet.exe", targets[0].Executable);
@@ -122,7 +122,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
                 name: "MyApplication",
                 commandName: "Project",
                 commandLineArgs: "--someArgs",
-                environmentVariables: new Dictionary<string, string> { { "var1", "Value1" } });
+                environmentVariables: ImmutableArray.Create(("var1", "Value1")));
 
             var targets = await debugger.QueryDebugTargetsAsync(DebugLaunchOptions.NoDebug, activeProfile);
             Assert.Single(targets);
@@ -176,7 +176,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
                 commandName: null, 
                 commandLineArgs: "--someArgs",
                 executablePath: @"c:\test\Project\someapp.exe",
-                environmentVariables: new Dictionary<string, string> { { "var1", "Value1" } });
+                environmentVariables: ImmutableArray.Create(("var1", "Value1")));
             var targets = await debugger.QueryDebugTargetsAsync(DebugLaunchOptions.NoDebug, activeProfile);
             Assert.Single(targets);
             Assert.Equal(activeProfile.ExecutablePath, targets[0].Executable);

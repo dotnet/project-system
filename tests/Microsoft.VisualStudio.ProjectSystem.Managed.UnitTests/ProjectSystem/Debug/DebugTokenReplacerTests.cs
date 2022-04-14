@@ -50,7 +50,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
 
             var launchProfile = new LaunchProfile(data);
 
-            var resolvedProfile = await replacer.ReplaceTokensInProfileAsync(launchProfile);
+            var resolvedProfile = (ILaunchProfile2)await replacer.ReplaceTokensInProfileAsync(launchProfile);
 
             // Name and Command name should never be touched
             Assert.Equal("$(msbuildProperty1)", resolvedProfile.Name);
@@ -60,10 +60,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             Assert.False(resolvedProfile.LaunchBrowser);
             Assert.Equal("http://localhost:8080/", resolvedProfile.LaunchUrl);
             Assert.Equal("c:\\test\\Property6", resolvedProfile.WorkingDirectory);
-            Assert.Equal("envVariable1", resolvedProfile.EnvironmentVariables?["var1"]);
-            Assert.Equal("Property3", resolvedProfile.EnvironmentVariables?["var2"]);
-            Assert.Equal("envVariable1", resolvedProfile.OtherSettings?["setting1"]);
-            Assert.True((bool?)resolvedProfile.OtherSettings?["setting2"]);
+            Assert.Equal(new[] { ("var1", "envVariable1"), ("var2", "Property3") }, resolvedProfile.EnvironmentVariables);
+            Assert.Equal(new[] { ("setting1", (object)"envVariable1"), ("setting2", true) }, resolvedProfile.OtherSettings);
         }
 
         [Theory]

@@ -323,8 +323,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
                 activeProfileOtherSettings: activeProfileOtherSettings,
                 updateLaunchSettingsCallback: s =>
                 {
-                    Assumes.NotNull(s.ActiveProfile?.OtherSettings);
-                    activeProfileAuthenticationMode = (string)s.ActiveProfile.OtherSettings[LaunchProfileExtensions.RemoteAuthenticationModeProperty];
+                    Assert.NotNull(s.ActiveProfile);
+                    Assert.True(s.ActiveProfile.TryGetSetting(LaunchProfileExtensions.RemoteAuthenticationModeProperty, out object? value));
+                    activeProfileAuthenticationMode = (string)value;
                 });
 
             var provider = new ActiveLaunchProfileExtensionValueProvider(settingsProvider);
@@ -366,8 +367,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
                 activeProfileOtherSettings: activeProfileOtherSettings,
                 updateLaunchSettingsCallback: s =>
                 {
-                    Assumes.NotNull(s.ActiveProfile?.OtherSettings);
-                    activeProfileNativeDebugging = (bool)s.ActiveProfile.OtherSettings[LaunchProfileExtensions.NativeDebuggingProperty];
+                    Assert.NotNull(s.ActiveProfile);
+                    Assert.True(s.ActiveProfile.TryGetSetting(LaunchProfileExtensions.NativeDebuggingProperty, out object? value));
+                    activeProfileNativeDebugging = (bool)value;
                 });
 
             var provider = new ActiveLaunchProfileExtensionValueProvider(settingsProvider);
@@ -409,8 +411,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
                 activeProfileOtherSettings: activeProfileOtherSettings,
                 updateLaunchSettingsCallback: s =>
                 {
-                    Assumes.NotNull(s.ActiveProfile?.OtherSettings);
-                    activeProfileRemoteDebugEnabled = (bool)s.ActiveProfile.OtherSettings[LaunchProfileExtensions.RemoteDebugEnabledProperty];
+                    Assert.NotNull(s.ActiveProfile);
+                    Assert.True(s.ActiveProfile.TryGetSetting(LaunchProfileExtensions.RemoteDebugEnabledProperty, out object? value));
+                    activeProfileRemoteDebugEnabled = (bool)value;
                 });
 
             var provider = new ActiveLaunchProfileExtensionValueProvider(settingsProvider);
@@ -452,8 +455,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
                 activeProfileOtherSettings: activeProfileOtherSettings,
                 updateLaunchSettingsCallback: s =>
                 {
-                    Assumes.NotNull(s.ActiveProfile?.OtherSettings);
-                    activeProfileRemoteMachineName = (string)s.ActiveProfile.OtherSettings[LaunchProfileExtensions.RemoteDebugMachineProperty];
+                    Assert.NotNull(s.ActiveProfile);
+                    Assert.True(s.ActiveProfile.TryGetSetting(LaunchProfileExtensions.RemoteDebugMachineProperty, out object? value));
+                    activeProfileRemoteMachineName = (string)value;
                 });
 
             var provider = new ActiveLaunchProfileExtensionValueProvider(settingsProvider);
@@ -495,8 +499,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
                 activeProfileOtherSettings: activeProfileOtherSettings,
                 updateLaunchSettingsCallback: s =>
                 {
-                    Assumes.NotNull(s.ActiveProfile?.OtherSettings);
-                    activeProfileSqlDebugEnabled = (bool)s.ActiveProfile.OtherSettings[LaunchProfileExtensions.SqlDebuggingProperty];
+                    Assert.NotNull(s.ActiveProfile);
+                    Assert.True(s.ActiveProfile.TryGetSetting(LaunchProfileExtensions.SqlDebuggingProperty, out object? value));
+                    activeProfileSqlDebugEnabled = (bool)value;
                 });
 
             var provider = new ActiveLaunchProfileExtensionValueProvider(settingsProvider);
@@ -551,15 +556,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
                 { "Alpha", "one" }
             };
 
-            ImmutableDictionary<string, string>? updatedEnvironmentVariables = null;
+            ImmutableArray<(string, string)>? updatedEnvironmentVariables = null;
 
             var settingsProvider = SetupLaunchSettingsProvider(
                 activeProfileName: "One",
                 activeProfileEnvironmentVariables: activeProfileEnvironmentVariables,
                 updateLaunchSettingsCallback: s =>
                 {
-                    Assumes.NotNull(s.ActiveProfile?.EnvironmentVariables);
-                    updatedEnvironmentVariables = s.ActiveProfile?.EnvironmentVariables;
+                    var vars = s.ActiveProfile?.FlattenEnvironmentVariables();
+                    Assumes.NotNull(vars);
+                    updatedEnvironmentVariables = vars;
                 });
 
             var project = UnconfiguredProjectFactory.Create();
@@ -568,9 +574,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
 
             await provider.OnSetPropertyValueAsync(ActiveLaunchProfileEnvironmentVariableValueProvider.EnvironmentVariablesPropertyName, "Alpha=Equals: /= Comma: /, Slash: //,Beta=two", Mock.Of<IProjectProperties>());
 
-            Assumes.NotNull(updatedEnvironmentVariables);
-            Assert.Equal(expected: "Equals: = Comma: , Slash: /", actual: updatedEnvironmentVariables["Alpha"]);
-            Assert.Equal(expected: "two", actual: updatedEnvironmentVariables["Beta"]);
+            Assert.NotNull(updatedEnvironmentVariables);
+            Assert.Equal(
+                expected: new[] { ("Alpha", "Equals: = Comma: , Slash: /"), ("Beta", "two") },
+                actual: updatedEnvironmentVariables);
         }
 
         private static ILaunchSettingsProvider SetupLaunchSettingsProvider(

@@ -3,7 +3,8 @@
 namespace Microsoft.VisualStudio.Collections
 {
     /// <summary>
-    /// Provides simple dictionary equality checks.
+    /// Compares <see cref="Dictionary{TKey, TValue}"/> instances for equality of keys and values.
+    /// Also compares equality of item order.
     /// </summary>
     /// <typeparam name="TKey">The type of key in the dictionaries to compare.</typeparam>
     /// <typeparam name="TValue">The type of value in the dictionaries to compare.</typeparam>
@@ -25,24 +26,64 @@ namespace Microsoft.VisualStudio.Collections
         /// <summary>
         /// Checks two dictionaries for equality.
         /// </summary>
-        public bool Equals(IImmutableDictionary<TKey, TValue>? x, IImmutableDictionary<TKey, TValue>? y)
+        public bool Equals(Dictionary<TKey, TValue>? x, Dictionary<TKey, TValue>? y)
         {
-            return AreEquivalent(x, y);
+            if (ReferenceEquals(x, y))
+            {
+                return true;
+            }
+
+            if (x == null || y == null)
+            {
+                return false;
+            }
+
+            if (x.Count != y.Count)
+            {
+                return false;
+            }
+
+            if (x.Count == 0)
+            {
+                // both dictionaries are empty, so bail out early to avoid
+                // enumerator allocation
+                return true;
+            }
+
+            // NOTE this uses the comparer from x, not from y
+            IEqualityComparer<TKey> keyComparer = x.Comparer ?? EqualityComparer<TKey>.Default;
+            IEqualityComparer<TValue> valueComparer = EqualityComparer<TValue>.Default;
+
+            // Compare items based on their order, as we care about preserving order in launch profiles
+            using Dictionary<TKey, TValue>.Enumerator enumerator1 = x.GetEnumerator();
+            using Dictionary<TKey, TValue>.Enumerator enumerator2 = y.GetEnumerator();
+
+            while (enumerator1.MoveNext() && enumerator2.MoveNext())
+            {
+                (TKey key1, TValue value1) = enumerator1.Current;
+                (TKey key2, TValue value2) = enumerator2.Current;
+
+                if (!keyComparer.Equals(key1, key2) || !valueComparer.Equals(value1, value2))
+                {
+                    return false;
+                }
+            }
+
+            return true;
         }
 
         /// <summary>
         /// Calculates a hash code for a dictionary.
         /// </summary>
-        public int GetHashCode(IImmutableDictionary<TKey, TValue> obj)
+        public int GetHashCode(Dictionary<TKey, TValue> obj)
         {
             int hashCode = 0;
 
-            var concreteDictionary1 = obj as ImmutableDictionary<TKey, TValue>;
-            IEqualityComparer<TKey> keyComparer = concreteDictionary1 != null ? concreteDictionary1.KeyComparer : EqualityComparer<TKey>.Default;
-            IEqualityComparer<TValue> valueComparer = concreteDictionary1 != null ? concreteDictionary1.ValueComparer : EqualityComparer<TValue>.Default;
-
             if (obj != null)
             {
+                IEqualityComparer<TKey> keyComparer = obj.Comparer ?? EqualityComparer<TKey>.Default;
+                IEqualityComparer<TValue> valueComparer = EqualityComparer<TValue>.Default;
+
                 foreach ((TKey key, TValue value) in obj)
                 {
                     hashCode += keyComparer.GetHashCode(key) ^ valueComparer.GetHashCode(value);
@@ -50,64 +91,6 @@ namespace Microsoft.VisualStudio.Collections
             }
 
             return hashCode;
-        }
-        /// <summary>
-        /// Tests two dictionaries to see if their contents are identical.
-        /// </summary>
-        private static bool AreEquivalent(IImmutableDictionary<TKey, TValue>? dictionary1, IImmutableDictionary<TKey, TValue>? dictionary2)
-        {
-            if (ReferenceEquals(dictionary1, dictionary2))
-            {
-                return true;
-            }
-
-            if (dictionary1 == null || dictionary2 == null)
-            {
-                return false;
-            }
-
-            IEqualityComparer<TValue> valueComparer = dictionary1 is ImmutableDictionary<TKey, TValue> concreteDictionary1 ? concreteDictionary1.ValueComparer : EqualityComparer<TValue>.Default;
-            return AreEquivalent(dictionary1, dictionary2, valueComparer);
-        }
-
-        /// <summary>
-        /// Tests two dictionaries to see if their contents are identical.
-        /// </summary>
-        private static bool AreEquivalent(IReadOnlyDictionary<TKey, TValue>? dictionary1, IReadOnlyDictionary<TKey, TValue>? dictionary2, IEqualityComparer<TValue> valueComparer)
-        {
-            Requires.NotNull(valueComparer, nameof(valueComparer));
-
-            if (ReferenceEquals(dictionary1, dictionary2))
-            {
-                return true;
-            }
-
-            if (dictionary1 == null || dictionary2 == null)
-            {
-                return false;
-            }
-
-            if (dictionary1.Count != dictionary2.Count)
-            {
-                return false;
-            }
-
-            if (dictionary1.Count == 0)
-            {
-                // both dictionaries are empty, so bail out early to avoid
-                // allocating an IEnumerator.
-                return true;
-            }
-
-            foreach ((TKey key, TValue value1) in dictionary1)
-            {
-                if (!dictionary2.TryGetValue(key, out TValue value2) || !valueComparer.Equals(value1, value2))
-                {
-                    return false;
-                }
-            }
-
-            return true;
         }
     }
 }

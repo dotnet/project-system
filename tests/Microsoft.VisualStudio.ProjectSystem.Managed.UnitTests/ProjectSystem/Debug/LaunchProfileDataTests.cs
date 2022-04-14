@@ -1,6 +1,5 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
-using System.Collections;
 using Microsoft.VisualStudio.Collections;
 using Newtonsoft.Json.Linq;
 
@@ -21,8 +20,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
                 workingDirectory: "c:\\working\\directory\\",
                 launchBrowser: true,
                 launchUrl: "LaunchPage.html",
-                environmentVariables: new Dictionary<string, string>() { { "var1", "Value1" }, { "var2", "Value2" } },
-                otherSettings: new Dictionary<string, object>(StringComparer.Ordinal) { { "setting1", true }, { "setting2", "mysetting" } },
+                environmentVariables: ImmutableArray.Create(("var1", "Value1"), ("var2", "Value2")),
+                otherSettings: ImmutableArray.Create(("setting1", (object)true), ("setting2", "mysetting")),
                 doNotPersist: isInMemory);
 
             var data = LaunchProfileData.FromILaunchProfile(profile);
@@ -33,8 +32,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             Assert.Equal(data.WorkingDirectory, profile.WorkingDirectory);
             Assert.Equal(data.LaunchBrowser, profile.LaunchBrowser);
             Assert.Equal(data.LaunchUrl, profile.LaunchUrl);
-            Assert.Equal(data.EnvironmentVariables!.ToImmutableDictionary(), profile.EnvironmentVariables, DictionaryEqualityComparer<string, string>.Instance);
-            Assert.True(DictionaryEqualityComparer<string, string>.Instance.Equals(data.EnvironmentVariables!.ToImmutableDictionary(), profile.EnvironmentVariables));
+            Assert.NotNull(data.EnvironmentVariables);
+            Assert.Equal(data.EnvironmentVariables.Select(pair => (pair.Key, pair.Value)), profile.EnvironmentVariables);
+            Assert.NotNull(data.OtherSettings);
+            Assert.Equal(data.OtherSettings.Select(pair => (pair.Key, pair.Value)), profile.OtherSettings);
             Assert.Equal(isInMemory, data.InMemoryProfile);
         }
 
@@ -147,8 +148,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             AssertEx.CollectionLength(serializableProfile, 3);
             Assert.Equal("Project", serializableProfile["commandName"]);
             Assert.True((bool)serializableProfile["launchBrowser"]);
-            Assert.Equal("Development", ((IDictionary)serializableProfile["environmentVariables"])["ASPNET_ENVIRONMENT"]);
-            Assert.Equal("c:\\Users\\billhie\\Documents\\projects\\WebApplication8\\src\\WebApplication8", ((IDictionary)serializableProfile["environmentVariables"])["ASPNET_APPLICATIONBASE"]);
+            Assert.Equal(
+                new Dictionary<string, string>
+                {
+                    { "ASPNET_ENVIRONMENT", "Development" },
+                    { "ASPNET_APPLICATIONBASE", "c:\\Users\\billhie\\Documents\\projects\\WebApplication8\\src\\WebApplication8" }
+                },
+                (Dictionary<string, string>)serializableProfile["environmentVariables"],
+                DictionaryEqualityComparer<string, string>.Instance);
+
+
         }
 
         // Json string data

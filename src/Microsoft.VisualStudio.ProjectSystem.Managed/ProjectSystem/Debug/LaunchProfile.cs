@@ -7,7 +7,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
     /// <summary>
     /// Represents one launch profile read from the launchSettings file.
     /// </summary>
-    internal class LaunchProfile : ILaunchProfile, IPersistOption
+    internal class LaunchProfile : ILaunchProfile2, IPersistOption
     {
         public static LaunchProfile Clone(ILaunchProfile profile)
         {
@@ -42,44 +42,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         /// <returns>A profile with tokens substituted.</returns>
         internal static async Task<LaunchProfile> ReplaceTokensAsync(ILaunchProfile profile, Func<string, Task<string>> replaceAsync)
         {
-            ImmutableDictionary<string, string>? environmentVariables = profile.EnvironmentVariables;
-            ImmutableDictionary<string, object>? otherSettings = profile.OtherSettings;
-
-            if (environmentVariables != null)
-            {
-                foreach ((string key, string value) in environmentVariables)
-                {
-                    environmentVariables = environmentVariables.SetItem(key, await replaceAsync(value));
-                }
-            }
-
-            if (otherSettings != null)
-            {
-                foreach ((string key, object value) in otherSettings)
-                {
-                    if (value is string s)
-                    {
-                        otherSettings = otherSettings.SetItem(key, await replaceAsync(s));
-                    }
-                }
-            }
-
-            ImmutableArray<string> environmentVariablesKeyOrder;
-            ImmutableArray<string> otherSettingsKeyOrder;
-
-            if (profile is LaunchProfile launchProfile)
-            {
-                // Preserve the order of keys
-                environmentVariablesKeyOrder = launchProfile.EnvironmentVariablesKeyOrder;
-                otherSettingsKeyOrder = launchProfile.OtherSettingsKeyOrder;
-            }
-            else
-            {
-                // We don't know the order here, so just use dictionary order (which will be randomised by hash codes)
-                environmentVariablesKeyOrder = GetKeys(environmentVariables);
-                otherSettingsKeyOrder = GetKeys(otherSettings);
-            }
-
             return new(
                 name: profile.Name,
                 commandName: profile.CommandName,
@@ -89,10 +51,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
                 launchBrowser: profile.LaunchBrowser,
                 launchUrl: await ReplaceOrNullAsync(profile.LaunchUrl),
                 doNotPersist: profile.IsInMemoryObject(),
-                environmentVariables: environmentVariables,
-                otherSettings: otherSettings,
-                environmentVariablesKeyOrder: environmentVariablesKeyOrder,
-                otherSettingsKeyOrder: otherSettingsKeyOrder);
+                environmentVariables: await GetEnvironmentVariablesAsync(),
+                otherSettings: await GetOtherSettingsAsync());
 
             Task<string?> ReplaceOrNullAsync(string? s)
             {
@@ -102,6 +62,68 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
                 }
 
                 return replaceAsync(s)!;
+            }
+
+            Task<ImmutableArray<(string Key, string Value)>> GetEnvironmentVariablesAsync()
+            {
+                return profile switch
+                {
+                    ILaunchProfile2 profile2 => ReplaceValuesAsync(profile2.EnvironmentVariables, replaceAsync),
+                    _ => ReplaceValuesAsync(profile.FlattenEnvironmentVariables(), replaceAsync)
+                };
+            }
+
+            Task<ImmutableArray<(string Key, object Value)>> GetOtherSettingsAsync()
+            {
+                return profile switch
+                {
+                    ILaunchProfile2 profile2 => ReplaceValuesAsync(profile2.OtherSettings, ReplaceIfString),
+                    _ => ReplaceValuesAsync(profile.FlattenOtherSettings(), ReplaceIfString)
+                };
+
+                async Task<object> ReplaceIfString(object o)
+                {
+                    return o switch
+                    {
+                        string s => await replaceAsync(s),
+                        _ => o
+                    };
+                }
+            }
+
+            static async Task<ImmutableArray<(string Key, T Value)>> ReplaceValuesAsync<T>(ImmutableArray<(string Key, T Value)> source, Func<T, Task<T>> replaceAsync)
+                where T : class
+            {
+                // We will only allocate a new array if a substituion is made
+                ImmutableArray<(string, T)>.Builder? builder = null;
+
+                for (int index = 0; index < source.Length; index++)
+                {
+                    (string key, T value) = source[index];
+
+                    T replaced = await replaceAsync(value);
+
+                    if (!ReferenceEquals(value, replaced))
+                    {
+                        // The value had at least one token substitution.
+                        if (builder is null)
+                        {
+                            // Init the builder.
+                            builder = ImmutableArray.CreateBuilder<(string, T)>(source.Length);
+
+                            if (index != 0)
+                            {
+                                // Copy any unsubstituted values up until this point.
+                                builder.AddRange(source, index);
+                            }
+                        }
+                    }
+
+                    builder?.Add((key, (T)replaced));
+                }
+
+                // Return the source unchanged if there were no substitutions made.
+                return builder?.MoveToImmutable() ?? source;
             }
         }
 
@@ -114,8 +136,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             bool launchBrowser = false,
             string? launchUrl = null,
             bool doNotPersist = false,
-            Dictionary<string, string>? environmentVariables = null,
-            Dictionary<string, object>? otherSettings = null)
+            ImmutableArray<(string Key, string Value)> environmentVariables = default,
+            ImmutableArray<(string Key, object Value)> otherSettings = default)
         {
             Name = name;
             CommandName = commandName;
@@ -126,35 +148,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             LaunchUrl = launchUrl;
             DoNotPersist = doNotPersist;
 
-            AssignFromDictionaries(environmentVariables, otherSettings);
-        }
-
-        private LaunchProfile(
-            string? name,
-            string? commandName,
-            string? executablePath,
-            string? commandLineArgs,
-            string? workingDirectory,
-            bool launchBrowser,
-            string? launchUrl,
-            bool doNotPersist,
-            ImmutableDictionary<string, string>? environmentVariables,
-            ImmutableDictionary<string, object>? otherSettings,
-            ImmutableArray<string> environmentVariablesKeyOrder,
-            ImmutableArray<string> otherSettingsKeyOrder)
-        {
-            Name = name;
-            CommandName = commandName;
-            ExecutablePath = executablePath;
-            CommandLineArgs = commandLineArgs;
-            WorkingDirectory = workingDirectory;
-            LaunchBrowser = launchBrowser;
-            LaunchUrl = launchUrl;
-            DoNotPersist = doNotPersist;
-            EnvironmentVariables = environmentVariables;
-            OtherSettings = otherSettings;
-            EnvironmentVariablesKeyOrder = environmentVariablesKeyOrder;
-            OtherSettingsKeyOrder = otherSettingsKeyOrder;
+            EnvironmentVariables = environmentVariables.IsDefault
+                ? ImmutableArray<(string Key, string Value)>.Empty
+                : environmentVariables;
+            OtherSettings = otherSettings.IsDefault
+                ? ImmutableArray<(string Key, object Value)>.Empty
+                : otherSettings;
         }
 
         public LaunchProfile(LaunchProfileData data)
@@ -166,9 +165,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             WorkingDirectory = data.WorkingDirectory;
             LaunchBrowser = data.LaunchBrowser ?? false;
             LaunchUrl = data.LaunchUrl;
+            EnvironmentVariables = Flatten(data.EnvironmentVariables);
+            OtherSettings = Flatten(data.OtherSettings);
             DoNotPersist = data.InMemoryProfile;
-
-            AssignFromDictionaries(data.EnvironmentVariables, data.OtherSettings);
         }
 
         /// <summary>
@@ -184,25 +183,26 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             WorkingDirectory = writableProfile.WorkingDirectory;
             LaunchBrowser = writableProfile.LaunchBrowser;
             LaunchUrl = writableProfile.LaunchUrl;
+            EnvironmentVariables = Flatten(writableProfile.EnvironmentVariables);
+            OtherSettings = Flatten(writableProfile.OtherSettings);
             DoNotPersist = writableProfile.IsInMemoryObject();
-
-            AssignFromDictionaries(writableProfile.EnvironmentVariables, writableProfile.OtherSettings);
         }
 
-        private void AssignFromDictionaries(Dictionary<string, string>? environmentVariables, Dictionary<string, object>? otherSettings)
+        private static ImmutableArray<(string, T)> Flatten<T>(Dictionary<string, T>? dictionary)
         {
-            // If there are no env variables or settings we want to set them to null
-            EnvironmentVariables = environmentVariables is { Count: not 0 } envVars ? envVars.ToImmutableDictionary() : null;
-            OtherSettings = otherSettings is { Count: not 0 } others ? others.ToImmutableDictionary() : null;
+            if (dictionary is null)
+            {
+                return ImmutableArray<(string, T)>.Empty;
+            }
 
-            // Dictionary<,> maintains the order of its keys, while ImmutableDictionary<,> does not.
-            // We convert to immutable here, and also retain the keys in their original order.
-            // This allows us to round-trip these collections without reordering their values.
-            // Ideally we would have declared these properties as IImmutableDictionary<,> and used
-            // an order preserving implementation, but the interface is public and has already shipped
-            // so cannot be changed.
-            EnvironmentVariablesKeyOrder = GetKeys(environmentVariables);
-            OtherSettingsKeyOrder = GetKeys(otherSettings);
+            ImmutableArray<(string, T)>.Builder builder = ImmutableArray.CreateBuilder<(string, T)>(dictionary.Count);
+
+            foreach ((string key, T value) in dictionary)
+            {
+                builder.Add(new(key, value));
+            }
+
+            return builder.MoveToImmutable();
         }
 
         public string? Name { get; }
@@ -214,11 +214,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         public string? LaunchUrl { get; }
         public bool DoNotPersist { get; }
 
-        public ImmutableDictionary<string, string>? EnvironmentVariables { get; private set; }
-        public ImmutableDictionary<string, object>? OtherSettings { get; private set; }
+        public ImmutableArray<(string Key, string Value)> EnvironmentVariables { get; }
+        public ImmutableArray<(string Key, object Value)> OtherSettings { get; }
 
-        public ImmutableArray<string> EnvironmentVariablesKeyOrder { get; private set; }
-        public ImmutableArray<string> OtherSettingsKeyOrder { get; private set; }
+        ImmutableDictionary<string, string>? ILaunchProfile.EnvironmentVariables => EnvironmentVariables.ToImmutableDictionary(pairs => pairs.Key, pairs => pairs.Value, StringComparers.EnvironmentVariableNames);
+        ImmutableDictionary<string, object>? ILaunchProfile.OtherSettings => OtherSettings.ToImmutableDictionary(pairs => pairs.Key, pairs => pairs.Value, StringComparers.LaunchProfileProperties);
 
         /// <summary>
         /// Compares two profile names. Using this function ensures case comparison consistency
@@ -226,11 +226,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         public static bool IsSameProfileName(string? name1, string? name2)
         {
             return string.Equals(name1, name2, StringComparisons.LaunchProfileNames);
-        }
-
-        private static ImmutableArray<string> GetKeys<T>(IReadOnlyDictionary<string, T>? dic)
-        {
-            return dic?.Keys.OrderBy(key => key).ToImmutableArray() ?? ImmutableArray<string>.Empty;
         }
     }
 }

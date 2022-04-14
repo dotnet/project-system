@@ -155,12 +155,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
                 }
             }
 
-            if (profile.OtherSettings is not null)
+            foreach ((string propertyName, _) in profile.EnumerateOtherSettings())
             {
-                foreach ((string propertyName, _) in profile.OtherSettings)
-                {
-                    builder.Add(propertyName);
-                }
+                builder.Add(propertyName);
             }
 
             return builder.ToImmutable();
@@ -298,8 +295,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
 
         private string? GetOtherSettingsPropertyValue(string propertyName, ILaunchProfile profile)
         {
-            if (profile.OtherSettings is not null
-                && profile.OtherSettings.TryGetValue(propertyName, out object? valueObject))
+            if (profile.TryGetSetting(propertyName, out object? valueObject))
             {
                 if (_rule?.GetProperty(propertyName) is BaseProperty property)
                 {

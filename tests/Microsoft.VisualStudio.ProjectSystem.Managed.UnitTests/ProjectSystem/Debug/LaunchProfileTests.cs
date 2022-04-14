@@ -1,7 +1,5 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
-using Microsoft.VisualStudio.Collections;
-
 namespace Microsoft.VisualStudio.ProjectSystem.Debug
 {
     public class LaunchProfileTests
@@ -24,14 +22,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             };
 
             var profile = new LaunchProfile(data);
+
             Assert.Equal(data.Name, profile.Name);
             Assert.Equal(data.ExecutablePath, profile.ExecutablePath);
             Assert.Equal(data.CommandLineArgs, profile.CommandLineArgs);
             Assert.Equal(data.WorkingDirectory, profile.WorkingDirectory);
             Assert.Equal(data.LaunchBrowser, profile.LaunchBrowser);
             Assert.Equal(data.LaunchUrl, profile.LaunchUrl);
-            Assert.True(DictionaryEqualityComparer<string, string>.Instance.Equals(data.EnvironmentVariables.ToImmutableDictionary(), profile.EnvironmentVariables));
-            Assert.True(DictionaryEqualityComparer<string, object>.Instance.Equals(data.OtherSettings.ToImmutableDictionary(), profile.OtherSettings));
+            Assert.Equal(data.EnvironmentVariables.Select(pair => (pair.Key, pair.Value)), profile.EnvironmentVariables);
+            Assert.Equal(data.OtherSettings.Select(pair => (pair.Key, pair.Value)), profile.OtherSettings);
             Assert.Equal(data.InMemoryProfile, profile.DoNotPersist);
 
             // Test overload

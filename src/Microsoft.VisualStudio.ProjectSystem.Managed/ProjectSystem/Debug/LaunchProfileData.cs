@@ -114,7 +114,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
 
                             if (value != null)
                             {
-                                customSettings.Add(property.Name, value);
+                                customSettings[property.Name] = value;
                             }
                         }
                         catch
@@ -176,17 +176,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
                 data.Add(Prop_launchUrl, profile.LaunchUrl);
             }
 
-            if (profile.EnvironmentVariables != null)
+            var vars = profile.GetEnvironmentVariablesDictionary();
+
+            if (vars is not null)
             {
-                data.Add(Prop_environmentVariables, profile.GetEnvironmentVariablesDictionary()!);
+                data.Add(Prop_environmentVariables, vars);
             }
 
-            if (profile.OtherSettings != null)
+            foreach ((string key, object value) in profile.EnumerateOtherSettings())
             {
-                foreach ((string key, object value) in profile.OtherSettings)
-                {
-                    data.Add(key, value);
-                }
+                data.Add(key, value);
             }
 
             return data;

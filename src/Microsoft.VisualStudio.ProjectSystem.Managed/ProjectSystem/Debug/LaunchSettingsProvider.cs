@@ -320,7 +320,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
                         name: Resources.NoActionProfileName,
                         commandName: ErrorProfileCommandName,
                         doNotPersist: true,
-                        otherSettings: new Dictionary<string, object> { { "ErrorString", ex.Message } });
+                        otherSettings: ImmutableArray.Create(("ErrorString", (object)ex.Message)));
                     var snapshot = new LaunchSettings(new[] { errorProfile }, null, errorProfile.Name, GetNextVersion());
                     FinishUpdate(snapshot);
                 }
