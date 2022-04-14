@@ -54,8 +54,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             else
             {
                 // We don't know the order here, so just use dictionary order (which will be randomised by hash codes)
-                environmentVariablesKeyOrder = environmentVariables?.Keys.ToImmutableArray() ?? ImmutableArray<string>.Empty;
-                otherSettingsKeyOrder = otherSettings?.Keys.ToImmutableArray() ?? ImmutableArray<string>.Empty;
+                environmentVariablesKeyOrder = GetKeys(environmentVariables);
+                otherSettingsKeyOrder = GetKeys(otherSettings);
             }
 
             return new(
@@ -176,8 +176,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             {
                 // We are unable to preserve order on other implementations of ILaunchProfile.
                 // In future we could version the interface to support this.
-                EnvironmentVariablesKeyOrder = existingProfile.EnvironmentVariables?.Keys.ToImmutableArray() ?? ImmutableArray<string>.Empty;
-                OtherSettingsKeyOrder = existingProfile.OtherSettings?.Keys.ToImmutableArray() ?? ImmutableArray<string>.Empty;
+                EnvironmentVariablesKeyOrder = GetKeys(existingProfile.EnvironmentVariables);
+                OtherSettingsKeyOrder = GetKeys(existingProfile.OtherSettings);
             }
         }
 
@@ -207,8 +207,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             // Ideally we would have declared these properties as IImmutableDictionary<,> and used
             // an order preserving implementation, but the interface is public and has already shipped
             // so cannot be changed.
-            EnvironmentVariablesKeyOrder = environmentVariables?.Keys.ToImmutableArray() ?? ImmutableArray<string>.Empty;
-            OtherSettingsKeyOrder = otherSettings?.Keys.ToImmutableArray() ?? ImmutableArray<string>.Empty;
+            EnvironmentVariablesKeyOrder = GetKeys(environmentVariables);
+            OtherSettingsKeyOrder = GetKeys(otherSettings);
         }
 
         public string? Name { get; }
@@ -232,6 +232,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         public static bool IsSameProfileName(string? name1, string? name2)
         {
             return string.Equals(name1, name2, StringComparisons.LaunchProfileNames);
+        }
+
+        private static ImmutableArray<string> GetKeys<T>(IReadOnlyDictionary<string, T>? dic)
+        {
+            return dic?.Keys.OrderBy(key => key).ToImmutableArray() ?? ImmutableArray<string>.Empty;
         }
     }
 }
