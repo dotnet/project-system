@@ -48,6 +48,26 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         }
 
         [Fact]
+        public void Clone_DoesNotCopyIfAlreadyConcreteType()
+        {
+            var source = new LaunchProfile("Name", "Command");
+
+            var clone = LaunchProfile.Clone(source);
+
+            Assert.Same(clone, source);
+        }
+
+        [Fact]
+        public void Clone_CopiesIfUnknownType()
+        {
+            var mock = new Mock<ILaunchProfile>();
+            
+            var clone = LaunchProfile.Clone(mock.Object);
+
+            Assert.NotSame(clone, mock.Object);
+        }
+
+        [Fact]
         public void LaunchProfile_IsSameProfileNameTests()
         {
             Assert.True(LaunchProfile.IsSameProfileName("test", "test"));

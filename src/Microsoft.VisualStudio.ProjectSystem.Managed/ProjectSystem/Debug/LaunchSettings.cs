@@ -16,7 +16,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             Profiles = ImmutableList<ILaunchProfile>.Empty;
             foreach (ILaunchProfile profile in profiles)
             {
-                Profiles = Profiles.Add(new LaunchProfile(profile));
+                Profiles = Profiles.Add(LaunchProfile.Clone(profile));
             }
 
             GlobalSettings = globalSettings == null ? ImmutableStringDictionary<object>.EmptyOrdinal : globalSettings.ToImmutableDictionary();

@@ -833,13 +833,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
 
                 if (addToFront)
                 {
-                    profiles = profiles.Insert(0, new LaunchProfile(profile));
+                    profiles = profiles.Insert(0, LaunchProfile.Clone(profile));
                 }
                 else
                 {
                     // Insertion index will be set to the current count (end of list) if an existing item was not found otherwise
                     // it will point to where the previous one was found
-                    profiles = profiles.Insert(insertionIndex, new LaunchProfile(profile));
+                    profiles = profiles.Insert(insertionIndex, LaunchProfile.Clone(profile));
                 }
 
                 // If the new profile is in-memory only, we don't want to touch the disk unless it replaces an existing disk based

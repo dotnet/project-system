@@ -9,6 +9,28 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
     /// </summary>
     internal class LaunchProfile : ILaunchProfile, IPersistOption
     {
+        public static LaunchProfile Clone(ILaunchProfile profile)
+        {
+            // LaunchProfile is immutable and doesn't need to be cloned.
+            if (profile is LaunchProfile lp)
+            {
+                return lp;
+            }
+
+            // Unknown implementation. Make a defensive copy to a new immutable instance.
+            return new LaunchProfile(
+                name: profile.Name,
+                executablePath: profile.ExecutablePath,
+                commandName: profile.CommandName,
+                commandLineArgs: profile.CommandLineArgs,
+                workingDirectory: profile.WorkingDirectory,
+                launchBrowser: profile.LaunchBrowser,
+                launchUrl: profile.LaunchUrl,
+                environmentVariables: profile.FlattenEnvironmentVariables(),
+                otherSettings: profile.FlattenOtherSettings(),
+                doNotPersist: profile.IsInMemoryObject());
+        }
+
         /// <summary>
         /// Creates a copy of <paramref name="profile"/> in which tokens are replaced via <paramref name="replaceAsync"/>.
         /// </summary>
@@ -147,38 +169,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             DoNotPersist = data.InMemoryProfile;
 
             AssignFromDictionaries(data.EnvironmentVariables, data.OtherSettings);
-        }
-
-        /// <summary>
-        /// Useful to create a mutable version from an existing immutable profile
-        /// </summary>
-        public LaunchProfile(ILaunchProfile existingProfile)
-        {
-            Name = existingProfile.Name;
-            ExecutablePath = existingProfile.ExecutablePath;
-            CommandName = existingProfile.CommandName;
-            CommandLineArgs = existingProfile.CommandLineArgs;
-            WorkingDirectory = existingProfile.WorkingDirectory;
-            LaunchBrowser = existingProfile.LaunchBrowser;
-            LaunchUrl = existingProfile.LaunchUrl;
-            DoNotPersist = existingProfile.IsInMemoryObject();
-
-            EnvironmentVariables = existingProfile.EnvironmentVariables;
-            OtherSettings = existingProfile.OtherSettings;
-
-            if (existingProfile is LaunchProfile launchProfile)
-            {
-                // Preserve the order of items.
-                EnvironmentVariablesKeyOrder = launchProfile.EnvironmentVariablesKeyOrder;
-                OtherSettingsKeyOrder = launchProfile.OtherSettingsKeyOrder;
-            }
-            else
-            {
-                // We are unable to preserve order on other implementations of ILaunchProfile.
-                // In future we could version the interface to support this.
-                EnvironmentVariablesKeyOrder = GetKeys(existingProfile.EnvironmentVariables);
-                OtherSettingsKeyOrder = GetKeys(existingProfile.OtherSettings);
-            }
         }
 
         public LaunchProfile(IWritableLaunchProfile writableProfile)
