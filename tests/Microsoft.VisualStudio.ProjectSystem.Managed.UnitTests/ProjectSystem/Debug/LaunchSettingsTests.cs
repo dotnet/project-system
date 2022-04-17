@@ -15,11 +15,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
                 new LaunchProfile("foo", null),
             };
 
-            var globals = new Dictionary<string, object>()
-            {
-                { "var1", true },
-                { "var2", "some string" }
-            };
+            var globals = ImmutableDictionary<string, object>.Empty
+                .Add("var1", true)
+                .Add("var2", "some string");
 
             var settings = new LaunchSettings(profiles, null, null);
             Assert.True(settings.ActiveProfile!.Name == "abc");

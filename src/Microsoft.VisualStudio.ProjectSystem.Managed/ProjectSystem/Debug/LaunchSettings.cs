@@ -14,7 +14,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         /// <summary>
         /// Represents the current set of launch settings. Creation from an existing set of profiles.
         /// </summary>
-        public LaunchSettings(IEnumerable<ILaunchProfile> profiles, IDictionary<string, object>? globalSettings, string? activeProfile = null, long version = 0)
+        public LaunchSettings(IEnumerable<ILaunchProfile> profiles, ImmutableDictionary<string, object>? globalSettings, string? activeProfile = null, long version = 0)
         {
             Profiles = ImmutableList<ILaunchProfile>.Empty;
             foreach (ILaunchProfile profile in profiles)
@@ -22,7 +22,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
                 Profiles = Profiles.Add(LaunchProfile.Clone(profile));
             }
 
-            GlobalSettings = globalSettings == null ? ImmutableStringDictionary<object>.EmptyOrdinal : globalSettings.ToImmutableDictionary();
+            GlobalSettings = globalSettings ?? ImmutableStringDictionary<object>.EmptyOrdinal;
             _activeProfileName = activeProfile;
             Version = version;
         }
