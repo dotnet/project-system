@@ -9,7 +9,7 @@
       </trans-unit>
       <trans-unit id="DontKnowHowToRunProfile_2">
         <source>The project doesn't know how to run the profile with name '{0}' and command '{1}'.</source>
-        <target state="new">The project doesn't know how to run the profile with name '{0}' and command '{1}'.</target>
+        <target state="translated">프로젝트에서 명령 '{1}'을(를) 사용하여 이름이 '{0}'인 프로필을 실행하는 방법을 알지 못 합니다.</target>
         <note>
       {0} is the profile name, which comes from the user.
       {1} is the profile command, which is usually an internal string but is helpful when diagnosing issues here.

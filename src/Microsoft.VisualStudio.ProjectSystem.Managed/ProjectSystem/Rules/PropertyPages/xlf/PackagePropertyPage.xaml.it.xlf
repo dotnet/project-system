@@ -24,12 +24,12 @@
       </trans-unit>
       <trans-unit id="BoolProperty|PackAsTool|Description">
         <source>Packs this project as a special package that contains a console application that may be installed via the "dotnet tool" command.</source>
-        <target state="new">Packs this project as a special package that contains a console application that may be installed via the "dotnet tool" command.</target>
+        <target state="translated">Comprimi questo progetto come pacchetto speciale che contiene un'applicazione console che può essere installata tramite il comando "dotnet tool".</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|PackAsTool|DisplayName">
         <source>Pack as a .NET tool</source>
-        <target state="new">Pack as a .NET tool</target>
+        <target state="translated">Comprimi come strumento .NET</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|PackageRequireLicenseAcceptance|Description">
@@ -304,12 +304,12 @@
       </trans-unit>
       <trans-unit id="StringProperty|ToolCommandName|Description">
         <source>The command name via which the .NET tool will be invoked on the command line.</source>
-        <target state="new">The command name via which the .NET tool will be invoked on the command line.</target>
+        <target state="translated">Nome del comando tramite il quale verrà richiamato lo strumento .NET sulla riga di comando.</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|ToolCommandName|DisplayName">
         <source>.NET tool command name</source>
-        <target state="new">.NET tool command name</target>
+        <target state="translated">Nome comando strumento .NET</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|Version|Description">
