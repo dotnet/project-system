@@ -27,7 +27,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             Version = version;
         }
 
-        public LaunchSettings(LaunchSettingsData settingsData, string? activeProfile = null, long version = 0)
+        public LaunchSettings(LaunchSettingsData settingsData, string? activeProfile, long version)
         {
             Requires.NotNull(settingsData.Profiles!, nameof(settingsData.Profiles));
 
