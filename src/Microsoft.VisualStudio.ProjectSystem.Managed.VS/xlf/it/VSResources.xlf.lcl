@@ -55,11 +55,11 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";DontKnowHowToRunProfile" ItemType="0" PsrId="308" Leaf="true">
+      <Item ItemId=";DontKnowHowToRunProfile_2" ItemType="0" PsrId="308" InstFlg="true" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[The project doesn't know how to run the profile {0}.]]></Val>
+          <Val><![CDATA[The project doesn't know how to run the profile with name '{0}' and command '{1}'.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Il progetto non dispone di informazioni sufficienti per eseguire il profilo {0}.]]></Val>
+            <Val><![CDATA[Il progetto non è in grado di eseguire il profilo con nome '{0}' e comando '{1}'.]]></Val>
           </Tgt>
         </Str>
         <Disp Icon="Str" />

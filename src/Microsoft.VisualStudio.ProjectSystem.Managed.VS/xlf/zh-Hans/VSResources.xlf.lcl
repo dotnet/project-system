@@ -55,11 +55,11 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";DontKnowHowToRunProfile" ItemType="0" PsrId="308" Leaf="true">
+      <Item ItemId=";DontKnowHowToRunProfile_2" ItemType="0" PsrId="308" InstFlg="true" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[The project doesn't know how to run the profile {0}.]]></Val>
+          <Val><![CDATA[The project doesn't know how to run the profile with name '{0}' and command '{1}'.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[该项目不知道如何运行配置文件 {0}。]]></Val>
+            <Val><![CDATA[项目不知道如何运行名为“{0}”和命令为“{1}”的配置文件。]]></Val>
           </Tgt>
         </Str>
         <Disp Icon="Str" />
