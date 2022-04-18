@@ -19,12 +19,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         private const string ProjectBuildRuleName = CompilerCommandLineArgs.SchemaName;
         private readonly ConfiguredProject _project;
         private readonly IProjectDiagnosticOutputService _logger;
-        private readonly ExportFactory<IWorkspaceContextHandler>[] _workspaceContextHandlerFactories;
+        private readonly ExportFactory<IWorkspaceContextHandler, IAppliesToMetadataView>[] _workspaceContextHandlerFactories;
         private IWorkspaceProjectContext? _context;
         private ExportLifetimeContext<IWorkspaceContextHandler>[] _handlers = Array.Empty<ExportLifetimeContext<IWorkspaceContextHandler>>();
 
         [ImportingConstructor]
-        public ApplyChangesToWorkspaceContext(ConfiguredProject project, IProjectDiagnosticOutputService logger, [ImportMany] ExportFactory<IWorkspaceContextHandler>[] workspaceContextHandlerFactories)
+        public ApplyChangesToWorkspaceContext(ConfiguredProject project, IProjectDiagnosticOutputService logger, [ImportMany] ExportFactory<IWorkspaceContextHandler, IAppliesToMetadataView>[] workspaceContextHandlerFactories)
         {
             _project = project;
             _logger = logger;
@@ -122,7 +122,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         {
             Assumes.NotNull(_context);
 
-            _handlers = _workspaceContextHandlerFactories.SelectArray(h => h.CreateExport());
+            _handlers = _workspaceContextHandlerFactories
+                .Where(f => _project.Capabilities.AppliesTo(f.Metadata.AppliesTo))
+                .Select(h => h.CreateExport())
+                .ToArray();
 
             foreach (ExportLifetimeContext<IWorkspaceContextHandler> handler in _handlers)
             {

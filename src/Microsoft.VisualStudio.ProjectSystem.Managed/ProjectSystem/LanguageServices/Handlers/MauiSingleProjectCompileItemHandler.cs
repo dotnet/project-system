@@ -1,17 +1,18 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
+using Microsoft.CodeAnalysis;
 using Microsoft.VisualStudio.ProjectSystem.VS;
 
 namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
 {
     /// <summary>
-    ///     Handles changes to the  &lt;EditorConfigFiles/&gt; items during design-time builds.
+    ///     Handles changes to the  &lt;Compile/&gt; item during design-time builds.
     /// </summary>
     [Export(typeof(IWorkspaceContextHandler))]
-    [AppliesTo(ProjectCapability.CSharpOrVisualBasicLanguageService)]
-    internal class AnalyzerConfigItemHandler : AbstractWorkspaceContextHandler, ICommandLineHandler
+    [AppliesTo("MauiSingleProject & " + ProjectCapability.CSharpOrVisualBasicLanguageService)]
+    internal class MauiSingleProjectCompileItemHandler : AbstractWorkspaceContextHandler, ICommandLineHandler
     {
-        // WORKAROUND: To avoid Roslyn throwing when we add duplicate additional files, we remember what 
+        // WORKAROUND: To avoid Roslyn throwing when we add duplicate compile items, we remember what 
         // sent to them and avoid sending on duplicates.
         // See: https://github.com/dotnet/project-system/issues/2230
 
@@ -19,7 +20,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
         private readonly HashSet<string> _paths = new(StringComparers.Paths);
 
         [ImportingConstructor]
-        public AnalyzerConfigItemHandler(UnconfiguredProject project)
+        public MauiSingleProjectCompileItemHandler(UnconfiguredProject project)
         {
             _project = project;
         }
@@ -33,27 +34,28 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
 
             VerifyInitialized();
 
-            foreach (string analyzerConfigFile in removed.AnalyzerConfigFiles)
+            foreach (CommandLineSourceFile additionalFile in removed.SourceFiles)
             {
-                string fullPath = _project.MakeRooted(analyzerConfigFile);
+                string fullPath = _project.MakeRooted(additionalFile.Path);
 
                 RemoveFromContextIfPresent(fullPath, logger);
             }
 
-            foreach (string analyzerConfigFile in added.AnalyzerConfigFiles)
+            foreach (CommandLineSourceFile additionalFile in added.SourceFiles)
             {
-                string fullPath = _project.MakeRooted(analyzerConfigFile);
+                string fullPath = _project.MakeRooted(additionalFile.Path);
 
-                AddToContextIfNotPresent(fullPath, logger);
+                AddToContextIfNotPresent(fullPath, state.IsActiveEditorContext, logger);
             }
         }
 
-        private void AddToContextIfNotPresent(string fullPath, IProjectDiagnosticOutputService logger)
+        private void AddToContextIfNotPresent(string fullPath, bool isActiveContext, IProjectDiagnosticOutputService logger)
         {
             if (!_paths.Contains(fullPath))
             {
-                logger.WriteLine("Adding analyzer config file '{0}'", fullPath);
-                AddToContext(fullPath);
+                string[]? folderNames = FileItemServices.GetLogicalFolderNames(Path.GetDirectoryName(_project.FullPath), fullPath, ImmutableStringDictionary<string>.EmptyOrdinal);
+                logger.WriteLine("Adding additional file '{0}'", fullPath);
+                Context.AddSourceFile(fullPath, isActiveContext, folderNames);
                 bool added = _paths.Add(fullPath);
                 Assumes.True(added);
             }
@@ -63,21 +65,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
         {
             if (_paths.Contains(fullPath))
             {
-                logger.WriteLine("Removing analyzer config file '{0}'", fullPath);
-                RemoveFromContext(fullPath);
+                logger.WriteLine("Removing additional file '{0}'", fullPath);
+                Context.RemoveAdditionalFile(fullPath);
                 bool removed = _paths.Remove(fullPath);
                 Assumes.True(removed);
             }
-        }
-
-        private void AddToContext(string fullPath)
-        {
-            Context.AddAnalyzerConfigFile(fullPath);
-        }
-
-        private void RemoveFromContext(string fullPath)
-        {
-            Context.RemoveAnalyzerConfigFile(fullPath);
         }
     }
 }

@@ -11,6 +11,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
     ///     and <see cref="IWorkspaceProjectContext.DisplayName"/>.
     /// </summary>
     [Export(typeof(IWorkspaceContextHandler))]
+    [AppliesTo(ProjectCapability.CSharpOrVisualBasicLanguageService)]
     internal class ProjectFilePathAndDisplayNameEvaluationHandler : AbstractWorkspaceContextHandler, IProjectEvaluationHandler
     {
         private readonly ConfiguredProject _project;

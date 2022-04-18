@@ -1,14 +1,17 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
+using Microsoft.CodeAnalysis;
 using Microsoft.VisualStudio.ProjectSystem.VS;
 
 namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
 {
+
     /// <summary>
     ///     Handles changes to Compile items during project evaluations and items that are passed
     ///     to the compiler during design-time builds.
     /// </summary>
     [Export(typeof(IWorkspaceContextHandler))]
+    [AppliesTo("(!MauiSingleProject) & " + ProjectCapability.CSharpOrVisualBasicLanguageService)]
     internal class CompileItemHandler : AbstractEvaluationCommandLineHandler, IProjectEvaluationHandler, ICommandLineHandler
     {
         private readonly UnconfiguredProject _project;

@@ -11,6 +11,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
     ///     This indirection is needed because Microsoft.VisualStudio.ProjectSystem.FSharp does not have InternalsVisibleTo access to Roslyn.
     /// </remarks>
     [Export(typeof(IWorkspaceContextHandler))]
+    [AppliesTo(ProjectCapability.CSharpOrVisualBasicLanguageService)]
     internal class CommandLineNotificationHandler : AbstractWorkspaceContextHandler, ICommandLineHandler
     {
         [ImportingConstructor]

@@ -613,13 +613,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
             {
                 var unconfiguredProject = UnconfiguredProjectFactory.ImplementFullPath(@"C:\Project\Project.csproj");
 
-                project = ConfiguredProjectFactory.ImplementUnconfiguredProject(unconfiguredProject);
+                project = ConfiguredProjectFactory.Create(
+                    unconfiguredProject: unconfiguredProject,
+                    capabilities: IProjectCapabilitiesScopeFactory.Create());
             }
 
             commandLineParser ??= ICommandLineParserServiceFactory.Create();
             logger ??= IProjectDiagnosticOutputServiceFactory.Create();
 
-            var factories = handlers.Select(h => ExportFactoryFactory.ImplementCreateValueWithAutoDispose(() => h))
+            var factories = handlers.Select(h => ExportFactoryFactory.ImplementCreateValueWithAutoDispose(() => h, (IAppliesToMetadataView)new MetadataView()))
                                     .ToArray();
 
             var applyChangesToWorkspaceContext = new ApplyChangesToWorkspaceContext(project, logger, factories);
@@ -627,6 +629,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
             applyChangesToWorkspaceContext.CommandLineParsers.Add(commandLineParser);
 
             return applyChangesToWorkspaceContext;
+        }
+
+        private class MetadataView : IAppliesToMetadataView
+        {
+            public string AppliesTo => "";
         }
     }
 }
