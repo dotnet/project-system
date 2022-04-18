@@ -277,10 +277,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         {
             var moqFS = new IFileSystemMock();
             using var provider = GetLaunchSettingsProvider(moqFS);
-            await Assert.ThrowsAsync<FileNotFoundException>(() =>
-{
-    return provider.ReadSettingsFileFromDiskTestAsync();
-});
+            Assert.Null(await provider.ReadSettingsFileFromDiskTestAsync());
         }
 
         [Fact]

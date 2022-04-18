@@ -280,9 +280,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
                     }
                 }
 
-                LaunchSettingsData launchSettingData = await GetLaunchSettingsAsync();
+                LaunchSettingsData launchSettingData = await ReadSettingsFileFromDiskAsync() ?? new LaunchSettingsData();
 
-                Assumes.NotNull(launchSettingData.Profiles);
+                // Make sure there is at least an empty profile list
+                launchSettingData.Profiles ??= new List<LaunchProfileData>();
 
                 // If there are no profiles, we will add a default profile to run the project. W/o it our debugger
                 // won't be called on F5 and the user will see a poor error message
@@ -422,29 +423,18 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         }
 
         /// <summary>
-        /// Creates the initial set of settings based on the file on disk
+        /// Reads <c>launchSettings.json</c> and returns all data as an API object.
+        /// Returns <see langword="null"/> if the file does not exist.
         /// </summary>
-        protected async Task<LaunchSettingsData> GetLaunchSettingsAsync()
+        /// <exception cref="FormatException">JSON data was not of the expected format.</exception>
+        protected async Task<LaunchSettingsData?> ReadSettingsFileFromDiskAsync()
         {
             string fileName = await GetLaunchSettingsFilePathAsync();
 
-            LaunchSettingsData settings = _fileSystem.FileExists(fileName)
-                ? await ReadSettingsFileFromDiskAsync()
-                : new LaunchSettingsData();
-
-            // Make sure there is at least an empty profile list
-            settings.Profiles ??= new List<LaunchProfileData>();
-
-            return settings;
-        }
-
-        /// <summary>
-        /// Reads the data from the launch settings file and returns it in a dictionary of settings section to object. Adds n error list entries
-        /// and throws if an exception occurs
-        /// </summary>
-        protected async Task<LaunchSettingsData> ReadSettingsFileFromDiskAsync()
-        {
-            string fileName = await GetLaunchSettingsFilePathAsync();
+            if (!_fileSystem.FileExists(fileName))
+            {
+                return null;
+            }
 
             string jsonString = await _fileSystem.ReadAllTextAsync(fileName);
 
