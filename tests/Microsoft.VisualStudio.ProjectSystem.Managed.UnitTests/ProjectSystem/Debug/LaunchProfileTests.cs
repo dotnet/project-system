@@ -32,18 +32,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             Assert.Equal(data.EnvironmentVariables.Select(pair => (pair.Key, pair.Value)), profile.EnvironmentVariables);
             Assert.Equal(data.OtherSettings.Select(pair => (pair.Key, pair.Value)), profile.OtherSettings);
             Assert.Equal(data.InMemoryProfile, profile.DoNotPersist);
-
-            // Test overload
-            var profile2 = new LaunchProfile(profile);
-            Assert.Equal(profile.Name, profile2.Name);
-            Assert.Equal(profile.ExecutablePath, profile2.ExecutablePath);
-            Assert.Equal(profile.CommandLineArgs, profile2.CommandLineArgs);
-            Assert.Equal(profile.WorkingDirectory, profile2.WorkingDirectory);
-            Assert.Equal(profile.LaunchBrowser, profile2.LaunchBrowser);
-            Assert.Equal(profile.LaunchUrl, profile2.LaunchUrl);
-            Assert.True(DictionaryEqualityComparer<string, string>.Instance.Equals(profile.EnvironmentVariables, profile2.EnvironmentVariables));
-            Assert.True(DictionaryEqualityComparer<string, object>.Instance.Equals(profile.OtherSettings!.ToImmutableDictionary(), profile2.OtherSettings));
-            Assert.Equal(profile.DoNotPersist, profile2.DoNotPersist);
         }
 
         [Fact]

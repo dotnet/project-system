@@ -997,14 +997,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         private readonly string JsonStringWithWebSettings =
             """
             {
-              "iisSettings": {
-                "windowsAuthentication": true,
-                "anonymousAuthentication": false,
-                "iisExpress": {
-                  "applicationUrl": "http://localhost:12345/",
-                  "sslPort": 44301
-                }
-              },
               "profiles": {
                 "IIS Express": {
                   "commandName": "IISExpress",
@@ -1013,6 +1005,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
                 "bar": {
                   "executablePath": "c:\\test\\project\\bin\\test.exe",
                   "commandLineArgs": "-someArg"
+                }
+              },
+              "iisSettings": {
+                "windowsAuthentication": true,
+                "anonymousAuthentication": false,
+                "iisExpress": {
+                  "applicationUrl": "http://localhost:12345/",
+                  "sslPort": 44301
                 }
               }
             }

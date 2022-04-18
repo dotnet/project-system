@@ -163,7 +163,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             CommandName = data.CommandName;
             CommandLineArgs = data.CommandLineArgs;
             WorkingDirectory = data.WorkingDirectory;
-            LaunchBrowser = data.LaunchBrowser ?? false;
+            LaunchBrowser = data.LaunchBrowser;
             LaunchUrl = data.LaunchUrl;
             EnvironmentVariables = Flatten(data.EnvironmentVariables);
             OtherSettings = Flatten(data.OtherSettings);

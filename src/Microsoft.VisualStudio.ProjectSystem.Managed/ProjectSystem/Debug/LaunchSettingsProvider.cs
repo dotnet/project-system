@@ -6,8 +6,6 @@ using Microsoft.VisualStudio.ProjectSystem.Properties;
 using Microsoft.VisualStudio.ProjectSystem.SpecialFileProviders;
 using Microsoft.VisualStudio.Threading;
 using Microsoft.VisualStudio.Threading.Tasks;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 
 namespace Microsoft.VisualStudio.ProjectSystem.Debug
 {
@@ -24,7 +22,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
     internal class LaunchSettingsProvider : ProjectValueDataSourceBase<ILaunchSettings>, ILaunchSettingsProvider3, IVersionedLaunchSettingsProvider
     {
         public const string LaunchSettingsFilename = "launchSettings.json";
-        public const string ProfilesSectionName = "profiles";
 
         // Command that means run this project
         public const string RunProjectCommandName = "Project";
@@ -451,41 +448,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
 
             string jsonString = await _fileSystem.ReadAllTextAsync(fileName);
 
-            // Since the sections in the settings file are extensible we iterate through each one and have the appropriate provider
-            // serialize their section. Unfortunately, this means the data is string to object which is messy to deal with
-            var launchSettingsData = new LaunchSettingsData() { OtherSettings = new Dictionary<string, object>(StringComparers.LaunchProfileProperties) };
-            var jsonObject = JObject.Parse(jsonString);
-            foreach ((string key, JToken? jToken) in jsonObject)
-            {
-                if (key.Equals(ProfilesSectionName, StringComparisons.LaunchSettingsPropertyNames) && jToken is JObject jObject)
-                {
-                    Dictionary<string, LaunchProfileData> profiles = LaunchProfileData.DeserializeProfiles(jObject);
-                    launchSettingsData.Profiles = FixUpProfilesAndLogErrors(profiles);
-                }
-                else if (jToken is not null)
-                {
-                    // Find the matching json serialization handler for this section
-                    Lazy<ILaunchSettingsSerializationProvider, IJsonSection>? handler = JsonSerializationProviders.FirstOrDefault(sp => string.Equals(sp.Metadata.JsonSection, key));
-                    if (handler != null)
-                    {
-                        object? sectionObject = JsonConvert.DeserializeObject(jToken.ToString(), handler.Metadata.SerializationType);
-                        if (sectionObject is not null)
-                        {
-                            launchSettingsData.OtherSettings.Add(key, sectionObject);
-                        }
-                    }
-                    else
-                    {
-                        // We still need to remember settings for which we don't have an extensibility component installed. For this we
-                        // just keep the jObject which can be serialized back out when the file is written.
-                        launchSettingsData.OtherSettings.Add(key, jToken);
-                    }
-                }
-            }
-
             // Remember the time we are sync'd to
             LastSettingsFileSyncTimeUtc = _fileSystem.GetLastFileWriteTimeOrMinValueUtc(fileName);
-            return launchSettingsData;
+
+            return LaunchSettingsJsonEncoding.FromJson(jsonString, JsonSerializationProviders);
         }
 
         public Task<string> GetLaunchSettingsFilePathAsync()
@@ -494,49 +460,23 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         }
 
         /// <summary>
-        /// Does a quick validation to make sure at least a name is present in each profile. Removes bad ones and
-        /// logs errors. Returns the resultant profiles as a list
-        /// </summary>
-        private static List<LaunchProfileData>? FixUpProfilesAndLogErrors(Dictionary<string, LaunchProfileData> profilesData)
-        {
-            if (profilesData == null)
-            {
-                return null;
-            }
-
-            var validProfiles = new List<LaunchProfileData>();
-            foreach ((string name, LaunchProfileData launchProfileData) in profilesData)
-            {
-                if (!string.IsNullOrWhiteSpace(name))
-                {
-                    // The name is if the profile is set to the value key
-                    launchProfileData.Name = name;
-                    validProfiles.Add(launchProfileData);
-                }
-            }
-
-            return validProfiles;
-        }
-
-        /// <summary>
         /// Saves the launch settings to the launch settings file. Adds an error string and throws if an exception. Note
         /// that the caller is responsible for checking out the file
         /// </summary>
         protected async Task SaveSettingsToDiskAsync(ILaunchSettings newSettings)
         {
-            Dictionary<string, object> serializationData = GetSettingsToSerialize(newSettings);
             string fileName = await GetLaunchSettingsFilePathAsync();
 
             try
             {
                 await EnsureSettingsFolderAsync();
 
-                // We don't want to write null values. We want to keep the file as small as possible
-                var settings = new JsonSerializerSettings() { NullValueHandling = NullValueHandling.Ignore };
-                string jsonString = JsonConvert.SerializeObject(serializationData, Formatting.Indented, settings);
+                string json = LaunchSettingsJsonEncoding.ToJson(newSettings);
 
+                // Ignore notifications of edits while our edit is in flight.
                 IgnoreFileChanges = true;
-                await _fileSystem.WriteAllTextAsync(fileName, jsonString);
+
+                await _fileSystem.WriteAllTextAsync(fileName, json);
 
                 // Update the last write time
                 LastSettingsFileSyncTimeUtc = _fileSystem.GetLastFileWriteTimeOrMinValueUtc(fileName);
@@ -545,50 +485,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             {
                 IgnoreFileChanges = false;
             }
-        }
-
-        /// <summary>
-        /// Gets the serialization object for the set of profiles and custom settings. It filters out built in profiles that get added to
-        /// wire up the debugger infrastructure (NoAction profiles). Returns a dictionary of the elements to serialize.
-        /// Removes in-memory profiles and global objects
-        /// </summary>
-        protected static Dictionary<string, object> GetSettingsToSerialize(ILaunchSettings curSettings)
-        {
-            var profileData = new Dictionary<string, Dictionary<string, object>>(StringComparers.LaunchProfileNames);
-            foreach (ILaunchProfile profile in curSettings.Profiles)
-            {
-                if (ProfileShouldBePersisted(profile))
-                {
-                    Assumes.NotNull(profile.Name);
-                    profileData.Add(profile.Name, LaunchProfileData.ToSerializableForm(profile));
-                }
-            }
-
-            var dataToSave = new Dictionary<string, object>(StringComparers.LaunchProfileProperties);
-
-            foreach ((string key, object value) in curSettings.GlobalSettings)
-            {
-                if (!value.IsInMemoryObject())
-                {
-                    dataToSave.Add(key, value);
-                }
-            }
-
-            if (profileData.Count > 0)
-            {
-                dataToSave.Add(ProfilesSectionName, profileData);
-            }
-
-            return dataToSave;
-        }
-
-        /// <summary>
-        /// Helper returns true if this is a profile which should be persisted.
-        /// Filters out <see cref="IPersistOption.DoNotPersist"/> profiles.
-        /// </summary>
-        private static bool ProfileShouldBePersisted(ILaunchProfile profile)
-        {
-            return !profile.IsInMemoryObject();
         }
 
         /// <summary>
