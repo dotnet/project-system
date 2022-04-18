@@ -9,94 +9,55 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
     /// </summary>
     internal class LaunchSettings : ILaunchSettings, IVersionedLaunchSettings
     {
-        private readonly string? _activeProfileName;
+        public static LaunchSettings Empty { get; } = new();
 
-        /// <summary>
-        /// Represents the current set of launch settings. Creation from an existing set of profiles.
-        /// </summary>
-        public LaunchSettings(IEnumerable<ILaunchProfile> profiles, ImmutableDictionary<string, object>? globalSettings, string? activeProfile = null, long version = 0)
+        public LaunchSettings(
+            IEnumerable<ILaunchProfile>? profiles = null,
+            ImmutableDictionary<string, object>? globalSettings = null,
+            string? activeProfileName = null,
+            ILaunchProfile? launchProfile = null,
+            long version = 0)
         {
-            Profiles = ImmutableList<ILaunchProfile>.Empty;
-            foreach (ILaunchProfile profile in profiles)
-            {
-                Profiles = Profiles.Add(LaunchProfile.Clone(profile));
-            }
-
+            Profiles = profiles is null
+                ? ImmutableList<ILaunchProfile>.Empty
+                : ImmutableList.CreateRange<ILaunchProfile>(profiles.Select(LaunchProfile.Clone));
             GlobalSettings = globalSettings ?? ImmutableStringDictionary<object>.EmptyOrdinal;
-            _activeProfileName = activeProfile;
+            ActiveProfile = launchProfile ?? FindActiveProfile();
             Version = version;
-        }
 
-        public LaunchSettings(LaunchSettingsData settingsData, string? activeProfile, long version)
-        {
-            Requires.NotNull(settingsData.Profiles!, nameof(settingsData.Profiles));
-
-            Profiles = ImmutableList<ILaunchProfile>.Empty;
-            foreach (LaunchProfileData profile in settingsData.Profiles)
+            ILaunchProfile? FindActiveProfile()
             {
-                Profiles = Profiles.Add(new LaunchProfile(profile));
+                ILaunchProfile? profile = null;
+
+                if (!Profiles.IsEmpty)
+                {
+                    if (!Strings.IsNullOrWhiteSpace(activeProfileName))
+                    {
+                        // Find the first profile having the required name
+                        profile = Profiles.FirstOrDefault(p => LaunchProfile.IsSameProfileName(p.Name, activeProfileName));
+                    }
+
+                    // If no active profile specified, or the active one is no longer valid, assume the first one
+                    profile ??= Profiles[0];
+                }
+
+                return profile;
             }
-
-            GlobalSettings = settingsData.OtherSettings == null ? ImmutableStringDictionary<object>.EmptyOrdinal : settingsData.OtherSettings.ToImmutableDictionary();
-            _activeProfileName = activeProfile;
-            Version = version;
-        }
-
-        public LaunchSettings(IWritableLaunchSettings settings, long version = 0)
-        {
-            Profiles = ImmutableList<ILaunchProfile>.Empty;
-            foreach (IWritableLaunchProfile profile in settings.Profiles)
-            {
-                Profiles = Profiles.Add(new LaunchProfile(profile));
-            }
-
-            GlobalSettings = ImmutableStringDictionary<object>.EmptyOrdinal.AddRange(CloneGlobalSettingsValues(settings.GlobalSettings));
-            _activeProfileName = settings.ActiveProfile?.Name;
-            Version = version;
-        }
-
-        public LaunchSettings()
-        {
-            Profiles = ImmutableList<ILaunchProfile>.Empty;
-            GlobalSettings = ImmutableStringDictionary<object>.EmptyOrdinal;
-            Version = 0;
         }
 
         public ImmutableList<ILaunchProfile> Profiles { get; }
 
         public ImmutableDictionary<string, object> GlobalSettings { get; }
 
+        public ILaunchProfile? ActiveProfile { get; }
+
+        public long Version { get; }
+
         public object? GetGlobalSetting(string settingName)
         {
             GlobalSettings.TryGetValue(settingName, out object? o);
             return o;
         }
-
-        private ILaunchProfile? _activeProfile;
-        public ILaunchProfile? ActiveProfile
-        {
-            get
-            {
-                if (_activeProfile == null)
-                {
-                    ILaunchProfile? computedProfile = null;
-
-                    // If no active profile specified, or the active one is no longer valid, assume the first one
-                    if (!Strings.IsNullOrWhiteSpace(_activeProfileName))
-                    {
-                        computedProfile = Profiles.FirstOrDefault(p => LaunchProfile.IsSameProfileName(p.Name, _activeProfileName));
-                    }
-
-                    computedProfile ??= !Profiles.IsEmpty ? Profiles[0] : null;
-
-                    Interlocked.CompareExchange(ref _activeProfile, value: computedProfile, comparand: null);
-                }
-
-                return _activeProfile;
-            }
-        }
-
-        public long Version { get; }
 
         /// <summary>
         /// Produces a sequence of values cloned from <paramref name="keyValues"/>. Used to keep snapshots of

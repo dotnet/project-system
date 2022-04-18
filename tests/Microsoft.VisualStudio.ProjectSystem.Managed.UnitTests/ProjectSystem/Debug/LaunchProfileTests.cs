@@ -7,31 +7,38 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         [Fact]
         public void LaunchProfile_CtorTests()
         {
-            var data = new LaunchProfileData()
-            {
-                Name = "Test",
-                ExecutablePath = "c:\\this\\is\\a\\exe\\path",
-                CommandName = null,
-                CommandLineArgs = "args",
-                WorkingDirectory = "c:\\working\\directory\\",
-                LaunchBrowser = true,
-                LaunchUrl = "LaunchPage.html",
-                EnvironmentVariables = new Dictionary<string, string>() { { "var1", "Value1" }, { "var2", "Value2" } },
-                OtherSettings = new Dictionary<string, object>(StringComparer.Ordinal) { { "setting1", true }, { "setting2", "mysetting" } },
-                InMemoryProfile = true
-            };
+            string? name = "Test";
+            string? executablePath = "c:\\this\\is\\a\\exe\\path";
+            string? commandName = null;
+            string? commandLineArgs = "args";
+            string? workingDirectory = "c:\\working\\directory\\";
+            bool launchBrowser = true;
+            string? launchUrl = "LaunchPage.html";
+            var environmentVariables = ImmutableArray.Create(("var1", "Value1"), ("var2", "Value2"));
+            var otherSettings = ImmutableArray.Create<(string, object)>(("setting1", true), ("setting2", "mysetting"));
+            var doNotPersist = true;
 
-            var profile = new LaunchProfile(data);
+            var profile = new LaunchProfile(
+                name: name,
+                executablePath: executablePath,
+                commandName: commandName,
+                commandLineArgs: commandLineArgs,
+                workingDirectory: workingDirectory,
+                launchBrowser: launchBrowser,
+                launchUrl: launchUrl,
+                environmentVariables: environmentVariables,
+                otherSettings: otherSettings,
+                doNotPersist: doNotPersist);
 
-            Assert.Equal(data.Name, profile.Name);
-            Assert.Equal(data.ExecutablePath, profile.ExecutablePath);
-            Assert.Equal(data.CommandLineArgs, profile.CommandLineArgs);
-            Assert.Equal(data.WorkingDirectory, profile.WorkingDirectory);
-            Assert.Equal(data.LaunchBrowser, profile.LaunchBrowser);
-            Assert.Equal(data.LaunchUrl, profile.LaunchUrl);
-            Assert.Equal(data.EnvironmentVariables.Select(pair => (pair.Key, pair.Value)), profile.EnvironmentVariables);
-            Assert.Equal(data.OtherSettings.Select(pair => (pair.Key, pair.Value)), profile.OtherSettings);
-            Assert.Equal(data.InMemoryProfile, profile.DoNotPersist);
+            Assert.Equal(name, profile.Name);
+            Assert.Equal(executablePath, profile.ExecutablePath);
+            Assert.Equal(commandLineArgs, profile.CommandLineArgs);
+            Assert.Equal(workingDirectory, profile.WorkingDirectory);
+            Assert.Equal(launchBrowser, profile.LaunchBrowser);
+            Assert.Equal(launchUrl, profile.LaunchUrl);
+            Assert.Equal(environmentVariables, profile.EnvironmentVariables);
+            Assert.Equal(otherSettings, profile.OtherSettings);
+            Assert.Equal(doNotPersist, profile.DoNotPersist);
         }
 
         [Fact]

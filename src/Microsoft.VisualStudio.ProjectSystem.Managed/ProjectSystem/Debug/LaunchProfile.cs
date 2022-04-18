@@ -156,55 +156,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
                 : otherSettings;
         }
 
-        public LaunchProfile(LaunchProfileData data)
-        {
-            Name = data.Name;
-            ExecutablePath = data.ExecutablePath;
-            CommandName = data.CommandName;
-            CommandLineArgs = data.CommandLineArgs;
-            WorkingDirectory = data.WorkingDirectory;
-            LaunchBrowser = data.LaunchBrowser;
-            LaunchUrl = data.LaunchUrl;
-            EnvironmentVariables = Flatten(data.EnvironmentVariables);
-            OtherSettings = Flatten(data.OtherSettings);
-            DoNotPersist = data.InMemoryProfile;
-        }
-
-        /// <summary>
-        /// Initializes a new instance of <see cref="LaunchProfile"/>,
-        /// copying data from the mutable <paramref name="writableProfile"/>.
-        /// </summary>
-        public LaunchProfile(IWritableLaunchProfile writableProfile)
-        {
-            Name = writableProfile.Name;
-            ExecutablePath = writableProfile.ExecutablePath;
-            CommandName = writableProfile.CommandName;
-            CommandLineArgs = writableProfile.CommandLineArgs;
-            WorkingDirectory = writableProfile.WorkingDirectory;
-            LaunchBrowser = writableProfile.LaunchBrowser;
-            LaunchUrl = writableProfile.LaunchUrl;
-            EnvironmentVariables = Flatten(writableProfile.EnvironmentVariables);
-            OtherSettings = Flatten(writableProfile.OtherSettings);
-            DoNotPersist = writableProfile.IsInMemoryObject();
-        }
-
-        private static ImmutableArray<(string, T)> Flatten<T>(Dictionary<string, T>? dictionary)
-        {
-            if (dictionary is null)
-            {
-                return ImmutableArray<(string, T)>.Empty;
-            }
-
-            ImmutableArray<(string, T)>.Builder builder = ImmutableArray.CreateBuilder<(string, T)>(dictionary.Count);
-
-            foreach ((string key, T value) in dictionary)
-            {
-                builder.Add(new(key, value));
-            }
-
-            return builder.MoveToImmutable();
-        }
-
         public string? Name { get; }
         public string? CommandName { get; }
         public string? ExecutablePath { get; }

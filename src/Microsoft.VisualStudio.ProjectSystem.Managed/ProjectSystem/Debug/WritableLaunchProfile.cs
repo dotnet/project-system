@@ -39,6 +39,36 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         public Dictionary<string, string> EnvironmentVariables { get; }
         public Dictionary<string, object> OtherSettings { get; }
 
-        public ILaunchProfile ToLaunchProfile() => new LaunchProfile(this);
+        public ILaunchProfile ToLaunchProfile()
+        {
+            return new LaunchProfile(
+                name: Name,
+                executablePath: ExecutablePath,
+                commandName: CommandName,
+                commandLineArgs: CommandLineArgs,
+                workingDirectory: WorkingDirectory,
+                launchBrowser: LaunchBrowser,
+                launchUrl: LaunchUrl,
+                environmentVariables: Flatten(EnvironmentVariables),
+                otherSettings: Flatten(OtherSettings),
+                doNotPersist: DoNotPersist);
+
+            static ImmutableArray<(string, T)> Flatten<T>(Dictionary<string, T>? dictionary)
+            {
+                if (dictionary is null)
+                {
+                    return ImmutableArray<(string, T)>.Empty;
+                }
+
+                ImmutableArray<(string, T)>.Builder builder = ImmutableArray.CreateBuilder<(string, T)>(dictionary.Count);
+
+                foreach ((string key, T value) in dictionary)
+                {
+                    builder.Add(new(key, value));
+                }
+
+                return builder.MoveToImmutable();
+            }
+        }
     }
 }

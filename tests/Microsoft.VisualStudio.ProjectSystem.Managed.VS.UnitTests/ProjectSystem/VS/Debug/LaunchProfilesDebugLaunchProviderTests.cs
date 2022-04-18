@@ -39,7 +39,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             _launchSettingsProviderMoq.Setup(x => x.WaitForFirstSnapshot(It.IsAny<int>())).Returns(() =>
                 _activeProfile != null ?
                     Task.FromResult((ILaunchSettings?)new LaunchSettings(new List<ILaunchProfile> { _activeProfile }, null, _activeProfile.Name)) :
-                    Task.FromResult((ILaunchSettings?)new LaunchSettings()));
+                    Task.FromResult((ILaunchSettings?)LaunchSettings.Empty));
         }
 
         [Fact]

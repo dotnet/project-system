@@ -34,7 +34,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
 
         public ILaunchSettings ToLaunchSettings()
         {
-            return new LaunchSettings(this);
+            return new LaunchSettings(
+                profiles: Profiles.Select(static profile => profile.ToLaunchProfile()),
+                globalSettings: ImmutableStringDictionary<object>.EmptyOrdinal.AddRange(LaunchSettings.CloneGlobalSettingsValues(GlobalSettings)));
         }
     }
 }

@@ -35,20 +35,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             var replacer = CreateInstance();
 
             // Tests all the possible replacements. env3 tests that environment vars are resolved before msbuild tokens
-            var data = new LaunchProfileData
-            {
-                Name = "$(msbuildProperty1)",
-                CommandLineArgs = "%env1%",
-                CommandName = "$(msbuildProperty2)",
-                ExecutablePath = "$(test this string",  // Not a valid token
-                WorkingDirectory = "c:\\test\\%env3%",
-                LaunchBrowser = false,
-                LaunchUrl = "http://localhost:8080/$(unknownproperty)",
-                EnvironmentVariables = new Dictionary<string, string> { { "var1", "%env1%" }, { "var2", "$(msbuildProperty3)" } },
-                OtherSettings = new Dictionary<string, object> { { "setting1", "%env1%" }, { "setting2", true } }
-            };
-
-            var launchProfile = new LaunchProfile(data);
+            var launchProfile = new LaunchProfile(
+                name: "$(msbuildProperty1)",
+                commandLineArgs: "%env1%",
+                commandName: "$(msbuildProperty2)",
+                executablePath: "$(test this string",  // Not a valid token
+                workingDirectory: "c:\\test\\%env3%",
+                launchBrowser: false,
+                launchUrl: "http://localhost:8080/$(unknownproperty)",
+                environmentVariables: ImmutableArray.Create(("var1", "%env1%"), ("var2", "$(msbuildProperty3)")),
+                otherSettings: ImmutableArray.Create(("setting1", (object)"%env1%"), ("setting2", true)));
 
             var resolvedProfile = (ILaunchProfile2)await replacer.ReplaceTokensInProfileAsync(launchProfile);
 

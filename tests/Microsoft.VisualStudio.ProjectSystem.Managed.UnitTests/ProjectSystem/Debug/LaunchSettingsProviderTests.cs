@@ -277,7 +277,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         {
             var moqFS = new IFileSystemMock();
             using var provider = GetLaunchSettingsProvider(moqFS);
-            Assert.Null(await provider.ReadSettingsFileFromDiskTestAsync());
+            var (profiles, globalSettings) = await provider.ReadSettingsFileFromDiskTestAsync();
+            Assert.Empty(profiles);
+            Assert.Empty(globalSettings);
         }
 
         [Fact]
@@ -287,9 +289,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             using var provider = GetLaunchSettingsProvider(moqFS);
             await moqFS.WriteAllTextAsync(provider.LaunchSettingsFile, JsonString1);
 
-            var launchSettings = await provider.ReadSettingsFileFromDiskTestAsync();
-
-            Assert.Equal(4, launchSettings.Profiles!.Count);
+            var (profiles, globalSettings) = await provider.ReadSettingsFileFromDiskTestAsync();
+            Assert.Equal(4, profiles.Length);
+            Assert.Empty(globalSettings);
         }
 
         [Fact]
@@ -312,14 +314,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             using var provider = GetLaunchSettingsProvider(moqFS);
             await moqFS.WriteAllTextAsync(provider.LaunchSettingsFile, JsonStringWithWebSettings);
 
-            var launchSettings = await provider.ReadSettingsFileFromDiskTestAsync();
+            var (profiles, globalSettings) = await provider.ReadSettingsFileFromDiskTestAsync();
 
-            Assert.NotNull(launchSettings.Profiles);
-            AssertEx.CollectionLength(launchSettings.Profiles, 2);
-            
-            Assert.NotNull(launchSettings.OtherSettings);
-            Assert.Single(launchSettings.OtherSettings);
-            var jObject = Assert.IsType<JObject>(launchSettings.OtherSettings["iisSettings"]);
+            AssertEx.CollectionLength(profiles, 2);
+
+            var (name, value) = Assert.Single(globalSettings);
+            Assert.Equal("iisSettings", name);
+            var jObject = Assert.IsType<JObject>(value);
 
             Assert.True(jObject.GetValue("windowsAuthentication")?.Value<bool>());
             Assert.False(jObject.GetValue("anonymousAuthentication")?.Value<bool>());
@@ -335,14 +336,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             // Set the serialization provider
             SetJsonSerializationProviders(provider);
 
-            var launchSettings = await provider.ReadSettingsFileFromDiskTestAsync();
+            var (profiles, globalSettings) = await provider.ReadSettingsFileFromDiskTestAsync();
             
-            Assert.NotNull(launchSettings.Profiles);
-            AssertEx.CollectionLength(launchSettings.Profiles, 2);
+            AssertEx.CollectionLength(profiles, 2);
             
-            Assert.NotNull(launchSettings.OtherSettings);
-            Assert.Single(launchSettings.OtherSettings);
-            Assert.IsType<IISSettingsData>(launchSettings.OtherSettings["iisSettings"]);
+            var (name, value) = Assert.Single(globalSettings);
+            Assert.Equal("iisSettings", name);
+            Assert.IsType<IISSettingsData>(value);
         }
 
         [Fact]
@@ -1059,7 +1059,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
 
         // Wrappers to call protected members
         public void SetCurrentSnapshot(ILaunchSettings profiles) { CurrentSnapshot = profiles; }
-        public Task<LaunchSettingsData> ReadSettingsFileFromDiskTestAsync() { return ReadSettingsFileFromDiskAsync(); }
+        public Task<(ImmutableArray<LaunchProfile> Profiles, ImmutableArray<(string Name, object Value)> GlobalSettings)> ReadSettingsFileFromDiskTestAsync() { return ReadSettingsFileFromDiskAsync(); }
         public Task SaveSettingsToDiskAsyncTest(ILaunchSettings curSettings) { return SaveSettingsToDiskAsync(curSettings); }
         public Task UpdateAndSaveSettingsInternalAsyncTest(ILaunchSettings curSettings, bool persistToDisk) { return UpdateAndSaveSettingsInternalAsync(curSettings, persistToDisk); }
         public void SetNextVersionTest(long nextVersion) { SetNextVersion(nextVersion); }

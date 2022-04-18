@@ -16,7 +16,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
         {
             public IList<ILaunchProfile>? Profiles { get; set; }
             public ILaunchSettingsProvider? ProfileProvider { get; set; }
-            public ILaunchSettings? LaunchProfiles { get; set; }
+            public ILaunchSettings? LaunchSettings { get; set; }
             public IList<Lazy<ILaunchSettingsUIProvider, IOrderPrecedenceMetadataView>> UIProviders { get; set; } = new List<Lazy<ILaunchSettingsUIProvider, IOrderPrecedenceMetadataView>>();
             public TaskCompletionSource? FirstSnapshotComplete { get; set; }
         }
@@ -25,7 +25,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
         {
             // Setup the debug profiles
             var mockSourceBlock = new Mock<IReceivableSourceBlock<ILaunchSettings>>();
-            var mockProfiles = new Mock<ILaunchSettings>();
+            var mockSettings = new Mock<ILaunchSettings>();
             var project = UnconfiguredProjectFactory.Create(fullPath: @"C:\Foo\foo.proj");
 
             data.FirstSnapshotComplete = new TaskCompletionSource();
@@ -35,21 +35,19 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
                 (
                     (ITargetBlock<ILaunchSettings> targetBlock, DataflowLinkOptions options) =>
                     {
-                        targetBlock.Post(mockProfiles.Object);
+                        targetBlock.Post(mockSettings.Object);
                         targetBlock.Complete();
                     }
                 ).Returns(() => new EmptyDisposable());
 
-            mockProfiles.Setup(m => m.Profiles).Returns(() =>
-            {
-                return data.Profiles?.ToImmutableList() ?? ImmutableList<ILaunchProfile>.Empty;
-            });
+            mockSettings.SetupGet(m => m.Profiles).Returns(() => data.Profiles?.ToImmutableList() ?? ImmutableList<ILaunchProfile>.Empty);
+            mockSettings.SetupGet(m => m.GlobalSettings).Returns(() => ImmutableStringDictionary<object>.EmptyOrdinal);
 
-            data.LaunchProfiles = mockProfiles.Object;
+            data.LaunchSettings = mockSettings.Object;
 
             var mockProfileProvider = new Mock<ILaunchSettingsProvider>();
             mockProfileProvider.SetupGet(m => m.SourceBlock).Returns(mockSourceBlock.Object);
-            mockProfileProvider.SetupGet(m => m.CurrentSnapshot).Returns(data.LaunchProfiles);
+            mockProfileProvider.SetupGet(m => m.CurrentSnapshot).Returns(data.LaunchSettings);
             mockProfileProvider.Setup(m => m.UpdateAndSaveSettingsAsync(It.IsAny<ILaunchSettings>())).Callback((ILaunchSettings newProfiles) =>
                     {
                         data.Profiles = new List<ILaunchProfile>(newProfiles.Profiles);

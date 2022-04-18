@@ -26,11 +26,12 @@ internal static class LaunchSettingsJsonEncoding
     private const string EnvironmentVariablesPropertyName = "environmentVariables";
 
     /// <summary>
-    /// Formats <paramref name="settings"/> as a JSON string.
+    /// Formats the specified launch settings data as a JSON string.
     /// </summary>
-    /// <param name="settings">The settings to serialize.</param>
+    /// <param name="profiles">The set of profiles to write to JSON.</param>
+    /// <param name="globalSettings">The set of global settings to write to JSON.</param>
     /// <returns>The serialized settings data, in JSON.</returns>
-    public static string ToJson(ILaunchSettings settings)
+    public static string ToJson(IEnumerable<ILaunchProfile> profiles, IEnumerable<(string Key, object Value)> globalSettings)
     {
         StringWriter sw = new();
 
@@ -38,17 +39,17 @@ internal static class LaunchSettingsJsonEncoding
 
         writer.WriteStartObject();
         {
-            WriteSettings(writer, settings);
+            WriteSettings();
         }
         writer.WriteEndObject();
 
         return sw.ToString();
 
-        static void WriteSettings(JsonWriter writer, ILaunchSettings settings)
+        void WriteSettings()
         {
             bool startedProfiles = false;
 
-            foreach (ILaunchProfile profile in settings.Profiles)
+            foreach (ILaunchProfile profile in profiles)
             {
                 if (!profile.IsInMemoryObject())
                 {
@@ -67,7 +68,7 @@ internal static class LaunchSettingsJsonEncoding
 
             JsonSerializer? jsonSerializer = null;
             
-            foreach ((string key, object value) in settings.GlobalSettings)
+            foreach ((string key, object value) in globalSettings)
             {
                 if (!value.IsInMemoryObject())
                 {
@@ -178,15 +179,17 @@ internal static class LaunchSettingsJsonEncoding
     /// <param name="json">The source JSON text to read from.</param>
     /// <param name="jsonSerializationProviders">Providers for custom serialisation of other settings. May be empty.</param>
     /// <returns>Deserialized launch settings.</returns>
-    /// <exception cref="FormatException">JSON data was not of the expected format.</exception>
-    public static LaunchSettingsData FromJson(string json, OrderPrecedenceImportCollection<ILaunchSettingsSerializationProvider, IJsonSection> jsonSerializationProviders)
+    /// <exception cref="JsonReaderException">JSON data was not of the expected format.</exception>
+    public static (ImmutableArray<LaunchProfile> Profiles, ImmutableArray<(string Name, object Value)> GlobalSettings) FromJson(
+        string json,
+        OrderPrecedenceImportCollection<ILaunchSettingsSerializationProvider, IJsonSection> jsonSerializationProviders)
     {
         JsonSerializer? jsonSerializer = null;
 
         using JsonTextReader reader = new(new StringReader(json));
 
-        LaunchSettingsData data = new();
-        data.Profiles ??= new();
+        ImmutableArray<LaunchProfile>.Builder? profiles = null;
+        ImmutableArray<(string Name, object Value)>.Builder? otherSettings = null;
 
         ReadObject(property =>
         {
@@ -196,20 +199,33 @@ internal static class LaunchSettingsJsonEncoding
             }
             else if (property == ProfilesSectionName)
             {
-                ReadObject(profileName => data.Profiles.Add(ReadProfile(profileName)));
+                ReadObject(profileName =>
+                {
+                    profiles ??= ImmutableArray.CreateBuilder<LaunchProfile>();
+                    profiles.Add(ReadProfile(profileName));
+                });
             }
             else if (ReadOtherSettingValue(property) is { } value)
             {
-                data.OtherSettings ??= new(StringComparers.LaunchSettingsPropertyNames);
-                data.OtherSettings.Add(property, value);
+                otherSettings ??= ImmutableArray.CreateBuilder<(string Name, object Value)>();
+                otherSettings.Add((property, value));
             }
         });
 
-        return data;
+        return (
+            profiles?.ToImmutable() ?? ImmutableArray<LaunchProfile>.Empty,
+            otherSettings?.ToImmutable() ?? ImmutableArray<(string Name, object Value)>.Empty);
 
-        LaunchProfileData ReadProfile(string name)
+        LaunchProfile ReadProfile(string name)
         {
-            var data = new LaunchProfileData { Name = name };
+            string? commandName = null;
+            string? executablePath = null;
+            string? commandLineArgs = null;
+            string? workingDirectory = null;
+            bool launchBrowser = false;
+            string? launchUrl = null;
+            ImmutableArray<(string Name, string Value)> environmentVariables = ImmutableArray<(string Name, string Value)>.Empty;
+            ImmutableArray<(string Name, object Value)>.Builder? otherSettings = null;
 
             ReadObject(property =>
             {
@@ -217,37 +233,37 @@ internal static class LaunchSettingsJsonEncoding
                 {
                     case CommandNamePropertyName:
                     {
-                        data.CommandName = ReadString();
+                        commandName = ReadString();
                         break;
                     }
                     case ExecutablePathPropertyName:
                     {
-                        data.ExecutablePath = ReadString();
+                        executablePath = ReadString();
                         break;
                     }
                     case CommandLineArgsPropertyName:
                     {
-                        data.CommandLineArgs = ReadString();
+                        commandLineArgs = ReadString();
                         break;
                     }
                     case WorkingDirectoryPropertyName:
                     {
-                        data.WorkingDirectory = ReadString();
+                        workingDirectory = ReadString();
                         break;
                     }
                     case LaunchBrowserPropertyName:
                     {
-                        data.LaunchBrowser = ReadBoolean();
+                        launchBrowser = ReadBoolean();
                         break;
                     }
                     case LaunchUrlPropertyName:
                     {
-                        data.LaunchUrl = ReadString();
+                        launchUrl = ReadString();
                         break;
                     }
                     case EnvironmentVariablesPropertyName:
                     {
-                        data.EnvironmentVariables = ReadEnvironmentVariables();
+                        environmentVariables = ReadEnvironmentVariables();
                         break;
                     }
                     default:
@@ -255,15 +271,24 @@ internal static class LaunchSettingsJsonEncoding
                         object? value = ReadCustomProfileSetting(property);
                         if (value is not null)
                         {
-                            data.OtherSettings ??= new(StringComparers.LaunchSettingsPropertyNames);
-                            data.OtherSettings[property] = value;
+                            otherSettings ??= ImmutableArray.CreateBuilder<(string Name, object Value)>();
+                            otherSettings.Add((property, value));
                         }
                         break;
                     }
                 }
             });
 
-            return data;
+            return new LaunchProfile(
+                name: name,
+                commandName: commandName,
+                executablePath: executablePath,
+                commandLineArgs: commandLineArgs,
+                workingDirectory: workingDirectory,
+                launchBrowser: launchBrowser,
+                launchUrl: launchUrl,
+                environmentVariables: environmentVariables,
+                otherSettings: otherSettings?.ToImmutable() ?? ImmutableArray<(string Name, object Value)>.Empty);
         }
 
         object? ReadCustomProfileSetting(string propertyName)
@@ -301,7 +326,7 @@ internal static class LaunchSettingsJsonEncoding
             // Move the reader past the PropertyName token, as both JToken.ReadFrom and
             // JsonSerializer.Deserialize start from the current token, not the next token.
             if (!reader.Read())
-                throw new FormatException($"Unexpected end of JSON data at {reader.LineNumber}:{reader.LinePosition}.");
+                throw new JsonReaderException($"Unexpected end of JSON data at {reader.LineNumber}:{reader.LinePosition}.");
 
             if (handler != null)
             {
@@ -320,37 +345,37 @@ internal static class LaunchSettingsJsonEncoding
             }
         }
 
-        Dictionary<string, string>? ReadEnvironmentVariables()
+        ImmutableArray<(string Name, string Value)> ReadEnvironmentVariables()
         {
-            Dictionary<string, string>? data = null;
+            ImmutableArray<(string Name, string Value)>.Builder? builder = null;
 
             ReadObject(property =>
             {
-                data ??= new(StringComparers.EnvironmentVariableNames);
-                data[property] = ReadString();
+                builder ??= ImmutableArray.CreateBuilder<(string Name, string Value)>();
+                builder.Add((property, ReadString()));
             });
 
-            return data;
+            return builder?.ToImmutable() ?? ImmutableArray<(string Name, string Value)>.Empty;
         }
 
         string ReadString()
         {
             if (!reader.Read() || reader.TokenType != JsonToken.String)
-                throw new FormatException($"Expected string at {reader.LineNumber}:{reader.LinePosition} but got {reader.TokenType}.");
+                throw new JsonReaderException($"Expected string at {reader.LineNumber}:{reader.LinePosition} but got {reader.TokenType}.");
             return (string)reader.Value!;
         }
 
         bool ReadBoolean()
         {
             if (!reader.Read() || reader.TokenType != JsonToken.Boolean)
-                throw new FormatException($"Expected bool at {reader.LineNumber}:{reader.LinePosition} but got {reader.TokenType}.");
+                throw new JsonReaderException($"Expected bool at {reader.LineNumber}:{reader.LinePosition} but got {reader.TokenType}.");
             return (bool)reader.Value!;
         }
 
         void ReadObject(Action<string> callback)
         {
             if (!reader.Read() || reader.TokenType != JsonToken.StartObject)
-                throw new FormatException($"Expected object start at {reader.LineNumber}:{reader.LinePosition} but got {reader.TokenType}.");
+                throw new JsonReaderException($"Expected object start at {reader.LineNumber}:{reader.LinePosition} but got {reader.TokenType}.");
 
             while (reader.Read())
             {
@@ -358,7 +383,7 @@ internal static class LaunchSettingsJsonEncoding
                     break;
 
                 if (reader.TokenType != JsonToken.PropertyName)
-                    throw new FormatException($"Expected property name at {reader.LineNumber}:{reader.LinePosition} but got {reader.TokenType}.");
+                    throw new JsonReaderException($"Expected property name at {reader.LineNumber}:{reader.LinePosition} but got {reader.TokenType}.");
 
                 string propertyName = (string)reader.Value!;
 

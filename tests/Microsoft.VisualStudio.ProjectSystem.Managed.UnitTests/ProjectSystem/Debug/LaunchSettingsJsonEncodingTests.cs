@@ -11,12 +11,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         [InlineData("""{ "profiles": {} }""")]
         public void FromJson_Empty(string json)
         {
-            var settings = LaunchSettingsJsonEncoding.FromJson(json, null!);
+            var (profiles, globalSettings) = LaunchSettingsJsonEncoding.FromJson(json, null!);
 
-            Assert.NotNull(settings.Profiles);
-            Assert.Empty(settings.Profiles);
-
-            Assert.Null(settings.OtherSettings);
+            Assert.Empty(profiles);
+            Assert.Empty(globalSettings);
         }
 
         [Fact]
@@ -56,18 +54,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             }
             """;
 
-            var settings = LaunchSettingsJsonEncoding.FromJson(json, _providers);
+            var (profiles, globalSettings) = LaunchSettingsJsonEncoding.FromJson(json, _providers);
 
-            List<LaunchProfileData>? profiles = settings.Profiles;
-            Assert.NotNull(profiles);
-            Assert.Equal(4, profiles.Count);
+            Assert.Equal(4, profiles.Length);
 
             var profile = profiles[0];
             Assert.Equal("IIS Express", profile.Name);
             Assert.Equal("IISExpress", profile.CommandName);
             Assert.Equal("http://localhost:1234/test.html", profile.LaunchUrl);
             Assert.True(profile.LaunchBrowser);
-            Assert.False(profile.InMemoryProfile);
+            Assert.False(profile.IsInMemoryObject());
 
             profile = profiles[1];
             Assert.Equal("HasCustomValues", profile.Name);
@@ -75,12 +71,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             Assert.Equal("c:\\test\\project\\bin\\project.exe", profile.ExecutablePath);
             Assert.False(profile.LaunchBrowser);
             Assert.Null(profile.LaunchUrl);
-            Assert.Null(profile.EnvironmentVariables);
-            Assert.NotNull(profile.OtherSettings);
-            Assert.True((bool)profile.OtherSettings["custom1"]);
-            Assert.Equal(124, profile.OtherSettings["custom2"]);
-            Assert.Equal("mycustomVal", profile.OtherSettings["custom3"]);
-            Assert.False(profile.InMemoryProfile);
+            Assert.Equal(3, profile.OtherSettings.Length);
+            Assert.Equal(("custom1", true), profile.OtherSettings[0]);
+            Assert.Equal(("custom2", 124), profile.OtherSettings[1]);
+            Assert.Equal(("custom3", "mycustomVal"), profile.OtherSettings[2]);
+            Assert.False(profile.IsInMemoryObject());
 
             profile = profiles[2];
             Assert.Equal("Docker", profile.Name);
@@ -89,11 +84,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             Assert.Null(profile.ExecutablePath);
             Assert.False(profile.LaunchBrowser);
             Assert.Null(profile.LaunchUrl);
-            Assert.Null(profile.EnvironmentVariables);
-            Assert.NotNull(profile.OtherSettings);
-            Assert.Equal("some option in docker", profile.OtherSettings["dockerOption1"]);
-            Assert.Equal("Another option in docker", profile.OtherSettings["dockerOption2"]);
-            Assert.False(profile.InMemoryProfile);
+            Assert.Empty(profile.EnvironmentVariables);
+            Assert.Equal(2, profile.OtherSettings.Length);
+            Assert.Equal(("dockerOption1", "some option in docker"), profile.OtherSettings[0]);
+            Assert.Equal(("dockerOption2", "Another option in docker"), profile.OtherSettings[1]);
+            Assert.False(profile.IsInMemoryObject());
 
             profile = profiles[3];
             Assert.Equal("web", profile.Name);
@@ -102,13 +97,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             Assert.Null(profile.ExecutablePath);
             Assert.True(profile.LaunchBrowser);
             Assert.Null(profile.LaunchUrl);
-            Assert.NotNull(profile.EnvironmentVariables);
-            Assert.Equal("Development", profile.EnvironmentVariables["ASPNET_ENVIRONMENT"]);
-            Assert.Equal("c:\\Users\\billhie\\Documents\\projects\\WebApplication8\\src\\WebApplication8", profile.EnvironmentVariables["ASPNET_APPLICATIONBASE"]);
-            Assert.Null(profile.OtherSettings);
-            Assert.False(profile.InMemoryProfile);
+            Assert.Equal(2, profile.EnvironmentVariables.Length);
+            Assert.Equal(("ASPNET_ENVIRONMENT", "Development"), profile.EnvironmentVariables[0]);
+            Assert.Equal(("ASPNET_APPLICATIONBASE", @"c:\Users\billhie\Documents\projects\WebApplication8\src\WebApplication8"), profile.EnvironmentVariables[1]);
+            Assert.False(profile.IsInMemoryObject());
 
-            var roundTrippedJson = LaunchSettingsJsonEncoding.ToJson(new LaunchSettings(settings, null, 0));
+            var roundTrippedJson = LaunchSettingsJsonEncoding.ToJson(profiles, globalSettings);
 
             Assert.Equal(json, roundTrippedJson);
         }
