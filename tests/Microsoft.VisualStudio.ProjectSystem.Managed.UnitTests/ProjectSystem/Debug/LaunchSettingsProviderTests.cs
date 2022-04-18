@@ -322,7 +322,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             
             Assert.NotNull(launchSettings.OtherSettings);
             Assert.Single(launchSettings.OtherSettings);
-            Assert.True(launchSettings.OtherSettings["iisSettings"] is JObject);
+            var jObject = Assert.IsType<JObject>(launchSettings.OtherSettings["iisSettings"]);
+
+            Assert.True(jObject.GetValue("windowsAuthentication")?.Value<bool>());
+            Assert.False(jObject.GetValue("anonymousAuthentication")?.Value<bool>());
         }
 
         [Fact]
@@ -342,7 +345,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             
             Assert.NotNull(launchSettings.OtherSettings);
             Assert.Single(launchSettings.OtherSettings);
-            Assert.True(launchSettings.OtherSettings["iisSettings"] is IISSettingsData);
+            Assert.IsType<IISSettingsData>(launchSettings.OtherSettings["iisSettings"]);
         }
 
         [Fact]
