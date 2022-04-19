@@ -83,8 +83,8 @@
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|EnvironmentVariables|Description">
-        <source>The environment variables to set prior to running the process. Variables are separated by a comma (,) and variables names and values are separated with an equal sign (=). Example: var1=value1,var2=value2,var3=value3. Commas and equal signs appearing within a variable can be escaped using a forward slash (/).</source>
-        <target state="translated">Proměnné prostředí, které se mají nastavit před spuštěním procesu. Proměnné se oddělují čárkami (,) a názvy a hodnoty proměnných se oddělují znakem rovnítka (=). Příklad: prom1=hodnota1,prom2=hodnota2,prom3=hodnota3. Čárky a znaky rovnítka, které se vyskytují v proměnné, je možné uvést lomítkem (/).</target>
+        <source>The environment variables to set prior to running the process.</source>
+        <target state="needs-review-translation">Proměnné prostředí, které se mají nastavit před spuštěním procesu. Proměnné se oddělují čárkami (,) a názvy a hodnoty proměnných se oddělují znakem rovnítka (=). Příklad: prom1=hodnota1,prom2=hodnota2,prom3=hodnota3. Čárky a znaky rovnítka, které se vyskytují v proměnné, je možné uvést lomítkem (/).</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|EnvironmentVariables|DisplayName">

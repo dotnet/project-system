@@ -67,7 +67,11 @@
 
   <StringProperty Name="EnvironmentVariables"
                   DisplayName="Environment variables"
-                  Description="The environment variables to set prior to running the process. Variables are separated by a comma (,) and variables names and values are separated with an equal sign (=). Example: var1=value1,var2=value2,var3=value3. Commas and equal signs appearing within a variable can be escaped using a forward slash (/)."/>
+                  Description="The environment variables to set prior to running the process.">
+    <StringProperty.ValueEditors>
+      <ValueEditor EditorType="NameValueList" />
+    </StringProperty.ValueEditors>
+  </StringProperty>
 
   <BoolProperty Name="NativeDebugging"
                 DisplayName="Enable native code debugging"
