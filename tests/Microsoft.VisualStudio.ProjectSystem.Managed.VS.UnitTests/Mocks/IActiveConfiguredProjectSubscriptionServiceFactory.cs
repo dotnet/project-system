@@ -9,7 +9,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
             var mock = new Mock<IActiveConfiguredProjectSubscriptionService>();
 
             mock.SetupGet(s => s.ProjectRuleSource)
-                .Returns(() => IProjectValueDataSourceFactory.CreateInstance<IProjectSubscriptionUpdate>());
+                .Returns(IProjectValueDataSourceFactory.CreateInstance<IProjectSubscriptionUpdate>);
 
             if (sourceItemsRuleSource != null)
             {

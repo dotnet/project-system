@@ -6,7 +6,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
     {
         public static IConfigurationGroup<ProjectConfiguration> CreateFromConfigurationNames(params string[] configurationNames)
         {
-            IEnumerable<ProjectConfiguration> configurations = configurationNames.Select(name => ProjectConfigurationFactory.Create(name));
+            IEnumerable<ProjectConfiguration> configurations = configurationNames.Select(ProjectConfigurationFactory.Create);
 
             return Create(configurations);
         }
