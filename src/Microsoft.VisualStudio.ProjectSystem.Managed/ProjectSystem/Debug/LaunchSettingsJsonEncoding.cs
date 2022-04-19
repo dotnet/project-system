@@ -181,12 +181,12 @@ internal static class LaunchSettingsJsonEncoding
     /// <returns>Deserialized launch settings.</returns>
     /// <exception cref="JsonReaderException">JSON data was not of the expected format.</exception>
     public static (ImmutableArray<LaunchProfile> Profiles, ImmutableArray<(string Name, object Value)> GlobalSettings) FromJson(
-        string json,
+        TextReader json,
         OrderPrecedenceImportCollection<ILaunchSettingsSerializationProvider, IJsonSection> jsonSerializationProviders)
     {
         JsonSerializer? jsonSerializer = null;
 
-        using JsonTextReader reader = new(new StringReader(json));
+        using JsonTextReader reader = new(json);
 
         ImmutableArray<LaunchProfile>.Builder? profiles = null;
         ImmutableArray<(string Name, object Value)>.Builder? otherSettings = null;

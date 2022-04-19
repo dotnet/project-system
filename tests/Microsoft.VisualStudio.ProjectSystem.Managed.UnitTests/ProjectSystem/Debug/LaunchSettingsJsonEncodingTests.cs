@@ -11,7 +11,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         [InlineData("""{ "profiles": {} }""")]
         public void FromJson_Empty(string json)
         {
-            var (profiles, globalSettings) = LaunchSettingsJsonEncoding.FromJson(json, null!);
+            var (profiles, globalSettings) = LaunchSettingsJsonEncoding.FromJson(new StringReader(json), null!);
 
             Assert.Empty(profiles);
             Assert.Empty(globalSettings);
@@ -54,7 +54,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             }
             """;
 
-            var (profiles, globalSettings) = LaunchSettingsJsonEncoding.FromJson(json, _providers);
+            var (profiles, globalSettings) = LaunchSettingsJsonEncoding.FromJson(new StringReader(json), _providers);
 
             Assert.Equal(4, profiles.Length);
 
