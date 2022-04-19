@@ -432,10 +432,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
 
             using Stream stream = _fileSystem.OpenTextStream(fileName);
 
-            // Remember the time we are sync'd to
+            var result = LaunchSettingsJsonEncoding.FromJson(new StreamReader(stream), JsonSerializationProviders);
+
+            // Remember the time we are sync'd to.
+            // Only do this when we successfully obtain a result.
             LastSettingsFileSyncTimeUtc = _fileSystem.GetLastFileWriteTimeOrMinValueUtc(fileName);
 
-            return LaunchSettingsJsonEncoding.FromJson(new StreamReader(stream), JsonSerializationProviders);
+            return result;
         }
 
         public Task<string> GetLaunchSettingsFilePathAsync()
