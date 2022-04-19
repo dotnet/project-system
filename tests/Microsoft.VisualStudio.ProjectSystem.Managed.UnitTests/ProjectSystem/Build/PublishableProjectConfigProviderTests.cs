@@ -31,10 +31,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Build
         {
             var provider = CreateInstance();
 
-            await Assert.ThrowsAsync<InvalidOperationException>(() =>
-            {
-                return provider.ShowPublishPromptAsync();
-            });
+            await Assert.ThrowsAsync<InvalidOperationException>(provider.ShowPublishPromptAsync);
         }
 
         private static PublishableProjectConfigProvider CreateInstance()

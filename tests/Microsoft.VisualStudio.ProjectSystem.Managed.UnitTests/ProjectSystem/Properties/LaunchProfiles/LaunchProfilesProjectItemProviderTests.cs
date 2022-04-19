@@ -228,7 +228,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
 
             Assert.Collection(items,
                 item => Assert.Equal("Profile3", item!.EvaluatedInclude),
-                item => Assert.Null(item),
+                Assert.Null,
                 item => Assert.Equal("Profile1", item!.EvaluatedInclude));
         }
 

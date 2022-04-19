@@ -301,10 +301,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             using var provider = GetLaunchSettingsProvider(moqFS);
             await moqFS.WriteAllTextAsync(provider.LaunchSettingsFile, BadJsonString);
 
-            await Assert.ThrowsAsync<JsonReaderException>(() =>
-            {
-                return provider.ReadSettingsFileFromDiskTestAsync();
-            });
+            await Assert.ThrowsAsync<JsonReaderException>(provider.ReadSettingsFileFromDiskTestAsync);
         }
 
         [Fact]

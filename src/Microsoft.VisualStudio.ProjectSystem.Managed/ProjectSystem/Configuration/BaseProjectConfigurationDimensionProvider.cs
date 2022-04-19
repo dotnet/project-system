@@ -50,11 +50,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
 
             Assumes.NotNull(configuredProject);
 
-            return await ProjectAccessor.OpenProjectForReadAsync(configuredProject, evaluatedProject =>
-            {
-                // Need evaluated property to get inherited properties defines in props or targets.
-                return GetOrderedPropertyValues(evaluatedProject);
-            });
+            // Need evaluated property to get inherited properties defined in props or targets.
+            return await ProjectAccessor.OpenProjectForReadAsync(configuredProject, GetOrderedPropertyValues);
         }
 
         /// <summary>

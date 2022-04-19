@@ -52,7 +52,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
 
                 IPropertyPagesCatalog catalog = await catalogProvider.GetCatalogAsync(PropertyPageContexts.Project);
                 return catalog.GetPropertyPagesSchemas()
-                    .Select(name => catalog.GetSchema(name))
+                    .Select(catalog.GetSchema)
                     .WhereNotNull()
                     .Where(rule => string.Equals(rule.PageTemplate, "CommandNameBasedDebugger", StringComparison.OrdinalIgnoreCase)
                             && rule.Metadata.TryGetValue("CommandName", out object pageCommandNameObj))

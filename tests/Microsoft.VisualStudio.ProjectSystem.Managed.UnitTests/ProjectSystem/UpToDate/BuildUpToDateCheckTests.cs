@@ -89,7 +89,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 projectSystemOptions.Object,
                 configuredProject.Object,
                 projectAsynchronousTasksService.Object,
-                ITelemetryServiceFactory.Create(telemetryParameters => _telemetryEvents.Add(telemetryParameters)),
+                ITelemetryServiceFactory.Create(_telemetryEvents.Add),
                 _fileSystem,
                 upToDateCheckHost.Object);
         }
@@ -250,8 +250,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
             await AssertNotUpToDateAsync(
                 $"""
-                Adding UpToDateCheckBuilt outputs:
-                    {_builtPath}
                 The set of project items was changed more recently ({itemChangedTime.ToLocalTime()}) than the last successful build start time ({lastBuildTime.ToLocalTime()}), not up-to-date.
                     Content item added 'ItemPath1' (CopyToOutputDirectory=Never, TargetPath='')
                     Content item added 'ItemPath2' (CopyToOutputDirectory=Never, TargetPath='')
@@ -510,8 +508,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
             await AssertNotUpToDateAsync(
                 $"""
-                Adding UpToDateCheckBuilt outputs:
-                    {_builtPath}
                 The set of project items was changed more recently ({itemChangeTime.ToLocalTime()}) than the last successful build start time ({lastBuildTime.ToLocalTime()}), not up-to-date.
                     Compile item removed 'Input.cs' (CopyToOutputDirectory=Never, TargetPath='')
                 """,

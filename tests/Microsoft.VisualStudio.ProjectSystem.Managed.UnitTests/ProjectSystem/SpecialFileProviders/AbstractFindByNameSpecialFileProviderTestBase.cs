@@ -156,7 +156,7 @@ Project (flags: {{ProjectRoot}}), FilePath: ""C:\Project\Project.csproj""
             // We override CreateFileAsync to call the CreateEmptyFileAsync which makes writting tests in the base easier
             var mock = new Mock<T>(arguments);
             mock.Protected().Setup<Task>("CreateFileAsync", ItExpr.IsAny<string>())
-                .Returns<string>(path => projectTree.TreeStorage.CreateEmptyFileAsync(path));
+                .Returns<string>(projectTree.TreeStorage.CreateEmptyFileAsync);
 
             mock.CallBase = true;
 

@@ -11,7 +11,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             var mock = new Mock<IRoslynServices>();
 
             mock.Setup(h => h.IsValidIdentifier(It.IsAny<string>()))
-                .Returns<string>(name => syntaxFactsService.IsValidIdentifier(name));
+                .Returns<string>(syntaxFactsService.IsValidIdentifier);
 
             return mock.Object;
         }

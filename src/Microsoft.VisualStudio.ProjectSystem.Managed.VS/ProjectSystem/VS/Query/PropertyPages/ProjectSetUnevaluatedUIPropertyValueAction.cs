@@ -25,9 +25,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
 
         protected override Task SetValueAsync(IProperty property)
         {
-            if (property is IEvaluatedProperty evaluatedProperty)
+            if (_parameter.Value == null)
             {
-                return evaluatedProperty.SetUnevaluatedValueAsync(_parameter.Value ?? string.Empty);
+                return property.DeleteAsync();
             }
             else
             {
