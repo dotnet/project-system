@@ -87,5 +87,31 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
 
             Assert.Equal(expected, data.RemoteDebugMachine());
         }
+
+        [Fact]
+        public void TryGetSetting_ILaunchProfile()
+        {
+            var mock = new Mock<ILaunchProfile>();
+            mock.SetupGet(lp => lp.OtherSettings).Returns(() => ImmutableDictionary<string, object>.Empty.Add("A", 1));
+
+            Assert.True(mock.Object.TryGetSetting("A", out object? o));
+            Assert.Equal(1, o);
+
+            Assert.False(mock.Object.TryGetSetting("B", out o));
+            Assert.Null(o);
+        }
+
+        [Fact]
+        public void TryGetSetting_ILaunchProfile2()
+        {
+            var mock = new Mock<ILaunchProfile2>();
+            mock.SetupGet(lp => lp.OtherSettings).Returns(() => ImmutableArray.Create<(string, object)>(("A", 1)));
+
+            Assert.True(mock.Object.TryGetSetting("A", out object? o));
+            Assert.Equal(1, o);
+
+            Assert.False(mock.Object.TryGetSetting("B", out o));
+            Assert.Null(o);
+        }
     }
 }

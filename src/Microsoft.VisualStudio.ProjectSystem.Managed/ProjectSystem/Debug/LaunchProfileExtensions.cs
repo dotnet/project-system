@@ -33,6 +33,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
                 }
             }
 
+            if (profile.OtherSettings?.TryGetValue(key, out value) is true)
+            {
+                return true;
+            }
+
             value = null;
             return false;
         }
