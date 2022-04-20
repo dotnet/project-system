@@ -830,13 +830,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 // Short-lived cache of timestamp by path
                 var timestampCache = new TimestampCache(_fileSystem);
 
+                globalProperties.TryGetValue(FastUpToDateCheckIgnoresKindsGlobalPropertyName, out string? ignoreKindsString);
+
                 LogLevel requestedLogLevel = await _projectSystemOptions.GetFastUpToDateLoggingLevelAsync(token);
-                var logger = new Log(logWriter, requestedLogLevel, sw, timestampCache, _configuredProject.UnconfiguredProject.FullPath ?? "", isValidationRun ? null : _telemetryService, state);
+                var logger = new Log(logWriter, requestedLogLevel, sw, timestampCache, _configuredProject.UnconfiguredProject.FullPath ?? "", isValidationRun ? null : _telemetryService, state, ignoreKindsString);
 
                 try
                 {
                     HashSet<string>? ignoreKinds = null;
-                    if (globalProperties.TryGetValue(FastUpToDateCheckIgnoresKindsGlobalPropertyName, out string? ignoreKindsString))
+                    if (ignoreKindsString is not null)
                     {
                         ignoreKinds = new HashSet<string>(new LazyStringSplit(ignoreKindsString, ';'), StringComparer.OrdinalIgnoreCase);
 
