@@ -18,13 +18,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
             var handler = CreateInstance(project, context);
 
             var projectChanges = ImmutableDictionary<string, IProjectChangeDescription>.Empty.Add(
-                "None", IProjectChangeDescriptionFactory.FromJson(
-@"{
-    ""Difference"": { 
-        ""AnyChanges"": true,
-        ""AddedItems"": [ ""File1.razor"", ""File1.cshtml"", ""File1.cs"" ]
-    }
-}"));
+                "None",
+                IProjectChangeDescriptionFactory.FromJson(
+                    """
+                    {
+                        "Difference": { 
+                            "AnyChanges": true,
+                            "AddedItems": [ "File1.razor", "File1.cshtml", "File1.cs" ]
+                        }
+                    }
+                    """));
 
             Handle(handler, projectChanges);
 
@@ -44,21 +47,29 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
 
             var handler = CreateInstance(project, context);
 
-            var projectChanges = ImmutableDictionary<string, IProjectChangeDescription>.Empty.Add(
-                "None", IProjectChangeDescriptionFactory.FromJson(
-@"{
-    ""Difference"": { 
-        ""AnyChanges"": true,
-        ""AddedItems"": [ ""File1.razor"", ""File1.cs"" ]
-    }
-}")).Add(
-                "Content", IProjectChangeDescriptionFactory.FromJson(
-@"{
-    ""Difference"": { 
-        ""AnyChanges"": true,
-        ""AddedItems"": [ ""File1.cshtml"", ""File2.cs"" ]
-    }
-}"));
+            var projectChanges = ImmutableDictionary<string, IProjectChangeDescription>.Empty
+                .Add(
+                    "None",
+                    IProjectChangeDescriptionFactory.FromJson(
+                        """
+                        {
+                            "Difference": { 
+                                "AnyChanges": true,
+                                "AddedItems": [ "File1.razor", "File1.cs" ]
+                            }
+                        }
+                        """))
+                .Add(
+                    "Content",
+                    IProjectChangeDescriptionFactory.FromJson(
+                        """
+                        {
+                            "Difference": { 
+                                "AnyChanges": true,
+                                "AddedItems": [ "File1.cshtml", "File2.cs" ]
+                            }
+                        }
+                        """));
 
             Handle(handler, projectChanges);
 
@@ -78,21 +89,29 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
 
             var handler = CreateInstance(project, context);
 
-            var projectChanges = ImmutableDictionary<string, IProjectChangeDescription>.Empty.Add(
-                "None", IProjectChangeDescriptionFactory.FromJson(
-@"{
-    ""Difference"": { 
-        ""AnyChanges"": true,
-        ""AddedItems"": [ ""File1.razor"", ""File1.cs"" ]
-    }
-}")).Add(
-                "Content", IProjectChangeDescriptionFactory.FromJson(
-@"{
-    ""Difference"": { 
-        ""AnyChanges"": true,
-        ""AddedItems"": [ ""File1.razor"", ""File1.cshtml"", ""File2.cs"" ]
-    }
-}"));
+            var projectChanges = ImmutableDictionary<string, IProjectChangeDescription>.Empty
+                .Add(
+                    "None",
+                    IProjectChangeDescriptionFactory.FromJson(
+                        """
+                        {
+                            "Difference": { 
+                                "AnyChanges": true,
+                                "AddedItems": [ "File1.razor", "File1.cs" ]
+                            }
+                        }
+                        """))
+                .Add(
+                    "Content",
+                    IProjectChangeDescriptionFactory.FromJson(
+                        """
+                        {
+                            "Difference": { 
+                                "AnyChanges": true,
+                                "AddedItems": [ "File1.razor", "File1.cshtml", "File2.cs" ]
+                            }
+                        }
+                        """));
 
             Handle(handler, projectChanges);
 

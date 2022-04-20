@@ -23,9 +23,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
         {
             var command = CreateInstance();
 
-            var tree = ProjectTreeParser.Parse(@"
-Root (flags: {ProjectRoot})
-");
+            var tree = ProjectTreeParser.Parse(
+                """
+                Root (flags: {ProjectRoot})
+                """);
 
             var nodes = ImmutableHashSet.Create(tree);
 
@@ -39,9 +40,10 @@ Root (flags: {ProjectRoot})
         {
             var command = CreateInstance(capability: "IncorrectCapability");
 
-            var tree = ProjectTreeParser.Parse(@"
-Root (flags: {ProjectRoot})
-");
+            var tree = ProjectTreeParser.Parse(
+                """
+                Root (flags: {ProjectRoot})
+                """);
 
             var nodes = ImmutableHashSet.Create(tree);
 
@@ -55,10 +57,11 @@ Root (flags: {ProjectRoot})
         {
             var command = CreateInstance();
 
-            var tree = ProjectTreeParser.Parse(@"
-Root (flags: {ProjectRoot})
-    Properties (flags: {Folder AppDesignerFolder})
-");
+            var tree = ProjectTreeParser.Parse(
+                """
+                Root (flags: {ProjectRoot})
+                    Properties (flags: {Folder AppDesignerFolder})
+                """);
 
             var nodes = ImmutableHashSet.Create(tree, tree.Children[0]);
 
@@ -72,10 +75,11 @@ Root (flags: {ProjectRoot})
         {
             var command = CreateInstance();
 
-            var tree = ProjectTreeParser.Parse(@"
-Root (flags: {ProjectRoot})
-    Code (flags: {Folder})
-");
+            var tree = ProjectTreeParser.Parse(
+                """
+                Root (flags: {ProjectRoot})
+                    Code (flags: {Folder})
+                """);
 
             var nodes = ImmutableHashSet.Create(tree.Children[0]);
 
@@ -91,10 +95,11 @@ Root (flags: {ProjectRoot})
         {
             var command = CreateInstance();
 
-            var tree = ProjectTreeParser.Parse(@"
-Root (flags: {ProjectRoot})
-    Code (flags: {Folder})
-");
+            var tree = ProjectTreeParser.Parse(
+                """
+                Root (flags: {ProjectRoot})
+                    Code (flags: {Folder})
+                """);
 
             var nodes = ImmutableHashSet.Create(tree.Children[0]);
 
@@ -122,10 +127,11 @@ Root (flags: {ProjectRoot})
 
             var command = CreateInstance(addItemDialogService: addItemDialogService);
 
-            var tree = ProjectTreeParser.Parse(@"
-Root (flags: {ProjectRoot})
-    Properties (flags: {Folder AppDesignerFolder})
-");
+            var tree = ProjectTreeParser.Parse(
+                """
+                Root (flags: {ProjectRoot})
+                    Properties (flags: {Folder AppDesignerFolder})
+                """);
 
             var nodes = ImmutableHashSet.Create(tree.Children[0]);
 
@@ -144,10 +150,11 @@ Root (flags: {ProjectRoot})
 
             var command = CreateInstance(addItemDialogService);
 
-            var tree = ProjectTreeParser.Parse(@"
-Root (flags: {ProjectRoot})
-    Code (flags: {Folder})
-");
+            var tree = ProjectTreeParser.Parse(
+                """
+                Root (flags: {ProjectRoot})
+                    Code (flags: {Folder})
+                """);
 
             var nodes = ImmutableHashSet.Create(tree.Children[0]);
 

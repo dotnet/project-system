@@ -10,40 +10,46 @@ namespace Microsoft.VisualStudio.ProjectSystem.SpecialFileProviders
         }
 
         [Theory]
-        [InlineData(@"
-Project (flags: {ProjectRoot}), FilePath: ""C:\Project\Project.csproj""
-    Application.xaml, ItemType: ApplicationDefinition, FilePath: ""C:\Project\Application.xaml""
-",
-@"C:\Project\Application.xaml")]
-        [InlineData(@"
-Project (flags: {ProjectRoot}), FilePath: ""C:\Project\Project.csproj""
-    App.xaml, ItemType: ApplicationDefinition, FilePath: ""C:\Project\App.xaml""
-",
-@"C:\Project\App.xaml")]
-        [InlineData(@"
-Project (flags: {ProjectRoot}), FilePath: ""C:\Project\Project.csproj""
-    ThisCanBeAnyName.xaml, ItemType: ApplicationDefinition, FilePath: ""C:\Project\ThisCanBeAnyName.xaml""
-",
-@"C:\Project\ThisCanBeAnyName.xaml")]
-        [InlineData(@"
-Project (flags: {ProjectRoot}), FilePath: ""C:\Project\Project.csproj""
-    Application.xaml, ItemType: ApplicationDefinition, FilePath: ""C:\Project\Application.xaml""
-    App.xaml, ItemType: ApplicationDefinition, FilePath: ""C:\Project\App.xaml""
-",
-@"C:\Project\Application.xaml")]
-        [InlineData(@"
-Project (flags: {ProjectRoot}), FilePath: ""C:\Project\Project.csproj""
-    Properties
-        Application.xaml, ItemType: ApplicationDefinition, FilePath: ""C:\Project\Properties\Application.xaml""
-",
-@"C:\Project\Properties\Application.xaml")]
-        [InlineData(@"
-Project (flags: {ProjectRoot}), FilePath: ""C:\Project\Project.csproj""
-    Properties
-        App.xaml, ItemType: ApplicationDefinition, FilePath: ""C:\Project\Properties\App.xaml""
-    Application.xaml, ItemType: ApplicationDefinition, FilePath: ""C:\Project\Application.xaml""
-",
-@"C:\Project\Application.xaml")]        // Breadthfirst
+        [InlineData(
+            """
+            Project (flags: {ProjectRoot}), FilePath: "C:\Project\Project.csproj"
+                Application.xaml, ItemType: ApplicationDefinition, FilePath: "C:\Project\Application.xaml"
+            """,
+            @"C:\Project\Application.xaml")]
+        [InlineData(
+            """
+            Project (flags: {ProjectRoot}), FilePath: "C:\Project\Project.csproj"
+                App.xaml, ItemType: ApplicationDefinition, FilePath: "C:\Project\App.xaml"
+            """,
+            @"C:\Project\App.xaml")]
+        [InlineData(
+            """
+            Project (flags: {ProjectRoot}), FilePath: "C:\Project\Project.csproj"
+                ThisCanBeAnyName.xaml, ItemType: ApplicationDefinition, FilePath: "C:\Project\ThisCanBeAnyName.xaml"
+            """,
+            @"C:\Project\ThisCanBeAnyName.xaml")]
+        [InlineData(
+            """
+            Project (flags: {ProjectRoot}), FilePath: "C:\Project\Project.csproj"
+                Application.xaml, ItemType: ApplicationDefinition, FilePath: "C:\Project\Application.xaml"
+                App.xaml, ItemType: ApplicationDefinition, FilePath: "C:\Project\App.xaml"
+            """,
+            @"C:\Project\Application.xaml")]
+        [InlineData(
+            """
+            Project (flags: {ProjectRoot}), FilePath: "C:\Project\Project.csproj"
+                Properties
+                    Application.xaml, ItemType: ApplicationDefinition, FilePath: "C:\Project\Properties\Application.xaml"
+            """,
+            @"C:\Project\Properties\Application.xaml")]
+        [InlineData(
+            """
+            Project (flags: {ProjectRoot}), FilePath: "C:\Project\Project.csproj"
+                Properties
+                    App.xaml, ItemType: ApplicationDefinition, FilePath: "C:\Project\Properties\App.xaml"
+                Application.xaml, ItemType: ApplicationDefinition, FilePath: "C:\Project\Application.xaml"
+            """,
+            @"C:\Project\Application.xaml")]        // Breadthfirst
         public async Task GetFileAsync_WhenItemMarkedWithApplicationManifest_ReturnsPath(string input, string expected)
         {
             var tree = ProjectTreeParser.Parse(input);

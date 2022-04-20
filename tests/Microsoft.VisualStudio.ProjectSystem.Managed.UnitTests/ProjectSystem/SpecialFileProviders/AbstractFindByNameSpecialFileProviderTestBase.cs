@@ -16,9 +16,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.SpecialFileProviders
         [Fact]
         public async Task GetFileAsync_ReturnsPathUnderProjectRoot()
         {
-            var tree = ProjectTreeParser.Parse($@"
-Project (flags: {{ProjectRoot}}), FilePath: ""C:\Project\Project.csproj""
-");
+            var tree = ProjectTreeParser.Parse(
+                """
+                Project (flags: {ProjectRoot}), FilePath: "C:\Project\Project.csproj"
+                """);
             var provider = CreateInstance(tree);
 
             var result = await provider.GetFileAsync(0, SpecialFileFlags.FullPath);
@@ -29,10 +30,11 @@ Project (flags: {{ProjectRoot}}), FilePath: ""C:\Project\Project.csproj""
         [Fact]
         public async Task GetFileAsync_WhenRootWithFile_ReturnsPath()
         {
-            var tree = ProjectTreeParser.Parse($@"
-Project (flags: {{ProjectRoot}}), FilePath: ""C:\Project\Project.csproj""
-    {_fileName} (flags: {{FileSystemEntity FileOnDisk}}), FilePath: ""C:\Project\{_fileName}""
-");
+            var tree = ProjectTreeParser.Parse(
+                $$"""
+                Project (flags: {ProjectRoot}), FilePath: "C:\Project\Project.csproj"
+                    {{_fileName}} (flags: {FileSystemEntity FileOnDisk}), FilePath: "C:\Project\{{_fileName}}"
+                """);
             var provider = CreateInstance(tree);
 
             var result = await provider.GetFileAsync(0, SpecialFileFlags.FullPath);
@@ -43,10 +45,11 @@ Project (flags: {{ProjectRoot}}), FilePath: ""C:\Project\Project.csproj""
         [Fact]
         public async Task GetFileAsync_WhenTreeWithFolderSameName_ReturnsPath()
         {
-            var tree = ProjectTreeParser.Parse($@"
-Project (flags: {{ProjectRoot}}), FilePath: ""C:\Project\Project.csproj""
-    {_fileName} (flags: {{FileSystemEntity Folder}}), FilePath: ""C:\Project\{_fileName}""
-");
+            var tree = ProjectTreeParser.Parse(
+                $$"""
+                Project (flags: {ProjectRoot}), FilePath: "C:\Project\Project.csproj"
+                    {{_fileName}} (flags: {FileSystemEntity Folder}), FilePath: "C:\Project\{{_fileName}}"
+                """);
 
             var provider = CreateInstance(tree);
 
@@ -58,10 +61,11 @@ Project (flags: {{ProjectRoot}}), FilePath: ""C:\Project\Project.csproj""
         [Fact]
         public async Task GetFileAsync_WhenTreeWithFolderSameName_ThrowsIfCreateIfNotExist()
         {
-            var tree = ProjectTreeParser.Parse($@"
-Project (flags: {{ProjectRoot}}), FilePath: ""C:\Project\Project.csproj""
-    {_fileName} (flags: {{FileSystemEntity Folder}}), FilePath: ""C:\Project\{_fileName}""
-");
+            var tree = ProjectTreeParser.Parse(
+                $$"""
+                Project (flags: {ProjectRoot}), FilePath: "C:\Project\Project.csproj"
+                    {{_fileName}} (flags: {FileSystemEntity Folder}), FilePath: "C:\Project\{{_fileName}}"
+                """);
 
             var provider = CreateInstance(tree);
 
@@ -74,10 +78,11 @@ Project (flags: {{ProjectRoot}}), FilePath: ""C:\Project\Project.csproj""
         [Fact]
         public async Task GetFileAsync_WhenTreeWithExcludedFile_IsAddedToProjectIfCreateIfNotExist()
         {
-            var tree = ProjectTreeParser.Parse($@"
-Project (flags: {{ProjectRoot}}), FilePath: ""C:\Project\Project.csproj""
-    {_fileName} (flags: {{FileSystemEntity FileOnDisk IncludeInProjectCandidate}}), FilePath: ""C:\Project\{_fileName}""
-");
+            var tree = ProjectTreeParser.Parse(
+                $$"""
+                Project (flags: {ProjectRoot}), FilePath: "C:\Project\Project.csproj"
+                    {{_fileName}} (flags: {FileSystemEntity FileOnDisk IncludeInProjectCandidate}), FilePath: "C:\Project\{{_fileName}}"
+                """);
             int callCount = 0;
             var storage = IPhysicalProjectTreeStorageFactory.ImplementAddFileAsync(path => callCount++);
             var physicalProjectTree = IPhysicalProjectTreeFactory.Create(currentTree: tree, storage: storage);
@@ -91,10 +96,11 @@ Project (flags: {{ProjectRoot}}), FilePath: ""C:\Project\Project.csproj""
         [Fact]
         public async Task GetFileAsync_WhenTreeWithExistentFile_ReturnsPathIfCreateIfNotExist()
         {
-            var tree = ProjectTreeParser.Parse($@"
-Project (flags: {{ProjectRoot}}), FilePath: ""C:\Project\Project.csproj""
-    {_fileName} (flags: {{FileSystemEntity FileOnDisk}}), FilePath: ""C:\Project\{_fileName}""
-");
+            var tree = ProjectTreeParser.Parse(
+                $$"""
+                Project (flags: {ProjectRoot}), FilePath: "C:\Project\Project.csproj"
+                    {{_fileName}} (flags: {FileSystemEntity FileOnDisk}), FilePath: "C:\Project\{{_fileName}}"
+                """);
             var physicalProjectTree = IPhysicalProjectTreeFactory.Create(currentTree: tree);
             var provider = CreateInstance(physicalProjectTree);
 
@@ -106,9 +112,10 @@ Project (flags: {{ProjectRoot}}), FilePath: ""C:\Project\Project.csproj""
         [Fact]
         public async Task GetFileAsync_WhenTreeWithNoFile_IsCreatedIfCreateIfNotExist()
         {
-            var tree = ProjectTreeParser.Parse($@"
-Project (flags: {{ProjectRoot}}), FilePath: ""C:\Project\Project.csproj""
-");
+            var tree = ProjectTreeParser.Parse(
+                $$"""
+                Project (flags: {ProjectRoot}), FilePath: "C:\Project\Project.csproj"
+                """);
 
             int callCount = 0;
             var storage = IPhysicalProjectTreeStorageFactory.ImplementCreateEmptyFileAsync(path => callCount++);
@@ -123,10 +130,11 @@ Project (flags: {{ProjectRoot}}), FilePath: ""C:\Project\Project.csproj""
         [Fact]
         public async Task GetFileAsync_WhenTreeWithMissingFile_IsCreatedIfCreateIfNotExist()
         {
-            var tree = ProjectTreeParser.Parse($@"
-Project (flags: {{ProjectRoot}}), FilePath: ""C:\Project\Project.csproj""
-    {_fileName} (flags: {{}}), FilePath: ""C:\Project\{_fileName}""
-");
+            var tree = ProjectTreeParser.Parse(
+                $$"""
+                Project (flags: {ProjectRoot}), FilePath: "C:\Project\Project.csproj"
+                    {{_fileName}} (flags: {}), FilePath: "C:\Project\{{_fileName}}"
+                """);
             int callCount = 0;
             var storage = IPhysicalProjectTreeStorageFactory.ImplementCreateEmptyFileAsync(path => callCount++);
             var physicalProjectTree = IPhysicalProjectTreeFactory.Create(currentTree: tree, storage: storage);

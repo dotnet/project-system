@@ -10,85 +10,96 @@ namespace Microsoft.VisualStudio.ProjectSystem
     public class ProjectReloadInterceptorTests
     {
         [Theory]
-        [InlineData(@"
-<Project>
-  <PropertyGroup>
-  </PropertyGroup>
-</Project>
-", @"
-<Project>
-  <PropertyGroup>
-    <TargetFrameworks>net45</TargetFrameworks>
-  </PropertyGroup>
-</Project>
-")]
-        [InlineData(@"
-<Project>
-  <PropertyGroup>
-    <TargetFrameworkIdentifier>.NETFramework</TargetFrameworkIdentifier>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
-  </PropertyGroup>
-</Project>
-", @"
-<Project>
-  <PropertyGroup>
-    <TargetFrameworks>net45;netcoreapp2.2</TargetFrameworks>
-  </PropertyGroup>
-</Project>
-")]
-        [InlineData(@"
-<Project>
-  <PropertyGroup>
-    <TargetFrameworks>net45;netcoreapp2.2</TargetFrameworks>
-  </PropertyGroup>
-</Project>
-", @"
-<Project>
-  <PropertyGroup>
-    <TargetFramework>net45</TargetFramework>
-  </PropertyGroup>
-</Project>
-")]
-        [InlineData(@"
-<Project>
-  <PropertyGroup>
-    <TargetFramework>net45</TargetFramework>    
-  </PropertyGroup>
-</Project>
-", @"
-<Project>
-  <PropertyGroup>
-    <TargetFrameworks>net45</TargetFrameworks>
-  </PropertyGroup>
-</Project>
-")]
-        [InlineData(@"
-<Project>
-  <PropertyGroup>
-    <TargetFramework>net45</TargetFramework>    
-  </PropertyGroup>
-</Project>
-", @"
-<Project>
-  <PropertyGroup>
-    <TargetFrameworks>net45;netcoreapp2.2</TargetFrameworks>
-  </PropertyGroup>
-</Project>
-")]
-        [InlineData(@"
-<Project>
-  <PropertyGroup>
-    <TargetFrameworks>net45;netcoreapp2.2</TargetFrameworks>
-  </PropertyGroup>
-</Project>
-", @"
-<Project>
-  <PropertyGroup>
-    <TargetFrameworkIdentifier>.NETFramework</TargetFrameworkIdentifier>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
-  </PropertyGroup>
-</Project>
-")]
+        [InlineData(
+            """
+            <Project>
+              <PropertyGroup>
+              </PropertyGroup>
+            </Project>
+            """,
+            """
+            <Project>
+              <PropertyGroup>
+                <TargetFrameworks>net45</TargetFrameworks>
+              </PropertyGroup>
+            </Project>
+            """)]
+        [InlineData(
+            """
+            <Project>
+              <PropertyGroup>
+                <TargetFrameworkIdentifier>.NETFramework</TargetFrameworkIdentifier>
+                <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+              </PropertyGroup>
+            </Project>
+            """,
+            """
+            <Project>
+              <PropertyGroup>
+                <TargetFrameworks>net45;netcoreapp2.2</TargetFrameworks>
+              </PropertyGroup>
+            </Project>
+            """)]
+        [InlineData("""
+            <Project>
+              <PropertyGroup>
+                <TargetFrameworks>net45;netcoreapp2.2</TargetFrameworks>
+              </PropertyGroup>
+            </Project>
+            """,
+            """
+            <Project>
+              <PropertyGroup>
+                <TargetFramework>net45</TargetFramework>
+              </PropertyGroup>
+            </Project>
+            """)]
+        [InlineData(
+            """
+            <Project>
+              <PropertyGroup>
+                <TargetFramework>net45</TargetFramework>    
+              </PropertyGroup>
+            </Project>
+            """,
+            """
+            <Project>
+              <PropertyGroup>
+                <TargetFrameworks>net45</TargetFrameworks>
+              </PropertyGroup>
+            </Project>
+            """)]
+        [InlineData(
+            """
+            <Project>
+              <PropertyGroup>
+                <TargetFramework>net45</TargetFramework>    
+              </PropertyGroup>
+            </Project>
+            """,
+            """
+            <Project>
+              <PropertyGroup>
+                <TargetFrameworks>net45;netcoreapp2.2</TargetFrameworks>
+              </PropertyGroup>
+            </Project>
+            """)]
+        [InlineData(
+            """
+            <Project>
+              <PropertyGroup>
+                <TargetFrameworks>net45;netcoreapp2.2</TargetFrameworks>
+              </PropertyGroup>
+            </Project>
+            """,
+            """
+            <Project>
+              <PropertyGroup>
+                <TargetFrameworkIdentifier>.NETFramework</TargetFrameworkIdentifier>
+                <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+              </PropertyGroup>
+            </Project>
+            """)]
         public void InterceptProjectReload_WhenDimensionsChange_ReturnsNeedsForceReload(string oldProjectXml, string newProjectXml)
         {
             var oldProperties = CreateProperties(oldProjectXml);
@@ -102,58 +113,66 @@ namespace Microsoft.VisualStudio.ProjectSystem
         }
 
         [Theory]
-        [InlineData(@"
-<Project>
-  <PropertyGroup>
-  </PropertyGroup>
-</Project>
-", @"
-<Project>
-  <PropertyGroup>
-    <TargetFramework>net45</TargetFramework>
-  </PropertyGroup>
-</Project>
-")]
-        [InlineData(@"
-<Project>
-  <PropertyGroup>
-    <TargetFrameworkIdentifier>.NETFramework</TargetFrameworkIdentifier>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
-  </PropertyGroup>
-</Project>
-", @"
-<Project>
-  <PropertyGroup>
-    <TargetFramework>net45</TargetFramework>
-  </PropertyGroup>
-</Project>
-")]
-        [InlineData(@"
-<Project>
-  <PropertyGroup>
-    <TargetFramework>net45</TargetFramework>
-  </PropertyGroup>
-</Project>
-", @"
-<Project>
-  <PropertyGroup>
-    <TargetFramework>net45</TargetFramework>
-  </PropertyGroup>
-</Project>
-")]
-        [InlineData(@"
-<Project>
-  <PropertyGroup>
-    <TargetFrameworks>net45;netcoreapp2.2</TargetFrameworks>
-  </PropertyGroup>
-</Project>
-", @"
-<Project>
-  <PropertyGroup>
-    <TargetFrameworks>net45;netcoreapp2.2</TargetFrameworks>
-  </PropertyGroup>
-</Project>
-")]
+        [InlineData(
+            """
+            <Project>
+              <PropertyGroup>
+              </PropertyGroup>
+            </Project>
+            """,
+            """
+            <Project>
+              <PropertyGroup>
+                <TargetFramework>net45</TargetFramework>
+              </PropertyGroup>
+            </Project>
+            """)]
+        [InlineData(
+            """
+            <Project>
+              <PropertyGroup>
+                <TargetFrameworkIdentifier>.NETFramework</TargetFrameworkIdentifier>
+                <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+              </PropertyGroup>
+            </Project>
+            """,
+            """
+            <Project>
+              <PropertyGroup>
+                <TargetFramework>net45</TargetFramework>
+              </PropertyGroup>
+            </Project>
+            """)]
+        [InlineData(
+            """
+            <Project>
+              <PropertyGroup>
+                <TargetFramework>net45</TargetFramework>
+              </PropertyGroup>
+            </Project>
+            """,
+            """
+            <Project>
+              <PropertyGroup>
+                <TargetFramework>net45</TargetFramework>
+              </PropertyGroup>
+            </Project>
+            """)]
+        [InlineData(
+            """
+            <Project>
+              <PropertyGroup>
+                <TargetFrameworks>net45;netcoreapp2.2</TargetFrameworks>
+              </PropertyGroup>
+            </Project>
+            """,
+            """
+            <Project>
+              <PropertyGroup>
+                <TargetFrameworks>net45;netcoreapp2.2</TargetFrameworks>
+              </PropertyGroup>
+            </Project>
+            """)]
         public void InterceptProjectReload_WhenNoDimensionsChange_ReturnsNoAction(string oldProjectXml, string newProjectXml)
         {
             var oldProperties = CreateProperties(oldProjectXml);
