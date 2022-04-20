@@ -53,6 +53,9 @@
   <StringProperty Name="Configuration"
                   Visible="False" />
 
+  <StringProperty Name="CommandLineArgsForDesignTimeEvaluation"
+                  Visible="False" />
+
   <StringProperty Name="DebuggerSymbolsPath"
                   Visible="False" />
 

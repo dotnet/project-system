@@ -79,10 +79,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 
                 try
                 {
-                    // Update LastDesignTimeBuildSucceeded within a batch to avoid thread pool starvation.
+                    // Update additional properties within a batch to avoid thread pool starvation.
                     // https://github.com/dotnet/project-system/issues/8027
 
                     context.LastDesignTimeBuildSucceeded = false;  // By default, turn off diagnostics until the first design time build succeeds for this project.
+
+                    // Pass along any early approximation we have of the command line options
+#pragma warning disable CS0618 // This was obsoleted in favor of the one that takes an array, but here just the string is easier; we'll un-Obsolete this API
+                    context.SetOptions(data.CommandLineArgsForDesignTimeEvaluation);
+#pragma warning restore CS0618 // Type or member is obsolete
                 }
                 finally
                 {
