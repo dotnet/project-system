@@ -123,7 +123,7 @@ Each property in the system has an associated type. For example, the _Assembly n
 
 In the XAML rule files, properties are specified with an underlying type. These types are [defined by MSBuild](https://github.com/dotnet/msbuild/tree/master/src/Framework/XamlTypes) and are:
 
-- `StringProperty`
+- `StringProperty` (these can be [validated with the use of a regular expression](string-property-validation.md))
 - `StringListProperty`
 - `BoolProperty`
 - `EnumProperty`
