@@ -48,6 +48,11 @@ namespace Microsoft.VisualStudio.IO
             return await reader.ReadToEndAsync();
         }
 
+        public Stream OpenTextStream(string path)
+        {
+            return new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.Read, bufferSize: 4096, useAsync: true);
+        }
+
         public async Task WriteAllTextAsync(string path, string content)
         {
             using var stream = new FileStream(path, FileMode.Create, FileAccess.Write, FileShare.Read, bufferSize: 4096, useAsync: true);

@@ -155,12 +155,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
                 }
             }
 
-            if (profile.OtherSettings is not null)
+            foreach ((string propertyName, _) in profile.EnumerateOtherSettings())
             {
-                foreach ((string propertyName, _) in profile.OtherSettings)
-                {
-                    builder.Add(propertyName);
-                }
+                builder.Add(propertyName);
             }
 
             return builder.ToImmutable();
@@ -189,7 +186,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
                 WorkingDirectoryPropertyName => profile.WorkingDirectory ?? string.Empty,
                 LaunchBrowserPropertyName => profile.LaunchBrowser ? "true" : "false",
                 LaunchUrlPropertyName => profile.LaunchUrl ?? string.Empty,
-                EnvironmentVariablesPropertyName => ConvertDictionaryToString(profile.EnvironmentVariables) ?? string.Empty,
+                EnvironmentVariablesPropertyName => LaunchProfileEnvironmentVariableEncoding.Format(profile),
                 _ => GetExtensionPropertyValue(propertyName, profile, snapshot.GlobalSettings)
             };
         }
@@ -213,7 +210,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
                 WorkingDirectoryPropertyName => profile => profile.WorkingDirectory = unevaluatedPropertyValue,
                 LaunchBrowserPropertyName => setLaunchBrowserProperty,
                 LaunchUrlPropertyName => profile => profile.LaunchUrl = unevaluatedPropertyValue,
-                EnvironmentVariablesPropertyName => setEnvironmentVariablesProperty,
+                EnvironmentVariablesPropertyName => profile => LaunchProfileEnvironmentVariableEncoding.ParseIntoDictionary(unevaluatedPropertyValue, profile.EnvironmentVariables),
                 _ => null
             };
 
@@ -274,11 +271,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
                     profile.LaunchBrowser = result;
                 }
             }
-
-            void setEnvironmentVariablesProperty(IWritableLaunchProfile profile)
-            {
-                ParseStringIntoDictionary(unevaluatedPropertyValue, profile.EnvironmentVariables);
-            }
         }
 
         public void SetRuleContext(Rule rule)
@@ -303,13 +295,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
 
         private string? GetOtherSettingsPropertyValue(string propertyName, ILaunchProfile profile)
         {
-            if (profile.OtherSettings is not null
-                && profile.OtherSettings.TryGetValue(propertyName, out object? valueObject))
+            if (profile.TryGetSetting(propertyName, out object? valueObject))
             {
                 if (_rule?.GetProperty(propertyName) is BaseProperty property)
                 {
-                    string? valueString = null;
-                    valueString = property switch
+                    return property switch
                     {
                         BoolProperty => boolToString(valueObject),
                         IntProperty => intToString(valueObject),
@@ -318,8 +308,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
                         DynamicEnumProperty => valueObject as string,
                         _ => throw new InvalidOperationException($"{nameof(LaunchProfileProjectProperties)} does not know how to convert `{property.GetType()}` to a string.")
                     };
-
-                    return valueString;
                 }
 
                 return valueObject as string;
@@ -376,90 +364,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
             }
 
             return null;
-        }
-
-        private static string? ConvertDictionaryToString(ImmutableDictionary<string, string>? value)
-        {
-            if (value is null)
-            {
-                return null;
-            }
-
-            return string.Join(",", value.OrderBy(kvp => kvp.Key, StringComparer.Ordinal).Select(kvp => $"{encode(kvp.Key)}={encode(kvp.Value)}"));
-
-            static string encode(string value)
-            {
-                return value.Replace("/", "//").Replace(",", "/,").Replace("=", "/=");
-            }
-        }
-
-        private static void ParseStringIntoDictionary(string value, Dictionary<string, string> dictionary)
-        {
-            dictionary.Clear();
-
-            foreach (string entry in readEntries(value))
-            {
-                (string entryKey, string entryValue) = splitEntry(entry);
-                string decodedEntryKey = decode(entryKey);
-                string decodedEntryValue = decode(entryValue);
-
-                if (!string.IsNullOrEmpty(decodedEntryKey))
-                {
-                    dictionary[decodedEntryKey] = decodedEntryValue;
-                }
-            }
-
-            static IEnumerable<string> readEntries(string rawText)
-            {
-                bool escaped = false;
-                int entryStart = 0;
-                for (int i = 0; i < rawText.Length; i++)
-                {
-                    if (rawText[i] == ',' && !escaped)
-                    {
-                        yield return rawText.Substring(entryStart, i - entryStart);
-                        entryStart = i + 1;
-                        escaped = false;
-                    }
-                    else if (rawText[i] == '/')
-                    {
-                        escaped = !escaped;
-                    }
-                    else
-                    {
-                        escaped = false;
-                    }
-                }
-
-                yield return rawText.Substring(entryStart);
-            }
-
-            static (string encodedKey, string encodedValue) splitEntry(string entry)
-            {
-                bool escaped = false;
-                for (int i = 0; i < entry.Length; i++)
-                {
-                    if (entry[i] == '=' && !escaped)
-                    {
-                        return (entry.Substring(0, i), entry.Substring(i + 1));
-                    }
-                    else if (entry[i] == '/')
-                    {
-                        escaped = !escaped;
-                    }
-                    else
-                    {
-                        escaped = false;
-                    }
-                }
-
-                return (string.Empty, string.Empty);
-            }
-
-            static string decode(string value)
-            {
-                return value.Replace("/=", "=").Replace("/,", ",").Replace("//", "/");
-            }
         }
 
         private class LaunchProfilePropertiesContext : IProjectPropertiesContext

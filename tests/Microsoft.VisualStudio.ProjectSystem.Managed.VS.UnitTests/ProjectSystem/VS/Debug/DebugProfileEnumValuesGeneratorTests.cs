@@ -9,11 +9,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
     {
         private readonly List<ILaunchProfile> _profiles = new()
         {
-            new LaunchProfile { Name = "Profile1", LaunchBrowser = true },
-            new LaunchProfile { Name = "MyCommand" },
-            new LaunchProfile { Name = "Foo" },
-            new LaunchProfile { Name = "Bar" },
-            new LaunchProfile { Name = "Foo & Bar" }
+            new LaunchProfile("Profile1", null, launchBrowser: true),
+            new LaunchProfile("MyCommand", null),
+            new LaunchProfile("Foo", null),
+            new LaunchProfile("Bar", null),
+            new LaunchProfile("Foo & Bar", null)
         };
 
         [Fact]

@@ -30,6 +30,7 @@ namespace Microsoft.VisualStudio.IO
         void RemoveFile(string path);
         void CopyFile(string source, string destination, bool overwrite);
         Task<string> ReadAllTextAsync(string path);
+        Stream OpenTextStream(string path);
         Task WriteAllTextAsync(string path, string content);
 
         /// <summary>
