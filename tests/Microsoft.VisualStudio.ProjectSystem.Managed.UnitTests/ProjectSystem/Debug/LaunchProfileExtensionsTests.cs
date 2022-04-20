@@ -113,5 +113,75 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             Assert.False(mock.Object.TryGetSetting("B", out o));
             Assert.Null(o);
         }
+
+        [Fact]
+        public void FlattenEnvironmentVariables_ILaunchProfile_Null()
+        {
+            var mock = new Mock<ILaunchProfile>();
+            mock.SetupGet(lp => lp.EnvironmentVariables).Returns(() => null);
+
+            Assert.Empty(mock.Object.FlattenEnvironmentVariables());
+        }
+
+        [Fact]
+        public void FlattenEnvironmentVariables_ILaunchProfile_Empty()
+        {
+            var mock = new Mock<ILaunchProfile>();
+            mock.SetupGet(lp => lp.EnvironmentVariables).Returns(() => ImmutableDictionary<string, string>.Empty);
+            Assert.Empty(mock.Object.FlattenEnvironmentVariables());
+        }
+
+        [Fact]
+        public void FlattenEnvironmentVariables_ILaunchProfile_WithItems()
+        {
+            var mock = new Mock<ILaunchProfile>();
+            mock.SetupGet(lp => lp.EnvironmentVariables).Returns(() => ImmutableDictionary<string, string>.Empty.Add("A", "1"));
+
+            Assert.Equal(new[] { ("A", "1") }, mock.Object.FlattenEnvironmentVariables());
+        }
+
+        [Fact]
+        public void FlattenEnvironmentVariables_ILaunchProfile2()
+        {
+            var mock = new Mock<ILaunchProfile2>();
+            mock.SetupGet(lp => lp.EnvironmentVariables).Returns(() => ImmutableArray.Create(("A", "1")));
+
+            Assert.Equal(new[] { ("A", "1") }, mock.Object.FlattenEnvironmentVariables());
+        }
+
+        [Fact]
+        public void FlattenOtherSettings_ILaunchProfile_Null()
+        {
+            var mock = new Mock<ILaunchProfile>();
+            mock.SetupGet(lp => lp.OtherSettings).Returns(() => null);
+
+            Assert.Empty(mock.Object.FlattenOtherSettings());
+        }
+
+        [Fact]
+        public void FlattenOtherSettings_ILaunchProfile_Empty()
+        {
+            var mock = new Mock<ILaunchProfile>();
+            mock.SetupGet(lp => lp.OtherSettings).Returns(() => ImmutableDictionary<string, object>.Empty);
+            Assert.Empty(mock.Object.FlattenOtherSettings());
+        }
+
+        [Fact]
+        public void FlattenOtherSettings_ILaunchProfile_WithItems()
+        {
+            var mock = new Mock<ILaunchProfile>();
+            mock.SetupGet(lp => lp.OtherSettings).Returns(() => ImmutableDictionary<string, object>.Empty.Add("A", 1));
+
+            Assert.Equal(new[] { ("A", (object)1) }, mock.Object.FlattenOtherSettings());
+        }
+
+        [Fact]
+        public void FlattenOtherSettings_ILaunchProfile2()
+        {
+            var mock = new Mock<ILaunchProfile2>();
+            mock.SetupGet(lp => lp.OtherSettings).Returns(() => ImmutableArray.Create(("A", (object)1)));
+
+            Assert.Equal(new[] { ("A", (object)1) }, mock.Object.FlattenOtherSettings());
+        }
     }
 }
