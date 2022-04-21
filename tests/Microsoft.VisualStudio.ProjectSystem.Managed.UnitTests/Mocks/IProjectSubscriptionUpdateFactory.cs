@@ -32,12 +32,13 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
         public static IProjectSubscriptionUpdate CreateEmpty()
         {
-            return FromJson(@"
-{
-    ""CurrentState"": {
-    }
-}
-");
+            return FromJson(
+                """
+                {
+                    "CurrentState": {
+                    }
+                }
+                """);
         }
 
         public static IProjectSubscriptionUpdate FromJson(string jsonString)

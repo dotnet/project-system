@@ -32,51 +32,62 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 
         [Theory]
         [InlineData(
-@"{
-    ""Properties"": {
-        ""LanguageServiceName"": ""CSharp"",
-        ""TargetPath"": ""C:\\Target.dll""
-    }
-}")]
-
+            """
+            {
+                "Properties": {
+                    "LanguageServiceName": "CSharp",
+                    "TargetPath": "C:\\Target.dll"
+                }
+            }
+            """)]
         [InlineData(
-@"{
-    ""Properties"": {
-        ""MSBuildProjectFullPath"": ""C:\\Project\\Project.csproj"",
-        ""TargetPath"": ""C:\\Target.dll""
-    }
-}")]
+            """
+            {
+                "Properties": {
+                    "MSBuildProjectFullPath": "C:\\Project\\Project.csproj",
+                    "TargetPath": "C:\\Target.dll"
+                }
+            }
+            """)]
         [InlineData(
-@"{
-    ""Properties"": {
-        ""MSBuildProjectFullPath"": ""C:\\Project\\Project.csproj"",
-        ""LanguageServiceName"": ""CSharp"",
-    }
-}")]
+            """
+            {
+                "Properties": {
+                    "MSBuildProjectFullPath": "C:\\Project\\Project.csproj",
+                    "LanguageServiceName": "CSharp",
+                }
+            }
+            """)]
         [InlineData(
-@"{
-    ""Properties"": {
-        ""MSBuildProjectFullPath"": """",
-        ""LanguageServiceName"": ""CSharp"",
-        ""TargetPath"": ""C:\\Target.dll""
-    }
-}")]
+            """
+            {
+                "Properties": {
+                    "MSBuildProjectFullPath": "",
+                    "LanguageServiceName": "CSharp",
+                    "TargetPath": "C:\\Target.dll"
+                }
+            }
+            """)]
         [InlineData(
-@"{
-    ""Properties"": {
-        ""MSBuildProjectFullPath"": ""C:\\Project\\Project.csproj"",
-        ""LanguageServiceName"": """",
-        ""TargetPath"": ""C:\\Target.dll""
-    }
-}")]
+            """
+            {
+                "Properties": {
+                    "MSBuildProjectFullPath": "C:\\Project\\Project.csproj",
+                    "LanguageServiceName": "",
+                    "TargetPath": "C:\\Target.dll"
+                }
+            }
+            """)]
         [InlineData(
-@"{
-    ""Properties"": {
-        ""MSBuildProjectFullPath"": ""C:\\Project\\Project.csproj"",
-        ""LanguageServiceName"": ""CSharp"",
-        ""TargetPath"": """"
-    }
-}")]
+            """
+            {
+                "Properties": {
+                    "MSBuildProjectFullPath": "C:\\Project\\Project.csproj",
+                    "LanguageServiceName": "CSharp",
+                    "TargetPath": ""
+                }
+            }
+            """)]
         public async Task CreateProjectContextAsync_WhenEmptyOrMissingMSBuildProperties_ReturnsNull(string json)
         {
             var snapshot = IProjectRuleSnapshotFactory.FromJson(json);
@@ -205,14 +216,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         private static WorkspaceProjectContextProvider CreateInstance(UnconfiguredProject? project = null, IProjectThreadingService? threadingService = null, IWorkspaceProjectContextFactory? workspaceProjectContextFactory = null, ISafeProjectGuidService? projectGuidService = null, IProjectRuleSnapshot? projectRuleSnapshot = null)
         {
             projectRuleSnapshot ??= IProjectRuleSnapshotFactory.FromJson(
-@"{
-    ""Properties"": {
-        ""MSBuildProjectFullPath"": ""C:\\Project\\Project.csproj"",
-        ""LanguageServiceName"": ""CSharp"",
-        ""TargetPath"": ""C:\\Target.dll"",
-        ""AssemblyName"": ""Project""
-    }
-}");
+                """
+                {
+                    "Properties": {
+                        "MSBuildProjectFullPath": "C:\\Project\\Project.csproj",
+                        "LanguageServiceName": "CSharp",
+                        "TargetPath": "C:\\Target.dll",
+                        "AssemblyName": "Project"
+                    }
+                }
+                """);
 
             var projectFaultService = IProjectFaultHandlerServiceFactory.Create();
             project ??= UnconfiguredProjectFactory.Create();

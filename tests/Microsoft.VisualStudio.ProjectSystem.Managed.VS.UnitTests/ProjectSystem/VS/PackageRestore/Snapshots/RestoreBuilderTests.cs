@@ -19,30 +19,31 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
         [Fact]
         public void ToProjectRestoreInfo_WhenNoItems_ReturnsEmptyItemCollections()
         {
-            var update = IProjectSubscriptionUpdateFactory.FromJson(@"
-{
-    ""CurrentState"": {
-        ""ProjectReference"": {
-            ""Items"" : {}
-        },
-        ""PackageReference"": {
-            ""Items"" : {}
-        },
-        ""DotNetCliToolReference"": {
-            ""Items"" : {}
-        },
-        ""CollectedFrameworkReference"": {
-            ""Items"" : {}
-        },
-        ""CollectedPackageDownload"": {
-            ""Items"" : {}
-        },
-        ""CollectedPackageVersion"": {
-            ""Items"" : {}
-        }
-    }
-}
-");
+            var update = IProjectSubscriptionUpdateFactory.FromJson(
+                """
+                {
+                    "CurrentState": {
+                        "ProjectReference": {
+                            "Items" : {}
+                        },
+                        "PackageReference": {
+                            "Items" : {}
+                        },
+                        "DotNetCliToolReference": {
+                            "Items" : {}
+                        },
+                        "CollectedFrameworkReference": {
+                            "Items" : {}
+                        },
+                        "CollectedPackageDownload": {
+                            "Items" : {}
+                        },
+                        "CollectedPackageVersion": {
+                            "Items" : {}
+                        }
+                    }
+                }
+                """);
             var result = RestoreBuilder.ToProjectRestoreInfo(update.CurrentState);
 
             AssertNoItems(result);
@@ -67,18 +68,19 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
         [Fact]
         public void ToProjectRestoreInfo_RespectsNuGetTargetMonikerIfPresent()
         {
-            var update = IProjectSubscriptionUpdateFactory.FromJson(@"
-{
-    ""CurrentState"": {
-        ""NuGetRestore"": {
-            ""Properties"": {
-                ""NuGetTargetMoniker"": ""UWP, Version=v10"",
-                ""TargetFrameworkMoniker"": "".NETFramework, Version=v4.5""
-            },
-        }
-    }
-}
-");
+            var update = IProjectSubscriptionUpdateFactory.FromJson(
+                """
+                {
+                    "CurrentState": {
+                        "NuGetRestore": {
+                            "Properties": {
+                                "NuGetTargetMoniker": "UWP, Version=v10",
+                                "TargetFrameworkMoniker": ".NETFramework, Version=v4.5"
+                            },
+                        }
+                    }
+                }
+                """);
             var result = RestoreBuilder.ToProjectRestoreInfo(update.CurrentState);
             var targetFramework = result.TargetFrameworks.Item(0);
 
@@ -88,19 +90,20 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
         [Fact]
         public void ToProjectRestoreInfo_SetsCoreProperties()
         {
-            var update = IProjectSubscriptionUpdateFactory.FromJson(@"
-{
-    ""CurrentState"": {
-        ""NuGetRestore"": {
-            ""Properties"": {
-                ""MSBuildProjectExtensionsPath"": ""C:\\Project\\obj"",
-                ""TargetFrameworks"": ""net45"",               
-                ""TargetFrameworkMoniker"": "".NETFramework, Version=v4.5""
-            },
-        }
-    }
-}
-");
+            var update = IProjectSubscriptionUpdateFactory.FromJson(
+                """
+                {
+                    "CurrentState": {
+                        "NuGetRestore": {
+                            "Properties": {
+                                "MSBuildProjectExtensionsPath": "C:\\Project\\obj",
+                                "TargetFrameworks": "net45",
+                                "TargetFrameworkMoniker": ".NETFramework, Version=v4.5"
+                            },
+                        }
+                    }
+                }
+                """);
             var result = RestoreBuilder.ToProjectRestoreInfo(update.CurrentState);
 
             Assert.Equal("C:\\Project\\obj", result.MSBuildProjectExtensionsPath);
@@ -115,19 +118,20 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
         [Fact]
         public void ToProjectRestoreInfo_WhenEmpty_SetsCorePropertiesToEmpty()
         {
-            var update = IProjectSubscriptionUpdateFactory.FromJson(@"
-{
-    ""CurrentState"": {
-        ""NuGetRestore"": {
-            ""Properties"": {
-                ""MSBuildProjectExtensionsPath"": """",
-                ""TargetFrameworks"": """",               
-                ""TargetFrameworkMoniker"": """"
-            },
-        }
-    }
-}
-");
+            var update = IProjectSubscriptionUpdateFactory.FromJson(
+                """
+                {
+                    "CurrentState": {
+                        "NuGetRestore": {
+                            "Properties": {
+                                "MSBuildProjectExtensionsPath": "",
+                                "TargetFrameworks": "",
+                                "TargetFrameworkMoniker": ""
+                            },
+                        }
+                    }
+                }
+                """);
             var result = RestoreBuilder.ToProjectRestoreInfo(update.CurrentState);
 
             Assert.Empty(result.MSBuildProjectExtensionsPath);
@@ -142,18 +146,19 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
         [Fact]
         public void ToProjectRestoreInfo_SetsTargetFrameworkProperties()
         {   // All NuGetRestore properties end up in the "target framework" property bag
-            var update = IProjectSubscriptionUpdateFactory.FromJson(@"
-{
-    ""CurrentState"": {
-        ""NuGetRestore"": {
-            ""Properties"": {
-                ""Property"": ""Value"",
-                ""AnotherProperty"": ""AnotherValue""
-            },
-        }
-    }
-}
-");
+            var update = IProjectSubscriptionUpdateFactory.FromJson(
+                """
+                {
+                    "CurrentState": {
+                        "NuGetRestore": {
+                            "Properties": {
+                                "Property": "Value",
+                                "AnotherProperty": "AnotherValue"
+                            },
+                        }
+                    }
+                }
+                """);
             var result = RestoreBuilder.ToProjectRestoreInfo(update.CurrentState);
 
             Assert.Equal(1, result.TargetFrameworks.Count);
@@ -167,25 +172,26 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
         [Fact]
         public void ToProjectRestoreInfo_SetsToolReferences()
         {
-            var update = IProjectSubscriptionUpdateFactory.FromJson(@"
-{
-    ""CurrentState"": {
-        ""DotNetCliToolReference"": {
-            ""Items"" : {
-                ""ToolReference1"" : {
-                    ""Version"" : ""1.0.0.0"",
-                },
-                ""ToolReference2"" : {
-                    ""Version"" : ""2.0.0.0"",
-                },
-                ""ToolReference3"" : {
-                    ""Name"" : ""Value""
+            var update = IProjectSubscriptionUpdateFactory.FromJson(
+                """
+                {
+                    "CurrentState": {
+                        "DotNetCliToolReference": {
+                            "Items" : {
+                                "ToolReference1" : {
+                                    "Version" : "1.0.0.0",
+                                },
+                                "ToolReference2" : {
+                                    "Version" : "2.0.0.0",
+                                },
+                                "ToolReference3" : {
+                                    "Name" : "Value"
+                                }
+                            }
+                        }
+                    }
                 }
-            }
-        }
-    }
-}
-");
+                """);
             var result = RestoreBuilder.ToProjectRestoreInfo(update.CurrentState);
             var references = result.ToolReferences;
 
@@ -204,25 +210,26 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
         [Fact]
         public void ToProjectRestoreInfo_SetsPackageReferences()
         {
-            var update = IProjectSubscriptionUpdateFactory.FromJson(@"
-{
-    ""CurrentState"": {
-        ""CollectedPackageReference"": {
-            ""Items"" : {
-                ""PackageReference1"" : {
-                    ""Version"" : ""1.0.0.0"",
-                },
-                ""PackageReference2"" : {
-                    ""Version"" : ""2.0.0.0"",
-                },
-                ""PackageReference3"" : {
-                    ""Name"" : ""Value""
+            var update = IProjectSubscriptionUpdateFactory.FromJson(
+                """
+                {
+                    "CurrentState": {
+                        "CollectedPackageReference": {
+                            "Items" : {
+                                "PackageReference1" : {
+                                    "Version" : "1.0.0.0",
+                                },
+                                "PackageReference2" : {
+                                    "Version" : "2.0.0.0",
+                                },
+                                "PackageReference3" : {
+                                    "Name" : "Value"
+                                }
+                            }
+                        }
+                    }
                 }
-            }
-        }
-    }
-}
-");
+                """);
             var result = RestoreBuilder.ToProjectRestoreInfo(update.CurrentState);
 
             Assert.Equal(1, result.TargetFrameworks.Count);
@@ -244,24 +251,26 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
         [Fact]
         public void ToProjectRestoreInfo_SetsCentralPackageVersions()
         {
-            var update = IProjectSubscriptionUpdateFactory.FromJson(@"
-{
-    ""CurrentState"": {
-        ""CollectedPackageVersion"": {
-            ""Items"" : {
-                ""Newtonsoft.Json"" : {
-                    ""Version"" : ""1.0"",
-                },
-                ""System.IO"" : {
-                    ""Version"" : ""2.0"",
-                },
-                ""Microsoft.Extensions"" : {
-                    ""Version"" : ""3.0""
+            var update = IProjectSubscriptionUpdateFactory.FromJson(
+                """
+                {
+                    "CurrentState": {
+                        "CollectedPackageVersion": {
+                            "Items" : {
+                                "Newtonsoft.Json" : {
+                                    "Version" : "1.0",
+                                },
+                                "System.IO" : {
+                                    "Version" : "2.0",
+                                },
+                                "Microsoft.Extensions" : {
+                                    "Version" : "3.0"
+                                }
+                            }
+                        }
+                    }
                 }
-            }
-        }
-    }
-}");
+                """);
             var result = RestoreBuilder.ToProjectRestoreInfo(update.CurrentState);
 
             Assert.Equal(1, result.TargetFrameworks.Count);
@@ -289,25 +298,27 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
         [Fact]
         public void ToProjectRestoreInfo_SetsProjectReferences()
         {
-            var update = IProjectSubscriptionUpdateFactory.FromJson(@"
-{
-    ""CurrentState"": {
-        ""ProjectReference"": {
-            ""Items"" : {
-                ""..\\Project\\Project1.csproj"" : {
-                    ""ProjectFileFullPath"" : ""C:\\Solution\\Project\\Project1.csproj"",
-                },
-                ""..\\Project\\Project2.csproj"" : {
-                    ""ProjectFileFullPath"" : ""C:\\Solution\\Project\\Project2.csproj"",
-                },
-                ""..\\Project\\Project3.csproj"" : {
-                    ""ProjectFileFullPath"" : ""C:\\Solution\\Project\\Project3.csproj"",
-                    ""MetadataName"": ""MetadataValue""
+            var update = IProjectSubscriptionUpdateFactory.FromJson(
+                """
+                {
+                    "CurrentState": {
+                        "ProjectReference": {
+                            "Items" : {
+                                "..\\Project\\Project1.csproj" : {
+                                    "ProjectFileFullPath" : "C:\\Solution\\Project\\Project1.csproj",
+                                },
+                                "..\\Project\\Project2.csproj" : {
+                                    "ProjectFileFullPath" : "C:\\Solution\\Project\\Project2.csproj",
+                                },
+                                "..\\Project\\Project3.csproj" : {
+                                    "ProjectFileFullPath" : "C:\\Solution\\Project\\Project3.csproj",
+                                    "MetadataName": "MetadataValue"
+                                }
+                            }
+                        }
+                    }
                 }
-            }
-        }
-    }
-}");
+                """);
             var result = RestoreBuilder.ToProjectRestoreInfo(update.CurrentState);
 
             Assert.Equal(1, result.TargetFrameworks.Count);
@@ -336,20 +347,22 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
         [Fact]
         public void ToProjectRestoreInfo_SetsFrameworkReferences()
         {
-            var update = IProjectSubscriptionUpdateFactory.FromJson(@"
-{
-    ""CurrentState"": {
-        ""CollectedFrameworkReference"": {
-            ""Items"" : {
-                ""WindowsForms"" : {
-                },
-                ""WPF"" : {
-                    ""PrivateAssets"" : ""all"",
+            var update = IProjectSubscriptionUpdateFactory.FromJson(
+                """
+                {
+                    "CurrentState": {
+                        "CollectedFrameworkReference": {
+                            "Items" : {
+                                "WindowsForms" : {
+                                },
+                                "WPF" : {
+                                    "PrivateAssets" : "all",
+                                }
+                            }
+                        }
+                    }
                 }
-            }
-        }
-    }
-}");
+                """);
             var result = RestoreBuilder.ToProjectRestoreInfo(update.CurrentState);
 
             Assert.Equal(1, result.TargetFrameworks.Count);
@@ -371,21 +384,23 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
         [Fact]
         public void ToProjectRestoreInfo_SetsPackageDownloads()
         {
-            var update = IProjectSubscriptionUpdateFactory.FromJson(@"
-{
-    ""CurrentState"": {
-        ""CollectedPackageDownload"": {
-            ""Items"" : {
-                ""NuGet.Common"" : {
-                    ""Version"" : ""[4.0.0];[5.0.0]"",
-                },
-                ""NuGet.Frameworks"" : {
-                    ""Version"" : ""[4.9.4]"",
+            var update = IProjectSubscriptionUpdateFactory.FromJson(
+                """
+                {
+                    "CurrentState": {
+                        "CollectedPackageDownload": {
+                            "Items" : {
+                                "NuGet.Common" : {
+                                    "Version" : "[4.0.0];[5.0.0]",
+                                },
+                                "NuGet.Frameworks" : {
+                                    "Version" : "[4.9.4]",
+                                }
+                            }
+                        }
+                    }
                 }
-            }
-        }
-    }
-}");
+                """);
             var result = RestoreBuilder.ToProjectRestoreInfo(update.CurrentState);
 
             Assert.Equal(1, result.TargetFrameworks.Count);

@@ -16,17 +16,19 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
             var handler = CreateInstance(context: context);
 
             var projectChange = IProjectChangeDescriptionFactory.FromJson(
-@"{
-    ""Difference"": { 
-        ""AnyChanges"": true,
-        ""ChangedProperties"": [ ""RootNamespace"" ]
-    },
-    ""After"": { 
-        ""Properties"": {
-            ""RootNamespace"": ""value""
-        }
-    }
-}");
+                """
+                {
+                    "Difference": { 
+                        "AnyChanges": true,
+                        "ChangedProperties": [ "RootNamespace" ]
+                    },
+                    "After": { 
+                        "Properties": {
+                            "RootNamespace": "value"
+                        }
+                    }
+                }
+                """);
 
             Handle(handler, projectChange);
 
@@ -43,17 +45,19 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
             var handler = CreateInstance(context: context);
 
             var projectChange = IProjectChangeDescriptionFactory.FromJson(
-@"{
-    ""Difference"": { 
-        ""AnyChanges"": true,
-        ""ChangedProperties"": [ ""TargetPath"" ]
-    },
-    ""After"": { 
-        ""Properties"": {
-            ""TargetPath"": ""NewBinOutputPath""
-        }
-    }
-}");
+                """
+                {
+                    "Difference": { 
+                        "AnyChanges": true,
+                        "ChangedProperties": [ "TargetPath" ]
+                    },
+                    "After": { 
+                        "Properties": {
+                            "TargetPath": "NewBinOutputPath"
+                        }
+                    }
+                }
+                """);
 
             Handle(handler, projectChange);
 
@@ -69,17 +73,19 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
             var handler = CreateInstance(context: context);
 
             var projectChange = IProjectChangeDescriptionFactory.FromJson(
-@"{
-    ""Difference"": { 
-        ""AnyChanges"": true,
-        ""ChangedProperties"": [ ]
-    },
-    ""After"": { 
-        ""Properties"": {
-            ""TargetPath"": ""NewBinOutputPath""
-        }
-    }
-}");
+                """
+                {
+                    "Difference": { 
+                        "AnyChanges": true,
+                        "ChangedProperties": [ ]
+                    },
+                    "After": { 
+                        "Properties": {
+                            "TargetPath": "NewBinOutputPath"
+                        }
+                    }
+                }
+                """);
 
             Handle(handler, projectChange);
 
@@ -88,41 +94,47 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
 
         [Theory]
         [InlineData(
-@"{
-    ""Difference"": { 
-        ""AnyChanges"": false,
-        ""ChangedProperties"": [ ]
-    },
-    ""After"": { 
-        ""Properties"": {
-            ""RootNamespace"": ""value""
-        }
-    }
-}")]
+            """
+            {
+                "Difference": { 
+                    "AnyChanges": false,
+                    "ChangedProperties": [ ]
+                },
+                "After": { 
+                    "Properties": {
+                        "RootNamespace": "value"
+                    }
+                }
+            }
+            """)]
         [InlineData(
-@"{
-    ""Difference"": { 
-        ""AnyChanges"": true,
-        ""ChangedProperties"": [ ""TargetPath"" ]
-    },
-    ""After"": { 
-        ""Properties"": {
-            ""TargetPath"": ""value""
-        }
-    }
-}")]
+            """
+            {
+                "Difference": { 
+                    "AnyChanges": true,
+                    "ChangedProperties": [ "TargetPath" ]
+                },
+                "After": { 
+                    "Properties": {
+                        "TargetPath": "value"
+                    }
+                }
+            }
+            """)]
         [InlineData(
-@"{
-    ""Difference"": { 
-        ""AnyChanges"": true,
-        ""ChangedProperties"": [ ]
-    },
-    ""After"": { 
-        ""Properties"": {
-            ""RootNamespace"": ""value""
-        }
-    }
-}")]
+            """
+            {
+                "Difference": { 
+                    "AnyChanges": true,
+                    "ChangedProperties": [ ]
+                },
+                "After": { 
+                    "Properties": {
+                        "RootNamespace": "value"
+                    }
+                }
+            }
+            """)]
         public void Handle_WhenPropertyIsNotChanged_DoesNotCallSetProperty(string input)
         {
             int callCount = 0;

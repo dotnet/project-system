@@ -68,9 +68,10 @@ namespace Microsoft.VisualStudio.ProjectSystem
         [Fact]
         public void Constructor_ValueAsTreeService_SetsCurrentTreeToTreeServiceCurrentTreeTree()
         {
-            var tree = ProjectTreeParser.Parse(@"
-Root (flags: {ProjectRoot})
-");
+            var tree = ProjectTreeParser.Parse(
+                """
+                Root (flags: {ProjectRoot})
+                """);
 
             var projectTreeServiceState = IProjectTreeServiceStateFactory.ImplementTree(() => tree);
             var projectTreeService = new Lazy<IProjectTreeService>(() => IProjectTreeServiceFactory.ImplementCurrentTree(() => projectTreeServiceState));

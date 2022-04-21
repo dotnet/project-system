@@ -85,14 +85,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation.VisualBasic
 
             static string ConstructNamespaceImportChangeJson(string[] importNames)
             {
-                var json = @"{
-    ""ProjectChanges"": {
-        ""NamespaceImport"": {
-            ""Difference"": {
-                ""AnyChanges"": ""True""
-            },
-            ""After"": {
-                ""Items"": {";
+                var json =
+                    """
+                    {
+                        "ProjectChanges": {
+                            "NamespaceImport": {
+                                "Difference": {
+                                    "AnyChanges": "True"
+                                },
+                                "After": {
+                                    "Items": {
+                    """;
 
                 for (int i = 0; i < importNames.Length; i++)
                 {
@@ -103,11 +106,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation.VisualBasic
                     }
                 }
 
-                json += @"                }
-               }
-           }
-       }
-   }";
+                json +=
+                    """
+                                   }
+                                }
+                            }
+                        }
+                    }
+                    """;
                 return json;
             }
         }

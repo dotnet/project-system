@@ -24,10 +24,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
         {
             var command = CreateInstance();
 
-            var tree = ProjectTreeParser.Parse(@"
-Root (flags: {ProjectRoot})
-    Properties (flags: {AppDesignerFolder})
-");
+            var tree = ProjectTreeParser.Parse(
+                """
+                Root (flags: {ProjectRoot})
+                    Properties (flags: {AppDesignerFolder})
+                """);
 
             var nodes = ImmutableHashSet.Create(tree.Root);
 
@@ -41,10 +42,11 @@ Root (flags: {ProjectRoot})
         {
             var command = CreateInstance();
 
-            var tree = ProjectTreeParser.Parse(@"
-Root (flags: {ProjectRoot})
-    Properties (flags: {AppDesignerFolder})
-");
+            var tree = ProjectTreeParser.Parse(
+                """
+                Root (flags: {ProjectRoot})
+                    Properties (flags: {AppDesignerFolder})
+                """);
 
             var nodes = ImmutableHashSet.Create(tree.Children[0]);
 
