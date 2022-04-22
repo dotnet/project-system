@@ -11,6 +11,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Build
     [Order(Order.Default)]
     internal class TargetFrameworkGlobalBuildPropertyProvider : StaticGlobalPropertiesProviderBase
     {
+        private readonly Task<IImmutableDictionary<string, string>> _emptyTargetFrameworkResult;
+        private readonly Task<IImmutableDictionary<string, string>> _crossTargetingProperties;
+
         private readonly ConfiguredProject _configuredProject;
 
         /// <summary>
@@ -21,6 +24,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.Build
             : base(projectService.Services)
         {
             _configuredProject = configuredProject;
+
+            _emptyTargetFrameworkResult = Task.FromResult<IImmutableDictionary<string, string>>(Empty.PropertiesMap);
+
+            // For a cross targeting project, we want to build for all the targeted frameworks.
+            // Clear out the TargetFramework property from the configuration.
+            _crossTargetingProperties = Task.FromResult<IImmutableDictionary<string, string>>(
+                Empty.PropertiesMap.Add(ConfigurationGeneral.TargetFrameworkProperty, string.Empty));
         }
 
         /// <summary>
@@ -29,17 +39,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.Build
         /// <value>A map whose keys are case insensitive.  Never null, but may be empty.</value>
         public override Task<IImmutableDictionary<string, string>> GetGlobalPropertiesAsync(CancellationToken cancellationToken)
         {
-            IImmutableDictionary<string, string> properties = Empty.PropertiesMap;
-
             // Check if this is a cross targeting project, i.e. project configuration has a "TargetFramework" dimension.
             if (_configuredProject.ProjectConfiguration.IsCrossTargeting())
             {
                 // For a cross targeting project, we want to build for all the targeted frameworks.
                 // Clear out the TargetFramework property from the configuration.
-                properties = properties.Add(ConfigurationGeneral.TargetFrameworkProperty, string.Empty);
+                return _crossTargetingProperties;
             }
 
-            return Task.FromResult(properties);
+            return _emptyTargetFrameworkResult;
         }
     }
 }

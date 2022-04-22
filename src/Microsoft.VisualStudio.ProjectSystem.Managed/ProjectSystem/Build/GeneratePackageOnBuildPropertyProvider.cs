@@ -10,7 +10,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Build
     [AppliesTo(ProjectCapability.Pack)]
     internal class GeneratePackageOnBuildPropertyProvider : StaticGlobalPropertiesProviderBase
     {
-        private bool? _overrideGeneratePackageOnBuild;
+        private Task<IImmutableDictionary<string, string>> _properties = Task.FromResult<IImmutableDictionary<string, string>>(Empty.PropertiesMap);
 
         /// <summary>
         /// Initializes a new instance of the <see cref="TargetFrameworkGlobalBuildPropertyProvider"/> class.
@@ -26,7 +26,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.Build
         /// </summary>
         public void OverrideGeneratePackageOnBuild(bool? value)
         {
-            _overrideGeneratePackageOnBuild = value;
+            _properties = Task.FromResult<IImmutableDictionary<string, string>>(
+                value switch
+                {
+                    null => Empty.PropertiesMap,
+                    true => Empty.PropertiesMap.Add(ConfigurationGeneralBrowseObject.GeneratePackageOnBuildProperty, "true"),
+                    false => Empty.PropertiesMap.Add(ConfigurationGeneralBrowseObject.GeneratePackageOnBuildProperty, "false")
+                });
         }
 
         /// <summary>
@@ -35,14 +41,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Build
         /// <value>A map whose keys are case insensitive.  Never null, but may be empty.</value>
         public override Task<IImmutableDictionary<string, string>> GetGlobalPropertiesAsync(CancellationToken cancellationToken)
         {
-            IImmutableDictionary<string, string> properties = Empty.PropertiesMap;
-
-            if (_overrideGeneratePackageOnBuild.HasValue)
-            {
-                properties = properties.Add(ConfigurationGeneralBrowseObject.GeneratePackageOnBuildProperty, _overrideGeneratePackageOnBuild.Value ? "true" : "false");
-            }
-
-            return Task.FromResult(properties);
+            return _properties;
         }
     }
 }
