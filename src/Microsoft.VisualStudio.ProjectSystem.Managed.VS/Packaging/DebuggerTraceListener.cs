@@ -7,7 +7,6 @@ using System.Reflection;
 using Microsoft.VisualStudio.ProjectSystem;
 using Microsoft.VisualStudio.ProjectSystem.VS;
 using Microsoft.VisualStudio.Shell;
-using Task = System.Threading.Tasks.Task;
 
 namespace Microsoft.VisualStudio.Packaging
 {
