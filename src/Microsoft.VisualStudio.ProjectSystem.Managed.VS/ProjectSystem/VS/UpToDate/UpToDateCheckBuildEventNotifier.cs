@@ -16,6 +16,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.UpToDate
     [AppliesTo(BuildUpToDateCheck.AppliesToExpression)]
     internal sealed class UpToDateCheckBuildEventNotifier : OnceInitializedOnceDisposedAsync, IVsUpdateSolutionEvents2, IProjectDynamicLoadComponent
     {
+        private readonly IProjectService _projectService;
         private readonly ISolutionBuildManager _solutionBuildManager;
 
         private IAsyncDisposable? _solutionBuildEventsSubscription;
@@ -23,9 +24,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.UpToDate
         [ImportingConstructor]
         public UpToDateCheckBuildEventNotifier(
             JoinableTaskContext joinableTaskContext,
+            IProjectService projectService,
             ISolutionBuildManager solutionBuildManager)
             : base(new(joinableTaskContext))
         {
+            _projectService = projectService;
             _solutionBuildManager = solutionBuildManager;
         }
 
@@ -94,9 +97,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.UpToDate
             return (operation & flags) == flags;
         }
 
-        private static IEnumerable<IBuildUpToDateCheckProviderInternal> FindActiveConfiguredProviders(IVsHierarchy vsHierarchy)
+        private IEnumerable<IBuildUpToDateCheckProviderInternal> FindActiveConfiguredProviders(IVsHierarchy vsHierarchy)
         {
-            UnconfiguredProject? unconfiguredProject = vsHierarchy.AsUnconfiguredProject();
+            UnconfiguredProject? unconfiguredProject = _projectService.GetUnconfiguredProject(vsHierarchy, appliesToExpression: BuildUpToDateCheck.AppliesToExpression);
 
             if (unconfiguredProject is not null)
             {
