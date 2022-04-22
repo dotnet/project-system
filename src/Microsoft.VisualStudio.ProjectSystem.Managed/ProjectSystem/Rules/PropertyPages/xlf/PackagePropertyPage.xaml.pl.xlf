@@ -14,12 +14,12 @@
       </trans-unit>
       <trans-unit id="BoolProperty|IncludeSymbols|Description">
         <source>Create an additional symbol package when the project is packed.</source>
-        <target state="new">Create an additional symbol package when the project is packed.</target>
+        <target state="translated">Utwórz dodatkowy pakiet symboli po spakowaniu projektu.</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|IncludeSymbols|DisplayName">
         <source>Produce a symbol package</source>
-        <target state="new">Produce a symbol package</target>
+        <target state="translated">Tworzenie pakietu symboli</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|PackAsTool|Description">
@@ -64,12 +64,12 @@
       </trans-unit>
       <trans-unit id="Category|Symbols|Description">
         <source>Specifies how symbols are added to the package.</source>
-        <target state="new">Specifies how symbols are added to the package.</target>
+        <target state="translated">Określa sposób dodawania symboli do pakietu.</target>
         <note />
       </trans-unit>
       <trans-unit id="Category|Symbols|DisplayName">
         <source>Symbols</source>
-        <target state="new">Symbols</target>
+        <target state="translated">Symbole</target>
         <note />
       </trans-unit>
       <trans-unit id="DynamicEnumProperty|NeutralLanguage|DisplayName">
@@ -89,12 +89,12 @@
       </trans-unit>
       <trans-unit id="EnumProperty|SymbolPackageFormat|Description">
         <source>Specifies the format of the symbols package.</source>
-        <target state="new">Specifies the format of the symbols package.</target>
+        <target state="translated">Określa format pakietu symboli.</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumProperty|SymbolPackageFormat|DisplayName">
         <source>Symbol package format</source>
-        <target state="new">Symbol package format</target>
+        <target state="translated">Format pakietu symboli</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|PackageLicenseKind.Expression|DisplayName">
@@ -114,12 +114,12 @@
       </trans-unit>
       <trans-unit id="EnumValue|SymbolPackageFormat.snupkg|DisplayName">
         <source>snupkg</source>
-        <target state="new">snupkg</target>
+        <target state="translated">snupkg</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|SymbolPackageFormat.symbols.nupkg|DisplayName">
         <source>symbols.nupkg (legacy)</source>
-        <target state="new">symbols.nupkg (legacy)</target>
+        <target state="translated">symbols.nupkg (starsza wersja)</target>
         <note />
       </trans-unit>
       <trans-unit id="Rule|Package|Description">
@@ -214,12 +214,12 @@
       </trans-unit>
       <trans-unit id="StringProperty|PackageOutputPath|Description">
         <source>Determines the output path in which the package will be dropped.</source>
-        <target state="new">Determines the output path in which the package will be dropped.</target>
+        <target state="translated">Określa ścieżkę wyjściową, do której pakiet zostanie przeniesiony.</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|PackageOutputPath|DisplayName">
         <source>Package Output Path</source>
-        <target state="new">Package Output Path</target>
+        <target state="translated">Ścieżka wyjściowa pakietu</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|PackageProjectUrl|Description">
@@ -294,12 +294,12 @@
       </trans-unit>
       <trans-unit id="StringProperty|Title|Description">
         <source>A human-friendly title of the package, typically used in UI displays as on nuget.org and the Package Manager in Visual Studio.</source>
-        <target state="new">A human-friendly title of the package, typically used in UI displays as on nuget.org and the Package Manager in Visual Studio.</target>
+        <target state="translated">Przyjazny dla użytkownika tytuł pakietu, zwykle używany w wyświetlaczach interfejsu użytkownika, tak jak w przypadku witryny nuget.org i Menedżera pakietów w programie Visual Studio.</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|Title|DisplayName">
         <source>Title</source>
-        <target state="new">Title</target>
+        <target state="translated">Tytuł</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|ToolCommandName|Description">
