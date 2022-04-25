@@ -1,6 +1,7 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
 using System.Diagnostics;
+using Microsoft.VisualStudio.Debugger.Contracts.HotReload;
 using Microsoft.VisualStudio.HotReload.Components.DeltaApplier;
 using Microsoft.VisualStudio.ProjectSystem.Debug;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
@@ -43,7 +44,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.HotReload
             _hotReloadDiagnosticOutputService = hotReloadDiagnosticOutputService;
         }
 
-        public async Task ActivateSessionAsync(int processId, bool runningUnderDebugger)
+        public async Task ActivateSessionAsync(int processId, bool runningUnderDebugger, string projectName)
         {
             using AsyncSemaphore.Releaser semaphoreReleaser = await _semaphore.EnterAsync();
 
@@ -55,14 +56,33 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.HotReload
                 {
                     Process? process = Process.GetProcessById(processId);
 
-                    WriteOutputMessage(string.Format(VSResources.ProjectHotReloadSessionManager_AttachingToProcess, _pendingSessionState.Session.Name, processId));
+                    WriteOutputMessage(
+                        new HotReloadLogMessage(
+                            HotReloadVerbosity.Detailed,
+                            VSResources.ProjectHotReloadSessionManager_AttachingToProcess,
+                            projectName,
+                            _pendingSessionState.Session.Name,
+                            (uint)processId,
+                            HotReloadDiagnosticErrorLevel.Info
+                        ),
+                        default);
 
                     process.Exited += _pendingSessionState.OnProcessExited;
                     process.EnableRaisingEvents = true;
 
                     if (process.HasExited)
                     {
-                        WriteOutputMessage(string.Format(VSResources.ProjectHotReloadSessionManager_ProcessAlreadyExited, _pendingSessionState.Session.Name));
+                        WriteOutputMessage(
+                            new HotReloadLogMessage(
+                                HotReloadVerbosity.Detailed,
+                                VSResources.ProjectHotReloadSessionManager_ProcessAlreadyExited,
+                                projectName,
+                                _pendingSessionState.Session.Name,
+                                (uint)processId,
+                                HotReloadDiagnosticErrorLevel.Info
+                            ),
+                            default);
+
                         process.Exited -= _pendingSessionState.OnProcessExited;
                         process = null;
                     }
@@ -71,6 +91,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.HotReload
                 }
                 catch (Exception ex)
                 {
+                    WriteOutputMessage(
+                        new HotReloadLogMessage(
+                            HotReloadVerbosity.Minimal,
+                            VSResources.ProjectHotReloadSessionManager_ProcessAlreadyExited,
+                            projectName,
+                            _pendingSessionState.Session.Name,
+                            (uint)processId,
+                            HotReloadDiagnosticErrorLevel.Error
+                        ),
+                        default);
                     WriteOutputMessage(string.Format(VSResources.ProjectHotReloadSessionManager_ErrorAttachingToProcess, _pendingSessionState.Session.Name, processId, ex.GetType(), ex.Message));
                 }
 
@@ -114,7 +144,18 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.HotReload
                 else
                 {
                     // If startup hooks are not supported then tell the user why Hot Reload isn't available.
-                    WriteOutputMessage(string.Format(VSResources.ProjectHotReloadSessionManager_StartupHooksDisabled, Path.GetFileNameWithoutExtension(_project.FullPath)));
+                    string projectName = Path.GetFileNameWithoutExtension(_project.FullPath);
+                    
+                    WriteOutputMessage(
+                        new HotReloadLogMessage(
+                            HotReloadVerbosity.Minimal,
+                            VSResources.ProjectHotReloadSessionManager_StartupHooksDisabled,
+                            projectName,
+                            null,
+                            HotReloadDiagnosticOutputService.GetProcessId(),
+                            HotReloadDiagnosticErrorLevel.Warning
+                        ),
+                        default);
                 }
             }
 
@@ -143,7 +184,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.HotReload
             _activeSessions.Clear();
         }
 
-        private void WriteOutputMessage(string outputMessage) => _hotReloadDiagnosticOutputService.Value.WriteLine(outputMessage);
+        private void WriteOutputMessage(HotReloadLogMessage hotReloadLogMessage, CancellationToken cancellationToken) => _hotReloadDiagnosticOutputService.Value.WriteLine(hotReloadLogMessage, cancellationToken);
 
         /// <summary>
         /// Checks if the project configuration targeted for debugging/launch meets the
@@ -254,8 +295,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.HotReload
             Assumes.NotNull(hotReloadState.Session);
             Assumes.NotNull(hotReloadState.Process);
 
-            WriteOutputMessage(string.Format(VSResources.ProjectHotReloadSessionManager_ProcessExited, hotReloadState.Session.Name));
-
+            WriteOutputMessage(
+                new HotReloadLogMessage(
+                    HotReloadVerbosity.Minimal,
+                    string.Format(VSResources.ProjectHotReloadSessionManager_ProcessExited, hotReloadState.Session.Name),
+                    hotReloadState.Session?.Name,
+                    null,
+                    HotReloadDiagnosticOutputService.GetProcessId(hotReloadState.Process),
+                    HotReloadDiagnosticErrorLevel.Info
+                ),
+                default);
+            
             await StopProjectAsync(hotReloadState, default);
 
             hotReloadState.Process.Exited -= hotReloadState.OnProcessExited;
@@ -302,7 +352,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.HotReload
             }
             catch (Exception ex)
             {
-                WriteOutputMessage(string.Format(VSResources.ProjectHotReloadSessionManager_ErrorStoppingTheSession, hotReloadState.Session.Name, ex.GetType(), ex.Message));
+                WriteOutputMessage(
+                    new HotReloadLogMessage(
+                        HotReloadVerbosity.Minimal,
+                        string.Format(VSResources.ProjectHotReloadSessionManager_ErrorStoppingTheSession, hotReloadState.Session.Name, ex.GetType(), ex.Message),
+                        hotReloadState.Session?.Name,
+                        null,
+                        HotReloadDiagnosticOutputService.GetProcessId(hotReloadState.Process),
+                        HotReloadDiagnosticErrorLevel.Error
+                    ),
+                    cancellationToken);
             }
 
             return true;

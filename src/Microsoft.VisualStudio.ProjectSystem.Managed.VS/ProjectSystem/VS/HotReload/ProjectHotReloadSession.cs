@@ -190,9 +190,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.HotReload
             return new ValueTask<bool>(_callback.SupportsRestart);
         }
 
-        private void WriteToOutputWindow(string message)
+        private void WriteToOutputWindow(HotReloadLogMessage hotReloadLogMessage, CancellationToken cancellationToken)
         {
-            _hotReloadOutputService.Value.WriteLine($"{Name}: {message}");
+            _hotReloadOutputService.Value.WriteLine(hotReloadLogMessage, cancellationToken);
         }
 
         private void EnsureDeltaApplierforSession()

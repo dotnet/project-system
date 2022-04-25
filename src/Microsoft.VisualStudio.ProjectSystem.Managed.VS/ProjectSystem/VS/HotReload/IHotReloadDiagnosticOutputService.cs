@@ -1,5 +1,7 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
+using Microsoft.VisualStudio.Debugger.Contracts.HotReload;
+
 namespace Microsoft.VisualStudio.ProjectSystem.VS.HotReload
 {
     /// <summary>
@@ -11,7 +13,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.HotReload
         /// <summary>
         /// Writes a message to the Hot Reload diagnostic output window.
         /// </summary>
-        /// <param name="outputMessage">The message to write.</param>
-        void WriteLine(string outputMessage);
+        /// <param name="hotReloadLogMessage">The message to write.</param>
+        /// <param name="cancellationToken">The cancellation token to pass to the IHotReloadLogger</param>
+        void WriteLine(HotReloadLogMessage hotReloadLogMessage, CancellationToken cancellationToken);
     }
 }
