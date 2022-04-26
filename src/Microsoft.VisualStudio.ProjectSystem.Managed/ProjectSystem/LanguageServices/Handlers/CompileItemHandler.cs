@@ -11,7 +11,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
     ///     to the compiler during design-time builds.
     /// </summary>
     [Export(typeof(IWorkspaceContextHandler))]
-    [AppliesTo("(!MauiSingleProject) & " + ProjectCapability.CSharpOrVisualBasicLanguageService)]
+    [AppliesTo("(!" + ProjectCapability.MauiSingleProject + ") & " + ProjectCapability.CSharpOrVisualBasicLanguageService)]
     internal class CompileItemHandler : AbstractEvaluationCommandLineHandler, IProjectEvaluationHandler, ICommandLineHandler
     {
         private readonly UnconfiguredProject _project;
