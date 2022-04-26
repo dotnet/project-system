@@ -5,11 +5,16 @@ using Microsoft.VisualStudio.ProjectSystem.VS;
 
 namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
 {
-
     /// <summary>
     ///     Handles changes to Compile items during project evaluations and items that are passed
     ///     to the compiler during design-time builds.
     /// </summary>
+    /// <remarks>
+    ///     Not used for MAUI Single Project scenarios as those depend on builds targets removing
+    ///     files present in evaluation and the <see cref="AbstractEvaluationCommandLineHandler"/>
+    ///     doesn't handle that. See <see cref="MauiSingleProjectCompileItemHandler"/> for the
+    ///     equivalent component for Maui.
+    /// </remarks>
     [Export(typeof(IWorkspaceContextHandler))]
     [AppliesTo("(!" + ProjectCapability.MauiSingleProject + ") & " + ProjectCapability.CSharpOrVisualBasicLanguageService)]
     internal class CompileItemHandler : AbstractEvaluationCommandLineHandler, IProjectEvaluationHandler, ICommandLineHandler

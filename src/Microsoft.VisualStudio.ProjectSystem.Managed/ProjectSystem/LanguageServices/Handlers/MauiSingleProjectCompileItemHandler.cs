@@ -8,6 +8,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
     /// <summary>
     ///     Handles changes to the  &lt;Compile/&gt; item during design-time builds.
     /// </summary>
+    /// <remarks>
+    ///     Unlike the <see cref="CompileItemHandler"/> (which is used everywhere _except_ MAUI
+    ///     Single Project scenarios) this does not make any use of evaluation data, only
+    ///     design-time build data. This way we don't have to worry about reconciling the two,
+    ///     and avoids problems with files present in evaluation but removed by targets.
+    /// </remarks>
     [Export(typeof(IWorkspaceContextHandler))]
     [AppliesTo(ProjectCapability.MauiSingleProject + " & " + ProjectCapability.CSharpOrVisualBasicLanguageService)]
     internal class MauiSingleProjectCompileItemHandler : AbstractWorkspaceContextHandler, ICommandLineHandler
