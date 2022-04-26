@@ -74,7 +74,7 @@
       </trans-unit>
       <trans-unit id="StringProperty|EnvironmentVariables|Description">
         <source>The environment variables to set prior to running the process.</source>
-        <target state="needs-review-translation">在运行进程之前要设置的环境变量。变量由逗号(,)分隔，变量名称和值以等号(=)分隔。示例: var1=value1,var2=value2,var3=value3。变量中出现的逗号和等号可使用正斜杠(/)进行转义。</target>
+        <target state="new">The environment variables to set prior to running the process.</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|EnvironmentVariables|DisplayName">
