@@ -74,7 +74,7 @@
       </trans-unit>
       <trans-unit id="StringProperty|EnvironmentVariables|Description">
         <source>The environment variables to set prior to running the process.</source>
-        <target state="needs-review-translation">Переменные среды, которые необходимо задать перед запуском процесса. Переменные разделяются запятыми (,), а имена переменных и значения разделяются знаком равенства (=). Пример: var1=value1,var2=value2,var3=value3. Запятые и знак равенства внутри переменной можно экранировать с помощью косой черты (/).</target>
+        <target state="new">The environment variables to set prior to running the process.</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|EnvironmentVariables|DisplayName">
