@@ -224,7 +224,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
 
             var difference = IProjectChangeDiffFactory.WithAddedItems("A.cs;B.cs");
             var metadata = MetadataFactory.Create("A.cs", ("ExcludeFromCurrentConfiguration", "true"))
-                                          .Add("B,cs", ("ExcludeFromCurrentConfiguration", "false"));
+                                          .Add("B.cs", ("ExcludeFromCurrentConfiguration", "false"));
 
             ApplyProjectEvaluation(handler, 1, difference, metadata);
 
