@@ -156,7 +156,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
 
         protected abstract void UpdateInContext(string fullPath, IImmutableDictionary<string, string> previousMetadata, IImmutableDictionary<string, string> currentMetadata, bool isActiveContext, IProjectDiagnosticOutputService logger);
 
-        private bool ItemInCurrentConfiguration(string includePath, IImmutableDictionary<string, IImmutableDictionary<string, string>> metadata)
+        private bool IsItemInCurrentConfiguration(string includePath, IImmutableDictionary<string, IImmutableDictionary<string, string>> metadata)
         {
             if (metadata.TryGetValue(includePath, out IImmutableDictionary<string, string> itemMetadata)
                 && itemMetadata.TryGetValue("ExcludeFromCurrentConfiguration", out string excludeFromCurrentConfiguration)
@@ -177,7 +177,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
 
             foreach (string includePath in difference.AddedItems)
             {
-                if (evaluation && !ItemInCurrentConfiguration(includePath, currentMetadata))
+                if (evaluation && !IsItemInCurrentConfiguration(includePath, currentMetadata))
                 {
                     // The item is present in evaluation but contains metadata indicating it should be
                     // ignored.
