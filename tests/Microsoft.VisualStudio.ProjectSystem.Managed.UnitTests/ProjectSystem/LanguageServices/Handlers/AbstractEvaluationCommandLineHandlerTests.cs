@@ -222,13 +222,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
         {
             var handler = CreateInstance(@"C:\Project\Project.csproj");
 
-            var difference = IProjectChangeDiffFactory.WithAddedItems("A.cs;B.cs");
+            var difference = IProjectChangeDiffFactory.WithAddedItems("A.cs;B.cs;C.cs");
             var metadata = MetadataFactory.Create("A.cs", ("ExcludeFromCurrentConfiguration", "true"))
                                           .Add("B.cs", ("ExcludeFromCurrentConfiguration", "false"));
+                            
 
             ApplyProjectEvaluation(handler, 1, difference, metadata);
 
-            Assert.Single(handler.FileNames, @"C:\Project\B.cs");
+            string[] expectedFiles = new[] { @"C:\Project\B.cs", @"C:\Project\C.cs" };
+            Assert.Equal(expectedFiles.OrderBy(f => f), handler.FileNames.OrderBy(f => f));
         }
 
         [Theory] // Current state                      Added files                      Expected state
