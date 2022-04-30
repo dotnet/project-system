@@ -84,7 +84,7 @@
       </trans-unit>
       <trans-unit id="StringProperty|EnvironmentVariables|Description">
         <source>The environment variables to set prior to running the process.</source>
-        <target state="needs-review-translation">Variabili di ambiente da impostare prima di eseguire il processo. Le variabili sono delimitate da una virgola (,) e i nomi e i valori di variabile sono delimitati da un segno di uguale (=). Esempio: var1=valore1,var2=valore2,var3=valore3. Le virgole e i segni di uguale presenti in una variabile devono essere precedute da una barra (/) che rappresenta il carattere di escape.</target>
+        <target state="new">The environment variables to set prior to running the process.</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|EnvironmentVariables|DisplayName">
