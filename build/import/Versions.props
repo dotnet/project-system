@@ -17,7 +17,6 @@
     <!-- Toolset -->
     <RoslynToolsRepoToolsetVersion>1.0.0-beta-62705-01</RoslynToolsRepoToolsetVersion>
     <RoslynToolsModifyVsixManifestVersion>1.0.0-beta-62327-02</RoslynToolsModifyVsixManifestVersion>
-    <RoslynToolsSignToolVersion>1.1.0-beta3.21260.1</RoslynToolsSignToolVersion>
     <MicrosoftDiaSymReaderPdb2PdbVersion>1.1.0-beta1-62624-01</MicrosoftDiaSymReaderPdb2PdbVersion>
     <MicroBuildPluginsSwixBuildVersion>1.1.37</MicroBuildPluginsSwixBuildVersion>
     <CodecovVersion>1.12.4</CodecovVersion>

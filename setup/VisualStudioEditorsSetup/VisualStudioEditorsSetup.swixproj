@@ -1,0 +1,26 @@
+<!-- Copyright (c)  Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information. -->
+<Project ToolsVersion="15.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+
+  <Import Project="..\..\build\import\VisualStudio.props" />
+  <Import Project="..\..\build\import\RepoLayout.props" />
+
+  <PropertyGroup>
+    <OutputArchitecture>neutral</OutputArchitecture>
+    <OutputLocalized>false</OutputLocalized>
+    <OutputName>$(SwrPackageName)</OutputName>
+    <OutputType>vsix</OutputType>
+    <IsPackage>true</IsPackage>
+  </PropertyGroup>
+
+  <Target Name="SetVsixProperties" BeforeTargets="Build" DependsOnTargets="GetBuildVersion">
+    <PropertyGroup>
+      <PackagePreprocessorDefinitions>$(PackagePreprocessorDefinitions);Version=$(BuildVersion)</PackagePreprocessorDefinitions>
+      <!-- Version=17.2.0.2042501;VisualStudioXamlRulesDir=D:\a\_work\1\s\artifacts\Release\VSSetup\Rules\ -->
+    </PropertyGroup>
+  </Target>
+
+  <ItemGroup>
+    <Package Include="$(SwrFiles)" />
+  </ItemGroup>
+
+</Project>
