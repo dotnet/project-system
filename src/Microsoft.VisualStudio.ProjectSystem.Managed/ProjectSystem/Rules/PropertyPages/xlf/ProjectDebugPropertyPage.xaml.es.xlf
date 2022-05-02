@@ -84,7 +84,7 @@
       </trans-unit>
       <trans-unit id="StringProperty|EnvironmentVariables|Description">
         <source>The environment variables to set prior to running the process.</source>
-        <target state="needs-review-translation">Variables de entorno que se van a establecer antes de ejecutar el proceso. Las variables se separan con una coma (,) y los nombres y los valores de las variables se separan con un signo igual (=). Ejemplo: var1=valor1,var2=valor2,var3=valor3. A las comas y los signos igual que aparecen en una variable se les puede agregar una barra diagonal (/) como carácter de escape.</target>
+        <target state="new">The environment variables to set prior to running the process.</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|EnvironmentVariables|DisplayName">
