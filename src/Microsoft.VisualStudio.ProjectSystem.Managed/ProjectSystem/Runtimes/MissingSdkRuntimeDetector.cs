@@ -17,7 +17,6 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
         private Guid _projectGuid;
         private bool _enabled;
-        private static readonly HashSet<string> s_listOfMissingRuntimes = new(StringComparer.OrdinalIgnoreCase);
 
         private readonly ConfiguredProject _project;
         private readonly IMissingSetupComponentRegistrationService _missingSetupComponentRegistrationService;
@@ -49,7 +48,6 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
         protected override Task DisposeCoreAsync(bool initialized)
         {
-            s_listOfMissingRuntimes.Clear();
             return Task.CompletedTask;
         }
 
@@ -58,7 +56,6 @@ namespace Microsoft.VisualStudio.ProjectSystem
             _projectGuid = await _project.UnconfiguredProject.GetProjectGuidAsync();
             _missingSetupComponentRegistrationService.RegisterProjectConfiguration(_projectGuid, _project);
             _ = RegisterSdkRuntimeNeededInProjectAsync(_project);
-            
         }
 
         private async Task RegisterSdkRuntimeNeededInProjectAsync(ConfiguredProject project)
@@ -74,11 +71,9 @@ namespace Microsoft.VisualStudio.ProjectSystem
                 string? TargetFrameworkVersion = await configuration.TargetFrameworkVersion.GetDisplayValueAsync();
 
                 if (string.Equals(TargetFrameworkIdentifier, s_netCoreTargetFrameworkIdentifier, StringComparisons.FrameworkIdentifiers) &&
-                    !string.IsNullOrEmpty(TargetFrameworkVersion) &&
-                    !s_listOfMissingRuntimes.Contains(TargetFrameworkVersion) &&
-                    s_packageVersionToComponentId.TryGetValue(TargetFrameworkVersion, out var componentId))
+                !string.IsNullOrEmpty(TargetFrameworkVersion) &&
+                s_packageVersionToComponentId.TryGetValue(TargetFrameworkVersion, out var componentId))
                 {
-                    s_listOfMissingRuntimes.Add(TargetFrameworkVersion);
                     _missingSetupComponentRegistrationService.RegisterMissingSdkRuntimeComponentId(_projectGuid, project, componentId);
                 }
             }

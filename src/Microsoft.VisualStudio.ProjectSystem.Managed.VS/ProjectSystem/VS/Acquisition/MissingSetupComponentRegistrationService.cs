@@ -21,6 +21,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
 
         private static readonly ImmutableHashSet<string> s_supportedReleaseChannelWorkloads = ImmutableHashSet.Create(StringComparers.WorkloadNames, WasmToolsWorkloadName);
 
+        private readonly ConcurrentHashSet<string> _missingRuntimesRegistered = new(StringComparers.WorkloadNames);
         private readonly ConcurrentDictionary<Guid, IConcurrentHashSet<WorkloadDescriptor>> _projectGuidToWorkloadDescriptorsMap;
         private readonly ConcurrentDictionary<Guid, string> _projectGuidToRuntimeDescriptorMap;
         private readonly ConcurrentDictionary<Guid, IConcurrentHashSet<ProjectConfiguration>> _projectGuidToProjectConfigurationsMap;
@@ -73,6 +74,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
 
         private void ClearMissingWorkloadMetadata()
         {
+            _missingRuntimesRegistered.Clear();
             _projectGuidToRuntimeDescriptorMap.Clear();
             _projectGuidToWorkloadDescriptorsMap.Clear();
             _projectGuidToProjectConfigurationsMap.Clear();
@@ -92,6 +94,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
 
         public void RegisterMissingSdkRuntimeComponentId(Guid projectGuid, ConfiguredProject project, string runtimeComponentId)
         {
+            // If a runtime is detected as missing, it will remain in that state until the user install it using the VS Installer.
+            // Due to this, during a solution load all the projects might register to install the same runtime version.
+            // This optimization can avoid executing displayMissingComponentsTask unnecesarily by registering a missing runtime once in the solution.
+            if (!_missingRuntimesRegistered.Add(runtimeComponentId))
+            {
+                return;
+            }
+
             _projectGuidToRuntimeDescriptorMap.GetOrAdd(projectGuid, runtimeComponentId);
 
             UnregisterProjectConfiguration(projectGuid, project);
