@@ -84,7 +84,7 @@
       </trans-unit>
       <trans-unit id="StringProperty|EnvironmentVariables|Description">
         <source>The environment variables to set prior to running the process.</source>
-        <target state="needs-review-translation">Proměnné prostředí, které se mají nastavit před spuštěním procesu. Proměnné se oddělují čárkami (,) a názvy a hodnoty proměnných se oddělují znakem rovnítka (=). Příklad: prom1=hodnota1,prom2=hodnota2,prom3=hodnota3. Čárky a znaky rovnítka, které se vyskytují v proměnné, je možné uvést lomítkem (/).</target>
+        <target state="new">The environment variables to set prior to running the process.</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|EnvironmentVariables|DisplayName">
