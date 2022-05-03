@@ -1,6 +1,7 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
 using Microsoft.VisualStudio.LanguageServices.ProjectSystem;
+using Microsoft.VisualStudio.ProjectSystem.Properties;
 using Microsoft.VisualStudio.ProjectSystem.VS;
 
 namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
@@ -156,6 +157,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
 
         protected abstract void UpdateInContext(string fullPath, IImmutableDictionary<string, string> previousMetadata, IImmutableDictionary<string, string> currentMetadata, bool isActiveContext, IProjectDiagnosticOutputService logger);
 
+        private bool IsItemInCurrentConfiguration(string includePath, IImmutableDictionary<string, IImmutableDictionary<string, string>> metadata)
+        {
+            if (metadata.TryGetValue(includePath, out IImmutableDictionary<string, string> itemMetadata)
+                && itemMetadata.GetBoolProperty(Compile.ExcludeFromCurrentConfigurationProperty) is true)
+            {
+                return false;
+            }
+
+            return true;
+        }
+
         private void ApplyChangesToContext(IProjectChangeDiff difference, IImmutableDictionary<string, IImmutableDictionary<string, string>> previousMetadata, IImmutableDictionary<string, IImmutableDictionary<string, string>> currentMetadata, bool isActiveContext, IProjectDiagnosticOutputService logger, bool evaluation)
         {
             foreach (string includePath in difference.RemovedItems)
@@ -165,6 +177,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
 
             foreach (string includePath in difference.AddedItems)
             {
+                if (evaluation && !IsItemInCurrentConfiguration(includePath, currentMetadata))
+                {
+                    // The item is present in evaluation but contains metadata indicating it should be
+                    // ignored.
+                    continue;
+                }
+
                 AddToContextIfNotPresent(includePath, currentMetadata, isActiveContext, logger);
             }
 
@@ -176,6 +195,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
                 foreach (string includePath in difference.ChangedItems)
                 {
                     UpdateInContextIfPresent(includePath, previousMetadata, currentMetadata, isActiveContext, logger);
+
+                    // TODO: Check for changes in the metadata indicating if we should ignore the file
+                    // in the current configuration.
                 }
             }
 
