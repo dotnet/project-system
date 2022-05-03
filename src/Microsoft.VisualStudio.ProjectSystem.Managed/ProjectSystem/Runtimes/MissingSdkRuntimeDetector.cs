@@ -10,11 +10,6 @@ namespace Microsoft.VisualStudio.ProjectSystem
     {
         private static readonly string s_netCoreTargetFrameworkIdentifier = ".NETCoreApp";
 
-        private static readonly ImmutableDictionary<string, string> s_packageVersionToComponentId = ImmutableDictionary.Create<string, string>(StringComparer.OrdinalIgnoreCase)
-            .Add("v2.1", "Microsoft.Net.Core.Component.SDK.2.1")
-            .Add("v3.1", "Microsoft.NetCore.Component.Runtime.3.1")
-            .Add("v5.0", "Microsoft.NetCore.Component.Runtime.5.0");
-
         private Guid _projectGuid;
         private bool _enabled;
 
@@ -70,22 +65,13 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
                 string? targetFrameworkVersion = await configuration.TargetFrameworkVersion.GetDisplayValueAsync();
 
-                string? componentId = GetComponentId(targetFrameworkIdentifier, targetFrameworkVersion);
-                
-                _missingSetupComponentRegistrationService.RegisterSdkRuntimeComponentId(_projectGuid, project, componentId);
-            }
-
-            static string? GetComponentId(string targetFrameworkIdentifier, string targetFrameworkVersion)
-            {
-                string? componentId = null;
-
-                if (string.Equals(targetFrameworkIdentifier, s_netCoreTargetFrameworkIdentifier, StringComparisons.FrameworkIdentifiers) &&
-                    !string.IsNullOrEmpty(targetFrameworkVersion))
+                if (!string.Equals(targetFrameworkIdentifier, s_netCoreTargetFrameworkIdentifier, StringComparisons.FrameworkIdentifiers) ||
+                    string.IsNullOrEmpty(targetFrameworkVersion))
                 {
-                    s_packageVersionToComponentId.TryGetValue(targetFrameworkVersion, out componentId);
+                    targetFrameworkVersion = string.Empty;
                 }
-
-                return componentId;
+                
+                _missingSetupComponentRegistrationService.RegisterPossibleMissingSdkRuntimeVersion(_projectGuid, project, targetFrameworkVersion);
             }
         }
     }
