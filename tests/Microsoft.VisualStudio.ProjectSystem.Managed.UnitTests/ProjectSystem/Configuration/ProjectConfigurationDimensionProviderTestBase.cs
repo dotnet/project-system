@@ -28,12 +28,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
         public async Task GetDefaultValuesForDimensionsAsync()
         {
             string projectXml =
-@"<Project>
-  <PropertyGroup>
-    <PROP>A;B;C</PROP>
-    <DIM>X</DIM>
-  </PropertyGroup>
-</Project>";
+                """
+                <Project>
+                  <PropertyGroup>
+                    <PROP>A;B;C</PROP>
+                    <DIM>X</DIM>
+                  </PropertyGroup>
+                </Project>
+                """;
 
             var provider = CreateInstance(projectXml.Replace("PROP", PropertyName).Replace("DIM", DimensionName));
 
@@ -47,11 +49,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
 
         [Theory]
         [InlineData("<Project />")]
-        [InlineData(@"<Project>
-  <PropertyGroup>
-    <DIM>X</DIM>
-  </PropertyGroup>
-</Project>")]
+        [InlineData(
+            """
+            <Project>
+              <PropertyGroup>
+                <DIM>X</DIM>
+              </PropertyGroup>
+            </Project>
+            """)]
         public async Task GetDefaultValuesForDimensionsAsync_ReturnsEmptyIfUndefined(string projectXml)
         {
             var provider = CreateInstance(projectXml.Replace("DIM", DimensionName));
@@ -66,12 +71,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
         public async Task GetProjectConfigurationDimensionsAsync()
         {
             string projectXml =
-@"<Project>
-  <PropertyGroup>
-    <PROP>A;B;C</PROP>
-    <DIM>X</DIM>
-  </PropertyGroup>
-</Project>";
+                """
+                <Project>
+                  <PropertyGroup>
+                    <PROP>A;B;C</PROP>
+                    <DIM>X</DIM>
+                  </PropertyGroup>
+                </Project>
+                """;
 
             var provider = CreateInstance(projectXml.Replace("PROP", PropertyName).Replace("DIM", DimensionName));
 
@@ -89,11 +96,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
 
         [Theory]
         [InlineData("<Project />")]
-        [InlineData(@"<Project>
-  <PropertyGroup>
-    <DIM>X</DIM>
-  </PropertyGroup>
-</Project>")]
+        [InlineData(
+            """
+            <Project>
+              <PropertyGroup>
+                <DIM>X</DIM>
+              </PropertyGroup>
+            </Project>
+            """)]
         public async Task GetProjectConfigurationDimensionsAsync_ReturnsEmptyIfUndefined(string projectXml)
         {
             var provider = CreateInstance(projectXml.Replace("DIM", DimensionName));
@@ -108,11 +118,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
         public async Task OnDimensionValueChanged_Add()
         {
             string projectXml =
-@"<Project>
-  <PropertyGroup>
-    <PROP>A;B;C</PROP>
-  </PropertyGroup>
-</Project>";
+                """
+                <Project>
+                  <PropertyGroup>
+                    <PROP>A;B;C</PROP>
+                  </PropertyGroup>
+                </Project>
+                """;
 
             var rootElement = ProjectRootElementFactory.Create(projectXml.Replace("PROP", PropertyName));
             var projectAccessor = IProjectAccessorFactory.Create(rootElement);
@@ -149,11 +161,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
         public async Task OnDimensionValueChanged_Remove()
         {
             string projectXml =
-@"<Project>
-  <PropertyGroup>
-    <PROP>A;B;C</PROP>
-  </PropertyGroup>
-</Project>";
+                """
+                <Project>
+                  <PropertyGroup>
+                    <PROP>A;B;C</PROP>
+                  </PropertyGroup>
+                </Project>
+                """;
 
             var rootElement = ProjectRootElementFactory.Create(projectXml.Replace("PROP", PropertyName));
             var projectAccessor = IProjectAccessorFactory.Create(rootElement);
@@ -190,11 +204,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
         public async Task OnDimensionValueChanged_Remove_UnknownValue()
         {
             string projectXml =
-@"<Project>
-  <PropertyGroup>
-    <PROP>A;B;C</PROP>
-  </PropertyGroup>
-</Project>";
+                """
+                <Project>
+                  <PropertyGroup>
+                    <PROP>A;B;C</PROP>
+                  </PropertyGroup>
+                </Project>
+                """;
 
             var rootElement = ProjectRootElementFactory.Create(projectXml.Replace("PROP", PropertyName));
             var projectAccessor = IProjectAccessorFactory.Create(rootElement);
@@ -218,11 +234,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
         public async Task OnDimensionValueChanged_Rename()
         {
             string projectXml =
-@"<Project>
-  <PropertyGroup>
-    <PROP>A;B;C</PROP>
-  </PropertyGroup>
-</Project>";
+                """
+                <Project>
+                  <PropertyGroup>
+                    <PROP>A;B;C</PROP>
+                  </PropertyGroup>
+                </Project>
+                """;
 
             var rootElement = ProjectRootElementFactory.Create(projectXml.Replace("PROP", PropertyName));
             var projectAccessor = IProjectAccessorFactory.Create(rootElement);
@@ -261,11 +279,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
         public async Task OnDimensionValueChanged_Rename_UnknownValue()
         {
             string projectXml =
-@"<Project>
-  <PropertyGroup>
-    <PROP>A;B;C</PROP>
-  </PropertyGroup>
-</Project>";
+                """
+                <Project>
+                  <PropertyGroup>
+                    <PROP>A;B;C</PROP>
+                  </PropertyGroup>
+                </Project>
+                """;
 
             var rootElement = ProjectRootElementFactory.Create(projectXml.Replace("PROP", PropertyName));
             var projectAccessor = IProjectAccessorFactory.Create(rootElement);
@@ -299,11 +319,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
         public async Task GetBestGuessDefaultValuesForDimensionsAsync_ReturnsFirstParseableValue(string propertyValue, string expected)
         {
             string projectXml =
-$@"<Project>
-  <PropertyGroup>
-    <PROP>{propertyValue}</PROP>
-  </PropertyGroup>
-</Project>";
+                $"""
+                <Project>
+                  <PropertyGroup>
+                    <PROP>{propertyValue}</PROP>
+                  </PropertyGroup>
+                </Project>
+                """;
 
             var provider = CreateInstance(projectXml.Replace("PROP", PropertyName));
 
@@ -328,11 +350,13 @@ $@"<Project>
         public async Task GetBestGuessDefaultValuesForDimensionsAsync_WhenPropertyIsEmpty_ReturnsDefaultOrEmpty(string propertyValue)
         {
             string projectXml =
-$@"<Project>
-  <PropertyGroup>
-    <PROP>{propertyValue}</PROP>
-  </PropertyGroup>
-</Project>";
+                $"""
+                <Project>
+                  <PropertyGroup>
+                    <PROP>{propertyValue}</PROP>
+                  </PropertyGroup>
+                </Project>
+                """;
 
             var provider = CreateInstance(projectXml.Replace("PROP", PropertyName));
 
@@ -345,12 +369,14 @@ $@"<Project>
         public async Task GetBestGuessDefaultValuesForDimensionsAsync_ReturnsFirstValueFromLastElement()
         {
             string projectXml =
-@"<Project>
-  <PropertyGroup>
-    <PROP>first</PROP>
-    <PROP>last</PROP>
-  </PropertyGroup>
-</Project>";
+                """
+                <Project>
+                  <PropertyGroup>
+                    <PROP>first</PROP>
+                    <PROP>last</PROP>
+                  </PropertyGroup>
+                </Project>
+                """;
 
             var provider = CreateInstance(projectXml.Replace("PROP", PropertyName));
 
@@ -365,10 +391,12 @@ $@"<Project>
         public async Task GetBestGuessDefaultValuesForDimensionsAsync_WhenPropertyIsMissing_ReturnsDefaultOrEmpty()
         {
             string projectXml =
-@"<Project>
-  <PropertyGroup>
-  </PropertyGroup>
-</Project>";
+                """
+                <Project>
+                  <PropertyGroup>
+                  </PropertyGroup>
+                </Project>
+                """;
 
             var provider = CreateInstance(projectXml);
 
@@ -379,50 +407,64 @@ $@"<Project>
 
         [Theory]
         [InlineData(
-            @"<Project>
-  <PropertyGroup>
-    <PROP Condition=""'$(BuildingInsideVisualStudio)' != 'true'"">net45</PROP>
-  </PropertyGroup>
-</Project>")]
+            """
+            <Project>
+              <PropertyGroup>
+                <PROP Condition="'$(BuildingInsideVisualStudio)' != 'true'">net45</PROP>
+              </PropertyGroup>
+            </Project>
+            """)]
         [InlineData(
-            @"<Project>
-  <PropertyGroup>
-    <PROP Condition=""'$(BuildingInsideVisualStudio)' != 'true'"">net45</PROP>
-    <TargetFramework>net45</TargetFramework>
-  </PropertyGroup>
-</Project>")]
+            """
+            <Project>
+              <PropertyGroup>
+                <PROP Condition="'$(BuildingInsideVisualStudio)' != 'true'">net45</PROP>
+                <TargetFramework>net45</TargetFramework>
+              </PropertyGroup>
+            </Project>
+            """)]
         [InlineData(
-            @"<Project>
-  <PropertyGroup>
-    <TargetFramework>net45</TargetFramework>
-    <PROP Condition=""'$(BuildingInsideVisualStudio)' != 'true'"">net45</PROP>
-  </PropertyGroup>
-</Project>")]
+            """
+            <Project>
+              <PropertyGroup>
+                <TargetFramework>net45</TargetFramework>
+                <PROP Condition="'$(BuildingInsideVisualStudio)' != 'true'">net45</PROP>
+              </PropertyGroup>
+            </Project>
+            """)]
         [InlineData(
-            @"<Project>
-  <PropertyGroup>
-    <PROP Condition=""'$(OS)' != 'Windows_NT'"">net45</PROP>
-  </PropertyGroup>
-</Project>")]
+            """
+            <Project>
+              <PropertyGroup>
+                <PROP Condition="'$(OS)' != 'Windows_NT'">net45</PROP>
+              </PropertyGroup>
+            </Project>
+            """)]
         [InlineData(
-            @"<Project>
-  <PropertyGroup>
-    <PROP Condition=""'$(OS)' == 'Unix'"">net45</PROP>
-  </PropertyGroup>
-</Project>")]
+            """
+            <Project>
+              <PropertyGroup>
+                <PROP Condition="'$(OS)' == 'Unix'">net45</PROP>
+              </PropertyGroup>
+            </Project>
+            """)]
         [InlineData(
-            @"<Project>
-  <PropertyGroup>
-    <PROP Condition=""'$(Foo)' == 'true'"">net45</PROP>
-  </PropertyGroup>
-</Project>")]
+            """
+            <Project>
+              <PropertyGroup>
+                <PROP Condition="'$(Foo)' == 'true'">net45</PROP>
+              </PropertyGroup>
+            </Project>
+            """)]
         [InlineData(
-            @"<Project>
-  <PropertyGroup>
-    <TargetFramework>net45</TargetFramework>
-    <PROP Condition=""'$(OS)' != 'Windows_NT'"">net45</PROP>
-  </PropertyGroup>
-</Project>")]
+            """
+            <Project>
+              <PropertyGroup>
+                <TargetFramework>net45</TargetFramework>
+                <PROP Condition="'$(OS)' != 'Windows_NT'">net45</PROP>
+              </PropertyGroup>
+            </Project>
+            """)]
         public async Task GetBestGuessDefaultValuesForDimensionsAsync_WhenPropertyHasUnrecognizedCondition_ReturnsDefaultOrEmpty(string projectXml)
         {
             var provider = CreateInstance(projectXml.Replace("PROP", PropertyName));
@@ -434,66 +476,84 @@ $@"<Project>
 
         [Theory]
         [InlineData(
-@"<Project>
-  <PropertyGroup>
-    <PROP Condition=""'$(BuildingInsideVisualStudio)' == 'true'"">expected</PROP>
-    <PROP Condition=""'$(BuildingInsideVisualStudio)' != 'true'"">other</PROP>
-  </PropertyGroup>
-</Project>")]
+            """
+            <Project>
+              <PropertyGroup>
+                <PROP Condition="'$(BuildingInsideVisualStudio)' == 'true'">expected</PROP>
+                <PROP Condition="'$(BuildingInsideVisualStudio)' != 'true'">other</PROP>
+              </PropertyGroup>
+            </Project>
+            """)]
         [InlineData(
-@"<Project>
-  <PropertyGroup>
-    <PROP Condition=""'$(OS)' == 'Windows_NT'"">expected</PROP>
-    <PROP Condition=""'$(OS)' != 'Windows_NT'"">other</PROP>
-  </PropertyGroup>
-</Project>")]
+            """
+            <Project>
+              <PropertyGroup>
+                <PROP Condition="'$(OS)' == 'Windows_NT'">expected</PROP>
+                <PROP Condition="'$(OS)' != 'Windows_NT'">other</PROP>
+              </PropertyGroup>
+            </Project>
+            """)]
         [InlineData(
-@"<Project>
-  <PropertyGroup>
-    <PROP Condition=""'$(OS)' == 'Windows_NT'"">expected</PROP>
-    <PROP Condition=""'$(OS)' == 'Unix'"">other</PROP>
-  </PropertyGroup>
-</Project>")]
+            """
+            <Project>
+              <PropertyGroup>
+                <PROP Condition="'$(OS)' == 'Windows_NT'">expected</PROP>
+                <PROP Condition="'$(OS)' == 'Unix'">other</PROP>
+              </PropertyGroup>
+            </Project>
+            """)]
         [InlineData(
-@"<Project>
-  <PropertyGroup>
-    <PROP Condition=""true"">expected</PROP>
-  </PropertyGroup>
-</Project>")]
+            """
+            <Project>
+              <PropertyGroup>
+                <PROP Condition="true">expected</PROP>
+              </PropertyGroup>
+            </Project>
+            """)]
         [InlineData(
-@"<Project>
-  <PropertyGroup>
-    <PROP Condition="""">expected</PROP>
-  </PropertyGroup>
-</Project>")]
+            """
+            <Project>
+              <PropertyGroup>
+                <PROP Condition="">expected</PROP>
+              </PropertyGroup>
+            </Project>
+            """)]
         [InlineData(
-@"<Project>
-  <PropertyGroup>
-    <PROP Condition=""'$(BuildingInsideVisualStudio)' == 'true'"">other</PROP>
-    <PROP>expected</PROP>
-  </PropertyGroup>
-</Project>")]
+            """
+            <Project>
+              <PropertyGroup>
+                <PROP Condition="'$(BuildingInsideVisualStudio)' == 'true'">other</PROP>
+                <PROP>expected</PROP>
+              </PropertyGroup>
+            </Project>
+            """)]
         [InlineData(
-@"<Project>
-  <PropertyGroup>
-    <PROP>other</PROP>
-    <PROP Condition=""'$(BuildingInsideVisualStudio)' == 'true'"">expected</PROP>
-  </PropertyGroup>
-</Project>")]
+            """
+            <Project>
+              <PropertyGroup>
+                <PROP>other</PROP>
+                <PROP Condition="'$(BuildingInsideVisualStudio)' == 'true'">expected</PROP>
+              </PropertyGroup>
+            </Project>
+            """)]
         [InlineData(
-@"<Project>
-  <PropertyGroup>
-    <PROP Condition=""'$(BuildingInsideVisualStudio)' != 'true'"">other</PROP>
-    <PROP>expected</PROP>
-  </PropertyGroup>
-</Project>")]
+            """
+            <Project>
+              <PropertyGroup>
+                <PROP Condition="'$(BuildingInsideVisualStudio)' != 'true'">other</PROP>
+                <PROP>expected</PROP>
+              </PropertyGroup>
+            </Project>
+            """)]
         [InlineData(
-@"<Project>
-  <PropertyGroup>
-    <PROP>expected</PROP>
-    <PROP Condition=""'$(BuildingInsideVisualStudio)' != 'true'"">other</PROP>
-  </PropertyGroup>
-</Project>")]
+            """
+            <Project>
+              <PropertyGroup>
+                <PROP>expected</PROP>
+                <PROP Condition="'$(BuildingInsideVisualStudio)' != 'true'">other</PROP>
+              </PropertyGroup>
+            </Project>
+            """)]
         public async Task GetBestGuessDefaultValuesForDimensionsAsync_WhenPlatformsHasRecognizedCondition_ReturnsValue2222222222222222(string projectXml)
         {
             var provider = CreateInstance(projectXml.Replace("PROP", PropertyName));

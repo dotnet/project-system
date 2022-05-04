@@ -10,11 +10,13 @@ namespace Microsoft.VisualStudio.Build
         public void GetProperty_MissingProperty()
         {
             string projectXml =
-@"<Project>
-  <PropertyGroup>
-     <MyProperty>MyPropertyValue</MyProperty>
-  </PropertyGroup>
-</Project>";
+                """
+                <Project>
+                  <PropertyGroup>
+                     <MyProperty>MyPropertyValue</MyProperty>
+                  </PropertyGroup>
+                </Project>
+                """;
 
             var project = ProjectRootElementFactory.Create(projectXml);
             var property = BuildUtilities.GetProperty(project, "NonExistentProperty");
@@ -25,11 +27,13 @@ namespace Microsoft.VisualStudio.Build
         public void GetProperty_ExistentProperty()
         {
             string projectXml =
-@"<Project>
-  <PropertyGroup>
-     <MyProperty>MyPropertyValue</MyProperty>
-  </PropertyGroup>
-</Project>";
+                """
+                <Project>
+                  <PropertyGroup>
+                     <MyProperty>MyPropertyValue</MyProperty>
+                  </PropertyGroup>
+                </Project>
+                """;
 
             var project = ProjectRootElementFactory.Create(projectXml);
             var property = BuildUtilities.GetProperty(project, "MyProperty");
@@ -94,10 +98,12 @@ namespace Microsoft.VisualStudio.Build
         public void GetOrAddProperty_FirstGroup()
         {
             string projectXml =
-@"<Project>
-  <PropertyGroup/>
-  <PropertyGroup/>
-</Project>";
+                """
+                <Project>
+                  <PropertyGroup/>
+                  <PropertyGroup/>
+                </Project>
+                """;
 
             var project = ProjectRootElementFactory.Create(projectXml);
             BuildUtilities.GetOrAddProperty(project, "MyProperty");
@@ -115,11 +121,13 @@ namespace Microsoft.VisualStudio.Build
         public void GetOrAddProperty_ExistingProperty()
         {
             string projectXml =
-@"<Project>
-  <PropertyGroup>
-    <MyProperty>1</MyProperty>
-  </PropertyGroup>
-</Project>";
+                """
+                <Project>
+                  <PropertyGroup>
+                    <MyProperty>1</MyProperty>
+                  </PropertyGroup>
+                </Project>
+                """;
 
             var project = ProjectRootElementFactory.Create(projectXml);
             BuildUtilities.GetOrAddProperty(project, "MyProperty");
@@ -137,11 +145,13 @@ namespace Microsoft.VisualStudio.Build
         public void AppendPropertyValue_DefaultDelimiter()
         {
             string projectXml =
-@"<Project>
-  <PropertyGroup>
-     <MyProperty>1;2</MyProperty>
-  </PropertyGroup>
-</Project>";
+                """
+                <Project>
+                  <PropertyGroup>
+                     <MyProperty>1;2</MyProperty>
+                  </PropertyGroup>
+                </Project>
+                """;
 
             var project = ProjectRootElementFactory.Create(projectXml);
             BuildUtilities.AppendPropertyValue(project, "1;2", "MyProperty", "3");
@@ -154,11 +164,13 @@ namespace Microsoft.VisualStudio.Build
         public void AppendPropertyValue_EmptyProperty()
         {
             string projectXml =
-@"<Project>
-  <PropertyGroup>
-     <MyProperty/>
-  </PropertyGroup>
-</Project>";
+                """
+                <Project>
+                  <PropertyGroup>
+                     <MyProperty/>
+                  </PropertyGroup>
+                </Project>
+                """;
 
             var project = ProjectRootElementFactory.Create(projectXml);
             BuildUtilities.AppendPropertyValue(project, "", "MyProperty", "1");
@@ -191,11 +203,13 @@ namespace Microsoft.VisualStudio.Build
         public void RemovePropertyValue_DefaultDelimiter()
         {
             string projectXml =
-@"<Project>
-  <PropertyGroup>
-     <MyProperty>1;2</MyProperty>
-  </PropertyGroup>
-</Project>";
+                """
+                <Project>
+                  <PropertyGroup>
+                     <MyProperty>1;2</MyProperty>
+                  </PropertyGroup>
+                </Project>
+                """;
 
             var project = ProjectRootElementFactory.Create(projectXml);
             BuildUtilities.RemovePropertyValue(project, "1;2", "MyProperty", "2");
@@ -208,11 +222,13 @@ namespace Microsoft.VisualStudio.Build
         public void RemovePropertyValue_EmptyAfterRemove()
         {
             string projectXml =
-@"<Project>
-  <PropertyGroup>
-     <MyProperty>1</MyProperty>
-  </PropertyGroup>
-</Project>";
+                """
+                <Project>
+                  <PropertyGroup>
+                     <MyProperty>1</MyProperty>
+                  </PropertyGroup>
+                </Project>
+                """;
 
             var project = ProjectRootElementFactory.Create(projectXml);
             BuildUtilities.RemovePropertyValue(project, "1", "MyProperty", "1");
@@ -245,11 +261,13 @@ namespace Microsoft.VisualStudio.Build
         public void RenamePropertyValue_DefaultDelimiter()
         {
             string projectXml =
-@"<Project>
-  <PropertyGroup>
-     <MyProperty>1;2</MyProperty>
-  </PropertyGroup>
-</Project>";
+                """
+                <Project>
+                  <PropertyGroup>
+                     <MyProperty>1;2</MyProperty>
+                  </PropertyGroup>
+                </Project>
+                """;
 
             var project = ProjectRootElementFactory.Create(projectXml);
             BuildUtilities.RenamePropertyValue(project, "1;2", "MyProperty", "2", "5");
