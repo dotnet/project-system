@@ -9,6 +9,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Build
     [AppliesTo(ProjectCapability.Pack)]
     internal class GeneratePackageOnBuildDesignTimeBuildPropertyProvider : StaticGlobalPropertiesProviderBase
     {
+        private readonly Task<IImmutableDictionary<string, string>> _properties;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="TargetFrameworkGlobalBuildPropertyProvider"/> class.
         /// </summary>
@@ -16,6 +18,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Build
         internal GeneratePackageOnBuildDesignTimeBuildPropertyProvider(IProjectService projectService)
             : base(projectService.Services)
         {
+            // Never generate NuGet package during design time build.
+            _properties = Task.FromResult<IImmutableDictionary<string, string>>(Empty.PropertiesMap.Add(ConfigurationGeneralBrowseObject.GeneratePackageOnBuildProperty, "false"));
         }
 
         /// <summary>
@@ -24,9 +28,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Build
         /// <value>A map whose keys are case insensitive.  Never null, but may be empty.</value>
         public override Task<IImmutableDictionary<string, string>> GetGlobalPropertiesAsync(CancellationToken cancellationToken)
         {
-            // Never generate nuget package during design time build.
-            IImmutableDictionary<string, string> properties = Empty.PropertiesMap.Add(ConfigurationGeneralBrowseObject.GeneratePackageOnBuildProperty, "false");
-            return Task.FromResult(properties);
+            return _properties;
         }
     }
 }

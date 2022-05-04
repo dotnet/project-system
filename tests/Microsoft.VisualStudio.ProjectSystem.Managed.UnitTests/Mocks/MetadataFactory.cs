@@ -9,5 +9,14 @@ namespace Microsoft.VisualStudio.ProjectSystem
             return ImmutableStringDictionary<IImmutableDictionary<string, string>>.EmptyOrdinal.Add(fileName,
                                                                                                     ImmutableStringDictionary<string>.EmptyOrdinalIgnoreCase.Add(metadata.name, metadata.value));
         }
+
+        public static IImmutableDictionary<string, IImmutableDictionary<string, string>> Add(
+            this IImmutableDictionary<string, IImmutableDictionary<string, string>> metadata,
+            string fileName,
+            (string name, string value) itemMetadata)
+        {
+            return metadata.Add(fileName,
+                                ImmutableStringDictionary<string>.EmptyOrdinalIgnoreCase.Add(itemMetadata.name, itemMetadata.value));
+        }
     }
 }

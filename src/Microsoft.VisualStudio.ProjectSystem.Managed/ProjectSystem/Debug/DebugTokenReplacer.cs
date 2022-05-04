@@ -26,7 +26,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         private IProjectAccessor ProjectAccessor { get; }
 
         // Regular expression string to extract $(sometoken) elements from a string
-        private static readonly Regex s_matchTokenRegex = new(@"(\$\((?<token>[^\)]+)\))", RegexOptions.IgnoreCase);
+        private static readonly Regex s_matchTokenRegex = new(@"\$\((?<token>[^\)]+)\)", RegexOptions.IgnoreCase);
 
         /// <summary>
         /// Walks the profile and returns a new one where all the tokens have been replaced. Tokens can consist of
@@ -35,48 +35,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         /// </summary>
         public async Task<ILaunchProfile> ReplaceTokensInProfileAsync(ILaunchProfile profile)
         {
-            var resolvedProfile = new LaunchProfile(profile);
-            if (!Strings.IsNullOrWhiteSpace(resolvedProfile.ExecutablePath))
-            {
-                resolvedProfile.ExecutablePath = await ReplaceTokensInStringAsync(resolvedProfile.ExecutablePath, true);
-            }
-
-            if (!Strings.IsNullOrWhiteSpace(resolvedProfile.CommandLineArgs))
-            {
-                resolvedProfile.CommandLineArgs = await ReplaceTokensInStringAsync(resolvedProfile.CommandLineArgs, true);
-            }
-
-            if (!Strings.IsNullOrWhiteSpace(resolvedProfile.WorkingDirectory))
-            {
-                resolvedProfile.WorkingDirectory = await ReplaceTokensInStringAsync(resolvedProfile.WorkingDirectory, true);
-            }
-
-            if (!Strings.IsNullOrWhiteSpace(resolvedProfile.LaunchUrl))
-            {
-                resolvedProfile.LaunchUrl = await ReplaceTokensInStringAsync(resolvedProfile.LaunchUrl, true);
-            }
-
-            // Since Env variables are an immutable dictionary they are a little messy to update.
-            if (resolvedProfile.EnvironmentVariables != null)
-            {
-                foreach ((string key, string value) in resolvedProfile.EnvironmentVariables)
-                {
-                    resolvedProfile.EnvironmentVariables = resolvedProfile.EnvironmentVariables.SetItem(key, await ReplaceTokensInStringAsync(value, true));
-                }
-            }
-
-            if (resolvedProfile.OtherSettings != null)
-            {
-                foreach ((string key, object value) in resolvedProfile.OtherSettings)
-                {
-                    if (value is string s)
-                    {
-                        resolvedProfile.OtherSettings = resolvedProfile.OtherSettings.SetItem(key, await ReplaceTokensInStringAsync(s, true));
-                    }
-                }
-            }
-
-            return resolvedProfile;
+            return await LaunchProfile.ReplaceTokensAsync(
+                profile,
+                str => ReplaceTokensInStringAsync(str, expandEnvironmentVars: true));
         }
 
         /// <summary>
@@ -87,40 +48,27 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         public Task<string> ReplaceTokensInStringAsync(string rawString, bool expandEnvironmentVars)
         {
             if (string.IsNullOrWhiteSpace(rawString))
-            {
                 return Task.FromResult(rawString);
-            }
 
             string expandedString = expandEnvironmentVars
                 ? EnvironmentHelper.ExpandEnvironmentVariables(rawString)
                 : rawString;
 
-            return ReplaceMSBuildTokensInStringAsync(expandedString);
-        }
+            if (!s_matchTokenRegex.IsMatch(expandedString))
+                return Task.FromResult(expandedString);
 
-        private async Task<string> ReplaceMSBuildTokensInStringAsync(string rawString)
-        {
-            MatchCollection matches = s_matchTokenRegex.Matches(rawString);
-            if (matches.Count == 0)
-                return rawString;
+            return ReplaceMSBuildTokensAsync();
 
-            ConfiguredProject? configuredProject = await ActiveDebugFrameworkService.GetConfiguredProjectForActiveFrameworkAsync();
-
-            Assumes.NotNull(configuredProject);
-
-            return await ProjectAccessor.OpenProjectForReadAsync(configuredProject, project =>
+            async Task<string> ReplaceMSBuildTokensAsync()
             {
-                string expandedString = rawString;
+                ConfiguredProject? configuredProject = await ActiveDebugFrameworkService.GetConfiguredProjectForActiveFrameworkAsync();
 
-                // For each token we try to get a replacement value.
-                foreach (Match match in matches)
-                {
-                    // Resolve with msbuild. It will return the empty string if not found
-                    expandedString = expandedString.Replace(match.Value, project.ExpandString(match.Value));
-                }
+                Assumes.NotNull(configuredProject);
 
-                return expandedString;
-            });
+                return await ProjectAccessor.OpenProjectForReadAsync(
+                    configuredProject,
+                    project => s_matchTokenRegex.Replace(expandedString, m => project.ExpandString(m.Value)));
+            }
         }
     }
 }

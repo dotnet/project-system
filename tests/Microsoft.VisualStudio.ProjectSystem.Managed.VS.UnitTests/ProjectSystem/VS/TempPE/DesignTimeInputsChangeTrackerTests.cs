@@ -276,35 +276,52 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
         {
             _intermediateOutputPath = intermediateOutputPath ?? _intermediateOutputPath;
 
-            var ruleUpdate = @"{
-                                      ""ProjectChanges"": {
-                                          ""ConfigurationGeneral"": {
-                                              ""Difference"": {
-                                                  ""ChangedProperties"": [ ";
+            var ruleUpdate =
+                """
+                {
+                    "ProjectChanges": {
+                        "ConfigurationGeneral": {
+                            "Difference": {
+                                "ChangedProperties": [
+
+                """;
 
             if (_lastIntermediateOutputPath != _intermediateOutputPath)
             {
-                ruleUpdate += @"                        ""IntermediateOutputPath"",";
+                ruleUpdate +=
+                    """
+                                        "IntermediateOutputPath",
+
+                    """;
             }
+
             // root namespace and project folder have changed if its the first time we've sent inputs
             if (_lastIntermediateOutputPath == null)
             {
-                ruleUpdate += @"                        ""ProjectDir"",
-                                                        ""RootNamespace""";
+                ruleUpdate +=
+                    """
+                                       "ProjectDir",
+                                       "RootNamespace"
+
+                    """;
             }
+
             ruleUpdate = ruleUpdate.TrimEnd(',');
-            ruleUpdate += @"                      ]
-                                              },
-                                              ""After"": {
-                                                  ""Properties"": {
-                                                      ""ProjectDir"": """ + _projectFolder.Replace("\\", "\\\\") + @""",
-                                                      ""IntermediateOutputPath"": """ + _intermediateOutputPath.Replace("\\", "\\\\") + @""",
-                                                      ""RootNamespace"": ""MyNamespace""
-                                                  }
-                                              }
-                                          }
-                                      }
-                                  }";
+            ruleUpdate +=
+                $$"""
+                                ]
+                            },
+                            "After": {
+                                "Properties": {
+                                    "ProjectDir": "{{_projectFolder.Replace("\\", "\\\\")}}",
+                                    "IntermediateOutputPath": "{{_intermediateOutputPath.Replace("\\", "\\\\")}}",
+                                    "RootNamespace": "MyNamespace"
+                                }
+                            }
+                        }
+                    }
+                }
+                """;
             IProjectSubscriptionUpdate subscriptionUpdate = IProjectSubscriptionUpdateFactory.FromJson(ruleUpdate);
 
             _lastIntermediateOutputPath = _intermediateOutputPath;

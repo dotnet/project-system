@@ -80,7 +80,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             await _mockFS.WriteAllTextAsync(@"c:\program files\dotnet\dotnet.exe", "");
             _mockFS.CreateDirectory(@"c:\test\project");
 
-            var activeProfile = new LaunchProfile { Name = "MyApplication", CommandName = "Project", CommandLineArgs = "--someArgs" };
+            var activeProfile = new LaunchProfile("MyApplication", "Project", commandLineArgs: "--someArgs");
             var targets = await debugger.QueryDebugTargetsAsync(0, activeProfile);
             Assert.Single(targets);
             Assert.Equal(@"c:\program files\dotnet\dotnet.exe", targets[0].Executable);
@@ -98,13 +98,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             await _mockFS.WriteAllTextAsync(@"c:\program files\dotnet\dotnet.exe", "");
             _mockFS.CreateDirectory(@"c:\test\project");
 
-            var activeProfile = new LaunchProfile
-            {
-                Name = "MyApplication",
-                CommandName = "Project",
-                CommandLineArgs = "--someArgs",
-                OtherSettings = ImmutableStringDictionary<object>.EmptyOrdinal.Add(LaunchProfileExtensions.NativeDebuggingProperty, true)
-            };
+            var activeProfile = new LaunchProfile(
+                name: "MyApplication",
+                commandName: "Project",
+                commandLineArgs: "--someArgs",
+                otherSettings: ImmutableArray.Create<(string, object)>((LaunchProfileExtensions.NativeDebuggingProperty, (object)true)));
             var targets = await debugger.QueryDebugTargetsAsync(0, activeProfile);
             Assert.Single(targets);
             Assert.Equal(@"c:\program files\dotnet\dotnet.exe", targets[0].Executable);
@@ -120,10 +118,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
         {
             var debugger = GetDebugTargetsProvider();
 
-            var activeProfile = new LaunchProfile { Name = "MyApplication", CommandName = "Project", CommandLineArgs = "--someArgs" };
+            var activeProfile = new LaunchProfile(
+                name: "MyApplication",
+                commandName: "Project",
+                commandLineArgs: "--someArgs",
+                environmentVariables: ImmutableArray.Create(("var1", "Value1")));
 
-            // Now control-F5, add env
-            activeProfile.EnvironmentVariables = new Dictionary<string, string> { { "var1", "Value1" } }.ToImmutableDictionary();
             var targets = await debugger.QueryDebugTargetsAsync(DebugLaunchOptions.NoDebug, activeProfile);
             Assert.Single(targets);
             Assert.EndsWith(@"\cmd.exe", targets[0].Executable, StringComparison.OrdinalIgnoreCase);
@@ -139,7 +139,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
         {
             var debugger = GetDebugTargetsProvider();
 
-            var activeProfile = new LaunchProfile { Name = "MyApplication", CommandName = "Project", CommandLineArgs = "--someArgs" };
+            var activeProfile = new LaunchProfile("MyApplication", "Project", commandLineArgs: "--someArgs");
 
             // Validate that when the DLO_Profiling is set we don't run the cmd.exe
             var targets = await debugger.QueryDebugTargetsAsync(DebugLaunchOptions.NoDebug | DebugLaunchOptions.Profiling, activeProfile);
@@ -153,7 +153,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
         {
             var debugger = GetDebugTargetsProvider();
 
-            var activeProfile = new LaunchProfile { Name = "MyApplication", CommandLineArgs = "--someArgs", ExecutablePath = @"c:\test\Project\someapp.exe" };
+            var activeProfile = new LaunchProfile(
+                "MyApplication",
+                commandName: null,
+                commandLineArgs: "--someArgs",
+                executablePath: @"c:\test\Project\someapp.exe");
             var targets = await debugger.QueryDebugTargetsAsync(0, activeProfile);
             Assert.Single(targets);
             Assert.Equal(activeProfile.ExecutablePath, targets[0].Executable);
@@ -167,10 +171,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
         {
             var debugger = GetDebugTargetsProvider();
 
-            var activeProfile = new LaunchProfile { Name = "MyApplication", CommandLineArgs = "--someArgs", ExecutablePath = @"c:\test\Project\someapp.exe" };
-
-            // Now control-F5, add env vars
-            activeProfile.EnvironmentVariables = new Dictionary<string, string> { { "var1", "Value1" } }.ToImmutableDictionary();
+            var activeProfile = new LaunchProfile(
+                name: "MyApplication",
+                commandName: null, 
+                commandLineArgs: "--someArgs",
+                executablePath: @"c:\test\Project\someapp.exe",
+                environmentVariables: ImmutableArray.Create(("var1", "Value1")));
             var targets = await debugger.QueryDebugTargetsAsync(DebugLaunchOptions.NoDebug, activeProfile);
             Assert.Single(targets);
             Assert.Equal(activeProfile.ExecutablePath, targets[0].Executable);
@@ -189,19 +195,19 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
         {
             var properties = new Dictionary<string, string?>
             {
-                    {"RunCommand", @"dotnet"},
-                    {"RunArguments", "exec " + "\"" + @"c:\test\project\bin\project.dll"+ "\""},
-                    {"RunWorkingDirectory",  @"bin\"},
-                    {"TargetFrameworkIdentifier", @".NetCoreApp"},
-                    {"OutDir", outdir}
-                };
+                { "RunCommand", @"dotnet" },
+                { "RunArguments", "exec " + "\"" + @"c:\test\project\bin\project.dll"+ "\"" },
+                { "RunWorkingDirectory",  @"bin\" },
+                { "TargetFrameworkIdentifier", @".NetCoreApp" },
+                { "OutDir", outdir }
+            };
 
             var debugger = GetDebugTargetsProvider("exe", properties);
 
             // Exe relative, no working dir
             await _mockFS.WriteAllTextAsync(@"c:\test\project\bin\test.exe", string.Empty);
             await _mockFS.WriteAllTextAsync(@"c:\test\project\test.exe", string.Empty);
-            var activeProfile = new LaunchProfile { Name = "run", ExecutablePath = ".\\test.exe" };
+            var activeProfile = new LaunchProfile("run", null, executablePath: ".\\test.exe");
             var targets = await debugger.QueryDebugTargetsAsync(0, activeProfile);
             Assert.Single(targets);
             if (outdir == null || outdir == @"doesntExist\")
@@ -227,7 +233,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             await _mockFS.WriteAllTextAsync(@"c:\WorkingDir\mytest.exe", string.Empty);
             _mockFS.SetCurrentDirectory(@"c:\Test");
             _mockFS.CreateDirectory(@"c:\WorkingDir");
-            var activeProfile = new LaunchProfile { Name = "run", ExecutablePath = ".\\mytest.exe", WorkingDirectory = workingDir };
+            var activeProfile = new LaunchProfile("run", null, executablePath: ".\\mytest.exe", workingDirectory: workingDir);
             var targets = await debugger.QueryDebugTargetsAsync(0, activeProfile);
             Assert.Single(targets);
             Assert.Equal(@"c:\WorkingDir\mytest.exe", targets[0].Executable);
@@ -242,7 +248,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             // Exe relative to full working dir
             await _mockFS.WriteAllTextAsync(@"c:\WorkingDir\mytest.exe", string.Empty);
             _mockFS.CreateDirectory(@"c:\WorkingDir");
-            var activeProfile = new LaunchProfile { Name = "run", ExecutablePath = "./mytest.exe", WorkingDirectory = @"c:/WorkingDir" };
+            var activeProfile = new LaunchProfile("run", null, executablePath: "./mytest.exe", workingDirectory: @"c:/WorkingDir");
             var targets = await debugger.QueryDebugTargetsAsync(0, activeProfile);
             Assert.Single(targets);
             Assert.Equal(@"c:\WorkingDir\mytest.exe", targets[0].Executable);
@@ -252,7 +258,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
         [Fact]
         public async Task QueryDebugTargetsAsync_SetsProject()
         {
-            var project = new LaunchProfile { Name = "run", ExecutablePath = "dotnet.exe" };
+            var project = new LaunchProfile("run", null, executablePath: "dotnet.exe");
 
             var debugger = GetDebugTargetsProvider();
             var targets = await debugger.QueryDebugTargetsAsync(0, project);
@@ -269,7 +275,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             var debugger = GetDebugTargetsProvider();
 
             // Exe relative to path
-            var activeProfile = new LaunchProfile { Name = "run", ExecutablePath = exeName };
+            var activeProfile = new LaunchProfile("run", null, executablePath: exeName);
             var targets = await debugger.QueryDebugTargetsAsync(0, activeProfile);
             Assert.Single(targets);
             Assert.Equal(@"c:\program files\dotnet\dotnet.exe", targets[0].Executable);
@@ -285,7 +291,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             _mockFS.SetCurrentDirectory(@"c:\CurrentDirectory");
 
             // Exe relative to path
-            var activeProfile = new LaunchProfile { Name = "run", ExecutablePath = exeName };
+            var activeProfile = new LaunchProfile("run", null, executablePath: exeName);
             var targets = await debugger.QueryDebugTargetsAsync(0, activeProfile);
             Assert.Single(targets);
             Assert.Equal(@"c:\CurrentDirectory\myexe.exe", targets[0].Executable);
@@ -299,7 +305,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             _mockFS.SetCurrentDirectory(@"e:\CurrentDirectory");
 
             // Exe relative to path
-            var activeProfile = new LaunchProfile { Name = "run", ExecutablePath = @"\myexe.exe" };
+            var activeProfile = new LaunchProfile("run", null, executablePath: @"\myexe.exe");
             var targets = await debugger.QueryDebugTargetsAsync(0, activeProfile);
             Assert.Single(targets);
             Assert.Equal(@"e:\myexe.exe", targets[0].Executable);
@@ -316,7 +322,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
 
             var debugger = GetDebugTargetsProvider("Library", properties);
 
-            var activeProfile = new LaunchProfile { Name = "Name", CommandName = "Project" };
+            var activeProfile = new LaunchProfile("Name", "Project");
 
             var targets = await debugger.QueryDebugTargetsAsync(0, activeProfile);
 
@@ -335,7 +341,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
 
             var debugger = GetDebugTargetsProvider("Library", properties);
 
-            var activeProfile = new LaunchProfile { Name = "Name", CommandName = "Project" };
+            var activeProfile = new LaunchProfile("Name", "Project");
 
             var targets = await debugger.QueryDebugTargetsAsync(0, activeProfile);
 
@@ -354,7 +360,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
 
             var debugger = GetDebugTargetsProvider("Library", properties);
 
-            var activeProfile = new LaunchProfile { Name = "Name", CommandName = "Project" };
+            var activeProfile = new LaunchProfile("Name", "Project");
 
             var targets = await debugger.QueryDebugTargetsAsync(0, activeProfile);
 
@@ -375,7 +381,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
 
             var debugger = GetDebugTargetsProvider("Library", properties);
 
-            var activeProfile = new LaunchProfile { Name = "Name", CommandName = "Project" };
+            var activeProfile = new LaunchProfile("Name", "Project");
 
             await Assert.ThrowsAsync<Exception>(() => debugger.QueryDebugTargetsForDebugLaunchAsync(0, activeProfile));
         }
@@ -393,7 +399,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
 
             var debugger = GetDebugTargetsProvider("Library", properties);
 
-            var activeProfile = new LaunchProfile { Name = "Name", CommandName = "Project" };
+            var activeProfile = new LaunchProfile("Name", "Project");
 
             var targets = await debugger.QueryDebugTargetsAsync(0, activeProfile);
 
@@ -412,7 +418,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
 
             var debugger = GetDebugTargetsProvider("exe", properties);
 
-            var activeProfile = new LaunchProfile { Name = "Name", CommandName = "Project" };
+            var activeProfile = new LaunchProfile("Name", "Project");
 
             var result = await debugger.QueryDebugTargetsAsync(DebugLaunchOptions.NoDebug, activeProfile);
 
@@ -434,7 +440,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
 
             var provider = GetDebugTargetsProvider("exe", properties, debugger, scope);
 
-            var activeProfile = new LaunchProfile { Name = "Name", CommandName = "Project" };
+            var activeProfile = new LaunchProfile("Name", "Project");
 
             var result = await provider.QueryDebugTargetsAsync(DebugLaunchOptions.NoDebug, activeProfile);
 
@@ -458,7 +464,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
 
             var provider = GetDebugTargetsProvider("exe", properties, debugger, scope);
 
-            var activeProfile = new LaunchProfile { Name = "Name", CommandName = "Project" };
+            var activeProfile = new LaunchProfile("Name", "Project");
 
             var result = await provider.QueryDebugTargetsAsync(launchOptions, activeProfile);
 
@@ -480,7 +486,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
 
             var provider = GetDebugTargetsProvider("exe", properties, debugger);
 
-            var activeProfile = new LaunchProfile { Name = "Name", CommandName = "Project" };
+            var activeProfile = new LaunchProfile("Name", "Project");
 
             var result = await provider.QueryDebugTargetsAsync(launchOptions, activeProfile);
 
@@ -504,7 +510,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
 
             var provider = GetDebugTargetsProvider(outputType, properties, debugger);
 
-            var activeProfile = new LaunchProfile { Name = "Name", CommandName = "Project" };
+            var activeProfile = new LaunchProfile("Name", "Project");
 
             var result = await provider.QueryDebugTargetsAsync(0, activeProfile);
 
@@ -527,7 +533,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
 
             var debugger = GetDebugTargetsProvider(outputType, properties);
 
-            var activeProfile = new LaunchProfile { Name = "Name", CommandName = "Project" };
+            var activeProfile = new LaunchProfile("Name", "Project");
 
             var result = await debugger.QueryDebugTargetsAsync(DebugLaunchOptions.NoDebug, activeProfile);
 
@@ -599,7 +605,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
                 debugger: null,
                 scope: null);
 
-            var activeProfile = new LaunchProfile { Name = "Name", CommandName = "Executable", CommandLineArgs = "-arg1\r\n-arg2 -arg3\n -arg4\r\n" };
+            var activeProfile = new LaunchProfile("Name", "Executable", commandLineArgs: "-arg1\r\n-arg2 -arg3\n -arg4\r\n");
             var launchSettings = await provider.GetConsoleTargetForProfileAsync(activeProfile, DebugLaunchOptions.NoDebug, false);
 
             Assert.Equal("-arg1 -arg2 -arg3  -arg4 ", launchSettings?.Arguments);
@@ -647,7 +653,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
                 debugger: null,
                 scope: null);
 
-            var activeProfile = new LaunchProfile { Name = "Name", CommandName = "Executable" };
+            var activeProfile = new LaunchProfile("Name", "Executable");
             bool canBeStartupProject = await provider.CanBeStartupProjectAsync(DebugLaunchOptions.NoDebug, activeProfile);
 
             Assert.True(canBeStartupProject);
@@ -659,7 +665,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             var provider = GetDebugTargetsProvider(
                 properties: new Dictionary<string, string?>() { { "RunCommand", @"C:\alpha\beta\gamma.exe" } });
 
-            var activeProfile = new LaunchProfile { Name = "Name", CommandName = "Project" };
+            var activeProfile = new LaunchProfile("Name", "Project");
             bool canBeStartupProject = await provider.CanBeStartupProjectAsync(DebugLaunchOptions.NoDebug, activeProfile);
 
             Assert.True(canBeStartupProject);
@@ -671,7 +677,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             var provider = GetDebugTargetsProvider(
                 properties: new Dictionary<string, string?>() { { "TargetPath", @"C:\alpha\beta\gamma.exe" } });
 
-            var activeProfile = new LaunchProfile { Name = "Name", CommandName = "Project" };
+            var activeProfile = new LaunchProfile("Name", "Project");
             bool canBeStartupProject = await provider.CanBeStartupProjectAsync(DebugLaunchOptions.NoDebug, activeProfile);
 
             Assert.True(canBeStartupProject);
@@ -686,7 +692,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
                 debugger: null,
                 scope: null);
 
-            var activeProfile = new LaunchProfile { Name = "Name", CommandName = "Project" };
+            var activeProfile = new LaunchProfile("Name", "Project");
             bool canBeStartupProject = await provider.CanBeStartupProjectAsync(DebugLaunchOptions.NoDebug, activeProfile);
 
             Assert.False(canBeStartupProject);

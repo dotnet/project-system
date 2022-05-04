@@ -97,31 +97,27 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
 
         private static T GetOtherProperty<T>(ILaunchProfile? launchProfile, string propertyName, T defaultValue)
         {
-            if (launchProfile == null
-                || launchProfile.OtherSettings == null)
+            if (launchProfile is not null && launchProfile.TryGetSetting(propertyName, out object? value))
             {
-                return defaultValue;
-            }
-
-            if (launchProfile.OtherSettings.TryGetValue(propertyName, out object? value) &&
-                value is T b)
-            {
-                return b;
-            }
-            else if (value is string s &&
-                TypeDescriptor.GetConverter(typeof(T)) is TypeConverter converter &&
-                converter.CanConvertFrom(typeof(string)))
-            {
-                try
+                if (value is T b)
                 {
-                    if (converter.ConvertFromString(s) is T o)
-                    {
-                        return o;
-                    }
+                    return b;
                 }
-                catch (Exception)
+                if (value is string s &&
+                    TypeDescriptor.GetConverter(typeof(T)) is TypeConverter converter &&
+                    converter.CanConvertFrom(typeof(string)))
                 {
-                    // ignore bad data in the json file and just let them have the default value
+                    try
+                    {
+                        if (converter.ConvertFromString(s) is T o)
+                        {
+                            return o;
+                        }
+                    }
+                    catch (Exception)
+                    {
+                        // ignore bad data in the json file and just let them have the default value
+                    }
                 }
             }
 

@@ -13,7 +13,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
 
         Dictionary<string, object> GlobalSettings { get; }
 
-        // Convert back to the immutable form
+        /// <summary>
+        /// Converts back to the immutable form.
+        /// </summary>
         ILaunchSettings ToLaunchSettings();
     }
 }

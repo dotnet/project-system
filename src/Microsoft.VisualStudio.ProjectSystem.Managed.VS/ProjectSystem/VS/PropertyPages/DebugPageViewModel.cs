@@ -13,7 +13,6 @@ using Microsoft.VisualStudio.ProjectSystem.VS.Utilities;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Threading.Tasks;
 using DialogResult = System.Windows.Forms.DialogResult;
-using Task = System.Threading.Tasks.Task;
 
 #nullable disable
 

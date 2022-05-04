@@ -123,7 +123,7 @@ Each property in the system has an associated type. For example, the _Assembly n
 
 In the XAML rule files, properties are specified with an underlying type. These types are [defined by MSBuild](https://github.com/dotnet/msbuild/tree/master/src/Framework/XamlTypes) and are:
 
-- `StringProperty`
+- `StringProperty` (these can be [validated with the use of a regular expression](string-property-validation.md))
 - `StringListProperty`
 - `BoolProperty`
 - `EnumProperty`
@@ -194,6 +194,24 @@ We use this on the `LangVersion` property, for example, as this value is intenti
   </StringProperty.ValueEditors>
 </StringProperty>
 ```
+
+### Name/Value List
+
+When a property contains a variable number of name/value pairs, you can use the `NameValueList` editor on `StringProperty` to display a two-column grid in the UI that allows users to edit values and add/remove rows.
+
+The property's string value should be encoded with format resembling `A=1,B=2`, using `/` as an escape character if needed. See `LaunchProfileEnvironmentVariableEncoding` in this repo for further details.
+
+```xml
+<StringProperty Name="EnvironmentVariables"
+                DisplayName="Environment variables"
+                Description="The environment variables to set prior to running the process.">
+  <StringProperty.ValueEditors>
+    <ValueEditor EditorType="NameValueList" />
+  </StringProperty.ValueEditors>
+</StringProperty>
+```
+
+This example is taken from the _Environment Variables_ property on project and executable launch profiles.
 
 ### Custom Editors
 

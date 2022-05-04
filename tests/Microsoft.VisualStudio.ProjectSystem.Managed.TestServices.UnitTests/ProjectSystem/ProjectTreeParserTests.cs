@@ -295,111 +295,118 @@ namespace Microsoft.VisualStudio.ProjectSystem
         }
 
         [Theory]
-        [InlineData(@"
-Root
-    Parent
-",
-            @"
-Root[caption]
-[indent]Parent[caption]
-")]
-
-        [InlineData(@"
-Root
-    Parent1
-    Parent2
-",
-            @"
-Root[caption]
-[indent]Parent1[caption]
-[indent]Parent2[caption]
-")]
-
-        [InlineData(@"
-Root
-    Parent1
-        Child
-    Parent2
-",
-            @"
-Root[caption]
-[indent]Parent1[caption]
-[indent][indent]Child[caption]
-[indent]Parent2[caption]
-")]
-
-        [InlineData(@"
-Root
-    Parent1
-        Child1
-        Child2
-    Parent2
-    Parent3
-        Child3
-        Child4
-            Grandchild
-    Parent4
-",
-            @"
-Root[caption]
-[indent]Parent1[caption]
-[indent][indent]Child1[caption]
-[indent][indent]Child2[caption]
-[indent]Parent2[caption]
-[indent]Parent3[caption]
-[indent][indent]Child3[caption]
-[indent][indent]Child4[caption]
-[indent][indent][indent]Grandchild[caption]
-[indent]Parent4[caption]
-")]
-
+        [InlineData(
+            """
+            Root
+                Parent
+            """,
+            """
+            Root[caption]
+            [indent]Parent[caption]
+            """)]
+        [InlineData(
+            """
+            Root
+                Parent1
+                Parent2
+            """,
+            """
+            Root[caption]
+            [indent]Parent1[caption]
+            [indent]Parent2[caption]
+            """)]
+        [InlineData(
+            """
+            Root
+                Parent1
+                    Child
+                Parent2
+            """,
+            """
+            Root[caption]
+            [indent]Parent1[caption]
+            [indent][indent]Child[caption]
+            [indent]Parent2[caption]
+            """)]
+        [InlineData(
+            """
+            Root
+                Parent1
+                    Child1
+                    Child2
+                Parent2
+                Parent3
+                    Child3
+                    Child4
+                        Grandchild
+                Parent4
+            """,
+            """
+            Root[caption]
+            [indent]Parent1[caption]
+            [indent][indent]Child1[caption]
+            [indent][indent]Child2[caption]
+            [indent]Parent2[caption]
+            [indent]Parent3[caption]
+            [indent][indent]Child3[caption]
+            [indent][indent]Child4[caption]
+            [indent][indent][indent]Grandchild[caption]
+            [indent]Parent4[caption]
+            """)]
         public void Parse_RootWithChildren_CanParse(string input, string expected)
         {
             AssertProjectTree(input, expected, ProjectTreeWriterOptions.None);
         }
 
         [Theory]
-        [InlineData(@"
-Root
-Root
-")]
-        [InlineData(@"
-Root
-    Parent
-Root
-")]
-        [InlineData(@"
-Root
-    Parent
-        Child
-Root
-")]
-        [InlineData(@"
-Root
-    Parent
-        Child
-        Child
-Root
-")]
+        [InlineData(
+            """
+            Root
+            Root
+            """)]
+        [InlineData(
+            """
+            Root
+                Parent
+            Root
+            """)]
+        [InlineData(
+            """
+            Root
+                Parent
+                    Child
+            Root
+            """)]
+        [InlineData(
+            """
+            Root
+                Parent
+                    Child
+                    Child
+            Root
+            """)]
         public void Parse_MultipleRoots_ThrowsFormat(string input)
         {
             AssertThrows(input, ProjectTreeFormatError.MultipleRoots);
         }
 
         [Theory]
-        [InlineData(@"
-Root
-        Parent
-")]
-        [InlineData(@"
-Root
-    Parent 
-            Parent
-")]
-        [InlineData(@"
-Root
-            Parent
-")]
+        [InlineData(
+            """
+            Root
+                    Parent
+            """)]
+        [InlineData(
+            """
+            Root
+                Parent 
+                        Parent
+            """)]
+        [InlineData(
+            """
+            Root
+                        Parent
+            """)]
         public void Parse_IndentTooManyLevels_ThrowsFormat(string input)
         {
             AssertThrows(input, ProjectTreeFormatError.IndentTooManyLevels);

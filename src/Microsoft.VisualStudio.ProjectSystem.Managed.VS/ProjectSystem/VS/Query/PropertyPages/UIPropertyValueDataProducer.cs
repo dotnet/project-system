@@ -59,6 +59,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
                 };
             }
 
+            if (requestedProperties.ValueDefinedInContext)
+            {
+                newUIPropertyValue.ValueDefinedInContext = await property.IsDefinedInContextAsync();
+            }
+
             ((IEntityValueFromProvider)newUIPropertyValue).ProviderState = new PropertyValueProviderState(configuration, property);
 
             return newUIPropertyValue;

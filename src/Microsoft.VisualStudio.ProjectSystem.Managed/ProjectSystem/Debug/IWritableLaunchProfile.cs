@@ -17,7 +17,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         Dictionary<string, string> EnvironmentVariables { get; }
         Dictionary<string, object> OtherSettings { get; }
 
-        // Convert back to the immutable form
+        /// <summary>
+        /// Convert back to the immutable form.
+        /// </summary>
         ILaunchProfile ToLaunchProfile();
     }
 }

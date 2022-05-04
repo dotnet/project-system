@@ -237,26 +237,30 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
             var applyChangesToWorkspace = CreateInitializedInstance(handlers: new[] { handler });
 
             var projectUpdate = IProjectSubscriptionUpdateFactory.FromJson(
-@"{
-   ""ProjectChanges"": {
-        ""RuleName"": {
-            ""Difference"": { 
-                ""AnyChanges"": false
-            },
-        }
-    }
-}");
+                """
+                {
+                   "ProjectChanges": {
+                        "RuleName": {
+                            "Difference": { 
+                                "AnyChanges": false
+                            },
+                        }
+                    }
+                }
+                """);
 
             var sourceItemsUpdate = IProjectSubscriptionUpdateFactory.FromJson(
-@"{
-   ""ProjectChanges"": {
-        ""RuleName"": {
-            ""Difference"": { 
-                ""AnyChanges"": false
-            },
-        }
-    }
-}");
+                """
+                {
+                   "ProjectChanges": {
+                        "RuleName": {
+                            "Difference": { 
+                                "AnyChanges": false
+                            },
+                        }
+                    }
+                }
+                """);
 
             var update = IProjectVersionedValueFactory.Create((projectUpdate, sourceItemsUpdate), ProjectDataSources.ConfiguredProjectVersion, 1);
 
@@ -274,15 +278,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
             var applyChangesToWorkspace = CreateInitializedInstance(handlers: new[] { handler });
 
             var projectUpdate = IProjectSubscriptionUpdateFactory.FromJson(
-@"{
-   ""ProjectChanges"": {
-        ""CompilerCommandLineArgs"": {
-            ""Difference"": { 
-                ""AnyChanges"": false
-            },
-        }
-    }
-}");
+                """
+                {
+                   "ProjectChanges": {
+                        "CompilerCommandLineArgs": {
+                            "Difference": { 
+                                "AnyChanges": false
+                            },
+                        }
+                    }
+                }
+                """);
 
             var update = IProjectVersionedValueFactory.Create((projectUpdate, _unchangedCommandLineArguments));
 
@@ -304,15 +310,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
             var applyChangesToWorkspace = CreateInitializedInstance(handlers: new[] { handler });
 
             var projectUpdate = IProjectSubscriptionUpdateFactory.FromJson(
-@"{
-   ""ProjectChanges"": {
-        ""RuleName"": {
-            ""Difference"": { 
-                ""AnyChanges"": true
-            },
-        }
-    }
-}");
+                """
+                {
+                   "ProjectChanges": {
+                        "RuleName": {
+                            "Difference": { 
+                                "AnyChanges": true
+                            },
+                        }
+                    }
+                }
+                """);
 
             var sourceItemsUpdate = IProjectSubscriptionUpdateFactory.CreateEmpty();
             int version = 2;
@@ -342,15 +350,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 
             var projectUpdate = IProjectSubscriptionUpdateFactory.CreateEmpty();
             var sourceItemsUpdate = IProjectSubscriptionUpdateFactory.FromJson(
-@"{
-   ""ProjectChanges"": {
-        ""RuleName"": {
-            ""Difference"": { 
-                ""AnyChanges"": true
-            },
-        }
-    }
-}");
+                """
+                {
+                   "ProjectChanges": {
+                        "RuleName": {
+                            "Difference": { 
+                                "AnyChanges": true
+                            },
+                        }
+                    }
+                }
+                """);
             int version = 2;
 
             var update = IProjectVersionedValueFactory.Create((projectUpdate, sourceItemsUpdate), ProjectDataSources.ConfiguredProjectVersion, version);
@@ -379,17 +389,19 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
             var applyChangesToWorkspace = CreateInitializedInstance(commandLineParser: parser, handlers: new[] { handler });
 
             var projectUpdate = IProjectSubscriptionUpdateFactory.FromJson(
-@"{
-   ""ProjectChanges"": {
-        ""CompilerCommandLineArgs"": {
-            ""Difference"": { 
-                ""AnyChanges"": true,
-                ""AddedItems"" : [ ""/reference:Added.dll"" ],
-                ""RemovedItems"" : [ ""/reference:Removed.dll"" ]
-            }
-        }
-    }
-}");
+                """
+                {
+                   "ProjectChanges": {
+                        "CompilerCommandLineArgs": {
+                            "Difference": { 
+                                "AnyChanges": true,
+                                "AddedItems" : [ "/reference:Added.dll" ],
+                                "RemovedItems" : [ "/reference:Removed.dll" ]
+                            }
+                        }
+                    }
+                }
+                """);
             int version = 2;
 
             var update = IProjectVersionedValueFactory.Create((projectUpdate, _changedCommandLineArguments), ProjectDataSources.ConfiguredProjectVersion, version);
@@ -417,20 +429,22 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
             var applyChangesToWorkspace = CreateInitializedInstance(handlers: new[] { handler1, handler2 });
 
             var projectUpdate = IProjectSubscriptionUpdateFactory.FromJson(
-@"{
-   ""ProjectChanges"": {
-        ""RuleName1"": {
-            ""Difference"": { 
-                ""AnyChanges"": true
-            },
-        },
-        ""RuleName2"": {
-            ""Difference"": { 
-                ""AnyChanges"": true
-            },
-        }
-    }
-}");
+                """
+                {
+                   "ProjectChanges": {
+                        "RuleName1": {
+                            "Difference": { 
+                                "AnyChanges": true
+                            },
+                        },
+                        "RuleName2": {
+                            "Difference": { 
+                                "AnyChanges": true
+                            },
+                        }
+                    }
+                }
+                """);
 
             var sourceItemsUpdate = IProjectSubscriptionUpdateFactory.CreateEmpty();
 
@@ -458,15 +472,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
             var applyChangesToWorkspace = CreateInitializedInstance(handlers: new[] { handler1, handler2 });
 
             var projectUpdate = IProjectSubscriptionUpdateFactory.FromJson(
-@"{
-   ""ProjectChanges"": {
-        ""CompilerCommandLineArgs"": {
-            ""Difference"": { 
-                ""AnyChanges"": true
-            },
-        }
-    }
-}");
+                """
+                {
+                   "ProjectChanges": {
+                        "CompilerCommandLineArgs": {
+                            "Difference": { 
+                                "AnyChanges": true
+                            },
+                        }
+                    }
+                }
+                """);
             var update = IProjectVersionedValueFactory.Create((projectUpdate, _changedCommandLineArguments), ProjectDataSources.ConfiguredProjectVersion, 1);
 
             Assert.Throws<OperationCanceledException>(() =>
@@ -487,20 +503,22 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
             var applyChangesToWorkspace = CreateInitializedInstance(handlers: new[] { handler });
 
             var projectUpdate = IProjectSubscriptionUpdateFactory.FromJson(
-@"{
-   ""ProjectChanges"": {
-        ""CompilerCommandLineArgs"": {
-            ""Difference"": { 
-                ""AnyChanges"": true
-            },
-        },
-        ""RuleName"": {
-            ""Difference"": { 
-                ""AnyChanges"": true
-            },
-        }
-    }
-}");
+                """
+                {
+                   "ProjectChanges": {
+                        "CompilerCommandLineArgs": {
+                            "Difference": { 
+                                "AnyChanges": true
+                            },
+                        },
+                        "RuleName": {
+                            "Difference": { 
+                                "AnyChanges": true
+                            },
+                        }
+                    }
+                }
+                """);
 
             var sourceItemsUpdate = IProjectSubscriptionUpdateFactory.CreateEmpty();
 
@@ -520,20 +538,22 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
             var applyChangesToWorkspace = CreateInitializedInstance(handlers: new[] { handler });
 
             var projectUpdate = IProjectSubscriptionUpdateFactory.FromJson(
-@"{
-   ""ProjectChanges"": {
-        ""CompilerCommandLineArgs"": {
-            ""Difference"": { 
-                ""AnyChanges"": true
-            },
-        },
-        ""RuleName"": {
-            ""Difference"": { 
-                ""AnyChanges"": true
-            },
-        }
-    }
-}");
+                """
+                {
+                   "ProjectChanges": {
+                        "CompilerCommandLineArgs": {
+                            "Difference": { 
+                                "AnyChanges": true
+                            },
+                        },
+                        "RuleName": {
+                            "Difference": { 
+                                "AnyChanges": true
+                            },
+                        }
+                    }
+                }
+                """);
             var update = IProjectVersionedValueFactory.Create((projectUpdate, _changedCommandLineArguments), ProjectDataSources.ConfiguredProjectVersion, 1);
 
             applyChangesToWorkspace.ApplyProjectBuild(update, new ContextState(isActiveEditorContext: true, isActiveConfiguration: false), CancellationToken.None);
@@ -548,18 +568,20 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
             context.LastDesignTimeBuildSucceeded = true;
 
             var projectUpdate = IProjectSubscriptionUpdateFactory.FromJson(
-@"{
-   ""ProjectChanges"": {
-        ""CompilerCommandLineArgs"": {
-            ""Difference"": { 
-                ""AnyChanges"": true
-            },
-            ""After"": { 
-                ""EvaluationSucceeded"": false
-            }
-        }
-    }
-}");
+                """
+                {
+                   "ProjectChanges": {
+                        "CompilerCommandLineArgs": {
+                            "Difference": { 
+                                "AnyChanges": true
+                            },
+                            "After": { 
+                                "EvaluationSucceeded": false
+                            }
+                        }
+                    }
+                }
+                """);
             var update = IProjectVersionedValueFactory.Create((projectUpdate, _changedCommandLineArguments), ProjectDataSources.ConfiguredProjectVersion, 1);
 
             applyChangesToWorkspace.ApplyProjectBuild(update, new ContextState(), CancellationToken.None);
@@ -573,18 +595,20 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
             var applyChangesToWorkspace = CreateInitializedInstance(out var context);
 
             var projectUpdate = IProjectSubscriptionUpdateFactory.FromJson(
-@"{
-   ""ProjectChanges"": {
-        ""CompilerCommandLineArgs"": {
-            ""Difference"": { 
-                ""AnyChanges"": true
-            },
-            ""After"": { 
-                ""EvaluationSucceeded"": true
-            }
-        }
-    }
-}");
+                """
+                {
+                   "ProjectChanges": {
+                        "CompilerCommandLineArgs": {
+                            "Difference": { 
+                                "AnyChanges": true
+                            },
+                            "After": { 
+                                "EvaluationSucceeded": true
+                            }
+                        }
+                    }
+                }
+                """);
             var update = IProjectVersionedValueFactory.Create((projectUpdate, _changedCommandLineArguments), ProjectDataSources.ConfiguredProjectVersion, 1);
 
             applyChangesToWorkspace.ApplyProjectBuild(update, new ContextState(true, false), CancellationToken.None);

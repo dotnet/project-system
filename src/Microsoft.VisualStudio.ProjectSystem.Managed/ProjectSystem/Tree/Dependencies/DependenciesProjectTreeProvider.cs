@@ -14,7 +14,6 @@ using Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Subscriptions;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies;
 using Microsoft.VisualStudio.Threading;
 using Microsoft.VisualStudio.Threading.Tasks;
-using Task = System.Threading.Tasks.Task;
 
 namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies
 {

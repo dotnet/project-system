@@ -43,6 +43,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.Rules
                 var targetPathElement = none.XPathSelectElement(@"/msb:Rule/msb:StringProperty[@Name=""TargetPath""]", namespaceManager);
                 Assert.NotNull(targetPathElement);
                 targetPathElement.Remove();
+
+                // Remove the "ExcludeFromCurrentConfiguration" element.
+                // This is for internal use and hidden, so we don't expect all items to have it.
+                var excludeFromCurrentConfigurationElement = rule.XPathSelectElement(@"/msb:Rule/msb:BoolProperty[@Name=""ExcludeFromCurrentConfiguration""]", namespaceManager);
+                if (excludeFromCurrentConfigurationElement is not null)
+                {
+                    excludeFromCurrentConfigurationElement.Remove();
+                }
             }
 
             AssertXmlEqual(none, rule);

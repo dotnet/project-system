@@ -5,7 +5,6 @@ using Microsoft.VisualStudio.ComponentModelHost;
 using Microsoft.VisualStudio.ProjectSystem.VS;
 using Microsoft.VisualStudio.ProjectSystem.VS.Xproj;
 using Microsoft.VisualStudio.Shell;
-using Task = System.Threading.Tasks.Task;
 
 namespace Microsoft.VisualStudio.Packaging
 {

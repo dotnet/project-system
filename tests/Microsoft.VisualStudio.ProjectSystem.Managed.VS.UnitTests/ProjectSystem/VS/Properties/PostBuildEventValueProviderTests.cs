@@ -13,24 +13,25 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
         [Fact]
         public static void GetPropertyAsync_AllTargetsPresent()
         {
-            var root = @"
-<Project Sdk=""Microsoft.NET.Sdk"">
+            var root =
+                """
+                <Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <OutputType>Exe</OutputType>
-    <TargetFramework>netcoreapp1.1</TargetFramework>
-  </PropertyGroup>
+                  <PropertyGroup>
+                    <OutputType>Exe</OutputType>
+                    <TargetFramework>netcoreapp1.1</TargetFramework>
+                  </PropertyGroup>
 
-  <Target Name=""PreBuild"" BeforeTargets=""PreBuildEvent"">
-    <Exec Command=""echo &quot;prebuild output&quot;"" />
-  </Target>
+                  <Target Name="PreBuild" BeforeTargets="PreBuildEvent">
+                    <Exec Command="echo &quot;prebuild output&quot;" />
+                  </Target>
 
-  <Target Name=""PostBuild"" AfterTargets=""PostBuildEvent"">
-    <Exec Command=""echo &quot;post build output&quot;"" />
-  </Target>
+                  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+                    <Exec Command="echo &quot;post build output&quot;" />
+                  </Target>
 
-</Project>
-".AsProjectRootElement();
+                </Project>
+                """.AsProjectRootElement();
             var actual = systemUnderTest.TryGetValueFromTarget(root);
             Assert.Equal(@"echo ""post build output""", actual);
         }
@@ -38,20 +39,21 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
         [Fact]
         public static void GetPropertyAsync_PostBuildTargetPresent()
         {
-            var root = @"
-<Project Sdk=""Microsoft.NET.Sdk"">
+            var root =
+                """
+                <Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <OutputType>Exe</OutputType>
-    <TargetFramework>netcoreapp1.1</TargetFramework>
-  </PropertyGroup>
+                  <PropertyGroup>
+                    <OutputType>Exe</OutputType>
+                    <TargetFramework>netcoreapp1.1</TargetFramework>
+                  </PropertyGroup>
 
-  <Target Name=""PostBuild"" AfterTargets=""PostBuildEvent"">
-    <Exec Command=""echo &quot;post build output&quot;"" />
-  </Target>
+                  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+                    <Exec Command="echo &quot;post build output&quot;" />
+                  </Target>
 
-</Project>
-".AsProjectRootElement();
+                </Project>
+                """.AsProjectRootElement();
             var actual = systemUnderTest.TryGetValueFromTarget(root);
             Assert.Equal(@"echo ""post build output""", actual);
         }
@@ -59,20 +61,21 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
         [Fact]
         public static void GetPropertyAsync_PostBuildTargetPresent_LowerCase()
         {
-            var root = @"
-<Project Sdk=""Microsoft.NET.Sdk"">
+            var root =
+                """
+                <Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <OutputType>Exe</OutputType>
-    <TargetFramework>netcoreapp1.1</TargetFramework>
-  </PropertyGroup>
+                  <PropertyGroup>
+                    <OutputType>Exe</OutputType>
+                    <TargetFramework>netcoreapp1.1</TargetFramework>
+                  </PropertyGroup>
 
-  <Target Name=""postbuild"" AfterTargets=""postbuildevent"">
-    <Exec Command=""echo &quot;post build output&quot;"" />
-  </Target>
+                  <Target Name="postbuild" AfterTargets="postbuildevent">
+                    <Exec Command="echo &quot;post build output&quot;" />
+                  </Target>
 
-</Project>
-".AsProjectRootElement();
+                </Project>
+                """.AsProjectRootElement();
             var actual = systemUnderTest.TryGetValueFromTarget(root);
             Assert.Equal(@"echo ""post build output""", actual);
         }
@@ -80,16 +83,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
         [Fact]
         public static void GetPropertyAsync_NoTargetsPresent()
         {
-            var root = @"
-<Project Sdk=""Microsoft.NET.Sdk"">
+            var root =
+                """
+                <Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <OutputType>Exe</OutputType>
-    <TargetFramework>netcoreapp1.1</TargetFramework>
-  </PropertyGroup>
+                  <PropertyGroup>
+                    <OutputType>Exe</OutputType>
+                    <TargetFramework>netcoreapp1.1</TargetFramework>
+                  </PropertyGroup>
 
-</Project>
-".AsProjectRootElement();
+                </Project>
+                """.AsProjectRootElement();
             var actual = systemUnderTest.TryGetValueFromTarget(root);
             Assert.Null(actual);
         }
@@ -107,18 +111,19 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
         [Fact]
         public static void GetPropertyAsync_WrongTargetName()
         {
-            var root = @"
-<Project Sdk=""Microsoft.NET.Sdk"">
+            var root =
+                """
+                <Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <OutputType>Exe</OutputType>
-    <TargetFramework>netcoreapp1.1</TargetFramework>
-  </PropertyGroup>
-  <Target Name=""PoostBuild"" AfterTargets=""PostBuildEvent"">
-    <Exec Command=""echo &quot;post build output&quot;"" />
-  </Target>
-</Project>
-".AsProjectRootElement();
+                  <PropertyGroup>
+                    <OutputType>Exe</OutputType>
+                    <TargetFramework>netcoreapp1.1</TargetFramework>
+                  </PropertyGroup>
+                  <Target Name="PoostBuild" AfterTargets="PostBuildEvent">
+                    <Exec Command="echo &quot;post build output&quot;" />
+                  </Target>
+                </Project>
+                """.AsProjectRootElement();
             var result = systemUnderTest.TryGetValueFromTarget(root);
             Assert.Null(result);
         }
@@ -126,18 +131,19 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
         [Fact]
         public static void GetPropertyAsync_WrongExec()
         {
-            var root = @"
-<Project Sdk=""Microsoft.NET.Sdk"">
+            var root =
+                """
+                <Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <OutputType>Exe</OutputType>
-    <TargetFramework>netcoreapp1.1</TargetFramework>
-  </PropertyGroup>
-  <Target Name=""PostBuild"" AfterTargets=""PostBuildEvent"">
-    <Exec Commmand=""echo &quot;post build output&quot;"" />
-  </Target>
-</Project>
-".AsProjectRootElement();
+                  <PropertyGroup>
+                    <OutputType>Exe</OutputType>
+                    <TargetFramework>netcoreapp1.1</TargetFramework>
+                  </PropertyGroup>
+                  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+                    <Exec Commmand="echo &quot;post build output&quot;" />
+                  </Target>
+                </Project>
+                """.AsProjectRootElement();
             var result = systemUnderTest.TryGetValueFromTarget(root);
             Assert.Null(result);
         }
@@ -145,23 +151,29 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
         [Fact]
         public static void SetPropertyAsync_NoTargetsPresent()
         {
-            var root = @"<Project Sdk=""Microsoft.NET.Sdk"">
-  <PropertyGroup>
-    <OutputType>Exe</OutputType>
-    <TargetFramework>netcoreapp1.1</TargetFramework>
-  </PropertyGroup>
-</Project>".AsProjectRootElement();
+            var root =
+                """
+                <Project Sdk="Microsoft.NET.Sdk">
+                  <PropertyGroup>
+                    <OutputType>Exe</OutputType>
+                    <TargetFramework>netcoreapp1.1</TargetFramework>
+                  </PropertyGroup>
+                </Project>
+                """.AsProjectRootElement();
             systemUnderTest.SetProperty(@"echo ""post build output""", root);
 
-            var expected = @"<Project Sdk=""Microsoft.NET.Sdk"">
-  <PropertyGroup>
-    <OutputType>Exe</OutputType>
-    <TargetFramework>netcoreapp1.1</TargetFramework>
-  </PropertyGroup>
-  <Target Name=""PostBuild"" AfterTargets=""PostBuildEvent"">
-    <Exec Command=""echo &quot;post build output&quot;"" />
-  </Target>
-</Project>";
+            var expected =
+                """
+                <Project Sdk="Microsoft.NET.Sdk">
+                  <PropertyGroup>
+                    <OutputType>Exe</OutputType>
+                    <TargetFramework>netcoreapp1.1</TargetFramework>
+                  </PropertyGroup>
+                  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+                    <Exec Command="echo &quot;post build output&quot;" />
+                  </Target>
+                </Project>
+                """;
 
             var actual = root.SaveAndGetChanges();
             Assert.Equal(expected, actual);
@@ -170,26 +182,32 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
         [Fact]
         public static void SetPropertyAsync_TargetPresent()
         {
-            var root = @"<Project Sdk=""Microsoft.NET.Sdk"">
-  <PropertyGroup>
-    <OutputType>Exe</OutputType>
-    <TargetFramework>netcoreapp1.1</TargetFramework>
-  </PropertyGroup>
-  <Target Name=""PostBuild"" AfterTargets=""PostBuildEvent"">
-    <Exec Command=""echo &quot;post build output&quot;"" />
-  </Target>
-</Project>".AsProjectRootElement();
+            var root =
+                """
+                <Project Sdk="Microsoft.NET.Sdk">
+                  <PropertyGroup>
+                    <OutputType>Exe</OutputType>
+                    <TargetFramework>netcoreapp1.1</TargetFramework>
+                  </PropertyGroup>
+                  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+                    <Exec Command="echo &quot;post build output&quot;" />
+                  </Target>
+                </Project>
+                """.AsProjectRootElement();
             systemUnderTest.SetProperty(@"echo ""post build $(OutDir)""", root);
 
-            var expected = @"<Project Sdk=""Microsoft.NET.Sdk"">
-  <PropertyGroup>
-    <OutputType>Exe</OutputType>
-    <TargetFramework>netcoreapp1.1</TargetFramework>
-  </PropertyGroup>
-  <Target Name=""PostBuild"" AfterTargets=""PostBuildEvent"">
-    <Exec Command=""echo &quot;post build $(OutDir)&quot;"" />
-  </Target>
-</Project>";
+            var expected =
+                """
+                <Project Sdk="Microsoft.NET.Sdk">
+                  <PropertyGroup>
+                    <OutputType>Exe</OutputType>
+                    <TargetFramework>netcoreapp1.1</TargetFramework>
+                  </PropertyGroup>
+                  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+                    <Exec Command="echo &quot;post build $(OutDir)&quot;" />
+                  </Target>
+                </Project>
+                """;
 
             var actual = root.SaveAndGetChanges();
             Assert.Equal(expected, actual);
@@ -198,26 +216,32 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
         [Fact]
         public static void SetPropertyAsync_TargetPresent_LowerCase()
         {
-            var root = @"<Project Sdk=""Microsoft.NET.Sdk"">
-  <PropertyGroup>
-    <OutputType>Exe</OutputType>
-    <TargetFramework>netcoreapp1.1</TargetFramework>
-  </PropertyGroup>
-  <Target Name=""postbuild"" AfterTargets=""postbuildevent"">
-    <Exec Command=""echo &quot;post build output&quot;"" />
-  </Target>
-</Project>".AsProjectRootElement();
+            var root =
+                """
+                <Project Sdk="Microsoft.NET.Sdk">
+                  <PropertyGroup>
+                    <OutputType>Exe</OutputType>
+                    <TargetFramework>netcoreapp1.1</TargetFramework>
+                  </PropertyGroup>
+                  <Target Name="postbuild" AfterTargets="postbuildevent">
+                    <Exec Command="echo &quot;post build output&quot;" />
+                  </Target>
+                </Project>
+                """.AsProjectRootElement();
             systemUnderTest.SetProperty(@"echo ""post build $(OutDir)""", root);
 
-            var expected = @"<Project Sdk=""Microsoft.NET.Sdk"">
-  <PropertyGroup>
-    <OutputType>Exe</OutputType>
-    <TargetFramework>netcoreapp1.1</TargetFramework>
-  </PropertyGroup>
-  <Target Name=""postbuild"" AfterTargets=""postbuildevent"">
-    <Exec Command=""echo &quot;post build $(OutDir)&quot;"" />
-  </Target>
-</Project>";
+            var expected =
+                """
+                <Project Sdk="Microsoft.NET.Sdk">
+                  <PropertyGroup>
+                    <OutputType>Exe</OutputType>
+                    <TargetFramework>netcoreapp1.1</TargetFramework>
+                  </PropertyGroup>
+                  <Target Name="postbuild" AfterTargets="postbuildevent">
+                    <Exec Command="echo &quot;post build $(OutDir)&quot;" />
+                  </Target>
+                </Project>
+                """;
 
             var actual = root.SaveAndGetChanges();
             Assert.Equal(expected, actual);
@@ -226,27 +250,33 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
         [Fact]
         public static void SetPropertyAsync_TargetPresent_NoTasks()
         {
-            var root = @"<Project Sdk=""Microsoft.NET.Sdk"">
-  <PropertyGroup>
-    <OutputType>Exe</OutputType>
-    <TargetFramework>netcoreapp1.1</TargetFramework>
-  </PropertyGroup>
-  <Target Name=""PostBuild"" AfterTargets=""PostBuildEvent"">
-  </Target>
-</Project>".AsProjectRootElement();
+            var root =
+                """
+                <Project Sdk="Microsoft.NET.Sdk">
+                  <PropertyGroup>
+                    <OutputType>Exe</OutputType>
+                    <TargetFramework>netcoreapp1.1</TargetFramework>
+                  </PropertyGroup>
+                  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+                  </Target>
+                </Project>
+                """.AsProjectRootElement();
             systemUnderTest.SetProperty(@"echo ""post build $(OutDir)""", root);
 
-            var expected = @"<Project Sdk=""Microsoft.NET.Sdk"">
-  <PropertyGroup>
-    <OutputType>Exe</OutputType>
-    <TargetFramework>netcoreapp1.1</TargetFramework>
-  </PropertyGroup>
-  <Target Name=""PostBuild"" AfterTargets=""PostBuildEvent"">
-  </Target>
-  <Target Name=""PostBuild"" AfterTargets=""PostBuildEvent"">
-    <Exec Command=""echo &quot;post build $(OutDir)&quot;"" />
-  </Target>
-</Project>";
+            var expected =
+                """
+                <Project Sdk="Microsoft.NET.Sdk">
+                  <PropertyGroup>
+                    <OutputType>Exe</OutputType>
+                    <TargetFramework>netcoreapp1.1</TargetFramework>
+                  </PropertyGroup>
+                  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+                  </Target>
+                  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+                    <Exec Command="echo &quot;post build $(OutDir)&quot;" />
+                  </Target>
+                </Project>
+                """;
 
             var actual = root.SaveAndGetChanges();
             Assert.Equal(expected, actual);
@@ -255,33 +285,39 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
         [Fact]
         public static void SetPropertyAsync_TargetPresent_NoTasks_Removal()
         {
-            var root = @"<Project Sdk=""Microsoft.NET.Sdk"">
-  <PropertyGroup>
-    <OutputType>Exe</OutputType>
-    <TargetFramework>netcoreapp1.1</TargetFramework>
-  </PropertyGroup>
-  <Target Name=""PostBuild"" AfterTargets=""PostBuildEvent"">
-  </Target>
-  <Target Name=""PostBuild1"" AfterTargets=""PostBuildEvent"">
-    <Exec Command=""echo &quot;post build $(OutDir)&quot;"" />
-  </Target>
-</Project>".AsProjectRootElement();
+            var root =
+                """
+                <Project Sdk="Microsoft.NET.Sdk">
+                  <PropertyGroup>
+                    <OutputType>Exe</OutputType>
+                    <TargetFramework>netcoreapp1.1</TargetFramework>
+                  </PropertyGroup>
+                  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+                  </Target>
+                  <Target Name="PostBuild1" AfterTargets="PostBuildEvent">
+                    <Exec Command="echo &quot;post build $(OutDir)&quot;" />
+                  </Target>
+                </Project>
+                """.AsProjectRootElement();
             systemUnderTest.SetProperty(@"", root);
 
-            var expected = @"<Project Sdk=""Microsoft.NET.Sdk"">
-  <PropertyGroup>
-    <OutputType>Exe</OutputType>
-    <TargetFramework>netcoreapp1.1</TargetFramework>
-  </PropertyGroup>
-  <Target Name=""PostBuild"" AfterTargets=""PostBuildEvent"">
-  </Target>
-  <Target Name=""PostBuild1"" AfterTargets=""PostBuildEvent"">
-    <Exec Command=""echo &quot;post build $(OutDir)&quot;"" />
-  </Target>
-  <Target Name=""PostBuild"" AfterTargets=""PostBuildEvent"">
-    <Exec Command="""" />
-  </Target>
-</Project>";
+            var expected =
+                """
+                <Project Sdk="Microsoft.NET.Sdk">
+                  <PropertyGroup>
+                    <OutputType>Exe</OutputType>
+                    <TargetFramework>netcoreapp1.1</TargetFramework>
+                  </PropertyGroup>
+                  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+                  </Target>
+                  <Target Name="PostBuild1" AfterTargets="PostBuildEvent">
+                    <Exec Command="echo &quot;post build $(OutDir)&quot;" />
+                  </Target>
+                  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+                    <Exec Command="" />
+                  </Target>
+                </Project>
+                """;
 
             var actual = root.SaveAndGetChanges();
             Assert.Equal(expected, actual);
@@ -290,28 +326,34 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
         [Fact]
         public static void SetPropertyAsync_TargetPresent_MultipleTasks()
         {
-            var root = @"<Project Sdk=""Microsoft.NET.Sdk"">
-  <PropertyGroup>
-    <OutputType>Exe</OutputType>
-    <TargetFramework>netcoreapp1.1</TargetFramework>
-  </PropertyGroup>
-  <Target Name=""PostBuild"" AfterTargets=""PostBuildEvent"">
-    <Exec Command=""echo &quot;post build output&quot;"" />
-    <Exec Command=""echo &quot;post build output&quot;"" />
-  </Target>
-</Project>".AsProjectRootElement();
+            var root =
+                """
+                <Project Sdk="Microsoft.NET.Sdk">
+                  <PropertyGroup>
+                    <OutputType>Exe</OutputType>
+                    <TargetFramework>netcoreapp1.1</TargetFramework>
+                  </PropertyGroup>
+                  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+                    <Exec Command="echo &quot;post build output&quot;" />
+                    <Exec Command="echo &quot;post build output&quot;" />
+                  </Target>
+                </Project>
+                """.AsProjectRootElement();
             systemUnderTest.SetProperty(@"echo ""post build $(OutDir)""", root);
 
-            var expected = @"<Project Sdk=""Microsoft.NET.Sdk"">
-  <PropertyGroup>
-    <OutputType>Exe</OutputType>
-    <TargetFramework>netcoreapp1.1</TargetFramework>
-  </PropertyGroup>
-  <Target Name=""PostBuild"" AfterTargets=""PostBuildEvent"">
-    <Exec Command=""echo &quot;post build $(OutDir)&quot;"" />
-    <Exec Command=""echo &quot;post build output&quot;"" />
-  </Target>
-</Project>";
+            var expected =
+                """
+                <Project Sdk="Microsoft.NET.Sdk">
+                  <PropertyGroup>
+                    <OutputType>Exe</OutputType>
+                    <TargetFramework>netcoreapp1.1</TargetFramework>
+                  </PropertyGroup>
+                  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+                    <Exec Command="echo &quot;post build $(OutDir)&quot;" />
+                    <Exec Command="echo &quot;post build output&quot;" />
+                  </Target>
+                </Project>
+                """;
 
             var actual = root.SaveAndGetChanges();
             Assert.Equal(expected, actual);
@@ -320,28 +362,34 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
         [Fact]
         public static void SetPropertyAsync_DoNotRemoveTarget_EmptyString()
         {
-            var root = @"<Project Sdk=""Microsoft.NET.Sdk"">
-  <PropertyGroup>
-    <OutputType>Exe</OutputType>
-    <TargetFramework>netcoreapp1.1</TargetFramework>
-  </PropertyGroup>
-  <Target Name=""PostBuild"" AfterTargets=""PostBuildEvent"">
-    <Exec Command=""echo &quot;post build output&quot;"" />
-    <Exec Command=""echo &quot;post build output&quot;"" />
-  </Target>
-</Project>".AsProjectRootElement();
+            var root =
+                """
+                <Project Sdk="Microsoft.NET.Sdk">
+                  <PropertyGroup>
+                    <OutputType>Exe</OutputType>
+                    <TargetFramework>netcoreapp1.1</TargetFramework>
+                  </PropertyGroup>
+                  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+                    <Exec Command="echo &quot;post build output&quot;" />
+                    <Exec Command="echo &quot;post build output&quot;" />
+                  </Target>
+                </Project>
+                """.AsProjectRootElement();
             systemUnderTest.SetProperty(string.Empty, root);
 
-            var expected = @"<Project Sdk=""Microsoft.NET.Sdk"">
-  <PropertyGroup>
-    <OutputType>Exe</OutputType>
-    <TargetFramework>netcoreapp1.1</TargetFramework>
-  </PropertyGroup>
-  <Target Name=""PostBuild"" AfterTargets=""PostBuildEvent"">
-    <Exec Command="""" />
-    <Exec Command=""echo &quot;post build output&quot;"" />
-  </Target>
-</Project>";
+            var expected =
+                """
+                <Project Sdk="Microsoft.NET.Sdk">
+                  <PropertyGroup>
+                    <OutputType>Exe</OutputType>
+                    <TargetFramework>netcoreapp1.1</TargetFramework>
+                  </PropertyGroup>
+                  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+                    <Exec Command="" />
+                    <Exec Command="echo &quot;post build output&quot;" />
+                  </Target>
+                </Project>
+                """;
 
             var actual = root.SaveAndGetChanges();
             Assert.Equal(expected, actual);
@@ -350,23 +398,29 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
         [Fact]
         public static void SetPropertyAsync_RemoveTarget_EmptyString()
         {
-            var root = @"<Project Sdk=""Microsoft.NET.Sdk"">
-  <PropertyGroup>
-    <OutputType>Exe</OutputType>
-    <TargetFramework>netcoreapp1.1</TargetFramework>
-  </PropertyGroup>
-  <Target Name=""PostBuild"" AfterTargets=""PostBuildEvent"">
-    <Exec Command=""echo &quot;post build output&quot;"" />
-  </Target>
-</Project>".AsProjectRootElement();
+            var root =
+                """
+                <Project Sdk="Microsoft.NET.Sdk">
+                  <PropertyGroup>
+                    <OutputType>Exe</OutputType>
+                    <TargetFramework>netcoreapp1.1</TargetFramework>
+                  </PropertyGroup>
+                  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+                    <Exec Command="echo &quot;post build output&quot;" />
+                  </Target>
+                </Project>
+                """.AsProjectRootElement();
             systemUnderTest.SetProperty(string.Empty, root);
 
-            var expected = @"<Project Sdk=""Microsoft.NET.Sdk"">
-  <PropertyGroup>
-    <OutputType>Exe</OutputType>
-    <TargetFramework>netcoreapp1.1</TargetFramework>
-  </PropertyGroup>
-</Project>";
+            var expected =
+                """
+                <Project Sdk="Microsoft.NET.Sdk">
+                  <PropertyGroup>
+                    <OutputType>Exe</OutputType>
+                    <TargetFramework>netcoreapp1.1</TargetFramework>
+                  </PropertyGroup>
+                </Project>
+                """;
 
             var actual = root.SaveAndGetChanges();
             Assert.Equal(expected, actual);
@@ -375,23 +429,29 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
         [Fact]
         public static void SetPropertyAsync_RemoveTarget_WhitespaceCharacter()
         {
-            var root = @"<Project Sdk=""Microsoft.NET.Sdk"">
-  <PropertyGroup>
-    <OutputType>Exe</OutputType>
-    <TargetFramework>netcoreapp1.1</TargetFramework>
-  </PropertyGroup>
-  <Target Name=""PostBuild"" AfterTargets=""PostBuildEvent"">
-    <Exec Command=""echo &quot;post build output&quot;"" />
-  </Target>
-</Project>".AsProjectRootElement();
+            var root =
+                """
+                <Project Sdk="Microsoft.NET.Sdk">
+                  <PropertyGroup>
+                    <OutputType>Exe</OutputType>
+                    <TargetFramework>netcoreapp1.1</TargetFramework>
+                  </PropertyGroup>
+                  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+                    <Exec Command="echo &quot;post build output&quot;" />
+                  </Target>
+                </Project>
+                """.AsProjectRootElement();
             systemUnderTest.SetProperty("       ", root);
 
-            var expected = @"<Project Sdk=""Microsoft.NET.Sdk"">
-  <PropertyGroup>
-    <OutputType>Exe</OutputType>
-    <TargetFramework>netcoreapp1.1</TargetFramework>
-  </PropertyGroup>
-</Project>";
+            var expected =
+                """
+                <Project Sdk="Microsoft.NET.Sdk">
+                  <PropertyGroup>
+                    <OutputType>Exe</OutputType>
+                    <TargetFramework>netcoreapp1.1</TargetFramework>
+                  </PropertyGroup>
+                </Project>
+                """;
 
             var actual = root.SaveAndGetChanges();
             Assert.Equal(expected, actual);
@@ -400,23 +460,29 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
         [Fact]
         public static void SetPropertyAsync_RemoveTarget_TabCharacter()
         {
-            var root = @"<Project Sdk=""Microsoft.NET.Sdk"">
-  <PropertyGroup>
-    <OutputType>Exe</OutputType>
-    <TargetFramework>netcoreapp1.1</TargetFramework>
-  </PropertyGroup>
-  <Target Name=""PostBuild"" AfterTargets=""PostBuildEvent"">
-    <Exec Command=""echo &quot;post build output&quot;"" />
-  </Target>
-</Project>".AsProjectRootElement();
+            var root =
+                """
+                <Project Sdk="Microsoft.NET.Sdk">
+                  <PropertyGroup>
+                    <OutputType>Exe</OutputType>
+                    <TargetFramework>netcoreapp1.1</TargetFramework>
+                  </PropertyGroup>
+                  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+                    <Exec Command="echo &quot;post build output&quot;" />
+                  </Target>
+                </Project>
+                """.AsProjectRootElement();
             systemUnderTest.SetProperty("\t\t\t", root);
 
-            var expected = @"<Project Sdk=""Microsoft.NET.Sdk"">
-  <PropertyGroup>
-    <OutputType>Exe</OutputType>
-    <TargetFramework>netcoreapp1.1</TargetFramework>
-  </PropertyGroup>
-</Project>";
+            var expected =
+                """
+                <Project Sdk="Microsoft.NET.Sdk">
+                  <PropertyGroup>
+                    <OutputType>Exe</OutputType>
+                    <TargetFramework>netcoreapp1.1</TargetFramework>
+                  </PropertyGroup>
+                </Project>
+                """;
 
             var actual = root.SaveAndGetChanges();
             Assert.Equal(expected, actual);
@@ -425,26 +491,32 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
         [Fact]
         public static void SetPropertyAsync_DoNotRemoveTarget_NewlineCharacter()
         {
-            var root = @"<Project Sdk=""Microsoft.NET.Sdk"">
-  <PropertyGroup>
-    <OutputType>Exe</OutputType>
-    <TargetFramework>netcoreapp1.1</TargetFramework>
-  </PropertyGroup>
-  <Target Name=""PostBuild"" AfterTargets=""PostBuildEvent"">
-    <Exec Command=""echo &quot;post build output&quot;"" />
-  </Target>
-</Project>".AsProjectRootElement();
+            var root =
+                """
+                <Project Sdk="Microsoft.NET.Sdk">
+                  <PropertyGroup>
+                    <OutputType>Exe</OutputType>
+                    <TargetFramework>netcoreapp1.1</TargetFramework>
+                  </PropertyGroup>
+                  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+                    <Exec Command="echo &quot;post build output&quot;" />
+                  </Target>
+                </Project>
+                """.AsProjectRootElement();
             systemUnderTest.SetProperty("\r\n", root);
 
-            var expected = @"<Project Sdk=""Microsoft.NET.Sdk"">
-  <PropertyGroup>
-    <OutputType>Exe</OutputType>
-    <TargetFramework>netcoreapp1.1</TargetFramework>
-  </PropertyGroup>
-  <Target Name=""PostBuild"" AfterTargets=""PostBuildEvent"">
-    <Exec Command=""&#xD;&#xA;"" />
-  </Target>
-</Project>";
+            var expected =
+                """
+                <Project Sdk="Microsoft.NET.Sdk">
+                  <PropertyGroup>
+                    <OutputType>Exe</OutputType>
+                    <TargetFramework>netcoreapp1.1</TargetFramework>
+                  </PropertyGroup>
+                  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+                    <Exec Command="&#xD;&#xA;" />
+                  </Target>
+                </Project>
+                """;
 
             var actual = root.SaveAndGetChanges();
             Assert.Equal(expected, actual);
@@ -453,27 +525,33 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
         [Fact]
         public static void SetPropertyAsync_TargetNameCollision()
         {
-            var root = @"<Project Sdk=""Microsoft.NET.Sdk"">
-  <PropertyGroup>
-    <OutputType>Exe</OutputType>
-    <TargetFramework>netcoreapp1.1</TargetFramework>
-  </PropertyGroup>
-  <Target Name=""PostBuild"">
-  </Target>
-</Project>".AsProjectRootElement();
+            var root =
+                """
+                <Project Sdk="Microsoft.NET.Sdk">
+                  <PropertyGroup>
+                    <OutputType>Exe</OutputType>
+                    <TargetFramework>netcoreapp1.1</TargetFramework>
+                  </PropertyGroup>
+                  <Target Name="PostBuild">
+                  </Target>
+                </Project>
+                """.AsProjectRootElement();
             systemUnderTest.SetProperty(@"echo ""post build $(OutDir)""", root);
 
-            var expected = @"<Project Sdk=""Microsoft.NET.Sdk"">
-  <PropertyGroup>
-    <OutputType>Exe</OutputType>
-    <TargetFramework>netcoreapp1.1</TargetFramework>
-  </PropertyGroup>
-  <Target Name=""PostBuild"">
-  </Target>
-  <Target Name=""PostBuild"" AfterTargets=""PostBuildEvent"">
-    <Exec Command=""echo &quot;post build $(OutDir)&quot;"" />
-  </Target>
-</Project>";
+            var expected =
+                """
+                <Project Sdk="Microsoft.NET.Sdk">
+                  <PropertyGroup>
+                    <OutputType>Exe</OutputType>
+                    <TargetFramework>netcoreapp1.1</TargetFramework>
+                  </PropertyGroup>
+                  <Target Name="PostBuild">
+                  </Target>
+                  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+                    <Exec Command="echo &quot;post build $(OutDir)&quot;" />
+                  </Target>
+                </Project>
+                """;
 
             var actual = root.SaveAndGetChanges();
             Assert.Equal(expected, actual);
@@ -482,32 +560,37 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
         [Fact]
         public static void SetPropertyAsync_TargetNameCollision02()
         {
-            var root = @"<Project Sdk=""Microsoft.NET.Sdk"">
-  <PropertyGroup>
-    <OutputType>Exe</OutputType>
-    <TargetFramework>netcoreapp1.1</TargetFramework>
-  </PropertyGroup>
-  <Target Name=""PostBuild"">
-  </Target>
-  <Target Name=""PostBuild1"">
-  </Target>
-</Project>
-".AsProjectRootElement();
+            var root =
+                """
+                <Project Sdk="Microsoft.NET.Sdk">
+                  <PropertyGroup>
+                    <OutputType>Exe</OutputType>
+                    <TargetFramework>netcoreapp1.1</TargetFramework>
+                  </PropertyGroup>
+                  <Target Name="PostBuild">
+                  </Target>
+                  <Target Name="PostBuild1">
+                  </Target>
+                </Project>
+                """.AsProjectRootElement();
             systemUnderTest.SetProperty(@"echo ""post build $(OutDir)""", root);
 
-            var expected = @"<Project Sdk=""Microsoft.NET.Sdk"">
-  <PropertyGroup>
-    <OutputType>Exe</OutputType>
-    <TargetFramework>netcoreapp1.1</TargetFramework>
-  </PropertyGroup>
-  <Target Name=""PostBuild"">
-  </Target>
-  <Target Name=""PostBuild1"">
-  </Target>
-  <Target Name=""PostBuild"" AfterTargets=""PostBuildEvent"">
-    <Exec Command=""echo &quot;post build $(OutDir)&quot;"" />
-  </Target>
-</Project>";
+            var expected =
+                """
+                <Project Sdk="Microsoft.NET.Sdk">
+                  <PropertyGroup>
+                    <OutputType>Exe</OutputType>
+                    <TargetFramework>netcoreapp1.1</TargetFramework>
+                  </PropertyGroup>
+                  <Target Name="PostBuild">
+                  </Target>
+                  <Target Name="PostBuild1">
+                  </Target>
+                  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+                    <Exec Command="echo &quot;post build $(OutDir)&quot;" />
+                  </Target>
+                </Project>
+                """;
 
             var actual = root.SaveAndGetChanges();
             Assert.Equal(expected, actual);
@@ -516,32 +599,37 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
         [Fact]
         public static void SetPropertyAsync_TargetNameCollision_LowerCase()
         {
-            var root = @"<Project Sdk=""Microsoft.NET.Sdk"">
-  <PropertyGroup>
-    <OutputType>Exe</OutputType>
-    <TargetFramework>netcoreapp1.1</TargetFramework>
-  </PropertyGroup>
-  <Target Name=""postBuild"">
-  </Target>
-  <Target Name=""postBuild1"">
-  </Target>
-</Project>
-".AsProjectRootElement();
+            var root =
+                """
+                <Project Sdk="Microsoft.NET.Sdk">
+                  <PropertyGroup>
+                    <OutputType>Exe</OutputType>
+                    <TargetFramework>netcoreapp1.1</TargetFramework>
+                  </PropertyGroup>
+                  <Target Name="postBuild">
+                  </Target>
+                  <Target Name="postBuild1">
+                  </Target>
+                </Project>
+                """.AsProjectRootElement();
             systemUnderTest.SetProperty(@"echo ""post build $(OutDir)""", root);
 
-            var expected = @"<Project Sdk=""Microsoft.NET.Sdk"">
-  <PropertyGroup>
-    <OutputType>Exe</OutputType>
-    <TargetFramework>netcoreapp1.1</TargetFramework>
-  </PropertyGroup>
-  <Target Name=""postBuild"">
-  </Target>
-  <Target Name=""postBuild1"">
-  </Target>
-  <Target Name=""PostBuild"" AfterTargets=""PostBuildEvent"">
-    <Exec Command=""echo &quot;post build $(OutDir)&quot;"" />
-  </Target>
-</Project>";
+            var expected =
+                """
+                <Project Sdk="Microsoft.NET.Sdk">
+                  <PropertyGroup>
+                    <OutputType>Exe</OutputType>
+                    <TargetFramework>netcoreapp1.1</TargetFramework>
+                  </PropertyGroup>
+                  <Target Name="postBuild">
+                  </Target>
+                  <Target Name="postBuild1">
+                  </Target>
+                  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+                    <Exec Command="echo &quot;post build $(OutDir)&quot;" />
+                  </Target>
+                </Project>
+                """;
 
             var actual = root.SaveAndGetChanges();
             Assert.Equal(expected, actual);
@@ -575,29 +663,35 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
         [Fact]
         public static void SetPropertyAsync_WrongTargetName()
         {
-            var root = @"<Project Sdk=""Microsoft.NET.Sdk"">
-  <PropertyGroup>
-    <OutputType>Exe</OutputType>
-    <TargetFramework>netcoreapp1.1</TargetFramework>
-  </PropertyGroup>
-  <Target Name=""PoostBuild"" AfterTargets=""PostBuildEvent"">
-    <Exec Command=""echo &quot;post build output&quot;"" />
-  </Target>
-</Project>".AsProjectRootElement();
+            var root =
+                """
+                <Project Sdk="Microsoft.NET.Sdk">
+                  <PropertyGroup>
+                    <OutputType>Exe</OutputType>
+                    <TargetFramework>netcoreapp1.1</TargetFramework>
+                  </PropertyGroup>
+                  <Target Name="PoostBuild" AfterTargets="PostBuildEvent">
+                    <Exec Command="echo &quot;post build output&quot;" />
+                  </Target>
+                </Project>
+                """.AsProjectRootElement();
             systemUnderTest.SetProperty(@"echo ""post build $(OutDir)""", root);
 
-            var expected = @"<Project Sdk=""Microsoft.NET.Sdk"">
-  <PropertyGroup>
-    <OutputType>Exe</OutputType>
-    <TargetFramework>netcoreapp1.1</TargetFramework>
-  </PropertyGroup>
-  <Target Name=""PoostBuild"" AfterTargets=""PostBuildEvent"">
-    <Exec Command=""echo &quot;post build output&quot;"" />
-  </Target>
-  <Target Name=""PostBuild"" AfterTargets=""PostBuildEvent"">
-    <Exec Command=""echo &quot;post build $(OutDir)&quot;"" />
-  </Target>
-</Project>";
+            var expected =
+                """
+                <Project Sdk="Microsoft.NET.Sdk">
+                  <PropertyGroup>
+                    <OutputType>Exe</OutputType>
+                    <TargetFramework>netcoreapp1.1</TargetFramework>
+                  </PropertyGroup>
+                  <Target Name="PoostBuild" AfterTargets="PostBuildEvent">
+                    <Exec Command="echo &quot;post build output&quot;" />
+                  </Target>
+                  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+                    <Exec Command="echo &quot;post build $(OutDir)&quot;" />
+                  </Target>
+                </Project>
+                """;
 
             var actual = root.SaveAndGetChanges();
             Assert.Equal(expected, actual);
@@ -606,16 +700,18 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
         [Fact]
         public static void EscapeValue_Read_CheckEscaped()
         {
-            var root = @"<Project Sdk=""Microsoft.NET.Sdk"">
-  <PropertyGroup>
-    <OutputType>Exe</OutputType>
-    <TargetFramework>netcoreapp1.1</TargetFramework>
-  </PropertyGroup>
-  <Target Name=""PostBuild"" AfterTargets=""PostBuildEvent"">
-    <Exec Command=""echo %25DATE%"" />
-  </Target>
-</Project>
-".AsProjectRootElement();
+            var root =
+                """
+                <Project Sdk="Microsoft.NET.Sdk">
+                  <PropertyGroup>
+                    <OutputType>Exe</OutputType>
+                    <TargetFramework>netcoreapp1.1</TargetFramework>
+                  </PropertyGroup>
+                  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+                    <Exec Command="echo %25DATE%" />
+                  </Target>
+                </Project>
+                """.AsProjectRootElement();
 
             const string expected = "echo %DATE%";
             string? actual = systemUnderTest.TryGetValueFromTarget(root);
@@ -625,16 +721,18 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
         [Fact]
         public static void EscapeValue_Read_CheckNotDoubleEscaped()
         {
-            var root = @"<Project Sdk=""Microsoft.NET.Sdk"">
-  <PropertyGroup>
-    <OutputType>Exe</OutputType>
-    <TargetFramework>netcoreapp1.1</TargetFramework>
-  </PropertyGroup>
-  <Target Name=""PostBuild"" AfterTargets=""PostBuildEvent"">
-    <Exec Command=""echo %2525DATE%"" />
-  </Target>
-</Project>
-".AsProjectRootElement();
+            var root =
+                """
+                <Project Sdk="Microsoft.NET.Sdk">
+                  <PropertyGroup>
+                    <OutputType>Exe</OutputType>
+                    <TargetFramework>netcoreapp1.1</TargetFramework>
+                  </PropertyGroup>
+                  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+                    <Exec Command="echo %2525DATE%" />
+                  </Target>
+                </Project>
+                """.AsProjectRootElement();
 
             const string expected = "echo %25DATE%";
             string? actual = systemUnderTest.TryGetValueFromTarget(root);
@@ -644,23 +742,28 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
         [Fact]
         public static void EscapeValue_Write_CheckEscaped()
         {
-            var root = @"<Project Sdk=""Microsoft.NET.Sdk"">
-  <PropertyGroup>
-    <OutputType>Exe</OutputType>
-    <TargetFramework>netcoreapp1.1</TargetFramework>
-  </PropertyGroup>
-</Project>
-".AsProjectRootElement();
+            var root =
+                """
+                <Project Sdk="Microsoft.NET.Sdk">
+                  <PropertyGroup>
+                    <OutputType>Exe</OutputType>
+                    <TargetFramework>netcoreapp1.1</TargetFramework>
+                  </PropertyGroup>
+                </Project>
+                """.AsProjectRootElement();
 
-            const string expected = @"<Project Sdk=""Microsoft.NET.Sdk"">
-  <PropertyGroup>
-    <OutputType>Exe</OutputType>
-    <TargetFramework>netcoreapp1.1</TargetFramework>
-  </PropertyGroup>
-  <Target Name=""PostBuild"" AfterTargets=""PostBuildEvent"">
-    <Exec Command=""echo %25DATE%25"" />
-  </Target>
-</Project>";
+            const string expected =
+                """
+                <Project Sdk="Microsoft.NET.Sdk">
+                  <PropertyGroup>
+                    <OutputType>Exe</OutputType>
+                    <TargetFramework>netcoreapp1.1</TargetFramework>
+                  </PropertyGroup>
+                  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+                    <Exec Command="echo %25DATE%25" />
+                  </Target>
+                </Project>
+                """;
 
             systemUnderTest.SetProperty("echo %DATE%", root);
             var actual = root.SaveAndGetChanges();
@@ -670,23 +773,28 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
         [Fact]
         public static void EscapeValue_Write_CheckNotDoubleEscaped()
         {
-            var root = @"<Project Sdk=""Microsoft.NET.Sdk"">
-  <PropertyGroup>
-    <OutputType>Exe</OutputType>
-    <TargetFramework>netcoreapp1.1</TargetFramework>
-  </PropertyGroup>
-</Project>
-".AsProjectRootElement();
+            var root =
+                """
+                <Project Sdk="Microsoft.NET.Sdk">
+                  <PropertyGroup>
+                    <OutputType>Exe</OutputType>
+                    <TargetFramework>netcoreapp1.1</TargetFramework>
+                  </PropertyGroup>
+                </Project>
+                """.AsProjectRootElement();
 
-            const string expected = @"<Project Sdk=""Microsoft.NET.Sdk"">
-  <PropertyGroup>
-    <OutputType>Exe</OutputType>
-    <TargetFramework>netcoreapp1.1</TargetFramework>
-  </PropertyGroup>
-  <Target Name=""PostBuild"" AfterTargets=""PostBuildEvent"">
-    <Exec Command=""echo %2525DATE%25"" />
-  </Target>
-</Project>";
+            const string expected =
+                """
+                <Project Sdk="Microsoft.NET.Sdk">
+                  <PropertyGroup>
+                    <OutputType>Exe</OutputType>
+                    <TargetFramework>netcoreapp1.1</TargetFramework>
+                  </PropertyGroup>
+                  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+                    <Exec Command="echo %2525DATE%25" />
+                  </Target>
+                </Project>
+                """;
 
             systemUnderTest.SetProperty("echo %25DATE%", root);
             var actual = root.SaveAndGetChanges();

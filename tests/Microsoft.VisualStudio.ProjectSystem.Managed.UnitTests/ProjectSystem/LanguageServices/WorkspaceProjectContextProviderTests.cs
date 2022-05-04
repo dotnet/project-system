@@ -32,51 +32,62 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 
         [Theory]
         [InlineData(
-@"{
-    ""Properties"": {
-        ""LanguageServiceName"": ""CSharp"",
-        ""TargetPath"": ""C:\\Target.dll""
-    }
-}")]
-
+            """
+            {
+                "Properties": {
+                    "LanguageServiceName": "CSharp",
+                    "TargetPath": "C:\\Target.dll"
+                }
+            }
+            """)]
         [InlineData(
-@"{
-    ""Properties"": {
-        ""MSBuildProjectFullPath"": ""C:\\Project\\Project.csproj"",
-        ""TargetPath"": ""C:\\Target.dll""
-    }
-}")]
+            """
+            {
+                "Properties": {
+                    "MSBuildProjectFullPath": "C:\\Project\\Project.csproj",
+                    "TargetPath": "C:\\Target.dll"
+                }
+            }
+            """)]
         [InlineData(
-@"{
-    ""Properties"": {
-        ""MSBuildProjectFullPath"": ""C:\\Project\\Project.csproj"",
-        ""LanguageServiceName"": ""CSharp"",
-    }
-}")]
+            """
+            {
+                "Properties": {
+                    "MSBuildProjectFullPath": "C:\\Project\\Project.csproj",
+                    "LanguageServiceName": "CSharp",
+                }
+            }
+            """)]
         [InlineData(
-@"{
-    ""Properties"": {
-        ""MSBuildProjectFullPath"": """",
-        ""LanguageServiceName"": ""CSharp"",
-        ""TargetPath"": ""C:\\Target.dll""
-    }
-}")]
+            """
+            {
+                "Properties": {
+                    "MSBuildProjectFullPath": "",
+                    "LanguageServiceName": "CSharp",
+                    "TargetPath": "C:\\Target.dll"
+                }
+            }
+            """)]
         [InlineData(
-@"{
-    ""Properties"": {
-        ""MSBuildProjectFullPath"": ""C:\\Project\\Project.csproj"",
-        ""LanguageServiceName"": """",
-        ""TargetPath"": ""C:\\Target.dll""
-    }
-}")]
+            """
+            {
+                "Properties": {
+                    "MSBuildProjectFullPath": "C:\\Project\\Project.csproj",
+                    "LanguageServiceName": "",
+                    "TargetPath": "C:\\Target.dll"
+                }
+            }
+            """)]
         [InlineData(
-@"{
-    ""Properties"": {
-        ""MSBuildProjectFullPath"": ""C:\\Project\\Project.csproj"",
-        ""LanguageServiceName"": ""CSharp"",
-        ""TargetPath"": """"
-    }
-}")]
+            """
+            {
+                "Properties": {
+                    "MSBuildProjectFullPath": "C:\\Project\\Project.csproj",
+                    "LanguageServiceName": "CSharp",
+                    "TargetPath": ""
+                }
+            }
+            """)]
         public async Task CreateProjectContextAsync_WhenEmptyOrMissingMSBuildProperties_ReturnsNull(string json)
         {
             var snapshot = IProjectRuleSnapshotFactory.FromJson(json);
@@ -142,7 +153,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
             workspaceProjectContext.Setup(context => context.StartBatch()).Callback(() => Assert.Equal(0, sequence++));
             workspaceProjectContext.SetupSet(context => context.LastDesignTimeBuildSucceeded = false).Callback(() => Assert.Equal(1, sequence++));
 #pragma warning disable CS0618 // This was obsoleted in favor of the one that takes an array, but here just the string is easier; we'll un-Obsolete this API
-            workspaceProjectContext.Setup(context => context.SetOptions("--args1=foo")).Callback(() => Assert.Equal(2, sequence++));
+            workspaceProjectContext.Setup(context => context.SetOptions("--command-line-args")).Callback(() => Assert.Equal(2, sequence++));
 #pragma warning restore CS0618 // Type or member is obsolete
             workspaceProjectContext.Setup(context => context.EndBatchAsync()).Returns(new ValueTask()).Callback(() => Assert.Equal(3, sequence++));
 
@@ -211,15 +222,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         private static WorkspaceProjectContextProvider CreateInstance(UnconfiguredProject? project = null, IProjectThreadingService? threadingService = null, IWorkspaceProjectContextFactory? workspaceProjectContextFactory = null, ISafeProjectGuidService? projectGuidService = null, IProjectRuleSnapshot? projectRuleSnapshot = null)
         {
             projectRuleSnapshot ??= IProjectRuleSnapshotFactory.FromJson(
-@"{
-    ""Properties"": {
-        ""MSBuildProjectFullPath"": ""C:\\Project\\Project.csproj"",
-        ""LanguageServiceName"": ""CSharp"",
-        ""TargetPath"": ""C:\\Target.dll"",
-        ""AssemblyName"": ""Project"",
-        ""CommandLineArgsForDesignTimeEvaluation"": ""--arg1=foo""
-    }
-}");
+                """
+                {
+                    "Properties": {
+                        "MSBuildProjectFullPath": "C:\\Project\\Project.csproj",
+                        "LanguageServiceName": "CSharp",
+                        "TargetPath": "C:\\Target.dll",
+                        "AssemblyName": "Project",
+                        "CommandLineArgsForDesignTimeEvaluation": "--command-line-args"
+                    }
+                }
+                """);
 
             var projectFaultService = IProjectFaultHandlerServiceFactory.Create();
             project ??= UnconfiguredProjectFactory.Create();

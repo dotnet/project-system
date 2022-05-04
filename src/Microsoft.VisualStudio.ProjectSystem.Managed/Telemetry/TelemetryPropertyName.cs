@@ -45,6 +45,12 @@ namespace Microsoft.VisualStudio.Telemetry
         public const string UpToDateCheckLogLevel = Prefix + ".uptodatecheck.loglevel";
 
         /// <summary>
+        ///     Indicates any ignore kinds provided to the fast up-to-date check.
+        ///     Used to skip analyzers during indirect builds (for debug or unit tests).
+        /// </summary>
+        public const string UpToDateCheckIgnoreKinds = Prefix + ".uptodatecheck.ignorekinds";
+
+        /// <summary>
         ///     Indicates the project when the dependency tree is updated with all resolved dependencies.
         /// </summary>
         public static readonly string TreeUpdatedResolvedProject = BuildPropertyName(TelemetryEventName.TreeUpdatedResolved, "Project");
