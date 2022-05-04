@@ -121,32 +121,38 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
             var hostObject = new object();
             var unconfiguredProject = UnconfiguredProjectFactory.Create(hostObject);
 
-            string? languageNameResult = null, projectFilePathResult = null, binOutputPathResult = null;
-            Guid? projectGuidResult = null;
-            object? hierarchyResult = null;
-            string? assemblyNameResult = null;
-            var workspaceProjectContextFactory = IWorkspaceProjectContextFactoryFactory.ImplementCreateProjectContext((languageName, _, projectFilePath, guid, hierarchy, binOutputPath, assemblyName, _) =>
-            {
-                languageNameResult = languageName;
-                projectFilePathResult = projectFilePath;
-                projectGuidResult = guid;
-                hierarchyResult = hierarchy;
-                binOutputPathResult = binOutputPath;
-                assemblyNameResult = assemblyName;
-                return null!;
-            });
+            var workspaceProjectContextFactory = new Mock<IWorkspaceProjectContextFactory>(MockBehavior.Strict);
+            var workspaceProjectContext = new Mock<IWorkspaceProjectContext>(MockBehavior.Strict);
 
-            var provider = CreateInstance(project: unconfiguredProject, workspaceProjectContextFactory: workspaceProjectContextFactory, projectGuidService: projectGuidService);
+            workspaceProjectContextFactory
+                .Setup(c => c.CreateProjectContextAsync(
+                    /* languageName */      "CSharp",
+                    /* projectUniqueName */ It.IsAny<string>(),
+                    /* projectFilePath */   "C:\\Project\\Project.csproj",
+                    /* projectGuid */       projectGuid,
+                    /* hierarchy */         hostObject,
+                    /* binOutputPath */     "C:\\Target.dll",
+                    /* assemblyName */      "Project",
+                    /* cancellationToken */ It.IsAny<CancellationToken>()))
+                .Returns<IWorkspaceProjectContext>(null!);
+
+            // We want these operations to occur in a specific order
+            int sequence = 0;
+
+            workspaceProjectContext.Setup(context => context.StartBatch()).Callback(() => Assert.Equal(0, sequence++));
+            workspaceProjectContext.SetupSet(context => context.LastDesignTimeBuildSucceeded = false).Callback(() => Assert.Equal(1, sequence++));
+#pragma warning disable CS0618 // This was obsoleted in favor of the one that takes an array, but here just the string is easier; we'll un-Obsolete this API
+            workspaceProjectContext.Setup(context => context.SetOptions("--args1=foo")).Callback(() => Assert.Equal(2, sequence++));
+#pragma warning restore CS0618 // Type or member is obsolete
+            workspaceProjectContext.Setup(context => context.EndBatchAsync()).Returns(new ValueTask()).Callback(() => Assert.Equal(3, sequence++));
+
+            var provider = CreateInstance(project: unconfiguredProject, workspaceProjectContextFactory: workspaceProjectContextFactory.Object, projectGuidService: projectGuidService);
             var project = ConfiguredProjectFactory.ImplementProjectConfiguration("Debug|AnyCPU");
 
             await provider.CreateProjectContextAsync(project);
 
-            Assert.Equal("CSharp", languageNameResult);
-            Assert.Equal("C:\\Project\\Project.csproj", projectFilePathResult);
-            Assert.Equal("C:\\Target.dll", binOutputPathResult);
-            Assert.Equal("Project", assemblyNameResult);
-            Assert.Equal(projectGuid, projectGuidResult!.Value);
-            Assert.Equal(hostObject, hierarchyResult);
+            workspaceProjectContextFactory.Verify();
+            workspaceProjectContext.Verify();
         }
 
         [Fact]
@@ -210,7 +216,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         ""MSBuildProjectFullPath"": ""C:\\Project\\Project.csproj"",
         ""LanguageServiceName"": ""CSharp"",
         ""TargetPath"": ""C:\\Target.dll"",
-        ""AssemblyName"": ""Project""
+        ""AssemblyName"": ""Project"",
+        ""CommandLineArgsForDesignTimeEvaluation"": ""--arg1=foo""
     }
 }");
 
