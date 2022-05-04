@@ -10,17 +10,48 @@ namespace Microsoft.VisualStudio.ProjectSystem.SpecialFileProviders.VisualBasic
     internal class VisualBasicAppConfigSpecialFileProvider : AbstractFindByNameSpecialFileProvider
     {
         private readonly ICreateFileFromTemplateService _templateFileCreationService;
+        private readonly ProjectProperties _properties;
 
         [ImportingConstructor]
-        public VisualBasicAppConfigSpecialFileProvider(IPhysicalProjectTree projectTree, ICreateFileFromTemplateService templateFileCreationService)
+        public VisualBasicAppConfigSpecialFileProvider(IPhysicalProjectTree projectTree, ICreateFileFromTemplateService templateFileCreationService, ProjectProperties projectProperties)
             : base("App.config", projectTree)
         {
             _templateFileCreationService = templateFileCreationService;
+            _properties = projectProperties;
         }
 
-        protected override Task CreateFileAsync(string path)
+        protected override async Task CreateFileAsync(string path)
         {
-            return _templateFileCreationService.CreateFileAsync("AppConfigurationInternal.zip", path);
+            if (await IsNetCore5OrHigherAsync())
+            {
+                await _templateFileCreationService.CreateFileAsync("AppConfigurationInternalNetCore.zip", path);
+            }
+            else
+            {
+                await _templateFileCreationService.CreateFileAsync("AppConfigurationInternal.zip", path);
+            }
+        }
+
+        /// <summary>
+        /// Looks at the ConfigurationGeneral properties to determine if this is targeting .NET 5 or higher.
+        /// </summary>
+        /// <returns>True if the version found in the TargetFrameworkMoniker is corresponding to .NET 5 or higher; otherwise, false.</returns>
+        private async Task<bool> IsNetCore5OrHigherAsync()
+        {
+            ConfigurationGeneral general = await _properties.GetConfigurationGeneralPropertiesAsync();
+            string? targetFrameworkVersion = (string?)await general.TargetFrameworkVersion.GetValueAsync();
+
+            if (string.IsNullOrEmpty(targetFrameworkVersion))
+                return false;
+
+            // v6.0 <- remove letter from string.
+            targetFrameworkVersion = targetFrameworkVersion.Substring(targetFrameworkVersion.LastIndexOf('v') + 1);
+            float version = float.Parse(targetFrameworkVersion);
+
+            if (version >= 5)
+                return true;
+
+            return false;
         }
     }
 }
