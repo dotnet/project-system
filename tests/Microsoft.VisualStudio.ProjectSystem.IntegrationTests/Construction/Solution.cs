@@ -23,42 +23,54 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
 
             writer.WriteLine();
             writer.WriteLine(
-@"Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.28010.2019
-MinimumVisualStudioVersion = 10.0.40219.1");
+                """
+                Microsoft Visual Studio Solution File, Format Version 12.00
+                # Visual Studio 15
+                VisualStudioVersion = 15.0.28010.2019
+                MinimumVisualStudioVersion = 10.0.40219.1
+                """);
 
             foreach (var project in _projects)
             {
                 writer.WriteLine(
-$@"Project(""{project.ProjectTypeGuid:B}"") = ""{project.ProjectName}"", ""{project.RelativeProjectFilePath}"", ""{project.ProjectGuid:B}""
-EndProject");
+                    $"""
+                    Project("{project.ProjectTypeGuid:B}") = "{project.ProjectName}", "{project.RelativeProjectFilePath}", "{project.ProjectGuid:B}"
+                    EndProject
+                    """);
             }
 
             writer.WriteLine(
-@"Global
-    GlobalSection(SolutionConfigurationPlatforms) = preSolution
-        Debug|Any CPU = Debug|Any CPU
-        Release|Any CPU = Release|Any CPU
-    EndGlobalSection
-    GlobalSection(ProjectConfigurationPlatforms) = postSolution");
+                """
+                Global
+                    GlobalSection(SolutionConfigurationPlatforms) = preSolution
+                        Debug|Any CPU = Debug|Any CPU
+                        Release|Any CPU = Release|Any CPU
+                    EndGlobalSection
+                    GlobalSection(ProjectConfigurationPlatforms) = postSolution
+                """);
+
             foreach (var project in _projects)
             {
                 writer.WriteLine(
-$@"        {project.ProjectGuid:B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-        {project.ProjectGuid:B}.Debug|Any CPU.Build.0 = Debug|Any CPU
-        {project.ProjectGuid:B}.Release|Any CPU.ActiveCfg = Release|Any CPU
-        {project.ProjectGuid:B}.Release|Any CPU.Build.0 = Release|Any CPU");
+                $"""
+                        {project.ProjectGuid:B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+                        {project.ProjectGuid:B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+                        {project.ProjectGuid:B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+                        {project.ProjectGuid:B}.Release|Any CPU.Build.0 = Release|Any CPU
+                """);
             }
+
             writer.WriteLine(
-$@"    EndGlobalSection
-    GlobalSection(SolutionProperties) = preSolution
-        HideSolutionNode = FALSE
-    EndGlobalSection
-    GlobalSection(ExtensibilityGlobals) = postSolution
-        SolutionGuid = {Guid.NewGuid():B}
-    EndGlobalSection
-EndGlobal");
+                $"""
+                    EndGlobalSection
+                    GlobalSection(SolutionProperties) = preSolution
+                        HideSolutionNode = FALSE
+                    EndGlobalSection
+                    GlobalSection(ExtensibilityGlobals) = postSolution
+                        SolutionGuid = {Guid.NewGuid():B}
+                    EndGlobalSection
+                EndGlobal
+                """);
         }
 
         public void Add(Project project) => _projects.Add(project);
