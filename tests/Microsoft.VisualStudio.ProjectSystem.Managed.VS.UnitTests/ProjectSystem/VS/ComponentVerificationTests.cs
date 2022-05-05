@@ -280,16 +280,20 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         {
             // Imports must import interfaces that are marked with [ProjectSystemContract]
 
-            var definition = ComponentComposition.Instance.FindComposablePartDefinition(type);
+            var partDefinition = ComponentComposition.Instance.FindComposablePartDefinition(type);
 
-            Assert.NotNull(definition);
+            Assert.NotNull(partDefinition);
 
-            foreach (ImportDefinitionBinding import in definition.Imports)
+            foreach (ImportDefinitionBinding import in partDefinition.Imports)
             {
                 ImportDefinition importDefinition = import.ImportDefinition;
-                if (!CheckContractHasMetadata(GetContractName(importDefinition), definition, ComponentComposition.Instance.Contracts, ComponentComposition.Instance.InterfaceNames))
+
+                string? typeName = importDefinition.ExportConstraints.OfType<ExportTypeIdentityConstraint>().FirstOrDefault()?.TypeIdentityName;
+                string contractName = GetContractName(importDefinition);
+
+                if (!ValidateContractAnnotation(typeName, contractName, partDefinition))
                 {
-                    Assert.Fail($"{definition.Type.FullName} imports a contract {importDefinition.ContractName}, which is not applied with [ProjectSystemContract]");
+                    Assert.Fail($"{partDefinition.Type.FullName} imports type {typeName}, which is not applied with [ProjectSystemContract]");
                 }
             }
         }
@@ -298,36 +302,55 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         [ClassData(typeof(ComposablePartDefinitionTestData))]
         public void ExportsMustExportContractsMarkedWithProjectSystemContract(Type type)
         {
-            // Exports must export interfaces that are marked with [ProjectSystemContract]
+            // When a parts export types from our assemblies, those exported types must be annotated with [ProjectSystemContract]
 
-            var definition = ComponentComposition.Instance.FindComposablePartDefinition(type);
+            var partDefinition = ComponentComposition.Instance.FindComposablePartDefinition(type);
 
-            Assert.NotNull(definition);
+            Assert.NotNull(partDefinition);
 
-            foreach (KeyValuePair<MemberRef?, ExportDefinition> export in definition.ExportDefinitions)
+            foreach ((_, ExportDefinition exportDefinition) in partDefinition.ExportDefinitions)
             {
-                ExportDefinition exportDefinition = export.Value;
-                if (!CheckContractHasMetadata(exportDefinition.ContractName, definition, ComponentComposition.Instance.Contracts, ComponentComposition.Instance.InterfaceNames))
+                if (exportDefinition.Metadata.TryGetValue("ExportTypeIdentity", out object? value) && value is string typeName)
                 {
-                    Assert.Fail($"{definition.Type.FullName} exports a contract {exportDefinition.ContractName}, which is not applied with [ProjectSystemContract]");
+                    if (!ValidateContractAnnotation(typeName, exportDefinition.ContractName, partDefinition))
+                    {
+                        Assert.Fail($"{partDefinition.Type.FullName} exports type {typeName}, which is not applied with [ProjectSystemContract]");
+                    }
                 }
             }
         }
 
-        private bool CheckContractHasMetadata(string contractName, ComposablePartDefinition part, IDictionary<string, ComponentComposition.ContractMetadata> contractMetadata, ISet<string> interfaceNames)
+        private bool ValidateContractAnnotation(string? typeName, string contractName, ComposablePartDefinition part)
         {
             Requires.NotNull(contractName, nameof(contractName));
-            if (contractMetadata.ContainsKey(contractName) || contractName == part.Type.FullName || contractName.Contains("{"))
+
+            if (typeName is not null && ComponentComposition.Instance.Contracts.ContainsKey(typeName))
             {
+                // We have seen [ProjectSystemContract] on this type.
                 return true;
             }
 
-            return !interfaceNames.Contains(contractName);
+            if (ComponentComposition.Instance.Contracts.ContainsKey(contractName))
+            {
+                // We have seen [ProjectSystemContract] exported with this contract name.
+                return true;
+            }
+            
+            if (ComponentComposition.Instance.InterfaceNames.Contains(contractName))
+            {
+                // This type is from our assemblies, but is not annotated.
+                // If it was annotated, we would have returned true above.
+                // But here we are.
+                return false;
+            }
+
+            // This type is outside of the assemblies we track, so we don't require validation here.
+            return true;
         }
 
         private static string GetContractName(ImportDefinition import)
         {
-            if (import.Metadata.TryGetValue("System.ComponentModel.Composition.GenericContractName", out var value) && null != value)
+            if (import.Metadata.TryGetValue("System.ComponentModel.Composition.GenericContractName", out var value) && value is not null)
             {
                 return (string)value;
             }
