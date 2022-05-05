@@ -34,7 +34,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                     {
                         if (!IsSubclassOfGenericType(typeof(OrderPrecedenceImportCollection<,>), memberType))
                         {
-                            Assert.False(true, $"{part.Definition.Type.FullName}.{importingProperty.Name} needs to use OrderPrecedenceImportCollection to import components.");
+                            Assert.Fail($"{part.Definition.Type.FullName}.{importingProperty.Name} needs to use OrderPrecedenceImportCollection to import components.");
                         }
                     }
 
@@ -59,7 +59,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                                 if (requiredAppliesTo == null ||
                                     !ContainsExpression(requiredAppliesTo))
                                 {
-                                    Assert.False(true, $"{part.Definition.Type.FullName}.{ importingProperty.Name} needs to check AppliesTo metadata of the imported component.");
+                                    Assert.Fail($"{part.Definition.Type.FullName}.{ importingProperty.Name} needs to check AppliesTo metadata of the imported component.");
                                 }
                             }
                         }
@@ -92,7 +92,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             // Now check all of them should be the same.
             if (appliesToMetadata.Distinct().Count() > 1)
             {
-                Assert.False(true, $"{definition.Type.FullName} exports multiple values with differing AppliesTo. All exports from a component must apply to the same capabilities.");
+                Assert.Fail($"{definition.Type.FullName} exports multiple values with differing AppliesTo. All exports from a component must apply to the same capabilities.");
             }
         }
 
@@ -209,7 +209,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
 
                     if (contractTypes.Any(t => t.IsAssignableFrom(exportType)))
                     {
-                        Assert.False(true, $"{definition.Type.FullName} must specify [AppliesTo] to its export of {exportType}.");
+                        Assert.Fail($"{definition.Type.FullName} must specify [AppliesTo] to its export of {exportType}.");
                     }
                 }
             }
@@ -233,7 +233,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                 {
                     if (contractMetadata.Cardinality == ImportCardinality.ZeroOrMore && importDefinition.Cardinality != ImportCardinality.ZeroOrMore)
                     {
-                        Assert.False(true, $"Must use [ImportMany] in {definition.Type.FullName} to import a contract {importDefinition.ContractName} which can be implemented by an extension.");
+                        Assert.Fail($"Must use [ImportMany] in {definition.Type.FullName} to import a contract {importDefinition.ContractName} which can be implemented by an extension.");
                     }
                 }
             }
@@ -266,7 +266,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                             // Do we import from a child scope but export to a parent scope? ie Importing ConfiguredProject, but exporting to an UnconfiguredProject service would be invalid
                             if (exportContractMetadata.Scope < importContractMetadata.Scope)
                             {
-                                Assert.False(true, $"{definition.Type.FullName} exports to the {exportContractMetadata.Scope.Value} scope, but it imports {importDefinition.ContractName} from {importContractMetadata.Scope} scope, which is a child of the preceeding scope.");
+                                Assert.Fail($"{definition.Type.FullName} exports to the {exportContractMetadata.Scope.Value} scope, but it imports {importDefinition.ContractName} from {importContractMetadata.Scope} scope, which is a child of the preceeding scope.");
                             }
                         }
                     }
@@ -289,7 +289,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                 ImportDefinition importDefinition = import.ImportDefinition;
                 if (!CheckContractHasMetadata(GetContractName(importDefinition), definition, ComponentComposition.Instance.Contracts, ComponentComposition.Instance.InterfaceNames))
                 {
-                    Assert.False(true, $"{definition.Type.FullName} imports a contract {importDefinition.ContractName}, which is not applied with [ProjectSystemContract]");
+                    Assert.Fail($"{definition.Type.FullName} imports a contract {importDefinition.ContractName}, which is not applied with [ProjectSystemContract]");
                 }
             }
         }
@@ -309,7 +309,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                 ExportDefinition exportDefinition = export.Value;
                 if (!CheckContractHasMetadata(exportDefinition.ContractName, definition, ComponentComposition.Instance.Contracts, ComponentComposition.Instance.InterfaceNames))
                 {
-                    Assert.False(true, $"{definition.Type.FullName} exports a contract {exportDefinition.ContractName}, which is not applied with [ProjectSystemContract]");
+                    Assert.Fail($"{definition.Type.FullName} exports a contract {exportDefinition.ContractName}, which is not applied with [ProjectSystemContract]");
                 }
             }
         }
