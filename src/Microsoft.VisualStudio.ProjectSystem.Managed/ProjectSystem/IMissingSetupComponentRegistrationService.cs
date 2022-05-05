@@ -8,6 +8,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
     ///     Tracks the set of missing workload packs and SDK runtimes the .NET projects in a solution
     ///     need to improve the development experience.
     /// </summary>
+    [ProjectSystemContract(ProjectSystemContractScope.ProjectService, ProjectSystemContractProvider.Private)]
     internal interface IMissingSetupComponentRegistrationService
     {
         Task InitializeAsync(CancellationToken cancellationToken = default);

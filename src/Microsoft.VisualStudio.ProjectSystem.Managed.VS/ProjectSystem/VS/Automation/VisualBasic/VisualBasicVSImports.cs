@@ -12,6 +12,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation.VisualBasic
     [Export(typeof(VisualBasicVSImports))]
     [AppliesTo(ProjectCapability.VisualBasic)]
     [Order(Order.Default)]
+    [ProjectSystemContract(ProjectSystemContractScope.UnconfiguredProject, ProjectSystemContractProvider.Private)]
     internal class VisualBasicVSImports : ConnectionPointContainer,
                                IEventSource<_dispImportsEvents>,
                                Imports,
