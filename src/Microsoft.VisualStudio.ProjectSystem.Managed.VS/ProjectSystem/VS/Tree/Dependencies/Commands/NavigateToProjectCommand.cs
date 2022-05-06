@@ -6,8 +6,6 @@ using Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 
-using Task = System.Threading.Tasks.Task;
-
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Commands
 {
     /// <summary>

@@ -254,7 +254,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         private static bool IsAppliesToRequired(ImportDefinitionBinding import)
         {
             Type appliesToView = typeof(IAppliesToMetadataView);
-            return import.MetadataType != null && appliesToView.IsAssignableFrom(appliesToView);
+            return import.MetadataType != null && appliesToView.IsAssignableFrom(import.MetadataType);
         }
     }
 }

@@ -12,7 +12,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
     internal partial class ComponentComposition
     {
         // These components solely exist so that the MEF composition for 
-        // these tests can see the "scopes" that used within CPS.
+        // these tests can see the "scopes" used within CPS.
 
         [Export]
         private class GlobalScope

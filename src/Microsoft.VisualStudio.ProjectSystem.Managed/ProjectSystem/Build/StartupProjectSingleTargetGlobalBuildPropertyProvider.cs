@@ -20,6 +20,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Build
     [Order(Order.BeforeDefault)]
     internal class StartupProjectSingleTargetGlobalBuildPropertyProvider : StaticGlobalPropertiesProviderBase
     {
+        private readonly Task<IImmutableDictionary<string, string>> _empty = Task.FromResult<IImmutableDictionary<string, string>>(Empty.PropertiesMap);
+        private ImmutableDictionary<string, IImmutableDictionary<string, string>> _propertiesByTargetFramework = ImmutableStringDictionary<IImmutableDictionary<string, string>>.EmptyOrdinalIgnoreCase;
+
         private readonly ConfiguredProject _configuredProject;
         private readonly IActiveDebugFrameworkServices _activeDebugFrameworkServices;
         private readonly IImplicitlyTriggeredBuildState _implicitlyTriggeredBuildState;
@@ -43,10 +46,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Build
             _projectSystemOptions = projectSystemOptions;
         }
 
-        public override async Task<IImmutableDictionary<string, string>> GetGlobalPropertiesAsync(CancellationToken cancellationToken)
+        public override Task<IImmutableDictionary<string, string>> GetGlobalPropertiesAsync(CancellationToken cancellationToken)
         {
-            IImmutableDictionary<string, string> properties = Empty.PropertiesMap;
-
             // Check:
             //   - if this is an implicitly-triggered build
             //   - if there is a single startup project
@@ -56,18 +57,32 @@ namespace Microsoft.VisualStudio.ProjectSystem.Build
             if (_implicitlyTriggeredBuildState.IsImplicitlyTriggeredBuild
                 && _implicitlyTriggeredBuildState.StartupProjectFullPaths.Length == 1
                 && StringComparers.Paths.Equals(_implicitlyTriggeredBuildState.StartupProjectFullPaths[0], _configuredProject.UnconfiguredProject.FullPath)
-                && _configuredProject.ProjectConfiguration.IsCrossTargeting()
-                && await _projectSystemOptions.GetPreferSingleTargetBuildsForStartupProjectsAsync(cancellationToken))
+                && _configuredProject.ProjectConfiguration.IsCrossTargeting())
             {
-                // We only want to build this for the framework that we will launch.
-                string? activeDebuggingFramework = await _activeDebugFrameworkServices.GetActiveDebuggingFrameworkPropertyAsync();
-                if (activeDebuggingFramework is not null)
-                {
-                    properties = properties.Add(ConfigurationGeneral.TargetFrameworkProperty, activeDebuggingFramework);
-                }
+                // Defer async state machine creation until needed.
+                return DoAsync();
             }
 
-            return properties;
+            return _empty;
+
+            async Task<IImmutableDictionary<string, string>> DoAsync()
+            {
+                if (await _projectSystemOptions.GetPreferSingleTargetBuildsForStartupProjectsAsync(cancellationToken))
+                {
+                    // We only want to build this for the framework that we will launch.
+                    string? activeDebuggingFramework = await _activeDebugFrameworkServices.GetActiveDebuggingFrameworkPropertyAsync();
+                    
+                    if (activeDebuggingFramework is not null)
+                    {
+                        return ImmutableInterlocked.GetOrAdd(
+                            ref _propertiesByTargetFramework,
+                            activeDebuggingFramework,
+                            tf => Empty.PropertiesMap.Add(ConfigurationGeneral.TargetFrameworkProperty, tf));
+                    }
+                }
+
+                return Empty.PropertiesMap;
+            }
         }
     }
 }

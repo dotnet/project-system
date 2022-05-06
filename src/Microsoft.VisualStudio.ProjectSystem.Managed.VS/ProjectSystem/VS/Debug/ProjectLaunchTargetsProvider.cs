@@ -13,7 +13,6 @@ using Microsoft.VisualStudio.Text;
 using Microsoft.VisualStudio.Threading;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using Task = System.Threading.Tasks.Task;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
 {

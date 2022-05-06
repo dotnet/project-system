@@ -11,6 +11,9 @@
                 SourceOfDefaultValue="AfterContext" />
   </Rule.DataSource>
 
+  <BoolProperty Name="ExcludeFromCurrentConfiguration"
+                Visible="False" />
+
   <DynamicEnumProperty Name="{}{ItemType}"
                        EnumProvider="ItemTypes" />
 

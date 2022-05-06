@@ -195,6 +195,24 @@ We use this on the `LangVersion` property, for example, as this value is intenti
 </StringProperty>
 ```
 
+### Name/Value List
+
+When a property contains a variable number of name/value pairs, you can use the `NameValueList` editor on `StringProperty` to display a two-column grid in the UI that allows users to edit values and add/remove rows.
+
+The property's string value should be encoded with format resembling `A=1,B=2`, using `/` as an escape character if needed. See `LaunchProfileEnvironmentVariableEncoding` in this repo for further details.
+
+```xml
+<StringProperty Name="EnvironmentVariables"
+                DisplayName="Environment variables"
+                Description="The environment variables to set prior to running the process.">
+  <StringProperty.ValueEditors>
+    <ValueEditor EditorType="NameValueList" />
+  </StringProperty.ValueEditors>
+</StringProperty>
+```
+
+This example is taken from the _Environment Variables_ property on project and executable launch profiles.
+
 ### Custom Editors
 
 If a non-standard editor is required for a given property, one may be provided via MEF.

@@ -8,6 +8,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation.VisualBasic
 {
     [Export(typeof(VisualBasicNamespaceImportsList))]
     [AppliesTo(ProjectCapability.VisualBasic)]
+    [ProjectSystemContract(ProjectSystemContractScope.UnconfiguredProject, ProjectSystemContractProvider.Private)]
     internal class VisualBasicNamespaceImportsList : UnconfiguredProjectHostBridge<IProjectVersionedValue<IProjectSubscriptionUpdate>, IProjectVersionedValue<ImmutableList<string>>, IProjectVersionedValue<ImmutableList<string>>>, IEnumerable<string>
     {
         private static readonly ImmutableHashSet<string> s_namespaceImportRule = Empty.OrdinalIgnoreCaseStringSet

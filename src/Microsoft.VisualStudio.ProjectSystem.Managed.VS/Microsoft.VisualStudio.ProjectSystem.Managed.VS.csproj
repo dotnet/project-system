@@ -40,6 +40,9 @@
     <Compile Update="ProjectSystem\VS\LanguageServices\VisualBasic\VisualBasicCodeDomProvider.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Update="ProjectSystem\VS\PropertyPages\DebugPropertyPage.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Update="ProjectSystem\VS\PropertyPages\DebugPageControl.xaml.cs">
       <DependentUpon>DebugPageControl.xaml</DependentUpon>
     </Compile>

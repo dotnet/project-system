@@ -13,54 +13,82 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename.VisualBasic
 
         [Theory]
         [InlineData("Bar.vb", "Foo.vb",
-                    @"Class Foo
-                    End Class")]
+                    """
+                    Class Foo
+                    End Class
+                    """)]
         [InlineData("Foo.vb", "Bar.vb",
-                    @"Class Foo1
-                    End Class")]
+                    """
+                    Class Foo1
+                    End Class
+                    """)]
         [InlineData("Foo.vb", "Bar.vb",
-                    @"Interface Foo1
-                      Sub m1()
-                      Sub m2()
-                    End Interface")]
+                    """
+                    Interface Foo1
+                        Sub m1()
+                        Sub m2()
+                    End Interface
+                    """)]
         [InlineData("Foo.vb", "Bar.vb",
-                    @"Delegate Function Foo1(s As String) As Integer")]
+                    """
+                    Delegate Function Foo1(s As String) As Integer
+                    """)]
         [InlineData("Foo.vb", "Bar.vb",
-                    @"Partial Class Foo1
+                    """
+                    Partial Class Foo1
                     End Class
                     Partial Class Foo2
-                    End Class")]
+                    End Class
+                    """)]
         [InlineData("Foo.vb", "Bar.vb",
-                    @"Structure Foo1
+                    """
+                    Structure Foo1
                         Private author As String
-                    End Structure")]
+                    End Structure
+                    """)]
         [InlineData("Foo.vb", "Bar.vb",
-                    @"Enum Foo1
+                    """
+                    Enum Foo1
                         None
                         enum1
-                    End Enum")]
+                    End Enum
+                    """)]
         [InlineData("Foo.vb", "Bar.vb",
-                    @"Module Foo1
-                    End Module")]
+                    """
+                    Module Foo1
+                    End Module
+                    """)]
         [InlineData("Bar.vb", "Foo`.vb",
-                    @"Class Foo
-                    End Class")]
+                    """
+                    Class Foo
+                    End Class
+                    """)]
         [InlineData("Bar.vb", "Foo@.vb",
-                    @"Class Foo
-                    End Class")]
+                    """
+                    Class Foo
+                    End Class
+                    """)]
         [InlineData("Foo.vb", "Foo.vb",
-                    @"Class Foo
-                    End Class")]
+                    """
+                    Class Foo
+                    End Class
+                    """)]
         [InlineData("Foo.vb", "Folder1\\Foo.vb",
-                    @"Class Foo
-                    End Class")]
+                    """
+                    Class Foo
+                    End Class
+                    """)]
         // Change in case
         [InlineData("Foo.vb", "foo.vb",
-                    @"Class Foo 
-                      End Class")]
+                    """
+                    Class Foo 
+                    End Class
+                    """)]
         [InlineData("Foo.vb", "Folder1\\foo.vb",
-                    @"Class Foo
-                      End Class")]
+                    """
+                    Class Foo
+                    End Class
+                    """)]
         public async Task Rename_Symbol_Should_Not_HappenAsync(string oldFilePath, string newFilePath, string sourceCode)
         {
             var userNotificationServices = IUserNotificationServicesFactory.Create();
@@ -77,38 +105,52 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename.VisualBasic
 
         [Theory]
         [InlineData("Foo.vb", "Bar.vb",
-            @"Class Foo
-            End Class")]
+            """
+            Class Foo
+            End Class
+            """)]
         [InlineData("Foo.vb", "Bar.vb",
-            @"Interface Foo
+            """
+            Interface Foo
                 Sub m1()
                 Sub m2()
-            End Interface")]
+            End Interface
+            """)]
         [InlineData("Foo.vb", "Bar.vb",
-            @"Delegate Function Foo(s As String) As Integer")]
+            """
+            Delegate Function Foo(s As String) As Integer
+            """)]
         [InlineData("Foo.vb", "Bar.vb",
-            @"Partial Class Foo
+            """
+            Partial Class Foo
             End Class
             Partial Class Foo
-            End Class")]
+            End Class
+            """)]
         [InlineData("Foo.vb", "Bar.vb",
-            @"Structure Foo
+            """
+            Structure Foo
                 Private author As String
-            End Structure")]
+            End Structure
+            """)]
         [InlineData("Foo.vb", "Bar.vb",
-            @"Enum Foo
+            """
+            Enum Foo
                 None
                 enum1
-            End Enum")]
+            End Enum
+            """)]
         [InlineData("Foo.vb", "Bar.vb",
-            @"Namespace n1
+            """
+            Namespace n1
                 Class Foo
                 End Class
             End Namespace
             Namespace n2
                 Class Foo
                 End Class
-            End Namespace")]
+            End Namespace
+            """)]
         public async Task Rename_Symbol_Should_TriggerUserConfirmationAsync(string oldFilePath, string newFilePath, string sourceCode)
         {
             var userNotificationServices = IUserNotificationServicesFactory.Create();
@@ -127,8 +169,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename.VisualBasic
         public async Task Rename_Symbol_Should_ExitEarlyInVSOnlineAsync()
         {
             string sourceCode =
-                @"Class Foo
-                End Class";
+                """
+                Class Foo
+                End Class
+                """;
             string oldFilePath = "Foo.vb";
             string newFilePath = "Bar.vb";
 
@@ -151,9 +195,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename.VisualBasic
         public async Task Rename_Symbol_Should_ExitEarlyInFileExtensionChange(string oldFilePath, string newFilePath)
         {
             string sourceCode =
-                @"Class Foo
-                End Class";
-
+                """
+                Class Foo
+                End Class
+                """;
             var userNotificationServices = IUserNotificationServicesFactory.Create();
             var roslynServices = IRoslynServicesFactory.Implement(new VisualBasicSyntaxFactsService());
             var vsOnlineService = IVsOnlineServicesFactory.Create(online: false);
@@ -170,8 +215,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename.VisualBasic
         public async Task Rename_Symbol_Should_ExitEarlyWhenFileDoesntChangeName()
         {
             string sourceCode =
-                @"Class Foo
-                End Class";
+                """
+                Class Foo
+                End Class
+                """;
             string oldFilePath = "Foo.vb";
             string newFilePath = "FOO.vb";
 

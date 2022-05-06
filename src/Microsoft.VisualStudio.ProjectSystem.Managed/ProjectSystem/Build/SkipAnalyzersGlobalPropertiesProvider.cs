@@ -17,6 +17,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.Managed.Build
     [AppliesTo(ProjectCapability.DotNet)]
     internal sealed partial class SkipAnalyzersGlobalPropertiesProvider : StaticGlobalPropertiesProviderBase
     {
+        private const string IsImplicitlyTriggeredBuildPropertyName = "IsImplicitlyTriggeredBuild";
+
+        private const string FastUpToDateCheckIgnoresKindsGlobalPropertyName = "FastUpToDateCheckIgnoresKinds";
+        private const string FastUpToDateCheckIgnoresKindsGlobalPropertyValue = "ImplicitBuild";
+
+        private readonly ImmutableDictionary<string, string> _regularBuildProperties;
+        private readonly ImmutableDictionary<string, string> _implicitlyTriggeredBuildProperties;
+
         private readonly IImplicitlyTriggeredBuildState _implicitlyTriggeredBuildState;
         private readonly IProjectSystemOptions _projectSystemOptions;
 
@@ -31,6 +39,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.Managed.Build
         {
             _implicitlyTriggeredBuildState = implicitlyTriggeredBuildState;
             _projectSystemOptions = projectSystemOptions;
+
+            _regularBuildProperties = ImmutableStringDictionary<string>.EmptyOrdinalIgnoreCase;
+
+            _implicitlyTriggeredBuildProperties = _regularBuildProperties
+                .Add(IsImplicitlyTriggeredBuildPropertyName, "true")
+                .Add(FastUpToDateCheckIgnoresKindsGlobalPropertyName, FastUpToDateCheckIgnoresKindsGlobalPropertyValue);
         }
 
         /// <summary>
@@ -43,8 +57,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Managed.Build
                 && await _projectSystemOptions.GetSkipAnalyzersForImplicitlyTriggeredBuildAsync(cancellationToken);
 
             ImmutableDictionary<string, string> globalProperties = useImplicitlyTriggeredBuildProperties
-                ? GlobalPropertiesStore.Instance.GetImplicitlyTriggeredBuildProperties()
-                : GlobalPropertiesStore.Instance.GetRegularBuildProperties();
+                ? _implicitlyTriggeredBuildProperties
+                : _regularBuildProperties;
 
             return globalProperties;
         }
