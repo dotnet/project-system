@@ -165,10 +165,13 @@
       </Item>
       <Item ItemId=";StringProperty|EnvironmentVariables|Description" ItemType="0" PsrId="308" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[The environment variables to set prior to running the process. Variables are separated by a comma (,) and variables names and values are separated with an equal sign (=). Example: var1=value1,var2=value2,var3=value3. Commas and equal signs appearing within a variable can be escaped using a forward slash (/).]]></Val>
+          <Val><![CDATA[The environment variables to set prior to running the process.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[在运行进程之前要设置的环境变量。变量由逗号(,)分隔，变量名称和值以等号(=)分隔。示例: var1=value1,var2=value2,var3=value3。变量中出现的逗号和等号可使用正斜杠(/)进行转义。]]></Val>
+            <Val><![CDATA[运行进程之前要设置的环境变量。]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[The environment variables to set prior to running the process. Variables are separated by a comma (,) and variables names and values are separated with an equal sign (=). Example: var1=value1,var2=value2,var3=value3. Commas and equal signs appearing within a variable can be escaped using a forward slash (/).]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
