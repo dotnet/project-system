@@ -19,6 +19,22 @@
     <ManifestJsonName>$(VisualStudioInsertionComponent)</ManifestJsonName>
   </PropertyGroup>
 
+  <PropertyGroup>
+    <SchemaVersion>2.0</SchemaVersion>
+    <CreateVsixContainer>true</CreateVsixContainer>
+    <!-- <GeneratePkgDefFile>false</GeneratePkgDefFile> -->
+    <!-- <IncludeAssemblyInVSIXContainer>false</IncludeAssemblyInVSIXContainer> -->
+    <IncludeDebugSymbolsInVSIXContainer>false</IncludeDebugSymbolsInVSIXContainer>
+    <IncludeDebugSymbolsInLocalVSIXDeployment>false</IncludeDebugSymbolsInLocalVSIXDeployment>
+    <!-- <CopyBuildOutputToOutputDirectory>false</CopyBuildOutputToOutputDirectory> -->
+    <!-- <CopyOutputSymbolsToOutputDirectory>false</CopyOutputSymbolsToOutputDirectory> -->
+    <IncludeCopyLocalReferencesInVSIXContainer>false</IncludeCopyLocalReferencesInVSIXContainer>
+    <IsProductComponent>true</IsProductComponent>
+    <!-- <ExtensionInstallationFolder>Microsoft\ProjectSystemQuery</ExtensionInstallationFolder> -->
+    <!-- <ExtensionInstallationRoot>CommonExtensions</ExtensionInstallationRoot> -->
+    <IsPackable>false</IsPackable>
+  </PropertyGroup>
+
   <ItemGroup>
     <ProjectReference Include="..\..\src\Microsoft.VisualStudio.AppDesigner\Microsoft.VisualStudio.AppDesigner.vbproj">
       <Name>Microsoft.VisualStudio.AppDesigner</Name>

@@ -22,6 +22,7 @@
     <PackageReference Update="MicroBuild.Core.Sentinel"                                               Version="1.0.0" />
     <PackageReference Update="Microsoft.VisualStudioEng.MicroBuild.Core"                              Version="1.0.0" />
     <PackageReference Update="Microsoft.VisualStudioEng.MicroBuild.Plugins.SwixBuild"                 Version="1.1.286" />
+    <PackageReference Update="RoslynTools.SignTool"                                                   Version="1.1.0-beta3.22256.1" />
 
     <!-- Toolset -->
     <PackageReference Update="Nerdbank.Streams"                                                       Version="2.8.57" />
