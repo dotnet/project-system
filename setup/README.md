@@ -1,0 +1,3 @@
+- Projects containing a `.csproj` & `.vsixmanifest` are VS extension projects, which create a VSIX package.
+- Projects containing a `.swixproj` & `.swr` are loose files to be put into a VSIX package (NOT AN EXTENSION).
+- `.vsmanproj` are for performing VS insertions.

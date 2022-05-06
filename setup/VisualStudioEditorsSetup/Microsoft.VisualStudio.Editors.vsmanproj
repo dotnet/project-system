@@ -1,0 +1,31 @@
+<!-- Copyright (c)  Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information. -->
+<Project ToolsVersion="15.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+
+  <Import Project="..\..\build\import\VisualStudio.props" />
+  <Import Project="..\..\build\import\RepoLayout.props" />
+
+  <PropertyGroup>
+    <ResolveNuGetPackages>false</ResolveNuGetPackages>
+    <ImportDirectoryBuildProps>false</ImportDirectoryBuildProps>
+    <ImportDirectoryBuildTargets>false</ImportDirectoryBuildTargets>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <FinalizeManifest>true</FinalizeManifest>
+    <FinalizeSkipLayout>true</FinalizeSkipLayout>
+    <IsPackage>true</IsPackage>
+    <TargetName>Microsoft.VisualStudio.ProjectSystem.Managed</TargetName>
+    <OutputPath>$(VisualStudioSetupInsertionPath)</OutputPath>
+    <IntermediateOutputPath>$(VisualStudioSetupIntermediateOutputPath)$(TargetName)\</IntermediateOutputPath>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <_PackageStubFiles Include="$(IntermediateOutputPath)*.stub"/>
+    <MergeManifest Include="@(_PackageStubFiles->'$(VisualStudioSetupInsertionPath)%(Filename).json')"/>
+  </ItemGroup>
+
+  <PropertyGroup Condition="'$(BUILD_BUILDNUMBER)' == ''">
+    <FinalizeManifest>false</FinalizeManifest>
+  </PropertyGroup>
+
+</Project>
