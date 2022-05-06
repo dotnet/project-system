@@ -13,6 +13,7 @@
       https://pkgs.dev.azure.com/dnceng/public/_packaging/dotnet-eng/nuget/v3/index.json;
       https://pkgs.dev.azure.com/dnceng/public/_packaging/dotnet-public/nuget/v3/index.json;
       https://pkgs.dev.azure.com/dnceng/public/_packaging/nuget-build/nuget/v3/index.json;
+      https://devdiv.pkgs.visualstudio.com/_packaging/MicroBuildToolset/nuget/v3/index.json;
     </RestoreSources>
   </PropertyGroup>
 
@@ -20,6 +21,7 @@
     <!-- Infrastructure -->
     <PackageReference Update="MicroBuild.Core.Sentinel"                                               Version="1.0.0" />
     <PackageReference Update="Microsoft.VisualStudioEng.MicroBuild.Core"                              Version="1.0.0" />
+    <PackageReference Update="Microsoft.VisualStudioEng.MicroBuild.Plugins.SwixBuild"                 Version="1.1.286" />
 
     <!-- Toolset -->
     <PackageReference Update="Nerdbank.Streams"                                                       Version="2.8.57" />
@@ -31,7 +33,6 @@
     <PackageReference Update="Microsoft.Net.Compilers.Toolset"                                        Version="4.2.0-1.final" />
     <PackageReference Update="OpenCover"                                                              Version="4.7.1138-rc" />
     <PackageReference Update="Codecov"                                                                Version="$(CodecovVersion)" />
-    <PackageReference Update="MicroBuild.Plugins.SwixBuild"                                           Version="$(MicroBuildPluginsSwixBuildVersion)" />
     <PackageReference Update="Microsoft.DevDiv.Validation.MediaRecorder"                              Version="15.0.199" />
 
     <!-- VS SDK -->

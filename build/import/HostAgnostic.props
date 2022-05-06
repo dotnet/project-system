@@ -19,7 +19,7 @@
     <!-- Infrastructure -->
     <PackageReference Include="MicroBuild.Core.Sentinel"            PrivateAssets="all"/>
     <PackageReference Include="Microsoft.VisualStudioEng.MicroBuild.Core" PrivateAssets="all"/>
-    <PackageReference Include="MicroBuild.Plugins.SwixBuild"        PrivateAssets="all" />
+    <PackageReference Include="Microsoft.VisualStudioEng.MicroBuild.Plugins.SwixBuild" PrivateAssets="all" />
 
     <!-- Toolset -->
     <PackageReference Include="Nerdbank.Streams"                    ExcludeAssets="all" />
