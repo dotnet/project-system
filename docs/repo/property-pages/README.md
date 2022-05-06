@@ -1,4 +1,4 @@
-﻿# Project Property Pages
+﻿# Project Properties and Launch Profiles
 
 This documentation details the updated Project Properties UI and associated back end, first released in Visual Studio 2022.
 
@@ -24,7 +24,7 @@ And then check these documents for more details:
 - [Visibility Conditions](visibility-conditions.md)
 - [Localization](localization.md)
 - [Validating string property values](string-property-validation.md)
-
+- [Property Value Interception](property-value-interception.md)
 
 ## Architecture
 
