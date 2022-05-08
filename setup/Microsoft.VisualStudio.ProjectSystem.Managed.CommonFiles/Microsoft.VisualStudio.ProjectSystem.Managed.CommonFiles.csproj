@@ -22,6 +22,7 @@
   <ItemGroup>
     <!-- Depend on projects producing XAML rules included in this Willow package -->
     <ProjectReference Include="..\..\src\Microsoft.VisualStudio.ProjectSystem.Managed\Microsoft.VisualStudio.ProjectSystem.Managed.csproj" />
+    <!-- <ProjectReference Include="Microsoft.VisualStudio.ProjectSystem.Managed.CommonFiles2.swixproj" /> -->
   </ItemGroup>
 
   <ItemGroup>
@@ -31,7 +32,7 @@
 
   <ItemGroup>
     <!-- NOTE: Having SwrFile defined is the condition for VisualStudio.SetupPackage.swixproj to be built (via SwixBuild target) in RepoToolset. -->
-    <SwrFile Include="*.swr" />
+    <!-- <SwrFile Include="*.swr" /> -->
   </ItemGroup>
 
   <Target Name="Build" DependsOnTargets="ResolveProjectReferences">

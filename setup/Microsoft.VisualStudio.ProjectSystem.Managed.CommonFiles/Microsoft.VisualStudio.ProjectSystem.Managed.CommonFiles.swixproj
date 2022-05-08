@@ -1,26 +1,83 @@
 <!-- Copyright (c)  Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information. -->
-<Project ToolsVersion="15.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
 
-  <Import Project="..\..\build\import\VisualStudio.props" />
-  <Import Project="..\..\build\import\RepoLayout.props" />
+  <PropertyGroup>
+    <ExcludeRestorePackageImports>true</ExcludeRestorePackageImports>
+  </PropertyGroup>
+  <!-- <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props"/> -->
+  <!-- <Import Project="C:\Program Files (x86)\Microsoft Visual Studio\2019\Preview\MSBuild\Current\Microsoft.Common.props"/> -->
+  <!-- <Import Project="..\..\build\import\VisualStudio.props" /> -->
+  <!-- <Import Project="..\..\build\import\RepoLayout.props" /> -->
+  <!-- <Import Project="..\..\build\import\NuGet.props" /> -->
+  <Import Project="..\Directory.Build.props" />
+  <Import Project="$(MicroBuildCoreDir)Microsoft.VisualStudioEng.MicroBuild.Core.props" />
 
   <PropertyGroup>
     <OutputArchitecture>neutral</OutputArchitecture>
     <OutputLocalized>false</OutputLocalized>
-    <OutputName>$(SwrPackageName)</OutputName>
+    <!-- <OutputName>Microsoft.VisualStudio.ProjectSystem.Managed.CommonFiles</OutputName> -->
+    <OutputName>$(MSBuildProjectName)</OutputName>
     <OutputType>vsix</OutputType>
     <IsPackage>true</IsPackage>
+    <!-- <OutputPath>$(PackageOutputPath)</OutputPath> -->
   </PropertyGroup>
 
-  <Target Name="SetVsixProperties" BeforeTargets="Build" DependsOnTargets="GetBuildVersion">
-    <PropertyGroup>
-      <PackagePreprocessorDefinitions>$(PackagePreprocessorDefinitions);Version=$(BuildVersion)</PackagePreprocessorDefinitions>
-      <!-- Version=17.2.0.2042501;VisualStudioXamlRulesDir=D:\a\_work\1\s\artifacts\Release\VSSetup\Rules\ -->
-    </PropertyGroup>
-  </Target>
-
   <ItemGroup>
-    <Package Include="$(SwrFiles)" />
+    <Package Include="CommonFiles.swr" />
+    <Package Include="ext.xproj.swr" />
   </ItemGroup>
 
+  <ItemGroup>
+    <!-- Depend on projects producing XAML rules included in this Willow package -->
+    <!-- <ProjectReference Include="..\..\src\Microsoft.VisualStudio.ProjectSystem.Managed\Microsoft.VisualStudio.ProjectSystem.Managed.csproj" /> -->
+    <!-- <PackageReference Include="Microsoft.VisualStudioEng.MicroBuild.Core" PrivateAssets="all" Version="1.0.0" />
+    <PackageReference Include="Microsoft.VSSDK.BuildTools"     PrivateAssets="all" Version="17.1.1035-preview2" /> -->
+  </ItemGroup>
+
+  <!-- <Target Name="SetVsixProperties" BeforeTargets="Build" DependsOnTargets="GetBuildVersion"> -->
+    <!-- <PropertyGroup> -->
+      <!-- <PackagePreprocessorDefinitions>$(PackagePreprocessorDefinitions);Version=$(BuildVersion);VisualStudioXamlRulesDir=$(VisualStudioXamlRulesDir)</PackagePreprocessorDefinitions> -->
+      <!-- Version=17.2.0.2042501;VisualStudioXamlRulesDir=D:\a\_work\1\s\artifacts\Release\VSSetup\Rules\ -->
+    <!-- </PropertyGroup> -->
+  <!-- </Target> -->
+
+  <!-- Version=17.2.0.2042501;VisualStudioXamlRulesDir=D:\a\_work\1\s\artifacts\Release\VSSetup\Rules\ -->
+  <PropertyGroup>
+    <!-- <PackagePreprocessorDefinitions>$(PackagePreprocessorDefinitions);Version=$(BuildVersion);VisualStudioXamlRulesDir=$(VisualStudioXamlRulesDir)</PackagePreprocessorDefinitions> -->
+    <PackagePreprocessorDefinitions>$(PackagePreprocessorDefinitions);Version=17.2.0.2042501;VisualStudioXamlRulesDir=$(VisualStudioXamlRulesDir)</PackagePreprocessorDefinitions>
+  </PropertyGroup>
+
+  <!-- <Target Name="Restore">
+     <Message Text="MicroBuildCoreDir: $(MicroBuildCoreDir)" />
+  </Target> -->
+
+  <!-- <Target Name="Build" DependsOnTargets="ResolveProjectReferences"> -->
+    <!-- <MakeDir Directories="$(IntermediateOutputPath)" ContinueOnError="True" /> -->
+    <!-- <MakeDir Directories="$(PackageOutputPath)" ContinueOnError="True" /> -->
+    <!-- <Message Text="PackageOutputPath: $(PackageOutputPath)" /> -->
+    <!-- <Message Text="OutputPath: $(OutputPath)" /> -->
+  <!-- </Target> -->
+
+  <!-- <Target Name="Build">
+    <Message Text="PackageOutputPath: $(PackageOutputPath)" />
+    <Message Text="OutputPath: $(OutputPath)" />
+  </Target> -->
+
+  <!-- Import common targets to enable restore -->
+  <!-- <Import Project="$(MSBuildToolsPath)\Microsoft.Common.targets" /> -->
+
+  <!-- <Target Name="GetTargetFrameworkProperties" /> -->
+
+  <!-- Needed by the Common Targets -->
+  <!-- <Target Name="CreateManifestResourceNames"/> -->
+
+  <!-- <Target Name="Pack" AfterTargets="Build">
+    <Copy SourceFiles="$(PackageOutputPath)"
+          DestinationFolder="$(VSIXOutputPath)"
+          UseHardlinksIfPossible="true"
+          SkipUnchangedFiles="true" />
+  </Target> -->
+
+  <Target Name="GetNativeManifest" />
+  <Import Project="$(MicroBuildCoreDir)Microsoft.VisualStudioEng.MicroBuild.Core.targets" />
 </Project>

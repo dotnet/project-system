@@ -6,5 +6,7 @@
     <NuGetPackageRoot Condition="'$(NuGetPackageRoot)' == '' AND '$(OS)' == 'Windows_NT'">$(UserProfile)\.nuget\packages\</NuGetPackageRoot>
     <NuGetPackageRoot Condition="'$(NuGetPackageRoot)' == '' AND '$(OS)' != 'Windows_NT'">$([System.Environment]::GetFolderPath(SpecialFolder.Personal))\.nuget\packages\</NuGetPackageRoot>
     <NuGetPackageRoot Condition="!HasTrailingSlash('$(NuGetPackageRoot)')">$(NuGetPackageRoot)\</NuGetPackageRoot>
+    <!-- <RestorePackagesPath>$(RepoPackagesDir)</RestorePackagesPath>
+    <NuGetPackageRoot>$(RepoPackagesDir)</NuGetPackageRoot> -->
   </PropertyGroup>
 </Project>

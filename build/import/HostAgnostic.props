@@ -17,7 +17,7 @@
     <Reference Include="WindowsBase" />
 
     <!-- Infrastructure -->
-    <PackageReference Include="MicroBuild.Core.Sentinel"            PrivateAssets="all"/>
+    <PackageReference Include="MicroBuild.Core.Sentinel"                  PrivateAssets="all"/>
     <PackageReference Include="Microsoft.VisualStudioEng.MicroBuild.Core" PrivateAssets="all"/>
     <!-- <PackageReference Include="Microsoft.VisualStudioEng.MicroBuild.Plugins.SwixBuild" PrivateAssets="all" /> -->
 
@@ -26,7 +26,7 @@
     <PackageReference Include="System.IO.Pipelines"                 ExcludeAssets="all" />
     <PackageReference Include="Microsoft.Net.Compilers.Toolset" />
     <PackageReference Include="XliffTasks"                          PrivateAssets="all" />
-    <PackageReference Include="RoslynTools.SignTool"                PrivateAssets="all" />
+    <!-- <PackageReference Include="RoslynTools.SignTool"                PrivateAssets="all" /> -->
     <PackageReference Include="RoslynTools.RepoToolset"             ExcludeAssets="all" />
     <PackageReference Include="Codecov"                             ExcludeAssets="all" />
     <PackageReference Include="OpenCover"                           ExcludeAssets="all" />

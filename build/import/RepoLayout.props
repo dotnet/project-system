@@ -15,6 +15,9 @@
   <PropertyGroup>
     <DotNetTool>$(DotNetRoot)dotnet</DotNetTool>
     <DotNetTool Condition="'$(OS)' == 'Windows_NT'">$(DotNetTool).exe</DotNetTool>
+    <!-- <RepoPackagesDir>$(RepoRoot)packages\</RepoPackagesDir> -->
+    <!-- TODO: Inject version from variable -->
+    <MicroBuildCoreDir>$(NuGetPackageRoot)microsoft.visualstudioeng.microbuild.core\1.0.0\build\</MicroBuildCoreDir>
     <ArtifactsDir>$(RepoRoot)artifacts\</ArtifactsDir>
     <ArtifactsToolsetDir>$(ArtifactsDir)toolset\</ArtifactsToolsetDir>
     <ArtifactsConfigurationDir>$(ArtifactsDir)$(Configuration)\</ArtifactsConfigurationDir>
@@ -24,7 +27,7 @@
     <ArtifactsTmpDir>$(ArtifactsConfigurationDir)tmp\</ArtifactsTmpDir>
     <ArtifactsTestResultsDir>$(ArtifactsConfigurationDir)TestResults\</ArtifactsTestResultsDir>
     <ArtifactsSymStoreDirectory>$(ArtifactsConfigurationDir)SymStore\</ArtifactsSymStoreDirectory>
-    <PackageOutputPath>$(ArtifactsConfigurationDir)packages\</PackageOutputPath>
+    <!-- <PackageOutputPath>$(ArtifactsConfigurationDir)packages\</PackageOutputPath> -->
     <VisualStudioSetupOutputPath>$(ArtifactsConfigurationDir)VSSetup\</VisualStudioSetupOutputPath>
     <VisualStudioSetupInsertionPath>$(VisualStudioSetupOutputPath)Insertion\</VisualStudioSetupInsertionPath>
     <VisualStudioSetupIntermediateOutputPath>$(ArtifactsConfigurationDir)VSSetup.obj\</VisualStudioSetupIntermediateOutputPath>
