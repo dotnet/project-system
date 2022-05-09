@@ -1,6 +1,522 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
   <file datatype="xml" source-language="en" target-language="cs" original="../BuildPropertyPage.VisualBasic.xaml">
-    <body />
+    <body>
+      <trans-unit id="BoolProperty|DefineDebug|DisplayName">
+        <source>Define DEBUG constant</source>
+        <target state="new">Define DEBUG constant</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="BoolProperty|DefineTrace|DisplayName">
+        <source>Degine TRACE constant</source>
+        <target state="new">Degine TRACE constant</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="BoolProperty|DisableAllWarnings|DisplayName">
+        <source>Disable all warnings</source>
+        <target state="new">Disable all warnings</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="BoolProperty|GenerateDocumentationFile|Description">
+        <source>Specifies whether to generate documentation information.</source>
+        <target state="new">Specifies whether to generate documentation information.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="BoolProperty|GenerateDocumentationFile|DisplayName">
+        <source>Generate XML documentation file</source>
+        <target state="new">Generate XML documentation file</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="BoolProperty|Optimize|DisplayName">
+        <source>Enable optimizations</source>
+        <target state="new">Enable optimizations</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="BoolProperty|Prefer32Bit|Description">
+        <source>Run in 32-bit mode on systems that support both 32-bit and 64-bit applications.</source>
+        <target state="new">Run in 32-bit mode on systems that support both 32-bit and 64-bit applications.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="BoolProperty|Prefer32Bit|DisplayName">
+        <source>Prefer 32-bit</source>
+        <target state="new">Prefer 32-bit</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="BoolProperty|RegisterForComInterop|Description">
+        <source>Specifies whether your managed application will expose a COM object (a COM-callable wrapper) that enables a COM object to interact with the application.</source>
+        <target state="new">Specifies whether your managed application will expose a COM object (a COM-callable wrapper) that enables a COM object to interact with the application.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="BoolProperty|RegisterForComInterop|DisplayName">
+        <source>Register for COM interop</source>
+        <target state="new">Register for COM interop</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="BoolProperty|RemoveIntegerChecks|DisplayName">
+        <source>Remove integer overflow checks</source>
+        <target state="new">Remove integer overflow checks</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="BoolProperty|TreatWarningsAsErrors|DisplayName">
+        <source>Treat all warnings as errors</source>
+        <target state="new">Treat all warnings as errors</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="Category|Advanced|Description">
+        <source>Advanced settings for the application.</source>
+        <target state="new">Advanced settings for the application.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="Category|Advanced|DisplayName">
+        <source>Advanced</source>
+        <target state="new">Advanced</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="Category|CompileOptions|DisplayName">
+        <source>Compile Options</source>
+        <target state="new">Compile Options</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="Category|Events|Description">
+        <source>Configures custom events that run before and after build.</source>
+        <target state="new">Configures custom events that run before and after build.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="Category|Events|DisplayName">
+        <source>Events</source>
+        <target state="new">Events</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="Category|General|DisplayName">
+        <source>General</source>
+        <target state="new">General</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="Category|WarningConfigurations|DisplayName">
+        <source>Warning configurations</source>
+        <target state="new">Warning configurations</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="DynamicEnumProperty|PlatformTarget|Description">
+        <source>Specifies the processor to be targeted by the output file. Choose 'Any CPU' to specify that any processor is acceptable, allowing the application to run on the broadest range of hardware.</source>
+        <target state="new">Specifies the processor to be targeted by the output file. Choose 'Any CPU' to specify that any processor is acceptable, allowing the application to run on the broadest range of hardware.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="DynamicEnumProperty|PlatformTarget|DisplayName">
+        <source>Target CPU</source>
+        <target state="new">Target CPU</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumProperty|DebugType|Description">
+        <source>Specifies the kind of debug symbols produced during build.</source>
+        <target state="new">Specifies the kind of debug symbols produced during build.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumProperty|DebugType|DisplayName">
+        <source>Debug symbols</source>
+        <target state="new">Debug symbols</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumProperty|DebugType|Metadata|SearchTerms">
+        <source>debug type</source>
+        <target state="new">debug type</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumProperty|DuplicateOrOverlappingCatchBlocks|DisplayName">
+        <source>Duplicate or overlapping catch blocks</source>
+        <target state="new">Duplicate or overlapping catch blocks</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumProperty|GenerateSerializationAssemblies|DisplayName">
+        <source>Generate serialization assemblies</source>
+        <target state="new">Generate serialization assemblies</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumProperty|ImplicitConversion|DisplayName">
+        <source>Implicit conversion</source>
+        <target state="new">Implicit conversion</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumProperty|ImplicitType|DisplayName">
+        <source>Implicit type; object assumed</source>
+        <target state="new">Implicit type; object assumed</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumProperty|InstanceVariableAccessesSharedMember|DisplayName">
+        <source>Instance variable accesses shared member</source>
+        <target state="new">Instance variable accesses shared member</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumProperty|LateBinding|DisplayName">
+        <source>Late binding; call could fail at run time</source>
+        <target state="new">Late binding; call could fail at run time</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumProperty|OptionCompare|Description">
+        <source>Specifies the type of string comparison to use.</source>
+        <target state="new">Specifies the type of string comparison to use.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumProperty|OptionCompare|DisplayName">
+        <source>Option compare</source>
+        <target state="new">Option compare</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumProperty|OptionExplicit|Description">
+        <source>Specifies whether to require explicit declaration of variables.</source>
+        <target state="new">Specifies whether to require explicit declaration of variables.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumProperty|OptionExplicit|DisplayName">
+        <source>Option explicit</source>
+        <target state="new">Option explicit</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumProperty|OptionInfer|Description">
+        <source>Specifies whether to allow local type inference in variable declarations.</source>
+        <target state="new">Specifies whether to allow local type inference in variable declarations.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumProperty|OptionInfer|DisplayName">
+        <source>Option Infer</source>
+        <target state="new">Option Infer</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumProperty|OptionStrict|Description">
+        <source>Specifies whether to enforce strict type semantics.</source>
+        <target state="new">Specifies whether to enforce strict type semantics.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumProperty|OptionStrict|DisplayName">
+        <source>Option strict</source>
+        <target state="new">Option strict</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumProperty|RecursiveOperatorOrPropertyAccess|DisplayName">
+        <source>Recursive operator or property access</source>
+        <target state="new">Recursive operator or property access</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumProperty|ReturningIntrinsicValueTypeWithoutReturnValue|DisplayName">
+        <source>Function returning intrinsic value type without return value</source>
+        <target state="new">Function returning intrinsic value type without return value</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumProperty|ReturningRefTypeWithoutReturnValue|DisplayName">
+        <source>Function returning reference type without return value</source>
+        <target state="new">Function returning reference type without return value</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumProperty|RunPostBuildEvent|Description">
+        <source>Specifies under which condition the post-build event will be executed.</source>
+        <target state="new">Specifies under which condition the post-build event will be executed.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumProperty|RunPostBuildEvent|DisplayName">
+        <source>When to run the post-build event</source>
+        <target state="new">When to run the post-build event</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumProperty|UnusedLocalVariable|DisplayName">
+        <source>Unused local variable</source>
+        <target state="new">Unused local variable</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumProperty|UseOfVariablePriorToAssignment|DisplayName">
+        <source>Use of variable prior to assignment</source>
+        <target state="new">Use of variable prior to assignment</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|DebugType.embedded|DisplayName">
+        <source>Embedded in DLL/EXE, portable across platforms</source>
+        <target state="new">Embedded in DLL/EXE, portable across platforms</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|DebugType.full|DisplayName">
+        <source>PDB file, current platform</source>
+        <target state="new">PDB file, current platform</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|DebugType.none|DisplayName">
+        <source>No symbols are emitted</source>
+        <target state="new">No symbols are emitted</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|DebugType.portable|DisplayName">
+        <source>PDB file, portable across platforms</source>
+        <target state="new">PDB file, portable across platforms</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|DuplicateOrOverlappingCatchBlocks.Error|DisplayName">
+        <source>Error</source>
+        <target state="new">Error</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|DuplicateOrOverlappingCatchBlocks.None|DisplayName">
+        <source>None</source>
+        <target state="new">None</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|DuplicateOrOverlappingCatchBlocks.Warning|DisplayName">
+        <source>Warning</source>
+        <target state="new">Warning</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|GenerateSerializationAssemblies.Auto|DisplayName">
+        <source>Auto</source>
+        <target state="new">Auto</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|GenerateSerializationAssemblies.Off|DisplayName">
+        <source>Off</source>
+        <target state="new">Off</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|GenerateSerializationAssemblies.On|DisplayName">
+        <source>On</source>
+        <target state="new">On</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|ImplicitConversion.Error|DisplayName">
+        <source>Error</source>
+        <target state="new">Error</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|ImplicitConversion.None|DisplayName">
+        <source>None</source>
+        <target state="new">None</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|ImplicitConversion.Warning|DisplayName">
+        <source>Warning</source>
+        <target state="new">Warning</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|ImplicitType.Error|DisplayName">
+        <source>Error</source>
+        <target state="new">Error</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|ImplicitType.None|DisplayName">
+        <source>None</source>
+        <target state="new">None</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|ImplicitType.Warning|DisplayName">
+        <source>Warning</source>
+        <target state="new">Warning</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|InstanceVariableAccessesSharedMember.Error|DisplayName">
+        <source>Error</source>
+        <target state="new">Error</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|InstanceVariableAccessesSharedMember.None|DisplayName">
+        <source>None</source>
+        <target state="new">None</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|InstanceVariableAccessesSharedMember.Warning|DisplayName">
+        <source>Warning</source>
+        <target state="new">Warning</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|LateBinding.Error|DisplayName">
+        <source>Error</source>
+        <target state="new">Error</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|LateBinding.None|DisplayName">
+        <source>None</source>
+        <target state="new">None</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|LateBinding.Warning|DisplayName">
+        <source>Warning</source>
+        <target state="new">Warning</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|OptionCompare.Binary|DisplayName">
+        <source>Binary</source>
+        <target state="new">Binary</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|OptionCompare.Text|DisplayName">
+        <source>Text</source>
+        <target state="new">Text</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|OptionExplicit.Off|DisplayName">
+        <source>Off</source>
+        <target state="new">Off</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|OptionExplicit.On|DisplayName">
+        <source>On</source>
+        <target state="new">On</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|OptionInfer.Off|DisplayName">
+        <source>Off</source>
+        <target state="new">Off</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|OptionInfer.On|DisplayName">
+        <source>On</source>
+        <target state="new">On</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|OptionStrict.Custom|DisplayName">
+        <source>(custom)</source>
+        <target state="new">(custom)</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|OptionStrict.Off|DisplayName">
+        <source>Off</source>
+        <target state="new">Off</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|OptionStrict.On|DisplayName">
+        <source>On</source>
+        <target state="new">On</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|RecursiveOperatorOrPropertyAccess.Error|DisplayName">
+        <source>Error</source>
+        <target state="new">Error</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|RecursiveOperatorOrPropertyAccess.None|DisplayName">
+        <source>None</source>
+        <target state="new">None</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|RecursiveOperatorOrPropertyAccess.Warning|DisplayName">
+        <source>Warning</source>
+        <target state="new">Warning</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|ReturningIntrinsicValueTypeWithoutReturnValue.Error|DisplayName">
+        <source>Error</source>
+        <target state="new">Error</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|ReturningIntrinsicValueTypeWithoutReturnValue.None|DisplayName">
+        <source>None</source>
+        <target state="new">None</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|ReturningIntrinsicValueTypeWithoutReturnValue.Warning|DisplayName">
+        <source>Warning</source>
+        <target state="new">Warning</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|ReturningRefTypeWithoutReturnValue.Error|DisplayName">
+        <source>Error</source>
+        <target state="new">Error</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|ReturningRefTypeWithoutReturnValue.None|DisplayName">
+        <source>None</source>
+        <target state="new">None</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|ReturningRefTypeWithoutReturnValue.Warning|DisplayName">
+        <source>Warning</source>
+        <target state="new">Warning</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|RunPostBuildEvent.Always|DisplayName">
+        <source>Always</source>
+        <target state="new">Always</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|RunPostBuildEvent.OnBuildSuccess|DisplayName">
+        <source>When the build succeeds</source>
+        <target state="new">When the build succeeds</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|RunPostBuildEvent.OnOutputUpdated|DisplayName">
+        <source>When the output is updated</source>
+        <target state="new">When the output is updated</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|UnusedLocalVariable.Error|DisplayName">
+        <source>Error</source>
+        <target state="new">Error</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|UnusedLocalVariable.None|DisplayName">
+        <source>None</source>
+        <target state="new">None</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|UnusedLocalVariable.Warning|DisplayName">
+        <source>Warning</source>
+        <target state="new">Warning</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|UseOfVariablePriorToAssignment.Error|DisplayName">
+        <source>Error</source>
+        <target state="new">Error</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|UseOfVariablePriorToAssignment.None|DisplayName">
+        <source>None</source>
+        <target state="new">None</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|UseOfVariablePriorToAssignment.Warning|DisplayName">
+        <source>Warning</source>
+        <target state="new">Warning</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="Rule|Build|Description">
+        <source>Specifies properties that control how the project builds.</source>
+        <target state="new">Specifies properties that control how the project builds.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="Rule|Build|DisplayName">
+        <source>Compile</source>
+        <target state="new">Compile</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|BaseAddress|DisplayName">
+        <source>DLL base address</source>
+        <target state="new">DLL base address</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|DefineConstants|DisplayName">
+        <source>Custom constants</source>
+        <target state="new">Custom constants</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|Output path|DisplayName">
+        <source>Build output path</source>
+        <target state="new">Build output path</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|PostBuildEvent|Description">
+        <source>Specifies commands that run after the build completes. Does not run if the build failed. Use 'call' to invoke .bat files. A non-zero exit code will fail the build.</source>
+        <target state="new">Specifies commands that run after the build completes. Does not run if the build failed. Use 'call' to invoke .bat files. A non-zero exit code will fail the build.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|PostBuildEvent|DisplayName">
+        <source>Post-build event</source>
+        <target state="new">Post-build event</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|PreBuildEvent|Description">
+        <source>Specifies commands that run before the build starts. Does not run if the project is up-to-date. A non-zero exit code will fail the build before it runs.</source>
+        <target state="new">Specifies commands that run before the build starts. Does not run if the project is up-to-date. A non-zero exit code will fail the build before it runs.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|PreBuildEvent|DisplayName">
+        <source>Pre-build event</source>
+        <target state="new">Pre-build event</target>
+        <note />
+      </trans-unit>
+    </body>
   </file>
 </xliff>

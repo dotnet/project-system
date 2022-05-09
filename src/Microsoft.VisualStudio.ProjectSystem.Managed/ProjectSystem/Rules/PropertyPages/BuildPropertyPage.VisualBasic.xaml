@@ -1,6 +1,375 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
+<!-- Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information. -->
 <Rule Name="Build"
-      OverrideMode="Extend"
+      OverrideMode="Replace"
+      Description="Specifies properties that control how the project builds."
+      DisplayName="Compile"
+      PageTemplate="generic"
+      Order="200"
       xmlns="http://schemas.microsoft.com/build/2009/properties">
 
+  <Rule.Categories>
+    <Category Name="General"
+              DisplayName="General" />
+
+    <Category Name="CompileOptions"
+              DisplayName="Compile Options" />
+
+    <Category Name="WarningConfigurations"
+              DisplayName="Warning configurations" />
+
+    <Category Name="Events"
+              Description="Configures custom events that run before and after build."
+              DisplayName="Events" />
+
+    <Category Name="Advanced"
+              DisplayName="Advanced"
+              Description="Advanced settings for the application." />
+  </Rule.Categories>
+
+  <Rule.DataSource>
+    <DataSource Persistence="ProjectFileWithInterception"
+                HasConfigurationCondition="True" />
+  </Rule.DataSource>
+
+  <StringProperty Name="Output path"
+                  DisplayName="Build output path"
+                  Category="General"
+                  Subtype="directory" />
+
+  <!-- TODO: Update this with correct behavior for SDK-style projects -->
+  <BoolProperty Name="GenerateDocumentationFile"
+                DisplayName="Generate XML documentation file"
+                Description="Specifies whether to generate documentation information."
+                Category="General" />
+
+  <!-- TODO: Condition the visibility on this being a class library -->
+  <BoolProperty Name="RegisterForComInterop"
+                DisplayName="Register for COM interop"
+                Description="Specifies whether your managed application will expose a COM object (a COM-callable wrapper) that enables a COM object to interact with the application."
+                Category="General" />
+
+  <!-- TODO: Replace HelpUrl with a fwlink -->
+  <EnumProperty Name="OptionExplicit"
+                DisplayName="Option explicit"
+                Description="Specifies whether to require explicit declaration of variables."
+                HelpUrl="https://docs.microsoft.com/visualstudio/ide/reference/compile-page-project-designer-visual-basic#compiler-configuration-options"
+                Category="CompileOptions">
+    <EnumValue Name="On" DisplayName="On" />
+    <EnumValue Name="Off" DisplayName="Off" />
+  </EnumProperty>
+
+  <!-- TODO: Replace HelpUrl with a fwlink -->
+  <!-- TODO: Enum values need to to come from a dynamic enum provider -->
+  <EnumProperty Name="OptionStrict"
+                DisplayName="Option strict"
+                Description="Specifies whether to enforce strict type semantics."
+                HelpUrl="https://docs.microsoft.com/visualstudio/ide/reference/compile-page-project-designer-visual-basic#compiler-configuration-options"
+                Category="CompileOptions">
+    <EnumValue Name="On" DisplayName="On" />
+    <EnumValue Name="Off" DisplayName="Off" />
+    <EnumValue Name="Custom" DisplayName="(custom)" />
+  </EnumProperty>
+
+  <!-- TODO: Replace HelpUrl with a fwlink -->
+  <EnumProperty Name="OptionCompare"
+                DisplayName="Option compare"
+                Description="Specifies the type of string comparison to use."
+                HelpUrl="https://docs.microsoft.com/visualstudio/ide/reference/compile-page-project-designer-visual-basic#compiler-configuration-options"
+                Category="CompileOptions">
+    <EnumValue Name="Binary" DisplayName="Binary" />
+    <EnumValue Name="Text" DisplayName="Text" />
+  </EnumProperty>
+
+  <!-- TODO: Replace HelpUrl with a fwlink -->
+  <EnumProperty Name="OptionInfer"
+                DisplayName="Option Infer"
+                Description="Specifies whether to allow local type inference in variable declarations."
+                HelpUrl="https://docs.microsoft.com/visualstudio/ide/reference/compile-page-project-designer-visual-basic#compiler-configuration-options"
+                Category="CompileOptions">
+    <EnumValue Name="On" DisplayName="On" />
+    <EnumValue Name="Off" DisplayName="Off" />
+  </EnumProperty>
+
+  <!-- TODO: Replace HelpUrl with a fwlink -->
+  <DynamicEnumProperty Name="PlatformTarget"
+                DisplayName="Target CPU"
+                Description="Specifies the processor to be targeted by the output file. Choose 'Any CPU' to specify that any processor is acceptable, allowing the application to run on the broadest range of hardware."
+                HelpUrl="https://docs.microsoft.com/visualstudio/ide/reference/compile-page-project-designer-visual-basic#compiler-configuration-options"
+                Category="CompileOptions"
+                EnumProvider="PlatformTargetEnumProvider"
+                MultipleValuesAllowed="False"/>
+
+  <!-- TODO: Replace HelpUrl with a fwlink -->
+  <BoolProperty Name="Prefer32Bit"
+                DisplayName="Prefer 32-bit"
+                Description="Run in 32-bit mode on systems that support both 32-bit and 64-bit applications."
+                HelpUrl="https://docs.microsoft.com/visualstudio/ide/reference/compile-page-project-designer-visual-basic#compiler-configuration-options"
+                Category="CompileOptions">
+    <BoolProperty.Metadata>
+      <NameValuePair Name="DependsOn" Value="Build::PlatformTarget" />
+      <NameValuePair Name="DependsOn" Value="Application::OutputType" />
+      <NameValuePair Name="VisibilityCondition">
+        <!-- Visibility based on: https://github.com/dotnet/msbuild/blob/9bcc06cbe19ae2482ab18eab90a82fd079b26897/src/Tasks/Microsoft.NETFramework.CurrentVersion.props#L87 -->
+        <NameValuePair.Value>
+          (and
+            (has-net-framework)
+            (has-evaluated-value "Build" "PlatformTarget" "AnyCPU")
+            (or
+              (has-evaluated-value "Application" "OutputType" "Exe")
+              (has-evaluated-value "Application" "OutputType" "WinExe")
+              (has-evaluated-value "Application" "OutputType" "AppContainerExe")
+            )
+          )
+        </NameValuePair.Value>
+      </NameValuePair>
+    </BoolProperty.Metadata>
+  </BoolProperty>
+
+  <!-- TODO: Replace HelpUrl with a fwlink -->
+  <EnumProperty Name="ImplicitConversion"
+                DisplayName="Implicit conversion"
+                HelpUrl="https://docs.microsoft.com/visualstudio/ide/reference/compile-page-project-designer-visual-basic#compiler-configuration-options"
+                Category="WarningConfigurations">
+    <EnumValue Name="None" DisplayName="None" />
+    <EnumValue Name="Warning" DisplayName="Warning" />
+    <EnumValue Name="Error" DisplayName="Error" />
+  </EnumProperty>
+
+  <!-- TODO: Replace HelpUrl with a fwlink -->
+  <EnumProperty Name="LateBinding"
+                DisplayName="Late binding; call could fail at run time"
+                HelpUrl="https://docs.microsoft.com/visualstudio/ide/reference/compile-page-project-designer-visual-basic#compiler-configuration-options"
+                Category="WarningConfigurations">
+    <EnumValue Name="None" DisplayName="None" />
+    <EnumValue Name="Warning" DisplayName="Warning" />
+    <EnumValue Name="Error" DisplayName="Error" />
+  </EnumProperty>
+
+  <!-- TODO: Replace HelpUrl with a fwlink -->
+  <EnumProperty Name="ImplicitType"
+                DisplayName="Implicit type; object assumed"
+                HelpUrl="https://docs.microsoft.com/visualstudio/ide/reference/compile-page-project-designer-visual-basic#compiler-configuration-options"
+                Category="WarningConfigurations">
+    <EnumValue Name="None" DisplayName="None" />
+    <EnumValue Name="Warning" DisplayName="Warning" />
+    <EnumValue Name="Error" DisplayName="Error" />
+  </EnumProperty>
+
+  <!-- TODO: Replace HelpUrl with a fwlink -->
+  <EnumProperty Name="UseOfVariablePriorToAssignment"
+                DisplayName="Use of variable prior to assignment"
+                HelpUrl="https://docs.microsoft.com/visualstudio/ide/reference/compile-page-project-designer-visual-basic#compiler-configuration-options"
+                Category="WarningConfigurations">
+    <EnumValue Name="None" DisplayName="None" />
+    <EnumValue Name="Warning" DisplayName="Warning" />
+    <EnumValue Name="Error" DisplayName="Error" />
+  </EnumProperty>
+
+  <!-- TODO: Replace HelpUrl with a fwlink -->
+  <EnumProperty Name="ReturningRefTypeWithoutReturnValue"
+                DisplayName="Function returning reference type without return value"
+                HelpUrl="https://docs.microsoft.com/visualstudio/ide/reference/compile-page-project-designer-visual-basic#compiler-configuration-options"
+                Category="WarningConfigurations">
+    <EnumValue Name="None" DisplayName="None" />
+    <EnumValue Name="Warning" DisplayName="Warning" />
+    <EnumValue Name="Error" DisplayName="Error" />
+  </EnumProperty>
+
+  <!-- TODO: Replace HelpUrl with a fwlink -->
+  <EnumProperty Name="ReturningIntrinsicValueTypeWithoutReturnValue"
+                DisplayName="Function returning intrinsic value type without return value"
+                HelpUrl="https://docs.microsoft.com/visualstudio/ide/reference/compile-page-project-designer-visual-basic#compiler-configuration-options"
+                Category="WarningConfigurations">
+    <EnumValue Name="None" DisplayName="None" />
+    <EnumValue Name="Warning" DisplayName="Warning" />
+    <EnumValue Name="Error" DisplayName="Error" />
+  </EnumProperty>
+
+  <!-- TODO: Replace HelpUrl with a fwlink -->
+  <EnumProperty Name="UnusedLocalVariable"
+                DisplayName="Unused local variable"
+                HelpUrl="https://docs.microsoft.com/visualstudio/ide/reference/compile-page-project-designer-visual-basic#compiler-configuration-options"
+                Category="WarningConfigurations">
+    <EnumValue Name="None" DisplayName="None" />
+    <EnumValue Name="Warning" DisplayName="Warning" />
+    <EnumValue Name="Error" DisplayName="Error" />
+  </EnumProperty>
+
+  <!-- TODO: Replace HelpUrl with a fwlink -->
+  <EnumProperty Name="InstanceVariableAccessesSharedMember"
+                DisplayName="Instance variable accesses shared member"
+                HelpUrl="https://docs.microsoft.com/visualstudio/ide/reference/compile-page-project-designer-visual-basic#compiler-configuration-options"
+                Category="WarningConfigurations">
+    <EnumValue Name="None" DisplayName="None" />
+    <EnumValue Name="Warning" DisplayName="Warning" />
+    <EnumValue Name="Error" DisplayName="Error" />
+  </EnumProperty>
+
+  <!-- TODO: Replace HelpUrl with a fwlink -->
+  <EnumProperty Name="RecursiveOperatorOrPropertyAccess"
+                DisplayName="Recursive operator or property access"
+                HelpUrl="https://docs.microsoft.com/visualstudio/ide/reference/compile-page-project-designer-visual-basic#compiler-configuration-options"
+                Category="WarningConfigurations">
+    <EnumValue Name="None" DisplayName="None" />
+    <EnumValue Name="Warning" DisplayName="Warning" />
+    <EnumValue Name="Error" DisplayName="Error" />
+  </EnumProperty>
+
+  <!-- TODO: Replace HelpUrl with a fwlink -->
+  <EnumProperty Name="DuplicateOrOverlappingCatchBlocks"
+                DisplayName="Duplicate or overlapping catch blocks"
+                HelpUrl="https://docs.microsoft.com/visualstudio/ide/reference/compile-page-project-designer-visual-basic#compiler-configuration-options"
+                Category="WarningConfigurations">
+    <EnumValue Name="None" DisplayName="None" />
+    <EnumValue Name="Warning" DisplayName="Warning" />
+    <EnumValue Name="Error" DisplayName="Error" />
+  </EnumProperty>
+
+  <!-- TODO: Replace HelpUrl with a fwlink -->
+  <BoolProperty Name="DisableAllWarnings"
+                DisplayName="Disable all warnings"
+                HelpUrl="https://docs.microsoft.com/visualstudio/ide/reference/compile-page-project-designer-visual-basic#compiler-configuration-options"
+                Category="WarningConfigurations" />
+
+  <!-- TODO: Replace HelpUrl with a fwlink -->
+  <!-- TODO: Reconcile visibility with DisableAllWarnings setting -->
+  <BoolProperty Name="TreatWarningsAsErrors"
+                DisplayName="Treat all warnings as errors"
+                HelpUrl="https://docs.microsoft.com/visualstudio/ide/reference/compile-page-project-designer-visual-basic#compiler-configuration-options"
+                Category="WarningConfigurations" />
+
+  <!-- TODO: Update HelpUrl -->
+  <StringProperty Name="PreBuildEvent"
+                  DisplayName="Pre-build event"
+                  Description="Specifies commands that run before the build starts. Does not run if the project is up-to-date. A non-zero exit code will fail the build before it runs."
+                  HelpUrl="https://docs.microsoft.com/visualstudio/ide/reference/build-events-dialog-box-visual-basic"
+                  Category="Events">
+    <StringProperty.DataSource>
+      <DataSource HasConfigurationCondition="False"
+                  Persistence="ProjectFileWithInterception"
+                  SourceOfDefaultValue="AfterContext" />
+    </StringProperty.DataSource>
+    <StringProperty.ValueEditors>
+      <ValueEditor EditorType="MultiLineString">
+        <ValueEditor.Metadata>
+          <NameValuePair Name="UseMonospaceFont" Value="True" />
+        </ValueEditor.Metadata>
+      </ValueEditor>
+    </StringProperty.ValueEditors>
+  </StringProperty>
+
+  <!-- TODO: Update HelpUrl -->
+  <StringProperty Name="PostBuildEvent"
+                  DisplayName="Post-build event"
+                  Description="Specifies commands that run after the build completes. Does not run if the build failed. Use 'call' to invoke .bat files. A non-zero exit code will fail the build."
+                  HelpUrl="https://docs.microsoft.com/visualstudio/ide/reference/build-events-dialog-box-visual-basic"
+                  Category="Events">
+    <StringProperty.DataSource>
+      <DataSource HasConfigurationCondition="False"
+                  Persistence="ProjectFileWithInterception"
+                  SourceOfDefaultValue="AfterContext" />
+    </StringProperty.DataSource>
+    <StringProperty.ValueEditors>
+      <ValueEditor EditorType="MultiLineString">
+        <ValueEditor.Metadata>
+          <NameValuePair Name="UseMonospaceFont" Value="True" />
+        </ValueEditor.Metadata>
+      </ValueEditor>
+    </StringProperty.ValueEditors>
+  </StringProperty>
+
+  <!-- TODO: Update HelpUrl -->
+  <EnumProperty Name="RunPostBuildEvent"
+                DisplayName="When to run the post-build event"
+                Description="Specifies under which condition the post-build event will be executed."
+                HelpUrl="https://docs.microsoft.com/visualstudio/ide/reference/build-events-dialog-box-visual-basic"
+                Category="Events">
+    <EnumProperty.DataSource>
+      <DataSource HasConfigurationCondition="False"
+                  PersistedName="RunPostBuildEvent"
+                  Persistence="ProjectFileWithInterception"
+                  SourceOfDefaultValue="AfterContext" />
+    </EnumProperty.DataSource>
+    <EnumValue Name="Always"
+               DisplayName="Always" />
+    <EnumValue Name="OnBuildSuccess"
+               DisplayName="When the build succeeds"
+               IsDefault="True" />
+    <EnumValue Name="OnOutputUpdated"
+               DisplayName="When the output is updated" />
+  </EnumProperty>
+
+  <!-- TODO: Replace HelpUrl with a fwlink -->
+  <BoolProperty Name="RemoveIntegerChecks"
+                DisplayName="Remove integer overflow checks"
+                HelpUrl="https://docs.microsoft.com/visualstudio/ide/reference/advanced-compiler-settings-dialog-box-visual-basic?view=#optimizations"
+                Category="Advanced" />
+
+  <!-- TODO: Replace HelpUrl with a fwlink -->
+  <BoolProperty Name="Optimize"
+                DisplayName="Enable optimizations"
+                HelpUrl="https://docs.microsoft.com/visualstudio/ide/reference/advanced-compiler-settings-dialog-box-visual-basic?view=#optimizations"
+                Category="Advanced" />
+
+  <!-- TODO: Replace HelpUrl with a fwlink -->
+  <!-- TODO: Validation -->
+  <StringProperty Name="BaseAddress"
+                  DisplayName="DLL base address"
+                  HelpUrl="https://docs.microsoft.com/visualstudio/ide/reference/advanced-compiler-settings-dialog-box-visual-basic?view=#optimizations"
+                  Category="Advanced" />
+
+  <!-- TODO: Replace HelpUrl with a fwlink -->
+  <EnumProperty Name="DebugType"
+                DisplayName="Debug symbols"
+                Description="Specifies the kind of debug symbols produced during build."
+                HelpUrl="https://docs.microsoft.com/visualstudio/ide/reference/advanced-compiler-settings-dialog-box-visual-basic?view=#optimizations"
+                Category="Advanced">
+    <EnumProperty.Metadata>
+      <NameValuePair Name="SearchTerms" Value="debug type" />
+    </EnumProperty.Metadata>
+    <EnumValue Name="none"
+               DisplayName="No symbols are emitted" />
+    <!--
+    Note that 'pdbonly' is the same as 'full'.
+    <EnumValue Name="pdbonly"
+               DisplayName="PDB Only" />
+    -->
+    <EnumValue Name="full"
+               DisplayName="PDB file, current platform" />
+    <EnumValue Name="portable"
+               DisplayName="PDB file, portable across platforms" />
+    <EnumValue Name="embedded"
+               DisplayName="Embedded in DLL/EXE, portable across platforms" />
+  </EnumProperty>
+
+  <!-- TODO: Replace HelpUrl with a fwlink -->
+  <BoolProperty Name="DefineDebug"
+                DisplayName="Define DEBUG constant"
+                HelpUrl="https://docs.microsoft.com/visualstudio/ide/reference/advanced-compiler-settings-dialog-box-visual-basic#compilation-constants"
+                Category="Advanced"/>
+
+  <!-- TODO: Replace HelpUrl with a fwlink -->
+  <BoolProperty Name="DefineTrace"
+                DisplayName="Degine TRACE constant"
+                HelpUrl="https://docs.microsoft.com/visualstudio/ide/reference/advanced-compiler-settings-dialog-box-visual-basic#compilation-constants"
+                Category="Advanced"/>
+
+  <!-- TODO: Replace HelpUrl with a fwlink -->
+  <StringProperty Name="DefineConstants"
+                  DisplayName="Custom constants"
+                  HelpUrl="https://docs.microsoft.com/visualstudio/ide/reference/advanced-compiler-settings-dialog-box-visual-basic#compilation-constants"
+                  Category="Advanced">
+    <StringProperty.Description>Enter any custom constants for your application in this text box. Entries should be delimited by commas, using this form: Name1="Value1",Name2="Value2",Name3="Value3".</StringProperty.Description>
+  </StringProperty>
+
+  <!-- TODO: Replace HelpUrl with a fwlink -->
+  <EnumProperty Name="GenerateSerializationAssemblies"
+                DisplayName="Generate serialization assemblies"
+                HelpUrl="https://docs.microsoft.com/visualstudio/ide/reference/advanced-compiler-settings-dialog-box-visual-basic#compilation-constants"
+                Category="Advanced">
+    <EnumValue Name="On" DisplayName="On"/>
+    <EnumValue Name="Off" DisplayName="Off"/>
+    <EnumValue Name="Auto" DisplayName="Auto"/>
+  </EnumProperty>
 </Rule>
