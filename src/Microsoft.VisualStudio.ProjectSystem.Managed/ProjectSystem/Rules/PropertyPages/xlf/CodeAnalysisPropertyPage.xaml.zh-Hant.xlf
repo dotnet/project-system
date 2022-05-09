@@ -154,7 +154,7 @@
       </trans-unit>
       <trans-unit id="Rule|CodeAnalysisPropertyPage|DisplayName">
         <source>Code Analysis</source>
-        <target state="translated">程式碼分析</target>
+        <target state="translated">Code Analysis</target>
         <note />
       </trans-unit>
     </body>
