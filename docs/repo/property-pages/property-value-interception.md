@@ -2,6 +2,11 @@
 
 Sometimes it is necessary to intercept reads and writes of property values, and modify those values while they are in flight. Property value interception allows this.
 
+Examples of why you may wish to do this:
+
+- You wish to [provide a default value](#providing-default-values) for the property in the UI, when no value is provided in props/targets.
+- The property is a [pseudo property](#pseudo-properties) and should not be written to the project. Its values may be ignored, or may actually be derived from and modify other properties instead.
+
 ## Mechanism
 
 The property must opt in to interception. Its `DataSource` must specify the `Persistence` property as one of:
@@ -44,6 +49,8 @@ internal sealed class MyPropertyValueProvider : InterceptingPropertyValueProvide
 
 The name of the class is not important, but you might like to follow the convention offered here.
 
+A single interceptor class may be used to intercept multiple properties. To do that, add one `ExportInterceptingPropertyValueProvider` attribute per property you wish to intercept, changing the name on each accordingly.
+
 ## Base classes
 
 While you can implement `IInterceptingPropertyValueProvider` directly, you may like to use one of these base types.
@@ -51,11 +58,33 @@ While you can implement `IInterceptingPropertyValueProvider` directly, you may l
 - `InterceptingPropertyValueProviderBase` has virtual methods you can overload, with base implementations that just forward values unchanged.
 - `NoOpInterceptingPropertyValueProvider` fixes the value as null or the empty string. Useful when a property should never be written to the project file. See [Fixed content properties](#fixed-content-properties) for more.
 
-## Psuedo-properties
+## Providing default values
+
+Consider a boolean (check box) property that should default to `true` when no value is specified. You can achieve this with something like the following:
+
+```c#
+[ExportInterceptingPropertyValueProvider("MyProperty", ExportInterceptingPropertyValueProviderFile.ProjectFile)]
+internal sealed class MyPropertyValueProvider : InterceptingPropertyValueProviderBase
+{
+    public override Task<string> OnGetUnevaluatedPropertyValueAsync(string propertyName, string unevaluatedPropertyValue, IProjectProperties defaultProperties)
+    {
+        if (string.IsNullOrEmpty(unevaluatedPropertyValue))
+        {
+            // No value has been specified. Default to true.
+            return Task.FromResult(bool.TrueString);
+        }
+
+        // Pass the original value, unmodified.
+        return Task.FromResult(unevaluatedPropertyValue);
+    }
+}
+```
+
+## Pseudo-properties
 
 ### Mapping properties
 
-**TODO** explain how one psuedo-property can be mapped to multiple real properties
+**TODO** explain how one pseudo-property can be mapped to multiple real properties
 
 ### Fixed content properties
 
