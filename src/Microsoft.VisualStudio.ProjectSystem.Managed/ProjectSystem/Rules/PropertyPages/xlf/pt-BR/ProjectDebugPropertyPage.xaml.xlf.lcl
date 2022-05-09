@@ -165,10 +165,13 @@
       </Item>
       <Item ItemId=";StringProperty|EnvironmentVariables|Description" ItemType="0" PsrId="308" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[The environment variables to set prior to running the process. Variables are separated by a comma (,) and variables names and values are separated with an equal sign (=). Example: var1=value1,var2=value2,var3=value3. Commas and equal signs appearing within a variable can be escaped using a forward slash (/).]]></Val>
+          <Val><![CDATA[The environment variables to set prior to running the process.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[As variáveis de ambiente a serem definidas antes da execução do processo. As variáveis são separadas por uma vírgula (,) e os valores e os nomes de variáveis são separados por um sinal de igual (=). Exemplo: var1=value1,var2=value2,var3=value3. As vírgulas e os sinais de igual que aparecem dentro de uma variável podem ter uma barra (/) como escape.]]></Val>
+            <Val><![CDATA[As variáveis de ambiente a serem definidas antes de executar o processo.]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[The environment variables to set prior to running the process. Variables are separated by a comma (,) and variables names and values are separated with an equal sign (=). Example: var1=value1,var2=value2,var3=value3. Commas and equal signs appearing within a variable can be escaped using a forward slash (/).]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
