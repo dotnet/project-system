@@ -284,7 +284,7 @@
         <Str Cat="Text">
           <Val><![CDATA[Code Analysis]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[代码分析]]></Val>
+            <Val><![CDATA[Code Analysis]]></Val>
           </Tgt>
         </Str>
         <Disp Icon="Str" />
