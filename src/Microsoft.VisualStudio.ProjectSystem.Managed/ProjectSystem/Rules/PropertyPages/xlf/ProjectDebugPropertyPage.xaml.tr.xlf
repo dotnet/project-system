@@ -84,7 +84,7 @@
       </trans-unit>
       <trans-unit id="StringProperty|EnvironmentVariables|Description">
         <source>The environment variables to set prior to running the process.</source>
-        <target state="needs-review-translation">İşlemi çalıştırmadan önce ayarlanacak ortam değişkenleri. Bağımız değişkenler virgülle (,), değişken adları ve değerleri eşittir işaretiyle (=) ayrılır. Örnek: değişken1=değer1,değişken2=değer2,değişken3=değer3. Bağımsız değişkenlerdeki virgül ve eşittir işaretleri için kaçış karakteri olarak eğik çizgi (/) kullanabilirsiniz.</target>
+        <target state="new">The environment variables to set prior to running the process.</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|EnvironmentVariables|DisplayName">
