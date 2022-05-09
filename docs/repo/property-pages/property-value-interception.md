@@ -82,10 +82,6 @@ internal sealed class MyPropertyValueProvider : InterceptingPropertyValueProvide
 
 ## Pseudo-properties
 
-### Mapping properties
-
-**TODO** explain how one pseudo-property can be mapped to multiple real properties
-
 ### Fixed content properties
 
 It is convenient to add certain kinds of content to a page of properties, where that content is not actually a property. For example, a paragraph of text, or a hyperlink.
@@ -100,3 +96,65 @@ internal sealed class MyCommandPropertyValueProvider : NoOpInterceptingPropertyV
 ```
 
 The base class `NoOpInterceptingPropertyValueProvider` blocks all writes and returns empty strings for all reads.
+
+### Mapping properties
+
+Sometimes a feature requires more than one property to be set, but it would be clearer from the user's perspective to have a single property in the UI. We can use property value interception to achieve this.
+
+Let's look at an example. The UI will display a checkbox for property `A`. Let's call this our logical property. Toggling that checkbox will cause either `B` or `C` to be present in the project. We'll call those our physical properties.
+
+- When `A` is checked, `B` will be stored with some constant value, and `C` will be deleted.
+- When `A` is unchecked, `C` will be stored with some constant value, and `B` will be deleted.
+
+You can implement other policies, but this example shows the basic approach.
+
+Our interceptor would be implemented as follows:
+
+```c#
+[ExportInterceptingPropertyValueProvider("A", ExportInterceptingPropertyValueProviderFile.ProjectFile)]
+internal sealed class AValueProvider : InterceptingPropertyValueProviderBase
+{
+    public override async Task<string?> OnSetPropertyValueAsync(string propertyName, string unevaluatedPropertyValue, IProjectProperties defaultProperties, IReadOnlyDictionary<string, string>? dimensionalConditions = null)
+    {
+        if (bool.TryParse(unevaluatedPropertyValue, out bool value))
+        {
+            if (value)
+            {
+                // A is checked. We set B and delete C.
+                await defaultProperties.SetPropertyValueAsync("B", "some value");
+                await defaultProperties.DeletePropertyAsync("C");
+            }
+            else
+            {
+                // A is unchecked. We set C and delete B.
+                await defaultProperties.SetPropertyValueAsync("C", "some value");
+                await defaultProperties.DeletePropertyAsync("B");
+            }
+        }
+
+        // Return null here to prevent any value for A being written to the project file.
+        return null;
+    }
+
+    public override Task<string> OnGetEvaluatedPropertyValueAsync(string propertyName, string evaluatedPropertyValue, IProjectProperties defaultProperties)
+    {
+        return ComputeValueAsync(defaultProperties.GetEvaluatedPropertyValueAsync!);
+    }
+
+    public override Task<string> OnGetUnevaluatedPropertyValueAsync(string propertyName, string unevaluatedPropertyValue, IProjectProperties defaultProperties)
+    {
+        return ComputeValueAsync(defaultProperties.GetUnevaluatedPropertyValueAsync);
+    }
+
+    private static async Task<string> ComputeValueAsync(Func<string, Task<string?>> getValue)
+    {
+        string? b = await getValue("B");
+
+        // If B has a value, consider A as checked (return true).
+        // You may wish to check for a specific value, or explicitly handle the case where both B and C have values.
+        return string.IsNullOrEmpty(b) ? bool.FalseString : bool.TrueString;
+    }
+}
+```
+
+Note that it's also possible for the `OnSetPropertyValueAsync` method to read the current state of other property values via `defaultProperties.GetUnevaluatedPropertyValueAsync`.
