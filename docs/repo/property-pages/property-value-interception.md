@@ -49,7 +49,17 @@ internal sealed class MyPropertyValueProvider : InterceptingPropertyValueProvide
 
 The name of the class is not important, but you might like to follow the convention offered here.
 
-A single interceptor class may be used to intercept multiple properties. To do that, add one `ExportInterceptingPropertyValueProvider` attribute per property you wish to intercept, changing the name on each accordingly.
+## Intercepting multiple properties
+
+A single interceptor class may be used to intercept multiple properties. To do that, pass an array containing multiple property names to the `ExportInterceptingPropertyValueProvider` attribute, such as:
+
+```c#
+[ExportInterceptingPropertyValueProvider(new[] { "Prop1", "Prop2" }, ExportInterceptingPropertyValueProviderFile.ProjectFile)]
+internal sealed class MyPropertyValueProvider : InterceptingPropertyValueProviderBase
+{
+    // ...
+}
+```
 
 ## Base classes
 
