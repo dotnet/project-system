@@ -84,7 +84,7 @@
       </trans-unit>
       <trans-unit id="StringProperty|EnvironmentVariables|Description">
         <source>The environment variables to set prior to running the process.</source>
-        <target state="needs-review-translation">執行處理序前要設定的環境變數。變數以逗號 (,) 分隔，變數名稱與值則以等號 (=) 分隔。範例: var1=value1,var2=value2,var3=value3。您可以使用斜線 (/) 逸出變數內顯示的逗號與等號。</target>
+        <target state="new">The environment variables to set prior to running the process.</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|EnvironmentVariables|DisplayName">
