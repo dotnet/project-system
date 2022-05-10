@@ -74,7 +74,7 @@
       </trans-unit>
       <trans-unit id="StringProperty|EnvironmentVariables|Description">
         <source>The environment variables to set prior to running the process.</source>
-        <target state="new">The environment variables to set prior to running the process.</target>
+        <target state="translated">프로세스를 실행하기 전에 설정할 환경 변수입니다.</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|EnvironmentVariables|DisplayName">
