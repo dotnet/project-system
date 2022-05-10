@@ -17,24 +17,25 @@
     <OutputLocalized>false</OutputLocalized>
     <!-- <OutputName>Microsoft.VisualStudio.ProjectSystem.Managed.CommonFiles</OutputName> -->
     <OutputName>$(MSBuildProjectName)</OutputName>
+    <OutputPath>$(VisualStudioSetupInsertionPath)</OutputPath>
     <OutputType>vsix</OutputType>
     <IsPackage>true</IsPackage>
-    <OutputPath>$(VisualStudioSetupInsertionPath)</OutputPath>
   </PropertyGroup>
 
   <ItemGroup>
     <Package Include="CommonFiles.swr" />
-    <Package Include="ext.xproj.swr" />
+    <!-- <Package Include="ext.xproj.swr" /> -->
   </ItemGroup>
 
-  <ItemGroup>
+  <!-- <ItemGroup> -->
     <!-- Depend on projects producing XAML rules included in this Willow package -->
     <!-- <ProjectReference Include="..\..\src\Microsoft.VisualStudio.ProjectSystem.Managed\Microsoft.VisualStudio.ProjectSystem.Managed.csproj" /> -->
     <!-- <PackageReference Include="Microsoft.VisualStudioEng.MicroBuild.Core" PrivateAssets="all" Version="1.0.0" />
     <PackageReference Include="Microsoft.VSSDK.BuildTools"     PrivateAssets="all" Version="17.1.1035-preview2" /> -->
-  </ItemGroup>
+  <!-- </ItemGroup> -->
 
   <!-- <Target Name="SetVsixProperties" BeforeTargets="Build" DependsOnTargets="GetBuildVersion"> -->
+    <!-- <Message Text="BuildVersion: $(BuildVersion)" /> -->
     <!-- <PropertyGroup> -->
       <!-- <PackagePreprocessorDefinitions>$(PackagePreprocessorDefinitions);Version=$(BuildVersion);VisualStudioXamlRulesDir=$(VisualStudioXamlRulesDir)</PackagePreprocessorDefinitions> -->
       <!-- Version=17.2.0.2042501;VisualStudioXamlRulesDir=D:\a\_work\1\s\artifacts\Release\VSSetup\Rules\ -->
@@ -43,8 +44,8 @@
 
   <!-- Version=17.2.0.2042501;VisualStudioXamlRulesDir=D:\a\_work\1\s\artifacts\Release\VSSetup\Rules\ -->
   <PropertyGroup>
-    <!-- <PackagePreprocessorDefinitions>$(PackagePreprocessorDefinitions);Version=$(BuildVersion);VisualStudioXamlRulesDir=$(VisualStudioXamlRulesDir)</PackagePreprocessorDefinitions> -->
-    <PackagePreprocessorDefinitions>$(PackagePreprocessorDefinitions);Version=17.2.0.2042501;VisualStudioXamlRulesDir=$(VisualStudioXamlRulesDir)</PackagePreprocessorDefinitions>
+    <PackagePreprocessorDefinitions>$(PackagePreprocessorDefinitions);Version=$(VsixVersion);VisualStudioXamlRulesDir=$(VisualStudioXamlRulesDir)</PackagePreprocessorDefinitions>
+    <!-- <PackagePreprocessorDefinitions>$(PackagePreprocessorDefinitions);Version=17.2.0.2042501;VisualStudioXamlRulesDir=$(VisualStudioXamlRulesDir)</PackagePreprocessorDefinitions> -->
   </PropertyGroup>
 
   <!-- <Target Name="Restore">

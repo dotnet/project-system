@@ -13,8 +13,9 @@
     <Reference Include="WindowsFormsIntegration" />
     
     <!-- Toolset -->
-    <PackageReference Include="RoslynTools.ModifyVsixManifest" PrivateAssets="all"/>
+    <!-- <PackageReference Include="RoslynTools.ModifyVsixManifest" PrivateAssets="all"/> -->
     <PackageReference Include="Microsoft.VSSDK.BuildTools"     PrivateAssets="all" />
+    <!-- <PackageReference Include="Microsoft.VisualStudio.SDK"     ExcludeAssets="runtime" /> -->
     <!-- <PackageReference Include="Microsoft.VisualStudio.Internal.MicroBuild.VisualStudio" PrivateAssets="all"/> -->
 
     <!-- VS SDK -->

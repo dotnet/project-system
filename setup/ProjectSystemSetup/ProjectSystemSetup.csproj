@@ -1,6 +1,10 @@
 ﻿<!-- Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information. -->
 <Project Sdk="Microsoft.NET.Sdk">
 
+  <PropertyGroup>
+    <ExcludeRestorePackageImports>true</ExcludeRestorePackageImports>
+  </PropertyGroup>
+
   <Import Project="..\..\build\import\VisualStudio.props" />
 
   <PropertyGroup>
@@ -34,6 +38,9 @@
     <!-- <ExtensionInstallationFolder>Microsoft\ProjectSystemQuery</ExtensionInstallationFolder> -->
     <!-- <ExtensionInstallationRoot>CommonExtensions</ExtensionInstallationRoot> -->
     <IsPackable>false</IsPackable>
+    <StartAction>Program</StartAction>
+    <StartProgram Condition="'$(DevEnvDir)' != ''">$(DevEnvDir)devenv.exe</StartProgram>
+    <StartArguments>/rootsuffix Exp</StartArguments>
   </PropertyGroup>
 
   <ItemGroup>
@@ -66,5 +73,7 @@
       <Link>ProvideCodeBaseBindingRedirection.cs</Link>
     </Compile>
   </ItemGroup>
+
+  <Import Project="$(VSToolsPath)\VSSDK\Microsoft.VsSDK.targets" Condition="'$(VSToolsPath)' != ''" />
 
 </Project>

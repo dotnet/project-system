@@ -9,7 +9,7 @@
     <SuppressNETCoreSdkPreviewMessage>true</SuppressNETCoreSdkPreviewMessage>
 
     <!-- Opt-in and out of repo features -->
-    <UsingToolVSSDK>true</UsingToolVSSDK>
+    <!-- <UsingToolVSSDK>true</UsingToolVSSDK> -->
     <UsingToolIbcOptimization>true</UsingToolIbcOptimization>
     <UsingToolXUnit>false</UsingToolXUnit>
     <UsingToolMicrosoftNetCompilers>false</UsingToolMicrosoftNetCompilers>
@@ -22,6 +22,6 @@
     <CodecovVersion>1.12.4</CodecovVersion>
 
     <!-- VS SDK -->
-    <VSSDK_GeneralVersion>17.0.0-preview-1-31218-023</VSSDK_GeneralVersion>
+    <VSSDK_GeneralVersion>17.0.32112.339</VSSDK_GeneralVersion>
   </PropertyGroup>
 </Project>

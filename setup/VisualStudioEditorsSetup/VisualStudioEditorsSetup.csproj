@@ -1,6 +1,31 @@
 ﻿<!-- Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information. -->
 <Project Sdk="Microsoft.NET.Sdk">
 
+  <PropertyGroup>
+    <ExcludeRestorePackageImports>true</ExcludeRestorePackageImports>
+    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <SchemaVersion>2.0</SchemaVersion>
+    <CreateVsixContainer>true</CreateVsixContainer>
+    <!-- <GeneratePkgDefFile>false</GeneratePkgDefFile> -->
+    <!-- <IncludeAssemblyInVSIXContainer>false</IncludeAssemblyInVSIXContainer> -->
+    <IncludeDebugSymbolsInVSIXContainer>false</IncludeDebugSymbolsInVSIXContainer>
+    <IncludeDebugSymbolsInLocalVSIXDeployment>false</IncludeDebugSymbolsInLocalVSIXDeployment>
+    <!-- <CopyBuildOutputToOutputDirectory>false</CopyBuildOutputToOutputDirectory> -->
+    <!-- <CopyOutputSymbolsToOutputDirectory>false</CopyOutputSymbolsToOutputDirectory> -->
+    <IncludeCopyLocalReferencesInVSIXContainer>false</IncludeCopyLocalReferencesInVSIXContainer>
+    <IsProductComponent>true</IsProductComponent>
+    <!-- <ExtensionInstallationFolder>Microsoft\ProjectSystemQuery</ExtensionInstallationFolder> -->
+    <!-- <ExtensionInstallationRoot>CommonExtensions</ExtensionInstallationRoot> -->
+    <!-- <IsPackable>false</IsPackable> -->
+    <StartAction>Program</StartAction>
+    <StartProgram Condition="'$(DevEnvDir)' != ''">$(DevEnvDir)devenv.exe</StartProgram>
+    <StartArguments>/rootsuffix Exp</StartArguments>
+    <IsPackable>true</IsPackable>
+  </PropertyGroup>
+
   <Import Project="..\..\build\import\VisualStudioDesigner.props" />
 
   <PropertyGroup>
@@ -19,21 +44,11 @@
     <ManifestJsonName>$(VisualStudioInsertionComponent)</ManifestJsonName>
   </PropertyGroup>
 
-  <PropertyGroup>
-    <SchemaVersion>2.0</SchemaVersion>
-    <CreateVsixContainer>true</CreateVsixContainer>
-    <!-- <GeneratePkgDefFile>false</GeneratePkgDefFile> -->
-    <!-- <IncludeAssemblyInVSIXContainer>false</IncludeAssemblyInVSIXContainer> -->
-    <IncludeDebugSymbolsInVSIXContainer>false</IncludeDebugSymbolsInVSIXContainer>
-    <IncludeDebugSymbolsInLocalVSIXDeployment>false</IncludeDebugSymbolsInLocalVSIXDeployment>
-    <!-- <CopyBuildOutputToOutputDirectory>false</CopyBuildOutputToOutputDirectory> -->
-    <!-- <CopyOutputSymbolsToOutputDirectory>false</CopyOutputSymbolsToOutputDirectory> -->
-    <IncludeCopyLocalReferencesInVSIXContainer>false</IncludeCopyLocalReferencesInVSIXContainer>
-    <IsProductComponent>true</IsProductComponent>
-    <!-- <ExtensionInstallationFolder>Microsoft\ProjectSystemQuery</ExtensionInstallationFolder> -->
-    <!-- <ExtensionInstallationRoot>CommonExtensions</ExtensionInstallationRoot> -->
-    <IsPackable>false</IsPackable>
-  </PropertyGroup>
+  <ItemGroup>
+    <None Include="source.extension.vsixmanifest">
+      <SubType>Designer</SubType>
+    </None>
+  </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\..\src\Microsoft.VisualStudio.AppDesigner\Microsoft.VisualStudio.AppDesigner.vbproj">
@@ -59,5 +74,7 @@
       <Link>ProvideCodeBaseBindingRedirection.cs</Link>
     </Compile>
   </ItemGroup>
+
+  <Import Project="$(VSToolsPath)\VSSDK\Microsoft.VsSDK.targets" Condition="'$(VSToolsPath)' != ''" />
 
 </Project>

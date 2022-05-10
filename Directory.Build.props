@@ -54,7 +54,7 @@
   -->
   <Import Project="build\import\ProjectLayout.props"/>
 
-  <Import Project="$(RepoToolsetDir)Settings.props" Condition="'$(ExcludeRestorePackageImports)' != 'true' AND Exists('$(RepoToolsetDir)Settings.props')" />
+  <!-- <Import Project="$(RepoToolsetDir)Settings.props" Condition="'$(ExcludeRestorePackageImports)' != 'true' AND Exists('$(RepoToolsetDir)Settings.props')" /> -->
   <Import Project="build\import\OverrideRepoToolsetVersions.props"/>
 
   <Import Project="build\import\Workarounds.props"/>

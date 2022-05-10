@@ -2,7 +2,7 @@
 <Project>
   <Import Project="build\import\Packages.targets"/>
   <Import Project="build\import\Stubs.targets" />
-  <Import Project="$(RepoToolsetDir)Imports.targets" Condition="'$(ExcludeRestorePackageImports)' != 'true' AND Exists('$(RepoToolsetDir)Imports.targets')" />
+  <!-- <Import Project="$(RepoToolsetDir)Imports.targets" Condition="'$(ExcludeRestorePackageImports)' != 'true' AND Exists('$(RepoToolsetDir)Imports.targets')" /> -->
   <Import Project="build\import\GenerateThisAssemblySourceFile.targets"/>
 
   <!-- Workarounds needs to come last so it can overwrite targets from RepoToolSet and its imports -->
