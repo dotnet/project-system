@@ -108,36 +108,29 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                 return;
             }
 
-            IConcurrentHashSet<ProjectConfiguration> projectConfigurationSet;
+            AddConfiguration();
 
-            // Fall back to the full path of the project if the project GUID has not yet been set.
-            if (projectGuid == Guid.Empty)
+            void AddConfiguration()
             {
-                projectConfigurationSet = ProjectPathToProjectConfigurationsMap.GetOrAdd(project.UnconfiguredProject.FullPath, guid => new ConcurrentHashSet<ProjectConfiguration>());
-            }
-            else
-            {
-                projectConfigurationSet = _projectGuidToProjectConfigurationsMap.GetOrAdd(projectGuid, guid => new ConcurrentHashSet<ProjectConfiguration>());
-            }
+                IConcurrentHashSet<ProjectConfiguration> projectConfigurationSet;
 
-            projectConfigurationSet.Add(project.ProjectConfiguration);
+                // Fall back to the full path of the project if the project GUID has not yet been set.
+                if (projectGuid == Guid.Empty)
+                {
+                    projectConfigurationSet = ProjectPathToProjectConfigurationsMap.GetOrAdd(project.UnconfiguredProject.FullPath, guid => new ConcurrentHashSet<ProjectConfiguration>());
+                }
+                else
+                {
+                    projectConfigurationSet = _projectGuidToProjectConfigurationsMap.GetOrAdd(projectGuid, guid => new ConcurrentHashSet<ProjectConfiguration>());
+                }
+
+                projectConfigurationSet.Add(project.ProjectConfiguration);
+            }
         }
 
         public void UnregisterProjectConfiguration(Guid projectGuid, ConfiguredProject project)
         {
-            IConcurrentHashSet<ProjectConfiguration> projectConfigurationSet;
-
-            if (projectGuid == Guid.Empty)
-            {
-                if (ProjectPathToProjectConfigurationsMap.TryGetValue(project.UnconfiguredProject.FullPath, out projectConfigurationSet))
-                {
-                    projectConfigurationSet.Remove(project.ProjectConfiguration);
-                }
-            }
-            else if (_projectGuidToProjectConfigurationsMap.TryGetValue(projectGuid, out projectConfigurationSet))
-            {
-                projectConfigurationSet.Remove(project.ProjectConfiguration);
-            }
+            RemoveConfiguration(projectGuid, project);
 
             bool displayMissingComponentsPrompt = ShouldDisplayMissingComponentsPrompt();
             if (displayMissingComponentsPrompt)
@@ -146,16 +139,47 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
 
                 _projectFaultHandlerService.Forget(displayMissingComponentsTask, project: project.UnconfiguredProject, ProjectFaultSeverity.Recoverable);
             }
+
+            void RemoveConfiguration(Guid projectGuid, ConfiguredProject project)
+            {
+                IConcurrentHashSet<ProjectConfiguration>? projectConfigurationSet;
+
+                if (projectGuid == Guid.Empty)
+                {
+                    ProjectPathToProjectConfigurationsMap.TryGetValue(project.UnconfiguredProject.FullPath, out projectConfigurationSet);
+                }
+                else
+                {
+                    _projectGuidToProjectConfigurationsMap.TryGetValue(projectGuid, out projectConfigurationSet);
+                }
+                
+                projectConfigurationSet?.Remove(project.ProjectConfiguration);
+            }
         }
 
         private bool ShouldDisplayMissingComponentsPrompt()
         {
             lock (_displayPromptLock)
             {
-                return (_projectGuidToWorkloadDescriptorsMap.Count > 0 || _projectGuidToRuntimeDescriptorMap.Count > 0)
-                    && _projectGuidToProjectConfigurationsMap.Values.All(projectConfigurationSet => projectConfigurationSet?.Count == 0)
-                    && (_projectPathToProjectConfigurationsMap == null ||
-                        _projectPathToProjectConfigurationsMap.Values.All(projectConfigurationSet => projectConfigurationSet?.Count == 0));
+                // Projects that subscribe to this service will registers all their configurations and after that
+                // each project configuration can start registering missing workload at different point in time.
+                // We want to display the prompt after ALL the registered project already registered their missing components
+                // and at least there is one component to install.
+                return AreMissingComponentsToInstall()
+                    && AllProjectsConfigurationsRegisteredTheirMissingComponents();
+            }
+
+            bool AreMissingComponentsToInstall()
+            {
+                // Projects can register zero or more missing components.
+                return _projectGuidToWorkloadDescriptorsMap.Count > 0 || _projectGuidToRuntimeDescriptorMap.Count > 0;
+            }
+
+            bool AllProjectsConfigurationsRegisteredTheirMissingComponents()
+            {
+                // When a project configuration registers its missing components, the configuration gets removed, but we keep the list of components.
+                return _projectGuidToProjectConfigurationsMap.Values.All(projectConfigurationSet => projectConfigurationSet.Count == 0)
+                    && _projectPathToProjectConfigurationsMap?.Values.All(projectConfigurationSet => projectConfigurationSet.Count == 0) is null or true;
             }
         }
 
