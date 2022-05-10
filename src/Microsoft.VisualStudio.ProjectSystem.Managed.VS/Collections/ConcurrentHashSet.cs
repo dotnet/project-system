@@ -59,5 +59,10 @@ namespace System.Collections.Concurrent
         {
             return _map.TryRemove(item, out _);
         }
+
+        public void Clear()
+        {
+            _map.Clear();   
+        }
     }
 }
