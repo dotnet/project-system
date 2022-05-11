@@ -72,11 +72,6 @@
         <target state="new">Advanced</target>
         <note />
       </trans-unit>
-      <trans-unit id="Category|CompileOptions|DisplayName">
-        <source>Compile Options</source>
-        <target state="new">Compile Options</target>
-        <note />
-      </trans-unit>
       <trans-unit id="Category|Events|Description">
         <source>Configures custom events that run before and after build.</source>
         <target state="new">Configures custom events that run before and after build.</target>
@@ -92,9 +87,14 @@
         <target state="new">General</target>
         <note />
       </trans-unit>
-      <trans-unit id="Category|WarningConfigurations|DisplayName">
-        <source>Warning configurations</source>
-        <target state="new">Warning configurations</target>
+      <trans-unit id="Category|Options|DisplayName">
+        <source>Options</source>
+        <target state="new">Options</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="Category|Warnings|DisplayName">
+        <source>Warnings</source>
+        <target state="new">Warnings</target>
         <note />
       </trans-unit>
       <trans-unit id="DynamicEnumProperty|PlatformTarget|Description">
@@ -132,14 +132,24 @@
         <target state="new">Generate serialization assemblies</target>
         <note />
       </trans-unit>
+      <trans-unit id="EnumProperty|ImplicitConversion|Description">
+        <source>Implicit narrowing conversion occurs when there is an implicit data type conversion that is a narrowing conversion.</source>
+        <target state="new">Implicit narrowing conversion occurs when there is an implicit data type conversion that is a narrowing conversion.</target>
+        <note />
+      </trans-unit>
       <trans-unit id="EnumProperty|ImplicitConversion|DisplayName">
         <source>Implicit conversion</source>
         <target state="new">Implicit conversion</target>
         <note />
       </trans-unit>
+      <trans-unit id="EnumProperty|ImplicitType|Description">
+        <source>Implicit object type errors occur when an appropriate type cannot be inferred for a declared variable, so a type of 'Object' is inferred.</source>
+        <target state="new">Implicit object type errors occur when an appropriate type cannot be inferred for a declared variable, so a type of 'Object' is inferred.</target>
+        <note />
+      </trans-unit>
       <trans-unit id="EnumProperty|ImplicitType|DisplayName">
-        <source>Implicit type; object assumed</source>
-        <target state="new">Implicit type; object assumed</target>
+        <source>Implicit type</source>
+        <target state="new">Implicit type</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumProperty|InstanceVariableAccessesSharedMember|DisplayName">
@@ -147,9 +157,14 @@
         <target state="new">Instance variable accesses shared member</target>
         <note />
       </trans-unit>
+      <trans-unit id="EnumProperty|LateBinding|Description">
+        <source>An object is late bound when it is assigned to a property or method of a variable that is declared to be of type 'Object'. These operations could fail at run time.</source>
+        <target state="new">An object is late bound when it is assigned to a property or method of a variable that is declared to be of type 'Object'. These operations could fail at run time.</target>
+        <note />
+      </trans-unit>
       <trans-unit id="EnumProperty|LateBinding|DisplayName">
-        <source>Late binding; call could fail at run time</source>
-        <target state="new">Late binding; call could fail at run time</target>
+        <source>Late binding</source>
+        <target state="new">Late binding</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumProperty|OptionCompare|Description">
@@ -178,8 +193,8 @@
         <note />
       </trans-unit>
       <trans-unit id="EnumProperty|OptionInfer|DisplayName">
-        <source>Option Infer</source>
-        <target state="new">Option Infer</target>
+        <source>Option infer</source>
+        <target state="new">Option infer</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumProperty|OptionStrict|Description">
