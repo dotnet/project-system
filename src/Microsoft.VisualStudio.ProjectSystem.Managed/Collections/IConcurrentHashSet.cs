@@ -46,6 +46,11 @@ namespace System.Collections.Concurrent
         /// <c>true</c> if at least one item was added to the System.Collections.Concurrent.IConcurrentHashSet`1;
         /// otherwise, <c>false</c>
         /// </returns>
-        public bool AddRange(IEnumerable<T> elements);
+        bool AddRange(IEnumerable<T> elements);
+
+        /// <summary>
+        /// Removes all elements from System.Collections.Concurrent.IConcurrentHashSet`1
+        /// </summary>
+        void Clear();
     }
 }
