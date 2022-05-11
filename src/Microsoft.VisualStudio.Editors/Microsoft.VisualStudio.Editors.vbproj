@@ -18,6 +18,7 @@
     <Description>Implementation of some designers and project property page editors in VisualStudio.</Description>
     <Summary>Editors implementation for Project Properties</Summary>
     <PackageTags>Roslyn Project Property Page Editors VisualStudio</PackageTags>
+    <RootNamespace />
   </PropertyGroup>
 
   <ItemGroup>

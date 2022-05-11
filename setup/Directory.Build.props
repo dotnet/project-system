@@ -4,7 +4,7 @@
 
   <PropertyGroup>
     <!-- Prevent vsix manifests from being copied to the shared output directory, makes build more deterministic -->
-    <CopyVsixManifestToOutput>false</CopyVsixManifestToOutput>
+    <CopyVsixManifestToOutput>true</CopyVsixManifestToOutput>
   </PropertyGroup>
   
   <ItemGroup>

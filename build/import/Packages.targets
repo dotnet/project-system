@@ -32,6 +32,7 @@
     <!-- <PackageReference Update="RoslynTools.RepoToolset"                                                Version="$(RoslynToolsRepoToolsetVersion)" /> -->
     <!-- <PackageReference Update="RoslynTools.ModifyVsixManifest"                                         Version="$(RoslynToolsModifyVsixManifestVersion)" /> -->
     <PackageReference Update="XliffTasks"                                                             Version="1.0.0-beta.20574.1" />
+    <!-- <PackageReference Update="XliffTasks"                                                             Version="0.2.0-beta-000081" /> -->
     <PackageReference Update="Microsoft.DiaSymReader.Pdb2Pdb"                                         Version="$(MicrosoftDiaSymReaderPdb2PdbVersion)" />
     <PackageReference Update="Microsoft.Net.Compilers.Toolset"                                        Version="4.2.0-1.final" />
     <PackageReference Update="OpenCover"                                                              Version="4.7.1138-rc" />
@@ -41,7 +42,9 @@
     <!-- VS SDK -->
     <PackageReference Update="EnvDTE"                                                                 Version="$(VSSDK_GeneralVersion)" />
     <PackageReference Update="Microsoft.Internal.VisualStudio.Interop"                                Version="17.1.0-preview-2-32002-062"/>
-    <PackageReference Update="Microsoft.VSSDK.BuildTools"                                             Version="17.3.7-preview1" />
+    <PackageReference Update="Microsoft.VSSDK.BuildTools"                                             Version="17.1.1035-preview2" />
+    <!-- <PackageReference Update="Microsoft.VSSDK.BuildTools"                                             Version="17.3.7-preview1" /> -->
+    <!-- <PackageReference Update="Microsoft.VSSDK.BuildTools"                                             Version="15.1.192" /> -->
     <PackageReference Update="Microsoft.VisualStudio.ComponentModelHost"                              Version="17.1.224-preview"/>
     <PackageReference Update="Microsoft.VisualStudio.Composition"                                     Version="17.0.46"/>
     <PackageReference Update="Microsoft.VisualStudio.Data.Core"                                       Version="17.0.0-preview-2-31223-026" />
