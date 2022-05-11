@@ -4,22 +4,22 @@
     <body>
       <trans-unit id="BoolProperty|AutoGenerateBindingRedirects|Description">
         <source>Add binding redirects automatically to App.config.</source>
-        <target state="new">Add binding redirects automatically to App.config.</target>
+        <target state="translated">Ajoutez automatiquement des redirections de liaison à App.config.</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|AutoGenerateBindingRedirects|DisplayName">
         <source>Auto-generate binding redirects</source>
-        <target state="new">Auto-generate binding redirects</target>
+        <target state="translated">Générer automatiquement les redirections de liaison</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|TargetMultipleFrameworks|Description">
         <source>Build this project for multiple target frameworks.</source>
-        <target state="new">Build this project for multiple target frameworks.</target>
+        <target state="translated">Générez ce projet pour plusieurs frameworks cibles.</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|TargetMultipleFrameworks|DisplayName">
         <source>Target multiple frameworks</source>
-        <target state="new">Target multiple frameworks</target>
+        <target state="translated">Cibler plusieurs frameworks</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|UseWPF|Description">
@@ -79,47 +79,47 @@
       </trans-unit>
       <trans-unit id="DynamicEnumProperty|SupportedOSPlatformVersion|Description">
         <source>Specifies the minimum OS version that the project will run on. When unspecified, the target OS version value is implied. Using an earlier version here requires code to add guards around later version APIs.</source>
-        <target state="new">Specifies the minimum OS version that the project will run on. When unspecified, the target OS version value is implied. Using an earlier version here requires code to add guards around later version APIs.</target>
+        <target state="translated">Spécifie la version minimale du système d’exploitation sur laquelle le projet doit s’exécuter. En cas de non spécification, la valeur de version du système d’exploitation cible est implicite. L’utilisation d’une version antérieure ici nécessite du code pour ajouter des gardes dans les API de version ultérieure.</target>
         <note />
       </trans-unit>
       <trans-unit id="DynamicEnumProperty|SupportedOSPlatformVersion|DisplayName">
         <source>Supported OS version</source>
-        <target state="new">Supported OS version</target>
+        <target state="translated">Version du système d’exploitation pris en charge</target>
         <note />
       </trans-unit>
       <trans-unit id="DynamicEnumProperty|SupportedOSPlatformVersion|Metadata|SearchTerms">
         <source>platform</source>
-        <target state="new">platform</target>
+        <target state="translated">plateforme</target>
         <note />
       </trans-unit>
       <trans-unit id="DynamicEnumProperty|TargetPlatformIdentifier|Description">
         <source>Specifies the operating system that this project will target.</source>
-        <target state="new">Specifies the operating system that this project will target.</target>
+        <target state="translated">Spécifie le système d’exploitation ciblé par ce projet.</target>
         <note />
       </trans-unit>
       <trans-unit id="DynamicEnumProperty|TargetPlatformIdentifier|DisplayName">
         <source>Target OS</source>
-        <target state="new">Target OS</target>
+        <target state="translated">SE cible</target>
         <note />
       </trans-unit>
       <trans-unit id="DynamicEnumProperty|TargetPlatformIdentifier|Metadata|SearchTerms">
         <source>platform</source>
-        <target state="new">platform</target>
+        <target state="translated">plateforme</target>
         <note />
       </trans-unit>
       <trans-unit id="DynamicEnumProperty|TargetPlatformVersion|Description">
         <source>Specifies the version of the operating system this project will target.</source>
-        <target state="new">Specifies the version of the operating system this project will target.</target>
+        <target state="translated">Spécifie la version du système d’exploitation ciblé par ce projet.</target>
         <note />
       </trans-unit>
       <trans-unit id="DynamicEnumProperty|TargetPlatformVersion|DisplayName">
         <source>Target OS version</source>
-        <target state="new">Target OS version</target>
+        <target state="translated">Version du système d’exploitation cible</target>
         <note />
       </trans-unit>
       <trans-unit id="DynamicEnumProperty|TargetPlatformVersion|Metadata|SearchTerms">
         <source>platform</source>
-        <target state="new">platform</target>
+        <target state="translated">plateforme</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumProperty|OutputType|Description">
@@ -134,12 +134,12 @@
       </trans-unit>
       <trans-unit id="EnumProperty|ResourceSpecificationKind|Description">
         <source>Specifies how application resources will be managed.</source>
-        <target state="new">Specifies how application resources will be managed.</target>
+        <target state="translated">Spécifie la façon dont les ressources de l'application sont managées.</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumProperty|ResourceSpecificationKind|DisplayName">
         <source>Resources</source>
-        <target state="new">Resources</target>
+        <target state="translated">Ressources</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|OutputType.Exe|DisplayName">
@@ -159,12 +159,12 @@
       </trans-unit>
       <trans-unit id="EnumValue|ResourceSpecificationKind.IconAndManifest|DisplayName">
         <source>Icon and manifest</source>
-        <target state="new">Icon and manifest</target>
+        <target state="translated">Icône et manifeste</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|ResourceSpecificationKind.ResourceFile|DisplayName">
         <source>Resource file</source>
-        <target state="new">Resource file</target>
+        <target state="translated">Fichier de ressources</target>
         <note />
       </trans-unit>
       <trans-unit id="Rule|Application|Description">
@@ -204,17 +204,17 @@
       </trans-unit>
       <trans-unit id="StringProperty|TargetFrameworks|Description">
         <source>Specifies the semicolon-delimited list of frameworks that this project will target.</source>
-        <target state="new">Specifies the semicolon-delimited list of frameworks that this project will target.</target>
+        <target state="translated">Spécifie la liste de valeurs délimitées par des points-virgules, qui représente les frameworks que ce projet doit cibler.</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|TargetFrameworks|DisplayName">
         <source>Target frameworks</source>
-        <target state="new">Target frameworks</target>
+        <target state="translated">Frameworks cibles</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|TargetFrameworks|Metadata|SearchTerms">
         <source>TFM</source>
-        <target state="new">TFM</target>
+        <target state="translated">TFM</target>
         <note />
       </trans-unit>
     </body>
