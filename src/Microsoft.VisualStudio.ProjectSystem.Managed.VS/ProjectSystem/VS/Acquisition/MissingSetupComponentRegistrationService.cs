@@ -92,7 +92,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             UnregisterProjectConfiguration(projectGuid, project);
         }
 
-        public void RegisterMissingSdkRuntimeComponentId(Guid projectGuid, ConfiguredProject project, string? runtimeComponentId)
+        public void RegisterSdkRuntimeComponentId(Guid projectGuid, ConfiguredProject project, string? runtimeComponentId)
         {
             if (runtimeComponentId is not null)
             {

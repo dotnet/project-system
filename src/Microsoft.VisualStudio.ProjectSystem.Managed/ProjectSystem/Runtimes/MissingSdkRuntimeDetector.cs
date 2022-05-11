@@ -66,23 +66,23 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
                 ConfigurationGeneral configuration = await projectProperties.GetConfigurationGeneralPropertiesAsync();
 
-                string? TargetFrameworkIdentifier = await configuration.TargetFrameworkIdentifier.GetDisplayValueAsync();
+                string? targetFrameworkIdentifier = await configuration.TargetFrameworkIdentifier.GetDisplayValueAsync();
 
-                string? TargetFrameworkVersion = await configuration.TargetFrameworkVersion.GetDisplayValueAsync();
+                string? targetFrameworkVersion = await configuration.TargetFrameworkVersion.GetDisplayValueAsync();
 
-                string? componentId = GetComponentId(TargetFrameworkIdentifier, TargetFrameworkVersion);
+                string? componentId = GetComponentId(targetFrameworkIdentifier, targetFrameworkVersion);
                 
-                _missingSetupComponentRegistrationService.RegisterMissingSdkRuntimeComponentId(_projectGuid, project, componentId);
+                _missingSetupComponentRegistrationService.RegisterSdkRuntimeComponentId(_projectGuid, project, componentId);
             }
 
-            static string? GetComponentId(string TargetFrameworkIdentifier, string TargetFrameworkVersion)
+            static string? GetComponentId(string targetFrameworkIdentifier, string targetFrameworkVersion)
             {
                 string? componentId = null;
 
-                if (string.Equals(TargetFrameworkIdentifier, s_netCoreTargetFrameworkIdentifier, StringComparisons.FrameworkIdentifiers) &&
-                    !string.IsNullOrEmpty(TargetFrameworkVersion))
+                if (string.Equals(targetFrameworkIdentifier, s_netCoreTargetFrameworkIdentifier, StringComparisons.FrameworkIdentifiers) &&
+                    !string.IsNullOrEmpty(targetFrameworkVersion))
                 {
-                    s_packageVersionToComponentId.TryGetValue(TargetFrameworkVersion, out componentId);
+                    s_packageVersionToComponentId.TryGetValue(targetFrameworkVersion, out componentId);
                 }
 
                 return componentId;
