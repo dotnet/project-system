@@ -10,6 +10,10 @@
               Description="Application Framework settings." />
   </Rule.Categories>
 
+  <!-- TODO: Add a hyperlink/button to open the app.manifest. Previously, we had a View Windows Settings button. -->
+
+  <!-- TODO: Add a hyperlink/button to open the ApplicationEvents.vb. Previously, we had a View Application Events button. -->
+  
   <!-- This property actually is saved as MyType. -->
   <BoolProperty Name="UseApplicationFramework"
                 DisplayName="Application Framework"
@@ -17,7 +21,6 @@
                 HelpUrl="https://go.microsoft.com/fwlink/?linkid=2195444"
                 Category="ApplicationFramework">
     <BoolProperty.Metadata>
-      <NameValuePair Name="DependsOn" Value="Application::OutputType" />
       <NameValuePair Name="VisibilityCondition">
         <NameValuePair.Value>
           (is-vb)
@@ -46,7 +49,6 @@
                 HelpUrl="https://go.microsoft.com/fwlink/?linkid=2195340"
                 Category="ApplicationFramework">
     <BoolProperty.Metadata>
-      <NameValuePair Name="DependsOn" Value="Application::UseApplicationFramework" />
       <NameValuePair Name="VisibilityCondition">
         <NameValuePair.Value>
           (has-evaluated-value "Application" "UseApplicationFramework" true)
@@ -61,7 +63,6 @@
                 HelpUrl="https://go.microsoft.com/fwlink/?linkid=2195171"
                 Category="ApplicationFramework">
     <BoolProperty.Metadata>
-      <NameValuePair Name="DependsOn" Value="Application::UseApplicationFramework" />
       <NameValuePair Name="VisibilityCondition">
         <NameValuePair.Value>
           (has-evaluated-value "Application" "UseApplicationFramework" true)
@@ -76,7 +77,6 @@
                 HelpUrl="https://go.microsoft.com/fwlink/?linkid=2195173"
                 Category="ApplicationFramework">
     <EnumProperty.Metadata>
-      <NameValuePair Name="DependsOn" Value="Application::UseApplicationFramework" />
       <NameValuePair Name="VisibilityCondition">
         <NameValuePair.Value>
           (has-evaluated-value "Application" "UseApplicationFramework" true)
@@ -103,7 +103,6 @@
                 HelpUrl="https://go.microsoft.com/fwlink/?linkid=2195341"
                 Category="ApplicationFramework">
     <EnumProperty.Metadata>
-      <NameValuePair Name="DependsOn" Value="Application::UseApplicationFramework" />
       <NameValuePair Name="VisibilityCondition">
         <NameValuePair.Value>
           (has-evaluated-value "Application" "UseApplicationFramework" true)
@@ -124,7 +123,6 @@
                 HelpUrl="https://go.microsoft.com/fwlink/?linkid=2195343"
                 Category="ApplicationFramework">
     <EnumProperty.Metadata>
-      <NameValuePair Name="DependsOn" Value="Application::UseApplicationFramework" />
       <NameValuePair Name="VisibilityCondition">
         <NameValuePair.Value>
           (has-evaluated-value "Application" "UseApplicationFramework" true)
@@ -137,4 +135,38 @@
     <EnumValue Name="AfterAllFormsClose"
                DisplayName="Shut down only after the last form closes." />
   </EnumProperty>
+
+  <DynamicEnumProperty Name="SplashScreen"
+                       DisplayName="Splash screen"
+                       Description="Sets the form to be used as a splash screen for the application."
+                       HelpUrl="https://go.microsoft.com/fwlink/?linkid=2195177"
+                       Category="ApplicationFramework"
+                       EnumProvider="StartupObjectsEnumProvider">
+    <DynamicEnumProperty.Metadata>
+      <NameValuePair Name="VisibilityCondition">
+        <NameValuePair.Value>
+          (has-evaluated-value "Application" "UseApplicationFramework" true)
+        </NameValuePair.Value>
+      </NameValuePair>
+    </DynamicEnumProperty.Metadata>
+    <DynamicEnumProperty.ProviderSettings>
+      <!-- We want an explicit item representing the empty value. We can remove this setting
+           when the enum provider starts including it by default. -->
+      <NameValuePair Name="IncludeEmptyValue" Value="true" />
+    </DynamicEnumProperty.ProviderSettings>
+  </DynamicEnumProperty>
+
+  <StringProperty Name="MinimumSplashScreenDisplayTime"
+                DisplayName="Minimum splash screen display time"
+                Description="Sets the minimum length of time, in milliseconds, for which the splash screen is displayed."
+                HelpUrl="https://go.microsoft.com/fwlink/?linkid=2195289"
+                Category="ApplicationFramework">
+    <StringProperty.Metadata>
+      <NameValuePair Name="VisibilityCondition">
+        <NameValuePair.Value>
+          (has-evaluated-value "Application" "UseApplicationFramework" true)
+        </NameValuePair.Value>
+      </NameValuePair>
+    </StringProperty.Metadata>
+  </StringProperty>
 </Rule>
