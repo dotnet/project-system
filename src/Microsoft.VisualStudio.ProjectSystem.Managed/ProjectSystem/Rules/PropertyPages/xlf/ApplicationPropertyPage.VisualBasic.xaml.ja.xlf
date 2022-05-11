@@ -1,0 +1,132 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
+  <file datatype="xml" source-language="en" target-language="ja" original="../ApplicationPropertyPage.VisualBasic.xaml">
+    <body>
+      <trans-unit id="BoolProperty|EnableVisualStyles|Description">
+        <source>Uses the most current version for the Control Library COMCTL to provide control rendering with modern visual styling.</source>
+        <target state="new">Uses the most current version for the Control Library COMCTL to provide control rendering with modern visual styling.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="BoolProperty|EnableVisualStyles|DisplayName">
+        <source>Windows XP Visual Styles</source>
+        <target state="new">Windows XP Visual Styles</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="BoolProperty|SaveMySettingsOnExit|Description">
+        <source>Controls if settings are saved when users shut down their computers.</source>
+        <target state="new">Controls if settings are saved when users shut down their computers.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="BoolProperty|SaveMySettingsOnExit|DisplayName">
+        <source>Save user settings on exit</source>
+        <target state="new">Save user settings on exit</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="BoolProperty|SingleInstance|Description">
+        <source>Prevents users from running multiple instances of the application. Default is cleared, which allows multiple instances of the application to be run.</source>
+        <target state="new">Prevents users from running multiple instances of the application. Default is cleared, which allows multiple instances of the application to be run.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="BoolProperty|SingleInstance|DisplayName">
+        <source>Single-instance application</source>
+        <target state="new">Single-instance application</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="BoolProperty|UseApplicationFramework|Description">
+        <source>Enable the Visual Basic Application Framework for this project. In general, these settings get serialized into the myapp file.</source>
+        <target state="new">Enable the Visual Basic Application Framework for this project. In general, these settings get serialized into the myapp file.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="BoolProperty|UseApplicationFramework|DisplayName">
+        <source>Application Framework</source>
+        <target state="new">Application Framework</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="Category|ApplicationFramework|Description">
+        <source>Application Framework settings.</source>
+        <target state="new">Application Framework settings.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="Category|ApplicationFramework|DisplayName">
+        <source>Application Framework</source>
+        <target state="new">Application Framework</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumProperty|AuthenticationMode|Description">
+        <source>Specifies the method of identifying the logged-on user, when needed.</source>
+        <target state="new">Specifies the method of identifying the logged-on user, when needed.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumProperty|AuthenticationMode|DisplayName">
+        <source>Authentication mode</source>
+        <target state="new">Authentication mode</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumProperty|HighDpiMode|Description">
+        <source>Specifies the application-wide HighDpiMode for the application. This setting can be programaticaly overriden through the ApplyApplicationDefaults event.</source>
+        <target state="new">Specifies the application-wide HighDpiMode for the application. This setting can be programaticaly overriden through the ApplyApplicationDefaults event.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumProperty|HighDpiMode|DisplayName">
+        <source>High DPI mode</source>
+        <target state="new">High DPI mode</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumProperty|ShutdownMode|Description">
+        <source>Indicates which condition causes the application to shut down.</source>
+        <target state="new">Indicates which condition causes the application to shut down.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumProperty|ShutdownMode|DisplayName">
+        <source>Shutdown mode</source>
+        <target state="new">Shutdown mode</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|AuthenticationMode.ApplicationDefined|DisplayName">
+        <source>Application-defined - Custom authentication implemented within the application.</source>
+        <target state="new">Application-defined - Custom authentication implemented within the application.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|AuthenticationMode.Windows|DisplayName">
+        <source>Windows - Retrieve user info through My.User at runtime.</source>
+        <target state="new">Windows - Retrieve user info through My.User at runtime.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|HighDpiMode.DpiUnawareGdiScaled|DisplayName">
+        <source>DPI unaware, GDI scaled - Like DPI unaware but optimized for non-double-buffered Graphics content.</source>
+        <target state="new">DPI unaware, GDI scaled - Like DPI unaware but optimized for non-double-buffered Graphics content.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|HighDpiMode.DpiUnaware|DisplayName">
+        <source>DPI unaware - No scaling and assuming 100% scaling.</source>
+        <target state="new">DPI unaware - No scaling and assuming 100% scaling.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|HighDpiMode.PerMonitorV2|DisplayName">
+        <source>Per monitor V2 - DPI detected on-launch and on-change including child windows</source>
+        <target state="new">Per monitor V2 - DPI detected on-launch and on-change including child windows</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|HighDpiMode.PerMonitor|DisplayName">
+        <source>Per monitor - DPI detected on-launch and on-change.</source>
+        <target state="new">Per monitor - DPI detected on-launch and on-change.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|HighDpiMode.SystemAware|DisplayName">
+        <source>System aware - Primary monitor's DPI is scale lead.</source>
+        <target state="new">System aware - Primary monitor's DPI is scale lead.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|ShutdownMode.AfterAllFormsClose|DisplayName">
+        <source>Shut down only after the last form closes.</source>
+        <target state="new">Shut down only after the last form closes.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|ShutdownMode.AfterMainFormCloses|DisplayName">
+        <source>Shut down when the main form closes.</source>
+        <target state="new">Shut down when the main form closes.</target>
+        <note />
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
