@@ -15,7 +15,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
         void RegisterMissingWorkloads(Guid projectGuid, ConfiguredProject project, ISet<WorkloadDescriptor> workloadDescriptors);
 
-        void RegisterMissingSdkRuntimeComponentId(Guid projectGuid, ConfiguredProject project, string runtimeComponentId);
+        void RegisterMissingSdkRuntimeComponentId(Guid projectGuid, ConfiguredProject project, string? runtimeComponentId);
 
         void RegisterProjectConfiguration(Guid projectGuid, ConfiguredProject project);
 

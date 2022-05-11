@@ -70,12 +70,22 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
                 string? TargetFrameworkVersion = await configuration.TargetFrameworkVersion.GetDisplayValueAsync();
 
+                string? componentId = GetComponentId(TargetFrameworkIdentifier, TargetFrameworkVersion);
+                
+                _missingSetupComponentRegistrationService.RegisterMissingSdkRuntimeComponentId(_projectGuid, project, componentId);
+            }
+
+            static string? GetComponentId(string TargetFrameworkIdentifier, string TargetFrameworkVersion)
+            {
+                string? componentId = null;
+
                 if (string.Equals(TargetFrameworkIdentifier, s_netCoreTargetFrameworkIdentifier, StringComparisons.FrameworkIdentifiers) &&
-                !string.IsNullOrEmpty(TargetFrameworkVersion) &&
-                s_packageVersionToComponentId.TryGetValue(TargetFrameworkVersion, out var componentId))
+                    !string.IsNullOrEmpty(TargetFrameworkVersion))
                 {
-                    _missingSetupComponentRegistrationService.RegisterMissingSdkRuntimeComponentId(_projectGuid, project, componentId);
+                    s_packageVersionToComponentId.TryGetValue(TargetFrameworkVersion, out componentId);
                 }
+
+                return componentId;
             }
         }
     }

@@ -92,17 +92,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             UnregisterProjectConfiguration(projectGuid, project);
         }
 
-        public void RegisterMissingSdkRuntimeComponentId(Guid projectGuid, ConfiguredProject project, string runtimeComponentId)
+        public void RegisterMissingSdkRuntimeComponentId(Guid projectGuid, ConfiguredProject project, string? runtimeComponentId)
         {
-            // If a runtime is detected as missing, it will remain in that state until the user install it using the VS Installer.
-            // Due to this, during a solution load all the projects might register to install the same runtime version.
-            // This optimization can avoid executing displayMissingComponentsTask unnecesarily by registering a missing runtime once in the solution.
-            if (!_missingRuntimesRegistered.Add(runtimeComponentId))
+            if (runtimeComponentId is not null)
             {
-                return;
-            }
+                _missingRuntimesRegistered.Add(runtimeComponentId);
 
-            _projectGuidToRuntimeDescriptorMap.GetOrAdd(projectGuid, runtimeComponentId);
+                _projectGuidToRuntimeDescriptorMap.GetOrAdd(projectGuid, runtimeComponentId);
+            }
 
             UnregisterProjectConfiguration(projectGuid, project);
         }
