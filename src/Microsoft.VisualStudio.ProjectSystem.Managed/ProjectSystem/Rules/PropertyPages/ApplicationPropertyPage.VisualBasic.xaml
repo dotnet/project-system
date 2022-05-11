@@ -1,0 +1,147 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<!-- Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information. -->
+<Rule Name="Application"
+      OverrideMode="Extend"
+      xmlns="http://schemas.microsoft.com/build/2009/properties">
+
+  <Rule.Categories>
+    <Category Name="ApplicationFramework"
+              DisplayName="Application Framework"
+              Description="Application Framework settings." />
+  </Rule.Categories>
+
+  <!-- TODO: Create a fwlink for helpurl -->
+  <!-- This property actually is saved as MyType. -->
+  <BoolProperty Name="UseApplicationFramework"
+                DisplayName="Application Framework"
+                Description="Enable the Visual Basic Application Framework for this project. In general, these settings get serialized into the myapp file."
+                HelpUrl="https://docs.microsoft.com/visualstudio/ide/reference/application-page-project-designer-visual-basic#enable-application-framework"
+                Category="ApplicationFramework">
+    <BoolProperty.Metadata>
+      <NameValuePair Name="DependsOn" Value="Application::OutputType" />
+      <NameValuePair Name="VisibilityCondition">
+        <NameValuePair.Value>
+          (is-vb)
+        </NameValuePair.Value>
+      </NameValuePair>
+    </BoolProperty.Metadata>
+  </BoolProperty>
+
+  <!-- TODO: Create a fwlink for helpurl -->
+  <BoolProperty Name="EnableVisualStyles"
+                DisplayName="Windows XP Visual Styles"
+                Description="Uses the most current version for the Control Library COMCTL to provide control rendering with modern visual styling."
+                HelpUrl="https://docs.microsoft.com/dotnet/api/microsoft.visualbasic.applicationservices.windowsformsapplicationbase.enablevisualstyles"
+                Category="ApplicationFramework">
+    <BoolProperty.Metadata>
+      <NameValuePair Name="VisibilityCondition">
+        <NameValuePair.Value>
+          (has-evaluated-value "Application" "UseApplicationFramework" true)
+        </NameValuePair.Value>
+      </NameValuePair>
+    </BoolProperty.Metadata>
+  </BoolProperty>
+
+  <!-- TODO: Create a fwlink for helpurl -->
+  <BoolProperty Name="SingleInstance"
+                DisplayName="Single-instance application"
+                Description="Prevents users from running multiple instances of the application. Default is cleared, which allows multiple instances of the application to be run."
+                HelpUrl="https://docs.microsoft.com/dotnet/api/microsoft.visualbasic.applicationservices.windowsformsapplicationbase.issingleinstance"
+                Category="ApplicationFramework">
+    <BoolProperty.Metadata>
+      <NameValuePair Name="DependsOn" Value="Application::UseApplicationFramework" />
+      <NameValuePair Name="VisibilityCondition">
+        <NameValuePair.Value>
+          (has-evaluated-value "Application" "UseApplicationFramework" true)
+        </NameValuePair.Value>
+      </NameValuePair>
+    </BoolProperty.Metadata>
+  </BoolProperty>
+
+  <!-- TODO: Create a fwlink for helpurl -->
+  <BoolProperty Name="SaveMySettingsOnExit"
+                DisplayName="Save user settings on exit"
+                Description="Controls if settings are saved when users shut down their computers."
+                HelpUrl="https://docs.microsoft.com/dotnet/api/microsoft.visualbasic.applicationservices.windowsformsapplicationbase.savemysettingsonexit"
+                Category="ApplicationFramework">
+    <BoolProperty.Metadata>
+      <NameValuePair Name="DependsOn" Value="Application::UseApplicationFramework" />
+      <NameValuePair Name="VisibilityCondition">
+        <NameValuePair.Value>
+          (has-evaluated-value "Application" "UseApplicationFramework" true)
+        </NameValuePair.Value>
+      </NameValuePair>
+    </BoolProperty.Metadata>
+  </BoolProperty>
+
+  <!-- TODO: Create a fwlink for helpurl -->
+  <EnumProperty Name="HighDpiMode"
+                DisplayName="High DPI mode"
+                Description="Specifies the application-wide HighDpiMode for the application. This setting can be programaticaly overriden through the ApplyApplicationDefaults event."
+                HelpUrl="https://docs.microsoft.com/dotnet/api/system.windows.forms.highdpimode"
+                Category="ApplicationFramework">
+    <EnumProperty.Metadata>
+      <NameValuePair Name="DependsOn" Value="Application::UseApplicationFramework" />
+      <NameValuePair Name="VisibilityCondition">
+        <NameValuePair.Value>
+          (has-evaluated-value "Application" "UseApplicationFramework" true)
+        </NameValuePair.Value>
+      </NameValuePair>
+    </EnumProperty.Metadata>
+
+    <!-- TODO: Validate DisplayName values. -->
+    <EnumValue Name="DpiUnaware"
+               DisplayName="DPI unaware - No scaling and assuming 100% scaling." />
+    <EnumValue Name="DpiUnawareGdiScaled"
+               DisplayName="DPI unaware, GDI scaled - Like DPI unaware but optimized for non-double-buffered Graphics content." />
+    <EnumValue Name="SystemAware"
+               DisplayName="System aware - Primary monitor's DPI is scale lead." />
+    <EnumValue Name="PerMonitor"
+               DisplayName="Per monitor - DPI detected on-launch and on-change." />
+    <EnumValue Name="PerMonitorV2"
+               DisplayName="Per monitor V2 - DPI detected on-launch and on-change including child windows" />
+  </EnumProperty>
+
+  <!-- TODO: Create a fwlink for helpurl -->
+  <EnumProperty Name="AuthenticationMode"
+                DisplayName="Authentication mode"
+                Description="Specifies the method of identifying the logged-on user, when needed."
+                HelpUrl="https://docs.microsoft.com/dotnet/api/microsoft.visualbasic.applicationservices.authenticationmode"
+                Category="ApplicationFramework">
+    <EnumProperty.Metadata>
+      <NameValuePair Name="DependsOn" Value="Application::UseApplicationFramework" />
+      <NameValuePair Name="VisibilityCondition">
+        <NameValuePair.Value>
+          (has-evaluated-value "Application" "UseApplicationFramework" true)
+        </NameValuePair.Value>
+      </NameValuePair>
+    </EnumProperty.Metadata>
+    <!-- TODO: Validate DisplayName values. -->
+    <!-- TODO: Value provider logic needed to convert string enums to integer values -->
+    <EnumValue Name="Windows"
+               DisplayName="Windows - Retrieve user info through My.User at runtime." />
+    <EnumValue Name="ApplicationDefined"
+               DisplayName="Application-defined - Custom authentication implemented within the application." />
+  </EnumProperty>
+
+  <!-- TODO: Create a fwlink for helpurl -->
+  <EnumProperty Name="ShutdownMode"
+                DisplayName="Shutdown mode"
+                Description="Indicates which condition causes the application to shut down."
+                HelpUrl="https://docs.microsoft.com/dotnet/api/microsoft.visualbasic.applicationservices.shutdownmode"
+                Category="ApplicationFramework">
+    <EnumProperty.Metadata>
+      <NameValuePair Name="DependsOn" Value="Application::UseApplicationFramework" />
+      <NameValuePair Name="VisibilityCondition">
+        <NameValuePair.Value>
+          (has-evaluated-value "Application" "UseApplicationFramework" true)
+        </NameValuePair.Value>
+      </NameValuePair>
+    </EnumProperty.Metadata>
+    <!-- TODO: Value provider logic needed to convert string enums to integer values -->
+    <EnumValue Name="AfterMainFormCloses"
+               DisplayName="Shut down when the main form closes." />
+    <EnumValue Name="AfterAllFormsClose"
+               DisplayName="Shut down only after the last form closes." />
+  </EnumProperty>
+</Rule>
