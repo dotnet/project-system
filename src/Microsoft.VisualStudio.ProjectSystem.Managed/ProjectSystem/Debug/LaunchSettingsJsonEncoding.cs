@@ -190,7 +190,7 @@ internal static class LaunchSettingsJsonEncoding
     {
         JsonSerializer? jsonSerializer = null;
 
-        using JsonTextReader reader = new(json);
+        using CommentSkippingJsonTextReader reader = new(json);
 
         ImmutableArray<LaunchProfile>.Builder? profiles = null;
         ImmutableArray<(string Name, object Value)>.Builder? otherSettings = null;
@@ -392,6 +392,28 @@ internal static class LaunchSettingsJsonEncoding
                 string propertyName = (string)reader.Value!;
 
                 callback(propertyName);
+            }
+        }
+    }
+
+    /// <summary>
+    /// An implementation of <see cref="JsonTextReader"/> that skips any comments found
+    /// in the JSON data.
+    /// </summary>
+    private sealed class CommentSkippingJsonTextReader : JsonTextReader
+    {
+        public CommentSkippingJsonTextReader(TextReader reader) : base(reader)
+        {
+        }
+
+        public override bool Read()
+        {
+            while (true)
+            {
+                if (!base.Read())
+                    return false;
+                if (TokenType != JsonToken.Comment)
+                    return true;
             }
         }
     }
