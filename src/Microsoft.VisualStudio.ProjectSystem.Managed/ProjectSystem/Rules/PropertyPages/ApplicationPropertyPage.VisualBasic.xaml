@@ -144,4 +144,31 @@
     <EnumValue Name="AfterAllFormsClose"
                DisplayName="Shut down only after the last form closes." />
   </EnumProperty>
+
+  <StringProperty Name="CreateOrOpenAppManifest"
+                  DisplayName="Create or open app manifest for Windows Settings."
+                  Category="General">
+    <StringProperty.ValueEditors>
+      <ValueEditor EditorType="LinkAction">
+        <ValueEditor.Metadata>
+          <NameValuePair Name="Action" Value="Command" />
+          <NameValuePair Name="Command" Value="CreateOrOpenAppManifest" />
+        </ValueEditor.Metadata>
+      </ValueEditor>
+    </StringProperty.ValueEditors>
+  </StringProperty>
+
+  <StringProperty Name="CreateOrOpenApplicationEvents"
+                  DisplayName="Create or open Application Events."
+                  Category="General">
+    <StringProperty.ValueEditors>
+      <ValueEditor EditorType="LinkAction">
+        <ValueEditor.Metadata>
+          <NameValuePair Name="Action" Value="Command" />
+          <NameValuePair Name="Command" Value="CreateOrOpenApplicationEvents" />
+        </ValueEditor.Metadata>
+      </ValueEditor>
+    </StringProperty.ValueEditors>
+  </StringProperty>
+  
 </Rule>
