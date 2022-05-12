@@ -3,6 +3,7 @@
 
   <Import Project="..\..\build\import\VisualStudio.props" />
   <Import Project="..\..\build\import\RepoLayout.props" />
+  <!-- <Import Project="$(MicroBuildDirectory)Microsoft.VisualStudioEng.MicroBuild.Core.props" /> -->
 
   <PropertyGroup>
     <ResolveNuGetPackages>false</ResolveNuGetPackages>
@@ -20,12 +21,15 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <_PackageStubFiles Include="$(IntermediateOutputPath)*.stub"/>
-    <MergeManifest Include="@(_PackageStubFiles->'$(VisualStudioSetupInsertionPath)%(Filename).json')"/>
+    <!-- <_PackageStubFiles Include="$(IntermediateOutputPath)*.stub"/>
+    <MergeManifest Include="@(_PackageStubFiles->'$(VisualStudioSetupInsertionPath)%(Filename).json')"/> -->
+    <MergeManifest Include="$(VisualStudioSetupInsertionPath)$(MSBuildProjectName).json"
+      SBOMFileLocation="$(ManifestDirPath)_manifest\spdx_2.2\manifest.spdx.json"
+      />
   </ItemGroup>
 
-  <PropertyGroup Condition="'$(BUILD_BUILDNUMBER)' == ''">
+  <!-- <PropertyGroup Condition="'$(BUILD_BUILDNUMBER)' == ''">
     <FinalizeManifest>false</FinalizeManifest>
-  </PropertyGroup>
+  </PropertyGroup> -->
 
 </Project>

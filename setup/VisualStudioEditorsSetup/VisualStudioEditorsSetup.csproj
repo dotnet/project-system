@@ -11,6 +11,7 @@
   <!-- <Import Project="..\..\build\import\VisualStudioDesigner.props" /> -->
 
   <PropertyGroup>
+    <TargetFramework>net472</TargetFramework>
     <RootNamespace>Microsoft.VisualStudio</RootNamespace>
     <PublishOutputToSymStore>false</PublishOutputToSymStore>
 
