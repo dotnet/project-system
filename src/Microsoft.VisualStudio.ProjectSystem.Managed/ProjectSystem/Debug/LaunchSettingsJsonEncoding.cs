@@ -48,6 +48,7 @@ internal static class LaunchSettingsJsonEncoding
         void WriteSettings()
         {
             bool startedProfiles = false;
+            JsonSerializer? jsonSerializer = null;
 
             foreach (ILaunchProfile profile in profiles)
             {
@@ -65,27 +66,13 @@ internal static class LaunchSettingsJsonEncoding
                 // End the profiles object.
                 writer.WriteEndObject();
             }
-
-            JsonSerializer? jsonSerializer = null;
             
             foreach ((string key, object value) in globalSettings)
             {
                 if (!value.IsInMemoryObject())
                 {
                     writer.WritePropertyName(key);
-                    if (value is string s)
-                        writer.WriteValue(s);
-                    if (value is int i)
-                        writer.WriteValue(i);
-                    if (value is null)
-                        writer.WriteNull();
-                    if (value is bool b)
-                        writer.WriteValue(b);
-                    else
-                    {
-                        jsonSerializer ??= JsonSerializer.Create(new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore });
-                        jsonSerializer.Serialize(writer, value);
-                    }
+                    WriteObject(value);
                 }
             }
 
@@ -165,10 +152,27 @@ internal static class LaunchSettingsJsonEncoding
                 foreach ((string key, object value) in profile.EnumerateOtherSettings())
                 {
                     writer.WritePropertyName(key);
-                    writer.WriteValue(value);
+                    WriteObject(value);
                 }
 
                 writer.WriteEndObject();
+            }
+
+            void WriteObject(object value)
+            {
+                if (value is string s)
+                    writer.WriteValue(s);
+                else if (value is int i)
+                    writer.WriteValue(i);
+                else if (value is null)
+                    writer.WriteNull();
+                else if (value is bool b)
+                    writer.WriteValue(b);
+                else
+                {
+                    jsonSerializer ??= JsonSerializer.Create(new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore });
+                    jsonSerializer.Serialize(writer, value);
+                }
             }
         }
     }
