@@ -2,7 +2,6 @@
 
 using Microsoft.VisualStudio.ProjectSystem.LanguageServices;
 using Microsoft.VisualStudio.TextManager.Interop;
-using Microsoft.VisualStudio.Threading;
 using HierarchyId = Microsoft.VisualStudio.Shell.HierarchyId;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
@@ -18,11 +17,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
     [AppliesTo(ProjectCapability.DotNetLanguageService)]
     internal class ActiveEditorContextTracker : IActiveIntellisenseProjectProvider, IVsContainedLanguageProjectNameProvider, IActiveEditorContextTracker
     {
-        private ImmutableList<string> _contexts = ImmutableList<string>.Empty;
+        private ImmutableHashSet<string> _contexts = ImmutableHashSet<string>.Empty.WithComparer(StringComparers.WorkspaceProjectContextIds);
         private string? _activeIntellisenseProjectContext;
 
         [ImportingConstructor]
-        public ActiveEditorContextTracker(UnconfiguredProject? project) // For scoping
+        public ActiveEditorContextTracker(UnconfiguredProject _) // For scoping
         {
         }
 
@@ -50,7 +49,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
             Requires.NotNullOrEmpty(contextId, nameof(contextId));
 
             if (!_contexts.Contains(contextId))
-                throw new InvalidOperationException($"'{nameof(contextId)}' has not been registered or has already been unregistered");
+                throw new InvalidOperationException($"'{nameof(contextId)}' has not been registered or has already been unregistered.");
 
             return StringComparers.WorkspaceProjectContextIds.Equals(ActiveIntellisenseProjectContext, contextId);
         }
@@ -59,17 +58,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
         {
             Requires.NotNullOrEmpty(contextId, nameof(contextId));
 
-            bool changed = ThreadingTools.ApplyChangeOptimistically(ref _contexts, projectContexts =>
-            {
-                if (!projectContexts.Contains(contextId))
-                {
-                    projectContexts = projectContexts.Add(contextId);
-                }
+            bool added = ImmutableInterlocked.Update(ref _contexts, static (contexts, id) => contexts.Add(id), contextId);
 
-                return projectContexts;
-            });
-
-            if (!changed)
+            if (!added)
                 throw new InvalidOperationException($"'{nameof(contextId)}' has already been registered.");
         }
 
@@ -77,10 +68,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
         {
             Requires.NotNullOrEmpty(contextId, nameof(contextId));
 
-            bool changed = ThreadingTools.ApplyChangeOptimistically(ref _contexts, projectContexts => projectContexts.Remove(contextId));
+            bool removed = ImmutableInterlocked.Update(ref _contexts, static (contexts, id) => contexts.Remove(id), contextId);
 
-            if (!changed)
-                throw new InvalidOperationException($"'{nameof(contextId)}' has not been registered or has already been unregistered");
+            if (!removed)
+                throw new InvalidOperationException($"'{nameof(contextId)}' has not been registered or has already been unregistered.");
         }
     }
 }
