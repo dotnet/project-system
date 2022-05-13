@@ -2,7 +2,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <ExcludeRestorePackageImports>true</ExcludeRestorePackageImports>
+    <!-- <ExcludeRestorePackageImports>true</ExcludeRestorePackageImports> -->
   </PropertyGroup>
 
   <Import Project="..\..\build\import\VisualStudio.props" />

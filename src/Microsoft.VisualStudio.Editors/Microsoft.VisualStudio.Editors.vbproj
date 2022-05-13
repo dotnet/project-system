@@ -7,9 +7,9 @@
     <Prefer32Bit>false</Prefer32Bit>
     <StrongNameKeyId>Microsoft</StrongNameKeyId>
     <TargetFramework>net472</TargetFramework>
-    <!-- <IsVsixProject>true</IsVsixProject> -->
-    <!-- <CreateVsixContainer>false</CreateVsixContainer> -->
-    <!-- <GeneratePkgDefFile>true</GeneratePkgDefFile> -->
+    <IsVsixProject>true</IsVsixProject>
+    <CreateVsixContainer>false</CreateVsixContainer>
+    <GeneratePkgDefFile>true</GeneratePkgDefFile>
     <!-- TODO: Function/Property doesn't return a value on all code paths (https://github.com/dotnet/project-system/issues/2592) -->
     <NoWarn>$(NoWarn);42353;42355;42105;NU5125;IDE1006</NoWarn>
     <IsManagedProjectSystemProject>false</IsManagedProjectSystemProject>
