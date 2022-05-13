@@ -1,3 +1,9 @@
 - Projects containing a `.csproj` & `.vsixmanifest` are VS extension projects, which create a VSIX package.
+  - Allows for F5 experience
+  - Doesn't require admin access to install
+  - Can only install into 8 specific VS sub-directories
 - Projects containing a `.swixproj` & `.swr` are loose files to be put into a VSIX package (NOT AN EXTENSION).
+  - No F5 experience
+  - Requires admin access to install
+  - Can install into any sub-directory in VS
 - `.vsmanproj` are for performing VS insertions.
