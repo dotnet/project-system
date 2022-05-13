@@ -1,5 +1,7 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
+using Newtonsoft.Json.Linq;
+
 namespace Microsoft.VisualStudio.ProjectSystem.Debug
 {
     public sealed class LaunchSettingsJsonEncodingTests
@@ -50,6 +52,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
                     "ASPNET_APPLICATIONBASE": "c:\\Users\\billhie\\Documents\\projects\\WebApplication8\\src\\WebApplication8"
                   }
                 }
+              },
+              "string": "hello",
+              "int": 123,
+              "bool": true,
+              "null": null,
+              "dictionary": {
+                "A": "1",
+                "B": "2"
               }
             }
             """;
@@ -102,9 +112,66 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             Assert.Equal(("ASPNET_APPLICATIONBASE", @"c:\Users\billhie\Documents\projects\WebApplication8\src\WebApplication8"), profile.EnvironmentVariables[1]);
             Assert.False(profile.IsInMemoryObject());
 
+            Assert.Equal(5, globalSettings.Length);
+            Assert.Equal(("string", new JValue("hello")), globalSettings[0]);
+            Assert.Equal(("int", new JValue(123)), globalSettings[1]);
+            Assert.Equal(("bool", new JValue(true)), globalSettings[2]);
+            Assert.Equal(("null", JValue.CreateNull()), globalSettings[3]);
+            var dicObj = Assert.IsType<JObject>(globalSettings[4].Value);
+            Assert.Equal(2, dicObj.Count);
+            Assert.Equal("1", dicObj["A"]);
+            Assert.Equal("2", dicObj["B"]);
+
             var roundTrippedJson = LaunchSettingsJsonEncoding.ToJson(profiles, globalSettings);
 
             Assert.Equal(json, roundTrippedJson);
+        }
+
+        [Fact]
+        public void ToJson_HandlesComplexOtherAndGlobalSettings()
+        {
+            var settings = ImmutableArray.Create<(string Key, object Value)>(
+                ("string", "hello"),
+                ("int", 123),
+                ("bool", true),
+                ("null", null!),
+                ("dictionary", new Dictionary<string, string> { ["A"] = "1", ["B"] = "2" }));
+
+            var launchProfile = new LaunchProfile(
+                "Name",
+                "Command",
+                otherSettings: settings);
+
+            var actual = LaunchSettingsJsonEncoding.ToJson(new[] { launchProfile }, globalSettings: settings);
+
+            var expected =
+                """
+                {
+                  "profiles": {
+                    "Name": {
+                      "commandName": "Command",
+                      "string": "hello",
+                      "int": 123,
+                      "bool": true,
+                      "null": null,
+                      "dictionary": {
+                        "A": "1",
+                        "B": "2"
+                      }
+                    }
+                  },
+                  "string": "hello",
+                  "int": 123,
+                  "bool": true,
+                  "null": null,
+                  "dictionary": {
+                    "A": "1",
+                    "B": "2"
+                  }
+                }
+                """;
+
+            Assert.Equal(expected, actual);
         }
     }
 }
