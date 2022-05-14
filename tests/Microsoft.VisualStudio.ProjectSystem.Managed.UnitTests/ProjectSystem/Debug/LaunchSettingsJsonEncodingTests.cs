@@ -173,5 +173,39 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
 
             Assert.Equal(expected, actual);
         }
+
+        [Fact]
+        public void FromJson_WithComments()
+        {
+            // https://github.com/dotnet/project-system/issues/8168
+            const string json =
+            """
+            {
+              "profiles": {
+                "ConsoleApp1": {
+                  "commandName": "Project"
+                  //"commandLineArgs": "1111"
+                }
+              }
+            }
+            """;
+
+            var (profiles, globalSettings) = LaunchSettingsJsonEncoding.FromJson(new StringReader(json), _providers);
+
+            var profile = Assert.Single(profiles);
+
+            Assert.Equal("ConsoleApp1", profile.Name);
+            Assert.Equal("Project", profile.CommandName);
+            Assert.False(profile.DoNotPersist);
+            Assert.Null(profile.ExecutablePath);
+            Assert.Null(profile.CommandLineArgs);
+            Assert.Null(profile.WorkingDirectory);
+            Assert.Null(profile.LaunchUrl);
+            Assert.False(profile.LaunchBrowser);
+            Assert.Empty(profile.OtherSettings);
+            Assert.False(profile.IsInMemoryObject());
+
+            Assert.Empty(globalSettings);
+        }
     }
 }
