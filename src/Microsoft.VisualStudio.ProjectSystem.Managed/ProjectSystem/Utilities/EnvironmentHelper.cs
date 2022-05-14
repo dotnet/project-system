@@ -15,6 +15,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.Utilities
 
         public string ExpandEnvironmentVariables(string name)
         {
+            if (name.IndexOf('%') == -1)
+            {
+                // There cannot be any environment variables in this string.
+                // Avoid several allocations in the .NET Framework's implementation
+                // of Environment.ExpandEnvironmentVariables.
+                return name;
+            }
+
             return Environment.ExpandEnvironmentVariables(name);
         }
     }
