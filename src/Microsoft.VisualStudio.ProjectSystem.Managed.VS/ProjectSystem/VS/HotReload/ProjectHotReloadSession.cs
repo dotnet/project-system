@@ -7,6 +7,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.HotReload
 {
     internal class ProjectHotReloadSession : IManagedHotReloadAgent, IProjectHotReloadSession
     {
+        private readonly int _variant;
         private readonly string _runtimeVersion;
         private readonly Lazy<IHotReloadAgentManagerClient> _hotReloadAgentManagerClient;
         private readonly Lazy<IHotReloadDiagnosticOutputService> _hotReloadOutputService;
@@ -18,6 +19,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.HotReload
 
         public ProjectHotReloadSession(
             string name,
+            int variant,
             string runtimeVersion,
             Lazy<IHotReloadAgentManagerClient> hotReloadAgentManagerClient,
             Lazy<IHotReloadDiagnosticOutputService> hotReloadOutputService,
@@ -25,6 +27,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.HotReload
             IProjectHotReloadSessionCallback callback)
         {
             Name = name;
+            _variant = variant;
             _runtimeVersion = runtimeVersion;
             _hotReloadAgentManagerClient = hotReloadAgentManagerClient;
             _hotReloadOutputService = hotReloadOutputService;
@@ -168,6 +171,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.HotReload
 
         public async ValueTask RestartAsync(CancellationToken cancellationToken)
         {
+            WriteToOutputWindow(
+                new HotReloadLogMessage(
+                    HotReloadVerbosity.Detailed,
+                    VSResources.ProjectHotReloadSessionManager_AttachingToProcess,
+                    Name,
+                    _pendingSessionState.Session.Name,
+                    (uint)processId,
+                    HotReloadDiagnosticErrorLevel.Info
+                ),
+                cancellationToken);
+            
             WriteToOutputWindow(VSResources.HotReloadRestartInProgress);
 
             await _callback.RestartProjectAsync(cancellationToken);

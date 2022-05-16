@@ -23,10 +23,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.HotReload
             _managedDeltaApplierCreator = managedDeltaApplierCreator;
         }
 
-        public IProjectHotReloadSession? CreateHotReloadSession(string id, string runtimeVersion, IProjectHotReloadSessionCallback callback)
+        public IProjectHotReloadSession? CreateHotReloadSession(string id, int variant, string runtimeVersion, IProjectHotReloadSessionCallback callback)
         {
             return new ProjectHotReloadSession(
                 id,
+                variant,
                 runtimeVersion,
                 _hotReloadAgentManagerClient,
                 _hotReloadDiagnosticOutputService,

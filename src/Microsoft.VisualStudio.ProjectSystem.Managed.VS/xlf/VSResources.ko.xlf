@@ -121,10 +121,10 @@
         <note />
       </trans-unit>
       <trans-unit id="ProjectHotReloadSessionManager_ErrorAttachingToProcess">
-        <source>{0}: Error while attaching to process '{1}':
+        <source>Error while attaching to process '{1}':
 {2}
 {3}</source>
-        <target state="translated">{0}: '{1}' 프로세스에 연결하는 동안 오류 발생:
+        <target state="needs-review-translation">{0}: '{1}' 프로세스에 연결하는 동안 오류 발생:
 {2}
 {3}</target>
         <note>{0} is the Hot Reload session identifier. {1} is the process ID (PID). {2} is the exception type name. {3} is the exception message.</note>
@@ -144,9 +144,9 @@
         <note>{0} is the Hot Reload session identifier.</note>
       </trans-unit>
       <trans-unit id="ProjectHotReloadSessionManager_ProcessAlreadyExited">
-        <source>{0}: The process has already exited.</source>
-        <target state="translated">{0}: 프로세스가 이미 종료되었습니다.</target>
-        <note>{0} is the Hot Reload session identifier.</note>
+        <source>The process has already exited.</source>
+        <target state="new">The process has already exited.</target>
+        <note />
       </trans-unit>
       <trans-unit id="ProjectHotReloadSessionManager_ProcessExited">
         <source>{0}: The process has exited.</source>

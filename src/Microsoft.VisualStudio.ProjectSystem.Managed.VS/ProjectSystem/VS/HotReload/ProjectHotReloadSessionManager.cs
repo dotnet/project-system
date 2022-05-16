@@ -96,7 +96,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.HotReload
                             HotReloadVerbosity.Minimal,
                             VSResources.ProjectHotReloadSessionManager_ProcessAlreadyExited,
                             projectName,
-                            _pendingSessionState.Session.Name,
+                            var,
                             (uint)processId,
                             HotReloadDiagnosticErrorLevel.Error
                         ),
@@ -128,9 +128,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.HotReload
             {
                 if (await DebugFrameworkSupportsStartupHooksAsync())
                 {
-                    string name = $"{Path.GetFileNameWithoutExtension(_project.FullPath)}:{_nextUniqueId++}";
+                    string name = Path.GetFileNameWithoutExtension(_project.FullPath);
                     HotReloadState state = new(this);
-                    IProjectHotReloadSession? projectHotReloadSession = _projectHotReloadAgent.Value.CreateHotReloadSession(name, frameworkVersion, state);
+                    IProjectHotReloadSession? projectHotReloadSession = _projectHotReloadAgent.Value.CreateHotReloadSession(name, _nextUniqueId++, frameworkVersion, state);
 
                     if (projectHotReloadSession is not null)
                     {
