@@ -76,7 +76,6 @@
     </EnumProperty.DataSource>
     <EnumValue Name="On" DisplayName="On" />
     <EnumValue Name="Off" DisplayName="Off" />
-    <EnumValue Name="Custom" DisplayName="(custom)" />
   </EnumProperty>
 
   <!-- TODO: Replace HelpUrl with a fwlink -->
@@ -148,6 +147,37 @@
                 Description="Implicit narrowing conversion occurs when there is an implicit data type conversion that is a narrowing conversion."
                 HelpUrl="https://docs.microsoft.com/dotnet/visual-basic/language-reference/statements/option-strict-statement#implicit-narrowing-conversion-errors"
                 Category="Warnings">
+    <EnumProperty.Metadata>
+      <NameValuePair Name="VisibilityCondition">
+        <NameValuePair.Value>
+          (not (has-evaluated-value "Build" "OptionStrict" "On"))
+        </NameValuePair.Value>
+      </NameValuePair>
+    </EnumProperty.Metadata>
+    <EnumValue Name="None" DisplayName="None" />
+    <EnumValue Name="Warning" DisplayName="Warning" />
+    <EnumValue Name="Error" DisplayName="Error" />
+  </EnumProperty>
+
+  <!-- TODO: Replace HelpUrl with a fwlink -->
+  <EnumProperty Name="ImplicitConversion_Readonly"
+                DisplayName="Implicit conversion"
+                Description="Implicit narrowing conversion occurs when there is an implicit data type conversion that is a narrowing conversion. Cannot be changed when 'Option strict' is on."
+                HelpUrl="https://docs.microsoft.com/dotnet/visual-basic/language-reference/statements/option-strict-statement#implicit-narrowing-conversion-errors"
+                Category="Warnings"
+                ReadOnly="True">
+    <EnumProperty.DataSource>
+      <DataSource Persistence="ProjectFileWithInterception"
+                  PersistedName="ImplicitConversion"
+                  HasConfigurationCondition="True" />
+    </EnumProperty.DataSource>
+    <EnumProperty.Metadata>
+      <NameValuePair Name="VisibilityCondition">
+        <NameValuePair.Value>
+          (has-evaluated-value "Build" "OptionStrict" "On")
+        </NameValuePair.Value>
+      </NameValuePair>
+    </EnumProperty.Metadata>
     <EnumValue Name="None" DisplayName="None" />
     <EnumValue Name="Warning" DisplayName="Warning" />
     <EnumValue Name="Error" DisplayName="Error" />
@@ -159,6 +189,37 @@
                 Description="An object is late bound when it is assigned to a property or method of a variable that is declared to be of type 'Object'. These operations could fail at run time."
                 HelpUrl="https://docs.microsoft.com/dotnet/visual-basic/language-reference/statements/option-strict-statement#late-binding-errors"
                 Category="Warnings">
+    <EnumProperty.Metadata>
+      <NameValuePair Name="VisibilityCondition">
+        <NameValuePair.Value>
+          (not (has-evaluated-value "Build" "OptionStrict" "On"))
+        </NameValuePair.Value>
+      </NameValuePair>
+    </EnumProperty.Metadata>
+    <EnumValue Name="None" DisplayName="None" />
+    <EnumValue Name="Warning" DisplayName="Warning" />
+    <EnumValue Name="Error" DisplayName="Error" />
+  </EnumProperty>
+  
+  <!-- TODO: Replace HelpUrl with a fwlink -->
+  <EnumProperty Name="LateBinding_Readonly"
+                DisplayName="Late binding"
+                Description="An object is late bound when it is assigned to a property or method of a variable that is declared to be of type 'Object'. These operations could fail at run time. Cannot be changed when 'Option strict' is on."
+                HelpUrl="https://docs.microsoft.com/dotnet/visual-basic/language-reference/statements/option-strict-statement#late-binding-errors"
+                Category="Warnings"
+                ReadOnly="True">
+    <EnumProperty.DataSource>
+      <DataSource Persistence="ProjectFileWithInterception"
+                  PersistedName="LateBinding"
+                  HasConfigurationCondition="True" />
+    </EnumProperty.DataSource>
+    <EnumProperty.Metadata>
+      <NameValuePair Name="VisibilityCondition">
+        <NameValuePair.Value>
+          (has-evaluated-value "Build" "OptionStrict" "On")
+        </NameValuePair.Value>
+      </NameValuePair>
+    </EnumProperty.Metadata>
     <EnumValue Name="None" DisplayName="None" />
     <EnumValue Name="Warning" DisplayName="Warning" />
     <EnumValue Name="Error" DisplayName="Error" />
@@ -170,6 +231,37 @@
                 Description="Implicit object type errors occur when an appropriate type cannot be inferred for a declared variable, so a type of 'Object' is inferred."
                 HelpUrl="https://docs.microsoft.com/en-us/dotnet/visual-basic/language-reference/statements/option-strict-statement#implicit-object-type-errors"
                 Category="Warnings">
+    <EnumProperty.Metadata>
+      <NameValuePair Name="VisibilityCondition">
+        <NameValuePair.Value>
+          (not (has-evaluated-value "Build" "OptionStrict" "On"))
+        </NameValuePair.Value>
+      </NameValuePair>
+    </EnumProperty.Metadata>
+    <EnumValue Name="None" DisplayName="None" />
+    <EnumValue Name="Warning" DisplayName="Warning" />
+    <EnumValue Name="Error" DisplayName="Error" />
+  </EnumProperty>
+
+  <!-- TODO: Replace HelpUrl with a fwlink -->
+  <EnumProperty Name="ImplicitType_Readonly"
+                DisplayName="Implicit type"
+                Description="Implicit object type errors occur when an appropriate type cannot be inferred for a declared variable, so a type of 'Object' is inferred. Cannot be changed when 'Option strict' is on."
+                HelpUrl="https://docs.microsoft.com/en-us/dotnet/visual-basic/language-reference/statements/option-strict-statement#implicit-object-type-errors"
+                Category="Warnings"
+                ReadOnly="True">
+    <EnumProperty.DataSource>
+      <DataSource Persistence="ProjectFileWithInterception"
+                  PersistedName="ImplicitType"
+                  HasConfigurationCondition="True" />
+    </EnumProperty.DataSource>
+    <EnumProperty.Metadata>
+      <NameValuePair Name="VisibilityCondition">
+        <NameValuePair.Value>
+          (has-evaluated-value "Build" "OptionStrict" "On")
+        </NameValuePair.Value>
+      </NameValuePair>
+    </EnumProperty.Metadata>
     <EnumValue Name="None" DisplayName="None" />
     <EnumValue Name="Warning" DisplayName="Warning" />
     <EnumValue Name="Error" DisplayName="Error" />

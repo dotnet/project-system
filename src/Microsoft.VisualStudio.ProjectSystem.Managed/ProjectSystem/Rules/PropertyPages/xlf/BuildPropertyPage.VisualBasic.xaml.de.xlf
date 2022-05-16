@@ -132,6 +132,16 @@
         <target state="new">Generate serialization assemblies</target>
         <note />
       </trans-unit>
+      <trans-unit id="EnumProperty|ImplicitConversion_Readonly|Description">
+        <source>Implicit narrowing conversion occurs when there is an implicit data type conversion that is a narrowing conversion. Cannot be changed when 'Option strict' is on.</source>
+        <target state="new">Implicit narrowing conversion occurs when there is an implicit data type conversion that is a narrowing conversion. Cannot be changed when 'Option strict' is on.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumProperty|ImplicitConversion_Readonly|DisplayName">
+        <source>Implicit conversion</source>
+        <target state="new">Implicit conversion</target>
+        <note />
+      </trans-unit>
       <trans-unit id="EnumProperty|ImplicitConversion|Description">
         <source>Implicit narrowing conversion occurs when there is an implicit data type conversion that is a narrowing conversion.</source>
         <target state="new">Implicit narrowing conversion occurs when there is an implicit data type conversion that is a narrowing conversion.</target>
@@ -140,6 +150,16 @@
       <trans-unit id="EnumProperty|ImplicitConversion|DisplayName">
         <source>Implicit conversion</source>
         <target state="new">Implicit conversion</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumProperty|ImplicitType_Readonly|Description">
+        <source>Implicit object type errors occur when an appropriate type cannot be inferred for a declared variable, so a type of 'Object' is inferred. Cannot be changed when 'Option strict' is on.</source>
+        <target state="new">Implicit object type errors occur when an appropriate type cannot be inferred for a declared variable, so a type of 'Object' is inferred. Cannot be changed when 'Option strict' is on.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumProperty|ImplicitType_Readonly|DisplayName">
+        <source>Implicit type</source>
+        <target state="new">Implicit type</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumProperty|ImplicitType|Description">
@@ -155,6 +175,16 @@
       <trans-unit id="EnumProperty|InstanceVariableAccessesSharedMember|DisplayName">
         <source>Instance variable accesses shared member</source>
         <target state="new">Instance variable accesses shared member</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumProperty|LateBinding_Readonly|Description">
+        <source>An object is late bound when it is assigned to a property or method of a variable that is declared to be of type 'Object'. These operations could fail at run time. Cannot be changed when 'Option strict' is on.</source>
+        <target state="new">An object is late bound when it is assigned to a property or method of a variable that is declared to be of type 'Object'. These operations could fail at run time. Cannot be changed when 'Option strict' is on.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumProperty|LateBinding_Readonly|DisplayName">
+        <source>Late binding</source>
+        <target state="new">Late binding</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumProperty|LateBinding|Description">
@@ -307,6 +337,21 @@
         <target state="new">Warning</target>
         <note />
       </trans-unit>
+      <trans-unit id="EnumValue|ImplicitConversion_Readonly.Error|DisplayName">
+        <source>Error</source>
+        <target state="new">Error</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|ImplicitConversion_Readonly.None|DisplayName">
+        <source>None</source>
+        <target state="new">None</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|ImplicitConversion_Readonly.Warning|DisplayName">
+        <source>Warning</source>
+        <target state="new">Warning</target>
+        <note />
+      </trans-unit>
       <trans-unit id="EnumValue|ImplicitType.Error|DisplayName">
         <source>Error</source>
         <target state="new">Error</target>
@@ -318,6 +363,21 @@
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|ImplicitType.Warning|DisplayName">
+        <source>Warning</source>
+        <target state="new">Warning</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|ImplicitType_Readonly.Error|DisplayName">
+        <source>Error</source>
+        <target state="new">Error</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|ImplicitType_Readonly.None|DisplayName">
+        <source>None</source>
+        <target state="new">None</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|ImplicitType_Readonly.Warning|DisplayName">
         <source>Warning</source>
         <target state="new">Warning</target>
         <note />
@@ -352,6 +412,21 @@
         <target state="new">Warning</target>
         <note />
       </trans-unit>
+      <trans-unit id="EnumValue|LateBinding_Readonly.Error|DisplayName">
+        <source>Error</source>
+        <target state="new">Error</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|LateBinding_Readonly.None|DisplayName">
+        <source>None</source>
+        <target state="new">None</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|LateBinding_Readonly.Warning|DisplayName">
+        <source>Warning</source>
+        <target state="new">Warning</target>
+        <note />
+      </trans-unit>
       <trans-unit id="EnumValue|OptionCompare.Binary|DisplayName">
         <source>Binary</source>
         <target state="new">Binary</target>
@@ -380,11 +455,6 @@
       <trans-unit id="EnumValue|OptionInfer.On|DisplayName">
         <source>On</source>
         <target state="new">On</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="EnumValue|OptionStrict.Custom|DisplayName">
-        <source>(custom)</source>
-        <target state="new">(custom)</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|OptionStrict.Off|DisplayName">
