@@ -94,19 +94,27 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.HotReload
                     WriteOutputMessage(
                         new HotReloadLogMessage(
                             HotReloadVerbosity.Minimal,
-                            VSResources.ProjectHotReloadSessionManager_ProcessAlreadyExited,
+                            $"${ex.GetType()}: ${ex.Message}",
                             projectName,
-                            var,
+                            _pendingSessionState.Session.Name,
                             (uint)processId,
                             HotReloadDiagnosticErrorLevel.Error
                         ),
                         default);
-                    WriteOutputMessage(string.Format(VSResources.ProjectHotReloadSessionManager_ErrorAttachingToProcess, _pendingSessionState.Session.Name, processId, ex.GetType(), ex.Message));
                 }
 
                 if (_pendingSessionState.Process is null)
                 {
-                    WriteOutputMessage(string.Format(VSResources.ProjectHotReloadSessionManager_NoActiveProcess, _pendingSessionState.Session.Name));
+                    WriteOutputMessage(
+                        new HotReloadLogMessage(
+                            HotReloadVerbosity.Minimal,
+                            VSResources.ProjectHotReloadSessionManager_NoActiveProcess,
+                            projectName,
+                            _pendingSessionState.Session.Name,
+                            (uint)processId,
+                            HotReloadDiagnosticErrorLevel.Warning
+                        ),
+                        default);
                 }
                 else
                 {
@@ -298,9 +306,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.HotReload
             WriteOutputMessage(
                 new HotReloadLogMessage(
                     HotReloadVerbosity.Minimal,
-                    string.Format(VSResources.ProjectHotReloadSessionManager_ProcessExited, hotReloadState.Session.Name),
+                    VSResources.ProjectHotReloadSessionManager_ProcessExited,
                     hotReloadState.Session?.Name,
-                    null,
+                    (_nextUniqueId - 1).ToString(),
                     HotReloadDiagnosticOutputService.GetProcessId(hotReloadState.Process),
                     HotReloadDiagnosticErrorLevel.Info
                 ),
@@ -355,7 +363,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.HotReload
                 WriteOutputMessage(
                     new HotReloadLogMessage(
                         HotReloadVerbosity.Minimal,
-                        string.Format(VSResources.ProjectHotReloadSessionManager_ErrorStoppingTheSession, hotReloadState.Session.Name, ex.GetType(), ex.Message),
+                        string.Format(VSResources.ProjectHotReloadSessionManager_ErrorStoppingTheSession, ex.GetType(), ex.Message),
                         hotReloadState.Session?.Name,
                         null,
                         HotReloadDiagnosticOutputService.GetProcessId(hotReloadState.Process),
