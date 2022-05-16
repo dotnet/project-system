@@ -177,6 +177,16 @@
         <target state="translated">애플리케이션</target>
         <note />
       </trans-unit>
+      <trans-unit id="StringProperty|ApplicationIcon|Description">
+        <source>Sets the .ico file that you want to use as your program icon.</source>
+        <target state="new">Sets the .ico file that you want to use as your program icon.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|ApplicationIcon|DisplayName">
+        <source>Icon</source>
+        <target state="new">Icon</target>
+        <note />
+      </trans-unit>
       <trans-unit id="StringProperty|AssemblyName|Description">
         <source>Specifies the name of the output file that will hold the assembly manifest.</source>
         <target state="translated">어셈블리 매니페스트를 저장할 출력 파일의 이름을 지정합니다.</target>

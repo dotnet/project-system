@@ -10,15 +10,17 @@
               Description="Application Framework settings." />
   </Rule.Categories>
 
-  <!-- TODO: Create a fwlink for helpurl -->
+  <!-- TODO: Add a hyperlink/button to open the app.manifest. Previously, we had a View Windows Settings button. -->
+
+  <!-- TODO: Add a hyperlink/button to open the ApplicationEvents.vb. Previously, we had a View Application Events button. -->
+  
   <!-- This property actually is saved as MyType. -->
   <BoolProperty Name="UseApplicationFramework"
                 DisplayName="Application Framework"
                 Description="Enable the Visual Basic Application Framework for this project. In general, these settings get serialized into the myapp file."
-                HelpUrl="https://docs.microsoft.com/visualstudio/ide/reference/application-page-project-designer-visual-basic#enable-application-framework"
+                HelpUrl="https://go.microsoft.com/fwlink/?linkid=2195444"
                 Category="ApplicationFramework">
     <BoolProperty.Metadata>
-      <NameValuePair Name="DependsOn" Value="Application::OutputType" />
       <NameValuePair Name="VisibilityCondition">
         <NameValuePair.Value>
           (is-vb)
@@ -27,11 +29,10 @@
     </BoolProperty.Metadata>
   </BoolProperty>
 
-  <!-- TODO: Create a fwlink for helpurl -->
   <BoolProperty Name="EnableVisualStyles"
                 DisplayName="Windows XP Visual Styles"
                 Description="Uses the most current version for the Control Library COMCTL to provide control rendering with modern visual styling."
-                HelpUrl="https://docs.microsoft.com/dotnet/api/microsoft.visualbasic.applicationservices.windowsformsapplicationbase.enablevisualstyles"
+                HelpUrl="https://go.microsoft.com/fwlink/?linkid=2195445"
                 Category="ApplicationFramework">
     <BoolProperty.Metadata>
       <NameValuePair Name="VisibilityCondition">
@@ -42,14 +43,12 @@
     </BoolProperty.Metadata>
   </BoolProperty>
 
-  <!-- TODO: Create a fwlink for helpurl -->
   <BoolProperty Name="SingleInstance"
                 DisplayName="Single-instance application"
                 Description="Prevents users from running multiple instances of the application. Default is cleared, which allows multiple instances of the application to be run."
-                HelpUrl="https://docs.microsoft.com/dotnet/api/microsoft.visualbasic.applicationservices.windowsformsapplicationbase.issingleinstance"
+                HelpUrl="https://go.microsoft.com/fwlink/?linkid=2195340"
                 Category="ApplicationFramework">
     <BoolProperty.Metadata>
-      <NameValuePair Name="DependsOn" Value="Application::UseApplicationFramework" />
       <NameValuePair Name="VisibilityCondition">
         <NameValuePair.Value>
           (has-evaluated-value "Application" "UseApplicationFramework" true)
@@ -58,14 +57,12 @@
     </BoolProperty.Metadata>
   </BoolProperty>
 
-  <!-- TODO: Create a fwlink for helpurl -->
   <BoolProperty Name="SaveMySettingsOnExit"
                 DisplayName="Save user settings on exit"
                 Description="Controls if settings are saved when users shut down their computers."
-                HelpUrl="https://docs.microsoft.com/dotnet/api/microsoft.visualbasic.applicationservices.windowsformsapplicationbase.savemysettingsonexit"
+                HelpUrl="https://go.microsoft.com/fwlink/?linkid=2195171"
                 Category="ApplicationFramework">
     <BoolProperty.Metadata>
-      <NameValuePair Name="DependsOn" Value="Application::UseApplicationFramework" />
       <NameValuePair Name="VisibilityCondition">
         <NameValuePair.Value>
           (has-evaluated-value "Application" "UseApplicationFramework" true)
@@ -74,14 +71,12 @@
     </BoolProperty.Metadata>
   </BoolProperty>
 
-  <!-- TODO: Create a fwlink for helpurl -->
   <EnumProperty Name="HighDpiMode"
                 DisplayName="High DPI mode"
                 Description="Specifies the application-wide HighDpiMode for the application. This setting can be programaticaly overriden through the ApplyApplicationDefaults event."
-                HelpUrl="https://docs.microsoft.com/dotnet/api/system.windows.forms.highdpimode"
+                HelpUrl="https://go.microsoft.com/fwlink/?linkid=2195173"
                 Category="ApplicationFramework">
     <EnumProperty.Metadata>
-      <NameValuePair Name="DependsOn" Value="Application::UseApplicationFramework" />
       <NameValuePair Name="VisibilityCondition">
         <NameValuePair.Value>
           (has-evaluated-value "Application" "UseApplicationFramework" true)
@@ -102,14 +97,12 @@
                DisplayName="Per monitor V2 - DPI detected on-launch and on-change including child windows" />
   </EnumProperty>
 
-  <!-- TODO: Create a fwlink for helpurl -->
   <EnumProperty Name="AuthenticationMode"
                 DisplayName="Authentication mode"
                 Description="Specifies the method of identifying the logged-on user, when needed."
-                HelpUrl="https://docs.microsoft.com/dotnet/api/microsoft.visualbasic.applicationservices.authenticationmode"
+                HelpUrl="https://go.microsoft.com/fwlink/?linkid=2195341"
                 Category="ApplicationFramework">
     <EnumProperty.Metadata>
-      <NameValuePair Name="DependsOn" Value="Application::UseApplicationFramework" />
       <NameValuePair Name="VisibilityCondition">
         <NameValuePair.Value>
           (has-evaluated-value "Application" "UseApplicationFramework" true)
@@ -124,14 +117,12 @@
                DisplayName="Application-defined - Custom authentication implemented within the application." />
   </EnumProperty>
 
-  <!-- TODO: Create a fwlink for helpurl -->
   <EnumProperty Name="ShutdownMode"
                 DisplayName="Shutdown mode"
                 Description="Indicates which condition causes the application to shut down."
-                HelpUrl="https://docs.microsoft.com/dotnet/api/microsoft.visualbasic.applicationservices.shutdownmode"
+                HelpUrl="https://go.microsoft.com/fwlink/?linkid=2195343"
                 Category="ApplicationFramework">
     <EnumProperty.Metadata>
-      <NameValuePair Name="DependsOn" Value="Application::UseApplicationFramework" />
       <NameValuePair Name="VisibilityCondition">
         <NameValuePair.Value>
           (has-evaluated-value "Application" "UseApplicationFramework" true)
@@ -144,4 +135,38 @@
     <EnumValue Name="AfterAllFormsClose"
                DisplayName="Shut down only after the last form closes." />
   </EnumProperty>
+
+  <DynamicEnumProperty Name="SplashScreen"
+                       DisplayName="Splash screen"
+                       Description="Sets the form to be used as a splash screen for the application."
+                       HelpUrl="https://go.microsoft.com/fwlink/?linkid=2195177"
+                       Category="ApplicationFramework"
+                       EnumProvider="StartupObjectsEnumProvider">
+    <DynamicEnumProperty.Metadata>
+      <NameValuePair Name="VisibilityCondition">
+        <NameValuePair.Value>
+          (has-evaluated-value "Application" "UseApplicationFramework" true)
+        </NameValuePair.Value>
+      </NameValuePair>
+    </DynamicEnumProperty.Metadata>
+    <DynamicEnumProperty.ProviderSettings>
+      <!-- We want an explicit item representing the empty value. We can remove this setting
+           when the enum provider starts including it by default. -->
+      <NameValuePair Name="IncludeEmptyValue" Value="true" />
+    </DynamicEnumProperty.ProviderSettings>
+  </DynamicEnumProperty>
+
+  <StringProperty Name="MinimumSplashScreenDisplayTime"
+                DisplayName="Minimum splash screen display time"
+                Description="Sets the minimum length of time, in milliseconds, for which the splash screen is displayed."
+                HelpUrl="https://go.microsoft.com/fwlink/?linkid=2195289"
+                Category="ApplicationFramework">
+    <StringProperty.Metadata>
+      <NameValuePair Name="VisibilityCondition">
+        <NameValuePair.Value>
+          (has-evaluated-value "Application" "UseApplicationFramework" true)
+        </NameValuePair.Value>
+      </NameValuePair>
+    </StringProperty.Metadata>
+  </StringProperty>
 </Rule>

@@ -52,6 +52,16 @@
         <target state="new">Application Framework</target>
         <note />
       </trans-unit>
+      <trans-unit id="DynamicEnumProperty|SplashScreen|Description">
+        <source>Sets the form to be used as a splash screen for the application.</source>
+        <target state="new">Sets the form to be used as a splash screen for the application.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="DynamicEnumProperty|SplashScreen|DisplayName">
+        <source>Splash screen</source>
+        <target state="new">Splash screen</target>
+        <note />
+      </trans-unit>
       <trans-unit id="EnumProperty|AuthenticationMode|Description">
         <source>Specifies the method of identifying the logged-on user, when needed.</source>
         <target state="new">Specifies the method of identifying the logged-on user, when needed.</target>
@@ -125,6 +135,16 @@
       <trans-unit id="EnumValue|ShutdownMode.AfterMainFormCloses|DisplayName">
         <source>Shut down when the main form closes.</source>
         <target state="new">Shut down when the main form closes.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|MinimumSplashScreenDisplayTime|Description">
+        <source>Sets the minimum length of time, in milliseconds, for which the splash screen is displayed.</source>
+        <target state="new">Sets the minimum length of time, in milliseconds, for which the splash screen is displayed.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|MinimumSplashScreenDisplayTime|DisplayName">
+        <source>Minimum splash screen display time</source>
+        <target state="new">Minimum splash screen display time</target>
         <note />
       </trans-unit>
     </body>

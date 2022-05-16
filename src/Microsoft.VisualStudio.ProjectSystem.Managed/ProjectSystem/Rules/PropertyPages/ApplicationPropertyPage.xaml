@@ -235,6 +235,30 @@
     </DynamicEnumProperty.ProviderSettings>
   </DynamicEnumProperty>
 
+  <StringProperty Name="ApplicationIcon"
+                  DisplayName="Icon"
+                  Category="Resources"
+                  Description="Sets the .ico file that you want to use as your program icon."
+                  Subtype="file">
+    <StringProperty.DataSource>
+      <DataSource Persistence="ProjectFileWithInterception"
+                  HasConfigurationCondition="False" />
+    </StringProperty.DataSource>
+    <StringProperty.ValueEditors>
+      <ValueEditor EditorType="FilePath">
+        <ValueEditor.Metadata>
+          <NameValuePair Name="FileTypeFilter" Value="Icon files (*.ico)|*.ico|All files (*.*)|*.*" />
+        </ValueEditor.Metadata>
+      </ValueEditor>
+    </StringProperty.ValueEditors>
+    <StringProperty.Metadata>
+      <NameValuePair Name="DependsOn" Value="Application::ResourceSpecificationKind" />
+      <NameValuePair Name="VisibilityCondition">
+        <NameValuePair.Value>(has-evaluated-value "Application" "ResourceSpecificationKind" "IconAndManifest")</NameValuePair.Value>
+      </NameValuePair>
+    </StringProperty.Metadata>
+  </StringProperty>
+
   <StringProperty Name="AssemblyName"
                   DisplayName="Assembly name"
                   Description="Specifies the name of the output file that will hold the assembly manifest."

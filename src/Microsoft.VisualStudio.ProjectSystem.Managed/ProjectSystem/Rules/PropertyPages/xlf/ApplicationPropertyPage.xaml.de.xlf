@@ -177,6 +177,16 @@
         <target state="translated">Anwendung</target>
         <note />
       </trans-unit>
+      <trans-unit id="StringProperty|ApplicationIcon|Description">
+        <source>Sets the .ico file that you want to use as your program icon.</source>
+        <target state="new">Sets the .ico file that you want to use as your program icon.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|ApplicationIcon|DisplayName">
+        <source>Icon</source>
+        <target state="new">Icon</target>
+        <note />
+      </trans-unit>
       <trans-unit id="StringProperty|AssemblyName|Description">
         <source>Specifies the name of the output file that will hold the assembly manifest.</source>
         <target state="translated">Hiermit wird der Name der Ausgabedatei angegeben, die das Assemblymanifest enthält.</target>
