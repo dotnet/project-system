@@ -34,5 +34,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.HotReload
                 _managedDeltaApplierCreator,
                 callback);
         }
+
+        public IProjectHotReloadSession? CreateHotReloadSession(string id, string runtimeVersion, IProjectHotReloadSessionCallback callback)
+        {
+            return CreateHotReloadSession(id, 0, runtimeVersion, callback);
+        }
     }
 }

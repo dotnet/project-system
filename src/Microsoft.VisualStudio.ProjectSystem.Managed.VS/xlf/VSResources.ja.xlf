@@ -121,13 +121,11 @@
         <note />
       </trans-unit>
       <trans-unit id="ProjectHotReloadSessionManager_ErrorStoppingTheSession">
-        <source>Error while stopping the session:
-{0}
+        <source>Error while stopping the session: {0}
 {1}</source>
-        <target state="new">Error while stopping the session:
-{0}
+        <target state="new">Error while stopping the session: {0}
 {1}</target>
-        <note>{1} is the exception type name. {2} is the exception message.</note>
+        <note>{0} is the exception type name. {1} is the exception message.</note>
       </trans-unit>
       <trans-unit id="ProjectHotReloadSessionManager_NoActiveProcess">
         <source>Unable to start Hot Reload session: no active process.</source>

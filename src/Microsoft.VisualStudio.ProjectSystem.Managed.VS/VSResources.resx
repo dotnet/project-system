@@ -274,10 +274,9 @@ In order to debug this project, add an executable project to this solution which
     <value>The process has exited.</value>
   </data>
   <data name="ProjectHotReloadSessionManager_ErrorStoppingTheSession" xml:space="preserve">
-    <value>Error while stopping the session:
-{0}
+    <value>Error while stopping the session: {0}
 {1}</value>
-    <comment>{1} is the exception type name. {2} is the exception message.</comment>
+    <comment>{0} is the exception type name. {1} is the exception message.</comment>
   </data>
   <data name="ProjectHotReloadSessionManager_StartupHooksDisabled" xml:space="preserve">
     <value>Hot Reload is not available because startup hooks have been disabled, possibly due to trimming.</value>

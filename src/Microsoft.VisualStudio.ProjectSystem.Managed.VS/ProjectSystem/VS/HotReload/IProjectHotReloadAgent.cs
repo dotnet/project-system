@@ -6,5 +6,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.HotReload
     public interface IProjectHotReloadAgent
     {
         IProjectHotReloadSession? CreateHotReloadSession(string id, int variant, string runtimeVersion, IProjectHotReloadSessionCallback callback);
+
+        IProjectHotReloadSession? CreateHotReloadSession(string id, string runtimeVersion, IProjectHotReloadSessionCallback callback);
     }
 }

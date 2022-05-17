@@ -7,7 +7,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.HotReload
 {
     internal class ProjectHotReloadSession : IManagedHotReloadAgent, IProjectHotReloadSession
     {
-        private readonly int _variant;
+        private readonly string _variant;
         private readonly string _runtimeVersion;
         private readonly Lazy<IHotReloadAgentManagerClient> _hotReloadAgentManagerClient;
         private readonly Lazy<IHotReloadDiagnosticOutputService> _hotReloadOutputService;
@@ -27,7 +27,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.HotReload
             IProjectHotReloadSessionCallback callback)
         {
             Name = name;
-            _variant = variant;
+            _variant = variant.ToString();
             _runtimeVersion = runtimeVersion;
             _hotReloadAgentManagerClient = hotReloadAgentManagerClient;
             _hotReloadOutputService = hotReloadOutputService;
@@ -93,7 +93,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.HotReload
                     HotReloadVerbosity.Minimal,
                     VSResources.HotReloadStartSession,
                     Name,
-                    _variant.ToString()
+                    _variant
                 ),
                 default);
             _sessionActive = true;
@@ -112,7 +112,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.HotReload
                         HotReloadVerbosity.Minimal,
                         VSResources.HotReloadStopSession,
                         Name,
-                        _variant.ToString()
+                        _variant
                     ),
                     default);
             }
@@ -127,9 +127,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.HotReload
                 WriteToOutputWindow(
                     new HotReloadLogMessage(
                         HotReloadVerbosity.Detailed,
-                        $"ApplyUpdatesAsync called but the session is not active.",
+                        $"{nameof(ApplyUpdatesAsync)} called but the session is not active.",
                         Name,
-                        _variant.ToString()
+                        _variant
                     ),
                     default);
                 return;
@@ -140,9 +140,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.HotReload
                 WriteToOutputWindow(
                     new HotReloadLogMessage(
                         HotReloadVerbosity.Detailed,
-                        $"ApplyUpdatesAsync called but we have no delta applier.",
+                        $"{nameof(ApplyUpdatesAsync)} called but we have no delta applier.",
                         Name,
-                        _variant.ToString()
+                        _variant
                     ),
                     default);
             }
@@ -159,7 +159,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.HotReload
                         HotReloadVerbosity.Detailed,
                         VSResources.HotReloadSendingUpdates,
                         Name,
-                        _variant.ToString()
+                        _variant
                     ),
                     cancellationToken);
 
@@ -171,7 +171,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.HotReload
                             HotReloadVerbosity.Detailed,
                             VSResources.HotReloadApplyUpdatesSuccessful,
                             Name,
-                            _variant.ToString()
+                            _variant
                         ),
                         cancellationToken);
                     if (_callback is not null)
@@ -189,7 +189,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.HotReload
                         HotReloadVerbosity.Minimal,
                         string.Format(VSResources.HotReloadApplyUpdatesFailure, message),
                         Name,
-                        _variant.ToString(),
+                        _variant,
                         errorLevel: HotReloadDiagnosticErrorLevel.Error
                     ),
                     cancellationToken);
@@ -214,7 +214,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.HotReload
                     HotReloadVerbosity.Minimal,
                     VSResources.HotReloadErrorsInApplication,
                     Name,
-                    _variant.ToString(),
+                    _variant,
                     errorLevel: HotReloadDiagnosticErrorLevel.Error
                 ),
                 cancellationToken);
@@ -226,7 +226,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.HotReload
                         HotReloadVerbosity.Minimal,
                         $"{diagnostic.FilePath}({diagnostic.Span.StartLine},{diagnostic.Span.StartColumn},{diagnostic.Span.EndLine},{diagnostic.Span.EndColumn}): {diagnostic.Message}",
                         Name,
-                        _variant.ToString(),
+                        _variant,
                         errorLevel: HotReloadDiagnosticErrorLevel.Error
                     ),
                     cancellationToken);
@@ -242,7 +242,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.HotReload
                     HotReloadVerbosity.Minimal,
                     VSResources.HotReloadRestartInProgress,
                     Name,
-                    _variant.ToString()
+                    _variant
                 ),
                 cancellationToken);
 
@@ -259,7 +259,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.HotReload
                     HotReloadVerbosity.Minimal,
                     VSResources.HotReloadStoppingApplication,
                     Name,
-                    _variant.ToString()
+                    _variant
                 ),
                 cancellationToken);
 

@@ -7,7 +7,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
 {
     internal static class IHotReloadDiagnosticOutputServiceFactory
     {
-        public static IHotReloadDiagnosticOutputService Create(Action<string>? writeLineCallback = null)
+        public static IHotReloadDiagnosticOutputService Create(Action? writeLineCallback = null)
         {
             var mock = new Mock<IHotReloadDiagnosticOutputService>();
 
