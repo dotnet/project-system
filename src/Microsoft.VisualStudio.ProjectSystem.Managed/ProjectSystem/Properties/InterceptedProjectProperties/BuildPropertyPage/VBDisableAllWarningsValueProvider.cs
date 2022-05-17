@@ -21,13 +21,11 @@ internal sealed class VBDisableAllWarningsValueProvider : InterceptingPropertyVa
 
     public override async Task<string?> OnSetPropertyValueAsync(string propertyName, string unevaluatedPropertyValue, IProjectProperties defaultProperties, IReadOnlyDictionary<string, string>? dimensionalConditions = null)
     {
-        if (StringComparers.PropertyLiteralValues.Equals(unevaluatedPropertyValue, "true"))
+        if (bool.TryParse(unevaluatedPropertyValue, out bool isDisabled))
         {
-            await defaultProperties.SetPropertyValueAsync(WarningLevelPropertyName, "0", dimensionalConditions);
-        }
-        else if (StringComparers.PropertyLiteralValues.Equals(unevaluatedPropertyValue, "false"))
-        {
-            await defaultProperties.SetPropertyValueAsync(WarningLevelPropertyName, "1", dimensionalConditions);
+            string warningLevelValue = isDisabled ? "0" : "1";
+
+            await defaultProperties.SetPropertyValueAsync(WarningLevelPropertyName, warningLevelValue, dimensionalConditions);
         }
 
         return null;
