@@ -12,11 +12,6 @@
         <target state="new">Degine TRACE constant</target>
         <note />
       </trans-unit>
-      <trans-unit id="BoolProperty|DisableAllWarnings|DisplayName">
-        <source>Disable all warnings</source>
-        <target state="new">Disable all warnings</target>
-        <note />
-      </trans-unit>
       <trans-unit id="BoolProperty|GenerateDocumentationFile|Description">
         <source>Specifies whether to generate documentation information.</source>
         <target state="new">Specifies whether to generate documentation information.</target>
@@ -55,11 +50,6 @@
       <trans-unit id="BoolProperty|RemoveIntegerChecks|DisplayName">
         <source>Remove integer overflow checks</source>
         <target state="new">Remove integer overflow checks</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="BoolProperty|TreatWarningsAsErrors|DisplayName">
-        <source>Treat all warnings as errors</source>
-        <target state="new">Treat all warnings as errors</target>
         <note />
       </trans-unit>
       <trans-unit id="Category|Advanced|Description">
@@ -270,6 +260,11 @@
       <trans-unit id="EnumProperty|UseOfVariablePriorToAssignment|DisplayName">
         <source>Use of variable prior to assignment</source>
         <target state="new">Use of variable prior to assignment</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumProperty|WarningSeverity|DisplayName">
+        <source>Warning severity</source>
+        <target state="new">Warning severity</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|DebugType.embedded|DisplayName">
@@ -555,6 +550,21 @@
       <trans-unit id="EnumValue|UseOfVariablePriorToAssignment.Warning|DisplayName">
         <source>Warning</source>
         <target state="new">Warning</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|WarningSeverity.AllAsErrors|DisplayName">
+        <source>Treat all warnings as errors</source>
+        <target state="new">Treat all warnings as errors</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|WarningSeverity.DisableAll|DisplayName">
+        <source>Disable all warnings</source>
+        <target state="new">Disable all warnings</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|WarningSeverity.Individual|DisplayName">
+        <source>Set warning severities individually</source>
+        <target state="new">Set warning severities individually</target>
         <note />
       </trans-unit>
       <trans-unit id="Rule|Build|Description">

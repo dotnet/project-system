@@ -142,6 +142,16 @@
   </BoolProperty>
 
   <!-- TODO: Replace HelpUrl with a fwlink -->
+  <EnumProperty Name="WarningSeverity"
+                DisplayName="Warning severity"
+                HelpUrl="https://docs.microsoft.com/visualstudio/ide/reference/compile-page-project-designer-visual-basic#compiler-configuration-options"
+                Category="Warnings">
+    <EnumValue Name="Individual" DisplayName="Set warning severities individually" />
+    <EnumValue Name="DisableAll" DisplayName="Disable all warnings" />
+    <EnumValue Name="AllAsErrors" DisplayName="Treat all warnings as errors" />
+  </EnumProperty>
+
+  <!-- TODO: Replace HelpUrl with a fwlink -->
   <EnumProperty Name="ImplicitConversion"
                 DisplayName="Implicit conversion"
                 Description="Implicit narrowing conversion occurs when there is an implicit data type conversion that is a narrowing conversion."
@@ -337,18 +347,7 @@
     <EnumValue Name="Error" DisplayName="Error" />
   </EnumProperty>
 
-  <!-- TODO: Replace HelpUrl with a fwlink -->
-  <BoolProperty Name="DisableAllWarnings"
-                DisplayName="Disable all warnings"
-                HelpUrl="https://docs.microsoft.com/visualstudio/ide/reference/compile-page-project-designer-visual-basic#compiler-configuration-options"
-                Category="Warnings" />
 
-  <!-- TODO: Replace HelpUrl with a fwlink -->
-  <!-- TODO: Reconcile visibility with DisableAllWarnings setting -->
-  <BoolProperty Name="TreatWarningsAsErrors"
-                DisplayName="Treat all warnings as errors"
-                HelpUrl="https://docs.microsoft.com/visualstudio/ide/reference/compile-page-project-designer-visual-basic#compiler-configuration-options"
-                Category="Warnings" />
 
   <!-- TODO: Update HelpUrl -->
   <StringProperty Name="PreBuildEvent"
