@@ -15,6 +15,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         ///     Handles the specified added and removed command-line arguments, and applies
         ///     them to the underlying <see cref="IWorkspaceProjectContext"/>.
         /// </summary>
+        /// <param name="context">
+        ///     The <see cref="IWorkspaceProjectContext"/> to update.
+        /// </param>
         /// <param name="version">
         ///     An <see cref="IComparable"/> representing the <see cref="ConfiguredProject.ProjectVersion"/> at
         ///     the time the <see cref="BuildOptions"/> were produced.
@@ -31,21 +34,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         /// <param name="logger">
         ///     The <see cref="IProjectDiagnosticOutputService"/> for logging to the log.
         /// </param>
-        /// <exception cref="ArgumentNullException">
-        ///     <paramref name="version"/> is <see langword="null"/>.
-        ///     <para>
-        ///         -or-
-        ///     </para>
-        ///     <paramref name="added"/> is <see langword="null"/>.
-        ///     <para>
-        ///         -or-
-        ///     </para>
-        ///     <paramref name="removed"/> is <see langword="null"/>.
-        ///     <para>
-        ///         -or-
-        ///     </para>
-        ///     <paramref name="logger"/> is <see langword="null"/>.
-        /// </exception>
-        void Handle(IComparable version, BuildOptions added, BuildOptions removed, ContextState state, IProjectDiagnosticOutputService logger);
+        void Handle(IWorkspaceProjectContext context, IComparable version, BuildOptions added, BuildOptions removed, ContextState state, IProjectDiagnosticOutputService logger);
     }
 }

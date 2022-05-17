@@ -11,13 +11,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
     ///     and <see cref="IWorkspaceProjectContext.DisplayName"/>.
     /// </summary>
     [Export(typeof(IWorkspaceContextHandler))]
-    internal class ProjectFilePathAndDisplayNameEvaluationHandler : AbstractWorkspaceContextHandler, IProjectEvaluationHandler
+    internal class ProjectFilePathAndDisplayNameEvaluationHandler : IWorkspaceContextHandler, IProjectEvaluationHandler
     {
-        private readonly ConfiguredProject _project;
+        private readonly UnconfiguredProject _project;
         private readonly IImplicitlyActiveDimensionProvider _implicitlyActiveDimensionProvider;
 
         [ImportingConstructor]
-        public ProjectFilePathAndDisplayNameEvaluationHandler(ConfiguredProject project, IImplicitlyActiveDimensionProvider implicitlyActiveDimensionProvider)
+        public ProjectFilePathAndDisplayNameEvaluationHandler(UnconfiguredProject project, IImplicitlyActiveDimensionProvider implicitlyActiveDimensionProvider)
         {
             _project = project;
             _implicitlyActiveDimensionProvider = implicitlyActiveDimensionProvider;
@@ -28,28 +28,22 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
             get { return ConfigurationGeneral.SchemaName; }
         }
 
-        public void Handle(IComparable version, IProjectChangeDescription projectChange, ContextState state, IProjectDiagnosticOutputService logger)
+        public void Handle(IWorkspaceProjectContext context, ProjectConfiguration projectConfiguration, IComparable version, IProjectChangeDescription projectChange, ContextState state, IProjectDiagnosticOutputService logger)
         {
-            Requires.NotNull(version, nameof(version));
-            Requires.NotNull(projectChange, nameof(projectChange));
-            Requires.NotNull(logger, nameof(logger));
-
-            VerifyInitialized();
-
             if (projectChange.Difference.ChangedProperties.Contains(ConfigurationGeneral.MSBuildProjectFullPathProperty))
             {
                 string projectFilePath = projectChange.After.Properties[ConfigurationGeneral.MSBuildProjectFullPathProperty];
-                string displayName = GetDisplayName(projectFilePath);
+                string displayName = GetDisplayName(projectFilePath, projectConfiguration);
 
                 logger.WriteLine("DisplayName: {0}", displayName);
                 logger.WriteLine("ProjectFilePath: {0}", projectFilePath);
 
-                Context.ProjectFilePath = projectFilePath;
-                Context.DisplayName = displayName;
+                context.ProjectFilePath = projectFilePath;
+                context.DisplayName = displayName;
             }
         }
 
-        private string GetDisplayName(string projectFilePath)
+        private string GetDisplayName(string projectFilePath, ProjectConfiguration projectConfiguration)
         {
             // Calculate the display name to use for the editor context switch and project column
             // in the Error List.
@@ -62,11 +56,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
 
             string projectName = Path.GetFileNameWithoutExtension(projectFilePath);
 
-            ProjectConfiguration configuration = _project.ProjectConfiguration;
+            IEnumerable<string> dimensionNames = _implicitlyActiveDimensionProvider.GetImplicitlyActiveDimensions(projectConfiguration.Dimensions.Keys);
 
-            IEnumerable<string> dimensionNames = _implicitlyActiveDimensionProvider.GetImplicitlyActiveDimensions(configuration.Dimensions.Keys);
-
-            string disambiguation = string.Join(", ", dimensionNames.Select(dimensionName => configuration.Dimensions[dimensionName]));
+            string disambiguation = string.Join(", ", dimensionNames.Select(dimensionName => projectConfiguration.Dimensions[dimensionName]));
             if (disambiguation.Length == 0)
                 return projectName;
 

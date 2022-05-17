@@ -1,137 +1,21 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
+using Microsoft.VisualStudio.LanguageServices.ProjectSystem;
+
 namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
 {
     public partial class AbstractEvaluationCommandLineHandlerTests
     {
         [Fact]
-        public void ApplyProjectEvaluation_NullAsVersion_ThrowsArgumentNull()
-        {
-            var handler = CreateInstance();
-
-            var difference = IProjectChangeDiffFactory.Create();
-            var metadata = ImmutableDictionary<string, IImmutableDictionary<string, string>>.Empty;
-            var logger = IProjectDiagnosticOutputServiceFactory.Create();
-
-            Assert.Throws<ArgumentNullException>(() =>
-            {
-                handler.ApplyProjectEvaluation(null!, difference, metadata, metadata, true, logger);
-            });
-        }
-
-        [Fact]
-        public void ApplyProjectEvaluation_NullAsDifference_ThrowsArgumentNull()
-        {
-            var handler = CreateInstance();
-
-            var version = 1;
-            var metadata = ImmutableDictionary<string, IImmutableDictionary<string, string>>.Empty;
-            var logger = IProjectDiagnosticOutputServiceFactory.Create();
-
-            Assert.Throws<ArgumentNullException>(() =>
-            {
-                handler.ApplyProjectEvaluation(version, null!, metadata, metadata, true, logger);
-            });
-        }
-
-        [Fact]
-        public void ApplyProjectEvaluation_NullAsPreviousMetadata_ThrowsArgumentNull()
-        {
-            var handler = CreateInstance();
-
-            var version = 1;
-            var difference = IProjectChangeDiffFactory.Create();
-            var currentMetadata = ImmutableDictionary<string, IImmutableDictionary<string, string>>.Empty;
-            var logger = IProjectDiagnosticOutputServiceFactory.Create();
-
-            Assert.Throws<ArgumentNullException>(() =>
-            {
-                handler.ApplyProjectEvaluation(version, difference, null!, currentMetadata, true, logger);
-            });
-        }
-
-        [Fact]
-        public void ApplyProjectEvaluation_NullAsCurrentMetadata_ThrowsArgumentNull()
-        {
-            var handler = CreateInstance();
-
-            var version = 1;
-            var difference = IProjectChangeDiffFactory.Create();
-            var previousMetadata = ImmutableDictionary<string, IImmutableDictionary<string, string>>.Empty;
-            var logger = IProjectDiagnosticOutputServiceFactory.Create();
-
-            Assert.Throws<ArgumentNullException>(() =>
-            {
-                handler.ApplyProjectEvaluation(version, difference, previousMetadata, null!, true, logger);
-            });
-        }
-
-        [Fact]
-        public void ApplyProjectEvaluation_NullAsLogger_ThrowsArgumentNull()
-        {
-            var handler = CreateInstance();
-
-            var version = 1;
-            var difference = IProjectChangeDiffFactory.Create();
-            var metadata = ImmutableDictionary<string, IImmutableDictionary<string, string>>.Empty;
-
-            Assert.Throws<ArgumentNullException>(() =>
-            {
-                handler.ApplyProjectEvaluation(version, difference, metadata, metadata, true, null!);
-            });
-        }
-
-        [Fact]
-        public void ApplyProjectBuild_NullAsVersion_ThrowsArgumentNull()
-        {
-            var handler = CreateInstance();
-
-            var difference = IProjectChangeDiffFactory.Create();
-            var logger = IProjectDiagnosticOutputServiceFactory.Create();
-
-            Assert.Throws<ArgumentNullException>(() =>
-            {
-                handler.ApplyProjectBuild(null!, difference, true, logger);
-            });
-        }
-
-        [Fact]
-        public void ApplyProjectBuild_NullAsDifference_ThrowsArgumentNull()
-        {
-            var handler = CreateInstance();
-
-            var version = 1;
-            var logger = IProjectDiagnosticOutputServiceFactory.Create();
-
-            Assert.Throws<ArgumentNullException>(() =>
-            {
-                handler.ApplyProjectBuild(version, null!, true, logger);
-            });
-        }
-
-        [Fact]
-        public void ApplyProjectBuild_NullAsLogger_ThrowsArgumentNull()
-        {
-            var handler = CreateInstance();
-
-            var version = 1;
-            var difference = IProjectChangeDiffFactory.Create();
-
-            Assert.Throws<ArgumentNullException>(() =>
-            {
-                handler.ApplyProjectBuild(version, difference, true, null!);
-            });
-        }
-
-        [Fact]
         public void ApplyProjectEvaluation_WhenNoChanges_DoesNothing()
         {
             var handler = CreateInstance();
+            var context = IWorkspaceProjectContextMockFactory.Create();
 
             var version = 1;
             var difference = IProjectChangeDiffFactory.WithNoChanges();
 
-            ApplyProjectEvaluation(handler, version, difference);
+            ApplyProjectEvaluation(context, handler, version, difference);
 
             Assert.Empty(handler.FileNames);
         }
@@ -140,11 +24,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
         public void ApplyProjectBuild_WhenNoChanges_DoesNothing()
         {
             var handler = CreateInstance();
+            var context = IWorkspaceProjectContextMockFactory.Create();
 
             var version = 1;
             var difference = IProjectChangeDiffFactory.WithNoChanges();
 
-            ApplyProjectBuild(handler, version, difference);
+            ApplyProjectBuild(context, handler, version, difference);
 
             Assert.Empty(handler.FileNames);
         }
@@ -159,9 +44,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
         public void ApplyProjectEvaluation_AddsItemFullPathRelativeToProject(string includePath, string expected)
         {
             var handler = CreateInstance(@"C:\Project\Project.csproj");
+            var context = IWorkspaceProjectContextMockFactory.Create();
             var difference = IProjectChangeDiffFactory.WithAddedItems(includePath);
 
-            ApplyProjectEvaluation(handler, 1, difference);
+            ApplyProjectEvaluation(context, handler, 1, difference);
 
             Assert.Single(handler.FileNames, expected);
         }
@@ -176,9 +62,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
         public void ApplyProjectBuild_AddsItemFullPathRelativeToProject(string includePath, string expected)
         {
             var handler = CreateInstance(@"C:\Project\Project.csproj");
+            var context = IWorkspaceProjectContextMockFactory.Create();
             var difference = IProjectChangeDiffFactory.WithAddedItems(includePath);
 
-            ApplyProjectBuild(handler, 1, difference);
+            ApplyProjectBuild(context, handler, 1, difference);
 
             Assert.Single(handler.FileNames, expected);
         }
@@ -195,9 +82,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
             string[] expectedFiles = expected.Split(';');
 
             var handler = CreateInstanceWithEvaluationItems(@"C:\Project\Project.csproj", currentFiles);
+            var context = IWorkspaceProjectContextMockFactory.Create();
 
             var difference = IProjectChangeDiffFactory.WithAddedItems(filesToAdd);
-            ApplyProjectEvaluation(handler, 2, difference);
+            ApplyProjectEvaluation(context, handler, 2, difference);
 
             Assert.Equal(expectedFiles.OrderBy(f => f), handler.FileNames.OrderBy(f => f));
         }
@@ -206,11 +94,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
         public void AddEvaluationChanges_CanAddItemWithMetadata()
         {
             var handler = CreateInstance(@"C:\Project\Project.csproj");
+            var context = IWorkspaceProjectContextMockFactory.Create();
 
             var difference = IProjectChangeDiffFactory.WithAddedItems("A.cs");
             var metadata = MetadataFactory.Create("A.cs", ("Name", "Value"));
 
-            ApplyProjectEvaluation(handler, 1, difference, metadata);
+            ApplyProjectEvaluation(context, handler, 1, difference, metadata);
 
             var result = handler.Files[@"C:\Project\A.cs"];
 
@@ -221,13 +110,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
         public void AddEvaluationChanges_ItemsWithExclusionMetadataAreIgnored()
         {
             var handler = CreateInstance(@"C:\Project\Project.csproj");
+            var context = IWorkspaceProjectContextMockFactory.Create();
 
             var difference = IProjectChangeDiffFactory.WithAddedItems("A.cs;B.cs;C.cs");
             var metadata = MetadataFactory.Create("A.cs", ("ExcludeFromCurrentConfiguration", "true"))
                                           .Add("B.cs", ("ExcludeFromCurrentConfiguration", "false"));
                             
 
-            ApplyProjectEvaluation(handler, 1, difference, metadata);
+            ApplyProjectEvaluation(context, handler, 1, difference, metadata);
 
             string[] expectedFiles = new[] { @"C:\Project\B.cs", @"C:\Project\C.cs" };
             Assert.Equal(expectedFiles.OrderBy(f => f), handler.FileNames.OrderBy(f => f));
@@ -245,9 +135,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
             string[] expectedFiles = expected.Split(';');
 
             var handler = CreateInstanceWithEvaluationItems(@"C:\Project\Project.csproj", currentFiles);
+            var context = IWorkspaceProjectContextMockFactory.Create();
 
             var difference = IProjectChangeDiffFactory.WithAddedItems(filesToAdd);
-            ApplyProjectBuild(handler, 1, difference);
+            ApplyProjectBuild(context, handler, 1, difference);
 
             Assert.Equal(handler.FileNames.OrderBy(f => f), expectedFiles.OrderBy(f => f));
         }
@@ -264,9 +155,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
             string[] expectedFiles = expected.Length == 0 ? Array.Empty<string>() : expected.Split(';');
 
             var handler = CreateInstanceWithEvaluationItems(@"C:\Project\Project.csproj", currentFiles);
+            var context = IWorkspaceProjectContextMockFactory.Create();
 
             var difference = IProjectChangeDiffFactory.WithRemovedItems(filesToRemove);
-            ApplyProjectEvaluation(handler, 2, difference);
+            ApplyProjectEvaluation(context, handler, 2, difference);
 
             Assert.Equal(expectedFiles.OrderBy(f => f), handler.FileNames.OrderBy(f => f));
         }
@@ -283,9 +175,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
             string[] expectedFiles = expected.Length == 0 ? Array.Empty<string>() : expected.Split(';');
 
             var handler = CreateInstanceWithEvaluationItems(@"C:\Project\Project.csproj", currentFiles);
+            var context = IWorkspaceProjectContextMockFactory.Create();
 
             var difference = IProjectChangeDiffFactory.WithRemovedItems(filesToRemove);
-            ApplyProjectBuild(handler, 1, difference);
+            ApplyProjectBuild(context, handler, 1, difference);
 
             Assert.Equal(expectedFiles.OrderBy(f => f), handler.FileNames.OrderBy(f => f));
         }
@@ -302,9 +195,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
             string[] expectedFiles = expected.Split(';');
 
             var handler = CreateInstanceWithDesignTimeItems(@"C:\Project\Project.csproj", currentFiles);
+            var context = IWorkspaceProjectContextMockFactory.Create();
 
             var difference = IProjectChangeDiffFactory.WithAddedItems(filesToAdd);
-            ApplyProjectEvaluation(handler, 2, difference);
+            ApplyProjectEvaluation(context, handler, 2, difference);
 
             Assert.Equal(expectedFiles.OrderBy(f => f), handler.FileNames.OrderBy(f => f));
         }
@@ -321,9 +215,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
             string[] expectedFiles = expected.Split(';');
 
             var handler = CreateInstanceWithDesignTimeItems(@"C:\Project\Project.csproj", currentFiles);
+            var context = IWorkspaceProjectContextMockFactory.Create();
 
             var difference = IProjectChangeDiffFactory.WithAddedItems(filesToAdd);
-            ApplyProjectBuild(handler, 2, difference);
+            ApplyProjectBuild(context, handler, 2, difference);
 
             Assert.Equal(expectedFiles.OrderBy(f => f), handler.FileNames.OrderBy(f => f));
         }
@@ -340,9 +235,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
             string[] expectedFiles = expected.Length == 0 ? Array.Empty<string>() : expected.Split(';');
 
             var handler = CreateInstanceWithDesignTimeItems(@"C:\Project\Project.csproj", currentFiles);
+            var context = IWorkspaceProjectContextMockFactory.Create();
 
             var difference = IProjectChangeDiffFactory.WithRemovedItems(filesToRemove);
-            ApplyProjectEvaluation(handler, 2, difference);
+            ApplyProjectEvaluation(context, handler, 2, difference);
 
             Assert.Equal(expectedFiles.OrderBy(f => f), handler.FileNames.OrderBy(f => f));
         }
@@ -359,9 +255,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
             string[] expectedFiles = expected.Length == 0 ? Array.Empty<string>() : expected.Split(';');
 
             var handler = CreateInstanceWithDesignTimeItems(@"C:\Project\Project.csproj", currentFiles);
+            var context = IWorkspaceProjectContextMockFactory.Create();
 
             var difference = IProjectChangeDiffFactory.WithRemovedItems(filesToRemove);
-            ApplyProjectBuild(handler, 2, difference);
+            ApplyProjectBuild(context, handler, 2, difference);
 
             Assert.Equal(expectedFiles.OrderBy(f => f), handler.FileNames.OrderBy(f => f));
         }
@@ -376,10 +273,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
             string[] expectedFiles = expected.Length == 0 ? Array.Empty<string>() : expected.Split(';');
 
             var handler = CreateInstanceWithEvaluationItems(@"C:\Project\Project.csproj", currentFiles);
+            var context = IWorkspaceProjectContextMockFactory.Create();
 
             var difference = IProjectChangeDiffFactory.WithRenamedItems(originalNames, newNames);
 
-            ApplyProjectEvaluation(handler, 2, difference);
+            ApplyProjectEvaluation(context, handler, 2, difference);
 
             Assert.Equal(expectedFiles.OrderBy(f => f), handler.FileNames.OrderBy(f => f));
         }
@@ -394,10 +292,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
             string[] expectedFiles = expected.Length == 0 ? Array.Empty<string>() : expected.Split(';');
 
             var handler = CreateInstanceWithDesignTimeItems(@"C:\Project\Project.csproj", currentFiles);
+            var context = IWorkspaceProjectContextMockFactory.Create();
 
             var difference = IProjectChangeDiffFactory.WithRenamedItems(originalNames, newNames);
 
-            ApplyProjectEvaluation(handler, 2, difference);
+            ApplyProjectEvaluation(context, handler, 2, difference);
 
             Assert.Equal(expectedFiles.OrderBy(f => f), handler.FileNames.OrderBy(f => f));
         }
@@ -407,11 +306,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
         {
             var file = "A.cs";
             var handler = CreateInstanceWithEvaluationItems(@"C:\Project\Project.csproj", file);
+            var context = IWorkspaceProjectContextMockFactory.Create();
 
             var difference = IProjectChangeDiffFactory.WithChangedItems(file);
             var metadata = MetadataFactory.Create(file, ("Name", "Value"));
 
-            ApplyProjectEvaluation(handler, 2, difference, metadata);
+            ApplyProjectEvaluation(context, handler, 2, difference, metadata);
 
             var result = handler.Files[@"C:\Project\A.cs"];
 
@@ -422,15 +322,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
         public void ApplyProjectBuild_WhenNewerEvaluationChangesWithAddedConflict_EvaluationWinsOut()
         {
             var handler = CreateInstance(@"C:\Project\Project.csproj");
+            var context = IWorkspaceProjectContextMockFactory.Create();
 
             int evaluationVersion = 1;
 
             // Setup the "current state"
-            ApplyProjectEvaluation(handler, evaluationVersion, IProjectChangeDiffFactory.WithAddedItems("Source.cs"));
+            ApplyProjectEvaluation(context, handler, evaluationVersion, IProjectChangeDiffFactory.WithAddedItems("Source.cs"));
 
             int designTimeVersion = 0;
 
-            ApplyProjectBuild(handler, designTimeVersion, IProjectChangeDiffFactory.WithRemovedItems("Source.cs"));
+            ApplyProjectBuild(context, handler, designTimeVersion, IProjectChangeDiffFactory.WithRemovedItems("Source.cs"));
 
             Assert.Single(handler.FileNames, @"C:\Project\Source.cs");
         }
@@ -439,15 +340,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
         public void ApplyProjectBuild_WhenNewerEvaluationChangesWithRemovedConflict_EvaluationWinsOut()
         {
             var handler = CreateInstance(@"C:\Project\Project.csproj");
+            var context = IWorkspaceProjectContextMockFactory.Create();
 
             int evaluationVersion = 1;
 
             // Setup the "current state"
-            ApplyProjectEvaluation(handler, evaluationVersion, IProjectChangeDiffFactory.WithRemovedItems("Source.cs"));
+            ApplyProjectEvaluation(context, handler, evaluationVersion, IProjectChangeDiffFactory.WithRemovedItems("Source.cs"));
 
             int designTimeVersion = 0;
 
-            ApplyProjectBuild(handler, designTimeVersion, IProjectChangeDiffFactory.WithAddedItems("Source.cs"));
+            ApplyProjectBuild(context, handler, designTimeVersion, IProjectChangeDiffFactory.WithAddedItems("Source.cs"));
 
             Assert.Empty(handler.FileNames);
         }
@@ -456,43 +358,45 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
         public void ApplyProjectBuild_WhenOlderEvaluationChangesWithRemovedConflict_DesignTimeWinsOut()
         {
             var handler = CreateInstance(@"C:\Project\Project.csproj");
+            var context = IWorkspaceProjectContextMockFactory.Create();
 
             int evaluationVersion = 0;
 
             // Setup the "current state"
-            ApplyProjectEvaluation(handler, evaluationVersion, IProjectChangeDiffFactory.WithRemovedItems("Source.cs"));
+            ApplyProjectEvaluation(context, handler, evaluationVersion, IProjectChangeDiffFactory.WithRemovedItems("Source.cs"));
 
             int designTimeVersion = 1;
 
-            ApplyProjectBuild(handler, designTimeVersion, IProjectChangeDiffFactory.WithAddedItems("Source.cs"));
+            ApplyProjectBuild(context, handler, designTimeVersion, IProjectChangeDiffFactory.WithAddedItems("Source.cs"));
 
             Assert.Single(handler.FileNames, @"C:\Project\Source.cs");
         }
 
-        private static void ApplyProjectEvaluation(AbstractEvaluationCommandLineHandler handler, IComparable version, IProjectChangeDiff difference, IImmutableDictionary<string, IImmutableDictionary<string, string>>? metadata = null)
+        private static void ApplyProjectEvaluation(IWorkspaceProjectContext context, AbstractEvaluationCommandLineHandler handler, IComparable version, IProjectChangeDiff difference, IImmutableDictionary<string, IImmutableDictionary<string, string>>? metadata = null)
         {
             metadata ??= ImmutableDictionary<string, IImmutableDictionary<string, string>>.Empty;
             var previousMetadata = ImmutableDictionary<string, IImmutableDictionary<string, string>>.Empty;
             bool isActiveContext = true;
             var logger = IProjectDiagnosticOutputServiceFactory.Create();
 
-            handler.ApplyProjectEvaluation(version, difference, previousMetadata, metadata, isActiveContext, logger);
+            handler.ApplyProjectEvaluation(context, version, difference, previousMetadata, metadata, isActiveContext, logger);
         }
 
-        private static void ApplyProjectBuild(AbstractEvaluationCommandLineHandler handler, IComparable version, IProjectChangeDiff difference)
+        private static void ApplyProjectBuild(IWorkspaceProjectContext context, AbstractEvaluationCommandLineHandler handler, IComparable version, IProjectChangeDiff difference)
         {
             bool isActiveContext = true;
             var logger = IProjectDiagnosticOutputServiceFactory.Create();
 
-            handler.ApplyProjectBuild(version, difference, isActiveContext, logger);
+            handler.ApplyProjectBuild(context, version, difference, isActiveContext, logger);
         }
 
         private static EvaluationCommandLineHandler CreateInstanceWithEvaluationItems(string fullPath, string semiColonSeparatedItems)
         {
             var handler = CreateInstance(fullPath);
+            var context = IWorkspaceProjectContextMockFactory.Create();
 
             // Setup the "current state"
-            ApplyProjectEvaluation(handler, 1, IProjectChangeDiffFactory.WithAddedItems(semiColonSeparatedItems));
+            ApplyProjectEvaluation(context, handler, 1, IProjectChangeDiffFactory.WithAddedItems(semiColonSeparatedItems));
 
             return handler;
         }
@@ -500,9 +404,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
         private static EvaluationCommandLineHandler CreateInstanceWithDesignTimeItems(string fullPath, string semiColonSeparatedItems)
         {
             var handler = CreateInstance(fullPath);
+            var context = IWorkspaceProjectContextMockFactory.Create();
 
             // Setup the "current state"
-            ApplyProjectBuild(handler, 1, IProjectChangeDiffFactory.WithAddedItems(semiColonSeparatedItems));
+            ApplyProjectBuild(context, handler, 1, IProjectChangeDiffFactory.WithAddedItems(semiColonSeparatedItems));
 
             return handler;
         }
