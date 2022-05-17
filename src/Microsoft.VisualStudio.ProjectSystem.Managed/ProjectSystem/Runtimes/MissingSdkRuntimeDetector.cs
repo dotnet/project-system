@@ -17,7 +17,6 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
         private Guid _projectGuid;
         private bool _enabled;
-        private static readonly HashSet<string> s_listOfMissingRuntimes = new(StringComparer.OrdinalIgnoreCase);
 
         private readonly ConfiguredProject _project;
         private readonly IMissingSetupComponentRegistrationService _missingSetupComponentRegistrationService;
@@ -49,7 +48,6 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
         protected override Task DisposeCoreAsync(bool initialized)
         {
-            s_listOfMissingRuntimes.Clear();
             return Task.CompletedTask;
         }
 
@@ -58,7 +56,6 @@ namespace Microsoft.VisualStudio.ProjectSystem
             _projectGuid = await _project.UnconfiguredProject.GetProjectGuidAsync();
             _missingSetupComponentRegistrationService.RegisterProjectConfiguration(_projectGuid, _project);
             _ = RegisterSdkRuntimeNeededInProjectAsync(_project);
-            
         }
 
         private async Task RegisterSdkRuntimeNeededInProjectAsync(ConfiguredProject project)
@@ -69,18 +66,26 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
                 ConfigurationGeneral configuration = await projectProperties.GetConfigurationGeneralPropertiesAsync();
 
-                string? TargetFrameworkIdentifier = await configuration.TargetFrameworkIdentifier.GetDisplayValueAsync();
+                string? targetFrameworkIdentifier = await configuration.TargetFrameworkIdentifier.GetDisplayValueAsync();
 
-                string? TargetFrameworkVersion = await configuration.TargetFrameworkVersion.GetDisplayValueAsync();
+                string? targetFrameworkVersion = await configuration.TargetFrameworkVersion.GetDisplayValueAsync();
 
-                if (string.Equals(TargetFrameworkIdentifier, s_netCoreTargetFrameworkIdentifier, StringComparisons.FrameworkIdentifiers) &&
-                    !string.IsNullOrEmpty(TargetFrameworkVersion) &&
-                    !s_listOfMissingRuntimes.Contains(TargetFrameworkVersion) &&
-                    s_packageVersionToComponentId.TryGetValue(TargetFrameworkVersion, out var componentId))
+                string? componentId = GetComponentId(targetFrameworkIdentifier, targetFrameworkVersion);
+                
+                _missingSetupComponentRegistrationService.RegisterSdkRuntimeComponentId(_projectGuid, project, componentId);
+            }
+
+            static string? GetComponentId(string targetFrameworkIdentifier, string targetFrameworkVersion)
+            {
+                string? componentId = null;
+
+                if (string.Equals(targetFrameworkIdentifier, s_netCoreTargetFrameworkIdentifier, StringComparisons.FrameworkIdentifiers) &&
+                    !string.IsNullOrEmpty(targetFrameworkVersion))
                 {
-                    s_listOfMissingRuntimes.Add(TargetFrameworkVersion);
-                    _missingSetupComponentRegistrationService.RegisterMissingSdkRuntimeComponentId(_projectGuid, project, componentId);
+                    s_packageVersionToComponentId.TryGetValue(targetFrameworkVersion, out componentId);
                 }
+
+                return componentId;
             }
         }
     }

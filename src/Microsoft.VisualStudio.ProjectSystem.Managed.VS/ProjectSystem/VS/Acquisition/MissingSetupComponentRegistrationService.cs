@@ -21,6 +21,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
 
         private static readonly ImmutableHashSet<string> s_supportedReleaseChannelWorkloads = ImmutableHashSet.Create(StringComparers.WorkloadNames, WasmToolsWorkloadName);
 
+        private readonly ConcurrentHashSet<string> _missingRuntimesRegistered = new(StringComparers.WorkloadNames);
         private readonly ConcurrentDictionary<Guid, IConcurrentHashSet<WorkloadDescriptor>> _projectGuidToWorkloadDescriptorsMap;
         private readonly ConcurrentDictionary<Guid, string> _projectGuidToRuntimeDescriptorMap;
         private readonly ConcurrentDictionary<Guid, IConcurrentHashSet<ProjectConfiguration>> _projectGuidToProjectConfigurationsMap;
@@ -73,6 +74,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
 
         private void ClearMissingWorkloadMetadata()
         {
+            _missingRuntimesRegistered.Clear();
             _projectGuidToRuntimeDescriptorMap.Clear();
             _projectGuidToWorkloadDescriptorsMap.Clear();
             _projectGuidToProjectConfigurationsMap.Clear();
@@ -90,9 +92,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             UnregisterProjectConfiguration(projectGuid, project);
         }
 
-        public void RegisterMissingSdkRuntimeComponentId(Guid projectGuid, ConfiguredProject project, string runtimeComponentId)
+        public void RegisterSdkRuntimeComponentId(Guid projectGuid, ConfiguredProject project, string? runtimeComponentId)
         {
-            _projectGuidToRuntimeDescriptorMap.GetOrAdd(projectGuid, runtimeComponentId);
+            if (runtimeComponentId is not null)
+            {
+                _missingRuntimesRegistered.Add(runtimeComponentId);
+
+                _projectGuidToRuntimeDescriptorMap.GetOrAdd(projectGuid, runtimeComponentId);
+            }
 
             UnregisterProjectConfiguration(projectGuid, project);
         }
