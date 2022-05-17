@@ -11,7 +11,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties;
 /// values persisted to the project file.
 /// </para>
 /// <para>
-/// Note this types stores IDs in instances of <see cref="ImmutableSortedSet{T}"/>,
+/// Note this type stores IDs in instances of <see cref="ImmutableSortedSet{T}"/>,
 /// rather a simple array or list. Two reasons:
 /// <list type="number">
 /// <item>We need to perform actual set operations (union, difference, etc.)</item>
