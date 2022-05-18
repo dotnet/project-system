@@ -179,12 +179,12 @@
       </trans-unit>
       <trans-unit id="StringProperty|ApplicationIcon|Description">
         <source>Sets the .ico file that you want to use as your program icon.</source>
-        <target state="new">Sets the .ico file that you want to use as your program icon.</target>
+        <target state="translated">Задает файл ICO, который будет использоваться в качестве значка программы.</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|ApplicationIcon|DisplayName">
         <source>Icon</source>
-        <target state="new">Icon</target>
+        <target state="translated">Значок</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|AssemblyName|Description">
