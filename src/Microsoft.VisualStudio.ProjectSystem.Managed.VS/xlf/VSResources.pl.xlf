@@ -116,47 +116,36 @@
         <note>{0} is the file name of the project.</note>
       </trans-unit>
       <trans-unit id="ProjectHotReloadSessionManager_AttachingToProcess">
-        <source>{0}: Attaching to process '{1}'.</source>
-        <target state="translated">{0}: dołączanie do procesu „{1}”.</target>
-        <note>{0} is the Hot Reload session identifier. {1} is the process ID (PID).</note>
-      </trans-unit>
-      <trans-unit id="ProjectHotReloadSessionManager_ErrorAttachingToProcess">
-        <source>{0}: Error while attaching to process '{1}':
-{2}
-{3}</source>
-        <target state="translated">{0}: Wystąpił błąd podczas dołączania do procesu „{1}”: 
-{2}
-{3}</target>
-        <note>{0} is the Hot Reload session identifier. {1} is the process ID (PID). {2} is the exception type name. {3} is the exception message.</note>
+        <source>Attaching to process.</source>
+        <target state="new">Attaching to process.</target>
+        <note />
       </trans-unit>
       <trans-unit id="ProjectHotReloadSessionManager_ErrorStoppingTheSession">
-        <source>{0}: Error while stopping the session:
-{1}
-{2}</source>
-        <target state="translated">{0}: Wystąpił błąd podczas zatrzymywania sesji: 
-{1}
-{2}</target>
-        <note>{0} is the Hot Reload session identifier. {1} is the exception type name. {2} is the exception message.</note>
+        <source>Error while stopping the session: {0}
+{1}</source>
+        <target state="new">Error while stopping the session: {0}
+{1}</target>
+        <note>{0} is the exception type name. {1} is the exception message.</note>
       </trans-unit>
       <trans-unit id="ProjectHotReloadSessionManager_NoActiveProcess">
-        <source>{0}: Unable to start Hot Reload session: no active process.</source>
-        <target state="translated">{0}: nie można rozpocząć sesji usługi Hot Reload: Brak aktywnego procesu.</target>
-        <note>{0} is the Hot Reload session identifier.</note>
+        <source>Unable to start Hot Reload session: no active process.</source>
+        <target state="new">Unable to start Hot Reload session: no active process.</target>
+        <note />
       </trans-unit>
       <trans-unit id="ProjectHotReloadSessionManager_ProcessAlreadyExited">
-        <source>{0}: The process has already exited.</source>
-        <target state="translated">{0}: proces został już zakończony.</target>
-        <note>{0} is the Hot Reload session identifier.</note>
+        <source>The process has already exited.</source>
+        <target state="new">The process has already exited.</target>
+        <note />
       </trans-unit>
       <trans-unit id="ProjectHotReloadSessionManager_ProcessExited">
-        <source>{0}: The process has exited.</source>
-        <target state="translated">{0}: proces został zakończony.</target>
-        <note>{0} is the Hot Reload session identifier.</note>
+        <source>The process has exited.</source>
+        <target state="new">The process has exited.</target>
+        <note />
       </trans-unit>
       <trans-unit id="ProjectHotReloadSessionManager_StartupHooksDisabled">
-        <source>{0}: Hot Reload is not available because startup hooks have been disabled, possibly due to trimming.</source>
-        <target state="translated">{0}: polecenie przeładowywania na gorąco nie jest dostępne, ponieważ wyłączono haki startowe, prawdopodobnie z powodu przycinania.</target>
-        <note>{0} is the project name.</note>
+        <source>Hot Reload is not available because startup hooks have been disabled, possibly due to trimming.</source>
+        <target state="new">Hot Reload is not available because startup hooks have been disabled, possibly due to trimming.</target>
+        <note />
       </trans-unit>
       <trans-unit id="RenameSymbolFailed">
         <source>Renaming the code element '{0}' failed.</source>

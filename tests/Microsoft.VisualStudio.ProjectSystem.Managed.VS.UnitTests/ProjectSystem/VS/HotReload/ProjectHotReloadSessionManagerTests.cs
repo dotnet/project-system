@@ -78,8 +78,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.HotReload
 
             var activeConfiguredProject = CreateConfiguredProject(capabilities, propertyNamesAndValues);
             bool outputServiceCalled = false;
-            Action<string> outputServiceCallback = message => outputServiceCalled = true;
-            var manager = CreateHotReloadSessionManager(activeConfiguredProject, outputServiceCallback);
+            void OutputServiceCallback() => outputServiceCalled = true;
+            var manager = CreateHotReloadSessionManager(activeConfiguredProject, OutputServiceCallback);
 
             var environmentVariables = new Dictionary<string, string>();
             var sessionCreated = await manager.TryCreatePendingSessionAsync(environmentVariables);
@@ -145,7 +145,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.HotReload
             Assert.False(sessionCreated);
         }
 
-        private static ProjectHotReloadSessionManager CreateHotReloadSessionManager(ConfiguredProject activeConfiguredProject, Action<string>? outputServiceCallback = null)
+        private static ProjectHotReloadSessionManager CreateHotReloadSessionManager(ConfiguredProject activeConfiguredProject, Action? outputServiceCallback = null)
         {
             var activeDebugFrameworkServices = new IActiveDebugFrameworkServicesMock()
                 .ImplementGetConfiguredProjectForActiveFrameworkAsync(activeConfiguredProject)

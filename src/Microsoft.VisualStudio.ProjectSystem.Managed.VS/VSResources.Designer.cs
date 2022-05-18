@@ -358,7 +358,7 @@ namespace Microsoft.VisualStudio {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to {0}: Attaching to process &apos;{1}&apos;..
+        ///   Looks up a localized string similar to Attaching to process..
         /// </summary>
         internal static string ProjectHotReloadSessionManager_AttachingToProcess {
             get {
@@ -367,7 +367,7 @@ namespace Microsoft.VisualStudio {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to {0}: Error while attaching to process &apos;{1}&apos;:
+        ///   Looks up a localized string similar to Error while attaching to process &apos;{1}&apos;:
         ///{2}
         ///{3}.
         /// </summary>
@@ -398,7 +398,7 @@ namespace Microsoft.VisualStudio {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to {0}: The process has already exited..
+        ///   Looks up a localized string similar to The process has already exited..
         /// </summary>
         internal static string ProjectHotReloadSessionManager_ProcessAlreadyExited {
             get {
@@ -416,7 +416,7 @@ namespace Microsoft.VisualStudio {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to {0}: Hot Reload is not available because startup hooks have been disabled, possibly due to trimming..
+        ///   Looks up a localized string similar to Hot Reload is not available because startup hooks have been disabled, possibly due to trimming..
         /// </summary>
         internal static string ProjectHotReloadSessionManager_StartupHooksDisabled {
             get {

@@ -262,36 +262,24 @@ In order to debug this project, add an executable project to this solution which
     <value>Sending updates to running application.</value>
   </data>
   <data name="ProjectHotReloadSessionManager_AttachingToProcess" xml:space="preserve">
-    <value>{0}: Attaching to process '{1}'.</value>
-    <comment>{0} is the Hot Reload session identifier. {1} is the process ID (PID).</comment>
+    <value>Attaching to process.</value>
   </data>
   <data name="ProjectHotReloadSessionManager_ProcessAlreadyExited" xml:space="preserve">
-    <value>{0}: The process has already exited.</value>
-    <comment>{0} is the Hot Reload session identifier.</comment>
-  </data>
-  <data name="ProjectHotReloadSessionManager_ErrorAttachingToProcess" xml:space="preserve">
-    <value>{0}: Error while attaching to process '{1}':
-{2}
-{3}</value>
-    <comment>{0} is the Hot Reload session identifier. {1} is the process ID (PID). {2} is the exception type name. {3} is the exception message.</comment>
+    <value>The process has already exited.</value>
   </data>
   <data name="ProjectHotReloadSessionManager_NoActiveProcess" xml:space="preserve">
-    <value>{0}: Unable to start Hot Reload session: no active process.</value>
-    <comment>{0} is the Hot Reload session identifier.</comment>
+    <value>Unable to start Hot Reload session: no active process.</value>
   </data>
   <data name="ProjectHotReloadSessionManager_ProcessExited" xml:space="preserve">
-    <value>{0}: The process has exited.</value>
-    <comment>{0} is the Hot Reload session identifier.</comment>
+    <value>The process has exited.</value>
   </data>
   <data name="ProjectHotReloadSessionManager_ErrorStoppingTheSession" xml:space="preserve">
-    <value>{0}: Error while stopping the session:
-{1}
-{2}</value>
-    <comment>{0} is the Hot Reload session identifier. {1} is the exception type name. {2} is the exception message.</comment>
+    <value>Error while stopping the session: {0}
+{1}</value>
+    <comment>{0} is the exception type name. {1} is the exception message.</comment>
   </data>
   <data name="ProjectHotReloadSessionManager_StartupHooksDisabled" xml:space="preserve">
-    <value>{0}: Hot Reload is not available because startup hooks have been disabled, possibly due to trimming.</value>
-    <comment>{0} is the project name.</comment>
+    <value>Hot Reload is not available because startup hooks have been disabled, possibly due to trimming.</value>
   </data>
   <data name="IncrementalBuildFailureWarningMessage" xml:space="preserve">
     <value>WARNING: Potential incremental build failure in '{0}'. See: https://aka.ms/incremental-build-failure</value>
