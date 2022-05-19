@@ -10,6 +10,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
     ///     Handles changes to the  &lt;Analyzer/&gt; item during design-time builds.
     /// </summary>
     [Export(typeof(IWorkspaceContextHandler))]
+    [PartCreationPolicy(CreationPolicy.NonShared)]
     internal class AnalyzerItemHandler : IWorkspaceContextHandler, ICommandLineHandler
     {
         // WORKAROUND: To avoid Roslyn throwing when we add duplicate analyzers, we remember what 

@@ -10,6 +10,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
     ///     Handles changes to the  &lt;AdditionalFiles/&gt; item during design-time builds.
     /// </summary>
     [Export(typeof(IWorkspaceContextHandler))]
+    [PartCreationPolicy(CreationPolicy.NonShared)]
     internal class AdditionalFilesItemHandler : IWorkspaceContextHandler, ICommandLineHandler
     {
         // WORKAROUND: To avoid Roslyn throwing when we add duplicate additional files, we remember what 

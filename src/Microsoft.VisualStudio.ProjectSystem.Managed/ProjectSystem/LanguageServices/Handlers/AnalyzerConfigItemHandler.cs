@@ -9,6 +9,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
     ///     Handles changes to the  &lt;EditorConfigFiles/&gt; items during design-time builds.
     /// </summary>
     [Export(typeof(IWorkspaceContextHandler))]
+    [PartCreationPolicy(CreationPolicy.NonShared)]
     internal class AnalyzerConfigItemHandler : IWorkspaceContextHandler, ICommandLineHandler
     {
         // WORKAROUND: To avoid Roslyn throwing when we add duplicate additional files, we remember what 
