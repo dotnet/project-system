@@ -74,20 +74,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         }
 
         [Fact]
-        public void Initialize_InitializesHandlers()
-        {
-            IWorkspaceProjectContext? result = null;
-            var handler = IWorkspaceContextHandlerFactory.ImplementInitialize((c) => { result = c; });
-
-            var applyChangesToWorkspace = CreateInstance(handlers: handler);
-            var context = IWorkspaceProjectContextMockFactory.Create();
-
-            applyChangesToWorkspace.Initialize(context);
-
-            Assert.Same(context, result);
-        }
-
-        [Fact]
         public void GetProjectEvaluationRules_WhenNotInitialized_ThrowsInvalidOperation()
         {
             var applyChangesToWorkspace = CreateInstance();
@@ -232,7 +218,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         public void ApplyProjectEvaluation_WhenNoRuleChanges_DoesNotCallHandler()
         {
             int callCount = 0;
-            var handler = IEvaluationHandlerFactory.ImplementHandle("RuleName", (version, description, state, logger) => { callCount++; });
+            var handler = IEvaluationHandlerFactory.ImplementHandle("RuleName", (context, projectConfiguration, version, description, state, logger) => { callCount++; });
 
             var applyChangesToWorkspace = CreateInitializedInstance(handlers: new[] { handler });
 
@@ -273,7 +259,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         public void ApplyProjectBuild_WhenNoCompilerCommandLineArgsRuleChanges_Throws()
         {
             int callCount = 0;
-            var handler = ICommandLineHandlerFactory.ImplementHandle((version, added, removed, state, logger) => { callCount++; });
+            var handler = ICommandLineHandlerFactory.ImplementHandle((context, version, added, removed, state, logger) => { callCount++; });
 
             var applyChangesToWorkspace = CreateInitializedInstance(handlers: new[] { handler });
 
@@ -302,7 +288,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         {
             (IComparable version, IProjectChangeDescription description, ContextState state, IProjectDiagnosticOutputService logger) result = default;
 
-            var handler = IEvaluationHandlerFactory.ImplementHandle("RuleName", (version, description, state, logger) =>
+            var handler = IEvaluationHandlerFactory.ImplementHandle("RuleName", (context, projectConfiguration, version, description, state, logger) =>
             {
                 result = (version, description, state, logger);
             });
@@ -341,7 +327,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         {
             (IComparable version, IImmutableDictionary<string, IProjectChangeDescription> description, ContextState state, IProjectDiagnosticOutputService logger) result = default;
 
-            var handler = ISourceItemsHandlerFactory.ImplementHandle((version, description, state, logger) =>
+            var handler = ISourceItemsHandlerFactory.ImplementHandle((context, version, description, state, logger) =>
             {
                 result = (version, description, state, logger);
             });
@@ -379,7 +365,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         {
             (IComparable version, BuildOptions added, BuildOptions removed, ContextState state, IProjectDiagnosticOutputService logger) result = default;
 
-            var handler = ICommandLineHandlerFactory.ImplementHandle((version, added, removed, state, logger) =>
+            var handler = ICommandLineHandlerFactory.ImplementHandle((context, version, added, removed, state, logger) =>
             {
                 result = (version, added, removed, state, logger);
             });
@@ -498,7 +484,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         public void ApplyProjectEvaluation_IgnoresCommandLineHandlers()
         {
             int callCount = 0;
-            var handler = ICommandLineHandlerFactory.ImplementHandle((version, added, removed, state, logger) => { callCount++; });
+            var handler = ICommandLineHandlerFactory.ImplementHandle((context, version, added, removed, state, logger) => { callCount++; });
 
             var applyChangesToWorkspace = CreateInitializedInstance(handlers: new[] { handler });
 
@@ -533,7 +519,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         public void ApplyProjectBuild_IgnoresEvaluationHandlers()
         {
             int callCount = 0;
-            var handler = IEvaluationHandlerFactory.ImplementHandle("RuleName", (version, description, state, logger) => { callCount++; });
+            var handler = IEvaluationHandlerFactory.ImplementHandle("RuleName", (context, projectConfiguration, version, description, state, logger) => { callCount++; });
 
             var applyChangesToWorkspace = CreateInitializedInstance(handlers: new[] { handler });
 

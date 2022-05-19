@@ -1,5 +1,6 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
+using Microsoft.VisualStudio.LanguageServices.ProjectSystem;
 using Microsoft.VisualStudio.ProjectSystem.VS;
 
 namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
@@ -9,7 +10,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
     ///     to the compiler during design-time builds.
     /// </summary>
     [Export(typeof(IWorkspaceContextHandler))]
-    internal class CompileItemHandler : AbstractEvaluationCommandLineHandler, IProjectEvaluationHandler, ICommandLineHandler
+    internal class CompileItemHandler : AbstractEvaluationCommandLineHandler, IWorkspaceContextHandler, IProjectEvaluationHandler, ICommandLineHandler
     {
         private readonly UnconfiguredProject _project;
 
@@ -25,52 +26,39 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
             get { return Compile.SchemaName; }
         }
 
-        public void Handle(IComparable version, IProjectChangeDescription projectChange, ContextState state, IProjectDiagnosticOutputService logger)
+        public void Handle(IWorkspaceProjectContext context, ProjectConfiguration projectConfiguration, IComparable version, IProjectChangeDescription projectChange, ContextState state, IProjectDiagnosticOutputService logger)
         {
-            Requires.NotNull(version, nameof(version));
-            Requires.NotNull(projectChange, nameof(projectChange));
-            Requires.NotNull(logger, nameof(logger));
-
-            VerifyInitialized();
-
-            ApplyProjectEvaluation(version, projectChange.Difference, projectChange.Before.Items, projectChange.After.Items, state.IsActiveEditorContext, logger);
+            ApplyProjectEvaluation(context, version, projectChange.Difference, projectChange.Before.Items, projectChange.After.Items, state.IsActiveEditorContext, logger);
         }
 
-        public void Handle(IComparable version, BuildOptions added, BuildOptions removed, ContextState state, IProjectDiagnosticOutputService logger)
+        public void Handle(IWorkspaceProjectContext context, IComparable version, BuildOptions added, BuildOptions removed, ContextState state, IProjectDiagnosticOutputService logger)
         {
-            Requires.NotNull(version, nameof(version));
-            Requires.NotNull(added, nameof(added));
-            Requires.NotNull(removed, nameof(removed));
-            Requires.NotNull(logger, nameof(logger));
-
-            VerifyInitialized();
-
             IProjectChangeDiff difference = ConvertToProjectDiff(added, removed);
 
-            ApplyProjectBuild(version, difference, state.IsActiveEditorContext, logger);
+            ApplyProjectBuild(context, version, difference, state.IsActiveEditorContext, logger);
         }
 
-        protected override void AddToContext(string fullPath, IImmutableDictionary<string, string> metadata, bool isActiveContext, IProjectDiagnosticOutputService logger)
+        protected override void AddToContext(IWorkspaceProjectContext context, string fullPath, IImmutableDictionary<string, string> metadata, bool isActiveContext, IProjectDiagnosticOutputService logger)
         {
             string[]? folderNames = FileItemServices.GetLogicalFolderNames(Path.GetDirectoryName(_project.FullPath), fullPath, metadata);
 
             logger.WriteLine("Adding source file '{0}'", fullPath);
-            Context.AddSourceFile(fullPath, isInCurrentContext: isActiveContext, folderNames: folderNames);
+            context.AddSourceFile(fullPath, isInCurrentContext: isActiveContext, folderNames: folderNames);
         }
 
-        protected override void RemoveFromContext(string fullPath, IProjectDiagnosticOutputService logger)
+        protected override void RemoveFromContext(IWorkspaceProjectContext context, string fullPath, IProjectDiagnosticOutputService logger)
         {
             logger.WriteLine("Removing source file '{0}'", fullPath);
-            Context.RemoveSourceFile(fullPath);
+            context.RemoveSourceFile(fullPath);
         }
 
-        protected override void UpdateInContext(string fullPath, IImmutableDictionary<string, string> previousMetadata, IImmutableDictionary<string, string> currentMetadata, bool isActiveContext, IProjectDiagnosticOutputService logger)
+        protected override void UpdateInContext(IWorkspaceProjectContext context, string fullPath, IImmutableDictionary<string, string> previousMetadata, IImmutableDictionary<string, string> currentMetadata, bool isActiveContext, IProjectDiagnosticOutputService logger)
         {
             if (LinkMetadataChanged(previousMetadata, currentMetadata))
             {
                 logger.WriteLine("Removing and then re-adding source file '{0}' to <Link> metadata changes", fullPath);
-                RemoveFromContext(fullPath, logger);
-                AddToContext(fullPath, currentMetadata, isActiveContext, logger);
+                RemoveFromContext(context, fullPath, logger);
+                AddToContext(context, fullPath, currentMetadata, isActiveContext, logger);
             }
         }
 

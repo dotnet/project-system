@@ -123,11 +123,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
             Assumes.NotNull(_context);
 
             _handlers = _workspaceContextHandlerFactories.SelectArray(h => h.CreateExport());
-
-            foreach (ExportLifetimeContext<IWorkspaceContextHandler> handler in _handlers)
-            {
-                handler.Value.Initialize(_context);
-            }
         }
 
         private void ProcessProjectBuildFailure(IProjectRuleSnapshot snapshot)
@@ -164,19 +159,23 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 
         private void ProcessCommandLineHandlers(IComparable version, BuildOptions added, BuildOptions removed, ContextState state, CancellationToken cancellationToken)
         {
+            Assumes.NotNull(_context);
+
             foreach (ExportLifetimeContext<IWorkspaceContextHandler> handler in _handlers)
             {
                 cancellationToken.ThrowIfCancellationRequested();
 
                 if (handler.Value is ICommandLineHandler commandLineHandler)
                 {
-                    commandLineHandler.Handle(version, added, removed, state, _logger);
+                    commandLineHandler.Handle(_context, version, added, removed, state, _logger);
                 }
             }
         }
 
         private void ProcessProjectEvaluationHandlers(IComparable version, IProjectSubscriptionUpdate update, ContextState state, CancellationToken cancellationToken)
         {
+            Assumes.NotNull(_context);
+
             foreach (ExportLifetimeContext<IWorkspaceContextHandler> handler in _handlers)
             {
                 cancellationToken.ThrowIfCancellationRequested();
@@ -187,20 +186,22 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
                     if (!projectChange.Difference.AnyChanges)
                         continue;
 
-                    evaluationHandler.Handle(version, projectChange, state, _logger);
+                    evaluationHandler.Handle(_context, _project.ProjectConfiguration, version, projectChange, state, _logger);
                 }
             }
         }
 
         private void ProcessSourceItemsHandlers(IComparable version, IProjectSubscriptionUpdate update, ContextState state, CancellationToken cancellationToken)
         {
+            Assumes.NotNull(_context);
+
             foreach (ExportLifetimeContext<IWorkspaceContextHandler> handler in _handlers)
             {
                 cancellationToken.ThrowIfCancellationRequested();
 
                 if (handler.Value is ISourceItemsHandler sourceItemsHandler)
                 {
-                    sourceItemsHandler.Handle(version, update.ProjectChanges, state, _logger);
+                    sourceItemsHandler.Handle(_context, version, update.ProjectChanges, state, _logger);
                 }
             }
         }

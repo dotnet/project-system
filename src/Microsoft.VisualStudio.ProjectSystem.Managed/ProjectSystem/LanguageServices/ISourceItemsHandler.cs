@@ -15,6 +15,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         ///     Handles the specified set of changes to source items, and applies them
         ///     to the underlying <see cref="IWorkspaceProjectContext"/>.
         /// </summary>
+        /// <param name="context">
+        ///     The <see cref="IWorkspaceProjectContext"/> to update.
+        /// </param>
         /// <param name="version">
         ///     An <see cref="IComparable"/> representing the <see cref="ConfiguredProject.ProjectVersion"/> at
         ///     the time the <see cref="IProjectChangeDescription"/> was produced.
@@ -29,17 +32,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         /// <param name="logger">
         ///     The <see cref="IProjectDiagnosticOutputService"/> for logging to the log.
         /// </param>
-        /// <exception cref="ArgumentNullException">
-        ///     <paramref name="version"/> is <see langword="null"/>.
-        ///     <para>
-        ///         -or-
-        ///     </para>
-        ///     <paramref name="projectChanges"/> is <see langword="null"/>.
-        ///     <para>
-        ///         -or-
-        ///     </para>
-        ///     <paramref name="logger"/> is <see langword="null"/>.
-        /// </exception>
-        void Handle(IComparable version, IImmutableDictionary<string, IProjectChangeDescription> projectChanges, ContextState state, IProjectDiagnosticOutputService logger);
+        void Handle(IWorkspaceProjectContext context, IComparable version, IImmutableDictionary<string, IProjectChangeDescription> projectChanges, ContextState state, IProjectDiagnosticOutputService logger);
     }
 }
