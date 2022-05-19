@@ -112,6 +112,11 @@
         <target state="new">debug type</target>
         <note />
       </trans-unit>
+      <trans-unit id="EnumProperty|DuplicateOrOverlappingCatchBlocks_Readonly|DisplayName">
+        <source>Duplicate or overlapping catch blocks</source>
+        <target state="new">Duplicate or overlapping catch blocks</target>
+        <note />
+      </trans-unit>
       <trans-unit id="EnumProperty|DuplicateOrOverlappingCatchBlocks|DisplayName">
         <source>Duplicate or overlapping catch blocks</source>
         <target state="new">Duplicate or overlapping catch blocks</target>
@@ -123,8 +128,8 @@
         <note />
       </trans-unit>
       <trans-unit id="EnumProperty|ImplicitConversion_Readonly|Description">
-        <source>Implicit narrowing conversion occurs when there is an implicit data type conversion that is a narrowing conversion. Cannot be changed when 'Option strict' is on.</source>
-        <target state="new">Implicit narrowing conversion occurs when there is an implicit data type conversion that is a narrowing conversion. Cannot be changed when 'Option strict' is on.</target>
+        <source>Implicit narrowing conversion occurs when there is an implicit data type conversion that is a narrowing conversion. Always 'Error' when 'Option strict' is on.</source>
+        <target state="new">Implicit narrowing conversion occurs when there is an implicit data type conversion that is a narrowing conversion. Always 'Error' when 'Option strict' is on.</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumProperty|ImplicitConversion_Readonly|DisplayName">
@@ -133,8 +138,8 @@
         <note />
       </trans-unit>
       <trans-unit id="EnumProperty|ImplicitConversion|Description">
-        <source>Implicit narrowing conversion occurs when there is an implicit data type conversion that is a narrowing conversion.</source>
-        <target state="new">Implicit narrowing conversion occurs when there is an implicit data type conversion that is a narrowing conversion.</target>
+        <source>Implicit narrowing conversion occurs when there is an implicit data type conversion that is a narrowing conversion. Always 'Error' when 'Option strict' is on.</source>
+        <target state="new">Implicit narrowing conversion occurs when there is an implicit data type conversion that is a narrowing conversion. Always 'Error' when 'Option strict' is on.</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumProperty|ImplicitConversion|DisplayName">
@@ -143,8 +148,8 @@
         <note />
       </trans-unit>
       <trans-unit id="EnumProperty|ImplicitType_Readonly|Description">
-        <source>Implicit object type errors occur when an appropriate type cannot be inferred for a declared variable, so a type of 'Object' is inferred. Cannot be changed when 'Option strict' is on.</source>
-        <target state="new">Implicit object type errors occur when an appropriate type cannot be inferred for a declared variable, so a type of 'Object' is inferred. Cannot be changed when 'Option strict' is on.</target>
+        <source>Implicit object type errors occur when an appropriate type cannot be inferred for a declared variable, so a type of 'Object' is inferred. Always 'Error' when 'Option strict' is on.</source>
+        <target state="new">Implicit object type errors occur when an appropriate type cannot be inferred for a declared variable, so a type of 'Object' is inferred. Always 'Error' when 'Option strict' is on.</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumProperty|ImplicitType_Readonly|DisplayName">
@@ -153,13 +158,18 @@
         <note />
       </trans-unit>
       <trans-unit id="EnumProperty|ImplicitType|Description">
-        <source>Implicit object type errors occur when an appropriate type cannot be inferred for a declared variable, so a type of 'Object' is inferred.</source>
-        <target state="new">Implicit object type errors occur when an appropriate type cannot be inferred for a declared variable, so a type of 'Object' is inferred.</target>
+        <source>Implicit object type errors occur when an appropriate type cannot be inferred for a declared variable, so a type of 'Object' is inferred. Always 'Error' when 'Option strict' is on.</source>
+        <target state="new">Implicit object type errors occur when an appropriate type cannot be inferred for a declared variable, so a type of 'Object' is inferred. Always 'Error' when 'Option strict' is on.</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumProperty|ImplicitType|DisplayName">
         <source>Implicit type</source>
         <target state="new">Implicit type</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumProperty|InstanceVariableAccessesSharedMember_Readonly|DisplayName">
+        <source>Instance variable accesses shared member</source>
+        <target state="new">Instance variable accesses shared member</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumProperty|InstanceVariableAccessesSharedMember|DisplayName">
@@ -168,8 +178,8 @@
         <note />
       </trans-unit>
       <trans-unit id="EnumProperty|LateBinding_Readonly|Description">
-        <source>An object is late bound when it is assigned to a property or method of a variable that is declared to be of type 'Object'. These operations could fail at run time. Cannot be changed when 'Option strict' is on.</source>
-        <target state="new">An object is late bound when it is assigned to a property or method of a variable that is declared to be of type 'Object'. These operations could fail at run time. Cannot be changed when 'Option strict' is on.</target>
+        <source>An object is late bound when it is assigned to a property or method of a variable that is declared to be of type 'Object'. These operations could fail at run time. Always 'Error' when 'Option strict' is on.</source>
+        <target state="new">An object is late bound when it is assigned to a property or method of a variable that is declared to be of type 'Object'. These operations could fail at run time. Always 'Error' when 'Option strict' is on.</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumProperty|LateBinding_Readonly|DisplayName">
@@ -178,8 +188,8 @@
         <note />
       </trans-unit>
       <trans-unit id="EnumProperty|LateBinding|Description">
-        <source>An object is late bound when it is assigned to a property or method of a variable that is declared to be of type 'Object'. These operations could fail at run time.</source>
-        <target state="new">An object is late bound when it is assigned to a property or method of a variable that is declared to be of type 'Object'. These operations could fail at run time.</target>
+        <source>An object is late bound when it is assigned to a property or method of a variable that is declared to be of type 'Object'. These operations could fail at run time. Always 'Error' when 'Option strict' is on.</source>
+        <target state="new">An object is late bound when it is assigned to a property or method of a variable that is declared to be of type 'Object'. These operations could fail at run time. Always 'Error' when 'Option strict' is on.</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumProperty|LateBinding|DisplayName">
@@ -227,14 +237,29 @@
         <target state="new">Option strict</target>
         <note />
       </trans-unit>
+      <trans-unit id="EnumProperty|RecursiveOperatorOrPropertyAccess_Readonly|DisplayName">
+        <source>Recursive operator or property access</source>
+        <target state="new">Recursive operator or property access</target>
+        <note />
+      </trans-unit>
       <trans-unit id="EnumProperty|RecursiveOperatorOrPropertyAccess|DisplayName">
         <source>Recursive operator or property access</source>
         <target state="new">Recursive operator or property access</target>
         <note />
       </trans-unit>
+      <trans-unit id="EnumProperty|ReturningIntrinsicValueTypeWithoutReturnValue_Readonly|DisplayName">
+        <source>Function returning intrinsic value type without return value</source>
+        <target state="new">Function returning intrinsic value type without return value</target>
+        <note />
+      </trans-unit>
       <trans-unit id="EnumProperty|ReturningIntrinsicValueTypeWithoutReturnValue|DisplayName">
         <source>Function returning intrinsic value type without return value</source>
         <target state="new">Function returning intrinsic value type without return value</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumProperty|ReturningRefTypeWithoutReturnValue_Readonly|DisplayName">
+        <source>Function returning reference type without return value</source>
+        <target state="new">Function returning reference type without return value</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumProperty|ReturningRefTypeWithoutReturnValue|DisplayName">
@@ -252,9 +277,19 @@
         <target state="new">When to run the post-build event</target>
         <note />
       </trans-unit>
+      <trans-unit id="EnumProperty|UnusedLocalVariable_Readonly|DisplayName">
+        <source>Unused local variable</source>
+        <target state="new">Unused local variable</target>
+        <note />
+      </trans-unit>
       <trans-unit id="EnumProperty|UnusedLocalVariable|DisplayName">
         <source>Unused local variable</source>
         <target state="new">Unused local variable</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumProperty|UseOfVariablePriorToAssignment_Readonly|DisplayName">
+        <source>Use of variable prior to assignment</source>
+        <target state="new">Use of variable prior to assignment</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumProperty|UseOfVariablePriorToAssignment|DisplayName">
@@ -298,6 +333,21 @@
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|DuplicateOrOverlappingCatchBlocks.Warning|DisplayName">
+        <source>Warning</source>
+        <target state="new">Warning</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|DuplicateOrOverlappingCatchBlocks_Readonly.Error|DisplayName">
+        <source>Error</source>
+        <target state="new">Error</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|DuplicateOrOverlappingCatchBlocks_Readonly.None|DisplayName">
+        <source>None</source>
+        <target state="new">None</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|DuplicateOrOverlappingCatchBlocks_Readonly.Warning|DisplayName">
         <source>Warning</source>
         <target state="new">Warning</target>
         <note />
@@ -392,6 +442,21 @@
         <target state="new">Warning</target>
         <note />
       </trans-unit>
+      <trans-unit id="EnumValue|InstanceVariableAccessesSharedMember_Readonly.Error|DisplayName">
+        <source>Error</source>
+        <target state="new">Error</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|InstanceVariableAccessesSharedMember_Readonly.None|DisplayName">
+        <source>None</source>
+        <target state="new">None</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|InstanceVariableAccessesSharedMember_Readonly.Warning|DisplayName">
+        <source>Warning</source>
+        <target state="new">Warning</target>
+        <note />
+      </trans-unit>
       <trans-unit id="EnumValue|LateBinding.Error|DisplayName">
         <source>Error</source>
         <target state="new">Error</target>
@@ -477,6 +542,21 @@
         <target state="new">Warning</target>
         <note />
       </trans-unit>
+      <trans-unit id="EnumValue|RecursiveOperatorOrPropertyAccess_Readonly.Error|DisplayName">
+        <source>Error</source>
+        <target state="new">Error</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|RecursiveOperatorOrPropertyAccess_Readonly.None|DisplayName">
+        <source>None</source>
+        <target state="new">None</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|RecursiveOperatorOrPropertyAccess_Readonly.Warning|DisplayName">
+        <source>Warning</source>
+        <target state="new">Warning</target>
+        <note />
+      </trans-unit>
       <trans-unit id="EnumValue|ReturningIntrinsicValueTypeWithoutReturnValue.Error|DisplayName">
         <source>Error</source>
         <target state="new">Error</target>
@@ -492,6 +572,21 @@
         <target state="new">Warning</target>
         <note />
       </trans-unit>
+      <trans-unit id="EnumValue|ReturningIntrinsicValueTypeWithoutReturnValue_Readonly.Error|DisplayName">
+        <source>Error</source>
+        <target state="new">Error</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|ReturningIntrinsicValueTypeWithoutReturnValue_Readonly.None|DisplayName">
+        <source>None</source>
+        <target state="new">None</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|ReturningIntrinsicValueTypeWithoutReturnValue_Readonly.Warning|DisplayName">
+        <source>Warning</source>
+        <target state="new">Warning</target>
+        <note />
+      </trans-unit>
       <trans-unit id="EnumValue|ReturningRefTypeWithoutReturnValue.Error|DisplayName">
         <source>Error</source>
         <target state="new">Error</target>
@@ -503,6 +598,21 @@
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|ReturningRefTypeWithoutReturnValue.Warning|DisplayName">
+        <source>Warning</source>
+        <target state="new">Warning</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|ReturningRefTypeWithoutReturnValue_Readonly.Error|DisplayName">
+        <source>Error</source>
+        <target state="new">Error</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|ReturningRefTypeWithoutReturnValue_Readonly.None|DisplayName">
+        <source>None</source>
+        <target state="new">None</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|ReturningRefTypeWithoutReturnValue_Readonly.Warning|DisplayName">
         <source>Warning</source>
         <target state="new">Warning</target>
         <note />
@@ -537,6 +647,21 @@
         <target state="new">Warning</target>
         <note />
       </trans-unit>
+      <trans-unit id="EnumValue|UnusedLocalVariable_Readonly.Error|DisplayName">
+        <source>Error</source>
+        <target state="new">Error</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|UnusedLocalVariable_Readonly.None|DisplayName">
+        <source>None</source>
+        <target state="new">None</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|UnusedLocalVariable_Readonly.Warning|DisplayName">
+        <source>Warning</source>
+        <target state="new">Warning</target>
+        <note />
+      </trans-unit>
       <trans-unit id="EnumValue|UseOfVariablePriorToAssignment.Error|DisplayName">
         <source>Error</source>
         <target state="new">Error</target>
@@ -548,6 +673,21 @@
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|UseOfVariablePriorToAssignment.Warning|DisplayName">
+        <source>Warning</source>
+        <target state="new">Warning</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|UseOfVariablePriorToAssignment_Readonly.Error|DisplayName">
+        <source>Error</source>
+        <target state="new">Error</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|UseOfVariablePriorToAssignment_Readonly.None|DisplayName">
+        <source>None</source>
+        <target state="new">None</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|UseOfVariablePriorToAssignment_Readonly.Warning|DisplayName">
         <source>Warning</source>
         <target state="new">Warning</target>
         <note />

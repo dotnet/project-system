@@ -154,13 +154,18 @@
   <!-- TODO: Replace HelpUrl with a fwlink -->
   <EnumProperty Name="ImplicitConversion"
                 DisplayName="Implicit conversion"
-                Description="Implicit narrowing conversion occurs when there is an implicit data type conversion that is a narrowing conversion."
+                Description="Implicit narrowing conversion occurs when there is an implicit data type conversion that is a narrowing conversion. Always 'Error' when 'Option strict' is on."
                 HelpUrl="https://docs.microsoft.com/dotnet/visual-basic/language-reference/statements/option-strict-statement#implicit-narrowing-conversion-errors"
                 Category="Warnings">
     <EnumProperty.Metadata>
       <NameValuePair Name="VisibilityCondition">
         <NameValuePair.Value>
-          (not (has-evaluated-value "Build" "OptionStrict" "On"))
+          (not 
+            (or
+              (has-evaluated-value "Build" "OptionStrict" "On")
+              (has-evaluated-value "Build" "WarningSeverity" "DisableAll")
+            )
+          )
         </NameValuePair.Value>
       </NameValuePair>
     </EnumProperty.Metadata>
@@ -172,7 +177,7 @@
   <!-- TODO: Replace HelpUrl with a fwlink -->
   <EnumProperty Name="ImplicitConversion_Readonly"
                 DisplayName="Implicit conversion"
-                Description="Implicit narrowing conversion occurs when there is an implicit data type conversion that is a narrowing conversion. Cannot be changed when 'Option strict' is on."
+                Description="Implicit narrowing conversion occurs when there is an implicit data type conversion that is a narrowing conversion. Always 'Error' when 'Option strict' is on."
                 HelpUrl="https://docs.microsoft.com/dotnet/visual-basic/language-reference/statements/option-strict-statement#implicit-narrowing-conversion-errors"
                 Category="Warnings"
                 ReadOnly="True">
@@ -184,7 +189,10 @@
     <EnumProperty.Metadata>
       <NameValuePair Name="VisibilityCondition">
         <NameValuePair.Value>
-          (has-evaluated-value "Build" "OptionStrict" "On")
+          (or
+            (has-evaluated-value "Build" "OptionStrict" "On")
+            (has-evaluated-value "Build" "WarningSeverity" "DisableAll")
+          )
         </NameValuePair.Value>
       </NameValuePair>
     </EnumProperty.Metadata>
@@ -196,13 +204,18 @@
   <!-- TODO: Replace HelpUrl with a fwlink -->
   <EnumProperty Name="LateBinding"
                 DisplayName="Late binding"
-                Description="An object is late bound when it is assigned to a property or method of a variable that is declared to be of type 'Object'. These operations could fail at run time."
+                Description="An object is late bound when it is assigned to a property or method of a variable that is declared to be of type 'Object'. These operations could fail at run time. Always 'Error' when 'Option strict' is on."
                 HelpUrl="https://docs.microsoft.com/dotnet/visual-basic/language-reference/statements/option-strict-statement#late-binding-errors"
                 Category="Warnings">
     <EnumProperty.Metadata>
       <NameValuePair Name="VisibilityCondition">
         <NameValuePair.Value>
-          (not (has-evaluated-value "Build" "OptionStrict" "On"))
+          (not 
+            (or
+              (has-evaluated-value "Build" "OptionStrict" "On")
+              (has-evaluated-value "Build" "WarningSeverity" "DisableAll")
+            )
+          )
         </NameValuePair.Value>
       </NameValuePair>
     </EnumProperty.Metadata>
@@ -214,7 +227,7 @@
   <!-- TODO: Replace HelpUrl with a fwlink -->
   <EnumProperty Name="LateBinding_Readonly"
                 DisplayName="Late binding"
-                Description="An object is late bound when it is assigned to a property or method of a variable that is declared to be of type 'Object'. These operations could fail at run time. Cannot be changed when 'Option strict' is on."
+                Description="An object is late bound when it is assigned to a property or method of a variable that is declared to be of type 'Object'. These operations could fail at run time. Always 'Error' when 'Option strict' is on."
                 HelpUrl="https://docs.microsoft.com/dotnet/visual-basic/language-reference/statements/option-strict-statement#late-binding-errors"
                 Category="Warnings"
                 ReadOnly="True">
@@ -226,7 +239,10 @@
     <EnumProperty.Metadata>
       <NameValuePair Name="VisibilityCondition">
         <NameValuePair.Value>
-          (has-evaluated-value "Build" "OptionStrict" "On")
+          (or
+            (has-evaluated-value "Build" "OptionStrict" "On")
+            (has-evaluated-value "Build" "WarningSeverity" "DisableAll")
+          )
         </NameValuePair.Value>
       </NameValuePair>
     </EnumProperty.Metadata>
@@ -238,13 +254,18 @@
   <!-- TODO: Replace HelpUrl with a fwlink -->
   <EnumProperty Name="ImplicitType"
                 DisplayName="Implicit type"
-                Description="Implicit object type errors occur when an appropriate type cannot be inferred for a declared variable, so a type of 'Object' is inferred."
+                Description="Implicit object type errors occur when an appropriate type cannot be inferred for a declared variable, so a type of 'Object' is inferred. Always 'Error' when 'Option strict' is on."
                 HelpUrl="https://docs.microsoft.com/en-us/dotnet/visual-basic/language-reference/statements/option-strict-statement#implicit-object-type-errors"
                 Category="Warnings">
     <EnumProperty.Metadata>
       <NameValuePair Name="VisibilityCondition">
         <NameValuePair.Value>
-          (not (has-evaluated-value "Build" "OptionStrict" "On"))
+          (not 
+            (or
+              (has-evaluated-value "Build" "OptionStrict" "On")
+              (has-evaluated-value "Build" "WarningSeverity" "DisableAll")
+            )
+          )
         </NameValuePair.Value>
       </NameValuePair>
     </EnumProperty.Metadata>
@@ -256,7 +277,7 @@
   <!-- TODO: Replace HelpUrl with a fwlink -->
   <EnumProperty Name="ImplicitType_Readonly"
                 DisplayName="Implicit type"
-                Description="Implicit object type errors occur when an appropriate type cannot be inferred for a declared variable, so a type of 'Object' is inferred. Cannot be changed when 'Option strict' is on."
+                Description="Implicit object type errors occur when an appropriate type cannot be inferred for a declared variable, so a type of 'Object' is inferred. Always 'Error' when 'Option strict' is on."
                 HelpUrl="https://docs.microsoft.com/en-us/dotnet/visual-basic/language-reference/statements/option-strict-statement#implicit-object-type-errors"
                 Category="Warnings"
                 ReadOnly="True">
@@ -268,7 +289,10 @@
     <EnumProperty.Metadata>
       <NameValuePair Name="VisibilityCondition">
         <NameValuePair.Value>
-          (has-evaluated-value "Build" "OptionStrict" "On")
+          (or
+            (has-evaluated-value "Build" "OptionStrict" "On")
+            (has-evaluated-value "Build" "WarningSeverity" "DisableAll")
+          )
         </NameValuePair.Value>
       </NameValuePair>
     </EnumProperty.Metadata>
@@ -282,16 +306,76 @@
                 DisplayName="Use of variable prior to assignment"
                 HelpUrl="https://docs.microsoft.com/visualstudio/ide/reference/compile-page-project-designer-visual-basic#compiler-configuration-options"
                 Category="Warnings">
+    <EnumProperty.Metadata>
+      <NameValuePair Name="VisibilityCondition">
+        <NameValuePair.Value>
+          (not (has-evaluated-value "Build" "WarningSeverity" "DisableAll"))
+        </NameValuePair.Value>
+      </NameValuePair>
+    </EnumProperty.Metadata>
     <EnumValue Name="None" DisplayName="None" />
     <EnumValue Name="Warning" DisplayName="Warning" />
     <EnumValue Name="Error" DisplayName="Error" />
   </EnumProperty>
 
   <!-- TODO: Replace HelpUrl with a fwlink -->
+  <EnumProperty Name="UseOfVariablePriorToAssignment_Readonly"
+                DisplayName="Use of variable prior to assignment"
+                HelpUrl="https://docs.microsoft.com/visualstudio/ide/reference/compile-page-project-designer-visual-basic#compiler-configuration-options"
+                Category="Warnings"
+                ReadOnly="True">
+    <EnumProperty.DataSource>
+      <DataSource Persistence="ProjectFileWithInterception"
+                  PersistedName="UseOfVariablePriorToAssignment"
+                  HasConfigurationCondition="True" />
+    </EnumProperty.DataSource>
+    <EnumProperty.Metadata>
+      <NameValuePair Name="VisibilityCondition">
+        <NameValuePair.Value>
+          (has-evaluated-value "Build" "WarningSeverity" "DisableAll")
+        </NameValuePair.Value>
+      </NameValuePair>
+    </EnumProperty.Metadata>
+    <EnumValue Name="None" DisplayName="None" />
+    <EnumValue Name="Warning" DisplayName="Warning" />
+    <EnumValue Name="Error" DisplayName="Error" />
+  </EnumProperty>
+  
+  <!-- TODO: Replace HelpUrl with a fwlink -->
   <EnumProperty Name="ReturningRefTypeWithoutReturnValue"
                 DisplayName="Function returning reference type without return value"
                 HelpUrl="https://docs.microsoft.com/visualstudio/ide/reference/compile-page-project-designer-visual-basic#compiler-configuration-options"
                 Category="Warnings">
+    <EnumProperty.Metadata>
+      <NameValuePair Name="VisibilityCondition">
+        <NameValuePair.Value>
+          (not (has-evaluated-value "Build" "WarningSeverity" "DisableAll"))
+        </NameValuePair.Value>
+      </NameValuePair>
+    </EnumProperty.Metadata>
+    <EnumValue Name="None" DisplayName="None" />
+    <EnumValue Name="Warning" DisplayName="Warning" />
+    <EnumValue Name="Error" DisplayName="Error" />
+  </EnumProperty>
+
+  <!-- TODO: Replace HelpUrl with a fwlink -->
+  <EnumProperty Name="ReturningRefTypeWithoutReturnValue_Readonly"
+                DisplayName="Function returning reference type without return value"
+                HelpUrl="https://docs.microsoft.com/visualstudio/ide/reference/compile-page-project-designer-visual-basic#compiler-configuration-options"
+                Category="Warnings"
+                ReadOnly="True">
+    <EnumProperty.DataSource>
+      <DataSource Persistence="ProjectFileWithInterception"
+                  PersistedName="ReturningRefTypeWithoutReturnValue"
+                  HasConfigurationCondition="True" />
+    </EnumProperty.DataSource>
+    <EnumProperty.Metadata>
+      <NameValuePair Name="VisibilityCondition">
+        <NameValuePair.Value>
+          (has-evaluated-value "Build" "WarningSeverity" "DisableAll")
+        </NameValuePair.Value>
+      </NameValuePair>
+    </EnumProperty.Metadata>
     <EnumValue Name="None" DisplayName="None" />
     <EnumValue Name="Warning" DisplayName="Warning" />
     <EnumValue Name="Error" DisplayName="Error" />
@@ -302,6 +386,36 @@
                 DisplayName="Function returning intrinsic value type without return value"
                 HelpUrl="https://docs.microsoft.com/visualstudio/ide/reference/compile-page-project-designer-visual-basic#compiler-configuration-options"
                 Category="Warnings">
+    <EnumProperty.Metadata>
+      <NameValuePair Name="VisibilityCondition">
+        <NameValuePair.Value>
+          (not (has-evaluated-value "Build" "WarningSeverity" "DisableAll"))
+        </NameValuePair.Value>
+      </NameValuePair>
+    </EnumProperty.Metadata>
+    <EnumValue Name="None" DisplayName="None" />
+    <EnumValue Name="Warning" DisplayName="Warning" />
+    <EnumValue Name="Error" DisplayName="Error" />
+  </EnumProperty>
+
+  <!-- TODO: Replace HelpUrl with a fwlink -->
+  <EnumProperty Name="ReturningIntrinsicValueTypeWithoutReturnValue_Readonly"
+                DisplayName="Function returning intrinsic value type without return value"
+                HelpUrl="https://docs.microsoft.com/visualstudio/ide/reference/compile-page-project-designer-visual-basic#compiler-configuration-options"
+                Category="Warnings"
+                ReadOnly="True">
+    <EnumProperty.DataSource>
+      <DataSource Persistence="ProjectFileWithInterception"
+                  PersistedName="ReturningIntrinsicValueTypeWithoutReturnValue"
+                  HasConfigurationCondition="True" />
+    </EnumProperty.DataSource>
+    <EnumProperty.Metadata>
+      <NameValuePair Name="VisibilityCondition">
+        <NameValuePair.Value>
+          (has-evaluated-value "Build" "WarningSeverity" "DisableAll")
+        </NameValuePair.Value>
+      </NameValuePair>
+    </EnumProperty.Metadata>
     <EnumValue Name="None" DisplayName="None" />
     <EnumValue Name="Warning" DisplayName="Warning" />
     <EnumValue Name="Error" DisplayName="Error" />
@@ -312,6 +426,36 @@
                 DisplayName="Unused local variable"
                 HelpUrl="https://docs.microsoft.com/visualstudio/ide/reference/compile-page-project-designer-visual-basic#compiler-configuration-options"
                 Category="Warnings">
+    <EnumProperty.Metadata>
+      <NameValuePair Name="VisibilityCondition">
+        <NameValuePair.Value>
+          (not (has-evaluated-value "Build" "WarningSeverity" "DisableAll"))
+        </NameValuePair.Value>
+      </NameValuePair>
+    </EnumProperty.Metadata>
+    <EnumValue Name="None" DisplayName="None" />
+    <EnumValue Name="Warning" DisplayName="Warning" />
+    <EnumValue Name="Error" DisplayName="Error" />
+  </EnumProperty>
+
+  <!-- TODO: Replace HelpUrl with a fwlink -->
+  <EnumProperty Name="UnusedLocalVariable_Readonly"
+                DisplayName="Unused local variable"
+                HelpUrl="https://docs.microsoft.com/visualstudio/ide/reference/compile-page-project-designer-visual-basic#compiler-configuration-options"
+                Category="Warnings"
+                ReadOnly="True">
+    <EnumProperty.DataSource>
+      <DataSource Persistence="ProjectFileWithInterception"
+                  PersistedName="UnusedLocalVariable"
+                  HasConfigurationCondition="True" />
+    </EnumProperty.DataSource>
+    <EnumProperty.Metadata>
+      <NameValuePair Name="VisibilityCondition">
+        <NameValuePair.Value>
+          (has-evaluated-value "Build" "WarningSeverity" "DisableAll")
+        </NameValuePair.Value>
+      </NameValuePair>
+    </EnumProperty.Metadata>
     <EnumValue Name="None" DisplayName="None" />
     <EnumValue Name="Warning" DisplayName="Warning" />
     <EnumValue Name="Error" DisplayName="Error" />
@@ -322,6 +466,36 @@
                 DisplayName="Instance variable accesses shared member"
                 HelpUrl="https://docs.microsoft.com/visualstudio/ide/reference/compile-page-project-designer-visual-basic#compiler-configuration-options"
                 Category="Warnings">
+    <EnumProperty.Metadata>
+      <NameValuePair Name="VisibilityCondition">
+        <NameValuePair.Value>
+          (not (has-evaluated-value "Build" "WarningSeverity" "DisableAll"))
+        </NameValuePair.Value>
+      </NameValuePair>
+    </EnumProperty.Metadata>
+    <EnumValue Name="None" DisplayName="None" />
+    <EnumValue Name="Warning" DisplayName="Warning" />
+    <EnumValue Name="Error" DisplayName="Error" />
+  </EnumProperty>
+
+  <!-- TODO: Replace HelpUrl with a fwlink -->
+  <EnumProperty Name="InstanceVariableAccessesSharedMember_Readonly"
+                DisplayName="Instance variable accesses shared member"
+                HelpUrl="https://docs.microsoft.com/visualstudio/ide/reference/compile-page-project-designer-visual-basic#compiler-configuration-options"
+                Category="Warnings"
+                ReadOnly="True">
+    <EnumProperty.DataSource>
+      <DataSource Persistence="ProjectFileWithInterception"
+                  PersistedName="InstanceVariableAccessesSharedMember"
+                  HasConfigurationCondition="True" />
+    </EnumProperty.DataSource>
+    <EnumProperty.Metadata>
+      <NameValuePair Name="VisibilityCondition">
+        <NameValuePair.Value>
+          (has-evaluated-value "Build" "WarningSeverity" "DisableAll")
+        </NameValuePair.Value>
+      </NameValuePair>
+    </EnumProperty.Metadata>
     <EnumValue Name="None" DisplayName="None" />
     <EnumValue Name="Warning" DisplayName="Warning" />
     <EnumValue Name="Error" DisplayName="Error" />
@@ -332,6 +506,36 @@
                 DisplayName="Recursive operator or property access"
                 HelpUrl="https://docs.microsoft.com/visualstudio/ide/reference/compile-page-project-designer-visual-basic#compiler-configuration-options"
                 Category="Warnings">
+    <EnumProperty.Metadata>
+      <NameValuePair Name="VisibilityCondition">
+        <NameValuePair.Value>
+          (not (has-evaluated-value "Build" "WarningSeverity" "DisableAll"))
+        </NameValuePair.Value>
+      </NameValuePair>
+    </EnumProperty.Metadata>
+    <EnumValue Name="None" DisplayName="None" />
+    <EnumValue Name="Warning" DisplayName="Warning" />
+    <EnumValue Name="Error" DisplayName="Error" />
+  </EnumProperty>
+
+  <!-- TODO: Replace HelpUrl with a fwlink -->
+  <EnumProperty Name="RecursiveOperatorOrPropertyAccess_Readonly"
+                DisplayName="Recursive operator or property access"
+                HelpUrl="https://docs.microsoft.com/visualstudio/ide/reference/compile-page-project-designer-visual-basic#compiler-configuration-options"
+                Category="Warnings"
+                ReadOnly="True">
+    <EnumProperty.DataSource>
+      <DataSource Persistence="ProjectFileWithInterception"
+                  PersistedName="RecursiveOperatorOrPropertyAccess"
+                  HasConfigurationCondition="True" />
+    </EnumProperty.DataSource>
+    <EnumProperty.Metadata>
+      <NameValuePair Name="VisibilityCondition">
+        <NameValuePair.Value>
+          (has-evaluated-value "Build" "WarningSeverity" "DisableAll")
+        </NameValuePair.Value>
+      </NameValuePair>
+    </EnumProperty.Metadata>
     <EnumValue Name="None" DisplayName="None" />
     <EnumValue Name="Warning" DisplayName="Warning" />
     <EnumValue Name="Error" DisplayName="Error" />
@@ -342,12 +546,40 @@
                 DisplayName="Duplicate or overlapping catch blocks"
                 HelpUrl="https://docs.microsoft.com/visualstudio/ide/reference/compile-page-project-designer-visual-basic#compiler-configuration-options"
                 Category="Warnings">
+    <EnumProperty.Metadata>
+      <NameValuePair Name="VisibilityCondition">
+        <NameValuePair.Value>
+          (not (has-evaluated-value "Build" "WarningSeverity" "DisableAll"))
+        </NameValuePair.Value>
+      </NameValuePair>
+    </EnumProperty.Metadata>
     <EnumValue Name="None" DisplayName="None" />
     <EnumValue Name="Warning" DisplayName="Warning" />
     <EnumValue Name="Error" DisplayName="Error" />
   </EnumProperty>
 
-
+  <!-- TODO: Replace HelpUrl with a fwlink -->
+  <EnumProperty Name="DuplicateOrOverlappingCatchBlocks_Readonly"
+                DisplayName="Duplicate or overlapping catch blocks"
+                HelpUrl="https://docs.microsoft.com/visualstudio/ide/reference/compile-page-project-designer-visual-basic#compiler-configuration-options"
+                Category="Warnings"
+                ReadOnly="True">
+    <EnumProperty.DataSource>
+      <DataSource Persistence="ProjectFileWithInterception"
+                  PersistedName="DuplicateOrOverlappingCatchBlocks"
+                  HasConfigurationCondition="True" />
+    </EnumProperty.DataSource>
+    <EnumProperty.Metadata>
+      <NameValuePair Name="VisibilityCondition">
+        <NameValuePair.Value>
+          (has-evaluated-value "Build" "WarningSeverity" "DisableAll")
+        </NameValuePair.Value>
+      </NameValuePair>
+    </EnumProperty.Metadata>
+    <EnumValue Name="None" DisplayName="None" />
+    <EnumValue Name="Warning" DisplayName="Warning" />
+    <EnumValue Name="Error" DisplayName="Error" />
+  </EnumProperty>
 
   <!-- TODO: Update HelpUrl -->
   <StringProperty Name="PreBuildEvent"
