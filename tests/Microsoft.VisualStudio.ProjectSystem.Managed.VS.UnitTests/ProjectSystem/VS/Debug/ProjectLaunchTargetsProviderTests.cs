@@ -605,10 +605,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
                 debugger: null,
                 scope: null);
 
-            var activeProfile = new LaunchProfile("Name", "Executable", commandLineArgs: "-arg1\r\n-arg2 -arg3\n -arg4\r\n");
+            var activeProfile = new LaunchProfile("Name", "Executable", commandLineArgs: "-arg1\r\n-arg2 -arg3\n -arg4\r\n\\r\\n");
             var launchSettings = await provider.GetConsoleTargetForProfileAsync(activeProfile, DebugLaunchOptions.NoDebug, false);
 
-            Assert.Equal("-arg1 -arg2 -arg3  -arg4 ", launchSettings?.Arguments);
+            Assert.Equal("-arg1 -arg2 -arg3\n -arg4 \\r\\n", launchSettings?.Arguments);
 
         }
 
