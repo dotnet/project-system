@@ -1,6 +1,7 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
 using System.Diagnostics.CodeAnalysis;
+using System.Text.RegularExpressions;
 using Microsoft.VisualStudio.Buffers.PooledObjects;
 using Microsoft.VisualStudio.Debugger.UI.Interfaces.HotReload;
 using Microsoft.VisualStudio.IO;
@@ -261,7 +262,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
                 }
             }
 
-            string? commandLineArgs = resolvedProfile.CommandLineArgs?.Replace("\r\n", " ");
+            string? commandLineArgs = resolvedProfile.CommandLineArgs is null
+                ? null
+                : Regex.Replace(resolvedProfile.CommandLineArgs, "[\r\n]+", " ");
 
             // Is this profile just running the project? If so we ignore the exe
             if (IsRunProjectCommand(resolvedProfile))
