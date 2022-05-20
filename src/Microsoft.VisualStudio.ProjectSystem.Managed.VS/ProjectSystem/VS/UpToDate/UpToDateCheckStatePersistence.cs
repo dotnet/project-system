@@ -16,11 +16,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.UpToDate
     /// </remarks>
     [Export(typeof(IUpToDateCheckStatePersistence))]
     [AppliesTo(BuildUpToDateCheck.AppliesToExpression)]
-    internal sealed partial class UpToDateCheckStatePersistence : OnceInitializedOnceDisposedAsync, IUpToDateCheckStatePersistence, IVsSolutionEvents
+    internal sealed partial class UpToDateCheckStatePersistence : OnceInitializedOnceDisposedUnderLockAsync, IUpToDateCheckStatePersistence, IVsSolutionEvents
     {
+        // The name of the file within the .vs folder that we use to store data for the up-to-date check.
+        // Note the suffix that indicates the file format's version. If a change is made to the format,
+        // this number must be bumped.
         private const string ProjectItemCacheFileName = ".futdcache.v1";
-
-        private readonly AsyncSemaphore _lock = new(initialCount: 1);
 
         private Dictionary<(string ProjectPath, IImmutableDictionary<string, string> ConfigurationDimensions), (int ItemHash, DateTime ItemsChangedAtUtc)>? _dataByConfiguredProject;
 
@@ -47,7 +48,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.UpToDate
             Verify.HResult(_solution.Value.AdviseSolutionEvents(this, out _cookie));
         }
 
-        protected override async Task DisposeCoreAsync(bool initialized)
+        protected override async Task DisposeCoreUnderLockAsync(bool initialized)
         {
             if (initialized)
             {
@@ -65,17 +66,20 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.UpToDate
         public async Task<(int ItemHash, DateTime ItemsChangedAtUtc)?> RestoreStateAsync(string projectPath, IImmutableDictionary<string, string> configurationDimensions, CancellationToken cancellationToken)
         {
             await InitializeAsync(cancellationToken);
-            await InitializeDataAsync(cancellationToken);
 
-            using (await _lock.EnterAsync(cancellationToken))
-            {
-                Assumes.NotNull(_dataByConfiguredProject);
+            return await ExecuteUnderLockAsync<(int ItemHash, DateTime ItemsChangedAtUtc)?>(
+                async token =>
+                {
+                    await InitializeDataAsync(token);
 
-                if (_dataByConfiguredProject.TryGetValue((projectPath, configurationDimensions), out (int ItemHash, DateTime ItemsChangedAtUtc) storedData))
-                    return storedData;
+                    Assumes.NotNull(_dataByConfiguredProject);
 
-                return null;
-            }
+                    if (_dataByConfiguredProject.TryGetValue((projectPath, configurationDimensions), out (int ItemHash, DateTime ItemsChangedAtUtc) storedData))
+                        return storedData;
+
+                    return null;
+                },
+                cancellationToken);
 
             async Task InitializeDataAsync(CancellationToken cancellationToken)
             {
@@ -86,13 +90,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.UpToDate
                     // Switch to a background thread before doing file I/O
                     await TaskScheduler.Default;
 
-                    using (await _lock.EnterAsync(cancellationToken))
+                    if (_cacheFilePath is null || _dataByConfiguredProject is null)
                     {
-                        if (_cacheFilePath is null || _dataByConfiguredProject is null)
-                        {
-                            _cacheFilePath = filePath;
-                            _dataByConfiguredProject = Deserialize(_cacheFilePath);
-                        }
+                        _cacheFilePath = filePath;
+                        _dataByConfiguredProject = Deserialize(_cacheFilePath);
                     }
                 }
 
@@ -119,22 +120,27 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.UpToDate
             }
         }
 
-        public async Task StoreStateAsync(string projectPath, IImmutableDictionary<string, string> configurationDimensions, int itemHash, DateTime itemsChangedAtUtc, CancellationToken cancellationToken)
+        public Task StoreStateAsync(string projectPath, IImmutableDictionary<string, string> configurationDimensions, int itemHash, DateTime itemsChangedAtUtc, CancellationToken cancellationToken)
         {
-            using (await _lock.EnterAsync(cancellationToken))
-            {
-                Assumes.NotNull(_dataByConfiguredProject);
-
-                (string ProjectPath, IImmutableDictionary<string, string> ConfigurationDimensions) key = (ProjectPath: projectPath, ConfigurationDimensions: configurationDimensions);
-
-                if (!_dataByConfiguredProject.TryGetValue(key, out (int ItemHash, DateTime ItemsChangedAtUtc) storedData) ||
-                    storedData.ItemHash != itemHash ||
-                    storedData.ItemsChangedAtUtc != itemsChangedAtUtc)
+            return ExecuteUnderLockAsync(
+                token =>
                 {
-                    _dataByConfiguredProject[key] = (itemHash, itemsChangedAtUtc);
-                    _hasUnsavedChange = true;
-                }
-            }
+                    if (_dataByConfiguredProject is not null)
+                    {
+                        (string ProjectPath, IImmutableDictionary<string, string> ConfigurationDimensions) key = (ProjectPath: projectPath, ConfigurationDimensions: configurationDimensions);
+
+                        if (!_dataByConfiguredProject.TryGetValue(key, out (int ItemHash, DateTime ItemsChangedAtUtc) storedData) ||
+                            storedData.ItemHash != itemHash ||
+                            storedData.ItemsChangedAtUtc != itemsChangedAtUtc)
+                        {
+                            _dataByConfiguredProject[key] = (itemHash, itemsChangedAtUtc);
+                            _hasUnsavedChange = true;
+                        }
+                    }
+
+                    return Task.CompletedTask;
+                },
+                cancellationToken);
         }
 
         #region Serialization
@@ -220,16 +226,19 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.UpToDate
             {
                 await TaskScheduler.Default;
 
-                using (await _lock.EnterAsync())
-                {
-                    if (_hasUnsavedChange && _cacheFilePath is not null && _dataByConfiguredProject is not null)
+                await ExecuteUnderLockAsync(
+                    _ =>
                     {
-                        Serialize(_cacheFilePath, _dataByConfiguredProject);
-                    }
+                        if (_hasUnsavedChange && _cacheFilePath is not null && _dataByConfiguredProject is not null)
+                        {
+                            Serialize(_cacheFilePath, _dataByConfiguredProject);
+                        }
 
-                    _cacheFilePath = null;
-                    _dataByConfiguredProject = null;
-                }
+                        _cacheFilePath = null;
+                        _dataByConfiguredProject = null;
+
+                        return Task.CompletedTask;
+                    });
             });
 
             return HResult.OK;
