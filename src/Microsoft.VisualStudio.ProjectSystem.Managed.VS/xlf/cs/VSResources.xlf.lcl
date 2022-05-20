@@ -307,66 +307,75 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";ProjectHotReloadSessionManager_AttachingToProcess" ItemType="0" PsrId="308" InstFlg="true" Leaf="true">
+      <Item ItemId=";ProjectHotReloadSessionManager_AttachingToProcess" ItemType="0" PsrId="308" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[{0}: Attaching to process '{1}'.]]></Val>
-          <Tgt Cat="Text" Stat="Loc" Orig="New">
+          <Val><![CDATA[Attaching to process.]]></Val>
+          <Tgt Cat="Text" Stat="Update" Orig="New">
             <Val><![CDATA[{0}: Připojování k procesu {1}]]></Val>
           </Tgt>
-        </Str>
-        <Disp Icon="Str" />
-      </Item>
-      <Item ItemId=";ProjectHotReloadSessionManager_ErrorAttachingToProcess" ItemType="0" PsrId="308" InstFlg="true" Leaf="true">
-        <Str Cat="Text">
-          <Val><![CDATA[{0}: Error while attaching to process '{1}':]D;]A;{2}]D;]A;{3}]]></Val>
-          <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[{0}: Při připojování k procesu {1} došlo k chybě:]D;]A;{2}]D;]A;{3}]]></Val>
-          </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[{0}: Attaching to process '{1}'.]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";ProjectHotReloadSessionManager_ErrorStoppingTheSession" ItemType="0" PsrId="308" InstFlg="true" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[{0}: Error while stopping the session:]D;]A;{1}]D;]A;{2}]]></Val>
-          <Tgt Cat="Text" Stat="Loc" Orig="New">
+          <Val><![CDATA[Error while stopping the session: {0}]D;]A;{1}]]></Val>
+          <Tgt Cat="Text" Stat="Update" Orig="New">
             <Val><![CDATA[{0}: Chyba při zastavování relace: ]D;]A;{1}]D;]A;{2}]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[{0}: Error while stopping the session:]D;]A;{1}]D;]A;{2}]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";ProjectHotReloadSessionManager_NoActiveProcess" ItemType="0" PsrId="308" InstFlg="true" Leaf="true">
+      <Item ItemId=";ProjectHotReloadSessionManager_NoActiveProcess" ItemType="0" PsrId="308" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[{0}: Unable to start Hot Reload session: no active process.]]></Val>
-          <Tgt Cat="Text" Stat="Loc" Orig="New">
+          <Val><![CDATA[Unable to start Hot Reload session: no active process.]]></Val>
+          <Tgt Cat="Text" Stat="Update" Orig="New">
             <Val><![CDATA[{0}: Nepovedlo se spustit relaci opětovného načítání za provozu: žádný aktivní proces.]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[{0}: Unable to start Hot Reload session: no active process.]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";ProjectHotReloadSessionManager_ProcessAlreadyExited" ItemType="0" PsrId="308" InstFlg="true" Leaf="true">
+      <Item ItemId=";ProjectHotReloadSessionManager_ProcessAlreadyExited" ItemType="0" PsrId="308" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[{0}: The process has already exited.]]></Val>
-          <Tgt Cat="Text" Stat="Loc" Orig="New">
+          <Val><![CDATA[The process has already exited.]]></Val>
+          <Tgt Cat="Text" Stat="Update" Orig="New">
             <Val><![CDATA[{0}: Proces již byl ukončen.]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[{0}: The process has already exited.]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";ProjectHotReloadSessionManager_ProcessExited" ItemType="0" PsrId="308" InstFlg="true" Leaf="true">
+      <Item ItemId=";ProjectHotReloadSessionManager_ProcessExited" ItemType="0" PsrId="308" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[{0}: The process has exited.]]></Val>
+          <Val><![CDATA[The process has exited.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[{0}: Proces byl ukončen.]]></Val>
+            <Val><![CDATA[Proces je ukončený.]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[{0}: The process has exited.]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";ProjectHotReloadSessionManager_StartupHooksDisabled" ItemType="0" PsrId="308" InstFlg="true" Leaf="true">
+      <Item ItemId=";ProjectHotReloadSessionManager_StartupHooksDisabled" ItemType="0" PsrId="308" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[{0}: Hot Reload is not available because startup hooks have been disabled, possibly due to trimming.]]></Val>
-          <Tgt Cat="Text" Stat="Loc" Orig="New">
+          <Val><![CDATA[Hot Reload is not available because startup hooks have been disabled, possibly due to trimming.]]></Val>
+          <Tgt Cat="Text" Stat="Update" Orig="New">
             <Val><![CDATA[{0}: Opětovné načítání za provozu není k dispozici, protože volané služby při spouštění se zakázaly, pravděpodobně kvůli oříznutí.]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[{0}: Hot Reload is not available because startup hooks have been disabled, possibly due to trimming.]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
