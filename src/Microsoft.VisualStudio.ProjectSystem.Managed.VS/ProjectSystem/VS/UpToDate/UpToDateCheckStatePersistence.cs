@@ -236,6 +236,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.UpToDate
 
                         _cacheFilePath = null;
                         _dataByConfiguredProject = null;
+                        _hasUnsavedChange = false;
 
                         return Task.CompletedTask;
                     });
