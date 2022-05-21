@@ -10,6 +10,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
     ///     Handles changes to references that are passed to the compiler during design-time builds.
     /// </summary>
     [Export(typeof(IWorkspaceContextHandler))]
+    [PartCreationPolicy(CreationPolicy.NonShared)]
     internal class MetadataReferenceItemHandler : IWorkspaceContextHandler, ICommandLineHandler
     {
         // WORKAROUND: The language services through IWorkspaceProjectContext doesn't expect to see AddMetadataReference called more than
