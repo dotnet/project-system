@@ -49,6 +49,9 @@
     <IsPackable>false</IsPackable>
     <!-- <LangVersion>preview</LangVersion> -->
     <UseCodebase>true</UseCodebase>
+    <!-- <GenerateAssemblyInformationalVersionAttribute>false</GenerateAssemblyInformationalVersionAttribute>
+    <GenerateAssemblyVersionAttribute>false</GenerateAssemblyVersionAttribute>
+    <GenerateAssemblyFileVersionAttribute>false</GenerateAssemblyFileVersionAttribute> -->
   </PropertyGroup>
 
   <PropertyGroup>
@@ -119,6 +122,7 @@
   <ItemGroup>
     <!-- <PackageReference Include="Microsoft.VisualStudio.SDK" Version="17.0.32112.339" ExcludeAssets="runtime" />
     <PackageReference Include="Microsoft.VSSDK.BuildTools" Version="17.3.7-preview1" /> -->
+    <!-- <PackageReference Include="Nerdbank.GitVersioning" Version="3.5.103" PrivateAssets="all" /> -->
   </ItemGroup>
 
   <ItemGroup>

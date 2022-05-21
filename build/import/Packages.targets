@@ -14,6 +14,7 @@
       https://pkgs.dev.azure.com/dnceng/public/_packaging/dotnet-public/nuget/v3/index.json;
       https://pkgs.dev.azure.com/dnceng/public/_packaging/nuget-build/nuget/v3/index.json;
       https://devdiv.pkgs.visualstudio.com/_packaging/MicroBuildToolset/nuget/v3/index.json;
+      https://devdiv.pkgs.visualstudio.com/DevDiv/_packaging/VS-Platform/nuget/v3/index.json;
     </RestoreSources>
   </PropertyGroup>
 
@@ -28,7 +29,7 @@
 
     <!-- Toolset -->
     <PackageReference Update="Nerdbank.Streams"                                                       Version="2.8.57" />
-    <!-- <PackageReference Update="Nerdbank.GitVersioning"                                                 Version="3.3.37" /> -->
+    <!-- <PackageReference Update="Nerdbank.GitVersioning"                                                 Version="3.5.103" /> -->
     <PackageReference Update="System.IO.Pipelines"                                                    Version="6.0.1" />
     <!-- <PackageReference Update="RoslynTools.RepoToolset"                                                Version="$(RoslynToolsRepoToolsetVersion)" /> -->
     <!-- <PackageReference Update="RoslynTools.ModifyVsixManifest"                                         Version="$(RoslynToolsModifyVsixManifestVersion)" /> -->
