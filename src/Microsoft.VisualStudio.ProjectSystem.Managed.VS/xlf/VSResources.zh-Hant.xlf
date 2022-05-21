@@ -117,34 +117,34 @@
       </trans-unit>
       <trans-unit id="ProjectHotReloadSessionManager_AttachingToProcess">
         <source>Attaching to process.</source>
-        <target state="new">Attaching to process.</target>
+        <target state="translated">正在附加至處理序。</target>
         <note />
       </trans-unit>
       <trans-unit id="ProjectHotReloadSessionManager_ErrorStoppingTheSession">
         <source>Error while stopping the session: {0}
 {1}</source>
-        <target state="new">Error while stopping the session: {0}
+        <target state="translated">停止工作階段時發生錯誤: {0}
 {1}</target>
         <note>{0} is the exception type name. {1} is the exception message.</note>
       </trans-unit>
       <trans-unit id="ProjectHotReloadSessionManager_NoActiveProcess">
         <source>Unable to start Hot Reload session: no active process.</source>
-        <target state="new">Unable to start Hot Reload session: no active process.</target>
+        <target state="translated">無法啟動熱重新載入工作階段: 沒有作用中的處理序。</target>
         <note />
       </trans-unit>
       <trans-unit id="ProjectHotReloadSessionManager_ProcessAlreadyExited">
         <source>The process has already exited.</source>
-        <target state="new">The process has already exited.</target>
+        <target state="translated">處理序已經結束。</target>
         <note />
       </trans-unit>
       <trans-unit id="ProjectHotReloadSessionManager_ProcessExited">
         <source>The process has exited.</source>
-        <target state="new">The process has exited.</target>
+        <target state="translated">此處理序已結束。</target>
         <note />
       </trans-unit>
       <trans-unit id="ProjectHotReloadSessionManager_StartupHooksDisabled">
         <source>Hot Reload is not available because startup hooks have been disabled, possibly due to trimming.</source>
-        <target state="new">Hot Reload is not available because startup hooks have been disabled, possibly due to trimming.</target>
+        <target state="translated">熱重新載入無法使用，因為已停用啟動勾點 (可能是由於調整)。</target>
         <note />
       </trans-unit>
       <trans-unit id="RenameSymbolFailed">

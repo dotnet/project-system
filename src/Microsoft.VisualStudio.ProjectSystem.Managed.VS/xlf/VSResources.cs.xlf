@@ -139,7 +139,7 @@
       </trans-unit>
       <trans-unit id="ProjectHotReloadSessionManager_ProcessExited">
         <source>The process has exited.</source>
-        <target state="new">The process has exited.</target>
+        <target state="translated">Proces je ukončený.</target>
         <note />
       </trans-unit>
       <trans-unit id="ProjectHotReloadSessionManager_StartupHooksDisabled">

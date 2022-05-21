@@ -117,34 +117,34 @@
       </trans-unit>
       <trans-unit id="ProjectHotReloadSessionManager_AttachingToProcess">
         <source>Attaching to process.</source>
-        <target state="new">Attaching to process.</target>
+        <target state="translated">Выполняется подключение к процессу.</target>
         <note />
       </trans-unit>
       <trans-unit id="ProjectHotReloadSessionManager_ErrorStoppingTheSession">
         <source>Error while stopping the session: {0}
 {1}</source>
-        <target state="new">Error while stopping the session: {0}
+        <target state="translated">Ошибка при остановке сеанса: {0}
 {1}</target>
         <note>{0} is the exception type name. {1} is the exception message.</note>
       </trans-unit>
       <trans-unit id="ProjectHotReloadSessionManager_NoActiveProcess">
         <source>Unable to start Hot Reload session: no active process.</source>
-        <target state="new">Unable to start Hot Reload session: no active process.</target>
+        <target state="translated">Невозможно запустить сеанс Горячей перезагрузки: нет активного процесса.</target>
         <note />
       </trans-unit>
       <trans-unit id="ProjectHotReloadSessionManager_ProcessAlreadyExited">
         <source>The process has already exited.</source>
-        <target state="new">The process has already exited.</target>
+        <target state="translated">Этот процесс уже завершил работу.</target>
         <note />
       </trans-unit>
       <trans-unit id="ProjectHotReloadSessionManager_ProcessExited">
         <source>The process has exited.</source>
-        <target state="new">The process has exited.</target>
+        <target state="translated">Процесс завершился.</target>
         <note />
       </trans-unit>
       <trans-unit id="ProjectHotReloadSessionManager_StartupHooksDisabled">
         <source>Hot Reload is not available because startup hooks have been disabled, possibly due to trimming.</source>
-        <target state="new">Hot Reload is not available because startup hooks have been disabled, possibly due to trimming.</target>
+        <target state="translated">Горячая перезагрузка недоступна, так как перехватчики запуска отключены, возможно, из-за фильтрации.</target>
         <note />
       </trans-unit>
       <trans-unit id="RenameSymbolFailed">

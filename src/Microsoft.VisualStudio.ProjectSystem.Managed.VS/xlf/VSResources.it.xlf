@@ -117,34 +117,34 @@
       </trans-unit>
       <trans-unit id="ProjectHotReloadSessionManager_AttachingToProcess">
         <source>Attaching to process.</source>
-        <target state="new">Attaching to process.</target>
+        <target state="translated">Connessione al processo.</target>
         <note />
       </trans-unit>
       <trans-unit id="ProjectHotReloadSessionManager_ErrorStoppingTheSession">
         <source>Error while stopping the session: {0}
 {1}</source>
-        <target state="new">Error while stopping the session: {0}
+        <target state="translated">Errore durante l'arresto della sessione: {0}
 {1}</target>
         <note>{0} is the exception type name. {1} is the exception message.</note>
       </trans-unit>
       <trans-unit id="ProjectHotReloadSessionManager_NoActiveProcess">
         <source>Unable to start Hot Reload session: no active process.</source>
-        <target state="new">Unable to start Hot Reload session: no active process.</target>
+        <target state="translated">Non è stato possibile avviare la sessione di Ricaricamento rapido: nessun processo attivo.</target>
         <note />
       </trans-unit>
       <trans-unit id="ProjectHotReloadSessionManager_ProcessAlreadyExited">
         <source>The process has already exited.</source>
-        <target state="new">The process has already exited.</target>
+        <target state="translated">Processo già terminato.</target>
         <note />
       </trans-unit>
       <trans-unit id="ProjectHotReloadSessionManager_ProcessExited">
         <source>The process has exited.</source>
-        <target state="new">The process has exited.</target>
+        <target state="translated">Il processo è stato terminato.</target>
         <note />
       </trans-unit>
       <trans-unit id="ProjectHotReloadSessionManager_StartupHooksDisabled">
         <source>Hot Reload is not available because startup hooks have been disabled, possibly due to trimming.</source>
-        <target state="new">Hot Reload is not available because startup hooks have been disabled, possibly due to trimming.</target>
+        <target state="translated">Il Ricaricamento rapido non è disponibile perché gli hook di avvio sono stati disabilitati, probabilmente a causa del troncamento.</target>
         <note />
       </trans-unit>
       <trans-unit id="RenameSymbolFailed">
