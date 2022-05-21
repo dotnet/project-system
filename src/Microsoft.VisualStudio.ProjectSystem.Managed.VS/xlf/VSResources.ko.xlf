@@ -117,34 +117,34 @@
       </trans-unit>
       <trans-unit id="ProjectHotReloadSessionManager_AttachingToProcess">
         <source>Attaching to process.</source>
-        <target state="new">Attaching to process.</target>
+        <target state="translated">프로세스에 연결하는 중입니다.</target>
         <note />
       </trans-unit>
       <trans-unit id="ProjectHotReloadSessionManager_ErrorStoppingTheSession">
         <source>Error while stopping the session: {0}
 {1}</source>
-        <target state="new">Error while stopping the session: {0}
+        <target state="translated">세션 중지 중 오류 발생: {0}
 {1}</target>
         <note>{0} is the exception type name. {1} is the exception message.</note>
       </trans-unit>
       <trans-unit id="ProjectHotReloadSessionManager_NoActiveProcess">
         <source>Unable to start Hot Reload session: no active process.</source>
-        <target state="new">Unable to start Hot Reload session: no active process.</target>
+        <target state="translated">핫 다시 로드 세션을 시작할 수 없음: 활성 프로세스가 없습니다.</target>
         <note />
       </trans-unit>
       <trans-unit id="ProjectHotReloadSessionManager_ProcessAlreadyExited">
         <source>The process has already exited.</source>
-        <target state="new">The process has already exited.</target>
+        <target state="translated">프로세스가 이미 종료되었습니다.</target>
         <note />
       </trans-unit>
       <trans-unit id="ProjectHotReloadSessionManager_ProcessExited">
         <source>The process has exited.</source>
-        <target state="new">The process has exited.</target>
+        <target state="translated">프로세스가 종료되었습니다.</target>
         <note />
       </trans-unit>
       <trans-unit id="ProjectHotReloadSessionManager_StartupHooksDisabled">
         <source>Hot Reload is not available because startup hooks have been disabled, possibly due to trimming.</source>
-        <target state="new">Hot Reload is not available because startup hooks have been disabled, possibly due to trimming.</target>
+        <target state="translated">아마도 트리밍으로 인해 시작 후크가 비활성화되었으므로 핫 다시 로드 사용할 수 없습니다.</target>
         <note />
       </trans-unit>
       <trans-unit id="RenameSymbolFailed">

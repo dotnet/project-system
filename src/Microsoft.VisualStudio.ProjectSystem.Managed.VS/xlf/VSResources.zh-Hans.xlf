@@ -117,34 +117,34 @@
       </trans-unit>
       <trans-unit id="ProjectHotReloadSessionManager_AttachingToProcess">
         <source>Attaching to process.</source>
-        <target state="new">Attaching to process.</target>
+        <target state="translated">正在附加到流程。</target>
         <note />
       </trans-unit>
       <trans-unit id="ProjectHotReloadSessionManager_ErrorStoppingTheSession">
         <source>Error while stopping the session: {0}
 {1}</source>
-        <target state="new">Error while stopping the session: {0}
+        <target state="translated">停止会话时出错: {0}
 {1}</target>
         <note>{0} is the exception type name. {1} is the exception message.</note>
       </trans-unit>
       <trans-unit id="ProjectHotReloadSessionManager_NoActiveProcess">
         <source>Unable to start Hot Reload session: no active process.</source>
-        <target state="new">Unable to start Hot Reload session: no active process.</target>
+        <target state="translated">无法启动热重载会话: 无活动流程。</target>
         <note />
       </trans-unit>
       <trans-unit id="ProjectHotReloadSessionManager_ProcessAlreadyExited">
         <source>The process has already exited.</source>
-        <target state="new">The process has already exited.</target>
+        <target state="translated">已经退出该进程。</target>
         <note />
       </trans-unit>
       <trans-unit id="ProjectHotReloadSessionManager_ProcessExited">
         <source>The process has exited.</source>
-        <target state="new">The process has exited.</target>
+        <target state="translated">进程已退出。</target>
         <note />
       </trans-unit>
       <trans-unit id="ProjectHotReloadSessionManager_StartupHooksDisabled">
         <source>Hot Reload is not available because startup hooks have been disabled, possibly due to trimming.</source>
-        <target state="new">Hot Reload is not available because startup hooks have been disabled, possibly due to trimming.</target>
+        <target state="translated">热重载不可用，因为已禁用启动挂钩，原因可能是剪裁。</target>
         <note />
       </trans-unit>
       <trans-unit id="RenameSymbolFailed">
