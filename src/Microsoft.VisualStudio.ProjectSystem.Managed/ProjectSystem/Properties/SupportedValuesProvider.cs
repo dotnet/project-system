@@ -2,12 +2,11 @@
 
 using System.Threading.Tasks.Dataflow;
 using Microsoft.Build.Framework.XamlTypes;
-using Microsoft.VisualStudio.ProjectSystem.Properties;
 using Microsoft.VisualStudio.Threading;
 using EnumCollection = System.Collections.Generic.ICollection<Microsoft.VisualStudio.ProjectSystem.Properties.IEnumValue>;
 using EnumCollectionProjectValue = Microsoft.VisualStudio.ProjectSystem.IProjectVersionedValue<System.Collections.Generic.ICollection<Microsoft.VisualStudio.ProjectSystem.Properties.IEnumValue>>;
 
-namespace Microsoft.VisualStudio.ProjectSystem.VS.Frameworks
+namespace Microsoft.VisualStudio.ProjectSystem.Properties
 {
     /// <summary>
     ///     Abstract class for providers that process values from evaluation.
