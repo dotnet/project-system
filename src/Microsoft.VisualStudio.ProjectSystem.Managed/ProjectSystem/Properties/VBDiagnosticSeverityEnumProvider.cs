@@ -38,15 +38,15 @@ internal sealed class VBDiagnosticSeverityEnumProvider : SupportedValuesProvider
 
     private static readonly List<IEnumValue> s_warningsAsErrorsOffEnumList = new()
     {
-        new PageEnumValue(new EnumValue { Name = NoneValue, DisplayName = "None" }),
-        new PageEnumValue(new EnumValue { Name = WarningValue, DisplayName = "Warning" }),
-        new PageEnumValue(new EnumValue { Name = ErrorValue, DisplayName = "Error" })
+        new PageEnumValue(new EnumValue { Name = NoneValue, DisplayName = Resources.DiagnosticLevel_None }),
+        new PageEnumValue(new EnumValue { Name = WarningValue, DisplayName = Resources.DiagnosticLevel_Warning }),
+        new PageEnumValue(new EnumValue { Name = ErrorValue, DisplayName = Resources.DiagnosticLevel_Error })
     };
 
     private static readonly List<IEnumValue> s_warningsAsErrorsOnEnumList = new()
     {
-        new PageEnumValue(new EnumValue { Name = NoneValue, DisplayName = "None" }),
-        new PageEnumValue(new EnumValue { Name = ErrorValue, DisplayName = "Error" })
+        new PageEnumValue(new EnumValue { Name = NoneValue, DisplayName = Resources.DiagnosticLevel_None }),
+        new PageEnumValue(new EnumValue { Name = ErrorValue, DisplayName = Resources.DiagnosticLevel_Error })
     };
 
     [ImportingConstructor]

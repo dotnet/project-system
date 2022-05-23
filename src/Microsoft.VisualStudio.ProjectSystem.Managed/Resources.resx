@@ -401,4 +401,16 @@ This project was loaded using the wrong project type, likely as a result of rena
     <value>Checking configuration {0}:</value>
     <comment>{0} is a description of the project's configuration, such as "Debug|AnyCPU|net6.0".</comment>
   </data>
+  <data name="DiagnosticLevel_None" xml:space="preserve">
+    <value>None</value>
+    <comment>Indicates that a diagnostic (i.e. a compiler warning) should be disabled.</comment>
+  </data>
+  <data name="DiagnosticLevel_Warning" xml:space="preserve">
+    <value>Warning</value>
+    <comment>Indicates that a diagnostic (i.e. a compiler warning) should be kept as a warning rather than disabled or promoted to an error.</comment>
+  </data>
+  <data name="DiagnosticLevel_Error" xml:space="preserve">
+    <value>Error</value>
+    <comment>Indicates that a diagnostic (i.e. a compiler warning) should be promoted to an error.</comment>
+  </data>
 </root>

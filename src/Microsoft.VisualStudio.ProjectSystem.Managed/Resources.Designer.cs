@@ -106,6 +106,33 @@ namespace Microsoft.VisualStudio {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Error.
+        /// </summary>
+        internal static string DiagnosticLevel_Error {
+            get {
+                return ResourceManager.GetString("DiagnosticLevel_Error", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to None.
+        /// </summary>
+        internal static string DiagnosticLevel_None {
+            get {
+                return ResourceManager.GetString("DiagnosticLevel_None", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Warning.
+        /// </summary>
+        internal static string DiagnosticLevel_Warning {
+            get {
+                return ResourceManager.GetString("DiagnosticLevel_Warning", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Framework Assemblies.
         /// </summary>
         internal static string FrameworkAssembliesNodeName {
