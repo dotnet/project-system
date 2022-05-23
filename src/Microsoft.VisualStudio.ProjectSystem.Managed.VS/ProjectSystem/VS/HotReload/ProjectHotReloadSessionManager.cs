@@ -10,7 +10,8 @@ using Microsoft.VisualStudio.Threading;
 namespace Microsoft.VisualStudio.ProjectSystem.VS.HotReload
 {
     [Export(typeof(IProjectHotReloadSessionManager))]
-    internal class ProjectHotReloadSessionManager : OnceInitializedOnceDisposedAsync, IProjectHotReloadSessionManager
+    [Export(typeof(IProjectHotReloadUpdateApplier))]
+    internal class ProjectHotReloadSessionManager : OnceInitializedOnceDisposedAsync, IProjectHotReloadSessionManager, IProjectHotReloadUpdateApplier
     {
         private readonly UnconfiguredProject _project;
         private readonly IProjectFaultHandlerService _projectFaultHandlerService;
@@ -26,6 +27,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.HotReload
         private readonly Dictionary<int, HotReloadState> _activeSessions = new();
         private HotReloadState? _pendingSessionState = null;
         private int _nextUniqueId = 1;
+
+        public bool HasActiveHotReloadSessions => _activeSessions.Count != 0;
 
         [ImportingConstructor]
         public ProjectHotReloadSessionManager(
@@ -373,6 +376,26 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.HotReload
             }
 
             return true;
+        }
+
+        /// <inheritdoc />
+        public async Task ApplyHotReloadUpdateAsync(Func<IDeltaApplier, CancellationToken, Task> applyFunction, CancellationToken cancelToken)
+        {
+            using AsyncSemaphore.Releaser semaphoreRelease = await _semaphore.EnterAsync();
+
+            foreach (HotReloadState sessionState in _activeSessions.Values)
+            {
+                cancelToken.ThrowIfCancellationRequested();
+                Assumes.NotNull(sessionState.Session);
+                if (sessionState.Session is IProjectHotReloadSessionInternal sessionInternal)
+                {
+                    IDeltaApplier? deltaApplier = sessionInternal.DeltApplier;
+                    if (deltaApplier is not null)
+                    {
+                        await applyFunction(deltaApplier, cancelToken);
+                    }
+                }
+            }
         }
 
         private class HotReloadState : IProjectHotReloadSessionCallback
