@@ -2,6 +2,7 @@
 
 using System.Collections.Concurrent;
 using Microsoft.ServiceHub.Framework;
+using Microsoft.VisualStudio.ProjectSystem.Runtimes;
 using Microsoft.VisualStudio.ProjectSystem.Utilities;
 using Microsoft.VisualStudio.ProjectSystem.Workloads;
 using Microsoft.VisualStudio.Shell.Interop;
@@ -19,6 +20,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
     {
         private const string WasmToolsWorkloadName = "wasm-tools";
 
+        private static readonly ImmutableDictionary<string, string> s_packageVersionToComponentId = ImmutableDictionary.Create<string, string>(StringComparer.OrdinalIgnoreCase)
+            .Add("v2.0", "Microsoft.Net.Core.Component.SDK.2.1")
+            .Add("v2.1", "Microsoft.Net.Core.Component.SDK.2.1")
+            .Add("v2.2", "Microsoft.Net.Core.Component.SDK.2.1")
+            .Add("v3.0", "Microsoft.NetCore.Component.Runtime.3.1")
+            .Add("v3.1", "Microsoft.NetCore.Component.Runtime.3.1")
+            .Add("v5.0", "Microsoft.NetCore.Component.Runtime.5.0")
+            .Add("v6.0", "Microsoft.NetCore.Component.Runtime.6.0");
+
+        private static readonly string s_netCoreRegistryKeyPath = "SOFTWARE\\WOW6432Node\\dotnet\\Setup\\InstalledVersions\\x64\\sharedfx\\";
+        private static readonly string s_netCoreRegistryKeyName = "Microsoft.NETCore.App";
         private static readonly ImmutableHashSet<string> s_supportedReleaseChannelWorkloads = ImmutableHashSet.Create(StringComparers.WorkloadNames, WasmToolsWorkloadName);
 
         private readonly ConcurrentHashSet<string> _missingRuntimesRegistered = new(StringComparers.WorkloadNames);
@@ -37,6 +49,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         private uint _solutionCookie = VSConstants.VSCOOKIE_NIL;
         private IVsSolution? _vsSolution;
         private bool? _isVSFromPreviewChannel;
+
+        private readonly object _lock = new();
+        private static HashSet<string>? _netCoreRegistryKeyValues = null;
 
         [ImportingConstructor]
         public MissingSetupComponentRegistrationService(
@@ -72,6 +87,27 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             }
         }
 
+        private HashSet<string> NetCoreRegistryKeyValues
+        {
+            get
+            {
+                if (_netCoreRegistryKeyValues is null)
+                {
+                    lock (_lock)
+                    {
+                        if (_netCoreRegistryKeyValues is null)
+                        {
+                            var registryKeyReader = new RegistryReaderRuntimesVersions();
+
+                            _netCoreRegistryKeyValues = (HashSet<string>?)registryKeyReader.ReadValueForCurrentUser(s_netCoreRegistryKeyPath, s_netCoreRegistryKeyName);
+                        }
+                    }
+                }
+
+                return _netCoreRegistryKeyValues!;
+            }
+        }
+
         private void ClearMissingWorkloadMetadata()
         {
             _missingRuntimesRegistered.Clear();
@@ -92,13 +128,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             UnregisterProjectConfiguration(projectGuid, project);
         }
 
-        public void RegisterSdkRuntimeComponentId(Guid projectGuid, ConfiguredProject project, string? runtimeComponentId)
+        public void RegisterPossibleMissingSdkRuntimeVersion(Guid projectGuid, ConfiguredProject project, string runtimeVersion)
         {
-            if (runtimeComponentId is not null)
+            // Workaround to fix https://devdiv.visualstudio.com/DevDiv/_workitems/edit/1460328
+            // VS has no information about the packages installed outside VS, and deep detection is not suggested for performance reasons.
+            // This workaround reads the Registry Key HKLM\SOFTWARE\WOW6432Node\dotnet\Setup\InstalledVersions\x64\sharedfx\Microsoft.NETCore.App
+            // and get the installed runtime versions from the value names.
+            if (!string.IsNullOrEmpty(runtimeVersion) &&
+                !NetCoreRegistryKeyValues.Contains(runtimeVersion) &&
+                s_packageVersionToComponentId.TryGetValue(runtimeVersion, value: out string? componentId))
             {
-                _missingRuntimesRegistered.Add(runtimeComponentId);
-
-                _projectGuidToRuntimeDescriptorMap.GetOrAdd(projectGuid, runtimeComponentId);
+                _projectGuidToRuntimeDescriptorMap.GetOrAdd(projectGuid, componentId);
             }
 
             UnregisterProjectConfiguration(projectGuid, project);
