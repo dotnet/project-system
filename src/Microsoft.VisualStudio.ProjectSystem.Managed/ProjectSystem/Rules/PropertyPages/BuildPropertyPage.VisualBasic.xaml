@@ -49,11 +49,10 @@
                 Description="Specifies whether your managed application will expose a COM object (a COM-callable wrapper) that enables a COM object to interact with the application."
                 Category="General" />
 
-  <!-- TODO: Replace HelpUrl with a fwlink -->
   <EnumProperty Name="OptionExplicit"
                 DisplayName="Option explicit"
                 Description="Specifies whether to require explicit declaration of variables."
-                HelpUrl="https://docs.microsoft.com/visualstudio/ide/reference/compile-page-project-designer-visual-basic#compiler-configuration-options"
+                HelpUrl="https://go.microsoft.com/fwlink/?linkid=2196261"
                 Category="Options">
     <EnumProperty.DataSource>
       <DataSource Persistence="ProjectFileWithInterception"
@@ -63,12 +62,10 @@
     <EnumValue Name="Off" DisplayName="Off" />
   </EnumProperty>
 
-  <!-- TODO: Replace HelpUrl with a fwlink -->
-  <!-- TODO: Enum values need to to come from a dynamic enum provider -->
   <EnumProperty Name="OptionStrict"
                 DisplayName="Option strict"
                 Description="Specifies whether to enforce strict type semantics."
-                HelpUrl="https://docs.microsoft.com/visualstudio/ide/reference/compile-page-project-designer-visual-basic#compiler-configuration-options"
+                HelpUrl="https://go.microsoft.com/fwlink/?linkid=2196261"
                 Category="Options">
     <EnumProperty.DataSource>
       <DataSource Persistence="ProjectFileWithInterception"
@@ -78,11 +75,10 @@
     <EnumValue Name="Off" DisplayName="Off" />
   </EnumProperty>
 
-  <!-- TODO: Replace HelpUrl with a fwlink -->
   <EnumProperty Name="OptionCompare"
                 DisplayName="Option compare"
                 Description="Specifies the type of string comparison to use."
-                HelpUrl="https://docs.microsoft.com/visualstudio/ide/reference/compile-page-project-designer-visual-basic#compiler-configuration-options"
+                HelpUrl="https://go.microsoft.com/fwlink/?linkid=2196261"
                 Category="Options">
     <EnumProperty.DataSource>
       <DataSource Persistence="ProjectFileWithInterception"
@@ -92,11 +88,10 @@
     <EnumValue Name="Text" DisplayName="Text" />
   </EnumProperty>
 
-  <!-- TODO: Replace HelpUrl with a fwlink -->
   <EnumProperty Name="OptionInfer"
                 DisplayName="Option infer"
                 Description="Specifies whether to allow local type inference in variable declarations."
-                HelpUrl="https://docs.microsoft.com/visualstudio/ide/reference/compile-page-project-designer-visual-basic#compiler-configuration-options"
+                HelpUrl="https://go.microsoft.com/fwlink/?linkid=2196261"
                 Category="Options">
     <EnumProperty.DataSource>
       <DataSource Persistence="ProjectFileWithInterception"
@@ -106,20 +101,18 @@
     <EnumValue Name="Off" DisplayName="Off" />
   </EnumProperty>
 
-  <!-- TODO: Replace HelpUrl with a fwlink -->
   <DynamicEnumProperty Name="PlatformTarget"
                        DisplayName="Target CPU"
                        Description="Specifies the processor to be targeted by the output file. Choose 'Any CPU' to specify that any processor is acceptable, allowing the application to run on the broadest range of hardware."
-                       HelpUrl="https://docs.microsoft.com/visualstudio/ide/reference/compile-page-project-designer-visual-basic#compiler-configuration-options"
+                       HelpUrl="https://go.microsoft.com/fwlink/?linkid=2196261"
                        Category="Options"
                        EnumProvider="PlatformTargetEnumProvider"
                        MultipleValuesAllowed="False"/>
 
-  <!-- TODO: Replace HelpUrl with a fwlink -->
   <BoolProperty Name="Prefer32Bit"
                 DisplayName="Prefer 32-bit"
                 Description="Run in 32-bit mode on systems that support both 32-bit and 64-bit applications."
-                HelpUrl="https://docs.microsoft.com/visualstudio/ide/reference/compile-page-project-designer-visual-basic#compiler-configuration-options"
+                HelpUrl="https://go.microsoft.com/fwlink/?linkid=2196261"
                 Category="Options">
     <BoolProperty.Metadata>
       <NameValuePair Name="DependsOn" Value="Build::PlatformTarget" />
@@ -141,21 +134,19 @@
     </BoolProperty.Metadata>
   </BoolProperty>
 
-  <!-- TODO: Replace HelpUrl with a fwlink -->
   <EnumProperty Name="WarningSeverity"
                 DisplayName="Warning severity"
-                HelpUrl="https://docs.microsoft.com/visualstudio/ide/reference/compile-page-project-designer-visual-basic#compiler-configuration-options"
+                HelpUrl="https://go.microsoft.com/fwlink/?linkid=2196261"
                 Category="Warnings">
     <EnumValue Name="Individual" DisplayName="Set warning severities individually" />
     <EnumValue Name="DisableAll" DisplayName="Disable all warnings" />
     <EnumValue Name="AllAsErrors" DisplayName="Treat all warnings as errors" />
   </EnumProperty>
 
-  <!-- TODO: Replace HelpUrl with a fwlink -->
   <DynamicEnumProperty Name="ImplicitConversion"
                        DisplayName="Implicit conversion"
                        Description="Implicit narrowing conversion occurs when there is an implicit data type conversion that is a narrowing conversion. Always 'Error' when 'Option strict' is on."
-                       HelpUrl="https://docs.microsoft.com/dotnet/visual-basic/language-reference/statements/option-strict-statement#implicit-narrowing-conversion-errors"
+                       HelpUrl="https://go.microsoft.com/fwlink/?linkid=2196420"
                        Category="Warnings"
                        EnumProvider="VBDiagnosticSeverityEnumProvider">
     <DynamicEnumProperty.Metadata>
@@ -172,11 +163,10 @@
     </DynamicEnumProperty.Metadata>
   </DynamicEnumProperty>
 
-  <!-- TODO: Replace HelpUrl with a fwlink -->
   <DynamicEnumProperty Name="ImplicitConversion_Readonly"
                        DisplayName="Implicit conversion"
                        Description="Implicit narrowing conversion occurs when there is an implicit data type conversion that is a narrowing conversion. Always 'Error' when 'Option strict' is on."
-                       HelpUrl="https://docs.microsoft.com/dotnet/visual-basic/language-reference/statements/option-strict-statement#implicit-narrowing-conversion-errors"
+                       HelpUrl="https://go.microsoft.com/fwlink/?linkid=2196420"
                        Category="Warnings"
                        ReadOnly="True"
                        EnumProvider="VBDiagnosticSeverityEnumProvider">
@@ -197,11 +187,10 @@
     </DynamicEnumProperty.Metadata>
   </DynamicEnumProperty>
 
-  <!-- TODO: Replace HelpUrl with a fwlink -->
   <DynamicEnumProperty Name="LateBinding"
                        DisplayName="Late binding"
                        Description="An object is late bound when it is assigned to a property or method of a variable that is declared to be of type 'Object'. These operations could fail at run time. Always 'Error' when 'Option strict' is on."
-                       HelpUrl="https://docs.microsoft.com/dotnet/visual-basic/language-reference/statements/option-strict-statement#late-binding-errors"
+                       HelpUrl="https://go.microsoft.com/fwlink/?linkid=2196325"
                        Category="Warnings"
                        EnumProvider="VBDiagnosticSeverityEnumProvider">
     <DynamicEnumProperty.Metadata>
@@ -218,11 +207,10 @@
     </DynamicEnumProperty.Metadata>
   </DynamicEnumProperty>
 
-  <!-- TODO: Replace HelpUrl with a fwlink -->
   <DynamicEnumProperty Name="LateBinding_Readonly"
                        DisplayName="Late binding"
                        Description="An object is late bound when it is assigned to a property or method of a variable that is declared to be of type 'Object'. These operations could fail at run time. Always 'Error' when 'Option strict' is on."
-                       HelpUrl="https://docs.microsoft.com/dotnet/visual-basic/language-reference/statements/option-strict-statement#late-binding-errors"
+                       HelpUrl="https://go.microsoft.com/fwlink/?linkid=2196325"
                        Category="Warnings"
                        ReadOnly="True"
                        EnumProvider="VBDiagnosticSeverityEnumProvider">
@@ -243,11 +231,10 @@
     </DynamicEnumProperty.Metadata>
   </DynamicEnumProperty>
 
-  <!-- TODO: Replace HelpUrl with a fwlink -->
   <DynamicEnumProperty Name="ImplicitType"
                        DisplayName="Implicit type"
                        Description="Implicit object type errors occur when an appropriate type cannot be inferred for a declared variable, so a type of 'Object' is inferred. Always 'Error' when 'Option strict' is on."
-                       HelpUrl="https://docs.microsoft.com/en-us/dotnet/visual-basic/language-reference/statements/option-strict-statement#implicit-object-type-errors"
+                       HelpUrl="https://go.microsoft.com/fwlink/?linkid=2196160"
                        Category="Warnings"
                        EnumProvider="VBDiagnosticSeverityEnumProvider">
     <DynamicEnumProperty.Metadata>
@@ -264,11 +251,10 @@
     </DynamicEnumProperty.Metadata>
   </DynamicEnumProperty>
 
-  <!-- TODO: Replace HelpUrl with a fwlink -->
   <DynamicEnumProperty Name="ImplicitType_Readonly"
                        DisplayName="Implicit type"
                        Description="Implicit object type errors occur when an appropriate type cannot be inferred for a declared variable, so a type of 'Object' is inferred. Always 'Error' when 'Option strict' is on."
-                       HelpUrl="https://docs.microsoft.com/en-us/dotnet/visual-basic/language-reference/statements/option-strict-statement#implicit-object-type-errors"
+                       HelpUrl="https://go.microsoft.com/fwlink/?linkid=2196160"
                        Category="Warnings"
                        ReadOnly="True"
                        EnumProvider="VBDiagnosticSeverityEnumProvider">
@@ -289,10 +275,9 @@
     </DynamicEnumProperty.Metadata>
   </DynamicEnumProperty>
 
-  <!-- TODO: Replace HelpUrl with a fwlink -->
   <DynamicEnumProperty Name="UseOfVariablePriorToAssignment"
                        DisplayName="Use of variable prior to assignment"
-                       HelpUrl="https://docs.microsoft.com/visualstudio/ide/reference/compile-page-project-designer-visual-basic#compiler-configuration-options"
+                       HelpUrl="https://go.microsoft.com/fwlink/?linkid=2196261"
                        Category="Warnings"
                        EnumProvider="VBDiagnosticSeverityEnumProvider">
     <DynamicEnumProperty.Metadata>
@@ -304,10 +289,9 @@
     </DynamicEnumProperty.Metadata>
   </DynamicEnumProperty>
 
-  <!-- TODO: Replace HelpUrl with a fwlink -->
   <DynamicEnumProperty Name="UseOfVariablePriorToAssignment_Readonly"
                        DisplayName="Use of variable prior to assignment"
-                       HelpUrl="https://docs.microsoft.com/visualstudio/ide/reference/compile-page-project-designer-visual-basic#compiler-configuration-options"
+                       HelpUrl="https://go.microsoft.com/fwlink/?linkid=2196261"
                        Category="Warnings"
                        ReadOnly="True"
                        EnumProvider="VBDiagnosticSeverityEnumProvider">
@@ -325,10 +309,9 @@
     </DynamicEnumProperty.Metadata>
   </DynamicEnumProperty>
 
-  <!-- TODO: Replace HelpUrl with a fwlink -->
   <DynamicEnumProperty Name="ReturningRefTypeWithoutReturnValue"
                        DisplayName="Function returning reference type without return value"
-                       HelpUrl="https://docs.microsoft.com/visualstudio/ide/reference/compile-page-project-designer-visual-basic#compiler-configuration-options"
+                       HelpUrl="https://go.microsoft.com/fwlink/?linkid=2196261"
                        Category="Warnings"
                        EnumProvider="VBDiagnosticSeverityEnumProvider">
     <DynamicEnumProperty.Metadata>
@@ -340,10 +323,9 @@
     </DynamicEnumProperty.Metadata>
   </DynamicEnumProperty>
 
-  <!-- TODO: Replace HelpUrl with a fwlink -->
   <DynamicEnumProperty Name="ReturningRefTypeWithoutReturnValue_Readonly"
                        DisplayName="Function returning reference type without return value"
-                       HelpUrl="https://docs.microsoft.com/visualstudio/ide/reference/compile-page-project-designer-visual-basic#compiler-configuration-options"
+                       HelpUrl="https://go.microsoft.com/fwlink/?linkid=2196261"
                        Category="Warnings"
                        ReadOnly="True"
                        EnumProvider="VBDiagnosticSeverityEnumProvider">
@@ -361,10 +343,9 @@
     </DynamicEnumProperty.Metadata>
   </DynamicEnumProperty>
 
-  <!-- TODO: Replace HelpUrl with a fwlink -->
   <DynamicEnumProperty Name="ReturningIntrinsicValueTypeWithoutReturnValue"
                        DisplayName="Function returning intrinsic value type without return value"
-                       HelpUrl="https://docs.microsoft.com/visualstudio/ide/reference/compile-page-project-designer-visual-basic#compiler-configuration-options"
+                       HelpUrl="https://go.microsoft.com/fwlink/?linkid=2196261"
                        Category="Warnings"
                        EnumProvider="VBDiagnosticSeverityEnumProvider">
     <DynamicEnumProperty.Metadata>
@@ -376,10 +357,9 @@
     </DynamicEnumProperty.Metadata>
   </DynamicEnumProperty>
 
-  <!-- TODO: Replace HelpUrl with a fwlink -->
   <DynamicEnumProperty Name="ReturningIntrinsicValueTypeWithoutReturnValue_Readonly"
                        DisplayName="Function returning intrinsic value type without return value"
-                       HelpUrl="https://docs.microsoft.com/visualstudio/ide/reference/compile-page-project-designer-visual-basic#compiler-configuration-options"
+                       HelpUrl="https://go.microsoft.com/fwlink/?linkid=2196261"
                        Category="Warnings"
                        ReadOnly="True"
                        EnumProvider="VBDiagnosticSeverityEnumProvider">
@@ -397,10 +377,9 @@
     </DynamicEnumProperty.Metadata>
   </DynamicEnumProperty>
 
-  <!-- TODO: Replace HelpUrl with a fwlink -->
   <DynamicEnumProperty Name="UnusedLocalVariable"
                        DisplayName="Unused local variable"
-                       HelpUrl="https://docs.microsoft.com/visualstudio/ide/reference/compile-page-project-designer-visual-basic#compiler-configuration-options"
+                       HelpUrl="https://go.microsoft.com/fwlink/?linkid=2196261"
                        Category="Warnings"
                        EnumProvider="VBDiagnosticSeverityEnumProvider">
     <DynamicEnumProperty.Metadata>
@@ -412,10 +391,9 @@
     </DynamicEnumProperty.Metadata>
   </DynamicEnumProperty>
 
-  <!-- TODO: Replace HelpUrl with a fwlink -->
   <DynamicEnumProperty Name="UnusedLocalVariable_Readonly"
                        DisplayName="Unused local variable"
-                       HelpUrl="https://docs.microsoft.com/visualstudio/ide/reference/compile-page-project-designer-visual-basic#compiler-configuration-options"
+                       HelpUrl="https://go.microsoft.com/fwlink/?linkid=2196261"
                        Category="Warnings"
                        ReadOnly="True"
                        EnumProvider="VBDiagnosticSeverityEnumProvider">
@@ -433,10 +411,9 @@
     </DynamicEnumProperty.Metadata>
   </DynamicEnumProperty>
 
-  <!-- TODO: Replace HelpUrl with a fwlink -->
   <DynamicEnumProperty Name="InstanceVariableAccessesSharedMember"
                        DisplayName="Instance variable accesses shared member"
-                       HelpUrl="https://docs.microsoft.com/visualstudio/ide/reference/compile-page-project-designer-visual-basic#compiler-configuration-options"
+                       HelpUrl="https://go.microsoft.com/fwlink/?linkid=2196261"
                        Category="Warnings"
                        EnumProvider="VBDiagnosticSeverityEnumProvider">
     <DynamicEnumProperty.Metadata>
@@ -448,10 +425,9 @@
     </DynamicEnumProperty.Metadata>
   </DynamicEnumProperty>
 
-  <!-- TODO: Replace HelpUrl with a fwlink -->
   <DynamicEnumProperty Name="InstanceVariableAccessesSharedMember_Readonly"
                        DisplayName="Instance variable accesses shared member"
-                       HelpUrl="https://docs.microsoft.com/visualstudio/ide/reference/compile-page-project-designer-visual-basic#compiler-configuration-options"
+                       HelpUrl="https://go.microsoft.com/fwlink/?linkid=2196261"
                        Category="Warnings"
                        ReadOnly="True"
                        EnumProvider="VBDiagnosticSeverityEnumProvider">
@@ -469,10 +445,9 @@
     </DynamicEnumProperty.Metadata>
   </DynamicEnumProperty>
 
-  <!-- TODO: Replace HelpUrl with a fwlink -->
   <DynamicEnumProperty Name="RecursiveOperatorOrPropertyAccess"
                        DisplayName="Recursive operator or property access"
-                       HelpUrl="https://docs.microsoft.com/visualstudio/ide/reference/compile-page-project-designer-visual-basic#compiler-configuration-options"
+                       HelpUrl="https://go.microsoft.com/fwlink/?linkid=2196261"
                        Category="Warnings"
                        EnumProvider="VBDiagnosticSeverityEnumProvider">
     <DynamicEnumProperty.Metadata>
@@ -484,10 +459,9 @@
     </DynamicEnumProperty.Metadata>
   </DynamicEnumProperty>
 
-  <!-- TODO: Replace HelpUrl with a fwlink -->
   <DynamicEnumProperty Name="RecursiveOperatorOrPropertyAccess_Readonly"
                        DisplayName="Recursive operator or property access"
-                       HelpUrl="https://docs.microsoft.com/visualstudio/ide/reference/compile-page-project-designer-visual-basic#compiler-configuration-options"
+                       HelpUrl="https://go.microsoft.com/fwlink/?linkid=2196261"
                        Category="Warnings"
                        ReadOnly="True"
                        EnumProvider="VBDiagnosticSeverityEnumProvider">
@@ -505,10 +479,9 @@
     </DynamicEnumProperty.Metadata>
   </DynamicEnumProperty>
 
-  <!-- TODO: Replace HelpUrl with a fwlink -->
   <DynamicEnumProperty Name="DuplicateOrOverlappingCatchBlocks"
                        DisplayName="Duplicate or overlapping catch blocks"
-                       HelpUrl="https://docs.microsoft.com/visualstudio/ide/reference/compile-page-project-designer-visual-basic#compiler-configuration-options"
+                       HelpUrl="https://go.microsoft.com/fwlink/?linkid=2196261"
                        Category="Warnings"
                        EnumProvider="VBDiagnosticSeverityEnumProvider">
     <DynamicEnumProperty.Metadata>
@@ -520,10 +493,9 @@
     </DynamicEnumProperty.Metadata>
   </DynamicEnumProperty>
 
-  <!-- TODO: Replace HelpUrl with a fwlink -->
   <DynamicEnumProperty Name="DuplicateOrOverlappingCatchBlocks_Readonly"
                        DisplayName="Duplicate or overlapping catch blocks"
-                       HelpUrl="https://docs.microsoft.com/visualstudio/ide/reference/compile-page-project-designer-visual-basic#compiler-configuration-options"
+                       HelpUrl="https://go.microsoft.com/fwlink/?linkid=2196261"
                        Category="Warnings"
                        ReadOnly="True"
                        EnumProvider="VBDiagnosticSeverityEnumProvider">
@@ -541,11 +513,10 @@
     </DynamicEnumProperty.Metadata>
   </DynamicEnumProperty>
 
-  <!-- TODO: Update HelpUrl -->
   <StringProperty Name="PreBuildEvent"
                   DisplayName="Pre-build event"
                   Description="Specifies commands that run before the build starts. Does not run if the project is up-to-date. A non-zero exit code will fail the build before it runs."
-                  HelpUrl="https://docs.microsoft.com/visualstudio/ide/reference/build-events-dialog-box-visual-basic"
+                  HelpUrl="https://go.microsoft.com/fwlink/?linkid=2196162"
                   Category="Events">
     <StringProperty.DataSource>
       <DataSource HasConfigurationCondition="False"
@@ -561,11 +532,10 @@
     </StringProperty.ValueEditors>
   </StringProperty>
 
-  <!-- TODO: Update HelpUrl -->
   <StringProperty Name="PostBuildEvent"
                   DisplayName="Post-build event"
                   Description="Specifies commands that run after the build completes. Does not run if the build failed. Use 'call' to invoke .bat files. A non-zero exit code will fail the build."
-                  HelpUrl="https://docs.microsoft.com/visualstudio/ide/reference/build-events-dialog-box-visual-basic"
+                  HelpUrl="https://go.microsoft.com/fwlink/?linkid=2196162"
                   Category="Events">
     <StringProperty.DataSource>
       <DataSource HasConfigurationCondition="False"
@@ -581,11 +551,10 @@
     </StringProperty.ValueEditors>
   </StringProperty>
 
-  <!-- TODO: Update HelpUrl -->
   <EnumProperty Name="RunPostBuildEvent"
                 DisplayName="When to run the post-build event"
                 Description="Specifies under which condition the post-build event will be executed."
-                HelpUrl="https://docs.microsoft.com/visualstudio/ide/reference/build-events-dialog-box-visual-basic"
+                HelpUrl="https://go.microsoft.com/fwlink/?linkid=2196162"
                 Category="Events">
     <EnumProperty.DataSource>
       <DataSource HasConfigurationCondition="False"
@@ -602,30 +571,26 @@
                DisplayName="When the output is updated" />
   </EnumProperty>
 
-  <!-- TODO: Replace HelpUrl with a fwlink -->
   <BoolProperty Name="RemoveIntegerChecks"
                 DisplayName="Remove integer overflow checks"
-                HelpUrl="https://docs.microsoft.com/visualstudio/ide/reference/advanced-compiler-settings-dialog-box-visual-basic?view=#optimizations"
+                HelpUrl="https://go.microsoft.com/fwlink/?linkid=2196163"
                 Category="Advanced" />
 
-  <!-- TODO: Replace HelpUrl with a fwlink -->
   <BoolProperty Name="Optimize"
                 DisplayName="Enable optimizations"
-                HelpUrl="https://docs.microsoft.com/visualstudio/ide/reference/advanced-compiler-settings-dialog-box-visual-basic?view=#optimizations"
+                HelpUrl="https://go.microsoft.com/fwlink/?linkid=2196163"
                 Category="Advanced" />
 
-  <!-- TODO: Replace HelpUrl with a fwlink -->
   <!-- TODO: Validation -->
   <StringProperty Name="BaseAddress"
                   DisplayName="DLL base address"
-                  HelpUrl="https://docs.microsoft.com/visualstudio/ide/reference/advanced-compiler-settings-dialog-box-visual-basic?view=#optimizations"
+                  HelpUrl="https://go.microsoft.com/fwlink/?linkid=2196163"
                   Category="Advanced" />
 
-  <!-- TODO: Replace HelpUrl with a fwlink -->
   <EnumProperty Name="DebugType"
                 DisplayName="Debug symbols"
                 Description="Specifies the kind of debug symbols produced during build."
-                HelpUrl="https://docs.microsoft.com/visualstudio/ide/reference/advanced-compiler-settings-dialog-box-visual-basic?view=#optimizations"
+                HelpUrl="https://go.microsoft.com/fwlink/?linkid=2196163"
                 Category="Advanced">
     <EnumProperty.Metadata>
       <NameValuePair Name="SearchTerms" Value="debug type" />
@@ -645,30 +610,26 @@
                DisplayName="Embedded in DLL/EXE, portable across platforms" />
   </EnumProperty>
 
-  <!-- TODO: Replace HelpUrl with a fwlink -->
   <BoolProperty Name="DefineDebug"
                 DisplayName="Define DEBUG constant"
-                HelpUrl="https://docs.microsoft.com/visualstudio/ide/reference/advanced-compiler-settings-dialog-box-visual-basic#compilation-constants"
+                HelpUrl="https://go.microsoft.com/fwlink/?linkid=2196264"
                 Category="Advanced"/>
 
-  <!-- TODO: Replace HelpUrl with a fwlink -->
   <BoolProperty Name="DefineTrace"
                 DisplayName="Degine TRACE constant"
-                HelpUrl="https://docs.microsoft.com/visualstudio/ide/reference/advanced-compiler-settings-dialog-box-visual-basic#compilation-constants"
+                HelpUrl="https://go.microsoft.com/fwlink/?linkid=2196264"
                 Category="Advanced"/>
 
-  <!-- TODO: Replace HelpUrl with a fwlink -->
   <StringProperty Name="DefineConstants"
                   DisplayName="Custom constants"
-                  HelpUrl="https://docs.microsoft.com/visualstudio/ide/reference/advanced-compiler-settings-dialog-box-visual-basic#compilation-constants"
+                  HelpUrl="https://go.microsoft.com/fwlink/?linkid=2196264"
                   Category="Advanced">
     <StringProperty.Description>Enter any custom constants for your application in this text box. Entries should be delimited by commas, using this form: Name1="Value1",Name2="Value2",Name3="Value3".</StringProperty.Description>
   </StringProperty>
 
-  <!-- TODO: Replace HelpUrl with a fwlink -->
   <EnumProperty Name="GenerateSerializationAssemblies"
                 DisplayName="Generate serialization assemblies"
-                HelpUrl="https://docs.microsoft.com/visualstudio/ide/reference/advanced-compiler-settings-dialog-box-visual-basic#compilation-constants"
+                HelpUrl="https://go.microsoft.com/fwlink/?linkid=2196264"
                 Category="Advanced">
     <EnumValue Name="On" DisplayName="On"/>
     <EnumValue Name="Off" DisplayName="Off"/>
