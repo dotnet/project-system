@@ -388,7 +388,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.HotReload
             foreach (HotReloadState sessionState in _activeSessions.Values)
             {
                 cancelToken.ThrowIfCancellationRequested();
-                Assumes.NotNull(sessionState.Session);
                 if (sessionState.Session is IProjectHotReloadSessionInternal sessionInternal)
                 {
                     IDeltaApplier? deltaApplier = sessionInternal.DeltaApplier;
