@@ -29,7 +29,7 @@
 
     <!-- Toolset -->
     <PackageReference Update="Nerdbank.Streams"                                                       Version="2.8.57" />
-    <!-- <PackageReference Update="Nerdbank.GitVersioning"                                                 Version="3.5.103" /> -->
+    <PackageReference Update="Nerdbank.GitVersioning"                                                 Version="3.5.103" />
     <PackageReference Update="System.IO.Pipelines"                                                    Version="6.0.1" />
     <!-- <PackageReference Update="RoslynTools.RepoToolset"                                                Version="$(RoslynToolsRepoToolsetVersion)" /> -->
     <!-- <PackageReference Update="RoslynTools.ModifyVsixManifest"                                         Version="$(RoslynToolsModifyVsixManifestVersion)" /> -->

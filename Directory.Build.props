@@ -18,8 +18,8 @@
       to allow VS to load packages and perform automatic package restore. 
       TODO: Remove once we can use a custom SDK (https://github.com/Microsoft/msbuild/issues/1493)
     -->
-    <_RepoToolsetDir>$(NuGetPackageRoot)roslyntools.repotoolset\$(RoslynToolsRepoToolsetVersion)\tools\</_RepoToolsetDir>
-    <RepoToolsetDir Condition="'$(BuildingInsideVisualStudio)' != 'true' or Exists('$(_RepoToolsetDir)')">$(_RepoToolsetDir)</RepoToolsetDir>
+    <!-- <_RepoToolsetDir>$(NuGetPackageRoot)roslyntools.repotoolset\$(RoslynToolsRepoToolsetVersion)\tools\</_RepoToolsetDir>
+    <RepoToolsetDir Condition="'$(BuildingInsideVisualStudio)' != 'true' or Exists('$(_RepoToolsetDir)')">$(_RepoToolsetDir)</RepoToolsetDir> -->
 
     <RepositoryUrl>https://github.com/dotnet/project-system</RepositoryUrl>
     <PackageProjectUrl>$(RepositoryUrl)</PackageProjectUrl>
@@ -64,6 +64,8 @@
   <!-- <Import Project="$(RepoToolsetDir)Settings.props" Condition="'$(ExcludeRestorePackageImports)' != 'true' AND Exists('$(RepoToolsetDir)Settings.props')" /> -->
   <!-- <Import Project="build\import\OverrideRepoToolsetVersions.props"/> -->
 
+  <Import Project="build\import\StrongName.props" />
+  <Import Project="build\import\ProjectDefaults.props" />
   <Import Project="build\import\Workarounds.props" />
 
   <PropertyGroup>
@@ -75,7 +77,7 @@
 
   <PropertyGroup>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
-    <MinimumVisualStudioVersion>16.0</MinimumVisualStudioVersion>
+    <MinimumVisualStudioVersion>17.0</MinimumVisualStudioVersion>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Language)' == 'C#'">

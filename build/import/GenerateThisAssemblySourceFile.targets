@@ -15,12 +15,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-[System.CodeDom.Compiler.GeneratedCode("GenerateThisAssembly","1.0.0.0")]
 internal static partial class ThisAssembly {
-    internal const string AssemblyVersion = "$(AssemblyVersion)"%3B
-    internal const string AssemblyName = "$(AssemblyName)"%3B
-    internal const string PublicKey = "$(PublicKey)"%3B
-    internal const string PublicKeyToken = "$(PublicKeyToken)"%3B
     internal const string FullName = AssemblyName + ", Version=" + AssemblyVersion + ", Culture=neutral, PublicKeyToken=" + PublicKeyToken%3B
 }
  ]]>
@@ -40,5 +35,5 @@ internal static partial class ThisAssembly {
       <Compile Include="$(ThisAssemblySourceFile)" />
     </ItemGroup>
   </Target>
-    
+
 </Project>

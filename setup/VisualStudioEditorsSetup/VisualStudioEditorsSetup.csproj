@@ -35,23 +35,8 @@
     <!-- <CopyOutputSymbolsToOutputDirectory>false</CopyOutputSymbolsToOutputDirectory> -->
     <IncludeCopyLocalReferencesInVSIXContainer>false</IncludeCopyLocalReferencesInVSIXContainer>
     <IsProductComponent>true</IsProductComponent>
-    <!-- <StartAction>Program</StartAction>
-    <StartProgram Condition="'$(DevEnvDir)' != ''">$(DevEnvDir)devenv.exe</StartProgram>
-    <StartArguments>/rootsuffix Exp</StartArguments> -->
     <IsPackable>false</IsPackable>
     <UseCodebase>true</UseCodebase>
-    <!-- <GenerateAssemblyInformationalVersionAttribute>false</GenerateAssemblyInformationalVersionAttribute>
-    <GenerateAssemblyVersionAttribute>false</GenerateAssemblyVersionAttribute>
-    <GenerateAssemblyFileVersionAttribute>false</GenerateAssemblyFileVersionAttribute> -->
-  </PropertyGroup>
-
-  <!-- From Directory.Build.props since the language isn't loaded by the time that file is loaded. -->
-  <PropertyGroup>
-    <CheckForOverflowUnderflow>false</CheckForOverflowUnderflow>
-    <LangVersion>preview</LangVersion>
-    <Nullable>enable</Nullable>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <Features>strict</Features>
   </PropertyGroup>
 
   <PropertyGroup>
@@ -124,7 +109,6 @@
           BeforeTargets="CreateVsixContainer"
           Condition="'$(CreateVsixContainer)' == 'true'"
           Outputs="$(_TargetVsixContainerDir)">
-
     <MakeDir Directories="$(_TargetVsixContainerDir)" />
   </Target>
 

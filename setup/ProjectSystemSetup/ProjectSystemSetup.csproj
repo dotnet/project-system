@@ -2,7 +2,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <!-- <ExcludeRestorePackageImports>true</ExcludeRestorePackageImports> -->
+    <MinimumVisualStudioVersion>17.0</MinimumVisualStudioVersion>
   </PropertyGroup>
 
   <Import Project="..\..\build\import\VisualStudio.props" />
@@ -28,19 +28,41 @@
     <SchemaVersion>2.0</SchemaVersion>
     <CreateVsixContainer>true</CreateVsixContainer>
     <!-- <GeneratePkgDefFile>false</GeneratePkgDefFile> -->
-    <!-- <IncludeAssemblyInVSIXContainer>false</IncludeAssemblyInVSIXContainer> -->
+
     <IncludeDebugSymbolsInVSIXContainer>false</IncludeDebugSymbolsInVSIXContainer>
     <IncludeDebugSymbolsInLocalVSIXDeployment>false</IncludeDebugSymbolsInLocalVSIXDeployment>
     <!-- <CopyBuildOutputToOutputDirectory>false</CopyBuildOutputToOutputDirectory> -->
     <!-- <CopyOutputSymbolsToOutputDirectory>false</CopyOutputSymbolsToOutputDirectory> -->
     <IncludeCopyLocalReferencesInVSIXContainer>false</IncludeCopyLocalReferencesInVSIXContainer>
     <IsProductComponent>true</IsProductComponent>
-    <!-- <ExtensionInstallationFolder>Microsoft\ProjectSystemQuery</ExtensionInstallationFolder> -->
-    <!-- <ExtensionInstallationRoot>CommonExtensions</ExtensionInstallationRoot> -->
     <IsPackable>false</IsPackable>
+    <UseCodebase>true</UseCodebase>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <VsixSourceManifestPath>$(MSBuildProjectDirectory)\source.extension.vsixmanifest</VsixSourceManifestPath>
+    <IsVsixProject>false</IsVsixProject>
+    <IsVsixProject Condition="Exists('$(VsixSourceManifestPath)')">true</IsVsixProject>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(IsVsixProject)' == 'true'">
+    <BuildForLiveUnitTesting>false</BuildForLiveUnitTesting>
+
     <StartAction>Program</StartAction>
-    <StartProgram Condition="'$(DevEnvDir)' != ''">$(DevEnvDir)devenv.exe</StartProgram>
-    <StartArguments>/rootsuffix Exp</StartArguments>
+    <StartProgram>$(DevEnvDir)devenv.exe</StartProgram>
+    <StartArguments>/rootsuffix $(VSSDKTargetPlatformRegRootSuffix) /log</StartArguments>
+
+    <Ngen>true</Ngen>
+    <NgenArchitecture>All</NgenArchitecture>
+    <NgenPriority>3</NgenPriority>
+
+    <_TargetVsixContainerDir>$(VisualStudioSetupOutputPath)</_TargetVsixContainerDir>
+
+    <TargetVsixContainerName Condition="'$(TargetVsixContainerName)' == ''">$(MSBuildProjectName).vsix</TargetVsixContainerName>
+    <TargetVsixContainer Condition="'$(TargetVsixContainer)' == ''">$(_TargetVsixContainerDir)$(TargetVsixContainerName)</TargetVsixContainer>
+
+    <DeployExtension>false</DeployExtension>
+    <DeployExtension Condition="'$(DeployProjectOutput)' == 'true'">true</DeployExtension>
   </PropertyGroup>
 
   <ItemGroup>
@@ -50,6 +72,7 @@
       <NgenPriority>1</NgenPriority>
       <IncludeOutputGroupsInVSIX>BuiltProjectOutputGroup;GetCopyToOutputDirectoryItems;SatelliteDllsProjectOutputGroup;PkgdefProjectOutputGroup</IncludeOutputGroupsInVSIX>
       <IncludeOutputGroupsInVSIXLocalOnly>DebugSymbolsProjectOutputGroup</IncludeOutputGroupsInVSIXLocalOnly>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
     </ProjectReference>
     <ProjectReference Include="..\..\src\Microsoft.VisualStudio.ProjectSystem.Managed\Microsoft.VisualStudio.ProjectSystem.Managed.csproj">
       <Name>Microsoft.VisualStudio.ProjectSystem.Managed</Name>
@@ -57,6 +80,7 @@
       <NgenPriority>1</NgenPriority>
       <IncludeOutputGroupsInVSIX>BuiltProjectOutputGroup;GetCopyToOutputDirectoryItems;SatelliteDllsProjectOutputGroup</IncludeOutputGroupsInVSIX>
       <IncludeOutputGroupsInVSIXLocalOnly>DebugSymbolsProjectOutputGroup</IncludeOutputGroupsInVSIXLocalOnly>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
     </ProjectReference>
     <ProjectReference Include="..\VisualStudioEditorsSetup\VisualStudioEditorsSetup.csproj">
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
@@ -74,6 +98,18 @@
     </Compile>
   </ItemGroup>
 
-  <Import Project="$(VSToolsPath)\VSSDK\Microsoft.VsSDK.targets" Condition="'$(VSToolsPath)' != ''" />
+  <Target Name="GetBuildVersion" Returns="$(BuildVersion)">
+    <PropertyGroup>
+      <BuildVersion>42.42.42.42</BuildVersion>
+    </PropertyGroup>
+  </Target>
+
+  <!-- Create VSIX container directory. -->
+  <Target Name="_MakeTargetVsixContainerDir"
+          BeforeTargets="CreateVsixContainer"
+          Condition="'$(CreateVsixContainer)' == 'true'"
+          Outputs="$(_TargetVsixContainerDir)">
+    <MakeDir Directories="$(_TargetVsixContainerDir)" />
+  </Target>
 
 </Project>
