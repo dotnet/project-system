@@ -12,17 +12,17 @@ namespace Microsoft.VisualStudio.Shell.Interop
         /// <summary>
         /// Returns the version of VS as defined by <see cref="VSAPropID.VSAPROPID_ProductSemanticVersion"/> with the trailing sem version stripped, or <see langword="null"/> on failure.
         /// </summary>
-        Task<Version?> GetVSVersionAsync(ProjectSystem.VS.IVsService<IVsAppId> vsAppIdService);
+        Task<Version?> GetVSVersionAsync(IVsService<IVsAppId> vsAppIdService);
 
         /// <summary>
         /// Returns the local app data folder as defined by <see cref="__VSSPROPID4.VSSPROPID_LocalAppDataDir"/>.
         /// </summary>
-        Task<string?> GetLocalAppDataFolderAsync(ProjectSystem.VS.IVsService<IVsShell> vsShellService);
+        Task<string?> GetLocalAppDataFolderAsync(IVsService<IVsShell> vsShellService);
 
         /// <summary>
         /// Returns the virtual registry root as defined by <see cref="__VSSPROPID.VSSPROPID_VirtualRegistryRoot"/>.
         /// </summary>
-        Task<string?> GetRegistryRootAsync(ProjectSystem.VS.IVsService<IVsShell> vsShellService);
+        Task<string?> GetRegistryRootAsync(IVsService<IVsShell> vsShellService);
 
         /// <summary>
         /// Determines whether Visual Studio was installed from a preview channel.
