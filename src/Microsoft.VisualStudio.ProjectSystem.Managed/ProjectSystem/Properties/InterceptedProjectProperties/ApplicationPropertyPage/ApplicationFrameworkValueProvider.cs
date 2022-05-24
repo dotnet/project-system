@@ -50,18 +50,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         {
             var value = await defaultProperties.GetUnevaluatedPropertyValueAsync(ApplicationFrameworkMSBuildProperty);
 
-            if (value == EnabledValue)
+            return value switch
             {
-                return "true";
-            }
-            else if (value == DisabledValue)
-            {
-                return "false";
-            }
-            else
-            {
-                return string.Empty;
-            }
+                EnabledValue => "true",
+                DisabledValue => "false",
+                _ => string.Empty
+            };
         }
     }
 }
