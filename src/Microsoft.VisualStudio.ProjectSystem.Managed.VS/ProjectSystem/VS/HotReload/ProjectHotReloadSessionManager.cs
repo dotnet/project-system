@@ -383,6 +383,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.HotReload
         {
             using AsyncSemaphore.Releaser semaphoreRelease = await _semaphore.EnterAsync();
 
+            // Run the updates in parallel
+            List<Task> updateTasks = new List<Task>();
             foreach (HotReloadState sessionState in _activeSessions.Values)
             {
                 cancelToken.ThrowIfCancellationRequested();
@@ -392,9 +394,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.HotReload
                     IDeltaApplier? deltaApplier = sessionInternal.DeltaApplier;
                     if (deltaApplier is not null)
                     {
-                        await applyFunction(deltaApplier, cancelToken);
+                        updateTasks.Add(applyFunction(deltaApplier, cancelToken));
                     }
                 }
+            }
+            
+            // Wait for their completion
+            if (updateTasks.Count > 0)
+            {
+                await Task.WhenAll(updateTasks);
             }
         }
 
