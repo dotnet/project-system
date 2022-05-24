@@ -40,14 +40,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.HotReload
         public string Name { get; }
 
         /// <inheritdoc />
-        public IDeltaApplier? DeltApplier
-        {
-            get
-            {
-                EnsureDeltaApplierforSession();
-                return _deltaApplier;
-            }
-        }
+        public IDeltaApplier? DeltaApplier => _deltaApplier;
 
         public async Task ApplyChangesAsync(CancellationToken cancellationToken)
         {

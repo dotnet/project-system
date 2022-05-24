@@ -12,6 +12,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.HotReload
         /// <summary>
         /// Returns the delta applier for this session
         /// </summary>
-        IDeltaApplier? DeltApplier { get; }
+        IDeltaApplier? DeltaApplier { get; }
     }
 }

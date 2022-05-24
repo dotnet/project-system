@@ -389,7 +389,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.HotReload
                 Assumes.NotNull(sessionState.Session);
                 if (sessionState.Session is IProjectHotReloadSessionInternal sessionInternal)
                 {
-                    IDeltaApplier? deltaApplier = sessionInternal.DeltApplier;
+                    IDeltaApplier? deltaApplier = sessionInternal.DeltaApplier;
                     if (deltaApplier is not null)
                     {
                         await applyFunction(deltaApplier, cancelToken);

@@ -163,27 +163,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.HotReload
             Assert.False(manager.HasActiveHotReloadSessions);
         }
 
-        [Fact]
-        public async Task WhenActiveSession_HasSessionsReturnsTrue()
-        {
-            var capabilities = new[] { "SupportsHotReload" };
-            var propertyNamesAndValues = new Dictionary<string, string?>()
-            {
-                { "TargetFrameworkVersion", "v6.0" },
-                { "DebugSymbols", "true" },
-                // Note: "Optimize" is not included here. The compilers do not optimize by default;
-                // so if the property isn't set that's OK.
-            };
-
-            var activeConfiguredProject = CreateConfiguredProject(capabilities, propertyNamesAndValues);
-            var manager = CreateHotReloadSessionManager(activeConfiguredProject);
-
-            var environmentVariables = new Dictionary<string, string>();
-            await manager.TryCreatePendingSessionAsync(environmentVariables);
-
-            Assert.False(manager.HasActiveHotReloadSessions);
-        }
-
         private static ProjectHotReloadSessionManager CreateHotReloadSessionManager(ConfiguredProject activeConfiguredProject, Action? outputServiceCallback = null)
         {
             var activeDebugFrameworkServices = new IActiveDebugFrameworkServicesMock()
