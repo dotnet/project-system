@@ -381,7 +381,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.HotReload
         /// <inheritdoc />
         public async Task ApplyHotReloadUpdateAsync(Func<IDeltaApplier, CancellationToken, Task> applyFunction, CancellationToken cancelToken)
         {
-            using AsyncSemaphore.Releaser semaphoreRelease = await _semaphore.EnterAsync();
+            using AsyncSemaphore.Releaser semaphoreRelease = await _semaphore.EnterAsync(cancelToken);
 
             // Run the updates in parallel
             List<Task> updateTasks = new List<Task>();
