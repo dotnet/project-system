@@ -1,10 +1,9 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
 using Microsoft.Build.Framework.XamlTypes;
-using Microsoft.VisualStudio.ProjectSystem.Properties;
 using EnumCollection = System.Collections.Generic.ICollection<Microsoft.VisualStudio.ProjectSystem.Properties.IEnumValue>;
 
-namespace Microsoft.VisualStudio.ProjectSystem.VS.Frameworks
+namespace Microsoft.VisualStudio.ProjectSystem.Properties
 {
     internal abstract class SingleRuleSupportedValuesProvider : SupportedValuesProvider
     {
