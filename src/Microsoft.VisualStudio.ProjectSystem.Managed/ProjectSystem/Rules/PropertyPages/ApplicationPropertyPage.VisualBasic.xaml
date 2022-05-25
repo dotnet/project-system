@@ -20,6 +20,10 @@
                 Description="Enable the Visual Basic Application Framework for this project. In general, these settings get serialized into the myapp file."
                 HelpUrl="https://go.microsoft.com/fwlink/?linkid=2195444"
                 Category="ApplicationFramework">
+    <BoolProperty.DataSource>
+      <DataSource Persistence="ProjectFileWithInterception"
+                  HasConfigurationCondition="False" />
+    </BoolProperty.DataSource>
     <BoolProperty.Metadata>
       <NameValuePair Name="VisibilityCondition">
         <NameValuePair.Value>
