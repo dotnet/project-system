@@ -30,25 +30,19 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
 
         public override async Task<string> OnGetEvaluatedPropertyValueAsync(string propertyName, string evaluatedPropertyValue, IProjectProperties defaultProperties)
         {
-            var value = await defaultProperties.GetEvaluatedPropertyValueAsync(ApplicationFrameworkMSBuildProperty);
+            string? value = await defaultProperties.GetEvaluatedPropertyValueAsync(ApplicationFrameworkMSBuildProperty);
 
-            if (value == EnabledValue)
+            return value switch
             {
-                return "true";
-            }
-            else if (value == DisabledValue)
-            {
-                return "false";
-            }
-            else
-            {
-                return string.Empty;
-            }
+                EnabledValue => "true",
+                DisabledValue => "false",
+                _ => string.Empty
+            };
         }
 
         public override async Task<string> OnGetUnevaluatedPropertyValueAsync(string propertyName, string unevaluatedPropertyValue, IProjectProperties defaultProperties)
         {
-            var value = await defaultProperties.GetUnevaluatedPropertyValueAsync(ApplicationFrameworkMSBuildProperty);
+            string? value = await defaultProperties.GetUnevaluatedPropertyValueAsync(ApplicationFrameworkMSBuildProperty);
 
             return value switch
             {
