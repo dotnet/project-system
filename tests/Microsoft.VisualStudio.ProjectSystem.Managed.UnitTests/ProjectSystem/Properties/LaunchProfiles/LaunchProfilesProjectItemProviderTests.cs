@@ -570,7 +570,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
                 launchSettingsProvider);
 
             var projectItem = await itemProvider.FindItemByNameAsync("Profile2");
-            var propertiesContext = projectItem!.PropertiesContext;
+            var propertiesContext = projectItem!.PropertiesContext!;
 
             Assert.Equal(expected: @"C:\alpha\beta\gamma.csproj", actual: propertiesContext.File);
             Assert.True(propertiesContext.IsProjectFile);

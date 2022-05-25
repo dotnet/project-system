@@ -87,8 +87,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties.Package
         {
             return await _sourceItemsProvider.GetItemAsync(Content.SchemaName, ci =>
                 // If the filename of this item and the filename of the property's value match, consider those to be related to one another.
-                ci.PropertiesContext.IsProjectFile &&
-                    Path.GetFileName(ci.EvaluatedInclude).Equals(Path.GetFileName(existingPropertyValue), StringComparisons.PropertyLiteralValues));
+                ci.PropertiesContext is { IsProjectFile: true } && Path.GetFileName(ci.EvaluatedInclude).Equals(Path.GetFileName(existingPropertyValue), StringComparisons.PropertyLiteralValues));
         }
     }
 }
