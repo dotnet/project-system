@@ -79,6 +79,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
             s_requestedValueProperties.RequireProperty(UIPropertyValueType.EvaluatedValuePropertyName);
             s_requestedValueProperties.RequireProperty(UIPropertyValueType.SupportedValuesPropertyName);
             s_requestedValueProperties.RequireProperty(UIPropertyValueType.UnevaluatedValuePropertyName);
+            s_requestedValueProperties.RequireProperty(UIPropertyValueType.ValueDefinedInContextPropertyName);
             s_requestedValueProperties.Freeze();
 
             s_requestedSupportedValueProperties = new SupportedValuePropertiesAvailableStatus();
