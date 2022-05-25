@@ -10,7 +10,8 @@ using Microsoft.VisualStudio.Threading;
 namespace Microsoft.VisualStudio.ProjectSystem.VS.HotReload
 {
     [Export(typeof(IProjectHotReloadSessionManager))]
-    internal class ProjectHotReloadSessionManager : OnceInitializedOnceDisposedAsync, IProjectHotReloadSessionManager
+    [Export(typeof(IProjectHotReloadUpdateApplier))]
+    internal class ProjectHotReloadSessionManager : OnceInitializedOnceDisposedAsync, IProjectHotReloadSessionManager, IProjectHotReloadUpdateApplier
     {
         private readonly UnconfiguredProject _project;
         private readonly IProjectFaultHandlerService _projectFaultHandlerService;
@@ -26,6 +27,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.HotReload
         private readonly Dictionary<int, HotReloadState> _activeSessions = new();
         private HotReloadState? _pendingSessionState = null;
         private int _nextUniqueId = 1;
+
+        public bool HasActiveHotReloadSessions => _activeSessions.Count != 0;
 
         [ImportingConstructor]
         public ProjectHotReloadSessionManager(
@@ -373,6 +376,33 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.HotReload
             }
 
             return true;
+        }
+
+        /// <inheritdoc />
+        public async Task ApplyHotReloadUpdateAsync(Func<IDeltaApplier, CancellationToken, Task> applyFunction, CancellationToken cancelToken)
+        {
+            using AsyncSemaphore.Releaser semaphoreRelease = await _semaphore.EnterAsync(cancelToken);
+
+            // Run the updates in parallel
+            List<Task> updateTasks = new List<Task>();
+            foreach (HotReloadState sessionState in _activeSessions.Values)
+            {
+                cancelToken.ThrowIfCancellationRequested();
+                if (sessionState.Session is IProjectHotReloadSessionInternal sessionInternal)
+                {
+                    IDeltaApplier? deltaApplier = sessionInternal.DeltaApplier;
+                    if (deltaApplier is not null)
+                    {
+                        updateTasks.Add(applyFunction(deltaApplier, cancelToken));
+                    }
+                }
+            }
+            
+            // Wait for their completion
+            if (updateTasks.Count > 0)
+            {
+                await Task.WhenAll(updateTasks);
+            }
         }
 
         private class HotReloadState : IProjectHotReloadSessionCallback

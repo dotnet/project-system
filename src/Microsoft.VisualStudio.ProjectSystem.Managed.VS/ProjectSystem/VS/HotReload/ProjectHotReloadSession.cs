@@ -5,7 +5,7 @@ using Microsoft.VisualStudio.HotReload.Components.DeltaApplier;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.HotReload
 {
-    internal class ProjectHotReloadSession : IManagedHotReloadAgent, IProjectHotReloadSession
+    internal class ProjectHotReloadSession : IManagedHotReloadAgent, IProjectHotReloadSession, IProjectHotReloadSessionInternal
     {
         private readonly string _variant;
         private readonly string _runtimeVersion;
@@ -38,6 +38,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.HotReload
         // IProjectHotReloadSession
 
         public string Name { get; }
+
+        public IDeltaApplier? DeltaApplier => _deltaApplier;
 
         public async Task ApplyChangesAsync(CancellationToken cancellationToken)
         {

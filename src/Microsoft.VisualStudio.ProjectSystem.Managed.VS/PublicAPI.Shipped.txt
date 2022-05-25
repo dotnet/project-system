@@ -414,3 +414,6 @@ virtual Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollec
 ~static Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages.PropertyPageResources.ValueHeader.get -> string
 ~static Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages.PropertyPageResources.WorkingDirectory.get -> string
 ~static Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages.PropertyPageResources.WorkingDirectoryWatermark.get -> string
+Microsoft.VisualStudio.ProjectSystem.VS.HotReload.IProjectHotReloadUpdateApplier
+Microsoft.VisualStudio.ProjectSystem.VS.HotReload.IProjectHotReloadUpdateApplier.ApplyHotReloadUpdateAsync(System.Func<Microsoft.VisualStudio.HotReload.Components.DeltaApplier.IDeltaApplier!, System.Threading.CancellationToken, System.Threading.Tasks.Task!>! applyFunction, System.Threading.CancellationToken cancelToken) -> System.Threading.Tasks.Task!
+Microsoft.VisualStudio.ProjectSystem.VS.HotReload.IProjectHotReloadUpdateApplier.HasActiveHotReloadSessions.get -> bool
