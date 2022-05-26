@@ -925,9 +925,11 @@ internal class AppDotXamlDocument : AppDotXamlDocument.IDebugLockCheck, AppDotXa
             // Replace the empty tag in the buffer with a start/end element tag
             // and the new value
             string newText =
-$@"<{_fullyQualifiedPropertyName}>
-{EscapeXmlString(value)}
-</{_fullyQualifiedPropertyName}>";
+                $"""
+                <{_fullyQualifiedPropertyName}>
+                {EscapeXmlString(value)}
+                </{_fullyQualifiedPropertyName}>
+                """;
 
             // We know where to replace, so go ahead and do it.
             replaceTextInstance.ReplaceText(DefinitionStart, DefinitionEndPlusOne, newText);
