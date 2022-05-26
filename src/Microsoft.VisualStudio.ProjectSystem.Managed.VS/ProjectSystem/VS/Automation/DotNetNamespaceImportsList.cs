@@ -4,12 +4,12 @@ using System.Collections;
 using System.Threading.Tasks.Dataflow;
 using Microsoft.VisualStudio.ProjectSystem.Build;
 
-namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation.VisualBasic
+namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
 {
-    [Export(typeof(VisualBasicNamespaceImportsList))]
-    [AppliesTo(ProjectCapability.VisualBasic)]
+    [Export(typeof(DotNetNamespaceImportsList))]
+    [AppliesTo(ProjectCapability.CSharpOrVisualBasic)]
     [ProjectSystemContract(ProjectSystemContractScope.UnconfiguredProject, ProjectSystemContractProvider.Private)]
-    internal class VisualBasicNamespaceImportsList : UnconfiguredProjectHostBridge<IProjectVersionedValue<IProjectSubscriptionUpdate>, IProjectVersionedValue<ImmutableList<string>>, IProjectVersionedValue<ImmutableList<string>>>, IEnumerable<string>
+    internal class DotNetNamespaceImportsList : UnconfiguredProjectHostBridge<IProjectVersionedValue<IProjectSubscriptionUpdate>, IProjectVersionedValue<ImmutableList<string>>, IProjectVersionedValue<ImmutableList<string>>>, IEnumerable<string>
     {
         private static readonly ImmutableHashSet<string> s_namespaceImportRule = Empty.OrdinalIgnoreCaseStringSet
             .Add(NamespaceImport.SchemaName);
@@ -22,7 +22,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation.VisualBasic
         internal bool SkipInitialization { get; set; }
 
         [ImportingConstructor]
-        public VisualBasicNamespaceImportsList(
+        public DotNetNamespaceImportsList(
             UnconfiguredProject project,
             IProjectThreadingService threadingService,
             IActiveConfiguredProjectSubscriptionService activeConfiguredProjectSubscriptionService)
@@ -31,8 +31,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation.VisualBasic
             _activeConfiguredProjectSubscriptionService = activeConfiguredProjectSubscriptionService;
         }
 
-        [Import(typeof(VisualBasicVSImports))]
-        internal Lazy<VisualBasicVSImports> VSImports { get; set; } = null!;
+        [Import(typeof(DotNetVSImports))]
+        internal Lazy<DotNetVSImports> VSImports { get; set; } = null!;
 
         /// <summary>
         /// Get the global project collection version number, so we can make sure we are waiting for the latest build after a dependent project is updated.
@@ -91,7 +91,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation.VisualBasic
             // a value is applied.
             if (previous != null)
             {
-                VisualBasicVSImports imports = VSImports.Value;
+                DotNetVSImports imports = VSImports.Value;
                 ImmutableList<string> currentValue = value.Value;
                 ImmutableList<string> previousValue = previous.Value;
 

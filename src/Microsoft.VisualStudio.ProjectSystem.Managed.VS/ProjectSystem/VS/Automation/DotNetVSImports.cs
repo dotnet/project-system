@@ -5,15 +5,15 @@ using EnvDTE;
 using Microsoft.VisualStudio.ProjectSystem.VS.ConnectionPoint;
 using VSLangProj;
 
-namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation.VisualBasic
+namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
 {
     [Export(typeof(Imports))]
     [Export(typeof(ImportsEvents))]
-    [Export(typeof(VisualBasicVSImports))]
-    [AppliesTo(ProjectCapability.VisualBasic)]
+    [Export(typeof(DotNetVSImports))]
+    [AppliesTo(ProjectCapability.CSharpOrVisualBasic)]
     [Order(Order.Default)]
     [ProjectSystemContract(ProjectSystemContractScope.UnconfiguredProject, ProjectSystemContractProvider.Private)]
-    internal class VisualBasicVSImports : ConnectionPointContainer,
+    internal class DotNetVSImports : ConnectionPointContainer,
                                IEventSource<_dispImportsEvents>,
                                Imports,
                                ImportsEvents
@@ -25,19 +25,19 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation.VisualBasic
         private readonly IProjectAccessor _projectAccessor;
         private readonly VSLangProj.VSProject _vsProject;
         private readonly IUnconfiguredProjectVsServices _unconfiguredProjectVSServices;
-        private readonly VisualBasicNamespaceImportsList _importsList;
+        private readonly DotNetNamespaceImportsList _importsList;
 
         public event _dispImportsEvents_ImportAddedEventHandler? ImportAdded;
         public event _dispImportsEvents_ImportRemovedEventHandler? ImportRemoved;
 
         [ImportingConstructor]
-        public VisualBasicVSImports(
+        public DotNetVSImports(
             [Import(ExportContractNames.VsTypes.CpsVSProject)] VSLangProj.VSProject vsProject,
             IProjectThreadingService threadingService,
             IActiveConfiguredValue<ConfiguredProject> activeConfiguredProject,
             IProjectAccessor projectAccessor,
             IUnconfiguredProjectVsServices unconfiguredProjectVSServices,
-            VisualBasicNamespaceImportsList importsList)
+            DotNetNamespaceImportsList importsList)
         {
             _vsProject = vsProject;
             _activeConfiguredProject = activeConfiguredProject;
