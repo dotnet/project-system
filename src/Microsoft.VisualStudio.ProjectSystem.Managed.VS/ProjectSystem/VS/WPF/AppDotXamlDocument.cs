@@ -6,6 +6,7 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Xml;
 using Microsoft.VisualStudio.TextManager.Interop;
+using DiagnosticsDebug = System.Diagnostics.Debug;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.WPF;
 
@@ -33,6 +34,11 @@ internal class AppDotXamlDocument : AppDotXamlDocument.IDebugLockCheck, AppDotXa
     private const string ApplicationElementName = "Application";
     private const string StartupUriPropertyName = "StartupUri";
     private const string ShutdownModePropertyName = "ShutdownMode";
+
+    private const char SingleQuote = '\'';
+    private const char DoubleQuote = '"';
+
+    private static readonly char[] ClosingAngleBracketHelperCharacters = new[] { SingleQuote, DoubleQuote, '/', '>' };
 
     private readonly IVsTextLines _vsTextLines;
 
@@ -153,7 +159,7 @@ internal class AppDotXamlDocument : AppDotXamlDocument.IDebugLockCheck, AppDotXa
     /// </summary>
     private XmlTextReader CreateXmlTextReader()
     {
-        System.Diagnostics.Debug.Assert(_debugBufferLockCount > 0, "Should be using BufferLock!");
+        DiagnosticsDebug.Assert(_debugBufferLockCount > 0, "Should be using BufferLock!");
         StringReader stringReader = new(GetAllText());
         // Required by Fxcop rule CA3054 - DoNotAllowDTDXmlTextReader
         XmlTextReader xmlTextReader = new(stringReader) { DtdProcessing = DtdProcessing.Prohibit };
@@ -189,12 +195,10 @@ internal class AppDotXamlDocument : AppDotXamlDocument.IDebugLockCheck, AppDotXa
     {
         int index = 0;
 
-        const char singleQuote = '\'';
-        const char doubleQuote = '"';
         while (index < line.Length)
         {
             // Find the next character of interest
-            index = line.IndexOfAny(new[] { singleQuote, doubleQuote, '/', '>' }, index);
+            index = line.IndexOfAny(ClosingAngleBracketHelperCharacters, index);
             if (index < 0)
             {
                 return -1;
@@ -203,8 +207,8 @@ internal class AppDotXamlDocument : AppDotXamlDocument.IDebugLockCheck, AppDotXa
             char characterOfInterest = line[index];
             switch (characterOfInterest)
             {
-                case singleQuote:
-                case doubleQuote:
+                case SingleQuote:
+                case DoubleQuote:
                     // We have a string.  Skip past it.
                     int closingQuote = line.IndexOf(characterOfInterest, index + 1);
                     if (closingQuote < 0)
@@ -220,7 +224,7 @@ internal class AppDotXamlDocument : AppDotXamlDocument.IDebugLockCheck, AppDotXa
                     // Found '>'
                     return index;
                 case '/':
-                    if (line.Substring(index).StartsWith("/>"))
+                    if (line.IndexOf("/>", index) == index)
                     {
                         // Found "/>"
                         return index;
@@ -232,7 +236,7 @@ internal class AppDotXamlDocument : AppDotXamlDocument.IDebugLockCheck, AppDotXa
                     }
                     break;
                 default:
-                    System.Diagnostics.Debug.Fail("We shouldn't reach here");
+                    DiagnosticsDebug.Fail("We shouldn't reach here");
                     break;
             }
         }
@@ -348,14 +352,14 @@ internal class AppDotXamlDocument : AppDotXamlDocument.IDebugLockCheck, AppDotXa
         {
             reader.Read();
             boundedEndLocation = new Location(reader);
-            System.Diagnostics.Debug.Assert(boundedEndLocation.LineIndex >= startLocation.LineIndex);
-            System.Diagnostics.Debug.Assert(boundedEndLocation.LineIndex > startLocation.LineIndex || boundedEndLocation.CharIndex > startLocation.CharIndex);
+            DiagnosticsDebug.Assert(boundedEndLocation.LineIndex >= startLocation.LineIndex);
+            DiagnosticsDebug.Assert(boundedEndLocation.LineIndex > startLocation.LineIndex || boundedEndLocation.CharIndex > startLocation.CharIndex);
         }
 
         // Now we have an approximate location.  Find the exact location.
         if (_vsTextLines is not IVsTextFind vsTextFind)
         {
-            System.Diagnostics.Debug.Fail("IVsTextFind not supported?");
+            DiagnosticsDebug.Fail("IVsTextFind not supported?");
             throw new InvalidOperationException();
         }
         else
@@ -369,21 +373,21 @@ internal class AppDotXamlDocument : AppDotXamlDocument.IDebugLockCheck, AppDotXa
             {
                 ThrowUnexpectedFormatException(startLocation);
             }
-            System.Diagnostics.Debug.Assert(equalsSign.Equals(GetText(equalsLine, equalsIndex, 1), StringComparison.Ordinal));
+            DiagnosticsDebug.Assert(equalsSign.Equals(GetText(equalsLine, equalsIndex, 1), StringComparison.Ordinal));
 
             // Find the starting quote
             if (ErrorHandler.Failed(vsTextFind.Find(quoteCharacterUsedByAttribute, equalsLine, equalsIndex, boundedEndLocation.LineIndex, boundedEndLocation.CharIndex, 0, out int startQuoteLine, out int startQuoteIndex)))
             {
                 ThrowUnexpectedFormatException(startLocation);
             }
-            System.Diagnostics.Debug.Assert(quoteCharacterUsedByAttribute.Equals(GetText(startQuoteLine, startQuoteIndex, 1), StringComparison.Ordinal));
+            DiagnosticsDebug.Assert(quoteCharacterUsedByAttribute.Equals(GetText(startQuoteLine, startQuoteIndex, 1), StringComparison.Ordinal));
 
             // Find the ending quote, assuming it's on the same line
             if (ErrorHandler.Failed(vsTextFind.Find(quoteCharacterUsedByAttribute, startQuoteLine, startQuoteIndex + 1, boundedEndLocation.LineIndex, boundedEndLocation.CharIndex, 0, out int endQuoteLine, out int endQuoteIndex)))
             {
                 ThrowUnexpectedFormatException(startLocation);
             }
-            System.Diagnostics.Debug.Assert(quoteCharacterUsedByAttribute.Equals(GetText(endQuoteLine, endQuoteIndex, 1), StringComparison.Ordinal));
+            DiagnosticsDebug.Assert(quoteCharacterUsedByAttribute.Equals(GetText(endQuoteLine, endQuoteIndex, 1), StringComparison.Ordinal));
 
             // Now we have the start and end of the attribute's value definition
             Location valueStart = new(startQuoteLine, startQuoteIndex);
@@ -589,7 +593,7 @@ internal class AppDotXamlDocument : AppDotXamlDocument.IDebugLockCheck, AppDotXa
     {
         if (!"<".Equals(GetText(tagStartLocation, 1), StringComparison.Ordinal))
         {
-            System.Diagnostics.Debug.Fail("MakeSureElementHasStartAndEndTags: The start location doesn't point to the start of an element tag");
+            DiagnosticsDebug.Fail("MakeSureElementHasStartAndEndTags: The start location doesn't point to the start of an element tag");
             ThrowUnexpectedFormatException(tagStartLocation);
         }
 
@@ -610,7 +614,7 @@ internal class AppDotXamlDocument : AppDotXamlDocument.IDebugLockCheck, AppDotXa
             string slashAndEndBracket = "/>";
             if (!slashAndEndBracket.Equals(GetText(startTagEndingBracketLocation, slashAndEndBracket.Length), StringComparison.Ordinal))
             {
-                System.Diagnostics.Debug.Fail("FindClosingAngleBracket returned the wrong location?");
+                DiagnosticsDebug.Fail("FindClosingAngleBracket returned the wrong location?");
                 ThrowUnexpectedFormatException(startTagEndingBracketLocation);
             }
 
@@ -688,7 +692,7 @@ internal class AppDotXamlDocument : AppDotXamlDocument.IDebugLockCheck, AppDotXa
     void IDebugLockCheck.OnBufferUnlock()
     {
         _debugBufferLockCount--;
-        System.Diagnostics.Debug.Assert(_debugBufferLockCount >= 0, "Extra buffer unlock");
+        DiagnosticsDebug.Assert(_debugBufferLockCount >= 0, "Extra buffer unlock");
     }
 
     /// <summary>
@@ -901,9 +905,6 @@ internal class AppDotXamlDocument : AppDotXamlDocument.IDebugLockCheck, AppDotXa
     /// </summary>
     private class XamlPropertyInPropertyElementSyntaxWithEmptyTag : XamlPropertyInPropertyElementSyntax
     {
-        /// <summary>
-        /// 
-        /// </summary>
         private readonly string _fullyQualifiedPropertyName;
 
         public XamlPropertyInPropertyElementSyntaxWithEmptyTag(IVsTextLines vsTextLines, string fullyQualifiedPropertyName, Location elementStart, Location elementEnd)
