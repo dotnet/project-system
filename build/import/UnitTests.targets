@@ -60,7 +60,7 @@
       Condition="$(ExitCode) != 0 AND !Exists('$(HtmlTestResultsFile)')"
       File="xUnit"
       />
-    
+
   </Target>
-  
+
 </Project>
