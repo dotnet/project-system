@@ -310,8 +310,8 @@
       <Item ItemId=";ProjectHotReloadSessionManager_AttachingToProcess" ItemType="0" PsrId="308" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[Attaching to process.]]></Val>
-          <Tgt Cat="Text" Stat="Update" Orig="New">
-            <Val><![CDATA[{0}: '{1}' işlemine ekleniliyor.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[İşleme ekleniyor.]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[{0}: Attaching to process '{1}'.]]></Val>
@@ -322,8 +322,8 @@
       <Item ItemId=";ProjectHotReloadSessionManager_ErrorStoppingTheSession" ItemType="0" PsrId="308" InstFlg="true" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[Error while stopping the session: {0}]D;]A;{1}]]></Val>
-          <Tgt Cat="Text" Stat="Update" Orig="New">
-            <Val><![CDATA[{0}: Oturum durdurulurken hata oluştu: ]D;]A;{1}]D;]A;{2}]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Oturum durdurulurken hata oluştu: {0}]D;]A;{1}]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[{0}: Error while stopping the session:]D;]A;{1}]D;]A;{2}]]></Val>
@@ -334,8 +334,8 @@
       <Item ItemId=";ProjectHotReloadSessionManager_NoActiveProcess" ItemType="0" PsrId="308" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[Unable to start Hot Reload session: no active process.]]></Val>
-          <Tgt Cat="Text" Stat="Update" Orig="New">
-            <Val><![CDATA[{0}: Çalışırken Yeniden Yükleme oturumu başlatılamıyor: etkin işlem yok.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Çalışırken Yeniden Yükleme oturumu başlatılamıyor: etkin işlem yok.]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[{0}: Unable to start Hot Reload session: no active process.]]></Val>
@@ -346,8 +346,8 @@
       <Item ItemId=";ProjectHotReloadSessionManager_ProcessAlreadyExited" ItemType="0" PsrId="308" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[The process has already exited.]]></Val>
-          <Tgt Cat="Text" Stat="Update" Orig="New">
-            <Val><![CDATA[{0}: İşlemden zaten çıkıldı.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[İşlemden zaten çıkıldı.]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[{0}: The process has already exited.]]></Val>
@@ -370,8 +370,8 @@
       <Item ItemId=";ProjectHotReloadSessionManager_StartupHooksDisabled" ItemType="0" PsrId="308" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[Hot Reload is not available because startup hooks have been disabled, possibly due to trimming.]]></Val>
-          <Tgt Cat="Text" Stat="Update" Orig="New">
-            <Val><![CDATA[{0}: Başlatma kancaları, büyük olasılıkla kırpma nedeniyle devre dışı bırakıldığından Çalışırken Yeniden Yükleme kullanılamıyor.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Başlatma kancaları, büyük olasılıkla kırpma nedeniyle devre dışı bırakıldığından Çalışırken Yeniden Yükleme kullanılamıyor.]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[{0}: Hot Reload is not available because startup hooks have been disabled, possibly due to trimming.]]></Val>
