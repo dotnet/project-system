@@ -38,7 +38,8 @@
                           VB;
                           Managed;
                           ClassDesigner;
-                          SharedProjectReferences;" />
+                          SharedProjectReferences;
+                          ProjectPropertiesEditor;" />
 
       <ProjectCapability Include="EnableMyApplication" Condition="'$(TargetFrameworkIdentifier)' == '.NETFramework'"/>
 
