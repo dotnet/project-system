@@ -1,6 +1,8 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
 using Microsoft.Build.Framework.XamlTypes;
+using Microsoft.CodeAnalysis;
+using Microsoft.VisualStudio.LanguageServices;
 using VSLangProj;
 
 namespace Microsoft.VisualStudio.ProjectSystem.Properties;
@@ -9,37 +11,91 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties;
 [AppliesTo(ProjectCapability.CSharpOrVisualBasic)]
 internal class DotNetImportsEnumProvider : IDynamicEnumValuesProvider
 {
+    private readonly UnconfiguredProject _unconfiguredProject;
     private readonly Imports _imports;
+    private readonly Workspace _workspace;
 
     [ImportingConstructor]
-    public DotNetImportsEnumProvider(Imports imports)
+    public DotNetImportsEnumProvider(
+        UnconfiguredProject unconfiguredProject,
+        Imports imports, 
+        [Import(typeof(VisualStudioWorkspace))] Workspace workspace)
     {
+        _unconfiguredProject = unconfiguredProject;
         _imports = imports;
+        _workspace = workspace;
+        
     }
     public Task<IDynamicEnumValuesGenerator> GetProviderAsync(IList<NameValuePair>? options)
     {
-        return Task.FromResult<IDynamicEnumValuesGenerator>(new DotNetImportsEnumGenerator(_imports));
+        return Task.FromResult<IDynamicEnumValuesGenerator>(new DotNetImportsEnumGenerator(_unconfiguredProject, _imports, _workspace));
     }
     
     private class DotNetImportsEnumGenerator : IDynamicEnumValuesGenerator
     {
+        private readonly UnconfiguredProject _unconfiguredProject;
         private readonly Imports _imports;
+        private readonly Workspace _workspace;
         
-        public DotNetImportsEnumGenerator(Imports imports)
+        public DotNetImportsEnumGenerator(UnconfiguredProject unconfiguredProject, Imports imports, Workspace workspace)
         {
+            _unconfiguredProject = unconfiguredProject;
             _imports = imports;
-
+            _workspace = workspace;
         }
-        
-        public Task<ICollection<IEnumValue>> GetListedValuesAsync()
+
+        private async Task<List<string>> GetNamespacesAsync()
         {
-            ImmutableArray<IEnumValue>.Builder importsArray = ImmutableArray.CreateBuilder<IEnumValue>(_imports.Count);
-            foreach (string import in _imports)
+            Compilation? compilation = await _workspace.CurrentSolution.Projects.FirstOrDefault(
+                proj => StringComparers.Paths.Equals(proj.FilePath, _unconfiguredProject.FullPath))?.GetCompilationAsync();
+            
+            if (compilation == null)
             {
-                importsArray.Add(new PageEnumValue(new EnumValue { Name = import, DisplayName = import}));
+                return new List<string>();
             }
 
-            return Task.FromResult(importsArray.MoveToImmutable() as ICollection<IEnumValue>);
+            List<string> namespaceNames = new List<string>();
+            Stack<INamespaceSymbol> namespacesToProcess = new Stack<INamespaceSymbol>();
+            namespacesToProcess.Push(compilation.GlobalNamespace);
+
+            while (namespacesToProcess.Count != 0)
+            {
+                foreach (INamespaceSymbol childNamespace in namespacesToProcess.Pop().GetNamespaceMembers())
+                {
+                    if (NamespaceIsReferenceableFromCompilation(childNamespace, compilation))
+                    {
+                        namespaceNames.Add(childNamespace.ToDisplayString());
+                    }
+                    
+                    namespacesToProcess.Push(childNamespace);
+                }
+            }
+
+            static bool NamespaceIsReferenceableFromCompilation(INamespaceSymbol namespaceSymbol, Compilation compilation)
+            {
+                foreach (INamedTypeSymbol typeMember in namespaceSymbol.GetTypeMembers())
+                {
+                    if (typeMember.CanBeReferencedByName
+                        && (typeMember.DeclaredAccessibility == Accessibility.Public
+                        || SymbolEqualityComparer.Default.Equals(typeMember.ContainingAssembly, compilation.Assembly)
+                        || typeMember.ContainingAssembly.GivesAccessTo(compilation.Assembly)))
+                    {
+                        return true;
+                    }
+                }
+
+                return false;
+            }
+
+            return namespaceNames;
+        }
+        
+        public async Task<ICollection<IEnumValue>> GetListedValuesAsync()
+        {
+            return (await GetNamespacesAsync()).Select(namespaceString => (IEnumValue) new PageEnumValue(new EnumValue
+            {
+                Name = namespaceString, DisplayName = namespaceString
+            })).ToImmutableList();
         }
 
         public Task<IEnumValue?> TryCreateEnumValueAsync(string userSuppliedValue)
