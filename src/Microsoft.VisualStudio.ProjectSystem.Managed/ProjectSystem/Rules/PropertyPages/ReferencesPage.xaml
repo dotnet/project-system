@@ -1,0 +1,42 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!-- Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information. -->
+<Rule Name="References"
+      Description="Specifies the project's references and namespace imports."
+      DisplayName="References"
+      PageTemplate="generic"
+      Order="100"
+      xmlns="http://schemas.microsoft.com/build/2009/properties">
+
+  <Rule.Categories>
+    <Category Name="Namespaces"
+              DisplayName="Namespaces"
+              Description="Namespace settings for C# and VB projects." />
+  </Rule.Categories>
+
+  <Rule.DataSource>
+    <DataSource Persistence="ProjectFile"
+                SourceOfDefaultValue="AfterContext"
+                HasConfigurationCondition="False" />
+  </Rule.DataSource>
+
+  <DynamicEnumProperty Name="InterceptedTargetFramework"
+                       DisplayName="Target framework"
+                       Description="Specifies the version of .NET that the application targets. This option can have different values depending on which versions of .NET are installed on your computer."
+                       HelpUrl="https://go.microsoft.com/fwlink/?linkid=2147236"
+                       Category="General"
+                       EnumProvider="SupportedTargetFrameworksEnumProvider"
+                       MultipleValuesAllowed="False">
+    <DynamicEnumProperty.DataSource>
+      <DataSource Persistence="ProjectFileWithInterception"
+                  HasConfigurationCondition="False" />
+    </DynamicEnumProperty.DataSource>
+    <DynamicEnumProperty.Metadata>
+      <NameValuePair Name="VisibilityCondition">
+        <NameValuePair.Value>(not (has-evaluated-value "Application" "TargetMultipleFrameworks" true))</NameValuePair.Value>
+      </NameValuePair>
+      <NameValuePair Name="SearchTerms" Value="TFM" />
+      <NameValuePair Name="DependsOn" Value="Application::TargetMultipleFrameworks" />
+    </DynamicEnumProperty.Metadata>
+  </DynamicEnumProperty>
+
+</Rule>
