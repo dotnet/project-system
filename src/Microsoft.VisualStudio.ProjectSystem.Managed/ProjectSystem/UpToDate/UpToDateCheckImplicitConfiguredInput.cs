@@ -40,8 +40,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 copyReferenceInputs: ImmutableArray<string>.Empty,
                 lastItemsChangedAtUtc: DateTime.MinValue,
                 lastItemChanges: ImmutableArray<(bool IsAdd, string ItemType, UpToDateCheckInputItem)>.Empty,
-                itemHash: null,
-                wasStateRestored: false);
+                itemHash: null);
         }
 
         /// <summary>
@@ -108,18 +107,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
         /// last added or removed from the project.
         /// </para>
         /// <para>
-        /// This property is not updated until after the first query occurs. Until that time it will
-        /// equal <see cref="DateTime.MinValue"/> which represents the fact that we do not know when
-        /// the set of items was last changed, so we cannot base any decisions on this data property.
+        /// This property is not set until the set of items is observed changing. Until that time it will
+        /// be <see langword="null"/>, representing the fact that the value is unknown and we cannot base
+        /// any decisions on this data property.
         /// </para>
         /// </remarks>
-        public DateTime LastItemsChangedAtUtc { get; }
+        public DateTime? LastItemsChangedAtUtc { get; }
 
         public ImmutableArray<(bool IsAdd, string ItemType, UpToDateCheckInputItem Item)> LastItemChanges { get; }
 
         public int? ItemHash { get; }
-
-        public bool WasStateRestored { get; }
 
         /// <summary>
         /// Gets the set of source item types known to be up-to-date check inputs.
@@ -166,7 +163,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             var emptyItemBySetName = ImmutableDictionary.Create<string, ImmutableDictionary<string, ImmutableArray<string>>>(BuildUpToDateCheck.SetNameComparer);
 
             ProjectConfiguration = projectConfiguration;
-            LastItemsChangedAtUtc = DateTime.MinValue;
+            LastItemsChangedAtUtc = null;
             InputSourceItemTypes = ImmutableArray<string>.Empty;
             InputSourceItemsByItemType = ImmutableDictionary.Create<string, ImmutableArray<UpToDateCheckInputItem>>(StringComparers.ItemTypes);
             SetNames = ImmutableArray<string>.Empty;
@@ -177,7 +174,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             ResolvedAnalyzerReferencePaths = ImmutableArray<string>.Empty;
             ResolvedCompilationReferencePaths = ImmutableArray<string>.Empty;
             CopyReferenceInputs = ImmutableArray<string>.Empty;
-            WasStateRestored = false;
         }
 
         private UpToDateCheckImplicitConfiguredInput(
@@ -198,10 +194,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             ImmutableArray<string> resolvedAnalyzerReferencePaths,
             ImmutableArray<string> resolvedCompilationReferencePaths,
             ImmutableArray<string> copyReferenceInputs,
-            DateTime lastItemsChangedAtUtc,
+            DateTime? lastItemsChangedAtUtc,
             ImmutableArray<(bool IsAdd, string ItemType, UpToDateCheckInputItem)> lastItemChanges,
-            int? itemHash,
-            bool wasStateRestored)
+            int? itemHash)
         {
             ProjectConfiguration = projectConfiguration;
             MSBuildProjectFullPath = msBuildProjectFullPath;
@@ -223,7 +218,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             LastItemsChangedAtUtc = lastItemsChangedAtUtc;
             LastItemChanges = lastItemChanges;
             ItemHash = itemHash;
-            WasStateRestored = wasStateRestored;
 
             var setNames = new HashSet<string>(BuildUpToDateCheck.SetNameComparer);
             AddKeys(upToDateCheckInputItemsByKindBySetName);
@@ -348,7 +342,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
             int itemHash = BuildUpToDateCheck.ComputeItemHash(inputSourceItemsByItemType);
 
-            DateTime lastItemsChangedAtUtc = LastItemsChangedAtUtc;
+            DateTime? lastItemsChangedAtUtc = LastItemsChangedAtUtc;
 
             if (itemHash != ItemHash && ItemHash != null)
             {
@@ -389,8 +383,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 copyReferenceInputs: copyReferenceInputs,
                 lastItemsChangedAtUtc: lastItemsChangedAtUtc,
                 lastItemChanges.ToImmutableArray(),
-                itemHash,
-                WasStateRestored);
+                itemHash);
 
             string? UpdateCopyUpToDateMarkerItem()
             {
@@ -560,7 +553,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
         /// <summary>
         /// For unit tests only.
         /// </summary>
-        internal UpToDateCheckImplicitConfiguredInput WithLastItemsChangedAtUtc(DateTime lastItemsChangedAtUtc)
+        internal UpToDateCheckImplicitConfiguredInput WithLastItemsChangedAtUtc(DateTime? lastItemsChangedAtUtc)
         {
             return new(
                 ProjectConfiguration,
@@ -582,11 +575,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 CopyReferenceInputs,
                 lastItemsChangedAtUtc,
                 LastItemChanges,
-                ItemHash,
-                WasStateRestored);
+                ItemHash);
         }
 
-        public UpToDateCheckImplicitConfiguredInput WithRestoredState(int itemHash, DateTime lastInputsChangedAtUtc)
+        public UpToDateCheckImplicitConfiguredInput WithRestoredState(int itemHash, DateTime? lastItemsChangedAtUtc)
         {
             return new(
                 ProjectConfiguration,
@@ -606,10 +598,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 ResolvedAnalyzerReferencePaths,
                 ResolvedCompilationReferencePaths,
                 CopyReferenceInputs,
-                lastInputsChangedAtUtc,
+                lastItemsChangedAtUtc,
                 LastItemChanges,
-                itemHash,
-                wasStateRestored: true);
+                itemHash);
         }
     }
 }

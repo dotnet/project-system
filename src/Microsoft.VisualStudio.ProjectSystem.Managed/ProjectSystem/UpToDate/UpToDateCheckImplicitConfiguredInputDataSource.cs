@@ -91,8 +91,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                     {
                         // Restoring state requires the UI thread. We must use JTF.RunAsync here to ensure the UI
                         // thread is shared between related work and prevent deadlocks.
-                        (int ItemHash, DateTime InputsChangedAtUtc)? restoredState =
-                            await JoinableFactory.RunAsync(() => _persistentState.RestoreStateAsync(_configuredProject.UnconfiguredProject.FullPath, _configuredProject.ProjectConfiguration.Dimensions, _projectAsynchronousTasksService.UnloadCancellationToken));
+                        (int ItemHash, DateTime? InputsChangedAtUtc)? restoredState =
+                            await JoinableFactory.RunAsync(() => _persistentState.RestoreItemStateAsync(_configuredProject.UnconfiguredProject.FullPath, _configuredProject.ProjectConfiguration.Dimensions, _projectAsynchronousTasksService.UnloadCancellationToken));
 
                         if (restoredState is not null)
                         {
@@ -102,7 +102,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 }
 
                 int? priorItemHash = state.ItemHash;
-                DateTime priorLastItemsChangedAtUtc = state.LastItemsChangedAtUtc;
+                DateTime? priorLastItemsChangedAtUtc = state.LastItemsChangedAtUtc;
 
                 state = state.Update(
                     jointRuleUpdate: e.Value.Item1,
@@ -112,7 +112,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
                 if (state.ItemHash is not null && _persistentState is not null && (priorItemHash != state.ItemHash || priorLastItemsChangedAtUtc != state.LastItemsChangedAtUtc))
                 {
-                    await _persistentState.StoreStateAsync(_configuredProject.UnconfiguredProject.FullPath, _configuredProject.ProjectConfiguration.Dimensions, state.ItemHash.Value, state.LastItemsChangedAtUtc, _projectAsynchronousTasksService.UnloadCancellationToken);
+                    await _persistentState.StoreItemStateAsync(_configuredProject.UnconfiguredProject.FullPath, _configuredProject.ProjectConfiguration.Dimensions, state.ItemHash.Value, state.LastItemsChangedAtUtc, _projectAsynchronousTasksService.UnloadCancellationToken);
                 }
 
                 return new ProjectVersionedValue<UpToDateCheckImplicitConfiguredInput>(state, e.DataSourceVersions);

@@ -27,11 +27,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
         private readonly DateTime _projectFileTimeUtc = new(1999, 1, 1, 0, 0, 0, DateTimeKind.Utc);
 
         private readonly List<ITelemetryServiceFactory.TelemetryParameters> _telemetryEvents = new();
-        private readonly Dictionary<ProjectConfiguration, DateTime> _lastSuccessfulBuildStartTimeUtcByConfiguration = new();
+        private DateTime? _lastSuccessfulBuildStartTime;
 
         private readonly BuildUpToDateCheck _buildUpToDateCheck;
         private readonly ITestOutputHelper _output;
         private readonly IFileSystemMock _fileSystem;
+        private readonly Mock<IUpToDateCheckStatePersistence> _persistence;
 
         // Values returned by mocks that may be modified in test cases as needed
         private bool _isTaskQueueEmpty = true;
@@ -74,6 +75,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             configuredProject.SetupGet(c => c.Services).Returns(configuredProjectServices);
             configuredProject.SetupGet(c => c.UnconfiguredProject).Returns(UnconfiguredProjectFactory.Create(fullPath: _projectPath));
 
+            _persistence = new Mock<IUpToDateCheckStatePersistence>(MockBehavior.Strict);
+            _persistence
+                .Setup(o => o.RestoreLastSuccessfulBuildStateAsync(It.IsAny<string>(), It.IsAny<IImmutableDictionary<string, string>>(), It.IsAny<CancellationToken>()))
+                .Returns(() => Task.FromResult(_lastSuccessfulBuildStartTime));
+
             var projectAsynchronousTasksService = new Mock<IProjectAsynchronousTasksService>(MockBehavior.Strict);
             projectAsynchronousTasksService.SetupGet(s => s.UnloadCancellationToken).Returns(CancellationToken.None);
             projectAsynchronousTasksService.Setup(s => s.IsTaskQueueEmpty(ProjectCriticalOperation.Build)).Returns(() => _isTaskQueueEmpty);
@@ -88,6 +94,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 inputDataSource.Object,
                 projectSystemOptions.Object,
                 configuredProject.Object,
+                _persistence.Object,
                 projectAsynchronousTasksService.Object,
                 ITelemetryServiceFactory.Create(_telemetryEvents.Add),
                 _fileSystem,
@@ -109,7 +116,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
         {
             upToDateCheckImplicitConfiguredInput ??= UpToDateCheckImplicitConfiguredInput.CreateEmpty(ProjectConfigurationFactory.Create("testConfiguration"));
 
-            _lastSuccessfulBuildStartTimeUtcByConfiguration[upToDateCheckImplicitConfiguredInput.ProjectConfiguration] = lastSuccessfulBuildStartTimeUtc ?? DateTime.MinValue;
+            _lastSuccessfulBuildStartTime = lastSuccessfulBuildStartTimeUtc;
             
             projectSnapshot ??= new Dictionary<string, IProjectRuleSnapshotModel>();
 
@@ -146,15 +153,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             subscription.Setup(s => s.EnsureInitialized());
 
             subscription
-                .Setup(s => s.UpdateLastSuccessfulBuildStartTimeUtc(It.IsAny<DateTime>()))
-                .Callback((DateTime timeUtc) => _lastSuccessfulBuildStartTimeUtcByConfiguration[upToDateCheckImplicitConfiguredInput.ProjectConfiguration] = timeUtc);
+                .Setup(s => s.UpdateLastSuccessfulBuildStartTimeUtcAsync(It.IsAny<DateTime>()))
+                .Callback((DateTime timeUtc) => _lastSuccessfulBuildStartTime = timeUtc)
+                .Returns(Task.CompletedTask);
 
             subscription
-                .Setup(s => s.RunAsync(It.IsAny<Func<UpToDateCheckConfiguredInput, IReadOnlyDictionary<ProjectConfiguration, DateTime>, CancellationToken, Task<(bool, ImmutableArray<ProjectConfiguration>)>>>(), It.IsAny<CancellationToken>()))
-                .Returns(async (Func<UpToDateCheckConfiguredInput, IReadOnlyDictionary<ProjectConfiguration, DateTime>, CancellationToken, Task<(bool, ImmutableArray<ProjectConfiguration>)>>  func, CancellationToken token) =>
+                .Setup(s => s.RunAsync(It.IsAny<Func<UpToDateCheckConfiguredInput, IUpToDateCheckStatePersistence, CancellationToken, Task<(bool, ImmutableArray<ProjectConfiguration>)>>>(), It.IsAny<CancellationToken>()))
+                .Returns(async (Func<UpToDateCheckConfiguredInput, IUpToDateCheckStatePersistence, CancellationToken, Task<(bool, ImmutableArray<ProjectConfiguration>)>> func, CancellationToken token) =>
                 {
                     Assumes.NotNull(_state);
-                    var result = await func(_state, _lastSuccessfulBuildStartTimeUtcByConfiguration, token);
+                    var result = await func(_state, _persistence.Object, token);
                     return result.Item1;
                 });
             
@@ -708,14 +716,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
             // Build (t2)
             ((IBuildUpToDateCheckProviderInternal)_buildUpToDateCheck).NotifyBuildStarting(buildStartTimeUtc: t2);
-            ((IBuildUpToDateCheckProviderInternal)_buildUpToDateCheck).NotifyBuildCompleted(wasSuccessful: true);
+            await ((IBuildUpToDateCheckProviderInternal)_buildUpToDateCheck).NotifyBuildCompletedAsync(wasSuccessful: true);
 
             // Modify input (t3)
             _fileSystem.AddFile(_inputPath, t3);
 
             // Rebuild (t4)
             ((IBuildUpToDateCheckProviderInternal)_buildUpToDateCheck).NotifyBuildStarting(buildStartTimeUtc: t4);
-            ((IBuildUpToDateCheckProviderInternal)_buildUpToDateCheck).NotifyBuildCompleted(wasSuccessful: true);
+            await ((IBuildUpToDateCheckProviderInternal)_buildUpToDateCheck).NotifyBuildCompletedAsync(wasSuccessful: true);
 
             // Update output (t5)
             _fileSystem.AddFile(_builtPath, t5);
@@ -763,7 +771,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
             // Rebuild (t1)
             ((IBuildUpToDateCheckProviderInternal)_buildUpToDateCheck).NotifyBuildStarting(buildStartTimeUtc: t1);
-            ((IBuildUpToDateCheckProviderInternal)_buildUpToDateCheck).NotifyBuildCompleted(wasSuccessful: true);
+            await ((IBuildUpToDateCheckProviderInternal)_buildUpToDateCheck).NotifyBuildCompletedAsync(wasSuccessful: true);
 
             // Run test (t2)
             await AssertUpToDateAsync(
