@@ -12,6 +12,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             private readonly TextWriter _writer;
             private readonly Stopwatch _stopwatch;
             private readonly TimestampCache _timestampCache;
+            private readonly Guid _projectGuid;
             private readonly string _fileName;
             private readonly ITelemetryService? _telemetryService;
             private readonly UpToDateCheckConfiguredInput _upToDateCheckConfiguredInput;
@@ -23,12 +24,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
             public string? FailureReason { get; private set; }
 
-            public Log(TextWriter writer, LogLevel requestedLogLevel, Stopwatch stopwatch, TimestampCache timestampCache, string projectPath, ITelemetryService? telemetryService, UpToDateCheckConfiguredInput upToDateCheckConfiguredInput, string? ignoreKinds)
+            public Log(TextWriter writer, LogLevel requestedLogLevel, Stopwatch stopwatch, TimestampCache timestampCache, string projectPath, Guid projectGuid, ITelemetryService? telemetryService, UpToDateCheckConfiguredInput upToDateCheckConfiguredInput, string? ignoreKinds)
             {
                 _writer = writer;
                 Level = requestedLogLevel;
                 _stopwatch = stopwatch;
                 _timestampCache = timestampCache;
+                _projectGuid = projectGuid;
                 _telemetryService = telemetryService;
                 _upToDateCheckConfiguredInput = upToDateCheckConfiguredInput;
                 _ignoreKinds = ignoreKinds;
@@ -159,6 +161,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                     (TelemetryPropertyName.UpToDateCheckFileCount, _timestampCache.Count),
                     (TelemetryPropertyName.UpToDateCheckConfigurationCount, _upToDateCheckConfiguredInput.ImplicitInputs.Length),
                     (TelemetryPropertyName.UpToDateCheckLogLevel, Level),
+                    (TelemetryPropertyName.UpToDateCheckProject, _projectGuid),
                     (TelemetryPropertyName.UpToDateCheckIgnoreKinds, _ignoreKinds ?? "")
                 });
 
@@ -181,6 +184,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                     (TelemetryPropertyName.UpToDateCheckFileCount, _timestampCache.Count),
                     (TelemetryPropertyName.UpToDateCheckConfigurationCount, _upToDateCheckConfiguredInput.ImplicitInputs.Length),
                     (TelemetryPropertyName.UpToDateCheckLogLevel, Level),
+                    (TelemetryPropertyName.UpToDateCheckProject, _projectGuid),
                     (TelemetryPropertyName.UpToDateCheckIgnoreKinds, _ignoreKinds ?? "")
                 });
 

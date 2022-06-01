@@ -44,6 +44,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
         private readonly IProjectAsynchronousTasksService _tasksService;
         private readonly ITelemetryService _telemetryService;
         private readonly IFileSystem _fileSystem;
+        private readonly ISafeProjectGuidService _guidService;
         private readonly IUpToDateCheckHost _upToDateCheckHost;
 
         private IImmutableDictionary<string, string> _lastGlobalProperties = ImmutableStringDictionary<string>.EmptyOrdinal;
@@ -61,6 +62,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             [Import(ExportContractNames.Scopes.ConfiguredProject)] IProjectAsynchronousTasksService tasksService,
             ITelemetryService telemetryService,
             IFileSystem fileSystem,
+            ISafeProjectGuidService guidService,
             IUpToDateCheckHost upToDateCheckHost)
         {
             _inputDataSource = inputDataSource;
@@ -69,6 +71,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             _tasksService = tasksService;
             _telemetryService = telemetryService;
             _fileSystem = fileSystem;
+            _guidService = guidService;
             _upToDateCheckHost = upToDateCheckHost;
             _subscription = new Subscription(inputDataSource, configuredProject, upToDateCheckHost);
         }
@@ -832,8 +835,20 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
                 globalProperties.TryGetValue(FastUpToDateCheckIgnoresKindsGlobalPropertyName, out string? ignoreKindsString);
 
-                LogLevel requestedLogLevel = await _projectSystemOptions.GetFastUpToDateLoggingLevelAsync(token);
-                var logger = new Log(logWriter, requestedLogLevel, sw, timestampCache, _configuredProject.UnconfiguredProject.FullPath ?? "", isValidationRun ? null : _telemetryService, state, ignoreKindsString);
+                (LogLevel requestedLogLevel, Guid projectGuid) = await WhenAll(
+                    _projectSystemOptions.GetFastUpToDateLoggingLevelAsync(token),
+                    _guidService.GetProjectGuidAsync(token));
+
+                var logger = new Log(
+                    logWriter,
+                    requestedLogLevel,
+                    sw,
+                    timestampCache,
+                    _configuredProject.UnconfiguredProject.FullPath ?? "",
+                    projectGuid,
+                    isValidationRun ? null : _telemetryService,
+                    state,
+                    ignoreKindsString);
 
                 try
                 {
@@ -902,6 +917,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
                     _lastFailureReason = logger.FailureReason ?? "";
                 }
+            }
+
+            static async Task<(T1, T2)> WhenAll<T1, T2>(Task<T1> t1, Task<T2> t2)
+            {
+                await Task.WhenAll(t1, t2);
+
+                return (await t1, await t2);
             }
         }
 
