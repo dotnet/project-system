@@ -53,6 +53,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
         private ISubscription _subscription;
         private int _isDisposed;
+        private int _checkNumber;
 
         [ImportingConstructor]
         public BuildUpToDateCheck(
@@ -848,7 +849,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                     projectGuid,
                     isValidationRun ? null : _telemetryService,
                     state,
-                    ignoreKindsString);
+                    ignoreKindsString,
+                    isValidationRun ? -1 : Interlocked.Increment(ref _checkNumber));
 
                 try
                 {
