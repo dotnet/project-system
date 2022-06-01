@@ -7,7 +7,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
         public static ISafeProjectGuidService ImplementGetProjectGuidAsync(Guid guid)
         {
             var mock = new Mock<ISafeProjectGuidService>();
-            mock.Setup(s => s.GetProjectGuidAsync())
+            mock.Setup(s => s.GetProjectGuidAsync(It.IsAny<CancellationToken>()))
                 .ReturnsAsync(guid);
 
             return mock.Object;

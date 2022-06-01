@@ -58,7 +58,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
 
         protected override async Task InitializeCoreAsync(CancellationToken cancellationToken)
         {
-            _projectGuid = await _projectGuidService.GetProjectGuidAsync();
+            _projectGuid = await _projectGuidService.GetProjectGuidAsync(cancellationToken);
 
             Assumes.False(_projectGuid == Guid.Empty);
 

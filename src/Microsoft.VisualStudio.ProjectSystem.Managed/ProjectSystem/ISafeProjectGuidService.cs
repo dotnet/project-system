@@ -30,6 +30,6 @@ namespace Microsoft.VisualStudio.ProjectSystem
         /// <exception cref="OperationCanceledException">
         ///     The project was unloaded before project load had finished.
         /// </exception>
-        Task<Guid> GetProjectGuidAsync();
+        Task<Guid> GetProjectGuidAsync(CancellationToken cancellationToken = default);
     }
 }
