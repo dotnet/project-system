@@ -121,7 +121,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.UpToDate
                     Assumes.NotNull(_dataByConfiguredProject);
 
                     if (_dataByConfiguredProject.TryGetValue((projectPath, configurationDimensions), out (int ItemHash, DateTime? ItemsChangedAtUtc, DateTime? LastSuccessfulBuildStartedAtUtc) storedData)
-                        && storedData.LastSuccessfulBuildStartedAtUtc != null)
+                        && storedData.LastSuccessfulBuildStartedAtUtc is not null)
                     {
                         return storedData.LastSuccessfulBuildStartedAtUtc;
                     }
