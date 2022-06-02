@@ -1,5 +1,7 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
+using Microsoft.VisualStudio.Threading;
+
 namespace Microsoft.VisualStudio.ProjectSystem.VS
 {
     /// <summary>
@@ -24,9 +26,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         [ImportMany]
         public OrderPrecedenceImportCollection<IProjectGuidService> ProjectGuidServices { get; }
 
-        public async Task<Guid> GetProjectGuidAsync()
+        public async Task<Guid> GetProjectGuidAsync(CancellationToken cancellationToken = default)
         {
-            await _tasksService.PrioritizedProjectLoadedInHost;
+            await _tasksService.PrioritizedProjectLoadedInHost.WithCancellation(cancellationToken);
 
 #pragma warning disable RS0030 // IProjectGuidService is banned
             IProjectGuidService? projectGuidService = ProjectGuidServices.FirstOrDefault()?.Value;

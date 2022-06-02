@@ -84,6 +84,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             projectAsynchronousTasksService.SetupGet(s => s.UnloadCancellationToken).Returns(CancellationToken.None);
             projectAsynchronousTasksService.Setup(s => s.IsTaskQueueEmpty(ProjectCriticalOperation.Build)).Returns(() => _isTaskQueueEmpty);
 
+            var guidService = ISafeProjectGuidServiceFactory.ImplementGetProjectGuidAsync(Guid.NewGuid());
+
             _fileSystem = new IFileSystemMock();
             _fileSystem.AddFolder(_projectDir);
             _fileSystem.AddFile(_projectPath, _projectFileTimeUtc);
@@ -98,6 +100,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 projectAsynchronousTasksService.Object,
                 ITelemetryServiceFactory.Create(_telemetryEvents.Add),
                 _fileSystem,
+                guidService,
                 upToDateCheckHost.Object);
         }
 
@@ -1923,7 +1926,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
             Assert.Equal(TelemetryEventName.UpToDateCheckFail, telemetryEvent.EventName);
             Assert.NotNull(telemetryEvent.Properties);
-            Assert.Equal(6, telemetryEvent.Properties.Count);
+            Assert.Equal(8, telemetryEvent.Properties.Count);
 
             var reasonProp = Assert.Single(telemetryEvent.Properties.Where(p => p.propertyName == TelemetryPropertyName.UpToDateCheckFailReason));
             Assert.Equal(reason, reasonProp.propertyValue);
@@ -1948,6 +1951,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             var ignoreKindsStr = Assert.IsType<string>(ignoreKindsProp.propertyValue);
             Assert.Equal(ignoreKinds, ignoreKindsStr);
 
+            Assert.Single(telemetryEvent.Properties.Where(p => p.propertyName == TelemetryPropertyName.UpToDateCheckProject));
+            Assert.Single(telemetryEvent.Properties.Where(p => p.propertyName == TelemetryPropertyName.UpToDateCheckNumber));
+
             _telemetryEvents.Clear();
         }
 
@@ -1958,7 +1964,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             Assert.Equal(TelemetryEventName.UpToDateCheckSuccess, telemetryEvent.EventName);
 
             Assert.NotNull(telemetryEvent.Properties);
-            Assert.Equal(5, telemetryEvent.Properties.Count);
+            Assert.Equal(7, telemetryEvent.Properties.Count);
 
             var durationProp = Assert.Single(telemetryEvent.Properties.Where(p => p.propertyName == TelemetryPropertyName.UpToDateCheckDurationMillis));
             var duration = Assert.IsType<double>(durationProp.propertyValue);
@@ -1979,6 +1985,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             var ignoreKindsProp = Assert.Single(telemetryEvent.Properties.Where(p => p.propertyName == TelemetryPropertyName.UpToDateCheckIgnoreKinds));
             var ignoreKindsStr = Assert.IsType<string>(ignoreKindsProp.propertyValue);
             Assert.Equal(ignoreKinds, ignoreKindsStr);
+
+            Assert.Single(telemetryEvent.Properties.Where(p => p.propertyName == TelemetryPropertyName.UpToDateCheckProject));
+            Assert.Single(telemetryEvent.Properties.Where(p => p.propertyName == TelemetryPropertyName.UpToDateCheckNumber));
 
             _telemetryEvents.Clear();
         }
