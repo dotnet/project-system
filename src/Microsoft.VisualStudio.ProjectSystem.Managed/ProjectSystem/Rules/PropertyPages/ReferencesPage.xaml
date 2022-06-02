@@ -8,9 +8,9 @@
       xmlns="http://schemas.microsoft.com/build/2009/properties">
 
   <Rule.Categories>
-    <Category Name="Namespaces"
-              DisplayName="Namespaces"
-              Description="Namespace settings for C# and VB projects." />
+    <Category Name="General"
+              DisplayName="General"
+              Description="References settings for C# and VB projects." />
   </Rule.Categories>
 
   <Rule.DataSource>
@@ -19,24 +19,19 @@
                 HasConfigurationCondition="False" />
   </Rule.DataSource>
 
-  <DynamicEnumProperty Name="InterceptedTargetFramework"
-                       DisplayName="Target framework"
-                       Description="Specifies the version of .NET that the application targets. This option can have different values depending on which versions of .NET are installed on your computer."
-                       HelpUrl="https://go.microsoft.com/fwlink/?linkid=2147236"
+  <DynamicEnumProperty Name="ImportedNamespaces"
+                       DisplayName="Import Namespaces"
+                       Description="todo2"
                        Category="General"
-                       EnumProvider="SupportedTargetFrameworksEnumProvider"
-                       MultipleValuesAllowed="False">
+                       EnumProvider="DotNetImportsEnumProvider">
     <DynamicEnumProperty.DataSource>
-      <DataSource Persistence="ProjectFileWithInterception"
+      <DataSource PersistedName="ImportedNamespaces"
+                  Persistence="ProjectFileWithInterception"
                   HasConfigurationCondition="False" />
     </DynamicEnumProperty.DataSource>
-    <DynamicEnumProperty.Metadata>
-      <NameValuePair Name="VisibilityCondition">
-        <NameValuePair.Value>(not (has-evaluated-value "Application" "TargetMultipleFrameworks" true))</NameValuePair.Value>
-      </NameValuePair>
-      <NameValuePair Name="SearchTerms" Value="TFM" />
-      <NameValuePair Name="DependsOn" Value="Application::TargetMultipleFrameworks" />
-    </DynamicEnumProperty.Metadata>
-  </DynamicEnumProperty>
+    <!--<DynamicEnumProperty.ValueEditors>
+      <ValueEditor EditorType="MultiStringSelector" />
+    </DynamicEnumProperty.ValueEditors>-->
+  </DynamicEnumProperty> 
 
 </Rule>

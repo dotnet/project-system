@@ -2,16 +2,6 @@
 <xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
   <file datatype="xml" source-language="en" target-language="tr" original="../ApplicationPropertyPage.xaml">
     <body>
-      <trans-unit id="BoolProperty|AutoGenerateBindingRedirect2s|Description">
-        <source>Add binding redirects automatically to App.config.</source>
-        <target state="new">Add binding redirects automatically to App.config.</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="BoolProperty|AutoGenerateBindingRedirect2s|DisplayName">
-        <source>Auto-generate binding redirects22</source>
-        <target state="new">Auto-generate binding redirects22</target>
-        <note />
-      </trans-unit>
       <trans-unit id="BoolProperty|AutoGenerateBindingRedirects|Description">
         <source>Add binding redirects automatically to App.config.</source>
         <target state="translated">App.config 'e bağlama yeniden yönlendirmelerini otomatik olarak ekleyin.</target>
@@ -60,26 +50,6 @@
       <trans-unit id="Category|General|DisplayName">
         <source>General</source>
         <target state="translated">Genel</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="Category|Test|Description">
-        <source>Test category</source>
-        <target state="new">Test category</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="Category|Test|DisplayName">
-        <source>Test</source>
-        <target state="new">Test</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="DynamicEnumProperty|ImportedNamespaces|Description">
-        <source>todo2</source>
-        <target state="new">todo2</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="DynamicEnumProperty|ImportedNamespaces|DisplayName">
-        <source>Import Namespaces</source>
-        <target state="new">Import Namespaces</target>
         <note />
       </trans-unit>
       <trans-unit id="DynamicEnumProperty|InterceptedTargetFramework|Description">

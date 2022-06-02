@@ -46,8 +46,10 @@ internal class DotNetImportsEnumProvider : IDynamicEnumValuesProvider
 
         private async Task<List<string>> GetNamespacesAsync()
         {
-            Compilation? compilation = await _workspace.CurrentSolution.Projects.FirstOrDefault(
-                proj => StringComparers.Paths.Equals(proj.FilePath, _unconfiguredProject.FullPath))?.GetCompilationAsync();
+            Project? project = _workspace.CurrentSolution.Projects.FirstOrDefault(
+                proj => StringComparers.Paths.Equals(proj.FilePath, _unconfiguredProject.FullPath));
+
+            Compilation? compilation = project == null ? null : await project.GetCompilationAsync();
             
             if (compilation == null)
             {
@@ -105,7 +107,7 @@ internal class DotNetImportsEnumProvider : IDynamicEnumValuesProvider
                 return Task.FromResult<IEnumValue?>(null);
             }
 
-            _imports.Add(userSuppliedValue);
+            //_imports.Add(userSuppliedValue);
             var value = new PageEnumValue(new EnumValue { Name = userSuppliedValue, DisplayName = userSuppliedValue });
             return Task.FromResult<IEnumValue?>(value);
         }

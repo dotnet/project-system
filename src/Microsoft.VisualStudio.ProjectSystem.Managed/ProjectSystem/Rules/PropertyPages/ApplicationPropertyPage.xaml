@@ -11,9 +11,6 @@
     <Category Name="General"
               DisplayName="General"
               Description="General settings for the application." />
-    <Category Name="Test" 
-              DisplayName="Test"
-              Description="Test category" />
   </Rule.Categories>
 
   <Rule.DataSource>
@@ -21,17 +18,6 @@
                 SourceOfDefaultValue="AfterContext"
                 HasConfigurationCondition="False" />
   </Rule.DataSource>
-
-  <DynamicEnumProperty Name="ImportedNamespaces"
-                       DisplayName="Import Namespaces"
-                       Description="todo2"
-                       Category="Test"
-                       EnumProvider="DotNetImportsEnumProvider">
-    <DynamicEnumProperty.DataSource>
-      <DataSource Persistence="ProjectFileWithInterception"
-                  HasConfigurationCondition="False" />
-    </DynamicEnumProperty.DataSource>
-  </DynamicEnumProperty> 
   
   <EnumProperty Name="OutputType"
                 DisplayName="Output type"
@@ -44,15 +30,6 @@
     <EnumValue Name="WinExe"
                DisplayName="Windows Application" />
   </EnumProperty>
-
-
-  <BoolProperty Name="AutoGenerateBindingRedirect2s"
-                DisplayName="Auto-generate binding redirects22"
-                Description="Add binding redirects automatically to App.config."
-                HelpUrl="https://go.microsoft.com/fwlink/?linkid=2164379"
-                Category="General">
-  </BoolProperty>
-
 
   <BoolProperty Name="TargetMultipleFrameworks"
                 DisplayName="Target multiple frameworks"
