@@ -29,8 +29,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             .Add("v5.0", "Microsoft.NetCore.Component.Runtime.5.0")
             .Add("v6.0", "Microsoft.NetCore.Component.Runtime.6.0");
 
-        private static readonly string s_netCoreRegistryKeyPath = "SOFTWARE\\WOW6432Node\\dotnet\\Setup\\InstalledVersions\\x64\\sharedfx\\";
-        private static readonly string s_netCoreRegistryKeyName = "Microsoft.NETCore.App";
         private static readonly ImmutableHashSet<string> s_supportedReleaseChannelWorkloads = ImmutableHashSet.Create(StringComparers.WorkloadNames, WasmToolsWorkloadName);
 
         private readonly ConcurrentHashSet<string> _missingRuntimesRegistered = new(StringComparers.WorkloadNames);
@@ -51,7 +49,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         private bool? _isVSFromPreviewChannel;
 
         private readonly object _lock = new();
-        private static HashSet<string>? _netCoreRegistryKeyValues = null;
+        private HashSet<string>? _netCoreRegistryKeyValues;
 
         [ImportingConstructor]
         public MissingSetupComponentRegistrationService(
@@ -87,7 +85,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             }
         }
 
-        private HashSet<string> NetCoreRegistryKeyValues
+        private HashSet<string>? RuntimeVersionsInstalledInLocalMachine
         {
             get
             {
@@ -97,14 +95,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                     {
                         if (_netCoreRegistryKeyValues is null)
                         {
-                            var registryKeyReader = new RegistryReaderRuntimesVersions();
-
-                            _netCoreRegistryKeyValues = (HashSet<string>?)registryKeyReader.ReadValueForCurrentUser(s_netCoreRegistryKeyPath, s_netCoreRegistryKeyName);
+                            _netCoreRegistryKeyValues = NetCoreRuntimeVersionsRegistryReader.ReadRuntimeVersionsInstalledInLocalMachine();
                         }
                     }
                 }
 
-                return _netCoreRegistryKeyValues!;
+                return _netCoreRegistryKeyValues;
             }
         }
 
@@ -135,7 +131,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             // This workaround reads the Registry Key HKLM\SOFTWARE\WOW6432Node\dotnet\Setup\InstalledVersions\x64\sharedfx\Microsoft.NETCore.App
             // and get the installed runtime versions from the value names.
             if (!string.IsNullOrEmpty(runtimeVersion) &&
-                !NetCoreRegistryKeyValues.Contains(runtimeVersion) &&
+                (RuntimeVersionsInstalledInLocalMachine is null || !RuntimeVersionsInstalledInLocalMachine.Contains(runtimeVersion)) &&
                 s_packageVersionToComponentId.TryGetValue(runtimeVersion, value: out string? componentId))
             {
                 _projectGuidToRuntimeDescriptorMap.GetOrAdd(projectGuid, componentId);

@@ -288,4 +288,11 @@ In order to debug this project, add an executable project to this solution which
   <data name="UpdateNamespacePromptMessage" xml:space="preserve">
     <value>Adjust namespaces for moved files?</value>
   </data>
+  <data name="WPFApp_Xaml_CouldntFindRootElement_1" xml:space="preserve">
+    <value>Could not find the expected root element "{0}" in the application definition file.</value>
+  </data>
+  <data name="WPFApp_Xaml_UnexpectedFormat_2" xml:space="preserve">
+    <value>The .xaml file was in an unexpected format, near line {0} column {1}.</value>
+    <comment>{0} is the line number of the problematic XAML, and {1} is the column.</comment>
+  </data>
 </root>

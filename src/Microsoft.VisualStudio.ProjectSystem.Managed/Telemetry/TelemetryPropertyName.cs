@@ -51,6 +51,17 @@ namespace Microsoft.VisualStudio.Telemetry
         public const string UpToDateCheckIgnoreKinds = Prefix + ".uptodatecheck.ignorekinds";
 
         /// <summary>
+        ///     Identifies the project to which data in the telemetry event applies.
+        /// </summary>
+        public const string UpToDateCheckProject = Prefix + ".uptodatecheck.projectid";
+
+        /// <summary>
+        ///     Indicates the number of checks performed for this project so far in the current session, starting at one.
+        ///     This number resets when the project is reloaded.
+        /// </summary>
+        public const string UpToDateCheckNumber = Prefix + ".uptodatecheck.checknumber";
+
+        /// <summary>
         ///     Indicates the project when the dependency tree is updated with all resolved dependencies.
         /// </summary>
         public static readonly string TreeUpdatedResolvedProject = BuildPropertyName(TelemetryEventName.TreeUpdatedResolved, "Project");

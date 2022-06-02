@@ -201,6 +201,16 @@ Para depurar esse projeto, adicione um projeto executável a essa solução que 
         <target state="translated">Ajustar namespaces para arquivos movidos?</target>
         <note />
       </trans-unit>
+      <trans-unit id="WPFApp_Xaml_CouldntFindRootElement_1">
+        <source>Could not find the expected root element "{0}" in the application definition file.</source>
+        <target state="new">Could not find the expected root element "{0}" in the application definition file.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="WPFApp_Xaml_UnexpectedFormat_2">
+        <source>The .xaml file was in an unexpected format, near line {0} column {1}.</source>
+        <target state="new">The .xaml file was in an unexpected format, near line {0} column {1}.</target>
+        <note>{0} is the line number of the problematic XAML, and {1} is the column.</note>
+      </trans-unit>
       <trans-unit id="WorkingDirecotryInvalid">
         <source>The working directory '{0}' specified in the '{1}' debug profile does not exist.</source>
         <target state="translated">O diretório de trabalho '{0}' especificado no perfil de depuração '{1}' não existe.</target>

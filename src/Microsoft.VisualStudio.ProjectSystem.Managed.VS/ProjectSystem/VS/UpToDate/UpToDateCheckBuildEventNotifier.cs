@@ -18,17 +18,22 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.UpToDate
     {
         private readonly IProjectService _projectService;
         private readonly ISolutionBuildManager _solutionBuildManager;
-
+        private readonly IProjectThreadingService _threadingService;
+        private readonly IProjectFaultHandlerService _faultHandlerService;
         private IAsyncDisposable? _solutionBuildEventsSubscription;
 
         [ImportingConstructor]
         public UpToDateCheckBuildEventNotifier(
             JoinableTaskContext joinableTaskContext,
             IProjectService projectService,
+            IProjectThreadingService threadingService,
+            IProjectFaultHandlerService faultHandlerService,
             ISolutionBuildManager solutionBuildManager)
             : base(new(joinableTaskContext))
         {
             _projectService = projectService;
+            _threadingService = threadingService;
+            _faultHandlerService = faultHandlerService;
             _solutionBuildManager = solutionBuildManager;
         }
 
@@ -60,9 +65,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.UpToDate
         {
             if (IsBuild(dwAction))
             {
-                foreach (IBuildUpToDateCheckProviderInternal provider in FindActiveConfiguredProviders(pHierProj))
+                IEnumerable<IBuildUpToDateCheckProviderInternal>? providers = FindActiveConfiguredProviders(pHierProj, out _);
+
+                if (providers is not null)
                 {
-                    provider.NotifyBuildStarting(DateTime.UtcNow);
+                    foreach (IBuildUpToDateCheckProviderInternal provider in providers)
+                    {
+                        provider.NotifyBuildStarting(DateTime.UtcNow);
+                    }
                 }
             }
 
@@ -76,9 +86,22 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.UpToDate
         {
             if (fCancel == 0 && IsBuild(dwAction))
             {
-                foreach (IBuildUpToDateCheckProviderInternal provider in FindActiveConfiguredProviders(pHierProj))
+                IEnumerable<IBuildUpToDateCheckProviderInternal>? providers = FindActiveConfiguredProviders(pHierProj, out UnconfiguredProject? unconfiguredProject);
+
+                if (providers is not null)
                 {
-                    provider.NotifyBuildCompleted(wasSuccessful: fSuccess != 0);
+                    JoinableTask task = _threadingService.JoinableTaskFactory.RunAsync(async () =>
+                    {
+                        // Do this work off the main thread
+                        await TaskScheduler.Default;
+
+                        foreach (IBuildUpToDateCheckProviderInternal provider in providers)
+                        {
+                            await provider.NotifyBuildCompletedAsync(wasSuccessful: fSuccess != 0);
+                        }
+                    });
+
+                    _faultHandlerService.Forget(task.Task, unconfiguredProject);
                 }
             }
 
@@ -97,9 +120,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.UpToDate
             return (operation & flags) == flags;
         }
 
-        private IEnumerable<IBuildUpToDateCheckProviderInternal> FindActiveConfiguredProviders(IVsHierarchy vsHierarchy)
+        private IEnumerable<IBuildUpToDateCheckProviderInternal>? FindActiveConfiguredProviders(IVsHierarchy vsHierarchy, out UnconfiguredProject? unconfiguredProject)
         {
-            UnconfiguredProject? unconfiguredProject = _projectService.GetUnconfiguredProject(vsHierarchy, appliesToExpression: BuildUpToDateCheck.AppliesToExpression);
+            unconfiguredProject = _projectService.GetUnconfiguredProject(vsHierarchy, appliesToExpression: BuildUpToDateCheck.AppliesToExpression);
 
             if (unconfiguredProject is not null)
             {
@@ -113,7 +136,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.UpToDate
                 }
             }
 
-            return Enumerable.Empty<IBuildUpToDateCheckProviderInternal>();
+            return null;
         }
 
         #region IVsUpdateSolutionEvents stubs

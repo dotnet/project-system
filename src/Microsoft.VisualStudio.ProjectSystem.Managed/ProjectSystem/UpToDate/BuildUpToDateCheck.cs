@@ -27,6 +27,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
         internal const string FastUpToDateCheckIgnoresKindsGlobalPropertyName = "FastUpToDateCheckIgnoresKinds";
         internal const string TargetFrameworkGlobalPropertyName = "TargetFramework";
 
+        // This analyzer fires for comparisons against the following constants. Disable it in this file.
+        #pragma warning disable CA1820 // Test for empty strings using string length
+
         internal const string DefaultSetName = "";
         internal const string DefaultKindName = "";
 
@@ -41,9 +44,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
         private readonly IUpToDateCheckConfiguredInputDataSource _inputDataSource;
         private readonly IProjectSystemOptions _projectSystemOptions;
         private readonly ConfiguredProject _configuredProject;
+        private readonly IUpToDateCheckStatePersistence _persistence;
         private readonly IProjectAsynchronousTasksService _tasksService;
         private readonly ITelemetryService _telemetryService;
         private readonly IFileSystem _fileSystem;
+        private readonly ISafeProjectGuidService _guidService;
         private readonly IUpToDateCheckHost _upToDateCheckHost;
 
         private IImmutableDictionary<string, string> _lastGlobalProperties = ImmutableStringDictionary<string>.EmptyOrdinal;
@@ -52,25 +57,30 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
         private ISubscription _subscription;
         private int _isDisposed;
+        private int _checkNumber;
 
         [ImportingConstructor]
         public BuildUpToDateCheck(
             IUpToDateCheckConfiguredInputDataSource inputDataSource,
             IProjectSystemOptions projectSystemOptions,
             ConfiguredProject configuredProject,
+            IUpToDateCheckStatePersistence persistence,
             [Import(ExportContractNames.Scopes.ConfiguredProject)] IProjectAsynchronousTasksService tasksService,
             ITelemetryService telemetryService,
             IFileSystem fileSystem,
+            ISafeProjectGuidService guidService,
             IUpToDateCheckHost upToDateCheckHost)
         {
             _inputDataSource = inputDataSource;
             _projectSystemOptions = projectSystemOptions;
             _configuredProject = configuredProject;
+            _persistence = persistence;
             _tasksService = tasksService;
             _telemetryService = telemetryService;
             _fileSystem = fileSystem;
+            _guidService = guidService;
             _upToDateCheckHost = upToDateCheckHost;
-            _subscription = new Subscription(inputDataSource, configuredProject, upToDateCheckHost);
+            _subscription = new Subscription(inputDataSource, configuredProject, upToDateCheckHost, persistence);
         }
 
         public Task ActivateAsync()
@@ -99,12 +109,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
         private void RecycleSubscription()
         {
-            ISubscription subscription = Interlocked.Exchange(ref _subscription, new Subscription(_inputDataSource, _configuredProject, _upToDateCheckHost));
+            ISubscription subscription = Interlocked.Exchange(ref _subscription, new Subscription(_inputDataSource, _configuredProject, _upToDateCheckHost, _persistence));
 
             subscription.Dispose();
         }
 
-        private bool CheckGlobalConditions(Log log, DateTime lastSuccessfulBuildStartTimeUtc, bool validateFirstRun, UpToDateCheckImplicitConfiguredInput state)
+        private bool CheckGlobalConditions(Log log, DateTime? lastSuccessfulBuildStartTimeUtc, bool validateFirstRun, UpToDateCheckImplicitConfiguredInput state)
         {
             if (!_tasksService.IsTaskQueueEmpty(ProjectCriticalOperation.Build))
             {
@@ -116,15 +126,23 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 return log.Fail("Disabled", nameof(Resources.FUTD_DisableFastUpToDateCheckTrue));
             }
 
-            if (validateFirstRun && !state.WasStateRestored && lastSuccessfulBuildStartTimeUtc == DateTime.MinValue)
+            if (validateFirstRun && lastSuccessfulBuildStartTimeUtc is null)
             {
-                // We had no persisted state, and this is the first run. We cannot know if the project is up-to-date
-                // or not, so schedule a build.
+                // We haven't observed a successful built yet. Therefore we don't know whether the set
+                // of input items we have actually built the outputs we observe on disk. It's possible
+                // that an input has been deleted since then. So we schedule a build.
+                //
+                // Despite the name, "FirstRun" can occur on the second run if the first build didn't
+                // complete correctly. The name is kept though as it allows easier correlation between
+                // older and newer data.
                 return log.Fail("FirstRun", nameof(Resources.FUTD_FirstRun));
             }
 
             if (lastSuccessfulBuildStartTimeUtc < state.LastItemsChangedAtUtc)
             {
+                Assumes.NotNull(lastSuccessfulBuildStartTimeUtc);
+                Assumes.NotNull(state.LastItemsChangedAtUtc);
+
                 log.Fail("ProjectItemsChangedSinceLastSuccessfulBuildStart", nameof(Resources.FUTD_SetOfItemsChangedMoreRecentlyThanOutput_2), state.LastItemsChangedAtUtc, lastSuccessfulBuildStartTimeUtc);
 
                 if (log.Level >= LogLevel.Info)
@@ -169,7 +187,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             return true;
         }
 
-        private bool CheckInputsAndOutputs(Log log, DateTime lastSuccessfulBuildStartTimeUtc, in TimestampCache timestampCache, UpToDateCheckImplicitConfiguredInput state, HashSet<string>? ignoreKinds, CancellationToken token)
+        private bool CheckInputsAndOutputs(Log log, DateTime? lastSuccessfulBuildStartTimeUtc, in TimestampCache timestampCache, UpToDateCheckImplicitConfiguredInput state, HashSet<string>? ignoreKinds, CancellationToken token)
         {
             // UpToDateCheckInput/Output/Built items have optional 'Set' metadata that determine whether they
             // are treated separately or not. If omitted, such inputs/outputs are included in the default set,
@@ -218,7 +236,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
                     DateTime? outputTime = timestampCache.GetTimestampUtc(output);
 
-                    if (outputTime == null)
+                    if (outputTime is null)
                     {
                         return log.Fail("OutputNotFound", nameof(Resources.FUTD_OutputDoesNotExist_1), output);
                     }
@@ -249,7 +267,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
                     DateTime? inputTime = timestampCache.GetTimestampUtc(input);
 
-                    if (inputTime == null)
+                    if (inputTime is null)
                     {
                         if (isRequired)
                         {
@@ -266,10 +284,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                         return log.Fail("InputNewerThanEarliestOutput", itemType is null ? nameof(Resources.FUTD_InputNewerThanOutput_4) : nameof(Resources.FUTD_TypedInputNewerThanOutput_5), input, inputTime.Value, earliestOutputPath, earliestOutputTime, itemType ?? "");
                     }
 
-                    if (inputTime > lastSuccessfulBuildStartTimeUtc && lastSuccessfulBuildStartTimeUtc != DateTime.MinValue)
+                    if (inputTime > lastSuccessfulBuildStartTimeUtc)
                     {
                         // Bypass this test if no check has yet been performed. We handle that in CheckGlobalConditions.
-                        return log.Fail("InputModifiedSinceLastSuccessfulBuildStart", itemType is null ? nameof(Resources.FUTD_InputModifiedSinceLastSuccessfulBuildStart_3) : nameof(Resources.FUTD_TypedInputModifiedSinceLastSuccessfulBuildStart_4), input, inputTime.Value, lastSuccessfulBuildStartTimeUtc, itemType ?? "");
+                        Assumes.NotNull(inputTime);
+                        Assumes.NotNull(lastSuccessfulBuildStartTimeUtc);
+                        return log.Fail("InputModifiedSinceLastSuccessfulBuildStart", itemType is null ? nameof(Resources.FUTD_InputModifiedSinceLastSuccessfulBuildStart_3) : nameof(Resources.FUTD_TypedInputModifiedSinceLastSuccessfulBuildStart_4), input, inputTime, lastSuccessfulBuildStartTimeUtc, itemType ?? "");
                     }
 
                     if (latestInput is null || inputTime > latestInput.Value.Time)
@@ -744,7 +764,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             _lastBuildStartTimeUtc = buildStartTimeUtc;
         }
 
-        void IBuildUpToDateCheckProviderInternal.NotifyBuildCompleted(bool wasSuccessful)
+        async Task IBuildUpToDateCheckProviderInternal.NotifyBuildCompletedAsync(bool wasSuccessful)
         {
             if (_lastBuildStartTimeUtc == default)
             {
@@ -758,7 +778,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             {
                 ISubscription subscription = Volatile.Read(ref _subscription);
 
-                subscription.UpdateLastSuccessfulBuildStartTimeUtc(_lastBuildStartTimeUtc);
+                await subscription.UpdateLastSuccessfulBuildStartTimeUtcAsync(_lastBuildStartTimeUtc);
             }
 
             _lastBuildStartTimeUtc = default;
@@ -823,7 +843,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
             return await subscription.RunAsync(CheckAsync, cancellationToken);
 
-            async Task<(bool, ImmutableArray<ProjectConfiguration>)> CheckAsync(UpToDateCheckConfiguredInput state, IReadOnlyDictionary<ProjectConfiguration, DateTime> lastSuccessfulBuildStartTimeUtcByConfiguration, CancellationToken token)
+            async Task<(bool, ImmutableArray<ProjectConfiguration>)> CheckAsync(UpToDateCheckConfiguredInput state, IUpToDateCheckStatePersistence persistence, CancellationToken token)
             {
                 token.ThrowIfCancellationRequested();
 
@@ -832,8 +852,21 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
                 globalProperties.TryGetValue(FastUpToDateCheckIgnoresKindsGlobalPropertyName, out string? ignoreKindsString);
 
-                LogLevel requestedLogLevel = await _projectSystemOptions.GetFastUpToDateLoggingLevelAsync(token);
-                var logger = new Log(logWriter, requestedLogLevel, sw, timestampCache, _configuredProject.UnconfiguredProject.FullPath ?? "", isValidationRun ? null : _telemetryService, state, ignoreKindsString);
+                (LogLevel requestedLogLevel, Guid projectGuid) = await WhenAll(
+                    _projectSystemOptions.GetFastUpToDateLoggingLevelAsync(token),
+                    _guidService.GetProjectGuidAsync(token));
+
+                var logger = new Log(
+                    logWriter,
+                    requestedLogLevel,
+                    sw,
+                    timestampCache,
+                    _configuredProject.UnconfiguredProject.FullPath ?? "",
+                    projectGuid,
+                    isValidationRun ? null : _telemetryService,
+                    state,
+                    ignoreKindsString,
+                    isValidationRun ? -1 : Interlocked.Increment(ref _checkNumber));
 
                 try
                 {
@@ -869,10 +902,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                             logger.Indent++;
                         }
 
-                        if (!lastSuccessfulBuildStartTimeUtcByConfiguration.TryGetValue(implicitState.ProjectConfiguration, out DateTime lastSuccessfulBuildStartTimeUtc))
-                        {
-                            lastSuccessfulBuildStartTimeUtc = DateTime.MinValue;
-                        }
+                        string? path = _configuredProject.UnconfiguredProject.FullPath;
+
+                        DateTime? lastSuccessfulBuildStartTimeUtc = path is null
+                            ? null
+                            : await persistence.RestoreLastSuccessfulBuildStateAsync(
+                                path,
+                                implicitState.ProjectConfiguration.Dimensions,
+                                CancellationToken.None);
 
                         if (!CheckGlobalConditions(logger, lastSuccessfulBuildStartTimeUtc, validateFirstRun: !isValidationRun, implicitState)
                             || !CheckInputsAndOutputs(logger, lastSuccessfulBuildStartTimeUtc, timestampCache, implicitState, ignoreKinds, token)
@@ -902,6 +939,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
                     _lastFailureReason = logger.FailureReason ?? "";
                 }
+            }
+
+            static async Task<(T1, T2)> WhenAll<T1, T2>(Task<T1> t1, Task<T2> t2)
+            {
+                await Task.WhenAll(t1, t2);
+
+                return (await t1, await t2);
             }
         }
 

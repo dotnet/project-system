@@ -215,6 +215,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
 
         public Task RemoveAsync(IProjectItem item, DeleteOptions deleteOptions = DeleteOptions.None)
         {
+            Assumes.NotNull(item.ItemType);
             return RemoveAsync(item.ItemType, item.UnevaluatedInclude, deleteOptions);
         }
 
