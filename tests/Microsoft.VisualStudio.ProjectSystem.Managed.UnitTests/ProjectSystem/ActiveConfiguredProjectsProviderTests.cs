@@ -151,7 +151,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
             {
                 foreach (var dimensionProvider in dimensionProviders)
                 {
-                    provider.DimensionProviders.Add(dimensionProvider, appliesTo: ProjectCapability.AlwaysAvailable);
+                    provider.DimensionProviders.Add(dimensionProvider, appliesTo: ProjectCapabilities.AlwaysApplicable);
                 }
             }
 
