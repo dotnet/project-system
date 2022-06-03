@@ -66,8 +66,6 @@ internal class WPFValueProvider : InterceptingPropertyValueProviderBase
 [ProjectSystemContract(ProjectSystemContractScope.UnconfiguredProject, ProjectSystemContractProvider.Extension, Cardinality = Composition.ImportCardinality.ExactlyOne)]
 internal interface IApplicationXamlFileAccessor
 {
-    Task<bool> ApplicationXamlFileExistsAsync();
-
     Task<string?> GetStartupUriAsync();
     Task SetStartupUriAsync(string startupUri);
 

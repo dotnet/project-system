@@ -81,11 +81,6 @@ internal class ApplicationXamlFileAccessor : IApplicationXamlFileAccessor
         }
     }
 
-    public async Task<bool> ApplicationXamlFileExistsAsync()
-    {
-        return !string.IsNullOrEmpty(await GetFilePathAsync(create: false));
-    }
-
     private async Task<AppDotXamlDocument?> TryGetApplicationXamlFileAsync(bool create)
     {
         if (_applicationDotXamlDocument is null)
