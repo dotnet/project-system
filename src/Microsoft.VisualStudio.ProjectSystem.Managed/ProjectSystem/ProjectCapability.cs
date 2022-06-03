@@ -7,7 +7,6 @@ namespace Microsoft.VisualStudio.ProjectSystem
     /// </summary>
     internal static class ProjectCapability
     {
-        public const string AlwaysAvailable = ProjectCapabilities.AlwaysApplicable;
         public const string CSharp = ProjectCapabilities.CSharp;
         public const string VisualBasic = ProjectCapabilities.VB;
         public const string FSharp = nameof(FSharp);
