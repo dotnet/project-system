@@ -9,17 +9,17 @@
       </trans-unit>
       <trans-unit id="DiagnosticLevel_Error">
         <source>Error</source>
-        <target state="new">Error</target>
+        <target state="translated">Error</target>
         <note>Indicates that a diagnostic (i.e. a compiler warning) should be promoted to an error.</note>
       </trans-unit>
       <trans-unit id="DiagnosticLevel_None">
         <source>None</source>
-        <target state="new">None</target>
+        <target state="translated">Ninguno</target>
         <note>Indicates that a diagnostic (i.e. a compiler warning) should be disabled.</note>
       </trans-unit>
       <trans-unit id="DiagnosticLevel_Warning">
         <source>Warning</source>
-        <target state="new">Warning</target>
+        <target state="translated">Advertencia</target>
         <note>Indicates that a diagnostic (i.e. a compiler warning) should be kept as a warning rather than disabled or promoted to an error.</note>
       </trans-unit>
       <trans-unit id="FUTD_AddingInputReferenceCopyMarkers">
