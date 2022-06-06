@@ -38,12 +38,9 @@ internal class ApplicationXamlFileAccessor : IApplicationXamlFileAccessor
     {
         await _threadingService.SwitchToUIThread();
 
-        if (await TryGetApplicationXamlFileAsync(create: false) is not AppDotXamlDocument xamlDocument)
-        {
-            return null;
-        }
+        AppDotXamlDocument? xamlDocument = await TryGetApplicationXamlFileAsync(create: false);
 
-        return xamlDocument.GetStartupUri();
+        return xamlDocument?.GetStartupUri();
     }
 
     public async Task SetStartupUriAsync(string startupUri)
@@ -97,6 +94,31 @@ internal class ApplicationXamlFileAccessor : IApplicationXamlFileAccessor
         }
 
         return _applicationDotXamlDocument;
+
+        async Task<DocData?> GetDocDataAsync(bool create)
+        {
+            if (_applicationXamlDocdata is null)
+            {
+                string? filePath = await GetFilePathAsync(create);
+                if (filePath is not null)
+                {
+                    _applicationXamlDocdata = new DocData(_serviceProvider, filePath);
+                }
+            }
+
+            return _applicationXamlDocdata;
+        }
+
+        async Task<string?> GetFilePathAsync(bool create)
+        {
+            SpecialFileFlags flags = SpecialFileFlags.FullPath | SpecialFileFlags.CheckoutIfExists;
+            if (create)
+            {
+                flags |= SpecialFileFlags.CreateIfNotExist;
+            }
+
+            return await _project.GetSpecialFilePathAsync(SpecialFiles.AppXaml, flags);
+        }
     }
 
     private void SaveDocDataIfOnlyEditor()
@@ -156,30 +178,5 @@ internal class ApplicationXamlFileAccessor : IApplicationXamlFileAccessor
             // We're the only ones with it open; save the document.
             ErrorHandler.ThrowOnFailure(_runningDocumentTable.Value.SaveDocuments((uint)__VSRDTSAVEOPTIONS.RDTSAVEOPT_SaveIfDirty, hierarchy, itemId, cookie));
         }
-    }
-
-    private async Task<DocData?> GetDocDataAsync(bool create)
-    {
-        if (_applicationXamlDocdata is null)
-        {
-            string? filePath = await GetFilePathAsync(create);
-            if (filePath is not null)
-            {
-                _applicationXamlDocdata = new DocData(_serviceProvider, filePath);
-            }
-        }
-
-        return _applicationXamlDocdata;
-    }
-
-    private async Task<string?> GetFilePathAsync(bool create)
-    {
-        SpecialFileFlags flags = SpecialFileFlags.FullPath | SpecialFileFlags.CheckoutIfExists;
-        if (create)
-        {
-            flags |= SpecialFileFlags.CreateIfNotExist;
-        }
-
-        return await _project.GetSpecialFilePathAsync(SpecialFiles.AppXaml, flags);
     }
 }

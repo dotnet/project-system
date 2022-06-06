@@ -43,14 +43,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
             }
         }
 
-        public override async Task<string> OnGetEvaluatedPropertyValueAsync(string propertyName, string evaluatedPropertyValue, IProjectProperties defaultProperties)
+        public override Task<string> OnGetEvaluatedPropertyValueAsync(string propertyName, string evaluatedPropertyValue, IProjectProperties defaultProperties)
         {
-            return await GetPropertyValueAsync(defaultProperties);
+            return GetPropertyValueAsync(defaultProperties);
         }
 
-        public override async Task<string> OnGetUnevaluatedPropertyValueAsync(string propertyName, string unevaluatedPropertyValue, IProjectProperties defaultProperties)
+        public override Task<string> OnGetUnevaluatedPropertyValueAsync(string propertyName, string unevaluatedPropertyValue, IProjectProperties defaultProperties)
         {
-            return await GetPropertyValueAsync(defaultProperties);
+            return GetPropertyValueAsync(defaultProperties);
         }
 
         private async Task<string> GetPropertyValueAsync(IProjectProperties defaultProperties)
