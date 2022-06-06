@@ -29,9 +29,9 @@
                   Persistence="ProjectFileWithInterception"
                   HasConfigurationCondition="False" />
     </DynamicEnumProperty.DataSource>
-    <!--<DynamicEnumProperty.ValueEditors>
+    <DynamicEnumProperty.ValueEditors>
       <ValueEditor EditorType="MultiStringSelector" />
-    </DynamicEnumProperty.ValueEditors>-->
+    </DynamicEnumProperty.ValueEditors>
   </DynamicEnumProperty> 
 
 </Rule>
