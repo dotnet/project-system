@@ -1895,7 +1895,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
         private static string ToLocalTime(DateTime time)
         {
-            return time.ToLocalTime().ToString("yyyyMMdd HH:mm:ss.fff");
+            return time.ToLocalTime().ToString("yyyy-MM-dd HH:mm:ss.fff");
         }
 
         private async Task AssertNotUpToDateAsync(string? expectedLogOutput = null, string? telemetryReason = null, BuildAction buildAction = BuildAction.Build, string ignoreKinds = "", string targetFramework = "")
