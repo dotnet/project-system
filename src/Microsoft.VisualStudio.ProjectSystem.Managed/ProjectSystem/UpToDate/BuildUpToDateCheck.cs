@@ -852,7 +852,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
                 globalProperties.TryGetValue(FastUpToDateCheckIgnoresKindsGlobalPropertyName, out string? ignoreKindsString);
 
-                (LogLevel requestedLogLevel, Guid projectGuid) = await WhenAll(
+                (LogLevel requestedLogLevel, Guid projectGuid) = await (
                     _projectSystemOptions.GetFastUpToDateLoggingLevelAsync(token),
                     _guidService.GetProjectGuidAsync(token));
 
@@ -939,13 +939,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
                     _lastFailureReason = logger.FailureReason ?? "";
                 }
-            }
-
-            static async Task<(T1, T2)> WhenAll<T1, T2>(Task<T1> t1, Task<T2> t2)
-            {
-                await Task.WhenAll(t1, t2);
-
-                return (await t1, await t2);
             }
         }
 
