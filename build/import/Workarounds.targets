@@ -54,4 +54,17 @@
     </ItemGroup>
   </Target>
 
+  <!-- Workaround for https://github.com/Microsoft/msbuild/issues/1310 -->
+  <!-- This creates a .dll.config containing the binding redirects we need to run our unit test assemblies. -->
+  <!-- Without this, running the unit tests will fail and state, "The located assembly's manifest definition does not match the assembly reference." -->
+  <Target Name="ForceGenerationOfBindingRedirects"
+          AfterTargets="ResolveAssemblyReferences"
+          BeforeTargets="GenerateBindingRedirects"
+          Condition="'$(AutoGenerateBindingRedirects)' == 'true'">
+    <PropertyGroup>
+      <!-- Needs to be set in a target because it has to be set after the initial evaluation in the common targets -->
+      <GenerateBindingRedirectsOutputType>true</GenerateBindingRedirectsOutputType>
+    </PropertyGroup>
+  </Target>
+
 </Project>
