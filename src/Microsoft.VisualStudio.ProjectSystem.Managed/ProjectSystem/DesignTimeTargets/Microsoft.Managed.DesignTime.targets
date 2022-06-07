@@ -92,6 +92,7 @@
     <ProjectCapability Include="ProjectImportsTree" />
     <ProjectCapability Include="LaunchProfiles" />
     <ProjectCapability Include="NoGeneralDependentFileIcon"/>
+    <ProjectCapability Include="ProjectPropertyInterception" />
     <ProjectCapability Include="PackageReferences" Condition="'$(RestoreProjectStyle)' == 'PackageReference'"/>
     
     <!--
