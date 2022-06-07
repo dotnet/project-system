@@ -115,9 +115,25 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 return upToDate;
             }
 
-            public Task UpdateLastSuccessfulBuildStartTimeUtcAsync(DateTime lastSuccessfulBuildStartTimeUtc)
+            public async Task UpdateLastSuccessfulBuildStartTimeUtcAsync(DateTime lastSuccessfulBuildStartTimeUtc, bool isRebuild)
             {
-                return Task.WhenAll(_lastCheckedConfigurations.Select(StoreConfigurationAsync));
+                IEnumerable<ProjectConfiguration> configurations;
+                
+                if (isRebuild)
+                {
+                    // During a rebuild the fast up-to-date check is not called, so we cannot rely upon
+                    // _lastCheckedConfigurations having been updated. We currently only support building
+                    // a subset of configurations for build, not for rebuild, so replace _lastCheckedConfigurations
+                    // with the set of active configurations, as that is what was built.
+                    IConfigurationGroup<ConfiguredProject> activeConfiguredProjects = await _configuredProject.UnconfiguredProject.Services.ActiveConfigurationGroupService.GetActiveLoadedConfiguredProjectGroupAsync();
+                    configurations = activeConfiguredProjects.Select(p => p.ProjectConfiguration);
+                }
+                else
+                {
+                    configurations = _lastCheckedConfigurations;
+                }
+
+                await Task.WhenAll(configurations.Select(StoreConfigurationAsync));
 
                 Task StoreConfigurationAsync(ProjectConfiguration configuration)
                 {
@@ -196,7 +212,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             /// The most recently built configurations should be obtained from the return value of the
             /// function passed to <see cref="RunAsync"/>.
             /// </remarks>
-            Task UpdateLastSuccessfulBuildStartTimeUtcAsync(DateTime lastSuccessfulBuildStartTimeUtc);
+            Task UpdateLastSuccessfulBuildStartTimeUtcAsync(DateTime lastSuccessfulBuildStartTimeUtc, bool isRebuild);
 
             /// <summary>
             /// Calls <paramref name="func"/> to determine whether the project is up-to-date or not.
