@@ -22,7 +22,7 @@ Namespace My.Resources
     '''<summary>
     '''  A strongly-typed resource class, for looking up localized strings, etc.
     '''</summary>
-    <Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0"),  _
+    <Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0"),  _
      Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
      Global.System.Runtime.CompilerServices.CompilerGeneratedAttribute()>  _
     Friend Class Microsoft_VisualStudio_Editors_Designer
@@ -63,7 +63,7 @@ Namespace My.Resources
                 resourceCulture = value
             End Set
         End Property
-
+        
         '''<summary>
         '''  Looks up a localized string similar to Unable to load &apos;{0}&apos; because it is not trusted..
         '''</summary>
@@ -72,7 +72,7 @@ Namespace My.Resources
                 Return ResourceManager.GetString("BlockedResx", resourceCulture)
             End Get
         End Property
-
+        
         '''<summary>
         '''  Looks up a localized string similar to All Files.
         '''</summary>
@@ -81,7 +81,7 @@ Namespace My.Resources
                 Return ResourceManager.GetString("CMN_AllFilesFilter", resourceCulture)
             End Get
         End Property
-
+        
         '''<summary>
         '''  Looks up a localized string similar to Multiple addresses (editable in .svcmap file).
         '''</summary>
@@ -90,7 +90,7 @@ Namespace My.Resources
                 Return ResourceManager.GetString("CSRDlg_MultipleURL", resourceCulture)
             End Get
         End Property
-
+        
         '''<summary>
         '''  Looks up a localized string similar to Unable to create the designer.  {0}.
         '''</summary>
@@ -99,7 +99,7 @@ Namespace My.Resources
                 Return ResourceManager.GetString("DFX_CreateEditorInstanceFailed_Ex", resourceCulture)
             End Get
         End Property
-
+        
         '''<summary>
         '''  Looks up a localized string similar to The editor could not get the IVsTextStream for file {0}..
         '''</summary>
@@ -108,7 +108,7 @@ Namespace My.Resources
                 Return ResourceManager.GetString("DFX_DesignerLoaderIVsTextStreamNotFound", resourceCulture)
             End Get
         End Property
-
+        
         '''<summary>
         '''  Looks up a localized string similar to The editor could not get the IVsTextStream..
         '''</summary>
@@ -117,7 +117,7 @@ Namespace My.Resources
                 Return ResourceManager.GetString("DFX_DesignerLoaderIVsTextStreamNotFoundNoFile", resourceCulture)
             End Get
         End Property
-
+        
         '''<summary>
         '''  Looks up a localized string similar to {0} [Read Only].
         '''</summary>
@@ -126,7 +126,7 @@ Namespace My.Resources
                 Return ResourceManager.GetString("DFX_DesignerReadOnlyCaption", resourceCulture)
             End Get
         End Property
-
+        
         '''<summary>
         '''  Looks up a localized string similar to No DesignerService for file &apos;{0}&apos;..
         '''</summary>
@@ -135,7 +135,7 @@ Namespace My.Resources
                 Return ResourceManager.GetString("DFX_EditorNoDesignerService", resourceCulture)
             End Get
         End Property
-
+        
         '''<summary>
         '''  Looks up a localized string similar to Microsoft Visual Studio.
         '''</summary>
@@ -144,7 +144,7 @@ Namespace My.Resources
                 Return ResourceManager.GetString("DFX_Error_Default_Caption", resourceCulture)
             End Get
         End Property
-
+        
         '''<summary>
         '''  Looks up a localized string similar to File is already opened in an incompatible editor..
         '''</summary>
@@ -153,7 +153,7 @@ Namespace My.Resources
                 Return ResourceManager.GetString("DFX_IncompatibleBuffer", resourceCulture)
             End Get
         End Property
-
+        
         '''<summary>
         '''  Looks up a localized string similar to No LocalRegistry service..
         '''</summary>
@@ -162,7 +162,7 @@ Namespace My.Resources
                 Return ResourceManager.GetString("DFX_NoLocalRegistry", resourceCulture)
             End Get
         End Property
-
+        
         '''<summary>
         '''  Looks up a localized string similar to One or more files were reloaded during the checkout. Please retry your operation..
         '''</summary>
@@ -171,7 +171,7 @@ Namespace My.Resources
                 Return ResourceManager.GetString("DFX_OneOrMoreFilesReloaded", resourceCulture)
             End Get
         End Property
-
+        
         '''<summary>
         '''  Looks up a localized string similar to Unable to create text buffer..
         '''</summary>
@@ -180,7 +180,7 @@ Namespace My.Resources
                 Return ResourceManager.GetString("DFX_UnableCreateTextBuffer", resourceCulture)
             End Get
         End Property
-
+        
         '''<summary>
         '''  Looks up a localized string similar to Unable to check out the current file.  The file may be read-only or locked, or you may need to check the file out manually..
         '''</summary>
@@ -189,7 +189,7 @@ Namespace My.Resources
                 Return ResourceManager.GetString("DFX_UnableToCheckout", resourceCulture)
             End Get
         End Property
-
+        
         '''<summary>
         '''  Looks up a localized string similar to Unknown Error..
         '''</summary>
@@ -198,7 +198,7 @@ Namespace My.Resources
                 Return ResourceManager.GetString("DFX_WindowPane_UnknownError", resourceCulture)
             End Get
         End Property
-
+        
         '''<summary>
         '''  Looks up a localized string similar to Invalid argument &apos;{0}&apos;.
         '''</summary>
@@ -207,7 +207,7 @@ Namespace My.Resources
                 Return ResourceManager.GetString("General_InvalidArgument_1Arg", resourceCulture)
             End Get
         End Property
-
+        
         '''<summary>
         '''  Looks up a localized string similar to Unable to find service &apos;{0}&apos;.  Ensure that the application is installed correctly..
         '''</summary>
@@ -216,7 +216,7 @@ Namespace My.Resources
                 Return ResourceManager.GetString("General_MissingService", resourceCulture)
             End Get
         End Property
-
+        
         '''<summary>
         '''  Looks up a localized string similar to Requires:.
         '''</summary>
@@ -225,7 +225,7 @@ Namespace My.Resources
                 Return ResourceManager.GetString("PermissionSet_Requires", resourceCulture)
             End Get
         End Property
-
+        
         '''<summary>
         '''  Looks up a localized string similar to Add existing file to project.
         '''</summary>
@@ -234,7 +234,7 @@ Namespace My.Resources
                 Return ResourceManager.GetString("PPG_AddExistingFilesTitle", resourceCulture)
             End Get
         End Property
-
+        
         '''<summary>
         '''  Looks up a localized string similar to Icon Files.
         '''</summary>
@@ -243,7 +243,7 @@ Namespace My.Resources
                 Return ResourceManager.GetString("PPG_AddIconFilesFilter", resourceCulture)
             End Get
         End Property
-
+        
         '''<summary>
         '''  Looks up a localized string similar to Win32 Resource Files.
         '''</summary>
@@ -252,7 +252,7 @@ Namespace My.Resources
                 Return ResourceManager.GetString("PPG_AddWin32ResourceFilter", resourceCulture)
             End Get
         End Property
-
+        
         '''<summary>
         '''  Looks up a localized string similar to Add Win32 resource file to project.
         '''</summary>
@@ -261,7 +261,7 @@ Namespace My.Resources
                 Return ResourceManager.GetString("PPG_AddWin32ResourceTitle", resourceCulture)
             End Get
         End Property
-
+        
         '''<summary>
         '''  Looks up a localized string similar to Embedded.
         '''</summary>
@@ -270,7 +270,7 @@ Namespace My.Resources
                 Return ResourceManager.GetString("PPG_AdvancedBuildSettings_DebugInfo_Embedded", resourceCulture)
             End Get
         End Property
-
+        
         '''<summary>
         '''  Looks up a localized string similar to Full.
         '''</summary>
@@ -279,7 +279,7 @@ Namespace My.Resources
                 Return ResourceManager.GetString("PPG_AdvancedBuildSettings_DebugInfo_Full", resourceCulture)
             End Get
         End Property
-
+        
         '''<summary>
         '''  Looks up a localized string similar to None.
         '''</summary>
@@ -288,7 +288,7 @@ Namespace My.Resources
                 Return ResourceManager.GetString("PPG_AdvancedBuildSettings_DebugInfo_None", resourceCulture)
             End Get
         End Property
-
+        
         '''<summary>
         '''  Looks up a localized string similar to Pdb-only.
         '''</summary>
@@ -297,7 +297,7 @@ Namespace My.Resources
                 Return ResourceManager.GetString("PPG_AdvancedBuildSettings_DebugInfo_PdbOnly", resourceCulture)
             End Get
         End Property
-
+        
         '''<summary>
         '''  Looks up a localized string similar to Portable.
         '''</summary>
@@ -306,7 +306,7 @@ Namespace My.Resources
                 Return ResourceManager.GetString("PPG_AdvancedBuildSettings_DebugInfo_Portable", resourceCulture)
             End Get
         End Property
-
+        
         '''<summary>
         '''  Looks up a localized string similar to Base address must be a hexadecimal number with less than or equal to 8 digits, for example, 0x11000000..
         '''</summary>
@@ -315,7 +315,7 @@ Namespace My.Resources
                 Return ResourceManager.GetString("PPG_AdvancedBuildSettings_InvalidBaseAddress", resourceCulture)
             End Get
         End Property
-
+        
         '''<summary>
         '''  Looks up a localized string similar to None.
         '''</summary>
@@ -324,7 +324,7 @@ Namespace My.Resources
                 Return ResourceManager.GetString("PPG_AdvancedBuildSettings_ReportCompilerErrors_None", resourceCulture)
             End Get
         End Property
-
+        
         '''<summary>
         '''  Looks up a localized string similar to Prompt.
         '''</summary>
@@ -333,7 +333,7 @@ Namespace My.Resources
                 Return ResourceManager.GetString("PPG_AdvancedBuildSettings_ReportCompilerErrors_Prompt", resourceCulture)
             End Get
         End Property
-
+        
         '''<summary>
         '''  Looks up a localized string similar to Queue.
         '''</summary>
@@ -342,7 +342,7 @@ Namespace My.Resources
                 Return ResourceManager.GetString("PPG_AdvancedBuildSettings_ReportCompilerErrors_Queue", resourceCulture)
             End Get
         End Property
-
+        
         '''<summary>
         '''  Looks up a localized string similar to Send.
         '''</summary>
@@ -351,7 +351,7 @@ Namespace My.Resources
                 Return ResourceManager.GetString("PPG_AdvancedBuildSettings_ReportCompilerErrors_Send", resourceCulture)
             End Get
         End Property
-
+        
         '''<summary>
         '''  Looks up a localized string similar to Advanced Build Settings.
         '''</summary>
@@ -360,7 +360,7 @@ Namespace My.Resources
                 Return ResourceManager.GetString("PPG_AdvancedBuildSettings_Title", resourceCulture)
             End Get
         End Property
-
+        
         '''<summary>
         '''  Looks up a localized string similar to Advanced Compiler Settings.
         '''</summary>
@@ -369,7 +369,7 @@ Namespace My.Resources
                 Return ResourceManager.GetString("PPG_AdvancedCompilerSettings_Title", resourceCulture)
             End Get
         End Property
-
+        
         '''<summary>
         '''  Looks up a localized string similar to Windows Store App.
         '''</summary>
@@ -378,7 +378,7 @@ Namespace My.Resources
                 Return ResourceManager.GetString("PPG_AppContainerExe", resourceCulture)
             End Get
         End Property
-
+        
         '''<summary>
         '''  Looks up a localized string similar to The following events are available for MyApplication:.
         '''</summary>
@@ -387,7 +387,7 @@ Namespace My.Resources
                 Return ResourceManager.GetString("PPG_Application_AppEventsCommentLine1", resourceCulture)
             End Get
         End Property
-
+        
         '''<summary>
         '''  Looks up a localized string similar to .
         '''</summary>
@@ -396,7 +396,7 @@ Namespace My.Resources
                 Return ResourceManager.GetString("PPG_Application_AppEventsCommentLine2", resourceCulture)
             End Get
         End Property
-
+        
         '''<summary>
         '''  Looks up a localized string similar to Startup: Raised when the application starts, before the startup form is created..
         '''</summary>
@@ -405,7 +405,7 @@ Namespace My.Resources
                 Return ResourceManager.GetString("PPG_Application_AppEventsCommentLine3", resourceCulture)
             End Get
         End Property
-
+        
         '''<summary>
         '''  Looks up a localized string similar to Shutdown: Raised after all application forms are closed.  This event is not raised if the application terminates abnormally..
         '''</summary>
@@ -414,7 +414,7 @@ Namespace My.Resources
                 Return ResourceManager.GetString("PPG_Application_AppEventsCommentLine4", resourceCulture)
             End Get
         End Property
-
+        
         '''<summary>
         '''  Looks up a localized string similar to UnhandledException: Raised if the application encounters an unhandled exception..
         '''</summary>
@@ -423,7 +423,7 @@ Namespace My.Resources
                 Return ResourceManager.GetString("PPG_Application_AppEventsCommentLine5", resourceCulture)
             End Get
         End Property
-
+        
         '''<summary>
         '''  Looks up a localized string similar to StartupNextInstance: Raised when launching a single-instance application and the application is already active. .
         '''</summary>
@@ -432,7 +432,7 @@ Namespace My.Resources
                 Return ResourceManager.GetString("PPG_Application_AppEventsCommentLine6", resourceCulture)
             End Get
         End Property
-
+        
         '''<summary>
         '''  Looks up a localized string similar to NetworkAvailabilityChanged: Raised when the network connection is connected or disconnected..
         '''</summary>
@@ -441,7 +441,7 @@ Namespace My.Resources
                 Return ResourceManager.GetString("PPG_Application_AppEventsCommentLine7", resourceCulture)
             End Get
         End Property
-
+        
         '''<summary>
         '''  Looks up a localized string similar to The GUID should match the format dddddddd-dddd-dddd-dddd-dddddddddddd..
         '''</summary>
@@ -450,7 +450,7 @@ Namespace My.Resources
                 Return ResourceManager.GetString("PPG_Application_BadGuid", resourceCulture)
             End Get
         End Property
-
+        
         '''<summary>
         '''  Looks up a localized string similar to Invalid icon file..
         '''</summary>
@@ -459,7 +459,7 @@ Namespace My.Resources
                 Return ResourceManager.GetString("PPG_Application_BadIcon", resourceCulture)
             End Get
         End Property
-
+        
         '''<summary>
         '''  Looks up a localized string similar to {0} is not a valid icon file..
         '''</summary>
@@ -468,7 +468,7 @@ Namespace My.Resources
                 Return ResourceManager.GetString("PPG_Application_BadIcon_1Arg", resourceCulture)
             End Get
         End Property
-
+        
         '''<summary>
         '''  Looks up a localized string similar to Invalid manifest file..
         '''</summary>
@@ -477,7 +477,7 @@ Namespace My.Resources
                 Return ResourceManager.GetString("PPG_Application_BadManifest", resourceCulture)
             End Get
         End Property
-
+        
         '''<summary>
         '''  Looks up a localized string similar to Icon could not be added to the project..
         '''</summary>
@@ -486,7 +486,7 @@ Namespace My.Resources
                 Return ResourceManager.GetString("PPG_Application_CantAddIcon", resourceCulture)
             End Get
         End Property
-
+        
         '''<summary>
         '''  Looks up a localized string similar to (Default Icon).
         '''</summary>
@@ -495,7 +495,7 @@ Namespace My.Resources
                 Return ResourceManager.GetString("PPG_Application_DefaultIconText", resourceCulture)
             End Get
         End Property
-
+        
         '''<summary>
         '''  Looks up a localized string similar to Embed manifest with default settings.
         '''</summary>
@@ -504,7 +504,7 @@ Namespace My.Resources
                 Return ResourceManager.GetString("PPG_Application_DefaultManifestText", resourceCulture)
             End Get
         End Property
-
+        
         '''<summary>
         '''  Looks up a localized string similar to &apos;{0}&apos; is not a valid identifier. Please select a different Splash screen form..
         '''</summary>
@@ -513,7 +513,7 @@ Namespace My.Resources
                 Return ResourceManager.GetString("PPG_Application_InvalidIdentifierSplashScreenForm_1Arg", resourceCulture)
             End Get
         End Property
-
+        
         '''<summary>
         '''  Looks up a localized string similar to &apos;{0}&apos; is not a valid identifier. Please select a different Startup form..
         '''</summary>
@@ -522,7 +522,7 @@ Namespace My.Resources
                 Return ResourceManager.GetString("PPG_Application_InvalidIdentifierStartupForm_1Arg", resourceCulture)
             End Get
         End Property
-
+        
         '''<summary>
         '''  Looks up a localized string similar to Startup object must be a form when &apos;Enable application framework&apos; is checked..
         '''</summary>
@@ -531,7 +531,7 @@ Namespace My.Resources
                 Return ResourceManager.GetString("PPG_Application_InvalidSubMainStartup", resourceCulture)
             End Get
         End Property
-
+        
         '''<summary>
         '''  Looks up a localized string similar to NOTE: This file is auto-generated; do not modify it directly.  To make changes,.
         '''</summary>
@@ -540,7 +540,7 @@ Namespace My.Resources
                 Return ResourceManager.GetString("PPG_Application_MyAppCommentLine1", resourceCulture)
             End Get
         End Property
-
+        
         '''<summary>
         '''  Looks up a localized string similar to  or if you encounter build errors in this file, go to the Project Designer.
         '''</summary>
@@ -549,7 +549,7 @@ Namespace My.Resources
                 Return ResourceManager.GetString("PPG_Application_MyAppCommentLine2", resourceCulture)
             End Get
         End Property
-
+        
         '''<summary>
         '''  Looks up a localized string similar to  (go to Project Properties or double-click the My Project node in.
         '''</summary>
@@ -558,7 +558,7 @@ Namespace My.Resources
                 Return ResourceManager.GetString("PPG_Application_MyAppCommentLine3", resourceCulture)
             End Get
         End Property
-
+        
         '''<summary>
         '''  Looks up a localized string similar to  Solution Explorer), and make changes on the Application tab..
         '''</summary>
@@ -567,7 +567,7 @@ Namespace My.Resources
                 Return ResourceManager.GetString("PPG_Application_MyAppCommentLine4", resourceCulture)
             End Get
         End Property
-
+        
         '''<summary>
         '''  Looks up a localized string similar to .
         '''</summary>
@@ -576,7 +576,7 @@ Namespace My.Resources
                 Return ResourceManager.GetString("PPG_Application_MyAppCommentLine5", resourceCulture)
             End Get
         End Property
-
+        
         '''<summary>
         '''  Looks up a localized string similar to Create application without a manifest.
         '''</summary>
@@ -585,7 +585,7 @@ Namespace My.Resources
                 Return ResourceManager.GetString("PPG_Application_NoManifestText", resourceCulture)
             End Get
         End Property
-
+        
         '''<summary>
         '''  Looks up a localized string similar to The splash screen form cannot be the start-up form..
         '''</summary>
@@ -594,7 +594,7 @@ Namespace My.Resources
                 Return ResourceManager.GetString("PPG_Application_SplashSameAsStart", resourceCulture)
             End Get
         End Property
-
+        
         '''<summary>
         '''  Looks up a localized string similar to Startup f&amp;orm:.
         '''</summary>
@@ -603,7 +603,7 @@ Namespace My.Resources
                 Return ResourceManager.GetString("PPG_Application_StartupFormLabelText", resourceCulture)
             End Get
         End Property
-
+        
         '''<summary>
         '''  Looks up a localized string similar to Startup &amp;object:.
         '''</summary>
@@ -612,7 +612,7 @@ Namespace My.Resources
                 Return ResourceManager.GetString("PPG_Application_StartupObjectLabelText", resourceCulture)
             End Get
         End Property
-
+        
         '''<summary>
         '''  Looks up a localized string similar to (Not set).
         '''</summary>
@@ -621,7 +621,7 @@ Namespace My.Resources
                 Return ResourceManager.GetString("PPG_Application_StartupObjectNotSet", resourceCulture)
             End Get
         End Property
-
+        
         '''<summary>
         '''  Looks up a localized string similar to Startup &amp;URI:.
         '''</summary>
@@ -630,7 +630,7 @@ Namespace My.Resources
                 Return ResourceManager.GetString("PPG_Application_StartupUriLabelText", resourceCulture)
             End Get
         End Property
-
+        
         '''<summary>
         '''  Looks up a localized string similar to Application.
         '''</summary>
@@ -639,7 +639,7 @@ Namespace My.Resources
                 Return ResourceManager.GetString("PPG_ApplicationTitle", resourceCulture)
             End Get
         End Property
-
+        
         '''<summary>
         '''  Looks up a localized string similar to A wildcard (&quot;*&quot;) is not allowed in this field..
         '''</summary>
@@ -648,7 +648,7 @@ Namespace My.Resources
                 Return ResourceManager.GetString("PPG_AssemblyInfo_BadWildcard", resourceCulture)
             End Get
         End Property
-
+        
         '''<summary>
         '''  Looks up a localized string similar to Invalid version format, expected &quot;[Major]&quot;, &quot;[Major].[Minor]&quot;, &quot;[Major].[Minor].[Build]&quot; or &quot;[Major].[Minor].[Build].[Revision]&quot;.
         '''</summary>
@@ -657,7 +657,7 @@ Namespace My.Resources
                 Return ResourceManager.GetString("PPG_AssemblyInfo_InvalidVersion", resourceCulture)
             End Get
         End Property
-
+        
         '''<summary>
         '''  Looks up a localized string similar to Assembly Information.
         '''</summary>
@@ -666,7 +666,7 @@ Namespace My.Resources
                 Return ResourceManager.GetString("PPG_AssemblyInfo_Title", resourceCulture)
             End Get
         End Property
-
+        
         '''<summary>
         '''  Looks up a localized string similar to Each part of the version number for &apos;{0}&apos; must be an integer between 0 and {1}..
         '''</summary>
@@ -675,7 +675,7 @@ Namespace My.Resources
                 Return ResourceManager.GetString("PPG_AssemblyInfo_VersionOutOfRange_2Args", resourceCulture)
             End Get
         End Property
-
+        
         '''<summary>
         '''  Looks up a localized string similar to &lt;Browse...&gt;.
         '''</summary>
@@ -684,7 +684,7 @@ Namespace My.Resources
                 Return ResourceManager.GetString("PPG_BrowseText", resourceCulture)
             End Get
         End Property
-
+        
         '''<summary>
         '''  Looks up a localized string similar to Build Events.
         '''</summary>
@@ -693,7 +693,7 @@ Namespace My.Resources
                 Return ResourceManager.GetString("PPG_BuildEventsTitle", resourceCulture)
             End Get
         End Property
-
+        
         '''<summary>
         '''  Looks up a localized string similar to Annotations.
         '''</summary>
@@ -702,7 +702,7 @@ Namespace My.Resources
                 Return ResourceManager.GetString("PPG_BuildSettings_Nullable_Annotations", resourceCulture)
             End Get
         End Property
-
+        
         '''<summary>
         '''  Looks up a localized string similar to Disable.
         '''</summary>
@@ -711,7 +711,7 @@ Namespace My.Resources
                 Return ResourceManager.GetString("PPG_BuildSettings_Nullable_Disable", resourceCulture)
             End Get
         End Property
-
+        
         '''<summary>
         '''  Looks up a localized string similar to Enable.
         '''</summary>
@@ -720,7 +720,7 @@ Namespace My.Resources
                 Return ResourceManager.GetString("PPG_BuildSettings_Nullable_Enable", resourceCulture)
             End Get
         End Property
-
+        
         '''<summary>
         '''  Looks up a localized string similar to Warnings.
         '''</summary>
@@ -729,7 +729,7 @@ Namespace My.Resources
                 Return ResourceManager.GetString("PPG_BuildSettings_Nullable_Warnings", resourceCulture)
             End Get
         End Property
-
+        
         '''<summary>
         '''  Looks up a localized string similar to Build.
         '''</summary>
@@ -738,7 +738,7 @@ Namespace My.Resources
                 Return ResourceManager.GetString("PPG_BuildTitle", resourceCulture)
             End Get
         End Property
-
+        
         '''<summary>
         '''  Looks up a localized string similar to Code Analysis.
         '''</summary>
@@ -747,7 +747,7 @@ Namespace My.Resources
                 Return ResourceManager.GetString("PPG_CodeAnalysisTitle", resourceCulture)
             End Get
         End Property
-
+        
         '''<summary>
         '''  Looks up a localized string similar to (None).
         '''</summary>
@@ -756,7 +756,7 @@ Namespace My.Resources
                 Return ResourceManager.GetString("PPG_ComboBoxSelect_None", resourceCulture)
             End Get
         End Property
-
+        
         '''<summary>
         '''  Looks up a localized string similar to Console Application.
         '''</summary>
@@ -765,7 +765,7 @@ Namespace My.Resources
                 Return ResourceManager.GetString("PPG_CommandLineApp", resourceCulture)
             End Get
         End Property
-
+        
         '''<summary>
         '''  Looks up a localized string similar to WPF Console Application.
         '''</summary>
@@ -774,7 +774,7 @@ Namespace My.Resources
                 Return ResourceManager.GetString("PPG_CommandLineApp_WPF", resourceCulture)
             End Get
         End Property
-
+        
         '''<summary>
         '''  Looks up a localized string similar to Recursive operator or property access.
         '''</summary>
@@ -783,7 +783,7 @@ Namespace My.Resources
                 Return ResourceManager.GetString("PPG_Compile_42004", resourceCulture)
             End Get
         End Property
-
+        
         '''<summary>
         '''  Looks up a localized string similar to Implicit conversion.
         '''</summary>
@@ -792,7 +792,7 @@ Namespace My.Resources
                 Return ResourceManager.GetString("PPG_Compile_42016", resourceCulture)
             End Get
         End Property
-
+        
         '''<summary>
         '''  Looks up a localized string similar to Late binding; call could fail at run time.
         '''</summary>
@@ -801,7 +801,7 @@ Namespace My.Resources
                 Return ResourceManager.GetString("PPG_Compile_42017_42018_42019", resourceCulture)
             End Get
         End Property
-
+        
         '''<summary>
         '''  Looks up a localized string similar to Implicit type; object assumed.
         '''</summary>
@@ -810,7 +810,7 @@ Namespace My.Resources
                 Return ResourceManager.GetString("PPG_Compile_42020", resourceCulture)
             End Get
         End Property
-
+        
         '''<summary>
         '''  Looks up a localized string similar to Unused local variable.
         '''</summary>
@@ -819,7 +819,7 @@ Namespace My.Resources
                 Return ResourceManager.GetString("PPG_Compile_42024", resourceCulture)
             End Get
         End Property
-
+        
         '''<summary>
         '''  Looks up a localized string similar to Instance variable accesses shared member.
         '''</summary>
@@ -828,7 +828,7 @@ Namespace My.Resources
                 Return ResourceManager.GetString("PPG_Compile_42025", resourceCulture)
             End Get
         End Property
-
+        
         '''<summary>
         '''  Looks up a localized string similar to Duplicate or overlapping catch blocks.
         '''</summary>
@@ -837,7 +837,7 @@ Namespace My.Resources
                 Return ResourceManager.GetString("PPG_Compile_42029", resourceCulture)
             End Get
         End Property
-
+        
         '''<summary>
         '''  Looks up a localized string similar to Use of variable prior to assignment.
         '''</summary>
@@ -846,7 +846,7 @@ Namespace My.Resources
                 Return ResourceManager.GetString("PPG_Compile_42104", resourceCulture)
             End Get
         End Property
-
+        
         '''<summary>
         '''  Looks up a localized string similar to Function returning reference type without return value.
         '''</summary>
@@ -855,7 +855,7 @@ Namespace My.Resources
                 Return ResourceManager.GetString("PPG_Compile_42105_42106_42107", resourceCulture)
             End Get
         End Property
-
+        
         '''<summary>
         '''  Looks up a localized string similar to Function returning intrinsic value type without return value.
         '''</summary>
@@ -864,7 +864,7 @@ Namespace My.Resources
                 Return ResourceManager.GetString("PPG_Compile_42353_42354_42355", resourceCulture)
             End Get
         End Property
-
+        
         '''<summary>
         '''  Looks up a localized string similar to Error.
         '''</summary>
@@ -873,7 +873,7 @@ Namespace My.Resources
                 Return ResourceManager.GetString("PPG_Compile_Notification_Error", resourceCulture)
             End Get
         End Property
-
+        
         '''<summary>
         '''  Looks up a localized string similar to None.
         '''</summary>
@@ -882,7 +882,7 @@ Namespace My.Resources
                 Return ResourceManager.GetString("PPG_Compile_Notification_None", resourceCulture)
             End Get
         End Property
-
+        
         '''<summary>
         '''  Looks up a localized string similar to Warning.
         '''</summary>
@@ -891,7 +891,7 @@ Namespace My.Resources
                 Return ResourceManager.GetString("PPG_Compile_Notification_Warning", resourceCulture)
             End Get
         End Property
-
+        
         '''<summary>
         '''  Looks up a localized string similar to (custom).
         '''</summary>
@@ -900,7 +900,7 @@ Namespace My.Resources
                 Return ResourceManager.GetString("PPG_Compile_OptionStrict_Custom", resourceCulture)
             End Get
         End Property
-
+        
         '''<summary>
         '''  Looks up a localized string similar to The warning settings for one or more configurations conflict.
         '''Changing this setting will reset the settings in all configurations..
@@ -910,7 +910,7 @@ Namespace My.Resources
                 Return ResourceManager.GetString("PPG_Compile_ResetIndeterminateWarningLevels", resourceCulture)
             End Get
         End Property
-
+        
         '''<summary>
         '''  Looks up a localized string similar to Compile.
         '''</summary>
@@ -919,7 +919,7 @@ Namespace My.Resources
                 Return ResourceManager.GetString("PPG_CompileTitle", resourceCulture)
             End Get
         End Property
-
+        
         '''<summary>
         '''  Looks up a localized string similar to Debug.
         '''</summary>
@@ -928,7 +928,7 @@ Namespace My.Resources
                 Return ResourceManager.GetString("PPG_DebugTitle", resourceCulture)
             End Get
         End Property
-
+        
         '''<summary>
         '''  Looks up a localized string similar to Executable Files.
         '''</summary>
@@ -937,7 +937,7 @@ Namespace My.Resources
                 Return ResourceManager.GetString("PPG_ExeFilesFilter", resourceCulture)
             End Get
         End Property
-
+        
         '''<summary>
         '''  Looks up a localized string similar to Folder path does not exist.
         '''Please select a valid folder path..
@@ -947,7 +947,7 @@ Namespace My.Resources
                 Return ResourceManager.GetString("PPG_InvalidFolderPath", resourceCulture)
             End Get
         End Property
-
+        
         '''<summary>
         '''  Looks up a localized string similar to Base address must be a hexadecimal number with less than or equal to 8 digits, for example, &amp;H11000000..
         '''</summary>
@@ -956,7 +956,7 @@ Namespace My.Resources
                 Return ResourceManager.GetString("PPG_InvalidHexString", resourceCulture)
             End Get
         End Property
-
+        
         '''<summary>
         '''  Looks up a localized string similar to Application-defined.
         '''</summary>
@@ -965,7 +965,7 @@ Namespace My.Resources
                 Return ResourceManager.GetString("PPG_MyApplication_AuthenMode_ApplicationDefined", resourceCulture)
             End Get
         End Property
-
+        
         '''<summary>
         '''  Looks up a localized string similar to Windows.
         '''</summary>
@@ -974,7 +974,7 @@ Namespace My.Resources
                 Return ResourceManager.GetString("PPG_MyApplication_AuthenMode_Windows", resourceCulture)
             End Get
         End Property
-
+        
         '''<summary>
         '''  Looks up a localized string similar to When last form closes.
         '''</summary>
@@ -983,7 +983,7 @@ Namespace My.Resources
                 Return ResourceManager.GetString("PPG_MyApplication_StartupMode_AppExits", resourceCulture)
             End Get
         End Property
-
+        
         '''<summary>
         '''  Looks up a localized string similar to When startup form closes.
         '''</summary>
@@ -992,7 +992,7 @@ Namespace My.Resources
                 Return ResourceManager.GetString("PPG_MyApplication_StartupMode_FormCloses", resourceCulture)
             End Get
         End Property
-
+        
         '''<summary>
         '''  Looks up a localized string similar to (None).
         '''</summary>
@@ -1001,7 +1001,7 @@ Namespace My.Resources
                 Return ResourceManager.GetString("PPG_NeutralLanguage_None", resourceCulture)
             End Get
         End Property
-
+        
         '''<summary>
         '''  Looks up a localized string similar to The output path is not trusted.
         '''The application may throw security exceptions when it attempts to perform actions which require full trust.
@@ -1012,7 +1012,7 @@ Namespace My.Resources
                 Return ResourceManager.GetString("PPG_OutputPathNotSecure", resourceCulture)
             End Get
         End Property
-
+        
         '''<summary>
         '''  Looks up a localized string similar to Package.
         '''</summary>
@@ -1021,7 +1021,7 @@ Namespace My.Resources
                 Return ResourceManager.GetString("PPG_PackageTitle", resourceCulture)
             End Get
         End Property
-
+        
         '''<summary>
         '''  Looks up a localized string similar to Post-build Event Command Line.
         '''</summary>
@@ -1030,7 +1030,7 @@ Namespace My.Resources
                 Return ResourceManager.GetString("PPG_PostBuildCommandLineTitle", resourceCulture)
             End Get
         End Property
-
+        
         '''<summary>
         '''  Looks up a localized string similar to Pre-build Event Command Line.
         '''</summary>
@@ -1039,7 +1039,7 @@ Namespace My.Resources
                 Return ResourceManager.GetString("PPG_PreBuildCommandLineTitle", resourceCulture)
             End Get
         End Property
-
+        
         '''<summary>
         '''  Looks up a localized string similar to Application Icon.
         '''</summary>
@@ -1048,7 +1048,7 @@ Namespace My.Resources
                 Return ResourceManager.GetString("PPG_Property_ApplicationIcon", resourceCulture)
             End Get
         End Property
-
+        
         '''<summary>
         '''  Looks up a localized string similar to Assembly File Version.
         '''</summary>
@@ -1057,7 +1057,7 @@ Namespace My.Resources
                 Return ResourceManager.GetString("PPG_Property_AssemblyFileVersion", resourceCulture)
             End Get
         End Property
-
+        
         '''<summary>
         '''  Looks up a localized string similar to Assembly GUID.
         '''</summary>
@@ -1066,7 +1066,7 @@ Namespace My.Resources
                 Return ResourceManager.GetString("PPG_Property_AssemblyGuid", resourceCulture)
             End Get
         End Property
-
+        
         '''<summary>
         '''  Looks up a localized string similar to Assembly Name.
         '''</summary>
@@ -1075,7 +1075,7 @@ Namespace My.Resources
                 Return ResourceManager.GetString("PPG_Property_AssemblyName", resourceCulture)
             End Get
         End Property
-
+        
         '''<summary>
         '''  Looks up a localized string similar to Assembly Version.
         '''</summary>
@@ -1084,7 +1084,7 @@ Namespace My.Resources
                 Return ResourceManager.GetString("PPG_Property_AssemblyVersion", resourceCulture)
             End Get
         End Property
-
+        
         '''<summary>
         '''  Looks up a localized string similar to Package Version.
         '''</summary>
@@ -1093,7 +1093,7 @@ Namespace My.Resources
                 Return ResourceManager.GetString("PPG_Property_PackageVersion", resourceCulture)
             End Get
         End Property
-
+        
         '''<summary>
         '''  Looks up a localized string similar to Remote Machine Name.
         '''</summary>
@@ -1102,7 +1102,7 @@ Namespace My.Resources
                 Return ResourceManager.GetString("PPG_Property_RemoteDebugMachine", resourceCulture)
             End Get
         End Property
-
+        
         '''<summary>
         '''  Looks up a localized string similar to Root Namespace.
         '''</summary>
@@ -1111,7 +1111,7 @@ Namespace My.Resources
                 Return ResourceManager.GetString("PPG_Property_RootNamespace", resourceCulture)
             End Get
         End Property
-
+        
         '''<summary>
         '''  Looks up a localized string similar to External Program Path.
         '''</summary>
@@ -1120,7 +1120,7 @@ Namespace My.Resources
                 Return ResourceManager.GetString("PPG_Property_StartProgram", resourceCulture)
             End Get
         End Property
-
+        
         '''<summary>
         '''  Looks up a localized string similar to Startup Object.
         '''</summary>
@@ -1129,7 +1129,7 @@ Namespace My.Resources
                 Return ResourceManager.GetString("PPG_Property_StartupObject", resourceCulture)
             End Get
         End Property
-
+        
         '''<summary>
         '''  Looks up a localized string similar to Start Browser With URL.
         '''</summary>
@@ -1138,7 +1138,7 @@ Namespace My.Resources
                 Return ResourceManager.GetString("PPG_Property_StartURL", resourceCulture)
             End Get
         End Property
-
+        
         '''<summary>
         '''  Looks up a localized string similar to Working Directory.
         '''</summary>
@@ -1147,7 +1147,7 @@ Namespace My.Resources
                 Return ResourceManager.GetString("PPG_Property_StartWorkingDirectory", resourceCulture)
             End Get
         End Property
-
+        
         '''<summary>
         '''  Looks up a localized string similar to Adding web reference failed. {0}
         '''.
@@ -1157,7 +1157,7 @@ Namespace My.Resources
                 Return ResourceManager.GetString("PPG_Reference_AddWebReference", resourceCulture)
             End Get
         End Property
-
+        
         '''<summary>
         '''  Looks up a localized string similar to Cannot remove &apos;{0}&apos;. {1}
         '''.
@@ -1167,7 +1167,7 @@ Namespace My.Resources
                 Return ResourceManager.GetString("PPG_Reference_CanNotRemoveReference", resourceCulture)
             End Get
         End Property
-
+        
         '''<summary>
         '''  Looks up a localized string similar to Updating web reference &apos;{0}&apos; failed.
         '''{1}.
@@ -1177,7 +1177,7 @@ Namespace My.Resources
                 Return ResourceManager.GetString("PPG_Reference_FailedToUpdateWebReference", resourceCulture)
             End Get
         End Property
-
+        
         '''<summary>
         '''  Looks up a localized string similar to Adding or removing &apos;{0}&apos; as a project import failed because of an unexpected error from the project system.  The error returned was:  &apos;{1}&apos;..
         '''</summary>
@@ -1186,7 +1186,7 @@ Namespace My.Resources
                 Return ResourceManager.GetString("PPG_Reference_RemoveImportsFailUnexpected", resourceCulture)
             End Get
         End Property
-
+        
         '''<summary>
         '''  Looks up a localized string similar to Reference Paths.
         '''</summary>
@@ -1195,7 +1195,7 @@ Namespace My.Resources
                 Return ResourceManager.GetString("PPG_ReferencePaths_Title", resourceCulture)
             End Get
         End Property
-
+        
         '''<summary>
         '''  Looks up a localized string similar to Reference Paths.
         '''</summary>
@@ -1204,7 +1204,7 @@ Namespace My.Resources
                 Return ResourceManager.GetString("PPG_ReferencePathsTitle", resourceCulture)
             End Get
         End Property
-
+        
         '''<summary>
         '''  Looks up a localized string similar to References.
         '''</summary>
@@ -1213,7 +1213,7 @@ Namespace My.Resources
                 Return ResourceManager.GetString("PPG_ReferencesTitle", resourceCulture)
             End Get
         End Property
-
+        
         '''<summary>
         '''  Looks up a localized string similar to Select Output Path.
         '''</summary>
@@ -1222,7 +1222,7 @@ Namespace My.Resources
                 Return ResourceManager.GetString("PPG_SelectOutputPathTitle", resourceCulture)
             End Get
         End Property
-
+        
         '''<summary>
         '''  Looks up a localized string similar to Select Reference Path.
         '''</summary>
@@ -1231,7 +1231,7 @@ Namespace My.Resources
                 Return ResourceManager.GetString("PPG_SelectReferencePath", resourceCulture)
             End Get
         End Property
-
+        
         '''<summary>
         '''  Looks up a localized string similar to Select Working Directory.
         '''</summary>
@@ -1240,7 +1240,7 @@ Namespace My.Resources
                 Return ResourceManager.GetString("PPG_SelectWorkingDirectoryTitle", resourceCulture)
             End Get
         End Property
-
+        
         '''<summary>
         '''  Looks up a localized string similar to A service reference with multiple source urls is not supported..
         '''</summary>
@@ -1249,7 +1249,7 @@ Namespace My.Resources
                 Return ResourceManager.GetString("PPG_ServiceReferenceProperty_MultipleUrlNotSupported", resourceCulture)
             End Get
         End Property
-
+        
         '''<summary>
         '''  Looks up a localized string similar to Cannot change reference Url to empty. The reference url must be a valid URL..
         '''</summary>
@@ -1258,7 +1258,7 @@ Namespace My.Resources
                 Return ResourceManager.GetString("PPG_ServiceReferenceProperty_SetReferenceUrlEmpty", resourceCulture)
             End Get
         End Property
-
+        
         '''<summary>
         '''  Looks up a localized string similar to Service Reference Properties.
         '''</summary>
@@ -1267,7 +1267,7 @@ Namespace My.Resources
                 Return ResourceManager.GetString("PPG_ServiceReferenceTypeName", resourceCulture)
             End Get
         End Property
-
+        
         '''<summary>
         '''  Looks up a localized string similar to Services.
         '''</summary>
@@ -1276,7 +1276,7 @@ Namespace My.Resources
                 Return ResourceManager.GetString("PPG_Services", resourceCulture)
             End Get
         End Property
-
+        
         '''<summary>
         '''  Looks up a localized string similar to Disabling application services will clear the default services for Authentication, Roles, and Settings.  Click OK to disable application services..
         '''</summary>
@@ -1285,7 +1285,7 @@ Namespace My.Resources
                 Return ResourceManager.GetString("PPG_Services_ConfirmRemoveServices", resourceCulture)
             End Get
         End Property
-
+        
         '''<summary>
         '''  Looks up a localized string similar to Disable Application Services.
         '''</summary>
@@ -1294,7 +1294,7 @@ Namespace My.Resources
                 Return ResourceManager.GetString("PPG_Services_ConfirmRemoveServices_Caption", resourceCulture)
             End Get
         End Property
-
+        
         '''<summary>
         '''  Looks up a localized string similar to Authentication, Roles and Web Settings providers have been configured via the Application configuration file such that they do not share a common connection string..
         '''</summary>
@@ -1303,7 +1303,7 @@ Namespace My.Resources
                 Return ResourceManager.GetString("PPG_Services_ConnectionStringsDontMatch", resourceCulture)
             End Get
         End Property
-
+        
         '''<summary>
         '''  Looks up a localized string similar to Specify a connection string to a SQL Server database, or use the special connection string &quot;Data Source = |SQL/CE|&quot;, which causes SQL Server Compact to generate local database files for offline storage..
         '''</summary>
@@ -1312,7 +1312,7 @@ Namespace My.Resources
                 Return ResourceManager.GetString("PPG_Services_connectionStringValueDefaultDisplayValue", resourceCulture)
             End Get
         End Property
-
+        
         '''<summary>
         '''  Looks up a localized string similar to days.
         '''</summary>
@@ -1321,7 +1321,7 @@ Namespace My.Resources
                 Return ResourceManager.GetString("PPG_Services_Days", resourceCulture)
             End Get
         End Property
-
+        
         '''<summary>
         '''  Looks up a localized string similar to Learn more about client application services....
         '''</summary>
@@ -1330,7 +1330,7 @@ Namespace My.Resources
                 Return ResourceManager.GetString("PPG_Services_HelpLabelLink", resourceCulture)
             End Get
         End Property
-
+        
         '''<summary>
         '''  Looks up a localized string similar to Client application services enable your Windows-based applications to use the ASP.NET login (authentication), roles, and profile (settings) services. To enable client application services, you must set the Target Framework for your application to the full version of the .NET Framework 3.5 or later.  .
         '''</summary>
@@ -1339,7 +1339,7 @@ Namespace My.Resources
                 Return ResourceManager.GetString("PPG_Services_HelpLabelText", resourceCulture)
             End Get
         End Property
-
+        
         '''<summary>
         '''  Looks up a localized string similar to hours.
         '''</summary>
@@ -1348,7 +1348,7 @@ Namespace My.Resources
                 Return ResourceManager.GetString("PPG_Services_Hours", resourceCulture)
             End Get
         End Property
-
+        
         '''<summary>
         '''  Looks up a localized string similar to An error occurred while reading the Application configuration file.  The file might be corrupted or contain invalid XML..
         '''</summary>
@@ -1357,7 +1357,7 @@ Namespace My.Resources
                 Return ResourceManager.GetString("PPG_Services_InvalidAppConfigXml", resourceCulture)
             End Get
         End Property
-
+        
         '''<summary>
         '''  Looks up a localized string similar to The URL is invalid. Please enter a valid URL like http://microsoft.com/services.
         '''</summary>
@@ -1366,7 +1366,7 @@ Namespace My.Resources
                 Return ResourceManager.GetString("PPG_Services_InvalidUrl", resourceCulture)
             End Get
         End Property
-
+        
         '''<summary>
         '''  Looks up a localized string similar to A service URL in the application configuration file is not in the expected format..
         '''</summary>
@@ -1375,7 +1375,7 @@ Namespace My.Resources
                 Return ResourceManager.GetString("PPG_Services_InvalidUrls", resourceCulture)
             End Get
         End Property
-
+        
         '''<summary>
         '''  Looks up a localized string similar to minutes.
         '''</summary>
@@ -1384,7 +1384,7 @@ Namespace My.Resources
                 Return ResourceManager.GetString("PPG_Services_Minutes", resourceCulture)
             End Get
         End Property
-
+        
         '''<summary>
         '''  Looks up a localized string similar to seconds.
         '''</summary>
@@ -1393,7 +1393,7 @@ Namespace My.Resources
                 Return ResourceManager.GetString("PPG_Services_Seconds", resourceCulture)
             End Get
         End Property
-
+        
         '''<summary>
         '''  Looks up a localized string similar to To enable client application services, you must set the Target Framework for your application to .NET Framework 3.5 or later. In C#, you can do this on the Application property page. In Visual Basic, you can do this on the Compile property page by clicking Advanced Compile Options..
         '''</summary>
@@ -1402,7 +1402,7 @@ Namespace My.Resources
                 Return ResourceManager.GetString("PPG_Services_VersionWarning", resourceCulture)
             End Get
         End Property
-
+        
         '''<summary>
         '''  Looks up a localized string similar to Advanced Settings for Services.
         '''</summary>
@@ -1411,7 +1411,7 @@ Namespace My.Resources
                 Return ResourceManager.GetString("PPG_ServicesAdvancedPage_Title", resourceCulture)
             End Get
         End Property
-
+        
         '''<summary>
         '''  Looks up a localized string similar to An unspecified error has occurred..
         '''</summary>
@@ -1420,7 +1420,7 @@ Namespace My.Resources
                 Return ResourceManager.GetString("PPG_Unexpected", resourceCulture)
             End Get
         End Property
-
+        
         '''<summary>
         '''  Looks up a localized string similar to Unknown output type: {0}.
         '''</summary>
@@ -1429,7 +1429,7 @@ Namespace My.Resources
                 Return ResourceManager.GetString("PPG_UnknownOutputType", resourceCulture)
             End Get
         End Property
-
+        
         '''<summary>
         '''  Looks up a localized string similar to Dynamic.
         '''</summary>
@@ -1438,7 +1438,7 @@ Namespace My.Resources
                 Return ResourceManager.GetString("PPG_UrlBehavior_Dynamic", resourceCulture)
             End Get
         End Property
-
+        
         '''<summary>
         '''  Looks up a localized string similar to Static.
         '''</summary>
@@ -1447,7 +1447,7 @@ Namespace My.Resources
                 Return ResourceManager.GetString("PPG_UrlBehavior_Static", resourceCulture)
             End Get
         End Property
-
+        
         '''<summary>
         '''  Looks up a localized string similar to Web Control Library.
         '''</summary>
@@ -1456,7 +1456,7 @@ Namespace My.Resources
                 Return ResourceManager.GetString("PPG_WebControlLib", resourceCulture)
             End Get
         End Property
-
+        
         '''<summary>
         '''  Looks up a localized string similar to Web Reference Properties.
         '''</summary>
@@ -1465,7 +1465,7 @@ Namespace My.Resources
                 Return ResourceManager.GetString("PPG_WebReferenceTypeName", resourceCulture)
             End Get
         End Property
-
+        
         '''<summary>
         '''  Looks up a localized string similar to Windows Application.
         '''</summary>
@@ -1474,7 +1474,7 @@ Namespace My.Resources
                 Return ResourceManager.GetString("PPG_WindowsApp", resourceCulture)
             End Get
         End Property
-
+        
         '''<summary>
         '''  Looks up a localized string similar to WPF Application.
         '''</summary>
@@ -1483,7 +1483,7 @@ Namespace My.Resources
                 Return ResourceManager.GetString("PPG_WindowsApp_WPF", resourceCulture)
             End Get
         End Property
-
+        
         '''<summary>
         '''  Looks up a localized string similar to Class Library.
         '''</summary>
@@ -1492,7 +1492,7 @@ Namespace My.Resources
                 Return ResourceManager.GetString("PPG_WindowsClassLib", resourceCulture)
             End Get
         End Property
-
+        
         '''<summary>
         '''  Looks up a localized string similar to WPF Class Library.
         '''</summary>
@@ -3149,6 +3149,15 @@ Namespace My.Resources
         End Property
 
         '''<summary>
+        '''  Looks up a localized string similar to If this is not a Settings-Designer file then use &apos;Open With&apos; to open it in a text editor..
+        '''</summary>
+        Friend Shared ReadOnly Property SD_ERR_HelpMessage_SuggestFileOpenWith() As String
+            Get
+                Return ResourceManager.GetString("SD_ERR_HelpMessage_SuggestFileOpenWith", resourceCulture)
+            End Get
+        End Property
+
+        '''<summary>
         '''  Looks up a localized string similar to &apos;{0}&apos; is not a valid identifier..
         '''</summary>
         Friend Shared ReadOnly Property SD_ERR_InvalidIdentifier_1Arg() As String
@@ -3487,7 +3496,7 @@ Namespace My.Resources
                 Return ResourceManager.GetString("SingleFileGenerator_FailedToGenerateFile_1Arg", resourceCulture)
             End Get
         End Property
-
+        
         '''<summary>
         '''  Looks up a localized string similar to Error: {0}.
         '''</summary>
@@ -3496,7 +3505,7 @@ Namespace My.Resources
                 Return ResourceManager.GetString("XmlToSchema_Error", resourceCulture)
             End Get
         End Property
-
+        
         '''<summary>
         '''  Looks up a localized string similar to Error during XML schema inference: {0}.
         '''</summary>
@@ -3505,7 +3514,7 @@ Namespace My.Resources
                 Return ResourceManager.GetString("XmlToSchema_ErrorInXmlInference", resourceCulture)
             End Get
         End Property
-
+        
         '''<summary>
         '''  Looks up a localized string similar to Error loading XML: {0}.
         '''</summary>
@@ -3514,7 +3523,7 @@ Namespace My.Resources
                 Return ResourceManager.GetString("XmlToSchema_ErrorLoadingXml", resourceCulture)
             End Get
         End Property
-
+        
         '''<summary>
         '''  Looks up a localized string similar to Invalid empty project item name..
         '''</summary>
@@ -3523,7 +3532,7 @@ Namespace My.Resources
                 Return ResourceManager.GetString("XmlToSchema_InvalidEmptyItemName", resourceCulture)
             End Get
         End Property
-
+        
         '''<summary>
         '''  Looks up a localized string similar to Invalid project path: {0}.
         '''</summary>
@@ -3532,7 +3541,7 @@ Namespace My.Resources
                 Return ResourceManager.GetString("XmlToSchema_InvalidProjectPath", resourceCulture)
             End Get
         End Property
-
+        
         '''<summary>
         '''  Looks up a localized string similar to Invalid XML Format: {0}.
         '''</summary>
@@ -3541,7 +3550,7 @@ Namespace My.Resources
                 Return ResourceManager.GetString("XmlToSchema_InvalidXMLFormat", resourceCulture)
             End Get
         End Property
-
+        
         '''<summary>
         '''  Looks up a localized string similar to No project selected..
         '''</summary>

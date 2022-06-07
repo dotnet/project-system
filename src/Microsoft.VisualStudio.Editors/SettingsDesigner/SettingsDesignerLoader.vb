@@ -194,10 +194,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                     SettingsReader = New DocDataTextReader(m_DocData)
                     SettingsSerializer.Deserialize(RootComponent, SettingsReader, False)
                 Catch ex As Exception
-                    If SerializationManager IsNot Nothing Then
-                        ex.HelpLink = HelpIDs.Err_LoadingSettingsFile
-                        SerializationManager.ReportError(ex)
-                    End If
+                    ReportSerializationError(SerializationManager, ex)
                     Throw New InvalidOperationException(My.Resources.Microsoft_VisualStudio_Editors_Designer.SD_Err_CantLoadSettingsFile, ex)
                 Finally
                     If SettingsReader IsNot Nothing Then
@@ -215,6 +212,22 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             If _appConfigDocData IsNot Nothing Then
                 Switches.TraceSDSerializeSettings(TraceLevel.Verbose, "Loading app.config")
                 LoadAppConfig()
+            End If
+        End Sub
+
+        Private Shared Sub ReportSerializationError(SerializationManager As IDesignerSerializationManager, ex As Exception)
+            If SerializationManager IsNot Nothing Then
+                Dim userErrorMessage As String =
+                    ex.Message +
+                    Environment.NewLine +
+                    My.Resources.Microsoft_VisualStudio_Editors_Designer.SD_Err_CantLoadSettingsFile +
+                    Environment.NewLine +
+                    My.Resources.Microsoft_VisualStudio_Editors_Designer.SD_ERR_HelpMessage_SuggestFileOpenWith
+
+                Dim exWithHelp = New Exception(userErrorMessage) With {
+                    .HelpLink = HelpIDs.Err_LoadingSettingsFile
+                }
+                SerializationManager.ReportError(exWithHelp)
             End If
         End Sub
 
