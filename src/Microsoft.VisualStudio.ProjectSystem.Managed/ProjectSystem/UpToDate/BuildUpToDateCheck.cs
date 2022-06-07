@@ -852,7 +852,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
                 globalProperties.TryGetValue(FastUpToDateCheckIgnoresKindsGlobalPropertyName, out string? ignoreKindsString);
 
-                (LogLevel requestedLogLevel, Guid projectGuid) = await(
+                (LogLevel requestedLogLevel, Guid projectGuid) = await (
                     _projectSystemOptions.GetFastUpToDateLoggingLevelAsync(token),
                     _guidService.GetProjectGuidAsync(token));
 
