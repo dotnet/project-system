@@ -32,11 +32,6 @@
         <target state="translated">正在添加最新的导入输入：</target>
         <note />
       </trans-unit>
-      <trans-unit id="FUTD_AddingOutputReferenceCopyMarker">
-        <source>Adding output reference copy marker:</source>
-        <target state="translated">正在添加输出引用副本标记：</target>
-        <note />
-      </trans-unit>
       <trans-unit id="FUTD_AddingProjectFileInputs">
         <source>Adding project file inputs:</source>
         <target state="translated">正在添加项目文件输入：</target>
@@ -167,10 +162,10 @@
         <target state="translated">正在忽略 Kind="{0}" 的最新检查项</target>
         <note>Do not translate Kind. {0} is the kind name.</note>
       </trans-unit>
-      <trans-unit id="FUTD_InputMarkerNewerThanOutputMarker">
-        <source>Input marker is newer than output marker, not up-to-date.</source>
-        <target state="translated">输入标记比输出标记新，不是最新的。</target>
-        <note />
+      <trans-unit id="FUTD_InputMarkerNewerThanOutputMarker_4">
+        <source>Input marker '{0}' is newer ({1}) than output marker '{2}' ({3}), not up-to-date.</source>
+        <target state="new">Input marker '{0}' is newer ({1}) than output marker '{2}' ({3}), not up-to-date.</target>
+        <note>{0} and {2} are file paths. {1} and {3} are datetimes.</note>
       </trans-unit>
       <trans-unit id="FUTD_InputModifiedSinceLastSuccessfulBuildStart_3">
         <source>Input '{0}' ({1}) has been modified since the last successful build started ({2}), not up-to-date.</source>
@@ -181,11 +176,6 @@
         <source>Input '{0}' is newer ({1}) than earliest output '{2}' ({3}), not up-to-date.</source>
         <target state="translated">输入 '{0}' 比最早的输出 '{2}' ({3}) 新 ({1}) ，不是最新的。</target>
         <note>{0} and {2} are file paths. {1} and {3} are datetimes.</note>
-      </trans-unit>
-      <trans-unit id="FUTD_LatestWriteTimeOnInputMarker_2">
-        <source>Latest write timestamp on input marker is {0} on '{1}'.</source>
-        <target state="translated">输入标记上的最新写入时间戳是 '{1}' 上的 {0}。</target>
-        <note>{0} is a datetime. {1} is a file path.</note>
       </trans-unit>
       <trans-unit id="FUTD_NoBuildOutputDefined">
         <source>No build outputs defined.</source>

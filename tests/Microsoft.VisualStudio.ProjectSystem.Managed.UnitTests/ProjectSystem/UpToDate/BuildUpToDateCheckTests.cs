@@ -835,11 +835,52 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
         }
 
         [Fact]
+        public async Task IsUpToDateAsync_True_CopyReferenceInputsOlderThanMarkerOutput()
+        {
+            var projectSnapshot = new Dictionary<string, IProjectRuleSnapshotModel>
+            {
+                [CopyUpToDateMarker.SchemaName] = SimpleItems("OutputMarker"),
+                [ResolvedCompilationReference.SchemaName] = new IProjectRuleSnapshotModel
+                {
+                    Items = ImmutableStringDictionary<IImmutableDictionary<string, string>>.EmptyOrdinal
+                        .Add("Reference1", ImmutableStringDictionary<string>.EmptyOrdinal
+                            .Add("CopyUpToDateMarker", "Reference1MarkerPath")
+                            .Add("ResolvedPath", "Reference1ResolvedPath")
+                            .Add("OriginalPath", "Reference1OriginalPath"))
+                }
+            };
+
+            var lastBuildTime = DateTime.UtcNow.AddMinutes(-5);
+
+            await SetupAsync(projectSnapshot: projectSnapshot, lastSuccessfulBuildStartTimeUtc: lastBuildTime);
+
+            var resolvedTime = DateTime.UtcNow.AddMinutes(-4);
+            var markerTime   = DateTime.UtcNow.AddMinutes(-3);
+            var originalTime = DateTime.UtcNow.AddMinutes(-2);
+            var outputTime   = DateTime.UtcNow.AddMinutes(-1);
+
+            _fileSystem.AddFile(@"C:\Dev\Solution\Project\OutputMarker", outputTime);
+            _fileSystem.AddFile("Reference1ResolvedPath", resolvedTime);
+            _fileSystem.AddFile("Reference1MarkerPath", markerTime);
+            _fileSystem.AddFile("Reference1OriginalPath", originalTime);
+
+            await AssertUpToDateAsync(
+                $"""
+                No build outputs defined.
+                Write timestamp on output marker is {ToLocalTime(outputTime)} on 'C:\Dev\Solution\Project\OutputMarker'.
+                Adding input reference copy markers:
+                    Reference1OriginalPath
+                    Reference1MarkerPath
+                Project is up-to-date.
+                """);
+        }
+
+        [Fact]
         public async Task IsUpToDateAsync_False_CopyReferenceInputNewerThanMarkerOutput()
         {
             var projectSnapshot = new Dictionary<string, IProjectRuleSnapshotModel>
             {
-                [CopyUpToDateMarker.SchemaName] = SimpleItems("Marker"),
+                [CopyUpToDateMarker.SchemaName] = SimpleItems("OutputMarker"),
                 [ResolvedCompilationReference.SchemaName] = new IProjectRuleSnapshotModel
                 {
                     Items = ImmutableStringDictionary<IImmutableDictionary<string, string>>.EmptyOrdinal
@@ -859,7 +900,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             var markerTime   = DateTime.UtcNow.AddMinutes(-2);
             var originalTime = DateTime.UtcNow.AddMinutes(-1);
 
-            _fileSystem.AddFile(@"C:\Dev\Solution\Project\Marker", outputTime);
+            _fileSystem.AddFile(@"C:\Dev\Solution\Project\OutputMarker", outputTime);
             _fileSystem.AddFile("Reference1ResolvedPath", resolvedTime);
             _fileSystem.AddFile("Reference1MarkerPath", markerTime);
             _fileSystem.AddFile("Reference1OriginalPath", originalTime);
@@ -867,14 +908,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             await AssertNotUpToDateAsync(
                 $"""
                 No build outputs defined.
+                Write timestamp on output marker is {ToLocalTime(outputTime)} on 'C:\Dev\Solution\Project\OutputMarker'.
                 Adding input reference copy markers:
                     Reference1OriginalPath
-                    Reference1MarkerPath
-                Adding output reference copy marker:
-                    C:\Dev\Solution\Project\Marker
-                Latest write timestamp on input marker is {ToLocalTime(originalTime)} on 'Reference1OriginalPath'.
-                Write timestamp on output marker is {ToLocalTime(outputTime)} on 'C:\Dev\Solution\Project\Marker'.
-                Input marker is newer than output marker, not up-to-date.
+                Input marker 'Reference1OriginalPath' is newer ({ToLocalTime(originalTime)}) than output marker 'C:\Dev\Solution\Project\OutputMarker' ({ToLocalTime(outputTime)}), not up-to-date.
                 """,
                 "InputMarkerNewerThanOutputMarker");
         }
@@ -1895,7 +1932,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
         private static string ToLocalTime(DateTime time)
         {
-            return time.ToLocalTime().ToString("yyyyMMdd HH:mm:ss.fff");
+            return time.ToLocalTime().ToString("yyyy-MM-dd HH:mm:ss.fff");
         }
 
         private async Task AssertNotUpToDateAsync(string? expectedLogOutput = null, string? telemetryReason = null, BuildAction buildAction = BuildAction.Build, string ignoreKinds = "", string targetFramework = "")

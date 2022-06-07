@@ -169,15 +169,6 @@ namespace Microsoft.VisualStudio {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Adding output reference copy marker:.
-        /// </summary>
-        internal static string FUTD_AddingOutputReferenceCopyMarker {
-            get {
-                return ResourceManager.GetString("FUTD_AddingOutputReferenceCopyMarker", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Adding project file inputs:.
         /// </summary>
         internal static string FUTD_AddingProjectFileInputs {
@@ -412,11 +403,11 @@ namespace Microsoft.VisualStudio {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Input marker is newer than output marker, not up-to-date..
+        ///   Looks up a localized string similar to Input marker &apos;{0}&apos; is newer ({1}) than output marker &apos;{2}&apos; ({3}), not up-to-date..
         /// </summary>
-        internal static string FUTD_InputMarkerNewerThanOutputMarker {
+        internal static string FUTD_InputMarkerNewerThanOutputMarker_4 {
             get {
-                return ResourceManager.GetString("FUTD_InputMarkerNewerThanOutputMarker", resourceCulture);
+                return ResourceManager.GetString("FUTD_InputMarkerNewerThanOutputMarker_4", resourceCulture);
             }
         }
         
@@ -435,15 +426,6 @@ namespace Microsoft.VisualStudio {
         internal static string FUTD_InputNewerThanOutput_4 {
             get {
                 return ResourceManager.GetString("FUTD_InputNewerThanOutput_4", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Latest write timestamp on input marker is {0} on &apos;{1}&apos;..
-        /// </summary>
-        internal static string FUTD_LatestWriteTimeOnInputMarker_2 {
-            get {
-                return ResourceManager.GetString("FUTD_LatestWriteTimeOnInputMarker_2", resourceCulture);
             }
         }
         
