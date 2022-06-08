@@ -756,7 +756,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             _lastBuildStartTimeUtc = buildStartTimeUtc;
         }
 
-        async Task IBuildUpToDateCheckProviderInternal.NotifyBuildCompletedAsync(bool wasSuccessful)
+        async Task IBuildUpToDateCheckProviderInternal.NotifyBuildCompletedAsync(bool wasSuccessful, bool isRebuild)
         {
             if (_lastBuildStartTimeUtc == default)
             {
@@ -770,7 +770,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             {
                 ISubscription subscription = Volatile.Read(ref _subscription);
 
-                await subscription.UpdateLastSuccessfulBuildStartTimeUtcAsync(_lastBuildStartTimeUtc);
+                await subscription.UpdateLastSuccessfulBuildStartTimeUtcAsync(_lastBuildStartTimeUtc, isRebuild);
             }
 
             _lastBuildStartTimeUtc = default;

@@ -156,8 +156,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             subscription.Setup(s => s.EnsureInitialized());
 
             subscription
-                .Setup(s => s.UpdateLastSuccessfulBuildStartTimeUtcAsync(It.IsAny<DateTime>()))
-                .Callback((DateTime timeUtc) => _lastSuccessfulBuildStartTime = timeUtc)
+                .Setup(s => s.UpdateLastSuccessfulBuildStartTimeUtcAsync(It.IsAny<DateTime>(), It.IsAny<bool>()))
+                .Callback((DateTime timeUtc, bool isRebuild) => _lastSuccessfulBuildStartTime = timeUtc)
                 .Returns(Task.CompletedTask);
 
             subscription
@@ -719,14 +719,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
             // Build (t2)
             ((IBuildUpToDateCheckProviderInternal)_buildUpToDateCheck).NotifyBuildStarting(buildStartTimeUtc: t2);
-            await ((IBuildUpToDateCheckProviderInternal)_buildUpToDateCheck).NotifyBuildCompletedAsync(wasSuccessful: true);
+            await ((IBuildUpToDateCheckProviderInternal)_buildUpToDateCheck).NotifyBuildCompletedAsync(wasSuccessful: true, isRebuild: false);
 
             // Modify input (t3)
             _fileSystem.AddFile(_inputPath, t3);
 
             // Rebuild (t4)
             ((IBuildUpToDateCheckProviderInternal)_buildUpToDateCheck).NotifyBuildStarting(buildStartTimeUtc: t4);
-            await ((IBuildUpToDateCheckProviderInternal)_buildUpToDateCheck).NotifyBuildCompletedAsync(wasSuccessful: true);
+            await ((IBuildUpToDateCheckProviderInternal)_buildUpToDateCheck).NotifyBuildCompletedAsync(wasSuccessful: true, isRebuild: true);
 
             // Update output (t5)
             _fileSystem.AddFile(_builtPath, t5);
@@ -774,7 +774,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
             // Rebuild (t1)
             ((IBuildUpToDateCheckProviderInternal)_buildUpToDateCheck).NotifyBuildStarting(buildStartTimeUtc: t1);
-            await ((IBuildUpToDateCheckProviderInternal)_buildUpToDateCheck).NotifyBuildCompletedAsync(wasSuccessful: true);
+            await ((IBuildUpToDateCheckProviderInternal)_buildUpToDateCheck).NotifyBuildCompletedAsync(wasSuccessful: true, isRebuild: true);
 
             // Run test (t2)
             await AssertUpToDateAsync(
