@@ -3,7 +3,6 @@
 using Microsoft.Build.Framework.XamlTypes;
 using Microsoft.CodeAnalysis;
 using Microsoft.VisualStudio.LanguageServices;
-using VSLangProj;
 
 namespace Microsoft.VisualStudio.ProjectSystem.Properties;
 
@@ -12,35 +11,30 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties;
 internal class DotNetImportsEnumProvider : IDynamicEnumValuesProvider
 {
     private readonly UnconfiguredProject _unconfiguredProject;
-    private readonly Imports _imports;
     private readonly Workspace _workspace;
 
     [ImportingConstructor]
     public DotNetImportsEnumProvider(
         UnconfiguredProject unconfiguredProject,
-        Imports imports, 
         [Import(typeof(VisualStudioWorkspace))] Workspace workspace)
     {
         _unconfiguredProject = unconfiguredProject;
-        _imports = imports;
         _workspace = workspace;
         
     }
     public Task<IDynamicEnumValuesGenerator> GetProviderAsync(IList<NameValuePair>? options)
     {
-        return Task.FromResult<IDynamicEnumValuesGenerator>(new DotNetImportsEnumGenerator(_unconfiguredProject, _imports, _workspace));
+        return Task.FromResult<IDynamicEnumValuesGenerator>(new DotNetImportsEnumGenerator(_unconfiguredProject, _workspace));
     }
     
     private class DotNetImportsEnumGenerator : IDynamicEnumValuesGenerator
     {
         private readonly UnconfiguredProject _unconfiguredProject;
-        private readonly Imports _imports;
         private readonly Workspace _workspace;
         
-        public DotNetImportsEnumGenerator(UnconfiguredProject unconfiguredProject, Imports imports, Workspace workspace)
+        public DotNetImportsEnumGenerator(UnconfiguredProject unconfiguredProject, Workspace workspace)
         {
             _unconfiguredProject = unconfiguredProject;
-            _imports = imports;
             _workspace = workspace;
         }
 
@@ -102,10 +96,10 @@ internal class DotNetImportsEnumProvider : IDynamicEnumValuesProvider
 
         public Task<IEnumValue?> TryCreateEnumValueAsync(string userSuppliedValue)
         {
-            if (userSuppliedValue.Length == 0)
+            /*if (userSuppliedValue.Length == 0)
             {
                 return Task.FromResult<IEnumValue?>(null);
-            }
+            }*/
 
             //_imports.Add(userSuppliedValue);
             var value = new PageEnumValue(new EnumValue { Name = userSuppliedValue, DisplayName = userSuppliedValue });
