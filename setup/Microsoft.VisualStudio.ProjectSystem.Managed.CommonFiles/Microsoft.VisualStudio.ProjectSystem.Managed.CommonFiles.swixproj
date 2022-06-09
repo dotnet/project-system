@@ -4,13 +4,12 @@
   <PropertyGroup>
     <ExcludeRestorePackageImports>true</ExcludeRestorePackageImports>
   </PropertyGroup>
-  <!-- <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props"/> -->
-  <!-- <Import Project="C:\Program Files (x86)\Microsoft Visual Studio\2019\Preview\MSBuild\Current\Microsoft.Common.props"/> -->
-  <!-- <Import Project="..\..\build\import\VisualStudio.props" /> -->
-  <!-- <Import Project="..\..\build\import\RepoLayout.props" /> -->
-  <!-- <Import Project="..\..\build\import\NuGet.props" /> -->
+
   <Import Project="..\Directory.Build.props" />
-  <Import Project="$(MicroBuildCoreDir)Microsoft.VisualStudioEng.MicroBuild.Core.props" />
+  <!-- This currently loads all SwixBuild packages, and multiple packages existing in your NuGet cache breaks the build. -->
+  <!-- <Import Project="$(MicroBuildCoreDir)Microsoft.VisualStudioEng.MicroBuild.Core.props" /> -->
+  <Import Project="$(MicroBuildCoreDir)MicroBuild.Plugin.props" />
+  <Import Project="$(MicroBuildSwixBuildDir)Microsoft.VisualStudioEng.MicroBuild.Plugins.SwixBuild.props" />
 
   <PropertyGroup>
     <OutputArchitecture>neutral</OutputArchitecture>
@@ -27,58 +26,14 @@
     <!-- <Package Include="ext.xproj.swr" /> -->
   </ItemGroup>
 
-  <!-- <ItemGroup> -->
-    <!-- Depend on projects producing XAML rules included in this Willow package -->
-    <!-- <ProjectReference Include="..\..\src\Microsoft.VisualStudio.ProjectSystem.Managed\Microsoft.VisualStudio.ProjectSystem.Managed.csproj" /> -->
-    <!-- <PackageReference Include="Microsoft.VisualStudioEng.MicroBuild.Core" PrivateAssets="all" Version="1.0.0" />
-    <PackageReference Include="Microsoft.VSSDK.BuildTools"     PrivateAssets="all" Version="17.1.1035-preview2" /> -->
-  <!-- </ItemGroup> -->
-
-  <!-- <Target Name="SetVsixProperties" BeforeTargets="Build" DependsOnTargets="GetBuildVersion"> -->
-    <!-- <Message Text="BuildVersion: $(BuildVersion)" /> -->
-    <!-- <PropertyGroup> -->
-      <!-- <PackagePreprocessorDefinitions>$(PackagePreprocessorDefinitions);Version=$(BuildVersion);VisualStudioXamlRulesDir=$(VisualStudioXamlRulesDir)</PackagePreprocessorDefinitions> -->
-      <!-- Version=17.2.0.2042501;VisualStudioXamlRulesDir=D:\a\_work\1\s\artifacts\Release\VSSetup\Rules\ -->
-    <!-- </PropertyGroup> -->
-  <!-- </Target> -->
-
   <!-- Version=17.2.0.2042501;VisualStudioXamlRulesDir=D:\a\_work\1\s\artifacts\Release\VSSetup\Rules\ -->
   <PropertyGroup>
     <PackagePreprocessorDefinitions>$(PackagePreprocessorDefinitions);Version=$(VsixVersion);VisualStudioXamlRulesDir=$(VisualStudioXamlRulesDir)</PackagePreprocessorDefinitions>
     <!-- <PackagePreprocessorDefinitions>$(PackagePreprocessorDefinitions);Version=17.2.0.2042501;VisualStudioXamlRulesDir=$(VisualStudioXamlRulesDir)</PackagePreprocessorDefinitions> -->
   </PropertyGroup>
 
-  <!-- <Target Name="Restore">
-     <Message Text="MicroBuildCoreDir: $(MicroBuildCoreDir)" />
-  </Target> -->
+  <!-- This currently loads all SwixBuild packages, and multiple packages existing in your NuGet cache breaks the build. -->
+  <!-- <Import Project="$(MicroBuildCoreDir)Microsoft.VisualStudioEng.MicroBuild.Core.targets" /> -->
+  <Import Project="$(MicroBuildSwixBuildDir)Microsoft.VisualStudioEng.MicroBuild.Plugins.SwixBuild.targets" />
 
-  <!-- <Target Name="Build" DependsOnTargets="ResolveProjectReferences"> -->
-    <!-- <MakeDir Directories="$(IntermediateOutputPath)" ContinueOnError="True" /> -->
-    <!-- <MakeDir Directories="$(PackageOutputPath)" ContinueOnError="True" /> -->
-    <!-- <Message Text="PackageOutputPath: $(PackageOutputPath)" /> -->
-    <!-- <Message Text="OutputPath: $(OutputPath)" /> -->
-  <!-- </Target> -->
-
-  <!-- <Target Name="Build">
-    <Message Text="PackageOutputPath: $(PackageOutputPath)" />
-    <Message Text="OutputPath: $(OutputPath)" />
-  </Target> -->
-
-  <!-- Import common targets to enable restore -->
-  <!-- <Import Project="$(MSBuildToolsPath)\Microsoft.Common.targets" /> -->
-
-  <!-- <Target Name="GetTargetFrameworkProperties" /> -->
-
-  <!-- Needed by the Common Targets -->
-  <!-- <Target Name="CreateManifestResourceNames"/> -->
-
-  <!-- <Target Name="Pack" AfterTargets="Build">
-    <Copy SourceFiles="$(PackageOutputPath)"
-          DestinationFolder="$(VSIXOutputPath)"
-          UseHardlinksIfPossible="true"
-          SkipUnchangedFiles="true" />
-  </Target> -->
-
-  <!-- <Target Name="GetNativeManifest" /> -->
-  <Import Project="$(MicroBuildCoreDir)Microsoft.VisualStudioEng.MicroBuild.Core.targets" />
 </Project>

@@ -43,7 +43,12 @@ Namespace My.Resources
         Friend Shared ReadOnly Property ResourceManager() As Global.System.Resources.ResourceManager
             Get
                 If Object.ReferenceEquals(resourceMan, Nothing) Then
-                    Dim temp As Global.System.Resources.ResourceManager = New Global.System.Resources.ResourceManager("Designer", GetType(Designer).Assembly)
+                    ' NOTICE: If this file is regenerated, the value below will change to "Designer". You need to manually change it back to "Microsoft.VisualStudio.AppDesigner.Designer" before pushing the changes.
+                    ' Related links:
+                    ' - https://github.com/dotnet/project-system/issues/1058
+                    ' - https://github.com/dotnet/project-system/pull/6202
+                    ' - https://github.com/dotnet/project-system/pull/3741
+                    Dim temp As Global.System.Resources.ResourceManager = New Global.System.Resources.ResourceManager("Microsoft.VisualStudio.AppDesigner.Designer", GetType(Designer).Assembly)
                     resourceMan = temp
                 End If
                 Return resourceMan

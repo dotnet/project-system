@@ -1,6 +1,11 @@
 ﻿<!-- Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information. -->
 <Project Sdk="Microsoft.NET.Sdk">
 
+  <!--
+    This project is not for building an assembly. It is for building the Managed project as the files from that are a dependency for the .swixproj.
+    We also end up running the Nerdbank.GitVersioning mechanism via PackageRestore. This version number is then passed to the .swixproj for as the VSIX version.
+  -->
+
   <Import Project="..\..\build\import\VisualStudio.props" />
 
   <PropertyGroup>
@@ -22,21 +27,20 @@
   <ItemGroup>
     <!-- Depend on projects producing XAML rules included in this Willow package -->
     <ProjectReference Include="..\..\src\Microsoft.VisualStudio.ProjectSystem.Managed\Microsoft.VisualStudio.ProjectSystem.Managed.csproj" />
-    <!-- <ProjectReference Include="Microsoft.VisualStudio.ProjectSystem.Managed.CommonFiles.swixproj" /> -->
+    <!-- <ProjectReference Include="Microsoft.VisualStudio.ProjectSystem.Managed.CommonFiles.swixproj" Properties="VsixVersion=$(Version)" /> -->
   </ItemGroup>
 
-  <!-- <ItemGroup>
-    <SwrProperty Include="Version=$(VsixVersion)" />
-    <SwrProperty Include="VisualStudioXamlRulesDir=$(VisualStudioXamlRulesDir)" />
-  </ItemGroup> -->
+  <Target Name="SwixBuild" AfterTargets="Build">
 
-  <!-- <ItemGroup> -->
-    <!-- NOTE: Having SwrFile defined is the condition for VisualStudio.SetupPackage.swixproj to be built (via SwixBuild target) in RepoToolset. -->
-    <!-- <SwrFile Include="*.swr" /> -->
-  <!-- </ItemGroup> -->
+    <MSBuild Projects="$(MSBuildThisFileDirectory)Microsoft.VisualStudio.ProjectSystem.Managed.CommonFiles.swixproj" Properties="VsixVersion=$(FileVersion)" Targets="Build" />
 
-  <!-- <Target Name="Build" DependsOnTargets="ResolveProjectReferences">
-    <MakeDir Directories="$(IntermediateOutputPath)" ContinueOnError="True" />
-  </Target> -->
+    <!-- <Copy SourceFiles="$(IntermediateOutputPath)$(TargetName).vsix;$(IntermediateOutputPath)$(TargetName).json"
+          DestinationFolder="$(VisualStudioSetupInsertionPath)" />
+
+    <ItemGroup>
+      <FileWrites Include="$(VisualStudioSetupInsertionPath)$(TargetName).vsix"/>
+      <FileWrites Include="$(VisualStudioSetupInsertionPath)$(TargetName).json"/>
+    </ItemGroup> -->
+  </Target>
 
 </Project>
