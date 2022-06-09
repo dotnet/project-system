@@ -1,11 +1,12 @@
 ﻿<!-- Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information. -->
 <Project Sdk="Microsoft.NET.Sdk">
+
   <Import Project="..\..\build\import\VisualStudio.props" />
+
   <PropertyGroup>
     <RootNamespace>Microsoft.VisualStudio</RootNamespace>
-    <!-- Static AssemblyVersion is needed for serialization tests that encode AssemblyQualifiedName, which includes the assembly version number. -->
-    <AssemblyVersion>42.42.42.42</AssemblyVersion>
   </PropertyGroup>
+
   <ItemGroup>
     <Content Include="img105.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -14,9 +15,19 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
+
   <ItemGroup>
     <ProjectReference Include="..\DeployTestDependencies\DeployTestDependencies.csproj" ReferenceOutputAssembly="false" />
     <ProjectReference Include="..\..\src\Microsoft.VisualStudio.Editors\Microsoft.VisualStudio.Editors.vbproj" />
     <ProjectReference Include="..\..\src\Microsoft.VisualStudio.AppDesigner\Microsoft.VisualStudio.AppDesigner.vbproj" />
   </ItemGroup>
+
+  <!-- Static AssemblyVersion is needed for serialization tests that encode AssemblyQualifiedName, which includes the assembly version number. -->
+  <!-- This applies to Nerdbank.GitVersioning targets. It changes AssemblyVersion after it is set but before it is used to generate assembly info. -->
+  <Target Name="OverrideAssemblyVersion" DependsOnTargets="GetBuildVersion" BeforeTargets="GenerateAssemblyNBGVVersionInfo">
+    <PropertyGroup>
+      <AssemblyVersion>42.42.42.42</AssemblyVersion>
+    </PropertyGroup>
+  </Target>
+
 </Project>
