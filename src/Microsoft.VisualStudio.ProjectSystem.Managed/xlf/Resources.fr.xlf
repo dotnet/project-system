@@ -32,11 +32,6 @@
         <target state="translated">Ajout de l’entrée d’importation la plus récente :</target>
         <note />
       </trans-unit>
-      <trans-unit id="FUTD_AddingOutputReferenceCopyMarker">
-        <source>Adding output reference copy marker:</source>
-        <target state="translated">Ajout du marqueur de copie de référence de sortie :</target>
-        <note />
-      </trans-unit>
       <trans-unit id="FUTD_AddingProjectFileInputs">
         <source>Adding project file inputs:</source>
         <target state="translated">Ajout d’entrées de fichier projet :</target>
@@ -167,10 +162,10 @@
         <target state="translated">Éléments de vérification à jour avec Kind="{0}" ignorés</target>
         <note>Do not translate Kind. {0} is the kind name.</note>
       </trans-unit>
-      <trans-unit id="FUTD_InputMarkerNewerThanOutputMarker">
-        <source>Input marker is newer than output marker, not up-to-date.</source>
-        <target state="translated">Le marqueur d’entrée est plus récent que le marqueur de sortie, pas à jour.</target>
-        <note />
+      <trans-unit id="FUTD_InputMarkerNewerThanOutputMarker_4">
+        <source>Input marker '{0}' is newer ({1}) than output marker '{2}' ({3}), not up-to-date.</source>
+        <target state="new">Input marker '{0}' is newer ({1}) than output marker '{2}' ({3}), not up-to-date.</target>
+        <note>{0} and {2} are file paths. {1} and {3} are datetimes.</note>
       </trans-unit>
       <trans-unit id="FUTD_InputModifiedSinceLastSuccessfulBuildStart_3">
         <source>Input '{0}' ({1}) has been modified since the last successful build started ({2}), not up-to-date.</source>
@@ -181,11 +176,6 @@
         <source>Input '{0}' is newer ({1}) than earliest output '{2}' ({3}), not up-to-date.</source>
         <target state="translated">Le '{0}' d’entrée est plus récent ({1}) que le '{2}' de sortie le plus ancien ({3}). Il n’est pas à jour.</target>
         <note>{0} and {2} are file paths. {1} and {3} are datetimes.</note>
-      </trans-unit>
-      <trans-unit id="FUTD_LatestWriteTimeOnInputMarker_2">
-        <source>Latest write timestamp on input marker is {0} on '{1}'.</source>
-        <target state="translated">L’horodatage d’écriture le plus récent sur le marqueur d’entrée est {0} sur '{1}'.</target>
-        <note>{0} is a datetime. {1} is a file path.</note>
       </trans-unit>
       <trans-unit id="FUTD_NoBuildOutputDefined">
         <source>No build outputs defined.</source>
@@ -302,6 +292,18 @@
         <target state="translated">Importations</target>
         <note />
       </trans-unit>
+      <trans-unit id="JsonErrorsNeedToBeCorrected_1">
+        <source>Errors in '{0}' need to be corrected before applying changes.</source>
+        <target state="new">Errors in '{0}' need to be corrected before applying changes.</target>
+        <note>{0} is the path to the malformed .json file.</note>
+      </trans-unit>
+      <trans-unit id="JsonErrorsNeedToBeCorrected_WithErrorMessage_2">
+        <source>Errors in '{0}' need to be corrected before applying changes. Error message:
+{1}</source>
+        <target state="new">Errors in '{0}' need to be corrected before applying changes. Error message:
+{1}</target>
+        <note>{0} is the path to the malformed .json file. {1} is an error message containing more details about the problems in the file.</note>
+      </trans-unit>
       <trans-unit id="NeutralLanguage_DisplayNameFormatString">
         <source>{0} - {1}</source>
         <target state="translated">{0} - {1}</target>
@@ -310,11 +312,6 @@
       <trans-unit id="NoActionProfileName">
         <source>Start</source>
         <target state="translated">Démarrer</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="JsonErrorNeedToBeCorrected">
-        <source>Errors in '{0}' need to be corrected before applying changes.</source>
-        <target state="translated">Vous devez corriger les erreurs dans '{0}' avant d'appliquer les modifications.</target>
         <note />
       </trans-unit>
       <trans-unit id="MsBuildMissingValueToRemove">

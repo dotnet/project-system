@@ -63,7 +63,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.UpToDate
         /// </summary>
         int IVsUpdateSolutionEvents2.UpdateProjectCfg_Begin(IVsHierarchy pHierProj, IVsCfg pCfgProj, IVsCfg pCfgSln, uint dwAction, ref int pfCancel)
         {
-            if (IsBuild(dwAction))
+            if (IsBuild(dwAction, out _))
             {
                 IEnumerable<IBuildUpToDateCheckProviderInternal>? providers = FindActiveConfiguredProviders(pHierProj, out _);
 
@@ -84,7 +84,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.UpToDate
         /// </summary>
         int IVsUpdateSolutionEvents2.UpdateProjectCfg_Done(IVsHierarchy pHierProj, IVsCfg pCfgProj, IVsCfg pCfgSln, uint dwAction, int fSuccess, int fCancel)
         {
-            if (fCancel == 0 && IsBuild(dwAction))
+            if (fCancel == 0 && IsBuild(dwAction, out bool isRebuild))
             {
                 IEnumerable<IBuildUpToDateCheckProviderInternal>? providers = FindActiveConfiguredProviders(pHierProj, out UnconfiguredProject? unconfiguredProject);
 
@@ -97,7 +97,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.UpToDate
 
                         foreach (IBuildUpToDateCheckProviderInternal provider in providers)
                         {
-                            await provider.NotifyBuildCompletedAsync(wasSuccessful: fSuccess != 0);
+                            await provider.NotifyBuildCompletedAsync(wasSuccessful: fSuccess != 0, isRebuild);
                         }
                     });
 
@@ -111,13 +111,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.UpToDate
         /// <summary>
         /// Returns <see langword="true"/> if <paramref name="options"/> indicates either a build or rebuild.
         /// </summary>
-        private static bool IsBuild(uint options)
+        private static bool IsBuild(uint options, out bool isRebuild)
         {
-            const VSSOLNBUILDUPDATEFLAGS flags = VSSOLNBUILDUPDATEFLAGS.SBF_OPERATION_BUILD;
+            const VSSOLNBUILDUPDATEFLAGS anyBuildFlags = VSSOLNBUILDUPDATEFLAGS.SBF_OPERATION_BUILD;
+            const VSSOLNBUILDUPDATEFLAGS rebuildFlags = VSSOLNBUILDUPDATEFLAGS.SBF_OPERATION_BUILD | VSSOLNBUILDUPDATEFLAGS.SBF_OPERATION_FORCE_UPDATE;
 
             var operation = (VSSOLNBUILDUPDATEFLAGS)options;
 
-            return (operation & flags) == flags;
+            isRebuild = (operation & rebuildFlags) == rebuildFlags;
+
+            return (operation & anyBuildFlags) == anyBuildFlags;
         }
 
         private IEnumerable<IBuildUpToDateCheckProviderInternal>? FindActiveConfiguredProviders(IVsHierarchy vsHierarchy, out UnconfiguredProject? unconfiguredProject)

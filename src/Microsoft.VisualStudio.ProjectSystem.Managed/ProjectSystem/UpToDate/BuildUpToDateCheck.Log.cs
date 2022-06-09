@@ -125,7 +125,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             {
                 if (value is DateTime time)
                 {
-                    value = time.ToLocalTime().ToString("yyyyMMdd HH:mm:ss.fff");
+                    value = time.ToLocalTime().ToString("yyyy-MM-dd HH:mm:ss.fff");
                 }
             }
 

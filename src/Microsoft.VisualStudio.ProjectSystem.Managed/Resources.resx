@@ -120,8 +120,14 @@
   <data name="NoActionProfileName" xml:space="preserve">
     <value>Start</value>
   </data>
-  <data name="JsonErrorNeedToBeCorrected" xml:space="preserve">
+  <data name="JsonErrorsNeedToBeCorrected_1" xml:space="preserve">
     <value>Errors in '{0}' need to be corrected before applying changes.</value>
+    <comment>{0} is the path to the malformed .json file.</comment>
+  </data>
+  <data name="JsonErrorsNeedToBeCorrected_WithErrorMessage_2" xml:space="preserve">
+    <value>Errors in '{0}' need to be corrected before applying changes. Error message:
+{1}</value>
+   <comment>{0} is the path to the malformed .json file. {1} is an error message containing more details about the problems in the file.</comment>
   </data>
   <data name="MsBuildMissingValueToRemove" xml:space="preserve">
     <value>The specified value to remove '{0}' was not present in the property '{1}'</value>
@@ -317,13 +323,6 @@ This project was loaded using the wrong project type, likely as a result of rena
   <data name="FUTD_AddingInputReferenceCopyMarkers" xml:space="preserve">
     <value>Adding input reference copy markers:</value>
   </data>
-  <data name="FUTD_AddingOutputReferenceCopyMarker" xml:space="preserve">
-    <value>Adding output reference copy marker:</value>
-  </data>
-  <data name="FUTD_LatestWriteTimeOnInputMarker_2" xml:space="preserve">
-    <value>Latest write timestamp on input marker is {0} on '{1}'.</value>
-    <comment>{0} is a datetime. {1} is a file path.</comment>
-  </data>
   <data name="FUTD_NoInputMarkersExist" xml:space="preserve">
     <value>No input markers exist, skipping marker check.</value>
   </data>
@@ -335,8 +334,9 @@ This project was loaded using the wrong project type, likely as a result of rena
     <value>Output marker '{0}' does not exist, skipping marker check.</value>
     <comment>{0} is a file path.</comment>
   </data>
-  <data name="FUTD_InputMarkerNewerThanOutputMarker" xml:space="preserve">
-    <value>Input marker is newer than output marker, not up-to-date.</value>
+  <data name="FUTD_InputMarkerNewerThanOutputMarker_4" xml:space="preserve">
+    <value>Input marker '{0}' is newer ({1}) than output marker '{2}' ({3}), not up-to-date.</value>
+    <comment>{0} and {2} are file paths. {1} and {3} are datetimes.</comment>
   </data>
   <data name="FUTD_SourceFileTimeAndPath_2" xml:space="preserve">
     <value>Source {0}: '{1}'</value>

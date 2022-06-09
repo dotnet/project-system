@@ -1,6 +1,5 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
-using System.Diagnostics.CodeAnalysis;
 using Microsoft.VisualStudio.IO;
 
 namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
@@ -39,25 +38,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 }
 
                 return time;
-            }
-
-            public bool TryGetLatestInput(ImmutableArray<string> inputs, [NotNullWhen(returnValue: true)] out string? latestPath, out DateTime latestTime)
-            {
-                latestTime = DateTime.MinValue;
-                latestPath = null;
-
-                foreach (string input in inputs)
-                {
-                    DateTime? time = GetTimestampUtc(input);
-
-                    if (time > latestTime)
-                    {
-                        latestTime = time.Value;
-                        latestPath = input;
-                    }
-                }
-
-                return latestPath != null;
             }
         }
     }

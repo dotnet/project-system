@@ -170,20 +170,14 @@ internal class AppDotXamlDocument : AppDotXamlDocument.IDebugLockCheck, AppDotXa
     /// Finds the value of the given property inside the xaml file.  If
     /// the property is not set in the xaml, an empty string is returned.
     /// </summary>
-    private string GetApplicationPropertyValue(string propertyName)
+    private string? GetApplicationPropertyValue(string propertyName)
     {
         using BufferLock bufferLock = new(_vsTextLines, this);
 
         XmlTextReader reader = CreateXmlTextReader();
         XamlProperty? prop = FindApplicationPropertyInXaml(reader, propertyName);
-        if (prop is not null)
-        {
-            return prop.UnescapedValue;
-        }
-        else
-        {
-            return string.Empty;
-        }
+
+        return prop?.UnescapedValue;
     }
 
     /// <summary>
@@ -628,12 +622,12 @@ internal class AppDotXamlDocument : AppDotXamlDocument.IDebugLockCheck, AppDotXa
     /// Finds the value of the StartupUri property inside the xaml file.  If
     /// the property is not set in the xaml, an empty string is returned.
     /// </summary>
-    private string GetStartupUri()
+    public string? GetStartupUri()
     {
         return GetApplicationPropertyValue(StartupUriPropertyName);
     }
 
-    private void SetStartupUri(string value)
+    public void SetStartupUri(string value)
     {
         SetApplicationPropertyValue(StartupUriPropertyName, value);
     }
@@ -642,12 +636,12 @@ internal class AppDotXamlDocument : AppDotXamlDocument.IDebugLockCheck, AppDotXa
     /// Finds the value of the ShutdownMode property inside the xaml file.  If
     /// the property is not set in the xaml, an empty string is returned.
     /// </summary>
-    private string GetShutdownMode()
+    public string? GetShutdownMode()
     {
         return GetApplicationPropertyValue(ShutdownModePropertyName);
     }
 
-    private void SetShutdownMode(string value)
+    public void SetShutdownMode(string value)
     {
         SetApplicationPropertyValue(ShutdownModePropertyName, value);
     }

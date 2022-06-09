@@ -25,6 +25,7 @@
     <PackageReference Include="Microsoft.VisualStudio.RpcContracts" />
     <PackageReference Include="Microsoft.VisualStudio.Threading.Analyzers" />    
     <PackageReference Include="Microsoft.VisualStudio.Shell.15.0" />
+    <PackageReference Include="Microsoft.VisualStudio.Shell.Design" />
     <PackageReference Include="Microsoft.VisualStudio.Shell.Framework" />
     <PackageReference Include="Microsoft.VisualStudio.Telemetry" />
     <PackageReference Include="Microsoft.VisualStudio.Utilities" />
