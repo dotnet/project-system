@@ -56,9 +56,10 @@
     <NgenArchitecture>All</NgenArchitecture>
     <NgenPriority>3</NgenPriority>
 
-    <_TargetVsixContainerDir>$(VisualStudioSetupOutputPath)</_TargetVsixContainerDir>
+    <_TargetVsixContainerDir>$(VisualStudioSetupInsertionPath)</_TargetVsixContainerDir>
 
-    <TargetVsixContainerName Condition="'$(TargetVsixContainerName)' == ''">$(MSBuildProjectName).vsix</TargetVsixContainerName>
+    <!-- No idea why this is AssemblyName instead of MSBuildProjectName -->
+    <TargetVsixContainerName Condition="'$(TargetVsixContainerName)' == ''">$(AssemblyName).vsix</TargetVsixContainerName>
     <TargetVsixContainer Condition="'$(TargetVsixContainer)' == ''">$(_TargetVsixContainerDir)$(TargetVsixContainerName)</TargetVsixContainer>
 
     <DeployExtension>false</DeployExtension>
@@ -98,6 +99,7 @@
     </Compile>
   </ItemGroup>
 
+  <!-- TODO: Create mechanism for local build version -->
   <Target Name="GetBuildVersion" Returns="$(BuildVersion)">
     <PropertyGroup>
       <BuildVersion>42.42.42.42</BuildVersion>
