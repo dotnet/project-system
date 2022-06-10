@@ -2,7 +2,6 @@
 <!-- Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information. -->
 <Rule Name="References"
       Description="Specifies the project's references and namespace imports."
-      OverrideMode="Replace"
       DisplayName="References"
       PageTemplate="generic"
       Order="100"
@@ -34,6 +33,7 @@
       <ValueEditor EditorType="MultiStringSelector">
         <ValueEditor.Metadata>
           <NameValuePair Name="TypeDescriptorText" Value="Imported Namespaces" />
+          <NameValuePair Name="AllowsAddingCustomStrings" Value="True" />
         </ValueEditor.Metadata>
       </ValueEditor>
     </DynamicEnumProperty.ValueEditors>

@@ -2,6 +2,7 @@
 
 using System.Collections.Concurrent;
 using System.Text;
+using Microsoft.VisualStudio.Text;
 
 namespace Microsoft.VisualStudio.ProjectSystem.Properties;
 
@@ -53,13 +54,13 @@ internal sealed class ImportedNamespacesValueProvider : InterceptingPropertyValu
                 {
                     containsProjectName = true;
                 }
-                sb.Append($"{import};");
+                sb.Append(import).Append(';');
             }
         }
 
         if (!containsProjectName)
         {
-            sb.Append($"{projectName};");
+            sb.Append(projectName).Append(';');
         }
 
         sb.Remove(sb.Length - 1, 1);
@@ -80,16 +81,12 @@ internal sealed class ImportedNamespacesValueProvider : InterceptingPropertyValu
     {
         await _threadingService.SwitchToUIThread();
         
-        string[] newImportsToSet = unevaluatedPropertyValue.Split(';');
-        // delete existing imports that aren't in unevaluatedPropertyValue
-        
-        // add imports that are in unevaluatedPropertyValue but not in _imports
-        var importsToAdd = newImportsToSet.ToHashSet();
+        var importsToAdd = new HashSet<string>(new LazyStringSplit(unevaluatedPropertyValue, ';'));
         importsToAdd.Remove(Path.GetFileNameWithoutExtension(_configuredProject.UnconfiguredProject.FullPath));
 
         foreach (string import in await GetSelectedImportsAsync())
         {
-            if (!newImportsToSet.Contains(import))
+            if (!importsToAdd.Contains(import))
             {
                 try
                 {
@@ -107,24 +104,32 @@ internal sealed class ImportedNamespacesValueProvider : InterceptingPropertyValu
                     });
 
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
-                    // if an import comes from a targets file, or else if there's a race condition we can't remove it
+                    // if an import comes from a targets file, or else if there's a race condition we can't remove it. otherwise throw
+                    if (ex is not ArgumentException && ex is not InvalidOperationException)
+                    {
+                        throw;
+                    }
                 }
             }
             
             importsToAdd.Remove(import);
         }
 
-        foreach (string importToAdd in importsToAdd)
+        // Verify we have at least one valid import to add before acquiring a write lock.
+        if (importsToAdd.Any(importToAdd => importToAdd.Length > 0))
         {
-            if (importToAdd.Length > 0)
+            await _projectAccessor.OpenProjectXmlForWriteAsync(_configuredProject.UnconfiguredProject, project =>
             {
-                await _projectAccessor.OpenProjectXmlForWriteAsync(_configuredProject.UnconfiguredProject, project =>
+                foreach (string importToAdd in importsToAdd)
                 {
-                    project.AddItem("Import", importToAdd);
-                });
-            }
+                    if (importToAdd.Length > 0)
+                    {
+                        project.AddItem("Import", importToAdd);
+                    }
+                }
+            });
         }
 
         return null;

@@ -8,7 +8,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties;
 
 [ExportDynamicEnumValuesProvider("DotNetImportsEnumProvider")]
 [AppliesTo(ProjectCapability.VisualBasic)]
-internal class DotNetImportsEnumProvider : IDynamicEnumValuesProvider
+internal class DotNetImportsEnumProvider : IDynamicEnumValuesProvider, IDynamicEnumValuesGenerator
 {
     private readonly UnconfiguredProject _unconfiguredProject;
     private readonly Workspace _workspace;
@@ -16,96 +16,79 @@ internal class DotNetImportsEnumProvider : IDynamicEnumValuesProvider
     [ImportingConstructor]
     public DotNetImportsEnumProvider(
         UnconfiguredProject unconfiguredProject,
-        [Import(typeof(VisualStudioWorkspace))] Workspace workspace)
+        [Import(typeof(VisualStudioWorkspace))]
+        Workspace workspace)
     {
         _unconfiguredProject = unconfiguredProject;
         _workspace = workspace;
-        
     }
+
     public Task<IDynamicEnumValuesGenerator> GetProviderAsync(IList<NameValuePair>? options)
     {
-        return Task.FromResult<IDynamicEnumValuesGenerator>(new DotNetImportsEnumGenerator(_unconfiguredProject, _workspace));
+        return Task.FromResult<IDynamicEnumValuesGenerator>(this);
     }
-    
-    private class DotNetImportsEnumGenerator : IDynamicEnumValuesGenerator
+
+    private async Task<IEnumerable<string>> GetNamespacesAsync()
     {
-        private readonly UnconfiguredProject _unconfiguredProject;
-        private readonly Workspace _workspace;
-        
-        public DotNetImportsEnumGenerator(UnconfiguredProject unconfiguredProject, Workspace workspace)
+        Project? project = _workspace.CurrentSolution.Projects.FirstOrDefault(
+            proj => StringComparers.Paths.Equals(proj.FilePath, _unconfiguredProject.FullPath));
+
+        Compilation? compilation = project == null ? null : await project.GetCompilationAsync();
+
+        if (compilation == null)
         {
-            _unconfiguredProject = unconfiguredProject;
-            _workspace = workspace;
+            return Enumerable.Empty<string>();
         }
 
-        private async Task<List<string>> GetNamespacesAsync()
+        List<string> namespaceNames = new List<string>();
+        Stack<INamespaceSymbol> namespacesToProcess = new Stack<INamespaceSymbol>();
+        namespacesToProcess.Push(compilation.GlobalNamespace);
+
+        while (namespacesToProcess.Count != 0)
         {
-            Project? project = _workspace.CurrentSolution.Projects.FirstOrDefault(
-                proj => StringComparers.Paths.Equals(proj.FilePath, _unconfiguredProject.FullPath));
-
-            Compilation? compilation = project == null ? null : await project.GetCompilationAsync();
-            
-            if (compilation == null)
+            foreach (INamespaceSymbol childNamespace in namespacesToProcess.Pop().GetNamespaceMembers())
             {
-                return new List<string>();
-            }
-
-            List<string> namespaceNames = new List<string>();
-            Stack<INamespaceSymbol> namespacesToProcess = new Stack<INamespaceSymbol>();
-            namespacesToProcess.Push(compilation.GlobalNamespace);
-
-            while (namespacesToProcess.Count != 0)
-            {
-                foreach (INamespaceSymbol childNamespace in namespacesToProcess.Pop().GetNamespaceMembers())
+                if (NamespaceIsReferenceableFromCompilation(childNamespace, compilation))
                 {
-                    if (NamespaceIsReferenceableFromCompilation(childNamespace, compilation))
-                    {
-                        namespaceNames.Add(childNamespace.ToDisplayString());
-                    }
-                    
-                    namespacesToProcess.Push(childNamespace);
+                    namespaceNames.Add(childNamespace.ToDisplayString());
                 }
-            }
 
-            static bool NamespaceIsReferenceableFromCompilation(INamespaceSymbol namespaceSymbol, Compilation compilation)
+                namespacesToProcess.Push(childNamespace);
+            }
+        }
+
+        static bool NamespaceIsReferenceableFromCompilation(INamespaceSymbol namespaceSymbol, Compilation compilation)
+        {
+            foreach (INamedTypeSymbol typeMember in namespaceSymbol.GetTypeMembers())
             {
-                foreach (INamedTypeSymbol typeMember in namespaceSymbol.GetTypeMembers())
-                {
-                    if (typeMember.CanBeReferencedByName
-                        && (typeMember.DeclaredAccessibility == Accessibility.Public
+                if (typeMember.CanBeReferencedByName
+                    && (typeMember.DeclaredAccessibility == Accessibility.Public
                         || SymbolEqualityComparer.Default.Equals(typeMember.ContainingAssembly, compilation.Assembly)
                         || typeMember.ContainingAssembly.GivesAccessTo(compilation.Assembly)))
-                    {
-                        return true;
-                    }
+                {
+                    return true;
                 }
-
-                return false;
             }
 
-            return namespaceNames;
-        }
-        
-        public async Task<ICollection<IEnumValue>> GetListedValuesAsync()
-        {
-            return (await GetNamespacesAsync()).Select(namespaceString => (IEnumValue) new PageEnumValue(new EnumValue
-            {
-                Name = namespaceString, DisplayName = namespaceString
-            })).ToImmutableList();
+            return false;
         }
 
-        public Task<IEnumValue?> TryCreateEnumValueAsync(string userSuppliedValue)
-        {
-            /*if (userSuppliedValue.Length == 0)
-            {
-                return Task.FromResult<IEnumValue?>(null);
-            }*/
-
-            //_imports.Add(userSuppliedValue);
-            var value = new PageEnumValue(new EnumValue { Name = userSuppliedValue, DisplayName = userSuppliedValue });
-            return Task.FromResult<IEnumValue?>(value);
-        }
-
-        public bool AllowCustomValues => true;
+        return namespaceNames;
     }
+
+    public async Task<ICollection<IEnumValue>> GetListedValuesAsync()
+    {
+        return (await GetNamespacesAsync()).Select(namespaceString => (IEnumValue)new PageEnumValue(new EnumValue
+        {
+            Name = namespaceString, DisplayName = namespaceString
+        })).ToImmutableList();
+    }
+
+    public Task<IEnumValue?> TryCreateEnumValueAsync(string userSuppliedValue)
+    {
+        var value = new PageEnumValue(new EnumValue { Name = userSuppliedValue, DisplayName = userSuppliedValue });
+        return Task.FromResult<IEnumValue?>(value);
+    }
+
+    public bool AllowCustomValues => true;
 }
