@@ -5,13 +5,18 @@
     <!-- NOTE: Keep in-sync with NuGet.config at repo root -->
     <RestoreSources>
       $(RestoreSources);
-      <!-- CPS: Microsoft.VisualStudio.ProjectSystem -->
+      <!-- CPS components including: Microsoft.VisualStudio.ProjectSystem -->
       https://pkgs.dev.azure.com/azure-public/vside/_packaging/vs-impl/nuget/v3/index.json;
-      <!-- Most of the Microsoft.VisualStudio components -->
+      <!-- Microsoft.VisualStudio components -->
       https://pkgs.dev.azure.com/azure-public/vside/_packaging/vssdk/nuget/v3/index.json;
       <!-- https://pkgs.dev.azure.com/dnceng/public/_packaging/dotnet5/nuget/v3/index.json; -->
 
-      <!-- Microsoft.DiaSymReader.Pdb2Pdb -->
+      <!--
+        Microsoft.DiaSymReader.Pdb2Pdb
+        Microsoft.CodeAnalysis
+        Microsoft.CodeAnalysis.Features
+        NuGet.VisualStudio
+      -->
       https://pkgs.dev.azure.com/dnceng/public/_packaging/dotnet-tools/nuget/v3/index.json;
       <!-- https://pkgs.dev.azure.com/dnceng/public/_packaging/myget-legacy/nuget/v3/index.json; -->
       <!--
@@ -23,14 +28,14 @@
        -->
       https://pkgs.dev.azure.com/dnceng/public/_packaging/dotnet-eng/nuget/v3/index.json;
 
-      <!-- Nerdbank.GitVersioning -->
+      <!-- Public components including: Nerdbank.GitVersioning -->
       https://api.nuget.org/v3/index.json;
 
       <!-- https://pkgs.dev.azure.com/dnceng/public/_packaging/dotnet-public/nuget/v3/index.json; -->
       <!-- https://pkgs.dev.azure.com/dnceng/public/_packaging/nuget-build/nuget/v3/index.json; -->
       <!-- https://devdiv.pkgs.visualstudio.com/_packaging/MicroBuildToolset/nuget/v3/index.json; -->
 
-      <!-- MicroBuild tools: Microsoft.VisualStudioEng.MicroBuild.Plugins.SwixBuild -->
+      <!-- MicroBuild tools including: Microsoft.VisualStudioEng.MicroBuild.Plugins.SwixBuild -->
       https://pkgs.dev.azure.com/dnceng/_packaging/MicroBuildToolset/nuget/v3/index.json;
       <!-- https://devdiv.pkgs.visualstudio.com/DevDiv/_packaging/VS-Platform/nuget/v3/index.json; -->
     </RestoreSources>
@@ -53,7 +58,7 @@
     <!-- <PackageReference Update="RoslynTools.ModifyVsixManifest"                                         Version="$(RoslynToolsModifyVsixManifestVersion)" /> -->
     <PackageReference Update="XliffTasks"                                                             Version="1.0.0-beta.20574.1" />
     <!-- <PackageReference Update="XliffTasks"                                                             Version="0.2.0-beta-000081" /> -->
-    <PackageReference Update="Microsoft.DiaSymReader.Pdb2Pdb"                                         Version="1.1.0-beta2-22306-02" />
+    <!-- <PackageReference Update="Microsoft.DiaSymReader.Pdb2Pdb"                                         Version="1.1.0-beta2-22306-02" /> -->
     <PackageReference Update="Microsoft.Net.Compilers.Toolset"                                        Version="4.2.0-1.final" />
     <PackageReference Update="OpenCover"                                                              Version="4.7.1138-rc" />
     <PackageReference Update="Codecov"                                                                Version="1.12.4" />
