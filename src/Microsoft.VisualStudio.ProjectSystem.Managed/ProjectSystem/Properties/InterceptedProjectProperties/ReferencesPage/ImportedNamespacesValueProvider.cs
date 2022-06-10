@@ -6,6 +6,7 @@ using System.Text;
 namespace Microsoft.VisualStudio.ProjectSystem.Properties;
 
 [ExportInterceptingPropertyValueProvider("ImportedNamespaces", ExportInterceptingPropertyValueProviderFile.ProjectFile)]
+[AppliesTo(ProjectCapability.VisualBasic)]
 internal sealed class ImportedNamespacesValueProvider : InterceptingPropertyValueProviderBase
 {
     private readonly ConfiguredProject _configuredProject;

@@ -196,6 +196,7 @@
     <XamlPropertyRuleNoCodeBehind Include="ProjectSystem\Rules\PropertyPages\PackagePropertyPage.xaml" />
     <XamlPropertyRuleNoCodeBehind Include="ProjectSystem\Rules\PropertyPages\ProjectDebugPropertyPage.xaml" />
     <XamlPropertyRuleNoCodeBehind Include="ProjectSystem\Rules\PropertyPages\ReferencesPage.xaml" />
+    <XamlPropertyRuleNoCodeBehind Include="ProjectSystem\Rules\PropertyPages\ReferencesPage.VisualBasic.xaml" />
     <XamlPropertyRuleNoCodeBehind Include="ProjectSystem\Rules\PropertyPages\BuildPropertyPage.FSharp.xaml" />
   </ItemGroup>
 

@@ -7,7 +7,7 @@ using Microsoft.VisualStudio.LanguageServices;
 namespace Microsoft.VisualStudio.ProjectSystem.Properties;
 
 [ExportDynamicEnumValuesProvider("DotNetImportsEnumProvider")]
-[AppliesTo(ProjectCapability.CSharpOrVisualBasic)]
+[AppliesTo(ProjectCapability.VisualBasic)]
 internal class DotNetImportsEnumProvider : IDynamicEnumValuesProvider
 {
     private readonly UnconfiguredProject _unconfiguredProject;

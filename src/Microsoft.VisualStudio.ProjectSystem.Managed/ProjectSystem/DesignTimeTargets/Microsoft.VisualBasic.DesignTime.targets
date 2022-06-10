@@ -55,6 +55,10 @@
       <Context>Project</Context>
     </PropertyPageSchema>
 
+    <PropertyPageSchema Include="$(ManagedXamlResourcesDirectory)ReferencesPage.VisualBasic.xaml">
+      <Context>Project</Context>
+    </PropertyPageSchema>
+
     <PropertyPageSchema Include="$(ManagedXamlNeutralResourcesDirectory)EditorConfigFiles.xaml">
       <Context>File</Context>
     </PropertyPageSchema>
