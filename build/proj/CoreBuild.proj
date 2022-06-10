@@ -92,6 +92,7 @@
       Because multiple projects can contribute to a single insertion component we package them in a separate phase.
       Also due to insertion manifests containing hashes of references VSIXes, so we need to run this after signing.
     -->
-    <MSBuild Projects="$(ToolsetPath)VisualStudio.Insertion.proj" Properties="@(CommonBuildProperty)" Targets="Pack" />
+    <!-- TODO: Figure out the VS manifest process -->
+    <!-- <MSBuild Projects="$(ToolsetPath)VisualStudio.Insertion.proj" Properties="@(CommonBuildProperty)" Targets="Pack" /> -->
   </Target>
 </Project>

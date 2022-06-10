@@ -21,7 +21,7 @@
     it requires. Instead, avoid deploying any of its binaries and just run it directly from package 
     folder so that it can probe for its exe.
     -->
-    <PackageReference Include="Microsoft.DevDiv.Validation.MediaRecorder" GeneratePathProperty="true" ExcludeAssets="All" />
+    <!-- <PackageReference Include="Microsoft.DevDiv.Validation.MediaRecorder" GeneratePathProperty="true" ExcludeAssets="All" /> -->
   </ItemGroup>
 
 </Project>

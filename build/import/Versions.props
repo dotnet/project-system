@@ -10,18 +10,18 @@
 
     <!-- Opt-in and out of repo features -->
     <!-- <UsingToolVSSDK>true</UsingToolVSSDK> -->
-    <UsingToolIbcOptimization>true</UsingToolIbcOptimization>
-    <UsingToolXUnit>false</UsingToolXUnit>
-    <UsingToolMicrosoftNetCompilers>false</UsingToolMicrosoftNetCompilers>
+    <!-- <UsingToolIbcOptimization>true</UsingToolIbcOptimization> -->
+    <!-- <UsingToolXUnit>false</UsingToolXUnit> -->
+    <!-- <UsingToolMicrosoftNetCompilers>false</UsingToolMicrosoftNetCompilers> -->
 
     <!-- Toolset -->
-    <RoslynToolsRepoToolsetVersion>1.0.0-beta-62705-01</RoslynToolsRepoToolsetVersion>
-    <RoslynToolsModifyVsixManifestVersion>1.0.0-beta-62327-02</RoslynToolsModifyVsixManifestVersion>
-    <MicrosoftDiaSymReaderPdb2PdbVersion>1.1.0-beta1-62624-01</MicrosoftDiaSymReaderPdb2PdbVersion>
+    <!-- <RoslynToolsRepoToolsetVersion>1.0.0-beta-62705-01</RoslynToolsRepoToolsetVersion> -->
+    <!-- <RoslynToolsModifyVsixManifestVersion>1.0.0-beta-62327-02</RoslynToolsModifyVsixManifestVersion> -->
+    <!-- <MicrosoftDiaSymReaderPdb2PdbVersion>1.1.0-beta2-22306-02</MicrosoftDiaSymReaderPdb2PdbVersion> -->
     <!-- <MicroBuildPluginsSwixBuildVersion>1.1.37</MicroBuildPluginsSwixBuildVersion> -->
-    <CodecovVersion>1.12.4</CodecovVersion>
+    <!-- <CodecovVersion>1.12.4</CodecovVersion> -->
 
     <!-- VS SDK -->
-    <VSSDK_GeneralVersion>17.0.32112.339</VSSDK_GeneralVersion>
+    <!-- <VSSDK_GeneralVersion>17.0.32112.339</VSSDK_GeneralVersion> -->
   </PropertyGroup>
 </Project>
