@@ -114,4 +114,8 @@
     <MakeDir Directories="$(_TargetVsixContainerDir)" />
   </Target>
 
+  <Target Name="VSManifestBuild" AfterTargets="Build">
+    <MSBuild Projects="$(MSBuildThisFileDirectory)Microsoft.VisualStudio.ProjectSystem.Managed.vsmanproj" Targets="Build" />
+  </Target>
+
 </Project>

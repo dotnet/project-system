@@ -17,7 +17,7 @@
     <DotNetTool Condition="'$(OS)' == 'Windows_NT'">$(DotNetTool).exe</DotNetTool>
     <!-- <RepoPackagesDir>$(RepoRoot)packages\</RepoPackagesDir> -->
 
-    <!-- TODO: Inject versions from variables -->
+    <!-- TODO: Instead of creating these, use GeneratePathProperty="true" on the PackageReference for these packages -->
     <MicroBuildCoreDir>$(NuGetPackageRoot)microsoft.visualstudioeng.microbuild.core\1.0.0\build\</MicroBuildCoreDir>
     <MicroBuildSwixBuildDir>$(NuGetPackageRoot)microsoft.visualstudioeng.microbuild.plugins.swixbuild\1.1.286\build\</MicroBuildSwixBuildDir>
 

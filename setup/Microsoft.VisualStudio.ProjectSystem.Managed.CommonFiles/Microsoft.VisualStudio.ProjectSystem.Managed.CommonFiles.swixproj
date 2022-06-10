@@ -8,7 +8,7 @@
   <Import Project="..\Directory.Build.props" />
   <!-- This currently loads all SwixBuild packages, and multiple packages existing in your NuGet cache breaks the build. -->
   <!-- <Import Project="$(MicroBuildCoreDir)Microsoft.VisualStudioEng.MicroBuild.Core.props" /> -->
-  <Import Project="$(MicroBuildCoreDir)MicroBuild.Plugin.props" />
+  <!-- <Import Project="$(MicroBuildCoreDir)MicroBuild.Plugin.props" /> -->
   <Import Project="$(MicroBuildSwixBuildDir)Microsoft.VisualStudioEng.MicroBuild.Plugins.SwixBuild.props" />
 
   <PropertyGroup>

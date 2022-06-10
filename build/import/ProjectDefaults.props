@@ -50,6 +50,7 @@
     <Language Condition="'$(MSBuildProjectExtension)' == '.fsproj'">F#</Language>
     <Language Condition="'$(MSBuildProjectExtension)' == '.vcxproj'">C++</Language>
     <Language Condition="'$(MSBuildProjectExtension)' == '.swixproj'">SWiX</Language>
+    <Language Condition="'$(MSBuildProjectExtension)' == '.vsmanproj'">VSMan</Language>
   </PropertyGroup>
 
   <!--
