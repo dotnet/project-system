@@ -42,7 +42,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build.Diagnostics
             return featureFlagsService.IsFeatureEnabled("ManagedProjectSystem.EnableIncrementalBuildFailureTelemetry", defaultValue: false);
         }
 
-        public Task ReportFailureAsync(string failureReason, TimeSpan checkDuration, CancellationToken cancellationToken)
+        public Task ReportFailureAsync(string failureReason, string failureDescription, TimeSpan checkDuration, CancellationToken cancellationToken)
         {
             Assumes.False(_hasBeenReported);
 

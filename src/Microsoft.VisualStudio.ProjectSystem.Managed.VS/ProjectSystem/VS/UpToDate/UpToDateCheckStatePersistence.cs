@@ -121,7 +121,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.UpToDate
                     Assumes.NotNull(_dataByConfiguredProject);
 
                     if (_dataByConfiguredProject.TryGetValue((projectPath, configurationDimensions), out (int ItemHash, DateTime? ItemsChangedAtUtc, DateTime? LastSuccessfulBuildStartedAtUtc) storedData)
-                        && storedData.LastSuccessfulBuildStartedAtUtc is not null)
+                        && storedData.LastSuccessfulBuildStartedAtUtc is not null and { Ticks: > 0 })
                     {
                         return storedData.LastSuccessfulBuildStartedAtUtc;
                     }
@@ -133,6 +133,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.UpToDate
 
         public Task StoreLastSuccessfulBuildStateAsync(string projectPath, IImmutableDictionary<string, string> configurationDimensions, DateTime lastSuccessfulBuildStartedAtUtc, CancellationToken cancellationToken)
         {
+            Requires.Argument(lastSuccessfulBuildStartedAtUtc != DateTime.MinValue, nameof(lastSuccessfulBuildStartedAtUtc), "Must not be DateTime.MinValue.");
+
             return ExecuteUnderLockAsync(
                 token =>
                 {

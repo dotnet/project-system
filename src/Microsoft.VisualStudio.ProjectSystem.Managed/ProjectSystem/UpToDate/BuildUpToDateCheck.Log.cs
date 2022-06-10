@@ -24,6 +24,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             public int Indent { get; set; }
 
             public string? FailureReason { get; private set; }
+            public string? FailureDescription { get; private set; }
 
             public Log(TextWriter writer, LogLevel requestedLogLevel, Stopwatch stopwatch, TimestampCache timestampCache, string projectPath, Guid projectGuid, ITelemetryService? telemetryService, UpToDateCheckConfiguredInput upToDateCheckConfiguredInput, string? ignoreKinds, int checkNumber)
             {
@@ -168,8 +169,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                     (TelemetryPropertyName.UpToDateCheckIgnoreKinds, _ignoreKinds ?? "")
                 });
 
-                // Remember the failure reason for use in IncrementalBuildFailureDetector.
+                // Remember the failure reason and description for use in IncrementalBuildFailureDetector.
                 FailureReason = reason;
+                FailureDescription = string.Format(GetResourceString(resourceName), values);
 
                 return false;
             }
@@ -177,6 +179,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             public void UpToDate()
             {
                 Assumes.Null(FailureReason);
+                Assumes.Null(FailureDescription);
 
                 _stopwatch.Stop();
 

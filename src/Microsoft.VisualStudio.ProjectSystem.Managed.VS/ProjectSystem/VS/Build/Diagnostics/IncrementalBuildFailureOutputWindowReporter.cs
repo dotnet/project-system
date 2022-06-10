@@ -49,7 +49,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build.Diagnostics
             return featureFlagsService.IsFeatureEnabled("ManagedProjectSystem.EnableIncrementalBuildFailureOutputLogging", defaultValue: false);
         }
 
-        public async Task ReportFailureAsync(string failureReason, TimeSpan checkDuration, CancellationToken cancellationToken)
+        public async Task ReportFailureAsync(string failureReason, string failureDescription, TimeSpan checkDuration, CancellationToken cancellationToken)
         {
             // Report telemetry indicating that we showed this message. This will allow us to compare the number of times this is shown
             // with the click-through rate for more information.
@@ -68,7 +68,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build.Diagnostics
 
             if (_outputWindow.Value.GetPane(ref outputPaneGuid, out IVsOutputWindowPane? outputPane) == HResult.OK && outputPane != null)
             {
-                string message = string.Format(VSResources.IncrementalBuildFailureWarningMessage, Path.GetFileName(_project.FullPath));
+                string message = string.Format(VSResources.IncrementalBuildFailureWarningMessage_2, Path.GetFileName(_project.FullPath), failureDescription.TrimEnd(Delimiter.Period));
 
                 outputPane.OutputStringNoPump(message);
             }

@@ -110,10 +110,10 @@
         <target state="translated">{0} – import pochází z cílového souboru. Tento import nelze odebrat.</target>
         <note />
       </trans-unit>
-      <trans-unit id="IncrementalBuildFailureWarningMessage">
-        <source>WARNING: Potential incremental build failure in '{0}'. See: https://aka.ms/incremental-build-failure</source>
-        <target state="translated">UPOZORNĚNÍ: Potenciální přírůstkové selhání sestavení v {0}. Další informace: https://aka.ms/incremental-build-failure</target>
-        <note>{0} is the file name of the project.</note>
+      <trans-unit id="IncrementalBuildFailureWarningMessage_2">
+        <source>WARNING: Potential incremental build failure in '{0}'. {1}. See https://aka.ms/incremental-build-failure.</source>
+        <target state="new">WARNING: Potential incremental build failure in '{0}'. {1}. See https://aka.ms/incremental-build-failure.</target>
+        <note>{0} is the file name of the project. {1} is a description of the failure. The period '.' after {1} is intentional and should be kept.</note>
       </trans-unit>
       <trans-unit id="ProjectHotReloadSessionManager_AttachingToProcess">
         <source>Attaching to process.</source>
