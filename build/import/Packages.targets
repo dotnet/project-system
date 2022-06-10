@@ -25,6 +25,7 @@
         xunit.extensibility.core
         xunit.extensibility.execution
         XliffTasks
+        Microsoft.VisualStudioEng.MicroBuild.Plugins.SwixBuild
        -->
       https://pkgs.dev.azure.com/dnceng/public/_packaging/dotnet-eng/nuget/v3/index.json;
 
@@ -36,7 +37,7 @@
       <!-- https://devdiv.pkgs.visualstudio.com/_packaging/MicroBuildToolset/nuget/v3/index.json; -->
 
       <!-- MicroBuild tools including: Microsoft.VisualStudioEng.MicroBuild.Plugins.SwixBuild -->
-      https://pkgs.dev.azure.com/dnceng/_packaging/MicroBuildToolset/nuget/v3/index.json;
+      <!-- https://pkgs.dev.azure.com/dnceng/_packaging/MicroBuildToolset/nuget/v3/index.json; -->
       <!-- https://devdiv.pkgs.visualstudio.com/DevDiv/_packaging/VS-Platform/nuget/v3/index.json; -->
     </RestoreSources>
   </PropertyGroup>
