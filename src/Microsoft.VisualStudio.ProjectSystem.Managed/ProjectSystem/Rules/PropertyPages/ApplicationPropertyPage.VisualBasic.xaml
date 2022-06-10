@@ -8,6 +8,10 @@
     <Category Name="ApplicationFramework"
               DisplayName="Application Framework"
               Description="Application Framework settings." />
+
+    <Category Name="WPF"
+              DisplayName="WPF"
+              Description="Settings specific to WPF applications." />
   </Rule.Categories>
 
   <!-- TODO: Add a hyperlink/button to open the app.manifest. Previously, we had a View Windows Settings button. -->
@@ -172,5 +176,74 @@
         </NameValuePair.Value>
       </NameValuePair>
     </StringProperty.Metadata>
+  </StringProperty>
+
+  <DynamicEnumProperty Name="StartupURI"
+                       DisplayName="Startup URI"
+                       Description="Specifies the window that will open when the application loads."
+                       EnumProvider="PageItemEnumProvider"
+                       Category="WPF">
+    <DynamicEnumProperty.DataSource>
+      <DataSource Persistence="ProjectFileWithInterception"
+                  HasConfigurationCondition="False" />
+    </DynamicEnumProperty.DataSource>
+    <DynamicEnumProperty.Metadata>
+      <NameValuePair Name="VisibilityCondition">
+        <NameValuePair.Value>
+          (and
+            (has-evaluated-value "Application" "UseWPF" true)
+            (has-evaluated-value "Application" "UseApplicationFramework" true)
+            (has-evaluated-value "Application" "OutputType" "WinExe"))
+        </NameValuePair.Value>
+      </NameValuePair>
+    </DynamicEnumProperty.Metadata>
+  </DynamicEnumProperty>
+
+  <EnumProperty Name="ShutdownMode_WPF"
+                DisplayName="Shutdown mode"
+                Description="Specifies when the application should close automatically."
+                Category="WPF">
+    <EnumProperty.DataSource>
+      <DataSource Persistence="ProjectFileWithInterception"
+                  HasConfigurationCondition="False" />
+    </EnumProperty.DataSource>
+    <EnumProperty.Metadata>
+      <NameValuePair Name="VisibilityCondition">
+        <NameValuePair.Value>
+          (and
+            (has-evaluated-value "Application" "UseWPF" true)
+            (has-evaluated-value "Application" "UseApplicationFramework" true)
+            (has-evaluated-value "Application" "OutputType" "WinExe"))
+        </NameValuePair.Value>
+      </NameValuePair>
+    </EnumProperty.Metadata>
+    <!-- Note these match the values of the System.Windows.ShutdownMode enum. -->
+    <EnumValue Name="OnLastWindowClose" DisplayName="On last window close" />
+    <EnumValue Name="OnMainWindowClose" DisplayName="On main window close" />
+    <EnumValue Name="OnExplicitShutdown" DisplayName="On explicit shutdown" />
+  </EnumProperty>
+
+  <StringProperty Name="CreateOrOpenApplicationXaml"
+                  DisplayName="Edit XAML"
+                  Description="Open the Application.xaml file"
+                  Category="WPF">
+    <StringProperty.Metadata>
+      <NameValuePair Name="VisibilityCondition">
+        <NameValuePair.Value>
+          (and
+            (has-evaluated-value "Application" "UseWPF" true)
+            (has-evaluated-value "Application" "UseApplicationFramework" true)
+            (has-evaluated-value "Application" "OutputType" "WinExe"))
+        </NameValuePair.Value>
+      </NameValuePair>
+    </StringProperty.Metadata>
+    <StringProperty.ValueEditors>
+      <ValueEditor EditorType="LinkAction">
+        <ValueEditor.Metadata>
+          <NameValuePair Name="Action" Value="Command" />
+          <NameValuePair Name="Command" Value="CreateOrOpenApplicationXaml" />
+        </ValueEditor.Metadata>
+      </ValueEditor>
+    </StringProperty.ValueEditors>
   </StringProperty>
 </Rule>

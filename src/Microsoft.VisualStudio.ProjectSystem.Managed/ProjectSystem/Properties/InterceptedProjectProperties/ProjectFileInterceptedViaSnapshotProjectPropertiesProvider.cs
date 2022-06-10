@@ -10,7 +10,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
     [Export(typeof(IProjectInstancePropertiesProvider))]
     [ExportMetadata("Name", "ProjectFileWithInterceptionViaSnapshot")]
     [ExportMetadata("HasEquivalentProjectInstancePropertiesProvider", true)]
-    [AppliesTo(ProjectCapability.DotNet)]
+    [AppliesTo(ProjectCapability.ProjectPropertyInterception)]
     internal sealed class ProjectFileInterceptedViaSnapshotProjectPropertiesProvider : InterceptedProjectPropertiesProviderBase
     {
         [ImportingConstructor]

@@ -52,6 +52,16 @@
         <target state="new">Application Framework</target>
         <note />
       </trans-unit>
+      <trans-unit id="Category|WPF|Description">
+        <source>Settings specific to WPF applications.</source>
+        <target state="new">Settings specific to WPF applications.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="Category|WPF|DisplayName">
+        <source>WPF</source>
+        <target state="new">WPF</target>
+        <note />
+      </trans-unit>
       <trans-unit id="DynamicEnumProperty|SplashScreen|Description">
         <source>Sets the form to be used as a splash screen for the application.</source>
         <target state="new">Sets the form to be used as a splash screen for the application.</target>
@@ -60,6 +70,16 @@
       <trans-unit id="DynamicEnumProperty|SplashScreen|DisplayName">
         <source>Splash screen</source>
         <target state="new">Splash screen</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="DynamicEnumProperty|StartupURI|Description">
+        <source>Specifies the window that will open when the application loads.</source>
+        <target state="new">Specifies the window that will open when the application loads.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="DynamicEnumProperty|StartupURI|DisplayName">
+        <source>Startup URI</source>
+        <target state="new">Startup URI</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumProperty|AuthenticationMode|Description">
@@ -80,6 +100,16 @@
       <trans-unit id="EnumProperty|HighDpiMode|DisplayName">
         <source>High DPI mode</source>
         <target state="new">High DPI mode</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumProperty|ShutdownMode_WPF|Description">
+        <source>Specifies when the application should close automatically.</source>
+        <target state="new">Specifies when the application should close automatically.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumProperty|ShutdownMode_WPF|DisplayName">
+        <source>Shutdown mode</source>
+        <target state="new">Shutdown mode</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumProperty|ShutdownMode|Description">
@@ -135,6 +165,31 @@
       <trans-unit id="EnumValue|ShutdownMode.AfterMainFormCloses|DisplayName">
         <source>Shut down when the main form closes.</source>
         <target state="new">Shut down when the main form closes.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|ShutdownMode_WPF.OnExplicitShutdown|DisplayName">
+        <source>On explicit shutdown</source>
+        <target state="new">On explicit shutdown</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|ShutdownMode_WPF.OnLastWindowClose|DisplayName">
+        <source>On last window close</source>
+        <target state="new">On last window close</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|ShutdownMode_WPF.OnMainWindowClose|DisplayName">
+        <source>On main window close</source>
+        <target state="new">On main window close</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|CreateOrOpenApplicationXaml|Description">
+        <source>Open the Application.xaml file</source>
+        <target state="new">Open the Application.xaml file</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|CreateOrOpenApplicationXaml|DisplayName">
+        <source>Edit XAML</source>
+        <target state="new">Edit XAML</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|MinimumSplashScreenDisplayTime|Description">

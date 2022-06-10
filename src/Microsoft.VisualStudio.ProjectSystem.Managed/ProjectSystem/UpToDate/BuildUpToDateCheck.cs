@@ -574,50 +574,42 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
             string outputMarkerFile = _configuredProject.UnconfiguredProject.MakeRooted(state.CopyUpToDateMarkerItem);
 
-            if (log.Level >= LogLevel.Verbose)
-            {
-                log.Verbose(nameof(Resources.FUTD_AddingInputReferenceCopyMarkers));
-
-                log.Indent++;
-
-                foreach (string referenceMarkerFile in state.CopyReferenceInputs)
-                {
-                    log.VerboseLiteral(referenceMarkerFile);
-                }
-
-                log.Indent--;
-
-                log.Verbose(nameof(Resources.FUTD_AddingOutputReferenceCopyMarker));
-                log.Indent++;
-                log.VerboseLiteral(outputMarkerFile);
-                log.Indent--;
-            }
-
-            if (timestampCache.TryGetLatestInput(state.CopyReferenceInputs, out string? latestInputMarkerPath, out DateTime latestInputMarkerTime))
-            {
-                log.Info(nameof(Resources.FUTD_LatestWriteTimeOnInputMarker_2), latestInputMarkerTime, latestInputMarkerPath);
-            }
-            else
-            {
-                log.Info(nameof(Resources.FUTD_NoInputMarkersExist));
-                return true;
-            }
-
             DateTime? outputMarkerTime = timestampCache.GetTimestampUtc(outputMarkerFile);
 
-            if (outputMarkerTime != null)
-            {
-                log.Info(nameof(Resources.FUTD_WriteTimeOnOutputMarker_2), outputMarkerTime, outputMarkerFile);
-            }
-            else
+            if (outputMarkerTime is null)
             {
                 log.Info(nameof(Resources.FUTD_NoOutputMarkerExists_1), outputMarkerFile);
                 return true;
             }
 
-            if (outputMarkerTime < latestInputMarkerTime)
+            log.Info(nameof(Resources.FUTD_WriteTimeOnOutputMarker_2), outputMarkerTime, outputMarkerFile);
+
+            log.Verbose(nameof(Resources.FUTD_AddingInputReferenceCopyMarkers));
+
+            bool inputMarkerExists = false;
+
+            foreach (string inputMarker in state.CopyReferenceInputs)
             {
-                return log.Fail("InputMarkerNewerThanOutputMarker", nameof(Resources.FUTD_InputMarkerNewerThanOutputMarker));
+                log.Indent++;
+                log.VerboseLiteral(inputMarker);
+                log.Indent--;
+
+                DateTime? inputMarkerTime = timestampCache.GetTimestampUtc(inputMarker);
+
+                if (inputMarkerTime is not null)
+                {
+                    inputMarkerExists = true;
+
+                    if (outputMarkerTime < inputMarkerTime)
+                    {
+                        return log.Fail("InputMarkerNewerThanOutputMarker", nameof(Resources.FUTD_InputMarkerNewerThanOutputMarker_4), inputMarker, inputMarkerTime, outputMarkerFile, outputMarkerTime);
+                    }
+                }
+            }
+
+            if (!inputMarkerExists)
+            {
+                log.Info(nameof(Resources.FUTD_NoInputMarkersExist));
             }
 
             return true;
@@ -764,7 +756,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             _lastBuildStartTimeUtc = buildStartTimeUtc;
         }
 
-        async Task IBuildUpToDateCheckProviderInternal.NotifyBuildCompletedAsync(bool wasSuccessful)
+        async Task IBuildUpToDateCheckProviderInternal.NotifyBuildCompletedAsync(bool wasSuccessful, bool isRebuild)
         {
             if (_lastBuildStartTimeUtc == default)
             {
@@ -778,7 +770,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             {
                 ISubscription subscription = Volatile.Read(ref _subscription);
 
-                await subscription.UpdateLastSuccessfulBuildStartTimeUtcAsync(_lastBuildStartTimeUtc);
+                await subscription.UpdateLastSuccessfulBuildStartTimeUtcAsync(_lastBuildStartTimeUtc, isRebuild);
             }
 
             _lastBuildStartTimeUtc = default;
@@ -852,7 +844,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
                 globalProperties.TryGetValue(FastUpToDateCheckIgnoresKindsGlobalPropertyName, out string? ignoreKindsString);
 
-                (LogLevel requestedLogLevel, Guid projectGuid) = await WhenAll(
+                (LogLevel requestedLogLevel, Guid projectGuid) = await (
                     _projectSystemOptions.GetFastUpToDateLoggingLevelAsync(token),
                     _guidService.GetProjectGuidAsync(token));
 
@@ -939,13 +931,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
                     _lastFailureReason = logger.FailureReason ?? "";
                 }
-            }
-
-            static async Task<(T1, T2)> WhenAll<T1, T2>(Task<T1> t1, Task<T2> t2)
-            {
-                await Task.WhenAll(t1, t2);
-
-                return (await t1, await t2);
             }
         }
 
