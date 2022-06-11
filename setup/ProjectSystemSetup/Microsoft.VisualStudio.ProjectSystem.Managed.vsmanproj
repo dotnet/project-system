@@ -20,7 +20,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <MergeManifest Include="$(VisualStudioSetupInsertionPath)$(TargetName).json" SBOMFileLocation="$(ArtifactsBinDir)spdx_2.2\manifest.spdx.json" />
+    <MergeManifest Include="$(VisualStudioSetupInsertionPath)$(TargetName).json" SBOMFileLocation="$(ArtifactsBinDir)_manifest\spdx_2.2\manifest.spdx.json" />
   </ItemGroup>
 
   <Import Project="$(MicroBuildSwixBuildDir)Microsoft.VisualStudioEng.MicroBuild.Plugins.SwixBuild.targets" />
