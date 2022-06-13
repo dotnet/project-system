@@ -220,7 +220,9 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                 Dim userErrorMessage As String =
                     ex.Message +
                     Environment.NewLine +
+                    Environment.NewLine +
                     My.Resources.Microsoft_VisualStudio_Editors_Designer.SD_Err_CantLoadSettingsFile +
+                    Environment.NewLine +
                     Environment.NewLine +
                     My.Resources.Microsoft_VisualStudio_Editors_Designer.SD_ERR_HelpMessage_SuggestFileOpenWith
 
