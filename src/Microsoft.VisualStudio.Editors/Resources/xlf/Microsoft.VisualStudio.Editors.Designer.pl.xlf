@@ -686,6 +686,11 @@ Zmiana tego ustawienia spowoduje zresetowanie ustawień we wszystkich konfigurac
         <target state="translated">Komentarz</target>
         <note>Column names for the string table</note>
       </trans-unit>
+      <trans-unit id="SD_ERR_HelpMessage_SuggestFileOpenWith">
+        <source>If this is not a Settings-Designer file then use 'Open With' to open it in a text editor.</source>
+        <target state="new">If this is not a Settings-Designer file then use 'Open With' to open it in a text editor.</target>
+        <note />
+      </trans-unit>
       <trans-unit id="SingleFileGenerator_FailedToGenerateFile_1Arg">
         <source>Failed to generate file: {0}</source>
         <target state="translated">Nie można wygenerować pliku: {0}</target>
