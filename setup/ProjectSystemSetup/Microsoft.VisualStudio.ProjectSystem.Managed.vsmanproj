@@ -14,6 +14,9 @@
     <FinalizeManifest>true</FinalizeManifest>
     <FinalizeSkipLayout>true</FinalizeSkipLayout>
     <IsPackage>true</IsPackage>
+    <!-- Without setting TargetFrameworkVersion, GetReferenceAssemblyPaths runs against v4.0, which isn't installed on CI. -->
+    <!-- error MSB3644: The reference assemblies for .NETFramework,Version=v4.0 were not found. To resolve this, install the Developer Pack (SDK/Targeting Pack) for this framework version or retarget your application. You can download .NET Framework Developer Packs at https://aka.ms/msbuild/developerpacks -->
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <TargetName>$(MSBuildProjectName)</TargetName>
     <OutputPath>$(VisualStudioSetupInsertionPath)</OutputPath>
     <IntermediateOutputPath>$(VisualStudioSetupIntermediateOutputPath)$(TargetName)\</IntermediateOutputPath>
