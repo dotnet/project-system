@@ -9,7 +9,9 @@
   "cloudBuild": {
     "buildNumber": {
       "enabled": true,
-      "setVersionVariables": true
+      "includeCommitId": {
+        "when": "never"
+      }
     }
   }
 }
