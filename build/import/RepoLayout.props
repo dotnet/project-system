@@ -30,7 +30,9 @@
     <ArtifactsTmpDir>$(ArtifactsConfigurationDir)tmp\</ArtifactsTmpDir>
     <ArtifactsTestResultsDir>$(ArtifactsConfigurationDir)TestResults\</ArtifactsTestResultsDir>
     <ArtifactsSymStoreDirectory>$(ArtifactsConfigurationDir)SymStore\</ArtifactsSymStoreDirectory>
-    <!-- <PackageOutputPath>$(ArtifactsConfigurationDir)packages\</PackageOutputPath> -->
+    <!-- For .swixproj, this ends up overriding the output path logic when SimplifiedWixCompilerToolTask is called in the MicroBuild SwixBuild package. -->
+    <!-- When it is not set, it uses the default logic of using $(OutputPath)$(OutputName).vsix as the file path for a .swixproj. -->
+    <PackageOutputPath Condition="'$(MSBuildProjectExtension)' != '.swixproj'">$(ArtifactsConfigurationDir)packages\</PackageOutputPath>
     <VisualStudioSetupOutputPath>$(ArtifactsConfigurationDir)VSSetup\</VisualStudioSetupOutputPath>
     <VisualStudioSetupInsertionPath>$(VisualStudioSetupOutputPath)Insertion\</VisualStudioSetupInsertionPath>
     <VisualStudioSetupIntermediateOutputPath>$(ArtifactsConfigurationDir)VSSetup.obj\</VisualStudioSetupIntermediateOutputPath>
