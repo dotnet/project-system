@@ -35,7 +35,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         Friend WithEvents iconTableLayoutPanel As System.Windows.Forms.TableLayoutPanel
 
         <System.Diagnostics.DebuggerStepThrough()> Private Sub InitializeComponent()
-            Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(ApplicationPropPage))
             Me.TopHalfLayoutPanel = New System.Windows.Forms.TableLayoutPanel()
             Me.AssemblyNameLabel = New System.Windows.Forms.Label()
             Me.AssemblyName = New System.Windows.Forms.TextBox()
@@ -73,7 +72,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             '
             'TopHalfLayoutPanel
             '
-            resources.ApplyResources(Me.TopHalfLayoutPanel, "TopHalfLayoutPanel")
             Me.TopHalfLayoutPanel.Controls.Add(Me.AssemblyNameLabel, 0, 0)
             Me.TopHalfLayoutPanel.Controls.Add(Me.AssemblyName, 0, 1)
             Me.TopHalfLayoutPanel.Controls.Add(Me.RootNamespaceLabel, 1, 0)
@@ -90,44 +88,36 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             '
             'AssemblyNameLabel
             '
-            resources.ApplyResources(Me.AssemblyNameLabel, "AssemblyNameLabel")
             Me.AssemblyNameLabel.Name = "AssemblyNameLabel"
             '
             'AssemblyName
             '
-            resources.ApplyResources(Me.AssemblyName, "AssemblyName")
             Me.AssemblyName.Name = "AssemblyName"
             '
             'RootNamespaceLabel
             '
-            resources.ApplyResources(Me.RootNamespaceLabel, "RootNamespaceLabel")
             Me.RootNamespaceLabel.Name = "RootNamespaceLabel"
             '
             'RootNameSpace
             '
-            resources.ApplyResources(Me.RootNamespaceTextBox, "RootNameSpace")
             Me.RootNamespaceTextBox.Name = "RootNameSpace"
             '
             'OutputTypeLabel
             '
-            resources.ApplyResources(Me.OutputTypeLabel, "OutputTypeLabel")
             Me.OutputTypeLabel.Name = "OutputTypeLabel"
             '
             'OutputType
             '
-            resources.ApplyResources(Me.OutputType, "OutputType")
             Me.OutputType.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
             Me.OutputType.FormattingEnabled = True
             Me.OutputType.Name = "OutputType"
             '
             'StartupObjectLabel
             '
-            resources.ApplyResources(Me.StartupObjectLabel, "StartupObjectLabel")
             Me.StartupObjectLabel.Name = "StartupObjectLabel"
             '
             'StartupObject
             '
-            resources.ApplyResources(Me.StartupObject, "StartupObject")
             Me.StartupObject.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
             Me.StartupObject.FormattingEnabled = True
             Me.StartupObject.Name = "StartupObject"
@@ -135,37 +125,31 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             '
             'AssemblyInfoButton
             '
-            resources.ApplyResources(Me.AssemblyInfoButton, "AssemblyInfoButton")
             Me.AssemblyInfoButton.Name = "AssemblyInfoButton"
             '
             'TargetFrameworkLabel
             '
-            resources.ApplyResources(Me.TargetFrameworkLabel, "TargetFrameworkLabel")
             Me.TargetFrameworkLabel.Name = "TargetFrameworkLabel"
             '
             'TargetFramework
             '
-            resources.ApplyResources(Me.TargetFramework, "TargetFramework")
             Me.TargetFramework.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
             Me.TargetFramework.FormattingEnabled = True
             Me.TargetFramework.Name = "TargetFramework"
             Me.TargetFramework.Sorted = True
             '
             'AutoGenerateBindingRedirects
-            resources.ApplyResources(Me.AutoGenerateBindingRedirects, "AutoGenerateBindingRedirects")
             Me.AutoGenerateBindingRedirects.Name = "AutoGenerateBindingRedirects"
             '
             '
             'ResourcesGroupBox
             '
-            resources.ApplyResources(Me.ResourcesGroupBox, "ResourcesGroupBox")
             Me.ResourcesGroupBox.Controls.Add(Me.iconTableLayoutPanel)
             Me.ResourcesGroupBox.Name = "ResourcesGroupBox"
             Me.ResourcesGroupBox.TabStop = False
             '
             'iconTableLayoutPanel
             '
-            resources.ApplyResources(Me.iconTableLayoutPanel, "iconTableLayoutPanel")
             Me.iconTableLayoutPanel.Controls.Add(Me.ResourcesLabel, 0, 0)
             Me.iconTableLayoutPanel.Controls.Add(Me.IconRadioButton, 0, 1)
             Me.iconTableLayoutPanel.Controls.Add(Me.ManifestExplanationLabel, 0, 2)
@@ -182,28 +166,23 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             '
             'ResourcesLabel
             '
-            resources.ApplyResources(Me.ResourcesLabel, "ResourcesLabel")
             Me.ResourcesLabel.Name = "ResourcesLabel"
             '
             'IconRadioButton
             '
-            resources.ApplyResources(Me.IconRadioButton, "IconRadioButton")
             Me.IconRadioButton.Name = "IconRadioButton"
             '
             'ManifestExplanationLabel
             '
             Me.ManifestExplanationLabel.BorderStyle = System.Windows.Forms.BorderStyle.None
-            resources.ApplyResources(Me.ManifestExplanationLabel, "ManifestExplanationLabel")
             Me.ManifestExplanationLabel.Name = "ManifestExplanationLabel"
             '
             'ApplicationIconLabel
             '
-            resources.ApplyResources(Me.ApplicationIconLabel, "ApplicationIconLabel")
             Me.ApplicationIconLabel.Name = "ApplicationIconLabel"
             '
             'ApplicationIcon
             '
-            resources.ApplyResources(Me.ApplicationIcon, "ApplicationIcon")
             Me.ApplicationIcon.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend
             Me.ApplicationIcon.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.FileSystem
             Me.ApplicationIcon.FormattingEnabled = True
@@ -211,23 +190,19 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             '
             'AppIconBrowse
             '
-            resources.ApplyResources(Me.AppIconBrowse, "AppIconBrowse")
             Me.AppIconBrowse.Name = "AppIconBrowse"
             '
             'AppIconImage
             '
-            resources.ApplyResources(Me.AppIconImage, "AppIconImage")
             Me.AppIconImage.Name = "AppIconImage"
             Me.AppIconImage.TabStop = False
             '
             'ApplicationManifestLabel
             '
-            resources.ApplyResources(Me.ApplicationManifestLabel, "ApplicationManifestLabel")
             Me.ApplicationManifestLabel.Name = "ApplicationManifestLabel"
             '
             'ApplicationManifest
             '
-            resources.ApplyResources(Me.ApplicationManifest, "ApplicationManifest")
             Me.ApplicationManifest.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend
             Me.ApplicationManifest.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.FileSystem
             Me.ApplicationManifest.FormattingEnabled = True
@@ -235,29 +210,24 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             '
             'Win32ResourceRadioButton
             '
-            resources.ApplyResources(Me.Win32ResourceRadioButton, "Win32ResourceRadioButton")
             Me.Win32ResourceRadioButton.Name = "Win32ResourceRadioButton"
             '
             'Win32ResourceFile
             '
-            resources.ApplyResources(Me.Win32ResourceFile, "Win32ResourceFile")
             Me.Win32ResourceFile.Name = "Win32ResourceFile"
             '
             'Win32ResourceFileBrowse
             '
-            resources.ApplyResources(Me.Win32ResourceFileBrowse, "Win32ResourceFileBrowse")
             Me.Win32ResourceFileBrowse.Name = "Win32ResourceFileBrowse"
             '
             'overarchingLayoutPanel
             '
-            resources.ApplyResources(Me.overarchingLayoutPanel, "overarchingLayoutPanel")
             Me.overarchingLayoutPanel.Controls.Add(Me.ResourcesGroupBox, 0, 1)
             Me.overarchingLayoutPanel.Controls.Add(Me.TopHalfLayoutPanel, 0, 0)
             Me.overarchingLayoutPanel.Name = "overarchingLayoutPanel"
             '
             'ApplicationPropPage
             '
-            resources.ApplyResources(Me, "$this")
             Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
             Me.Controls.Add(Me.overarchingLayoutPanel)
             Me.Name = "ApplicationPropPage"
@@ -273,6 +243,44 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Me.ResumeLayout(False)
 
         End Sub
+
+        Protected Overrides Sub OnCreateControl()
+            ApplyResources()
+        End Sub
+
+        Private Sub ApplyResources()
+            Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(ApplicationPropPage))
+            resources.ApplyResources(Me.TopHalfLayoutPanel, "TopHalfLayoutPanel")
+            resources.ApplyResources(Me.AssemblyNameLabel, "AssemblyNameLabel")
+            resources.ApplyResources(Me.AssemblyName, "AssemblyName")
+            resources.ApplyResources(Me.RootNamespaceLabel, "RootNamespaceLabel")
+            resources.ApplyResources(Me.RootNamespaceTextBox, "RootNameSpace")
+            resources.ApplyResources(Me.OutputTypeLabel, "OutputTypeLabel")
+            resources.ApplyResources(Me.OutputType, "OutputType")
+            resources.ApplyResources(Me.StartupObjectLabel, "StartupObjectLabel")
+            resources.ApplyResources(Me.StartupObject, "StartupObject")
+            resources.ApplyResources(Me.AssemblyInfoButton, "AssemblyInfoButton")
+            resources.ApplyResources(Me.TargetFrameworkLabel, "TargetFrameworkLabel")
+            resources.ApplyResources(Me.TargetFramework, "TargetFramework")
+            resources.ApplyResources(Me.AutoGenerateBindingRedirects, "AutoGenerateBindingRedirects")
+            resources.ApplyResources(Me.ResourcesGroupBox, "ResourcesGroupBox")
+            resources.ApplyResources(Me.iconTableLayoutPanel, "iconTableLayoutPanel")
+            resources.ApplyResources(Me.ResourcesLabel, "ResourcesLabel")
+            resources.ApplyResources(Me.IconRadioButton, "IconRadioButton")
+            resources.ApplyResources(Me.ManifestExplanationLabel, "ManifestExplanationLabel")
+            resources.ApplyResources(Me.ApplicationIconLabel, "ApplicationIconLabel")
+            resources.ApplyResources(Me.ApplicationIcon, "ApplicationIcon")
+            resources.ApplyResources(Me.AppIconBrowse, "AppIconBrowse")
+            resources.ApplyResources(Me.AppIconImage, "AppIconImage")
+            resources.ApplyResources(Me.ApplicationManifestLabel, "ApplicationManifestLabel")
+            resources.ApplyResources(Me.ApplicationManifest, "ApplicationManifest")
+            resources.ApplyResources(Me.Win32ResourceRadioButton, "Win32ResourceRadioButton")
+            resources.ApplyResources(Me.Win32ResourceFile, "Win32ResourceFile")
+            resources.ApplyResources(Me.Win32ResourceFileBrowse, "Win32ResourceFileBrowse")
+            resources.ApplyResources(Me.overarchingLayoutPanel, "overarchingLayoutPanel")
+            resources.ApplyResources(Me, "$this")
+        End Sub
+
     End Class
 
 End Namespace
