@@ -444,10 +444,6 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
 
                 If customToolProperty IsNot Nothing Then
                     Dim previousCustomToolValue As String = TryCast(customToolProperty.Value, String)
-                    If customToolNamespaceProperty IsNot Nothing Then
-                        Dim previousToolNamespaceValue As String = Nothing
-                        previousToolNamespaceValue = TryCast(customToolProperty.Value, String)
-                    End If
 
                     customToolProperty.Value = value
 
