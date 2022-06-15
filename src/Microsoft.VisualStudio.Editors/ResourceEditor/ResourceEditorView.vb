@@ -268,10 +268,10 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
 
                 _isInDevice20Project = IsInDevice20Project(rootDesigner)
 
-                AddCodeGeneratorEntry(AccessModifierConverter.Access.Friend, IIf(useVbMyResXCodeGenerator, VBMYCUSTOMTOOL, STANDARDCUSTOMTOOL))
+                AddCodeGeneratorEntry(AccessModifierType.Internal, IIf(useVbMyResXCodeGenerator, VBMYCUSTOMTOOL, STANDARDCUSTOMTOOL))
                 If Not _isInDevice20Project Then
                     ' public generator is not supported in Device 2.0 projects
-                    AddCodeGeneratorEntry(AccessModifierConverter.Access.Public, IIf(useVbMyResXCodeGenerator, VBMYCUSTOMTOOLPUBLIC, STANDARDCUSTOMTOOLPUBLIC))
+                    AddCodeGeneratorEntry(AccessModifierType.Public, IIf(useVbMyResXCodeGenerator, VBMYCUSTOMTOOLPUBLIC, STANDARDCUSTOMTOOLPUBLIC))
                 End If
 
                 If allowNoCodeGeneration Then
