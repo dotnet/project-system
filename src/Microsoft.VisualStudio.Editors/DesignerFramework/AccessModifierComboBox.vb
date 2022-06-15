@@ -10,17 +10,19 @@ Imports Microsoft.VisualStudio.Editors.Common
 Imports Microsoft.VisualStudio.Shell.Interop
 
 Namespace Microsoft.VisualStudio.Editors.DesignerFramework
+    ''' <summary>
+    '''     Access modifier types for resources
+    ''' </summary>
+    Friend Enum AccessModifierType
+        [Public]
+        [Internal]
+    End Enum
 
     ''' <summary>
-    ''' Gets the language-dependent terminology for Public/Friend
+    ''' Gets the language-dependent terminology for Public/Internal
     ''' </summary>
     Friend Class AccessModifierConverter
         Private ReadOnly _converter As TypeConverter
-
-        Public Enum Access
-            [Public]
-            [Friend]
-        End Enum
 
         Public Sub New(provider As CodeDomProvider)
             If provider IsNot Nothing Then
@@ -35,18 +37,18 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         End Sub
 
         ''' <summary>
-        ''' Gets the language-dependent terminology for Public/Friend
+        ''' Gets the language-dependent terminology for Public/Internal
         ''' </summary>
         ''' <param name="accessibility"></param>
-        Public Function ConvertToString(accessibility As Access) As String
+        Public Function ConvertToString(accessibility As AccessModifierType) As String
             Select Case accessibility
-                Case Access.Friend
+                Case AccessModifierType.Internal
                     If _converter IsNot Nothing Then
                         Return _converter.ConvertToString(MemberAttributes.Assembly)
                     Else
                         Return "Internal"
                     End If
-                Case Access.Public
+                Case AccessModifierType.Public
                     If _converter IsNot Nothing Then
                         Return _converter.ConvertToString(MemberAttributes.Public)
                     Else
@@ -78,11 +80,6 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         ' checked the project system yet)
         ' This field should only be accessed through the CustomToolsRegistered property.
         Private _customToolsRegistered As Boolean?
-
-        Public Enum Access
-            [Public]
-            [Friend]
-        End Enum
 
 #Region "Nested class CodeGenerator"
 
@@ -124,10 +121,10 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         Private Class CodeGeneratorWithDelayedName
             Inherits CodeGenerator
 
-            Private ReadOnly _accessibility As AccessModifierConverter.Access
+            Private ReadOnly _accessibility As AccessModifierType
             Private ReadOnly _serviceProvider As IServiceProvider
 
-            Public Sub New(accessibility As AccessModifierConverter.Access, serviceProvider As IServiceProvider, customToolValue As String)
+            Public Sub New(accessibility As AccessModifierType, serviceProvider As IServiceProvider, customToolValue As String)
                 MyBase.New(customToolValue)
 
                 Requires.NotNull(serviceProvider, NameOf(serviceProvider))
@@ -311,8 +308,8 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         ''' </summary>
         ''' <param name="accessibility"></param>
         ''' <param name="customToolValue"></param>
-        Public Sub AddCodeGeneratorEntry(accessibility As AccessModifierConverter.Access, customToolValue As String)
-            Debug.Assert([Enum].IsDefined(GetType(AccessModifierConverter.Access), accessibility))
+        Public Sub AddCodeGeneratorEntry(accessibility As AccessModifierType, customToolValue As String)
+            Debug.Assert([Enum].IsDefined(GetType(AccessModifierType), accessibility))
 
             Dim entry As New CodeGeneratorWithDelayedName(accessibility, _serviceProvider, customToolValue)
             _codeGeneratorEntries.Add(entry)
