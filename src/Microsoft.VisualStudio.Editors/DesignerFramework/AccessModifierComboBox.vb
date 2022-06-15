@@ -216,7 +216,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
                         menuCommandService.AddCommand(newDesignerMenuCommand)
                     Else
                         ' Add an imposter command to keep an handler around when the UI is closed
-                        Dim dummyDesignerMenuCommand As New ImposterDesignerMenuCommand(commandID)
+                        Dim dummyDesignerMenuCommand As New DummyDesignerMenuCommand(commandID)
                         AddMenuCommandForwarderToInternalList(commandID, dummyDesignerMenuCommand)
                         menuCommandService.AddCommand(dummyDesignerMenuCommand)
                     End If
