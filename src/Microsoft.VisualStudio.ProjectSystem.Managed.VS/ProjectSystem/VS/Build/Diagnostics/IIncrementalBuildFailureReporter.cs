@@ -12,7 +12,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build.Diagnostics
         ///   Gets whether this reporter is enabled or not.
         /// </summary>
         /// <remarks>
-        ///   When this method returns <see langword="false"/>, <see cref="ReportFailureAsync(string, TimeSpan, CancellationToken)"/>
+        ///   When this method returns <see langword="false"/>, <see cref="ReportFailureAsync(string, string, TimeSpan, CancellationToken)"/>
         ///   will not be called. If all exports of <see cref="IIncrementalBuildFailureReporter"/> return false, the incremental
         ///   build failure check is not performed at all.
         /// </remarks>
@@ -24,9 +24,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build.Diagnostics
         ///   Reports an incremental build failure for the project in the current scope.
         /// </summary>
         /// <param name="failureReason">A string that identifies the reason for the failure.</param>
+        /// <param name="failureDescription">A detailed description of the failure. May include file paths and timestamps.</param>
         /// <param name="checkDuration">The duration spent performing the incremental build failure check.</param>
         /// <param name="cancellationToken">A token whose cancellation marks lost interest in the result of this task.</param>
         /// <returns>A task that completes when reporting is done.</returns>
-        Task ReportFailureAsync(string failureReason, TimeSpan checkDuration, CancellationToken cancellationToken);
+        Task ReportFailureAsync(string failureReason, string failureDescription, TimeSpan checkDuration, CancellationToken cancellationToken);
     }
 }

@@ -18,6 +18,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
         /// </remarks>
         /// <param name="cancellationToken">A token that is cancelled if the caller loses interest in the result.</param>
         /// <returns></returns>
-        Task<(bool IsUpToDate, string? FailureReason)> ValidateUpToDateAsync(CancellationToken cancellationToken = default);
+        Task<(bool IsUpToDate, string? FailureReason, string? FailureDescription)> ValidateUpToDateAsync(CancellationToken cancellationToken = default);
     }
 }

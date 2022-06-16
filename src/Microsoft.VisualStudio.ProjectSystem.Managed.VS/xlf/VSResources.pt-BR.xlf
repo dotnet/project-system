@@ -110,10 +110,10 @@
         <target state="translated">{0} – a importação é proveniente do arquivo de destino. Essa importação não pode ser removida.</target>
         <note />
       </trans-unit>
-      <trans-unit id="IncrementalBuildFailureWarningMessage">
-        <source>WARNING: Potential incremental build failure in '{0}'. See: https://aka.ms/incremental-build-failure</source>
-        <target state="translated">AVISO: possível falha de build incremental em '{0}'. Consulte: https://aka.ms/incremental-build-failure</target>
-        <note>{0} is the file name of the project.</note>
+      <trans-unit id="IncrementalBuildFailureWarningMessage_2">
+        <source>WARNING: Potential incremental build failure in '{0}'. {1}. See https://aka.ms/incremental-build-failure.</source>
+        <target state="new">WARNING: Potential incremental build failure in '{0}'. {1}. See https://aka.ms/incremental-build-failure.</target>
+        <note>{0} is the file name of the project. {1} is a description of the failure. The period '.' after {1} is intentional and should be kept.</note>
       </trans-unit>
       <trans-unit id="ProjectHotReloadSessionManager_AttachingToProcess">
         <source>Attaching to process.</source>

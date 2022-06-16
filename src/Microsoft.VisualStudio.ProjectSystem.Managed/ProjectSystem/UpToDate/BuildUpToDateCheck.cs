@@ -52,7 +52,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
         private readonly IUpToDateCheckHost _upToDateCheckHost;
 
         private IImmutableDictionary<string, string> _lastGlobalProperties = ImmutableStringDictionary<string>.EmptyOrdinal;
-        private string _lastFailureReason = "";
+        private string? _lastFailureReason;
+        private string? _lastFailureDescription;
         private DateTime _lastBuildStartTimeUtc = DateTime.MinValue;
 
         private ISubscription _subscription;
@@ -787,13 +788,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             return IsUpToDateAsync(buildAction, logWriter, ImmutableDictionary<string, string>.Empty, cancellationToken);
         }
 
-        async Task<(bool IsUpToDate, string? FailureReason)> IBuildUpToDateCheckValidator.ValidateUpToDateAsync(CancellationToken cancellationToken)
+        async Task<(bool IsUpToDate, string? FailureReason, string? FailureDescription)> IBuildUpToDateCheckValidator.ValidateUpToDateAsync(CancellationToken cancellationToken)
         {
             bool isUpToDate = await IsUpToDateInternalAsync(TextWriter.Null, _lastGlobalProperties, isValidationRun: true, cancellationToken);
 
-            string failureReason = isUpToDate ? "" : _lastFailureReason;
+            string? failureReason = isUpToDate ? null : _lastFailureReason;
+            string? failureDescription = isUpToDate ? null : _lastFailureDescription;
 
-            return (isUpToDate, failureReason);
+            return (isUpToDate, failureReason, failureDescription);
         }
 
         public Task<bool> IsUpToDateAsync(
@@ -929,7 +931,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 {
                     logger.Verbose(nameof(Resources.FUTD_Completed), sw.Elapsed.TotalMilliseconds);
 
-                    _lastFailureReason = logger.FailureReason ?? "";
+                    _lastFailureReason = logger.FailureReason;
+                    _lastFailureDescription = logger.FailureDescription;
                 }
             }
         }
