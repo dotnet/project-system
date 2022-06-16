@@ -184,9 +184,9 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
                 If menuCommandService IsNot Nothing Then
                     ' Remove previous active command (if any) and tell the shell that this is no longer the active 
                     ' command...
-                    Dim previousCommand As DesignerMenuCommand = GetMenuCommandAtHeadOfInternalList(commandID)
-                    If previousCommand IsNot Nothing Then
-                        menuCommandService.RemoveCommand(previousCommand)
+                    Dim previousDesignerMenuCommand As DesignerMenuCommand = GetMenuCommandAtHeadOfInternalList(commandID)
+                    If previousDesignerMenuCommand IsNot Nothing Then
+                        menuCommandService.RemoveCommand(previousDesignerMenuCommand)
                     End If
 
                     ' Add the command to our internal list of commands...
@@ -202,23 +202,23 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
                 Dim menuCommandService As IMenuCommandService = VBPackage.Instance.MenuCommandService
                 If menuCommandService IsNot Nothing Then
                     ' Remove the currently active command (if any) from the MenuCommandService
-                    Dim previousCommand As DesignerMenuCommand = GetMenuCommandAtHeadOfInternalList(commandID)
-                    If previousCommand IsNot Nothing Then
-                        menuCommandService.RemoveCommand(previousCommand)
+                    Dim previousDesignerMenuCommand As DesignerMenuCommand = GetMenuCommandAtHeadOfInternalList(commandID)
+                    If previousDesignerMenuCommand IsNot Nothing Then
+                        menuCommandService.RemoveCommand(previousDesignerMenuCommand)
                     End If
 
                     ' Update our internal list of commands
                     RemoveMenuCommandForwarderFromInternalList(commandID, forwarder)
 
                     ' Re-register the new command that is supposed to be active
-                    Dim newCommand As DesignerMenuCommand = GetMenuCommandAtHeadOfInternalList(commandID)
-                    If newCommand IsNot Nothing Then
-                        menuCommandService.AddCommand(newCommand)
+                    Dim newDesignerMenuCommand As DesignerMenuCommand = GetMenuCommandAtHeadOfInternalList(commandID)
+                    If newDesignerMenuCommand IsNot Nothing Then
+                        menuCommandService.AddCommand(newDesignerMenuCommand)
                     Else
-                        ' Add an imposter command to keep an handler around when the UI is closed
-                        Dim imposterCommand As ImposterDesignerMenuCommand = New ImposterDesignerMenuCommand(commandID)
-                        AddMenuCommandForwarderToInternalList(commandID, imposterCommand)
-                        menuCommandService.AddCommand(imposterCommand)
+                        ' Add a dummy command to keep an handler around when the UI is closed
+                        Dim dummyDesignerMenuCommand As New DummyDesignerMenuCommand(commandID)
+                        AddMenuCommandForwarderToInternalList(commandID, dummyDesignerMenuCommand)
+                        menuCommandService.AddCommand(dummyDesignerMenuCommand)
                     End If
                 Else
                     Debug.Fail("No package menu command service?")
@@ -311,9 +311,9 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         Public Sub AddCodeGeneratorEntry(accessibility As AccessModifierType, customToolValue As String)
             Debug.Assert([Enum].IsDefined(GetType(AccessModifierType), accessibility))
 
-            Dim entry As New CodeGeneratorWithDelayedName(accessibility, _serviceProvider, customToolValue)
-            _codeGeneratorEntries.Add(entry)
-            AddRecognizedCustomToolValue(entry.CustomToolValue)
+            Dim codeGeneratorEntry As New CodeGeneratorWithDelayedName(accessibility, _serviceProvider, customToolValue)
+            _codeGeneratorEntries.Add(codeGeneratorEntry)
+            AddRecognizedCustomToolValue(codeGeneratorEntry.CustomToolValue)
         End Sub
 
         ''' <summary>
@@ -323,9 +323,9 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         ''' <param name="displayName"></param>
         ''' <param name="customToolValue"></param>
         Public Sub AddCodeGeneratorEntry(displayName As String, customToolValue As String)
-            Dim entry As New CodeGeneratorWithName(displayName, customToolValue)
-            _codeGeneratorEntries.Add(entry)
-            AddRecognizedCustomToolValue(entry.CustomToolValue)
+            Dim codeGeneratorEntry As New CodeGeneratorWithName(displayName, customToolValue)
+            _codeGeneratorEntries.Add(codeGeneratorEntry)
+            AddRecognizedCustomToolValue(codeGeneratorEntry.CustomToolValue)
         End Sub
 
         ''' <summary>
@@ -354,15 +354,47 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         Protected Function GetMenuCommandsToRegister(commandIdCombobox As CommandID, commandIdGetDropdownValues As CommandID) As ICollection
             ' For a dynamic combobox, we need to add two commands, one to handle the combobox, and one to fill
             ' it with items...
-            Dim MenuCommands As New List(Of MenuCommand)
-            _designerCommandBarComboBoxCommand = New DesignerCommandBarComboBox(_rootDesigner, commandIdCombobox, AddressOf GetCurrentValue, AddressOf SetCurrentValue, AddressOf EnabledHandler)
+            Dim menuCommands As New List(Of MenuCommand)
+            _designerCommandBarComboBoxCommand = New DesignerCommandBarComboBox(_rootDesigner, commandIdCombobox, AddressOf GetCurrentAccessibilityValue, AddressOf SetCurrentAccessibilityValue, AddressOf EnabledHandler)
             _commandIdCombobox = commandIdCombobox
-            MenuCommands.Add(_designerCommandBarComboBoxCommand)
-            MenuCommands.Add(New DesignerCommandBarComboBoxFiller(_rootDesigner, commandIdGetDropdownValues, AddressOf GetDropdownValues))
+            menuCommands.Add(_designerCommandBarComboBoxCommand)
+            menuCommands.Add(New DesignerCommandBarComboBoxFiller(_rootDesigner, commandIdGetDropdownValues, AddressOf GetDropdownValues))
 
             RegisterMenuCommandForwarder()
 
-            Return MenuCommands
+            Return menuCommands
+        End Function
+
+        ''' <summary>
+        ''' Return the current accessibility value
+        ''' </summary>
+        Private Function GetCurrentAccessibilityValue() As String
+            Dim currentValue As String
+            Dim matchingCodeGenerator As CodeGenerator = GetCurrentMatchingGenerator()
+            If matchingCodeGenerator IsNot Nothing Then
+                currentValue = matchingCodeGenerator.DisplayName
+            Else
+                currentValue = My.Resources.Microsoft_VisualStudio_Editors_Designer.RSE_AccessModifier_Custom
+            End If
+
+            Switches.TracePDAccessModifierCombobox(TraceLevel.Verbose, "GetCurrentAccessibilityValue: " & [GetType].Name & ": " & currentValue)
+            Return currentValue
+        End Function
+
+        ''' <summary>
+        ''' Searches the current custom tool value for a matching generator entry.
+        ''' </summary>
+        Private Function GetCurrentMatchingGenerator() As CodeGenerator
+            Dim customToolValue As String = Nothing
+            If TryGetCustomToolPropertyValue(customToolValue) Then
+                For Each codeGenerator As CodeGenerator In _codeGeneratorEntries
+                    If codeGenerator.CustomToolValue.Equals(customToolValue, StringComparison.OrdinalIgnoreCase) Then
+                        Return codeGenerator
+                    End If
+                Next
+            End If
+
+            Return Nothing
         End Function
 
         ''' <summary>
@@ -373,10 +405,10 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         Private Function TryGetCustomToolPropertyValue(ByRef value As String) As Boolean
             value = Nothing
 
-            Dim ToolProperty As EnvDTE.Property = DTEUtils.GetProjectItemProperty(_projectItem, DTEUtils.PROJECTPROPERTY_CUSTOMTOOL)
-            If ToolProperty IsNot Nothing Then
-                Dim CurrentCustomToolValue As String = TryCast(ToolProperty.Value, String)
-                value = CurrentCustomToolValue
+            Dim customToolProperty As EnvDTE.Property = DTEUtils.GetProjectItemProperty(_projectItem, DTEUtils.PROJECTPROPERTY_CUSTOMTOOL)
+            If customToolProperty IsNot Nothing Then
+                Dim customToolValue As String = TryCast(customToolProperty.Value, String)
+                value = customToolValue
                 Return True
             End If
 
@@ -384,52 +416,20 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         End Function
 
         ''' <summary>
-        ''' Return the current accessibility value
-        ''' </summary>
-        Private Function GetCurrentValue() As String
-            Dim currentValue As String
-            Dim matchingEntry As CodeGenerator = GetCurrentMatchingGenerator()
-            If matchingEntry IsNot Nothing Then
-                currentValue = matchingEntry.DisplayName
-            Else
-                currentValue = My.Resources.Microsoft_VisualStudio_Editors_Designer.RSE_AccessModifier_Custom
-            End If
-
-            Switches.TracePDAccessModifierCombobox(TraceLevel.Verbose, "GetCurrentValue: " & [GetType].Name & ": " & currentValue)
-            Return currentValue
-        End Function
-
-        ''' <summary>
-        ''' Searches the current custom tool value for a matching generator entry.
-        ''' </summary>
-        Private Function GetCurrentMatchingGenerator() As CodeGenerator
-            Dim customToolValue As String = Nothing
-            If TryGetCustomToolPropertyValue(customToolValue) Then
-                For Each entry As CodeGenerator In _codeGeneratorEntries
-                    If entry.CustomToolValue.Equals(customToolValue, StringComparison.OrdinalIgnoreCase) Then
-                        Return entry
-                    End If
-                Next
-            End If
-
-            Return Nothing
-        End Function
-
-        ''' <summary>
         ''' Set the current accessibility value
         ''' </summary>
         ''' <param name="value"></param>
-        Private Sub SetCurrentValue(value As String)
-            Switches.TracePDAccessModifierCombobox(TraceLevel.Verbose, "SetCurrentValue: " & [GetType].Name & ": " & value)
+        Private Sub SetCurrentAccessibilityValue(value As String)
+            Switches.TracePDAccessModifierCombobox(TraceLevel.Verbose, "SetCurrentAccessibilityValue: " & [GetType].Name & ": " & value)
 
-            For Each entry As CodeGenerator In _codeGeneratorEntries
-                If entry.DisplayName.Equals(value, StringComparison.CurrentCultureIgnoreCase) Then
-                    TrySetCustomToolValue(entry.CustomToolValue)
+            For Each codeGenerator As CodeGenerator In _codeGeneratorEntries
+                If codeGenerator.DisplayName.Equals(value, StringComparison.CurrentCultureIgnoreCase) Then
+                    TrySetCustomToolValue(codeGenerator.CustomToolValue)
                     Return
                 End If
             Next
 
-            'Couldn't find the expected entry.  Do nothing.
+            'Couldn't find the expected codeGenerator.  Do nothing.
         End Sub
 
         ''' <summary>
@@ -439,25 +439,21 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         ''' <param name="value"></param>
         Private Sub TrySetCustomToolValue(value As String)
             Try
-                Dim ToolProperty As EnvDTE.Property = DTEUtils.GetProjectItemProperty(_projectItem, DTEUtils.PROJECTPROPERTY_CUSTOMTOOL)
-                Dim ToolNamespaceProperty As EnvDTE.Property = DTEUtils.GetProjectItemProperty(_projectItem, DTEUtils.PROJECTPROPERTY_CUSTOMTOOLNAMESPACE)
+                Dim customToolProperty As EnvDTE.Property = DTEUtils.GetProjectItemProperty(_projectItem, DTEUtils.PROJECTPROPERTY_CUSTOMTOOL)
+                Dim customToolNamespaceProperty As EnvDTE.Property = DTEUtils.GetProjectItemProperty(_projectItem, DTEUtils.PROJECTPROPERTY_CUSTOMTOOLNAMESPACE)
 
-                If ToolProperty IsNot Nothing Then
-                    Dim previousToolValue As String = TryCast(ToolProperty.Value, String)
-                    If ToolNamespaceProperty IsNot Nothing Then
-                        Dim previousToolNamespaceValue As String = Nothing
-                        previousToolNamespaceValue = TryCast(ToolProperty.Value, String)
-                    End If
+                If customToolProperty IsNot Nothing Then
+                    Dim previousCustomToolValue As String = TryCast(customToolProperty.Value, String)
 
-                    ToolProperty.Value = value
+                    customToolProperty.Value = value
 
-                    If ToolNamespaceProperty IsNot Nothing _
+                    If customToolNamespaceProperty IsNot Nothing _
                     AndAlso _namespaceToOverrideIfCustomToolIsEmpty IsNot Nothing _
-                    AndAlso previousToolValue = "" Then
+                    AndAlso previousCustomToolValue = "" Then
                         ' This is currently used for the VB scenario - if the custom tool has been yet been set, and
                         '   the user turns on code generation, we want to also set the custom tool namespace to the
                         '   default for VB (My.Resources).
-                        ToolNamespaceProperty.Value = _namespaceToOverrideIfCustomToolIsEmpty
+                        customToolNamespaceProperty.Value = _namespaceToOverrideIfCustomToolIsEmpty
                     End If
 
                     _rootDesigner.RefreshMenuStatus()
@@ -477,21 +473,21 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         ''' Gets the set of entries for the AccessModifier dropdown on the toolbar
         ''' </summary>
         Friend Function GetDropdownValues() As String()
-            Dim Values As New List(Of String)
+            Dim values As New List(Of String)
 
-            For Each entry As CodeGenerator In _codeGeneratorEntries
-                Values.Add(entry.DisplayName)
+            For Each codeGenerator As CodeGenerator In _codeGeneratorEntries
+                values.Add(codeGenerator.DisplayName)
             Next
 
-            Return Values.ToArray()
+            Return values.ToArray()
         End Function
 
         Protected MustOverride Function IsDesignerEditable() As Boolean
 
         Private Function EnabledHandler(MenuCommand As DesignerMenuCommand) As Boolean
             Try
-                Dim shouldBeEnabled As Boolean = Me.ShouldBeEnabled()
-                Switches.TracePDAccessModifierCombobox(TraceLevel.Verbose, "EnabledHandler: " & [GetType].Name & ": Enabled=" & shouldBeEnabled)
+                Dim shouldAccessModifierComboBoxBeEnabled As Boolean = ShouldBeEnabled()
+                Switches.TracePDAccessModifierCombobox(TraceLevel.Verbose, "EnabledHandler: " & [GetType].Name & ": Enabled=" & shouldAccessModifierComboBoxBeEnabled)
             Catch ex As Exception When ReportWithoutCrash(ex, "Failed to determine if the access modifier combobox should be enabled", NameOf(AccessModifierCombobox))
                 Throw
             End Try
@@ -538,8 +534,8 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
                 If Not _customToolsRegistered.HasValue Then
                     ' If one or more of the custom tools in the drop-down are not registered for the current
                     '  project type, we disable the combobox...
-                    For Each generator As CodeGenerator In _codeGeneratorEntries
-                        If Not ShellUtil.IsCustomToolRegistered(Hierarchy, generator.CustomToolValue) Then
+                    For Each codeGenerator As CodeGenerator In _codeGeneratorEntries
+                        If Not ShellUtil.IsCustomToolRegistered(Hierarchy, codeGenerator.CustomToolValue) Then
                             _customToolsRegistered = False
                             Return _customToolsRegistered.Value
                         End If
