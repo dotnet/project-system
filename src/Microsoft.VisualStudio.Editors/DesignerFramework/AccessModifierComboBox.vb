@@ -215,7 +215,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
                     If newDesignerMenuCommand IsNot Nothing Then
                         menuCommandService.AddCommand(newDesignerMenuCommand)
                     Else
-                        ' Add an imposter command to keep an handler around when the UI is closed
+                        ' Add a dummy command to keep an handler around when the UI is closed
                         Dim dummyDesignerMenuCommand As New DummyDesignerMenuCommand(commandID)
                         AddMenuCommandForwarderToInternalList(commandID, dummyDesignerMenuCommand)
                         menuCommandService.AddCommand(dummyDesignerMenuCommand)
@@ -311,9 +311,9 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         Public Sub AddCodeGeneratorEntry(accessibility As AccessModifierType, customToolValue As String)
             Debug.Assert([Enum].IsDefined(GetType(AccessModifierType), accessibility))
 
-            Dim codeGenerator As New CodeGeneratorWithDelayedName(accessibility, _serviceProvider, customToolValue)
-            _codeGeneratorEntries.Add(codeGenerator)
-            AddRecognizedCustomToolValue(codeGenerator.CustomToolValue)
+            Dim codeGeneratorEntry As New CodeGeneratorWithDelayedName(accessibility, _serviceProvider, customToolValue)
+            _codeGeneratorEntries.Add(codeGeneratorEntry)
+            AddRecognizedCustomToolValue(codeGeneratorEntry.CustomToolValue)
         End Sub
 
         ''' <summary>
@@ -323,9 +323,9 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         ''' <param name="displayName"></param>
         ''' <param name="customToolValue"></param>
         Public Sub AddCodeGeneratorEntry(displayName As String, customToolValue As String)
-            Dim codeGenerator As New CodeGeneratorWithName(displayName, customToolValue)
-            _codeGeneratorEntries.Add(codeGenerator)
-            AddRecognizedCustomToolValue(codeGenerator.CustomToolValue)
+            Dim codeGeneratorEntry As New CodeGeneratorWithName(displayName, customToolValue)
+            _codeGeneratorEntries.Add(codeGeneratorEntry)
+            AddRecognizedCustomToolValue(codeGeneratorEntry.CustomToolValue)
         End Sub
 
         ''' <summary>
