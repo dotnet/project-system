@@ -5,12 +5,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.WindowsForms;
 /// <summary>
 /// Provides access to properties in the myapp file.
 /// </summary>
-internal interface IMyAppXamlFileAccessor
+internal interface IMyAppFileAccessor
 {
     /// <summary>
     /// Returns the current value of property as stored in the myapp file.
     /// </summary>
-    Task<bool> GetMySubMainAsync();
+    Task<bool?> GetMySubMainAsync();
 
     /// <summary>
     /// Sets the current value of property in the myapp file.
@@ -20,7 +20,7 @@ internal interface IMyAppXamlFileAccessor
     /// <summary>
     /// Returns the current value of property as stored in the myapp file.
     /// </summary>
-    Task<string> GetMainFormAsync();
+    Task<string?> GetMainFormAsync();
 
     /// <summary>
     /// Sets the current value of property in the myapp file.
@@ -30,7 +30,7 @@ internal interface IMyAppXamlFileAccessor
     /// <summary>
     /// Returns the current value of property as stored in the myapp file.
     /// </summary>
-    Task<bool> GetSingleInstanceAsync();
+    Task<bool?> GetSingleInstanceAsync();
 
     /// <summary>
     /// Sets the current value of property in the myapp file.
@@ -40,7 +40,7 @@ internal interface IMyAppXamlFileAccessor
     /// <summary>
     /// Returns the current value of property as stored in the myapp file.
     /// </summary>
-    Task<int> GetShutdownModeAsync();
+    Task<int?> GetShutdownModeAsync();
 
     /// <summary>
     /// Sets the current value of property in the myapp file.
@@ -50,7 +50,7 @@ internal interface IMyAppXamlFileAccessor
     /// <summary>
     /// Returns the current value of property as stored in the myapp file.
     /// </summary>
-    Task<bool> GetEnableVisualStylesAsync();
+    Task<bool?> GetEnableVisualStylesAsync();
 
     /// <summary>
     /// Sets the current value of property in the myapp file.
@@ -60,7 +60,7 @@ internal interface IMyAppXamlFileAccessor
     /// <summary>
     /// Returns the current value of property as stored in the myapp file.
     /// </summary>
-    Task<int> GetAuthenticationModeAsync();
+    Task<int?> GetAuthenticationModeAsync();
 
     /// <summary>
     /// Sets the current value of property in the myapp file.
@@ -70,7 +70,7 @@ internal interface IMyAppXamlFileAccessor
     /// <summary>
     /// Returns the current value of property as stored in the myapp file.
     /// </summary>
-    Task<bool> GetSaveMySettingsOnExitAsync();
+    Task<bool?> GetSaveMySettingsOnExitAsync();
 
     /// <summary>
     /// Sets the current value of property in the myapp file.
@@ -80,7 +80,7 @@ internal interface IMyAppXamlFileAccessor
     /// <summary>
     /// Returns the current value of property as stored in the myapp file.
     /// </summary>
-    Task<int> GetHighDpiModeAsync();
+    Task<int?> GetHighDpiModeAsync();
 
     /// <summary>
     /// Sets the current value of property in the myapp file.
@@ -90,7 +90,7 @@ internal interface IMyAppXamlFileAccessor
     /// <summary>
     /// Returns the current value of property as stored in the myapp file.
     /// </summary>
-    Task<string> GetSplashScreenAsync();
+    Task<string?> GetSplashScreenAsync();
 
     /// <summary>
     /// Sets the current value of property in the myapp file.
@@ -100,7 +100,7 @@ internal interface IMyAppXamlFileAccessor
     /// <summary>
     /// Returns the current value of property as stored in the myapp file.
     /// </summary>
-    Task<int> GetMinimumSplashScreenDisplayTimeAsync();
+    Task<int?> GetMinimumSplashScreenDisplayTimeAsync();
 
     /// <summary>
     /// Sets the current value of property in the myapp file.

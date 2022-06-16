@@ -36,7 +36,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
             {
                 ExportInterceptingPropertyValueProviderFile.ProjectFile => ContractNames.ProjectPropertyProviders.ProjectFile,
                 ExportInterceptingPropertyValueProviderFile.UserFile => ContractNames.ProjectPropertyProviders.UserFile,
-                ExportInterceptingPropertyValueProviderFile.UserFileWithXamlDefaults => ContractNames.ProjectPropertyProviders.UserFileWithXamlDefaults
+                ExportInterceptingPropertyValueProviderFile.UserFileWithXamlDefaults => ContractNames.ProjectPropertyProviders.UserFileWithXamlDefaults,
 
                 _ => string.Empty,
             };
