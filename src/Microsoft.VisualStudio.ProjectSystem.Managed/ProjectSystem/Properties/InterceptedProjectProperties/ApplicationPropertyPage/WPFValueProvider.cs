@@ -13,8 +13,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties;
     ExportInterceptingPropertyValueProviderFile.ProjectFile)]
 internal class WPFValueProvider : InterceptingPropertyValueProviderBase
 {
-    private const string StartupURIPropertyName = "StartupURI";
-    private const string ShutdownModePropertyName = "ShutdownMode_WPF";
+    internal const string StartupURIPropertyName = "StartupURI";
+    internal const string ShutdownModePropertyName = "ShutdownMode_WPF";
+    internal const string UseWPFPropertyName = "UseWPF";
+    internal const string OutputTypePropertyName = "OutputType";
+    internal const string WinExeOutputTypeValue = "WinExe";
 
     private readonly IApplicationXamlFileAccessor _applicationXamlFileAccessor;
 
@@ -26,35 +29,53 @@ internal class WPFValueProvider : InterceptingPropertyValueProviderBase
 
     public override Task<string> OnGetEvaluatedPropertyValueAsync(string propertyName, string evaluatedPropertyValue, IProjectProperties defaultProperties)
     {
-        return GetPropertyValueAsync(propertyName);
+        return GetPropertyValueAsync(propertyName, defaultProperties);
     }
 
     public override Task<string> OnGetUnevaluatedPropertyValueAsync(string propertyName, string unevaluatedPropertyValue, IProjectProperties defaultProperties)
     {
-        return GetPropertyValueAsync(propertyName);
+        return GetPropertyValueAsync(propertyName, defaultProperties);
     }
 
     public override async Task<string?> OnSetPropertyValueAsync(string propertyName, string unevaluatedPropertyValue, IProjectProperties defaultProperties, IReadOnlyDictionary<string, string>? dimensionalConditions = null)
     {
-        await (propertyName switch
+        if (await IsWPFApplicationAsync(defaultProperties))
         {
-            StartupURIPropertyName => _applicationXamlFileAccessor.SetStartupUriAsync(unevaluatedPropertyValue),
-            ShutdownModePropertyName => _applicationXamlFileAccessor.SetShutdownModeAsync(unevaluatedPropertyValue),
+            await (propertyName switch
+            {
+                StartupURIPropertyName => _applicationXamlFileAccessor.SetStartupUriAsync(unevaluatedPropertyValue),
+                ShutdownModePropertyName => _applicationXamlFileAccessor.SetShutdownModeAsync(unevaluatedPropertyValue),
 
-            _ => throw new InvalidOperationException($"The {nameof(WPFValueProvider)} does not support the '{propertyName}' property.")
-        });
+                _ => throw new InvalidOperationException($"The {nameof(WPFValueProvider)} does not support the '{propertyName}' property.")
+            });
+        }
 
         return null;
     }
 
-    private async Task<string> GetPropertyValueAsync(string propertyName)
+    private async Task<string> GetPropertyValueAsync(string propertyName, IProjectProperties defaultProperties)
     {
-        return propertyName switch
+        if (await IsWPFApplicationAsync(defaultProperties))
         {
-            StartupURIPropertyName => await _applicationXamlFileAccessor.GetStartupUriAsync() ?? string.Empty,
-            ShutdownModePropertyName => await _applicationXamlFileAccessor.GetShutdownModeAsync() ?? "OnLastWindowClose",
+            return propertyName switch
+            {
+                StartupURIPropertyName => await _applicationXamlFileAccessor.GetStartupUriAsync() ?? string.Empty,
+                ShutdownModePropertyName => await _applicationXamlFileAccessor.GetShutdownModeAsync() ?? "OnLastWindowClose",
 
-            _ => throw new InvalidOperationException($"The {nameof(WPFValueProvider)} does not support the '{propertyName}' property.")
-        };
+                _ => throw new InvalidOperationException($"The {nameof(WPFValueProvider)} does not support the '{propertyName}' property.")
+            };
+        }
+
+        return string.Empty;
+    }
+
+    private static async Task<bool> IsWPFApplicationAsync(IProjectProperties defaultProperties)
+    {
+        string useWPFString = await defaultProperties.GetEvaluatedPropertyValueAsync(UseWPFPropertyName);
+        string outputTypeString = await defaultProperties.GetEvaluatedPropertyValueAsync(OutputTypePropertyName);
+
+        return bool.TryParse(useWPFString, out bool useWPF)
+            && useWPF
+            && StringComparers.PropertyLiteralValues.Equals(outputTypeString, WinExeOutputTypeValue);
     }
 }
