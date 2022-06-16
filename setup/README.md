@@ -7,3 +7,4 @@
   - Requires admin access to install
   - Can install into any sub-directory in VS
 - `.vsmanproj` are for performing VS insertions.
+- `.pkgdef` is the same as a `.reg` file.

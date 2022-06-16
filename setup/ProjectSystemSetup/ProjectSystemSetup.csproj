@@ -19,9 +19,7 @@
     <AddVsixForSigningDependsOn>CreateVsixContainer</AddVsixForSigningDependsOn>
 
     <!-- VS Insertion -->
-    <!-- NOTE: Having VisualStudioInsertionComponent defined is the condition for VisualStudio.SetupPackage.vsmanproj to be built (via FinalizeInsertionVsixFiles target in VisualStudio.Insertion.proj) in RepoToolset. -->
-    <VisualStudioInsertionComponent>Microsoft.VisualStudio.ProjectSystem.Managed</VisualStudioInsertionComponent>
-    <ManifestJsonName>$(VisualStudioInsertionComponent)</ManifestJsonName>
+    <ManifestJsonName>Microsoft.VisualStudio.ProjectSystem.Managed</ManifestJsonName>
   </PropertyGroup>
 
   <PropertyGroup>
@@ -69,7 +67,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\src\Microsoft.VisualStudio.ProjectSystem.Managed.VS\Microsoft.VisualStudio.ProjectSystem.Managed.VS.csproj">
       <Name>Microsoft.VisualStudio.ProjectSystem.Managed.VS</Name>
-      <Ngen>True</Ngen>
+      <Ngen>true</Ngen>
       <NgenPriority>1</NgenPriority>
       <IncludeOutputGroupsInVSIX>BuiltProjectOutputGroup;GetCopyToOutputDirectoryItems;SatelliteDllsProjectOutputGroup;PkgdefProjectOutputGroup</IncludeOutputGroupsInVSIX>
       <IncludeOutputGroupsInVSIXLocalOnly>DebugSymbolsProjectOutputGroup</IncludeOutputGroupsInVSIXLocalOnly>
@@ -77,15 +75,21 @@
     </ProjectReference>
     <ProjectReference Include="..\..\src\Microsoft.VisualStudio.ProjectSystem.Managed\Microsoft.VisualStudio.ProjectSystem.Managed.csproj">
       <Name>Microsoft.VisualStudio.ProjectSystem.Managed</Name>
-      <Ngen>True</Ngen>
+      <Ngen>true</Ngen>
       <NgenPriority>1</NgenPriority>
       <IncludeOutputGroupsInVSIX>BuiltProjectOutputGroup;GetCopyToOutputDirectoryItems;SatelliteDllsProjectOutputGroup</IncludeOutputGroupsInVSIX>
       <IncludeOutputGroupsInVSIXLocalOnly>DebugSymbolsProjectOutputGroup</IncludeOutputGroupsInVSIXLocalOnly>
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
     </ProjectReference>
+    <!-- This is included so that F5 debugging works in the repo. It is not included in the setup .vsix package with the Project System assemblies. -->
     <ProjectReference Include="..\VisualStudioEditorsSetup\VisualStudioEditorsSetup.csproj">
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
-      <Private>False</Private>
+      <Private>false</Private>
+    </ProjectReference>
+    <!-- This is included so the .vsmanproj is guaranteed to have the .json manifest available for CommonFiles, so it can be included as part of the same .vsman file. -->
+    <ProjectReference Include="..\Microsoft.VisualStudio.ProjectSystem.Managed.CommonFiles\Microsoft.VisualStudio.ProjectSystem.Managed.CommonFiles.csproj">
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+      <Private>false</Private>
     </ProjectReference>
   </ItemGroup>
 
@@ -100,11 +104,11 @@
   </ItemGroup>
 
   <!-- TODO: Create mechanism for local build version -->
-  <Target Name="GetBuildVersion" Returns="$(BuildVersion)">
+  <!-- <Target Name="GetBuildVersion" Returns="$(BuildVersion)">
     <PropertyGroup>
       <BuildVersion>42.42.42.42</BuildVersion>
     </PropertyGroup>
-  </Target>
+  </Target> -->
 
   <!-- Create VSIX container directory. -->
   <Target Name="_MakeTargetVsixContainerDir"
