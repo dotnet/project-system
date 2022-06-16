@@ -22,7 +22,8 @@
   <ItemGroup>
     <MergeManifest Include="$(VisualStudioSetupInsertionPath)$(TargetName).json" SBOMFileLocation="$(ArtifactsBinDir)_manifest\spdx_2.2\manifest.spdx.json" />
     <!-- TODO: Get the Microsoft.VisualStudio.ProjectSystem.Managed.CommonFiles name elsewhere instead of hard-coded. -->
-    <MergeManifest Include="$(VisualStudioSetupInsertionPath)Microsoft.VisualStudio.ProjectSystem.Managed.CommonFiles.json" SBOMFileLocation="$(ArtifactsBinDir)_manifest\spdx_2.2\manifest.spdx.json" />
+    <!-- NOTE: SBOMFileLocation is not included as this .vsix is just a loose set of files, not a project with dependencies. -->
+    <MergeManifest Include="$(VisualStudioSetupInsertionPath)Microsoft.VisualStudio.ProjectSystem.Managed.CommonFiles.json" />
   </ItemGroup>
 
   <Import Project="$(MicroBuildSwixBuildDir)Microsoft.VisualStudioEng.MicroBuild.Plugins.SwixBuild.targets" />
