@@ -19,8 +19,8 @@
     <!-- Infrastructure -->
     <PackageReference Include="MicroBuild.Core.Sentinel"                  PrivateAssets="all"/>
     <PackageReference Include="Microsoft.VisualStudioEng.MicroBuild.Core" PrivateAssets="all"/>
-    <!-- SwixBuild does not have the assets accessed via PackageReference. Instead, they are accessed directly from the NuGet cache on disk. -->
-    <PackageReference Include="Microsoft.VisualStudioEng.MicroBuild.Plugins.SwixBuild" ExcludeAssets="all" />
+    <!-- SwixBuild does not have the assets accessed via PackageReference. Instead, they are accessed directly from the NuGet cache on disk via PkgMicrosoft_VisualStudioEng_MicroBuild_Plugins_SwixBuild. -->
+    <PackageReference Include="Microsoft.VisualStudioEng.MicroBuild.Plugins.SwixBuild" ExcludeAssets="all" GeneratePathProperty="true" />
 
     <!-- Toolset -->
     <PackageReference Include="Nerdbank.Streams"                    ExcludeAssets="all" />

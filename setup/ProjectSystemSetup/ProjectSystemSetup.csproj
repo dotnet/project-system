@@ -64,6 +64,10 @@
     <DeployExtension Condition="'$(DeployProjectOutput)' == 'true'">true</DeployExtension>
   </PropertyGroup>
 
+  <PropertyGroup>
+    <CommonFilesProjectName>Microsoft.VisualStudio.ProjectSystem.Managed.CommonFiles</CommonFilesProjectName>
+  </PropertyGroup>
+
   <ItemGroup>
     <ProjectReference Include="..\..\src\Microsoft.VisualStudio.ProjectSystem.Managed.VS\Microsoft.VisualStudio.ProjectSystem.Managed.VS.csproj">
       <Name>Microsoft.VisualStudio.ProjectSystem.Managed.VS</Name>
@@ -87,7 +91,7 @@
       <Private>false</Private>
     </ProjectReference>
     <!-- This is included so the .vsmanproj is guaranteed to have the .json manifest available for CommonFiles, so it can be included as part of the same .vsman file. -->
-    <ProjectReference Include="..\Microsoft.VisualStudio.ProjectSystem.Managed.CommonFiles\Microsoft.VisualStudio.ProjectSystem.Managed.CommonFiles.csproj">
+    <ProjectReference Include="..\$(CommonFilesProjectName)\$(CommonFilesProjectName).csproj">
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
       <Private>false</Private>
     </ProjectReference>
@@ -110,16 +114,10 @@
     </PropertyGroup>
   </Target> -->
 
-  <!-- Create VSIX container directory. -->
-  <Target Name="_MakeTargetVsixContainerDir"
-          BeforeTargets="CreateVsixContainer"
-          Condition="'$(CreateVsixContainer)' == 'true'"
-          Outputs="$(_TargetVsixContainerDir)">
-    <MakeDir Directories="$(_TargetVsixContainerDir)" />
-  </Target>
-
   <Target Name="VSManifestBuild" AfterTargets="Build">
-    <MSBuild Projects="$(MSBuildThisFileDirectory)Microsoft.VisualStudio.ProjectSystem.Managed.vsmanproj" Targets="Build" />
+    <MSBuild Projects="$(MSBuildThisFileDirectory)Microsoft.VisualStudio.ProjectSystem.Managed.vsmanproj"
+      Properties="SwixBuildDir=$(PkgMicrosoft_VisualStudioEng_MicroBuild_Plugins_SwixBuild)\build\;CommonFilesProjectName=$(CommonFilesProjectName)"
+      Targets="Build" />
   </Target>
 
 </Project>

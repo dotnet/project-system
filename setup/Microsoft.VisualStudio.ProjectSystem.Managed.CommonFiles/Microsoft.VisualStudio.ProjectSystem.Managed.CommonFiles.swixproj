@@ -8,13 +8,11 @@
   <Import Project="..\Directory.Build.props" />
   <!-- This currently loads all SwixBuild packages, and multiple packages existing in your NuGet cache breaks the build. -->
   <!-- <Import Project="$(MicroBuildCoreDir)Microsoft.VisualStudioEng.MicroBuild.Core.props" /> -->
-  <!-- <Import Project="$(MicroBuildCoreDir)MicroBuild.Plugin.props" /> -->
-  <Import Project="$(MicroBuildSwixBuildDir)Microsoft.VisualStudioEng.MicroBuild.Plugins.SwixBuild.props" />
+  <Import Project="$(SwixBuildDir)Microsoft.VisualStudioEng.MicroBuild.Plugins.SwixBuild.props" />
 
   <PropertyGroup>
     <OutputArchitecture>neutral</OutputArchitecture>
     <OutputLocalized>false</OutputLocalized>
-    <!-- <OutputName>Microsoft.VisualStudio.ProjectSystem.Managed.CommonFiles</OutputName> -->
     <OutputName>$(MSBuildProjectName)</OutputName>
     <OutputPath>$(VisualStudioSetupInsertionPath)</OutputPath>
     <OutputType>vsix</OutputType>
@@ -26,14 +24,12 @@
     <!-- <Package Include="ext.xproj.swr" /> -->
   </ItemGroup>
 
-  <!-- Version=17.2.0.2042501;VisualStudioXamlRulesDir=D:\a\_work\1\s\artifacts\Release\VSSetup\Rules\ -->
   <PropertyGroup>
     <PackagePreprocessorDefinitions>$(PackagePreprocessorDefinitions);Version=$(VsixVersion);VisualStudioXamlRulesDir=$(VisualStudioXamlRulesDir)</PackagePreprocessorDefinitions>
-    <!-- <PackagePreprocessorDefinitions>$(PackagePreprocessorDefinitions);Version=17.2.0.2042501;VisualStudioXamlRulesDir=$(VisualStudioXamlRulesDir)</PackagePreprocessorDefinitions> -->
   </PropertyGroup>
 
   <!-- This currently loads all SwixBuild packages, and multiple packages existing in your NuGet cache breaks the build. -->
   <!-- <Import Project="$(MicroBuildCoreDir)Microsoft.VisualStudioEng.MicroBuild.Core.targets" /> -->
-  <Import Project="$(MicroBuildSwixBuildDir)Microsoft.VisualStudioEng.MicroBuild.Plugins.SwixBuild.targets" />
+  <Import Project="$(SwixBuildDir)Microsoft.VisualStudioEng.MicroBuild.Plugins.SwixBuild.targets" />
 
 </Project>

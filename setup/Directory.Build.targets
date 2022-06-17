@@ -4,15 +4,14 @@
   <Import Project="..\Directory.Build.targets" />
 
   <!--
-    Defining this target will disable the new SDK behavior of implicit transitive project
-    references. This is a fine feature in general but the current implementation breaks VSIX 
-    construction by including a number of projects that should not be included. 
+    Defining this target will disable the new SDK behavior of implicit transitive project references.
+    This is a fine feature in general but the current implementation breaks VSIX construction by including a number of projects that should not be included.
     https://github.com/dotnet/sdk/issues/1366
   -->
   <Target Name="IncludeTransitiveProjectReferences" >
   </Target>
 
-  <!-- Adds the appropriate vsix files for signing. -->
+  <!-- Adds the appropriate VSIX files for signing. -->
   <Target Name="AddVsixForSigning" DependsOnTargets="$(AddVsixForSigningDependsOn)" BeforeTargets="SignFiles">
     <Copy SourceFiles="$(VisualStudioSetupInsertionPath)$(AssemblyName).vsix" DestinationFolder="$(OutDir)" />
     <ItemGroup>
@@ -35,7 +34,7 @@
   <!-- Copies the vsix files after they've been signed to the different output folders. -->
   <Target Name="CopyVsixAfterSigning" DependsOnTargets="AddVsixForSigning" AfterTargets="SignFiles">
     <Copy SourceFiles="$(OutDir)$(AssemblyName).vsix" DestinationFolder="$(VisualStudioSetupInsertionPath)" />
-    <Copy SourceFiles="$(OutDir)$(AssemblyName).vsix" DestinationFolder="$(VisualStudioSetupOutputPath)" />
+    <!-- <Copy SourceFiles="$(OutDir)$(AssemblyName).vsix" DestinationFolder="$(VisualStudioSetupOutputPath)" /> -->
   </Target>
 
   <Target Name="RemoveExperimentalAttributeFromVsixManifest" AfterTargets="DetokenizeVsixManifestFile" Condition="'$(CIBuild)' == 'true'">

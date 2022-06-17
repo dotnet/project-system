@@ -2,7 +2,6 @@
 <Project>
 
   <PropertyGroup>
-    <!-- NOTE: Keep in-sync with NuGet.config at repo root -->
     <RestoreSources>
       $(RestoreSources);
       <!-- CPS components including: Microsoft.VisualStudio.ProjectSystem -->

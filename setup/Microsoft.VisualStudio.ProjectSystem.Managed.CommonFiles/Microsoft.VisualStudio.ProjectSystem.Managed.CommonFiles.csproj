@@ -13,26 +13,19 @@
     <AddVsixForSigningDependsOn>SwixBuild</AddVsixForSigningDependsOn>
 
     <!-- VS Insertion -->
-    <!-- NOTE: Having VisualStudioInsertionComponent defined is the condition for VisualStudio.SetupPackage.vsmanproj to be built (via FinalizeInsertionVsixFiles target in VisualStudio.Insertion.proj) in RepoToolset. -->
-    <!--
-      This is set to `Microsoft.VisualStudio.ProjectSystem.Managed` so it will be merged into the same VSMAN file produced by the ProjectSystemSetup.csproj.
-      If this value is changed to 'Microsoft.VisualStudio.ProjectSystem.Managed.CommonFiles', a new VSMAN file will be produced and cause 2 packages that depend on the single VSMAN file to fail to acquire this package during insertion:
-        - Microsoft.VisualStudio.ComponentGroup.VisualStudioExtensionBuildTools.Prerequisites
-        - Microsoft.VisualStudio.Product.Server64
-    -->
-    <VisualStudioInsertionComponent>Microsoft.VisualStudio.ProjectSystem.Managed</VisualStudioInsertionComponent>
-    <ManifestJsonName>$(VisualStudioInsertionComponent).CommonFiles</ManifestJsonName>
+    <ManifestJsonName>$(MSBuildProjectName)</ManifestJsonName>
   </PropertyGroup>
 
   <ItemGroup>
     <!-- Depend on projects producing XAML rules included in this Willow package -->
     <ProjectReference Include="..\..\src\Microsoft.VisualStudio.ProjectSystem.Managed\Microsoft.VisualStudio.ProjectSystem.Managed.csproj" />
-    <!-- <ProjectReference Include="Microsoft.VisualStudio.ProjectSystem.Managed.CommonFiles.swixproj" Properties="VsixVersion=$(Version)" /> -->
   </ItemGroup>
 
   <Target Name="SwixBuild" AfterTargets="Build">
 
-    <MSBuild Projects="$(MSBuildThisFileDirectory)Microsoft.VisualStudio.ProjectSystem.Managed.CommonFiles.swixproj" Properties="VsixVersion=$(FileVersion)" Targets="Build" />
+    <MSBuild Projects="$(MSBuildThisFileDirectory)$(MSBuildProjectName).swixproj"
+      Properties="VsixVersion=$(FileVersion);SwixBuildDir=$(PkgMicrosoft_VisualStudioEng_MicroBuild_Plugins_SwixBuild)\build\"
+      Targets="Build" />
 
     <!-- <Copy SourceFiles="$(IntermediateOutputPath)$(TargetName).vsix;$(IntermediateOutputPath)$(TargetName).json"
           DestinationFolder="$(VisualStudioSetupInsertionPath)" />
