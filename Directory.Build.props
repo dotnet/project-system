@@ -42,6 +42,8 @@
     <ForceGenerationOfBindingRedirects>true</ForceGenerationOfBindingRedirects>
 
     <ProduceReferenceAssembly>true</ProduceReferenceAssembly>
+    <!-- For projects using VSSDK to generate pkgdef files, this sets the registry entires to link to the DLL directly in the PackageFolder location as opposed to using an Assembly reference. -->
+    <UseCodebase>true</UseCodebase>
   </PropertyGroup>
 
   <!-- Modify the set of implicit usings -->

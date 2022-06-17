@@ -5,6 +5,7 @@
   <Import Project="$(MicroBuildSwixBuildDir)Microsoft.VisualStudioEng.MicroBuild.Plugins.SwixBuild.props" />
 
   <PropertyGroup>
+    <!-- TODO: I don't think these properties are applicable. -->
     <ResolveNuGetPackages>false</ResolveNuGetPackages>
     <ImportDirectoryBuildProps>false</ImportDirectoryBuildProps>
     <ImportDirectoryBuildTargets>false</ImportDirectoryBuildTargets>
