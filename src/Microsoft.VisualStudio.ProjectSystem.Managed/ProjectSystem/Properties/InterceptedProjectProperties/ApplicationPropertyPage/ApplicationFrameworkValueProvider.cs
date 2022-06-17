@@ -114,11 +114,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
                 {
                     // Enabled: <MyType>WindowsForms</MyType>
                     await defaultProperties.SetPropertyValueAsync(ApplicationFrameworkMSBuildProperty, EnabledValue);
+
+                    // TODO: We also need to save this property in the myapp file.
                 }
                 else
                 {
                     // Disabled: <MyType>WindowsFormsWithCustomSubMain</MyType>
                     await defaultProperties.SetPropertyValueAsync(ApplicationFrameworkMSBuildProperty, DisabledValue);
+
+                    // TODO: We also need to save this property in the myapp file.
                 }
             }
 
