@@ -38,4 +38,11 @@
     <Copy SourceFiles="$(OutDir)$(AssemblyName).vsix" DestinationFolder="$(VisualStudioSetupOutputPath)" />
   </Target>
 
+  <Target Name="RemoveExperimentalAttributeFromVsixManifest" AfterTargets="DetokenizeVsixManifestFile">
+    <PropertyGroup>
+      <ObjVsixManifestPath>$(ArtifactsObjDir)$(MSBuildProjectName)\extension.vsixmanifest</ObjVsixManifestPath>
+    </PropertyGroup>
+    <Exec Command="powershell -NonInteractive -NoLogo -NoProfile -ExecutionPolicy Unrestricted -Command &quot;$manifestXml = [Xml.XmlDocument](Get-Content '$(ObjVsixManifestPath)');$manifestXml.PackageManifest.Installation.SetAttribute('Experimental', 'false');$manifestXml.Save('$(ObjVsixManifestPath)')&quot;" />
+  </Target>
+
 </Project>
