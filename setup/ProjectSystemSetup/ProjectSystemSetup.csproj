@@ -1,71 +1,24 @@
 ﻿<!-- Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information. -->
 <Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <MinimumVisualStudioVersion>17.0</MinimumVisualStudioVersion>
-  </PropertyGroup>
-
   <Import Project="..\..\build\import\VisualStudio.props" />
 
   <PropertyGroup>
     <RootNamespace>Microsoft.VisualStudio</RootNamespace>
     <AssemblyName>ProjectSystem</AssemblyName>
-    <PublishOutputToSymStore>false</PublishOutputToSymStore>
 
     <!-- VSIX -->
-    <IncludeAssemblyInVSIXContainer>false</IncludeAssemblyInVSIXContainer>
     <ExtensionInstallationRoot>Extensions</ExtensionInstallationRoot>
     <ExtensionInstallationFolder>Microsoft\ManagedProjectSystem</ExtensionInstallationFolder>
     <AddVsixForSigningDependsOn>CreateVsixContainer</AddVsixForSigningDependsOn>
 
     <!-- VS Insertion -->
     <ManifestJsonName>Microsoft.VisualStudio.ProjectSystem.Managed</ManifestJsonName>
-  </PropertyGroup>
-
-  <PropertyGroup>
-    <SchemaVersion>2.0</SchemaVersion>
-    <CreateVsixContainer>true</CreateVsixContainer>
-    <!-- <GeneratePkgDefFile>false</GeneratePkgDefFile> -->
-
-    <IncludeDebugSymbolsInVSIXContainer>false</IncludeDebugSymbolsInVSIXContainer>
-    <IncludeDebugSymbolsInLocalVSIXDeployment>false</IncludeDebugSymbolsInLocalVSIXDeployment>
-    <!-- <CopyBuildOutputToOutputDirectory>false</CopyBuildOutputToOutputDirectory> -->
-    <!-- <CopyOutputSymbolsToOutputDirectory>false</CopyOutputSymbolsToOutputDirectory> -->
-    <IncludeCopyLocalReferencesInVSIXContainer>false</IncludeCopyLocalReferencesInVSIXContainer>
-    <IsProductComponent>true</IsProductComponent>
-    <IsPackable>false</IsPackable>
-    <UseCodebase>true</UseCodebase>
-  </PropertyGroup>
-
-  <PropertyGroup>
-    <VsixSourceManifestPath>$(MSBuildProjectDirectory)\source.extension.vsixmanifest</VsixSourceManifestPath>
-    <IsVsixProject>false</IsVsixProject>
-    <IsVsixProject Condition="Exists('$(VsixSourceManifestPath)')">true</IsVsixProject>
-  </PropertyGroup>
-
-  <PropertyGroup Condition="'$(IsVsixProject)' == 'true'">
-    <BuildForLiveUnitTesting>false</BuildForLiveUnitTesting>
-
-    <StartAction>Program</StartAction>
-    <StartProgram>$(DevEnvDir)devenv.exe</StartProgram>
-    <StartArguments>/rootsuffix $(VSSDKTargetPlatformRegRootSuffix) /log</StartArguments>
-
-    <Ngen>true</Ngen>
-    <NgenArchitecture>All</NgenArchitecture>
-    <NgenPriority>3</NgenPriority>
-
-    <_TargetVsixContainerDir>$(VisualStudioSetupInsertionPath)</_TargetVsixContainerDir>
-
-    <!-- No idea why this is AssemblyName instead of MSBuildProjectName -->
-    <TargetVsixContainerName Condition="'$(TargetVsixContainerName)' == ''">$(AssemblyName).vsix</TargetVsixContainerName>
-    <TargetVsixContainer Condition="'$(TargetVsixContainer)' == ''">$(_TargetVsixContainerDir)$(TargetVsixContainerName)</TargetVsixContainer>
-
-    <DeployExtension>false</DeployExtension>
-    <DeployExtension Condition="'$(DeployProjectOutput)' == 'true'">true</DeployExtension>
-  </PropertyGroup>
-
-  <PropertyGroup>
     <CommonFilesProjectName>Microsoft.VisualStudio.ProjectSystem.Managed.CommonFiles</CommonFilesProjectName>
+
+    <!-- No idea why this is AssemblyName instead of MSBuildProjectName. -->
+    <TargetVsixContainerName>$(AssemblyName).vsix</TargetVsixContainerName>
+    <TargetVsixContainer>$(VisualStudioSetupInsertionPath)$(TargetVsixContainerName)</TargetVsixContainer>
   </PropertyGroup>
 
   <ItemGroup>

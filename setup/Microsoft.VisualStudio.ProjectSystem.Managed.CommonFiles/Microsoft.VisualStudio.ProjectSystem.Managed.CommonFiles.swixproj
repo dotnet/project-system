@@ -2,7 +2,7 @@
 <Project>
 
   <PropertyGroup>
-    <ExcludeRestorePackageImports>true</ExcludeRestorePackageImports>
+    <!-- <ExcludeRestorePackageImports>true</ExcludeRestorePackageImports> -->
   </PropertyGroup>
 
   <Import Project="..\Directory.Build.props" />

@@ -1,6 +1,7 @@
 <!-- Copyright (c)  Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information. -->
 <Project>
 
+  <!-- <Import Project="..\Directory.Build.props" /> -->
   <Import Project="$(SwixBuildDir)Microsoft.VisualStudioEng.MicroBuild.Plugins.SwixBuild.props" />
 
   <PropertyGroup>
@@ -11,15 +12,9 @@
       You should add 'win' to the "RuntimeIdentifiers" property in your project file and then re-run NuGet restore.
     -->
     <ResolveNuGetPackages>false</ResolveNuGetPackages>
-  </PropertyGroup>
-
-  <PropertyGroup>
-    <FinalizeManifest>true</FinalizeManifest>
-    <FinalizeSkipLayout>true</FinalizeSkipLayout>
-    <IsPackage>true</IsPackage>
-    <TargetName>$(MSBuildProjectName)</TargetName>
-    <OutputPath>$(VisualStudioSetupInsertionPath)</OutputPath>
-    <IntermediateOutputPath>$(VisualStudioSetupIntermediateOutputPath)$(TargetName)\</IntermediateOutputPath>
+    <!-- Manually importing the Directory.Build.props seems to respect the properties such as OutputPath appropriately. Otherwise, things end up in the wrong places. -->
+    <!-- <ImportDirectoryBuildProps>false</ImportDirectoryBuildProps>
+    <ImportDirectoryBuildTargets>false</ImportDirectoryBuildTargets> -->
   </PropertyGroup>
 
   <ItemGroup>

@@ -1,27 +1,13 @@
 <!-- Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information. -->
-<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project>
   <PropertyGroup>
-    <!-- IMPORTANT: These assembly versions must always be 3 digits -->
-    <MinimumRequiredVSVersion>16.8.1</MinimumRequiredVSVersion> <!-- We should try to keep this up to date with the highest version available on build machines -->
-    <ProjectSystemVersion>17.2.0</ProjectSystemVersion> <!-- This should always match with the VS release we're targeting -->
+    <!-- IMPORTANT: These assembly versions must always be 3 digits. -->
+    <!-- This should try to stay up to date with the highest version available on build machines. -->
+    <MinimumRequiredVSVersion>16.8.1</MinimumRequiredVSVersion>
+    <!-- This should always match the VS release being targeted. -->
+    <ProjectSystemVersion>17.2.0</ProjectSystemVersion>
     <VersionBase>$(ProjectSystemVersion)</VersionBase>
     <PreReleaseVersionLabel>beta1</PreReleaseVersionLabel>
     <SuppressNETCoreSdkPreviewMessage>true</SuppressNETCoreSdkPreviewMessage>
-
-    <!-- Opt-in and out of repo features -->
-    <!-- <UsingToolVSSDK>true</UsingToolVSSDK> -->
-    <!-- <UsingToolIbcOptimization>true</UsingToolIbcOptimization> -->
-    <!-- <UsingToolXUnit>false</UsingToolXUnit> -->
-    <!-- <UsingToolMicrosoftNetCompilers>false</UsingToolMicrosoftNetCompilers> -->
-
-    <!-- Toolset -->
-    <!-- <RoslynToolsRepoToolsetVersion>1.0.0-beta-62705-01</RoslynToolsRepoToolsetVersion> -->
-    <!-- <RoslynToolsModifyVsixManifestVersion>1.0.0-beta-62327-02</RoslynToolsModifyVsixManifestVersion> -->
-    <!-- <MicrosoftDiaSymReaderPdb2PdbVersion>1.1.0-beta2-22306-02</MicrosoftDiaSymReaderPdb2PdbVersion> -->
-    <!-- <MicroBuildPluginsSwixBuildVersion>1.1.37</MicroBuildPluginsSwixBuildVersion> -->
-    <!-- <CodecovVersion>1.12.4</CodecovVersion> -->
-
-    <!-- VS SDK -->
-    <!-- <VSSDK_GeneralVersion>17.0.32112.339</VSSDK_GeneralVersion> -->
   </PropertyGroup>
 </Project>

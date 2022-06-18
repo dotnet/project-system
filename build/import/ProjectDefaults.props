@@ -36,7 +36,7 @@
 
       TODO:
       - Live Unit Testing doesn't support embedded PDBs:
-         https://github.com/dotnet/testimpact/issues/1877      
+         https://github.com/dotnet/testimpact/issues/1877
     -->
     <DebugType>portable</DebugType>
     <DebugType Condition="'$(OfficialBuild)' != 'true' and '$(BuildingForLiveUnitTesting)' != 'true'">embedded</DebugType>
