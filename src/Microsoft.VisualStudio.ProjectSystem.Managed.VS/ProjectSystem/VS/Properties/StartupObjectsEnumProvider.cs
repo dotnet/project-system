@@ -69,17 +69,21 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
                 return Array.Empty<IEnumValue>();
             }
 
-            List<IEnumValue> enumValues = new();
-
             Compilation? compilation = await project.GetCompilationAsync();
+            if (compilation is null)
+            {
+                // Project does not support compilations
+                return Array.Empty<IEnumValue>();
+            }
 
+            List<IEnumValue> enumValues = new();
             if (_includeEmptyValue)
             {
                 enumValues.Add(new PageEnumValue(new EnumValue { Name = "", DisplayName = VSResources.StartupObjectNotSet }));
             }
 
             IEntryPointFinderService? entryPointFinderService = project.LanguageServices.GetService<IEntryPointFinderService>();
-            IEnumerable<INamedTypeSymbol>? entryPoints = entryPointFinderService?.FindEntryPoints(compilation?.GlobalNamespace, SearchForEntryPointsInFormsOnly);
+            IEnumerable<INamedTypeSymbol>? entryPoints = entryPointFinderService?.FindEntryPoints(compilation.GlobalNamespace, SearchForEntryPointsInFormsOnly);
             if (entryPoints is not null)
             {
                 enumValues.AddRange(entryPoints.Select(ep =>
