@@ -33,7 +33,7 @@
       <ValueEditor EditorType="MultiStringSelector">
         <ValueEditor.Metadata>
           <NameValuePair Name="TypeDescriptorText" Value="Imported Namespaces" />
-          <NameValuePair Name="AllowsAddingCustomStrings" Value="True" />
+          <NameValuePair Name="AllowsCustomStrings" Value="True" />
         </ValueEditor.Metadata>
       </ValueEditor>
     </DynamicEnumProperty.ValueEditors>
