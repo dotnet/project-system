@@ -73,6 +73,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
 
         Private _designerCommandBarComboBoxCommand As DesignerCommandBarComboBox
         Private _commandIdCombobox As CommandID
+        Private _previousCustomToolValue As String
 
         ' Cached flag to indicate if the custom tools associated with this combobox are
         ' registered for the current project type.
@@ -405,12 +406,23 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         Private Function TryGetCustomToolPropertyValue(ByRef value As String) As Boolean
             value = Nothing
 
-            Dim customToolProperty As EnvDTE.Property = DTEUtils.GetProjectItemProperty(_projectItem, DTEUtils.PROJECTPROPERTY_CUSTOMTOOL)
-            If customToolProperty IsNot Nothing Then
-                Dim customToolValue As String = TryCast(customToolProperty.Value, String)
-                value = customToolValue
-                Return True
-            End If
+            Try
+                Dim customToolProperty As EnvDTE.Property = DTEUtils.GetProjectItemProperty(_projectItem, DTEUtils.PROJECTPROPERTY_CUSTOMTOOL)
+                If customToolProperty IsNot Nothing Then
+                    Dim customToolValue As String = TryCast(customToolProperty.Value, String)
+                    value = customToolValue
+                    _previousCustomToolValue = customToolValue
+                    Return True
+                End If
+            Catch ex As KeyNotFoundException
+                ' Possible limitation of Cps. In some cases Cps is not able to maintain the same item id for items,
+                ' causing them to Not be found. In some scenarios (i.e., when the item Is moved), it ends up having
+                ' a different id, so the older one can't be found anymore.
+                If _previousCustomToolValue IsNot Nothing Then
+                    value = _previousCustomToolValue
+                    Return True
+                End If
+            End Try
 
             Return False
         End Function
