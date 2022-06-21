@@ -22,12 +22,6 @@
     <MergeManifest Include="$(VisualStudioSetupInsertionPath)$(TargetName).json" SBOMFileLocation="$(ArtifactsBinDir)_manifest\spdx_2.2\manifest.spdx.json" />
   </ItemGroup>
 
-  <ItemGroup>
-    <FilesToSign Include="$(OutDir)$(AssemblyName).vsix">
-      <Authenticode>VsixSHA2</Authenticode>
-    </FilesToSign>
-  </ItemGroup>
-
   <Import Project="$(MicroBuildCoreDir)Microsoft.VisualStudioEng.MicroBuild.Core.targets" />
   <!-- <Import Project="$(SwixBuildDir)Microsoft.VisualStudioEng.MicroBuild.Plugins.SwixBuild.targets" /> -->
 

@@ -8,8 +8,8 @@
     This is a fine feature in general but the current implementation breaks VSIX construction by including a number of projects that should not be included.
     https://github.com/dotnet/sdk/issues/1366
   -->
-  <Target Name="IncludeTransitiveProjectReferences" >
-  </Target>
+  <!-- TODO: See if this is necessary. -->
+  <Target Name="IncludeTransitiveProjectReferences" />
 
   <!-- Adds the appropriate VSIX files for signing. -->
   <!-- <Target Name="AddVsixForSigning" DependsOnTargets="$(AddVsixForSigningDependsOn)" BeforeTargets="SignFiles">
@@ -27,17 +27,17 @@
     Doing it as AfterTargets="AddVsixForSigning" unnecessarily binds the SBOM process to signing. But there is not currently a scenario where we wouldn't sign and generate an SBOM.
   -->
   <!-- TODO: Since this is already a workaround for normal SBOM, the condition here is a workaround for now too. This entire target will be removed with normal SBOM creation. -->
-  <Target Name="UpdateManifestJsonForSbom" AfterTargets="AddVsixForSigning" Condition="'$(MSBuildProjectExtension)' != '.vsmanproj'">
+  <Target Name="UpdateManifestJsonForSbom" AfterTargets="AddVsixForSigningDependsOn" Condition="'$(MSBuildProjectExtension)' != '.vsmanproj'">
     <Exec ContinueOnError="false" Command="powershell -NonInteractive -NoLogo -NoProfile -ExecutionPolicy Unrestricted -Command &quot;. $(RepoRoot)build\script\UpdateManifestJsonForSbom.ps1 -manifestJsonPath '$(VisualStudioSetupInsertionPath)$(ManifestJsonName).json' -sbomMetadataPath '$(ArtifactsBinDir)_manifest\spdx_2.2\manifest.spdx.json'&quot;" />
   </Target>
 
-  <!-- Copies the vsix files after they've been signed to the different output folders. -->
-  <!-- <Target Name="CopyVsixAfterSigning" DependsOnTargets="AddVsixForSigning" AfterTargets="SignFiles"> -->
-    <!-- <Copy SourceFiles="$(OutDir)$(AssemblyName).vsix" DestinationFolder="$(VisualStudioSetupInsertionPath)" /> -->
+  <!-- Copies the vsix files after they've been signed to the appropriate output folder. -->
+  <Target Name="CopyVsixAfterSigning" AfterTargets="SignFiles" Condition="'$(IsVsixProject)' == 'true'">
+    <Copy SourceFiles="$(IntermediateOutputPath)$(AssemblyName).vsix" DestinationFolder="$(VisualStudioSetupInsertionPath)" />
     <!-- <Copy SourceFiles="$(OutDir)$(AssemblyName).vsix" DestinationFolder="$(VisualStudioSetupOutputPath)" /> -->
-  <!-- </Target> -->
+  </Target>
 
-  <!-- Sets the Experimental attribute on the VSIX manifest to false for builds in CI. -->
+  <!-- Sets the Experimental attribute on the VSIX manifest to 'false' for builds in CI. -->
   <Target Name="RemoveExperimentalAttributeFromVsixManifest" AfterTargets="DetokenizeVsixManifestFile" Condition="'$(CIBuild)' == 'true'">
     <PropertyGroup>
       <ObjVsixManifestPath>$(ArtifactsObjDir)$(MSBuildProjectName)\extension.vsixmanifest</ObjVsixManifestPath>

@@ -28,6 +28,12 @@
     <PackagePreprocessorDefinitions>$(PackagePreprocessorDefinitions);Version=$(VsixVersion);VisualStudioXamlRulesDir=$(VisualStudioXamlRulesDir)</PackagePreprocessorDefinitions>
   </PropertyGroup>
 
+  <ItemGroup>
+    <FilesToSign Include="$(VisualStudioSetupInsertionPath)$(MSBuildProjectName).vsix">
+      <Authenticode>VsixSHA2</Authenticode>
+    </FilesToSign>
+  </ItemGroup>
+
   <!-- This currently loads all SwixBuild packages, and multiple packages existing in your NuGet cache breaks the build. -->
   <Import Project="$(MicroBuildCoreDir)Microsoft.VisualStudioEng.MicroBuild.Core.targets" />
   <!-- <Import Project="$(SwixBuildDir)Microsoft.VisualStudioEng.MicroBuild.Plugins.SwixBuild.targets" /> -->

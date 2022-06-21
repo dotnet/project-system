@@ -17,7 +17,7 @@
     <IncludeAssemblyInVSIXContainer>false</IncludeAssemblyInVSIXContainer>
 
     <VsixSourceManifestPath>$(MSBuildProjectDirectory)\source.extension.vsixmanifest</VsixSourceManifestPath>
-    <!-- The SwixBuild plugin expects this value to be set for the AddSBOM task. -->
+    <!-- This property indicates that the project is a VS Extension project. The SwixBuild plugin expects this value to be set for the AddSBOM task. -->
     <IsVsixProject Condition="Exists('$(VsixSourceManifestPath)')">true</IsVsixProject>
   </PropertyGroup>
 

@@ -5,6 +5,7 @@
 
   <PropertyGroup>
     <RootNamespace>Microsoft.VisualStudio</RootNamespace>
+    <!-- No idea why this is the AssemblyName instead of using the MSBuildProjectName. -->
     <AssemblyName>ProjectSystem</AssemblyName>
 
     <!-- VSIX -->
@@ -16,9 +17,9 @@
     <ManifestJsonName>Microsoft.VisualStudio.ProjectSystem.Managed</ManifestJsonName>
     <CommonFilesProjectName>Microsoft.VisualStudio.ProjectSystem.Managed.CommonFiles</CommonFilesProjectName>
 
-    <!-- No idea why this is AssemblyName instead of MSBuildProjectName. -->
     <TargetVsixContainerName>$(AssemblyName).vsix</TargetVsixContainerName>
-    <TargetVsixContainer>$(VisualStudioSetupInsertionPath)$(TargetVsixContainerName)</TargetVsixContainer>
+    <!-- Required to start in either OutDir or IntermediateOutputPath for signing. It'll be copied after signing via the CopyVsixAfterSigning target. -->
+    <TargetVsixContainer>$(IntermediateOutputPath)$(TargetVsixContainerName)</TargetVsixContainer>
   </PropertyGroup>
 
   <ItemGroup>
@@ -66,6 +67,12 @@
       <BuildVersion>42.42.42.42</BuildVersion>
     </PropertyGroup>
   </Target> -->
+
+  <ItemGroup>
+    <FilesToSign Include="$(TargetVsixContainer)">
+      <Authenticode>VsixSHA2</Authenticode>
+    </FilesToSign>
+  </ItemGroup>
 
   <Target Name="VSManifestBuild" AfterTargets="Build">
     <MSBuild Projects="$(MSBuildThisFileDirectory)Microsoft.VisualStudio.ProjectSystem.Managed.vsmanproj"
