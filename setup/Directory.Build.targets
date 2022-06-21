@@ -12,14 +12,14 @@
   </Target>
 
   <!-- Adds the appropriate VSIX files for signing. -->
-  <Target Name="AddVsixForSigning" DependsOnTargets="$(AddVsixForSigningDependsOn)" BeforeTargets="SignFiles">
+  <!-- <Target Name="AddVsixForSigning" DependsOnTargets="$(AddVsixForSigningDependsOn)" BeforeTargets="SignFiles">
     <Copy SourceFiles="$(VisualStudioSetupInsertionPath)$(AssemblyName).vsix" DestinationFolder="$(OutDir)" />
     <ItemGroup>
       <FilesToSign Include="$(OutDir)$(AssemblyName).vsix">
         <Authenticode>VsixSHA2</Authenticode>
       </FilesToSign>
     </ItemGroup>
-  </Target>
+  </Target> -->
 
   <!--
     Updates insertion manifests (json) for creating the vsman files for insertion to include the SPDX SBOM json.
@@ -32,16 +32,17 @@
   </Target>
 
   <!-- Copies the vsix files after they've been signed to the different output folders. -->
-  <Target Name="CopyVsixAfterSigning" DependsOnTargets="AddVsixForSigning" AfterTargets="SignFiles">
-    <Copy SourceFiles="$(OutDir)$(AssemblyName).vsix" DestinationFolder="$(VisualStudioSetupInsertionPath)" />
+  <!-- <Target Name="CopyVsixAfterSigning" DependsOnTargets="AddVsixForSigning" AfterTargets="SignFiles"> -->
+    <!-- <Copy SourceFiles="$(OutDir)$(AssemblyName).vsix" DestinationFolder="$(VisualStudioSetupInsertionPath)" /> -->
     <!-- <Copy SourceFiles="$(OutDir)$(AssemblyName).vsix" DestinationFolder="$(VisualStudioSetupOutputPath)" /> -->
-  </Target>
+  <!-- </Target> -->
 
+  <!-- Sets the Experimental attribute on the VSIX manifest to false for builds in CI. -->
   <Target Name="RemoveExperimentalAttributeFromVsixManifest" AfterTargets="DetokenizeVsixManifestFile" Condition="'$(CIBuild)' == 'true'">
     <PropertyGroup>
       <ObjVsixManifestPath>$(ArtifactsObjDir)$(MSBuildProjectName)\extension.vsixmanifest</ObjVsixManifestPath>
     </PropertyGroup>
-    <Exec Command="powershell -NonInteractive -NoLogo -NoProfile -ExecutionPolicy Unrestricted -Command &quot;$manifestXml = [Xml.XmlDocument](Get-Content '$(ObjVsixManifestPath)');$manifestXml.PackageManifest.Installation.SetAttribute('Experimental', 'false');$manifestXml.Save('$(ObjVsixManifestPath)')&quot;" />
+    <Exec ContinueOnError="false" Command="powershell -NonInteractive -NoLogo -NoProfile -ExecutionPolicy Unrestricted -Command &quot;$manifestXml = [Xml.XmlDocument](Get-Content '$(ObjVsixManifestPath)');$manifestXml.PackageManifest.Installation.SetAttribute('Experimental', 'false');$manifestXml.Save('$(ObjVsixManifestPath)')&quot;" />
   </Target>
 
 </Project>

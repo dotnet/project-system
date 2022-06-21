@@ -24,7 +24,7 @@
   <Target Name="SwixBuild" AfterTargets="Build">
 
     <MSBuild Projects="$(MSBuildThisFileDirectory)$(MSBuildProjectName).swixproj"
-      Properties="VsixVersion=$(FileVersion);SwixBuildDir=$(PkgMicrosoft_VisualStudioEng_MicroBuild_Plugins_SwixBuild)\build\"
+      Properties="VsixVersion=$(FileVersion);SwixBuildDir=$(PkgMicrosoft_VisualStudioEng_MicroBuild_Plugins_SwixBuild)\build\;MicroBuildCoreDir=$(PkgMicrosoft_VisualStudioEng_MicroBuild_Core)\build\"
       Targets="Build" />
 
     <!-- <Copy SourceFiles="$(IntermediateOutputPath)$(TargetName).vsix;$(IntermediateOutputPath)$(TargetName).json"

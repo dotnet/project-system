@@ -2,7 +2,8 @@
 <Project>
 
   <Import Project="..\Directory.Build.props" />
-  <Import Project="$(SwixBuildDir)Microsoft.VisualStudioEng.MicroBuild.Plugins.SwixBuild.props" />
+  <Import Project="$(MicroBuildCoreDir)Microsoft.VisualStudioEng.MicroBuild.Core.props" />
+  <!-- <Import Project="$(SwixBuildDir)Microsoft.VisualStudioEng.MicroBuild.Plugins.SwixBuild.props" /> -->
 
   <PropertyGroup>
     <!--
@@ -23,6 +24,7 @@
     <MergeManifest Include="$(VisualStudioSetupInsertionPath)$(CommonFilesProjectName).json" />
   </ItemGroup>
 
-  <Import Project="$(SwixBuildDir)Microsoft.VisualStudioEng.MicroBuild.Plugins.SwixBuild.targets" />
+  <Import Project="$(MicroBuildCoreDir)Microsoft.VisualStudioEng.MicroBuild.Core.targets" />
+  <!-- <Import Project="$(SwixBuildDir)Microsoft.VisualStudioEng.MicroBuild.Plugins.SwixBuild.targets" /> -->
 
 </Project>
