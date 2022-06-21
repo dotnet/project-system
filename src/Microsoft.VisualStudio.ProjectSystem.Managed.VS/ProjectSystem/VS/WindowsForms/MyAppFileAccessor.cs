@@ -30,226 +30,16 @@ internal class MyAppFileAccessor : IMyAppFileAccessor
         _fileName = fileName;
     }
 
-    public async Task<bool?> GetMySubMainAsync()
+    private async Task<MyAppDocument?> TryGetMyAppFileAsync()
     {
-        MyAppDocument? myAppDocument = await TryGetMyAppFileAsync(false);
-        string? value = myAppDocument?.GetProperty(_filePath, MySubMainProperty);
+        string filePath = Path.GetFullPath(_fileName);
 
-        if (value is null)
-            return null;
-        else
-            return bool.Parse(value);
-    }
-    
-    public async Task SetMySubMainAsync(string mySubMain)
-    {
-        MyAppDocument? myAppDocument = await TryGetMyAppFileAsync(true);
-
-        if (myAppDocument is not null)
-        {
-            myAppDocument.SetProperty(MySubMainProperty, mySubMain);
-        }
-    }
-
-    public async Task<string?> GetMainFormAsync()
-    {
-        MyAppDocument? myAppDocument = await TryGetMyAppFileAsync(false);
-        string? value = myAppDocument?.GetProperty(_filePath, MainFormProperty);
-
-        if (value is null)
-            return null;
-        else
-            return value;
-    }
-    
-    public async Task SetMainFormAsync(string mainForm)
-    {
-        MyAppDocument? myAppDocument = await TryGetMyAppFileAsync(true);
-
-        if (myAppDocument is not null)
-        {
-            myAppDocument.SetProperty(MySubMainProperty, mainForm);
-        }
-    }
-
-    public async Task<bool?> GetSingleInstanceAsync()
-    {
-        MyAppDocument? myAppDocument = await TryGetMyAppFileAsync(false);
-        string? value = myAppDocument?.GetProperty(_filePath, SingleInstanceProperty);
-
-        if (value is null)
-            return null;
-        else
-            return bool.Parse(value);
-    }
-
-    public async Task SetSingleInstanceAsync(bool singleInstance)
-    {
-        MyAppDocument? myAppDocument = await TryGetMyAppFileAsync(true);
-
-        if (myAppDocument is not null)
-        {
-            myAppDocument.SetProperty(SingleInstanceProperty, singleInstance.ToString());
-        }
-    }
-    
-    public async Task<int?> GetShutdownModeAsync()
-    {
-        MyAppDocument? myAppDocument = await TryGetMyAppFileAsync(false);
-        string? value = myAppDocument?.GetProperty(_filePath, ShutdownModeProperty);
-
-        if (value is null)
-            return null;
-        else
-            return int.Parse(value);
-    }
-
-    public async Task SetShutdownModeAsync(int shutdownMode)
-    {
-        MyAppDocument? myAppDocument = await TryGetMyAppFileAsync(true);
-
-        if (myAppDocument is not null)
-        {
-            myAppDocument.SetProperty(ShutdownModeProperty, shutdownMode.ToString());
-        }
-    }
-
-    public async Task<bool?> GetEnableVisualStylesAsync()
-    {
-        MyAppDocument? myAppDocument = await TryGetMyAppFileAsync(false);
-        string? value = myAppDocument?.GetProperty(_filePath, EnableVisualStylesProperty);
-
-        if (value is null)
-            return null;
-        else
-            return bool.Parse(value);
-    }
-
-    public async Task SetEnableVisualStylesAsync(bool enableVisualStyles)
-    {
-        MyAppDocument? myAppDocument = await TryGetMyAppFileAsync(true);
-
-        if (myAppDocument is not null)
-        {
-            myAppDocument.SetProperty(EnableVisualStylesProperty, enableVisualStyles.ToString());
-        }
-    }
-
-    public async Task<int?> GetAuthenticationModeAsync()
-    {
-        MyAppDocument? myAppDocument = await TryGetMyAppFileAsync(false);
-        string? value = myAppDocument?.GetProperty(_filePath, AuthenticationModeProperty);
-
-        if (value is null)
-            return null;
-        else
-            return int.Parse(value);
-    }
-
-    public async Task SetAuthenticationModeAsync(int authenticationMode)
-    {
-        MyAppDocument? myAppDocument = await TryGetMyAppFileAsync(true);
-
-        if (myAppDocument is not null)
-        {
-            myAppDocument.SetProperty(AuthenticationModeProperty, authenticationMode.ToString());
-        }
-    }
-
-    public async Task<bool?> GetSaveMySettingsOnExitAsync()
-    {
-        MyAppDocument? myAppDocument = await TryGetMyAppFileAsync(false);
-        string? value = myAppDocument?.GetProperty(_filePath, SaveMySettingsOnExitProperty);
-
-        if (value is null)
-            return null;
-        else
-            return bool.Parse(value);
-    }
-
-    public async Task SetSaveMySettingsOnExitAsync(bool saveMySettingsOnExit)
-    {
-        MyAppDocument? myAppDocument = await TryGetMyAppFileAsync(true);
-
-        if (myAppDocument is not null)
-        {
-            myAppDocument.SetProperty(SaveMySettingsOnExitProperty, saveMySettingsOnExit.ToString());
-        }
-    }
-
-    public async Task<int?> GetHighDpiModeAsync()
-    {
-        MyAppDocument? myAppDocument = await TryGetMyAppFileAsync(false);
-        string? value = myAppDocument?.GetProperty(_filePath, HighDpiModeProperty);
-
-        if (value is null)
-            return null;
-        else
-            return int.Parse(value);
-    }
-
-    public async Task SetHighDpiModeAsync(int highDpiMode)
-    {
-        MyAppDocument? myAppDocument = await TryGetMyAppFileAsync(true);
-
-        if (myAppDocument is not null)
-        {
-            myAppDocument.SetProperty(HighDpiModeProperty, highDpiMode.ToString());
-        }
-    }
-
-    public async Task<string?> GetSplashScreenAsync()
-    {
-        MyAppDocument? myAppDocument = await TryGetMyAppFileAsync(false);
-        string? value = myAppDocument?.GetProperty(_filePath, SplashScreenProperty);
-
-        if (value is null)
-            return null;
-        else
-            return value;
-    }
-
-    public async Task SetSplashScreenAsync(string splashScreen)
-    {
-        MyAppDocument? myAppDocument = await TryGetMyAppFileAsync(true);
-
-        if (myAppDocument is not null)
-        {
-            myAppDocument.SetProperty(SplashScreenProperty, splashScreen);
-        }
-    }
-
-    public async Task<int?> GetMinimumSplashScreenDisplayTimeAsync()
-    {
-        MyAppDocument? myAppDocument = await TryGetMyAppFileAsync(false);
-        string? value = myAppDocument?.GetProperty(_filePath, MinimumSplashScreenDisplayTimeProperty);
-
-        if (value is null)
-            return null;
-        else
-            return int.Parse(value);
-    }
-
-    public async Task SetMinimumSplashScreenDisplayTimeAsync(int minimumSplashScreenDisplayTime)
-    {
-        MyAppDocument? myAppDocument = await TryGetMyAppFileAsync(true);
-
-        if (myAppDocument is not null)
-        {
-            myAppDocument.SetProperty(MinimumSplashScreenDisplayTimeProperty, minimumSplashScreenDisplayTime.ToString());
-        }
-    }
-
-    private async Task<MyAppDocument?> TryGetMyAppFileAsync(bool create)
-    {
-        string _filePath = Path.GetFullPath(_fileName);
-
-        if (_filePath is null)
+        if (filePath is null)
         {
             throw new InvalidOperationException($"The file {_fileName} path cannot be found.");
         }
 
-        var docData = new DocData(_serviceProvider, _filePath);
+        var docData = new DocData(_serviceProvider, filePath);
 
         if (docData is not null)
         {
@@ -259,4 +49,78 @@ internal class MyAppFileAccessor : IMyAppFileAccessor
 
         return null;
     }
+
+    private async Task SetPropertyAsync(string propertyName, string value)
+    {
+        MyAppDocument? myAppDocument = await TryGetMyAppFileAsync();
+
+        if (myAppDocument is not null)
+        {
+            myAppDocument.SetProperty(propertyName, value);
+        }
+    }
+
+    private async Task<string?> GetStringPropertyValueAsync(string propertyName)
+    {
+        MyAppDocument? myAppDocument = await TryGetMyAppFileAsync();
+        return myAppDocument?.GetProperty(_filePath, propertyName);
+    }
+
+    private async Task<bool?> GetBooleanPropertyValueAsync(string propertyName)
+    {
+        string? value = await GetStringPropertyValueAsync(propertyName);
+
+        if (bool.TryParse(value, out bool booleanValue))
+            return booleanValue;
+        return null;
+    }
+
+    private async Task<int?> GetIntPropertyValueAsync(string propertyName)
+    {
+        string? value = await GetStringPropertyValueAsync(propertyName);
+
+        if (int.TryParse(value, out int intValue))
+            return intValue;
+        return null;
+    }
+
+    public async Task<bool?> GetMySubMainAsync() => await GetBooleanPropertyValueAsync(MySubMainProperty);
+
+    public async Task SetMySubMainAsync(string value) => await SetPropertyAsync(MySubMainProperty, value);
+
+    public async Task<string?> GetMainFormAsync() => await GetStringPropertyValueAsync(MainFormProperty);
+
+    public async Task SetMainFormAsync(string value) => await SetPropertyAsync(MainFormProperty, value);
+
+    public async Task<bool?> GetSingleInstanceAsync() => await GetBooleanPropertyValueAsync(SingleInstanceProperty);
+
+    public async Task SetSingleInstanceAsync(bool value) => await SetPropertyAsync(SingleInstanceProperty, value.ToString().ToLower());
+
+    public async Task<int?> GetShutdownModeAsync() => await GetIntPropertyValueAsync(ShutdownModeProperty);
+
+    public async Task SetShutdownModeAsync(int value) => await SetPropertyAsync(ShutdownModeProperty, value.ToString());
+
+    public async Task<bool?> GetEnableVisualStylesAsync() => await GetBooleanPropertyValueAsync(EnableVisualStylesProperty);
+
+    public async Task SetEnableVisualStylesAsync(bool value) => await SetPropertyAsync(EnableVisualStylesProperty, value.ToString().ToLower());
+
+    public async Task<int?> GetAuthenticationModeAsync() => await GetIntPropertyValueAsync(AuthenticationModeProperty);
+
+    public async Task SetAuthenticationModeAsync(int value) => await SetPropertyAsync(AuthenticationModeProperty, value.ToString());
+
+    public async Task<bool?> GetSaveMySettingsOnExitAsync() => await GetBooleanPropertyValueAsync(SaveMySettingsOnExitProperty);
+
+    public async Task SetSaveMySettingsOnExitAsync(bool value) => await SetPropertyAsync(SaveMySettingsOnExitProperty, value.ToString().ToLower());
+
+    public async Task<int?> GetHighDpiModeAsync() => await GetIntPropertyValueAsync(HighDpiModeProperty);
+
+    public async Task SetHighDpiModeAsync(int value) => await SetPropertyAsync(HighDpiModeProperty, value.ToString());
+
+    public async Task<string?> GetSplashScreenAsync() => await GetStringPropertyValueAsync(SplashScreenProperty);
+
+    public async Task SetSplashScreenAsync(string value) => await SetPropertyAsync(SplashScreenProperty, value);
+
+    public async Task<int?> GetMinimumSplashScreenDisplayTimeAsync() => await GetIntPropertyValueAsync(MinimumSplashScreenDisplayTimeProperty);
+
+    public async Task SetMinimumSplashScreenDisplayTimeAsync(int value) => await SetPropertyAsync(MinimumSplashScreenDisplayTimeProperty, value.ToString());
 }
