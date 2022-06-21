@@ -32,7 +32,8 @@
     <IncludeCopyLocalReferencesInVSIXContainer>false</IncludeCopyLocalReferencesInVSIXContainer>
     <IsProductComponent>true</IsProductComponent>
     <IsPackable>false</IsPackable>
-    <UseCodebase>true</UseCodebase>
+    <!-- Runs the DeployVsixExtensionFiles from the VSSDK to enable the extension on the local machine. -->
+    <DeployExtension>true</DeployExtension>
     <BuildForLiveUnitTesting>false</BuildForLiveUnitTesting>
 
     <StartAction>Program</StartAction>
@@ -42,9 +43,6 @@
     <Ngen>true</Ngen>
     <NgenArchitecture>All</NgenArchitecture>
     <NgenPriority>3</NgenPriority>
-
-    <DeployExtension>false</DeployExtension>
-    <DeployExtension Condition="'$(DeployProjectOutput)' == 'true'">true</DeployExtension>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(MSBuildProjectExtension)' == '.vsmanproj'">

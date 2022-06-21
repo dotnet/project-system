@@ -5,9 +5,10 @@
     <!-- This should try to stay up to date with the highest version available on build machines. -->
     <MinimumRequiredVSVersion>16.8.1</MinimumRequiredVSVersion>
     <!-- This should always match the VS release being targeted. -->
-    <ProjectSystemVersion>17.2.0</ProjectSystemVersion>
-    <VersionBase>$(ProjectSystemVersion)</VersionBase>
-    <PreReleaseVersionLabel>beta1</PreReleaseVersionLabel>
+    <ProjectSystemVersion>17.3.0</ProjectSystemVersion>
+    <!-- TODO: This may no longer be needed. -->
+    <!-- <VersionBase>$(ProjectSystemVersion)</VersionBase> -->
+    <!-- <PreReleaseVersionLabel>beta1</PreReleaseVersionLabel> -->
     <SuppressNETCoreSdkPreviewMessage>true</SuppressNETCoreSdkPreviewMessage>
   </PropertyGroup>
 </Project>

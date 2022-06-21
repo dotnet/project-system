@@ -67,14 +67,6 @@
     </PropertyGroup>
   </Target> -->
 
-  <!-- Create VSIX container directory. -->
-  <Target Name="_MakeTargetVsixContainerDir"
-          BeforeTargets="CreateVsixContainer"
-          Condition="'$(CreateVsixContainer)' == 'true'"
-          Outputs="$(_TargetVsixContainerDir)">
-    <MakeDir Directories="$(_TargetVsixContainerDir)" />
-  </Target>
-
   <Target Name="VSManifestBuild" AfterTargets="Build">
     <MSBuild Projects="$(MSBuildThisFileDirectory)Microsoft.VisualStudio.ProjectSystem.Managed.vsmanproj"
       Properties="SwixBuildDir=$(PkgMicrosoft_VisualStudioEng_MicroBuild_Plugins_SwixBuild)\build\;CommonFilesProjectName=$(CommonFilesProjectName)"
