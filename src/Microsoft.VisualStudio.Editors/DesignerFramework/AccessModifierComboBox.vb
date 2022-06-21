@@ -405,15 +405,10 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         ''' <param name="value"></param>
         Private Function TryGetCustomToolPropertyValue(ByRef value As String) As Boolean
             value = Nothing
+            Dim customToolProperty As EnvDTE.Property = Nothing
 
             Try
-                Dim customToolProperty As EnvDTE.Property = DTEUtils.GetProjectItemProperty(_resxFileProjectItem, DTEUtils.PROJECTPROPERTY_CUSTOMTOOL)
-                If customToolProperty IsNot Nothing Then
-                    Dim customToolValue As String = TryCast(customToolProperty.Value, String)
-                    value = customToolValue
-                    _previousCustomToolValue = customToolValue
-                    Return True
-                End If
+                customToolProperty = DTEUtils.GetProjectItemProperty(_resxFileProjectItem, DTEUtils.PROJECTPROPERTY_CUSTOMTOOL)
             Catch ex As KeyNotFoundException
                 ' Possible limitation of Cps. In some cases Cps is not able to maintain the same item id for items,
                 ' causing them to Not be found. In some scenarios (i.e., when the item Is moved), it ends up having
@@ -423,6 +418,13 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
                     Return True
                 End If
             End Try
+
+            If customToolProperty IsNot Nothing Then
+                Dim customToolValue As String = TryCast(customToolProperty.Value, String)
+                value = customToolValue
+                _previousCustomToolValue = customToolValue
+                Return True
+            End If
 
             Return False
         End Function
