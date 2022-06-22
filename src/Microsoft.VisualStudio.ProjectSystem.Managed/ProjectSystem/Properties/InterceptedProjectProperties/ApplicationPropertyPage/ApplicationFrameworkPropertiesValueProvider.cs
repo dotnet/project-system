@@ -48,9 +48,28 @@ internal sealed class ApplicationFrameworkPropertiesValueProvider : Intercepting
 
     public override async Task<string?> OnSetPropertyValueAsync(string propertyName, string unevaluatedPropertyValue, IProjectProperties defaultProperties, IReadOnlyDictionary<string, string>? dimensionalConditions = null)
     {
+        // ValueProvider needs to convert string enums to valid values to be saved.
+        if (propertyName == AuthenticationModeProperty)
+        {
+            if (unevaluatedPropertyValue == "Windows")
+                unevaluatedPropertyValue = "0";
+
+            if (unevaluatedPropertyValue == "ApplicationDefined")
+                unevaluatedPropertyValue= "1";
+        }
+        else if (propertyName == ShutdownModeProperty)
+        {
+            if (unevaluatedPropertyValue == "AfterMainFormCloses")
+                unevaluatedPropertyValue = "0";
+
+            if (unevaluatedPropertyValue == "AfterAllFormsClose")
+                unevaluatedPropertyValue = "1";
+        }
+
         await (propertyName switch
         {
             //ApplicationFrameworkProperty => _myAppXamlFileAccessor.SetMySubMainAsync(unevaluatedPropertyValue),
+            EnableVisualStylesProperty => _myAppXamlFileAccessor.SetEnableVisualStylesAsync(Convert.ToBoolean(unevaluatedPropertyValue)),
             SingleInstanceProperty => _myAppXamlFileAccessor.SetSingleInstanceAsync(Convert.ToBoolean(unevaluatedPropertyValue)),
             SaveMySettingsOnExitProperty => _myAppXamlFileAccessor.SetSaveMySettingsOnExitAsync(Convert.ToBoolean(unevaluatedPropertyValue)),
             HighDpiModeProperty => _myAppXamlFileAccessor.SetHighDpiModeAsync(Convert.ToInt16(unevaluatedPropertyValue)),

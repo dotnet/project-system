@@ -7,30 +7,25 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.WindowsForms;
 
 internal class MyAppDocument
 {
-    private XDocument _doc;
-    private XElement _root;
-    private readonly DocDataTextReader _reader;
+    private readonly XDocument _doc;
+    private readonly DocData _docData;
 
-    private readonly string _fileName;
-
-    public MyAppDocument(string fileName, DocDataTextReader textReader)
+    public MyAppDocument(DocData docData)
     {
-        _reader = textReader;
-        _doc = XDocument.Load(_reader);
-        _root = _doc.Root;
-        _fileName = fileName;
+        using var textReader = new DocDataTextReader(docData);
+        _doc = XDocument.Load(textReader);
+        _docData = docData;
     }
 
-    public string GetProperty(string filePath, string propertyName)
+    public string GetProperty(string propertyName)
     {
-        _doc = XDocument.Load(_reader);
-        _root = _doc.Root;
-        return (string)_root.Element(propertyName);
+        return _doc.Root.Element(propertyName).Value;
     }
 
     public void SetProperty(string propertyName, string propertyValue)
     {
-        _root.Element(propertyName).Value = propertyValue;
-        _doc.Save(_fileName);
+        _doc.Root.Element(propertyName).Value = propertyValue;
+        using var textWriter = new DocDataTextWriter(_docData);
+        _doc.Save(textWriter);
     }
 }

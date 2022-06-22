@@ -1,16 +1,20 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
+using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Design.Serialization;
+using Microsoft.VisualStudio.Threading;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.WindowsForms;
 
 [Export(typeof(IMyAppFileAccessor))]
 [AppliesTo(ProjectCapability.DotNet)]
-internal class MyAppFileAccessor : IMyAppFileAccessor
+internal class MyAppFileAccessor : IMyAppFileAccessor, IDisposable
 {
     private readonly IServiceProvider _serviceProvider;
-    private readonly string _filePath;
-    private readonly string _fileName = "Application.myapp";
+    private readonly UnconfiguredProject _project;
+    private readonly IProjectThreadingService _threadingService;
+    private DocData? _docData;
+    private MyAppDocument? myAppDocument;
 
     private const string MySubMainProperty = "MySubMain";
     private const string MainFormProperty = "MainForm";
@@ -23,31 +27,44 @@ internal class MyAppFileAccessor : IMyAppFileAccessor
     private const string SplashScreenProperty = "SplashScreen";
     private const string MinimumSplashScreenDisplayTimeProperty = "MinimumSplashScreenDisplayTime";
 
-    public MyAppFileAccessor(IServiceProvider serviceProvider, string filePath, string fileName)
+    [ImportingConstructor]
+    public MyAppFileAccessor([Import(typeof(SVsServiceProvider))] IServiceProvider serviceProvider, UnconfiguredProject project, IProjectThreadingService threadingService)
     {
         _serviceProvider = serviceProvider;
-        _filePath = filePath;
-        _fileName = fileName;
+        _project = project;
+        _threadingService = threadingService;
+    }
+
+    public void Dispose()
+    {
+        _docData?.Dispose();
+    }
+
+    private void DocData_Modifying(object sender, EventArgs e)
+    {
+        myAppDocument = null;
     }
 
     private async Task<MyAppDocument?> TryGetMyAppFileAsync()
     {
-        string filePath = Path.GetFullPath(_fileName);
-
-        if (filePath is null)
+        if (_docData is null)
         {
-            throw new InvalidOperationException($"The file {_fileName} path cannot be found.");
+            string absolutePath = _project.MakeRooted("My Project\\Application.myapp");
+
+            await _threadingService.SwitchToUIThread();
+            _docData = new DocData(_serviceProvider, absolutePath);
+            _docData.Modifying += DocData_Modifying;
+            await TaskScheduler.Default;
         }
 
-        var docData = new DocData(_serviceProvider, filePath);
-
-        if (docData is not null)
+        if (myAppDocument is null)
         {
-            var textReader = new DocDataTextReader(docData);
-            return new MyAppDocument(_fileName, textReader);
+            myAppDocument = new MyAppDocument(_docData);
         }
 
-        return null;
+        return myAppDocument;
+
+        //return null; // Consider when we will reach here: when file doesn't exist.
     }
 
     private async Task SetPropertyAsync(string propertyName, string value)
@@ -56,6 +73,7 @@ internal class MyAppFileAccessor : IMyAppFileAccessor
 
         if (myAppDocument is not null)
         {
+            await _threadingService.SwitchToUIThread();
             myAppDocument.SetProperty(propertyName, value);
         }
     }
@@ -63,7 +81,7 @@ internal class MyAppFileAccessor : IMyAppFileAccessor
     private async Task<string?> GetStringPropertyValueAsync(string propertyName)
     {
         MyAppDocument? myAppDocument = await TryGetMyAppFileAsync();
-        return myAppDocument?.GetProperty(_filePath, propertyName);
+        return myAppDocument?.GetProperty(propertyName);
     }
 
     private async Task<bool?> GetBooleanPropertyValueAsync(string propertyName)
@@ -123,4 +141,5 @@ internal class MyAppFileAccessor : IMyAppFileAccessor
     public async Task<int?> GetMinimumSplashScreenDisplayTimeAsync() => await GetIntPropertyValueAsync(MinimumSplashScreenDisplayTimeProperty);
 
     public async Task SetMinimumSplashScreenDisplayTimeAsync(int value) => await SetPropertyAsync(MinimumSplashScreenDisplayTimeProperty, value.ToString());
+
 }

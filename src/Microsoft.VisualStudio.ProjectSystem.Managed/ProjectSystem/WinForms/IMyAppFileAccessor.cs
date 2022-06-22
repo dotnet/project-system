@@ -5,6 +5,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.WindowsForms;
 /// <summary>
 /// Provides access to properties in the myapp file.
 /// </summary>
+[ProjectSystemContract(ProjectSystemContractScope.UnconfiguredProject, ProjectSystemContractProvider.System, Cardinality = Composition.ImportCardinality.ExactlyOne)]
 internal interface IMyAppFileAccessor
 {
     /// <summary>

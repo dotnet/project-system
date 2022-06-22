@@ -138,7 +138,6 @@
       </NameValuePair>
     </EnumProperty.Metadata>
     <!-- TODO: Validate DisplayName values. -->
-    <!-- TODO: Value provider logic needed to convert string enums to integer values -->
     <EnumValue Name="Windows"
                DisplayName="Windows - Retrieve user info through My.User at runtime." />
     <EnumValue Name="ApplicationDefined"
@@ -161,7 +160,6 @@
         </NameValuePair.Value>
       </NameValuePair>
     </EnumProperty.Metadata>
-    <!-- TODO: Value provider logic needed to convert string enums to integer values -->
     <EnumValue Name="AfterMainFormCloses"
                DisplayName="Shut down when the main form closes." />
     <EnumValue Name="AfterAllFormsClose"
