@@ -1,17 +1,17 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
-namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation.VisualBasic
+namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
 {
     internal static class VisualBasicNamespaceImportsListFactory
     {
-        public static TestVisualBasicNamespaceImportsList CreateInstance(params string[] list)
+        public static TestDotNetNamespaceImportsList CreateInstance(params string[] list)
         {
-            var newList = new TestVisualBasicNamespaceImportsList(
+            var newList = new TestDotNetNamespaceImportsList(
                 UnconfiguredProjectFactory.Create(),
                 IProjectThreadingServiceFactory.Create(),
                 IActiveConfiguredProjectSubscriptionServiceFactory.Create());
 
-            newList.VSImports = new Lazy<VisualBasicVSImports>(() => new TestVisualBasicVSImports(
+            newList.VSImports = new Lazy<DotNetVSImports>(() => new TestDotNetVsImports(
                 Mock.Of<VSLangProj.VSProject>(),
                 IProjectThreadingServiceFactory.Create(),
                 IActiveConfiguredValueFactory.ImplementValue(()=> ConfiguredProjectFactory.Create()),
@@ -27,9 +27,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation.VisualBasic
             return newList;
         }
 
-        internal class TestVisualBasicNamespaceImportsList : VisualBasicNamespaceImportsList
+        internal class TestDotNetNamespaceImportsList : DotNetNamespaceImportsList
         {
-            public TestVisualBasicNamespaceImportsList(UnconfiguredProject project,
+            public TestDotNetNamespaceImportsList(UnconfiguredProject project,
                                                        IProjectThreadingService threadingService,
                                                        IActiveConfiguredProjectSubscriptionService activeConfiguredProjectSubscriptionService)
                 : base(project, threadingService, activeConfiguredProjectSubscriptionService)
@@ -56,15 +56,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation.VisualBasic
             }
         }
 
-        private class TestVisualBasicVSImports : VisualBasicVSImports
+        private class TestDotNetVsImports : DotNetVSImports
         {
-            private readonly TestVisualBasicNamespaceImportsList _testImportsList;
-            public TestVisualBasicVSImports(VSLangProj.VSProject vsProject,
+            private readonly TestDotNetNamespaceImportsList _testImportsList;
+            public TestDotNetVsImports(VSLangProj.VSProject vsProject,
                                             IProjectThreadingService threadingService,
                                             IActiveConfiguredValue<ConfiguredProject> activeConfiguredProject,
                                             IProjectAccessor projectAccessor,
                                             IUnconfiguredProjectVsServices unconfiguredProjectVSServices,
-                                            TestVisualBasicNamespaceImportsList importsList)
+                                            TestDotNetNamespaceImportsList importsList)
                 : base(vsProject, threadingService, activeConfiguredProject, projectAccessor, unconfiguredProjectVSServices, importsList)
             {
                 _testImportsList = importsList;

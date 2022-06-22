@@ -3,7 +3,7 @@
 using EnvDTE;
 using VSLangProj;
 
-namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation.VisualBasic
+namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
 {
     public class VsImportsTests
     {
@@ -81,15 +81,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation.VisualBasic
             Assert.Equal(2, vsimports.Count);
         }
 
-        private static VisualBasicVSImports CreateInstance(
+        private static DotNetVSImports CreateInstance(
             VSLangProj.VSProject vsProject,
             IProjectThreadingService threadingService,
             IActiveConfiguredValue<ConfiguredProject> activeConfiguredProject,
             IProjectAccessor projectAccessor,
             IUnconfiguredProjectVsServices vsServices,
-            VisualBasicNamespaceImportsList importList)
+            DotNetNamespaceImportsList importList)
         {
-            return new VisualBasicVSImports(vsProject, threadingService, activeConfiguredProject, projectAccessor, vsServices, importList);
+            return new DotNetVSImports(vsProject, threadingService, activeConfiguredProject, projectAccessor, vsServices, importList);
         }
     }
 }
