@@ -47,9 +47,9 @@
       <Context>Project</Context>
     </PropertyPageSchema>
 
-    <PropertyPageSchema Include="$(ManagedXamlResourcesDirectory)ReferencesPage.CSharp.xaml">
+    <!--<PropertyPageSchema Include="$(ManagedXamlResourcesDirectory)ReferencesPage.CSharp.xaml">
       <Context>Project</Context>
-    </PropertyPageSchema>cd projec
+    </PropertyPageSchema>-->
     
     <PropertyPageSchema Include="$(ManagedXamlNeutralResourcesDirectory)EditorConfigFiles.xaml">
       <Context>File</Context>
