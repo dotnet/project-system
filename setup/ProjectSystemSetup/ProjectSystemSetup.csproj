@@ -11,15 +11,13 @@
     <!-- VSIX -->
     <ExtensionInstallationRoot>Extensions</ExtensionInstallationRoot>
     <ExtensionInstallationFolder>Microsoft\ManagedProjectSystem</ExtensionInstallationFolder>
-    <AddVsixForSigningDependsOn>CreateVsixContainer</AddVsixForSigningDependsOn>
 
     <!-- VS Insertion -->
     <ManifestJsonName>Microsoft.VisualStudio.ProjectSystem.Managed</ManifestJsonName>
     <CommonFilesProjectName>Microsoft.VisualStudio.ProjectSystem.Managed.CommonFiles</CommonFilesProjectName>
 
     <TargetVsixContainerName>$(AssemblyName).vsix</TargetVsixContainerName>
-    <!-- Required to start in either OutDir or IntermediateOutputPath for signing. It'll be copied after signing via the CopyVsixAfterSigning target. -->
-    <TargetVsixContainer>$(OutDir)$(TargetVsixContainerName)</TargetVsixContainer>
+    <TargetVsixContainer>$(VisualStudioSetupInsertionPath)$(TargetVsixContainerName)</TargetVsixContainer>
   </PropertyGroup>
 
   <ItemGroup>
@@ -69,7 +67,8 @@
   </Target> -->
 
   <ItemGroup>
-    <FilesToSign Include="$(TargetVsixContainer)">
+    <!-- The CopyVsixForSigning target will put the VSIX into OutDir for signing. -->
+    <FilesToSign Include="$(OutDir)$(AssemblyName).vsix">
       <Authenticode>VsixSHA2</Authenticode>
     </FilesToSign>
   </ItemGroup>

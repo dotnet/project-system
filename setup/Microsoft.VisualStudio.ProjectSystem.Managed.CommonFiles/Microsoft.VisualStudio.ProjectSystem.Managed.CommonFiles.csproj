@@ -9,9 +9,6 @@
   <Import Project="..\..\build\import\VisualStudio.props" />
 
   <PropertyGroup>
-    <!-- VSIX -->
-    <AddVsixForSigningDependsOn>SwixBuild</AddVsixForSigningDependsOn>
-
     <!-- VS Insertion -->
     <ManifestJsonName>$(MSBuildProjectName)</ManifestJsonName>
   </PropertyGroup>
