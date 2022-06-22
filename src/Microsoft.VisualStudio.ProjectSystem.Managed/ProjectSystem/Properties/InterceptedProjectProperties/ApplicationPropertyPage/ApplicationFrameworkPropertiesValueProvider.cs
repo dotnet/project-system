@@ -125,7 +125,7 @@ internal sealed class ApplicationFrameworkPropertiesValueProvider : Intercepting
                 "1" => "ApplicationDefined",
                 "" => "",
 
-                _ => throw new InvalidDataException($"Invalid value '{value}' for '{propertyName}' property.")
+                _ => throw new InvalidOperationException($"Invalid value '{value}' for '{propertyName}' property.")
             };
         }
         else if (propertyName == HighDpiModeProperty)
@@ -139,7 +139,7 @@ internal sealed class ApplicationFrameworkPropertiesValueProvider : Intercepting
                 "4" => "DpiUnawareGdiScaled",
                 "" => "",
 
-                _ => throw new InvalidDataException($"Invalid value '{value}' for '{propertyName}' property.")
+                _ => throw new InvalidOperationException($"Invalid value '{value}' for '{propertyName}' property.")
             };
         }
         else if (propertyName == ShutdownModeProperty)
@@ -150,7 +150,7 @@ internal sealed class ApplicationFrameworkPropertiesValueProvider : Intercepting
                 "1" => "AfterAllFormsClose",
                 "" => "",
 
-                _ => throw new InvalidDataException($"Invalid value '{value}' for '{propertyName}' property.")
+                _ => throw new InvalidOperationException($"Invalid value '{value}' for '{propertyName}' property.")
             };
         }
 

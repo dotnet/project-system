@@ -52,8 +52,17 @@ internal class MyAppFileAccessor : IMyAppFileAccessor, IDisposable
             string absolutePath = _project.MakeRooted("My Project\\Application.myapp");
 
             await _threadingService.SwitchToUIThread();
-            _docData = new DocData(_serviceProvider, absolutePath);
-            _docData.Modifying += DocData_Modifying;
+            try
+            {
+                _docData = new DocData(_serviceProvider, absolutePath);
+                _docData.Modifying += DocData_Modifying;
+            } 
+            catch (Exception)
+            {
+                // If we have reached here, it means that the file doesn't exist in that location.
+                return null;
+            }
+            
             await TaskScheduler.Default;
         }
 
@@ -63,8 +72,6 @@ internal class MyAppFileAccessor : IMyAppFileAccessor, IDisposable
         }
 
         return myAppDocument;
-
-        //return null; // Consider when we will reach here: when file doesn't exist.
     }
 
     private async Task SetPropertyAsync(string propertyName, string value)
