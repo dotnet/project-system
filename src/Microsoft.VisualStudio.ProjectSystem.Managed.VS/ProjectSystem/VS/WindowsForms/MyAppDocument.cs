@@ -19,12 +19,26 @@ internal class MyAppDocument
 
     public string GetProperty(string propertyName)
     {
-        return _doc.Root.Element(propertyName).Value;
+        XElement element = _doc.Root.Element(propertyName);
+
+        if (element is null)
+            return string.Empty;
+
+        return element.Value;
     }
 
     public void SetProperty(string propertyName, string propertyValue)
     {
-        _doc.Root.Element(propertyName).Value = propertyValue;
+        XElement element = _doc.Root.Element(propertyName);
+
+        if (element is not null)
+            element.Value = propertyValue;
+        else
+        {
+            element = new XElement(propertyName, propertyValue);
+            _doc.Root.Add(element);
+        }
+
         using var textWriter = new DocDataTextWriter(_docData);
         _doc.Save(textWriter);
     }
