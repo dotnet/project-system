@@ -33,7 +33,7 @@
 
   <!-- Copies the vsix files after they've been signed to the appropriate output folder. -->
   <Target Name="CopyVsixAfterSigning" AfterTargets="SignFiles" Condition="'$(IsVsixProject)' == 'true'">
-    <Copy SourceFiles="$(IntermediateOutputPath)$(AssemblyName).vsix" DestinationFolder="$(VisualStudioSetupInsertionPath)" />
+    <Copy SourceFiles="$(OutDir)$(AssemblyName).vsix" DestinationFolder="$(VisualStudioSetupInsertionPath)" />
     <!-- <Copy SourceFiles="$(OutDir)$(AssemblyName).vsix" DestinationFolder="$(VisualStudioSetupOutputPath)" /> -->
   </Target>
 

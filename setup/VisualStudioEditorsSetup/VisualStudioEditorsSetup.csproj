@@ -16,7 +16,7 @@
 
     <TargetVsixContainerName>$(AssemblyName).vsix</TargetVsixContainerName>
     <!-- Required to start in either OutDir or IntermediateOutputPath for signing. It'll be copied after signing via the CopyVsixAfterSigning target. -->
-    <TargetVsixContainer>$(IntermediateOutputPath)$(TargetVsixContainerName)</TargetVsixContainer>
+    <TargetVsixContainer>$(OutDir)$(TargetVsixContainerName)</TargetVsixContainer>
   </PropertyGroup>
 
   <ItemGroup>
