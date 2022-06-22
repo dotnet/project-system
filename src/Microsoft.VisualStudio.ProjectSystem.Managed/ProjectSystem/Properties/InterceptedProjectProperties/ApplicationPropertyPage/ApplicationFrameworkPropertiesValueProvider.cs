@@ -7,6 +7,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties;
 [ExportInterceptingPropertyValueProvider(
     new[] 
     {
+        //ApplicationFrameworkProperty,
         EnableVisualStylesProperty,
         SingleInstanceProperty,
         SaveMySettingsOnExitProperty,
@@ -19,6 +20,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties;
     ExportInterceptingPropertyValueProviderFile.ProjectFile)] //Note: we don't need to save it in the project file, but we'll intercept the properties.
 internal sealed class ApplicationFrameworkPropertiesValueProvider : InterceptingPropertyValueProviderBase
 {
+    //internal const string ApplicationFrameworkProperty = "UseApplicationFramework";
     internal const string EnableVisualStylesProperty = "EnableVisualStyles";
     internal const string SingleInstanceProperty = "SingleInstance";
     internal const string SaveMySettingsOnExitProperty = "SaveMySettingsOnExit";
@@ -51,19 +53,33 @@ internal sealed class ApplicationFrameworkPropertiesValueProvider : Intercepting
         // ValueProvider needs to convert string enums to valid values to be saved.
         if (propertyName == AuthenticationModeProperty)
         {
-            if (unevaluatedPropertyValue == "Windows")
-                unevaluatedPropertyValue = "0";
-
-            if (unevaluatedPropertyValue == "ApplicationDefined")
-                unevaluatedPropertyValue= "1";
+            unevaluatedPropertyValue = unevaluatedPropertyValue switch
+            {
+                "Windows" => "0",
+                "ApplicationDefined" => "1",
+                _ => unevaluatedPropertyValue
+            };
+        }
+        else if (propertyName == HighDpiModeProperty)
+        {
+            unevaluatedPropertyValue = unevaluatedPropertyValue switch
+            {
+                "DpiUnaware" => "0",
+                "SystemAware" => "1",
+                "PerMonitor" => "2",
+                "PerMonitorV2" => "3",
+                "DpiUnawareGdiScaled" => "4",
+                _ => unevaluatedPropertyValue
+            };
         }
         else if (propertyName == ShutdownModeProperty)
         {
-            if (unevaluatedPropertyValue == "AfterMainFormCloses")
-                unevaluatedPropertyValue = "0";
-
-            if (unevaluatedPropertyValue == "AfterAllFormsClose")
-                unevaluatedPropertyValue = "1";
+            unevaluatedPropertyValue = unevaluatedPropertyValue switch
+            {
+                "AfterMainFormCloses" => "0",
+                "AfterAllFormsClose" => "1",
+                _ => unevaluatedPropertyValue
+            };
         }
 
         await (propertyName switch
@@ -86,7 +102,7 @@ internal sealed class ApplicationFrameworkPropertiesValueProvider : Intercepting
 
     private async Task<string> GetPropertyValueAsync(string propertyName)
     {
-        return propertyName switch
+        string? value = propertyName switch
         {
             //ApplicationFrameworkProperty => (await _myAppXamlFileAccessor.GetMySubMainAsync()).ToString() ?? string.Empty,
             EnableVisualStylesProperty => (await _myAppXamlFileAccessor.GetEnableVisualStylesAsync()).ToString() ?? string.Empty,
@@ -100,5 +116,44 @@ internal sealed class ApplicationFrameworkPropertiesValueProvider : Intercepting
 
             _ => throw new InvalidOperationException($"The provider does not support the '{propertyName}' property.")
         };
+
+        if (propertyName == AuthenticationModeProperty)
+        {
+            value = value switch
+            {
+                "0" => "Windows",
+                "1" => "ApplicationDefined",
+                "" => "",
+
+                _ => throw new InvalidDataException($"Invalid value '{value}' for '{propertyName}' property.")
+            };
+        }
+        else if (propertyName == HighDpiModeProperty)
+        {
+            value = value switch
+            {
+                "0" => "DpiUnaware",
+                "1" => "SystemAware",
+                "2" => "PerMonitor",
+                "3" => "PerMonitorV2",
+                "4" => "DpiUnawareGdiScaled",
+                "" => "",
+
+                _ => throw new InvalidDataException($"Invalid value '{value}' for '{propertyName}' property.")
+            };
+        }
+        else if (propertyName == ShutdownModeProperty)
+        {
+            value = value switch
+            {
+                "0" => "AfterMainFormCloses",
+                "1" => "AfterAllFormsClose",
+                "" => "",
+
+                _ => throw new InvalidDataException($"Invalid value '{value}' for '{propertyName}' property.")
+            };
+        }
+
+        return value;
     }
 }
