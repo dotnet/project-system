@@ -42,6 +42,10 @@
                 Description="Uses the most current version for the Control Library COMCTL to provide control rendering with modern visual styling."
                 HelpUrl="https://go.microsoft.com/fwlink/?linkid=2195445"
                 Category="ApplicationFramework">
+    <BoolProperty.DataSource>
+      <DataSource Persistence="ProjectFileWithInterception"
+                  HasConfigurationCondition="False" />
+    </BoolProperty.DataSource>
     <BoolProperty.Metadata>
       <NameValuePair Name="VisibilityCondition">
         <NameValuePair.Value>
@@ -56,6 +60,10 @@
                 Description="Prevents users from running multiple instances of the application. Default is cleared, which allows multiple instances of the application to be run."
                 HelpUrl="https://go.microsoft.com/fwlink/?linkid=2195340"
                 Category="ApplicationFramework">
+    <BoolProperty.DataSource>
+      <DataSource Persistence="ProjectFileWithInterception"
+                  HasConfigurationCondition="False" />
+    </BoolProperty.DataSource>
     <BoolProperty.Metadata>
       <NameValuePair Name="VisibilityCondition">
         <NameValuePair.Value>
@@ -70,6 +78,10 @@
                 Description="Controls if settings are saved when users shut down their computers."
                 HelpUrl="https://go.microsoft.com/fwlink/?linkid=2195171"
                 Category="ApplicationFramework">
+    <BoolProperty.DataSource>
+      <DataSource Persistence="ProjectFileWithInterception"
+                  HasConfigurationCondition="False" />
+    </BoolProperty.DataSource>
     <BoolProperty.Metadata>
       <NameValuePair Name="VisibilityCondition">
         <NameValuePair.Value>
@@ -84,6 +96,10 @@
                 Description="Specifies the application-wide HighDpiMode for the application. This setting can be programaticaly overriden through the ApplyApplicationDefaults event."
                 HelpUrl="https://go.microsoft.com/fwlink/?linkid=2195173"
                 Category="ApplicationFramework">
+    <EnumProperty.DataSource>
+      <DataSource Persistence="ProjectFileWithInterception"
+                  HasConfigurationCondition="False" />
+    </EnumProperty.DataSource>
     <EnumProperty.Metadata>
       <NameValuePair Name="VisibilityCondition">
         <NameValuePair.Value>
@@ -105,11 +121,15 @@
                DisplayName="Per monitor V2 - DPI detected on-launch and on-change including child windows" />
   </EnumProperty>
 
-  <EnumProperty Name="AuthenticationMode"
+  <EnumProperty Name="VBAuthenticationMode"
                 DisplayName="Authentication mode"
                 Description="Specifies the method of identifying the logged-on user, when needed."
                 HelpUrl="https://go.microsoft.com/fwlink/?linkid=2195341"
                 Category="ApplicationFramework">
+    <EnumProperty.DataSource>
+      <DataSource Persistence="ProjectFileWithInterception"
+                  HasConfigurationCondition="False" />
+    </EnumProperty.DataSource>
     <EnumProperty.Metadata>
       <NameValuePair Name="VisibilityCondition">
         <NameValuePair.Value>
@@ -118,7 +138,6 @@
       </NameValuePair>
     </EnumProperty.Metadata>
     <!-- TODO: Validate DisplayName values. -->
-    <!-- TODO: Value provider logic needed to convert string enums to integer values -->
     <EnumValue Name="Windows"
                DisplayName="Windows - Retrieve user info through My.User at runtime." />
     <EnumValue Name="ApplicationDefined"
@@ -130,6 +149,10 @@
                 Description="Indicates which condition causes the application to shut down."
                 HelpUrl="https://go.microsoft.com/fwlink/?linkid=2195343"
                 Category="ApplicationFramework">
+    <EnumProperty.DataSource>
+      <DataSource Persistence="ProjectFileWithInterception"
+                  HasConfigurationCondition="False" />
+    </EnumProperty.DataSource>
     <EnumProperty.Metadata>
       <NameValuePair Name="VisibilityCondition">
         <NameValuePair.Value>
@@ -137,7 +160,6 @@
         </NameValuePair.Value>
       </NameValuePair>
     </EnumProperty.Metadata>
-    <!-- TODO: Value provider logic needed to convert string enums to integer values -->
     <EnumValue Name="AfterMainFormCloses"
                DisplayName="Shut down when the main form closes." />
     <EnumValue Name="AfterAllFormsClose"
@@ -150,6 +172,10 @@
                        HelpUrl="https://go.microsoft.com/fwlink/?linkid=2195177"
                        Category="ApplicationFramework"
                        EnumProvider="StartupObjectsEnumProvider">
+    <DynamicEnumProperty.DataSource>
+      <DataSource Persistence="ProjectFileWithInterception"
+                  HasConfigurationCondition="False" />
+    </DynamicEnumProperty.DataSource>
     <DynamicEnumProperty.Metadata>
       <NameValuePair Name="VisibilityCondition">
         <NameValuePair.Value>
@@ -169,6 +195,10 @@
                 Description="Sets the minimum length of time, in milliseconds, for which the splash screen is displayed."
                 HelpUrl="https://go.microsoft.com/fwlink/?linkid=2195289"
                 Category="ApplicationFramework">
+    <StringProperty.DataSource>
+      <DataSource Persistence="ProjectFileWithInterception"
+                  HasConfigurationCondition="False" />
+    </StringProperty.DataSource>
     <StringProperty.Metadata>
       <NameValuePair Name="VisibilityCondition">
         <NameValuePair.Value>

@@ -82,16 +82,6 @@
         <target state="new">Startup URI</target>
         <note />
       </trans-unit>
-      <trans-unit id="EnumProperty|AuthenticationMode|Description">
-        <source>Specifies the method of identifying the logged-on user, when needed.</source>
-        <target state="new">Specifies the method of identifying the logged-on user, when needed.</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="EnumProperty|AuthenticationMode|DisplayName">
-        <source>Authentication mode</source>
-        <target state="new">Authentication mode</target>
-        <note />
-      </trans-unit>
       <trans-unit id="EnumProperty|HighDpiMode|Description">
         <source>Specifies the application-wide HighDpiMode for the application. This setting can be programaticaly overriden through the ApplyApplicationDefaults event.</source>
         <target state="new">Specifies the application-wide HighDpiMode for the application. This setting can be programaticaly overriden through the ApplyApplicationDefaults event.</target>
@@ -122,14 +112,14 @@
         <target state="new">Shutdown mode</target>
         <note />
       </trans-unit>
-      <trans-unit id="EnumValue|AuthenticationMode.ApplicationDefined|DisplayName">
-        <source>Application-defined - Custom authentication implemented within the application.</source>
-        <target state="new">Application-defined - Custom authentication implemented within the application.</target>
+      <trans-unit id="EnumProperty|VBAuthenticationMode|Description">
+        <source>Specifies the method of identifying the logged-on user, when needed.</source>
+        <target state="new">Specifies the method of identifying the logged-on user, when needed.</target>
         <note />
       </trans-unit>
-      <trans-unit id="EnumValue|AuthenticationMode.Windows|DisplayName">
-        <source>Windows - Retrieve user info through My.User at runtime.</source>
-        <target state="new">Windows - Retrieve user info through My.User at runtime.</target>
+      <trans-unit id="EnumProperty|VBAuthenticationMode|DisplayName">
+        <source>Authentication mode</source>
+        <target state="new">Authentication mode</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|HighDpiMode.DpiUnawareGdiScaled|DisplayName">
@@ -180,6 +170,16 @@
       <trans-unit id="EnumValue|ShutdownMode_WPF.OnMainWindowClose|DisplayName">
         <source>On main window close</source>
         <target state="new">On main window close</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|VBAuthenticationMode.ApplicationDefined|DisplayName">
+        <source>Application-defined - Custom authentication implemented within the application.</source>
+        <target state="new">Application-defined - Custom authentication implemented within the application.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|VBAuthenticationMode.Windows|DisplayName">
+        <source>Windows - Retrieve user info through My.User at runtime.</source>
+        <target state="new">Windows - Retrieve user info through My.User at runtime.</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|CreateOrOpenApplicationXaml|Description">
