@@ -65,7 +65,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
 
         Private _isDisposed As Boolean
         Private ReadOnly _rootDesigner As BaseRootDesigner
-        Private ReadOnly _projectItem As EnvDTE.ProjectItem
+        Private ReadOnly _resxFileProjectItem As EnvDTE.ProjectItem
         Private ReadOnly _serviceProvider As IServiceProvider
         Private ReadOnly _namespaceToOverrideIfCustomToolIsEmpty As String
         Private ReadOnly _codeGeneratorEntries As New List(Of CodeGenerator)
@@ -73,6 +73,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
 
         Private _designerCommandBarComboBoxCommand As DesignerCommandBarComboBox
         Private _commandIdCombobox As CommandID
+        Private _previousCustomToolValue As String
 
         ' Cached flag to indicate if the custom tools associated with this combobox are
         ' registered for the current project type.
@@ -298,7 +299,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
             Requires.NotNull(serviceProvider, NameOf(serviceProvider))
 
             _rootDesigner = rootDesigner
-            _projectItem = projectItem
+            _resxFileProjectItem = projectItem
             _serviceProvider = serviceProvider
             _namespaceToOverrideIfCustomToolIsEmpty = namespaceToOverrideIfCustomToolIsEmpty
         End Sub
@@ -404,11 +405,24 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         ''' <param name="value"></param>
         Private Function TryGetCustomToolPropertyValue(ByRef value As String) As Boolean
             value = Nothing
+            Dim customToolProperty As EnvDTE.Property = Nothing
 
-            Dim customToolProperty As EnvDTE.Property = DTEUtils.GetProjectItemProperty(_projectItem, DTEUtils.PROJECTPROPERTY_CUSTOMTOOL)
+            Try
+                customToolProperty = DTEUtils.GetProjectItemProperty(_resxFileProjectItem, DTEUtils.PROJECTPROPERTY_CUSTOMTOOL)
+            Catch ex As KeyNotFoundException
+                ' Possible limitation of Cps. In some cases Cps is not able to maintain the same item id for items,
+                ' causing them to Not be found. In some scenarios (i.e., when the item Is moved), it ends up having
+                ' a different id, so the older one can't be found anymore.
+                If _previousCustomToolValue IsNot Nothing Then
+                    value = _previousCustomToolValue
+                    Return True
+                End If
+            End Try
+
             If customToolProperty IsNot Nothing Then
                 Dim customToolValue As String = TryCast(customToolProperty.Value, String)
                 value = customToolValue
+                _previousCustomToolValue = customToolValue
                 Return True
             End If
 
@@ -439,8 +453,8 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         ''' <param name="value"></param>
         Private Sub TrySetCustomToolValue(value As String)
             Try
-                Dim customToolProperty As EnvDTE.Property = DTEUtils.GetProjectItemProperty(_projectItem, DTEUtils.PROJECTPROPERTY_CUSTOMTOOL)
-                Dim customToolNamespaceProperty As EnvDTE.Property = DTEUtils.GetProjectItemProperty(_projectItem, DTEUtils.PROJECTPROPERTY_CUSTOMTOOLNAMESPACE)
+                Dim customToolProperty As EnvDTE.Property = DTEUtils.GetProjectItemProperty(_resxFileProjectItem, DTEUtils.PROJECTPROPERTY_CUSTOMTOOL)
+                Dim customToolNamespaceProperty As EnvDTE.Property = DTEUtils.GetProjectItemProperty(_resxFileProjectItem, DTEUtils.PROJECTPROPERTY_CUSTOMTOOLNAMESPACE)
 
                 If customToolProperty IsNot Nothing Then
                     Dim previousCustomToolValue As String = TryCast(customToolProperty.Value, String)
@@ -553,7 +567,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         ''' </summary>
         Protected Overridable ReadOnly Property Hierarchy As IVsHierarchy
             Get
-                Return ShellUtil.VsHierarchyFromDTEProject(_serviceProvider, _projectItem.ContainingProject)
+                Return ShellUtil.VsHierarchyFromDTEProject(_serviceProvider, _resxFileProjectItem.ContainingProject)
             End Get
         End Property
 
