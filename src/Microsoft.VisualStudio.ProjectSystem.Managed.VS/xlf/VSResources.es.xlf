@@ -112,7 +112,7 @@
       </trans-unit>
       <trans-unit id="IncrementalBuildFailureWarningMessage_2">
         <source>WARNING: Potential incremental build failure in '{0}'. {1}. See https://aka.ms/incremental-build-failure.</source>
-        <target state="new">WARNING: Potential incremental build failure in '{0}'. {1}. See https://aka.ms/incremental-build-failure.</target>
+        <target state="translated">ADVERTENCIA: posible error de compilación incremental en "{0}". {1}. Consultar: https://aka.ms/incremental-build-failure</target>
         <note>{0} is the file name of the project. {1} is a description of the failure. The period '.' after {1} is intentional and should be kept.</note>
       </trans-unit>
       <trans-unit id="ProjectHotReloadSessionManager_AttachingToProcess">
@@ -203,12 +203,12 @@ Para depurar este proyecto, agregue un proyecto ejecutable a esta solución con 
       </trans-unit>
       <trans-unit id="WPFApp_Xaml_CouldntFindRootElement_1">
         <source>Could not find the expected root element "{0}" in the application definition file.</source>
-        <target state="new">Could not find the expected root element "{0}" in the application definition file.</target>
+        <target state="translated">No se pudo encontrar el elemento raíz esperado "{0}" en el archivo de definición de aplicación.</target>
         <note />
       </trans-unit>
       <trans-unit id="WPFApp_Xaml_UnexpectedFormat_2">
         <source>The .xaml file was in an unexpected format, near line {0} column {1}.</source>
-        <target state="new">The .xaml file was in an unexpected format, near line {0} column {1}.</target>
+        <target state="translated">El archivo .xaml tenía un formato no esperado cerca de la línea {0}, columna {1}.</target>
         <note>{0} is the line number of the problematic XAML, and {1} is the column.</note>
       </trans-unit>
       <trans-unit id="WorkingDirecotryInvalid">

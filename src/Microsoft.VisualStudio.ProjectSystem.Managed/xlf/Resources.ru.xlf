@@ -164,7 +164,7 @@
       </trans-unit>
       <trans-unit id="FUTD_InputMarkerNewerThanOutputMarker_4">
         <source>Input marker '{0}' is newer ({1}) than output marker '{2}' ({3}), not up-to-date.</source>
-        <target state="new">Input marker '{0}' is newer ({1}) than output marker '{2}' ({3}), not up-to-date.</target>
+        <target state="translated">Входной маркер "{0}" новее ({1}) выходного маркера "{2}". ({3}) обновление не выполнено.</target>
         <note>{0} and {2} are file paths. {1} and {3} are datetimes.</note>
       </trans-unit>
       <trans-unit id="FUTD_InputModifiedSinceLastSuccessfulBuildStart_3">
@@ -294,13 +294,13 @@
       </trans-unit>
       <trans-unit id="JsonErrorsNeedToBeCorrected_1">
         <source>Errors in '{0}' need to be corrected before applying changes.</source>
-        <target state="new">Errors in '{0}' need to be corrected before applying changes.</target>
+        <target state="translated">Перед применением изменений необходимо исправить ошибки в "{0}".</target>
         <note>{0} is the path to the malformed .json file.</note>
       </trans-unit>
       <trans-unit id="JsonErrorsNeedToBeCorrected_WithErrorMessage_2">
         <source>Errors in '{0}' need to be corrected before applying changes. Error message:
 {1}</source>
-        <target state="new">Errors in '{0}' need to be corrected before applying changes. Error message:
+        <target state="translated">Перед применением изменений необходимо исправить ошибки в "{0}". Сообщение об ошибке:
 {1}</target>
         <note>{0} is the path to the malformed .json file. {1} is an error message containing more details about the problems in the file.</note>
       </trans-unit>

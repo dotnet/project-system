@@ -164,7 +164,7 @@
       </trans-unit>
       <trans-unit id="FUTD_InputMarkerNewerThanOutputMarker_4">
         <source>Input marker '{0}' is newer ({1}) than output marker '{2}' ({3}), not up-to-date.</source>
-        <target state="new">Input marker '{0}' is newer ({1}) than output marker '{2}' ({3}), not up-to-date.</target>
+        <target state="translated">입력 마커 '{0}'이(가) 최신이 아니라 출력 마커 '{2}' ({3})보다 최신({1})입니다.</target>
         <note>{0} and {2} are file paths. {1} and {3} are datetimes.</note>
       </trans-unit>
       <trans-unit id="FUTD_InputModifiedSinceLastSuccessfulBuildStart_3">
@@ -294,13 +294,13 @@
       </trans-unit>
       <trans-unit id="JsonErrorsNeedToBeCorrected_1">
         <source>Errors in '{0}' need to be corrected before applying changes.</source>
-        <target state="new">Errors in '{0}' need to be corrected before applying changes.</target>
+        <target state="translated">변경 내용을 적용하려면 먼저 '{0}'의 오류를 해결해야 합니다.</target>
         <note>{0} is the path to the malformed .json file.</note>
       </trans-unit>
       <trans-unit id="JsonErrorsNeedToBeCorrected_WithErrorMessage_2">
         <source>Errors in '{0}' need to be corrected before applying changes. Error message:
 {1}</source>
-        <target state="new">Errors in '{0}' need to be corrected before applying changes. Error message:
+        <target state="translated">변경 내용을 적용하기 전에 '{0}'의 오류를 수정해야 합니다. 오류 메시지:
 {1}</target>
         <note>{0} is the path to the malformed .json file. {1} is an error message containing more details about the problems in the file.</note>
       </trans-unit>

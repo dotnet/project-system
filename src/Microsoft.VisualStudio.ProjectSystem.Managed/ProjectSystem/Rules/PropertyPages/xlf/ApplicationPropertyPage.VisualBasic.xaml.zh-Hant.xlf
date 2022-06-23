@@ -164,12 +164,12 @@
       </trans-unit>
       <trans-unit id="EnumValue|ShutdownMode_WPF.OnLastWindowClose|DisplayName">
         <source>On last window close</source>
-        <target state="new">On last window close</target>
+        <target state="translated">在最後一個視窗關閉時</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|ShutdownMode_WPF.OnMainWindowClose|DisplayName">
         <source>On main window close</source>
-        <target state="new">On main window close</target>
+        <target state="translated">在主視窗關閉時</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|VBAuthenticationMode.ApplicationDefined|DisplayName">

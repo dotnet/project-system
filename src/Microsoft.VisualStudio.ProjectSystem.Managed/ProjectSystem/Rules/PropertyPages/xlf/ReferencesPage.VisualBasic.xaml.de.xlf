@@ -9,7 +9,7 @@
       </trans-unit>
       <trans-unit id="Category|General|DisplayName">
         <source>General</source>
-        <target state="new">General</target>
+        <target state="translated">Allgemein</target>
         <note />
       </trans-unit>
       <trans-unit id="DynamicEnumProperty|ImportedNamespaces|Description">

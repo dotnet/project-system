@@ -688,7 +688,7 @@ Si cambia este valor, se restablecerán los valores de todas las configuraciones
       </trans-unit>
       <trans-unit id="SD_ERR_HelpMessage_SuggestFileOpenWith">
         <source>If this is not a Settings-Designer file then use 'Open With' to open it in a text editor.</source>
-        <target state="new">If this is not a Settings-Designer file then use 'Open With' to open it in a text editor.</target>
+        <target state="translated">Si no es un archivo Settings-Designer, use “Abrir con” para abrirlo en un editor de texto.</target>
         <note />
       </trans-unit>
       <trans-unit id="SingleFileGenerator_FailedToGenerateFile_1Arg">
