@@ -262,11 +262,11 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";IncrementalBuildFailureWarningMessage" ItemType="0" PsrId="308" InstFlg="true" Leaf="true">
+      <Item ItemId=";IncrementalBuildFailureWarningMessage_2" ItemType="0" PsrId="308" InstFlg="true" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[WARNING: Potential incremental build failure in '{0}'. See: https://aka.ms/incremental-build-failure]]></Val>
+          <Val><![CDATA[WARNING: Potential incremental build failure in '{0}'. {1}. See https://aka.ms/incremental-build-failure.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[경고: '{0}'에서 증분 빌드 실패가 발생할 수 있습니다. 참조: https://aka.ms/incremental-build-failure]]></Val>
+            <Val><![CDATA[경고: '{0}'에서 증분 빌드 실패가 발생할 수 있습니다. {1}. 참조: https://aka.ms/incremental-build-failure]]></Val>
           </Tgt>
         </Str>
         <Disp Icon="Str" />
@@ -477,6 +477,24 @@
           <Val><![CDATA[User Control (Windows Forms) Designer]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
             <Val><![CDATA[사용자 정의 컨트롤(Windows Forms) 디자이너]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";WPFApp_Xaml_CouldntFindRootElement_1" ItemType="0" PsrId="308" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[Could not find the expected root element "{0}" in the application definition file.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[애플리케이션 정의 파일에서 필요한 루트 요소 "{0}"을(를) 찾을 수 없습니다.]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";WPFApp_Xaml_UnexpectedFormat_2" ItemType="0" PsrId="308" InstFlg="true" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[The .xaml file was in an unexpected format, near line {0} column {1}.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[.xaml 파일의 줄 {0} 열 {1} 근처에 예기치 않은 형식이 있습니다.]]></Val>
           </Tgt>
         </Str>
         <Disp Icon="Str" />

@@ -262,11 +262,11 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";IncrementalBuildFailureWarningMessage" ItemType="0" PsrId="308" InstFlg="true" Leaf="true">
+      <Item ItemId=";IncrementalBuildFailureWarningMessage_2" ItemType="0" PsrId="308" InstFlg="true" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[WARNING: Potential incremental build failure in '{0}'. See: https://aka.ms/incremental-build-failure]]></Val>
+          <Val><![CDATA[WARNING: Potential incremental build failure in '{0}'. {1}. See https://aka.ms/incremental-build-failure.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[UYARI: '{0}' içinde olası artımlı derleme hatası oluştu. Bkz. https://aka.ms/incremental-build-failure]]></Val>
+            <Val><![CDATA[UYARI: '{0}' içinde olası artımlı derleme hatası oluştu. {1}. Bkz. https://aka.ms/incremental-build-failure.]]></Val>
           </Tgt>
         </Str>
         <Disp Icon="Str" />
@@ -477,6 +477,24 @@
           <Val><![CDATA[User Control (Windows Forms) Designer]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
             <Val><![CDATA[Kullanıcı Denetimi (Windows Forms) Tasarımcısı]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";WPFApp_Xaml_CouldntFindRootElement_1" ItemType="0" PsrId="308" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[Could not find the expected root element "{0}" in the application definition file.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA["{0}" beklenen kök öğe uygulama tanım dosyasında bulunamadı.]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";WPFApp_Xaml_UnexpectedFormat_2" ItemType="0" PsrId="308" InstFlg="true" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[The .xaml file was in an unexpected format, near line {0} column {1}.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[.xaml dosyası beklenmedik bir biçimde; {1} sütunu, {0} satırının yanında.]]></Val>
           </Tgt>
         </Str>
         <Disp Icon="Str" />

@@ -262,11 +262,11 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";IncrementalBuildFailureWarningMessage" ItemType="0" PsrId="308" InstFlg="true" Leaf="true">
+      <Item ItemId=";IncrementalBuildFailureWarningMessage_2" ItemType="0" PsrId="308" InstFlg="true" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[WARNING: Potential incremental build failure in '{0}'. See: https://aka.ms/incremental-build-failure]]></Val>
+          <Val><![CDATA[WARNING: Potential incremental build failure in '{0}'. {1}. See https://aka.ms/incremental-build-failure.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[UPOZORNĚNÍ: Potenciální přírůstkové selhání sestavení v {0}. Další informace: https://aka.ms/incremental-build-failure]]></Val>
+            <Val><![CDATA[UPOZORNĚNÍ: Potenciální přírůstkové selhání sestavení v {0}. {1}. Další informace: https://aka.ms/incremental-build-failure.]]></Val>
           </Tgt>
         </Str>
         <Disp Icon="Str" />
@@ -477,6 +477,24 @@
           <Val><![CDATA[User Control (Windows Forms) Designer]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
             <Val><![CDATA[Návrhář uživatelských ovládacích prvků (Windows Forms)]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";WPFApp_Xaml_CouldntFindRootElement_1" ItemType="0" PsrId="308" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[Could not find the expected root element "{0}" in the application definition file.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[V souboru definice aplikace se nepovedlo nají očekávaný kořenový element {0}.]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";WPFApp_Xaml_UnexpectedFormat_2" ItemType="0" PsrId="308" InstFlg="true" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[The .xaml file was in an unexpected format, near line {0} column {1}.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Soubor .xaml má blízko řádku {0} a sloupce {1} nečekaný formát.]]></Val>
           </Tgt>
         </Str>
         <Disp Icon="Str" />
