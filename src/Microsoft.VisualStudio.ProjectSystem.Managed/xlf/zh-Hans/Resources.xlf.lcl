@@ -100,15 +100,6 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";FUTD_AddingOutputReferenceCopyMarker" ItemType="0" PsrId="308" Leaf="true">
-        <Str Cat="Text">
-          <Val><![CDATA[Adding output reference copy marker:]]></Val>
-          <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[正在添加输出引用副本标记：]]></Val>
-          </Tgt>
-        </Str>
-        <Disp Icon="Str" />
-      </Item>
       <Item ItemId=";FUTD_AddingProjectFileInputs" ItemType="0" PsrId="308" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[Adding project file inputs:]]></Val>
@@ -349,11 +340,11 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";FUTD_InputMarkerNewerThanOutputMarker" ItemType="0" PsrId="308" Leaf="true">
+      <Item ItemId=";FUTD_InputMarkerNewerThanOutputMarker_4" ItemType="0" PsrId="308" InstFlg="true" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Input marker is newer than output marker, not up-to-date.]]></Val>
+          <Val><![CDATA[Input marker '{0}' is newer ({1}) than output marker '{2}' ({3}), not up-to-date.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[输入标记比输出标记新，不是最新的。]]></Val>
+            <Val><![CDATA[输入标记“{0}”比输出标记“{2}”({3})更新({1})，不是最新的。]]></Val>
           </Tgt>
         </Str>
         <Disp Icon="Str" />
@@ -372,15 +363,6 @@
           <Val><![CDATA[Input '{0}' is newer ({1}) than earliest output '{2}' ({3}), not up-to-date.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
             <Val><![CDATA[输入 '{0}' 比最早的输出 '{2}' ({3}) 新 ({1}) ，不是最新的。]]></Val>
-          </Tgt>
-        </Str>
-        <Disp Icon="Str" />
-      </Item>
-      <Item ItemId=";FUTD_LatestWriteTimeOnInputMarker_2" ItemType="0" PsrId="308" InstFlg="true" Leaf="true">
-        <Str Cat="Text">
-          <Val><![CDATA[Latest write timestamp on input marker is {0} on '{1}'.]]></Val>
-          <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[输入标记上的最新写入时间戳是 '{1}' 上的 {0}。]]></Val>
           </Tgt>
         </Str>
         <Disp Icon="Str" />
@@ -610,11 +592,20 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";JsonErrorNeedToBeCorrected" ItemType="0" PsrId="308" Leaf="true">
+      <Item ItemId=";JsonErrorsNeedToBeCorrected_1" ItemType="0" PsrId="308" InstFlg="true" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[Errors in '{0}' need to be corrected before applying changes.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
             <Val><![CDATA[在应用更改前，需要更正“{0}”中的错误。]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";JsonErrorsNeedToBeCorrected_WithErrorMessage_2" ItemType="0" PsrId="308" InstFlg="true" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[Errors in '{0}' need to be corrected before applying changes. Error message:]D;]A;{1}]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[在应用更改前，需要更正“{0}”中的错误。错误消息:]D;]A;{1}]]></Val>
           </Tgt>
         </Str>
         <Disp Icon="Str" />

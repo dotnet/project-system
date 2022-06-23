@@ -55,6 +55,33 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
+      <Item ItemId=";DiagnosticLevel_Error" ItemType="0" PsrId="308" InstFlg="true" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[Error]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[錯誤]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";DiagnosticLevel_None" ItemType="0" PsrId="308" InstFlg="true" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[None]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[無]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";DiagnosticLevel_Warning" ItemType="0" PsrId="308" InstFlg="true" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[Warning]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[警告]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
       <Item ItemId=";FUTD_AddingInputReferenceCopyMarkers" ItemType="0" PsrId="308" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[Adding input reference copy markers:]]></Val>
@@ -69,15 +96,6 @@
           <Val><![CDATA[Adding newest import input:]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
             <Val><![CDATA[正在新增最新的匯入輸入:]]></Val>
-          </Tgt>
-        </Str>
-        <Disp Icon="Str" />
-      </Item>
-      <Item ItemId=";FUTD_AddingOutputReferenceCopyMarker" ItemType="0" PsrId="308" Leaf="true">
-        <Str Cat="Text">
-          <Val><![CDATA[Adding output reference copy marker:]]></Val>
-          <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[正在新增輸出參考複製標記:]]></Val>
           </Tgt>
         </Str>
         <Disp Icon="Str" />
@@ -322,11 +340,11 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";FUTD_InputMarkerNewerThanOutputMarker" ItemType="0" PsrId="308" Leaf="true">
+      <Item ItemId=";FUTD_InputMarkerNewerThanOutputMarker_4" ItemType="0" PsrId="308" InstFlg="true" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Input marker is newer than output marker, not up-to-date.]]></Val>
+          <Val><![CDATA[Input marker '{0}' is newer ({1}) than output marker '{2}' ({3}), not up-to-date.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[輸入標記比輸出標記新，不是最新狀態。]]></Val>
+            <Val><![CDATA[輸入標記 '{0}' ({1}) 比輸出標記 '{2}' 新 ({3})，不是最新狀態。]]></Val>
           </Tgt>
         </Str>
         <Disp Icon="Str" />
@@ -345,15 +363,6 @@
           <Val><![CDATA[Input '{0}' is newer ({1}) than earliest output '{2}' ({3}), not up-to-date.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
             <Val><![CDATA[輸入 '{0}' 比最早的輸出 '{2}' ({3}) 新 ({1})，不是最新狀態。]]></Val>
-          </Tgt>
-        </Str>
-        <Disp Icon="Str" />
-      </Item>
-      <Item ItemId=";FUTD_LatestWriteTimeOnInputMarker_2" ItemType="0" PsrId="308" InstFlg="true" Leaf="true">
-        <Str Cat="Text">
-          <Val><![CDATA[Latest write timestamp on input marker is {0} on '{1}'.]]></Val>
-          <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[輸入標記上的最新寫入時間戳記是 {0}，'{1}'。]]></Val>
           </Tgt>
         </Str>
         <Disp Icon="Str" />
@@ -583,11 +592,20 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";JsonErrorNeedToBeCorrected" ItemType="0" PsrId="308" Leaf="true">
+      <Item ItemId=";JsonErrorsNeedToBeCorrected_1" ItemType="0" PsrId="308" InstFlg="true" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[Errors in '{0}' need to be corrected before applying changes.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
             <Val><![CDATA[必須先修正 '{0}' 中的錯誤，才能套用變更。]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";JsonErrorsNeedToBeCorrected_WithErrorMessage_2" ItemType="0" PsrId="308" InstFlg="true" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[Errors in '{0}' need to be corrected before applying changes. Error message:]D;]A;{1}]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[必須先修正 '{0}' 中的錯誤才能套用變更。錯誤訊息:]D;]A;{1}]]></Val>
           </Tgt>
         </Str>
         <Disp Icon="Str" />

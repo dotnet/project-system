@@ -1,10 +1,11 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<LCX SchemaVersion="6.0" Name="D:\a\_work\1\s\src\Microsoft.VisualStudio.ProjectSystem.Managed\ProjectSystem\Rules\PropertyPages\xlf\BuildPropertyPage.VisualBasic.xaml.xlf" PsrId="308" SrcCul="en-US" xmlns="http://schemas.microsoft.com/locstudio/2006/6/lcx" TgtCul="pl-PL">
+<LCX SchemaVersion="6.0" Name="D:\a\_work\1\s\src\Microsoft.VisualStudio.ProjectSystem.Managed\ProjectSystem\Rules\PropertyPages\xlf\BuildPropertyPage.VisualBasic.xaml.xlf" PsrId="308" FileType="1" SrcCul="en-US" TgtCul="pl-PL" xmlns="http://schemas.microsoft.com/locstudio/2006/6/lcx">
   <OwnedComments>
     <Cmt Name="Dev" />
     <Cmt Name="LcxAdmin" />
     <Cmt Name="Rccx" />
   </OwnedComments>
+  <Settings Name="@vsLocTools@\default.lss" Type="Lss" />
   <Item ItemId=";Xliff file" ItemType="0" PsrId="308" Leaf="false">
     <Disp Icon="Expand" Expand="true" Disp="true" LocTbl="false" />
     <Item ItemId=";Xliff Resources" ItemType="0" PsrId="308" Leaf="false">
@@ -42,12 +43,18 @@
       <Item ItemId=";BoolProperty|Prefer32Bit|Description" ItemType="0" PsrId="308" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[Run in 32-bit mode on systems that support both 32-bit and 64-bit applications.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Uruchamiaj w trybie 32-bitowym w systemach obsługujących aplikacje 32-bitowe i 64-bitowe.]]></Val>
+          </Tgt>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";BoolProperty|Prefer32Bit|DisplayName" ItemType="0" PsrId="308" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[Prefer 32-bit]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Preferuj 32-bitowe]]></Val>
+          </Tgt>
         </Str>
         <Disp Icon="Str" />
       </Item>
@@ -66,36 +73,54 @@
       <Item ItemId=";BoolProperty|RemoveIntegerChecks|DisplayName" ItemType="0" PsrId="308" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[Remove integer overflow checks]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Wyłącz sprawdzanie nadmiaru dla operacji na liczbach całkowitych]]></Val>
+          </Tgt>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";Category|Advanced|Description" ItemType="0" PsrId="308" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[Advanced settings for the application.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Ustawienia zaawansowane aplikacji.]]></Val>
+          </Tgt>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";Category|Advanced|DisplayName" ItemType="0" PsrId="308" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[Advanced]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Zaawansowane]]></Val>
+          </Tgt>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";Category|Events|Description" ItemType="0" PsrId="308" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[Configures custom events that run before and after build.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Konfiguruje zdarzenia niestandardowe uruchamiane przed kompilacją i po niej.]]></Val>
+          </Tgt>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";Category|Events|DisplayName" ItemType="0" PsrId="308" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[Events]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Zdarzenia]]></Val>
+          </Tgt>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";Category|General|DisplayName" ItemType="0" PsrId="308" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[General]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Ogólne]]></Val>
+          </Tgt>
         </Str>
         <Disp Icon="Str" />
       </Item>
@@ -114,12 +139,18 @@
       <Item ItemId=";DynamicEnumProperty|DuplicateOrOverlappingCatchBlocks_Readonly|DisplayName" ItemType="0" PsrId="308" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[Duplicate or overlapping catch blocks]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Zduplikowane lub nakładające się bloki catch]]></Val>
+          </Tgt>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";DynamicEnumProperty|DuplicateOrOverlappingCatchBlocks|DisplayName" ItemType="0" PsrId="308" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[Duplicate or overlapping catch blocks]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Zduplikowane lub nakładające się bloki catch]]></Val>
+          </Tgt>
         </Str>
         <Disp Icon="Str" />
       </Item>
@@ -174,12 +205,18 @@
       <Item ItemId=";DynamicEnumProperty|InstanceVariableAccessesSharedMember_Readonly|DisplayName" ItemType="0" PsrId="308" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[Instance variable accesses shared member]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Zmienna wystąpienia uzyskała dostęp do udostępnionej składowej]]></Val>
+          </Tgt>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";DynamicEnumProperty|InstanceVariableAccessesSharedMember|DisplayName" ItemType="0" PsrId="308" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[Instance variable accesses shared member]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Zmienna wystąpienia uzyskała dostęp do udostępnionej składowej]]></Val>
+          </Tgt>
         </Str>
         <Disp Icon="Str" />
       </Item>
@@ -210,6 +247,9 @@
       <Item ItemId=";DynamicEnumProperty|PlatformTarget|Description" ItemType="0" PsrId="308" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[Specifies the processor to be targeted by the output file. Choose 'Any CPU' to specify that any processor is acceptable, allowing the application to run on the broadest range of hardware.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Określa procesor, który ma być docelowo określany przez plik wyjściowy. Wybierz opcję "Dowolny procesor", aby określić, że dowolny procesor jest akceptowalny, co pozwoli aplikacji działać w najszerszym zakresie sprzętu.]]></Val>
+          </Tgt>
         </Str>
         <Disp Icon="Str" />
       </Item>
@@ -222,36 +262,54 @@
       <Item ItemId=";DynamicEnumProperty|RecursiveOperatorOrPropertyAccess_Readonly|DisplayName" ItemType="0" PsrId="308" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[Recursive operator or property access]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Cykliczny operator lub dostęp do właściwości]]></Val>
+          </Tgt>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";DynamicEnumProperty|RecursiveOperatorOrPropertyAccess|DisplayName" ItemType="0" PsrId="308" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[Recursive operator or property access]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Cykliczny operator lub dostęp do właściwości]]></Val>
+          </Tgt>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";DynamicEnumProperty|ReturningIntrinsicValueTypeWithoutReturnValue_Readonly|DisplayName" ItemType="0" PsrId="308" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[Function returning intrinsic value type without return value]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Funkcja zwracająca wewnętrzny typ wartości bez wartości zwracanej]]></Val>
+          </Tgt>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";DynamicEnumProperty|ReturningIntrinsicValueTypeWithoutReturnValue|DisplayName" ItemType="0" PsrId="308" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[Function returning intrinsic value type without return value]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Funkcja zwracająca wewnętrzny typ wartości bez wartości zwracanej]]></Val>
+          </Tgt>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";DynamicEnumProperty|ReturningRefTypeWithoutReturnValue_Readonly|DisplayName" ItemType="0" PsrId="308" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[Function returning reference type without return value]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Funkcja zwracająca typ referencyjny bez wartości zwracanej]]></Val>
+          </Tgt>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";DynamicEnumProperty|ReturningRefTypeWithoutReturnValue|DisplayName" ItemType="0" PsrId="308" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[Function returning reference type without return value]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Funkcja zwracająca typ referencyjny bez wartości zwracanej]]></Val>
+          </Tgt>
         </Str>
         <Disp Icon="Str" />
       </Item>
@@ -270,30 +328,45 @@
       <Item ItemId=";DynamicEnumProperty|UseOfVariablePriorToAssignment_Readonly|DisplayName" ItemType="0" PsrId="308" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[Use of variable prior to assignment]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Użycie zmiennej przed przypisaniem]]></Val>
+          </Tgt>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";DynamicEnumProperty|UseOfVariablePriorToAssignment|DisplayName" ItemType="0" PsrId="308" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[Use of variable prior to assignment]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Użycie zmiennej przed przypisaniem]]></Val>
+          </Tgt>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";EnumProperty|DebugType|Description" ItemType="0" PsrId="308" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[Specifies the kind of debug symbols produced during build.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Określa rodzaj symboli debugowania utworzonych podczas kompilacji.]]></Val>
+          </Tgt>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";EnumProperty|DebugType|DisplayName" ItemType="0" PsrId="308" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[Debug symbols]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Symbole debugowania]]></Val>
+          </Tgt>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";EnumProperty|DebugType|Metadata|SearchTerms" ItemType="0" PsrId="308" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[debug type]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[typ debugowania]]></Val>
+          </Tgt>
         </Str>
         <Disp Icon="Str" />
       </Item>
@@ -354,12 +427,18 @@
       <Item ItemId=";EnumProperty|RunPostBuildEvent|Description" ItemType="0" PsrId="308" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[Specifies under which condition the post-build event will be executed.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Określa warunek, pod jakim zostanie wykonane zdarzenie po kompilacji.]]></Val>
+          </Tgt>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";EnumProperty|RunPostBuildEvent|DisplayName" ItemType="0" PsrId="308" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[When to run the post-build event]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Kiedy uruchomić zdarzenie po kompilacji.]]></Val>
+          </Tgt>
         </Str>
         <Disp Icon="Str" />
       </Item>
@@ -372,24 +451,36 @@
       <Item ItemId=";EnumValue|DebugType.embedded|DisplayName" ItemType="0" PsrId="308" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[Embedded in DLL/EXE, portable across platforms]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Osadzone w bibliotece DLL/EXE, przenośne na różne platformy]]></Val>
+          </Tgt>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";EnumValue|DebugType.full|DisplayName" ItemType="0" PsrId="308" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[PDB file, current platform]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Plik PDB, aktualna platforma]]></Val>
+          </Tgt>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";EnumValue|DebugType.none|DisplayName" ItemType="0" PsrId="308" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[No symbols are emitted]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Żadne symbole nie są wyemitowane]]></Val>
+          </Tgt>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";EnumValue|DebugType.portable|DisplayName" ItemType="0" PsrId="308" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[PDB file, portable across platforms]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Plik PDB, przenośny na różnych platformach]]></Val>
+          </Tgt>
         </Str>
         <Disp Icon="Str" />
       </Item>
@@ -414,36 +505,54 @@
       <Item ItemId=";EnumValue|OptionCompare.Binary|DisplayName" ItemType="0" PsrId="308" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[Binary]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Dane binarne]]></Val>
+          </Tgt>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";EnumValue|OptionCompare.Text|DisplayName" ItemType="0" PsrId="308" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[Text]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Tekst]]></Val>
+          </Tgt>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";EnumValue|OptionExplicit.Off|DisplayName" ItemType="0" PsrId="308" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[Off]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Wyłączony]]></Val>
+          </Tgt>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";EnumValue|OptionExplicit.On|DisplayName" ItemType="0" PsrId="308" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[On]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Włączony]]></Val>
+          </Tgt>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";EnumValue|OptionInfer.Off|DisplayName" ItemType="0" PsrId="308" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[Off]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Wyłączony]]></Val>
+          </Tgt>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";EnumValue|OptionInfer.On|DisplayName" ItemType="0" PsrId="308" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[On]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Włączony]]></Val>
+          </Tgt>
         </Str>
         <Disp Icon="Str" />
       </Item>
@@ -462,18 +571,27 @@
       <Item ItemId=";EnumValue|RunPostBuildEvent.Always|DisplayName" ItemType="0" PsrId="308" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[Always]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Zawsze]]></Val>
+          </Tgt>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";EnumValue|RunPostBuildEvent.OnBuildSuccess|DisplayName" ItemType="0" PsrId="308" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[When the build succeeds]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Gdy kompilacja zakończy się pomyślnie]]></Val>
+          </Tgt>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";EnumValue|RunPostBuildEvent.OnOutputUpdated|DisplayName" ItemType="0" PsrId="308" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[When the output is updated]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Po zaktualizowaniu danych wyjściowych]]></Val>
+          </Tgt>
         </Str>
         <Disp Icon="Str" />
       </Item>
@@ -498,6 +616,9 @@
       <Item ItemId=";Rule|Build|Description" ItemType="0" PsrId="308" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[Specifies properties that control how the project builds.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Określa właściwości sterujące sposobem kompilacji projektu.]]></Val>
+          </Tgt>
         </Str>
         <Disp Icon="Str" />
       </Item>
@@ -528,27 +649,39 @@
       <Item ItemId=";StringProperty|PostBuildEvent|Description" ItemType="0" PsrId="308" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[Specifies commands that run after the build completes. Does not run if the build failed. Use 'call' to invoke .bat files. A non-zero exit code will fail the build.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Określa polecenia, które są uruchamiane po zakończeniu kompilacji. Nie jest uruchamiane, jeśli kompilacja zakończy się niepowodzeniem. Użyj elementu „call”, aby wywołać pliki. bat. Niezerowy kod zakończenia spowoduje niepowodzenie kompilacji.]]></Val>
+          </Tgt>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";StringProperty|PostBuildEvent|DisplayName" ItemType="0" PsrId="308" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[Post-build event]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Zdarzenie po kompilacji]]></Val>
+          </Tgt>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";StringProperty|PreBuildEvent|Description" ItemType="0" PsrId="308" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[Specifies commands that run before the build starts. Does not run if the project is up-to-date. A non-zero exit code will fail the build before it runs.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Określa polecenia, które są uruchamiane przed rozpoczęciem kompilacji. Nie jest uruchamiane, jeśli projekt jest aktualny. Niezerowy kod zakończenia spowoduje niepowodzenie kompilacji przed jej uruchomieniem.]]></Val>
+          </Tgt>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";StringProperty|PreBuildEvent|DisplayName" ItemType="0" PsrId="308" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[Pre-build event]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Zdarzenie przed kompilacją]]></Val>
+          </Tgt>
         </Str>
         <Disp Icon="Str" />
       </Item>
     </Item>
   </Item>
-<Settings Name="@vsLocTools@\default.lss" Type="Lss" /></LCX>
+</LCX>

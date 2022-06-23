@@ -1,10 +1,11 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<LCX SchemaVersion="6.0" Name="D:\a\_work\1\s\src\Microsoft.VisualStudio.ProjectSystem.Managed\ProjectSystem\Rules\PropertyPages\xlf\ApplicationPropertyPage.VisualBasic.xaml.xlf" PsrId="308" SrcCul="en-US" xmlns="http://schemas.microsoft.com/locstudio/2006/6/lcx" TgtCul="ja-JP">
+<LCX SchemaVersion="6.0" Name="D:\a\_work\1\s\src\Microsoft.VisualStudio.ProjectSystem.Managed\ProjectSystem\Rules\PropertyPages\xlf\ApplicationPropertyPage.VisualBasic.xaml.xlf" PsrId="308" FileType="1" SrcCul="en-US" TgtCul="ja-JP" xmlns="http://schemas.microsoft.com/locstudio/2006/6/lcx">
   <OwnedComments>
     <Cmt Name="Dev" />
     <Cmt Name="LcxAdmin" />
     <Cmt Name="Rccx" />
   </OwnedComments>
+  <Settings Name="@vsLocTools@\default.lss" Type="Lss" />
   <Item ItemId=";Xliff file" ItemType="0" PsrId="308" Leaf="false">
     <Disp Icon="Expand" Expand="true" Disp="true" LocTbl="false" />
     <Item ItemId=";Xliff Resources" ItemType="0" PsrId="308" Leaf="false">
@@ -105,18 +106,6 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";EnumProperty|AuthenticationMode|Description" ItemType="0" PsrId="308" Leaf="true">
-        <Str Cat="Text">
-          <Val><![CDATA[Specifies the method of identifying the logged-on user, when needed.]]></Val>
-        </Str>
-        <Disp Icon="Str" />
-      </Item>
-      <Item ItemId=";EnumProperty|AuthenticationMode|DisplayName" ItemType="0" PsrId="308" Leaf="true">
-        <Str Cat="Text">
-          <Val><![CDATA[Authentication mode]]></Val>
-        </Str>
-        <Disp Icon="Str" />
-      </Item>
       <Item ItemId=";EnumProperty|HighDpiMode|Description" ItemType="0" PsrId="308" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[Specifies the application-wide HighDpiMode for the application. This setting can be programaticaly overriden through the ApplyApplicationDefaults event.]]></Val>
@@ -153,15 +142,15 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";EnumValue|AuthenticationMode.ApplicationDefined|DisplayName" ItemType="0" PsrId="308" Leaf="true">
+      <Item ItemId=";EnumProperty|VBAuthenticationMode|Description" ItemType="0" PsrId="308" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Application-defined - Custom authentication implemented within the application.]]></Val>
+          <Val><![CDATA[Specifies the method of identifying the logged-on user, when needed.]]></Val>
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";EnumValue|AuthenticationMode.Windows|DisplayName" ItemType="0" PsrId="308" Leaf="true">
+      <Item ItemId=";EnumProperty|VBAuthenticationMode|DisplayName" ItemType="0" PsrId="308" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Windows - Retrieve user info through My.User at runtime.]]></Val>
+          <Val><![CDATA[Authentication mode]]></Val>
         </Str>
         <Disp Icon="Str" />
       </Item>
@@ -216,12 +205,30 @@
       <Item ItemId=";EnumValue|ShutdownMode_WPF.OnLastWindowClose|DisplayName" ItemType="0" PsrId="308" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[On last window close]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[最後のウィンドウを閉じるとき]]></Val>
+          </Tgt>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";EnumValue|ShutdownMode_WPF.OnMainWindowClose|DisplayName" ItemType="0" PsrId="308" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[On main window close]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[メイン ウィンドウを閉じるとき]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";EnumValue|VBAuthenticationMode.ApplicationDefined|DisplayName" ItemType="0" PsrId="308" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[Application-defined - Custom authentication implemented within the application.]]></Val>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";EnumValue|VBAuthenticationMode.Windows|DisplayName" ItemType="0" PsrId="308" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[Windows - Retrieve user info through My.User at runtime.]]></Val>
         </Str>
         <Disp Icon="Str" />
       </Item>
@@ -251,4 +258,4 @@
       </Item>
     </Item>
   </Item>
-<Settings Name="@vsLocTools@\default.lss" Type="Lss" /></LCX>
+</LCX>
