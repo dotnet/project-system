@@ -29,12 +29,12 @@
       </trans-unit>
       <trans-unit id="BoolProperty|Prefer32Bit|Description">
         <source>Run in 32-bit mode on systems that support both 32-bit and 64-bit applications.</source>
-        <target state="new">Run in 32-bit mode on systems that support both 32-bit and 64-bit applications.</target>
+        <target state="translated">Spustit v 32bitovém režimu v systémech, které podporují 32bitové i 64bitové aplikace.</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|Prefer32Bit|DisplayName">
         <source>Prefer 32-bit</source>
-        <target state="new">Prefer 32-bit</target>
+        <target state="translated">Preferovat 32bitovou verzi</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|RegisterForComInterop|Description">
@@ -49,32 +49,32 @@
       </trans-unit>
       <trans-unit id="BoolProperty|RemoveIntegerChecks|DisplayName">
         <source>Remove integer overflow checks</source>
-        <target state="new">Remove integer overflow checks</target>
+        <target state="translated">Odebrat kontroly přetečení celých čísel</target>
         <note />
       </trans-unit>
       <trans-unit id="Category|Advanced|Description">
         <source>Advanced settings for the application.</source>
-        <target state="new">Advanced settings for the application.</target>
+        <target state="translated">Upřesňující nastavení aplikace.</target>
         <note />
       </trans-unit>
       <trans-unit id="Category|Advanced|DisplayName">
         <source>Advanced</source>
-        <target state="new">Advanced</target>
+        <target state="translated">Upřesnit</target>
         <note />
       </trans-unit>
       <trans-unit id="Category|Events|Description">
         <source>Configures custom events that run before and after build.</source>
-        <target state="new">Configures custom events that run before and after build.</target>
+        <target state="translated">Nakonfiguruje vlastní události, které běží před a po sestavení.</target>
         <note />
       </trans-unit>
       <trans-unit id="Category|Events|DisplayName">
         <source>Events</source>
-        <target state="new">Events</target>
+        <target state="translated">Události</target>
         <note />
       </trans-unit>
       <trans-unit id="Category|General|DisplayName">
         <source>General</source>
-        <target state="new">General</target>
+        <target state="translated">Obecné</target>
         <note />
       </trans-unit>
       <trans-unit id="Category|Options|DisplayName">
@@ -89,12 +89,12 @@
       </trans-unit>
       <trans-unit id="DynamicEnumProperty|DuplicateOrOverlappingCatchBlocks_Readonly|DisplayName">
         <source>Duplicate or overlapping catch blocks</source>
-        <target state="new">Duplicate or overlapping catch blocks</target>
+        <target state="translated">Duplicitní nebo překrývající se bloky catch</target>
         <note />
       </trans-unit>
       <trans-unit id="DynamicEnumProperty|DuplicateOrOverlappingCatchBlocks|DisplayName">
         <source>Duplicate or overlapping catch blocks</source>
-        <target state="new">Duplicate or overlapping catch blocks</target>
+        <target state="translated">Duplicitní nebo překrývající se bloky catch</target>
         <note />
       </trans-unit>
       <trans-unit id="DynamicEnumProperty|ImplicitConversion_Readonly|Description">
@@ -139,12 +139,12 @@
       </trans-unit>
       <trans-unit id="DynamicEnumProperty|InstanceVariableAccessesSharedMember_Readonly|DisplayName">
         <source>Instance variable accesses shared member</source>
-        <target state="new">Instance variable accesses shared member</target>
+        <target state="translated">Proměnná instance přistupuje ke sdílenému členu.</target>
         <note />
       </trans-unit>
       <trans-unit id="DynamicEnumProperty|InstanceVariableAccessesSharedMember|DisplayName">
         <source>Instance variable accesses shared member</source>
-        <target state="new">Instance variable accesses shared member</target>
+        <target state="translated">Proměnná instance přistupuje ke sdílenému členu.</target>
         <note />
       </trans-unit>
       <trans-unit id="DynamicEnumProperty|LateBinding_Readonly|Description">
@@ -169,7 +169,7 @@
       </trans-unit>
       <trans-unit id="DynamicEnumProperty|PlatformTarget|Description">
         <source>Specifies the processor to be targeted by the output file. Choose 'Any CPU' to specify that any processor is acceptable, allowing the application to run on the broadest range of hardware.</source>
-        <target state="new">Specifies the processor to be targeted by the output file. Choose 'Any CPU' to specify that any processor is acceptable, allowing the application to run on the broadest range of hardware.</target>
+        <target state="translated">Určuje procesor, na který má výstupní soubor cílit. Pokud chcete určit, že je přijatelný libovolný procesor, zvolte možnost Jakýkoli procesor, aby se aplikace dala spustit na maximální škále hardwaru.</target>
         <note />
       </trans-unit>
       <trans-unit id="DynamicEnumProperty|PlatformTarget|DisplayName">
@@ -179,32 +179,32 @@
       </trans-unit>
       <trans-unit id="DynamicEnumProperty|RecursiveOperatorOrPropertyAccess_Readonly|DisplayName">
         <source>Recursive operator or property access</source>
-        <target state="new">Recursive operator or property access</target>
+        <target state="translated">Rekurzivní operátor nebo přístup k vlastnosti</target>
         <note />
       </trans-unit>
       <trans-unit id="DynamicEnumProperty|RecursiveOperatorOrPropertyAccess|DisplayName">
         <source>Recursive operator or property access</source>
-        <target state="new">Recursive operator or property access</target>
+        <target state="translated">Rekurzivní operátor nebo přístup k vlastnosti</target>
         <note />
       </trans-unit>
       <trans-unit id="DynamicEnumProperty|ReturningIntrinsicValueTypeWithoutReturnValue_Readonly|DisplayName">
         <source>Function returning intrinsic value type without return value</source>
-        <target state="new">Function returning intrinsic value type without return value</target>
+        <target state="translated">Funkce vracející vnitřní hodnotový typ bez návratové hodnoty</target>
         <note />
       </trans-unit>
       <trans-unit id="DynamicEnumProperty|ReturningIntrinsicValueTypeWithoutReturnValue|DisplayName">
         <source>Function returning intrinsic value type without return value</source>
-        <target state="new">Function returning intrinsic value type without return value</target>
+        <target state="translated">Funkce vracející vnitřní hodnotový typ bez návratové hodnoty</target>
         <note />
       </trans-unit>
       <trans-unit id="DynamicEnumProperty|ReturningRefTypeWithoutReturnValue_Readonly|DisplayName">
         <source>Function returning reference type without return value</source>
-        <target state="new">Function returning reference type without return value</target>
+        <target state="translated">Funkce vracející odkazový typ bez návratové hodnoty</target>
         <note />
       </trans-unit>
       <trans-unit id="DynamicEnumProperty|ReturningRefTypeWithoutReturnValue|DisplayName">
         <source>Function returning reference type without return value</source>
-        <target state="new">Function returning reference type without return value</target>
+        <target state="translated">Funkce vracející odkazový typ bez návratové hodnoty</target>
         <note />
       </trans-unit>
       <trans-unit id="DynamicEnumProperty|UnusedLocalVariable_Readonly|DisplayName">
@@ -219,27 +219,27 @@
       </trans-unit>
       <trans-unit id="DynamicEnumProperty|UseOfVariablePriorToAssignment_Readonly|DisplayName">
         <source>Use of variable prior to assignment</source>
-        <target state="new">Use of variable prior to assignment</target>
+        <target state="translated">Použití proměnné závisí na předchozím přiřazení</target>
         <note />
       </trans-unit>
       <trans-unit id="DynamicEnumProperty|UseOfVariablePriorToAssignment|DisplayName">
         <source>Use of variable prior to assignment</source>
-        <target state="new">Use of variable prior to assignment</target>
+        <target state="translated">Použití proměnné závisí na předchozím přiřazení</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumProperty|DebugType|Description">
         <source>Specifies the kind of debug symbols produced during build.</source>
-        <target state="new">Specifies the kind of debug symbols produced during build.</target>
+        <target state="translated">Určuje druh symbolů ladění vyprodukovaných během sestavování.</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumProperty|DebugType|DisplayName">
         <source>Debug symbols</source>
-        <target state="new">Debug symbols</target>
+        <target state="translated">Symboly ladění</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumProperty|DebugType|Metadata|SearchTerms">
         <source>debug type</source>
-        <target state="new">debug type</target>
+        <target state="translated">typ ladění</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumProperty|GenerateSerializationAssemblies|DisplayName">
@@ -289,12 +289,12 @@
       </trans-unit>
       <trans-unit id="EnumProperty|RunPostBuildEvent|Description">
         <source>Specifies under which condition the post-build event will be executed.</source>
-        <target state="new">Specifies under which condition the post-build event will be executed.</target>
+        <target state="translated">Určuje, pod jakou podmínkou bude událost po sestavení provedena.</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumProperty|RunPostBuildEvent|DisplayName">
         <source>When to run the post-build event</source>
-        <target state="new">When to run the post-build event</target>
+        <target state="translated">Kdy má být spuštěna událost po sestavení</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumProperty|WarningSeverity|DisplayName">
@@ -304,22 +304,22 @@
       </trans-unit>
       <trans-unit id="EnumValue|DebugType.embedded|DisplayName">
         <source>Embedded in DLL/EXE, portable across platforms</source>
-        <target state="new">Embedded in DLL/EXE, portable across platforms</target>
+        <target state="translated">Vložené v knihovně DLL/EXE, přenosné mezi platformami</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|DebugType.full|DisplayName">
         <source>PDB file, current platform</source>
-        <target state="new">PDB file, current platform</target>
+        <target state="translated">Soubor PDB, aktuální platforma</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|DebugType.none|DisplayName">
         <source>No symbols are emitted</source>
-        <target state="new">No symbols are emitted</target>
+        <target state="translated">Nejsou vygenerovány žádné symboly.</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|DebugType.portable|DisplayName">
         <source>PDB file, portable across platforms</source>
-        <target state="new">PDB file, portable across platforms</target>
+        <target state="translated">Soubor PDB, přenosný napříč platformami</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|GenerateSerializationAssemblies.Auto|DisplayName">
@@ -339,32 +339,32 @@
       </trans-unit>
       <trans-unit id="EnumValue|OptionCompare.Binary|DisplayName">
         <source>Binary</source>
-        <target state="new">Binary</target>
+        <target state="translated">Binární</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|OptionCompare.Text|DisplayName">
         <source>Text</source>
-        <target state="new">Text</target>
+        <target state="translated">Text</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|OptionExplicit.Off|DisplayName">
         <source>Off</source>
-        <target state="new">Off</target>
+        <target state="translated">Vypnuto</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|OptionExplicit.On|DisplayName">
         <source>On</source>
-        <target state="new">On</target>
+        <target state="translated">Zapnuto</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|OptionInfer.Off|DisplayName">
         <source>Off</source>
-        <target state="new">Off</target>
+        <target state="translated">Vypnuto</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|OptionInfer.On|DisplayName">
         <source>On</source>
-        <target state="new">On</target>
+        <target state="translated">Zapnuto</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|OptionStrict.Off|DisplayName">
@@ -379,17 +379,17 @@
       </trans-unit>
       <trans-unit id="EnumValue|RunPostBuildEvent.Always|DisplayName">
         <source>Always</source>
-        <target state="new">Always</target>
+        <target state="translated">Vždy</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|RunPostBuildEvent.OnBuildSuccess|DisplayName">
         <source>When the build succeeds</source>
-        <target state="new">When the build succeeds</target>
+        <target state="translated">Po úspěšném sestavení</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|RunPostBuildEvent.OnOutputUpdated|DisplayName">
         <source>When the output is updated</source>
-        <target state="new">When the output is updated</target>
+        <target state="translated">Při aktualizaci výstupu</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|WarningSeverity.AllAsErrors|DisplayName">
@@ -409,7 +409,7 @@
       </trans-unit>
       <trans-unit id="Rule|Build|Description">
         <source>Specifies properties that control how the project builds.</source>
-        <target state="new">Specifies properties that control how the project builds.</target>
+        <target state="translated">Určuje vlastnosti, které řídí způsob sestavení daného projektu.</target>
         <note />
       </trans-unit>
       <trans-unit id="Rule|Build|DisplayName">
@@ -434,22 +434,22 @@
       </trans-unit>
       <trans-unit id="StringProperty|PostBuildEvent|Description">
         <source>Specifies commands that run after the build completes. Does not run if the build failed. Use 'call' to invoke .bat files. A non-zero exit code will fail the build.</source>
-        <target state="new">Specifies commands that run after the build completes. Does not run if the build failed. Use 'call' to invoke .bat files. A non-zero exit code will fail the build.</target>
+        <target state="translated">Určuje příkazy, které jsou spuštěny po dokončení sestavení. Nespustí se, pokud se sestavení nepovedlo. Použijte „cal“ pro vyvolání souborů .bat. Nenulový ukončovací kód povede k selhání sestavení.</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|PostBuildEvent|DisplayName">
         <source>Post-build event</source>
-        <target state="new">Post-build event</target>
+        <target state="translated">Událost po sestavení</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|PreBuildEvent|Description">
         <source>Specifies commands that run before the build starts. Does not run if the project is up-to-date. A non-zero exit code will fail the build before it runs.</source>
-        <target state="new">Specifies commands that run before the build starts. Does not run if the project is up-to-date. A non-zero exit code will fail the build before it runs.</target>
+        <target state="translated">Určuje příkazy, které se spouštějí před spuštěním sestavení. Nespustí se, pokud je projekt aktuální. Nenulový ukončovací kód povede k selhání sestavení před spuštěním.</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|PreBuildEvent|DisplayName">
         <source>Pre-build event</source>
-        <target state="new">Pre-build event</target>
+        <target state="translated">Událost před sestavením</target>
         <note />
       </trans-unit>
     </body>

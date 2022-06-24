@@ -688,7 +688,7 @@ Se si modifica questa impostazione, verranno ripristinate le impostazioni in tut
       </trans-unit>
       <trans-unit id="SD_ERR_HelpMessage_SuggestFileOpenWith">
         <source>If this is not a Settings-Designer file then use 'Open With' to open it in a text editor.</source>
-        <target state="new">If this is not a Settings-Designer file then use 'Open With' to open it in a text editor.</target>
+        <target state="translated">Se non è un file Settings-Designer, usare 'Apri con' per aprirlo in un editor di testo.</target>
         <note />
       </trans-unit>
       <trans-unit id="SingleFileGenerator_FailedToGenerateFile_1Arg">

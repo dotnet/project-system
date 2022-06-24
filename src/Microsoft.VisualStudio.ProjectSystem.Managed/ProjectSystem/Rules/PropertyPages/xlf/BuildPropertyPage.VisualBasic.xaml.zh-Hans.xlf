@@ -29,12 +29,12 @@
       </trans-unit>
       <trans-unit id="BoolProperty|Prefer32Bit|Description">
         <source>Run in 32-bit mode on systems that support both 32-bit and 64-bit applications.</source>
-        <target state="new">Run in 32-bit mode on systems that support both 32-bit and 64-bit applications.</target>
+        <target state="translated">在同时支持 32 位和 64 位应用程序的系统上以 32 位模式运行。</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|Prefer32Bit|DisplayName">
         <source>Prefer 32-bit</source>
-        <target state="new">Prefer 32-bit</target>
+        <target state="translated">首选 32 位</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|RegisterForComInterop|Description">
@@ -49,32 +49,32 @@
       </trans-unit>
       <trans-unit id="BoolProperty|RemoveIntegerChecks|DisplayName">
         <source>Remove integer overflow checks</source>
-        <target state="new">Remove integer overflow checks</target>
+        <target state="translated">不做整数溢出检查</target>
         <note />
       </trans-unit>
       <trans-unit id="Category|Advanced|Description">
         <source>Advanced settings for the application.</source>
-        <target state="new">Advanced settings for the application.</target>
+        <target state="translated">应用程序的高级设置。</target>
         <note />
       </trans-unit>
       <trans-unit id="Category|Advanced|DisplayName">
         <source>Advanced</source>
-        <target state="new">Advanced</target>
+        <target state="translated">高级</target>
         <note />
       </trans-unit>
       <trans-unit id="Category|Events|Description">
         <source>Configures custom events that run before and after build.</source>
-        <target state="new">Configures custom events that run before and after build.</target>
+        <target state="translated">配置生成之前和之后运行的自定义事件。</target>
         <note />
       </trans-unit>
       <trans-unit id="Category|Events|DisplayName">
         <source>Events</source>
-        <target state="new">Events</target>
+        <target state="translated">事件</target>
         <note />
       </trans-unit>
       <trans-unit id="Category|General|DisplayName">
         <source>General</source>
-        <target state="new">General</target>
+        <target state="translated">常规</target>
         <note />
       </trans-unit>
       <trans-unit id="Category|Options|DisplayName">
@@ -89,12 +89,12 @@
       </trans-unit>
       <trans-unit id="DynamicEnumProperty|DuplicateOrOverlappingCatchBlocks_Readonly|DisplayName">
         <source>Duplicate or overlapping catch blocks</source>
-        <target state="new">Duplicate or overlapping catch blocks</target>
+        <target state="translated">重复或重叠的 catch 块</target>
         <note />
       </trans-unit>
       <trans-unit id="DynamicEnumProperty|DuplicateOrOverlappingCatchBlocks|DisplayName">
         <source>Duplicate or overlapping catch blocks</source>
-        <target state="new">Duplicate or overlapping catch blocks</target>
+        <target state="translated">重复或重叠的 catch 块</target>
         <note />
       </trans-unit>
       <trans-unit id="DynamicEnumProperty|ImplicitConversion_Readonly|Description">
@@ -139,12 +139,12 @@
       </trans-unit>
       <trans-unit id="DynamicEnumProperty|InstanceVariableAccessesSharedMember_Readonly|DisplayName">
         <source>Instance variable accesses shared member</source>
-        <target state="new">Instance variable accesses shared member</target>
+        <target state="translated">实例变量访问共享成员</target>
         <note />
       </trans-unit>
       <trans-unit id="DynamicEnumProperty|InstanceVariableAccessesSharedMember|DisplayName">
         <source>Instance variable accesses shared member</source>
-        <target state="new">Instance variable accesses shared member</target>
+        <target state="translated">实例变量访问共享成员</target>
         <note />
       </trans-unit>
       <trans-unit id="DynamicEnumProperty|LateBinding_Readonly|Description">
@@ -169,7 +169,7 @@
       </trans-unit>
       <trans-unit id="DynamicEnumProperty|PlatformTarget|Description">
         <source>Specifies the processor to be targeted by the output file. Choose 'Any CPU' to specify that any processor is acceptable, allowing the application to run on the broadest range of hardware.</source>
-        <target state="new">Specifies the processor to be targeted by the output file. Choose 'Any CPU' to specify that any processor is acceptable, allowing the application to run on the broadest range of hardware.</target>
+        <target state="translated">指定输出文件的目标处理器。选择“任何 CPU”以指定任何处理器都是可接受的，从而允许应用程序在最广泛范围的硬件上运行。</target>
         <note />
       </trans-unit>
       <trans-unit id="DynamicEnumProperty|PlatformTarget|DisplayName">
@@ -179,32 +179,32 @@
       </trans-unit>
       <trans-unit id="DynamicEnumProperty|RecursiveOperatorOrPropertyAccess_Readonly|DisplayName">
         <source>Recursive operator or property access</source>
-        <target state="new">Recursive operator or property access</target>
+        <target state="translated">递归运算符或属性访问</target>
         <note />
       </trans-unit>
       <trans-unit id="DynamicEnumProperty|RecursiveOperatorOrPropertyAccess|DisplayName">
         <source>Recursive operator or property access</source>
-        <target state="new">Recursive operator or property access</target>
+        <target state="translated">递归运算符或属性访问</target>
         <note />
       </trans-unit>
       <trans-unit id="DynamicEnumProperty|ReturningIntrinsicValueTypeWithoutReturnValue_Readonly|DisplayName">
         <source>Function returning intrinsic value type without return value</source>
-        <target state="new">Function returning intrinsic value type without return value</target>
+        <target state="translated">函数返回了不返回值的固有值类型</target>
         <note />
       </trans-unit>
       <trans-unit id="DynamicEnumProperty|ReturningIntrinsicValueTypeWithoutReturnValue|DisplayName">
         <source>Function returning intrinsic value type without return value</source>
-        <target state="new">Function returning intrinsic value type without return value</target>
+        <target state="translated">函数返回了不返回值的固有值类型</target>
         <note />
       </trans-unit>
       <trans-unit id="DynamicEnumProperty|ReturningRefTypeWithoutReturnValue_Readonly|DisplayName">
         <source>Function returning reference type without return value</source>
-        <target state="new">Function returning reference type without return value</target>
+        <target state="translated">函数返回了不返回值的引用类型</target>
         <note />
       </trans-unit>
       <trans-unit id="DynamicEnumProperty|ReturningRefTypeWithoutReturnValue|DisplayName">
         <source>Function returning reference type without return value</source>
-        <target state="new">Function returning reference type without return value</target>
+        <target state="translated">函数返回了不返回值的引用类型</target>
         <note />
       </trans-unit>
       <trans-unit id="DynamicEnumProperty|UnusedLocalVariable_Readonly|DisplayName">
@@ -219,27 +219,27 @@
       </trans-unit>
       <trans-unit id="DynamicEnumProperty|UseOfVariablePriorToAssignment_Readonly|DisplayName">
         <source>Use of variable prior to assignment</source>
-        <target state="new">Use of variable prior to assignment</target>
+        <target state="translated">在赋值前使用变量</target>
         <note />
       </trans-unit>
       <trans-unit id="DynamicEnumProperty|UseOfVariablePriorToAssignment|DisplayName">
         <source>Use of variable prior to assignment</source>
-        <target state="new">Use of variable prior to assignment</target>
+        <target state="translated">在赋值前使用变量</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumProperty|DebugType|Description">
         <source>Specifies the kind of debug symbols produced during build.</source>
-        <target state="new">Specifies the kind of debug symbols produced during build.</target>
+        <target state="translated">指定内部版本期间生成的调试符号类型。</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumProperty|DebugType|DisplayName">
         <source>Debug symbols</source>
-        <target state="new">Debug symbols</target>
+        <target state="translated">调试符号</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumProperty|DebugType|Metadata|SearchTerms">
         <source>debug type</source>
-        <target state="new">debug type</target>
+        <target state="translated">调试类型</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumProperty|GenerateSerializationAssemblies|DisplayName">
@@ -289,12 +289,12 @@
       </trans-unit>
       <trans-unit id="EnumProperty|RunPostBuildEvent|Description">
         <source>Specifies under which condition the post-build event will be executed.</source>
-        <target state="new">Specifies under which condition the post-build event will be executed.</target>
+        <target state="translated">指定何种条件下将执行生成后事件。</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumProperty|RunPostBuildEvent|DisplayName">
         <source>When to run the post-build event</source>
-        <target state="new">When to run the post-build event</target>
+        <target state="translated">何时运行生成后事件</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumProperty|WarningSeverity|DisplayName">
@@ -304,22 +304,22 @@
       </trans-unit>
       <trans-unit id="EnumValue|DebugType.embedded|DisplayName">
         <source>Embedded in DLL/EXE, portable across platforms</source>
-        <target state="new">Embedded in DLL/EXE, portable across platforms</target>
+        <target state="translated">嵌入到 DLL/EXE 中，可跨平台移植</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|DebugType.full|DisplayName">
         <source>PDB file, current platform</source>
-        <target state="new">PDB file, current platform</target>
+        <target state="translated">PDB 文件，当前平台</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|DebugType.none|DisplayName">
         <source>No symbols are emitted</source>
-        <target state="new">No symbols are emitted</target>
+        <target state="translated">未发出任何符号</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|DebugType.portable|DisplayName">
         <source>PDB file, portable across platforms</source>
-        <target state="new">PDB file, portable across platforms</target>
+        <target state="translated">PDB 文件，可跨平台移植</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|GenerateSerializationAssemblies.Auto|DisplayName">
@@ -339,32 +339,32 @@
       </trans-unit>
       <trans-unit id="EnumValue|OptionCompare.Binary|DisplayName">
         <source>Binary</source>
-        <target state="new">Binary</target>
+        <target state="translated">二进制</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|OptionCompare.Text|DisplayName">
         <source>Text</source>
-        <target state="new">Text</target>
+        <target state="translated">文本</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|OptionExplicit.Off|DisplayName">
         <source>Off</source>
-        <target state="new">Off</target>
+        <target state="translated">关</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|OptionExplicit.On|DisplayName">
         <source>On</source>
-        <target state="new">On</target>
+        <target state="translated">开</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|OptionInfer.Off|DisplayName">
         <source>Off</source>
-        <target state="new">Off</target>
+        <target state="translated">关</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|OptionInfer.On|DisplayName">
         <source>On</source>
-        <target state="new">On</target>
+        <target state="translated">开</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|OptionStrict.Off|DisplayName">
@@ -379,17 +379,17 @@
       </trans-unit>
       <trans-unit id="EnumValue|RunPostBuildEvent.Always|DisplayName">
         <source>Always</source>
-        <target state="new">Always</target>
+        <target state="translated">始终</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|RunPostBuildEvent.OnBuildSuccess|DisplayName">
         <source>When the build succeeds</source>
-        <target state="new">When the build succeeds</target>
+        <target state="translated">生成成功时</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|RunPostBuildEvent.OnOutputUpdated|DisplayName">
         <source>When the output is updated</source>
-        <target state="new">When the output is updated</target>
+        <target state="translated">更新输出时</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|WarningSeverity.AllAsErrors|DisplayName">
@@ -409,7 +409,7 @@
       </trans-unit>
       <trans-unit id="Rule|Build|Description">
         <source>Specifies properties that control how the project builds.</source>
-        <target state="new">Specifies properties that control how the project builds.</target>
+        <target state="translated">指定控制如何生成项目的属性。</target>
         <note />
       </trans-unit>
       <trans-unit id="Rule|Build|DisplayName">
@@ -434,22 +434,22 @@
       </trans-unit>
       <trans-unit id="StringProperty|PostBuildEvent|Description">
         <source>Specifies commands that run after the build completes. Does not run if the build failed. Use 'call' to invoke .bat files. A non-zero exit code will fail the build.</source>
-        <target state="new">Specifies commands that run after the build completes. Does not run if the build failed. Use 'call' to invoke .bat files. A non-zero exit code will fail the build.</target>
+        <target state="translated">指定生成完成后运行的命令。如果生成失败，则不运行。请使用“调用”来调用 .bat 文件。非零退出代码将导致生成失败。</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|PostBuildEvent|DisplayName">
         <source>Post-build event</source>
-        <target state="new">Post-build event</target>
+        <target state="translated">生成后事件</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|PreBuildEvent|Description">
         <source>Specifies commands that run before the build starts. Does not run if the project is up-to-date. A non-zero exit code will fail the build before it runs.</source>
-        <target state="new">Specifies commands that run before the build starts. Does not run if the project is up-to-date. A non-zero exit code will fail the build before it runs.</target>
+        <target state="translated">指定生成开始前运行的命令。如果项目是最新的，则不运行。非零退出代码将在生成运行前导致生成失败。</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|PreBuildEvent|DisplayName">
         <source>Pre-build event</source>
-        <target state="new">Pre-build event</target>
+        <target state="translated">预生成事件</target>
         <note />
       </trans-unit>
     </body>

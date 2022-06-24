@@ -688,7 +688,7 @@ Changing this setting will reset the settings in all configurations.</source>
       </trans-unit>
       <trans-unit id="SD_ERR_HelpMessage_SuggestFileOpenWith">
         <source>If this is not a Settings-Designer file then use 'Open With' to open it in a text editor.</source>
-        <target state="new">If this is not a Settings-Designer file then use 'Open With' to open it in a text editor.</target>
+        <target state="translated">これが Settings-Designer ファイルでない場合は、'Open With' を使用してテキスト エディターで開きます。</target>
         <note />
       </trans-unit>
       <trans-unit id="SingleFileGenerator_FailedToGenerateFile_1Arg">
