@@ -8,8 +8,8 @@
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|EnableVisualStyles|DisplayName">
-        <source>Windows XP Visual Styles</source>
-        <target state="new">Windows XP Visual Styles</target>
+        <source>Windows Visual Styles</source>
+        <target state="new">Windows Visual Styles</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|SaveMySettingsOnExit|Description">

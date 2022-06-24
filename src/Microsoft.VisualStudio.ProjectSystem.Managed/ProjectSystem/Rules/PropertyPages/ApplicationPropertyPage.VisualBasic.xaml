@@ -38,7 +38,7 @@
   </BoolProperty>
 
   <BoolProperty Name="EnableVisualStyles"
-                DisplayName="Windows XP Visual Styles"
+                DisplayName="Windows Visual Styles"
                 Description="Uses the most current version for the Control Library COMCTL to provide control rendering with modern visual styling."
                 HelpUrl="https://go.microsoft.com/fwlink/?linkid=2195445"
                 Category="ApplicationFramework">
