@@ -58,7 +58,9 @@
     <!-- <PackageReference Update="RoslynTools.ModifyVsixManifest"                                         Version="$(RoslynToolsModifyVsixManifestVersion)" /> -->
     <PackageReference Update="XliffTasks"                                                             Version="1.0.0-beta.20574.1" />
     <!-- <PackageReference Update="XliffTasks"                                                             Version="0.2.0-beta-000081" /> -->
-    <!-- <PackageReference Update="Microsoft.DiaSymReader.Pdb2Pdb"                                         Version="1.1.0-beta2-22306-02" /> -->
+    <!-- This is used for publishing portable PDBs to the legacy symbol server. -->
+    <!-- https://devdiv.visualstudio.com/DevDiv/_wiki/wikis/DevDiv.wiki/672/Archive-Symbols-with-Symweb?anchor=portable-pdbs -->
+    <PackageReference Update="Microsoft.DiaSymReader.Pdb2Pdb"                                         Version="1.1.0-beta2-22320-02" />
     <PackageReference Update="Microsoft.Net.Compilers.Toolset"                                        Version="4.2.0-1.final" />
     <PackageReference Update="OpenCover"                                                              Version="4.7.1138-rc" />
     <PackageReference Update="Codecov"                                                                Version="1.12.4" />
