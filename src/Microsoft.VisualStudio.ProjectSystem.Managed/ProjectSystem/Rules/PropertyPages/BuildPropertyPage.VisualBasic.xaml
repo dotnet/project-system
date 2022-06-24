@@ -616,7 +616,7 @@
                 Category="Advanced"/>
 
   <BoolProperty Name="DefineTrace"
-                DisplayName="Degine TRACE constant"
+                DisplayName="Define TRACE constant"
                 HelpUrl="https://go.microsoft.com/fwlink/?linkid=2196264"
                 Category="Advanced"/>
 

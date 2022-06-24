@@ -8,8 +8,8 @@
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|DefineTrace|DisplayName">
-        <source>Degine TRACE constant</source>
-        <target state="new">Degine TRACE constant</target>
+        <source>Define TRACE constant</source>
+        <target state="new">Define TRACE constant</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|GenerateDocumentationFile|Description">
