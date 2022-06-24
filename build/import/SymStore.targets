@@ -30,10 +30,6 @@
       <_PdbConverterCommandLineArgs>"$(TargetPath)" /out "$(_SymStorePdbPath)" /verbose /srcsvrvar SRC_INDEX=public</_PdbConverterCommandLineArgs>
     </PropertyGroup>
 
-    <Error Text="Attempt to publish Portable PDB to SymStore without conversion: UsingToolPdbConverter property is false in project $(MSBuildProjectName)"
-           Condition="'$(UsingToolPdbConverter)' != 'true'"
-           ContinueOnError="false"/>
-
     <MakeDir Directories="$(_SymStoreOutputDir)"/>
     <Exec Command='"$(_PdbConverterPath)" $(_PdbConverterCommandLineArgs)' IgnoreExitCode="false" />
     <ItemGroup>
