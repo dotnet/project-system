@@ -25,6 +25,7 @@
 
     <!-- Toolset -->
     <PackageReference Include="Nerdbank.Streams"                    ExcludeAssets="all" />
+    <!-- Note: We require Nerdbank.GitVersioning beyond simply generating version numbers. It also produces some assembly information such as AssemblyName and PublicKeyToken into a *.ThisAssembly.cs file. -->
     <PackageReference Include="Nerdbank.GitVersioning"              PrivateAssets="all" />
     <PackageReference Include="System.IO.Pipelines"                 ExcludeAssets="all" />
     <PackageReference Include="Microsoft.Net.Compilers.Toolset" />

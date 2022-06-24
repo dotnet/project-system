@@ -44,6 +44,9 @@
     <ProduceReferenceAssembly>true</ProduceReferenceAssembly>
     <!-- For projects using VSSDK to generate pkgdef files, this sets the registry entires to link to the DLL directly in the PackageFolder location as opposed to using an Assembly reference. -->
     <UseCodebase>true</UseCodebase>
+    <!-- https://github.com/dotnet/Nerdbank.GitVersioning/blob/main/doc/msbuild.md#reducing-getbuildversion-invocations -->
+    <GitVersionBaseDirectory>$(MSBuildThisFileDirectory)</GitVersionBaseDirectory>
+    <SuppressNETCoreSdkPreviewMessage>true</SuppressNETCoreSdkPreviewMessage>
   </PropertyGroup>
 
   <!-- Modify the set of implicit usings -->
@@ -110,11 +113,6 @@
   <PropertyGroup>
     <!-- TODO: Suppress warnings about duplicate PackageReferences until we can remove them (https://github.com/dotnet/project-system/issues/8074) -->
     <NoWarn>$(NoWarn);NU1504</NoWarn>
-  </PropertyGroup>
-
-  <!-- https://github.com/dotnet/Nerdbank.GitVersioning/blob/main/doc/msbuild.md#reducing-getbuildversion-invocations -->
-  <PropertyGroup>
-    <GitVersionBaseDirectory>$(MSBuildThisFileDirectory)</GitVersionBaseDirectory>
   </PropertyGroup>
 
 </Project>

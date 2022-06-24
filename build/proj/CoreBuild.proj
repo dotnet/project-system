@@ -82,6 +82,7 @@
   </Target>
 
   <!-- Generate insertion assets -->
+  <!-- This is used in the RoslynInsertionTool in the file RoslynInsertionTool.AssemblyVersions.cs.  -->
   <Target Name="GenerateDependentAssemblyVersionsFile" Condition="'$(BuildOrRebuild)' == 'true'">
     <MSBuild Projects="GenerateDependentAssemblyVersionFile.proj" BuildInParallel="true" />
   </Target>

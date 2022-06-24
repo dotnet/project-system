@@ -1,5 +1,6 @@
 <!-- Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information. -->
 <Project>
+
   <Import Project="build\import\Packages.targets"/>
   <Import Project="build\import\Stubs.targets" />
   <!-- <Import Project="$(RepoToolsetDir)Imports.targets" Condition="'$(ExcludeRestorePackageImports)' != 'true' AND Exists('$(RepoToolsetDir)Imports.targets')" /> -->
@@ -17,7 +18,7 @@
     <AdditionalFiles Include="$(MSBuildThisFileDirectory)src\Common\BannedSymbols.txt" Condition="'$(BannedSymbolsOptOut)' != 'true'" />
   </ItemGroup>
 
-  <!-- 
+  <!--
     With UseCommonOutputDirectory turned on, any copy-local projects/references break
     csproj's up-to-date check because they aren't copied to the output directory. 
     Turn it off. 
@@ -31,4 +32,55 @@
       <Private>false</Private>
     </ProjectReference>
   </ItemDefinitionGroup>
+
+  <!-- Sets the version numbers for local builds. -->
+  <!-- This applies to Nerdbank.GitVersioning targets. It changes the version information after it is set but before it is used to generate assembly info. -->
+  <Target Name="SetLocalBuildVersions" DependsOnTargets="GetBuildVersion" BeforeTargets="GenerateAssemblyNBGVVersionInfo" Condition="'$(CIBuild)' != 'true'">
+    <PropertyGroup>
+      <Version>$(LocalBuildVersion)-dev</Version>
+      <!-- https://stackoverflow.com/a/65062/294804 -->
+      <AssemblyVersion>$(LocalBuildVersion).0</AssemblyVersion>
+
+      <!-- Note: BuildVersion is used for VSIXs and VS insertions. -->
+      <BuildVersion>$(AssemblyVersion)</BuildVersion>
+      <FileVersion>$(AssemblyVersion)</FileVersion>
+      <AssemblyFileVersion>$(AssemblyVersion)</AssemblyFileVersion>
+      <AssemblyInformationalVersion>$(AssemblyVersion)</AssemblyInformationalVersion>
+      <!-- These must use a version that marks them as prerelease via a suffix. -->
+      <!-- In this case, Version has the -dev suffix. Otherwise, an this error will occur from dependent packages. -->
+      <!-- error NU5104: A stable release of a package should not have a prerelease dependency. -->
+      <PackageVersion>$(Version)</PackageVersion>
+      <NuGetPackageVersion>$(Version)</NuGetPackageVersion>
+
+      <!--
+        From GetBuildVersion in Nerdbank.GitVersioning:
+
+        BuildVersion = 17.3.32.55474
+        AssemblyInformationalVersion = 17.3.32+d8b2cf4a2d
+        AssemblyFileVersion = 17.3.32.55474
+        FileVersion = 17.3.32.55474
+        BuildVersionSimple = 17.3.32
+        PrereleaseVersion = 
+        MajorMinorVersion = 17.3
+        AssemblyVersion = 17.3.0.0
+        GitCommitId = d8b2cf4a2d7e5946c6e4a5166155f194cfce9db4
+        GitCommitIdShort = d8b2cf4a2d
+        GitCommitDateTicks = 637914599150000000
+        GitVersionHeight = 32
+        BuildNumber = 32
+        BuildVersionNumberComponent = 32
+        PublicRelease = False
+        BuildingRef = refs/heads/feature/RemoveRoslynTools
+        SemVerBuildSuffix = +d8b2cf4a2d
+        NuGetPackageVersion = 17.3.32-gd8b2cf4a2d
+        ChocolateyPackageVersion = 17.3.32-gd8b2cf4a2d
+        Version = 17.3.32-gd8b2cf4a2d
+        PackageVersion = 17.3.32-gd8b2cf4a2d
+        NPMPackageVersion = 17.3.32-gd8b2cf4a2d
+        BuildVersion3Components = 17.3.32
+        CloudBuildNumber = 17.3.32
+      -->
+    </PropertyGroup>
+  </Target>
+
 </Project>

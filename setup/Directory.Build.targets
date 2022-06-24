@@ -14,6 +14,7 @@
   <!-- Copy the VSIX files for signing from VS Extension projects. -->
   <Target Name="CopyVsixForSigning" DependsOnTargets="CreateVsixContainer" BeforeTargets="SignFiles" Condition="'$(IsVsixProject)' == 'true'">
     <!-- Required to be in either OutDir or IntermediateOutputPath for signing. It'll be copied after signing via the CopyVsixAfterSigning target. -->
+    <!-- https://devdiv.visualstudio.com/DevDiv/_wiki/wikis/DevDiv.wiki/650/MicroBuild-Signing?anchor=modify-your-project-file-to-include-%60filestosign%60-itemgroup -->
     <Copy SourceFiles="$(VisualStudioSetupInsertionPath)$(AssemblyName).vsix" DestinationFolder="$(OutDir)" />
     <!-- <ItemGroup>
       <FilesToSign Include="$(OutDir)$(AssemblyName).vsix">
@@ -45,5 +46,8 @@
     </PropertyGroup>
     <Exec ContinueOnError="false" Command="powershell -NonInteractive -NoLogo -NoProfile -ExecutionPolicy Unrestricted -Command &quot;$manifestXml = [Xml.XmlDocument](Get-Content '$(ObjVsixManifestPath)');$manifestXml.PackageManifest.Installation.SetAttribute('Experimental', 'false');$manifestXml.Save('$(ObjVsixManifestPath)')&quot;" />
   </Target>
+
+  <!-- Specifies the version number that is used within the source.extension.vsixmanifest files for VS insertions. -->
+  <Target Name="GetVsixVersion" Outputs="$(BuildVersion)" Condition="'$(IsVsixProject)' == 'true'" />
 
 </Project>

@@ -22,6 +22,7 @@
     <MicroBuildSwixBuildDir>$(NuGetPackageRoot)microsoft.visualstudioeng.microbuild.plugins.swixbuild\1.1.286\build\</MicroBuildSwixBuildDir>
 
     <ArtifactsDir>$(RepoRoot)artifacts\</ArtifactsDir>
+    <!-- TODO: What is this for? -->
     <ArtifactsToolsetDir>$(ArtifactsDir)toolset\</ArtifactsToolsetDir>
     <ArtifactsConfigurationDir>$(ArtifactsDir)$(Configuration)\</ArtifactsConfigurationDir>
     <ArtifactsBinDir>$(ArtifactsConfigurationDir)bin\</ArtifactsBinDir>
