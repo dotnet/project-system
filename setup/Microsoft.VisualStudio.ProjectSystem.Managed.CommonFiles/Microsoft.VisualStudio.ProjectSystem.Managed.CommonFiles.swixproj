@@ -3,10 +3,6 @@
 
   <!-- Note: SwixBuild automatically adds the .vsix to FilesToSign via the AddTargetPathToFilesToSign target. -->
 
-  <PropertyGroup>
-    <!-- <ExcludeRestorePackageImports>true</ExcludeRestorePackageImports> -->
-  </PropertyGroup>
-
   <Import Project="..\Directory.Build.props" />
   <!-- This currently loads all SwixBuild packages, and multiple packages existing in your NuGet cache breaks the build. -->
   <Import Project="$(MicroBuildCoreDir)Microsoft.VisualStudioEng.MicroBuild.Core.props" />

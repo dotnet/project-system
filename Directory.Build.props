@@ -47,6 +47,10 @@
     <!-- https://github.com/dotnet/Nerdbank.GitVersioning/blob/main/doc/msbuild.md#reducing-getbuildversion-invocations -->
     <GitVersionBaseDirectory>$(MSBuildThisFileDirectory)</GitVersionBaseDirectory>
     <SuppressNETCoreSdkPreviewMessage>true</SuppressNETCoreSdkPreviewMessage>
+    <!-- This tells XliffTasks to produce updated XLF files when building a project. -->
+    <!-- We set this off in CI so that the CI build will fail if updated XLF files were not committed to the repo. -->
+    <!-- https://github.com/dotnet/xliff-tasks/tree/main#using-microsoftdotnetxlifftasks -->
+    <UpdateXlfOnBuild Condition="'$(CIBuild)' != 'true'">true</UpdateXlfOnBuild>
   </PropertyGroup>
 
   <!-- Modify the set of implicit usings -->

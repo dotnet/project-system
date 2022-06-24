@@ -1,6 +1,8 @@
 ﻿<!-- Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information. -->
 <Project Sdk="Microsoft.NET.Sdk">
 
+  <!-- Note: VSIX signing is handled via AddVsixForSigning in Directory.Build.targets. -->
+
   <Import Project="..\..\build\import\VisualStudio.props" />
 
   <PropertyGroup>
@@ -11,13 +13,10 @@
     <!-- VSIX -->
     <ExtensionInstallationRoot>Extensions</ExtensionInstallationRoot>
     <ExtensionInstallationFolder>Microsoft\ManagedProjectSystem</ExtensionInstallationFolder>
-
-    <!-- VS Insertion -->
-    <ManifestJsonName>Microsoft.VisualStudio.ProjectSystem.Managed</ManifestJsonName>
-    <CommonFilesProjectName>Microsoft.VisualStudio.ProjectSystem.Managed.CommonFiles</CommonFilesProjectName>
-
     <TargetVsixContainerName>$(AssemblyName).vsix</TargetVsixContainerName>
     <TargetVsixContainer>$(VisualStudioSetupInsertionPath)$(TargetVsixContainerName)</TargetVsixContainer>
+
+    <CommonFilesProjectName>Microsoft.VisualStudio.ProjectSystem.Managed.CommonFiles</CommonFilesProjectName>
   </PropertyGroup>
 
   <ItemGroup>
@@ -39,13 +38,13 @@
     </ProjectReference>
     <!-- This is included so that F5 debugging works in the repo. It is not included in the setup .vsix package with the Project System assemblies. -->
     <ProjectReference Include="..\VisualStudioEditorsSetup\VisualStudioEditorsSetup.csproj">
-      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
       <Private>false</Private>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
     </ProjectReference>
     <!-- This is included so the .vsmanproj is guaranteed to have the .json manifest available for CommonFiles, so it can be included as part of the same .vsman file. -->
     <ProjectReference Include="..\$(CommonFilesProjectName)\$(CommonFilesProjectName).csproj">
-      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
       <Private>false</Private>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
     </ProjectReference>
   </ItemGroup>
 
@@ -59,23 +58,9 @@
     </Compile>
   </ItemGroup>
 
-  <!-- TODO: Create mechanism for local build version -->
-  <!-- <Target Name="GetBuildVersion" Returns="$(BuildVersion)">
-    <PropertyGroup>
-      <BuildVersion>42.42.42.42</BuildVersion>
-    </PropertyGroup>
-  </Target> -->
-
-  <ItemGroup>
-    <!-- The CopyVsixForSigning target will put the VSIX into OutDir for signing. -->
-    <FilesToSign Include="$(OutDir)$(AssemblyName).vsix">
-      <Authenticode>VsixSHA2</Authenticode>
-    </FilesToSign>
-  </ItemGroup>
-
   <Target Name="VSManifestBuild" AfterTargets="Build">
     <MSBuild Projects="$(MSBuildThisFileDirectory)Microsoft.VisualStudio.ProjectSystem.Managed.vsmanproj"
-      Properties="SwixBuildDir=$(PkgMicrosoft_VisualStudioEng_MicroBuild_Plugins_SwixBuild)\build\;CommonFilesProjectName=$(CommonFilesProjectName);MicroBuildCoreDir=$(PkgMicrosoft_VisualStudioEng_MicroBuild_Core)\build\"
+      Properties="CommonFilesProjectName=$(CommonFilesProjectName);SwixBuildDir=$(PkgMicrosoft_VisualStudioEng_MicroBuild_Plugins_SwixBuild)\build\;MicroBuildCoreDir=$(PkgMicrosoft_VisualStudioEng_MicroBuild_Core)\build\"
       Targets="Build" />
   </Target>
 

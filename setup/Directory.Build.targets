@@ -4,34 +4,24 @@
   <Import Project="..\Directory.Build.targets" />
 
   <!--
-    Defining this target will disable the new SDK behavior of implicit transitive project references.
-    This is a fine feature in general but the current implementation breaks VSIX construction by including a number of projects that should not be included.
+    Defining this target will disable the SDK behavior of implicit transitive project references.
+    The current implementation breaks VSIX construction by including a number of projects that should not be included.
     https://github.com/dotnet/sdk/issues/1366
   -->
   <!-- TODO: See if this is necessary. -->
   <Target Name="IncludeTransitiveProjectReferences" />
 
-  <!-- Copy the VSIX files for signing from VS Extension projects. -->
-  <Target Name="CopyVsixForSigning" DependsOnTargets="CreateVsixContainer" BeforeTargets="SignFiles" Condition="'$(IsVsixProject)' == 'true'">
+  <!-- Add the VSIX files from VS Extension projects for signing. -->
+  <Target Name="AddVsixForSigning" DependsOnTargets="CreateVsixContainer" BeforeTargets="SignFiles" Condition="'$(IsVsixProject)' == 'true'">
     <!-- Required to be in either OutDir or IntermediateOutputPath for signing. It'll be copied after signing via the CopyVsixAfterSigning target. -->
     <!-- https://devdiv.visualstudio.com/DevDiv/_wiki/wikis/DevDiv.wiki/650/MicroBuild-Signing?anchor=modify-your-project-file-to-include-%60filestosign%60-itemgroup -->
     <Copy SourceFiles="$(VisualStudioSetupInsertionPath)$(AssemblyName).vsix" DestinationFolder="$(OutDir)" />
-    <!-- <ItemGroup>
+    <ItemGroup>
       <FilesToSign Include="$(OutDir)$(AssemblyName).vsix">
         <Authenticode>VsixSHA2</Authenticode>
       </FilesToSign>
-    </ItemGroup> -->
+    </ItemGroup>
   </Target>
-
-  <!--
-    Updates insertion manifests (json) for creating the vsman files for insertion to include the SPDX SBOM json.
-    Technically, this should be AfterTargets="$(AddVsixForSigningDependsOn)" as that value (target) indicates when VSIX packaging has completed.
-    Doing it as AfterTargets="AddVsixForSigning" unnecessarily binds the SBOM process to signing. But there is not currently a scenario where we wouldn't sign and generate an SBOM.
-  -->
-  <!-- TODO: Since this is already a workaround for normal SBOM, the condition here is a workaround for now too. This entire target will be removed with normal SBOM creation. -->
-  <!-- <Target Name="UpdateManifestJsonForSbom" AfterTargets="$(AddVsixForSigningDependsOn)" Condition="'$(MSBuildProjectExtension)' != '.vsmanproj'">
-    <Exec ContinueOnError="false" Command="powershell -NonInteractive -NoLogo -NoProfile -ExecutionPolicy Unrestricted -Command &quot;. $(RepoRoot)build\script\UpdateManifestJsonForSbom.ps1 -manifestJsonPath '$(VisualStudioSetupInsertionPath)$(ManifestJsonName).json' -sbomMetadataPath '$(ArtifactsBinDir)_manifest\spdx_2.2\manifest.spdx.json'&quot;" />
-  </Target> -->
 
   <!-- Copies the VSIX files after they've been signed from VS Extension projects to the appropriate output folder. -->
   <Target Name="CopyVsixAfterSigning" AfterTargets="SignFiles" Condition="'$(IsVsixProject)' == 'true'">
@@ -47,7 +37,7 @@
     <Exec ContinueOnError="false" Command="powershell -NonInteractive -NoLogo -NoProfile -ExecutionPolicy Unrestricted -Command &quot;$manifestXml = [Xml.XmlDocument](Get-Content '$(ObjVsixManifestPath)');$manifestXml.PackageManifest.Installation.SetAttribute('Experimental', 'false');$manifestXml.Save('$(ObjVsixManifestPath)')&quot;" />
   </Target>
 
-  <!-- Specifies the version number that is used within the source.extension.vsixmanifest files for VS insertions. -->
+  <!-- Specifies the version number that is used within the 'source.extension.vsixmanifest' files for VSIX packages. -->
   <Target Name="GetVsixVersion" Outputs="$(BuildVersion)" Condition="'$(IsVsixProject)' == 'true'" />
 
 </Project>

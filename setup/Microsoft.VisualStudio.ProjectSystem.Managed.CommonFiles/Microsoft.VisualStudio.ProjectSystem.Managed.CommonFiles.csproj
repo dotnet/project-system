@@ -2,16 +2,11 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <!--
-    This project is not for building an assembly. It is for building the Managed project as the files from that are a dependency for the .swixproj.
+    This project is not for building an assembly. It is for building the Microsoft.VisualStudio.ProjectSystem.Managed project as the files from that are a dependency for the .swixproj.
     We also end up running the Nerdbank.GitVersioning mechanism via PackageRestore. This version number is then passed to the .swixproj for as the VSIX version.
   -->
 
   <Import Project="..\..\build\import\VisualStudio.props" />
-
-  <PropertyGroup>
-    <!-- VS Insertion -->
-    <ManifestJsonName>$(MSBuildProjectName)</ManifestJsonName>
-  </PropertyGroup>
 
   <ItemGroup>
     <!-- Depend on projects producing XAML rules included in this Willow package -->

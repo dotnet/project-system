@@ -18,11 +18,7 @@
     <AdditionalFiles Include="$(MSBuildThisFileDirectory)src\Common\BannedSymbols.txt" Condition="'$(BannedSymbolsOptOut)' != 'true'" />
   </ItemGroup>
 
-  <!--
-    With UseCommonOutputDirectory turned on, any copy-local projects/references break
-    csproj's up-to-date check because they aren't copied to the output directory. 
-    Turn it off. 
-  -->
+  <!-- With UseCommonOutputDirectory turned on, any copy-local projects/references break csproj's up-to-date check because they aren't copied to the output directory. Turn it off. -->
   <ItemDefinitionGroup Condition="'$(UseCommonOutputDirectory)' == 'true'">
     <Reference>
       <Private>false</Private>
