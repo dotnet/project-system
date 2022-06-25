@@ -1,6 +1,9 @@
 <!-- Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information. -->
 <Project>
 
+  <!-- TODO: This legacy symbol publishing process will be replaced with the Automated VS Insertion task. -->
+  <!-- https://devdiv.visualstudio.com/DevDiv/_wiki/wikis/DevDiv.wiki/629/Automated-VS-Insertion -->
+
   <Target Name="DeployToSymStore" AfterTargets="Pack">
     <PropertyGroup>
       <_TargetPdbPath />
@@ -27,7 +30,7 @@
 
     <PropertyGroup>
       <_PdbConverterPath>$(PkgMicrosoft_DiaSymReader_Pdb2Pdb)\tools\Pdb2Pdb.exe</_PdbConverterPath>
-      <_PdbConverterCommandLineArgs>"$(TargetPath)" /out "$(_SymStorePdbPath)" /verbose /srcsvrvar SRC_INDEX=public</_PdbConverterCommandLineArgs>
+      <_PdbConverterCommandLineArgs>"$(TargetPath)" /out "$(_SymStorePdbPath)" /srcsvrvar SRC_INDEX=public</_PdbConverterCommandLineArgs>
     </PropertyGroup>
 
     <MakeDir Directories="$(_SymStoreOutputDir)"/>
