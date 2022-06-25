@@ -15,9 +15,9 @@
       AssemblyOriginatorKeyFile
   -->
 
-  <PropertyGroup>
+  <!-- <PropertyGroup>
     <MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
-  </PropertyGroup>
+  </PropertyGroup> -->
 
   <PropertyGroup Condition="'$(SignAssembly)' != 'false'">
     <DelaySign>false</DelaySign>
@@ -55,24 +55,21 @@
     delay-signing satellite assemblies when main assembly is public-signed.
     This workaround is needed until we can move to MSBuild 15.6.
   -->
-  <Target Name="PrepareToDelaySignSatelliteAssemblies"
-          BeforeTargets="GenerateSatelliteAssemblies"
-          Condition="'$(MSBuildRuntimeType)' != 'Core' and '$(SignAssembly)' != 'false'">
+  <Target Name="PrepareToDelaySignSatelliteAssemblies" BeforeTargets="GenerateSatelliteAssemblies" Condition="'$(MSBuildRuntimeType)' != 'Core' and '$(SignAssembly)' != 'false'">
     <PropertyGroup>
       <_DelaySignMainAssembly>$(DelaySign)</_DelaySignMainAssembly>
       <DelaySign Condition="'$(PublicSign)' == 'true'">true</DelaySign>
     </PropertyGroup>
   </Target>
-  <Target Name="CleanupAfterDelaySigningSatelliteAssemblies"
-          AfterTargets="GenerateSatelliteAssemblies"
-          Condition="'$(MSBuildRuntimeType)' != 'Core' and '$(SignAssembly)' != 'false'">
+
+  <Target Name="CleanupAfterDelaySigningSatelliteAssemblies" AfterTargets="GenerateSatelliteAssemblies" Condition="'$(MSBuildRuntimeType)' != 'Core' and '$(SignAssembly)' != 'false'">
     <PropertyGroup>
       <DelaySign>$(_DelaySignMainAssembly)</DelaySign>
     </PropertyGroup>
   </Target>
 
   <!-- Build Flag Verification -->
-  <PropertyGroup>
+  <!-- <PropertyGroup>
     <PrepareForBuildDependsOn>$(PrepareForBuildDependsOn);VerifyBuildFlags</PrepareForBuildDependsOn>
   </PropertyGroup>
 
@@ -80,6 +77,6 @@
     <Error Condition="'$(SignAssembly)' != 'false' and
                       ('$(PublicKey)' == '' or '$(PublicKeyToken)' == '' or '$(AssemblyOriginatorKeyFile)' == '')"
            Text="PublicKey, PublicKeyToken and AssemblyOriginatorKeyFile must be specified" />
-  </Target>
+  </Target> -->
 
 </Project>
