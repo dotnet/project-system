@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!-- Copyright (c)  Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information. -->
+<!-- Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information. -->
 <Project>
 
   <!--
@@ -14,10 +13,6 @@
       PublicKeyToken
       AssemblyOriginatorKeyFile
   -->
-
-  <!-- <PropertyGroup>
-    <MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
-  </PropertyGroup> -->
 
   <PropertyGroup Condition="'$(SignAssembly)' != 'false'">
     <DelaySign>false</DelaySign>
@@ -51,9 +46,8 @@
   </Choose>
 
   <!--
-    Work around https://github.com/Microsoft/msbuild/issues/1490 (lack of support for public-signing satellites) by
-    delay-signing satellite assemblies when main assembly is public-signed.
-    This workaround is needed until we can move to MSBuild 15.6.
+    Workaround for: https://github.com/Microsoft/msbuild/issues/1490 (lack of support for public-signing satellites)
+    Delay-signs the satellite assemblies when main assembly is public-signed.
   -->
   <Target Name="PrepareToDelaySignSatelliteAssemblies" BeforeTargets="GenerateSatelliteAssemblies" Condition="'$(MSBuildRuntimeType)' != 'Core' and '$(SignAssembly)' != 'false'">
     <PropertyGroup>
@@ -67,16 +61,5 @@
       <DelaySign>$(_DelaySignMainAssembly)</DelaySign>
     </PropertyGroup>
   </Target>
-
-  <!-- Build Flag Verification -->
-  <!-- <PropertyGroup>
-    <PrepareForBuildDependsOn>$(PrepareForBuildDependsOn);VerifyBuildFlags</PrepareForBuildDependsOn>
-  </PropertyGroup>
-
-  <Target Name="VerifyBuildFlags">
-    <Error Condition="'$(SignAssembly)' != 'false' and
-                      ('$(PublicKey)' == '' or '$(PublicKeyToken)' == '' or '$(AssemblyOriginatorKeyFile)' == '')"
-           Text="PublicKey, PublicKeyToken and AssemblyOriginatorKeyFile must be specified" />
-  </Target> -->
 
 </Project>

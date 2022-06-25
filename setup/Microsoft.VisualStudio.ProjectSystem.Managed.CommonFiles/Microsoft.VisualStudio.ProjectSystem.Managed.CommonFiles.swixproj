@@ -19,7 +19,8 @@
 
   <ItemGroup>
     <Package Include="CommonFiles.swr" />
-    <!-- <Package Include="ext.xproj.swr" /> -->
+    <!-- TODO: Remove this for: https://github.com/dotnet/project-system/issues/8268 -->
+    <Package Include="ext.xproj.swr" />
   </ItemGroup>
 
   <PropertyGroup>
