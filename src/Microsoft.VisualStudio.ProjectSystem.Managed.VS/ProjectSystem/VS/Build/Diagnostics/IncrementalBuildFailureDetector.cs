@@ -90,15 +90,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build.Diagnostics
                 Assumes.NotNull(_solutionBuildEventsSubscription);
                 Assumes.NotNull(_rdtEventsSubscription);
 
-                if (_solutionBuildEventsSubscription is not null)
-                {
-                    await _solutionBuildEventsSubscription.DisposeAsync();
-                }
-
-                if (_rdtEventsSubscription is not null)
-                {
-                    await _rdtEventsSubscription.DisposeAsync();
-                }
+                await _solutionBuildEventsSubscription.DisposeAsync();
+                await _rdtEventsSubscription.DisposeAsync();
             }
         }
 
