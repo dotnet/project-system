@@ -87,7 +87,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build.Diagnostics
         {
             if (initialized)
             {
-                Assumes.NotNull(_solutionBuildEvents);
+                Assumes.NotNull(_solutionBuildEventsSubscription);
                 Assumes.NotNull(_rdtEventsSubscription);
 
                 if (_solutionBuildEventsSubscription is not null)
