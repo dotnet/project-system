@@ -63,9 +63,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build
             {
                 await JoinableFactory.SwitchToMainThreadAsync();
 
-                HResult.Verify(
-                    _vsSolutionBuildManager2.UnadviseUpdateSolutionEvents(cookie),
-                    $"Error unadvising solution events in {typeof(SolutionBuildManager)}.");
+                if (cookie != VSConstants.VSCOOKIE_NIL)
+                {
+                    HResult.Verify(
+                        _vsSolutionBuildManager2.UnadviseUpdateSolutionEvents(cookie),
+                        $"Error unadvising solution events in {typeof(SolutionBuildManager)}.");
+                }
 
                 if (cookie3 != VSConstants.VSCOOKIE_NIL)
                 {
