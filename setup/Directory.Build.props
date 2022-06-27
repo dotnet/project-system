@@ -11,8 +11,8 @@
 
   <!-- General  -->
   <PropertyGroup>
-    <!-- Prevent VSIX manifests from being copied to the shared output directory. Makes build more deterministic. -->
-    <CopyVsixManifestToOutput>true</CopyVsixManifestToOutput>
+    <!-- Prevent the extension.vsixmanifest from each VS Extension project to write to the same output directory, overriding each other's file. This prevents the target CopyVsixManifestFile from the VSSDK.BuildTools from executing. -->
+    <CopyVsixManifestToOutput>false</CopyVsixManifestToOutput>
     <PublishOutputToSymStore>false</PublishOutputToSymStore>
     <IncludeAssemblyInVSIXContainer>false</IncludeAssemblyInVSIXContainer>
 
