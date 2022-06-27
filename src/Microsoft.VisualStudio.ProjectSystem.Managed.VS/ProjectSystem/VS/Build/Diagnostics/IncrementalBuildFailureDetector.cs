@@ -87,18 +87,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build.Diagnostics
         {
             if (initialized)
             {
-                Assumes.NotNull(_solutionBuildEvents);
+                Assumes.NotNull(_solutionBuildEventsSubscription);
                 Assumes.NotNull(_rdtEventsSubscription);
 
-                if (_solutionBuildEventsSubscription is not null)
-                {
-                    await _solutionBuildEventsSubscription.DisposeAsync();
-                }
+                // Switch the UI thread once here, rather than once per dispose below
+                await JoinableFactory.SwitchToMainThreadAsync();
 
-                if (_rdtEventsSubscription is not null)
-                {
-                    await _rdtEventsSubscription.DisposeAsync();
-                }
+                await _solutionBuildEventsSubscription.DisposeAsync();
+                await _rdtEventsSubscription.DisposeAsync();
             }
         }
 
