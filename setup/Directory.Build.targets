@@ -34,10 +34,24 @@
     <PropertyGroup>
       <ObjVsixManifestPath>$(ArtifactsObjDir)$(MSBuildProjectName)\extension.vsixmanifest</ObjVsixManifestPath>
     </PropertyGroup>
-    <Exec ContinueOnError="false" Command="powershell -NonInteractive -NoLogo -NoProfile -ExecutionPolicy Unrestricted -Command &quot;$manifestXml = [Xml.XmlDocument](Get-Content '$(ObjVsixManifestPath)');$manifestXml.PackageManifest.Installation.SetAttribute('Experimental', 'false');$manifestXml.Save('$(ObjVsixManifestPath)')&quot;" />
+    <Exec ContinueOnError="false" Command="$(PowerShellCommand) &quot;$manifestXml = [Xml.XmlDocument](Get-Content '$(ObjVsixManifestPath)');$manifestXml.PackageManifest.Installation.SetAttribute('Experimental', 'false');$manifestXml.Save('$(ObjVsixManifestPath)')&quot;" />
   </Target>
 
   <!-- Specifies the version number that is used within the 'source.extension.vsixmanifest' files for VSIX packages. -->
   <Target Name="GetVsixVersion" Outputs="$(BuildVersion)" Condition="'$(IsVsixProject)' == 'true'" />
+
+  <!--
+    Generates DependentAssemblyVersions.csv that enables the Roslyn insertion tool to update various assembly versions in the VS repository under src\ProductData.
+    This is used in the RoslynInsertionTool in the file RoslynInsertionTool.AssemblyVersions.cs.
+    See: https://github.com/dotnet/roslyn-tools/tree/main/src/RoslynInsertionTool
+
+    $(ProjectSystemVersion):        The version number of both Microsoft.VisualStudio.Editors/Microsoft.VisualStudio.AppDesigner and Microsoft.VisualStudio.ProjectSystem.Managed/Microsoft.VisualStudio.ProjectSystem.Managed.VS.
+    $(ArtifactsConfigurationDir):   The configured-based build output location.
+  -->
+  <!-- TODO: This will need to be changed/removed as part of https://github.com/dotnet/project-system/issues/7911 -->
+  <Target Name="CreateDependentAssemblyVersionsCsv" AfterTargets="Build" Condition="!Exists('$(DependentAssemblyVersionsCsvPath)')">
+    <!-- We use individual version for AppDesigner/Editors, however Managed and Managed.VS share the same variable in VS repository under src\ProductData\AssemblyVersions.tt. -->
+    <Exec ContinueOnError="false" Command="$(PowerShellCommand) &quot;New-Item -Path '$(DependentAssemblyVersionsCsvPath)' -ItemType File -Force | Set-Content -Value 'Microsoft.VisualStudio.AppDesigner,$(ProjectSystemVersion).0','Microsoft.VisualStudio.Editors,$(ProjectSystemVersion).0','Microsoft.VisualStudio.ProjectSystem.Managed,$(ProjectSystemVersion).0'&quot;" />
+  </Target>
 
 </Project>

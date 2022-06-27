@@ -1,5 +1,5 @@
 <!-- Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information. -->
-<Project DefaultTargets="Restore;Build;GenerateDependentAssemblyVersionsFile;GenerateVSManifest" LocalProperty="SolutionPath">
+<Project DefaultTargets="Restore;Build" LocalProperty="SolutionPath">
 
   <!--
   Required parameters:
@@ -81,19 +81,4 @@
     <MSBuild Projects="$(SolutionPath)" Properties="@(SolutionRestoreAndBuildProperty);__BuildPhase=SolutionBuild" Targets="@(SolutionBuildTarget)" BuildInParallel="true" Condition="'@(SolutionBuildTarget)' != ''" />
   </Target>
 
-  <!-- Generate insertion assets -->
-  <!-- This is used in the RoslynInsertionTool in the file RoslynInsertionTool.AssemblyVersions.cs.  -->
-  <Target Name="GenerateDependentAssemblyVersionsFile" Condition="'$(BuildOrRebuild)' == 'true'">
-    <MSBuild Projects="GenerateDependentAssemblyVersionFile.proj" BuildInParallel="true" />
-  </Target>
-
-  <!-- TODO: This file, VisualStudio.Insertion.proj, doesn't exist in the latest RepoToolset version. -->
-  <Target Name="GenerateVSManifest" Condition="'$(BuildOrRebuild)' == 'true'">
-    <!--
-      Because multiple projects can contribute to a single insertion component we package them in a separate phase.
-      Also due to insertion manifests containing hashes of references VSIXes, so we need to run this after signing.
-    -->
-    <!-- TODO: Figure out the VS manifest process -->
-    <!-- <MSBuild Projects="$(ToolsetPath)VisualStudio.Insertion.proj" Properties="@(CommonBuildProperty)" Targets="Pack" /> -->
-  </Target>
 </Project>

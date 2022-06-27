@@ -55,6 +55,8 @@
     <!-- We set this off in CI so that the CI build will fail if updated XLF files were not committed to the repo. -->
     <!-- https://github.com/dotnet/xliff-tasks/tree/main#using-microsoftdotnetxlifftasks -->
     <UpdateXlfOnBuild Condition="'$(CIBuild)' != 'true'">true</UpdateXlfOnBuild>
+    <!-- Variable used for executing a PowerShell command with arguments for the MSBuild/commandline environment. -->
+    <PowerShellCommand>powershell -NonInteractive -NoLogo -NoProfile -ExecutionPolicy Unrestricted -Command</PowerShellCommand>
   </PropertyGroup>
 
   <!-- Modify the set of implicit usings -->
