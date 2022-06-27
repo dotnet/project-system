@@ -9,7 +9,6 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.Test.Apex.VisualStudio" />
-    <PackageReference Include="Microsoft.VisualStudio.Composition" />
     <PackageReference Include="MSTest.TestFramework" />
     <PackageReference Include="MSTest.TestAdapter" />
 
