@@ -49,33 +49,45 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build
             uint cookie3 = VSConstants.VSCOOKIE_NIL;
 
             HResult.Verify(
-                _vsSolutionBuildManager2.AdviseUpdateSolutionEvents(eventListener, out uint cookie),
+                _vsSolutionBuildManager2.AdviseUpdateSolutionEvents(eventListener, out uint cookie2),
                 $"Error advising solution events in {typeof(SolutionBuildManager)}.");
 
             if (eventListener is IVsUpdateSolutionEvents3 events3)
             {
-                HResult.Verify(
-                    _vsSolutionBuildManager3.AdviseUpdateSolutionEvents3(events3, out cookie3),
-                    $"Error advising solution events 3 in {typeof(SolutionBuildManager)}.");
+                int hr = _vsSolutionBuildManager3.AdviseUpdateSolutionEvents3(events3, out cookie3);
+
+                if (hr != HResult.OK)
+                {
+                    // The first subscription succeeded while the second failed.
+                    // We need to clean up the first subscription before throwing an exception.
+                    _vsSolutionBuildManager2.UnadviseUpdateSolutionEvents(cookie2);
+
+                    // Throw.
+                    HResult.Verify(hr, $"Error advising solution events 3 in {typeof(SolutionBuildManager)}.");
+                }
             }
 
             return new AsyncDisposable(async () =>
             {
                 await JoinableFactory.SwitchToMainThreadAsync();
 
-                if (cookie != VSConstants.VSCOOKIE_NIL)
+                int result2 = HResult.OK;
+                int result3 = HResult.OK;
+
+                if (cookie2 != VSConstants.VSCOOKIE_NIL)
                 {
-                    HResult.Verify(
-                        _vsSolutionBuildManager2.UnadviseUpdateSolutionEvents(cookie),
-                        $"Error unadvising solution events in {typeof(SolutionBuildManager)}.");
+                    result2 = _vsSolutionBuildManager2.UnadviseUpdateSolutionEvents(cookie2);
                 }
 
                 if (cookie3 != VSConstants.VSCOOKIE_NIL)
                 {
-                    HResult.Verify(
-                        _vsSolutionBuildManager3.UnadviseUpdateSolutionEvents3(cookie3),
-                        $"Error unadvising solution events 3 in {typeof(SolutionBuildManager)}.");
+                    result3 = _vsSolutionBuildManager3.UnadviseUpdateSolutionEvents3(cookie3);
                 }
+
+                // Defer any exception until this point, so that we ensure both subscriptions
+                // have a chance to be cleaned up.
+                HResult.Verify(result2, $"Error unadvising solution events 2 in {typeof(SolutionBuildManager)}.");
+                HResult.Verify(result3, $"Error unadvising solution events 3 in {typeof(SolutionBuildManager)}.");
             });
         }
 
