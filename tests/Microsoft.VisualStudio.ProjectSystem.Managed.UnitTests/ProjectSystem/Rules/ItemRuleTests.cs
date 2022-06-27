@@ -17,6 +17,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.Rules
                 return;
             }
 
+            // Special case for PackageVersion, which is an item but not a file so none of the properties on "None" are actually
+            // relevant.
+            if (ruleName.Equals("PackageVersion", StringComparison.Ordinal))
+            {
+                return;
+            }
+
             // No need to check None against None
             if (ruleName.Equals("None", StringComparison.Ordinal))
             {

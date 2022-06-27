@@ -175,8 +175,8 @@
       <Context>File</Context>
     </PropertyPageSchema>
 
-    <PropertyPageSchema Include="$(ManagedXamlNeutralResourcesDirectory)PackageVersion.BrowseObject.xaml">
-      <Context>BrowseObject</Context>
+    <PropertyPageSchema Include="$(ManagedXamlNeutralResourcesDirectory)PackageVersion.xaml">
+      <Context>File</Context>
     </PropertyPageSchema>
 
     <PropertyPageSchema Include="$(ManagedXamlResourcesDirectory)None.BrowseObject.xaml">

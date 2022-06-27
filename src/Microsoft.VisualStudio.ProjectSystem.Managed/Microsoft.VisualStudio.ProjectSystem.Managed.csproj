@@ -271,7 +271,7 @@
     </XamlPropertyRuleNoCodeBehind>
     <XamlPropertyRuleNoCodeBehind Include="ProjectSystem\Rules\Items\None.BrowseObject.xaml" />
 
-    <XamlPropertyRuleNoCodeBehind Include="ProjectSystem\Rules\Items\PackageVersion.BrowseObject.xaml">
+    <XamlPropertyRuleNoCodeBehind Include="ProjectSystem\Rules\Items\PackageVersion.xaml">
       <XlfInput>false</XlfInput>
     </XamlPropertyRuleNoCodeBehind>
   </ItemGroup>

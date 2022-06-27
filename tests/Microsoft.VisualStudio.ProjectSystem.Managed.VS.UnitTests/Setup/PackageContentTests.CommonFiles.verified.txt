@@ -322,7 +322,7 @@
   Contents/MSBuild/Microsoft/VisualStudio/Managed/None.xaml,
   Contents/MSBuild/Microsoft/VisualStudio/Managed/PackagePropertyPage.xaml,
   Contents/MSBuild/Microsoft/VisualStudio/Managed/PackageReference.xaml,
-  Contents/MSBuild/Microsoft/VisualStudio/Managed/PackageVersion.BrowseObject.xaml,
+  Contents/MSBuild/Microsoft/VisualStudio/Managed/PackageVersion.xaml,
   Contents/MSBuild/Microsoft/VisualStudio/Managed/pl/AnalyzerReference.xaml,
   Contents/MSBuild/Microsoft/VisualStudio/Managed/pl/ApplicationPropertyPage.CSharp.xaml,
   Contents/MSBuild/Microsoft/VisualStudio/Managed/pl/ApplicationPropertyPage.VisualBasic.xaml,
