@@ -20,8 +20,8 @@
 
   <ItemGroup>
     <MergeManifest Include="$(VisualStudioSetupInsertionPath)$(TargetName).json" SBOMFileLocation="$(ArtifactsBinDir)_manifest\spdx_2.2\manifest.spdx.json" />
-    <!-- NOTE: SBOMFileLocation is not included as this .vsix is just a loose set of files, not a project with dependencies. -->
-    <MergeManifest Include="$(VisualStudioSetupInsertionPath)$(CommonFilesProjectName).json" />
+    <!-- NOTE: Even though this .vsix is just a loose set of files (not a project with dependencies), SBOMFileLocation is still included as the SBOM check in the VS insertion will fail without it. -->
+    <MergeManifest Include="$(VisualStudioSetupInsertionPath)$(CommonFilesProjectName).json" SBOMFileLocation="$(ArtifactsBinDir)_manifest\spdx_2.2\manifest.spdx.json" />
   </ItemGroup>
 
   <Import Project="$(MicroBuildCoreDir)Microsoft.VisualStudioEng.MicroBuild.Core.targets" />
