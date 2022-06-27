@@ -168,9 +168,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
                 newProfileName ??= await GetNewProfileNameAsync(cancellationToken);
                 newProfileCommandName ??= existingProfile.CommandName;
 
-                var writableProfile = new WritableLaunchProfile(existingProfile);
-                writableProfile.Name = newProfileName;
-                writableProfile.CommandName = newProfileCommandName;
+                var writableProfile = new WritableLaunchProfile(existingProfile)
+                {
+                    Name = newProfileName,
+                    CommandName = newProfileCommandName
+                };
 
                 await _launchSettingsProvider.AddOrUpdateProfileAsync(writableProfile.ToLaunchProfile(), addToFront: false);
 
@@ -208,8 +210,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
             ProjectSystem.Debug.ILaunchProfile? existingProfile = launchSettings.Profiles.FirstOrDefault(p => StringComparers.LaunchProfileNames.Equals(p.Name, currentProfileName));
             if (existingProfile is not null)
             {
-                var writableProfile = new WritableLaunchProfile(existingProfile);
-                writableProfile.Name = newProfileName;
+                var writableProfile = new WritableLaunchProfile(existingProfile)
+                {
+                    Name = newProfileName
+                };
 
                 await _launchSettingsProvider.RemoveProfileAsync(currentProfileName);
                 await _launchSettingsProvider.AddOrUpdateProfileAsync(writableProfile.ToLaunchProfile(), addToFront: false);

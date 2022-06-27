@@ -18,6 +18,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
             public string AssemblyName;
             public Guid ProjectGuid;
             public string WorkspaceProjectContextId;
+            public string CommandLineArgsForDesignTimeEvaluation;
 
             public bool IsInvalid()
             {
@@ -39,7 +40,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
                 snapshot.Properties.TryGetValue(ConfigurationGeneral.TargetPathProperty, out data.BinOutputPath);
                 snapshot.Properties.TryGetValue(ConfigurationGeneral.MSBuildProjectFullPathProperty, out data.ProjectFilePath);
                 snapshot.Properties.TryGetValue(ConfigurationGeneral.AssemblyNameProperty, out data.AssemblyName);
-
+                snapshot.Properties.TryGetValue(ConfigurationGeneral.CommandLineArgsForDesignTimeEvaluationProperty, out data.CommandLineArgsForDesignTimeEvaluation);
+                
                 data.ProjectGuid = projectGuid;
                 data.WorkspaceProjectContextId = GetWorkspaceProjectContextId(data.ProjectFilePath, projectGuid, configuration);
 

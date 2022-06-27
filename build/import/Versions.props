@@ -9,7 +9,7 @@
     <ProjectSystemVersion>17.3.0</ProjectSystemVersion>
     <!-- TODO: This may no longer be needed. -->
     <!-- <VersionBase>$(ProjectSystemVersion)</VersionBase> -->
-    <!-- <PreReleaseVersionLabel>beta1</PreReleaseVersionLabel> -->
+    <!-- <PreReleaseVersionLabel>preview3</PreReleaseVersionLabel> -->
     <!--
       IMPORTANT: The reason we use 99.0.0 is because we need a version number that will always be above the published version of the assemblies.
       This causes VS to always prefer our locally build packages for debugging purposes.

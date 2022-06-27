@@ -3149,6 +3149,15 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to If this is not a Settings-Designer file then use &apos;Open With&apos; to open it in a text editor..
+        '''</summary>
+        Friend Shared ReadOnly Property SD_ERR_HelpMessage_SuggestFileOpenWith() As String
+            Get
+                Return ResourceManager.GetString("SD_ERR_HelpMessage_SuggestFileOpenWith", resourceCulture)
+            End Get
+        End Property
+
+        '''<summary>
         '''  Looks up a localized string similar to &apos;{0}&apos; is not a valid identifier..
         '''</summary>
         Friend Shared ReadOnly Property SD_ERR_InvalidIdentifier_1Arg() As String

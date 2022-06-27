@@ -24,14 +24,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         {
         }
 
-        public override string? GetPropertyValue(string propertyName, ILaunchSettings launchSettings)
+        public override string GetPropertyValue(string propertyName, ILaunchSettings launchSettings)
         {
             if (propertyName != EnvironmentVariablesPropertyName)
             {
                 throw new InvalidOperationException($"{nameof(ActiveLaunchProfileEnvironmentVariableValueProvider)} does not handle property '{propertyName}'.");
             }
 
-            return ConvertDictionaryToString(launchSettings.ActiveProfile?.EnvironmentVariables);
+            return LaunchProfileEnvironmentVariableEncoding.Format(launchSettings.ActiveProfile);
         }
 
         public override bool SetPropertyValue(string propertyName, string value, IWritableLaunchSettings launchSettings)
@@ -47,92 +47,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
                 return false;
             }
 
-            ParseStringIntoDictionary(value, activeProfile.EnvironmentVariables);
+            LaunchProfileEnvironmentVariableEncoding.ParseIntoDictionary(value, activeProfile.EnvironmentVariables);
 
             return true;
-        }
-
-        private static string ConvertDictionaryToString(ImmutableDictionary<string, string>? value)
-        {
-            if (value == null)
-            {
-                return string.Empty;
-            }
-
-            return string.Join(",", value.OrderBy(kvp => kvp.Key, StringComparer.Ordinal).Select(kvp => $"{encode(kvp.Key)}={encode(kvp.Value)}"));
-
-            static string encode(string value)
-            {
-                return value.Replace("/", "//").Replace(",", "/,").Replace("=", "/=");
-            }
-        }
-        private static void ParseStringIntoDictionary(string value, Dictionary<string, string> dictionary)
-        {
-            dictionary.Clear();
-
-            foreach (var entry in readEntries(value))
-            {
-                var (entryKey, entryValue) = splitEntry(entry);
-                var decodedEntryKey = decode(entryKey);
-                var decodedEntryValue = decode(entryValue);
-
-                if (!string.IsNullOrEmpty(decodedEntryKey))
-                {
-                    dictionary[decodedEntryKey] = decodedEntryValue;
-                }
-            }
-
-            static IEnumerable<string> readEntries(string rawText)
-            {
-                bool escaped = false;
-                int entryStart = 0;
-                for (int i = 0; i < rawText.Length; i++)
-                {
-                    if (rawText[i] == ',' && !escaped)
-                    {
-                        yield return rawText.Substring(entryStart, i - entryStart);
-                        entryStart = i + 1;
-                        escaped = false;
-                    }
-                    else if (rawText[i] == '/')
-                    {
-                        escaped = !escaped;
-                    }
-                    else
-                    {
-                        escaped = false;
-                    }
-                }
-
-                yield return rawText.Substring(entryStart);
-            }
-
-            static (string encodedKey, string encodedValue) splitEntry(string entry)
-            {
-                bool escaped = false;
-                for (int i = 0; i < entry.Length; i++)
-                {
-                    if (entry[i] == '=' && !escaped)
-                    {
-                        return (entry.Substring(0, i), entry.Substring(i + 1));
-                    }
-                    else if (entry[i] == '/')
-                    {
-                        escaped = !escaped;
-                    }
-                    else
-                    {
-                        escaped = false;
-                    }
-                }
-
-                return (string.Empty, string.Empty);
-            }
-
-            static string decode(string value)
-            {
-                return value.Replace("/=", "=").Replace("/,", ",").Replace("//", "/");
-            }
         }
     }
 }

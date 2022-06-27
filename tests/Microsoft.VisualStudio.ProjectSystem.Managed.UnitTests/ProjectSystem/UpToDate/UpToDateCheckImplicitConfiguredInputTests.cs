@@ -32,7 +32,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
             var state = UpToDateCheckImplicitConfiguredInput.CreateEmpty(ProjectConfigurationFactory.Create("testConfiguration"));
 
-            Assert.Equal(DateTime.MinValue, state.LastItemsChangedAtUtc);
+            Assert.Null(state.LastItemsChangedAtUtc);
 
             // Initial change does NOT set LastItemsChangedAtUtc
             state = UpdateState(
@@ -40,12 +40,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 projectSnapshot,
                 sourceSnapshot1);
 
-            Assert.Equal(DateTime.MinValue, state.LastItemsChangedAtUtc);
+            Assert.Null(state.LastItemsChangedAtUtc);
 
             // Broadcasting an update with no change to items does NOT set LastItemsChangedAtUtc
             state = UpdateState(state);
 
-            Assert.Equal(DateTime.MinValue, state.LastItemsChangedAtUtc);
+            Assert.Null(state.LastItemsChangedAtUtc);
 
             // Broadcasting changed items DOES set LastItemsChangedAtUtc
             state = UpdateState(
@@ -53,7 +53,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 projectSnapshot,
                 sourceSnapshot2);
 
-            Assert.NotEqual(DateTime.MinValue, state.LastItemsChangedAtUtc);
+            Assert.NotNull(state.LastItemsChangedAtUtc);
         }
     }
 }

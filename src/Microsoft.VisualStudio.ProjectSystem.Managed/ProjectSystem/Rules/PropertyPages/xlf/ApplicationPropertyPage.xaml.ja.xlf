@@ -12,16 +12,6 @@
         <target state="translated">バインド リダイレクトの自動生成</target>
         <note />
       </trans-unit>
-      <trans-unit id="BoolProperty|IsPublishable|Description">
-        <source>Allow publishing outside of Visual Studio, such as via "dotnet publish".</source>
-        <target state="translated">"dotnet publish" を使用するなど、Visual Studio 外でのパブリッシュを許可します。</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="BoolProperty|IsPublishable|DisplayName">
-        <source>Publishing</source>
-        <target state="translated">パブリッシュ</target>
-        <note />
-      </trans-unit>
       <trans-unit id="BoolProperty|TargetMultipleFrameworks|Description">
         <source>Build this project for multiple target frameworks.</source>
         <target state="translated">このプロジェクトを複数のターゲット フレームワーク用にビルドします。</target>
@@ -60,26 +50,6 @@
       <trans-unit id="Category|General|DisplayName">
         <source>General</source>
         <target state="translated">全般</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="Category|Packaging|Description">
-        <source>Packaging settings for the application.</source>
-        <target state="translated">アプリケーションのパッケージ化設定です。</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="Category|Packaging|DisplayName">
-        <source>Packaging</source>
-        <target state="translated">パッケージ化</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="Category|Resources|Description">
-        <source>Resource settings for the application.</source>
-        <target state="translated">アプリケーションのリソース設定です。</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="Category|Resources|DisplayName">
-        <source>Win32 Resources</source>
-        <target state="translated">Win32 リソース</target>
         <note />
       </trans-unit>
       <trans-unit id="DynamicEnumProperty|InterceptedTargetFramework|Description">
@@ -152,16 +122,6 @@
         <target state="translated">プラットフォーム</target>
         <note />
       </trans-unit>
-      <trans-unit id="EnumProperty|ApplicationManifestKind|Description">
-        <source>Selects a manifest generation option when the application runs on Windows Vista or later under User Account Control (UAC). Options include a default manifest, no manifest, or a custom manifest provided by your project.</source>
-        <target state="translated">アプリケーションがユーザー アカウント制御 (UAC) を使用して Windows Vista またはそれ以降で実行されるときに、マニフェスト生成オプションを選択します。オプションには、既定のマニフェスト、マニフェストなし、プロジェクトによって提供されるカスタム マニフェストが含まれます。</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="EnumProperty|ApplicationManifestKind|DisplayName">
-        <source>Manifest</source>
-        <target state="translated">マニフェスト</target>
-        <note />
-      </trans-unit>
       <trans-unit id="EnumProperty|OutputType|Description">
         <source>Specifies the type of application to build.</source>
         <target state="translated">ビルドするアプリケーションの種類を指定します。</target>
@@ -180,21 +140,6 @@
       <trans-unit id="EnumProperty|ResourceSpecificationKind|DisplayName">
         <source>Resources</source>
         <target state="translated">リソース</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="EnumValue|ApplicationManifestKind.CustomManifest|DisplayName">
-        <source>Use a custom manifest</source>
-        <target state="translated">カスタム マニフェストを使用する</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="EnumValue|ApplicationManifestKind.DefaultManifest|DisplayName">
-        <source>Embed manifest with default settings</source>
-        <target state="translated">マニフェストを既定の設定で埋め込みます</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="EnumValue|ApplicationManifestKind.NoManifest|DisplayName">
-        <source>Create application without a manifest</source>
-        <target state="translated">マニフェストなしでアプリケーションを作成します</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|OutputType.Exe|DisplayName">
@@ -242,16 +187,6 @@
         <target state="translated">アイコン</target>
         <note />
       </trans-unit>
-      <trans-unit id="StringProperty|ApplicationManifestPath|Description">
-        <source>The path to the custom manifest file.</source>
-        <target state="translated">カスタム マニフェスト ファイルへのパスです。</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="StringProperty|ApplicationManifestPath|DisplayName">
-        <source>Manifest path</source>
-        <target state="translated">マニフェスト パス</target>
-        <note />
-      </trans-unit>
       <trans-unit id="StringProperty|AssemblyName|Description">
         <source>Specifies the name of the output file that will hold the assembly manifest.</source>
         <target state="translated">アセンブリ マニフェストを保持する出力ファイルの名前を指定します。</target>
@@ -290,16 +225,6 @@
       <trans-unit id="StringProperty|TargetFrameworks|Metadata|SearchTerms">
         <source>TFM</source>
         <target state="translated">TFM</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="StringProperty|Win32Resource|Description">
-        <source>Specifies a resource file for the project.</source>
-        <target state="translated">プロジェクトのリソース ファイルが指定されます。</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="StringProperty|Win32Resource|DisplayName">
-        <source>Resource file</source>
-        <target state="translated">リソース ファイル</target>
         <note />
       </trans-unit>
     </body>

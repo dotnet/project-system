@@ -13,22 +13,24 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
             string? valueResult = null;
             var context = IWorkspaceProjectContextMockFactory.ImplementSetProperty((name, value) => { nameResult = name; valueResult = value; });
 
-            var handler = CreateInstance(context: context);
+            var handler = CreateInstance();
 
             var projectChange = IProjectChangeDescriptionFactory.FromJson(
-@"{
-    ""Difference"": { 
-        ""AnyChanges"": true,
-        ""ChangedProperties"": [ ""RootNamespace"" ]
-    },
-    ""After"": { 
-        ""Properties"": {
-            ""RootNamespace"": ""value""
-        }
-    }
-}");
+                """
+                {
+                    "Difference": { 
+                        "AnyChanges": true,
+                        "ChangedProperties": [ "RootNamespace" ]
+                    },
+                    "After": { 
+                        "Properties": {
+                            "RootNamespace": "value"
+                        }
+                    }
+                }
+                """);
 
-            Handle(handler, projectChange);
+            Handle(context, handler, projectChange);
 
             Assert.Equal("RootNamespace", nameResult);
             Assert.Equal("value", valueResult);
@@ -40,22 +42,24 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
             var context = IWorkspaceProjectContextMockFactory.Create();
             context.BinOutputPath = @"BinOutputPath";
 
-            var handler = CreateInstance(context: context);
+            var handler = CreateInstance();
 
             var projectChange = IProjectChangeDescriptionFactory.FromJson(
-@"{
-    ""Difference"": { 
-        ""AnyChanges"": true,
-        ""ChangedProperties"": [ ""TargetPath"" ]
-    },
-    ""After"": { 
-        ""Properties"": {
-            ""TargetPath"": ""NewBinOutputPath""
-        }
-    }
-}");
+                """
+                {
+                    "Difference": { 
+                        "AnyChanges": true,
+                        "ChangedProperties": [ "TargetPath" ]
+                    },
+                    "After": { 
+                        "Properties": {
+                            "TargetPath": "NewBinOutputPath"
+                        }
+                    }
+                }
+                """);
 
-            Handle(handler, projectChange);
+            Handle(context, handler, projectChange);
 
             Assert.Equal("NewBinOutputPath", context.BinOutputPath);
         }
@@ -66,91 +70,88 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
             var context = IWorkspaceProjectContextMockFactory.Create();
             context.BinOutputPath = @"BinOutputPath";
 
-            var handler = CreateInstance(context: context);
+            var handler = CreateInstance();
 
             var projectChange = IProjectChangeDescriptionFactory.FromJson(
-@"{
-    ""Difference"": { 
-        ""AnyChanges"": true,
-        ""ChangedProperties"": [ ]
-    },
-    ""After"": { 
-        ""Properties"": {
-            ""TargetPath"": ""NewBinOutputPath""
-        }
-    }
-}");
+                """
+                {
+                    "Difference": { 
+                        "AnyChanges": true,
+                        "ChangedProperties": [ ]
+                    },
+                    "After": { 
+                        "Properties": {
+                            "TargetPath": "NewBinOutputPath"
+                        }
+                    }
+                }
+                """);
 
-            Handle(handler, projectChange);
+            Handle(context, handler, projectChange);
 
             Assert.Equal("BinOutputPath", context.BinOutputPath);
         }
 
         [Theory]
         [InlineData(
-@"{
-    ""Difference"": { 
-        ""AnyChanges"": false,
-        ""ChangedProperties"": [ ]
-    },
-    ""After"": { 
-        ""Properties"": {
-            ""RootNamespace"": ""value""
-        }
-    }
-}")]
+            """
+            {
+                "Difference": { 
+                    "AnyChanges": false,
+                    "ChangedProperties": [ ]
+                },
+                "After": { 
+                    "Properties": {
+                        "RootNamespace": "value"
+                    }
+                }
+            }
+            """)]
         [InlineData(
-@"{
-    ""Difference"": { 
-        ""AnyChanges"": true,
-        ""ChangedProperties"": [ ""TargetPath"" ]
-    },
-    ""After"": { 
-        ""Properties"": {
-            ""TargetPath"": ""value""
-        }
-    }
-}")]
+            """
+            {
+                "Difference": { 
+                    "AnyChanges": true,
+                    "ChangedProperties": [ "TargetPath" ]
+                },
+                "After": { 
+                    "Properties": {
+                        "TargetPath": "value"
+                    }
+                }
+            }
+            """)]
         [InlineData(
-@"{
-    ""Difference"": { 
-        ""AnyChanges"": true,
-        ""ChangedProperties"": [ ]
-    },
-    ""After"": { 
-        ""Properties"": {
-            ""RootNamespace"": ""value""
-        }
-    }
-}")]
+            """
+            {
+                "Difference": { 
+                    "AnyChanges": true,
+                    "ChangedProperties": [ ]
+                },
+                "After": { 
+                    "Properties": {
+                        "RootNamespace": "value"
+                    }
+                }
+            }
+            """)]
         public void Handle_WhenPropertyIsNotChanged_DoesNotCallSetProperty(string input)
         {
             int callCount = 0;
             var context = IWorkspaceProjectContextMockFactory.ImplementSetProperty((name, value) => { callCount++; });
 
-            var handler = CreateInstance(context: context);
+            var handler = CreateInstance();
 
             var projectChange = IProjectChangeDescriptionFactory.FromJson(input);
 
-            Handle(handler, projectChange);
+            Handle(context, handler, projectChange);
 
             Assert.Equal(0, callCount);
         }
 
         internal override IProjectEvaluationHandler CreateInstance()
         {
-            return CreateInstance(null, null);
-        }
-
-        private static ProjectPropertiesItemHandler CreateInstance(UnconfiguredProject? project = null, IWorkspaceProjectContext? context = null)
-        {
-            project ??= UnconfiguredProjectFactory.Create();
-
-            var handler = new ProjectPropertiesItemHandler(project);
-            if (context != null)
-                handler.Initialize(context);
-
-            return handler;
+            return new ProjectPropertiesItemHandler(UnconfiguredProjectFactory.Create());
         }
     }
 }

@@ -12,16 +12,6 @@
         <target state="translated">自动生成绑定重定向</target>
         <note />
       </trans-unit>
-      <trans-unit id="BoolProperty|IsPublishable|Description">
-        <source>Allow publishing outside of Visual Studio, such as via "dotnet publish".</source>
-        <target state="translated">允许在 Visual Studio 外部发布，例如通过“dotnet publish”。</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="BoolProperty|IsPublishable|DisplayName">
-        <source>Publishing</source>
-        <target state="translated">发布</target>
-        <note />
-      </trans-unit>
       <trans-unit id="BoolProperty|TargetMultipleFrameworks|Description">
         <source>Build this project for multiple target frameworks.</source>
         <target state="translated">为多个目标框架生成此项目。</target>
@@ -60,26 +50,6 @@
       <trans-unit id="Category|General|DisplayName">
         <source>General</source>
         <target state="translated">常规</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="Category|Packaging|Description">
-        <source>Packaging settings for the application.</source>
-        <target state="translated">应用程序的打包设置。</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="Category|Packaging|DisplayName">
-        <source>Packaging</source>
-        <target state="translated">打包</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="Category|Resources|Description">
-        <source>Resource settings for the application.</source>
-        <target state="translated">应用程序的资源设置。</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="Category|Resources|DisplayName">
-        <source>Win32 Resources</source>
-        <target state="translated">Win32 资源</target>
         <note />
       </trans-unit>
       <trans-unit id="DynamicEnumProperty|InterceptedTargetFramework|Description">
@@ -152,16 +122,6 @@
         <target state="translated">平台</target>
         <note />
       </trans-unit>
-      <trans-unit id="EnumProperty|ApplicationManifestKind|Description">
-        <source>Selects a manifest generation option when the application runs on Windows Vista or later under User Account Control (UAC). Options include a default manifest, no manifest, or a custom manifest provided by your project.</source>
-        <target state="translated">当应用程序在 Windows Vista 或更高版本下的用户帐户控制(UAC)下运行时，选择一个清单生成选项。选项包括默认清单、无清单或由项目提供的自定义清单。</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="EnumProperty|ApplicationManifestKind|DisplayName">
-        <source>Manifest</source>
-        <target state="translated">清单</target>
-        <note />
-      </trans-unit>
       <trans-unit id="EnumProperty|OutputType|Description">
         <source>Specifies the type of application to build.</source>
         <target state="translated">指定要生成的应用程序的类型。</target>
@@ -180,21 +140,6 @@
       <trans-unit id="EnumProperty|ResourceSpecificationKind|DisplayName">
         <source>Resources</source>
         <target state="translated">资源</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="EnumValue|ApplicationManifestKind.CustomManifest|DisplayName">
-        <source>Use a custom manifest</source>
-        <target state="translated">使用自定义清单</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="EnumValue|ApplicationManifestKind.DefaultManifest|DisplayName">
-        <source>Embed manifest with default settings</source>
-        <target state="translated">嵌入带默认设置的清单</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="EnumValue|ApplicationManifestKind.NoManifest|DisplayName">
-        <source>Create application without a manifest</source>
-        <target state="translated">创建不带清单的应用程序</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|OutputType.Exe|DisplayName">
@@ -242,16 +187,6 @@
         <target state="translated">图标</target>
         <note />
       </trans-unit>
-      <trans-unit id="StringProperty|ApplicationManifestPath|Description">
-        <source>The path to the custom manifest file.</source>
-        <target state="translated">自定义清单文件的路径。</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="StringProperty|ApplicationManifestPath|DisplayName">
-        <source>Manifest path</source>
-        <target state="translated">清单路径</target>
-        <note />
-      </trans-unit>
       <trans-unit id="StringProperty|AssemblyName|Description">
         <source>Specifies the name of the output file that will hold the assembly manifest.</source>
         <target state="translated">指定将包含程序集清单的输出文件的名称。</target>
@@ -290,16 +225,6 @@
       <trans-unit id="StringProperty|TargetFrameworks|Metadata|SearchTerms">
         <source>TFM</source>
         <target state="translated">TFM</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="StringProperty|Win32Resource|Description">
-        <source>Specifies a resource file for the project.</source>
-        <target state="translated">指定项目的资源文件。</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="StringProperty|Win32Resource|DisplayName">
-        <source>Resource file</source>
-        <target state="translated">资源文件</target>
         <note />
       </trans-unit>
     </body>

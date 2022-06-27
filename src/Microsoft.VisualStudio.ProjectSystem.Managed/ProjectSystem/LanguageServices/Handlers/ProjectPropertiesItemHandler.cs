@@ -1,5 +1,6 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
+using Microsoft.VisualStudio.LanguageServices.ProjectSystem;
 using Microsoft.VisualStudio.ProjectSystem.VS;
 
 namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
@@ -8,7 +9,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
     ///     Handles changes to the project and makes sure the language service is aware of them.
     /// </summary>
     [Export(typeof(IWorkspaceContextHandler))]
-    internal class ProjectPropertiesItemHandler : AbstractWorkspaceContextHandler, IProjectEvaluationHandler
+    internal class ProjectPropertiesItemHandler : IWorkspaceContextHandler, IProjectEvaluationHandler
     {
         [ImportingConstructor]
         public ProjectPropertiesItemHandler(UnconfiguredProject project)
@@ -20,32 +21,26 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
             get { return LanguageService.SchemaName; }
         }
 
-        public void Handle(IComparable version, IProjectChangeDescription projectChange, ContextState state, IProjectDiagnosticOutputService logger)
+        public void Handle(IWorkspaceProjectContext context, ProjectConfiguration projectConfiguration, IComparable version, IProjectChangeDescription projectChange, ContextState state, IProjectDiagnosticOutputService logger)
         {
-            Requires.NotNull(version, nameof(version));
-            Requires.NotNull(projectChange, nameof(projectChange));
-            Requires.NotNull(logger, nameof(logger));
-
-            VerifyInitialized();
-
             foreach (string name in projectChange.Difference.ChangedProperties)
             {
                 string value = projectChange.After.Properties[name];
 
                 // Is it a property we're specifically aware of?
-                if (TryHandleSpecificProperties(name, value, logger))
+                if (TryHandleSpecificProperties(context, name, value, logger))
                     continue;
 
                 // Otherwise, just pass it through
                 logger.WriteLine("{0}: {1}", name, value);
-                Context.SetProperty(name, value);
+                context.SetProperty(name, value);
             }
 
             // NOTE: Roslyn treats "unset" as true, so always set it.
-            Context.IsPrimary = state.IsActiveConfiguration;
+            context.IsPrimary = state.IsActiveConfiguration;
         }
 
-        private bool TryHandleSpecificProperties(string name, string value, IProjectDiagnosticOutputService logger)
+        private static bool TryHandleSpecificProperties(IWorkspaceProjectContext context, string name, string value, IProjectDiagnosticOutputService logger)
         {
             // The language service wants both the intermediate (bin\obj) and output (bin\debug)) paths
             // so that it can automatically hook up project-to-project references. It does this by matching the 
@@ -59,7 +54,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
                 if (!string.IsNullOrEmpty(value))
                 {
                     logger.WriteLine("BinOutputPath: {0}", value);
-                    Context.BinOutputPath = value;
+                    context.BinOutputPath = value;
                 }
 
                 return true;

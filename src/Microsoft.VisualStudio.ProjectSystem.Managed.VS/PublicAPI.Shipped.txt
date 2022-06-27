@@ -112,6 +112,7 @@ Microsoft.VisualStudio.ProjectSystem.VS.Debug.IDebugProfileLaunchTargetsProvider
 Microsoft.VisualStudio.ProjectSystem.VS.Debug.IDebugProfileLaunchTargetsProvider4.OnAfterLaunchAsync(Microsoft.VisualStudio.ProjectSystem.Debug.DebugLaunchOptions launchOptions, Microsoft.VisualStudio.ProjectSystem.Debug.ILaunchProfile! profile, System.Collections.Generic.IReadOnlyList<Microsoft.VisualStudio.Shell.Interop.VsDebugTargetProcessInfo>! processInfos) -> System.Threading.Tasks.Task!
 Microsoft.VisualStudio.ProjectSystem.VS.Debug.IDebugProfileLaunchTargetsProvider4.OnBeforeLaunchAsync(Microsoft.VisualStudio.ProjectSystem.Debug.DebugLaunchOptions launchOptions, Microsoft.VisualStudio.ProjectSystem.Debug.ILaunchProfile! profile, System.Collections.Generic.IReadOnlyList<Microsoft.VisualStudio.ProjectSystem.VS.Debug.IDebugLaunchSettings!>! debugLaunchSettings) -> System.Threading.Tasks.Task!
 Microsoft.VisualStudio.ProjectSystem.VS.HotReload.IProjectHotReloadAgent
+Microsoft.VisualStudio.ProjectSystem.VS.HotReload.IProjectHotReloadAgent.CreateHotReloadSession(string! id, int variant, string! runtimeVersion, Microsoft.VisualStudio.ProjectSystem.VS.HotReload.IProjectHotReloadSessionCallback! callback) -> Microsoft.VisualStudio.ProjectSystem.VS.HotReload.IProjectHotReloadSession?
 Microsoft.VisualStudio.ProjectSystem.VS.HotReload.IProjectHotReloadAgent.CreateHotReloadSession(string! id, string! runtimeVersion, Microsoft.VisualStudio.ProjectSystem.VS.HotReload.IProjectHotReloadSessionCallback! callback) -> Microsoft.VisualStudio.ProjectSystem.VS.HotReload.IProjectHotReloadSession?
 Microsoft.VisualStudio.ProjectSystem.VS.HotReload.IProjectHotReloadSession
 Microsoft.VisualStudio.ProjectSystem.VS.HotReload.IProjectHotReloadSession.ApplyChangesAsync(System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task!
@@ -413,3 +414,6 @@ virtual Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollec
 ~static Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages.PropertyPageResources.ValueHeader.get -> string
 ~static Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages.PropertyPageResources.WorkingDirectory.get -> string
 ~static Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages.PropertyPageResources.WorkingDirectoryWatermark.get -> string
+Microsoft.VisualStudio.ProjectSystem.VS.HotReload.IProjectHotReloadUpdateApplier
+Microsoft.VisualStudio.ProjectSystem.VS.HotReload.IProjectHotReloadUpdateApplier.ApplyHotReloadUpdateAsync(System.Func<Microsoft.VisualStudio.HotReload.Components.DeltaApplier.IDeltaApplier!, System.Threading.CancellationToken, System.Threading.Tasks.Task!>! applyFunction, System.Threading.CancellationToken cancelToken) -> System.Threading.Tasks.Task!
+Microsoft.VisualStudio.ProjectSystem.VS.HotReload.IProjectHotReloadUpdateApplier.HasActiveHotReloadSessions.get -> bool

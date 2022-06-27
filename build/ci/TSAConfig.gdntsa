@@ -5,12 +5,12 @@
     ],
     "codebaseAdmins": [
         "REDMOND\\tomescht",
-        "REDMOND\\jjme"
+        "REDMOND\\kvenkatrajan"
     ],
     "instanceUrl": "https://devdiv.visualstudio.com",
     "projectName": "DevDiv",
     "areaPath": "DevDiv\\NET Tools\\Project",
-    "iterationPath": "DevDiv\\OneVS",
+    "iterationPath": "DevDiv",
     "tools": [
         "CredScan",
         "PoliCheck",

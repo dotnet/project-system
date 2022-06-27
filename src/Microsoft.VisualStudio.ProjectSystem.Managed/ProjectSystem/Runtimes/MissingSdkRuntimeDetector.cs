@@ -10,14 +10,8 @@ namespace Microsoft.VisualStudio.ProjectSystem
     {
         private static readonly string s_netCoreTargetFrameworkIdentifier = ".NETCoreApp";
 
-        private static readonly ImmutableDictionary<string, string> s_packageVersionToComponentId = ImmutableDictionary.Create<string, string>(StringComparer.OrdinalIgnoreCase)
-            .Add("v2.1", "Microsoft.Net.Core.Component.SDK.2.1")
-            .Add("v3.1", "Microsoft.NetCore.Component.Runtime.3.1")
-            .Add("v5.0", "Microsoft.NetCore.Component.Runtime.5.0");
-
         private Guid _projectGuid;
         private bool _enabled;
-        private static readonly HashSet<string> s_listOfMissingRuntimes = new(StringComparer.OrdinalIgnoreCase);
 
         private readonly ConfiguredProject _project;
         private readonly IMissingSetupComponentRegistrationService _missingSetupComponentRegistrationService;
@@ -49,7 +43,6 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
         protected override Task DisposeCoreAsync(bool initialized)
         {
-            s_listOfMissingRuntimes.Clear();
             return Task.CompletedTask;
         }
 
@@ -58,7 +51,6 @@ namespace Microsoft.VisualStudio.ProjectSystem
             _projectGuid = await _project.UnconfiguredProject.GetProjectGuidAsync();
             _missingSetupComponentRegistrationService.RegisterProjectConfiguration(_projectGuid, _project);
             _ = RegisterSdkRuntimeNeededInProjectAsync(_project);
-            
         }
 
         private async Task RegisterSdkRuntimeNeededInProjectAsync(ConfiguredProject project)
@@ -69,18 +61,17 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
                 ConfigurationGeneral configuration = await projectProperties.GetConfigurationGeneralPropertiesAsync();
 
-                string? TargetFrameworkIdentifier = await configuration.TargetFrameworkIdentifier.GetDisplayValueAsync();
+                string? targetFrameworkIdentifier = await configuration.TargetFrameworkIdentifier.GetDisplayValueAsync();
 
-                string? TargetFrameworkVersion = await configuration.TargetFrameworkVersion.GetDisplayValueAsync();
+                string? targetFrameworkVersion = await configuration.TargetFrameworkVersion.GetDisplayValueAsync();
 
-                if (string.Equals(TargetFrameworkIdentifier, s_netCoreTargetFrameworkIdentifier, StringComparisons.FrameworkIdentifiers) &&
-                    !string.IsNullOrEmpty(TargetFrameworkVersion) &&
-                    !s_listOfMissingRuntimes.Contains(TargetFrameworkVersion) &&
-                    s_packageVersionToComponentId.TryGetValue(TargetFrameworkVersion, out var componentId))
+                if (!string.Equals(targetFrameworkIdentifier, s_netCoreTargetFrameworkIdentifier, StringComparisons.FrameworkIdentifiers) ||
+                    string.IsNullOrEmpty(targetFrameworkVersion))
                 {
-                    s_listOfMissingRuntimes.Add(TargetFrameworkVersion);
-                    _missingSetupComponentRegistrationService.RegisterMissingSdkRuntimeComponentId(_projectGuid, project, componentId);
+                    targetFrameworkVersion = string.Empty;
                 }
+                
+                _missingSetupComponentRegistrationService.RegisterPossibleMissingSdkRuntimeVersion(_projectGuid, project, targetFrameworkVersion);
             }
         }
     }

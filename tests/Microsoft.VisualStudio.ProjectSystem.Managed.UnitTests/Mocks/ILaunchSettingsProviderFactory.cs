@@ -59,7 +59,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
             if (activeProfileName != null)
             {
                 var activeLaunchProfile = launchProfiles?.FirstOrDefault(p => p.Name == activeProfileName)
-                    ?? new LaunchProfile { Name = activeProfileName };
+                    ?? new LaunchProfile(name: activeProfileName, commandName: null);
                 launchSettingsMock.Setup(t => t.ActiveProfile).Returns(activeLaunchProfile);
             }
 

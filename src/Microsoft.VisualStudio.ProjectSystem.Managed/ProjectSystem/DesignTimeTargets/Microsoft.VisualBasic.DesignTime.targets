@@ -47,6 +47,18 @@
 
   <ItemGroup Condition="'$(DefineCommonManagedItemSchemas)' == 'true'">
 
+    <PropertyPageSchema Include="$(ManagedXamlResourcesDirectory)BuildPropertyPage.VisualBasic.xaml">
+      <Context>Project</Context>
+    </PropertyPageSchema>
+    
+    <PropertyPageSchema Include="$(ManagedXamlResourcesDirectory)ApplicationPropertyPage.VisualBasic.xaml">
+      <Context>Project</Context>
+    </PropertyPageSchema>
+
+    <PropertyPageSchema Include="$(ManagedXamlResourcesDirectory)ReferencesPage.VisualBasic.xaml">
+      <Context>Project</Context>
+    </PropertyPageSchema>
+
     <PropertyPageSchema Include="$(ManagedXamlNeutralResourcesDirectory)EditorConfigFiles.xaml">
       <Context>File</Context>
     </PropertyPageSchema>

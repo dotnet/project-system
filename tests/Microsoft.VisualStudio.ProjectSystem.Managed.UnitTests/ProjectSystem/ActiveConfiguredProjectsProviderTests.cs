@@ -135,7 +135,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
                 return Task.FromResult(ConfiguredProjectFactory.ImplementProjectConfiguration(projectConfiguration));
             });
 
-            var dimensionProviders = dimensionNames.Select(name => IActiveConfiguredProjectsDimensionProviderFactory.ImplementDimensionName(name));
+            var dimensionProviders = dimensionNames.Select(IActiveConfiguredProjectsDimensionProviderFactory.ImplementDimensionName);
 
             return CreateInstance(services: services, project: project, dimensionProviders: dimensionProviders);
         }
@@ -151,7 +151,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
             {
                 foreach (var dimensionProvider in dimensionProviders)
                 {
-                    provider.DimensionProviders.Add(dimensionProvider, appliesTo: ProjectCapability.AlwaysAvailable);
+                    provider.DimensionProviders.Add(dimensionProvider, appliesTo: ProjectCapabilities.AlwaysApplicable);
                 }
             }
 

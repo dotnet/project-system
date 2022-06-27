@@ -110,53 +110,42 @@
         <target state="translated">{0} - L'importation provient du fichier cible. Impossible de supprimer cette importation.</target>
         <note />
       </trans-unit>
-      <trans-unit id="IncrementalBuildFailureWarningMessage">
-        <source>WARNING: Potential incremental build failure in '{0}'. See: https://aka.ms/incremental-build-failure</source>
-        <target state="translated">AVERTISSEMENT : échec potentiel de build incrémentielle dans '{0}'. Voir : https://aka.ms/incremental-build-failure</target>
-        <note>{0} is the file name of the project.</note>
+      <trans-unit id="IncrementalBuildFailureWarningMessage_2">
+        <source>WARNING: Potential incremental build failure in '{0}'. {1}. See https://aka.ms/incremental-build-failure.</source>
+        <target state="translated">AVERTISSEMENT : échec potentiel de build incrémentielle dans '{0}' {1}. Voir : https://aka.ms/incremental-build-failure.</target>
+        <note>{0} is the file name of the project. {1} is a description of the failure. The period '.' after {1} is intentional and should be kept.</note>
       </trans-unit>
       <trans-unit id="ProjectHotReloadSessionManager_AttachingToProcess">
-        <source>{0}: Attaching to process '{1}'.</source>
-        <target state="translated">{0}: Attachement au processus '{1}'.</target>
-        <note>{0} is the Hot Reload session identifier. {1} is the process ID (PID).</note>
-      </trans-unit>
-      <trans-unit id="ProjectHotReloadSessionManager_ErrorAttachingToProcess">
-        <source>{0}: Error while attaching to process '{1}':
-{2}
-{3}</source>
-        <target state="translated">{0} : erreur lors de l’attachement au processus '{1}':
-{2}
-{3}</target>
-        <note>{0} is the Hot Reload session identifier. {1} is the process ID (PID). {2} is the exception type name. {3} is the exception message.</note>
+        <source>Attaching to process.</source>
+        <target state="translated">Attachement au processus</target>
+        <note />
       </trans-unit>
       <trans-unit id="ProjectHotReloadSessionManager_ErrorStoppingTheSession">
-        <source>{0}: Error while stopping the session:
-{1}
-{2}</source>
-        <target state="translated">{0} : erreur lors de l’arrêt de la session : 
-{1}
-{2}</target>
-        <note>{0} is the Hot Reload session identifier. {1} is the exception type name. {2} is the exception message.</note>
+        <source>Error while stopping the session: {0}
+{1}</source>
+        <target state="translated">Erreur lors de l’arrêt de la session : {0}
+{1}</target>
+        <note>{0} is the exception type name. {1} is the exception message.</note>
       </trans-unit>
       <trans-unit id="ProjectHotReloadSessionManager_NoActiveProcess">
-        <source>{0}: Unable to start Hot Reload session: no active process.</source>
-        <target state="translated">{0} : impossible de démarrer la session de rechargement à chaud : aucun processus actif.</target>
-        <note>{0} is the Hot Reload session identifier.</note>
+        <source>Unable to start Hot Reload session: no active process.</source>
+        <target state="translated">Impossible de démarrer la session de rechargement à chaud : aucun processus actif.</target>
+        <note />
       </trans-unit>
       <trans-unit id="ProjectHotReloadSessionManager_ProcessAlreadyExited">
-        <source>{0}: The process has already exited.</source>
-        <target state="translated">{0}: Le processus est déjà terminé.</target>
-        <note>{0} is the Hot Reload session identifier.</note>
+        <source>The process has already exited.</source>
+        <target state="translated">Le processus est déjà terminé.</target>
+        <note />
       </trans-unit>
       <trans-unit id="ProjectHotReloadSessionManager_ProcessExited">
-        <source>{0}: The process has exited.</source>
-        <target state="translated">{0}: Le processus s'est arrêté.</target>
-        <note>{0} is the Hot Reload session identifier.</note>
+        <source>The process has exited.</source>
+        <target state="translated">Le processus s'est arrêté.</target>
+        <note />
       </trans-unit>
       <trans-unit id="ProjectHotReloadSessionManager_StartupHooksDisabled">
-        <source>{0}: Hot Reload is not available because startup hooks have been disabled, possibly due to trimming.</source>
-        <target state="translated">{0} : le rechargement à chaud n’est pas disponible, car les hooks de démarrage ont été désactivés, probablement en raison d’un rognage.</target>
-        <note>{0} is the project name.</note>
+        <source>Hot Reload is not available because startup hooks have been disabled, possibly due to trimming.</source>
+        <target state="translated">Le rechargement à chaud n’est pas disponible, car les hooks de démarrage ont été désactivés, probablement en raison d’un rognage.</target>
+        <note />
       </trans-unit>
       <trans-unit id="RenameSymbolFailed">
         <source>Renaming the code element '{0}' failed.</source>
@@ -211,6 +200,16 @@ Pour déboguer ce projet, ajoutez à cette solution un projet exécutable qui fa
         <source>Adjust namespaces for moved files?</source>
         <target state="translated">Ajuster les espaces de noms pour les fichiers déplacés ?</target>
         <note />
+      </trans-unit>
+      <trans-unit id="WPFApp_Xaml_CouldntFindRootElement_1">
+        <source>Could not find the expected root element "{0}" in the application definition file.</source>
+        <target state="translated">Impossible de trouver l'élément racine attendu "{0}" dans le fichier de définition d'application.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="WPFApp_Xaml_UnexpectedFormat_2">
+        <source>The .xaml file was in an unexpected format, near line {0} column {1}.</source>
+        <target state="translated">Le fichier .xaml était dans un format inattendu, vers la ligne {0} colonne {1}.</target>
+        <note>{0} is the line number of the problematic XAML, and {1} is the column.</note>
       </trans-unit>
       <trans-unit id="WorkingDirecotryInvalid">
         <source>The working directory '{0}' specified in the '{1}' debug profile does not exist.</source>

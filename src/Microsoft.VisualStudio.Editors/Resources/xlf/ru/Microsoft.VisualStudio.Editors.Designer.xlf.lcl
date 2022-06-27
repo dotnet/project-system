@@ -3034,6 +3034,15 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
+      <Item ItemId=";SD_ERR_HelpMessage_SuggestFileOpenWith" ItemType="0" PsrId="308" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[If this is not a Settings-Designer file then use 'Open With' to open it in a text editor.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Если это не файл Settings-Designer, откройте его в текстовом редакторе с помощью команды "Открыть с помощью".]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
       <Item ItemId=";SD_ERR_InvalidIdentifier_1Arg" ItemType="0" PsrId="308" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA['{0}' is not a valid identifier.]]></Val>

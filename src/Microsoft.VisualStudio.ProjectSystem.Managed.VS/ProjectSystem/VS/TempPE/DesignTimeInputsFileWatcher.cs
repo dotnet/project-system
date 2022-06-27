@@ -3,7 +3,6 @@
 using System.Threading.Tasks.Dataflow;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
-using Task = System.Threading.Tasks.Task;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
 {

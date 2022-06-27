@@ -17,16 +17,39 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             // if they contain the same items
             for (int i = 0; i < launchSettings.Profiles.Count; i++)
             {
-                if (!WritableLaunchProfile.ProfilesAreEqual(launchSettings.Profiles[i], settingsToCompare.Profiles[i]))
+                if (!ProfilesAreEqual(launchSettings.Profiles[i], settingsToCompare.Profiles[i]))
                 {
                     return true;
                 }
             }
 
             // Check the global settings
-            return !DictionaryEqualityComparer<string, object>.Instance.Equals(
-                launchSettings.GlobalSettings.ToImmutableDictionary(),
-                settingsToCompare.GlobalSettings.ToImmutableDictionary());
+            return !DictionaryEqualityComparer<string, object>.Instance.Equals(launchSettings.GlobalSettings, settingsToCompare.GlobalSettings);
+
+            static bool ProfilesAreEqual(IWritableLaunchProfile debugProfile1, IWritableLaunchProfile debugProfile2)
+            {
+                // Same instance are equal
+                if (ReferenceEquals(debugProfile1, debugProfile2))
+                {
+                    return true;
+                }
+
+                if (!string.Equals(debugProfile1.Name, debugProfile2.Name, StringComparisons.LaunchProfileProperties) ||
+                   !string.Equals(debugProfile1.CommandName, debugProfile2.CommandName, StringComparisons.LaunchProfileCommandNames) ||
+                   !string.Equals(debugProfile1.ExecutablePath, debugProfile2.ExecutablePath, StringComparisons.LaunchProfileProperties) ||
+                   !string.Equals(debugProfile1.CommandLineArgs, debugProfile2.CommandLineArgs, StringComparisons.LaunchProfileProperties) ||
+                   !string.Equals(debugProfile1.WorkingDirectory, debugProfile2.WorkingDirectory, StringComparisons.LaunchProfileProperties) ||
+                   !string.Equals(debugProfile1.LaunchUrl, debugProfile2.LaunchUrl, StringComparisons.LaunchProfileProperties) ||
+                   debugProfile1.LaunchBrowser != debugProfile2.LaunchBrowser ||
+                   !DictionaryEqualityComparer<string, object>.Instance.Equals(debugProfile1.OtherSettings, debugProfile2.OtherSettings) ||
+                   !DictionaryEqualityComparer<string, string>.Instance.Equals(debugProfile1.EnvironmentVariables, debugProfile2.EnvironmentVariables))
+                {
+                    return false;
+                }
+
+                // Compare in-memory states
+                return debugProfile1.IsInMemoryObject() == debugProfile2.IsInMemoryObject();
+            }
         }
     }
 }

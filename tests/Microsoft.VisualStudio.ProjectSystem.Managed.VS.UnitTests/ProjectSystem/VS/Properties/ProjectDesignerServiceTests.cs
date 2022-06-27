@@ -4,7 +4,6 @@ using System.Runtime.InteropServices;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
-using Task = System.Threading.Tasks.Task;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
 {
@@ -31,10 +30,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
 
             var designerService = CreateInstance(vsProjectDesignerPageService);
 
-            Assert.ThrowsAsync<InvalidOperationException>(() =>
-            {
-                return designerService.ShowProjectDesignerAsync();
-            });
+            Assert.ThrowsAsync<InvalidOperationException>(designerService.ShowProjectDesignerAsync);
         }
 
         [Fact]
@@ -49,10 +45,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
 
             var designerService = CreateInstance(projectVsServices, vsProjectDesignerPageService);
 
-            await Assert.ThrowsAsync<COMException>(() =>
-            {
-                return designerService.ShowProjectDesignerAsync();
-            });
+            await Assert.ThrowsAsync<COMException>(designerService.ShowProjectDesignerAsync);
         }
 
         [Fact]
@@ -67,10 +60,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
 
             var designerService = CreateInstance(projectVsServices, vsProjectDesignerPageService);
 
-            await Assert.ThrowsAsync<COMException>(() =>
-            {
-                return designerService.ShowProjectDesignerAsync();
-            });
+            await Assert.ThrowsAsync<COMException>(designerService.ShowProjectDesignerAsync);
         }
 
         [Fact]
@@ -90,10 +80,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
 
             var designerService = CreateInstance(projectVsServices, vsProjectDesignerPageService);
 
-            await Assert.ThrowsAsync<COMException>(() =>
-            {
-                return designerService.ShowProjectDesignerAsync();
-            });
+            await Assert.ThrowsAsync<COMException>(designerService.ShowProjectDesignerAsync);
         }
 
         [Fact]
@@ -134,10 +121,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
 
             var designerService = CreateInstance(projectVsServices, vsProjectDesignerPageService);
 
-            await Assert.ThrowsAsync<COMException>(() =>
-            {
-                return designerService.ShowProjectDesignerAsync();
-            });
+            await Assert.ThrowsAsync<COMException>(designerService.ShowProjectDesignerAsync);
         }
 
         [Fact]

@@ -16,13 +16,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.UpToDate
     /// </remarks>
     [Export(typeof(IUpToDateCheckStatePersistence))]
     [AppliesTo(BuildUpToDateCheck.AppliesToExpression)]
-    internal sealed partial class UpToDateCheckStatePersistence : OnceInitializedOnceDisposedAsync, IUpToDateCheckStatePersistence, IVsSolutionEvents
+    internal sealed partial class UpToDateCheckStatePersistence : OnceInitializedOnceDisposedUnderLockAsync, IUpToDateCheckStatePersistence, IVsSolutionEvents
     {
-        private const string ProjectItemCacheFileName = ".futdcache.v1";
+        // The name of the file within the .vs folder that we use to store data for the up-to-date check.
+        // Note the suffix that indicates the file format's version. If a change is made to the format,
+        // this number must be bumped.
+        private const string ProjectItemCacheFileName = ".futdcache.v2";
 
-        private readonly AsyncSemaphore _lock = new(initialCount: 1);
-
-        private Dictionary<(string ProjectPath, IImmutableDictionary<string, string> ConfigurationDimensions), (int ItemHash, DateTime ItemsChangedAtUtc)>? _dataByConfiguredProject;
+        private Dictionary<(string ProjectPath, IImmutableDictionary<string, string> ConfigurationDimensions), (int ItemHash, DateTime? ItemsChangedAtUtc, DateTime? LastSuccessfulBuildStartedAtUtc)>? _dataByConfiguredProject;
 
         private readonly IVsUIService<SVsSolution, IVsSolution> _solution;
 
@@ -47,7 +48,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.UpToDate
             Verify.HResult(_solution.Value.AdviseSolutionEvents(this, out _cookie));
         }
 
-        protected override async Task DisposeCoreAsync(bool initialized)
+        protected override async Task DisposeCoreUnderLockAsync(bool initialized)
         {
             if (initialized)
             {
@@ -62,91 +63,146 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.UpToDate
             }
         }
 
-        public async Task<(int ItemHash, DateTime ItemsChangedAtUtc)?> RestoreStateAsync(string projectPath, IImmutableDictionary<string, string> configurationDimensions, CancellationToken cancellationToken)
+        public async Task<(int ItemHash, DateTime? ItemsChangedAtUtc)?> RestoreItemStateAsync(string projectPath, IImmutableDictionary<string, string> configurationDimensions, CancellationToken cancellationToken)
         {
             await InitializeAsync(cancellationToken);
-            await InitializeDataAsync(cancellationToken);
 
-            using (await _lock.EnterAsync(cancellationToken))
-            {
-                Assumes.NotNull(_dataByConfiguredProject);
-
-                if (_dataByConfiguredProject.TryGetValue((projectPath, configurationDimensions), out (int ItemHash, DateTime ItemsChangedAtUtc) storedData))
-                    return storedData;
-
-                return null;
-            }
-
-            async Task InitializeDataAsync(CancellationToken cancellationToken)
-            {
-                if (_cacheFilePath is null || _dataByConfiguredProject is null)
+            return await ExecuteUnderLockAsync<(int ItemHash, DateTime? ItemsChangedAtUtc)?>(
+                async token =>
                 {
-                    string filePath = await GetCacheFilePathAsync(cancellationToken);
+                    await EnsureDataInitializedAsync(token);
 
-                    // Switch to a background thread before doing file I/O
-                    await TaskScheduler.Default;
+                    Assumes.NotNull(_dataByConfiguredProject);
 
-                    using (await _lock.EnterAsync(cancellationToken))
+                    if (_dataByConfiguredProject.TryGetValue((projectPath, configurationDimensions), out (int ItemHash, DateTime? ItemsChangedAtUtc, DateTime? LastSuccessfulBuildStartedAtUtc) storedData))
                     {
-                        if (_cacheFilePath is null || _dataByConfiguredProject is null)
-                        {
-                            _cacheFilePath = filePath;
-                            _dataByConfiguredProject = Deserialize(_cacheFilePath);
-                        }
+                        return (storedData.ItemHash, storedData.ItemsChangedAtUtc);
                     }
-                }
 
-                return;
-
-                async Task<string> GetCacheFilePathAsync(CancellationToken cancellationToken)
-                {
-                    await JoinableFactory.SwitchToMainThreadAsync(cancellationToken);
-
-                    var solutionWorkingFolder = _solution.Value as IVsSolutionWorkingFolders;
-
-                    Assumes.Present(solutionWorkingFolder);
-
-                    solutionWorkingFolder.GetFolder(
-                        (uint)__SolutionWorkingFolder.SlnWF_StatePersistence,
-                        guidProject: Guid.Empty,
-                        fVersionSpecific: true,
-                        fEnsureCreated: true,
-                        out bool isTemporary,
-                        out string workingFolderPath);
-
-                    return Path.Combine(workingFolderPath, ProjectItemCacheFileName);
-                }
-            }
+                    return null;
+                },
+                cancellationToken);
         }
 
-        public async Task StoreStateAsync(string projectPath, IImmutableDictionary<string, string> configurationDimensions, int itemHash, DateTime itemsChangedAtUtc, CancellationToken cancellationToken)
+        public Task StoreItemStateAsync(string projectPath, IImmutableDictionary<string, string> configurationDimensions, int itemHash, DateTime? itemsChangedAtUtc, CancellationToken cancellationToken)
         {
-            using (await _lock.EnterAsync(cancellationToken))
-            {
-                Assumes.NotNull(_dataByConfiguredProject);
+            Requires.Argument(itemsChangedAtUtc != DateTime.MinValue, nameof(itemsChangedAtUtc), "Must not be DateTime.MinValue.");
 
-                (string ProjectPath, IImmutableDictionary<string, string> ConfigurationDimensions) key = (ProjectPath: projectPath, ConfigurationDimensions: configurationDimensions);
-
-                if (!_dataByConfiguredProject.TryGetValue(key, out (int ItemHash, DateTime ItemsChangedAtUtc) storedData) ||
-                    storedData.ItemHash != itemHash ||
-                    storedData.ItemsChangedAtUtc != itemsChangedAtUtc)
+            return ExecuteUnderLockAsync(
+                token =>
                 {
-                    _dataByConfiguredProject[key] = (itemHash, itemsChangedAtUtc);
-                    _hasUnsavedChange = true;
+                    if (_dataByConfiguredProject is not null)
+                    {
+                        (string ProjectPath, IImmutableDictionary<string, string> ConfigurationDimensions) key = (ProjectPath: projectPath, ConfigurationDimensions: configurationDimensions);
+
+                        if (!_dataByConfiguredProject.TryGetValue(key, out (int ItemHash, DateTime? ItemsChangedAtUtc, DateTime? LastSuccessfulBuildStartedAtUtc) storedData)
+                            || storedData.ItemHash != itemHash
+                            || storedData.ItemsChangedAtUtc != itemsChangedAtUtc)
+                        {
+                            _dataByConfiguredProject[key] = (itemHash, itemsChangedAtUtc, storedData.LastSuccessfulBuildStartedAtUtc);
+                            _hasUnsavedChange = true;
+                        }
+                    }
+
+                    return Task.CompletedTask;
+                },
+                cancellationToken);
+        }
+
+        public async Task<DateTime?> RestoreLastSuccessfulBuildStateAsync(string projectPath, IImmutableDictionary<string, string> configurationDimensions, CancellationToken cancellationToken)
+        {
+            await InitializeAsync(cancellationToken);
+
+            return await ExecuteUnderLockAsync(
+                async token =>
+                {
+                    await EnsureDataInitializedAsync(token);
+
+                    Assumes.NotNull(_dataByConfiguredProject);
+
+                    if (_dataByConfiguredProject.TryGetValue((projectPath, configurationDimensions), out (int ItemHash, DateTime? ItemsChangedAtUtc, DateTime? LastSuccessfulBuildStartedAtUtc) storedData)
+                        && storedData.LastSuccessfulBuildStartedAtUtc is not null and { Ticks: > 0 })
+                    {
+                        return storedData.LastSuccessfulBuildStartedAtUtc;
+                    }
+
+                    return null;
+                },
+                cancellationToken);
+        }
+
+        public Task StoreLastSuccessfulBuildStateAsync(string projectPath, IImmutableDictionary<string, string> configurationDimensions, DateTime lastSuccessfulBuildStartedAtUtc, CancellationToken cancellationToken)
+        {
+            Requires.Argument(lastSuccessfulBuildStartedAtUtc != DateTime.MinValue, nameof(lastSuccessfulBuildStartedAtUtc), "Must not be DateTime.MinValue.");
+
+            return ExecuteUnderLockAsync(
+                token =>
+                {
+                    if (_dataByConfiguredProject is not null)
+                    {
+                        (string ProjectPath, IImmutableDictionary<string, string> ConfigurationDimensions) key = (ProjectPath: projectPath, ConfigurationDimensions: configurationDimensions);
+
+                        if (!_dataByConfiguredProject.TryGetValue(key, out (int ItemHash, DateTime? ItemsChangedAtUtc, DateTime? LastSuccessfulBuildStartedAtUtc) storedData)
+                            || storedData.LastSuccessfulBuildStartedAtUtc != lastSuccessfulBuildStartedAtUtc)
+                        {
+                            _dataByConfiguredProject[key] = (storedData.ItemHash, storedData.ItemsChangedAtUtc, lastSuccessfulBuildStartedAtUtc);
+                            _hasUnsavedChange = true;
+                        }
+                    }
+
+                    return Task.CompletedTask;
+                },
+                cancellationToken);
+        }
+
+        private async Task EnsureDataInitializedAsync(CancellationToken cancellationToken)
+        {
+            if (_cacheFilePath is null || _dataByConfiguredProject is null)
+            {
+                string filePath = await GetCacheFilePathAsync(cancellationToken);
+
+                // Switch to a background thread before doing file I/O
+                await TaskScheduler.Default;
+
+                if (_cacheFilePath is null || _dataByConfiguredProject is null)
+                {
+                    _cacheFilePath = filePath;
+                    _dataByConfiguredProject = Deserialize(_cacheFilePath);
                 }
+            }
+
+            return;
+
+            async Task<string> GetCacheFilePathAsync(CancellationToken cancellationToken)
+            {
+                await JoinableFactory.SwitchToMainThreadAsync(cancellationToken);
+
+                var solutionWorkingFolder = _solution.Value as IVsSolutionWorkingFolders;
+
+                Assumes.Present(solutionWorkingFolder);
+
+                solutionWorkingFolder.GetFolder(
+                    (uint)__SolutionWorkingFolder.SlnWF_StatePersistence,
+                    guidProject: Guid.Empty,
+                    fVersionSpecific: true,
+                    fEnsureCreated: true,
+                    out bool isTemporary,
+                    out string workingFolderPath);
+
+                return Path.Combine(workingFolderPath, ProjectItemCacheFileName);
             }
         }
 
         #region Serialization
 
-        private static void Serialize(string cacheFilePath, Dictionary<(string ProjectPath, IImmutableDictionary<string, string> ConfigurationDimensions), (int ItemHash, DateTime ItemsChangedAtUtc)> dataByConfiguredProject)
+        private static void Serialize(string cacheFilePath, Dictionary<(string ProjectPath, IImmutableDictionary<string, string> ConfigurationDimensions), (int ItemHash, DateTime? ItemsChangedAtUtc, DateTime? LastSuccessfulBuildStartedAtUtc)> dataByConfiguredProject)
         {
             using var stream = new FileStream(cacheFilePath, FileMode.Create, FileAccess.Write, FileShare.None);
             using var writer = new BinaryWriter(stream, Encoding.UTF8, leaveOpen: true);
 
             writer.Write(dataByConfiguredProject.Count);
 
-            foreach (((string path, IImmutableDictionary<string, string> dimensions), (int ItemHash, DateTime ItemsChangedAtUtc) data) in dataByConfiguredProject)
+            foreach (((string path, IImmutableDictionary<string, string> dimensions), (int ItemHash, DateTime? ItemsChangedAtUtc, DateTime? LastSuccessfulBuildStartedAtUtc) data) in dataByConfiguredProject)
             {
                 writer.Write(path);
 
@@ -159,13 +215,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.UpToDate
                 }
 
                 writer.Write(data.ItemHash);
-                writer.Write(data.ItemsChangedAtUtc.Ticks);
+                writer.Write(data.ItemsChangedAtUtc?.Ticks ?? 0L);
+                writer.Write(data.LastSuccessfulBuildStartedAtUtc?.Ticks ?? 0L);
             }
         }
 
-        private static Dictionary<(string ProjectPath, IImmutableDictionary<string, string> ConfigurationDimensions), (int ItemHash, DateTime ItemsChangedAtUtc)> Deserialize(string cacheFilePath)
+        private static Dictionary<(string ProjectPath, IImmutableDictionary<string, string> ConfigurationDimensions), (int ItemHash, DateTime? ItemsChangedAtUtc, DateTime? LastSuccessfulBuildStartedAtUtc)> Deserialize(string cacheFilePath)
         {
-            var data = new Dictionary<(string ProjectPath, IImmutableDictionary<string, string> ConfigurationDimensions), (int ItemHash, DateTime ItemsChangedAtUtc)>(ConfiguredProjectComparer.Instance);
+            var data = new Dictionary<(string ProjectPath, IImmutableDictionary<string, string> ConfigurationDimensions), (int ItemHash, DateTime? ItemsChangedAtUtc, DateTime? LastSuccessfulBuildStartedAtUtc)>(ConfiguredProjectComparer.Instance);
 
             if (!File.Exists(cacheFilePath))
             {
@@ -192,10 +249,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.UpToDate
                 }
 
                 int hash = reader.ReadInt32();
-                long ticks = reader.ReadInt64();
-                var itemsChangedAtUtc = new DateTime(ticks, DateTimeKind.Utc);
+                var itemsChangedAtUtc = new DateTime(reader.ReadInt64(), DateTimeKind.Utc);
+                var lastSuccessfulBuildStartedAtUtc = new DateTime(reader.ReadInt64(), DateTimeKind.Utc);
 
-                data[(path, dimensions.ToImmutable())] = (hash, itemsChangedAtUtc);
+                data[(path, dimensions.ToImmutable())] = (hash, itemsChangedAtUtc, lastSuccessfulBuildStartedAtUtc);
             }
 
             return data;
@@ -220,16 +277,20 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.UpToDate
             {
                 await TaskScheduler.Default;
 
-                using (await _lock.EnterAsync())
-                {
-                    if (_hasUnsavedChange && _cacheFilePath is not null && _dataByConfiguredProject is not null)
+                await ExecuteUnderLockAsync(
+                    _ =>
                     {
-                        Serialize(_cacheFilePath, _dataByConfiguredProject);
-                    }
+                        if (_hasUnsavedChange && _cacheFilePath is not null && _dataByConfiguredProject is not null)
+                        {
+                            Serialize(_cacheFilePath, _dataByConfiguredProject);
+                        }
 
-                    _cacheFilePath = null;
-                    _dataByConfiguredProject = null;
-                }
+                        _cacheFilePath = null;
+                        _dataByConfiguredProject = null;
+                        _hasUnsavedChange = false;
+
+                        return Task.CompletedTask;
+                    });
             });
 
             return HResult.OK;

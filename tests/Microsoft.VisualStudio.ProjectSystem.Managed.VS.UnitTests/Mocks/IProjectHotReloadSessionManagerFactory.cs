@@ -13,7 +13,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             mock.Setup(manager => manager.TryCreatePendingSessionAsync(It.IsAny<IDictionary<string, string>>()))
                 .ReturnsAsync(true);
 
-            mock.Setup(manager => manager.ActivateSessionAsync(It.IsAny<int>(), It.IsAny<bool>()))
+            mock.Setup(manager => manager.ActivateSessionAsync(It.IsAny<int>(), It.IsAny<bool>(), It.IsAny<string>()))
                 .Returns(Task.CompletedTask);
 
             return mock.Object;

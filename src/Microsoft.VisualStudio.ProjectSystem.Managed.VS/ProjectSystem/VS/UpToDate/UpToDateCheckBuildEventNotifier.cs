@@ -16,16 +16,24 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.UpToDate
     [AppliesTo(BuildUpToDateCheck.AppliesToExpression)]
     internal sealed class UpToDateCheckBuildEventNotifier : OnceInitializedOnceDisposedAsync, IVsUpdateSolutionEvents2, IProjectDynamicLoadComponent
     {
+        private readonly IProjectService _projectService;
         private readonly ISolutionBuildManager _solutionBuildManager;
-
+        private readonly IProjectThreadingService _threadingService;
+        private readonly IProjectFaultHandlerService _faultHandlerService;
         private IAsyncDisposable? _solutionBuildEventsSubscription;
 
         [ImportingConstructor]
         public UpToDateCheckBuildEventNotifier(
             JoinableTaskContext joinableTaskContext,
+            IProjectService projectService,
+            IProjectThreadingService threadingService,
+            IProjectFaultHandlerService faultHandlerService,
             ISolutionBuildManager solutionBuildManager)
             : base(new(joinableTaskContext))
         {
+            _projectService = projectService;
+            _threadingService = threadingService;
+            _faultHandlerService = faultHandlerService;
             _solutionBuildManager = solutionBuildManager;
         }
 
@@ -55,11 +63,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.UpToDate
         /// </summary>
         int IVsUpdateSolutionEvents2.UpdateProjectCfg_Begin(IVsHierarchy pHierProj, IVsCfg pCfgProj, IVsCfg pCfgSln, uint dwAction, ref int pfCancel)
         {
-            if (IsBuild(dwAction))
+            if (IsBuild(dwAction, out _))
             {
-                foreach (IBuildUpToDateCheckProviderInternal provider in FindActiveConfiguredProviders(pHierProj))
+                IEnumerable<IBuildUpToDateCheckProviderInternal>? providers = FindActiveConfiguredProviders(pHierProj, out _);
+
+                if (providers is not null)
                 {
-                    provider.NotifyBuildStarting(DateTime.UtcNow);
+                    foreach (IBuildUpToDateCheckProviderInternal provider in providers)
+                    {
+                        provider.NotifyBuildStarting(DateTime.UtcNow);
+                    }
                 }
             }
 
@@ -71,11 +84,24 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.UpToDate
         /// </summary>
         int IVsUpdateSolutionEvents2.UpdateProjectCfg_Done(IVsHierarchy pHierProj, IVsCfg pCfgProj, IVsCfg pCfgSln, uint dwAction, int fSuccess, int fCancel)
         {
-            if (fCancel == 0 && IsBuild(dwAction))
+            if (fCancel == 0 && IsBuild(dwAction, out bool isRebuild))
             {
-                foreach (IBuildUpToDateCheckProviderInternal provider in FindActiveConfiguredProviders(pHierProj))
+                IEnumerable<IBuildUpToDateCheckProviderInternal>? providers = FindActiveConfiguredProviders(pHierProj, out UnconfiguredProject? unconfiguredProject);
+
+                if (providers is not null)
                 {
-                    provider.NotifyBuildCompleted(wasSuccessful: fSuccess != 0);
+                    JoinableTask task = _threadingService.JoinableTaskFactory.RunAsync(async () =>
+                    {
+                        // Do this work off the main thread
+                        await TaskScheduler.Default;
+
+                        foreach (IBuildUpToDateCheckProviderInternal provider in providers)
+                        {
+                            await provider.NotifyBuildCompletedAsync(wasSuccessful: fSuccess != 0, isRebuild);
+                        }
+                    });
+
+                    _faultHandlerService.Forget(task.Task, unconfiguredProject);
                 }
             }
 
@@ -85,18 +111,21 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.UpToDate
         /// <summary>
         /// Returns <see langword="true"/> if <paramref name="options"/> indicates either a build or rebuild.
         /// </summary>
-        private static bool IsBuild(uint options)
+        private static bool IsBuild(uint options, out bool isRebuild)
         {
-            const VSSOLNBUILDUPDATEFLAGS flags = VSSOLNBUILDUPDATEFLAGS.SBF_OPERATION_BUILD;
+            const VSSOLNBUILDUPDATEFLAGS anyBuildFlags = VSSOLNBUILDUPDATEFLAGS.SBF_OPERATION_BUILD;
+            const VSSOLNBUILDUPDATEFLAGS rebuildFlags = VSSOLNBUILDUPDATEFLAGS.SBF_OPERATION_BUILD | VSSOLNBUILDUPDATEFLAGS.SBF_OPERATION_FORCE_UPDATE;
 
             var operation = (VSSOLNBUILDUPDATEFLAGS)options;
 
-            return (operation & flags) == flags;
+            isRebuild = (operation & rebuildFlags) == rebuildFlags;
+
+            return (operation & anyBuildFlags) == anyBuildFlags;
         }
 
-        private static IEnumerable<IBuildUpToDateCheckProviderInternal> FindActiveConfiguredProviders(IVsHierarchy vsHierarchy)
+        private IEnumerable<IBuildUpToDateCheckProviderInternal>? FindActiveConfiguredProviders(IVsHierarchy vsHierarchy, out UnconfiguredProject? unconfiguredProject)
         {
-            UnconfiguredProject? unconfiguredProject = vsHierarchy.AsUnconfiguredProject();
+            unconfiguredProject = _projectService.GetUnconfiguredProject(vsHierarchy, appliesToExpression: BuildUpToDateCheck.AppliesToExpression);
 
             if (unconfiguredProject is not null)
             {
@@ -110,7 +139,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.UpToDate
                 }
             }
 
-            return Enumerable.Empty<IBuildUpToDateCheckProviderInternal>();
+            return null;
         }
 
         #region IVsUpdateSolutionEvents stubs

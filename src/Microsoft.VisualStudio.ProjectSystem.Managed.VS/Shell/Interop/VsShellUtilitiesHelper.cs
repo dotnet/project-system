@@ -22,7 +22,7 @@ namespace Microsoft.VisualStudio.Shell.Interop
             _threadingService = threadingService;
         }
 
-        public async Task<Version?> GetVSVersionAsync(ProjectSystem.VS.IVsService<IVsAppId> vsAppIdService)
+        public async Task<Version?> GetVSVersionAsync(IVsService<IVsAppId> vsAppIdService)
         {
             await _threadingService.SwitchToUIThread();
 
@@ -47,7 +47,7 @@ namespace Microsoft.VisualStudio.Shell.Interop
             return null;
         }
 
-        public async Task<string?> GetLocalAppDataFolderAsync(ProjectSystem.VS.IVsService<IVsShell> vsShellService)
+        public async Task<string?> GetLocalAppDataFolderAsync(IVsService<IVsShell> vsShellService)
         {
             await _threadingService.SwitchToUIThread();
 
@@ -61,7 +61,7 @@ namespace Microsoft.VisualStudio.Shell.Interop
             return null;
         }
 
-        public async Task<string?> GetRegistryRootAsync(ProjectSystem.VS.IVsService<IVsShell> vsShellService)
+        public async Task<string?> GetRegistryRootAsync(IVsService<IVsShell> vsShellService)
         {
             await _threadingService.SwitchToUIThread();
 

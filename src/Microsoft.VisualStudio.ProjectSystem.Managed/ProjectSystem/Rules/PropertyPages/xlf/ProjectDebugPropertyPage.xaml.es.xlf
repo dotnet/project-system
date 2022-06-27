@@ -83,8 +83,8 @@
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|EnvironmentVariables|Description">
-        <source>The environment variables to set prior to running the process. Variables are separated by a comma (,) and variables names and values are separated with an equal sign (=). Example: var1=value1,var2=value2,var3=value3. Commas and equal signs appearing within a variable can be escaped using a forward slash (/).</source>
-        <target state="translated">Variables de entorno que se van a establecer antes de ejecutar el proceso. Las variables se separan con una coma (,) y los nombres y los valores de las variables se separan con un signo igual (=). Ejemplo: var1=valor1,var2=valor2,var3=valor3. A las comas y los signos igual que aparecen en una variable se les puede agregar una barra diagonal (/) como carácter de escape.</target>
+        <source>The environment variables to set prior to running the process.</source>
+        <target state="translated">Variables de entorno que se establecerán antes de ejecutar el proceso.</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|EnvironmentVariables|DisplayName">

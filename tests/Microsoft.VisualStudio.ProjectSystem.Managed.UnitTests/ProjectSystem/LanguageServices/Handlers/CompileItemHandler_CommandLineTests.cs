@@ -6,7 +6,7 @@ using Microsoft.VisualStudio.ProjectSystem.VS;
 
 namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
 {
-    public class CompileItemHandler_CommandTests : CommandLineHandlerTestBase
+    public class CompileItemHandler_CommandTests
     {
         [Fact]
         public void Constructor_NullAsProject_ThrowsArgumentNull()
@@ -28,19 +28,19 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
             var context = IWorkspaceProjectContextMockFactory.CreateForSourceFiles(project, onSourceFileAdded, onSourceFileRemoved);
             var logger = Mock.Of<IProjectDiagnosticOutputService>();
 
-            var handler = CreateInstance(project, context);
+            var handler = new CompileItemHandler(project);
             var projectDir = Path.GetDirectoryName(project.FullPath);
             var added = BuildOptions.FromCommandLineArguments(CSharpCommandLineParser.Default.Parse(args: new[] { @"C:\file1.cs", @"C:\file2.cs", @"C:\file1.cs" }, baseDirectory: projectDir, sdkDirectory: null));
             var empty = BuildOptions.FromCommandLineArguments(CSharpCommandLineParser.Default.Parse(args: new string[] { }, baseDirectory: projectDir, sdkDirectory: null));
 
-            handler.Handle(10, added: added, removed: empty, new ContextState(isActiveEditorContext: true, isActiveConfiguration: false), logger: logger);
+            handler.Handle(context, 10, added: added, removed: empty, new ContextState(isActiveEditorContext: true, isActiveConfiguration: false), logger: logger);
 
             AssertEx.CollectionLength(sourceFilesPushedToWorkspace, 2);
             Assert.Contains(@"C:\file1.cs", sourceFilesPushedToWorkspace);
             Assert.Contains(@"C:\file2.cs", sourceFilesPushedToWorkspace);
 
             var removed = BuildOptions.FromCommandLineArguments(CSharpCommandLineParser.Default.Parse(args: new[] { @"C:\file1.cs", @"C:\file1.cs" }, baseDirectory: projectDir, sdkDirectory: null));
-            handler.Handle(10, added: empty, removed: removed, new ContextState(isActiveEditorContext: true, isActiveConfiguration: false), logger: logger);
+            handler.Handle(context, 10, added: empty, removed: removed, new ContextState(isActiveEditorContext: true, isActiveConfiguration: false), logger: logger);
 
             Assert.Single(sourceFilesPushedToWorkspace);
             Assert.Contains(@"C:\file2.cs", sourceFilesPushedToWorkspace);
@@ -57,31 +57,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
             var context = IWorkspaceProjectContextMockFactory.CreateForSourceFiles(project, onSourceFileAdded, onSourceFileRemoved);
             var logger = Mock.Of<IProjectDiagnosticOutputService>();
 
-            var handler = CreateInstance(project, context);
+            var handler = new CompileItemHandler(project);
             var projectDir = Path.GetDirectoryName(project.FullPath);
             var added = BuildOptions.FromCommandLineArguments(CSharpCommandLineParser.Default.Parse(args: new[] { @"file1.cs", @"..\ProjectFolder\file1.cs" }, baseDirectory: projectDir, sdkDirectory: null));
             var removed = BuildOptions.FromCommandLineArguments(CSharpCommandLineParser.Default.Parse(args: new string[] { }, baseDirectory: projectDir, sdkDirectory: null));
 
-            handler.Handle(10, added: added, removed: removed, new ContextState(true, false), logger: logger);
+            handler.Handle(context, 10, added: added, removed: removed, new ContextState(true, false), logger: logger);
 
             Assert.Single(sourceFilesPushedToWorkspace);
             Assert.Contains(@"C:\ProjectFolder\file1.cs", sourceFilesPushedToWorkspace);
-        }
-
-        internal override ICommandLineHandler CreateInstance()
-        {
-            return CreateInstance(null, null);
-        }
-
-        private static CompileItemHandler CreateInstance(UnconfiguredProject? project = null, IWorkspaceProjectContext? context = null)
-        {
-            project ??= UnconfiguredProjectFactory.Create();
-
-            var handler = new CompileItemHandler(project);
-            if (context != null)
-                handler.Initialize(context);
-
-            return handler;
         }
     }
 }

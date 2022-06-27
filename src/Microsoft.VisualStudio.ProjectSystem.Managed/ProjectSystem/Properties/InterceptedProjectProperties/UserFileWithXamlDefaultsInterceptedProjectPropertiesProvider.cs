@@ -7,7 +7,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
     [Export("UserFileWithXamlDefaultsWithInterception", typeof(IProjectInstancePropertiesProvider))]
     [Export(typeof(IProjectInstancePropertiesProvider))]
     [ExportMetadata("Name", "UserFileWithXamlDefaultsWithInterception")]
-    [AppliesTo(ProjectCapability.DotNet)]
+    [AppliesTo(ProjectCapability.ProjectPropertyInterception)]
     internal sealed class UserFileWithXamlDefaultsInterceptedProjectPropertiesProvider : UserFileInterceptedProjectPropertiesProvider
     {
         [ImportingConstructor]

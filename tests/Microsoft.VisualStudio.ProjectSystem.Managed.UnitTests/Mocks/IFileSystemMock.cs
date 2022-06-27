@@ -1,6 +1,7 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
 using System.Diagnostics.CodeAnalysis;
+using System.Text;
 
 namespace Microsoft.VisualStudio.IO
 {
@@ -122,6 +123,11 @@ namespace Microsoft.VisualStudio.IO
         public Task<string> ReadAllTextAsync(string path)
         {
             return Task.FromResult(GetFileData(path).FileContents!);
+        }
+
+        public Stream OpenTextStream(string path)
+        {
+            return new MemoryStream(Encoding.UTF8.GetBytes(GetFileData(path).FileContents!));
         }
 
         public Task WriteAllTextAsync(string path, string content)

@@ -686,6 +686,11 @@ Bu ayarın değiştirilmesi, tüm yapılandırmaların ayarlarını sıfırlar.<
         <target state="translated">Açıklama</target>
         <note>Column names for the string table</note>
       </trans-unit>
+      <trans-unit id="SD_ERR_HelpMessage_SuggestFileOpenWith">
+        <source>If this is not a Settings-Designer file then use 'Open With' to open it in a text editor.</source>
+        <target state="translated">Bu bir Ayarlar Tasarımcısı dosyası değilse 'Birlikte Aç' seçeneğini kullanarak dosyayı bir metin düzenleyicide açın.</target>
+        <note />
+      </trans-unit>
       <trans-unit id="SingleFileGenerator_FailedToGenerateFile_1Arg">
         <source>Failed to generate file: {0}</source>
         <target state="translated">Dosya oluşturulamadı: {0}</target>

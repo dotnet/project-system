@@ -4,85 +4,54 @@ using Newtonsoft.Json;
 
 namespace Microsoft.VisualStudio.ProjectSystem.Debug
 {
+    /// <summary>
+    /// Immutable snapshot of data from the <c>launchSettings.json</c> file.
+    /// </summary>
     internal class LaunchSettings : ILaunchSettings, IVersionedLaunchSettings
     {
-        private readonly string? _activeProfileName;
+        public static LaunchSettings Empty { get; } = new();
 
-        /// <summary>
-        /// Represents the current set of launch settings. Creation from an existing set of profiles.
-        /// </summary>
-        public LaunchSettings(IEnumerable<ILaunchProfile> profiles, IDictionary<string, object>? globalSettings, string? activeProfile = null, long version = 0)
+        public LaunchSettings(
+            IEnumerable<ILaunchProfile>? profiles = null,
+            ImmutableDictionary<string, object>? globalSettings = null,
+            string? activeProfileName = null,
+            ILaunchProfile? launchProfile = null,
+            long version = 0)
         {
-            Profiles = ImmutableList<ILaunchProfile>.Empty;
-            foreach (ILaunchProfile profile in profiles)
-            {
-                Profiles = Profiles.Add(new LaunchProfile(profile));
-            }
-
-            GlobalSettings = globalSettings == null ? ImmutableStringDictionary<object>.EmptyOrdinal : globalSettings.ToImmutableDictionary();
-            _activeProfileName = activeProfile;
+            Profiles = profiles is null
+                ? ImmutableList<ILaunchProfile>.Empty
+                : ImmutableList.CreateRange<ILaunchProfile>(profiles.Select(LaunchProfile.Clone));
+            GlobalSettings = globalSettings ?? ImmutableStringDictionary<object>.EmptyOrdinal;
+            ActiveProfile = launchProfile ?? FindActiveProfile();
             Version = version;
-        }
 
-        public LaunchSettings(LaunchSettingsData settingsData, string? activeProfile = null, long version = 0)
-        {
-            Requires.NotNull(settingsData.Profiles!, nameof(settingsData.Profiles));
-
-            Profiles = ImmutableList<ILaunchProfile>.Empty;
-            foreach (LaunchProfileData profile in settingsData.Profiles)
+            ILaunchProfile? FindActiveProfile()
             {
-                Profiles = Profiles.Add(new LaunchProfile(profile));
-            }
+                ILaunchProfile? profile = null;
 
-            GlobalSettings = settingsData.OtherSettings == null ? ImmutableStringDictionary<object>.EmptyOrdinal : settingsData.OtherSettings.ToImmutableDictionary();
-            _activeProfileName = activeProfile;
-            Version = version;
-        }
-
-        public LaunchSettings(IWritableLaunchSettings settings, long version = 0)
-        {
-            Profiles = ImmutableList<ILaunchProfile>.Empty;
-            foreach (IWritableLaunchProfile profile in settings.Profiles)
-            {
-                Profiles = Profiles.Add(new LaunchProfile(profile));
-            }
-
-            var jsonSerializerSettings = new JsonSerializerSettings() { NullValueHandling = NullValueHandling.Ignore };
-
-            // For global settings we want to make new copies of each entry so that the snapshot remains immutable. If the object implements 
-            // ICloneable that is used, otherwise, it is serialized back to json, and a new object rehydrated from that
-            GlobalSettings = ImmutableStringDictionary<object>.EmptyOrdinal;
-            foreach ((string key, object value) in settings.GlobalSettings)
-            {
-                if (value is ICloneable cloneableObject)
+                if (!Profiles.IsEmpty)
                 {
-                    GlobalSettings = GlobalSettings.Add(key, cloneableObject.Clone());
-                }
-                else
-                {
-                    string jsonString = JsonConvert.SerializeObject(value, Formatting.Indented, jsonSerializerSettings);
-                    object? clonedObject = JsonConvert.DeserializeObject(jsonString, value.GetType());
-                    if (clonedObject is not null)
+                    if (!Strings.IsNullOrWhiteSpace(activeProfileName))
                     {
-                        GlobalSettings = GlobalSettings.Add(key, clonedObject);
+                        // Find the first profile having the required name
+                        profile = Profiles.FirstOrDefault(p => LaunchProfile.IsSameProfileName(p.Name, activeProfileName));
                     }
+
+                    // If no active profile specified, or the active one is no longer valid, assume the first one
+                    profile ??= Profiles[0];
                 }
+
+                return profile;
             }
-
-            _activeProfileName = settings.ActiveProfile?.Name;
-            Version = version;
-        }
-
-        public LaunchSettings()
-        {
-            Profiles = ImmutableList<ILaunchProfile>.Empty;
-            GlobalSettings = ImmutableStringDictionary<object>.EmptyOrdinal;
-            Version = 0;
         }
 
         public ImmutableList<ILaunchProfile> Profiles { get; }
 
         public ImmutableDictionary<string, object> GlobalSettings { get; }
+
+        public ILaunchProfile? ActiveProfile { get; }
+
+        public long Version { get; }
 
         public object? GetGlobalSetting(string settingName)
         {
@@ -90,31 +59,52 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             return o;
         }
 
-        private ILaunchProfile? _activeProfile;
-        public ILaunchProfile? ActiveProfile
+        /// <summary>
+        /// Produces a sequence of values cloned from <paramref name="keyValues"/>. Used to keep snapshots of
+        /// launch setting data immutable. <see langword="null"/> values are excluded from the output sequence.
+        /// </summary>
+        /// <remarks>
+        /// The following approach is taken:
+        /// <list type="number">
+        ///   <item>Common known immutable types (<see cref="string"/>, <see cref="int"/>, <see cref="bool"/>) are not cloned.</item>
+        ///   <item>If the type supports <see cref="ICloneable"/>, that is used.</item>
+        ///   <item>Otherwise the object is round tripped to JSON and back to create a clone.</item>
+        /// </list>
+        /// </remarks>
+        internal static IEnumerable<KeyValuePair<string, object>> CloneGlobalSettingsValues(IEnumerable<KeyValuePair<string, object>> keyValues)
         {
-            get
+            JsonSerializerSettings? jsonSerializerSettings = null;
+
+            foreach ((string key, object value) in keyValues)
             {
-                if (_activeProfile == null)
+                if (value is int or string or bool)
                 {
-                    ILaunchProfile? computedProfile = null;
+                    // These common types do not need cloning.
+                    yield return new(key, value);
+                }
+                else if (value is ICloneable cloneableObject)
+                {
+                    // Type supports cloning.
+                    yield return new(key, cloneableObject.Clone());
+                }
+                else if (value is not null)
+                {
+                    // Custom type. The best way we have to clone it is to round trip it to JSON and back.
+                    jsonSerializerSettings ??= new() { NullValueHandling = NullValueHandling.Ignore };
 
-                    // If no active profile specified, or the active one is no longer valid, assume the first one
-                    if (!Strings.IsNullOrWhiteSpace(_activeProfileName))
+                    string jsonString = JsonConvert.SerializeObject(value, Formatting.Indented, jsonSerializerSettings);
+
+                    object? clonedObject = JsonConvert.DeserializeObject(jsonString, value.GetType());
+
+                    if (clonedObject is not null)
                     {
-                        computedProfile = Profiles.FirstOrDefault(p => LaunchProfile.IsSameProfileName(p.Name, _activeProfileName));
+                        yield return new(key, clonedObject);
                     }
-
-                    computedProfile ??= !Profiles.IsEmpty ? Profiles[0] : null;
-
-                    Interlocked.CompareExchange(ref _activeProfile, value: computedProfile, comparand: null);
                 }
 
-                return _activeProfile;
+                // Null values are skipped.
             }
         }
-
-        public long Version { get; }
     }
 
     internal static class LaunchSettingsExtension

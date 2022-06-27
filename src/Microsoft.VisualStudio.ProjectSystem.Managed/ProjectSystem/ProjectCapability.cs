@@ -7,7 +7,6 @@ namespace Microsoft.VisualStudio.ProjectSystem
     /// </summary>
     internal static class ProjectCapability
     {
-        public const string AlwaysAvailable = ProjectCapabilities.AlwaysApplicable;
         public const string CSharp = ProjectCapabilities.CSharp;
         public const string VisualBasic = ProjectCapabilities.VB;
         public const string FSharp = nameof(FSharp);
@@ -33,6 +32,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
         public const string DotNetLanguageService = DotNet + " & " + LanguageService;
         public const string UseProjectEvaluationCache = ProjectCapabilities.UseProjectEvaluationCache;
         public const string SingleTargetBuildForStartupProjects = nameof(SingleTargetBuildForStartupProjects);
+        public const string ProjectPropertyInterception = nameof(ProjectPropertyInterception);
 
         /// <summary>
         /// Instructs CPS to order tree items according to the <see cref="IProjectTree2.DisplayOrder"/> property first.

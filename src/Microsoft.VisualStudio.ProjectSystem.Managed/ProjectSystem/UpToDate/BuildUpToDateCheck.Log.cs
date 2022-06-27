@@ -12,24 +12,31 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             private readonly TextWriter _writer;
             private readonly Stopwatch _stopwatch;
             private readonly TimestampCache _timestampCache;
+            private readonly Guid _projectGuid;
             private readonly string _fileName;
             private readonly ITelemetryService? _telemetryService;
             private readonly UpToDateCheckConfiguredInput _upToDateCheckConfiguredInput;
+            private readonly string? _ignoreKinds;
+            private readonly int _checkNumber;
 
             public LogLevel Level { get; }
 
             public int Indent { get; set; }
 
             public string? FailureReason { get; private set; }
+            public string? FailureDescription { get; private set; }
 
-            public Log(TextWriter writer, LogLevel requestedLogLevel, Stopwatch stopwatch, TimestampCache timestampCache, string projectPath, ITelemetryService? telemetryService, UpToDateCheckConfiguredInput upToDateCheckConfiguredInput)
+            public Log(TextWriter writer, LogLevel requestedLogLevel, Stopwatch stopwatch, TimestampCache timestampCache, string projectPath, Guid projectGuid, ITelemetryService? telemetryService, UpToDateCheckConfiguredInput upToDateCheckConfiguredInput, string? ignoreKinds, int checkNumber)
             {
                 _writer = writer;
                 Level = requestedLogLevel;
                 _stopwatch = stopwatch;
                 _timestampCache = timestampCache;
+                _projectGuid = projectGuid;
                 _telemetryService = telemetryService;
                 _upToDateCheckConfiguredInput = upToDateCheckConfiguredInput;
+                _ignoreKinds = ignoreKinds;
+                _checkNumber = checkNumber;
                 _fileName = Path.GetFileNameWithoutExtension(projectPath);
             }
 
@@ -119,7 +126,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             {
                 if (value is DateTime time)
                 {
-                    value = time.ToLocalTime();
+                    value = time.ToLocalTime().ToString("yyyy-MM-dd HH:mm:ss.fff");
                 }
             }
 
@@ -156,11 +163,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                     (TelemetryPropertyName.UpToDateCheckDurationMillis, _stopwatch.Elapsed.TotalMilliseconds),
                     (TelemetryPropertyName.UpToDateCheckFileCount, _timestampCache.Count),
                     (TelemetryPropertyName.UpToDateCheckConfigurationCount, _upToDateCheckConfiguredInput.ImplicitInputs.Length),
-                    (TelemetryPropertyName.UpToDateCheckLogLevel, Level)
+                    (TelemetryPropertyName.UpToDateCheckLogLevel, Level),
+                    (TelemetryPropertyName.UpToDateCheckProject, _projectGuid),
+                    (TelemetryPropertyName.UpToDateCheckNumber, _checkNumber),
+                    (TelemetryPropertyName.UpToDateCheckIgnoreKinds, _ignoreKinds ?? "")
                 });
 
-                // Remember the failure reason for use in IncrementalBuildFailureDetector.
+                // Remember the failure reason and description for use in IncrementalBuildFailureDetector.
                 FailureReason = reason;
+                FailureDescription = string.Format(GetResourceString(resourceName), values);
 
                 return false;
             }
@@ -168,6 +179,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             public void UpToDate()
             {
                 Assumes.Null(FailureReason);
+                Assumes.Null(FailureDescription);
 
                 _stopwatch.Stop();
 
@@ -177,7 +189,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                     (TelemetryPropertyName.UpToDateCheckDurationMillis, (object)_stopwatch.Elapsed.TotalMilliseconds),
                     (TelemetryPropertyName.UpToDateCheckFileCount, _timestampCache.Count),
                     (TelemetryPropertyName.UpToDateCheckConfigurationCount, _upToDateCheckConfiguredInput.ImplicitInputs.Length),
-                    (TelemetryPropertyName.UpToDateCheckLogLevel, Level)
+                    (TelemetryPropertyName.UpToDateCheckLogLevel, Level),
+                    (TelemetryPropertyName.UpToDateCheckProject, _projectGuid),
+                    (TelemetryPropertyName.UpToDateCheckNumber, _checkNumber),
+                    (TelemetryPropertyName.UpToDateCheckIgnoreKinds, _ignoreKinds ?? "")
                 });
 
                 Info(nameof(Resources.FUTD_UpToDate));

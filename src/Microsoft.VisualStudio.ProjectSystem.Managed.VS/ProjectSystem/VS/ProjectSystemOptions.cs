@@ -26,12 +26,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
 
         public Task<bool> GetIsFastUpToDateCheckEnabledAsync(CancellationToken cancellationToken = default)
         {
-            return GetSettingValueOrDefaultAsync(FastUpToDateEnabledSettingKey, true, cancellationToken);
+            return GetSettingValueOrDefaultAsync(FastUpToDateEnabledSettingKey, defaultValue: true, cancellationToken);
         }
 
         public Task<LogLevel> GetFastUpToDateLoggingLevelAsync(CancellationToken cancellationToken = default)
         {
-            return GetSettingValueOrDefaultAsync(FastUpToDateLogLevelSettingKey, LogLevel.None, cancellationToken);
+            return GetSettingValueOrDefaultAsync(FastUpToDateLogLevelSettingKey, defaultValue: LogLevel.None, cancellationToken);
         }
 
         public Task<bool> GetUseDesignerByDefaultAsync(string designerCategory, bool defaultValue, CancellationToken cancellationToken = default)
@@ -51,7 +51,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
 
         public Task<bool> GetPreferSingleTargetBuildsForStartupProjectsAsync(CancellationToken cancellationToken = default)
         {
-            return GetSettingValueOrDefaultAsync(PreferSingleTargetBuildsForStartupProjects, defaultValue: false, cancellationToken);
+            return GetSettingValueOrDefaultAsync(PreferSingleTargetBuildsForStartupProjects, defaultValue: true, cancellationToken);
         }
 
         private async Task<T> GetSettingValueOrDefaultAsync<T>(string name, T defaultValue, CancellationToken cancellationToken)

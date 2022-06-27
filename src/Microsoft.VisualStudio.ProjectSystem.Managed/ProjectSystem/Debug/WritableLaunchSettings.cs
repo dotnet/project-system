@@ -1,7 +1,5 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
-using Newtonsoft.Json;
-
 namespace Microsoft.VisualStudio.ProjectSystem.Debug
 {
     internal class WritableLaunchSettings : IWritableLaunchSettings
@@ -12,32 +10,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             {
                 foreach (ILaunchProfile profile in settings.Profiles)
                 {
+                    // Make a mutable/writable copy of each profile
                     Profiles.Add(new WritableLaunchProfile(profile));
                 }
             }
 
-            // For global settings we want to make new copies of each entry so that the snapshot remains immutable. If the object implements 
-            // ICloneable that is used, otherwise, it is serialized back to json, and a new object rehydrated from that
-            if (settings.GlobalSettings != null)
+            foreach ((string key, object value) in LaunchSettings.CloneGlobalSettingsValues(settings.GlobalSettings))
             {
-                var jsonSerializerSettings = new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore };
-
-                foreach ((string key, object value) in settings.GlobalSettings)
-                {
-                    if (value is ICloneable cloneableObject)
-                    {
-                        GlobalSettings.Add(key, cloneableObject.Clone());
-                    }
-                    else
-                    {
-                        string jsonString = JsonConvert.SerializeObject(value, Formatting.Indented, jsonSerializerSettings);
-                        object? clonedObject = JsonConvert.DeserializeObject(jsonString, value.GetType());
-                        if (clonedObject is not null)
-                        {
-                            GlobalSettings.Add(key, clonedObject);
-                        }
-                    }
-                }
+                GlobalSettings.Add(key, value);
             }
 
             if (settings.ActiveProfile != null)
@@ -54,7 +34,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
 
         public ILaunchSettings ToLaunchSettings()
         {
-            return new LaunchSettings(this);
+            return new LaunchSettings(
+                profiles: Profiles.Select(static profile => profile.ToLaunchProfile()),
+                globalSettings: ImmutableStringDictionary<object>.EmptyOrdinal.AddRange(LaunchSettings.CloneGlobalSettingsValues(GlobalSettings)));
         }
     }
 }

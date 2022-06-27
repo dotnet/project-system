@@ -38,6 +38,18 @@
   </ItemGroup>
 
   <ItemGroup Condition="'$(DefineCommonManagedItemSchemas)' == 'true'">
+
+    <PropertyPageSchema Include="$(ManagedXamlResourcesDirectory)ApplicationPropertyPage.CSharp.xaml">
+      <Context>Project</Context>
+    </PropertyPageSchema>
+    
+    <PropertyPageSchema Include="$(ManagedXamlResourcesDirectory)BuildPropertyPage.CSharp.xaml">
+      <Context>Project</Context>
+    </PropertyPageSchema>
+
+    <!--<PropertyPageSchema Include="$(ManagedXamlResourcesDirectory)ReferencesPage.CSharp.xaml">
+      <Context>Project</Context>
+    </PropertyPageSchema>-->
     
     <PropertyPageSchema Include="$(ManagedXamlNeutralResourcesDirectory)EditorConfigFiles.xaml">
       <Context>File</Context>

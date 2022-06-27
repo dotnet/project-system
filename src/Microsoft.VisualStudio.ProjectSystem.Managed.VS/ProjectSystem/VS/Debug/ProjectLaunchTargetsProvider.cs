@@ -1,6 +1,7 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
 using System.Diagnostics.CodeAnalysis;
+using System.Text.RegularExpressions;
 using Microsoft.VisualStudio.Buffers.PooledObjects;
 using Microsoft.VisualStudio.Debugger.UI.Interfaces.HotReload;
 using Microsoft.VisualStudio.IO;
@@ -13,7 +14,6 @@ using Microsoft.VisualStudio.Text;
 using Microsoft.VisualStudio.Threading;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using Task = System.Threading.Tasks.Task;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
 {
@@ -109,7 +109,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
 
             bool runningUnderDebugger = (launchOptions & DebugLaunchOptions.NoDebug) != DebugLaunchOptions.NoDebug;
 
-            await _hotReloadSessionManager.Value.ActivateSessionAsync((int)processInfos[0].dwProcessId, runningUnderDebugger);
+            await _hotReloadSessionManager.Value.ActivateSessionAsync((int)processInfos[0].dwProcessId, runningUnderDebugger, Path.GetFileNameWithoutExtension(_project.UnconfiguredProject.FullPath));
         }
 
         public async Task<bool> CanBeStartupProjectAsync(DebugLaunchOptions launchOptions, ILaunchProfile profile)
@@ -262,12 +262,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
                 }
             }
 
-            string? commandLineArgs = resolvedProfile.CommandLineArgs?
-                .Replace("\r\n", " ")
-                .Replace("\r", " ")
-                .Replace("\n", " ")
-                .Replace("\\r\\n", "\r\n")
-                .Replace("\\n", "\n");
+            string? commandLineArgs = resolvedProfile.CommandLineArgs is null
+                ? null
+                : Regex.Replace(resolvedProfile.CommandLineArgs, "[\r\n]+", " ");
 
             // Is this profile just running the project? If so we ignore the exe
             if (IsRunProjectCommand(resolvedProfile))
@@ -353,12 +350,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             }
 
             // Apply environment variables.
-            if (resolvedProfile.EnvironmentVariables?.IsEmpty == false)
+            foreach ((string key, string value) in resolvedProfile.EnumerateEnvironmentVariables())
             {
-                foreach ((string key, string value) in resolvedProfile.EnvironmentVariables)
-                {
-                    settings.Environment[key] = value;
-                }
+                settings.Environment[key] = value;
             }
 
             settings.LaunchOperation = DebugLaunchOperation.CreateProcess;

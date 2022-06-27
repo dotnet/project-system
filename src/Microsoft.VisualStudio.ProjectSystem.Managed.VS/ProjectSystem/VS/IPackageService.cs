@@ -2,7 +2,6 @@
 
 using Microsoft.VisualStudio.Composition;
 using Microsoft.VisualStudio.Shell;
-using Task = System.Threading.Tasks.Task;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS
 {

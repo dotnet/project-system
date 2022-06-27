@@ -24,6 +24,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
         {
             private readonly IUpToDateCheckConfiguredInputDataSource _inputDataSource;
 
+            /// <summary>
+            /// The active configured project. For a multi-targeting project, there will be only one instance of this
+            /// subscription, and this field will be the active configuration (usually the first).
+            /// </summary>
             private readonly ConfiguredProject _configuredProject;
 
             /// <summary>
@@ -33,25 +37,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
             private readonly IUpToDateCheckHost _host;
 
+            private readonly IUpToDateCheckStatePersistence _persistence;
+
             /// <summary>
             /// Prevent overlapping requests.
             /// </summary>
             private readonly AsyncSemaphore _semaphore = new(1);
 
             private int _disposed;
-
-            /// <summary>
-            /// Gets the time at which the last successful build was started, per configuration.
-            /// </summary>
-            /// <remarks>
-            /// This value is required in order to protect against a race condition described in
-            /// https://github.com/dotnet/project-system/issues/4014. Specifically, if source files are
-            /// modified during a compilation, but before that compilation's outputs are produced, then
-            /// the changed input file's timestamp will be earlier than the compilation output, making
-            /// it seem as though the compilation is up to date when in fact the input was not included
-            /// in that compilation. Comparing against compilation start time fixes that issue.
-            /// </remarks>
-            private readonly Dictionary<ProjectConfiguration, DateTime> _lastSuccessfulBuildStartTimeUtcByConfiguration = new();
 
             /// <summary>
             /// Lazily constructed Dataflow subscription. Set back to <see langword="null"/> in <see cref="Dispose"/>.
@@ -65,7 +58,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             /// </summary>
             private readonly CancellationTokenSource _disposeTokenSource = new();
 
-            public Subscription(IUpToDateCheckConfiguredInputDataSource inputDataSource, ConfiguredProject configuredProject, IUpToDateCheckHost host)
+            public Subscription(IUpToDateCheckConfiguredInputDataSource inputDataSource, ConfiguredProject configuredProject, IUpToDateCheckHost host, IUpToDateCheckStatePersistence persistence)
             {
                 Requires.NotNull(inputDataSource, nameof(inputDataSource));
                 Requires.NotNull(configuredProject, nameof(configuredProject));
@@ -73,10 +66,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 _inputDataSource = inputDataSource;
                 _configuredProject = configuredProject;
                 _host = host;
+                _persistence = persistence;
             }
 
             public async Task<bool> RunAsync(
-                Func<UpToDateCheckConfiguredInput, IReadOnlyDictionary<ProjectConfiguration, DateTime>, CancellationToken, Task<(bool UpToDate, ImmutableArray<ProjectConfiguration> CheckedConfigurations)>> func,
+                Func<UpToDateCheckConfiguredInput, IUpToDateCheckStatePersistence, CancellationToken, Task<(bool UpToDate, ImmutableArray<ProjectConfiguration> CheckedConfigurations)>> func,
                 CancellationToken cancellationToken)
             {
                 using var cts = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken, _disposeTokenSource.Token);
@@ -116,16 +110,38 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                         cancellationToken: token);
                 }
 
-                (bool upToDate, _lastCheckedConfigurations) = await func(state.Value, _lastSuccessfulBuildStartTimeUtcByConfiguration, token);
+                (bool upToDate, _lastCheckedConfigurations) = await func(state.Value, _persistence, token);
 
                 return upToDate;
             }
 
-            public void UpdateLastSuccessfulBuildStartTimeUtc(DateTime lastBuildStartTimeUtc)
+            public async Task UpdateLastSuccessfulBuildStartTimeUtcAsync(DateTime lastSuccessfulBuildStartTimeUtc, bool isRebuild)
             {
-                foreach (ProjectConfiguration configuration in _lastCheckedConfigurations)
+                IEnumerable<ProjectConfiguration> configurations;
+                
+                if (isRebuild)
                 {
-                    _lastSuccessfulBuildStartTimeUtcByConfiguration[configuration] = lastBuildStartTimeUtc;
+                    // During a rebuild the fast up-to-date check is not called, so we cannot rely upon
+                    // _lastCheckedConfigurations having been updated. We currently only support building
+                    // a subset of configurations for build, not for rebuild, so replace _lastCheckedConfigurations
+                    // with the set of active configurations, as that is what was built.
+                    IConfigurationGroup<ConfiguredProject> activeConfiguredProjects = await _configuredProject.UnconfiguredProject.Services.ActiveConfigurationGroupService.GetActiveLoadedConfiguredProjectGroupAsync();
+                    configurations = activeConfiguredProjects.Select(p => p.ProjectConfiguration);
+                }
+                else
+                {
+                    configurations = _lastCheckedConfigurations;
+                }
+
+                await Task.WhenAll(configurations.Select(StoreConfigurationAsync));
+
+                Task StoreConfigurationAsync(ProjectConfiguration configuration)
+                {
+                    return _persistence.StoreLastSuccessfulBuildStateAsync(
+                        _configuredProject.UnconfiguredProject.FullPath,
+                        configuration.Dimensions,
+                        lastSuccessfulBuildStartTimeUtc,
+                        CancellationToken.None);
                 }
             }
 
@@ -140,7 +156,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 // Double check within lock
                 lock (_lock)
                 {
-                    if (_link == null && _disposed == 0)
+                    if (_link is null && _disposed == 0)
                     {
                         // Link to a null target so that data will flow. The null target drops all values.
                         // When we need a value we use GetLatestVersionAsync to ensure the UpToDateCheckConfiguredInput
@@ -196,7 +212,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             /// The most recently built configurations should be obtained from the return value of the
             /// function passed to <see cref="RunAsync"/>.
             /// </remarks>
-            void UpdateLastSuccessfulBuildStartTimeUtc(DateTime timeUtc);
+            Task UpdateLastSuccessfulBuildStartTimeUtcAsync(DateTime lastSuccessfulBuildStartTimeUtc, bool isRebuild);
 
             /// <summary>
             /// Calls <paramref name="func"/> to determine whether the project is up-to-date or not.
@@ -205,7 +221,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             /// A function that accepts three arguments:
             /// <list type="number">
             ///     <item>The current project state as an instance of <see cref="UpToDateCheckConfiguredInput"/>.</item>
-            ///     <item>A map from project configuration to the UTC date/time of the last successful build's start time.</item>
+            ///     <item>An object that stores persisted data, such as the last successful build start time.</item>
             ///     <item>A cancellation token that may indicate a loss of interest in the result.</item>
             /// </list>
             /// And returns a tuple of:
@@ -217,7 +233,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             /// <param name="cancellationToken">Indicates a loss of interest in the result.</param>
             /// <returns><see langword="true"/> if the project is up-to-date, otherwise <see langword="false"/>.</returns>
             Task<bool> RunAsync(
-                Func<UpToDateCheckConfiguredInput, IReadOnlyDictionary<ProjectConfiguration, DateTime>, CancellationToken, Task<(bool UpToDate, ImmutableArray<ProjectConfiguration> CheckedConfigurations)>> func,
+                Func<UpToDateCheckConfiguredInput, IUpToDateCheckStatePersistence, CancellationToken, Task<(bool UpToDate, ImmutableArray<ProjectConfiguration> CheckedConfigurations)>> func,
                 CancellationToken cancellationToken);
         }
     }

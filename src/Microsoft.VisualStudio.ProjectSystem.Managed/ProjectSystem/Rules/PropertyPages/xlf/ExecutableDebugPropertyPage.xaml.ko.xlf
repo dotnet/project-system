@@ -73,8 +73,8 @@
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|EnvironmentVariables|Description">
-        <source>The environment variables to set prior to running the process. Variables are separated by a comma (,) and variables names and values are separated with an equal sign (=). Example: var1=value1,var2=value2,var3=value3. Commas and equal signs appearing within a variable can be escaped using a forward slash (/).</source>
-        <target state="translated">프로세스를 실행하기 전에 설정할 환경 변수입니다. 변수는 쉼표(,)로 구분하고 변수 이름과 값은 등호(=)로 구분합니다(예: var1=value1,var2=value2,var3=value3). 변수 내에 나타나는 쉼표와 등호는 슬래시(/)로 이스케이프할 수 있습니다.</target>
+        <source>The environment variables to set prior to running the process.</source>
+        <target state="translated">프로세스를 실행하기 전에 설정할 환경 변수입니다.</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|EnvironmentVariables|DisplayName">

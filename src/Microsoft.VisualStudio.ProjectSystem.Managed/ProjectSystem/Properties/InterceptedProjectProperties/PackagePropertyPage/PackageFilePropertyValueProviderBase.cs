@@ -83,7 +83,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties.Package
             }
 
             // None items outside of the project file cannot be updated.
-            if (existingItem?.PropertiesContext.IsProjectFile ?? false)
+            if (existingItem?.PropertiesContext?.IsProjectFile ?? false)
             {
                 if (!isEmptyValue)
                 {

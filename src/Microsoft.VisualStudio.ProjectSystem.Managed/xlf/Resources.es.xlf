@@ -7,6 +7,21 @@
         <target state="translated">Flujo de datos del sistema de proyectos "{0}" cerrado debido a una excepción: {1}</target>
         <note />
       </trans-unit>
+      <trans-unit id="DiagnosticLevel_Error">
+        <source>Error</source>
+        <target state="translated">Error</target>
+        <note>Indicates that a diagnostic (i.e. a compiler warning) should be promoted to an error.</note>
+      </trans-unit>
+      <trans-unit id="DiagnosticLevel_None">
+        <source>None</source>
+        <target state="translated">Ninguno</target>
+        <note>Indicates that a diagnostic (i.e. a compiler warning) should be disabled.</note>
+      </trans-unit>
+      <trans-unit id="DiagnosticLevel_Warning">
+        <source>Warning</source>
+        <target state="translated">Advertencia</target>
+        <note>Indicates that a diagnostic (i.e. a compiler warning) should be kept as a warning rather than disabled or promoted to an error.</note>
+      </trans-unit>
       <trans-unit id="FUTD_AddingInputReferenceCopyMarkers">
         <source>Adding input reference copy markers:</source>
         <target state="translated">Agregando marcadores de copia de referencia de entrada:</target>
@@ -15,11 +30,6 @@
       <trans-unit id="FUTD_AddingNewestImportInput">
         <source>Adding newest import input:</source>
         <target state="translated">Agregando una nueva entrada de importación:</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="FUTD_AddingOutputReferenceCopyMarker">
-        <source>Adding output reference copy marker:</source>
-        <target state="translated">Agregar marcador de copia de referencia de salida:</target>
         <note />
       </trans-unit>
       <trans-unit id="FUTD_AddingProjectFileInputs">
@@ -152,10 +162,10 @@
         <target state="translated">Ignorar los elementos de control actualizados con Kind="{0}"</target>
         <note>Do not translate Kind. {0} is the kind name.</note>
       </trans-unit>
-      <trans-unit id="FUTD_InputMarkerNewerThanOutputMarker">
-        <source>Input marker is newer than output marker, not up-to-date.</source>
-        <target state="translated">El marcador de entrada es más reciente que el de salida, no está actualizado.</target>
-        <note />
+      <trans-unit id="FUTD_InputMarkerNewerThanOutputMarker_4">
+        <source>Input marker '{0}' is newer ({1}) than output marker '{2}' ({3}), not up-to-date.</source>
+        <target state="translated">El marcador de entrada "{0}" es más reciente ({1}) que el de salida "{2}" ({3}), no está actualizado.</target>
+        <note>{0} and {2} are file paths. {1} and {3} are datetimes.</note>
       </trans-unit>
       <trans-unit id="FUTD_InputModifiedSinceLastSuccessfulBuildStart_3">
         <source>Input '{0}' ({1}) has been modified since the last successful build started ({2}), not up-to-date.</source>
@@ -166,11 +176,6 @@
         <source>Input '{0}' is newer ({1}) than earliest output '{2}' ({3}), not up-to-date.</source>
         <target state="translated">La entrada "{0}" es más reciente ({1}) que la primera salida "{2}" ({3}), no está actualizada.</target>
         <note>{0} and {2} are file paths. {1} and {3} are datetimes.</note>
-      </trans-unit>
-      <trans-unit id="FUTD_LatestWriteTimeOnInputMarker_2">
-        <source>Latest write timestamp on input marker is {0} on '{1}'.</source>
-        <target state="translated">La marca de tiempo más reciente de escritura en el marcador de entrada es {0} en "{1}".</target>
-        <note>{0} is a datetime. {1} is a file path.</note>
       </trans-unit>
       <trans-unit id="FUTD_NoBuildOutputDefined">
         <source>No build outputs defined.</source>
@@ -287,6 +292,18 @@
         <target state="translated">Importaciones</target>
         <note />
       </trans-unit>
+      <trans-unit id="JsonErrorsNeedToBeCorrected_1">
+        <source>Errors in '{0}' need to be corrected before applying changes.</source>
+        <target state="translated">Los errores de '{0}' deben corregirse antes de aplicar los cambios.</target>
+        <note>{0} is the path to the malformed .json file.</note>
+      </trans-unit>
+      <trans-unit id="JsonErrorsNeedToBeCorrected_WithErrorMessage_2">
+        <source>Errors in '{0}' need to be corrected before applying changes. Error message:
+{1}</source>
+        <target state="translated">Los errores de “{0}” deben corregirse antes de aplicar los cambios. Mensaje de error: 
+{1}</target>
+        <note>{0} is the path to the malformed .json file. {1} is an error message containing more details about the problems in the file.</note>
+      </trans-unit>
       <trans-unit id="NeutralLanguage_DisplayNameFormatString">
         <source>{0} - {1}</source>
         <target state="translated">{0} - {1}</target>
@@ -295,11 +312,6 @@
       <trans-unit id="NoActionProfileName">
         <source>Start</source>
         <target state="translated">Inicio</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="JsonErrorNeedToBeCorrected">
-        <source>Errors in '{0}' need to be corrected before applying changes.</source>
-        <target state="translated">Los errores de '{0}' deben corregirse antes de aplicar los cambios.</target>
         <note />
       </trans-unit>
       <trans-unit id="MsBuildMissingValueToRemove">

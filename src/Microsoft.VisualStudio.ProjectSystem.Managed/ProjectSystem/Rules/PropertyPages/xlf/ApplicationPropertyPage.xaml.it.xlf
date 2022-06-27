@@ -12,16 +12,6 @@
         <target state="translated">Genera automaticamente reindirizzamenti di binding</target>
         <note />
       </trans-unit>
-      <trans-unit id="BoolProperty|IsPublishable|Description">
-        <source>Allow publishing outside of Visual Studio, such as via "dotnet publish".</source>
-        <target state="translated">Consentire la pubblicazione all'esterno di Visual Studio, ad esempio tramite "dotnet publish".</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="BoolProperty|IsPublishable|DisplayName">
-        <source>Publishing</source>
-        <target state="translated">Pubblicazione</target>
-        <note />
-      </trans-unit>
       <trans-unit id="BoolProperty|TargetMultipleFrameworks|Description">
         <source>Build this project for multiple target frameworks.</source>
         <target state="translated">Compila questo progetto per più framework di destinazione.</target>
@@ -60,26 +50,6 @@
       <trans-unit id="Category|General|DisplayName">
         <source>General</source>
         <target state="translated">Generale</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="Category|Packaging|Description">
-        <source>Packaging settings for the application.</source>
-        <target state="translated">Impostazioni di creazione pacchetti per l'applicazione.</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="Category|Packaging|DisplayName">
-        <source>Packaging</source>
-        <target state="translated">Creazione pacchetto</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="Category|Resources|Description">
-        <source>Resource settings for the application.</source>
-        <target state="translated">Impostazioni delle risorse per l'applicazione.</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="Category|Resources|DisplayName">
-        <source>Win32 Resources</source>
-        <target state="translated">Risorse Win32</target>
         <note />
       </trans-unit>
       <trans-unit id="DynamicEnumProperty|InterceptedTargetFramework|Description">
@@ -152,16 +122,6 @@
         <target state="translated">piattaforma</target>
         <note />
       </trans-unit>
-      <trans-unit id="EnumProperty|ApplicationManifestKind|Description">
-        <source>Selects a manifest generation option when the application runs on Windows Vista or later under User Account Control (UAC). Options include a default manifest, no manifest, or a custom manifest provided by your project.</source>
-        <target state="translated">Consente di selezionare un'opzione di generazione del manifesto quando l'applicazione viene eseguita in Windows Vista o versioni successive in Controllo dell'account utente. Le opzioni includono un manifesto predefinito, nessun manifesto o un manifesto personalizzato fornito dal progetto.</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="EnumProperty|ApplicationManifestKind|DisplayName">
-        <source>Manifest</source>
-        <target state="translated">Manifesto</target>
-        <note />
-      </trans-unit>
       <trans-unit id="EnumProperty|OutputType|Description">
         <source>Specifies the type of application to build.</source>
         <target state="translated">Specifica il tipo di applicazione da compilare.</target>
@@ -180,21 +140,6 @@
       <trans-unit id="EnumProperty|ResourceSpecificationKind|DisplayName">
         <source>Resources</source>
         <target state="translated">Risorse</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="EnumValue|ApplicationManifestKind.CustomManifest|DisplayName">
-        <source>Use a custom manifest</source>
-        <target state="translated">Usa un manifesto personalizzato</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="EnumValue|ApplicationManifestKind.DefaultManifest|DisplayName">
-        <source>Embed manifest with default settings</source>
-        <target state="translated">Incorpora manifesto con impostazioni predefinite</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="EnumValue|ApplicationManifestKind.NoManifest|DisplayName">
-        <source>Create application without a manifest</source>
-        <target state="translated">Crea applicazione senza manifesto</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|OutputType.Exe|DisplayName">
@@ -242,16 +187,6 @@
         <target state="translated">Icona</target>
         <note />
       </trans-unit>
-      <trans-unit id="StringProperty|ApplicationManifestPath|Description">
-        <source>The path to the custom manifest file.</source>
-        <target state="translated">Percorso del file manifesto personalizzato.</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="StringProperty|ApplicationManifestPath|DisplayName">
-        <source>Manifest path</source>
-        <target state="translated">Percorso del manifesto</target>
-        <note />
-      </trans-unit>
       <trans-unit id="StringProperty|AssemblyName|Description">
         <source>Specifies the name of the output file that will hold the assembly manifest.</source>
         <target state="translated">Specifica il nome del file di output che conterrà il manifesto dell'assembly.</target>
@@ -290,16 +225,6 @@
       <trans-unit id="StringProperty|TargetFrameworks|Metadata|SearchTerms">
         <source>TFM</source>
         <target state="translated">TFM</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="StringProperty|Win32Resource|Description">
-        <source>Specifies a resource file for the project.</source>
-        <target state="translated">Consente di specificare un file di risorse per il progetto.</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="StringProperty|Win32Resource|DisplayName">
-        <source>Resource file</source>
-        <target state="translated">File di risorse</target>
         <note />
       </trans-unit>
     </body>

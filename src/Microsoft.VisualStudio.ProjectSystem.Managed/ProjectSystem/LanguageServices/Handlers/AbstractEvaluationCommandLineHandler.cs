@@ -1,6 +1,7 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
 using Microsoft.VisualStudio.LanguageServices.ProjectSystem;
+using Microsoft.VisualStudio.ProjectSystem.Properties;
 using Microsoft.VisualStudio.ProjectSystem.VS;
 
 namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
@@ -9,7 +10,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
     ///     Responsible for coordinating changes and conflicts between evaluation and design-time builds, and pushing those changes
     ///     onto Roslyn via a <see cref="IWorkspaceProjectContext"/>.
     /// </summary>
-    internal abstract partial class AbstractEvaluationCommandLineHandler : AbstractWorkspaceContextHandler
+    internal abstract partial class AbstractEvaluationCommandLineHandler
     {
         // This class is not thread-safe, and the assumption is that the caller will make sure that project evaluations and builds (design-time) 
         // do not overlap inside the class at the same time.
@@ -103,21 +104,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
         ///     </para>
         ///     <paramref name="logger" /> is <see langword="null"/>.
         /// </exception>
-        public void ApplyProjectEvaluation(IComparable version, IProjectChangeDiff difference, IImmutableDictionary<string, IImmutableDictionary<string, string>> previousMetadata, IImmutableDictionary<string, IImmutableDictionary<string, string>> currentMetadata, bool isActiveContext, IProjectDiagnosticOutputService logger)
+        public void ApplyProjectEvaluation(IWorkspaceProjectContext context, IComparable version, IProjectChangeDiff difference, IImmutableDictionary<string, IImmutableDictionary<string, string>> previousMetadata, IImmutableDictionary<string, IImmutableDictionary<string, string>> currentMetadata, bool isActiveContext, IProjectDiagnosticOutputService logger)
         {
-            Requires.NotNull(version, nameof(version));
-            Requires.NotNull(difference, nameof(difference));
-            Requires.NotNull(previousMetadata, nameof(previousMetadata));
-            Requires.NotNull(currentMetadata, nameof(currentMetadata));
-            Requires.NotNull(logger, nameof(logger));
-
             if (!difference.AnyChanges)
                 return;
 
             difference = HandlerServices.NormalizeRenames(difference);
             EnqueueProjectEvaluation(version, difference);
 
-            ApplyChangesToContext(difference, previousMetadata, currentMetadata, isActiveContext, logger, evaluation: true);
+            ApplyChangesToContext(context, difference, previousMetadata, currentMetadata, isActiveContext, logger, evaluation: true);
         }
 
         /// <summary>
@@ -135,37 +130,51 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
         ///     </para>
         ///     <paramref name="logger" /> is <see langword="null"/>.
         /// </exception>
-        public void ApplyProjectBuild(IComparable version, IProjectChangeDiff difference, bool isActiveContext, IProjectDiagnosticOutputService logger)
+        public void ApplyProjectBuild(IWorkspaceProjectContext context, IComparable version, IProjectChangeDiff difference, bool isActiveContext, IProjectDiagnosticOutputService logger)
         {
-            Requires.NotNull(version, nameof(version));
-            Requires.NotNull(difference, nameof(difference));
-            Requires.NotNull(logger, nameof(logger));
-
             if (!difference.AnyChanges)
                 return;
 
             difference = HandlerServices.NormalizeRenames(difference);
             difference = ResolveProjectBuildConflicts(version, difference);
 
-            ApplyChangesToContext(difference, ImmutableStringDictionary<IImmutableDictionary<string, string>>.EmptyOrdinal, ImmutableStringDictionary<IImmutableDictionary<string, string>>.EmptyOrdinal, isActiveContext, logger, evaluation: false);
+            ApplyChangesToContext(context, difference, ImmutableStringDictionary<IImmutableDictionary<string, string>>.EmptyOrdinal, ImmutableStringDictionary<IImmutableDictionary<string, string>>.EmptyOrdinal, isActiveContext, logger, evaluation: false);
         }
 
-        protected abstract void AddToContext(string fullPath, IImmutableDictionary<string, string> metadata, bool isActiveContext, IProjectDiagnosticOutputService logger);
+        protected abstract void AddToContext(IWorkspaceProjectContext context, string fullPath, IImmutableDictionary<string, string> metadata, bool isActiveContext, IProjectDiagnosticOutputService logger);
 
-        protected abstract void RemoveFromContext(string fullPath, IProjectDiagnosticOutputService logger);
+        protected abstract void RemoveFromContext(IWorkspaceProjectContext context, string fullPath, IProjectDiagnosticOutputService logger);
 
-        protected abstract void UpdateInContext(string fullPath, IImmutableDictionary<string, string> previousMetadata, IImmutableDictionary<string, string> currentMetadata, bool isActiveContext, IProjectDiagnosticOutputService logger);
+        protected abstract void UpdateInContext(IWorkspaceProjectContext context, string fullPath, IImmutableDictionary<string, string> previousMetadata, IImmutableDictionary<string, string> currentMetadata, bool isActiveContext, IProjectDiagnosticOutputService logger);
 
-        private void ApplyChangesToContext(IProjectChangeDiff difference, IImmutableDictionary<string, IImmutableDictionary<string, string>> previousMetadata, IImmutableDictionary<string, IImmutableDictionary<string, string>> currentMetadata, bool isActiveContext, IProjectDiagnosticOutputService logger, bool evaluation)
+        private static bool IsItemInCurrentConfiguration(string includePath, IImmutableDictionary<string, IImmutableDictionary<string, string>> metadata)
+        {
+            if (metadata.TryGetValue(includePath, out IImmutableDictionary<string, string> itemMetadata)
+                && itemMetadata.GetBoolProperty(Compile.ExcludeFromCurrentConfigurationProperty) is true)
+            {
+                return false;
+            }
+
+            return true;
+        }
+
+        private void ApplyChangesToContext(IWorkspaceProjectContext context, IProjectChangeDiff difference, IImmutableDictionary<string, IImmutableDictionary<string, string>> previousMetadata, IImmutableDictionary<string, IImmutableDictionary<string, string>> currentMetadata, bool isActiveContext, IProjectDiagnosticOutputService logger, bool evaluation)
         {
             foreach (string includePath in difference.RemovedItems)
             {
-                RemoveFromContextIfPresent(includePath, logger);
+                RemoveFromContextIfPresent(context, includePath, logger);
             }
 
             foreach (string includePath in difference.AddedItems)
             {
-                AddToContextIfNotPresent(includePath, currentMetadata, isActiveContext, logger);
+                if (evaluation && !IsItemInCurrentConfiguration(includePath, currentMetadata))
+                {
+                    // The item is present in evaluation but contains metadata indicating it should be
+                    // ignored.
+                    continue;
+                }
+
+                AddToContextIfNotPresent(context, includePath, currentMetadata, isActiveContext, logger);
             }
 
             if (evaluation)
@@ -175,14 +184,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
 
                 foreach (string includePath in difference.ChangedItems)
                 {
-                    UpdateInContextIfPresent(includePath, previousMetadata, currentMetadata, isActiveContext, logger);
+                    UpdateInContextIfPresent(context, includePath, previousMetadata, currentMetadata, isActiveContext, logger);
+
+                    // TODO: Check for changes in the metadata indicating if we should ignore the file
+                    // in the current configuration.
                 }
             }
 
             Assumes.True(difference.RenamedItems.Count == 0, "We should have normalized renames.");
         }
 
-        private void RemoveFromContextIfPresent(string includePath, IProjectDiagnosticOutputService logger)
+        private void RemoveFromContextIfPresent(IWorkspaceProjectContext context, string includePath, IProjectDiagnosticOutputService logger)
         {
             string fullPath = _project.MakeRooted(includePath);
 
@@ -190,13 +202,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
             {
                 // Remove from the context first so if Roslyn throws due to a bug 
                 // or other reason, that our state of the world remains consistent
-                RemoveFromContext(fullPath, logger);
+                RemoveFromContext(context, fullPath, logger);
                 bool removed = _paths.Remove(fullPath);
                 Assumes.True(removed);
             }
         }
 
-        private void AddToContextIfNotPresent(string includePath, IImmutableDictionary<string, IImmutableDictionary<string, string>> metadata, bool isActiveContext, IProjectDiagnosticOutputService logger)
+        private void AddToContextIfNotPresent(IWorkspaceProjectContext context, string includePath, IImmutableDictionary<string, IImmutableDictionary<string, string>> metadata, bool isActiveContext, IProjectDiagnosticOutputService logger)
         {
             string fullPath = _project.MakeRooted(includePath);
 
@@ -206,13 +218,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
 
                 // Add to the context first so if Roslyn throws due to a bug or
                 // other reason, that our state of the world remains consistent
-                AddToContext(fullPath, itemMetadata, isActiveContext, logger);
+                AddToContext(context, fullPath, itemMetadata, isActiveContext, logger);
                 bool added = _paths.Add(fullPath);
                 Assumes.True(added);
             }
         }
 
-        private void UpdateInContextIfPresent(string includePath, IImmutableDictionary<string, IImmutableDictionary<string, string>> previousMetadata, IImmutableDictionary<string, IImmutableDictionary<string, string>> currentMetadata, bool isActiveContext, IProjectDiagnosticOutputService logger)
+        private void UpdateInContextIfPresent(IWorkspaceProjectContext context, string includePath, IImmutableDictionary<string, IImmutableDictionary<string, string>> previousMetadata, IImmutableDictionary<string, IImmutableDictionary<string, string>> currentMetadata, bool isActiveContext, IProjectDiagnosticOutputService logger)
         {
             string fullPath = _project.MakeRooted(includePath);
 
@@ -221,7 +233,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
                 IImmutableDictionary<string, string> previousItemMetadata = previousMetadata.GetValueOrDefault(includePath, ImmutableStringDictionary<string>.EmptyOrdinal);
                 IImmutableDictionary<string, string> currentItemMetadata = currentMetadata.GetValueOrDefault(includePath, ImmutableStringDictionary<string>.EmptyOrdinal);
 
-                UpdateInContext(fullPath, previousItemMetadata, currentItemMetadata, isActiveContext, logger);
+                UpdateInContext(context, fullPath, previousItemMetadata, currentItemMetadata, isActiveContext, logger);
             }
         }
 

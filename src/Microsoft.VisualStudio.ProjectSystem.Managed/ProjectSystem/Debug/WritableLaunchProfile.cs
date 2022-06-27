@@ -1,7 +1,5 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
-using Microsoft.VisualStudio.Collections;
-
 namespace Microsoft.VisualStudio.ProjectSystem.Debug
 {
     /// <summary>
@@ -11,6 +9,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
     {
         public WritableLaunchProfile()
         {
+            EnvironmentVariables = new(StringComparers.EnvironmentVariableNames);
+            OtherSettings = new(StringComparers.LaunchSettingsPropertyNames);
         }
 
         public WritableLaunchProfile(ILaunchProfile profile)
@@ -24,15 +24,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             LaunchUrl = profile.LaunchUrl;
             DoNotPersist = profile.IsInMemoryObject();
 
-            if (profile.EnvironmentVariables != null)
-            {
-                EnvironmentVariables = new Dictionary<string, string>(profile.EnvironmentVariables, StringComparer.Ordinal);
-            }
-
-            if (profile.OtherSettings != null)
-            {
-                OtherSettings = new Dictionary<string, object>(profile.OtherSettings, StringComparers.LaunchProfileProperties);
-            }
+            EnvironmentVariables = profile.GetEnvironmentVariablesDictionary() ?? new(StringComparers.EnvironmentVariableNames);
+            OtherSettings = profile.GetOtherSettingsDictionary() ?? new(StringComparers.LaunchSettingsPropertyNames);
         }
 
         public string? Name { get; set; }
@@ -43,46 +36,39 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         public bool LaunchBrowser { get; set; }
         public string? LaunchUrl { get; set; }
         public bool DoNotPersist { get; set; }
+        public Dictionary<string, string> EnvironmentVariables { get; }
+        public Dictionary<string, object> OtherSettings { get; }
 
-        public Dictionary<string, string> EnvironmentVariables { get; } = new Dictionary<string, string>(StringComparer.Ordinal);
-
-        public Dictionary<string, object> OtherSettings { get; } = new Dictionary<string, object>(StringComparers.LaunchProfileProperties);
-
-        /// <summary>
-        /// Converts back to the immutable form
-        /// </summary>
         public ILaunchProfile ToLaunchProfile()
         {
-            return new LaunchProfile(this);
-        }
+            return new LaunchProfile(
+                name: Name,
+                executablePath: ExecutablePath,
+                commandName: CommandName,
+                commandLineArgs: CommandLineArgs,
+                workingDirectory: WorkingDirectory,
+                launchBrowser: LaunchBrowser,
+                launchUrl: LaunchUrl,
+                environmentVariables: Flatten(EnvironmentVariables),
+                otherSettings: Flatten(OtherSettings),
+                doNotPersist: DoNotPersist);
 
-        /// <summary>
-        /// Compares two IWritableLaunchProfile to see if they contain the same values.
-        /// </summary>
-        public static bool ProfilesAreEqual(IWritableLaunchProfile debugProfile1, IWritableLaunchProfile debugProfile2)
-        {
-            // Same instance are equal
-            if (ReferenceEquals(debugProfile1, debugProfile2))
+            static ImmutableArray<(string, T)> Flatten<T>(Dictionary<string, T>? dictionary)
             {
-                return true;
-            }
+                if (dictionary is null)
+                {
+                    return ImmutableArray<(string, T)>.Empty;
+                }
 
-            if (!string.Equals(debugProfile1.Name, debugProfile2.Name, StringComparisons.LaunchProfileProperties) ||
-               !string.Equals(debugProfile1.CommandName, debugProfile2.CommandName, StringComparisons.LaunchProfileCommandNames) ||
-               !string.Equals(debugProfile1.ExecutablePath, debugProfile2.ExecutablePath, StringComparisons.LaunchProfileProperties) ||
-               !string.Equals(debugProfile1.CommandLineArgs, debugProfile2.CommandLineArgs, StringComparisons.LaunchProfileProperties) ||
-               !string.Equals(debugProfile1.WorkingDirectory, debugProfile2.WorkingDirectory, StringComparisons.LaunchProfileProperties) ||
-               !string.Equals(debugProfile1.LaunchUrl, debugProfile2.LaunchUrl, StringComparisons.LaunchProfileProperties) ||
-               debugProfile1.LaunchBrowser != debugProfile2.LaunchBrowser ||
-               !DictionaryEqualityComparer<string, object>.Instance.Equals(debugProfile1.OtherSettings.ToImmutableDictionary(), debugProfile2.OtherSettings.ToImmutableDictionary()) ||
-               !DictionaryEqualityComparer<string, string>.Instance.Equals(debugProfile1.EnvironmentVariables.ToImmutableDictionary(), debugProfile2.EnvironmentVariables.ToImmutableDictionary())
-               )
-            {
-                return false;
-            }
+                ImmutableArray<(string, T)>.Builder builder = ImmutableArray.CreateBuilder<(string, T)>(dictionary.Count);
 
-            // Compare in-memory states
-            return debugProfile1.IsInMemoryObject() == debugProfile2.IsInMemoryObject();
+                foreach ((string key, T value) in dictionary)
+                {
+                    builder.Add(new(key, value));
+                }
+
+                return builder.MoveToImmutable();
+            }
         }
     }
 }

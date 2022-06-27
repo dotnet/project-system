@@ -313,11 +313,11 @@ namespace Microsoft.VisualStudio {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to WARNING: Potential incremental build failure in &apos;{0}&apos;. See: https://aka.ms/incremental-build-failure.
+        ///   Looks up a localized string similar to WARNING: Potential incremental build failure in &apos;{0}&apos;. {1}. See https://aka.ms/incremental-build-failure..
         /// </summary>
-        internal static string IncrementalBuildFailureWarningMessage {
+        internal static string IncrementalBuildFailureWarningMessage_2 {
             get {
-                return ResourceManager.GetString("IncrementalBuildFailureWarningMessage", resourceCulture);
+                return ResourceManager.GetString("IncrementalBuildFailureWarningMessage_2", resourceCulture);
             }
         }
         
@@ -358,7 +358,7 @@ namespace Microsoft.VisualStudio {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to {0}: Attaching to process &apos;{1}&apos;..
+        ///   Looks up a localized string similar to Attaching to process..
         /// </summary>
         internal static string ProjectHotReloadSessionManager_AttachingToProcess {
             get {
@@ -367,20 +367,8 @@ namespace Microsoft.VisualStudio {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to {0}: Error while attaching to process &apos;{1}&apos;:
-        ///{2}
-        ///{3}.
-        /// </summary>
-        internal static string ProjectHotReloadSessionManager_ErrorAttachingToProcess {
-            get {
-                return ResourceManager.GetString("ProjectHotReloadSessionManager_ErrorAttachingToProcess", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to {0}: Error while stopping the session:
-        ///{1}
-        ///{2}.
+        ///   Looks up a localized string similar to Error while stopping the session: {0}
+        ///{1}.
         /// </summary>
         internal static string ProjectHotReloadSessionManager_ErrorStoppingTheSession {
             get {
@@ -389,7 +377,7 @@ namespace Microsoft.VisualStudio {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to {0}: Unable to start Hot Reload session: no active process..
+        ///   Looks up a localized string similar to Unable to start Hot Reload session: no active process..
         /// </summary>
         internal static string ProjectHotReloadSessionManager_NoActiveProcess {
             get {
@@ -398,7 +386,7 @@ namespace Microsoft.VisualStudio {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to {0}: The process has already exited..
+        ///   Looks up a localized string similar to The process has already exited..
         /// </summary>
         internal static string ProjectHotReloadSessionManager_ProcessAlreadyExited {
             get {
@@ -407,7 +395,7 @@ namespace Microsoft.VisualStudio {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to {0}: The process has exited..
+        ///   Looks up a localized string similar to The process has exited..
         /// </summary>
         internal static string ProjectHotReloadSessionManager_ProcessExited {
             get {
@@ -416,7 +404,7 @@ namespace Microsoft.VisualStudio {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to {0}: Hot Reload is not available because startup hooks have been disabled, possibly due to trimming..
+        ///   Looks up a localized string similar to Hot Reload is not available because startup hooks have been disabled, possibly due to trimming..
         /// </summary>
         internal static string ProjectHotReloadSessionManager_StartupHooksDisabled {
             get {
@@ -540,6 +528,24 @@ namespace Microsoft.VisualStudio {
         internal static string WorkingDirecotryInvalid {
             get {
                 return ResourceManager.GetString("WorkingDirecotryInvalid", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Could not find the expected root element &quot;{0}&quot; in the application definition file..
+        /// </summary>
+        internal static string WPFApp_Xaml_CouldntFindRootElement_1 {
+            get {
+                return ResourceManager.GetString("WPFApp_Xaml_CouldntFindRootElement_1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The .xaml file was in an unexpected format, near line {0} column {1}..
+        /// </summary>
+        internal static string WPFApp_Xaml_UnexpectedFormat_2 {
+            get {
+                return ResourceManager.GetString("WPFApp_Xaml_UnexpectedFormat_2", resourceCulture);
             }
         }
         

@@ -3,7 +3,7 @@
 namespace Microsoft.VisualStudio.ProjectSystem.Debug
 {
     /// <summary>
-    /// Interface definition for a profile
+    /// Models immutable data about a launch profile.
     /// </summary>
     public interface ILaunchProfile
     {

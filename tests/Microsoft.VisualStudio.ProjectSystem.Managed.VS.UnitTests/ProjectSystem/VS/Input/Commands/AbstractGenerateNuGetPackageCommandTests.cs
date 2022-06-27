@@ -44,9 +44,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
             var solutionEventsListener = IVsUpdateSolutionEventsFactory.Create(onUpdateSolutionBegin, onUpdateSolutionCancel, onUpdateSolutionDone);
             var command = CreateInstance(solutionEventsListener: solutionEventsListener);
 
-            var tree = ProjectTreeParser.Parse(@"
-Root (flags: {ProjectRoot})
-");
+            var tree = ProjectTreeParser.Parse("Root (flags: {ProjectRoot})");
 
             var nodes = ImmutableHashSet.Create(tree.Root);
 
@@ -70,9 +68,7 @@ Root (flags: {ProjectRoot})
             var solutionEventsListener = IVsUpdateSolutionEventsFactory.Create(onUpdateSolutionBegin, onUpdateSolutionCancel, onUpdateSolutionDone);
             var command = CreateInstance(solutionEventsListener: solutionEventsListener, cancelBuild: true);
 
-            var tree = ProjectTreeParser.Parse(@"
-Root (flags: {ProjectRoot})
-");
+            var tree = ProjectTreeParser.Parse("Root (flags: {ProjectRoot})");
 
             var nodes = ImmutableHashSet.Create(tree.Root);
 
@@ -87,9 +83,7 @@ Root (flags: {ProjectRoot})
         [Fact]
         public async Task GetCommandStatusAsync_BuildInProgress()
         {
-            var tree = ProjectTreeParser.Parse(@"
-Root (flags: {ProjectRoot})
-");
+            var tree = ProjectTreeParser.Parse("Root (flags: {ProjectRoot})");
 
             var nodes = ImmutableHashSet.Create(tree.Root);
 
@@ -109,9 +103,7 @@ Root (flags: {ProjectRoot})
         [Fact]
         public async Task TryHandleCommandAsync_BuildInProgress()
         {
-            var tree = ProjectTreeParser.Parse(@"
-Root (flags: {ProjectRoot})
-");
+            var tree = ProjectTreeParser.Parse("Root (flags: {ProjectRoot})");
 
             var nodes = ImmutableHashSet.Create(tree.Root);
 

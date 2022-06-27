@@ -41,6 +41,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build.Diagnostics
     {
         private readonly ISolutionBuildManager _solutionBuildEvents;
         private readonly IRunningDocumentTable _rdtEvents;
+        private readonly IProjectServiceAccessor _projectServiceAccessor;
 
         private IAsyncDisposable? _solutionBuildEventsSubscription;
         private IAsyncDisposable? _rdtEventsSubscription;
@@ -52,11 +53,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build.Diagnostics
         public IncrementalBuildFailureDetector(
             ISolutionBuildManager solutionBuildEvents,
             IRunningDocumentTable rdtEvents,
+            IProjectServiceAccessor projectServiceAccessor,
             JoinableTaskContext joinableTaskContext)
             : base(new(joinableTaskContext))
         {
             _solutionBuildEvents = solutionBuildEvents;
             _rdtEvents = rdtEvents;
+            _projectServiceAccessor = projectServiceAccessor;
         }
 
         async Task IPackageService.InitializeAsync(IAsyncServiceProvider _)
@@ -84,18 +87,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build.Diagnostics
         {
             if (initialized)
             {
-                Assumes.NotNull(_solutionBuildEvents);
+                Assumes.NotNull(_solutionBuildEventsSubscription);
                 Assumes.NotNull(_rdtEventsSubscription);
 
-                if (_solutionBuildEventsSubscription is not null)
-                {
-                    await _solutionBuildEventsSubscription.DisposeAsync();
-                }
+                // Switch the UI thread once here, rather than once per dispose below
+                await JoinableFactory.SwitchToMainThreadAsync();
 
-                if (_rdtEventsSubscription is not null)
-                {
-                    await _rdtEventsSubscription.DisposeAsync();
-                }
+                await _solutionBuildEventsSubscription.DisposeAsync();
+                await _rdtEventsSubscription.DisposeAsync();
             }
         }
 
@@ -117,7 +116,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build.Diagnostics
 
                 if (IsRelevantBuild(dwAction))
                 {
-                    IProjectChecker? checker = pHierProj.AsUnconfiguredProject()?.Services.ExportProvider.GetExportedValueOrDefault<IProjectChecker>();
+                    UnconfiguredProject? unconfiguredProject = _projectServiceAccessor.GetProjectService().GetUnconfiguredProject(pHierProj, appliesToExpression: BuildUpToDateCheck.AppliesToExpression);
+
+                    IProjectChecker? checker = unconfiguredProject?.Services.ExportProvider.GetExportedValueOrDefault<IProjectChecker>();
 
                     checker?.OnProjectBuildCompleted();
                 }

@@ -9,27 +9,28 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         {
             var profiles = new List<LaunchProfile>()
             {
-                new LaunchProfile(){Name="abc", CommandLineArgs="test"},
-                new LaunchProfile(){Name="def"},
-                new LaunchProfile(){Name="ghi"},
-                new LaunchProfile(){Name="foo"},
-            };
-            var globals = new Dictionary<string, object>()
-            {
-                {"var1", true },
-                {"var2", "some string" }
+                new LaunchProfile("abc", null, commandLineArgs: "test"),
+                new LaunchProfile("def", null),
+                new LaunchProfile("ghi", null),
+                new LaunchProfile("foo", null),
             };
 
-            var settings = new LaunchSettings(profiles, null, null);
-            Assert.True(settings.ActiveProfile!.Name == "abc");
+            var globals = ImmutableDictionary<string, object>.Empty
+                .Add("var1", true)
+                .Add("var2", "some string");
+
+            var settings = new LaunchSettings(profiles);
+            Assert.NotNull(settings.ActiveProfile);
+            Assert.True(settings.ActiveProfile.Name == "abc");
             Assert.Equal(profiles.Count, settings.Profiles.Count);
             Assert.Empty(settings.GlobalSettings);
 
-            settings = new LaunchSettings(profiles, null, "ghi");
-            Assert.True(settings.ActiveProfile!.Name == "ghi");
+            settings = new LaunchSettings(profiles, activeProfileName: "ghi");
+            Assert.NotNull(settings.ActiveProfile);
+            Assert.True(settings.ActiveProfile.Name == "ghi");
 
             // Test 
-            settings = new LaunchSettings(profiles, globals, "foo");
+            settings = new LaunchSettings(profiles, globals, activeProfileName: "foo");
             Assert.Equal(globals.Count, settings.GlobalSettings.Count);
         }
     }

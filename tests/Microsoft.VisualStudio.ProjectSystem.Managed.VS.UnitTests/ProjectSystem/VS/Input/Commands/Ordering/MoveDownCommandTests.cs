@@ -11,11 +11,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.Ordering
         {
             var command = CreateAbstractInstance();
 
-            var tree = ProjectTreeParser.Parse(@"
-Root (flags: {ProjectRoot}), FilePath: ""C:\Foo\testing.fsproj""
-    File (flags: {}), FilePath: ""C:\Foo\test1.fs"", DisplayOrder: 1
-    File (flags: {}), FilePath: ""C:\Foo\test2.fs"", DisplayOrder: 2
-");
+            var tree = ProjectTreeParser.Parse(
+                """
+                Root (flags: {ProjectRoot}), FilePath: "C:\Foo\testing.fsproj"
+                    File (flags: {}), FilePath: "C:\Foo\test1.fs", DisplayOrder: 1
+                    File (flags: {}), FilePath: "C:\Foo\test2.fs", DisplayOrder: 2
+                """);
 
             var nodes = ImmutableHashSet.Create(tree.Children[0]); // test1.fs
 
@@ -30,11 +31,12 @@ Root (flags: {ProjectRoot}), FilePath: ""C:\Foo\testing.fsproj""
         {
             var command = CreateAbstractInstance();
 
-            var tree = ProjectTreeParser.Parse(@"
-Root (flags: {ProjectRoot}), FilePath: ""C:\Foo\testing.fsproj""
-    File (flags: {}), FilePath: ""C:\Foo\test1.fs"", DisplayOrder: 1
-    File (flags: {}), FilePath: ""C:\Foo\test2.fs"", DisplayOrder: 2
-");
+            var tree = ProjectTreeParser.Parse(
+                """
+                Root (flags: {ProjectRoot}), FilePath: "C:\Foo\testing.fsproj"
+                    File (flags: {}), FilePath: "C:\Foo\test1.fs", DisplayOrder: 1
+                    File (flags: {}), FilePath: "C:\Foo\test2.fs", DisplayOrder: 2
+                """);
 
             var nodes = ImmutableHashSet.Create(tree.Children[1]); // test2.fs
 
@@ -49,14 +51,15 @@ Root (flags: {ProjectRoot}), FilePath: ""C:\Foo\testing.fsproj""
         {
             var command = CreateAbstractInstance();
 
-            var tree = ProjectTreeParser.Parse(@"
-Root (flags: {ProjectRoot}), FilePath: ""C:\Foo\testing.fsproj""
-    File (flags: {}), FilePath: ""C:\Foo\test1.fs"", DisplayOrder: 1
-    File (flags: {}), FilePath: ""C:\Foo\test2.fs"", DisplayOrder: 2
-    Folder (flags: {Folder}), DisplayOrder: 3
-        File (flags: {}), FilePath: ""C:\Foo\test3.fs"", DisplayOrder: 4
-        File (flags: {}), FilePath: ""C:\Foo\test4.fs"", DisplayOrder: 5
-");
+            var tree = ProjectTreeParser.Parse(
+                """
+                Root (flags: {ProjectRoot}), FilePath: "C:\Foo\testing.fsproj"
+                    File (flags: {}), FilePath: "C:\Foo\test1.fs", DisplayOrder: 1
+                    File (flags: {}), FilePath: "C:\Foo\test2.fs", DisplayOrder: 2
+                    Folder (flags: {Folder}), DisplayOrder: 3
+                        File (flags: {}), FilePath: "C:\Foo\test3.fs", DisplayOrder: 4
+                        File (flags: {}), FilePath: "C:\Foo\test4.fs", DisplayOrder: 5
+                """);
 
             var nodes = ImmutableHashSet.Create(tree.Children[2].Children[0]); // test3.fs
 
@@ -71,14 +74,15 @@ Root (flags: {ProjectRoot}), FilePath: ""C:\Foo\testing.fsproj""
         {
             var command = CreateAbstractInstance();
 
-            var tree = ProjectTreeParser.Parse(@"
-Root (flags: {ProjectRoot}), FilePath: ""C:\Foo\testing.fsproj""
-    File (flags: {}), FilePath: ""C:\Foo\test1.fs"", DisplayOrder: 1
-    File (flags: {}), FilePath: ""C:\Foo\test2.fs"", DisplayOrder: 2
-    Folder (flags: {Folder}), DisplayOrder: 3
-        File (flags: {}), FilePath: ""C:\Foo\test3.fs"", DisplayOrder: 4
-        File (flags: {}), FilePath: ""C:\Foo\test4.fs"", DisplayOrder: 5
-");
+            var tree = ProjectTreeParser.Parse(
+                """
+                Root (flags: {ProjectRoot}), FilePath: "C:\Foo\testing.fsproj"
+                    File (flags: {}), FilePath: "C:\Foo\test1.fs", DisplayOrder: 1
+                    File (flags: {}), FilePath: "C:\Foo\test2.fs", DisplayOrder: 2
+                    Folder (flags: {Folder}), DisplayOrder: 3
+                        File (flags: {}), FilePath: "C:\Foo\test3.fs", DisplayOrder: 4
+                        File (flags: {}), FilePath: "C:\Foo\test4.fs", DisplayOrder: 5
+                """);
 
             var nodes = ImmutableHashSet.Create(tree.Children[2].Children[1]); // test4.fs
 
@@ -93,17 +97,18 @@ Root (flags: {ProjectRoot}), FilePath: ""C:\Foo\testing.fsproj""
         {
             var command = CreateAbstractInstance();
 
-            var tree = ProjectTreeParser.Parse(@"
-Root (flags: {ProjectRoot}), FilePath: ""C:\Foo\testing.fsproj""
-    File (flags: {}), FilePath: ""C:\Foo\test1.fs"", DisplayOrder: 1
-    File (flags: {}), FilePath: ""C:\Foo\test2.fs"", DisplayOrder: 2
-    Folder (flags: {Folder}), DisplayOrder: 3
-        File (flags: {}), FilePath: ""C:\Foo\test3.fs"", DisplayOrder: 4
-        File (flags: {}), FilePath: ""C:\Foo\test4.fs"", DisplayOrder: 5
-    Folder (flags: {Folder}), DisplayOrder: 6
-        File (flags: {}), FilePath: ""C:\Foo\test5.fs"", DisplayOrder: 7
-        File (flags: {}), FilePath: ""C:\Foo\test6.fs"", DisplayOrder: 8
-");
+            var tree = ProjectTreeParser.Parse(
+                """
+                Root (flags: {ProjectRoot}), FilePath: "C:\Foo\testing.fsproj"
+                    File (flags: {}), FilePath: "C:\Foo\test1.fs", DisplayOrder: 1
+                    File (flags: {}), FilePath: "C:\Foo\test2.fs", DisplayOrder: 2
+                    Folder (flags: {Folder}), DisplayOrder: 3
+                        File (flags: {}), FilePath: "C:\Foo\test3.fs", DisplayOrder: 4
+                        File (flags: {}), FilePath: "C:\Foo\test4.fs", DisplayOrder: 5
+                    Folder (flags: {Folder}), DisplayOrder: 6
+                        File (flags: {}), FilePath: "C:\Foo\test5.fs", DisplayOrder: 7
+                        File (flags: {}), FilePath: "C:\Foo\test6.fs", DisplayOrder: 8
+                """);
 
             var nodes = ImmutableHashSet.Create(tree.Children[2]); // first folder
 
@@ -118,17 +123,18 @@ Root (flags: {ProjectRoot}), FilePath: ""C:\Foo\testing.fsproj""
         {
             var command = CreateAbstractInstance();
 
-            var tree = ProjectTreeParser.Parse(@"
-Root (flags: {ProjectRoot}), FilePath: ""C:\Foo\testing.fsproj""
-    Folder (flags: {Folder}), DisplayOrder: 1
-        File (flags: {}), FilePath: ""C:\Foo\test3.fs"", DisplayOrder: 2
-        File (flags: {}), FilePath: ""C:\Foo\test4.fs"", DisplayOrder: 3
-    File (flags: {}), FilePath: ""C:\Foo\test1.fs"", DisplayOrder: 4
-    File (flags: {}), FilePath: ""C:\Foo\test2.fs"", DisplayOrder: 5
-    Folder (flags: {Folder}), DisplayOrder: 6
-        File (flags: {}), FilePath: ""C:\Foo\test5.fs"", DisplayOrder: 7
-        File (flags: {}), FilePath: ""C:\Foo\test6.fs"", DisplayOrder: 8
-");
+            var tree = ProjectTreeParser.Parse(
+                """
+                Root (flags: {ProjectRoot}), FilePath: "C:\Foo\testing.fsproj"
+                    Folder (flags: {Folder}), DisplayOrder: 1
+                        File (flags: {}), FilePath: "C:\Foo\test3.fs", DisplayOrder: 2
+                        File (flags: {}), FilePath: "C:\Foo\test4.fs", DisplayOrder: 3
+                    File (flags: {}), FilePath: "C:\Foo\test1.fs", DisplayOrder: 4
+                    File (flags: {}), FilePath: "C:\Foo\test2.fs", DisplayOrder: 5
+                    Folder (flags: {Folder}), DisplayOrder: 6
+                        File (flags: {}), FilePath: "C:\Foo\test5.fs", DisplayOrder: 7
+                        File (flags: {}), FilePath: "C:\Foo\test6.fs", DisplayOrder: 8
+                """);
 
             var nodes = ImmutableHashSet.Create(tree.Children[0]); // first folder
 
@@ -143,15 +149,16 @@ Root (flags: {ProjectRoot}), FilePath: ""C:\Foo\testing.fsproj""
         {
             var command = CreateAbstractInstance();
 
-            var tree = ProjectTreeParser.Parse(@"
-Root (flags: {ProjectRoot}), FilePath: ""C:\Foo\testing.fsproj""
-    Folder (flags: {Folder}), DisplayOrder: 1
-        File (flags: {}), FilePath: ""C:\Foo\test3.fs"", DisplayOrder: 2
-        File (flags: {}), FilePath: ""C:\Foo\test4.fs"", DisplayOrder: 3
-    Folder (flags: {Folder}), DisplayOrder: 4
-        File (flags: {}), FilePath: ""C:\Foo\test5.fs"", DisplayOrder: 5
-        File (flags: {}), FilePath: ""C:\Foo\test6.fs"", DisplayOrder: 6
-");
+            var tree = ProjectTreeParser.Parse(
+                """
+                Root (flags: {ProjectRoot}), FilePath: "C:\Foo\testing.fsproj"
+                    Folder (flags: {Folder}), DisplayOrder: 1
+                        File (flags: {}), FilePath: "C:\Foo\test3.fs", DisplayOrder: 2
+                        File (flags: {}), FilePath: "C:\Foo\test4.fs", DisplayOrder: 3
+                    Folder (flags: {Folder}), DisplayOrder: 4
+                        File (flags: {}), FilePath: "C:\Foo\test5.fs", DisplayOrder: 5
+                        File (flags: {}), FilePath: "C:\Foo\test6.fs", DisplayOrder: 6
+                """);
 
             var nodes = ImmutableHashSet.Create(tree.Children[1]); // second folder
 

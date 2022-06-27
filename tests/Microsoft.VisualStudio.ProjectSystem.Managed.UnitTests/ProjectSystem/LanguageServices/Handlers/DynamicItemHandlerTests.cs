@@ -4,7 +4,7 @@ using Microsoft.VisualStudio.LanguageServices.ProjectSystem;
 
 namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
 {
-    public class DynamicItemHandlerTests : SourceItemsHandlerTestBase
+    public class DynamicItemHandlerTests
     {
         [Fact]
         public void Handle_RazorAndCshtmlFiles_AddsToContext()
@@ -15,18 +15,21 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
             var project = UnconfiguredProjectFactory.Create(fullPath: @"C:\Myproject.csproj");
             var context = IWorkspaceProjectContextMockFactory.CreateForDynamicFiles(project, onDynamicFileAdded);
 
-            var handler = CreateInstance(project, context);
+            var handler = new DynamicItemHandler(project);
 
             var projectChanges = ImmutableDictionary<string, IProjectChangeDescription>.Empty.Add(
-                "None", IProjectChangeDescriptionFactory.FromJson(
-@"{
-    ""Difference"": { 
-        ""AnyChanges"": true,
-        ""AddedItems"": [ ""File1.razor"", ""File1.cshtml"", ""File1.cs"" ]
-    }
-}"));
+                "None",
+                IProjectChangeDescriptionFactory.FromJson(
+                    """
+                    {
+                        "Difference": { 
+                            "AnyChanges": true,
+                            "AddedItems": [ "File1.razor", "File1.cshtml", "File1.cs" ]
+                        }
+                    }
+                    """));
 
-            Handle(handler, projectChanges);
+            handler.Handle(context, 1, projectChanges, new ContextState(), IProjectDiagnosticOutputServiceFactory.Create());
 
             Assert.Equal(2, dynamicFiles.Count);
             Assert.Contains(@"C:\File1.razor", dynamicFiles);
@@ -42,25 +45,33 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
             var project = UnconfiguredProjectFactory.Create(fullPath: @"C:\Myproject.csproj");
             var context = IWorkspaceProjectContextMockFactory.CreateForDynamicFiles(project, onDynamicFileAdded);
 
-            var handler = CreateInstance(project, context);
+            var handler = new DynamicItemHandler(project);
 
-            var projectChanges = ImmutableDictionary<string, IProjectChangeDescription>.Empty.Add(
-                "None", IProjectChangeDescriptionFactory.FromJson(
-@"{
-    ""Difference"": { 
-        ""AnyChanges"": true,
-        ""AddedItems"": [ ""File1.razor"", ""File1.cs"" ]
-    }
-}")).Add(
-                "Content", IProjectChangeDescriptionFactory.FromJson(
-@"{
-    ""Difference"": { 
-        ""AnyChanges"": true,
-        ""AddedItems"": [ ""File1.cshtml"", ""File2.cs"" ]
-    }
-}"));
+            var projectChanges = ImmutableDictionary<string, IProjectChangeDescription>.Empty
+                .Add(
+                    "None",
+                    IProjectChangeDescriptionFactory.FromJson(
+                        """
+                        {
+                            "Difference": { 
+                                "AnyChanges": true,
+                                "AddedItems": [ "File1.razor", "File1.cs" ]
+                            }
+                        }
+                        """))
+                .Add(
+                    "Content",
+                    IProjectChangeDescriptionFactory.FromJson(
+                        """
+                        {
+                            "Difference": { 
+                                "AnyChanges": true,
+                                "AddedItems": [ "File1.cshtml", "File2.cs" ]
+                            }
+                        }
+                        """));
 
-            Handle(handler, projectChanges);
+            handler.Handle(context, 1, projectChanges, new ContextState(), IProjectDiagnosticOutputServiceFactory.Create());
 
             Assert.Equal(2, dynamicFiles.Count);
             Assert.Contains(@"C:\File1.razor", dynamicFiles);
@@ -76,45 +87,37 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
             var project = UnconfiguredProjectFactory.Create(fullPath: @"C:\Myproject.csproj");
             var context = IWorkspaceProjectContextMockFactory.CreateForDynamicFiles(project, onDynamicFileAdded);
 
-            var handler = CreateInstance(project, context);
+            var handler = new DynamicItemHandler(project);
 
-            var projectChanges = ImmutableDictionary<string, IProjectChangeDescription>.Empty.Add(
-                "None", IProjectChangeDescriptionFactory.FromJson(
-@"{
-    ""Difference"": { 
-        ""AnyChanges"": true,
-        ""AddedItems"": [ ""File1.razor"", ""File1.cs"" ]
-    }
-}")).Add(
-                "Content", IProjectChangeDescriptionFactory.FromJson(
-@"{
-    ""Difference"": { 
-        ""AnyChanges"": true,
-        ""AddedItems"": [ ""File1.razor"", ""File1.cshtml"", ""File2.cs"" ]
-    }
-}"));
+            var projectChanges = ImmutableDictionary<string, IProjectChangeDescription>.Empty
+                .Add(
+                    "None",
+                    IProjectChangeDescriptionFactory.FromJson(
+                        """
+                        {
+                            "Difference": { 
+                                "AnyChanges": true,
+                                "AddedItems": [ "File1.razor", "File1.cs" ]
+                            }
+                        }
+                        """))
+                .Add(
+                    "Content",
+                    IProjectChangeDescriptionFactory.FromJson(
+                        """
+                        {
+                            "Difference": { 
+                                "AnyChanges": true,
+                                "AddedItems": [ "File1.razor", "File1.cshtml", "File2.cs" ]
+                            }
+                        }
+                        """));
 
-            Handle(handler, projectChanges);
+            handler.Handle(context, 1, projectChanges, new ContextState(), IProjectDiagnosticOutputServiceFactory.Create());
 
             Assert.Equal(2, dynamicFiles.Count);
             Assert.Contains(@"C:\File1.razor", dynamicFiles);
             Assert.Contains(@"C:\File1.cshtml", dynamicFiles);
-        }
-
-        internal override ISourceItemsHandler CreateInstance()
-        {
-            return CreateInstance(null, null);
-        }
-
-        private static DynamicItemHandler CreateInstance(UnconfiguredProject? project = null, IWorkspaceProjectContext? context = null)
-        {
-            project ??= UnconfiguredProjectFactory.Create();
-
-            var handler = new DynamicItemHandler(project);
-            if (context != null)
-                handler.Initialize(context);
-
-            return handler;
         }
     }
 }

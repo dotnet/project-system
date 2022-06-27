@@ -8,13 +8,14 @@ namespace Microsoft.VisualStudio.ProjectSystem
     ///     Tracks the set of missing workload packs and SDK runtimes the .NET projects in a solution
     ///     need to improve the development experience.
     /// </summary>
+    [ProjectSystemContract(ProjectSystemContractScope.ProjectService, ProjectSystemContractProvider.Private)]
     internal interface IMissingSetupComponentRegistrationService
     {
         Task InitializeAsync(CancellationToken cancellationToken = default);
 
         void RegisterMissingWorkloads(Guid projectGuid, ConfiguredProject project, ISet<WorkloadDescriptor> workloadDescriptors);
 
-        void RegisterMissingSdkRuntimeComponentId(Guid projectGuid, ConfiguredProject project, string runtimeComponentId);
+        void RegisterPossibleMissingSdkRuntimeVersion(Guid projectGuid, ConfiguredProject project, string runtimeVersion);
 
         void RegisterProjectConfiguration(Guid projectGuid, ConfiguredProject project);
 

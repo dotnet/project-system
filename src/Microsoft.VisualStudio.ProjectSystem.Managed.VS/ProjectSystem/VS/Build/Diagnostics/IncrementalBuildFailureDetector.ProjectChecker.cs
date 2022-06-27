@@ -73,7 +73,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build.Diagnostics
                         return;
                     }
 
-                    (bool isUpToDate, string? failureReason) = await validator.ValidateUpToDateAsync(cancellationToken);
+                    (bool isUpToDate, string? failureReason, string? failureDescription) = await validator.ValidateUpToDateAsync(cancellationToken);
 
                     if (isUpToDate)
                     {
@@ -82,12 +82,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build.Diagnostics
                     }
 
                     Assumes.NotNull(failureReason);
+                    Assumes.NotNull(failureDescription);
 
                     TimeSpan checkDuration = sw.Elapsed;
 
                     foreach (IIncrementalBuildFailureReporter reporter in reporters)
                     {
-                        await reporter.ReportFailureAsync(failureReason, checkDuration, cancellationToken);
+                        await reporter.ReportFailureAsync(failureReason, failureDescription, checkDuration, cancellationToken);
                     }
 
                     return;

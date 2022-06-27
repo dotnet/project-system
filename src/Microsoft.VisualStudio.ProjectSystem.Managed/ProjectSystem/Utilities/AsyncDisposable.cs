@@ -8,8 +8,16 @@ namespace Microsoft.VisualStudio.ProjectSystem
     {
         private readonly Func<ValueTask> _callback;
 
+        private int _isDisposed;
+
         public AsyncDisposable(Func<ValueTask> callback) => _callback = callback;
 
-        public async ValueTask DisposeAsync() => await _callback();
+        public async ValueTask DisposeAsync()
+        {
+            if (Interlocked.CompareExchange(ref _isDisposed, 1, 0) == 0)
+            {
+                await _callback();
+            }
+        }
     }
 }

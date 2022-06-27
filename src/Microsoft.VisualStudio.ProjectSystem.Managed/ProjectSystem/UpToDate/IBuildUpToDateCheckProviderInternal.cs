@@ -39,6 +39,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
         /// <remarks>
         /// Must also be called for rebuilds.
         /// </remarks>
-        void NotifyBuildCompleted(bool wasSuccessful);
+        Task NotifyBuildCompletedAsync(bool wasSuccessful, bool isRebuild);
     }
 }

@@ -17,13 +17,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
             var handler = CreateInstance(context: context);
 
             var projectChange = IProjectChangeDescriptionFactory.FromJson(
-@"{
-    ""Difference"": { 
-        ""AnyChanges"": true
-    }
-}");
+                """
+                {
+                    "Difference": { 
+                        "AnyChanges": true
+                    }
+                }
+                """);
 
-            Handle(handler, projectChange);
+            Handle(context, handler, projectChange);
 
             Assert.Equal(@"ProjectFilePath", context.ProjectFilePath);
             Assert.Equal(@"DisplayName", context.DisplayName);
@@ -38,18 +40,20 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
             var handler = CreateInstance(context: context);
 
             var projectChange = IProjectChangeDescriptionFactory.FromJson(
-@"{
-    ""Difference"": { 
-        ""AnyChanges"": true,
-        ""ChangedProperties"": [ ""MSBuildProjectFullPath"" ]
-    },
-    ""After"": { 
-        ""Properties"": {
-            ""MSBuildProjectFullPath"": ""NewProjectFilePath""
-        }
-    }
-}");
-            Handle(handler, projectChange);
+                """
+                {
+                    "Difference": { 
+                        "AnyChanges": true,
+                        "ChangedProperties": [ "MSBuildProjectFullPath" ]
+                    },
+                    "After": { 
+                        "Properties": {
+                            "MSBuildProjectFullPath": "NewProjectFilePath"
+                        }
+                    }
+                }
+                """);
+            Handle(context, handler, projectChange);
 
             Assert.Equal(@"NewProjectFilePath", context.ProjectFilePath);
         }
@@ -62,18 +66,20 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
             var handler = CreateInstance(context: context);
 
             var projectChange = IProjectChangeDescriptionFactory.FromJson(
-@"{
-    ""Difference"": { 
-        ""AnyChanges"": true,
-        ""ChangedProperties"": [ ""MSBuildProjectFullPath"" ]
-    },
-    ""After"": { 
-        ""Properties"": {
-            ""MSBuildProjectFullPath"": ""C:\\Project\\Project.csproj""
-        }
-    }
-}");
-            Handle(handler, projectChange);
+                """
+                {
+                    "Difference": { 
+                        "AnyChanges": true,
+                        "ChangedProperties": [ "MSBuildProjectFullPath" ]
+                    },
+                    "After": { 
+                        "Properties": {
+                            "MSBuildProjectFullPath": "C:\\Project\\Project.csproj"
+                        }
+                    }
+                }
+                """);
+            Handle(context, handler, projectChange);
 
             Assert.Equal(@"Project", context.DisplayName);
         }
@@ -94,21 +100,24 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
             var context = IWorkspaceProjectContextMockFactory.Create();
             var implicitlyActiveDimensionProvider = IImplicitlyActiveDimensionProviderFactory.ImplementGetImplicitlyActiveDimensions(n => implicitDimensionNames.SplitReturningEmptyIfEmpty('|'));
             var configuration = ProjectConfigurationFactory.Create(dimensionNames, dimensionValues);
-            var handler = CreateInstance(configuration, implicitlyActiveDimensionProvider, context);
+            var handler = CreateInstance(implicitlyActiveDimensionProvider, context);
 
             var projectChange = IProjectChangeDescriptionFactory.FromJson(
-@"{
-    ""Difference"": { 
-        ""AnyChanges"": true,
-        ""ChangedProperties"": [ ""MSBuildProjectFullPath"" ]
-    },
-    ""After"": { 
-        ""Properties"": {
-            ""MSBuildProjectFullPath"": ""C:\\Project\\Project.csproj""
-        }
-    }
-}");
-            Handle(handler, projectChange);
+                """
+                {
+                    "Difference": { 
+                        "AnyChanges": true,
+                        "ChangedProperties": [ "MSBuildProjectFullPath" ]
+                    },
+                    "After": { 
+                        "Properties": {
+                            "MSBuildProjectFullPath": "C:\\Project\\Project.csproj"
+                        }
+                    }
+                }
+                """);
+
+            Handle(context, handler, projectChange, configuration);
 
             Assert.Equal(expected, context.DisplayName);
         }
@@ -118,16 +127,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
             return CreateInstance(null, null);
         }
 
-        private static ProjectFilePathAndDisplayNameEvaluationHandler CreateInstance(ProjectConfiguration? configuration = null, IImplicitlyActiveDimensionProvider? implicitlyActiveDimensionProvider = null, IWorkspaceProjectContext? context = null)
+        private static ProjectFilePathAndDisplayNameEvaluationHandler CreateInstance(IImplicitlyActiveDimensionProvider? implicitlyActiveDimensionProvider = null, IWorkspaceProjectContext? context = null)
         {
-            var project = ConfiguredProjectFactory.ImplementProjectConfiguration(configuration ?? ProjectConfigurationFactory.Create("Debug|AnyCPU"));
+            var project = UnconfiguredProjectFactory.Create();
             implicitlyActiveDimensionProvider ??= IImplicitlyActiveDimensionProviderFactory.Create();
 
-            var handler = new ProjectFilePathAndDisplayNameEvaluationHandler(project, implicitlyActiveDimensionProvider);
-            if (context != null)
-                handler.Initialize(context);
-
-            return handler;
+            return new ProjectFilePathAndDisplayNameEvaluationHandler(project, implicitlyActiveDimensionProvider);
         }
     }
 }

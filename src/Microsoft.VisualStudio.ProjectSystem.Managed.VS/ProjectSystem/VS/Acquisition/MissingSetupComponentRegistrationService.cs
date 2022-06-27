@@ -2,6 +2,7 @@
 
 using System.Collections.Concurrent;
 using Microsoft.ServiceHub.Framework;
+using Microsoft.VisualStudio.ProjectSystem.Runtimes;
 using Microsoft.VisualStudio.ProjectSystem.Utilities;
 using Microsoft.VisualStudio.ProjectSystem.Workloads;
 using Microsoft.VisualStudio.Shell.Interop;
@@ -19,8 +20,18 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
     {
         private const string WasmToolsWorkloadName = "wasm-tools";
 
+        private static readonly ImmutableDictionary<string, string> s_packageVersionToComponentId = ImmutableDictionary.Create<string, string>(StringComparer.OrdinalIgnoreCase)
+            .Add("v2.0", "Microsoft.Net.Core.Component.SDK.2.1")
+            .Add("v2.1", "Microsoft.Net.Core.Component.SDK.2.1")
+            .Add("v2.2", "Microsoft.Net.Core.Component.SDK.2.1")
+            .Add("v3.0", "Microsoft.NetCore.Component.Runtime.3.1")
+            .Add("v3.1", "Microsoft.NetCore.Component.Runtime.3.1")
+            .Add("v5.0", "Microsoft.NetCore.Component.Runtime.5.0")
+            .Add("v6.0", "Microsoft.NetCore.Component.Runtime.6.0");
+
         private static readonly ImmutableHashSet<string> s_supportedReleaseChannelWorkloads = ImmutableHashSet.Create(StringComparers.WorkloadNames, WasmToolsWorkloadName);
 
+        private readonly ConcurrentHashSet<string> _missingRuntimesRegistered = new(StringComparers.WorkloadNames);
         private readonly ConcurrentDictionary<Guid, IConcurrentHashSet<WorkloadDescriptor>> _projectGuidToWorkloadDescriptorsMap;
         private readonly ConcurrentDictionary<Guid, string> _projectGuidToRuntimeDescriptorMap;
         private readonly ConcurrentDictionary<Guid, IConcurrentHashSet<ProjectConfiguration>> _projectGuidToProjectConfigurationsMap;
@@ -36,6 +47,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         private uint _solutionCookie = VSConstants.VSCOOKIE_NIL;
         private IVsSolution? _vsSolution;
         private bool? _isVSFromPreviewChannel;
+
+        private readonly object _lock = new();
+        private HashSet<string>? _netCoreRegistryKeyValues;
 
         [ImportingConstructor]
         public MissingSetupComponentRegistrationService(
@@ -71,8 +85,28 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             }
         }
 
+        private HashSet<string>? RuntimeVersionsInstalledInLocalMachine
+        {
+            get
+            {
+                if (_netCoreRegistryKeyValues is null)
+                {
+                    lock (_lock)
+                    {
+                        if (_netCoreRegistryKeyValues is null)
+                        {
+                            _netCoreRegistryKeyValues = NetCoreRuntimeVersionsRegistryReader.ReadRuntimeVersionsInstalledInLocalMachine();
+                        }
+                    }
+                }
+
+                return _netCoreRegistryKeyValues;
+            }
+        }
+
         private void ClearMissingWorkloadMetadata()
         {
+            _missingRuntimesRegistered.Clear();
             _projectGuidToRuntimeDescriptorMap.Clear();
             _projectGuidToWorkloadDescriptorsMap.Clear();
             _projectGuidToProjectConfigurationsMap.Clear();
@@ -90,9 +124,18 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             UnregisterProjectConfiguration(projectGuid, project);
         }
 
-        public void RegisterMissingSdkRuntimeComponentId(Guid projectGuid, ConfiguredProject project, string runtimeComponentId)
+        public void RegisterPossibleMissingSdkRuntimeVersion(Guid projectGuid, ConfiguredProject project, string runtimeVersion)
         {
-            _projectGuidToRuntimeDescriptorMap.GetOrAdd(projectGuid, runtimeComponentId);
+            // Workaround to fix https://devdiv.visualstudio.com/DevDiv/_workitems/edit/1460328
+            // VS has no information about the packages installed outside VS, and deep detection is not suggested for performance reasons.
+            // This workaround reads the Registry Key HKLM\SOFTWARE\WOW6432Node\dotnet\Setup\InstalledVersions\x64\sharedfx\Microsoft.NETCore.App
+            // and get the installed runtime versions from the value names.
+            if (!string.IsNullOrEmpty(runtimeVersion) &&
+                (RuntimeVersionsInstalledInLocalMachine is null || !RuntimeVersionsInstalledInLocalMachine.Contains(runtimeVersion)) &&
+                s_packageVersionToComponentId.TryGetValue(runtimeVersion, value: out string? componentId))
+            {
+                _projectGuidToRuntimeDescriptorMap.GetOrAdd(projectGuid, componentId);
+            }
 
             UnregisterProjectConfiguration(projectGuid, project);
         }
@@ -108,36 +151,29 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                 return;
             }
 
-            IConcurrentHashSet<ProjectConfiguration> projectConfigurationSet;
+            AddConfiguration();
 
-            // Fall back to the full path of the project if the project GUID has not yet been set.
-            if (projectGuid == Guid.Empty)
+            void AddConfiguration()
             {
-                projectConfigurationSet = ProjectPathToProjectConfigurationsMap.GetOrAdd(project.UnconfiguredProject.FullPath, guid => new ConcurrentHashSet<ProjectConfiguration>());
-            }
-            else
-            {
-                projectConfigurationSet = _projectGuidToProjectConfigurationsMap.GetOrAdd(projectGuid, guid => new ConcurrentHashSet<ProjectConfiguration>());
-            }
+                IConcurrentHashSet<ProjectConfiguration> projectConfigurationSet;
 
-            projectConfigurationSet.Add(project.ProjectConfiguration);
+                // Fall back to the full path of the project if the project GUID has not yet been set.
+                if (projectGuid == Guid.Empty)
+                {
+                    projectConfigurationSet = ProjectPathToProjectConfigurationsMap.GetOrAdd(project.UnconfiguredProject.FullPath, guid => new ConcurrentHashSet<ProjectConfiguration>());
+                }
+                else
+                {
+                    projectConfigurationSet = _projectGuidToProjectConfigurationsMap.GetOrAdd(projectGuid, guid => new ConcurrentHashSet<ProjectConfiguration>());
+                }
+
+                projectConfigurationSet.Add(project.ProjectConfiguration);
+            }
         }
 
         public void UnregisterProjectConfiguration(Guid projectGuid, ConfiguredProject project)
         {
-            IConcurrentHashSet<ProjectConfiguration> projectConfigurationSet;
-
-            if (projectGuid == Guid.Empty)
-            {
-                if (ProjectPathToProjectConfigurationsMap.TryGetValue(project.UnconfiguredProject.FullPath, out projectConfigurationSet))
-                {
-                    projectConfigurationSet.Remove(project.ProjectConfiguration);
-                }
-            }
-            else if (_projectGuidToProjectConfigurationsMap.TryGetValue(projectGuid, out projectConfigurationSet))
-            {
-                projectConfigurationSet.Remove(project.ProjectConfiguration);
-            }
+            RemoveConfiguration(projectGuid, project);
 
             bool displayMissingComponentsPrompt = ShouldDisplayMissingComponentsPrompt();
             if (displayMissingComponentsPrompt)
@@ -146,16 +182,47 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
 
                 _projectFaultHandlerService.Forget(displayMissingComponentsTask, project: project.UnconfiguredProject, ProjectFaultSeverity.Recoverable);
             }
+
+            void RemoveConfiguration(Guid projectGuid, ConfiguredProject project)
+            {
+                IConcurrentHashSet<ProjectConfiguration>? projectConfigurationSet;
+
+                if (projectGuid == Guid.Empty)
+                {
+                    ProjectPathToProjectConfigurationsMap.TryGetValue(project.UnconfiguredProject.FullPath, out projectConfigurationSet);
+                }
+                else
+                {
+                    _projectGuidToProjectConfigurationsMap.TryGetValue(projectGuid, out projectConfigurationSet);
+                }
+                
+                projectConfigurationSet?.Remove(project.ProjectConfiguration);
+            }
         }
 
         private bool ShouldDisplayMissingComponentsPrompt()
         {
             lock (_displayPromptLock)
             {
-                return (_projectGuidToWorkloadDescriptorsMap.Count > 0 || _projectGuidToRuntimeDescriptorMap.Count > 0)
-                    && _projectGuidToProjectConfigurationsMap.Values.All(projectConfigurationSet => projectConfigurationSet?.Count == 0)
-                    && (_projectPathToProjectConfigurationsMap == null ||
-                        _projectPathToProjectConfigurationsMap.Values.All(projectConfigurationSet => projectConfigurationSet?.Count == 0));
+                // Projects that subscribe to this service will registers all their configurations and after that
+                // each project configuration can start registering missing workload at different point in time.
+                // We want to display the prompt after ALL the registered project already registered their missing components
+                // and at least there is one component to install.
+                return AreMissingComponentsToInstall()
+                    && AllProjectsConfigurationsRegisteredTheirMissingComponents();
+            }
+
+            bool AreMissingComponentsToInstall()
+            {
+                // Projects can register zero or more missing components.
+                return _projectGuidToWorkloadDescriptorsMap.Count > 0 || _projectGuidToRuntimeDescriptorMap.Count > 0;
+            }
+
+            bool AllProjectsConfigurationsRegisteredTheirMissingComponents()
+            {
+                // When a project configuration registers its missing components, the configuration gets removed, but we keep the list of components.
+                return _projectGuidToProjectConfigurationsMap.Values.All(projectConfigurationSet => projectConfigurationSet.Count == 0)
+                    && _projectPathToProjectConfigurationsMap?.Values.All(projectConfigurationSet => projectConfigurationSet.Count == 0) is null or true;
             }
         }
 

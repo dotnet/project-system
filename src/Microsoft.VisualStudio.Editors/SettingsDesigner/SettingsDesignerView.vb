@@ -47,8 +47,8 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             Public Sub New(rootDesigner As BaseRootDesigner, serviceProvider As IServiceProvider, projectItem As EnvDTE.ProjectItem, namespaceToOverrideIfCustomToolIsEmpty As String)
                 MyBase.New(rootDesigner, serviceProvider, projectItem, namespaceToOverrideIfCustomToolIsEmpty)
 
-                AddCodeGeneratorEntry(AccessModifierConverter.Access.Friend, SettingsSingleFileGenerator.SingleFileGeneratorName)
-                AddCodeGeneratorEntry(AccessModifierConverter.Access.Public, PublicSettingsSingleFileGenerator.SingleFileGeneratorName)
+                AddCodeGeneratorEntry(AccessModifierType.Internal, SettingsSingleFileGenerator.SingleFileGeneratorName)
+                AddCodeGeneratorEntry(AccessModifierType.Public, PublicSettingsSingleFileGenerator.SingleFileGeneratorName)
 
                 'Make sure both the internal and public custom tool values are "recognized"
                 AddRecognizedCustomToolValue(SettingsSingleFileGenerator.SingleFileGeneratorName)
@@ -88,7 +88,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                     Return _committingChanges
                 End Get
                 Set
-                    _committingChanges = value
+                    _committingChanges = Value
                 End Set
             End Property
         End Class

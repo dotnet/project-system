@@ -122,7 +122,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
         {
             _prioritizedProjectLoadedInHost.SetResult();
 
-            _threadingService.ExecuteSynchronously(() => _prioritizedTasks.JoinTillEmptyAsync());
+            _threadingService.ExecuteSynchronously(_prioritizedTasks.JoinTillEmptyAsync);
         }
     }
 }

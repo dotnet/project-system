@@ -15,7 +15,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                 session = IProjectHotReloadSessionFactory.Create();
             }
 
-            mock.Setup(agent => agent.CreateHotReloadSession(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<IProjectHotReloadSessionCallback>()))
+            mock.Setup(agent => agent.CreateHotReloadSession(It.IsAny<string>(), It.IsAny<int>(), It.IsAny<string>(), It.IsAny<IProjectHotReloadSessionCallback>()))
                 .Returns(session);
 
             return mock.Object;

@@ -4,6 +4,7 @@ using Microsoft.VisualStudio.Imaging.Interop;
 
 namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Models
 {
+    [ProjectSystemContract(ProjectSystemContractScope.UnconfiguredProject, ProjectSystemContractProvider.Private)]
     internal interface IDependenciesViewModelFactory
     {
         /// <summary>

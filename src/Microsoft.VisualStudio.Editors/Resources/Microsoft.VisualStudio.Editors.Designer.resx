@@ -1124,6 +1124,9 @@ Do you want to update the value in the .settings file?</value>
   <data name="SD_ERR_GenericTypesNotSupported_1Arg" xml:space="preserve">
     <value>Generic types are not supported.</value>
   </data>
+  <data name="SD_ERR_HelpMessage_SuggestFileOpenWith" xml:space="preserve">
+    <value>If this is not a Settings-Designer file then use 'Open With' to open it in a text editor.</value>
+  </data>
   <data name="SD_ERR_AbstractTypesNotSupported_1Arg" xml:space="preserve">
     <value>Abstract types are not supported.</value>
   </data>

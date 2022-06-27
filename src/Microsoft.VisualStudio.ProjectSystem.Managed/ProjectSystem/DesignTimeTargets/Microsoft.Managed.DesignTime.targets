@@ -92,6 +92,7 @@
     <ProjectCapability Include="ProjectImportsTree" />
     <ProjectCapability Include="LaunchProfiles" />
     <ProjectCapability Include="NoGeneralDependentFileIcon"/>
+    <ProjectCapability Include="ProjectPropertyInterception" />
     <ProjectCapability Include="PackageReferences" Condition="'$(RestoreProjectStyle)' == 'PackageReference'"/>
     
     <!--
@@ -412,7 +413,12 @@
   <Target Name="CollectResolvedCompilationReferencesDesignTime" DependsOnTargets="CompileDesignTime" Returns="@(ReferencePathWithRefAssemblies)" />
 
   <!-- This target collects all the extra inputs for the up to date check. -->
-  <Target Name="CollectUpToDateCheckInputDesignTime" DependsOnTargets="CompileDesignTime" Returns="@(UpToDateCheckInput)" />
+  <Target Name="CollectUpToDateCheckInputDesignTime" DependsOnTargets="CompileDesignTime" Returns="@(UpToDateCheckInput)">
+    <ItemGroup>
+      <!-- app.manifest -->
+      <UpToDateCheckInput Condition=" '$(ApplicationManifest)' != '' " Include="$(ApplicationManifest)" />
+    </ItemGroup>
+  </Target>
 
   <!-- This target collects all the extra outputs for the up to date check. -->
   <Target Name="CollectUpToDateCheckOutputDesignTime" DependsOnTargets="CompileDesignTime" Returns="@(UpToDateCheckOutput)" />

@@ -5,8 +5,9 @@ using Microsoft.VisualStudio.HotReload.Components.DeltaApplier;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.HotReload
 {
-    internal class ProjectHotReloadSession : IManagedHotReloadAgent, IProjectHotReloadSession
+    internal class ProjectHotReloadSession : IManagedHotReloadAgent, IProjectHotReloadSession, IProjectHotReloadSessionInternal
     {
+        private readonly string _variant;
         private readonly string _runtimeVersion;
         private readonly Lazy<IHotReloadAgentManagerClient> _hotReloadAgentManagerClient;
         private readonly Lazy<IHotReloadDiagnosticOutputService> _hotReloadOutputService;
@@ -18,6 +19,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.HotReload
 
         public ProjectHotReloadSession(
             string name,
+            int variant,
             string runtimeVersion,
             Lazy<IHotReloadAgentManagerClient> hotReloadAgentManagerClient,
             Lazy<IHotReloadDiagnosticOutputService> hotReloadOutputService,
@@ -25,6 +27,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.HotReload
             IProjectHotReloadSessionCallback callback)
         {
             Name = name;
+            _variant = variant.ToString();
             _runtimeVersion = runtimeVersion;
             _hotReloadAgentManagerClient = hotReloadAgentManagerClient;
             _hotReloadOutputService = hotReloadOutputService;
@@ -35,6 +38,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.HotReload
         // IProjectHotReloadSession
 
         public string Name { get; }
+
+        public IDeltaApplier? DeltaApplier => _deltaApplier;
 
         public async Task ApplyChangesAsync(CancellationToken cancellationToken)
         {
@@ -85,7 +90,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.HotReload
 
             HotReloadAgentFlags flags = runningUnderDebugger ? HotReloadAgentFlags.IsDebuggedProcess : HotReloadAgentFlags.None;
             await _hotReloadAgentManagerClient.Value.AgentStartedAsync(this, flags, cancellationToken);
-            WriteToOutputWindow(VSResources.HotReloadStartSession);
+            WriteToOutputWindow(
+                new HotReloadLogMessage(
+                    HotReloadVerbosity.Minimal,
+                    VSResources.HotReloadStartSession,
+                    Name,
+                    _variant
+                ),
+                default);
             _sessionActive = true;
             EnsureDeltaApplierforSession();
         }
@@ -97,7 +109,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.HotReload
                 _sessionActive = false;
 
                 await _hotReloadAgentManagerClient.Value.AgentTerminatedAsync(this, cancellationToken);
-                WriteToOutputWindow(VSResources.HotReloadStopSession);
+                WriteToOutputWindow(
+                    new HotReloadLogMessage(
+                        HotReloadVerbosity.Minimal,
+                        VSResources.HotReloadStopSession,
+                        Name,
+                        _variant
+                    ),
+                    default);
             }
         }
 
@@ -107,13 +126,27 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.HotReload
         {
             if (!_sessionActive)
             {
-                WriteToOutputWindow($"ApplyUpdatesAsync called but the session is not active.");
+                WriteToOutputWindow(
+                    new HotReloadLogMessage(
+                        HotReloadVerbosity.Detailed,
+                        $"{nameof(ApplyUpdatesAsync)} called but the session is not active.",
+                        Name,
+                        _variant
+                    ),
+                    default);
                 return;
             }
 
             if (_deltaApplier is null)
             {
-                WriteToOutputWindow($"ApplyUpdatesAsync called but we have no delta applier.");
+                WriteToOutputWindow(
+                    new HotReloadLogMessage(
+                        HotReloadVerbosity.Detailed,
+                        $"{nameof(ApplyUpdatesAsync)} called but we have no delta applier.",
+                        Name,
+                        _variant
+                    ),
+                    default);
             }
 
             if (!_sessionActive || _deltaApplier is null)
@@ -123,12 +156,26 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.HotReload
 
             try
             {
-                WriteToOutputWindow(VSResources.HotReloadSendingUpdates);
+                WriteToOutputWindow(
+                    new HotReloadLogMessage(
+                        HotReloadVerbosity.Detailed,
+                        VSResources.HotReloadSendingUpdates,
+                        Name,
+                        _variant
+                    ),
+                    cancellationToken);
 
                 ApplyResult result = await _deltaApplier.ApplyUpdatesAsync(updates, cancellationToken);
                 if (result == ApplyResult.Success || result == ApplyResult.SuccessRefreshUI)
                 {
-                    WriteToOutputWindow(VSResources.HotReloadApplyUpdatesSuccessful);
+                    WriteToOutputWindow(
+                        new HotReloadLogMessage(
+                            HotReloadVerbosity.Detailed,
+                            VSResources.HotReloadApplyUpdatesSuccessful,
+                            Name,
+                            _variant
+                        ),
+                        cancellationToken);
                     if (_callback is not null)
                     {
                         await _callback.OnAfterChangesAppliedAsync(cancellationToken);
@@ -139,7 +186,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.HotReload
             {
                 string message = $"{ex.GetType()}: {ex.Message}";
 
-                WriteToOutputWindow(string.Format(VSResources.HotReloadApplyUpdatesFailure, message));
+                WriteToOutputWindow(
+                    new HotReloadLogMessage(
+                        HotReloadVerbosity.Minimal,
+                        string.Format(VSResources.HotReloadApplyUpdatesFailure, message),
+                        Name,
+                        _variant,
+                        errorLevel: HotReloadDiagnosticErrorLevel.Error
+                    ),
+                    cancellationToken);
                 throw;
             }
         }
@@ -156,11 +211,27 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.HotReload
 
         public ValueTask ReportDiagnosticsAsync(ImmutableArray<ManagedHotReloadDiagnostic> diagnostics, CancellationToken cancellationToken)
         {
-            WriteToOutputWindow(VSResources.HotReloadErrorsInApplication);
+            WriteToOutputWindow(
+                new HotReloadLogMessage(
+                    HotReloadVerbosity.Minimal,
+                    VSResources.HotReloadErrorsInApplication,
+                    Name,
+                    _variant,
+                    errorLevel: HotReloadDiagnosticErrorLevel.Error
+                ),
+                cancellationToken);
 
             foreach (ManagedHotReloadDiagnostic diagnostic in diagnostics)
             {
-                WriteToOutputWindow($"{diagnostic.FilePath}({diagnostic.Span.StartLine},{diagnostic.Span.StartColumn},{diagnostic.Span.EndLine},{diagnostic.Span.EndColumn}): {diagnostic.Message}");
+                WriteToOutputWindow(
+                    new HotReloadLogMessage(
+                        HotReloadVerbosity.Minimal,
+                        $"{diagnostic.FilePath}({diagnostic.Span.StartLine},{diagnostic.Span.StartColumn},{diagnostic.Span.EndLine},{diagnostic.Span.EndColumn}): {diagnostic.Message}",
+                        Name,
+                        _variant,
+                        errorLevel: HotReloadDiagnosticErrorLevel.Error
+                    ),
+                    cancellationToken);
             }
 
             return new ValueTask(Task.CompletedTask);
@@ -168,7 +239,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.HotReload
 
         public async ValueTask RestartAsync(CancellationToken cancellationToken)
         {
-            WriteToOutputWindow(VSResources.HotReloadRestartInProgress);
+            WriteToOutputWindow(
+                new HotReloadLogMessage(
+                    HotReloadVerbosity.Minimal,
+                    VSResources.HotReloadRestartInProgress,
+                    Name,
+                    _variant
+                ),
+                cancellationToken);
 
             await _callback.RestartProjectAsync(cancellationToken);
 
@@ -178,7 +256,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.HotReload
 
         public async ValueTask StopAsync(CancellationToken cancellationToken)
         {
-            WriteToOutputWindow(VSResources.HotReloadStoppingApplication);
+            WriteToOutputWindow(
+                new HotReloadLogMessage(
+                    HotReloadVerbosity.Minimal,
+                    VSResources.HotReloadStoppingApplication,
+                    Name,
+                    _variant
+                ),
+                cancellationToken);
 
             await _callback.StopProjectAsync(cancellationToken);
 
@@ -190,9 +275,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.HotReload
             return new ValueTask<bool>(_callback.SupportsRestart);
         }
 
-        private void WriteToOutputWindow(string message)
+        private void WriteToOutputWindow(HotReloadLogMessage hotReloadLogMessage, CancellationToken cancellationToken)
         {
-            _hotReloadOutputService.Value.WriteLine($"{Name}: {message}");
+            _hotReloadOutputService.Value.WriteLine(hotReloadLogMessage, cancellationToken);
         }
 
         private void EnsureDeltaApplierforSession()

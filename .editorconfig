@@ -96,7 +96,7 @@ dotnet_naming_rule.private_instance_fields_must_be_camel_cased_and_prefixed_with
 dotnet_naming_rule.private_instance_fields_must_be_camel_cased_and_prefixed_with_underscore.severity  = warning
 
 # Symbols
-dotnet_naming_symbols.externally_visible_symbols.applicable_kinds                                     = class,struct,interface,enum,property,method,field,event,delegate
+dotnet_naming_symbols.externally_visible_symbols.applicable_kinds                                     = class,struct,enum,property,method,field,event,delegate
 dotnet_naming_symbols.externally_visible_symbols.applicable_accessibilities                           = public,internal,friend,protected,protected_internal,protected_friend,private_protected
 
 dotnet_naming_symbols.interface_symbols.applicable_kinds                                              = interface

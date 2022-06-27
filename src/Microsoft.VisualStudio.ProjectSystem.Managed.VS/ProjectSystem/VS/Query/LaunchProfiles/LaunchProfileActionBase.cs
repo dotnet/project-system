@@ -60,6 +60,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
             s_requestedPropertyProperties.RequireProperty(UIPropertyType.SearchTermsPropertyName);
             s_requestedPropertyProperties.RequireProperty(UIPropertyType.TypePropertyName);
             s_requestedPropertyProperties.RequireProperty(UIPropertyType.VisibilityConditionPropertyName);
+            s_requestedPropertyProperties.RequireProperty(UIPropertyType.DimensionVisibilityConditionPropertyName);
+            s_requestedPropertyProperties.RequireProperty(UIPropertyType.ConfiguredValueVisibilityConditionPropertyName);
             s_requestedPropertyProperties.Freeze();
 
             s_requestedEditorProperties = new UIPropertyEditorPropertiesAvailableStatus();
@@ -77,6 +79,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
             s_requestedValueProperties.RequireProperty(UIPropertyValueType.EvaluatedValuePropertyName);
             s_requestedValueProperties.RequireProperty(UIPropertyValueType.SupportedValuesPropertyName);
             s_requestedValueProperties.RequireProperty(UIPropertyValueType.UnevaluatedValuePropertyName);
+            s_requestedValueProperties.RequireProperty(UIPropertyValueType.ValueDefinedInContextPropertyName);
             s_requestedValueProperties.Freeze();
 
             s_requestedSupportedValueProperties = new SupportedValuePropertiesAvailableStatus();
