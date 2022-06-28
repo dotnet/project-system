@@ -15,7 +15,11 @@
     <ExtensionInstallationFolder>Microsoft\ManagedProjectSystem</ExtensionInstallationFolder>
     <TargetVsixContainerName>$(AssemblyName).vsix</TargetVsixContainerName>
     <TargetVsixContainer>$(VisualStudioSetupInsertionPath)$(TargetVsixContainerName)</TargetVsixContainer>
+  </PropertyGroup>
 
+  <!-- Local properties -->
+  <PropertyGroup>
+    <ManagedProjectName>Microsoft.VisualStudio.ProjectSystem.Managed</ManagedProjectName>
     <CommonFilesProjectName>Microsoft.VisualStudio.ProjectSystem.Managed.CommonFiles</CommonFilesProjectName>
   </PropertyGroup>
 
@@ -28,8 +32,8 @@
       <IncludeOutputGroupsInVSIXLocalOnly>DebugSymbolsProjectOutputGroup</IncludeOutputGroupsInVSIXLocalOnly>
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
     </ProjectReference>
-    <ProjectReference Include="..\..\src\Microsoft.VisualStudio.ProjectSystem.Managed\Microsoft.VisualStudio.ProjectSystem.Managed.csproj">
-      <Name>Microsoft.VisualStudio.ProjectSystem.Managed</Name>
+    <ProjectReference Include="..\..\src\$(ManagedProjectName)\$(ManagedProjectName).csproj">
+      <Name>$(ManagedProjectName)</Name>
       <Ngen>true</Ngen>
       <NgenPriority>1</NgenPriority>
       <IncludeOutputGroupsInVSIX>BuiltProjectOutputGroup;GetCopyToOutputDirectoryItems;SatelliteDllsProjectOutputGroup</IncludeOutputGroupsInVSIX>
@@ -62,6 +66,14 @@
     <MSBuild Projects="$(MSBuildThisFileDirectory)Microsoft.VisualStudio.ProjectSystem.Managed.vsmanproj"
       Properties="CommonFilesProjectName=$(CommonFilesProjectName);SwixBuildDir=$(PkgMicrosoft_VisualStudioEng_MicroBuild_Plugins_SwixBuild)\build\;MicroBuildCoreDir=$(PkgMicrosoft_VisualStudioEng_MicroBuild_Core)\build\"
       Targets="Build" />
+  </Target>
+
+  <!-- Excludes the localized .xaml files from the VSIX which are added from the GetCopyToOutputDirectoryItems output group. Only the localized .dlls are needed in the VSIX. -->
+  <!-- For additional info, see: https://github.com/dotnet/project-system/issues/6612 -->
+  <Target Name="ExcludeLocalizedXamlFilesFromVSIX" AfterTargets="GetVsixSourceItems">
+    <ItemGroup>
+      <VSIXSourceItem Remove="$(ArtifactsObjDir)$(ManagedProjectName)\$(ManagedProjectName).xlf\**\*.xaml" />
+    </ItemGroup>
   </Target>
 
 </Project>
