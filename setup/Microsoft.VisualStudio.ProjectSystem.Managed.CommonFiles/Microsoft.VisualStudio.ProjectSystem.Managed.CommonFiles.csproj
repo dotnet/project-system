@@ -2,8 +2,8 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <!--
-    This project is not for building an assembly. It is for building the Microsoft.VisualStudio.ProjectSystem.Managed project as the files from that are a dependency for the .swixproj.
-    We also end up running the Nerdbank.GitVersioning mechanism via PackageRestore. This version number is then passed to the .swixproj for as the VSIX version.
+    The purpose of this project is not for building an assembly. It is for building the Microsoft.VisualStudio.ProjectSystem.Managed project as the files from that are a dependency for the .swixproj.
+    Additionally, it ends up running the Nerdbank.GitVersioning mechanism via PackageRestore. This version number is then passed to the .swixproj for as the VSIX version.
   -->
 
   <Import Project="..\..\build\import\VisualStudio.props" />
@@ -14,18 +14,9 @@
   </ItemGroup>
 
   <Target Name="SwixBuild" AfterTargets="Build">
-
     <MSBuild Projects="$(MSBuildThisFileDirectory)$(MSBuildProjectName).swixproj"
       Properties="BuildVersion=$(BuildVersion);SwixBuildDir=$(PkgMicrosoft_VisualStudioEng_MicroBuild_Plugins_SwixBuild)\build\;MicroBuildCoreDir=$(PkgMicrosoft_VisualStudioEng_MicroBuild_Core)\build\"
       Targets="Build" />
-
-    <!-- <Copy SourceFiles="$(IntermediateOutputPath)$(TargetName).vsix;$(IntermediateOutputPath)$(TargetName).json"
-          DestinationFolder="$(VisualStudioSetupInsertionPath)" />
-
-    <ItemGroup>
-      <FileWrites Include="$(VisualStudioSetupInsertionPath)$(TargetName).vsix"/>
-      <FileWrites Include="$(VisualStudioSetupInsertionPath)$(TargetName).json"/>
-    </ItemGroup> -->
   </Target>
 
 </Project>

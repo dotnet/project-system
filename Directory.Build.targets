@@ -3,8 +3,6 @@
 
   <Import Project="build\import\Packages.targets" />
   <Import Project="build\import\Stubs.targets" />
-  <!-- <Import Project="$(RepoToolsetDir)Imports.targets" Condition="'$(ExcludeRestorePackageImports)' != 'true' AND Exists('$(RepoToolsetDir)Imports.targets')" /> -->
-  <!-- <Import Project="$(RepoToolsetDir)Imports2.targets" Condition="'$(ExcludeRestorePackageImports)' != 'true' AND Exists('$(RepoToolsetDir)Imports2.targets')" /> -->
   <Import Project="build\import\StrongName.targets" />
   <Import Project="build\import\SymStore.targets" Condition="'$(CIBuild)' == 'true'"/>
   <!-- VSSDK is needed in projects generating VSIX packages or pkgdef files. -->

@@ -1,10 +1,5 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!-- Copyright (c)  Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information. -->
+<!-- Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information. -->
 <Project>
-
-  <PropertyGroup>
-    <MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
-  </PropertyGroup>
 
   <PropertyGroup>
     <SignAssembly>true</SignAssembly>
@@ -22,21 +17,10 @@
     <!-- By default do not build nuget package for a project. Project may override. -->
     <IsPackable>false</IsPackable>
 
-    <!-- 
+    <!--
       Official build:
        - Build standalone Portable PDBs to reduce the size of the binaries.
-       - Convert Portable PDBs to Windows PDBs and publish the converted PDBs to Symbol Store to allow WinDBG, 
-         Watson and other tools to find symbol format they understand.
-        
-      Jenkins build:
-       - Embed PDBs to make it easier to debug Jenkins crash dumps.
-       
-      Developer build:
-       - Embed PDBs to be consistent with Jenkins builds.
-
-      TODO:
-      - Live Unit Testing doesn't support embedded PDBs:
-         https://github.com/dotnet/testimpact/issues/1877
+       - Convert Portable PDBs to Windows PDBs and publish the converted PDBs to Symbol Store to allow WinDBG, Watson and other tools to find symbol format they understand.
     -->
     <DebugType>portable</DebugType>
     <DebugType Condition="'$(OfficialBuild)' != 'true' and '$(BuildingForLiveUnitTesting)' != 'true'">embedded</DebugType>
@@ -54,9 +38,8 @@
   </PropertyGroup>
 
   <!--
-      When building WPF / VSIX projects MSBuild will create a temporary project with an extension of
-      tmp_proj.  In that case the SDK is unable to determine the target language and cannot pick
-      the correct import. Need to set it explicitly here.
+      When building WPF / VSIX projects MSBuild will create a temporary project with an extension of tmp_proj.
+      In that case the SDK is unable to determine the target language and cannot pick the correct import. Need to set it explicitly here.
       See https://github.com/dotnet/project-system/issues/1467
     -->
   <Choose>
@@ -122,14 +105,6 @@
       <PropertyGroup Condition="'$(Configuration)' == 'Release'">
         <DefineTrace>true</DefineTrace>
         <Optimize>true</Optimize>
-      </PropertyGroup>
-    </When>
-
-    <!-- F# specific settings -->
-    <When Condition="'$(Language)' == 'F#'">
-      <PropertyGroup>
-        <!-- F# compiler doesn't support PathMap (see https://github.com/Microsoft/visualfsharp/issues/3812) -->
-        <DeterministicSourcePaths>false</DeterministicSourcePaths>
       </PropertyGroup>
     </When>
   </Choose>

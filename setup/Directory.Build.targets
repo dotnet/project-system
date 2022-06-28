@@ -3,14 +3,6 @@
 
   <Import Project="..\Directory.Build.targets" />
 
-  <!--
-    Defining this target will disable the SDK behavior of implicit transitive project references.
-    The current implementation breaks VSIX construction by including a number of projects that should not be included.
-    https://github.com/dotnet/sdk/issues/1366
-  -->
-  <!-- TODO: See if this is necessary. -->
-  <Target Name="IncludeTransitiveProjectReferences" />
-
   <!-- Add the VSIX files from VS Extension projects for signing. -->
   <Target Name="AddVsixForSigning" DependsOnTargets="CreateVsixContainer" BeforeTargets="SignFiles" Condition="'$(IsVsixProject)' == 'true'">
     <!-- Required to be in either OutDir or IntermediateOutputPath for signing. It'll be copied after signing via the CopyVsixAfterSigning target. -->
@@ -26,7 +18,6 @@
   <!-- Copies the VSIX files after they've been signed from VS Extension projects to the appropriate output folder. -->
   <Target Name="CopyVsixAfterSigning" AfterTargets="SignFiles" Condition="'$(IsVsixProject)' == 'true'">
     <Copy SourceFiles="$(OutDir)$(AssemblyName).vsix" DestinationFolder="$(VisualStudioSetupInsertionPath)" />
-    <!-- <Copy SourceFiles="$(OutDir)$(AssemblyName).vsix" DestinationFolder="$(VisualStudioSetupOutputPath)" /> -->
   </Target>
 
   <!-- Sets the Experimental attribute on the VSIX manifest to 'false' for builds in CI. -->

@@ -13,15 +13,6 @@
 
   <PropertyGroup>
     <Configuration Condition="'$(Configuration)' == ''">Debug</Configuration>
-
-    <!--
-      RepoToolset props and targets are conditionally imported based on whether RepoToolsetDir is set or not
-      to allow VS to load packages and perform automatic package restore. 
-      TODO: Remove once we can use a custom SDK (https://github.com/Microsoft/msbuild/issues/1493)
-    -->
-    <!-- <_RepoToolsetDir>$(NuGetPackageRoot)roslyntools.repotoolset\$(RoslynToolsRepoToolsetVersion)\tools\</_RepoToolsetDir>
-    <RepoToolsetDir Condition="'$(BuildingInsideVisualStudio)' != 'true' or Exists('$(_RepoToolsetDir)')">$(_RepoToolsetDir)</RepoToolsetDir> -->
-
     <RepositoryUrl>https://github.com/dotnet/project-system</RepositoryUrl>
     <PackageProjectUrl>$(RepositoryUrl)</PackageProjectUrl>
 
@@ -72,10 +63,6 @@
     product artifacts into wrong obj directories. Remove once we can use a custom SDK (https://github.com/Microsoft/msbuild/issues/1493)
   -->
   <Import Project="build\import\ProjectLayout.props" />
-
-  <!-- <Import Project="$(RepoToolsetDir)Settings.props" Condition="'$(ExcludeRestorePackageImports)' != 'true' AND Exists('$(RepoToolsetDir)Settings.props')" /> -->
-  <!-- <Import Project="build\import\OverrideRepoToolsetVersions.props"/> -->
-
   <Import Project="build\import\ProjectDefaults.props" />
   <Import Project="build\import\Workarounds.props" />
 

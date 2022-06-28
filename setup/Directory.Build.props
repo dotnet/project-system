@@ -9,7 +9,6 @@
     <SuppressFromVsix Include="Microsoft.VisualStudio.XmlEditor.dll"/>
   </ItemGroup>
 
-  <!-- General  -->
   <PropertyGroup>
     <!-- Prevent the extension.vsixmanifest from each VS Extension project to write to the same output directory, overriding each other's file. This prevents the target CopyVsixManifestFile from the VSSDK.BuildTools from executing. -->
     <CopyVsixManifestToOutput>false</CopyVsixManifestToOutput>
@@ -26,17 +25,14 @@
   <PropertyGroup Condition="'$(IsVsixProject)' == 'true'">
     <SchemaVersion>2.0</SchemaVersion>
     <CreateVsixContainer>true</CreateVsixContainer>
-    <!-- <GeneratePkgDefFile>false</GeneratePkgDefFile> -->
     <IncludeDebugSymbolsInVSIXContainer>false</IncludeDebugSymbolsInVSIXContainer>
     <IncludeDebugSymbolsInLocalVSIXDeployment>false</IncludeDebugSymbolsInLocalVSIXDeployment>
-    <!-- <CopyBuildOutputToOutputDirectory>false</CopyBuildOutputToOutputDirectory> -->
-    <!-- <CopyOutputSymbolsToOutputDirectory>false</CopyOutputSymbolsToOutputDirectory> -->
     <IncludeCopyLocalReferencesInVSIXContainer>false</IncludeCopyLocalReferencesInVSIXContainer>
     <IsProductComponent>true</IsProductComponent>
     <IsPackable>false</IsPackable>
+    <BuildForLiveUnitTesting>false</BuildForLiveUnitTesting>
     <!-- Runs the DeployVsixExtensionFiles from the VSSDK to enable the extension on the local machine. -->
     <DeployExtension>true</DeployExtension>
-    <BuildForLiveUnitTesting>false</BuildForLiveUnitTesting>
 
     <StartAction>Program</StartAction>
     <StartProgram>$(DevEnvDir)devenv.exe</StartProgram>

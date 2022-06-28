@@ -40,7 +40,8 @@
         <AssemblyOriginatorKeyFile>$(MSBuildThisFileDirectory)AspNet.snk</AssemblyOriginatorKeyFile>
         <PublicKey>$(MicrosoftAspNetPublicKey)</PublicKey>
         <PublicKeyToken>adb9793829ddae60</PublicKeyToken>
-        <PublicSign>false</PublicSign> <!-- The MicrosoftAspNet strong name key is a full key -->
+        <!-- The MicrosoftAspNet strong name key is a full key, so set PublicSign to false. -->
+        <PublicSign>false</PublicSign>
       </PropertyGroup>
     </When>
   </Choose>

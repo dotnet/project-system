@@ -7,7 +7,7 @@
 
   <PropertyGroup>
     <RootNamespace>Microsoft.VisualStudio</RootNamespace>
-    <!-- No idea why this is the AssemblyName instead of using the MSBuildProjectName. -->
+    <!-- Note: No idea why ProjectSystem is the AssemblyName instead of using the MSBuildProjectName of ProjectSystemSetup. -->
     <AssemblyName>ProjectSystem</AssemblyName>
 
     <!-- VSIX -->
