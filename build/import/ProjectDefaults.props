@@ -1,33 +1,6 @@
 <!-- Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information. -->
 <Project>
 
-  <PropertyGroup>
-    <SignAssembly>true</SignAssembly>
-    <StrongNameKeyId>MicrosoftShared</StrongNameKeyId>
-    <ChecksumAlgorithm>SHA256</ChecksumAlgorithm>
-    <HighEntropyVA>true</HighEntropyVA>
-    <NeutralLanguage>en-US</NeutralLanguage>
-    <Company>Microsoft Corporation</Company>
-    <Copyright>© Microsoft Corporation. All rights reserved.</Copyright>
-    <Authors>Microsoft</Authors>
-    <Serviceable>true</Serviceable>
-    <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
-    <PackageLicenseUrl>http://go.microsoft.com/fwlink/?LinkId=529443</PackageLicenseUrl>
-
-    <!-- By default do not build nuget package for a project. Project may override. -->
-    <IsPackable>false</IsPackable>
-
-    <!--
-      Official build:
-       - Build standalone Portable PDBs to reduce the size of the binaries.
-       - Convert Portable PDBs to Windows PDBs and publish the converted PDBs to Symbol Store to allow WinDBG, Watson and other tools to find symbol format they understand.
-    -->
-    <DebugType>portable</DebugType>
-    <DebugType Condition="'$(OfficialBuild)' != 'true' and '$(BuildingForLiveUnitTesting)' != 'true'">embedded</DebugType>
-
-    <EnableSourceLink Condition="'$(CIBuild)' == 'true'">true</EnableSourceLink>
-  </PropertyGroup>
-
   <PropertyGroup Condition="'$(Language)' == ''">
     <Language Condition="'$(MSBuildProjectExtension)' == '.csproj'">C#</Language>
     <Language Condition="'$(MSBuildProjectExtension)' == '.vbproj'">VB</Language>
@@ -38,10 +11,10 @@
   </PropertyGroup>
 
   <!--
-      When building WPF / VSIX projects MSBuild will create a temporary project with an extension of tmp_proj.
-      In that case the SDK is unable to determine the target language and cannot pick the correct import. Need to set it explicitly here.
-      See https://github.com/dotnet/project-system/issues/1467
-    -->
+    When building WPF/VSIX projects MSBuild will create a temporary project with an extension of tmp_proj.
+    In that case the SDK is unable to determine the target language and cannot pick the correct import. Need to set it explicitly here.
+    See: https://github.com/dotnet/project-system/issues/1467
+  -->
   <Choose>
     <When Condition="'$(MSBuildProjectExtension)' != '.csproj' and '$(MSBuildProjectExtension)' != '.vbproj' and '$(MSBuildProjectExtension)' != '.shproj'">
       <Choose>
@@ -62,15 +35,16 @@
     </When>
   </Choose>
 
-  <Import Project="|Build precondition failed: Unable to determine the language of the project. Consider adding Directory.Build.props that sets Language property to directory '$(MSBuildProjectDirectory)'.|"
-          Condition="'$(Language)' == '' and '$(MSBuildProjectExtension)' != '.shproj'"/>
-
   <Choose>
     <!-- C# specific settings -->
     <When Condition="'$(Language)' == 'C#'">
       <PropertyGroup>
-        <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
         <NoWarn>$(NoWarn);1701;1702;1705;1591</NoWarn>
+        <CheckForOverflowUnderflow>false</CheckForOverflowUnderflow>
+        <LangVersion>preview</LangVersion>
+        <Nullable>enable</Nullable>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Features>strict</Features>
       </PropertyGroup>
 
       <PropertyGroup Condition="'$(Configuration)' == 'Debug'">
@@ -92,8 +66,10 @@
         <OptionExplicit>On</OptionExplicit>
         <OptionInfer>On</OptionInfer>
         <OptionStrict>On</OptionStrict>
-        <VBRuntime>Embed</VBRuntime>
+        <LangVersion>16</LangVersion>
+        <VBRuntime>Default</VBRuntime>
         <RemoveIntegerChecks>true</RemoveIntegerChecks>
+        <Features>strict</Features>
       </PropertyGroup>
 
       <PropertyGroup Condition="'$(Configuration)' == 'Debug'">
