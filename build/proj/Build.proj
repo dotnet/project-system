@@ -1,25 +1,22 @@
 <!-- Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information. -->
 <Project DefaultTargets="ClearNuGetCache;PrepareMachine;CoreBuild;UploadCodeCoverage">
 
-  <Import Project="..\import\Versions.props"/>
-  <Import Project="..\import\NuGet.props"/>
+  <Import Project="..\import\Versions.props" />
+  <Import Project="..\import\NuGet.props" />
   <Import Project="..\import\RepoLayout.props" />
 
   <PropertyGroup>
-    <ToolsetBuildProjectFilePath>$(NuGetPackageRoot)RoslynTools.RepoToolset\$(RoslynToolsRepoToolsetVersion)\tools\Build.proj</ToolsetBuildProjectFilePath>
     <IsCodeCoverageBuild Condition="'$(UsingCodeCoverage)' == 'true' AND '$(Configuration)' == 'Debug'">true</IsCodeCoverageBuild>
   </PropertyGroup>
 
+  <!-- Removes the NuGet cache folder on the machine. Useful if packages such as MicroBuild SwixBuild has multiple versions within the cache, which causes the build to fail. -->
   <Target Name="ClearNuGetCache" Condition="'$(ClearNuGetCache)' == 'true'">
     <Message Text="Clearing '$(NuGetPackageRoot)'..." Importance="high" />
-
-    <!-- Clean nuget packages to unnecessary to avoid mismatching versions of SWIX Microbuild and VSSDK
-         and to avoid picking up packages on the machine, but not in any of our sources -->
     <RemoveDir Directories="$(NuGetPackageRoot)" />
   </Target>
 
+  <!-- Creates several output directories so that artifact publishing always succeeds. -->
   <Target Name="PrepareMachine" Condition="'$(CIBuild)' == 'true'">
-    <!-- Always create these directories so that publish always succeeds despite where the failure is -->
     <MakeDir Directories="$(ArtifactsBinDir);$(ArtifactsLogDir);$(ArtifactsTestResultsDir);$(VisualStudioSetupOutputPath)" />
   </Target>
 

@@ -13,14 +13,13 @@
     IntegrationTest                 "true" to run integration tests
   -->
 
-  <Import Project="..\import\Versions.props"/>
-  <Import Project="..\import\NuGet.props"/>
+  <Import Project="..\import\Versions.props" />
+  <Import Project="..\import\NuGet.props" />
   <Import Project="..\import\RepoLayout.props" />
 
   <PropertyGroup>
     <SolutionFileName>ProjectSystem.sln</SolutionFileName>
     <SolutionPath>$(RepoRoot)$(SolutionFileName)</SolutionPath>
-    <ToolsetPath>$(NuGetPackageRoot)RoslynTools.RepoToolset\$(RoslynToolsRepoToolsetVersion)\tools\</ToolsetPath>
     <BuildOrRebuild Condition="'$(Build)' == 'true' or '$(Rebuild)' == 'true'">true</BuildOrRebuild>
   </PropertyGroup>
 
@@ -37,6 +36,10 @@
     <SolutionRestoreAndBuildProperty Include="__DeployProjectOutput=$(Deploy)" Condition="'$(Deploy)' != ''" />
   </ItemGroup>
 
+  <!--
+    Creates a new solution file for projects within the 'src' folder only and sets the properties appropriately for the Build target.
+    This is useful for SBOM generation as the assemblies are necessary for SBOM prior to VSIX packaging.
+  -->
   <Target Name="GenerateSolutionForQuickSrcBuild" BeforeTargets="Restore" Condition="'$(QuickSrcBuild)' == 'true'">
     <PropertyGroup>
       <SolutionName>Src</SolutionName>

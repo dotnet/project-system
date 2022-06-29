@@ -8,8 +8,9 @@
     <OutDirName Condition="'$(OutDirName)' == ''">Dlls</OutDirName>
   </PropertyGroup>
 
-  <Import Project="build\import\NuGet.props"/>
-  <Import Project="build\import\Versions.props"/>
+  <Import Project="build\import\Versions.props" />
+  <Import Project="build\import\NuGet.props" />
+  <Import Project="build\import\RepoLayout.props" />
 
   <PropertyGroup>
     <Configuration Condition="'$(Configuration)' == ''">Debug</Configuration>
@@ -58,11 +59,15 @@
     <Using Include="System.ComponentModel.Composition" />
   </ItemGroup>
 
-  <!--
-    TODO: Import layout props so that design-time build executed before package restore is finished doesn't
-    product artifacts into wrong obj directories. Remove once we can use a custom SDK (https://github.com/Microsoft/msbuild/issues/1493)
-  -->
-  <Import Project="build\import\ProjectLayout.props" />
+  <!-- Project layout -->
+  <PropertyGroup>
+    <OutDirName Condition="'$(OutDirName)' == ''">$(MSBuildProjectName)</OutDirName>
+    <BaseOutputPath Condition="'$(BaseOutputPath)' == ''">$([System.IO.Path]::GetFullPath('$(ArtifactsBinDir)$(OutDirName)\'))</BaseOutputPath>
+    <OutputPath>$(BaseOutputPath)</OutputPath>
+    <BaseIntermediateOutputPath Condition="'$(BaseIntermediateOutputPath)' == ''">$([System.IO.Path]::GetFullPath('$(ArtifactsObjDir)$(MSBuildProjectName)\'))</BaseIntermediateOutputPath>
+    <IntermediateOutputPath>$(BaseIntermediateOutputPath)</IntermediateOutputPath>
+  </PropertyGroup>
+
   <Import Project="build\import\ProjectDefaults.props" />
   <Import Project="build\import\Workarounds.props" />
 

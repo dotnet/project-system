@@ -2,13 +2,10 @@
 <Project>
 
   <Import Project="build\import\Packages.targets" />
-  <Import Project="build\import\Stubs.targets" />
   <Import Project="build\import\StrongName.targets" />
   <Import Project="build\import\SymStore.targets" Condition="'$(CIBuild)' == 'true'"/>
   <!-- VSSDK is needed in projects generating VSIX packages or pkgdef files. -->
   <Import Project="$(VSToolsPath)\VSSDK\Microsoft.VsSDK.targets" Condition="'$(VSToolsPath)' != '' and ('$(IsVsixProject)' == 'true' or '$(GeneratePkgDefFile)' == 'true')" />
-
-  <!-- Workarounds needs to come last so it can overwrite targets from RepoToolSet and its imports -->
   <Import Project="build\import\Workarounds.targets"/>
 
   <ItemGroup>
@@ -46,32 +43,33 @@
       <NuGetPackageVersion>$(Version)</NuGetPackageVersion>
 
       <!--
-        From GetBuildVersion in Nerdbank.GitVersioning:
+        NOTICE: Keep this information here for reference as it is useful to understand how version information is computed.
 
-        BuildVersion = 17.3.32.55474
-        AssemblyInformationalVersion = 17.3.32+d8b2cf4a2d
-        AssemblyFileVersion = 17.3.32.55474
-        FileVersion = 17.3.32.55474
-        BuildVersionSimple = 17.3.32
-        PrereleaseVersion = 
-        MajorMinorVersion = 17.3
-        AssemblyVersion = 17.3.0.0
-        GitCommitId = d8b2cf4a2d7e5946c6e4a5166155f194cfce9db4
-        GitCommitIdShort = d8b2cf4a2d
-        GitCommitDateTicks = 637914599150000000
-        GitVersionHeight = 32
-        BuildNumber = 32
-        BuildVersionNumberComponent = 32
-        PublicRelease = False
-        BuildingRef = refs/heads/feature/RemoveRoslynTools
-        SemVerBuildSuffix = +d8b2cf4a2d
-        NuGetPackageVersion = 17.3.32-gd8b2cf4a2d
-        ChocolateyPackageVersion = 17.3.32-gd8b2cf4a2d
-        Version = 17.3.32-gd8b2cf4a2d
-        PackageVersion = 17.3.32-gd8b2cf4a2d
-        NPMPackageVersion = 17.3.32-gd8b2cf4a2d
-        BuildVersion3Components = 17.3.32
-        CloudBuildNumber = 17.3.32
+        Example output from GetBuildVersion in Nerdbank.GitVersioning:
+          BuildVersion = 17.3.32.55474
+          AssemblyInformationalVersion = 17.3.32+d8b2cf4a2d
+          AssemblyFileVersion = 17.3.32.55474
+          FileVersion = 17.3.32.55474
+          BuildVersionSimple = 17.3.32
+          PrereleaseVersion = 
+          MajorMinorVersion = 17.3
+          AssemblyVersion = 17.3.0.0
+          GitCommitId = d8b2cf4a2d7e5946c6e4a5166155f194cfce9db4
+          GitCommitIdShort = d8b2cf4a2d
+          GitCommitDateTicks = 637914599150000000
+          GitVersionHeight = 32
+          BuildNumber = 32
+          BuildVersionNumberComponent = 32
+          PublicRelease = False
+          BuildingRef = refs/heads/feature/RemoveRoslynTools
+          SemVerBuildSuffix = +d8b2cf4a2d
+          NuGetPackageVersion = 17.3.32-gd8b2cf4a2d
+          ChocolateyPackageVersion = 17.3.32-gd8b2cf4a2d
+          Version = 17.3.32-gd8b2cf4a2d
+          PackageVersion = 17.3.32-gd8b2cf4a2d
+          NPMPackageVersion = 17.3.32-gd8b2cf4a2d
+          BuildVersion3Components = 17.3.32
+          CloudBuildNumber = 17.3.32
       -->
     </PropertyGroup>
   </Target>

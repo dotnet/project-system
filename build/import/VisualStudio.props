@@ -12,11 +12,8 @@
     <Reference Include="System.Xaml" />
     <Reference Include="WindowsFormsIntegration" />
     
-    <!-- Toolset -->
-    <!-- <PackageReference Include="RoslynTools.ModifyVsixManifest" PrivateAssets="all"/> -->
+    <!-- Infrastructure -->
     <PackageReference Include="Microsoft.VSSDK.BuildTools"     PrivateAssets="all" />
-    <!-- <PackageReference Include="Microsoft.VisualStudio.SDK"     ExcludeAssets="runtime" /> -->
-    <!-- <PackageReference Include="Microsoft.VisualStudio.Internal.MicroBuild.VisualStudio" PrivateAssets="all"/> -->
 
     <!-- VS SDK -->
     <PackageReference Include="Microsoft.Internal.VisualStudio.Interop" />
