@@ -14,7 +14,6 @@
   -->
 
   <Import Project="..\import\Versions.props" />
-  <Import Project="..\import\NuGet.props" />
   <Import Project="..\import\RepoLayout.props" />
 
   <PropertyGroup>
@@ -27,8 +26,8 @@
     <CommonBuildProperty Include="Configuration=$(Configuration)" />
     <CommonBuildProperty Include="CIBuild=$(CIBuild)" />
     <CommonBuildProperty Include="RepoRoot=$(RepoRoot)" />
-    <CommonBuildProperty Include="VersionsPropsPath=$(RepoRoot)build\import\Versions.props" />
     <CommonBuildProperty Include="QuickSrcBuild=$(QuickSrcBuild)" />
+    <CommonBuildProperty Include="UsingCodeCoverage=$(UsingCodeCoverage)" />
   </ItemGroup>
 
   <ItemGroup>

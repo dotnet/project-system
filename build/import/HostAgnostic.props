@@ -30,8 +30,8 @@
     <PackageReference Include="XliffTasks"                          PrivateAssets="all" />
     <!-- Path Property: PkgMicrosoft_DiaSymReader_Pdb2Pdb -->
     <PackageReference Include="Microsoft.DiaSymReader.Pdb2Pdb"      ExcludeAssets="all" GeneratePathProperty="true" />
-    <PackageReference Include="Codecov"                             ExcludeAssets="all" />
-    <PackageReference Include="OpenCover"                           ExcludeAssets="all" />
+    <!-- Path Property: PkgCodecov -->
+    <PackageReference Include="Codecov"                             ExcludeAssets="all" GeneratePathProperty="true" />
 
     <!-- CPS -->
     <PackageReference Include="Microsoft.VisualStudio.ProjectSystem" />

@@ -1,13 +1,8 @@
 <!-- Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information. -->
-<Project DefaultTargets="ClearNuGetCache;PrepareMachine;CoreBuild;UploadCodeCoverage">
+<Project DefaultTargets="ClearNuGetCache;PrepareMachine;CoreBuild">
 
   <Import Project="..\import\Versions.props" />
-  <Import Project="..\import\NuGet.props" />
   <Import Project="..\import\RepoLayout.props" />
-
-  <PropertyGroup>
-    <IsCodeCoverageBuild Condition="'$(UsingCodeCoverage)' == 'true' AND '$(Configuration)' == 'Debug'">true</IsCodeCoverageBuild>
-  </PropertyGroup>
 
   <!-- Removes the NuGet cache folder on the machine. Useful if packages such as MicroBuild SwixBuild has multiple versions within the cache, which causes the build to fail. -->
   <Target Name="ClearNuGetCache" Condition="'$(ClearNuGetCache)' == 'true'">
@@ -24,7 +19,6 @@
   <Target Name="CoreBuild">
     <PropertyGroup>
       <CoreBuildProperties>
-        UseOpenCover=$(IsCodeCoverageBuild);
         Configuration=$(Configuration);
         CIBuild=$(CIBuild);
         Build=$(Build);
@@ -33,15 +27,11 @@
         Test=$(Test);
         IntegrationTest=$(IntegrationTest);
         QuickSrcBuild=$(QuickSrcBuild);
+        UsingCodeCoverage=$(UsingCodeCoverage);
       </CoreBuildProperties>
     </PropertyGroup>
 
     <MSBuild BuildInParallel="true" Projects="CoreBuild.proj" Properties="$(CoreBuildProperties)" />
-  </Target>
-
-  <!-- Push code coverage to https://codecov.io/ -->
-  <Target Name="UploadCodeCoverage" Condition="'$(IsCodeCoverageBuild)' == 'true'">
-    <MSBuild BuildInParallel="true" Projects="CodeCov.proj" />
   </Target>
 
 </Project>

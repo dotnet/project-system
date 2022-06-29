@@ -3,10 +3,11 @@
   <Import Project="..\Directory.Build.props"/>
 
   <PropertyGroup>
-    <!-- Prevent vsix manifests from being copied to the shared output directory, makes build more deterministic -->
+    <!--
+      Prevents the VSSDK.BuildTools from trying to interpret every project as a VS Extension project.
+      This error occurs without this property:
+        VSSDK1039: Source.extension.vsixmanifest file not found in project 'Microsoft.VisualStudio.ProjectSystem.Managed.VS'/'Microsoft.VisualStudio.Editors'.
+    -->
     <CopyVsixManifestToOutput>false</CopyVsixManifestToOutput>
-    
-    <!-- Workaround: https://github.com/dotnet/sdk/issues/12739 -->
-    <ImportFrameworkWinFXTargets>true</ImportFrameworkWinFXTargets>
   </PropertyGroup>
 </Project>
