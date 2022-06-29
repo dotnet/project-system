@@ -1,10 +1,24 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
 using Microsoft.VisualStudio.ProjectSystem.VS;
+using Microsoft.VisualStudio.ProjectSystem.VS.WindowsForms;
 
 namespace Microsoft.VisualStudio.ProjectSystem.Properties
 {
-    [ExportInterceptingPropertyValueProvider("UseApplicationFramework", ExportInterceptingPropertyValueProviderFile.ProjectFile)]
+    [ExportInterceptingPropertyValueProvider(
+    new[]
+    {
+        ApplicationFrameworkProperty,
+        EnableVisualStylesProperty,
+        SingleInstanceProperty,
+        SaveMySettingsOnExitProperty,
+        HighDpiModeProperty,
+        AuthenticationModeProperty,
+        ShutdownModeProperty,
+        SplashScreenProperty,
+        MinimumSplashScreenDisplayTimeProperty
+    },
+    ExportInterceptingPropertyValueProviderFile.ProjectFile)]
     [AppliesTo(ProjectCapability.VisualBasic)]
     internal sealed class ApplicationFrameworkValueProvider : InterceptingPropertyValueProviderBase
     {
@@ -19,38 +33,72 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         private const string NoneItemType = "None";
         private const string ApplicationDefinitionItemType = "ApplicationDefinition";
 
+        internal const string ApplicationFrameworkProperty = "UseApplicationFramework";
+        internal const string EnableVisualStylesProperty = "EnableVisualStyles";
+        internal const string SingleInstanceProperty = "SingleInstance";
+        internal const string SaveMySettingsOnExitProperty = "SaveMySettingsOnExit";
+        internal const string HighDpiModeProperty = "HighDpiMode";
+        internal const string AuthenticationModeProperty = "VBAuthenticationMode";
+        internal const string ShutdownModeProperty = "ShutdownMode";
+        internal const string SplashScreenProperty = "SplashScreen";
+        internal const string MinimumSplashScreenDisplayTimeProperty = "MinimumSplashScreenDisplayTime";
+
         private readonly UnconfiguredProject _project;
         private readonly IProjectItemProvider _sourceItemsProvider;
+        private readonly IMyAppFileAccessor _myAppXmlFileAccessor;
 
         [ImportingConstructor]
         public ApplicationFrameworkValueProvider(
             UnconfiguredProject project,
-            [Import(ExportContractNames.ProjectItemProviders.SourceFiles)] IProjectItemProvider sourceItemsProvider)
+            [Import(ExportContractNames.ProjectItemProviders.SourceFiles)] IProjectItemProvider sourceItemsProvider,
+            IMyAppFileAccessor myAppXamlFileAccessor)
         {
             _project = project;
             _sourceItemsProvider = sourceItemsProvider;
+            _myAppXmlFileAccessor = myAppXamlFileAccessor;
         }
 
         public override async Task<string?> OnSetPropertyValueAsync(string propertyName, string unevaluatedPropertyValue, IProjectProperties defaultProperties, IReadOnlyDictionary<string, string>? dimensionalConditions = null)
         {
-            if (await IsWPFApplicationAsync(defaultProperties))
+            if (propertyName == ApplicationFrameworkProperty)
             {
-                return await SetPropertyValueForWPFApplicationAsync(unevaluatedPropertyValue, defaultProperties);
+                if (await IsWPFApplicationAsync(defaultProperties))
+                {
+                    return await SetPropertyValueForWPFApplicationAsync(unevaluatedPropertyValue, defaultProperties);
+                }
+                else
+                {
+                    return await SetPropertyValueForDefaultProjectTypesAsync(unevaluatedPropertyValue, defaultProperties);
+                }
             }
             else
             {
-                return await SetPropertyValueForDefaultProjectTypesAsync(unevaluatedPropertyValue, defaultProperties);
-            }
+                return await SetPropertyValueAsync(propertyName, unevaluatedPropertyValue, defaultProperties);
+            }     
         }
 
         public override Task<string> OnGetEvaluatedPropertyValueAsync(string propertyName, string evaluatedPropertyValue, IProjectProperties defaultProperties)
         {
-            return GetPropertyValueAsync(defaultProperties);
+            if (propertyName == ApplicationFrameworkProperty)
+            {
+                return GetPropertyValueAsync(defaultProperties);
+            }
+            else
+            {
+                return GetPropertyValueAsync(propertyName);
+            }
         }
 
         public override Task<string> OnGetUnevaluatedPropertyValueAsync(string propertyName, string unevaluatedPropertyValue, IProjectProperties defaultProperties)
         {
-            return GetPropertyValueAsync(defaultProperties);
+            if (propertyName == ApplicationFrameworkProperty)
+            {
+                return GetPropertyValueAsync(defaultProperties);
+            }
+            else
+            {
+                return GetPropertyValueAsync(propertyName);
+            }
         }
 
         private async Task<string> GetPropertyValueAsync(IProjectProperties defaultProperties)
@@ -106,23 +154,25 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
                 && StringComparers.PropertyLiteralValues.Equals(outputTypeString, WinExeOutputType);
         }
 
-        private static async Task<string?> SetPropertyValueForDefaultProjectTypesAsync(string unevaluatedPropertyValue, IProjectProperties defaultProperties)
+        private async Task<string?> SetPropertyValueForDefaultProjectTypesAsync(string unevaluatedPropertyValue, IProjectProperties defaultProperties)
         {
             if (bool.TryParse(unevaluatedPropertyValue, out bool value))
             {
                 if (value)
                 {
-                    // Enabled: <MyType>WindowsForms</MyType>
+                    // Set in project file: <MyType>WindowsForms</MyType>
                     await defaultProperties.SetPropertyValueAsync(ApplicationFrameworkMSBuildProperty, EnabledValue);
 
-                    // TODO: We also need to save this property in the myapp file.
+                    // Set in myapp file: <MySubMain>true</MySubMain>
+                    await _myAppXmlFileAccessor.SetMySubMainAsync("true");
                 }
                 else
                 {
-                    // Disabled: <MyType>WindowsFormsWithCustomSubMain</MyType>
+                    // Set in project file: <MyType>WindowsFormsWithCustomSubMain</MyType>
                     await defaultProperties.SetPropertyValueAsync(ApplicationFrameworkMSBuildProperty, DisabledValue);
 
-                    // TODO: We also need to save this property in the myapp file.
+                    // Set in myapp file: <MySubMain>false</MySubMain>
+                    await _myAppXmlFileAccessor.SetMySubMainAsync("false");
                 }
             }
 
@@ -187,6 +237,115 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
                     }
                 }
             }
+
+            return null;
+        }
+
+        private async Task<string> GetPropertyValueAsync(string propertyName)
+        {
+            string value = propertyName switch
+            {
+                ApplicationFrameworkProperty => (await _myAppXmlFileAccessor.GetMySubMainAsync()).ToString() ?? string.Empty,
+                EnableVisualStylesProperty => (await _myAppXmlFileAccessor.GetEnableVisualStylesAsync()).ToString() ?? string.Empty,
+                SingleInstanceProperty => (await _myAppXmlFileAccessor.GetSingleInstanceAsync()).ToString() ?? string.Empty,
+                SaveMySettingsOnExitProperty => (await _myAppXmlFileAccessor.GetSaveMySettingsOnExitAsync()).ToString() ?? string.Empty,
+                HighDpiModeProperty => (await _myAppXmlFileAccessor.GetHighDpiModeAsync()).ToString() ?? string.Empty,
+                AuthenticationModeProperty => (await _myAppXmlFileAccessor.GetAuthenticationModeAsync()).ToString() ?? string.Empty,
+                ShutdownModeProperty => (await _myAppXmlFileAccessor.GetShutdownModeAsync()).ToString() ?? string.Empty,
+                SplashScreenProperty => await _myAppXmlFileAccessor.GetSplashScreenAsync() ?? string.Empty,
+                MinimumSplashScreenDisplayTimeProperty => (await _myAppXmlFileAccessor.GetMinimumSplashScreenDisplayTimeAsync()).ToString() ?? string.Empty,
+
+                _ => throw new InvalidOperationException($"The provider does not support the '{propertyName}' property.")
+            };
+
+            if (propertyName == AuthenticationModeProperty)
+            {
+                value = value switch
+                {
+                    "0" => "Windows",
+                    "1" => "ApplicationDefined",
+                    "" => "",
+
+                    _ => throw new InvalidOperationException($"Invalid value '{value}' for '{propertyName}' property.")
+                };
+            }
+            else if (propertyName == HighDpiModeProperty)
+            {
+                value = value switch
+                {
+                    "0" => "DpiUnaware",
+                    "1" => "SystemAware",
+                    "2" => "PerMonitor",
+                    "3" => "PerMonitorV2",
+                    "4" => "DpiUnawareGdiScaled",
+                    "" => "",
+
+                    _ => throw new InvalidOperationException($"Invalid value '{value}' for '{propertyName}' property.")
+                };
+            }
+            else if (propertyName == ShutdownModeProperty)
+            {
+                value = value switch
+                {
+                    "0" => "AfterMainFormCloses",
+                    "1" => "AfterAllFormsClose",
+                    "" => "",
+
+                    _ => throw new InvalidOperationException($"Invalid value '{value}' for '{propertyName}' property.")
+                };
+            }
+
+            return value;
+        }
+
+        private async Task<string?> SetPropertyValueAsync(string propertyName, string unevaluatedPropertyValue, IProjectProperties defaultProperties)
+        {
+            // ValueProvider needs to convert string enums to valid values to be saved.
+            if (propertyName == AuthenticationModeProperty)
+            {
+                unevaluatedPropertyValue = unevaluatedPropertyValue switch
+                {
+                    "Windows" => "0",
+                    "ApplicationDefined" => "1",
+                    _ => unevaluatedPropertyValue
+                };
+            }
+            else if (propertyName == HighDpiModeProperty)
+            {
+                unevaluatedPropertyValue = unevaluatedPropertyValue switch
+                {
+                    "DpiUnaware" => "0",
+                    "SystemAware" => "1",
+                    "PerMonitor" => "2",
+                    "PerMonitorV2" => "3",
+                    "DpiUnawareGdiScaled" => "4",
+                    _ => unevaluatedPropertyValue
+                };
+            }
+            else if (propertyName == ShutdownModeProperty)
+            {
+                unevaluatedPropertyValue = unevaluatedPropertyValue switch
+                {
+                    "AfterMainFormCloses" => "0",
+                    "AfterAllFormsClose" => "1",
+                    _ => unevaluatedPropertyValue
+                };
+            }
+
+            await (propertyName switch 
+            {
+                ApplicationFrameworkProperty => _myAppXmlFileAccessor.SetMySubMainAsync(unevaluatedPropertyValue),
+                EnableVisualStylesProperty => _myAppXmlFileAccessor.SetEnableVisualStylesAsync(Convert.ToBoolean(unevaluatedPropertyValue)),
+                SingleInstanceProperty => _myAppXmlFileAccessor.SetSingleInstanceAsync(Convert.ToBoolean(unevaluatedPropertyValue)),
+                SaveMySettingsOnExitProperty => _myAppXmlFileAccessor.SetSaveMySettingsOnExitAsync(Convert.ToBoolean(unevaluatedPropertyValue)),
+                HighDpiModeProperty => _myAppXmlFileAccessor.SetHighDpiModeAsync(Convert.ToInt16(unevaluatedPropertyValue)),
+                AuthenticationModeProperty => _myAppXmlFileAccessor.SetAuthenticationModeAsync(Convert.ToInt16(unevaluatedPropertyValue)),
+                ShutdownModeProperty => _myAppXmlFileAccessor.SetShutdownModeAsync(Convert.ToInt16(unevaluatedPropertyValue)),
+                SplashScreenProperty => _myAppXmlFileAccessor.SetSplashScreenAsync(unevaluatedPropertyValue),
+                MinimumSplashScreenDisplayTimeProperty => _myAppXmlFileAccessor.SetMinimumSplashScreenDisplayTimeAsync(Convert.ToInt16(unevaluatedPropertyValue)),
+
+                _ => throw new InvalidOperationException($"The provider does not support the '{propertyName}' property.")
+            });
 
             return null;
         }
