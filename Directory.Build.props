@@ -107,7 +107,7 @@
     <Using Include="System.ComponentModel.Composition" />
   </ItemGroup>
 
-  <Import Project="build\import\ProjectDefaults.props" />
+  <Import Project="build\import\LanguageSettings.props" />
   <Import Project="build\import\Workarounds.props" />
 
 </Project>
