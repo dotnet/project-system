@@ -45,17 +45,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
 
         private readonly UnconfiguredProject _project;
         private readonly IProjectItemProvider _sourceItemsProvider;
-        private IMyAppFileAccessor _myAppXamlFileAccessor;
+        private readonly IMyAppFileAccessor _myAppXmlFileAccessor;
 
         [ImportingConstructor]
         public ApplicationFrameworkValueProvider(
             UnconfiguredProject project,
             [Import(ExportContractNames.ProjectItemProviders.SourceFiles)] IProjectItemProvider sourceItemsProvider,
-            IMyAppFileAccessor MyAppXamlFileAccessor)
+            IMyAppFileAccessor myAppXamlFileAccessor)
         {
             _project = project;
             _sourceItemsProvider = sourceItemsProvider;
-            _myAppXamlFileAccessor = MyAppXamlFileAccessor;
+            _myAppXmlFileAccessor = myAppXamlFileAccessor;
         }
 
         public override async Task<string?> OnSetPropertyValueAsync(string propertyName, string unevaluatedPropertyValue, IProjectProperties defaultProperties, IReadOnlyDictionary<string, string>? dimensionalConditions = null)
@@ -164,7 +164,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
                     await defaultProperties.SetPropertyValueAsync(ApplicationFrameworkMSBuildProperty, EnabledValue);
 
                     // Set in myapp file: <MySubMain>true</MySubMain>
-                    await _myAppXamlFileAccessor.SetMySubMainAsync("true");
+                    await _myAppXmlFileAccessor.SetMySubMainAsync("true");
                 }
                 else
                 {
@@ -172,7 +172,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
                     await defaultProperties.SetPropertyValueAsync(ApplicationFrameworkMSBuildProperty, DisabledValue);
 
                     // Set in myapp file: <MySubMain>false</MySubMain>
-                    await _myAppXamlFileAccessor.SetMySubMainAsync("false");
+                    await _myAppXmlFileAccessor.SetMySubMainAsync("false");
                 }
             }
 
@@ -243,17 +243,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
 
         private async Task<string> GetPropertyValueAsync(string propertyName)
         {
-            string? value = propertyName switch
+            string value = propertyName switch
             {
-                ApplicationFrameworkProperty => (await _myAppXamlFileAccessor.GetMySubMainAsync()).ToString() ?? string.Empty,
-                EnableVisualStylesProperty => (await _myAppXamlFileAccessor.GetEnableVisualStylesAsync()).ToString() ?? string.Empty,
-                SingleInstanceProperty => (await _myAppXamlFileAccessor.GetSingleInstanceAsync()).ToString() ?? string.Empty,
-                SaveMySettingsOnExitProperty => (await _myAppXamlFileAccessor.GetSaveMySettingsOnExitAsync()).ToString() ?? string.Empty,
-                HighDpiModeProperty => (await _myAppXamlFileAccessor.GetHighDpiModeAsync()).ToString() ?? string.Empty,
-                AuthenticationModeProperty => (await _myAppXamlFileAccessor.GetAuthenticationModeAsync()).ToString() ?? string.Empty,
-                ShutdownModeProperty => (await _myAppXamlFileAccessor.GetShutdownModeAsync()).ToString() ?? string.Empty,
-                SplashScreenProperty => await _myAppXamlFileAccessor.GetSplashScreenAsync() ?? string.Empty,
-                MinimumSplashScreenDisplayTimeProperty => (await _myAppXamlFileAccessor.GetMinimumSplashScreenDisplayTimeAsync()).ToString() ?? string.Empty,
+                ApplicationFrameworkProperty => (await _myAppXmlFileAccessor.GetMySubMainAsync()).ToString() ?? string.Empty,
+                EnableVisualStylesProperty => (await _myAppXmlFileAccessor.GetEnableVisualStylesAsync()).ToString() ?? string.Empty,
+                SingleInstanceProperty => (await _myAppXmlFileAccessor.GetSingleInstanceAsync()).ToString() ?? string.Empty,
+                SaveMySettingsOnExitProperty => (await _myAppXmlFileAccessor.GetSaveMySettingsOnExitAsync()).ToString() ?? string.Empty,
+                HighDpiModeProperty => (await _myAppXmlFileAccessor.GetHighDpiModeAsync()).ToString() ?? string.Empty,
+                AuthenticationModeProperty => (await _myAppXmlFileAccessor.GetAuthenticationModeAsync()).ToString() ?? string.Empty,
+                ShutdownModeProperty => (await _myAppXmlFileAccessor.GetShutdownModeAsync()).ToString() ?? string.Empty,
+                SplashScreenProperty => await _myAppXmlFileAccessor.GetSplashScreenAsync() ?? string.Empty,
+                MinimumSplashScreenDisplayTimeProperty => (await _myAppXmlFileAccessor.GetMinimumSplashScreenDisplayTimeAsync()).ToString() ?? string.Empty,
 
                 _ => throw new InvalidOperationException($"The provider does not support the '{propertyName}' property.")
             };
@@ -332,17 +332,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
                 };
             }
 
-            await(propertyName switch
+            await (propertyName switch 
             {
-                ApplicationFrameworkProperty => _myAppXamlFileAccessor.SetMySubMainAsync(unevaluatedPropertyValue),
-                EnableVisualStylesProperty => _myAppXamlFileAccessor.SetEnableVisualStylesAsync(Convert.ToBoolean(unevaluatedPropertyValue)),
-                SingleInstanceProperty => _myAppXamlFileAccessor.SetSingleInstanceAsync(Convert.ToBoolean(unevaluatedPropertyValue)),
-                SaveMySettingsOnExitProperty => _myAppXamlFileAccessor.SetSaveMySettingsOnExitAsync(Convert.ToBoolean(unevaluatedPropertyValue)),
-                HighDpiModeProperty => _myAppXamlFileAccessor.SetHighDpiModeAsync(Convert.ToInt16(unevaluatedPropertyValue)),
-                AuthenticationModeProperty => _myAppXamlFileAccessor.SetAuthenticationModeAsync(Convert.ToInt16(unevaluatedPropertyValue)),
-                ShutdownModeProperty => _myAppXamlFileAccessor.SetShutdownModeAsync(Convert.ToInt16(unevaluatedPropertyValue)),
-                SplashScreenProperty => _myAppXamlFileAccessor.SetSplashScreenAsync(unevaluatedPropertyValue),
-                MinimumSplashScreenDisplayTimeProperty => _myAppXamlFileAccessor.SetMinimumSplashScreenDisplayTimeAsync(Convert.ToInt16(unevaluatedPropertyValue)),
+                ApplicationFrameworkProperty => _myAppXmlFileAccessor.SetMySubMainAsync(unevaluatedPropertyValue),
+                EnableVisualStylesProperty => _myAppXmlFileAccessor.SetEnableVisualStylesAsync(Convert.ToBoolean(unevaluatedPropertyValue)),
+                SingleInstanceProperty => _myAppXmlFileAccessor.SetSingleInstanceAsync(Convert.ToBoolean(unevaluatedPropertyValue)),
+                SaveMySettingsOnExitProperty => _myAppXmlFileAccessor.SetSaveMySettingsOnExitAsync(Convert.ToBoolean(unevaluatedPropertyValue)),
+                HighDpiModeProperty => _myAppXmlFileAccessor.SetHighDpiModeAsync(Convert.ToInt16(unevaluatedPropertyValue)),
+                AuthenticationModeProperty => _myAppXmlFileAccessor.SetAuthenticationModeAsync(Convert.ToInt16(unevaluatedPropertyValue)),
+                ShutdownModeProperty => _myAppXmlFileAccessor.SetShutdownModeAsync(Convert.ToInt16(unevaluatedPropertyValue)),
+                SplashScreenProperty => _myAppXmlFileAccessor.SetSplashScreenAsync(unevaluatedPropertyValue),
+                MinimumSplashScreenDisplayTimeProperty => _myAppXmlFileAccessor.SetMinimumSplashScreenDisplayTimeAsync(Convert.ToInt16(unevaluatedPropertyValue)),
 
                 _ => throw new InvalidOperationException($"The provider does not support the '{propertyName}' property.")
             });
