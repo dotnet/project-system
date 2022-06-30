@@ -44,6 +44,7 @@ Namespace My.Resources
             Get
                 If Object.ReferenceEquals(resourceMan, Nothing) Then
                     ' NOTICE: If this file is regenerated, the value below will change to "Designer". You need to manually change it back to "Microsoft.VisualStudio.AppDesigner.Designer" before pushing the changes.
+                    ' You should also add this comment back to the file so the next person is aware of the issue.
                     ' Related links:
                     ' - https://github.com/dotnet/project-system/issues/1058
                     ' - https://github.com/dotnet/project-system/pull/6202
