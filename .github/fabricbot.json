@@ -107,7 +107,7 @@
           {
             "name": "addMilestone",
             "parameters": {
-              "milestoneName": "17.3"
+              "milestoneName": "17.4"
             }
           }
         ],
@@ -1617,16 +1617,27 @@
           "operator": "and",
           "operands": [
             {
-              "name": "prTargetsBranch",
-              "parameters": {
-                "branchName": "dev17.3-preview2"
-              }
-            },
-            {
               "name": "isAction",
               "parameters": {
                 "action": "merged"
               }
+            },
+            {
+              "operator": "or",
+              "operands": [
+                {
+                  "name": "prTargetsBranch",
+                  "parameters": {
+                    "branchName": "dev17.3.x"
+                  }
+                },
+                {
+                  "name": "prTargetsBranch",
+                  "parameters": {
+                    "branchName": "dev17.3-preview2"
+                  }
+                }
+              ]
             }
           ]
         },
@@ -1636,7 +1647,7 @@
           "issues",
           "project_card"
         ],
-        "taskName": "Milestone tracking - 17.3 Preview 2",
+        "taskName": "Milestone tracking - 17.3",
         "actions": [
           {
             "name": "addMilestone",
