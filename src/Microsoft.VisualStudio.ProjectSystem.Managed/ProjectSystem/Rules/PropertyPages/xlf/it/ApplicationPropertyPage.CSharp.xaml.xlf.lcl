@@ -76,6 +76,9 @@
       <Item ItemId=";EnumProperty|ApplicationManifestKind|DisplayName" ItemType="0" PsrId="308" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[Manifest]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Manifesto]]></Val>
+          </Tgt>
         </Str>
         <Disp Icon="Str" />
       </Item>
@@ -172,6 +175,9 @@
       <Item ItemId=";StringProperty|Win32Resource|DisplayName" ItemType="0" PsrId="308" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[Resource file]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[File di risorse]]></Val>
+          </Tgt>
         </Str>
         <Disp Icon="Str" />
       </Item>
