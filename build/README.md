@@ -21,8 +21,8 @@
   - *Potential change*: This file may be replaced with a `Directory.Packages.props` file within: https://github.com/dotnet/project-system/issues/8238
 
 ### `loc`
-- This directory contains the `OneLocBuildSetup` project which creates the `LocProject.json` and copies language-specific XLF files to become language-neutral; both of these are required for the [OneLocBuild](https://aka.ms/OneLocBuild) process for localization.
-- The `OneLocBuildSetup` project is only build and used as part of the [one-loc-build.yml](build\one-loc-build.yml) pipeline.
+- This directory contains the **OneLocBuildSetup** project which creates the `LocProject.json` and copies language-specific XLF files to become language-neutral; both of these are required for the [OneLocBuild](https://aka.ms/OneLocBuild) process for localization.
+- The **OneLocBuildSetup** project is only build and used as part of the [one-loc-build.yml](build\one-loc-build.yml) pipeline.
   - *Potential change*: This pipeline might be combined into another pipeline as part of: https://github.com/dotnet/project-system/issues/7915
 
 ### `optprof`

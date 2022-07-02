@@ -19,8 +19,8 @@
 
   <!-- Local properties -->
   <PropertyGroup>
-    <ManagedProjectName>Microsoft.VisualStudio.ProjectSystem.Managed</ManagedProjectName>
-    <CommonFilesProjectName>Microsoft.VisualStudio.ProjectSystem.Managed.CommonFiles</CommonFilesProjectName>
+    <_ManagedProjectName>Microsoft.VisualStudio.ProjectSystem.Managed</_ManagedProjectName>
+    <_CommonFilesProjectName>Microsoft.VisualStudio.ProjectSystem.Managed.CommonFiles</_CommonFilesProjectName>
   </PropertyGroup>
 
   <ItemGroup>
@@ -32,8 +32,8 @@
       <IncludeOutputGroupsInVSIXLocalOnly>DebugSymbolsProjectOutputGroup</IncludeOutputGroupsInVSIXLocalOnly>
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
     </ProjectReference>
-    <ProjectReference Include="..\..\src\$(ManagedProjectName)\$(ManagedProjectName).csproj">
-      <Name>$(ManagedProjectName)</Name>
+    <ProjectReference Include="..\..\src\$(_ManagedProjectName)\$(_ManagedProjectName).csproj">
+      <Name>$(_ManagedProjectName)</Name>
       <Ngen>true</Ngen>
       <NgenPriority>1</NgenPriority>
       <IncludeOutputGroupsInVSIX>BuiltProjectOutputGroup;GetCopyToOutputDirectoryItems;SatelliteDllsProjectOutputGroup</IncludeOutputGroupsInVSIX>
@@ -46,7 +46,7 @@
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
     </ProjectReference>
     <!-- This is included so the .vsmanproj is guaranteed to have the .json manifest available for CommonFiles, so it can be included as part of the same .vsman file. -->
-    <ProjectReference Include="..\$(CommonFilesProjectName)\$(CommonFilesProjectName).csproj">
+    <ProjectReference Include="..\$(_CommonFilesProjectName)\$(_CommonFilesProjectName).csproj">
       <Private>false</Private>
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
     </ProjectReference>
@@ -64,7 +64,7 @@
 
   <Target Name="VSManifestBuild" AfterTargets="Build">
     <MSBuild Projects="$(MSBuildThisFileDirectory)Microsoft.VisualStudio.ProjectSystem.Managed.vsmanproj"
-      Properties="CommonFilesProjectName=$(CommonFilesProjectName);SwixBuildDir=$(PkgMicrosoft_VisualStudioEng_MicroBuild_Plugins_SwixBuild)\build\;MicroBuildCoreDir=$(PkgMicrosoft_VisualStudioEng_MicroBuild_Core)\build\"
+      Properties="CommonFilesProjectName=$(_CommonFilesProjectName);SwixBuildDir=$(PkgMicrosoft_VisualStudioEng_MicroBuild_Plugins_SwixBuild)\build\;MicroBuildCoreDir=$(PkgMicrosoft_VisualStudioEng_MicroBuild_Core)\build\"
       Targets="Build" />
   </Target>
 
@@ -72,7 +72,7 @@
   <!-- For additional info, see: https://github.com/dotnet/project-system/issues/6612 -->
   <Target Name="ExcludeLocalizedXamlFilesFromVSIX" AfterTargets="GetVsixSourceItems">
     <ItemGroup>
-      <VSIXSourceItem Remove="$(ArtifactsObjDir)$(ManagedProjectName)\$(ManagedProjectName).xlf\**\*.xaml" />
+      <VSIXSourceItem Remove="$(ArtifactsObjDir)$(_ManagedProjectName)\$(_ManagedProjectName).xlf\**\*.xaml" />
     </ItemGroup>
   </Target>
 
