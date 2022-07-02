@@ -4,162 +4,162 @@
     <body>
       <trans-unit id="BoolProperty|EnableVisualStyles|Description">
         <source>Uses the most current version for the Control Library COMCTL to provide control rendering with modern visual styling.</source>
-        <target state="new">Uses the most current version for the Control Library COMCTL to provide control rendering with modern visual styling.</target>
+        <target state="translated">使用最新版本的控制库 COMCTL 提供具有新式视觉样式的控件呈现。</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|EnableVisualStyles|DisplayName">
         <source>Windows Visual Styles</source>
-        <target state="new">Windows Visual Styles</target>
+        <target state="translated">Windows 视觉样式</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|SaveMySettingsOnExit|Description">
         <source>Controls if settings are saved when users shut down their computers.</source>
-        <target state="new">Controls if settings are saved when users shut down their computers.</target>
+        <target state="translated">控制用户关闭计算机时是否保存设置。</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|SaveMySettingsOnExit|DisplayName">
         <source>Save user settings on exit</source>
-        <target state="new">Save user settings on exit</target>
+        <target state="translated">退出时保存用户设置</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|SingleInstance|Description">
         <source>Prevents users from running multiple instances of the application. Default is cleared, which allows multiple instances of the application to be run.</source>
-        <target state="new">Prevents users from running multiple instances of the application. Default is cleared, which allows multiple instances of the application to be run.</target>
+        <target state="translated">阻止用户运行应用程序的多个实例。默认值被清除，这允许运行应用程序的多个实例。</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|SingleInstance|DisplayName">
         <source>Single-instance application</source>
-        <target state="new">Single-instance application</target>
+        <target state="translated">单实例应用程序</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|UseApplicationFramework|Description">
         <source>Enable the Visual Basic Application Framework for this project. In general, these settings get serialized into the myapp file.</source>
-        <target state="new">Enable the Visual Basic Application Framework for this project. In general, these settings get serialized into the myapp file.</target>
+        <target state="translated">为此项目启用 Visual Basic 应用程序框架。通常，这些设置会序列化为 myapp 文件。</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|UseApplicationFramework|DisplayName">
         <source>Application Framework</source>
-        <target state="new">Application Framework</target>
+        <target state="translated">应用程序框架</target>
         <note />
       </trans-unit>
       <trans-unit id="Category|ApplicationFramework|Description">
         <source>Application Framework settings.</source>
-        <target state="new">Application Framework settings.</target>
+        <target state="translated">应用程序框架设置。</target>
         <note />
       </trans-unit>
       <trans-unit id="Category|ApplicationFramework|DisplayName">
         <source>Application Framework</source>
-        <target state="new">Application Framework</target>
+        <target state="translated">应用程序框架</target>
         <note />
       </trans-unit>
       <trans-unit id="Category|WPF|Description">
         <source>Settings specific to WPF applications.</source>
-        <target state="new">Settings specific to WPF applications.</target>
+        <target state="translated">特定于 WPF 应用程序的设置。</target>
         <note />
       </trans-unit>
       <trans-unit id="Category|WPF|DisplayName">
         <source>WPF</source>
-        <target state="new">WPF</target>
+        <target state="translated">WPF</target>
         <note />
       </trans-unit>
       <trans-unit id="DynamicEnumProperty|SplashScreen|Description">
         <source>Sets the form to be used as a splash screen for the application.</source>
-        <target state="new">Sets the form to be used as a splash screen for the application.</target>
+        <target state="translated">设置要用作应用程序初始屏幕的窗体。</target>
         <note />
       </trans-unit>
       <trans-unit id="DynamicEnumProperty|SplashScreen|DisplayName">
         <source>Splash screen</source>
-        <target state="new">Splash screen</target>
+        <target state="translated">初始屏幕</target>
         <note />
       </trans-unit>
       <trans-unit id="DynamicEnumProperty|StartupURI|Description">
         <source>Specifies the window that will open when the application loads.</source>
-        <target state="new">Specifies the window that will open when the application loads.</target>
+        <target state="translated">指定应用程序加载时将打开的窗口。</target>
         <note />
       </trans-unit>
       <trans-unit id="DynamicEnumProperty|StartupURI|DisplayName">
         <source>Startup URI</source>
-        <target state="new">Startup URI</target>
+        <target state="translated">启动 URI</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumProperty|HighDpiMode|Description">
         <source>Specifies the application-wide HighDpiMode for the application. This setting can be programaticaly overriden through the ApplyApplicationDefaults event.</source>
-        <target state="new">Specifies the application-wide HighDpiMode for the application. This setting can be programaticaly overriden through the ApplyApplicationDefaults event.</target>
+        <target state="translated">为应用程序指定应用程序范围的 HighDpiMode。可以通过 ApplyApplicationDefaults 事件以编程方式替代此设置。</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumProperty|HighDpiMode|DisplayName">
         <source>High DPI mode</source>
-        <target state="new">High DPI mode</target>
+        <target state="translated">高 DPI 模式</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumProperty|ShutdownMode_WPF|Description">
         <source>Specifies when the application should close automatically.</source>
-        <target state="new">Specifies when the application should close automatically.</target>
+        <target state="translated">指定应用程序何时应自动关闭。</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumProperty|ShutdownMode_WPF|DisplayName">
         <source>Shutdown mode</source>
-        <target state="new">Shutdown mode</target>
+        <target state="translated">关闭模式</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumProperty|ShutdownMode|Description">
         <source>Indicates which condition causes the application to shut down.</source>
-        <target state="new">Indicates which condition causes the application to shut down.</target>
+        <target state="translated">指示导致应用程序关闭的条件。</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumProperty|ShutdownMode|DisplayName">
         <source>Shutdown mode</source>
-        <target state="new">Shutdown mode</target>
+        <target state="translated">关闭模式</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumProperty|VBAuthenticationMode|Description">
         <source>Specifies the method of identifying the logged-on user, when needed.</source>
-        <target state="new">Specifies the method of identifying the logged-on user, when needed.</target>
+        <target state="translated">指定在需要时标识已登录用户的方法。</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumProperty|VBAuthenticationMode|DisplayName">
         <source>Authentication mode</source>
-        <target state="new">Authentication mode</target>
+        <target state="translated">身份验证模式</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|HighDpiMode.DpiUnawareGdiScaled|DisplayName">
         <source>DPI unaware, GDI scaled - Like DPI unaware but optimized for non-double-buffered Graphics content.</source>
-        <target state="new">DPI unaware, GDI scaled - Like DPI unaware but optimized for non-double-buffered Graphics content.</target>
+        <target state="translated">DPI 不知情，GDI 已缩放 - 和 DPI 不知情相似，但针对非双缓冲图形内容进行了优化。</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|HighDpiMode.DpiUnaware|DisplayName">
         <source>DPI unaware - No scaling and assuming 100% scaling.</source>
-        <target state="new">DPI unaware - No scaling and assuming 100% scaling.</target>
+        <target state="translated">DPI 不知情 - 无缩放，并假定 100% 缩放。</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|HighDpiMode.PerMonitorV2|DisplayName">
         <source>Per monitor V2 - DPI detected on-launch and on-change including child windows</source>
-        <target state="new">Per monitor V2 - DPI detected on-launch and on-change including child windows</target>
+        <target state="translated">按监视器 V2 - 在启动和更改时检测到 DPI，包括子窗口</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|HighDpiMode.PerMonitor|DisplayName">
         <source>Per monitor - DPI detected on-launch and on-change.</source>
-        <target state="new">Per monitor - DPI detected on-launch and on-change.</target>
+        <target state="translated">按监视器 - 在启动和更改时检测到 DPI。</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|HighDpiMode.SystemAware|DisplayName">
         <source>System aware - Primary monitor's DPI is scale lead.</source>
-        <target state="new">System aware - Primary monitor's DPI is scale lead.</target>
+        <target state="translated">系统感知 - 主监视器的 DPI 是缩放前导。</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|ShutdownMode.AfterAllFormsClose|DisplayName">
         <source>Shut down only after the last form closes.</source>
-        <target state="new">Shut down only after the last form closes.</target>
+        <target state="translated">仅在最后一个窗体关闭后才关闭。</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|ShutdownMode.AfterMainFormCloses|DisplayName">
         <source>Shut down when the main form closes.</source>
-        <target state="new">Shut down when the main form closes.</target>
+        <target state="translated">在主窗体关闭时关闭。</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|ShutdownMode_WPF.OnExplicitShutdown|DisplayName">
         <source>On explicit shutdown</source>
-        <target state="new">On explicit shutdown</target>
+        <target state="translated">在显式关闭时</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|ShutdownMode_WPF.OnLastWindowClose|DisplayName">
@@ -174,32 +174,32 @@
       </trans-unit>
       <trans-unit id="EnumValue|VBAuthenticationMode.ApplicationDefined|DisplayName">
         <source>Application-defined - Custom authentication implemented within the application.</source>
-        <target state="new">Application-defined - Custom authentication implemented within the application.</target>
+        <target state="translated">应用程序定义 - 在应用程序中实现的自定义身份验证。</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|VBAuthenticationMode.Windows|DisplayName">
         <source>Windows - Retrieve user info through My.User at runtime.</source>
-        <target state="new">Windows - Retrieve user info through My.User at runtime.</target>
+        <target state="translated">Windows - 在运行时通过 My.User 检索用户信息。</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|CreateOrOpenApplicationXaml|Description">
         <source>Open the Application.xaml file</source>
-        <target state="new">Open the Application.xaml file</target>
+        <target state="translated">打开 Application.xaml 文件</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|CreateOrOpenApplicationXaml|DisplayName">
         <source>Edit XAML</source>
-        <target state="new">Edit XAML</target>
+        <target state="translated">编辑 XAML</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|MinimumSplashScreenDisplayTime|Description">
         <source>Sets the minimum length of time, in milliseconds, for which the splash screen is displayed.</source>
-        <target state="new">Sets the minimum length of time, in milliseconds, for which the splash screen is displayed.</target>
+        <target state="translated">设置显示初始屏幕的最短时间长度(以毫秒为单位)。</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|MinimumSplashScreenDisplayTime|DisplayName">
         <source>Minimum splash screen display time</source>
-        <target state="new">Minimum splash screen display time</target>
+        <target state="translated">最短初始屏幕显示时间</target>
         <note />
       </trans-unit>
     </body>

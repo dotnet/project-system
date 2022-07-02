@@ -4,12 +4,12 @@
     <body>
       <trans-unit id="Rule|References|Description">
         <source>Specifies the project's references.</source>
-        <target state="new">Specifies the project's references.</target>
+        <target state="translated">Určuje odkazy projektu.</target>
         <note />
       </trans-unit>
       <trans-unit id="Rule|References|DisplayName">
         <source>References</source>
-        <target state="new">References</target>
+        <target state="translated">Odkazy</target>
         <note />
       </trans-unit>
     </body>
