@@ -4,7 +4,7 @@
     <body>
       <trans-unit id="Category|General|Description">
         <source>References and namespace settings for VB projects.</source>
-        <target state="new">References and namespace settings for VB projects.</target>
+        <target state="translated">Odwołania i ustawienia przestrzeni nazw dla projektów Visual Basic.</target>
         <note />
       </trans-unit>
       <trans-unit id="Category|General|DisplayName">
@@ -14,22 +14,22 @@
       </trans-unit>
       <trans-unit id="DynamicEnumProperty|ImportedNamespaces|Description">
         <source>Manage which namespaces to import in your application.</source>
-        <target state="new">Manage which namespaces to import in your application.</target>
+        <target state="translated">Zarządzaj przestrzeniami nazw do zaimportowania w aplikacji.</target>
         <note />
       </trans-unit>
       <trans-unit id="DynamicEnumProperty|ImportedNamespaces|DisplayName">
         <source>Import Namespaces</source>
-        <target state="new">Import Namespaces</target>
+        <target state="translated">Importuj przestrzenie nazw</target>
         <note />
       </trans-unit>
       <trans-unit id="Rule|References|Description">
         <source>Specifies the project's references and namespace imports.</source>
-        <target state="new">Specifies the project's references and namespace imports.</target>
+        <target state="translated">Określa odwołania projektu i importy przestrzeni nazw.</target>
         <note />
       </trans-unit>
       <trans-unit id="Rule|References|DisplayName">
         <source>References</source>
-        <target state="new">References</target>
+        <target state="translated">Odwołania</target>
         <note />
       </trans-unit>
     </body>
