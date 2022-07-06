@@ -62,6 +62,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
             s_requestedPropertyProperties.RequireProperty(UIPropertyType.VisibilityConditionPropertyName);
             s_requestedPropertyProperties.RequireProperty(UIPropertyType.DimensionVisibilityConditionPropertyName);
             s_requestedPropertyProperties.RequireProperty(UIPropertyType.ConfiguredValueVisibilityConditionPropertyName);
+            s_requestedPropertyProperties.RequireProperty(UIPropertyType.EditabilityConditionPropertyName);
             s_requestedPropertyProperties.Freeze();
 
             s_requestedEditorProperties = new UIPropertyEditorPropertiesAvailableStatus();
