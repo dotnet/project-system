@@ -220,6 +220,31 @@ If you do not wish to use the fast up-to-date check, preferring to always call M
 Note that in both cases this only disables Visual Studio's up-to-date check. MSBuild will still perform its own
 determination as to whether the project should be rebuilt.
 
-⚠️ We do not recommend disabling this! It can have a significant negative impact on your productivity.
-If you are disabling the check because you feel it is not behaving correctly, please file an issue in this repo and
-include details from the verbose log so that we can improve the feature.
+> ⚠️ We do not recommend disabling this! It can have a significant negative impact on your productivity.
+> If you are disabling the check because you feel it is not behaving correctly, please file an issue in this repo and
+> include details from the verbose log so that we can improve the feature.
+
+## Reasons a project is not up-to-date
+
+There are several reasons that a project may fail its up-to-date check and be scheduled to build.
+
+| Reason | Description |
+|--------|-------------|
+| *InputNewerThanEarliestOutput* | A project input (such as a `.cs` file) has a time stamp later than the earliest output time stamp. |
+| *InputModifiedSinceLastSuccessfulBuildStart* | A project input (such as a `.cs` file) has a time stamp that comes after the last successful build time. This case would usually be covered by _InputNewerThanEarliestOutput_ as builds usually update output files, however there are cases where outputs are not updated, and this check ensures we don't end up in an overbuild loop, as such loops have significant penalties on inner-loop productivity. |
+| *FirstRun* | This is the first build of the project. The FUTD check doesn't have persisted data in the `.vs` folder, so doesn't know the previous set of inputs that contributed to the current outputs (i.e. we could miss a case of reason *ProjectItemsChangedSinceLastSuccessfulBuildStart*). We schedule a build just to be sure. Once that build completes, this reason will not resurface unless the `.vs` folder is deleted. |
+| *InputNotFound* | A project input (such as a `.cs` file) is not found on disk. A build is scheduled that may either produce this file and copy it, or emit an error about the missing file. |
+| *OutputNotFound* | A project output (such as a `.dll` file) is not found on disk. A build is scheduled that will likely produce it. |
+| *InputMarkerNewerThanOutputMarker* | This reason is seen when using [reference assemblies](https://docs.microsoft.com/dotnet/standard/assembly/reference-assemblies) and `ProjectReference`. It indicates that the referenced project's implementation assembly was changed, despite its reference assembly being unchanged. This situation occurs when the referenced project changes such that its public API is unmodified. The referencing project may not need to be recompiled, but must copy the updated implementation assembly to its output directory. |
+| *ProjectItemsChangedSinceLastSuccessfulBuildStart* | The set of project items has changed since the time at which the last successful build started. This is required to correctly handle the removal of an input file that is included via globs. Without this check, removing a `.cs` file would not trigger a build, as no other observable change is present on disk. |
+| *CopyDestinationNotFound* | A file is marked for copy, and the destination does not exist. The build will copy it. |
+| *CopySourceNotFound* | A file is marked for copy, and the source does not exist. A build is scheduled that may either produce this file and copy it, or emit an error about the missing file. |
+| *CopySourceNewer* | A file is marked for copy, and the source file was modified after the destination file. The build will update the destination file. |
+| *CopyAlwaysItemDiffers* | A `CopyToOutputDirectory="Always"` item in the project has different source/target files (either by time stamp or file size). The build will copy it. |
+| *CopyToOutputDirectoryDestinationNotFound* | A `CopyToOutputDirectory` input file is not present in the output directory. The build will copy it. |
+| *CopyToOutputDirectorySourceNotFound* | A `CopyToOutputDirectory` input file does not exist. A build is scheduled that may either produce this file and copy it, or emit an error about the missing file. |
+| *CopyToOutputDirectorySourceNewer* | A `CopyToOutputDirectory` input file has a newer time stamp than its destination. The build will update the output file. |
+| *CopyAlwaysItemExists* | Since 17.2 we only report this when `DisableFastUpToDateCopyAlwaysOptimization` is set on the project. [More info](#copytooutputdirectory-always-vs-preservenewest). |
+| *Disabled* | The project has `DisableFastUpToDateCheck` set. [More info](#disabling-the-up-to-date-check). |
+| *CriticalTasks* | Critical build tasks are running. This is very uncommon, and is not something the user has control over. |
+| *Exception* | An exception occurred in the implementation of the fast up-to-date check. We schedule a build at this point, as we don't know whether it is safe not to. |
