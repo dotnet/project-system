@@ -210,7 +210,30 @@ In VS 17.2, we changed the fast up-to-date check to be less strict about `Always
 
 To opt-out of this optimization and preserve the pre-17.2 behaviour, set the `DisableFastUpToDateCopyAlwaysOptimization` MSBuild property to `true` in your project. Consider also opening an issue on this repo to explain why the optimization doesn't work for you, to give us a chance to improve it further.
 
-## Disabling the Up-to-date Check
+## Reference assemblies and mixed SDK-style/non-SDK-style projects
+
+[Reference assemblies](https://docs.microsoft.com/dotnet/standard/assembly/reference-assemblies) can be used during .NET builds to avoid unnecessary compilation in the following case:
+
+1. A _referencing_ project has a `ProjectReference` to a _referenced_ project that specifies `ProduceReferenceAssembly` as `true`.
+2. The _referenced_ project is changed in a way that doesn't alter its public API (such as a change within a method body, or the addition of a `private` method).
+3. A build is requested for the _referencing_ project.
+4. The _referenced_ project is built first, and that build notices that the public API hasn't changed.
+5. The _referencing_ project is build second, and identifies that the referenced public API hasn't changed, so the build needs only to copy the referenced binary, without recompiling itself.
+
+In a large solution with many layers of project references, this feature can avoid many recompilation chain reactions, reducing build times significantly.
+
+In Visual Studio, reference assemblies are not yet supported for non-SDK-style projects. Therefore if you have a solution that mixes both SDK-style and non-SDK-style projects, the interaction between the two projects in steps 4 and 5 above won't happen correctly. What happens instead is that the _referencing_ non-SDK-style project thinks the _referenced_ SDK-style project is up-to-date, so no build is scheduled. This means that the _referenced_ binary is not copied to the _referencing_ project's output directory. From the perspective of the developer, their changes appear to have no effect when running their program.
+
+If you are experiencing this issue, you have a few options to address it, each with different downsides to consider:
+
+1. Set `ProduceReferenceAssembly` to `false` for all SDK-style projects (perhaps in a `Directory.Build.props` file). The downside here is that SDK-style projects will build more frequently.
+2. Disable the fast up-to-date check for non-SDK-style projects (again, perhaps in a `Directory.Build.props` file). The downside here is that non-SDK-style projects will build more frequently. You could use something like:
+   ```xml
+   <DisableFastUpToDateCheck Condition="'$(UsingMicrosoftNETSdk)' != 'true'">true</DisableFastUpToDateCheck>
+   ```
+3. Convert any non-SDK-style projects to SDK-style. The downside here is the effort involved. 
+
+## Disabling the up-to-date check
 
 If you do not wish to use the fast up-to-date check, preferring to always call MSBuild, you can disable it by either:
 
