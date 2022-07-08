@@ -282,7 +282,7 @@ In order to debug this project, add an executable project to this solution which
     <value>Hot Reload is not available because startup hooks have been disabled, possibly due to trimming.</value>
   </data>
   <data name="IncrementalBuildFailureWarningMessage_2" xml:space="preserve">
-    <value>WARNING: Potential incremental build failure in '{0}'. {1}. See https://aka.ms/incremental-build-failure.</value>
+    <value>WARNING: Potential build performance issue in '{0}'. The project does not appear up-to-date after a successful build: {1}. See https://aka.ms/incremental-build-failure.</value>
     <comment>{0} is the file name of the project. {1} is a description of the failure. The period '.' after {1} is intentional and should be kept.</comment>
   </data>
   <data name="UpdateNamespacePromptMessage" xml:space="preserve">
