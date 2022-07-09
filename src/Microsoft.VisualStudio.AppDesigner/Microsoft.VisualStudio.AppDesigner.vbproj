@@ -109,7 +109,6 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Designer.Designer.vb</LastGenOutput>
       <SubType>Designer</SubType>
-      <!-- <RootNamespace>Microsoft.VisualStudio.AppDesigner</RootNamespace> -->
     </EmbeddedResource>
     <EmbeddedResource Update="DesignerFramework\ErrorControl.resx">
       <DependentUpon>ErrorControl.vb</DependentUpon>
