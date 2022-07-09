@@ -110,7 +110,7 @@
         <NameValuePair.Value>
           (and
             (has-net-framework)
-            (has-evaluated-value "Build" "PlatformTarget" "AnyCPU")
+            (has-evaluated-value "Build" "PlatformTarget" "Any CPU")
             (or
               (has-evaluated-value "Application" "OutputType" "Exe")
               (has-evaluated-value "Application" "OutputType" "WinExe")

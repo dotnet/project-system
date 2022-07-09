@@ -6,7 +6,7 @@
 |[17.0][170Branch]|[![Build Status][170Debug]][170Build]|[![Build Status][170Release]][170Build]|[![Build Status][170Spanish]][170Build]|
 |[17.1][171Branch]|[![Build Status][171Debug]][171Build]|[![Build Status][171Release]][171Build]|[![Build Status][171Spanish]][171Build]|
 |[17.2][172Branch]|[![Build Status][172Debug]][172Build]|[![Build Status][172Release]][172Build]|[![Build Status][172Spanish]][172Build]|
-|[17.3 Preview 2][173Preview2Branch]|[![Build Status][173Preview2Debug]][173Preview2Build]|[![Build Status][173Preview2Release]][173Preview2Build]|[![Build Status][173Preview2Spanish]][173Preview2Build]|
+|[17.3][173Branch]|[![Build Status][173Debug]][173Build]|[![Build Status][173Release]][173Build]|[![Build Status][173Spanish]][173Build]|
 |[main][MainBranch]|[![Build Status][MainDebug]][MainBuild]|[![Build Status][MainRelease]][MainBuild]|[![Build Status][MainSpanish]][MainBuild]|
 
 [![Join the chat at https://gitter.im/dotnet/project-system](https://badges.gitter.im/dotnet/project-system.svg)](https://gitter.im/dotnet/project-system?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
@@ -77,8 +77,8 @@ This project has adopted a code of conduct adapted from the [Contributor Covenan
 [172Spanish]: https://dev.azure.com/dnceng/public/_apis/build/status/dotnet/project-system/unit-tests?branchName=dev17.2.x&jobName=Spanish&label=dev17.2.x
 [172Build]: https://dev.azure.com/dnceng/public/_build/latest?definitionId=406&branchName=dev17.2.x
 
-[173Preview2Branch]: https://github.com/dotnet/project-system/tree/dev17.3-preview2
-[173Preview2Debug]: https://dev.azure.com/dnceng/public/_apis/build/status/dotnet/project-system/unit-tests?branchName=dev17.3-preview2&jobName=Windows_Debug&%20Debug&label=dev17.3-preview2
-[173Preview2Release]: https://dev.azure.com/dnceng/public/_apis/build/status/dotnet/project-system/unit-tests?branchName=dev17.3-preview2&jobName=Windows_Release&%20Release&label=dev17.3-preview2
-[173Preview2Spanish]: https://dev.azure.com/dnceng/public/_apis/build/status/dotnet/project-system/unit-tests?branchName=dev17.3-preview2&jobName=Spanish&label=dev17.3-preview2
-[173Preview2Build]: https://dev.azure.com/dnceng/public/_build/latest?definitionId=406&branchName=dev17.3-preview2
+[173Branch]: https://github.com/dotnet/project-system/tree/dev17.3.x
+[173Debug]: https://dev.azure.com/dnceng/public/_apis/build/status/dotnet/project-system/unit-tests?branchName=dev17.3.x&jobName=Windows_Debug&%20Debug&label=dev17.3.x
+[173Release]: https://dev.azure.com/dnceng/public/_apis/build/status/dotnet/project-system/unit-tests?branchName=dev17.3.x&jobName=Windows_Release&%20Release&label=dev17.3.x
+[173Spanish]: https://dev.azure.com/dnceng/public/_apis/build/status/dotnet/project-system/unit-tests?branchName=dev17.3.x&jobName=Spanish&label=dev17.3.x
+[173Build]: https://dev.azure.com/dnceng/public/_build/latest?definitionId=406&branchName=dev17.3.x

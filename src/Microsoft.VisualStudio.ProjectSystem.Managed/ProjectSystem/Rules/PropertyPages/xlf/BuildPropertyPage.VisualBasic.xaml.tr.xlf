@@ -4,27 +4,27 @@
     <body>
       <trans-unit id="BoolProperty|DefineDebug|DisplayName">
         <source>Define DEBUG constant</source>
-        <target state="new">Define DEBUG constant</target>
+        <target state="translated">DEBUG sabitini tanımla</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|DefineTrace|DisplayName">
         <source>Define TRACE constant</source>
-        <target state="new">Define TRACE constant</target>
+        <target state="translated">TRACE sabiti tanımla</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|GenerateDocumentationFile|Description">
         <source>Specifies whether to generate documentation information.</source>
-        <target state="new">Specifies whether to generate documentation information.</target>
+        <target state="translated">Belge bilgilerinin üretilip üretilmeyeceğini belirtir.</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|GenerateDocumentationFile|DisplayName">
         <source>Generate XML documentation file</source>
-        <target state="new">Generate XML documentation file</target>
+        <target state="translated">XML belge dosyası oluştur</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|Optimize|DisplayName">
         <source>Enable optimizations</source>
-        <target state="new">Enable optimizations</target>
+        <target state="translated">İyileştirmeleri etkinleştir</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|Prefer32Bit|Description">
@@ -39,12 +39,12 @@
       </trans-unit>
       <trans-unit id="BoolProperty|RegisterForComInterop|Description">
         <source>Specifies whether your managed application will expose a COM object (a COM-callable wrapper) that enables a COM object to interact with the application.</source>
-        <target state="new">Specifies whether your managed application will expose a COM object (a COM-callable wrapper) that enables a COM object to interact with the application.</target>
+        <target state="translated">Yönetilen uygulamanız ile bir COM nesnesinin etkileşim kurmasını sağlayan bir COM nesnesinin (COM çağrılabilir sarmalayıcısının) uygulamanız tarafından ortaya çıkarılıp çıkarılmayacağını belirtir.</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|RegisterForComInterop|DisplayName">
         <source>Register for COM interop</source>
-        <target state="new">Register for COM interop</target>
+        <target state="translated">COM ile birlikte çalışma için kaydolun</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|RemoveIntegerChecks|DisplayName">
@@ -79,12 +79,12 @@
       </trans-unit>
       <trans-unit id="Category|Options|DisplayName">
         <source>Options</source>
-        <target state="new">Options</target>
+        <target state="translated">Seçenekler</target>
         <note />
       </trans-unit>
       <trans-unit id="Category|Warnings|DisplayName">
         <source>Warnings</source>
-        <target state="new">Warnings</target>
+        <target state="translated">Uyarılar</target>
         <note />
       </trans-unit>
       <trans-unit id="DynamicEnumProperty|DuplicateOrOverlappingCatchBlocks_Readonly|DisplayName">
@@ -99,42 +99,42 @@
       </trans-unit>
       <trans-unit id="DynamicEnumProperty|ImplicitConversion_Readonly|Description">
         <source>Implicit narrowing conversion occurs when there is an implicit data type conversion that is a narrowing conversion. Always 'Error' when 'Option strict' is on.</source>
-        <target state="new">Implicit narrowing conversion occurs when there is an implicit data type conversion that is a narrowing conversion. Always 'Error' when 'Option strict' is on.</target>
+        <target state="translated">Örtük daraltma dönüştürmesi, daraltma dönüştürmesi olan örtük bir veri türü dönüştürmesi olduğunda oluşur. 'Option strict' açık olduğunda her zaman 'Error' görünür.</target>
         <note />
       </trans-unit>
       <trans-unit id="DynamicEnumProperty|ImplicitConversion_Readonly|DisplayName">
         <source>Implicit conversion</source>
-        <target state="new">Implicit conversion</target>
+        <target state="translated">Örtük dönüştürme</target>
         <note />
       </trans-unit>
       <trans-unit id="DynamicEnumProperty|ImplicitConversion|Description">
         <source>Implicit narrowing conversion occurs when there is an implicit data type conversion that is a narrowing conversion. Always 'Error' when 'Option strict' is on.</source>
-        <target state="new">Implicit narrowing conversion occurs when there is an implicit data type conversion that is a narrowing conversion. Always 'Error' when 'Option strict' is on.</target>
+        <target state="translated">Örtük daraltma dönüştürmesi, daraltma dönüştürmesi olan örtük bir veri türü dönüştürmesi olduğunda oluşur. 'Option strict' açık olduğunda her zaman 'Error' görünür.</target>
         <note />
       </trans-unit>
       <trans-unit id="DynamicEnumProperty|ImplicitConversion|DisplayName">
         <source>Implicit conversion</source>
-        <target state="new">Implicit conversion</target>
+        <target state="translated">Örtük dönüştürme</target>
         <note />
       </trans-unit>
       <trans-unit id="DynamicEnumProperty|ImplicitType_Readonly|Description">
         <source>Implicit object type errors occur when an appropriate type cannot be inferred for a declared variable, so a type of 'Object' is inferred. Always 'Error' when 'Option strict' is on.</source>
-        <target state="new">Implicit object type errors occur when an appropriate type cannot be inferred for a declared variable, so a type of 'Object' is inferred. Always 'Error' when 'Option strict' is on.</target>
+        <target state="translated">Örtük nesne türü hataları, bildirilen bir değişken için uygun bir tür çıkarsanamazsa oluşur, bu nedenle bir 'Object' türü çıkarsanmış olur. 'Option strict' açık olduğunda her zaman 'Error' görünür.</target>
         <note />
       </trans-unit>
       <trans-unit id="DynamicEnumProperty|ImplicitType_Readonly|DisplayName">
         <source>Implicit type</source>
-        <target state="new">Implicit type</target>
+        <target state="translated">Örtük tür</target>
         <note />
       </trans-unit>
       <trans-unit id="DynamicEnumProperty|ImplicitType|Description">
         <source>Implicit object type errors occur when an appropriate type cannot be inferred for a declared variable, so a type of 'Object' is inferred. Always 'Error' when 'Option strict' is on.</source>
-        <target state="new">Implicit object type errors occur when an appropriate type cannot be inferred for a declared variable, so a type of 'Object' is inferred. Always 'Error' when 'Option strict' is on.</target>
+        <target state="translated">Örtük nesne türü hataları, bildirilen bir değişken için uygun bir tür çıkarsanamazsa oluşur, bu nedenle bir 'Object' türü çıkarsanmış olur. 'Option strict' açık olduğunda her zaman 'Error' görünür.</target>
         <note />
       </trans-unit>
       <trans-unit id="DynamicEnumProperty|ImplicitType|DisplayName">
         <source>Implicit type</source>
-        <target state="new">Implicit type</target>
+        <target state="translated">Örtük tür</target>
         <note />
       </trans-unit>
       <trans-unit id="DynamicEnumProperty|InstanceVariableAccessesSharedMember_Readonly|DisplayName">
@@ -149,22 +149,22 @@
       </trans-unit>
       <trans-unit id="DynamicEnumProperty|LateBinding_Readonly|Description">
         <source>An object is late bound when it is assigned to a property or method of a variable that is declared to be of type 'Object'. These operations could fail at run time. Always 'Error' when 'Option strict' is on.</source>
-        <target state="new">An object is late bound when it is assigned to a property or method of a variable that is declared to be of type 'Object'. These operations could fail at run time. Always 'Error' when 'Option strict' is on.</target>
+        <target state="translated">Bir nesne, 'Object' türünde olduğu bildirilen bir değişkenin bir özelliğine veya yöntemine atandığında geç bağlanır. Bu işlemler çalışma zamanında başarısız olabilir. 'Option strict' açık olduğunda her zaman 'Error' görünür.</target>
         <note />
       </trans-unit>
       <trans-unit id="DynamicEnumProperty|LateBinding_Readonly|DisplayName">
         <source>Late binding</source>
-        <target state="new">Late binding</target>
+        <target state="translated">Geç bağlama</target>
         <note />
       </trans-unit>
       <trans-unit id="DynamicEnumProperty|LateBinding|Description">
         <source>An object is late bound when it is assigned to a property or method of a variable that is declared to be of type 'Object'. These operations could fail at run time. Always 'Error' when 'Option strict' is on.</source>
-        <target state="new">An object is late bound when it is assigned to a property or method of a variable that is declared to be of type 'Object'. These operations could fail at run time. Always 'Error' when 'Option strict' is on.</target>
+        <target state="translated">Bir nesne, 'Object' türünde olduğu bildirilen bir değişkenin bir özelliğine veya yöntemine atandığında geç bağlanır. Bu işlemler çalışma zamanında başarısız olabilir. 'Option strict' açık olduğunda her zaman 'Error' görünür.</target>
         <note />
       </trans-unit>
       <trans-unit id="DynamicEnumProperty|LateBinding|DisplayName">
         <source>Late binding</source>
-        <target state="new">Late binding</target>
+        <target state="translated">Geç bağlama</target>
         <note />
       </trans-unit>
       <trans-unit id="DynamicEnumProperty|PlatformTarget|Description">
@@ -174,7 +174,7 @@
       </trans-unit>
       <trans-unit id="DynamicEnumProperty|PlatformTarget|DisplayName">
         <source>Target CPU</source>
-        <target state="new">Target CPU</target>
+        <target state="translated">Hedef CPU</target>
         <note />
       </trans-unit>
       <trans-unit id="DynamicEnumProperty|RecursiveOperatorOrPropertyAccess_Readonly|DisplayName">
@@ -209,12 +209,12 @@
       </trans-unit>
       <trans-unit id="DynamicEnumProperty|UnusedLocalVariable_Readonly|DisplayName">
         <source>Unused local variable</source>
-        <target state="new">Unused local variable</target>
+        <target state="translated">Kullanılmayan yerel değişken</target>
         <note />
       </trans-unit>
       <trans-unit id="DynamicEnumProperty|UnusedLocalVariable|DisplayName">
         <source>Unused local variable</source>
-        <target state="new">Unused local variable</target>
+        <target state="translated">Kullanılmayan yerel değişken</target>
         <note />
       </trans-unit>
       <trans-unit id="DynamicEnumProperty|UseOfVariablePriorToAssignment_Readonly|DisplayName">
@@ -244,47 +244,47 @@
       </trans-unit>
       <trans-unit id="EnumProperty|GenerateSerializationAssemblies|DisplayName">
         <source>Generate serialization assemblies</source>
-        <target state="new">Generate serialization assemblies</target>
+        <target state="translated">Serileştirme derlemeleri oluştur</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumProperty|OptionCompare|Description">
         <source>Specifies the type of string comparison to use.</source>
-        <target state="new">Specifies the type of string comparison to use.</target>
+        <target state="translated">Kullanılacak dize karşılaştırma türünü belirtir.</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumProperty|OptionCompare|DisplayName">
         <source>Option compare</source>
-        <target state="new">Option compare</target>
+        <target state="translated">Seçenek karşılaştırma</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumProperty|OptionExplicit|Description">
         <source>Specifies whether to require explicit declaration of variables.</source>
-        <target state="new">Specifies whether to require explicit declaration of variables.</target>
+        <target state="translated">Değişkenlerin açık bildiriminin gerekip gerekmediğini belirtir.</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumProperty|OptionExplicit|DisplayName">
         <source>Option explicit</source>
-        <target state="new">Option explicit</target>
+        <target state="translated">Seçenek açık</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumProperty|OptionInfer|Description">
         <source>Specifies whether to allow local type inference in variable declarations.</source>
-        <target state="new">Specifies whether to allow local type inference in variable declarations.</target>
+        <target state="translated">Değişken bildirimlerinde yerel çıkarıma izin verilip verilmeyeceğini belirtir.</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumProperty|OptionInfer|DisplayName">
         <source>Option infer</source>
-        <target state="new">Option infer</target>
+        <target state="translated">Seçenek kaynağı</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumProperty|OptionStrict|Description">
         <source>Specifies whether to enforce strict type semantics.</source>
-        <target state="new">Specifies whether to enforce strict type semantics.</target>
+        <target state="translated">Katı tür semantiğinin zorlanıp zorlanmayacağını gösterir.</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumProperty|OptionStrict|DisplayName">
         <source>Option strict</source>
-        <target state="new">Option strict</target>
+        <target state="translated">Katı seçenek</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumProperty|RunPostBuildEvent|Description">
@@ -299,7 +299,7 @@
       </trans-unit>
       <trans-unit id="EnumProperty|WarningSeverity|DisplayName">
         <source>Warning severity</source>
-        <target state="new">Warning severity</target>
+        <target state="translated">Uyarı önem derecesi</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|DebugType.embedded|DisplayName">
@@ -324,17 +324,17 @@
       </trans-unit>
       <trans-unit id="EnumValue|GenerateSerializationAssemblies.Auto|DisplayName">
         <source>Auto</source>
-        <target state="new">Auto</target>
+        <target state="translated">Otomatik</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|GenerateSerializationAssemblies.Off|DisplayName">
         <source>Off</source>
-        <target state="new">Off</target>
+        <target state="translated">Kapalı</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|GenerateSerializationAssemblies.On|DisplayName">
         <source>On</source>
-        <target state="new">On</target>
+        <target state="translated">Açık</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|OptionCompare.Binary|DisplayName">
@@ -369,12 +369,12 @@
       </trans-unit>
       <trans-unit id="EnumValue|OptionStrict.Off|DisplayName">
         <source>Off</source>
-        <target state="new">Off</target>
+        <target state="translated">Kapalı</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|OptionStrict.On|DisplayName">
         <source>On</source>
-        <target state="new">On</target>
+        <target state="translated">Açık</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|RunPostBuildEvent.Always|DisplayName">
@@ -394,17 +394,17 @@
       </trans-unit>
       <trans-unit id="EnumValue|WarningSeverity.AllAsErrors|DisplayName">
         <source>Treat all warnings as errors</source>
-        <target state="new">Treat all warnings as errors</target>
+        <target state="translated">Tüm uyarıları hata olarak değerlendir</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|WarningSeverity.DisableAll|DisplayName">
         <source>Disable all warnings</source>
-        <target state="new">Disable all warnings</target>
+        <target state="translated">Tüm uyarıları devre dışı bırak</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|WarningSeverity.Individual|DisplayName">
         <source>Set warning severities individually</source>
-        <target state="new">Set warning severities individually</target>
+        <target state="translated">Uyarı önem derecelerini tek tek ayarla</target>
         <note />
       </trans-unit>
       <trans-unit id="Rule|Build|Description">
@@ -414,22 +414,22 @@
       </trans-unit>
       <trans-unit id="Rule|Build|DisplayName">
         <source>Compile</source>
-        <target state="new">Compile</target>
+        <target state="translated">Derleme</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|BaseAddress|DisplayName">
         <source>DLL base address</source>
-        <target state="new">DLL base address</target>
+        <target state="translated">DLL temel adresi</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|DefineConstants|DisplayName">
         <source>Custom constants</source>
-        <target state="new">Custom constants</target>
+        <target state="translated">Özel sabitler</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|Output path|DisplayName">
         <source>Build output path</source>
-        <target state="new">Build output path</target>
+        <target state="translated">Derleme çıkış yolu</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|PostBuildEvent|Description">

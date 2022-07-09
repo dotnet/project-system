@@ -13,30 +13,48 @@
       <Item ItemId=";BoolProperty|DefineDebug|DisplayName" ItemType="0" PsrId="308" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[Define DEBUG constant]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Zdefiniuj stałą DEBUG]]></Val>
+          </Tgt>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";BoolProperty|DefineTrace|DisplayName" ItemType="0" PsrId="308" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Degine TRACE constant]]></Val>
+          <Val><![CDATA[Define TRACE constant]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Zdefiniuj stałą TRACE]]></Val>
+          </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[Degine TRACE constant]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";BoolProperty|GenerateDocumentationFile|Description" ItemType="0" PsrId="308" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[Specifies whether to generate documentation information.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Określa, czy generować informacje o dokumentacji.]]></Val>
+          </Tgt>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";BoolProperty|GenerateDocumentationFile|DisplayName" ItemType="0" PsrId="308" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[Generate XML documentation file]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Generuj plik dokumentacji XML]]></Val>
+          </Tgt>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";BoolProperty|Optimize|DisplayName" ItemType="0" PsrId="308" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[Enable optimizations]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Włącz optymalizacje]]></Val>
+          </Tgt>
         </Str>
         <Disp Icon="Str" />
       </Item>
@@ -61,12 +79,18 @@
       <Item ItemId=";BoolProperty|RegisterForComInterop|Description" ItemType="0" PsrId="308" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[Specifies whether your managed application will expose a COM object (a COM-callable wrapper) that enables a COM object to interact with the application.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Określa, czy aplikacja zarządzana uwidacznia obiekt COM (otokę wywoływaną przez COM), która umożliwia interakcję obiektu COM z aplikacją.]]></Val>
+          </Tgt>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";BoolProperty|RegisterForComInterop|DisplayName" ItemType="0" PsrId="308" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[Register for COM interop]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Rejestruj w usłudze międzyoperacyjnej modelu COM]]></Val>
+          </Tgt>
         </Str>
         <Disp Icon="Str" />
       </Item>
@@ -127,12 +151,18 @@
       <Item ItemId=";Category|Options|DisplayName" ItemType="0" PsrId="308" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[Options]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Opcje]]></Val>
+          </Tgt>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";Category|Warnings|DisplayName" ItemType="0" PsrId="308" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[Warnings]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Ostrzeżenia]]></Val>
+          </Tgt>
         </Str>
         <Disp Icon="Str" />
       </Item>
@@ -157,48 +187,72 @@
       <Item ItemId=";DynamicEnumProperty|ImplicitConversion_Readonly|Description" ItemType="0" PsrId="308" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[Implicit narrowing conversion occurs when there is an implicit data type conversion that is a narrowing conversion. Always 'Error' when 'Option strict' is on.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Niejawna konwersja zawężająca występuje, gdy istnieje niejawna konwersja typu danych, która jest konwersją zawężania. Zawsze zwraca „Błąd”, gdy opcja „Opcja ścisła” jest włączona.]]></Val>
+          </Tgt>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";DynamicEnumProperty|ImplicitConversion_Readonly|DisplayName" ItemType="0" PsrId="308" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[Implicit conversion]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Niejawna konwersja]]></Val>
+          </Tgt>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";DynamicEnumProperty|ImplicitConversion|Description" ItemType="0" PsrId="308" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[Implicit narrowing conversion occurs when there is an implicit data type conversion that is a narrowing conversion. Always 'Error' when 'Option strict' is on.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Niejawna konwersja zawężająca występuje, gdy istnieje niejawna konwersja typu danych, która jest konwersją zawężania. Zawsze zwraca „Błąd”, gdy opcja „Opcja ścisła” jest włączona.]]></Val>
+          </Tgt>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";DynamicEnumProperty|ImplicitConversion|DisplayName" ItemType="0" PsrId="308" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[Implicit conversion]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Niejawna konwersja]]></Val>
+          </Tgt>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";DynamicEnumProperty|ImplicitType_Readonly|Description" ItemType="0" PsrId="308" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[Implicit object type errors occur when an appropriate type cannot be inferred for a declared variable, so a type of 'Object' is inferred. Always 'Error' when 'Option strict' is on.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Niejawne błędy typu obiektu występują, gdy nie można wywnioskować odpowiedniego typu dla zadeklarowanej zmiennej, więc wywnioskowany jest typ „Obiekt”. Zawsze zwraca „Błąd”, gdy opcja „Opcja ścisła” jest włączona.]]></Val>
+          </Tgt>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";DynamicEnumProperty|ImplicitType_Readonly|DisplayName" ItemType="0" PsrId="308" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[Implicit type]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Typ niejawny]]></Val>
+          </Tgt>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";DynamicEnumProperty|ImplicitType|Description" ItemType="0" PsrId="308" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[Implicit object type errors occur when an appropriate type cannot be inferred for a declared variable, so a type of 'Object' is inferred. Always 'Error' when 'Option strict' is on.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Niejawne błędy typu obiektu występują, gdy nie można wywnioskować odpowiedniego typu dla zadeklarowanej zmiennej, więc wywnioskowany jest typ „Obiekt”. Zawsze zwraca „Błąd”, gdy opcja „Opcja ścisła” jest włączona.]]></Val>
+          </Tgt>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";DynamicEnumProperty|ImplicitType|DisplayName" ItemType="0" PsrId="308" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[Implicit type]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Typ niejawny]]></Val>
+          </Tgt>
         </Str>
         <Disp Icon="Str" />
       </Item>
@@ -223,24 +277,36 @@
       <Item ItemId=";DynamicEnumProperty|LateBinding_Readonly|Description" ItemType="0" PsrId="308" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[An object is late bound when it is assigned to a property or method of a variable that is declared to be of type 'Object'. These operations could fail at run time. Always 'Error' when 'Option strict' is on.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Obiekt jest późno powiązany, gdy jest przypisany do właściwości lub metody zmiennej, która jest zadeklarowana jako typ „Obiekt”. Te operacje mogą zakończyć się niepowodzeniem w czasie wykonywania. Zawsze zwraca „Błąd”, gdy opcja „Opcja ścisła" jest włączona.]]></Val>
+          </Tgt>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";DynamicEnumProperty|LateBinding_Readonly|DisplayName" ItemType="0" PsrId="308" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[Late binding]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Późne powiązanie]]></Val>
+          </Tgt>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";DynamicEnumProperty|LateBinding|Description" ItemType="0" PsrId="308" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[An object is late bound when it is assigned to a property or method of a variable that is declared to be of type 'Object'. These operations could fail at run time. Always 'Error' when 'Option strict' is on.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Obiekt jest późno powiązany, gdy jest przypisany do właściwości lub metody zmiennej, która jest zadeklarowana jako typ „Obiekt”. Te operacje mogą zakończyć się niepowodzeniem w czasie wykonywania. Zawsze zwraca „Błąd”, gdy opcja „Opcja ścisła" jest włączona.]]></Val>
+          </Tgt>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";DynamicEnumProperty|LateBinding|DisplayName" ItemType="0" PsrId="308" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[Late binding]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Późne powiązanie]]></Val>
+          </Tgt>
         </Str>
         <Disp Icon="Str" />
       </Item>
@@ -256,6 +322,9 @@
       <Item ItemId=";DynamicEnumProperty|PlatformTarget|DisplayName" ItemType="0" PsrId="308" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[Target CPU]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Docelowy procesor CPU]]></Val>
+          </Tgt>
         </Str>
         <Disp Icon="Str" />
       </Item>
@@ -316,12 +385,18 @@
       <Item ItemId=";DynamicEnumProperty|UnusedLocalVariable_Readonly|DisplayName" ItemType="0" PsrId="308" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[Unused local variable]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Nieużyta zmienna lokalna]]></Val>
+          </Tgt>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";DynamicEnumProperty|UnusedLocalVariable|DisplayName" ItemType="0" PsrId="308" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[Unused local variable]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Nieużyta zmienna lokalna]]></Val>
+          </Tgt>
         </Str>
         <Disp Icon="Str" />
       </Item>
@@ -373,54 +448,81 @@
       <Item ItemId=";EnumProperty|GenerateSerializationAssemblies|DisplayName" ItemType="0" PsrId="308" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[Generate serialization assemblies]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Generuj zestawy serializacji]]></Val>
+          </Tgt>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";EnumProperty|OptionCompare|Description" ItemType="0" PsrId="308" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[Specifies the type of string comparison to use.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Określa typ porównania ciągów do użycia.]]></Val>
+          </Tgt>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";EnumProperty|OptionCompare|DisplayName" ItemType="0" PsrId="308" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[Option compare]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Opcja porównaj]]></Val>
+          </Tgt>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";EnumProperty|OptionExplicit|Description" ItemType="0" PsrId="308" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[Specifies whether to require explicit declaration of variables.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Określa, czy wymagać jawnej deklaracji zmiennych.]]></Val>
+          </Tgt>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";EnumProperty|OptionExplicit|DisplayName" ItemType="0" PsrId="308" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[Option explicit]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Opcja jawna]]></Val>
+          </Tgt>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";EnumProperty|OptionInfer|Description" ItemType="0" PsrId="308" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[Specifies whether to allow local type inference in variable declarations.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Określa, czy zezwalać na wnioskowanie o typie lokalnym w deklaracjach zmiennych.]]></Val>
+          </Tgt>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";EnumProperty|OptionInfer|DisplayName" ItemType="0" PsrId="308" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[Option infer]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Opcja wnioskowania:]]></Val>
+          </Tgt>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";EnumProperty|OptionStrict|Description" ItemType="0" PsrId="308" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[Specifies whether to enforce strict type semantics.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Określa, czy wymuszać ścisłą semantykę typu.]]></Val>
+          </Tgt>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";EnumProperty|OptionStrict|DisplayName" ItemType="0" PsrId="308" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[Option strict]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Opcja ścisła]]></Val>
+          </Tgt>
         </Str>
         <Disp Icon="Str" />
       </Item>
@@ -445,6 +547,9 @@
       <Item ItemId=";EnumProperty|WarningSeverity|DisplayName" ItemType="0" PsrId="308" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[Warning severity]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Ważność ostrzeżenia]]></Val>
+          </Tgt>
         </Str>
         <Disp Icon="Str" />
       </Item>
@@ -487,18 +592,27 @@
       <Item ItemId=";EnumValue|GenerateSerializationAssemblies.Auto|DisplayName" ItemType="0" PsrId="308" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[Auto]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Automatycznie]]></Val>
+          </Tgt>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";EnumValue|GenerateSerializationAssemblies.Off|DisplayName" ItemType="0" PsrId="308" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[Off]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Wyłączony]]></Val>
+          </Tgt>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";EnumValue|GenerateSerializationAssemblies.On|DisplayName" ItemType="0" PsrId="308" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[On]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Włączony]]></Val>
+          </Tgt>
         </Str>
         <Disp Icon="Str" />
       </Item>
@@ -559,12 +673,18 @@
       <Item ItemId=";EnumValue|OptionStrict.Off|DisplayName" ItemType="0" PsrId="308" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[Off]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Wyłączony]]></Val>
+          </Tgt>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";EnumValue|OptionStrict.On|DisplayName" ItemType="0" PsrId="308" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[On]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Włączony]]></Val>
+          </Tgt>
         </Str>
         <Disp Icon="Str" />
       </Item>
@@ -598,18 +718,27 @@
       <Item ItemId=";EnumValue|WarningSeverity.AllAsErrors|DisplayName" ItemType="0" PsrId="308" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[Treat all warnings as errors]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Traktuj wszystkie ostrzeżenia jako błędy]]></Val>
+          </Tgt>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";EnumValue|WarningSeverity.DisableAll|DisplayName" ItemType="0" PsrId="308" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[Disable all warnings]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Wyłącz wszystkie ostrzeżenia]]></Val>
+          </Tgt>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";EnumValue|WarningSeverity.Individual|DisplayName" ItemType="0" PsrId="308" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[Set warning severities individually]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Ustaw ważności ostrzeżeń pojedynczo]]></Val>
+          </Tgt>
         </Str>
         <Disp Icon="Str" />
       </Item>
@@ -625,24 +754,36 @@
       <Item ItemId=";Rule|Build|DisplayName" ItemType="0" PsrId="308" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[Compile]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Kompiluj]]></Val>
+          </Tgt>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";StringProperty|BaseAddress|DisplayName" ItemType="0" PsrId="308" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[DLL base address]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Adres podstawowy biblioteki DLL]]></Val>
+          </Tgt>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";StringProperty|DefineConstants|DisplayName" ItemType="0" PsrId="308" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[Custom constants]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Stałe niestandardowe]]></Val>
+          </Tgt>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";StringProperty|Output path|DisplayName" ItemType="0" PsrId="308" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[Build output path]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Ścieżka wyjściowa kompilacji]]></Val>
+          </Tgt>
         </Str>
         <Disp Icon="Str" />
       </Item>
