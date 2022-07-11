@@ -44,3 +44,25 @@
   - The assembly produced from the `.csproj` is not used.
   - The assemblies from [Microsoft.VisualStudio.AppDesigner.csproj](..\src\Microsoft.VisualStudio.AppDesigner\Microsoft.VisualStudio.AppDesigner.csproj) and [Microsoft.VisualStudio.Editors.csproj](..\src\Microsoft.VisualStudio.Editors\Microsoft.VisualStudio.Editors.csproj) are included in the produced VSIX package.
 - The `.vsmanproj` creates the `.vsman` manifest, which is inserted into VS as `Microsoft.VisualStudio.Editors.vsman`.
+
+## High-level Design
+The list below is not all-encompassing of the files produced by each project. It is only meant as a high-level overview of what is produced by these projects.
+
+- `ProjectSystemSetup` produces:
+  - `Microsoft.VisualStudio.ProjectSystem.Managed.vsman` references:
+    - ProjectSystem.vsix
+    - Microsoft.VisualStudio.ProjectSystem.Managed.CommonFiles.vsix
+  - `ProjectSystem.vsix` contains:
+    - extension.vsixmanifest
+    - Microsoft.VisualStudio.ProjectSystem.Managed.dll
+    - Microsoft.VisualStudio.ProjectSystem.Managed.VS.dll
+- `VisualStudioEditorsSetup` produces:
+  - `Microsoft.VisualStudio.Editors.vsman` references:
+    - VisualStudioEditorsSetup.vsix
+  - `VisualStudioEditorsSetup.vsix` contains:
+    - extension.vsixmanifest
+    - Microsoft.VisualStudio.AppDesigner.dll
+    - Microsoft.VisualStudio.Editors.dll
+- `Microsoft.VisualStudio.ProjectSystem.Managed.CommonFiles` produces:
+  - `Microsoft.VisualStudio.ProjectSystem.Managed.CommonFiles.vsix` contains:
+    - `.xaml` rule files from *Microsoft.VisualStudio.ProjectSystem.Managed*

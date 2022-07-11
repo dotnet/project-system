@@ -42,6 +42,7 @@
     </Compile>
   </ItemGroup>
 
+  <!-- Builds the associated .vsmanproj to produce a .vsman file for VS insertions. -->
   <Target Name="VSManifestBuild" AfterTargets="Build">
     <MSBuild Projects="$(MSBuildThisFileDirectory)Microsoft.VisualStudio.Editors.vsmanproj"
       Properties="SwixBuildDir=$(PkgMicrosoft_VisualStudioEng_MicroBuild_Plugins_SwixBuild)\build\;MicroBuildCoreDir=$(PkgMicrosoft_VisualStudioEng_MicroBuild_Core)\build\"
