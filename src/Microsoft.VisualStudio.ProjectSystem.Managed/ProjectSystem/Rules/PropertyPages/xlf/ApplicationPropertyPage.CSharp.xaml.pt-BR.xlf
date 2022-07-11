@@ -39,7 +39,7 @@
       </trans-unit>
       <trans-unit id="EnumProperty|ApplicationManifestKind|DisplayName">
         <source>Manifest</source>
-        <target state="new">Manifest</target>
+        <target state="translated">Manifesto</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumProperty|ResourceSpecificationKind|Description">
@@ -94,7 +94,7 @@
       </trans-unit>
       <trans-unit id="StringProperty|Win32Resource|DisplayName">
         <source>Resource file</source>
-        <target state="new">Resource file</target>
+        <target state="translated">Arquivo de recurso</target>
         <note />
       </trans-unit>
     </body>

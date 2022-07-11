@@ -210,7 +210,26 @@ In VS 17.2, we changed the fast up-to-date check to be less strict about `Always
 
 To opt-out of this optimization and preserve the pre-17.2 behaviour, set the `DisableFastUpToDateCopyAlwaysOptimization` MSBuild property to `true` in your project. Consider also opening an issue on this repo to explain why the optimization doesn't work for you, to give us a chance to improve it further.
 
-## Disabling the Up-to-date Check
+## Reference assemblies and mixed SDK-style/non-SDK-style projects
+
+[Reference assemblies](https://docs.microsoft.com/dotnet/standard/assembly/reference-assemblies) can be used during .NET builds to avoid unnecessary compilation in the following case:
+
+1. A _referencing_ project has a `ProjectReference` to a _referenced_ project that specifies `ProduceReferenceAssembly` as `true`.
+2. The _referenced_ project is changed in a way that doesn't alter its public API (such as a change within a method body, or the addition of a `private` method).
+3. A build is requested for the _referencing_ project.
+4. The _referenced_ project is built first, and that build notices that the public API hasn't changed.
+5. The _referencing_ project is build second, and identifies that the referenced public API hasn't changed, so the build needs only to copy the referenced binary, without recompiling itself.
+
+In a large solution with many layers of project references, this feature can avoid many recompilation chain reactions, reducing build times significantly.
+
+In Visual Studio, reference assemblies are not yet supported for non-SDK-style projects. Therefore if you have a solution that mixes both SDK-style and non-SDK-style projects, the interaction between the two projects in steps 4 and 5 above won't happen correctly. What happens instead is that the _referencing_ non-SDK-style project thinks the _referenced_ SDK-style project is up-to-date, so no build is scheduled. This means that the _referenced_ binary is not copied to the _referencing_ project's output directory. From the perspective of the developer, their changes appear to have no effect when running their program.
+
+If you are experiencing this issue, you may either:
+
+1. Convert all non-SDK-style projects to SDK-style, or
+2. Set `CompileUsingReferenceAssemblies` to `false` for all non-SDK-style projects. Note that you cannot use a `Directory.Build.props` file to achieve this if any SDK-style projects would also pick up that file. The property would need to be conditional, and non-SDK-style projects do not support conditions in these files ([see](https://github.com/dotnet/project-system/issues/4175)).
+
+## Disabling the up-to-date check
 
 If you do not wish to use the fast up-to-date check, preferring to always call MSBuild, you can disable it by either:
 
@@ -220,6 +239,31 @@ If you do not wish to use the fast up-to-date check, preferring to always call M
 Note that in both cases this only disables Visual Studio's up-to-date check. MSBuild will still perform its own
 determination as to whether the project should be rebuilt.
 
-⚠️ We do not recommend disabling this! It can have a significant negative impact on your productivity.
-If you are disabling the check because you feel it is not behaving correctly, please file an issue in this repo and
-include details from the verbose log so that we can improve the feature.
+> ⚠️ We do not recommend disabling this! It can have a significant negative impact on your productivity.
+> If you are disabling the check because you feel it is not behaving correctly, please file an issue in this repo and
+> include details from the verbose log so that we can improve the feature.
+
+## Reasons a project is not up-to-date
+
+There are several reasons that a project may fail its up-to-date check and be scheduled to build.
+
+| Reason | Description |
+|--------|-------------|
+| *InputNewerThanEarliestOutput* | A project input (such as a `.cs` file) has a time stamp later than the earliest output time stamp. |
+| *InputModifiedSinceLastSuccessfulBuildStart* | A project input (such as a `.cs` file) has a time stamp that comes after the last successful build time. This case would usually be covered by _InputNewerThanEarliestOutput_ as builds usually update output files, however there are cases where outputs are not updated, and this check ensures we don't end up in an overbuild loop, as such loops have significant penalties on inner-loop productivity. |
+| *FirstRun* | This is the first build of the project. The FUTD check doesn't have persisted data in the `.vs` folder, so doesn't know the previous set of inputs that contributed to the current outputs (i.e. we could miss a case of reason *ProjectItemsChangedSinceLastSuccessfulBuildStart*). We schedule a build just to be sure. Once that build completes, this reason will not resurface unless the `.vs` folder is deleted. |
+| *InputNotFound* | A project input (such as a `.cs` file) is not found on disk. A build is scheduled that may either produce this file and copy it, or emit an error about the missing file. |
+| *OutputNotFound* | A project output (such as a `.dll` file) is not found on disk. A build is scheduled that will likely produce it. |
+| *InputMarkerNewerThanOutputMarker* | This reason is seen when using [reference assemblies](https://docs.microsoft.com/dotnet/standard/assembly/reference-assemblies) and `ProjectReference`. It indicates that the referenced project's implementation assembly was changed, despite its reference assembly being unchanged. This situation occurs when the referenced project changes such that its public API is unmodified. The referencing project may not need to be recompiled, but must copy the updated implementation assembly to its output directory. |
+| *ProjectItemsChangedSinceLastSuccessfulBuildStart* | The set of project items has changed since the time at which the last successful build started. This is required to correctly handle the removal of an input file that is included via globs. Without this check, removing a `.cs` file would not trigger a build, as no other observable change is present on disk. |
+| *CopyDestinationNotFound* | A file is marked for copy, and the destination does not exist. The build will copy it. |
+| *CopySourceNotFound* | A file is marked for copy, and the source does not exist. A build is scheduled that may either produce this file and copy it, or emit an error about the missing file. |
+| *CopySourceNewer* | A file is marked for copy, and the source file was modified after the destination file. The build will update the destination file. |
+| *CopyAlwaysItemDiffers* | A `CopyToOutputDirectory="Always"` item in the project has different source/target files (either by time stamp or file size). The build will copy it. |
+| *CopyToOutputDirectoryDestinationNotFound* | A `CopyToOutputDirectory` input file is not present in the output directory. The build will copy it. |
+| *CopyToOutputDirectorySourceNotFound* | A `CopyToOutputDirectory` input file does not exist. A build is scheduled that may either produce this file and copy it, or emit an error about the missing file. |
+| *CopyToOutputDirectorySourceNewer* | A `CopyToOutputDirectory` input file has a newer time stamp than its destination. The build will update the output file. |
+| *CopyAlwaysItemExists* | Since 17.2 we only report this when `DisableFastUpToDateCopyAlwaysOptimization` is set on the project. [More info](#copytooutputdirectory-always-vs-preservenewest). |
+| *Disabled* | The project has `DisableFastUpToDateCheck` set. [More info](#disabling-the-up-to-date-check). |
+| *CriticalTasks* | Critical build tasks are running. This is very uncommon, and is not something the user has control over. |
+| *Exception* | An exception occurred in the implementation of the fast up-to-date check. We schedule a build at this point, as we don't know whether it is safe not to. |

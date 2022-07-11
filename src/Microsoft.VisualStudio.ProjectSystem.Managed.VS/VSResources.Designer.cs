@@ -313,7 +313,7 @@ namespace Microsoft.VisualStudio {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to WARNING: Potential incremental build failure in &apos;{0}&apos;. {1}. See https://aka.ms/incremental-build-failure..
+        ///   Looks up a localized string similar to WARNING: Potential build performance issue in &apos;{0}&apos;. The project does not appear up-to-date after a successful build: {1}. See https://aka.ms/incremental-build-failure..
         /// </summary>
         internal static string IncrementalBuildFailureWarningMessage_2 {
             get {

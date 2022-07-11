@@ -126,6 +126,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
                 newUIProperty.ConfiguredValueVisibilityCondition = configuredValueVisibilityCondition ?? string.Empty;
             }
             
+            if (requestedProperties.EditabilityCondition)
+            {
+                string? editabilityCondition = property.GetMetadataValueOrNull("EditabilityCondition");
+                newUIProperty.EditabilityCondition = editabilityCondition ?? string.Empty;
+            }
+            
             ((IEntityValueFromProvider)newUIProperty).ProviderState = new PropertyProviderState(cache, property.ContainingRule, propertiesContext, property.Name);
 
             return newUIProperty;

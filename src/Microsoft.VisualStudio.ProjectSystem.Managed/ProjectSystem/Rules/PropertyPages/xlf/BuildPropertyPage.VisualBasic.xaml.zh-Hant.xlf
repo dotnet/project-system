@@ -4,27 +4,27 @@
     <body>
       <trans-unit id="BoolProperty|DefineDebug|DisplayName">
         <source>Define DEBUG constant</source>
-        <target state="new">Define DEBUG constant</target>
+        <target state="translated">定義 DEBUG 常數</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|DefineTrace|DisplayName">
         <source>Define TRACE constant</source>
-        <target state="new">Define TRACE constant</target>
+        <target state="translated">定義 TRACE 常數</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|GenerateDocumentationFile|Description">
         <source>Specifies whether to generate documentation information.</source>
-        <target state="new">Specifies whether to generate documentation information.</target>
+        <target state="translated">指定是否產生文件資訊。</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|GenerateDocumentationFile|DisplayName">
         <source>Generate XML documentation file</source>
-        <target state="new">Generate XML documentation file</target>
+        <target state="translated">產生 XML 文件檔案</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|Optimize|DisplayName">
         <source>Enable optimizations</source>
-        <target state="new">Enable optimizations</target>
+        <target state="translated">啟用最佳化</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|Prefer32Bit|Description">
@@ -39,12 +39,12 @@
       </trans-unit>
       <trans-unit id="BoolProperty|RegisterForComInterop|Description">
         <source>Specifies whether your managed application will expose a COM object (a COM-callable wrapper) that enables a COM object to interact with the application.</source>
-        <target state="new">Specifies whether your managed application will expose a COM object (a COM-callable wrapper) that enables a COM object to interact with the application.</target>
+        <target state="translated">指定您的受管理應用程式是否會公開 COM 物件 (可呼叫 COM 的包裝函式)，讓 COM 物件與應用程式互動。</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|RegisterForComInterop|DisplayName">
         <source>Register for COM interop</source>
-        <target state="new">Register for COM interop</target>
+        <target state="translated">註冊 COM Interop</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|RemoveIntegerChecks|DisplayName">
@@ -79,12 +79,12 @@
       </trans-unit>
       <trans-unit id="Category|Options|DisplayName">
         <source>Options</source>
-        <target state="new">Options</target>
+        <target state="translated">選項</target>
         <note />
       </trans-unit>
       <trans-unit id="Category|Warnings|DisplayName">
         <source>Warnings</source>
-        <target state="new">Warnings</target>
+        <target state="translated">警告</target>
         <note />
       </trans-unit>
       <trans-unit id="DynamicEnumProperty|DuplicateOrOverlappingCatchBlocks_Readonly|DisplayName">
@@ -99,42 +99,42 @@
       </trans-unit>
       <trans-unit id="DynamicEnumProperty|ImplicitConversion_Readonly|Description">
         <source>Implicit narrowing conversion occurs when there is an implicit data type conversion that is a narrowing conversion. Always 'Error' when 'Option strict' is on.</source>
-        <target state="new">Implicit narrowing conversion occurs when there is an implicit data type conversion that is a narrowing conversion. Always 'Error' when 'Option strict' is on.</target>
+        <target state="translated">當有隱含資料類型轉換是縮小轉換時，即會發生隱含縮小轉換。開啟 'Option strict' 時一律為 'Error'。</target>
         <note />
       </trans-unit>
       <trans-unit id="DynamicEnumProperty|ImplicitConversion_Readonly|DisplayName">
         <source>Implicit conversion</source>
-        <target state="new">Implicit conversion</target>
+        <target state="translated">隱含轉換</target>
         <note />
       </trans-unit>
       <trans-unit id="DynamicEnumProperty|ImplicitConversion|Description">
         <source>Implicit narrowing conversion occurs when there is an implicit data type conversion that is a narrowing conversion. Always 'Error' when 'Option strict' is on.</source>
-        <target state="new">Implicit narrowing conversion occurs when there is an implicit data type conversion that is a narrowing conversion. Always 'Error' when 'Option strict' is on.</target>
+        <target state="translated">當有隱含資料類型轉換是縮小轉換時，即會發生隱含縮小轉換。開啟 'Option strict' 時一律為 'Error'。</target>
         <note />
       </trans-unit>
       <trans-unit id="DynamicEnumProperty|ImplicitConversion|DisplayName">
         <source>Implicit conversion</source>
-        <target state="new">Implicit conversion</target>
+        <target state="translated">隱含轉換</target>
         <note />
       </trans-unit>
       <trans-unit id="DynamicEnumProperty|ImplicitType_Readonly|Description">
         <source>Implicit object type errors occur when an appropriate type cannot be inferred for a declared variable, so a type of 'Object' is inferred. Always 'Error' when 'Option strict' is on.</source>
-        <target state="new">Implicit object type errors occur when an appropriate type cannot be inferred for a declared variable, so a type of 'Object' is inferred. Always 'Error' when 'Option strict' is on.</target>
+        <target state="translated">無法為宣告的變數推斷適當類型，因此推斷 'Object' 的類型時，即會發生隱含物件類型錯誤。開啟 'Option strict' 時一律為 'Error'。</target>
         <note />
       </trans-unit>
       <trans-unit id="DynamicEnumProperty|ImplicitType_Readonly|DisplayName">
         <source>Implicit type</source>
-        <target state="new">Implicit type</target>
+        <target state="translated">隱含類型</target>
         <note />
       </trans-unit>
       <trans-unit id="DynamicEnumProperty|ImplicitType|Description">
         <source>Implicit object type errors occur when an appropriate type cannot be inferred for a declared variable, so a type of 'Object' is inferred. Always 'Error' when 'Option strict' is on.</source>
-        <target state="new">Implicit object type errors occur when an appropriate type cannot be inferred for a declared variable, so a type of 'Object' is inferred. Always 'Error' when 'Option strict' is on.</target>
+        <target state="translated">無法為宣告的變數推斷適當類型，因此推斷 'Object' 的類型時，即會發生隱含物件類型錯誤。開啟 'Option strict' 時一律為 'Error'。</target>
         <note />
       </trans-unit>
       <trans-unit id="DynamicEnumProperty|ImplicitType|DisplayName">
         <source>Implicit type</source>
-        <target state="new">Implicit type</target>
+        <target state="translated">隱含類型</target>
         <note />
       </trans-unit>
       <trans-unit id="DynamicEnumProperty|InstanceVariableAccessesSharedMember_Readonly|DisplayName">
@@ -149,22 +149,22 @@
       </trans-unit>
       <trans-unit id="DynamicEnumProperty|LateBinding_Readonly|Description">
         <source>An object is late bound when it is assigned to a property or method of a variable that is declared to be of type 'Object'. These operations could fail at run time. Always 'Error' when 'Option strict' is on.</source>
-        <target state="new">An object is late bound when it is assigned to a property or method of a variable that is declared to be of type 'Object'. These operations could fail at run time. Always 'Error' when 'Option strict' is on.</target>
+        <target state="translated">當物件被指派給宣告為 'Object' 類型之變數的屬性或方法時，便會延遲繫結。這些作業在執行時間可能會失敗。開啟 'Option strict' 時一律為 'Error'。</target>
         <note />
       </trans-unit>
       <trans-unit id="DynamicEnumProperty|LateBinding_Readonly|DisplayName">
         <source>Late binding</source>
-        <target state="new">Late binding</target>
+        <target state="translated">延遲繫結</target>
         <note />
       </trans-unit>
       <trans-unit id="DynamicEnumProperty|LateBinding|Description">
         <source>An object is late bound when it is assigned to a property or method of a variable that is declared to be of type 'Object'. These operations could fail at run time. Always 'Error' when 'Option strict' is on.</source>
-        <target state="new">An object is late bound when it is assigned to a property or method of a variable that is declared to be of type 'Object'. These operations could fail at run time. Always 'Error' when 'Option strict' is on.</target>
+        <target state="translated">當物件被指派給宣告為 'Object' 類型之變數的屬性或方法時，便會延遲繫結。這些作業在執行時間可能會失敗。開啟 'Option strict' 時一律為 'Error'。</target>
         <note />
       </trans-unit>
       <trans-unit id="DynamicEnumProperty|LateBinding|DisplayName">
         <source>Late binding</source>
-        <target state="new">Late binding</target>
+        <target state="translated">延遲繫結</target>
         <note />
       </trans-unit>
       <trans-unit id="DynamicEnumProperty|PlatformTarget|Description">
@@ -174,7 +174,7 @@
       </trans-unit>
       <trans-unit id="DynamicEnumProperty|PlatformTarget|DisplayName">
         <source>Target CPU</source>
-        <target state="new">Target CPU</target>
+        <target state="translated">目標 CPU</target>
         <note />
       </trans-unit>
       <trans-unit id="DynamicEnumProperty|RecursiveOperatorOrPropertyAccess_Readonly|DisplayName">
@@ -209,12 +209,12 @@
       </trans-unit>
       <trans-unit id="DynamicEnumProperty|UnusedLocalVariable_Readonly|DisplayName">
         <source>Unused local variable</source>
-        <target state="new">Unused local variable</target>
+        <target state="translated">未使用的區域變數</target>
         <note />
       </trans-unit>
       <trans-unit id="DynamicEnumProperty|UnusedLocalVariable|DisplayName">
         <source>Unused local variable</source>
-        <target state="new">Unused local variable</target>
+        <target state="translated">未使用的區域變數</target>
         <note />
       </trans-unit>
       <trans-unit id="DynamicEnumProperty|UseOfVariablePriorToAssignment_Readonly|DisplayName">
@@ -244,47 +244,47 @@
       </trans-unit>
       <trans-unit id="EnumProperty|GenerateSerializationAssemblies|DisplayName">
         <source>Generate serialization assemblies</source>
-        <target state="new">Generate serialization assemblies</target>
+        <target state="translated">產生序列化組件</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumProperty|OptionCompare|Description">
         <source>Specifies the type of string comparison to use.</source>
-        <target state="new">Specifies the type of string comparison to use.</target>
+        <target state="translated">指定要使用的字串比較類型。</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumProperty|OptionCompare|DisplayName">
         <source>Option compare</source>
-        <target state="new">Option compare</target>
+        <target state="translated">Option Compare</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumProperty|OptionExplicit|Description">
         <source>Specifies whether to require explicit declaration of variables.</source>
-        <target state="new">Specifies whether to require explicit declaration of variables.</target>
+        <target state="translated">指定是否需要明確宣告變數。</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumProperty|OptionExplicit|DisplayName">
         <source>Option explicit</source>
-        <target state="new">Option explicit</target>
+        <target state="translated">Option Explicit</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumProperty|OptionInfer|Description">
         <source>Specifies whether to allow local type inference in variable declarations.</source>
-        <target state="new">Specifies whether to allow local type inference in variable declarations.</target>
+        <target state="translated">指定是否允許變數宣告中的區域型別推斷。</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumProperty|OptionInfer|DisplayName">
         <source>Option infer</source>
-        <target state="new">Option infer</target>
+        <target state="translated">Option Infer</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumProperty|OptionStrict|Description">
         <source>Specifies whether to enforce strict type semantics.</source>
-        <target state="new">Specifies whether to enforce strict type semantics.</target>
+        <target state="translated">指定是否強制執行嚴格類型語意。</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumProperty|OptionStrict|DisplayName">
         <source>Option strict</source>
-        <target state="new">Option strict</target>
+        <target state="translated">Option Strict</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumProperty|RunPostBuildEvent|Description">
@@ -299,7 +299,7 @@
       </trans-unit>
       <trans-unit id="EnumProperty|WarningSeverity|DisplayName">
         <source>Warning severity</source>
-        <target state="new">Warning severity</target>
+        <target state="translated">警告嚴重性</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|DebugType.embedded|DisplayName">
@@ -324,17 +324,17 @@
       </trans-unit>
       <trans-unit id="EnumValue|GenerateSerializationAssemblies.Auto|DisplayName">
         <source>Auto</source>
-        <target state="new">Auto</target>
+        <target state="translated">自動</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|GenerateSerializationAssemblies.Off|DisplayName">
         <source>Off</source>
-        <target state="new">Off</target>
+        <target state="translated">關閉</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|GenerateSerializationAssemblies.On|DisplayName">
         <source>On</source>
-        <target state="new">On</target>
+        <target state="translated">開啟</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|OptionCompare.Binary|DisplayName">
@@ -369,12 +369,12 @@
       </trans-unit>
       <trans-unit id="EnumValue|OptionStrict.Off|DisplayName">
         <source>Off</source>
-        <target state="new">Off</target>
+        <target state="translated">關閉</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|OptionStrict.On|DisplayName">
         <source>On</source>
-        <target state="new">On</target>
+        <target state="translated">開啟</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|RunPostBuildEvent.Always|DisplayName">
@@ -394,17 +394,17 @@
       </trans-unit>
       <trans-unit id="EnumValue|WarningSeverity.AllAsErrors|DisplayName">
         <source>Treat all warnings as errors</source>
-        <target state="new">Treat all warnings as errors</target>
+        <target state="translated">將所有警告視為錯誤。</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|WarningSeverity.DisableAll|DisplayName">
         <source>Disable all warnings</source>
-        <target state="new">Disable all warnings</target>
+        <target state="translated">停用所有警告。</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|WarningSeverity.Individual|DisplayName">
         <source>Set warning severities individually</source>
-        <target state="new">Set warning severities individually</target>
+        <target state="translated">個別設定警告嚴重性</target>
         <note />
       </trans-unit>
       <trans-unit id="Rule|Build|Description">
@@ -414,22 +414,22 @@
       </trans-unit>
       <trans-unit id="Rule|Build|DisplayName">
         <source>Compile</source>
-        <target state="new">Compile</target>
+        <target state="translated">編譯</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|BaseAddress|DisplayName">
         <source>DLL base address</source>
-        <target state="new">DLL base address</target>
+        <target state="translated">DLL 基底位址</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|DefineConstants|DisplayName">
         <source>Custom constants</source>
-        <target state="new">Custom constants</target>
+        <target state="translated">自訂常數</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|Output path|DisplayName">
         <source>Build output path</source>
-        <target state="new">Build output path</target>
+        <target state="translated">建置輸出路徑</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|PostBuildEvent|Description">
