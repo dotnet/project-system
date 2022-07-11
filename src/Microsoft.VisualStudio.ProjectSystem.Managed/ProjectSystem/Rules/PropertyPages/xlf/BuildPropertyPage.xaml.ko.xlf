@@ -257,16 +257,6 @@
         <target state="translated">빌드 후 이벤트를 실행하는 경우</target>
         <note />
       </trans-unit>
-      <trans-unit id="EnumProperty|WarningLevel_Readonly|Description">
-        <source>Specifies the level to display for compiler warnings. Inferred from the 'Analysis level' property of the 'Code Analysis' page.</source>
-        <target state="translated">컴파일러 경고에 대해 표시할 수준을 지정합니다. 'Code Analysis' 페이지의 'Analysis level' 속성에서 추론합니다.</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="EnumProperty|WarningLevel_Readonly|DisplayName">
-        <source>Warning level</source>
-        <target state="translated">경고 수준</target>
-        <note />
-      </trans-unit>
       <trans-unit id="EnumProperty|WarningLevel|Description">
         <source>Specifies the level to display for compiler warnings. Higher levels produce more warnings, and include all warnings from lower levels.</source>
         <target state="translated">컴파일러 경고에 대해 표시할 수준을 지정합니다. 높은 수준은 더 많은 경고를 생성하고 낮은 수준의 모든 경고를 포함합니다.</target>
@@ -418,51 +408,6 @@
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|WarningLevel.9999|DisplayName">
-        <source>9999 - All warnings</source>
-        <target state="translated">9999 - 모든 경고</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="EnumValue|WarningLevel_Readonly.0|DisplayName">
-        <source>0 - Disable all warnings</source>
-        <target state="translated">0 - 모든 경고 비활성화</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="EnumValue|WarningLevel_Readonly.1|DisplayName">
-        <source>1 - Severe warning messages</source>
-        <target state="translated">1 - 심각한 경고 메시지</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="EnumValue|WarningLevel_Readonly.2|DisplayName">
-        <source>2 - Less severe warnings, such as warnings about hiding class members</source>
-        <target state="translated">2 - 클래스 구성원 숨기기에 대한 경고와 같은 덜 심각한 경고</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="EnumValue|WarningLevel_Readonly.3|DisplayName">
-        <source>3 - Less severe warnings, such as warnings about expressions that always evaluate to true or false</source>
-        <target state="translated">3 - 항상 true 또는 false로 평가되는 식에 대한 경고와 같이 덜 심각한 경고</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="EnumValue|WarningLevel_Readonly.4|DisplayName">
-        <source>4 - Informational warnings</source>
-        <target state="translated">4 - 정보 경고</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="EnumValue|WarningLevel_Readonly.5|DisplayName">
-        <source>5 - Warnings from C# 9</source>
-        <target state="translated">5 - C# 9의 경고</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="EnumValue|WarningLevel_Readonly.6|DisplayName">
-        <source>6 - Warnings from C# 10</source>
-        <target state="translated">6 - C# 10의 경고</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="EnumValue|WarningLevel_Readonly.7|DisplayName">
-        <source>7 - Warnings from C# 11</source>
-        <target state="translated">7 - C# 11의 경고</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="EnumValue|WarningLevel_Readonly.9999|DisplayName">
         <source>9999 - All warnings</source>
         <target state="translated">9999 - 모든 경고</target>
         <note />

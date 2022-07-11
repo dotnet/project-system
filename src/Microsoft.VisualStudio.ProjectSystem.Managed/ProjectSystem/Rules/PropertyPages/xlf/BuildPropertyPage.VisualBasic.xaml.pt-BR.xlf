@@ -87,24 +87,9 @@
         <target state="translated">Avisos</target>
         <note />
       </trans-unit>
-      <trans-unit id="DynamicEnumProperty|DuplicateOrOverlappingCatchBlocks_Readonly|DisplayName">
-        <source>Duplicate or overlapping catch blocks</source>
-        <target state="translated">Duplicar ou sobrepor blocos de captura</target>
-        <note />
-      </trans-unit>
       <trans-unit id="DynamicEnumProperty|DuplicateOrOverlappingCatchBlocks|DisplayName">
         <source>Duplicate or overlapping catch blocks</source>
         <target state="translated">Duplicar ou sobrepor blocos de captura</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="DynamicEnumProperty|ImplicitConversion_Readonly|Description">
-        <source>Implicit narrowing conversion occurs when there is an implicit data type conversion that is a narrowing conversion. Always 'Error' when 'Option strict' is on.</source>
-        <target state="translated">A conversão de restrição implícita ocorre quando há uma conversão de tipo de dados implícita que é uma conversão de restrição. Sempre 'Erro' quando 'Option strict' está ativado.</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="DynamicEnumProperty|ImplicitConversion_Readonly|DisplayName">
-        <source>Implicit conversion</source>
-        <target state="translated">Conversão implícita</target>
         <note />
       </trans-unit>
       <trans-unit id="DynamicEnumProperty|ImplicitConversion|Description">
@@ -117,16 +102,6 @@
         <target state="translated">Conversão implícita</target>
         <note />
       </trans-unit>
-      <trans-unit id="DynamicEnumProperty|ImplicitType_Readonly|Description">
-        <source>Implicit object type errors occur when an appropriate type cannot be inferred for a declared variable, so a type of 'Object' is inferred. Always 'Error' when 'Option strict' is on.</source>
-        <target state="translated">Erros de tipo de objeto implícito ocorrem quando um tipo apropriado não pode ser inferido para uma variável declarada, portanto, um tipo de 'Objeto' é inferido. Sempre 'Erro' quando 'Option strict' está ativado.</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="DynamicEnumProperty|ImplicitType_Readonly|DisplayName">
-        <source>Implicit type</source>
-        <target state="translated">Tipo implícito</target>
-        <note />
-      </trans-unit>
       <trans-unit id="DynamicEnumProperty|ImplicitType|Description">
         <source>Implicit object type errors occur when an appropriate type cannot be inferred for a declared variable, so a type of 'Object' is inferred. Always 'Error' when 'Option strict' is on.</source>
         <target state="translated">Erros de tipo de objeto implícito ocorrem quando um tipo apropriado não pode ser inferido para uma variável declarada, portanto, um tipo de 'Objeto' é inferido. Sempre 'Erro' quando 'Option strict' está ativado.</target>
@@ -137,24 +112,9 @@
         <target state="translated">Tipo implícito</target>
         <note />
       </trans-unit>
-      <trans-unit id="DynamicEnumProperty|InstanceVariableAccessesSharedMember_Readonly|DisplayName">
-        <source>Instance variable accesses shared member</source>
-        <target state="translated">Variável de instância acessa membro compartilhado</target>
-        <note />
-      </trans-unit>
       <trans-unit id="DynamicEnumProperty|InstanceVariableAccessesSharedMember|DisplayName">
         <source>Instance variable accesses shared member</source>
         <target state="translated">Variável de instância acessa membro compartilhado</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="DynamicEnumProperty|LateBinding_Readonly|Description">
-        <source>An object is late bound when it is assigned to a property or method of a variable that is declared to be of type 'Object'. These operations could fail at run time. Always 'Error' when 'Option strict' is on.</source>
-        <target state="translated">Um objeto é vinculado tardiamente quando é atribuído a uma propriedade ou método de uma variável que é declarada do tipo 'Objeto'. Essas operações podem falhar em tempo de execução. Sempre 'Erro' quando 'Option strict' está ativado.</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="DynamicEnumProperty|LateBinding_Readonly|DisplayName">
-        <source>Late binding</source>
-        <target state="translated">Associação tardia</target>
         <note />
       </trans-unit>
       <trans-unit id="DynamicEnumProperty|LateBinding|Description">
@@ -177,19 +137,9 @@
         <target state="translated">CPU de Destino</target>
         <note />
       </trans-unit>
-      <trans-unit id="DynamicEnumProperty|RecursiveOperatorOrPropertyAccess_Readonly|DisplayName">
-        <source>Recursive operator or property access</source>
-        <target state="translated">Operador recursivo ou acesso de propriedade</target>
-        <note />
-      </trans-unit>
       <trans-unit id="DynamicEnumProperty|RecursiveOperatorOrPropertyAccess|DisplayName">
         <source>Recursive operator or property access</source>
         <target state="translated">Operador recursivo ou acesso de propriedade</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="DynamicEnumProperty|ReturningIntrinsicValueTypeWithoutReturnValue_Readonly|DisplayName">
-        <source>Function returning intrinsic value type without return value</source>
-        <target state="translated">Função retornando tipo de valor intrínseco sem valor de retorno</target>
         <note />
       </trans-unit>
       <trans-unit id="DynamicEnumProperty|ReturningIntrinsicValueTypeWithoutReturnValue|DisplayName">
@@ -197,29 +147,14 @@
         <target state="translated">Função retornando tipo de valor intrínseco sem valor de retorno</target>
         <note />
       </trans-unit>
-      <trans-unit id="DynamicEnumProperty|ReturningRefTypeWithoutReturnValue_Readonly|DisplayName">
-        <source>Function returning reference type without return value</source>
-        <target state="translated">Função que retorna tipo de referência sem valor de retorno</target>
-        <note />
-      </trans-unit>
       <trans-unit id="DynamicEnumProperty|ReturningRefTypeWithoutReturnValue|DisplayName">
         <source>Function returning reference type without return value</source>
         <target state="translated">Função que retorna tipo de referência sem valor de retorno</target>
         <note />
       </trans-unit>
-      <trans-unit id="DynamicEnumProperty|UnusedLocalVariable_Readonly|DisplayName">
-        <source>Unused local variable</source>
-        <target state="translated">Variável local não usada</target>
-        <note />
-      </trans-unit>
       <trans-unit id="DynamicEnumProperty|UnusedLocalVariable|DisplayName">
         <source>Unused local variable</source>
         <target state="translated">Variável local não usada</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="DynamicEnumProperty|UseOfVariablePriorToAssignment_Readonly|DisplayName">
-        <source>Use of variable prior to assignment</source>
-        <target state="translated">Uso da variável antes da atribuição</target>
         <note />
       </trans-unit>
       <trans-unit id="DynamicEnumProperty|UseOfVariablePriorToAssignment|DisplayName">
