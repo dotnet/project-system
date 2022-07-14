@@ -10,7 +10,7 @@ namespace System.ComponentModel.Composition
             {
                 T value = factory();
 
-                return Tuple.Create<T, Action>(value, () =>
+                return Tuple.Create(value, () =>
                 {
                     if (value is IDisposable disposable)
                         disposable.Dispose();
@@ -24,7 +24,7 @@ namespace System.ComponentModel.Composition
             {
                 T value = factory();
 
-                return Tuple.Create<T, Action>(value, () =>
+                return Tuple.Create(value, () =>
                 {
                     if (value is IDisposable disposable)
                         disposable.Dispose();

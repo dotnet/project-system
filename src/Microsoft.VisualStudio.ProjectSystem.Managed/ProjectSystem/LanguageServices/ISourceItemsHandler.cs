@@ -32,6 +32,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         /// <param name="logger">
         ///     The <see cref="IProjectDiagnosticOutputService"/> for logging to the log.
         /// </param>
-        void Handle(IWorkspaceProjectContext context, IComparable version, IImmutableDictionary<string, IProjectChangeDescription> projectChanges, ContextState state, IProjectDiagnosticOutputService logger);
+        void Handle(
+            IWorkspaceProjectContext context,
+            IComparable version,
+            IImmutableDictionary<string, IProjectChangeDescription> projectChanges,
+            ContextState state,
+            IProjectDiagnosticOutputService logger);
     }
 }

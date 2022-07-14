@@ -156,7 +156,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
                 }
 
                 LogTelemetry(cancelled: token.IsCancellationRequested);
-            });
+            },
+            token);
 
             void LogTelemetry(bool cancelled)
             {

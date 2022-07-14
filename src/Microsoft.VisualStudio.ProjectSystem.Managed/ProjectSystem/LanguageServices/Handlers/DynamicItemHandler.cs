@@ -25,7 +25,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
 
         public void Handle(IWorkspaceProjectContext context, IComparable version, IImmutableDictionary<string, IProjectChangeDescription> projectChanges, ContextState state, IProjectDiagnosticOutputService logger)
         {
-            foreach (var (_, projectChange) in projectChanges)
+            foreach ((_, IProjectChangeDescription projectChange) in projectChanges)
             {
                 if (!projectChange.Difference.AnyChanges)
                     continue;
