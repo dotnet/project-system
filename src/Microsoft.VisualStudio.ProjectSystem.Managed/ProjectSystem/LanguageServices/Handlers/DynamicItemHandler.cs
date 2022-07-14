@@ -8,9 +8,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
     /// <summary>
     ///     Handles changes to dynamic items, such as Razor CSHTML files.
     /// </summary>
-    [Export(typeof(IWorkspaceContextHandler))]
+    [Export(typeof(IWorkspaceUpdateHandler))]
     [PartCreationPolicy(CreationPolicy.NonShared)]
-    internal class DynamicItemHandler : IWorkspaceContextHandler, ISourceItemsHandler
+    internal class DynamicItemHandler : IWorkspaceUpdateHandler, ISourceItemsHandler
     {
         private const string RazorPagesExtension = ".cshtml";
         private const string RazorComponentsExtension = ".razor";

@@ -4,6 +4,16 @@ namespace System.ComponentModel.Composition
 {
     internal static class ExportFactoryFactory
     {
+        public static ExportFactory<T> Implement<T>(Func<T> factory, Action? disposeAction = null)
+        {
+            return new ExportFactory<T>(() =>
+            {
+                T value = factory();
+
+                return Tuple.Create(value, disposeAction ?? delegate { });
+            });
+        }
+
         public static ExportFactory<T> ImplementCreateValueWithAutoDispose<T>(Func<T> factory)
         {
             return new ExportFactory<T>(() =>

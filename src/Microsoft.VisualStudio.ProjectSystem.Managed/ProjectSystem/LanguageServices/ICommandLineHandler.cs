@@ -9,7 +9,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
     ///     Handles changes within the command-line, and applies them to a
     ///     <see cref="IWorkspaceProjectContext"/> instance.
     /// </summary>
-    internal interface ICommandLineHandler : IWorkspaceContextHandler
+    internal interface ICommandLineHandler : IWorkspaceUpdateHandler
     {
         /// <summary>
         ///     Handles the specified added and removed command-line arguments, and applies
@@ -34,12 +34,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         /// <param name="logger">
         ///     The <see cref="IProjectDiagnosticOutputService"/> for logging to the log.
         /// </param>
-        void Handle(
-            IWorkspaceProjectContext context,
-            IComparable version,
-            BuildOptions added,
-            BuildOptions removed,
-            ContextState state,
-            IProjectDiagnosticOutputService logger);
+        void Handle(IWorkspaceProjectContext context, IComparable version, BuildOptions added, BuildOptions removed, ContextState state, IProjectDiagnosticOutputService logger);
     }
 }

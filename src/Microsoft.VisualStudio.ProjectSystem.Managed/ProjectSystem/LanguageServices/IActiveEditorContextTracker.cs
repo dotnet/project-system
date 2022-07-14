@@ -16,7 +16,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
     ///     </para>
     ///     <para>
     ///         NOTE: This is distinct from the "active" context for an <see cref="UnconfiguredProject"/> which is
-    ///         tracked via <see cref="IActiveWorkspaceProjectContextHost"/>.
+    ///         tracked via <see cref="IWorkspaceWriter"/>.
     ///     </para>
     /// </remarks>
     [ProjectSystemContract(ProjectSystemContractScope.UnconfiguredProject, ProjectSystemContractProvider.Private, Cardinality = ImportCardinality.ExactlyOne)]
@@ -39,6 +39,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         /// <summary>
         ///     Registers the <see cref="IWorkspaceProjectContext"/> with the tracker.
         /// </summary>
+        /// <returns>
+        ///     An object that, when disposed, unregisters the context.
+        /// </returns>
         /// <exception cref="ArgumentNullException">
         ///     <paramref name="contextId"/> is <see langword="null" />.
         /// </exception>
@@ -48,20 +51,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         /// <exception cref="InvalidOperationException">
         ///     <paramref name="contextId"/> has already been registered.
         /// </exception>
-        void RegisterContext(string contextId);
-
-        /// <summary>
-        ///     Unregisters the <see cref="IWorkspaceProjectContext"/> with the tracker.
-        /// </summary>
-        /// <exception cref="ArgumentNullException">
-        ///     <paramref name="contextId"/> is <see langword="null" />
-        /// </exception>
-        /// <exception cref="ArgumentException">
-        ///     <paramref name="contextId"/> is an empty string ("").
-        /// </exception>
-        /// <exception cref="InvalidOperationException">
-        ///     <paramref name="contextId"/> has not been registered or has already been unregistered.
-        /// </exception>
-        void UnregisterContext(string contextId);
+        IDisposable RegisterContext(string contextId);
     }
 }

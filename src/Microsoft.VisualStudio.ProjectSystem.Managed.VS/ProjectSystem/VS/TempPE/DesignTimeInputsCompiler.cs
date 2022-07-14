@@ -18,7 +18,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
         private static readonly TimeSpan s_compilationDelayTime = TimeSpan.FromMilliseconds(500);
 
         private readonly UnconfiguredProject _project;
-        private readonly IActiveWorkspaceProjectContextHost _activeWorkspaceProjectContextHost;
+        private readonly IWorkspaceWriter _workspaceWriter;
         private readonly IProjectThreadingService _threadingService;
         private readonly IDesignTimeInputsChangeTracker _changeTracker;
         private readonly ITempPECompiler _compiler;
@@ -34,7 +34,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
 
         [ImportingConstructor]
         public DesignTimeInputsCompiler(UnconfiguredProject project,
-                                        IActiveWorkspaceProjectContextHost activeWorkspaceProjectContextHost,
+                                        IWorkspaceWriter workspaceWriter,
                                         IProjectThreadingService threadingService,
                                         IDesignTimeInputsChangeTracker changeTracker,
                                         ITempPECompiler compiler,
@@ -43,7 +43,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
             : base(threadingService.JoinableTaskContext)
         {
             _project = project;
-            _activeWorkspaceProjectContextHost = activeWorkspaceProjectContextHost;
+            _workspaceWriter = workspaceWriter;
             _threadingService = threadingService;
             _changeTracker = changeTracker;
             _compiler = compiler;
@@ -110,7 +110,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
             int compileCount = 0;
             int initialQueueLength = _queue.Count;
             var compileStopWatch = Stopwatch.StartNew();
-            return _activeWorkspaceProjectContextHost.OpenContextForWriteAsync(async accessor =>
+            return _workspaceWriter.WriteAsync(async workspace =>
             {
                 while (true)
                 {
@@ -137,7 +137,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
                     string outputFileName = GetOutputFileName(item.FileName, item.TempPEOutputPath);
                     try
                     {
-                        if (await CompileDesignTimeInputAsync(accessor.Context, item.FileName, outputFileName, item.SharedInputs, item.IgnoreFileWriteTime, token))
+                        if (await CompileDesignTimeInputAsync(workspace.Context, item.FileName, outputFileName, item.SharedInputs, item.IgnoreFileWriteTime, token))
                         {
                             compileCount++;
                         }
@@ -195,9 +195,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
 
             string outputFileName = GetOutputFileNameFromRelativePath(relativeFileName, tempPEOutputPath);
             // make sure the file is up to date
-            bool compiled = await _activeWorkspaceProjectContextHost.OpenContextForWriteAsync(accessor =>
+            bool compiled = await _workspaceWriter.WriteAsync(workspace =>
             {
-                return CompileDesignTimeInputAsync(accessor.Context, fileName, outputFileName, sharedInputs, ignoreFileWriteTime: false);
+                return CompileDesignTimeInputAsync(workspace.Context, fileName, outputFileName, sharedInputs, ignoreFileWriteTime: false);
             });
 
             if (compiled)

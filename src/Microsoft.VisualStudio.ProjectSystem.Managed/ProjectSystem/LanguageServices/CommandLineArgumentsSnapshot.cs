@@ -7,7 +7,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
     /// </summary>
     /// <remarks>
     /// <para>
-    ///     Produced by <see cref="CommandLineArgumentsProvider"/>.
+    ///     Produced by <see cref="CommandLineArgumentsDataSource"/>.
     /// <para>
     /// </para>
     ///     This snapshot exists because CPS's dataflow/rules handling does not preserve the order of items.
