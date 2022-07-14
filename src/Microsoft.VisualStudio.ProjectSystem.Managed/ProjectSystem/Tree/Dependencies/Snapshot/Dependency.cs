@@ -1,6 +1,7 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
 using Microsoft.VisualStudio.Buffers.PooledObjects;
+using Microsoft.VisualStudio.Imaging;
 using Microsoft.VisualStudio.Imaging.Interop;
 using Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Models;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies;
@@ -122,8 +123,70 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
 
         public string? FilePath { get; }
 
-        public ImageMoniker Icon         => DiagnosticLevel == DiagnosticLevel.None ? Implicit ? IconSet.ImplicitIcon         : IconSet.Icon         : IconSet.UnresolvedIcon;
-        public ImageMoniker ExpandedIcon => DiagnosticLevel == DiagnosticLevel.None ? Implicit ? IconSet.ImplicitExpandedIcon : IconSet.ExpandedIcon : IconSet.UnresolvedExpandedIcon;
+        public ImageMoniker Icon
+        {
+            get
+            {
+                if (DiagnosticLevel == DiagnosticLevel.None)
+                {
+                    if (Implicit)
+                    {
+                        return IconSet.ImplicitIcon;
+                    }
+
+                    return IconSet.Icon;
+                }
+
+                switch (DiagnosticLevel)
+                {
+                    case DiagnosticLevel.UpgradeAvailable:
+                        return KnownMonikers.OfficeWord2013;
+                    case DiagnosticLevel.Warning:
+                        return IconSet.UnresolvedIcon;
+                    case DiagnosticLevel.Deprecation:
+                        return KnownMonikers.OfficeSharePoint2013;
+                    case DiagnosticLevel.Error:
+                        return IconSet.UnresolvedIcon;
+                    case DiagnosticLevel.Vulnerability:
+                        return KnownMonikers.OfficeExcel2013;
+                    default:
+                        throw new ArgumentOutOfRangeException();
+                }
+            }
+        }
+
+        public ImageMoniker ExpandedIcon
+        {
+            get
+            {
+                if (DiagnosticLevel == DiagnosticLevel.None)
+                {
+                    if (Implicit)
+                    {
+                        return IconSet.ImplicitExpandedIcon;
+                    }
+
+                    return IconSet.ExpandedIcon;
+                }
+
+                switch (DiagnosticLevel)
+                {
+                    case DiagnosticLevel.UpgradeAvailable:
+                        return KnownMonikers.OfficeWord2013;
+                    case DiagnosticLevel.Warning:
+                        return IconSet.UnresolvedIcon;
+                    case DiagnosticLevel.Deprecation:
+                        return KnownMonikers.OfficeSharePoint2013;
+                    case DiagnosticLevel.Error:
+                        return IconSet.UnresolvedExpandedIcon;
+                    case DiagnosticLevel.Vulnerability:
+                        return KnownMonikers.OfficeExcel2013;
+                    default:
+                        throw new ArgumentOutOfRangeException();
+                }
+                
+            }
+        }
 
         #endregion
 

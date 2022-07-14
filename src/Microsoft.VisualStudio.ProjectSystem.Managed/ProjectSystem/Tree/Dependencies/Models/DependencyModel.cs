@@ -12,8 +12,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Models
         // These states are in precedence order, where later states override earlier ones.
 
         None = 0,
-        Warning = 1,
-        Error = 2,
+        UpgradeAvailable = 1,
+        Warning = 2,
+        Deprecation = 3,
+        Error = 4,
+        Vulnerability = 5
     }
 
     /// <summary>
