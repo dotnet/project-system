@@ -43,7 +43,7 @@
 - This project is an SDK-style VS Extension project, creating the VSIX package defined by the `source.extension.vsixmanifest`.
   - This project type is able to build via a workaround in our [Directory.Build.targets](..\Directory.Build.targets) that loads the `Microsoft.VsSDK.targets` manually.
   - The assembly produced from the `.csproj` is not used.
-  - The assemblies from [Microsoft.VisualStudio.AppDesigner.csproj](..\src\Microsoft.VisualStudio.AppDesigner\Microsoft.VisualStudio.AppDesigner.csproj) and [Microsoft.VisualStudio.Editors.csproj](..\src\Microsoft.VisualStudio.Editors\Microsoft.VisualStudio.Editors.csproj) are included in the produced VSIX package.
+  - The assemblies from [Microsoft.VisualStudio.AppDesigner.csproj](..\src\Microsoft.VisualStudio.AppDesigner\Microsoft.VisualStudio.AppDesigner.vbproj) and [Microsoft.VisualStudio.Editors.csproj](..\src\Microsoft.VisualStudio.Editors\Microsoft.VisualStudio.Editors.vbproj) are included in the produced VSIX package.
 - The `.vsmanproj` creates the `.vsman` manifest, which is inserted into VS as `Microsoft.VisualStudio.Editors.vsman`.
 
 ## High-level Design

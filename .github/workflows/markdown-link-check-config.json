@@ -1,7 +1,16 @@
 {
   "ignorePatterns": [
     {
-      "pattern": "^https://.*\\.visualstudio\\.com"
+      "pattern": "^https:\/\/.*\\.visualstudio\\.com"
+    },
+    {
+      "pattern": "^https:\/\/dev\\.azure\\.com"
+    },
+    {
+      "pattern": "^https:\/\/aka\\.ms"
+    },
+    {
+      "pattern": ".*❓.*"
     }
   ],
   "replacementPatterns": [
