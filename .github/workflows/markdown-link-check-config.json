@@ -1,7 +1,7 @@
 {
   "ignorePatterns": [
     {
-      "pattern": "^https://.*%5C.visualstudio%5C.com"
+      "pattern": "^https://.*\\.visualstudio\\.com"
     }
   ],
   "replacementPatterns": [
