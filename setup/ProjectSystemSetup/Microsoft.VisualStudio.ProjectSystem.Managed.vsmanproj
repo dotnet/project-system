@@ -1,0 +1,30 @@
+<!-- Copyright (c)  Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information. -->
+<Project>
+
+  <Import Project="..\Directory.Build.props" />
+  <Import Project="$(MicroBuildCoreDir)Microsoft.VisualStudioEng.MicroBuild.Core.props" />
+  <!-- <Import Project="$(SwixBuildDir)Microsoft.VisualStudioEng.MicroBuild.Plugins.SwixBuild.props" /> -->
+
+  <PropertyGroup>
+    <!--
+      Without this, the project attempts to run NuGet restore, but it doesn't have the necessary information to run properly.
+      C:\Program Files\Microsoft Visual Studio\2022\Preview\MSBuild\Microsoft\NuGet\17.0\Microsoft.NuGet.targets(198,5):
+      error : Your project file doesn't list 'win' as a "RuntimeIdentifier".
+      You should add 'win' to the "RuntimeIdentifiers" property in your project file and then re-run NuGet restore.
+    -->
+    <ResolveNuGetPackages>false</ResolveNuGetPackages>
+    <!-- Manually importing the Directory.Build.props seems to respect the properties such as OutputPath appropriately. Otherwise, things end up in the wrong places. -->
+    <ImportDirectoryBuildProps>false</ImportDirectoryBuildProps>
+    <ImportDirectoryBuildTargets>false</ImportDirectoryBuildTargets>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <MergeManifest Include="$(VisualStudioSetupInsertionPath)$(TargetName).json" SBOMFileLocation="$(ArtifactsBinDir)_manifest\spdx_2.2\manifest.spdx.json" />
+    <!-- NOTE: Even though this .vsix is just a loose set of files (not a project with dependencies), SBOMFileLocation is still included as the SBOM check in the VS insertion will fail without it. -->
+    <MergeManifest Include="$(VisualStudioSetupInsertionPath)$(CommonFilesProjectName).json" SBOMFileLocation="$(ArtifactsBinDir)_manifest\spdx_2.2\manifest.spdx.json" />
+  </ItemGroup>
+
+  <Import Project="$(MicroBuildCoreDir)Microsoft.VisualStudioEng.MicroBuild.Core.targets" />
+  <!-- <Import Project="$(SwixBuildDir)Microsoft.VisualStudioEng.MicroBuild.Plugins.SwixBuild.targets" /> -->
+
+</Project>

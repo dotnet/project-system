@@ -1,0 +1,61 @@
+<!-- Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information. -->
+<Project>
+
+  <!-- TODO: This legacy symbol publishing process will be replaced with the Automated VS Insertion task. -->
+  <!-- https://devdiv.visualstudio.com/DevDiv/_wiki/wikis/DevDiv.wiki/629/Automated-VS-Insertion -->
+
+  <Target Name="DeployToSymStore" AfterTargets="Pack">
+    <PropertyGroup>
+      <_TargetPdbPath />
+      <_TargetPdbPath Condition="'$(DebugType)' != 'embedded'">$([System.IO.Path]::ChangeExtension($(TargetPath), '.pdb'))</_TargetPdbPath>
+
+      <_SymStoreOutputDir>$(ArtifactsSymStoreDirectory)$(MSBuildProjectName)\$(TargetFramework)\</_SymStoreOutputDir>
+      <_SymStorePdbPath>$(_SymStoreOutputDir)$(TargetName).pdb</_SymStorePdbPath>
+      <_SymStoreAssemblyPath>$(_SymStoreOutputDir)$(TargetName)$(TargetExt)</_SymStoreAssemblyPath>
+      
+      <PublishOutputToSymStore Condition="'$(PublishOutputToSymStore)' == '' and Exists('$(TargetPath)') and ('$(DebugType)' == 'embedded' or Exists('$(_TargetPdbPath)'))">true</PublishOutputToSymStore>
+    </PropertyGroup>
+  </Target>
+
+  <!--
+    Convert Portable and Embedded PDBs. We publish converted PDBs to Symbol Store so that WinDBG can find them when debugging crash dumps.
+    Convert source link to srcsvr so that both WinDBG and VS can open the source files.
+    We add SRC_INDEX=public srcsvr variable in order to preserve the source server stream when it's published to the public symbol server (msdl.microsoft.com).
+  -->
+  <Target Name="DeployPortableSymbolsToSymStore"
+          AfterTargets="DeployToSymStore"
+          Inputs="$(TargetPath);$(_TargetPdbPath)"
+          Outputs="$(_SymStorePdbPath)"
+          Condition="'$(PublishOutputToSymStore)' == 'true' and ('$(DebugType)' == 'portable' or '$(DebugType)' == 'embedded')">
+
+    <PropertyGroup>
+      <_PdbConverterPath>$(PkgMicrosoft_DiaSymReader_Pdb2Pdb)\tools\Pdb2Pdb.exe</_PdbConverterPath>
+      <_PdbConverterCommandLineArgs>"$(TargetPath)" /out "$(_SymStorePdbPath)" /srcsvrvar SRC_INDEX=public</_PdbConverterCommandLineArgs>
+    </PropertyGroup>
+
+    <MakeDir Directories="$(_SymStoreOutputDir)"/>
+    <Exec Command='"$(_PdbConverterPath)" $(_PdbConverterCommandLineArgs)' IgnoreExitCode="false" />
+    <ItemGroup>
+      <FileWrites Include="$(_SymStorePdbPath)"/>
+    </ItemGroup>
+  </Target>
+
+  <!--
+    The current MicroBuild symbol indexing task doesn't support specifying list of files to index.
+    Therefore we create hardlinks to the files in output directory, where DLLs and EXEs are signed.
+    These targets are executed after the signing phase so that we publish signed binaries to the symbol store even if the files are copies and not hardlinked.
+  -->
+  <Target Name="DeployAssembliesToSymStore"
+          AfterTargets="DeployToSymStore"
+          Condition="'$(PublishOutputToSymStore)' == 'true'"
+          Inputs="$(TargetPath)"
+          Outputs="$(_SymStoreAssemblyPath)">
+
+    <MakeDir Directories="$(_SymStoreOutputDir)"/>
+    <Copy SourceFiles="$(TargetPath)" DestinationFiles="$(_SymStoreAssemblyPath)" UseHardlinksIfPossible="true"/>
+    <ItemGroup>
+      <FileWrites Include="$(_SymStoreAssemblyPath)"/>
+    </ItemGroup>
+  </Target>
+
+</Project>

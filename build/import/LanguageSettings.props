@@ -1,0 +1,88 @@
+<!-- Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information. -->
+<Project>
+
+  <PropertyGroup Condition="'$(Language)' == ''">
+    <Language Condition="'$(MSBuildProjectExtension)' == '.csproj'">C#</Language>
+    <Language Condition="'$(MSBuildProjectExtension)' == '.vbproj'">VB</Language>
+    <Language Condition="'$(MSBuildProjectExtension)' == '.fsproj'">F#</Language>
+    <Language Condition="'$(MSBuildProjectExtension)' == '.vcxproj'">C++</Language>
+    <Language Condition="'$(MSBuildProjectExtension)' == '.swixproj'">SWiX</Language>
+    <Language Condition="'$(MSBuildProjectExtension)' == '.vsmanproj'">VSMan</Language>
+  </PropertyGroup>
+
+  <!--
+    When building WPF/VSIX projects MSBuild will create a temporary project with an extension of tmp_proj.
+    In that case the SDK is unable to determine the target language and cannot pick the correct import. Need to set it explicitly here.
+    See: https://github.com/dotnet/project-system/issues/1467
+  -->
+  <Choose>
+    <When Condition="'$(MSBuildProjectExtension)' != '.csproj' and '$(MSBuildProjectExtension)' != '.vbproj' and '$(MSBuildProjectExtension)' != '.shproj'">
+      <Choose>
+        <When Condition="'$(Language)' == 'C#' or Exists('$(MSBuildProjectDirectory)\$(AssemblyName).csproj')">
+          <PropertyGroup>
+            <Language>C#</Language>
+            <LanguageTargets>$(MSBuildToolsPath)\Microsoft.CSharp.targets</LanguageTargets>
+          </PropertyGroup>
+        </When>
+
+        <When Condition="'$(Language)' == 'VB' or Exists('$(MSBuildProjectDirectory)\$(AssemblyName).vbproj')">
+          <PropertyGroup>
+            <Language>VB</Language>
+            <LanguageTargets>$(MSBuildToolsPath)\Microsoft.VisualBasic.targets</LanguageTargets>
+          </PropertyGroup>
+        </When>
+      </Choose>
+    </When>
+  </Choose>
+
+  <Choose>
+    <!-- C# specific settings -->
+    <When Condition="'$(Language)' == 'C#'">
+      <PropertyGroup>
+        <NoWarn>$(NoWarn);1701;1702;1705;1591</NoWarn>
+        <CheckForOverflowUnderflow>false</CheckForOverflowUnderflow>
+        <LangVersion>preview</LangVersion>
+        <Nullable>enable</Nullable>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Features>strict</Features>
+      </PropertyGroup>
+
+      <PropertyGroup Condition="'$(Configuration)' == 'Debug'">
+        <DebugSymbols>true</DebugSymbols>
+        <DefineConstants>DEBUG;TRACE</DefineConstants>
+      </PropertyGroup>
+
+      <PropertyGroup Condition="'$(Configuration)' == 'Release'">
+        <DefineConstants>TRACE</DefineConstants>
+        <Optimize>true</Optimize>
+      </PropertyGroup>
+    </When>
+
+    <!-- VB specific settings -->
+    <When Condition="'$(Language)' == 'VB'">
+      <PropertyGroup>
+        <MyType>Empty</MyType>
+        <OptionCompare>Binary</OptionCompare>
+        <OptionExplicit>On</OptionExplicit>
+        <OptionInfer>On</OptionInfer>
+        <OptionStrict>On</OptionStrict>
+        <LangVersion>16</LangVersion>
+        <VBRuntime>Default</VBRuntime>
+        <RemoveIntegerChecks>true</RemoveIntegerChecks>
+        <Features>strict</Features>
+      </PropertyGroup>
+
+      <PropertyGroup Condition="'$(Configuration)' == 'Debug'">
+        <DebugSymbols>true</DebugSymbols>
+        <DefineDebug>true</DefineDebug>
+        <DefineTrace>true</DefineTrace>
+      </PropertyGroup>
+
+      <PropertyGroup Condition="'$(Configuration)' == 'Release'">
+        <DefineTrace>true</DefineTrace>
+        <Optimize>true</Optimize>
+      </PropertyGroup>
+    </When>
+  </Choose>
+
+</Project>

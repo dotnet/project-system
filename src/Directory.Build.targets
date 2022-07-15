@@ -11,7 +11,7 @@
     Uses AppendAllText instead of Add-Content since that cmdlet adds an empty line at the end of the file.
   -->
   <Target Name="FlushUnshippedAPI" AfterTargets="Build" Condition="'$(CIBuild)' != 'true'">
-    <Exec Command="powershell -NonInteractive -NoLogo -NoProfile -ExecutionPolicy Unrestricted -Command &quot;$unshipped = '$(MSBuildProjectDirectory)\PublicAPI.Unshipped.txt'; $content = Get-Content $unshipped -Raw; if(-Not [String]::IsNullOrWhiteSpace($content)) { [IO.File]::AppendAllText('$(MSBuildProjectDirectory)\PublicAPI.Shipped.txt', [Environment]::NewLine + $content); Clear-Content $unshipped }&quot;" />
+    <Exec ContinueOnError="false" Command="$(PowerShellCommand) &quot;$unshipped = '$(MSBuildProjectDirectory)\PublicAPI.Unshipped.txt'; $content = Get-Content $unshipped -Raw; if(-Not [String]::IsNullOrWhiteSpace($content)) { [IO.File]::AppendAllText('$(MSBuildProjectDirectory)\PublicAPI.Shipped.txt', [Environment]::NewLine + $content); Clear-Content $unshipped }&quot;" />
   </Target>
 
   <!-- Adds the appropriate assemblies for signing. -->

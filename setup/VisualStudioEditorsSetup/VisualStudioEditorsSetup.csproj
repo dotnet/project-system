@@ -1,22 +1,18 @@
 ﻿<!-- Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information. -->
 <Project Sdk="Microsoft.NET.Sdk">
 
+  <!-- Note: VSIX signing is handled via AddVsixForSigning in Directory.Build.targets. -->
+
   <Import Project="..\..\build\import\VisualStudioDesigner.props" />
 
   <PropertyGroup>
     <RootNamespace>Microsoft.VisualStudio</RootNamespace>
-    <PublishOutputToSymStore>false</PublishOutputToSymStore>
 
     <!-- VSIX -->
-    <IncludeAssemblyInVSIXContainer>false</IncludeAssemblyInVSIXContainer>
     <ExtensionInstallationRoot>CommonExtensions</ExtensionInstallationRoot>
     <ExtensionInstallationFolder>Microsoft\VisualStudio\Editors</ExtensionInstallationFolder>
-    <AddVsixForSigningDependsOn>FinalizeInsertionVsixFiles</AddVsixForSigningDependsOn>
-
-    <!-- VS Setup -->
-    <!-- NOTE: Having VisualStudioInsertionComponent defined is the condition for VisualStudio.SetupPackage.vsmanproj to be built (via FinalizeInsertionVsixFiles target in VisualStudio.Insertion.proj) in RepoToolset. -->
-    <VisualStudioInsertionComponent>Microsoft.VisualStudio.Editors</VisualStudioInsertionComponent>
-    <ManifestJsonName>$(VisualStudioInsertionComponent)</ManifestJsonName>
+    <TargetVsixContainerName>$(AssemblyName).vsix</TargetVsixContainerName>
+    <TargetVsixContainer>$(VisualStudioSetupInsertionPath)$(TargetVsixContainerName)</TargetVsixContainer>
   </PropertyGroup>
 
   <ItemGroup>
@@ -27,6 +23,7 @@
       <Ngen>true</Ngen>
       <NgenArchitecture>All</NgenArchitecture>
       <NgenPriority>3</NgenPriority>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
     </ProjectReference>
     <ProjectReference Include="..\..\src\Microsoft.VisualStudio.Editors\Microsoft.VisualStudio.Editors.vbproj">
       <Name>Microsoft.VisualStudio.Editors</Name>
@@ -35,6 +32,7 @@
       <Ngen>true</Ngen>
       <NgenArchitecture>All</NgenArchitecture>
       <NgenPriority>3</NgenPriority>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
     </ProjectReference>
   </ItemGroup>
 
@@ -43,5 +41,12 @@
       <Link>ProvideCodeBaseBindingRedirection.cs</Link>
     </Compile>
   </ItemGroup>
+
+  <!-- Builds the associated .vsmanproj to produce a .vsman file for VS insertions. -->
+  <Target Name="VSManifestBuild" AfterTargets="Build">
+    <MSBuild Projects="$(MSBuildThisFileDirectory)Microsoft.VisualStudio.Editors.vsmanproj"
+      Properties="SwixBuildDir=$(PkgMicrosoft_VisualStudioEng_MicroBuild_Plugins_SwixBuild)\build\;MicroBuildCoreDir=$(PkgMicrosoft_VisualStudioEng_MicroBuild_Core)\build\"
+      Targets="Build" />
+  </Target>
 
 </Project>
