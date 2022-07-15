@@ -476,7 +476,7 @@
         <Str Cat="Text">
           <Val><![CDATA[Package Repository Type]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[包存储库类型]]></Val>
+            <Val><![CDATA[包仓库类型]]></Val>
           </Tgt>
         </Str>
         <Disp Icon="Str" />
@@ -485,7 +485,7 @@
         <Str Cat="Text">
           <Val><![CDATA[&Repository type:]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[存储库类型(&R):]]></Val>
+            <Val><![CDATA[仓库类型(&R):]]></Val>
           </Tgt>
         </Str>
         <Disp Icon="Str" />
@@ -494,7 +494,7 @@
         <Str Cat="Text">
           <Val><![CDATA[Package Repository URL]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[包存储库 URL]]></Val>
+            <Val><![CDATA[包仓库 URL]]></Val>
           </Tgt>
         </Str>
         <Disp Icon="Str" />
@@ -503,7 +503,7 @@
         <Str Cat="Text">
           <Val><![CDATA[&Repository URL:]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[存储库 URL (&R):]]></Val>
+            <Val><![CDATA[仓库 URL (&R):]]></Val>
           </Tgt>
         </Str>
         <Disp Icon="Str" />
