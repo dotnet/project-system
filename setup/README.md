@@ -10,6 +10,7 @@
   - Can install into any sub-directory in VS
 - `.vsmanproj` files are for creating the `.vsman` files, necessary for VS insertions.
 - `.pkgdef` files are the same as a `.reg` files.
+- `.vsmand` files are the definition files that seed the generation of `.vsman` files. They contain the basic structure and information that is added to when creating a fully fleshed-out `.vsman` file.
 
 ## Directory Structure
 ### `Common`
