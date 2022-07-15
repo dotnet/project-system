@@ -3,9 +3,6 @@
   "version": "17.4",
   "assemblyVersion": "17.4",
   "buildNumberOffset": 0,
-  "publicReleaseRefSpec": [
-    "^refs/heads/main$"
-  ],
   "cloudBuild": {
     "buildNumber": {
       "enabled": true,
