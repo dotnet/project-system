@@ -506,7 +506,7 @@
         <Str Cat="Text">
           <Val><![CDATA[Specifies the type of the repository. Default is 'git'.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[指定存储库的类型。默认值为 "git"。]]></Val>
+            <Val><![CDATA[指定仓库的类型。默认值为 'git'。]]></Val>
           </Tgt>
         </Str>
         <Disp Icon="Str" />
@@ -515,7 +515,7 @@
         <Str Cat="Text">
           <Val><![CDATA[Repository type]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[存储库类型]]></Val>
+            <Val><![CDATA[仓库类型]]></Val>
           </Tgt>
         </Str>
         <Disp Icon="Str" />
@@ -524,7 +524,7 @@
         <Str Cat="Text">
           <Val><![CDATA[Specifies the URL for the repository where the source code for the package resides and/or from which it's being built. For linking to the project page, use the 'Project URL' field, instead.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[指定包的源代码所在的存储库和/或从其中构建源代码的存储库的 URL。如需链接到项目页面，请改用“项目 URL”字段。]]></Val>
+            <Val><![CDATA[指定包的源代码所在的仓库和/或从其中构建源代码的仓库的 URL。如需链接到项目页面，请改用“项目 URL”字段。]]></Val>
           </Tgt>
         </Str>
         <Disp Icon="Str" />
@@ -533,7 +533,7 @@
         <Str Cat="Text">
           <Val><![CDATA[Repository URL]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[存储库 URL]]></Val>
+            <Val><![CDATA[仓库 URL]]></Val>
           </Tgt>
         </Str>
         <Disp Icon="Str" />

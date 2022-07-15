@@ -264,10 +264,13 @@
       </Item>
       <Item ItemId=";IncrementalBuildFailureWarningMessage_2" ItemType="0" PsrId="308" InstFlg="true" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[WARNING: Potential incremental build failure in '{0}'. {1}. See https://aka.ms/incremental-build-failure.]]></Val>
+          <Val><![CDATA[WARNING: Potential build performance issue in '{0}'. The project does not appear up-to-date after a successful build: {1}. See https://aka.ms/incremental-build-failure.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[WARNUNG: Potenzieller inkrementeller Buildfehler in "{0}". {1}. Siehe https://aka.ms/incremental-build-failure.]]></Val>
+            <Val><![CDATA[WARNUNG: Potenzielles Problem mit der Buildleistung in '{0}'. Das Projekt erscheint nach einem erfolgreichen Build nicht aktuell: {1}. Siehe https://aka.ms/incremental-build-failure.]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[WARNING: Potential incremental build failure in '{0}'. {1}. See https://aka.ms/incremental-build-failure.]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
