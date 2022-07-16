@@ -7,7 +7,7 @@ jobs:
     - task: MSBuild@1
       displayName: Build ProjectSystem.sln
       inputs:
-        solution: $(Build.SourcesDirectory)\eng\proj\Build.proj
+        solution: $(Build.SourcesDirectory)\eng\Build.proj
         msbuildArchitecture: x86
         configuration: ${{ parameters.configuration }}
         msbuildArguments: '/m /warnaserror /nologo /clp:Summary /p:Build=true /p:Test=true /p:CIBuild=true /v:normal /bl:$(Build.SourcesDirectory)\artifacts\${{ parameters.configuration }}\log\Build.binlog'
