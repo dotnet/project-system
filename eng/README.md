@@ -1,13 +1,13 @@
-# `build` directory
+# `eng` directory
 ## Directory Structure
-### `ci`
+### `pipelines`
 - This directory is only used by Azure Pipelines and is not read by anything else in the repo.
 - *Contents*: This directory primarily contains `.yaml` files, which become pipelines in Azure Pipelines. There are some other files that support the pipelines within this folder.
   - *Potential change*: Rename this folder to `pipelines` as part of: https://github.com/dotnet/project-system/issues/7915
 
 #### Notable Files
-- [official.yml](build\official.yml): This file is our official build pipeline that produces the signed packages (VSIX) that used for insertion into Visual Studio.
-- [unit-tests.yml](build\unit-tests.yml): This file is our build pipeline used when validating pull requests into the repo from GitHub.
+- [official.yml](pipelines\official.yml): This file is our official build pipeline that produces the signed packages (VSIX) that used for insertion into Visual Studio.
+- [unit-tests.yml](pipelines\unit-tests.yml): This file is our build pipeline used when validating pull requests into the repo from GitHub.
 
 ### `import`
 - This directory is highly accessed as part of the MSBuild pipeline to produce our assemblies, run tests, create packages, etc.
@@ -20,20 +20,18 @@
   - This file primarily works with [HostAgnostic.props](import\HostAgnostic.props) which is the file that actually *Includes* many of these packages in the build pipeline.
   - *Potential change*: This file may be replaced with a `Directory.Packages.props` file within: https://github.com/dotnet/project-system/issues/8238
 
-### `loc`
-- This directory contains the **OneLocBuildSetup** project which creates the `LocProject.json` and copies language-specific XLF files to become language-neutral; both of these are required for the [OneLocBuild](https://aka.ms/OneLocBuild) process for localization.
-- The **OneLocBuildSetup** project is only build and used as part of the [one-loc-build.yml](build\one-loc-build.yml) pipeline.
-  - *Potential change*: This pipeline might be combined into another pipeline as part of: https://github.com/dotnet/project-system/issues/7915
-
-### `optprof`
-- This directory contains a few files related to running [OptProf](https://aka.ms/OptProf) on the assemblies in our repo.
-  - A majority of the configuration relates to setting the test(s) that OptProf uses for creating optimization data.
-  - *Potential change*: This directory may either be removed *or* have more files added to it as part of: https://github.com/dotnet/project-system/issues/8139
-
 ### `proj`
 - This directory contains [Build.proj](proj\Build.proj) and [CoreBuild.proj](proj\CoreBuild.proj) which build the projects within the repo.
   - *Potential change*: This directory will likely be removed within: https://github.com/dotnet/project-system/issues/7868
 
-### `script`
-- This directory only contains [SetVSEnvironment.cmd](script\SetVSEnvironment.cmd) which is only used by [build.cmd](..\build.cmd).
-  - *Potential change*: This directory will likely be removed within: https://github.com/dotnet/project-system/issues/7868
+### `scripts`
+- This directory contains:
+  - [SetVSEnvironment.cmd](script\SetVSEnvironment.cmd) which is used by [build.cmd](..\build.cmd)
+  - A few files related to running [OptProf](https://aka.ms/OptProf) on the assemblies in our repo.
+    - A majority of the configuration relates to setting the test(s) that OptProf uses for creating optimization data.
+    - The *runsettings* folder contains the `.runsettings` file. This entire folder is published in our [official.yml](pipelines\official.yml).
+
+### `tools`
+- This directory contains the **OneLocBuildSetup** project which creates the `LocProject.json` and copies language-specific XLF files to become language-neutral; both of these are required for the [OneLocBuild](https://aka.ms/OneLocBuild) process for localization.
+  - The **OneLocBuildSetup** project is only build and used as part of the [one-loc-build.yml](pipelines\one-loc-build.yml) pipeline.
+    - *Potential change*: This pipeline might be combined into another pipeline as part of: https://github.com/dotnet/project-system/issues/7915

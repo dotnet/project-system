@@ -3,7 +3,7 @@
 
   <!-- Note: VSIX signing is handled via AddVsixForSigning in Directory.Build.targets. -->
 
-  <Import Project="..\..\build\import\VisualStudioDesigner.props" />
+  <Import Project="..\..\eng\import\VisualStudioDesigner.props" />
 
   <PropertyGroup>
     <RootNamespace>Microsoft.VisualStudio</RootNamespace>

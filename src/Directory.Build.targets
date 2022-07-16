@@ -1,9 +1,9 @@
 <!-- Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information. -->
 <Project>
 
-  <Import Project="..\build\optprof\OptProf.targets" />
+  <Import Project="..\eng\import\OptProf.targets" />
   <Import Project="..\Directory.Build.targets" />
-  <Import Project="..\build\import\VisualStudio.XamlRules.targets" />
+  <Import Project="..\eng\import\VisualStudio.XamlRules.targets" />
 
   <!--
     Copies the contents of PublicAPI.Unshipped.txt into PublicAPI.Shipped.txt on build.

@@ -23,7 +23,7 @@ _Descriptions of these steps can be found in the team OneNote._
   - [ ] Update the [signed build definition](https://devdiv.visualstudio.com/DevDiv/_build?definitionId=9675) to build the new branch
 - [ ] Update Roslyn Tools [config.xml](https://github.com/dotnet/roslyn-tools/blob/main/src/GitHubCreateMergePRs/config.xml) file to flow branch changes to the latest dev branch
   - [ ] dotnet/roslyn-tools PR: https://github.com/dotnet/roslyn-tools/pull/❓
-- [ ] Update [Versions.props](..\..\build\import\Versions.props) (via `<ProjectSystemVersion>`) and [version.json](..\..\version.json) (via `"version"` and `"assemblyVersion"`) to match the version of VS, if needed
+- [ ] Update [Versions.props](..\..\eng\import\Versions.props) (via `<ProjectSystemVersion>`) and [version.json](..\..\version.json) (via `"version"` and `"assemblyVersion"`) to match the version of VS, if needed
     - [ ] In new branch: https://github.com/dotnet/project-system/blob/dev17.❓.x/build/import/Versions.props
     - [ ] In `main`: https://github.com/dotnet/project-system/blob/main/build/import/Versions.props
 - [ ] Clone existing release definition to insert this branch into VS (see OneNote)

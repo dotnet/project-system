@@ -76,7 +76,7 @@ steps:
 - task: MSBuild@1
   displayName: Build Src for SBOM
   inputs:
-    solution: $(Build.SourcesDirectory)\build\proj\Build.proj
+    solution: $(Build.SourcesDirectory)\eng\proj\Build.proj
     msbuildArchitecture: x86
     configuration: $(BuildConfiguration)
     msbuildArguments: '/m /warnaserror /nologo /clp:Summary /p:Build=true /p:CIBuild=true /p:QuickSrcBuild=true /v:normal /bl:$(Build.SourcesDirectory)\artifacts\$(BuildConfiguration)\log\QuickSrcBuild.binlog'
@@ -90,7 +90,7 @@ steps:
 - task: MSBuild@1
   displayName: Build ProjectSystem.sln
   inputs:
-    solution: $(Build.SourcesDirectory)\build\proj\Build.proj
+    solution: $(Build.SourcesDirectory)\eng\proj\Build.proj
     msbuildArchitecture: x86
     configuration: $(BuildConfiguration)
     msbuildArguments: '/m /warnaserror /nologo /clp:Summary /p:Build=true /p:Test=true /p:CIBuild=true /v:normal /bl:$(Build.SourcesDirectory)\artifacts\$(BuildConfiguration)\log\Build.binlog'
@@ -102,7 +102,7 @@ steps:
       $(Build.SourcesDirectory)/artifacts/$(BuildConfiguration)/packages
       $(Build.SourcesDirectory)/artifacts/$(BuildConfiguration)/VSSetup/Insertion
     # Filters out certain files (usually by extension) in the provided file.
-    ApprovalListPathForCerts: $(Build.SourcesDirectory)\build\ci\no_authenticode.txt
+    ApprovalListPathForCerts: $(Build.SourcesDirectory)\eng\pipelines\no_authenticode.txt
 
 - task: Ref12Analyze@0
   displayName: Create Codex Index
@@ -202,7 +202,7 @@ steps:
 - task: PowerShell@2
   displayName: Update RunSettings via Bootstrapper data
   inputs:
-    filePath: build\optprof\UpdateRunSettings.ps1
+    filePath: eng\scripts\UpdateRunSettings.ps1
     arguments: '-profilingInputsPath "ProfilingInputs/$(System.TeamProject)/$(Build.Repository.Name)/$(Build.SourceBranchName)/$(Build.BuildId)" -bootstrapperInfoPath "$(Build.StagingDirectory)\MicroBuild\Output\BootstrapperInfo.json"'
     failOnStderr: true
 
@@ -211,7 +211,7 @@ steps:
   inputs:
     dropServiceURI: 'https://devdiv.artifacts.visualstudio.com'
     buildNumber: 'RunSettings/$(System.TeamProject)/$(Build.Repository.Name)/$(Build.SourceBranchName)/$(Build.BuildId)'
-    sourcePath: '$(Build.SourcesDirectory)\build\optprof'
+    sourcePath: '$(Build.SourcesDirectory)\eng\scripts\runsettings'
     toLowerCase: false
     usePat: true
     AccessToken: '$(System.AccessToken)'

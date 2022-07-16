@@ -24,7 +24,7 @@ steps:
 - task: MSBuild@1
   displayName: Build ProjectSystem.sln
   inputs:
-    solution: $(Build.SourcesDirectory)\build\proj\Build.proj
+    solution: $(Build.SourcesDirectory)\eng\proj\Build.proj
     msbuildArchitecture: x86
     configuration: $(BuildConfiguration)
     msbuildArguments: '/m /warnaserror /nologo /clp:Summary /p:Build=true /p:CIBuild=true /v:normal /bl:$(Build.SourcesDirectory)\artifacts\$(BuildConfiguration)\log\Build.binlog'
@@ -77,7 +77,7 @@ steps:
   displayName: Upload results and create bugs
   inputs:
     GdnPublishTsaOnboard: true
-    GdnPublishTsaConfigFile: '$(Build.SourcesDirectory)\build\ci\TSAConfig.gdntsa'  # All relevant settings are in this file.
+    GdnPublishTsaConfigFile: '$(Build.SourcesDirectory)\eng\pipelines\TSAConfig.gdntsa'  # All relevant settings are in this file.
   continueOnError: true
 
 - task: PublishSecurityAnalysisLogs@3
