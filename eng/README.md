@@ -11,18 +11,14 @@
 
 ### `import`
 - This directory is highly accessed as part of the MSBuild pipeline to produce our assemblies, run tests, create packages, etc.
-- *Contents*: This directory contains a majority of the `.props`/`.targets` files in the repo. There are also a couple of `.snk` files used for StrongName signing within the [StrongName.targets](import\StrongName.targets) file.
+- *Contents*: This directory contains a majority of the `.props`/`.targets` files in the repo. There are also a couple of `.snk` files used for StrongName signing within the [StrongName.targets](imports\StrongName.targets) file.
 
 #### Notable Files
-- [Versions.props](import\Versions.props): Contains properties for version information that is used by the build pipeline.
-- [RepoLayout.props](import\RepoLayout.props): Contains properties for paths to the directories within the repo itself.
-- [Packages.targets](import\Packages.targets): Contains the `RestoreSources` (package feeds) and `PackageReference` nodes utilized by the repo. The `PackageReference` nodes contain the versions of the packages used by the repo, and does not *Include* the packages; they only *Update* them.
-  - This file primarily works with [HostAgnostic.props](import\HostAgnostic.props) which is the file that actually *Includes* many of these packages in the build pipeline.
+- [Versions.props](imports\Versions.props): Contains properties for version information that is used by the build pipeline.
+- [RepoLayout.props](imports\RepoLayout.props): Contains properties for paths to the directories within the repo itself.
+- [Packages.targets](imports\Packages.targets): Contains the `RestoreSources` (package feeds) and `PackageReference` nodes utilized by the repo. The `PackageReference` nodes contain the versions of the packages used by the repo, and does not *Include* the packages; they only *Update* them.
+  - This file primarily works with [HostAgnostic.props](imports\HostAgnostic.props) which is the file that actually *Includes* many of these packages in the build pipeline.
   - *Potential change*: This file may be replaced with a `Directory.Packages.props` file within: https://github.com/dotnet/project-system/issues/8238
-
-### `proj`
-- This directory contains [Build.proj](proj\Build.proj) and [CoreBuild.proj](proj\CoreBuild.proj) which build the projects within the repo.
-  - *Potential change*: This directory will likely be removed within: https://github.com/dotnet/project-system/issues/7868
 
 ### `scripts`
 - This directory contains:

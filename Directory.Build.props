@@ -7,8 +7,8 @@
     <IsTestProject Condition="'$(IsTestProject)' == ''">false</IsTestProject>
   </PropertyGroup>
 
-  <Import Project="eng\import\Versions.props" />
-  <Import Project="eng\import\RepoLayout.props" />
+  <Import Project="eng\imports\Versions.props" />
+  <Import Project="eng\imports\RepoLayout.props" />
 
   <!-- Project layout -->
   <PropertyGroup>
@@ -106,7 +106,7 @@
     <Using Include="System.ComponentModel.Composition" />
   </ItemGroup>
 
-  <Import Project="eng\import\LanguageSettings.props" />
-  <Import Project="eng\import\Workarounds.props" />
+  <Import Project="eng\imports\LanguageSettings.props" />
+  <Import Project="eng\imports\Workarounds.props" />
 
 </Project>

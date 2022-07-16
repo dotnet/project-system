@@ -6,7 +6,7 @@
     Additionally, it ends up running the Nerdbank.GitVersioning mechanism via PackageRestore. This version number is then passed to the .swixproj for as the VSIX version.
   -->
 
-  <Import Project="..\..\eng\import\VisualStudio.props" />
+  <Import Project="..\..\eng\imports\VisualStudio.props" />
 
   <ItemGroup>
     <!-- Depend on projects producing XAML rules included in this Willow package -->
