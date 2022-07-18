@@ -6,8 +6,8 @@
   - *Potential change*: Rename this folder to `pipelines` as part of: https://github.com/dotnet/project-system/issues/7915
 
 #### Notable Files
-- [official.yml](build\official.yml): This file is our official build pipeline that produces the signed packages (VSIX) that used for insertion into Visual Studio.
-- [unit-tests.yml](build\unit-tests.yml): This file is our build pipeline used when validating pull requests into the repo from GitHub.
+- [official.yml](ci\official.yml): This file is our official build pipeline that produces the signed packages (VSIX) that used for insertion into Visual Studio.
+- [unit-tests.yml](ci\unit-tests.yml): This file is our build pipeline used when validating pull requests into the repo from GitHub.
 
 ### `import`
 - This directory is highly accessed as part of the MSBuild pipeline to produce our assemblies, run tests, create packages, etc.
@@ -22,7 +22,7 @@
 
 ### `loc`
 - This directory contains the **OneLocBuildSetup** project which creates the `LocProject.json` and copies language-specific XLF files to become language-neutral; both of these are required for the [OneLocBuild](https://aka.ms/OneLocBuild) process for localization.
-- The **OneLocBuildSetup** project is only build and used as part of the [one-loc-build.yml](build\one-loc-build.yml) pipeline.
+- The **OneLocBuildSetup** project is only build and used as part of the [one-loc-build.yml](ci\one-loc-build.yml) pipeline.
   - *Potential change*: This pipeline might be combined into another pipeline as part of: https://github.com/dotnet/project-system/issues/7915
 
 ### `optprof`
