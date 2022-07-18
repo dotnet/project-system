@@ -239,12 +239,23 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies
                     {
                         if (import.ImportingElement.ContainingProject != projectXml || !PathHelper.IsSamePath(import.ImportedProject.FullPath, sharedFilePath))
                         {
+                            // This is not the import we are trying to remove.
                             continue;
                         }
 
                         ProjectImportElement importingElementToRemove = import.ImportingElement;
-                        Report.IfNot(importingElementToRemove != null, "Cannot find shared project reference to remove.");
-                        importingElementToRemove?.Parent.RemoveChild(importingElementToRemove);
+
+                        if (importingElementToRemove is null)
+                        {
+                            Report.Fail("Cannot find shared project reference to remove.");
+                            continue;
+                        }
+
+                        // We found a matching import. Remove it.
+                        importingElementToRemove.Parent.RemoveChild(importingElementToRemove);
+
+                        // Stop scanning for imports.
+                        break;
                     }
                 }
             });
