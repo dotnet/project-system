@@ -11,6 +11,9 @@
     },
     {
       "pattern": ".*❓.*"
+    },
+    {
+      "pattern": "^https:\/\/www\\.microsoft\\.com"
     }
   ],
   "replacementPatterns": [
@@ -21,7 +24,7 @@
   ],
   "httpHeaders": [
     {
-      "urls": ["https://docs.github.com/", "https://www.microsoft.com/"],
+      "urls": ["https://docs.github.com/"],
       "headers": {
         "Accept-Encoding": "zstd, br, gzip, deflate"
       }
