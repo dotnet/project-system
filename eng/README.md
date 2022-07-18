@@ -22,7 +22,7 @@
 
 ### `scripts`
 - This directory contains:
-  - [SetVSEnvironment.cmd](script\SetVSEnvironment.cmd) which is used by [build.cmd](..\build.cmd)
+  - [SetVSEnvironment.cmd](scripts\SetVSEnvironment.cmd) which is used by [build.cmd](..\build.cmd)
   - A few files related to running [OptProf](https://aka.ms/OptProf) on the assemblies in our repo.
     - A majority of the configuration relates to setting the test(s) that OptProf uses for creating optimization data.
     - The *runsettings* folder contains the `.runsettings` file. This entire folder is published in our [official.yml](pipelines\official.yml).

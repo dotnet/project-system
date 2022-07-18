@@ -21,7 +21,7 @@
   ],
   "httpHeaders": [
     {
-      "urls": ["https://docs.github.com/"],
+      "urls": ["https://docs.github.com/", "https://www.microsoft.com/"],
       "headers": {
         "Accept-Encoding": "zstd, br, gzip, deflate"
       }
