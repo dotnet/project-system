@@ -286,6 +286,9 @@ steps:
     packagesToPush: 'artifacts\$(BuildConfiguration)\packages\*.nupkg'
     nuGetFeedType: 'external'
     publishFeedCredentials: azure-public/vs-impl
+    # This allows the task to succeed if duplicate packages exist. Packages cannot be overridden in a feed.
+    # See: https://docs.microsoft.com/en-us/azure/devops/pipelines/tasks/package/nuget?view=azure-devops#arguments
+    allowPackageConflicts: true
 
 # Publishes the packages to https://dev.azure.com/DevDiv/DevDiv/_artifacts/feed/VS
 # The RoslynInsertionTool will republish these contents from the VS feed to https://dev.azure.com/DevDiv/DevDiv/_artifacts/feed/VS-CoreXtFeeds
@@ -297,6 +300,8 @@ steps:
     # Feed Endpoint: https://devdiv.pkgs.visualstudio.com/_packaging/VS/nuget/v3/index.json
     # Requires VssFeedId despite documentation here: https://docs.microsoft.com/en-us/azure/devops/pipelines/artifacts/nuget?view=azure-devops&tabs=yaml#publish-a-package
     publishVstsFeed: '97a41293-2972-4f48-8c0e-05493ae82010'
+    # This allows the task to succeed if duplicate packages exist. Packages cannot be overridden in a feed.
+    # See: https://docs.microsoft.com/en-us/azure/devops/pipelines/tasks/package/nuget?view=azure-devops#arguments
     allowPackageConflicts: true
 
 ###################################################################################################################################################################
