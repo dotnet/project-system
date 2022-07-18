@@ -3,13 +3,13 @@
 #### Prerequisites
 - [Visual Studio 16.3 Preview 2 or higher](https://visualstudio.microsoft.com/vs/preview/)
 - GitHub account
-- Basic Git experience: https://try.github.io/
+- Basic Git experience: https://docs.github.com/get-started/quickstart/set-up-git
 
 All commands below are run under a [Visual Studio Developer Prompt](https://msdn.microsoft.com/en-us/library/ms229859(v=vs.150).aspx).
 
 ## Code
 
-Contribution to this repository is via the [fork model](https://help.github.com/articles/fork-a-repo/). Contributors push changes to their own "forked" version of project-system, and then submit a pull request into it requesting those changes be merged.
+Contribution to this repository is via the [fork model](https://docs.github.com/get-started/quickstart/fork-a-repo). Contributors push changes to their own "forked" version of project-system, and then submit a pull request into it requesting those changes be merged.
 
 To get started:
 
