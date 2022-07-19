@@ -9,7 +9,7 @@ Write-Host "profilingInputsPath: $profilingInputsPath"
 Write-Host "bootstrapperInfoPath: $bootstrapperInfoPath"
 Write-Host "buildDropPath: $buildDropPath"
 
-$runsettingsPath = (Get-Item "$PSScriptRoot\OptProf.runsettings").FullName
+$runsettingsPath = (Get-Item "$PSScriptRoot\runsettings\OptProf.runsettings").FullName
 $runsettingsXml = [Xml.XmlDocument](Get-Content $runsettingsPath)
 # https://stackoverflow.com/questions/33813700/empty-xml-node-rendered-as-string-in-powershell
 $testStores = $runsettingsXml.RunSettings.TestConfiguration.SelectSingleNode('TestStores')

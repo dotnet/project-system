@@ -13,8 +13,8 @@
     IntegrationTest                 "true" to run integration tests
   -->
 
-  <Import Project="..\import\Versions.props" />
-  <Import Project="..\import\RepoLayout.props" />
+  <Import Project="imports\Versions.props" />
+  <Import Project="imports\RepoLayout.props" />
 
   <PropertyGroup>
     <SolutionFileName>ProjectSystem.sln</SolutionFileName>

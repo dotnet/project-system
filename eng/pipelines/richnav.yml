@@ -39,7 +39,7 @@ steps:
 - task: MSBuild@1
   displayName: Build ProjectSystem.sln
   inputs:
-    solution: $(Build.SourcesDirectory)\build\proj\Build.proj
+    solution: $(Build.SourcesDirectory)\eng\Build.proj
     msbuildArchitecture: x86
     configuration: $(BuildConfiguration)
     msbuildArguments: '/m /warnaserror /nologo /clp:Summary /p:Build=true /p:CIBuild=true /v:normal /bl:$(Build.SourcesDirectory)\artifacts\$(BuildConfiguration)\log\Build.binlog'

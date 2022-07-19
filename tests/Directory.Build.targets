@@ -3,8 +3,8 @@
 
   <Import Project="..\Directory.Build.targets" />
 
-  <Import Project="..\build\import\UnitTests.targets" Condition="'$(IsUnitTestProject)' == 'true'" />
-  <Import Project="..\build\import\IntegrationTests.targets" Condition="'$(IsIntegrationTestProject)' == 'true'" />
+  <Import Project="..\eng\imports\UnitTests.targets" Condition="'$(IsUnitTestProject)' == 'true'" />
+  <Import Project="..\eng\imports\IntegrationTests.targets" Condition="'$(IsIntegrationTestProject)' == 'true'" />
 
   <PropertyGroup>
     <_CoverageReport>$(ArtifactsTestResultsDir)$(AssemblyName).dll.coverage</_CoverageReport>

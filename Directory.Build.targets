@@ -1,14 +1,14 @@
 <!-- Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information. -->
 <Project>
 
-  <Import Project="build\import\Packages.targets" />
-  <Import Project="build\import\StrongName.targets" />
-  <Import Project="build\import\SymStore.targets" Condition="'$(CIBuild)' == 'true'"/>
+  <Import Project="eng\imports\Packages.targets" />
+  <Import Project="eng\imports\StrongName.targets" />
+  <Import Project="eng\imports\SymStore.targets" Condition="'$(CIBuild)' == 'true'"/>
   <!-- VSSDK is needed in projects generating VSIX packages or pkgdef files. -->
   <!-- Manually importing the .targets here allows SDK-style VS Extension projects to build properly. -->
   <!-- See: https://github.com/dotnet/msbuild/issues/2393#issuecomment-1126563335 -->
   <Import Project="$(VSToolsPath)\VSSDK\Microsoft.VsSDK.targets" Condition="'$(VSToolsPath)' != '' and ('$(IsVsixProject)' == 'true' or '$(GeneratePkgDefFile)' == 'true')" />
-  <Import Project="build\import\Workarounds.targets"/>
+  <Import Project="eng\imports\Workarounds.targets"/>
 
   <ItemGroup>
     <AdditionalFiles Include="$(MSBuildThisFileDirectory)src\Common\BannedSymbols.txt" Condition="'$(BannedSymbolsOptOut)' != 'true'" />
