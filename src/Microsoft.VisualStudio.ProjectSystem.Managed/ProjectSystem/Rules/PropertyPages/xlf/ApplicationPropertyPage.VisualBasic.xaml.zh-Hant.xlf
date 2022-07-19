@@ -52,6 +52,16 @@
         <target state="translated">應用程式架構</target>
         <note />
       </trans-unit>
+      <trans-unit id="Category|General|Description">
+        <source>General settings for the application.</source>
+        <target state="new">General settings for the application.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="Category|General|DisplayName">
+        <source>General</source>
+        <target state="new">General</target>
+        <note />
+      </trans-unit>
       <trans-unit id="Category|WPF|Description">
         <source>Settings specific to WPF applications.</source>
         <target state="translated">特定於 WPF 應用程式的設定。</target>
@@ -70,6 +80,16 @@
       <trans-unit id="DynamicEnumProperty|SplashScreen|DisplayName">
         <source>Splash screen</source>
         <target state="translated">啟動顯示畫面</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="DynamicEnumProperty|StartupObject|Description">
+        <source>Defines the entry point to be called when the application loads. Generally this is set either to the main form in your application or to the 'Main' procedure that should run when the application starts. Class libraries do not define an entry point.</source>
+        <target state="new">Defines the entry point to be called when the application loads. Generally this is set either to the main form in your application or to the 'Main' procedure that should run when the application starts. Class libraries do not define an entry point.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="DynamicEnumProperty|StartupObject|DisplayName">
+        <source>Startup object</source>
+        <target state="new">Startup object</target>
         <note />
       </trans-unit>
       <trans-unit id="DynamicEnumProperty|StartupURI|Description">
