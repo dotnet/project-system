@@ -26,33 +26,21 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
 
         public Task<IDynamicEnumValuesGenerator> GetProviderAsync(IList<NameValuePair>? options)
         {
-            bool searchForEntryPointsInFormsOnly;
-            bool includeEmptyValue;
+            bool searchForEntryPointsInFormsOnly = options?.Any(pair =>
+                pair.Name == "searchForEntryPointsInFormsOnly"
+                && bool.TryParse(pair.Value, out bool optionValue)
+                && optionValue) ?? false;
 
-            // The StartupObject property has a different set of appropriate values for VB and for C#.
-            // For VB projects, we expect to see every Form in the assembly directly or indirectly inherited from Form.
-            // We specify this by setting the searchForEntryPointsInFormsOnly to true.
-            // We also want to ensure that the property always has a value.
-            if (_unconfiguredProject.Capabilities.Contains(ProjectCapability.VisualBasic))
-            {
-                searchForEntryPointsInFormsOnly = true;
-                includeEmptyValue = false;
-            }
-            else
-            {
-                searchForEntryPointsInFormsOnly = false;
-
-                // We only include a value representing the "not set" state if requested. This is
-                // because the old property pages explicitly add the "(Not set)" value at the UI
-                // layer; the new property pages do not have that option and so the value must come
-                // from the enum provider.
-                // When this project system no longer needs to support the old property pages we can
-                // remove this and always include the "(Not set)" value.
-                includeEmptyValue = options?.Any(pair =>
+            // We only include a value representing the "not set" state if requested. This is
+            // because the old property pages explicitly add the "(Not set)" value at the UI
+            // layer; the new property pages do not have that option and so the value must come
+            // from the enum provider.
+            // When this project system no longer needs to support the old property pages we can
+            // remove this and always include the "(Not set)" value.
+            bool includeEmptyValue = options?.Any(pair =>
                 pair.Name == "IncludeEmptyValue"
                 && bool.TryParse(pair.Value, out bool optionValue)
                 && optionValue) ?? false;
-            }
 
             return Task.FromResult<IDynamicEnumValuesGenerator>(new StartupObjectsEnumGenerator(_workspace, _unconfiguredProject, includeEmptyValue, searchForEntryPointsInFormsOnly));
         }
