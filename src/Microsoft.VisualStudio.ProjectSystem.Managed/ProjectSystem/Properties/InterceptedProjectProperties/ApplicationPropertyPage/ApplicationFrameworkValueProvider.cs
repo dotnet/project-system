@@ -16,7 +16,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         AuthenticationModeProperty,
         ShutdownModeProperty,
         SplashScreenProperty,
-        MinimumSplashScreenDisplayTimeProperty
+        MinimumSplashScreenDisplayTimeProperty,
+        StartupObjectMSBuildProperty
     },
     ExportInterceptingPropertyValueProviderFile.ProjectFile)]
     [AppliesTo(ProjectCapability.VisualBasic)]
@@ -42,6 +43,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         internal const string ShutdownModeProperty = "ShutdownMode";
         internal const string SplashScreenProperty = "SplashScreen";
         internal const string MinimumSplashScreenDisplayTimeProperty = "MinimumSplashScreenDisplayTime";
+        internal const string StartupObjectProperty = "StartupObject";
 
         private readonly UnconfiguredProject _project;
         private readonly IProjectItemProvider _sourceItemsProvider;
@@ -70,6 +72,33 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
                 {
                     return await SetPropertyValueForDefaultProjectTypesAsync(unevaluatedPropertyValue, defaultProperties);
                 }
+            }
+            else if (propertyName == StartupObjectProperty)
+            {
+                string isWindowsFormsProject = await defaultProperties.GetEvaluatedPropertyValueAsync("UseWinForms");
+
+                if (isWindowsFormsProject != null)
+                {
+                    string applicationFrameworkValue = await defaultProperties.GetEvaluatedPropertyValueAsync(ApplicationFrameworkProperty);
+
+                    if (applicationFrameworkValue == "true")
+                    {
+                        if (unevaluatedPropertyValue.Contains("form")) // Is there a better way to identify a form?
+                        {
+                            // If the user selects a Form, the value should be serialized to the myapp file.
+                            await _myAppXmlFileAccessor.SetStartupObjectAsync(unevaluatedPropertyValue);
+                            return null;
+                        }
+                        
+                        // If the ApplicationFramework is enabled, the value Sub Main should always be serialized to the project file.
+                        await defaultProperties.SetPropertyValueAsync(StartupObjectProperty, "Sub Main");
+                        return null;
+                    }
+                }
+
+                // Else, if it's other than a Windows Forms project, save the StartupObject property in the project file as usual.
+                // Or if the ApplicationFramework property is disabled, save the StartupObject property in the project file as usual.
+                return await SetPropertyValueAsync(propertyName, unevaluatedPropertyValue, defaultProperties);
             }
             else
             {
