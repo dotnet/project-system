@@ -17,6 +17,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices;
 /// </summary>
 internal sealed class Workspace : OnceInitializedOnceDisposedUnderLockAsync, IWorkspace
 {
+    internal enum WorkspaceState
+    {
+        Uninitialized = 0,
+        Initialized,
+        Failed,
+        Disposed
+    }
+
     private const string ProjectBuildRuleName = CompilerCommandLineArgs.SchemaName;
 
     private readonly DisposableBag _disposableBag;
@@ -35,23 +43,34 @@ internal sealed class Workspace : OnceInitializedOnceDisposedUnderLockAsync, IWo
     private readonly CancellationToken _unloadCancellationToken;
     private readonly string _baseDirectory;
 
-    /// <summary>
-    /// Completes when the workspace has integrated both evaluation and build data.
-    /// </summary>
-    private readonly TaskCompletionSource _initializationCompletion = new();
+    /// <summary>Completes when the workspace has integrated evaluation data.</summary>
+    private readonly TaskCompletionSource _hasEvaluationData = new(TaskCreationOptions.RunContinuationsAsynchronously);
 
-    private const int StateUninitialized = 0;
-    private const int StateInitializing = 1;
-    private const int StateInitialized = 2;
-    private const int StateFailed = 3;
-    private const int StateDisposed = 4;
+    /// <summary>Completes when the workspace has integrated build data.</summary>
+    private readonly TaskCompletionSource _hasBuildData = new(TaskCreationOptions.RunContinuationsAsynchronously);
 
-    private int _state;
+    /// <summary>The current state of this workspace.</summary>
+    private WorkspaceState _state;
 
+    /// <summary>Operation progress reporting for evaluation dataflow, as this blocks IntelliSense.</summary>
     private IDataProgressTrackerServiceRegistration? _evaluationProgressRegistration;
+
+    /// <summary>Operation progress reporting for build dataflow, as this blocks IntelliSense.</summary>
     private IDataProgressTrackerServiceRegistration? _buildProgressRegistration;
+
+    /// <summary>The Roslyn context object that backs this workspace.</summary>
     private IWorkspaceProjectContext? _context;
+
+    /// <summary>Roslyn's identifier for this workspace context.</summary>
     private string? _contextId;
+
+    /// <summary>Whether we have seen evaluation data yet.</summary>
+    private bool _seenEvaluation;
+
+    /// <summary>Gets whether this workspace represents the primary active configuration.</summary>
+    public bool IsPrimary { get; internal set; }
+
+    #region IWorkspace
 
     public IWorkspaceProjectContext Context => _context ?? throw new InvalidOperationException("Workspace has not been initialized.");
 
@@ -59,7 +78,7 @@ internal sealed class Workspace : OnceInitializedOnceDisposedUnderLockAsync, IWo
 
     public object HostSpecificErrorReporter => Context;
 
-    public bool IsPrimary { get; internal set; }
+    #endregion
 
     internal Workspace(
         ProjectConfigurationSlice slice,
@@ -104,12 +123,14 @@ internal sealed class Workspace : OnceInitializedOnceDisposedUnderLockAsync, IWo
 
     protected override Task DisposeCoreUnderLockAsync(bool initialized)
     {
-        if (Interlocked.Exchange(ref _state, StateDisposed) != StateDisposed)
-        {
-            _disposableBag.Dispose();
-            _initializationCompletion.TrySetCanceled();
-            IsPrimary = false;
-        }
+        _state = WorkspaceState.Disposed;
+
+        _hasEvaluationData.TrySetCanceled();
+        _hasBuildData.TrySetCanceled();
+
+        _disposableBag.Dispose();
+
+        IsPrimary = false;
 
         return Task.CompletedTask;
     }
@@ -127,34 +148,53 @@ internal sealed class Workspace : OnceInitializedOnceDisposedUnderLockAsync, IWo
 
         await InitializeAsync(_unloadCancellationToken);
 
+        Assumes.True(_state is WorkspaceState.Uninitialized or WorkspaceState.Initialized);
+
         await _joinableTaskFactory.RunAsync(
             async () =>
             {
-                if (update.Value.EvaluationUpdate is not null)
+                // Calls never overlap. No synchronisation is needed here.
+                // We can receive either evaluation OR build data first.
+
+                if (TryTransition(WorkspaceState.Uninitialized, WorkspaceState.Initialized))
                 {
-                    await OnEvaluationUpdateAsync(update.Derive(u => u.EvaluationUpdate!));
+                    // Note that we create operation progress registrations using the first primary (active) configuration
+                    // within the slice. Over time this may change, but we keep the same registration to the first seen.
+
+                    ConfiguredProject configuredProject = update.Value switch
+                    {
+                        { EvaluationUpdate: EvaluationUpdate update } => update.ConfiguredProject,
+                        { BuildUpdate: BuildUpdate update } => update.ConfiguredProject,
+                        _ => throw Assumes.NotReachable()
+                    };
+
+                    _evaluationProgressRegistration = _dataProgressTrackerService.RegisterForIntelliSense(this, configuredProject, "LanguageServiceHost.Workspace.Evaluation");
+                    _buildProgressRegistration = _dataProgressTrackerService.RegisterForIntelliSense(this, configuredProject, "LanguageServiceHost.Workspace.ProjectBuild");
+
+                    _disposableBag.Add(_evaluationProgressRegistration);
+                    _disposableBag.Add(_buildProgressRegistration);
                 }
-                else if (update.Value.BuildUpdate is not null)
+
+                await (update.Value switch
                 {
-                    await OnBuildUpdateAsync(update.Derive(u => u.BuildUpdate!));
-                }
-                else
-                {
-                    throw Assumes.NotReachable();
-                }
+                    { EvaluationUpdate: not null } => OnEvaluationUpdateAsync(update.Derive(u => u.EvaluationUpdate!)),
+                    { BuildUpdate: not null } => OnBuildUpdateAsync(update.Derive(u => u.BuildUpdate!)),
+                    _ => throw Assumes.NotReachable()
+                });
             });
     }
 
     private async Task OnEvaluationUpdateAsync(IProjectVersionedValue<EvaluationUpdate> evaluationUpdate)
     {
-        if (Interlocked.CompareExchange(ref _state, StateInitializing, StateUninitialized) == StateUninitialized)
-        {
-            await ExecuteUnderLockAsync(InitializeAsync, _unloadCancellationToken);
-        }
-
-        System.Diagnostics.Debug.Assert(_state is StateInitialized or StateInitializing);
-
+        Assumes.True(_state is WorkspaceState.Initialized);
         Assumes.NotNull(_evaluationProgressRegistration);
+
+        if (!_seenEvaluation)
+        {
+            _seenEvaluation = true;
+
+            await ProcessInitialEvaluationDataAsync(_unloadCancellationToken);
+        }
 
         await OnProjectChangedAsync(
             _evaluationProgressRegistration,
@@ -163,9 +203,13 @@ internal sealed class Workspace : OnceInitializedOnceDisposedUnderLockAsync, IWo
             applyFunc: ApplyProjectEvaluation,
             _unloadCancellationToken);
 
-        async Task InitializeAsync(CancellationToken cancellationToken)
+        _hasEvaluationData.TrySetResult();
+
+        return;
+
+        async Task ProcessInitialEvaluationDataAsync(CancellationToken cancellationToken)
         {
-            _logger.WriteLine("Initializing workspace");
+            _logger.WriteLine("Initializing workspace from evaluation data");
 
             IProjectRuleSnapshot snapshot = evaluationUpdate.Value.EvaluationRuleUpdate.CurrentState[ConfigurationGeneral.SchemaName];
 
@@ -178,33 +222,23 @@ internal sealed class Workspace : OnceInitializedOnceDisposedUnderLockAsync, IWo
             if (string.IsNullOrEmpty(languageName) || string.IsNullOrEmpty(binOutputPath) || string.IsNullOrEmpty(projectFilePath))
             {
                 // Insufficient data to initialize the language service.
-                Interlocked.Exchange(ref _state, StateFailed);
+                _state = WorkspaceState.Failed;
 
                 Exception ex = new("Insufficient project data to initialize the language service.");
-                _initializationCompletion.TrySetException(ex);
+                _hasEvaluationData.TrySetException(ex);
 
                 throw ex;
             }
 
             try
             {
-                // Note that we create operation progress registrations using the first primary (active) configuration
-                // within the slice. Over time this may change, but we keep the same registration to the first seen.
-                ConfiguredProject configuredProject = evaluationUpdate.Value.ConfiguredProject;
-
-                _evaluationProgressRegistration = _dataProgressTrackerService.RegisterForIntelliSense(this, configuredProject, "LanguageServiceHost.Workspace.Evaluation");
-                _buildProgressRegistration = _dataProgressTrackerService.RegisterForIntelliSense(this, configuredProject, "LanguageServiceHost.Workspace.ProjectBuild");
-
-                _disposableBag.Add(_evaluationProgressRegistration);
-                _disposableBag.Add(_buildProgressRegistration);
-
                 _contextId = GetWorkspaceProjectContextId(projectFilePath, _projectGuid, _slice);
 
                 _disposableBag.Add(_activeEditorContextTracker.RegisterContext(_contextId));
 
                 object? hostObject = _unconfiguredProject.Services.HostObject;
 
-                // Call into Roslyn to init language service for this project
+                // Call into Roslyn to initialize language service for this project
                 _context = await _workspaceProjectContextFactory.Value.CreateProjectContextAsync(
                     languageName,
                     _contextId,
@@ -234,19 +268,19 @@ internal sealed class Workspace : OnceInitializedOnceDisposedUnderLockAsync, IWo
                 {
                     await _context.EndBatchAsync();
                 }
-
-                Assumes.True(Interlocked.CompareExchange(ref _state, StateInitialized, StateInitializing) == StateInitializing);
             }
             catch (Exception ex)
             {
-                Assumes.True(Interlocked.CompareExchange(ref _state, StateFailed, StateInitializing) == StateInitializing);
+                _state = WorkspaceState.Failed;
 
                 await _faultHandlerService.ReportFaultAsync(ex, _unconfiguredProject, ProjectFaultSeverity.LimitedFunctionality);
 
                 _context?.Dispose();
 
                 // We will never initialize now. Ensure anyone waiting on initialization sees the error.
-                _initializationCompletion.TrySetException(ex);
+                _hasBuildData.TrySetException(ex);
+
+                _disposableBag.Dispose();
 
                 // Let the exception escape, to unsubscribe data sources.
                 throw;
@@ -337,13 +371,7 @@ internal sealed class Workspace : OnceInitializedOnceDisposedUnderLockAsync, IWo
 
     private async Task OnBuildUpdateAsync(IProjectVersionedValue<BuildUpdate> update)
     {
-        if (_initializationCompletion.Task.IsFaulted)
-        {
-            await _initializationCompletion.Task;
-        }
-
-        System.Diagnostics.Debug.Assert(_state is StateInitialized or StateInitializing);
-
+        Assumes.True(_state is WorkspaceState.Initialized);
         Assumes.NotNull(_buildProgressRegistration);
 
         await OnProjectChangedAsync(
@@ -353,13 +381,21 @@ internal sealed class Workspace : OnceInitializedOnceDisposedUnderLockAsync, IWo
             applyFunc: ApplyProjectBuild,
             _unloadCancellationToken);
 
-        _initializationCompletion.TrySetResult();
+        _hasBuildData.TrySetResult();
 
-        void ApplyProjectBuild(
+        return;
+
+        async void ApplyProjectBuild(
             IProjectVersionedValue<BuildUpdate> update,
             ContextState state,
             CancellationToken cancellationToken)
         {
+            // The Roslyn workspace context is created when the first evaluation data arrives.
+            // It's possible that build data arrives before evaluation data, in which case
+            // the Roslyn context would be null. To prevent problems, we wait for evaluation
+            // data to have been processed at least once before continuing.
+            await _hasEvaluationData.Task;
+
             IProjectChangeDescription projectChange = update.Value.BuildRuleUpdate.ProjectChanges[ProjectBuildRuleName];
 
             // There should always be some change to publish, as we have already called BeginBatch by this point
@@ -420,6 +456,17 @@ internal sealed class Workspace : OnceInitializedOnceDisposedUnderLockAsync, IWo
         }
     }
 
+    private bool TryTransition(WorkspaceState initialState, WorkspaceState newState)
+    {
+        if (_state == initialState)
+        {
+            _state = newState;
+            return true;
+        }
+
+        return false;
+    }
+
     private Task OnProjectChangedAsync<T>(
         IDataProgressTrackerServiceRegistration registration,
         IProjectVersionedValue<T> update,
@@ -435,6 +482,7 @@ internal sealed class Workspace : OnceInitializedOnceDisposedUnderLockAsync, IWo
             {
                 // No change since the last update. We must still update operation progress, but can skip creating a batch.
                 UpdateProgressRegistration();
+
                 return Task.CompletedTask;
             }
 
@@ -502,9 +550,25 @@ internal sealed class Workspace : OnceInitializedOnceDisposedUnderLockAsync, IWo
 
         await _joinableTaskFactory.RunAsync(async () =>
         {
-            await _initializationCompletion.Task.WithCancellation(cancellationToken);
+            // We only have build data if we also have evaluation data, so this implies both have been integrated.
+            await _hasBuildData.Task.WithCancellation(cancellationToken);
 
             Verify.NotDisposed(this);
         });
+    }
+
+    internal TestAccessor GetTestAccessor() => new(this);
+
+    internal sealed class TestAccessor
+    {
+        private readonly Workspace _workspace;
+        public TestAccessor(Workspace workspace) => _workspace = workspace;
+
+        public void SetInitialized(IDataProgressTrackerServiceRegistration evaluationProgressRegistration, IDataProgressTrackerServiceRegistration buildProgressRegistration)
+        {
+            _workspace._state = WorkspaceState.Initialized;
+            _workspace._evaluationProgressRegistration = evaluationProgressRegistration;
+            _workspace._buildProgressRegistration = buildProgressRegistration;
+        }
     }
 }

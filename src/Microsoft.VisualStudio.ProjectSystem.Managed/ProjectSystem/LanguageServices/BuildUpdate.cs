@@ -7,14 +7,25 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices;
 /// </summary>
 internal sealed class BuildUpdate
 {
-    public BuildUpdate(IProjectSubscriptionUpdate buildRuleUpdate, CommandLineArgumentsSnapshot commandLineArgumentsSnapshot)
+    public BuildUpdate(ConfiguredProject configuredProject, IProjectSubscriptionUpdate buildRuleUpdate, CommandLineArgumentsSnapshot commandLineArgumentsSnapshot)
     {
+        Requires.NotNull(configuredProject, nameof(configuredProject));
         Requires.NotNull(buildRuleUpdate, nameof(buildRuleUpdate));
         Requires.NotNull(commandLineArgumentsSnapshot, nameof(commandLineArgumentsSnapshot));
 
+        ConfiguredProject = configuredProject;
         BuildRuleUpdate = buildRuleUpdate;
         CommandLineArgumentsSnapshot = commandLineArgumentsSnapshot;
     }
+
+    /// <summary>
+    /// Gets the <see cref="ConfiguredProject"/> currently bound to the workspace's project slice.
+    /// </summary>
+    /// <remarks>
+    /// This value may change over time.
+    /// For example, it changes when switching between Debug and Release configurations.
+    /// </remarks>
+    public ConfiguredProject ConfiguredProject { get; }
 
     public IProjectSubscriptionUpdate BuildRuleUpdate { get; }
 

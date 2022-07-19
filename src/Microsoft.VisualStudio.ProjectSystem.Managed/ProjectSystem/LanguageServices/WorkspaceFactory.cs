@@ -83,9 +83,9 @@ internal class WorkspaceFactory : IWorkspaceFactory
 
         ITargetBlock<IProjectVersionedValue<WorkspaceUpdate>> actionBlock
             = DataflowBlockFactory.CreateActionBlock<IProjectVersionedValue<WorkspaceUpdate>>(
-                update => joinableTaskFactory.RunAsync(async () => await workspace.OnWorkspaceUpdateAsync(update)),
-                _unconfiguredProject,
-                ProjectFaultSeverity.LimitedFunctionality,
+                target: workspace.OnWorkspaceUpdateAsync,
+                project: _unconfiguredProject,
+                severity: ProjectFaultSeverity.LimitedFunctionality,
                 nameFormat: "Workspace update handler {0}");
 
         #region Evaluation data
@@ -120,7 +120,7 @@ internal class WorkspaceFactory : IWorkspaceFactory
             _unconfiguredProject,
             configuredProject => configuredProject.Services.ExportProvider.GetExportedValue<ICommandLineArgumentsDataSource>());
 
-        var buildTransformBlock = DataflowBlockSlim.CreateTransformBlock<IProjectVersionedValue<(IProjectSubscriptionUpdate BuildUpdate, CommandLineArgumentsSnapshot CommandLineArgumentsSnapshot)>, IProjectVersionedValue<WorkspaceUpdate>>
+        var buildTransformBlock = DataflowBlockSlim.CreateTransformBlock<IProjectVersionedValue<(ConfiguredProject ConfiguredProject, IProjectSubscriptionUpdate BuildUpdate, CommandLineArgumentsSnapshot CommandLineArgumentsSnapshot)>, IProjectVersionedValue<WorkspaceUpdate>>
             (update => update.Derive(WorkspaceUpdate.FromBuild));
 
         workspace.ChainDisposal(new DisposableBag
@@ -130,6 +130,7 @@ internal class WorkspaceFactory : IWorkspaceFactory
             source.ActiveConfiguredProjectSource.SourceBlock.LinkTo(commandLineArgumentsBlock, DataflowOption.PropagateCompletion),
 
             ProjectDataSources.SyncLinkTo(
+                source.ActiveConfiguredProjectSource.SourceBlock.SyncLinkOptions(),
                 source.ProjectBuildRuleSource.SourceBlock.SyncLinkOptions(DataflowOption.WithRuleNames(ProjectBuildRuleName)),
                 commandLineArgumentsBlock.SourceBlock.SyncLinkOptions(),
                 target: buildTransformBlock,

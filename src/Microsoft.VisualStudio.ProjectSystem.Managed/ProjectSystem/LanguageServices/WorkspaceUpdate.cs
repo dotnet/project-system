@@ -13,7 +13,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices;
 internal sealed class WorkspaceUpdate
 {
     public static WorkspaceUpdate FromEvaluation((ConfiguredProject ConfiguredProject, IProjectSubscriptionUpdate EvaluationRuleUpdate, IProjectSubscriptionUpdate SourceItemsUpdate) update) => new(new(update.ConfiguredProject, update.EvaluationRuleUpdate, update.SourceItemsUpdate), null);
-    public static WorkspaceUpdate FromBuild((IProjectSubscriptionUpdate BuildRuleUpdate, CommandLineArgumentsSnapshot CommandLineArgumentsSnapshot) update) => new(null, new(update.BuildRuleUpdate, update.CommandLineArgumentsSnapshot));
+    public static WorkspaceUpdate FromBuild((ConfiguredProject ConfiguredProject, IProjectSubscriptionUpdate BuildRuleUpdate, CommandLineArgumentsSnapshot CommandLineArgumentsSnapshot) update) => new(null, new(update.ConfiguredProject, update.BuildRuleUpdate, update.CommandLineArgumentsSnapshot));
 
     private WorkspaceUpdate(EvaluationUpdate? evaluationUpdate, BuildUpdate? buildUpdate)
     {
