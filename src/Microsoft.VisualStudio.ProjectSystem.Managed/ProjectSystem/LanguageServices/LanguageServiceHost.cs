@@ -34,7 +34,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices;
 [AppliesTo(ProjectCapability.DotNetLanguageService)]
 internal sealed class LanguageServiceHost : OnceInitializedOnceDisposedUnderLockAsync, IProjectDynamicLoadComponent, IWorkspaceWriter
 {
-    // TODO don't activate in if _vsShellServices.Value.IsInCommandLineMode
+    // TODO don't activate in if _vsShellServices.Value.IsInCommandLineMode (https://github.com/dotnet/project-system/issues/3832)
 
     private readonly TaskCompletionSource _firstPrimaryWorkspaceSet = new();
 
