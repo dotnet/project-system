@@ -9,8 +9,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Models
     internal class SharedProjectDependencyModel : DependencyModel
     {
         private static readonly DependencyFlagCache s_flagCache = new(
-            resolved: DependencyTreeFlags.ProjectDependency + DependencyTreeFlags.SharedProjectDependency + DependencyTreeFlags.SupportsBrowse,
-            unresolved: DependencyTreeFlags.ProjectDependency + DependencyTreeFlags.SharedProjectDependency + DependencyTreeFlags.SupportsBrowse,
+            resolved: DependencyTreeFlags.ProjectDependency + DependencyTreeFlags.SharedProjectDependency + DependencyTreeFlags.SupportsBrowse + ProjectTreeFlags.FileSystemEntity,
+            unresolved: DependencyTreeFlags.ProjectDependency + DependencyTreeFlags.SharedProjectDependency + DependencyTreeFlags.SupportsBrowse + ProjectTreeFlags.FileSystemEntity,
             remove: DependencyTreeFlags.SupportsRuleProperties);
 
         private static readonly DependencyIconSet s_iconSet = new(
