@@ -65,4 +65,4 @@ Code Metrics                                                                | �
 Code Clones                                                                 | ●        | ●
 Fakes                                                                       | ●        | ● (16.7)
 T4 Templates                                                                | ●        | 
-[Automation Extenders](https://msdn.microsoft.com/en-us/library/0y92k2w2.aspx)| ●      | ●
+[Automation Extenders](https://docs.microsoft.com/previous-versions/0y92k2w2(v=vs.140))| ●      | ●
