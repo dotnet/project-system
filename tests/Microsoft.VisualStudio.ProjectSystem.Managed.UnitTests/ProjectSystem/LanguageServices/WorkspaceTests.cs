@@ -627,12 +627,8 @@ public class WorkspaceTests
         Assert.False(workspace.Context.LastDesignTimeBuildSucceeded);
     }
 
-    [Theory(Skip = "Under development")]
-    [InlineData(1)]
-    [InlineData(2)]
-    [InlineData(3)]
-    [InlineData(4)]
-    public async Task ConstructionExceptionCleansUp(int step)
+    [Fact]
+    public async Task ConstructionExceptionCleansUp()
     {
         var projectGuid = Guid.NewGuid();
         object hostObject = new();
@@ -645,50 +641,47 @@ public class WorkspaceTests
         unconfiguredProject.SetupGet(o => o.FullPath).Returns("""C:\MyProject\MyProject.csproj""");
         unconfiguredProject.SetupGet(o => o.Services).Returns(unconfiguredProjectServices.Object);
 
-        Mock<IWorkspaceProjectContext> workspaceProjectContext = new(MockBehavior.Loose);
-        //workspaceProjectContext.Setup(o => o.StartBatch());
-        //workspaceProjectContext.SetupSet(o => o.LastDesignTimeBuildSucceeded = false);
-        //workspaceProjectContext.Setup(o => o.EndBatchAsync()).Returns(() => new ValueTask());
-        //workspaceProjectContext.Setup(o => o.Dispose());
+        Mock<IWorkspaceProjectContext> workspaceProjectContext = new(MockBehavior.Strict);
+        workspaceProjectContext
+            .Setup(o => o.StartBatch())
+            .Throws(ex); // Throw straight away
+        workspaceProjectContext.Setup(o => o.Dispose()); // Must be disposed
 
         Workspace workspace = await CreateInstanceAsync(
                 unconfiguredProject: unconfiguredProject.Object,
                 projectGuid: projectGuid,
                 workspaceProjectContext: workspaceProjectContext.Object,
-                applyEvaluation: true);
-
-        workspaceProjectContext
-            .Setup(o => o.StartBatch())
-            .Throws(ex); // Throw straight away
+                applyEvaluation: false);
 
         IDataProgressTrackerServiceRegistration operationProgress = Mock.Of<IDataProgressTrackerServiceRegistration>();
 
-        //workspace.GetTestAccessor().SetInitialized(operationProgress, operationProgress);
+        var sourceItemsUpdate = IProjectSubscriptionUpdateFactory.FromJson(
+                """
+                {
+                    "ProjectChanges": {
+                        "RuleName": {
+                            "Difference": {
+                                "AnyChanges": true
+                            }
+                        }
+                    }
+                }
+                """);
 
-        Func<Task> func;
-
-        if (step == 1)
-        {
-            func = () => ApplyEvaluationAsync(workspace);
-        }
-        else if (step == 2)
-        {
-            func = () => ApplyBuildAsync(workspace);
-        }
-        else if (step == 3)
-        {
-            func = () => workspace.WriteAsync(_ => Task.CompletedTask, CancellationToken.None);
-        }
-        else
-        {
-            func = () => workspace.WriteAsync(_ => Task.FromResult(123), CancellationToken.None);
-        }
-
-        Assert.Same(ex, await Assert.ThrowsAnyAsync<Exception>(func));
+        // An exception during context initialization leaves the context in a failed state.
+        Assert.Same(ex, await Assert.ThrowsAsync<Exception>(() => ApplyEvaluationAsync(workspace, sourceItemsUpdate: sourceItemsUpdate)));
 
         workspaceProjectContext.Verify();
         unconfiguredProjectServices.Verify();
         unconfiguredProject.Verify();
+
+        // Receiving another update will fail with a different exception (we cannot test the type as it's internal to vs-validation)
+        Assert.NotSame(ex, await Assert.ThrowsAnyAsync<Exception>(() => ApplyEvaluationAsync(workspace, sourceItemsUpdate: sourceItemsUpdate)));
+
+        // Attempting to write to a failed workspace produces the original exception
+        Assert.Same(ex, await Assert.ThrowsAnyAsync<Exception>(() => workspace.WriteAsync(_ => Task.CompletedTask, CancellationToken.None)));
+
+        Assert.Same(ex, await Assert.ThrowsAnyAsync<Exception>(() => workspace.WriteAsync(_ => Task.FromResult(123), CancellationToken.None)));
     }
 
     [Theory] // Configurations          Project GUID                               Expected

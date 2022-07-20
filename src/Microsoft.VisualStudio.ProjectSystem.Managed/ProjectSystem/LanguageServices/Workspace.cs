@@ -556,19 +556,4 @@ internal sealed class Workspace : OnceInitializedOnceDisposedUnderLockAsync, IWo
             Verify.NotDisposed(this);
         });
     }
-
-    internal TestAccessor GetTestAccessor() => new(this);
-
-    internal sealed class TestAccessor
-    {
-        private readonly Workspace _workspace;
-        public TestAccessor(Workspace workspace) => _workspace = workspace;
-
-        public void SetInitialized(IDataProgressTrackerServiceRegistration evaluationProgressRegistration, IDataProgressTrackerServiceRegistration buildProgressRegistration)
-        {
-            _workspace._state = WorkspaceState.Initialized;
-            _workspace._evaluationProgressRegistration = evaluationProgressRegistration;
-            _workspace._buildProgressRegistration = buildProgressRegistration;
-        }
-    }
 }
