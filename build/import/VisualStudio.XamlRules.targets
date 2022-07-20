@@ -1,5 +1,6 @@
 <!-- Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information. -->
 <Project>
+
   <!-- Default values for XAML rules-->
   <ItemDefinitionGroup>
     <XamlPropertyRule>
@@ -26,13 +27,9 @@
 
   <!-- Copy XAML rule files and design targets files for testing and setup authoring purposes -->
   <Target Name="CopyXamlRulesToOutputDirectory" AfterTargets="CopyFilesToOutputDirectory">
-
     <ItemGroup>
-      
-      <_ItemsToCopy Include="@(XamlPropertyRule);@(XamlPropertyRuleNoCodeBehind);@(XamlPropertyProjectItemsSchema);@(DesignTimeTargetsFile)" 
-                    Condition="'%(CopyToOutputDirectory)' != 'Never'"/>
-    
-    </ItemGroup>    
+      <_ItemsToCopy Include="@(XamlPropertyRule);@(XamlPropertyRuleNoCodeBehind);@(XamlPropertyProjectItemsSchema);@(DesignTimeTargetsFile)" Condition="'%(CopyToOutputDirectory)' != 'Never'" />
+    </ItemGroup>
 
     <Copy SourceFiles="@(_ItemsToCopy)"
           DestinationFolder="$(VisualStudioXamlRulesDir)"
@@ -41,18 +38,15 @@
           Retries="$(CopyRetryCount)"
           RetryDelayMilliseconds="$(CopyRetryDelayMilliseconds)"
           UseHardlinksIfPossible="$(CreateHardLinksForCopyFilesToOutputDirectoryIfPossible)">
-
       <Output TaskParameter="DestinationFiles" ItemName="FileWrites"/>
     </Copy>
   </Target>
 
   <!-- Copy translated XAML rule files for testing and setup authoring purposes -->
   <Target Name="CopyTranslatedXamlRulesToOutputDirectory" AfterTargets="CopyFilesToOutputDirectory" DependsOnTargets="TranslateSourceFromXlf">
-
     <ItemGroup>
-        <_TranslatedItemsToCopy Include="@(EmbeddedResource)"
-                                Condition="'%(EmbeddedResource.XlfSourceFormat)' == 'XamlRule'" />
-    </ItemGroup>    
+        <_TranslatedItemsToCopy Include="@(EmbeddedResource)" Condition="'%(EmbeddedResource.XlfSourceFormat)' == 'XamlRule'" />
+    </ItemGroup>
 
     <Copy SourceFiles="@(_TranslatedItemsToCopy)"
           DestinationFiles="@(_TranslatedItemsToCopy->'$(VisualStudioXamlRulesDir)%(XlfLanguage)\$([System.IO.Path]::GetFileName('%(XlfSource)'))')"
@@ -61,7 +55,6 @@
           Retries="$(CopyRetryCount)"
           RetryDelayMilliseconds="$(CopyRetryDelayMilliseconds)"
           UseHardlinksIfPossible="$(CreateHardLinksForCopyFilesToOutputDirectoryIfPossible)">
-      
       <Output TaskParameter="DestinationFiles" ItemName="FileWrites"/>
     </Copy>
   </Target>

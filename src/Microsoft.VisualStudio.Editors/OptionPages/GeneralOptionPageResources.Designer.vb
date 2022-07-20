@@ -164,7 +164,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to When starting a project that targets multiple .NET frameworks the build time can be reduced by limiting the build to a single framework..
+        '''  Looks up a localized string similar to When starting a project that targets multiple .NET frameworks, the build time can be reduced by limiting the build to a single framework..
         '''</summary>
         Public Shared ReadOnly Property General_PreferSingleTargetBuildsOnLaunchDescription() As String
             Get
