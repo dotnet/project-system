@@ -1,3 +1,4 @@
+<!-- Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information. -->
 <!--
 
   This file contains Visual Studio and designer-related properties and items for C# projects.
@@ -21,13 +22,13 @@
     <DesignerFunctionVisibility Condition="'$(DesignerFunctionVisibility)' == ''">Private</DesignerFunctionVisibility>
     <DesignerVariableNaming Condition="'$(DesignerVariableNaming)' == ''">Camel</DesignerVariableNaming>
     <DesignerHiddenCodeGeneration Condition="'$(DesignerHiddenCodeGeneration)' == ''">Declarations</DesignerHiddenCodeGeneration>
-  
+
     <!-- Turn off rules and capabilities that are defined in MSBuild so that we can import our own below -->
     <DefineCSharpItemSchemas>false</DefineCSharpItemSchemas>
   </PropertyGroup>
 
   <ItemGroup>
-    <PropertyPageSchema Include="$(ManagedXamlResourcesDirectory)ProjectItemsSchema.CSharp.xaml;"/>
+    <PropertyPageSchema Include="$(ManagedXamlResourcesDirectory)ProjectItemsSchema.CSharp.xaml;" />
 
     <ProjectCapability Include="
                           CSharp;
@@ -42,15 +43,16 @@
     <PropertyPageSchema Include="$(ManagedXamlResourcesDirectory)ApplicationPropertyPage.CSharp.xaml">
       <Context>Project</Context>
     </PropertyPageSchema>
-    
+
     <PropertyPageSchema Include="$(ManagedXamlResourcesDirectory)BuildPropertyPage.CSharp.xaml">
       <Context>Project</Context>
     </PropertyPageSchema>
 
+    <!-- See: https://github.com/dotnet/project-system/pull/8235 -->
     <!--<PropertyPageSchema Include="$(ManagedXamlResourcesDirectory)ReferencesPage.CSharp.xaml">
       <Context>Project</Context>
     </PropertyPageSchema>-->
-    
+
     <PropertyPageSchema Include="$(ManagedXamlNeutralResourcesDirectory)EditorConfigFiles.xaml">
       <Context>File</Context>
     </PropertyPageSchema>
@@ -58,9 +60,9 @@
     <PropertyPageSchema Include="$(ManagedXamlResourcesDirectory)EditorConfigFiles.BrowseObject.xaml">
       <Context>BrowseObject</Context>
     </PropertyPageSchema>
-    
+
   </ItemGroup>
-  
+
   <!-- Targets -->
 
   <!-- Returns Csc command-line arguments for the language service -->
@@ -70,9 +72,9 @@
           Condition="'$(IsCrossTargetingBuild)' != 'true'">
 
     <ItemGroup>
-      <_CompilerCommandLineArgs Include="@(CscCommandLineArgs)"/>
+      <_CompilerCommandLineArgs Include="@(CscCommandLineArgs)" />
     </ItemGroup>
-      
+
   </Target>
 
 </Project>

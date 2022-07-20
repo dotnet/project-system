@@ -1,3 +1,4 @@
+<!-- Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information. -->
 <!--
 
   This file contains Visual Studio and designer-related properties and items for F# projects.
@@ -21,7 +22,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PropertyPageSchema Include="$(ManagedXamlResourcesDirectory)ProjectItemsSchema.FSharp.xaml;"/>
+    <PropertyPageSchema Include="$(ManagedXamlResourcesDirectory)ProjectItemsSchema.FSharp.xaml;" />
 
     <ProjectCapability Include="
                        FSharp;
@@ -64,7 +65,7 @@
           >
 
     <ItemGroup>
-      <_CompilerCommandLineArgs Include="@(FscCommandLineArgs, ';');"/>
+      <_CompilerCommandLineArgs Include="@(FscCommandLineArgs, ';');" />
     </ItemGroup>
 
   </Target>

@@ -1,3 +1,4 @@
+<!-- Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information. -->
 <!--
 
   This file contains Visual Studio and designer-related properties and items for Visual Basic projects.
@@ -27,23 +28,23 @@
   </PropertyGroup>
 
   <ItemGroup>
-     <PropertyPageSchema Include="$(ManagedXamlResourcesDirectory)ProjectItemsSchema.VisualBasic.xaml;"/>
+    <PropertyPageSchema Include="$(ManagedXamlResourcesDirectory)ProjectItemsSchema.VisualBasic.xaml;" />
 
-      <!-- Namespace Import List-->
-      <PropertyPageSchema Include="$(ManagedXamlNeutralResourcesDirectory)VisualBasic.NamespaceImport.xaml">
-        <Context>ProjectSubscriptionService</Context>
-      </PropertyPageSchema>
+    <!-- Namespace Import List-->
+    <PropertyPageSchema Include="$(ManagedXamlNeutralResourcesDirectory)VisualBasic.NamespaceImport.xaml">
+      <Context>ProjectSubscriptionService</Context>
+    </PropertyPageSchema>
 
-     <ProjectCapability Include="
+    <ProjectCapability Include="
                           VB;
                           Managed;
                           ClassDesigner;
                           SharedProjectReferences;
                           ProjectPropertiesEditor;" />
 
-      <ProjectCapability Include="EnableMyApplication" Condition="'$(TargetFrameworkIdentifier)' == '.NETFramework'"/>
+    <ProjectCapability Include="EnableMyApplication" Condition="'$(TargetFrameworkIdentifier)' == '.NETFramework'" />
 
-      <ProjectCapability Include="EnableMyApplication" Condition="'$(TargetFrameworkIdentifier)' == '.NETCoreApp' And '$(UseWindowsForms)' == 'true' And '$(TargetFrameworkVersion)' != '' And $([MSBuild]::VersionGreaterThanOrEquals('$(TargetFrameworkVersion)','5.0'))"/>
+    <ProjectCapability Include="EnableMyApplication" Condition="'$(TargetFrameworkIdentifier)' == '.NETCoreApp' And '$(UseWindowsForms)' == 'true' And '$(TargetFrameworkVersion)' != '' And $([MSBuild]::VersionGreaterThanOrEquals('$(TargetFrameworkVersion)','5.0'))" />
   </ItemGroup>
 
   <ItemGroup Condition="'$(DefineCommonManagedItemSchemas)' == 'true'">
@@ -51,7 +52,7 @@
     <PropertyPageSchema Include="$(ManagedXamlResourcesDirectory)BuildPropertyPage.VisualBasic.xaml">
       <Context>Project</Context>
     </PropertyPageSchema>
-    
+
     <PropertyPageSchema Include="$(ManagedXamlResourcesDirectory)ApplicationPropertyPage.VisualBasic.xaml">
       <Context>Project</Context>
     </PropertyPageSchema>
@@ -87,15 +88,15 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <VbcCommandLineArgs Condition="Exists('$(MSCorlibPath)')" Include="/reference:$(MSCorlibPath)"/>
+      <VbcCommandLineArgs Condition="Exists('$(MSCorlibPath)')" Include="/reference:$(MSCorlibPath)" />
 
       <!-- MSVBRuntimeFileOrPath could either be the filename relative to sdkpath or the actual path to the runtime-->
-      <VbcCommandLineArgs Condition="Exists('$(MSVBRuntimeFileOrPath)')" Include="/reference:$(MSVBRuntimeFileOrPath)"/>
-      <VbcCommandLineArgs Condition="'$(MSVBRuntimeFileOrPath)' != '' And Exists('$(FrameworkPathOverride)\$(MSVBRuntimeFileOrPath)')" Include="/reference:$(FrameworkPathOverride)\$(MSVBRuntimeFileOrPath)"/>
+      <VbcCommandLineArgs Condition="Exists('$(MSVBRuntimeFileOrPath)')" Include="/reference:$(MSVBRuntimeFileOrPath)" />
+      <VbcCommandLineArgs Condition="'$(MSVBRuntimeFileOrPath)' != '' And Exists('$(FrameworkPathOverride)\$(MSVBRuntimeFileOrPath)')" Include="/reference:$(FrameworkPathOverride)\$(MSVBRuntimeFileOrPath)" />
     </ItemGroup>
 
     <ItemGroup>
-      <_CompilerCommandLineArgs Include="@(VbcCommandLineArgs)"/>
+      <_CompilerCommandLineArgs Include="@(VbcCommandLineArgs)" />
     </ItemGroup>
 
   </Target>

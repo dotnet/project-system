@@ -1,3 +1,4 @@
+<!-- Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information. -->
 <!--
 
   This file contains Visual Studio and designer-related properties and items for managed projects.
@@ -20,22 +21,21 @@
     <!--This property sets the default output types supported by the project system.-->
     <SupportedOutputTypes Condition="'$(SupportedOutputTypes)' == ''">Exe;WinExe;Library</SupportedOutputTypes>
     <SuppressOutOfDateMessageOnBuild Condition="'$(SuppressOutOfDateMessageOnBuild)' == ''">true</SuppressOutOfDateMessageOnBuild>
-    
+
     <!-- Tells CPS which target to run for the Package solution build type -->
     <PackageAction Condition="'$(PackageAction)' == ''">Pack</PackageAction>
   </PropertyGroup>
-  
+
   <PropertyGroup Condition="'$(AssemblyReferenceTabs)' == '' And '$(UsingMicrosoftNETSdk)' == 'true'">
-    
+
     <!-- You cannot choose individual framework assemblies in .NET Core/.NET Standard, and AssemblyFoldersEx
          is not supported, so completely opt out of the Assembly category in Reference Manager by default. -->
     <AssemblyReferenceTabs>0</AssemblyReferenceTabs>
-    
+
     <!-- However, .NET Framework supports choosing individual framework assemblies, so opt into that tab  -->
     <AssemblyReferenceTabs Condition="'$(TargetFrameworkIdentifier)' == '.NETFramework'">TAB_ASSEMBLY_FRAMEWORK</AssemblyReferenceTabs>
-  
-  </PropertyGroup>
 
+  </PropertyGroup>
 
   <!--
     Rule files that don't need localization go in the neutral directory to save duplicating files into each language
@@ -91,10 +91,10 @@
     <ProjectCapability Include="DependenciesTree" />
     <ProjectCapability Include="ProjectImportsTree" />
     <ProjectCapability Include="LaunchProfiles" />
-    <ProjectCapability Include="NoGeneralDependentFileIcon"/>
+    <ProjectCapability Include="NoGeneralDependentFileIcon" />
     <ProjectCapability Include="ProjectPropertyInterception" />
-    <ProjectCapability Include="PackageReferences" Condition="'$(RestoreProjectStyle)' == 'PackageReference'"/>
-    
+    <ProjectCapability Include="PackageReferences" Condition="'$(RestoreProjectStyle)' == 'PackageReference'" />
+
     <!--
       List of capabilities below is adding back common capabilities defined in imported targets.
       We disabled them with the property DefineCommonCapabilities=false to get rid of default
@@ -119,11 +119,11 @@
     <ProjectCapability Include="COMReferences" Condition="'$(TargetFrameworkIdentifier)' == '.NETFramework' Or ('$(TargetFrameworkIdentifier)' == '.NETCoreApp' And '$(_TargetFrameworkVersionWithoutV)' >= '3.0')" />
 
     <!-- Settings page capability -->
-    <ProjectCapability Include="AppSettings" Condition="'$(TargetFrameworkIdentifier)' == '.NETFramework' Or '$(UseWPF)' == 'true' Or '$(UseWindowsForms)' == 'true' "/>
+    <ProjectCapability Include="AppSettings" Condition="'$(TargetFrameworkIdentifier)' == '.NETFramework' Or '$(UseWPF)' == 'true' Or '$(UseWindowsForms)' == 'true' " />
 
     <!-- Publish capability enables the Publish command for the Project -->
-    <ProjectCapability Include="Publish"/>
-    <ProjectCapability Include="FolderPublish"/>
+    <ProjectCapability Include="Publish" />
+    <ProjectCapability Include="FolderPublish" />
 
     <!-- All Microsoft.NET.Sdk Exe projects, except WPF and WinForms exes, can be published to app service -->
     <ProjectCapability Include="AppServicePublish" Condition="'$(OutputType)' == 'Exe'" />
@@ -131,7 +131,7 @@
     <!-- Capabilities for WPF and WinForms -->
     <ProjectCapability Include="WPF" Condition="'$(UseWPF)' == 'true'" />
     <ProjectCapability Include="WindowsForms" Condition="'$(UseWindowsForms)' == 'true'" />
-    <ProjectCapability Include="DataSourceWindow" Condition="'$(TargetFrameworkIdentifier)' == '.NETFramework' Or ('$(TargetFrameworkIdentifier)' == '.NETCoreApp' And '$(_TargetFrameworkVersionWithoutV)' >= '3.0')"/>
+    <ProjectCapability Include="DataSourceWindow" Condition="'$(TargetFrameworkIdentifier)' == '.NETFramework' Or ('$(TargetFrameworkIdentifier)' == '.NETCoreApp' And '$(_TargetFrameworkVersionWithoutV)' >= '3.0')" />
   </ItemGroup>
 
   <!-- Common Project System rules that override rules defined in msbuild. These are exact copy of the rules defined in msbuild. -->
@@ -250,15 +250,15 @@
     <PropertyPageSchema Include="$(ManagedXamlNeutralResourcesDirectory)SupportedTargetFrameworkAlias.xaml">
       <Context>Project</Context>
     </PropertyPageSchema>
-    
+
     <PropertyPageSchema Include="$(ManagedXamlNeutralResourcesDirectory)SupportedNETCoreAppTargetFramework.xaml">
       <Context>Project</Context>
     </PropertyPageSchema>
-    
+
     <PropertyPageSchema Include="$(ManagedXamlNeutralResourcesDirectory)SupportedNETStandardTargetFramework.xaml">
       <Context>Project</Context>
     </PropertyPageSchema>
-    
+
     <PropertyPageSchema Include="$(ManagedXamlNeutralResourcesDirectory)SupportedNETFrameworkTargetFramework.xaml">
       <Context>Project</Context>
     </PropertyPageSchema>
@@ -292,7 +292,7 @@
     <PropertyPageSchema Include="$(ManagedXamlResourcesDirectory)ResolvedFrameworkReference.xaml">
       <Context>ProjectSubscriptionService;BrowseObject</Context>
     </PropertyPageSchema>
-    
+
     <!-- Project references -->
     <PropertyPageSchema Include="$(ManagedXamlResourcesDirectory)ProjectReference.xaml">
       <Context>Project;BrowseObject</Context>
@@ -332,10 +332,10 @@
 
   <!-- List of external files that trigger re-evaluation & design-time builds when they are added or removed, or edited -->
   <ItemGroup>
-    
-    <!-- Potential Editor config locations, we only want to trigger design-time builds on removal/addition and not edits  -->
-    <AdditionalDesignTimeBuildInput Include="@(PotentialEditorConfigFiles)" ContentSensitive="false" />   
-  
+
+    <!-- Potential Editor config locations, we only want to trigger design-time builds on removal/addition and not edits -->
+    <AdditionalDesignTimeBuildInput Include="@(PotentialEditorConfigFiles)" ContentSensitive="false" />
+
   </ItemGroup>
 
   <!-- Find all potential locations of "global.json" starting from the Solution directory and walking backwards -->
@@ -432,16 +432,16 @@
   <Target Name="CollectUpToDateCheckBuiltDesignTime" DependsOnTargets="CompileDesignTime" Returns="@(UpToDateCheckBuilt)">
     <ItemGroup>
       <!-- Assembly output, bin and obj -->
-      <UpToDateCheckBuilt Condition="'$(CopyBuildOutputToOutputDirectory)' != 'false' and '$(SkipCopyBuildProduct)' != 'true'" Include="$(TargetPath)"/>
-      <UpToDateCheckBuilt Include="@(IntermediateAssembly)"/>
+      <UpToDateCheckBuilt Condition="'$(CopyBuildOutputToOutputDirectory)' != 'false' and '$(SkipCopyBuildProduct)' != 'true'" Include="$(TargetPath)" />
+      <UpToDateCheckBuilt Include="@(IntermediateAssembly)" />
 
       <!-- Documentation file, bin and obj -->
-      <UpToDateCheckBuilt Condition="'$(_DocumentationFileProduced)'=='true'" Include="@(FinalDocFile)"/>
-      <UpToDateCheckBuilt Condition="'$(_DocumentationFileProduced)'=='true'" Include="@(DocFileItem)"/>
+      <UpToDateCheckBuilt Condition="'$(_DocumentationFileProduced)'=='true'" Include="@(FinalDocFile)" />
+      <UpToDateCheckBuilt Condition="'$(_DocumentationFileProduced)'=='true'" Include="@(DocFileItem)" />
 
       <!-- Symbols, bin and obj -->
-      <UpToDateCheckBuilt Condition="'$(_DebugSymbolsProduced)'=='true'" Include="@(_DebugSymbolsIntermediatePath)"/>
-      <UpToDateCheckBuilt Condition="'$(_DebugSymbolsProduced)'=='true' and '$(SkipCopyingSymbolsToOutputDirectory)' != 'true' and '$(CopyOutputSymbolsToOutputDirectory)' != 'false'" Include="@(_DebugSymbolsOutputPath)"/>
+      <UpToDateCheckBuilt Condition="'$(_DebugSymbolsProduced)'=='true'" Include="@(_DebugSymbolsIntermediatePath)" />
+      <UpToDateCheckBuilt Condition="'$(_DebugSymbolsProduced)'=='true' and '$(SkipCopyingSymbolsToOutputDirectory)' != 'true' and '$(CopyOutputSymbolsToOutputDirectory)' != 'false'" Include="@(_DebugSymbolsOutputPath)" />
 
       <!-- app.config -->
       <!-- The property AppConfig, created in PrepareForBuild, is used instead of AppConfigWithTargetPath because GenerateSupportedRuntime
@@ -450,7 +450,7 @@
            https://github.com/dotnet/msbuild/blob/d2f9dbccd913c5612fd3a3cb78b2524fbcb023da/src/Tasks/Microsoft.Common.CurrentVersion.targets#L1152-L1165
            We skip this check if AppConfig is empty, which occurs for .NET Framework console apps. See https://github.com/dotnet/project-system/issues/6758.
       -->
-      <UpToDateCheckBuilt Condition=" '@(AppConfigWithTargetPath)' != '' and '$(AppConfig)' != '' " Include="@(AppConfigWithTargetPath->'$(OutDir)%(TargetPath)')" Original="$(AppConfig)"/>
+      <UpToDateCheckBuilt Condition=" '@(AppConfigWithTargetPath)' != '' and '$(AppConfig)' != '' " Include="@(AppConfigWithTargetPath->'$(OutDir)%(TargetPath)')" Original="$(AppConfig)" />
     </ItemGroup>
   </Target>
 
