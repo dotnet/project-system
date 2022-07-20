@@ -29,16 +29,19 @@ internal class MyAppFileAccessor : IMyAppFileAccessor, IDisposable
     private const string SplashScreenProperty = "SplashScreen";
     private const string MinimumSplashScreenDisplayTimeProperty = "MinimumSplashScreenDisplayTime";
 
-    private const string DefaultMyappFileContents = "<?xml version=\"1.0\" encoding=\"utf-8\"?>" +
-                                                    "<MyApplicationData xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\">" +
-                                                    "  <MySubMain>true</MySubMain>" +
-                                                    "  <MainForm>Form1</MainForm>" +
-                                                    "  <SingleInstance>false</SingleInstance>" +
-                                                    "  <ShutdownMode>0</ShutdownMode>" +
-                                                    "  <EnableVisualStyles>true</EnableVisualStyles>" +
-                                                    "  <AuthenticationMode>0</AuthenticationMode>" +
-                                                    "  <SaveMySettingsOnExit>true</SaveMySettingsOnExit>" +
-                                                    "</MyApplicationData>";
+    private const string DefaultMyappFileContents =
+        """
+        <?xml version="1.0" encoding="utf-8"?>
+        <MyApplicationData xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+          <MySubMain>true</MySubMain>
+          <MainForm>Form1</MainForm>
+          <SingleInstance>false</SingleInstance>
+          <ShutdownMode>0</ShutdownMode>
+          <EnableVisualStyles>true</EnableVisualStyles>
+          <AuthenticationMode>0</AuthenticationMode>
+          <SaveMySettingsOnExit>true</SaveMySettingsOnExit>
+        </MyApplicationData>
+        """;
     
     [ImportingConstructor]
     public MyAppFileAccessor([Import(typeof(SVsServiceProvider))] IServiceProvider serviceProvider,
@@ -50,7 +53,7 @@ internal class MyAppFileAccessor : IMyAppFileAccessor, IDisposable
         _project = project;
         _threadingService = threadingService;
         _storage = projectTree.TreeStorage;
-        _absolutePath = _project.MakeRooted("My Project\\Application.myapp");
+        _absolutePath = _project.MakeRooted(@"My Project\Application.myapp");
     }
 
     public void Dispose()
@@ -65,43 +68,35 @@ internal class MyAppFileAccessor : IMyAppFileAccessor, IDisposable
 
     private async Task<MyAppDocument?> TryGetMyAppFileAsync()
     {
-        if (_docData?.Data is null || !File.Exists(_absolutePath))
+        if (_docData?.Data is null)
         {
-            await _threadingService.SwitchToUIThread();
-            try
+            await TaskScheduler.Default;
+            // Create My Project directory if it doesn't exist. If it does, nothing happens
+            await _storage.CreateFolderAsync("My Project");
+
+            if (!File.Exists(_absolutePath))
             {
-                _docData = new DocData(_serviceProvider, _absolutePath);
-                _docData.Modifying += DocData_Modifying;
-            } 
-            catch (Exception)
-            {
-                // If we have reached here, it means that the file doesn't exist in that location, so try to create it
-                
-                // Create My Project directory if it doesn't exist. If it does, nothing happens
-                await _storage.CreateFolderAsync("My Project");
-                
                 // Create and write defaults to the myapp file
                 await _storage.CreateEmptyFileAsync(_absolutePath);
-                StreamWriter writer = File.AppendText(_absolutePath);
+                using StreamWriter writer = File.AppendText(_absolutePath);
                 await writer.WriteAsync(DefaultMyappFileContents);
                 await writer.FlushAsync();
-                writer.Close();
-                
-                // Now that we've created the file, we can instantiate _docData and myAppDocument.
-                _docData = new DocData(_serviceProvider, _absolutePath);
-                _docData.Modifying += DocData_Modifying;
-
-                myAppDocument = new MyAppDocument(_docData);
-                return myAppDocument;
             }
-            
-            await TaskScheduler.Default;
         }
-
-        if (myAppDocument is null)
+        
+        await _threadingService.SwitchToUIThread();
+        try
         {
+            _docData = new DocData(_serviceProvider, _absolutePath);
+            _docData.Modifying += DocData_Modifying;
             myAppDocument = new MyAppDocument(_docData);
         }
+        catch (Exception)
+        {
+            // If we've reached here, the file write succeeded but the file may have been deleted by the time UI thread is switched to
+        }
+
+        await TaskScheduler.Default;
 
         return myAppDocument;
     }
