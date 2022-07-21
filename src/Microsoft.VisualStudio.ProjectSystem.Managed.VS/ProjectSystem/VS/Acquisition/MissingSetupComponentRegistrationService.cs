@@ -31,6 +31,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
 
         private static readonly ImmutableHashSet<string> s_supportedReleaseChannelWorkloads = ImmutableHashSet.Create(StringComparers.WorkloadNames, WasmToolsWorkloadName);
 
+        private readonly object _wpfComponentLock = new();
+        private readonly ConcurrentHashSet<string> _wpfComponentIdsDetected;
         private readonly ConcurrentHashSet<string> _missingRuntimesRegistered = new(StringComparers.WorkloadNames);
         private readonly ConcurrentDictionary<Guid, IConcurrentHashSet<WorkloadDescriptor>> _projectGuidToWorkloadDescriptorsMap;
         private readonly ConcurrentDictionary<Guid, string> _projectGuidToRuntimeDescriptorMap;
@@ -60,6 +62,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             Lazy<IProjectThreadingService> threadHandling,
             IProjectFaultHandlerService projectFaultHandlerService)
         {
+            _wpfComponentIdsDetected = new();
             _projectGuidToWorkloadDescriptorsMap = new();
             _projectGuidToProjectConfigurationsMap = new();
             _projectGuidToRuntimeDescriptorMap = new();
@@ -106,6 +109,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
 
         private void ClearMissingWorkloadMetadata()
         {
+            _wpfComponentIdsDetected.Clear();
             _missingRuntimesRegistered.Clear();
             _projectGuidToRuntimeDescriptorMap.Clear();
             _projectGuidToWorkloadDescriptorsMap.Clear();
@@ -122,6 +126,40 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             }
 
             UnregisterProjectConfiguration(projectGuid, project);
+        }
+
+        public void RegisterMissingWpfWorkloads(Guid projectGuid, ConfiguredProject project, ISet<WorkloadDescriptor> workloadDescriptors)
+        {
+            if (AreNewComponentIdsToRegister(workloadDescriptors))
+            {
+                return;
+            }
+
+            var workloadDescriptorSet = _projectGuidToWorkloadDescriptorsMap.GetOrAdd(projectGuid, guid => new ConcurrentHashSet<WorkloadDescriptor>());
+            workloadDescriptorSet.AddRange(workloadDescriptors);
+
+            UnregisterProjectConfiguration(projectGuid, project);
+
+            bool AreNewComponentIdsToRegister(ISet<WorkloadDescriptor> workloadDescriptors)
+            {
+                bool notFound = false;
+                foreach (var workloadDescriptor in workloadDescriptors)
+                {
+                    foreach (var componentId in workloadDescriptor.VisualStudioComponentIds)
+                    {
+                        lock (_wpfComponentLock)
+                        {
+                            if (!_wpfComponentIdsDetected.Contains(componentId))
+                            {
+                                notFound = true;
+                                _wpfComponentIdsDetected.Add(componentId);
+                            }
+                        }
+                    }
+                }
+
+                return !notFound;
+            }
         }
 
         public void RegisterPossibleMissingSdkRuntimeVersion(Guid projectGuid, ConfiguredProject project, string runtimeVersion)
