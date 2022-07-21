@@ -38,6 +38,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
         public const string SupportUniversalAuthentication = nameof(SupportUniversalAuthentication);
 
         public const string DotNet = ".NET";
+        public const string DotNetRazor = "DotNetCoreRazor";
 
         /// <summary>
         /// Instructs CPS to order tree items according to the <see cref="IProjectTree2.DisplayOrder"/> property first.
