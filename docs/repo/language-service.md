@@ -57,6 +57,43 @@ Without this facility, components that require project data from the active conf
 
 ## .NET Project System types and concepts
 
+### Dataflow graph
+
+Per project slice, we have:
+
+```mermaid
+graph LR;
+  subgraph Slice
+    ActiveConfiguredProjectSource
+    ProjectRuleSource
+    SourceItemsRuleSource
+    ProjectBuildRuleSource
+  end
+  subgraph Workspace
+    E1(Evaluation sync link)
+    E2(Evaluation transform)
+    B1(Build sync link)
+    B2(Build transform)
+    A(Action);
+
+    ActiveConfiguredProjectSource --> E1
+    SourceItemsRuleSource --> E1
+    ProjectRuleSource --> E1
+
+    ActiveConfiguredProjectSource --> B1
+    ProjectBuildRuleSource --> B1
+
+    E1 --> E2
+    B1 --> B2
+
+    E2 --> A
+    B2 --> A
+
+    A --> OnWorkspaceUpdateAsync
+
+  end
+```
+
 ### `LanguageServiceHost`
 
 The `LanguageServiceHost` component hosts the Roslyn language service for a given project.
