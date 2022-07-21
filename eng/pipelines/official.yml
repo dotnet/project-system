@@ -79,7 +79,7 @@ steps:
     solution: $(Build.SourcesDirectory)\eng\Build.proj
     msbuildArchitecture: x86
     configuration: $(BuildConfiguration)
-    msbuildArguments: '/m /warnaserror /nologo /clp:Summary /p:Build=true /p:CIBuild=true /p:QuickSrcBuild=true /v:normal /bl:$(Build.SourcesDirectory)\artifacts\$(BuildConfiguration)\log\QuickSrcBuild.binlog'
+    msbuildArguments: '/m /warnAsError /noLogo /clp:Summary /p:Build=true /p:CIBuild=true /p:QuickSrcBuild=true /v:normal /bl:$(Build.SourcesDirectory)\artifacts\$(BuildConfiguration)\log\QuickSrcBuild.binlog'
 
 - task: ManifestGeneratorTask@0
   displayName: Generate SBOM
@@ -93,7 +93,7 @@ steps:
     solution: $(Build.SourcesDirectory)\eng\Build.proj
     msbuildArchitecture: x86
     configuration: $(BuildConfiguration)
-    msbuildArguments: '/m /warnaserror /nologo /clp:Summary /p:Build=true /p:Test=true /p:CIBuild=true /v:normal /bl:$(Build.SourcesDirectory)\artifacts\$(BuildConfiguration)\log\Build.binlog'
+    msbuildArguments: '/m /warnAsError /noLogo /clp:Summary /p:Build=true /p:Test=true /p:CIBuild=true /v:normal /bl:$(Build.SourcesDirectory)\artifacts\$(BuildConfiguration)\log\Build.binlog'
 
 - task: MicroBuildCodesignVerify@3
   displayName: Verify Signed Files

@@ -1,80 +1,70 @@
 <!-- Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information. -->
-<Project DefaultTargets="ClearNuGetCache;PrepareMachine;Restore;Build" TreatAsLocalProperty="SolutionPath">
+<Project DefaultTargets="Build">
 
   <Import Project="imports\Versions.props" />
   <Import Project="imports\RepoLayout.props" />
 
-  <!-- Removes the NuGet cache folder on the machine. Useful if packages such as MicroBuild SwixBuild has multiple versions within the cache, which causes the build to fail. -->
-  <Target Name="ClearNuGetCache" Condition="'$(ClearNuGetCache)' == 'true'">
-    <Message Text="Clearing '$(NuGetPackageRoot)'..." Importance="high" />
-    <RemoveDir Directories="$(NuGetPackageRoot)" />
-  </Target>
+  <Target Name="Build">
+    <!-- Creates several output directories so that artifact publishing always succeeds. -->
+    <MakeDir Directories="$(ArtifactsBinDir)" Condition="!Exists($(ArtifactsBinDir))" />
+    <MakeDir Directories="$(ArtifactsLogDir)" Condition="!Exists($(ArtifactsLogDir))" />
+    <MakeDir Directories="$(ArtifactsTestResultsDir)" Condition="!Exists($(ArtifactsTestResultsDir))" />
+    <MakeDir Directories="$(VisualStudioSetupOutputPath)" Condition="!Exists($(VisualStudioSetupOutputPath))" />
 
-  <!-- Creates several output directories so that artifact publishing always succeeds. -->
-  <Target Name="PrepareMachine" Condition="'$(CIBuild)' == 'true'">
-    <MakeDir Directories="$(ArtifactsBinDir);$(ArtifactsLogDir);$(ArtifactsTestResultsDir);$(VisualStudioSetupOutputPath)" />
-  </Target>
-
-  <PropertyGroup>
-    <SolutionFileName>ProjectSystem.sln</SolutionFileName>
-    <SolutionPath>$(RepoRoot)$(SolutionFileName)</SolutionPath>
-    <BuildOrRebuild Condition="'$(Build)' == 'true' or '$(Rebuild)' == 'true'">true</BuildOrRebuild>
-  </PropertyGroup>
-
-  <ItemGroup>
-    <CommonBuildProperty Include="Configuration=$(Configuration)" />
-    <CommonBuildProperty Include="CIBuild=$(CIBuild)" />
-    <CommonBuildProperty Include="RepoRoot=$(RepoRoot)" />
-    <CommonBuildProperty Include="QuickSrcBuild=$(QuickSrcBuild)" />
-    <CommonBuildProperty Include="UsingCodeCoverage=$(UsingCodeCoverage)" />
-  </ItemGroup>
-
-  <!--
-    Creates a new solution file for projects within the 'src' folder only and sets the properties appropriately for the Build target.
-    This is useful for SBOM generation as the assemblies are necessary for SBOM prior to VSIX packaging.
-  -->
-  <Target Name="GenerateSolutionForQuickSrcBuild" BeforeTargets="Restore" Condition="'$(QuickSrcBuild)' == 'true'">
+    <!-- Defaults -->
     <PropertyGroup>
-      <SolutionName>Src</SolutionName>
-      <SolutionFolder>$(RepoRoot)src/</SolutionFolder>
-      <SolutionFileName>$(SolutionName).sln</SolutionFileName>
-      <SolutionPath>$(SolutionFolder)$(SolutionFileName)</SolutionPath>
+      <Configuration Condition="'$(Configuration)' == ''">Debug</Configuration>
     </PropertyGroup>
-    <Message Text="Generating Solution file [$(SolutionFileName)]..." Importance="high" />
+
+    <!-- Default targets -->
+    <PropertyGroup>
+      <Restore Condition="'$(Restore)' == ''">true</Restore>
+      <Build Condition="'$(Build)' == ''">true</Build>
+      <Rebuild Condition="'$(Rebuild)' == ''">false</Rebuild>
+      <Test Condition="'$(Test)' == ''">true</Test>
+      <Pack Condition="'$(Pack)' == ''">true</Pack>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <BuildTarget Include="Restore" Condition="'$(Restore)' == 'true'" />
+      <BuildTarget Include="Build" Condition="'$(Build)' == 'true' and '$(Rebuild)' != 'true'" />
+      <BuildTarget Include="Rebuild" Condition="'$(Rebuild)' == 'true'" />
+      <BuildTarget Include="Test" Condition="'$(Test)' == 'true'" />
+      <BuildTarget Include="Pack" Condition="'$(Pack)' == 'true'" />
+    </ItemGroup>
+
+    <!-- Default projects -->
+    <PropertyGroup>
+      <SrcProjects Condition="'$(SrcProjects)' == ''">true</SrcProjects>
+      <TestProjects Condition="'$(TestProjects)' == ''">true</TestProjects>
+      <SetupProjects Condition="'$(SetupProjects)' == ''">true</SetupProjects>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <BuildProject Include="$(RepoRoot)src/**/*.csproj;$(RepoRoot)src/**/*.vbproj" Condition="'$(SrcProjects)' == 'true'" />
+      <BuildProject Include="$(RepoRoot)tests/**/*.csproj;$(RepoRoot)src/**/*.vbproj" Condition="'$(TestProjects)' == 'true'" />
+      <BuildProject Include="$(RepoRoot)setup/**/*.csproj" Condition="'$(SetupProjects)' == 'true'" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <BuildProperty Include="Configuration=$(Configuration)" />
+      <BuildProperty Include="RepoRoot=$(RepoRoot)" />
+      <BuildProperty Include="CIBuild=$(CIBuild)" />
+      <BuildProperty Include="Pack=$(Pack)" />
+      <BuildProperty Include="UsingCodeCoverage=$(UsingCodeCoverage)" />
+    </ItemGroup>
+
+    <Message Text="Including 'Src' projects..." Importance="high" Condition="'$(SrcProjects)' == 'true'" />
+    <Message Text="Including 'Test' projects..." Importance="high" Condition="'$(TestProjects)' == 'true'" />
+    <Message Text="Including 'Setup' projects..." Importance="high" Condition="'$(SetupProjects)' == 'true'" />
+    <Message Text="Configuration: $(Configuration)" Importance="high" />
 
     <!-- https://docs.microsoft.com/en-us/dotnet/core/tools/dotnet-new#options -->
-    <!-- The 'force' flag ensures that if for any reason there is already a solution in the destination, the command will not fail. -->
-    <Exec Command="dotnet new sln -n $(SolutionName) -o $(SolutionFolder) --force" />
-
-    <ItemGroup>
-      <ProjFiles Include="$(SolutionFolder)**/*.*proj" />
-    </ItemGroup>
-    <!-- https://github.com/dotnet/cli/issues/6295#issuecomment-346973582 -->
-    <Exec Command="dotnet sln $(SolutionPath) add &quot;%(ProjFiles.FullPath)&quot;" />
-  </Target>
-
-  <!--
-    Run solution restore separately from the other targets, in a different build phase.
-    Since restore brings in new .props and .targets files we need to rerun evaluation.
-
-    Note: msbuild caches the metaproject for the solution (see https://github.com/Microsoft/msbuild/issues/1695)
-    We invalidate the cache by changing the value of __BuildPhase property.
-  -->
-  <Target Name="Restore">
-    <Message Text="Restoring $(SolutionFileName) [$(Configuration)]...%0a" Importance="high" />
-    <MSBuild Projects="$(SolutionPath)" Properties="@(CommonBuildProperty);__BuildPhase=SolutionRestore" Targets="Restore" BuildInParallel="true" />
-  </Target>
-
-  <Target Name="Build">
-    <Message Text="Building $(SolutionFileName) [$(Configuration)]...%0a" Importance="high" />
-    <ItemGroup>
-      <SolutionBuildTarget Include="Rebuild" Condition="'$(Rebuild)' == 'true'" />
-      <SolutionBuildTarget Include="Build" Condition="'$(Build)' == 'true' and '$(Rebuild)' != 'true'" />
-      <SolutionBuildTarget Include="Test" Condition="'$(Test)' == 'true'" />
-      <SolutionBuildTarget Include="IntegrationTest" Condition="'$(IntegrationTest)' == 'true'" />
-      <SolutionBuildTarget Include="Pack" Condition="'$(BuildOrRebuild)' == 'true' AND '$(QuickSrcBuild)' != 'true'" />
-    </ItemGroup>
-    <MSBuild Projects="$(SolutionPath)" Properties="@(CommonBuildProperty);__BuildPhase=SolutionBuild" Targets="@(SolutionBuildTarget)" BuildInParallel="true" Condition="'@(SolutionBuildTarget)' != ''" />
+    <!-- The 'force' flag overrides the existing .sln file if one already exists. -->
+    <Exec Command="dotnet new sln -n $(MSBuildProjectName) -o $(ArtifactsDir) --force" />
+    <!-- https://stackoverflow.com/a/3012224/294804 -->
+    <Exec Command="dotnet sln $(ArtifactsDir)$(MSBuildProjectName).sln add @(BuildProject -> '&quot;%(FullPath)&quot;', ' ')" />
+    <MSBuild Projects="$(ArtifactsDir)$(MSBuildProjectName).sln" Properties="@(BuildProperty)" Targets="@(BuildTarget)" BuildInParallel="true" Condition="'@(BuildTarget)' != ''" />
   </Target>
 
 </Project>
