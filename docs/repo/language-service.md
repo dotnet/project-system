@@ -76,9 +76,9 @@ graph LR;
     B2(Build transform)
     A(Action);
 
-    ActiveConfiguredProjectSource --> E1
-    SourceItemsRuleSource --> E1
     ProjectRuleSource --> E1
+    SourceItemsRuleSource --> E1
+    ActiveConfiguredProjectSource --> E1
 
     ActiveConfiguredProjectSource --> B1
     ProjectBuildRuleSource --> B1
