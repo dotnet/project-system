@@ -40,16 +40,18 @@ parameters:
 ###################################################################################################################################################################
 
 steps:
+- task: Bash@3
+  displayName: Show environment variables
+  inputs:
+    targetType: 'inline'
+    script: 'env | sort'
+
 - task: MicroBuildSigningPlugin@4
   displayName: Install Signing Plugin
   inputs:
     signType: ${{ parameters.SignType }}
     esrpSigning: true
 
-# This is currently only used by the MicroBuildBuildVSBootstrapper task.
-# RepoToolset has custom logic to download the NuGet package of this plugin for an old version (1.1.37).
-# This plugin is not directly used by RepoToolset.
-# Moving this task down to the OptProf section will cause test verification in the OptProf release pipeline to fail stating that the Microsoft.VisualStudio.ProjectSystem.Managed(.VS).dll(s) do not exist.
 - task: MicroBuildSwixPlugin@4
   displayName: Install Swix Plugin
 
