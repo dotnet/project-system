@@ -8,7 +8,6 @@
     <ArtifactsConfigurationDir>$(ArtifactsDir)$(Configuration)\</ArtifactsConfigurationDir>
     <ArtifactsBinDir>$(ArtifactsConfigurationDir)bin\</ArtifactsBinDir>
     <ArtifactsObjDir>$(ArtifactsConfigurationDir)obj\</ArtifactsObjDir>
-    <ArtifactsLogDir>$(ArtifactsConfigurationDir)log\</ArtifactsLogDir>
     <ArtifactsTestResultsDir>$(ArtifactsConfigurationDir)TestResults\</ArtifactsTestResultsDir>
     <!-- This is used in CI as the legacy symbol publishing directory in the artifacts. -->
     <ArtifactsSymStoreDirectory>$(ArtifactsConfigurationDir)SymStore\</ArtifactsSymStoreDirectory>

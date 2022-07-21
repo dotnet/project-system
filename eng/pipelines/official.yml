@@ -77,9 +77,9 @@ steps:
   displayName: Build Src for SBOM
   inputs:
     solution: $(Build.SourcesDirectory)\eng\Build.proj
-    msbuildArchitecture: x86
+    msBuildArchitecture: x86
     configuration: $(BuildConfiguration)
-    msbuildArguments: '/m /warnAsError /noLogo /clp:Summary /p:Build=true /p:CIBuild=true /p:QuickSrcBuild=true /v:normal /bl:$(Build.SourcesDirectory)\artifacts\$(BuildConfiguration)\log\QuickSrcBuild.binlog'
+    msBuildArguments: '/m /warnAsError /noLogo /clp:Summary /v:normal /p:CIBuild=true /p:Test=false /p:Pack=false /p:TestProjects=false /p:SetupProjects=false /bl:$(Build.SourcesDirectory)\artifacts\log\SrcBuild.binlog'
 
 - task: ManifestGeneratorTask@0
   displayName: Generate SBOM
@@ -91,9 +91,9 @@ steps:
   displayName: Build ProjectSystem.sln
   inputs:
     solution: $(Build.SourcesDirectory)\eng\Build.proj
-    msbuildArchitecture: x86
+    msBuildArchitecture: x86
     configuration: $(BuildConfiguration)
-    msbuildArguments: '/m /warnAsError /noLogo /clp:Summary /p:Build=true /p:Test=true /p:CIBuild=true /v:normal /bl:$(Build.SourcesDirectory)\artifacts\$(BuildConfiguration)\log\Build.binlog'
+    msBuildArguments: '/m /warnAsError /noLogo /clp:Summary /v:normal /p:CIBuild=true /bl:$(Build.SourcesDirectory)\artifacts\log\Build.binlog'
 
 - task: MicroBuildCodesignVerify@3
   displayName: Verify Signed Files
@@ -108,11 +108,11 @@ steps:
   displayName: Create Codex Index
   inputs:
     workflowArguments: |
-     /sourcesDirectory:$(Build.SourcesDirectory)
-     /codexRepoUrl:$(Build.Repository.Uri)
-     /repoName:$(Build.Repository.Name)
-     /additionalCodexArguments:-bld
-     /additionalCodexArguments:$(Build.SourcesDirectory)\artifacts\Release\log
+      /sourcesDirectory:$(Build.SourcesDirectory)
+      /codexRepoUrl:$(Build.Repository.Uri)
+      /repoName:$(Build.Repository.Name)
+      /additionalCodexArguments:-bld
+      /additionalCodexArguments:$(Build.SourcesDirectory)\artifacts\log
   condition: succeeded()
   continueOnError: true
 
@@ -162,7 +162,7 @@ steps:
 - task: PublishBuildArtifacts@1
   displayName: 'Publish Artifact: Symbols'
   inputs:
-    PathtoPublish: '$(Build.ArtifactStagingDirectory)/Symbols'
+    PathToPublish: '$(Build.ArtifactStagingDirectory)/Symbols'
     # The artifact name specifically has to be 'symbols' with that casing.
     # This artifact is downloaded by the release pipeline's 'Publish Symbols' task.
     # The lowercase 'symbols' is specified in the 'Agent job' settings for that task.
@@ -221,7 +221,7 @@ steps:
 - task: PublishBuildArtifacts@1
   displayName: 'Publish Artifact: MicroBuildOutputs'
   inputs:
-    PathtoPublish: $(Build.StagingDirectory)\MicroBuild\Output
+    PathToPublish: $(Build.StagingDirectory)\MicroBuild\Output
     ArtifactName: MicroBuildOutputs
     ArtifactType: Container
   condition: succeededOrFailed()
@@ -242,9 +242,9 @@ steps:
     SourceFolder: '$(Build.SourcesDirectory)'
     # NOTE: The copied contents are directly used by the RoslynInsertionTool to create the insertion PR.
     Contents: |
+      artifacts\log\**
       artifacts\$(BuildConfiguration)\bin\**
       artifacts\$(BuildConfiguration)\DevDivInsertionFiles\**
-      artifacts\$(BuildConfiguration)\log\**
       artifacts\$(BuildConfiguration)\packages\**
       artifacts\$(BuildConfiguration)\VSSetup\**
       artifacts\$(BuildConfiguration)\TestResults\**
@@ -254,7 +254,7 @@ steps:
 - task: PublishBuildArtifacts@1
   displayName: Publish Artifacts
   inputs:
-    PathtoPublish: '$(Build.ArtifactStagingDirectory)/ArtifactsDrop/artifacts/$(BuildConfiguration)'
+    PathToPublish: '$(Build.ArtifactStagingDirectory)/ArtifactsDrop/artifacts/$(BuildConfiguration)'
     # NOTE: Artifact name is required to be Build.BuildNumber.
     # The build-number named artifact is used for the RoslynInsertionTool to find the build for the insertion PR.
     # Code here: https://github.com/dotnet/roslyn-tools/blob/1f64f56b4ea9a0c119bbe840c39b935acc60e4b8/src/RoslynInsertionTool/RoslynInsertionTool/RoslynInsertionTool.VisualStudioTeamServices.cs#L174

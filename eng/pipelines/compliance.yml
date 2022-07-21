@@ -25,9 +25,9 @@ steps:
   displayName: Build ProjectSystem.sln
   inputs:
     solution: $(Build.SourcesDirectory)\eng\Build.proj
-    msbuildArchitecture: x86
+    msBuildArchitecture: x86
     configuration: $(BuildConfiguration)
-    msbuildArguments: '/m /warnaserror /nologo /clp:Summary /p:Build=true /p:CIBuild=true /v:normal /bl:$(Build.SourcesDirectory)\artifacts\$(BuildConfiguration)\log\Build.binlog'
+    msBuildArguments: '/m /warnAsError /noLogo /clp:Summary /v:normal /p:CIBuild=true /p:Test=false /bl:$(Build.SourcesDirectory)\artifacts\log\Build.binlog'
 
 - task: PoliCheck@2
   # Scan for problematic terminology.
@@ -44,7 +44,7 @@ steps:
   # Scan for credentials accidentally committed to source control.
   displayName: Run CredScan
   inputs:
-    outputFormat: 'pre' # Ouput in PREFast format so TSAUpload can consume it
+    outputFormat: 'pre' # Output in PREFast format so TSAUpload can consume it
   continueOnError: true
 
 - task: CopyFiles@2

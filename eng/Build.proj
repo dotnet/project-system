@@ -1,29 +1,35 @@
 <!-- Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information. -->
 <Project DefaultTargets="Build">
 
+  <!-- Defaults -->
+  <PropertyGroup>
+    <Configuration Condition="'$(Configuration)' == ''">Debug</Configuration>
+  </PropertyGroup>
+
+  <!-- Default targets -->
+  <PropertyGroup>
+    <Restore Condition="'$(Restore)' == ''">true</Restore>
+    <Build Condition="'$(Build)' == ''">true</Build>
+    <Rebuild Condition="'$(Rebuild)' == ''">false</Rebuild>
+    <Test Condition="'$(Test)' == ''">true</Test>
+    <Pack Condition="'$(Pack)' == ''">true</Pack>
+  </PropertyGroup>
+
+  <!-- Default projects -->
+  <PropertyGroup>
+    <SrcProjects Condition="'$(SrcProjects)' == ''">true</SrcProjects>
+    <TestProjects Condition="'$(TestProjects)' == ''">true</TestProjects>
+    <SetupProjects Condition="'$(SetupProjects)' == ''">true</SetupProjects>
+  </PropertyGroup>
+
   <Import Project="imports\Versions.props" />
   <Import Project="imports\RepoLayout.props" />
 
   <Target Name="Build">
     <!-- Creates several output directories so that artifact publishing always succeeds. -->
     <MakeDir Directories="$(ArtifactsBinDir)" Condition="!Exists($(ArtifactsBinDir))" />
-    <MakeDir Directories="$(ArtifactsLogDir)" Condition="!Exists($(ArtifactsLogDir))" />
     <MakeDir Directories="$(ArtifactsTestResultsDir)" Condition="!Exists($(ArtifactsTestResultsDir))" />
     <MakeDir Directories="$(VisualStudioSetupOutputPath)" Condition="!Exists($(VisualStudioSetupOutputPath))" />
-
-    <!-- Defaults -->
-    <PropertyGroup>
-      <Configuration Condition="'$(Configuration)' == ''">Debug</Configuration>
-    </PropertyGroup>
-
-    <!-- Default targets -->
-    <PropertyGroup>
-      <Restore Condition="'$(Restore)' == ''">true</Restore>
-      <Build Condition="'$(Build)' == ''">true</Build>
-      <Rebuild Condition="'$(Rebuild)' == ''">false</Rebuild>
-      <Test Condition="'$(Test)' == ''">true</Test>
-      <Pack Condition="'$(Pack)' == ''">true</Pack>
-    </PropertyGroup>
 
     <ItemGroup>
       <BuildTarget Include="Restore" Condition="'$(Restore)' == 'true'" />
@@ -33,25 +39,10 @@
       <BuildTarget Include="Pack" Condition="'$(Pack)' == 'true'" />
     </ItemGroup>
 
-    <!-- Default projects -->
-    <PropertyGroup>
-      <SrcProjects Condition="'$(SrcProjects)' == ''">true</SrcProjects>
-      <TestProjects Condition="'$(TestProjects)' == ''">true</TestProjects>
-      <SetupProjects Condition="'$(SetupProjects)' == ''">true</SetupProjects>
-    </PropertyGroup>
-
     <ItemGroup>
       <BuildProject Include="$(RepoRoot)src/**/*.csproj;$(RepoRoot)src/**/*.vbproj" Condition="'$(SrcProjects)' == 'true'" />
       <BuildProject Include="$(RepoRoot)tests/**/*.csproj;$(RepoRoot)src/**/*.vbproj" Condition="'$(TestProjects)' == 'true'" />
       <BuildProject Include="$(RepoRoot)setup/**/*.csproj" Condition="'$(SetupProjects)' == 'true'" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <BuildProperty Include="Configuration=$(Configuration)" />
-      <BuildProperty Include="RepoRoot=$(RepoRoot)" />
-      <BuildProperty Include="CIBuild=$(CIBuild)" />
-      <BuildProperty Include="Pack=$(Pack)" />
-      <BuildProperty Include="UsingCodeCoverage=$(UsingCodeCoverage)" />
     </ItemGroup>
 
     <Message Text="Including 'Src' projects..." Importance="high" Condition="'$(SrcProjects)' == 'true'" />
@@ -64,7 +55,7 @@
     <Exec Command="dotnet new sln -n $(MSBuildProjectName) -o $(ArtifactsDir) --force" />
     <!-- https://stackoverflow.com/a/3012224/294804 -->
     <Exec Command="dotnet sln $(ArtifactsDir)$(MSBuildProjectName).sln add @(BuildProject -> '&quot;%(FullPath)&quot;', ' ')" />
-    <MSBuild Projects="$(ArtifactsDir)$(MSBuildProjectName).sln" Properties="@(BuildProperty)" Targets="@(BuildTarget)" BuildInParallel="true" Condition="'@(BuildTarget)' != ''" />
+    <MSBuild Projects="$(ArtifactsDir)$(MSBuildProjectName).sln" Targets="@(BuildTarget)" BuildInParallel="true" Condition="'@(BuildTarget)' != ''" />
   </Target>
 
 </Project>

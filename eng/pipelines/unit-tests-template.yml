@@ -10,11 +10,11 @@ jobs:
         solution: $(Build.SourcesDirectory)\eng\Build.proj
         msbuildArchitecture: x86
         configuration: ${{ parameters.configuration }}
-        msbuildArguments: '/m /warnaserror /nologo /clp:Summary /p:Build=true /p:Test=true /p:CIBuild=true /v:normal /bl:$(Build.SourcesDirectory)\artifacts\${{ parameters.configuration }}\log\Build.binlog'
+        msbuildArguments: '/m /warnAsError /noLogo /clp:Summary /v:normal /p:CIBuild=true /bl:$(Build.SourcesDirectory)\artifacts\log\Build.binlog'
 
     - task: PublishBuildArtifacts@1
       inputs:
-        PathtoPublish: '$(Build.SourcesDirectory)\artifacts\${{ parameters.configuration }}\log'
+        PathtoPublish: '$(Build.SourcesDirectory)\artifacts\log'
         ArtifactName: '${{ parameters.configuration }} Log folder'
         publishLocation: Container
       continueOnError: true
