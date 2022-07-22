@@ -35,11 +35,13 @@ parameters:
   type: boolean
   default: false
 
+
 ###################################################################################################################################################################
 # SBOM GENERATION
 # This occurs above plugin installation so that the Src build does not perform signing.
 ###################################################################################################################################################################
 
+steps:
 - task: MSBuild@1
   displayName: Build Src for SBOM
   inputs:
@@ -58,7 +60,6 @@ parameters:
 # PLUGIN INSTALLATION
 ###################################################################################################################################################################
 
-steps:
 - task: MicroBuildSigningPlugin@4
   displayName: Install Signing Plugin
   inputs:
