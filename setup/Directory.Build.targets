@@ -4,7 +4,7 @@
   <Import Project="..\Directory.Build.targets" />
 
   <!-- Add the VSIX files from VS Extension projects for signing. -->
-  <Target Name="AddVsixForSigning" DependsOnTargets="CreateVsixContainer" BeforeTargets="SignFiles" Condition="'$(IsVsixProject)' == 'true'">
+  <Target Name="AddVsixForSigning" DependsOnTargets="CreateVsixContainer" BeforeTargets="SignFiles" Condition="'$(IsVsixProject)' == 'true' AND '$(CIBuild)' == 'true'">
     <!-- Required to be in either OutDir or IntermediateOutputPath for signing. It'll be copied after signing via the CopyVsixAfterSigning target. -->
     <!-- https://devdiv.visualstudio.com/DevDiv/_wiki/wikis/DevDiv.wiki/650/MicroBuild-Signing?anchor=modify-your-project-file-to-include-%60filestosign%60-itemgroup -->
     <Copy SourceFiles="$(VisualStudioSetupInsertionPath)$(AssemblyName).vsix" DestinationFolder="$(OutDir)" />
@@ -16,7 +16,7 @@
   </Target>
 
   <!-- Copies the VSIX files after they've been signed from VS Extension projects to the appropriate output folder. -->
-  <Target Name="CopyVsixAfterSigning" AfterTargets="SignFiles" Condition="'$(IsVsixProject)' == 'true'">
+  <Target Name="CopyVsixAfterSigning" AfterTargets="SignFiles" Condition="'$(IsVsixProject)' == 'true' AND '$(CIBuild)' == 'true'">
     <Copy SourceFiles="$(OutDir)$(AssemblyName).vsix" DestinationFolder="$(VisualStudioSetupInsertionPath)" />
   </Target>
 
@@ -25,7 +25,7 @@
     <PropertyGroup>
       <ObjVsixManifestPath>$(ArtifactsObjDir)$(MSBuildProjectName)\extension.vsixmanifest</ObjVsixManifestPath>
     </PropertyGroup>
-    <Exec ContinueOnError="false" Command="$(PowerShellCommand) &quot;$manifestXml = [Xml.XmlDocument](Get-Content '$(ObjVsixManifestPath)');$manifestXml.PackageManifest.Installation.SetAttribute('Experimental', 'false');$manifestXml.Save('$(ObjVsixManifestPath)')&quot;" />
+    <Exec ContinueOnError="false" Command="$(PowerShellFile) &quot;$(RepoRoot)eng\scripts\RemoveExperimentalAttributeFromVsixManifest.ps1&quot; -manifestPath &quot;$(ObjVsixManifestPath)&quot;" />
   </Target>
 
   <!-- Specifies the version number that is used within the 'source.extension.vsixmanifest' files for VSIX packages. -->
@@ -36,13 +36,12 @@
     This is used in the RoslynInsertionTool in the file RoslynInsertionTool.AssemblyVersions.cs.
     See: https://github.com/dotnet/roslyn-tools/tree/main/src/RoslynInsertionTool
 
-    $(ProjectSystemVersion):        The version number of both Microsoft.VisualStudio.Editors/Microsoft.VisualStudio.AppDesigner and Microsoft.VisualStudio.ProjectSystem.Managed/Microsoft.VisualStudio.ProjectSystem.Managed.VS.
-    $(ArtifactsConfigurationDir):   The configured-based build output location.
+    $(ProjectSystemVersion):               The version number of both Microsoft.VisualStudio.Editors/Microsoft.VisualStudio.AppDesigner and Microsoft.VisualStudio.ProjectSystem.Managed/Microsoft.VisualStudio.ProjectSystem.Managed.VS.
+    $(DependentAssemblyVersionsCsvPath):   The file location to create the DependentAssemblyVersions.csv file.
   -->
   <!-- TODO: This will need to be changed/removed as part of https://github.com/dotnet/project-system/issues/7911 -->
   <Target Name="CreateDependentAssemblyVersionsCsv" AfterTargets="Build" Condition="!Exists('$(DependentAssemblyVersionsCsvPath)')">
-    <!-- We use individual version for AppDesigner/Editors, however Managed and Managed.VS share the same variable in VS repository under src\ProductData\AssemblyVersions.tt. -->
-    <Exec ContinueOnError="false" Command="$(PowerShellCommand) &quot;New-Item -Path '$(DependentAssemblyVersionsCsvPath)' -ItemType File -Force | Set-Content -Value 'Microsoft.VisualStudio.AppDesigner,$(ProjectSystemVersion).0','Microsoft.VisualStudio.Editors,$(ProjectSystemVersion).0','Microsoft.VisualStudio.ProjectSystem.Managed,$(ProjectSystemVersion).0'&quot;" />
+    <Exec ContinueOnError="false" Command="$(PowerShellFile) &quot;$(RepoRoot)eng\scripts\CreateDependentAssemblyVersionsCsv.ps1&quot; -csvPath &quot;$(DependentAssemblyVersionsCsvPath)&quot; -version $(ProjectSystemVersion)" />
   </Target>
 
 </Project>

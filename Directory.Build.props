@@ -47,6 +47,7 @@
   <PropertyGroup>
     <!-- Variable used for executing a PowerShell command with arguments for the MSBuild/commandline environment. -->
     <PowerShellCommand>powershell -NonInteractive -NoLogo -NoProfile -ExecutionPolicy Unrestricted -Command</PowerShellCommand>
+    <PowerShellFile>powershell -NonInteractive -NoLogo -NoProfile -ExecutionPolicy Unrestricted -File</PowerShellFile>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <ForceGenerationOfBindingRedirects>true</ForceGenerationOfBindingRedirects>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
