@@ -14,7 +14,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
     /// command line arguments from the project build snapshot.
     /// </remarks>
     [ProjectSystemContract(ProjectSystemContractScope.ConfiguredProject, ProjectSystemContractProvider.Private, Cardinality = ImportCardinality.ExactlyOne)]
-    internal interface ICommandLineArgumentsProvider : IProjectValueDataSource<CommandLineArgumentsSnapshot>
+    internal interface ICommandLineArgumentsDataSource : IProjectValueDataSource<CommandLineArgumentsSnapshot>
     {
     }
 }
