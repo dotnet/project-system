@@ -138,7 +138,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             var workloadDescriptorSet = _projectGuidToWorkloadDescriptorsMap.GetOrAdd(projectGuid, guid => new ConcurrentHashSet<WorkloadDescriptor>());
             workloadDescriptorSet.AddRange(workloadDescriptors);
 
-            UnregisterProjectConfiguration(projectGuid, project);
+            DisplayYellowBarInSolutionExplorer(project);
 
             bool AreNewComponentIdsToRegister(ISet<WorkloadDescriptor> workloadDescriptors)
             {
@@ -212,14 +212,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         public void UnregisterProjectConfiguration(Guid projectGuid, ConfiguredProject project)
         {
             RemoveConfiguration(projectGuid, project);
-
-            bool displayMissingComponentsPrompt = ShouldDisplayMissingComponentsPrompt();
-            if (displayMissingComponentsPrompt)
-            {
-                var displayMissingComponentsTask = DisplayMissingComponentsPromptAsync();
-
-                _projectFaultHandlerService.Forget(displayMissingComponentsTask, project: project.UnconfiguredProject, ProjectFaultSeverity.Recoverable);
-            }
+            DisplayYellowBarInSolutionExplorer(project);
 
             void RemoveConfiguration(Guid projectGuid, ConfiguredProject project)
             {
@@ -233,8 +226,19 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                 {
                     _projectGuidToProjectConfigurationsMap.TryGetValue(projectGuid, out projectConfigurationSet);
                 }
-                
+
                 projectConfigurationSet?.Remove(project.ProjectConfiguration);
+            }
+        }
+
+        private void DisplayYellowBarInSolutionExplorer(ConfiguredProject project)
+        {
+            bool displayMissingComponentsPrompt = ShouldDisplayMissingComponentsPrompt();
+            if (displayMissingComponentsPrompt)
+            {
+                var displayMissingComponentsTask = DisplayMissingComponentsPromptAsync();
+
+                _projectFaultHandlerService.Forget(displayMissingComponentsTask, project: project.UnconfiguredProject, ProjectFaultSeverity.Recoverable);
             }
         }
 
