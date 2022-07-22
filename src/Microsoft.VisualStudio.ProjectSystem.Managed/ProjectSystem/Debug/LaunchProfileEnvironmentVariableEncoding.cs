@@ -15,96 +15,26 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
     /// </remarks>
     internal static class LaunchProfileEnvironmentVariableEncoding
     {
+        private static readonly KeyValuePairListEncoding _encoding = new();
+        
         public static string Format(ILaunchProfile? profile)
         {
             if (profile is null)
                 return "";
-
-            var sb = new StringBuilder();
-
-            foreach ((string key, string value) in profile.EnumerateEnvironmentVariables())
-            {
-                if (sb.Length != 0)
-                    sb.Append(',');
-                sb.Append(encode(key));
-                sb.Append('=');
-                sb.Append(encode(value));
-            }
-
-            return sb.ToString();
-
-            static string encode(string value)
-            {
-                return value.Replace("/", "//").Replace(",", "/,").Replace("=", "/=");
-            }
+            
+            return _encoding.Format(profile.EnumerateEnvironmentVariables());
         }
 
         public static void ParseIntoDictionary(string value, Dictionary<string, string> dictionary)
         {
             dictionary.Clear();
-
-            foreach (var entry in readEntries(value))
+            
+            foreach ((string entryKey, string entryValue) in _encoding.Parse(value))
             {
-                var (entryKey, entryValue) = splitEntry(entry);
-                var decodedEntryKey = decode(entryKey);
-                var decodedEntryValue = decode(entryValue);
-
-                if (!string.IsNullOrEmpty(decodedEntryKey))
+                if (!string.IsNullOrEmpty(entryKey))
                 {
-                    dictionary[decodedEntryKey] = decodedEntryValue;
+                    dictionary[entryKey] = entryValue;
                 }
-            }
-
-            static IEnumerable<string> readEntries(string rawText)
-            {
-                bool escaped = false;
-                int entryStart = 0;
-                for (int i = 0; i < rawText.Length; i++)
-                {
-                    if (rawText[i] == ',' && !escaped)
-                    {
-                        yield return rawText.Substring(entryStart, i - entryStart);
-                        entryStart = i + 1;
-                        escaped = false;
-                    }
-                    else if (rawText[i] == '/')
-                    {
-                        escaped = !escaped;
-                    }
-                    else
-                    {
-                        escaped = false;
-                    }
-                }
-
-                yield return rawText.Substring(entryStart);
-            }
-
-            static (string encodedKey, string encodedValue) splitEntry(string entry)
-            {
-                bool escaped = false;
-                for (int i = 0; i < entry.Length; i++)
-                {
-                    if (entry[i] == '=' && !escaped)
-                    {
-                        return (entry.Substring(0, i), entry.Substring(i + 1));
-                    }
-                    else if (entry[i] == '/')
-                    {
-                        escaped = !escaped;
-                    }
-                    else
-                    {
-                        escaped = false;
-                    }
-                }
-
-                return (string.Empty, string.Empty);
-            }
-
-            static string decode(string value)
-            {
-                return value.Replace("/=", "=").Replace("/,", ",").Replace("//", "/");
             }
         }
     }
