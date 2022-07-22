@@ -1,0 +1,34 @@
+<!-- Copyright (c)  Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information. -->
+<Project>
+
+  <!-- Note: SwixBuild automatically adds the .vsix to FilesToSign via the AddTargetPathToFilesToSign target. -->
+
+  <Import Project="..\Directory.Build.props" />
+  <!-- This currently loads all SwixBuild packages, and multiple packages existing in your NuGet cache breaks the build. -->
+  <Import Project="$(MicroBuildCoreDir)Microsoft.VisualStudioEng.MicroBuild.Core.props" />
+  <!-- <Import Project="$(SwixBuildDir)Microsoft.VisualStudioEng.MicroBuild.Plugins.SwixBuild.props" /> -->
+
+  <PropertyGroup>
+    <OutputArchitecture>neutral</OutputArchitecture>
+    <OutputLocalized>false</OutputLocalized>
+    <OutputName>$(MSBuildProjectName)</OutputName>
+    <OutputPath>$(VisualStudioSetupInsertionPath)</OutputPath>
+    <OutputType>vsix</OutputType>
+    <IsPackage>true</IsPackage>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Package Include="CommonFiles.swr" />
+    <!-- TODO: Remove this for: https://github.com/dotnet/project-system/issues/8268 -->
+    <Package Include="ext.xproj.swr" />
+  </ItemGroup>
+
+  <PropertyGroup>
+    <PackagePreprocessorDefinitions>$(PackagePreprocessorDefinitions);Version=$(BuildVersion);VisualStudioXamlRulesDir=$(VisualStudioXamlRulesDir)</PackagePreprocessorDefinitions>
+  </PropertyGroup>
+
+  <!-- This currently loads all SwixBuild packages, and multiple packages existing in your NuGet cache breaks the build. -->
+  <Import Project="$(MicroBuildCoreDir)Microsoft.VisualStudioEng.MicroBuild.Core.targets" />
+  <!-- <Import Project="$(SwixBuildDir)Microsoft.VisualStudioEng.MicroBuild.Plugins.SwixBuild.targets" /> -->
+
+</Project>

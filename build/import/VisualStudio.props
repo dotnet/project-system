@@ -1,5 +1,6 @@
 <!-- Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information. -->
 <Project>
+
   <Import Project="HostAgnostic.props"/>
 
   <ItemGroup>
@@ -11,9 +12,8 @@
     <Reference Include="System.Xaml" />
     <Reference Include="WindowsFormsIntegration" />
     
-    <!-- Toolset -->
-    <PackageReference Include="RoslynTools.ModifyVsixManifest" PrivateAssets="All"/>
-    <PackageReference Include="Microsoft.VSSDK.BuildTools" PrivateAssets="All" />
+    <!-- Infrastructure -->
+    <PackageReference Include="Microsoft.VSSDK.BuildTools"     PrivateAssets="all" />
 
     <!-- VS SDK -->
     <PackageReference Include="Microsoft.Internal.VisualStudio.Interop" />
@@ -23,7 +23,7 @@
     <PackageReference Include="Microsoft.VisualStudio.Interop" />
     <PackageReference Include="Microsoft.VisualStudio.ManagedInterfaces" />
     <PackageReference Include="Microsoft.VisualStudio.RpcContracts" />
-    <PackageReference Include="Microsoft.VisualStudio.Threading.Analyzers" />    
+    <PackageReference Include="Microsoft.VisualStudio.Threading.Analyzers" />
     <PackageReference Include="Microsoft.VisualStudio.Shell.15.0" />
     <PackageReference Include="Microsoft.VisualStudio.Shell.Design" />
     <PackageReference Include="Microsoft.VisualStudio.Shell.Framework" />

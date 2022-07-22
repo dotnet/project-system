@@ -1,5 +1,5 @@
 <!-- Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information. -->
-<Project DefaultTargets="Restore;Build;GenerateDependentAssemblyVersionsFile;GenerateVSManifest" LocalProperty="SolutionPath">
+<Project DefaultTargets="Restore;Build" LocalProperty="SolutionPath">
 
   <!--
   Required parameters:
@@ -13,14 +13,12 @@
     IntegrationTest                 "true" to run integration tests
   -->
 
-  <Import Project="..\import\Versions.props"/>
-  <Import Project="..\import\NuGet.props"/>
+  <Import Project="..\import\Versions.props" />
   <Import Project="..\import\RepoLayout.props" />
 
   <PropertyGroup>
     <SolutionFileName>ProjectSystem.sln</SolutionFileName>
     <SolutionPath>$(RepoRoot)$(SolutionFileName)</SolutionPath>
-    <ToolsetPath>$(NuGetPackageRoot)RoslynTools.RepoToolset\$(RoslynToolsRepoToolsetVersion)\tools\</ToolsetPath>
     <BuildOrRebuild Condition="'$(Build)' == 'true' or '$(Rebuild)' == 'true'">true</BuildOrRebuild>
   </PropertyGroup>
 
@@ -28,8 +26,8 @@
     <CommonBuildProperty Include="Configuration=$(Configuration)" />
     <CommonBuildProperty Include="CIBuild=$(CIBuild)" />
     <CommonBuildProperty Include="RepoRoot=$(RepoRoot)" />
-    <CommonBuildProperty Include="VersionsPropsPath=$(RepoRoot)build\import\Versions.props" />
     <CommonBuildProperty Include="QuickSrcBuild=$(QuickSrcBuild)" />
+    <CommonBuildProperty Include="UsingCodeCoverage=$(UsingCodeCoverage)" />
   </ItemGroup>
 
   <ItemGroup>
@@ -37,6 +35,10 @@
     <SolutionRestoreAndBuildProperty Include="__DeployProjectOutput=$(Deploy)" Condition="'$(Deploy)' != ''" />
   </ItemGroup>
 
+  <!--
+    Creates a new solution file for projects within the 'src' folder only and sets the properties appropriately for the Build target.
+    This is useful for SBOM generation as the assemblies are necessary for SBOM prior to VSIX packaging.
+  -->
   <Target Name="GenerateSolutionForQuickSrcBuild" BeforeTargets="Restore" Condition="'$(QuickSrcBuild)' == 'true'">
     <PropertyGroup>
       <SolutionName>Src</SolutionName>
@@ -81,17 +83,4 @@
     <MSBuild Projects="$(SolutionPath)" Properties="@(SolutionRestoreAndBuildProperty);__BuildPhase=SolutionBuild" Targets="@(SolutionBuildTarget)" BuildInParallel="true" Condition="'@(SolutionBuildTarget)' != ''" />
   </Target>
 
-  <!-- Generate insertion assets -->
-  <Target Name="GenerateDependentAssemblyVersionsFile" Condition="'$(BuildOrRebuild)' == 'true'">
-    <MSBuild Projects="GenerateDependentAssemblyVersionFile.proj" BuildInParallel="true" />
-  </Target>
-
-  <!-- TODO: This file, VisualStudio.Insertion.proj, doesn't exist in the latest RepoToolset version. -->
-  <Target Name="GenerateVSManifest" Condition="'$(BuildOrRebuild)' == 'true'">
-    <!--
-      Because multiple projects can contribute to a single insertion component we package them in a separate phase.
-      Also due to insertion manifests containing hashes of references VSIXes, so we need to run this after signing.
-    -->
-    <MSBuild Projects="$(ToolsetPath)VisualStudio.Insertion.proj" Properties="@(CommonBuildProperty)" Targets="Pack" />
-  </Target>
 </Project>

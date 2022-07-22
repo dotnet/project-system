@@ -264,10 +264,13 @@
       </Item>
       <Item ItemId=";IncrementalBuildFailureWarningMessage_2" ItemType="0" PsrId="308" InstFlg="true" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[WARNING: Potential incremental build failure in '{0}'. {1}. See https://aka.ms/incremental-build-failure.]]></Val>
+          <Val><![CDATA[WARNING: Potential build performance issue in '{0}'. The project does not appear up-to-date after a successful build: {1}. See https://aka.ms/incremental-build-failure.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[경고: '{0}'에서 증분 빌드 실패가 발생할 수 있습니다. {1}. 참조: https://aka.ms/incremental-build-failure]]></Val>
+            <Val><![CDATA[경고: '{0}'에서의 잠재적 빌드 성능 문제입니다. 빌드가 성공한 후에는 프로젝트가 최신 상태로 표시되지 않습니다. {1}. https://aka.ms/incremental-build-failure를 참조하세요.]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[WARNING: Potential incremental build failure in '{0}'. {1}. See https://aka.ms/incremental-build-failure.]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
