@@ -70,7 +70,6 @@ internal class MyAppFileAccessor : IMyAppFileAccessor, IDisposable
     {
         if (_docData?.Data is null)
         {
-            await TaskScheduler.Default;
             // Create My Project directory if it doesn't exist. If it does, nothing happens
             await _storage.CreateFolderAsync("My Project");
 
@@ -94,6 +93,7 @@ internal class MyAppFileAccessor : IMyAppFileAccessor, IDisposable
         catch (Exception)
         {
             // If we've reached here, the file write succeeded but the file may have been deleted by the time UI thread is switched to
+            return null;
         }
 
         await TaskScheduler.Default;
