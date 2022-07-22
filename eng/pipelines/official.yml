@@ -40,12 +40,6 @@ parameters:
 ###################################################################################################################################################################
 
 steps:
-- task: PowerShell@2
-  displayName: Show environment variables
-  inputs:
-    targetType: 'inline'
-    script: 'Get-ChildItem -Path Env:\ | Format-List'
-
 - task: MicroBuildSigningPlugin@4
   displayName: Install Signing Plugin
   inputs:
