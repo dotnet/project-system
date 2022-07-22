@@ -148,7 +148,8 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                 ' then get the CodeCompileUnit for this .settings file
                 '
                 Dim generatedClass As CodeTypeDeclaration = Nothing
-                Dim CompileUnit As CodeCompileUnit = Create(DirectCast(GetService(GetType(IVsHierarchy)), IVsHierarchy),
+                Dim CompileUnit As CodeCompileUnit = Create(isVB,
+                                                            DirectCast(GetService(GetType(IVsHierarchy)), IVsHierarchy),
                                                             Settings,
                                                             wszDefaultNamespace,
                                                             wszInputFilePath,
@@ -231,7 +232,8 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <param name="GeneratedClassVisibility"></param>
         ''' <param name="GenerateVBMyAutoSave"></param>
         ''' <returns>CodeCompileUnit of the given DesignTimeSettings object</returns>
-        Friend Shared Function Create(Hierarchy As IVsHierarchy,
+        Friend Shared Function Create(IsVb as Boolean,
+                                      Hierarchy As IVsHierarchy,
                                       Settings As DesignTimeSettings,
                                       DefaultNamespace As String,
                                       FilePath As String,
@@ -248,7 +250,14 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
 
             ' Create a new namespace to put our class in
             '
-            Dim ns As New CodeNamespace()
+            Dim ns as CodeNamespace
+            
+            If IsVb Then
+                ns = New CodeNamespace()
+            Else
+                ns = New CodeNamespace(DesignerFramework.DesignUtil.GenerateValidLanguageIndependentNamespace(DefaultNamespace))
+            End If
+            
             CompileUnit.Namespaces.Add(ns)
 
             ' Create the strongly typed settings class
