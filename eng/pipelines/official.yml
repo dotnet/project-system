@@ -35,7 +35,6 @@ parameters:
   type: boolean
   default: false
 
-
 ###################################################################################################################################################################
 # SBOM GENERATION
 # This occurs above plugin installation so that the Src build does not perform signing.
@@ -50,6 +49,7 @@ steps:
     configuration: $(BuildConfiguration)
     msBuildArguments: '/m /warnAsError /noLogo /clp:Summary /v:normal /p:CIBuild=true /p:Test=false /p:Pack=false /p:TestProjects=false /p:SetupProjects=false /bl:$(Build.SourcesDirectory)\artifacts\log\SrcBuild.binlog'
 
+# This task both generates the SBOM files and marks the pipeline as compliant.
 - task: ManifestGeneratorTask@0
   displayName: Generate SBOM
   inputs:
