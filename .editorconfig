@@ -390,6 +390,7 @@ dotnet_diagnostic.VSTHRD103.severity = none     # Call async methods when in an 
 dotnet_diagnostic.VSTHRD108.severity = none     # Thread affinity checks should be unconditional.
 dotnet_diagnostic.VSTHRD003.severity = none     # Avoid awaiting or returning a Task representing work that was not started within your context as that can lead to deadlocks
 dotnet_diagnostic.VSTHRD111.severity = none     # Use ConfigureAwait(true).
+dotnet_diagnostic.VSTHRD100.severity = error    # Avoid async void methods
 
 # Microsoft.VisualStudio.SDK.Analyzers
 dotnet_diagnostic.VSSDK006.severity = none      # Check whether the result of GetService calls is null
