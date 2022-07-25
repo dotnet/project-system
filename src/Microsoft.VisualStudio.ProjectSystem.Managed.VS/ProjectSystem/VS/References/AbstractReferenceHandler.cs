@@ -70,7 +70,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.References
             var propertyNames = await metadata.GetPropertyNamesAsync();
             string? value = await metadata.GetEvaluatedPropertyValueAsync(ProjectReference.TreatAsUsedProperty);
 
-            return value != null && PropertySerializer.SimpleTypes.ToValue<bool>(value);
+            return value is not null && PropertySerializer.SimpleTypes.ToValue<bool>(value);
         }
 
         private async Task<IProjectItem?> GetProjectItemsAsync(ConfiguredProject selectedConfiguredProject,
@@ -127,7 +127,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.References
         {
             IProjectItem? items = await GetProjectItemsAsync(selectedConfiguredProject, itemSpecification);
 
-            if (items != null)
+            if (items is not null)
             {
                 foreach ((string propertyName, string propertyValue) in projectPropertiesValues)
                 {

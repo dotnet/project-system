@@ -145,7 +145,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
                 // them to actually contains changes, only nominate if there are any.
                 byte[] hash = RestoreHasher.CalculateHash(restoreInfo);
 
-                if (_latestHash != null && hash.AsSpan().SequenceEqual(_latestHash))
+                if (_latestHash is not null && hash.AsSpan().SequenceEqual(_latestHash))
                 {
                     _stopwatch.Reset();
                     _nuGetRestoreSuccesses++;

@@ -22,13 +22,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Utilities
 
         protected override void OnCollectionChanged(NotifyCollectionChangedEventArgs e)
         {
-            if (e.OldItems != null)
+            if (e.OldItems is not null)
             {
                 foreach (INotifyPropertyChanged item in e.OldItems)
                     item.PropertyChanged -= OnItemPropertyChanged;
             }
 
-            if (e.NewItems != null)
+            if (e.NewItems is not null)
             {
                 foreach (INotifyPropertyChanged item in e.NewItems)
                     item.PropertyChanged += OnItemPropertyChanged;

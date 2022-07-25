@@ -28,7 +28,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedColl
         {
             _sourceItem = Requires.NotNull(sourceItem, nameof(sourceItem));
 
-            if (collection != null)
+            if (collection is not null)
             {
                 SetCollection(collection);
             }
@@ -50,7 +50,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedColl
         bool IAttachedCollectionSource.HasItems => _collection?.HasItems == true;
 
         // We are updating items until they are provided
-        bool IAsyncAttachedCollectionSource.IsUpdatingHasItems => _collection == null;
+        bool IAsyncAttachedCollectionSource.IsUpdatingHasItems => _collection is null;
 
         /// <summary>
         /// Sets the backing collection for this source, for cases where that collection was not available at the time
@@ -61,7 +61,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedColl
         /// </exception>
         public void SetCollection(IAggregateRelationCollection collection)
         {
-            if (_collection != null)
+            if (_collection is not null)
             {
                 throw new InvalidOperationException("Backing collection has already been provided.");
             }

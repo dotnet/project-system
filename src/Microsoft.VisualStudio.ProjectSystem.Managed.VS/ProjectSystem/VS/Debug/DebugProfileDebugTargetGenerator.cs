@@ -97,13 +97,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
         {
             if (disposing)
             {
-                if (_launchProfileProviderLink != null)
+                if (_launchProfileProviderLink is not null)
                 {
                     _launchProfileProviderLink.Dispose();
                     _launchProfileProviderLink = null;
                 }
 
-                if (_debugProviderLink != null)
+                if (_debugProviderLink is not null)
                 {
                     _debugProviderLink.Dispose();
                     _debugProviderLink = null;

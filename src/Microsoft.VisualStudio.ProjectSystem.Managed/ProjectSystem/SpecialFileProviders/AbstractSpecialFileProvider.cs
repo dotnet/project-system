@@ -28,7 +28,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.SpecialFileProviders
 
             // Attempt to find an existing file/folder first
             string? path = await FindFileAsync(state.TreeProvider, state.Tree, flags);
-            if (path == null)
+            if (path is null)
             {
                 // Otherwise, fall back and create it
                 path = await CreateDefaultFileAsync(state.TreeProvider, state.Tree, flags);
@@ -40,11 +40,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.SpecialFileProviders
         private async Task<string?> FindFileAsync(IProjectTreeProvider provider, IProjectTree root, SpecialFileFlags flags)
         {
             IProjectTree? node = await FindFileAsync(provider, root);
-            if (node == null)
+            if (node is null)
                 return null;
 
             string? path = GetFilePath(provider, node);
-            if (path != null && flags.HasFlag(SpecialFileFlags.CreateIfNotExist))
+            if (path is not null && flags.HasFlag(SpecialFileFlags.CreateIfNotExist))
             {
                 // Similar to legacy, we only verify state if we've been asked to create it
                 await VerifyStateAsync(node, path);
@@ -57,7 +57,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.SpecialFileProviders
         {
             string? path = await GetDefaultFileAsync(provider, root);
 
-            if (path != null && flags.HasFlag(SpecialFileFlags.CreateIfNotExist))
+            if (path is not null && flags.HasFlag(SpecialFileFlags.CreateIfNotExist))
             {
                 await CreateFileAsync(path);
             }

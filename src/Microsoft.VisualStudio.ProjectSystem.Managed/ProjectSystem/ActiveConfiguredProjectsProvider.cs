@@ -96,7 +96,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
         {
             ActiveConfiguredObjects<ProjectConfiguration>? configurations = await GetActiveProjectConfigurationsAsync();
 
-            if (configurations == null)
+            if (configurations is null)
             {
                 return null;
             }
@@ -117,7 +117,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
         {
             ProjectConfiguration? activeSolutionConfiguration = _services.ActiveConfiguredProjectProvider?.ActiveProjectConfiguration;
 
-            if (activeSolutionConfiguration == null)
+            if (activeSolutionConfiguration is null)
             {
                 return null;
             }

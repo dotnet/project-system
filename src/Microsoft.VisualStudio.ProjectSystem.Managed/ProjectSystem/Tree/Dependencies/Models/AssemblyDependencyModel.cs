@@ -53,7 +53,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Models
             {
                 string? fusionName = properties.GetStringProperty(ResolvedAssemblyReference.FusionNameProperty);
 
-                return fusionName == null ? path : new AssemblyName(fusionName).Name;
+                return fusionName is null ? path : new AssemblyName(fusionName).Name;
             }
 
             return path;

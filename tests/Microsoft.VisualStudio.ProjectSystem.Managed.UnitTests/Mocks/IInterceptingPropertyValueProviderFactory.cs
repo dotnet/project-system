@@ -13,7 +13,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
         {
             var mock = new Mock<IInterceptingPropertyValueProvider>();
 
-            if (onGetEvaluatedPropertyValue != null)
+            if (onGetEvaluatedPropertyValue is not null)
             {
                 mock.Setup(t => t.OnGetEvaluatedPropertyValueAsync(
                     It.IsAny<string>(),
@@ -22,7 +22,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
                      .Returns<string, string, IProjectProperties>((n, u, p) => Task.FromResult(onGetEvaluatedPropertyValue(u, p)));
             }
 
-            if (onGetUnevaluatedPropertyValue != null)
+            if (onGetUnevaluatedPropertyValue is not null)
             {
                 mock.Setup(t => t.OnGetUnevaluatedPropertyValueAsync(
                     It.IsAny<string>(),
@@ -31,7 +31,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
                      .Returns<string, string, IProjectProperties>((n, u, p) => Task.FromResult(onGetUnevaluatedPropertyValue(u, p)));
             }
 
-            if (onSetPropertyValue != null)
+            if (onSetPropertyValue is not null)
             {
                 mock.Setup(t => t.OnSetPropertyValueAsync(
                     It.IsAny<string>(),

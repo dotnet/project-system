@@ -37,11 +37,11 @@ namespace Microsoft.VisualStudio.ProjectSystem
             return Id == dependency.Id
                    && ProviderType == dependency.ProviderType
                    && Flags == dependency.Flags
-                   && (Caption == null || Caption == dependency.Caption)
-                   && (OriginalItemSpec == null || OriginalItemSpec == dependency.OriginalItemSpec)
-                   && (Path == null || Path == dependency.FilePath)
-                   && (SchemaName == null || SchemaName == dependency.SchemaName)
-                   && (SchemaItemType == null || !Flags.Contains(DependencyTreeFlags.Dependency) || SchemaItemType == dependency.SchemaItemType)
+                   && (Caption is null || Caption == dependency.Caption)
+                   && (OriginalItemSpec is null || OriginalItemSpec == dependency.OriginalItemSpec)
+                   && (Path is null || Path == dependency.FilePath)
+                   && (SchemaName is null || SchemaName == dependency.SchemaName)
+                   && (SchemaItemType is null || !Flags.Contains(DependencyTreeFlags.Dependency) || SchemaItemType == dependency.SchemaItemType)
                    && Resolved == dependency.Resolved
                    && Implicit == dependency.Implicit
                    && Visible == dependency.Visible
@@ -55,7 +55,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
         private static bool Equals(IImmutableDictionary<string, string> a, IImmutableDictionary<string, string> b)
         {
             // Allow b to have whatever if we didn't specify any properties
-            if (a == null || a.Count == 0)
+            if (a is null || a.Count == 0)
                 return true;
 
             return a.Count == b.Count &&

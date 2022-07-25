@@ -152,7 +152,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
             if (!_options.HasFlag(ProjectTreeWriterOptions.SubType))
                 return;
 
-            if (tree.BrowseObjectProperties != null)
+            if (tree.BrowseObjectProperties is not null)
             {
                 _builder.Append(", SubType: ");
                 _builder.Append(tree.BrowseObjectProperties.GetPropertyValueAsync("SubType").Result);
@@ -215,7 +215,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
         {
             _builder.AppendFormat(", {0}: {{", name);
 
-            if (icon != null)
+            if (icon is not null)
             {
                 _builder.AppendFormat("{1} {2}", name, icon.Guid.ToString("D").ToUpperInvariant(), icon.Id);
             }

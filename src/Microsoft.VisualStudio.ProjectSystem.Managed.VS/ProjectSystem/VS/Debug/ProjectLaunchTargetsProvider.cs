@@ -156,7 +156,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             ILaunchProfile resolvedProfile = await _tokenReplacer.ReplaceTokensInProfileAsync(activeProfile);
 
             DebugLaunchSettings? consoleTarget = await GetConsoleTargetForProfileAsync(resolvedProfile, launchOptions, validateSettings);
-            return consoleTarget == null ? null : new[] { consoleTarget };
+            return consoleTarget is null ? null : new[] { consoleTarget };
         }
 
         /// <summary>
@@ -335,7 +335,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
                         else
                         {
                             string? fullPathFromEnv = GetFullPathOfExeFromEnvironmentPath(exeName);
-                            if (fullPathFromEnv != null)
+                            if (fullPathFromEnv is not null)
                             {
                                 executable = fullPathFromEnv;
                             }
@@ -394,7 +394,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
                 if (!Strings.IsNullOrEmpty(remoteAuthenticationMode))
                 {
                     IRemoteAuthenticationProvider? remoteAuthenticationProvider = _remoteDebuggerAuthenticationService.FindProviderForAuthenticationMode(remoteAuthenticationMode);
-                    if (remoteAuthenticationProvider != null)
+                    if (remoteAuthenticationProvider is not null)
                     {
                         settings.PortSupplierGuid = remoteAuthenticationProvider.PortSupplierGuid;
                     }
@@ -542,7 +542,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             if (runCommand.IndexOf(Path.DirectorySeparatorChar) == -1)
             {
                 string? executable = GetFullPathOfExeFromEnvironmentPath(runCommand);
-                if (executable != null)
+                if (executable is not null)
                 {
                     runCommand = executable;
                 }

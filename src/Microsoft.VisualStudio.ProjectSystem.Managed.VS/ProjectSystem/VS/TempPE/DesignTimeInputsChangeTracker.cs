@@ -110,7 +110,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
 
             // Ignore any file changes until we've received the first set of design time inputs (which shouldn't happen anyway)
             // That first update will send out all of the files so we're not losing anything
-            if (state == null)
+            if (state is null)
             {
                 return;
             }
@@ -161,7 +161,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
 
             var changedInputs = new List<DesignTimeInputFileChange>();
             // On the first call where we receive design time inputs we queue compilation of all of them, knowing that we'll only compile if the file write date requires it
-            if (previousState == null)
+            if (previousState is null)
             {
                 AddAllInputsToQueue(false);
             }

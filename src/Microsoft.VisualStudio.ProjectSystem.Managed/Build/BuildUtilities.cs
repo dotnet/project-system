@@ -68,7 +68,7 @@ namespace Microsoft.VisualStudio.Build
 
                 if (!string.IsNullOrEmpty(s))
                 {
-                    if (seen == null)
+                    if (seen is null)
                     {
                         seen = new HashSet<string>(StringComparers.PropertyValues) { s };
                         yield return s;
@@ -211,7 +211,7 @@ namespace Microsoft.VisualStudio.Build
             Requires.NotNull(project, nameof(project));
             ProjectPropertyElement? property = GetProperty(project, propertyName);
 
-            if (property != null)
+            if (property is not null)
             {
                 return property;
             }

@@ -36,7 +36,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
         /// <returns>If the method succeeds, it returns S_OK. If it fails, it returns an error code.</returns>
         public int GetBuildMacroValue(string bstrBuildMacroName, out string? pbstrBuildMacroValue)
         {
-            if (_configuredProject == null)
+            if (_configuredProject is null)
             {
                 pbstrBuildMacroValue = null;
                 return HResult.Unexpected;

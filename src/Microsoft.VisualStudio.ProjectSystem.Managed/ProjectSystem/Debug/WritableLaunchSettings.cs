@@ -6,7 +6,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
     {
         public WritableLaunchSettings(ILaunchSettings settings)
         {
-            if (settings.Profiles != null)
+            if (settings.Profiles is not null)
             {
                 foreach (ILaunchProfile profile in settings.Profiles)
                 {
@@ -20,7 +20,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
                 GlobalSettings.Add(key, value);
             }
 
-            if (settings.ActiveProfile != null)
+            if (settings.ActiveProfile is not null)
             {
                 ActiveProfile = Profiles.Find(profile => LaunchProfile.IsSameProfileName(profile.Name, settings.ActiveProfile.Name));
             }

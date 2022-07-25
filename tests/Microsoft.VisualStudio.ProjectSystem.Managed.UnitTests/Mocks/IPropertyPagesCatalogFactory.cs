@@ -59,7 +59,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
             property.As<IEvaluatedProperty>().Setup(p => p.GetEvaluatedValueAtEndAsync()).ReturnsAsync(value.ToString());
             property.As<IEvaluatedProperty>().Setup(p => p.GetEvaluatedValueAsync()).ReturnsAsync(value.ToString());
 
-            if (setValues != null)
+            if (setValues is not null)
             {
                 property.Setup(p => p.SetValueAsync(It.IsAny<object>()))
                         .Callback<object>(setValues.Add)

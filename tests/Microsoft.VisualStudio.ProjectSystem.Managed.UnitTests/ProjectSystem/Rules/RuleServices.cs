@@ -15,7 +15,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Rules
             foreach (var member in GetAllExportedMembers())
             {
                 var attribute = member.GetCustomAttribute<ExportRuleAttribute>();
-                if (attribute != null)
+                if (attribute is not null)
                     yield return attribute.RuleName;
             }
         }

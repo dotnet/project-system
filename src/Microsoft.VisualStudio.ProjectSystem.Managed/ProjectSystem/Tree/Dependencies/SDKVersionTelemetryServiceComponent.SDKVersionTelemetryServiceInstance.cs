@@ -37,7 +37,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies
 
                     ConfigurationGeneral projectProperties = await _projectVsServices.ActiveConfiguredProjectProperties.GetConfigurationGeneralPropertiesAsync();
                     Task<object?>? task = projectProperties?.NETCoreSdkVersion?.GetValueAsync();
-                    string? version = task == null ? string.Empty : (string?)await task;
+                    string? version = task is null ? string.Empty : (string?)await task;
                     string? projectId = await GetProjectIdAsync();
 
                     if (Strings.IsNullOrEmpty(version) || Strings.IsNullOrEmpty(projectId))

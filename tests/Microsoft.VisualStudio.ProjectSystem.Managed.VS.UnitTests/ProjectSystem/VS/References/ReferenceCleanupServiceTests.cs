@@ -201,7 +201,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.References
                 item.As<IProjectItem>().Setup(c => c.Metadata.GetEvaluatedPropertyValueAsync(ProjectReference.TreatAsUsedProperty))
                     .ReturnsAsync(evaluatedValue);
 
-                if (s_item == null && item is Mock<IUnresolvedPackageReference> packageItem)
+                if (s_item is null && item is Mock<IUnresolvedPackageReference> packageItem)
                 {
                     s_item = packageItem;
                 }

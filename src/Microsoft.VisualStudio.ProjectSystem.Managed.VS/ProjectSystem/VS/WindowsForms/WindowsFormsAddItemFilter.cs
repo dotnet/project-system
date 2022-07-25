@@ -30,7 +30,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.WindowsForms
             pfFilter = 0;
 
             var project = _project;
-            if (project == null)
+            if (project is null)
             {
                 return HResult.Unexpected;
             }

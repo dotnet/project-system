@@ -15,7 +15,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Rules
 
             MemberInfo member = typeof(RuleExporter).GetField(name);
 
-            Assert.True(member != null, $"Rule '{fullPath}' has not been exported by {nameof(RuleExporter)}. Export this rule from a member called {name}.");
+            Assert.True(member is not null, $"Rule '{fullPath}' has not been exported by {nameof(RuleExporter)}. Export this rule from a member called {name}.");
         }
 
         [Theory]
@@ -31,7 +31,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Rules
         {
             var attribute = member.GetCustomAttribute<AppliesToAttribute>();
 
-            Assert.True(attribute != null, $"'{GetTypeQualifiedName(member)}' must be marked with [AppliesTo]");
+            Assert.True(attribute is not null, $"'{GetTypeQualifiedName(member)}' must be marked with [AppliesTo]");
         }
 
         [Theory]
@@ -59,10 +59,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.Rules
             foreach (MemberInfo member in members)
             {
                 var attribute = member.GetCustomAttribute<AppliesToAttribute>();
-                if (attribute == null)
+                if (attribute is null)
                     continue; // Another test will catch this
 
-                if (appliesTo == null)
+                if (appliesTo is null)
                 {
                     appliesTo = attribute.AppliesTo;
                 }
@@ -108,7 +108,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Rules
 
             using Stream stream = assembly.GetManifestResourceStream(attribute.XamlResourceStreamName);
 
-            Assert.True(stream != null, $"The rule '{attribute.XamlResourceStreamName}' indicated by '{GetTypeQualifiedName(member)}' does not exist in assembly '{attribute.XamlResourceAssemblyName}'.");
+            Assert.True(stream is not null, $"The rule '{attribute.XamlResourceStreamName}' indicated by '{GetTypeQualifiedName(member)}' does not exist in assembly '{attribute.XamlResourceAssemblyName}'.");
         }
 
         private static string GetTypeQualifiedName(MemberInfo member)

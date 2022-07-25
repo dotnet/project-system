@@ -52,7 +52,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Commands
         {
             string? identifier = GetReferenceProviderIdentifier(commandId);
 
-            if (identifier != null)
+            if (identifier is not null)
             {
                 _referencesUI.ShowReferenceManagerDialog(new Guid(identifier));
                 return true;
@@ -64,7 +64,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Commands
         private bool CanAddReference(long commandId)
         {
             string? identifier = GetReferenceProviderIdentifier(commandId);
-            if (identifier != null)
+            if (identifier is not null)
             {
                 Lazy<IVsReferenceManagerUserAsync>? user = ReferenceManagerUsers.FirstOrDefault(u => u.Metadata.ProviderContextIdentifier == identifier);
 

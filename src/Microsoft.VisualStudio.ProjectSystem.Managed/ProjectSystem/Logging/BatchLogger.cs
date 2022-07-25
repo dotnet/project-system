@@ -78,7 +78,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
 
         public void Dispose()
         {
-            if (_builder != null)
+            if (_builder is not null)
             {
                 _outputService.WriteLine(_builder.ToString());
             }

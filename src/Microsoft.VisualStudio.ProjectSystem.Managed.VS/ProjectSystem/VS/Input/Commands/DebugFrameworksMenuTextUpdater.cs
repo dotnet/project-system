@@ -65,7 +65,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
                     {
                         frameworks = await activeDebugFramework.GetProjectFrameworksAsync();
 
-                        if (first == null)
+                        if (first is null)
                         {
                             first = frameworks;
                         }

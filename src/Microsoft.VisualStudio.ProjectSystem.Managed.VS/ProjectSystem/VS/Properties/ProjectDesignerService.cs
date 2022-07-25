@@ -40,7 +40,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
 
             IVsWindowFrame? frame = _projectVsServices.VsProject.OpenItemWithSpecific(HierarchyId.Root, projectDesignerGuid);
 
-            if (frame != null)
+            if (frame is not null)
             {   // Opened within Visual Studio
                 // Can only use Shell APIs on the UI thread
                 await _projectVsServices.ThreadingService.SwitchToUIThread();

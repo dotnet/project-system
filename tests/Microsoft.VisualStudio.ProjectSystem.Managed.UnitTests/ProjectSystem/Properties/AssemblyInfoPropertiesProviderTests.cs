@@ -36,7 +36,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
             Func<ProjectId>? getActiveProjectId = null)
             : base(delegatedProvider: IProjectPropertiesProviderFactory.Create(defaultProperties ?? IProjectPropertiesFactory.MockWithProperty("").Object),
                   instanceProvider: instanceProvider ?? IProjectInstancePropertiesProviderFactory.Create(),
-                  interceptingValueProviders: interceptingProvider == null ?
+                  interceptingValueProviders: interceptingProvider is null ?
                     new[] { new Lazy<IInterceptingPropertyValueProvider, IInterceptingPropertyValueProviderMetadata>(
                         () => IInterceptingPropertyValueProviderFactory.Create(),
                         IInterceptingPropertyValueProviderMetadataFactory.Create("TestPropertyName")) } :
@@ -278,7 +278,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         [InlineData("""[assembly: System.Reflection.AssemblyInformationalVersionAttribute("2016.2")]""", "Version", "2016.2", null)]
         internal async Task SourceFileProperties_DefaultValues_GetEvaluatedPropertyAsync(string code, string propertyName, string expectedValue, Type interceptingProviderType)
         {
-            var interceptingProvider = interceptingProviderType != null ?
+            var interceptingProvider = interceptingProviderType is not null ?
                 new Lazy<IInterceptingPropertyValueProvider, IInterceptingPropertyValueProviderMetadata>(
                     valueFactory: () => (IInterceptingPropertyValueProvider)Activator.CreateInstance(interceptingProviderType),
                     metadata: IInterceptingPropertyValueProviderMetadataFactory.Create(propertyName)) :
@@ -352,7 +352,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         [InlineData("Version", null, "2016.2", "2016.2", null)]
         internal async Task ProjectFileProperties_WithInterception_SetEvaluatedPropertyAsync(string propertyName, string existingPropertyValue, string propertyValueToSet, string expectedValue, Type interceptingProviderType)
         {
-            var interceptingProvider = interceptingProviderType != null ?
+            var interceptingProvider = interceptingProviderType is not null ?
                 new Lazy<IInterceptingPropertyValueProvider, IInterceptingPropertyValueProviderMetadata>(
                     valueFactory: () => (IInterceptingPropertyValueProvider)Activator.CreateInstance(interceptingProviderType),
                     metadata: IInterceptingPropertyValueProviderMetadataFactory.Create(propertyName)) :

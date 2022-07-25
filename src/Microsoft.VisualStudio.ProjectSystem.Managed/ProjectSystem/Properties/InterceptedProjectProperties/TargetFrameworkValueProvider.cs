@@ -20,7 +20,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
             ConfigurationGeneral configuration = await _properties.GetConfigurationGeneralPropertiesAsync();
             string? targetFrameworkMoniker = (string?)await configuration.TargetFrameworkMoniker.GetValueAsync();
 
-            if (targetFrameworkMoniker != null)
+            if (targetFrameworkMoniker is not null)
             {
                 var targetFramework = new FrameworkName(targetFrameworkMoniker);
 

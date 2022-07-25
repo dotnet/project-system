@@ -39,7 +39,7 @@ namespace Microsoft.VisualStudio.Shell
             get
             {
                 _threadingService.VerifyOnUIThread();
-                return _solutionExplorer.Value != null;
+                return _solutionExplorer.Value is not null;
             }
         }
 
@@ -68,7 +68,7 @@ namespace Microsoft.VisualStudio.Shell
             _threadingService.VerifyOnUIThread();
 
             IVsUIHierarchyWindow2? window = _solutionExplorer.Value;
-            if (window == null)
+            if (window is null)
             {
                 throw new InvalidOperationException("Solution Explorer is not available in command-line mode.");
             }
@@ -78,7 +78,7 @@ namespace Microsoft.VisualStudio.Shell
 
         private static IVsUIHierarchyWindow2? GetUIHierarchyWindow(IVsUIService<IVsUIShell> shell, Guid persistenceSlot)
         {
-            if (ErrorHandler.Succeeded(shell.Value.FindToolWindow(0, ref persistenceSlot, out IVsWindowFrame? frame)) && frame != null)
+            if (ErrorHandler.Succeeded(shell.Value.FindToolWindow(0, ref persistenceSlot, out IVsWindowFrame? frame)) && frame is not null)
             {
                 ErrorHandler.ThrowOnFailure(frame.GetProperty((int)__VSFPROPID.VSFPROPID_DocView, out object? view));
 

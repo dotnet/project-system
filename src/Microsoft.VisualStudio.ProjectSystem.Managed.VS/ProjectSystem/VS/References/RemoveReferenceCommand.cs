@@ -31,7 +31,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.References
         {
             await _referenceHandler.AddReferenceAsync(_selectedConfiguredProject, _itemSpecification);
 
-            if (_projectPropertiesValues != null)
+            if (_projectPropertiesValues is not null)
             {
                 await _referenceHandler.SetAttributesAsync(_selectedConfiguredProject, _itemSpecification, _projectPropertiesValues);
             }

@@ -686,7 +686,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree
             IImmutableDictionary<string, string> projectTreeSettings = ImmutableStringDictionary<string>.EmptyOrdinal;
             IImmutableDictionary<string, IProjectRuleSnapshot> ruleSnapshots = IProjectRuleSnapshotsFactory.Create();
 
-            if (folderName != null)
+            if (folderName is not null)
                 ruleSnapshots = ruleSnapshots.Add(AppDesigner.SchemaName, AppDesigner.FolderNameProperty, folderName);
 
             if (contentOnlyVisibleInShowAllFiles != null)

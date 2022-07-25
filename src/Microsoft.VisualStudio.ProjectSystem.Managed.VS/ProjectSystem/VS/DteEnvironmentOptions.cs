@@ -24,7 +24,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         {
             EnvDTE.Properties? properties = _dte.Value.get_Properties(category, page);
 
-            if (properties != null)
+            if (properties is not null)
             {
                 return (T)properties.Item(option).Value;
             }
@@ -36,7 +36,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         {
             EnvDTE.Properties? properties = _dte.Value.get_Properties(category, page);
 
-            if (properties != null)
+            if (properties is not null)
             {
                 properties.Item(option).Value = newValue;
             }

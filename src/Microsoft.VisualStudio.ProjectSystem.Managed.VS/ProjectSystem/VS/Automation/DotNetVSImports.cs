@@ -85,7 +85,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
                 _ => null
             };
 
-            if (importToRemove != null)
+            if (importToRemove is not null)
             {
                 _threadingService.ExecuteSynchronously(async () =>
                 {

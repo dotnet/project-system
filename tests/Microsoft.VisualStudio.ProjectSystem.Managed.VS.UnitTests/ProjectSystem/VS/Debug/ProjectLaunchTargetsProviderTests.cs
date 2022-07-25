@@ -210,7 +210,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             var activeProfile = new LaunchProfile("run", null, executablePath: ".\\test.exe");
             var targets = await debugger.QueryDebugTargetsAsync(0, activeProfile);
             Assert.Single(targets);
-            if (outdir == null || outdir == @"doesntExist\")
+            if (outdir is null || outdir == @"doesntExist\")
             {
                 Assert.Equal(@"c:\test\project\test.exe", targets[0].Executable);
                 Assert.Equal(@"c:\test\project", targets[0].CurrentDirectory);

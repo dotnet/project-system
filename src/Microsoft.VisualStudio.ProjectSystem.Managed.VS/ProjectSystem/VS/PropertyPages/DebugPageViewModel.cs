@@ -67,7 +67,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
         {
             get
             {
-                if (_projectThreadingService == null)
+                if (_projectThreadingService is null)
                 {
                     IUnconfiguredProjectVsServices projectVsServices = Project.Services.ExportProvider.GetExportedValue<IUnconfiguredProjectVsServices>();
                     _projectThreadingService = projectVsServices.ThreadingService;
@@ -81,7 +81,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
         {
             get
             {
-                if (_remoteDebuggerAuthenticationService == null)
+                if (_remoteDebuggerAuthenticationService is null)
                 {
                     _remoteDebuggerAuthenticationService = Project.Services.ExportProvider.GetExportedValue<IRemoteDebuggerAuthenticationService>();
                 }
@@ -131,7 +131,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
                     // Existing commands are shown in the UI as project
                     // since that is what is run when that command is selected. However, we don't want to just update the actual
                     // profile to this value - we want to treat them as equivalent.
-                    if (_selectedLaunchType != null)
+                    if (_selectedLaunchType is not null)
                     {
                         SelectedDebugProfile.CommandName = _selectedLaunchType.CommandName;
                         if (_selectedLaunchType.CommandName == ProfileCommandNames.Executable)
@@ -176,7 +176,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
             }
             set
             {
-                if (SelectedDebugProfile != null && SelectedDebugProfile.CommandLineArgs != value)
+                if (SelectedDebugProfile is not null && SelectedDebugProfile.CommandLineArgs != value)
                 {
                     SelectedDebugProfile.CommandLineArgs = value;
                     OnPropertyChanged(nameof(CommandLineArguments));
@@ -197,7 +197,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
             }
             set
             {
-                if (SelectedDebugProfile != null && SelectedDebugProfile.ExecutablePath != value)
+                if (SelectedDebugProfile is not null && SelectedDebugProfile.ExecutablePath != value)
                 {
                     SelectedDebugProfile.ExecutablePath = value;
                     OnPropertyChanged(nameof(ExecutablePath));
@@ -218,7 +218,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
             }
             set
             {
-                if (SelectedDebugProfile != null && SelectedDebugProfile.LaunchUrl != value)
+                if (SelectedDebugProfile is not null && SelectedDebugProfile.LaunchUrl != value)
                 {
                     SelectedDebugProfile.LaunchUrl = value;
                     OnPropertyChanged(nameof(LaunchPage));
@@ -239,7 +239,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
             }
             set
             {
-                if (SelectedDebugProfile != null && SelectedDebugProfile.WorkingDirectory != value)
+                if (SelectedDebugProfile is not null && SelectedDebugProfile.WorkingDirectory != value)
                 {
                     SelectedDebugProfile.WorkingDirectory = value;
                     OnPropertyChanged(nameof(WorkingDirectory));
@@ -306,7 +306,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
             }
             set
             {
-                if (SelectedDebugProfile != null && SelectedDebugProfile.LaunchBrowser != value)
+                if (SelectedDebugProfile is not null && SelectedDebugProfile.LaunchBrowser != value)
                 {
                     SelectedDebugProfile.LaunchBrowser = value;
                     OnPropertyChanged(nameof(HasLaunchOption));
@@ -415,7 +415,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
         public bool SupportsLaunchUrl            => ActiveProviderSupportsProperty(UIProfilePropertyName.LaunchUrl);
         public bool SupportsEnvironmentVariables => ActiveProviderSupportsProperty(UIProfilePropertyName.EnvironmentVariables);
 
-        public bool IsProfileSelected => SelectedDebugProfile != null;
+        public bool IsProfileSelected => SelectedDebugProfile is not null;
 
         public ObservableCollection<IWritableLaunchProfile> LaunchProfiles { get; } = new ObservableCollection<IWritableLaunchProfile>();
 
@@ -446,7 +446,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
             }
             set
             {
-                if (CurrentLaunchSettings != null && CurrentLaunchSettings.ActiveProfile != value)
+                if (CurrentLaunchSettings is not null && CurrentLaunchSettings.ActiveProfile != value)
                 {
                     IWritableLaunchProfile oldProfile = CurrentLaunchSettings.ActiveProfile;
                     CurrentLaunchSettings.ActiveProfile = value;
@@ -494,7 +494,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
         {
             get
             {
-                return EnvironmentVariables == null || _environmentVariablesValid;
+                return EnvironmentVariables is null || _environmentVariablesValid;
             }
             set
             {
@@ -535,7 +535,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
         {
             get
             {
-                if (SelectedLaunchType == null)
+                if (SelectedLaunchType is null)
                 {
                     return null;
                 }
@@ -641,7 +641,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
             }
         }
 
-        public bool NewProfileEnabled => LaunchProfiles != null;
+        public bool NewProfileEnabled => LaunchProfiles is not null;
 
         public ICommand NewProfileCommand
         {
@@ -704,12 +704,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
             // so that we don't get notifications while the control is initializing. Note that this is likely the first time the 
             // custom control is asked for and we want to call it and have it created prior to setting the active profile
             UserControl customControl = ActiveProvider?.CustomUI;
-            if (customControl != null)
+            if (customControl is not null)
             {
                 ActiveProvider.ProfileSelected(CurrentLaunchSettings);
 
                 context = customControl.DataContext as INotifyPropertyChanged;
-                if (context != null)
+                if (context is not null)
                 {
                     context.PropertyChanged += OnCustomUIStateChanged;
                 }
@@ -809,7 +809,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
         public virtual async Task SaveLaunchSettingsAsync()
         {
             ILaunchSettingsProvider provider = GetDebugProfileProvider();
-            if (EnvironmentVariables?.Count > 0 && SelectedDebugProfile != null)
+            if (EnvironmentVariables?.Count > 0 && SelectedDebugProfile is not null)
             {
                 SelectedDebugProfile.EnvironmentVariables.Clear();
                 foreach (NameValuePair kvp in EnvironmentVariables)
@@ -817,7 +817,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
                     SelectedDebugProfile.EnvironmentVariables.Add(kvp.Name, kvp.Value);
                 }
             }
-            else if (SelectedDebugProfile != null)
+            else if (SelectedDebugProfile is not null)
             {
                 SelectedDebugProfile.EnvironmentVariables.Clear();
             }
@@ -827,7 +827,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
 
         private void SetEnvironmentGrid(IWritableLaunchProfile oldProfile)
         {
-            if (EnvironmentVariables != null && oldProfile != null)
+            if (EnvironmentVariables is not null && oldProfile is not null)
             {
                 if (_environmentVariables.Count > 0)
                 {
@@ -846,7 +846,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
                 ((INotifyPropertyChanged)EnvironmentVariables).PropertyChanged -= DebugPageViewModel_EnvironmentVariables_PropertyChanged;
             }
 
-            if (SelectedDebugProfile != null)
+            if (SelectedDebugProfile is not null)
             {
                 EnvironmentVariables = SelectedDebugProfile.EnvironmentVariables.CreateList();
             }
@@ -906,10 +906,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
                 NotifyProfileCollectionChanged();
 
                 // If we have a selection, we want to leave it as is
-                if (curProfileName == null || newSettings.Profiles.Find(p => LaunchProfile.IsSameProfileName(p.Name, curProfileName)) == null)
+                if (curProfileName is null || newSettings.Profiles.Find(p => LaunchProfile.IsSameProfileName(p.Name, curProfileName)) is null)
                 {
                     // Note that we have to be careful since the collection can be empty. 
-                    if (profiles.ActiveProfile != null && !string.IsNullOrEmpty(profiles.ActiveProfile.Name))
+                    if (profiles.ActiveProfile is not null && !string.IsNullOrEmpty(profiles.ActiveProfile.Name))
                     {
                         SelectedDebugProfile = LaunchProfiles.Single(p => LaunchProfile.IsSameProfileName(p.Name, profiles.ActiveProfile.Name));
                     }
@@ -943,7 +943,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
         /// </summary>
         protected void InitializePropertyPage()
         {
-            if (_debugProfileProviderLink == null)
+            if (_debugProfileProviderLink is null)
             {
                 ILaunchSettingsProvider profileProvider = GetDebugProfileProvider();
                 _debugProfileProviderLink = profileProvider.SourceBlock.LinkToAsyncAction(
@@ -956,7 +956,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
 
         private async Task OnLaunchSettingsChangedAsync(ILaunchSettings profiles)
         {
-            if (_firstSnapshotCompleteSource == null)
+            if (_firstSnapshotCompleteSource is null)
             {
                 await ProjectThreadingService.SwitchToUIThread();
             }
@@ -1052,12 +1052,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
         {
             // Populate the set of unique launch types from the list of providers since there can be duplicates with different priorities. However,
             // the command name will be the same so we can grab the first one for the purposes of populating the list
-            if (_providerLaunchTypes == null)
+            if (_providerLaunchTypes is null)
             {
                 _providerLaunchTypes = new List<LaunchType>();
                 foreach (Lazy<ILaunchSettingsUIProvider, IOrderPrecedenceMetadataView> provider in _uiProviders)
                 {
-                    if (_providerLaunchTypes.Find(launchType => launchType.CommandName.Equals(provider.Value.CommandName)) == null)
+                    if (_providerLaunchTypes.Find(launchType => launchType.CommandName.Equals(provider.Value.CommandName)) is null)
                     {
                         _providerLaunchTypes.Add(new LaunchType(provider.Value.CommandName, provider.Value.FriendlyName));
                     }
@@ -1068,12 +1068,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
             LaunchType selectedLaunchType = null;
 
             _launchTypes = new List<LaunchType>();
-            if (selectedProfile != null)
+            if (selectedProfile is not null)
             {
                 _launchTypes.AddRange(_providerLaunchTypes);
 
                 selectedLaunchType = _launchTypes.Find(launchType => string.Equals(launchType.CommandName, selectedProfile.CommandName));
-                if (selectedLaunchType == null)
+                if (selectedLaunchType is null)
                 {
                     selectedLaunchType = new LaunchType(selectedProfile.CommandName, selectedProfile.CommandName);
                     _launchTypes.Insert(0, selectedLaunchType);
@@ -1103,7 +1103,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
         /// </summary>
         public override void ViewModelDetached()
         {
-            if (_debugProfileProviderLink != null)
+            if (_debugProfileProviderLink is not null)
             {
                 _debugProfileProviderLink.Dispose();
                 _debugProfileProviderLink = null;
@@ -1114,7 +1114,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
 
         protected virtual ILaunchSettingsProvider GetDebugProfileProvider()
         {
-            if (_launchSettingsProvider == null)
+            if (_launchSettingsProvider is null)
             {
                 _launchSettingsProvider = Project.Services.ExportProvider.GetExportedValue<ILaunchSettingsProvider>();
             }

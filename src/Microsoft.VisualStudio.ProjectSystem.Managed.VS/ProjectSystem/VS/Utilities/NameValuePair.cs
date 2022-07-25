@@ -107,7 +107,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Utilities
 
         private bool IsNamePropertyDuplicate()
         {
-            if (_parentCollection != null)
+            if (_parentCollection is not null)
             {
                 foreach (NameValuePair nvp in _parentCollection)
                 {

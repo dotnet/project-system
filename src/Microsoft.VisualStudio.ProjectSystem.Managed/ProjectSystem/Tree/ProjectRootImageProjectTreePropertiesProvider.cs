@@ -46,7 +46,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree
         {
             ProjectImageMoniker? icon = _imageProvider.GetProjectImage(imageKey);
 
-            if (icon != null)
+            if (icon is not null)
             {
                 propertyValues.Icon = icon;
             }

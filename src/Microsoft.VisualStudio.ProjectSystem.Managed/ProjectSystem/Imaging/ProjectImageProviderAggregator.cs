@@ -30,7 +30,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Imaging
             {
                 ProjectImageMoniker? image = provider.Value.GetProjectImage(key);
 
-                if (image != null)
+                if (image is not null)
                 {
                     return image;
                 }

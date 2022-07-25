@@ -87,7 +87,7 @@ namespace Microsoft.VisualStudio.IO
 
         public string GetFullPath(string path)
         {
-            if (_currentDirectory != null)
+            if (_currentDirectory is not null)
             {
                 var pathRoot = Path.GetPathRoot(path);
                 if (pathRoot == @"\")

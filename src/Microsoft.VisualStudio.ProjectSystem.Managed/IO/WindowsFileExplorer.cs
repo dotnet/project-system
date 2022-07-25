@@ -30,7 +30,7 @@ namespace Microsoft.VisualStudio.IO
             else
             {
                 string? parentPath = GetParentPath(path);
-                if (parentPath != null && _fileSystem.DirectoryExists(parentPath))
+                if (parentPath is not null && _fileSystem.DirectoryExists(parentPath))
                 {
                     OpenFolder(parentPath);
                 }

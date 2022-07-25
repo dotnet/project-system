@@ -112,7 +112,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Subscriptions.R
 
                 string? dependencyType = properties.GetStringProperty(ProjectItemMetadata.Type);
 
-                if (dependencyType != null)
+                if (dependencyType is not null)
                 {
                     // LEGACY MODE
                     //
@@ -185,7 +185,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Subscriptions.R
 
             IImmutableDictionary<string, string>? evaluationProperties = evaluationRuleSnapshot.GetProjectItemProperties(originalItemSpec);
 
-            if (evaluationProperties == null)
+            if (evaluationProperties is null)
             {
                 // This package is present in build results, but not in evaluation.
                 // We disallow packages which are not present in evaluation.

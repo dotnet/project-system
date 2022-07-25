@@ -11,7 +11,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
             mock.SetupGet(s => s.ProjectRuleSource)
                 .Returns(IProjectValueDataSourceFactory.CreateInstance<IProjectSubscriptionUpdate>);
 
-            if (sourceItemsRuleSource != null)
+            if (sourceItemsRuleSource is not null)
             {
                 mock.SetupGet(s => s.SourceItemsRuleSource)
                     .Returns(() => sourceItemsRuleSource);
