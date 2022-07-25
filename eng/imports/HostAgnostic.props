@@ -1,0 +1,130 @@
+<!-- Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information. -->
+<Project>
+  <PropertyGroup>
+    <BannedSymbolsOptOut Condition="'$(IsTestProject)' == 'true'">true</BannedSymbolsOptOut>
+    <EnableNETAnalyzers>true</EnableNETAnalyzers>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <!-- Framework -->
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.Composition" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="WindowsBase" />
+
+    <!-- Infrastructure -->
+    <PackageReference Include="MicroBuild.Core.Sentinel"                  PrivateAssets="all" />
+    <!-- Path Property: PkgMicrosoft_VisualStudioEng_MicroBuild_Core -->
+    <PackageReference Include="Microsoft.VisualStudioEng.MicroBuild.Core" PrivateAssets="all" GeneratePathProperty="true" />
+    <!-- SwixBuild does not have the assets accessed via PackageReference. Instead, they are accessed directly from the NuGet cache on disk via property: PkgMicrosoft_VisualStudioEng_MicroBuild_Plugins_SwixBuild. -->
+    <PackageReference Include="Microsoft.VisualStudioEng.MicroBuild.Plugins.SwixBuild" ExcludeAssets="all" GeneratePathProperty="true" />
+    <PackageReference Include="Nerdbank.Streams"                    ExcludeAssets="all" />
+    <!-- Note: We require Nerdbank.GitVersioning beyond simply generating version numbers. It also produces some assembly information such as AssemblyName and PublicKeyToken into a *.ThisAssembly.cs file. -->
+    <PackageReference Include="Nerdbank.GitVersioning"              PrivateAssets="all" />
+    <PackageReference Include="System.IO.Pipelines"                 ExcludeAssets="all" />
+    <PackageReference Include="Microsoft.Net.Compilers.Toolset" />
+    <PackageReference Include="XliffTasks"                          PrivateAssets="all" />
+    <!-- Path Property: PkgMicrosoft_DiaSymReader_Pdb2Pdb -->
+    <PackageReference Include="Microsoft.DiaSymReader.Pdb2Pdb"      ExcludeAssets="all" GeneratePathProperty="true" />
+    <!-- Path Property: PkgCodecov -->
+    <PackageReference Include="Codecov"                             ExcludeAssets="all" GeneratePathProperty="true" />
+
+    <!-- CPS -->
+    <PackageReference Include="Microsoft.VisualStudio.ProjectSystem" />
+    <PackageReference Include="Microsoft.VisualStudio.ProjectSystem.Query" />
+    <PackageReference Include="Microsoft.VisualStudio.Validation" />
+    <PackageReference Include="Microsoft.VisualStudio.Threading" />
+    <PackageReference Include="Microsoft.VisualStudio.ProjectSystem.SDK.Tools" />
+    <PackageReference Include="System.Threading.Tasks.Dataflow" />
+
+    <!-- VS MEF -->
+    <PackageReference Include="Microsoft.VisualStudio.Composition" />
+
+    <!-- Roslyn -->
+    <PackageReference Include="Microsoft.VisualStudio.LanguageServices" />
+    <PackageReference Include="Microsoft.CodeAnalysis" />
+    <PackageReference Include="Microsoft.CSharp" />
+
+    <!-- Analyzers-->
+    <!-- Set PrivateAssets="all" to prevent consumers of our packages from picking up these analyzers transitively. -->
+    <PackageReference Include="Microsoft.VisualStudio.ProjectSystem.Analyzers" PrivateAssets="all" />
+    <PackageReference Include="Microsoft.CodeAnalysis.Analyzers"               PrivateAssets="all" />
+    <PackageReference Include="Microsoft.CodeAnalysis.CSharp.CodeStyle"        PrivateAssets="all" />
+    <PackageReference Include="Microsoft.CodeAnalysis.VisualBasic.CodeStyle"   PrivateAssets="all" />
+    <PackageReference Include="Roslyn.Diagnostics.Analyzers"                   PrivateAssets="all" Condition="'$(IsTestProject)' != 'true'" />
+
+    <!-- Framework packages -->
+    <PackageReference Include="Microsoft.IO.Redist" />
+    
+    <!-- 3rd party -->
+    <PackageReference Include="Newtonsoft.Json" />
+
+    <!-- Host-Agnostic Visual Studio -->
+    <PackageReference Include="Microsoft.VisualStudio.SDK.EmbedInteropTypes" />
+    <PackageReference Include="Microsoft.VisualStudio.ImageCatalog" />
+  </ItemGroup>
+
+  <ItemGroup Condition="'$(IsUnitTestProject)' == 'true'">
+    <PackageReference Include="Moq" />
+    <PackageReference Include="Verify.Xunit" />
+    <PackageReference Include="xunit.analyzers" />
+    <PackageReference Include="xunit.assert" />
+    <PackageReference Include="xunit.combinatorial" />
+    <PackageReference Include="xunit.extensibility.core" />
+    <PackageReference Include="xunit.extensibility.execution" />
+    <PackageReference Include="xunit.runner.console" GeneratePathProperty="true" />
+    <PackageReference Include="xunit.runner.visualstudio" GeneratePathProperty="true" />
+    <InternalsVisibleTo Include="DynamicProxyGenAssembly2" Key="$(MoqPublicKey)" />
+  </ItemGroup>
+
+ <!--
+    Some of the VSSDK packages may pull in Microsoft.VisualStudio.SDK.EmbedInteropTypes which essentially
+    does the below but for all of the listed references. We can't just use what they have since they include
+    things like EnvDTE which is reasonable for consumers, but strange since we actually _implement_ DTE and
+    use it as an exchange type with generics in a few places. Instead, we run directly after the target declared
+    in the EmbedInteropTypes package and ensure only the dependencies we need are embedded and the others are
+    skipped.
+  -->
+  <Target Name="CustomLinkVSSDKEmbeddableAssemblies" AfterTargets="LinkVSSDKEmbeddableAssemblies">
+    <ItemGroup>
+      <ReferencePath Condition="
+              '%(FileName)' == 'Microsoft.VisualStudio.Setup.Configuration.Interop'
+           or '%(FileName)' == 'Microsoft.VisualStudio.Shell.Embeddable'
+           or '%(FileName)' == 'Microsoft.VisualStudio.Shell.Interop.12.0'
+           or '%(FileName)' == 'Microsoft.VisualStudio.Shell.Interop.12.1.DesignTime'
+           or '%(FileName)' == 'Microsoft.VisualStudio.Shell.Interop.14.0.DesignTime'
+           or '%(FileName)' == 'Microsoft.VisualStudio.Shell.Interop.15.0.DesignTime'
+           or '%(FileName)' == 'Microsoft.VisualStudio.Shell.Interop.15.3.DesignTime'
+           or '%(FileName)' == 'Microsoft.VisualStudio.Shell.Interop.15.7.DesignTime'
+           or '%(FileName)' == 'Microsoft.VisualStudio.Shell.Interop.15.8.DesignTime'
+           or '%(FileName)' == 'Microsoft.VisualStudio.TextManager.Interop.12.1.DesignTime'
+           or '%(FileName)' == 'Microsoft.VisualStudio.ProjectSystem.Interop'
+           or '%(FileName)' == 'stdole'
+           or '%(FileName)' == 'Microsoft.VisualStudio.CommandBars'
+           or '%(FileName)' == 'NuGet.VisualStudio'
+           or '%(FileName)' == 'VSLangProj110'
+           or '%(FileName)' == 'VSLangProj165'
+           ">
+        <EmbedInteropTypes>true</EmbedInteropTypes>
+      </ReferencePath>
+      <ReferencePath Condition="
+              '%(FileName)' == 'Microsoft.VisualStudio.Imaging.Interop.15.0.DesignTime'
+           or '%(FileName)' == 'Microsoft.VisualStudio.Shell.Interop.10.0'
+           or '%(FileName)' == 'Microsoft.VisualStudio.Shell.Interop.11.0'
+           or '%(FileName)' == 'Microsoft.VisualStudio.Feedback.Interop.12.0.DesignTime'
+           or '%(FileName)' == 'microsoft.visualstudio.designer.interfaces'
+           or '%(FileName)' == 'EnvDTE80'
+           or '%(FileName)' == 'EnvDTE90'
+           or '%(FileName)' == 'EnvDTE100'
+           or '%(Filename)' == 'Microsoft.VisualStudio.Imaging.Interop.14.0.DesignTime'
+           or '%(FileName)' == 'Microsoft.Internal.VisualStudio.Shell.Interop.14.1.DesignTime'
+           or '%(FileName)' == 'Microsoft.Internal.VisualStudio.Shell.Interop.14.2.DesignTime'">
+        <EmbedInteropTypes>false</EmbedInteropTypes>
+      </ReferencePath>
+    </ItemGroup>
+  </Target>
+</Project>

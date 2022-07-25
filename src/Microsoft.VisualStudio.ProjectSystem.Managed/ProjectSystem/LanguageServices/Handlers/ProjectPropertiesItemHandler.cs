@@ -8,8 +8,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
     /// <summary>
     ///     Handles changes to the project and makes sure the language service is aware of them.
     /// </summary>
-    [Export(typeof(IWorkspaceContextHandler))]
-    internal class ProjectPropertiesItemHandler : IWorkspaceContextHandler, IProjectEvaluationHandler
+    [Export(typeof(IWorkspaceUpdateHandler))]
+    internal class ProjectPropertiesItemHandler : IWorkspaceUpdateHandler, IProjectEvaluationHandler
     {
         [ImportingConstructor]
         public ProjectPropertiesItemHandler(UnconfiguredProject project)

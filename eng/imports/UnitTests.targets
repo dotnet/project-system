@@ -1,0 +1,35 @@
+<!-- Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information. -->
+<Project>
+
+  <!-- Runs unit tests for a project via xUnit. -->
+  <Target Name="Test">
+    <PropertyGroup>
+      <TestResultsDirectory>$(ArtifactsTestResultsDir)</TestResultsDirectory>
+      <XUnitExe>$(Pkgxunit_runner_console)\tools\net472\xunit.console.x86.exe</XUnitExe>
+
+      <!-- For Azure DevOps to read as the test results. -->
+      <XmlTestResultsFile>$(TestResultsDirectory)$(TargetName)$(TargetExt).xml</XmlTestResultsFile>
+      <!-- For people to read the results from the build as needed. -->
+      <HtmlTestResultsFile>$(TestResultsDirectory)$(TargetName)$(TargetExt).html</HtmlTestResultsFile>
+    </PropertyGroup>
+
+    <Error Text="The project must be restored and built before running tests" File="$(MSBuildProjectFile)" Condition="!Exists('$(XUnitExe)') Or !Exists('$(TargetPath)')" />
+
+    <Message Text="$(MSBuildProjectName) -> Running tests..." Importance="High" />
+
+    <MakeDir Directories="$(TestResultsDirectory)" />
+    <Delete Files="$(XmlTestResultsFile);$(HtmlTestResultsFile)" />
+
+    <!-- xUnit writes to STDERR (test name) and STDOUT (error message, stack). STDERR gets logged as an error.  -->
+    <Exec Command='"$(XUnitExe)" "$(TargetPath)" -quiet -nologo -noshadow -parallel all -xml "$(XmlTestResultsFile)" -html "$(HtmlTestResultsFile)"' LogStandardErrorAsError="true" IgnoreExitCode="true">
+      <Output TaskParameter="ExitCode" PropertyName="ExitCode" />
+    </Exec>
+
+    <Message Text="$(MSBuildProjectName) -> Tests succeeded" Condition="$(ExitCode) == 0" Importance="High" />
+
+    <!-- Exec.LogStandardErrorAsError does not fail the build, we need to output explicit error to do that. -->
+    <Error Text="Tests failed, see $(HtmlTestResultsFile) for full results." Condition="$(ExitCode) != 0 AND Exists('$(HtmlTestResultsFile)')" File="xUnit" />
+    <Error Text="Attempting to run the test runner $(XUnitExe) failed with error level $(ExitCode) and failed to produce any results. Use 'build.cmd /diagnostic' and consult 'log\Build.binlog' for more information." Condition="$(ExitCode) != 0 AND !Exists('$(HtmlTestResultsFile)')" File="xUnit" />
+  </Target>
+
+</Project>

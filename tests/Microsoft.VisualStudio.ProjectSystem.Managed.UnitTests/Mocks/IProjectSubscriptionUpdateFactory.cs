@@ -11,11 +11,6 @@ namespace Microsoft.VisualStudio.ProjectSystem
             return IProjectVersionedValueFactory.Create(Mock.Of<IProjectSubscriptionUpdate>());
         }
 
-        public static IProjectSubscriptionUpdate Create()
-        {
-            return Mock.Of<IProjectSubscriptionUpdate>();
-        }
-
         public static IProjectSubscriptionUpdate Implement(
             IDictionary<string, IProjectRuleSnapshot>? currentState = null,
             IDictionary<string, IProjectChangeDescription>? projectChanges = null,
@@ -36,6 +31,8 @@ namespace Microsoft.VisualStudio.ProjectSystem
                 """
                 {
                     "CurrentState": {
+                    },
+                    "ProjectChanges": {
                     }
                 }
                 """);

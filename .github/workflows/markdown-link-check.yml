@@ -3,7 +3,7 @@ on: [push, pull_request]
 
 jobs:
   markdown-link-check:
-    name: verify
+    name: markdown-link-check
     runs-on: ubuntu-latest
 
     steps:

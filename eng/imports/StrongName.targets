@@ -1,0 +1,66 @@
+<!-- Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information. -->
+<Project>
+
+  <!--
+    Reads variables:
+      SignAssembly    "true" to sign the output assembly of the current project
+      StrongNameKeyId The id of the key used for strong name generation
+
+    Writes variables:
+      DelaySign
+      PublicSign
+      PublicKey
+      PublicKeyToken
+      AssemblyOriginatorKeyFile
+  -->
+
+  <PropertyGroup Condition="'$(SignAssembly)' != 'false'">
+    <DelaySign>false</DelaySign>
+    <PublicSign>true</PublicSign>
+  </PropertyGroup>
+
+  <!-- Binaries are delay or public-signed with one of these keys; later, the signing system will finish the strong-name signing. -->
+  <Choose>
+    <When Condition="'$(StrongNameKeyId)' == 'Microsoft'">
+      <PropertyGroup>
+        <AssemblyOriginatorKeyFile>$(MSBuildThisFileDirectory)MSFT.snk</AssemblyOriginatorKeyFile>
+        <PublicKey>$(MicrosoftPublicKey)</PublicKey>
+        <PublicKeyToken>b03f5f7f11d50a3a</PublicKeyToken>
+      </PropertyGroup>
+    </When>
+    <When Condition="'$(StrongNameKeyId)' == 'MicrosoftShared'">
+      <PropertyGroup>
+        <AssemblyOriginatorKeyFile>$(MSBuildThisFileDirectory)35MSSharedLib1024.snk</AssemblyOriginatorKeyFile>
+        <PublicKey>$(MicrosoftSharedPublicKey)</PublicKey>
+        <PublicKeyToken>31BF3856AD364E35</PublicKeyToken>
+      </PropertyGroup>
+    </When>
+    <When Condition="'$(StrongNameKeyId)' == 'MicrosoftAspNet'">
+      <PropertyGroup>
+        <AssemblyOriginatorKeyFile>$(MSBuildThisFileDirectory)AspNet.snk</AssemblyOriginatorKeyFile>
+        <PublicKey>$(MicrosoftAspNetPublicKey)</PublicKey>
+        <PublicKeyToken>adb9793829ddae60</PublicKeyToken>
+        <!-- The MicrosoftAspNet strong name key is a full key, so set PublicSign to false. -->
+        <PublicSign>false</PublicSign>
+      </PropertyGroup>
+    </When>
+  </Choose>
+
+  <!--
+    Workaround for: https://github.com/Microsoft/msbuild/issues/1490 (lack of support for public-signing satellites)
+    Delay-signs the satellite assemblies when main assembly is public-signed.
+  -->
+  <Target Name="PrepareToDelaySignSatelliteAssemblies" BeforeTargets="GenerateSatelliteAssemblies" Condition="'$(MSBuildRuntimeType)' != 'Core' and '$(SignAssembly)' != 'false'">
+    <PropertyGroup>
+      <_DelaySignMainAssembly>$(DelaySign)</_DelaySignMainAssembly>
+      <DelaySign Condition="'$(PublicSign)' == 'true'">true</DelaySign>
+    </PropertyGroup>
+  </Target>
+
+  <Target Name="CleanupAfterDelaySigningSatelliteAssemblies" AfterTargets="GenerateSatelliteAssemblies" Condition="'$(MSBuildRuntimeType)' != 'Core' and '$(SignAssembly)' != 'false'">
+    <PropertyGroup>
+      <DelaySign>$(_DelaySignMainAssembly)</DelaySign>
+    </PropertyGroup>
+  </Target>
+
+</Project>

@@ -9,6 +9,10 @@
 *.xlf linguist-generated=true
 *.lcl linguist-generated=true
 
+# Set these files to XML (coloring) in PRs
+*.vsmanproj linguist-language=XML
+*.swixproj linguist-language=XML
+
 ###############################################################################
 # Set default behavior for command prompt diff.
 #

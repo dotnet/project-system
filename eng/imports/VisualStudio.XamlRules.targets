@@ -1,0 +1,67 @@
+<!-- Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information. -->
+<Project>
+
+  <!-- Default values for XAML rules-->
+  <ItemDefinitionGroup>
+    <XamlPropertyRule>
+      <Namespace>Microsoft.VisualStudio.ProjectSystem</Namespace>
+      <RuleInjectionClassName>$(XamlPropertyRuleInjectionClassName)</RuleInjectionClassName>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <XlfOutputItem>EmbeddedResource</XlfOutputItem>
+      <LogicalName>XamlRuleToCode:%(Filename)%(Extension)</LogicalName>
+    </XamlPropertyRule>
+    <XamlPropertyRuleNoCodeBehind>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <XlfOutputItem>EmbeddedResource</XlfOutputItem>
+      <LogicalName>XamlRuleToCode:%(Filename)%(Extension)</LogicalName>
+    </XamlPropertyRuleNoCodeBehind>
+    <XamlPropertyProjectItemsSchema>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <XlfOutputItem>EmbeddedResource</XlfOutputItem>
+      <LogicalName>XamlRuleToCode:%(Filename)%(Extension)</LogicalName>
+    </XamlPropertyProjectItemsSchema>
+    <DesignTimeTargetsFile>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </DesignTimeTargetsFile>
+  </ItemDefinitionGroup>
+
+  <!-- Copy XAML rule files and design targets files for testing and setup authoring purposes -->
+  <Target Name="CopyXamlRulesToOutputDirectory" AfterTargets="CopyFilesToOutputDirectory">
+    <ItemGroup>
+      <_ItemsToCopy Include="@(XamlPropertyRule);@(XamlPropertyRuleNoCodeBehind);@(XamlPropertyProjectItemsSchema);@(DesignTimeTargetsFile)" Condition="'%(CopyToOutputDirectory)' != 'Never'" />
+    </ItemGroup>
+
+    <Copy SourceFiles="@(_ItemsToCopy)"
+          DestinationFolder="$(VisualStudioXamlRulesDir)"
+          SkipUnchangedFiles="$(SkipCopyUnchangedFiles)"
+          OverwriteReadOnlyFiles="$(OverwriteReadOnlyFiles)"
+          Retries="$(CopyRetryCount)"
+          RetryDelayMilliseconds="$(CopyRetryDelayMilliseconds)"
+          UseHardlinksIfPossible="$(CreateHardLinksForCopyFilesToOutputDirectoryIfPossible)">
+      <Output TaskParameter="DestinationFiles" ItemName="FileWrites"/>
+    </Copy>
+  </Target>
+
+  <!-- Copy translated XAML rule files for testing and setup authoring purposes -->
+  <Target Name="CopyTranslatedXamlRulesToOutputDirectory" AfterTargets="CopyFilesToOutputDirectory" DependsOnTargets="TranslateSourceFromXlf">
+    <ItemGroup>
+        <_TranslatedItemsToCopy Include="@(EmbeddedResource)" Condition="'%(EmbeddedResource.XlfSourceFormat)' == 'XamlRule'" />
+    </ItemGroup>
+
+    <Copy SourceFiles="@(_TranslatedItemsToCopy)"
+          DestinationFiles="@(_TranslatedItemsToCopy->'$(VisualStudioXamlRulesDir)%(XlfLanguage)\$([System.IO.Path]::GetFileName('%(XlfSource)'))')"
+          SkipUnchangedFiles="$(SkipCopyUnchangedFiles)"
+          OverwriteReadOnlyFiles="$(OverwriteReadOnlyFiles)"
+          Retries="$(CopyRetryCount)"
+          RetryDelayMilliseconds="$(CopyRetryDelayMilliseconds)"
+          UseHardlinksIfPossible="$(CreateHardLinksForCopyFilesToOutputDirectoryIfPossible)">
+      <Output TaskParameter="DestinationFiles" ItemName="FileWrites"/>
+    </Copy>
+  </Target>
+
+  <ItemGroup>
+    <!-- XamlPropertyRuleNoCodeBehind are embedded during build. Changes to them must trigger builds. -->
+    <UpToDateCheckInput Include="@(XamlPropertyRuleNoCodeBehind)" />
+  </ItemGroup>
+
+</Project>

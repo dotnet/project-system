@@ -1,13 +1,33 @@
 {
   "ignorePatterns": [
     {
-      "pattern": "^https://.*\.visualstudio\.com"
+      "pattern": "^https:\/\/.*\\.visualstudio\\.com"
+    },
+    {
+      "pattern": "^https:\/\/dev\\.azure\\.com"
+    },
+    {
+      "pattern": "^https:\/\/aka\\.ms"
+    },
+    {
+      "pattern": ".*❓.*"
+    },
+    {
+      "pattern": "^https:\/\/www\\.microsoft\\.com"
     }
   ],
   "replacementPatterns": [
     {
       "pattern": "^/",
       "replacement": "{{BASEURL}}/"
+    }
+  ],
+  "httpHeaders": [
+    {
+      "urls": ["https://docs.github.com/"],
+      "headers": {
+        "Accept-Encoding": "zstd, br, gzip, deflate"
+      }
     }
   ]
 }

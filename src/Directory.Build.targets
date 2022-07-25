@@ -1,9 +1,9 @@
 <!-- Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information. -->
 <Project>
 
-  <Import Project="..\build\optprof\OptProf.targets" />
+  <Import Project="..\eng\imports\OptProf.targets" />
   <Import Project="..\Directory.Build.targets" />
-  <Import Project="..\build\import\VisualStudio.XamlRules.targets" />
+  <Import Project="..\eng\imports\VisualStudio.XamlRules.targets" />
 
   <!--
     Copies the contents of PublicAPI.Unshipped.txt into PublicAPI.Shipped.txt on build.
@@ -11,7 +11,7 @@
     Uses AppendAllText instead of Add-Content since that cmdlet adds an empty line at the end of the file.
   -->
   <Target Name="FlushUnshippedAPI" AfterTargets="Build" Condition="'$(CIBuild)' != 'true'">
-    <Exec Command="powershell -NonInteractive -NoLogo -NoProfile -ExecutionPolicy Unrestricted -Command &quot;$unshipped = '$(MSBuildProjectDirectory)\PublicAPI.Unshipped.txt'; $content = Get-Content $unshipped -Raw; if(-Not [String]::IsNullOrWhiteSpace($content)) { [IO.File]::AppendAllText('$(MSBuildProjectDirectory)\PublicAPI.Shipped.txt', [Environment]::NewLine + $content); Clear-Content $unshipped }&quot;" />
+    <Exec ContinueOnError="false" Command="$(PowerShellCommand) &quot;$unshipped = '$(MSBuildProjectDirectory)\PublicAPI.Unshipped.txt'; $content = Get-Content $unshipped -Raw; if(-Not [String]::IsNullOrWhiteSpace($content)) { [IO.File]::AppendAllText('$(MSBuildProjectDirectory)\PublicAPI.Shipped.txt', [Environment]::NewLine + $content); Clear-Content $unshipped }&quot;" />
   </Target>
 
   <!-- Adds the appropriate assemblies for signing. -->

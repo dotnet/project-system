@@ -1,0 +1,37 @@
+<!-- Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information. -->
+<Project DefaultTargets="ClearNuGetCache;PrepareMachine;CoreBuild">
+
+  <Import Project="imports\Versions.props" />
+  <Import Project="imports\RepoLayout.props" />
+
+  <!-- Removes the NuGet cache folder on the machine. Useful if packages such as MicroBuild SwixBuild has multiple versions within the cache, which causes the build to fail. -->
+  <Target Name="ClearNuGetCache" Condition="'$(ClearNuGetCache)' == 'true'">
+    <Message Text="Clearing '$(NuGetPackageRoot)'..." Importance="high" />
+    <RemoveDir Directories="$(NuGetPackageRoot)" />
+  </Target>
+
+  <!-- Creates several output directories so that artifact publishing always succeeds. -->
+  <Target Name="PrepareMachine" Condition="'$(CIBuild)' == 'true'">
+    <MakeDir Directories="$(ArtifactsBinDir);$(ArtifactsLogDir);$(ArtifactsTestResultsDir);$(VisualStudioSetupOutputPath)" />
+  </Target>
+
+  <!-- Delegate onto CoreBuild.proj, which will will actually restore, build, test, and pack our solution -->
+  <Target Name="CoreBuild">
+    <PropertyGroup>
+      <CoreBuildProperties>
+        Configuration=$(Configuration);
+        CIBuild=$(CIBuild);
+        Build=$(Build);
+        Rebuild=$(Rebuild);
+        Deploy=$(Deploy);
+        Test=$(Test);
+        IntegrationTest=$(IntegrationTest);
+        QuickSrcBuild=$(QuickSrcBuild);
+        UsingCodeCoverage=$(UsingCodeCoverage);
+      </CoreBuildProperties>
+    </PropertyGroup>
+
+    <MSBuild BuildInParallel="true" Projects="CoreBuild.proj" Properties="$(CoreBuildProperties)" />
+  </Target>
+
+</Project>
