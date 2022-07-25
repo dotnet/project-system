@@ -1,20 +1,11 @@
 {
   "ignorePatterns": [
-    {
-      "pattern": "^https:\/\/.*\\.visualstudio\\.com"
-    },
-    {
-      "pattern": "^https:\/\/dev\\.azure\\.com"
-    },
-    {
-      "pattern": "^https:\/\/aka\\.ms"
-    },
-    {
-      "pattern": ".*❓.*"
-    },
-    {
-      "pattern": "^https:\/\/www\\.microsoft\\.com"
-    }
+    { "pattern": "^https:\/\/.*\\.visualstudio\\.com" },
+    { "pattern": "^https:\/\/dev\\.azure\\.com" },
+    { "pattern": "^https:\/\/aka\\.ms" },
+    { "pattern": ".*❓.*" },
+    { "pattern": "^https:\/\/www\\.microsoft\\.com" },
+    { "pattern": "^*GitHubCreateMergePRs\/config\\.xml" }
   ],
   "replacementPatterns": [
     {
