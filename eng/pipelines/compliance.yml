@@ -27,7 +27,7 @@ steps:
     solution: $(Build.SourcesDirectory)\eng\Build.proj
     msBuildArchitecture: x86
     configuration: $(BuildConfiguration)
-    msBuildArguments: '/m /warnAsError /noLogo /clp:Summary /v:normal /p:CIBuild=true /p:Test=false /bl:$(Build.SourcesDirectory)\artifacts\log\Build.binlog'
+    msBuildArguments: '/m /warnAsError /noLogo /clp:Summary /v:normal /p:CIBuild=true /p:Test=false /bl:$(Build.SourcesDirectory)\artifacts\$(BuildConfiguration)\log\Build.binlog'
 
 - task: PoliCheck@2
   # Scan for problematic terminology.

@@ -4,6 +4,7 @@
 
 param ([Parameter(Mandatory=$true)] [String] $versionJsonPath)
 
+# https://github.com/microsoft/vswhere/wiki/Installing
 $installerPath = "${env:ProgramFiles(x86)}\Microsoft Visual Studio\Installer"
 if(-Not (Test-Path -Path $installerPath))
 {
@@ -13,12 +14,6 @@ if(-Not (Test-Path -Path $installerPath))
 $versionJson = Get-Content $versionJsonPath | ConvertFrom-Json
 # Use only the Major version value from the version number.
 $minimumVersion = "$(($versionJson.version.Split('.'))[0]).0"
-$msBuildPath = (& "$installerPath\vswhere.exe" -all -prerelease -latest -version $minimumVersion -requires Microsoft.Component.MSBuild -find MSBuild\**\Bin\MSBuild.exe) | Select-Object -First 1
 
-# TODO: This currently does not work for 'Build Tools for Visual Studio' because vswhere.exe does not find MSBuild located within it.
-if(-Not $msBuildPath)
-{
-  return
-}
-
-$msBuildPath
+# Note: Along with VS installations, this finds BuildTools' MSBuild.exe via '-products *'. However, the repo currently cannot deploy the VS Extensions via BuildTools.
+(& "$installerPath\vswhere.exe" -all -prerelease -latest -version $minimumVersion -products * -requires Microsoft.Component.MSBuild -find MSBuild\**\Bin\MSBuild.exe) | Select-Object -First 1

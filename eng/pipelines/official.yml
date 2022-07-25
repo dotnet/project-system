@@ -47,7 +47,7 @@ steps:
     solution: $(Build.SourcesDirectory)\eng\Build.proj
     msBuildArchitecture: x86
     configuration: $(BuildConfiguration)
-    msBuildArguments: '/m /warnAsError /noLogo /clp:Summary /v:normal /p:CIBuild=true /p:Test=false /p:Pack=false /p:TestProjects=false /p:SetupProjects=false /bl:$(Build.SourcesDirectory)\artifacts\log\SrcBuild.binlog'
+    msBuildArguments: '/m /warnAsError /noLogo /clp:Summary /v:normal /p:CIBuild=true /p:Test=false /p:Pack=false /p:TestProjects=false /p:SetupProjects=false /bl:$(Build.SourcesDirectory)\artifacts\$(BuildConfiguration)\log\SrcBuild.binlog'
 
 # This task both generates the SBOM files and marks the pipeline as compliant.
 - task: ManifestGeneratorTask@0
@@ -95,7 +95,7 @@ steps:
     solution: $(Build.SourcesDirectory)\eng\Build.proj
     msBuildArchitecture: x86
     configuration: $(BuildConfiguration)
-    msBuildArguments: '/m /warnAsError /noLogo /clp:Summary /v:normal /p:CIBuild=true /bl:$(Build.SourcesDirectory)\artifacts\log\Build.binlog'
+    msBuildArguments: '/m /warnAsError /noLogo /clp:Summary /v:normal /p:CIBuild=true /bl:$(Build.SourcesDirectory)\artifacts\$(BuildConfiguration)\log\Build.binlog'
 
 - task: MicroBuildCodesignVerify@3
   displayName: Verify Signed Files
@@ -114,7 +114,7 @@ steps:
       /codexRepoUrl:$(Build.Repository.Uri)
       /repoName:$(Build.Repository.Name)
       /additionalCodexArguments:-bld
-      /additionalCodexArguments:$(Build.SourcesDirectory)\artifacts\log
+      /additionalCodexArguments:$(Build.SourcesDirectory)\artifacts\$(BuildConfiguration)\log
   condition: succeeded()
   continueOnError: true
 
@@ -244,9 +244,9 @@ steps:
     SourceFolder: '$(Build.SourcesDirectory)'
     # NOTE: The copied contents are directly used by the RoslynInsertionTool to create the insertion PR.
     Contents: |
-      artifacts\log\**
       artifacts\$(BuildConfiguration)\bin\**
       artifacts\$(BuildConfiguration)\DevDivInsertionFiles\**
+      artifacts\$(BuildConfiguration)\log\**
       artifacts\$(BuildConfiguration)\packages\**
       artifacts\$(BuildConfiguration)\VSSetup\**
       artifacts\$(BuildConfiguration)\TestResults\**
