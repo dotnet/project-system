@@ -36,13 +36,8 @@ variables:
   EnableRichCodeNavigation: true
 
 steps:
-- task: MSBuild@1
-  displayName: Build ProjectSystem.sln
-  inputs:
-    solution: $(Build.SourcesDirectory)\eng\Build.proj
-    msBuildArchitecture: x86
-    configuration: $(BuildConfiguration)
-    msBuildArguments: '/m /warnAsError /noLogo /clp:Summary /v:normal /p:CIBuild=true /p:Test=false /bl:$(Build.SourcesDirectory)\artifacts\$(BuildConfiguration)\log\Build.binlog'
+- script: $(Build.SourcesDirectory)\build.cmd /v:normal /p:Configuration=$(BuildConfiguration) /p:CIBuild=true /p:Test=false
+  displayName: Build All Projects
 
 - task: RichCodeNavIndexer@0
   displayName: RichCodeNav Upload

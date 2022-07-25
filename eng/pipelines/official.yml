@@ -41,13 +41,14 @@ parameters:
 ###################################################################################################################################################################
 
 steps:
-- task: MSBuild@1
+- script: $(Build.SourcesDirectory)\build.cmd /v:normal /p:Configuration=$(BuildConfiguration) /p:CIBuild=true /p:Test=false /p:Pack=false /p:TestProjects=false /p:SetupProjects=false
   displayName: Build Src for SBOM
+
+- task: PowerShell@2
+  displayName: Rename Build.binlog to SrcBuild.binlog
   inputs:
-    solution: $(Build.SourcesDirectory)\eng\Build.proj
-    msBuildArchitecture: x86
-    configuration: $(BuildConfiguration)
-    msBuildArguments: '/m /warnAsError /noLogo /clp:Summary /v:normal /p:CIBuild=true /p:Test=false /p:Pack=false /p:TestProjects=false /p:SetupProjects=false /bl:$(Build.SourcesDirectory)\artifacts\$(BuildConfiguration)\log\SrcBuild.binlog'
+    targetType: 'inline'
+    script: Rename-Item -Path "$(Build.SourcesDirectory)\artifacts\$(BuildConfiguration)\log\Build.binlog" -NewName 'SrcBuild.binlog'
 
 # This task both generates the SBOM files and marks the pipeline as compliant.
 - task: ManifestGeneratorTask@0
@@ -86,16 +87,11 @@ steps:
     NumberCommitsToSearch: '100'
 
 ###################################################################################################################################################################
-# BUILD SOLUTION
+# BUILD REPOSITORY
 ###################################################################################################################################################################
 
-- task: MSBuild@1
-  displayName: Build ProjectSystem.sln
-  inputs:
-    solution: $(Build.SourcesDirectory)\eng\Build.proj
-    msBuildArchitecture: x86
-    configuration: $(BuildConfiguration)
-    msBuildArguments: '/m /warnAsError /noLogo /clp:Summary /v:normal /p:CIBuild=true /bl:$(Build.SourcesDirectory)\artifacts\$(BuildConfiguration)\log\Build.binlog'
+- script: $(Build.SourcesDirectory)\build.cmd /v:normal /p:Configuration=$(BuildConfiguration) /p:CIBuild=true
+  displayName: Build All Projects
 
 - task: MicroBuildCodesignVerify@3
   displayName: Verify Signed Files
