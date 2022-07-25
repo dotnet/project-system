@@ -374,6 +374,12 @@ internal sealed class Workspace : OnceInitializedOnceDisposedUnderLockAsync, IWo
         Assumes.True(_state is WorkspaceState.Initialized);
         Assumes.NotNull(_buildProgressRegistration);
 
+        // The Roslyn workspace context is created when the first evaluation data arrives.
+        // It's possible that build data arrives before evaluation data, in which case
+        // the Roslyn context would be null. To prevent problems, we wait for evaluation
+        // data to have been processed at least once before continuing.
+        await _hasEvaluationData.Task;
+
         await OnProjectChangedAsync(
             _buildProgressRegistration,
             update,
@@ -385,17 +391,11 @@ internal sealed class Workspace : OnceInitializedOnceDisposedUnderLockAsync, IWo
 
         return;
 
-        async void ApplyProjectBuild(
+        void ApplyProjectBuild(
             IProjectVersionedValue<BuildUpdate> update,
             ContextState state,
             CancellationToken cancellationToken)
         {
-            // The Roslyn workspace context is created when the first evaluation data arrives.
-            // It's possible that build data arrives before evaluation data, in which case
-            // the Roslyn context would be null. To prevent problems, we wait for evaluation
-            // data to have been processed at least once before continuing.
-            await _hasEvaluationData.Task;
-
             IProjectChangeDescription projectChange = update.Value.BuildRuleUpdate.ProjectChanges[ProjectBuildRuleName];
 
             // There should always be some change to publish, as we have already called BeginBatch by this point
