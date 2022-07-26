@@ -223,10 +223,6 @@
                        Description="Defines the entry point to be called when the application loads. Generally this is set either to the main form in your application or to the 'Main' procedure that should run when the application starts. Class libraries do not define an entry point."
                        Category="General"
                        EnumProvider="StartupObjectsEnumProvider">
-    <DynamicEnumProperty.DataSource>
-      <DataSource Persistence="ProjectFileWithInterception"
-                  HasConfigurationCondition="False" />
-    </DynamicEnumProperty.DataSource>
     <DynamicEnumProperty.Metadata>
       <NameValuePair Name="VisibilityCondition">
         <NameValuePair.Value>(not (has-evaluated-value "Application" "OutputType" "Library"))</NameValuePair.Value>
