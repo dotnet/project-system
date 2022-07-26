@@ -16,17 +16,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
     {
         private readonly IVsService<IOleAsyncServiceProvider> _serviceProvider;
         private readonly IUnconfiguredProjectVsServices _projectVsServices;
-        private readonly IActiveWorkspaceProjectContextHost _projectContextHost;
+        private readonly IWorkspaceWriter _workspaceWriter;
         private readonly AsyncLazy<IVsContainedLanguageFactory?> _containedLanguageFactory;
 
         [ImportingConstructor]
         public VsContainedLanguageComponentsFactory(IVsService<SAsyncServiceProvider, IOleAsyncServiceProvider> serviceProvider,
                                                     IUnconfiguredProjectVsServices projectVsServices,
-                                                    IActiveWorkspaceProjectContextHost projectContextHost)
+                                                    IWorkspaceWriter workspaceWriter)
         {
             _serviceProvider = serviceProvider;
             _projectVsServices = projectVsServices;
-            _projectContextHost = projectContextHost;
+            _workspaceWriter = workspaceWriter;
 
             _containedLanguageFactory = new AsyncLazy<IVsContainedLanguageFactory?>(GetContainedLanguageFactoryAsync, projectVsServices.ThreadingService.JoinableTaskFactory);
         }
@@ -46,7 +46,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
 
         private async Task<(HierarchyId itemid, IVsHierarchy? hierarchy, IVsContainedLanguageFactory? containedLanguageFactory)> GetContainedLanguageFactoryForFileAsync(string filePath)
         {
-            await _projectContextHost.PublishAsync();
+            await _workspaceWriter.WhenInitialized();
 
             await _projectVsServices.ThreadingService.SwitchToUIThread();
 

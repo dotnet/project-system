@@ -1,6 +1,7 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
 using Microsoft.VisualStudio.ProjectSystem.LanguageServices;
+using Microsoft.VisualStudio.ProjectSystem.Utilities;
 using Microsoft.VisualStudio.TextManager.Interop;
 using Microsoft.VisualStudio.Threading;
 using HierarchyId = Microsoft.VisualStudio.Shell.HierarchyId;
@@ -50,12 +51,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
             Requires.NotNullOrEmpty(contextId, nameof(contextId));
 
             if (!_contexts.Contains(contextId))
-                throw new InvalidOperationException($"'{nameof(contextId)}' has not been registered or has already been unregistered");
+                throw new InvalidOperationException($"Context with ID '{contextId}' has not been registered or has already been unregistered.");
 
             return StringComparers.WorkspaceProjectContextIds.Equals(ActiveIntellisenseProjectContext, contextId);
         }
 
-        public void RegisterContext(string contextId)
+        public IDisposable RegisterContext(string contextId)
         {
             Requires.NotNullOrEmpty(contextId, nameof(contextId));
 
@@ -70,17 +71,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
             });
 
             if (!changed)
-                throw new InvalidOperationException($"'{nameof(contextId)}' has already been registered.");
-        }
+                throw new InvalidOperationException($"Context with ID '{contextId}' has already been registered.");
 
-        public void UnregisterContext(string contextId)
-        {
-            Requires.NotNullOrEmpty(contextId, nameof(contextId));
-
-            bool changed = ThreadingTools.ApplyChangeOptimistically(ref _contexts, projectContexts => projectContexts.Remove(contextId));
-
-            if (!changed)
-                throw new InvalidOperationException($"'{nameof(contextId)}' has not been registered or has already been unregistered");
+            return new DisposableDelegate(
+                () => Assumes.True(ThreadingTools.ApplyChangeOptimistically(ref _contexts, contextId, static (projectContexts, contextId) => projectContexts.Remove(contextId))));
         }
     }
 }

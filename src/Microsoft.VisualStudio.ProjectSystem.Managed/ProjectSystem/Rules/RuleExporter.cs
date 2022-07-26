@@ -162,7 +162,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Rules
         }
 
         /// <summary>
-        ///     Contains rules for the <see cref="ApplyChangesToWorkspaceContext"/> component.
+        ///     Contains rules for the <see cref="IWorkspaceUpdateHandler"/> implementations.
         /// </summary>
         private static class LanguageServiceRules
         {
