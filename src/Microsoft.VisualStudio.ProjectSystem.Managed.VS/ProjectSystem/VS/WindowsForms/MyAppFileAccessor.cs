@@ -26,7 +26,6 @@ internal class MyAppFileAccessor : IMyAppFileAccessor, IDisposable
     private const string HighDpiModeProperty = "HighDpiMode";
     private const string SplashScreenProperty = "SplashScreen";
     private const string MinimumSplashScreenDisplayTimeProperty = "MinimumSplashScreenDisplayTime";
-    private const string StartupObjectProperty = "StartupObject";
 
     [ImportingConstructor]
     public MyAppFileAccessor([Import(typeof(SVsServiceProvider))] IServiceProvider serviceProvider, UnconfiguredProject project, IProjectThreadingService threadingService)
@@ -149,8 +148,4 @@ internal class MyAppFileAccessor : IMyAppFileAccessor, IDisposable
     public async Task<int?> GetMinimumSplashScreenDisplayTimeAsync() => await GetIntPropertyValueAsync(MinimumSplashScreenDisplayTimeProperty);
 
     public async Task SetMinimumSplashScreenDisplayTimeAsync(int value) => await SetPropertyAsync(MinimumSplashScreenDisplayTimeProperty, value.ToString());
-
-    public async Task<string?> GetStartupObjectAsync() => await GetStringPropertyValueAsync(StartupObjectProperty);
-
-    public async Task SetStartupObjectAsync(string value) => await SetPropertyAsync(StartupObjectProperty, value);
 }
