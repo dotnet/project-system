@@ -37,14 +37,14 @@ internal class StartupObjectValueProvider : InterceptingPropertyValueProviderBas
                 if (unevaluatedPropertyValue.Contains("Form")) // Is there a better way to identify a form?
                 {
                     // If the user selects a Form, the value should be serialized to the myapp file.
-                    await _myAppXmlFileAccessor.SetStartupObjectAsync(unevaluatedPropertyValue);
+                    await _myAppXmlFileAccessor.SetMainFormAsync(unevaluatedPropertyValue);
                     await defaultProperties.DeletePropertyAsync(StartupObjectProperty);
                     return null;
                 }
 
                 // If the ApplicationFramework is enabled, the value Sub Main should always be serialized to the project file.
                 await defaultProperties.SetPropertyValueAsync(StartupObjectProperty, "Sub Main");
-                await _myAppXmlFileAccessor.SetStartupObjectAsync(string.Empty);
+                await _myAppXmlFileAccessor.SetMainFormAsync(string.Empty);
                 return null;
             }
         }
@@ -66,7 +66,7 @@ internal class StartupObjectValueProvider : InterceptingPropertyValueProviderBas
         string valueInProjectFile = await base.OnGetUnevaluatedPropertyValueAsync(propertyName, evaluatedPropertyValue, defaultProperties);
 
         if (string.IsNullOrEmpty(valueInProjectFile))
-            return await _myAppXmlFileAccessor.GetStartupObjectAsync() ?? string.Empty;
+            return await _myAppXmlFileAccessor.GetMainFormAsync() ?? string.Empty;
 
         return valueInProjectFile;
     }
@@ -82,7 +82,7 @@ internal class StartupObjectValueProvider : InterceptingPropertyValueProviderBas
         string valueInProjectFile = await base.OnGetUnevaluatedPropertyValueAsync(propertyName, unevaluatedPropertyValue, defaultProperties);
 
         if (string.IsNullOrEmpty(valueInProjectFile))
-            return await _myAppXmlFileAccessor.GetStartupObjectAsync() ?? string.Empty;
+            return await _myAppXmlFileAccessor.GetMainFormAsync() ?? string.Empty;
 
         return valueInProjectFile;
     }
