@@ -90,7 +90,7 @@ internal class MyAppFileAccessor : IMyAppFileAccessor, IDisposable
             _docData.Modifying += DocData_Modifying;
             myAppDocument = new MyAppDocument(_docData);
         }
-        catch (Exception)
+        catch (NullReferenceException)
         {
             // If we've reached here, the file write succeeded but the file may have been deleted by the time UI thread is switched to
             return null;
