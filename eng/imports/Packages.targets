@@ -89,10 +89,10 @@
 
     <!-- CPS -->
     <!-- Find versions at https://dev.azure.com/azure-public/vside/_artifacts/feed/vs-impl -->
-    <PackageReference Update="Microsoft.VisualStudio.ProjectSystem"                                   Version="17.4.5-pre" />
-    <PackageReference Update="Microsoft.VisualStudio.ProjectSystem.Analyzers"                         Version="17.4.5-pre" />
-    <PackageReference Update="Microsoft.VisualStudio.ProjectSystem.Query"                             Version="17.4.5-pre" />
-    <PackageReference Update="Microsoft.VisualStudio.ProjectSystem.SDK.Tools"                         Version="17.4.5-pre" />
+    <PackageReference Update="Microsoft.VisualStudio.ProjectSystem"                                   Version="17.4.38-pre" />
+    <PackageReference Update="Microsoft.VisualStudio.ProjectSystem.Analyzers"                         Version="17.4.38-pre" />
+    <PackageReference Update="Microsoft.VisualStudio.ProjectSystem.Query"                             Version="17.4.38-pre" />
+    <PackageReference Update="Microsoft.VisualStudio.ProjectSystem.SDK.Tools"                         Version="17.4.38-pre" />
 
     <!-- Roslyn -->
     <PackageReference Update="Microsoft.Net.Compilers.Toolset"                                        Version="4.3.0-2.final" />
