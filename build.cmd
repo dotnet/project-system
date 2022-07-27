@@ -1,6 +1,9 @@
 @if not defined _echo @echo off
 setlocal enabledelayedexpansion
 
+@REM Show the command line arguments available if /? is provided.
+if /I "%1" == "/?" call :Usage && exit /b 1
+
 @REM Turn off dotnet CLI logo
 set DOTNET_NOLOGO=true
 
@@ -36,3 +39,19 @@ if exist "%BinlogPath%" (
 )
 
 exit /b %MSBuildErrorLevel%
+
+:Usage
+echo Usage: build.cmd [options]
+echo.
+echo   For Projects:
+echo     /p:SrcProjects=[true or false]     Includes the projects within the src directory. Default: true
+echo     /p:TestProjects=[true or false]    Includes the projects within the tests directory. Default: true
+echo     /p:SetupProjects=[true or false]   Includes the projects within the setup directory. Default: true
+echo.
+echo   For Targets:
+echo     /p:Restore=[true or false]         Runs the Restore target to acquire project dependencies. Default: true
+echo     /p:Build=[true or false]           Runs the Build target to compile the projects into assemblies. Default: true
+echo     /p:Rebuild=[true or false]         Runs the Rebuild target which cleans and builds the projects. Default: false
+echo     /p:Test=[true or false]            Runs the Test target to execute the xUnit test projects. Default: true
+echo     /p:Pack=[true or false]            Runs the Pack target to bundle the projects into NuGet packages. Default: true
+goto :eof
