@@ -1,13 +1,13 @@
 # The .NET Project System for Visual Studio
 
-|Release|Unit Tests (Debug)|Unit Tests (Release)|Localization|
-|---|:--:|:--:|:--:|
-|[16.11][1611Branch]|[![Build Status][1611Debug]][1611Build]|[![Build Status][1611Release]][1611Build]|[![Build Status][1611Spanish]][1611Build]|
-|[17.0][170Branch]|[![Build Status][170Debug]][170Build]|[![Build Status][170Release]][170Build]|[![Build Status][170Spanish]][170Build]|
-|[17.1][171Branch]|[![Build Status][171Debug]][171Build]|[![Build Status][171Release]][171Build]|[![Build Status][171Spanish]][171Build]|
-|[17.2][172Branch]|[![Build Status][172Debug]][172Build]|[![Build Status][172Release]][172Build]|[![Build Status][172Spanish]][172Build]|
-|[17.3][173Branch]|[![Build Status][173Debug]][173Build]|[![Build Status][173Release]][173Build]|[![Build Status][173Spanish]][173Build]|
-|[main][MainBranch]|[![Build Status][MainDebug]][MainBuild]|[![Build Status][MainRelease]][MainBuild]|[![Build Status][MainSpanish]][MainBuild]|
+| Release             | Unit Tests (Debug)                      | Unit Tests (Release)                      | Localization
+|---------------------|:---------------------------------------:|:-----------------------------------------:|:------------:
+| [16.11][1611Branch] | [![Build Status][1611Debug]][1611Build] | [![Build Status][1611Release]][1611Build] | [![Build Status][1611Spanish]][1611Build]
+| [17.0][170Branch]   | [![Build Status][170Debug]][170Build]   | [![Build Status][170Release]][170Build]   | [![Build Status][170Spanish]][170Build]
+| [17.1][171Branch]   | [![Build Status][171Debug]][171Build]   | [![Build Status][171Release]][171Build]   | [![Build Status][171Spanish]][171Build]
+| [17.2][172Branch]   | [![Build Status][172Debug]][172Build]   | [![Build Status][172Release]][172Build]   | [![Build Status][172Spanish]][172Build]
+| [17.3][173Branch]   | [![Build Status][173Debug]][173Build]   | [![Build Status][173Release]][173Build]   | [![Build Status][173Spanish]][173Build]
+| [main][MainBranch]  | [![Build Status][MainDebug]][MainBuild] | [![Build Status][MainRelease]][MainBuild] | [![Build Status][MainSpanish]][MainBuild]
 
 [![Join the chat at https://gitter.im/dotnet/project-system](https://badges.gitter.im/dotnet/project-system.svg)](https://gitter.im/dotnet/project-system?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
@@ -20,7 +20,7 @@ The legacy C# and Visual Basic project systems (*csproj.dll* and *msvbprj.dll*) 
 - Hard to extend outside of aggregation via the use of `<ProjectTypeGuids>` and [sub types (flavors)](https://docs.microsoft.com/en-us/visualstudio/extensibility/internals/project-types)
 - Separate implementations for C# and Visual Basic projects
 
-The new .NET Project System is:
+The current .NET Project System is:
 
 - Managed and managed-interface based
 - Multi-threaded, scalable, and responsive
@@ -35,7 +35,7 @@ There are many technologies that come together to make up the .NET Project Syste
 - [MSBuild](https://github.com/dotnet/msbuild) provides the build engine and file format.
 - [SDK](https://github.com/dotnet/sdk) provides the command-line interface for building, running and interacting with .NET projects, along with the necessary MSBuild tasks and targets.
 - [Common Project System](https://github.com/microsoft/vsprojectsystem) provides the base building blocks for the project system including (but not limited to) project tree, build and debugger coordination and Visual Studio integration.
-- [Roslyn](https://github.com/dotnet/roslyn) provides C# and Visual Basic language support including compilers, IntelliSense, refactorings, analyzers and code fixes.
+- [Roslyn](https://github.com/dotnet/roslyn) provides C# and Visual Basic language support including compilers, IntelliSense, refactorings, analyzers, and code fixes.
 - [Visual F# tools](https://github.com/dotnet/fsharp) provides F# language support.
 
 ![image](docs/repo/images/solution-explorer.png)
@@ -71,7 +71,7 @@ All the command line arguments provided to **build.cmd** get forwarded to MSBuil
   - `/p:Pack=[true or false]`: Runs the **Pack** target to bundle the projects into NuGet packages. Default: `true`
 
 ## How do I engage and contribute?
-We welcome you to try things out, [file issues](https://github.com/dotnet/project-system/issues), make feature requests, and join us in design conversations. If you are looking for something to work on, take a look at our [help wanted issues](https://github.com/dotnet/project-system/issues?q=is%3Aopen+is%3Aissue+label%3A%22Help+Wanted%22) for a great place to start. Also be sure to check out our [contributing guide](CONTRIBUTING.md).
+We welcome you to try things out, [file issues](https://github.com/dotnet/project-system/issues), make feature requests, and join us in design conversations. If you are looking for something to work on, take a look at our [help wanted issues](https://github.com/dotnet/project-system/issues?q=is%3Aopen+is%3Aissue+label%3A%22Help+Wanted%22) for a great place to start. Also, check out our [contributing guide](CONTRIBUTING.md).
 
 This project has adopted a code of conduct adapted from the [Contributor Covenant](http://contributor-covenant.org/) to clarify expected behavior in our community. This code of conduct has been [adopted by many other projects](http://contributor-covenant.org/adopters/). For more information, see [Contributors Code of conduct](https://github.com/dotnet/home/blob/master/guidance/be-nice.md).
 
