@@ -35,9 +35,9 @@ namespace Microsoft.VisualStudio.ProjectSystem
         public const string ProjectPropertyInterception = nameof(ProjectPropertyInterception);
         public const string WindowsForms = nameof(WindowsForms);
         public const string WPF = nameof(WPF);
+        public const string SupportUniversalAuthentication = nameof(SupportUniversalAuthentication);
 
         public const string DotNet = ".NET";
-        public const string SupportUniversalAuthentication = "SupportUniversalAuthentication";
 
         /// <summary>
         /// Instructs CPS to order tree items according to the <see cref="IProjectTree2.DisplayOrder"/> property first.
