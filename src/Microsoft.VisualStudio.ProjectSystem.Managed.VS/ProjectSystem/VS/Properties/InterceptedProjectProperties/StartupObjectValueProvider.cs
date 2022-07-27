@@ -28,11 +28,11 @@ internal class StartupObjectValueProvider : InterceptingPropertyValueProviderBas
     {
         string isWindowsFormsProject = await defaultProperties.GetEvaluatedPropertyValueAsync(UseWinFormsProperty);
 
-        if (isWindowsFormsProject == "true")
+        if (bool.TryParse(isWindowsFormsProject, out bool b) && b)
         {
             string applicationFrameworkValue = await defaultProperties.GetEvaluatedPropertyValueAsync(ApplicationFrameworkProperty);
 
-            if (applicationFrameworkValue == EnabledValue)
+            if (Equals(applicationFrameworkValue, EnabledValue))
             {
                 if (unevaluatedPropertyValue.Contains("Form")) // Is there a better way to identify a form?
                 {
@@ -59,11 +59,11 @@ internal class StartupObjectValueProvider : InterceptingPropertyValueProviderBas
     {
         // StartupObject can come from the project file or the myapp file.
         string applicationFrameworkValue = await defaultProperties.GetEvaluatedPropertyValueAsync(ApplicationFrameworkProperty);
-        
-        if (applicationFrameworkValue == DisabledValue)
-            return await base.OnGetUnevaluatedPropertyValueAsync(propertyName, evaluatedPropertyValue, defaultProperties);
 
         string valueInProjectFile = await base.OnGetUnevaluatedPropertyValueAsync(propertyName, evaluatedPropertyValue, defaultProperties);
+        
+        if (Equals(applicationFrameworkValue, DisabledValue))
+            return valueInProjectFile;
 
         if (string.IsNullOrEmpty(valueInProjectFile))
             return await _myAppXmlFileAccessor.GetMainFormAsync() ?? string.Empty;
@@ -76,11 +76,10 @@ internal class StartupObjectValueProvider : InterceptingPropertyValueProviderBas
         // StartupObject can come from the project file or the myapp file.
         string applicationFrameworkValue = await defaultProperties.GetEvaluatedPropertyValueAsync(ApplicationFrameworkProperty);
 
-        if (applicationFrameworkValue == DisabledValue)
-            return await base.OnGetUnevaluatedPropertyValueAsync(propertyName, unevaluatedPropertyValue, defaultProperties);
-
         string valueInProjectFile = await base.OnGetUnevaluatedPropertyValueAsync(propertyName, unevaluatedPropertyValue, defaultProperties);
-
+        if (Equals(applicationFrameworkValue, DisabledValue))
+            return valueInProjectFile; 
+        
         if (string.IsNullOrEmpty(valueInProjectFile))
             return await _myAppXmlFileAccessor.GetMainFormAsync() ?? string.Empty;
 
