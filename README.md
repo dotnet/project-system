@@ -11,9 +11,9 @@
 
 [![Join the chat at https://gitter.im/dotnet/project-system](https://badges.gitter.im/dotnet/project-system.svg)](https://gitter.im/dotnet/project-system?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
-This repository contains the new .NET Project System that has been rewritten on top of the [Common Project System (CPS)](https://github.com/microsoft/vsprojectsystem). In Visual Studio 2017, [Visual Studio 2019](https://www.visualstudio.com/vs/), and Visual Studio 2022, this project system is used by default for Shared Projects (C# and Visual Basic), and .NET Core (C#, F# and Visual Basic) project types, however, [long term](docs/repo/roadmap.md) it will be the basis of all C#, F# and Visual Basic project types. For a list of feature differences between the project systems, see [Feature Comparison](docs/feature-comparison.md).
+This repository contains the .NET Project System for [Visual Studio](https://www.visualstudio.com/vs/) that is written on top of the [Common Project System (CPS)](https://github.com/microsoft/vsprojectsystem) framework. In Visual Studio 2017, Visual Studio 2019, and Visual Studio 2022, this project system is used for .NET Core [SDK-style] (C#, F# and Visual Basic) and Shared Projects (C# and Visual Basic) project types. In the [long term](docs/repo/roadmap.md), this project system will be the basis for all C#, F# and Visual Basic project types. For a list of feature differences between the project systems, see [Feature Comparison](docs/feature-comparison.md).
 
-The legacy C# and Visual Basic project systems (csproj.dll and msvbprj.dll) first shipped with Visual Studio .NET in 2002. They have served us well but are:
+The legacy C# and Visual Basic project systems (*csproj.dll* and *msvbprj.dll*) first shipped with Visual Studio .NET in 2002. They have served us well but are:
 
 - Native and COM-based
 - Single threaded and bound to the UI thread
@@ -28,7 +28,7 @@ The new .NET Project System is:
 - A single implementation for C#, F# and Visual Basic projects
 
 ## What is a project system?
-A project system sits between a project file on disk (for example, .csproj and .vbproj) and various Visual Studio features including, but not limited to, Solution Explorer, designers, the debugger, language services, build and deployment. Almost all interaction that occurs with files contained in a project file happens through the project system.
+A project system sits between a project file on disk (for example, *.csproj* and *.vbproj*) and various Visual Studio features including, but not limited to, Solution Explorer, designers, the debugger, language services, build and deployment. Almost all interaction that occurs with files contained in a project file happens through the project system.
 
 There are many technologies that come together to make up the .NET Project System:
 
@@ -40,10 +40,40 @@ There are many technologies that come together to make up the .NET Project Syste
 
 ![image](docs/repo/images/solution-explorer.png)
 
-## How do I engage and contribute?
-We welcome you to try things out, [file issues](https://github.com/dotnet/project-system/issues), make feature requests and join us in design conversations. If you are looking for something to work on, take a look at our [help wanted issues](https://github.com/dotnet/project-system/issues?q=is%3Aopen+is%3Aissue+label%3A%22Help+Wanted%22) for a great place to start. Also be sure to check out our [contributing guide](CONTRIBUTING.md).
+## How do I build the repository?
+This repository is built on .NET Framework and requires the .NET Framework version of [MSBuild](https://docs.microsoft.com/en-us/visualstudio/msbuild/msbuild?view=vs-2022) to build successfully. Additionally, there is a dependency on the [Visual Studio SDK](https://docs.microsoft.com/en-us/visualstudio/extensibility/starting-to-develop-visual-studio-extensions?view=vs-2022) as the .NET Project System is bundled as a Visual Studio Extension for deployment into Visual Studio.
 
-This project has adopted a code of conduct adapted from the [Contributor Covenant](http://contributor-covenant.org/) to clarify expected behavior in our community. This code of conduct has been [adopted by many other projects](http://contributor-covenant.org/adopters/). For more information see [Contributors Code of conduct](https://github.com/dotnet/home/blob/master/guidance/be-nice.md). 
+Here are the two ways to acquire the necessary components:
+- Install the latest [Visual Studio](https://visualstudio.microsoft.com/downloads/)
+- Install [Build Tools for Visual Studio](https://visualstudio.microsoft.com/downloads/?q=build+tools#build-tools-for-visual-studio-2022)
+
+For either option, these workloads should be installed:
+- .NET desktop build tools
+- Visual Studio extension development
+
+![image](docs/repo/images/workloads-for-building-the-repo.png)
+
+After the necessary components are installed, simply run the `build.cmd` batch file at the root of the repository. This will build, test, and bundle the repository appropriately.
+
+**NOTE:** When using the *Build Tools for Visual Studio*, the basic call to **build.cmd** will fail. It will attempt to deploy to the *Exp* hive (for debugging the .NET Project System) which it cannot do if full Visual Studio is not installed. Additionally, some tests will fail. To build without failures in this situation, run `build.cmd /p:DeployExtension=false /p:Test=false`.
+
+### **build.cmd** flags
+All the command line arguments provided to **build.cmd** get forwarded to MSBuild. There are some special properties we've set up for building this repo.
+- For Projects:
+  - `/p:SrcProjects=[true or false]`: Includes the projects within the **src** directory. Default: `true`
+  - `/p:TestProjects=[true or false]`: Includes the projects within the **tests** directory. Default: `true`
+  - `/p:SetupProjects=[true or false]`: Includes the projects within the **setup** directory. Default: `true`
+- For Targets:
+  - `/p:Restore=[true or false]`: Runs the **Restore** target to acquire project dependencies. Default: `true`
+  - `/p:Build=[true or false]`: Runs the **Build** target to compile the projects into assemblies. Default: `true`
+  - `/p:Rebuild=[true or false]`: Runs the **Rebuild** target which cleans and builds the projects. Default: `false`
+  - `/p:Test=[true or false]`: Runs the **Test** target to execute the xUnit test projects. Default: `true`
+  - `/p:Pack=[true or false]`: Runs the **Pack** target to bundle the projects into NuGet packages. Default: `true`
+
+## How do I engage and contribute?
+We welcome you to try things out, [file issues](https://github.com/dotnet/project-system/issues), make feature requests, and join us in design conversations. If you are looking for something to work on, take a look at our [help wanted issues](https://github.com/dotnet/project-system/issues?q=is%3Aopen+is%3Aissue+label%3A%22Help+Wanted%22) for a great place to start. Also be sure to check out our [contributing guide](CONTRIBUTING.md).
+
+This project has adopted a code of conduct adapted from the [Contributor Covenant](http://contributor-covenant.org/) to clarify expected behavior in our community. This code of conduct has been [adopted by many other projects](http://contributor-covenant.org/adopters/). For more information, see [Contributors Code of conduct](https://github.com/dotnet/home/blob/master/guidance/be-nice.md).
 
 <!-- References -->
 
