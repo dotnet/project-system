@@ -9,11 +9,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.Workloads
     /// </summary>
     [Export(ExportContractNames.Scopes.ConfiguredProject, typeof(IProjectDynamicLoadComponent))]
     [AppliesTo(ProjectCapability.RazorAndEitherWinFormsOrWpf)]
-    internal class WpfMissingWorkloadDetector : OnceInitializedOnceDisposedAsync, IProjectDynamicLoadComponent
+    internal class WebMissingWorkloadDetector : OnceInitializedOnceDisposedAsync, IProjectDynamicLoadComponent
     {
         private readonly ConfiguredProject _project;
         private readonly IMissingSetupComponentRegistrationService _missingSetupComponentRegistrationService;
-        private readonly IWpfWorkloadDescriptorDataSource _wpfWorkloadDescriptorDataSource;
+        private readonly IWebWorkloadDescriptorDataSource _wpfWorkloadDescriptorDataSource;
         private readonly IProjectFaultHandlerService _projectFaultHandlerService;
         private readonly IProjectSubscriptionService _projectSubscriptionService;
 
@@ -24,9 +24,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Workloads
         private IDisposable? _subscription;
 
         [ImportingConstructor]
-        public WpfMissingWorkloadDetector(
+        public WebMissingWorkloadDetector(
             ConfiguredProject project,
-            IWpfWorkloadDescriptorDataSource wpfWorkloadDescriptorDataSource,
+            IWebWorkloadDescriptorDataSource wpfWorkloadDescriptorDataSource,
             IMissingSetupComponentRegistrationService missingSetupComponentRegistrationService,
             IProjectThreadingService threadingService,
             IProjectFaultHandlerService projectFaultHandlerService,
@@ -84,7 +84,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Workloads
                 return;
             }
 
-            _missingSetupComponentRegistrationService.RegisterMissingWpfWorkloads(_projectGuid, _project, pair.Value.workloadDescriptors);
+            _missingSetupComponentRegistrationService.RegisterMissingWebWorkloads(_projectGuid, _project, pair.Value.workloadDescriptors);
         }
     }
 }

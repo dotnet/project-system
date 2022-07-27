@@ -128,7 +128,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             UnregisterProjectConfiguration(projectGuid, project);
         }
 
-        public void RegisterMissingWpfWorkloads(Guid projectGuid, ConfiguredProject project, ISet<WorkloadDescriptor> workloadDescriptors)
+        public void RegisterMissingWebWorkloads(Guid projectGuid, ConfiguredProject project, ISet<WorkloadDescriptor> workloadDescriptors)
         {
             if (AreNewComponentIdsToRegister(workloadDescriptors))
             {

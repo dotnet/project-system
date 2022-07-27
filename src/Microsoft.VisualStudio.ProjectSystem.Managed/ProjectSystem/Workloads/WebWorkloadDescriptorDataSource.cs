@@ -5,9 +5,9 @@ using System.Threading.Tasks.Dataflow;
 
 namespace Microsoft.VisualStudio.ProjectSystem.Workloads
 {
-    [Export(typeof(IWpfWorkloadDescriptorDataSource))]
+    [Export(typeof(IWebWorkloadDescriptorDataSource))]
     [AppliesTo(ProjectCapability.DotNet)]
-    internal class WpfWorkloadDescriptorDataSource : ChainedProjectValueDataSourceBase<ISet<WorkloadDescriptor>>, IWpfWorkloadDescriptorDataSource
+    internal class WebWorkloadDescriptorDataSource : ChainedProjectValueDataSourceBase<ISet<WorkloadDescriptor>>, IWebWorkloadDescriptorDataSource
     {
         private static readonly string s_webWorkloadName = "Web";
         private static readonly string s_webComponentId = "Microsoft.VisualStudio.Component.Web";
@@ -17,7 +17,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Workloads
         private readonly ConfiguredProject _configuredProject;
 
         [ImportingConstructor]
-        public WpfWorkloadDescriptorDataSource(ConfiguredProject configuredProject)
+        public WebWorkloadDescriptorDataSource(ConfiguredProject configuredProject)
             : base(configuredProject)
         {
             _configuredProject = configuredProject;
