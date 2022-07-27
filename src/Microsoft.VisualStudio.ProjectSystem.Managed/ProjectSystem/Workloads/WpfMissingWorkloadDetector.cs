@@ -8,7 +8,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Workloads
     ///     Tracks the set of missing .NET workloads for a configured project.
     /// </summary>
     [Export(ExportContractNames.Scopes.ConfiguredProject, typeof(IProjectDynamicLoadComponent))]
-    [AppliesTo(ProjectCapability.DotNet)]
+    [AppliesTo(ProjectCapability.RazorAndEitherWinFormsOrWpf)]
     internal class WpfMissingWorkloadDetector : OnceInitializedOnceDisposedAsync, IProjectDynamicLoadComponent
     {
         private readonly ConfiguredProject _project;

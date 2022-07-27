@@ -13,7 +13,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Workloads
         private static readonly string s_webComponentId = "Microsoft.VisualStudio.Component.Web";
         private static readonly WorkloadDescriptor s_webWorkload = new(s_webWorkloadName, s_webComponentId);
 
-        private readonly ConcurrentHashSet<string> _componentIdsDetected = new();
+        private readonly ConcurrentHashSet<string> _componentIdsRequired = new();
         private readonly ConfiguredProject _configuredProject;
 
         [ImportingConstructor]
@@ -43,11 +43,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.Workloads
             bool wpf = projectCapabilitiesSnapshot.IsProjectCapabilityPresent(ProjectCapability.WPF);
 
             // Detect all possible scenarios and add the corresponding needed component ids.
-            if (!_componentIdsDetected.Contains(s_webComponentId) && WpfDetected(dotnetCoreRazor, windowsForm, wpf))
+            if (!_componentIdsRequired.Contains(s_webComponentId) && WpfDetected(dotnetCoreRazor, windowsForm, wpf))
             {
                 Workloads = Workloads.Add(s_webWorkload);
 
-                _componentIdsDetected.Add(s_webComponentId);
+                _componentIdsRequired.Add(s_webComponentId);
             }
 
             return Workloads;

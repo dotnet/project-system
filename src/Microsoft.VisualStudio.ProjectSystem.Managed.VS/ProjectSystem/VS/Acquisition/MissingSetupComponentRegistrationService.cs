@@ -138,7 +138,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             var workloadDescriptorSet = _projectGuidToWorkloadDescriptorsMap.GetOrAdd(projectGuid, guid => new ConcurrentHashSet<WorkloadDescriptor>());
             workloadDescriptorSet.AddRange(workloadDescriptors);
 
-            DisplayYellowBarInSolutionExplorer(project);
+            DisplayMissingComponentsPromptIfNeeded(project);
 
             bool AreNewComponentIdsToRegister(ISet<WorkloadDescriptor> workloadDescriptors)
             {
@@ -212,7 +212,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         public void UnregisterProjectConfiguration(Guid projectGuid, ConfiguredProject project)
         {
             RemoveConfiguration(projectGuid, project);
-            DisplayYellowBarInSolutionExplorer(project);
+            DisplayMissingComponentsPromptIfNeeded(project);
 
             void RemoveConfiguration(Guid projectGuid, ConfiguredProject project)
             {
@@ -231,7 +231,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             }
         }
 
-        private void DisplayYellowBarInSolutionExplorer(ConfiguredProject project)
+        private void DisplayMissingComponentsPromptIfNeeded(ConfiguredProject project)
         {
             bool displayMissingComponentsPrompt = ShouldDisplayMissingComponentsPrompt();
             if (displayMissingComponentsPrompt)
