@@ -20,17 +20,54 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
                 foreach (UpToDateCheckInputItem item in items)
                 {
-                    itemHash ^= item.Path.GetHashCode();
+                    itemHash ^= GetStableHashCode(item.Path);
                 }
 
                 // Multiply by the item type hash, so that if an item changes type the hash will change.
                 // The rest of the system does not really need this though, as it is assumed the only way
                 // an item can change type is if a project file changes, which would be detected via
                 // file timestamp changes.
-                hash ^= itemHash * itemType.GetHashCode();
+                hash ^= itemHash * GetStableHashCode(itemType);
             }
 
             return hash;
+        }
+
+        ///<summary>
+        /// Returns the hash code of the string
+        ///</summary>
+        /// <remarks>
+        /// Please, do not make changes to this hash algorithm.
+        /// Current hash value is persisted in a file in the .vs folder, 
+        /// changing this algorithm may regress performance and break compatibility.
+        /// 
+        /// The original code was taken from string.GetHashCode() with some minor changes
+        /// https://github.com/microsoft/referencesource/blob/master/mscorlib/system/string.cs
+        /// </remarks>
+        internal static int GetStableHashCode(string str)
+        {
+            unsafe
+            {
+                fixed (char* src = str)
+                {
+                    int hash1 = 5381;
+                    int hash2 = hash1;
+
+                    int c;
+                    char* s = src;
+                    while ((c = s[0]) != 0)
+                    {
+                        hash1 = ((hash1 << 5) + hash1) ^ c;
+                        c = s[1];
+                        if (c == 0)
+                            break;
+                        hash2 = ((hash2 << 5) + hash2) ^ c;
+                        s += 2;
+                    }
+
+                    return hash1 + (hash2 * 1566083941);
+                }
+            }
         }
     }
 }
