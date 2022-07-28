@@ -1890,6 +1890,45 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             }
         }
 
+        [Theory]
+        [InlineData("", 371857150)]
+        [InlineData("Hello, World!", 562640209)]
+        [InlineData("Test", -871204762)]
+        [InlineData("TEst", -2094096442)]
+        [InlineData("Some text", -1076058823)]
+        [InlineData("AAAAAAAAAAAAAAAAAAAAA", 1397387549)]
+        [InlineData("1(*!)#2*$&@_fa!f(#(b$(12", -2128933005)]
+        public void GetStableHashCode_Matches_NetFrameworkX64(string str, int netFrameworkX64HashPrecomputed)
+        {
+            int hash = BuildUpToDateCheck.GetStableHashCode(str);
+
+            Assert.Equal(hash, netFrameworkX64HashPrecomputed);
+        }
+
+        [Fact]
+        public void GetStableHashCode_SameText_SameHash()
+        {
+            string str1 = "SomeText";
+            string str2 = "SomeText";
+
+            int h1 = BuildUpToDateCheck.GetStableHashCode(str1);
+            int h2 = BuildUpToDateCheck.GetStableHashCode(str2);
+
+            Assert.Equal(h1, h2);
+        }
+
+        [Fact]
+        public void GetStableHashCode_DifferentText_DifferentHash()
+        {
+            string str1 = "SomeText";
+            string str2 = "SomeTexT";
+
+            int h1 = BuildUpToDateCheck.GetStableHashCode(str1);
+            int h2 = BuildUpToDateCheck.GetStableHashCode(str2);
+
+            Assert.NotEqual(h1, h2);
+        }
+
         [Fact]
         public async Task IsUpToDateAsync_True_InputNewerThatBuiltOutput_TargetFrameworkDoesNotMatchBuild()
         {
