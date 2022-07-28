@@ -42,13 +42,14 @@ internal sealed class ImportedNamespacesValueProvider : InterceptingPropertyValu
     private async Task<string> GetSelectedImportStringAsync()
     {
         string projectName = Path.GetFileNameWithoutExtension(_configuredProject.UnconfiguredProject.FullPath);
-        bool containsProjectName = false;
 
         ImmutableArray<(string Value, bool IsImported)> existingImports = await GetSelectedImportsAsync();
 
         var selectedImports = existingImports
                 .Where(pair => !string.IsNullOrEmpty(pair.Value))
                 .Select(pair => (Key: pair.Value, Value: pair.IsImported.ToString())).ToList();
+
+        bool containsProjectName = selectedImports.Any(selectedImport => string.Equals(selectedImport.Key, projectName, StringComparison.Ordinal));
 
         if (!containsProjectName)
         {
@@ -126,6 +127,6 @@ internal sealed class ImportedNamespacesValueProvider : InterceptingPropertyValu
             });
         }
 
-        return null;
+        return await GetSelectedImportStringAsync();
     }
 }
