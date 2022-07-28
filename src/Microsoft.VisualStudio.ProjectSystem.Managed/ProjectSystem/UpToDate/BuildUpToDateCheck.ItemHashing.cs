@@ -1,5 +1,7 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
+using Microsoft.VisualStudio.Text;
+
 namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 {
     internal sealed partial class BuildUpToDateCheck
@@ -20,14 +22,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
                 foreach (UpToDateCheckInputItem item in items)
                 {
-                    itemHash ^= item.Path.GetHashCode();
+                    itemHash ^= item.Path.GetDeterministicHashCode();
                 }
 
                 // Multiply by the item type hash, so that if an item changes type the hash will change.
                 // The rest of the system does not really need this though, as it is assumed the only way
                 // an item can change type is if a project file changes, which would be detected via
                 // file timestamp changes.
-                hash ^= itemHash * itemType.GetHashCode();
+                hash ^= itemHash * itemType.GetDeterministicHashCode();
             }
 
             return hash;
