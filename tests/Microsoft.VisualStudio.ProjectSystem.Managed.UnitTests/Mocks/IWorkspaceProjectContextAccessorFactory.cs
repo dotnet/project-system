@@ -4,11 +4,11 @@ using Microsoft.VisualStudio.LanguageServices.ProjectSystem;
 
 namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 {
-    internal static class IWorkspaceMockFactory
+    internal static class IWorkspaceProjectContextAccessorFactory
     {
-        public static IWorkspace ImplementContextId(string contextId)
+        public static IWorkspaceProjectContextAccessor ImplementContextId(string contextId)
         {
-            var mock = new Mock<IWorkspace>();
+            var mock = new Mock<IWorkspaceProjectContextAccessor>();
 
             mock.Setup(c => c.ContextId)
                 .Returns(contextId);
@@ -16,9 +16,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
             return mock.Object;
         }
 
-        public static IWorkspace ImplementContext(IWorkspaceProjectContext context, string? contextId = null)
+        public static IWorkspaceProjectContextAccessor ImplementContext(IWorkspaceProjectContext context, string? contextId = null)
         {
-            var mock = new Mock<IWorkspace>();
+            var mock = new Mock<IWorkspaceProjectContextAccessor>();
 
             mock.Setup(c => c.Context)
                 .Returns(context);
@@ -29,9 +29,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
             return mock.Object;
         }
 
-        public static IWorkspace ImplementHostSpecificErrorReporter(Func<object> action)
+        public static IWorkspaceProjectContextAccessor ImplementHostSpecificErrorReporter(Func<object> action)
         {
-            var mock = new Mock<IWorkspace>();
+            var mock = new Mock<IWorkspaceProjectContextAccessor>();
 
             mock.SetupGet(c => c.HostSpecificErrorReporter)
                 .Returns(action);
@@ -39,7 +39,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
             return mock.Object;
         }
 
-        public static IWorkspace Create()
+        public static IWorkspaceProjectContextAccessor Create()
         {
             var context = IWorkspaceProjectContextMockFactory.Create();
 

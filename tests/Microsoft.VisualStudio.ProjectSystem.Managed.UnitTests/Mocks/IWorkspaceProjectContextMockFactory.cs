@@ -7,6 +7,16 @@ namespace Microsoft.VisualStudio.LanguageServices.ProjectSystem
 {
     internal static class IWorkspaceProjectContextMockFactory
     {
+        public static IWorkspaceProjectContext ImplementDispose(Action action)
+        {
+            var mock = new Mock<IWorkspaceProjectContext>();
+
+            mock.Setup(c => c.Dispose())
+                .Callback(action);
+
+            return mock.Object;
+        }
+
         public static IWorkspaceProjectContext ImplementSetProperty(Action<string, string> action)
         {
             var mock = new Mock<IWorkspaceProjectContext>();

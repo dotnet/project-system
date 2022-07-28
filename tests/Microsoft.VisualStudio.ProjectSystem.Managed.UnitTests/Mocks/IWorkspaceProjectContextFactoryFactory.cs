@@ -4,6 +4,11 @@ namespace Microsoft.VisualStudio.LanguageServices.ProjectSystem
 {
     internal static class IWorkspaceProjectContextFactoryFactory
     {
+        public static IWorkspaceProjectContextFactory Create()
+        {
+            return Mock.Of<IWorkspaceProjectContextFactory>();
+        }
+
         public static IWorkspaceProjectContextFactory ImplementCreateProjectContext(Func<string, string, string, Guid, object?, string?, string?, CancellationToken, IWorkspaceProjectContext> action)
         {
             var mock = new Mock<IWorkspaceProjectContextFactory>();

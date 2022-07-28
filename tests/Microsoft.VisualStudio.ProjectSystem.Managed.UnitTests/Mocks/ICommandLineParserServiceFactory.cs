@@ -6,6 +6,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 {
     internal static class ICommandLineParserServiceFactory
     {
+        public static ICommandLineParserService Create()
+        {
+            return Mock.Of<ICommandLineParserService>();
+        }
+
         public static ICommandLineParserService ImplementParse(Func<IEnumerable<string>, string, BuildOptions> action)
         {
             var mock = new Mock<ICommandLineParserService>();
