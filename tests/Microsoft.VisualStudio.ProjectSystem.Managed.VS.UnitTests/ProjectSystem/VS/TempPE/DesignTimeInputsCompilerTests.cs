@@ -257,7 +257,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
 
             var telemetryService = ITelemetryServiceFactory.Create();
             var threadingService = IProjectThreadingServiceFactory.Create();
-            var workspaceWriter = IWorkspaceWriterFactory.ImplementProjectContextAccessor(IWorkspaceMockFactory.Create());
+            var activeWorkspaceProjectContextHost = IActiveWorkspaceProjectContextHostFactory.ImplementProjectContextAccessor(IWorkspaceProjectContextAccessorFactory.Create());
             var unconfiguredProject = UnconfiguredProjectFactory.Create(
                 fullPath: Path.Combine(_projectFolder, "MyTestProj.csproj"),
                 projectAsynchronousTasksService: IProjectAsynchronousTasksServiceFactory.Create());
@@ -267,7 +267,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
                         .ReturnsAsync((IWorkspaceProjectContext context, string outputFile, ISet<string> filesToCompile, CancellationToken token) => _compilationCallback(outputFile, filesToCompile));
 
             _manager = new DesignTimeInputsCompiler(unconfiguredProject,
-                                      workspaceWriter,
+                                      activeWorkspaceProjectContextHost,
                                       threadingService,
                                       changeTrackerMock.Object,
                                       compilerMock.Object,

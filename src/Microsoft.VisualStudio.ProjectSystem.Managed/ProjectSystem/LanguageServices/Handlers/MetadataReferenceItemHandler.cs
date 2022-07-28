@@ -9,9 +9,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
     /// <summary>
     ///     Handles changes to references that are passed to the compiler during design-time builds.
     /// </summary>
-    [Export(typeof(IWorkspaceUpdateHandler))]
+    [Export(typeof(IWorkspaceContextHandler))]
     [PartCreationPolicy(CreationPolicy.NonShared)]
-    internal class MetadataReferenceItemHandler : IWorkspaceUpdateHandler, ICommandLineHandler
+    internal class MetadataReferenceItemHandler : IWorkspaceContextHandler, ICommandLineHandler
     {
         // WORKAROUND: The language services through IWorkspaceProjectContext doesn't expect to see AddMetadataReference called more than
         // once with the same path and different properties. This dedupes the references to work around this limitation.

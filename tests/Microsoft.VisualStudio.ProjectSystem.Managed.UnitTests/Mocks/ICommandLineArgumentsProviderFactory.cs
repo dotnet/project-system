@@ -5,13 +5,13 @@ using Microsoft.VisualStudio.ProjectSystem.LanguageServices;
 
 namespace Microsoft.VisualStudio.ProjectSystem
 {
-    internal static class ICommandLineArgumentsDataSourceFactory
+    internal static class ICommandLineArgumentsProviderFactory
     {
-        public static ICommandLineArgumentsDataSource Create()
+        public static ICommandLineArgumentsProvider Create()
         {
             var sourceBlock = new Mock<IReceivableSourceBlock<IProjectVersionedValue<CommandLineArgumentsSnapshot>>>().Object;
 
-            var mock = new Mock<ICommandLineArgumentsDataSource>();
+            var mock = new Mock<ICommandLineArgumentsProvider>();
             mock.SetupGet(s => s.SourceBlock)
                 .Returns(sourceBlock);
 
