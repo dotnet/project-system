@@ -33,44 +33,26 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             return hash;
         }
 
-        /// <summary>
+        ///<summary>
+        /// Returns the hash code of the string
+        ///</summary>
+        /// <remarks>
         /// Please, do not make changes to this hash algorithm.
         /// Current hash value is persisted in a file in the .vs folder, 
         /// changing this algorithm may regress performance and break compatibility.
         /// 
         /// The original code was taken from string.GetHashCode() with some minor changes
         /// https://github.com/microsoft/referencesource/blob/master/mscorlib/system/string.cs
-        /// </summary>
+        /// </remarks>
         internal static int GetStableHashCode(string str)
         {
             unsafe
             {
                 fixed (char* src = str)
                 {
-#if WIN32
-                int hash1 = (5381<<16) + 5381;
-#else
                     int hash1 = 5381;
-#endif
                     int hash2 = hash1;
 
-#if WIN32
-                // 32 bit machines.
-                int* pint = (int *)src;
-                int len = this.Length;
-                while (len > 2)
-                {
-                    hash1 = ((hash1 << 5) + hash1 + (hash1 >> 27)) ^ pint[0];
-                    hash2 = ((hash2 << 5) + hash2 + (hash2 >> 27)) ^ pint[1];
-                    pint += 2;
-                    len  -= 4;
-                }
-
-                if (len > 0)
-                {
-                    hash1 = ((hash1 << 5) + hash1 + (hash1 >> 27)) ^ pint[0];
-                }
-#else
                     int c;
                     char* s = src;
                     while ((c = s[0]) != 0)
@@ -82,7 +64,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                         hash2 = ((hash2 << 5) + hash2) ^ c;
                         s += 2;
                     }
-#endif
+
                     return hash1 + (hash2 * 1566083941);
                 }
             }
