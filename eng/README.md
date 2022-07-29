@@ -5,7 +5,6 @@
 - *Contents*: This directory contains a majority of the `.props`/`.targets` files in the repo. There are also a couple of `.snk` files used for StrongName signing within the [StrongName.targets](imports\StrongName.targets) file.
 
 #### Notable Files
-- [Versions.props](imports\Versions.props): Contains properties for version information that is used by the build pipeline.
 - [RepoLayout.props](imports\RepoLayout.props): Contains properties for paths to the directories within the repo itself.
 - [Packages.targets](imports\Packages.targets): Contains the `RestoreSources` (package feeds) and `PackageReference` nodes utilized by the repo. The `PackageReference` nodes contain the versions of the packages used by the repo, and does not *Include* the packages; they only *Update* them.
   - This file primarily works with [HostAgnostic.props](imports\HostAgnostic.props) which is the file that actually *Includes* many of these packages in the build pipeline.
@@ -22,7 +21,6 @@
 
 ### `scripts`
 - This directory contains:
-  - [SetVSEnvironment.cmd](scripts\SetVSEnvironment.cmd) which is used by [build.cmd](..\build.cmd)
   - A few files related to running [OptProf](https://aka.ms/OptProf) on the assemblies in our repo.
     - A majority of the configuration relates to setting the test(s) that OptProf uses for creating optimization data.
     - The *runsettings* folder contains the `.runsettings` file. This entire folder is published in our [official.yml](pipelines\official.yml).
