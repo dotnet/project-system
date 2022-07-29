@@ -31,8 +31,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
 
         private static readonly ImmutableHashSet<string> s_supportedReleaseChannelWorkloads = ImmutableHashSet.Create(StringComparers.WorkloadNames, WasmToolsWorkloadName);
 
-        private readonly object _wpfComponentLock = new();
-        private readonly ConcurrentHashSet<string> _wpfComponentIdsDetected;
+        private readonly object _webComponentIdsDetectedLock = new();
+        private readonly ConcurrentHashSet<string> _webComponentIdsDetected;
         private readonly ConcurrentHashSet<string> _missingRuntimesRegistered = new(StringComparers.WorkloadNames);
         private readonly ConcurrentDictionary<Guid, IConcurrentHashSet<WorkloadDescriptor>> _projectGuidToWorkloadDescriptorsMap;
         private readonly ConcurrentDictionary<Guid, string> _projectGuidToRuntimeDescriptorMap;
@@ -62,7 +62,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             Lazy<IProjectThreadingService> threadHandling,
             IProjectFaultHandlerService projectFaultHandlerService)
         {
-            _wpfComponentIdsDetected = new();
+            _webComponentIdsDetected = new();
             _projectGuidToWorkloadDescriptorsMap = new();
             _projectGuidToProjectConfigurationsMap = new();
             _projectGuidToRuntimeDescriptorMap = new();
@@ -109,7 +109,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
 
         private void ClearMissingWorkloadMetadata()
         {
-            _wpfComponentIdsDetected.Clear();
+            _webComponentIdsDetected.Clear();
             _missingRuntimesRegistered.Clear();
             _projectGuidToRuntimeDescriptorMap.Clear();
             _projectGuidToWorkloadDescriptorsMap.Clear();
@@ -147,12 +147,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                 {
                     foreach (var componentId in workloadDescriptor.VisualStudioComponentIds)
                     {
-                        lock (_wpfComponentLock)
+                        lock (_webComponentIdsDetectedLock)
                         {
-                            if (!_wpfComponentIdsDetected.Contains(componentId))
+                            if (!_webComponentIdsDetected.Contains(componentId))
                             {
                                 notFound = true;
-                                _wpfComponentIdsDetected.Add(componentId);
+                                _webComponentIdsDetected.Add(componentId);
                             }
                         }
                     }
