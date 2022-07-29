@@ -11,5 +11,5 @@ Write-Host "csvPath: $csvPath"
 Write-Host "version: $version"
 
 # We use individual version for AppDesigner/Editors, however Managed and Managed.VS share the same variable in VS repository under src\ProductData\AssemblyVersions.tt.
-$content = "Microsoft.VisualStudio.AppDesigner,$version.0","Microsoft.VisualStudio.Editors,$version.0","Microsoft.VisualStudio.ProjectSystem.Managed,$version.0"
+$content = "Microsoft.VisualStudio.AppDesigner,$version","Microsoft.VisualStudio.Editors,$version","Microsoft.VisualStudio.ProjectSystem.Managed,$version"
 New-Item -Path $csvPath -ItemType File -Force | Set-Content -Value $content
