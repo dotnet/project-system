@@ -52,16 +52,6 @@
         <target state="translated">Estrutura do Aplicativo</target>
         <note />
       </trans-unit>
-      <trans-unit id="Category|General|Description">
-        <source>General settings for the application.</source>
-        <target state="new">General settings for the application.</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="Category|General|DisplayName">
-        <source>General</source>
-        <target state="new">General</target>
-        <note />
-      </trans-unit>
       <trans-unit id="Category|WPF|Description">
         <source>Settings specific to WPF applications.</source>
         <target state="translated">Configurações específicas para aplicativos WPF.</target>

@@ -5,10 +5,6 @@
       xmlns="http://schemas.microsoft.com/build/2009/properties">
 
   <Rule.Categories>
-    <Category Name="General"
-              DisplayName="General"
-              Description="General settings for the application." />
-
     <Category Name="ApplicationFramework"
               DisplayName="Application Framework"
               Description="Application Framework settings." />
@@ -24,7 +20,7 @@
 
   <!-- The StartupObject property has a different set of appropriate values for VB and for C#.
        For VB projects, we expect to see every Form in the assembly directly or indirectly inherited from Form.
-       We specify this by setting the searchForEntryPointsInFormsOnly to true.
+       We specify this by setting the SearchForEntryPointsInFormsOnly to true.
        We also want to ensure that the property always has a value. -->
   <DynamicEnumProperty Name="StartupObject"
                        DisplayName="Startup object"
@@ -42,7 +38,7 @@
     </DynamicEnumProperty.Metadata>
     <DynamicEnumProperty.ProviderSettings>
       <NameValuePair Name="IncludeEmptyValue" Value="false" />
-      <NameValuePair Name="searchForEntryPointsInFormsOnly" Value="true" />
+      <NameValuePair Name="SearchForEntryPointsInFormsOnly" Value="true" />
     </DynamicEnumProperty.ProviderSettings>
   </DynamicEnumProperty>
 
