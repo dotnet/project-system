@@ -1,5 +1,6 @@
 # Name: unit-tests
-# URL: https://dev.azure.com/dnceng/public/_build?definitionId=406
+# URL (dev17.3.x): https://dev.azure.com/dnceng/public/_build?definitionId=1169
+# URL (everything else): https://dev.azure.com/dnceng/public/_build?definitionId=406
 #
 # Responsible for validating pull requests and commits to protected branches against unit tests.
 
@@ -7,17 +8,13 @@
 trigger:
   branches:
     include:
-    - main
-    - dev*
-    - feature/*
+    - dev17.3.x
 
 # Branches that trigger builds on PR
 pr:
   branches:
     include:
-    - main
-    - dev*
-    - feature/*
+    - dev17.3.x
 
 variables:
   # Opt out of running Codesign Validation (https://aka.ms/gdn-injection)
