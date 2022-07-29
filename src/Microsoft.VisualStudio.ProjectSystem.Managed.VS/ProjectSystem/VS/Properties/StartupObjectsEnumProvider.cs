@@ -27,7 +27,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         public Task<IDynamicEnumValuesGenerator> GetProviderAsync(IList<NameValuePair>? options)
         {
             bool searchForEntryPointsInFormsOnly = options?.Any(pair =>
-                pair.Name == "searchForEntryPointsInFormsOnly"
+                pair.Name == "SearchForEntryPointsInFormsOnly"
                 && bool.TryParse(pair.Value, out bool optionValue)
                 && optionValue) ?? false;
 
@@ -54,7 +54,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         private readonly bool _includeEmptyValue;
         private readonly bool _searchForEntryPointsInFormsOnly;
 
-        [ImportingConstructor]
         public StartupObjectsEnumGenerator(Workspace workspace, UnconfiguredProject project, bool includeEmptyValue, bool searchForEntryPointsInFormsOnly)
         {
             _workspace = workspace;
