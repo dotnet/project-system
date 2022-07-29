@@ -230,10 +230,14 @@ steps:
 # PUBLISH ARTIFACTS
 ###################################################################################################################################################################
 
+# This creates the drop location for the .vsman files for VS insertion.
 - task: MicroBuildUploadVstsDropFolder@1
   displayName: Publish VS Setup
   inputs:
     DropFolder: 'artifacts\$(BuildConfiguration)\VSSetup\Insertion'
+    # https://github.com/dotnet/Nerdbank.GitVersioning/blob/main/doc/cloudbuild.md#automatically-match-cloud-build-numbers-to-to-your-git-version
+    # 'Products/[DevDiv]/[dotnet/project-system]/[main]/[x.x.x]'
+    DropName: 'Products/$(System.TeamProject)/$(Build.Repository.Name)/$(Build.SourceBranchName)/$(GitBuildVersionSimple)'
     AccessToken: $(System.AccessToken)
 
 - task: CopyFiles@2
