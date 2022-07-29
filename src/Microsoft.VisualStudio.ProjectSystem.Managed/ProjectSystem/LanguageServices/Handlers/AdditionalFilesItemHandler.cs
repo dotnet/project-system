@@ -7,11 +7,11 @@ using Microsoft.VisualStudio.ProjectSystem.VS;
 namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
 {
     /// <summary>
-    ///     Handles changes to the  &lt;AdditionalFiles/&gt; item during design-time builds.
+    ///     Handles <c>AdditionalFiles</c> items during design-time builds.
     /// </summary>
-    [Export(typeof(IWorkspaceContextHandler))]
+    [Export(typeof(IWorkspaceUpdateHandler))]
     [PartCreationPolicy(CreationPolicy.NonShared)]
-    internal class AdditionalFilesItemHandler : IWorkspaceContextHandler, ICommandLineHandler
+    internal class AdditionalFilesItemHandler : IWorkspaceUpdateHandler, ICommandLineHandler
     {
         // WORKAROUND: To avoid Roslyn throwing when we add duplicate additional files, we remember what 
         // sent to them and avoid sending on duplicates.

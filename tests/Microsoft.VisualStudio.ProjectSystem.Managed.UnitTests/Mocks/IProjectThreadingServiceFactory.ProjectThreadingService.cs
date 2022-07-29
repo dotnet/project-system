@@ -14,10 +14,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
             public JoinableTaskContextNode JoinableTaskContext { get; } = new JoinableTaskContextNode(new JoinableTaskContext());
 
-            public JoinableTaskFactory JoinableTaskFactory
-            {
-                get { return JoinableTaskContext.Factory; }
-            }
+            public JoinableTaskFactory JoinableTaskFactory => JoinableTaskContext.Factory;
 
             public bool IsOnMainThread
             {
@@ -54,13 +51,14 @@ namespace Microsoft.VisualStudio.ProjectSystem
                 return new DisposableObject();
             }
 
-            public void Fork(Func<Task> asyncAction,
-                      JoinableTaskFactory? factory = null,
-                      UnconfiguredProject? project = null,
-                      ConfiguredProject? configuredProject = null,
-                      ErrorReportSettings? watsonReportSettings = null,
-                      ProjectFaultSeverity faultSeverity = ProjectFaultSeverity.Recoverable,
-                      ForkOptions options = ForkOptions.Default)
+            public void Fork(
+                Func<Task> asyncAction,
+                JoinableTaskFactory? factory = null,
+                UnconfiguredProject? project = null,
+                ConfiguredProject? configuredProject = null,
+                ErrorReportSettings? watsonReportSettings = null,
+                ProjectFaultSeverity faultSeverity = ProjectFaultSeverity.Recoverable,
+                ForkOptions options = ForkOptions.Default)
             {
                 JoinableTaskFactory.Run(asyncAction);
             }
