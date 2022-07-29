@@ -5,6 +5,7 @@ using Microsoft.VisualStudio.ProjectSystem.VS.WindowsForms;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties;
 
+// The AppliesTo metadata has no effect given the limitations described in https://github.com/dotnet/project-system/issues/8170.
 [ExportInterceptingPropertyValueProvider(StartupObjectProperty, ExportInterceptingPropertyValueProviderFile.ProjectFile)]
 [AppliesTo(ProjectCapability.VisualBasic)]
 internal class StartupObjectValueProvider : InterceptingPropertyValueProviderBase
@@ -34,25 +35,14 @@ internal class StartupObjectValueProvider : InterceptingPropertyValueProviderBas
 
             if (Equals(applicationFrameworkValue, EnabledValue))
             {
-                if (unevaluatedPropertyValue.Contains("Form")) // Is there a better way to identify a form?
-                {
-                    // If the user selects a Form, the value should be serialized to the myapp file.
-                    await _myAppXmlFileAccessor.SetMainFormAsync(unevaluatedPropertyValue);
-                    await defaultProperties.DeletePropertyAsync(StartupObjectProperty);
-                    return null;
-                }
-
-                // If the ApplicationFramework is enabled, the value Sub Main should always be serialized to the project file.
-                await defaultProperties.SetPropertyValueAsync(StartupObjectProperty, "Sub Main");
-                await _myAppXmlFileAccessor.SetMainFormAsync(string.Empty);
-                return null;
+                // TO-DO: Validate scenario where the selected value is a Form.
+                await _myAppXmlFileAccessor.SetMainFormAsync(unevaluatedPropertyValue);
             }
         }
 
         // Else, if it's other than a Windows Forms project, save the StartupObject property in the project file as usual.
         // Or if the ApplicationFramework property is disabled, save the StartupObject property in the project file as usual.
-        await defaultProperties.SetPropertyValueAsync(propertyName, unevaluatedPropertyValue);
-        return null;
+        return unevaluatedPropertyValue;
     }
 
     public override async Task<string> OnGetEvaluatedPropertyValueAsync(string propertyName, string evaluatedPropertyValue, IProjectProperties defaultProperties)
@@ -60,29 +50,26 @@ internal class StartupObjectValueProvider : InterceptingPropertyValueProviderBas
         // StartupObject can come from the project file or the myapp file.
         string applicationFrameworkValue = await defaultProperties.GetEvaluatedPropertyValueAsync(ApplicationFrameworkProperty);
 
-        string valueInProjectFile = await base.OnGetUnevaluatedPropertyValueAsync(propertyName, evaluatedPropertyValue, defaultProperties);
-        
         if (Equals(applicationFrameworkValue, DisabledValue))
-            return valueInProjectFile;
+            return evaluatedPropertyValue;
 
-        if (string.IsNullOrEmpty(valueInProjectFile))
+        if (string.IsNullOrEmpty(evaluatedPropertyValue))
             return await _myAppXmlFileAccessor.GetMainFormAsync() ?? string.Empty;
 
-        return valueInProjectFile;
+        return evaluatedPropertyValue;
     }
 
     public override async Task<string> OnGetUnevaluatedPropertyValueAsync(string propertyName, string unevaluatedPropertyValue, IProjectProperties defaultProperties)
     {
         // StartupObject can come from the project file or the myapp file.
-        string applicationFrameworkValue = await defaultProperties.GetEvaluatedPropertyValueAsync(ApplicationFrameworkProperty);
-
-        string valueInProjectFile = await base.OnGetUnevaluatedPropertyValueAsync(propertyName, unevaluatedPropertyValue, defaultProperties);
+        string? applicationFrameworkValue = await defaultProperties.GetUnevaluatedPropertyValueAsync(ApplicationFrameworkProperty);
+                
         if (Equals(applicationFrameworkValue, DisabledValue))
-            return valueInProjectFile; 
-        
-        if (string.IsNullOrEmpty(valueInProjectFile))
+            return unevaluatedPropertyValue;
+
+        if (string.IsNullOrEmpty(unevaluatedPropertyValue))
             return await _myAppXmlFileAccessor.GetMainFormAsync() ?? string.Empty;
 
-        return valueInProjectFile;
+        return unevaluatedPropertyValue;
     }
 }
