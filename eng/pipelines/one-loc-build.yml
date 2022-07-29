@@ -38,6 +38,6 @@ steps:
   displayName: Publish Localization Artifacts
   condition: succeededOrFailed()
   inputs:
-    PathtoPublish: '$(Build.ArtifactStagingDirectory)\loc'
+    PathToPublish: '$(Build.ArtifactStagingDirectory)\loc'
     ArtifactName: 'OneLocBuild'
     publishLocation: 'Container'

@@ -36,20 +36,37 @@ parameters:
   default: false
 
 ###################################################################################################################################################################
-# INSTALLATION
+# SBOM GENERATION
+# This occurs above plugin installation so that the Src build does not perform signing.
 ###################################################################################################################################################################
 
 steps:
+- script: $(Build.SourcesDirectory)\build.cmd /v:normal /p:Configuration=$(BuildConfiguration) /p:CIBuild=true /p:Test=false /p:Pack=false /p:TestProjects=false /p:SetupProjects=false
+  displayName: Build Src for SBOM
+
+- task: PowerShell@2
+  displayName: Rename Build.binlog to SrcBuild.binlog
+  inputs:
+    targetType: 'inline'
+    script: Rename-Item -Path "$(Build.SourcesDirectory)\artifacts\$(BuildConfiguration)\log\Build.binlog" -NewName 'SrcBuild.binlog'
+
+# This task both generates the SBOM files and marks the pipeline as compliant.
+- task: ManifestGeneratorTask@0
+  displayName: Generate SBOM
+  inputs:
+    BuildDropPath: '$(Build.SourcesDirectory)\artifacts\$(BuildConfiguration)\bin\Dlls'
+    ManifestDirPath: '$(Build.SourcesDirectory)\artifacts\$(BuildConfiguration)\bin'
+
+###################################################################################################################################################################
+# PLUGIN INSTALLATION
+###################################################################################################################################################################
+
 - task: MicroBuildSigningPlugin@4
   displayName: Install Signing Plugin
   inputs:
     signType: ${{ parameters.SignType }}
     esrpSigning: true
 
-# This is currently only used by the MicroBuildBuildVSBootstrapper task.
-# RepoToolset has custom logic to download the NuGet package of this plugin for an old version (1.1.37).
-# This plugin is not directly used by RepoToolset.
-# Moving this task down to the OptProf section will cause test verification in the OptProf release pipeline to fail stating that the Microsoft.VisualStudio.ProjectSystem.Managed(.VS).dll(s) do not exist.
 - task: MicroBuildSwixPlugin@4
   displayName: Install Swix Plugin
 
@@ -70,30 +87,11 @@ steps:
     NumberCommitsToSearch: '100'
 
 ###################################################################################################################################################################
-# BUILD SOLUTION
+# BUILD REPOSITORY
 ###################################################################################################################################################################
 
-- task: MSBuild@1
-  displayName: Build Src for SBOM
-  inputs:
-    solution: $(Build.SourcesDirectory)\eng\Build.proj
-    msbuildArchitecture: x86
-    configuration: $(BuildConfiguration)
-    msbuildArguments: '/m /warnaserror /nologo /clp:Summary /p:Build=true /p:CIBuild=true /p:QuickSrcBuild=true /v:normal /bl:$(Build.SourcesDirectory)\artifacts\$(BuildConfiguration)\log\QuickSrcBuild.binlog'
-
-- task: ManifestGeneratorTask@0
-  displayName: Generate SBOM
-  inputs:
-    BuildDropPath: '$(Build.SourcesDirectory)\artifacts\$(BuildConfiguration)\bin\Dlls'
-    ManifestDirPath: '$(Build.SourcesDirectory)\artifacts\$(BuildConfiguration)\bin'
-
-- task: MSBuild@1
-  displayName: Build ProjectSystem.sln
-  inputs:
-    solution: $(Build.SourcesDirectory)\eng\Build.proj
-    msbuildArchitecture: x86
-    configuration: $(BuildConfiguration)
-    msbuildArguments: '/m /warnaserror /nologo /clp:Summary /p:Build=true /p:Test=true /p:CIBuild=true /v:normal /bl:$(Build.SourcesDirectory)\artifacts\$(BuildConfiguration)\log\Build.binlog'
+- script: $(Build.SourcesDirectory)\build.cmd /v:normal /p:Configuration=$(BuildConfiguration) /p:CIBuild=true
+  displayName: Build All Projects
 
 - task: MicroBuildCodesignVerify@3
   displayName: Verify Signed Files
@@ -108,11 +106,11 @@ steps:
   displayName: Create Codex Index
   inputs:
     workflowArguments: |
-     /sourcesDirectory:$(Build.SourcesDirectory)
-     /codexRepoUrl:$(Build.Repository.Uri)
-     /repoName:$(Build.Repository.Name)
-     /additionalCodexArguments:-bld
-     /additionalCodexArguments:$(Build.SourcesDirectory)\artifacts\Release\log
+      /sourcesDirectory:$(Build.SourcesDirectory)
+      /codexRepoUrl:$(Build.Repository.Uri)
+      /repoName:$(Build.Repository.Name)
+      /additionalCodexArguments:-bld
+      /additionalCodexArguments:$(Build.SourcesDirectory)\artifacts\$(BuildConfiguration)\log
   condition: succeeded()
   continueOnError: true
 
@@ -162,7 +160,7 @@ steps:
 - task: PublishBuildArtifacts@1
   displayName: 'Publish Artifact: Symbols'
   inputs:
-    PathtoPublish: '$(Build.ArtifactStagingDirectory)/Symbols'
+    PathToPublish: '$(Build.ArtifactStagingDirectory)/Symbols'
     # The artifact name specifically has to be 'symbols' with that casing.
     # This artifact is downloaded by the release pipeline's 'Publish Symbols' task.
     # The lowercase 'symbols' is specified in the 'Agent job' settings for that task.
@@ -221,7 +219,7 @@ steps:
 - task: PublishBuildArtifacts@1
   displayName: 'Publish Artifact: MicroBuildOutputs'
   inputs:
-    PathtoPublish: $(Build.StagingDirectory)\MicroBuild\Output
+    PathToPublish: $(Build.StagingDirectory)\MicroBuild\Output
     ArtifactName: MicroBuildOutputs
     ArtifactType: Container
   condition: succeededOrFailed()
@@ -258,7 +256,7 @@ steps:
 - task: PublishBuildArtifacts@1
   displayName: Publish Artifacts
   inputs:
-    PathtoPublish: '$(Build.ArtifactStagingDirectory)/ArtifactsDrop/artifacts/$(BuildConfiguration)'
+    PathToPublish: '$(Build.ArtifactStagingDirectory)/ArtifactsDrop/artifacts/$(BuildConfiguration)'
     # NOTE: Artifact name is required to be Build.BuildNumber.
     # The build-number named artifact is used for the RoslynInsertionTool to find the build for the insertion PR.
     # Code here: https://github.com/dotnet/roslyn-tools/blob/1f64f56b4ea9a0c119bbe840c39b935acc60e4b8/src/RoslynInsertionTool/RoslynInsertionTool/RoslynInsertionTool.VisualStudioTeamServices.cs#L174

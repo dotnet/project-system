@@ -1,8 +1,8 @@
 # __Well Known Project Properties, Items and Item Metadata__
 
-There are two types of properties, items and item metadata that are stored in MSBuild project, targets and props files. 
+There are two types of properties, items and item metadata that are stored in MSBuild project, targets and props files.
 
-- [Build  Properties, Items and Item  Metadata](#build-properties-items-and-item-metadata)
+- [Build Properties, Items and Item Metadata](#build-properties-items-and-item-metadata)
 
 - [Design-Time Properties, Items and Item Metadata](#design-time-properties-items-and-item-metadata)
 

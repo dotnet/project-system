@@ -53,19 +53,19 @@
 
     <!-- VS SDK -->
     <PackageReference Update="EnvDTE"                                                                 Version="17.0.32112.339" />
-    <PackageReference Update="Microsoft.Internal.VisualStudio.Interop"                                Version="17.1.0-preview-2-32002-062"/>
+    <PackageReference Update="Microsoft.Internal.VisualStudio.Interop"                                Version="17.1.0-preview-2-32002-062" />
     <PackageReference Update="Microsoft.VSSDK.BuildTools"                                             Version="17.1.1035-preview2" />
-    <PackageReference Update="Microsoft.VisualStudio.ComponentModelHost"                              Version="17.1.224-preview"/>
-    <PackageReference Update="Microsoft.VisualStudio.Composition"                                     Version="17.0.46"/>
+    <PackageReference Update="Microsoft.VisualStudio.ComponentModelHost"                              Version="17.1.224-preview" />
+    <PackageReference Update="Microsoft.VisualStudio.Composition"                                     Version="17.0.46" />
     <PackageReference Update="Microsoft.VisualStudio.Data.Core"                                       Version="17.0.0-preview-2-31223-026" />
-    <PackageReference Update="Microsoft.VisualStudio.DataDesign.Common"                               Version="17.0.0-preview-2-31223-026"/>
+    <PackageReference Update="Microsoft.VisualStudio.DataDesign.Common"                               Version="17.0.0-preview-2-31223-026" />
     <PackageReference Update="Microsoft.VisualStudio.Data.Services"                                   Version="17.0.0-preview-2-31223-026" />
     <PackageReference Update="Microsoft.VisualStudio.DataTools.Interop"                               Version="17.0.0-preview-2-31223-026" />
     <PackageReference Update="Microsoft.VisualStudio.Debugger.Contracts"                              Version="17.2.0-beta.22219.1" />
     <PackageReference Update="Microsoft.VisualStudio.Debugger.UI.Interfaces"                          Version="17.2.0-beta.22219.1" />
     <PackageReference Update="Microsoft.VisualStudio.Designer.Interfaces"                             Version="17.1.0-preview-2-32002-062" />
     <PackageReference Update="Microsoft.VisualStudio.ImageCatalog"                                    Version="17.1.0-preview-2-32002-062" />
-    <PackageReference Update="Microsoft.VisualStudio.Interop"                                         Version="17.1.0-preview-2-32002-062"/>
+    <PackageReference Update="Microsoft.VisualStudio.Interop"                                         Version="17.1.0-preview-2-32002-062" />
     <PackageReference Update="Microsoft.VisualStudio.ManagedInterfaces"                               Version="8.0.50728" />
     <PackageReference Update="Microsoft.VisualStudio.RpcContracts"                                    Version="17.3.13-alpha" />
     <PackageReference Update="Microsoft.VisualStudio.Settings.15.0"                                   Version="16.8.30406.155-pre" />
@@ -83,7 +83,7 @@
     <PackageReference Update="Microsoft.VisualStudio.XmlEditor"                                       Version="17.1.0-preview-2-32002-062" />
     <PackageReference Update="System.Threading.Tasks.Dataflow"                                        Version="6.0.0" />
     <PackageReference Update="Microsoft.VSDesigner"                                                   Version="17.0.0-preview-2-31223-026" />
-    <PackageReference Update="VsWebSite.Interop"                                                      Version="16.8.30523.219"/>
+    <PackageReference Update="VsWebSite.Interop"                                                      Version="16.8.30523.219" />
 
     <!-- https://github.com/dotnet/roslyn/issues/53877 -->
     <PackageReference Include="StreamJsonRpc"                                                         Version="2.11.35" />
@@ -117,16 +117,16 @@
     <PackageReference Update="Microsoft.VisualStudio.HotReload.Components"                            Version="6.0.0-preview.6.21380.4" />
 
     <!-- 3rd party -->
-    <PackageReference Update="Newtonsoft.Json"                                                        Version="13.0.1"/>
+    <PackageReference Update="Newtonsoft.Json"                                                        Version="13.0.1" />
 
     <!-- Tests -->
-    <PackageReference Update="Moq"                                                                    Version="4.16.1"/>
-    <PackageReference Update="Verify.Xunit"                                                           Version="14.2.0"/>
+    <PackageReference Update="Moq"                                                                    Version="4.16.1" />
+    <PackageReference Update="Verify.Xunit"                                                           Version="14.2.0" />
     <PackageReference Update="xunit"                                                                  Version="2.4.2-pre.13" />
     <PackageReference Update="xunit.assert"                                                           Version="2.4.2-pre.13" />
     <PackageReference Update="xunit.combinatorial"                                                    Version="1.4.1" />
     <PackageReference Update="xunit.extensibility.core"                                               Version="2.4.2-pre.13" />
-    <PackageReference Update="xunit.extensibility.execution"                                          Version="2.4.2-pre.13"     NoWarn="NU1608" />
+    <PackageReference Update="xunit.extensibility.execution"                                          Version="2.4.2-pre.13" NoWarn="NU1608" />
     <PackageReference Update="xunit.runner.visualstudio"                                              Version="2.4.3" />
     <PackageReference Update="xunit.runner.console"                                                   Version="2.4.1" />
     <PackageReference Update="xunit.analyzers"                                                        Version="0.12.0-pre.19"/>
