@@ -233,9 +233,10 @@ steps:
   displayName: Publish VS Setup
   inputs:
     DropFolder: 'artifacts\$(BuildConfiguration)\VSSetup\Insertion'
+    # TODO: Change this to use $(GitBuildVersion) when working on: https://github.com/dotnet/project-system/issues/7911
     # https://github.com/dotnet/Nerdbank.GitVersioning/blob/main/doc/cloudbuild.md#automatically-match-cloud-build-numbers-to-to-your-git-version
-    # 'Products/[DevDiv]/[dotnet/project-system]/[main]/[x.x.x]'
-    DropName: 'Products/$(System.TeamProject)/$(Build.Repository.Name)/$(Build.SourceBranchName)/$(GitBuildVersionSimple)'
+    # 'Products/[DevDiv]/[dotnet/project-system]/[main]/[x.x]'
+    DropName: 'Products/$(System.TeamProject)/$(Build.Repository.Name)/$(Build.SourceBranchName)/$(Build.BuildNumber)'
     AccessToken: $(System.AccessToken)
 
 - task: CopyFiles@2
