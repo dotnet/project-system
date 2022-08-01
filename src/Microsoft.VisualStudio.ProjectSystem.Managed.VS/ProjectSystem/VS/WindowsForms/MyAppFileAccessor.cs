@@ -15,8 +15,8 @@ internal class MyAppFileAccessor : IMyAppFileAccessor, IDisposable
     private readonly IProjectThreadingService _threadingService;
     private readonly IPhysicalProjectTreeStorage _storage;
     private DocData? _docData;
-    private MyAppDocument? myAppDocument;
-    private string _absolutePath;
+    private MyAppDocument? _myAppDocument;
+    private readonly string _absolutePath;
 
     private const string MySubMainProperty = "MySubMain";
     private const string MainFormProperty = "MainForm";
@@ -63,7 +63,7 @@ internal class MyAppFileAccessor : IMyAppFileAccessor, IDisposable
 
     private void DocData_Modifying(object sender, EventArgs e)
     {
-        myAppDocument = null;
+        _myAppDocument = null;
     }
 
     private async Task<MyAppDocument?> TryGetMyAppFileAsync()
@@ -88,7 +88,7 @@ internal class MyAppFileAccessor : IMyAppFileAccessor, IDisposable
         {
             _docData = new DocData(_serviceProvider, _absolutePath);
             _docData.Modifying += DocData_Modifying;
-            myAppDocument = new MyAppDocument(_docData);
+            _myAppDocument = new MyAppDocument(_docData);
         }
         catch (NullReferenceException)
         {
@@ -98,7 +98,7 @@ internal class MyAppFileAccessor : IMyAppFileAccessor, IDisposable
 
         await TaskScheduler.Default;
 
-        return myAppDocument;
+        return _myAppDocument;
     }
 
     private async Task SetPropertyAsync(string propertyName, string value)
