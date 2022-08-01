@@ -1,5 +1,7 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
+using Microsoft.VisualStudio.ProjectSystem.Utilities;
+
 namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 {
     internal static class IActiveEditorContextTrackerFactory
@@ -12,26 +14,20 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         public static IActiveEditorContextTracker ImplementIsActiveEditorContext(Func<string, bool> action)
         {
             var mock = new Mock<IActiveEditorContextTracker>();
+
             mock.Setup(t => t.IsActiveEditorContext(It.IsAny<string>()))
                 .Returns(action);
 
             return mock.Object;
         }
 
-        public static IActiveEditorContextTracker ImplementUnregisterContext(Action<string> action)
+        public static IActiveEditorContextTracker ImplementRegisterContext(Action<string> action, IDisposable? lifetime = null)
         {
             var mock = new Mock<IActiveEditorContextTracker>();
-            mock.Setup(t => t.UnregisterContext(It.IsAny<string>()))
-                .Callback(action);
 
-            return mock.Object;
-        }
-
-        public static IActiveEditorContextTracker ImplementRegisterContext(Action<string> action)
-        {
-            var mock = new Mock<IActiveEditorContextTracker>();
             mock.Setup(t => t.RegisterContext(It.IsAny<string>()))
-                .Callback(action);
+                .Callback(action)
+                .Returns(lifetime ?? EmptyDisposable.Instance);
 
             return mock.Object;
         }
