@@ -274,22 +274,22 @@
       </trans-unit>
       <trans-unit id="StringProperty|RepositoryType|Description">
         <source>Specifies the type of the repository. Default is 'git'.</source>
-        <target state="translated">指定存储库的类型。默认值为 "git"。</target>
+        <target state="translated">指定仓库的类型。默认值为 'git'。</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|RepositoryType|DisplayName">
         <source>Repository type</source>
-        <target state="translated">存储库类型</target>
+        <target state="translated">仓库类型</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|RepositoryUrl|Description">
         <source>Specifies the URL for the repository where the source code for the package resides and/or from which it's being built. For linking to the project page, use the 'Project URL' field, instead.</source>
-        <target state="translated">指定包的源代码所在的存储库和/或从其中构建源代码的存储库的 URL。如需链接到项目页面，请改用“项目 URL”字段。</target>
+        <target state="translated">指定包的源代码所在的仓库和/或从其中构建源代码的仓库的 URL。如需链接到项目页面，请改用“项目 URL”字段。</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|RepositoryUrl|DisplayName">
         <source>Repository URL</source>
-        <target state="translated">存储库 URL</target>
+        <target state="translated">仓库 URL</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|Title|Description">

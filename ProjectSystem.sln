@@ -31,7 +31,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DeployTestDependencies", "t
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DeployIntegrationDependencies", "tests\DeployIntegrationDependencies\DeployIntegrationDependencies.csproj", "{C16993CC-6063-4447-AE16-BE671AFDE08A}"
 EndProject
-Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "build", "build\build.shproj", "{41D1FA55-B719-4E8D-9D79-F7610004D496}"
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "eng", "eng\eng.shproj", "{41D1FA55-B719-4E8D-9D79-F7610004D496}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{7349958E-C619-481F-BB2A-8A4CA2E349D9}"
 	ProjectSection(SolutionItems) = preProject
@@ -74,7 +74,7 @@ Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		tests\Microsoft.VisualStudio.ProjectSystem.Managed.TestServices\Microsoft.VisualStudio.ProjectSystem.Managed.TestServices.projitems*{02578366-dfa9-4827-93f7-08e2ae5ce6a4}*SharedItemsImports = 13
 		tests\Microsoft.VisualStudio.ProjectSystem.Managed.TestServices\Microsoft.VisualStudio.ProjectSystem.Managed.TestServices.projitems*{369dca0f-a079-4d0c-8b32-53879199b681}*SharedItemsImports = 5
-		build\build.projitems*{41d1fa55-b719-4e8d-9d79-f7610004d496}*SharedItemsImports = 13
+		eng\eng.projitems*{41d1fa55-b719-4e8d-9d79-f7610004d496}*SharedItemsImports = 13
 		tests\Microsoft.VisualStudio.ProjectSystem.Managed.TestServices\Microsoft.VisualStudio.ProjectSystem.Managed.TestServices.projitems*{c7ec63f8-f96a-4a8f-b879-d572516746b4}*SharedItemsImports = 5
 		docs\docs.projitems*{ff972a03-384a-4b2d-a254-f21cf000dab9}*SharedItemsImports = 13
 	EndGlobalSection

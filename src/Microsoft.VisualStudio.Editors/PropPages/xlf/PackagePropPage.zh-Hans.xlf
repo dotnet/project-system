@@ -54,7 +54,7 @@
       </trans-unit>
       <trans-unit id="RepositoryUrlLabel.Text">
         <source>&amp;Repository URL:</source>
-        <target state="translated">存储库 URL (&amp;R):</target>
+        <target state="translated">仓库 URL (&amp;R):</target>
         <note />
       </trans-unit>
       <trans-unit id="PackageReleaseNotesLabel.Text">
@@ -64,7 +64,7 @@
       </trans-unit>
       <trans-unit id="RepositoryTypeLabel.Text">
         <source>&amp;Repository type:</source>
-        <target state="translated">存储库类型(&amp;R):</target>
+        <target state="translated">仓库类型(&amp;R):</target>
         <note />
       </trans-unit>
       <trans-unit id="PackageProjectUrlLabel.Text">
@@ -199,12 +199,12 @@
       </trans-unit>
       <trans-unit id="RepositoryUrl.AccessibleName">
         <source>Package Repository URL</source>
-        <target state="translated">包存储库 URL</target>
+        <target state="translated">包仓库 URL</target>
         <note />
       </trans-unit>
       <trans-unit id="RepositoryType.AccessibleName">
         <source>Package Repository Type</source>
-        <target state="translated">包存储库类型</target>
+        <target state="translated">包仓库类型</target>
         <note />
       </trans-unit>
       <trans-unit id="PackageReleaseNotes.AccessibleName">

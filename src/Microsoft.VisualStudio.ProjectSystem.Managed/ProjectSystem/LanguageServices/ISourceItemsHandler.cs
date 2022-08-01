@@ -9,7 +9,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
     ///     Handles changes to source items and applies them to a
     ///     <see cref="IWorkspaceProjectContext"/> instance.
     /// </summary>
-    internal interface ISourceItemsHandler : IWorkspaceContextHandler
+    internal interface ISourceItemsHandler : IWorkspaceUpdateHandler
     {
         /// <summary>
         ///     Handles the specified set of changes to source items, and applies them

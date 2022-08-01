@@ -51,6 +51,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
                     "ASPNET_ENVIRONMENT": "Development",
                     "ASPNET_APPLICATIONBASE": "c:\\Users\\billhie\\Documents\\projects\\WebApplication8\\src\\WebApplication8"
                   }
+                },
+                "Docker Compose": {
+                  "commandName": "DockerCompose",
+                  "commandVersion": "1.0",
+                  "composeProfile": {
+                    "includes": [
+                      "web1"
+                    ]
+                  }
                 }
               },
               "string": "hello",
@@ -66,7 +75,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
 
             var (profiles, globalSettings) = LaunchSettingsJsonEncoding.FromJson(new StringReader(json), _providers);
 
-            Assert.Equal(4, profiles.Length);
+            Assert.Equal(5, profiles.Length);
 
             var profile = profiles[0];
             Assert.Equal("IIS Express", profile.Name);
@@ -110,6 +119,24 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             Assert.Equal(2, profile.EnvironmentVariables.Length);
             Assert.Equal(("ASPNET_ENVIRONMENT", "Development"), profile.EnvironmentVariables[0]);
             Assert.Equal(("ASPNET_APPLICATIONBASE", @"c:\Users\billhie\Documents\projects\WebApplication8\src\WebApplication8"), profile.EnvironmentVariables[1]);
+            Assert.False(profile.IsInMemoryObject());
+
+            profile = profiles[4];
+            Assert.Equal("Docker Compose", profile.Name);
+            Assert.Equal("DockerCompose", profile.CommandName);
+            Assert.Null(profile.WorkingDirectory);
+            Assert.Null(profile.ExecutablePath);
+            Assert.False(profile.LaunchBrowser);
+            Assert.Null(profile.LaunchUrl);
+            Assert.Empty(profile.EnvironmentVariables);
+            Assert.Equal(2, profile.OtherSettings.Length);
+            Assert.Equal("commandVersion", profile.OtherSettings[0].Key);
+            Assert.Equal("1.0", profile.OtherSettings[0].Value);
+            Assert.Equal("composeProfile", profile.OtherSettings[1].Key);
+            var composeProfiles = Assert.IsType<Dictionary<string, object>>(profile.OtherSettings[1].Value);
+            var includes = Assert.IsType<JArray>(composeProfiles["includes"]);
+            Assert.Single(includes);
+            Assert.Equal("web1", includes[0]);
             Assert.False(profile.IsInMemoryObject());
 
             Assert.Equal(5, globalSettings.Length);

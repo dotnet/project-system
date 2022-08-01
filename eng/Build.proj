@@ -1,0 +1,55 @@
+<!-- Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information. -->
+<Project DefaultTargets="Build">
+
+  <Import Project="..\Directory.Build.props" />
+
+  <!-- Default targets -->
+  <PropertyGroup>
+    <Restore Condition="'$(Restore)' == ''">true</Restore>
+    <Build Condition="'$(Build)' == ''">true</Build>
+    <Rebuild Condition="'$(Rebuild)' == ''">false</Rebuild>
+    <Test Condition="'$(Test)' == ''">true</Test>
+    <Pack Condition="'$(Pack)' == ''">true</Pack>
+  </PropertyGroup>
+
+  <!-- Default projects -->
+  <PropertyGroup>
+    <SrcProjects Condition="'$(SrcProjects)' == ''">true</SrcProjects>
+    <TestProjects Condition="'$(TestProjects)' == ''">true</TestProjects>
+    <SetupProjects Condition="'$(SetupProjects)' == ''">true</SetupProjects>
+  </PropertyGroup>
+
+  <Target Name="Build">
+    <!-- Creates several output directories so that artifact publishing always succeeds. -->
+    <MakeDir Directories="$(ArtifactsBinDir)" Condition="!Exists($(ArtifactsBinDir))" />
+    <MakeDir Directories="$(ArtifactsTestResultsDir)" Condition="!Exists($(ArtifactsTestResultsDir))" />
+    <MakeDir Directories="$(VisualStudioSetupOutputPath)" Condition="!Exists($(VisualStudioSetupOutputPath))" />
+
+    <ItemGroup>
+      <BuildTarget Include="Restore" Condition="'$(Restore)' == 'true'" />
+      <BuildTarget Include="Build" Condition="'$(Build)' == 'true' and '$(Rebuild)' != 'true'" />
+      <BuildTarget Include="Rebuild" Condition="'$(Rebuild)' == 'true'" />
+      <BuildTarget Include="Test" Condition="'$(Test)' == 'true'" />
+      <BuildTarget Include="Pack" Condition="'$(Pack)' == 'true'" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <BuildProject Include="$(RepoRoot)src/**/*.csproj;$(RepoRoot)src/**/*.vbproj" Condition="'$(SrcProjects)' == 'true'" />
+      <BuildProject Include="$(RepoRoot)tests/**/*.csproj;$(RepoRoot)src/**/*.vbproj" Condition="'$(TestProjects)' == 'true'" />
+      <BuildProject Include="$(RepoRoot)setup/**/*.csproj" Condition="'$(SetupProjects)' == 'true'" />
+    </ItemGroup>
+
+    <Message Text="Including 'Src' projects..." Importance="high" Condition="'$(SrcProjects)' == 'true'" />
+    <Message Text="Including 'Test' projects..." Importance="high" Condition="'$(TestProjects)' == 'true'" />
+    <Message Text="Including 'Setup' projects..." Importance="high" Condition="'$(SetupProjects)' == 'true'" />
+    <Message Text="Configuration: $(Configuration)" Importance="high" />
+
+    <!-- https://docs.microsoft.com/en-us/dotnet/core/tools/dotnet-new#options -->
+    <!-- The 'force' flag overrides the existing .sln file if one already exists. -->
+    <Exec Command="dotnet new sln -n $(MSBuildProjectName) -o $(ArtifactsDir) --force" />
+    <!-- https://stackoverflow.com/a/3012224/294804 -->
+    <Exec Command="dotnet sln $(ArtifactsDir)$(MSBuildProjectName).sln add @(BuildProject -> '&quot;%(FullPath)&quot;', ' ')" />
+    <MSBuild Projects="$(ArtifactsDir)$(MSBuildProjectName).sln" Targets="@(BuildTarget)" BuildInParallel="true" Condition="'@(BuildTarget)' != ''" />
+  </Target>
+
+</Project>

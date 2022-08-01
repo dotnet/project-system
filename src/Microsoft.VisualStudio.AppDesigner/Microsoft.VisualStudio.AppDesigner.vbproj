@@ -1,7 +1,7 @@
 ﻿<!-- Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information. -->
 <Project Sdk="Microsoft.NET.Sdk">
 
-  <Import Project="..\..\build\import\VisualStudioDesigner.props" />
+  <Import Project="..\..\eng\imports\VisualStudioDesigner.props" />
 
   <PropertyGroup>
     <!-- TODO: Function doesn't return a value on all code paths (https://github.com/dotnet/project-system/issues/2592) -->
@@ -14,6 +14,8 @@
     <Description>This package implements the AppDesigner, which is the designer host used for project property pages among other things in Visual Studio</Description>
     <Summary>AppDesigner designer host implementation for Visual Studio project property pages</Summary>
     <PackageTags>Roslyn Project AppDesigner VisualStudio</PackageTags>
+    <!-- By default the SDK sets RootNamespace to the name of the project. Clear it here to avoid prefixing our namespaces. -->
+    <RootNamespace />
   </PropertyGroup>
 
   <ItemGroup>

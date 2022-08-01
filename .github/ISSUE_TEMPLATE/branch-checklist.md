@@ -19,13 +19,13 @@ _Descriptions of these steps can be found in the team OneNote._
 - [ ] Create branch on GitHub at that commit
   - [ ] https://github.com/dotnet/project-system/tree/dev17.❓.x
 - [ ] For branches not matching `dev*` or `feature/*` (usually we skip these)
-  - [ ] Update the [YAML file](https://github.com/dotnet/project-system/blob/main/build/ci/unit-tests.yml) to support CI/PR builds
+  - [ ] Update the [YAML file](..\\..\eng\pipelines\unit-tests.yml) to support CI/PR builds
   - [ ] Update the [signed build definition](https://devdiv.visualstudio.com/DevDiv/_build?definitionId=9675) to build the new branch
 - [ ] Update Roslyn Tools [config.xml](https://github.com/dotnet/roslyn-tools/blob/main/src/GitHubCreateMergePRs/config.xml) file to flow branch changes to the latest dev branch
   - [ ] dotnet/roslyn-tools PR: https://github.com/dotnet/roslyn-tools/pull/❓
-- [ ] Update `Versions.props` so `<ProjectSystemVersion>` and `<PreReleaseVersionLabel>` match the version of VS, if needed
-    - [ ] In new branch: https://github.com/dotnet/project-system/blob/dev17.❓.x/build/import/Versions.props
-    - [ ] In `main`: https://github.com/dotnet/project-system/blob/main/build/import/Versions.props
+- [ ] Update [version.json](..\\..\version.json) (via `"version"`) to match the version of VS, if needed
+    - [ ] In new branch: https://github.com/dotnet/project-system/blob/dev17.❓.x/eng/imports/Versions.props
+    - [ ] In `main`: https://github.com/dotnet/project-system/blob/main/eng/imports/Versions.props
 - [ ] Clone existing release definition to insert this branch into VS (see OneNote)
 - [ ] Update [README.md](https://github.com/dotnet/project-system/blob/main/README.md) (in `main`) if we need new badges
 - [ ] Update [MSFTBot milestone tracking](https://aka.ms/fabricbotconfig)

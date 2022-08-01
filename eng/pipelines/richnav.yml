@@ -1,0 +1,46 @@
+# Name: DotNet-Project-System Rich Code Navigation
+# URL: https://dev.azure.com/devdiv/DevDiv/_build?definitionId=9675
+#
+# Creates the Rich Navigation index for navigation throughout the main branch
+# of dotnet/project-system
+#
+
+# Branches that trigger a build on commit
+trigger:
+  branches:
+    include:
+    - main
+    - dev*
+    - feature/*
+
+# Branches that trigger builds on PR
+pr:
+  branches:
+    include:
+    - main
+    - dev*
+    - feature/*
+
+resources:
+- repo: self
+  clean: true
+pool:
+  name: NetCore1ESPool-Public
+  # Image list: https://helix.dot.net/#1esPools
+  demands: ImageOverride -equals Build.Windows.Amd64.VS2022.Pre.Open
+  timeoutInMinutes: 15
+variables:
+  BuildConfiguration: Debug
+  BuildPlatform: any cpu
+  DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true
+  EnableRichCodeNavigation: true
+
+steps:
+- script: $(Build.SourcesDirectory)\build.cmd /v:normal /p:Configuration=$(BuildConfiguration) /p:CIBuild=true /p:Test=false
+  displayName: Build All Projects
+
+- task: RichCodeNavIndexer@0
+  displayName: RichCodeNav Upload
+  inputs:
+    languages: 'csharp'
+  continueOnError: true

@@ -1,0 +1,107 @@
+<!-- Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information. -->
+<Project>
+
+  <!--
+    Runs APEX integration tests for a project via vstest.console.exe
+
+    Inputs:
+      $(VSSDKTargetPlatformRegRootSuffix):  The root suffix of the hive to open.
+      $(VisualStudioXamlRulesDir):          The build output location containing the XAML rules.
+      $(ArtifactsTestResultsDir):           The build output location where test results are output.
+  -->
+
+  <Target Name="IntegrationTest" DependsOnTargets="GenerateRunSettings;PrepareVisualStudio;ExecuteTests;CleanupTestResults;ReportTestResults" />
+
+  <PropertyGroup>
+    <TestResultsDirectory>$(ArtifactsTestResultsDir)</TestResultsDirectory>
+    <RunSettingsFullPath>$(IntermediateOutputPath)$(TargetName)$(TargetExt).runsettings</RunSettingsFullPath>
+  </PropertyGroup>
+
+  <Target Name="GenerateRunSettings">
+    <PropertyGroup>
+      <MediaRecorderDirectory>$(PkgMicrosoft_DevDiv_Validation_MediaRecorder)\lib\net461</MediaRecorderDirectory>
+    </PropertyGroup>
+
+    <Error Text="The project must be restored before running tests" File="$(MSBuildProjectFile)" Condition="!Exists('$(MediaRecorderDirectory)')" />
+
+    <PropertyGroup>
+      <RunSettingsContents>
+        <![CDATA[
+<RunSettings>
+  <TestRunParameters>
+    <Parameter name="VsRootSuffix" value="$(VSSDKTargetPlatformRegRootSuffix)" />
+  </TestRunParameters>
+  <RunConfiguration>
+    <MaxCpuCount>1</MaxCpuCount>
+    <TestAdaptersPaths>$(MediaRecorderDirectory)</TestAdaptersPaths>
+  </RunConfiguration>
+  
+  <DataCollectionRunSettings>
+    <DataCollectors>
+      <DataCollector friendlyName="Screen and Voice Recorder" uri="datacollector://Microsoft/DevDiv/VideoRecorder/2.0" assemblyQualifiedName="Microsoft.DevDiv.Validation.MediaRecorder.Collector, Microsoft.DevDiv.Validation.MediaRecorder.Collector.VideoRecorderDataCollector, Version=15.0.0.0, Culture=neutral, PublicKeyToken=null" enabled="true">
+        <Configuration>
+          <MediaRecorder>
+            <AudioRecorder enabled="false" />
+          </MediaRecorder>
+        </Configuration>
+      </DataCollector>
+    </DataCollectors>
+  </DataCollectionRunSettings>
+  
+  <MSTest>
+     <DeploymentEnabled>false</DeploymentEnabled>
+     <DeleteDeploymentDirectoryAfterTestRunIsComplete>False</DeleteDeploymentDirectoryAfterTestRunIsComplete>
+  </MSTest>
+</RunSettings>
+]]>
+      </RunSettingsContents>
+    </PropertyGroup>
+
+    <WriteLinesToFile File="$(RunSettingsFullPath)" Lines="$(RunSettingsContents)" Overwrite="true" />
+  </Target>
+
+  <Target Name="PrepareVisualStudio">
+    <!-- Want to avoid getting asked to sign in if the machine has never logged in -->
+    <Message Text="Turning off VS first launch dialog" />
+    <Exec Command='vsregedit.exe set "$(VSInstallDir.TrimEnd("\"))" $(VSSDKTargetPlatformRegRootSuffix) HKLM Profile DisableFirstLaunchDialog dword 1' />
+  </Target>
+
+  <Target Name="ExecuteTests">
+    <PropertyGroup>
+      <VSTestExe>$(PkgMicrosoft_TestPlatform)\tools\net451\Common7\IDE\Extensions\TestPlatform\vstest.console.exe</VSTestExe>
+      <TrxLogFileName>$(TargetName)$(TargetExt).trx</TrxLogFileName>
+      <TrxLogFilePath>$(TestResultsDirectory)$(TrxLogFileName)</TrxLogFilePath>
+      <VSTestExeEnvironment>
+        VisualBasicDesignTimeTargetsPath=$(VisualStudioXamlRulesDir)Microsoft.VisualBasic.DesignTime.targets;
+        FSharpDesignTimeTargetsPath=$(VisualStudioXamlRulesDir)Microsoft.FSharp.DesignTime.targets;
+        CSharpDesignTimeTargetsPath=$(VisualStudioXamlRulesDir)Microsoft.CSharp.DesignTime.targets;
+      </VSTestExeEnvironment>
+    </PropertyGroup>
+
+    <MakeDir Directories="$(TestResultsDirectory)" />
+    <Error Text="The project must built before running tests" File="$(MSBuildProjectFile)" Condition="!Exists('$(TargetPath)')" />
+
+    <Message Text="$(MSBuildProjectName) -> Running tests (this might take a while)..." Importance="High" />
+    <!-- Delete the TRX to avoid warning about overwriting it -->
+    <Delete Files="$(TrxLogFilePath)" />
+    <Exec Command='"$(VSTestExe)" /Blame /ResultsDirectory:"$(TestResultsDirectory)\" /Settings:"$(RunSettingsFullPath)" /Logger:trx;LogFileName=$(TrxLogFileName) "$(TargetPath)"' EnvironmentVariables="$(VSTestExeEnvironment)" LogStandardErrorAsError="true" StandardOutputImportance="Low" IgnoreExitCode="true">
+      <Output TaskParameter="ExitCode" PropertyName="VSTestExeExitCode" />
+    </Exec>
+  </Target>
+
+  <Target Name="ReportTestResults">
+    <Message Text="$(MSBuildProjectName) -> Tests succeeded" Condition="$(VSTestExeExitCode) == 0" Importance="High" />
+    <!-- Exec.LogStandardErrorAsError does not fail the build, we need to output explicit error to do that. -->
+    <Error Text="Tests failed, see $(TrxLogFilePath) for full results." Condition="$(VSTestExeExitCode) != 0 AND Exists('$(TrxLogFilePath)')" File="Apex" />
+    <Error Text="Attempting to run the test runner $(VSTestExe) failed with error level $(VSTestExeExitCode) and failed to produce any results. Use 'build.cmd /diagnostic' and consult 'log\Build.binlog' for more information." Condition="$(VSTestExeExitCode) != 0 AND !Exists('$(TrxLogFilePath)')" File="Apex" />
+  </Target>
+
+  <Target Name="CleanupTestResults">
+    <ItemGroup>
+      <UnneededTestResultsFile Include="$(TestResultsDirectory)\**\*.trmx" />       <!-- Metadata file for screen capture that contains nothing inside of it -->
+      <UnneededTestResultsFile Include="$(TestResultsDirectory)\**\*RawXml.xml" />  <!-- Unstructured XML version of OmniLog.html that we do not use -->
+    </ItemGroup>
+    <Delete Files="@(UnneededTestResultsFile)" />
+  </Target>
+
+</Project>

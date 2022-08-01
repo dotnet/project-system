@@ -267,3 +267,43 @@ There are several reasons that a project may fail its up-to-date check and be sc
 | *Disabled* | The project has `DisableFastUpToDateCheck` set. [More info](#disabling-the-up-to-date-check). |
 | *CriticalTasks* | Critical build tasks are running. This is very uncommon, and is not something the user has control over. |
 | *Exception* | An exception occurred in the implementation of the fast up-to-date check. We schedule a build at this point, as we don't know whether it is safe not to. |
+
+## Discrepancies between FUTDC logging and build summary
+
+If you enable [fast up-to-date check logging](#sdk-style-projects) (especially at verbose level) you may notice that sometimes a project is identified as up-to-date in those logs, yet the VS build summary says the project was built.
+
+Here's an example of how that might appear:
+
+```
+...
+1>FastUpToDate: Project is up-to-date. (MyProject)
+1>FastUpToDate: Up-to-date check completed in 110.5 ms (MyProject)
+1>------ Build started: Project: MyProject, Configuration: Debug Any CPU ------
+========== Build: 1 succeeded, 0 failed, 0 up-to-date, 0 skipped ==========
+```
+
+This log contradicts itself. It says the project was up-to-date, however it then goes on to report "build started" and finally "1 succeeded".
+
+We would expect this instead:
+
+```
+...
+1>FastUpToDate: Project is up-to-date. (MyProject)
+1>FastUpToDate: Up-to-date check completed in 110.5 ms (MyProject)
+========== Build: 0 succeeded, 0 failed, 1 up-to-date, 0 skipped ==========
+```
+
+The reason for this is as follows:
+
+- When building, the Solution Build Manager (SBM) requests the fast up-to-date check (FUTDC) to run. For SDK-style .NET projects, this request is brokered by the Common Project System (CPS).
+- The SBM is a very old component and makes a blocking (non-async) request for this information on the UI thread.
+- The interaction between CPS and the FUTDC is non-blocking (async) and does not require the UI thread.
+- While the FUTDC is running, VS is unresponsive as its UI thread is blocked waiting for the result.
+- To prevent such a UI delay, if the FUTDC takes longer than some amount of time, CPS lies to the SBM, telling it the project is not up-to-date and must be built. The FUTDC operation continues however.
+- Later, when the SBM calls back into CPS for the actual build to occur, the result of the FUTDC is taken into account. If the project actually _was_ up-to-date, then no build occurs. However the SBM doesn't know that, and just sees a very fast build.
+
+Enabling verbose FUTDC logging is a good way to make the FUTDC take longer than the time CPS gives it.
+
+This situation does not impact build correctness. It is a quirk that was intentionally introduced to keep VS responsive. It only applies to projects built via CPS, such as SDK-style .NET projects.
+
+In future we hope to make the SBM async-aware, so that we can unblock the UI thread during these operations and report a correct build summary in all cases.

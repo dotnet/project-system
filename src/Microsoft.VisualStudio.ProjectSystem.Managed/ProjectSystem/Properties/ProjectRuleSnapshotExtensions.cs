@@ -47,6 +47,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         /// </summary>
         public static bool IsPropertyTrue(this IImmutableDictionary<string, IProjectRuleSnapshot> snapshots, string ruleName, string propertyName, bool defaultValue)
         {
+            Requires.NotNull(snapshots, nameof(snapshots));
+            Requires.NotNull(ruleName, nameof(ruleName));
+            Requires.NotNull(propertyName, nameof(propertyName));
+
             string value = snapshots.GetPropertyOrDefault(ruleName, propertyName, defaultValue ? "true" : "false");
 
             return StringComparers.PropertyLiteralValues.Equals(value, "true");
@@ -69,6 +73,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
 
         public static bool HasChange(this IImmutableDictionary<string, IProjectChangeDescription> changesByRule)
         {
+            Requires.NotNull(changesByRule, nameof(changesByRule));
+
             foreach ((_, IProjectChangeDescription change) in changesByRule)
             {
                 if (change.Difference.AnyChanges)

@@ -1,89 +1,57 @@
 @if not defined _echo @echo off
 setlocal enabledelayedexpansion
 
-set BatchFile=%0
-set Root=%~dp0
+@REM Show the command line arguments available if /? is provided.
+if /I "%1" == "/?" call :Usage && exit /b 1
 
-set BuildConfiguration=Debug
-set RootSuffixCmdLine=
-set OptBuild=true
-set OptDiagnostic=false
-set OptRebuild=false
-set OptDeploy=true
-set OptTest=true
-set OptIntegrationTest=false
-set OptCI=false
-set OptSign=false
-set OptIbc=false
-set OptNodeReuse=true
-set OptClearNuGetCache=false
+@REM Turn off dotnet CLI logo
+set DOTNET_NOLOGO=true
 
-:ParseArguments
-if    "%1" == ""                                                                                    goto :DoneParsing
-if /I "%1" == "/?"                                                                                  call :Usage && exit /b 1
-if /I "%1" == "/build"                set "OptBuild=true"  && set "OptRebuild=false"                && shift && goto :ParseArguments
-if /I "%1" == "/no-build"             set "OptBuild=false" && set "OptRebuild=false"                && shift && goto :ParseArguments
-if /I "%1" == "/rebuild"              set "OptBuild=false" && set "OptRebuild=true"                 && shift && goto :ParseArguments
-if /I "%1" == "/test"                 set "OptTest=true"                                            && shift && goto :ParseArguments
-if /I "%1" == "/no-test"              set "OptTest=false"                                           && shift && goto :ParseArguments
-if /I "%1" == "/integration"          set "OptIntegrationTest=true"                                 && shift && goto :ParseArguments
-if /I "%1" == "/no-integration"       set "OptIntegrationTest=false"                                && shift && goto :ParseArguments
-if /I "%1" == "/deploy"               set "OptDeploy=true"                                          && shift && goto :ParseArguments
-if /I "%1" == "/no-deploy"            set "OptDeploy=false"                                         && shift && goto :ParseArguments
-if /I "%1" == "/diagnostic"           set "OptDiagnostic=true"                                      && shift && goto :ParseArguments
-if /I "%1" == "/no-diagnostic"        set "OptDiagnostic=false"                                     && shift && goto :ParseArguments
-if /I "%1" == "/sign"                 set "OptSign=true"                                            && shift && goto :ParseArguments
-if /I "%1" == "/no-sign"              set "OptSign=false"                                           && shift && goto :ParseArguments
-if /I "%1" == "/ci"                   set "OptCI=true"     && set "OptNodeReuse=false"              && shift && goto :ParseArguments
-if /I "%1" == "/no-ci"                set "OptCI=false"    && set "OptNodeReuse=true"               && shift && goto :ParseArguments
-if /I "%1" == "/ibc"                  set "OptIbc=true"                                             && shift && goto :ParseArguments
-if /I "%1" == "/no-ibc"               set "OptIbc=false"                                            && shift && goto :ParseArguments
-if /I "%1" == "/clearnugetcache"      set "OptClearNuGetCache=true"                                 && shift && goto :ParseArguments
-if /I "%1" == "/no-clearnugetcache"   set "OptClearNuGetCache=false"                                && shift && goto :ParseArguments
-if /I "%1" == "/rootsuffix"           set "RootSuffixCmdLine=/p:RootSuffix=%2"                      && shift && shift && goto :ParseArguments
-if /I "%1" == "/configuration"        set "BuildConfiguration=%2"                                   && shift && shift && goto :ParseArguments
+@REM Sets the output of GetMSBuildPath.ps1 to the MSBuildPath environment variable
+@REM https://stackoverflow.com/a/3417728/294804
+FOR /F "usebackq delims=" %%v IN (`powershell -NonInteractive -NoLogo -NoProfile -ExecutionPolicy Unrestricted -File "%~dp0eng\scripts\GetMSBuildPath.ps1" -versionJsonPath "%~dp0version.json"`) DO set "MSBuildPath=%%~v"
 
-call :Usage && exit /b 1
-:DoneParsing
-
-set LogFile=%Root%artifacts\%BuildConfiguration%\log\Build.binlog
-
-REM The logging command-line needs to factor in build configuration, so calculate it after that's been determined
-if "%OptDiagnostic%" == "true" (
-    set LogCmdLine=/v:normal /bl:%LogFile%
-) else (
-    set LogCmdLine=/v:minimal
+if not defined MSBuildPath (
+    echo Visual Studio must be installed to allow building via MSBuild.
+    exit /b 1
 )
 
-call "%Root%\build\script\SetVSEnvironment.cmd" || exit /b 1
-
-msbuild %Root%build\proj\Build.proj /m /warnaserror /nologo /clp:Summary /nodeReuse:%OptNodeReuse% /p:Configuration=%BuildConfiguration% /p:Build=%OptBuild% /p:Rebuild=%OptRebuild% /p:Deploy=%OptDeploy% /p:Test=%OptTest% /p:IntegrationTest=%OptIntegrationTest% /p:Sign=%OptSign% /p:CIBuild=%OptCI% /p:EnableIbc=%OptIbc% /p:ClearNuGetCache=%OptClearNuGetCache% %LogCmdLine% %RootSuffixCmdLine%
+@REM The configuration is not known at this point. It could either use the default from Build.proj or be passed in as an MSBuild argument.
+set "BinlogPath=%~dp0artifacts\Build.binlog"
+@REM https://stackoverflow.com/a/16144756/294804
+"%MSBuildPath%" "%~dp0eng\Build.proj" /m /warnAsError /noLogo /clp:Summary /bl:"%BinlogPath%" %*
 set MSBuildErrorLevel=%ERRORLEVEL%
 
-if "%OptDiagnostic%" == "true" if "%OptCI%" == "false" (
-    start %LogFile%
+@REM Move the binlog into the appropriate configuration directory.
+if exist "%BinlogPath%" (
+    @REM Finds the last modified directory in the artifacts folder.
+    @REM https://stackoverflow.com/a/36545652/294804
+    for /f "delims=" %%a in ('dir /b /a:d /o:-d /t:w "%~dp0artifacts\"') do (
+        set "ConfigurationDirectory=%%~a"
+        goto :break
+    )
+    :break
+    set "LogDirectory=%~dp0artifacts\%ConfigurationDirectory%\log\"
+    if not exist "%LogDirectory%" (
+        mkdir "%LogDirectory%"
+    )
+    move "%BinlogPath%" "%LogDirectory%"
 )
 
 exit /b %MSBuildErrorLevel%
 
 :Usage
-echo Usage: %BatchFile% [options]
+echo Usage: build.cmd [options]
 echo.
-echo   Build targets:
-echo     /rebuild                  Perform a clean, then build
-echo     /[no]-build               Perform a build (default) or not
+echo   For Projects:
+echo     /p:SrcProjects=[true or false]     Includes the projects within the src directory. Default: true
+echo     /p:TestProjects=[true or false]    Includes the projects within the tests directory. Default: true
+echo     /p:SetupProjects=[true or false]   Includes the projects within the setup directory. Default: true
 echo.
-echo   Test targets:
-echo     /[no-]test                Run (default) or skip unit tests
-echo     /[no-]integration         Run or skip (default) integration tests
-echo.
-echo   Build options:
-echo     /[no-]diagnostic          Turns on or turns off (default) logging to a binlog
-echo     /[no-]deploy              Deploy (default) or skip deploying Visual Studio extensions
-echo     /[no-]sign                Sign (default) or skip signing build outputs
-echo     /[no-]ci                  Turns on or turns off (default) a continuous integration build
-echo     /[no-]ibc                 Turns on or turns off (default) IBC (OptProf) optimization data usage
-echo     /[no-]clearnugetcache     Clears or skips clearing (default) NuGet package cache
-echo     /rootsuffix ^<hive^>        Hive to use when deploying Visual Studio extensions (default is 'Exp')
-echo     /configuration ^<config^>   Use Debug (default) or Release build configuration
+echo   For Targets:
+echo     /p:Restore=[true or false]         Runs the Restore target to acquire project dependencies. Default: true
+echo     /p:Build=[true or false]           Runs the Build target to compile the projects into assemblies. Default: true
+echo     /p:Rebuild=[true or false]         Runs the Rebuild target which cleans and builds the projects. Default: false
+echo     /p:Test=[true or false]            Runs the Test target to execute the xUnit test projects. Default: true
+echo     /p:Pack=[true or false]            Runs the Pack target to bundle the projects into NuGet packages. Default: true
 goto :eof

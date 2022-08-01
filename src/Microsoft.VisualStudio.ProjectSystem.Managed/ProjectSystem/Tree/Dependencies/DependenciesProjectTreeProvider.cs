@@ -201,12 +201,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies
                 {
                     if (node.BrowseObjectProperties?.Context == null)
                     {
-                        // If node does not have an IRule with valid ProjectPropertiesContext we can not 
+                        // If node does not have an IRule with valid ProjectPropertiesContext we can not
                         // get its itemsSpec. If nodes provided by custom IProjectDependenciesSubTreeProvider
                         // implementation, and have some custom IRule without context, it is not a problem,
-                        // since they would not have DependencyNode.GenericDependencyFlags and we would not 
-                        // end up here, since CanRemove would return false and Remove command would not show 
-                        // up for those nodes. 
+                        // since they would not have DependencyNode.GenericDependencyFlags and we would not
+                        // end up here, since CanRemove would return false and Remove command would not show
+                        // up for those nodes.
                         continue;
                     }
 
@@ -239,12 +239,23 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies
                     {
                         if (import.ImportingElement.ContainingProject != projectXml || !PathHelper.IsSamePath(import.ImportedProject.FullPath, sharedFilePath))
                         {
+                            // This is not the import we are trying to remove.
                             continue;
                         }
 
                         ProjectImportElement importingElementToRemove = import.ImportingElement;
-                        Report.IfNot(importingElementToRemove != null, "Cannot find shared project reference to remove.");
-                        importingElementToRemove?.Parent.RemoveChild(importingElementToRemove);
+
+                        if (importingElementToRemove is null)
+                        {
+                            Report.Fail("Cannot find shared project reference to remove.");
+                            continue;
+                        }
+
+                        // We found a matching import. Remove it.
+                        importingElementToRemove.Parent.RemoveChild(importingElementToRemove);
+
+                        // Stop scanning for imports.
+                        break;
                     }
                 }
             });

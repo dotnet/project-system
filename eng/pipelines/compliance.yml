@@ -1,0 +1,84 @@
+# Name: DotNet-Project-System-Compliance
+# URL: https://devdiv.visualstudio.com/DevDiv/_build?definitionId=15013
+#
+# Responsible for running compliance checks.
+
+#
+# NOTE: triggers for this build are defined in the Web UI instead of here in the YAML file so they
+#       apply to all branches.
+
+resources:
+- repo: self
+  clean: true
+queue:
+  name: VSEngSS-MicroBuild2022-1ES
+  demands: Cmd
+  timeoutInMinutes: 90
+variables:
+  BuildConfiguration: Release
+  TeamName: DotNet-Project-System
+  BuildPlatform: any cpu
+  DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true
+
+steps:
+- script: $(Build.SourcesDirectory)\build.cmd /v:normal /p:Configuration=$(BuildConfiguration) /p:CIBuild=true /p:Test=false
+  displayName: Build All Projects
+
+- task: PoliCheck@2
+  # Scan for problematic terminology.
+  displayName: Run PoliCheck
+  inputs:
+    targetType: 'F'                             # Scan a particular file or folder (recursively)
+    targetArgument: '$(Build.SourcesDirectory)' # Path of file/folder to scan
+    result: 'PoliCheck.xml'                     # Name of the output file
+    optionsFC: '1'                              # Enable scanning of comments
+    optionsSEV: '1|2|3'                         # Scan for severity 1, 2, and 3 issues
+  continueOnError: true
+
+- task: CredScan@3
+  # Scan for credentials accidentally committed to source control.
+  displayName: Run CredScan
+  inputs:
+    outputFormat: 'pre' # Output in PREFast format so TSAUpload can consume it
+  continueOnError: true
+
+- task: CopyFiles@2
+  # APIScan can take a long time, so here we copy (mostly) just the product binaries and related .pdbs
+  # in an effort to limit what it needs to work on.
+  displayName: Copy files for APIScan
+  inputs:
+    SourceFolder: '$(Build.SourcesDirectory)\artifacts\$(BuildConfiguration)\bin\Dlls'  # Limit to (mostly) product binaries
+    Contents: |
+      *.dll
+      *.pdb
+    TargetFolder: '$(Agent.TempDirectory)\APIScanFiles'
+  continueOnError: true
+
+- task: APIScan@2
+  # Scan for the use of undocumented APIs.
+  displayName: Run APIScan
+  inputs:
+    softwareFolder: '$(Agent.TempDirectory)\APIScanFiles' # Only examine the product binaries we previously copied.
+    softwareName: 'Dotnet-Project-System'
+    softwareVersionNum: '17.0'
+    softwareBuildNum: '$(Build.BuildId)'
+    symbolsFolder: 'SRV*http://symweb'
+  env:
+    AzureServicesAuthConnectionString: runAs=App;AppId=$(ApiScanClientId);TenantId=$(ApiScanTenant);AppKey=$(ApiScanSecret)
+  continueOnError: true
+
+- task: TSAUpload@2
+  # Scan the output of previous steps and create bugs for any problems.
+  displayName: Upload results and create bugs
+  inputs:
+    GdnPublishTsaOnboard: true
+    GdnPublishTsaConfigFile: '$(Build.SourcesDirectory)\eng\pipelines\TSAConfig.gdntsa'  # All relevant settings are in this file.
+  continueOnError: true
+
+- task: PublishSecurityAnalysisLogs@3
+  displayName: Publishing analysis artifacts
+  inputs:
+    ArtifactName: 'CodeAnalysisLogs'
+    ArtifactType: 'Container'           # Associate the artifacts with the build.
+    AllTools: true                      # Look for logs from all tools.
+    ToolLogsNotFoundAction: 'Standard'  # If a log is not found just output a message to that effect.

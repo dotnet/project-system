@@ -306,7 +306,7 @@ internal static class LaunchSettingsJsonEncoding
                 {
                     JsonToken.Boolean => (bool)reader.Value!,
                     JsonToken.Integer => checked((int)(long)reader.Value!),
-                    JsonToken.StartObject => (jsonSerializer ??= JsonSerializer.CreateDefault()).Deserialize<Dictionary<string, string>>(reader),
+                    JsonToken.StartObject => (jsonSerializer ??= JsonSerializer.CreateDefault()).Deserialize<Dictionary<string, object>>(reader),
                     JsonToken.String => (string)reader.Value!,
                     _ => null
                 };

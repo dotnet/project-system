@@ -3,17 +3,10 @@
 
   <Import Project="..\Directory.Build.targets" />
 
-  <!--
-    Defining this target will disable the new SDK behavior of implicit transitive project
-    references. This is a fine feature in general but the current implementation breaks VSIX 
-    construction by including a number of projects that should not be included. 
-    https://github.com/dotnet/sdk/issues/1366
-  -->
-  <Target Name="IncludeTransitiveProjectReferences" >
-  </Target>
-
-  <!-- Adds the appropriate vsix files for signing. -->
-  <Target Name="AddVsixForSigning" DependsOnTargets="$(AddVsixForSigningDependsOn)" BeforeTargets="SignFiles">
+  <!-- Add the VSIX files from VS Extension projects for signing. -->
+  <Target Name="AddVsixForSigning" DependsOnTargets="CreateVsixContainer" BeforeTargets="SignFiles" Condition="'$(IsVsixProject)' == 'true' AND '$(CIBuild)' == 'true'">
+    <!-- Required to be in either OutDir or IntermediateOutputPath for signing. It'll be copied after signing via the CopyVsixAfterSigning target. -->
+    <!-- https://devdiv.visualstudio.com/DevDiv/_wiki/wikis/DevDiv.wiki/650/MicroBuild-Signing?anchor=modify-your-project-file-to-include-%60filestosign%60-itemgroup -->
     <Copy SourceFiles="$(VisualStudioSetupInsertionPath)$(AssemblyName).vsix" DestinationFolder="$(OutDir)" />
     <ItemGroup>
       <FilesToSign Include="$(OutDir)$(AssemblyName).vsix">
@@ -22,19 +15,33 @@
     </ItemGroup>
   </Target>
 
-  <!--
-    Updates insertion manifests (json) for creating the vsman files for insertion to include the SPDX SBOM json.
-    Technically, this should be AfterTargets="$(AddVsixForSigningDependsOn)" as that value (target) indicates when VSIX packaging has completed.
-    Doing it as AfterTargets="AddVsixForSigning" unnecessarily binds the SBOM process to signing. But there is not currently a scenario where we wouldn't sign and generate an SBOM.
-  -->
-  <Target Name="UpdateManifestJsonForSbom" AfterTargets="AddVsixForSigning">
-    <Exec ContinueOnError="false" Command="powershell -NonInteractive -NoLogo -NoProfile -ExecutionPolicy Unrestricted -Command &quot;. $(RepoRoot)build\script\UpdateManifestJsonForSbom.ps1 -manifestJsonPath '$(VisualStudioSetupInsertionPath)$(ManifestJsonName).json' -sbomMetadataPath '$(ArtifactsBinDir)_manifest\spdx_2.2\manifest.spdx.json'&quot;" />
+  <!-- Copies the VSIX files after they've been signed from VS Extension projects to the appropriate output folder. -->
+  <Target Name="CopyVsixAfterSigning" AfterTargets="SignFiles" Condition="'$(IsVsixProject)' == 'true' AND '$(CIBuild)' == 'true'">
+    <Copy SourceFiles="$(OutDir)$(AssemblyName).vsix" DestinationFolder="$(VisualStudioSetupInsertionPath)" />
   </Target>
 
-  <!-- Copies the vsix files after they've been signed to the different output folders. -->
-  <Target Name="CopyVsixAfterSigning" DependsOnTargets="AddVsixForSigning" AfterTargets="SignFiles">
-    <Copy SourceFiles="$(OutDir)$(AssemblyName).vsix" DestinationFolder="$(VisualStudioSetupInsertionPath)" />
-    <Copy SourceFiles="$(OutDir)$(AssemblyName).vsix" DestinationFolder="$(VisualStudioSetupOutputPath)" />
+  <!-- Sets the Experimental attribute on the VSIX manifest to 'false' for builds in CI. -->
+  <Target Name="RemoveExperimentalAttributeFromVsixManifest" AfterTargets="DetokenizeVsixManifestFile" Condition="'$(CIBuild)' == 'true'">
+    <PropertyGroup>
+      <ObjVsixManifestPath>$(ArtifactsObjDir)$(MSBuildProjectName)\extension.vsixmanifest</ObjVsixManifestPath>
+    </PropertyGroup>
+    <Exec ContinueOnError="false" Command="$(PowerShellFile) &quot;$(RepoRoot)eng\scripts\RemoveExperimentalAttributeFromVsixManifest.ps1&quot; -manifestPath &quot;$(ObjVsixManifestPath)&quot;" />
+  </Target>
+
+  <!-- Specifies the version number that is used within the 'source.extension.vsixmanifest' files for VSIX packages. -->
+  <Target Name="GetVsixVersion" Outputs="$(BuildVersion)" Condition="'$(IsVsixProject)' == 'true'" />
+
+  <!--
+    Generates DependentAssemblyVersions.csv that enables the Roslyn insertion tool to update various assembly versions in the VS repository under src\ProductData.
+    This is used in the RoslynInsertionTool in the file RoslynInsertionTool.AssemblyVersions.cs.
+    See: https://github.com/dotnet/roslyn-tools/tree/main/src/RoslynInsertionTool
+
+    $(AssemblyVersion):                    The version number of both Microsoft.VisualStudio.Editors/Microsoft.VisualStudio.AppDesigner and Microsoft.VisualStudio.ProjectSystem.Managed/Microsoft.VisualStudio.ProjectSystem.Managed.VS.
+    $(DependentAssemblyVersionsCsvPath):   The file location to create the DependentAssemblyVersions.csv file.
+  -->
+  <!-- TODO: This will need to be changed/removed as part of https://github.com/dotnet/project-system/issues/7911 -->
+  <Target Name="CreateDependentAssemblyVersionsCsv" AfterTargets="Build" Condition="'$(CIBuild)' == 'true' AND !Exists('$(DependentAssemblyVersionsCsvPath)')">
+    <Exec ContinueOnError="false" Command="$(PowerShellFile) &quot;$(RepoRoot)eng\scripts\CreateDependentAssemblyVersionsCsv.ps1&quot; -csvPath &quot;$(DependentAssemblyVersionsCsvPath)&quot; -version $(AssemblyVersion)" />
   </Target>
 
 </Project>

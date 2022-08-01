@@ -1,11 +1,12 @@
 ﻿<!-- Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information. -->
 <Project Sdk="Microsoft.NET.Sdk">
-  <Import Project="..\..\build\import\VisualStudio.props" />
+
+  <Import Project="..\..\eng\imports\VisualStudio.props" />
+
   <PropertyGroup>
     <RootNamespace>Microsoft.VisualStudio</RootNamespace>
-    <!-- Static AssemblyVersion is needed for serialization tests that encode AssemblyQualifiedName, which includes the assembly version number. -->
-    <AssemblyVersion>42.42.42.42</AssemblyVersion>
   </PropertyGroup>
+
   <ItemGroup>
     <Content Include="img105.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -14,9 +15,28 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
+
   <ItemGroup>
     <ProjectReference Include="..\DeployTestDependencies\DeployTestDependencies.csproj" ReferenceOutputAssembly="false" />
     <ProjectReference Include="..\..\src\Microsoft.VisualStudio.Editors\Microsoft.VisualStudio.Editors.vbproj" />
     <ProjectReference Include="..\..\src\Microsoft.VisualStudio.AppDesigner\Microsoft.VisualStudio.AppDesigner.vbproj" />
   </ItemGroup>
+
+  <!-- We create 2 targets here: one for local builds and one for CI builds. This is because trying to specify both BeforeTargets and AfterTargets causes incorrect target ordering. -->
+  <!-- See: https://docs.microsoft.com/en-us/visualstudio/msbuild/target-build-order?view=vs-2022#beforetargets-and-aftertargets -->
+
+  <!-- Static AssemblyVersion is needed for serialization tests that encode AssemblyQualifiedName, which includes the assembly version number. -->
+  <!-- This applies to Nerdbank.GitVersioning targets. It changes AssemblyVersion after it is set but before it is used to generate assembly info. -->
+  <Target Name="OverrideCIAssemblyVersion" DependsOnTargets="GetBuildVersion" BeforeTargets="GenerateAssemblyNBGVVersionInfo" Condition="'$(CIBuild)' == 'true'">
+    <PropertyGroup>
+      <AssemblyVersion>42.42.42.42</AssemblyVersion>
+    </PropertyGroup>
+  </Target>
+  <!-- SetLocalBuildVersions is the version numbers for local builds. We need to make sure to override the local build AssemblyVersion. -->
+  <Target Name="OverrideLocalAssemblyVersion" DependsOnTargets="SetLocalBuildVersions" BeforeTargets="GenerateAssemblyNBGVVersionInfo" Condition="'$(CIBuild)' != 'true'">
+    <PropertyGroup>
+      <AssemblyVersion>42.42.42.42</AssemblyVersion>
+    </PropertyGroup>
+  </Target>
+
 </Project>
