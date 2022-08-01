@@ -1,8 +1,7 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
 using System.Collections.Concurrent;
-using System.Text;
-using Microsoft.VisualStudio.Text;
+using Microsoft.VisualStudio.ProjectSystem.Debug;
 
 namespace Microsoft.VisualStudio.ProjectSystem.Properties;
 
@@ -14,6 +13,7 @@ internal sealed class ImportedNamespacesValueProvider : InterceptingPropertyValu
     private readonly IProjectThreadingService _threadingService;
     private readonly IProjectAccessor _projectAccessor;
     private readonly ConcurrentHashSet<string> _specialImports;
+    private readonly KeyValuePairListEncoding _encoding;
     
     [ImportingConstructor]
     public ImportedNamespacesValueProvider(ConfiguredProject configuredProject, IProjectThreadingService threadingService, IProjectAccessor projectAccessor)
@@ -22,16 +22,17 @@ internal sealed class ImportedNamespacesValueProvider : InterceptingPropertyValu
         _threadingService = threadingService;
         _projectAccessor = projectAccessor;
         _specialImports = new ConcurrentHashSet<string>();
+        _encoding = new KeyValuePairListEncoding();
     }
 
-    private async Task<ImmutableArray<string>> GetSelectedImportsAsync()
+    private async Task<ImmutableArray<(string Value, bool IsReadOnly)>> GetSelectedImportsAsync()
     {
-        ImmutableArray<string> existingImports = await _projectAccessor.OpenProjectForReadAsync(_configuredProject, project =>
+        ImmutableArray<(string Value, bool IsReadOnly)> existingImports = await _projectAccessor.OpenProjectForReadAsync(_configuredProject, project =>
         {
             return project
                 .GetItems("Import")
-                .Select(item => item.EvaluatedInclude)
-                .Where(import => !string.IsNullOrEmpty(import))
+                .Select(item => (Value: item.EvaluatedInclude, IsReadOnly: item.IsImported))
+                .Where(import => !string.IsNullOrEmpty(import.Value))
                 .ToImmutableArray();
         });
 
@@ -40,64 +41,58 @@ internal sealed class ImportedNamespacesValueProvider : InterceptingPropertyValu
     
     private async Task<string> GetSelectedImportStringAsync()
     {
-        StringBuilder sb = new StringBuilder();
         string projectName = Path.GetFileNameWithoutExtension(_configuredProject.UnconfiguredProject.FullPath);
-        bool containsProjectName = false;
 
-        ImmutableArray<string> existingImports = await GetSelectedImportsAsync();
-        
-        foreach (string? import in existingImports)
-        {
-            if (!string.IsNullOrEmpty(import))
-            {
-                if (string.Equals(import, projectName))
-                {
-                    containsProjectName = true;
-                }
-                sb.Append(import).Append(';');
-            }
-        }
+        ImmutableArray<(string Value, bool IsImported)> existingImports = await GetSelectedImportsAsync();
+
+        var selectedImports = existingImports
+                .Where(pair => !string.IsNullOrEmpty(pair.Value))
+                .Select(pair => (Key: pair.Value, Value: pair.IsImported.ToString())).ToList();
+
+        bool containsProjectName = selectedImports.Any(selectedImport => string.Equals(selectedImport.Key, projectName, StringComparison.Ordinal));
 
         if (!containsProjectName)
         {
-            sb.Append(projectName).Append(';');
+            selectedImports.Add((projectName, Value: bool.TrueString));
         }
 
-        sb.Remove(sb.Length - 1, 1);
-        return sb.ToString();
+        return _encoding.Format(selectedImports);
     }
     
-    public override Task<string> OnGetUnevaluatedPropertyValueAsync(string propertyName, string unevaluatedPropertyValue, IProjectProperties defaultProperties)
+    public override async Task<string> OnGetUnevaluatedPropertyValueAsync(string propertyName, string unevaluatedPropertyValue, IProjectProperties defaultProperties)
     {
-        return GetSelectedImportStringAsync();
+        return await GetSelectedImportStringAsync();
     }
 
-    public override Task<string> OnGetEvaluatedPropertyValueAsync(string propertyName, string evaluatedPropertyValue, IProjectProperties defaultProperties)
+    public override async Task<string> OnGetEvaluatedPropertyValueAsync(string propertyName, string evaluatedPropertyValue, IProjectProperties defaultProperties)
     {
-        return GetSelectedImportStringAsync();
+        return await GetSelectedImportStringAsync();
     }
 
     public override async Task<string?> OnSetPropertyValueAsync(string propertyName, string unevaluatedPropertyValue, IProjectProperties defaultProperties, IReadOnlyDictionary<string, string>? dimensionalConditions = null)
     {
         await _threadingService.SwitchToUIThread();
+
+        var importsToAdd = _encoding.Parse(unevaluatedPropertyValue)
+            .Where(pair => bool.TryParse(pair.Value, out bool _))
+            .ToDictionary(pair => pair.Name, pair => bool.Parse(pair.Value));
         
-        var importsToAdd = new HashSet<string>(new LazyStringSplit(unevaluatedPropertyValue, ';'));
         importsToAdd.Remove(Path.GetFileNameWithoutExtension(_configuredProject.UnconfiguredProject.FullPath));
 
-        foreach (string import in await GetSelectedImportsAsync())
+        foreach ((string value, bool _) in await GetSelectedImportsAsync())
         {
-            if (!importsToAdd.Contains(import))
+            if (!importsToAdd.ContainsKey(value))
             {
                 try
                 {
                     await _projectAccessor.OpenProjectForWriteAsync(_configuredProject, project =>
                     {
                         Microsoft.Build.Evaluation.ProjectItem importProjectItem = project.GetItems("Import")
-                            .First(i => string.Equals(import, i.EvaluatedInclude, StringComparisons.ItemNames));
+                            .First(i => string.Equals(value, i.EvaluatedInclude, StringComparisons.ItemNames));
 
                         if (importProjectItem.IsImported)
                         {
-                            _specialImports.Add(import);
+                            _specialImports.Add(value);
                         }
                         
                         project.RemoveItem(importProjectItem);
@@ -114,24 +109,24 @@ internal sealed class ImportedNamespacesValueProvider : InterceptingPropertyValu
                 }
             }
             
-            importsToAdd.Remove(import);
+            importsToAdd.Remove(value);
         }
 
         // Verify we have at least one valid import to add before acquiring a write lock.
-        if (importsToAdd.Any(importToAdd => importToAdd.Length > 0))
+        if (importsToAdd.Any(importToAdd => importToAdd.Key.Length > 0))
         {
             await _projectAccessor.OpenProjectXmlForWriteAsync(_configuredProject.UnconfiguredProject, project =>
             {
-                foreach (string importToAdd in importsToAdd)
+                foreach (KeyValuePair<string, bool> importToAdd in importsToAdd)
                 {
-                    if (importToAdd.Length > 0)
+                    if (importToAdd.Key.Length > 0)
                     {
-                        project.AddItem("Import", importToAdd);
+                        project.AddItem("Import", importToAdd.Key);
                     }
                 }
             });
         }
 
-        return null;
+        return await GetSelectedImportStringAsync();
     }
 }
