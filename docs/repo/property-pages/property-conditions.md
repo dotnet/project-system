@@ -1,22 +1,23 @@
-﻿# Visibility Conditions
+﻿# Visibility and other Property Conditions
 
-The Project System may define properties for a project that, in practice, are only visible under certain conditions.
+For example, the Project System may define properties for a project that, in practice, are only visible under certain conditions.
 
-For example, the _Documentation file path_ property only makes sense when the option to generate documentaion files is checked. Similarly, the _Package license expression_ property is only relevant when the _Package license type_ property has a value of _Expression_.
+For instance, the _Documentation file path_ property only makes sense when the option to generate documentaion files is checked. Similarly, the _Package license expression_ property is only relevant when the _Package license type_ property has a value of _Expression_.
 
 To achieve this, a simple expression language is added which may be evaluated synchronously (and therefore quickly) on the client. This must be fast, as we cannot afford to call back to the server and wait for re-evaluation of the project each time the user toggles a check box, for example. These expressions allow instantaneous feedback in the UI, which feels great to the user.
 
-Visibility conditions are not interpreted by the back-end, which treats them as opaque strings.
+However, visibility conditions are not the only conditions that properties may use. For example, properties that are to be read-only only under certain conditions may define an _IsReadOnlyCondition_ to control this behavior.
+Thus these evaluated conditions together are "property conditions" that are not interpreted by the back-end, which treats them as opaque strings.
 
 ## Specification
 
-There are three four of visibility conditions:
+There are four kinds of property conditions:
 - VisibilityCondition is a visibility condition on a property (whether the property should be shown).
-- EditabilityCondition is a visibility condition on a property that determines whether the property should editable (if true or not specified) or readonly (if evaluated to false).
 - DimensionVisibilityCondition is a visibility condition on a dimension name (whether users should be allowed to select to vary/unvary by the dimension.)
 - ConfiguredValueVisibilityCondition is a visibility condition on a PropertyValue (whether the value for each individual dimensional configuration should be shown). For example, if a property varies by dimension but the value only applies to iOS, other targets can be hidden.
+- IsReadOnlyCondition is a condition on a property that determines whether the property should be editable (if true or not specified) or readonly (if evaluated to false).
 
-In a XAML rule file, a visibility condition is specified as metadata on the property. For example:
+In a XAML rule file, a property condition is specified as metadata on the property. For example:
 
 ```xml
 <StringProperty ...>
@@ -78,7 +79,7 @@ The following expression returns the unevaluated value of _MyProperty_ on _MyPag
 (unevaluated "MyPage" "MyProperty")
 ```
 
-If _MyProperty_ is a boolean property, then this expression stands alone as a visibility condition and will cause the targeted property to only be visible when _MyProperty_ is true. However if _MyProperty_ has non-boolean type then further comparison is required.
+If _MyProperty_ is a boolean property, then this expression stands alone as a property condition and will cause the targeted property to only be visible when _MyProperty_ is true. However if _MyProperty_ has non-boolean type then further comparison is required.
 
 For example, if _MyProperty_ is an enum property, the following expression may be used:
 
@@ -90,7 +91,7 @@ Now, the property will only be visible if _MyProperty_ has value _MyEnumValue_.
 
 ## Function Reference
 
-The following table details the default set of visibility expression functions. These are the only functions allowed in both `VisibilityCondition`s and `EditabilityCondition`s
+The following table details the default set of property condition expression functions. These are the only functions allowed in both `VisibilityCondition`s and `IsReadOnlyCondition`s
 
 | Function                               | Arity    | Description                                                                                                              |
 |----------------------------------------|----------|--------------------------------------------------------------------------------------------------------------------------|
@@ -123,7 +124,7 @@ The following table details the default set of visibility expression functions. 
 | `has-csharp-lang-version-or-greater`   | 1        | Returns true if this is a C# project and the language level is `latest`, `preview` or above the specified version.       |
 | `has-evaluated-value`                  | 3        | Returns true if property on page `arg0` with name `arg1` has an evaluated value matching `arg2`                          |
 
-These functions are defined in class `BaseVisibilityConditionEvaluator`.
+These functions are defined in class `BasePropertyConditionEvaluator`.
 
 #### Functions only available for `DimensionVisibilityCondition`
 These functions are defined in the `DimensionVisibilityConditionEvaluator` class
@@ -148,4 +149,4 @@ Functions that take a version number should be passed strings containing decimal
 
 ## Adding Functions
 
-⚠ https://github.com/dotnet/project-system/issues/6895 is tracking the ability to provide additional visibility condition functions &mdash; this documentation will be updated when that issue is resolved.
+⚠ https://github.com/dotnet/project-system/issues/6895 is tracking the ability to provide additional property condition functions &mdash; this documentation will be updated when that issue is resolved.

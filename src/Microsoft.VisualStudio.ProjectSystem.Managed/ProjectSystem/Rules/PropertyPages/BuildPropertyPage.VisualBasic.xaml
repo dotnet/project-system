@@ -150,7 +150,7 @@
                        Category="Warnings"
                        EnumProvider="VBDiagnosticSeverityEnumProvider">
     <DynamicEnumProperty.Metadata>
-      <NameValuePair Name="EditabilityCondition">
+      <NameValuePair Name="IsReadOnlyCondition">
         <NameValuePair.Value>
           (not 
             (or
@@ -170,7 +170,7 @@
                        Category="Warnings"
                        EnumProvider="VBDiagnosticSeverityEnumProvider">
     <DynamicEnumProperty.Metadata>
-      <NameValuePair Name="EditabilityCondition">
+      <NameValuePair Name="IsReadOnlyCondition">
         <NameValuePair.Value>
           (not 
             (or
@@ -190,7 +190,7 @@
                        Category="Warnings"
                        EnumProvider="VBDiagnosticSeverityEnumProvider">
     <DynamicEnumProperty.Metadata>
-      <NameValuePair Name="EditabilityCondition">
+      <NameValuePair Name="IsReadOnlyCondition">
         <NameValuePair.Value>
           (not 
             (or
@@ -209,7 +209,7 @@
                        Category="Warnings"
                        EnumProvider="VBDiagnosticSeverityEnumProvider">
     <DynamicEnumProperty.Metadata>
-      <NameValuePair Name="EditabilityCondition">
+      <NameValuePair Name="IsReadOnlyCondition">
         <NameValuePair.Value>
           (not (has-evaluated-value "Build" "WarningSeverity" "DisableAll"))
         </NameValuePair.Value>
@@ -223,7 +223,7 @@
                        Category="Warnings"
                        EnumProvider="VBDiagnosticSeverityEnumProvider">
     <DynamicEnumProperty.Metadata>
-      <NameValuePair Name="EditabilityCondition">
+      <NameValuePair Name="IsReadOnlyCondition">
         <NameValuePair.Value>
           (not (has-evaluated-value "Build" "WarningSeverity" "DisableAll"))
         </NameValuePair.Value>
@@ -237,7 +237,7 @@
                        Category="Warnings"
                        EnumProvider="VBDiagnosticSeverityEnumProvider">
     <DynamicEnumProperty.Metadata>
-      <NameValuePair Name="EditabilityCondition">
+      <NameValuePair Name="IsReadOnlyCondition">
         <NameValuePair.Value>
           (not (has-evaluated-value "Build" "WarningSeverity" "DisableAll"))
         </NameValuePair.Value>
@@ -251,7 +251,7 @@
                        Category="Warnings"
                        EnumProvider="VBDiagnosticSeverityEnumProvider">
     <DynamicEnumProperty.Metadata>
-      <NameValuePair Name="EditabilityCondition">
+      <NameValuePair Name="IsReadOnlyCondition">
         <NameValuePair.Value>
           (not (has-evaluated-value "Build" "WarningSeverity" "DisableAll"))
         </NameValuePair.Value>
@@ -265,7 +265,7 @@
                        Category="Warnings"
                        EnumProvider="VBDiagnosticSeverityEnumProvider">
     <DynamicEnumProperty.Metadata>
-      <NameValuePair Name="EditabilityCondition">
+      <NameValuePair Name="IsReadOnlyCondition">
         <NameValuePair.Value>
           (not (has-evaluated-value "Build" "WarningSeverity" "DisableAll"))
         </NameValuePair.Value>
@@ -279,7 +279,7 @@
                        Category="Warnings"
                        EnumProvider="VBDiagnosticSeverityEnumProvider">
     <DynamicEnumProperty.Metadata>
-      <NameValuePair Name="EditabilityCondition">
+      <NameValuePair Name="IsReadOnlyCondition">
         <NameValuePair.Value>
           (not (has-evaluated-value "Build" "WarningSeverity" "DisableAll"))
         </NameValuePair.Value>
@@ -293,7 +293,7 @@
                        Category="Warnings"
                        EnumProvider="VBDiagnosticSeverityEnumProvider">
     <DynamicEnumProperty.Metadata>
-      <NameValuePair Name="EditabilityCondition">
+      <NameValuePair Name="IsReadOnlyCondition">
         <NameValuePair.Value>
           (not (has-evaluated-value "Build" "WarningSeverity" "DisableAll"))
         </NameValuePair.Value>
