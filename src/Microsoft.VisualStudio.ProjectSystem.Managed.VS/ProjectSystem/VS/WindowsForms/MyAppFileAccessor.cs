@@ -13,8 +13,10 @@ internal class MyAppFileAccessor : IMyAppFileAccessor, IDisposable
     private readonly IServiceProvider _serviceProvider;
     private readonly UnconfiguredProject _project;
     private readonly IProjectThreadingService _threadingService;
+    private readonly IPhysicalProjectTreeStorage _storage;
     private DocData? _docData;
-    private MyAppDocument? myAppDocument;
+    private MyAppDocument? _myAppDocument;
+    private readonly string _absolutePath;
 
     private const string MySubMainProperty = "MySubMain";
     private const string MainFormProperty = "MainForm";
@@ -27,12 +29,31 @@ internal class MyAppFileAccessor : IMyAppFileAccessor, IDisposable
     private const string SplashScreenProperty = "SplashScreen";
     private const string MinimumSplashScreenDisplayTimeProperty = "MinimumSplashScreenDisplayTime";
 
+    private const string DefaultMyappFileContents =
+        """
+        <?xml version="1.0" encoding="utf-8"?>
+        <MyApplicationData xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+          <MySubMain>true</MySubMain>
+          <MainForm>Form1</MainForm>
+          <SingleInstance>false</SingleInstance>
+          <ShutdownMode>0</ShutdownMode>
+          <EnableVisualStyles>true</EnableVisualStyles>
+          <AuthenticationMode>0</AuthenticationMode>
+          <SaveMySettingsOnExit>true</SaveMySettingsOnExit>
+        </MyApplicationData>
+        """;
+    
     [ImportingConstructor]
-    public MyAppFileAccessor([Import(typeof(SVsServiceProvider))] IServiceProvider serviceProvider, UnconfiguredProject project, IProjectThreadingService threadingService)
+    public MyAppFileAccessor([Import(typeof(SVsServiceProvider))] IServiceProvider serviceProvider,
+        UnconfiguredProject project,
+        IProjectThreadingService threadingService,
+        IPhysicalProjectTree projectTree)
     {
         _serviceProvider = serviceProvider;
         _project = project;
         _threadingService = threadingService;
+        _storage = projectTree.TreeStorage;
+        _absolutePath = _project.MakeRooted(@"My Project\Application.myapp");
     }
 
     public void Dispose()
@@ -42,36 +63,42 @@ internal class MyAppFileAccessor : IMyAppFileAccessor, IDisposable
 
     private void DocData_Modifying(object sender, EventArgs e)
     {
-        myAppDocument = null;
+        _myAppDocument = null;
     }
 
     private async Task<MyAppDocument?> TryGetMyAppFileAsync()
     {
-        if (_docData is null)
+        if (_docData?.Data is null)
         {
-            string absolutePath = _project.MakeRooted("My Project\\Application.myapp");
+            // Create My Project directory if it doesn't exist. If it does, nothing happens
+            await _storage.CreateFolderAsync("My Project");
 
-            await _threadingService.SwitchToUIThread();
-            try
+            if (!File.Exists(_absolutePath))
             {
-                _docData = new DocData(_serviceProvider, absolutePath);
-                _docData.Modifying += DocData_Modifying;
-            } 
-            catch (Exception)
-            {
-                // If we have reached here, it means that the file doesn't exist in that location.
-                return null;
+                // Create and write defaults to the myapp file
+                await _storage.CreateEmptyFileAsync(_absolutePath);
+                using StreamWriter writer = File.AppendText(_absolutePath);
+                await writer.WriteAsync(DefaultMyappFileContents);
+                await writer.FlushAsync();
             }
-            
-            await TaskScheduler.Default;
         }
-
-        if (myAppDocument is null)
+        
+        await _threadingService.SwitchToUIThread();
+        try
         {
-            myAppDocument = new MyAppDocument(_docData);
+            _docData = new DocData(_serviceProvider, _absolutePath);
+            _docData.Modifying += DocData_Modifying;
+            _myAppDocument = new MyAppDocument(_docData);
+        }
+        catch (NullReferenceException)
+        {
+            // If we've reached here, the file write succeeded but the file may have been deleted by the time UI thread is switched to
+            return null;
         }
 
-        return myAppDocument;
+        await TaskScheduler.Default;
+
+        return _myAppDocument;
     }
 
     private async Task SetPropertyAsync(string propertyName, string value)
