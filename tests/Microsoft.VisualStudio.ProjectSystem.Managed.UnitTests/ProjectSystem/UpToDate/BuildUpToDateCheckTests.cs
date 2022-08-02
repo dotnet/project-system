@@ -278,6 +278,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 "Disabled");
         }
 
+        [Fact]
+        public async Task ValidateUpToDateAsync_True_Disabled()
+        {
+            await SetupAsync(disableFastUpToDateCheck: true);
+
+            await ValidateUpToDateAsync();
+        }
+
         [Theory]
         //          ItemType            Optimized  ExpectUpToDate  IsItemTypeCopied
         [InlineData(None.SchemaName,    false,     false,          true)]
@@ -1988,6 +1996,18 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 Assert.Empty(_telemetryEvents);
 
             Assert.False(isUpToDate, "Expected not up-to-date, but was.");
+
+            if (buildAction == BuildAction.Build)
+            {
+                if (telemetryReason == "Disabled")
+                {
+                    await ValidateUpToDateAsync();
+                }
+                else
+                {
+                    await ValidateNotUpToDateAsync();
+                }
+            }
         }
 
         private async Task AssertUpToDateAsync(string expectedLogOutput, string ignoreKinds = "", string targetFramework = "")
@@ -1995,10 +2015,34 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             var writer = new AssertWriter(_output, expectedLogOutput);
 
             Assert.True(await _buildUpToDateCheck.IsUpToDateAsync(BuildAction.Build, writer, CreateGlobalProperties(ignoreKinds, targetFramework)));
-            
+
             AssertTelemetrySuccessEvent(ignoreKinds);
 
             writer.Assert();
+
+            await ValidateUpToDateAsync();
+        }
+
+        private async Task ValidateUpToDateAsync()
+        {
+            IBuildUpToDateCheckValidator validator = _buildUpToDateCheck;
+
+            (bool isUpToDate, string? failureReason, string? failureDescription) = await validator.ValidateUpToDateAsync();
+
+            Assert.True(isUpToDate);
+            Assert.Null(failureReason);
+            Assert.Null(failureDescription);
+        }
+
+        private async Task ValidateNotUpToDateAsync()
+        {
+            IBuildUpToDateCheckValidator validator = _buildUpToDateCheck;
+
+            (bool isUpToDate, string? failureReason, string? failureDescription) = await validator.ValidateUpToDateAsync();
+
+            Assert.False(isUpToDate);
+            Assert.NotNull(failureReason);
+            Assert.NotNull(failureDescription);
         }
 
         private void AssertTelemetryFailureEvent(string reason, string ignoreKinds)
