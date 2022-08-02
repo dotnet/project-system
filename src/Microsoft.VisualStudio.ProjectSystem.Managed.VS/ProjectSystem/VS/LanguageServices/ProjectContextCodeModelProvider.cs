@@ -17,14 +17,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
     {
         private readonly IProjectThreadingService _threadingService;
         private readonly ICodeModelFactory _codeModelFactory;
-        private readonly IWorkspaceWriter _workspaceWriter;
+        private readonly IActiveWorkspaceProjectContextHost _projectContextHost;
 
         [ImportingConstructor]
-        public ProjectContextCodeModelProvider(IProjectThreadingService threadingService, ICodeModelFactory codeModelFactory, IWorkspaceWriter workspaceWriter)
+        public ProjectContextCodeModelProvider(IProjectThreadingService threadingService, ICodeModelFactory codeModelFactory, IActiveWorkspaceProjectContextHost projectContextHost)
         {
             _threadingService = threadingService;
             _codeModelFactory = codeModelFactory;
-            _workspaceWriter = workspaceWriter;
+            _projectContextHost = projectContextHost;
         }
 
         public CodeModel? GetCodeModel(Project project)
@@ -51,9 +51,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
         {
             await _threadingService.SwitchToUIThread();
 
-            return await _workspaceWriter.WriteAsync(workspace =>
+            return await _projectContextHost.OpenContextForWriteAsync(accessor =>
             {
-                return Task.FromResult(_codeModelFactory.GetCodeModel(workspace.Context, project));
+                return Task.FromResult(_codeModelFactory.GetCodeModel(accessor.Context, project));
             });
         }
 
@@ -61,11 +61,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
         {
             await _threadingService.SwitchToUIThread();
 
-            return await _workspaceWriter.WriteAsync(workspace =>
+            return await _projectContextHost.OpenContextForWriteAsync(accessor =>
             {
                 try
                 {
-                    return Task.FromResult<FileCodeModel?>(_codeModelFactory.GetFileCodeModel(workspace.Context, fileItem));
+                    return Task.FromResult<FileCodeModel?>(_codeModelFactory.GetFileCodeModel(accessor.Context, fileItem));
                 }
                 catch (NotImplementedException)
                 {   // Isn't a file that Roslyn knows about

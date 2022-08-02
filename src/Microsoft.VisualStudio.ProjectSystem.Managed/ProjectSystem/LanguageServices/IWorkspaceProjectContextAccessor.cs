@@ -7,7 +7,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
     /// <summary>
     ///     Provides access to a <see cref="IWorkspaceProjectContext"/> and associated services.
     /// </summary>
-    internal interface IWorkspace
+    internal interface IWorkspaceProjectContextAccessor
     {
         /// <summary>
         ///     Gets an identifier that uniquely identifies the <see cref="IWorkspaceProjectContext"/> across a solution.

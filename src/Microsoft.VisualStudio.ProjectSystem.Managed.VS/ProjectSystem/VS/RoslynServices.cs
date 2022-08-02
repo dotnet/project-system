@@ -2,9 +2,7 @@
 
 using Microsoft.CodeAnalysis;
 using Microsoft.VisualStudio.ProjectSystem.LanguageServices;
-
 using RoslynRenamer = Microsoft.CodeAnalysis.Rename;
-using Workspace = Microsoft.CodeAnalysis.Workspace;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS
 {

@@ -95,7 +95,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
             IVsContainedLanguageFactory? containedLanguageFactory = null,
             IVsHierarchy? hierarchy = null,
             ProjectProperties? properties = null,
-            IWorkspaceWriter? workspaceWriter = null)
+            IActiveWorkspaceProjectContextHost? projectContextHost = null)
         {
             var serviceProvider = IOleAsyncServiceProviderFactory.ImplementQueryServiceAsync(containedLanguageFactory, new Guid(LanguageServiceId));
 
@@ -105,20 +105,20 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
             projectVsServices.ImplementThreadingService(IProjectThreadingServiceFactory.Create());
             projectVsServices.ImplementActiveConfiguredProjectProperties(properties);
 
-            return CreateInstance(serviceProvider, projectVsServices.Object, workspaceWriter);
+            return CreateInstance(serviceProvider, projectVsServices.Object, projectContextHost);
         }
 
         private static VsContainedLanguageComponentsFactory CreateInstance(
             IOleAsyncServiceProvider? serviceProvider = null,
             IUnconfiguredProjectVsServices? projectVsServices = null,
-            IWorkspaceWriter? workspaceWriter = null)
+            IActiveWorkspaceProjectContextHost? projectContextHost = null)
         {
             projectVsServices ??= IUnconfiguredProjectVsServicesFactory.Create();
-            workspaceWriter ??= IWorkspaceWriterFactory.Create();
+            projectContextHost ??= IActiveWorkspaceProjectContextHostFactory.Create();
 
             return new VsContainedLanguageComponentsFactory(IVsServiceFactory.Create<SAsyncServiceProvider, IOleAsyncServiceProvider>(serviceProvider!),
                                                             projectVsServices,
-                                                            workspaceWriter);
+                                                            projectContextHost);
         }
     }
 }

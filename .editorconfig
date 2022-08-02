@@ -382,16 +382,14 @@ dotnet_diagnostic.IDE0090.severity = warning      # Use new(...)
 dotnet_diagnostic.IDE1006.severity = warning      # Naming styles                                 Task Open()                                         Task OpenAsync()
 dotnet_diagnostic.IDE1006WithoutSuggestion.severity = suggestion
 
-# Microsoft.VisualStudio.Threading.Analyzers
-# https://github.com/microsoft/vs-threading/blob/main/doc/analyzers/index.md
 
-dotnet_diagnostic.VSTHRD200.severity = error    # Use Async suffix for async methods                                         Task OpenAsync()
+# Microsoft.VisualStudio.Threading.Analyzers
+dotnet_diagnostic.VSTHRD200.severity = error    # Naming styles                                 Task Open()                                         Task OpenAsync()
 dotnet_diagnostic.VSTHRD010.severity = none     # Visual Studio service should be used on main thread explicitly.
 dotnet_diagnostic.VSTHRD103.severity = none     # Call async methods when in an async method.
 dotnet_diagnostic.VSTHRD108.severity = none     # Thread affinity checks should be unconditional.
 dotnet_diagnostic.VSTHRD003.severity = none     # Avoid awaiting or returning a Task representing work that was not started within your context as that can lead to deadlocks
 dotnet_diagnostic.VSTHRD111.severity = none     # Use ConfigureAwait(true).
-dotnet_diagnostic.VSTHRD100.severity = error    # Avoid async void methods
 
 # Microsoft.VisualStudio.SDK.Analyzers
 dotnet_diagnostic.VSSDK006.severity = none      # Check whether the result of GetService calls is null

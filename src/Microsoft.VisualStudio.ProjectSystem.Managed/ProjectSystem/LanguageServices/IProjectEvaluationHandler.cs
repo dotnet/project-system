@@ -9,7 +9,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
     ///     Handles changes to project evaluation rule and applies them to a
     ///     <see cref="IWorkspaceProjectContext"/> instance.
     /// </summary>
-    internal interface IProjectEvaluationHandler : IWorkspaceUpdateHandler
+    internal interface IProjectEvaluationHandler : IWorkspaceContextHandler
     {
         /// <summary>
         ///     Gets the project evaluation rule that the <see cref="IProjectEvaluationHandler"/> handles.
@@ -40,12 +40,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         /// <param name="logger">
         ///     The <see cref="IProjectDiagnosticOutputService"/> for logging to the log.
         /// </param>
-        void Handle(
-            IWorkspaceProjectContext context,
-            ProjectConfiguration projectConfiguration,
-            IComparable version,
-            IProjectChangeDescription projectChange,
-            ContextState state,
-            IProjectDiagnosticOutputService logger);
+        void Handle(IWorkspaceProjectContext context, ProjectConfiguration projectConfiguration, IComparable version, IProjectChangeDescription projectChange, ContextState state, IProjectDiagnosticOutputService logger);
     }
 }
