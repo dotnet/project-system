@@ -1,8 +1,6 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
 using Microsoft.VisualStudio.Composition;
-using Microsoft.VisualStudio.ProjectSystem.Build;
-using Microsoft.VisualStudio.ProjectSystem.UpToDate;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Build.Diagnostics
 {
@@ -12,12 +10,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build.Diagnostics
         ///   Tracks per-project state.
         /// </summary>
         /// <remarks>
-        ///   The parent class is in the global MEF scope. When a project build completes, we need to find
-        ///   it's <see cref="IBuildUpToDateCheckProvider"/> and <see cref="IBuildUpToDateCheckValidator"/>.
-        ///   Therefore we have a component in each unconfigured project that imports the <see cref="IActiveConfiguredValue{T}"/>
-        ///   of each into this component.
+        ///   The parent class is in the global MEF scope. Projects are built within the context of a specific
+        ///   configuration. We use exports of this component to perform logic at the configuration scope.
         /// </remarks>
-        [ProjectSystemContract(ProjectSystemContractScope.UnconfiguredProject, ProjectSystemContractProvider.Private, Cardinality = ImportCardinality.ExactlyOne)]
+        [ProjectSystemContract(ProjectSystemContractScope.ConfiguredProject, ProjectSystemContractProvider.Private, Cardinality = ImportCardinality.ExactlyOne)]
         internal interface IProjectChecker
         {
             /// <summary>
