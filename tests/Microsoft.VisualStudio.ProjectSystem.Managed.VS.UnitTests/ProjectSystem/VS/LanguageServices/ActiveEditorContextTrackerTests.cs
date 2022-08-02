@@ -28,6 +28,28 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
             });
         }
 
+        [Fact]
+        public void UnregisterContext_NullAsContextId_ThrowsArgumentNull()
+        {
+            var instance = CreateInstance();
+
+            Assert.Throws<ArgumentNullException>("contextId", () =>
+            {
+                instance.UnregisterContext(null!);
+            });
+        }
+
+        [Fact]
+        public void UnregisterContext_EmptyAsContextId_ThrowsArgument()
+        {
+            var instance = CreateInstance();
+
+            Assert.Throws<ArgumentException>("contextId", () =>
+            {
+                instance.UnregisterContext(string.Empty);
+            });
+        }
+
         [Theory]
         [InlineData(VSConstants.VSITEMID_NIL)]
         [InlineData(VSConstants.VSITEMID_SELECTION)]
@@ -67,13 +89,24 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
         }
 
         [Fact]
+        public void UnregisteredContext_NotRegisteredContextAsContextId_ThrowsInvalidOperation()
+        {
+            var instance = CreateInstance();
+
+            Assert.Throws<InvalidOperationException>(() =>
+            {
+                instance.UnregisterContext("NotRegistered");
+            });
+        }
+
+        [Fact]
         public void UnregisterContext_RegisteredContextAsContextId_CanUnregister()
         {
             var instance = CreateInstance();
 
-            var registration = instance.RegisterContext("ContextId");
+            instance.RegisterContext("ContextId");
 
-            registration.Dispose();
+            instance.UnregisterContext("ContextId");
 
             // Should be unregistered
             Assert.Throws<InvalidOperationException>(() => instance.IsActiveEditorContext("ContextId"));

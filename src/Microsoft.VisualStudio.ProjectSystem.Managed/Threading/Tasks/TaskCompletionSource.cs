@@ -16,15 +16,6 @@ namespace Microsoft.VisualStudio.Threading.Tasks
             get { return base.Task; }
         }
 
-        public TaskCompletionSource()
-        {
-        }
-
-        public TaskCompletionSource(TaskCreationOptions taskCreationOptions)
-            : base(taskCreationOptions)
-        {
-        }
-
         /// <inheritdoc cref="TaskCompletionSource{TResult}.SetResult(TResult)"/>
         public void SetResult()
         {

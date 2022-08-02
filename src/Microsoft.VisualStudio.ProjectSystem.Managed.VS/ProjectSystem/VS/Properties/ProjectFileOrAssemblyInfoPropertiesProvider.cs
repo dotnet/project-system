@@ -23,23 +23,23 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
             [Import(ContractNames.ProjectPropertyProviders.ProjectFile)] IProjectInstancePropertiesProvider instanceProvider,
             [ImportMany(ContractNames.ProjectPropertyProviders.ProjectFile)]IEnumerable<Lazy<IInterceptingPropertyValueProvider, IInterceptingPropertyValueProviderMetadata>> interceptingValueProviders,
             UnconfiguredProject project,
-            IWorkspaceWriter workspaceWriter,
+            IActiveWorkspaceProjectContextHost projectContextHost,
             VisualStudioWorkspace workspace,
             IProjectThreadingService threadingService)
             : base(delegatedProvider, instanceProvider, interceptingValueProviders, project,
-                  getActiveProjectId: () => GetProjectId(threadingService, workspaceWriter),
+                  getActiveProjectId: () => GetProjectId(threadingService, projectContextHost),
                   workspace: workspace,
                   threadingService: threadingService)
         {
         }
 
-        private static ProjectId? GetProjectId(IProjectThreadingService threadingService, IWorkspaceWriter workspaceWriter)
+        private static ProjectId? GetProjectId(IProjectThreadingService threadingService, IActiveWorkspaceProjectContextHost projectContextHost)
         {
             return threadingService.ExecuteSynchronously(() =>
             {
-                return workspaceWriter.WriteAsync(workspace =>
+                return projectContextHost.OpenContextForWriteAsync(accessor =>
                 {
-                    return Task.FromResult(workspace.Context.Id);
+                    return Task.FromResult(accessor.Context.Id);
                 });
             });
         }
