@@ -144,14 +144,12 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                 '   appropriate code.
                 '
                 Dim projectRootNamespace As String = String.Empty
-                If isVB Then
-                    projectRootNamespace = GetProjectRootNamespace()
-                End If
 
                 ' then get the CodeCompileUnit for this .settings file
                 '
                 Dim generatedClass As CodeTypeDeclaration = Nothing
-                Dim CompileUnit As CodeCompileUnit = Create(DirectCast(GetService(GetType(IVsHierarchy)), IVsHierarchy),
+                Dim CompileUnit As CodeCompileUnit = Create(isVB,
+                                                            DirectCast(GetService(GetType(IVsHierarchy)), IVsHierarchy),
                                                             Settings,
                                                             wszDefaultNamespace,
                                                             wszInputFilePath,
@@ -234,7 +232,8 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <param name="GeneratedClassVisibility"></param>
         ''' <param name="GenerateVBMyAutoSave"></param>
         ''' <returns>CodeCompileUnit of the given DesignTimeSettings object</returns>
-        Friend Shared Function Create(Hierarchy As IVsHierarchy,
+        Friend Shared Function Create(IsVb as Boolean,
+                                      Hierarchy As IVsHierarchy,
                                       Settings As DesignTimeSettings,
                                       DefaultNamespace As String,
                                       FilePath As String,
@@ -251,7 +250,14 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
 
             ' Create a new namespace to put our class in
             '
-            Dim ns As New CodeNamespace(DesignerFramework.DesignUtil.GenerateValidLanguageIndependentNamespace(DefaultNamespace))
+            Dim ns as CodeNamespace
+            
+            If IsVb Then
+                ns = New CodeNamespace()
+            Else
+                ns = New CodeNamespace(DesignerFramework.DesignUtil.GenerateValidLanguageIndependentNamespace(DefaultNamespace))
+            End If
+            
             CompileUnit.Namespaces.Add(ns)
 
             ' Create the strongly typed settings class
@@ -570,16 +576,11 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' Creates a string representation of the full-type name give the project's root-namespace, the default namespace
         ''' into which we are generating, and the name of the class
         ''' </summary>
-        ''' <param name="projectRootNamespace">project's root namespace (may be String.Empty)</param>
         ''' <param name="defaultNamespace">namespace into which we are generating (may be String.Empty)</param>
         ''' <param name="typeName">the type of the settings-class we are generating</param>
-        Private Shared Function GetFullTypeName(projectRootNamespace As String, defaultNamespace As String, typeName As String) As String
+        Private Shared Function GetFullTypeName(defaultNamespace As String, typeName As String) As String
 
             Dim fullTypeName As String = String.Empty
-
-            If projectRootNamespace <> "" Then
-                fullTypeName = projectRootNamespace & "."
-            End If
 
             If defaultNamespace <> "" Then
                 fullTypeName &= defaultNamespace & "."
@@ -664,7 +665,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                 .HasSet = False
             }
 
-            Dim fullTypeReference As CodeTypeReference = New CodeTypeReference(GetFullTypeName(projectRootNamespace, defaultNamespace, GeneratedType.Name)) With {
+            Dim fullTypeReference As CodeTypeReference = New CodeTypeReference(GetFullTypeName(defaultNamespace, GeneratedType.Name)) With {
                 .Options = CodeTypeReferenceOptions.GlobalReference
             }
             SettingProperty.Type = fullTypeReference
