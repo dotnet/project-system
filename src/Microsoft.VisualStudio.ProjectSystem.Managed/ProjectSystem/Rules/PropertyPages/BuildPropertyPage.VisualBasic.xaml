@@ -150,37 +150,13 @@
                        Category="Warnings"
                        EnumProvider="VBDiagnosticSeverityEnumProvider">
     <DynamicEnumProperty.Metadata>
-      <NameValuePair Name="VisibilityCondition">
+      <NameValuePair Name="IsReadOnlyCondition">
         <NameValuePair.Value>
           (not 
             (or
               (has-evaluated-value "Build" "OptionStrict" "On")
               (has-evaluated-value "Build" "WarningSeverity" "DisableAll")
             )
-          )
-        </NameValuePair.Value>
-      </NameValuePair>
-    </DynamicEnumProperty.Metadata>
-  </DynamicEnumProperty>
-
-  <DynamicEnumProperty Name="ImplicitConversion_Readonly"
-                       DisplayName="Implicit conversion"
-                       Description="Implicit narrowing conversion occurs when there is an implicit data type conversion that is a narrowing conversion. Always 'Error' when 'Option strict' is on."
-                       HelpUrl="https://go.microsoft.com/fwlink/?linkid=2196420"
-                       Category="Warnings"
-                       ReadOnly="True"
-                       EnumProvider="VBDiagnosticSeverityEnumProvider">
-    <DynamicEnumProperty.DataSource>
-      <DataSource Persistence="ProjectFileWithInterception"
-                  PersistedName="ImplicitConversion"
-                  HasConfigurationCondition="True" />
-    </DynamicEnumProperty.DataSource>
-    <DynamicEnumProperty.Metadata>
-      <NameValuePair Name="VisibilityCondition">
-        <NameValuePair.Value>
-          (or
-            (has-evaluated-value "Build" "OptionStrict" "On")
-            (has-evaluated-value "Build" "WarningSeverity" "DisableAll")
           )
         </NameValuePair.Value>
       </NameValuePair>
@@ -194,37 +170,13 @@
                        Category="Warnings"
                        EnumProvider="VBDiagnosticSeverityEnumProvider">
     <DynamicEnumProperty.Metadata>
-      <NameValuePair Name="VisibilityCondition">
+      <NameValuePair Name="IsReadOnlyCondition">
         <NameValuePair.Value>
           (not 
             (or
               (has-evaluated-value "Build" "OptionStrict" "On")
               (has-evaluated-value "Build" "WarningSeverity" "DisableAll")
             )
-          )
-        </NameValuePair.Value>
-      </NameValuePair>
-    </DynamicEnumProperty.Metadata>
-  </DynamicEnumProperty>
-
-  <DynamicEnumProperty Name="LateBinding_Readonly"
-                       DisplayName="Late binding"
-                       Description="An object is late bound when it is assigned to a property or method of a variable that is declared to be of type 'Object'. These operations could fail at run time. Always 'Error' when 'Option strict' is on."
-                       HelpUrl="https://go.microsoft.com/fwlink/?linkid=2196325"
-                       Category="Warnings"
-                       ReadOnly="True"
-                       EnumProvider="VBDiagnosticSeverityEnumProvider">
-    <DynamicEnumProperty.DataSource>
-      <DataSource Persistence="ProjectFileWithInterception"
-                  PersistedName="LateBinding"
-                  HasConfigurationCondition="True" />
-    </DynamicEnumProperty.DataSource>
-    <DynamicEnumProperty.Metadata>
-      <NameValuePair Name="VisibilityCondition">
-        <NameValuePair.Value>
-          (or
-            (has-evaluated-value "Build" "OptionStrict" "On")
-            (has-evaluated-value "Build" "WarningSeverity" "DisableAll")
           )
         </NameValuePair.Value>
       </NameValuePair>
@@ -238,7 +190,7 @@
                        Category="Warnings"
                        EnumProvider="VBDiagnosticSeverityEnumProvider">
     <DynamicEnumProperty.Metadata>
-      <NameValuePair Name="VisibilityCondition">
+      <NameValuePair Name="IsReadOnlyCondition">
         <NameValuePair.Value>
           (not 
             (or
@@ -250,60 +202,16 @@
       </NameValuePair>
     </DynamicEnumProperty.Metadata>
   </DynamicEnumProperty>
-
-  <DynamicEnumProperty Name="ImplicitType_Readonly"
-                       DisplayName="Implicit type"
-                       Description="Implicit object type errors occur when an appropriate type cannot be inferred for a declared variable, so a type of 'Object' is inferred. Always 'Error' when 'Option strict' is on."
-                       HelpUrl="https://go.microsoft.com/fwlink/?linkid=2196160"
-                       Category="Warnings"
-                       ReadOnly="True"
-                       EnumProvider="VBDiagnosticSeverityEnumProvider">
-    <DynamicEnumProperty.DataSource>
-      <DataSource Persistence="ProjectFileWithInterception"
-                  PersistedName="ImplicitType"
-                  HasConfigurationCondition="True" />
-    </DynamicEnumProperty.DataSource>
-    <DynamicEnumProperty.Metadata>
-      <NameValuePair Name="VisibilityCondition">
-        <NameValuePair.Value>
-          (or
-            (has-evaluated-value "Build" "OptionStrict" "On")
-            (has-evaluated-value "Build" "WarningSeverity" "DisableAll")
-          )
-        </NameValuePair.Value>
-      </NameValuePair>
-    </DynamicEnumProperty.Metadata>
-  </DynamicEnumProperty>
-
+  
   <DynamicEnumProperty Name="UseOfVariablePriorToAssignment"
                        DisplayName="Use of variable prior to assignment"
                        HelpUrl="https://go.microsoft.com/fwlink/?linkid=2196261"
                        Category="Warnings"
                        EnumProvider="VBDiagnosticSeverityEnumProvider">
     <DynamicEnumProperty.Metadata>
-      <NameValuePair Name="VisibilityCondition">
+      <NameValuePair Name="IsReadOnlyCondition">
         <NameValuePair.Value>
           (not (has-evaluated-value "Build" "WarningSeverity" "DisableAll"))
-        </NameValuePair.Value>
-      </NameValuePair>
-    </DynamicEnumProperty.Metadata>
-  </DynamicEnumProperty>
-
-  <DynamicEnumProperty Name="UseOfVariablePriorToAssignment_Readonly"
-                       DisplayName="Use of variable prior to assignment"
-                       HelpUrl="https://go.microsoft.com/fwlink/?linkid=2196261"
-                       Category="Warnings"
-                       ReadOnly="True"
-                       EnumProvider="VBDiagnosticSeverityEnumProvider">
-    <DynamicEnumProperty.DataSource>
-      <DataSource Persistence="ProjectFileWithInterception"
-                  PersistedName="UseOfVariablePriorToAssignment"
-                  HasConfigurationCondition="True"/>
-    </DynamicEnumProperty.DataSource>
-    <DynamicEnumProperty.Metadata>
-      <NameValuePair Name="VisibilityCondition">
-        <NameValuePair.Value>
-          (has-evaluated-value "Build" "WarningSeverity" "DisableAll")
         </NameValuePair.Value>
       </NameValuePair>
     </DynamicEnumProperty.Metadata>
@@ -315,29 +223,9 @@
                        Category="Warnings"
                        EnumProvider="VBDiagnosticSeverityEnumProvider">
     <DynamicEnumProperty.Metadata>
-      <NameValuePair Name="VisibilityCondition">
+      <NameValuePair Name="IsReadOnlyCondition">
         <NameValuePair.Value>
           (not (has-evaluated-value "Build" "WarningSeverity" "DisableAll"))
-        </NameValuePair.Value>
-      </NameValuePair>
-    </DynamicEnumProperty.Metadata>
-  </DynamicEnumProperty>
-
-  <DynamicEnumProperty Name="ReturningRefTypeWithoutReturnValue_Readonly"
-                       DisplayName="Function returning reference type without return value"
-                       HelpUrl="https://go.microsoft.com/fwlink/?linkid=2196261"
-                       Category="Warnings"
-                       ReadOnly="True"
-                       EnumProvider="VBDiagnosticSeverityEnumProvider">
-    <DynamicEnumProperty.DataSource>
-      <DataSource Persistence="ProjectFileWithInterception"
-                  PersistedName="ReturningRefTypeWithoutReturnValue"
-                  HasConfigurationCondition="True" />
-    </DynamicEnumProperty.DataSource>
-    <DynamicEnumProperty.Metadata>
-      <NameValuePair Name="VisibilityCondition">
-        <NameValuePair.Value>
-          (has-evaluated-value "Build" "WarningSeverity" "DisableAll")
         </NameValuePair.Value>
       </NameValuePair>
     </DynamicEnumProperty.Metadata>
@@ -349,29 +237,9 @@
                        Category="Warnings"
                        EnumProvider="VBDiagnosticSeverityEnumProvider">
     <DynamicEnumProperty.Metadata>
-      <NameValuePair Name="VisibilityCondition">
+      <NameValuePair Name="IsReadOnlyCondition">
         <NameValuePair.Value>
           (not (has-evaluated-value "Build" "WarningSeverity" "DisableAll"))
-        </NameValuePair.Value>
-      </NameValuePair>
-    </DynamicEnumProperty.Metadata>
-  </DynamicEnumProperty>
-
-  <DynamicEnumProperty Name="ReturningIntrinsicValueTypeWithoutReturnValue_Readonly"
-                       DisplayName="Function returning intrinsic value type without return value"
-                       HelpUrl="https://go.microsoft.com/fwlink/?linkid=2196261"
-                       Category="Warnings"
-                       ReadOnly="True"
-                       EnumProvider="VBDiagnosticSeverityEnumProvider">
-    <DynamicEnumProperty.DataSource>
-      <DataSource Persistence="ProjectFileWithInterception"
-                  PersistedName="ReturningIntrinsicValueTypeWithoutReturnValue"
-                  HasConfigurationCondition="True" />
-    </DynamicEnumProperty.DataSource>
-    <DynamicEnumProperty.Metadata>
-      <NameValuePair Name="VisibilityCondition">
-        <NameValuePair.Value>
-          (has-evaluated-value "Build" "WarningSeverity" "DisableAll")
         </NameValuePair.Value>
       </NameValuePair>
     </DynamicEnumProperty.Metadata>
@@ -383,29 +251,9 @@
                        Category="Warnings"
                        EnumProvider="VBDiagnosticSeverityEnumProvider">
     <DynamicEnumProperty.Metadata>
-      <NameValuePair Name="VisibilityCondition">
+      <NameValuePair Name="IsReadOnlyCondition">
         <NameValuePair.Value>
           (not (has-evaluated-value "Build" "WarningSeverity" "DisableAll"))
-        </NameValuePair.Value>
-      </NameValuePair>
-    </DynamicEnumProperty.Metadata>
-  </DynamicEnumProperty>
-
-  <DynamicEnumProperty Name="UnusedLocalVariable_Readonly"
-                       DisplayName="Unused local variable"
-                       HelpUrl="https://go.microsoft.com/fwlink/?linkid=2196261"
-                       Category="Warnings"
-                       ReadOnly="True"
-                       EnumProvider="VBDiagnosticSeverityEnumProvider">
-    <DynamicEnumProperty.DataSource>
-      <DataSource Persistence="ProjectFileWithInterception"
-                  PersistedName="UnusedLocalVariable"
-                  HasConfigurationCondition="True" />
-    </DynamicEnumProperty.DataSource>
-    <DynamicEnumProperty.Metadata>
-      <NameValuePair Name="VisibilityCondition">
-        <NameValuePair.Value>
-          (has-evaluated-value "Build" "WarningSeverity" "DisableAll")
         </NameValuePair.Value>
       </NameValuePair>
     </DynamicEnumProperty.Metadata>
@@ -417,29 +265,9 @@
                        Category="Warnings"
                        EnumProvider="VBDiagnosticSeverityEnumProvider">
     <DynamicEnumProperty.Metadata>
-      <NameValuePair Name="VisibilityCondition">
+      <NameValuePair Name="IsReadOnlyCondition">
         <NameValuePair.Value>
           (not (has-evaluated-value "Build" "WarningSeverity" "DisableAll"))
-        </NameValuePair.Value>
-      </NameValuePair>
-    </DynamicEnumProperty.Metadata>
-  </DynamicEnumProperty>
-
-  <DynamicEnumProperty Name="InstanceVariableAccessesSharedMember_Readonly"
-                       DisplayName="Instance variable accesses shared member"
-                       HelpUrl="https://go.microsoft.com/fwlink/?linkid=2196261"
-                       Category="Warnings"
-                       ReadOnly="True"
-                       EnumProvider="VBDiagnosticSeverityEnumProvider">
-    <DynamicEnumProperty.DataSource>
-      <DataSource Persistence="ProjectFileWithInterception"
-                  PersistedName="InstanceVariableAccessesSharedMember"
-                  HasConfigurationCondition="True" />
-    </DynamicEnumProperty.DataSource>
-    <DynamicEnumProperty.Metadata>
-      <NameValuePair Name="VisibilityCondition">
-        <NameValuePair.Value>
-          (has-evaluated-value "Build" "WarningSeverity" "DisableAll")
         </NameValuePair.Value>
       </NameValuePair>
     </DynamicEnumProperty.Metadata>
@@ -451,29 +279,9 @@
                        Category="Warnings"
                        EnumProvider="VBDiagnosticSeverityEnumProvider">
     <DynamicEnumProperty.Metadata>
-      <NameValuePair Name="VisibilityCondition">
+      <NameValuePair Name="IsReadOnlyCondition">
         <NameValuePair.Value>
           (not (has-evaluated-value "Build" "WarningSeverity" "DisableAll"))
-        </NameValuePair.Value>
-      </NameValuePair>
-    </DynamicEnumProperty.Metadata>
-  </DynamicEnumProperty>
-
-  <DynamicEnumProperty Name="RecursiveOperatorOrPropertyAccess_Readonly"
-                       DisplayName="Recursive operator or property access"
-                       HelpUrl="https://go.microsoft.com/fwlink/?linkid=2196261"
-                       Category="Warnings"
-                       ReadOnly="True"
-                       EnumProvider="VBDiagnosticSeverityEnumProvider">
-    <DynamicEnumProperty.DataSource>
-      <DataSource Persistence="ProjectFileWithInterception"
-                  PersistedName="RecursiveOperatorOrPropertyAccess"
-                  HasConfigurationCondition="True" />
-    </DynamicEnumProperty.DataSource>
-    <DynamicEnumProperty.Metadata>
-      <NameValuePair Name="VisibilityCondition">
-        <NameValuePair.Value>
-          (has-evaluated-value "Build" "WarningSeverity" "DisableAll")
         </NameValuePair.Value>
       </NameValuePair>
     </DynamicEnumProperty.Metadata>
@@ -485,29 +293,9 @@
                        Category="Warnings"
                        EnumProvider="VBDiagnosticSeverityEnumProvider">
     <DynamicEnumProperty.Metadata>
-      <NameValuePair Name="VisibilityCondition">
+      <NameValuePair Name="IsReadOnlyCondition">
         <NameValuePair.Value>
           (not (has-evaluated-value "Build" "WarningSeverity" "DisableAll"))
-        </NameValuePair.Value>
-      </NameValuePair>
-    </DynamicEnumProperty.Metadata>
-  </DynamicEnumProperty>
-
-  <DynamicEnumProperty Name="DuplicateOrOverlappingCatchBlocks_Readonly"
-                       DisplayName="Duplicate or overlapping catch blocks"
-                       HelpUrl="https://go.microsoft.com/fwlink/?linkid=2196261"
-                       Category="Warnings"
-                       ReadOnly="True"
-                       EnumProvider="VBDiagnosticSeverityEnumProvider">
-    <DynamicEnumProperty.DataSource>
-      <DataSource Persistence="ProjectFileWithInterception"
-                  PersistedName="DuplicateOrOverlappingCatchBlocks"
-                  HasConfigurationCondition="True" />
-    </DynamicEnumProperty.DataSource>
-    <DynamicEnumProperty.Metadata>
-      <NameValuePair Name="VisibilityCondition">
-        <NameValuePair.Value>
-          (has-evaluated-value "Build" "WarningSeverity" "DisableAll")
         </NameValuePair.Value>
       </NameValuePair>
     </DynamicEnumProperty.Metadata>

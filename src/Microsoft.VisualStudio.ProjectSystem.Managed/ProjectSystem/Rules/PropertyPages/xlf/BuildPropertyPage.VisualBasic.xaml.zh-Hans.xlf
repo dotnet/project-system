@@ -87,24 +87,9 @@
         <target state="translated">警告</target>
         <note />
       </trans-unit>
-      <trans-unit id="DynamicEnumProperty|DuplicateOrOverlappingCatchBlocks_Readonly|DisplayName">
-        <source>Duplicate or overlapping catch blocks</source>
-        <target state="translated">重复或重叠的 catch 块</target>
-        <note />
-      </trans-unit>
       <trans-unit id="DynamicEnumProperty|DuplicateOrOverlappingCatchBlocks|DisplayName">
         <source>Duplicate or overlapping catch blocks</source>
         <target state="translated">重复或重叠的 catch 块</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="DynamicEnumProperty|ImplicitConversion_Readonly|Description">
-        <source>Implicit narrowing conversion occurs when there is an implicit data type conversion that is a narrowing conversion. Always 'Error' when 'Option strict' is on.</source>
-        <target state="translated">当存在属于收缩转换的隐式数据类型转换时，会发生隐式收缩转换。当 “Option strict” 启用时，始终为 “Error”。</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="DynamicEnumProperty|ImplicitConversion_Readonly|DisplayName">
-        <source>Implicit conversion</source>
-        <target state="translated">隐式转换</target>
         <note />
       </trans-unit>
       <trans-unit id="DynamicEnumProperty|ImplicitConversion|Description">
@@ -117,16 +102,6 @@
         <target state="translated">隐式转换</target>
         <note />
       </trans-unit>
-      <trans-unit id="DynamicEnumProperty|ImplicitType_Readonly|Description">
-        <source>Implicit object type errors occur when an appropriate type cannot be inferred for a declared variable, so a type of 'Object' is inferred. Always 'Error' when 'Option strict' is on.</source>
-        <target state="translated">当无法为声明的变量推断适当的类型时，会发生隐式对象类型错误，因此会推断 “Object” 的类型。当 “Option strict” 启用时，始终为 “Error”。</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="DynamicEnumProperty|ImplicitType_Readonly|DisplayName">
-        <source>Implicit type</source>
-        <target state="translated">隐式类型</target>
-        <note />
-      </trans-unit>
       <trans-unit id="DynamicEnumProperty|ImplicitType|Description">
         <source>Implicit object type errors occur when an appropriate type cannot be inferred for a declared variable, so a type of 'Object' is inferred. Always 'Error' when 'Option strict' is on.</source>
         <target state="translated">当无法为声明的变量推断适当的类型时，会发生隐式对象类型错误，因此会推断 “Object” 的类型。当 “Option strict” 启用时，始终为 “Error”。</target>
@@ -137,24 +112,9 @@
         <target state="translated">隐式类型</target>
         <note />
       </trans-unit>
-      <trans-unit id="DynamicEnumProperty|InstanceVariableAccessesSharedMember_Readonly|DisplayName">
-        <source>Instance variable accesses shared member</source>
-        <target state="translated">实例变量访问共享成员</target>
-        <note />
-      </trans-unit>
       <trans-unit id="DynamicEnumProperty|InstanceVariableAccessesSharedMember|DisplayName">
         <source>Instance variable accesses shared member</source>
         <target state="translated">实例变量访问共享成员</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="DynamicEnumProperty|LateBinding_Readonly|Description">
-        <source>An object is late bound when it is assigned to a property or method of a variable that is declared to be of type 'Object'. These operations could fail at run time. Always 'Error' when 'Option strict' is on.</source>
-        <target state="translated">将对象分配给声明为 “Object” 类型的变量的属性或方法时，该对象将处于晚期绑定状态。这些操作可能会在运行时失败。在启用 “Option strict” 时始终为 “Error”。</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="DynamicEnumProperty|LateBinding_Readonly|DisplayName">
-        <source>Late binding</source>
-        <target state="translated">晚期绑定</target>
         <note />
       </trans-unit>
       <trans-unit id="DynamicEnumProperty|LateBinding|Description">
@@ -177,19 +137,9 @@
         <target state="translated">目标 CPU</target>
         <note />
       </trans-unit>
-      <trans-unit id="DynamicEnumProperty|RecursiveOperatorOrPropertyAccess_Readonly|DisplayName">
-        <source>Recursive operator or property access</source>
-        <target state="translated">递归运算符或属性访问</target>
-        <note />
-      </trans-unit>
       <trans-unit id="DynamicEnumProperty|RecursiveOperatorOrPropertyAccess|DisplayName">
         <source>Recursive operator or property access</source>
         <target state="translated">递归运算符或属性访问</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="DynamicEnumProperty|ReturningIntrinsicValueTypeWithoutReturnValue_Readonly|DisplayName">
-        <source>Function returning intrinsic value type without return value</source>
-        <target state="translated">函数返回了不返回值的固有值类型</target>
         <note />
       </trans-unit>
       <trans-unit id="DynamicEnumProperty|ReturningIntrinsicValueTypeWithoutReturnValue|DisplayName">
@@ -197,29 +147,14 @@
         <target state="translated">函数返回了不返回值的固有值类型</target>
         <note />
       </trans-unit>
-      <trans-unit id="DynamicEnumProperty|ReturningRefTypeWithoutReturnValue_Readonly|DisplayName">
-        <source>Function returning reference type without return value</source>
-        <target state="translated">函数返回了不返回值的引用类型</target>
-        <note />
-      </trans-unit>
       <trans-unit id="DynamicEnumProperty|ReturningRefTypeWithoutReturnValue|DisplayName">
         <source>Function returning reference type without return value</source>
         <target state="translated">函数返回了不返回值的引用类型</target>
         <note />
       </trans-unit>
-      <trans-unit id="DynamicEnumProperty|UnusedLocalVariable_Readonly|DisplayName">
-        <source>Unused local variable</source>
-        <target state="translated">未使用的局部变量</target>
-        <note />
-      </trans-unit>
       <trans-unit id="DynamicEnumProperty|UnusedLocalVariable|DisplayName">
         <source>Unused local variable</source>
         <target state="translated">未使用的局部变量</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="DynamicEnumProperty|UseOfVariablePriorToAssignment_Readonly|DisplayName">
-        <source>Use of variable prior to assignment</source>
-        <target state="translated">在赋值前使用变量</target>
         <note />
       </trans-unit>
       <trans-unit id="DynamicEnumProperty|UseOfVariablePriorToAssignment|DisplayName">
