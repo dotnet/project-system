@@ -122,11 +122,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 return log.Fail("CriticalTasks", nameof(Resources.FUTD_CriticalBuildTasksRunning));
             }
 
-            if (state.IsDisabled)
-            {
-                return log.Fail("Disabled", nameof(Resources.FUTD_DisableFastUpToDateCheckTrue));
-            }
-
             if (validateFirstRun && lastSuccessfulBuildStartTimeUtc is null)
             {
                 // We haven't observed a successful built yet. Therefore we don't know whether the set
@@ -545,7 +540,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 if (log.Level >= LogLevel.Verbose)
                 {
                     log.Indent++;
-                   
+
                     foreach (string path in items)
                     {
                         string absolutePath = _configuredProject.UnconfiguredProject.MakeRooted(path);
@@ -896,6 +891,20 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                             logger.Indent++;
                         }
 
+                        if (implicitState.IsDisabled)
+                        {
+                            if (isValidationRun)
+                            {
+                                // We don't run validation if the FUTDC is disabled. So pretend we're up to date.
+                                return (true, checkedConfigurations);
+                            }
+                            else
+                            {
+                                logger.Fail("Disabled", nameof(Resources.FUTD_DisableFastUpToDateCheckTrue));
+                                return (false, checkedConfigurations);
+                            }
+                        }
+
                         string? path = _configuredProject.UnconfiguredProject.FullPath;
 
                         DateTime? lastSuccessfulBuildStartTimeUtc = path is null
@@ -913,7 +922,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                         {
                             return (false, checkedConfigurations);
                         }
-                        
+
                         if (logConfigurations)
                         {
                             logger.Indent--;
