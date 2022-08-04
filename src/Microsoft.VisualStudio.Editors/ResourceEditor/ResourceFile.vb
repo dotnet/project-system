@@ -509,6 +509,11 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
 #If DEBUG Then
             Debug.Assert(_resources.Count = ResourcesCountOld + 1)
 #End If
+
+            If Not _isLoadingResourceFile Then
+                ResourceEditorTelemetry.OnResourceAdded(NewResource.FriendlyValueTypeName)
+            End If
+
         End Sub
 
         ''' <summary>
@@ -543,6 +548,9 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             If DisposeResource Then
                 Resource.Dispose()
             End If
+
+            ResourceEditorTelemetry.OnResourceRemoved(Resource.FriendlyValueTypeName)
+
         End Sub
 
         ''' <summary>
@@ -724,6 +732,9 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                 '  this way, because Undo/Redo on a name will change the component's site's name only, and we
                 '  need to pick up on those changes in order to reflect the change in the Resource itself.
                 Resource.IComponent_Site.Name = NewName
+
+                ResourceEditorTelemetry.OnResourceRenamed(Resource.FriendlyValueTypeName)
+
             Else
                 Debug.Fail("Trying to rename component that's not in the resource file")
             End If
@@ -799,11 +810,15 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <param name="e">Event args</param>
         Private Sub ComponentChangeService_ComponentChanged(sender As Object, e As ComponentChangedEventArgs) Handles _componentChangeService.ComponentChanged
             If TypeOf e.Component IsNot Resource Then
-                Debug.Fail("Got component rename event for a component that isn't a resource")
+                Debug.Fail("Got component change event for a component that isn't a resource")
                 Exit Sub
             End If
 
-            View.OnResourceTouched(DirectCast(e.Component, Resource))
+            Dim resource = DirectCast(e.Component, Resource)
+
+            View.OnResourceTouched(resource)
+
+            ResourceEditorTelemetry.OnResourceChanged(resource.FriendlyValueTypeName)
 
         End Sub
 
@@ -927,7 +942,10 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                 End If
             Finally
                 _isLoadingResourceFile = False
+
+                ResourceEditorTelemetry.OnResourcesLoaded(_resources.Count, _resourceFileMetadata.Count)
             End Try
+
         End Sub
 
         ''' <summary>
