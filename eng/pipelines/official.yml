@@ -49,6 +49,9 @@ stages:
   displayName: Build
   jobs:
   - template: templates\build-official-release.yml
+    parameters:
+      SignType: ${{ parameters.SignType }}
+      SkipOptimize: ${{ parameters.SkipOptimize }}
 
 # - stage: Publish
 #   displayName: Publish
