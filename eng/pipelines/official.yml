@@ -53,6 +53,12 @@ stages:
       SignType: ${{ parameters.SignType }}
       SkipOptimize: ${{ parameters.SkipOptimize }}
 
+- stage: Publish
+  displayName: Publish
+  dependsOn: Build
+  jobs:
+  - template: templates\publish-symbols.yml
+
 # - stage: Publish
 #   displayName: Publish
 #   dependsOn: Build

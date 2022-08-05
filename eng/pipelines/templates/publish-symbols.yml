@@ -1,0 +1,77 @@
+# Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
+
+jobs:
+- job: PublishSymbols
+  displayName: Publish Symbols
+  timeoutInMinutes: 10
+  pool:
+    name: $(SymbolsPoolName)
+    demands: $(DefaultDemands)
+  steps:
+
+  # Download the artifacts from the Build job.
+  - download: current  # refers to artifacts published by current pipeline
+    displayName: Download Build Artifacts
+    artifact: $(Build.BuildNumber)
+    # Only download the necessary files for symbol publishing.
+    patterns: |
+      bin/Dlls/**/*.pdb
+      bin/Dlls/**/*.dll
+      bin/SymStore/**/*.pdb
+      bin/SymStore/**/*.dll
+
+  ###################################################################################################################################################################
+  # PUBLISH SYMBOLS
+  ###################################################################################################################################################################
+
+  # Symbols is the one thing we cannot declare in the ps1 artifact scripts due to the extra steps needed and the specific order it has to be performed in.
+  # Copy -> Publish Symbols -> Publish Artifact -> Publish to SymWeb
+  # - task: CopyFiles@2
+  #   displayName: Copy Symbols
+  #   inputs:
+  #     SourceFolder: $(Build.SourcesDirectory)\artifacts\$(BuildConfiguration)
+  #     Contents: |
+  #       **/Microsoft.VisualStudio.ProjectSystem.Managed?(*.pdb|*.dll|*.xml)
+  #       **/Microsoft.VisualStudio.AppDesigner?(*.pdb|*.dll|*.xml)
+  #       **/Microsoft.VisualStudio.Editors?(*.pdb|*.dll|*.xml)
+  #     TargetFolder: $(Build.ArtifactStagingDirectory)/Symbols
+
+  # https://docs.microsoft.com/azure/devops/pipelines/tasks/build/index-sources-publish-symbols
+  - task: PublishSymbols@2
+    displayName: Publish Symbols to Azure Artifacts
+    inputs:
+      SymbolsFolder: $(Pipeline.Workspace)/$(Build.BuildNumber)
+      # SearchPattern: |
+      #   **/*.pdb
+      #   **/*.dll
+      # If enabled, this produces a warning about indexing but will still publish the symbols.
+      # See: https://github.com/microsoft/azure-pipelines-tasks/issues/15605
+      IndexSources: false
+      SymbolServerType: TeamServices
+      SymbolsProduct: '.NET Project System'
+      SymbolsVersion: $(Build.BuildNumber)
+      SymbolsArtifactName: Symbols
+    continueOnError: true
+
+  # The symbols archived here are checked as part of the VS Insertion PR to ensure they are available.
+  - task: MicroBuildArchiveSymbols@1
+    displayName: Publish Symbols to Symweb
+    inputs:
+      SymbolsFeatureName: MS.VS.ProjectSystem.Managed
+      SymbolsSymwebProject: VS
+      # This value is provided as a pipeline variable.
+      SymbolsUncPath: $(SymbolsUncPath)
+      SymbolsEmailContacts: dotnetdevexproj
+      SymbolsAgentPath: $(Pipeline.Workspace)/$(Build.BuildNumber)
+
+  # # TODO: Most of these files are already published via 'Publish Artifacts' section. Investigate publish consolidation.
+  # - task: PublishBuildArtifacts@1
+  #   displayName: 'Publish Artifact: Symbols'
+  #   inputs:
+  #     PathToPublish: '$(Build.ArtifactStagingDirectory)/Symbols'
+  #     # The artifact name specifically has to be 'symbols' with that casing.
+  #     # This artifact is downloaded by the release pipeline's 'Publish Symbols' task.
+  #     # The lowercase 'symbols' is specified in the 'Agent job' settings for that task.
+  #     # If this artifact name is changed, all release pipelines that have this task need to have these settings changed.
+  #     ArtifactName: symbols
+  #     publishLocation: Container
