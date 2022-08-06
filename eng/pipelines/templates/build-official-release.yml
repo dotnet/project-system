@@ -17,18 +17,15 @@ jobs:
   # Use empty script to display the section header.
   - script:
     displayName: ==== SBOM Generation ====
-    enabled: false
+    condition: false
 
   # Only the projects in the 'src' folder are necessary for generating the SBOM.
   - script: $(Build.SourcesDirectory)/build.cmd /v:normal /p:Configuration=$(BuildConfiguration) /p:CIBuild=true /p:Test=false /p:Pack=false /p:TestProjects=false /p:SetupProjects=false
     displayName: Build Src Projects
 
   # The binlog is set to Build.binlog by default when using build.cmd. We rename it so it isn't overridden by the full build.
-  - task: PowerShell@2
+  - powershell: Rename-Item -Path "$(Build.SourcesDirectory)/artifacts/$(BuildConfiguration)/log/Build.binlog" -NewName 'SrcBuild.binlog'
     displayName: Rename Src Binlog
-    inputs:
-      targetType: inline
-      script: Rename-Item -Path "$(Build.SourcesDirectory)/artifacts/$(BuildConfiguration)/log/Build.binlog" -NewName 'SrcBuild.binlog'
 
   # This task both generates the SBOM files and marks the pipeline as compliant.
   # The SBOM files are needed prior to the full build, as the full build includes them within the .vsman insertion files as part of the SwixBuild (.vsmanproj) process.
@@ -49,12 +46,10 @@ jobs:
       signType: ${{ parameters.SignType }}
       esrpSigning: true
 
-  - powershell: Get-ChildItem -Path '$(Build.StagingDirectory)' -Recurse | Select FullName
-    displayName: List Files
-
-  # - powershell: ./$(Build.SourcesDirectory)/eng/scripts/SetSigningRetryInterval.ps1 -signConfigPath '$(Build.StagingDirectory)' -intervalInSeconds 60
-  #   displayName: Set Signing Interval
-  #   continueOnError: true
+  # Gets the signconfig.xml from the MicroBuild Signing plugin and sets the retry interval to 60 seconds.
+  - powershell: . '$(Build.SourcesDirectory)/eng/scripts/SetSigningRetryInterval.ps1' -signConfigPath ((Get-ChildItem -Path '$(Build.StagingDirectory)/MicroBuild/Plugins/*/build/signconfig.xml').FullName) -intervalInSeconds 60
+    displayName: Set Signing Interval
+    continueOnError: true
 
   # Necessary for building the .swixproj (VSIX package) and .vsmanproj (VS Insertion) projects.
   - task: MicroBuildSwixPlugin@4
