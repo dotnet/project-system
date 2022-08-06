@@ -16,7 +16,7 @@ jobs:
 
   # Use a disabled, empty script to display the section header in the pipeline UI.
   - script:
-    displayName: ==== SBOM Generation ====
+    displayName: ==== SBOM Generation ===
     condition: false
 
   # Only the projects in the 'src' folder are necessary for generating the SBOM.
@@ -24,7 +24,7 @@ jobs:
     displayName: Build Src Projects
 
   # The binlog is set to Build.binlog by default when using build.cmd. We rename it so it isn't overridden by the full build.
-  - powershell: Rename-Item -Path "$(Build.SourcesDirectory)/artifacts/$(BuildConfiguration)/log/Build.binlog" -NewName 'SrcBuild.binlog'
+  - powershell: Rename-Item -Path '$(Build.SourcesDirectory)/artifacts/$(BuildConfiguration)/log/Build.binlog' -NewName SrcBuild.binlog
     displayName: Rename Src Binlog
 
   # This task both generates the SBOM files and marks the pipeline as compliant.
@@ -94,17 +94,31 @@ jobs:
   - script: $(Build.SourcesDirectory)/build.cmd /v:normal /p:Configuration=$(BuildConfiguration) /p:CIBuild=true
     displayName: Build All Projects
 
-  # TODO CONSIDER MOVING TO COMPLIANCE
+  # TODO MOVE THIS TO COMPLIANCE
 
-  # Verifies the files produced by the build are properly signed.
-  - task: MicroBuildCodesignVerify@3
-    displayName: Verify Signed Files
+  # # Verifies the files produced by the build are properly signed.
+  # - task: MicroBuildCodesignVerify@3
+  #   displayName: Verify Signed Files
+  #   inputs:
+  #     TargetFolders: |
+  #       $(Build.SourcesDirectory)/artifacts/$(BuildConfiguration)/packages
+  #       $(Build.SourcesDirectory)/artifacts/$(BuildConfiguration)/VSSetup/Insertion
+  #     # Filters out certain files (usually by extension) in the provided file.
+  #     ApprovalListPathForCerts: $(Build.SourcesDirectory)/eng/pipelines/no_authenticode.txt
+
+  # Creates the VS bootstrapper information based on the build's .vsman file.
+  # This bootstrapper information is only used for OptProf currently.
+  # Since this data will be output with rest of our insertion files, we produce this data now and publish it in the build artifacts.
+  # NOTE: This task requires MicroBuildSigningPlugin (uses signjson.exe) to run.
+  - task: MicroBuildBuildVSBootstrapper@2
+    displayName: Build VS Bootstrapper
     inputs:
-      TargetFolders: |
-        $(Build.SourcesDirectory)/artifacts/$(BuildConfiguration)/packages
-        $(Build.SourcesDirectory)/artifacts/$(BuildConfiguration)/VSSetup/Insertion
-      # Filters out certain files (usually by extension) in the provided file.
-      ApprovalListPathForCerts: $(Build.SourcesDirectory)/eng/pipelines/no_authenticode.txt
+      bootstrapperCoreVersion: latest
+      # TODO: Does this need to stay in-sync with version.json?
+      vsMajorVersion: 17
+      channelName: int.main
+      manifests: $(Build.SourcesDirectory)/artifacts/$(BuildConfiguration)/VSSetup/Insertion/Microsoft.VisualStudio.ProjectSystem.Managed.vsman
+      outputFolder: $(Build.SourcesDirectory)/artifacts/$(BuildConfiguration)/VSSetup/Insertion
 
   # This adds our source information to http://index (which is called Codex).
   # https://github.com/Ref12/Codex
@@ -116,7 +130,7 @@ jobs:
   # - https://github.com/Ref12/Codex/blob/d759c4b44bad0f307ec33319278e62d70cf730f3/src/Codex.Automation.Workflow/Program.cs#L47
   # - https://github.com/Ref12/Codex/blob/d759c4b44bad0f307ec33319278e62d70cf730f3/src/Codex/CodexApplication.cs#L52
   - task: Ref12Analyze@0
-    displayName: Publish Source to Codex
+    displayName: Add Build to Codex
     inputs:
       workflowArguments: |
         /sourcesDirectory:$(Build.SourcesDirectory)
@@ -148,14 +162,20 @@ jobs:
       testRunTitle: Unit Test Results
     condition: succeededOrFailed()
 
+  # # The .artifactignore file filters the artifacts published from a particular folder.
+  # # This needs to be copied to the folder we want to publish.
+  # - task: CopyFiles@2
+  #   displayName: Copy Artifact Filter
+  #   inputs:
+  #     SourceFolder: $(Build.SourcesDirectory)/eng
+  #     TargetFolder: $(Build.SourcesDirectory)/artifacts/$(BuildConfiguration)
+  #     Contents: .artifactignore
+  #   condition: succeededOrFailed()
+
   # The .artifactignore file filters the artifacts published from a particular folder.
-  # This needs to be copied to the folder we want to publish.
-  - task: CopyFiles@2
-    displayName: Copy ArtifactIgnore File
-    inputs:
-      SourceFolder: $(Build.SourcesDirectory)/eng
-      TargetFolder: $(Build.SourcesDirectory)/artifacts/$(BuildConfiguration)
-      Contents: .artifactignore
+  # This must be present in the folder we want to publish and be named '.artifactignore'.
+  - powershell: Copy-Item -Path '$(Build.SourcesDirectory)/eng/pipelines/build.artifactignore' -Destination '$(Build.SourcesDirectory)/artifacts/$(BuildConfiguration)/.artifactignore'
+    displayName: Copy Build Artifact Filter
     condition: succeededOrFailed()
 
   # Publishes the artifacts folder contents to the Azure Pipeline for use in other jobs/stages.
@@ -166,6 +186,12 @@ jobs:
     # The build-number named artifact is used for the RoslynInsertionTool to find the build for the VS Insertion PR.
     # Code here: https://github.com/dotnet/roslyn-tools/blob/1f64f56b4ea9a0c119bbe840c39b935acc60e4b8/src/RoslynInsertionTool/RoslynInsertionTool/RoslynInsertionTool.VisualStudioTeamServices.cs#L174
     artifact: $(Build.BuildNumber)
+    condition: succeededOrFailed()
+
+  # The .artifactignore file filters the artifacts published from a particular folder.
+  # This must be present in the folder we want to publish and be named '.artifactignore'.
+  - powershell: Copy-Item -Path '$(Build.SourcesDirectory)/eng/pipelines/staging.artifactignore' -Destination '$(Build.StagingDirectory)/.artifactignore'
+    displayName: Copy Staging Artifact Filter
     condition: succeededOrFailed()
 
   # Publishes the staging folder contents to the Azure Pipeline for use in other jobs/stages.

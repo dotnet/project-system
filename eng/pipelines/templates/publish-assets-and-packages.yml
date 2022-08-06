@@ -14,75 +14,16 @@ jobs:
     artifact: $(Build.BuildNumber)
     # Only download the necessary files for publishing.
     patterns: |
-      VSSetup/Insertion
-      packages
+      VSSetup/Insertion/
+      packages/
   # Download the staging artifacts from the Build job.
   - download: current
     displayName: Download Staging Artifacts
     artifact: Staging
     # Only download the necessary files for publishing.
     patterns: |
-      MicroBuild
-      OptProf
-
-  ###################################################################################################################################################################
-  # PUBLISH OPTPROF
-  # The published OptProf metadata is consumed by the release pipeline that profiles the assemblies to create the optimization data.
-  # Release Pipeline URL: https://devdiv.visualstudio.com/DevDiv/_release?definitionId=3197
-  ###################################################################################################################################################################
-
-  # Use a disabled, empty script to display the section header in the pipeline UI.
-  - script:
-    displayName: ==== Publish OptProf ====
-    condition: false
-
-  # This is required to deploy the tests to devdiv.artifacts.visualstudio.com for the 'Deploy tests' step in the release pipeline.
-  # https://eng.ms/docs/cloud-ai-platform/developer-services/one-engineering-system-1es/1es-docs/azure-artifacts/drop-service/using-azure-devops-drop-in-devops-build
-  - task: artifactDropTask@1
-    displayName: Publish ProfilingInputs
-    inputs:
-      dropServiceURI: https://devdiv.artifacts.visualstudio.com
-      buildNumber: ProfilingInputs/$(System.TeamProject)/$(Build.Repository.Name)/$(Build.SourceBranchName)/$(Build.BuildId)
-      sourcePath: $(Pipeline.Workspace)/Staging/OptProf/ProfilingInputs
-      toLowerCase: false
-      # AccessToken: $(System.AccessToken)
-      dropMetadataContainerName: ProfilingInputs
-
-  # MicroBuildBuildVSBootstrapper requires MicroBuildSigningPlugin for signjson.exe to run.
-  - task: MicroBuildBuildVSBootstrapper@2
-    displayName: Build VS Bootstrapper
-    inputs:
-      bootstrapperCoreVersion: latest
-      # TODO: Does this need to stay in-sync with version.json?
-      vsMajorVersion: 17
-      channelName: int.main
-      manifests: $(Pipeline.Workspace)/$(Build.BuildNumber)/VSSetup/Insertion/Microsoft.VisualStudio.ProjectSystem.Managed.vsman
-      outputFolder: $(Pipeline.Workspace)/$(Build.BuildNumber)/VSSetup/Insertion
-
-  # Using the VS bootstrapper data, update the runsettings with the appropriate information for this build.
-  - powershell: . '$(Build.SourcesDirectory)/eng/scripts/UpdateRunSettings.ps1' -profilingInputsPath 'ProfilingInputs/$(System.TeamProject)/$(Build.Repository.Name)/$(Build.SourceBranchName)/$(Build.BuildId)' -bootstrapperInfoPath '$(Pipeline.Workspace)/Staging/MicroBuild/Output/BootstrapperInfo.json'
-    displayName: Update RunSettings
-    failOnStderr: true
-
-  # The runsettings drives the test process for producing optimization data.
-  # https://eng.ms/docs/cloud-ai-platform/developer-services/one-engineering-system-1es/1es-docs/azure-artifacts/drop-service/using-azure-devops-drop-in-devops-build
-  - task: artifactDropTask@1
-    displayName: Publish RunSettings
-    inputs:
-      dropServiceURI: https://devdiv.artifacts.visualstudio.com
-      buildNumber: RunSettings/$(System.TeamProject)/$(Build.Repository.Name)/$(Build.SourceBranchName)/$(Build.BuildId)
-      sourcePath: $(Build.SourcesDirectory)/eng/scripts/runsettings
-      toLowerCase: false
-      # AccessToken: $(System.AccessToken)
-      dropMetadataContainerName: RunSettings
-
-  # - task: PublishBuildArtifacts@1
-  #   displayName: 'Publish Artifact: MicroBuildOutputs'
-  #   inputs:
-  #     PathToPublish: $(Build.StagingDirectory)\MicroBuild\Output
-  #     ArtifactName: MicroBuildOutputs
-  #     ArtifactType: Container
-  #   condition: succeededOrFailed()
+      MicroBuild/
+      OptProf/
 
   ###################################################################################################################################################################
   # PUBLISH INSERTION
@@ -128,6 +69,65 @@ jobs:
   #     # Code here: https://github.com/dotnet/roslyn-tools/blob/1f64f56b4ea9a0c119bbe840c39b935acc60e4b8/src/RoslynInsertionTool/RoslynInsertionTool/RoslynInsertionTool.VisualStudioTeamServices.cs#L174
   #     ArtifactName: '$(Build.BuildNumber)'
   #     publishLocation: Container
+  #   condition: succeededOrFailed()
+
+  ###################################################################################################################################################################
+  # PUBLISH OPTPROF
+  # The published OptProf metadata is consumed by the release pipeline that profiles the assemblies to create the optimization data.
+  # Release Pipeline URL: https://devdiv.visualstudio.com/DevDiv/_release?definitionId=3197
+  ###################################################################################################################################################################
+
+  # Use a disabled, empty script to display the section header in the pipeline UI.
+  - script:
+    displayName: ==== Publish OptProf ====
+    condition: false
+
+  # This is required to deploy the tests to devdiv.artifacts.visualstudio.com for the 'Deploy tests' step in the release pipeline.
+  # https://eng.ms/docs/cloud-ai-platform/developer-services/one-engineering-system-1es/1es-docs/azure-artifacts/drop-service/using-azure-devops-drop-in-devops-build
+  - task: artifactDropTask@1
+    displayName: Publish ProfilingInputs
+    inputs:
+      dropServiceURI: https://devdiv.artifacts.visualstudio.com
+      buildNumber: ProfilingInputs/$(System.TeamProject)/$(Build.Repository.Name)/$(Build.SourceBranchName)/$(Build.BuildId)
+      sourcePath: $(Pipeline.Workspace)/Staging/OptProf/ProfilingInputs
+      toLowerCase: false
+      # AccessToken: $(System.AccessToken)
+      dropMetadataContainerName: ProfilingInputs
+
+  # # MicroBuildBuildVSBootstrapper requires MicroBuildSigningPlugin for signjson.exe to run.
+  # - task: MicroBuildBuildVSBootstrapper@2
+  #   displayName: Build VS Bootstrapper
+  #   inputs:
+  #     bootstrapperCoreVersion: latest
+  #     # TODO: Does this need to stay in-sync with version.json?
+  #     vsMajorVersion: 17
+  #     channelName: int.main
+  #     manifests: $(Pipeline.Workspace)/$(Build.BuildNumber)/VSSetup/Insertion/Microsoft.VisualStudio.ProjectSystem.Managed.vsman
+  #     outputFolder: $(Pipeline.Workspace)/$(Build.BuildNumber)/VSSetup/Insertion
+
+  # Using the VS bootstrapper data, update the runsettings with the appropriate information for this build.
+  - powershell: . '$(Build.SourcesDirectory)/eng/scripts/UpdateRunSettings.ps1' -profilingInputsPath 'ProfilingInputs/$(System.TeamProject)/$(Build.Repository.Name)/$(Build.SourceBranchName)/$(Build.BuildId)' -bootstrapperInfoPath '$(Pipeline.Workspace)/Staging/MicroBuild/Output/BootstrapperInfo.json'
+    displayName: Update RunSettings
+    failOnStderr: true
+
+  # The runsettings drives the test process for producing optimization data.
+  # https://eng.ms/docs/cloud-ai-platform/developer-services/one-engineering-system-1es/1es-docs/azure-artifacts/drop-service/using-azure-devops-drop-in-devops-build
+  - task: artifactDropTask@1
+    displayName: Publish RunSettings
+    inputs:
+      dropServiceURI: https://devdiv.artifacts.visualstudio.com
+      buildNumber: RunSettings/$(System.TeamProject)/$(Build.Repository.Name)/$(Build.SourceBranchName)/$(Build.BuildId)
+      sourcePath: $(Build.SourcesDirectory)/eng/scripts/runsettings
+      toLowerCase: false
+      # AccessToken: $(System.AccessToken)
+      dropMetadataContainerName: RunSettings
+
+  # - task: PublishBuildArtifacts@1
+  #   displayName: 'Publish Artifact: MicroBuildOutputs'
+  #   inputs:
+  #     PathToPublish: $(Build.StagingDirectory)\MicroBuild\Output
+  #     ArtifactName: MicroBuildOutputs
+  #     ArtifactType: Container
   #   condition: succeededOrFailed()
 
   ###################################################################################################################################################################

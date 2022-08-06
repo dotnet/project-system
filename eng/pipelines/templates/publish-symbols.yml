@@ -21,26 +21,10 @@ jobs:
       bin/SymStore/**/*.pdb
       bin/SymStore/**/*.dll
 
-  ###################################################################################################################################################################
-  # PUBLISH SYMBOLS
-  ###################################################################################################################################################################
-
-  # Symbols is the one thing we cannot declare in the ps1 artifact scripts due to the extra steps needed and the specific order it has to be performed in.
-  # Copy -> Publish Symbols -> Publish Artifact -> Publish to SymWeb
-  # - task: CopyFiles@2
-  #   displayName: Copy Symbols
-  #   inputs:
-  #     SourceFolder: $(Build.SourcesDirectory)\artifacts\$(BuildConfiguration)
-  #     Contents: |
-  #       **/Microsoft.VisualStudio.ProjectSystem.Managed?(*.pdb|*.dll|*.xml)
-  #       **/Microsoft.VisualStudio.AppDesigner?(*.pdb|*.dll|*.xml)
-  #       **/Microsoft.VisualStudio.Editors?(*.pdb|*.dll|*.xml)
-  #     TargetFolder: $(Build.ArtifactStagingDirectory)/Symbols
-
   # Symbols published to the Azure Artifacts symbol server are accessible to anyone in the DevDiv organization in Azure DevOps.
   # https://docs.microsoft.com/azure/devops/pipelines/tasks/build/index-sources-publish-symbols
   - task: PublishSymbols@2
-    displayName: Publish Symbols to Azure Artifacts
+    displayName: Publish to Azure Artifacts
     inputs:
       SymbolsFolder: $(Pipeline.Workspace)/$(Build.BuildNumber)
       # SearchPattern: |
@@ -59,7 +43,7 @@ jobs:
   # The symbols archived here are checked as part of the VS Insertion PR to ensure they are available.
   # https://devdiv.visualstudio.com/DevDiv/_wiki/wikis/DevDiv.wiki/672/Archive-Symbols-with-Symweb
   - task: MicroBuildArchiveSymbols@1
-    displayName: Publish Symbols to Symweb
+    displayName: Publish to Symweb
     inputs:
       SymbolsFeatureName: MS.VS.ProjectSystem.Managed
       SymbolsSymwebProject: VS
