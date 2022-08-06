@@ -1,5 +1,7 @@
 # Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
+# Publishing symbols requires a specific agent pool. Making a separate job allows us to use that agent pool only for symbol publishing.
+
 jobs:
 - job: PublishSymbols
   displayName: Publish Symbols
@@ -8,9 +10,8 @@ jobs:
     name: $(SymbolsPoolName)
     demands: $(DefaultDemands)
   steps:
-
-  # Download the artifacts from the Build job.
-  - download: current  # refers to artifacts published by current pipeline
+  # Download the build artifacts from the Build job.
+  - download: current
     displayName: Download Build Artifacts
     artifact: $(Build.BuildNumber)
     # Only download the necessary files for symbol publishing.
@@ -52,6 +53,7 @@ jobs:
       SymbolsProduct: '.NET Project System'
       SymbolsVersion: $(Build.BuildNumber)
       SymbolsArtifactName: Symbols
+    # This is a non-critical task, so don't fail the build if it fails.
     continueOnError: true
 
   # The symbols archived here are checked as part of the VS Insertion PR to ensure they are available.

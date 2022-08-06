@@ -58,6 +58,8 @@ stages:
   dependsOn: Build
   jobs:
   - template: templates\publish-symbols.yml
+  - template: templates\publish-assets-and-packages.yml
+
 
 # - stage: Publish
 #   displayName: Publish

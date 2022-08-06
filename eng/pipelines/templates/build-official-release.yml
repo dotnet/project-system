@@ -14,7 +14,7 @@ jobs:
   # This process occurs above plugin installation so that the Src build does not perform signing.
   ###################################################################################################################################################################
 
-  # Use empty script to display the section header.
+  # Use a disabled, empty script to display the section header in the pipeline UI.
   - script:
     displayName: ==== SBOM Generation ====
     condition: false
@@ -39,6 +39,11 @@ jobs:
   # PLUGIN INSTALLATION
   ###################################################################################################################################################################
 
+  # Use a disabled, empty script to display the section header in the pipeline UI.
+  - script:
+    displayName: ==== Plugin Installation ====
+    condition: false
+
   # Necessary for signing the assemblies and packages.
   - task: MicroBuildSigningPlugin@4
     displayName: Install Signing Plugin
@@ -47,6 +52,7 @@ jobs:
       esrpSigning: true
 
   # Gets the signconfig.xml from the MicroBuild Signing plugin and sets the retry interval to 60 seconds.
+  # This reduces the calls to the signing API and pipeline log bloat.
   - powershell: . '$(Build.SourcesDirectory)/eng/scripts/SetSigningRetryInterval.ps1' -signConfigPath ((Get-ChildItem -Path '$(Build.StagingDirectory)/MicroBuild/Plugins/*/build/signconfig.xml').FullName) -intervalInSeconds 60
     displayName: Set Signing Interval
     continueOnError: true
@@ -78,6 +84,11 @@ jobs:
   ###################################################################################################################################################################
   # BUILD REPOSITORY
   ###################################################################################################################################################################
+
+  # Use a disabled, empty script to display the section header in the pipeline UI.
+  - script:
+    displayName: ==== Build Repository ====
+    condition: false
 
   # Runs the full build of the projects in the repository. See Build.proj for details.
   - script: $(Build.SourcesDirectory)/build.cmd /v:normal /p:Configuration=$(BuildConfiguration) /p:CIBuild=true
@@ -114,18 +125,28 @@ jobs:
         /additionalCodexArguments:-bld
         /additionalCodexArguments:$(Build.SourcesDirectory)/artifacts/$(BuildConfiguration)/log
         /additionalCodexArguments:-noMsBuildLocator
+    # This is a non-critical task, so don't fail the build if it fails.
     continueOnError: true
 
-  # TODO MOVE THIS TO PUBLISH GENERAL
+  ###################################################################################################################################################################
+  # PUBLISH BUILD
+  # Steps in this section should contain 'condition: succeededOrFailed()' since these artifacts can be used for analyzing build failures.
+  ###################################################################################################################################################################
 
-  # # Publishes the test results to the Azure Pipeline itself so they can be viewed in the UI.
-  # - task: PublishTestResults@2
-  #   displayName: Publish Test Results
-  #   inputs:
-  #     testRunner: XUnit
-  #     testResultsFiles: artifacts/$(BuildConfiguration)/TestResults/*.xml
-  #     testRunTitle: Unit Test Results
-  #   condition: succeededOrFailed()
+  # Use a disabled, empty script to display the section header in the pipeline UI.
+  - script:
+    displayName: ==== Publish Build ====
+    condition: false
+
+  # Publishes the test results to the Azure Pipeline itself so they can be viewed in the UI.
+  # This needs to be ran after the build, because if the build failed due to a test failure, the test results wouldn't be published.
+  - task: PublishTestResults@2
+    displayName: Publish Test Results
+    inputs:
+      testRunner: XUnit
+      testResultsFiles: $(Build.SourcesDirectory)/artifacts/$(BuildConfiguration)/TestResults/*.xml
+      testRunTitle: Unit Test Results
+    condition: succeededOrFailed()
 
   # The .artifactignore file filters the artifacts published from a particular folder.
   # This needs to be copied to the folder we want to publish.
@@ -135,9 +156,7 @@ jobs:
       SourceFolder: $(Build.SourcesDirectory)/eng
       TargetFolder: $(Build.SourcesDirectory)/artifacts/$(BuildConfiguration)
       Contents: .artifactignore
-
-  # Publishes the source directory (root) to the Azure Pipeline for use in other jobs/stages.
-  # This publish is filtered by the .artifactignore at the root of the repo. See that file for exactly what is published.
+    condition: succeededOrFailed()
 
   # Publishes the artifacts folder contents to the Azure Pipeline for use in other jobs/stages.
   # This publish is filtered by the .artifactignore in the 'eng' folder. See that file for more details.
@@ -147,4 +166,11 @@ jobs:
     # The build-number named artifact is used for the RoslynInsertionTool to find the build for the VS Insertion PR.
     # Code here: https://github.com/dotnet/roslyn-tools/blob/1f64f56b4ea9a0c119bbe840c39b935acc60e4b8/src/RoslynInsertionTool/RoslynInsertionTool/RoslynInsertionTool.VisualStudioTeamServices.cs#L174
     artifact: $(Build.BuildNumber)
+    condition: succeededOrFailed()
+
+  # Publishes the staging folder contents to the Azure Pipeline for use in other jobs/stages.
+  # The Build.StagingDirectory is used by certain plugin outputs, such as MicroBuild and OptProf.
+  - publish: $(Build.StagingDirectory)
+    displayName: Publish Staging Artifacts
+    artifact: Staging
     condition: succeededOrFailed()
