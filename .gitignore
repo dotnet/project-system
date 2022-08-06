@@ -9,7 +9,7 @@
 .vs/
 .vscode/
 .tools/
-/build/loc/Properties/launchSettings.json
+/eng/tools/OneLocBuildSetup/Properties/launchSettings.json
 
 # Build results, but not the debug folder under projectsystem
 [Aa]rtifacts/

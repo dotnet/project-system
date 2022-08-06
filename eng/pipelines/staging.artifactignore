@@ -6,6 +6,6 @@
 Codex/
 VSSetup.obj/
 MicroBuild/
-!MicroBuild/Output/Bootstrapper.json
+!MicroBuild/Output/BootstrapperInfo.json
 !MicroBuild/Staging/
 !MicroBuild/Verify/out/

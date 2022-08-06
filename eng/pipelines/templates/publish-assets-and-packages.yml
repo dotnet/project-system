@@ -14,16 +14,16 @@ jobs:
     artifact: $(Build.BuildNumber)
     # Only download the necessary files for publishing.
     patterns: |
-      VSSetup/Insertion/
-      packages/
+      VSSetup/Insertion/**
+      packages/**
   # Download the staging artifacts from the Build job.
   - download: current
     displayName: Download Staging Artifacts
     artifact: Staging
     # Only download the necessary files for publishing.
     patterns: |
-      MicroBuild/
-      OptProf/
+      MicroBuild/**
+      OptProf/**
 
   ###################################################################################################################################################################
   # PUBLISH INSERTION

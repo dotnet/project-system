@@ -51,9 +51,9 @@ jobs:
       signType: ${{ parameters.SignType }}
       esrpSigning: true
 
-  # Gets the signconfig.xml from the MicroBuild Signing plugin and sets the retry interval to 60 seconds.
-  # This reduces the calls to the signing API and pipeline log bloat.
-  - powershell: . '$(Build.SourcesDirectory)/eng/scripts/SetSigningRetryInterval.ps1' -signConfigPath ((Get-ChildItem -Path '$(Build.StagingDirectory)/MicroBuild/Plugins/*/build/signconfig.xml').FullName) -intervalInSeconds 60
+  # Gets the signconfig.xml from the MicroBuild Signing plugin and sets the retry interval to 30 seconds.
+  # This reduces the calls to the signing API (potentially increasing signing speed) and reduces the pipeline log bloat when polling signing completion.
+  - powershell: . '$(Build.SourcesDirectory)/eng/scripts/SetSigningRetryInterval.ps1' -signConfigPath ((Get-ChildItem -Path '$(Build.StagingDirectory)/MicroBuild/Plugins/*/build/signconfig.xml').FullName) -intervalInSeconds 30
     displayName: Set Signing Interval
     continueOnError: true
 
