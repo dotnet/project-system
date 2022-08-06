@@ -6,14 +6,14 @@ using Microsoft.VisualStudio.ProjectSystem.Build;
 
 namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 {
-    [Export(typeof(ICommandLineArgumentsProvider))]
+    [Export(typeof(ICommandLineArgumentsDataSource))]
     [AppliesTo(ProjectCapability.DotNet)]
-    internal sealed class CommandLineArgumentsProvider : ChainedProjectValueDataSourceBase<CommandLineArgumentsSnapshot>, ICommandLineArgumentsProvider
+    internal sealed class CommandLineArgumentsDataSource : ChainedProjectValueDataSourceBase<CommandLineArgumentsSnapshot>, ICommandLineArgumentsDataSource
     {
         private readonly IProjectBuildSnapshotService _projectBuildSnapshotService;
 
         [ImportingConstructor]
-        public CommandLineArgumentsProvider(
+        public CommandLineArgumentsDataSource(
             ConfiguredProject project,
             IProjectBuildSnapshotService projectBuildSnapshotService)
             : base(project, synchronousDisposal: false, registerDataSource: false)
@@ -33,7 +33,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
             // Set the link up so that we publish changes to target block
             transformBlock.Value.LinkTo(targetBlock, DataflowOption.PropagateCompletion);
 
-            // Join the source block, so if it needs to switch to UI thread to complete 
+            // Join the source block, so if it needs to switch to UI thread to complete
             // and someone is blocked on us on the same thread, the call proceeds
             JoinUpstreamDataSources(_projectBuildSnapshotService);
 

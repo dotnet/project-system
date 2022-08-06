@@ -20,7 +20,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build
         internal const string LspPullDiagnosticsFeatureFlagName = "Lsp.PullDiagnostics";
 
         private readonly UnconfiguredProject _project;
-        private readonly IActiveWorkspaceProjectContextHost _projectContextHost;
+        private readonly IWorkspaceWriter _workspaceWriter;
 
         private readonly AsyncLazy<bool> _isLspPullDiagnosticsEnabled;
 
@@ -30,12 +30,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build
         [ImportingConstructor]
         public LanguageServiceErrorListProvider(
             UnconfiguredProject project,
-            IActiveWorkspaceProjectContextHost projectContextHost,
+            IWorkspaceWriter workspaceWriter,
             IVsService<SVsFeatureFlags, IVsFeatureFlags> featureFlagsService,
             JoinableTaskContext joinableTaskContext)
         {
             _project = project;
-            _projectContextHost = projectContextHost;
+            _workspaceWriter = workspaceWriter;
 
             _isLspPullDiagnosticsEnabled = new AsyncLazy<bool>(async () =>
             {
@@ -73,9 +73,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build
                 return AddMessageResult.NotHandled;
             }
 
-            bool? handled = await _projectContextHost.OpenContextForWriteAsync(accessor =>
+            bool? handled = await _workspaceWriter.WriteAsync(workspace =>
             {
-                var errorReporter = (IVsLanguageServiceBuildErrorReporter2)accessor.HostSpecificErrorReporter;
+                var errorReporter = (IVsLanguageServiceBuildErrorReporter2)workspace.HostSpecificErrorReporter;
 
                 try
                 {
@@ -107,9 +107,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build
 
         public Task ClearAllAsync()
         {
-            return _projectContextHost.OpenContextForWriteAsync(accessor =>
+            return _workspaceWriter.WriteAsync(workspace =>
             {
-                ((IVsLanguageServiceBuildErrorReporter2)accessor.HostSpecificErrorReporter).ClearErrors();
+                ((IVsLanguageServiceBuildErrorReporter2)workspace.HostSpecificErrorReporter).ClearErrors();
 
                 return Task.CompletedTask;
             });
