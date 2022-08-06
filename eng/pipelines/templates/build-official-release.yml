@@ -14,10 +14,10 @@ jobs:
   # This process occurs above plugin installation so that the Src build does not perform signing.
   ###################################################################################################################################################################
 
-  # Use the Delay task (default is no delay) to display the section header.
-  # https://docs.microsoft.com/azure/devops/pipelines/tasks/utility/delay
-  - task: Delay@1
+  # Use empty script to display the section header.
+  - script:
     displayName: ==== SBOM Generation ====
+    enabled: false
 
   # Only the projects in the 'src' folder are necessary for generating the SBOM.
   - script: $(Build.SourcesDirectory)/build.cmd /v:normal /p:Configuration=$(BuildConfiguration) /p:CIBuild=true /p:Test=false /p:Pack=false /p:TestProjects=false /p:SetupProjects=false
