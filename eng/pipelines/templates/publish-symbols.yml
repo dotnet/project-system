@@ -36,6 +36,7 @@ jobs:
   #       **/Microsoft.VisualStudio.Editors?(*.pdb|*.dll|*.xml)
   #     TargetFolder: $(Build.ArtifactStagingDirectory)/Symbols
 
+  # Symbols published to the Azure Artifacts symbol server are accessible to anyone in the DevDiv organization in Azure DevOps.
   # https://docs.microsoft.com/azure/devops/pipelines/tasks/build/index-sources-publish-symbols
   - task: PublishSymbols@2
     displayName: Publish Symbols to Azure Artifacts
@@ -54,6 +55,7 @@ jobs:
     continueOnError: true
 
   # The symbols archived here are checked as part of the VS Insertion PR to ensure they are available.
+  # https://devdiv.visualstudio.com/DevDiv/_wiki/wikis/DevDiv.wiki/672/Archive-Symbols-with-Symweb
   - task: MicroBuildArchiveSymbols@1
     displayName: Publish Symbols to Symweb
     inputs:

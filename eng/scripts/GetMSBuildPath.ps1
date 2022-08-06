@@ -2,7 +2,7 @@
 
 # Gets the path to MSBuild via vswhere.exe. Returns nothing if a suitable Visual Studio version is not installed.
 
-param ([Parameter(Mandatory=$true)] [String] $versionJsonPath)
+param ([Parameter(Mandatory=$true)] [string] $versionJsonPath)
 
 # https://github.com/microsoft/vswhere/wiki/Installing
 $installerPath = "${env:ProgramFiles(x86)}\Microsoft Visual Studio\Installer"

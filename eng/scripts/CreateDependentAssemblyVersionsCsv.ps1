@@ -4,7 +4,7 @@
 # This is used in the RoslynInsertionTool in the file RoslynInsertionTool.AssemblyVersions.cs.
 # See: https://github.com/dotnet/roslyn-tools/tree/main/src/RoslynInsertionTool
 
-param ([Parameter(Mandatory=$true)] [String] $csvPath, [Parameter(Mandatory=$true)] [String] $version)
+param ([Parameter(Mandatory=$true)] [string] $csvPath, [Parameter(Mandatory=$true)] [string] $version)
 
 Write-Host 'Inputs:'
 Write-Host "csvPath: $csvPath"

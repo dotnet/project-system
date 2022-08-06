@@ -14,16 +14,18 @@ jobs:
   # This process occurs above plugin installation so that the Src build does not perform signing.
   ###################################################################################################################################################################
 
+  # Use the Delay task (default is no delay) to display the section header.
+  # https://docs.microsoft.com/azure/devops/pipelines/tasks/utility/delay
+  - task: Delay@1
+    displayName: ==== SBOM Generation ====
+
   # Only the projects in the 'src' folder are necessary for generating the SBOM.
   - script: $(Build.SourcesDirectory)/build.cmd /v:normal /p:Configuration=$(BuildConfiguration) /p:CIBuild=true /p:Test=false /p:Pack=false /p:TestProjects=false /p:SetupProjects=false
-    displayName: |
-      Build Src for SBOM
-      Multi-line name
-      Hello World
+    displayName: Build Src Projects
 
   # The binlog is set to Build.binlog by default when using build.cmd. We rename it so it isn't overridden by the full build.
   - task: PowerShell@2
-    displayName: Rename Build.binlog to SrcBuild.binlog
+    displayName: Rename Src Binlog
     inputs:
       targetType: inline
       script: Rename-Item -Path "$(Build.SourcesDirectory)/artifacts/$(BuildConfiguration)/log/Build.binlog" -NewName 'SrcBuild.binlog'
@@ -46,6 +48,13 @@ jobs:
     inputs:
       signType: ${{ parameters.SignType }}
       esrpSigning: true
+
+  - powershell: Get-ChildItem -Path '$(Build.StagingDirectory)' -Recurse | Select FullName
+    displayName: List Files
+
+  # - powershell: ./$(Build.SourcesDirectory)/eng/scripts/SetSigningRetryInterval.ps1 -signConfigPath '$(Build.StagingDirectory)' -intervalInSeconds 60
+  #   displayName: Set Signing Interval
+  #   continueOnError: true
 
   # Necessary for building the .swixproj (VSIX package) and .vsmanproj (VS Insertion) projects.
   - task: MicroBuildSwixPlugin@4
@@ -101,7 +110,7 @@ jobs:
   # - https://github.com/Ref12/Codex/blob/d759c4b44bad0f307ec33319278e62d70cf730f3/src/Codex.Automation.Workflow/Program.cs#L47
   # - https://github.com/Ref12/Codex/blob/d759c4b44bad0f307ec33319278e62d70cf730f3/src/Codex/CodexApplication.cs#L52
   - task: Ref12Analyze@0
-    displayName: Publish Source to http://index
+    displayName: Publish Source to Codex
     inputs:
       workflowArguments: |
         /sourcesDirectory:$(Build.SourcesDirectory)
@@ -126,7 +135,7 @@ jobs:
   # The .artifactignore file filters the artifacts published from a particular folder.
   # This needs to be copied to the folder we want to publish.
   - task: CopyFiles@2
-    displayName: Copy .artifactignore for Publishing
+    displayName: Copy ArtifactIgnore File
     inputs:
       SourceFolder: $(Build.SourcesDirectory)/eng
       TargetFolder: $(Build.SourcesDirectory)/artifacts/$(BuildConfiguration)

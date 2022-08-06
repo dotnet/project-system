@@ -2,7 +2,7 @@
 
 # This updates OptProf.runsettings with the bootstrapper information and the profiling inputs path, as TestStore nodes.
 
-param ([Parameter(Mandatory=$true)] [String] $profilingInputsPath, [String] $bootstrapperInfoPath, [String] $buildDropPath)
+param ([Parameter(Mandatory=$true)] [string] $profilingInputsPath, [string] $bootstrapperInfoPath, [string] $buildDropPath)
 
 Write-Host 'Inputs:'
 Write-Host "profilingInputsPath: $profilingInputsPath"

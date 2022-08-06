@@ -3,7 +3,7 @@
 # Copies the contents of PublicAPI.Unshipped.txt into PublicAPI.Shipped.txt on build.
 # It assumes that the project directory contains these files (PublicApiAnalyzers also makes this assumption).
 
-param ([Parameter(Mandatory=$true)] [String] $projectDirectory)
+param ([Parameter(Mandatory=$true)] [string] $projectDirectory)
 
 Write-Host 'Inputs:'
 Write-Host "projectDirectory: $projectDirectory"
