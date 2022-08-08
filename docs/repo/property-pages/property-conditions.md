@@ -136,10 +136,10 @@ These functions are defined in the `DimensionVisibilityConditionEvaluator` class
 #### Functions only available for `ConfiguredValueVisibilityCondition`
 These functions are defined in the `ConfiguredVisibilityConditionEvaluator` class
 
-| Function    | Arity    | Description                                                               |
-|-------------|----------|---------------------------------------------------------------------------|
-| `evaluated` | 2        | Returns the evaluated value of property on page `arg0` with name `arg1`.  |
-
+| Function               | Arity | Description                                                              |
+|------------------------|-------|--------------------------------------------------------------------------|
+| `evaluated`            | 2     | Returns the evaluated value of property on page `arg0` with name `arg1`. |
+| `has-evaluated-values` | 0     | Returns whether this property value contains nested aggregated value(s). |
 
 Note that the `evaluated` function is not available in the VisibilityCondition condition, as a Property may have multiple evaluated values, and as such it's not possible to reliably return a single value. Use `has-evaluated-value` instead in this case.
 
