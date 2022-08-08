@@ -1,8 +1,7 @@
 # Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
-# Publishing symbols requires a specific agent pool. Making a separate job allows us to use that agent pool only for symbol publishing.
-
 jobs:
+# Publishing symbols requires a specific agent pool. Making a separate job allows us to use that agent pool only for symbol publishing.
 - job: PublishSymbols
   displayName: Publish Symbols
   timeoutInMinutes: 10
@@ -10,6 +9,16 @@ jobs:
     name: $(SymbolsPoolName)
     demands: $(DefaultDemands)
   steps:
+
+  ###################################################################################################################################################################
+  # DOWNLOAD ARTIFACTS
+  ###################################################################################################################################################################
+
+  # Use a disabled, empty script to display the section header in the pipeline UI.
+  - script:
+    displayName: ==== Download Artifacts ====
+    condition: false
+
   # Download the build artifacts from the Build job.
   - download: current
     displayName: Download Build Artifacts

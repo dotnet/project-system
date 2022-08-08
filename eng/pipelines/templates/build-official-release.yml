@@ -51,9 +51,9 @@ jobs:
       signType: ${{ parameters.SignType }}
       esrpSigning: true
 
-  # Gets the signconfig.xml from the MicroBuild Signing plugin and sets the retry interval to 30 seconds.
+  # Gets the signconfig.xml from the MicroBuild Signing plugin and sets the retry interval to 45 seconds.
   # This reduces the calls to the signing API (potentially increasing signing speed) and reduces the pipeline log bloat when polling signing completion.
-  - powershell: . '$(Build.SourcesDirectory)/eng/scripts/SetSigningRetryInterval.ps1' -signConfigPath ((Get-ChildItem -Path '$(Build.StagingDirectory)/MicroBuild/Plugins/*/build/signconfig.xml').FullName) -intervalInSeconds 30
+  - powershell: . '$(Build.SourcesDirectory)/eng/scripts/SetSigningRetryInterval.ps1' -signConfigPath ((Get-ChildItem -Path '$(Build.StagingDirectory)/MicroBuild/Plugins/*/build/signconfig.xml').FullName) -intervalInSeconds 45
     displayName: Set Signing Interval
     continueOnError: true
 
@@ -94,18 +94,6 @@ jobs:
   - script: $(Build.SourcesDirectory)/build.cmd /v:normal /p:Configuration=$(BuildConfiguration) /p:CIBuild=true
     displayName: Build All Projects
 
-  # TODO MOVE THIS TO COMPLIANCE
-
-  # # Verifies the files produced by the build are properly signed.
-  # - task: MicroBuildCodesignVerify@3
-  #   displayName: Verify Signed Files
-  #   inputs:
-  #     TargetFolders: |
-  #       $(Build.SourcesDirectory)/artifacts/$(BuildConfiguration)/packages
-  #       $(Build.SourcesDirectory)/artifacts/$(BuildConfiguration)/VSSetup/Insertion
-  #     # Filters out certain files (usually by extension) in the provided file.
-  #     ApprovalListPathForCerts: $(Build.SourcesDirectory)/eng/pipelines/no_authenticode.txt
-
   # Creates the VS bootstrapper information based on the build's .vsman file.
   # This bootstrapper information is only used for OptProf currently.
   # Since this data will be output with rest of our insertion files, we produce this data now and publish it in the build artifacts.
@@ -120,6 +108,12 @@ jobs:
       manifests: $(Build.SourcesDirectory)/artifacts/$(BuildConfiguration)/VSSetup/Insertion/Microsoft.VisualStudio.ProjectSystem.Managed.vsman
       outputFolder: $(Build.SourcesDirectory)/artifacts/$(BuildConfiguration)/VSSetup/Insertion
 
+  # The .artifactignore file filters the artifacts published from a particular folder.
+  # This must be present in the folder we want to publish and be named '.artifactignore'.
+  - powershell: Copy-Item -Path '$(Build.SourcesDirectory)/eng/pipelines/configuration/staging.artifactignore' -Destination '$(Build.StagingDirectory)/Codex/.artifactignore'
+    displayName: Copy Codex Artifact Filter
+    condition: succeededOrFailed()
+
   # This adds our source information to http://index (which is called Codex).
   # https://github.com/Ref12/Codex
   # This runs after the build because it needs:
@@ -132,6 +126,8 @@ jobs:
   - task: Ref12Analyze@0
     displayName: Add Build to Codex
     inputs:
+      # This uploads the outputs of the process to the pipeline artifacts as 'CodexOutputs'. There is no way to avoid this upload currently, since the analysis mode forces upload.
+      # See: https://github.com/Ref12/Codex/blob/c4257948cc410acc05e03e7c65a29337b12e27a7/src/Codex.Automation.Workflow/Program.cs#L35-L36
       workflowArguments: |
         /sourcesDirectory:$(Build.SourcesDirectory)
         /codexRepoUrl:$(Build.Repository.Uri)
@@ -162,19 +158,9 @@ jobs:
       testRunTitle: Unit Test Results
     condition: succeededOrFailed()
 
-  # # The .artifactignore file filters the artifacts published from a particular folder.
-  # # This needs to be copied to the folder we want to publish.
-  # - task: CopyFiles@2
-  #   displayName: Copy Artifact Filter
-  #   inputs:
-  #     SourceFolder: $(Build.SourcesDirectory)/eng
-  #     TargetFolder: $(Build.SourcesDirectory)/artifacts/$(BuildConfiguration)
-  #     Contents: .artifactignore
-  #   condition: succeededOrFailed()
-
   # The .artifactignore file filters the artifacts published from a particular folder.
   # This must be present in the folder we want to publish and be named '.artifactignore'.
-  - powershell: Copy-Item -Path '$(Build.SourcesDirectory)/eng/pipelines/build.artifactignore' -Destination '$(Build.SourcesDirectory)/artifacts/$(BuildConfiguration)/.artifactignore'
+  - powershell: Copy-Item -Path '$(Build.SourcesDirectory)/eng/pipelines/configuration/build.artifactignore' -Destination '$(Build.SourcesDirectory)/artifacts/$(BuildConfiguration)/.artifactignore'
     displayName: Copy Build Artifact Filter
     condition: succeededOrFailed()
 
@@ -190,7 +176,7 @@ jobs:
 
   # The .artifactignore file filters the artifacts published from a particular folder.
   # This must be present in the folder we want to publish and be named '.artifactignore'.
-  - powershell: Copy-Item -Path '$(Build.SourcesDirectory)/eng/pipelines/staging.artifactignore' -Destination '$(Build.StagingDirectory)/.artifactignore'
+  - powershell: Copy-Item -Path '$(Build.SourcesDirectory)/eng/pipelines/configuration/staging.artifactignore' -Destination '$(Build.StagingDirectory)/.artifactignore'
     displayName: Copy Staging Artifact Filter
     condition: succeededOrFailed()
 

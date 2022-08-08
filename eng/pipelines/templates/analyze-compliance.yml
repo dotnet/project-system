@@ -1,9 +1,9 @@
 # Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
 jobs:
-- job: PublishAssetsAndPackages
-  displayName: Publish Assets and Packages
-  timeoutInMinutes: 10
+- job: AnalyzeCompliance
+  displayName: Analyze Compliance
+  timeoutInMinutes: 60
   pool:
     name: $(DefaultPoolName)
     demands: $(DefaultDemands)
@@ -34,6 +34,99 @@ jobs:
     patterns: |
       MicroBuild/**
       OptProf/**
+
+  ###################################################################################################################################################################
+  # PUBLISH INSERTION
+  ###################################################################################################################################################################
+
+  # Use a disabled, empty script to display the section header in the pipeline UI.
+  - script:
+    displayName: ==== Publish Insertion ====
+    condition: false
+
+  # Verifies the files produced by the build are properly signed.
+  - task: MicroBuildCodesignVerify@3
+    displayName: Verify Signed Files
+    inputs:
+      TargetFolders: |
+        $(Pipeline.Workspace)/$(Build.BuildNumber)/packages
+        $(Pipeline.Workspace)/$(Build.BuildNumber)/VSSetup/Insertion
+      # Filters out certain files (usually by extension) for Authenticode certificate verification.
+      # File Format:
+      #   Wildcards (* and ?) can be used and paths are relative to the TargetFolders.
+      #   Format is one entry per line followed by a comma and then a comment as to why the entry is approved.
+      ApprovalListPathForCerts: $(Build.SourcesDirectory)/eng/pipelines/configuration/AuthenticodeSigningFilter.txt
+
+
+  - task: PoliCheck@2
+    # Scan for problematic terminology.
+    displayName: Run PoliCheck
+    inputs:
+      targetType: 'F'                             # Scan a particular file or folder (recursively)
+      targetArgument: '$(Build.SourcesDirectory)' # Path of file/folder to scan
+      result: 'PoliCheck.xml'                     # Name of the output file
+      optionsFC: '1'                              # Enable scanning of comments
+      optionsSEV: '1|2|3'                         # Scan for severity 1, 2, and 3 issues
+    continueOnError: true
+
+  - task: CredScan@3
+    # Scan for credentials accidentally committed to source control.
+    displayName: Run CredScan
+    inputs:
+      outputFormat: 'pre' # Output in PREFast format so TSAUpload can consume it
+    continueOnError: true
+
+  - task: CopyFiles@2
+    # APIScan can take a long time, so here we copy (mostly) just the product binaries and related .pdbs
+    # in an effort to limit what it needs to work on.
+    displayName: Copy files for APIScan
+    inputs:
+      SourceFolder: '$(Build.SourcesDirectory)\artifacts\$(BuildConfiguration)\bin\Dlls'  # Limit to (mostly) product binaries
+      Contents: |
+        *.dll
+        *.pdb
+      TargetFolder: '$(Agent.TempDirectory)\APIScanFiles'
+    continueOnError: true
+
+  - task: APIScan@2
+    # Scan for the use of undocumented APIs.
+    displayName: Run APIScan
+    inputs:
+      softwareFolder: '$(Agent.TempDirectory)\APIScanFiles' # Only examine the product binaries we previously copied.
+      softwareName: 'Dotnet-Project-System'
+      softwareVersionNum: '17.0'
+      softwareBuildNum: '$(Build.BuildId)'
+      symbolsFolder: 'SRV*http://symweb'
+    env:
+      AzureServicesAuthConnectionString: runAs=App;AppId=$(ApiScanClientId);TenantId=$(ApiScanTenant);AppKey=$(ApiScanSecret)
+    continueOnError: true
+
+  - task: TSAUpload@2
+    # Scan the output of previous steps and create bugs for any problems.
+    displayName: Upload results and create bugs
+    inputs:
+      GdnPublishTsaOnboard: true
+      GdnPublishTsaConfigFile: '$(Build.SourcesDirectory)\eng\pipelines\TSAConfig.gdntsa'  # All relevant settings are in this file.
+    continueOnError: true
+
+  - task: PublishSecurityAnalysisLogs@3
+    displayName: Publishing analysis artifacts
+    inputs:
+      ArtifactName: 'CodeAnalysisLogs'
+      ArtifactType: 'Container'           # Associate the artifacts with the build.
+      AllTools: true                      # Look for logs from all tools.
+      ToolLogsNotFoundAction: 'Standard'  # If a log is not found just output a message to that effect.
+
+
+
+
+
+
+
+
+
+
+
 
   ###################################################################################################################################################################
   # PUBLISH INSERTION
@@ -103,8 +196,7 @@ jobs:
       sourcePath: $(Pipeline.Workspace)/Staging/OptProf/ProfilingInputs
       toLowerCase: false
       # AccessToken: $(System.AccessToken)
-      # dropMetadataContainerName: ProfilingInputs
-      uploadDropMetadata: false
+      dropMetadataContainerName: ProfilingInputs
 
   # # MicroBuildBuildVSBootstrapper requires MicroBuildSigningPlugin for signjson.exe to run.
   # - task: MicroBuildBuildVSBootstrapper@2
@@ -132,8 +224,7 @@ jobs:
       sourcePath: $(Build.SourcesDirectory)/eng/scripts/runsettings
       toLowerCase: false
       # AccessToken: $(System.AccessToken)
-      # dropMetadataContainerName: RunSettings
-      uploadDropMetadata: false
+      dropMetadataContainerName: RunSettings
 
   # - task: PublishBuildArtifacts@1
   #   displayName: 'Publish Artifact: MicroBuildOutputs'
