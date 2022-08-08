@@ -110,7 +110,8 @@ jobs:
 
   # The .artifactignore file filters the artifacts published from a particular folder.
   # This must be present in the folder we want to publish and be named '.artifactignore'.
-  - powershell: Copy-Item -Path '$(Build.SourcesDirectory)/eng/pipelines/configuration/staging.artifactignore' -Destination '$(Build.StagingDirectory)/Codex/.artifactignore'
+  # The Codex folder does not exist until the Ref12Analyze task runs, so it must be created as part of the script.
+  - powershell: New-Item -ItemType Directory -Path '$(Build.StagingDirectory)/Codex/'; Copy-Item -Path '$(Build.SourcesDirectory)/eng/pipelines/configuration/codex.artifactignore' -Destination '$(Build.StagingDirectory)/Codex/.artifactignore'
     displayName: Copy Codex Artifact Filter
     condition: succeededOrFailed()
 
