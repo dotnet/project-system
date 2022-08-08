@@ -43,7 +43,8 @@ jobs:
       # https://github.com/dotnet/Nerdbank.GitVersioning/blob/main/doc/cloudbuild.md#automatically-match-cloud-build-numbers-to-to-your-git-version
       # 'Products/[DevDiv]/[dotnet/project-system]/[main]/[x.x]'
       DropName: Products/$(System.TeamProject)/$(Build.Repository.Name)/$(Build.SourceBranchName)/$(Build.BuildNumber)
-      # AccessToken: $(System.AccessToken)
+      # When this isn't provided, the tool sets the --AadAuth flag instead of using --PatAuthEnvVar. The AadAuth doesn't seem to work for this situation.
+      AccessToken: $(System.AccessToken)
 
   # - task: CopyFiles@2
   #   displayName: Copy Artifacts

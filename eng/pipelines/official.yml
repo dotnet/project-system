@@ -60,28 +60,6 @@ stages:
   - template: templates\publish-symbols.yml
   - template: templates\publish-assets-and-packages.yml
 
-
-# - stage: Publish
-#   displayName: Publish
-#   dependsOn: Build
-#   jobs:
-#   - job: PublishArtifactsPackages
-#     displayName: Publish Artifacts & Packages
-#     timeoutInMinutes: 10
-#     pool:
-#       name: '$(DefaultPoolName)'
-#       demands: '$(DefaultDemands)'
-#     steps:
-#     - template: Initialize_Build.yml
-#   - job: PublishSymbols
-#     displayName: Publish Symbols
-#     timeoutInMinutes: 10
-#     pool:
-#       name: '$(SymbolsPoolName)'
-#       demands: '$(DefaultDemands)'
-#     steps:
-#     - template: Initialize_Build.yml
-
 # - stage: Compliance
 #   displayName: Compliance
 #   dependsOn: Build
