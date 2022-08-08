@@ -2,9 +2,19 @@
 <xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
   <file datatype="xml" source-language="en" target-language="it" original="../BuildPropertyPage.VisualBasic.xaml">
     <body>
+      <trans-unit id="BoolProperty|DefineDebug|Description">
+        <source>Whether to set a DEBUG constant.</source>
+        <target state="new">Whether to set a DEBUG constant.</target>
+        <note />
+      </trans-unit>
       <trans-unit id="BoolProperty|DefineDebug|DisplayName">
         <source>Define DEBUG constant</source>
         <target state="translated">Definire la costante DEBUG</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="BoolProperty|DefineTrace|Description">
+        <source>Whether to set a TRACE constant.</source>
+        <target state="new">Whether to set a TRACE constant.</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|DefineTrace|DisplayName">
@@ -20,6 +30,11 @@
       <trans-unit id="BoolProperty|GenerateDocumentationFile|DisplayName">
         <source>Generate XML documentation file</source>
         <target state="translated">Genera un file di documentazione XML</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="BoolProperty|Optimize|Description">
+        <source>Select this check box to enable compiler optimizations.</source>
+        <target state="new">Select this check box to enable compiler optimizations.</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|Optimize|DisplayName">
@@ -45,6 +60,11 @@
       <trans-unit id="BoolProperty|RegisterForComInterop|DisplayName">
         <source>Register for COM interop</source>
         <target state="translated">Eseguire la registrazione per l'interoperabilità COM</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="BoolProperty|RemoveIntegerChecks|Description">
+        <source>Select this check box to remove integer overflow checking.</source>
+        <target state="new">Select this check box to remove integer overflow checking.</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|RemoveIntegerChecks|DisplayName">
