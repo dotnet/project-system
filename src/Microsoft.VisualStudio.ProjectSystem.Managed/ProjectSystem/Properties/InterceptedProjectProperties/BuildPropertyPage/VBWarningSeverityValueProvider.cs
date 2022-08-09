@@ -24,6 +24,11 @@ internal sealed class VBWarningSeverityValueProvider : InterceptingPropertyValue
         return OnGetPropertyValueAsync(defaultProperties);
     }
 
+    public override Task<IEnumerable<string>?> GetProjectFileMSBuildPropertyNamesAsync(string propertyName, IProjectProperties defaultProperties)
+    {
+        return Task.FromResult<IEnumerable<string>?>(new [] { WarningSeverityPropertyName, WarningLevelPropertyName, TreatWarningsAsErrorsPropertyName });
+    }
+
     public override async Task<string?> OnSetPropertyValueAsync(string propertyName, string unevaluatedPropertyValue, IProjectProperties defaultProperties, IReadOnlyDictionary<string, string>? dimensionalConditions = null)
     {
         switch (unevaluatedPropertyValue)

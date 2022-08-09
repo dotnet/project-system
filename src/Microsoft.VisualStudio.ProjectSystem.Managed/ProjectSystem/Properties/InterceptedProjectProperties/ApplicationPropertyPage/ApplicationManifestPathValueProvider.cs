@@ -26,6 +26,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
             _unconfiguredProject = project;
         }
 
+        public override Task<IEnumerable<string>?> GetProjectFileMSBuildPropertyNamesAsync(string propertyName, IProjectProperties defaultProperties)
+        {
+            return Task.FromResult<IEnumerable<string>?>(new [] { ApplicationManifestMSBuildProperty });
+        }
+
         public override Task<string> OnGetEvaluatedPropertyValueAsync(string propertyName, string evaluatedPropertyValue, IProjectProperties defaultProperties)
         {
             return defaultProperties.GetEvaluatedPropertyValueAsync(ApplicationManifestMSBuildProperty);

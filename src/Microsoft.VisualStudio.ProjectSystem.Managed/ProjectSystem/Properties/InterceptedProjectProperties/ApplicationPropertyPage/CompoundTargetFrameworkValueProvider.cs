@@ -50,9 +50,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
             return await GetStoredComplexTargetFrameworkAsync(configuration);
         }
 
-        public override Task<IEnumerable<string>> GetProjectFileMSBuildPropertyNamesAsync(string propertyName)
+        public override Task<IEnumerable<string>?> GetProjectFileMSBuildPropertyNamesAsync(string propertyName, IProjectProperties defaultProperties)
         {
-            return Task.FromResult<IEnumerable<string>>(new List<string> { TargetFrameworkProperty });
+            return Task.FromResult<IEnumerable<string>?>(new [] { TargetFrameworkProperty, TargetPlatformProperty, TargetPlatformVersionProperty, SupportedOSPlatformVersionProperty });
         }
 
         public override async Task<string?> OnSetPropertyValueAsync(string propertyName, string unevaluatedPropertyValue, IProjectProperties defaultProperties, IReadOnlyDictionary<string, string>? dimensionalConditions = null)

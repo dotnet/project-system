@@ -15,6 +15,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
             _temporaryPropertyStorage = temporaryPropertyStorage;
         }
 
+        public override Task<IEnumerable<string>?> GetProjectFileMSBuildPropertyNamesAsync(string propertyName, IProjectProperties defaultProperties)
+        {
+            return Task.FromResult<IEnumerable<string>?>(new [] { WarningsAsErrorsProperty, WarningsNotAsErrorsProperty });
+        }
+
         public override async Task<string?> OnSetPropertyValueAsync(string propertyName, string unevaluatedPropertyValue, IProjectProperties defaultProperties, IReadOnlyDictionary<string, string>? dimensionalConditions = null)
         {
             if (!bool.TryParse(unevaluatedPropertyValue, out bool value))

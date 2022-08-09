@@ -23,7 +23,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
             return Task.FromResult<string?>(unevaluatedPropertyValue);
         }
 
-        public virtual Task<IEnumerable<string>> GetProjectFileMSBuildPropertyNamesAsync(string propertyName)
+        public virtual Task<IEnumerable<string>?> GetProjectFileMSBuildPropertyNamesAsync(string propertyName, IProjectProperties defaultProperties)
         {
             return Task.FromResult<IEnumerable<string>?>(null);
         }

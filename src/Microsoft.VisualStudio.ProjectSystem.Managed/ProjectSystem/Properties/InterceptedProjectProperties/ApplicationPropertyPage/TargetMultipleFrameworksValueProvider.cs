@@ -8,6 +8,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
     [ExportInterceptingPropertyValueProvider("TargetMultipleFrameworks", ExportInterceptingPropertyValueProviderFile.ProjectFile)]
     internal sealed class TargetMultipleFrameworksValueProvider : InterceptingPropertyValueProviderBase
     {
+        public override Task<IEnumerable<string>?> GetProjectFileMSBuildPropertyNamesAsync(string propertyName, IProjectProperties defaultProperties)
+        {
+            return Task.FromResult<IEnumerable<string>?>(new[] { TargetFrameworksProperty, TargetFrameworkProperty});
+        }
+
         public override async Task<string?> OnSetPropertyValueAsync(string propertyName, string unevaluatedPropertyValue, IProjectProperties defaultProperties, IReadOnlyDictionary<string, string>? dimensionalConditions = null)
         {
             if (bool.TryParse(unevaluatedPropertyValue, out bool value))

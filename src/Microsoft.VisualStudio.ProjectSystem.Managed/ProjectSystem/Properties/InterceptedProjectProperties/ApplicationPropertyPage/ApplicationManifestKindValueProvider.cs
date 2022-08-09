@@ -31,6 +31,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
             _temporaryPropertyStorage = temporaryPropertyStorage;
         }
 
+        public override Task<IEnumerable<string>?> GetProjectFileMSBuildPropertyNamesAsync(string propertyName, IProjectProperties defaultProperties)
+        {
+            return Task.FromResult<IEnumerable<string>?>(new [] { NoManifestMSBuildProperty, ApplicationManifestMSBuildProperty });
+        }
+
         /// <summary>
         /// Gets the application manifest kind property
         /// </summary>

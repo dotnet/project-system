@@ -11,6 +11,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         /// <summary>
         /// Obtain the MSBuild properties to which this <see cref="IInterceptingPropertyValueProvider"/> is writing to, given the parameters.
         /// </summary>
-        Task<IEnumerable<string>?> GetProjectFileMSBuildPropertyNamesAsync(string propertyName);
+        Task<IEnumerable<string>?> GetProjectFileMSBuildPropertyNamesAsync(string propertyName, IProjectProperties defaultProperties);
     }
 }
