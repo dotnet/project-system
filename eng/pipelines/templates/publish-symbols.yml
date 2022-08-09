@@ -16,7 +16,7 @@ jobs:
 
   # Use a disabled, empty script to display the section header in the pipeline UI.
   - script:
-    displayName: ==== Download Artifacts ====
+    displayName: === Download Artifacts ===
     condition: false
 
   # Download the build artifacts from the Build job.
@@ -29,6 +29,15 @@ jobs:
       bin/Dlls/**/*.dll
       bin/SymStore/**/*.pdb
       bin/SymStore/**/*.dll
+
+  ###################################################################################################################################################################
+  # PUBLISH SYMBOLS
+  ###################################################################################################################################################################
+
+  # Use a disabled, empty script to display the section header in the pipeline UI.
+  - script:
+    displayName: === Publish Symbols ===
+    condition: false
 
   # Symbols published to the Azure Artifacts symbol server are accessible to anyone in the DevDiv organization in Azure DevOps.
   # https://docs.microsoft.com/azure/devops/pipelines/tasks/build/index-sources-publish-symbols

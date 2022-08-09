@@ -15,14 +15,14 @@ jobs:
 
   # Use a disabled, empty script to display the section header in the pipeline UI.
   - script:
-    displayName: ==== Download Artifacts ====
+    displayName: === Download Artifacts ===
     condition: false
 
   # Download the build artifacts from the Build job.
   - download: current
     displayName: Download Build Artifacts
     artifact: $(Build.BuildNumber)
-    # Only download the necessary files for publishing.
+    # Only download the necessary files for analysis.
     patterns: |
       VSSetup/Insertion/**
       packages/**
@@ -36,12 +36,12 @@ jobs:
       OptProf/**
 
   ###################################################################################################################################################################
-  # PUBLISH INSERTION
+  # ANALYZE BUILD
   ###################################################################################################################################################################
 
   # Use a disabled, empty script to display the section header in the pipeline UI.
   - script:
-    displayName: ==== Publish Insertion ====
+    displayName: === Analyze Build ===
     condition: false
 
   # Verifies the files produced by the build are properly signed.
@@ -53,13 +53,12 @@ jobs:
         $(Pipeline.Workspace)/$(Build.BuildNumber)/VSSetup/Insertion
       # Filters out certain files (usually by extension) for Authenticode certificate verification.
       # File Format:
-      #   Wildcards (* and ?) can be used and paths are relative to the TargetFolders.
+      #   Wildcards (* and ?) can be used and paths are relative to the TargetFolders locations.
       #   Format is one entry per line followed by a comma and then a comment as to why the entry is approved.
       ApprovalListPathForCerts: $(Build.SourcesDirectory)/eng/pipelines/configuration/AuthenticodeSigningFilter.txt
 
-
+  # Scan for problematic terminology.
   - task: PoliCheck@2
-    # Scan for problematic terminology.
     displayName: Run PoliCheck
     inputs:
       targetType: 'F'                             # Scan a particular file or folder (recursively)

@@ -15,7 +15,7 @@ jobs:
 
   # Use a disabled, empty script to display the section header in the pipeline UI.
   - script:
-    displayName: ==== Download Artifacts ====
+    displayName: === Download Artifacts ===
     condition: false
 
   # Download the build artifacts from the Build job.
@@ -41,7 +41,7 @@ jobs:
 
   # Use a disabled, empty script to display the section header in the pipeline UI.
   - script:
-    displayName: ==== Publish Insertion ====
+    displayName: === Publish Insertion ===
     condition: false
 
   # This creates the drop location and uploads the insertion data (.vsman files) for VS insertion.
@@ -90,7 +90,7 @@ jobs:
 
   # Use a disabled, empty script to display the section header in the pipeline UI.
   - script:
-    displayName: ==== Publish OptProf ====
+    displayName: === Publish OptProf ===
     condition: false
 
   # This is required to deploy the tests to devdiv.artifacts.visualstudio.com for the 'Deploy tests' step in the release pipeline.
@@ -102,9 +102,10 @@ jobs:
       buildNumber: ProfilingInputs/$(System.TeamProject)/$(Build.Repository.Name)/$(Build.SourceBranchName)/$(Build.BuildId)
       sourcePath: $(Pipeline.Workspace)/Staging/OptProf/ProfilingInputs
       toLowerCase: false
+      detailedLog: true
       # AccessToken: $(System.AccessToken)
-      # dropMetadataContainerName: ProfilingInputs
-      uploadDropMetadata: false
+      # This task uploads the drop metadata to the pipeline artifacts using this name. There does not seem to be an option of not uploading this metadata.
+      dropMetadataContainerName: OptProf-ProfilingInputs
 
   # # MicroBuildBuildVSBootstrapper requires MicroBuildSigningPlugin for signjson.exe to run.
   # - task: MicroBuildBuildVSBootstrapper@2
@@ -131,9 +132,10 @@ jobs:
       buildNumber: RunSettings/$(System.TeamProject)/$(Build.Repository.Name)/$(Build.SourceBranchName)/$(Build.BuildId)
       sourcePath: $(Build.SourcesDirectory)/eng/scripts/runsettings
       toLowerCase: false
+      detailedLog: true
       # AccessToken: $(System.AccessToken)
-      # dropMetadataContainerName: RunSettings
-      uploadDropMetadata: false
+      # This task uploads the drop metadata to the pipeline artifacts using this name. There does not seem to be an option of not uploading this metadata.
+      dropMetadataContainerName: OptProf-RunSettings
 
   # - task: PublishBuildArtifacts@1
   #   displayName: 'Publish Artifact: MicroBuildOutputs'
@@ -149,7 +151,7 @@ jobs:
 
   # Use a disabled, empty script to display the section header in the pipeline UI.
   - script:
-    displayName: ==== Publish Packages ====
+    displayName: === Publish Packages ===
     condition: false
 
   # Downloads NuGet and adds it to the PATH.

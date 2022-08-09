@@ -16,7 +16,7 @@ jobs:
 
   # Use a disabled, empty script to display the section header in the pipeline UI.
   - script:
-    displayName: ==== SBOM Generation ===
+    displayName: === SBOM Generation ===
     condition: false
 
   # Only the projects in the 'src' folder are necessary for generating the SBOM.
@@ -41,7 +41,7 @@ jobs:
 
   # Use a disabled, empty script to display the section header in the pipeline UI.
   - script:
-    displayName: ==== Plugin Installation ====
+    displayName: === Plugin Installation ===
     condition: false
 
   # Necessary for signing the assemblies and packages.
@@ -87,7 +87,7 @@ jobs:
 
   # Use a disabled, empty script to display the section header in the pipeline UI.
   - script:
-    displayName: ==== Build Repository ====
+    displayName: === Build Repository ===
     condition: false
 
   # Runs the full build of the projects in the repository. See Build.proj for details.
@@ -108,27 +108,20 @@ jobs:
       manifests: $(Build.SourcesDirectory)/artifacts/$(BuildConfiguration)/VSSetup/Insertion/Microsoft.VisualStudio.ProjectSystem.Managed.vsman
       outputFolder: $(Build.SourcesDirectory)/artifacts/$(BuildConfiguration)/VSSetup/Insertion
 
-  # The .artifactignore file filters the artifacts published from a particular folder.
-  # This must be present in the folder we want to publish and be named '.artifactignore'.
-  # The Codex folder does not exist until the Ref12Analyze task runs, so it must be created as part of the script.
-  - powershell: New-Item -ItemType Directory -Path '$(Build.StagingDirectory)/Codex/'; Copy-Item -Path '$(Build.SourcesDirectory)/eng/pipelines/configuration/codex.artifactignore' -Destination '$(Build.StagingDirectory)/Codex/.artifactignore'
-    displayName: Copy Codex Artifact Filter
-    condition: succeededOrFailed()
-
   # This adds our source information to http://index (which is called Codex).
   # https://github.com/Ref12/Codex
   # This runs after the build because it needs:
   # - source files used in the build (including the generated ones in the obj directory)
   # - binaries (.dll) passed as references
   # - .binlog that ties it all together, describes what happened during the build, and where all the inputs are
-  # Argument information can be found here:
-  # - https://github.com/Ref12/Codex/blob/d759c4b44bad0f307ec33319278e62d70cf730f3/src/Codex.Automation.Workflow/Program.cs#L47
-  # - https://github.com/Ref12/Codex/blob/d759c4b44bad0f307ec33319278e62d70cf730f3/src/Codex/CodexApplication.cs#L52
+  # The task uploads the outputs of the process to the pipeline artifacts as 'CodexOutputs' with the file 'store.zip'.
+  # There is a separate process that scans all the Azure Pipelines for this specific artifact on a weekly basis and uploads it to the http://index database.
   - task: Ref12Analyze@0
     displayName: Add Build to Codex
     inputs:
-      # This uploads the outputs of the process to the pipeline artifacts as 'CodexOutputs'. There is no way to avoid this upload currently, since the analysis mode forces upload.
-      # See: https://github.com/Ref12/Codex/blob/c4257948cc410acc05e03e7c65a29337b12e27a7/src/Codex.Automation.Workflow/Program.cs#L35-L36
+      # Argument information can be found here:
+      # - https://github.com/Ref12/Codex/blob/d759c4b44bad0f307ec33319278e62d70cf730f3/src/Codex.Automation.Workflow/Program.cs#L47
+      # - https://github.com/Ref12/Codex/blob/d759c4b44bad0f307ec33319278e62d70cf730f3/src/Codex/CodexApplication.cs#L52
       workflowArguments: |
         /sourcesDirectory:$(Build.SourcesDirectory)
         /codexRepoUrl:$(Build.Repository.Uri)
@@ -146,7 +139,7 @@ jobs:
 
   # Use a disabled, empty script to display the section header in the pipeline UI.
   - script:
-    displayName: ==== Publish Build ====
+    displayName: === Publish Build ===
     condition: false
 
   # Publishes the test results to the Azure Pipeline itself so they can be viewed in the UI.
