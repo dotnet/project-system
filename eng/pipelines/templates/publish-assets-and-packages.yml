@@ -102,10 +102,18 @@ jobs:
       buildNumber: ProfilingInputs/$(System.TeamProject)/$(Build.Repository.Name)/$(Build.SourceBranchName)/$(Build.BuildId)
       sourcePath: $(Pipeline.Workspace)/Staging/OptProf/ProfilingInputs
       toLowerCase: false
-      detailedLog: true
+      # For deeper investigation, uncomment the following line:
+      # detailedLog: true
       # AccessToken: $(System.AccessToken)
       # This task uploads the drop metadata to the pipeline artifacts using this name. There does not seem to be an option of not uploading this metadata.
       dropMetadataContainerName: OptProf-ProfilingInputs
+
+  # The current artifactDropTask seems to try making the DropMetadata folder every time it runs. After running this artifactDropTask for ProfilingInputs, we need to delete the folder so the artifactDropTask for RunSettings succeeds.
+  # Otherwise, the error is shown as follows:
+  #   ##[warning]Can't find loc string for key: FailedToRunClientTool
+  #   ##[error]FailedToRunClientTool EEXIST: file already exists, mkdir 'D:\a\_work\1\a\DropMetadata'
+  - powershell: Remove-Item -Path '$(Build.StagingDirectory)/DropMetadata/' -Recurse -Force
+    displayName: Delete DropMetadata Directory
 
   # # MicroBuildBuildVSBootstrapper requires MicroBuildSigningPlugin for signjson.exe to run.
   # - task: MicroBuildBuildVSBootstrapper@2
@@ -132,7 +140,8 @@ jobs:
       buildNumber: RunSettings/$(System.TeamProject)/$(Build.Repository.Name)/$(Build.SourceBranchName)/$(Build.BuildId)
       sourcePath: $(Build.SourcesDirectory)/eng/scripts/runsettings
       toLowerCase: false
-      detailedLog: true
+      # For deeper investigation, uncomment the following line:
+      # detailedLog: true
       # AccessToken: $(System.AccessToken)
       # This task uploads the drop metadata to the pipeline artifacts using this name. There does not seem to be an option of not uploading this metadata.
       dropMetadataContainerName: OptProf-RunSettings
