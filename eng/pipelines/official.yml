@@ -60,6 +60,12 @@ stages:
   - template: templates\publish-symbols.yml
   - template: templates\publish-assets-and-packages.yml
 
+- stage: Compliance
+  displayName: Compliance
+  dependsOn: Build
+  jobs:
+  - template: templates\analyze-compliance.yml
+
 # - stage: Compliance
 #   displayName: Compliance
 #   dependsOn: Build
