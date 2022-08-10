@@ -100,8 +100,8 @@ jobs:
       DropFolder: $(Pipeline.Workspace)/Staging/MicroBuild/Output/bootstrapper
       # TODO: Change this to use $(GitBuildVersion) when working on: https://github.com/dotnet/project-system/issues/7911
       # https://github.com/dotnet/Nerdbank.GitVersioning/blob/main/doc/cloudbuild.md#automatically-match-cloud-build-numbers-to-to-your-git-version
-      # 'Products/[DevDiv]/[dotnet/project-system]/[main]/[x.x]'
-      DropName: Products/$(System.TeamProject)/$(Build.Repository.Name)/$(Build.SourceBranchName)/$(Build.BuildNumber)
+      # 'Bootstrapper/[DevDiv]/[dotnet/project-system]/[main]/[x.x]'
+      DropName: Bootstrapper/$(System.TeamProject)/$(Build.Repository.Name)/$(Build.SourceBranchName)/$(Build.BuildNumber)
       # When this isn't provided, the tool sets the --AadAuth flag instead of using --PatAuthEnvVar. The AadAuth doesn't seem to work for this situation.
       AccessToken: $(System.AccessToken)
 

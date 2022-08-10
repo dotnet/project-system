@@ -117,9 +117,7 @@ jobs:
       InputType: Basic
       Function: analyze
       TargetPattern: binskimPattern
-      AnalyzeTargetBinskim: |
-        $(Build.SourcesDirectory)/artifacts/$(BuildConfiguration)/**.dll
-        $(Build.SourcesDirectory)/artifacts/$(BuildConfiguration)/**.exe
+      AnalyzeTargetBinskim: $(Build.SourcesDirectory)/artifacts/$(BuildConfiguration)/bin/Dlls/**.dll
     condition: succeededOrFailed()
 
   # TODO MOVE TO SEPARATE JOB
@@ -172,6 +170,8 @@ jobs:
       GdnPublishTsaConfigFile: $(Build.SourcesDirectory)/eng/pipelines/configuration/TSAConfig.gdntsa
       GdnPublishTsaExportedResultsPublishable: true
     condition: succeededOrFailed()
+    # TODO: Temporarily disable while building this pipeline.
+    enabled: false
 
   # Publishes the results as artifacts to the Azure Pipeline.
   # YAML reference: https://eng.ms/docs/security-compliance-identity-and-management-scim/security/azure-security/cloudai-security-fundamentals-engineering/security-integration/guardian-wiki/sdl-azdo-extension/publish-security-analysis-logs#v3
