@@ -12,6 +12,7 @@
 # Set these files to XML (coloring) in PRs
 *.vsmanproj linguist-language=XML
 *.swixproj linguist-language=XML
+*.config linguist-language=XML
 
 ###############################################################################
 # Set default behavior for command prompt diff.
