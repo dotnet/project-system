@@ -46,15 +46,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
 
             if (valueProvider.Value is IInterceptingPropertyValueProvider2 valueProviderValueWithMsBuildProperties)
             {
-                string[]? msBuildPropertyNames = (await valueProviderValueWithMsBuildProperties.GetProjectFileMSBuildPropertyNamesAsync(propertyName, DelegatedProperties))?.ToArray();
-                if (msBuildPropertyNames?.Length > 0)
-                {
-                    string[] propertiesDefinedInProjectFile = (await GetDirectPropertyNamesAsync()).ToArray();
-                    if (msBuildPropertyNames.Any(name => propertiesDefinedInProjectFile.Contains(name)))
-                    {
-                        return false;
-                    }
-                }
+                return await valueProviderValueWithMsBuildProperties.IsValueDefinedInContextAsync(propertyName, DelegatedProperties);
+                
             }
 
             return await base.IsValueInheritedAsync(propertyName);

@@ -26,9 +26,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
             _unconfiguredProject = project;
         }
 
-        public override Task<IEnumerable<string>?> GetProjectFileMSBuildPropertyNamesAsync(string propertyName, IProjectProperties defaultProperties)
+        public override Task<bool> IsValueDefinedInContextAsync(string propertyName, IProjectProperties defaultProperties)
         {
-            return Task.FromResult<IEnumerable<string>?>(new [] { ApplicationManifestMSBuildProperty });
+            return IsValueDefinedInContextMsBuildPropertiesAsync(defaultProperties,new [] { ApplicationManifestMSBuildProperty });
         }
 
         public override Task<string> OnGetEvaluatedPropertyValueAsync(string propertyName, string evaluatedPropertyValue, IProjectProperties defaultProperties)

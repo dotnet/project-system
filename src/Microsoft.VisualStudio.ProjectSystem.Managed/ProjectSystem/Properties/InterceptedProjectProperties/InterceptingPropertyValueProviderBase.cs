@@ -23,9 +23,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
             return Task.FromResult<string?>(unevaluatedPropertyValue);
         }
 
-        public virtual Task<IEnumerable<string>?> GetProjectFileMSBuildPropertyNamesAsync(string propertyName, IProjectProperties defaultProperties)
+        public virtual Task<bool> IsValueDefinedInContextAsync(string propertyName, IProjectProperties defaultProperties)
         {
-            return Task.FromResult<IEnumerable<string>?>(null);
+            return Task.FromResult(true);
+        }
+
+        internal static async Task<bool> IsValueDefinedInContextMsBuildPropertiesAsync(IProjectProperties defaultProperties, string[] msBuildPropertyNames)
+        {
+            string[] propertiesDefinedInProjectFile = (await defaultProperties.GetDirectPropertyNamesAsync()).ToArray();
+            return !msBuildPropertyNames.Any(name => propertiesDefinedInProjectFile.Contains(name));
         }
     }
 }
