@@ -57,6 +57,8 @@ jobs:
     inputs:
       Path: $(Build.SourcesDirectory)/artifacts/$(BuildConfiguration)/packages
       # OutputDirectory: 'outputdir'
+    # Make sure to continue running all of the tools, even if one fails.
+    continueOnError: true
 
   # YAML inputs reference: https://eng.ms/docs/security-compliance-identity-and-management-scim/security/azure-security/cloudai-security-fundamentals-engineering/security-integration/guardian-wiki/sdl-azdo-extension/code-signing-validation-build-task#v1-preview
   - task: CodeSign@1
@@ -64,6 +66,8 @@ jobs:
     inputs:
       Path: $(Build.SourcesDirectory)/artifacts/$(BuildConfiguration)/VSSetup/Insertion
       # OutputDirectory: 'outputdir'
+    # Make sure to continue running all of the tools, even if one fails.
+    continueOnError: true
 
   # Scan for problematic terminology. Related documentation:
   # - https://microsoft.sharepoint.com/sites/globalreadiness/SitePages/PoliCheck.aspx
