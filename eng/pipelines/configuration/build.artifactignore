@@ -3,12 +3,5 @@
 # Ignore certain files and folders from Azure Pipelines artifact publishing.
 # See: https://docs.microsoft.com/azure/devops/artifacts/reference/artifactignore
 
-# Ignore all files and folders, except for those in the artifacts folder.
-# **/*
-# !artifacts/**.*
-
-# Ignore the obj directories
-# artifacts/*/obj/
-# artifacts/*/VSSetup.obj/
 obj/
 VSSetup.obj/

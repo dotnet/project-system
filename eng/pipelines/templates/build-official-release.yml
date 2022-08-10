@@ -97,7 +97,13 @@ jobs:
   # Creates the VS bootstrapper information based on the build's .vsman file.
   # This bootstrapper information is only used for OptProf currently.
   # Since this data will be output with rest of our insertion files, we produce this data now and publish it in the build artifacts.
-  # NOTE: This task requires MicroBuildSigningPlugin (uses signjson.exe) to run.
+  # This task creates 2 assets:
+  # - The bootstrapper metadata file: $(Build.StagingDirectory)/MicroBuild/Output/BootstrapperInfo.json
+  # - The bootstrapper executable (and associated files): [outputFolder]/bootstrapper
+  # This task requires these plugins:
+  # - MicroBuildSigningPlugin: uses signjson.exe to sign the manifests
+  # - MicroBuildSwixPlugin: uses vsman.exe and sets the environment variable ManifestPublishUrl
+  # Documentation: https://devdiv.visualstudio.com/DevDiv/_wiki/wikis/DevDiv.wiki/643/How-to-Build-a-Bootstrapper
   - task: MicroBuildBuildVSBootstrapper@2
     displayName: Build VS Bootstrapper
     inputs:
@@ -106,7 +112,7 @@ jobs:
       vsMajorVersion: 17
       channelName: int.main
       manifests: $(Build.SourcesDirectory)/artifacts/$(BuildConfiguration)/VSSetup/Insertion/Microsoft.VisualStudio.ProjectSystem.Managed.vsman
-      outputFolder: $(Build.SourcesDirectory)/artifacts/$(BuildConfiguration)/VSSetup/Insertion
+      outputFolder: $(Build.StagingDirectory)/MicroBuild/Output
 
   # This adds our source information to http://index (which is called Codex).
   # https://github.com/Ref12/Codex

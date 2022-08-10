@@ -2,7 +2,8 @@
 
 jobs:
 # Overview of tasks offered for security and compliance:
-# https://eng.ms/docs/security-compliance-identity-and-management-scim/security/azure-security/cloudai-security-fundamentals-engineering/security-integration/guardian-wiki/sdl-azdo-extension/secure-development-tools-extension-for-azure-devops#tools
+# - https://eng.ms/docs/security-compliance-identity-and-management-scim/security/azure-security/cloudai-security-fundamentals-engineering/security-integration/guardian-wiki
+# - https://eng.ms/docs/security-compliance-identity-and-management-scim/security/azure-security/cloudai-security-fundamentals-engineering/security-integration/guardian-wiki/sdl-azdo-extension/secure-development-tools-extension-for-azure-devops#tools
 - job: AnalyzeCompliance
   displayName: Analyze Compliance
   # TODO: Adjust this
@@ -38,6 +39,8 @@ jobs:
 
   ###################################################################################################################################################################
   # RUN ANALYSIS
+  # Steps in this section should contain 'condition: succeededOrFailed()' since one analyzer failing should not block the other analyzers from running.
+  # https://docs.microsoft.com/en-us/azure/devops/pipelines/process/tasks?view=azure-devops&tabs=yaml#task-control-options
   ###################################################################################################################################################################
 
   # Use a disabled, empty script to display the section header in the pipeline UI.
@@ -57,32 +60,29 @@ jobs:
       #   Wildcards (* and ?) can be used and paths are relative to the TargetFolders locations.
       #   Format is one entry per line followed by a comma and then a comment as to why the entry is approved.
       ApprovalListPathForCerts: $(Build.SourcesDirectory)/eng/pipelines/configuration/AuthenticodeSigningFilter.txt
-    # Make sure to continue running all of the tools, even if one fails.
-    continueOnError: true
+    condition: succeededOrFailed()
 
-  # YAML inputs reference: https://eng.ms/docs/security-compliance-identity-and-management-scim/security/azure-security/cloudai-security-fundamentals-engineering/security-integration/guardian-wiki/sdl-azdo-extension/code-signing-validation-build-task#v1-preview
+  # YAML reference: https://eng.ms/docs/security-compliance-identity-and-management-scim/security/azure-security/cloudai-security-fundamentals-engineering/security-integration/guardian-wiki/sdl-azdo-extension/code-signing-validation-build-task#v1-preview
   - task: CodeSign@1
     displayName: Verify Package Signing
     inputs:
       Path: $(Build.SourcesDirectory)/artifacts/$(BuildConfiguration)/packages
       # OutputDirectory: 'outputdir'
-    # Make sure to continue running all of the tools, even if one fails.
-    continueOnError: true
+    condition: succeededOrFailed()
 
-  # YAML inputs reference: https://eng.ms/docs/security-compliance-identity-and-management-scim/security/azure-security/cloudai-security-fundamentals-engineering/security-integration/guardian-wiki/sdl-azdo-extension/code-signing-validation-build-task#v1-preview
+  # YAML reference: https://eng.ms/docs/security-compliance-identity-and-management-scim/security/azure-security/cloudai-security-fundamentals-engineering/security-integration/guardian-wiki/sdl-azdo-extension/code-signing-validation-build-task#v1-preview
   - task: CodeSign@1
     displayName: Verify Insertion Signing
     inputs:
       Path: $(Build.SourcesDirectory)/artifacts/$(BuildConfiguration)/VSSetup/Insertion
       # OutputDirectory: 'outputdir'
-    # Make sure to continue running all of the tools, even if one fails.
-    continueOnError: true
+    condition: succeededOrFailed()
 
   # Scan for problematic terminology. Related documentation:
   # - https://microsoft.sharepoint.com/sites/globalreadiness/SitePages/PoliCheck.aspx
   # - https://policheck.microsoft.com/
   # Requires scanning both the source and the build artifacts: https://liquid.microsoft.com/Web/Object/Read/MS.GlobalReadiness/Requirements/01.01#Zapplicability
-  # YAML inputs reference: https://eng.ms/docs/security-compliance-identity-and-management-scim/security/azure-security/cloudai-security-fundamentals-engineering/security-integration/guardian-wiki/sdl-azdo-extension/PoliCheck-build-task#v2
+  # YAML reference: https://eng.ms/docs/security-compliance-identity-and-management-scim/security/azure-security/cloudai-security-fundamentals-engineering/security-integration/guardian-wiki/sdl-azdo-extension/PoliCheck-build-task#v2
   - task: PoliCheck@2
     displayName: Run PoliCheck
     inputs:
@@ -95,20 +95,32 @@ jobs:
       optionsFC: 1
       # Scan for severity 1, 2, and 3 issues
       optionsSEV: '1|2|3'
-    # Make sure to continue running all of the tools, even if one fails.
-    continueOnError: true
+    condition: succeededOrFailed()
 
   # Scan for credentials and other sensitive information. Related documentation:
   # - https://strikecommunity.azurewebsites.net/articles/4114/credential-scanner-overview.html
-  # Even though it isn't explicitly stated, the source and the build artifacts.
-  # YAML inputs reference: https://eng.ms/docs/security-compliance-identity-and-management-scim/security/azure-security/cloudai-security-fundamentals-engineering/security-integration/guardian-wiki/sdl-azdo-extension/credscan-azure-devops-build-task#v3-preview
+  # Even though it isn't explicitly stated, we scan both the source and the build artifacts.
+  # YAML reference: https://eng.ms/docs/security-compliance-identity-and-management-scim/security/azure-security/cloudai-security-fundamentals-engineering/security-integration/guardian-wiki/sdl-azdo-extension/credscan-azure-devops-build-task#v3-preview
   - task: CredScan@3
     displayName: Run CredScan
     inputs:
       # Output in PREFast format so TSAUpload can consume it.
       outputFormat: pre
-    # Make sure to continue running all of the tools, even if one fails.
-    continueOnError: true
+    condition: succeededOrFailed()
+
+  # Validates compiler/linker settings and other security-related binary characteristics.
+  # https://github.com/Microsoft/binskim
+  # YAML reference: https://eng.ms/docs/security-compliance-identity-and-management-scim/security/azure-security/cloudai-security-fundamentals-engineering/security-integration/guardian-wiki/sdl-azdo-extension/binskim-build-task#v4
+  - task: BinSkim@4
+    displayName: Run BinSkim
+    inputs:
+      InputType: Basic
+      Function: analyze
+      TargetPattern: binskimPattern
+      AnalyzeTargetBinskim: |
+        $(Build.SourcesDirectory)/artifacts/$(BuildConfiguration)/**.dll
+        $(Build.SourcesDirectory)/artifacts/$(BuildConfiguration)/**.exe
+    condition: succeededOrFailed()
 
   # TODO MOVE TO SEPARATE JOB
 
@@ -137,8 +149,18 @@ jobs:
   #     AzureServicesAuthConnectionString: runAs=App;AppId=$(ApiScanClientId);TenantId=$(ApiScanTenant);AppKey=$(ApiScanSecret)
   #   continueOnError: true
 
+  ###################################################################################################################################################################
+  # PUBLISH RESULTS
+  ###################################################################################################################################################################
+
+  # Use a disabled, empty script to display the section header in the pipeline UI.
+  - script:
+    displayName: === Publish Results ===
+    condition: false
+
   # Upload the output of the compliance tools to Trust Services Automation (TSA), and create Azure DevOps work items for failures.
-  # YAML inputs reference: https://eng.ms/docs/cloud-ai-platform/developer-services/one-engineering-system-1es/1es-docs/trust-services-automation-tsa/tsa-upload-build-task#yaml-reference
+  # TSA overview: https://eng.ms/docs/cloud-ai-platform/developer-services/one-engineering-system-1es/1es-docs/trust-services-automation-tsa/tsa-overview
+  # YAML reference: https://eng.ms/docs/cloud-ai-platform/developer-services/one-engineering-system-1es/1es-docs/trust-services-automation-tsa/tsa-upload-build-task#yaml-reference
   - task: TSAUpload@2
     displayName: Upload Results to TSA
     inputs:
@@ -149,11 +171,10 @@ jobs:
       # - https://dev.azure.com/securitytools/SecurityIntegration/_wiki/wikis/Guardian/1409/Guardian-TSA?anchor=tsa-options-file
       GdnPublishTsaConfigFile: $(Build.SourcesDirectory)/eng/pipelines/configuration/TSAConfig.gdntsa
       GdnPublishTsaExportedResultsPublishable: true
-    # Make sure to continue running all of the tools, even if one fails.
-    continueOnError: true
+    condition: succeededOrFailed()
 
   # Publishes the results as artifacts to the Azure Pipeline.
-  # YAML inputs reference: https://eng.ms/docs/security-compliance-identity-and-management-scim/security/azure-security/cloudai-security-fundamentals-engineering/security-integration/guardian-wiki/sdl-azdo-extension/publish-security-analysis-logs#v3
+  # YAML reference: https://eng.ms/docs/security-compliance-identity-and-management-scim/security/azure-security/cloudai-security-fundamentals-engineering/security-integration/guardian-wiki/sdl-azdo-extension/publish-security-analysis-logs#v3
   - task: PublishSecurityAnalysisLogs@3
     displayName: Publish Compliance Artifacts
     inputs:
