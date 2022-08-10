@@ -113,7 +113,7 @@ jobs:
   #   ##[warning]Can't find loc string for key: FailedToRunClientTool
   #   ##[error]FailedToRunClientTool EEXIST: file already exists, mkdir 'D:\a\_work\1\a\DropMetadata'
   - powershell: Remove-Item -Path '$(Build.StagingDirectory)/DropMetadata/' -Recurse -Force
-    displayName: Delete DropMetadata Directory
+    displayName: Delete DropMetadata Folder
 
   # # MicroBuildBuildVSBootstrapper requires MicroBuildSigningPlugin for signjson.exe to run.
   # - task: MicroBuildBuildVSBootstrapper@2

@@ -1,6 +1,8 @@
 # Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
 jobs:
+# Overview of tasks offered for security and compliance:
+# https://eng.ms/docs/security-compliance-identity-and-management-scim/security/azure-security/cloudai-security-fundamentals-engineering/security-integration/guardian-wiki/sdl-azdo-extension/secure-development-tools-extension-for-azure-devops#tools
 - job: AnalyzeCompliance
   displayName: Analyze Compliance
   timeoutInMinutes: 60
@@ -22,26 +24,16 @@ jobs:
   - download: current
     displayName: Download Build Artifacts
     artifact: $(Build.BuildNumber)
-    # Only download the necessary files for analysis.
-    patterns: |
-      VSSetup/Insertion/**
-      packages/**
-  # Download the staging artifacts from the Build job.
-  - download: current
-    displayName: Download Staging Artifacts
-    artifact: Staging
-    # Only download the necessary files for publishing.
-    patterns: |
-      MicroBuild/**
-      OptProf/**
+    inputs:
+      path: $(Build.SourcesDirectory)/artifacts/$(BuildConfiguration)
 
   ###################################################################################################################################################################
-  # ANALYZE BUILD
+  # RUN ANALYSIS
   ###################################################################################################################################################################
 
   # Use a disabled, empty script to display the section header in the pipeline UI.
   - script:
-    displayName: === Analyze Build ===
+    displayName: === Run Analysis ===
     condition: false
 
   # Verifies the files produced by the build are properly signed.
@@ -49,233 +41,111 @@ jobs:
     displayName: Verify Signed Files
     inputs:
       TargetFolders: |
-        $(Pipeline.Workspace)/$(Build.BuildNumber)/packages
-        $(Pipeline.Workspace)/$(Build.BuildNumber)/VSSetup/Insertion
+        $(Build.SourcesDirectory)/artifacts/$(BuildConfiguration)/packages
+        $(Build.SourcesDirectory)/artifacts/$(BuildConfiguration)/VSSetup/Insertion
       # Filters out certain files (usually by extension) for Authenticode certificate verification.
       # File Format:
       #   Wildcards (* and ?) can be used and paths are relative to the TargetFolders locations.
       #   Format is one entry per line followed by a comma and then a comment as to why the entry is approved.
       ApprovalListPathForCerts: $(Build.SourcesDirectory)/eng/pipelines/configuration/AuthenticodeSigningFilter.txt
+    # Make sure to continue running all of the tools, even if one fails.
+    continueOnError: true
 
-  # Scan for problematic terminology.
+  # YAML inputs reference: https://eng.ms/docs/security-compliance-identity-and-management-scim/security/azure-security/cloudai-security-fundamentals-engineering/security-integration/guardian-wiki/sdl-azdo-extension/code-signing-validation-build-task#v1-preview
+  - task: CodeSign@1
+    displayName: Verify Package Signing
+    inputs:
+      Path: $(Build.SourcesDirectory)/artifacts/$(BuildConfiguration)/packages
+      # OutputDirectory: 'outputdir'
+
+  # YAML inputs reference: https://eng.ms/docs/security-compliance-identity-and-management-scim/security/azure-security/cloudai-security-fundamentals-engineering/security-integration/guardian-wiki/sdl-azdo-extension/code-signing-validation-build-task#v1-preview
+  - task: CodeSign@1
+    displayName: Verify Insertion Signing
+    inputs:
+      Path: $(Build.SourcesDirectory)/artifacts/$(BuildConfiguration)/VSSetup/Insertion
+      # OutputDirectory: 'outputdir'
+
+  # Scan for problematic terminology. Related documentation:
+  # - https://microsoft.sharepoint.com/sites/globalreadiness/SitePages/PoliCheck.aspx
+  # - https://policheck.microsoft.com/
+  # Requires scanning both the source and the build artifacts: https://liquid.microsoft.com/Web/Object/Read/MS.GlobalReadiness/Requirements/01.01#Zapplicability
+  # YAML inputs reference: https://eng.ms/docs/security-compliance-identity-and-management-scim/security/azure-security/cloudai-security-fundamentals-engineering/security-integration/guardian-wiki/sdl-azdo-extension/PoliCheck-build-task#v2
   - task: PoliCheck@2
     displayName: Run PoliCheck
     inputs:
-      targetType: 'F'                             # Scan a particular file or folder (recursively)
-      targetArgument: '$(Build.SourcesDirectory)' # Path of file/folder to scan
-      result: 'PoliCheck.xml'                     # Name of the output file
-      optionsFC: '1'                              # Enable scanning of comments
-      optionsSEV: '1|2|3'                         # Scan for severity 1, 2, and 3 issues
+      # F - Scan a particular file or folder (recursively)
+      targetType: F
+      targetArgument: $(Build.SourcesDirectory)
+      # TODO: Consider moving this file.
+      result: PoliCheck.xml
+      # 1 - Enable scanning of comments
+      optionsFC: 1
+      # Scan for severity 1, 2, and 3 issues
+      optionsSEV: '1|2|3'
+    # Make sure to continue running all of the tools, even if one fails.
     continueOnError: true
 
+  # Scan for credentials and other sensitive information. Related documentation:
+  # - https://strikecommunity.azurewebsites.net/articles/4114/credential-scanner-overview.html
+  # Even though it isn't explicitly stated, the source and the build artifacts.
+  # YAML inputs reference: https://eng.ms/docs/security-compliance-identity-and-management-scim/security/azure-security/cloudai-security-fundamentals-engineering/security-integration/guardian-wiki/sdl-azdo-extension/credscan-azure-devops-build-task#v3-preview
   - task: CredScan@3
-    # Scan for credentials accidentally committed to source control.
     displayName: Run CredScan
     inputs:
-      outputFormat: 'pre' # Output in PREFast format so TSAUpload can consume it
+      # Output in PREFast format so TSAUpload can consume it.
+      outputFormat: pre
+    # Make sure to continue running all of the tools, even if one fails.
     continueOnError: true
 
-  - task: CopyFiles@2
-    # APIScan can take a long time, so here we copy (mostly) just the product binaries and related .pdbs
-    # in an effort to limit what it needs to work on.
-    displayName: Copy files for APIScan
-    inputs:
-      SourceFolder: '$(Build.SourcesDirectory)\artifacts\$(BuildConfiguration)\bin\Dlls'  # Limit to (mostly) product binaries
-      Contents: |
-        *.dll
-        *.pdb
-      TargetFolder: '$(Agent.TempDirectory)\APIScanFiles'
-    continueOnError: true
-
-  - task: APIScan@2
-    # Scan for the use of undocumented APIs.
-    displayName: Run APIScan
-    inputs:
-      softwareFolder: '$(Agent.TempDirectory)\APIScanFiles' # Only examine the product binaries we previously copied.
-      softwareName: 'Dotnet-Project-System'
-      softwareVersionNum: '17.0'
-      softwareBuildNum: '$(Build.BuildId)'
-      symbolsFolder: 'SRV*http://symweb'
-    env:
-      AzureServicesAuthConnectionString: runAs=App;AppId=$(ApiScanClientId);TenantId=$(ApiScanTenant);AppKey=$(ApiScanSecret)
-    continueOnError: true
-
-  - task: TSAUpload@2
-    # Scan the output of previous steps and create bugs for any problems.
-    displayName: Upload results and create bugs
-    inputs:
-      GdnPublishTsaOnboard: true
-      GdnPublishTsaConfigFile: '$(Build.SourcesDirectory)\eng\pipelines\TSAConfig.gdntsa'  # All relevant settings are in this file.
-    continueOnError: true
-
-  - task: PublishSecurityAnalysisLogs@3
-    displayName: Publishing analysis artifacts
-    inputs:
-      ArtifactName: 'CodeAnalysisLogs'
-      ArtifactType: 'Container'           # Associate the artifacts with the build.
-      AllTools: true                      # Look for logs from all tools.
-      ToolLogsNotFoundAction: 'Standard'  # If a log is not found just output a message to that effect.
-
-
-
-
-
-
-
-
-
-
-
-
-  ###################################################################################################################################################################
-  # PUBLISH INSERTION
-  ###################################################################################################################################################################
-
-  # Use a disabled, empty script to display the section header in the pipeline UI.
-  - script:
-    displayName: ==== Publish Insertion ====
-    condition: false
-
-  # This creates the drop location and uploads the insertion data (.vsman files) for VS insertion.
-  - task: MicroBuildUploadVstsDropFolder@2
-    displayName: Publish Insertion Data
-    inputs:
-      DropFolder: $(Pipeline.Workspace)/$(Build.BuildNumber)/VSSetup/Insertion
-      # TODO: Change this to use $(GitBuildVersion) when working on: https://github.com/dotnet/project-system/issues/7911
-      # https://github.com/dotnet/Nerdbank.GitVersioning/blob/main/doc/cloudbuild.md#automatically-match-cloud-build-numbers-to-to-your-git-version
-      # 'Products/[DevDiv]/[dotnet/project-system]/[main]/[x.x]'
-      DropName: Products/$(System.TeamProject)/$(Build.Repository.Name)/$(Build.SourceBranchName)/$(Build.BuildNumber)
-      # When this isn't provided, the tool sets the --AadAuth flag instead of using --PatAuthEnvVar. The AadAuth doesn't seem to work for this situation.
-      AccessToken: $(System.AccessToken)
+  # TODO MOVE TO SEPARATE JOB
 
   # - task: CopyFiles@2
-  #   displayName: Copy Artifacts
+  #   # APIScan can take a long time, so here we copy (mostly) just the product binaries and related .pdbs
+  #   # in an effort to limit what it needs to work on.
+  #   displayName: Copy files for APIScan
   #   inputs:
-  #     SourceFolder: '$(Build.SourcesDirectory)'
-  #     # NOTE: The copied contents are directly used by the RoslynInsertionTool to create the insertion PR.
+  #     SourceFolder: '$(Build.SourcesDirectory)\artifacts\$(BuildConfiguration)\bin\Dlls'  # Limit to (mostly) product binaries
   #     Contents: |
-  #       artifacts\$(BuildConfiguration)\bin\**
-  #       artifacts\$(BuildConfiguration)\DevDivInsertionFiles\**
-  #       artifacts\$(BuildConfiguration)\log\**
-  #       artifacts\$(BuildConfiguration)\packages\**
-  #       artifacts\$(BuildConfiguration)\VSSetup\**
-  #       artifacts\$(BuildConfiguration)\TestResults\**
-  #     TargetFolder: $(Build.ArtifactStagingDirectory)/ArtifactsDrop
-  #   condition: succeededOrFailed()
+  #       *.dll
+  #       *.pdb
+  #     TargetFolder: '$(Agent.TempDirectory)\APIScanFiles'
+  #   continueOnError: true
 
-  # - task: PublishBuildArtifacts@1
-  #   displayName: Publish Artifacts
+  # - task: APIScan@2
+  #   # Scan for the use of undocumented APIs.
+  #   displayName: Run APIScan
   #   inputs:
-  #     PathToPublish: '$(Build.ArtifactStagingDirectory)/ArtifactsDrop/artifacts/$(BuildConfiguration)'
-  #     # NOTE: Artifact name is required to be Build.BuildNumber.
-  #     # The build-number named artifact is used for the RoslynInsertionTool to find the build for the insertion PR.
-  #     # Code here: https://github.com/dotnet/roslyn-tools/blob/1f64f56b4ea9a0c119bbe840c39b935acc60e4b8/src/RoslynInsertionTool/RoslynInsertionTool/RoslynInsertionTool.VisualStudioTeamServices.cs#L174
-  #     ArtifactName: '$(Build.BuildNumber)'
-  #     publishLocation: Container
-  #   condition: succeededOrFailed()
+  #     softwareFolder: '$(Agent.TempDirectory)\APIScanFiles' # Only examine the product binaries we previously copied.
+  #     softwareName: 'Dotnet-Project-System'
+  #     softwareVersionNum: '17.0'
+  #     softwareBuildNum: '$(Build.BuildId)'
+  #     symbolsFolder: 'SRV*http://symweb'
+  #   env:
+  #     AzureServicesAuthConnectionString: runAs=App;AppId=$(ApiScanClientId);TenantId=$(ApiScanTenant);AppKey=$(ApiScanSecret)
+  #   continueOnError: true
 
-  ###################################################################################################################################################################
-  # PUBLISH OPTPROF
-  # The published OptProf metadata is consumed by the release pipeline that profiles the assemblies to create the optimization data.
-  # Release Pipeline URL: https://devdiv.visualstudio.com/DevDiv/_release?definitionId=3197
-  ###################################################################################################################################################################
-
-  # Use a disabled, empty script to display the section header in the pipeline UI.
-  - script:
-    displayName: ==== Publish OptProf ====
-    condition: false
-
-  # This is required to deploy the tests to devdiv.artifacts.visualstudio.com for the 'Deploy tests' step in the release pipeline.
-  # https://eng.ms/docs/cloud-ai-platform/developer-services/one-engineering-system-1es/1es-docs/azure-artifacts/drop-service/using-azure-devops-drop-in-devops-build
-  - task: artifactDropTask@1
-    displayName: Publish ProfilingInputs
+  # Upload the output of the compliance tools to Trust Services Automation (TSA), and create Azure DevOps work items for failures.
+  # YAML inputs reference: https://eng.ms/docs/cloud-ai-platform/developer-services/one-engineering-system-1es/1es-docs/trust-services-automation-tsa/tsa-upload-build-task#yaml-reference
+  - task: TSAUpload@2
+    displayName: Upload Results to TSA
     inputs:
-      dropServiceURI: https://devdiv.artifacts.visualstudio.com
-      buildNumber: ProfilingInputs/$(System.TeamProject)/$(Build.Repository.Name)/$(Build.SourceBranchName)/$(Build.BuildId)
-      sourcePath: $(Pipeline.Workspace)/Staging/OptProf/ProfilingInputs
-      toLowerCase: false
-      # AccessToken: $(System.AccessToken)
-      dropMetadataContainerName: ProfilingInputs
+      GdnPublishTsaOnboard: true
+      # Configures the compliance tool results to process.
+      # Configuration file format:
+      # - https://eng.ms/docs/security-compliance-identity-and-management-scim/security/azure-security/cloudai-security-fundamentals-engineering/security-integration/guardian-wiki/microsoft-guardian/guardian-tsa#tsa-options-file
+      # - https://dev.azure.com/securitytools/SecurityIntegration/_wiki/wikis/Guardian/1409/Guardian-TSA?anchor=tsa-options-file
+      GdnPublishTsaConfigFile: $(Build.SourcesDirectory)/eng/pipelines/configuration/TSAConfig.gdntsa
+      GdnPublishTsaExportedResultsPublishable: true
+    # Make sure to continue running all of the tools, even if one fails.
+    continueOnError: true
 
-  # # MicroBuildBuildVSBootstrapper requires MicroBuildSigningPlugin for signjson.exe to run.
-  # - task: MicroBuildBuildVSBootstrapper@2
-  #   displayName: Build VS Bootstrapper
-  #   inputs:
-  #     bootstrapperCoreVersion: latest
-  #     # TODO: Does this need to stay in-sync with version.json?
-  #     vsMajorVersion: 17
-  #     channelName: int.main
-  #     manifests: $(Pipeline.Workspace)/$(Build.BuildNumber)/VSSetup/Insertion/Microsoft.VisualStudio.ProjectSystem.Managed.vsman
-  #     outputFolder: $(Pipeline.Workspace)/$(Build.BuildNumber)/VSSetup/Insertion
-
-  # Using the VS bootstrapper data, update the runsettings with the appropriate information for this build.
-  - powershell: . '$(Build.SourcesDirectory)/eng/scripts/UpdateRunSettings.ps1' -profilingInputsPath 'ProfilingInputs/$(System.TeamProject)/$(Build.Repository.Name)/$(Build.SourceBranchName)/$(Build.BuildId)' -bootstrapperInfoPath '$(Pipeline.Workspace)/Staging/MicroBuild/Output/BootstrapperInfo.json'
-    displayName: Update RunSettings
-    failOnStderr: true
-
-  # The runsettings drives the test process for producing optimization data.
-  # https://eng.ms/docs/cloud-ai-platform/developer-services/one-engineering-system-1es/1es-docs/azure-artifacts/drop-service/using-azure-devops-drop-in-devops-build
-  - task: artifactDropTask@1
-    displayName: Publish RunSettings
+  # Publishes the results as artifacts to the Azure Pipeline.
+  # YAML inputs reference: https://eng.ms/docs/security-compliance-identity-and-management-scim/security/azure-security/cloudai-security-fundamentals-engineering/security-integration/guardian-wiki/sdl-azdo-extension/publish-security-analysis-logs#v3
+  - task: PublishSecurityAnalysisLogs@3
+    displayName: Publish Compliance Artifacts
     inputs:
-      dropServiceURI: https://devdiv.artifacts.visualstudio.com
-      buildNumber: RunSettings/$(System.TeamProject)/$(Build.Repository.Name)/$(Build.SourceBranchName)/$(Build.BuildId)
-      sourcePath: $(Build.SourcesDirectory)/eng/scripts/runsettings
-      toLowerCase: false
-      # AccessToken: $(System.AccessToken)
-      dropMetadataContainerName: RunSettings
-
-  # - task: PublishBuildArtifacts@1
-  #   displayName: 'Publish Artifact: MicroBuildOutputs'
-  #   inputs:
-  #     PathToPublish: $(Build.StagingDirectory)\MicroBuild\Output
-  #     ArtifactName: MicroBuildOutputs
-  #     ArtifactType: Container
-  #   condition: succeededOrFailed()
-
-  ###################################################################################################################################################################
-  # PUBLISH PACKAGES
-  ###################################################################################################################################################################
-
-  # Use a disabled, empty script to display the section header in the pipeline UI.
-  - script:
-    displayName: ==== Publish Packages ====
-    condition: false
-
-  # Downloads NuGet and adds it to the PATH.
-  - task: NuGetToolInstaller@1
-    displayName: Install NuGet
-    # inputs:
-    #   versionSpec: '4.9.2'
-
-  # Authenticate with a service connection to be able to publish packages to external (different DevOps organization) NuGet feeds.
-  - task: NuGetAuthenticate@1
-    displayName: Authenticate NuGet
-    inputs:
-      nuGetServiceConnections: azure-public/vs-impl
-
-  # Publishes the NuGet packages to azure-public/vs-impl (https://dev.azure.com/azure-public/vside/_packaging?_a=feed&feed=vs-impl)
-  - task: NuGetCommand@2
-    displayName: Publish Packages to azure-public
-    inputs:
-      command: push
-      packagesToPush: $(Pipeline.Workspace)/$(Build.BuildNumber)/packages/*.nupkg
-      nuGetFeedType: external
-      publishFeedCredentials: azure-public/vs-impl
-      # This allows the task to succeed if duplicate packages exist. Packages cannot be overridden in a feed.
-      # See: https://docs.microsoft.com/en-us/azure/devops/pipelines/tasks/package/nuget?view=azure-devops#arguments
-      allowPackageConflicts: true
-
-  # Publishes the NuGet packages to DevDiv/VS (https://dev.azure.com/DevDiv/DevDiv/_artifacts/feed/VS)
-  # The RoslynInsertionTool will republish these packages to DevDiv/VS-CoreXtFeeds (https://dev.azure.com/DevDiv/DevDiv/_artifacts/feed/VS-CoreXtFeeds)
-  - task: NuGetCommand@2
-    displayName: Publish Packages to DevDiv
-    inputs:
-      command: push
-      packagesToPush: $(Pipeline.Workspace)/$(Build.BuildNumber)/packages/*.nupkg
-      # Feed Endpoint: https://devdiv.pkgs.visualstudio.com/_packaging/VS/nuget/v3/index.json
-      # Requires VssFeedId despite documentation here: https://docs.microsoft.com/en-us/azure/devops/pipelines/artifacts/nuget?view=azure-devops&tabs=yaml#publish-a-package
-      publishVstsFeed: 97a41293-2972-4f48-8c0e-05493ae82010
-      # This allows the task to succeed if duplicate packages exist. Packages cannot be overridden in a feed.
-      # See: https://docs.microsoft.com/en-us/azure/devops/pipelines/tasks/package/nuget?view=azure-devops#arguments
-      allowPackageConflicts: true
+      ArtifactName: CodeAnalysisLogs
+      ArtifactType: Container
+      AllTools: true
+      ToolLogsNotFoundAction: Standard
+    condition: succeededOrFailed()

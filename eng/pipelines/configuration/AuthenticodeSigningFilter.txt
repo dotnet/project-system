@@ -1,1 +1,1 @@
-*\*.xml,xml doc aren't signed
+*\*.xml,xml files aren't signed
