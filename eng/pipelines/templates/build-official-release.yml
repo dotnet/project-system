@@ -3,6 +3,7 @@
 jobs:
 - job: BuildOfficialRelease
   displayName: Build Official Release
+  # We make this timeout more than double the normal amount of build time as signing has a highly variable amount of time to complete.
   timeoutInMinutes: 90
   pool:
     name: $(DefaultPoolName)

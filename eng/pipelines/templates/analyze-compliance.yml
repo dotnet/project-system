@@ -10,7 +10,7 @@ jobs:
 # - CodeQL: https://eng.ms/docs/security-compliance-identity-and-management-scim/security/azure-security/cloudai-security-fundamentals-engineering/security-integration/guardian-wiki/sdl-azdo-extension/codeql-build-task
 - job: AnalyzeCompliance
   displayName: Analyze Compliance
-  timeoutInMinutes: 15
+  timeoutInMinutes: 20
   pool:
     name: $(DefaultPoolName)
     demands: $(DefaultDemands)
