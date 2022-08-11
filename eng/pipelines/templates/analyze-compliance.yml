@@ -27,18 +27,18 @@ jobs:
     condition: false
 
   # # Download the build artifacts from the Build job.
-  - download: current
-    displayName: Download Build Artifacts
-    artifact: $(Build.BuildNumber)
-    path: $(Build.SourcesDirectory)/artifacts/$(BuildConfiguration)
+  # - download: current
+  #   displayName: Download Build Artifacts
+  #   artifact: $(Build.BuildNumber)
+  #   path: $(Build.SourcesDirectory)/artifacts/$(BuildConfiguration)
 
   # Download the build artifacts from the Build job.
   # The DownloadPipelineArtifact task is used since we can specify the output path. The 'download:' node doesn't allow changes in output location.
-  # - task: DownloadPipelineArtifact@2
-  #   displayName: Download Build Artifacts
-  #   inputs:
-  #     artifact: '$(Build.BuildNumber)'
-  #     path: $(Build.SourcesDirectory)/artifacts/$(BuildConfiguration)
+  - task: DownloadPipelineArtifact@2
+    displayName: Download Build Artifacts
+    inputs:
+      artifact: '$(Build.BuildNumber)'
+      path: $(Build.SourcesDirectory)/artifacts/$(BuildConfiguration)
 
   ###################################################################################################################################################################
   # RUN ANALYSIS
