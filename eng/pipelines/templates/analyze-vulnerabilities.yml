@@ -38,14 +38,27 @@ jobs:
     displayName: === Run Analysis ===
     condition: false
 
-  # Scan the managed code for security vulnerabilities.
-  # YAML reference: https://eng.ms/docs/security-compliance-identity-and-management-scim/security/azure-security/cloudai-security-fundamentals-engineering/security-integration/guardian-wiki/sdl-azdo-extension/roslyn-analyzers-build-task#v3
+  # # Scan the managed code for security vulnerabilities.
+  # # The build itself via an MSBuild task needs to run in the pipeline for it to detect how to build the code in this analyzer.
+  # # YAML reference: https://eng.ms/docs/security-compliance-identity-and-management-scim/security/azure-security/cloudai-security-fundamentals-engineering/security-integration/guardian-wiki/sdl-azdo-extension/roslyn-analyzers-build-task#v3
+  # - task: RoslynAnalyzers@3
+  #   displayName: Run RoslynAnalyzers
+  #   inputs:
+  #     userProvideBuildInfo: autoMsBuildInfo
+  #     setupCommandlinePicker: vs2022
+  #   # Adds the pipeline token to the environment for the analyzer.
+  #   # See: https://eng.ms/docs/security-compliance-identity-and-management-scim/security/azure-security/cloudai-security-fundamentals-engineering/security-integration/guardian-wiki/sdl-azdo-extension/roslyn-analyzers-build-task#systemaccesstoken-cannot-be-accessed-enable-pipeline-access-to-systemaccesstoken-on-the-agent-job-level
+  #   env:
+  #     SYSTEM_ACCESSTOKEN: $(System.AccessToken)
+
   - task: RoslynAnalyzers@3
+    displayName: Run RoslynAnalyzers
     inputs:
-      userProvideBuildInfo: autoMsBuildInfo
+      userProvideBuildInfo: msBuildInfo
+      msBuildVersion: 17.0
+      msBuildArchitecture: x86
       setupCommandlinePicker: vs2022
-    # Adds the pipeline token to the environment for the analyzer.
-    # See: https://eng.ms/docs/security-compliance-identity-and-management-scim/security/azure-security/cloudai-security-fundamentals-engineering/security-integration/guardian-wiki/sdl-azdo-extension/roslyn-analyzers-build-task#systemaccesstoken-cannot-be-accessed-enable-pipeline-access-to-systemaccesstoken-on-the-agent-job-level
+      msBuildCommandline: $(Build.SourcesDirectory)/build.cmd /v:normal /p:Configuration=$(BuildConfiguration) /p:CIBuild=true /p:Test=false /p:Pack=false /p:TestProjects=false /p:SetupProjects=false
     env:
       SYSTEM_ACCESSTOKEN: $(System.AccessToken)
 
