@@ -65,6 +65,7 @@ stages:
   dependsOn: Build
   jobs:
   - template: templates\analyze-compliance.yml
+  - template: templates\analyze-api.yml
 
 # - stage: Compliance
 #   displayName: Compliance

@@ -10,8 +10,7 @@ jobs:
 # - CodeQL: https://eng.ms/docs/security-compliance-identity-and-management-scim/security/azure-security/cloudai-security-fundamentals-engineering/security-integration/guardian-wiki/sdl-azdo-extension/codeql-build-task
 - job: AnalyzeCompliance
   displayName: Analyze Compliance
-  # TODO: Adjust this
-  timeoutInMinutes: 60
+  timeoutInMinutes: 15
   pool:
     name: $(DefaultPoolName)
     demands: $(DefaultDemands)
@@ -187,7 +186,7 @@ jobs:
   - task: PublishSecurityAnalysisLogs@3
     displayName: Publish Compliance Artifacts
     inputs:
-      ArtifactName: CodeAnalysisLogs
+      ArtifactName: Analysis-Compliance
       ArtifactType: Container
       AllTools: true
       ToolLogsNotFoundAction: Standard
