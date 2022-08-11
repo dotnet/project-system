@@ -48,7 +48,7 @@ stages:
 - stage: Build
   displayName: Build
   jobs:
-  - template: templates\build-official-release.yml
+  - template: templates/build-official-release.yml
     parameters:
       SignType: ${{ parameters.SignType }}
       SkipOptimize: ${{ parameters.SkipOptimize }}
@@ -57,15 +57,20 @@ stages:
   displayName: Publish
   dependsOn: Build
   jobs:
-  - template: templates\publish-symbols.yml
-  - template: templates\publish-assets-and-packages.yml
+  - template: templates/publish-symbols.yml
+  - template: templates/publish-assets-and-packages.yml
 
 - stage: Compliance
   displayName: Compliance
   dependsOn: Build
   jobs:
-  - template: templates\analyze-compliance.yml
-  - template: templates\analyze-api.yml
+  - template: templates/analyze-compliance.yml
+  - template: templates/analyze-api.yml
+
+- stage: Independent
+  displayName: Independent
+  jobs:
+  - template: templates/analyze-vulnerabilities.yml
 
 # - stage: Compliance
 #   displayName: Compliance

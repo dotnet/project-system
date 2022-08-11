@@ -1,8 +1,8 @@
 # Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
 jobs:
-- job: AnalyzeAPI
-  displayName: Analyze API
+- job: AnalyzeVulnerabilities
+  displayName: Analyze Vulnerabilities
   timeoutInMinutes: 60
   pool:
     name: $(DefaultPoolName)
@@ -10,26 +10,24 @@ jobs:
   steps:
 
   ###################################################################################################################################################################
-  # DOWNLOAD ARTIFACTS
+  # BUILD SRC
   ###################################################################################################################################################################
 
   # Use a disabled, empty script to display the section header in the pipeline UI.
   - script:
-    displayName: === Download Artifacts ===
+    displayName: === Build Src ===
     condition: false
 
-  # Download the build artifacts from the Build job.
-  - download: current
-    displayName: Download Build Artifacts
-    artifact: $(Build.BuildNumber)
-    # Only download the necessary files for API validation.
-    patterns: |
-      bin/Dlls/**/Microsoft.VisualStudio.AppDesigner*.pdb
-      bin/Dlls/**/Microsoft.VisualStudio.Editors*.pdb
-      bin/Dlls/**/Microsoft.VisualStudio.Managed*.pdb
-      bin/Dlls/**/Microsoft.VisualStudio.AppDesigner*.dll
-      bin/Dlls/**/Microsoft.VisualStudio.Editors*.dll
-      bin/Dlls/**/Microsoft.VisualStudio.Managed*.dll
+  # Only the projects in the 'src' folder are necessary for analyzing vulnerabilities.
+  # We need to use the MSBuildTask for the Roslyn Security Analyzer to understand the project build configuration.
+  # See: https://eng.ms/docs/security-compliance-identity-and-management-scim/security/azure-security/cloudai-security-fundamentals-engineering/security-integration/guardian-wiki/sdl-azdo-extension/roslyn-analyzers-build-task#overview
+  - task: MSBuild@1
+    displayName: Build Src Projects
+    inputs:
+      solution: $(Build.SourcesDirectory)/eng/Build.proj
+      msBuildArchitecture: x86
+      configuration: $(BuildConfiguration)
+      msBuildArguments: /m /warnAsError /noLogo /clp:Summary /bl:"$(Build.SourcesDirectory)/artifacts/$(BuildConfiguration)/log/Build.binlog" /v:normal /p:Configuration=$(BuildConfiguration) /p:CIBuild=true /p:Test=false /p:Pack=false /p:TestProjects=false /p:SetupProjects=false
 
   ###################################################################################################################################################################
   # RUN ANALYSIS
@@ -40,26 +38,12 @@ jobs:
     displayName: === Run Analysis ===
     condition: false
 
-  # Scan for the use of undocumented APIs.
-  # YAML reference: https://eng.ms/docs/security-compliance-identity-and-management-scim/security/azure-security/cloudai-security-fundamentals-engineering/security-integration/guardian-wiki/sdl-azdo-extension/apiscan-build-task#v2
-  - task: APIScan@2
-    displayName: Run APIScan
+  # Scan the managed code for security vulnerabilities.
+  # YAML reference: https://eng.ms/docs/security-compliance-identity-and-management-scim/security/azure-security/cloudai-security-fundamentals-engineering/security-integration/guardian-wiki/sdl-azdo-extension/roslyn-analyzers-build-task#v3
+  - task: RoslynAnalyzers@3
     inputs:
-      softwareFolder: $(Pipeline.Workspace)/$(Build.BuildNumber)/bin/Dlls
-      softwareName: Dotnet-Project-System
-      # TODO: Does this need to stay in-sync with version.json?
-      softwareVersionNum: 17
-      softwareBuildNum: $(Build.BuildId)
-      symbolsFolder: SRV*http://symweb
-      noCopySymbols: true
-      noCopyBinaries: true
-      noDecompress: true
-      isLargeApp: true
-    # APIScan requires an Azure Identity to run. That is provided via an Azure service principal.
-    # - https://microsoft.sharepoint.com/teams/apiscan/APIScan%20User%20Wiki/authentication_using_AAD_identities.aspx
-    # - https://microsoft.sharepoint.com/teams/apiscan/Lists/Contacts%20%20System%20Account%20and%20Wrappers/AllItems.aspx?skipSignal=true
-    env:
-      AzureServicesAuthConnectionString: runAs=App;AppId=$(ApiScanClientId);TenantId=$(ApiScanTenant);AppKey=$(ApiScanSecret)
+      userProvideBuildInfo: autoMsBuildInfo
+      setupCommandlinePicker: vs2022
 
   ###################################################################################################################################################################
   # PUBLISH RESULTS
