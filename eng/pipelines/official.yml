@@ -69,7 +69,7 @@ stages:
 
 - stage: Independent
   displayName: Independent
-  # [] clears the dependency on the previous stage.
+  # [] clears the dependency on the previous stage allowing parallelism.
   dependsOn: []
   jobs:
   - template: templates/analyze-vulnerabilities.yml
