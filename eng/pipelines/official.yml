@@ -69,6 +69,8 @@ stages:
 
 - stage: Independent
   displayName: Independent
+  # [] clears the dependency on the previous stage.
+  dependsOn: []
   jobs:
   - template: templates/analyze-vulnerabilities.yml
 
