@@ -2,8 +2,12 @@
 
 jobs:
 # Overview of tasks offered for security and compliance:
+# - https://dev.azure.com/securitytools/SecurityIntegration/_wiki/wikis/Guardian/1425/Guardian-Tools
 # - https://eng.ms/docs/security-compliance-identity-and-management-scim/security/azure-security/cloudai-security-fundamentals-engineering/security-integration/guardian-wiki
 # - https://eng.ms/docs/security-compliance-identity-and-management-scim/security/azure-security/cloudai-security-fundamentals-engineering/security-integration/guardian-wiki/sdl-azdo-extension/secure-development-tools-extension-for-azure-devops#tools
+# Other tools to consider:
+# - InferSharp: https://dev.azure.com/securitytools/SecurityIntegration/_wiki/wikis/Guardian/1638/InferSharp-Usage
+# - CodeQL: https://eng.ms/docs/security-compliance-identity-and-management-scim/security/azure-security/cloudai-security-fundamentals-engineering/security-integration/guardian-wiki/sdl-azdo-extension/codeql-build-task
 - job: AnalyzeCompliance
   displayName: Analyze Compliance
   # TODO: Adjust this
@@ -23,19 +27,18 @@ jobs:
     condition: false
 
   # # Download the build artifacts from the Build job.
-  # - download: current
-  #   displayName: Download Build Artifacts
-  #   artifact: $(Build.BuildNumber)
-  #   inputs:
-  #     path: $(Build.SourcesDirectory)/artifacts/$(BuildConfiguration)
+  - download: current
+    displayName: Download Build Artifacts
+    artifact: $(Build.BuildNumber)
+    path: $(Build.SourcesDirectory)/artifacts/$(BuildConfiguration)
 
   # Download the build artifacts from the Build job.
   # The DownloadPipelineArtifact task is used since we can specify the output path. The 'download:' node doesn't allow changes in output location.
-  - task: DownloadPipelineArtifact@2
-    displayName: Download Build Artifacts
-    inputs:
-      artifact: '$(Build.BuildNumber)'
-      path: $(Build.SourcesDirectory)/artifacts/$(BuildConfiguration)
+  # - task: DownloadPipelineArtifact@2
+  #   displayName: Download Build Artifacts
+  #   inputs:
+  #     artifact: '$(Build.BuildNumber)'
+  #     path: $(Build.SourcesDirectory)/artifacts/$(BuildConfiguration)
 
   ###################################################################################################################################################################
   # RUN ANALYSIS
@@ -48,9 +51,23 @@ jobs:
     displayName: === Run Analysis ===
     condition: false
 
-  # Verifies the files produced by the build are properly signed.
+    # Verify the loose DLLs are signed appropriately.
+    # YAML reference: https://eng.ms/docs/security-compliance-identity-and-management-scim/security/azure-security/cloudai-security-fundamentals-engineering/security-integration/guardian-wiki/sdl-azdo-extension/code-signing-validation-build-task#v1-preview
+  - task: CodeSign@1
+    displayName: Verify Signed DLLs
+    inputs:
+      Path: $(Build.SourcesDirectory)/artifacts/$(BuildConfiguration)/bin/Dlls/
+      # Glob Format: https://dev.azure.com/securitytools/SecurityIntegration/_wiki/wikis/Guardian/1378/Glob-Format
+      Targets: |
+        **/Microsoft.VisualStudio.AppDesigner*.dll
+        **/Microsoft.VisualStudio.Editors*.dll
+        **/Microsoft.VisualStudio.Managed*.dll
+      # OutputDirectory: 'outputdir'
+    condition: succeededOrFailed()
+
+  # Verifies the packages (and files within) are signed appropriately.
   - task: MicroBuildCodesignVerify@3
-    displayName: Verify Signed Files
+    displayName: Verify Signed Packages
     inputs:
       TargetFolders: |
         $(Build.SourcesDirectory)/artifacts/$(BuildConfiguration)/packages
@@ -63,20 +80,12 @@ jobs:
     condition: succeededOrFailed()
 
   # YAML reference: https://eng.ms/docs/security-compliance-identity-and-management-scim/security/azure-security/cloudai-security-fundamentals-engineering/security-integration/guardian-wiki/sdl-azdo-extension/code-signing-validation-build-task#v1-preview
-  - task: CodeSign@1
-    displayName: Verify Package Signing
-    inputs:
-      Path: $(Build.SourcesDirectory)/artifacts/$(BuildConfiguration)/packages
-      # OutputDirectory: 'outputdir'
-    condition: succeededOrFailed()
-
-  # YAML reference: https://eng.ms/docs/security-compliance-identity-and-management-scim/security/azure-security/cloudai-security-fundamentals-engineering/security-integration/guardian-wiki/sdl-azdo-extension/code-signing-validation-build-task#v1-preview
-  - task: CodeSign@1
-    displayName: Verify Insertion Signing
-    inputs:
-      Path: $(Build.SourcesDirectory)/artifacts/$(BuildConfiguration)/VSSetup/Insertion
-      # OutputDirectory: 'outputdir'
-    condition: succeededOrFailed()
+  # - task: CodeSign@1
+  #   displayName: Verify Insertion Signing
+  #   inputs:
+  #     Path: $(Build.SourcesDirectory)/artifacts/$(BuildConfiguration)/VSSetup/Insertion
+  #     # OutputDirectory: 'outputdir'
+  #   condition: succeededOrFailed()
 
   # Scan for problematic terminology. Related documentation:
   # - https://microsoft.sharepoint.com/sites/globalreadiness/SitePages/PoliCheck.aspx
@@ -90,7 +99,7 @@ jobs:
       targetType: F
       targetArgument: $(Build.SourcesDirectory)
       # TODO: Consider moving this file.
-      result: PoliCheck.xml
+      # result: PoliCheck.xml
       # 1 - Enable scanning of comments
       optionsFC: 1
       # Scan for severity 1, 2, and 3 issues
