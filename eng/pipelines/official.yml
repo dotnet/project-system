@@ -43,7 +43,6 @@ parameters:
   type: boolean
   default: false
 
-
 stages:
 - stage: Build
   displayName: Build
@@ -66,26 +65,15 @@ stages:
   jobs:
   - template: templates/analyze-compliance.yml
   - template: templates/analyze-api.yml
+  # TODO: Commented out for since I cannot get the build for the analyzer to recognize global namespaces.
+  # - template: templates/analyze-vulnerabilities.yml
 
-- stage: Independent
-  displayName: Independent
-  # [] clears the dependency on the previous stage allowing parallelism.
+- stage: Localization
+  displayName: Localization
+  # [] clears the dependency on the previous stages allowing parallelism.
   dependsOn: []
   jobs:
-  - template: templates/analyze-vulnerabilities.yml
-
-# - stage: Compliance
-#   displayName: Compliance
-#   dependsOn: Build
-#   jobs:
-#   - job: AnalyzeCompliance
-#     displayName: Analyze Compliance
-#     timeoutInMinutes: 60
-#     pool:
-#       name: '$(DefaultPoolName)'
-#       demands: '$(DefaultDemands)'
-#     steps:
-#     - template: Initialize_Build.yml
+  - template: templates/generate-localization.yml
 
 # - stage: Insertion
 #   displayName: Insertion
