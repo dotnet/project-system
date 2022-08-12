@@ -56,8 +56,9 @@ stages:
   displayName: Publish
   dependsOn: Build
   jobs:
-  - template: templates/publish-symbols.yml
   - template: templates/publish-assets-and-packages.yml
+  - template: templates/publish-symbols.yml
+  - template: templates/publish-richnav.yml
 
 - stage: Compliance
   displayName: Compliance
