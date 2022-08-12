@@ -71,5 +71,10 @@ namespace Microsoft.VisualStudio.Telemetry
         ///     Indicates that the user was notified of the suspected incremental build failure.
         /// </summary>
         public const string IncrementalBuildValidationFailureDisplayed = Prefix + "/incrementalbuild/validationfailure/displayed";
+
+        /// <summary>
+        ///     Indicates that the NuGet restore detected a cycle.
+        /// </summary>
+        public const string NuGetRestoreCycleDetected = Prefix + "/nugetrestore/cycledetected";
     }
 }

@@ -115,6 +115,21 @@
         <target state="translated">警告: "{0}" 中可能存在生成性能问题。成功生成后，项目不会显示为最新版本: {1}。请参阅 https://aka.ms/incremental-build-failure。</target>
         <note>{0} is the file name of the project. {1} is a description of the failure. The period '.' after {1} is intentional and should be kept.</note>
       </trans-unit>
+      <trans-unit id="InfoBarMessageNuGetCycleDetected">
+        <source>A circular dependency A -&gt; B -&gt; A was detected during NuGet Restore which caused NuGet to stop restoring.
+Because the NuGet restore didn't finish correctly, the project might be in a bad state.
+
+This might be caused because one or more projects have a package that sets AssetTargetFallback, not supported for this scenario, which caused certain PackageReference to be included.
+
+NuGet Error NU1108</source>
+        <target state="new">A circular dependency A -&gt; B -&gt; A was detected during NuGet Restore which caused NuGet to stop restoring.
+Because the NuGet restore didn't finish correctly, the project might be in a bad state.
+
+This might be caused because one or more projects have a package that sets AssetTargetFallback, not supported for this scenario, which caused certain PackageReference to be included.
+
+NuGet Error NU1108</target>
+        <note />
+      </trans-unit>
       <trans-unit id="ProjectHotReloadSessionManager_AttachingToProcess">
         <source>Attaching to process.</source>
         <target state="translated">正在附加到流程。</target>
