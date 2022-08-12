@@ -1,40 +1,6 @@
 <!-- Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information. -->
 <Project>
 
-  <PropertyGroup>
-    <RestoreSources>
-      $(RestoreSources);
-      <!-- CPS components including: Microsoft.VisualStudio.ProjectSystem -->
-      https://pkgs.dev.azure.com/azure-public/vside/_packaging/vs-impl/nuget/v3/index.json;
-      <!-- Microsoft.VisualStudio components -->
-      https://pkgs.dev.azure.com/azure-public/vside/_packaging/vssdk/nuget/v3/index.json;
-      <!--
-        Various packages including:
-        Microsoft.DiaSymReader.Pdb2Pdb
-        Microsoft.CodeAnalysis
-        Microsoft.CodeAnalysis.Features
-        NuGet.VisualStudio
-      -->
-      https://pkgs.dev.azure.com/dnceng/public/_packaging/dotnet-tools/nuget/v3/index.json;
-      <!--
-        Various packages including:
-        xunit
-        xunit.assert
-        xunit.extensibility.core
-        xunit.extensibility.execution
-        XliffTasks
-        Microsoft.VisualStudioEng.MicroBuild.Plugins.SwixBuild
-       -->
-      https://pkgs.dev.azure.com/dnceng/public/_packaging/dotnet-eng/nuget/v3/index.json;
-      <!--
-        Public components including:
-        Nerdbank.GitVersioning
-        Codecov
-      -->
-      https://api.nuget.org/v3/index.json;
-    </RestoreSources>
-  </PropertyGroup>
-
   <ItemGroup>
     <!-- Infrastructure -->
     <PackageReference Update="MicroBuild.Core.Sentinel"                                               Version="1.0.0" />
