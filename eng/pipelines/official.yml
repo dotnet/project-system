@@ -18,7 +18,9 @@ resources:
 #   demands: Cmd
 #   timeoutInMinutes: 90
 variables:
-  - group: OneLocBuildVariables
+- group: OneLocBuildVariables
+
+variables:
   BuildConfiguration: Release
   TeamName: DotNet-Project-System
   BuildPlatform: any cpu
