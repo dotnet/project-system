@@ -19,20 +19,40 @@ resources:
 #   timeoutInMinutes: 90
 variables:
 - group: OneLocBuildVariables
-
-variables:
-  BuildConfiguration: Release
-  TeamName: DotNet-Project-System
-  BuildPlatform: any cpu
-  DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true
-  Packaging.EnableSBOMSigning: true
+- name: BuildConfiguration
+  value: Release
+- name: TeamName
+  value: DotNet-Project-System
+- name: BuildPlatform
+  value: any cpu
+- name: DOTNET_SKIP_FIRST_TIME_EXPERIENCE
+  value: true
+- name: Packaging.EnableSBOMSigning
+  value: true
   # https://devdiv.visualstudio.com/DevDiv/_settings/agentqueues?queueId=3123&view=jobs
-  DefaultPoolName: VSEngSS-MicroBuild2022-1ES
+- name: DefaultPoolName
+  value: VSEngSS-MicroBuild2022-1ES
   # https://devdiv.visualstudio.com/DevDiv/_settings/agentqueues?queueId=3316&view=jobs
   # This specific pool is required to access the \\cpvsbuild\DotNetTools\DotNet-Project-System share.
-  SymbolsPoolName: VSEng-ReleasePool-1ES
+- name: SymbolsPoolName
+  value: VSEng-ReleasePool-1ES
   # https://docs.microsoft.com/en-us/azure/devops/pipelines/process/demands?view=azure-devops&tabs=yaml#manually-entered-demands
-  DefaultDemands: Cmd
+- name: DefaultDemands
+  value: Cmd
+
+# variables:
+#   BuildConfiguration: Release
+#   TeamName: DotNet-Project-System
+#   BuildPlatform: any cpu
+#   DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true
+#   Packaging.EnableSBOMSigning: true
+#   # https://devdiv.visualstudio.com/DevDiv/_settings/agentqueues?queueId=3123&view=jobs
+#   DefaultPoolName: VSEngSS-MicroBuild2022-1ES
+#   # https://devdiv.visualstudio.com/DevDiv/_settings/agentqueues?queueId=3316&view=jobs
+#   # This specific pool is required to access the \\cpvsbuild\DotNetTools\DotNet-Project-System share.
+#   SymbolsPoolName: VSEng-ReleasePool-1ES
+#   # https://docs.microsoft.com/en-us/azure/devops/pipelines/process/demands?view=azure-devops&tabs=yaml#manually-entered-demands
+#   DefaultDemands: Cmd
 parameters:
 - name: SignType
   displayName: Sign Type
