@@ -277,16 +277,20 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             }
 
             var setupCompositionService = await _vsSetupCompositionService.GetValueAsync();
+            if (setupCompositionService is null)
+            {
+                return;
+            }
 
             IReadOnlyDictionary<Guid, IReadOnlyCollection<string>>? vsComponentIdsToRegister = ComputeVsComponentIdsToRegister(setupCompositionService);
-            if (vsComponentIdsToRegister == null)
+            if (vsComponentIdsToRegister is null)
             {
                 return;
             }
 
             var serviceBrokerContainer = await _serviceBrokerContainer.GetValueAsync();
             IServiceBroker? serviceBroker = serviceBrokerContainer?.GetFullAccessServiceBroker();
-            if (serviceBroker == null)
+            if (serviceBroker is null)
             {
                 return;
             }
@@ -296,7 +300,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
 
             using (missingWorkloadRegistrationService as IDisposable)
             {
-                if (missingWorkloadRegistrationService != null)
+                if (missingWorkloadRegistrationService is not null)
                 {
                     await missingWorkloadRegistrationService.RegisterMissingComponentsAsync(vsComponentIdsToRegister, cancellationToken: default);
                 }
