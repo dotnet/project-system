@@ -124,7 +124,7 @@ stages:
   jobs:
   - template: templates/generate-localization.yml
 
-- template: templates/generate-optimization.yml
+- template: templates/generate-optimizations.yml
 
 # - stage: Insertion
 #   displayName: Insertion
