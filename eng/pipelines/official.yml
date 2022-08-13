@@ -10,8 +10,8 @@
 ###################################################################################################################################################################
 
 resources:
-- repo: self
-  clean: true
+# - repo: self
+#   clean: true
 # queue:
 #   name: VSEngSS-MicroBuild2022-1ES
 #   # https://docs.microsoft.com/en-us/azure/devops/pipelines/process/demands?view=azure-devops&tabs=yaml#manually-entered-demands
