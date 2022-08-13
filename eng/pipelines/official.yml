@@ -17,42 +17,67 @@ resources:
 #   # https://docs.microsoft.com/en-us/azure/devops/pipelines/process/demands?view=azure-devops&tabs=yaml#manually-entered-demands
 #   demands: Cmd
 #   timeoutInMinutes: 90
-variables:
-- group: OneLocBuildVariables
-- name: BuildConfiguration
-  value: Release
-- name: TeamName
-  value: DotNet-Project-System
-- name: BuildPlatform
-  value: any cpu
-- name: DOTNET_SKIP_FIRST_TIME_EXPERIENCE
-  value: true
-- name: Packaging.EnableSBOMSigning
-  value: true
-  # https://devdiv.visualstudio.com/DevDiv/_settings/agentqueues?queueId=3123&view=jobs
-- name: DefaultPoolName
-  value: VSEngSS-MicroBuild2022-1ES
-  # https://devdiv.visualstudio.com/DevDiv/_settings/agentqueues?queueId=3316&view=jobs
-  # This specific pool is required to access the \\cpvsbuild\DotNetTools\DotNet-Project-System share.
-- name: SymbolsPoolName
-  value: VSEng-ReleasePool-1ES
-  # https://docs.microsoft.com/en-us/azure/devops/pipelines/process/demands?view=azure-devops&tabs=yaml#manually-entered-demands
-- name: DefaultDemands
-  value: Cmd
+
+  # These are only used by the generate-optimizations.yml template.
+  pipelines:
+  # This name is the default value for the 'dartLabBuildResourceName' parameter in single-runsettings.yml.
+  - pipeline: DartLab
+    project: DevDiv
+    source: DartLab
+    branch: main
+  # This name is the default value for the 'dartLabOptProfBuildResourceName' parameter in single-runsettings.yml.
+  - pipeline: DartLab.OptProf
+    source: DartLab.OptProf
+    branch: main
+  repositories:
+  # This name is the default value for the 'dartLabTemplatesResourceName 'parameter in single-runsettings.yml.
+  - repository: DartLabTemplates
+    type: git
+    name: DartLab.Templates
+    ref: refs/heads/main
+  # This name is used in generate-optimizations.yml to access the single-runsettings.yml template.
+  - repository: DartLabOptProfTemplates
+    type: git
+    name: DartLab.OptProf
+    ref: refs/heads/main
+
 
 # variables:
-#   BuildConfiguration: Release
-#   TeamName: DotNet-Project-System
-#   BuildPlatform: any cpu
-#   DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true
-#   Packaging.EnableSBOMSigning: true
+# - group: OneLocBuildVariables
+# - name: BuildConfiguration
+#   value: Release
+# - name: TeamName
+#   value: DotNet-Project-System
+# - name: BuildPlatform
+#   value: any cpu
+# - name: DOTNET_SKIP_FIRST_TIME_EXPERIENCE
+#   value: true
+# - name: Packaging.EnableSBOMSigning
+#   value: true
 #   # https://devdiv.visualstudio.com/DevDiv/_settings/agentqueues?queueId=3123&view=jobs
-#   DefaultPoolName: VSEngSS-MicroBuild2022-1ES
+# - name: DefaultPoolName
+#   value: VSEngSS-MicroBuild2022-1ES
 #   # https://devdiv.visualstudio.com/DevDiv/_settings/agentqueues?queueId=3316&view=jobs
 #   # This specific pool is required to access the \\cpvsbuild\DotNetTools\DotNet-Project-System share.
-#   SymbolsPoolName: VSEng-ReleasePool-1ES
+# - name: SymbolsPoolName
+#   value: VSEng-ReleasePool-1ES
 #   # https://docs.microsoft.com/en-us/azure/devops/pipelines/process/demands?view=azure-devops&tabs=yaml#manually-entered-demands
-#   DefaultDemands: Cmd
+# - name: DefaultDemands
+#   value: Cmd
+
+variables:
+  BuildConfiguration: Release
+  TeamName: DotNet-Project-System
+  BuildPlatform: any cpu
+  DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true
+  Packaging.EnableSBOMSigning: true
+  # https://devdiv.visualstudio.com/DevDiv/_settings/agentqueues?queueId=3123&view=jobs
+  DefaultPoolName: VSEngSS-MicroBuild2022-1ES
+  # https://devdiv.visualstudio.com/DevDiv/_settings/agentqueues?queueId=3316&view=jobs
+  # This specific pool is required to access the \\cpvsbuild\DotNetTools\DotNet-Project-System share.
+  SymbolsPoolName: VSEng-ReleasePool-1ES
+  # https://docs.microsoft.com/en-us/azure/devops/pipelines/process/demands?view=azure-devops&tabs=yaml#manually-entered-demands
+  DefaultDemands: Cmd
 parameters:
 - name: SignType
   displayName: Sign Type
@@ -98,6 +123,8 @@ stages:
   dependsOn: []
   jobs:
   - template: templates/generate-localization.yml
+
+- template: templates/generate-optimization.yml
 
 # - stage: Insertion
 #   displayName: Insertion

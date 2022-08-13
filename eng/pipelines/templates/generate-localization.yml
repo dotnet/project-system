@@ -7,6 +7,10 @@ jobs:
   pool:
     name: $(DefaultPoolName)
     demands: $(DefaultDemands)
+  variables:
+  # Variable group containing the PATs required for running OneLocBuild.
+  # See: https://devdiv.visualstudio.com/DevDiv/_library?itemType=VariableGroups&view=VariableGroupView&variableGroupId=343&path=OneLocBuildVariables
+  - group: OneLocBuildVariables
   steps:
 
   ###################################################################################################################################################################
@@ -35,9 +39,11 @@ jobs:
     inputs:
       locProj: $(Build.StagingDirectory)/loc/LocProject.json
       repoType: gitHub
-      gitHubPatVariable: $(OneLocBuildGitHubPAT)
+      # Uses the dotnet-bot account for creating PRs: https://github.com/dotnet-bot
+      gitHubPatVariable: $(BotAccount-dotnet-bot-repo-PAT)
       packageSourceAuth: patAuth
-      patVariable: $(OneLocBuildCeapexPAT)
+      # Provides read access to the ceapex AzDO instance: https://dev.azure.com/ceapex/
+      patVariable: $(dn-bot-ceapex-package-r)
       isCreatePrSelected: true
       isAutoCompletePrSelected: false
 
