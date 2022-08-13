@@ -4,8 +4,8 @@ stages:
 # This template is provided by the DartLabOptProfTemplates repo, declared in the resources section of official.yml.
 - template: \templates\stages\visual-studio\single-runsettings.yml@DartLabOptProfTemplates
   parameters:
-    name: GenerateOptimizations
-    displayName: Generate Optimizations
+    name: Optimization
+    displayName: Optimization
     dependsOn:
     - Publish
     - Compliance

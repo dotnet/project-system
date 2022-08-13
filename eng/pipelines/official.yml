@@ -124,7 +124,22 @@ stages:
   jobs:
   - template: templates/generate-localization.yml
 
-- template: templates/generate-optimizations.yml
+# - template: templates/generate-optimizations.yml
+
+# This template is provided by the DartLabOptProfTemplates repo, declared in the repositories section (top of this file).
+- template: \templates\stages\visual-studio\single-runsettings.yml@DartLabOptProfTemplates
+  parameters:
+    name: Optimization
+    displayName: Optimization
+    dependsOn:
+    - Publish
+    - Compliance
+    runSettingsURI: https://vsdrop.corp.microsoft.com/file/v1/RunSettings/$(System.TeamProject)/dotnet/project-system/$(Build.SourceBranchName)/$(Build.BuildId);OptProf.runsettings
+    # This variable is set during the 'Update RunSettings' (UpdateRunSettings.ps1) step in the publish-assets-and-packages.yml.
+    visualStudioBootstrapperURI: $(visualStudioBootstrapperURI)
+    # The output of the optimization process. The first half of the path is provided to the DropNamePrefix input in the 'Install OptProf Plugin' (MicroBuildOptProfPlugin) step in build-official-release.yml.
+    optOptimizationInputsDropName: OptimizationInputs/$(System.TeamProject)/$(Build.Repository.Name)/$(Build.SourceVersion)/$(Build.BuildId)/$(System.StageAttempt)
+    testLabPoolName: VS-Platform
 
 # - stage: Insertion
 #   displayName: Insertion
