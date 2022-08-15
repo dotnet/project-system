@@ -42,7 +42,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
         private static string? GetLinkFilePath(IImmutableDictionary<string, string> metadata)
         {
             // This mimic's CPS's handling of Link metadata
-            if (metadata.TryGetValue(Compile.LinkProperty, out string linkFilePath) && !string.IsNullOrWhiteSpace(linkFilePath))
+            if (metadata.TryGetValue(Compile.LinkProperty, out string? linkFilePath) && !string.IsNullOrWhiteSpace(linkFilePath))
             {
                 return linkFilePath.TrimEnd(Delimiter.Path);
             }

@@ -9,8 +9,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
     ///     Handles changes to Compile items during project evaluations and items that are passed
     ///     to the compiler during design-time builds.
     /// </summary>
-    [Export(typeof(IWorkspaceContextHandler))]
-    internal class CompileItemHandler : AbstractEvaluationCommandLineHandler, IWorkspaceContextHandler, IProjectEvaluationHandler, ICommandLineHandler
+    [Export(typeof(IWorkspaceUpdateHandler))]
+    internal class CompileItemHandler : AbstractEvaluationCommandLineHandler, IWorkspaceUpdateHandler, IProjectEvaluationHandler, ICommandLineHandler
     {
         private readonly UnconfiguredProject _project;
 
