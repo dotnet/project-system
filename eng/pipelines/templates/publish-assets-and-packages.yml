@@ -144,6 +144,11 @@ jobs:
     displayName: Update RunSettings
     failOnStderr: true
 
+  - script: |
+        echo "Key Value: "
+        echo $(UpdateRunSettings.visualStudioBootstrapperURI)
+      name: Print_Key_value
+
   # The runsettings drives the test process for producing optimization data.
   # https://eng.ms/docs/cloud-ai-platform/developer-services/one-engineering-system-1es/1es-docs/azure-artifacts/drop-service/using-azure-devops-drop-in-devops-build
   - task: artifactDropTask@1
