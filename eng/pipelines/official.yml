@@ -113,7 +113,8 @@ stages:
   dependsOn: Build
   jobs:
   - template: templates/analyze-compliance.yml
-  - template: templates/analyze-api.yml
+  # TODO: Temporarily disabling as we're trying to test more things downstream. This takes too much time.
+  # - template: templates/analyze-api.yml
   # TODO: Commented out for since I cannot get the build for the analyzer to recognize global namespaces.
   # - template: templates/analyze-vulnerabilities.yml
 
