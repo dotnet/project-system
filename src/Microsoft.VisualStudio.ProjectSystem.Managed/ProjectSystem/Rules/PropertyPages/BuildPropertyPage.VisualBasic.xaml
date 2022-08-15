@@ -362,11 +362,13 @@
   <BoolProperty Name="RemoveIntegerChecks"
                 DisplayName="Remove integer overflow checks"
                 HelpUrl="https://go.microsoft.com/fwlink/?linkid=2196163"
+                Description="Remove integer overflow checking."
                 Category="Advanced" />
 
   <BoolProperty Name="Optimize"
                 DisplayName="Enable optimizations"
                 HelpUrl="https://go.microsoft.com/fwlink/?linkid=2196163"
+                Description="Enable compiler optimizations."
                 Category="Advanced" />
 
   <!-- TODO: Validation -->
@@ -401,11 +403,13 @@
   <BoolProperty Name="DefineDebug"
                 DisplayName="Define DEBUG constant"
                 HelpUrl="https://go.microsoft.com/fwlink/?linkid=2196264"
+                Description="Specify DEBUG as a compilation constant."
                 Category="Advanced"/>
 
   <BoolProperty Name="DefineTrace"
                 DisplayName="Define TRACE constant"
                 HelpUrl="https://go.microsoft.com/fwlink/?linkid=2196264"
+                Description="Specify TRACE as a compilation constant."
                 Category="Advanced"/>
 
   <StringProperty Name="DefineConstants"
