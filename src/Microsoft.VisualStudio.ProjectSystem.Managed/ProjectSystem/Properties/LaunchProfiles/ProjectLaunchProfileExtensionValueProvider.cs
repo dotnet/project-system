@@ -15,12 +15,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
     /// itself. Those are handled by <see cref="LaunchProfileProjectProperties"/>.
     /// </para>
     /// </summary>
-    /// <remarks>
-    /// Not to be confused with <see cref="ActiveLaunchProfileExtensionValueProvider" />,
-    /// which serves a very similar purpose but reads and writes the _active_ profile
-    /// rather than a particular one, and will go away once the Launch Profiles UI is up
-    /// and running.
-    /// </remarks>
     [ExportLaunchProfileExtensionValueProvider(
         new[]
         {
