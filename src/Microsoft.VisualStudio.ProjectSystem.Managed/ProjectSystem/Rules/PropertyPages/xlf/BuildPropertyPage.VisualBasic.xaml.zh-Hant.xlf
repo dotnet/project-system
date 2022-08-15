@@ -3,8 +3,8 @@
   <file datatype="xml" source-language="en" target-language="zh-Hant" original="../BuildPropertyPage.VisualBasic.xaml">
     <body>
       <trans-unit id="BoolProperty|DefineDebug|Description">
-        <source>Whether to set a DEBUG constant.</source>
-        <target state="new">Whether to set a DEBUG constant.</target>
+        <source>Specify DEBUG as a compilation constant.</source>
+        <target state="new">Specify DEBUG as a compilation constant.</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|DefineDebug|DisplayName">
@@ -13,8 +13,8 @@
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|DefineTrace|Description">
-        <source>Whether to set a TRACE constant.</source>
-        <target state="new">Whether to set a TRACE constant.</target>
+        <source>Specify TRACE as a compilation constant.</source>
+        <target state="new">Specify TRACE as a compilation constant.</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|DefineTrace|DisplayName">
@@ -33,8 +33,8 @@
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|Optimize|Description">
-        <source>Select this check box to enable compiler optimizations.</source>
-        <target state="new">Select this check box to enable compiler optimizations.</target>
+        <source>Enable compiler optimizations.</source>
+        <target state="new">Enable compiler optimizations.</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|Optimize|DisplayName">
@@ -63,8 +63,8 @@
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|RemoveIntegerChecks|Description">
-        <source>Select this check box to remove integer overflow checking.</source>
-        <target state="new">Select this check box to remove integer overflow checking.</target>
+        <source>Remove integer overflow checking.</source>
+        <target state="new">Remove integer overflow checking.</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|RemoveIntegerChecks|DisplayName">
