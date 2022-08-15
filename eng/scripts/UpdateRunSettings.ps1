@@ -1,7 +1,7 @@
 # Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
 # This updates OptProf.runsettings with the bootstrapper information and the profiling inputs path, as TestStore nodes.
-# Additionally, sets the visualStudioBootstrapperURI variable in the AzDO pipeline, which is used for the OptProf DartLab template.
+# Additionally, sets the VisualStudio.InstallationUnderTest.BootstrapperURL variable in the AzDO pipeline, which is used for the OptProf DartLab template.
 
 param ([Parameter(Mandatory=$true)] [string] $profilingInputsPath, [string] $bootstrapperInfoPath, [string] $buildDropPath)
 
@@ -32,7 +32,7 @@ if(-not $buildDropPath)
   $buildDropJson = Get-Content $bootstrapperInfoPath | ConvertFrom-Json
   $dropHashAndGuid = $buildDropJson[0].BuildDrop.Replace('https://vsdrop.corp.microsoft.com/file/v1/Products/DevDiv/VS/', '')
   $buildDropPath = "vstsdrop:Tests/DevDiv/VS/$dropHashAndGuid"
-  Write-Host "##vso[task.setvariable variable=visualStudioBootstrapperURI;$($buildDropJson[0].bootstrapperUrl)]"
+  Write-Host "##vso[task.setvariable variable=VisualStudio.InstallationUnderTest.BootstrapperURL;$($buildDropJson[0].bootstrapperUrl)]"
 }
 $buildDropStore.SetAttribute('Uri', $buildDropPath)
 $null = $testStores.AppendChild($buildDropStore)
