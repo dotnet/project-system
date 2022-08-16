@@ -144,6 +144,7 @@ jobs:
     displayName: Update RunSettings
     failOnStderr: true
 
+  # TODO: THIS IS TEMPORARY OUTPUT
   - script: |
       echo "Key Value: "
       echo $(UpdateRunSettings.visualStudioBootstrapperURI)

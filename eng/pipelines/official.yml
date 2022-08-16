@@ -149,6 +149,14 @@ stages:
     optOptimizationInputsDropName: OptimizationInputs/$(System.TeamProject)/$(Build.Repository.Name)/$(Build.SourceVersion)/$(Build.BuildId)/$(System.StageAttempt)
     testLabPoolName: VS-Platform
 
+- stage: Insertion
+  displayName: Insertion
+  dependsOn:
+  - Publish
+  - Compliance
+  jobs:
+  - template: templates/generate-insertion.yml
+
 # - stage: Insertion
 #   displayName: Insertion
 #   dependsOn:

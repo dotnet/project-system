@@ -95,6 +95,11 @@ jobs:
   - script: $(Build.SourcesDirectory)/build.cmd /v:normal /p:Configuration=$(BuildConfiguration) /p:CIBuild=true
     displayName: Build All Projects
 
+  # TODO: THIS IS TEMPORARY OUTPUT
+  - script: |
+    echo $(NBGV_PackageVersion)
+  name: Print_Key_value
+
   # Creates the VS bootstrapper information based on the build's .vsman file.
   # This bootstrapper information is only used for OptProf currently.
   # Since this data will be output with rest of our insertion files, we produce this data now and publish it in the build artifacts.

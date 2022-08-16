@@ -1,0 +1,94 @@
+# Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
+
+jobs:
+- job: GenerateInsertion
+  displayName: Generate Insertion
+  timeoutInMinutes: 30
+  pool:
+    name: $(DefaultPoolName)
+    demands: $(DefaultDemands)
+  steps:
+
+  ###################################################################################################################################################################
+  # GENERATE VS INSERTION
+  ###################################################################################################################################################################
+
+  # Use a disabled, empty script to display the section header in the pipeline UI.
+  - script:
+    displayName: === Generate VS Insertion ===
+    condition: false
+
+
+
+  - task: MicroBuildRetainVstsDrops@1
+    displayName: Retain Drop for Insertion
+    inputs:
+      DropNames: Products/$(System.TeamProject)/$(Build.Repository.Name)/$(Build.SourceBranchName)/$(Build.BuildNumber)
+      DropServiceUri: https://devdiv.artifacts.visualstudio.com/DefaultCollection
+
+  # TODO: THIS IS TEMPORARY OUTPUT
+  - script: |
+      echo $(NBGV_PackageVersion)
+    name: Print_Key_value
+
+  # https://devdiv.visualstudio.com/DevDiv/_wiki/wikis/DevDiv.wiki/635/Overview?anchor=**build-pipeline**
+  - task: MicroBuildInsertVsPayload@4
+    displayName: Create VS Insertion PR
+    TargetBranch: main
+    # InsertionTopicBranch: 'topic branch name'
+    TeamName: Project System
+    TeamEmail: dotnetdevexproj@microsoft.com
+    ComponentJsonValues: https://vsdrop.corp.microsoft.com/file/v1/Products/$(System.TeamProject)/$(Build.Repository.Name)/$(Build.SourceBranchName)/$(Build.BuildNumber);Microsoft.VisualStudio.Editors.vsman,https://vsdrop.corp.microsoft.com/file/v1/Products/$(System.TeamProject)/$(Build.Repository.Name)/$(Build.SourceBranchName)/$(Build.BuildNumber);Microsoft.VisualStudio.ProjectSystem.Managed.vsman
+    DefaultConfigValues: Microsoft.VisualStudio.AppDesigner=$(NBGV_PackageVersion),Microsoft.VisualStudio.Editors=$(NBGV_PackageVersion),Microsoft.VisualStudio.ProjectSystem.Managed=$(NBGV_PackageVersion),Microsoft.VisualStudio.ProjectSystem.Managed.VS=$(NBGV_PackageVersion)
+    # PackagePropsValues: Microsoft.VisualStudio.AppDesigner=$(NBGV_PackageVersion),Microsoft.VisualStudio.Editors=$(NBGV_PackageVersion),Microsoft.VisualStudio.ProjectSystem.Managed=$(NBGV_PackageVersion),Microsoft.VisualStudio.ProjectSystem.Managed.VS=$(NBGV_PackageVersion)
+    AllowTopicBranchUpdate: true
+    # InsertionDescription: 'description'
+    InsertionReviewers: '.NET Project System'
+    InsertionBuildPolicy: Request Perf DDRITs
+
+
+
+
+
+
+
+
+  # # Creates the LocProject.json and perform some necessary file copying and renaming.
+  # - task: DotNetCoreCLI@2
+  #   displayName: Run Setup
+  #   inputs:
+  #     command: run
+  #     projects: eng/tools/OneLocBuildSetup/OneLocBuildSetup.csproj
+  #     # The -- allows us to pass parameters to the application that is being ran.
+  #     # See: https://docs.microsoft.com/en-us/dotnet/core/tools/dotnet-run#options
+  #     arguments: '-- -r "$(System.DefaultWorkingDirectory)" -o "$(Build.StagingDirectory)"'
+
+  # # Runs the localization process on the resource files provided within LocProject.json.
+  # # Details for the process can be found here: https://ceapex.visualstudio.com/CEINTL/_wiki/wikis/CEINTL.wiki/107/Localization-with-OneLocBuild-Task
+  # - task: OneLocBuild@2
+  #   displayName: Run OneLocBuild
+  #   inputs:
+  #     locProj: $(Build.StagingDirectory)/loc/LocProject.json
+  #     repoType: gitHub
+  #     # Uses the dotnet-bot account for creating PRs: https://github.com/dotnet-bot
+  #     gitHubPatVariable: $(BotAccount-dotnet-bot-repo-PAT)
+  #     packageSourceAuth: patAuth
+  #     # Provides read access to the ceapex AzDO instance: https://dev.azure.com/ceapex/
+  #     patVariable: $(dn-bot-ceapex-package-r)
+  #     isCreatePrSelected: true
+  #     isAutoCompletePrSelected: false
+
+  ###################################################################################################################################################################
+  # PUBLISH ARTIFACTS
+  ###################################################################################################################################################################
+
+  # # Use a disabled, empty script to display the section header in the pipeline UI.
+  # - script:
+  #   displayName: === Publish Artifacts ===
+  #   condition: false
+
+  # # Publishes any associated information related to the OneLocBuild process.
+  # - publish: $(Build.StagingDirectory)/loc
+  #   displayName: Publish Localization Artifacts
+  #   artifact: OneLocBuild
+  #   condition: succeededOrFailed()
