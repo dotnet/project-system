@@ -31,7 +31,22 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
         Private _codeDomProvider As CodeDomProvider
         Private _serviceProvider As ServiceProvider
 
+        ' Constants for properties to be generated.
         Private Const MyNamespaceName As String = "My"
+        Private Const _mainFormFieldName As String = "MainForm"
+        Private Const _singleInstanceFieldName As String = "IsSingleInstance"
+        Private Const _shutdownModeFieldName As String = "ShutDownStyle"
+        Private Const _enableVisualStylesFieldName As String = "EnableVisualStyles"
+        Private Const _saveMySettingsOnExitFieldName As String = "SaveMySettingsOnExit"
+        Private Const _splashScreenFieldName As String = "SplashScreen"
+        Private Const _highDpiModeFieldName As String = "HighDpiMode"
+
+        Private Const _highDpiMode_DpiUnaware = "DpiUnaware"
+        Private Const _highDpiMode_SystemAware = "SystemAware"
+        Private Const _highDpiMode_PerMonitor = "PerMonitor"
+        Private Const _highDpiMode_PerMonitorV2 = "PerMonitorV2"
+        Private Const _highDpiMode_DpiUnawareGdiScaled = "DpiUnawareGdiScaled"
+
         Friend Const SingleFileGeneratorName As String = "MyApplicationCodeGenerator"
 
         ''' <summary>
@@ -196,23 +211,40 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
                 '  GENERATED CODE:
                 '    Me.IsSingleInstance = <True/False>
                 '    Me.EnableVisualStyles = <True/False>
-                '    Me.ShutDownStyle = ApplicationServices.ShutdownMode.xxx
-                '    Me.SaveMySettingsOnExit = <True/False>
+                '    Me.SaveMySettingsOnExit = <True/False>                
                 '
-                AddFieldPrimitiveAssignment(Constructor, "IsSingleInstance", MyApplication.SingleInstance)
-                AddFieldPrimitiveAssignment(Constructor, "EnableVisualStyles", MyApplication.EnableVisualStyles)
-                AddFieldPrimitiveAssignment(Constructor, "SaveMySettingsOnExit", MyApplication.SaveMySettingsOnExit)
+                AddFieldPrimitiveAssignment(Constructor, _singleInstanceFieldName, MyApplication.SingleInstance)
+                AddFieldPrimitiveAssignment(Constructor, _enableVisualStylesFieldName, MyApplication.EnableVisualStyles)
+                AddFieldPrimitiveAssignment(Constructor, _saveMySettingsOnExitFieldName, MyApplication.SaveMySettingsOnExit)
 
-                '
+                '    Me.ShutDownStyle = ApplicationServices.ShutdownMode.xxx
                 Dim EnumType As Type
                 EnumType = GetType(ApplicationServices.ShutdownMode)
                 If MyApplication.ShutdownMode = ApplicationServices.ShutdownMode.AfterAllFormsClose Then
-                    AddFieldAssignment(Constructor, "ShutDownStyle", EnumType, "AfterAllFormsClose")
+                    AddFieldAssignment(Constructor, _shutdownModeFieldName, EnumType, "AfterAllFormsClose")
                 ElseIf MyApplication.ShutdownMode = ApplicationServices.ShutdownMode.AfterMainFormCloses Then
-                    AddFieldAssignment(Constructor, "ShutDownStyle", EnumType, "AfterMainFormCloses")
+                    AddFieldAssignment(Constructor, _shutdownModeFieldName, EnumType, "AfterMainFormCloses")
                 Else
                     Debug.Fail("Unexpected MyApplication.ShutdownMode")
                 End If
+
+                '    Me.HighDpiMode = HighDpiMode.xxx
+                Dim HighDpiValue As String
+                Select Case MyApplication.HighDpiMode
+                    Case 0
+                        HighDpiValue = _highDpiMode_DpiUnaware
+                    Case 1
+                        HighDpiValue = _highDpiMode_SystemAware
+                    Case 2
+                        HighDpiValue = _highDpiMode_PerMonitor
+                    Case 3
+                        HighDpiValue = _highDpiMode_PerMonitorV2
+                    Case 4
+                        HighDpiValue = _highDpiMode_DpiUnawareGdiScaled
+                    Case Else
+                        HighDpiValue = ""
+                End Select
+                AddFieldAssignment(Constructor, _highDpiModeFieldName, _highDpiModeFieldName, HighDpiValue)
 
                 GeneratedType.Members.Add(Constructor)
 
@@ -257,7 +289,7 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
                             .Name = "OnCreateMainForm"
                         }
                         AddAttribute(OnCreateMainForm, DebuggerStepThroughAttribute, True)
-                        AddDefaultFormAssignment(OnCreateMainForm, "MainForm", ProjectRootNamespace, MyApplication.MainFormNoRootNS)
+                        AddDefaultFormAssignment(OnCreateMainForm, _mainFormFieldName, ProjectRootNamespace, MyApplication.MainFormNoRootNS)
                         GeneratedType.Members.Add(OnCreateMainForm)
                     End If
                 End If
@@ -290,7 +322,7 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
                             .Name = "OnCreateSplashScreen"
                         }
                         AddAttribute(OnCreateSplashScreen, DebuggerStepThroughAttribute, True)
-                        AddDefaultFormAssignment(OnCreateSplashScreen, "SplashScreen", ProjectRootNamespace, MyApplication.SplashScreenNoRootNS)
+                        AddDefaultFormAssignment(OnCreateSplashScreen, _splashScreenFieldName, ProjectRootNamespace, MyApplication.SplashScreenNoRootNS)
                         GeneratedType.Members.Add(OnCreateSplashScreen)
                     End If
                 End If
@@ -355,6 +387,25 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
             TypeRef = New CodeTypeReference(EnumType) With {
                 .Options = CodeTypeReferenceOptions.GlobalReference
             }
+
+            Dim value1 As New CodeFieldReferenceExpression(New CodeTypeReferenceExpression(TypeRef), EnumFieldName)
+            Statement.Right = value1
+            Method.Statements.Add(Statement)
+        End Sub
+
+        ' Overload of AddFieldAssignment to accept a String instead of a Type for EnumType '
+        ' Background: For the case of HighDpiMode, the actual Type is only available in the Designer OOP server-side.
+        ' So to use types, we would need to generate this also in the server-side.
+        ' We don 't think it's necessary though, and consider it is too much of an effort,
+        ' so we decided to use a String for the type name client side.
+        Private Shared Sub AddFieldAssignment(Method As CodeMemberMethod, FieldName As String, EnumType As String, EnumFieldName As String)
+            Dim Statement As CodeAssignStatement
+            Statement = New CodeAssignStatement With {
+                .Left = New CodeFieldReferenceExpression(New CodeThisReferenceExpression(), FieldName)
+            }
+
+            Dim TypeRef As CodeTypeReference
+            TypeRef = New CodeTypeReference(EnumType)
 
             Dim value1 As New CodeFieldReferenceExpression(New CodeTypeReferenceExpression(TypeRef), EnumFieldName)
             Statement.Right = value1

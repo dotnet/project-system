@@ -1,4 +1,4 @@
-' Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
+﻿' Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
 Namespace Microsoft.VisualStudio.Editors.MyApplication
 
@@ -23,6 +23,7 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
         Private _authenticationMode As Integer
         Private _splashScreenNoRootNS As String 'Splash screen to use (without the root namespace)
         Private _saveMySettingsOnExit As Boolean 'Whether to save My.Settings on shutdown
+        Private _highDpiMode As Integer
 
         Private _dirty As Boolean
 
@@ -111,6 +112,16 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
             End Get
             Set
                 _saveMySettingsOnExit = value
+                IsDirty = True
+            End Set
+        End Property
+
+        Public Property HighDpiMode As Integer
+            Get
+                Return _highDpiMode
+            End Get
+            Set
+                _highDpiMode = Value
                 IsDirty = True
             End Set
         End Property

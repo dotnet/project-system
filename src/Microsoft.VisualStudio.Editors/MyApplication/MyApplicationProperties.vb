@@ -86,6 +86,7 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
         SplashScreen = 8
         ' ApplicationType = 9 ' OBSOLETE
         SaveMySettingsOnExit = 10
+        HigDpiMode = 11
     End Enum
 
     ''' <summary>
@@ -105,6 +106,7 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
         <DispId(MyAppDISPIDs.SplashScreen)> Property SplashScreen As String
         ' <DispId(MyAppDISPIDs.ApplicationType)> Property ApplicationType() As Integer ' OBSOLETE
         <DispId(MyAppDISPIDs.SaveMySettingsOnExit)> Property SaveMySettingsOnExit As Boolean
+        <DispId(MyAppDISPIDs.HigDpiMode)> Property HighDpiMode As Integer
     End Interface
 
     Friend Interface IMyApplicationPropertiesInternal 'Not publicly exposed - for internal use only
@@ -192,6 +194,7 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
         Private Const PROPNAME_SaveMySettingsOnExit As String = "SaveMySettingsOnExit"
         Private Const PROPNAME_AuthenticationMode As String = "AuthenticationMode"
         Private Const PROPNAME_SplashScreen As String = "SplashScreen"
+        Private Const PROPNAME_HighDpiMode As String = "HighDpiMode"
 
         Private _projectHierarchy As IVsHierarchy
         Private WithEvents _myAppDocData As DocData 'The DocData which backs the MyApplication.myapp file
@@ -589,6 +592,34 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
 
                     'Notify users of property change
                     OnPropertyChanged(PROPNAME_SplashScreen)
+                End If
+            End Set
+        End Property
+
+        Friend Property HighDpiMode As Integer Implements IMyApplicationPropertiesInternal.HighDpiMode
+            Get
+                Return _myAppData.HighDpiMode
+            End Get
+            Set
+                Select Case Value
+                    Case _
+                    0, ' There is no ApplicationService.HighDpiMode available to do it more clean.
+                    1,
+                    2,
+                    3,
+                    4
+                        ' Valid - continue
+                    Case Else
+                        Throw New ArgumentOutOfRangeException(NameOf(Value))
+                End Select
+
+                If _myAppData.HighDpiMode <> Value Then
+                    CheckOutDocData()
+                    _myAppData.HighDpiMode = Value
+                    FlushToDocData()
+
+                    'Notify users of property change
+                    OnPropertyChanged(PROPNAME_highDpiMode)
                 End If
             End Set
         End Property
