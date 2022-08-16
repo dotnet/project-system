@@ -95,8 +95,7 @@
                 DisplayName="High DPI mode"
                 Description="Specifies the application-wide HighDpiMode for the application. This setting can be programaticaly overriden through the ApplyApplicationDefaults event."
                 HelpUrl="https://go.microsoft.com/fwlink/?linkid=2195173"
-                Category="ApplicationFramework"
-                Visible="False">
+                Category="ApplicationFramework">
     <EnumProperty.DataSource>
       <DataSource Persistence="ProjectFileWithInterception"
                   HasConfigurationCondition="False" />
@@ -110,15 +109,15 @@
     </EnumProperty.Metadata>
 
     <!-- TODO: Validate DisplayName values. -->
-    <EnumValue Name="DpiUnaware"
+    <EnumValue Name="0"
                DisplayName="DPI unaware - No scaling and assuming 100% scaling." />
-    <EnumValue Name="DpiUnawareGdiScaled"
+    <EnumValue Name="4"
                DisplayName="DPI unaware, GDI scaled - Like DPI unaware but optimized for non-double-buffered Graphics content." />
-    <EnumValue Name="SystemAware"
+    <EnumValue Name="1"
                DisplayName="System aware - Primary monitor's DPI is scale lead." />
-    <EnumValue Name="PerMonitor"
+    <EnumValue Name="2"
                DisplayName="Per monitor - DPI detected on-launch and on-change." />
-    <EnumValue Name="PerMonitorV2"
+    <EnumValue Name="3"
                DisplayName="Per monitor V2 - DPI detected on-launch and on-change including child windows" />
   </EnumProperty>
 
