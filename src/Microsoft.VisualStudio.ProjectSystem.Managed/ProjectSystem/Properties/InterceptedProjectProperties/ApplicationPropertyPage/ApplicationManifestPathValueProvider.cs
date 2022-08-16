@@ -19,7 +19,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         private readonly UnconfiguredProject _unconfiguredProject;
 
         private const string ApplicationManifestMSBuildProperty = "ApplicationManifest";
-
+        private static readonly string[] s_msBuildPropertyNames = { ApplicationManifestMSBuildProperty };
+        
         [ImportingConstructor]
         public ApplicationManifestPathValueProvider(UnconfiguredProject project)
         {
@@ -28,7 +29,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
 
         public override Task<bool> IsValueDefinedInContextAsync(string propertyName, IProjectProperties defaultProperties)
         {
-            return IsValueDefinedInContextMsBuildPropertiesAsync(defaultProperties,new [] { ApplicationManifestMSBuildProperty });
+            return IsValueDefinedInContextMsBuildPropertiesAsync(defaultProperties, s_msBuildPropertyNames);
         }
 
         public override Task<string> OnGetEvaluatedPropertyValueAsync(string propertyName, string evaluatedPropertyValue, IProjectProperties defaultProperties)

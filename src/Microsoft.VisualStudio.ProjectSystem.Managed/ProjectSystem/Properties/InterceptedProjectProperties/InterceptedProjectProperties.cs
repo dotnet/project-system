@@ -47,7 +47,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
             if (valueProvider.Value is IInterceptingPropertyValueProvider2 valueProviderValueWithMsBuildProperties)
             {
                 return await valueProviderValueWithMsBuildProperties.IsValueDefinedInContextAsync(propertyName, DelegatedProperties);
-                
             }
 
             return await base.IsValueInheritedAsync(propertyName);

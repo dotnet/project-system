@@ -25,6 +25,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         private const string CustomManifestValue = "CustomManifest";
         private readonly ITemporaryPropertyStorage _temporaryPropertyStorage;
 
+        private static readonly string[] s_msBuildPropertyNames = { NoManifestMSBuildProperty, ApplicationManifestMSBuildProperty };
+        
         [ImportingConstructor]
         public ApplicationManifestKindValueProvider(ITemporaryPropertyStorage temporaryPropertyStorage)
         {
@@ -33,7 +35,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
 
         public override Task<bool> IsValueDefinedInContextAsync(string propertyName, IProjectProperties defaultProperties)
         {
-            return IsValueDefinedInContextMsBuildPropertiesAsync(defaultProperties, new [] { NoManifestMSBuildProperty, ApplicationManifestMSBuildProperty });
+            return IsValueDefinedInContextMsBuildPropertiesAsync(defaultProperties, s_msBuildPropertyNames);
         }
 
         /// <summary>

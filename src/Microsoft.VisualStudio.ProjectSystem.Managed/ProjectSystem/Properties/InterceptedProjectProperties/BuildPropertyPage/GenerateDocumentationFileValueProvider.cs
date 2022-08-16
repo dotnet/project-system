@@ -8,7 +8,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         private readonly ITemporaryPropertyStorage _temporaryPropertyStorage;
 
         private const string DocumentationFileMSBuildProperty = "DocumentationFile";
-
+        private static readonly string[] s_msBuildPropertyNames = { DocumentationFileMSBuildProperty };
+        
         [ImportingConstructor]
         public GenerateDocumentationFileValueProvider(ITemporaryPropertyStorage temporaryPropertyStorage)
         {
@@ -17,7 +18,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
 
         public override Task<bool> IsValueDefinedInContextAsync(string propertyName, IProjectProperties defaultProperties)
         {
-            return IsValueDefinedInContextMsBuildPropertiesAsync(defaultProperties, new [] { DocumentationFileMSBuildProperty });
+            return IsValueDefinedInContextMsBuildPropertiesAsync(defaultProperties, s_msBuildPropertyNames);
         }
 
         public override async Task<string?> OnSetPropertyValueAsync(string propertyName, string unevaluatedPropertyValue, IProjectProperties defaultProperties, IReadOnlyDictionary<string, string>? dimensionalConditions = null)

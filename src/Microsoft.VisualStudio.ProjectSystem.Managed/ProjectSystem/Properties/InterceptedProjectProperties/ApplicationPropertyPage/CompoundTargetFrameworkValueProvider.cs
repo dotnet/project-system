@@ -29,6 +29,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         private bool? _useWPFProperty;
         private bool? _useWindowsFormsProperty;
 
+        private static readonly string[] s_msBuildPropertyNames = { TargetFrameworkProperty, TargetPlatformProperty, TargetPlatformVersionProperty, SupportedOSPlatformVersionProperty };
+
         private struct ComplexTargetFramework
         {
             public string? TargetFrameworkMoniker;
@@ -52,7 +54,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
 
         public override Task<bool> IsValueDefinedInContextAsync(string propertyName, IProjectProperties defaultProperties)
         {
-            return IsValueDefinedInContextMsBuildPropertiesAsync(defaultProperties, new [] { TargetFrameworkProperty, TargetPlatformProperty, TargetPlatformVersionProperty, SupportedOSPlatformVersionProperty });
+            return IsValueDefinedInContextMsBuildPropertiesAsync(defaultProperties, s_msBuildPropertyNames);
         }
 
         public override async Task<string?> OnSetPropertyValueAsync(string propertyName, string unevaluatedPropertyValue, IProjectProperties defaultProperties, IReadOnlyDictionary<string, string>? dimensionalConditions = null)
