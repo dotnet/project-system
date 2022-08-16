@@ -97,7 +97,7 @@ jobs:
   - task: MicroBuildUploadVstsDropFolder@2
     displayName: Publish Bootstrapper Data
     inputs:
-      DropFolder: $(Pipeline.Workspace)/Staging/MicroBuild/Output/bootstrapper
+      DropFolder: $(Pipeline.Workspace)/Staging/MicroBuild/Output
       # TODO: Change this to use $(GitBuildVersion) when working on: https://github.com/dotnet/project-system/issues/7911
       # https://github.com/dotnet/Nerdbank.GitVersioning/blob/main/doc/cloudbuild.md#automatically-match-cloud-build-numbers-to-to-your-git-version
       # 'Bootstrapper/[DevDiv]/[dotnet/project-system]/[main]/[x.x]'
