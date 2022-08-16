@@ -34,17 +34,18 @@ jobs:
   # https://devdiv.visualstudio.com/DevDiv/_wiki/wikis/DevDiv.wiki/635/Overview?anchor=**build-pipeline**
   - task: MicroBuildInsertVsPayload@4
     displayName: Create VS Insertion PR
-    TargetBranch: main
-    # InsertionTopicBranch: 'topic branch name'
-    TeamName: Project System
-    TeamEmail: dotnetdevexproj@microsoft.com
-    ComponentJsonValues: https://vsdrop.corp.microsoft.com/file/v1/Products/$(System.TeamProject)/$(Build.Repository.Name)/$(Build.SourceBranchName)/$(Build.BuildNumber);Microsoft.VisualStudio.Editors.vsman,https://vsdrop.corp.microsoft.com/file/v1/Products/$(System.TeamProject)/$(Build.Repository.Name)/$(Build.SourceBranchName)/$(Build.BuildNumber);Microsoft.VisualStudio.ProjectSystem.Managed.vsman
-    DefaultConfigValues: Microsoft.VisualStudio.AppDesigner=$(NBGV_PackageVersion),Microsoft.VisualStudio.Editors=$(NBGV_PackageVersion),Microsoft.VisualStudio.ProjectSystem.Managed=$(NBGV_PackageVersion),Microsoft.VisualStudio.ProjectSystem.Managed.VS=$(NBGV_PackageVersion)
-    # PackagePropsValues: Microsoft.VisualStudio.AppDesigner=$(NBGV_PackageVersion),Microsoft.VisualStudio.Editors=$(NBGV_PackageVersion),Microsoft.VisualStudio.ProjectSystem.Managed=$(NBGV_PackageVersion),Microsoft.VisualStudio.ProjectSystem.Managed.VS=$(NBGV_PackageVersion)
-    AllowTopicBranchUpdate: true
-    # InsertionDescription: 'description'
-    InsertionReviewers: '.NET Project System'
-    InsertionBuildPolicy: Request Perf DDRITs
+    inputs:
+      TargetBranch: main
+      # InsertionTopicBranch: 'topic branch name'
+      TeamName: Project System
+      TeamEmail: dotnetdevexproj@microsoft.com
+      ComponentJsonValues: https://vsdrop.corp.microsoft.com/file/v1/Products/$(System.TeamProject)/$(Build.Repository.Name)/$(Build.SourceBranchName)/$(Build.BuildNumber);Microsoft.VisualStudio.Editors.vsman,https://vsdrop.corp.microsoft.com/file/v1/Products/$(System.TeamProject)/$(Build.Repository.Name)/$(Build.SourceBranchName)/$(Build.BuildNumber);Microsoft.VisualStudio.ProjectSystem.Managed.vsman
+      DefaultConfigValues: Microsoft.VisualStudio.AppDesigner=$(NBGV_PackageVersion),Microsoft.VisualStudio.Editors=$(NBGV_PackageVersion),Microsoft.VisualStudio.ProjectSystem.Managed=$(NBGV_PackageVersion),Microsoft.VisualStudio.ProjectSystem.Managed.VS=$(NBGV_PackageVersion)
+      # PackagePropsValues: Microsoft.VisualStudio.AppDesigner=$(NBGV_PackageVersion),Microsoft.VisualStudio.Editors=$(NBGV_PackageVersion),Microsoft.VisualStudio.ProjectSystem.Managed=$(NBGV_PackageVersion),Microsoft.VisualStudio.ProjectSystem.Managed.VS=$(NBGV_PackageVersion)
+      AllowTopicBranchUpdate: true
+      # InsertionDescription: 'description'
+      InsertionReviewers: '.NET Project System'
+      InsertionBuildPolicy: Request Perf DDRITs
 
 
 
