@@ -25,6 +25,8 @@ jobs:
     inputs:
       DropNames: Products/$(System.TeamProject)/$(Build.Repository.Name)/$(Build.SourceBranchName)/$(Build.BuildNumber)
       DropServiceUri: https://devdiv.artifacts.visualstudio.com/DefaultCollection
+      # When this isn't provided, the tool sets the --AadAuth flag instead of using --PatAuthEnvVar. The AadAuth doesn't seem to work for this situation.
+      AccessToken: $(System.AccessToken)
 
   # TODO: THIS IS TEMPORARY OUTPUT
   - script: |
