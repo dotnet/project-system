@@ -10,8 +10,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
     ///     Handles changes to the project file, and updates <see cref="IWorkspaceProjectContext.ProjectFilePath"/>
     ///     and <see cref="IWorkspaceProjectContext.DisplayName"/>.
     /// </summary>
-    [Export(typeof(IWorkspaceContextHandler))]
-    internal class ProjectFilePathAndDisplayNameEvaluationHandler : IWorkspaceContextHandler, IProjectEvaluationHandler
+    [Export(typeof(IWorkspaceUpdateHandler))]
+    internal class ProjectFilePathAndDisplayNameEvaluationHandler : IWorkspaceUpdateHandler, IProjectEvaluationHandler
     {
         private readonly UnconfiguredProject _project;
         private readonly IImplicitlyActiveDimensionProvider _implicitlyActiveDimensionProvider;
