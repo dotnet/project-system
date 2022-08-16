@@ -1,0 +1,115 @@
+<ResourceDictionary
+  xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+  xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+  xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+  xmlns:vsfx="clr-namespace:Microsoft.VisualStudio.Shell;assembly=Microsoft.VisualStudio.Shell.15.0"
+  xmlns:platform="clr-namespace:Microsoft.Internal.VisualStudio.PlatformUI;assembly=Microsoft.VisualStudio.Shell.15.0"
+  xmlns:imaging="clr-namespace:Microsoft.VisualStudio.Imaging;assembly=Microsoft.VisualStudio.Imaging"
+  xmlns:catalog="clr-namespace:Microsoft.VisualStudio.Imaging;assembly=Microsoft.VisualStudio.ImageCatalog"
+  xmlns:system="clr-namespace:System;assembly=mscorlib"
+  xmlns:designer="clr-namespace:Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages.Designer;assembly=Microsoft.VisualStudio.ProjectSystem.VS"
+  mc:Ignorable="d">
+    
+    <!-- MULTI STRING SELECTOR PROPERTIES -->
+
+<!--<Style x:Key="MultiStringSelectorStyle" TargetType="controls:MultiStringSelectorControl">
+  <Setter Property="IsTabStop" Value="False" />
+  <Setter Property="Template">
+    <Setter.Value>
+      <ControlTemplate TargetType="controls:MultiStringSelectorControl">
+        <DockPanel>
+          <platform:HighlightTextBlock
+            DockPanel.Dock="Top"
+            Margin="0,0,0,6"
+            TextSource="{TemplateBinding MultiStringSelectorTypeDescriptorText}"
+            Style="{StaticResource HighlightTextBlockStyle}"
+            Foreground="{DynamicResource {x:Static vsui:CommonDocumentColors.SupportTextBrushKey}}"
+            MaxWidth="{StaticResource MaxDescriptionWidth}" />
+          
+          <DockPanel 
+            DockPanel.Dock="Top" 
+            HorizontalAlignment="Left" 
+            Visibility="{TemplateBinding AllowsCustomStrings, Converter={x:Static local:Converters.CollapsedWhenFalse}}"
+            KeyboardNavigation.TabNavigation="Local" 
+            Margin="0, 0, 0, 8">
+            <TextBox
+              Text="{Binding Path=EnteredUserString, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay}"
+              TextWrapping="Wrap"
+              Style="{StaticResource TextBoxStyle}"
+              AutomationProperties.Name="{x:Static local:Resources.MultiStringSelectorTextBoxAccessibleName}"/>
+            
+            <Button
+              DockPanel.Dock="Right"
+              Style="{StaticResource ButtonStyle}"
+              Content="{x:Static local:Resources.MultiStringSelectorEditorAddButtonText}"
+              Margin="8,0,0,0"
+              Command="{TemplateBinding AddUserStringCommand}" />
+          </DockPanel>
+          
+          <ListView 
+            ItemsSource="{TemplateBinding StringsCheckedState}" 
+            KeyboardNavigation.TabNavigation="Continue" 
+            Background="Transparent" 
+            MaxHeight="500"
+            AutomationProperties.Name="{x:Static local:Resources.MultiStringSelectorEditorStringListViewName}">
+            <ListView.ItemTemplate>
+              <DataTemplate DataType="controls:CheckableString">
+                <CheckBox
+                  IsChecked="{Binding IsChecked}"
+                  IsEnabled="{Binding IsReadOnly, Converter={x:Static local:Converters.InvertBoolean}}"
+                  Style="{StaticResource {x:Static vsfx:VsResourceKeys.CheckBoxStyleKey}}"
+                  Command="{Binding ToggleStringCommand}"
+                  CommandParameter="{Binding }"
+                  AutomationProperties.Name="{Binding Name}">
+                  <platform:HighlightTextBlock
+                    TextSource="{Binding Name, FallbackValue='', TargetNullValue=''}"
+                    Style="{StaticResource HighlightTextBlockStyle}"
+                    MaxWidth="{StaticResource MaxDescriptionWidth}" />
+                </CheckBox>
+              </DataTemplate>
+            </ListView.ItemTemplate>
+            <ListBox.ItemContainerStyle>
+              <Style TargetType="ListBoxItem">
+                <Setter Property="IsTabStop" Value="False"/>
+                <Setter Property="Focusable" Value="False" />
+              </Style>
+            </ListBox.ItemContainerStyle>
+          </ListView>
+        </DockPanel>
+      </ControlTemplate>
+    </Setter.Value>
+  </Setter>
+</Style>-->
+
+<DataTemplate x:Key="UnconfiguredCSharpImplicitUsingsTemplate" DataType="{x:Type designer:IPropertyValueViewModel}">
+    <TextBlock Text="unconfigured" />
+<!--
+    <controls:MultiStringSelectorControl 
+    StringList="{Binding UnevaluatedValue, Mode=TwoWay}" 
+    MultiStringSelectorTypeDescriptorText="{Binding Parent.EditorMetadata[TypeDescriptorText], FallbackValue={x:Null}}"
+    AllowsCustomStrings="{Binding Parent.EditorMetadata[AllowsCustomStrings], Converter={x:Static local:Converters.StringToNotNullBoolean}, FallbackValue=''}"
+    SupportedValues="{Binding SupportedValues}"
+    Style="{StaticResource MultiStringSelectorStyle}" />-->
+</DataTemplate>
+
+<DataTemplate x:Key="ConfiguredCSharpImplicitUsingsEditorTemplate" DataType="designer:IPropertyValueViewModel">
+    <TextBlock Text="configured" />
+    <!--<DockPanel Margin="0,2" HorizontalAlignment="Left">
+    <TextBlock DockPanel.Dock="Top" TextWrapping="Wrap" Foreground="{DynamicResource {x:Static vsui:CommonDocumentColors.HeaderTextBrushKey}}">
+      <TextBlock.Text>
+        <MultiBinding Converter="{x:Static local:Converters.DimensionNames}">
+          <Binding Path="Configuration" />
+          <Binding Path="Parent.Context.ConfigurationMatrix.DimensionNames" FallbackValue="{x:Static local:Converters.ImmutableStringArray}" />
+        </MultiBinding>
+      </TextBlock.Text>
+    </TextBlock>
+    <controls:MultiStringSelectorControl 
+      StringList="{Binding UnevaluatedValue, Mode=TwoWay}" 
+      MultiStringSelectorTypeDescriptorText="{Binding Parent.EditorMetadata[TypeDescriptorText], FallbackValue={x:Null}}"
+      AllowsCustomStrings="{Binding Parent.EditorMetadata[AllowsCustomStrings], Converter={x:Static local:Converters.StringToNotNullBoolean}, FallbackValue=''}"
+      SupportedValues="{Binding SupportedValues}"
+      Style="{StaticResource MultiStringSelectorStyle}" />
+  </DockPanel>-->
+</DataTemplate>
+</ResourceDictionary>

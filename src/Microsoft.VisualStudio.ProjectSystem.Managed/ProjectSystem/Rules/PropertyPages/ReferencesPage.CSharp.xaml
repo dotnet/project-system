@@ -1,9 +1,53 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information. -->
 <Rule Name="References"
-      Description="Specifies the project's references."
-      DisplayName="References"
+      Description="Settings associated with the C# implicit global usings feature."
+      DisplayName="Global Usings"
       PageTemplate="generic"
       Order="100"
       xmlns="http://schemas.microsoft.com/build/2009/properties">
+  <Rule.Categories>
+    <Category Name="General"
+              DisplayName="General"
+              Description="Global usings settings for C# projects." />
+  </Rule.Categories>
+
+  <Rule.DataSource>
+    <DataSource Persistence="ProjectFile"
+                SourceOfDefaultValue="AfterContext"
+                HasConfigurationCondition="False" />
+  </Rule.DataSource>
+
+  <BoolProperty Name="ImplicitUsings"
+                DisplayName="Implicit global usings"
+                Description="Enable implicit global usings to be declared by the project SDK."
+                Category="General">
+    <BoolProperty.DataSource>
+      <DataSource Persistence="ProjectFileWithInterception"
+                  SourceOfDefaultValue="AfterContext"
+                  HasConfigurationCondition="False" />
+    </BoolProperty.DataSource>
+    <BoolProperty.Metadata>
+      <NameValuePair Name="SearchTerms" Value="implicit" />
+      <NameValuePair Name="VisibilityCondition">
+        <NameValuePair.Value>(has-csharp-lang-version-or-greater "10")</NameValuePair.Value>
+      </NameValuePair>
+    </BoolProperty.Metadata>
+  </BoolProperty>
+  
+  <DynamicEnumProperty Name="ImplicitUsingsEditor"
+                       DisplayName="Manage Implicit Global Usings"
+                       Description="Manage which implicit global usings to use in your application."
+                       Category="General"
+                       EnumProvider="DotNetImportsEnumProvider">
+    <DynamicEnumProperty.DataSource>
+      <DataSource PersistedName="ImportedNamespaces"
+                  Persistence="ProjectFileWithInterception"
+                  HasConfigurationCondition="False" />
+    </DynamicEnumProperty.DataSource>
+    <DynamicEnumProperty.ValueEditors>
+      <ValueEditor EditorType="CSharpImplicitUsingsEditor" />
+    </DynamicEnumProperty.ValueEditors>
+  </DynamicEnumProperty>
+
 </Rule>
