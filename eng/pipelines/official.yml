@@ -137,6 +137,8 @@ stages:
     - Compliance
     variables:
     - name: visualStudioBootstrapperURI
+      # If you set this value to the visualStudioBootstrapperURI parameter directly, it does not resolve correctly.
+      # Instead, we set it to a variable and pass that variable into the parameter.
       value: $[ stageDependencies.Publish.PublishAssetsAndPackages.outputs['UpdateRunSettings.visualStudioBootstrapperURI'] ]
     runSettingsURI: https://vsdrop.corp.microsoft.com/file/v1/RunSettings/$(System.TeamProject)/dotnet/project-system/$(Build.SourceBranchName)/$(Build.BuildId);OptProf.runsettings
     # This variable is set during the 'Update RunSettings' (UpdateRunSettings.ps1) step in the publish-assets-and-packages.yml.

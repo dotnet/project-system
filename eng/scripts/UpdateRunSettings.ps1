@@ -32,8 +32,9 @@ if(-not $buildDropPath)
   $buildDropJson = Get-Content $bootstrapperInfoPath | ConvertFrom-Json
   $dropHashAndGuid = $buildDropJson[0].BuildDrop.Replace('https://vsdrop.corp.microsoft.com/file/v1/Products/DevDiv/VS/', '')
   $buildDropPath = "vstsdrop:Tests/DevDiv/VS/$dropHashAndGuid"
+  $bootstrapperUrl = $buildDropJson[0].bootstrapperUrl.Replace('https://vsdrop.corp.microsoft.com/file/v1/Products/', 'https://vsdrop.corp.microsoft.com/file/v1/Bootstrapper/')
   # https://docs.microsoft.com/en-us/azure/devops/pipelines/process/set-variables-scripts?view=azure-devops&tabs=powershell#set-variable-properties
-  Write-Host "##vso[task.setvariable variable=visualStudioBootstrapperURI;isoutput=true]$($buildDropJson[0].bootstrapperUrl)"
+  Write-Host "##vso[task.setvariable variable=visualStudioBootstrapperURI;isoutput=true]$bootstrapperUrl"
 }
 $buildDropStore.SetAttribute('Uri', $buildDropPath)
 $null = $testStores.AppendChild($buildDropStore)
