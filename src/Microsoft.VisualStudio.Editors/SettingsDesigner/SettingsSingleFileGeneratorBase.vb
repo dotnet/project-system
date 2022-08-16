@@ -144,7 +144,10 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                 '   appropriate code.
                 '
                 Dim projectRootNamespace As String = String.Empty
-
+                If isVB Then
+                    projectRootNamespace = GetProjectRootNamespace()
+                End If
+                
                 ' then get the CodeCompileUnit for this .settings file
                 '
                 Dim generatedClass As CodeTypeDeclaration = Nothing
@@ -253,7 +256,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             Dim ns as CodeNamespace
             
             If IsVb Then
-                ns = New CodeNamespace()
+                ns = New CodeNamespace(MyNamespaceName)
             Else
                 ns = New CodeNamespace(DesignerFramework.DesignUtil.GenerateValidLanguageIndependentNamespace(DefaultNamespace))
             End If
@@ -578,10 +581,14 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' </summary>
         ''' <param name="defaultNamespace">namespace into which we are generating (may be String.Empty)</param>
         ''' <param name="typeName">the type of the settings-class we are generating</param>
-        Private Shared Function GetFullTypeName(defaultNamespace As String, typeName As String) As String
+        Private Shared Function GetFullTypeName(projectRootNamespace As String, defaultNamespace As String, typeName As String) As String
 
             Dim fullTypeName As String = String.Empty
 
+            If projectRootNamespace <> "" Then
+                fullTypeName = projectRootNamespace & "."
+            End If
+            
             If defaultNamespace <> "" Then
                 fullTypeName &= defaultNamespace & "."
             End If
@@ -665,7 +672,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                 .HasSet = False
             }
 
-            Dim fullTypeReference As CodeTypeReference = New CodeTypeReference(GetFullTypeName(defaultNamespace, GeneratedType.Name)) With {
+            Dim fullTypeReference As CodeTypeReference = New CodeTypeReference(GetFullTypeName(projectRootNamespace, defaultNamespace, GeneratedType.Name)) With {
                 .Options = CodeTypeReferenceOptions.GlobalReference
             }
             SettingProperty.Type = fullTypeReference
