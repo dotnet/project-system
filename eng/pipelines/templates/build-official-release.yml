@@ -97,8 +97,8 @@ jobs:
 
   # TODO: THIS IS TEMPORARY OUTPUT
   - script: |
-    echo $(NBGV_PackageVersion)
-  name: Print_Key_value
+      echo $(NBGV_PackageVersion)
+    name: Print_Key_value
 
   # Creates the VS bootstrapper information based on the build's .vsman file.
   # This bootstrapper information is only used for OptProf currently.
