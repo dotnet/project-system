@@ -28,7 +28,7 @@ jobs:
 
   # TODO: THIS IS TEMPORARY OUTPUT
   - script: |
-      echo $(NBGV_PackageVersion)
+      echo $(NBGV_Version)
     name: Print_Key_value
 
   # https://devdiv.visualstudio.com/DevDiv/_wiki/wikis/DevDiv.wiki/635/Overview?anchor=**build-pipeline**
@@ -40,8 +40,8 @@ jobs:
       TeamName: Project System
       TeamEmail: dotnetdevexproj@microsoft.com
       ComponentJsonValues: https://vsdrop.corp.microsoft.com/file/v1/Products/$(System.TeamProject)/$(Build.Repository.Name)/$(Build.SourceBranchName)/$(Build.BuildNumber);Microsoft.VisualStudio.Editors.vsman,https://vsdrop.corp.microsoft.com/file/v1/Products/$(System.TeamProject)/$(Build.Repository.Name)/$(Build.SourceBranchName)/$(Build.BuildNumber);Microsoft.VisualStudio.ProjectSystem.Managed.vsman
-      DefaultConfigValues: Microsoft.VisualStudio.AppDesigner=$(NBGV_PackageVersion),Microsoft.VisualStudio.Editors=$(NBGV_PackageVersion),Microsoft.VisualStudio.ProjectSystem.Managed=$(NBGV_PackageVersion),Microsoft.VisualStudio.ProjectSystem.Managed.VS=$(NBGV_PackageVersion)
-      # PackagePropsValues: Microsoft.VisualStudio.AppDesigner=$(NBGV_PackageVersion),Microsoft.VisualStudio.Editors=$(NBGV_PackageVersion),Microsoft.VisualStudio.ProjectSystem.Managed=$(NBGV_PackageVersion),Microsoft.VisualStudio.ProjectSystem.Managed.VS=$(NBGV_PackageVersion)
+      DefaultConfigValues: Microsoft.VisualStudio.AppDesigner=$(NBGV_Version),Microsoft.VisualStudio.Editors=$(NBGV_Version),Microsoft.VisualStudio.ProjectSystem.Managed=$(NBGV_Version),Microsoft.VisualStudio.ProjectSystem.Managed.VS=$(NBGV_Version)
+      # PackagePropsValues: Microsoft.VisualStudio.AppDesigner=$(NBGV_Version),Microsoft.VisualStudio.Editors=$(NBGV_Version),Microsoft.VisualStudio.ProjectSystem.Managed=$(NBGV_Version),Microsoft.VisualStudio.ProjectSystem.Managed.VS=$(NBGV_Version)
       AllowTopicBranchUpdate: true
       # InsertionDescription: 'description'
       InsertionReviewers: '.NET Project System'

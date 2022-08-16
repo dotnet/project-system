@@ -97,7 +97,7 @@ jobs:
 
   # TODO: THIS IS TEMPORARY OUTPUT
   - script: |
-      echo $(NBGV_PackageVersion)
+      echo $(NBGV_Version)
     name: Print_Key_value
 
   # Creates the VS bootstrapper information based on the build's .vsman file.
