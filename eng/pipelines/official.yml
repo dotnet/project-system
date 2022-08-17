@@ -100,8 +100,8 @@ stages:
       SignType: ${{ parameters.SignType }}
       SkipOptimize: ${{ parameters.SkipOptimize }}
 
-- stage: Insertion
-  displayName: Insertion
+- stage: Variables
+  displayName: Variables
   dependsOn: Build
   variables:
     PackageVersion3: $[ stageDependencies.Build.BuildOfficialRelease.outputs['WritePackageVersion.PackageVersion'] ]
