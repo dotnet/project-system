@@ -141,7 +141,7 @@ jobs:
   # Using the VS bootstrapper data, update the runsettings with the appropriate information for this build.
   - powershell: . '$(Build.SourcesDirectory)/eng/scripts/UpdateRunSettings.ps1' -profilingInputsPath 'ProfilingInputs/$(System.TeamProject)/$(Build.Repository.Name)/$(Build.SourceBranchName)/$(Build.BuildId)' -bootstrapperInfoPath '$(Pipeline.Workspace)/Staging/MicroBuild/Output/BootstrapperInfo.json'
     displayName: Update RunSettings
-    # Required to reference the variables created within this build step in other stages.
+    # Name is required to reference the variables created within this build step in other stages.
     name: UpdateRunSettings
     failOnStderr: true
 

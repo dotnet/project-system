@@ -97,9 +97,17 @@ jobs:
     # Required to reference the variables created within this build step in other stages.
     name: BuildAllProjects
 
+  - powershell: Get-ChildItem -Path Env:\ | Format-List
+    displayName: Print Environment Variables
+
+  - powershell: Write-Host "##vso[task.setvariable variable=PackageVersion;isoutput=true]$(NBGV_NuGetPackageVersion)"
+    displayName: Write PackageVersion
+    # Name is required to reference the variables created within this build step in other stages.
+    name: WritePackageVersion
+
   # TODO: THIS IS TEMPORARY OUTPUT
   - script: |
-      echo $(BuildAllProjects.NBGV_NuGetPackageVersion)
+      echo $(WritePackageVersion.PackageVersion)
     name: Print_Key_value
 
   # Creates the VS bootstrapper information based on the build's .vsman file.

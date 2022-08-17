@@ -164,7 +164,7 @@ stages:
   jobs:
   - template: templates/generate-insertion.yml
     parameters:
-      PackageVersion: $[ stageDependencies.Build.BuildOfficialRelease.outputs['BuildAllProjects.NBGV_NuGetPackageVersion'] ]
+      PackageVersion: $[ stageDependencies.Build.BuildOfficialRelease.outputs['WritePackageVersion.PackageVersion'] ]
 
 # - stage: Insertion
 #   displayName: Insertion
