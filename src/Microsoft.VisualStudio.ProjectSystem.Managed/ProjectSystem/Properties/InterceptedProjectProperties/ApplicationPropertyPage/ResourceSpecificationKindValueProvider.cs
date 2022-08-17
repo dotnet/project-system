@@ -14,10 +14,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         internal const string IconAndManifestValue = "IconAndManifest";
         internal const string ResourceFileValue = "ResourceFile";
 
+        private static readonly string[] s_msBuildPropertyNames = { Win32ResourceMSBuildProperty, ApplicationIconMSBuildProperty, ApplicationManifestMSBuildProperty };
+
         [ImportingConstructor]
         public ResourceSpecificationKindValueProvider(ITemporaryPropertyStorage temporaryPropertyStorage)
         {
             _temporaryPropertyStorage = temporaryPropertyStorage;
+        }
+
+        public override Task<bool> IsValueDefinedInContextAsync(string propertyName, IProjectProperties defaultProperties)
+        {
+            return IsValueDefinedInContextMsBuildPropertiesAsync(defaultProperties, s_msBuildPropertyNames);
         }
 
         public override async Task<string?> OnSetPropertyValueAsync(string propertyName, string unevaluatedPropertyValue, IProjectProperties defaultProperties, IReadOnlyDictionary<string, string>? dimensionalConditions = null)

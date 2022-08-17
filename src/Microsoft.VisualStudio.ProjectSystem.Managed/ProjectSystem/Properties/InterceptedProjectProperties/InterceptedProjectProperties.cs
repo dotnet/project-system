@@ -37,6 +37,22 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
             _valueProviders = builder.ToImmutable();
         }
 
+        public override async Task<bool> IsValueInheritedAsync(string propertyName)
+        {
+            if (!_valueProviders.TryGetValue(propertyName, out Lazy<IInterceptingPropertyValueProvider, IInterceptingPropertyValueProviderMetadata>? valueProvider))
+            {
+                return await base.IsValueInheritedAsync(propertyName);
+            }
+
+            if (valueProvider.Value is IInterceptingPropertyValueProvider2 valueProviderValueWithMsBuildProperties)
+            {
+                return await valueProviderValueWithMsBuildProperties.IsValueDefinedInContextAsync(propertyName, DelegatedProperties);
+            }
+
+            return await base.IsValueInheritedAsync(propertyName);
+        }
+        
+
         public override async Task<string> GetEvaluatedPropertyValueAsync(string propertyName)
         {
             string evaluatedProperty = await base.GetEvaluatedPropertyValueAsync(propertyName);
