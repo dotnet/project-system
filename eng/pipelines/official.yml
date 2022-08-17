@@ -203,6 +203,7 @@ stages:
 - stage: Insertion
   displayName: Insertion
   dependsOn:
+  - Build
   - Publish
   - Compliance
   variables:
