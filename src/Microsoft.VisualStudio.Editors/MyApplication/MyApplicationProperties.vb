@@ -602,13 +602,7 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
             End Get
             Set
                 Select Case Value
-                    Case _
-                    0, ' There is no ApplicationService.HighDpiMode available to do it more clean.
-                    1,
-                    2,
-                    3,
-                    4
-                        ' Valid - continue
+                    Case 0 To 4 ' Valid - continue
                     Case Else
                         Throw New ArgumentOutOfRangeException(NameOf(Value))
                 End Select
