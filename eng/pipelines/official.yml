@@ -164,13 +164,40 @@ stages:
   variables:
     PackageVersion3: $[ stageDependencies.Build.BuildOfficialRelease.outputs['WritePackageVersion.PackageVersion'] ]
     PackageVersion4: $[ stageDependencies.Build.outputs['BuildOfficialRelease.WritePackageVersion.PackageVersion'] ]
+    PackageVersion5: $[ stageDependencies.Build.BuildOfficialRelease.outputs['BuildOfficialRelease.WritePackageVersion.PackageVersion'] ]
   jobs:
   - template: templates/generate-insertion.yml
     parameters:
       PackageVersion: $(PackageVersion3)
       PackageVersion4: $(PackageVersion4)
+      PackageVersionParam5: $(PackageVersion5)
     # parameters:
     #   PackageVersion: $[ stageDependencies.Build.BuildOfficialRelease.outputs['WritePackageVersion.PackageVersion'] ]
+  - job: TestVariables
+    displayName: Test Variables
+    timeoutInMinutes: 10
+    pool:
+      name: $(DefaultPoolName)
+      demands: $(DefaultDemands)
+    steps:
+    - powershell: Write-Host $[ stageDependencies.Build.BuildOfficialRelease.outputs['WritePackageVersion.PackageVersion'] ]
+      name: Print_Key_value
+    - powershell: Write-Host $[ stageDependencies.Build.outputs['BuildOfficialRelease.WritePackageVersion.PackageVersion'] ]
+      name: Print_Key_value_2
+    - powershell: Write-Host $[ stageDependencies.Build.BuildOfficialRelease.outputs['BuildOfficialRelease.WritePackageVersion.PackageVersion'] ]
+      name: Print_Key_value_3
+    - powershell: Write-Host $(PackageVersion3)
+      name: Print_Key_value3
+    - powershell: Write-Host $[variables.PackageVersion3]
+      name: Print_Key_value3_2
+    - powershell: Write-Host $(PackageVersion4)
+      name: Print_Key_value4
+    - powershell: Write-Host $[variables.PackageVersion4]
+      name: Print_Key_value4_2
+    - powershell: Write-Host $(PackageVersion5)
+      name: Print_Key_value5
+    - powershell: Write-Host $[variables.PackageVersion5]
+      name: Print_Key_value5_2
 
 # - stage: Insertion
 #   displayName: Insertion
