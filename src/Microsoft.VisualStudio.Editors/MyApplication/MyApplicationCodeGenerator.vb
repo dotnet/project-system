@@ -31,7 +31,22 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
         Private _codeDomProvider As CodeDomProvider
         Private _serviceProvider As ServiceProvider
 
+        ' Constants for properties to be generated.
         Private Const MyNamespaceName As String = "My"
+        Private Const MainFormFieldName As String = "MainForm"
+        Private Const SingleInstanceFieldName As String = "IsSingleInstance"
+        Private Const ShutdownModeFieldName As String = "ShutDownStyle"
+        Private Const EnableVisualStylesFieldName As String = "EnableVisualStyles"
+        Private Const SaveMySettingsOnExitFieldName As String = "SaveMySettingsOnExit"
+        Private Const SplashScreenFieldName As String = "SplashScreen"
+        Private Const HighDpiModeFieldName As String = "HighDpiMode"
+
+        Private Const HighDpiMode_DpiUnaware = "DpiUnaware"
+        Private Const HighDpiMode_SystemAware = "SystemAware"
+        Private Const HighDpiMode_PerMonitor = "PerMonitor"
+        Private Const HighDpiMode_PerMonitorV2 = "PerMonitorV2"
+        Private Const HighDpiMode_DpiUnawareGdiScaled = "DpiUnawareGdiScaled"
+
         Friend Const SingleFileGeneratorName As String = "MyApplicationCodeGenerator"
 
         ''' <summary>
@@ -196,27 +211,44 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
                 '  GENERATED CODE:
                 '    Me.IsSingleInstance = <True/False>
                 '    Me.EnableVisualStyles = <True/False>
-                '    Me.ShutDownStyle = ApplicationServices.ShutdownMode.xxx
-                '    Me.SaveMySettingsOnExit = <True/False>
+                '    Me.SaveMySettingsOnExit = <True/False>                
                 '
-                AddFieldPrimitiveAssignment(Constructor, "IsSingleInstance", MyApplication.SingleInstance)
-                AddFieldPrimitiveAssignment(Constructor, "EnableVisualStyles", MyApplication.EnableVisualStyles)
-                AddFieldPrimitiveAssignment(Constructor, "SaveMySettingsOnExit", MyApplication.SaveMySettingsOnExit)
+                AddFieldPrimitiveAssignment(Constructor, SingleInstanceFieldName, MyApplication.SingleInstance)
+                AddFieldPrimitiveAssignment(Constructor, EnableVisualStylesFieldName, MyApplication.EnableVisualStyles)
+                AddFieldPrimitiveAssignment(Constructor, SaveMySettingsOnExitFieldName, MyApplication.SaveMySettingsOnExit)
 
-                '
+                '    Me.ShutDownStyle = ApplicationServices.ShutdownMode.xxx
                 Dim EnumType As Type
                 EnumType = GetType(ApplicationServices.ShutdownMode)
                 If MyApplication.ShutdownMode = ApplicationServices.ShutdownMode.AfterAllFormsClose Then
-                    AddFieldAssignment(Constructor, "ShutDownStyle", EnumType, "AfterAllFormsClose")
+                    AddFieldAssignment(Constructor, ShutdownModeFieldName, EnumType, "AfterAllFormsClose")
                 ElseIf MyApplication.ShutdownMode = ApplicationServices.ShutdownMode.AfterMainFormCloses Then
-                    AddFieldAssignment(Constructor, "ShutDownStyle", EnumType, "AfterMainFormCloses")
+                    AddFieldAssignment(Constructor, ShutdownModeFieldName, EnumType, "AfterMainFormCloses")
                 Else
                     Debug.Fail("Unexpected MyApplication.ShutdownMode")
                 End If
 
+                '    Me.HighDpiMode = HighDpiMode.xxx
+                Dim HighDpiValue As String
+                Select Case MyApplication.HighDpiMode
+                    Case 0
+                        HighDpiValue = HighDpiMode_DpiUnaware
+                    Case 1
+                        HighDpiValue = HighDpiMode_SystemAware
+                    Case 2
+                        HighDpiValue = HighDpiMode_PerMonitor
+                    Case 3
+                        HighDpiValue = HighDpiMode_PerMonitorV2
+                    Case 4
+                        HighDpiValue = HighDpiMode_DpiUnawareGdiScaled
+                    Case Else
+                        HighDpiValue = String.Empty
+                End Select
+                AddFieldAssignment(Constructor, HighDpiModeFieldName, HighDpiModeFieldName, HighDpiValue)
+
                 GeneratedType.Members.Add(Constructor)
 
-                If MyApplication.MainFormNoRootNS <> "" Then
+                If MyApplication.MainFormNoRootNS <> String.Empty Then
                     'Create OnCreateMainForm override
                     '
                     '  GENERATED CODE:
@@ -257,12 +289,12 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
                             .Name = "OnCreateMainForm"
                         }
                         AddAttribute(OnCreateMainForm, DebuggerStepThroughAttribute, True)
-                        AddDefaultFormAssignment(OnCreateMainForm, "MainForm", ProjectRootNamespace, MyApplication.MainFormNoRootNS)
+                        AddDefaultFormAssignment(OnCreateMainForm, MainFormFieldName, ProjectRootNamespace, MyApplication.MainFormNoRootNS)
                         GeneratedType.Members.Add(OnCreateMainForm)
                     End If
                 End If
 
-                If MyApplication.SplashScreenNoRootNS <> "" Then
+                If MyApplication.SplashScreenNoRootNS <> String.Empty Then
                     'Create OnCreateSplashScreen override
                     '
                     '  GENERATED CODE:
@@ -290,7 +322,7 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
                             .Name = "OnCreateSplashScreen"
                         }
                         AddAttribute(OnCreateSplashScreen, DebuggerStepThroughAttribute, True)
-                        AddDefaultFormAssignment(OnCreateSplashScreen, "SplashScreen", ProjectRootNamespace, MyApplication.SplashScreenNoRootNS)
+                        AddDefaultFormAssignment(OnCreateSplashScreen, SplashScreenFieldName, ProjectRootNamespace, MyApplication.SplashScreenNoRootNS)
                         GeneratedType.Members.Add(OnCreateSplashScreen)
                     End If
                 End If
@@ -361,6 +393,25 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
             Method.Statements.Add(Statement)
         End Sub
 
+        ' Overload of AddFieldAssignment to accept a String instead of a Type for EnumType '
+        ' Background: For the case of HighDpiMode, the actual Type is only available in the Designer OOP server-side.
+        ' So, to use types, we would need to generate the whole code also server-side.
+        ' We don't think it's necessary though, and consider it is too much of an effort,
+        ' so we decided to use a String for the type name client side.
+        Private Shared Sub AddFieldAssignment(Method As CodeMemberMethod, FieldName As String, EnumType As String, EnumFieldName As String)
+            Dim Statement As CodeAssignStatement
+            Statement = New CodeAssignStatement With {
+                .Left = New CodeFieldReferenceExpression(New CodeThisReferenceExpression(), FieldName)
+            }
+
+            Dim TypeRef As CodeTypeReference
+            TypeRef = New CodeTypeReference(EnumType)
+
+            Dim value1 As New CodeFieldReferenceExpression(New CodeTypeReferenceExpression(TypeRef), EnumFieldName)
+            Statement.Right = value1
+            Method.Statements.Add(Statement)
+        End Sub
+
         ''' <summary>
         ''' Adds a statement to 'Method' in the form of "Me.xxx = FormX"
         ''' </summary>
@@ -375,7 +426,7 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
             '
             Debug.Assert(FieldName IsNot Nothing)
             If FormNameWithoutRootNamespace Is Nothing Then
-                FormNameWithoutRootNamespace = ""
+                FormNameWithoutRootNamespace = String.Empty
             End If
 
             If RootNamespace Is Nothing Then
@@ -392,7 +443,7 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
             Dim Hierarchy As IVsHierarchy = DirectCast(GetService(GetType(IVsHierarchy)), IVsHierarchy)
             Debug.Assert(Hierarchy IsNot Nothing, "Failed to get a Hierarchy item for item to generate code from")
             Dim data As MyApplicationData = Nothing
-            If InputString <> "" Then
+            If InputString <> String.Empty Then
                 ' We actually have some contents to deserialize.... 
                 Dim MyApplicationReader As New StringReader(InputString)
                 data = MyApplicationSerializer.Deserialize(MyApplicationReader)

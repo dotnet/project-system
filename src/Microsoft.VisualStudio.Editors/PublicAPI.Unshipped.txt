@@ -1,0 +1,2 @@
+Microsoft.VisualStudio.Editors.MyApplication.IVsMyApplicationProperties.HighDpiMode() -> Integer
+Microsoft.VisualStudio.Editors.MyApplication.IVsMyApplicationProperties.HighDpiMode(Value As Integer) -> Void

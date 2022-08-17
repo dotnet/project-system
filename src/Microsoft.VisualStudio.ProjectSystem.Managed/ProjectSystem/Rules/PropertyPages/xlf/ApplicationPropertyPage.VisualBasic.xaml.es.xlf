@@ -122,29 +122,29 @@
         <target state="translated">Modo de autenticación</target>
         <note />
       </trans-unit>
-      <trans-unit id="EnumValue|HighDpiMode.DpiUnawareGdiScaled|DisplayName">
-        <source>DPI unaware, GDI scaled - Like DPI unaware but optimized for non-double-buffered Graphics content.</source>
-        <target state="translated">Sin reconocimiento de PPP, GDI escalado: como con reconocimiento de PPP, pero optimizado para contenido gráfico sin búfer doble.</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="EnumValue|HighDpiMode.DpiUnaware|DisplayName">
+      <trans-unit id="EnumValue|HighDpiMode.0|DisplayName">
         <source>DPI unaware - No scaling and assuming 100% scaling.</source>
-        <target state="translated">Con reconocimiento de PPP: sin escala y se supone un 100 % de ajuste de escala.</target>
+        <target state="new">DPI unaware - No scaling and assuming 100% scaling.</target>
         <note />
       </trans-unit>
-      <trans-unit id="EnumValue|HighDpiMode.PerMonitorV2|DisplayName">
-        <source>Per monitor V2 - DPI detected on-launch and on-change including child windows</source>
-        <target state="translated">Por monitor V2: PPP detectado al iniciar y al cambiar, incluidas las ventanas secundarias</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="EnumValue|HighDpiMode.PerMonitor|DisplayName">
-        <source>Per monitor - DPI detected on-launch and on-change.</source>
-        <target state="translated">Por monitor: PPP detectado al iniciar y al cambiar.</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="EnumValue|HighDpiMode.SystemAware|DisplayName">
+      <trans-unit id="EnumValue|HighDpiMode.1|DisplayName">
         <source>System aware - Primary monitor's DPI is scale lead.</source>
-        <target state="translated">Con reconocimiento de sistema: el PPP del monitor principal es el cliente potencial de la escala.</target>
+        <target state="new">System aware - Primary monitor's DPI is scale lead.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|HighDpiMode.2|DisplayName">
+        <source>Per monitor - DPI detected on-launch and on-change.</source>
+        <target state="new">Per monitor - DPI detected on-launch and on-change.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|HighDpiMode.3|DisplayName">
+        <source>Per monitor V2 - DPI detected on-launch and on-change including child windows</source>
+        <target state="new">Per monitor V2 - DPI detected on-launch and on-change including child windows</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|HighDpiMode.4|DisplayName">
+        <source>DPI unaware, GDI scaled - Like DPI unaware but optimized for non-double-buffered Graphics content.</source>
+        <target state="new">DPI unaware, GDI scaled - Like DPI unaware but optimized for non-double-buffered Graphics content.</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|ShutdownMode.AfterAllFormsClose|DisplayName">
