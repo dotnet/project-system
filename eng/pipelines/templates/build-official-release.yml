@@ -111,8 +111,11 @@ jobs:
     name: Print_Key_value
   - powershell: Write-Host $(WritePackageVersion.PackageVersion)
     name: Print_Key_value_2
+  # DOESN'T WORK
   - powershell: Write-Host $[variables.WritePackageVersion.PackageVersion]
     name: Print_Key_value_3
+  - powershell: Write-Host $[variables.PackageVersion]
+    name: Print_Key_value_4
 
   # Creates the VS bootstrapper information based on the build's .vsman file.
   # This bootstrapper information is only used for OptProf currently.
@@ -132,6 +135,8 @@ jobs:
       vsMajorVersion: 17
       channelName: int.main
       manifests: $(Build.SourcesDirectory)/artifacts/$(BuildConfiguration)/VSSetup/Insertion/Microsoft.VisualStudio.ProjectSystem.Managed.vsman
+      # Outputting to the Insertion folder allows the bootstrapper to be published to the Products drop, along with our insertion files.
+      # The merged .vsman (OverlaidInstallerManifest.vsman) created by the bootstrapper assumes the bootstrapper will be output to the same drop (Products) as the insertion files.
       outputFolder: $(Build.SourcesDirectory)/artifacts/$(BuildConfiguration)/VSSetup/Insertion
 
   # This adds our source information to http://index (which is called Codex).
