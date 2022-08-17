@@ -163,10 +163,12 @@ stages:
   - Compliance
   variables:
     PackageVersion3: $[ stageDependencies.Build.BuildOfficialRelease.outputs['WritePackageVersion.PackageVersion'] ]
+    PackageVersion4: $[ stageDependencies.Build.outputs['BuildOfficialRelease.WritePackageVersion.PackageVersion'] ]
   jobs:
   - template: templates/generate-insertion.yml
     parameters:
       PackageVersion: $(PackageVersion3)
+      PackageVersion4: $(PackageVersion4)
     # parameters:
     #   PackageVersion: $[ stageDependencies.Build.BuildOfficialRelease.outputs['WritePackageVersion.PackageVersion'] ]
 

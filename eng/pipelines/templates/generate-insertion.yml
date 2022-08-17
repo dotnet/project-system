@@ -8,7 +8,8 @@ jobs:
     name: $(DefaultPoolName)
     demands: $(DefaultDemands)
   variables:
-    PackageVersion: ${{ parameters.PackageVersion }}
+    # PackageVersion: ${{ parameters.PackageVersion }}
+    PackageVersion: $[parameters.PackageVersion]
     PackageVersion2: $[ stageDependencies.Build.BuildOfficialRelease.outputs['WritePackageVersion.PackageVersion'] ]
   steps:
 
@@ -34,10 +35,20 @@ jobs:
   # TODO: THIS IS TEMPORARY OUTPUT
   - powershell: Write-Host $(PackageVersion)
     name: Print_Key_value
+  - powershell: Write-Host $[variables.PackageVersion]
+    name: Print_Key_value_2
+  - powershell: Write-Host $[parameters.PackageVersion]
+    name: Print_Key_value_3
   - powershell: Write-Host $(PackageVersion2)
     name: Print_Key_value2
   - powershell: Write-Host $(PackageVersion3)
     name: Print_Key_value3
+  - powershell: Write-Host $(PackageVersion4)
+    name: Print_Key_value4
+  - powershell: Write-Host $[variables.PackageVersion4]
+    name: Print_Key_value4_2
+  - powershell: Write-Host $[parameters.PackageVersion4]
+    name: Print_Key_value4_3
   # - script: |
   #     echo $(PackageVersion)
   #   name: Print_Key_value
