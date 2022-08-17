@@ -39,7 +39,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build.Diagnostics
 
             IVsFeatureFlags featureFlagsService = _featureFlagsService.Value;
 
-            return featureFlagsService.IsFeatureEnabled("ManagedProjectSystem.EnableIncrementalBuildFailureTelemetry", defaultValue: false);
+            return featureFlagsService.IsFeatureEnabled(FeatureFlagNames.EnableIncrementalBuildFailureTelemetry, defaultValue: false);
         }
 
         public Task ReportFailureAsync(string failureReason, string failureDescription, TimeSpan checkDuration, CancellationToken cancellationToken)

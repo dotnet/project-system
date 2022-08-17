@@ -94,7 +94,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
             bool featureFlagEnabled = false)
         {
             var featureFlagServiceMock = new Mock<IVsFeatureFlags>();
-            featureFlagServiceMock.Setup(m => m.IsFeatureEnabled(FeatureFlags.EnableNuGetRestoreCycleDetection, false)).Returns(featureFlagEnabled);
+            featureFlagServiceMock.Setup(m => m.IsFeatureEnabled(FeatureFlagNames.EnableNuGetRestoreCycleDetection, false)).Returns(featureFlagEnabled);
             var vsFeatureFlagsServiceService = new Mock<IVsUIService<SVsFeatureFlags, IVsFeatureFlags>>();
             vsFeatureFlagsServiceService.SetupGet(m => m.Value).Returns(featureFlagServiceMock.Object);
 

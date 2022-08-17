@@ -216,7 +216,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
 
             IVsFeatureFlags featureFlagsService = _featureFlagsService.Value;
 
-            return featureFlagsService.IsFeatureEnabled(FeatureFlags.EnableNuGetRestoreCycleDetection, defaultValue: false);
+            return featureFlagsService.IsFeatureEnabled(FeatureFlagNames.EnableNuGetRestoreCycleDetection, defaultValue: false);
         }
 
         private async Task<bool> NominateForRestoreAsync(ProjectRestoreInfo restoreInfo, CancellationToken cancellationToken)
