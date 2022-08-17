@@ -7,11 +7,11 @@ jobs:
   pool:
     name: $(DefaultPoolName)
     demands: $(DefaultDemands)
-  variables:
-    # PackageVersion: ${{ parameters.PackageVersion }}
-    # PackageVersion1: $[parameters.PackageVersion]
-    # PackageVersion2: $[ stageDependencies.Build.BuildOfficialRelease.outputs['WritePackageVersion.PackageVersion'] ]
-    PackageVersion: $[ stageDependencies.Build.BuildOfficialRelease.outputs['WritePackageVersion.PackageVersion'] ]
+  # variables:
+  #   # PackageVersion: ${{ parameters.PackageVersion }}
+  #   # PackageVersion1: $[parameters.PackageVersion]
+  #   # PackageVersion2: $[ stageDependencies.Build.BuildOfficialRelease.outputs['WritePackageVersion.PackageVersion'] ]
+  #   PackageVersion: $[ stageDependencies.Build.BuildOfficialRelease.outputs['WritePackageVersion.PackageVersion'] ]
   steps:
 
   ###################################################################################################################################################################
