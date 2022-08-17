@@ -94,10 +94,12 @@ jobs:
   # Runs the full build of the projects in the repository. See Build.proj for details.
   - script: $(Build.SourcesDirectory)/build.cmd /v:normal /p:Configuration=$(BuildConfiguration) /p:CIBuild=true
     displayName: Build All Projects
+    # Required to reference the variables created within this build step in other stages.
+    name: BuildAllProjects
 
   # TODO: THIS IS TEMPORARY OUTPUT
   - script: |
-      echo $(NBGV_Version)
+      echo $(BuildAllProjects.NBGV_NuGetPackageVersion)
     name: Print_Key_value
 
   # Creates the VS bootstrapper information based on the build's .vsman file.
@@ -118,7 +120,7 @@ jobs:
       vsMajorVersion: 17
       channelName: int.main
       manifests: $(Build.SourcesDirectory)/artifacts/$(BuildConfiguration)/VSSetup/Insertion/Microsoft.VisualStudio.ProjectSystem.Managed.vsman
-      outputFolder: $(Build.StagingDirectory)/MicroBuild/Output
+      outputFolder: $(Build.SourcesDirectory)/artifacts/$(BuildConfiguration)/VSSetup/Insertion
 
   # This adds our source information to http://index (which is called Codex).
   # https://github.com/Ref12/Codex

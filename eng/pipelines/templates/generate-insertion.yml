@@ -7,6 +7,8 @@ jobs:
   pool:
     name: $(DefaultPoolName)
     demands: $(DefaultDemands)
+  variables:
+    PackageVersion: ${{ parameters.PackageVersion }}
   steps:
 
   ###################################################################################################################################################################
@@ -30,7 +32,7 @@ jobs:
 
   # TODO: THIS IS TEMPORARY OUTPUT
   - script: |
-      echo $(NBGV_Version)
+      echo $(PackageVersion)
     name: Print_Key_value
 
   # https://devdiv.visualstudio.com/DevDiv/_wiki/wikis/DevDiv.wiki/635/Overview?anchor=**build-pipeline**
@@ -41,8 +43,8 @@ jobs:
       # InsertionTopicBranch: 'topic branch name'
       TeamName: Project System
       TeamEmail: dotnetdevexproj@microsoft.com
-      ComponentJsonValues: https://vsdrop.corp.microsoft.com/file/v1/Products/$(System.TeamProject)/$(Build.Repository.Name)/$(Build.SourceBranchName)/$(Build.BuildNumber);Microsoft.VisualStudio.Editors.vsman,https://vsdrop.corp.microsoft.com/file/v1/Products/$(System.TeamProject)/$(Build.Repository.Name)/$(Build.SourceBranchName)/$(Build.BuildNumber);Microsoft.VisualStudio.ProjectSystem.Managed.vsman
-      DefaultConfigValues: Microsoft.VisualStudio.AppDesigner=$(NBGV_Version),Microsoft.VisualStudio.Editors=$(NBGV_Version),Microsoft.VisualStudio.ProjectSystem.Managed=$(NBGV_Version),Microsoft.VisualStudio.ProjectSystem.Managed.VS=$(NBGV_Version)
+      ComponentJsonValues: Microsoft.VisualStudio.Editors.vsman=https://vsdrop.corp.microsoft.com/file/v1/Products/$(System.TeamProject)/$(Build.Repository.Name)/$(Build.SourceBranchName)/$(Build.BuildNumber);Microsoft.VisualStudio.Editors.vsman,Microsoft.VisualStudio.ProjectSystem.Managed.vsman=https://vsdrop.corp.microsoft.com/file/v1/Products/$(System.TeamProject)/$(Build.Repository.Name)/$(Build.SourceBranchName)/$(Build.BuildNumber);Microsoft.VisualStudio.ProjectSystem.Managed.vsman
+      DefaultConfigValues: Microsoft.VisualStudio.AppDesigner=$(PackageVersion),Microsoft.VisualStudio.Editors=$(PackageVersion),Microsoft.VisualStudio.ProjectSystem.Managed=$(PackageVersion),Microsoft.VisualStudio.ProjectSystem.Managed.VS=$(PackageVersion)
       # PackagePropsValues: Microsoft.VisualStudio.AppDesigner=$(NBGV_Version),Microsoft.VisualStudio.Editors=$(NBGV_Version),Microsoft.VisualStudio.ProjectSystem.Managed=$(NBGV_Version),Microsoft.VisualStudio.ProjectSystem.Managed.VS=$(NBGV_Version)
       AllowTopicBranchUpdate: true
       # InsertionDescription: 'description'

@@ -137,11 +137,18 @@ stages:
     - Compliance
     variables:
     - name: visualStudioBootstrapperURI
-      # If you set this value to the visualStudioBootstrapperURI parameter directly, it does not resolve correctly.
-      # Instead, we set it to a variable and pass that variable into the parameter.
+      # If you set this value to the visualStudioBootstrapperURI parameter directly, it does not resolve correctly. Instead, we set it to a variable and pass that variable into the parameter.
+      # For parameter, variable, and expression syntax/usage, see:
+      # - https://docs.microsoft.com/en-us/azure/devops/pipelines/process/variables?view=azure-devops&tabs=yaml%2Cbatch#understand-variable-syntax
+      # - https://docs.microsoft.com/en-us/azure/devops/pipelines/process/expressions?view=azure-devops
+      # - https://docs.microsoft.com/en-us/azure/devops/pipelines/process/runtime-parameters?view=azure-devops&tabs=script#how-can-i-use-variables-inside-of-templates
+      # For variables across stages, see:
+      # - https://arunksingh16.medium.com/azure-devops-share-variable-across-stages-9bca85abfe8a
+      # - https://stackoverflow.com/a/57488169/294804
       value: $[ stageDependencies.Publish.PublishAssetsAndPackages.outputs['UpdateRunSettings.visualStudioBootstrapperURI'] ]
     runSettingsURI: https://vsdrop.corp.microsoft.com/file/v1/RunSettings/$(System.TeamProject)/dotnet/project-system/$(Build.SourceBranchName)/$(Build.BuildId);OptProf.runsettings
     # This variable is set during the 'Update RunSettings' (UpdateRunSettings.ps1) step in the publish-assets-and-packages.yml.
+    # This variable is expanded when it is used: https://docs.microsoft.com/en-us/azure/devops/pipelines/process/variables?view=azure-devops&tabs=yaml%2Cbatch#macro-syntax-variables
     visualStudioBootstrapperURI: $(visualStudioBootstrapperURI)
     # visualStudioBootstrapperURI: $[ stageDependencies.Publish.PublishAssetsAndPackages.outputs['UpdateRunSettings.visualStudioBootstrapperURI'] ]
     # visualStudioBootstrapperURI: $[ stageDependencies.Publish.outputs['PublishAssetsAndPackages.UpdateRunSettings.visualStudioBootstrapperURI'] ]
@@ -156,6 +163,8 @@ stages:
   - Compliance
   jobs:
   - template: templates/generate-insertion.yml
+    parameters:
+      PackageVersion: $[ stageDependencies.Build.BuildOfficialRelease.outputs['BuildAllProjects.NBGV_NuGetPackageVersion'] ]
 
 # - stage: Insertion
 #   displayName: Insertion

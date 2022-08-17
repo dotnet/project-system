@@ -93,17 +93,17 @@ jobs:
     displayName: === Publish OptProf ===
     condition: false
 
-  # This creates the drop location and uploads the bootstrapper data (.vsman files) for OptProf.
-  - task: MicroBuildUploadVstsDropFolder@2
-    displayName: Publish Bootstrapper Data
-    inputs:
-      DropFolder: $(Pipeline.Workspace)/Staging/MicroBuild/Output
-      # TODO: Change this to use $(GitBuildVersion) when working on: https://github.com/dotnet/project-system/issues/7911
-      # https://github.com/dotnet/Nerdbank.GitVersioning/blob/main/doc/cloudbuild.md#automatically-match-cloud-build-numbers-to-to-your-git-version
-      # 'Bootstrapper/[DevDiv]/[dotnet/project-system]/[main]/[x.x]'
-      DropName: Bootstrapper/$(System.TeamProject)/$(Build.Repository.Name)/$(Build.SourceBranchName)/$(Build.BuildNumber)
-      # When this isn't provided, the tool sets the --AadAuth flag instead of using --PatAuthEnvVar. The AadAuth doesn't seem to work for this situation.
-      AccessToken: $(System.AccessToken)
+  # # This creates the drop location and uploads the bootstrapper data (.vsman files) for OptProf.
+  # - task: MicroBuildUploadVstsDropFolder@2
+  #   displayName: Publish Bootstrapper Data
+  #   inputs:
+  #     DropFolder: $(Pipeline.Workspace)/Staging/MicroBuild/Output
+  #     # TODO: Change this to use $(GitBuildVersion) when working on: https://github.com/dotnet/project-system/issues/7911
+  #     # https://github.com/dotnet/Nerdbank.GitVersioning/blob/main/doc/cloudbuild.md#automatically-match-cloud-build-numbers-to-to-your-git-version
+  #     # 'Bootstrapper/[DevDiv]/[dotnet/project-system]/[main]/[x.x]'
+  #     DropName: Bootstrapper/$(System.TeamProject)/$(Build.Repository.Name)/$(Build.SourceBranchName)/$(Build.BuildNumber)
+  #     # When this isn't provided, the tool sets the --AadAuth flag instead of using --PatAuthEnvVar. The AadAuth doesn't seem to work for this situation.
+  #     AccessToken: $(System.AccessToken)
 
   # This is required to deploy the tests to devdiv.artifacts.visualstudio.com for the 'Deploy tests' step in the release pipeline.
   # https://eng.ms/docs/cloud-ai-platform/developer-services/one-engineering-system-1es/1es-docs/azure-artifacts/drop-service/using-azure-devops-drop-in-devops-build
@@ -140,8 +140,9 @@ jobs:
 
   # Using the VS bootstrapper data, update the runsettings with the appropriate information for this build.
   - powershell: . '$(Build.SourcesDirectory)/eng/scripts/UpdateRunSettings.ps1' -profilingInputsPath 'ProfilingInputs/$(System.TeamProject)/$(Build.Repository.Name)/$(Build.SourceBranchName)/$(Build.BuildId)' -bootstrapperInfoPath '$(Pipeline.Workspace)/Staging/MicroBuild/Output/BootstrapperInfo.json'
-    name: UpdateRunSettings
     displayName: Update RunSettings
+    # Required to reference the variables created within this build step in other stages.
+    name: UpdateRunSettings
     failOnStderr: true
 
   # TODO: THIS IS TEMPORARY OUTPUT
