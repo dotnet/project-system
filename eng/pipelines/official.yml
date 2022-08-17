@@ -161,10 +161,14 @@ stages:
   dependsOn:
   - Publish
   - Compliance
+  variables:
+    PackageVersion3: $[ stageDependencies.Build.BuildOfficialRelease.outputs['WritePackageVersion.PackageVersion'] ]
   jobs:
   - template: templates/generate-insertion.yml
     parameters:
-      PackageVersion: $[ stageDependencies.Build.BuildOfficialRelease.outputs['WritePackageVersion.PackageVersion'] ]
+      PackageVersion: $(PackageVersion3)
+    # parameters:
+    #   PackageVersion: $[ stageDependencies.Build.BuildOfficialRelease.outputs['WritePackageVersion.PackageVersion'] ]
 
 # - stage: Insertion
 #   displayName: Insertion

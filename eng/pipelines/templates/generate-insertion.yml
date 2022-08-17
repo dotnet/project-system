@@ -9,6 +9,7 @@ jobs:
     demands: $(DefaultDemands)
   variables:
     PackageVersion: ${{ parameters.PackageVersion }}
+    PackageVersion2: $[ stageDependencies.Build.BuildOfficialRelease.outputs['WritePackageVersion.PackageVersion'] ]
   steps:
 
   ###################################################################################################################################################################
@@ -31,9 +32,15 @@ jobs:
       AccessToken: $(System.AccessToken)
 
   # TODO: THIS IS TEMPORARY OUTPUT
-  - script: |
-      echo $(PackageVersion)
+  - powershell: Write-Host $(PackageVersion)
     name: Print_Key_value
+  - powershell: Write-Host $(PackageVersion2)
+    name: Print_Key_value2
+  - powershell: Write-Host $(PackageVersion3)
+    name: Print_Key_value3
+  # - script: |
+  #     echo $(PackageVersion)
+  #   name: Print_Key_value
 
   # https://devdiv.visualstudio.com/DevDiv/_wiki/wikis/DevDiv.wiki/635/Overview?anchor=**build-pipeline**
   - task: MicroBuildInsertVsPayload@4
