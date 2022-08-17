@@ -100,49 +100,49 @@ stages:
       SignType: ${{ parameters.SignType }}
       SkipOptimize: ${{ parameters.SkipOptimize }}
 
-- stage: Variables
-  displayName: Variables
-  dependsOn: Build
-  variables:
-    PackageVersion3: $[ stageDependencies.Build.BuildOfficialRelease.outputs['WritePackageVersion.PackageVersion'] ]
-    PackageVersion4: $[ stageDependencies.Build.outputs['BuildOfficialRelease.WritePackageVersion.PackageVersion'] ]
-    PackageVersion5: $[ stageDependencies.Build.BuildOfficialRelease.outputs['BuildOfficialRelease.WritePackageVersion.PackageVersion'] ]
-  jobs:
-  - job: TestVariables
-    displayName: Test Variables
-    timeoutInMinutes: 10
-    pool:
-      name: $(DefaultPoolName)
-      demands: $(DefaultDemands)
-    variables:
-      PackageVersion6: $[ stageDependencies.Build.BuildOfficialRelease.outputs['WritePackageVersion.PackageVersion'] ]
-      PackageVersion7: $[ stageDependencies.Build.outputs['BuildOfficialRelease.WritePackageVersion.PackageVersion'] ]
-      PackageVersion8: $[ stageDependencies.Build.BuildOfficialRelease.outputs['BuildOfficialRelease.WritePackageVersion.PackageVersion'] ]
-    steps:
-    - powershell: Write-Host $[ stageDependencies.Build.BuildOfficialRelease.outputs['WritePackageVersion.PackageVersion'] ]
-      name: Print_Key_value
-    - powershell: Write-Host $[ stageDependencies.Build.outputs['BuildOfficialRelease.WritePackageVersion.PackageVersion'] ]
-      name: Print_Key_value_2
-    - powershell: Write-Host $[ stageDependencies.Build.BuildOfficialRelease.outputs['BuildOfficialRelease.WritePackageVersion.PackageVersion'] ]
-      name: Print_Key_value_3
-    - powershell: Write-Host $(PackageVersion3)
-      name: Print_Key_value3
-    - powershell: Write-Host $[variables.PackageVersion3]
-      name: Print_Key_value3_2
-    - powershell: Write-Host $(PackageVersion4)
-      name: Print_Key_value4
-    - powershell: Write-Host $[variables.PackageVersion4]
-      name: Print_Key_value4_2
-    - powershell: Write-Host $(PackageVersion5)
-      name: Print_Key_value5
-    - powershell: Write-Host $[variables.PackageVersion5]
-      name: Print_Key_value5_2
-    - powershell: Write-Host $(PackageVersion6)
-      name: Print_Key_value6
-    - powershell: Write-Host $(PackageVersion7)
-      name: Print_Key_value7
-    - powershell: Write-Host $(PackageVersion8)
-      name: Print_Key_value8
+# - stage: Variables
+#   displayName: Variables
+#   dependsOn: Build
+#   variables:
+#     PackageVersion3: $[ stageDependencies.Build.BuildOfficialRelease.outputs['WritePackageVersion.PackageVersion'] ]
+#     PackageVersion4: $[ stageDependencies.Build.outputs['BuildOfficialRelease.WritePackageVersion.PackageVersion'] ]
+#     PackageVersion5: $[ stageDependencies.Build.BuildOfficialRelease.outputs['BuildOfficialRelease.WritePackageVersion.PackageVersion'] ]
+#   jobs:
+#   - job: TestVariables
+#     displayName: Test Variables
+#     timeoutInMinutes: 10
+#     pool:
+#       name: $(DefaultPoolName)
+#       demands: $(DefaultDemands)
+#     variables:
+#       PackageVersion6: $[ stageDependencies.Build.BuildOfficialRelease.outputs['WritePackageVersion.PackageVersion'] ]
+#       PackageVersion7: $[ stageDependencies.Build.outputs['BuildOfficialRelease.WritePackageVersion.PackageVersion'] ]
+#       PackageVersion8: $[ stageDependencies.Build.BuildOfficialRelease.outputs['BuildOfficialRelease.WritePackageVersion.PackageVersion'] ]
+#     steps:
+#     - powershell: Write-Host $[ stageDependencies.Build.BuildOfficialRelease.outputs['WritePackageVersion.PackageVersion'] ]
+#       name: Print_Key_value
+#     - powershell: Write-Host $[ stageDependencies.Build.outputs['BuildOfficialRelease.WritePackageVersion.PackageVersion'] ]
+#       name: Print_Key_value_2
+#     - powershell: Write-Host $[ stageDependencies.Build.BuildOfficialRelease.outputs['BuildOfficialRelease.WritePackageVersion.PackageVersion'] ]
+#       name: Print_Key_value_3
+#     - powershell: Write-Host $(PackageVersion3)
+#       name: Print_Key_value3
+#     - powershell: Write-Host $[variables.PackageVersion3]
+#       name: Print_Key_value3_2
+#     - powershell: Write-Host $(PackageVersion4)
+#       name: Print_Key_value4
+#     - powershell: Write-Host $[variables.PackageVersion4]
+#       name: Print_Key_value4_2
+#     - powershell: Write-Host $(PackageVersion5)
+#       name: Print_Key_value5
+#     - powershell: Write-Host $[variables.PackageVersion5]
+#       name: Print_Key_value5_2
+#     - powershell: Write-Host $(PackageVersion6)
+#       name: Print_Key_value6
+#     - powershell: Write-Host $(PackageVersion7)
+#       name: Print_Key_value7
+#     - powershell: Write-Host $(PackageVersion8)
+#       name: Print_Key_value8
 
 - stage: Publish
   displayName: Publish
@@ -169,36 +169,34 @@ stages:
   jobs:
   - template: templates/generate-localization.yml
 
-# - template: templates/generate-optimizations.yml
-
 # This template is provided by the DartLabOptProfTemplates repo, declared in the repositories section (top of this file).
-- template: \templates\stages\visual-studio\single-runsettings.yml@DartLabOptProfTemplates
-  parameters:
-    name: Optimization
-    displayName: Optimization
-    dependsOn:
-    - Publish
-    - Compliance
-    variables:
-    - name: visualStudioBootstrapperURI
-      # If you set this value to the visualStudioBootstrapperURI parameter directly, it does not resolve correctly. Instead, we set it to a variable and pass that variable into the parameter.
-      # For parameter, variable, and expression syntax/usage, see:
-      # - https://docs.microsoft.com/en-us/azure/devops/pipelines/process/variables?view=azure-devops&tabs=yaml%2Cbatch#understand-variable-syntax
-      # - https://docs.microsoft.com/en-us/azure/devops/pipelines/process/expressions?view=azure-devops
-      # - https://docs.microsoft.com/en-us/azure/devops/pipelines/process/runtime-parameters?view=azure-devops&tabs=script#how-can-i-use-variables-inside-of-templates
-      # For variables across stages, see:
-      # - https://arunksingh16.medium.com/azure-devops-share-variable-across-stages-9bca85abfe8a
-      # - https://stackoverflow.com/a/57488169/294804
-      value: $[ stageDependencies.Publish.PublishAssetsAndPackages.outputs['UpdateRunSettings.visualStudioBootstrapperURI'] ]
-    runSettingsURI: https://vsdrop.corp.microsoft.com/file/v1/RunSettings/$(System.TeamProject)/dotnet/project-system/$(Build.SourceBranchName)/$(Build.BuildId);OptProf.runsettings
-    # This variable is set during the 'Update RunSettings' (UpdateRunSettings.ps1) step in the publish-assets-and-packages.yml.
-    # This variable is expanded when it is used: https://docs.microsoft.com/en-us/azure/devops/pipelines/process/variables?view=azure-devops&tabs=yaml%2Cbatch#macro-syntax-variables
-    visualStudioBootstrapperURI: $(visualStudioBootstrapperURI)
-    # visualStudioBootstrapperURI: $[ stageDependencies.Publish.PublishAssetsAndPackages.outputs['UpdateRunSettings.visualStudioBootstrapperURI'] ]
-    # visualStudioBootstrapperURI: $[ stageDependencies.Publish.outputs['PublishAssetsAndPackages.UpdateRunSettings.visualStudioBootstrapperURI'] ]
-    # The output of the optimization process. The first half of the path is provided to the DropNamePrefix input in the 'Install OptProf Plugin' (MicroBuildOptProfPlugin) step in build-official-release.yml.
-    optOptimizationInputsDropName: OptimizationInputs/$(System.TeamProject)/$(Build.Repository.Name)/$(Build.SourceVersion)/$(Build.BuildId)/$(System.StageAttempt)
-    testLabPoolName: VS-Platform
+# - template: \templates\stages\visual-studio\single-runsettings.yml@DartLabOptProfTemplates
+#   parameters:
+#     name: Optimization
+#     displayName: Optimization
+#     dependsOn:
+#     - Publish
+#     - Compliance
+#     variables:
+#     - name: visualStudioBootstrapperURI
+#       # If you set this value to the visualStudioBootstrapperURI parameter directly, it does not resolve correctly. Instead, we set it to a variable and pass that variable into the parameter.
+#       # For parameter, variable, and expression syntax/usage, see:
+#       # - https://docs.microsoft.com/en-us/azure/devops/pipelines/process/variables?view=azure-devops&tabs=yaml%2Cbatch#understand-variable-syntax
+#       # - https://docs.microsoft.com/en-us/azure/devops/pipelines/process/expressions?view=azure-devops
+#       # - https://docs.microsoft.com/en-us/azure/devops/pipelines/process/runtime-parameters?view=azure-devops&tabs=script#how-can-i-use-variables-inside-of-templates
+#       # For variables across stages, see:
+#       # - https://arunksingh16.medium.com/azure-devops-share-variable-across-stages-9bca85abfe8a
+#       # - https://stackoverflow.com/a/57488169/294804
+#       value: $[ stageDependencies.Publish.PublishAssetsAndPackages.outputs['UpdateRunSettings.visualStudioBootstrapperURI'] ]
+#     runSettingsURI: https://vsdrop.corp.microsoft.com/file/v1/RunSettings/$(System.TeamProject)/dotnet/project-system/$(Build.SourceBranchName)/$(Build.BuildId);OptProf.runsettings
+#     # This variable is set during the 'Update RunSettings' (UpdateRunSettings.ps1) step in the publish-assets-and-packages.yml.
+#     # This variable is expanded when it is used: https://docs.microsoft.com/en-us/azure/devops/pipelines/process/variables?view=azure-devops&tabs=yaml%2Cbatch#macro-syntax-variables
+#     visualStudioBootstrapperURI: $(visualStudioBootstrapperURI)
+#     # visualStudioBootstrapperURI: $[ stageDependencies.Publish.PublishAssetsAndPackages.outputs['UpdateRunSettings.visualStudioBootstrapperURI'] ]
+#     # visualStudioBootstrapperURI: $[ stageDependencies.Publish.outputs['PublishAssetsAndPackages.UpdateRunSettings.visualStudioBootstrapperURI'] ]
+#     # The output of the optimization process. The first half of the path is provided to the DropNamePrefix input in the 'Install OptProf Plugin' (MicroBuildOptProfPlugin) step in build-official-release.yml.
+#     optOptimizationInputsDropName: OptimizationInputs/$(System.TeamProject)/$(Build.Repository.Name)/$(Build.SourceVersion)/$(Build.BuildId)/$(System.StageAttempt)
+#     testLabPoolName: VS-Platform
 
 - stage: Insertion
   displayName: Insertion
@@ -218,41 +216,41 @@ stages:
       PackageVersionParam5: $(PackageVersion5)
     # parameters:
     #   PackageVersion: $[ stageDependencies.Build.BuildOfficialRelease.outputs['WritePackageVersion.PackageVersion'] ]
-  - job: TestVariables
-    displayName: Test Variables
-    timeoutInMinutes: 10
-    pool:
-      name: $(DefaultPoolName)
-      demands: $(DefaultDemands)
-    variables:
-      PackageVersion6: $[ stageDependencies.Build.BuildOfficialRelease.outputs['WritePackageVersion.PackageVersion'] ]
-      PackageVersion7: $[ stageDependencies.Build.outputs['BuildOfficialRelease.WritePackageVersion.PackageVersion'] ]
-      PackageVersion8: $[ stageDependencies.Build.BuildOfficialRelease.outputs['BuildOfficialRelease.WritePackageVersion.PackageVersion'] ]
-    steps:
-    - powershell: Write-Host $[ stageDependencies.Build.BuildOfficialRelease.outputs['WritePackageVersion.PackageVersion'] ]
-      name: Print_Key_value
-    - powershell: Write-Host $[ stageDependencies.Build.outputs['BuildOfficialRelease.WritePackageVersion.PackageVersion'] ]
-      name: Print_Key_value_2
-    - powershell: Write-Host $[ stageDependencies.Build.BuildOfficialRelease.outputs['BuildOfficialRelease.WritePackageVersion.PackageVersion'] ]
-      name: Print_Key_value_3
-    - powershell: Write-Host $(PackageVersion3)
-      name: Print_Key_value3
-    - powershell: Write-Host $[variables.PackageVersion3]
-      name: Print_Key_value3_2
-    - powershell: Write-Host $(PackageVersion4)
-      name: Print_Key_value4
-    - powershell: Write-Host $[variables.PackageVersion4]
-      name: Print_Key_value4_2
-    - powershell: Write-Host $(PackageVersion5)
-      name: Print_Key_value5
-    - powershell: Write-Host $[variables.PackageVersion5]
-      name: Print_Key_value5_2
-    - powershell: Write-Host $(PackageVersion6)
-      name: Print_Key_value6
-    - powershell: Write-Host $(PackageVersion7)
-      name: Print_Key_value7
-    - powershell: Write-Host $(PackageVersion8)
-      name: Print_Key_value8
+  # - job: TestVariables
+  #   displayName: Test Variables
+  #   timeoutInMinutes: 10
+  #   pool:
+  #     name: $(DefaultPoolName)
+  #     demands: $(DefaultDemands)
+  #   variables:
+  #     PackageVersion6: $[ stageDependencies.Build.BuildOfficialRelease.outputs['WritePackageVersion.PackageVersion'] ]
+  #     PackageVersion7: $[ stageDependencies.Build.outputs['BuildOfficialRelease.WritePackageVersion.PackageVersion'] ]
+  #     PackageVersion8: $[ stageDependencies.Build.BuildOfficialRelease.outputs['BuildOfficialRelease.WritePackageVersion.PackageVersion'] ]
+  #   steps:
+  #   - powershell: Write-Host $[ stageDependencies.Build.BuildOfficialRelease.outputs['WritePackageVersion.PackageVersion'] ]
+  #     name: Print_Key_value
+  #   - powershell: Write-Host $[ stageDependencies.Build.outputs['BuildOfficialRelease.WritePackageVersion.PackageVersion'] ]
+  #     name: Print_Key_value_2
+  #   - powershell: Write-Host $[ stageDependencies.Build.BuildOfficialRelease.outputs['BuildOfficialRelease.WritePackageVersion.PackageVersion'] ]
+  #     name: Print_Key_value_3
+  #   - powershell: Write-Host $(PackageVersion3)
+  #     name: Print_Key_value3
+  #   - powershell: Write-Host $[variables.PackageVersion3]
+  #     name: Print_Key_value3_2
+  #   - powershell: Write-Host $(PackageVersion4)
+  #     name: Print_Key_value4
+  #   - powershell: Write-Host $[variables.PackageVersion4]
+  #     name: Print_Key_value4_2
+  #   - powershell: Write-Host $(PackageVersion5)
+  #     name: Print_Key_value5
+  #   - powershell: Write-Host $[variables.PackageVersion5]
+  #     name: Print_Key_value5_2
+  #   - powershell: Write-Host $(PackageVersion6)
+  #     name: Print_Key_value6
+  #   - powershell: Write-Host $(PackageVersion7)
+  #     name: Print_Key_value7
+  #   - powershell: Write-Host $(PackageVersion8)
+  #     name: Print_Key_value8
 
 # - stage: Insertion
 #   displayName: Insertion
