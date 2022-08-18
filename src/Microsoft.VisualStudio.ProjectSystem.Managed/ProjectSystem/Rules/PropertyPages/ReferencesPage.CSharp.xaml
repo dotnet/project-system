@@ -35,19 +35,17 @@
     </BoolProperty.Metadata>
   </BoolProperty>
   
-  <DynamicEnumProperty Name="ImplicitUsingsEditor"
+  <StringProperty Name="ImplicitUsingsEditor"
                        DisplayName="Manage Implicit Global Usings"
                        Description="Manage which implicit global usings to use in your application."
-                       Category="General"
-                       EnumProvider="DotNetImportsEnumProvider">
-    <DynamicEnumProperty.DataSource>
-      <DataSource PersistedName="ImportedNamespaces"
-                  Persistence="ProjectFileWithInterception"
+                       Category="General">
+    <StringProperty.DataSource>
+      <DataSource Persistence="ProjectFileWithInterception"
                   HasConfigurationCondition="False" />
-    </DynamicEnumProperty.DataSource>
-    <DynamicEnumProperty.ValueEditors>
+    </StringProperty.DataSource>
+    <StringProperty.ValueEditors>
       <ValueEditor EditorType="CSharpImplicitUsingsEditor" />
-    </DynamicEnumProperty.ValueEditors>
-  </DynamicEnumProperty>
+    </StringProperty.ValueEditors>
+  </StringProperty>
 
 </Rule>

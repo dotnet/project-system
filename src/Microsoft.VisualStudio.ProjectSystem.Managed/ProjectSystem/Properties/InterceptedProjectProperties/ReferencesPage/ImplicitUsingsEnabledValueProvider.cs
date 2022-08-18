@@ -5,7 +5,7 @@ using Microsoft.VisualStudio.Threading;
 namespace Microsoft.VisualStudio.ProjectSystem.Properties
 {
     [ExportInterceptingPropertyValueProvider("ImplicitUsings", ExportInterceptingPropertyValueProviderFile.ProjectFile)]
-    internal sealed class ImplicitUsingsValueProvider : InterceptingPropertyValueProviderBase
+    internal sealed class ImplicitUsingsEnabledValueProvider : InterceptingPropertyValueProviderBase
     {
         private static readonly Task<string?> s_enableStringTaskResult = Task.FromResult<string?>("enable");
         private static readonly Task<string?> s_disableStringTaskResult = Task.FromResult<string?>("disable");

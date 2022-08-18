@@ -27,16 +27,6 @@
         <target state="new">General</target>
         <note />
       </trans-unit>
-      <trans-unit id="DynamicEnumProperty|ImplicitUsingsEditor|Description">
-        <source>Manage which implicit global usings to use in your application.</source>
-        <target state="new">Manage which implicit global usings to use in your application.</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="DynamicEnumProperty|ImplicitUsingsEditor|DisplayName">
-        <source>Manage Implicit Global Usings</source>
-        <target state="new">Manage Implicit Global Usings</target>
-        <note />
-      </trans-unit>
       <trans-unit id="Rule|References|Description">
         <source>Settings associated with the C# implicit global usings feature.</source>
         <target state="needs-review-translation">指定專案的參考。</target>
@@ -45,6 +35,16 @@
       <trans-unit id="Rule|References|DisplayName">
         <source>Global Usings</source>
         <target state="needs-review-translation">參考</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|ImplicitUsingsEditor|Description">
+        <source>Manage which implicit global usings to use in your application.</source>
+        <target state="new">Manage which implicit global usings to use in your application.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|ImplicitUsingsEditor|DisplayName">
+        <source>Manage Implicit Global Usings</source>
+        <target state="new">Manage Implicit Global Usings</target>
         <note />
       </trans-unit>
     </body>

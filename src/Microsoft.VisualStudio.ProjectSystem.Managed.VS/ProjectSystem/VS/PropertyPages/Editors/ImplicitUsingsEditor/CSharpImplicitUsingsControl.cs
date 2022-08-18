@@ -1,80 +1,50 @@
-﻿/********************************************************
-*                                                        *
-*   © Copyright (C) Microsoft. All rights reserved.      *
-*                                                        *
-*********************************************************/
+﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using Microsoft.VisualStudio.PlatformUI;
+using Microsoft.VisualStudio.ProjectSystem.Debug;
 using Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages.Designer;
 
 namespace Microsoft.VisualStudio.ProjectSystem.Properties.Controls
 {
-    /*internal sealed class CSharpImplicitUsingsControl : Control
+    internal sealed class CSharpImplicitUsingsControl : Control
     {
-        public static readonly DependencyProperty AllowsCustomStringsProperty = DependencyProperty.Register(
-            nameof(AllowsCustomStrings),
-            typeof(bool),
-            typeof(MultiStringSelectorControl),
-            new PropertyMetadata(false));
-
-        public static readonly DependencyProperty MultiStringSelectorTypeDescriptorTextProperty = DependencyProperty.Register(
-            nameof(MultiStringSelectorTypeDescriptorText),
-            typeof(string),
-            typeof(MultiStringSelectorControl),
-            new PropertyMetadata(null));
-
-        public static readonly DependencyProperty SupportedValuesProperty = DependencyProperty.Register(
-            nameof(SupportedValues),
-            typeof(IList<SupportedValue>),
-            typeof(MultiStringSelectorControl),
-            new PropertyMetadata(null, (o, e) => ((MultiStringSelectorControl)o).OnStringListOrSupportedValuesPropertyChanged()));
-
-        public static readonly DependencyProperty AddUserStringCommandProperty = DependencyProperty.Register(
-            nameof(AddUserStringCommand),
+        public static readonly DependencyProperty AddUserUsingCommandProperty = DependencyProperty.Register(
+            nameof(AddUserUsingCommand),
             typeof(ICommand),
-            typeof(MultiStringSelectorControl),
+            typeof(CSharpImplicitUsingsControl),
             new PropertyMetadata());
-
-        public static readonly DependencyProperty EnteredUserStringProperty = DependencyProperty.Register(
-            nameof(EnteredUserString),
-            typeof(string),
-            typeof(MultiStringSelectorControl),
-            new PropertyMetadata(string.Empty));
 
         public static readonly DependencyProperty StringListProperty = DependencyProperty.Register(
             nameof(StringList),
             typeof(string),
-            typeof(MultiStringSelectorControl),
+            typeof(CSharpImplicitUsingsControl),
             new PropertyMetadata(string.Empty, (o, e) => ((MultiStringSelectorControl)o).OnStringListOrSupportedValuesPropertyChanged()));
 
-        public static readonly DependencyProperty StringsCheckedStateProperty = DependencyProperty.Register(
-            nameof(StringsCheckedState),
-            typeof(ObservableCollection<CheckableString>),
-            typeof(MultiStringSelectorControl),
+        public static readonly DependencyProperty UsingCollectionStateProperty = DependencyProperty.Register(
+            nameof(UsingCollectionState),
+            typeof(ObservableCollection<ImplicitUsingsValueProvider.ImplicitUsing>),
+            typeof(CSharpImplicitUsingsControl),
             new PropertyMetadata());
 
         // Used to suppress event handling during our own updates, breaking infinite loops.
         private bool updating;
-        private readonly IKeyValuePairListEncoding encoding;
-        private readonly List<string> stringOrder;
 
-        public MultiStringSelectorControl()
+        public CSharpImplicitUsingsControl()
         {
-            this.encoding = new KeyValuePairListEncoding();
-            this.StringsCheckedState = new ObservableCollection<CheckableString>();
-            this.stringOrder = new List<string>();
+            UsingCollectionState = new ObservableCollection<ImplicitUsingsValueProvider.ImplicitUsing>();
 
-            this.AddUserStringCommand = new DelegateCommand<string>(_ =>
+            AddUserUsingCommand = new DelegateCommand<ImplicitUsingsValueProvider.ImplicitUsing>(newUsing =>
             {
-                if (!this.StringsCheckedState.Any(checkedString =>
-                        string.Equals(checkedString.Name, this.EnteredUserString, StringComparison.Ordinal)))
+                if (!UsingCollectionState.Any(implicitUsing =>
+                        string.Equals(implicitUsing.Name, newUsing.Include, StringComparison.Ordinal)))
                 {
-                    this.StringsCheckedState.Add(new CheckableString(name: this.EnteredUserString, isChecked: true, isReadOnly: false, parent: this));
-                    this.NotifyPairChanged();
+                    UsingCollectionState.Add(newUsing);
+                    NotifyPairChanged();
                 }
 
                 this.EnteredUserString = string.Empty;
@@ -321,5 +291,5 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties.Controls
                 return hashCode;
             }
         }
-    }*/
+    }
 }
