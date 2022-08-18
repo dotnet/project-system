@@ -18,7 +18,8 @@ jobs:
     # - https://arunksingh16.medium.com/azure-devops-share-variable-across-stages-9bca85abfe8a
     # - https://stackoverflow.com/a/57488169/294804
     # - https://github.com/microsoft/azure-pipelines-tasks/issues/4743
-    PackageVersion: $[ stageDependencies.Build.BuildOfficialRelease.outputs['WritePackageVersion.PackageVersion'] ]
+    PackageVersion: $[ stageDependencies.Build.BuildOfficialRelease.outputs['SetPackageVersion.PackageVersion'] ]
+    TestingSomething: $[ stageDependencies.Build.BuildOfficialRelease.outputs['BuildAllProjects.NBGV_NuGetPackageVersion'] ]
   steps:
 
   ###################################################################################################################################################################
@@ -30,45 +31,22 @@ jobs:
     displayName: === Generate VS Insertion ===
     condition: false
 
-  # Sets the artifacts
+  - powershell: Write-Host $(TestingSomething)
+    name: Test Direct NBGV
+
+  # Sets the Products drop for permanent retention. This is the drop that contains the VS insertion data (.vsman files).
+  # Overview: https://devdiv.visualstudio.com/DevDiv/_wiki/wikis/DevDiv.wiki/635/Overview
   - task: MicroBuildRetainVstsDrops@1
-    displayName: Retain Drop for Insertion
+    displayName: Retain Products Drop
     inputs:
+      # If the drop name is changed in the Publish job, this name also needs changed.
+      # TODO: Consider making this a pipeline variable.
       DropNames: Products/$(System.TeamProject)/$(Build.Repository.Name)/$(Build.SourceBranchName)/$(Build.BuildNumber)
       DropServiceUri: https://devdiv.artifacts.visualstudio.com/DefaultCollection
       # When this isn't provided, the tool sets the --AadAuth flag instead of using --PatAuthEnvVar. The AadAuth doesn't seem to work for this situation.
       AccessToken: $(System.AccessToken)
 
-  # TODO: THIS IS TEMPORARY OUTPUT
-  - powershell: Write-Host $(PackageVersion)
-    name: Print_Key_value
-  # - powershell: Write-Host $(PackageVersion1)
-  #   name: Print_Key_value
-  # - powershell: Write-Host $[variables.PackageVersion1]
-  #   name: Print_Key_value_2
-  # - powershell: Write-Host $[parameters.PackageVersion]
-  #   name: Print_Key_value_3
-  # - powershell: Write-Host $(PackageVersion2)
-  #   name: Print_Key_value2
-  # - powershell: Write-Host $(PackageVersion3)
-  #   name: Print_Key_value3
-  # - powershell: Write-Host $(PackageVersion4)
-  #   name: Print_Key_value4
-  # - powershell: Write-Host $[variables.PackageVersion4]
-  #   name: Print_Key_value4_2
-  # - powershell: Write-Host $[parameters.PackageVersion4]
-  #   name: Print_Key_value4_3
-  # - powershell: Write-Host $(PackageVersion5)
-  #   name: Print_Key_value5
-  # - powershell: Write-Host $[variables.PackageVersion5]
-  #   name: Print_Key_value5_2
-  # - powershell: Write-Host $[parameters.PackageVersionParam5]
-  #   name: Print_Key_value5_3
-  # - script: |
-  #     echo $(PackageVersion)
-  #   name: Print_Key_value
-
-  # Creates a VS insertion PR.
+  # Creates a VS insertion PR using the Products drop containing the .vsman files.
   # YAML reference: https://devdiv.visualstudio.com/DevDiv/_wiki/wikis/DevDiv.wiki/635/Overview?anchor=**build-pipeline**
   - task: MicroBuildInsertVsPayload@4
     displayName: Create VS Insertion PR
@@ -95,50 +73,3 @@ jobs:
       # ##[warning]WARNING: Cannot copy work items from vstfs:///Build/Build/6574299: ArgumentException : 'https://github.com/dotnet/project-system' does not look like an Azure DevOps url
       # Documentation: https://devdiv.visualstudio.com/DevDiv/_wiki/wikis/DevDiv.wiki/634/Link-Work-Items-to-PR
       LinkWorkItemsToPR: false
-
-
-
-
-
-
-
-
-  # # Creates the LocProject.json and perform some necessary file copying and renaming.
-  # - task: DotNetCoreCLI@2
-  #   displayName: Run Setup
-  #   inputs:
-  #     command: run
-  #     projects: eng/tools/OneLocBuildSetup/OneLocBuildSetup.csproj
-  #     # The -- allows us to pass parameters to the application that is being ran.
-  #     # See: https://docs.microsoft.com/en-us/dotnet/core/tools/dotnet-run#options
-  #     arguments: '-- -r "$(System.DefaultWorkingDirectory)" -o "$(Build.StagingDirectory)"'
-
-  # # Runs the localization process on the resource files provided within LocProject.json.
-  # # Details for the process can be found here: https://ceapex.visualstudio.com/CEINTL/_wiki/wikis/CEINTL.wiki/107/Localization-with-OneLocBuild-Task
-  # - task: OneLocBuild@2
-  #   displayName: Run OneLocBuild
-  #   inputs:
-  #     locProj: $(Build.StagingDirectory)/loc/LocProject.json
-  #     repoType: gitHub
-  #     # Uses the dotnet-bot account for creating PRs: https://github.com/dotnet-bot
-  #     gitHubPatVariable: $(BotAccount-dotnet-bot-repo-PAT)
-  #     packageSourceAuth: patAuth
-  #     # Provides read access to the ceapex AzDO instance: https://dev.azure.com/ceapex/
-  #     patVariable: $(dn-bot-ceapex-package-r)
-  #     isCreatePrSelected: true
-  #     isAutoCompletePrSelected: false
-
-  ###################################################################################################################################################################
-  # PUBLISH ARTIFACTS
-  ###################################################################################################################################################################
-
-  # # Use a disabled, empty script to display the section header in the pipeline UI.
-  # - script:
-  #   displayName: === Publish Artifacts ===
-  #   condition: false
-
-  # # Publishes any associated information related to the OneLocBuild process.
-  # - publish: $(Build.StagingDirectory)/loc
-  #   displayName: Publish Localization Artifacts
-  #   artifact: OneLocBuild
-  #   condition: succeededOrFailed()

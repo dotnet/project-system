@@ -18,7 +18,7 @@ resources:
 #   demands: Cmd
 #   timeoutInMinutes: 90
 
-  # These are only used by the generate-optimizations.yml template.
+  # These DartLab pipelines and repositories are only used by the Optimization stage.
   pipelines:
   # This name is the default value for the 'dartLabBuildResourceName' parameter in single-runsettings.yml.
   - pipeline: DartLab
@@ -32,13 +32,13 @@ resources:
   repositories:
   # This name is the default value for the 'dartLabTemplatesResourceName 'parameter in single-runsettings.yml.
   - repository: DartLabTemplates
-    type: git
     name: DartLab.Templates
-    ref: refs/heads/main
-  # This name is used in generate-optimizations.yml to access the single-runsettings.yml template.
-  - repository: DartLabOptProfTemplates
     type: git
+    ref: refs/heads/main
+  # This name is used to access the single-runsettings.yml template.
+  - repository: DartLabOptProfTemplates
     name: DartLab.OptProf
+    type: git
     ref: refs/heads/main
 
 
@@ -170,6 +170,7 @@ stages:
   - template: templates/generate-localization.yml
 
 # This template is provided by the DartLabOptProfTemplates repo, declared in the repositories section (top of this file).
+# It is a stage template, defining our entire Optimization stage.
 # - template: \templates\stages\visual-studio\single-runsettings.yml@DartLabOptProfTemplates
 #   parameters:
 #     name: Optimization

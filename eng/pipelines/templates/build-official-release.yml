@@ -56,6 +56,7 @@ jobs:
   # This reduces the calls to the signing API (potentially increasing signing speed) and reduces the pipeline log bloat when polling signing completion.
   - powershell: . '$(Build.SourcesDirectory)/eng/scripts/SetSigningRetryInterval.ps1' -signConfigPath ((Get-ChildItem -Path '$(Build.StagingDirectory)/MicroBuild/Plugins/*/build/signconfig.xml').FullName) -intervalInSeconds 45
     displayName: Set Signing Interval
+    # This is not a necessary task for the build to be successful.
     continueOnError: true
 
   # Necessary for building the .swixproj (VSIX package) and .vsmanproj (VS Insertion) projects.
@@ -94,28 +95,13 @@ jobs:
   # Runs the full build of the projects in the repository. See Build.proj for details.
   - script: $(Build.SourcesDirectory)/build.cmd /v:normal /p:Configuration=$(BuildConfiguration) /p:CIBuild=true
     displayName: Build All Projects
-    # Required to reference the variables created within this build step in other stages.
     name: BuildAllProjects
 
-  - powershell: Get-ChildItem -Path Env:\ | Format-List
-    displayName: Print Environment Variables
-
+  # Sets the PackageVersion variable for the job. This variable is not used by this job; instead, it is consumed by the Insertion job.
   - powershell: Write-Host "##vso[task.setvariable variable=PackageVersion;isoutput=true]$(NBGV_NuGetPackageVersion)"
-    displayName: Write PackageVersion
+    displayName: Set PackageVersion Variable
     # Name is required to reference the variables created within this build step in other stages.
-    name: WritePackageVersion
-
-  # TODO: THIS IS TEMPORARY OUTPUT
-  - script: |
-      echo $(WritePackageVersion.PackageVersion)
-    name: Print_Key_value
-  - powershell: Write-Host $(WritePackageVersion.PackageVersion)
-    name: Print_Key_value_2
-  # DOESN'T WORK
-  - powershell: Write-Host $[variables.WritePackageVersion.PackageVersion]
-    name: Print_Key_value_3
-  - powershell: Write-Host $[variables.PackageVersion]
-    name: Print_Key_value_4
+    name: SetPackageVersion
 
   # Creates the VS bootstrapper information based on the build's .vsman file.
   # This bootstrapper information is only used for OptProf currently.
