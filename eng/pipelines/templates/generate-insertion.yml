@@ -53,7 +53,9 @@ jobs:
     inputs:
       # TODO: Make TargetBranch configurable.
       TargetBranch: main
-      TeamName: '.NET Project System'
+      # Cannot use '.NET' Project System as the branch name is created via this value. It produces an error:
+      # fatal: 'team/.NET-Project-System/DotNet-Project-System-20220818.3-1' is not a valid branch name
+      TeamName: DotNet Project System
       TeamEmail: dotnetdevexproj@microsoft.com
       InsertionPayloadName: '.NET Project System (branch: $(Build.SourceBranchName), build: $(Build.BuildNumber))'
       ComponentJsonValues: Microsoft.VisualStudio.Editors.vsman=https://vsdrop.corp.microsoft.com/file/v1/Products/$(System.TeamProject)/$(Build.Repository.Name)/$(Build.SourceBranchName)/$(Build.BuildNumber);Microsoft.VisualStudio.Editors.vsman,Microsoft.VisualStudio.ProjectSystem.Managed.vsman=https://vsdrop.corp.microsoft.com/file/v1/Products/$(System.TeamProject)/$(Build.Repository.Name)/$(Build.SourceBranchName)/$(Build.BuildNumber);Microsoft.VisualStudio.ProjectSystem.Managed.vsman
