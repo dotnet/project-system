@@ -185,8 +185,10 @@ stages:
 #       # - https://docs.microsoft.com/en-us/azure/devops/pipelines/process/expressions?view=azure-devops
 #       # - https://docs.microsoft.com/en-us/azure/devops/pipelines/process/runtime-parameters?view=azure-devops&tabs=script#how-can-i-use-variables-inside-of-templates
 #       # For variables across stages, see:
+#       # - https://docs.microsoft.com/en-us/azure/devops/pipelines/process/variables?view=azure-devops&tabs=yaml%2Cbatch#use-outputs-in-a-different-stage
 #       # - https://arunksingh16.medium.com/azure-devops-share-variable-across-stages-9bca85abfe8a
 #       # - https://stackoverflow.com/a/57488169/294804
+#       # - https://github.com/microsoft/azure-pipelines-tasks/issues/4743
 #       value: $[ stageDependencies.Publish.PublishAssetsAndPackages.outputs['UpdateRunSettings.visualStudioBootstrapperURI'] ]
 #     runSettingsURI: https://vsdrop.corp.microsoft.com/file/v1/RunSettings/$(System.TeamProject)/dotnet/project-system/$(Build.SourceBranchName)/$(Build.BuildId);OptProf.runsettings
 #     # This variable is set during the 'Update RunSettings' (UpdateRunSettings.ps1) step in the publish-assets-and-packages.yml.
@@ -208,8 +210,8 @@ stages:
   #   PackageVersion3: $[ stageDependencies.Build.BuildOfficialRelease.outputs['WritePackageVersion.PackageVersion'] ]
   #   PackageVersion4: $[ stageDependencies.Build.outputs['BuildOfficialRelease.WritePackageVersion.PackageVersion'] ]
   #   PackageVersion5: $[ stageDependencies.Build.BuildOfficialRelease.outputs['BuildOfficialRelease.WritePackageVersion.PackageVersion'] ]
-  variables:
-    PackageVersion: $[ stageDependencies.Build.BuildOfficialRelease.outputs['WritePackageVersion.PackageVersion'] ]
+  # variables:
+  #   PackageVersion: $[ stageDependencies.Build.BuildOfficialRelease.outputs['WritePackageVersion.PackageVersion'] ]
   jobs:
   - template: templates/generate-insertion.yml
     # parameters:

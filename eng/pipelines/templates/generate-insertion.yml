@@ -7,11 +7,18 @@ jobs:
   pool:
     name: $(DefaultPoolName)
     demands: $(DefaultDemands)
-  # variables:
-  #   # PackageVersion: ${{ parameters.PackageVersion }}
-  #   # PackageVersion1: $[parameters.PackageVersion]
-  #   # PackageVersion2: $[ stageDependencies.Build.BuildOfficialRelease.outputs['WritePackageVersion.PackageVersion'] ]
-  #   PackageVersion: $[ stageDependencies.Build.BuildOfficialRelease.outputs['WritePackageVersion.PackageVersion'] ]
+  variables:
+    # Gets the PackageVersion variable produced by the Build pipeline.
+    # For parameter, variable, and expression syntax/usage, see:
+    # - https://docs.microsoft.com/en-us/azure/devops/pipelines/process/variables?view=azure-devops&tabs=yaml%2Cbatch#understand-variable-syntax
+    # - https://docs.microsoft.com/en-us/azure/devops/pipelines/process/expressions?view=azure-devops
+    # - https://docs.microsoft.com/en-us/azure/devops/pipelines/process/runtime-parameters?view=azure-devops&tabs=script#how-can-i-use-variables-inside-of-templates
+    # For variables across stages, see:
+    # - https://docs.microsoft.com/en-us/azure/devops/pipelines/process/variables?view=azure-devops&tabs=yaml%2Cbatch#use-outputs-in-a-different-stage
+    # - https://arunksingh16.medium.com/azure-devops-share-variable-across-stages-9bca85abfe8a
+    # - https://stackoverflow.com/a/57488169/294804
+    # - https://github.com/microsoft/azure-pipelines-tasks/issues/4743
+    PackageVersion: $[ stageDependencies.Build.BuildOfficialRelease.outputs['WritePackageVersion.PackageVersion'] ]
   steps:
 
   ###################################################################################################################################################################
@@ -23,8 +30,7 @@ jobs:
     displayName: === Generate VS Insertion ===
     condition: false
 
-
-
+  # Sets the artifacts
   - task: MicroBuildRetainVstsDrops@1
     displayName: Retain Drop for Insertion
     inputs:
@@ -62,21 +68,33 @@ jobs:
   #     echo $(PackageVersion)
   #   name: Print_Key_value
 
-  # https://devdiv.visualstudio.com/DevDiv/_wiki/wikis/DevDiv.wiki/635/Overview?anchor=**build-pipeline**
+  # Creates a VS insertion PR.
+  # YAML reference: https://devdiv.visualstudio.com/DevDiv/_wiki/wikis/DevDiv.wiki/635/Overview?anchor=**build-pipeline**
   - task: MicroBuildInsertVsPayload@4
     displayName: Create VS Insertion PR
     inputs:
+      # TODO: Make TargetBranch configurable.
       TargetBranch: main
-      # InsertionTopicBranch: 'topic branch name'
-      TeamName: Project System
+      TeamName: '.NET Project System'
       TeamEmail: dotnetdevexproj@microsoft.com
+      InsertionPayloadName: '.NET Project System (branch: $(Build.SourceBranchName), build: $(Build.BuildNumber))'
       ComponentJsonValues: Microsoft.VisualStudio.Editors.vsman=https://vsdrop.corp.microsoft.com/file/v1/Products/$(System.TeamProject)/$(Build.Repository.Name)/$(Build.SourceBranchName)/$(Build.BuildNumber);Microsoft.VisualStudio.Editors.vsman,Microsoft.VisualStudio.ProjectSystem.Managed.vsman=https://vsdrop.corp.microsoft.com/file/v1/Products/$(System.TeamProject)/$(Build.Repository.Name)/$(Build.SourceBranchName)/$(Build.BuildNumber);Microsoft.VisualStudio.ProjectSystem.Managed.vsman
+      # Setting DefaultConfigValues also sets the PackagePropsValues.
+      # See the bottom of the table here: https://devdiv.visualstudio.com/DevDiv/_wiki/wikis/DevDiv.wiki/635/Overview?anchor=**build-pipeline**
       DefaultConfigValues: Microsoft.VisualStudio.AppDesigner=$(PackageVersion),Microsoft.VisualStudio.Editors=$(PackageVersion),Microsoft.VisualStudio.ProjectSystem.Managed=$(PackageVersion),Microsoft.VisualStudio.ProjectSystem.Managed.VS=$(PackageVersion)
-      # PackagePropsValues: Microsoft.VisualStudio.AppDesigner=$(NBGV_Version),Microsoft.VisualStudio.Editors=$(NBGV_Version),Microsoft.VisualStudio.ProjectSystem.Managed=$(NBGV_Version),Microsoft.VisualStudio.ProjectSystem.Managed.VS=$(NBGV_Version)
       AllowTopicBranchUpdate: true
+      # TODO: This is where a fancy description can be provided. Need to create a mechanism to provide this.
       # InsertionDescription: 'description'
       InsertionReviewers: '.NET Project System'
       InsertionBuildPolicy: Request Perf DDRITs
+      # This action only works on AzDO repos. This warning occurs if enabled:
+      # ##[warning]WARNING: Cannot extract commit details from vstfs:///Build/Build/6574299: ArgumentException : 'https://github.com/dotnet/project-system' does not look like an Azure DevOps url
+      # Documentation: https://devdiv.visualstudio.com/DevDiv/_wiki/wikis/DevDiv.wiki/631/Copy-Commit-Details-to-PR
+      AddCommitsToPR: false
+      # This action only works on AzDO repos. This warning occurs if enabled:
+      # ##[warning]WARNING: Cannot copy work items from vstfs:///Build/Build/6574299: ArgumentException : 'https://github.com/dotnet/project-system' does not look like an Azure DevOps url
+      # Documentation: https://devdiv.visualstudio.com/DevDiv/_wiki/wikis/DevDiv.wiki/634/Link-Work-Items-to-PR
+      LinkWorkItemsToPR: false
 
 
 
