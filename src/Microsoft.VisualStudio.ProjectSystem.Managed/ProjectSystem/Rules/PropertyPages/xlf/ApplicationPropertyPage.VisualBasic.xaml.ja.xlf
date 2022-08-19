@@ -124,27 +124,27 @@
       </trans-unit>
       <trans-unit id="EnumValue|HighDpiMode.0|DisplayName">
         <source>DPI unaware - No scaling and assuming 100% scaling.</source>
-        <target state="new">DPI unaware - No scaling and assuming 100% scaling.</target>
+        <target state="translated">DPI 非対応 - スケーリングなし。スケーリングは 100%であると仮定します。</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|HighDpiMode.1|DisplayName">
         <source>System aware - Primary monitor's DPI is scale lead.</source>
-        <target state="new">System aware - Primary monitor's DPI is scale lead.</target>
+        <target state="translated">システム対応 - プライマリ モニターの DPI が最初にスケーリングされます。</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|HighDpiMode.2|DisplayName">
         <source>Per monitor - DPI detected on-launch and on-change.</source>
-        <target state="new">Per monitor - DPI detected on-launch and on-change.</target>
+        <target state="translated">モニターごと - 起動時と変更時に DPI が検出されます。</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|HighDpiMode.3|DisplayName">
         <source>Per monitor V2 - DPI detected on-launch and on-change including child windows</source>
-        <target state="new">Per monitor V2 - DPI detected on-launch and on-change including child windows</target>
+        <target state="translated">モニターごと V2 - 子ウィンドウを含め、起動時と変更時に DPI が検出されます</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|HighDpiMode.4|DisplayName">
         <source>DPI unaware, GDI scaled - Like DPI unaware but optimized for non-double-buffered Graphics content.</source>
-        <target state="new">DPI unaware, GDI scaled - Like DPI unaware but optimized for non-double-buffered Graphics content.</target>
+        <target state="translated">DPI 非対応、GDI スケーリング済み - DPI 非対応と同様ですが、ダブル バッファリングを使用しないグラフィックス コンテンツ向けに最適化されます。</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|ShutdownMode.AfterAllFormsClose|DisplayName">

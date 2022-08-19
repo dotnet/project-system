@@ -124,27 +124,27 @@
       </trans-unit>
       <trans-unit id="EnumValue|HighDpiMode.0|DisplayName">
         <source>DPI unaware - No scaling and assuming 100% scaling.</source>
-        <target state="new">DPI unaware - No scaling and assuming 100% scaling.</target>
+        <target state="translated">Sans prise en charge PPP : aucune mise à l’échelle et mise à l’échelle de 100 %.</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|HighDpiMode.1|DisplayName">
         <source>System aware - Primary monitor's DPI is scale lead.</source>
-        <target state="new">System aware - Primary monitor's DPI is scale lead.</target>
+        <target state="translated">Prise en charge du système : la résolution PPP du moniteur principal dépend de la mise à l’échelle.</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|HighDpiMode.2|DisplayName">
         <source>Per monitor - DPI detected on-launch and on-change.</source>
-        <target state="new">Per monitor - DPI detected on-launch and on-change.</target>
+        <target state="translated">Par moniteur : PPP détecté lors du lancement et de la modification.</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|HighDpiMode.3|DisplayName">
         <source>Per monitor V2 - DPI detected on-launch and on-change including child windows</source>
-        <target state="new">Per monitor V2 - DPI detected on-launch and on-change including child windows</target>
+        <target state="translated">Par moniteur V2 : PPP détecté lors du lancement et de la modification, y compris les fenêtres enfants</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|HighDpiMode.4|DisplayName">
         <source>DPI unaware, GDI scaled - Like DPI unaware but optimized for non-double-buffered Graphics content.</source>
-        <target state="new">DPI unaware, GDI scaled - Like DPI unaware but optimized for non-double-buffered Graphics content.</target>
+        <target state="translated">Sans prise en charge PPP, GDI mis à l’échelle : similaire à Sans prise en charge PPP, mais optimisé pour le contenu graphique non mis en mémoire tampon double.</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|ShutdownMode.AfterAllFormsClose|DisplayName">

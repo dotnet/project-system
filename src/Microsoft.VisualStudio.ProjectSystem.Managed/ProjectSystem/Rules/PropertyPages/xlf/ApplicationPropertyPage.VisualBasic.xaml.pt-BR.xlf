@@ -124,27 +124,27 @@
       </trans-unit>
       <trans-unit id="EnumValue|HighDpiMode.0|DisplayName">
         <source>DPI unaware - No scaling and assuming 100% scaling.</source>
-        <target state="new">DPI unaware - No scaling and assuming 100% scaling.</target>
+        <target state="translated">DPI inconsciente - Sem escala e assumindo 100% de escala.</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|HighDpiMode.1|DisplayName">
         <source>System aware - Primary monitor's DPI is scale lead.</source>
-        <target state="new">System aware - Primary monitor's DPI is scale lead.</target>
+        <target state="translated">Reconhecimento do sistema - O DPI do monitor primário é o cliente em potencial de escala.</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|HighDpiMode.2|DisplayName">
         <source>Per monitor - DPI detected on-launch and on-change.</source>
-        <target state="new">Per monitor - DPI detected on-launch and on-change.</target>
+        <target state="translated">Por monitor - DPI detectado na inicialização e na alteração.</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|HighDpiMode.3|DisplayName">
         <source>Per monitor V2 - DPI detected on-launch and on-change including child windows</source>
-        <target state="new">Per monitor V2 - DPI detected on-launch and on-change including child windows</target>
+        <target state="translated">Por monitor V2 - DPI detectado na inicialização e na alteração, incluindo janelas filhas</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|HighDpiMode.4|DisplayName">
         <source>DPI unaware, GDI scaled - Like DPI unaware but optimized for non-double-buffered Graphics content.</source>
-        <target state="new">DPI unaware, GDI scaled - Like DPI unaware but optimized for non-double-buffered Graphics content.</target>
+        <target state="translated">DPI inconsciente, GDI dimensionado - Como DPI inconsciente, mas otimizado para conteúdo gráfico sem buffer duplo.</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|ShutdownMode.AfterAllFormsClose|DisplayName">
