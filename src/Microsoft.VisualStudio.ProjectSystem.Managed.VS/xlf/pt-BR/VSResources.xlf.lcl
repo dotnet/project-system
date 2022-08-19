@@ -274,6 +274,15 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
+      <Item ItemId=";InfoBarMessageNuGetCycleDetected" ItemType="0" PsrId="308" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[A circular dependency A -> B -> A was detected during NuGet Restore which caused NuGet to stop restoring.]D;]A;Because the NuGet restore didn't finish correctly, the project might be in a bad state.]D;]A;]D;]A;This might be caused because one or more projects have a package that sets AssetTargetFallback, not supported for this scenario, which caused certain PackageReference to be included.]D;]A;]D;]A;NuGet Error NU1108]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Uma dependência circular A -> B -> A foi detectada durante a Restauração do NuGet, que fez com que o NuGet parasse de ser restaurado.]D;]A;Como a restauração do NuGet não terminou corretamente, o projeto pode estar em um mau estado.]D;]A;]D;]A;Isto pode ser causado porque um ou mais projetos têm um pacote que define o AssetTargetFallback, sem suporte para este cenário, o que causou a inclusão de certa PackageReference.]D;]A;]D;]A;NuGet Erro NU1108]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
       <Item ItemId=";MultiTFEditNotSupported" ItemType="0" PsrId="308" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[Editing of multiple target framework is not supported.]]></Val>

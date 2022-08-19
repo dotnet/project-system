@@ -229,16 +229,7 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";EnumValue|HighDpiMode.DpiUnawareGdiScaled|DisplayName" ItemType="0" PsrId="308" Leaf="true">
-        <Str Cat="Text">
-          <Val><![CDATA[DPI unaware, GDI scaled - Like DPI unaware but optimized for non-double-buffered Graphics content.]]></Val>
-          <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Nepodporuje DPI, GDI se škáluje – Stejně jako rozlišení DPI bez rozlišení, ale je optimalizované pro grafický obsah, který není ve vyrovnávací paměti.]]></Val>
-          </Tgt>
-        </Str>
-        <Disp Icon="Str" />
-      </Item>
-      <Item ItemId=";EnumValue|HighDpiMode.DpiUnaware|DisplayName" ItemType="0" PsrId="308" Leaf="true">
+      <Item ItemId=";EnumValue|HighDpiMode.0|DisplayName" ItemType="0" PsrId="308" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[DPI unaware - No scaling and assuming 100% scaling.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
@@ -247,16 +238,16 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";EnumValue|HighDpiMode.PerMonitorV2|DisplayName" ItemType="0" PsrId="308" Leaf="true">
+      <Item ItemId=";EnumValue|HighDpiMode.1|DisplayName" ItemType="0" PsrId="308" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Per monitor V2 - DPI detected on-launch and on-change including child windows]]></Val>
+          <Val><![CDATA[System aware - Primary monitor's DPI is scale lead.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Na monitor V2 – Rozpoznáno DPI při spuštění a při změně včetně podřízených oken]]></Val>
+            <Val><![CDATA[Informace o systému – DPI primárního monitoru je potenciální měřítko.]]></Val>
           </Tgt>
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";EnumValue|HighDpiMode.PerMonitor|DisplayName" ItemType="0" PsrId="308" Leaf="true">
+      <Item ItemId=";EnumValue|HighDpiMode.2|DisplayName" ItemType="0" PsrId="308" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[Per monitor - DPI detected on-launch and on-change.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
@@ -265,11 +256,20 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";EnumValue|HighDpiMode.SystemAware|DisplayName" ItemType="0" PsrId="308" Leaf="true">
+      <Item ItemId=";EnumValue|HighDpiMode.3|DisplayName" ItemType="0" PsrId="308" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[System aware - Primary monitor's DPI is scale lead.]]></Val>
+          <Val><![CDATA[Per monitor V2 - DPI detected on-launch and on-change including child windows]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Informace o systému – DPI primárního monitoru je potenciální měřítko.]]></Val>
+            <Val><![CDATA[Na monitor V2 – Rozpoznáno DPI při spuštění a při změně včetně podřízených oken]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";EnumValue|HighDpiMode.4|DisplayName" ItemType="0" PsrId="308" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[DPI unaware, GDI scaled - Like DPI unaware but optimized for non-double-buffered Graphics content.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Nepodporuje DPI, GDI se škáluje – Stejně jako rozlišení DPI bez rozlišení, ale je optimalizované pro grafický obsah, který není ve vyrovnávací paměti.]]></Val>
           </Tgt>
         </Str>
         <Disp Icon="Str" />
