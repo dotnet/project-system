@@ -4,7 +4,7 @@
     <body>
       <trans-unit id="BoolProperty|DefineDebug|Description">
         <source>Specify DEBUG as a compilation constant.</source>
-        <target state="new">Specify DEBUG as a compilation constant.</target>
+        <target state="translated">DEBUG를 컴파일 상수로 지정합니다.</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|DefineDebug|DisplayName">
@@ -14,7 +14,7 @@
       </trans-unit>
       <trans-unit id="BoolProperty|DefineTrace|Description">
         <source>Specify TRACE as a compilation constant.</source>
-        <target state="new">Specify TRACE as a compilation constant.</target>
+        <target state="translated">TRACE를 컴파일 상수로 지정합니다.</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|DefineTrace|DisplayName">
@@ -34,7 +34,7 @@
       </trans-unit>
       <trans-unit id="BoolProperty|Optimize|Description">
         <source>Enable compiler optimizations.</source>
-        <target state="new">Enable compiler optimizations.</target>
+        <target state="translated">컴파일러 최적화를 사용하도록 설정합니다.</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|Optimize|DisplayName">
@@ -64,7 +64,7 @@
       </trans-unit>
       <trans-unit id="BoolProperty|RemoveIntegerChecks|Description">
         <source>Remove integer overflow checking.</source>
-        <target state="new">Remove integer overflow checking.</target>
+        <target state="translated">정수 오버플로 검사를 제거합니다.</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|RemoveIntegerChecks|DisplayName">
