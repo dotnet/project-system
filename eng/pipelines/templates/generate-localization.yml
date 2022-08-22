@@ -7,10 +7,6 @@ jobs:
   pool:
     name: $(DefaultPoolName)
     demands: $(DefaultDemands)
-  variables:
-  # Variable group containing the PATs required for running OneLocBuild.
-  # See: https://devdiv.visualstudio.com/DevDiv/_library?itemType=VariableGroups&view=VariableGroupView&variableGroupId=343&path=OneLocBuildVariables
-  - group: OneLocBuildVariables
   steps:
 
   ###################################################################################################################################################################

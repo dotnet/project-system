@@ -38,6 +38,7 @@ jobs:
 
   # Provides functionality for VS Rich Code Navigation for our repo. It indexes the repository and stores navigation information.
   # This process discovers the symbol information and relates it to the source files in the repo.
+  # See: https://visualstudio.microsoft.com/services/rich-code-navigation/
   - task: RichCodeNavIndexer@0
     displayName: Publish RichNav Information
     inputs:

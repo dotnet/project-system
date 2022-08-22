@@ -1,7 +1,7 @@
 # Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
 jobs:
-# Publishing symbols requires a specific agent pool. Making a separate job allows us to use that agent pool only for symbol publishing.
+# Publishing symbols requires a specific agent pool for access to our file share. Making a separate job allows us to use that agent pool only for symbol publishing.
 - job: PublishSymbols
   displayName: Publish Symbols
   timeoutInMinutes: 10
@@ -69,15 +69,3 @@ jobs:
       SymbolsUncPath: $(SymbolsUncPath)
       SymbolsEmailContacts: dotnetdevexproj
       SymbolsAgentPath: $(Pipeline.Workspace)/$(Build.BuildNumber)
-
-  # # TODO: Most of these files are already published via 'Publish Artifacts' section. Investigate publish consolidation.
-  # - task: PublishBuildArtifacts@1
-  #   displayName: 'Publish Artifact: Symbols'
-  #   inputs:
-  #     PathToPublish: '$(Build.ArtifactStagingDirectory)/Symbols'
-  #     # The artifact name specifically has to be 'symbols' with that casing.
-  #     # This artifact is downloaded by the release pipeline's 'Publish Symbols' task.
-  #     # The lowercase 'symbols' is specified in the 'Agent job' settings for that task.
-  #     # If this artifact name is changed, all release pipelines that have this task need to have these settings changed.
-  #     ArtifactName: symbols
-  #     publishLocation: Container

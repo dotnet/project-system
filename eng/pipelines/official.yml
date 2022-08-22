@@ -10,14 +10,6 @@
 ###################################################################################################################################################################
 
 resources:
-# - repo: self
-#   clean: true
-# queue:
-#   name: VSEngSS-MicroBuild2022-1ES
-#   # https://docs.microsoft.com/en-us/azure/devops/pipelines/process/demands?view=azure-devops&tabs=yaml#manually-entered-demands
-#   demands: Cmd
-#   timeoutInMinutes: 90
-
   # These DartLab pipelines and repositories are only used by the Optimization stage.
   pipelines:
   # This name is the default value for the 'dartLabBuildResourceName' parameter in single-runsettings.yml.
@@ -41,7 +33,6 @@ resources:
     type: git
     ref: refs/heads/main
 
-
 # variables:
 # - group: OneLocBuildVariables
 # - name: BuildConfiguration
@@ -58,7 +49,7 @@ resources:
 # - name: DefaultPoolName
 #   value: VSEngSS-MicroBuild2022-1ES
 #   # https://devdiv.visualstudio.com/DevDiv/_settings/agentqueues?queueId=3316&view=jobs
-#   # This specific pool is required to access the \\cpvsbuild\DotNetTools\DotNet-Project-System share.
+#   # This specific pool is required to access our file share location.
 # - name: SymbolsPoolName
 #   value: VSEng-ReleasePool-1ES
 #   # https://docs.microsoft.com/en-us/azure/devops/pipelines/process/demands?view=azure-devops&tabs=yaml#manually-entered-demands
@@ -66,18 +57,22 @@ resources:
 #   value: Cmd
 
 variables:
+  # This is used throughout the various pipelines as file paths for output contain the build configuration as a folder name.
   BuildConfiguration: Release
-  TeamName: DotNet-Project-System
-  BuildPlatform: any cpu
-  DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true
-  Packaging.EnableSBOMSigning: true
+  # TeamName: DotNet-Project-System
+  # BuildPlatform: any cpu
   # https://devdiv.visualstudio.com/DevDiv/_settings/agentqueues?queueId=3123&view=jobs
   DefaultPoolName: VSEngSS-MicroBuild2022-1ES
+  # This specific pool is required to access our file share location.
   # https://devdiv.visualstudio.com/DevDiv/_settings/agentqueues?queueId=3316&view=jobs
-  # This specific pool is required to access the \\cpvsbuild\DotNetTools\DotNet-Project-System share.
   SymbolsPoolName: VSEng-ReleasePool-1ES
   # https://docs.microsoft.com/en-us/azure/devops/pipelines/process/demands?view=azure-devops&tabs=yaml#manually-entered-demands
   DefaultDemands: Cmd
+  # https://docs.microsoft.com/en-us/dotnet/core/tools/dotnet-environment-variables#dotnet_skip_first_time_experience
+  DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true
+  # https://devdiv.visualstudio.com/DevDiv/_wiki/wikis/DevDiv.wiki/26284/Enabling-SBOM-For-Your-Component-Insertion-into-VS?anchor=1.-add-the-%27manifest-generator-task%27-to-your-pipeline
+  Packaging.EnableSBOMSigning: true
+
 parameters:
 - name: SignType
   displayName: Sign Type
@@ -99,50 +94,6 @@ stages:
     parameters:
       SignType: ${{ parameters.SignType }}
       SkipOptimize: ${{ parameters.SkipOptimize }}
-
-# - stage: Variables
-#   displayName: Variables
-#   dependsOn: Build
-#   variables:
-#     PackageVersion3: $[ stageDependencies.Build.BuildOfficialRelease.outputs['WritePackageVersion.PackageVersion'] ]
-#     PackageVersion4: $[ stageDependencies.Build.outputs['BuildOfficialRelease.WritePackageVersion.PackageVersion'] ]
-#     PackageVersion5: $[ stageDependencies.Build.BuildOfficialRelease.outputs['BuildOfficialRelease.WritePackageVersion.PackageVersion'] ]
-#   jobs:
-#   - job: TestVariables
-#     displayName: Test Variables
-#     timeoutInMinutes: 10
-#     pool:
-#       name: $(DefaultPoolName)
-#       demands: $(DefaultDemands)
-#     variables:
-#       PackageVersion6: $[ stageDependencies.Build.BuildOfficialRelease.outputs['WritePackageVersion.PackageVersion'] ]
-#       PackageVersion7: $[ stageDependencies.Build.outputs['BuildOfficialRelease.WritePackageVersion.PackageVersion'] ]
-#       PackageVersion8: $[ stageDependencies.Build.BuildOfficialRelease.outputs['BuildOfficialRelease.WritePackageVersion.PackageVersion'] ]
-#     steps:
-#     - powershell: Write-Host $[ stageDependencies.Build.BuildOfficialRelease.outputs['WritePackageVersion.PackageVersion'] ]
-#       name: Print_Key_value
-#     - powershell: Write-Host $[ stageDependencies.Build.outputs['BuildOfficialRelease.WritePackageVersion.PackageVersion'] ]
-#       name: Print_Key_value_2
-#     - powershell: Write-Host $[ stageDependencies.Build.BuildOfficialRelease.outputs['BuildOfficialRelease.WritePackageVersion.PackageVersion'] ]
-#       name: Print_Key_value_3
-#     - powershell: Write-Host $(PackageVersion3)
-#       name: Print_Key_value3
-#     - powershell: Write-Host $[variables.PackageVersion3]
-#       name: Print_Key_value3_2
-#     - powershell: Write-Host $(PackageVersion4)
-#       name: Print_Key_value4
-#     - powershell: Write-Host $[variables.PackageVersion4]
-#       name: Print_Key_value4_2
-#     - powershell: Write-Host $(PackageVersion5)
-#       name: Print_Key_value5
-#     - powershell: Write-Host $[variables.PackageVersion5]
-#       name: Print_Key_value5_2
-#     - powershell: Write-Host $(PackageVersion6)
-#       name: Print_Key_value6
-#     - powershell: Write-Host $(PackageVersion7)
-#       name: Print_Key_value7
-#     - powershell: Write-Host $(PackageVersion8)
-#       name: Print_Key_value8
 
 - stage: Publish
   displayName: Publish
@@ -166,6 +117,10 @@ stages:
   displayName: Localization
   # [] clears the dependency on the previous stages allowing parallelism.
   dependsOn: []
+  variables:
+  # Variable group containing the PATs required for running OneLocBuild.
+  # See: https://devdiv.visualstudio.com/DevDiv/_library?itemType=VariableGroups&view=VariableGroupView&variableGroupId=343&path=OneLocBuildVariables
+  - group: OneLocBuildVariables
   jobs:
   - template: templates/generate-localization.yml
 
@@ -204,58 +159,24 @@ stages:
 - stage: Insertion
   displayName: Insertion
   dependsOn:
+  # The Build dependsOn is required for putting that stage's variables into the stageDependencies property bag.
   - Build
   - Publish
   - Compliance
-  # variables:
-  #   PackageVersion3: $[ stageDependencies.Build.BuildOfficialRelease.outputs['WritePackageVersion.PackageVersion'] ]
-  #   PackageVersion4: $[ stageDependencies.Build.outputs['BuildOfficialRelease.WritePackageVersion.PackageVersion'] ]
-  #   PackageVersion5: $[ stageDependencies.Build.BuildOfficialRelease.outputs['BuildOfficialRelease.WritePackageVersion.PackageVersion'] ]
-  # variables:
-  #   PackageVersion: $[ stageDependencies.Build.BuildOfficialRelease.outputs['WritePackageVersion.PackageVersion'] ]
+  variables:
+    # Gets the PackageVersion variable produced by the Build pipeline.
+    # For parameter, variable, and expression syntax/usage, see:
+    # - https://docs.microsoft.com/en-us/azure/devops/pipelines/process/variables?view=azure-devops&tabs=yaml%2Cbatch#understand-variable-syntax
+    # - https://docs.microsoft.com/en-us/azure/devops/pipelines/process/expressions?view=azure-devops
+    # - https://docs.microsoft.com/en-us/azure/devops/pipelines/process/runtime-parameters?view=azure-devops&tabs=script#how-can-i-use-variables-inside-of-templates
+    # For variables across stages, see:
+    # - https://docs.microsoft.com/en-us/azure/devops/pipelines/process/variables?view=azure-devops&tabs=yaml%2Cbatch#use-outputs-in-a-different-stage
+    # - https://arunksingh16.medium.com/azure-devops-share-variable-across-stages-9bca85abfe8a
+    # - https://stackoverflow.com/a/57488169/294804
+    # - https://github.com/microsoft/azure-pipelines-tasks/issues/4743
+    PackageVersion: $[ stageDependencies.Build.BuildOfficialRelease.outputs['SetPackageVersion.PackageVersion'] ]
   jobs:
   - template: templates/generate-insertion.yml
-    # parameters:
-    #   PackageVersion: $(PackageVersion3)
-    #   PackageVersion4: $(PackageVersion4)
-    #   PackageVersionParam5: $(PackageVersion5)
-    # parameters:
-    #   PackageVersion: $[ stageDependencies.Build.BuildOfficialRelease.outputs['WritePackageVersion.PackageVersion'] ]
-  # - job: TestVariables
-  #   displayName: Test Variables
-  #   timeoutInMinutes: 10
-  #   pool:
-  #     name: $(DefaultPoolName)
-  #     demands: $(DefaultDemands)
-  #   variables:
-  #     PackageVersion6: $[ stageDependencies.Build.BuildOfficialRelease.outputs['WritePackageVersion.PackageVersion'] ]
-  #     PackageVersion7: $[ stageDependencies.Build.outputs['BuildOfficialRelease.WritePackageVersion.PackageVersion'] ]
-  #     PackageVersion8: $[ stageDependencies.Build.BuildOfficialRelease.outputs['BuildOfficialRelease.WritePackageVersion.PackageVersion'] ]
-  #   steps:
-  #   - powershell: Write-Host $[ stageDependencies.Build.BuildOfficialRelease.outputs['WritePackageVersion.PackageVersion'] ]
-  #     name: Print_Key_value
-  #   - powershell: Write-Host $[ stageDependencies.Build.outputs['BuildOfficialRelease.WritePackageVersion.PackageVersion'] ]
-  #     name: Print_Key_value_2
-  #   - powershell: Write-Host $[ stageDependencies.Build.BuildOfficialRelease.outputs['BuildOfficialRelease.WritePackageVersion.PackageVersion'] ]
-  #     name: Print_Key_value_3
-  #   - powershell: Write-Host $(PackageVersion3)
-  #     name: Print_Key_value3
-  #   - powershell: Write-Host $[variables.PackageVersion3]
-  #     name: Print_Key_value3_2
-  #   - powershell: Write-Host $(PackageVersion4)
-  #     name: Print_Key_value4
-  #   - powershell: Write-Host $[variables.PackageVersion4]
-  #     name: Print_Key_value4_2
-  #   - powershell: Write-Host $(PackageVersion5)
-  #     name: Print_Key_value5
-  #   - powershell: Write-Host $[variables.PackageVersion5]
-  #     name: Print_Key_value5_2
-  #   - powershell: Write-Host $(PackageVersion6)
-  #     name: Print_Key_value6
-  #   - powershell: Write-Host $(PackageVersion7)
-  #     name: Print_Key_value7
-  #   - powershell: Write-Host $(PackageVersion8)
-  #     name: Print_Key_value8
 
 # - stage: Insertion
 #   displayName: Insertion

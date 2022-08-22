@@ -25,12 +25,6 @@ jobs:
     displayName: === Download Artifacts ===
     condition: false
 
-  # # Download the build artifacts from the Build job.
-  # - download: current
-  #   displayName: Download Build Artifacts
-  #   artifact: $(Build.BuildNumber)
-  #   path: $(Build.SourcesDirectory)/artifacts/$(BuildConfiguration)
-
   # Download the build artifacts from the Build job.
   # The DownloadPipelineArtifact task is used since we can specify the output path. The 'download:' node doesn't allow changes in output location.
   - task: DownloadPipelineArtifact@2
@@ -77,14 +71,6 @@ jobs:
       ExcludeFolders: bootstrapper
     condition: succeededOrFailed()
 
-  # YAML reference: https://eng.ms/docs/security-compliance-identity-and-management-scim/security/azure-security/cloudai-security-fundamentals-engineering/security-integration/guardian-wiki/sdl-azdo-extension/code-signing-validation-build-task#v1-preview
-  # - task: CodeSign@1
-  #   displayName: Verify Insertion Signing
-  #   inputs:
-  #     Path: $(Build.SourcesDirectory)/artifacts/$(BuildConfiguration)/VSSetup/Insertion
-  #     # OutputDirectory: 'outputdir'
-  #   condition: succeededOrFailed()
-
   # Scan for problematic terminology. Related documentation:
   # - https://microsoft.sharepoint.com/sites/globalreadiness/SitePages/PoliCheck.aspx
   # - https://policheck.microsoft.com/
@@ -126,33 +112,6 @@ jobs:
       TargetPattern: binskimPattern
       AnalyzeTargetBinskim: $(Build.SourcesDirectory)/artifacts/$(BuildConfiguration)/bin/Dlls/**.dll
     condition: succeededOrFailed()
-
-  # TODO MOVE TO SEPARATE JOB
-
-  # - task: CopyFiles@2
-  #   # APIScan can take a long time, so here we copy (mostly) just the product binaries and related .pdbs
-  #   # in an effort to limit what it needs to work on.
-  #   displayName: Copy files for APIScan
-  #   inputs:
-  #     SourceFolder: '$(Build.SourcesDirectory)\artifacts\$(BuildConfiguration)\bin\Dlls'  # Limit to (mostly) product binaries
-  #     Contents: |
-  #       *.dll
-  #       *.pdb
-  #     TargetFolder: '$(Agent.TempDirectory)\APIScanFiles'
-  #   continueOnError: true
-
-  # - task: APIScan@2
-  #   # Scan for the use of undocumented APIs.
-  #   displayName: Run APIScan
-  #   inputs:
-  #     softwareFolder: '$(Agent.TempDirectory)\APIScanFiles' # Only examine the product binaries we previously copied.
-  #     softwareName: 'Dotnet-Project-System'
-  #     softwareVersionNum: '17.0'
-  #     softwareBuildNum: '$(Build.BuildId)'
-  #     symbolsFolder: 'SRV*http://symweb'
-  #   env:
-  #     AzureServicesAuthConnectionString: runAs=App;AppId=$(ApiScanClientId);TenantId=$(ApiScanTenant);AppKey=$(ApiScanSecret)
-  #   continueOnError: true
 
   ###################################################################################################################################################################
   # PUBLISH RESULTS

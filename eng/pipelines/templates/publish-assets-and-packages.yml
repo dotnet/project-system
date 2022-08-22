@@ -57,32 +57,6 @@ jobs:
       # When this isn't provided, the tool sets the --AadAuth flag instead of using --PatAuthEnvVar. The AadAuth doesn't seem to work for this situation.
       AccessToken: $(System.AccessToken)
 
-  # - task: CopyFiles@2
-  #   displayName: Copy Artifacts
-  #   inputs:
-  #     SourceFolder: '$(Build.SourcesDirectory)'
-  #     # NOTE: The copied contents are directly used by the RoslynInsertionTool to create the insertion PR.
-  #     Contents: |
-  #       artifacts\$(BuildConfiguration)\bin\**
-  #       artifacts\$(BuildConfiguration)\DevDivInsertionFiles\**
-  #       artifacts\$(BuildConfiguration)\log\**
-  #       artifacts\$(BuildConfiguration)\packages\**
-  #       artifacts\$(BuildConfiguration)\VSSetup\**
-  #       artifacts\$(BuildConfiguration)\TestResults\**
-  #     TargetFolder: $(Build.ArtifactStagingDirectory)/ArtifactsDrop
-  #   condition: succeededOrFailed()
-
-  # - task: PublishBuildArtifacts@1
-  #   displayName: Publish Artifacts
-  #   inputs:
-  #     PathToPublish: '$(Build.ArtifactStagingDirectory)/ArtifactsDrop/artifacts/$(BuildConfiguration)'
-  #     # NOTE: Artifact name is required to be Build.BuildNumber.
-  #     # The build-number named artifact is used for the RoslynInsertionTool to find the build for the insertion PR.
-  #     # Code here: https://github.com/dotnet/roslyn-tools/blob/1f64f56b4ea9a0c119bbe840c39b935acc60e4b8/src/RoslynInsertionTool/RoslynInsertionTool/RoslynInsertionTool.VisualStudioTeamServices.cs#L174
-  #     ArtifactName: '$(Build.BuildNumber)'
-  #     publishLocation: Container
-  #   condition: succeededOrFailed()
-
   ###################################################################################################################################################################
   # PUBLISH OPTPROF
   # The published OptProf metadata is consumed by the release pipeline that profiles the assemblies to create the optimization data.
@@ -105,7 +79,6 @@ jobs:
       toLowerCase: false
       # For deeper investigation, uncomment the following line:
       # detailedLog: true
-      # AccessToken: $(System.AccessToken)
       # This task uploads the drop metadata to the pipeline artifacts using this name. There does not seem to be an option of not uploading this metadata.
       dropMetadataContainerName: OptProf-ProfilingInputs
 
@@ -134,17 +107,8 @@ jobs:
       toLowerCase: false
       # For deeper investigation, uncomment the following line:
       # detailedLog: true
-      # AccessToken: $(System.AccessToken)
       # This task uploads the drop metadata to the pipeline artifacts using this name. There does not seem to be an option of not uploading this metadata.
       dropMetadataContainerName: OptProf-RunSettings
-
-  # - task: PublishBuildArtifacts@1
-  #   displayName: 'Publish Artifact: MicroBuildOutputs'
-  #   inputs:
-  #     PathToPublish: $(Build.StagingDirectory)\MicroBuild\Output
-  #     ArtifactName: MicroBuildOutputs
-  #     ArtifactType: Container
-  #   condition: succeededOrFailed()
 
   ###################################################################################################################################################################
   # PUBLISH PACKAGES

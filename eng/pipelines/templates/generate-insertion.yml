@@ -7,19 +7,6 @@ jobs:
   pool:
     name: $(DefaultPoolName)
     demands: $(DefaultDemands)
-  variables:
-    # Gets the PackageVersion variable produced by the Build pipeline.
-    # For parameter, variable, and expression syntax/usage, see:
-    # - https://docs.microsoft.com/en-us/azure/devops/pipelines/process/variables?view=azure-devops&tabs=yaml%2Cbatch#understand-variable-syntax
-    # - https://docs.microsoft.com/en-us/azure/devops/pipelines/process/expressions?view=azure-devops
-    # - https://docs.microsoft.com/en-us/azure/devops/pipelines/process/runtime-parameters?view=azure-devops&tabs=script#how-can-i-use-variables-inside-of-templates
-    # For variables across stages, see:
-    # - https://docs.microsoft.com/en-us/azure/devops/pipelines/process/variables?view=azure-devops&tabs=yaml%2Cbatch#use-outputs-in-a-different-stage
-    # - https://arunksingh16.medium.com/azure-devops-share-variable-across-stages-9bca85abfe8a
-    # - https://stackoverflow.com/a/57488169/294804
-    # - https://github.com/microsoft/azure-pipelines-tasks/issues/4743
-    PackageVersion: $[ stageDependencies.Build.BuildOfficialRelease.outputs['SetPackageVersion.PackageVersion'] ]
-    TestingSomething: $[ stageDependencies.Build.BuildOfficialRelease.outputs['BuildAllProjects.NBGV_NuGetPackageVersion'] ]
   steps:
 
   ###################################################################################################################################################################
@@ -30,9 +17,6 @@ jobs:
   - script:
     displayName: === Generate VS Insertion ===
     condition: false
-
-  - powershell: Write-Host $(TestingSomething)
-    displayName: Test Direct NBGV
 
   # Sets the Products drop for permanent retention. This is the drop that contains the VS insertion data (.vsman files).
   # Overview: https://devdiv.visualstudio.com/DevDiv/_wiki/wikis/DevDiv.wiki/635/Overview
@@ -57,7 +41,7 @@ jobs:
       # fatal: 'team/.NET-Project-System/DotNet-Project-System-20220818.3-1' is not a valid branch name
       TeamName: DotNet Project System
       TeamEmail: dotnetdevexproj@microsoft.com
-      InsertionPayloadName: '.NET Project System (branch: $(Build.SourceBranchName), build: $(Build.BuildNumber))'
+      InsertionPayloadName: 'DotNet-Project-System {$(Build.SourceBranchName):$(Build.BuildNumber)}'
       ComponentJsonValues: Microsoft.VisualStudio.Editors.vsman=https://vsdrop.corp.microsoft.com/file/v1/Products/$(System.TeamProject)/$(Build.Repository.Name)/$(Build.SourceBranchName)/$(Build.BuildNumber);Microsoft.VisualStudio.Editors.vsman,Microsoft.VisualStudio.ProjectSystem.Managed.vsman=https://vsdrop.corp.microsoft.com/file/v1/Products/$(System.TeamProject)/$(Build.Repository.Name)/$(Build.SourceBranchName)/$(Build.BuildNumber);Microsoft.VisualStudio.ProjectSystem.Managed.vsman
       # Setting DefaultConfigValues also sets the PackagePropsValues.
       # See the bottom of the table here: https://devdiv.visualstudio.com/DevDiv/_wiki/wikis/DevDiv.wiki/635/Overview?anchor=**build-pipeline**
