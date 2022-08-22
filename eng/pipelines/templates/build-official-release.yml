@@ -52,7 +52,8 @@ jobs:
       signType: ${{ parameters.SignType }}
       esrpSigning: true
     env:
-      # https://devdiv.visualstudio.com/DevDiv/_wiki/wikis/DevDiv.wiki/650/MicroBuild-Signing?anchor=high-level-steps-to-enable-signing
+      # Only used for tracking purposes.
+      # See: https://devdiv.visualstudio.com/DevDiv/_wiki/wikis/DevDiv.wiki/650/MicroBuild-Signing?anchor=high-level-steps-to-enable-signing
       TeamName: DotNet-Project-System
 
   # Gets the signconfig.xml from the MicroBuild Signing plugin and sets the retry interval to 45 seconds.
@@ -65,6 +66,10 @@ jobs:
   # Necessary for building the .swixproj (VSIX package) and .vsmanproj (VS Insertion) projects.
   - task: MicroBuildSwixPlugin@4
     displayName: Install Swix Plugin
+    env:
+      # Only used for tracking purposes.
+      # See: https://devdiv.visualstudio.com/DevDiv/_wiki/wikis/DevDiv.wiki/650/MicroBuild-Signing?anchor=high-level-steps-to-enable-signing
+      TeamName: DotNet-Project-System
 
   # This requires the OptimizationInputs via the 'Publish OptimizationInputs drop' step in the release pipeline.
   # To generate ProfilingInputs for the first time, set this input: ShouldSkipOptimize: true
