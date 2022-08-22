@@ -34,8 +34,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices;
 [AppliesTo(ProjectCapability.DotNetLanguageService)]
 internal sealed class LanguageServiceHost : OnceInitializedOnceDisposedUnderLockAsync, IProjectDynamicLoadComponent, IWorkspaceWriter
 {
-    // TODO don't activate in if _vsShellServices.Value.IsInCommandLineMode (https://github.com/dotnet/project-system/issues/3832)
-
     private readonly TaskCompletionSource _firstPrimaryWorkspaceSet = new();
 
     private readonly UnconfiguredProject _unconfiguredProject;
@@ -47,6 +45,7 @@ internal sealed class LanguageServiceHost : OnceInitializedOnceDisposedUnderLock
     private readonly IProjectFaultHandlerService _projectFaultHandler;
     private readonly JoinableTaskCollection _joinableTaskCollection;
     private readonly JoinableTaskFactory _joinableTaskFactory;
+    private readonly ILanguageServiceHostEnvironment? _languageServiceHostEnvironment;
 
     private DisposableBag? _disposables;
     private Workspace? _primaryWorkspace;
@@ -60,7 +59,8 @@ internal sealed class LanguageServiceHost : OnceInitializedOnceDisposedUnderLock
         IUnconfiguredProjectTasksService tasksService,
         ISafeProjectGuidService projectGuidService,
         IProjectThreadingService threadingService,
-        IProjectFaultHandlerService projectFaultHandler)
+        IProjectFaultHandlerService projectFaultHandler,
+        [Import(AllowDefault = true)] ILanguageServiceHostEnvironment? languageServiceHostEnvironment)
         : base(threadingService.JoinableTaskContext)
     {
         _unconfiguredProject = project;
@@ -70,6 +70,7 @@ internal sealed class LanguageServiceHost : OnceInitializedOnceDisposedUnderLock
         _tasksService = tasksService;
         _projectGuidService = projectGuidService;
         _projectFaultHandler = projectFaultHandler;
+        _languageServiceHostEnvironment = languageServiceHostEnvironment;
 
         _joinableTaskCollection = threadingService.JoinableTaskContext.CreateCollection();
         _joinableTaskCollection.DisplayName = "LanguageServiceHostTasks";
@@ -92,8 +93,14 @@ internal sealed class LanguageServiceHost : OnceInitializedOnceDisposedUnderLock
     // Over time the mapping from slice to source changes. We need to have subscriptions for each in that mapping, and create/destroy as they come and go.
     // However if the underlying 'active' configuration changes, that is transparent to us.
 
-    protected override Task InitializeCoreAsync(CancellationToken cancellationToken)
+    protected override async Task InitializeCoreAsync(CancellationToken cancellationToken)
     {
+        if (_languageServiceHostEnvironment is not null && !await _languageServiceHostEnvironment.IsEnabledAsync(cancellationToken))
+        {
+            // Our hosting environment is telling us we're not enabled.
+            return;
+        }
+
         // We have one "workspace" per "slice".
         //
         // - A "workspace" models the project state that Roslyn needs for a specific configuration.
@@ -125,7 +132,7 @@ internal sealed class LanguageServiceHost : OnceInitializedOnceDisposedUnderLock
                 cancellationToken: cancellationToken)
         };
 
-        return Task.CompletedTask;
+        return;
 
         async Task OnSlicesChanged(IProjectVersionedValue<(ConfiguredProject ActiveConfiguredProject, ConfigurationSubscriptionSources Sources)> update, CancellationToken cancellationToken)
         {
