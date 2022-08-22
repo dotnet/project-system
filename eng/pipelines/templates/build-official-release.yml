@@ -51,6 +51,9 @@ jobs:
     inputs:
       signType: ${{ parameters.SignType }}
       esrpSigning: true
+    env:
+      # https://devdiv.visualstudio.com/DevDiv/_wiki/wikis/DevDiv.wiki/650/MicroBuild-Signing?anchor=high-level-steps-to-enable-signing
+      TeamName: DotNet-Project-System
 
   # Gets the signconfig.xml from the MicroBuild Signing plugin and sets the retry interval to 45 seconds.
   # This reduces the calls to the signing API (potentially increasing signing speed) and reduces the pipeline log bloat when polling signing completion.
