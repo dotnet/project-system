@@ -161,6 +161,10 @@
       <Context>BrowseObject</Context>
     </PropertyPageSchema>
 
+    <PropertyPageSchema Include="$(ManagedXamlResourcesDirectory)Resource.BrowseObject.xaml;">
+      <Context>BrowseObject</Context>
+    </PropertyPageSchema>
+
     <PropertyPageSchema Include="$(ManagedXamlNeutralResourcesDirectory)Content.xaml">
       <Context>File</Context>
     </PropertyPageSchema>
@@ -185,6 +189,10 @@
       <Context>File</Context>
     </PropertyPageSchema>
 
+    <PropertyPageSchema Include="$(ManagedXamlNeutralResourcesDirectory)Resource.xaml">
+      <Context>File</Context>
+    </PropertyPageSchema>
+    
     <PropertyPageSchema Include="$(ManagedXamlNeutralResourcesDirectory)PackageVersion.xaml">
       <Context>File</Context>
     </PropertyPageSchema>

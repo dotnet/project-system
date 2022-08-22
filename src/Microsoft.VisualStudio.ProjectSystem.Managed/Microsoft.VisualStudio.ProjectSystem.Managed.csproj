@@ -232,6 +232,22 @@
     </XamlPropertyRuleNoCodeBehind>
     <XamlPropertyRuleNoCodeBehind Include="ProjectSystem\Rules\Items\Content.BrowseObject.xaml" />
 
+
+    <Compile Update="ProjectSystem\Rules\Items\Resource.cs">
+      <DependentUpon>Resource.xaml</DependentUpon>
+    </Compile>
+    <XamlPropertyRule Include="ProjectSystem\Rules\Items\Resource.xaml">
+      <XlfInput>false</XlfInput>
+      <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
+      <SubType>Designer</SubType>
+      <DataAccess>None</DataAccess>
+      <RuleInjection>None</RuleInjection>
+    </XamlPropertyRule>
+    <XamlPropertyRuleNoCodeBehind Include="ProjectSystem\Rules\Items\Resource.FSharp.xaml">
+      <XlfInput>false</XlfInput>
+    </XamlPropertyRuleNoCodeBehind>
+    <XamlPropertyRuleNoCodeBehind Include="ProjectSystem\Rules\Items\Resource.BrowseObject.xaml" />
+
     <XamlPropertyRuleNoCodeBehind Include="ProjectSystem\Rules\Items\EditorConfigFiles.xaml">
       <XlfInput>false</XlfInput>
     </XamlPropertyRuleNoCodeBehind>
@@ -626,6 +642,12 @@
   <ItemGroup>
     <AdditionalFiles Include="PublicAPI.Shipped.txt" />
     <AdditionalFiles Include="PublicAPI.Unshipped.txt" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="ProjectSystem\Rules\Items\Resource.FSharp.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </None>
   </ItemGroup>
 
 </Project>
