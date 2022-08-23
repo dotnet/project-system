@@ -37,7 +37,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             ProjectThreadingService = threadingService;
         }
 
-        public override NamedIdentity DataSourceKey { get; } = new NamedIdentity();
+        public override NamedIdentity DataSourceKey { get; } = new NamedIdentity(nameof(DebugProfileDebugTargetGenerator));
 
         private int _dataSourceVersion;
 
