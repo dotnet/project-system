@@ -73,6 +73,12 @@ variables:
   # Opt out of automatically injecting Codesign Validation into the pipeline. We run Codesign Validation as part of the Compliance pipeline.
   # See: https://aka.ms/gdn-injection
   runCodesignValidationInjection: false
+  # Suspend enforcement of NuGet Single Feed Policy. See:
+  # - https://aka.ms/nugetmultifeed
+  # - https://docs.opensource.microsoft.com/tools/nuget_security_analysis/nuget_security_analysis/
+  # - https://docs.opensource.microsoft.com/tools/cg/how-to/nuget-multifeed-configuration/
+  # - https://onebranch.visualstudio.com/OneBranch/_wiki/wikis/OneBranch.wiki/5205/TSG-Build-Broken-Due-to-Using-Multiple-Feeds?anchor=setting-nugetsecurityanalysiswarninglevel-in-cdp
+  NugetSecurityAnalysisWarningLevel: none
 
 parameters:
 - name: CreateInsertion
@@ -136,35 +142,33 @@ stages:
 
 # This template is provided by the DartLabOptProfTemplates repo, declared in the repositories section (top of this file).
 # It is a stage template, defining our entire Optimization stage.
-# - template: \templates\stages\visual-studio\single-runsettings.yml@DartLabOptProfTemplates
-#   parameters:
-#     name: Optimization
-#     displayName: Optimization
-#     dependsOn:
-#     - Publish
-#     - Compliance
-#     variables:
-#     - name: visualStudioBootstrapperURI
-#       # If you set this value to the visualStudioBootstrapperURI parameter directly, it does not resolve correctly. Instead, we set it to a variable and pass that variable into the parameter.
-#       # For parameter, variable, and expression syntax/usage, see:
-#       # - https://docs.microsoft.com/en-us/azure/devops/pipelines/process/variables?view=azure-devops&tabs=yaml%2Cbatch#understand-variable-syntax
-#       # - https://docs.microsoft.com/en-us/azure/devops/pipelines/process/expressions?view=azure-devops
-#       # - https://docs.microsoft.com/en-us/azure/devops/pipelines/process/runtime-parameters?view=azure-devops&tabs=script#how-can-i-use-variables-inside-of-templates
-#       # For variables across stages, see:
-#       # - https://docs.microsoft.com/en-us/azure/devops/pipelines/process/variables?view=azure-devops&tabs=yaml%2Cbatch#use-outputs-in-a-different-stage
-#       # - https://arunksingh16.medium.com/azure-devops-share-variable-across-stages-9bca85abfe8a
-#       # - https://stackoverflow.com/a/57488169/294804
-#       # - https://github.com/microsoft/azure-pipelines-tasks/issues/4743
-#       value: $[ stageDependencies.Publish.PublishAssetsAndPackages.outputs['UpdateRunSettings.visualStudioBootstrapperURI'] ]
-#     runSettingsURI: https://vsdrop.corp.microsoft.com/file/v1/RunSettings/$(System.TeamProject)/dotnet/project-system/$(Build.SourceBranchName)/$(Build.BuildId);OptProf.runsettings
-#     # This variable is set during the 'Update RunSettings' (UpdateRunSettings.ps1) step in the publish-assets-and-packages.yml.
-#     # This variable is expanded when it is used: https://docs.microsoft.com/en-us/azure/devops/pipelines/process/variables?view=azure-devops&tabs=yaml%2Cbatch#macro-syntax-variables
-#     visualStudioBootstrapperURI: $(visualStudioBootstrapperURI)
-#     # visualStudioBootstrapperURI: $[ stageDependencies.Publish.PublishAssetsAndPackages.outputs['UpdateRunSettings.visualStudioBootstrapperURI'] ]
-#     # visualStudioBootstrapperURI: $[ stageDependencies.Publish.outputs['PublishAssetsAndPackages.UpdateRunSettings.visualStudioBootstrapperURI'] ]
-#     # The output of the optimization process. The first half of the path is provided to the DropNamePrefix input in the 'Install OptProf Plugin' (MicroBuildOptProfPlugin) step in build-official-release.yml.
-#     optOptimizationInputsDropName: OptimizationInputs/$(System.TeamProject)/$(Build.Repository.Name)/$(Build.SourceVersion)/$(Build.BuildId)/$(System.StageAttempt)
-#     testLabPoolName: VS-Platform
+- template: \templates\stages\visual-studio\single-runsettings.yml@DartLabOptProfTemplates
+  parameters:
+    name: Optimization
+    displayName: Optimization
+    dependsOn:
+    - Publish
+    - Compliance
+    variables:
+    - name: visualStudioBootstrapperURI
+      # If you set this value to the visualStudioBootstrapperURI parameter directly, it does not resolve correctly. Instead, we set it to a variable and pass that variable into the parameter.
+      # For parameter, variable, and expression syntax/usage, see:
+      # - https://docs.microsoft.com/en-us/azure/devops/pipelines/process/variables?view=azure-devops&tabs=yaml%2Cbatch#understand-variable-syntax
+      # - https://docs.microsoft.com/en-us/azure/devops/pipelines/process/expressions?view=azure-devops
+      # - https://docs.microsoft.com/en-us/azure/devops/pipelines/process/runtime-parameters?view=azure-devops&tabs=script#how-can-i-use-variables-inside-of-templates
+      # For variables across stages, see:
+      # - https://docs.microsoft.com/en-us/azure/devops/pipelines/process/variables?view=azure-devops&tabs=yaml%2Cbatch#use-outputs-in-a-different-stage
+      # - https://arunksingh16.medium.com/azure-devops-share-variable-across-stages-9bca85abfe8a
+      # - https://stackoverflow.com/a/57488169/294804
+      # - https://github.com/microsoft/azure-pipelines-tasks/issues/4743
+      value: $[ stageDependencies.Publish.PublishAssetsAndPackages.outputs['UpdateRunSettings.visualStudioBootstrapperURI'] ]
+    runSettingsURI: https://vsdrop.corp.microsoft.com/file/v1/RunSettings/$(System.TeamProject)/dotnet/project-system/$(Build.SourceBranchName)/$(Build.BuildId);OptProf.runsettings
+    # This variable is set during the 'Update RunSettings' (UpdateRunSettings.ps1) step in the publish-assets-and-packages.yml.
+    # This variable is expanded when it is used: https://docs.microsoft.com/en-us/azure/devops/pipelines/process/variables?view=azure-devops&tabs=yaml%2Cbatch#macro-syntax-variables
+    visualStudioBootstrapperURI: $(visualStudioBootstrapperURI)
+    # The output of the optimization process. The first half of the path is provided to the DropNamePrefix input in the 'Install OptProf Plugin' (MicroBuildOptProfPlugin) step in build-official-release.yml.
+    optOptimizationInputsDropName: OptimizationInputs/$(System.TeamProject)/$(Build.Repository.Name)/$(Build.SourceVersion)/$(Build.BuildId)/$(System.StageAttempt)
+    testLabPoolName: VS-Platform
 
 - stage: Insertion
   displayName: Insertion
