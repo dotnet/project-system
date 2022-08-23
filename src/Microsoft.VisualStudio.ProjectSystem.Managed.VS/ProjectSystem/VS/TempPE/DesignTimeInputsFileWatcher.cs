@@ -74,7 +74,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
         {
             base.Initialize();
 
-            _broadcastBlock = DataflowBlockSlim.CreateBroadcastBlock<IProjectVersionedValue<string[]>>(nameFormat: nameof(DesignTimeInputsFileWatcher) + "Broadcast {1}");
+            _broadcastBlock = DataflowBlockSlim.CreateBroadcastBlock<IProjectVersionedValue<string[]>>(nameFormat: nameof(DesignTimeInputsFileWatcher) + " Broadcast: {1}");
             _publicBlock = AllowSourceBlockCompletion ? _broadcastBlock : _broadcastBlock.SafePublicize();
 
             _actionBlock = DataflowBlockFactory.CreateActionBlock<IProjectVersionedValue<DesignTimeInputs>>(ProcessDesignTimeInputsAsync, _project);
