@@ -67,7 +67,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
             // Create an action block to process the design time inputs and configuration general changes
             ITargetBlock<IProjectVersionedValue<ValueTuple<DesignTimeInputs, IProjectSubscriptionUpdate>>> inputsAction = DataflowBlockFactory.CreateActionBlock<IProjectVersionedValue<ValueTuple<DesignTimeInputs, IProjectSubscriptionUpdate>>>(ProcessDataflowChanges, _project);
 
-            _broadcastBlock = DataflowBlockSlim.CreateBroadcastBlock<IProjectVersionedValue<DesignTimeInputSnapshot>>(nameFormat: nameof(DesignTimeInputsChangeTracker) + "Broadcast {1}");
+            _broadcastBlock = DataflowBlockSlim.CreateBroadcastBlock<IProjectVersionedValue<DesignTimeInputSnapshot>>(nameFormat: nameof(DesignTimeInputsChangeTracker) + " Broadcast: {1}");
             _publicBlock = AllowSourceBlockCompletion ? _broadcastBlock : _broadcastBlock.SafePublicize();
 
             Assumes.Present(_project.Services.ProjectAsynchronousTasks);

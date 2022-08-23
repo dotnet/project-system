@@ -28,7 +28,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Subscriptions
                 _currentSnapshot = DependenciesSnapshot.Empty;
 
                 // Updates will be published via Dataflow.
-                _source = DataflowBlockSlim.CreateBroadcastBlock<SnapshotChangedEventArgs>("DependenciesSnapshot {1}", skipIntermediateInputData: true);
+                _source = DataflowBlockSlim.CreateBroadcastBlock<SnapshotChangedEventArgs>(nameFormat: "DependenciesSnapshot Broadcast: {1}", skipIntermediateInputData: true);
 
                 // Updates are debounced to conflate rapid updates and reduce frequency of tree updates downstream.
                 _debounce = new TaskDelayScheduler(
