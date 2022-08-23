@@ -46,12 +46,14 @@ stages:
   jobs:
   - template: templates/build-pull-request.yml
     parameters:
-      JobName: Build Debug
+      JobName: BuildPullRequest-Debug
+      JobDisplayName: Build Debug
       BuildConfiguration: Debug
       ArtifactName: '$(Build.BuildNumber)-Debug'
   - template: templates/build-pull-request.yml
     parameters:
-      JobName: Build Release
+      JobName: BuildPullRequest-Release
+      JobDisplayName: Build Release
       BuildConfiguration: Release
       ArtifactName: '$(Build.BuildNumber)'
 
