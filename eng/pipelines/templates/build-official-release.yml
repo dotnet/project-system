@@ -49,7 +49,9 @@ jobs:
   - task: MicroBuildSigningPlugin@4
     displayName: Install Signing Plugin
     inputs:
-      signType: ${{ parameters.SignType }}
+      # Build fails if this is set to 'test'.
+      # See: https://github.com/dotnet/project-system/issues/7935
+      signType: real
       esrpSigning: true
     env:
       # Only used for tracking purposes.
@@ -84,7 +86,7 @@ jobs:
       DropNamePrefix: OptimizationInputs/$(System.TeamProject)/$(Build.Repository.Name)
       AccessToken: $(System.AccessToken)
       feedSource: https://devdiv.pkgs.visualstudio.com/DefaultCollection/_packaging/MicroBuildToolset/nuget/v3/index.json
-      ShouldSkipOptimize: ${{ parameters.SkipOptimize }}
+      ShouldSkipOptimize: $(SkipOptimize)
       # This value determines how old the optimization data is allowed to be.
       # If the delta of the number of commits between the commit used for the last produced optimization data and the current commit is greater than this value,
       # this task will always fail. The only way to fix it is produce new optimization data.
@@ -157,9 +159,15 @@ jobs:
     # This is a non-critical task, so don't fail the build if it fails.
     continueOnError: true
 
+  # Uploads telemetry to MicroBuild about the MicroBuild components used.
+  - task: MicroBuildCleanup@1
+    displayName: Send MicroBuild Telemetry
+    condition: succeededOrFailed()
+
   ###################################################################################################################################################################
   # PUBLISH BUILD
   # Steps in this section should contain 'condition: succeededOrFailed()' since these artifacts can be used for analyzing build failures.
+  # https://docs.microsoft.com/en-us/azure/devops/pipelines/process/tasks?view=azure-devops&tabs=yaml#task-control-options
   ###################################################################################################################################################################
 
   # Use a disabled, empty script to display the section header in the pipeline UI.

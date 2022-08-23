@@ -7,6 +7,8 @@ jobs:
   pool:
     name: $(DefaultPoolName)
     demands: $(DefaultDemands)
+  # Run this pipeline only when specifically requested (via CreateInsertion) or when the pipeline is ran on a schedule.
+  condition: and(succeeded(), or(eq(variables['CreateInsertion'], true), eq(variables['Build.Reason'], 'Schedule')))
   steps:
 
   ###################################################################################################################################################################
@@ -35,13 +37,12 @@ jobs:
   - task: MicroBuildInsertVsPayload@4
     displayName: Create VS Insertion PR
     inputs:
-      # TODO: Make TargetBranch configurable.
-      TargetBranch: main
+      TargetBranch: $(InsertionVSBranch)
       # Cannot use '.NET' Project System as the branch name is created via this value. It produces an error:
       # fatal: 'team/.NET-Project-System/DotNet-Project-System-20220818.3-1' is not a valid branch name
       TeamName: DotNet Project System
       TeamEmail: dotnetdevexproj@microsoft.com
-      InsertionPayloadName: 'DotNet-Project-System {$(Build.SourceBranchName):$(Build.BuildNumber)}'
+      InsertionPayloadName: 'DotNet-Project-System ($(Build.SourceBranchName):$(Build.BuildNumber))'
       ComponentJsonValues: Microsoft.VisualStudio.Editors.vsman=https://vsdrop.corp.microsoft.com/file/v1/Products/$(System.TeamProject)/$(Build.Repository.Name)/$(Build.SourceBranchName)/$(Build.BuildNumber);Microsoft.VisualStudio.Editors.vsman,Microsoft.VisualStudio.ProjectSystem.Managed.vsman=https://vsdrop.corp.microsoft.com/file/v1/Products/$(System.TeamProject)/$(Build.Repository.Name)/$(Build.SourceBranchName)/$(Build.BuildNumber);Microsoft.VisualStudio.ProjectSystem.Managed.vsman
       # Setting DefaultConfigValues also sets the PackagePropsValues.
       # See the bottom of the table here: https://devdiv.visualstudio.com/DevDiv/_wiki/wikis/DevDiv.wiki/635/Overview?anchor=**build-pipeline**
@@ -49,6 +50,7 @@ jobs:
       AllowTopicBranchUpdate: true
       # TODO: This is where a fancy description can be provided. Need to create a mechanism to provide this.
       # InsertionDescription: 'description'
+      # This is the name of our DevDiv alias.
       InsertionReviewers: '.NET Project System'
       InsertionBuildPolicy: Request Perf DDRITs
       # This action only works on AzDO repos. This warning occurs if enabled:

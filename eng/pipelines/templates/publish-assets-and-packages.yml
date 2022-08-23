@@ -26,6 +26,7 @@ jobs:
     patterns: |
       VSSetup/Insertion/**
       packages/**
+
   # Download the staging artifacts from the Build job.
   - download: current
     displayName: Download Staging Artifacts
@@ -59,8 +60,7 @@ jobs:
 
   ###################################################################################################################################################################
   # PUBLISH OPTPROF
-  # The published OptProf metadata is consumed by the release pipeline that profiles the assemblies to create the optimization data.
-  # Release Pipeline URL: https://devdiv.visualstudio.com/DevDiv/_release?definitionId=3197
+  # The published OptProf metadata is consumed by the Optimization pipeline that profiles the assemblies to create the optimization data.
   ###################################################################################################################################################################
 
   # Use a disabled, empty script to display the section header in the pipeline UI.
@@ -122,8 +122,6 @@ jobs:
   # Downloads NuGet and adds it to the PATH.
   - task: NuGetToolInstaller@1
     displayName: Install NuGet
-    # inputs:
-    #   versionSpec: '4.9.2'
 
   # Authenticate with a service connection to be able to publish packages to external (different DevOps organization) NuGet feeds.
   - task: NuGetAuthenticate@1
