@@ -1,55 +1,64 @@
-# Name: unit-tests
+# Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
+
+# Name: DotNet-Project-System-PR
 # URL: https://dev.azure.com/dnceng/public/_build?definitionId=406
-#
-# Responsible for validating pull requests and commits to protected branches against unit tests.
 
-# Branches that trigger a build on commit
-trigger:
-  branches:
-    include:
-    - main
-    - dev*
-    - feature/*
+# Validates commits as part of GitHub pull requests.
 
-# Branches that trigger builds on PR
+###################################################################################################################################################################
+# PIPELINE METADATA
+###################################################################################################################################################################
+
+# Activates the pipeline for every commit on a PR.
+# See: https://docs.microsoft.com/en-us/azure/devops/pipelines/yaml-schema/pr?view=azure-pipelines
 pr:
   branches:
     include:
     - main
-    - dev*
     - feature/*
+  paths:
+    exclude:
+    - docs/*
+    - README.md
 
 variables:
-  # Opt out of running Codesign Validation (https://aka.ms/gdn-injection)
-  runCodesignValidationInjection: false
+  # The max number of concurrent jobs that can be run in the pool is 820.
+  # https://dnceng.visualstudio.com/public/_settings/agentqueues?queueId=396&view=jobs
+  DefaultPoolName: NetCore1ESPool-Public
+  # https://docs.microsoft.com/en-us/azure/devops/pipelines/process/demands?view=azure-devops&tabs=yaml#manually-entered-demands
+  # Image List: https://helix.dot.net/#1esPools
+  DefaultDemands: ImageOverride -equals Windows.VS2022Preview.Amd64.Open
+  # https://docs.microsoft.com/en-us/dotnet/core/tools/dotnet-environment-variables#dotnet_skip_first_time_experience
   DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true
+  # https://docs.microsoft.com/en-us/dotnet/core/tools/dotnet-environment-variables#dotnet_nologo
+  DOTNET_NOLOGO: true
+  # Opt out of automatically injecting Codesign Validation into the pipeline.
+  # See: https://aka.ms/gdn-injection
+  runCodesignValidationInjection: false
 
-jobs:
-- template: unit-tests-template.yml
-  parameters:
-    name: Windows_Debug
-    configuration: Debug
-    pool:
-      name: NetCore1ESPool-Public
-      # Image list: https://helix.dot.net/#1esPools
-      demands: ImageOverride -equals Build.Windows.Amd64.VS2022.Pre.Open
+###################################################################################################################################################################
+# STAGES
+###################################################################################################################################################################
 
-- template: unit-tests-template.yml
-  parameters:
-    name: Windows_Release
-    configuration: Release
-    pool:
-      name: NetCore1ESPool-Public
-      # Image list: https://helix.dot.net/#1esPools
-      demands: ImageOverride -equals Build.Windows.Amd64.VS2022.Pre.Open
+stages:
+- stage: Build
+  displayName: Build
+  jobs:
+  - template: templates/build-pull-request.yml
+    parameters:
+      JobName: Build Debug
+      BuildConfiguration: Debug
+      ArtifactName: '$(Build.BuildNumber)-Debug'
+  - template: templates/build-pull-request.yml
+    parameters:
+      JobName: Build Release
+      BuildConfiguration: Release
+      ArtifactName: '$(Build.BuildNumber)'
 
-- template: unit-tests-template.yml
-  parameters:
-    name: Spanish
-    configuration: Debug
-    pool: 
-      name: NetCore1ESPool-Public
-      # Image list: https://helix.dot.net/#1esPools
-      # NOTE: There currently is no Spanish VS 2022 image. Previous image was: Build.Windows.Amd64.VS2019.Pre.ES.Open
-      # 'Scout' is the data-center image as to simply provide a different environment to test.
-      demands: ImageOverride -equals Build.Windows.Amd64.VS2022.Pre.Scout.Open
+- stage: Publish
+  displayName: Publish
+  dependsOn: Build
+  variables:
+    BuildConfiguration: Release
+  jobs:
+  - template: templates/publish-richnav.yml

@@ -2,7 +2,8 @@
 
 # Name: DotNet-Project-System
 # URL: https://dev.azure.com/devdiv/DevDiv/_build?definitionId=9675
-# Produces the signed product build for insertion into the Visual Studio repository.
+
+# Produces the signed product build for insertion into the Visual Studio.
 
 ###################################################################################################################################################################
 # PIPELINE METADATA
@@ -53,29 +54,6 @@ resources:
     type: git
     ref: refs/heads/main
 
-# variables:
-# - group: OneLocBuildVariables
-# - name: BuildConfiguration
-#   value: Release
-# - name: TeamName
-#   value: DotNet-Project-System
-# - name: BuildPlatform
-#   value: any cpu
-# - name: DOTNET_SKIP_FIRST_TIME_EXPERIENCE
-#   value: true
-# - name: Packaging.EnableSBOMSigning
-#   value: true
-#   # https://devdiv.visualstudio.com/DevDiv/_settings/agentqueues?queueId=3123&view=jobs
-# - name: DefaultPoolName
-#   value: VSEngSS-MicroBuild2022-1ES
-#   # https://devdiv.visualstudio.com/DevDiv/_settings/agentqueues?queueId=3316&view=jobs
-#   # This specific pool is required to access our file share location.
-# - name: SymbolsPoolName
-#   value: VSEng-ReleasePool-1ES
-#   # https://docs.microsoft.com/en-us/azure/devops/pipelines/process/demands?view=azure-devops&tabs=yaml#manually-entered-demands
-# - name: DefaultDemands
-#   value: Cmd
-
 variables:
   # The configuration for the build is used throughout the various pipelines as the file paths for output contain the build configuration as a folder name.
   BuildConfiguration: Release
@@ -92,15 +70,11 @@ variables:
   DOTNET_NOLOGO: true
   # https://devdiv.visualstudio.com/DevDiv/_wiki/wikis/DevDiv.wiki/26284/Enabling-SBOM-For-Your-Component-Insertion-into-VS?anchor=1.-add-the-%27manifest-generator-task%27-to-your-pipeline
   Packaging.EnableSBOMSigning: true
+  # Opt out of automatically injecting Codesign Validation into the pipeline. We run Codesign Validation as part of the Compliance pipeline.
+  # See: https://aka.ms/gdn-injection
+  runCodesignValidationInjection: false
 
 parameters:
-# - name: SignType
-#   displayName: Sign Type
-#   type: string
-#   default: real
-#   values:
-#   - real
-#   - test
 - name: CreateInsertion
   displayName: Create VS Insertion PR
   type: boolean
@@ -116,11 +90,18 @@ parameters:
   type: boolean
   default: false
 
+###################################################################################################################################################################
+# STAGES
+###################################################################################################################################################################
+
 stages:
 - stage: Build
   displayName: Build
   variables:
     SkipOptimize: ${{ parameters.SkipOptimize }}
+    # Only used for tracking purposes in MicroBuild tasks.
+    # See: https://devdiv.visualstudio.com/DevDiv/_wiki/wikis/DevDiv.wiki/650/MicroBuild-Signing?anchor=high-level-steps-to-enable-signing
+    TeamName: DotNet-Project-System
   jobs:
   - template: templates/build-official-release.yml
 
