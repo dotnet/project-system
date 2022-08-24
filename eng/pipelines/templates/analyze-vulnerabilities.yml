@@ -7,26 +7,6 @@ jobs:
   steps:
 
   ###################################################################################################################################################################
-  # BUILD SRC
-  ###################################################################################################################################################################
-
-  # Use a disabled, empty script to display the section header in the pipeline UI.
-  # - script:
-  #   displayName: === Build Src ===
-  #   condition: false
-
-  # Only the projects in the 'src' folder are necessary for analyzing vulnerabilities.
-  # We need to use the MSBuildTask for the Roslyn Security Analyzer to understand the project build configuration.
-  # See: https://eng.ms/docs/security-compliance-identity-and-management-scim/security/azure-security/cloudai-security-fundamentals-engineering/security-integration/guardian-wiki/sdl-azdo-extension/roslyn-analyzers-build-task#overview
-  # - task: MSBuild@1
-  #   displayName: Build Src Projects
-  #   inputs:
-  #     solution: $(Build.SourcesDirectory)/eng/Build.proj
-  #     msBuildArchitecture: x86
-  #     configuration: $(BuildConfiguration)
-  #     msBuildArguments: /m /warnAsError /noLogo /clp:Summary /bl:"$(Build.SourcesDirectory)/artifacts/$(BuildConfiguration)/log/Build.binlog" /v:normal /p:Configuration=$(BuildConfiguration) /p:CIBuild=true /p:Test=false /p:Pack=false /p:TestProjects=false /p:SetupProjects=false
-
-  ###################################################################################################################################################################
   # RUN ANALYSIS
   ###################################################################################################################################################################
 
@@ -35,40 +15,13 @@ jobs:
     displayName: === Run Analysis ===
     condition: false
 
-  # # Scan the managed code for security vulnerabilities.
-  # # The build itself via an MSBuild task needs to run in the pipeline for it to detect how to build the code in this analyzer.
-  # # YAML reference: https://eng.ms/docs/security-compliance-identity-and-management-scim/security/azure-security/cloudai-security-fundamentals-engineering/security-integration/guardian-wiki/sdl-azdo-extension/roslyn-analyzers-build-task#v3
-  # - task: RoslynAnalyzers@3
-  #   displayName: Run RoslynAnalyzers
-  #   inputs:
-  #     userProvideBuildInfo: autoMsBuildInfo
-  #     setupCommandlinePicker: vs2022
-  #   # Adds the pipeline token to the environment for the analyzer.
-  #   # See: https://eng.ms/docs/security-compliance-identity-and-management-scim/security/azure-security/cloudai-security-fundamentals-engineering/security-integration/guardian-wiki/sdl-azdo-extension/roslyn-analyzers-build-task#systemaccesstoken-cannot-be-accessed-enable-pipeline-access-to-systemaccesstoken-on-the-agent-job-level
-  #   env:
-  #     SYSTEM_ACCESSTOKEN: $(System.AccessToken)
-
-  # - task: RoslynAnalyzers@3
-  #   displayName: Run RoslynAnalyzers
-  #   inputs:
-  #     userProvideBuildInfo: msBuildInfo
-  #     msBuildVersion: 17.0
-  #     msBuildArchitecture: x86
-  #     setupCommandlinePicker: vs2022
-  #     msBuildCommandline: $(Build.SourcesDirectory)/build.cmd /v:normal /p:Configuration=$(BuildConfiguration) /p:CIBuild=true /p:Test=false /p:Pack=false /p:TestProjects=false /p:SetupProjects=false
-  #   env:
-  #     SYSTEM_ACCESSTOKEN: $(System.AccessToken)
-
+  # Scan the managed code for security vulnerabilities.
+  # YAML reference: https://eng.ms/docs/security-compliance-identity-and-management-scim/security/azure-security/cloudai-security-fundamentals-engineering/security-integration/guardian-wiki/sdl-azdo-extension/codeql-build-task#v1
   - task: Semmle@1
     displayName: Run CodeQL
     inputs:
       sourceCodeDirectory: $(Build.SourcesDirectory)
-      # language: 'csharp'
       buildCommandsString: $(Build.SourcesDirectory)/build.cmd /v:normal /p:Configuration=$(BuildConfiguration) /p:CIBuild=true /p:Test=false /p:Pack=false /p:TestProjects=false /p:SetupProjects=false
-      # querySuite: 'Recommended'
-      # timeout: '1800'
-      # ram: '16384'
-      # addProjectDirToScanningExclusionList: true
 
   ###################################################################################################################################################################
   # PUBLISH RESULTS
@@ -99,9 +52,9 @@ jobs:
   # Publishes the results as artifacts to the Azure Pipeline.
   # YAML reference: https://eng.ms/docs/security-compliance-identity-and-management-scim/security/azure-security/cloudai-security-fundamentals-engineering/security-integration/guardian-wiki/sdl-azdo-extension/publish-security-analysis-logs#v3
   - task: PublishSecurityAnalysisLogs@3
-    displayName: Publish API Artifacts
+    displayName: Publish Vulnerabilities Artifacts
     inputs:
-      ArtifactName: Analysis-API
+      ArtifactName: Analysis-Vulnerabilities
       ArtifactType: Container
       AllTools: true
       ToolLogsNotFoundAction: Standard
