@@ -81,8 +81,6 @@ jobs:
       # F - Scan a particular file or folder (recursively)
       targetType: F
       targetArgument: $(Build.SourcesDirectory)
-      # TODO: Consider moving this file.
-      # result: PoliCheck.xml
       # 1 - Enable scanning of comments
       optionsFC: 1
       # Scan for severity 1, 2, and 3 issues
@@ -134,9 +132,7 @@ jobs:
       # - https://dev.azure.com/securitytools/SecurityIntegration/_wiki/wikis/Guardian/1409/Guardian-TSA?anchor=tsa-options-file
       GdnPublishTsaConfigFile: $(Build.SourcesDirectory)/eng/pipelines/configuration/TSAConfig.gdntsa
       GdnPublishTsaExportedResultsPublishable: true
-    condition: succeededOrFailed()
-    # TODO: Temporarily disable while building this pipeline.
-    enabled: false
+    condition: and(succeededOrFailed(), eq(variables.UploadTSAResults, true))
 
   # Publishes the results as artifacts to the Azure Pipeline.
   # YAML reference: https://eng.ms/docs/security-compliance-identity-and-management-scim/security/azure-security/cloudai-security-fundamentals-engineering/security-integration/guardian-wiki/sdl-azdo-extension/publish-security-analysis-logs#v3

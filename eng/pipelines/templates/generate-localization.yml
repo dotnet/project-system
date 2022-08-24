@@ -36,9 +36,11 @@ jobs:
       locProj: $(Build.StagingDirectory)/loc/LocProject.json
       repoType: gitHub
       # Uses the dotnet-bot account for creating PRs: https://github.com/dotnet-bot
+      # Variable value comes from OneLocBuildVariables: https://devdiv.visualstudio.com/DevDiv/_library?itemType=VariableGroups&view=VariableGroupView&variableGroupId=343&path=OneLocBuildVariables
       gitHubPatVariable: $(BotAccount-dotnet-bot-repo-PAT)
       packageSourceAuth: patAuth
       # Provides read access to the ceapex AzDO instance: https://dev.azure.com/ceapex/
+      # Variable value comes from OneLocBuildVariables: https://devdiv.visualstudio.com/DevDiv/_library?itemType=VariableGroups&view=VariableGroupView&variableGroupId=343&path=OneLocBuildVariables
       patVariable: $(dn-bot-ceapex-package-r)
       isCreatePrSelected: true
       isAutoCompletePrSelected: false

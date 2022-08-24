@@ -7,8 +7,6 @@ jobs:
   pool:
     name: $(DefaultPoolName)
     demands: $(DefaultDemands)
-  # Run this pipeline only when specifically requested (via CreateInsertion) or when the pipeline was ran on a schedule.
-  condition: and(succeeded(), or(eq(variables['CreateInsertion'], true), eq(variables['Build.Reason'], 'Schedule')))
   steps:
 
   ###################################################################################################################################################################
