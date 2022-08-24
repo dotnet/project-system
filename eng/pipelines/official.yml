@@ -177,29 +177,32 @@ stages:
 #     optOptimizationInputsDropName: OptimizationInputs/$(System.TeamProject)/$(Build.Repository.Name)/$(Build.SourceVersion)/$(Build.BuildId)/$(System.StageAttempt)
 #     testLabPoolName: VS-Platform
 
-- stage: Insertion
-  displayName: Insertion
-  dependsOn:
-  # The Build dependsOn is required for putting that stage's variables into the stageDependencies property bag.
-  - Build
-  - Publish
-  - Compliance
-  variables:
-    # Gets the PackageVersion variable produced by the Build pipeline.
-    # For parameter, variable, and expression syntax/usage, see:
-    # - https://docs.microsoft.com/azure/devops/pipelines/process/variables?view=azure-devops&tabs=yaml%2Cbatch#understand-variable-syntax
-    # - https://docs.microsoft.com/azure/devops/pipelines/process/expressions?view=azure-devops
-    # - https://docs.microsoft.com/azure/devops/pipelines/process/runtime-parameters?view=azure-devops&tabs=script#how-can-i-use-variables-inside-of-templates
-    # For variables across stages, see:
-    # - https://docs.microsoft.com/azure/devops/pipelines/process/variables?view=azure-devops&tabs=yaml%2Cbatch#use-outputs-in-a-different-stage
-    # - https://arunksingh16.medium.com/azure-devops-share-variable-across-stages-9bca85abfe8a
-    # - https://stackoverflow.com/a/57488169/294804
-    # - https://github.com/microsoft/azure-pipelines-tasks/issues/4743
-    PackageVersion: $[ stageDependencies.Build.BuildOfficialRelease.outputs['SetPackageVersion.PackageVersion'] ]
-    # CreateInsertion: ${{ parameters.CreateInsertion }}
-    InsertionVSBranch: ${{ parameters.InsertionVSBranch }}
-  # Run this stage only when specifically requested (via CreateInsertion) or when the pipeline was ran on a schedule.
-  # https://docs.microsoft.com/azure/devops/pipelines/process/conditions?view=azure-devops&tabs=yaml#use-a-template-parameter-as-part-of-a-condition
-  condition: and(succeeded(), or(eq('${{ parameters.CreateInsertion }}', true), eq(variables['Build.Reason'], 'Schedule')))
-  jobs:
-  - template: templates/generate-insertion.yml
+# Run this stage only when specifically requested (via CreateInsertion) or when the pipeline was ran on a schedule.
+# Conditional insertion syntax: https://docs.microsoft.com/en-us/azure/devops/pipelines/process/expressions?view=azure-devops#conditional-insertion
+- ${{ if or(eq(parameters.CreateInsertion, true), eq(variables['Build.Reason'], 'Schedule')) }}:
+  - stage: Insertion
+    displayName: Insertion
+    dependsOn:
+    # The Build dependsOn is required for putting that stage's variables into the stageDependencies property bag.
+    - Build
+    - Publish
+    - Compliance
+    variables:
+      # Gets the PackageVersion variable produced by the Build pipeline.
+      # For parameter, variable, and expression syntax/usage, see:
+      # - https://docs.microsoft.com/azure/devops/pipelines/process/variables?view=azure-devops&tabs=yaml%2Cbatch#understand-variable-syntax
+      # - https://docs.microsoft.com/azure/devops/pipelines/process/expressions?view=azure-devops
+      # - https://docs.microsoft.com/azure/devops/pipelines/process/runtime-parameters?view=azure-devops&tabs=script#how-can-i-use-variables-inside-of-templates
+      # For variables across stages, see:
+      # - https://docs.microsoft.com/azure/devops/pipelines/process/variables?view=azure-devops&tabs=yaml%2Cbatch#use-outputs-in-a-different-stage
+      # - https://arunksingh16.medium.com/azure-devops-share-variable-across-stages-9bca85abfe8a
+      # - https://stackoverflow.com/a/57488169/294804
+      # - https://github.com/microsoft/azure-pipelines-tasks/issues/4743
+      PackageVersion: $[ stageDependencies.Build.BuildOfficialRelease.outputs['SetPackageVersion.PackageVersion'] ]
+      # CreateInsertion: ${{ parameters.CreateInsertion }}
+      InsertionVSBranch: ${{ parameters.InsertionVSBranch }}
+    # Run this stage only when specifically requested (via CreateInsertion) or when the pipeline was ran on a schedule.
+    # https://docs.microsoft.com/azure/devops/pipelines/process/conditions?view=azure-devops&tabs=yaml#use-a-template-parameter-as-part-of-a-condition
+    # condition: and(succeeded(), or(eq('${{ parameters.CreateInsertion }}', true), eq(variables['Build.Reason'], 'Schedule')))
+    jobs:
+    - template: templates/generate-insertion.yml

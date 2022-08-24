@@ -50,17 +50,16 @@ variables:
 stages:
 - stage: Build
   displayName: Build
+  variables:
+    DefaultPoolName: ${{ variables.DefaultPoolName }}
+    DefaultDemands: ${{ variables.DefaultDemands }}
   jobs:
   - template: templates/build-pull-request.yml
     parameters:
-      # JobName: BuildPullRequest_Debug
-      # JobDisplayName: Build Debug
       BuildConfiguration: Debug
       ArtifactName: '$(Build.BuildNumber)-Debug'
   - template: templates/build-pull-request.yml
     parameters:
-      # JobName: BuildPullRequest_Release
-      # JobDisplayName: Build Release
       BuildConfiguration: Release
       ArtifactName: '$(Build.BuildNumber)'
 
