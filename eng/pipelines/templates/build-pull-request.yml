@@ -5,8 +5,8 @@ jobs:
   displayName: Build ${{ parameters.BuildConfiguration }}
   timeoutInMinutes: 20
   pool:
-    name: $(DefaultPoolName)
-    demands: ImageOverride -equals Build.Windows.Amd64.VS2022.Pre.Open
+    name: ${{ parameters.DefaultPoolName }}
+    demands: ${{ parameters.DefaultDemands }}
   variables:
     BuildConfiguration: ${{ parameters.BuildConfiguration }}
     ArtifactName: ${{ parameters.ArtifactName }}
