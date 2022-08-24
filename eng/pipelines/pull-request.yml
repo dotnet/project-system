@@ -76,6 +76,7 @@ stages:
       ArtifactName: '$(Build.BuildNumber)-Debug'
   - template: templates/build-pull-request.yml
     parameters:
+      DefaultPool: ${{ parameters.DefaultPool }}
       BuildConfiguration: Release
       ArtifactName: '$(Build.BuildNumber)'
 
