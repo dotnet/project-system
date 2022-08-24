@@ -6,7 +6,7 @@ jobs:
   timeoutInMinutes: 20
   pool:
     name: $(DefaultPoolName)
-    demands: $(DefaultDemands)
+    demands: ImageOverride -equals Build.Windows.Amd64.VS2022.Pre.Open
   variables:
     BuildConfiguration: ${{ parameters.BuildConfiguration }}
     ArtifactName: ${{ parameters.ArtifactName }}
@@ -20,9 +20,6 @@ jobs:
   - script:
     displayName: === Build Repository ===
     condition: false
-
-  - powershell: Write-Host ${env:ProgramFiles(x86)}
-    displayName: Check Program Files
 
   - powershell: Write-Host $(DefaultDemands)
     displayName: Demands Value
