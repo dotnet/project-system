@@ -99,5 +99,5 @@ stages:
     # Disables the signing validation tasks within analyze-compliance.yml.
     VerifySigning: false
   jobs:
-  - template: templates/analyze-compliance.yml
+  # - template: templates/analyze-compliance.yml
   - template: templates/publish-richnav.yml
