@@ -4,9 +4,6 @@ jobs:
 - job: GenerateInsertion
   displayName: Generate Insertion
   timeoutInMinutes: 30
-  pool:
-    name: $(DefaultPoolName)
-    demands: $(DefaultDemands)
   steps:
 
   ###################################################################################################################################################################

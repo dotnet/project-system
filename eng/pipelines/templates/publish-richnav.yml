@@ -4,9 +4,6 @@ jobs:
 - job: PublishRichNav
   displayName: Publish RichNav
   timeoutInMinutes: 30
-  pool:
-    name: $(DefaultPoolName)
-    demands: $(DefaultDemands)
   steps:
 
   ###################################################################################################################################################################

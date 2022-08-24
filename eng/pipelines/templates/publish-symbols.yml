@@ -1,13 +1,14 @@
 # Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
 jobs:
-# Publishing symbols requires a specific agent pool for access to our file share. Making a separate job allows us to use that agent pool only for symbol publishing.
 - job: PublishSymbols
   displayName: Publish Symbols
   timeoutInMinutes: 10
   pool:
-    name: $(SymbolsPoolName)
-    demands: $(DefaultDemands)
+    # Publishing symbols requires a specific agent pool for access to our file share. Defining the pool information within the job allows us to use that agent pool only for symbol publishing.
+    # Agent Queue: https://devdiv.visualstudio.com/DevDiv/_settings/agentqueues?queueId=3316&view=jobs
+    name: VSEng-ReleasePool-1ES
+    demands: Cmd
   steps:
 
   ###################################################################################################################################################################

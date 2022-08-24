@@ -4,9 +4,6 @@ jobs:
 - job: AnalyzeVulnerabilities
   displayName: Analyze Vulnerabilities
   timeoutInMinutes: 60
-  pool:
-    name: $(DefaultPoolName)
-    demands: $(DefaultDemands)
   steps:
 
   ###################################################################################################################################################################
@@ -82,20 +79,22 @@ jobs:
     displayName: === Publish Results ===
     condition: false
 
-  # Upload the output of the compliance tools to Trust Services Automation (TSA), and create Azure DevOps work items for failures.
-  # TSA overview: https://eng.ms/docs/cloud-ai-platform/developer-services/one-engineering-system-1es/1es-docs/trust-services-automation-tsa/tsa-overview
-  # YAML reference: https://eng.ms/docs/cloud-ai-platform/developer-services/one-engineering-system-1es/1es-docs/trust-services-automation-tsa/tsa-upload-build-task#yaml-reference
-  - task: TSAUpload@2
-    displayName: Upload Results to TSA
-    inputs:
-      GdnPublishTsaOnboard: true
-      # Configures the compliance tool results to process.
-      # Configuration file format:
-      # - https://eng.ms/docs/security-compliance-identity-and-management-scim/security/azure-security/cloudai-security-fundamentals-engineering/security-integration/guardian-wiki/microsoft-guardian/guardian-tsa#tsa-options-file
-      # - https://dev.azure.com/securitytools/SecurityIntegration/_wiki/wikis/Guardian/1409/Guardian-TSA?anchor=tsa-options-file
-      GdnPublishTsaConfigFile: $(Build.SourcesDirectory)/eng/pipelines/configuration/TSAConfig.gdntsa
-      GdnPublishTsaExportedResultsPublishable: true
-    condition: and(succeededOrFailed(), eq(variables.UploadTSAResults, true))
+  # Only run this task if UploadTSAResults was specified.
+  - ${{ if eq(variables.UploadTSAResults, true) }}:
+    # Upload the output of the compliance tools to Trust Services Automation (TSA), and create Azure DevOps work items for failures.
+    # TSA overview: https://eng.ms/docs/cloud-ai-platform/developer-services/one-engineering-system-1es/1es-docs/trust-services-automation-tsa/tsa-overview
+    # YAML reference: https://eng.ms/docs/cloud-ai-platform/developer-services/one-engineering-system-1es/1es-docs/trust-services-automation-tsa/tsa-upload-build-task#yaml-reference
+    - task: TSAUpload@2
+      displayName: Upload Results to TSA
+      inputs:
+        GdnPublishTsaOnboard: true
+        # Configures the compliance tool results to process.
+        # Configuration file format:
+        # - https://eng.ms/docs/security-compliance-identity-and-management-scim/security/azure-security/cloudai-security-fundamentals-engineering/security-integration/guardian-wiki/microsoft-guardian/guardian-tsa#tsa-options-file
+        # - https://dev.azure.com/securitytools/SecurityIntegration/_wiki/wikis/Guardian/1409/Guardian-TSA?anchor=tsa-options-file
+        GdnPublishTsaConfigFile: $(Build.SourcesDirectory)/eng/pipelines/configuration/TSAConfig.gdntsa
+        GdnPublishTsaExportedResultsPublishable: true
+      condition: succeededOrFailed()
 
   # Publishes the results as artifacts to the Azure Pipeline.
   # YAML reference: https://eng.ms/docs/security-compliance-identity-and-management-scim/security/azure-security/cloudai-security-fundamentals-engineering/security-integration/guardian-wiki/sdl-azdo-extension/publish-security-analysis-logs#v3

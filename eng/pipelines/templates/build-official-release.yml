@@ -5,9 +5,6 @@ jobs:
   displayName: Build Official Release
   # We make this timeout more than double the normal amount of build time as signing has a highly variable amount of time to complete.
   timeoutInMinutes: 90
-  pool:
-    name: $(DefaultPoolName)
-    demands: $(DefaultDemands)
   steps:
 
   ###################################################################################################################################################################
@@ -127,31 +124,31 @@ jobs:
       # The merged .vsman (OverlaidInstallerManifest.vsman) created by the bootstrapper assumes the bootstrapper will be output to the same drop (Products) as the insertion files.
       outputFolder: $(Build.SourcesDirectory)/artifacts/$(BuildConfiguration)/VSSetup/Insertion
 
-  # This adds our source information to http://index (which is called Codex).
-  # https://github.com/Ref12/Codex
-  # This runs after the build because it needs:
-  # - source files used in the build (including the generated ones in the obj directory)
-  # - binaries (.dll) passed as references
-  # - .binlog that ties it all together, describes what happened during the build, and where all the inputs are
-  # The task uploads the outputs of the process to the pipeline artifacts as 'CodexOutputs' with the file 'store.zip'.
-  # There is a separate process that scans all the Azure Pipelines for this specific artifact on a weekly basis and uploads it to the http://index database.
-  - task: Ref12Analyze@0
-    displayName: Add Build to Codex
-    inputs:
-      # Argument information can be found here:
-      # - https://github.com/Ref12/Codex/blob/d759c4b44bad0f307ec33319278e62d70cf730f3/src/Codex.Automation.Workflow/Program.cs#L47
-      # - https://github.com/Ref12/Codex/blob/d759c4b44bad0f307ec33319278e62d70cf730f3/src/Codex/CodexApplication.cs#L52
-      workflowArguments: |
-        /sourcesDirectory:$(Build.SourcesDirectory)
-        /codexRepoUrl:$(Build.Repository.Uri)
-        /repoName:$(Build.Repository.Name)
-        /additionalCodexArguments:-bld
-        /additionalCodexArguments:$(Build.SourcesDirectory)/artifacts/$(BuildConfiguration)/log
-        /additionalCodexArguments:-noMsBuildLocator
-    # Run this task only when the pipeline was ran on a schedule.
-    condition: and(succeeded(), eq(variables['Build.Reason'], 'Schedule'))
-    # This is a non-critical task, so don't fail the build if it fails.
-    continueOnError: true
+  # Run this task only when the pipeline was ran on a schedule.
+  - ${{ if eq(variables['Build.Reason'], 'Schedule') }}:
+    # This adds our source information to http://index (which is called Codex).
+    # https://github.com/Ref12/Codex
+    # This runs after the build because it needs:
+    # - source files used in the build (including the generated ones in the obj directory)
+    # - binaries (.dll) passed as references
+    # - .binlog that ties it all together, describes what happened during the build, and where all the inputs are
+    # The task uploads the outputs of the process to the pipeline artifacts as 'CodexOutputs' with the file 'store.zip'.
+    # There is a separate process that scans all the Azure Pipelines for this specific artifact on a weekly basis and uploads it to the http://index database.
+    - task: Ref12Analyze@0
+      displayName: Add Build to Codex
+      inputs:
+        # Argument information can be found here:
+        # - https://github.com/Ref12/Codex/blob/d759c4b44bad0f307ec33319278e62d70cf730f3/src/Codex.Automation.Workflow/Program.cs#L47
+        # - https://github.com/Ref12/Codex/blob/d759c4b44bad0f307ec33319278e62d70cf730f3/src/Codex/CodexApplication.cs#L52
+        workflowArguments: |
+          /sourcesDirectory:$(Build.SourcesDirectory)
+          /codexRepoUrl:$(Build.Repository.Uri)
+          /repoName:$(Build.Repository.Name)
+          /additionalCodexArguments:-bld
+          /additionalCodexArguments:$(Build.SourcesDirectory)/artifacts/$(BuildConfiguration)/log
+          /additionalCodexArguments:-noMsBuildLocator
+      # This is a non-critical task, so don't fail the build if it fails.
+      continueOnError: true
 
   # Uploads telemetry to MicroBuild about the MicroBuild components used.
   - task: MicroBuildCleanup@1

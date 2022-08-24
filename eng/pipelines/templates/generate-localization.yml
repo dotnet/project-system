@@ -4,9 +4,6 @@ jobs:
 - job: GenerateLocalization
   displayName: Generate Localization
   timeoutInMinutes: 10
-  pool:
-    name: $(DefaultPoolName)
-    demands: $(DefaultDemands)
   steps:
 
   ###################################################################################################################################################################

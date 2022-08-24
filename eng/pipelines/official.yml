@@ -54,16 +54,15 @@ resources:
     type: git
     ref: refs/heads/main
 
+pool:
+  # Agent Queue: https://devdiv.visualstudio.com/DevDiv/_settings/agentqueues?queueId=3123&view=jobs
+  name: VSEngSS-MicroBuild2022-1ES
+  # Demands Docs: https://docs.microsoft.com/azure/devops/pipelines/process/demands?view=azure-devops&tabs=yaml#manually-entered-demands
+  demands: Cmd
+
 variables:
   # The configuration for the build is used throughout the various pipelines as the file paths for output contain the build configuration as a folder name.
   BuildConfiguration: Release
-  # https://devdiv.visualstudio.com/DevDiv/_settings/agentqueues?queueId=3123&view=jobs
-  DefaultPoolName: VSEngSS-MicroBuild2022-1ES
-  # This specific pool is required to access our file share location.
-  # https://devdiv.visualstudio.com/DevDiv/_settings/agentqueues?queueId=3316&view=jobs
-  SymbolsPoolName: VSEng-ReleasePool-1ES
-  # https://docs.microsoft.com/azure/devops/pipelines/process/demands?view=azure-devops&tabs=yaml#manually-entered-demands
-  DefaultDemands: Cmd
   # https://docs.microsoft.com/dotnet/core/tools/dotnet-environment-variables#dotnet_skip_first_time_experience
   DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true
   # https://docs.microsoft.com/dotnet/core/tools/dotnet-environment-variables#dotnet_nologo

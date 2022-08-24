@@ -4,9 +4,6 @@ jobs:
 - job: PublishAssetsAndPackages
   displayName: Publish Assets and Packages
   timeoutInMinutes: 10
-  pool:
-    name: $(DefaultPoolName)
-    demands: $(DefaultDemands)
   steps:
 
   ###################################################################################################################################################################
