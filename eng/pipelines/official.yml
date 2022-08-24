@@ -10,7 +10,7 @@
 ###################################################################################################################################################################
 
 # Activates the pipeline after a PR is merged.
-# See: https://docs.microsoft.com/en-us/azure/devops/pipelines/yaml-schema/trigger?view=azure-pipelines
+# See: https://docs.microsoft.com/azure/devops/pipelines/yaml-schema/trigger?view=azure-pipelines
 trigger:
   branches:
     include:
@@ -23,7 +23,7 @@ trigger:
 
 schedules:
 # Runs the pipelines at 4am and creates a VS insertion PR.
-# https://docs.microsoft.com/en-us/azure/devops/pipelines/yaml-schema/schedules-cron?view=azure-pipelines
+# https://docs.microsoft.com/azure/devops/pipelines/yaml-schema/schedules-cron?view=azure-pipelines
 - cron: '0 4 * * *'
   displayName: Daily 4am Build (with Insertion)
   branches:
@@ -62,11 +62,11 @@ variables:
   # This specific pool is required to access our file share location.
   # https://devdiv.visualstudio.com/DevDiv/_settings/agentqueues?queueId=3316&view=jobs
   SymbolsPoolName: VSEng-ReleasePool-1ES
-  # https://docs.microsoft.com/en-us/azure/devops/pipelines/process/demands?view=azure-devops&tabs=yaml#manually-entered-demands
+  # https://docs.microsoft.com/azure/devops/pipelines/process/demands?view=azure-devops&tabs=yaml#manually-entered-demands
   DefaultDemands: Cmd
-  # https://docs.microsoft.com/en-us/dotnet/core/tools/dotnet-environment-variables#dotnet_skip_first_time_experience
+  # https://docs.microsoft.com/dotnet/core/tools/dotnet-environment-variables#dotnet_skip_first_time_experience
   DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true
-  # https://docs.microsoft.com/en-us/dotnet/core/tools/dotnet-environment-variables#dotnet_nologo
+  # https://docs.microsoft.com/dotnet/core/tools/dotnet-environment-variables#dotnet_nologo
   DOTNET_NOLOGO: true
   # https://devdiv.visualstudio.com/DevDiv/_wiki/wikis/DevDiv.wiki/26284/Enabling-SBOM-For-Your-Component-Insertion-into-VS?anchor=1.-add-the-%27manifest-generator-task%27-to-your-pipeline
   Packaging.EnableSBOMSigning: true
@@ -160,18 +160,18 @@ stages:
 #     - name: visualStudioBootstrapperURI
 #       # If you set this value to the visualStudioBootstrapperURI parameter directly, it does not resolve correctly. Instead, we set it to a variable and pass that variable into the parameter.
 #       # For parameter, variable, and expression syntax/usage, see:
-#       # - https://docs.microsoft.com/en-us/azure/devops/pipelines/process/variables?view=azure-devops&tabs=yaml%2Cbatch#understand-variable-syntax
-#       # - https://docs.microsoft.com/en-us/azure/devops/pipelines/process/expressions?view=azure-devops
-#       # - https://docs.microsoft.com/en-us/azure/devops/pipelines/process/runtime-parameters?view=azure-devops&tabs=script#how-can-i-use-variables-inside-of-templates
+#       # - https://docs.microsoft.com/azure/devops/pipelines/process/variables?view=azure-devops&tabs=yaml%2Cbatch#understand-variable-syntax
+#       # - https://docs.microsoft.com/azure/devops/pipelines/process/expressions?view=azure-devops
+#       # - https://docs.microsoft.com/azure/devops/pipelines/process/runtime-parameters?view=azure-devops&tabs=script#how-can-i-use-variables-inside-of-templates
 #       # For variables across stages, see:
-#       # - https://docs.microsoft.com/en-us/azure/devops/pipelines/process/variables?view=azure-devops&tabs=yaml%2Cbatch#use-outputs-in-a-different-stage
+#       # - https://docs.microsoft.com/azure/devops/pipelines/process/variables?view=azure-devops&tabs=yaml%2Cbatch#use-outputs-in-a-different-stage
 #       # - https://arunksingh16.medium.com/azure-devops-share-variable-across-stages-9bca85abfe8a
 #       # - https://stackoverflow.com/a/57488169/294804
 #       # - https://github.com/microsoft/azure-pipelines-tasks/issues/4743
 #       value: $[ stageDependencies.Publish.PublishAssetsAndPackages.outputs['UpdateRunSettings.visualStudioBootstrapperURI'] ]
 #     runSettingsURI: https://vsdrop.corp.microsoft.com/file/v1/RunSettings/$(System.TeamProject)/dotnet/project-system/$(Build.SourceBranchName)/$(Build.BuildId);OptProf.runsettings
 #     # This variable is set during the 'Update RunSettings' (UpdateRunSettings.ps1) step in the publish-assets-and-packages.yml.
-#     # This variable is expanded when it is used: https://docs.microsoft.com/en-us/azure/devops/pipelines/process/variables?view=azure-devops&tabs=yaml%2Cbatch#macro-syntax-variables
+#     # This variable is expanded when it is used: https://docs.microsoft.com/azure/devops/pipelines/process/variables?view=azure-devops&tabs=yaml%2Cbatch#macro-syntax-variables
 #     visualStudioBootstrapperURI: $(visualStudioBootstrapperURI)
 #     # The output of the optimization process. The first half of the path is provided to the DropNamePrefix input in the 'Install OptProf Plugin' (MicroBuildOptProfPlugin) step in build-official-release.yml.
 #     optOptimizationInputsDropName: OptimizationInputs/$(System.TeamProject)/$(Build.Repository.Name)/$(Build.SourceVersion)/$(Build.BuildId)/$(System.StageAttempt)
@@ -187,11 +187,11 @@ stages:
   variables:
     # Gets the PackageVersion variable produced by the Build pipeline.
     # For parameter, variable, and expression syntax/usage, see:
-    # - https://docs.microsoft.com/en-us/azure/devops/pipelines/process/variables?view=azure-devops&tabs=yaml%2Cbatch#understand-variable-syntax
-    # - https://docs.microsoft.com/en-us/azure/devops/pipelines/process/expressions?view=azure-devops
-    # - https://docs.microsoft.com/en-us/azure/devops/pipelines/process/runtime-parameters?view=azure-devops&tabs=script#how-can-i-use-variables-inside-of-templates
+    # - https://docs.microsoft.com/azure/devops/pipelines/process/variables?view=azure-devops&tabs=yaml%2Cbatch#understand-variable-syntax
+    # - https://docs.microsoft.com/azure/devops/pipelines/process/expressions?view=azure-devops
+    # - https://docs.microsoft.com/azure/devops/pipelines/process/runtime-parameters?view=azure-devops&tabs=script#how-can-i-use-variables-inside-of-templates
     # For variables across stages, see:
-    # - https://docs.microsoft.com/en-us/azure/devops/pipelines/process/variables?view=azure-devops&tabs=yaml%2Cbatch#use-outputs-in-a-different-stage
+    # - https://docs.microsoft.com/azure/devops/pipelines/process/variables?view=azure-devops&tabs=yaml%2Cbatch#use-outputs-in-a-different-stage
     # - https://arunksingh16.medium.com/azure-devops-share-variable-across-stages-9bca85abfe8a
     # - https://stackoverflow.com/a/57488169/294804
     # - https://github.com/microsoft/azure-pipelines-tasks/issues/4743
@@ -199,6 +199,7 @@ stages:
     # CreateInsertion: ${{ parameters.CreateInsertion }}
     InsertionVSBranch: ${{ parameters.InsertionVSBranch }}
   # Run this stage only when specifically requested (via CreateInsertion) or when the pipeline was ran on a schedule.
-  condition: and(succeeded(), or(eq(parameters.CreateInsertion, true), eq(variables['Build.Reason'], 'Schedule')))
+  # https://docs.microsoft.com/azure/devops/pipelines/process/conditions?view=azure-devops&tabs=yaml#use-a-template-parameter-as-part-of-a-condition
+  condition: and(succeeded(), or(eq('${{ parameters.CreateInsertion }}', true), eq(variables['Build.Reason'], 'Schedule')))
   jobs:
   - template: templates/generate-insertion.yml

@@ -25,7 +25,7 @@ jobs:
       command: run
       projects: eng/tools/OneLocBuildSetup/OneLocBuildSetup.csproj
       # The -- allows us to pass parameters to the application that is being ran.
-      # See: https://docs.microsoft.com/en-us/dotnet/core/tools/dotnet-run#options
+      # See: https://docs.microsoft.com/dotnet/core/tools/dotnet-run#options
       arguments: '-- -r "$(System.DefaultWorkingDirectory)" -o "$(Build.StagingDirectory)"'
 
   # Runs the localization process on the resource files provided within LocProject.json.

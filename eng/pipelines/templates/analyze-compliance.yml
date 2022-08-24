@@ -36,7 +36,7 @@ jobs:
   ###################################################################################################################################################################
   # RUN ANALYSIS
   # Steps in this section should contain 'condition: succeededOrFailed()' since one analyzer failing should not block the other analyzers from running.
-  # https://docs.microsoft.com/en-us/azure/devops/pipelines/process/tasks?view=azure-devops&tabs=yaml#task-control-options
+  # https://docs.microsoft.com/azure/devops/pipelines/process/tasks?view=azure-devops&tabs=yaml#task-control-options
   ###################################################################################################################################################################
 
   # Use a disabled, empty script to display the section header in the pipeline UI.

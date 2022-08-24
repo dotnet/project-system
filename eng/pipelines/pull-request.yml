@@ -10,7 +10,7 @@
 ###################################################################################################################################################################
 
 # Activates the pipeline for every commit on a PR.
-# See: https://docs.microsoft.com/en-us/azure/devops/pipelines/yaml-schema/pr?view=azure-pipelines
+# See: https://docs.microsoft.com/azure/devops/pipelines/yaml-schema/pr?view=azure-pipelines
 pr:
   branches:
     include:
@@ -25,13 +25,13 @@ variables:
   # The max number of concurrent jobs that can be run in the pool is 820.
   # https://dnceng.visualstudio.com/public/_settings/agentqueues?queueId=396&view=jobs
   DefaultPoolName: NetCore1ESPool-Public
-  # https://docs.microsoft.com/en-us/azure/devops/pipelines/process/demands?view=azure-devops&tabs=yaml#manually-entered-demands
+  # https://docs.microsoft.com/azure/devops/pipelines/process/demands?view=azure-devops&tabs=yaml#manually-entered-demands
   # Image List: https://helix.dot.net/#1esPools
   # DefaultDemands: ImageOverride -equals Windows.VS2022Preview.Amd64.Open
   DefaultDemands: ImageOverride -equals Build.Windows.Amd64.VS2022.Pre.Open
-  # https://docs.microsoft.com/en-us/dotnet/core/tools/dotnet-environment-variables#dotnet_skip_first_time_experience
+  # https://docs.microsoft.com/dotnet/core/tools/dotnet-environment-variables#dotnet_skip_first_time_experience
   DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true
-  # https://docs.microsoft.com/en-us/dotnet/core/tools/dotnet-environment-variables#dotnet_nologo
+  # https://docs.microsoft.com/dotnet/core/tools/dotnet-environment-variables#dotnet_nologo
   DOTNET_NOLOGO: true
   # Opt out of automatically injecting Codesign Validation into the pipeline.
   # See: https://aka.ms/gdn-injection
