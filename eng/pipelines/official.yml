@@ -128,6 +128,8 @@ stages:
   dependsOn: Build
   variables:
     UploadTSAResults: ${{ parameters.UploadTSAResults }}
+    # Enables the signing validation tasks within analyze-compliance.yml.
+    VerifySigning: true
   jobs:
   - template: templates/analyze-compliance.yml
   # TODO: Temporarily disabling as we're trying to test more things downstream. This takes too much time.

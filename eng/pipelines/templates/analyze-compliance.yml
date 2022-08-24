@@ -41,31 +41,33 @@ jobs:
     displayName: === Run Analysis ===
     condition: false
 
+  # Only run this task if VerifySigning was specified.
+  - ${{ if eq(variables.VerifySigning, true) }}:
     # Verify the loose DLLs are signed appropriately.
     # YAML reference: https://eng.ms/docs/security-compliance-identity-and-management-scim/security/azure-security/cloudai-security-fundamentals-engineering/security-integration/guardian-wiki/sdl-azdo-extension/code-signing-validation-build-task#v1-preview
-  - task: CodeSign@1
-    displayName: Verify Signed DLLs
-    inputs:
-      Path: $(Build.SourcesDirectory)/artifacts/$(BuildConfiguration)/bin/Dlls/
-      # Glob Format: https://dev.azure.com/securitytools/SecurityIntegration/_wiki/wikis/Guardian/1378/Glob-Format
-      Targets: '**/Microsoft.VisualStudio.AppDesigner*.dll;**/Microsoft.VisualStudio.Editors*.dll;**/Microsoft.VisualStudio.Managed*.dll'
-    condition: succeededOrFailed()
+    - task: CodeSign@1
+      displayName: Verify Signed DLLs
+      inputs:
+        Path: $(Build.SourcesDirectory)/artifacts/$(BuildConfiguration)/bin/Dlls/
+        # Glob Format: https://dev.azure.com/securitytools/SecurityIntegration/_wiki/wikis/Guardian/1378/Glob-Format
+        Targets: '**/Microsoft.VisualStudio.AppDesigner*.dll;**/Microsoft.VisualStudio.Editors*.dll;**/Microsoft.VisualStudio.Managed*.dll'
+      condition: succeededOrFailed()
 
-  # Verifies the packages (and files within) are signed appropriately.
-  - task: MicroBuildCodesignVerify@3
-    displayName: Verify Signed Packages
-    inputs:
-      TargetFolders: |
-        $(Build.SourcesDirectory)/artifacts/$(BuildConfiguration)/packages
-        $(Build.SourcesDirectory)/artifacts/$(BuildConfiguration)/VSSetup/Insertion
-      # Filters out certain files (usually by extension) for Authenticode certificate verification.
-      # File Format:
-      #   Wildcards (* and ?) can be used and paths are relative to the TargetFolders locations.
-      #   Format is one entry per line followed by a comma and then a comment as to why the entry is approved.
-      ApprovalListPathForCerts: $(Build.SourcesDirectory)/eng/pipelines/configuration/AuthenticodeSigningFilter.txt
-      # The bootstrapper folder is placed inside the VSSetup/Insertion folder. We don't want to verify the VS bootstrapper for signing.
-      ExcludeFolders: bootstrapper
-    condition: succeededOrFailed()
+    # Verifies the packages (and files within) are signed appropriately.
+    - task: MicroBuildCodesignVerify@3
+      displayName: Verify Signed Packages
+      inputs:
+        TargetFolders: |
+          $(Build.SourcesDirectory)/artifacts/$(BuildConfiguration)/packages
+          $(Build.SourcesDirectory)/artifacts/$(BuildConfiguration)/VSSetup/Insertion
+        # Filters out certain files (usually by extension) for Authenticode certificate verification.
+        # File Format:
+        #   Wildcards (* and ?) can be used and paths are relative to the TargetFolders locations.
+        #   Format is one entry per line followed by a comma and then a comment as to why the entry is approved.
+        ApprovalListPathForCerts: $(Build.SourcesDirectory)/eng/pipelines/configuration/AuthenticodeSigningFilter.txt
+        # The bootstrapper folder is placed inside the VSSetup/Insertion folder. We don't want to verify the VS bootstrapper for signing.
+        ExcludeFolders: bootstrapper
+      condition: succeededOrFailed()
 
   # Scan for problematic terminology. Related documentation:
   # - https://microsoft.sharepoint.com/sites/globalreadiness/SitePages/PoliCheck.aspx

@@ -89,10 +89,15 @@ stages:
       BuildConfiguration: Release
       ArtifactName: '$(Build.BuildNumber)'
 
-- stage: RichNav
-  displayName: RichNav
+- stage: PostBuild
+  displayName: Post-Build
   dependsOn: Build
   variables:
     BuildConfiguration: Release
+    # Disables the TSA compliance results upload task in analyze-compliance.yml.
+    UploadTSAResults: false
+    # Disables the signing validation tasks within analyze-compliance.yml.
+    VerifySigning: false
   jobs:
+  - template: templates/analyze-compliance.yml
   - template: templates/publish-richnav.yml
