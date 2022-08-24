@@ -130,6 +130,9 @@ stages:
     UploadTSAResults: ${{ parameters.UploadTSAResults }}
     # Enables the signing validation tasks within analyze-compliance.yml.
     VerifySigning: true
+    # Gets the VisualStudioMinimumVersion variable produced by the Build pipeline.
+    # This value is used in the analyze-api.yml template.
+    VisualStudioMinimumVersion: $[ stageDependencies.Build.BuildOfficialRelease.outputs['BuildAllProjects.VisualStudioMinimumVersion'] ]
   jobs:
   - template: templates/analyze-compliance.yml
   - template: templates/analyze-api.yml

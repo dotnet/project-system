@@ -37,6 +37,9 @@ jobs:
     displayName: === Run Analysis ===
     condition: false
 
+  - powershell: Write-Host $(VisualStudioMinimumVersion)
+    displayName: Check VisualStudioMinimumVersion
+
   # Scan for the use of undocumented APIs.
   # YAML reference: https://eng.ms/docs/security-compliance-identity-and-management-scim/security/azure-security/cloudai-security-fundamentals-engineering/security-integration/guardian-wiki/sdl-azdo-extension/apiscan-build-task#v2
   - task: APIScan@2
@@ -44,8 +47,8 @@ jobs:
     inputs:
       softwareFolder: $(Pipeline.Workspace)/$(Build.BuildNumber)/bin/Dlls
       softwareName: Dotnet-Project-System
-      # TODO: Does this need to stay in-sync with version.json?
-      softwareVersionNum: 17
+      # The VisualStudioMinimumVersion variable is written out by the BuildAllProjects task in the Build stage.
+      softwareVersionNum: $(VisualStudioMinimumVersion)
       softwareBuildNum: $(Build.BuildId)
       symbolsFolder: SRV*http://symweb
       noCopySymbols: true

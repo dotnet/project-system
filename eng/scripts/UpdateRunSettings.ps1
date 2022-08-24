@@ -32,8 +32,13 @@ if(-not $buildDropPath)
   $buildDropJson = Get-Content $bootstrapperInfoPath | ConvertFrom-Json
   $dropHashAndGuid = $buildDropJson[0].BuildDrop.Replace('https://vsdrop.corp.microsoft.com/file/v1/Products/DevDiv/VS/', '')
   $buildDropPath = "vstsdrop:Tests/DevDiv/VS/$dropHashAndGuid"
-  # https://docs.microsoft.com/azure/devops/pipelines/process/set-variables-scripts?view=azure-devops&tabs=powershell#set-variable-properties
-  Write-Host "##vso[task.setvariable variable=visualStudioBootstrapperURI;isoutput=true]$($buildDropJson[0].bootstrapperUrl)"
+  # Indicates this script is running in Azure Pipelines.
+  # https://docs.microsoft.com/en-us/azure/devops/pipelines/build/variables?view=azure-devops&tabs=yaml#system-variables-devops-services
+  if($env:TF_BUILD)
+  {
+    # https://docs.microsoft.com/azure/devops/pipelines/process/set-variables-scripts?view=azure-devops&tabs=powershell#set-variable-properties
+    Write-Host "##vso[task.setvariable variable=visualStudioBootstrapperURI;isoutput=true]$($buildDropJson[0].bootstrapperUrl)"
+  }
 }
 $buildDropStore.SetAttribute('Uri', $buildDropPath)
 $null = $testStores.AppendChild($buildDropStore)
