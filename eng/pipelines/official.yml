@@ -132,9 +132,11 @@ stages:
   jobs:
   - template: templates/analyze-compliance.yml
   # TODO: Temporarily disabling as we're trying to test more things downstream. This takes too much time.
-  # - template: templates/analyze-api.yml
-  # TODO: Commented out for since I cannot get the build for the analyzer to recognize global namespaces.
-  - template: templates/analyze-vulnerabilities.yml
+  - ${{ if false }}:
+    - template: templates/analyze-api.yml
+  # TODO: Disabled for since I cannot get the build for CodeQL to recognize global namespaces.
+  - ${{ if false }}:
+    - template: templates/analyze-vulnerabilities.yml
 
 - stage: Localization
   displayName: Localization
@@ -147,35 +149,36 @@ stages:
   jobs:
   - template: templates/generate-localization.yml
 
-# # This template is provided by the DartLabOptProfTemplates repo, declared in the repositories section (top of this file).
-# # It is a stage template, defining our entire Optimization stage.
-# - template: \templates\stages\visual-studio\single-runsettings.yml@DartLabOptProfTemplates
-#   parameters:
-#     name: Optimization
-#     displayName: Optimization
-#     dependsOn:
-#     - Publish
-#     - Compliance
-#     variables:
-#     - name: visualStudioBootstrapperURI
-#       # If you set this value to the visualStudioBootstrapperURI parameter directly, it does not resolve correctly. Instead, we set it to a variable and pass that variable into the parameter.
-#       # For parameter, variable, and expression syntax/usage, see:
-#       # - https://docs.microsoft.com/azure/devops/pipelines/process/variables?view=azure-devops&tabs=yaml%2Cbatch#understand-variable-syntax
-#       # - https://docs.microsoft.com/azure/devops/pipelines/process/expressions?view=azure-devops
-#       # - https://docs.microsoft.com/azure/devops/pipelines/process/runtime-parameters?view=azure-devops&tabs=script#how-can-i-use-variables-inside-of-templates
-#       # For variables across stages, see:
-#       # - https://docs.microsoft.com/azure/devops/pipelines/process/variables?view=azure-devops&tabs=yaml%2Cbatch#use-outputs-in-a-different-stage
-#       # - https://arunksingh16.medium.com/azure-devops-share-variable-across-stages-9bca85abfe8a
-#       # - https://stackoverflow.com/a/57488169/294804
-#       # - https://github.com/microsoft/azure-pipelines-tasks/issues/4743
-#       value: $[ stageDependencies.Publish.PublishAssetsAndPackages.outputs['UpdateRunSettings.visualStudioBootstrapperURI'] ]
-#     runSettingsURI: https://vsdrop.corp.microsoft.com/file/v1/RunSettings/$(System.TeamProject)/dotnet/project-system/$(Build.SourceBranchName)/$(Build.BuildId);OptProf.runsettings
-#     # This variable is set during the 'Update RunSettings' (UpdateRunSettings.ps1) step in the publish-assets-and-packages.yml.
-#     # This variable is expanded when it is used: https://docs.microsoft.com/azure/devops/pipelines/process/variables?view=azure-devops&tabs=yaml%2Cbatch#macro-syntax-variables
-#     visualStudioBootstrapperURI: $(visualStudioBootstrapperURI)
-#     # The output of the optimization process. The first half of the path is provided to the DropNamePrefix input in the 'Install OptProf Plugin' (MicroBuildOptProfPlugin) step in build-official-release.yml.
-#     optOptimizationInputsDropName: OptimizationInputs/$(System.TeamProject)/$(Build.Repository.Name)/$(Build.SourceVersion)/$(Build.BuildId)/$(System.StageAttempt)
-#     testLabPoolName: VS-Platform
+# This template is provided by the DartLabOptProfTemplates repo, declared in the repositories section (top of this file).
+# It is a stage template, defining our entire Optimization stage.
+- ${{ if false }}:
+  - template: \templates\stages\visual-studio\single-runsettings.yml@DartLabOptProfTemplates
+    parameters:
+      name: Optimization
+      displayName: Optimization
+      dependsOn:
+      - Publish
+      - Compliance
+      variables:
+      - name: visualStudioBootstrapperURI
+        # If you set this value to the visualStudioBootstrapperURI parameter directly, it does not resolve correctly. Instead, we set it to a variable and pass that variable into the parameter.
+        # For parameter, variable, and expression syntax/usage, see:
+        # - https://docs.microsoft.com/azure/devops/pipelines/process/variables?view=azure-devops&tabs=yaml%2Cbatch#understand-variable-syntax
+        # - https://docs.microsoft.com/azure/devops/pipelines/process/expressions?view=azure-devops
+        # - https://docs.microsoft.com/azure/devops/pipelines/process/runtime-parameters?view=azure-devops&tabs=script#how-can-i-use-variables-inside-of-templates
+        # For variables across stages, see:
+        # - https://docs.microsoft.com/azure/devops/pipelines/process/variables?view=azure-devops&tabs=yaml%2Cbatch#use-outputs-in-a-different-stage
+        # - https://arunksingh16.medium.com/azure-devops-share-variable-across-stages-9bca85abfe8a
+        # - https://stackoverflow.com/a/57488169/294804
+        # - https://github.com/microsoft/azure-pipelines-tasks/issues/4743
+        value: $[ stageDependencies.Publish.PublishAssetsAndPackages.outputs['UpdateRunSettings.visualStudioBootstrapperURI'] ]
+      runSettingsURI: https://vsdrop.corp.microsoft.com/file/v1/RunSettings/$(System.TeamProject)/dotnet/project-system/$(Build.SourceBranchName)/$(Build.BuildId);OptProf.runsettings
+      # This variable is set during the 'Update RunSettings' (UpdateRunSettings.ps1) step in the publish-assets-and-packages.yml.
+      # This variable is expanded when it is used: https://docs.microsoft.com/azure/devops/pipelines/process/variables?view=azure-devops&tabs=yaml%2Cbatch#macro-syntax-variables
+      visualStudioBootstrapperURI: $(visualStudioBootstrapperURI)
+      # The output of the optimization process. The first half of the path is provided to the DropNamePrefix input in the 'Install OptProf Plugin' (MicroBuildOptProfPlugin) step in build-official-release.yml.
+      optOptimizationInputsDropName: OptimizationInputs/$(System.TeamProject)/$(Build.Repository.Name)/$(Build.SourceVersion)/$(Build.BuildId)/$(System.StageAttempt)
+      testLabPoolName: VS-Platform
 
 # Run this stage only when specifically requested (via CreateInsertion) or when the pipeline was ran on a schedule.
 # Conditional insertion syntax: https://docs.microsoft.com/en-us/azure/devops/pipelines/process/expressions?view=azure-devops#conditional-insertion

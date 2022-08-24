@@ -4,9 +4,7 @@ jobs:
 - job: BuildPullRequest_${{ parameters.BuildConfiguration }}
   displayName: Build ${{ parameters.BuildConfiguration }}
   timeoutInMinutes: 20
-  pool:
-    name: ${{ variables.DefaultPoolName }}
-    demands: ${{ variables.DefaultDemands }}
+  pool: ${{ parameters.DefaultPool }}
   variables:
     BuildConfiguration: ${{ parameters.BuildConfiguration }}
     ArtifactName: ${{ parameters.ArtifactName }}
