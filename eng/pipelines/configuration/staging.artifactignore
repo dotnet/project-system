@@ -7,6 +7,5 @@ Codex/
 VSSetup.obj/
 MicroBuild/
 !MicroBuild/Output/BootstrapperInfo.json
-!MicroBuild/Output/bootstrapper/
 !MicroBuild/Staging/
 !MicroBuild/Verify/out/

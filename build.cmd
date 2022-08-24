@@ -7,9 +7,20 @@ if /I "%1" == "/?" call :Usage && exit /b 1
 @REM Turn off dotnet CLI logo
 set DOTNET_NOLOGO=true
 
-@REM Sets the output of GetMSBuildPath.ps1 to the MSBuildPath environment variable
+@REM Sets the output of GetVisualStudioMinimumVersion.ps1 to the VisualStudioMinimumVersion environment variable.
 @REM https://stackoverflow.com/a/3417728/294804
-FOR /F "usebackq delims=" %%v IN (`powershell -NonInteractive -NoLogo -NoProfile -ExecutionPolicy Unrestricted -File "%~dp0eng\scripts\GetMSBuildPath.ps1" -versionJsonPath "%~dp0version.json"`) DO set "MSBuildPath=%%~v"
+FOR /F "usebackq delims=" %%v IN (`powershell -NonInteractive -NoLogo -NoProfile -ExecutionPolicy Unrestricted -File "%~dp0eng\scripts\GetVisualStudioMinimumVersion.ps1"`) DO set "VisualStudioMinimumVersion=%%~v"
+
+@REM Indicates this script is running in Azure Pipelines.
+@REM https://docs.microsoft.com/en-us/azure/devops/pipelines/build/variables?view=azure-devops&tabs=yaml#system-variables-devops-services
+if /i "%TF_BUILD%" == "True" (
+  @REM https://docs.microsoft.com/en-us/azure/devops/pipelines/process/set-variables-scripts?view=azure-devops&tabs=bash#set-variable-properties
+  echo "##vso[task.setvariable variable=VisualStudioMinimumVersion;isoutput=true]%VisualStudioMinimumVersion%"
+)
+
+@REM Sets the output of GetMSBuildPath.ps1 to the MSBuildPath environment variable.
+@REM https://stackoverflow.com/a/3417728/294804
+FOR /F "usebackq delims=" %%v IN (`powershell -NonInteractive -NoLogo -NoProfile -ExecutionPolicy Unrestricted -File "%~dp0eng\scripts\GetMSBuildPath.ps1" -version "%VisualStudioMinimumVersion%"`) DO set "MSBuildPath=%%~v"
 
 if not defined MSBuildPath (
     echo Visual Studio must be installed to allow building via MSBuild.
