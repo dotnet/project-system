@@ -13,6 +13,7 @@ Firstly, here are some commits and PRs that provide good examples of common chan
 - [Add search term alias](https://github.com/dotnet/project-system/pull/7041) &mdash; shows how to add additional terms for the purposes of search. These terms will not appear in the UI, but will cause a search operation to match the property. Useful for synonyms and common misspellings.
 - [Add an editor type](https://devdiv.visualstudio.com/DevDiv/_git/CPS/pullrequest/312423) (MS internal) &mdash; Adds a new editor type, which a property may elect to display itself in the UI.
 - [Change a string property to allow multiple lines of text](https://github.com/dotnet/project-system/commit/5a37eb52aeb93ae5f8a13c2cccfde79ae371a9ac) &mdash; Shows using the `MultiLineString` editor so that a property may have more than one line of text entered.
+- [Use editability (IsReadOnlyCondition) conditions in build property pages](https://github.com/dotnet/project-system/pull/8291) &mdash; Shows using the `IsReadOnlyCondition` property condition.
 
 ## XAML Rule Files
 
@@ -104,6 +105,16 @@ Here is a complex example of a string property that demonstrates the majority of
     <NameValuePair Name="VisibilityCondition">
       <NameValuePair.Value>(has-evaluated-value "OtherPage" "OtherProperty" "SomeValue")</NameValuePair.Value>
     </NameValuePair>
+    <NameValuePair Name="IsReadOnlyCondition">
+      <NameValuePair.Value>
+          (not
+            (or
+              (has-evaluated-value "Build" "OptionStrict" "On")
+              (has-evaluated-value "Build" "WarningSeverity" "DisableAll")
+            )
+          )
+      </NameValuePair.Value>
+    </NameValuePair>  
   </StringProperty.Metadata>
 </StringProperty>
 ```
@@ -116,7 +127,8 @@ Breaking this down:
 - `Category` is an optional string that must match the `Name` of a declared category (see above). If omitted, the property is assigned category `General`.
 - This property defines some optional metadata values:
   - `DependsOn` (optional) lists properties that may influence this property's values (see [Property Dependencies](#property-dependencies))
-  - `VisibilityCondition` (optional) holds an expression that the UI will use to determine whether the property should be visible (see [Visibility Conditions](visibility-conditions.md))
+  - `VisibilityCondition` (optional) holds an expression that the UI will use to determine whether the property should be visible (see [Visibility and Property Conditions](property-conditions.md))
+  - `IsReadOnlyCondition` (optional) holds an expression that the UI will use to determine whether the property should be read-only (see [Visibility and Property Conditions](property-conditions.md))
 
 ## Property Types
 
@@ -212,7 +224,37 @@ The property's string value should be encoded with format resembling `A=1,B=2`, 
 </StringProperty>
 ```
 
-This example is taken from the _Environment Variables_ property on project and executable launch profiles.
+### Multi-String Selector Editor
+
+When a property contains a variable number of strings, you can use the `MultiStringSelector` editor on any kind of `EnumProperty` to display a list of checkable/uncheckable strings.
+
+The `TypeDescriptorText` metadata must be included in order to describe what is actually being selected.
+
+By default, users will not be able to add their own custom strings to the list. To allow custom strings, set the `AllowsCustomStrings` metadata value to True.
+
+```xml
+  <DynamicEnumProperty Name="ImportedNamespaces"
+                       DisplayName="Import Namespaces"
+                       Description="Manage which namespaces to import in your application."
+                       Category="General"
+                       EnumProvider="DotNetImportsEnumProvider">
+    <DynamicEnumProperty.DataSource>
+        <DataSource PersistedName="ImportedNamespaces"
+                    Persistence="ProjectFileWithInterception"
+                    HasConfigurationCondition="False" />
+    </DynamicEnumProperty.DataSource>
+    <DynamicEnumProperty.ValueEditors>
+        <ValueEditor EditorType="MultiStringSelector">
+            <ValueEditor.Metadata>
+                <NameValuePair Name="TypeDescriptorText" Value="Imported Namespaces" />
+                <NameValuePair Name="AllowsCustomStrings" Value="True" />
+            </ValueEditor.Metadata>
+        </ValueEditor>
+    </DynamicEnumProperty.ValueEditors>
+</DynamicEnumProperty>
+```
+
+This example is taken from the [_Imported Namespaces_](https://github.com/dotnet/project-system/blob/1f860b8c3616a6be551f7a3f90eb54be3b249afd/src/Microsoft.VisualStudio.ProjectSystem.Managed/ProjectSystem/Rules/PropertyPages/ReferencesPage.VisualBasic.xaml#L22) property on the Visual Basic project properties references page.
 
 ### Custom Editors
 

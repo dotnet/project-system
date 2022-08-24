@@ -181,3 +181,6 @@ virtual Microsoft.VisualStudio.ProjectSystem.Properties.InterceptingPropertyValu
 Microsoft.VisualStudio.ProjectSystem.Debug.ILaunchProfile2
 Microsoft.VisualStudio.ProjectSystem.Debug.ILaunchProfile2.EnvironmentVariables.get -> System.Collections.Immutable.ImmutableArray<(string! Key, string! Value)>
 Microsoft.VisualStudio.ProjectSystem.Debug.ILaunchProfile2.OtherSettings.get -> System.Collections.Immutable.ImmutableArray<(string! Key, object! Value)>
+virtual Microsoft.VisualStudio.ProjectSystem.Properties.InterceptingPropertyValueProviderBase.IsValueDefinedInContextAsync(string! propertyName, Microsoft.VisualStudio.ProjectSystem.Properties.IProjectProperties! defaultProperties) -> System.Threading.Tasks.Task<bool>!
+Microsoft.VisualStudio.ProjectSystem.Properties.IInterceptingPropertyValueProvider2
+Microsoft.VisualStudio.ProjectSystem.Properties.IInterceptingPropertyValueProvider2.IsValueDefinedInContextAsync(string! propertyName, Microsoft.VisualStudio.ProjectSystem.Properties.IProjectProperties! defaultProperties) -> System.Threading.Tasks.Task<bool>!

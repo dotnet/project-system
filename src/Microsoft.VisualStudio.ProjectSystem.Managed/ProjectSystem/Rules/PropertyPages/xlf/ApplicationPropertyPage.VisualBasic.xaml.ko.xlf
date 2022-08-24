@@ -122,29 +122,29 @@
         <target state="translated">인증 모드</target>
         <note />
       </trans-unit>
-      <trans-unit id="EnumValue|HighDpiMode.DpiUnawareGdiScaled|DisplayName">
-        <source>DPI unaware, GDI scaled - Like DPI unaware but optimized for non-double-buffered Graphics content.</source>
-        <target state="translated">DPI를 인식하지 못함, GDI 크기 조정 - DPI와 마찬가지로 두 번 버퍼링되지 않은 그래픽 콘텐츠에 최적화되어 있습니다.</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="EnumValue|HighDpiMode.DpiUnaware|DisplayName">
+      <trans-unit id="EnumValue|HighDpiMode.0|DisplayName">
         <source>DPI unaware - No scaling and assuming 100% scaling.</source>
         <target state="translated">DPI 인식 안 함 - 크기 조정이 없으며 100% 크기 조정을 가정합니다.</target>
         <note />
       </trans-unit>
-      <trans-unit id="EnumValue|HighDpiMode.PerMonitorV2|DisplayName">
-        <source>Per monitor V2 - DPI detected on-launch and on-change including child windows</source>
-        <target state="translated">모니터당 V2 - 자식 창을 포함하여 시작 시 및 변경 시 DPI가 검색됨</target>
+      <trans-unit id="EnumValue|HighDpiMode.1|DisplayName">
+        <source>System aware - Primary monitor's DPI is scale lead.</source>
+        <target state="translated">시스템 인식 - 기본 모니터의 DPI는 크기 조정 잠재 고객입니다.</target>
         <note />
       </trans-unit>
-      <trans-unit id="EnumValue|HighDpiMode.PerMonitor|DisplayName">
+      <trans-unit id="EnumValue|HighDpiMode.2|DisplayName">
         <source>Per monitor - DPI detected on-launch and on-change.</source>
         <target state="translated">모니터당 - 시작 시 및 변경 시 DPI가 검색되었습니다.</target>
         <note />
       </trans-unit>
-      <trans-unit id="EnumValue|HighDpiMode.SystemAware|DisplayName">
-        <source>System aware - Primary monitor's DPI is scale lead.</source>
-        <target state="translated">시스템 인식 - 기본 모니터의 DPI는 크기 조정 잠재 고객입니다.</target>
+      <trans-unit id="EnumValue|HighDpiMode.3|DisplayName">
+        <source>Per monitor V2 - DPI detected on-launch and on-change including child windows</source>
+        <target state="translated">모니터당 V2 - 자식 창을 포함하여 시작 시 및 변경 시 DPI가 검색됨</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|HighDpiMode.4|DisplayName">
+        <source>DPI unaware, GDI scaled - Like DPI unaware but optimized for non-double-buffered Graphics content.</source>
+        <target state="translated">DPI를 인식하지 못함, GDI 크기 조정 - DPI와 마찬가지로 두 번 버퍼링되지 않은 그래픽 콘텐츠에 최적화되어 있습니다.</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|ShutdownMode.AfterAllFormsClose|DisplayName">

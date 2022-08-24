@@ -269,20 +269,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
                     _ => throw new InvalidOperationException($"Invalid value '{value}' for '{propertyName}' property.")
                 };
             }
-            else if (propertyName == HighDpiModeProperty)
-            {
-                value = value switch
-                {
-                    "0" => "DpiUnaware",
-                    "1" => "SystemAware",
-                    "2" => "PerMonitor",
-                    "3" => "PerMonitorV2",
-                    "4" => "DpiUnawareGdiScaled",
-                    "" => "",
-
-                    _ => throw new InvalidOperationException($"Invalid value '{value}' for '{propertyName}' property.")
-                };
-            }
             else if (propertyName == ShutdownModeProperty)
             {
                 value = value switch
@@ -307,18 +293,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
                 {
                     "Windows" => "0",
                     "ApplicationDefined" => "1",
-                    _ => unevaluatedPropertyValue
-                };
-            }
-            else if (propertyName == HighDpiModeProperty)
-            {
-                unevaluatedPropertyValue = unevaluatedPropertyValue switch
-                {
-                    "DpiUnaware" => "0",
-                    "SystemAware" => "1",
-                    "PerMonitor" => "2",
-                    "PerMonitorV2" => "3",
-                    "DpiUnawareGdiScaled" => "4",
                     _ => unevaluatedPropertyValue
                 };
             }

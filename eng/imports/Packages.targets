@@ -1,40 +1,6 @@
 <!-- Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information. -->
 <Project>
 
-  <PropertyGroup>
-    <RestoreSources>
-      $(RestoreSources);
-      <!-- CPS components including: Microsoft.VisualStudio.ProjectSystem -->
-      https://pkgs.dev.azure.com/azure-public/vside/_packaging/vs-impl/nuget/v3/index.json;
-      <!-- Microsoft.VisualStudio components -->
-      https://pkgs.dev.azure.com/azure-public/vside/_packaging/vssdk/nuget/v3/index.json;
-      <!--
-        Various packages including:
-        Microsoft.DiaSymReader.Pdb2Pdb
-        Microsoft.CodeAnalysis
-        Microsoft.CodeAnalysis.Features
-        NuGet.VisualStudio
-      -->
-      https://pkgs.dev.azure.com/dnceng/public/_packaging/dotnet-tools/nuget/v3/index.json;
-      <!--
-        Various packages including:
-        xunit
-        xunit.assert
-        xunit.extensibility.core
-        xunit.extensibility.execution
-        XliffTasks
-        Microsoft.VisualStudioEng.MicroBuild.Plugins.SwixBuild
-       -->
-      https://pkgs.dev.azure.com/dnceng/public/_packaging/dotnet-eng/nuget/v3/index.json;
-      <!--
-        Public components including:
-        Nerdbank.GitVersioning
-        Codecov
-      -->
-      https://api.nuget.org/v3/index.json;
-    </RestoreSources>
-  </PropertyGroup>
-
   <ItemGroup>
     <!-- Infrastructure -->
     <PackageReference Update="MicroBuild.Core.Sentinel"                                               Version="1.0.0" />
@@ -47,7 +13,6 @@
     <!-- This is used for publishing PDBs to the legacy symbol server. It converts portable PDBs to Windows PDBs (embedded). -->
     <!-- https://devdiv.visualstudio.com/DevDiv/_wiki/wikis/DevDiv.wiki/672/Archive-Symbols-with-Symweb?anchor=portable-pdbs -->
     <PackageReference Update="Microsoft.DiaSymReader.Pdb2Pdb"                                         Version="1.1.0-beta2-22320-02" />
-    <PackageReference Update="Microsoft.Net.Compilers.Toolset"                                        Version="4.2.0-1.final" />
     <!-- This package is deprecated. CodecovUploader is now the recommended package. -->
     <PackageReference Update="Codecov"                                                                Version="1.13.0" />
 
@@ -96,6 +61,7 @@
     <PackageReference Update="Microsoft.VisualStudio.ProjectSystem.SDK.Tools"                         Version="17.4.38-pre" />
 
     <!-- Roslyn -->
+    <PackageReference Update="Microsoft.Net.Compilers.Toolset"                                        Version="4.3.0-2.final" />
     <PackageReference Update="Microsoft.VisualStudio.LanguageServices"                                Version="4.1.0-2.21558.8" />
     <PackageReference Update="Microsoft.CodeAnalysis"                                                 Version="4.1.0-2.21558.8" />
     <PackageReference Update="Microsoft.VisualStudio.IntegrationTest.Utilities"                       Version="2.6.0-beta1-62113-02" />

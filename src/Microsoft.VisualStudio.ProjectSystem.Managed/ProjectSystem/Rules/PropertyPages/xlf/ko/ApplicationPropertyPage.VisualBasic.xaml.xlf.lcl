@@ -229,16 +229,7 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";EnumValue|HighDpiMode.DpiUnawareGdiScaled|DisplayName" ItemType="0" PsrId="308" Leaf="true">
-        <Str Cat="Text">
-          <Val><![CDATA[DPI unaware, GDI scaled - Like DPI unaware but optimized for non-double-buffered Graphics content.]]></Val>
-          <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[DPI를 인식하지 못함, GDI 크기 조정 - DPI와 마찬가지로 두 번 버퍼링되지 않은 그래픽 콘텐츠에 최적화되어 있습니다.]]></Val>
-          </Tgt>
-        </Str>
-        <Disp Icon="Str" />
-      </Item>
-      <Item ItemId=";EnumValue|HighDpiMode.DpiUnaware|DisplayName" ItemType="0" PsrId="308" Leaf="true">
+      <Item ItemId=";EnumValue|HighDpiMode.0|DisplayName" ItemType="0" PsrId="308" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[DPI unaware - No scaling and assuming 100% scaling.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
@@ -247,16 +238,16 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";EnumValue|HighDpiMode.PerMonitorV2|DisplayName" ItemType="0" PsrId="308" Leaf="true">
+      <Item ItemId=";EnumValue|HighDpiMode.1|DisplayName" ItemType="0" PsrId="308" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Per monitor V2 - DPI detected on-launch and on-change including child windows]]></Val>
+          <Val><![CDATA[System aware - Primary monitor's DPI is scale lead.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[모니터당 V2 - 자식 창을 포함하여 시작 시 및 변경 시 DPI가 검색됨]]></Val>
+            <Val><![CDATA[시스템 인식 - 기본 모니터의 DPI는 크기 조정 잠재 고객입니다.]]></Val>
           </Tgt>
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";EnumValue|HighDpiMode.PerMonitor|DisplayName" ItemType="0" PsrId="308" Leaf="true">
+      <Item ItemId=";EnumValue|HighDpiMode.2|DisplayName" ItemType="0" PsrId="308" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[Per monitor - DPI detected on-launch and on-change.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
@@ -265,11 +256,20 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";EnumValue|HighDpiMode.SystemAware|DisplayName" ItemType="0" PsrId="308" Leaf="true">
+      <Item ItemId=";EnumValue|HighDpiMode.3|DisplayName" ItemType="0" PsrId="308" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[System aware - Primary monitor's DPI is scale lead.]]></Val>
+          <Val><![CDATA[Per monitor V2 - DPI detected on-launch and on-change including child windows]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[시스템 인식 - 기본 모니터의 DPI는 크기 조정 잠재 고객입니다.]]></Val>
+            <Val><![CDATA[모니터당 V2 - 자식 창을 포함하여 시작 시 및 변경 시 DPI가 검색됨]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";EnumValue|HighDpiMode.4|DisplayName" ItemType="0" PsrId="308" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[DPI unaware, GDI scaled - Like DPI unaware but optimized for non-double-buffered Graphics content.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[DPI를 인식하지 못함, GDI 크기 조정 - DPI와 마찬가지로 두 번 버퍼링되지 않은 그래픽 콘텐츠에 최적화되어 있습니다.]]></Val>
           </Tgt>
         </Str>
         <Disp Icon="Str" />

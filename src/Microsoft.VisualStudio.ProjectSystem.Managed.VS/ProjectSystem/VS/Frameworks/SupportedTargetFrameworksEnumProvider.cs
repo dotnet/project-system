@@ -13,7 +13,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Frameworks
     [AppliesTo(ProjectCapability.DotNet)]
     internal class SupportedTargetFrameworksEnumProvider : SupportedValuesProvider
     {
-        protected override string[] RuleNames => new [] { SupportedNETCoreAppTargetFramework.SchemaName, SupportedNETFrameworkTargetFramework.SchemaName, SupportedNETStandardTargetFramework.SchemaName, ConfigurationGeneral.SchemaName };
+        protected override string[] RuleNames => new[] { SupportedNETCoreAppTargetFramework.SchemaName, SupportedNETFrameworkTargetFramework.SchemaName, SupportedNETStandardTargetFramework.SchemaName, ConfigurationGeneral.SchemaName };
 
         [ImportingConstructor]
         public SupportedTargetFrameworksEnumProvider(

@@ -1657,6 +1657,51 @@
           }
         ]
       }
+    },
+    {
+      "taskType": "trigger",
+      "capabilityId": "IssueResponder",
+      "subCapability": "PullRequestResponder",
+      "version": "1.0",
+      "config": {
+        "conditions": {
+          "operator": "and",
+          "operands": [
+            {
+              "name": "isAction",
+              "parameters": {
+                "action": "merged"
+              }
+            },
+            {
+              "operator": "or",
+              "operands": [
+                {
+                  "name": "prTargetsBranch",
+                  "parameters": {
+                    "branchName": "dev17.4-preview1"
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        "eventType": "pull_request",
+        "eventNames": [
+          "pull_request",
+          "issues",
+          "project_card"
+        ],
+        "taskName": "Milestone tracking - 17.4",
+        "actions": [
+          {
+            "name": "addMilestone",
+            "parameters": {
+              "milestoneName": "17.4"
+            }
+          }
+        ]
+      }
     }
   ],
   "userGroups": []

@@ -1083,3 +1083,5 @@ Shared My.Resources.GeneralOptionPageResources.ResourceManager() -> System.Resou
 Shared My.Resources.GeneralOptionPageResources.General_PreferSingleTargetBuildsOnLaunch() -> String
 Shared My.Resources.GeneralOptionPageResources.General_MultiTargetingSettings_Title() -> String
 Shared My.Resources.GeneralOptionPageResources.General_PreferSingleTargetBuildsOnLaunchDescription() -> String
+Microsoft.VisualStudio.Editors.MyApplication.IVsMyApplicationProperties.HighDpiMode() -> Integer
+Microsoft.VisualStudio.Editors.MyApplication.IVsMyApplicationProperties.HighDpiMode(Value As Integer) -> Void

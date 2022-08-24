@@ -115,6 +115,21 @@
         <target state="translated">ПРЕДУПРЕЖДЕНИЕ. Возможная проблема с производительностью сборки в "{0}". Проект не отображается обновленным после успешной сборки: {1}. Сведения см. на странице https://aka.ms/incremental-build-failure.</target>
         <note>{0} is the file name of the project. {1} is a description of the failure. The period '.' after {1} is intentional and should be kept.</note>
       </trans-unit>
+      <trans-unit id="InfoBarMessageNuGetCycleDetected">
+        <source>A circular dependency A -&gt; B -&gt; A was detected during NuGet Restore which caused NuGet to stop restoring.
+Because the NuGet restore didn't finish correctly, the project might be in a bad state.
+
+This might be caused because one or more projects have a package that sets AssetTargetFallback, not supported for this scenario, which caused certain PackageReference to be included.
+
+NuGet Error NU1108</source>
+        <target state="translated">При восстановлении NuGet обнаружена циклическая зависимость A -&gt; B -&gt; A, что привело к остановке восстановления NuGet.
+Поскольку восстановление NuGet завершилось неправильно, проект может находиться в некорректном состоянии.
+
+Это может быть вызвано тем, что один или несколько проектов имеют пакет, который задает AssetTargetFallback, не поддерживаемый для этого сценария, что привело к задействованию определенных элементов PackageReference.
+
+Ошибка NuGet NU1108</target>
+        <note />
+      </trans-unit>
       <trans-unit id="ProjectHotReloadSessionManager_AttachingToProcess">
         <source>Attaching to process.</source>
         <target state="translated">Выполняется подключение к процессу.</target>

@@ -257,16 +257,6 @@
         <target state="translated">Quand exécuter l’événement post-build</target>
         <note />
       </trans-unit>
-      <trans-unit id="EnumProperty|WarningLevel_Readonly|Description">
-        <source>Specifies the level to display for compiler warnings. Inferred from the 'Analysis level' property of the 'Code Analysis' page.</source>
-        <target state="translated">Spécifie le niveau à afficher pour les avertissements du compilateur. Inféré à partir de la propriété 'Niveau d’analyse' de la page 'Code Analysis'.</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="EnumProperty|WarningLevel_Readonly|DisplayName">
-        <source>Warning level</source>
-        <target state="translated">Niveau d'avertissement</target>
-        <note />
-      </trans-unit>
       <trans-unit id="EnumProperty|WarningLevel|Description">
         <source>Specifies the level to display for compiler warnings. Higher levels produce more warnings, and include all warnings from lower levels.</source>
         <target state="translated">Spécifie le niveau à afficher pour les avertissements du compilateur. Les niveaux supérieurs produisent plus d'avertissements, et incluent tous les avertissements des niveaux inférieurs.</target>
@@ -418,51 +408,6 @@
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|WarningLevel.9999|DisplayName">
-        <source>9999 - All warnings</source>
-        <target state="translated">9999 - Tous les avertissements</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="EnumValue|WarningLevel_Readonly.0|DisplayName">
-        <source>0 - Disable all warnings</source>
-        <target state="translated">0 - Désactiver tous les avertissements.</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="EnumValue|WarningLevel_Readonly.1|DisplayName">
-        <source>1 - Severe warning messages</source>
-        <target state="translated">1 - Messages d'avertissement sévères</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="EnumValue|WarningLevel_Readonly.2|DisplayName">
-        <source>2 - Less severe warnings, such as warnings about hiding class members</source>
-        <target state="translated">2 - Avertissements moins graves, tels que des avertissements concernant le masquage des membres de classe</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="EnumValue|WarningLevel_Readonly.3|DisplayName">
-        <source>3 - Less severe warnings, such as warnings about expressions that always evaluate to true or false</source>
-        <target state="translated">3 - Avertissements moins graves, tels que des avertissements sur les expressions qui ont toujours la valeur true ou false</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="EnumValue|WarningLevel_Readonly.4|DisplayName">
-        <source>4 - Informational warnings</source>
-        <target state="translated">4 - Avertissements d’information</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="EnumValue|WarningLevel_Readonly.5|DisplayName">
-        <source>5 - Warnings from C# 9</source>
-        <target state="translated">5 - Avertissements de C# 9</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="EnumValue|WarningLevel_Readonly.6|DisplayName">
-        <source>6 - Warnings from C# 10</source>
-        <target state="translated">6 - Avertissements de C# 10</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="EnumValue|WarningLevel_Readonly.7|DisplayName">
-        <source>7 - Warnings from C# 11</source>
-        <target state="translated">7 - Avertissements de C# 11</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="EnumValue|WarningLevel_Readonly.9999|DisplayName">
         <source>9999 - All warnings</source>
         <target state="translated">9999 - Tous les avertissements</target>
         <note />

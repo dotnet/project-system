@@ -10,11 +10,29 @@
     <Disp Icon="Expand" Expand="true" Disp="true" LocTbl="false" />
     <Item ItemId=";Xliff Resources" ItemType="0" PsrId="308" Leaf="false">
       <Disp Icon="Str" Disp="true" LocTbl="false" />
+      <Item ItemId=";BoolProperty|DefineDebug|Description" ItemType="0" PsrId="308" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[Specify DEBUG as a compilation constant.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Spécifiez DEBUG comme constante de compilation.]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
       <Item ItemId=";BoolProperty|DefineDebug|DisplayName" ItemType="0" PsrId="308" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[Define DEBUG constant]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
             <Val><![CDATA[Définir une constante DEBUG]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";BoolProperty|DefineTrace|Description" ItemType="0" PsrId="308" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[Specify TRACE as a compilation constant.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Spécifiez TRACE en tant que constante de compilation.]]></Val>
           </Tgt>
         </Str>
         <Disp Icon="Str" />
@@ -45,6 +63,15 @@
           <Val><![CDATA[Generate XML documentation file]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
             <Val><![CDATA[Générer un fichier de documentation XML]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";BoolProperty|Optimize|Description" ItemType="0" PsrId="308" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[Enable compiler optimizations.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Activez les optimisations du compilateur.]]></Val>
           </Tgt>
         </Str>
         <Disp Icon="Str" />
@@ -90,6 +117,15 @@
           <Val><![CDATA[Register for COM interop]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
             <Val><![CDATA[S’inscrire à COM Interop]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";BoolProperty|RemoveIntegerChecks|Description" ItemType="0" PsrId="308" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[Remove integer overflow checking.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Supprimez la vérification du dépassement de capacité de l’entier.]]></Val>
           </Tgt>
         </Str>
         <Disp Icon="Str" />
@@ -166,38 +202,11 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";DynamicEnumProperty|DuplicateOrOverlappingCatchBlocks_Readonly|DisplayName" ItemType="0" PsrId="308" Leaf="true">
-        <Str Cat="Text">
-          <Val><![CDATA[Duplicate or overlapping catch blocks]]></Val>
-          <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Blocs catch dupliqués ou superposés]]></Val>
-          </Tgt>
-        </Str>
-        <Disp Icon="Str" />
-      </Item>
       <Item ItemId=";DynamicEnumProperty|DuplicateOrOverlappingCatchBlocks|DisplayName" ItemType="0" PsrId="308" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[Duplicate or overlapping catch blocks]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
             <Val><![CDATA[Blocs catch dupliqués ou superposés]]></Val>
-          </Tgt>
-        </Str>
-        <Disp Icon="Str" />
-      </Item>
-      <Item ItemId=";DynamicEnumProperty|ImplicitConversion_Readonly|Description" ItemType="0" PsrId="308" Leaf="true">
-        <Str Cat="Text">
-          <Val><![CDATA[Implicit narrowing conversion occurs when there is an implicit data type conversion that is a narrowing conversion. Always 'Error' when 'Option strict' is on.]]></Val>
-          <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Une conversion restrictive implicite se produit lorsqu’une conversion de type de données implicite est une conversion restrictive. « Erreur » apparaît systématiquement lorsque « Option stricte » est activé.]]></Val>
-          </Tgt>
-        </Str>
-        <Disp Icon="Str" />
-      </Item>
-      <Item ItemId=";DynamicEnumProperty|ImplicitConversion_Readonly|DisplayName" ItemType="0" PsrId="308" Leaf="true">
-        <Str Cat="Text">
-          <Val><![CDATA[Implicit conversion]]></Val>
-          <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Conversion implicite]]></Val>
           </Tgt>
         </Str>
         <Disp Icon="Str" />
@@ -220,24 +229,6 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";DynamicEnumProperty|ImplicitType_Readonly|Description" ItemType="0" PsrId="308" Leaf="true">
-        <Str Cat="Text">
-          <Val><![CDATA[Implicit object type errors occur when an appropriate type cannot be inferred for a declared variable, so a type of 'Object' is inferred. Always 'Error' when 'Option strict' is on.]]></Val>
-          <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Des erreurs de type d’objet implicite se produisent lorsqu’un type approprié ne peut pas être déduit pour une variable déclarée. Un type « Object » est donc déduit. « Erreur » apparaît systématiquement lorsque « Option stricte » est activé.]]></Val>
-          </Tgt>
-        </Str>
-        <Disp Icon="Str" />
-      </Item>
-      <Item ItemId=";DynamicEnumProperty|ImplicitType_Readonly|DisplayName" ItemType="0" PsrId="308" Leaf="true">
-        <Str Cat="Text">
-          <Val><![CDATA[Implicit type]]></Val>
-          <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Type implicite]]></Val>
-          </Tgt>
-        </Str>
-        <Disp Icon="Str" />
-      </Item>
       <Item ItemId=";DynamicEnumProperty|ImplicitType|Description" ItemType="0" PsrId="308" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[Implicit object type errors occur when an appropriate type cannot be inferred for a declared variable, so a type of 'Object' is inferred. Always 'Error' when 'Option strict' is on.]]></Val>
@@ -256,38 +247,11 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";DynamicEnumProperty|InstanceVariableAccessesSharedMember_Readonly|DisplayName" ItemType="0" PsrId="308" Leaf="true">
-        <Str Cat="Text">
-          <Val><![CDATA[Instance variable accesses shared member]]></Val>
-          <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[La variable d'instance accède au membre partagé]]></Val>
-          </Tgt>
-        </Str>
-        <Disp Icon="Str" />
-      </Item>
       <Item ItemId=";DynamicEnumProperty|InstanceVariableAccessesSharedMember|DisplayName" ItemType="0" PsrId="308" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[Instance variable accesses shared member]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
             <Val><![CDATA[La variable d'instance accède au membre partagé]]></Val>
-          </Tgt>
-        </Str>
-        <Disp Icon="Str" />
-      </Item>
-      <Item ItemId=";DynamicEnumProperty|LateBinding_Readonly|Description" ItemType="0" PsrId="308" Leaf="true">
-        <Str Cat="Text">
-          <Val><![CDATA[An object is late bound when it is assigned to a property or method of a variable that is declared to be of type 'Object'. These operations could fail at run time. Always 'Error' when 'Option strict' is on.]]></Val>
-          <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Un objet est en liaison tardive lorsqu’il est affecté à une propriété ou à une méthode de variable déclarée comme de type « Objet ». Ces opérations peuvent échouer au moment de l’exécution. « Erreur » apparaît systématiquement lorsque « Option stricte » est activé.]]></Val>
-          </Tgt>
-        </Str>
-        <Disp Icon="Str" />
-      </Item>
-      <Item ItemId=";DynamicEnumProperty|LateBinding_Readonly|DisplayName" ItemType="0" PsrId="308" Leaf="true">
-        <Str Cat="Text">
-          <Val><![CDATA[Late binding]]></Val>
-          <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Liaison tardive]]></Val>
           </Tgt>
         </Str>
         <Disp Icon="Str" />
@@ -328,29 +292,11 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";DynamicEnumProperty|RecursiveOperatorOrPropertyAccess_Readonly|DisplayName" ItemType="0" PsrId="308" Leaf="true">
-        <Str Cat="Text">
-          <Val><![CDATA[Recursive operator or property access]]></Val>
-          <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Accès récursif à un opérateur ou une propriété]]></Val>
-          </Tgt>
-        </Str>
-        <Disp Icon="Str" />
-      </Item>
       <Item ItemId=";DynamicEnumProperty|RecursiveOperatorOrPropertyAccess|DisplayName" ItemType="0" PsrId="308" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[Recursive operator or property access]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
             <Val><![CDATA[Accès récursif à un opérateur ou une propriété]]></Val>
-          </Tgt>
-        </Str>
-        <Disp Icon="Str" />
-      </Item>
-      <Item ItemId=";DynamicEnumProperty|ReturningIntrinsicValueTypeWithoutReturnValue_Readonly|DisplayName" ItemType="0" PsrId="308" Leaf="true">
-        <Str Cat="Text">
-          <Val><![CDATA[Function returning intrinsic value type without return value]]></Val>
-          <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Fonction qui retourne un type valeur intrinsèque sans valeur de retour]]></Val>
           </Tgt>
         </Str>
         <Disp Icon="Str" />
@@ -364,15 +310,6 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";DynamicEnumProperty|ReturningRefTypeWithoutReturnValue_Readonly|DisplayName" ItemType="0" PsrId="308" Leaf="true">
-        <Str Cat="Text">
-          <Val><![CDATA[Function returning reference type without return value]]></Val>
-          <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Fonction qui retourne le type référence sans valeur de retour]]></Val>
-          </Tgt>
-        </Str>
-        <Disp Icon="Str" />
-      </Item>
       <Item ItemId=";DynamicEnumProperty|ReturningRefTypeWithoutReturnValue|DisplayName" ItemType="0" PsrId="308" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[Function returning reference type without return value]]></Val>
@@ -382,29 +319,11 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";DynamicEnumProperty|UnusedLocalVariable_Readonly|DisplayName" ItemType="0" PsrId="308" Leaf="true">
-        <Str Cat="Text">
-          <Val><![CDATA[Unused local variable]]></Val>
-          <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Variable locale non utilisée]]></Val>
-          </Tgt>
-        </Str>
-        <Disp Icon="Str" />
-      </Item>
       <Item ItemId=";DynamicEnumProperty|UnusedLocalVariable|DisplayName" ItemType="0" PsrId="308" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[Unused local variable]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
             <Val><![CDATA[Variable locale non utilisée]]></Val>
-          </Tgt>
-        </Str>
-        <Disp Icon="Str" />
-      </Item>
-      <Item ItemId=";DynamicEnumProperty|UseOfVariablePriorToAssignment_Readonly|DisplayName" ItemType="0" PsrId="308" Leaf="true">
-        <Str Cat="Text">
-          <Val><![CDATA[Use of variable prior to assignment]]></Val>
-          <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Utiliser une variable avant l'assignation]]></Val>
           </Tgt>
         </Str>
         <Disp Icon="Str" />

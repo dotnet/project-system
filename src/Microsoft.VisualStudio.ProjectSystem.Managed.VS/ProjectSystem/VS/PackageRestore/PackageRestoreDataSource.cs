@@ -2,9 +2,14 @@
 
 using System.Threading.Tasks.Dataflow;
 using Microsoft.Internal.Performance;
+using Microsoft.VisualStudio.Imaging;
 using Microsoft.VisualStudio.IO;
 using Microsoft.VisualStudio.Threading;
+using Microsoft.VisualStudio.ProjectSystem.VS.UI.InfoBarService;
+using Microsoft.VisualStudio.Telemetry;
 using NuGet.SolutionRestoreManager;
+using Microsoft.Internal.VisualStudio.Shell.Interop;
+using System.Diagnostics;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
 {
@@ -49,6 +54,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
         // |_________________________________________|    |_________________________________________|
         //
 
+        private readonly Stopwatch _stopwatch = new();
+        private readonly NuGetRestoreCycleDetector _cycleDetector = new();
+        private readonly IVsUIService<SVsFeatureFlags, IVsFeatureFlags> _featureFlagsService;
+        private readonly ITelemetryService _telemetryService;
+        private readonly IInfoBarService _infoBarService;
         private readonly UnconfiguredProject _project;
         private readonly IPackageRestoreUnconfiguredInputDataSource _dataSource;
         private readonly IProjectAsynchronousTasksService _projectAsynchronousTasksService;
@@ -58,9 +68,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
         private readonly IVsSolutionRestoreService4 _solutionRestoreService4;
         private byte[]? _latestHash;
         private bool _enabled;
+        private int _nuGetRestoreSuccesses;
+        private int _nuGetRestoreCyclesDetected;
 
         [ImportingConstructor]
         public PackageRestoreDataSource(
+            IVsUIService<SVsFeatureFlags, IVsFeatureFlags> featureFlagsService,
+            ITelemetryService telemetryService,
+            IInfoBarService infoBarService,
             UnconfiguredProject project,
             IPackageRestoreUnconfiguredInputDataSource dataSource,
             [Import(ExportContractNames.Scopes.UnconfiguredProject)] IProjectAsynchronousTasksService projectAsynchronousTasksService,
@@ -71,6 +86,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
             PackageRestoreSharedJoinableTaskCollection sharedJoinableTaskCollection)
             : base(project, sharedJoinableTaskCollection, synchronousDisposal: true, registerDataSource: false)
         {
+            _featureFlagsService = featureFlagsService;
+            _telemetryService = telemetryService;
+            _infoBarService = infoBarService;
             _project = project;
             _dataSource = dataSource;
             _projectAsynchronousTasksService = projectAsynchronousTasksService;
@@ -129,11 +147,20 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
 
                 if (_latestHash != null && hash.AsSpan().SequenceEqual(_latestHash))
                 {
+                    _stopwatch.Reset();
+                    _nuGetRestoreSuccesses++;
+                    _cycleDetector.Clear();
                     SaveNominatedConfiguredVersions(value.ConfiguredInputs);
                     return true;
                 }
 
                 _latestHash = hash;
+
+                if (await CycleDetectedAsync(hash, _projectAsynchronousTasksService.UnloadCancellationToken))
+                {
+                    _nuGetRestoreCyclesDetected++;
+                    return false;
+                }
 
                 _restoreStarted = true;
                 JoinableTask<bool> joinableTask = JoinableFactory.RunAsync(() =>
@@ -161,6 +188,56 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
             }
 
             return success;
+        }
+
+        private async Task<bool> CycleDetectedAsync(byte[] hash, CancellationToken cancellationToken)
+        {
+            _stopwatch.Start();
+
+            bool enabled = await IsNuGetRestoreCycleDetectionEnabledAsync(cancellationToken);
+
+            if (!enabled)
+            {
+                return false;
+            }
+
+            bool cycleDetected = _cycleDetector.ComputeCycleDetection(hash);
+
+            if (!cycleDetected)
+            {
+                return false;
+            }
+
+            _stopwatch.Stop();
+
+            SendTelemetry();
+
+            await _infoBarService.ShowInfoBarAsync(
+                VSResources.InfoBarMessageNuGetCycleDetected,
+                KnownMonikers.StatusError,
+                cancellationToken
+            );
+
+            return true;
+
+            void SendTelemetry()
+            {
+                _telemetryService.PostProperties(TelemetryEventName.NuGetRestoreCycleDetected, new[]
+                {
+                    (TelemetryPropertyName.NuGetRestoreCycleDetectedRestoreDurationMillis, (object)_stopwatch.Elapsed.TotalMilliseconds),
+                    (TelemetryPropertyName.NuGetRestoreCycleDetectedRestoreSuccesses, _nuGetRestoreSuccesses),
+                    (TelemetryPropertyName.NuGetRestoreCycleDetectedRestoreCyclesDetected, _nuGetRestoreCyclesDetected)
+                });
+            }
+        }
+
+        private async Task<bool> IsNuGetRestoreCycleDetectionEnabledAsync(CancellationToken cancellationToken)
+        {
+            await _project.Services.ThreadingPolicy.SwitchToUIThread(cancellationToken);
+
+            IVsFeatureFlags featureFlagsService = _featureFlagsService.Value;
+
+            return featureFlagsService.IsFeatureEnabled(FeatureFlagNames.EnableNuGetRestoreCycleDetection, defaultValue: false);
         }
 
         private async Task<bool> NominateForRestoreAsync(ProjectRestoreInfo restoreInfo, CancellationToken cancellationToken)

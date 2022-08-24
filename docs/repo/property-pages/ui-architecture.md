@@ -56,7 +56,7 @@ The metadata of a property is immutable and will not change over time. It is mod
 1. `SupportsPerConfigurationValues` whether the property may be configured or not. See [property configurations](#property-configurations).
 1. `SearchTerms` an optional list of additional search terms for which the property should be displayed. Useful for synonyms, common misspellings, etc.
 1. `HelpUrl` an optional URL for documentation about the property.
-1. `VisibilityCondition` an optional expression that controls when the property is visible or hidden from view. See [visibility conditions](visibility-conditions.md).
+1. `VisibilityCondition` an optional expression that controls when the property is visible or hidden from view. See [visibility conditions](property-conditions.md).
 
 This metadata comes from XAML rule files deployed with the project system. For information on authoring such metadata, see [Property Specification](property-specification.md).
 
@@ -66,7 +66,7 @@ Each `Property` instance holds, in addition to a reference to its `PropertyMetad
 
 1. The set of _dimensions_ the property varies by.
 1. The single _value_, or multiple _values_ if the property varies by configuration.
-1. The _visibility_ of the property, influenced by both [visibility conditions](visibility-conditions.md) and property search.
+1. The _visibility_ of the property, influenced by both [visibility conditions](property-conditions.md) and property search.
 
 ## Unevaluated and Evaluated Values
 
@@ -98,9 +98,9 @@ For other properties, it may make sense to vary the property's value by one or m
 
 The Project Properties UI allows the user to control how values vary across dimensions.
 
-## Visibility Conditions
+## Visibility and Property Conditions
 
-See [Visibility Conditions](visibility-conditions.md).
+See [Visibility and Property Conditions](property-conditions.md).
 
 ## Property Simplification
 

@@ -186,11 +186,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             base.Initialize();
 
             // Create our broadcast block for subscribers to ILaunchSettingsProvider to get new ILaunchSettings information
-            _broadcastBlock = DataflowBlockSlim.CreateBroadcastBlock<ILaunchSettings>();
+            _broadcastBlock = DataflowBlockSlim.CreateBroadcastBlock<ILaunchSettings>(nameFormat: "Launch Settings Broadcast: {1}");
             _changedSourceBlock = _broadcastBlock.SafePublicize();
 
             // Create our broadcast block for subscribers to IVersionedLaunchSettingsProvider to get new ILaunchSettings information
-            _versionedBroadcastBlock = DataflowBlockSlim.CreateBroadcastBlock<IProjectVersionedValue<ILaunchSettings>>();
+            _versionedBroadcastBlock = DataflowBlockSlim.CreateBroadcastBlock<IProjectVersionedValue<ILaunchSettings>>(nameFormat: "Versioned Launch Settings Broadcast: {1}");
             _versionedChangedSourceBlock = _versionedBroadcastBlock.SafePublicize();
 
             // Subscribe to changes to the broadcast block using the idle scheduler. This should filter out a lot of the intermediate

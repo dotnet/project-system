@@ -2,9 +2,19 @@
 <xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
   <file datatype="xml" source-language="en" target-language="cs" original="../BuildPropertyPage.VisualBasic.xaml">
     <body>
+      <trans-unit id="BoolProperty|DefineDebug|Description">
+        <source>Specify DEBUG as a compilation constant.</source>
+        <target state="translated">Zadejte DEBUG jako kompilační konstantu.</target>
+        <note />
+      </trans-unit>
       <trans-unit id="BoolProperty|DefineDebug|DisplayName">
         <source>Define DEBUG constant</source>
         <target state="translated">Definovat konstantu DEBUG</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="BoolProperty|DefineTrace|Description">
+        <source>Specify TRACE as a compilation constant.</source>
+        <target state="translated">Zadejte TRACE jako kompilační konstantu.</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|DefineTrace|DisplayName">
@@ -20,6 +30,11 @@
       <trans-unit id="BoolProperty|GenerateDocumentationFile|DisplayName">
         <source>Generate XML documentation file</source>
         <target state="translated">Generovat soubor dokumentace XML</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="BoolProperty|Optimize|Description">
+        <source>Enable compiler optimizations.</source>
+        <target state="translated">Povolte optimalizace kompilátoru.</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|Optimize|DisplayName">
@@ -45,6 +60,11 @@
       <trans-unit id="BoolProperty|RegisterForComInterop|DisplayName">
         <source>Register for COM interop</source>
         <target state="translated">Zaregistrovat pro zprostředkovatele komunikace s objekty COM</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="BoolProperty|RemoveIntegerChecks|Description">
+        <source>Remove integer overflow checking.</source>
+        <target state="translated">Odeberte kontrolu přetečení celého čísla.</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|RemoveIntegerChecks|DisplayName">
@@ -87,24 +107,9 @@
         <target state="translated">Upozornění</target>
         <note />
       </trans-unit>
-      <trans-unit id="DynamicEnumProperty|DuplicateOrOverlappingCatchBlocks_Readonly|DisplayName">
-        <source>Duplicate or overlapping catch blocks</source>
-        <target state="translated">Duplicitní nebo překrývající se bloky catch</target>
-        <note />
-      </trans-unit>
       <trans-unit id="DynamicEnumProperty|DuplicateOrOverlappingCatchBlocks|DisplayName">
         <source>Duplicate or overlapping catch blocks</source>
         <target state="translated">Duplicitní nebo překrývající se bloky catch</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="DynamicEnumProperty|ImplicitConversion_Readonly|Description">
-        <source>Implicit narrowing conversion occurs when there is an implicit data type conversion that is a narrowing conversion. Always 'Error' when 'Option strict' is on.</source>
-        <target state="translated">Implicitní zužující převod nastane v případě, že existuje implicitní převod datového typu, který je zužující převod. Vždy se zobrazí „Error“, pokud je zapnutá možnost „Option strict“.</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="DynamicEnumProperty|ImplicitConversion_Readonly|DisplayName">
-        <source>Implicit conversion</source>
-        <target state="translated">Implicitní převod</target>
         <note />
       </trans-unit>
       <trans-unit id="DynamicEnumProperty|ImplicitConversion|Description">
@@ -117,16 +122,6 @@
         <target state="translated">Implicitní převod</target>
         <note />
       </trans-unit>
-      <trans-unit id="DynamicEnumProperty|ImplicitType_Readonly|Description">
-        <source>Implicit object type errors occur when an appropriate type cannot be inferred for a declared variable, so a type of 'Object' is inferred. Always 'Error' when 'Option strict' is on.</source>
-        <target state="translated">K chybám implicitního typu objektu dochází, když nelze odvodit vhodný typ pro deklarovanou proměnnou, takže je odvozen typ Object. Vždy se zobrazí „Error“, pokud je zapnutá možnost „Option strict“.</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="DynamicEnumProperty|ImplicitType_Readonly|DisplayName">
-        <source>Implicit type</source>
-        <target state="translated">Implicitní typ</target>
-        <note />
-      </trans-unit>
       <trans-unit id="DynamicEnumProperty|ImplicitType|Description">
         <source>Implicit object type errors occur when an appropriate type cannot be inferred for a declared variable, so a type of 'Object' is inferred. Always 'Error' when 'Option strict' is on.</source>
         <target state="translated">K chybám implicitního typu objektu dochází, když nelze odvodit vhodný typ pro deklarovanou proměnnou, takže je odvozen typ Object. Vždy se zobrazí „Error“, pokud je zapnutá možnost „Option strict“.</target>
@@ -137,24 +132,9 @@
         <target state="translated">Implicitní typ</target>
         <note />
       </trans-unit>
-      <trans-unit id="DynamicEnumProperty|InstanceVariableAccessesSharedMember_Readonly|DisplayName">
-        <source>Instance variable accesses shared member</source>
-        <target state="translated">Proměnná instance přistupuje ke sdílenému členu.</target>
-        <note />
-      </trans-unit>
       <trans-unit id="DynamicEnumProperty|InstanceVariableAccessesSharedMember|DisplayName">
         <source>Instance variable accesses shared member</source>
         <target state="translated">Proměnná instance přistupuje ke sdílenému členu.</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="DynamicEnumProperty|LateBinding_Readonly|Description">
-        <source>An object is late bound when it is assigned to a property or method of a variable that is declared to be of type 'Object'. These operations could fail at run time. Always 'Error' when 'Option strict' is on.</source>
-        <target state="translated">Objekt je zpožděný, pokud je přiřazen vlastnosti nebo metodě proměnné, která je deklarována jako typu Object. Tyto operace můžou v době běhu selhat. Vždy se zobrazí „Error“, pokud je zapnutá možnost „Option strict“.</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="DynamicEnumProperty|LateBinding_Readonly|DisplayName">
-        <source>Late binding</source>
-        <target state="translated">Pozdní vazba</target>
         <note />
       </trans-unit>
       <trans-unit id="DynamicEnumProperty|LateBinding|Description">
@@ -177,19 +157,9 @@
         <target state="translated">Cílový procesor</target>
         <note />
       </trans-unit>
-      <trans-unit id="DynamicEnumProperty|RecursiveOperatorOrPropertyAccess_Readonly|DisplayName">
-        <source>Recursive operator or property access</source>
-        <target state="translated">Rekurzivní operátor nebo přístup k vlastnosti</target>
-        <note />
-      </trans-unit>
       <trans-unit id="DynamicEnumProperty|RecursiveOperatorOrPropertyAccess|DisplayName">
         <source>Recursive operator or property access</source>
         <target state="translated">Rekurzivní operátor nebo přístup k vlastnosti</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="DynamicEnumProperty|ReturningIntrinsicValueTypeWithoutReturnValue_Readonly|DisplayName">
-        <source>Function returning intrinsic value type without return value</source>
-        <target state="translated">Funkce vracející vnitřní hodnotový typ bez návratové hodnoty</target>
         <note />
       </trans-unit>
       <trans-unit id="DynamicEnumProperty|ReturningIntrinsicValueTypeWithoutReturnValue|DisplayName">
@@ -197,29 +167,14 @@
         <target state="translated">Funkce vracející vnitřní hodnotový typ bez návratové hodnoty</target>
         <note />
       </trans-unit>
-      <trans-unit id="DynamicEnumProperty|ReturningRefTypeWithoutReturnValue_Readonly|DisplayName">
-        <source>Function returning reference type without return value</source>
-        <target state="translated">Funkce vracející odkazový typ bez návratové hodnoty</target>
-        <note />
-      </trans-unit>
       <trans-unit id="DynamicEnumProperty|ReturningRefTypeWithoutReturnValue|DisplayName">
         <source>Function returning reference type without return value</source>
         <target state="translated">Funkce vracející odkazový typ bez návratové hodnoty</target>
         <note />
       </trans-unit>
-      <trans-unit id="DynamicEnumProperty|UnusedLocalVariable_Readonly|DisplayName">
-        <source>Unused local variable</source>
-        <target state="translated">Nepoužitá lokální proměnná</target>
-        <note />
-      </trans-unit>
       <trans-unit id="DynamicEnumProperty|UnusedLocalVariable|DisplayName">
         <source>Unused local variable</source>
         <target state="translated">Nepoužitá lokální proměnná</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="DynamicEnumProperty|UseOfVariablePriorToAssignment_Readonly|DisplayName">
-        <source>Use of variable prior to assignment</source>
-        <target state="translated">Použití proměnné závisí na předchozím přiřazení</target>
         <note />
       </trans-unit>
       <trans-unit id="DynamicEnumProperty|UseOfVariablePriorToAssignment|DisplayName">

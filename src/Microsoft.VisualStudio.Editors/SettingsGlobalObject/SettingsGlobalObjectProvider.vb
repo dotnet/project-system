@@ -1298,7 +1298,9 @@ Namespace Microsoft.VisualStudio.Editors.SettingsGlobalObjects
 
             Dim isDesignTime As Boolean = True
 
-            Dim ccu As CodeCompileUnit = SettingsSingleFileGeneratorBase.Create(_hierarchy, designTimeSettingsToPresent, _namespace, fileName, isDesignTime, TypeAttributes.Public Or TypeAttributes.Sealed)
+            Dim isVB As Boolean = fileName.EndsWith(".vb")
+            
+            Dim ccu As CodeCompileUnit = SettingsSingleFileGeneratorBase.Create(isVB, _hierarchy, designTimeSettingsToPresent, _namespace, fileName, isDesignTime, TypeAttributes.Public Or TypeAttributes.Sealed)
             Debug.Assert(ccu.Namespaces.Count = 1, "Expected a single namespace from SettingsSingleFileGenerator")
 
             ' Remove structure from the compile unit that virtual types can't handle.  

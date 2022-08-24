@@ -122,29 +122,29 @@
         <target state="translated">驗證模式</target>
         <note />
       </trans-unit>
-      <trans-unit id="EnumValue|HighDpiMode.DpiUnawareGdiScaled|DisplayName">
-        <source>DPI unaware, GDI scaled - Like DPI unaware but optimized for non-double-buffered Graphics content.</source>
-        <target state="translated">DPI 非識別，GDI 縮放 - 像 DPI 非識別，但已針對非雙重緩衝圖形內容最佳化。</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="EnumValue|HighDpiMode.DpiUnaware|DisplayName">
+      <trans-unit id="EnumValue|HighDpiMode.0|DisplayName">
         <source>DPI unaware - No scaling and assuming 100% scaling.</source>
         <target state="translated">DPI 非識別 - 不調整規模並假設 100% 縮放。</target>
         <note />
       </trans-unit>
-      <trans-unit id="EnumValue|HighDpiMode.PerMonitorV2|DisplayName">
-        <source>Per monitor V2 - DPI detected on-launch and on-change including child windows</source>
-        <target state="translated">每個監視器 V2 - DPI 在啟動時和變更時已偵測，包括子視窗</target>
+      <trans-unit id="EnumValue|HighDpiMode.1|DisplayName">
+        <source>System aware - Primary monitor's DPI is scale lead.</source>
+        <target state="translated">系統感知 - 主要監視器的 DPI 是縮放潛在客戶。</target>
         <note />
       </trans-unit>
-      <trans-unit id="EnumValue|HighDpiMode.PerMonitor|DisplayName">
+      <trans-unit id="EnumValue|HighDpiMode.2|DisplayName">
         <source>Per monitor - DPI detected on-launch and on-change.</source>
         <target state="translated">每個監視器 - DPI 在啟動時和變更時已偵測。</target>
         <note />
       </trans-unit>
-      <trans-unit id="EnumValue|HighDpiMode.SystemAware|DisplayName">
-        <source>System aware - Primary monitor's DPI is scale lead.</source>
-        <target state="translated">系統感知 - 主要監視器的 DPI 是縮放潛在客戶。</target>
+      <trans-unit id="EnumValue|HighDpiMode.3|DisplayName">
+        <source>Per monitor V2 - DPI detected on-launch and on-change including child windows</source>
+        <target state="translated">每個監視器 V2 - DPI 在啟動時和變更時已偵測，包括子視窗</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|HighDpiMode.4|DisplayName">
+        <source>DPI unaware, GDI scaled - Like DPI unaware but optimized for non-double-buffered Graphics content.</source>
+        <target state="translated">DPI 非識別，GDI 縮放 - 像 DPI 非識別，但已針對非雙重緩衝圖形內容最佳化。</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|ShutdownMode.AfterAllFormsClose|DisplayName">
