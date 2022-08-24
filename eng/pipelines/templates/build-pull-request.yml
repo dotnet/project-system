@@ -5,8 +5,8 @@ jobs:
   displayName: Build ${{ parameters.BuildConfiguration }}
   timeoutInMinutes: 20
   pool:
-    name: ${{ parameters.DefaultPoolName }}
-    demands: ${{ parameters.DefaultDemands }}
+    name: ${{ variables.DefaultPoolName }}
+    demands: ${{ variables.DefaultDemands }}
   variables:
     BuildConfiguration: ${{ parameters.BuildConfiguration }}
     ArtifactName: ${{ parameters.ArtifactName }}
