@@ -24,7 +24,7 @@ jobs:
     # Name is required to reference the variables created within this build step in other stages.
     name: SetVisualStudioMinimumVersionVariable
 
-  - powershell: Write-Host '$(VisualStudioMinimumVersion)'
+  - powershell: Write-Host '$(SetVisualStudioMinimumVersionVariable.VisualStudioMinimumVersion)'
     displayName: Check VisualStudioMinimumVersion
 
   # Only the projects in the 'src' folder are necessary for generating the SBOM.

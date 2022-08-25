@@ -57,8 +57,7 @@ variables:
 
 stages:
 - stage: Build
-  # Make display name friendly within GitHub checks UI.
-  displayName: 'Build:'
+  displayName: Build
   jobs:
   - template: templates/build-pull-request.yml
     parameters:
@@ -70,8 +69,7 @@ stages:
       ArtifactName: '$(Build.BuildNumber)'
 
 - stage: PostBuild
-  # Make display name friendly within GitHub checks UI.
-  displayName: 'Post-Build:'
+  displayName: Post-Build
   dependsOn: Build
   variables:
     BuildConfiguration: Release
