@@ -58,9 +58,9 @@ jobs:
     # APIScan requires an Azure Identity to run. That is provided via an Azure service principal.
     # - https://microsoft.sharepoint.com/teams/apiscan/APIScan%20User%20Wiki/authentication_using_AAD_identities.aspx
     # - https://microsoft.sharepoint.com/teams/apiscan/Lists/Contacts%20%20System%20Account%20and%20Wrappers/AllItems.aspx?skipSignal=true
-    # TODO: Consider better means of providing these values.
+    # This value is provided from the DotNet-Project-System variable group, defined in the stage variables.
     env:
-      AzureServicesAuthConnectionString: runAs=App;AppId=$(ApiScanClientId);TenantId=$(ApiScanTenant);AppKey=$(ApiScanSecret)
+      AzureServicesAuthConnectionString: $(ApiScanConnectionString)
 
   ###################################################################################################################################################################
   # PUBLISH RESULTS

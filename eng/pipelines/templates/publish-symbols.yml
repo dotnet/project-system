@@ -66,8 +66,7 @@ jobs:
     inputs:
       SymbolsFeatureName: MS.VS.ProjectSystem.Managed
       SymbolsSymwebProject: VS
-      # This value is provided as a pipeline variable.
-      # TODO: Consider better means of providing this value.
+      # This value is provided from the DotNet-Project-System variable group, defined in the stage variables.
       SymbolsUncPath: $(SymbolsUncPath)
       SymbolsEmailContacts: dotnetdevexproj
       SymbolsAgentPath: $(Pipeline.Workspace)/$(Build.BuildNumber)
