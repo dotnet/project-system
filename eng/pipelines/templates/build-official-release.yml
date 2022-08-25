@@ -17,16 +17,6 @@ jobs:
     displayName: === SBOM Generation ===
     condition: false
 
-  # Sets the VisualStudioMinimumVersion variable for the job. This variable is also used by the APIScan job.
-  # https://docs.microsoft.com/azure/devops/pipelines/process/set-variables-scripts?view=azure-devops&tabs=powershell#set-variable-properties
-  - powershell: Write-Host "##vso[task.setvariable variable=VisualStudioMinimumVersion;isoutput=true]$(. '$(Build.SourcesDirectory)/eng/scripts/GetVisualStudioMinimumVersion.ps1')"
-    displayName: Set VisualStudioMinimumVersion Variable
-    # Name is required to reference the variables created within this build step in other stages.
-    name: SetVisualStudioMinimumVersionVariable
-
-  - powershell: Write-Host '$(SetVisualStudioMinimumVersionVariable.VisualStudioMinimumVersion)'
-    displayName: Check VisualStudioMinimumVersion
-
   # Only the projects in the 'src' folder are necessary for generating the SBOM.
   - script: $(Build.SourcesDirectory)/build.cmd /v:normal /p:Configuration=$(BuildConfiguration) /p:CIBuild=true /p:Test=false /p:Pack=false /p:TestProjects=false /p:SetupProjects=false
     displayName: Build Src Projects
@@ -112,6 +102,16 @@ jobs:
     # Name is required to reference the variables created within this build step in other stages.
     name: SetPackageVersion
 
+  # Sets the VisualStudioMinimumVersion variable for the job. This variable is also used by the APIScan job.
+  # https://docs.microsoft.com/azure/devops/pipelines/process/set-variables-scripts?view=azure-devops&tabs=powershell#set-variable-properties
+  - powershell: Write-Host "##vso[task.setvariable variable=VisualStudioMinimumVersion;isoutput=true]$(. '$(Build.SourcesDirectory)/eng/scripts/GetVisualStudioMinimumVersion.ps1')"
+    displayName: Set VisualStudioMinimumVersion Variable
+    # Name is required to reference the variables created within this build step in other stages.
+    name: SetVisualStudioMinimumVersionVariable
+
+  - powershell: Write-Host '$(SetVisualStudioMinimumVersionVariable.VisualStudioMinimumVersion)'
+    displayName: Check VisualStudioMinimumVersion
+
   # Creates the VS bootstrapper information based on the build's .vsman file.
   # This bootstrapper information is only used for OptProf currently.
   # Since this data will be output with rest of our insertion files, we produce this data now and publish it in the build artifacts.
@@ -126,8 +126,7 @@ jobs:
     displayName: Build VS Bootstrapper
     inputs:
       bootstrapperCoreVersion: latest
-      # The VisualStudioMinimumVersion variable is written out by the BuildAllProjects task.
-      vsMajorVersion: $(VisualStudioMinimumVersion)
+      vsMajorVersion: $(SetVisualStudioMinimumVersionVariable.VisualStudioMinimumVersion)
       channelName: int.main
       manifests: $(Build.SourcesDirectory)/artifacts/$(BuildConfiguration)/VSSetup/Insertion/Microsoft.VisualStudio.ProjectSystem.Managed.vsman
       # Outputting to the Insertion folder allows the bootstrapper to be published to the Products drop, along with our insertion files.

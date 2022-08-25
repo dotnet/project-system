@@ -47,7 +47,7 @@ jobs:
     inputs:
       softwareFolder: $(Pipeline.Workspace)/$(Build.BuildNumber)/bin/Dlls
       softwareName: Dotnet-Project-System
-      # The VisualStudioMinimumVersion variable is written out by the BuildAllProjects task in the Build stage.
+      # The VisualStudioMinimumVersion variable is written out by the SetVisualStudioMinimumVersionVariable task in the Build stage.
       softwareVersionNum: $(VisualStudioMinimumVersion)
       softwareBuildNum: $(Build.BuildId)
       symbolsFolder: SRV*http://symweb
