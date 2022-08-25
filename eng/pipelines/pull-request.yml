@@ -73,13 +73,5 @@ stages:
   dependsOn: Build
   variables:
     BuildConfiguration: Release
-    # Disables the TSA compliance results upload task in analyze-compliance.yml.
-    UploadTSAResults: false
-    # Disables the signing validation tasks within analyze-compliance.yml.
-    VerifySigning: false
   jobs:
   - template: templates/publish-richnav.yml
-  # TODO: DNCEng Public does not have the Guardian extension installed. Thus, we cannot run compliance.
-  # See: https://eng.ms/docs/security-compliance-identity-and-management-scim/security/azure-security/cloudai-security-fundamentals-engineering/security-integration/guardian-wiki/sdl-azdo-extension/secure-development-tools-extension-for-azure-devops
-  - ${{ if false }}:
-    - template: templates/analyze-compliance.yml

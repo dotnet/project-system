@@ -143,11 +143,8 @@ stages:
   variables:
   - name: UploadTSAResults
     value: ${{ parameters.UploadTSAResults }}
-    # Enables the signing validation tasks within analyze-compliance.yml.
-  - name: VerifySigning
-    value: true
-    # Gets the VisualStudioMinimumVersion variable produced by the Build pipeline.
-    # This value is used in the analyze-api.yml template.
+  # Gets the VisualStudioMinimumVersion variable produced by the Build pipeline.
+  # This value is used in the analyze-api.yml template.
   - name: VisualStudioMinimumVersion
     value: $[ stageDependencies.Build.BuildOfficialRelease.outputs['SetVisualStudioMinimumVersionVariable.VisualStudioMinimumVersion'] ]
   # https://devdiv.visualstudio.com/DevDiv/_library?itemType=VariableGroups&view=VariableGroupView&variableGroupId=434&path=DotNet-Project-System
@@ -158,6 +155,7 @@ stages:
   - template: templates/analyze-compliance.yml
   - template: templates/analyze-api.yml
   # TODO: Disabled since the build for CodeQL does not seem to recognize global namespaces. Thus, it fails to build.
+  # Issue: https://github.com/dotnet/project-system/issues/8421
   - ${{ if false }}:
     - template: templates/analyze-vulnerabilities.yml
 
