@@ -21,6 +21,10 @@ pr:
     - docs/*
     - README.md
 
+# Disable CI builds for this pipeline.
+# See: https://docs.microsoft.com/azure/devops/pipelines/yaml-schema/trigger?view=azure-pipelines#examples
+trigger: none
+
 pool:
   # The max number of concurrent jobs that can be run in the pool is 820.
   # https://dnceng.visualstudio.com/public/_settings/agentqueues?queueId=396&view=jobs
@@ -53,7 +57,8 @@ variables:
 
 stages:
 - stage: Build
-  displayName: Build
+  # Make display name friendly within GitHub checks UI.
+  displayName: 'Build:'
   jobs:
   - template: templates/build-pull-request.yml
     parameters:
@@ -65,7 +70,8 @@ stages:
       ArtifactName: '$(Build.BuildNumber)'
 
 - stage: PostBuild
-  displayName: Post-Build
+  # Make display name friendly within GitHub checks UI.
+  displayName: 'Post-Build:'
   dependsOn: Build
   variables:
     BuildConfiguration: Release

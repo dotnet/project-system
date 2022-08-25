@@ -21,6 +21,9 @@ jobs:
   - script: $(Build.SourcesDirectory)/build.cmd /v:normal /p:Configuration=$(BuildConfiguration) /p:CIBuild=true /p:Test=false /p:Pack=false /p:TestProjects=false /p:SetupProjects=false
     displayName: Build Src Projects
 
+  - powershell: Write-Host '$(VisualStudioMinimumVersion)'
+    displayName: Check VisualStudioMinimumVersion
+
   # The binlog is set to Build.binlog by default when using build.cmd. We rename it so it isn't overridden by the full build.
   - powershell: Rename-Item -Path '$(Build.SourcesDirectory)/artifacts/$(BuildConfiguration)/log/Build.binlog' -NewName SrcBuild.binlog
     displayName: Rename Src Binlog
@@ -103,9 +106,6 @@ jobs:
     displayName: Set PackageVersion Variable
     # Name is required to reference the variables created within this build step in other stages.
     name: SetPackageVersion
-
-  - powershell: Write-Host $(VisualStudioMinimumVersion)
-    displayName: Check VisualStudioMinimumVersion
 
   # Creates the VS bootstrapper information based on the build's .vsman file.
   # This bootstrapper information is only used for OptProf currently.

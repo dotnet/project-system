@@ -2,7 +2,7 @@
 
 jobs:
 - job: BuildPullRequest_${{ parameters.BuildConfiguration }}
-  displayName: Build ${{ parameters.BuildConfiguration }}
+  displayName: ${{ parameters.BuildConfiguration }} Configuration
   timeoutInMinutes: 20
   variables:
     BuildConfiguration: ${{ parameters.BuildConfiguration }}

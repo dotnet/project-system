@@ -21,6 +21,10 @@ trigger:
     - docs/*
     - README.md
 
+# Disable PR builds for this pipeline.
+# See: https://docs.microsoft.com/azure/devops/pipelines/yaml-schema/pr?view=azure-pipelines#examples
+pr: none
+
 schedules:
 # Runs the pipelines at 4am and creates a VS insertion PR.
 # https://docs.microsoft.com/azure/devops/pipelines/yaml-schema/schedules-cron?view=azure-pipelines
