@@ -18,8 +18,5 @@ internal sealed class ImplicitUsingsEditor : PropertyEditorBase
 
     public override object DefaultValue => string.Empty;
 
-    public override bool IsChangedByEvaluation(string unevaluatedValue, object? evaluatedValue, ImmutableDictionary<string, string> editorMetadata)
-    {
-        return evaluatedValue is string s && !string.Equals(unevaluatedValue, s, StringComparison.Ordinal);
-    }
+    public override bool IsChangedByEvaluation(string unevaluatedValue, object? evaluatedValue, ImmutableDictionary<string, string> editorMetadata) => false;
 }

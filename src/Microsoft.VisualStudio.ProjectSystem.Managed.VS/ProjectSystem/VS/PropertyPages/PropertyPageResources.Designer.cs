@@ -545,5 +545,77 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages {
                 return ResourceManager.GetString("WorkingDirectoryWatermark", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Using.
+        /// </summary>
+        public static string ImplicitUsingEditor_AddUsing {
+            get {
+                return ResourceManager.GetString("ImplicitUsingEditor_AddUsing", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Add Using.
+        /// </summary>
+        public static string ImplicitUsingEditor_AddUsingButton {
+            get {
+                return ResourceManager.GetString("ImplicitUsingEditor_AddUsingButton", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Using Includes.
+        /// </summary>
+        public static string ImplicitUsingEditor_ListItemIncludes {
+            get {
+                return ResourceManager.GetString("ImplicitUsingEditor_ListItemIncludes", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Alias.
+        /// </summary>
+        public static string ImplicitUsingEditor_ListItemAlias {
+            get {
+                return ResourceManager.GetString("ImplicitUsingEditor_ListItemAlias", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Is Static.
+        /// </summary>
+        public static string ImplicitUsingEditor_ListItemIsStatic {
+            get {
+                return ResourceManager.GetString("ImplicitUsingEditor_ListItemIsStatic", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Delete.
+        /// </summary>
+        public static string ImplicitUsingEditor_ListItemDelete {
+            get {
+                return ResourceManager.GetString("ImplicitUsingEditor_ListItemDelete", resourceCulture);
+            }
+        }
+                
+        /// <summary>
+        ///   Looks up a localized string similar to Implicit global usings list.
+        /// </summary>
+        public static string ImplicitUsingEditor_ListViewAccessibleName {
+            get {
+                return ResourceManager.GetString("ImplicitUsingEditor_ListViewAccessibleName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Show imported usings.
+        /// </summary>
+        public static string ImplicitUsingEditor_ShowImportedUsingsButton {
+            get {
+                return ResourceManager.GetString("ImplicitUsingEditor_ShowImportedUsingsButton", resourceCulture);
+            }
+        }
     }
 }

@@ -52,6 +52,46 @@
         <target state="translated">尋找(_F)...</target>
         <note />
       </trans-unit>
+      <trans-unit id="ImplicitUsingEditor_AddUsing">
+        <source>Using</source>
+        <target state="new">Using</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ImplicitUsingEditor_AddUsingButton">
+        <source>Add Using</source>
+        <target state="new">Add Using</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ImplicitUsingEditor_ListItemAlias">
+        <source>Alias</source>
+        <target state="new">Alias</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ImplicitUsingEditor_ListItemDelete">
+        <source>Delete</source>
+        <target state="new">Delete</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ImplicitUsingEditor_ListItemIncludes">
+        <source>Using Includes</source>
+        <target state="new">Using Includes</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ImplicitUsingEditor_ListItemIsStatic">
+        <source>Is Static</source>
+        <target state="new">Is Static</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ImplicitUsingEditor_ListViewAccessibleName">
+        <source>Implicit global usings list</source>
+        <target state="new">Implicit global usings list</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ImplicitUsingEditor_ShowImportedUsingsButton">
+        <source>Show imported usings</source>
+        <target state="new">Show imported usings</target>
+        <note />
+      </trans-unit>
       <trans-unit id="InvalidHostName">
         <source>The host name is invalid.</source>
         <target state="translated">此主機名稱無效。</target>

@@ -52,15 +52,6 @@
     <Compile Update="ProjectSystem\VS\PropertyPages\PropertyPage.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Update="ProjectSystem\VS\PropertyPages\PropertyPage.Designer.cs">
-      <DependentUpon>PropertyPage.cs</DependentUpon>
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Update="ProjectSystem\VS\PropertyPages\PropertyPageResources.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>PropertyPageResources.resx</DependentUpon>
-    </Compile>
     <Compile Update="ProjectSystem\VS\PropertyPages\WpfBasedPropertyPage.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -96,11 +87,7 @@
 
   <ItemGroup>
     <None Include="**\*.xlf" />
-    <EmbeddedResource Update="ProjectSystem\VS\PropertyPages\PropertyPageResources.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>PropertyPageResources.Designer.cs</LastGenOutput>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
+    
     <EmbeddedResource Update="VSResources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>VSResources.Designer.cs</LastGenOutput>

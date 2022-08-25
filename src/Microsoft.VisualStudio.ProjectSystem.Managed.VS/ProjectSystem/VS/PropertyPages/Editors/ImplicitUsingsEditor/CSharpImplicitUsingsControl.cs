@@ -6,8 +6,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using Microsoft.VisualStudio.PlatformUI;
-using Microsoft.VisualStudio.ProjectSystem.Debug;
-using Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages.Designer;
+using Newtonsoft.Json;
 
 namespace Microsoft.VisualStudio.ProjectSystem.Properties.Controls
 {
@@ -23,206 +22,258 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties.Controls
             nameof(StringList),
             typeof(string),
             typeof(CSharpImplicitUsingsControl),
-            new PropertyMetadata(string.Empty, (o, e) => ((MultiStringSelectorControl)o).OnStringListOrSupportedValuesPropertyChanged()));
+            new PropertyMetadata(string.Empty, (o, e) => ((CSharpImplicitUsingsControl)o).OnStringListOrSupportedValuesPropertyChanged()));
 
         public static readonly DependencyProperty UsingCollectionStateProperty = DependencyProperty.Register(
             nameof(UsingCollectionState),
-            typeof(ObservableCollection<ImplicitUsingsValueProvider.ImplicitUsing>),
+            typeof(ObservableCollection<ImplicitUsingModel>),
             typeof(CSharpImplicitUsingsControl),
-            new PropertyMetadata());
+            new PropertyMetadata(new ObservableCollection<ImplicitUsingModel>()));
+
+        public static readonly DependencyProperty EnteredUserUsingIncludesProperty = DependencyProperty.Register(
+            nameof(EnteredUserUsingIncludes),
+            typeof(string),
+            typeof(CSharpImplicitUsingsControl),
+            new PropertyMetadata(string.Empty));
+
+        public static readonly DependencyProperty EnteredUserUsingAliasProperty = DependencyProperty.Register(
+            nameof(EnteredUserUsingAlias),
+            typeof(string),
+            typeof(CSharpImplicitUsingsControl),
+            new PropertyMetadata(string.Empty));
+
+        public static readonly DependencyProperty EnteredUserUsingIsStaticProperty = DependencyProperty.Register(
+            nameof(EnteredUserUsingIsStatic),
+            typeof(bool),
+            typeof(CSharpImplicitUsingsControl),
+            new PropertyMetadata(false));
+        
+        public static readonly DependencyProperty ShouldShowReadonlyUsingsProperty = DependencyProperty.Register(
+            nameof(ShouldShowReadonlyUsings),
+            typeof(bool),
+            typeof(CSharpImplicitUsingsControl),
+            new PropertyMetadata(true, (o, e) => ((CSharpImplicitUsingsControl)o).OnStringListOrSupportedValuesPropertyChanged()));
 
         // Used to suppress event handling during our own updates, breaking infinite loops.
         private bool updating;
 
         public CSharpImplicitUsingsControl()
         {
-            UsingCollectionState = new ObservableCollection<ImplicitUsingsValueProvider.ImplicitUsing>();
+            UsingCollectionState = new ObservableCollection<ImplicitUsingModel>();
 
-            AddUserUsingCommand = new DelegateCommand<ImplicitUsingsValueProvider.ImplicitUsing>(newUsing =>
+#pragma warning disable VSTHRD012
+            AddUserUsingCommand = new DelegateCommand(_ =>
             {
-                if (!UsingCollectionState.Any(implicitUsing =>
-                        string.Equals(implicitUsing.Name, newUsing.Include, StringComparison.Ordinal)))
+                string usingIncludes = EnteredUserUsingIncludes;
+                if (usingIncludes.Length == 0)
                 {
-                    UsingCollectionState.Add(newUsing);
+                    return;
+                }
+
+                if (!UsingCollectionState.Any(implicitUsing =>
+                        string.Equals(implicitUsing.Include, usingIncludes, StringComparison.Ordinal)))
+                {
+                    UsingCollectionState.Add(new ImplicitUsingModel(usingIncludes, EnteredUserUsingAlias, EnteredUserUsingIsStatic, false, this));
                     NotifyPairChanged();
                 }
 
-                this.EnteredUserString = string.Empty;
+                EnteredUserUsingIncludes = string.Empty;
+                EnteredUserUsingAlias = string.Empty;
+                EnteredUserUsingIsStatic = false;
             });
 
-            this.OnStringListOrSupportedValuesPropertyChanged();
+#pragma warning restore VSTHRD012
+
+            OnStringListOrSupportedValuesPropertyChanged();
         }
 
-        public ICommand AddUserStringCommand
+        public ICommand AddUserUsingCommand
         {
-            get => (ICommand)this.GetValue(AddUserStringCommandProperty);
-            set => this.SetValue(AddUserStringCommandProperty, value);
+            get => (ICommand)GetValue(AddUserUsingCommandProperty);
+            set => SetValue(AddUserUsingCommandProperty, value);
         }
 
-        public bool AllowsCustomStrings
+        public string EnteredUserUsingIncludes
         {
-            get => (bool)this.GetValue(AllowsCustomStringsProperty);
-            set => this.SetValue(AllowsCustomStringsProperty, value);
+            get => (string)GetValue(EnteredUserUsingIncludesProperty);
+            set => SetValue(EnteredUserUsingIncludesProperty, value);
         }
 
-        public string MultiStringSelectorTypeDescriptorText
+        public string EnteredUserUsingAlias
         {
-            get => (string)this.GetValue(MultiStringSelectorTypeDescriptorTextProperty);
-            set => this.SetValue(MultiStringSelectorTypeDescriptorTextProperty, value);
+            get => (string)GetValue(EnteredUserUsingAliasProperty);
+            set => SetValue(EnteredUserUsingAliasProperty, value);
         }
 
-        public string EnteredUserString
+        public bool EnteredUserUsingIsStatic
         {
-            get => (string)this.GetValue(EnteredUserStringProperty);
-            set => this.SetValue(EnteredUserStringProperty, value);
+            get => (bool)GetValue(EnteredUserUsingIsStaticProperty);
+            set => SetValue(EnteredUserUsingIsStaticProperty, value);
         }
-
+        
+        public bool ShouldShowReadonlyUsings
+        {
+            get => (bool)GetValue(ShouldShowReadonlyUsingsProperty);
+            set => SetValue(ShouldShowReadonlyUsingsProperty, value);
+        }
+        
         public string StringList
         {
-            get => (string)this.GetValue(StringListProperty);
-            set => this.SetValue(StringListProperty, value);
+            get => (string)GetValue(StringListProperty);
+            set => SetValue(StringListProperty, value);
         }
 
-        public IList<SupportedValue>? SupportedValues
+        public ObservableCollection<ImplicitUsingModel> UsingCollectionState
         {
-            get => (IList<SupportedValue>?)this.GetValue(SupportedValuesProperty);
-            set => this.SetValue(SupportedValuesProperty, value);
-        }
-
-        public ObservableCollection<CheckableString> StringsCheckedState
-        {
-            get => (ObservableCollection<CheckableString>)this.GetValue(StringsCheckedStateProperty);
-            set => this.SetValue(StringsCheckedStateProperty, value);
+            get => (ObservableCollection<ImplicitUsingModel>)GetValue(UsingCollectionStateProperty);
+            set => SetValue(UsingCollectionStateProperty, value);
         }
 
         private void OnStringListOrSupportedValuesPropertyChanged()
         {
-            if (this.updating)
+            if (updating)
             {
                 return;
             }
 
-            this.updating = true;
+            updating = true;
 
             try
             {
-                Dictionary<string, bool> checkedStrings = this.encoding.Parse(this.StringList)
-                    .Where(pair => bool.TryParse(pair.Value, out bool _))
-                    .ToDictionary(pair => pair.Name, pair => bool.Parse(pair.Value), StringComparer.Ordinal);
-
-                ISet<string>? supportedValues = this.SupportedValues
-                    ?.Where((supportedValue, _) => !checkedStrings.ContainsKey(supportedValue.Value))
-                    .Select(value => value.Value).ToHashSet(StringComparer.Ordinal);
-
-                Dictionary<string, CheckableString> checkableStrings = new Dictionary<string, CheckableString>(StringComparer.Ordinal);
-
-                foreach ((string? name, bool isReadOnly) in checkedStrings)
+                if (JsonConvert.DeserializeObject(StringList, typeof(List<ImplicitUsingsValueProvider.ImplicitUsing>)) is not List<ImplicitUsingsValueProvider.ImplicitUsing> rawImplicitUsings)
                 {
-                    if (name.Length > 0)
+                    return;
+                }
+                
+                rawImplicitUsings.Sort((x, y) =>
+                {
+                    if ((x.IsReadOnly && y.IsReadOnly) || (!x.IsReadOnly && !y.IsReadOnly))
                     {
-                        checkableStrings[name] = new CheckableString(name: name, isChecked: true, isReadOnly: isReadOnly, parent: this);
+                        return string.Compare(x.Include, y.Include, StringComparison.Ordinal);
                     }
+
+                    return x.IsReadOnly ? 1 : -1;
+                });
+
+                if (!ShouldShowReadonlyUsings)
+                {
+                    rawImplicitUsings.RemoveAll(implicitUsing => implicitUsing.IsReadOnly);
                 }
 
-                if (supportedValues != null)
+                var currentlySetImplicitUsings = rawImplicitUsings.GroupBy(implicitUsing => implicitUsing.Include).Select(group => group.First()).ToList();
+                
+                if (UsingCollectionState.Count == 0)
                 {
-                    foreach (string supportedValue in supportedValues)
+                    foreach (ImplicitUsingsValueProvider.ImplicitUsing implicitUsing in currentlySetImplicitUsings)
                     {
-                        if (supportedValue.Length > 0 && !checkableStrings.ContainsKey(supportedValue))
-                        {
-                            checkableStrings.Add(supportedValue, new CheckableString(name: supportedValue, isChecked: false, isReadOnly: false, parent: this));
-                        }
-                    }
-                }
-
-                if (this.StringsCheckedState.Count == 0)
-                {
-                    foreach (CheckableString checkableString in checkableStrings.Values)
-                    {
-                        this.StringsCheckedState.Add(checkableString);
+                        UsingCollectionState.Add(new ImplicitUsingModel(implicitUsing.Include, implicitUsing.Alias ?? string.Empty, implicitUsing.IsStatic, implicitUsing.IsReadOnly, this));
                     }
                 }
                 else
                 {
                     int stringIndex = 0;
 
-                    foreach (CheckableString checkableString in checkableStrings.Values)
+                    foreach (ImplicitUsingsValueProvider.ImplicitUsing implicitUsing in currentlySetImplicitUsings)
                     {
-                        if (stringIndex < this.StringsCheckedState.Count)
+                        if (stringIndex < UsingCollectionState.Count)
                         {
-                            if (!this.StringsCheckedState[stringIndex].Equals(checkableString))
+                            ImplicitUsingModel existingUsingModel = UsingCollectionState[stringIndex];
+                            if (!existingUsingModel.ToImplicitUsing().Equals(implicitUsing))
                             {
-                                this.StringsCheckedState[stringIndex] = checkableString;
+                                if (string.Equals(existingUsingModel.Include, implicitUsing.Include, StringComparison.Ordinal))
+                                {
+                                    if (!string.Equals(existingUsingModel.Alias, implicitUsing.Alias ?? string.Empty, StringComparison.Ordinal))
+                                    {
+                                        existingUsingModel.Alias = implicitUsing.Alias ?? string.Empty;
+                                    }
+
+                                    if (existingUsingModel.IsStatic != implicitUsing.IsStatic)
+                                    {
+                                        existingUsingModel.IsStatic = implicitUsing.IsStatic;
+                                    }
+
+                                    if (existingUsingModel.IsReadOnly != implicitUsing.IsReadOnly)
+                                    {
+                                        existingUsingModel.IsReadOnly = implicitUsing.IsReadOnly;
+                                    }
+                                }
+                                else
+                                {
+                                    UsingCollectionState[stringIndex] = new ImplicitUsingModel(implicitUsing.Include, implicitUsing.Alias ?? string.Empty, implicitUsing.IsStatic, implicitUsing.IsReadOnly, this);
+                                }
                             }
                         }
                         else
                         {
-                            this.StringsCheckedState.Add(checkableString);
+                            UsingCollectionState.Add(new ImplicitUsingModel(implicitUsing.Include, implicitUsing.Alias ?? string.Empty, implicitUsing.IsStatic, implicitUsing.IsReadOnly, this));
                         }
 
                         stringIndex++;
                     }
 
-                    if (stringIndex < this.StringsCheckedState.Count - 1)
+                    if (stringIndex < UsingCollectionState.Count - 1)
                     {
-                        for (int i = this.StringsCheckedState.Count - 1; i >= stringIndex + 1; i--)
+                        for (int i = UsingCollectionState.Count - 1; i >= stringIndex; i--)
                         {
-                            this.StringsCheckedState.RemoveAt(i);
+                            UsingCollectionState.RemoveAt(i);
                         }
                     }
                 }
             }
             finally
             {
-                this.updating = false;
+                updating = false;
             }
         }
 
         public void NotifyPairChanged()
         {
-            if (this.updating)
+            if (updating)
             {
                 return;
             }
 
-            this.StringList = this.encoding.Format(
-                this.StringsCheckedState
-                    .Where(checkableString => checkableString.IsChecked && checkableString.Name.Length > 0)
-                    .Select(checkableString => (checkableString.Name, Value: checkableString.IsReadOnly.ToString())));
+            StringList = JsonConvert.SerializeObject(UsingCollectionState.Select(implicitUsingModel => implicitUsingModel.ToImplicitUsing()));
         }
     }
 
-    internal sealed class CheckableString : INotifyPropertyChanged
+    internal sealed class ImplicitUsingModel : INotifyPropertyChanged
     {
-        private static readonly PropertyChangedEventArgs NameChangeArgs = new(nameof(Name));
-        private static readonly PropertyChangedEventArgs IsCheckedChangeArgs = new(nameof(IsChecked));
-        private static readonly PropertyChangedEventArgs IsReadOnlyChangeArgs = new(nameof(IsReadOnly));
-        private readonly MultiStringSelectorControl parent;
+        private readonly CSharpImplicitUsingsControl _parent;
+        private static readonly PropertyChangedEventArgs s_includeChangeArgs = new(nameof(Include));
+        private static readonly PropertyChangedEventArgs s_aliasChangeArgs = new(nameof(Alias));
+        private static readonly PropertyChangedEventArgs s_isStaticChangeArgs = new(nameof(IsStatic));
+        private static readonly PropertyChangedEventArgs s_isReadOnlyChangeArgs = new(nameof(IsReadOnly));
 
-        private string name;
-        private bool isChecked;
-        private bool isReadOnly;
+        private string _include;
+        private string _alias;
+        private bool _isStatic;
+        private bool _isReadOnly;
 
-        public CheckableString(string name, bool isChecked, bool isReadOnly, MultiStringSelectorControl parent)
+        public ImplicitUsingModel(string include, string alias, bool isStatic, bool isReadOnly, CSharpImplicitUsingsControl parent)
         {
-            this.name = name;
-            this.isChecked = isChecked;
-            this.isReadOnly = isReadOnly;
-            this.parent = parent;
+            _include = include;
+            _alias = alias;
+            _isStatic = isStatic;
+            _isReadOnly = isReadOnly;
+            _parent = parent;
 
-            this.ToggleStringCommand = new DelegateCommand<CheckableString>(checkableString =>
+#pragma warning disable VSTHRD012
+            RemoveUsingCommand = new DelegateCommand<ImplicitUsingModel>(model =>
+#pragma warning restore VSTHRD012
             {
-                checkableString.parent.NotifyPairChanged();
+                model._parent.UsingCollectionState.Remove(model);
+                model._parent.NotifyPairChanged();
             });
         }
 
         public event PropertyChangedEventHandler? PropertyChanged;
 
-        public ICommand ToggleStringCommand { get; }
+        public ICommand RemoveUsingCommand { get; }
 
-        public string Name
+        public string Include
         {
-            get => this.name;
+            get => _include;
             set
             {
                 // Name may not be empty, unless it was set as such in the constructor (for a new row)
@@ -231,65 +282,72 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties.Controls
                     return;
                 }
 
-                if (string.Equals(this.name, value, StringComparison.Ordinal))
+                if (string.Equals(_include, value, StringComparison.Ordinal))
                 {
                     return;
                 }
 
-                this.name = value;
-                this.PropertyChanged?.Invoke(this, NameChangeArgs);
-                this.parent.NotifyPairChanged();
+                _include = value;
+                PropertyChanged?.Invoke(this, s_includeChangeArgs);
+                _parent.NotifyPairChanged();
             }
         }
 
-        public bool IsChecked
+        public string Alias
         {
-            get => this.isChecked;
+            get => _alias;
             set
             {
-                if (this.isChecked == value)
+                if (string.Equals(_alias, value, StringComparison.Ordinal))
                 {
                     return;
                 }
 
-                this.isChecked = value;
-                this.PropertyChanged?.Invoke(this, IsCheckedChangeArgs);
+                _alias = value;
+                PropertyChanged?.Invoke(this, s_aliasChangeArgs);
+                _parent.NotifyPairChanged();
+            }
+        }
+
+        public bool IsStatic
+        {
+            get => _isStatic;
+            set
+            {
+                if (_isStatic == value)
+                {
+                    return;
+                }
+
+                _isStatic = value;
+                PropertyChanged?.Invoke(this, s_isStaticChangeArgs);
+                _parent.NotifyPairChanged();
             }
         }
 
         public bool IsReadOnly
         {
-            get => this.isReadOnly;
+            get => _isReadOnly;
             set
             {
-                if (this.isReadOnly == value)
+                if (_isReadOnly == value)
                 {
                     return;
                 }
 
-                this.isReadOnly = value;
-                this.PropertyChanged?.Invoke(this, IsReadOnlyChangeArgs);
-                this.parent.NotifyPairChanged();
+                _isReadOnly = value;
+                PropertyChanged?.Invoke(this, s_isReadOnlyChangeArgs);
+                _parent.NotifyPairChanged();
             }
         }
 
-        public override bool Equals(object obj)
+        public ImplicitUsingsValueProvider.ImplicitUsing ToImplicitUsing()
         {
-            return obj is CheckableString otherCheckableString &&
-                   string.Equals(this.Name, otherCheckableString.Name, StringComparison.Ordinal) &&
-                   this.IsChecked == otherCheckableString.IsChecked
-                   && this.IsReadOnly == otherCheckableString.IsReadOnly;
-        }
-
-        public override int GetHashCode()
-        {
-            unchecked
-            {
-                var hashCode = this.parent.GetHashCode();
-                hashCode = (hashCode * 397) ^ this.name.GetHashCode();
-                hashCode = (hashCode * 397) ^ this.isChecked.GetHashCode();
-                return hashCode;
-            }
+            return new ImplicitUsingsValueProvider.ImplicitUsing(
+                Include,
+                IsStatic ? null : string.IsNullOrWhiteSpace(Alias) ? null : Alias,
+                IsStatic,
+                IsReadOnly);
         }
     }
 }
