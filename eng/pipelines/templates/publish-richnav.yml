@@ -36,9 +36,7 @@ jobs:
   # Provides functionality for VS Rich Code Navigation for our repo. It indexes the repository and stores navigation information.
   # This process discovers the symbol information and relates it to the source files in the repo.
   # See: https://visualstudio.microsoft.com/services/rich-code-navigation/
-  # This is fully-qualified as DevDiv seems to have a published beta version of this task, which causes a reference conflict.
-  # Error: Job PublishRichNav: Step  task reference is invalid. The task name RichCodeNavIndexer is ambiguous. Specify one of the following identifiers to resolve the ambiguity: MS-RichCodeNav.Indexer-beta.build-task.RichCodeNavIndexer, MS-RichCodeNav.Indexer.build-task.RichCodeNavIndexer
-  - task: MS-RichCodeNav.Indexer.build-task.RichCodeNavIndexer@0
+  - task: RichCodeNavIndexer@0
     displayName: Publish RichNav Information
     inputs:
       languages: csharp
