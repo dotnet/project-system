@@ -132,6 +132,9 @@ stages:
   # Variables used:
   # - SymbolsUncPath
   - group: DotNet-Project-System
+  # This indicates the environment which RichNav uploads the information to.
+  - name: RichNavEnvironment
+    value: production
   jobs:
   - template: templates/publish-assets-and-packages.yml
   - template: templates/publish-symbols.yml

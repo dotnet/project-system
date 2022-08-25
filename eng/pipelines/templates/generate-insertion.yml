@@ -44,6 +44,7 @@ jobs:
       DefaultConfigValues: Microsoft.VisualStudio.AppDesigner=$(PackageVersion),Microsoft.VisualStudio.Editors=$(PackageVersion),Microsoft.VisualStudio.ProjectSystem.Managed=$(PackageVersion),Microsoft.VisualStudio.ProjectSystem.Managed.VS=$(PackageVersion)
       AllowTopicBranchUpdate: true
       # TODO: This is where a fancy description can be provided. Need to create a mechanism to provide this.
+      # See: https://github.com/dotnet/project-system/issues/8423
       # InsertionDescription: 'description'
       # This is the name of our DevDiv alias.
       InsertionReviewers: '.NET Project System'
