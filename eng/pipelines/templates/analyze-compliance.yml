@@ -42,6 +42,7 @@ jobs:
     condition: false
 
   # Verify the loose DLLs are signed appropriately.
+  # Note: This task takes ~3 minutes only because it is the first Guardian task in this job. So, it installs the Guardian components so the other tasks don't have to.
   # YAML reference: https://eng.ms/docs/security-compliance-identity-and-management-scim/security/azure-security/cloudai-security-fundamentals-engineering/security-integration/guardian-wiki/sdl-azdo-extension/code-signing-validation-build-task#v1-preview
   - task: CodeSign@1
     displayName: Verify Signed DLLs

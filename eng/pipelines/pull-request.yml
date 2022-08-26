@@ -76,6 +76,5 @@ stages:
   dependsOn: Build
   variables:
     BuildConfiguration: Release
-    RichNavEnvironment: development
   jobs:
   - template: templates/publish-richnav.yml

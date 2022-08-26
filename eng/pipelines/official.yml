@@ -29,11 +29,11 @@ trigger:
 pr: none
 
 schedules:
-# Runs the pipelines at 4am and creates a VS insertion PR.
+# Runs the pipelines at 4am PST (11am UTC) and creates a VS insertion PR.
 # YAML reference: https://docs.microsoft.com/azure/devops/pipelines/yaml-schema/schedules-cron?view=azure-pipelines
 # CRON syntax: https://docs.microsoft.com/azure/devops/pipelines/process/scheduled-triggers?view=azure-devops&tabs=yaml#cron-syntax
-- cron: '0 4 * * *'
-  displayName: Daily 4am Build (with Insertion)
+- cron: '0 11 * * *'
+  displayName: Daily 4am PT Build with Insertion
   branches:
     include:
     - main
@@ -136,9 +136,6 @@ stages:
   # Variables used:
   # - SymbolsUncPath
   - group: DotNet-Project-System
-  # This indicates the environment which RichNav uploads the information to.
-  - name: RichNavEnvironment
-    value: production
   jobs:
   - template: templates/publish-assets-and-packages.yml
   - template: templates/publish-symbols.yml
