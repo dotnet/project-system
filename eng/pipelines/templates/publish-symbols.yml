@@ -1,0 +1,72 @@
+# Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
+
+jobs:
+- job: PublishSymbols
+  displayName: Publish Symbols
+  timeoutInMinutes: 10
+  pool:
+    # Publishing symbols requires a specific agent pool for access to our file share. Defining the pool information within the job allows us to use that agent pool only for symbol publishing.
+    # Agent Queue: https://devdiv.visualstudio.com/DevDiv/_settings/agentqueues?queueId=3316&view=jobs
+    name: VSEng-ReleasePool-1ES
+    demands: Cmd
+  steps:
+
+  ###################################################################################################################################################################
+  # DOWNLOAD ARTIFACTS
+  ###################################################################################################################################################################
+
+  # Use a disabled, empty script to display the section header in the pipeline UI.
+  - script:
+    displayName: === Download Artifacts ===
+    condition: false
+
+  # Download the build artifacts from the Build job.
+  - download: current
+    displayName: Download Build Artifacts
+    artifact: $(Build.BuildNumber)
+    # Only download the necessary files for symbol publishing.
+    patterns: |
+      bin/Dlls/**/*.pdb
+      bin/Dlls/**/*.dll
+      bin/SymStore/**/*.pdb
+      bin/SymStore/**/*.dll
+
+  ###################################################################################################################################################################
+  # PUBLISH SYMBOLS
+  ###################################################################################################################################################################
+
+  # Use a disabled, empty script to display the section header in the pipeline UI.
+  - script:
+    displayName: === Publish Symbols ===
+    condition: false
+
+  # Symbols published to the Azure Artifacts symbol server are accessible to anyone in the DevDiv organization in Azure DevOps.
+  # https://docs.microsoft.com/azure/devops/pipelines/tasks/build/index-sources-publish-symbols
+  - task: PublishSymbols@2
+    displayName: Publish to Azure Artifacts
+    inputs:
+      SymbolsFolder: $(Pipeline.Workspace)/$(Build.BuildNumber)
+      # SearchPattern: |
+      #   **/*.pdb
+      #   **/*.dll
+      # If enabled, this produces a warning about indexing but will still publish the symbols.
+      # See: https://github.com/microsoft/azure-pipelines-tasks/issues/15605
+      IndexSources: false
+      SymbolServerType: TeamServices
+      SymbolsProduct: '.NET Project System'
+      SymbolsVersion: $(Build.BuildNumber)
+      SymbolsArtifactName: Symbols
+    # This is a non-critical task, so don't fail the build if it fails.
+    continueOnError: true
+
+  # The symbols archived here are checked as part of the VS Insertion PR to ensure they are available.
+  # https://devdiv.visualstudio.com/DevDiv/_wiki/wikis/DevDiv.wiki/672/Archive-Symbols-with-Symweb
+  - task: MicroBuildArchiveSymbols@1
+    displayName: Publish to Symweb
+    inputs:
+      SymbolsFeatureName: MS.VS.ProjectSystem.Managed
+      SymbolsSymwebProject: VS
+      # This value is provided from the DotNet-Project-System variable group, defined in the stage variables.
+      SymbolsUncPath: $(SymbolsUncPath)
+      SymbolsEmailContacts: dotnetdevexproj
+      SymbolsAgentPath: $(Pipeline.Workspace)/$(Build.BuildNumber)

@@ -1,0 +1,59 @@
+# Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
+
+jobs:
+- job: GenerateInsertion
+  displayName: Generate Insertion
+  timeoutInMinutes: 30
+  steps:
+
+  ###################################################################################################################################################################
+  # GENERATE VS INSERTION
+  ###################################################################################################################################################################
+
+  # Use a disabled, empty script to display the section header in the pipeline UI.
+  - script:
+    displayName: === Generate VS Insertion ===
+    condition: false
+
+  # Sets the Products drop for permanent retention. This is the drop that contains the VS insertion data (.vsman files).
+  # Overview: https://devdiv.visualstudio.com/DevDiv/_wiki/wikis/DevDiv.wiki/635/Overview
+  - task: MicroBuildRetainVstsDrops@1
+    displayName: Retain Products Drop
+    inputs:
+      # If the drop name is changed in the Publish job, this name also needs changed.
+      # TODO: Consider making this a pipeline variable.
+      DropNames: Products/$(System.TeamProject)/$(Build.Repository.Name)/$(Build.SourceBranchName)/$(Build.BuildNumber)
+      DropServiceUri: https://devdiv.artifacts.visualstudio.com/DefaultCollection
+      # When this isn't provided, the tool sets the --AadAuth flag instead of using --PatAuthEnvVar. The AadAuth doesn't seem to work for this situation.
+      AccessToken: $(System.AccessToken)
+
+  # Creates a VS insertion PR using the Products drop containing the .vsman files.
+  # YAML reference: https://devdiv.visualstudio.com/DevDiv/_wiki/wikis/DevDiv.wiki/635/Overview?anchor=**build-pipeline**
+  - task: MicroBuildInsertVsPayload@4
+    displayName: Create VS Insertion PR
+    inputs:
+      TargetBranch: $(InsertionVSBranch)
+      # Cannot use '.NET' Project System as the branch name is created via this value. It produces an error:
+      # fatal: 'team/.NET-Project-System/DotNet-Project-System-20220818.3-1' is not a valid branch name
+      TeamName: DotNet Project System
+      TeamEmail: dotnetdevexproj@microsoft.com
+      InsertionPayloadName: 'DotNet-Project-System ($(Build.SourceBranchName):$(Build.BuildNumber))'
+      ComponentJsonValues: Microsoft.VisualStudio.Editors.vsman=https://vsdrop.corp.microsoft.com/file/v1/Products/$(System.TeamProject)/$(Build.Repository.Name)/$(Build.SourceBranchName)/$(Build.BuildNumber);Microsoft.VisualStudio.Editors.vsman,Microsoft.VisualStudio.ProjectSystem.Managed.vsman=https://vsdrop.corp.microsoft.com/file/v1/Products/$(System.TeamProject)/$(Build.Repository.Name)/$(Build.SourceBranchName)/$(Build.BuildNumber);Microsoft.VisualStudio.ProjectSystem.Managed.vsman
+      # Setting DefaultConfigValues also sets the PackagePropsValues.
+      # See the bottom of the table here: https://devdiv.visualstudio.com/DevDiv/_wiki/wikis/DevDiv.wiki/635/Overview?anchor=**build-pipeline**
+      DefaultConfigValues: Microsoft.VisualStudio.AppDesigner=$(PackageVersion),Microsoft.VisualStudio.Editors=$(PackageVersion),Microsoft.VisualStudio.ProjectSystem.Managed=$(PackageVersion),Microsoft.VisualStudio.ProjectSystem.Managed.VS=$(PackageVersion)
+      AllowTopicBranchUpdate: true
+      # TODO: This is where a fancy description can be provided. Need to create a mechanism to provide this.
+      # See: https://github.com/dotnet/project-system/issues/8423
+      # InsertionDescription: 'description'
+      # This is the name of our DevDiv alias.
+      InsertionReviewers: '.NET Project System'
+      InsertionBuildPolicy: Request Perf DDRITs
+      # This action only works on AzDO repos. This warning occurs if enabled:
+      # ##[warning]WARNING: Cannot extract commit details from vstfs:///Build/Build/6574299: ArgumentException : 'https://github.com/dotnet/project-system' does not look like an Azure DevOps url
+      # Documentation: https://devdiv.visualstudio.com/DevDiv/_wiki/wikis/DevDiv.wiki/631/Copy-Commit-Details-to-PR
+      AddCommitsToPR: false
+      # This action only works on AzDO repos. This warning occurs if enabled:
+      # ##[warning]WARNING: Cannot copy work items from vstfs:///Build/Build/6574299: ArgumentException : 'https://github.com/dotnet/project-system' does not look like an Azure DevOps url
+      # Documentation: https://devdiv.visualstudio.com/DevDiv/_wiki/wikis/DevDiv.wiki/634/Link-Work-Items-to-PR
+      LinkWorkItemsToPR: false

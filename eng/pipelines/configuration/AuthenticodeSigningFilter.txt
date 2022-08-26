@@ -1,0 +1,1 @@
+*\*.xml,xml files aren't signed

@@ -2,315 +2,231 @@
 
 # Name: DotNet-Project-System
 # URL: https://dev.azure.com/devdiv/DevDiv/_build?definitionId=9675
-# Produces the signed product build for insertion into the Visual Studio repository
-# NOTE: Triggers for this build are defined in the Web UI instead of here in the YAML file so they apply to all branches.
+
+# Produces the signed product build for insertion into the Visual Studio.
 
 ###################################################################################################################################################################
 # PIPELINE METADATA
 ###################################################################################################################################################################
 
+# Activates the pipeline after a PR is merged.
+# See: https://docs.microsoft.com/azure/devops/pipelines/yaml-schema/trigger?view=azure-pipelines
+trigger:
+  branches:
+    include:
+    - main
+    # Our VS alignment branches start with dev (for example: dev17.2.x)
+    - dev*
+    # Any other branches that contain major feature development, or require access to the pipeline, prior to merge.
+    - feature/*
+  paths:
+    exclude:
+    - docs/*
+    - README.md
+
+# Disable PR builds for this pipeline.
+# See: https://docs.microsoft.com/azure/devops/pipelines/yaml-schema/pr?view=azure-pipelines#examples
+pr: none
+
+schedules:
+# Runs the pipelines at 4am and creates a VS insertion PR.
+# YAML reference: https://docs.microsoft.com/azure/devops/pipelines/yaml-schema/schedules-cron?view=azure-pipelines
+# CRON syntax: https://docs.microsoft.com/azure/devops/pipelines/process/scheduled-triggers?view=azure-devops&tabs=yaml#cron-syntax
+- cron: '0 4 * * *'
+  displayName: Daily 4am Build (with Insertion)
+  branches:
+    include:
+    - main
+
 resources:
-- repo: self
-  clean: true
-queue:
+  # These DartLab pipelines and repositories are only used by the Optimization stage.
+  pipelines:
+  # This name is the default value for the 'dartLabBuildResourceName' parameter in single-runsettings.yml.
+  - pipeline: DartLab
+    project: DevDiv
+    source: DartLab
+    branch: main
+  # This name is the default value for the 'dartLabOptProfBuildResourceName' parameter in single-runsettings.yml.
+  - pipeline: DartLab.OptProf
+    source: DartLab.OptProf
+    branch: main
+  repositories:
+  # This name is the default value for the 'dartLabTemplatesResourceName 'parameter in single-runsettings.yml.
+  - repository: DartLabTemplates
+    name: DartLab.Templates
+    type: git
+    ref: refs/heads/main
+  # This name is used to access the single-runsettings.yml template.
+  - repository: DartLabOptProfTemplates
+    name: DartLab.OptProf
+    type: git
+    ref: refs/heads/main
+
+pool:
+  # Agent Queue: https://devdiv.visualstudio.com/DevDiv/_settings/agentqueues?queueId=3123&view=jobs
   name: VSEngSS-MicroBuild2022-1ES
+  # Demands Docs: https://docs.microsoft.com/azure/devops/pipelines/process/demands?view=azure-devops&tabs=yaml#manually-entered-demands
   demands: Cmd
-  timeoutInMinutes: 90
+
+# Note: Only add pipeline variables if they apply to most of the stages/jobs.
 variables:
+  # The configuration for the build is used throughout the various pipelines as the file paths for output contain the build configuration as a folder name.
   BuildConfiguration: Release
-  TeamName: DotNet-Project-System
-  BuildPlatform: any cpu
+  # https://docs.microsoft.com/dotnet/core/tools/dotnet-environment-variables#dotnet_skip_first_time_experience
   DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true
+  # https://docs.microsoft.com/dotnet/core/tools/dotnet-environment-variables#dotnet_nologo
+  DOTNET_NOLOGO: true
+  # https://devdiv.visualstudio.com/DevDiv/_wiki/wikis/DevDiv.wiki/26284/Enabling-SBOM-For-Your-Component-Insertion-into-VS?anchor=1.-add-the-%27manifest-generator-task%27-to-your-pipeline
   Packaging.EnableSBOMSigning: true
+  # Opt out of automatically injecting Codesign Validation into the pipeline. We run Codesign Validation as part of the Compliance pipeline.
+  # See: https://aka.ms/gdn-injection
+  runCodesignValidationInjection: false
+  # Suspend enforcement of NuGet Single Feed Policy. See:
+  # - https://aka.ms/nugetmultifeed
+  # - https://docs.opensource.microsoft.com/tools/nuget_security_analysis/nuget_security_analysis/
+  # - https://docs.opensource.microsoft.com/tools/cg/how-to/nuget-multifeed-configuration/
+  # - https://onebranch.visualstudio.com/OneBranch/_wiki/wikis/OneBranch.wiki/5205/TSG-Build-Broken-Due-to-Using-Multiple-Feeds?anchor=setting-nugetsecurityanalysiswarninglevel-in-cdp
+  NugetSecurityAnalysisWarningLevel: none
+
 parameters:
-- name: SignType
-  displayName: Sign Type
+- name: CreateInsertion
+  displayName: Create VS Insertion PR
+  type: boolean
+  default: false
+- name: InsertionVSBranch
+  displayName: VS Insertion Branch Name
   type: string
-  default: real
-  values:
-  - real
-  - test
+  default: main
+- name: CreateOptimizationData
+  displayName: Create Optimization Data
+  type: boolean
+  default: false
+# This should only be enabled when generating optimization data for the first time.
+# See details in the Build job for the MicroBuildOptProfPlugin task.
 - name: SkipOptimize
-  displayName: Skip OptProf Optimization
+  displayName: Do Not Optimize Assemblies
+  type: boolean
+  default: false
+# This should only be enabled if we need to create AzDO work items based on Compliance failures.
+- name: UploadTSAResults
+  displayName: Create Compliance Work Items
   type: boolean
   default: false
 
 ###################################################################################################################################################################
-# SBOM GENERATION
-# This occurs above plugin installation so that the Src build does not perform signing.
+# STAGES
 ###################################################################################################################################################################
 
-steps:
-- script: $(Build.SourcesDirectory)\build.cmd /v:normal /p:Configuration=$(BuildConfiguration) /p:CIBuild=true /p:Test=false /p:Pack=false /p:TestProjects=false /p:SetupProjects=false
-  displayName: Build Src for SBOM
+stages:
+- stage: Build
+  displayName: Build
+  variables:
+    SkipOptimize: ${{ parameters.SkipOptimize }}
+    # Only used for tracking purposes in MicroBuild tasks.
+    # See: https://devdiv.visualstudio.com/DevDiv/_wiki/wikis/DevDiv.wiki/650/MicroBuild-Signing?anchor=high-level-steps-to-enable-signing
+    TeamName: DotNet-Project-System
+  jobs:
+  - template: templates/build-official-release.yml
 
-- task: PowerShell@2
-  displayName: Rename Build.binlog to SrcBuild.binlog
-  inputs:
-    targetType: 'inline'
-    script: Rename-Item -Path "$(Build.SourcesDirectory)\artifacts\$(BuildConfiguration)\log\Build.binlog" -NewName 'SrcBuild.binlog'
+- stage: Publish
+  displayName: Publish
+  dependsOn: Build
+  variables:
+  # https://devdiv.visualstudio.com/DevDiv/_library?itemType=VariableGroups&view=VariableGroupView&variableGroupId=434&path=DotNet-Project-System
+  # Variables used:
+  # - SymbolsUncPath
+  - group: DotNet-Project-System
+  # This indicates the environment which RichNav uploads the information to.
+  - name: RichNavEnvironment
+    value: production
+  jobs:
+  - template: templates/publish-assets-and-packages.yml
+  - template: templates/publish-symbols.yml
+  - template: templates/publish-richnav.yml
 
-# This task both generates the SBOM files and marks the pipeline as compliant.
-- task: ManifestGeneratorTask@0
-  displayName: Generate SBOM
-  inputs:
-    BuildDropPath: '$(Build.SourcesDirectory)\artifacts\$(BuildConfiguration)\bin\Dlls'
-    ManifestDirPath: '$(Build.SourcesDirectory)\artifacts\$(BuildConfiguration)\bin'
+- stage: Compliance
+  displayName: Compliance
+  dependsOn: Build
+  variables:
+  - name: UploadTSAResults
+    value: ${{ parameters.UploadTSAResults }}
+  # Gets the VisualStudioMinimumVersion variable produced by the Build pipeline.
+  # This value is used in the analyze-api.yml template.
+  - name: VisualStudioMinimumVersion
+    value: $[ stageDependencies.Build.BuildOfficialRelease.outputs['SetVisualStudioMinimumVersionVariable.VisualStudioMinimumVersion'] ]
+  # https://devdiv.visualstudio.com/DevDiv/_library?itemType=VariableGroups&view=VariableGroupView&variableGroupId=434&path=DotNet-Project-System
+  # Variables used:
+  # - ApiScanConnectionString
+  - group: DotNet-Project-System
+  jobs:
+  - template: templates/analyze-compliance.yml
+  - template: templates/analyze-api.yml
+  # TODO: Disabled since the build for CodeQL does not seem to recognize global namespaces. Thus, it fails to build.
+  # Issue: https://github.com/dotnet/project-system/issues/8421
+  - ${{ if false }}:
+    - template: templates/analyze-vulnerabilities.yml
 
-###################################################################################################################################################################
-# PLUGIN INSTALLATION
-###################################################################################################################################################################
+- stage: Localization
+  displayName: Localization
+  # [] clears the dependency on the previous stages allowing parallelism.
+  dependsOn: []
+  variables:
+  # Variable group containing the PATs required for running OneLocBuild.
+  # See: https://devdiv.visualstudio.com/DevDiv/_library?itemType=VariableGroups&view=VariableGroupView&variableGroupId=343&path=OneLocBuildVariables
+  # Variables used:
+  # - BotAccount-dotnet-bot-repo-PAT
+  # - dn-bot-ceapex-package-r
+  - group: OneLocBuildVariables
+  jobs:
+  - template: templates/generate-localization.yml
 
-- task: MicroBuildSigningPlugin@4
-  displayName: Install Signing Plugin
-  inputs:
-    signType: ${{ parameters.SignType }}
-    esrpSigning: true
+# Run this stage only when specifically requested (via CreateOptimizationData) or when the pipeline was ran on a schedule.
+- ${{ if or(eq(parameters.CreateOptimizationData, true), eq(variables['Build.Reason'], 'Schedule')) }}:
+  # This template is provided by the DartLabOptProfTemplates repo, declared in the repositories section (top of this file).
+  # It is a stage template, defining our entire Optimization stage.
+  - template: \templates\stages\visual-studio\single-runsettings.yml@DartLabOptProfTemplates
+    parameters:
+      name: Optimization
+      displayName: Optimization
+      dependsOn:
+      - Publish
+      - Compliance
+      variables:
+      - name: visualStudioBootstrapperURI
+        # If you set this value to the visualStudioBootstrapperURI parameter directly, it does not resolve correctly. Instead, we set it to a variable and pass that variable into the parameter.
+        # For parameter, variable, and expression syntax/usage, see:
+        # - https://docs.microsoft.com/azure/devops/pipelines/process/variables?view=azure-devops&tabs=yaml%2Cbatch#understand-variable-syntax
+        # - https://docs.microsoft.com/azure/devops/pipelines/process/expressions?view=azure-devops
+        # - https://docs.microsoft.com/azure/devops/pipelines/process/runtime-parameters?view=azure-devops&tabs=script#how-can-i-use-variables-inside-of-templates
+        # For variables across stages, see:
+        # - https://docs.microsoft.com/azure/devops/pipelines/process/variables?view=azure-devops&tabs=yaml%2Cbatch#use-outputs-in-a-different-stage
+        # - https://arunksingh16.medium.com/azure-devops-share-variable-across-stages-9bca85abfe8a
+        # - https://stackoverflow.com/a/57488169/294804
+        # - https://github.com/microsoft/azure-pipelines-tasks/issues/4743
+        value: $[ stageDependencies.Publish.PublishAssetsAndPackages.outputs['UpdateRunSettings.visualStudioBootstrapperURI'] ]
+      runSettingsURI: https://vsdrop.corp.microsoft.com/file/v1/RunSettings/$(System.TeamProject)/dotnet/project-system/$(Build.SourceBranchName)/$(Build.BuildId);OptProf.runsettings
+      # This variable is set during the 'Update RunSettings' (UpdateRunSettings.ps1) step in the publish-assets-and-packages.yml.
+      # This variable is expanded when it is used: https://docs.microsoft.com/azure/devops/pipelines/process/variables?view=azure-devops&tabs=yaml%2Cbatch#macro-syntax-variables
+      visualStudioBootstrapperURI: $(visualStudioBootstrapperURI)
+      # The output of the optimization process. The first half of the path is provided to the DropNamePrefix input in the 'Install OptProf Plugin' (MicroBuildOptProfPlugin) step in build-official-release.yml.
+      optOptimizationInputsDropName: OptimizationInputs/$(System.TeamProject)/$(Build.Repository.Name)/$(Build.SourceVersion)/$(Build.BuildId)/$(System.StageAttempt)
+      testLabPoolName: VS-Platform
 
-- task: MicroBuildSwixPlugin@4
-  displayName: Install Swix Plugin
-
-# This requires the OptimizationInputs via the 'Publish OptimizationInputs drop' step in the release pipeline.
-# To generate ProfilingInputs for the first time, set this input: ShouldSkipOptimize: true
-# See documentation here: https://devdiv.visualstudio.com/DevDiv/_wiki/wikis/DevDiv.wiki/2602/Build-With-Expired-(or-Without-Prior)-Optimization-Profiling-Data
-# This plugin will restore MicroBuild.Plugins.OptProf which is required to create ProfilingInputs data.
-# The projects include OptProf.targets which uses MicroBuild.Plugins.OptProf to run the target GenerateProfilingInputs on each project.
-- task: MicroBuildOptProfPlugin@6
-  displayName: Install OptProf Plugin
-  inputs:
-    ProfilingInputsDropName: 'ProfilingInputs/$(System.TeamProject)/$(Build.Repository.Name)/$(Build.SourceBranchName)/$(Build.BuildId)'
-    OptimizationInputsLookupMethod: 'DropPrefix'
-    DropNamePrefix: 'OptimizationInputs/$(System.TeamProject)/$(Build.Repository.Name)'
-    AccessToken: '$(System.AccessToken)'
-    feedSource: 'https://devdiv.pkgs.visualstudio.com/DefaultCollection/_packaging/MicroBuildToolset/nuget/v3/index.json'
-    ShouldSkipOptimize: ${{ parameters.SkipOptimize }}
-    NumberCommitsToSearch: '100'
-
-###################################################################################################################################################################
-# BUILD REPOSITORY
-###################################################################################################################################################################
-
-- script: $(Build.SourcesDirectory)\build.cmd /v:normal /p:Configuration=$(BuildConfiguration) /p:CIBuild=true
-  displayName: Build All Projects
-
-- task: MicroBuildCodesignVerify@3
-  displayName: Verify Signed Files
-  inputs:
-    TargetFolders: |
-      $(Build.SourcesDirectory)/artifacts/$(BuildConfiguration)/packages
-      $(Build.SourcesDirectory)/artifacts/$(BuildConfiguration)/VSSetup/Insertion
-    # Filters out certain files (usually by extension) in the provided file.
-    ApprovalListPathForCerts: $(Build.SourcesDirectory)\eng\pipelines\no_authenticode.txt
-
-- task: Ref12Analyze@0
-  displayName: Create Codex Index
-  inputs:
-    workflowArguments: |
-      /sourcesDirectory:$(Build.SourcesDirectory)
-      /codexRepoUrl:$(Build.Repository.Uri)
-      /repoName:$(Build.Repository.Name)
-      /additionalCodexArguments:-bld
-      /additionalCodexArguments:$(Build.SourcesDirectory)\artifacts\$(BuildConfiguration)\log
-  condition: succeeded()
-  continueOnError: true
-
-- task: PublishTestResults@2
-  displayName: Publish Test Results
-  inputs:
-    testRunner: XUnit
-    testResultsFiles: 'artifacts/$(BuildConfiguration)/TestResults/*.xml'
-    testRunTitle: 'Unit Test Results'
-  condition: succeededOrFailed()
-
-###################################################################################################################################################################
-# PUBLISH SYMBOLS
-###################################################################################################################################################################
-
-# Symbols is the one thing we cannot declare in the ps1 artifact scripts due to the extra steps needed and the specific order it has to be performed in.
-# Copy -> Publish Symbols -> Publish Artifact -> Publish to SymWeb
-- task: CopyFiles@2
-  displayName: Copy Symbols
-  inputs:
-    SourceFolder: '$(Build.SourcesDirectory)\artifacts\$(BuildConfiguration)'
-    Contents: |
-      **/Microsoft.VisualStudio.ProjectSystem.Managed?(*.pdb|*.dll|*.xml)
-      **/Microsoft.VisualStudio.AppDesigner?(*.pdb|*.dll|*.xml)
-      **/Microsoft.VisualStudio.Editors?(*.pdb|*.dll|*.xml)
-    TargetFolder: $(Build.ArtifactStagingDirectory)/Symbols
-
-# https://docs.microsoft.com/azure/devops/pipelines/tasks/build/index-sources-publish-symbols
-- task: PublishSymbols@2
-  displayName: Publish Symbols to Azure Artifacts
-  inputs:
-    SymbolsFolder: '$(Build.ArtifactStagingDirectory)/Symbols'
-    SearchPattern: |
-      **/*.pdb
-      **/*.dll
-      **/*.exe
-    # NOTE: This produces a warning about indexing (if enabled) but will still publish the symbols. See: https://github.com/microsoft/azure-pipelines-tasks/issues/15605
-    IndexSources: false
-    PublishSymbols: true
-    SymbolServerType: TeamServices
-    SymbolsProduct: '.NET Project System'
-    SymbolsVersion: '$(Build.BuildNumber)'
-    SymbolsArtifactName: Symbols
-  continueOnError: true
-
-# TODO: Most of these files are already published via 'Publish Artifacts' section. Investigate publish consolidation.
-- task: PublishBuildArtifacts@1
-  displayName: 'Publish Artifact: Symbols'
-  inputs:
-    PathToPublish: '$(Build.ArtifactStagingDirectory)/Symbols'
-    # The artifact name specifically has to be 'symbols' with that casing.
-    # This artifact is downloaded by the release pipeline's 'Publish Symbols' task.
-    # The lowercase 'symbols' is specified in the 'Agent job' settings for that task.
-    # If this artifact name is changed, all release pipelines that have this task need to have these settings changed.
-    ArtifactName: symbols
-    publishLocation: Container
-
-###################################################################################################################################################################
-# PUBLISH OPTPROF METADATA
-###################################################################################################################################################################
-# The published OptProf metadata is consumed by the release pipeline that profiles the assemblies to create the optimization data.
-# Release Pipeline URL: https://devdiv.visualstudio.com/DevDiv/_release?definitionId=3197
-
-# This is required to deploy the tests to devdiv.artifacts.visualstudio.com for the 'Deploy tests' step in the release pipeline.
-- task: artifactDropTask@0
-  displayName: 'Publish to Artifact Services: ProfilingInputs'
-  inputs:
-    dropServiceURI: 'https://devdiv.artifacts.visualstudio.com'
-    buildNumber: 'ProfilingInputs/$(System.TeamProject)/$(Build.Repository.Name)/$(Build.SourceBranchName)/$(Build.BuildId)'
-    sourcePath: '$(Build.ArtifactStagingDirectory)\OptProf\ProfilingInputs'
-    toLowerCase: false
-    usePat: true
-    AccessToken: '$(System.AccessToken)'
-  condition: succeeded()
-
-# MicroBuildBuildVSBootstrapper requires MicroBuildSigningPlugin for signjson.exe to run.
-- task: MicroBuildBuildVSBootstrapper@2
-  displayName: Build VS Bootstrapper
-  inputs:
-    bootstrapperCoreVersion: 'latest'
-    vsMajorVersion: 17
-    channelName: 'int.main'
-    manifests: '$(Build.SourcesDirectory)\artifacts\$(BuildConfiguration)\VSSetup\Insertion\Microsoft.VisualStudio.ProjectSystem.Managed.vsman'
-    outputFolder: $(Build.SourcesDirectory)\artifacts\$(BuildConfiguration)\VSSetup\Insertion
-  condition: succeeded()
-
-- task: PowerShell@2
-  displayName: Update RunSettings via Bootstrapper data
-  inputs:
-    filePath: eng\scripts\UpdateRunSettings.ps1
-    arguments: '-profilingInputsPath "ProfilingInputs/$(System.TeamProject)/$(Build.Repository.Name)/$(Build.SourceBranchName)/$(Build.BuildId)" -bootstrapperInfoPath "$(Build.StagingDirectory)\MicroBuild\Output\BootstrapperInfo.json"'
-    failOnStderr: true
-
-- task: artifactDropTask@0
-  displayName: 'Publish to Artifact Services: RunSettings'
-  inputs:
-    dropServiceURI: 'https://devdiv.artifacts.visualstudio.com'
-    buildNumber: 'RunSettings/$(System.TeamProject)/$(Build.Repository.Name)/$(Build.SourceBranchName)/$(Build.BuildId)'
-    sourcePath: '$(Build.SourcesDirectory)\eng\scripts\runsettings'
-    toLowerCase: false
-    usePat: true
-    AccessToken: '$(System.AccessToken)'
-    dropMetadataContainerName: RunSettings
-  condition: succeeded()
-
-- task: PublishBuildArtifacts@1
-  displayName: 'Publish Artifact: MicroBuildOutputs'
-  inputs:
-    PathToPublish: $(Build.StagingDirectory)\MicroBuild\Output
-    ArtifactName: MicroBuildOutputs
-    ArtifactType: Container
-  condition: succeededOrFailed()
-
-###################################################################################################################################################################
-# PUBLISH ARTIFACTS
-###################################################################################################################################################################
-
-# This creates the drop location for the .vsman files for VS insertion.
-- task: MicroBuildUploadVstsDropFolder@1
-  displayName: Publish VS Setup
-  inputs:
-    DropFolder: 'artifacts\$(BuildConfiguration)\VSSetup\Insertion'
-    # TODO: Change this to use $(GitBuildVersion) when working on: https://github.com/dotnet/project-system/issues/7911
-    # https://github.com/dotnet/Nerdbank.GitVersioning/blob/main/doc/cloudbuild.md#automatically-match-cloud-build-numbers-to-to-your-git-version
-    # 'Products/[DevDiv]/[dotnet/project-system]/[main]/[x.x]'
-    DropName: 'Products/$(System.TeamProject)/$(Build.Repository.Name)/$(Build.SourceBranchName)/$(Build.BuildNumber)'
-    AccessToken: $(System.AccessToken)
-
-- task: CopyFiles@2
-  displayName: Copy Artifacts
-  inputs:
-    SourceFolder: '$(Build.SourcesDirectory)'
-    # NOTE: The copied contents are directly used by the RoslynInsertionTool to create the insertion PR.
-    Contents: |
-      artifacts\$(BuildConfiguration)\bin\**
-      artifacts\$(BuildConfiguration)\DevDivInsertionFiles\**
-      artifacts\$(BuildConfiguration)\log\**
-      artifacts\$(BuildConfiguration)\packages\**
-      artifacts\$(BuildConfiguration)\VSSetup\**
-      artifacts\$(BuildConfiguration)\TestResults\**
-    TargetFolder: $(Build.ArtifactStagingDirectory)/ArtifactsDrop
-  condition: succeededOrFailed()
-
-- task: PublishBuildArtifacts@1
-  displayName: Publish Artifacts
-  inputs:
-    PathToPublish: '$(Build.ArtifactStagingDirectory)/ArtifactsDrop/artifacts/$(BuildConfiguration)'
-    # NOTE: Artifact name is required to be Build.BuildNumber.
-    # The build-number named artifact is used for the RoslynInsertionTool to find the build for the insertion PR.
-    # Code here: https://github.com/dotnet/roslyn-tools/blob/1f64f56b4ea9a0c119bbe840c39b935acc60e4b8/src/RoslynInsertionTool/RoslynInsertionTool/RoslynInsertionTool.VisualStudioTeamServices.cs#L174
-    ArtifactName: '$(Build.BuildNumber)'
-    publishLocation: Container
-  condition: succeededOrFailed()
-
-###################################################################################################################################################################
-# PUBLISH PACKAGE
-###################################################################################################################################################################
-
-- task: NuGetToolInstaller@0
-  displayName: Install NuGet
-  inputs:
-    versionSpec: '4.9.2'
-
-# Authenticate with a service connection to be able to publish packages to external (different DevOps organization) NuGet feeds.
-- task: NuGetAuthenticate@0
-  displayName: Authenticate NuGet
-  inputs:
-    nuGetServiceConnections: azure-public/vs-impl
-
-# Publishes the packages to https://dev.azure.com/azure-public/vside/_packaging?_a=feed&feed=vs-impl
-# For documentation purposes the old feeds are stored in https://dev.azure.com/dnceng/public/_packaging?_a=feed&feed=myget-legacy%40Local
-- task: NuGetCommand@2
-  displayName: Publish Packages to azure-public/vs-impl
-  inputs:
-    command: push
-    packagesToPush: 'artifacts\$(BuildConfiguration)\packages\*.nupkg'
-    nuGetFeedType: 'external'
-    publishFeedCredentials: azure-public/vs-impl
-    # This allows the task to succeed if duplicate packages exist. Packages cannot be overridden in a feed.
-    # See: https://docs.microsoft.com/en-us/azure/devops/pipelines/tasks/package/nuget?view=azure-devops#arguments
-    allowPackageConflicts: true
-
-# Publishes the packages to https://dev.azure.com/DevDiv/DevDiv/_artifacts/feed/VS
-# The RoslynInsertionTool will republish these contents from the VS feed to https://dev.azure.com/DevDiv/DevDiv/_artifacts/feed/VS-CoreXtFeeds
-- task: NuGetCommand@2
-  displayName: Publish Packages to DevDiv/VS
-  inputs:
-    command: push
-    packagesToPush: 'artifacts\$(BuildConfiguration)\packages\*.nupkg'
-    # Feed Endpoint: https://devdiv.pkgs.visualstudio.com/_packaging/VS/nuget/v3/index.json
-    # Requires VssFeedId despite documentation here: https://docs.microsoft.com/en-us/azure/devops/pipelines/artifacts/nuget?view=azure-devops&tabs=yaml#publish-a-package
-    publishVstsFeed: '97a41293-2972-4f48-8c0e-05493ae82010'
-    # This allows the task to succeed if duplicate packages exist. Packages cannot be overridden in a feed.
-    # See: https://docs.microsoft.com/en-us/azure/devops/pipelines/tasks/package/nuget?view=azure-devops#arguments
-    allowPackageConflicts: true
-
-###################################################################################################################################################################
-# CLEANUP
-###################################################################################################################################################################
-
-- task: MicroBuildCleanup@1
-  displayName: Perform Cleanup
-  condition: always()
+# Run this stage only when specifically requested (via CreateInsertion) or when the pipeline was ran on a schedule.
+# Conditional insertion syntax:
+# - https://docs.microsoft.com/azure/devops/pipelines/process/expressions?view=azure-devops#conditional-insertion
+# - https://www.andrewhoefling.com/Blog/Post/conditional-insertion-in-azure-pipelines-yaml
+- ${{ if or(eq(parameters.CreateInsertion, true), eq(variables['Build.Reason'], 'Schedule')) }}:
+  - stage: Insertion
+    displayName: Insertion
+    dependsOn:
+    # The Build dependsOn is required for putting that stage's variables into the stageDependencies property bag (for PackageVersion).
+    - Build
+    - Publish
+    - Compliance
+    variables:
+      # Gets the PackageVersion variable produced by the Build pipeline.
+      PackageVersion: $[ stageDependencies.Build.BuildOfficialRelease.outputs['SetPackageVersion.PackageVersion'] ]
+      InsertionVSBranch: ${{ parameters.InsertionVSBranch }}
+    jobs:
+    - template: templates/generate-insertion.yml

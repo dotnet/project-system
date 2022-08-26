@@ -1,0 +1,58 @@
+# Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
+
+jobs:
+- job: GenerateLocalization
+  displayName: Generate Localization
+  timeoutInMinutes: 10
+  steps:
+
+  ###################################################################################################################################################################
+  # GENERATE LOCALIZATION
+  ###################################################################################################################################################################
+
+  # Use a disabled, empty script to display the section header in the pipeline UI.
+  - script:
+    displayName: === Generate Localization ===
+    condition: false
+
+  # Creates the LocProject.json and perform some necessary file copying and renaming.
+  - task: DotNetCoreCLI@2
+    displayName: Run Setup
+    inputs:
+      command: run
+      projects: eng/tools/OneLocBuildSetup/OneLocBuildSetup.csproj
+      # The -- allows us to pass parameters to the application that is being ran.
+      # See: https://docs.microsoft.com/dotnet/core/tools/dotnet-run#options
+      arguments: '-- -r "$(System.DefaultWorkingDirectory)" -o "$(Build.StagingDirectory)"'
+
+  # Runs the localization process on the resource files provided within LocProject.json.
+  # Details for the process can be found here: https://ceapex.visualstudio.com/CEINTL/_wiki/wikis/CEINTL.wiki/107/Localization-with-OneLocBuild-Task
+  - task: OneLocBuild@2
+    displayName: Run OneLocBuild
+    inputs:
+      locProj: $(Build.StagingDirectory)/loc/LocProject.json
+      repoType: gitHub
+      # Uses the dotnet-bot account for creating PRs: https://github.com/dotnet-bot
+      # Variable value comes from OneLocBuildVariables: https://devdiv.visualstudio.com/DevDiv/_library?itemType=VariableGroups&view=VariableGroupView&variableGroupId=343&path=OneLocBuildVariables
+      gitHubPatVariable: $(BotAccount-dotnet-bot-repo-PAT)
+      packageSourceAuth: patAuth
+      # Provides read access to the ceapex AzDO instance: https://dev.azure.com/ceapex/
+      # Variable value comes from OneLocBuildVariables: https://devdiv.visualstudio.com/DevDiv/_library?itemType=VariableGroups&view=VariableGroupView&variableGroupId=343&path=OneLocBuildVariables
+      patVariable: $(dn-bot-ceapex-package-r)
+      isCreatePrSelected: true
+      isAutoCompletePrSelected: false
+
+  ###################################################################################################################################################################
+  # PUBLISH ARTIFACTS
+  ###################################################################################################################################################################
+
+  # Use a disabled, empty script to display the section header in the pipeline UI.
+  - script:
+    displayName: === Publish Artifacts ===
+    condition: false
+
+  # Publishes any associated information related to the OneLocBuild process.
+  - publish: $(Build.StagingDirectory)/loc
+    displayName: Publish Localization Artifacts
+    artifact: OneLocBuild
+    condition: succeededOrFailed()

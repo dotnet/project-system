@@ -2,7 +2,7 @@
 
 # Sets the Experimental attribute on the VSIX manifest to 'false' for builds in CI.
 
-param ([Parameter(Mandatory=$true)] [String] $manifestPath)
+param ([Parameter(Mandatory=$true)] [string] $manifestPath)
 
 Write-Host 'Inputs:'
 Write-Host "manifestPath: $manifestPath"
