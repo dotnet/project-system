@@ -33,7 +33,7 @@ schedules:
 # YAML reference: https://docs.microsoft.com/azure/devops/pipelines/yaml-schema/schedules-cron?view=azure-pipelines
 # CRON syntax: https://docs.microsoft.com/azure/devops/pipelines/process/scheduled-triggers?view=azure-devops&tabs=yaml#cron-syntax
 - cron: '0 11 * * *'
-  displayName: Daily 4am Build with Insertion
+  displayName: Daily 4am PT Build with Insertion
   branches:
     include:
     - main
