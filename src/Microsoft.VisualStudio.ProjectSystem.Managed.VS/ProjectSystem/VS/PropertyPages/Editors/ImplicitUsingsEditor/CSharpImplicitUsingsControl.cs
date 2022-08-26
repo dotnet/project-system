@@ -54,6 +54,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties.Controls
             typeof(CSharpImplicitUsingsControl),
             new PropertyMetadata(true, (o, e) => ((CSharpImplicitUsingsControl)o).OnStringListOrSupportedValuesPropertyChanged()));
 
+        private const string IncludesTextBoxName = "Using_ListItemIncludes";
+        private const string AliasTextBoxName = "Using_ListItemAlias";
+        private const string IsStaticCheckboxName = "Using_ListItemIsStatic";
+
+        
         // Used to suppress event handling during our own updates, breaking infinite loops.
         private bool updating;
 
@@ -223,6 +228,30 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties.Controls
             finally
             {
                 updating = false;
+                
+                if (Keyboard.FocusedElement is Control { DataContext: ImplicitUsingModel model } control)
+                {
+                    foreach (ImplicitUsingModel implicitUsingModel in UsingCollectionState)
+                    {
+                        if (implicitUsingModel.Equals(model))
+                        {
+                            if (string.Equals(control.Name, IncludesTextBoxName, StringComparison.Ordinal))
+                            {
+                                implicitUsingModel.ForceIncludesFocus = true;
+                            }
+                        
+                            if (string.Equals(control.Name, AliasTextBoxName, StringComparison.Ordinal))
+                            {
+                                implicitUsingModel.ForceAliasFocus = true;
+                            }
+                        
+                            if (string.Equals(control.Name, IsStaticCheckboxName, StringComparison.Ordinal))
+                            {
+                                implicitUsingModel.ForceIsStaticFocus = true;
+                            }
+                        }
+                    }   
+                }
             }
         }
 
@@ -244,11 +273,19 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties.Controls
         private static readonly PropertyChangedEventArgs s_aliasChangeArgs = new(nameof(Alias));
         private static readonly PropertyChangedEventArgs s_isStaticChangeArgs = new(nameof(IsStatic));
         private static readonly PropertyChangedEventArgs s_isReadOnlyChangeArgs = new(nameof(IsReadOnly));
+        private static readonly PropertyChangedEventArgs s_forceIncludesFocusChangeArgs = new(nameof(ForceIncludesFocus));
+        private static readonly PropertyChangedEventArgs s_forceAliasFocusChangeArgs = new(nameof(ForceAliasFocus));
+        private static readonly PropertyChangedEventArgs s_forceIsStaticFocusChangeArgs = new(nameof(ForceIsStaticFocus));
 
         private string _include;
         private string _alias;
         private bool _isStatic;
         private bool _isReadOnly;
+        
+        private bool _forceIncludesFocus;
+        private bool _forceAliasFocus;
+        private bool _forceIsStaticFocus;
+
 
         public ImplicitUsingModel(string include, string alias, bool isStatic, bool isReadOnly, CSharpImplicitUsingsControl parent)
         {
@@ -257,6 +294,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties.Controls
             _isStatic = isStatic;
             _isReadOnly = isReadOnly;
             _parent = parent;
+            
+            _forceIncludesFocus = false;
+            _forceAliasFocus = false;
+            _forceIsStaticFocus = false;
 
 #pragma warning disable VSTHRD012
             RemoveUsingCommand = new DelegateCommand<ImplicitUsingModel>(model =>
@@ -338,6 +379,36 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties.Controls
                 _isReadOnly = value;
                 PropertyChanged?.Invoke(this, s_isReadOnlyChangeArgs);
                 _parent.NotifyPairChanged();
+            }
+        }
+        
+        public bool ForceIncludesFocus
+        {
+            get => _forceIncludesFocus;
+            set
+            {
+                _forceIncludesFocus = value;
+                PropertyChanged?.Invoke(this, s_forceIncludesFocusChangeArgs);
+            }
+        }
+        
+        public bool ForceAliasFocus
+        {
+            get => _forceAliasFocus;
+            set
+            {
+                _forceAliasFocus = value;
+                PropertyChanged?.Invoke(this, s_forceAliasFocusChangeArgs);
+            }
+        }
+        
+        public bool ForceIsStaticFocus
+        {
+            get => _forceIsStaticFocus;
+            set
+            {
+                _forceIsStaticFocus = value;
+                PropertyChanged?.Invoke(this, s_forceIsStaticFocusChangeArgs);
             }
         }
 

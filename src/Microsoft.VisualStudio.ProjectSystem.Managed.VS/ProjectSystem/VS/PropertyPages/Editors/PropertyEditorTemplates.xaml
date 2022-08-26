@@ -143,6 +143,8 @@
                                         <GridViewColumn.CellTemplate>
                                             <DataTemplate DataType="{x:Type controls:ImplicitUsingModel}">
                                                 <TextBox
+                                                    Name="Using_ListItemIncludes"
+                                                    propertyPages:KeyboardFocusBehaviour.IsKeyboardFocused="{Binding ForceIncludesFocus}"
                                                     AutomationProperties.Name="{x:Static propertyPages:PropertyPageResources.ImplicitUsingEditor_ListItemIncludes}"
                                                     IsEnabled="{Binding IsReadOnly, Converter={x:Static local:Converters.InvertBoolean}}"
                                                     Text="{Binding Include, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
@@ -155,6 +157,8 @@
                                         <GridViewColumn.CellTemplate>
                                             <DataTemplate DataType="{x:Type controls:ImplicitUsingModel}">
                                                 <TextBox
+                                                    Name="Using_ListItemAlias"
+                                                    propertyPages:KeyboardFocusBehaviour.IsKeyboardFocused="{Binding ForceAliasFocus}"
                                                     AutomationProperties.Name="{x:Static propertyPages:PropertyPageResources.ImplicitUsingEditor_ListItemAlias}"
                                                     Text="{Binding Alias, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                     Style="{StaticResource TextBoxStyle}"
@@ -174,6 +178,8 @@
                                         <GridViewColumn.CellTemplate>
                                             <DataTemplate DataType="{x:Type controls:ImplicitUsingModel}">
                                                 <CheckBox
+                                                    Name="Using_ListItemIsStatic"
+                                                    propertyPages:KeyboardFocusBehaviour.IsKeyboardFocused="{Binding ForceIsStaticFocus}"
                                                     IsChecked="{Binding IsStatic, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                     Style="{StaticResource {x:Static vsfx:VsResourceKeys.CheckBoxStyleKey}}"
                                                     AutomationProperties.Name="{x:Static propertyPages:PropertyPageResources.ImplicitUsingEditor_ListItemIsStatic}"
