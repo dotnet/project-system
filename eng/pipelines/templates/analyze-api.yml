@@ -37,9 +37,6 @@ jobs:
     displayName: === Run Analysis ===
     condition: false
 
-  - powershell: Write-Host $(VisualStudioMinimumVersion)
-    displayName: Check VisualStudioMinimumVersion
-
   # Scan for the use of undocumented APIs.
   # YAML reference: https://eng.ms/docs/security-compliance-identity-and-management-scim/security/azure-security/cloudai-security-fundamentals-engineering/security-integration/guardian-wiki/sdl-azdo-extension/apiscan-build-task#v2
   - task: APIScan@2

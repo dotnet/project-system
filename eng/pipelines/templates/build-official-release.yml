@@ -109,9 +109,6 @@ jobs:
     # Name is required to reference the variables created within this build step in other stages.
     name: SetVisualStudioMinimumVersionVariable
 
-  - powershell: Write-Host '$(SetVisualStudioMinimumVersionVariable.VisualStudioMinimumVersion)'
-    displayName: Check VisualStudioMinimumVersion
-
   # Creates the VS bootstrapper information based on the build's .vsman file.
   # This bootstrapper information is only used for OptProf currently.
   # Since this data will be output with rest of our insertion files, we produce this data now and publish it in the build artifacts.
