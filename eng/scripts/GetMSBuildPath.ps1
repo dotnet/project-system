@@ -14,7 +14,7 @@ if(-Not (Test-Path -Path $installerPath))
 # If the version is not provided, use the version fron the version.json at the root of the repo.
 if(-Not $version)
 {
-  $version = $(. "$PSScriptRoot\GetVisualStudioMinimumVersion.ps1")
+  $version = "$(. "$PSScriptRoot\GetVisualStudioMinimumVersion.ps1").0"
 }
 
 # Note: Along with VS installations, this finds BuildTools' MSBuild.exe via '-products *'. However, the repo currently cannot deploy the VS Extensions via BuildTools.
