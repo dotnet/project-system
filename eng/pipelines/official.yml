@@ -15,6 +15,9 @@ trigger:
   branches:
     include:
     - main
+    # Our VS alignment branches start with dev (for example: dev17.2.x)
+    - dev*
+    # Any other branches that contain major feature development, or require access to the pipeline, prior to merge.
     - feature/*
   paths:
     exclude:
@@ -27,7 +30,8 @@ pr: none
 
 schedules:
 # Runs the pipelines at 4am and creates a VS insertion PR.
-# https://docs.microsoft.com/azure/devops/pipelines/yaml-schema/schedules-cron?view=azure-pipelines
+# YAML reference: https://docs.microsoft.com/azure/devops/pipelines/yaml-schema/schedules-cron?view=azure-pipelines
+# CRON syntax: https://docs.microsoft.com/en-us/azure/devops/pipelines/process/scheduled-triggers?view=azure-devops&tabs=yaml#cron-syntax
 - cron: '0 4 * * *'
   displayName: Daily 4am Build (with Insertion)
   branches:
@@ -90,7 +94,7 @@ parameters:
   type: boolean
   default: false
 - name: InsertionVSBranch
-  displayName: Insertion VS Branch Name
+  displayName: VS Insertion Branch Name
   type: string
   default: main
 - name: CreateOptimizationData

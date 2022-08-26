@@ -15,6 +15,9 @@ pr:
   branches:
     include:
     - main
+    # Our VS alignment branches start with dev (for example: dev17.2.x)
+    - dev*
+    # Any other branches that contain major feature development.
     - feature/*
   paths:
     exclude:
