@@ -31,7 +31,7 @@ pr: none
 schedules:
 # Runs the pipelines at 4am and creates a VS insertion PR.
 # YAML reference: https://docs.microsoft.com/azure/devops/pipelines/yaml-schema/schedules-cron?view=azure-pipelines
-# CRON syntax: https://docs.microsoft.com/en-us/azure/devops/pipelines/process/scheduled-triggers?view=azure-devops&tabs=yaml#cron-syntax
+# CRON syntax: https://docs.microsoft.com/azure/devops/pipelines/process/scheduled-triggers?view=azure-devops&tabs=yaml#cron-syntax
 - cron: '0 4 * * *'
   displayName: Daily 4am Build (with Insertion)
   branches:
@@ -214,7 +214,7 @@ stages:
 
 # Run this stage only when specifically requested (via CreateInsertion) or when the pipeline was ran on a schedule.
 # Conditional insertion syntax:
-# - https://docs.microsoft.com/en-us/azure/devops/pipelines/process/expressions?view=azure-devops#conditional-insertion
+# - https://docs.microsoft.com/azure/devops/pipelines/process/expressions?view=azure-devops#conditional-insertion
 # - https://www.andrewhoefling.com/Blog/Post/conditional-insertion-in-azure-pipelines-yaml
 - ${{ if or(eq(parameters.CreateInsertion, true), eq(variables['Build.Reason'], 'Schedule')) }}:
   - stage: Insertion
