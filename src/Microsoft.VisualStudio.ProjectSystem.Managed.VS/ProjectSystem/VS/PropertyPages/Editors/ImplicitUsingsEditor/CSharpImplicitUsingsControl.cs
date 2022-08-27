@@ -53,11 +53,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties.Controls
             typeof(bool),
             typeof(CSharpImplicitUsingsControl),
             new PropertyMetadata(true, (o, e) => ((CSharpImplicitUsingsControl)o).OnStringListOrSupportedValuesPropertyChanged()));
-
-        private const string IncludesTextBoxName = "Using_ListItemIncludes";
-        private const string AliasTextBoxName = "Using_ListItemAlias";
-        private const string IsStaticCheckboxName = "Using_ListItemIsStatic";
-
         
         // Used to suppress event handling during our own updates, breaking infinite loops.
         private bool updating;
@@ -228,30 +223,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties.Controls
             finally
             {
                 updating = false;
-                
-                if (Keyboard.FocusedElement is Control { DataContext: ImplicitUsingModel model } control)
-                {
-                    foreach (ImplicitUsingModel implicitUsingModel in UsingCollectionState)
-                    {
-                        if (implicitUsingModel.Equals(model))
-                        {
-                            if (string.Equals(control.Name, IncludesTextBoxName, StringComparison.Ordinal))
-                            {
-                                implicitUsingModel.ForceIncludesFocus = true;
-                            }
-                        
-                            if (string.Equals(control.Name, AliasTextBoxName, StringComparison.Ordinal))
-                            {
-                                implicitUsingModel.ForceAliasFocus = true;
-                            }
-                        
-                            if (string.Equals(control.Name, IsStaticCheckboxName, StringComparison.Ordinal))
-                            {
-                                implicitUsingModel.ForceIsStaticFocus = true;
-                            }
-                        }
-                    }   
-                }
             }
         }
 
