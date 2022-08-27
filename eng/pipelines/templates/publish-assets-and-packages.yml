@@ -119,12 +119,12 @@ jobs:
     condition: false
 
   # Downloads NuGet and adds it to the PATH.
-  # See: https://docs.microsoft.com/en-us/azure/devops/pipelines/tasks/tool/nuget?view=azure-devops
+  # See: https://docs.microsoft.com/azure/devops/pipelines/tasks/tool/nuget?view=azure-devops
   - task: NuGetToolInstaller@1
     displayName: Install NuGet
 
   # Authenticate with a service connection to be able to publish packages to external (different DevOps organization) NuGet feeds.
-  # See: https://docs.microsoft.com/en-us/azure/devops/pipelines/tasks/package/nuget-authenticate?view=azure-devops
+  # See: https://docs.microsoft.com/azure/devops/pipelines/tasks/package/nuget-authenticate?view=azure-devops
   - task: NuGetAuthenticate@1
     displayName: Authenticate NuGet
     inputs:
