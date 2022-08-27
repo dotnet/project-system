@@ -48,9 +48,11 @@ jobs:
     displayName: Publish Insertion Data
     inputs:
       DropFolder: $(Pipeline.Workspace)/$(Build.BuildNumber)/VSSetup/Insertion
-      # TODO: Change this to use $(GitBuildVersion) when working on: https://github.com/dotnet/project-system/issues/7911
-      # https://github.com/dotnet/Nerdbank.GitVersioning/blob/main/doc/cloudbuild.md#automatically-match-cloud-build-numbers-to-to-your-git-version
-      # 'Products/[DevDiv]/[dotnet/project-system]/[main]/[x.x]'
+      # TODO: Consider using $(GitBuildVersion) instead of $(Build.BuildNumber) as it better correlates the build of the code to the VS insertion.
+      # Meaning, instead of VS Insertion -> Pipeline BuildNumber -> Code BuildVersion, it would just be VS Insertion -> Code BuildVersion.
+      # For GitBuildVersion: https://github.com/dotnet/Nerdbank.GitVersioning/blob/main/doc/cloudbuild.md#automatically-match-cloud-build-numbers-to-to-your-git-version
+      # Issue: https://github.com/dotnet/project-system/issues/8431
+      # Example of current path: 'Products/[DevDiv]/[dotnet/project-system]/[main]/[x.x]'
       DropName: Products/$(System.TeamProject)/$(Build.Repository.Name)/$(Build.SourceBranchName)/$(Build.BuildNumber)
       # When this isn't provided, the tool sets the --AadAuth flag instead of using --PatAuthEnvVar. The AadAuth doesn't seem to work for this situation.
       AccessToken: $(System.AccessToken)
@@ -117,10 +119,12 @@ jobs:
     condition: false
 
   # Downloads NuGet and adds it to the PATH.
+  # See: https://docs.microsoft.com/azure/devops/pipelines/tasks/tool/nuget?view=azure-devops
   - task: NuGetToolInstaller@1
     displayName: Install NuGet
 
   # Authenticate with a service connection to be able to publish packages to external (different DevOps organization) NuGet feeds.
+  # See: https://docs.microsoft.com/azure/devops/pipelines/tasks/package/nuget-authenticate?view=azure-devops
   - task: NuGetAuthenticate@1
     displayName: Authenticate NuGet
     inputs:
