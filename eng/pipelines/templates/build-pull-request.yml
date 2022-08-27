@@ -45,6 +45,7 @@ jobs:
 
   # The .artifactignore file filters the artifacts published from a particular folder.
   # This must be present in the folder we want to publish and be named '.artifactignore'.
+  # See: https://docs.microsoft.com/azure/devops/artifacts/reference/artifactignore?view=azure-devops
   - powershell: Copy-Item -Path '$(Build.SourcesDirectory)/eng/pipelines/configuration/build.artifactignore' -Destination '$(Build.SourcesDirectory)/artifacts/$(BuildConfiguration)/.artifactignore'
     displayName: Copy Build Artifact Filter
     condition: succeededOrFailed()

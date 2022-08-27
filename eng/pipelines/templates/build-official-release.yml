@@ -186,6 +186,7 @@ jobs:
 
   # The .artifactignore file filters the artifacts published from a particular folder.
   # This must be present in the folder we want to publish and be named '.artifactignore'.
+  # See: https://docs.microsoft.com/azure/devops/artifacts/reference/artifactignore?view=azure-devops
   - powershell: Copy-Item -Path '$(Build.SourcesDirectory)/eng/pipelines/configuration/build.artifactignore' -Destination '$(Build.SourcesDirectory)/artifacts/$(BuildConfiguration)/.artifactignore'
     displayName: Copy Build Artifact Filter
     condition: succeededOrFailed()
@@ -194,14 +195,15 @@ jobs:
   # This publish is filtered by the .artifactignore in the 'eng' folder. See that file for more details.
   - publish: $(Build.SourcesDirectory)/artifacts/$(BuildConfiguration)
     displayName: Publish Build Artifacts
-    # NOTE: Artifact name is required to be Build.BuildNumber.
-    # The build-number named artifact is used for the RoslynInsertionTool to find the build for the VS Insertion PR.
-    # Code here: https://github.com/dotnet/roslyn-tools/blob/1f64f56b4ea9a0c119bbe840c39b935acc60e4b8/src/RoslynInsertionTool/RoslynInsertionTool/RoslynInsertionTool.VisualStudioTeamServices.cs#L174
+    # TODO: Consider using $(GitBuildVersion) instead of $(Build.BuildNumber) as it better correlates the build of the code, instead of the run of the pipeline.
+    # Traditionally, this artifact name was used as it was required for the prior VS insertion mechanism.
+    # Issue: https://github.com/dotnet/project-system/issues/8431
     artifact: $(Build.BuildNumber)
     condition: succeededOrFailed()
 
   # The .artifactignore file filters the artifacts published from a particular folder.
   # This must be present in the folder we want to publish and be named '.artifactignore'.
+  # See: https://docs.microsoft.com/azure/devops/artifacts/reference/artifactignore?view=azure-devops
   - powershell: Copy-Item -Path '$(Build.SourcesDirectory)/eng/pipelines/configuration/staging.artifactignore' -Destination '$(Build.StagingDirectory)/.artifactignore'
     displayName: Copy Staging Artifact Filter
     condition: succeededOrFailed()
