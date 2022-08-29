@@ -46,6 +46,11 @@
     <StringProperty.ValueEditors>
       <ValueEditor EditorType="CSharpImplicitUsingsEditor" />
     </StringProperty.ValueEditors>
+    <StringProperty.Metadata>
+      <NameValuePair Name="VisibilityCondition">
+        <NameValuePair.Value>(and (has-csharp-lang-version-or-greater "10") (has-evaluated-value "References" "ImplicitUsings" true))</NameValuePair.Value>
+      </NameValuePair>
+    </StringProperty.Metadata>
   </StringProperty>
 
 </Rule>
