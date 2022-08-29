@@ -147,7 +147,7 @@
                                                     propertyPages:KeyboardFocusBehaviour.IsKeyboardFocused="{Binding ForceIncludesFocus}"
                                                     AutomationProperties.Name="{x:Static propertyPages:PropertyPageResources.ImplicitUsingEditor_ListItemIncludes}"
                                                     IsEnabled="{Binding IsReadOnly, Converter={x:Static local:Converters.InvertBoolean}}"
-                                                    Text="{Binding Include, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                    Text="{Binding Include, Mode=TwoWay}"
                                                     Style="{StaticResource TextBoxStyle}"
                                                     Width="275" />
                                             </DataTemplate>
@@ -160,7 +160,7 @@
                                                     Name="Using_ListItemAlias"
                                                     propertyPages:KeyboardFocusBehaviour.IsKeyboardFocused="{Binding ForceAliasFocus}"
                                                     AutomationProperties.Name="{x:Static propertyPages:PropertyPageResources.ImplicitUsingEditor_ListItemAlias}"
-                                                    Text="{Binding Alias, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                    Text="{Binding Alias, Mode=TwoWay}"
                                                     Style="{StaticResource TextBoxStyle}"
                                                     Width="175">
                                                     <TextBox.IsEnabled>
@@ -180,7 +180,7 @@
                                                 <CheckBox
                                                     Name="Using_ListItemIsStatic"
                                                     propertyPages:KeyboardFocusBehaviour.IsKeyboardFocused="{Binding ForceIsStaticFocus}"
-                                                    IsChecked="{Binding IsStatic, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                    IsChecked="{Binding IsStatic, Mode=TwoWay}"
                                                     Style="{StaticResource {x:Static vsfx:VsResourceKeys.CheckBoxStyleKey}}"
                                                     AutomationProperties.Name="{x:Static propertyPages:PropertyPageResources.ImplicitUsingEditor_ListItemIsStatic}"
                                                     Margin="0, 0, 15, 0">

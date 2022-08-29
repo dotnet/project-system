@@ -1,5 +1,6 @@
 // Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
+using Microsoft.Build.Evaluation;
 using Newtonsoft.Json;
 
 namespace Microsoft.VisualStudio.ProjectSystem.Properties;
@@ -79,13 +80,9 @@ internal class ImplicitUsingsValueProvider : InterceptingPropertyValueProviderBa
                 {
                     await _projectAccessor.OpenProjectForWriteAsync(_configuredProject, project =>
                     {
-                        Microsoft.Build.Evaluation.ProjectItem importProjectItem = project.GetItems("Using")
-                            .First(i => string.Equals(existingUsing.Include, i.EvaluatedInclude, StringComparisons.ItemNames));
-
-                        if (!importProjectItem.IsImported)
-                        {
-                            project.RemoveItem(importProjectItem);
-                        }
+                        project.RemoveItems(
+                            project.GetItems("Using").Where(i => string.Equals(existingUsing.Include, i.EvaluatedInclude, StringComparisons.ItemNames) && !i.IsImported)
+                        );
                     });
 
                 }
@@ -117,13 +114,13 @@ internal class ImplicitUsingsValueProvider : InterceptingPropertyValueProviderBa
                 {
 
                     List<ImplicitUsing> existingUsingsOfIncludeToRemove = existingUsings.FindAll(existingUsing =>
-                        string.Equals(usingToSet.Include, existingUsing.Include, StringComparison.Ordinal) && !usingToSet.Equals(existingUsing));
+                        string.Equals(usingToSet.Include, existingUsing.Include, StringComparison.Ordinal) && !existingUsing.IsReadOnly && !usingToSet.Equals(existingUsing));
 
                     if (existingUsingsOfIncludeToRemove.Count > 0)
                     {
                         project.RemoveItems(
                             project.GetItems("Using")
-                                .Where(i => string.Equals(usingToSet.Include, i.EvaluatedInclude, StringComparisons.ItemNames))
+                                .Where(i => string.Equals(usingToSet.Include, i.EvaluatedInclude, StringComparisons.ItemNames) && !i.IsImported)
                         );
                     }
                     
