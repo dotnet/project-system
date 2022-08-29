@@ -102,10 +102,13 @@
       </Item>
       <Item ItemId=";Rule|Resource|DisplayName" ItemType="0" PsrId="308" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[General]]></Val>
+          <Val><![CDATA[File Properties]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[일반]]></Val>
+            <Val><![CDATA[파일 속성]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[General]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
