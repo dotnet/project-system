@@ -19,7 +19,7 @@
       </trans-unit>
       <trans-unit id="DynamicEnumProperty|{}{ItemType}|DisplayName">
         <source>Build Action</source>
-        <target state="translated">Ação de compilação</target>
+        <target state="translated">Ação de Compilação</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumProperty|CopyToOutputDirectory|Description">
@@ -54,7 +54,7 @@
       </trans-unit>
       <trans-unit id="Rule|Resource|DisplayName">
         <source>File Properties</source>
-        <target state="new">File Properties</target>
+        <target state="translated">Propriedades do Arquivo</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|CustomToolNamespace|Description">

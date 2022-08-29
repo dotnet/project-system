@@ -54,7 +54,7 @@
       </trans-unit>
       <trans-unit id="Rule|Resource|DisplayName">
         <source>File Properties</source>
-        <target state="new">File Properties</target>
+        <target state="translated">Свойства файла</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|CustomToolNamespace|Description">
