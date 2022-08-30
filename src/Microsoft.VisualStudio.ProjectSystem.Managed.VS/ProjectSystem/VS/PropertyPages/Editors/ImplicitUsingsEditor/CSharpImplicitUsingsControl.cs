@@ -257,7 +257,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties.Controls
         private bool _forceAliasFocus;
         private bool _forceIsStaticFocus;
 
-
         public ImplicitUsingModel(string include, string alias, bool isStatic, bool isReadOnly, CSharpImplicitUsingsControl parent)
         {
             _include = include;
