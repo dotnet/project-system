@@ -18,6 +18,7 @@ internal class StartupObjectValueProvider : InterceptingPropertyValueProviderBas
 
     internal const string UseWinFormsProperty = "UseWindowsForms";
     internal const string StartupObjectProperty = "StartupObject";
+    internal const string RootNamespaceProperty = "RootNamespace";
 
     [ImportingConstructor]
     public StartupObjectValueProvider(IMyAppFileAccessor myAppXmlFileAccessor)
@@ -28,7 +29,7 @@ internal class StartupObjectValueProvider : InterceptingPropertyValueProviderBas
     public override async Task<string?> OnSetPropertyValueAsync(string propertyName, string unevaluatedPropertyValue, IProjectProperties defaultProperties, IReadOnlyDictionary<string, string>? dimensionalConditions = null)
     {
         string isWindowsFormsProject = await defaultProperties.GetEvaluatedPropertyValueAsync(UseWinFormsProperty);
-        string rootNameSpace = await defaultProperties.GetEvaluatedPropertyValueAsync("RootNamespace");
+        string rootNameSpace = await defaultProperties.GetEvaluatedPropertyValueAsync(RootNamespaceProperty);
 
         if (bool.TryParse(isWindowsFormsProject, out bool b) && b)
         {
@@ -40,7 +41,7 @@ internal class StartupObjectValueProvider : InterceptingPropertyValueProviderBas
                 await _myAppXmlFileAccessor.SetMainFormAsync(unevaluatedPropertyValue);
 
                 // And save namespace.My.MyApplication in the project file.
-                await defaultProperties.SetPropertyValueAsync("StartupObject", rootNameSpace + ".My.MyApplication");
+                await defaultProperties.SetPropertyValueAsync(StartupObjectProperty, rootNameSpace + ".My.MyApplication");
             }
         }
 

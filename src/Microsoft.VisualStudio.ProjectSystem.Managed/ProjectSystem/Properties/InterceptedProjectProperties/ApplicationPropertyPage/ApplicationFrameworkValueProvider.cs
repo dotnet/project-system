@@ -156,7 +156,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
 
         private async Task<string?> SetPropertyValueForDefaultProjectTypesAsync(string unevaluatedPropertyValue, IProjectProperties defaultProperties)
         {
-            string rootNameSpace = await defaultProperties.GetEvaluatedPropertyValueAsync("RootNamespace");
+            string rootNamespace = await defaultProperties.GetEvaluatedPropertyValueAsync("RootNamespace");
             
             if (bool.TryParse(unevaluatedPropertyValue, out bool value))
             {
@@ -171,11 +171,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
                     // Set the StartupObject to namespace.My.MyApplication; we should save the actual value in the myapp file.
                     string? startupObjectValue = await defaultProperties.GetEvaluatedPropertyValueAsync(StartupObjectMSBuildProperty);
 
-                    await defaultProperties.SetPropertyValueAsync(StartupObjectMSBuildProperty, rootNameSpace + ".My.MyApplication");
+                    await defaultProperties.SetPropertyValueAsync(StartupObjectMSBuildProperty, rootNamespace + ".My.MyApplication");
 
                     if (startupObjectValue is not null)
                     {
-                        startupObjectValue.Replace(rootNameSpace + ".", "");
+                        // Use StringComparison.OrdinalIgnoreCase because VB is _not_ case-sensitive
+                        if (startupObjectValue.StartsWith(rootNamespace + ".", StringComparison.OrdinalIgnoreCase))
+                        {
+                            startupObjectValue = startupObjectValue.Substring((rootNamespace + ".").Length);
+                        }
                         await _myAppXmlFileAccessor.SetMainFormAsync(startupObjectValue);
                     }
                 }
@@ -191,7 +195,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
                     string? startupObjectValue = await _myAppXmlFileAccessor.GetMainFormAsync();
 
                     if (startupObjectValue is not null)
-                        await defaultProperties.SetPropertyValueAsync(StartupObjectMSBuildProperty, rootNameSpace + "." + startupObjectValue);
+                        await defaultProperties.SetPropertyValueAsync(StartupObjectMSBuildProperty, rootNamespace + "." + startupObjectValue);
                 }
             }
 
