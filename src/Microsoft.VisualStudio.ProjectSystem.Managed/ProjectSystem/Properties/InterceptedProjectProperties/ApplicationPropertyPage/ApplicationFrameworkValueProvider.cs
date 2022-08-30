@@ -156,6 +156,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
 
         private async Task<string?> SetPropertyValueForDefaultProjectTypesAsync(string unevaluatedPropertyValue, IProjectProperties defaultProperties)
         {
+            string rootNameSpace = await defaultProperties.GetEvaluatedPropertyValueAsync("RootNamespace");
+            
             if (bool.TryParse(unevaluatedPropertyValue, out bool value))
             {
                 if (value)
@@ -165,6 +167,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
 
                     // Set in myapp file: <MySubMain>true</MySubMain>
                     await _myAppXmlFileAccessor.SetMySubMainAsync("true");
+
+                    // Set the StartupObject to namespace.My.MyApplication; we should save the actual value in the myapp file.
+                    string? startupObjectValue = await defaultProperties.GetEvaluatedPropertyValueAsync(StartupObjectMSBuildProperty);
+
+                    await defaultProperties.SetPropertyValueAsync(StartupObjectMSBuildProperty, rootNameSpace + ".My.MyApplication");
+
+                    if (startupObjectValue is not null)
+                    {
+                        startupObjectValue.Replace(rootNameSpace + ".", "");
+                        await _myAppXmlFileAccessor.SetMainFormAsync(startupObjectValue);
+                    }
                 }
                 else
                 {
@@ -173,6 +186,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
 
                     // Set in myapp file: <MySubMain>false</MySubMain>
                     await _myAppXmlFileAccessor.SetMySubMainAsync("false");
+
+                    // Recover the StartupObject from myapp file and save it to the project file.
+                    string? startupObjectValue = await _myAppXmlFileAccessor.GetMainFormAsync();
+
+                    if (startupObjectValue is not null)
+                        await defaultProperties.SetPropertyValueAsync(StartupObjectMSBuildProperty, rootNameSpace + "." + startupObjectValue);
                 }
             }
 
