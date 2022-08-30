@@ -47,6 +47,8 @@ Add the following item to your .props or .targets file:
 
 Note that order of `PropertyPageSchema` items is important, as that is the order in which extensions are applied. For this reason, the `PropertyPageSchema` item for extension page must come _after_ the item for the base page in the MSBuild evaluation.
 
+Note also that the `Context` metadata must be present, and must have the value "Project". Rule objects such as the one defined in these .xaml files are used for multiple purposes in the project system; failing to specify the correct context may prevent your property page from being shown and/or cause bugs elsewhere.
+
 ### Step 4: Describe the property page
 
 Replace the contents of MyExtendedApplicationPage.xaml with the following:

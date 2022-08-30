@@ -60,6 +60,8 @@ Add the following item to your .props or .targets file:
 </PropertyPageSchema>
 ```
 
+Note that the `Context` metadata must be present, and must have the value "Project". Rule objects such as the one defined in these .xaml files are used for multiple purposes in the project system; failing to specify the correct context may prevent your property page from being shown and/or cause bugs elsewhere.
+
 ### Step 4: Describe the property page
 
 Replace the contents of MyLaunchProfile.xaml with the following:

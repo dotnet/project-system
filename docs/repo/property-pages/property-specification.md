@@ -25,11 +25,16 @@ Any rule file to be included in the UI must be added to the project's evaluation
 
 ```xml
 <ItemGroup>
-  <PropertyPageSchema Include="$(MSBuildThisFileDirectory)\$(LocaleFolder)MyProjectPropertiesPage.xaml" />
+  <PropertyPageSchema Include="$(MSBuildThisFileDirectory)\$(LocaleFolder)MyProjectPropertiesPage.xaml">
+    <Context>Project</Context>
+  </PropertyPageSchema>
 </ItemGroup>
 ```
 
-Note that rules files contain display strings which must be localised. Depending upon how you produce your package, you will want to make sure that the localised file is included.
+A couple of things to note:
+
+- Rule files contain display strings which must be localised. Depending upon how you produce your package, you will want to make sure that the localised file is included.
+- The "Context" metadata must be set to "Project". Rule files have other uses (unrelated to the property page UI) in other parts of the project system; correct "Context" metadata is important to ensure they are only used as intended.
 
 ### Structure of a XAML rule file
 
