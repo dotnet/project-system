@@ -39,14 +39,6 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
         Private Const EnableVisualStylesFieldName As String = "EnableVisualStyles"
         Private Const SaveMySettingsOnExitFieldName As String = "SaveMySettingsOnExit"
         Private Const SplashScreenFieldName As String = "SplashScreen"
-        Private Const HighDpiModeFieldName As String = "HighDpiMode"
-
-        Private Const HighDpiMode_DpiUnaware = "DpiUnaware"
-        Private Const HighDpiMode_SystemAware = "SystemAware"
-        Private Const HighDpiMode_PerMonitor = "PerMonitor"
-        Private Const HighDpiMode_PerMonitorV2 = "PerMonitorV2"
-        Private Const HighDpiMode_DpiUnawareGdiScaled = "DpiUnawareGdiScaled"
-
         Friend Const SingleFileGeneratorName As String = "MyApplicationCodeGenerator"
 
         ''' <summary>
@@ -227,25 +219,7 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
                 Else
                     Debug.Fail("Unexpected MyApplication.ShutdownMode")
                 End If
-
-                '    Me.HighDpiMode = HighDpiMode.xxx
-                Dim HighDpiValue As String
-                Select Case MyApplication.HighDpiMode
-                    Case 0
-                        HighDpiValue = HighDpiMode_DpiUnaware
-                    Case 1
-                        HighDpiValue = HighDpiMode_SystemAware
-                    Case 2
-                        HighDpiValue = HighDpiMode_PerMonitor
-                    Case 3
-                        HighDpiValue = HighDpiMode_PerMonitorV2
-                    Case 4
-                        HighDpiValue = HighDpiMode_DpiUnawareGdiScaled
-                    Case Else
-                        HighDpiValue = String.Empty
-                End Select
-                AddFieldAssignment(Constructor, HighDpiModeFieldName, HighDpiModeFieldName, HighDpiValue)
-
+                
                 GeneratedType.Members.Add(Constructor)
 
                 If MyApplication.MainFormNoRootNS <> String.Empty Then
