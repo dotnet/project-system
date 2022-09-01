@@ -593,7 +593,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                 fullTypeName &= defaultNamespace & "."
             End If
 
-            If isVb Then
+            If isVb And Not fullTypeName.EndsWith("." + MyNamespaceName + ".") Then
                 fullTypeName &= MyNamespaceName + "."
             End If
             
