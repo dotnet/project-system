@@ -8,7 +8,7 @@ resources:
 - repo: self
   clean: true
 pool:
-  name: NetCore1ESPool-Public
+  name: NetCore-Public
   # Image list: https://helix.dot.net/#1esPools
   demands: ImageOverride -equals Build.Windows.Amd64.VS2022.Pre.Open
   timeoutInMinutes: 15
