@@ -172,7 +172,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                     ' If this is the "default" settings file, we add the "My" module as well...
                     '
                     If shouldGenerateMyStuff Then
-                        AddMyModule(CompileUnit, projectRootNamespace, DesignUtil.GenerateValidLanguageIndependentNamespace(wszDefaultNamespace))
+                        AddMyModule(CompileUnit, projectRootNamespace, DesignUtil.GenerateValidLanguageIndependentNamespace(wszDefaultNamespace), isVB)
                     End If
                 End If
 
@@ -581,7 +581,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' </summary>
         ''' <param name="defaultNamespace">namespace into which we are generating (may be String.Empty)</param>
         ''' <param name="typeName">the type of the settings-class we are generating</param>
-        Private Shared Function GetFullTypeName(projectRootNamespace As String, defaultNamespace As String, typeName As String) As String
+        Private Shared Function GetFullTypeName(projectRootNamespace As String, defaultNamespace As String, typeName As String, isVb as Boolean) As String
 
             Dim fullTypeName As String = String.Empty
 
@@ -593,6 +593,10 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                 fullTypeName &= defaultNamespace & "."
             End If
 
+            If isVb Then
+                fullTypeName &= MyNamespaceName + "."
+            End If
+            
             Debug.Assert(typeName <> "", "we shouldn't have an empty type-name when generating a Settings class")
             fullTypeName &= typeName
 
@@ -625,7 +629,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' My.Settings for easy access to typed-settings.
         ''' </summary>
         ''' <param name="Unit"></param>
-        Private Shared Sub AddMyModule(Unit As CodeCompileUnit, projectRootNamespace As String, defaultNamespace As String)
+        Private Shared Sub AddMyModule(Unit As CodeCompileUnit, projectRootNamespace As String, defaultNamespace As String, isVb as Boolean)
 
             Debug.Assert(Unit IsNot Nothing AndAlso Unit.Namespaces.Count = 1 AndAlso Unit.Namespaces(0).Types.Count = 1, "Expected a compile unit with a single namespace containing a single type!")
 
@@ -672,7 +676,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                 .HasSet = False
             }
 
-            Dim fullTypeReference As CodeTypeReference = New CodeTypeReference(GetFullTypeName(projectRootNamespace, defaultNamespace, GeneratedType.Name)) With {
+            Dim fullTypeReference As CodeTypeReference = New CodeTypeReference(GetFullTypeName(projectRootNamespace, defaultNamespace, GeneratedType.Name, isVb)) With {
                 .Options = CodeTypeReferenceOptions.GlobalReference
             }
             SettingProperty.Type = fullTypeReference
