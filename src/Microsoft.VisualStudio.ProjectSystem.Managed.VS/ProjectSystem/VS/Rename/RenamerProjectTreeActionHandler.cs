@@ -20,11 +20,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
     [AppliesTo(ProjectCapability.CSharpOrVisualBasicLanguageService)]
     internal partial class RenamerProjectTreeActionHandler : ProjectTreeActionHandlerBase
     {
-        private const string SymbolicRenameName = "SolutionNavigator.EnableSymbolicRename";
-        private const string RenameSymbolCategory = "Environment";
-        private const string RenameSymbolPage = "ProjectsAndSolution";
-        private const string RenameSymbolOption = "PromptForRenameSymbol";
-
         private readonly IEnvironmentOptions _environmentOptions;
         private readonly IUnconfiguredProjectVsServices _projectVsServices;
         private readonly IProjectThreadingService _threadingService;
@@ -234,11 +229,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
             ISettingsManager settings = await _settingsManagerService.GetValueAsync();
 
             // Default value needs to match the default value in the checkbox Tools|Options|Project and Solutions|Enable symbolic renaming.
-            bool enableSymbolicRename = settings.GetValueOrDefault(SymbolicRenameName, true);
+            bool enableSymbolicRename = settings.GetValueOrDefault(VsToolsOptions.OptionEnableSymbolicRename, true);
 
             await _projectVsServices.ThreadingService.SwitchToUIThread();
 
-            bool userNeedPrompt = _environmentOptions.GetOption(RenameSymbolCategory, RenameSymbolPage, RenameSymbolOption, false);
+            bool userNeedPrompt = _environmentOptions.GetOption(VsToolsOptions.CategoryEnvironment, VsToolsOptions.PageProjectsAndSolution, VsToolsOptions.OptionPromptRenameSymbol, false);
 
             if (!enableSymbolicRename || !userNeedPrompt)
             {
@@ -247,11 +242,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
 
             string renamePromptMessage = string.Format(CultureInfo.CurrentCulture, VSResources.RenameSymbolPrompt, oldFileName);
 
-            bool userSelection = _userNotificationServices.Confirm(renamePromptMessage, out bool disablePromptMessage);
+            bool shouldRename = _userNotificationServices.Confirm(renamePromptMessage, out bool disablePromptMessage);
 
-            _environmentOptions.SetOption(RenameSymbolCategory, RenameSymbolPage, RenameSymbolOption, !disablePromptMessage);
+            if (disablePromptMessage)
+            {
+                await settings.SetValueAsync(VsToolsOptions.OptionEnableSymbolicRename, shouldRename, isMachineLocal: true);
+                _environmentOptions.SetOption(VsToolsOptions.CategoryEnvironment, VsToolsOptions.PageProjectsAndSolution, VsToolsOptions.OptionPromptRenameSymbol, !disablePromptMessage);
+            }
 
-            return userSelection;
+            return shouldRename;
         }
     }
 }
