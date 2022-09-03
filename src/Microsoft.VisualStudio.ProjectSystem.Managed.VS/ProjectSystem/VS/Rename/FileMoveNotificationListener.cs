@@ -17,9 +17,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
     [AppliesTo(ProjectCapability.CSharpOrVisualBasicLanguageService)]
     internal class FileMoveNotificationListener : IFileMoveNotificationListener
     {
-        private const string PromptNamespaceUpdate = "SolutionNavigator.PromptNamespaceUpdate";
-        private const string EnableNamespaceUpdate = "SolutionNavigator.EnableNamespaceUpdate";
-
         private readonly UnconfiguredProject _unconfiguredProject;
         private readonly IUserNotificationServices _userNotificationServices;
         private readonly IUnconfiguredProjectVsServices _projectVsServices;
@@ -147,8 +144,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
             {
                 ISettingsManager settings = await _settingsManagerService.GetValueAsync();
 
-                bool promptNamespaceUpdate = settings.GetValueOrDefault(PromptNamespaceUpdate, true);
-                bool enabledNamespaceUpdate = settings.GetValueOrDefault(EnableNamespaceUpdate, true);
+                bool promptNamespaceUpdate = settings.GetValueOrDefault(VsToolsOptions.OptionPromptNamespaceUpdate, true);
+                bool enabledNamespaceUpdate = settings.GetValueOrDefault(VsToolsOptions.OptionEnableNamespaceUpdate, true);
 
                 if (!enabledNamespaceUpdate || !promptNamespaceUpdate)
                 {
@@ -159,7 +156,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
 
                 bool confirmation = _userNotificationServices.Confirm(VSResources.UpdateNamespacePromptMessage, out promptNamespaceUpdate);
 
-                await settings.SetValueAsync(PromptNamespaceUpdate, !promptNamespaceUpdate, true);
+                await settings.SetValueAsync(VsToolsOptions.OptionPromptNamespaceUpdate, !promptNamespaceUpdate, true);
 
                 return confirmation;
             }
