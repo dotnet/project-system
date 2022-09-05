@@ -129,7 +129,16 @@ internal sealed class LanguageServiceHost : OnceInitializedOnceDisposedUnderLock
                     _unconfiguredProject,
                     ProjectFaultSeverity.LimitedFunctionality),
                 linkOptions: DataflowOption.PropagateCompletion,
-                cancellationToken: cancellationToken)
+                cancellationToken: cancellationToken),
+
+            new DisposableDelegate(() =>
+            {
+                // Dispose all workspaces. Note that this happens within a lock, so we will not race with project updates.
+                foreach ((_, Workspace workspace) in workspaceBySlice)
+                {
+                    workspace.Dispose();
+                }
+            })
         };
 
         return;
