@@ -53,12 +53,12 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Me.CompilationConstantsLabel = New System.Windows.Forms.Label
             Me.ConstantsSeparatorLabel = New System.Windows.Forms.Label
             Me.GenerateSerializationAssembliesLabel = New System.Windows.Forms.Label
-            Me.GenerateSerializationAssemblyComboBox = New System.Windows.Forms.ComboBox
+            Me.GenerateSerializationAssemblyComboBox = new PropPages.AccessibleComboBox
             Me.overarchingTableLayoutPanel = New System.Windows.Forms.TableLayoutPanel
             Me.compilationConstantsTableLayoutPanel = New System.Windows.Forms.TableLayoutPanel
             Me.optimizationTableLayoutPanel = New System.Windows.Forms.TableLayoutPanel
             Me.GenerateDebugInfoLabel = New System.Windows.Forms.Label
-            Me.DebugInfoComboBox = New System.Windows.Forms.ComboBox
+            Me.DebugInfoComboBox = new PropPages.AccessibleComboBox
             Me.CompileWithDotNetNative = New System.Windows.Forms.CheckBox()
             Me.EnableGatekeeperAnAlysis = New System.Windows.Forms.CheckBox()
             Me.overarchingTableLayoutPanel.SuspendLayout()

@@ -29,7 +29,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Me.Label1 = New System.Windows.Forms.Label()
             Me.Label2 = New System.Windows.Forms.Label()
             Me.AnalysisLevelLabel = New System.Windows.Forms.Label()
-            Me.AnalysisLevelComboBox = New System.Windows.Forms.ComboBox()
+            Me.AnalysisLevelComboBox = new PropPages.AccessibleComboBox()
             Me.RunAnalyzersDuringLiveAnalysis = New System.Windows.Forms.CheckBox()
             Me.RunAnalyzersDuringBuild = New System.Windows.Forms.CheckBox()
             Me.RoslynAnalyzersLabel = New System.Windows.Forms.Label()

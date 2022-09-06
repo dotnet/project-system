@@ -60,7 +60,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Me.StartWorkingDirectory = New Microsoft.VisualStudio.Editors.PropertyPages.TextBoxWithWorkaroundForAutoCompleteAppend()
             Me.RemoteDebugMachine = New System.Windows.Forms.TextBox()
             Me.AuthenticationModeLabel = New System.Windows.Forms.Label()
-            Me.AuthenticationMode = New System.Windows.Forms.ComboBox()
+            Me.AuthenticationMode = New PropPages.AccessibleComboBox()
             Me.StartWorkingDirectoryBrowse = New System.Windows.Forms.Button()
             Me.EnableDebuggerLabelLine = New System.Windows.Forms.Label()
             Me.EnableDebuggerLabel = New System.Windows.Forms.Label()

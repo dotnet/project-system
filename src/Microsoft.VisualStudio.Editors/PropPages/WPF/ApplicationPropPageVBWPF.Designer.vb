@@ -43,23 +43,23 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages.WPF
             Me.RootNamespaceLabel = New System.Windows.Forms.Label
             Me.RootNamespaceTextBox = New System.Windows.Forms.TextBox
             Me.TargetFrameworkLabel = New System.Windows.Forms.Label
-            Me.TargetFrameworkComboBox = New System.Windows.Forms.ComboBox
+            Me.TargetFrameworkComboBox = new PropPages.AccessibleComboBox
             Me.AutoGenerateBindingRedirectsCheckBox = New System.Windows.Forms.CheckBox
-            Me.StartupObjectOrUriComboBox = New System.Windows.Forms.ComboBox
+            Me.StartupObjectOrUriComboBox = new PropPages.AccessibleComboBox
             Me.StartupObjectOrUriLabel = New System.Windows.Forms.Label
             Me.ApplicationTypeLabel = New System.Windows.Forms.Label
-            Me.ApplicationTypeComboBox = New System.Windows.Forms.ComboBox
+            Me.ApplicationTypeComboBox = new PropPages.AccessibleComboBox
             Me.UseApplicationFrameworkCheckBox = New System.Windows.Forms.CheckBox
             Me.IconLabel = New System.Windows.Forms.Label
             Me.IconPicturebox = New System.Windows.Forms.PictureBox
-            Me.IconCombobox = New System.Windows.Forms.ComboBox
+            Me.IconCombobox = new PropPages.AccessibleComboBox
             Me.overarchingTableLayoutPanel = New System.Windows.Forms.TableLayoutPanel
             Me.WindowsAppGroupBox = New System.Windows.Forms.GroupBox
             Me.BottomHalfLayoutPanel = New System.Windows.Forms.TableLayoutPanel
             Me.EditXamlButton = New System.Windows.Forms.Button
             Me.ViewCodeButton = New System.Windows.Forms.Button
             Me.ShutdownModeLabel = New System.Windows.Forms.Label
-            Me.ShutdownModeComboBox = New System.Windows.Forms.ComboBox
+            Me.ShutdownModeComboBox = new PropPages.AccessibleComboBox
             Me.TopHalfLayoutPanel.SuspendLayout()
             Me.ButtonsLayoutPanel.SuspendLayout()
             CType(Me.IconPicturebox, System.ComponentModel.ISupportInitialize).BeginInit()

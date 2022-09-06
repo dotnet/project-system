@@ -61,7 +61,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Me.PackageReleaseNotesLabel = New System.Windows.Forms.Label()
             Me.PackageReleaseNotes = New System.Windows.Forms.TextBox()
             Me.NeutralLanguageLabel = New System.Windows.Forms.Label()
-            Me.NeutralLanguageComboBox = New System.Windows.Forms.ComboBox()
+            Me.NeutralLanguageComboBox = new PropPages.AccessibleComboBox()
             Me.AssemblyVersionLabel = New System.Windows.Forms.Label()
             Me.AssemblyVersionLayoutPanel = New System.Windows.Forms.TableLayoutPanel()
             Me.AssemblyVersionRevisionTextBox = New System.Windows.Forms.TextBox()

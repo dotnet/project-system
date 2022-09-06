@@ -34,7 +34,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Me.txtPostBuildEventCommandLine = New System.Windows.Forms.TextBox()
             Me.btnPostBuildBuilder = New System.Windows.Forms.Button()
             Me.lblRunPostBuildEvent = New System.Windows.Forms.Label()
-            Me.cboRunPostBuildEvent = New System.Windows.Forms.ComboBox()
+            Me.cboRunPostBuildEvent = new PropPages.AccessibleComboBox()
             Me.overarchingTableLayoutPanel = New System.Windows.Forms.TableLayoutPanel()
             runPostBuildEventPanel = New System.Windows.Forms.TableLayoutPanel()
             Me.overarchingTableLayoutPanel.SuspendLayout()

@@ -27,7 +27,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(AdvancedServicesDialog))
             Me.RoleServiceCacheTimeoutLabel = New System.Windows.Forms.Label
             Me.TimeQuantity = New System.Windows.Forms.NumericUpDown
-            Me.TimeUnitComboBox = New System.Windows.Forms.ComboBox
+            Me.TimeUnitComboBox = new PropPages.AccessibleComboBox
             Me.CustomConnectionString = New System.Windows.Forms.TextBox
             Me.UseCustomConnectionStringCheckBox = New System.Windows.Forms.CheckBox
             Me.HonorServerCookieExpirationCheckbox = New System.Windows.Forms.CheckBox

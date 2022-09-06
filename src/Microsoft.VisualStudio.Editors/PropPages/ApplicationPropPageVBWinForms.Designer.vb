@@ -45,15 +45,15 @@
             Me.RootNamespaceLabel = New System.Windows.Forms.Label
             Me.RootNamespaceTextBox = New System.Windows.Forms.TextBox
             Me.TargetFrameworkLabel = New System.Windows.Forms.Label
-            Me.TargetFrameworkComboBox = New System.Windows.Forms.ComboBox
+            Me.TargetFrameworkComboBox = new PropPages.AccessibleComboBox
             Me.AutoGenerateBindingRedirectsCheckBox = New System.Windows.Forms.CheckBox
-            Me.StartupObjectComboBox = New System.Windows.Forms.ComboBox
+            Me.StartupObjectComboBox = new PropPages.AccessibleComboBox
             Me.StartupObjectLabel = New System.Windows.Forms.Label
             Me.ApplicationTypeLabel = New System.Windows.Forms.Label
-            Me.ApplicationTypeComboBox = New System.Windows.Forms.ComboBox
+            Me.ApplicationTypeComboBox = new PropPages.AccessibleComboBox
             Me.IconLabel = New System.Windows.Forms.Label
             Me.IconPicturebox = New System.Windows.Forms.PictureBox
-            Me.IconCombobox = New System.Windows.Forms.ComboBox
+            Me.IconCombobox = new PropPages.AccessibleComboBox
             Me.UseApplicationFrameworkCheckBox = New System.Windows.Forms.CheckBox
             Me.TableLayoutPanel1 = New System.Windows.Forms.TableLayoutPanel
             Me.AssemblyInfoButton = New System.Windows.Forms.Button
@@ -64,11 +64,11 @@
             Me.SingleInstanceCheckBox = New System.Windows.Forms.CheckBox
             Me.SaveMySettingsCheckbox = New System.Windows.Forms.CheckBox
             Me.AuthenticationModeLabel = New System.Windows.Forms.Label
-            Me.AuthenticationModeComboBox = New System.Windows.Forms.ComboBox
+            Me.AuthenticationModeComboBox = new PropPages.AccessibleComboBox
             Me.ShutdownModeLabel = New System.Windows.Forms.Label
-            Me.ShutdownModeComboBox = New System.Windows.Forms.ComboBox
+            Me.ShutdownModeComboBox = new PropPages.AccessibleComboBox
             Me.SplashScreenLabel = New System.Windows.Forms.Label
-            Me.SplashScreenComboBox = New System.Windows.Forms.ComboBox
+            Me.SplashScreenComboBox = new PropPages.AccessibleComboBox
             Me.ViewCodeButton = New System.Windows.Forms.Button
             Me.overarchingTableLayoutPanel = New System.Windows.Forms.TableLayoutPanel
             Me.TopHalfLayoutPanel.SuspendLayout()

@@ -74,7 +74,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Me.FileVersionBuildTextBox = New System.Windows.Forms.TextBox()
             Me.FileVersionRevisionTextBox = New System.Windows.Forms.TextBox()
             Me.GuidTextBox = New System.Windows.Forms.TextBox()
-            Me.NeutralLanguageComboBox = New System.Windows.Forms.ComboBox()
+            Me.NeutralLanguageComboBox = new PropPages.AccessibleComboBox()
             Me.GuidLabel = New System.Windows.Forms.Label()
             Me.overarchingTableLayoutPanel.SuspendLayout()
             Me.AssemblyVersionLayoutPanel.SuspendLayout()

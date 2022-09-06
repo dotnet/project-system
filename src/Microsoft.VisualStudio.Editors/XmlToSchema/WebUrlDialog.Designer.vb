@@ -29,7 +29,7 @@
             Dim cancelButton As System.Windows.Forms.Button
             Dim Label2 As System.Windows.Forms.Label
             Dim TableLayoutPanel2 As System.Windows.Forms.TableLayoutPanel
-            Me._urlComboBox = New System.Windows.Forms.ComboBox
+            Me._urlComboBox = new PropPages.AccessibleComboBox
             okButton = New System.Windows.Forms.Button
             cancelButton = New System.Windows.Forms.Button
             Label2 = New System.Windows.Forms.Label
