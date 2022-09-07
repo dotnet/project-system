@@ -292,11 +292,6 @@ internal sealed class Workspace : OnceInitializedOnceDisposedUnderLockAsync, IWo
             ContextState contextState,
             CancellationToken cancellationToken)
         {
-            // This is the ConfiguredProject currently bound to the slice owned by this workspace.
-            // It may change over time, such as in response to changing the active configuration,
-            // for example from Debug to Release.
-            ConfiguredProject configuredProject = update.Value.ConfiguredProject;
-
             IComparable version = GetConfiguredProjectVersion(update);
 
             ProcessProjectEvaluationHandlers();
@@ -305,6 +300,11 @@ internal sealed class Workspace : OnceInitializedOnceDisposedUnderLockAsync, IWo
 
             void ProcessProjectEvaluationHandlers()
             {
+                // This is the ConfiguredProject currently bound to the slice owned by this workspace.
+                // It may change over time, such as in response to changing the active configuration,
+                // for example from Debug to Release.
+                ConfiguredProject configuredProject = update.Value.ConfiguredProject;
+
                 foreach (IProjectEvaluationHandler evaluationHandler in _updateHandlers.EvaluationHandlers)
                 {
                     cancellationToken.ThrowIfCancellationRequested();
