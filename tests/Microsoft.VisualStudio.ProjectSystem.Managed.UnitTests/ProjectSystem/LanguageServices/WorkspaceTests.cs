@@ -545,7 +545,7 @@ public class WorkspaceTests
         Mock<ICommandLineHandler> commandLineHandler = updateHandler.As<ICommandLineHandler>();
 
         // Other handler kinds should be ignored
-        updateHandler.As<IProjectEvaluationHandler>().SetupGet(o => o.ProjectEvaluationRule).Returns("MyEvaluationRule"); ;
+        updateHandler.As<IProjectEvaluationHandler>().SetupGet(o => o.ProjectEvaluationRule).Returns("MyEvaluationRule");
         updateHandler.As<ISourceItemsHandler>();
 
         if (anyChanges)
