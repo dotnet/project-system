@@ -1681,6 +1681,12 @@
                   "parameters": {
                     "branchName": "dev17.4-preview1"
                   }
+                },
+                {
+                  "name": "prTargetsBranch",
+                  "parameters": {
+                    "branchName": "dev17.4-preview2"
+                  }
                 }
               ]
             }
