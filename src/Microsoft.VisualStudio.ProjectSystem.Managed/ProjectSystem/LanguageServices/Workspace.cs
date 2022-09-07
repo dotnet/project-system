@@ -380,6 +380,8 @@ internal sealed class Workspace : OnceInitializedOnceDisposedUnderLockAsync, IWo
         // data to have been processed at least once before continuing.
         await _hasEvaluationData.Task;
 
+        Assumes.True(_seenEvaluation);
+
         await OnProjectChangedAsync(
             _buildProgressRegistration,
             update,
