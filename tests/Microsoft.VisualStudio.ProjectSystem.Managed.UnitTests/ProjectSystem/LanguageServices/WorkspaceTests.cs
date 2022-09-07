@@ -515,7 +515,7 @@ public class WorkspaceTests
     {
         var buildRuleUpdate = IProjectSubscriptionUpdateFactory.FromJson(
             anyChanges
-            ? $$"""
+            ? """
               {
                   "ProjectChanges": {
                       "CompilerCommandLineArgs": {
@@ -528,7 +528,7 @@ public class WorkspaceTests
                   }
               }
               """
-            : $$"""
+            : """
               {
                   "ProjectChanges": {
                       "CompilerCommandLineArgs": {
