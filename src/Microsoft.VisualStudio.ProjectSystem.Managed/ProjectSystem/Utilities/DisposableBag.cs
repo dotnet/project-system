@@ -66,37 +66,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Utilities
         }
 
         /// <summary>
-        /// Adds objects to this bag, to each be disposed when the bag itself is disposed.
-        /// </summary>
-        public void Add(IEnumerable<IDisposable?> disposables)
-        {
-            Requires.NotNull(disposables, nameof(disposables));
-
-            foreach (IDisposable? disposable in disposables)
-            {
-                Add(disposable);
-            }
-        }
-
-        /// <summary>
-        /// Removes an object from the bag. If done before the bag is disposed, this will prevent
-        /// <paramref name="disposable"/> from being disposed along with the bag itself.
-        /// </summary>
-        /// <param name="disposable">The object to remove.</param>
-        public void Remove(IDisposable? disposable)
-        {
-            if (disposable == null)
-            {
-                return;
-            }
-
-            ImmutableInterlocked.Update(
-                ref _disposables,
-                (set, item) => set?.Remove(item),
-                disposable);
-        }
-
-        /// <summary>
         /// Implemented only to allow collection initialization of this type.
         /// </summary>
         IEnumerator IEnumerable.GetEnumerator() => throw new NotSupportedException();
