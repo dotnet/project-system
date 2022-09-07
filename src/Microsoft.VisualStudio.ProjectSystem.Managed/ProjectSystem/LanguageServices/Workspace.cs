@@ -292,11 +292,6 @@ internal sealed class Workspace : OnceInitializedOnceDisposedUnderLockAsync, IWo
             ContextState contextState,
             CancellationToken cancellationToken)
         {
-            // This is the ConfiguredProject currently bound to the slice owned by this workspace.
-            // It may change over time, such as in response to changing the active configuration,
-            // for example from Debug to Release.
-            ConfiguredProject configuredProject = update.Value.ConfiguredProject;
-
             IComparable version = GetConfiguredProjectVersion(update);
 
             ProcessProjectEvaluationHandlers();
@@ -305,6 +300,11 @@ internal sealed class Workspace : OnceInitializedOnceDisposedUnderLockAsync, IWo
 
             void ProcessProjectEvaluationHandlers()
             {
+                // This is the ConfiguredProject currently bound to the slice owned by this workspace.
+                // It may change over time, such as in response to changing the active configuration,
+                // for example from Debug to Release.
+                ConfiguredProject configuredProject = update.Value.ConfiguredProject;
+
                 foreach (IProjectEvaluationHandler evaluationHandler in _updateHandlers.EvaluationHandlers)
                 {
                     cancellationToken.ThrowIfCancellationRequested();
@@ -379,6 +379,8 @@ internal sealed class Workspace : OnceInitializedOnceDisposedUnderLockAsync, IWo
         // the Roslyn context would be null. To prevent problems, we wait for evaluation
         // data to have been processed at least once before continuing.
         await _hasEvaluationData.Task;
+
+        Assumes.True(_seenEvaluation);
 
         await OnProjectChangedAsync(
             _buildProgressRegistration,
