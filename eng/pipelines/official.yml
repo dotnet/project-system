@@ -157,7 +157,8 @@ stages:
   - group: DotNet-Project-System
   jobs:
   - template: templates/analyze-compliance.yml
-  - template: templates/analyze-api.yml
+  - ${{ if false }}:
+    - template: templates/analyze-api.yml
   # TODO: Disabled since the build for CodeQL does not seem to recognize global namespaces. Thus, it fails to build.
   # Issue: https://github.com/dotnet/project-system/issues/8421
   - ${{ if false }}:
