@@ -3,7 +3,6 @@
 jobs:
 - job: AnalyzeAPI
   displayName: Analyze API
-  timeoutInMinutes: 90
   steps:
 
   ###################################################################################################################################################################
@@ -58,6 +57,9 @@ jobs:
     # This value is provided from the DotNet-Project-System variable group, defined in the stage variables.
     env:
       AzureServicesAuthConnectionString: $(ApiScanConnectionString)
+    # Add a timeout with a retry count in an attempt to workaround timeout failures that have been occurring with the task itself.
+    retryCountOnTaskFailure: 2
+    timeoutInMinutes: 120
 
   ###################################################################################################################################################################
   # PUBLISH RESULTS
