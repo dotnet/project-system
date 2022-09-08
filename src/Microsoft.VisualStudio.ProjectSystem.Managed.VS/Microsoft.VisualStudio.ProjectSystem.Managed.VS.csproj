@@ -77,8 +77,8 @@
 
   <ItemGroup>
     <Page Include="ProjectSystem\VS\PropertyPages\DebugPageControl.xaml">
-      <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="ProjectSystem\VS\PropertyPages\GetProfileNameDialog.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -116,5 +116,13 @@
     <AdditionalFiles Include="PublicAPI.Shipped.txt" />
     <AdditionalFiles Include="PublicAPI.Unshipped.txt" />
   </ItemGroup>
+
+  <!-- This is required for SourceLink to find these .xaml files within the generated .g.cs files. -->
+  <!-- Note that the filepath for the file MUST be nested within itself in the destination, as the .g.cs files include the relative nested path. -->
+  <!-- See: https://github.com/dotnet/sourcelink/issues/492 -->
+  <Target Name="CopyDependentUponXamlFiles" BeforeTargets="CoreCompile">
+    <Copy SourceFiles="ProjectSystem\VS\PropertyPages\DebugPageControl.xaml" DestinationFiles="$(IntermediateOutputPath)\ProjectSystem\VS\PropertyPages\ProjectSystem\VS\PropertyPages\DebugPageControl.xaml" SkipUnchangedFiles="true" />
+    <Copy SourceFiles="ProjectSystem\VS\PropertyPages\GetProfileNameDialog.xaml" DestinationFiles="$(IntermediateOutputPath)\ProjectSystem\VS\PropertyPages\ProjectSystem\VS\PropertyPages\GetProfileNameDialog.xaml" SkipUnchangedFiles="true" />
+  </Target>
 
 </Project>

@@ -54,9 +54,21 @@
     <ForceGenerationOfBindingRedirects>true</ForceGenerationOfBindingRedirects>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <ProduceReferenceAssembly>true</ProduceReferenceAssembly>
-    <!-- TODO: Might be related to: https://github.com/dotnet/project-system/issues/5619 -->
-    <EnableSourceLink Condition="'$(CIBuild)' == 'true'">true</EnableSourceLink>
     <NoWarn>$(NoWarn);NU5125</NoWarn>
+
+    <!-- SourceLink properties -->
+    <!-- https://github.com/dotnet/sourcelink#using-source-link-in-net-projects -->
+    <EnableSourceLink>true</EnableSourceLink>
+    <!-- Publish the repository URL in the built .nupkg (in the NuSpec <Repository> element) -->
+    <PublishRepositoryUrl>true</PublishRepositoryUrl>
+    <!-- Embed source files that are not tracked by the source control manager in the PDB -->
+    <EmbedUntrackedSources>true</EmbedUntrackedSources>
+    <!-- Build symbol package (.snupkg) to distribute the PDB containing Source Link -->
+    <IncludeSymbols>true</IncludeSymbols>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+    <!-- Marks the assembly be built in a determinstic way. -->
+    <!-- See: https://github.com/dotnet/sdk/issues/16325#issuecomment-981818164 -->
+    <ContinuousIntegrationBuild>true</ContinuousIntegrationBuild>
 
     <!-- Test project properties -->
     <IsUnitTestProject Condition="'$(IsUnitTestProject)' == ''">false</IsUnitTestProject>
