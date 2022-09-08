@@ -47,8 +47,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies
 
                     _telemetryService.PostProperties(TelemetryEventName.SDKVersion, new[]
                     {
-                        (TelemetryPropertyName.SDKVersionProject, (object)projectId),
-                        (TelemetryPropertyName.SDKVersionNETCoreSdkVersion, version)
+                        (TelemetryPropertyName.SDKVersion.Project, (object)projectId),
+                        (TelemetryPropertyName.SDKVersion.NETCoreSDKVersion, version)
                     });
                 },
                 unconfiguredProject: _projectVsServices.Project);

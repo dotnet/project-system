@@ -59,7 +59,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
                         cell?.Focus();
                         dataGridEnvironmentVariables.BeginEdit();
                     }
-                }).FileAndForget(TelemetryEventName.Prefix);
+                }).FileAndForget(TelemetryEventName.Fault);
 #pragma warning restore RS0030 // Do not used banned APIs
             }
         }

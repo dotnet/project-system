@@ -159,14 +159,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 // Send telemetry.
                 _telemetryService?.PostProperties(TelemetryEventName.UpToDateCheckFail, new[]
                 {
-                    (TelemetryPropertyName.UpToDateCheckFailReason, (object)reason),
-                    (TelemetryPropertyName.UpToDateCheckDurationMillis, _stopwatch.Elapsed.TotalMilliseconds),
-                    (TelemetryPropertyName.UpToDateCheckFileCount, _timestampCache.Count),
-                    (TelemetryPropertyName.UpToDateCheckConfigurationCount, _upToDateCheckConfiguredInput.ImplicitInputs.Length),
-                    (TelemetryPropertyName.UpToDateCheckLogLevel, Level),
-                    (TelemetryPropertyName.UpToDateCheckProject, _projectGuid),
-                    (TelemetryPropertyName.UpToDateCheckNumber, _checkNumber),
-                    (TelemetryPropertyName.UpToDateCheckIgnoreKinds, _ignoreKinds ?? "")
+                    (TelemetryPropertyName.UpToDateCheck.FailReason, (object)reason),
+                    (TelemetryPropertyName.UpToDateCheck.DurationMillis, _stopwatch.Elapsed.TotalMilliseconds),
+                    (TelemetryPropertyName.UpToDateCheck.FileCount, _timestampCache.Count),
+                    (TelemetryPropertyName.UpToDateCheck.ConfigurationCount, _upToDateCheckConfiguredInput.ImplicitInputs.Length),
+                    (TelemetryPropertyName.UpToDateCheck.LogLevel, Level),
+                    (TelemetryPropertyName.UpToDateCheck.Project, _projectGuid),
+                    (TelemetryPropertyName.UpToDateCheck.CheckNumber, _checkNumber),
+                    (TelemetryPropertyName.UpToDateCheck.IgnoreKinds, _ignoreKinds ?? "")
                 });
 
                 // Remember the failure reason and description for use in IncrementalBuildFailureDetector.
@@ -186,13 +186,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 // Send telemetry.
                 _telemetryService?.PostProperties(TelemetryEventName.UpToDateCheckSuccess, new[]
                 {
-                    (TelemetryPropertyName.UpToDateCheckDurationMillis, (object)_stopwatch.Elapsed.TotalMilliseconds),
-                    (TelemetryPropertyName.UpToDateCheckFileCount, _timestampCache.Count),
-                    (TelemetryPropertyName.UpToDateCheckConfigurationCount, _upToDateCheckConfiguredInput.ImplicitInputs.Length),
-                    (TelemetryPropertyName.UpToDateCheckLogLevel, Level),
-                    (TelemetryPropertyName.UpToDateCheckProject, _projectGuid),
-                    (TelemetryPropertyName.UpToDateCheckNumber, _checkNumber),
-                    (TelemetryPropertyName.UpToDateCheckIgnoreKinds, _ignoreKinds ?? "")
+                    (TelemetryPropertyName.UpToDateCheck.DurationMillis, (object)_stopwatch.Elapsed.TotalMilliseconds),
+                    (TelemetryPropertyName.UpToDateCheck.FileCount, _timestampCache.Count),
+                    (TelemetryPropertyName.UpToDateCheck.ConfigurationCount, _upToDateCheckConfiguredInput.ImplicitInputs.Length),
+                    (TelemetryPropertyName.UpToDateCheck.LogLevel, Level),
+                    (TelemetryPropertyName.UpToDateCheck.Project, _projectGuid),
+                    (TelemetryPropertyName.UpToDateCheck.CheckNumber, _checkNumber),
+                    (TelemetryPropertyName.UpToDateCheck.IgnoreKinds, _ignoreKinds ?? "")
                 });
 
                 Info(nameof(Resources.FUTD_UpToDate));
