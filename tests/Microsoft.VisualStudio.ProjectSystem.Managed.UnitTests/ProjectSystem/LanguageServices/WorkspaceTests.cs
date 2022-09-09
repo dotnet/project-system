@@ -515,7 +515,7 @@ public class WorkspaceTests
     {
         var buildRuleUpdate = IProjectSubscriptionUpdateFactory.FromJson(
             anyChanges
-            ? $$"""
+            ? """
               {
                   "ProjectChanges": {
                       "CompilerCommandLineArgs": {
@@ -528,7 +528,7 @@ public class WorkspaceTests
                   }
               }
               """
-            : $$"""
+            : """
               {
                   "ProjectChanges": {
                       "CompilerCommandLineArgs": {
@@ -545,7 +545,7 @@ public class WorkspaceTests
         Mock<ICommandLineHandler> commandLineHandler = updateHandler.As<ICommandLineHandler>();
 
         // Other handler kinds should be ignored
-        updateHandler.As<IProjectEvaluationHandler>().SetupGet(o => o.ProjectEvaluationRule).Returns("MyEvaluationRule"); ;
+        updateHandler.As<IProjectEvaluationHandler>().SetupGet(o => o.ProjectEvaluationRule).Returns("MyEvaluationRule");
         updateHandler.As<ISourceItemsHandler>();
 
         if (anyChanges)

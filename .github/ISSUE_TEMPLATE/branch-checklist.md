@@ -13,7 +13,7 @@ _Descriptions of these steps can be found in the team OneNote._
 
 - [ ] Identify base commit for new branch
   - [ ] According to the [schedule](https://dev.azure.com/devdiv/DevDiv/_wiki/wikis/DevDiv.wiki/10097/Dev17-Release), `main` snapped to `rel/d17.❓` at ❓ PST
-  - [ ] Last [completed Project System insertion PR](https://dev.azure.com/devdiv/DevDiv/_git/VS/pullrequests?_a=completed&createdBy=9f64bc2f-479b-429f-a665-fec80e130b1f&assignedTo=6e89082d-fdd2-4442-a310-051df5bdc73c): https://dev.azure.com/devdiv/DevDiv/_git/VS/pullrequest/❓
+  - [ ] Last [completed Project System insertion PR](https://dev.azure.com/devdiv/DevDiv/_git/VS/pullrequests?_a=completed&assignedTo=6e89082d-fdd2-4442-a310-051df5bdc73c): https://dev.azure.com/devdiv/DevDiv/_git/VS/pullrequest/❓
   - [ ] Last inserted GitHub PR: https://github.com/dotnet/project-system/pull/❓
   - [ ] Merge commit of that PR: ❓
 - [ ] Create branch on GitHub at that commit

@@ -24,7 +24,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
         // gives the user results a lot faster than if we just pushed during design-time builds only. Evaluations are guaranteed to have 
         // occurred before a file is seen by components outside of the project system.
         //
-        // Typically, adds and removes of files found at evaluation time are also found during a design-time build, with the later also 
+        // Typically, adds and removes of files found at evaluation time are also found during a design-time build, with the latter also 
         // including generated files. This forces us to remember what files we've already sent to Roslyn to avoid sending duplicate adds
         // or removes of the same file. Due to design-time builds being significantly slower than evaluations, there are also times where 
         // many evaluations have occured by the time a design-time build based on a past version of the ConfiguredProject has completed.
@@ -60,7 +60,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
         // 2. Walk every design-time build addition, if there's an associated removal in a later evaluation - we throw away the addition
         // 3. Walk every design-time build removal, if there's an associated addition in a later evaluation - we throw away the removal
         //
-        // We don't resolve conflicts between changes items, because the design-time build doesn't produce them due to the way we represent
+        // We don't resolve conflicts between changed items, because the design-time build doesn't produce them due to the way we represent
         // command-line arguments as individual item includes, such as <CscCommandLineArguments Include="/reference:Foo.dll"/>, without any 
         // metadata.
         //
