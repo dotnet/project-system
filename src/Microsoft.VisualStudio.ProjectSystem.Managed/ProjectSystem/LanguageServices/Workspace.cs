@@ -43,9 +43,6 @@ internal sealed class Workspace : OnceInitializedOnceDisposedUnderLockAsync, IWo
     private readonly CancellationToken _unloadCancellationToken;
     private readonly string _baseDirectory;
 
-    /// <summary>Completes when the workspace has integrated evaluation data.</summary>
-    private readonly TaskCompletionSource _hasEvaluationData = new(TaskCreationOptions.RunContinuationsAsynchronously);
-
     /// <summary>Completes when the workspace has integrated build data.</summary>
     private readonly TaskCompletionSource _hasBuildData = new(TaskCreationOptions.RunContinuationsAsynchronously);
 
@@ -125,7 +122,6 @@ internal sealed class Workspace : OnceInitializedOnceDisposedUnderLockAsync, IWo
     {
         _state = WorkspaceState.Disposed;
 
-        _hasEvaluationData.TrySetCanceled();
         _hasBuildData.TrySetCanceled();
 
         _disposableBag.Dispose();
@@ -203,8 +199,6 @@ internal sealed class Workspace : OnceInitializedOnceDisposedUnderLockAsync, IWo
             applyFunc: ApplyProjectEvaluation,
             _unloadCancellationToken);
 
-        _hasEvaluationData.TrySetResult();
-
         return;
 
         async Task ProcessInitialEvaluationDataAsync(CancellationToken cancellationToken)
@@ -224,10 +218,7 @@ internal sealed class Workspace : OnceInitializedOnceDisposedUnderLockAsync, IWo
                 // Insufficient data to initialize the language service.
                 _state = WorkspaceState.Failed;
 
-                Exception ex = new("Insufficient project data to initialize the language service.");
-                _hasEvaluationData.TrySetException(ex);
-
-                throw ex;
+                throw new("Insufficient project data to initialize the language service.");
             }
 
             try
@@ -375,11 +366,8 @@ internal sealed class Workspace : OnceInitializedOnceDisposedUnderLockAsync, IWo
         Assumes.NotNull(_buildProgressRegistration);
 
         // The Roslyn workspace context is created when the first evaluation data arrives.
-        // It's possible that build data arrives before evaluation data, in which case
-        // the Roslyn context would be null. To prevent problems, we wait for evaluation
-        // data to have been processed at least once before continuing.
-        await _hasEvaluationData.Task;
-
+        // Upstream caller must ensure that build updates are delayed until the first
+        // evaluation update is processed.
         Assumes.True(_seenEvaluation);
 
         await OnProjectChangedAsync(
