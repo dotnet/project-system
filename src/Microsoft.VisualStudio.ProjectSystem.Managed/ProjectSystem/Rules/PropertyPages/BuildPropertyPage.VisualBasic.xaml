@@ -416,7 +416,7 @@
                   DisplayName="Custom constants"
                   HelpUrl="https://go.microsoft.com/fwlink/?linkid=2196264"
                   Category="Advanced">
-    <StringProperty.Description>Enter any custom constants for your application in this text box. Entries should be delimited by commas, using this form: Name1="Value1",Name2="Value2",Name3="Value3".</StringProperty.Description>
+    <StringProperty.Description>Enter any custom constants for your application in this text box.</StringProperty.Description>
     <StringProperty.ValueEditors>
       <ValueEditor EditorType="NameValueList" />
     </StringProperty.ValueEditors>
