@@ -32,6 +32,7 @@
     <PackageReference Include="Microsoft.DiaSymReader.Pdb2Pdb"      ExcludeAssets="all" GeneratePathProperty="true" />
     <!-- Path Property: PkgCodecov -->
     <PackageReference Include="Codecov"                             ExcludeAssets="all" GeneratePathProperty="true" />
+    <PackageReference Include="Microsoft.SourceLink.GitHub"         PrivateAssets="all" />
 
     <!-- CPS -->
     <PackageReference Include="Microsoft.VisualStudio.ProjectSystem" />
