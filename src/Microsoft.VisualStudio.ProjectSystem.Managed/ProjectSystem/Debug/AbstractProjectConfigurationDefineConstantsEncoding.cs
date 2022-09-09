@@ -24,6 +24,5 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
                 }
             }
         }
-
     }
 }
