@@ -17,9 +17,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
         {
             return new IProjectRuleSnapshotModel
             {
-                Items = items.Aggregate(
-                    ImmutableStringDictionary<IImmutableDictionary<string, string>>.EmptyOrdinal,
-                    (current, item) => current.Add(item, ImmutableStringDictionary<string>.EmptyOrdinal))
+                Items = items.ToDictionary<string, string, IImmutableDictionary<string, string>>(i => i, i => ImmutableStringDictionary<string>.EmptyOrdinal)
             };
         }
 
@@ -27,9 +25,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
         {
             return new IProjectRuleSnapshotModel
             {
-                Items = ImmutableStringDictionary<IImmutableDictionary<string, string>>.EmptyOrdinal.Add(
-                    itemSpec,
-                    ImmutableStringDictionary<string>.EmptyOrdinal.Add(metadataName, metadataValue))
+                Items = new Dictionary<string, IImmutableDictionary<string, string>>
+                {
+                    { itemSpec, ImmutableStringDictionary<string>.EmptyOrdinal.Add(metadataName, metadataValue) }
+                }
             };
         }
 
@@ -37,9 +36,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
         {
             return new IProjectRuleSnapshotModel
             {
-                Items = ImmutableStringDictionary<IImmutableDictionary<string, string>>.EmptyOrdinal.Add(
-                    itemSpec,
-                    metadata.ToImmutableDictionary(pair => pair.MetadataName, pair => pair.MetadataValue, StringComparer.Ordinal))
+                Items = new Dictionary<string, IImmutableDictionary<string, string>>
+                {
+                    { itemSpec, metadata.ToImmutableDictionary(pair => pair.MetadataName, pair => pair.MetadataValue, StringComparer.Ordinal) }
+                }
             };
         }
 
@@ -47,23 +47,19 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
         {
             return new IProjectRuleSnapshotModel
             {
-                Items = ImmutableStringDictionary<IImmutableDictionary<string, string>>.EmptyOrdinal.AddRange(
-                    items.Select(
-                        item => new KeyValuePair<string, IImmutableDictionary<string, string>>(
-                            item.itemSpec,
-                            ImmutableStringDictionary<string>.EmptyOrdinal.Add(item.metadataName, item.metadataValue))))
+                Items = items.ToDictionary(i => i.itemSpec, i => (IImmutableDictionary<string, string>)ImmutableStringDictionary<string>.EmptyOrdinal.Add(i.metadataName, i.metadataValue))
             };
         }
 
         private protected static IProjectRuleSnapshotModel Union(params IProjectRuleSnapshotModel[] models)
         {
-            var items = ImmutableDictionary<string, IImmutableDictionary<string, string>>.Empty;
+            var items = new Dictionary<string, IImmutableDictionary<string, string>>();
 
             foreach (var model in models)
             {
                 foreach ((string key, IImmutableDictionary<string, string> value) in model.Items)
                 {
-                    items = items.Add(key, value);
+                    items[key] = value;
                 }
             }
 

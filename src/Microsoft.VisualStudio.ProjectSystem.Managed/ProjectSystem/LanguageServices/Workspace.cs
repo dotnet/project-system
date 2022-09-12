@@ -373,7 +373,7 @@ internal sealed class Workspace : OnceInitializedOnceDisposedUnderLockAsync, IWo
         await OnProjectChangedAsync(
             _buildProgressRegistration,
             update,
-            hasChange: static e => e.Value.BuildRuleUpdate.ProjectChanges[ProjectBuildRuleName].Difference.AnyChanges || e.Value.CommandLineArgumentsSnapshot.IsChanged,
+            hasChange: e => e.Value.BuildRuleUpdate.ProjectChanges[ProjectBuildRuleName].Difference.AnyChanges,
             applyFunc: ApplyProjectBuild,
             _unloadCancellationToken);
 
@@ -388,37 +388,37 @@ internal sealed class Workspace : OnceInitializedOnceDisposedUnderLockAsync, IWo
         {
             IProjectChangeDescription projectChange = update.Value.BuildRuleUpdate.ProjectChanges[ProjectBuildRuleName];
 
-            // There should always be some change to publish, as we have already called BeginBatch by this point
-            // TODO understand why the CLA snapshot's changed state differs from the project update, as they are supposed to travel together in sync
-            //Assumes.True(projectChange.Difference.AnyChanges && update.Value.CommandLineArgumentsSnapshot.IsChanged);
-
-            IComparable version = GetConfiguredProjectVersion(update);
-
-            // We just need to pass all options to Roslyn
-            Context.SetOptions(update.Value.CommandLineArgumentsSnapshot.Arguments);
-
-            ProcessCommandLine(version, projectChange.Difference, state, cancellationToken);
+            ProcessCommandLine();
 
             ProcessProjectBuildFailure(projectChange.After);
 
-            void ProcessCommandLine(IComparable version, IProjectChangeDiff differences, ContextState state, CancellationToken cancellationToken)
+            void ProcessCommandLine()
             {
-                if (!differences.AnyChanges)
+                SetContextCommandLine();
+
+                InvokeCommandLineUpdateHandlers();
+
+                void SetContextCommandLine()
                 {
-                    return;
+                    var orderedSource = projectChange.After.Items as IDataWithOriginalSource<KeyValuePair<string, IImmutableDictionary<string, string>>>;
+
+                    Assumes.NotNull(orderedSource);
+
+                    // Pass command line to Roslyn
+                    Context.SetOptions(orderedSource.SourceData.Select(pair => pair.Key).ToImmutableArray());
                 }
 
-                ICommandLineParserService? parser = _commandLineParserServices.FirstOrDefault()?.Value;
-
-                Assumes.Present(parser);
-
-                BuildOptions added = parser.Parse(differences.AddedItems, _baseDirectory);
-                BuildOptions removed = parser.Parse(differences.RemovedItems, _baseDirectory);
-
-                ProcessCommandLineHandlers();
-
-                void ProcessCommandLineHandlers()
+                void InvokeCommandLineUpdateHandlers()
                 {
+                    ICommandLineParserService? parser = _commandLineParserServices.FirstOrDefault()?.Value;
+
+                    Assumes.Present(parser);
+
+                    IComparable version = GetConfiguredProjectVersion(update);
+
+                    BuildOptions added   = parser.Parse(projectChange.Difference.AddedItems,   _baseDirectory);
+                    BuildOptions removed = parser.Parse(projectChange.Difference.RemovedItems, _baseDirectory);
+
                     foreach (ICommandLineHandler commandLineHandler in _updateHandlers.CommandLineHandlers)
                     {
                         cancellationToken.ThrowIfCancellationRequested();

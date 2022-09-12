@@ -120,21 +120,23 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             upToDateCheckImplicitConfiguredInput ??= UpToDateCheckImplicitConfiguredInput.CreateEmpty(ProjectConfigurationFactory.Create("testConfiguration"));
 
             _lastSuccessfulBuildStartTime = lastSuccessfulBuildStartTimeUtc;
-            
+
             projectSnapshot ??= new Dictionary<string, IProjectRuleSnapshotModel>();
 
             if (!projectSnapshot.ContainsKey(ConfigurationGeneral.SchemaName))
             {
                 projectSnapshot[ConfigurationGeneral.SchemaName] = new IProjectRuleSnapshotModel
                 {
-                    Properties = ImmutableStringDictionary<string>.EmptyOrdinal
-                        .Add("MSBuildProjectFullPath", _projectPath)
-                        .Add("MSBuildProjectDirectory", _projectDir)
-                        .Add("MSBuildAllProjects", _msBuildAllProjects)
-                        .Add("OutputPath", outDir)
-                        .Add("OutDir", outDir)
-                        .Add(ConfigurationGeneral.DisableFastUpToDateCheckProperty, disableFastUpToDateCheck.ToString())
-                        .Add(ConfigurationGeneral.DisableFastUpToDateCopyAlwaysOptimizationProperty, disableFastUpToDateCopyAlwaysOptimization.ToString())
+                    Properties = new Dictionary<string, string>(StringComparers.PropertyNames)
+                    {
+                        { "MSBuildProjectFullPath", _projectPath },
+                        { "MSBuildProjectDirectory", _projectDir },
+                        { "MSBuildAllProjects", _msBuildAllProjects },
+                        { "OutputPath", outDir },
+                        { "OutDir", outDir },
+                        { ConfigurationGeneral.DisableFastUpToDateCheckProperty, disableFastUpToDateCheck.ToString() },
+                        { ConfigurationGeneral.DisableFastUpToDateCopyAlwaysOptimizationProperty, disableFastUpToDateCopyAlwaysOptimization.ToString() },
+                    }
                 };
             }
 
@@ -428,15 +430,20 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 // 1. With the item type we are testing, marked CopyAlways.
                 // 2. With a different item type, with no copy specification.
 
-                var items = ImmutableStringDictionary<IImmutableDictionary<string, string>>.EmptyOrdinal
-                    .Add("CopyMe", ImmutableStringDictionary<string>.EmptyOrdinal
-                        .Add("CopyToOutputDirectory", "Always")); // ALWAYS COPY THIS ITEM
+                var items = new Dictionary<string, IImmutableDictionary<string, string>>(StringComparers.ItemNames)
+                {
+                    {
+                        "CopyMe",
+                        ImmutableStringDictionary<string>.EmptyOrdinal
+                            .Add("CopyToOutputDirectory", "Always") // ALWAYS COPY THIS ITEM
+                    }
+                };
 
-                var compileItems = ImmutableStringDictionary<IImmutableDictionary<string, string>>.EmptyOrdinal;
+                var compileItems = new Dictionary<string, IImmutableDictionary<string, string>>(StringComparers.ItemNames);
 
                 ref var items2 = ref (itemType == Compile.SchemaName ? ref items : ref compileItems);
 
-                items2 = items2.Add("OtherInput", ImmutableStringDictionary<string>.EmptyOrdinal);
+                items2.Add("OtherInput", ImmutableStringDictionary<string>.EmptyOrdinal);
 
                 var sourceSnapshot = new Dictionary<string, IProjectRuleSnapshotModel>
                 {
@@ -850,11 +857,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 [CopyUpToDateMarker.SchemaName] = SimpleItems("OutputMarker"),
                 [ResolvedCompilationReference.SchemaName] = new IProjectRuleSnapshotModel
                 {
-                    Items = ImmutableStringDictionary<IImmutableDictionary<string, string>>.EmptyOrdinal
-                        .Add("Reference1", ImmutableStringDictionary<string>.EmptyOrdinal
-                            .Add("CopyUpToDateMarker", "Reference1MarkerPath")
-                            .Add("ResolvedPath", "Reference1ResolvedPath")
-                            .Add("OriginalPath", "Reference1OriginalPath"))
+                    Items = new Dictionary<string, IImmutableDictionary<string, string>>(StringComparers.ItemNames)
+                    {
+                        {
+                            "Reference1",
+                            ImmutableStringDictionary<string>.EmptyOrdinal
+                                .Add("CopyUpToDateMarker", "Reference1MarkerPath")
+                                .Add("ResolvedPath", "Reference1ResolvedPath")
+                                .Add("OriginalPath", "Reference1OriginalPath")
+                        }
+                    }
                 }
             };
 
@@ -891,11 +903,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 [CopyUpToDateMarker.SchemaName] = SimpleItems("OutputMarker"),
                 [ResolvedCompilationReference.SchemaName] = new IProjectRuleSnapshotModel
                 {
-                    Items = ImmutableStringDictionary<IImmutableDictionary<string, string>>.EmptyOrdinal
-                        .Add("Reference1", ImmutableStringDictionary<string>.EmptyOrdinal
-                            .Add("CopyUpToDateMarker", "Reference1MarkerPath")
-                            .Add("ResolvedPath", "Reference1ResolvedPath")
-                            .Add("OriginalPath", "Reference1OriginalPath"))
+                    Items = new Dictionary<string, IImmutableDictionary<string, string>>(StringComparers.ItemNames)
+                    {
+                        {
+                            "Reference1",
+                            ImmutableStringDictionary<string>.EmptyOrdinal
+                                .Add("CopyUpToDateMarker", "Reference1MarkerPath")
+                                .Add("ResolvedPath", "Reference1ResolvedPath")
+                                .Add("OriginalPath", "Reference1OriginalPath")
+                        }
+                    }
                 }
             };
 
@@ -973,11 +990,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 [UpToDateCheckBuilt.SchemaName] = SimpleItems(@"bin\Debug\Built.dll"),
                 [ResolvedCompilationReference.SchemaName] = new IProjectRuleSnapshotModel
                 {
-                    Items = ImmutableStringDictionary<IImmutableDictionary<string, string>>.EmptyOrdinal
-                        .Add("Reference1", ImmutableStringDictionary<string>.EmptyOrdinal
-                            .Add("CopyUpToDateMarker", "Reference1MarkerPath")
-                            .Add("ResolvedPath", resolvedReferencePath)
-                            .Add("OriginalPath", @"..\Project\Reference1OriginalPath"))
+                    Items = new Dictionary<string, IImmutableDictionary<string, string>>(StringComparers.ItemNames)
+                    {
+                        {
+                            "Reference1",
+                            ImmutableStringDictionary<string>.EmptyOrdinal
+                                .Add("CopyUpToDateMarker", "Reference1MarkerPath")
+                                .Add("ResolvedPath", resolvedReferencePath)
+                                .Add("OriginalPath", @"..\Project\Reference1OriginalPath")
+                        }
+                    }
                 }
             };
 

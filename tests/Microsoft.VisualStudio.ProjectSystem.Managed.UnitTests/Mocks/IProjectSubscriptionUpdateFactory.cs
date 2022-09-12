@@ -59,7 +59,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
             if (CurrentState is not null)
             {
-                currentState = CurrentState.Select(x => new KeyValuePair<string, IProjectRuleSnapshot>(x.Key, x.Value)).ToImmutableDictionary();
+                currentState = CurrentState.Select(x => new KeyValuePair<string, IProjectRuleSnapshot>(x.Key, x.Value.ToActualModel())).ToImmutableDictionary();
             }
             else
             {
