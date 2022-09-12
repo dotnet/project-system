@@ -47,7 +47,7 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
         Private Const HighDpiMode_PerMonitor = "PerMonitor"
         Private Const HighDpiMode_PerMonitorV2 = "PerMonitorV2"
         Private Const HighDpiMode_DpiUnawareGdiScaled = "DpiUnawareGdiScaled"
-        
+
         Friend Const SingleFileGeneratorName As String = "MyApplicationCodeGenerator"
 
         ''' <summary>
