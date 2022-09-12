@@ -164,10 +164,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
                 compileStopWatch!.Stop();
                 _telemetryService.PostProperties(TelemetryEventName.TempPEProcessQueue, new[]
                 {
-                    ( TelemetryPropertyName.TempPECompileCount,        (object)compileCount),
-                    ( TelemetryPropertyName.TempPEInitialQueueLength,  initialQueueLength),
-                    ( TelemetryPropertyName.TempPECompileWasCancelled, cancelled),
-                    ( TelemetryPropertyName.TempPECompileDuration,     compileStopWatch.ElapsedMilliseconds)
+                    ( TelemetryPropertyName.TempPE.CompileCount,        (object)compileCount),
+                    ( TelemetryPropertyName.TempPE.InitialQueueLength,  initialQueueLength),
+                    ( TelemetryPropertyName.TempPE.CompileWasCancelled, cancelled),
+                    ( TelemetryPropertyName.TempPE.CompileDuration,     compileStopWatch.ElapsedMilliseconds)
                 });
             }
         }
@@ -204,7 +204,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
             {
                 _telemetryService.PostProperties(TelemetryEventName.TempPECompileOnDemand, new[]
                 {
-                    ( TelemetryPropertyName.TempPEInitialQueueLength, (object)initialQueueLength)
+                    ( TelemetryPropertyName.TempPE.InitialQueueLength, (object)initialQueueLength)
                 });
             }
 

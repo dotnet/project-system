@@ -224,9 +224,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
             {
                 _telemetryService.PostProperties(TelemetryEventName.NuGetRestoreCycleDetected, new[]
                 {
-                    (TelemetryPropertyName.NuGetRestoreCycleDetectedRestoreDurationMillis, (object)_stopwatch.Elapsed.TotalMilliseconds),
-                    (TelemetryPropertyName.NuGetRestoreCycleDetectedRestoreSuccesses, _nuGetRestoreSuccesses),
-                    (TelemetryPropertyName.NuGetRestoreCycleDetectedRestoreCyclesDetected, _nuGetRestoreCyclesDetected)
+                    (TelemetryPropertyName.NuGetRestoreCycleDetected.RestoreDurationMillis, (object)_stopwatch.Elapsed.TotalMilliseconds),
+                    (TelemetryPropertyName.NuGetRestoreCycleDetected.RestoreSuccesses, _nuGetRestoreSuccesses),
+                    (TelemetryPropertyName.NuGetRestoreCycleDetected.RestoreCyclesDetected, _nuGetRestoreCyclesDetected)
                 });
             }
         }

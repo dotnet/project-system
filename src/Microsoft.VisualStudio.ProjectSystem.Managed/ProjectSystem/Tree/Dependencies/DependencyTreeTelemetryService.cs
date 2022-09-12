@@ -130,16 +130,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies
             {
                 _telemetryService.PostProperties(TelemetryEventName.TreeUpdatedUnresolved, new[]
                 {
-                    (TelemetryPropertyName.TreeUpdatedUnresolvedProject, (object)_projectId),
-                    (TelemetryPropertyName.TreeUpdatedUnresolvedObservedAllRules, observedAllRules)
+                    (TelemetryPropertyName.TreeUpdated.UnresolvedProject, (object)_projectId),
+                    (TelemetryPropertyName.TreeUpdated.UnresolvedObservedAllRules, observedAllRules)
                 });
             }
             else
             {
                 _telemetryService.PostProperties(TelemetryEventName.TreeUpdatedResolved, new[]
                 {
-                    (TelemetryPropertyName.TreeUpdatedResolvedProject, (object)_projectId),
-                    (TelemetryPropertyName.TreeUpdatedResolvedObservedAllRules, observedAllRules)
+                    (TelemetryPropertyName.TreeUpdated.ResolvedProject, (object)_projectId),
+                    (TelemetryPropertyName.TreeUpdated.ResolvedObservedAllRules, observedAllRules)
                 });
             }
 
@@ -201,13 +201,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies
 
                 _telemetryService.PostProperties(TelemetryEventName.ProjectUnloadDependencies, new (string, object)[]
                 {
-                    (TelemetryPropertyName.ProjectUnloadDependenciesVersion, 2),
-                    (TelemetryPropertyName.ProjectUnloadDependenciesProject, _projectId),
-                    (TelemetryPropertyName.ProjectUnloadProjectAgeMillis, _projectLoadTime.ElapsedMilliseconds),
-                    (TelemetryPropertyName.ProjectUnloadTotalDependencyCount, totalDependencyCount),
-                    (TelemetryPropertyName.ProjectUnloadUnresolvedDependencyCount, unresolvedDependencyCount),
-                    (TelemetryPropertyName.ProjectUnloadTargetFrameworkCount, _dependenciesSnapshot.DependenciesByTargetFramework.Count),
-                    (TelemetryPropertyName.ProjectUnloadDependencyBreakdown, new ComplexPropertyValue(data.ToArray()))
+                    (TelemetryPropertyName.ProjectUnload.DependenciesVersion, 2),
+                    (TelemetryPropertyName.ProjectUnload.DependenciesProject, _projectId),
+                    (TelemetryPropertyName.ProjectUnload.ProjectAgeMillis, _projectLoadTime.ElapsedMilliseconds),
+                    (TelemetryPropertyName.ProjectUnload.TotalDependencyCount, totalDependencyCount),
+                    (TelemetryPropertyName.ProjectUnload.UnresolvedDependencyCount, unresolvedDependencyCount),
+                    (TelemetryPropertyName.ProjectUnload.TargetFrameworkCount, _dependenciesSnapshot.DependenciesByTargetFramework.Count),
+                    (TelemetryPropertyName.ProjectUnload.DependencyBreakdown, new ComplexPropertyValue(data.ToArray()))
                 });
             }
         }
