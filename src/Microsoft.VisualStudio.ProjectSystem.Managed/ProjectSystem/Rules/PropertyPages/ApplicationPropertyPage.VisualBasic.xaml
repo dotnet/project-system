@@ -127,7 +127,10 @@
     <EnumProperty.Metadata>
       <NameValuePair Name="VisibilityCondition">
         <NameValuePair.Value>
-          (has-evaluated-value "Application" "UseApplicationFramework" true)
+          (and 
+            (has-evaluated-value "Application" "UseApplicationFramework" true)
+            (has-net-core-app-version-or-greater "3.0")
+          )
         </NameValuePair.Value>
       </NameValuePair>
     </EnumProperty.Metadata>
