@@ -53,6 +53,7 @@ jobs:
       noDecompress: true
       isLargeApp: true
       verbosityLevel: minimal
+      preserveTempFiles: true
     # APIScan requires an Azure Identity to run. That is provided via an Azure service principal.
     # - https://microsoft.sharepoint.com/teams/apiscan/APIScan%20User%20Wiki/authentication_using_AAD_identities.aspx
     # - https://microsoft.sharepoint.com/teams/apiscan/Lists/Contacts%20%20System%20Account%20and%20Wrappers/AllItems.aspx?skipSignal=true
