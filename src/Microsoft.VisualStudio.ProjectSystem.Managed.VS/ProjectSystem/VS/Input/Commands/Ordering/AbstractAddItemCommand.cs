@@ -29,7 +29,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.Ordering
         {
             IProjectTree? nodeToAddTo = GetNodeToAddTo(node);
 
-            if (nodeToAddTo != null && _addItemDialogService.CanAddNewOrExistingItemTo(nodeToAddTo) && CanAdd(node))
+            if (nodeToAddTo is not null && _addItemDialogService.CanAddNewOrExistingItemTo(nodeToAddTo) && CanAdd(node))
             {
                 return GetCommandStatusResult.Handled(commandText, CommandStatus.Enabled);
             }
@@ -45,7 +45,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.Ordering
         {
             IProjectTree? nodeToAddTo = GetNodeToAddTo(node);
 
-            if (nodeToAddTo == null)
+            if (nodeToAddTo is null)
             {
                 return false;
             }

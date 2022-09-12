@@ -240,7 +240,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
                 info.LaunchDebugEngineGuid
             };
 
-            if (info.AdditionalDebugEngines != null)
+            if (info.AdditionalDebugEngines is not null)
             {
                 guids.AddRange(info.AdditionalDebugEngines);
             }
@@ -304,7 +304,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
         private static string? GetSerializedEnvironmentString(IDictionary<string, string> environment)
         {
             // If no dictionary was set, or its empty, the debugger wants null for its environment block.
-            if (environment == null || environment.Count == 0)
+            if (environment is null || environment.Count == 0)
             {
                 return null;
             }

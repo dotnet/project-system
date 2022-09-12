@@ -114,7 +114,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.ProjectImports
                         _externalFilesManager.Value.TransferDocument(item.FilePath, item.FilePath, windowFrame);
 
                         // Show the document window
-                        if (windowFrame != null)
+                        if (windowFrame is not null)
                         {
                             ErrorHandler.ThrowOnFailure(windowFrame.Show());
                         }
@@ -153,7 +153,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.ProjectImports
                 }
             }
 
-            if (exceptions != null)
+            if (exceptions is not null)
             {
                 if (exceptions.Count == 1)
                 {

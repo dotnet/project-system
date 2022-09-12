@@ -147,7 +147,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
             var provider = new ActiveConfiguredProjectsProvider(services, project);
 
-            if (dimensionProviders != null)
+            if (dimensionProviders is not null)
             {
                 foreach (var dimensionProvider in dimensionProviders)
                 {

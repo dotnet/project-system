@@ -13,7 +13,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
             mock.Setup(p => p.Services)
                    .Returns(services);
 
-            if (scope != null)
+            if (scope is not null)
             {
                 mock.Setup(p => p.LoadedUnconfiguredProjects)
                     .Returns(new[] { UnconfiguredProjectFactory.Create(scope: scope, configuredProject: configuredProject) });

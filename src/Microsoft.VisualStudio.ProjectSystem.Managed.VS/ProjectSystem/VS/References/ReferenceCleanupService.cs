@@ -78,7 +78,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.References
 
             var references = new List<ProjectSystemReferenceInfo>();
 
-            foreach (var keyValuePair in s_mapReferenceTypeToHandler.Where(h => h.Value != null))
+            foreach (var keyValuePair in s_mapReferenceTypeToHandler.Where(h => h.Value is not null))
             {
                 references.AddRange(await keyValuePair.Value.GetReferencesAsync(selectedConfiguredProject, cancellationToken));
             }
@@ -106,7 +106,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.References
             var referenceHandler = s_mapReferenceTypeToHandler[referenceUpdate.ReferenceInfo.ReferenceType];
 
             IProjectSystemUpdateReferenceOperation? command = null;
-            if (referenceHandler != null)
+            if (referenceHandler is not null)
             {
                 command = CreateCommand(referenceUpdate, referenceHandler, activeConfiguredProject, cancellationToken);
             }

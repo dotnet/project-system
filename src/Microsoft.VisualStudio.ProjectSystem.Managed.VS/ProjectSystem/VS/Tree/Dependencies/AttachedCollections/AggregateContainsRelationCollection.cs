@@ -108,7 +108,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedColl
         {
             foreach (AggregateContainsRelationCollectionSpan span in _spans)
             {
-                if (span.Items != null)
+                if (span.Items is not null)
                 {
                     foreach (IRelatableItem item in span.Items)
                     {
@@ -126,7 +126,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedColl
                 {
                     foreach (AggregateContainsRelationCollectionSpan span in _spans)
                     {
-                        if (span.Items == null)
+                        if (span.Items is null)
                         {
                             continue;
                         }
@@ -160,7 +160,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedColl
 
                 foreach (AggregateContainsRelationCollectionSpan span in _spans)
                 {
-                    if (span.Items == null)
+                    if (span.Items is null)
                     {
                         continue;
                     }

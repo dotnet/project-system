@@ -85,7 +85,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
 
                 IVsStartupProjectsListService? startupProjectsListService = await _startupProjectsListService.GetValueOrNullAsync();
 
-                if (startupProjectsListService == null)
+                if (startupProjectsListService is null)
                 {
                     return;
                 }

@@ -72,7 +72,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties.Package
             // <PackagePath></PackagePath> node, which causes the value during pack to default to "content;contentFiles" which is not the intended directory.
             // See discussion here for more details: https://github.com/dotnet/project-system/issues/7642
             string packagePath = @"\";
-            if (existingItem != null)
+            if (existingItem is not null)
             {
                 packagePath = await existingItem.Metadata.GetEvaluatedPropertyValueAsync(PackagePathMetadataName);
                 // The new filepath is the same as the current. No item changes are required.

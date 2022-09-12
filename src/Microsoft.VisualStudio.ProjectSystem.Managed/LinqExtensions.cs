@@ -50,7 +50,7 @@ namespace Microsoft.VisualStudio
         {
             foreach (T? item in source)
             {
-                if (item != null)
+                if (item is not null)
                     yield return item;
             }
         }

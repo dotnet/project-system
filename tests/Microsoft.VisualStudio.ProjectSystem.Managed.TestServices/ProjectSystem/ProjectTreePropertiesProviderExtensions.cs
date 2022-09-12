@@ -96,7 +96,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
                 get
                 {
                     IProjectTree? parent = _tree.Parent;
-                    if (parent == null)
+                    if (parent is null)
                         return ProjectTreeFlags.Empty;
 
                     return parent.Flags;

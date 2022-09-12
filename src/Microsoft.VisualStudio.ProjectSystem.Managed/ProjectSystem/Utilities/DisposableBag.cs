@@ -21,7 +21,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Utilities
         {
             ImmutableHashSet<IDisposable>? disposables = Interlocked.Exchange(ref _disposables, null);
 
-            if (disposables != null)
+            if (disposables is not null)
             {
                 foreach (IDisposable? item in disposables)
                 {
@@ -39,7 +39,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Utilities
         /// <param name="disposable">The value to be included in this disposable bag.</param>
         public void Add(IDisposable? disposable)
         {
-            if (disposable == null)
+            if (disposable is null)
             {
                 return;
             }
@@ -49,7 +49,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Utilities
                 ref _disposables,
                 (set, item) =>
                 {
-                    if (set == null)
+                    if (set is null)
                     {
                         shouldDisposeArgument = true;
                         return null!;

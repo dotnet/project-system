@@ -36,7 +36,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
 
             var dependencyById = previousSnapshot.Dependencies.ToDictionary(IDependencyExtensions.GetDependencyId);
 
-            if (changes != null && changes.RemovedNodes.Count != 0)
+            if (changes is not null && changes.RemovedNodes.Count != 0)
             {
                 foreach (IDependencyModel removed in changes.RemovedNodes)
                 {
@@ -46,7 +46,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
                 anyChanges = true;
             }
 
-            if (changes != null && changes.AddedNodes.Count != 0)
+            if (changes is not null && changes.AddedNodes.Count != 0)
             {
                 foreach (IDependencyModel added in changes.AddedNodes)
                 {
@@ -116,7 +116,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
                     // Check whether we have a match of form "Caption (Suffix)".
                     string? suffix = GetSuffix(other);
 
-                    if (suffix != null)
+                    if (suffix is not null)
                     {
                         int expectedItemSpecIndex = dependency.Caption.Length + 2; // " (".Length
                         int expectedLength = expectedItemSpecIndex + suffix.Length + 1; // ")".Length
@@ -132,7 +132,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
 
             if (shouldApplyAlias)
             {
-                if (matchingDependency != null)
+                if (matchingDependency is not null)
                 {
                     // Change the matching dependency's caption too
                     IDependency modifiedMatching = matchingDependency.WithCaption(caption: GetAlias(matchingDependency));

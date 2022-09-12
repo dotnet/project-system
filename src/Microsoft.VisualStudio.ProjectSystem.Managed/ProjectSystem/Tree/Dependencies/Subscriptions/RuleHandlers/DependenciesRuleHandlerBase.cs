@@ -102,7 +102,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Subscriptions.R
         {
             IDependencyModel? model = CreateDependencyModelForRule(addedItem, evaluationRuleSnapshot, projectChange.After, isResolvedItem, changesBuilder, targetFramework, projectFullPath);
 
-            if (model != null && (isEvaluatedItemSpec == null || isEvaluatedItemSpec(model.Id)))
+            if (model is not null && (isEvaluatedItemSpec is null || isEvaluatedItemSpec(model.Id)))
             {
                 changesBuilder.Added(targetFramework, model);
             }
@@ -152,7 +152,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Subscriptions.R
 
             IImmutableDictionary<string, string>? evaluationProperties = evaluationRuleSnapshot.GetProjectItemProperties(originalItemSpec);
 
-            if (evaluationProperties == null)
+            if (evaluationProperties is null)
             {
                 if (ResolvedItemRequiresEvaluatedItem)
                 {

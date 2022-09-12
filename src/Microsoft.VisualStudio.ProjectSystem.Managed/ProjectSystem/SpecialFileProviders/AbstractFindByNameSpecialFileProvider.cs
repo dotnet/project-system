@@ -28,7 +28,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.SpecialFileProviders
         protected override Task<string?> GetDefaultFileAsync(IProjectTreeProvider provider, IProjectTree root)
         {
             string? projectPath = provider.GetRootedAddNewItemDirectory(root);
-            if (projectPath == null)  // Root has DisableAddItem
+            if (projectPath is null)  // Root has DisableAddItem
                 return TaskResult.Null<string>();
 
             string path = Path.Combine(projectPath, _fileName);

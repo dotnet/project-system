@@ -71,7 +71,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties.Package
 
             string existingPropertyValue = await defaultProperties.GetEvaluatedPropertyValueAsync(ConfigurationGeneral.ApplicationIconProperty);
             IProjectItem? existingItem = await GetExistingContentItemAsync(existingPropertyValue);
-            if (existingItem != null)
+            if (existingItem is not null)
             {
                 await existingItem.SetUnevaluatedIncludeAsync(propertyValue);
             }

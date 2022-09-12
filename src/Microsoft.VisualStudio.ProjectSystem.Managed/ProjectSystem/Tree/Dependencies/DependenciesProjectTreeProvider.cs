@@ -105,13 +105,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies
             // If the node's FilePath is null, we are going to return null regardless of whether
             // this node belongs to the dependencies tree or not, so avoid extra work by retuning
             // immediately here.
-            if (node.FilePath == null)
+            if (node.FilePath is null)
             {
                 return null;
             }
 
             // Walk up from node through all its ancestors.
-            for (IProjectTree? step = node; step != null; step = step.Parent)
+            for (IProjectTree? step = node; step is not null; step = step.Parent)
             {
                 if (step.Flags.Contains(DependencyTreeFlags.DependenciesRootNode))
                 {
@@ -199,7 +199,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies
                 // Handle the removal of normal reference Item Nodes (this excludes any shared import nodes).
                 foreach (IProjectTree node in referenceItemNodes)
                 {
-                    if (node.BrowseObjectProperties?.Context == null)
+                    if (node.BrowseObjectProperties?.Context is null)
                     {
                         // If node does not have an IRule with valid ProjectPropertiesContext we can not
                         // get its itemsSpec. If nodes provided by custom IProjectDependenciesSubTreeProvider
@@ -216,8 +216,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies
                             (item, t) => string.Equals(item.ItemType, t, StringComparisons.ItemTypes),
                             nodeItemContext.ItemType);
 
-                    Report.IfNot(unresolvedReferenceItem != null, "Cannot find reference to remove.");
-                    if (unresolvedReferenceItem != null)
+                    Report.IfNot(unresolvedReferenceItem is not null, "Cannot find reference to remove.");
+                    if (unresolvedReferenceItem is not null)
                     {
                         project.RemoveItem(unresolvedReferenceItem);
                     }
@@ -378,7 +378,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies
             // Take the highest priority view provider
             IDependenciesTreeViewProvider? viewProvider = _viewProviders.FirstOrDefault()?.Value;
 
-            if (viewProvider == null)
+            if (viewProvider is null)
             {
                 return;
             }
@@ -496,9 +496,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies
                 itemType: dependency.SchemaItemType,
                 itemName: itemSpec);
 
-            Rule? schema = dependency.SchemaName != null ? browseObjectsCatalog.GetSchema(dependency.SchemaName) : null;
+            Rule? schema = dependency.SchemaName is not null ? browseObjectsCatalog.GetSchema(dependency.SchemaName) : null;
 
-            if (schema == null)
+            if (schema is null)
             {
                 // Since we have no browse object, we still need to create *something* so
                 // that standard property pages can pop up.
@@ -524,12 +524,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies
 
             async Task<IImmutableDictionary<string, IPropertyPagesCatalog>> GetNamedCatalogsAsync()
             {
-                if (catalogs != null)
+                if (catalogs is not null)
                 {
                     return catalogs.NamedCatalogs;
                 }
 
-                if (_namedCatalogs == null)
+                if (_namedCatalogs is null)
                 {
                     Assumes.NotNull(ActiveConfiguredProject);
                     Assumes.Present(ActiveConfiguredProject.Services.PropertyPagesCatalog);

@@ -34,7 +34,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         /// <returns><see langword="true"/> if the property was found with a non-empty value, otherwise <see langword="false"/>.</returns>
         public static bool TryGetStringProperty(this IImmutableDictionary<string, string> properties, string key, [NotNullWhen(returnValue: true)] out string? stringValue)
         {
-            if (properties != null &&
+            if (properties is not null &&
                 properties.TryGetValue(key, out stringValue) &&
                 !string.IsNullOrEmpty(stringValue))
             {

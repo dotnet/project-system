@@ -79,7 +79,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         {
             get
             {
-                if (_projectPathToProjectConfigurationsMap == null)
+                if (_projectPathToProjectConfigurationsMap is null)
                 {
                     Interlocked.CompareExchange(ref _projectPathToProjectConfigurationsMap, new(), null);
                 }
@@ -180,7 +180,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
 
         public void RegisterProjectConfiguration(Guid projectGuid, ConfiguredProject project)
         {
-            if (project.ProjectConfiguration == null)
+            if (project.ProjectConfiguration is null)
             {
                 const string errorMessage = "Cannot register the project configuration for a null project configuration.";
                 TraceUtilities.TraceError(errorMessage);
@@ -427,7 +427,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
 
             if (_solutionCookie != VSConstants.VSCOOKIE_NIL)
             {
-                if (_vsSolution != null)
+                if (_vsSolution is not null)
                 {
                     Verify.HResult(_vsSolution.UnadviseSolutionEvents(_solutionCookie));
                     _solutionCookie = VSConstants.VSCOOKIE_NIL;

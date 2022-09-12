@@ -61,7 +61,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         {
             ComplexTargetFramework storedProperties = await GetStoredPropertiesAsync();
 
-            if (storedProperties.TargetFrameworkMoniker != null)
+            if (storedProperties.TargetFrameworkMoniker is not null)
             {
                 // Changing the Target Framework Moniker
                 if (StringComparers.PropertyLiteralValues.Equals(propertyName, InterceptedTargetFrameworkProperty))
@@ -247,7 +247,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
 
             IImmutableDictionary<string, string>? targetFrameworkProperties = targetFrameworkRuleSnapshot.GetProjectItemProperties(targetFrameworkMoniker);
 
-            if (targetFrameworkProperties != null &&
+            if (targetFrameworkProperties is not null &&
                 targetFrameworkProperties.TryGetValue(SupportedTargetFramework.AliasProperty, out string? targetFrameworkAlias))
             {
                 return targetFrameworkAlias;

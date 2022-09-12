@@ -17,7 +17,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.SpecialFileProviders
         {
             // First look for the actual App.xaml first
             IProjectTree? node = FindAppXamlFile(root);
-            if (node == null)
+            if (node is null)
             {
                 // Otherwise, find a candidate that we might be able to add to the project
                 node = await base.FindFileAsync(provider, root);

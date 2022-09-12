@@ -64,7 +64,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Build
         {
             ProjectConfiguration? activeConfig = _activeConfiguredProjectProvider.ActiveProjectConfiguration;
 
-            if (activeConfig == null)
+            if (activeConfig is null)
                 return false;
 
             return _configuredProject.ProjectConfiguration.EqualIgnoringTargetFramework(activeConfig);

@@ -84,7 +84,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.Ordering
 
         private bool CanMove()
         {
-            return _action != OrderingMoveAction.NoOp && _target != null;
+            return _action != OrderingMoveAction.NoOp && _target is not null;
         }
     }
 }

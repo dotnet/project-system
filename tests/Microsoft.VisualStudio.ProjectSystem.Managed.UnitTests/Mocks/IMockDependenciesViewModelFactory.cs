@@ -21,7 +21,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
                 mock.Setup(x => x.GetDependenciesRootIcon(It.IsAny<DiagnosticLevel>())).Returns(getDependenciesRootIcon.Value);
             }
 
-            if (createRootViewModel != null)
+            if (createRootViewModel is not null)
             {
                 foreach (var d in createRootViewModel)
                 {
@@ -40,7 +40,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
                 }
             }
 
-            if (createTargetViewModel != null)
+            if (createTargetViewModel is not null)
             {
                 foreach (var d in createTargetViewModel)
                 {

@@ -172,7 +172,7 @@ namespace Microsoft.VisualStudio.Telemetry
 
         private static VsTelemetryService CreateInstance(Action<TelemetryEvent>? action = null)
         {
-            if (action == null)
+            if (action is null)
                 return new VsTelemetryService();
 
             // Override PostEventToSession to avoid actually sending to telemetry

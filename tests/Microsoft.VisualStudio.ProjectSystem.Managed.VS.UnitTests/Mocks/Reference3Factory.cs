@@ -33,7 +33,7 @@ namespace VSLangProj80
                 .Returns(path);
 
             mock.SetupGet(r => r.Resolved)
-                .Returns(path != null);
+                .Returns(path is not null);
 
             mock.SetupGet(r => r.Type)
                 .Returns(type);

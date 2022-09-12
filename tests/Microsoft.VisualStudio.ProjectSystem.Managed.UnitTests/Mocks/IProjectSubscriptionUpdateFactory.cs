@@ -57,7 +57,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
             IImmutableDictionary<string, IProjectChangeDescription> projectChanges;
             ProjectConfiguration projectConfiguration;
 
-            if (CurrentState != null)
+            if (CurrentState is not null)
             {
                 currentState = CurrentState.Select(x => new KeyValuePair<string, IProjectRuleSnapshot>(x.Key, x.Value)).ToImmutableDictionary();
             }
@@ -66,7 +66,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
                 currentState = ImmutableDictionary<string, IProjectRuleSnapshot>.Empty;
             }
 
-            if (ProjectChanges != null)
+            if (ProjectChanges is not null)
             {
                 projectChanges = ProjectChanges.Select(x => new KeyValuePair<string, IProjectChangeDescription>(x.Key, x.Value.ToActualModel())).ToImmutableDictionary();
             }
@@ -75,7 +75,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
                 projectChanges = ImmutableDictionary<string, IProjectChangeDescription>.Empty;
             }
 
-            if (ProjectConfiguration != null)
+            if (ProjectConfiguration is not null)
             {
                 projectConfiguration = ProjectConfiguration.ToActualModel();
             }

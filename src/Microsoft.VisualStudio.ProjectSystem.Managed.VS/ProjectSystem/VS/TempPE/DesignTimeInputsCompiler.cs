@@ -92,7 +92,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
 
         protected override async Task DisposeCoreAsync(bool initialized)
         {
-            if (_compileActionBlock != null)
+            if (_compileActionBlock is not null)
             {
                 // This will stop our blocks taking any more input
                 _compileActionBlock.Complete();
@@ -128,7 +128,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
 
                     // Grab the next file to compile off the queue
                     QueueItem? item = _queue.Pop();
-                    if (item == null)
+                    if (item is null)
                     {
                         break;
                     }

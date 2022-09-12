@@ -102,7 +102,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Order
                 return _orderedMap.TryGetValue(propertyContext.ItemName, out displayOrder);
             }
 
-            return propertyContext.Metadata != null &&
+            return propertyContext.Metadata is not null &&
                 propertyContext.Metadata.TryGetValue(FullPathProperty, out string fullPath) &&
                 _orderedMap.TryGetValue(fullPath, out displayOrder);
         }
@@ -123,7 +123,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Order
                 if (TryGetDisplayOrder(propertyContext, out int displayOrder))
                 {
                     // sometimes these items temporarily have null item type. Ignore these cases
-                    if (propertyContext.ItemType != null)
+                    if (propertyContext.ItemType is not null)
                     {
                         propertyValues2.DisplayOrder = displayOrder;
                     }

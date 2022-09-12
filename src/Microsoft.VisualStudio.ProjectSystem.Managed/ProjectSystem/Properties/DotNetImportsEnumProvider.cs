@@ -33,9 +33,9 @@ internal class DotNetImportsEnumProvider : IDynamicEnumValuesProvider, IDynamicE
         Project? project = _workspace.CurrentSolution.Projects.FirstOrDefault(
             proj => StringComparers.Paths.Equals(proj.FilePath, _unconfiguredProject.FullPath));
 
-        Compilation? compilation = project == null ? null : await project.GetCompilationAsync();
+        Compilation? compilation = project is null ? null : await project.GetCompilationAsync();
 
-        if (compilation == null)
+        if (compilation is null)
         {
             return Enumerable.Empty<string>();
         }

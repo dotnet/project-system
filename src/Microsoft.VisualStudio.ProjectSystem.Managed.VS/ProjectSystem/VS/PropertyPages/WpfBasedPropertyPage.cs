@@ -87,7 +87,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
 
         private void OnControlStatusChanged(object sender, EventArgs e)
         {
-            if (_control == null)
+            if (_control is null)
             {
                 return;
             }

@@ -53,7 +53,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
         /// </summary>
         public Task<IReadOnlyList<IDebugLaunchSettings>> QueryDebugTargetsAsync(DebugLaunchOptions launchOptions, ILaunchProfile activeProfile)
         {
-            if (activeProfile.OtherSettings != null &&
+            if (activeProfile.OtherSettings is not null &&
                 activeProfile.OtherSettings.TryGetValue("ErrorString", out object? objErrorString) &&
                 objErrorString is string errorString)
             {

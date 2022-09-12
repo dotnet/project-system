@@ -32,7 +32,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedColl
         {
             unchecked
             {
-                return (Path.GetHashCode() * 397) ^ (Profile != null ? Profile.GetHashCode() : 0);
+                return (Path.GetHashCode() * 397) ^ (Profile is not null ? Profile.GetHashCode() : 0);
             }
         }
     }

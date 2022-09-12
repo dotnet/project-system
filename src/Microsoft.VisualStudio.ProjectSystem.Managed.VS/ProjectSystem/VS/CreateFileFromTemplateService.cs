@@ -46,7 +46,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
 
             string templateFilePath = ((Solution2)_dte.Value.Solution).GetProjectItemTemplate(templateFile, templateLanguage);
 
-            if (templateFilePath != null)
+            if (templateFilePath is not null)
             {
                 HierarchyId parentId = _projectVsServices.VsProject.GetHierarchyId(directoryName);
                 var result = new VSADDRESULT[1];

@@ -20,7 +20,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties.InterceptedProjectP
         {
             ActiveConfiguredObjects<ConfiguredProject>? configuredProjects = await _projectProvider.GetActiveConfiguredProjectsAsync();
 
-            if (configuredProjects == null)
+            if (configuredProjects is null)
             {
                 return "";
             }
