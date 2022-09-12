@@ -86,8 +86,7 @@ public class WorkspaceFactoryTests
     {
         ConfiguredProject configuredProject = ConfiguredProjectFactory.Create();
         IProjectSubscriptionUpdate buildRuleUpdate = IProjectSubscriptionUpdateFactory.CreateEmpty();
-        CommandLineArgumentsSnapshot commandLineArguments = new(ImmutableArray<string>.Empty, isChanged: false);
-        var workspaceUpdate = WorkspaceUpdate.FromBuild((configuredProject, buildRuleUpdate, commandLineArguments));
+        var workspaceUpdate = WorkspaceUpdate.FromBuild((configuredProject, buildRuleUpdate));
 
         return new ProjectVersionedValue<WorkspaceUpdate>(
             workspaceUpdate,

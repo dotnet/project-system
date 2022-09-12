@@ -115,39 +115,29 @@ internal class WorkspaceFactory : IWorkspaceFactory
 
             evaluationTransformBlock.LinkTo(orderingBlock, DataflowOption.PropagateCompletion),
 
-            ProjectDataSources.JoinUpstreamDataSources(joinableTaskFactory, _projectService.Services.FaultHandler, source.ProjectRuleSource, source.SourceItemsRuleSource)
+            ProjectDataSources.JoinUpstreamDataSources(joinableTaskFactory, _projectService.Services.FaultHandler, source.ActiveConfiguredProjectSource, source.ProjectRuleSource, source.SourceItemsRuleSource)
         });
 
         #endregion
 
         #region Build data subscriptions
 
-        // A block that provides the command line arguments for a configured project.
-        // We will link this to the slice's active configured project.
-        // NOTE this will go away once CPS exposes a way to access snapshot data while preserving order (being worked on for 17.4)
-        var commandLineArgumentsBlock = new UnwrapChainedProjectValueDataSource<ConfiguredProject, CommandLineArgumentsSnapshot>(
-            _unconfiguredProject,
-            configuredProject => configuredProject.Services.ExportProvider.GetExportedValue<ICommandLineArgumentsDataSource>());
-
-        var buildTransformBlock = DataflowBlockSlim.CreateTransformBlock<IProjectVersionedValue<(ConfiguredProject ConfiguredProject, IProjectSubscriptionUpdate BuildUpdate, CommandLineArgumentsSnapshot CommandLineArgumentsSnapshot)>, IProjectVersionedValue<WorkspaceUpdate>>
-            (update => update.Derive(WorkspaceUpdate.FromBuild));
+        var buildTransformBlock
+            = DataflowBlockSlim.CreateTransformBlock<IProjectVersionedValue<(ConfiguredProject ConfiguredProject, IProjectSubscriptionUpdate BuildUpdate)>, IProjectVersionedValue<WorkspaceUpdate>>
+                (update => update.Derive(WorkspaceUpdate.FromBuild));
 
         workspace.ChainDisposal(new DisposableBag
         {
-            commandLineArgumentsBlock,
-
-            source.ActiveConfiguredProjectSource.SourceBlock.LinkTo(commandLineArgumentsBlock, DataflowOption.PropagateCompletion),
-
             ProjectDataSources.SyncLinkTo(
                 source.ActiveConfiguredProjectSource.SourceBlock.SyncLinkOptions(),
                 source.ProjectBuildRuleSource.SourceBlock.SyncLinkOptions(DataflowOption.WithRuleNames(ProjectBuildRuleName)),
-                commandLineArgumentsBlock.SourceBlock.SyncLinkOptions(),
                 target: buildTransformBlock,
-                linkOptions: DataflowOption.PropagateCompletion),
+                linkOptions: DataflowOption.PropagateCompletion,
+                cancellationToken: cancellationToken),
 
             buildTransformBlock.LinkTo(orderingBlock, DataflowOption.PropagateCompletion),
 
-            ProjectDataSources.JoinUpstreamDataSources(joinableTaskFactory, _projectService.Services.FaultHandler, source.ActiveConfiguredProjectSource, source.ProjectBuildRuleSource, commandLineArgumentsBlock)
+            ProjectDataSources.JoinUpstreamDataSources(joinableTaskFactory, _projectService.Services.FaultHandler, source.ActiveConfiguredProjectSource, source.ProjectBuildRuleSource)
         });
 
         #endregion

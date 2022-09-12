@@ -26,7 +26,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
         public override IProjectChangeDescription ToActualModel()
         {
-            return new ActualModel(After, Before, Difference);
+            return new ActualModel(After.ToActualModel(), Before.ToActualModel(), Difference);
         }
 
         private sealed class ActualModel : IProjectChangeDescription
