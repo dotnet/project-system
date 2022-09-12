@@ -66,6 +66,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedColl
 
                 var allParentItems = new List<object>();
 
+                childItem.ContainedByCollection = new AggregateContainedByRelationCollection(allParentItems);
+
                 foreach (IRelation relation in containedByRelations)
                 {
                     IEnumerable<IRelatableItem>? relationParentItems = relation.CreateContainedByItems(childItem);
@@ -91,8 +93,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedColl
                         }
                     }
                 }
-
-                childItem.ContainedByCollection = new AggregateContainedByRelationCollection(allParentItems);
             }
 
             IRelatableItem DeduplicateItem(IRelatableItem item)
