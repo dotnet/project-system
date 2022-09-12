@@ -129,7 +129,7 @@
         <NameValuePair.Value>
           (and 
             (has-evaluated-value "Application" "UseApplicationFramework" true)
-            (has-net-core-app-version-or-greater "3.0")
+            (has-net-core-app-version-or-greater "6.0")
           )
         </NameValuePair.Value>
       </NameValuePair>
