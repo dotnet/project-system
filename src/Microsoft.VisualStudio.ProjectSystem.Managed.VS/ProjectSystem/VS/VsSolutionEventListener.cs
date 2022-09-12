@@ -54,7 +54,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
 
             if ((bool)isFullyLoaded)
             {
-                _loadedInHost.SetResult();
+                _loadedInHost.TrySetResult();
             }
         }
 
@@ -92,7 +92,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
 
         public int OnAfterBackgroundSolutionLoadComplete()
         {
-            _loadedInHost.SetResult();
+            _loadedInHost.TrySetResult();
             return HResult.OK;
         }
 
