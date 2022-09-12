@@ -17,5 +17,6 @@ if(-Not $version)
   $version = "$(. "$PSScriptRoot\GetVisualStudioMinimumVersion.ps1").0"
 }
 
-# Note: Along with VS installations, this finds BuildTools' MSBuild.exe via '-products *'. However, the repo currently cannot deploy the VS Extensions via BuildTools.
-(& "$installerPath\vswhere.exe" -all -prerelease -latest -version $version -products * -requires Microsoft.Component.MSBuild -find MSBuild\**\Bin\MSBuild.exe) | Select-Object -First 1
+# This only identifies Visual Studio installations since we do not use the '-products *' parameter. Otherwise, it would also include Visual Studio Build Tools.
+# See: https://github.com/microsoft/vswhere/wiki/FAQ#why-doesnt-vswhere-find-visual-studio-build-tools
+(& "$installerPath\vswhere.exe" -all -prerelease -latest -version $version -requires Microsoft.Component.MSBuild -find MSBuild\**\Bin\MSBuild.exe) | Select-Object -First 1

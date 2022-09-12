@@ -32,7 +32,7 @@
     <IsPackable>false</IsPackable>
     <BuildForLiveUnitTesting>false</BuildForLiveUnitTesting>
     <!-- Runs the DeployVsixExtensionFiles from the VSSDK to enable the extension on the local machine. -->
-    <DeployExtension>true</DeployExtension>
+    <DeployExtension Condition="'$(CIBuild)' != 'true'">true</DeployExtension>
 
     <StartAction>Program</StartAction>
     <StartProgram>$(DevEnvDir)devenv.exe</StartProgram>
