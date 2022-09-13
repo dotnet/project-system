@@ -55,7 +55,7 @@
       <trans-unit id="ImplicitUsingEditor_AddUsing">
         <source>Using</source>
         <target state="new">Using</target>
-        <note />
+        <note>Refers to the implicit using "includes" that will be added</note>
       </trans-unit>
       <trans-unit id="ImplicitUsingEditor_AddUsingButton">
         <source>Add Using</source>
@@ -65,22 +65,22 @@
       <trans-unit id="ImplicitUsingEditor_ListItemAlias">
         <source>Alias</source>
         <target state="new">Alias</target>
-        <note />
+        <note>Refers to the implicit using "Alias" text when displayed as a list item</note>
       </trans-unit>
       <trans-unit id="ImplicitUsingEditor_ListItemDelete">
         <source>Delete</source>
         <target state="new">Delete</target>
-        <note />
+        <note>The action of deleting an implicit using list item</note>
       </trans-unit>
       <trans-unit id="ImplicitUsingEditor_ListItemIncludes">
         <source>Using Includes</source>
         <target state="new">Using Includes</target>
-        <note />
+        <note>Refers to the implicit using "Includes" text when displayed as a list item</note>
       </trans-unit>
       <trans-unit id="ImplicitUsingEditor_ListItemIsStatic">
-        <source>Is Static</source>
-        <target state="new">Is Static</target>
-        <note />
+        <source>Static</source>
+        <target state="new">Static</target>
+        <note>Refers to the implicit using "Static" value when displayed as a list item</note>
       </trans-unit>
       <trans-unit id="ImplicitUsingEditor_ListViewAccessibleName">
         <source>Implicit global usings list</source>

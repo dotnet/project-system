@@ -140,7 +140,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties.Controls
 
             try
             {
-                if (JsonConvert.DeserializeObject(StringList, typeof(List<ImplicitUsingsValueProvider.ImplicitUsing>)) is not List<ImplicitUsingsValueProvider.ImplicitUsing> rawImplicitUsings)
+                if (JsonConvert.DeserializeObject(StringList, typeof(List<ImplicitUsing>)) is not List<ImplicitUsing> rawImplicitUsings)
                 {
                     return;
                 }
@@ -164,7 +164,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties.Controls
                 
                 if (UsingCollectionState.Count == 0)
                 {
-                    foreach (ImplicitUsingsValueProvider.ImplicitUsing implicitUsing in currentlySetImplicitUsings)
+                    foreach (ImplicitUsing implicitUsing in currentlySetImplicitUsings)
                     {
                         UsingCollectionState.Add(new ImplicitUsingModel(implicitUsing.Include, implicitUsing.Alias ?? string.Empty, implicitUsing.IsStatic, implicitUsing.IsReadOnly, this));
                     }
@@ -173,7 +173,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties.Controls
                 {
                     int stringIndex = 0;
 
-                    foreach (ImplicitUsingsValueProvider.ImplicitUsing implicitUsing in currentlySetImplicitUsings)
+                    foreach (ImplicitUsing implicitUsing in currentlySetImplicitUsings)
                     {
                         if (stringIndex < UsingCollectionState.Count)
                         {
@@ -382,9 +382,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties.Controls
             }
         }
 
-        public ImplicitUsingsValueProvider.ImplicitUsing ToImplicitUsing()
+        public ImplicitUsing ToImplicitUsing()
         {
-            return new ImplicitUsingsValueProvider.ImplicitUsing(
+            return new ImplicitUsing(
                 Include,
                 IsStatic ? null : string.IsNullOrWhiteSpace(Alias) ? null : Alias,
                 IsStatic,

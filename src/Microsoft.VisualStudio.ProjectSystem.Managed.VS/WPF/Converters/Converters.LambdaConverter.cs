@@ -52,7 +52,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Utilities
             {
                 try
                 {
-                    if (convertBack != null && value is TTo to)
+                    if (convertBack is not null && value is TTo to)
                     {
                         return convertBack(to);
                     }

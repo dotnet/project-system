@@ -52,7 +52,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Utilities
 
             public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture)
             {
-                if (convertBack != null && value is TTo to)
+                if (convertBack is not null && value is TTo to)
                 {
                     var values = convertBack(to);
                     return new object[] { values.Item1, values.Item2 };
@@ -104,7 +104,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Utilities
 
             public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture)
             {
-                if (convertBack != null && value is TTo to)
+                if (convertBack is not null && value is TTo to)
                 {
                     var values = convertBack(to);
                     return new object[] { values.Item1, values.Item2, values.Item3 };
@@ -157,7 +157,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Utilities
 
             public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture)
             {
-                if (convertBack != null && value is TTo to)
+                if (convertBack is not null && value is TTo to)
                 {
                     var values = convertBack(to);
                     return new object[] { values.Item1, values.Item2, values.Item3, values.Item4 };

@@ -30,8 +30,8 @@ internal class ImplicitUsingsValueProvider : InterceptingPropertyValueProviderBa
                 .GetItems(UsingItemType)
                 .Select(item =>
                 {
-                    string? isStaticMetadata = item.DirectMetadata.FirstOrDefault(metadata => metadata.Name.Equals("Static", StringComparison.Ordinal))?.EvaluatedValue;
-                    string? aliasMetadata = item.DirectMetadata.FirstOrDefault(metadata => metadata.Name.Equals("Alias", StringComparison.Ordinal))?.EvaluatedValue;
+                    string? isStaticMetadata = item.DirectMetadata.FirstOrDefault(metadata => metadata.Name.Equals("Static", StringComparisons.PropertyValues))?.EvaluatedValue;
+                    string? aliasMetadata = item.DirectMetadata.FirstOrDefault(metadata => metadata.Name.Equals("Alias", StringComparisons.PropertyValues))?.EvaluatedValue;
 
                     return new ImplicitUsing(
                         item.EvaluatedInclude,
@@ -62,8 +62,6 @@ internal class ImplicitUsingsValueProvider : InterceptingPropertyValueProviderBa
 
     public override async Task<string?> OnSetPropertyValueAsync(string propertyName, string unevaluatedPropertyValue, IProjectProperties defaultProperties, IReadOnlyDictionary<string, string>? dimensionalConditions = null)
     {
-        await _threadingService.SwitchToUIThread();
-
         if (JsonConvert.DeserializeObject(unevaluatedPropertyValue, typeof(List<ImplicitUsing>)) is not List<ImplicitUsing> usingsToSet)
         {
             return null;
@@ -89,7 +87,7 @@ internal class ImplicitUsingsValueProvider : InterceptingPropertyValueProviderBa
                 }
                 catch (Exception ex)
                 {
-                    // if an import comes from a targets file, or else if there's a race condition we can't remove it. otherwise throw
+                    // If there's a race condition we can't remove it. otherwise throw
                     if (ex is not ArgumentException && ex is not InvalidOperationException)
                     {
                         throw;
@@ -115,7 +113,7 @@ internal class ImplicitUsingsValueProvider : InterceptingPropertyValueProviderBa
                 {
 
                     List<ImplicitUsing> existingUsingsOfIncludeToRemove = existingUsings.FindAll(existingUsing =>
-                        string.Equals(usingToSet.Include, existingUsing.Include, StringComparison.Ordinal) && !existingUsing.IsReadOnly && !usingToSet.Equals(existingUsing));
+                        string.Equals(usingToSet.Include, existingUsing.Include, StringComparisons.PropertyValues) && !existingUsing.IsReadOnly && !usingToSet.Equals(existingUsing));
 
                     if (existingUsingsOfIncludeToRemove.Count > 0)
                     {
@@ -145,58 +143,5 @@ internal class ImplicitUsingsValueProvider : InterceptingPropertyValueProviderBa
         }
 
         return null;
-    }
-
-    internal class ImplicitUsing
-    {
-        public string Include { get; }
-        public string? Alias { get; }
-        public bool IsStatic { get; }
-        public bool IsReadOnly { get; }
-        
-        public ImplicitUsing(string include, string? alias, bool isStatic, bool isReadOnly)
-        {
-            Include = include;
-            Alias = alias;
-            IsStatic = isStatic;
-            IsReadOnly = isReadOnly;
-        }
-
-        protected bool Equals(ImplicitUsing other)
-        {
-            return Include == other.Include && Alias == other.Alias && IsStatic == other.IsStatic && IsReadOnly == other.IsReadOnly;
-        }
-
-        public override bool Equals(object? obj)
-        {
-            if (ReferenceEquals(null, obj))
-            {
-                return false;
-            }
-
-            if (ReferenceEquals(this, obj))
-            {
-                return true;
-            }
-
-            if (obj.GetType() != GetType())
-            {
-                return false;
-            }
-            
-            return Equals((ImplicitUsing)obj);
-        }
-
-        public override int GetHashCode()
-        {
-            unchecked
-            {
-                int hashCode = Include.GetHashCode();
-                hashCode = (hashCode * 397) ^ (Alias != null ? Alias.GetHashCode() : 0);
-                hashCode = (hashCode * 397) ^ IsStatic.GetHashCode();
-                hashCode = (hashCode * 397) ^ IsReadOnly.GetHashCode();
-                return hashCode;
-            }
-        }
     }
 }

@@ -53,7 +53,7 @@ internal static class BindingBehavior
             {
                 DependencyProperty? property = GetUpdatePropertyOnEnterPressed((DependencyObject)e.Source);
 
-                if (property != null && e.Source is DependencyObject o)
+                if (property is not null && e.Source is DependencyObject o)
                 {
                     BindingExpression? binding = BindingOperations.GetBindingExpression(o, property);
 

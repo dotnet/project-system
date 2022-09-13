@@ -38,8 +38,8 @@
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|ImplicitUsingsEditor|Description">
-        <source>Manage which implicit global usings to use in your application.</source>
-        <target state="new">Manage which implicit global usings to use in your application.</target>
+        <source>Manage common global usings directives for your project to reference.</source>
+        <target state="new">Manage common global usings directives for your project to reference.</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|ImplicitUsingsEditor|DisplayName">

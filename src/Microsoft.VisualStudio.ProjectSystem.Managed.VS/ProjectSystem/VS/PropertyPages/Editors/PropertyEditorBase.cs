@@ -52,7 +52,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Implementation.PropertyPages.D
 
         protected PropertyEditorBase(string? unconfiguredDataTemplateName, string? configuredDataTemplateName, string? propertyDataTemplateName = null)
         {
-            if (propertyDataTemplateName != null)
+            if (propertyDataTemplateName is not null)
             {
                 lazyPropertyDataTemplate = new(() =>
                 {
@@ -63,7 +63,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Implementation.PropertyPages.D
                 });
             }
 
-            if (unconfiguredDataTemplateName != null)
+            if (unconfiguredDataTemplateName is not null)
             {
                 lazyUnconfiguredDataTemplate = new(() =>
                 {
@@ -72,7 +72,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Implementation.PropertyPages.D
                 });
             }
 
-            if (configuredDataTemplateName != null)
+            if (configuredDataTemplateName is not null)
             {
                 lazyConfiguredDataTemplate = new(() =>
                 {
