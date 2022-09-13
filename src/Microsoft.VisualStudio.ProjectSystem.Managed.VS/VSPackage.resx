@@ -117,36 +117,6 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="10" xml:space="preserve">
-    <value>A project for creating a class library that targets .NET Core.</value>
-  </data>
-  <data name="11" xml:space="preserve">
-    <value>xUnit Test Project (.NET Core)</value>
-  </data>
-  <data name="12" xml:space="preserve">
-    <value>A project that contains xUnit.net tests that can run on .NET Core on Windows, Linux and MacOS.</value>
-  </data>
-  <data name="13" xml:space="preserve">
-    <value>NUnit Test Project (.NET Core)</value>
-  </data>
-  <data name="14" xml:space="preserve">
-    <value>A project that contains NUnit tests that can run on .NET Core on Windows, Linux and MacOS.</value>
-  </data>
-  <data name="3" xml:space="preserve">
-    <value>Console App (.NET Core)</value>
-  </data>
-  <data name="4" xml:space="preserve">
-    <value>A project for creating a command-line application that can run on .NET Core on Windows, Linux and MacOS.</value>
-  </data>
-  <data name="5" xml:space="preserve">
-    <value>Class Library (.NET Standard)</value>
-  </data>
-  <data name="6" xml:space="preserve">
-    <value>A project for creating a class library that targets .NET Standard.</value>
-  </data>
-  <data name="9" xml:space="preserve">
-    <value>Class Library (.NET Core)</value>
-  </data>
   <data name="21" xml:space="preserve">
     <value>Visual Basic</value>
   </data>
