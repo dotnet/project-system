@@ -1,3 +1,5 @@
+# Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
+
 $previousSha = '09c9fb467c042c5441ca2cde0742af9d88954a7e'
 $currentSha = 'aa3a7acfdc903f398584936976560041d1cf24c6'
 # BUILD_REPOSITORY_URI
@@ -46,7 +48,7 @@ $commitsJson = $commitsClean | ConvertFrom-Json
 # $filtered = $commitsJson | Where-Object { $isPr = $_.subject -match "^Merge pull request #(\d+) from"; if($isPr) { $prNumbers += $matches[1] }; $isPr }
 
 # Filter the commits to only PR merges and replace 'subject' with only the PR number.
-$pullRequests = $commitsJson | Where-Object { $isPr = $_.subject -match "^Merge pull request #(\d+) from"; if($isPr) { $_.subject = $matches[1] }; $isPr }
+$pullRequests = $commitsJson | Where-Object { $isPr = $_.subject -match '^Merge pull request #(\d+) from'; if($isPr) { $_.subject = $matches[1] }; $isPr }
 
 $description += $pullRequests | ForEach-Object { "- [($($_.subject)) $($_.body)]($repoUrl/pull/$($_.subject))" } | Out-String
 

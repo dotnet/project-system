@@ -1,0 +1,83 @@
+# Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
+
+# Name: DotNet-Project-System-Tagger
+# URL: https://dev.azure.com/devdiv/DevDiv/_build?definitionId=9675
+
+# Creates a Git tag in our repo when a VS Insertion PR is merged.
+
+###################################################################################################################################################################
+# PIPELINE METADATA
+###################################################################################################################################################################
+
+# Disable CI builds for this pipeline.
+# See: https://docs.microsoft.com/azure/devops/pipelines/yaml-schema/trigger?view=azure-pipelines#examples
+trigger: none
+
+# Disable PR builds for this pipeline.
+# See: https://docs.microsoft.com/azure/devops/pipelines/yaml-schema/pr?view=azure-pipelines#examples
+pr: none
+
+resources:
+  # https://stackoverflow.com/a/63270937/294804
+  repositories:
+  - repository: VS
+    name: VS
+    type: git
+    trigger:
+      branches:
+        include:
+        - main
+      paths:
+        include:
+        # File containing the package version for Managed/Managed.VS packages.
+        - src/ConfigData/Packages/ProjectSystem/Managed.props
+        # File containing the package version for AppDesigner/Editors packages.
+        - src/ConfigData/Packages/Wizard/packages.props
+    # trigger:
+    #   branches:
+    #     include:
+    #     # The branch names are defined based on a pattern as part of the MicroBuildInsertVsPayload task in generate-insertion.yml.
+    #     # Pattern: team/[TeamName]/[PipelineName]-[PipelineBuildNumber]-[InsertionAttemptCount]
+    #     - team/DotNet-Project-System/*
+
+pool:
+  # Agent Queue: https://devdiv.visualstudio.com/DevDiv/_settings/agentqueues?queueId=3123&view=jobs
+  name: VSEngSS-MicroBuild2022-1ES
+  # Demands Docs: https://docs.microsoft.com/azure/devops/pipelines/process/demands?view=azure-devops&tabs=yaml#manually-entered-demands
+  demands: Cmd
+
+variables:
+  # https://docs.microsoft.com/dotnet/core/tools/dotnet-environment-variables#dotnet_skip_first_time_experience
+  DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true
+  # https://docs.microsoft.com/dotnet/core/tools/dotnet-environment-variables#dotnet_nologo
+  DOTNET_NOLOGO: true
+  # https://devdiv.visualstudio.com/DevDiv/_wiki/wikis/DevDiv.wiki/26284/Enabling-SBOM-For-Your-Component-Insertion-into-VS?anchor=1.-add-the-%27manifest-generator-task%27-to-your-pipeline
+  Packaging.EnableSBOMSigning: true
+  # Opt out of automatically injecting Codesign Validation into the pipeline. We run Codesign Validation as part of the Compliance pipeline.
+  # See: https://aka.ms/gdn-injection
+  runCodesignValidationInjection: false
+  # Suspend enforcement of NuGet Single Feed Policy. See:
+  # - https://aka.ms/nugetmultifeed
+  # - https://docs.opensource.microsoft.com/tools/nuget_security_analysis/nuget_security_analysis/
+  # - https://docs.opensource.microsoft.com/tools/cg/how-to/nuget-multifeed-configuration/
+  # - https://onebranch.visualstudio.com/OneBranch/_wiki/wikis/OneBranch.wiki/5205/TSG-Build-Broken-Due-to-Using-Multiple-Feeds?anchor=setting-nugetsecurityanalysiswarninglevel-in-cdp
+  NugetSecurityAnalysisWarningLevel: none
+
+###################################################################################################################################################################
+# STEPS
+###################################################################################################################################################################
+
+steps:
+- powershell: |
+    cd '$(Pipeline.Workspace)/s/VS'
+    $commitTitle = (git log -1 --pretty=%s)
+    $hasShortCommitId = $commitTitle -match 'DotNet-Project-System \(\w+:\d+(\.\d+)*:(\w+)\)'
+    if($hasShortCommitId)
+    {
+      $shortCommitId = $matches[2]
+      $commitId = (git rev-parse $shortCommitId)
+
+      $tag = "DotNet-Project-System-$shortCommitId"
+      Write-Host "##vso[task.setvariable variable=Tag]$tag"
+      Write-Host "##vso[task.setvariable variable=ShortCommitId]$shortCommitId"
+    }
