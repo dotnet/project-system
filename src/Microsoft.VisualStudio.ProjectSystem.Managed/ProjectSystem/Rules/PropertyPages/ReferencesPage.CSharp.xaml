@@ -37,7 +37,7 @@
   
   <StringProperty Name="ImplicitUsingsEditor"
                        DisplayName="Manage Implicit Global Usings"
-                       Description="Manage which implicit global usings to use in your application."
+                       Description="Manage common global usings directives for your project to reference."
                        Category="General">
     <StringProperty.DataSource>
       <DataSource Persistence="ProjectFileWithInterception"

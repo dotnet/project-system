@@ -12,6 +12,8 @@ internal class ImplicitUsingsValueProvider : InterceptingPropertyValueProviderBa
     private readonly ConfiguredProject _configuredProject;
     private readonly IProjectThreadingService _threadingService;
 
+    private const string UsingItemType = "Using";
+
     [ImportingConstructor]
     public ImplicitUsingsValueProvider(IProjectAccessor projectAccessor, ConfiguredProject configuredProject, IProjectThreadingService threadingService)
     {
@@ -25,7 +27,7 @@ internal class ImplicitUsingsValueProvider : InterceptingPropertyValueProviderBa
         List<ImplicitUsing> usings = await _projectAccessor.OpenProjectForReadAsync(_configuredProject, project =>
         {
             return project
-                .GetItems("Using")
+                .GetItems(UsingItemType)
                 .Select(item =>
                 {
                     string? isStaticMetadata = item.DirectMetadata.FirstOrDefault(metadata => metadata.Name.Equals("Static", StringComparison.Ordinal))?.EvaluatedValue;
@@ -80,7 +82,7 @@ internal class ImplicitUsingsValueProvider : InterceptingPropertyValueProviderBa
                     await _projectAccessor.OpenProjectForWriteAsync(_configuredProject, project =>
                     {
                         project.RemoveItems(
-                            project.GetItems("Using").Where(i => string.Equals(existingUsing.Include, i.EvaluatedInclude, StringComparisons.ItemNames) && !i.IsImported)
+                            project.GetItems(UsingItemType).Where(i => string.Equals(existingUsing.Include, i.EvaluatedInclude, StringComparisons.ItemNames) && !i.IsImported)
                         );
                     });
 
@@ -118,7 +120,7 @@ internal class ImplicitUsingsValueProvider : InterceptingPropertyValueProviderBa
                     if (existingUsingsOfIncludeToRemove.Count > 0)
                     {
                         project.RemoveItems(
-                            project.GetItems("Using")
+                            project.GetItems(UsingItemType)
                                 .Where(i => string.Equals(usingToSet.Include, i.EvaluatedInclude, StringComparisons.ItemNames) && !i.IsImported)
                         );
                     }
@@ -136,7 +138,7 @@ internal class ImplicitUsingsValueProvider : InterceptingPropertyValueProviderBa
                             usingMetadata.Add(new KeyValuePair<string, string>("Static", usingToSet.IsStatic.ToString()));
                         }
                         
-                        project.AddItem("Using", usingToSet.Include, usingMetadata);
+                        project.AddItem(UsingItemType, usingToSet.Include, usingMetadata);
                     }
                 }
             });
