@@ -33,7 +33,7 @@ namespace Microsoft.VisualStudio.Collections
                 return true;
             }
 
-            if (x == null || y == null)
+            if (x is null || y is null)
             {
                 return false;
             }
@@ -79,7 +79,7 @@ namespace Microsoft.VisualStudio.Collections
         {
             int hashCode = 0;
 
-            if (obj != null)
+            if (obj is not null)
             {
                 IEqualityComparer<TKey> keyComparer = obj.Comparer ?? EqualityComparer<TKey>.Default;
                 IEqualityComparer<TValue> valueComparer = EqualityComparer<TValue>.Default;

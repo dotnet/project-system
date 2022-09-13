@@ -7,9 +7,9 @@ if /I "%1" == "/?" call :Usage && exit /b 1
 @REM Turn off dotnet CLI logo
 set DOTNET_NOLOGO=true
 
-@REM Sets the output of GetMSBuildPath.ps1 to the MSBuildPath environment variable
+@REM Sets the output of GetMSBuildPath.ps1 to the MSBuildPath environment variable.
 @REM https://stackoverflow.com/a/3417728/294804
-FOR /F "usebackq delims=" %%v IN (`powershell -NonInteractive -NoLogo -NoProfile -ExecutionPolicy Unrestricted -File "%~dp0eng\scripts\GetMSBuildPath.ps1" -versionJsonPath "%~dp0version.json"`) DO set "MSBuildPath=%%~v"
+FOR /F "usebackq delims=" %%v IN (`powershell -NonInteractive -NoLogo -NoProfile -ExecutionPolicy Unrestricted -File "%~dp0eng\scripts\GetMSBuildPath.ps1"`) DO set "MSBuildPath=%%~v"
 
 if not defined MSBuildPath (
     echo Visual Studio must be installed to allow building via MSBuild.

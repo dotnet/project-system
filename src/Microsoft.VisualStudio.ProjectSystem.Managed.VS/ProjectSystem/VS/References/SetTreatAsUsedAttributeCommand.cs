@@ -24,7 +24,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.References
         {
             IProjectItem item = await GetProjectItemAsync();
 
-            if (item == null)
+            if (item is null)
             {
                 return false;
             }
@@ -38,7 +38,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.References
         {
             IProjectItem item = await GetProjectItemAsync();
 
-            if (item == null)
+            if (item is null)
             {
                 return false;
             }

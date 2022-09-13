@@ -17,9 +17,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
     [AppliesTo(ProjectCapability.CSharpOrVisualBasicLanguageService)]
     internal class FileMoveNotificationListener : IFileMoveNotificationListener
     {
-        private const string PromptNamespaceUpdate = "SolutionNavigator.PromptNamespaceUpdate";
-        private const string EnableNamespaceUpdate = "SolutionNavigator.EnableNamespaceUpdate";
-
         private readonly UnconfiguredProject _unconfiguredProject;
         private readonly IUserNotificationServices _userNotificationServices;
         private readonly IUnconfiguredProjectVsServices _projectVsServices;
@@ -59,7 +56,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
         {
             Project? project = GetCurrentProject();
 
-            if (project is not null && TryGetFilesToMove(out List<string>? filesToMove, out string destination))
+            if (project is not null && TryGetFilesToMove(out List<(string file, string destination)>? filesToMove))
             {
                 _actions = await GetNamespaceUpdateActionsAsync();
             }
@@ -76,38 +73,59 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
                     proj => StringComparers.Paths.Equals(proj.FilePath, _projectVsServices.Project.FullPath));
             }
 
-            bool TryGetFilesToMove([NotNullWhen(returnValue: true)] out List<string>? filesToMove, out string destination)
+            bool TryGetFilesToMove([NotNullWhen(returnValue: true)] out List<(string file, string destination)>? filesToMove)
             {
-                destination = string.Empty;
                 filesToMove = null;
 
-                // TODO : Parse children in Folders
                 foreach (IFileMoveItem item in items)
+                {
+                    RecursiveTryGetFilesToMove(item, ref filesToMove);
+                }
+
+                return filesToMove is not null;
+            }
+
+            void RecursiveTryGetFilesToMove(IFileMoveItem? item, ref List<(string file, string destination)>? filesToMove)
+            {
+                if (item is null)
+                {
+                    return;
+                }
+
+                if (item.IsFolder)
+                {
+                    if (item is not ICopyPasteItem copyPasteItem)
+                    {
+                        return;
+                    }
+
+                    foreach (IFileMoveItem child in copyPasteItem.Children.Cast<IFileMoveItem>())
+                    {
+                        RecursiveTryGetFilesToMove(child, ref filesToMove);
+                    }
+                }
+                else
                 {
                     bool isCompileItem = StringComparers.ItemTypes.Equals(item.ItemType, Compile.SchemaName);
 
                     if (item.WithinProject && isCompileItem && !item.IsLinked && !item.IsFolder)
                     {
                         filesToMove ??= new();
-                        filesToMove.Add(item.Source);
-                        destination = item.Destination;
+                        filesToMove.Add((item.Source, item.Destination));
                     }
                 }
-
-                return filesToMove is not null;
             }
 
             async Task<List<(Renamer.RenameDocumentActionSet, string)>> GetNamespaceUpdateActionsAsync()
             {
-                string destinationFileRelative = _unconfiguredProject.MakeRelative(destination);
-                string destinationFolder = Path.GetDirectoryName(destinationFileRelative);
-
-                string[] documentFolders = destinationFolder.Split(Delimiter.Path, StringSplitOptions.RemoveEmptyEntries);
-
                 List<(Renamer.RenameDocumentActionSet, string)> actions = new();
 
-                foreach (string filenameWithPath in filesToMove)
+                foreach ((string filenameWithPath, string destination) in filesToMove)
                 {
+                    string destinationFileRelative = _unconfiguredProject.MakeRelative(destination);
+                    string destinationFolder = Path.GetDirectoryName(destinationFileRelative);
+                    string[] documentFolders = destinationFolder.Split(Delimiter.Path, StringSplitOptions.RemoveEmptyEntries);
+
                     string filename = Path.GetFileName(filenameWithPath);
 
                     Document? oldDocument = project.Documents.FirstOrDefault(d => StringComparers.Paths.Equals(d.FilePath, filenameWithPath));
@@ -147,8 +165,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
             {
                 ISettingsManager settings = await _settingsManagerService.GetValueAsync();
 
-                bool promptNamespaceUpdate = settings.GetValueOrDefault(PromptNamespaceUpdate, true);
-                bool enabledNamespaceUpdate = settings.GetValueOrDefault(EnableNamespaceUpdate, true);
+                bool promptNamespaceUpdate = settings.GetValueOrDefault(VsToolsOptions.OptionPromptNamespaceUpdate, true);
+                bool enabledNamespaceUpdate = settings.GetValueOrDefault(VsToolsOptions.OptionEnableNamespaceUpdate, true);
 
                 if (!enabledNamespaceUpdate || !promptNamespaceUpdate)
                 {
@@ -159,7 +177,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
 
                 bool confirmation = _userNotificationServices.Confirm(VSResources.UpdateNamespacePromptMessage, out promptNamespaceUpdate);
 
-                await settings.SetValueAsync(PromptNamespaceUpdate, !promptNamespaceUpdate, true);
+                await settings.SetValueAsync(VsToolsOptions.OptionPromptNamespaceUpdate, !promptNamespaceUpdate, true);
 
                 return confirmation;
             }

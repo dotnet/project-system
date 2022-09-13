@@ -44,14 +44,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedColl
 
             IProjectTree targetRootNode;
 
-            if (_dependenciesNode.FindChildWithFlags(DependencyTreeFlags.TargetNode) == null)
+            if (_dependenciesNode.FindChildWithFlags(DependencyTreeFlags.TargetNode) is null)
             {
                 // Tree does not show any target nodes
                 targetRootNode = _dependenciesNode;
             }
             else
             {
-                if (configuredProject.Services.ProjectSubscription == null)
+                if (configuredProject.Services.ProjectSubscription is null)
                 {
                     return null;
                 }
@@ -66,7 +66,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedColl
 
                 IProjectTree? targetNode = _dependenciesNode.FindChildWithFlags(ProjectTreeFlags.Create("$TFM:" + tf));
 
-                if (targetNode == null)
+                if (targetNode is null)
                 {
                     TraceUtilities.TraceError("Should not fail to find the target node.");
                     return null;

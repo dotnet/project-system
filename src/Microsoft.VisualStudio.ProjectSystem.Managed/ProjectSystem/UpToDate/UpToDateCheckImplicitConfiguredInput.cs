@@ -413,7 +413,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
                 foreach ((string item, IImmutableDictionary<string, string> metadata) in projectChangeDescription.After.Items)
                 {
-                    if (metadataPredicate != null && !metadataPredicate(metadata))
+                    if (metadataPredicate is not null && !metadataPredicate(metadata))
                     {
                         continue;
                     }
@@ -421,7 +421,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                     string? setNames = metadata.GetStringProperty(setPropertyName);
                     string kindName = metadata.GetStringProperty(kindPropertyName) ?? BuildUpToDateCheck.DefaultKindName;
 
-                    if (setNames != null)
+                    if (setNames is not null)
                     {
                         foreach (string setName in new LazyStringSplit(setNames, ';'))
                         {

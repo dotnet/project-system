@@ -28,7 +28,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Order
 
             var provider = new TreeItemOrderPropertyProvider(orderedItems, UnconfiguredProjectFactory.Create(fullPath: "X:\\Project\\"));
 
-            var metadata = rootedPath == null ? null : new Dictionary<string, string> { { "FullPath", rootedPath } }.ToImmutableDictionary();
+            var metadata = rootedPath is null ? null : new Dictionary<string, string> { { "FullPath", rootedPath } }.ToImmutableDictionary();
 
             var context = GetContext(itemName, itemType, isFolder, ProjectTreeFlags.ProjectRoot, metadata);
             var values = GetInitialValues();
@@ -61,7 +61,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Order
 
             var provider = new TreeItemOrderPropertyProvider(orderedItems, UnconfiguredProjectFactory.Create(fullPath: "X:\\Project\\"));
 
-            var metadata = rootedPath == null ? null : new Dictionary<string, string> { { "FullPath", rootedPath } }.ToImmutableDictionary();
+            var metadata = rootedPath is null ? null : new Dictionary<string, string> { { "FullPath", rootedPath } }.ToImmutableDictionary();
 
             var context = GetContext(itemName, itemType, isFolder, ProjectTreeFlags.ProjectRoot, metadata);
             var values = GetInitialValues();
@@ -87,7 +87,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Order
             solutionTree.ForEach(item =>
             {
                 var rootedPath = item.rootedPath;
-                var metadata = rootedPath == null ? null : new Dictionary<string, string> { { "FullPath", rootedPath } }.ToImmutableDictionary();
+                var metadata = rootedPath is null ? null : new Dictionary<string, string> { { "FullPath", rootedPath } }.ToImmutableDictionary();
 
                 var context = GetContext(item.itemName, item.itemType, item.isFolder,
                     item.isUnderProjectRoot ? ProjectTreeFlags.ProjectRoot : ProjectTreeFlags.Empty, metadata);
@@ -202,7 +202,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Order
             var provider = new TreeItemOrderPropertyProvider(orderedItems, UnconfiguredProjectFactory.Create(fullPath: "X:\\Project\\"));
 
             bool isUnderProjectRoot = rootedPath?.Contains("Tables") != true;
-            var metadata = rootedPath == null ? null : new Dictionary<string, string> { { "FullPath", rootedPath } }.ToImmutableDictionary();
+            var metadata = rootedPath is null ? null : new Dictionary<string, string> { { "FullPath", rootedPath } }.ToImmutableDictionary();
 
             var context = GetContext(itemName, itemType, isFolder,
                 isUnderProjectRoot ? ProjectTreeFlags.ProjectRoot : ProjectTreeFlags.Empty,
@@ -237,7 +237,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Order
             var provider = new TreeItemOrderPropertyProvider(orderedItems, UnconfiguredProjectFactory.Create(fullPath: "X:\\Project\\"));
 
             bool isUnderProjectRoot = rootedPath?.Contains("Tables") != true;
-            var metadata = rootedPath == null ? null : new Dictionary<string, string> { { "FullPath", rootedPath }, { "Link", linkPath ?? "" } }.ToImmutableDictionary();
+            var metadata = rootedPath is null ? null : new Dictionary<string, string> { { "FullPath", rootedPath }, { "Link", linkPath ?? "" } }.ToImmutableDictionary();
 
             var context = GetContext(itemName, itemType, isFolder,
                 isUnderProjectRoot ? ProjectTreeFlags.ProjectRoot : ProjectTreeFlags.Empty,

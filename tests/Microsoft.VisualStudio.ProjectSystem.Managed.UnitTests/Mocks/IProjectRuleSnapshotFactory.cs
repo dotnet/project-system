@@ -15,7 +15,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
             mock.SetupGet(r => r.Properties)
                 .Returns(dictionary);
 
-            if (items != null)
+            if (items is not null)
             {
                 mock.SetupGet(c => c.Items).Returns(items);
             }

@@ -4,7 +4,7 @@
     <body>
       <trans-unit id="BoolProperty|DefineDebug|Description">
         <source>Specify DEBUG as a compilation constant.</source>
-        <target state="new">Specify DEBUG as a compilation constant.</target>
+        <target state="translated">Especifique DEBUG como una constante de compilación.</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|DefineDebug|DisplayName">
@@ -14,7 +14,7 @@
       </trans-unit>
       <trans-unit id="BoolProperty|DefineTrace|Description">
         <source>Specify TRACE as a compilation constant.</source>
-        <target state="new">Specify TRACE as a compilation constant.</target>
+        <target state="translated">Especifique TRACE como una constante de compilación.</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|DefineTrace|DisplayName">
@@ -34,7 +34,7 @@
       </trans-unit>
       <trans-unit id="BoolProperty|Optimize|Description">
         <source>Enable compiler optimizations.</source>
-        <target state="new">Enable compiler optimizations.</target>
+        <target state="translated">Habilite las optimizaciones del compilador.</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|Optimize|DisplayName">
@@ -64,7 +64,7 @@
       </trans-unit>
       <trans-unit id="BoolProperty|RemoveIntegerChecks|Description">
         <source>Remove integer overflow checking.</source>
-        <target state="new">Remove integer overflow checking.</target>
+        <target state="translated">Quitar comprobación de desbordamiento de enteros.</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|RemoveIntegerChecks|DisplayName">

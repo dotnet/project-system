@@ -51,7 +51,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
             IRule? properties = node.BrowseObjectProperties;
 
-            if (properties?.Schema == null || !project.Services.PropertyPagesCatalog.SourceBlock.TryReceive(null, out IProjectVersionedValue<IProjectCatalogSnapshot>? catalogSnapshot))
+            if (properties?.Schema is null || !project.Services.PropertyPagesCatalog.SourceBlock.TryReceive(null, out IProjectVersionedValue<IProjectCatalogSnapshot>? catalogSnapshot))
                 return properties;
 
             // We let the snapshot be out of date with the "live" project

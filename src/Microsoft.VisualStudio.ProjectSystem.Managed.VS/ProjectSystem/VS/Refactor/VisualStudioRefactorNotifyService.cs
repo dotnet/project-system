@@ -23,7 +23,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Refactor
         public void OnBeforeGlobalSymbolRenamed(string projectPath, IEnumerable<string> filePaths, string rqName, string newName)
         {
             IVsHierarchy? projectHierarchy = GetProjectHierarchy(projectPath);
-            if (projectHierarchy == null)
+            if (projectHierarchy is null)
             {
                 return;
             }
@@ -46,7 +46,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Refactor
         public void OnAfterGlobalSymbolRenamed(string projectPath, IEnumerable<string> filePaths, string rqName, string newName)
         {
             IVsHierarchy? projectHierarchy = GetProjectHierarchy(projectPath);
-            if (projectHierarchy == null)
+            if (projectHierarchy is null)
             {
                 return;
             }
@@ -68,7 +68,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Refactor
         private IVsHierarchy? GetProjectHierarchy(string projectPath)
         {
             Project? project = TryGetProjectFromPath(projectPath);
-            if (project == null)
+            if (project is null)
             {
                 return null;
             }

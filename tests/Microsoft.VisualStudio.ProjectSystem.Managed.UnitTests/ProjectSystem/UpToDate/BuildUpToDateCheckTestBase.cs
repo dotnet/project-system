@@ -87,7 +87,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 var snapshots = ImmutableStringDictionary<IProjectRuleSnapshot>.EmptyOrdinal;
                 var changes = ImmutableStringDictionary<IProjectChangeDescription>.EmptyOrdinal;
 
-                if (snapshotBySchemaName != null)
+                if (snapshotBySchemaName is not null)
                 {
                     foreach ((string schemaName, IProjectRuleSnapshotModel model) in snapshotBySchemaName)
                     {

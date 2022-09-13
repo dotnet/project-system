@@ -229,16 +229,7 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";EnumValue|HighDpiMode.DpiUnawareGdiScaled|DisplayName" ItemType="0" PsrId="308" Leaf="true">
-        <Str Cat="Text">
-          <Val><![CDATA[DPI unaware, GDI scaled - Like DPI unaware but optimized for non-double-buffered Graphics content.]]></Val>
-          <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Без учета DPI, с масштабированием интерфейса графических устройств. Например, DPI не поддерживается, но оптимизирован для графического содержимого без двойной буферизации.]]></Val>
-          </Tgt>
-        </Str>
-        <Disp Icon="Str" />
-      </Item>
-      <Item ItemId=";EnumValue|HighDpiMode.DpiUnaware|DisplayName" ItemType="0" PsrId="308" Leaf="true">
+      <Item ItemId=";EnumValue|HighDpiMode.0|DisplayName" ItemType="0" PsrId="308" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[DPI unaware - No scaling and assuming 100% scaling.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
@@ -247,16 +238,16 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";EnumValue|HighDpiMode.PerMonitorV2|DisplayName" ItemType="0" PsrId="308" Leaf="true">
+      <Item ItemId=";EnumValue|HighDpiMode.1|DisplayName" ItemType="0" PsrId="308" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Per monitor V2 - DPI detected on-launch and on-change including child windows]]></Val>
+          <Val><![CDATA[System aware - Primary monitor's DPI is scale lead.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Для каждого монитора версии 2 — DPI определяется при запуске и изменении, включая дочерние окна]]></Val>
+            <Val><![CDATA[Системная осведомленность — DPI основного монитора опережает шкалу.]]></Val>
           </Tgt>
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";EnumValue|HighDpiMode.PerMonitor|DisplayName" ItemType="0" PsrId="308" Leaf="true">
+      <Item ItemId=";EnumValue|HighDpiMode.2|DisplayName" ItemType="0" PsrId="308" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[Per monitor - DPI detected on-launch and on-change.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
@@ -265,11 +256,20 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";EnumValue|HighDpiMode.SystemAware|DisplayName" ItemType="0" PsrId="308" Leaf="true">
+      <Item ItemId=";EnumValue|HighDpiMode.3|DisplayName" ItemType="0" PsrId="308" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[System aware - Primary monitor's DPI is scale lead.]]></Val>
+          <Val><![CDATA[Per monitor V2 - DPI detected on-launch and on-change including child windows]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Системная осведомленность — DPI основного монитора опережает шкалу.]]></Val>
+            <Val><![CDATA[Для каждого монитора версии 2 — DPI определяется при запуске и изменении, включая дочерние окна]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";EnumValue|HighDpiMode.4|DisplayName" ItemType="0" PsrId="308" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[DPI unaware, GDI scaled - Like DPI unaware but optimized for non-double-buffered Graphics content.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Без учета DPI, с масштабированием интерфейса графических устройств. Например, DPI не поддерживается, но оптимизирован для графического содержимого без двойной буферизации.]]></Val>
           </Tgt>
         </Str>
         <Disp Icon="Str" />

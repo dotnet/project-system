@@ -35,7 +35,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedColl
 
         public void SubmitResult(IRelatableItem? item)
         {
-            if (item == null)
+            if (item is null)
             {
                 return;
             }
@@ -48,7 +48,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedColl
 
             void PopulateAncestors(IRelatableItem childItem)
             {
-                if (childItem.ContainedByCollection != null)
+                if (childItem.ContainedByCollection is not null)
                 {
                     // We've already populated this item's ancestors. It's likely an ancestor of
                     // another search result. This also prevents runaway in case of cycles.
@@ -66,11 +66,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedColl
 
                 var allParentItems = new List<object>();
 
+                childItem.ContainedByCollection = new AggregateContainedByRelationCollection(allParentItems);
+
                 foreach (IRelation relation in containedByRelations)
                 {
                     IEnumerable<IRelatableItem>? relationParentItems = relation.CreateContainedByItems(childItem);
 
-                    if (relationParentItems != null)
+                    if (relationParentItems is not null)
                     {
                         foreach (IRelatableItem parentItem in relationParentItems)
                         {
@@ -84,15 +86,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedColl
                                 allParentItems.Add(hierarchyItem);
                             }
 
-                            if (deduplicateItem.ContainedByCollection == null)
+                            if (deduplicateItem.ContainedByCollection is null)
                             {
                                 PopulateAncestors(deduplicateItem);
                             }
                         }
                     }
                 }
-
-                childItem.ContainedByCollection = new AggregateContainedByRelationCollection(allParentItems);
             }
 
             IRelatableItem DeduplicateItem(IRelatableItem item)

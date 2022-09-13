@@ -54,7 +54,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Subscriptions
                 AggregateCrossTargetProjectContext? previousContext = Current;
 
                 // Check if we have already computed the project context.
-                if (previousContext != null)
+                if (previousContext is not null)
                 {
                     // For non-cross targeting projects, we can use the current project context if the TargetFramework hasn't changed.
                     // For cross-targeting projects, we need to verify that the current project context matches latest frameworks targeted by the project.
@@ -134,7 +134,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Subscriptions
                     {
                         TargetFramework? targetFramework = _targetFrameworkProvider.GetTargetFramework(targetFrameworkMoniker);
 
-                        if (targetFramework == null || !previousContext.TargetFrameworks.Contains(targetFramework))
+                        if (targetFramework is null || !previousContext.TargetFrameworks.Contains(targetFramework))
                         {
                             // Differing TargetFramework
                             return false;

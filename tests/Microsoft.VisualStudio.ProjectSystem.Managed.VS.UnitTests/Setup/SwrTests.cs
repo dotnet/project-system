@@ -43,7 +43,7 @@ namespace Microsoft.VisualStudio.Setup
 
             var ruleFilesByCulture = Directory.EnumerateFiles(rulesPath, "*", SearchOption.AllDirectories)
                 .Select(ParseRepoFile)
-                .Where(pair => pair.Culture != null)
+                .Where(pair => pair.Culture is not null)
                 .ToLookup(pair => pair.Culture, pair => pair.File);
 
             var setupCultures = setupFilesByCulture.Select(p => p.Key);
@@ -142,7 +142,7 @@ namespace Microsoft.VisualStudio.Setup
                 var fileMatch = _swrFilePattern.Match(line);
                 if (fileMatch.Success)
                 {
-                    if (folder == null)
+                    if (folder is null)
                         throw new FileFormatException("'file' entry appears before a 'folder' entry.");
                     var file = fileMatch.Groups["path"].Value;
                     yield return (folder, file);

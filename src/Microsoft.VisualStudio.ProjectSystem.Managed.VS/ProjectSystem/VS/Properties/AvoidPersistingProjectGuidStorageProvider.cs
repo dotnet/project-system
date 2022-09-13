@@ -33,7 +33,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
             return _projectAccessor.OpenProjectXmlForReadAsync(_project, projectXml =>
             {
                 ProjectPropertyElement? property = FindProjectGuidProperty(projectXml);
-                if (property != null)
+                if (property is not null)
                 {
                     _isPersistedInProject = true;
 
@@ -63,7 +63,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
             return _projectAccessor.OpenProjectXmlForUpgradeableReadAsync(_project, async (projectXml, cancellationToken) =>
             {
                 ProjectPropertyElement property = FindProjectGuidProperty(projectXml);
-                if (property != null)
+                if (property is not null)
                 {
                     _isPersistedInProject = true;
 

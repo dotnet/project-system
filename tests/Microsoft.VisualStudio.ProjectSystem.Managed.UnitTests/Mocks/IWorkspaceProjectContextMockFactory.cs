@@ -29,7 +29,7 @@ namespace Microsoft.VisualStudio.LanguageServices.ProjectSystem
             context.SetupGet(c => c.ProjectFilePath)
                 .Returns(project.FullPath);
 
-            if (addDynamicFile != null)
+            if (addDynamicFile is not null)
             {
                 context.Setup(c => c.AddDynamicFile(It.IsAny<string>(), It.IsAny<IEnumerable<string>>()))
                     .Callback<string, IEnumerable<string>>((p1, p2) => addDynamicFile(p1));
@@ -45,13 +45,13 @@ namespace Microsoft.VisualStudio.LanguageServices.ProjectSystem
             context.SetupGet(c => c.ProjectFilePath)
                 .Returns(project.FullPath);
 
-            if (addSourceFile != null)
+            if (addSourceFile is not null)
             {
                 context.Setup(c => c.AddSourceFile(It.IsAny<string>(), It.IsAny<bool>(), It.IsAny<IEnumerable<string>>(), It.IsAny<SourceCodeKind>()))
                     .Callback<string, bool, IEnumerable<string>, SourceCodeKind>((p1, p2, p3, p4) => addSourceFile(p1));
             }
 
-            if (removeSourceFile != null)
+            if (removeSourceFile is not null)
             {
                 context.Setup(c => c.RemoveSourceFile(It.IsAny<string>()))
                     .Callback(removeSourceFile);
@@ -67,13 +67,13 @@ namespace Microsoft.VisualStudio.LanguageServices.ProjectSystem
             context.SetupGet(c => c.ProjectFilePath)
                 .Returns(project.FullPath);
 
-            if (addMetadataReference != null)
+            if (addMetadataReference is not null)
             {
                 context.Setup(c => c.AddMetadataReference(It.IsAny<string>(), It.IsAny<MetadataReferenceProperties>()))
                     .Callback<string, MetadataReferenceProperties>((p1, p2) => addMetadataReference(p1));
             }
 
-            if (removeMetadataReference != null)
+            if (removeMetadataReference is not null)
             {
                 context.Setup(c => c.RemoveMetadataReference(It.IsAny<string>()))
                     .Callback(removeMetadataReference);

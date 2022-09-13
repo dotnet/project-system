@@ -18,13 +18,13 @@ namespace Microsoft.VisualStudio.ProjectSystem
         {
             var mock = new Mock<IProjectTreeServiceState>();
 
-            if (treeAction != null)
+            if (treeAction is not null)
             {
                 mock.SetupGet<IProjectTree?>(s => s.Tree)
                     .Returns(treeAction);
             }
 
-            if (treeProviderAction != null)
+            if (treeProviderAction is not null)
             {
                 mock.SetupGet(s => s.TreeProvider)
                     .Returns(treeProviderAction);

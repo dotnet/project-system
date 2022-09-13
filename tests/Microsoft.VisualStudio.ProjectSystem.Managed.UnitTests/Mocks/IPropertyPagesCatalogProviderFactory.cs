@@ -17,7 +17,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
                 .Setup(o => o.GetCatalogAsync(It.IsAny<string>(), CancellationToken.None))
                 .Returns((string name, CancellationToken token) => Task.FromResult(catalogsByContext[name]));
 
-            if (memoryOnlyCatalog != null)
+            if (memoryOnlyCatalog is not null)
             {
                 catalogProvider
                     .Setup(o => o.GetMemoryOnlyCatalog(It.IsAny<string>()))

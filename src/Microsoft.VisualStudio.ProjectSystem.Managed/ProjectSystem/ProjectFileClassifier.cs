@@ -143,7 +143,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
         public bool IsNonUserEditable(string filePath)
         {
             return IsNonModifiable(filePath)
-                   || (ProjectExtensionsPath != null && filePath.StartsWith(ProjectExtensionsPath, StringComparisons.Paths));
+                   || (ProjectExtensionsPath is not null && filePath.StartsWith(ProjectExtensionsPath, StringComparisons.Paths));
         }
 
         /// <summary>
@@ -153,11 +153,11 @@ namespace Microsoft.VisualStudio.ProjectSystem
         /// <returns><see langword="true"/> if the file is non-modifiable, otherwise <see langword="false"/>.</returns>
         public bool IsNonModifiable(string filePath)
         {
-            return (_programFiles64 != null && filePath.StartsWith(_programFiles64, StringComparisons.Paths))
+            return (_programFiles64 is not null && filePath.StartsWith(_programFiles64, StringComparisons.Paths))
                    || filePath.StartsWith(_programFiles86, StringComparisons.Paths)
                    || filePath.StartsWith(_windows, StringComparisons.Paths)
                    || _nuGetPackageFolders.Any(nugetFolder => filePath.StartsWith(nugetFolder, StringComparisons.Paths))
-                   || (_vsInstallationDirectory != null && filePath.StartsWith(_vsInstallationDirectory, StringComparisons.Paths));
+                   || (_vsInstallationDirectory is not null && filePath.StartsWith(_vsInstallationDirectory, StringComparisons.Paths));
         }
     }
 }

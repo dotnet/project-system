@@ -78,7 +78,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
             // Due to that, and to avoid a deadlock when event handlers call back into us
             // while we're still initializing, we avoid firing the events the first time 
             // a value is applied.
-            if (previous != null)
+            if (previous is not null)
             {
                 DesignTimeInputSnapshot currentValue = value.Value;
                 DesignTimeInputSnapshot previousValue = previous.Value;

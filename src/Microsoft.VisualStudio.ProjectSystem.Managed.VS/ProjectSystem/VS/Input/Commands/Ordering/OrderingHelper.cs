@@ -79,7 +79,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.Ordering
         {
             Requires.NotNull(projectTree, nameof(projectTree));
 
-            return GetSiblingByMoveAction(projectTree, MoveAction.Above) != null;
+            return GetSiblingByMoveAction(projectTree, MoveAction.Above) is not null;
         }
 
         /// <summary>
@@ -100,7 +100,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.Ordering
         {
             Requires.NotNull(projectTree, nameof(projectTree));
 
-            return GetSiblingByMoveAction(projectTree, MoveAction.Below) != null;
+            return GetSiblingByMoveAction(projectTree, MoveAction.Below) is not null;
         }
 
         /// <summary>
@@ -123,7 +123,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.Ordering
             Requires.NotNull(target, nameof(target));
 
             ProjectItemElement? referenceElement = TryGetReferenceElement(project, target, ImmutableArray<string>.Empty, MoveAction.Above);
-            if (referenceElement == null)
+            if (referenceElement is null)
             {
                 return false;
             }
@@ -140,7 +140,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.Ordering
             Requires.NotNull(target, nameof(target));
 
             ProjectItemElement? referenceElement = TryGetReferenceElement(project, target, ImmutableArray<string>.Empty, MoveAction.Below);
-            if (referenceElement == null)
+            if (referenceElement is null)
             {
                 return false;
             }
@@ -166,8 +166,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.Ordering
             }
 
             var excludeIncludes = elements.Select(x => x.Include).ToImmutableArray();
-            ProjectItemElement? referenceElement = GetChildren(newTarget!).Select(x => TryGetReferenceElement(project, x, excludeIncludes, MoveAction.Above)).FirstOrDefault(x => x != null);
-            if (referenceElement == null)
+            ProjectItemElement? referenceElement = GetChildren(newTarget!).Select(x => TryGetReferenceElement(project, x, excludeIncludes, MoveAction.Above)).FirstOrDefault(x => x is not null);
+            if (referenceElement is null)
             {
                 return false;
             }
@@ -236,7 +236,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.Ordering
                     // Technically it is possible to have more than one of the same item names.
                     // We only want to add one of them.
                     // Sanity check
-                    if (tree2.Item?.ItemName != null && hashSet.Add(tree2.Item.ItemName))
+                    if (tree2.Item?.ItemName is not null && hashSet.Add(tree2.Item.ItemName))
                     {
                         includes.Add(tree2.DisplayOrder, tree2.Item.ItemName);
                     }
@@ -281,7 +281,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.Ordering
         {
             IProjectTree? parent = projectTree.Parent;
             int displayOrder = GetDisplayOrder(projectTree);
-            if (!IsValidDisplayOrder(displayOrder) || parent == null)
+            if (!IsValidDisplayOrder(displayOrder) || parent is null)
             {
                 return null;
             }
@@ -367,7 +367,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.Ordering
             Requires.NotNull(referenceElement, nameof(referenceElement));
 
             ProjectElementContainer parent = referenceElement.Parent;
-            if (parent == null || !elements.Any())
+            if (parent is null || !elements.Any())
             {
                 return false;
             }
@@ -381,7 +381,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.Ordering
                     foreach (ProjectItemElement element in elements)
                     {
                         ProjectElementContainer elementParent = element.Parent;
-                        if (elementParent != null)
+                        if (elementParent is not null)
                         {
                             elementParent.RemoveChild(element);
                             parent.InsertBeforeChild(element, referenceElement);
@@ -401,7 +401,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.Ordering
                         ProjectItemElement element = elements[i];
 
                         ProjectElementContainer elementParent = element.Parent;
-                        if (elementParent != null)
+                        if (elementParent is not null)
                         {
                             elementParent.RemoveChild(element);
                             parent.InsertAfterChild(element, referenceElement);
@@ -433,12 +433,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.Ordering
                 return false;
             }
 
-            if (referenceProjectTree != null)
+            if (referenceProjectTree is not null)
             {
                 // The reference element is the element for which moved items will be above or below it.
                 ProjectItemElement? referenceElement = TryGetReferenceElement(project, referenceProjectTree, ImmutableArray<string>.Empty, moveAction);
 
-                if (referenceElement != null)
+                if (referenceElement is not null)
                 {
                     ImmutableArray<ProjectItemElement> elements = GetItemElements(project, projectTree, ImmutableArray<string>.Empty);
                     return TryMoveElements(elements, referenceElement, moveAction);

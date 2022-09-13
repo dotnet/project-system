@@ -42,7 +42,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.CopyPaste
             foreach (IProjectTree node in selectedNodes)
             {
                 string? path = await DependencyServices.GetBrowsePathAsync(_project, node);
-                if (path == null)
+                if (path is null)
                     continue;
 
                 // Note we leave trailing slashes to mimic what happens with normal folders

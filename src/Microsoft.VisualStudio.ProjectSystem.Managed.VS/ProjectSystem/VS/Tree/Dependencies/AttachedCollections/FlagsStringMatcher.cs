@@ -48,7 +48,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedColl
         {
             Requires.NotNull(flagsString, nameof(flagsString));
 
-            if (_regex == null)
+            if (_regex is null)
             {
                 // We are testing against the empty set of flags, which always returns true
                 return true;

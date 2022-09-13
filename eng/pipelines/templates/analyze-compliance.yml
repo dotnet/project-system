@@ -1,0 +1,146 @@
+# Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
+
+jobs:
+# Overview of tasks offered for security and compliance:
+# - https://dev.azure.com/securitytools/SecurityIntegration/_wiki/wikis/Guardian/1425/Guardian-Tools
+# - https://eng.ms/docs/security-compliance-identity-and-management-scim/security/azure-security/cloudai-security-fundamentals-engineering/security-integration/guardian-wiki
+# - https://eng.ms/docs/security-compliance-identity-and-management-scim/security/azure-security/cloudai-security-fundamentals-engineering/security-integration/guardian-wiki/sdl-azdo-extension/secure-development-tools-extension-for-azure-devops#tools
+# Other tools to consider:
+# - InferSharp: https://dev.azure.com/securitytools/SecurityIntegration/_wiki/wikis/Guardian/1638/InferSharp-Usage
+# - CodeQL: https://eng.ms/docs/security-compliance-identity-and-management-scim/security/azure-security/cloudai-security-fundamentals-engineering/security-integration/guardian-wiki/sdl-azdo-extension/codeql-build-task
+- job: AnalyzeCompliance
+  displayName: Analyze Compliance
+  timeoutInMinutes: 20
+  steps:
+
+  ###################################################################################################################################################################
+  # DOWNLOAD ARTIFACTS
+  ###################################################################################################################################################################
+
+  # Use a disabled, empty script to display the section header in the pipeline UI.
+  - script:
+    displayName: === Download Artifacts ===
+    condition: false
+
+  # Download the build artifacts from the Build job.
+  # The DownloadPipelineArtifact task is used since we can specify the output path. The 'download:' node doesn't allow changes in output location.
+  - task: DownloadPipelineArtifact@2
+    displayName: Download Build Artifacts
+    inputs:
+      artifact: '$(Build.BuildNumber)'
+      path: $(Build.SourcesDirectory)/artifacts/$(BuildConfiguration)
+
+  ###################################################################################################################################################################
+  # RUN ANALYSIS
+  # Steps in this section should contain 'condition: succeededOrFailed()' since one analyzer failing should not block the other analyzers from running.
+  # https://docs.microsoft.com/azure/devops/pipelines/process/tasks?view=azure-devops&tabs=yaml#task-control-options
+  ###################################################################################################################################################################
+
+  # Use a disabled, empty script to display the section header in the pipeline UI.
+  - script:
+    displayName: === Run Analysis ===
+    condition: false
+
+  # Verify the loose DLLs are signed appropriately.
+  # Note: This task takes ~3 minutes only because it is the first Guardian task in this job. So, it installs the Guardian components so the other tasks don't have to.
+  # YAML reference: https://eng.ms/docs/security-compliance-identity-and-management-scim/security/azure-security/cloudai-security-fundamentals-engineering/security-integration/guardian-wiki/sdl-azdo-extension/code-signing-validation-build-task#v1-preview
+  - task: CodeSign@1
+    displayName: Verify Signed DLLs
+    inputs:
+      Path: $(Build.SourcesDirectory)/artifacts/$(BuildConfiguration)/bin/Dlls/
+      # Glob Format: https://dev.azure.com/securitytools/SecurityIntegration/_wiki/wikis/Guardian/1378/Glob-Format
+      Targets: '**/Microsoft.VisualStudio.AppDesigner*.dll;**/Microsoft.VisualStudio.Editors*.dll;**/Microsoft.VisualStudio.Managed*.dll'
+    condition: succeededOrFailed()
+
+  # Verifies the packages (and files within) are signed appropriately.
+  - task: MicroBuildCodesignVerify@3
+    displayName: Verify Signed Packages
+    inputs:
+      TargetFolders: |
+        $(Build.SourcesDirectory)/artifacts/$(BuildConfiguration)/packages
+        $(Build.SourcesDirectory)/artifacts/$(BuildConfiguration)/VSSetup/Insertion
+      # Filters out certain files (usually by extension) for Authenticode certificate verification.
+      # File Format:
+      #   Wildcards (* and ?) can be used and paths are relative to the TargetFolders locations.
+      #   Format is one entry per line followed by a comma and then a comment as to why the entry is approved.
+      ApprovalListPathForCerts: $(Build.SourcesDirectory)/eng/pipelines/configuration/AuthenticodeSigningFilter.txt
+      # The bootstrapper folder is placed inside the VSSetup/Insertion folder. We don't want to verify the VS bootstrapper for signing.
+      ExcludeFolders: bootstrapper
+    condition: succeededOrFailed()
+
+  # Scan for problematic terminology. Related documentation:
+  # - https://microsoft.sharepoint.com/sites/globalreadiness/SitePages/PoliCheck.aspx
+  # - https://policheck.microsoft.com/
+  # Requires scanning both the source and the build artifacts: https://liquid.microsoft.com/Web/Object/Read/MS.GlobalReadiness/Requirements/01.01#Zapplicability
+  # YAML reference: https://eng.ms/docs/security-compliance-identity-and-management-scim/security/azure-security/cloudai-security-fundamentals-engineering/security-integration/guardian-wiki/sdl-azdo-extension/PoliCheck-build-task#v2
+  - task: PoliCheck@2
+    displayName: Run PoliCheck
+    inputs:
+      # F - Scan a particular file or folder (recursively)
+      targetType: F
+      targetArgument: $(Build.SourcesDirectory)
+      # 1 - Enable scanning of comments
+      optionsFC: 1
+      # Scan for severity 1, 2, and 3 issues
+      optionsSEV: '1|2|3'
+    condition: succeededOrFailed()
+
+  # Scan for credentials and other sensitive information. Related documentation:
+  # - https://strikecommunity.azurewebsites.net/articles/4114/credential-scanner-overview.html
+  # Even though it isn't explicitly stated, we scan both the source and the build artifacts.
+  # YAML reference: https://eng.ms/docs/security-compliance-identity-and-management-scim/security/azure-security/cloudai-security-fundamentals-engineering/security-integration/guardian-wiki/sdl-azdo-extension/credscan-azure-devops-build-task#v3-preview
+  - task: CredScan@3
+    displayName: Run CredScan
+    inputs:
+      # Output in PREFast format so TSAUpload can consume it.
+      outputFormat: pre
+    condition: succeededOrFailed()
+
+  # Validates compiler/linker settings and other security-related binary characteristics.
+  # https://github.com/Microsoft/binskim
+  # YAML reference: https://eng.ms/docs/security-compliance-identity-and-management-scim/security/azure-security/cloudai-security-fundamentals-engineering/security-integration/guardian-wiki/sdl-azdo-extension/binskim-build-task#v4
+  - task: BinSkim@4
+    displayName: Run BinSkim
+    inputs:
+      InputType: Basic
+      Function: analyze
+      TargetPattern: binskimPattern
+      AnalyzeTargetBinskim: $(Build.SourcesDirectory)/artifacts/$(BuildConfiguration)/bin/Dlls/**.dll
+    condition: succeededOrFailed()
+
+  ###################################################################################################################################################################
+  # PUBLISH RESULTS
+  ###################################################################################################################################################################
+
+  # Use a disabled, empty script to display the section header in the pipeline UI.
+  - script:
+    displayName: === Publish Results ===
+    condition: false
+
+  # Only run this task if UploadTSAResults was specified.
+  - ${{ if eq(variables.UploadTSAResults, true) }}:
+    # Upload the output of the compliance tools to Trust Services Automation (TSA), and create Azure DevOps work items for failures.
+    # TSA overview: https://eng.ms/docs/cloud-ai-platform/developer-services/one-engineering-system-1es/1es-docs/trust-services-automation-tsa/tsa-overview
+    # YAML reference: https://eng.ms/docs/cloud-ai-platform/developer-services/one-engineering-system-1es/1es-docs/trust-services-automation-tsa/tsa-upload-build-task#yaml-reference
+    - task: TSAUpload@2
+      displayName: Upload Results to TSA
+      inputs:
+        GdnPublishTsaOnboard: true
+        # Configures the compliance tool results to process.
+        # Configuration file format:
+        # - https://eng.ms/docs/security-compliance-identity-and-management-scim/security/azure-security/cloudai-security-fundamentals-engineering/security-integration/guardian-wiki/microsoft-guardian/guardian-tsa#tsa-options-file
+        # - https://dev.azure.com/securitytools/SecurityIntegration/_wiki/wikis/Guardian/1409/Guardian-TSA?anchor=tsa-options-file
+        GdnPublishTsaConfigFile: $(Build.SourcesDirectory)/eng/pipelines/configuration/TSAConfig.gdntsa
+        GdnPublishTsaExportedResultsPublishable: true
+      condition: succeededOrFailed()
+
+  # Publishes the results as artifacts to the Azure Pipeline.
+  # YAML reference: https://eng.ms/docs/security-compliance-identity-and-management-scim/security/azure-security/cloudai-security-fundamentals-engineering/security-integration/guardian-wiki/sdl-azdo-extension/publish-security-analysis-logs#v3
+  - task: PublishSecurityAnalysisLogs@3
+    displayName: Publish Compliance Artifacts
+    inputs:
+      ArtifactName: Analysis-Compliance
+      ArtifactType: Container
+      AllTools: true
+      ToolLogsNotFoundAction: Standard
+    condition: succeededOrFailed()

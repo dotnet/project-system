@@ -97,7 +97,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedColl
                 IUnconfiguredProjectVsServices? projectVsServices = unconfiguredProject.Services.ExportProvider.GetExportedValue<IUnconfiguredProjectVsServices>();
                 IProjectTree? dependenciesNode = projectVsServices?.ProjectTree.CurrentTree?.FindChildWithFlags(DependencyTreeFlags.DependenciesRootNode);
 
-                if (projectVsServices != null && dependenciesNode != null)
+                if (projectVsServices is not null && dependenciesNode is not null)
                 {
                     var projectContext = new DependenciesTreeProjectSearchContext(context, unconfiguredProject, dependenciesNode, _hierarchyItemManager, projectVsServices, _relationProvider);
 

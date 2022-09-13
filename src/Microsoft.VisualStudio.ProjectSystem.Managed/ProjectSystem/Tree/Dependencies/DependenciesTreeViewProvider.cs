@@ -111,7 +111,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies
                     else
                     {
                         IProjectTree? node = dependenciesTree.FindChildWithCaption(targetFramework.TargetFrameworkAlias);
-                        bool shouldAddTargetNode = node == null;
+                        bool shouldAddTargetNode = node is null;
                         IDependencyViewModel targetViewModel = _viewModelFactory.CreateTargetViewModel(targetedSnapshot.TargetFramework, targetedSnapshot.MaximumVisibleDiagnosticLevel);
 
                         node = CreateOrUpdateNode(
@@ -140,7 +140,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies
 
             IProjectTree RememberNewNodes(IProjectTree rootNode, IEnumerable<IProjectTree> newNodes)
             {
-                if (newNodes != null)
+                if (newNodes is not null)
                 {
                     currentNodes.AddRange(newNodes);
                 }
@@ -197,18 +197,18 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies
                     providerType,
                     targetedSnapshot.GetMaximumVisibleDiagnosticLevelForProvider(providerType));
 
-                if (subTreeViewModel == null)
+                if (subTreeViewModel is null)
                 {
                     // In theory this should never happen, as it means we have a dependency model of a type
                     // that no provider claims. https://github.com/dotnet/project-system/issues/3653
                     continue;
                 }
 
-                IProjectTree? subTreeNode = subtreeFlag != null
+                IProjectTree? subTreeNode = subtreeFlag is not null
                     ? rootNode.FindChildWithFlags(subtreeFlag.Value)
                     : rootNode.FindChildWithCaption(subTreeViewModel.Caption);
 
-                bool isNewSubTreeNode = subTreeNode == null;
+                bool isNewSubTreeNode = subTreeNode is null;
 
                 ProjectTreeFlags excludedFlags = targetedSnapshot.TargetFramework.Equals(TargetFramework.Any)
                     ? ProjectTreeFlags.Create(ProjectTreeFlags.Common.BubbleUp)
@@ -257,7 +257,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies
             foreach (IDependency dependency in dependencies)
             {
                 IProjectTree? dependencyNode = rootNode.FindChildWithCaption(dependency.Caption);
-                bool isNewDependencyNode = dependencyNode == null;
+                bool isNewDependencyNode = dependencyNode is null;
 
                 // NOTE this project system supports multiple implicit configuration dimensions (such as target framework)
                 // which is a concept not modelled by DTE/VSLangProj. In order to produce a sensible view of the project
@@ -284,7 +284,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies
                 rootNode = parent;
             }
 
-            return currentNodes != null // shouldCleanup
+            return currentNodes is not null
                 ? CleanupOldNodes(rootNode, currentNodes)
                 : rootNode;
         }
@@ -334,7 +334,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies
             ProjectTreeFlags? additionalFlags = null,
             ProjectTreeFlags? excludedFlags = null)
         {
-            if (node != null)
+            if (node is not null)
             {
                 return UpdateTreeNode();
             }

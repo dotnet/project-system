@@ -147,7 +147,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
             public void EnsureInitialized()
             {
-                if (_link != null || _disposed != 0)
+                if (_link is not null || _disposed != 0)
                 {
                     // Already initialized or disposed
                     return;

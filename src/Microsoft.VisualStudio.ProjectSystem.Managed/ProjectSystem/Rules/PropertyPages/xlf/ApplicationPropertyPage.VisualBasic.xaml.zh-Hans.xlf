@@ -72,6 +72,16 @@
         <target state="translated">初始屏幕</target>
         <note />
       </trans-unit>
+      <trans-unit id="DynamicEnumProperty|StartupObject|Description">
+        <source>Defines the entry point to be called when the application loads. Generally this is set either to the main form in your application or to the 'Main' procedure that should run when the application starts. Class libraries do not define an entry point.</source>
+        <target state="new">Defines the entry point to be called when the application loads. Generally this is set either to the main form in your application or to the 'Main' procedure that should run when the application starts. Class libraries do not define an entry point.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="DynamicEnumProperty|StartupObject|DisplayName">
+        <source>Startup object</source>
+        <target state="new">Startup object</target>
+        <note />
+      </trans-unit>
       <trans-unit id="DynamicEnumProperty|StartupURI|Description">
         <source>Specifies the window that will open when the application loads.</source>
         <target state="translated">指定应用程序加载时将打开的窗口。</target>
@@ -122,29 +132,29 @@
         <target state="translated">身份验证模式</target>
         <note />
       </trans-unit>
-      <trans-unit id="EnumValue|HighDpiMode.DpiUnawareGdiScaled|DisplayName">
-        <source>DPI unaware, GDI scaled - Like DPI unaware but optimized for non-double-buffered Graphics content.</source>
-        <target state="translated">DPI 不知情，GDI 已缩放 - 和 DPI 不知情相似，但针对非双缓冲图形内容进行了优化。</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="EnumValue|HighDpiMode.DpiUnaware|DisplayName">
+      <trans-unit id="EnumValue|HighDpiMode.0|DisplayName">
         <source>DPI unaware - No scaling and assuming 100% scaling.</source>
         <target state="translated">DPI 不知情 - 无缩放，并假定 100% 缩放。</target>
         <note />
       </trans-unit>
-      <trans-unit id="EnumValue|HighDpiMode.PerMonitorV2|DisplayName">
-        <source>Per monitor V2 - DPI detected on-launch and on-change including child windows</source>
-        <target state="translated">按监视器 V2 - 在启动和更改时检测到 DPI，包括子窗口</target>
+      <trans-unit id="EnumValue|HighDpiMode.1|DisplayName">
+        <source>System aware - Primary monitor's DPI is scale lead.</source>
+        <target state="translated">系统感知 - 主监视器的 DPI 是缩放前导。</target>
         <note />
       </trans-unit>
-      <trans-unit id="EnumValue|HighDpiMode.PerMonitor|DisplayName">
+      <trans-unit id="EnumValue|HighDpiMode.2|DisplayName">
         <source>Per monitor - DPI detected on-launch and on-change.</source>
         <target state="translated">按监视器 - 在启动和更改时检测到 DPI。</target>
         <note />
       </trans-unit>
-      <trans-unit id="EnumValue|HighDpiMode.SystemAware|DisplayName">
-        <source>System aware - Primary monitor's DPI is scale lead.</source>
-        <target state="translated">系统感知 - 主监视器的 DPI 是缩放前导。</target>
+      <trans-unit id="EnumValue|HighDpiMode.3|DisplayName">
+        <source>Per monitor V2 - DPI detected on-launch and on-change including child windows</source>
+        <target state="translated">按监视器 V2 - 在启动和更改时检测到 DPI，包括子窗口</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|HighDpiMode.4|DisplayName">
+        <source>DPI unaware, GDI scaled - Like DPI unaware but optimized for non-double-buffered Graphics content.</source>
+        <target state="translated">DPI 不知情，GDI 已缩放 - 和 DPI 不知情相似，但针对非双缓冲图形内容进行了优化。</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|ShutdownMode.AfterAllFormsClose|DisplayName">

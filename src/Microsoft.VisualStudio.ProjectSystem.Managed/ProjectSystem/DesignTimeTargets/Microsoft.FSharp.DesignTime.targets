@@ -45,6 +45,10 @@
       <Context>File</Context>
     </PropertyPageSchema>
 
+    <PropertyPageSchema Include="$(ManagedXamlNeutralResourcesDirectory)Resource.FSharp.xaml">
+      <Context>File</Context>
+    </PropertyPageSchema>
+    
     <PropertyPageSchema Include="$(ManagedXamlNeutralResourcesDirectory)EmbeddedResource.FSharp.xaml">
       <Context>File</Context>
     </PropertyPageSchema>

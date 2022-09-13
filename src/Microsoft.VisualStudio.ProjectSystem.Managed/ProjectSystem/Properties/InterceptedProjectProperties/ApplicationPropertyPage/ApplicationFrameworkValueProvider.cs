@@ -156,6 +156,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
 
         private async Task<string?> SetPropertyValueForDefaultProjectTypesAsync(string unevaluatedPropertyValue, IProjectProperties defaultProperties)
         {
+            string rootNamespace = await defaultProperties.GetEvaluatedPropertyValueAsync("RootNamespace");
+            
             if (bool.TryParse(unevaluatedPropertyValue, out bool value))
             {
                 if (value)
@@ -165,6 +167,21 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
 
                     // Set in myapp file: <MySubMain>true</MySubMain>
                     await _myAppXmlFileAccessor.SetMySubMainAsync("true");
+
+                    // Set the StartupObject to namespace.My.MyApplication; we should save the actual value in the myapp file.
+                    string? startupObjectValue = await defaultProperties.GetEvaluatedPropertyValueAsync(StartupObjectMSBuildProperty);
+
+                    await defaultProperties.SetPropertyValueAsync(StartupObjectMSBuildProperty, rootNamespace + ".My.MyApplication");
+
+                    if (startupObjectValue is not null)
+                    {
+                        // Use StringComparison.OrdinalIgnoreCase because VB is _not_ case-sensitive
+                        if (startupObjectValue.StartsWith(rootNamespace + ".", StringComparison.OrdinalIgnoreCase))
+                        {
+                            startupObjectValue = startupObjectValue.Substring((rootNamespace + ".").Length);
+                        }
+                        await _myAppXmlFileAccessor.SetMainFormAsync(startupObjectValue);
+                    }
                 }
                 else
                 {
@@ -173,6 +190,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
 
                     // Set in myapp file: <MySubMain>false</MySubMain>
                     await _myAppXmlFileAccessor.SetMySubMainAsync("false");
+
+                    // Recover the StartupObject from myapp file and save it to the project file.
+                    string? startupObjectValue = await _myAppXmlFileAccessor.GetMainFormAsync();
+
+                    if (startupObjectValue is not null)
+                        await defaultProperties.SetPropertyValueAsync(StartupObjectMSBuildProperty, rootNamespace + "." + startupObjectValue);
                 }
             }
 
@@ -269,20 +292,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
                     _ => throw new InvalidOperationException($"Invalid value '{value}' for '{propertyName}' property.")
                 };
             }
-            else if (propertyName == HighDpiModeProperty)
-            {
-                value = value switch
-                {
-                    "0" => "DpiUnaware",
-                    "1" => "SystemAware",
-                    "2" => "PerMonitor",
-                    "3" => "PerMonitorV2",
-                    "4" => "DpiUnawareGdiScaled",
-                    "" => "",
-
-                    _ => throw new InvalidOperationException($"Invalid value '{value}' for '{propertyName}' property.")
-                };
-            }
             else if (propertyName == ShutdownModeProperty)
             {
                 value = value switch
@@ -307,18 +316,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
                 {
                     "Windows" => "0",
                     "ApplicationDefined" => "1",
-                    _ => unevaluatedPropertyValue
-                };
-            }
-            else if (propertyName == HighDpiModeProperty)
-            {
-                unevaluatedPropertyValue = unevaluatedPropertyValue switch
-                {
-                    "DpiUnaware" => "0",
-                    "SystemAware" => "1",
-                    "PerMonitor" => "2",
-                    "PerMonitorV2" => "3",
-                    "DpiUnawareGdiScaled" => "4",
                     _ => unevaluatedPropertyValue
                 };
             }

@@ -40,7 +40,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.CrossTarget
             ImmutableDictionary<string, ConfiguredProject>? configuredProjectsMap = await _activeConfiguredProjectsProvider.GetActiveConfiguredProjectsMapAsync();
 #pragma warning restore CS0618 // Type or member is obsolete
 
-            if (configuredProjectsMap == null)
+            if (configuredProjectsMap is null)
             {
                 throw new InvalidOperationException("There are no active configured projects.");
             }
@@ -82,7 +82,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.CrossTarget
                 ConfigurationGeneral configurationGeneralProperties = await projectProperties.GetConfigurationGeneralPropertiesAsync();
                 object? targetObject = await configurationGeneralProperties.TargetFramework.GetValueAsync();
 
-                if (targetObject == null)
+                if (targetObject is null)
                 {
                     return TargetFramework.Empty;
                 }

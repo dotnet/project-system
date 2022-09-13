@@ -26,6 +26,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
 
         public Task<IDynamicEnumValuesGenerator> GetProviderAsync(IList<NameValuePair>? options)
         {
+            bool searchForEntryPointsInFormsOnly = options?.Any(pair =>
+                pair.Name == "SearchForEntryPointsInFormsOnly"
+                && bool.TryParse(pair.Value, out bool optionValue)
+                && optionValue) ?? false;
+
             // We only include a value representing the "not set" state if requested. This is
             // because the old property pages explicitly add the "(Not set)" value at the UI
             // layer; the new property pages do not have that option and so the value must come
@@ -37,7 +42,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
                 && bool.TryParse(pair.Value, out bool optionValue)
                 && optionValue) ?? false;
 
-            return Task.FromResult<IDynamicEnumValuesGenerator>(new StartupObjectsEnumGenerator(_workspace, _unconfiguredProject, includeEmptyValue));
+            return Task.FromResult<IDynamicEnumValuesGenerator>(new StartupObjectsEnumGenerator(_workspace, _unconfiguredProject, includeEmptyValue, searchForEntryPointsInFormsOnly));
         }
     }
 
@@ -47,18 +52,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         private readonly Workspace _workspace;
         private readonly UnconfiguredProject _unconfiguredProject;
         private readonly bool _includeEmptyValue;
+        private readonly bool _searchForEntryPointsInFormsOnly;
 
-        /// <summary>
-        /// When we implement WinForms support, we need to set this for VB WinForms projects
-        /// </summary>
-        private static bool SearchForEntryPointsInFormsOnly => false;
-
-        [ImportingConstructor]
-        public StartupObjectsEnumGenerator(Workspace workspace, UnconfiguredProject project, bool includeEmptyValue)
+        public StartupObjectsEnumGenerator(Workspace workspace, UnconfiguredProject project, bool includeEmptyValue, bool searchForEntryPointsInFormsOnly)
         {
             _workspace = workspace;
             _unconfiguredProject = project;
             _includeEmptyValue = includeEmptyValue;
+            _searchForEntryPointsInFormsOnly = searchForEntryPointsInFormsOnly;
         }
 
         public async Task<ICollection<IEnumValue>> GetListedValuesAsync()
@@ -83,13 +84,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
             }
 
             IEntryPointFinderService? entryPointFinderService = project.LanguageServices.GetService<IEntryPointFinderService>();
-            IEnumerable<INamedTypeSymbol>? entryPoints = entryPointFinderService?.FindEntryPoints(compilation.GlobalNamespace, SearchForEntryPointsInFormsOnly);
+            IEnumerable<INamedTypeSymbol>? entryPoints = entryPointFinderService?.FindEntryPoints(compilation.GlobalNamespace, _searchForEntryPointsInFormsOnly);
             if (entryPoints is not null)
             {
                 enumValues.AddRange(entryPoints.Select(ep =>
                 {
                     string name = ep.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat.WithGlobalNamespaceStyle(SymbolDisplayGlobalNamespaceStyle.Omitted));
-                    return new PageEnumValue(new EnumValue { Name = name, DisplayName = name });
+                    string minimalName = ep.ToDisplayString(SymbolDisplayFormat.MinimallyQualifiedFormat);
+                    return new PageEnumValue(new EnumValue { Name = minimalName, DisplayName = name });
                 }));
             }
 

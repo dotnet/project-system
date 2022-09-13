@@ -78,7 +78,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
         public void GetLogicalFolderNames_Returns(string basePath, string fullPath, string link, params string[] expected)
         {
             var metadata = ImmutableDictionary<string, string>.Empty;
-            if (link != null)
+            if (link is not null)
             {
                 metadata = metadata.SetItem(Compile.LinkProperty, link);
             }

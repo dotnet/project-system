@@ -53,7 +53,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedColl
                 // scoping.
                 yield return Relationships.Contains;
 
-                if (relatableItem.ContainedByCollection != null)
+                if (relatableItem.ContainedByCollection is not null)
                 {
                     yield return Relationships.ContainedBy;
                 }

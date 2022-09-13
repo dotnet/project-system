@@ -122,12 +122,12 @@ Because the NuGet restore didn't finish correctly, the project might be in a bad
 This might be caused because one or more projects have a package that sets AssetTargetFallback, not supported for this scenario, which caused certain PackageReference to be included.
 
 NuGet Error NU1108</source>
-        <target state="new">A circular dependency A -&gt; B -&gt; A was detected during NuGet Restore which caused NuGet to stop restoring.
-Because the NuGet restore didn't finish correctly, the project might be in a bad state.
+        <target state="translated">在 NuGet 還原期間偵測到迴圈相依性 A -&gt; B -&gt; A，導致 NuGet 停止還原。
+因為 NuGet 還原未正確完成，所以專案可能處於損壞狀態。
 
-This might be caused because one or more projects have a package that sets AssetTargetFallback, not supported for this scenario, which caused certain PackageReference to be included.
+這可能是因為有一或多個專案具有設定 AssetTargetFallback 的套件，但此案例不支援該套件，導致包含特定 PackageReference。
 
-NuGet Error NU1108</target>
+NuGet 錯誤 NU1108</target>
         <note />
       </trans-unit>
       <trans-unit id="ProjectHotReloadSessionManager_AttachingToProcess">

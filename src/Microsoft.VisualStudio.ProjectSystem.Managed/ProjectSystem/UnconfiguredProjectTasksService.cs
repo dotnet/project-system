@@ -37,7 +37,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
         [AppliesTo(ProjectCapability.DotNet)]
         public Task OnProjectFactoryCompleted()
         {
-            if (_loadedInHostListener != null)
+            if (_loadedInHostListener is not null)
             {
                 return _loadedInHostListener.StartListeningAsync();
             }

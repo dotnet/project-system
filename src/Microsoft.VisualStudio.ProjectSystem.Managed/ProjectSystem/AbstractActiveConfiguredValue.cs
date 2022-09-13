@@ -34,7 +34,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
             _activeConfiguredProjectProvider.Changed += OnActiveConfigurationChanged;
 
             ConfiguredProject? configuredProject = _activeConfiguredProjectProvider.ActiveConfiguredProject;
-            if (configuredProject == null)
+            if (configuredProject is null)
             {
                 _threadingService.ExecuteSynchronously(async () =>
                 {

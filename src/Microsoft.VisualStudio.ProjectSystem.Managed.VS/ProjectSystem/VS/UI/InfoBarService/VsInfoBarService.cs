@@ -42,7 +42,7 @@ internal partial class VsInfoBarService : IInfoBarService
             await _threadingService.SwitchToUIThread(cancellationToken);
 
             IVsInfoBarHost? host = FindMainWindowInfoBarHost();
-            if (host == null)
+            if (host is null)
             {
                 return;
             }
@@ -105,7 +105,7 @@ internal partial class VsInfoBarService : IInfoBarService
     private void AddInfoBar(IVsInfoBarHost host, string message, ImageMoniker image, InfoBarUI[] items)
     {
         IVsInfoBarUIElement? element = CreateInfoBarUIElement(message, image, items);
-        if (element != null)
+        if (element is not null)
         {
             var entry = new InfoBarEntry(message, element, items, OnClosed);
             _entries.Add(entry);

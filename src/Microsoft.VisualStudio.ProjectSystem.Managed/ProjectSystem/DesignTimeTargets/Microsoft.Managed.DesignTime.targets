@@ -134,6 +134,16 @@
     <ProjectCapability Include="DataSourceWindow" Condition="'$(TargetFrameworkIdentifier)' == '.NETFramework' Or ('$(TargetFrameworkIdentifier)' == '.NETCoreApp' And '$(_TargetFrameworkVersionWithoutV)' >= '3.0')" />
   </ItemGroup>
 
+  <!-- List of well known rule Contexts that determine which catalog the rule shows up in CPS:
+    File                       - Rules that apply at a per-item level, or at the project level to apply defaults to project items.
+    Project                    - Rules that apply only at the project level.
+    PropertySheet              - Rules that apply only to property sheets.
+    ProjectSubscriptionService - Rules that are invisible except for purposes of programmatic subscribing to project data.
+    Invisible                  - A special rule catalog for purposes of programmatic subscribing to project data.
+    BrowseObject               - Rules that describe properties that appear in the Properties tool window while an item is selected in Solution Explorer.
+    ConfiguredBrowseObject     - Rules that describe configured project properties. This context currently only supports the Xaml rule to define 
+                                 configuration related project level properties.-->
+
   <!-- Common Project System rules that override rules defined in msbuild. These are exact copy of the rules defined in msbuild. -->
   <ItemGroup Condition="'$(DefineCommonManagedItemSchemas)' == 'true'">
 
@@ -151,6 +161,10 @@
       <Context>BrowseObject</Context>
     </PropertyPageSchema>
 
+    <PropertyPageSchema Include="$(ManagedXamlResourcesDirectory)Resource.BrowseObject.xaml;">
+      <Context>BrowseObject</Context>
+    </PropertyPageSchema>
+
     <PropertyPageSchema Include="$(ManagedXamlNeutralResourcesDirectory)Content.xaml">
       <Context>File</Context>
     </PropertyPageSchema>
@@ -158,7 +172,7 @@
     <PropertyPageSchema Include="$(ManagedXamlResourcesDirectory)Content.BrowseObject.xaml">
       <Context>BrowseObject</Context>
     </PropertyPageSchema>
-    
+
     <PropertyPageSchema Include="$(ManagedXamlNeutralResourcesDirectory)EmbeddedResource.xaml">
       <Context>File</Context>
     </PropertyPageSchema>
@@ -175,6 +189,10 @@
       <Context>File</Context>
     </PropertyPageSchema>
 
+    <PropertyPageSchema Include="$(ManagedXamlNeutralResourcesDirectory)Resource.xaml">
+      <Context>File</Context>
+    </PropertyPageSchema>
+    
     <PropertyPageSchema Include="$(ManagedXamlNeutralResourcesDirectory)PackageVersion.xaml">
       <Context>File</Context>
     </PropertyPageSchema>

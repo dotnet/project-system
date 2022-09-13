@@ -13,19 +13,19 @@ _Descriptions of these steps can be found in the team OneNote._
 
 - [ ] Identify base commit for new branch
   - [ ] According to the [schedule](https://dev.azure.com/devdiv/DevDiv/_wiki/wikis/DevDiv.wiki/10097/Dev17-Release), `main` snapped to `rel/d17.❓` at ❓ PST
-  - [ ] Last [completed Project System insertion PR](https://dev.azure.com/devdiv/DevDiv/_git/VS/pullrequests?_a=completed&createdBy=9f64bc2f-479b-429f-a665-fec80e130b1f&assignedTo=6e89082d-fdd2-4442-a310-051df5bdc73c): https://dev.azure.com/devdiv/DevDiv/_git/VS/pullrequest/❓
+  - [ ] Last [completed Project System insertion PR](https://dev.azure.com/devdiv/DevDiv/_git/VS/pullrequests?_a=completed&assignedTo=6e89082d-fdd2-4442-a310-051df5bdc73c): https://dev.azure.com/devdiv/DevDiv/_git/VS/pullrequest/❓
   - [ ] Last inserted GitHub PR: https://github.com/dotnet/project-system/pull/❓
   - [ ] Merge commit of that PR: ❓
 - [ ] Create branch on GitHub at that commit
   - [ ] https://github.com/dotnet/project-system/tree/dev17.❓.x
 - [ ] For branches not matching `dev*` or `feature/*` (usually we skip these)
-  - [ ] Update the [YAML file](..\\..\eng\pipelines\unit-tests.yml) to support CI/PR builds
-  - [ ] Update the [signed build definition](https://devdiv.visualstudio.com/DevDiv/_build?definitionId=9675) to build the new branch
+  - [ ] Update the [pull-request.yml](..\\..\eng\pipelines\pull-request.yml) (via `pr`) to support PR builds
+  - [ ] Update the [official.yml](..\\..\eng\pipelines\official.yml) (via `trigger`) to have signed builds the new branch
 - [ ] Update Roslyn Tools [config.xml](https://github.com/dotnet/roslyn-tools/blob/main/src/GitHubCreateMergePRs/config.xml) file to flow branch changes to the latest dev branch
   - [ ] dotnet/roslyn-tools PR: https://github.com/dotnet/roslyn-tools/pull/❓
 - [ ] Update [version.json](..\\..\version.json) (via `"version"`) to match the version of VS, if needed
-    - [ ] In new branch: https://github.com/dotnet/project-system/blob/dev17.❓.x/eng/imports/Versions.props
-    - [ ] In `main`: https://github.com/dotnet/project-system/blob/main/eng/imports/Versions.props
-- [ ] Clone existing release definition to insert this branch into VS (see OneNote)
+    - [ ] In new branch: https://github.com/dotnet/project-system/blob/dev17.❓.x/version.json
+    - [ ] In `main`: https://github.com/dotnet/project-system/blob/main/version.json
+- [ ] For running manual insertions, queue them up within the [DotNet-Project-System pipeline](https://devdiv.visualstudio.com/DevDiv/_build?definitionId=9675&_a=summary) and enter the appropriate `VS Insertion Branch Name`
 - [ ] Update [README.md](https://github.com/dotnet/project-system/blob/main/README.md) (in `main`) if we need new badges
 - [ ] Update [MSFTBot milestone tracking](https://aka.ms/fabricbotconfig)

@@ -30,7 +30,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedColl
 
         public void SubmitResult(IRelatableItem? item)
         {
-            if (item == null || CancellationToken.IsCancellationRequested)
+            if (item is null || CancellationToken.IsCancellationRequested)
             {
                 return;
             }

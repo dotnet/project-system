@@ -54,9 +54,27 @@
     <ForceGenerationOfBindingRedirects>true</ForceGenerationOfBindingRedirects>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <ProduceReferenceAssembly>true</ProduceReferenceAssembly>
-    <!-- TODO: Might be related to: https://github.com/dotnet/project-system/issues/5619 -->
-    <EnableSourceLink Condition="'$(CIBuild)' == 'true'">true</EnableSourceLink>
     <NoWarn>$(NoWarn);NU5125</NoWarn>
+    <!-- Sets deterministic compilation (/deterministic compiler flag) -->
+    <Deterministic>true</Deterministic>
+
+    <!-- SourceLink properties -->
+    <!-- https://github.com/dotnet/sourcelink#using-source-link-in-net-projects -->
+    <EnableSourceLink>true</EnableSourceLink>
+    <!-- Publish the repository URL in the built .nupkg (in the NuSpec <Repository> element) -->
+    <PublishRepositoryUrl>true</PublishRepositoryUrl>
+    <!-- Embed source files that are not tracked by the source control manager in the PDB -->
+    <EmbedUntrackedSources>true</EmbedUntrackedSources>
+    <!-- Build symbol package (.snupkg) to distribute the PDB containing Source Link -->
+    <IncludeSymbols>true</IncludeSymbols>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+    <!-- Controls both the compiler determinism (same as Deterministic) and turns on normalized PDB paths, which may break local debugging scenarios. -->
+    <!-- We only want this on for CIBuild, so PDB files point to the local source locations on disk, making finding local files easy during debugging. -->
+    <!-- See:
+      - https://github.com/dotnet/sdk/issues/16325#issuecomment-981818164 
+      - https://github.com/dotnet/project-system/pull/8464#discussion_r965499524
+    -->
+    <ContinuousIntegrationBuild Condition="'$(CIBuild)' == 'true'">true</ContinuousIntegrationBuild>
 
     <!-- Test project properties -->
     <IsUnitTestProject Condition="'$(IsUnitTestProject)' == ''">false</IsUnitTestProject>
@@ -102,6 +120,7 @@
     <PackageLicenseUrl>http://go.microsoft.com/fwlink/?LinkId=529443</PackageLicenseUrl>
     <RepositoryUrl>https://github.com/dotnet/project-system</RepositoryUrl>
     <PackageProjectUrl>$(RepositoryUrl)</PackageProjectUrl>
+    <RepositoryType>git</RepositoryType>
     <!-- By default, do not build a NuGet package for a project. -->
     <IsPackable>false</IsPackable>
   </PropertyGroup>

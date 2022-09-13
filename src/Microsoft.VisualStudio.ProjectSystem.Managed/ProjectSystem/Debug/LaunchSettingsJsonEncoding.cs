@@ -332,7 +332,7 @@ internal static class LaunchSettingsJsonEncoding
             if (!reader.Read())
                 throw new JsonReaderException($"Unexpected end of JSON data at {reader.LineNumber}:{reader.LinePosition}.");
 
-            if (handler != null)
+            if (handler is not null)
             {
                 jsonSerializer ??= JsonSerializer.CreateDefault();
                 

@@ -26,7 +26,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedColl
         {
             s_targetFlagsRegex ??= new Regex(@"^(?=.*\b" + nameof(DependencyTreeFlags.TargetNode) + @"\b)(?=.*\$TFM:(?<target>[^ ]+)\b).*$", RegexOptions.Compiled);
 
-            for (IVsHierarchyItem? parent = item; parent != null; parent = parent.Parent)
+            for (IVsHierarchyItem? parent = item; parent is not null; parent = parent.Parent)
             {
                 if (parent.TryGetFlagsString(out string? flagsString))
                 {

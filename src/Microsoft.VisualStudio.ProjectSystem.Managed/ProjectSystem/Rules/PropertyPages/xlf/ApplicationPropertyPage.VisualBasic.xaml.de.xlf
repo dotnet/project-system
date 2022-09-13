@@ -72,6 +72,16 @@
         <target state="translated">Begrüßungsbildschirm</target>
         <note />
       </trans-unit>
+      <trans-unit id="DynamicEnumProperty|StartupObject|Description">
+        <source>Defines the entry point to be called when the application loads. Generally this is set either to the main form in your application or to the 'Main' procedure that should run when the application starts. Class libraries do not define an entry point.</source>
+        <target state="new">Defines the entry point to be called when the application loads. Generally this is set either to the main form in your application or to the 'Main' procedure that should run when the application starts. Class libraries do not define an entry point.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="DynamicEnumProperty|StartupObject|DisplayName">
+        <source>Startup object</source>
+        <target state="new">Startup object</target>
+        <note />
+      </trans-unit>
       <trans-unit id="DynamicEnumProperty|StartupURI|Description">
         <source>Specifies the window that will open when the application loads.</source>
         <target state="translated">Gibt das Fenster an, das beim Laden der Anwendung geöffnet wird.</target>
@@ -122,29 +132,29 @@
         <target state="translated">Authentifizierungsmodus</target>
         <note />
       </trans-unit>
-      <trans-unit id="EnumValue|HighDpiMode.DpiUnawareGdiScaled|DisplayName">
-        <source>DPI unaware, GDI scaled - Like DPI unaware but optimized for non-double-buffered Graphics content.</source>
-        <target state="translated">Nicht DPI-fähig, GDI-skaliert – Wie nicht DPI-fähig, aber für nicht doppelt gepufferte Grafikinhalte optimiert.</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="EnumValue|HighDpiMode.DpiUnaware|DisplayName">
+      <trans-unit id="EnumValue|HighDpiMode.0|DisplayName">
         <source>DPI unaware - No scaling and assuming 100% scaling.</source>
         <target state="translated">Nicht DPI-fähig – Keine Skalierung und Annahme einer 100%igen Skalierung.</target>
         <note />
       </trans-unit>
-      <trans-unit id="EnumValue|HighDpiMode.PerMonitorV2|DisplayName">
-        <source>Per monitor V2 - DPI detected on-launch and on-change including child windows</source>
-        <target state="translated">Pro Monitor V2 – DPI beim Start und bei Änderung erkannt, einschließlich untergeordneter Fenster</target>
+      <trans-unit id="EnumValue|HighDpiMode.1|DisplayName">
+        <source>System aware - Primary monitor's DPI is scale lead.</source>
+        <target state="translated">Systemfähig – Der DPI des primären Monitors ist ein Skalierungslead.</target>
         <note />
       </trans-unit>
-      <trans-unit id="EnumValue|HighDpiMode.PerMonitor|DisplayName">
+      <trans-unit id="EnumValue|HighDpiMode.2|DisplayName">
         <source>Per monitor - DPI detected on-launch and on-change.</source>
         <target state="translated">Pro Monitor – DPI beim Start und bei Änderung erkannt.</target>
         <note />
       </trans-unit>
-      <trans-unit id="EnumValue|HighDpiMode.SystemAware|DisplayName">
-        <source>System aware - Primary monitor's DPI is scale lead.</source>
-        <target state="translated">Systemfähig – Der DPI des primären Monitors ist ein Skalierungslead.</target>
+      <trans-unit id="EnumValue|HighDpiMode.3|DisplayName">
+        <source>Per monitor V2 - DPI detected on-launch and on-change including child windows</source>
+        <target state="translated">Pro Monitor V2 – DPI beim Start und bei Änderung erkannt, einschließlich untergeordneter Fenster</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|HighDpiMode.4|DisplayName">
+        <source>DPI unaware, GDI scaled - Like DPI unaware but optimized for non-double-buffered Graphics content.</source>
+        <target state="translated">Nicht DPI-fähig, GDI-skaliert – Wie nicht DPI-fähig, aber für nicht doppelt gepufferte Grafikinhalte optimiert.</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|ShutdownMode.AfterAllFormsClose|DisplayName">

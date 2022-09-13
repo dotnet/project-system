@@ -172,6 +172,21 @@ namespace Microsoft.VisualStudio.Telemetry
         /// </summary>
         public static readonly string IncrementalBuildValidationDurationMillis = BuildPropertyName(TelemetryEventName.IncrementalBuildValidationFailure, "DurationMillis");
 
+        /// <summary>
+        ///     Indicates the duration of the NuGet restore to detect a cycle
+        /// </summary>
+        public static readonly string NuGetRestoreCycleDetectedRestoreDurationMillis = BuildPropertyName(TelemetryEventName.NuGetRestoreCycleDetected, "DurationMillis");
+
+        /// <summary>
+        ///     Indicates the number of time NuGet restore have succeeded until now.
+        /// </summary>
+        public static readonly string NuGetRestoreCycleDetectedRestoreSuccesses = BuildPropertyName(TelemetryEventName.NuGetRestoreCycleDetected, "RestoreSuccesses");
+
+        /// <summary>
+        ///     Indicates the number of times NuGet restore have detected cycles until now.
+        /// </summary>
+        public static readonly string NuGetRestoreCycleDetectedRestoreCyclesDetected = BuildPropertyName(TelemetryEventName.NuGetRestoreCycleDetected, "CyclesDetected");
+
         private static string BuildPropertyName(string eventName, string propertyName)
         {
             // Property names use the event names, but with slashes replaced by periods.

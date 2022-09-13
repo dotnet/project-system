@@ -65,14 +65,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Commands
         private async Task NavigateToAsync(IProjectTree node)
         {
             string? browsePath = await DependencyServices.GetBrowsePathAsync(_project, node);
-            if (browsePath == null)
+            if (browsePath is null)
                 return;
 
             await _threadingService.SwitchToUIThread();
 
             // Find the hierarchy based on the project file, and then select it
             var hierarchy = (IVsUIHierarchy?)_projectServices.GetHierarchyByProjectName(browsePath);
-            if (hierarchy == null || !_solutionExplorer.IsAvailable)
+            if (hierarchy is null || !_solutionExplorer.IsAvailable)
                 return;
 
             _ = _solutionExplorer.Select(hierarchy, HierarchyId.Root);

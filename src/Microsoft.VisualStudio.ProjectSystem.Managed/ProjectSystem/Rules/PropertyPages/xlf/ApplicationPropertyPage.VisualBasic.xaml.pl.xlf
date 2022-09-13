@@ -72,6 +72,16 @@
         <target state="translated">Ekran powitalny</target>
         <note />
       </trans-unit>
+      <trans-unit id="DynamicEnumProperty|StartupObject|Description">
+        <source>Defines the entry point to be called when the application loads. Generally this is set either to the main form in your application or to the 'Main' procedure that should run when the application starts. Class libraries do not define an entry point.</source>
+        <target state="new">Defines the entry point to be called when the application loads. Generally this is set either to the main form in your application or to the 'Main' procedure that should run when the application starts. Class libraries do not define an entry point.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="DynamicEnumProperty|StartupObject|DisplayName">
+        <source>Startup object</source>
+        <target state="new">Startup object</target>
+        <note />
+      </trans-unit>
       <trans-unit id="DynamicEnumProperty|StartupURI|Description">
         <source>Specifies the window that will open when the application loads.</source>
         <target state="translated">Określa okno, które zostanie otwarte po załadowaniu aplikacji.</target>
@@ -122,29 +132,29 @@
         <target state="translated">Tryb uwierzytelniania</target>
         <note />
       </trans-unit>
-      <trans-unit id="EnumValue|HighDpiMode.DpiUnawareGdiScaled|DisplayName">
-        <source>DPI unaware, GDI scaled - Like DPI unaware but optimized for non-double-buffered Graphics content.</source>
-        <target state="translated">Nierozpoznawane wartości DPI, skalowane GDI — podobnie jak nierozpoznawane DPI, ale zoptymalizowane pod kątem zawartości grafiki niebuforowanej dwukrotnie.</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="EnumValue|HighDpiMode.DpiUnaware|DisplayName">
+      <trans-unit id="EnumValue|HighDpiMode.0|DisplayName">
         <source>DPI unaware - No scaling and assuming 100% scaling.</source>
         <target state="translated">Nierozpoznawane wartość DPI — bez skalowania i przy założeniu skalowania na 100%.</target>
         <note />
       </trans-unit>
-      <trans-unit id="EnumValue|HighDpiMode.PerMonitorV2|DisplayName">
-        <source>Per monitor V2 - DPI detected on-launch and on-change including child windows</source>
-        <target state="translated">Na monitor w wersji 2 — wykryto DPI podczas uruchamiania i zmiany, w tym okna podrzędne</target>
+      <trans-unit id="EnumValue|HighDpiMode.1|DisplayName">
+        <source>System aware - Primary monitor's DPI is scale lead.</source>
+        <target state="translated">Rozpoznawanie systemu — DPI monitora podstawowego to potencjalny klient skalowania.</target>
         <note />
       </trans-unit>
-      <trans-unit id="EnumValue|HighDpiMode.PerMonitor|DisplayName">
+      <trans-unit id="EnumValue|HighDpiMode.2|DisplayName">
         <source>Per monitor - DPI detected on-launch and on-change.</source>
         <target state="translated">Na monitor — wykryto DPI podczas uruchamiania i zmiany.</target>
         <note />
       </trans-unit>
-      <trans-unit id="EnumValue|HighDpiMode.SystemAware|DisplayName">
-        <source>System aware - Primary monitor's DPI is scale lead.</source>
-        <target state="translated">Rozpoznawanie systemu — DPI monitora podstawowego to potencjalny klient skalowania.</target>
+      <trans-unit id="EnumValue|HighDpiMode.3|DisplayName">
+        <source>Per monitor V2 - DPI detected on-launch and on-change including child windows</source>
+        <target state="translated">Na monitor w wersji 2 — wykryto DPI podczas uruchamiania i zmiany, w tym okna podrzędne</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|HighDpiMode.4|DisplayName">
+        <source>DPI unaware, GDI scaled - Like DPI unaware but optimized for non-double-buffered Graphics content.</source>
+        <target state="translated">Nierozpoznawane wartości DPI, skalowane GDI — podobnie jak nierozpoznawane DPI, ale zoptymalizowane pod kątem zawartości grafiki niebuforowanej dwukrotnie.</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|ShutdownMode.AfterAllFormsClose|DisplayName">

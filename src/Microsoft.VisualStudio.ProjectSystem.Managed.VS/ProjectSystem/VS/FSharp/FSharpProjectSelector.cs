@@ -53,8 +53,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.FSharp
 
             // If the project has either a Project-level SDK attribute or an Import-level SDK attribute, we'll open it with the new project system.
             // Check both namespace-qualified and unqualified forms to include projects with and without the xmlns attribute.
-            bool hasProjectElementWithSdkAttribute = doc.XPathSelectElement("/msb:Project[@Sdk]", nsm) != null || doc.XPathSelectElement("/Project[@Sdk]") != null;
-            bool hasImportElementWithSdkAttribute = doc.XPathSelectElement("/*/msb:Import[@Sdk]", nsm) != null || doc.XPathSelectElement("/*/Import[@Sdk]") != null;
+            bool hasProjectElementWithSdkAttribute = doc.XPathSelectElement("/msb:Project[@Sdk]", nsm) is not null || doc.XPathSelectElement("/Project[@Sdk]") is not null;
+            bool hasImportElementWithSdkAttribute = doc.XPathSelectElement("/*/msb:Import[@Sdk]", nsm) is not null || doc.XPathSelectElement("/*/Import[@Sdk]") is not null;
 
             if (hasProjectElementWithSdkAttribute || hasImportElementWithSdkAttribute)
             {

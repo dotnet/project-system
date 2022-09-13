@@ -144,7 +144,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 sourceSnapshot,
                 itemRemovedFromSourceSnapshot: itemRemovedFromSourceSnapshot);
 
-            if (lastItemsChangedAtUtc != null)
+            if (lastItemsChangedAtUtc is not null)
             {
                 configuredInput = configuredInput.WithLastItemsChangedAtUtc(lastItemsChangedAtUtc.Value);
             }
@@ -1990,7 +1990,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
             writer.Assert();
 
-            if (telemetryReason != null)
+            if (telemetryReason is not null)
                 AssertTelemetryFailureEvent(telemetryReason, ignoreKinds);
             else
                 Assert.Empty(_telemetryEvents);

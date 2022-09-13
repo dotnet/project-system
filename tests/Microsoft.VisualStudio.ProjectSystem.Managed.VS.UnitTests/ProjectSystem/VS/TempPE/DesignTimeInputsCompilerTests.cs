@@ -338,7 +338,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
         private void SendDesignTimeInputs(DesignTimeInputs? inputs = null, string[]? changedFiles = null)
         {
             // Make everything full paths here, to allow for easier test authoring
-            if (inputs != null)
+            if (inputs is not null)
             {
                 inputs = new DesignTimeInputs(inputs.Inputs.Select(f => Path.Combine(_projectFolder, f)), inputs.SharedInputs.Select(f => Path.Combine(_projectFolder, f)));
             }
@@ -355,7 +355,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
             }
 
             IEnumerable<DesignTimeInputFileChange> changes;
-            if (changedFiles != null)
+            if (changedFiles is not null)
             {
                 changes = changedFiles.Select(f => new DesignTimeInputFileChange(Path.Combine(_projectFolder, f), false));
             }

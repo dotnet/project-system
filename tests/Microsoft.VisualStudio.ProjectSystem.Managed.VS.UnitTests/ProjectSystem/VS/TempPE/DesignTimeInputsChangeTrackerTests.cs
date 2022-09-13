@@ -296,7 +296,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
             }
 
             // root namespace and project folder have changed if its the first time we've sent inputs
-            if (_lastIntermediateOutputPath == null)
+            if (_lastIntermediateOutputPath is null)
             {
                 ruleUpdate +=
                     """

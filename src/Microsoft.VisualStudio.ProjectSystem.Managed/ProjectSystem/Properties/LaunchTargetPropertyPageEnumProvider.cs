@@ -45,7 +45,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
             {
                 var catalogProvider = _configuredProject.Services.PropertyPagesCatalog;
 
-                if (catalogProvider == null)
+                if (catalogProvider is null)
                 {
                     return Array.Empty<IEnumValue>();
                 }
