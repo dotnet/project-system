@@ -3,7 +3,7 @@
 jobs:
 - job: AnalyzeAPI
   displayName: Analyze API
-  timeoutInMinutes: 5
+  timeoutInMinutes: 180
   # This is a non-critical job, so don't fail the build if it fails.
   continueOnError: true
   steps:
