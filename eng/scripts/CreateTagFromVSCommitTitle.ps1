@@ -17,14 +17,22 @@ $hasShortCommitId = $commitTitle -match 'DotNet-Project-System \(\w+:\d+(\.\d+)*
 if($hasShortCommitId)
 {
   $shortCommitId = $matches[2]
-  Set-Location $projectSystemDirectory
-  # # Gets the full commit ID from the short commit ID.
-  # # See: https://stackoverflow.com/a/41717108/294804
-  # $commitId = (git rev-parse $shortCommitId)
+  # Default to VS repo short commit ID as part of the tag when the commit isn't a merge commit.
+  # In almost all cases, vsTagIdentifier will be set to the PR number since we we primarily create merge commits.
+  # See also: https://stackoverflow.com/a/21015031/294804
+  $vsTagIdentifier = (git log -1 --pretty=%h)
+  $hasPRNumber = $commitTitle -match 'Merged PR (\d+):'
+  if($hasPRNumber)
+  {
+    $prNumber = $matches[1]
+    $vsTagIdentifier = "PR-$prNumber"
+  }
 
-  $tagName = "TODO"
+  $tagName = "VS-Insertion-$vsTagIdentifier"
+  Set-Location $projectSystemDirectory
+  # Using a lightweight tag since we don't need any other information than the tag name itself.
   # https://git-scm.com/book/en/v2/Git-Basics-Tagging
-  git tag -a $tagName $shortCommitId
+  git tag $tagName $shortCommitId
   git push origin $tagName
   exit 0
 }

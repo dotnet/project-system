@@ -33,12 +33,6 @@ resources:
         - src/ConfigData/Packages/ProjectSystem/Managed.props
         # File containing the package version for AppDesigner/Editors packages.
         - src/ConfigData/Packages/Wizard/packages.props
-    # trigger:
-    #   branches:
-    #     include:
-    #     # The branch names are defined based on a pattern as part of the MicroBuildInsertVsPayload task in generate-insertion.yml.
-    #     # Pattern: team/[TeamName]/[PipelineName]-[PipelineBuildNumber]-[InsertionAttemptCount]
-    #     - team/DotNet-Project-System/*
 
 pool:
   # Agent Queue: https://devdiv.visualstudio.com/DevDiv/_settings/agentqueues?queueId=3123&view=jobs
@@ -47,10 +41,6 @@ pool:
   demands: Cmd
 
 variables:
-  # https://docs.microsoft.com/dotnet/core/tools/dotnet-environment-variables#dotnet_skip_first_time_experience
-  DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true
-  # https://docs.microsoft.com/dotnet/core/tools/dotnet-environment-variables#dotnet_nologo
-  DOTNET_NOLOGO: true
   # https://devdiv.visualstudio.com/DevDiv/_wiki/wikis/DevDiv.wiki/26284/Enabling-SBOM-For-Your-Component-Insertion-into-VS?anchor=1.-add-the-%27manifest-generator-task%27-to-your-pipeline
   Packaging.EnableSBOMSigning: true
   # Opt out of automatically injecting Codesign Validation into the pipeline. We run Codesign Validation as part of the Compliance pipeline.
@@ -68,16 +58,6 @@ variables:
 ###################################################################################################################################################################
 
 steps:
-- powershell: |
-    cd '$(Pipeline.Workspace)/s/VS'
-    $commitTitle = (git log -1 --pretty=%s)
-    $hasShortCommitId = $commitTitle -match 'DotNet-Project-System \(\w+:\d+(\.\d+)*:(\w+)\)'
-    if($hasShortCommitId)
-    {
-      $shortCommitId = $matches[2]
-      $commitId = (git rev-parse $shortCommitId)
-
-      $tag = "DotNet-Project-System-$shortCommitId"
-      Write-Host "##vso[task.setvariable variable=Tag]$tag"
-      Write-Host "##vso[task.setvariable variable=ShortCommitId]$shortCommitId"
-    }
+- powershell: . '$(Build.SourcesDirectory)/eng/scripts/CreateTagFromVSCommitTitle.ps1' -projectSystemDirectory '$(Build.SourcesDirectory)' -vsDirectory '$(Pipeline.Workspace)/s/VS'
+  displayName: Create VS Insertion Tag
+  failOnStderr: true
