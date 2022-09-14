@@ -1,7 +1,7 @@
 # Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
 # Name: DotNet-Project-System-Tagger
-# URL: https://dev.azure.com/devdiv/DevDiv/_build?definitionId=9675
+# URL: https://dev.azure.com/devdiv/DevDiv/_build?definitionId=17277
 
 # Creates a Git tag in our repo when a VS Insertion PR is merged.
 
@@ -58,6 +58,6 @@ variables:
 ###################################################################################################################################################################
 
 steps:
-- powershell: . '$(Build.SourcesDirectory)/eng/scripts/CreateTagFromVSCommitTitle.ps1' -projectSystemDirectory '$(Build.SourcesDirectory)' -vsDirectory '$(Pipeline.Workspace)/s/VS'
+- powershell: . '$(Build.SourcesDirectory)/eng/scripts/CreateTagFromVSCommitTitle.ps1' -projectSystemDirectory '$(Build.SourcesDirectory)' -vsDirectory '$(Build.SourcesDirectory)/VS'
   displayName: Create VS Insertion Tag
   failOnStderr: true
