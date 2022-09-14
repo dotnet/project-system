@@ -143,7 +143,7 @@ jobs:
       allowPackageConflicts: true
 
   # Publishes the NuGet packages to DevDiv/VS (https://dev.azure.com/DevDiv/DevDiv/_artifacts/feed/VS)
-  # The RoslynInsertionTool will republish these packages to DevDiv/VS-CoreXtFeeds (https://dev.azure.com/DevDiv/DevDiv/_artifacts/feed/VS-CoreXtFeeds)
+  # A separate process will republish these packages to DevDiv/VS-CoreXtFeeds (https://dev.azure.com/DevDiv/DevDiv/_artifacts/feed/VS-CoreXtFeeds)
   - task: NuGetCommand@2
     displayName: Publish Packages to DevDiv
     inputs:
