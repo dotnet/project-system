@@ -4,6 +4,8 @@ jobs:
 - job: AnalyzeVulnerabilities
   displayName: Analyze Vulnerabilities
   timeoutInMinutes: 60
+  # This is a non-critical job, so don't fail the build if it fails.
+  continueOnError: true
   steps:
 
   ###################################################################################################################################################################

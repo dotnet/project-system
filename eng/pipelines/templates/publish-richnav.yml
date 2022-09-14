@@ -4,6 +4,8 @@ jobs:
 - job: PublishRichNav
   displayName: Publish RichNav
   timeoutInMinutes: 30
+  # This is a non-critical job, so don't fail the build if it fails.
+  continueOnError: true
   steps:
 
   ###################################################################################################################################################################
