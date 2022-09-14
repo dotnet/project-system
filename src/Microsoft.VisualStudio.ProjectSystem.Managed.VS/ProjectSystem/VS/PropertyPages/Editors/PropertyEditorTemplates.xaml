@@ -136,9 +136,10 @@
                             KeyboardNavigation.TabNavigation="Continue"
                             Background="Transparent"
                             MaxHeight="750"
+                            Style="{StaticResource {x:Static vsfx:VsResourceKeys.ThemedDialogListViewStyleKey}}"
                             AutomationProperties.Name="{x:Static propertyPages:PropertyPageResources.ImplicitUsingEditor_ListViewAccessibleName}">
                             <ListView.View>
-                                <GridView>
+                                <GridView ColumnHeaderContainerStyle="{StaticResource {x:Static vsfx:VsResourceKeys.ThemedDialogGridViewColumnHeaderStyleKey}}">
                                     <GridViewColumn Header="{x:Static propertyPages:PropertyPageResources.ImplicitUsingEditor_ListItemIncludes}" Width="300">
                                         <GridViewColumn.CellTemplate>
                                             <DataTemplate DataType="{x:Type controls:ImplicitUsingModel}">
@@ -212,8 +213,8 @@
                                 </GridView>
                             </ListView.View>
 
-                            <ListBox.ItemContainerStyle>
-                                <Style TargetType="ListBoxItem">
+                            <ListView.ItemContainerStyle>
+                                <Style TargetType="ListViewItem" BasedOn="{StaticResource {x:Static vsfx:VsResourceKeys.ThemedDialogListViewItemGridStyleKey}}">
                                     <Setter Property="IsTabStop" Value="False" />
                                     <Setter Property="Focusable" Value="False" />
 
@@ -224,7 +225,7 @@
                                     </Style.Triggers>
 
                                 </Style>
-                            </ListBox.ItemContainerStyle>
+                            </ListView.ItemContainerStyle>
                         </ListView>
                     </Grid>
                 </ControlTemplate>
