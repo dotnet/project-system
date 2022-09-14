@@ -29,12 +29,12 @@
       </trans-unit>
       <trans-unit id="Rule|References|Description">
         <source>Settings associated with the C# implicit global usings feature.</source>
-        <target state="needs-review-translation">指定專案的參考。</target>
+        <target state="new">Settings associated with the C# implicit global usings feature.</target>
         <note />
       </trans-unit>
       <trans-unit id="Rule|References|DisplayName">
         <source>Global Usings</source>
-        <target state="needs-review-translation">參考</target>
+        <target state="new">Global Usings</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|ImplicitUsingsEditor|Description">
