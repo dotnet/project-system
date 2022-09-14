@@ -943,7 +943,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             Finally
                 _isLoadingResourceFile = False
 
-                ResourceEditorTelemetry.OnResourcesLoaded(_resources.Count, _resourceFileMetadata.Count)
+                ResourceEditorTelemetry.OnResourcesLoaded(_resources, _resourceFileMetadata.Count)
             End Try
 
         End Sub

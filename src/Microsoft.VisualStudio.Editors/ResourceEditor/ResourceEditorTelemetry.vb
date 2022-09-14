@@ -10,10 +10,37 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
 
     Friend NotInheritable Class ResourceEditorTelemetry
 
-        Public Shared Sub OnResourcesLoaded(resourceCount As Integer, metadataCount As Integer)
+        Public Shared Sub OnResourcesLoaded(resources As Dictionary(Of String, Resource), metadataCount As Integer)
+
+            Dim resourceCount = resources.Count
+            Dim stringCount = 0
+            Dim bitmapCount = 0
+            Dim iconCount = 0
+            Dim audioCount = 0
+            Dim otherCount = 0
+
+            For Each resource As Resource In resources.Values
+                If resource.FriendlyValueTypeName = "System.String" Then
+                    stringCount += 1
+                ElseIf resource.FriendlyValueTypeName = "System.Drawing.Bitmap" Then
+                    bitmapCount += 1
+                ElseIf resource.FriendlyValueTypeName = "System.Drawing.Icon" Then
+                    iconCount += 1
+                ElseIf resource.FriendlyTypeDescription = "Wave Sound" Then
+                    audioCount += 1
+                Else
+                    otherCount += 1
+                End If
+            Next
+
             Dim telemetryEvent = New TelemetryEvent("vs/projectsystem/editors/resourceeditor/loaded")
             telemetryEvent.Properties("vs.projectsystem.editors.resourceeditor.resourcecount") = resourceCount
             telemetryEvent.Properties("vs.projectsystem.editors.resourceeditor.metadatacount") = metadataCount
+            telemetryEvent.Properties("vs.projectsystem.editors.resourceeditor.stringcount") = stringCount
+            telemetryEvent.Properties("vs.projectsystem.editors.resourceeditor.bitmapcount") = bitmapCount
+            telemetryEvent.Properties("vs.projectsystem.editors.resourceeditor.iconcount") = iconCount
+            telemetryEvent.Properties("vs.projectsystem.editors.resourceeditor.audioCount") = audioCount
+            telemetryEvent.Properties("vs.projectsystem.editors.resourceeditor.othercount") = otherCount
             TelemetryService.DefaultSession.PostEvent(telemetryEvent)
         End Sub
 
