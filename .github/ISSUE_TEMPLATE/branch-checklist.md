@@ -19,11 +19,11 @@ _Descriptions of these steps can be found in the team OneNote._
 - [ ] Create branch on GitHub at that commit
   - [ ] https://github.com/dotnet/project-system/tree/dev17.❓.x
 - [ ] For branches not matching `dev*` or `feature/*` (usually we skip these)
-  - [ ] Update the [pull-request.yml](..\\..\eng\pipelines\pull-request.yml) (via `pr`) to support PR builds
-  - [ ] Update the [official.yml](..\\..\eng\pipelines\official.yml) (via `trigger`) to have signed builds the new branch
+  - [ ] Update the [pull-request.yml](https://github.com/dotnet/project-system/blob/main/eng/pipelines/pull-request.yml) (via `pr`) to support PR builds
+  - [ ] Update the [official.yml](https://github.com/dotnet/project-system/blob/main/eng/pipelines/official.yml) (via `trigger`) to have signed builds the new branch
 - [ ] Update Roslyn Tools [config.xml](https://github.com/dotnet/roslyn-tools/blob/main/src/GitHubCreateMergePRs/config.xml) file to flow branch changes to the latest dev branch
   - [ ] dotnet/roslyn-tools PR: https://github.com/dotnet/roslyn-tools/pull/❓
-- [ ] Update [version.json](..\\..\version.json) (via `"version"`) to match the version of VS, if needed
+- [ ] Update [version.json](https://github.com/dotnet/project-system/blob/main/version.json) (via `"version"`) to match the version of VS, if needed
     - [ ] In new branch: https://github.com/dotnet/project-system/blob/dev17.❓.x/version.json
     - [ ] In `main`: https://github.com/dotnet/project-system/blob/main/version.json
 - [ ] For running manual insertions, queue them up within the [DotNet-Project-System pipeline](https://devdiv.visualstudio.com/DevDiv/_build?definitionId=9675&_a=summary) and enter the appropriate `VS Insertion Branch Name`
