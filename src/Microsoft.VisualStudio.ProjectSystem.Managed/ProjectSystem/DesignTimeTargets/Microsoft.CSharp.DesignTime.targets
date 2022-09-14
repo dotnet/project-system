@@ -48,10 +48,9 @@
       <Context>Project</Context>
     </PropertyPageSchema>
 
-    <!-- See: https://github.com/dotnet/project-system/pull/8235 -->
-    <!--<PropertyPageSchema Include="$(ManagedXamlResourcesDirectory)ReferencesPage.CSharp.xaml">
+    <PropertyPageSchema Include="$(ManagedXamlResourcesDirectory)ReferencesPage.CSharp.xaml">
       <Context>Project</Context>
-    </PropertyPageSchema>-->
+    </PropertyPageSchema>
 
     <PropertyPageSchema Include="$(ManagedXamlNeutralResourcesDirectory)EditorConfigFiles.xaml">
       <Context>File</Context>
