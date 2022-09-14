@@ -62,21 +62,6 @@
         <target state="translated">Arquivo da documentação</target>
         <note />
       </trans-unit>
-      <trans-unit id="BoolProperty|ImplicitUsings|Description">
-        <source>Enable implicit global usings to be declared by the project SDK.</source>
-        <target state="translated">Permitir que os usos globais implícitos sejam declarados pelo projeto do SDK.</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="BoolProperty|ImplicitUsings|DisplayName">
-        <source>Implicit global usings</source>
-        <target state="translated">Usos globais implícitos</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="BoolProperty|ImplicitUsings|Metadata|SearchTerms">
-        <source>implicit</source>
-        <target state="translated">implícito</target>
-        <note />
-      </trans-unit>
       <trans-unit id="BoolProperty|Optimize|Description">
         <source>Enable compiler optimizations for smaller, faster, and more efficient output.</source>
         <target state="translated">Habilitar otimizações do compilador para uma saída menor, mais rápida e mais eficiente.</target>

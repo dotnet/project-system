@@ -417,3 +417,11 @@ virtual Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollec
 Microsoft.VisualStudio.ProjectSystem.VS.HotReload.IProjectHotReloadUpdateApplier
 Microsoft.VisualStudio.ProjectSystem.VS.HotReload.IProjectHotReloadUpdateApplier.ApplyHotReloadUpdateAsync(System.Func<Microsoft.VisualStudio.HotReload.Components.DeltaApplier.IDeltaApplier!, System.Threading.CancellationToken, System.Threading.Tasks.Task!>! applyFunction, System.Threading.CancellationToken cancelToken) -> System.Threading.Tasks.Task!
 Microsoft.VisualStudio.ProjectSystem.VS.HotReload.IProjectHotReloadUpdateApplier.HasActiveHotReloadSessions.get -> bool
+~static Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages.PropertyPageResources.ImplicitUsingEditor_AddUsing.get -> string
+~static Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages.PropertyPageResources.ImplicitUsingEditor_AddUsingButton.get -> string
+~static Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages.PropertyPageResources.ImplicitUsingEditor_ListItemAlias.get -> string
+~static Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages.PropertyPageResources.ImplicitUsingEditor_ListItemDelete.get -> string
+~static Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages.PropertyPageResources.ImplicitUsingEditor_ListItemIncludes.get -> string
+~static Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages.PropertyPageResources.ImplicitUsingEditor_ListItemIsStatic.get -> string
+~static Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages.PropertyPageResources.ImplicitUsingEditor_ListViewAccessibleName.get -> string
+~static Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages.PropertyPageResources.ImplicitUsingEditor_ShowImportedUsingsButton.get -> string

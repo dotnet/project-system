@@ -62,21 +62,6 @@
         <target state="translated">Soubor dokumentace</target>
         <note />
       </trans-unit>
-      <trans-unit id="BoolProperty|ImplicitUsings|Description">
-        <source>Enable implicit global usings to be declared by the project SDK.</source>
-        <target state="translated">Povolte implicitní globální použití, která budou deklarována sadou SDK projektu.</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="BoolProperty|ImplicitUsings|DisplayName">
-        <source>Implicit global usings</source>
-        <target state="translated">Implicitní globální použití</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="BoolProperty|ImplicitUsings|Metadata|SearchTerms">
-        <source>implicit</source>
-        <target state="translated">implicitní</target>
-        <note />
-      </trans-unit>
       <trans-unit id="BoolProperty|Optimize|Description">
         <source>Enable compiler optimizations for smaller, faster, and more efficient output.</source>
         <target state="translated">Povolte optimalizace kompilátoru pro menší, rychlejší a efektivnější výstup.</target>
