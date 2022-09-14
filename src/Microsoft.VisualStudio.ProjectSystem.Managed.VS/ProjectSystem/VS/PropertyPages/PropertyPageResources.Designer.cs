@@ -7,6 +7,8 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
+using System.Diagnostics.CodeAnalysis;
+
 namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages {
     using System;
     
@@ -21,6 +23,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
+    [SuppressMessage("ApiDesign", "RS0041:Public members should not use oblivious types")]
     public class PropertyPageResources {
         
         private static global::System.Resources.ResourceManager resourceMan;
