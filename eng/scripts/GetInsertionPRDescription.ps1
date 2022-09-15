@@ -24,7 +24,7 @@ if(-Not $previousSha)
   $description += "Updating $projectName to [$currentShaShort]($repoUrl/commit/$currentSha)"
   $description += '---'
   $description += 'Unable to determine the previous VS insertion. PR changelist cannot be computed.'
-  Write-Host "##vso[task.setvariable variable=InsertionDescription])$($description | Join-String -Separator '%0D%0A')"
+  Write-Host "##vso[task.setvariable variable=InsertionDescription])$($description -join '%0D%0A')"
   exit 0
 }
 $previousShaShort = $previousSha.Substring(0,10)
@@ -83,4 +83,4 @@ if($isTruncated)
 # Merge the description lines into a single string (using %0D%0A for newline) and set it to InsertionDescription.
 # https://developercommunity.visualstudio.com/t/multiple-lines-variable-in-build-and-release/365667
 # https://stackoverflow.com/a/49947273/294804
-Write-Host "##vso[task.setvariable variable=InsertionDescription])$($description | Join-String -Separator '%0D%0A')"
+Write-Host "##vso[task.setvariable variable=InsertionDescription])$($description -join '%0D%0A')"
