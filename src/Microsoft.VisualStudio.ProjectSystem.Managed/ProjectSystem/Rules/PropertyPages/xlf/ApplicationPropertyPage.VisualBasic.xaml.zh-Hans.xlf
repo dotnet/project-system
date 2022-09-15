@@ -192,6 +192,11 @@
         <target state="translated">Windows - 在运行时通过 My.User 检索用户信息。</target>
         <note />
       </trans-unit>
+      <trans-unit id="StringProperty|CreateOrOpenAppManifest|DisplayName">
+        <source>Create or open app manifest for Windows settings.</source>
+        <target state="new">Create or open app manifest for Windows settings.</target>
+        <note />
+      </trans-unit>
       <trans-unit id="StringProperty|CreateOrOpenApplicationXaml|Description">
         <source>Open the Application.xaml file</source>
         <target state="translated">打开 Application.xaml 文件</target>

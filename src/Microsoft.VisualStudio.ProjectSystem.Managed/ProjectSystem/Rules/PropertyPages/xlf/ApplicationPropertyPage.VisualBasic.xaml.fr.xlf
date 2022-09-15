@@ -192,6 +192,11 @@
         <target state="translated">Windows : récupérer les informations utilisateur via My.User au moment de l’exécution.</target>
         <note />
       </trans-unit>
+      <trans-unit id="StringProperty|CreateOrOpenAppManifest|DisplayName">
+        <source>Create or open app manifest for Windows settings.</source>
+        <target state="new">Create or open app manifest for Windows settings.</target>
+        <note />
+      </trans-unit>
       <trans-unit id="StringProperty|CreateOrOpenApplicationXaml|Description">
         <source>Open the Application.xaml file</source>
         <target state="translated">Ouvrir le fichier Application.xaml</target>
