@@ -65,12 +65,15 @@ $description += $pullRequests | ForEach-Object { "- [($($_.subject)) $($_.body)]
 
 # 4000 character limit is imposed by Azure Pipelines. See:
 # https://developercommunity.visualstudio.com/t/raise-the-character-limit-for-pull-request-descrip/365708
-# Remove the last line (PR) from the description until it is less than 4003 characters, to allow room for the ellipsis.
+# Remove the last line (PR) from the description until it is less than 4000 characters, including the 6 characters for newlines (%0D%0A) (see Write-Host below).
+$characterLimit = 4000
 $isTruncated = $false
-while(($description | Measure-Object -Character).Characters -gt 4003)
+while((($description | Measure-Object -Character).Characters + (($description.Count - 1) * 6)) -gt $characterLimit)
 {
   $description = $description | Select-Object -SkipLast 1
   $isTruncated = $true
+  # Make room for 9 characters: 3 for ellipsis (...) and 6 characters for the newline (%0D%0A).
+  $characterLimit = 3991
 }
 if($isTruncated)
 {
