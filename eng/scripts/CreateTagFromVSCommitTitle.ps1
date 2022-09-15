@@ -1,19 +1,20 @@
 # Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
-# This updates OptProf.runsettings with the bootstrapper information and the profiling inputs path, as TestStore nodes.
-# Additionally, sets the visualStudioBootstrapperURI variable in the AzDO pipeline, which is used for the OptProf DartLab template.
+# This creates a tag in our repo (.NET Project System) based on parsing the latest commit title in the VS repo.
 
 param ([Parameter(Mandatory=$true)] [string] $projectSystemDirectory, [Parameter(Mandatory=$true)] [string] $vsDirectory)
 
 Set-Location $vsDirectory
-# Gets the subject (title) from the latest commit.
-# See:
+# Gets the subject (title) from the latest commit. See:
 # - https://stackoverflow.com/a/7293026/294804
 # - https://git-scm.com/docs/git-log#_pretty_formats
 $commitTitle = (git log -1 --pretty=%s)
-# Parse the short commit ID out of the commit title.
-# See: https://stackoverflow.com/a/12001377/294804
-$hasShortCommitId = $commitTitle -match 'DotNet-Project-System \(\w+:\d+(\.\d+)*:(\w+)\)'
+# Parse the short commit ID out of the commit title. See:
+# - https://stackoverflow.com/a/3697210/294804
+# - https://stackoverflow.com/a/12001377/294804
+# Note: Only including alphanumeric and dot, underscore, and hyphen in the branch name.
+# See this for how complex branch names can be: https://stackoverflow.com/a/12093994/294804
+$hasShortCommitId = $commitTitle -match 'DotNet-Project-System \([a-zA-Z0-9._-]+:\d+(\.\d+)*:(\w+)\)'
 if($hasShortCommitId)
 {
   $shortCommitId = $matches[2]
