@@ -102,6 +102,21 @@
         <target state="translated">Nom de la machine distante</target>
         <note />
       </trans-unit>
+      <trans-unit id="StringProperty|RemoveStartArguments|DisplayName">
+        <source>Move the command line args from the .user file to launchSettings.json</source>
+        <target state="new">Move the command line args from the .user file to launchSettings.json</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|StartArguments|Description">
+        <source>This project's .user file has a value in the StartArguments property. The use of StartArguments is deprecated, and we recommend removing it via the link below.</source>
+        <target state="new">This project's .user file has a value in the StartArguments property. The use of StartArguments is deprecated, and we recommend removing it via the link below.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|StartArguments|DisplayName">
+        <source>Command line arguments (from .user file)</source>
+        <target state="new">Command line arguments (from .user file)</target>
+        <note />
+      </trans-unit>
       <trans-unit id="StringProperty|WorkingDirectory|Description">
         <source>Path to the working directory where the process will be started.</source>
         <target state="translated">Chemin du répertoire de travail où le processus va démarrer.</target>
