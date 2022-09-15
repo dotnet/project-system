@@ -83,7 +83,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             var data = new LaunchProfile(
                 name: null,
                 commandName: null,
-                otherSettings: value == null ? ImmutableArray<(string, object)>.Empty : ImmutableArray.Create<(string, object)>((LaunchProfileExtensions.RemoteDebugMachineProperty, value)));
+                otherSettings: value is null ? ImmutableArray<(string, object)>.Empty : ImmutableArray.Create<(string, object)>((LaunchProfileExtensions.RemoteDebugMachineProperty, value)));
 
             Assert.Equal(expected, data.RemoteDebugMachine());
         }

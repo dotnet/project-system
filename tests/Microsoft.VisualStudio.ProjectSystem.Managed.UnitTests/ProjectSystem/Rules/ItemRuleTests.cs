@@ -154,7 +154,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Rules
             {
                 var attribute = element.Attribute("ItemType");
 
-                if (attribute != null)
+                if (attribute is not null)
                 {
                     Assert.Equal(ruleName, attribute.Value);
                 }
@@ -170,7 +170,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Rules
             foreach (XElement element in rule.Elements())
             {
                 var nameAttribute = element.Attribute("Name");
-                if (nameAttribute == null)
+                if (nameAttribute is null)
                 {
                     continue;
                 }

@@ -22,7 +22,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             foreach ((ImportDefinitionBinding import, IReadOnlyList<ExportDefinitionBinding> exports) in part.SatisfyingExports)
             {
                 var importingProperty = import.ImportingMember as PropertyInfo;
-                if (importingProperty == null)  // We don't verify ImportingConstructor, only check properties.
+                if (importingProperty is null)  // We don't verify ImportingConstructor, only check properties.
                     return;
 
                 Type memberType = importingProperty.PropertyType;
@@ -43,7 +43,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
 
                 // Single import
                 ExportDefinitionBinding exportBinding = exports.SingleOrDefault();
-                if (exportBinding != null)
+                if (exportBinding is not null)
                 {
                     string? appliesTo = GetAppliesToMetadata(exportBinding.ExportDefinition);
                     if (!string.IsNullOrEmpty(appliesTo) && !ContainsExpression(appliesTo))
@@ -56,7 +56,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                             foreach (ExportDefinition exportDefinition in part.Definition.ExportDefinitions.Select(p => p.Value))
                             {
                                 string? requiredAppliesTo = GetAppliesToMetadata(exportDefinition);
-                                if (requiredAppliesTo == null ||
+                                if (requiredAppliesTo is null ||
                                     !ContainsExpression(requiredAppliesTo))
                                 {
                                     Assert.Fail($"{part.Definition.Type.FullName}.{ importingProperty.Name} needs to check AppliesTo metadata of the imported component.");
@@ -85,7 +85,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                     continue;
 
                 exportDefinition.Metadata.TryGetValue(nameof(AppliesToAttribute.AppliesTo), out object? metadata);
-                if (null != metadata)
+                if (metadata is not null)
                     appliesToMetadata.Add((string)metadata);
             }
 
@@ -164,7 +164,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                 {
                     hasParameterlessConstructor = true;
                 }
-                else if (constructor.GetCustomAttribute<ImportingConstructorAttribute>() != null)
+                else if (constructor.GetCustomAttribute<ImportingConstructorAttribute>() is not null)
                 {
                     importingConstructors++;
                 }
@@ -198,7 +198,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                 if (contractsRequiringMetadata.TryGetValue(exportDefinition.ContractName, out ISet<Type> contractTypes))
                 {
                     Type exportType;
-                    if (memberRef == null)
+                    if (memberRef is null)
                     {
                         exportType = definition.Type;
                     }
@@ -372,7 +372,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         /// </summary>
         private static bool IsSubclassOfGenericType(Type genericType, Type type)
         {
-            while (type != null && type != typeof(object))
+            while (type is not null && type != typeof(object))
             {
                 Type currentType = type.IsGenericType ? type.GetGenericTypeDefinition() : type;
                 if (genericType == currentType)
@@ -392,7 +392,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         /// <returns>returns null if the metadata cannot be found.</returns>
         private static string? GetAppliesToMetadata(ExportDefinition exportDefinition)
         {
-            if (exportDefinition.Metadata.TryGetValue(nameof(AppliesToAttribute.AppliesTo), out object? appliesToMetadata) && null != appliesToMetadata)
+            if (exportDefinition.Metadata.TryGetValue(nameof(AppliesToAttribute.AppliesTo), out object? appliesToMetadata) && appliesToMetadata is not null)
             {
                 return (string)appliesToMetadata;
             }

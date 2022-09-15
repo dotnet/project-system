@@ -35,7 +35,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
             string? relativePath = provider.GetAddNewItemDirectory(target);
 
-            if (relativePath == null)
+            if (relativePath is null)
                 return null;
 
             string? projectFilePath = provider.GetPath(target.Root);

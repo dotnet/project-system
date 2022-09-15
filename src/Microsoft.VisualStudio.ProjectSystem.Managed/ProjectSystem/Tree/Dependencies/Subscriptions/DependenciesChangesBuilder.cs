@@ -50,14 +50,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Subscriptions
 
         public IDependenciesChanges? TryBuildChanges()
         {
-            if (_added == null && _removed == null)
+            if (_added is null && _removed is null)
             {
                 return null;
             }
 
             return new DependenciesChanges(
-                _added == null ? ImmutableList<IDependencyModel>.Empty : ImmutableArray.CreateRange(_added),
-                _removed == null ? ImmutableList<IDependencyModel>.Empty : ImmutableArray.CreateRange(_removed));
+                _added is null ? ImmutableList<IDependencyModel>.Empty : ImmutableArray.CreateRange(_added),
+                _removed is null ? ImmutableList<IDependencyModel>.Empty : ImmutableArray.CreateRange(_removed));
         }
 
         public bool HasResolvedItem(TargetFramework targetFramework, string providerType, string dependencyId)

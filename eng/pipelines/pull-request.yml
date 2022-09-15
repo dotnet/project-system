@@ -19,10 +19,6 @@ pr:
     - dev*
     # Any other branches that contain major feature development.
     - feature/*
-  paths:
-    exclude:
-    - docs/*
-    - README.md
 
 # Disable CI builds for this pipeline.
 # See: https://docs.microsoft.com/azure/devops/pipelines/yaml-schema/trigger?view=azure-pipelines#examples

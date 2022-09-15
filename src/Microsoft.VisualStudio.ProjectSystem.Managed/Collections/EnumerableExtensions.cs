@@ -51,13 +51,13 @@ namespace Microsoft.VisualStudio.Collections
             if (!ignoreDuplicateKeys)
                 return source.ToDictionary(keySelector, elementSelector, comparer);
 
-            if (source == null)
+            if (source is null)
                 throw new ArgumentNullException(nameof(source));
 
-            if (keySelector == null)
+            if (keySelector is null)
                 throw new ArgumentNullException(nameof(keySelector));
 
-            if (elementSelector == null)
+            if (elementSelector is null)
                 throw new ArgumentNullException(nameof(elementSelector));
 
             Dictionary<TKey, TElement> result = new(comparer);
@@ -66,7 +66,7 @@ namespace Microsoft.VisualStudio.Collections
             {
                 var key = keySelector(item);
 
-                if (key == null)
+                if (key is null)
                     throw new ArgumentNullException(nameof(key));
 
                 var element = elementSelector(item);

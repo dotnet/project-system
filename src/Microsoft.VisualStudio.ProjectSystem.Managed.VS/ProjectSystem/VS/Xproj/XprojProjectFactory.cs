@@ -68,7 +68,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Xproj
         {
             _context.VerifyIsOnMainThread();
 
-            if (_cookie != VSConstants.VSCOOKIE_NIL && _registerProjectTypes != null)
+            if (_cookie != VSConstants.VSCOOKIE_NIL && _registerProjectTypes is not null)
             {
                 Verify.HResult(_registerProjectTypes.UnregisterProjectType(_cookie));
             }

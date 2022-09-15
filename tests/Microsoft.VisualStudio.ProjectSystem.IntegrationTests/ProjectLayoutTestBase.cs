@@ -80,17 +80,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
 
             void VerifyNode(Node? expect, SolutionExplorerItemTestExtension? actual, int depth = 0)
             {
-                Assert.IsTrue(expect != null || actual != null);
+                Assert.IsTrue(expect is not null || actual is not null);
 
                 var thisSame = true;
 
-                if (actual != null && expect?.Text != null && expect.Text != actual.Name)
+                if (actual is not null && expect?.Text is not null && expect.Text != actual.Name)
                 {
                     same = false;
                     thisSame = false;
                 }
 
-                if (actual != null && expect?.Icon != null && !AssertExtensions.AreEqual(expect.Icon.Value, actual.ExpandedIconMoniker))
+                if (actual is not null && expect?.Icon != null && !AssertExtensions.AreEqual(expect.Icon.Value, actual.ExpandedIconMoniker))
                 {
                     same = false;
                     thisSame = false;
@@ -100,7 +100,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                     ? "null"
                     : ImageMonikerDebuggerDisplay.FromImageMoniker(actual.ExpandedIconMoniker.Value.ToImageMoniker());
 
-                if (expect != null)
+                if (expect is not null)
                 {
                     expectOutput
                         .Append(' ', depth * 4)
@@ -111,7 +111,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                             : actualIcon);
                 }
 
-                if (actual != null)
+                if (actual is not null)
                 {
                     actualOutput
                         .Append(' ', depth * 4)
@@ -121,9 +121,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                         .AppendLine(thisSame ? "" : " 🐛");
                 }
 
-                if (expect?.Children != null)
+                if (expect?.Children is not null)
                 {
-                    if (actual?.IsExpanded == false && expect.Children != null && expect.Children.Count != 0)
+                    if (actual?.IsExpanded == false && expect.Children is not null && expect.Children.Count != 0)
                     {
                         actual.Expand();
                     }

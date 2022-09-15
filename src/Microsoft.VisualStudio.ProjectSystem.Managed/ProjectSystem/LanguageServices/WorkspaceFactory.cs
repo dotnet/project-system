@@ -90,62 +90,8 @@ internal class WorkspaceFactory : IWorkspaceFactory
 
         #region Ordering evaluation before first build
 
-        // This dataflow block will ensure that the first output item is always evaluation data.
-        // We need that behaviour for the Workspace, which creates the Roslyn object in response
-        // to evaluation data, and needs that Roslyn object when build data is processed.
-        //
-        // This block works by buffering any build data that arrives ahead of the first evaluation
-        // data.
-
-        List<IProjectVersionedValue<WorkspaceUpdate>>? bufferedBuilds = new() { null! };
-
         IPropagatorBlock<IProjectVersionedValue<WorkspaceUpdate>, IProjectVersionedValue<WorkspaceUpdate>> orderingBlock
-            = DataflowBlockSlim.CreateTransformManyBlock<IProjectVersionedValue<WorkspaceUpdate>, IProjectVersionedValue<WorkspaceUpdate>>(input =>
-                {
-                    if (input.Value.EvaluationUpdate is not null)
-                    {
-                        if (bufferedBuilds is null)
-                        {
-                            // Second or later evaluation update. Handle normally.
-                        }
-                        else if (bufferedBuilds is { Count: 1 })
-                        {
-                            // First evaluation data, and no build data was buffered. Handle normally.
-                            bufferedBuilds = null!;
-                        }
-                        else
-                        {
-                            // First evaluation data, and we have buffered build data.
-                            // Prepend the evaluation in the first slot (we reserved an empty position here).
-                            bufferedBuilds[0] = input;
-                            // Null out the reference for future callers, and return this collection of output
-                            // items for this input.
-                            IEnumerable<IProjectVersionedValue<WorkspaceUpdate>> result = bufferedBuilds;
-                            bufferedBuilds = null;
-                            return result;
-                        }
-                    }
-                    else if (input.Value.BuildUpdate is not null)
-                    {
-                        if (bufferedBuilds is not null)
-                        {
-                            // We are buffering build data until some later point at which evaluation
-                            // data arrives. Add it to the queue.
-                            bufferedBuilds.Add(input);
-
-                            // Return an empty enumerable. We don't yet want to produce any outputs.
-                            return Enumerable.Empty<IProjectVersionedValue<WorkspaceUpdate>>();
-                        }
-                    }
-                    else
-                    {
-                        throw Assumes.NotReachable();
-                    }
-
-                    // If we got here, we return the input item unchanged (just wrapped in an array).
-                    return new[] { input };
-                },
-                new ExecutionDataflowBlockOptions { NameFormat = "Workspace update ordering {0}" });
+            = CreateWorkspaceUpdateOrderingBlock();
 
         workspace.ChainDisposal(orderingBlock.LinkTo(actionBlock, DataflowOption.PropagateCompletion));
 
@@ -169,43 +115,93 @@ internal class WorkspaceFactory : IWorkspaceFactory
 
             evaluationTransformBlock.LinkTo(orderingBlock, DataflowOption.PropagateCompletion),
 
-            ProjectDataSources.JoinUpstreamDataSources(joinableTaskFactory, _projectService.Services.FaultHandler, source.ProjectRuleSource, source.SourceItemsRuleSource)
+            ProjectDataSources.JoinUpstreamDataSources(joinableTaskFactory, _projectService.Services.FaultHandler, source.ActiveConfiguredProjectSource, source.ProjectRuleSource, source.SourceItemsRuleSource)
         });
 
         #endregion
 
         #region Build data subscriptions
 
-        // A block that provides the command line arguments for a configured project.
-        // We will link this to the slice's active configured project.
-        // NOTE this will go away once CPS exposes a way to access snapshot data while preserving order (being worked on for 17.4)
-        var commandLineArgumentsBlock = new UnwrapChainedProjectValueDataSource<ConfiguredProject, CommandLineArgumentsSnapshot>(
-            _unconfiguredProject,
-            configuredProject => configuredProject.Services.ExportProvider.GetExportedValue<ICommandLineArgumentsDataSource>());
-
-        var buildTransformBlock = DataflowBlockSlim.CreateTransformBlock<IProjectVersionedValue<(ConfiguredProject ConfiguredProject, IProjectSubscriptionUpdate BuildUpdate, CommandLineArgumentsSnapshot CommandLineArgumentsSnapshot)>, IProjectVersionedValue<WorkspaceUpdate>>
-            (update => update.Derive(WorkspaceUpdate.FromBuild));
+        var buildTransformBlock
+            = DataflowBlockSlim.CreateTransformBlock<IProjectVersionedValue<(ConfiguredProject ConfiguredProject, IProjectSubscriptionUpdate BuildUpdate)>, IProjectVersionedValue<WorkspaceUpdate>>
+                (update => update.Derive(WorkspaceUpdate.FromBuild));
 
         workspace.ChainDisposal(new DisposableBag
         {
-            commandLineArgumentsBlock,
-
-            source.ActiveConfiguredProjectSource.SourceBlock.LinkTo(commandLineArgumentsBlock, DataflowOption.PropagateCompletion),
-
             ProjectDataSources.SyncLinkTo(
                 source.ActiveConfiguredProjectSource.SourceBlock.SyncLinkOptions(),
                 source.ProjectBuildRuleSource.SourceBlock.SyncLinkOptions(DataflowOption.WithRuleNames(ProjectBuildRuleName)),
-                commandLineArgumentsBlock.SourceBlock.SyncLinkOptions(),
                 target: buildTransformBlock,
-                linkOptions: DataflowOption.PropagateCompletion),
+                linkOptions: DataflowOption.PropagateCompletion,
+                cancellationToken: cancellationToken),
 
             buildTransformBlock.LinkTo(orderingBlock, DataflowOption.PropagateCompletion),
 
-            ProjectDataSources.JoinUpstreamDataSources(joinableTaskFactory, _projectService.Services.FaultHandler, source.ActiveConfiguredProjectSource, source.ProjectBuildRuleSource, commandLineArgumentsBlock)
+            ProjectDataSources.JoinUpstreamDataSources(joinableTaskFactory, _projectService.Services.FaultHandler, source.ActiveConfiguredProjectSource, source.ProjectBuildRuleSource)
         });
 
         #endregion
 
         return workspace;
+    }
+
+    /// <summary>
+    /// Creates a dataflow block that reorders initial values to ensure that the first output item
+    /// is evaluation data, even if build data arrives first.
+    /// </summary>
+    /// <remarks>
+    /// We need that behaviour for the Workspace, which creates the Roslyn object in response
+    /// to evaluation data, and needs that Roslyn object when build data is processed.
+    /// This block works by buffering any build data that arrives ahead of the first evaluation
+    /// data.
+    /// </remarks>
+    /// <returns></returns>
+    internal static IPropagatorBlock<IProjectVersionedValue<WorkspaceUpdate>, IProjectVersionedValue<WorkspaceUpdate>> CreateWorkspaceUpdateOrderingBlock()
+    {
+        List<IProjectVersionedValue<WorkspaceUpdate>>? bufferedBuilds = new() { null! };
+
+        return DataflowBlockSlim.CreateTransformManyBlock<IProjectVersionedValue<WorkspaceUpdate>, IProjectVersionedValue<WorkspaceUpdate>>(
+            input =>
+            {
+                if (bufferedBuilds is not null)
+                {
+                    if (input.Value.EvaluationUpdate is not null)
+                    {
+                        if (bufferedBuilds is { Count: 1 })
+                        {
+                            // First evaluation data, and no build data was buffered. Handle normally.
+                            bufferedBuilds = null!;
+                        }
+                        else
+                        {
+                            // First evaluation data, and we have buffered build data.
+                            // Prepend the evaluation in the first slot (we reserved an empty position here).
+                            bufferedBuilds[0] = input;
+                            // Null out the reference for future callers, and return this collection of output
+                            // items for this input.
+                            IEnumerable<IProjectVersionedValue<WorkspaceUpdate>> result = bufferedBuilds;
+                            bufferedBuilds = null;
+                            return result;
+                        }
+                    }
+                    else if (input.Value.BuildUpdate is not null)
+                    {
+                        // We are buffering build data until some later point at which evaluation
+                        // data arrives. Add it to the queue.
+                        bufferedBuilds.Add(input);
+
+                        // Return an empty enumerable. We don't yet want to produce any outputs.
+                        return Enumerable.Empty<IProjectVersionedValue<WorkspaceUpdate>>();
+                    }
+                    else
+                    {
+                        throw Assumes.NotReachable();
+                    }
+                }
+
+                // If we got here, we return the input item unchanged (just wrapped in an array).
+                return new[] { input };
+            },
+            new ExecutionDataflowBlockOptions { NameFormat = "Workspace update ordering {0}" });
     }
 }

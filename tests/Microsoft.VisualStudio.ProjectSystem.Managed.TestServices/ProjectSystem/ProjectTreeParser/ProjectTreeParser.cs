@@ -45,7 +45,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
             {
                 current = ReadNextProjectItem(current);
 
-            } while (current != null);
+            } while (current is not null);
 
             return root;
         }
@@ -64,7 +64,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
                 indent++;
             }
 
-            if (parent == null)
+            if (parent is null)
                 throw FormatException(ProjectTreeFormatError.MultipleRoots, "Encountered another project root, when tree can only have one.");
 
             MutableProjectTree tree = ReadProjectItem();

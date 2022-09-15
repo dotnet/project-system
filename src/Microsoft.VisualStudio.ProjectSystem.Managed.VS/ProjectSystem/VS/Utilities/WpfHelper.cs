@@ -13,15 +13,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Utilities
         {
             DataGridRow rowContainer = GetRow(dataGrid, row);
 
-            if (rowContainer != null)
+            if (rowContainer is not null)
             {
                 DataGridCellsPresenter? presenter = GetVisualChild<DataGridCellsPresenter>(rowContainer);
 
-                if (presenter != null)
+                if (presenter is not null)
                 {
                     // try to get the cell but it may possibly be virtualized
                     var cell = (DataGridCell)presenter.ItemContainerGenerator.ContainerFromIndex(column);
-                    if (cell == null)
+                    if (cell is null)
                     {
                         // now try to bring into view and retrieve the cell
                         dataGrid.ScrollIntoView(rowContainer, dataGrid.Columns[column]);
@@ -37,7 +37,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Utilities
         public static DataGridRow GetRow(DataGrid dataGrid, int index)
         {
             var row = (DataGridRow)dataGrid.ItemContainerGenerator.ContainerFromIndex(index);
-            if (row == null)
+            if (row is null)
             {
                 // may be virtualized, bring into view and try again
                 dataGrid.ScrollIntoView(dataGrid.Items[index]);
@@ -54,11 +54,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Utilities
             {
                 var v = (Visual)VisualTreeHelper.GetChild(parent, i);
                 child = v as T;
-                if (child == null)
+                if (child is null)
                 {
                     child = GetVisualChild<T>(v);
                 }
-                if (child != null)
+                if (child is not null)
                 {
                     break;
                 }

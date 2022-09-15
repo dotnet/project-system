@@ -3,6 +3,9 @@
 jobs:
 - job: AnalyzeAPI
   displayName: Analyze API
+  timeoutInMinutes: 180
+  # This is a non-critical job, so don't fail the build if it fails.
+  continueOnError: true
   steps:
 
   ###################################################################################################################################################################
@@ -51,17 +54,14 @@ jobs:
       noCopyBinaries: true
       noDecompress: true
       isLargeApp: true
+      verbosityLevel: minimal
+      preserveTempFiles: true
     # APIScan requires an Azure Identity to run. That is provided via an Azure service principal.
     # - https://microsoft.sharepoint.com/teams/apiscan/APIScan%20User%20Wiki/authentication_using_AAD_identities.aspx
     # - https://microsoft.sharepoint.com/teams/apiscan/Lists/Contacts%20%20System%20Account%20and%20Wrappers/AllItems.aspx?skipSignal=true
     # This value is provided from the DotNet-Project-System variable group, defined in the stage variables.
     env:
       AzureServicesAuthConnectionString: $(ApiScanConnectionString)
-    # Add a retry count in an attempt to workaround timeout failures that have been occurring with the task itself.
-    # You cannot have both a retry count and a timeout. See: https://stackoverflow.com/questions/71582213/how-can-you-handle-retrycountontaskfailure-and-timeoutinminutes-together
-    retryCountOnTaskFailure: 2
-    # This task is causing problems because of timeouts. Make it still succeed, even if it times out.
-    continueOnError: true
 
   ###################################################################################################################################################################
   # PUBLISH RESULTS

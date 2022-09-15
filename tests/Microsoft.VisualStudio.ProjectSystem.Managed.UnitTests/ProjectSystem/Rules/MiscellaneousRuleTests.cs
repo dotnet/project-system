@@ -94,7 +94,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Rules
             var sourceType = dataSource?.Attribute("SourceType");
             var msBuildTarget = dataSource?.Attribute("MSBuildTarget");
 
-            if (sourceType != null)
+            if (sourceType is not null)
             {
                 if (sourceType.Value == "TargetResults")
                 {
@@ -136,14 +136,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.Rules
             var dataSource = root.XPathSelectElement(@"/msb:Rule/msb:Rule.DataSource/msb:DataSource", namespaceManager);
 
             var itemType = dataSource?.Attribute("ItemType");
-            if (itemType != null)
+            if (itemType is not null)
             {
                 foreach (var property in GetProperties(root))
                 {
                     var element = GetDataSource(property);
 
                     var propertyItemType = element?.Attribute("ItemType");
-                    if (propertyItemType != null)
+                    if (propertyItemType is not null)
                     {
                         Assert.Equal(itemType?.Value, propertyItemType.Value);
                     }

@@ -42,7 +42,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
         public bool Equals(TargetFramework? obj)
         {
-            return obj != null && TargetFrameworkAlias.Equals(obj.TargetFrameworkAlias, StringComparisons.FrameworkIdentifiers);
+            return obj is not null && TargetFrameworkAlias.Equals(obj.TargetFrameworkAlias, StringComparisons.FrameworkIdentifiers);
         }
 
         public static bool operator ==(TargetFramework? left, TargetFramework? right)

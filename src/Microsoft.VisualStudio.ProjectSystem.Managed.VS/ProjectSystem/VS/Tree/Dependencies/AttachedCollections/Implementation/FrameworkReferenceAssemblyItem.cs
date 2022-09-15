@@ -54,7 +54,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedColl
 
             [BrowseObjectDisplayName(nameof(VSResources.FrameworkAssemblyPathDisplayName))]
             [BrowseObjectDescription(nameof(VSResources.FrameworkAssemblyPathDescription))]
-            public string Path => _item.Path != null
+            public string Path => _item.Path is not null
                 ? System.IO.Path.GetFullPath(System.IO.Path.Combine(_item.Framework.Path, _item.Path))
                 : "";
 

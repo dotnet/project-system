@@ -128,7 +128,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
 
         public IEnumerable<string> GetBestGuessDimensionNames(ImmutableArray<ProjectPropertyElement> properties)
         {
-            if (FindDimensionProperty(properties) != null)
+            if (FindDimensionProperty(properties) is not null)
                 return new string[] { DimensionName };
 
             return Array.Empty<string>();
@@ -137,7 +137,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
         public async Task<IEnumerable<KeyValuePair<string, string>>> GetBestGuessDefaultValuesForDimensionsAsync(UnconfiguredProject project)
         {
             string? defaultValue = await FindDefaultValueFromDimensionPropertyAsync(project) ?? DimensionDefaultValue;
-            if (defaultValue != null)
+            if (defaultValue is not null)
                 return new[] { new KeyValuePair<string, string>(DimensionName, defaultValue) };
 
             return Enumerable.Empty<KeyValuePair<string, string>>();

@@ -40,7 +40,7 @@ namespace Microsoft.VisualStudio.Threading.Tasks
         ~CancellationSeries()
         {
             Debug.Assert(
-                Environment.HasShutdownStarted || _cts == null,
+                Environment.HasShutdownStarted || _cts is null,
                 "Instance of CancellationSeries not disposed before being finalized",
                 "Stack at construction:{0}{1}",
                 Environment.NewLine,
@@ -75,7 +75,7 @@ namespace Microsoft.VisualStudio.Threading.Tasks
 
             CancellationTokenSource? priorSource = Interlocked.Exchange(ref _cts, nextSource);
 
-            if (priorSource == null)
+            if (priorSource is null)
             {
                 nextSource.Dispose();
 
@@ -104,7 +104,7 @@ namespace Microsoft.VisualStudio.Threading.Tasks
 
             CancellationTokenSource? source = Interlocked.Exchange(ref _cts, null);
 
-            if (source == null)
+            if (source is null)
             {
                 // Already disposed
                 return;

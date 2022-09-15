@@ -38,7 +38,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
                 foreach (IProjectTree node in nodes)
                 {
                     string? path = await DependencyServices.GetBrowsePathAsync(_project, node);
-                    if (path == null)
+                    if (path is null)
                         continue;
 
                     Open(path);

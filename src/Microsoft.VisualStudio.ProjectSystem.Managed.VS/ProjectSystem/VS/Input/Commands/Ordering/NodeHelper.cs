@@ -36,7 +36,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.Ordering
         {
             UseWindow(configuredProject, serviceProvider, (hierarchy, window) =>
             {
-                if (window != null)
+                if (window is not null)
                 {
                     // We need to unselect the item if it is already selected to re-select it correctly.
                     window.ExpandItem(hierarchy, itemId, EXPANDFLAGS.EXPF_UnSelectItem);
@@ -67,7 +67,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.Ordering
         {
             Requires.NotNull(serviceProvider, nameof(serviceProvider));
 
-            if (serviceProvider == null)
+            if (serviceProvider is null)
             {
                 throw new ArgumentNullException(nameof(serviceProvider));
             }
@@ -81,14 +81,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.Ordering
 
             try
             {
-                if (ErrorHandler.Succeeded(shell.FindToolWindow(0, ref persistenceSlot, out IVsWindowFrame frame)) && frame != null)
+                if (ErrorHandler.Succeeded(shell.FindToolWindow(0, ref persistenceSlot, out IVsWindowFrame frame)) && frame is not null)
                 {
                     ErrorHandler.ThrowOnFailure(frame.GetProperty((int)__VSFPROPID.VSFPROPID_DocView, out pvar));
                 }
             }
             finally
             {
-                if (pvar != null)
+                if (pvar is not null)
                 {
                     uiHierarchyWindow = (IVsUIHierarchyWindow)pvar;
                 }

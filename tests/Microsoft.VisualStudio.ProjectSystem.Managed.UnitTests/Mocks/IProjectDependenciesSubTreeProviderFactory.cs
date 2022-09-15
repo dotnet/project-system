@@ -14,17 +14,17 @@ namespace Microsoft.VisualStudio.ProjectSystem
         {
             var mock = new Mock<IProjectDependenciesSubTreeProvider2>(mockBehavior);
 
-            if (providerType != null)
+            if (providerType is not null)
             {
                 mock.Setup(x => x.ProviderType).Returns(providerType);
             }
 
-            if (createRootDependencyNode != null)
+            if (createRootDependencyNode is not null)
             {
                 mock.Setup(x => x.CreateRootDependencyNode()).Returns(createRootDependencyNode);
             }
 
-            if (groupNodeFlags != null)
+            if (groupNodeFlags is not null)
             {
                 mock.SetupGet(x => x.GroupNodeFlag).Returns(groupNodeFlags.Value);
             }

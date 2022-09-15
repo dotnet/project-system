@@ -10,13 +10,13 @@ namespace Microsoft.VisualStudio.ProjectSystem
         {
             var mock = new Mock<IProjectPropertiesProvider>();
 
-            if (props != null)
+            if (props is not null)
             {
                 mock.Setup(t => t.GetProperties(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()))
                                 .Returns(props);
             }
 
-            if (commonProps != null)
+            if (commonProps is not null)
             {
                 mock.Setup(t => t.GetCommonProperties()).Returns(commonProps);
             }

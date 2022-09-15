@@ -65,8 +65,8 @@ namespace Microsoft.VisualStudio.Telemetry
 
             _telemetryService.PostProperties(TelemetryEventName.DesignTimeBuildComplete, new[]
             {
-                (TelemetryPropertyName.DesignTimeBuildCompleteSucceeded, (object)_succeeded),
-                (TelemetryPropertyName.DesignTimeBuildCompleteTargets, targetResults)
+                (TelemetryPropertyName.DesignTimeBuildComplete.Succeeded, (object)_succeeded),
+                (TelemetryPropertyName.DesignTimeBuildComplete.Targets, targetResults)
             });
         }
     }

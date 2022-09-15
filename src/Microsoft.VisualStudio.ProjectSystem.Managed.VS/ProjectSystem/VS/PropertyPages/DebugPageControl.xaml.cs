@@ -59,7 +59,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
                         cell?.Focus();
                         dataGridEnvironmentVariables.BeginEdit();
                     }
-                }).FileAndForget(TelemetryEventName.Prefix);
+                }).FileAndForget(TelemetryEventName.Fault);
 #pragma warning restore RS0030 // Do not used banned APIs
             }
         }
@@ -97,13 +97,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
         /// </summary>
         private void DebugPageControl_LayoutUpdated(object sender, EventArgs e)
         {
-            if (_customControlLayoutUpdateRequired && _mainGrid != null && DataContext is DebugPageViewModel viewModel)
+            if (_customControlLayoutUpdateRequired && _mainGrid is not null && DataContext is DebugPageViewModel viewModel)
             {
                 _customControlLayoutUpdateRequired = false;
 
                 // Get the control that was added to the grid
                 UserControl customControl = viewModel.ActiveProviderUserControl;
-                if (customControl != null)
+                if (customControl is not null)
                 {
                     if (customControl.Content is Grid childGrid && childGrid.ColumnDefinitions.Count == _mainGrid.ColumnDefinitions.Count)
                     {

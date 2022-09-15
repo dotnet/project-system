@@ -87,7 +87,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
                 valueToSet = unevaluatedPropertyValue;
             }
 
-            if (valueToSet != null)
+            if (valueToSet is not null)
             {
                 await base.SetPropertyValueAsync(propertyName, valueToSet, dimensionalConditions);
             }

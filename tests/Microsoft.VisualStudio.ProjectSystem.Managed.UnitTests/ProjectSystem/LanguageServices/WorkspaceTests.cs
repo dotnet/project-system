@@ -732,8 +732,7 @@ public class WorkspaceTests
         IProjectSubscriptionUpdate? evaluationRuleUpdate = null,
         IProjectSubscriptionUpdate? sourceItemsUpdate = null,
         bool applyBuild = false,
-        IProjectSubscriptionUpdate? buildRuleUpdate = null,
-        CommandLineArgumentsSnapshot? commandLineArgumentsSnapshot = null)
+        IProjectSubscriptionUpdate? buildRuleUpdate = null)
     {
         var commandLineParserService = new Mock<ICommandLineParserService>(MockBehavior.Strict);
         commandLineParserService.Setup(o => o.Parse(It.IsAny<IEnumerable<string>>(), """C:\MyProject""")).Returns(EmptyBuildOptions);
@@ -777,7 +776,7 @@ public class WorkspaceTests
 
         if (applyBuild)
         {
-            await ApplyBuildAsync(workspace, configuredProject, buildRuleUpdate, commandLineArgumentsSnapshot);
+            await ApplyBuildAsync(workspace, configuredProject, buildRuleUpdate);
         }
 
         return workspace;
@@ -844,7 +843,6 @@ public class WorkspaceTests
         Workspace workspace,
         ConfiguredProject? configuredProject = null,
         IProjectSubscriptionUpdate? buildRuleUpdate = null,
-        CommandLineArgumentsSnapshot? commandLineArgumentsSnapshot = null,
         int configuredProjectVersion = 1)
     {
         configuredProject ??= ConfiguredProjectFactory.Create();
@@ -867,9 +865,7 @@ public class WorkspaceTests
             }
             """);
 
-        commandLineArgumentsSnapshot ??= new(ImmutableArray<string>.Empty, isChanged: false);
-
-        var update = WorkspaceUpdate.FromBuild((configuredProject, buildRuleUpdate, commandLineArgumentsSnapshot));
+        var update = WorkspaceUpdate.FromBuild((configuredProject, buildRuleUpdate));
 
         await workspace.OnWorkspaceUpdateAsync(
             IProjectVersionedValueFactory.Create(update, ProjectDataSources.ConfiguredProjectVersion, configuredProjectVersion));

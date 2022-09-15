@@ -68,7 +68,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             ImmutableDictionary<string, ConfiguredProject>? configProjects = await _activeConfiguredProjectsProvider.GetActiveConfiguredProjectsMapAsync();
 #pragma warning restore CS0618 // Type or member is obsolete
 
-            if (configProjects == null)
+            if (configProjects is null)
             {
                 return null;
             }

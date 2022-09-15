@@ -55,8 +55,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build.Diagnostics
             // with the click-through rate for more information.
             var telemetryEvent = new TelemetryEvent(TelemetryEventName.IncrementalBuildValidationFailureDisplayed);
 
-            telemetryEvent.Properties.Add(TelemetryPropertyName.IncrementalBuildFailureReason, failureReason);
-            telemetryEvent.Properties.Add(TelemetryPropertyName.IncrementalBuildValidationDurationMillis, checkDuration);
+            telemetryEvent.Properties.Add(TelemetryPropertyName.IncrementalBuildValidation.FailureReason, failureReason);
+            telemetryEvent.Properties.Add(TelemetryPropertyName.IncrementalBuildValidation.DurationMillis, checkDuration);
 
             TelemetryService.DefaultSession.PostEvent(telemetryEvent);
 
@@ -66,7 +66,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build.Diagnostics
             // We don't want to hold up reporting of a completed build on this.
             Guid outputPaneGuid = VSConstants.GUID_BuildOutputWindowPane;
 
-            if (_outputWindow.Value.GetPane(ref outputPaneGuid, out IVsOutputWindowPane? outputPane) == HResult.OK && outputPane != null)
+            if (_outputWindow.Value.GetPane(ref outputPaneGuid, out IVsOutputWindowPane? outputPane) == HResult.OK && outputPane is not null)
             {
                 string message = string.Format(VSResources.IncrementalBuildFailureWarningMessage_2, Path.GetFileName(_project.FullPath), failureDescription.TrimEnd(Delimiter.Period));
 

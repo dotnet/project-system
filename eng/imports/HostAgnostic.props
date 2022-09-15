@@ -52,6 +52,7 @@
 
     <!-- Analyzers-->
     <!-- Set PrivateAssets="all" to prevent consumers of our packages from picking up these analyzers transitively. -->
+    <PackageReference Include="CSharpIsNullAnalyzer"                           PrivateAssets="all" />
     <PackageReference Include="Microsoft.VisualStudio.ProjectSystem.Analyzers" PrivateAssets="all" />
     <PackageReference Include="Microsoft.CodeAnalysis.Analyzers"               PrivateAssets="all" />
     <PackageReference Include="Microsoft.CodeAnalysis.CSharp.CodeStyle"        PrivateAssets="all" />

@@ -41,7 +41,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
                 return GetContainedLanguageFactoryForFileAsync(filePath);
             });
 
-            return (hierarchy == null || containedLanguageFactory == null) ? HResult.Fail : HResult.OK;
+            return (hierarchy is null || containedLanguageFactory is null) ? HResult.Fail : HResult.OK;
         }
 
         private async Task<(HierarchyId itemid, IVsHierarchy? hierarchy, IVsContainedLanguageFactory? containedLanguageFactory)> GetContainedLanguageFactoryForFileAsync(string filePath)
@@ -59,7 +59,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
 
             IVsContainedLanguageFactory? containedLanguageFactory = await _containedLanguageFactory.GetValueAsync();
 
-            if (containedLanguageFactory == null)
+            if (containedLanguageFactory is null)
                 return (HierarchyId.Nil, null, null);
 
             return (itemid, _projectVsServices.VsHierarchy, containedLanguageFactory);

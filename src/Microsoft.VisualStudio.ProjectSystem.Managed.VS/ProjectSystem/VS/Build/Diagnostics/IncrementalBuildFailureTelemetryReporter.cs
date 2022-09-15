@@ -48,8 +48,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build.Diagnostics
 
             var telemetryEvent = new TelemetryEvent(TelemetryEventName.IncrementalBuildValidationFailure);
 
-            telemetryEvent.Properties.Add(TelemetryPropertyName.IncrementalBuildFailureReason, failureReason);
-            telemetryEvent.Properties.Add(TelemetryPropertyName.IncrementalBuildValidationDurationMillis, checkDuration);
+            telemetryEvent.Properties.Add(TelemetryPropertyName.IncrementalBuildValidation.FailureReason, failureReason);
+            telemetryEvent.Properties.Add(TelemetryPropertyName.IncrementalBuildValidation.DurationMillis, checkDuration);
 
             TelemetryService.DefaultSession.PostEvent(telemetryEvent);
 

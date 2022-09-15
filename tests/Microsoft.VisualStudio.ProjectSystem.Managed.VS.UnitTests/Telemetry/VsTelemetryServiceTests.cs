@@ -145,11 +145,11 @@ namespace Microsoft.VisualStudio.Telemetry
             TelemetryEvent? result = null;
             var service = CreateInstance((e) => { result = e; });
 
-            service.PostProperty(TelemetryEventName.UpToDateCheckFail, TelemetryPropertyName.UpToDateCheckFailReason, "Reason");
+            service.PostProperty(TelemetryEventName.UpToDateCheckFail, TelemetryPropertyName.UpToDateCheck.FailReason, "Reason");
 
             Assert.NotNull(result);
             Assert.Equal(TelemetryEventName.UpToDateCheckFail, result.Name);
-            Assert.Contains(new KeyValuePair<string, object>(TelemetryPropertyName.UpToDateCheckFailReason, "Reason"), result.Properties);
+            Assert.Contains(new KeyValuePair<string, object>(TelemetryPropertyName.UpToDateCheck.FailReason, "Reason"), result.Properties);
         }
 
         [Fact]
@@ -160,19 +160,19 @@ namespace Microsoft.VisualStudio.Telemetry
 
             service.PostProperties(TelemetryEventName.DesignTimeBuildComplete, new[]
             {
-                (TelemetryPropertyName.DesignTimeBuildCompleteSucceeded, (object)true),
-                (TelemetryPropertyName.DesignTimeBuildCompleteTargets, "Compile")
+                (TelemetryPropertyName.DesignTimeBuildComplete.Succeeded, (object)true),
+                (TelemetryPropertyName.DesignTimeBuildComplete.Targets, "Compile")
             });
 
             Assert.NotNull(result);
             Assert.Equal(TelemetryEventName.DesignTimeBuildComplete, result.Name);
-            Assert.Contains(new KeyValuePair<string, object>(TelemetryPropertyName.DesignTimeBuildCompleteSucceeded, true), result.Properties);
-            Assert.Contains(new KeyValuePair<string, object>(TelemetryPropertyName.DesignTimeBuildCompleteTargets, "Compile"), result.Properties);
+            Assert.Contains(new KeyValuePair<string, object>(TelemetryPropertyName.DesignTimeBuildComplete.Succeeded, true), result.Properties);
+            Assert.Contains(new KeyValuePair<string, object>(TelemetryPropertyName.DesignTimeBuildComplete.Targets, "Compile"), result.Properties);
         }
 
         private static VsTelemetryService CreateInstance(Action<TelemetryEvent>? action = null)
         {
-            if (action == null)
+            if (action is null)
                 return new VsTelemetryService();
 
             // Override PostEventToSession to avoid actually sending to telemetry

@@ -260,7 +260,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Subscriptions
                     activeTargetFramework),
                 token);
 
-            if (updatedSnapshot != null)
+            if (updatedSnapshot is not null)
             {
                 _dependencyTreeTelemetryService.ObserveSnapshot(updatedSnapshot);
             }
@@ -287,7 +287,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Subscriptions
         {
             // If "TargetFrameworks" property has changed, we need to refresh the project context and subscriptions.
             // If no context exists yet, create one.
-            if (HasTargetFrameworksChanged() || _context.Current == null)
+            if (HasTargetFrameworksChanged() || _context.Current is null)
             {
                 return UpdateProjectContextAndSubscriptionsAsync();
             }
@@ -314,7 +314,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Subscriptions
             {
                 AggregateCrossTargetProjectContext? newProjectContext = await _context.TryUpdateCurrentAggregateProjectContextAsync();
 
-                if (newProjectContext != null)
+                if (newProjectContext is not null)
                 {
                     _snapshot.TryUpdate(previousSnapshot => previousSnapshot.SetTargets(newProjectContext.TargetFrameworks, newProjectContext.ActiveTargetFramework));
 

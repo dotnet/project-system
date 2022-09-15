@@ -213,7 +213,7 @@ namespace Microsoft.VisualStudio.Buffers.PooledObjects
         public void Free()
         {
             ObjectPool<PooledArray<T>> pool = _pool;
-            if (pool != null)
+            if (pool is not null)
             {
                 // We do not want to retain (potentially indefinitely) very large builders 
                 // while the chance that we will need their size is diminishingly small.

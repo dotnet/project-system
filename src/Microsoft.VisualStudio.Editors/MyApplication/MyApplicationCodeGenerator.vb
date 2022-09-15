@@ -10,6 +10,7 @@ Imports System.Runtime.InteropServices
 Imports EnvDTE
 
 Imports Microsoft.VisualStudio.Designer.Interfaces
+Imports Microsoft.VisualStudio.Editors.Common
 Imports Microsoft.VisualStudio.Editors.Interop
 Imports Microsoft.VisualStudio.OLE.Interop
 Imports Microsoft.VisualStudio.Shell
@@ -227,25 +228,27 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
                 Else
                     Debug.Fail("Unexpected MyApplication.ShutdownMode")
                 End If
-
-                '    Me.HighDpiMode = HighDpiMode.xxx
-                Dim HighDpiValue As String
-                Select Case MyApplication.HighDpiMode
-                    Case 0
-                        HighDpiValue = HighDpiMode_DpiUnaware
-                    Case 1
-                        HighDpiValue = HighDpiMode_SystemAware
-                    Case 2
-                        HighDpiValue = HighDpiMode_PerMonitor
-                    Case 3
-                        HighDpiValue = HighDpiMode_PerMonitorV2
-                    Case 4
-                        HighDpiValue = HighDpiMode_DpiUnawareGdiScaled
-                    Case Else
-                        HighDpiValue = String.Empty
-                End Select
-                AddFieldAssignment(Constructor, HighDpiModeFieldName, HighDpiModeFieldName, HighDpiValue)
-
+                
+                If IsTargetingDotNetCore(DirectCast(GetService(GetType(IVsHierarchy)), IVsHierarchy))
+                    '    Me.HighDpiMode = HighDpiMode.xxx
+                    Dim HighDpiValue As String
+                    Select Case MyApplication.HighDpiMode
+                        Case 0
+                            HighDpiValue = HighDpiMode_DpiUnaware
+                        Case 1
+                            HighDpiValue = HighDpiMode_SystemAware
+                        Case 2
+                            HighDpiValue = HighDpiMode_PerMonitor
+                        Case 3
+                            HighDpiValue = HighDpiMode_PerMonitorV2
+                        Case 4
+                            HighDpiValue = HighDpiMode_DpiUnawareGdiScaled
+                        Case Else
+                            HighDpiValue = String.Empty
+                    End Select
+                    AddFieldAssignment(Constructor, HighDpiModeFieldName, HighDpiModeFieldName, HighDpiValue)
+                End If
+                    
                 GeneratedType.Members.Add(Constructor)
 
                 If MyApplication.MainFormNoRootNS <> String.Empty Then

@@ -38,7 +38,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedColl
                         //  We must filter to a specific profile
                         string? fileProfile = file.Attribute("Profile")?.Value;
 
-                        if (fileProfile == null)
+                        if (fileProfile is null)
                         {
                             // The file doesn't specify a profile, so skip it
                             continue;
@@ -62,7 +62,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedColl
                     string? assemblyVersion = Pool(file.Attribute("AssemblyVersion")?.Value);
                     string? fileVersion = Pool(file.Attribute("FileVersion")?.Value);
 
-                    if (assemblyName != null)
+                    if (assemblyName is not null)
                     {
                         results.Add(new FrameworkReferenceAssemblyItem(assemblyName, path, assemblyVersion, fileVersion, framework));
                     }
@@ -72,7 +72,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedColl
 
                 string? Pool(string? s)
                 {
-                    if (s != null)
+                    if (s is not null)
                     {
                         if (pool.TryGetValue(s, out string existing))
                         {

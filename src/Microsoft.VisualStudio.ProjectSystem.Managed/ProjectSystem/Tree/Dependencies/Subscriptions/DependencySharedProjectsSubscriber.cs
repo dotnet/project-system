@@ -67,7 +67,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Subscriptions
 
             IDependenciesChanges? changes = changesBuilder.TryBuildChanges();
 
-            if (changes != null)
+            if (changes is not null)
             {
                 RaiseDependenciesChanged(targetFrameworkToUpdate, changes, currentAggregateContext, catalogs);
             }

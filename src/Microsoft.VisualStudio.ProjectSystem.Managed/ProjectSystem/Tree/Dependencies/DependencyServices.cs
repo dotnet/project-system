@@ -17,7 +17,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies
             Requires.NotNull(node, nameof(node));
 
             string? path = await GetMaybeRelativeBrowsePathAsync(project, node);
-            if (path == null)
+            if (path is null)
                 return null;
 
             return project.MakeRooted(path);
@@ -33,7 +33,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies
                 return await GetSharedAssetsProjectAsync(project, node);
             }
 
-            if (node.BrowseObjectProperties == null)
+            if (node.BrowseObjectProperties is null)
                 return null;
 
             // This property typically only exists for "Resolved" dependencies with exception 

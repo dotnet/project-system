@@ -71,8 +71,6 @@ internal sealed class ImportedNamespacesValueProvider : InterceptingPropertyValu
 
     public override async Task<string?> OnSetPropertyValueAsync(string propertyName, string unevaluatedPropertyValue, IProjectProperties defaultProperties, IReadOnlyDictionary<string, string>? dimensionalConditions = null)
     {
-        await _threadingService.SwitchToUIThread();
-
         var importsToAdd = _encoding.Parse(unevaluatedPropertyValue)
             .Where(pair => bool.TryParse(pair.Value, out bool _))
             .ToDictionary(pair => pair.Name, pair => bool.Parse(pair.Value));

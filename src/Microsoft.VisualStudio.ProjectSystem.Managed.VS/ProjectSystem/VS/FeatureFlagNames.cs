@@ -7,21 +7,18 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS;
 /// </summary>
 internal static class FeatureFlagNames
 {
-    // Use this prefix name for all feature flags where the feature implementations belongs to dotnet project system.
-    public const string Prefix = "ManagedProjectSystem";
-
     /// <summary>
     /// Enables NuGet restore to detect cycles of type A -> B -> A to avoid loops.
     /// </summary>
-    public const string EnableNuGetRestoreCycleDetection = Prefix + ".EnableNuGetRestoreCycleDetection";
+    public const string EnableNuGetRestoreCycleDetection = "ManagedProjectSystem.EnableNuGetRestoreCycleDetection";
 
     /// <summary>
     /// Enables logs in incremental builds.
     /// </summary>
-    public const string EnableIncrementalBuildFailureOutputLogging = Prefix + ".EnableIncrementalBuildFailureOutputLogging";
+    public const string EnableIncrementalBuildFailureOutputLogging = "ManagedProjectSystem.EnableIncrementalBuildFailureOutputLogging";
 
     /// <summary>
     /// Enables incremental build to report build failures.
     /// </summary>
-    public const string EnableIncrementalBuildFailureTelemetry = Prefix + ".EnableIncrementalBuildFailureTelemetry";
+    public const string EnableIncrementalBuildFailureTelemetry = "ManagedProjectSystem.EnableIncrementalBuildFailureTelemetry";
 }

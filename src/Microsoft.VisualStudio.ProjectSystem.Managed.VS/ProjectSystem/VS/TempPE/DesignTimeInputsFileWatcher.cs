@@ -141,7 +141,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
                 _broadcastBlock?.Complete();
                 _dataSourceLink?.Dispose();
 
-                if (_actionBlock != null)
+                if (_actionBlock is not null)
                 {
                     _actionBlock.Complete();
 
