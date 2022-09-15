@@ -1,32 +1,34 @@
 # Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
-# $previousSha = '09c9fb467c042c5441ca2cde0742af9d88954a7e'
-# $currentSha = 'aa3a7acfdc903f398584936976560041d1cf24c6'
-# BUILD_REPOSITORY_URI
-# $repoUrl = 'https://github.com/dotnet/project-system'
-# BUILD_DEFINITIONNAME
-# $projectName = 'DotNet-Project-System'
-
 # Creates a description for VS Insertion PRs that contains a list of PRs that have been merged between since the previous VS Insertion.
 # The previous VS Insertion relies on finding the last tag in our repo that matches the pattern: VS-Insertion-*
 # This script outputs the description string into the InsertionDescription variable within the Azure Pipeline.
 
 param ([Parameter(Mandatory=$true)] [string] $currentSha, [Parameter(Mandatory=$true)] [string] $repoUrl, [Parameter(Mandatory=$true)] [string] $projectName)
 
-# Gets the commit ID of the latest tag that matches VS-Insertion-*
-# https://git-scm.com/docs/git-rev-list
-# https://stackoverflow.com/a/1862542/294804
-$previousSha = (git rev-list --tags=VS-Insertion-* -1)
-
 # Using 10 characters since that will make it incredibly unlikely that there will be a collision.
 # https://stackoverflow.com/a/18134919/294804
-$previousShaShort = $previousSha.Substring(0,10)
 $currentShaShort = $currentSha.Substring(0,10)
 # This is not using isoutput=true since this variable is only needed within the job itself.
 # https://docs.microsoft.com/azure/devops/pipelines/process/set-variables-scripts?view=azure-devops&tabs=powershell#set-an-output-variable-for-use-in-the-same-job
 Write-Host "##vso[task.setvariable variable=ShortCommitId]$currentShaShort"
 
 $description = @()
+# Gets the commit ID of the latest tag that matches VS-Insertion-*
+# https://git-scm.com/docs/git-rev-list
+# https://stackoverflow.com/a/1862542/294804
+$previousSha = (git rev-list --tags=VS-Insertion-* -1)
+# Since a previous commit ID was not found, we create a basic description.
+if(-Not $previousSha)
+{
+  $description += "Updating $projectName to [$currentShaShort]($repoUrl/commit/$currentSha)"
+  $description += '---'
+  $description += 'Unable to determine the previous VS insertion. PR changelist cannot be computed.'
+  Write-Host "##vso[task.setvariable variable=InsertionDescription])$($description | Join-String -Separator '%0D%0A')"
+  exit 0
+}
+$previousShaShort = $previousSha.Substring(0,10)
+
 $description += "Updating $projectName from [$previousShaShort]($repoUrl/commit/$previousSha) to [$currentShaShort]($repoUrl/commit/$currentSha)"
 $description += '---'
 # The 'w' query parameter is for ignoring whitespace.
@@ -61,8 +63,6 @@ $pullRequests = $commitsClean | ConvertFrom-Json | Where-Object { $isPr = $_.sub
 # Create a markdown list item for each PR.
 $description += $pullRequests | ForEach-Object { "- [($($_.subject)) $($_.body)]($repoUrl/pull/$($_.subject))" }
 
-# $description | Out-File 'description.md'
-
 # 4000 character limit is imposed by Azure Pipelines. See:
 # https://developercommunity.visualstudio.com/t/raise-the-character-limit-for-pull-request-descrip/365708
 # Remove the last line (PR) from the description until it is less than 4000 characters, including the 6 characters for newlines (%0D%0A) (see Write-Host below).
@@ -84,19 +84,3 @@ if($isTruncated)
 # https://developercommunity.visualstudio.com/t/multiple-lines-variable-in-build-and-release/365667
 # https://stackoverflow.com/a/49947273/294804
 Write-Host "##vso[task.setvariable variable=InsertionDescription])$($description | Join-String -Separator '%0D%0A')"
-
-
-# Name  : BUILD_REPOSITORY_URI
-# Value : https://github.com/dotnet/project-system
-
-
-# "$repoUrl/compare/$previousSha...$currentSha?w=1"
-
-
-
-
-
-# Previously, there were insertion PR descriptions that contained 3 components:
-# To-From links for each build
-# Link for viewing complete diff of changes
-# Links to each PR that is contained within 
