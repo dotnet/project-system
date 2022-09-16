@@ -162,7 +162,7 @@ internal sealed class LanguageServiceHost : OnceInitializedOnceDisposedUnderLock
                     Guid projectGuid = await _projectGuidService.GetProjectGuidAsync(cancellationToken);
 
                     // New slice. Create a workspace for it.
-                    workspace = _workspaceFactory.Create(source, slice, _joinableTaskFactory, projectGuid, cancellationToken);
+                    workspace = _workspaceFactory.Create(source, slice, _joinableTaskCollection, _joinableTaskFactory, projectGuid, cancellationToken);
 
                     if (workspace is null)
                     {

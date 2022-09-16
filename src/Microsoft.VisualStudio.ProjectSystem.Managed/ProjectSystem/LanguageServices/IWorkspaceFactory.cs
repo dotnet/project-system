@@ -17,6 +17,7 @@ internal interface IWorkspaceFactory
     /// </summary>
     /// <param name="source">A special project subscription source for data from a single slice.</param>
     /// <param name="slice">The slice this workspace represents.</param>
+    /// <param name="joinableTaskCollection">A collection for joinable tasks.</param>
     /// <param name="joinableTaskFactory">A factory for joinable tasks.</param>
     /// <param name="projectGuid">The project's GUID.</param>
     /// <param name="cancellationToken">Signals a loss of interest in the result of this operation.</param>
@@ -24,6 +25,7 @@ internal interface IWorkspaceFactory
     Workspace Create(
         IActiveConfigurationSubscriptionSource source,
         ProjectConfigurationSlice slice,
+        JoinableTaskCollection joinableTaskCollection,
         JoinableTaskFactory joinableTaskFactory,
         Guid projectGuid,
         CancellationToken cancellationToken);

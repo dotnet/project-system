@@ -39,6 +39,7 @@ internal sealed class Workspace : OnceInitializedOnceDisposedUnderLockAsync, IWo
     private readonly IDataProgressTrackerService _dataProgressTrackerService;
     private readonly Lazy<IWorkspaceProjectContextFactory> _workspaceProjectContextFactory;
     private readonly IProjectFaultHandlerService _faultHandlerService;
+    private readonly JoinableTaskCollection _joinableTaskCollection;
     private readonly JoinableTaskFactory _joinableTaskFactory;
     private readonly CancellationToken _unloadCancellationToken;
     private readonly string _baseDirectory;
@@ -88,6 +89,7 @@ internal sealed class Workspace : OnceInitializedOnceDisposedUnderLockAsync, IWo
         IDataProgressTrackerService dataProgressTrackerService,
         Lazy<IWorkspaceProjectContextFactory> workspaceProjectContextFactory,
         IProjectFaultHandlerService faultHandlerService,
+        JoinableTaskCollection joinableTaskCollection,
         JoinableTaskFactory joinableTaskFactory,
         JoinableTaskContextNode joinableTaskContextNode,
         CancellationToken unloadCancellationToken)
@@ -103,6 +105,7 @@ internal sealed class Workspace : OnceInitializedOnceDisposedUnderLockAsync, IWo
         _dataProgressTrackerService = dataProgressTrackerService;
         _workspaceProjectContextFactory = workspaceProjectContextFactory;
         _faultHandlerService = faultHandlerService;
+        _joinableTaskCollection = joinableTaskCollection;
         _joinableTaskFactory = joinableTaskFactory;
         _unloadCancellationToken = unloadCancellationToken;
 
@@ -538,12 +541,15 @@ internal sealed class Workspace : OnceInitializedOnceDisposedUnderLockAsync, IWo
     {
         Verify.NotDisposed(this);
 
-        await _joinableTaskFactory.RunAsync(async () =>
+        // Join the same collection that's used by our dataflow nodes, so that if we are called on
+        // the main thread, we don't block anything that might prohibit dataflow from progressing
+        // this workspace's initialisation (leading to deadlock).
+        using (_joinableTaskCollection.Join())
         {
             // We only have build data if we also have evaluation data, so this implies both have been integrated.
             await _hasBuildData.Task.WithCancellation(cancellationToken);
 
             Verify.NotDisposed(this);
-        });
+        }
     }
 }

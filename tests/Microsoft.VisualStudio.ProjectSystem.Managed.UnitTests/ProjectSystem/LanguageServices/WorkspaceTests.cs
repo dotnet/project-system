@@ -748,7 +748,8 @@ public class WorkspaceTests
         workspaceProjectContext ??= Mock.Of<IWorkspaceProjectContext>(MockBehavior.Loose);
         workspaceProjectContextFactory ??= IWorkspaceProjectContextFactoryFactory.ImplementCreateProjectContext(delegate { return workspaceProjectContext; });
         faultHandlerService ??= IProjectFaultHandlerServiceFactory.Create();
-        joinableTaskFactory ??= new(new JoinableTaskCollection(new JoinableTaskContext()));
+        JoinableTaskCollection joinableTaskCollection = new(new JoinableTaskContext());
+        joinableTaskFactory ??= new(joinableTaskCollection);
         joinableTaskContextNode ??= JoinableTaskContextNodeFactory.Create();
 
         var workspace = new Workspace(
@@ -762,6 +763,7 @@ public class WorkspaceTests
             dataProgressTrackerService,
             new(() => workspaceProjectContextFactory),
             faultHandlerService,
+            joinableTaskCollection,
             joinableTaskFactory,
             joinableTaskContextNode,
             unloadCancellationToken)

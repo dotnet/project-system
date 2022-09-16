@@ -60,6 +60,7 @@ internal class WorkspaceFactory : IWorkspaceFactory
     public Workspace Create(
         IActiveConfigurationSubscriptionSource source,
         ProjectConfigurationSlice slice,
+        JoinableTaskCollection joinableTaskCollection,
         JoinableTaskFactory joinableTaskFactory,
         Guid projectGuid,
         CancellationToken cancellationToken)
@@ -77,6 +78,7 @@ internal class WorkspaceFactory : IWorkspaceFactory
             _dataProgressTrackerService,
             _workspaceProjectContextFactory,
             _faultHandlerService,
+            joinableTaskCollection,
             joinableTaskFactory,
             _threadingService.JoinableTaskContext,
             unloadCancellationToken: cancellationToken);
