@@ -20,9 +20,14 @@ pr: none
 resources:
   # https://stackoverflow.com/a/63270937/294804
   repositories:
+  - repository: self
+    name: project-system
+    type: git
+    ref: feature/InsertionPRDescriptionAndTagging
   - repository: VS
     name: VS
     type: git
+    ref: main
     trigger:
       branches:
         include:
