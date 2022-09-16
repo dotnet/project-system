@@ -18,6 +18,8 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             Dim iconCount = 0
             Dim audioCount = 0
             Dim otherCount = 0
+            Dim commentCount = 0
+            Dim linkCount = 0
 
             For Each resource As Resource In resources.Values
                 If resource.FriendlyValueTypeName = "System.String" Then
@@ -31,6 +33,14 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                 Else
                     otherCount += 1
                 End If
+
+                If Not String.IsNullOrWhiteSpace(resource.Comment) Then
+                    commentCount += 1
+                End If
+
+                If resource.IsLink Then
+                    linkCount += 1
+                End If
             Next
 
             Dim telemetryEvent = New TelemetryEvent("vs/projectsystem/editors/resourceeditor/loaded")
@@ -41,6 +51,8 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             telemetryEvent.Properties("vs.projectsystem.editors.resourceeditor.iconcount") = iconCount
             telemetryEvent.Properties("vs.projectsystem.editors.resourceeditor.audioCount") = audioCount
             telemetryEvent.Properties("vs.projectsystem.editors.resourceeditor.othercount") = otherCount
+            telemetryEvent.Properties("vs.projectsystem.editors.resourceeditor.commentCount") = commentCount
+            telemetryEvent.Properties("vs.projectsystem.editors.resourceeditor.linkCount") = linkCount
             TelemetryService.DefaultSession.PostEvent(telemetryEvent)
         End Sub
 
