@@ -22,19 +22,19 @@ $previousSha = (git rev-list --tags=VS-Insertion-* -1)
 if(-Not $previousSha)
 {
   $description += "Updating $projectName to [$currentShaShort]($repoUrl/commit/$currentSha)"
-  $description += '---'
+  $description += '----------------------------------------------------------------'
   $description += 'Unable to determine the previous VS insertion. PR changelist cannot be computed.'
-  # Write-Host "##vso[task.setvariable variable=InsertionDescription]$($description -join '%0D%0A')"
-  Write-Host "##vso[task.setvariable variable=InsertionDescription]$($description -join '^`n`r')"
+  Write-Host "##vso[task.setvariable variable=InsertionDescription]$($description -join '<br>')"
   exit 0
 }
 $previousShaShort = $previousSha.Substring(0,10)
 
 $description += "Updating $projectName from [$previousShaShort]($repoUrl/commit/$previousSha) to [$currentShaShort]($repoUrl/commit/$currentSha)"
-$description += '---'
+$description += '----------------------------------------------------------------'
 # The 'w' query parameter is for ignoring whitespace.
 # See: https://stackoverflow.com/a/37145215/294804
 $description += "Included PRs: ([View Diff]($repoUrl/compare/$previousSha...$currentSha?w=1))"
+$description += ''
 
 # Using quadruple carats as double quotes.
 # See: https://gist.github.com/varemenos/e95c2e098e657c7688fd?permalink_comment_id=2856549#gistcomment-2856549
@@ -66,23 +66,26 @@ $description += $pullRequests | ForEach-Object { "- [($($_.subject)) $($_.body)]
 
 # 4000 character limit is imposed by Azure Pipelines. See:
 # https://developercommunity.visualstudio.com/t/raise-the-character-limit-for-pull-request-descrip/365708
-# Remove the last line (PR) from the description until it is less than 4000 characters, including the 6 characters for newlines (%0D%0A) (see Write-Host below).
+# Remove the last line (PR) from the description until it is less than 4000 characters, including the 4 characters for newlines (<br>) (see Write-Host below).
 $characterLimit = 4000
 $isTruncated = $false
-while((($description | Measure-Object -Character).Characters + (($description.Count - 1) * 6)) -gt $characterLimit)
+while((($description | Measure-Object -Character).Characters + (($description.Count - 1) * 4)) -gt $characterLimit)
 {
   $description = $description | Select-Object -SkipLast 1
   $isTruncated = $true
-  # Make room for 9 characters: 3 for ellipsis (...) and 6 characters for the newline (%0D%0A).
-  $characterLimit = 3991
+  # Make room for 7 characters: 3 for ellipsis (...) and 4 characters for the newline (<br>).
+  $characterLimit = 3993
 }
 if($isTruncated)
 {
   $description += '...'
 }
 
-# Merge the description lines into a single string (using %0D%0A for newline) and set it to InsertionDescription.
-# https://developercommunity.visualstudio.com/t/multiple-lines-variable-in-build-and-release/365667
-# https://stackoverflow.com/a/49947273/294804
-# Write-Host "##vso[task.setvariable variable=InsertionDescription]$($description -join '%0D%0A')"
-Write-Host "##vso[task.setvariable variable=InsertionDescription]$($description -join '^`n`r')"
+# Merge the description lines into a single string (using <br> for newline) and set it to InsertionDescription.
+# Note: We cannot render newlines directly as they are restricted by the PowerShell cmdlet that MicroBuild calls.
+# Since we cannot render newlines in the description, we cannot actually render any markdown elements that require newlines (such as lists, horizontal rules, etc.).
+# See: https://github.com/microsoft/azure-pipelines-task-lib/blob/ee582bc9b6c7ed2749929b0d66bc34af831e0eea/powershell/VstsTaskSdk/ToolFunctions.ps1#L84-L86
+# If we could render newlines, this is how we would need to do it in an Azure Pipelines variable (via '%0D%0A'). See:
+# - https://developercommunity.visualstudio.com/t/multiple-lines-variable-in-build-and-release/365667
+# - https://stackoverflow.com/a/49947273/294804
+Write-Host "##vso[task.setvariable variable=InsertionDescription]$($description -join '<br>')"
