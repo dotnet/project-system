@@ -50,7 +50,14 @@ jobs:
       # See the bottom of the table here: https://devdiv.visualstudio.com/DevDiv/_wiki/wikis/DevDiv.wiki/635/Overview?anchor=**build-pipeline**
       DefaultConfigValues: Microsoft.VisualStudio.AppDesigner=$(PackageVersion),Microsoft.VisualStudio.Editors=$(PackageVersion),Microsoft.VisualStudio.ProjectSystem.Managed=$(PackageVersion),Microsoft.VisualStudio.ProjectSystem.Managed.VS=$(PackageVersion)
       AllowTopicBranchUpdate: true
-      InsertionDescription: $(InsertionDescription)
+      # InsertionDescription: $(InsertionDescription)
+      InsertionDescription: |
+        This is a [test description](http://www.microsoft.com).
+        ---
+        This is another thing.
+        - Line Item 1
+        - Line Item 2
+        - Line Item 3
       # This is the name of our DevDiv alias.
       InsertionReviewers: '.NET Project System'
       InsertionBuildPolicy: Request Perf DDRITs
