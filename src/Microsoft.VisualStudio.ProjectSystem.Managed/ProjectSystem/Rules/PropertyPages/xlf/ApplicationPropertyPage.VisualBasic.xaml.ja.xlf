@@ -192,6 +192,11 @@
         <target state="translated">Windows - 実行時に My.User を使用してユーザー情報を取得します。</target>
         <note />
       </trans-unit>
+      <trans-unit id="StringProperty|CreateOrOpenAppManifest|DisplayName">
+        <source>Create or open app manifest for Windows settings.</source>
+        <target state="new">Create or open app manifest for Windows settings.</target>
+        <note />
+      </trans-unit>
       <trans-unit id="StringProperty|CreateOrOpenApplicationXaml|Description">
         <source>Open the Application.xaml file</source>
         <target state="translated">Application.xaml ファイルを開く</target>
