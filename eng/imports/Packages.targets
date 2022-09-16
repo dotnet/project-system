@@ -63,7 +63,7 @@
 
     <!-- Roslyn -->
     <PackageReference Update="Microsoft.Net.Compilers.Toolset"                                        Version="4.3.0-2.final" />
-    <PackageReference Update="Microsoft.VisualStudio.LanguageServices"                                Version="4.1.0-2.21558.8" />
+    <PackageReference Update="Microsoft.VisualStudio.LanguageServices"                                Version="4.4.0-3.22465.18" />
     <PackageReference Update="Microsoft.CodeAnalysis"                                                 Version="4.1.0-2.21558.8" />
     <PackageReference Update="Microsoft.VisualStudio.IntegrationTest.Utilities"                       Version="2.6.0-beta1-62113-02" />
     <PackageReference Update="Microsoft.CSharp"                                                       Version="4.7.0" />
