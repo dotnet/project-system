@@ -58,6 +58,8 @@ variables:
 ###################################################################################################################################################################
 
 steps:
+- checkout: self
+- checkout: VS
 - powershell: . '$(Build.SourcesDirectory)/eng/scripts/CreateTagFromVSCommitTitle.ps1' -projectSystemDirectory '$(Build.SourcesDirectory)' -vsDirectory '$(Build.SourcesDirectory)/VS'
   displayName: Create VS Insertion Tag
   failOnStderr: true
