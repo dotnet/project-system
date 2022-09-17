@@ -14,7 +14,18 @@
               Description="Settings specific to WPF applications." />
   </Rule.Categories>
 
-  <!-- TODO: Add a hyperlink/button to open the app.manifest. Previously, we had a View Windows Settings button. -->
+  <StringProperty Name="CreateOrOpenAppManifest"
+                  DisplayName="Create or open app manifest for Windows settings."
+                  Category="General">
+    <StringProperty.ValueEditors>
+      <ValueEditor EditorType="LinkAction">
+        <ValueEditor.Metadata>
+          <NameValuePair Name="Action" Value="Command" />
+          <NameValuePair Name="Command" Value="CreateOrOpenAppManifest" />
+        </ValueEditor.Metadata>
+      </ValueEditor>
+    </StringProperty.ValueEditors>
+  </StringProperty>
 
   <!-- TODO: Add a hyperlink/button to open the ApplicationEvents.vb. Previously, we had a View Application Events button. -->
 

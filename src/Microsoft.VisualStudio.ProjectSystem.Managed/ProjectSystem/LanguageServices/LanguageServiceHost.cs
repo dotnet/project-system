@@ -48,6 +48,11 @@ internal sealed class LanguageServiceHost : OnceInitializedOnceDisposedUnderLock
     private readonly ILanguageServiceHostEnvironment? _languageServiceHostEnvironment;
 
     private DisposableBag? _disposables;
+
+    /// <summary>
+    /// Gets the "primary" workspace. Each slice represents a single implicitly active configuration.
+    /// This workspace is from the slice that VS considers "active".
+    /// </summary>
     private Workspace? _primaryWorkspace;
 
     [ImportingConstructor]
@@ -146,12 +151,15 @@ internal sealed class LanguageServiceHost : OnceInitializedOnceDisposedUnderLock
         async Task OnSlicesChanged(IProjectVersionedValue<(ConfiguredProject ActiveConfiguredProject, ConfigurationSubscriptionSources Sources)> update, CancellationToken cancellationToken)
         {
             ProjectConfiguration activeProjectConfiguration = update.Value.ActiveConfiguredProject.ProjectConfiguration;
-            IReadOnlyDictionary<ProjectConfigurationSlice, IActiveConfigurationSubscriptionSource> sources = update.Value.Sources;
+            ConfigurationSubscriptionSources sources = update.Value.Sources;
 
             // Check off existing slices. An unseen at the end must be disposed.
             var checklist = new Dictionary<ProjectConfigurationSlice, Workspace>(workspaceBySlice);
 
             // TODO currently this loops through each slice, initializing them serially. can we do this in parallel, or can we do the active slice first?
+
+            // Remember the first slice's workspace. We may use it later, if the active workspace is removed.
+            Workspace? firstWorkspace = null;
 
             foreach ((ProjectConfigurationSlice slice, IActiveConfigurationSubscriptionSource source) in sources)
             {
@@ -162,7 +170,7 @@ internal sealed class LanguageServiceHost : OnceInitializedOnceDisposedUnderLock
                     Guid projectGuid = await _projectGuidService.GetProjectGuidAsync(cancellationToken);
 
                     // New slice. Create a workspace for it.
-                    workspace = _workspaceFactory.Create(source, slice, _joinableTaskFactory, projectGuid, cancellationToken);
+                    workspace = _workspaceFactory.Create(source, slice, _joinableTaskCollection, _joinableTaskFactory, projectGuid, cancellationToken);
 
                     if (workspace is null)
                     {
@@ -178,6 +186,8 @@ internal sealed class LanguageServiceHost : OnceInitializedOnceDisposedUnderLock
                     Assumes.True(checklist.Remove(slice));
                 }
 
+                firstWorkspace ??= workspace;
+
                 workspace.IsPrimary = IsPrimaryActiveSlice(slice, activeProjectConfiguration);
 
                 if (workspace.IsPrimary)
@@ -187,18 +197,34 @@ internal sealed class LanguageServiceHost : OnceInitializedOnceDisposedUnderLock
                 }
             }
 
+            bool removedPrimary = false;
+
             // Dispose workspaces for unseen slices
             foreach ((_, Workspace workspace) in checklist)
             {
                 if (ReferenceEquals(_primaryWorkspace, workspace))
                 {
-                    _primaryWorkspace = null;
+                    removedPrimary = true;
                 }
 
                 workspace.IsPrimary = false;
 
                 // Disposes asynchronously on the thread pool, without awaiting completion.
                 workspace.Dispose();
+            }
+
+            if (removedPrimary)
+            {
+                // We removed the primary workspace
+
+                // If we have a new primary workspace, use it.
+                if (firstWorkspace is not null)
+                {
+                    firstWorkspace.IsPrimary = true;
+                }
+
+                // Set the new primary workspace (or theoretically null if no slices exist).
+                _primaryWorkspace = firstWorkspace;
             }
         }
 
