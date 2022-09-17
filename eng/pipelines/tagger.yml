@@ -70,7 +70,7 @@ parameters:
 
 steps:
 - checkout: self
-  # persistCredentials: true
+  persistCredentials: true
   fetchDepth: 100
 # - checkout: VS
 #   fetchDepth: 100
