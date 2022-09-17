@@ -5,6 +5,8 @@
 param ([Parameter(Mandatory=$true)] [string] $vsDirectory, [string] $vsCommitId)
 
 Set-Location $vsDirectory
+
+Write-Host "vsCommitId: $vsCommitId"
 # Gets the subject (title) from the latest commit (unless a vsCommitId is provided). See:
 # - https://stackoverflow.com/a/7293026/294804
 # - https://git-scm.com/docs/git-log#_pretty_formats
