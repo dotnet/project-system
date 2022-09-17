@@ -74,7 +74,7 @@ steps:
   fetchDepth: 100
 # - checkout: VS
 #   fetchDepth: 100
-- powershell: New-Item -Path '$(Build.SourcesDirectory)' -Name 'VS' -ItemType Directory; git clone --no-checkout --depth 100 https://devdiv.visualstudio.com/DefaultCollection/DevDiv/_git/VS $(Build.SourcesDirectory)/VS
+- powershell: New-Item -Path '$(Build.SourcesDirectory)' -Name 'VS' -ItemType Directory; git clone --no-checkout --depth 100 https://devdiv@dev.azure.com/devdiv/DevDiv/_git/VS $(Build.SourcesDirectory)/VS
   displayName: Clone VS Repo
   failOnStderr: true
 - powershell: . '$(Build.SourcesDirectory)/project-system/eng/scripts/CreateTagFromVSCommitTitle.ps1' -vsDirectory '$(Build.SourcesDirectory)/VS/' -vsCommitId '${{ parameters.VsCommitId }}'
