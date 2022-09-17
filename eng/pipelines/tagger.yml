@@ -71,6 +71,7 @@ parameters:
 steps:
 - checkout: self
   persistCredentials: true
+  path: $(Build.SourcesDirectory)/project-system
   fetchDepth: 100
 # - checkout: VS
 #   fetchDepth: 100
@@ -78,8 +79,7 @@ steps:
 - powershell: |
     $env:GIT_REDIRECT_STDERR = '2>&1'
     New-Item -Path '$(Build.SourcesDirectory)' -Name VS -ItemType Directory
-    Set-Location '$(Build.SourcesDirectory)/VS'
-    git clone --no-checkout --depth 100 https://$(System.AccessToken)@dev.azure.com/devdiv/DevDiv/_git/VS
+    git clone --no-checkout --depth 100 https://$(System.AccessToken)@dev.azure.com/devdiv/DevDiv/_git/VS $(Build.SourcesDirectory)/VS
   displayName: Clone VS Repo
   failOnStderr: true
 - powershell: . '$(Build.SourcesDirectory)/project-system/eng/scripts/CreateTagFromVSCommitTitle.ps1' -vsDirectory '$(Build.SourcesDirectory)/VS/' -vsCommitId '${{ parameters.VsCommitId }}'
