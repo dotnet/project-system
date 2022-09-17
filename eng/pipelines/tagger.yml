@@ -71,7 +71,9 @@ parameters:
 steps:
 - checkout: self
   # persistCredentials: true
+  fetchDepth: 100
 - checkout: VS
+  fetchDepth: 100
 - powershell: . '$(Build.SourcesDirectory)/project-system/eng/scripts/CreateTagFromVSCommitTitle.ps1' -vsDirectory '$(Build.SourcesDirectory)/VS/' -vsCommitId '${{ parameters.VsCommitId }}'
   displayName: Create VS Insertion Tag
   failOnStderr: true
