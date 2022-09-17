@@ -23,7 +23,9 @@ if(-Not $previousSha)
 {
   $description += "Updating $projectName to [$currentShaShort]($repoUrl/commit/$currentSha)"
   $description += '----------------------------------------------------------------'
-  $description += 'Unable to determine the previous VS insertion. PR changelist cannot be computed.'
+  $description += 'Unable to determine the previous VS insertion.'
+  $description += ''
+  $description += 'PR changelist cannot be computed.'
   Write-Host "##vso[task.setvariable variable=InsertionDescription]$($description -join '<br>')"
   exit 0
 }
