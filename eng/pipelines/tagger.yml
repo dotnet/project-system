@@ -71,7 +71,7 @@ parameters:
 steps:
 - checkout: self
   persistCredentials: true
-  path: $(Build.SourcesDirectory)/project-system
+  path: project-system
   fetchDepth: 100
 # - checkout: VS
 #   fetchDepth: 100
