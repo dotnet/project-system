@@ -74,7 +74,12 @@ steps:
   fetchDepth: 100
 # - checkout: VS
 #   fetchDepth: 100
-- powershell: New-Item -Path '$(Build.SourcesDirectory)' -Name 'VS' -ItemType Directory; git clone --no-checkout --depth 100 https://$(System.AccessToken)@dev.azure.com/devdiv/DevDiv/_git/VS $(Build.SourcesDirectory)/VS
+# Create the VS folder and clone the VS repo into it, excluding the files themselves (only .git history is required).
+- powershell: |
+    $env:GIT_REDIRECT_STDERR = '2>&1'
+    New-Item -Path '$(Build.SourcesDirectory)' -Name VS -ItemType Directory
+    Set-Location '$(Build.SourcesDirectory)/VS'
+    git clone --no-checkout --depth 100 https://$(System.AccessToken)@dev.azure.com/devdiv/DevDiv/_git/VS
   displayName: Clone VS Repo
   failOnStderr: true
 - powershell: . '$(Build.SourcesDirectory)/project-system/eng/scripts/CreateTagFromVSCommitTitle.ps1' -vsDirectory '$(Build.SourcesDirectory)/VS/' -vsCommitId '${{ parameters.VsCommitId }}'
