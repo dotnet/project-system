@@ -2,13 +2,13 @@
 
 # This creates a tag in our repo (.NET Project System) based on parsing the latest commit title in the VS repo.
 
-param ([Parameter(Mandatory=$true)] [string] $projectSystemDirectory, [Parameter(Mandatory=$true)] [string] $vsDirectory)
+param ([Parameter(Mandatory=$true)] [string] $vsDirectory, [string] $vsCommitId)
 
 Set-Location $vsDirectory
-# Gets the subject (title) from the latest commit. See:
+# Gets the subject (title) from the latest commit (unless a vsCommitId is provided). See:
 # - https://stackoverflow.com/a/7293026/294804
 # - https://git-scm.com/docs/git-log#_pretty_formats
-$commitTitle = (git log -1 --pretty=%s)
+$commitTitle = (git log -1 --pretty=%s $vsCommitId)
 # Parse the short commit ID out of the commit title. See:
 # - https://stackoverflow.com/a/3697210/294804
 # - https://stackoverflow.com/a/12001377/294804
@@ -30,7 +30,7 @@ if($hasShortCommitId)
   }
 
   $tagName = "VS-Insertion-$vsTagIdentifier"
-  Set-Location $projectSystemDirectory
+  Set-Location $PSScriptRoot
   # Using a lightweight tag since we don't need any other information than the tag name itself.
   # https://git-scm.com/book/en/v2/Git-Basics-Tagging
   git tag $tagName $shortCommitId
