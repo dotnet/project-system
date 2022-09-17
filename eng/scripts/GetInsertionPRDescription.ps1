@@ -18,6 +18,8 @@ $description = @()
 # https://git-scm.com/docs/git-rev-list
 # https://stackoverflow.com/a/1862542/294804
 $previousSha = (git rev-list --tags=VS-Insertion-* -1)
+Write-Host "previousSha: $previousSha"
+Write-Host "currentSha: $currentSha"
 # Since a previous commit ID was not found, we create a basic description.
 if(-Not $previousSha)
 {
@@ -26,6 +28,7 @@ if(-Not $previousSha)
   $description += 'Unable to determine the previous VS insertion.'
   $description += ''
   $description += 'PR changelist cannot be computed.'
+  Write-Host "=== DESCRIPTION ===$([Environment]::Newline)$([Environment]::Newline)$($description -join [Environment]::Newline)"
   Write-Host "##vso[task.setvariable variable=InsertionDescription]$($description -join '<br>')"
   exit 0
 }
@@ -60,9 +63,10 @@ $commitsClean = $commitsClean -replace '\^\^\^\^','"'
 # Note that the replacement value is using interpolated string (double quoted string) so the newline characters (`r`n) are rendered in the string.
 # See: https://stackoverflow.com/a/39104508/294804
 $commitsClean = $commitsClean -replace '\}\r\n\{',"},`r`n{"
+$commitsJson = $commitsClean | ConvertFrom-Json
 
 # Filter the commits to only PR merges and replace 'subject' with only the PR number.
-$pullRequests = $commitsClean | ConvertFrom-Json | Where-Object { $isPr = $_.subject -match '^Merge pull request #(\d+) from'; if($isPr) { $_.subject = $matches[1] }; $isPr }
+$pullRequests = $commitsJson | Where-Object { $isPr = $_.subject -match '^Merge pull request #(\d+) from'; if($isPr) { $_.subject = $matches[1] }; $isPr }
 # Create a markdown list item for each PR.
 $description += $pullRequests | ForEach-Object { "- [($($_.subject)) $($_.body)]($repoUrl/pull/$($_.subject))" }
 
@@ -82,6 +86,8 @@ if($isTruncated)
 {
   $description += '...'
 }
+
+Write-Host "=== DESCRIPTION ===$([Environment]::Newline)$([Environment]::Newline)$($description -join [Environment]::Newline)"
 
 # Merge the description lines into a single string (using <br> for newline) and set it to InsertionDescription.
 # Note: We cannot render newlines directly as they are restricted by the PowerShell cmdlet that MicroBuild calls.
