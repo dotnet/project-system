@@ -24,7 +24,7 @@ Write-Host "currentSha: $currentSha"
 if(-Not $previousSha)
 {
   $description += "Updating $projectName to [$currentShaShort]($repoUrl/commit/$currentSha)"
-  $description += '----------------------------------------------------------------'
+  $description += '---------------------------------------------------------------------------'
   $description += 'Unable to determine the previous VS insertion.'
   $description += ''
   $description += 'PR changelist cannot be computed.'
@@ -35,10 +35,10 @@ if(-Not $previousSha)
 $previousShaShort = $previousSha.Substring(0,10)
 
 $description += "Updating $projectName from [$previousShaShort]($repoUrl/commit/$previousSha) to [$currentShaShort]($repoUrl/commit/$currentSha)"
-$description += '----------------------------------------------------------------'
+$description += '---------------------------------------------------------------------------'
 # The 'w' query parameter is for ignoring whitespace.
 # See: https://stackoverflow.com/a/37145215/294804
-$description += "Included PRs: ([View Diff]($repoUrl/compare/$previousSha...$currentSha?w=1))"
+$description += "Included PRs: [View Diff]($repoUrl/compare/$previousSha...$currentSha?w=1)"
 $description += ''
 
 # Using quadruple carats as double quotes.
@@ -68,11 +68,11 @@ $commitsJson = $commitsClean | ConvertFrom-Json
 # Filter the commits to only PR merges and replace 'subject' with only the PR number.
 $pullRequests = $commitsJson | Where-Object { $isPr = $_.subject -match '^Merge pull request #(\d+) from'; if($isPr) { $_.subject = $matches[1] }; $isPr }
 # Create a markdown list item for each PR.
-$description += $pullRequests | ForEach-Object { "- [($($_.subject)) $($_.body)]($repoUrl/pull/$($_.subject))" }
+$description += $pullRequests | ForEach-Object { "- [$($_.subject): $($_.body)]($repoUrl/pull/$($_.subject))" }
 
 # 4000 character limit is imposed by Azure Pipelines. See:
 # https://developercommunity.visualstudio.com/t/raise-the-character-limit-for-pull-request-descrip/365708
-# Remove the last line (PR) from the description until it is less than 4000 characters, including the 4 characters for newlines (<br>) (see Write-Host below).
+# Remove the last line (PR) from the description until it is less than 4000 characters, including the 4 characters for newlines (<br>) (see InsertionDescription output below).
 $characterLimit = 4000
 $isTruncated = $false
 while((($description | Measure-Object -Character).Characters + (($description.Count - 1) * 4)) -gt $characterLimit)
