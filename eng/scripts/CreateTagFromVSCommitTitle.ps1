@@ -4,9 +4,12 @@
 
 param ([Parameter(Mandatory=$true)] [string] $vsDirectory, [string] $vsCommitId)
 
+# Moves Git command stderr to stdout. Git commands may succeed but cause PowerShell to think they are failing. See:
+# https://stackoverflow.com/questions/57786104/git-clone-generating-an-error-in-azure-command-line-task#comment102034707_57788340
+# $env:GIT_REDIRECT_STDERR = '2>&1'
+
 Set-Location $vsDirectory
 
-Write-Host "vsCommitId: $vsCommitId"
 # Gets the subject (title) from the latest commit (unless a vsCommitId is provided). See:
 # - https://stackoverflow.com/a/7293026/294804
 # - https://git-scm.com/docs/git-log#_pretty_formats
