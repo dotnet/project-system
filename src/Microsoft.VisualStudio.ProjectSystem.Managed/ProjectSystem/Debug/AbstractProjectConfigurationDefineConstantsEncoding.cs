@@ -11,18 +11,20 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
     /// </remarks>
     internal static class AbstractProjectConfigurationDefineConstants
     {
-        private static readonly KeyValuePairListEncoding _encoding = new();
+        private static readonly KeyQuotedValuePairListEncoding _encoding = new();
 
-        public static void ParseIntoDictionary(string inputValue, Dictionary<string, string> dictionary)
+        public static Dictionary<string, string> ParseIntoDictionary(string inputValue)
         {
-            dictionary.Clear();
+            Dictionary<string, string> constantsDict = new Dictionary<string, string>();
+            constantsDict.Clear();
             foreach ((string key, string value) in _encoding.Parse(inputValue))
             {
                 if (!string.IsNullOrEmpty(key))
                 {
-                    dictionary.Add(key, value);
+                    constantsDict.Add(key, value);
                 }
             }
+            return constantsDict;
         }
     }
 }
