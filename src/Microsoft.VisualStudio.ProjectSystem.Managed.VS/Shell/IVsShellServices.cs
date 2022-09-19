@@ -19,17 +19,6 @@ namespace Microsoft.VisualStudio.Shell
         Task<bool> IsCommandLineModeAsync(CancellationToken cancellationToken = default);
 
         /// <summary>
-        /// Gets a value indicating whether VS is running in server mode.
-        /// </summary>
-        /// <remarks>
-        /// Implies <see cref="IsCommandLineModeAsync"/> is also <see langword="true"/>.
-        /// </remarks>
-        /// <remarks>
-        /// This has a free-threaded implementation.
-        /// </remarks>
-        Task<bool> IsInServerModeAsync(CancellationToken cancellationToken = default);
-
-        /// <summary>
         /// Gets a value indicating whether VS is populating the solution cache during a command line operation.
         /// </summary>
         /// <remarks>

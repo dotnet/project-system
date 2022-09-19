@@ -12,7 +12,7 @@ namespace Microsoft.VisualStudio.Shell;
 internal class VSShellServices : IVsShellServices
 {
 
-    private readonly AsyncLazy<(bool IsCommandLineMode, bool IsServerMode, bool IsPopulateSolutionCacheMode)> _initialization;
+    private readonly AsyncLazy<(bool IsCommandLineMode, bool IsPopulateSolutionCacheMode)> _initialization;
 
     [ImportingConstructor]
     public VSShellServices(
@@ -29,33 +29,24 @@ internal class VSShellServices : IVsShellServices
                 IVsShell? vsShell = vsShellService.Value;
                 IVsAppCommandLine? commandLine = commandLineService.Value;
 
-                Assumes.Present(vsShell);
-
                 bool isCommandLineMode = IsCommandLineMode();
 
                 if (isCommandLineMode)
                 {
-                    return (IsCommandLineMode: true, IsInServerMode(), IsPopulateSolutionCacheMode());
+                    return (IsCommandLineMode: true, IsPopulateSolutionCacheMode());
                 }
 
-                return (false, false, false);
+                return (false, false);
 
                 bool IsCommandLineMode()
                 {
+                    Assumes.Present(vsShell);
+
                     int hr = vsShell.GetProperty((int)__VSSPROPID.VSSPROPID_IsInCommandLineMode, out object result);
 
                     return ErrorHandler.Succeeded(hr)
                         && result is bool isCommandLineMode
                         && isCommandLineMode;
-                }
-
-                bool IsInServerMode()
-                {
-                    int hr = vsShell.GetProperty((int)__VSSPROPID11.VSSPROPID_ShellMode, out object value);
-
-                    return ErrorHandler.Succeeded(hr)
-                        && value is int shellMode
-                        && shellMode == (int)__VSShellMode.VSSM_Server;
                 }
 
                 bool IsPopulateSolutionCacheMode()
@@ -75,11 +66,6 @@ internal class VSShellServices : IVsShellServices
     public async Task<bool> IsCommandLineModeAsync(CancellationToken cancellationToken)
     {
         return (await _initialization.GetValueAsync(cancellationToken)).IsCommandLineMode;
-    }
-
-    public async Task<bool> IsInServerModeAsync(CancellationToken cancellationToken)
-    {
-        return (await _initialization.GetValueAsync(cancellationToken)).IsServerMode;
     }
 
     public async Task<bool> IsPopulateSolutionCacheModeAsync(CancellationToken cancellationToken)

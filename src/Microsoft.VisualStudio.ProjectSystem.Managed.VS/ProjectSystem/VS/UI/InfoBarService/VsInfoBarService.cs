@@ -37,7 +37,7 @@ internal partial class VsInfoBarService : IInfoBarService
         Requires.NotNullOrEmpty(message, nameof(message));
         Requires.NotNull(items, nameof(items));
 
-        if (!await _vsShellServices.IsInServerModeAsync(cancellationToken))
+        if (!await _vsShellServices.IsCommandLineModeAsync(cancellationToken))
         {
             await _threadingService.SwitchToUIThread(cancellationToken);
 
