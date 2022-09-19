@@ -45,7 +45,7 @@ internal sealed class Workspace : OnceInitializedOnceDisposedUnderLockAsync, IWo
     private readonly string _baseDirectory;
 
     /// <summary>Completes when the workspace has integrated build data.</summary>
-    private readonly TaskCompletionSource _hasBuildData = new(TaskCreationOptions.RunContinuationsAsynchronously);
+    private readonly TaskCompletionSource _contextCreated = new(TaskCreationOptions.RunContinuationsAsynchronously);
 
     /// <summary>The current state of this workspace.</summary>
     private WorkspaceState _state;
@@ -125,7 +125,7 @@ internal sealed class Workspace : OnceInitializedOnceDisposedUnderLockAsync, IWo
     {
         _state = WorkspaceState.Disposed;
 
-        _hasBuildData.TrySetCanceled();
+        _contextCreated.TrySetCanceled();
 
         _disposableBag.Dispose();
 
@@ -262,6 +262,8 @@ internal sealed class Workspace : OnceInitializedOnceDisposedUnderLockAsync, IWo
                 {
                     await _context.EndBatchAsync();
                 }
+
+                _contextCreated.TrySetResult();
             }
             catch (Exception ex)
             {
@@ -272,7 +274,7 @@ internal sealed class Workspace : OnceInitializedOnceDisposedUnderLockAsync, IWo
                 _context?.Dispose();
 
                 // We will never initialize now. Ensure anyone waiting on initialization sees the error.
-                _hasBuildData.TrySetException(ex);
+                _contextCreated.TrySetException(ex);
 
                 _disposableBag.Dispose();
 
@@ -379,8 +381,6 @@ internal sealed class Workspace : OnceInitializedOnceDisposedUnderLockAsync, IWo
             hasChange: e => e.Value.BuildRuleUpdate.ProjectChanges[ProjectBuildRuleName].Difference.AnyChanges,
             applyFunc: ApplyProjectBuild,
             _unloadCancellationToken);
-
-        _hasBuildData.TrySetResult();
 
         return;
 
@@ -521,7 +521,7 @@ internal sealed class Workspace : OnceInitializedOnceDisposedUnderLockAsync, IWo
 
         cancellationToken = CancellationTokenSource.CreateLinkedTokenSource(_unloadCancellationToken, cancellationToken).Token;
 
-        await WhenInitialized(cancellationToken);
+        await WhenContextCreated(cancellationToken);
 
         await ExecuteUnderLockAsync(_ => action(this), cancellationToken);
     }
@@ -532,12 +532,12 @@ internal sealed class Workspace : OnceInitializedOnceDisposedUnderLockAsync, IWo
 
         cancellationToken = CancellationTokenSource.CreateLinkedTokenSource(_unloadCancellationToken, cancellationToken).Token;
 
-        await WhenInitialized(cancellationToken);
+        await WhenContextCreated(cancellationToken);
 
         return await ExecuteUnderLockAsync(_ => action(this), cancellationToken);
     }
 
-    private async Task WhenInitialized(CancellationToken cancellationToken)
+    private async Task WhenContextCreated(CancellationToken cancellationToken)
     {
         Verify.NotDisposed(this);
 
@@ -546,8 +546,8 @@ internal sealed class Workspace : OnceInitializedOnceDisposedUnderLockAsync, IWo
         // this workspace's initialisation (leading to deadlock).
         using (_joinableTaskCollection.Join())
         {
-            // We only have build data if we also have evaluation data, so this implies both have been integrated.
-            await _hasBuildData.Task.WithCancellation(cancellationToken);
+            // Ensure we have received enough data to create the context.
+            await _contextCreated.Task.WithCancellation(cancellationToken);
 
             Verify.NotDisposed(this);
         }
