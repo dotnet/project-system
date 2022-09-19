@@ -208,6 +208,14 @@ stages:
       # The output of the optimization process. The first half of the path is provided to the DropNamePrefix input in the 'Install OptProf Plugin' (MicroBuildOptProfPlugin) step in build-official-release.yml.
       optOptimizationInputsDropName: OptimizationInputs/$(System.TeamProject)/$(Build.Repository.Name)/$(Build.SourceVersion)/$(Build.BuildId)/$(System.StageAttempt)
       testLabPoolName: VS-Platform
+      prePublishOptimizationInputsDropStepList:
+      # This sets the PreviousOptimizationInputsDropName variable which enables LKG (Last Known Good) support.
+      # See: https://devdiv.visualstudio.com/DevDiv/_wiki/wikis/DevDiv.wiki/29053/Enabling-LKG-support
+      - powershell: . '$(Build.SourcesDirectory)/eng/scripts/SetPreviousOptimizationInputsDropName.ps1' -buildId '$(resources.pipeline.VisualStudioBuildUnderTest.runID)'
+        displayName: Set PreviousOptimizationInputsDropName variable
+        # https://learn.microsoft.com/azure/devops/pipelines/scripts/powershell?view=azure-devops&tabs=yaml#example-powershell-script-access-rest-api
+        env:
+          SYSTEM_ACCESSTOKEN: $(System.AccessToken)
 
 # Run this stage only when specifically requested (via CreateInsertion) or when the pipeline was ran on a schedule.
 # Conditional insertion syntax:
