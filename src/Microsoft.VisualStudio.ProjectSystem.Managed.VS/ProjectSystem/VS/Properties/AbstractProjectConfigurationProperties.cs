@@ -1,5 +1,6 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
+using Microsoft.VisualStudio.ProjectSystem.Debug;
 using VSLangProj;
 using VSLangProj80;
 
@@ -149,7 +150,25 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
         public bool DebugSymbols { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
         public bool DefineDebug { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
         public bool DefineTrace { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
-        public string DefineConstants { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
+        public string DefineConstants
+        {
+            get
+            {
+                return _threadingService.ExecuteSynchronously(async () =>
+                {
+                    ConfiguredBrowseObject browseObjectProperties = await _projectProperties.GetConfiguredBrowseObjectPropertiesAsync();
+                    return await browseObjectProperties.DefineConstants.GetEvaluatedValueAtEndAsync();
+                });
+            }
+            set
+            {
+                _threadingService.ExecuteSynchronously(async () =>
+                {
+                    ConfiguredBrowseObject browseObjectProperties = await _projectProperties.GetConfiguredBrowseObjectPropertiesAsync();
+                    await browseObjectProperties.RunCodeAnalysis.SetValueAsync(AbstractProjectConfigurationDefineConstants.ParseIntoDictionary(value));
+                });
+            }
+        }
         public bool RemoveIntegerChecks { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
         public uint BaseAddress { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
         public bool AllowUnsafeBlocks { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
