@@ -220,7 +220,7 @@ stages:
           $artifactParameters = @{
             InstanceURL = 'https://dev.azure.com/devdiv'
             ProjectName = 'DevDiv'
-            BuildID = $(resources.pipeline.VisualStudioBuildUnderTest.runID)
+            BuildID = '$(Build.BuildId)'
             ArtifactName = 'OptProf'
             OAuthAccessToken = (ConvertTo-SecureString '$(System.AccessToken)' -AsPlainText -Force)
           }
