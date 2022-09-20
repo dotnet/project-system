@@ -1,64 +1,75 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
-using System.Runtime.CompilerServices;
 using Microsoft.VisualStudio.ProjectSystem;
 using Microsoft.VisualStudio.ProjectSystem.VS;
 using Microsoft.VisualStudio.Shell.Interop;
-
-#nullable disable
+using Microsoft.VisualStudio.Threading;
 
 namespace Microsoft.VisualStudio.Shell;
 
-/// <summary>
-/// See IVSShellServices.
-/// </summary>
 [Export(typeof(IVsShellServices))]
 [AppliesTo(ProjectCapabilities.AlwaysApplicable)]
-internal class VSShellServices : OnceInitializedOnceDisposed, IVsShellServices
+internal class VSShellServices : IVsShellServices
 {
-    /// <summary>
-    /// The service provider providing access to the VS services.
-    /// </summary>
-    [Import]
-    private IVsUIService<SVsShell, IVsShell> ServiceProvider { get; set; }
 
-    public bool IsInServerMode { get; private set; }
+    private readonly AsyncLazy<(bool IsCommandLineMode, bool IsPopulateSolutionCacheMode)> _initialization;
 
-    /// <summary>
-    /// The SVsShell service.
-    /// </summary>
-    private IVsShell vsShell;
-
-    /// <summary>
-    /// Initializes a new instance of the <see cref="VSShellServices"/> class.
-    /// </summary>
-    public VSShellServices()
-        : base(synchronousDisposal: true) // disposal requires UI thread unadvise, so async defeats that.
+    [ImportingConstructor]
+    public VSShellServices(
+        IVsUIService<SVsShell, IVsShell> vsShellService,
+        IVsUIService<SVsAppCommandLine, IVsAppCommandLine> commandLineService,
+        JoinableTaskContext joinableTaskContext)
     {
+        _initialization = new(
+            async () =>
+            {
+                // Initialisation must occur on the main thread.
+                await joinableTaskContext.Factory.SwitchToMainThreadAsync();
+
+                IVsShell? vsShell = vsShellService.Value;
+                IVsAppCommandLine? commandLine = commandLineService.Value;
+
+                bool isCommandLineMode = IsCommandLineMode();
+
+                if (isCommandLineMode)
+                {
+                    return (IsCommandLineMode: true, IsPopulateSolutionCacheMode());
+                }
+
+                return (false, false);
+
+                bool IsCommandLineMode()
+                {
+                    Assumes.Present(vsShell);
+
+                    int hr = vsShell.GetProperty((int)__VSSPROPID.VSSPROPID_IsInCommandLineMode, out object result);
+
+                    return ErrorHandler.Succeeded(hr)
+                        && result is bool isCommandLineMode
+                        && isCommandLineMode;
+                }
+
+                bool IsPopulateSolutionCacheMode()
+                {
+                    if (commandLine is null)
+                        return false;
+
+                    int hr = commandLine.GetOption("populateSolutionCache", out int populateSolutionCache, out string commandValue);
+
+                    return ErrorHandler.Succeeded(hr)
+                        && Convert.ToBoolean(populateSolutionCache);
+                }
+            },
+            joinableTaskContext.Factory);
     }
 
-    protected override void Initialize()
+    public async Task<bool> IsCommandLineModeAsync(CancellationToken cancellationToken)
     {
-        vsShell = ServiceProvider.Value;
-
-        if (ErrorHandler.Succeeded(vsShell.GetProperty((int)__VSSPROPID.VSSPROPID_IsInCommandLineMode, out object result)) && (bool)result)
-        {
-            IsInServerMode = CheckIsInServerMode();
-        }
+        return (await _initialization.GetValueAsync(cancellationToken)).IsCommandLineMode;
     }
 
-    [MethodImpl(MethodImplOptions.NoInlining)]
-    private bool CheckIsInServerMode()
+    public async Task<bool> IsPopulateSolutionCacheModeAsync(CancellationToken cancellationToken)
     {
-        if (ErrorHandler.Succeeded(vsShell.GetProperty((int)__VSSPROPID11.VSSPROPID_ShellMode, out object value))
-            && value is int shellMode
-            && shellMode == (int)__VSShellMode.VSSM_Server)
-            return true;
-
-        return false;
-    }
-
-    protected override void Dispose(bool disposing)
-    {
+        return (await _initialization.GetValueAsync(cancellationToken)).IsPopulateSolutionCacheMode;
     }
 }

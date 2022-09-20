@@ -318,7 +318,9 @@ internal sealed class LanguageServiceHost : OnceInitializedOnceDisposedUnderLock
 
     #endregion
 
-    [ProjectAutoLoad(startAfter: ProjectLoadCheckpoint.AfterLoadInitialConfiguration, completeBy: ProjectLoadCheckpoint.ProjectFactoryCompleted)]
+    [ProjectAutoLoad(
+        startAfter: ProjectLoadCheckpoint.AfterLoadInitialConfiguration,
+        completeBy: ProjectLoadCheckpoint.ProjectFactoryCompleted)]
     [AppliesTo(ProjectCapability.DotNetLanguageService)]
     public async Task AfterLoadInitialConfigurationAsync()
     {
