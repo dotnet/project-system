@@ -118,12 +118,8 @@
       <trans-unit id="InfoBarMessageNuGetCycleDetected">
         <source>A circular dependency A -&gt; B -&gt; A was detected during NuGet Restore which caused NuGet to stop restoring.
 Because the NuGet restore didn't finish correctly, the project might be in a bad state.</source>
-        <target state="needs-review-translation">Podczas przywracania menedżera NuGet wykryto zależność cykliczną A -&gt; B -&gt; A, co spowodowało zatrzymanie przywracania.
-Ponieważ przywracanie narzędzia NuGet nie zostało ukończone poprawnie, projekt może być w złym stanie.
-
-Może to być spowodowane tym, że co najmniej jeden projekt ma pakiet ustawiający element AssetTargetFallback, który nie jest obsługiwany w tym scenariuszu, co spowodowało uwzględnienie określonego elementu PackageReference.
-
-Błąd NuGet NU1108</target>
+        <target state="new">A circular dependency A -&gt; B -&gt; A was detected during NuGet Restore which caused NuGet to stop restoring.
+Because the NuGet restore didn't finish correctly, the project might be in a bad state.</target>
         <note />
       </trans-unit>
       <trans-unit id="ProjectHotReloadSessionManager_AttachingToProcess">
