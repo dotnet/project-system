@@ -211,11 +211,30 @@ stages:
       prePublishOptimizationInputsDropStepList:
       # This sets the PreviousOptimizationInputsDropName variable which enables LKG (Last Known Good) support.
       # See: https://devdiv.visualstudio.com/DevDiv/_wiki/wikis/DevDiv.wiki/29053/Enabling-LKG-support
-      - powershell: . '$(Build.SourcesDirectory)/eng/scripts/SetPreviousOptimizationInputsDropName.ps1' -buildId '$(resources.pipeline.VisualStudioBuildUnderTest.runID)'
+      # - powershell: . '$(Build.SourcesDirectory)/eng/scripts/SetPreviousOptimizationInputsDropName.ps1' -buildId '$(resources.pipeline.VisualStudioBuildUnderTest.runID)'
+      #   displayName: Set PreviousOptimizationInputsDropName variable
+      #   # https://learn.microsoft.com/azure/devops/pipelines/scripts/powershell?view=azure-devops&tabs=yaml#example-powershell-script-access-rest-api
+      #   env:
+      #     SYSTEM_ACCESSTOKEN: $(System.AccessToken)
+      - powershell: |
+          $artifactParameters = @{
+            InstanceURL = 'https://dev.azure.com/devdiv'
+            ProjectName = 'DevDiv'
+            BuildID = '$(resources.pipeline.VisualStudioBuildUnderTest.runID)'
+            ArtifactName = 'OptProf'
+            OAuthAccessToken = (ConvertTo-SecureString '$(System.AccessToken)' -AsPlainText -Force)
+          }
+          $artifact = Get-BuildArtifact @artifactParameters
+          $containerName = $artifact.Resource.Data -Split '/' | Select-Object -Last 1
+          $metadataString = Read-BuildArtifactFile @artifactParameters -FileName (Join-Path $containerName 'Metadata.json')
+          $dropName = ($metadataString | ConvertFrom-Json).OptimizationData
+
+          Write-Host "PreviousOptimizationInputsDropName: $dropName"
+          Set-AzurePipelinesVariable 'PreviousOptimizationInputsDropName' $dropName
         displayName: Set PreviousOptimizationInputsDropName variable
         # https://learn.microsoft.com/azure/devops/pipelines/scripts/powershell?view=azure-devops&tabs=yaml#example-powershell-script-access-rest-api
-        env:
-          SYSTEM_ACCESSTOKEN: $(System.AccessToken)
+        # env:
+        #   SYSTEM_ACCESSTOKEN: $(System.AccessToken)
 
 # Run this stage only when specifically requested (via CreateInsertion) or when the pipeline was ran on a schedule.
 # Conditional insertion syntax:
