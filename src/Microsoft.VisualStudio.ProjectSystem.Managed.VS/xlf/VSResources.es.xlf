@@ -117,12 +117,8 @@
       </trans-unit>
       <trans-unit id="InfoBarMessageNuGetCycleDetected">
         <source>A circular dependency A -&gt; B -&gt; A was detected during NuGet Restore which caused NuGet to stop restoring.
-Because the NuGet restore didn't finish correctly, the project might be in a bad state.
-
-This might be caused because one or more projects have a package that sets AssetTargetFallback, not supported for this scenario, which caused certain PackageReference to be included.
-
-NuGet Error NU1108</source>
-        <target state="translated">Durante la restauración de NuGet, se detectó una dependencia circular A -&gt; B -&gt; A que hizo que la restauración de NuGet se detuviera.
+Because the NuGet restore didn't finish correctly, the project might be in a bad state.</source>
+        <target state="needs-review-translation">Durante la restauración de NuGet, se detectó una dependencia circular A -&gt; B -&gt; A que hizo que la restauración de NuGet se detuviera.
 Debido a que la restauración de NuGet no terminó correctamente, el proyecto podría estar en mal estado.
 
 Esto puede deberse a que uno o más proyectos tienen un paquete que establece AssetTargetFallback, no soportado para este escenario, lo que provocó que se incluyera algún PackageReference.
