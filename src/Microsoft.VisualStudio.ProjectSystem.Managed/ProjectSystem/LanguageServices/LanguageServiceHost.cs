@@ -255,7 +255,10 @@ internal sealed class LanguageServiceHost : OnceInitializedOnceDisposedUnderLock
     {
         await ValidateEnabledAsync(token);
 
-        await _firstPrimaryWorkspaceSet.Task.WithCancellation(token);
+        using (_joinableTaskCollection.Join())
+        {
+            await _firstPrimaryWorkspaceSet.Task.WithCancellation(token);
+        }
     }
 
     public async Task WriteAsync(Func<IWorkspace, Task> action, CancellationToken token)
