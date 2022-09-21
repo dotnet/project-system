@@ -209,13 +209,10 @@ stages:
       optOptimizationInputsDropName: OptimizationInputs/$(System.TeamProject)/$(Build.Repository.Name)/$(Build.SourceVersion)/$(Build.BuildId)/$(System.StageAttempt)
       testLabPoolName: VS-Platform
       prePublishOptimizationInputsDropStepList:
-      # This sets the PreviousOptimizationInputsDropName variable which enables LKG (Last Known Good) support.
-      # See: https://devdiv.visualstudio.com/DevDiv/_wiki/wikis/DevDiv.wiki/29053/Enabling-LKG-support
-      # - powershell: . '$(Build.SourcesDirectory)/eng/scripts/SetPreviousOptimizationInputsDropName.ps1' -buildId '$(resources.pipeline.VisualStudioBuildUnderTest.runID)'
-      #   displayName: Set PreviousOptimizationInputsDropName variable
-      #   # https://learn.microsoft.com/azure/devops/pipelines/scripts/powershell?view=azure-devops&tabs=yaml#example-powershell-script-access-rest-api
-      #   env:
-      #     SYSTEM_ACCESSTOKEN: $(System.AccessToken)
+      # This extracts the Metadata.json file information from the OptProf artifact in the build and sets the drop name to the PreviousOptimizationInputsDropName variable.
+      # The PreviousOptimizationInputsDropName variable enables LKG (Last Known Good) support.
+      # See LKG support for details: https://devdiv.visualstudio.com/DevDiv/_wiki/wikis/DevDiv.wiki/29053/Enabling-LKG-support
+      # This PowerShell script needs to be written in this YAML file directly as the job that runs this task does not have access to files on-disk (it does not perform a checkout).
       - powershell: |
           $artifactParameters = @{
             InstanceURL = 'https://dev.azure.com/devdiv'
@@ -232,9 +229,6 @@ stages:
           Write-Host "PreviousOptimizationInputsDropName: $dropName"
           Set-AzurePipelinesVariable 'PreviousOptimizationInputsDropName' $dropName
         displayName: Set PreviousOptimizationInputsDropName variable
-        # https://learn.microsoft.com/azure/devops/pipelines/scripts/powershell?view=azure-devops&tabs=yaml#example-powershell-script-access-rest-api
-        # env:
-        #   SYSTEM_ACCESSTOKEN: $(System.AccessToken)
 
 # Run this stage only when specifically requested (via CreateInsertion) or when the pipeline was ran on a schedule.
 # Conditional insertion syntax:
