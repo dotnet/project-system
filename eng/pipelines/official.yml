@@ -125,6 +125,8 @@ stages:
     # Only used for tracking purposes in MicroBuild tasks.
     # See: https://devdiv.visualstudio.com/DevDiv/_wiki/wikis/DevDiv.wiki/650/MicroBuild-Signing?anchor=high-level-steps-to-enable-signing
     TeamName: DotNet-Project-System
+    # https://eng.ms/docs/cloud-ai-platform/devdiv/one-engineering-system-1es/1es-docs/codeql/configuring-codeql3000-ado-pipelines
+    Codeql.Enabled: true
   jobs:
   - template: templates/build-official-release.yml
 
