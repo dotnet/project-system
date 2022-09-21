@@ -36,6 +36,47 @@
     </StringProperty.ValueEditors>
   </StringProperty>
 
+  <StringProperty Name="StartArguments"
+                  DisplayName="Command line arguments (from .user file)"
+                  Description="This project's .user file has a value in the StartArguments property. The use of StartArguments is deprecated, and we recommend removing it via the link below.">
+    <StringProperty.DataSource>
+      <DataSource HasConfigurationCondition="False"
+                  SourceOfDefaultValue="AfterContext"
+                  Persistence="UserFile"/>
+    </StringProperty.DataSource>
+    <StringProperty.Metadata>
+      <NameValuePair Name="VisibilityCondition">
+        <NameValuePair.Value>(ne "" (unevaluated "Project" "StartArguments"))</NameValuePair.Value>
+      </NameValuePair>
+      <NameValuePair Name="DependsOn" Value="Project::StartArguments" />
+    </StringProperty.Metadata>
+    <StringProperty.ValueEditors>
+      <ValueEditor EditorType="MultiLineString">
+        <ValueEditor.Metadata>
+          <NameValuePair Name="UseMonospaceFont" Value="True" />
+        </ValueEditor.Metadata>
+      </ValueEditor>
+    </StringProperty.ValueEditors>
+  </StringProperty>
+
+  <StringProperty Name="RemoveStartArguments"
+                  DisplayName="Move the command line args from the .user file to launchSettings.json">
+    <StringProperty.Metadata>
+      <NameValuePair Name="VisibilityCondition">
+        <NameValuePair.Value>(ne "" (unevaluated "Project" "StartArguments"))</NameValuePair.Value>
+      </NameValuePair>
+      <NameValuePair Name="DependsOn" Value="Project::StartArguments" />
+    </StringProperty.Metadata>
+    <StringProperty.ValueEditors>
+      <ValueEditor EditorType="LinkAction">
+        <ValueEditor.Metadata>
+          <NameValuePair Name="Action" Value="Command" />
+          <NameValuePair Name="Command" Value="RemoveStartArguments" />
+        </ValueEditor.Metadata>
+      </ValueEditor>
+    </StringProperty.ValueEditors>
+  </StringProperty>
+  
   <StringProperty Name="WorkingDirectory"
                   DisplayName="Working directory"
                   Description="Path to the working directory where the process will be started."
