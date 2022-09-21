@@ -208,9 +208,10 @@ stages:
       # The output of the optimization process. The first half of the path is provided to the DropNamePrefix input in the 'Install OptProf Plugin' (MicroBuildOptProfPlugin) step in build-official-release.yml.
       optOptimizationInputsDropName: OptimizationInputs/$(System.TeamProject)/$(Build.Repository.Name)/$(Build.SourceVersion)/$(Build.BuildId)/$(System.StageAttempt)
       testLabPoolName: VS-Platform
+      previousOptimizationInputsDropName: $(previousOptimizationInputsDropName)
       prePublishOptimizationInputsDropStepList:
-      # This extracts the Metadata.json file information from the OptProf artifact in the build and sets the drop name to the PreviousOptimizationInputsDropName variable.
-      # The PreviousOptimizationInputsDropName variable enables LKG (Last Known Good) support.
+      # This extracts the Metadata.json file information from the OptProf artifact in the build and sets the drop name to the previousOptimizationInputsDropName variable.
+      # The previousOptimizationInputsDropName variable enables LKG (Last Known Good) support.
       # See LKG support for details: https://devdiv.visualstudio.com/DevDiv/_wiki/wikis/DevDiv.wiki/29053/Enabling-LKG-support
       # This PowerShell script needs to be written in this YAML file directly as the job that runs this task does not have access to files on-disk (it does not perform a checkout).
       - powershell: |
@@ -226,9 +227,9 @@ stages:
           $metadataString = Read-BuildArtifactFile @artifactParameters -FileName (Join-Path $containerName 'Metadata.json')
           $dropName = ($metadataString | ConvertFrom-Json).OptimizationData
 
-          Write-Host "PreviousOptimizationInputsDropName: $dropName"
-          Set-AzurePipelinesVariable 'PreviousOptimizationInputsDropName' $dropName
-        displayName: Set PreviousOptimizationInputsDropName variable
+          Write-Host "previousOptimizationInputsDropName: $dropName"
+          Set-AzurePipelinesVariable 'previousOptimizationInputsDropName' $dropName
+        displayName: Set previousOptimizationInputsDropName variable
 
 # Run this stage only when specifically requested (via CreateInsertion) or when the pipeline was ran on a schedule.
 # Conditional insertion syntax:
