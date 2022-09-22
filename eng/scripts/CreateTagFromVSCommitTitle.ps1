@@ -18,7 +18,9 @@ $commitTitle = (git log -1 --pretty=%s $vsCommitId)
 # - https://stackoverflow.com/a/3697210/294804
 # - https://stackoverflow.com/a/12001377/294804
 # Note: Only including alphanumeric and dot, underscore, and hyphen in the branch name.
-# See this for how complex branch names can be: https://stackoverflow.com/a/12093994/294804
+# See this for how complex branch names can be:
+# - https://stackoverflow.com/a/12093994/294804
+# - https://stackoverflow.com/a/3651867/294804
 $hasShortCommitId = $commitTitle -match 'DotNet-Project-System \([a-zA-Z0-9._-]+:\d+(\.\d+)*:(\w+)\)'
 if($hasShortCommitId)
 {
