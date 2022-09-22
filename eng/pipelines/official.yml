@@ -90,6 +90,9 @@ variables:
   # Allows CodeQL to run on our Build job.
   # https://eng.ms/docs/cloud-ai-platform/devdiv/one-engineering-system-1es/1es-docs/codeql/configuring-codeql3000-ado-pipelines
   Codeql.Enabled: true
+  # Default to skipping auto-injection for CodeQL. It is not skipped in the Build job only.
+  # https://eng.ms/docs/cloud-ai-platform/devdiv/one-engineering-system-1es/1es-docs/codeql/configuring-codeql3000-ado-pipelines#monolithic-repos-and-multistage-pipelines
+  Codeql.SkipTaskAutoInjection: true
 
 parameters:
 - name: CreateInsertion
@@ -128,6 +131,9 @@ stages:
     # Only used for tracking purposes in MicroBuild tasks.
     # See: https://devdiv.visualstudio.com/DevDiv/_wiki/wikis/DevDiv.wiki/650/MicroBuild-Signing?anchor=high-level-steps-to-enable-signing
     TeamName: DotNet-Project-System
+    # Auto-injects the CodeQL task.
+    # https://eng.ms/docs/cloud-ai-platform/devdiv/one-engineering-system-1es/1es-docs/codeql/configuring-codeql3000-ado-pipelines#monolithic-repos-and-multistage-pipelines
+    Codeql.SkipTaskAutoInjection: false
   jobs:
   - template: templates/build-official-release.yml
 
@@ -139,9 +145,6 @@ stages:
   # Variables used:
   # - SymbolsUncPath
   - group: DotNet-Project-System
-  # https://eng.ms/docs/cloud-ai-platform/devdiv/one-engineering-system-1es/1es-docs/codeql/configuring-codeql3000-ado-pipelines#monolithic-repos-and-multistage-pipelines
-  - name: Codeql.SkipTaskAutoInjection
-    value: true
   jobs:
   - template: templates/publish-assets-and-packages.yml
   - template: templates/publish-symbols.yml
@@ -161,9 +164,6 @@ stages:
   # Variables used:
   # - ApiScanConnectionString
   - group: DotNet-Project-System
-  # https://eng.ms/docs/cloud-ai-platform/devdiv/one-engineering-system-1es/1es-docs/codeql/configuring-codeql3000-ado-pipelines#monolithic-repos-and-multistage-pipelines
-  - name: Codeql.SkipTaskAutoInjection
-    value: true
   jobs:
   - template: templates/analyze-compliance.yml
   - template: templates/analyze-api.yml
@@ -183,9 +183,6 @@ stages:
   # - BotAccount-dotnet-bot-repo-PAT
   # - dn-bot-ceapex-package-r
   - group: OneLocBuildVariables
-  # https://eng.ms/docs/cloud-ai-platform/devdiv/one-engineering-system-1es/1es-docs/codeql/configuring-codeql3000-ado-pipelines#monolithic-repos-and-multistage-pipelines
-  - name: Codeql.SkipTaskAutoInjection
-    value: true
   jobs:
   - template: templates/generate-localization.yml
 
@@ -213,9 +210,6 @@ stages:
         # - https://stackoverflow.com/a/57488169/294804
         # - https://github.com/microsoft/azure-pipelines-tasks/issues/4743
         value: $[ stageDependencies.Publish.PublishAssetsAndPackages.outputs['UpdateRunSettings.visualStudioBootstrapperURI'] ]
-      # https://eng.ms/docs/cloud-ai-platform/devdiv/one-engineering-system-1es/1es-docs/codeql/configuring-codeql3000-ado-pipelines#monolithic-repos-and-multistage-pipelines
-      - name: Codeql.SkipTaskAutoInjection
-        value: true
       runSettingsURI: https://vsdrop.corp.microsoft.com/file/v1/RunSettings/$(System.TeamProject)/dotnet/project-system/$(Build.SourceBranchName)/$(Build.BuildId);OptProf.runsettings
       # This variable is set during the 'Update RunSettings' (UpdateRunSettings.ps1) step in the publish-assets-and-packages.yml.
       # This variable is expanded when it is used: https://docs.microsoft.com/azure/devops/pipelines/process/variables?view=azure-devops&tabs=yaml%2Cbatch#macro-syntax-variables
@@ -262,7 +256,5 @@ stages:
       # Gets the PackageVersion variable produced by the Build pipeline.
       PackageVersion: $[ stageDependencies.Build.BuildOfficialRelease.outputs['SetPackageVersion.PackageVersion'] ]
       InsertionVSBranch: ${{ parameters.InsertionVSBranch }}
-      # https://eng.ms/docs/cloud-ai-platform/devdiv/one-engineering-system-1es/1es-docs/codeql/configuring-codeql3000-ado-pipelines#monolithic-repos-and-multistage-pipelines
-      Codeql.SkipTaskAutoInjection: true
     jobs:
     - template: templates/generate-insertion.yml
