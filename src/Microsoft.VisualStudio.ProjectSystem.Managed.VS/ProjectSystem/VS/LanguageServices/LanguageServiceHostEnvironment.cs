@@ -2,18 +2,19 @@
 
 using Microsoft.VisualStudio.Composition;
 using Microsoft.VisualStudio.ProjectSystem.LanguageServices;
-using Microsoft.VisualStudio.Shell.Interop;
+using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Threading;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices;
 
 [Export(typeof(ILanguageServiceHostEnvironment))]
+[AppliesTo(ProjectCapability.DotNetLanguageService)]
 internal sealed class LanguageServiceHostEnvironment : ILanguageServiceHostEnvironment
 {
     private readonly AsyncLazy<bool> _isEnabled;
 
     [ImportingConstructor]
-    public LanguageServiceHostEnvironment(IVsUIService<SVsShell, IVsShell> vsShell, JoinableTaskContext joinableTaskContext)
+    public LanguageServiceHostEnvironment(IVsShellServices vsShell, JoinableTaskContext joinableTaskContext)
     {
         _isEnabled = new(
             async () =>
@@ -21,11 +22,10 @@ internal sealed class LanguageServiceHostEnvironment : ILanguageServiceHostEnvir
                 await joinableTaskContext.Factory.SwitchToMainThreadAsync();
 
                 // If VS is running in command line mode (e.g. "devenv.exe /build my.sln"),
-                // the language service host is not enabled.
-
-                return ErrorHandler.Succeeded(vsShell.Value.GetProperty((int)__VSSPROPID.VSSPROPID_IsInCommandLineMode, out object resultObj))
-                    && resultObj is bool result
-                    && !result; // negate: enabled when not in command line mode
+                // the language service host is not enabled. The one exception to this is
+                // when we're populating a solution cache via "/populateSolutionCache".
+                return !await vsShell.IsCommandLineModeAsync()
+                    || await vsShell.IsPopulateSolutionCacheModeAsync();
             },
             joinableTaskContext.Factory);
     }

@@ -38,7 +38,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedColl
 
         public override object? GetBrowseObject() => new BrowseObject(this);
 
-        private sealed class BrowseObject : BrowseObjectBase
+        private sealed class BrowseObject : LocalizableProperties
         {
             private readonly FrameworkReferenceAssemblyItem _item;
 

@@ -73,31 +73,36 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build
                 return AddMessageResult.NotHandled;
             }
 
-            bool? handled = await _workspaceWriter.WriteAsync(workspace =>
+            bool handled = false;
+
+            if (await _workspaceWriter.IsEnabledAsync())
             {
-                var errorReporter = (IVsLanguageServiceBuildErrorReporter2)workspace.HostSpecificErrorReporter;
-
-                try
+                handled = await _workspaceWriter.WriteAsync(workspace =>
                 {
-                    errorReporter.ReportError2(details.Message,
-                                               details.Code,
-                                               details.Priority,
-                                               details.LineNumberForErrorList,
-                                               details.ColumnNumberForErrorList,
-                                               details.EndLineNumberForErrorList,
-                                               details.EndColumnNumberForErrorList,
-                                               details.GetFileFullPath(_project.FullPath));
-                    return TaskResult.True;
-                }
-                catch (NotImplementedException)
-                {   // Language Service doesn't handle it, typically because file 
-                    // isn't in the project or because it doesn't have line/column
-                }
+                    var errorReporter = (IVsLanguageServiceBuildErrorReporter2)workspace.HostSpecificErrorReporter;
 
-                return TaskResult.False;
-            });
+                    try
+                    {
+                        errorReporter.ReportError2(details.Message,
+                                                   details.Code,
+                                                   details.Priority,
+                                                   details.LineNumberForErrorList,
+                                                   details.ColumnNumberForErrorList,
+                                                   details.EndLineNumberForErrorList,
+                                                   details.EndColumnNumberForErrorList,
+                                                   details.GetFileFullPath(_project.FullPath));
+                        return TaskResult.True;
+                    }
+                    catch (NotImplementedException)
+                    {   // Language Service doesn't handle it, typically because file 
+                        // isn't in the project or because it doesn't have line/column
+                    }
 
-            return handled ?? false ? AddMessageResult.HandledAndStopProcessing : AddMessageResult.NotHandled;
+                    return TaskResult.False;
+                });
+            }
+
+            return handled ? AddMessageResult.HandledAndStopProcessing : AddMessageResult.NotHandled;
         }
 
         public Task ClearMessageFromTargetAsync(string targetName)
@@ -105,14 +110,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build
             return Task.CompletedTask;
         }
 
-        public Task ClearAllAsync()
+        public async Task ClearAllAsync()
         {
-            return _workspaceWriter.WriteAsync(workspace =>
+            if (await _workspaceWriter.IsEnabledAsync())
             {
-                ((IVsLanguageServiceBuildErrorReporter2)workspace.HostSpecificErrorReporter).ClearErrors();
+                await _workspaceWriter.WriteAsync(workspace =>
+                {
+                    ((IVsLanguageServiceBuildErrorReporter2)workspace.HostSpecificErrorReporter).ClearErrors();
 
-                return Task.CompletedTask;
-            });
+                    return Task.CompletedTask;
+                });
+            }
         }
 
         /// <summary>

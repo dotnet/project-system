@@ -100,7 +100,7 @@ internal sealed class LanguageServiceHost : OnceInitializedOnceDisposedUnderLock
 
     protected override async Task InitializeCoreAsync(CancellationToken cancellationToken)
     {
-        if (await IsDisabledAsync(cancellationToken))
+        if (!await IsEnabledAsync(cancellationToken))
         {
             // We are not enabled, so don't perform any initialization.
             return;
@@ -251,11 +251,26 @@ internal sealed class LanguageServiceHost : OnceInitializedOnceDisposedUnderLock
 
     #region IWorkspaceWriter
 
+    public Task<bool> IsEnabledAsync(CancellationToken cancellationToken)
+    {
+        if (_languageServiceHostEnvironment is null)
+        {
+            // Assume enabled when no host environment is available.
+            return TaskResult.True;
+        }
+
+        // Defer to the host environment to determine if we're enabled.
+        return _languageServiceHostEnvironment.IsEnabledAsync(cancellationToken);
+    }
+
     public async Task WhenInitialized(CancellationToken token)
     {
         await ValidateEnabledAsync(token);
 
-        await _firstPrimaryWorkspaceSet.Task.WithCancellation(token);
+        using (_joinableTaskCollection.Join())
+        {
+            await _firstPrimaryWorkspaceSet.Task.WithCancellation(token);
+        }
     }
 
     public async Task WriteAsync(Func<IWorkspace, Task> action, CancellationToken token)
@@ -303,11 +318,13 @@ internal sealed class LanguageServiceHost : OnceInitializedOnceDisposedUnderLock
 
     #endregion
 
-    [ProjectAutoLoad(startAfter: ProjectLoadCheckpoint.AfterLoadInitialConfiguration, completeBy: ProjectLoadCheckpoint.ProjectFactoryCompleted)]
+    [ProjectAutoLoad(
+        startAfter: ProjectLoadCheckpoint.AfterLoadInitialConfiguration,
+        completeBy: ProjectLoadCheckpoint.ProjectFactoryCompleted)]
     [AppliesTo(ProjectCapability.DotNetLanguageService)]
     public async Task AfterLoadInitialConfigurationAsync()
     {
-        if (await IsDisabledAsync(_tasksService.UnloadCancellationToken))
+        if (!await IsEnabledAsync(_tasksService.UnloadCancellationToken))
         {
             // We are not enabled, so don't block project load on our initialization.
             return;
@@ -336,15 +353,9 @@ internal sealed class LanguageServiceHost : OnceInitializedOnceDisposedUnderLock
         return Task.CompletedTask;
     }
 
-    private async Task<bool> IsDisabledAsync(CancellationToken cancellationToken)
-    {
-        // Check whether our hosting environment is telling us we're enabled.
-        return _languageServiceHostEnvironment is not null && !await _languageServiceHostEnvironment.IsEnabledAsync(cancellationToken);
-    }
-
     private async Task ValidateEnabledAsync(CancellationToken cancellationToken)
     {
-        if (await IsDisabledAsync(cancellationToken))
+        if (!await IsEnabledAsync(cancellationToken))
         {
             Assumes.Fail("Invalid operation when language services are not enabled.");
         }

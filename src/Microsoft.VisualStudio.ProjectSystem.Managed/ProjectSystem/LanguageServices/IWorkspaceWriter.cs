@@ -22,6 +22,24 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices;
 internal interface IWorkspaceWriter
 {
     /// <summary>
+    ///    Gets a value indicating whether the language service is enabled for this project.
+    /// </summary>
+    /// <remarks>
+    ///    Users of this interface should use this method to validate that the language service
+    ///    is enabled for this project before attempting to use the other members of this interface.
+    ///    Attempting to use other members when the language service is disabled will result in
+    ///    an exception being thrown.
+    /// </remarks>
+    /// <param name="cancellationToken">
+    ///     Registers a loss of interest in the operation.
+    /// </param>
+    /// <returns>
+    ///     A task who's completed result indicates whether the language service is enabled or not
+    ///     for this project.
+    /// </returns>
+    Task<bool> IsEnabledAsync(CancellationToken cancellationToken = default);
+
+    /// <summary>
     ///     Completes when a write lock can be requested for the active workspace.
     /// </summary>
     /// <remarks>

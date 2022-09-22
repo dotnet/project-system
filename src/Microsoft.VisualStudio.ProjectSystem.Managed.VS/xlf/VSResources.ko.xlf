@@ -117,17 +117,9 @@
       </trans-unit>
       <trans-unit id="InfoBarMessageNuGetCycleDetected">
         <source>A circular dependency A -&gt; B -&gt; A was detected during NuGet Restore which caused NuGet to stop restoring.
-Because the NuGet restore didn't finish correctly, the project might be in a bad state.
-
-This might be caused because one or more projects have a package that sets AssetTargetFallback, not supported for this scenario, which caused certain PackageReference to be included.
-
-NuGet Error NU1108</source>
-        <target state="translated">NuGet 복원 중에 순환 종속성 A -&gt; B -&gt; A가 감지되어 NuGet이 복원을 중지했습니다.
-NuGet 복원이 올바르게 완료되지 않았기 때문에 프로젝트가 잘못된 상태일 수 있습니다.
-
-이는 하나 이상의 프로젝트에 이 시나리오에서 지원되지 않는 AssetTargetFallback을 설정하는 패키지가 있어 특정 PackageReference가 포함되기 때문에 발생할 수 있습니다.
-
-NuGet 오류 NU1108</target>
+Because the NuGet restore didn't finish correctly, the project might be in a bad state.</source>
+        <target state="new">A circular dependency A -&gt; B -&gt; A was detected during NuGet Restore which caused NuGet to stop restoring.
+Because the NuGet restore didn't finish correctly, the project might be in a bad state.</target>
         <note />
       </trans-unit>
       <trans-unit id="ProjectHotReloadSessionManager_AttachingToProcess">
