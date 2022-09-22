@@ -7,8 +7,6 @@ jobs:
   timeoutInMinutes: 90
   steps:
 
-  - task: CodeQL3000Init@0
-
   ###################################################################################################################################################################
   # SBOM GENERATION
   # This process occurs above plugin installation so that the Src build does not perform signing.
@@ -216,5 +214,3 @@ jobs:
     displayName: Publish Staging Artifacts
     artifact: Staging
     condition: succeededOrFailed()
-
-  - task: CodeQL3000Finalize@0
