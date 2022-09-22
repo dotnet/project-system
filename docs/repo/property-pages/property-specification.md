@@ -71,7 +71,9 @@ The `DataSource` specified here will be applied to all properties, however prope
 - `Persistence` may have several values:
   - `ProjectFile` means that the value will be read and written from the project file directly.
   - `ProjectFileWithInterception` means that a MEF part exists that will handle read/write operations for the property (see below).
+  - `UserFile` means that the value will be read and written from the `.user` file directly.
   - `UserFileWithInterception` is the same as `ProjectFileWithInterception` except we write changes to the project's `.user` file.
+  - `LaunchProfile` means that the value will be read and written from the `launchSettings.json` file directly.
 - `HasConfigurationCondition` controls whether the property is intended to be varied by project configuration (e.g. Debug/Release, platform, target framework...). Setting this to true allows varying property values by configuration dimensions.
 
 ### Categories
