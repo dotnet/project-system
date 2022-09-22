@@ -71,8 +71,8 @@ jobs:
     displayName: Install OptProf Plugin
     inputs:
       ProfilingInputsDropName: ProfilingInputs/$(System.TeamProject)/$(Build.Repository.Name)/$(Build.SourceBranchName)/$(Build.BuildId)
-      # OptimizationInputsLookupMethod: DropPrefix
-      # DropNamePrefix: OptimizationInputs/$(System.TeamProject)/$(Build.Repository.Name)
+      OptimizationInputsLookupMethod: DropPrefix
+      DropNamePrefix: OptimizationInputs/$(System.TeamProject)/$(Build.Repository.Name)
       AccessToken: $(System.AccessToken)
       feedSource: https://devdiv.pkgs.visualstudio.com/DefaultCollection/_packaging/MicroBuildToolset/nuget/v3/index.json
       ShouldSkipOptimize: $(SkipOptimize)
@@ -81,8 +81,6 @@ jobs:
       # this task will always fail. The only way to fix it is produce new optimization data.
       # A temporary fix is to increase this value. However, it may cause a perf regression since eventually, the optimization data will no longer be aligned with the actual source content in the repo.
       NumberCommitsToSearch: 100
-      OptimizationInputsLookupMethod: DropName
-      OptimizationInputsDropName: 'OptimizationInputs/DevDiv/dotnet/project-system/66b07af131b98fe9663be2a66595ca8ade784a2a/6691351/1'
 
   ###################################################################################################################################################################
   # BUILD REPOSITORY
