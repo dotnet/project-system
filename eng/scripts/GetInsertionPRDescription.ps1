@@ -1,7 +1,7 @@
 # Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
 # Creates a description for VS Insertion PRs that contains a list of PRs that have been merged between since the previous VS Insertion.
-# The previous VS Insertion relies on finding the last tag in our repo that matches the pattern: VS-Insertion-*
+# The previous VS Insertion relies on finding the last tag in our repo that matches the pattern: insertion/*
 # This script outputs the description string into the InsertionDescription variable within the Azure Pipeline.
 
 param ([Parameter(Mandatory=$true)] [string] $currentSha, [Parameter(Mandatory=$true)] [string] $repoUrl, [Parameter(Mandatory=$true)] [string] $projectName)
@@ -14,10 +14,10 @@ $currentShaShort = $currentSha.Substring(0,10)
 Write-Host "##vso[task.setvariable variable=ShortCommitId]$currentShaShort"
 
 $description = @()
-# Gets the commit ID of the latest tag that matches VS-Insertion-*
+# Gets the commit ID of the latest tag that matches insertion/*
 # https://git-scm.com/docs/git-rev-list
 # https://stackoverflow.com/a/1862542/294804
-$previousSha = (git rev-list --tags=VS-Insertion-* -1)
+$previousSha = (git rev-list --tags=insertion/* -1)
 Write-Host "previousSha: $previousSha"
 Write-Host "currentSha: $currentSha"
 # Since a previous commit ID was not found, we create a basic description.
@@ -87,6 +87,7 @@ if($isTruncated)
   $description += '...'
 }
 
+# Write out the description into the log for human consumption.
 Write-Host "=== DESCRIPTION ===$([Environment]::Newline)$([Environment]::Newline)$($description -join [Environment]::Newline)"
 
 # Merge the description lines into a single string (using <br> for newline) and set it to InsertionDescription.

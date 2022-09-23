@@ -4,10 +4,6 @@
 
 param ([Parameter(Mandatory=$true)] [string] $vsDirectory, [string] $vsCommitId)
 
-# Moves Git command stderr to stdout. Git commands may succeed but cause PowerShell to think they are failing. See:
-# https://stackoverflow.com/questions/57786104/git-clone-generating-an-error-in-azure-command-line-task#comment102034707_57788340
-# $env:GIT_REDIRECT_STDERR = '2>&1'
-
 Set-Location $vsDirectory
 
 # Gets the subject (title) from the latest commit (unless a vsCommitId is provided). See:
@@ -36,7 +32,7 @@ if($hasShortCommitId)
     $vsTagIdentifier = "PR-$prNumber"
   }
 
-  $tagName = "VS-Insertion-$vsTagIdentifier"
+  $tagName = "insertion/$vsTagIdentifier"
   Set-Location $PSScriptRoot
   # Using a lightweight tag since we don't need any other information than the tag name itself.
   # https://git-scm.com/book/en/v2/Git-Basics-Tagging
