@@ -165,7 +165,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
                 _threadingService.ExecuteSynchronously(async () =>
                 {
                     ConfiguredBrowseObject browseObjectProperties = await _projectProperties.GetConfiguredBrowseObjectPropertiesAsync();
-                    await browseObjectProperties.RunCodeAnalysis.SetValueAsync(AbstractProjectConfigurationDefineConstants.ParseIntoDictionary(value));
+                    await browseObjectProperties.DefineConstants.SetValueAsync(value);
                 });
             }
         }
