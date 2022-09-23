@@ -62,7 +62,7 @@ parameters:
 - name: VsCommitId
   displayName: VS Commit ID
   type: string
-  default: ''
+  default: $(Build.SourceVersion)
 - name: VsCheckoutDepth
   displayName: VS Checkout Depth
   type: number
