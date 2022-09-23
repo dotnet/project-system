@@ -77,10 +77,10 @@ steps:
   path: project-system
   # Hard-coded assumption that the commit referenced by the VS insertion is within the last 100 commits in the repo.
   fetchDepth: 100
-- checkout: VS
-  persistCredentials: true
-  path: VS
-  fetchDepth: ${{ parameters.VsCheckoutDepth }}
+# - checkout: VS
+#   persistCredentials: true
+#   path: VS
+#   fetchDepth: ${{ parameters.VsCheckoutDepth }}
 # Create the VS folder and clone the VS repo into it, excluding the files themselves (only .git history is required).
 # Doing this manual checkout over the checkout: VS task saves around 3-4 minutes.
 # The System.AccessToken is required for the clone to occur. See: https://stackoverflow.com/a/56734304/294804
