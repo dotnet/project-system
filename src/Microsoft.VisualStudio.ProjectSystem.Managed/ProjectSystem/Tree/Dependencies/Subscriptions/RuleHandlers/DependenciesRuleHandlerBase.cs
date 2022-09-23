@@ -69,7 +69,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Subscriptions.R
 
             void HandleChangesForRule(IProjectChangeDescription evaluationProjectChange, bool isResolvedItem, IProjectChangeDescription? buildProjectChange = null, Func<string, bool>? isEvaluatedItemSpec = null)
             {
-                IProjectChangeDescription projectChange = buildProjectChange ?? evaluationProjectChange;
+                IProjectChangeDescription projectChange = buildProjectChange?.Difference.AnyChanges is true ? buildProjectChange : evaluationProjectChange;
 
                 foreach (string removedItem in projectChange.Difference.RemovedItems)
                 {
