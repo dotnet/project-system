@@ -90,8 +90,9 @@ if($isTruncated)
 # Write out the description into the log for human consumption.
 Write-Host "=== DESCRIPTION ===$([Environment]::Newline)$([Environment]::Newline)$($description -join [Environment]::Newline)"
 
-# Merge the description lines into a single string (using <br> for newline) and set it to InsertionDescription.
-# See: https://www.markdownguide.org/basic-syntax/#line-breaks
+# Merge the description lines into a single string (using <br> for newline) and set it to InsertionDescription. See:
+# - https://www.markdownguide.org/basic-syntax/#line-breaks
+# - https://learn.microsoft.com/azure/devops/project/wiki/markdown-guidance?view=azure-devops
 # Note: We cannot render newlines directly as they are restricted by the PowerShell cmdlet that MicroBuild calls.
 # Since we cannot render newlines in the description, we cannot actually render any markdown elements that require newlines (such as lists, horizontal rules, etc.).
 # See: https://github.com/microsoft/azure-pipelines-task-lib/blob/ee582bc9b6c7ed2749929b0d66bc34af831e0eea/powershell/VstsTaskSdk/ToolFunctions.ps1#L84-L86

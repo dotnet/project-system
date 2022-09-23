@@ -23,11 +23,11 @@ resources:
   - repository: VS
     name: VS
     type: git
-    ref: main
+    ref: dev/miyanni/tagger-test
     trigger:
       branches:
         include:
-        - main
+        - dev/miyanni/tagger-test
       paths:
         include:
         # File containing the package version for Managed/Managed.VS packages.

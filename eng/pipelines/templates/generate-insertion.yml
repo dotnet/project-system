@@ -50,6 +50,9 @@ jobs:
       # See the bottom of the table here: https://devdiv.visualstudio.com/DevDiv/_wiki/wikis/DevDiv.wiki/635/Overview?anchor=**build-pipeline**
       DefaultConfigValues: Microsoft.VisualStudio.AppDesigner=$(PackageVersion),Microsoft.VisualStudio.Editors=$(PackageVersion),Microsoft.VisualStudio.ProjectSystem.Managed=$(PackageVersion),Microsoft.VisualStudio.ProjectSystem.Managed.VS=$(PackageVersion)
       AllowTopicBranchUpdate: true
+      # Description logic here:
+      # - https://devdiv.visualstudio.com/Engineering/_git/MicroBuild?path=/src/Tasks/InsertVsPayload/plugin.ps1&version=GBmain&line=25&lineEnd=26&lineStartColumn=1&lineEndColumn=1&lineStyle=plain&_a=contents
+      # - https://devdiv.visualstudio.com/DevDiv/_git/302b028d-413e-471a-af4d-abc68bdc96b8?path=/src/SubmitPullRequest/Program.cs&version=GBmain&_a=contents
       InsertionDescription: $(InsertionDescription)
       # This is the name of our DevDiv alias.
       InsertionReviewers: '.NET Project System'
