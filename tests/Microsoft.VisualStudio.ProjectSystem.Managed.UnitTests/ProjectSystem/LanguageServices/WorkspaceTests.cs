@@ -332,7 +332,7 @@ public class WorkspaceTests
         {
             var ex = await Assert.ThrowsAsync<Exception>(() => task);
 
-            Assert.Equal("Insufficient project data to initialize the language service.", ex.Message);
+            Assert.StartsWith("Insufficient project data to initialize the language service: missing property", ex.Message);
         }
     }
 

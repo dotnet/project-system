@@ -207,22 +207,17 @@ internal sealed class Workspace : OnceInitializedOnceDisposedUnderLockAsync, IWo
         async Task ProcessInitialEvaluationDataAsync(CancellationToken cancellationToken)
         {
             _logger.WriteLine("Initializing workspace from evaluation data");
-
+            
             IProjectRuleSnapshot snapshot = evaluationUpdate.Value.EvaluationRuleUpdate.CurrentState[ConfigurationGeneral.SchemaName];
 
-            snapshot.Properties.TryGetValue(ConfigurationGeneral.LanguageServiceNameProperty, out string? languageName);
-            snapshot.Properties.TryGetValue(ConfigurationGeneral.TargetPathProperty, out string? binOutputPath);
-            snapshot.Properties.TryGetValue(ConfigurationGeneral.MSBuildProjectFullPathProperty, out string? projectFilePath);
-            snapshot.Properties.TryGetValue(ConfigurationGeneral.AssemblyNameProperty, out string? assemblyName);
-            snapshot.Properties.TryGetValue(ConfigurationGeneral.CommandLineArgsForDesignTimeEvaluationProperty, out string? commandLineArgsForDesignTimeEvaluation);
+            // We _must_ have these properties or we can't initialize the language service.
+            string languageName = RetrievePropertyOrFailInitializationAndThrow(snapshot.Properties, ConfigurationGeneral.LanguageServiceNameProperty);
+            string binOutputPath = RetrievePropertyOrFailInitializationAndThrow(snapshot.Properties, ConfigurationGeneral.TargetPathProperty);
+            string projectFilePath = RetrievePropertyOrFailInitializationAndThrow(snapshot.Properties, ConfigurationGeneral.MSBuildProjectFullPathProperty);
 
-            if (string.IsNullOrEmpty(languageName) || string.IsNullOrEmpty(binOutputPath) || string.IsNullOrEmpty(projectFilePath))
-            {
-                // Insufficient data to initialize the language service.
-                _state = WorkspaceState.Failed;
-
-                throw new("Insufficient project data to initialize the language service.");
-            }
+            // These _should_ be present, but we can continue without them.
+            string? assemblyName = RetrievePropertyOrNull(snapshot.Properties, ConfigurationGeneral.AssemblyNameProperty);
+            string? commandLineArgsForDesignTimeEvaluation = RetrievePropertyOrNull(snapshot.Properties, ConfigurationGeneral.CommandLineArgsForDesignTimeEvaluationProperty);
 
             try
             {
@@ -281,6 +276,26 @@ internal sealed class Workspace : OnceInitializedOnceDisposedUnderLockAsync, IWo
                 // Let the exception escape, to unsubscribe data sources.
                 throw;
             }
+        }
+
+        string RetrievePropertyOrFailInitializationAndThrow(IImmutableDictionary<string, string> properties, string propertyName)
+        {
+            properties.TryGetValue(propertyName, out string? propertyValue);
+            
+            if (string.IsNullOrEmpty(propertyValue))
+            {
+                // Insufficient data to initialize the language service.
+                _state = WorkspaceState.Failed;
+                throw new($"Insufficient project data to initialize the language service: missing property '{propertyName}'.");
+            }
+
+            return propertyValue;
+        }
+
+        string? RetrievePropertyOrNull(IImmutableDictionary<string, string> properties, string propertyName)
+        {
+            properties.TryGetValue(propertyName, out string? propertyValue);
+            return propertyValue;
         }
 
         void ApplyProjectEvaluation(
