@@ -2,6 +2,10 @@
 
 namespace Microsoft.VisualStudio.ProjectSystem.Debug
 {
+    /// <summary>
+    ///  Encoding corresponding a format of keys eith a respective value that
+    ///  is surrounded in quotes, ex. key1="value1"
+    /// </summary>
     internal sealed class KeyQuotedValuePairListEncoding
     {
         public IEnumerable<(string Name, string Value)> Parse(string input)
@@ -55,15 +59,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
                 {
                     if (entry[i] == '=' && !escaped)
                     {
-                        // if (entry[i + 1] == '"' && entry[entry.Length - 1] == '"')
-                        // {
-                        //    return (entry.Substring(0, i), entry.Substring(i + 2, entry.Length - 1));
-                        //}
-                        //else
-                        //{
-                        //    return (entry.Substring(0, i), entry.Substring(i + 1));
-                        //}
-                        return (entry.Substring(0, i), entry.Substring(i + 1));
+                        if (entry.Length > i + 1)
+                        {
+                            return (entry.Substring(0, i), (entry.Substring(i + 1)).Replace("\"", ""));
+                        }
                     }
                     else if (entry[i] == '/')
                     {
@@ -84,14 +83,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             }
         }
 
-        //public string Format( IEnumerable<(string Name, string Value)> pairs)
-        //{
-         //   return string.Join(",", pairs.Select(pair => $"{Encode(pair.Name)}=\"{Encode(pair.Value)}\""));
+        public string Format(IEnumerable<(string Name, string Value)> pairs)
+        {
+            return string.Join(",", pairs.Select(pair => $"{Encode(pair.Name)}=\"{Encode(pair.Value)}\""));
 
-          //  static string Encode(string value)
-           // {
-          //      return value.Replace("/", "//").Replace(",", "/,").Replace("=", "/=");
-         //   }
-        //}
+            static string Encode(string value)
+            {
+                return value.Replace("/", "//").Replace(",", "/,").Replace("=", "/=");
+            }
+        }
     }
 }
