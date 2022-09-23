@@ -20,10 +20,6 @@ pr: none
 resources:
   # https://stackoverflow.com/a/63270937/294804
   repositories:
-  - repository: self
-    name: project-system
-    type: git
-    ref: feature/InsertionPRDescriptionAndTagging
   - repository: VS
     name: VS
     type: git
@@ -74,17 +70,23 @@ parameters:
 
 steps:
 - checkout: self
+  # Required for using Git commands in the other tasks below.
+  # See: https://stackoverflow.com/questions/56733922/fatal-could-not-read-password-for-https-organizationnamedev-azure-com-ter#comment108309839_56734304
   persistCredentials: true
   # Changes Build.SourcesDirectory from $(Pipeline.Workspace)/s to $(Pipeline.Workspace)/project-system
   path: project-system
   # Hard-coded assumption that the commit referenced by the VS insertion is within the last 100 commits in the repo.
   fetchDepth: 100
+- checkout: VS
+  persistCredentials: true
+  path: VS
+  fetchDepth: ${{ parameters.VsCheckoutDepth }}
 # Create the VS folder and clone the VS repo into it, excluding the files themselves (only .git history is required).
 # Doing this manual checkout over the checkout: VS task saves around 3-4 minutes.
 # The System.AccessToken is required for the clone to occur. See: https://stackoverflow.com/a/56734304/294804
-- powershell: |
-    $null = New-Item -Path '$(Pipeline.Workspace)' -Name VS -ItemType Directory
-    git clone --no-checkout --depth ${{ parameters.VsCheckoutDepth }} https://$(System.AccessToken)@dev.azure.com/devdiv/DevDiv/_git/VS $(Pipeline.Workspace)/VS
+# - powershell: |
+#     $null = New-Item -Path '$(Pipeline.Workspace)' -Name VS -ItemType Directory
+#     git clone --no-checkout --depth ${{ parameters.VsCheckoutDepth }} https://$(System.AccessToken)@dev.azure.com/devdiv/DevDiv/_git/VS $(Pipeline.Workspace)/VS
   displayName: Clone VS Repo
 - powershell: . '$(Build.SourcesDirectory)/eng/scripts/CreateTagFromVSCommitTitle.ps1' -vsDirectory '$(Pipeline.Workspace)/VS/' -vsCommitId '${{ parameters.VsCommitId }}'
   displayName: Create VS Insertion Tag
