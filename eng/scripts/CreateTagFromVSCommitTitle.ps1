@@ -10,6 +10,12 @@ Set-Location $vsDirectory
 # - https://stackoverflow.com/a/7293026/294804
 # - https://git-scm.com/docs/git-log#_pretty_formats
 $commitTitle = (git log -1 --pretty=%s $vsCommitId)
+# https://stackoverflow.com/a/48877892/294804
+if($LastExitCode -ne 0)
+{
+  Write-Error "Failed to get commit title for VS commit ID: $vsCommitId"
+  exit $LastExitCode
+}
 # Parse the short commit ID out of the commit title. See:
 # - https://stackoverflow.com/a/3697210/294804
 # - https://stackoverflow.com/a/12001377/294804
@@ -38,6 +44,12 @@ if($hasShortCommitId)
   # https://git-scm.com/book/en/v2/Git-Basics-Tagging
   git tag $tagName $shortCommitId
   git push origin $tagName
+  # https://stackoverflow.com/a/48877892/294804
+  if($LastExitCode -ne 0)
+  {
+    Write-Error "Failed to create tag for commit ID: $shortCommitId"
+    exit $LastExitCode
+  }
   exit 0
 }
 

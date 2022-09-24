@@ -72,8 +72,9 @@ parameters:
 
 steps:
 - checkout: self
-  # Required for using Git commands in the subsequent tasks below.
-  # See: https://stackoverflow.com/questions/56733922/fatal-could-not-read-password-for-https-organizationnamedev-azure-com-ter#comment108309839_56734304
+  # Required for using Git commands in the subsequent tasks below. See:
+  # - https://stackoverflow.com/questions/56733922/fatal-could-not-read-password-for-https-organizationnamedev-azure-com-ter#comment108309839_56734304
+  # - https://learn.microsoft.com/azure/devops/pipelines/scripts/git-commands?view=azure-devops&tabs=yaml#allow-scripts-to-access-the-system-token
   persistCredentials: true
   # Changes Build.SourcesDirectory from $(Pipeline.Workspace)/s to $(Pipeline.Workspace)/project-system
   path: project-system
