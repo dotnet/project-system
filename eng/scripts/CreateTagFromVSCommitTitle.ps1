@@ -2,11 +2,11 @@
 
 # This creates a tag in our repo (.NET Project System) based on parsing the latest commit title in the VS repo.
 
-param ([Parameter(Mandatory=$true)] [string] $vsDirectory, [string] $vsCommitId)
+param ([Parameter(Mandatory=$true)] [string] $vsDirectory, [Parameter(Mandatory=$true)] [string] $vsCommitId)
 
 Set-Location $vsDirectory
 
-# Gets the subject (title) from the latest commit (unless a vsCommitId is provided). See:
+# Gets the subject (title) from the provided commit ID (via vsCommitId). See:
 # - https://stackoverflow.com/a/7293026/294804
 # - https://git-scm.com/docs/git-log#_pretty_formats
 $commitTitle = (git log -1 --pretty=%s $vsCommitId)
@@ -24,7 +24,7 @@ if($hasShortCommitId)
   # Default to VS repo short commit ID as part of the tag when the commit isn't a merge commit.
   # In almost all cases, vsTagIdentifier will be set to the PR number since we we primarily create merge commits.
   # See also: https://stackoverflow.com/a/21015031/294804
-  $vsTagIdentifier = (git log -1 --pretty=%h)
+  $vsTagIdentifier = (git log -1 --pretty=%h $vsCommitId)
   $hasPRNumber = $commitTitle -match 'Merged PR (\d+):'
   if($hasPRNumber)
   {
