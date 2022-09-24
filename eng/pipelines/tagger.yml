@@ -19,6 +19,7 @@ pr: none
 
 resources:
   # https://stackoverflow.com/a/63270937/294804
+  # https://learn.microsoft.com/azure/devops/pipelines/repos/multi-repo-checkout?view=azure-devops#triggers
   repositories:
   - repository: VS
     name: VS
@@ -53,14 +54,16 @@ variables:
   # - https://docs.opensource.microsoft.com/tools/cg/how-to/nuget-multifeed-configuration/
   # - https://onebranch.visualstudio.com/OneBranch/_wiki/wikis/OneBranch.wiki/5205/TSG-Build-Broken-Due-to-Using-Multiple-Feeds?anchor=setting-nugetsecurityanalysiswarninglevel-in-cdp
   NugetSecurityAnalysisWarningLevel: none
-  # https://stackoverflow.com/a/70954396/294804
+  # Conditionally set the VsCommitId variable based on the VsCommitId parameter.
+  # If the parameter provides a value other than 'Default', it will be used. Otherwise, default to the commit ID of the VS repo.
+  # For conditional variables, see: https://stackoverflow.com/a/70954396/294804
+  # For Build.SourceVersion being set to VS repo commit ID, see: https://learn.microsoft.com/azure/devops/pipelines/repos/multi-repo-checkout?view=azure-devops#triggers
   ${{ if eq(parameters.VsCommitId, 'Default') }}:
     VsCommitId: $(Build.SourceVersion)
   ${{ else }}:
     VsCommitId: ${{ parameters.VsCommitId }}
 
 parameters:
-# https://stackoverflow.com/a/70954396/294804
 - name: VsCommitId
   displayName: VS Commit ID
   type: string
@@ -81,7 +84,7 @@ steps:
   # Hard-coded assumption that the commit referenced by the VS insertion is within the last 100 commits to main in the repo.
   fetchDepth: 100
 # Create the VS folder and fetch the VS repo Git information into it, excluding the files themselves (only .git history is required).
-# Doing this manual process over the checkout: VS task saves around 3-4 minutes.
+# Doing this manual process over the checkout: VS task saves around 3 minutes. See: https://stackoverflow.com/a/43136160/294804
 # The System.AccessToken is required for the clone to occur. See: https://stackoverflow.com/a/56734304/294804
 # The Git config change is for disabling a warning message because we are fetching a specific commit instead of a branch. See: https://stackoverflow.com/a/36794768/294804
 - powershell: |
