@@ -13,7 +13,7 @@ $commitTitle = (git log -1 --pretty=%s $vsCommitId)
 # https://stackoverflow.com/a/48877892/294804
 if($LastExitCode -ne 0)
 {
-  Write-Error "Failed to get commit title for VS commit ID: $vsCommitId"
+  Write-Host "Failed to get commit title for VS commit ID: $vsCommitId"
   exit $LastExitCode
 }
 # Parse the short commit ID out of the commit title. See:
@@ -47,7 +47,7 @@ if($hasShortCommitId)
   # https://stackoverflow.com/a/48877892/294804
   if($LastExitCode -ne 0)
   {
-    Write-Error "Failed to create tag for commit ID: $shortCommitId"
+    Write-Host "Failed to create tag for commit ID: $shortCommitId"
     exit $LastExitCode
   }
   exit 0
