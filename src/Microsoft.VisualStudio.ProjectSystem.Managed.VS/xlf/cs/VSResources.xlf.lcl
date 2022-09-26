@@ -276,10 +276,13 @@
       </Item>
       <Item ItemId=";InfoBarMessageNuGetCycleDetected" ItemType="0" PsrId="308" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[A circular dependency A -> B -> A was detected during NuGet Restore which caused NuGet to stop restoring.]D;]A;Because the NuGet restore didn't finish correctly, the project might be in a bad state.]D;]A;]D;]A;This might be caused because one or more projects have a package that sets AssetTargetFallback, not supported for this scenario, which caused certain PackageReference to be included.]D;]A;]D;]A;NuGet Error NU1108]]></Val>
+          <Val><![CDATA[A circular dependency A -> B -> A was detected during NuGet Restore which caused NuGet to stop restoring.]D;]A;Because the NuGet restore didn't finish correctly, the project might be in a bad state.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Během obnovení NuGet byla zjištěna cyklická závislost A -> B -> A, což způsobilo, že se NuGet přestal obnovovat.]D;]A;Vzhledem k tomu, že se obnovení NuGet nedokončilo správně, může být projekt ve špatném stavu.]D;]A;]D;]A;To může být způsobeno tím, že jeden nebo více projektů má balíček, který nastavuje AssetTargetFallback, který se pro tento scénář nepodporuje, což způsobilo zahrnutí určitého PackageReference.]D;]A;]D;]A;NuGet – chyba NU1108]]></Val>
+            <Val><![CDATA[Během obnovení NuGet byla zjištěna cyklická závislost A -> B -> A, což způsobilo, že se NuGet přestal obnovovat.]D;]A;Vzhledem k tomu, že se obnovení NuGet nedokončilo správně, může být projekt ve špatném stavu.]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[A circular dependency A -> B -> A was detected during NuGet Restore which caused NuGet to stop restoring.]D;]A;Because the NuGet restore didn't finish correctly, the project might be in a bad state.]D;]A;]D;]A;This might be caused because one or more projects have a package that sets AssetTargetFallback, not supported for this scenario, which caused certain PackageReference to be included.]D;]A;]D;]A;NuGet Error NU1108]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>

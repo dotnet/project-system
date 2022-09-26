@@ -276,10 +276,13 @@
       </Item>
       <Item ItemId=";InfoBarMessageNuGetCycleDetected" ItemType="0" PsrId="308" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[A circular dependency A -> B -> A was detected during NuGet Restore which caused NuGet to stop restoring.]D;]A;Because the NuGet restore didn't finish correctly, the project might be in a bad state.]D;]A;]D;]A;This might be caused because one or more projects have a package that sets AssetTargetFallback, not supported for this scenario, which caused certain PackageReference to be included.]D;]A;]D;]A;NuGet Error NU1108]]></Val>
+          <Val><![CDATA[A circular dependency A -> B -> A was detected during NuGet Restore which caused NuGet to stop restoring.]D;]A;Because the NuGet restore didn't finish correctly, the project might be in a bad state.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Während der NuGet-Wiederherstellung wurde eine Ringabhängigkeit A -> B -> A erkannt, was dazu führte, dass NuGet die Wiederherstellung beendete.]D;]A;Da die NuGet-Wiederherstellung nicht ordnungsgemäß abgeschlossen wurde, befindet sich das Projekt möglicherweise in einem fehlerhaften Zustand.]D;]A;]D;]A;Dies kann darauf zurückzuführen sein, dass ein oder mehrere Projekte über ein Paket verfügen, das AssetTargetFallback festlegt, das für dieses Szenario nicht unterstützt wird, was dazu führte, dass bestimmte PackageReference eingeschlossen wurden.]D;]A;]D;]A;NuGet-Fehler NU1108]]></Val>
+            <Val><![CDATA[Eine Ringabhängigkeit A -> B -> Bei der NuGet-Wiederherstellung wurde ein Fehler erkannt, der dazu führte, dass NuGet die Wiederherstellung beendete.]D;]A;Da die NuGet-Wiederherstellung nicht ordnungsgemäß abgeschlossen wurde, befindet sich das Projekt möglicherweise in einem fehlerhaften Zustand.]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[A circular dependency A -> B -> A was detected during NuGet Restore which caused NuGet to stop restoring.]D;]A;Because the NuGet restore didn't finish correctly, the project might be in a bad state.]D;]A;]D;]A;This might be caused because one or more projects have a package that sets AssetTargetFallback, not supported for this scenario, which caused certain PackageReference to be included.]D;]A;]D;]A;NuGet Error NU1108]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>

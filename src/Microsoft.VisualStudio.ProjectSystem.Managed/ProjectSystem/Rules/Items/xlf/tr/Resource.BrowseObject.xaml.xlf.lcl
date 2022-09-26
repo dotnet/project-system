@@ -103,8 +103,8 @@
       <Item ItemId=";Rule|Resource|DisplayName" ItemType="0" PsrId="308" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[File Properties]]></Val>
-          <Tgt Cat="Text" Stat="Update" Orig="New">
-            <Val><![CDATA[Genel]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Dosya Özellikleri]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[General]]></Val>
