@@ -276,10 +276,13 @@
       </Item>
       <Item ItemId=";InfoBarMessageNuGetCycleDetected" ItemType="0" PsrId="308" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[A circular dependency A -> B -> A was detected during NuGet Restore which caused NuGet to stop restoring.]D;]A;Because the NuGet restore didn't finish correctly, the project might be in a bad state.]D;]A;]D;]A;This might be caused because one or more projects have a package that sets AssetTargetFallback, not supported for this scenario, which caused certain PackageReference to be included.]D;]A;]D;]A;NuGet Error NU1108]]></Val>
+          <Val><![CDATA[A circular dependency A -> B -> A was detected during NuGet Restore which caused NuGet to stop restoring.]D;]A;Because the NuGet restore didn't finish correctly, the project might be in a bad state.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[При восстановлении NuGet обнаружена циклическая зависимость A -> B -> A, что привело к остановке восстановления NuGet.]D;]A;Поскольку восстановление NuGet завершилось неправильно, проект может находиться в некорректном состоянии.]D;]A;]D;]A;Это может быть вызвано тем, что один или несколько проектов имеют пакет, который задает AssetTargetFallback, не поддерживаемый для этого сценария, что привело к задействованию определенных элементов PackageReference.]D;]A;]D;]A;Ошибка NuGet NU1108]]></Val>
+            <Val><![CDATA[При выполнении восстановления NuGet была обнаружена циклическая зависимость A -> B -> A, вследствие чего восстановление NuGet было остановлено.]D;]A;Поскольку восстановление NuGet не было правильно завершено, проект может находиться в неисправном состоянии.]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[A circular dependency A -> B -> A was detected during NuGet Restore which caused NuGet to stop restoring.]D;]A;Because the NuGet restore didn't finish correctly, the project might be in a bad state.]D;]A;]D;]A;This might be caused because one or more projects have a package that sets AssetTargetFallback, not supported for this scenario, which caused certain PackageReference to be included.]D;]A;]D;]A;NuGet Error NU1108]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>

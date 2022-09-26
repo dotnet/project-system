@@ -276,10 +276,13 @@
       </Item>
       <Item ItemId=";InfoBarMessageNuGetCycleDetected" ItemType="0" PsrId="308" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[A circular dependency A -> B -> A was detected during NuGet Restore which caused NuGet to stop restoring.]D;]A;Because the NuGet restore didn't finish correctly, the project might be in a bad state.]D;]A;]D;]A;This might be caused because one or more projects have a package that sets AssetTargetFallback, not supported for this scenario, which caused certain PackageReference to be included.]D;]A;]D;]A;NuGet Error NU1108]]></Val>
+          <Val><![CDATA[A circular dependency A -> B -> A was detected during NuGet Restore which caused NuGet to stop restoring.]D;]A;Because the NuGet restore didn't finish correctly, the project might be in a bad state.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[在 NuGet 還原期間偵測到迴圈相依性 A -> B -> A，導致 NuGet 停止還原。]D;]A;因為 NuGet 還原未正確完成，所以專案可能處於損壞狀態。]D;]A;]D;]A;這可能是因為有一或多個專案具有設定 AssetTargetFallback 的套件，但此案例不支援該套件，導致包含特定 PackageReference。]D;]A;]D;]A;NuGet 錯誤 NU1108]]></Val>
+            <Val><![CDATA[NuGet 還原期間偵測到循環相依性 A -> B -> A，導致 NuGet 停止還原。]D;]A;因為 NuGet 還原未正確完成，專案可能狀態不良。]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[A circular dependency A -> B -> A was detected during NuGet Restore which caused NuGet to stop restoring.]D;]A;Because the NuGet restore didn't finish correctly, the project might be in a bad state.]D;]A;]D;]A;This might be caused because one or more projects have a package that sets AssetTargetFallback, not supported for this scenario, which caused certain PackageReference to be included.]D;]A;]D;]A;NuGet Error NU1108]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
