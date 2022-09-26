@@ -4,47 +4,47 @@
     <body>
       <trans-unit id="BoolProperty|ImplicitUsings|Description">
         <source>Enable implicit global usings to be declared by the project SDK.</source>
-        <target state="new">Enable implicit global usings to be declared by the project SDK.</target>
+        <target state="translated">Activez les instructions d’utilisation implicites globales pour qu’elles soient déclarées par le SDK Project.</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|ImplicitUsings|DisplayName">
         <source>Implicit global usings</source>
-        <target state="new">Implicit global usings</target>
+        <target state="translated">Instructions d’utilisation implicites globales</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|ImplicitUsings|Metadata|SearchTerms">
         <source>implicit</source>
-        <target state="new">implicit</target>
+        <target state="translated">implicite</target>
         <note />
       </trans-unit>
       <trans-unit id="Category|General|Description">
         <source>Global usings settings for C# projects.</source>
-        <target state="new">Global usings settings for C# projects.</target>
+        <target state="translated">Paramètres d’utilisation globaux pour les projets C#</target>
         <note />
       </trans-unit>
       <trans-unit id="Category|General|DisplayName">
         <source>General</source>
-        <target state="new">General</target>
+        <target state="translated">Général</target>
         <note />
       </trans-unit>
       <trans-unit id="Rule|References|Description">
         <source>Settings associated with the C# implicit global usings feature.</source>
-        <target state="new">Settings associated with the C# implicit global usings feature.</target>
+        <target state="translated">Paramètres associés à la fonctionnalité d’utilisation globale implicite C#</target>
         <note />
       </trans-unit>
       <trans-unit id="Rule|References|DisplayName">
         <source>Global Usings</source>
-        <target state="new">Global Usings</target>
+        <target state="translated">Utilisations globales</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|ImplicitUsingsEditor|Description">
         <source>Manage common global usings directives for your project to reference.</source>
-        <target state="new">Manage common global usings directives for your project to reference.</target>
+        <target state="translated">Gérez les directives d’utilisation globales courantes de votre projet à référencer.</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|ImplicitUsingsEditor|DisplayName">
         <source>Manage Implicit Global Usings</source>
-        <target state="new">Manage Implicit Global Usings</target>
+        <target state="translated">Gérer les utilisations implicites globales</target>
         <note />
       </trans-unit>
     </body>
