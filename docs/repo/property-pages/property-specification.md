@@ -1,4 +1,4 @@
-﻿# Property Specification
+# Property Specification
 
 This document details how properties are specified, which controls their appearance and behavior in the Project Properties UI and how they are written to the project file.
 
@@ -71,9 +71,7 @@ The `DataSource` specified here will be applied to all properties, however prope
 - `Persistence` may have several values:
   - `ProjectFile` means that the value will be read and written from the project file directly.
   - `ProjectFileWithInterception` means that a MEF part exists that will handle read/write operations for the property (see below).
-  - `UserFile` means that the value will be read and written from the `.user` file directly.
   - `UserFileWithInterception` is the same as `ProjectFileWithInterception` except we write changes to the project's `.user` file.
-  - `LaunchProfile` means that the value will be read and written from the `launchSettings.json` file directly.
 - `HasConfigurationCondition` controls whether the property is intended to be varied by project configuration (e.g. Debug/Release, platform, target framework...). Setting this to true allows varying property values by configuration dimensions.
 
 ### Categories
@@ -347,7 +345,7 @@ internal sealed class MyDescriptionPropertyValueProvider : NoOpInterceptingPrope
 
 ## Link Actions
 
-It is useful to insert hyperlinks between properties that either link to URLs or perform arbitrary actions. This can be achieved via the `ActionLink` editor type. The underlying property type does not matter, as no value is presented.
+It is useful to insert hyperlinks between properties that either: **link to URLs**, **perform arbitrary actions**, or **focus a property or property page/category**. This can be achieved via the `LinkAction` editor type. The underlying property type does not matter, as no value is presented.
 
 Clicking the hyperlink can either open a URL or invoke a callback.
 
@@ -440,6 +438,49 @@ internal sealed class MyCommandActionHandler : ILinkActionHandler
     }
 }
 ```
+
+### Focus a property, property page, or property page category
+
+If a hyperlink should, when clicked, set focus to a property page, property page category, or property, the following template may be used.
+
+The editor must specify at least two metadata values:
+
+- `Action`, with value `Focus`
+- `PropertyPage`, with value being the `Name` attribute of the property page to focus.
+
+If you wish to focus a property page category instead of a property page, you must also specify the `PropertyPageCategory` metadata value.
+
+If you wish instead to focus a specific property, you must also specify the `Property` metadata value (**do not** specify `PropertyPageCategory` in this case).
+
+```xml
+<StringProperty Name="MyCommandProperty"
+                DisplayName="Click me to focus a property page category">
+  <StringProperty.DataSource>
+    <DataSource PersistedName="MyCommandProperty"
+                Persistence="ProjectFileWithInterception"
+                HasConfigurationCondition="False" />
+  </StringProperty.DataSource>
+  <StringProperty.ValueEditors>
+    <ValueEditor EditorType="LinkAction">
+      <ValueEditor.Metadata>
+        <NameValuePair Name="Action" Value="Focus" />
+        <NameValuePair Name="PropertyPage" Value="Build" />
+        <NameValuePair Name="PropertyPageCategory" Value="Output" /> <!-- change metadata to Property to focus property, or remove to focus the Build page -->
+      </ValueEditor.Metadata>
+    </ValueEditor>
+  </StringProperty.ValueEditors>
+</StringProperty>
+```
+
+We don't want this property to ever be read from or written to the project file. We intercept these reads and writes by specifying `Persistence="ProjectFileWithInterception"`, and providing the following no-op interceptor. See [Property Value Interception](property-value-interception.md) for more on how and why this works.
+
+```c#
+[ExportInterceptingPropertyValueProvider("MyCommandProperty", ExportInterceptingPropertyValueProviderFile.ProjectFile)]
+internal sealed class MyCommandPropertyValueProvider : NoOpInterceptingPropertyValueProvider
+{
+}
+```
+
 
 ## File Properties
 
