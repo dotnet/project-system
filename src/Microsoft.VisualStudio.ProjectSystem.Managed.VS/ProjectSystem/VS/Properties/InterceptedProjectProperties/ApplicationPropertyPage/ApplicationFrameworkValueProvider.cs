@@ -27,6 +27,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         private const string DisabledValue = "WindowsFormsWithCustomSubMain";
         
         private const string UseWPFMSBuildProperty = "UseWPF";
+        private const string UseWindowsFormProperty = "UseWindowsForms";
         private const string OutputTypeMSBuildProperty = "OutputType";
         private const string WinExeOutputType = "WinExe";
         private const string StartupObjectMSBuildProperty = "StartupObject";
@@ -147,11 +148,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         private static async Task<bool> IsWPFApplicationAsync(IProjectProperties defaultProperties)
         {
             string useWPFString = await defaultProperties.GetEvaluatedPropertyValueAsync(UseWPFMSBuildProperty);
+            string useWindowsFormsString = await defaultProperties.GetEvaluatedPropertyValueAsync(UseWindowsFormProperty);
             string outputTypeString = await defaultProperties.GetEvaluatedPropertyValueAsync(OutputTypeMSBuildProperty);
 
             return bool.TryParse(useWPFString, out bool useWPF)
                 && useWPF
-                && StringComparers.PropertyLiteralValues.Equals(outputTypeString, WinExeOutputType);
+                && StringComparers.PropertyLiteralValues.Equals(outputTypeString, WinExeOutputType)
+                && bool.TryParse(useWindowsFormsString, out bool useWindowsForms)
+                && !useWindowsForms;
         }
 
         private async Task<string?> SetPropertyValueForDefaultProjectTypesAsync(string unevaluatedPropertyValue, IProjectProperties defaultProperties)
