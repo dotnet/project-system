@@ -16,6 +16,7 @@ internal class WPFValueProvider : InterceptingPropertyValueProviderBase
     internal const string StartupURIPropertyName = "StartupURI";
     internal const string ShutdownModePropertyName = "ShutdownMode_WPF";
     internal const string UseWPFPropertyName = "UseWPF";
+    internal const string UseWindowsFormsPropertyName = "UseWindowsForms";
     internal const string OutputTypePropertyName = "OutputType";
     internal const string WinExeOutputTypeValue = "WinExe";
 
@@ -72,10 +73,13 @@ internal class WPFValueProvider : InterceptingPropertyValueProviderBase
     private static async Task<bool> IsWPFApplicationAsync(IProjectProperties defaultProperties)
     {
         string useWPFString = await defaultProperties.GetEvaluatedPropertyValueAsync(UseWPFPropertyName);
+        string useWindowsFormsString = await defaultProperties.GetEvaluatedPropertyValueAsync(UseWindowsFormsPropertyName);
         string outputTypeString = await defaultProperties.GetEvaluatedPropertyValueAsync(OutputTypePropertyName);
 
         return bool.TryParse(useWPFString, out bool useWPF)
             && useWPF
-            && StringComparers.PropertyLiteralValues.Equals(outputTypeString, WinExeOutputTypeValue);
+            && StringComparers.PropertyLiteralValues.Equals(outputTypeString, WinExeOutputTypeValue)
+            && bool.TryParse(useWindowsFormsString, out bool useWindowsForms)
+            && !useWindowsForms;
     }
 }
