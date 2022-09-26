@@ -118,8 +118,8 @@
       <trans-unit id="InfoBarMessageNuGetCycleDetected">
         <source>A circular dependency A -&gt; B -&gt; A was detected during NuGet Restore which caused NuGet to stop restoring.
 Because the NuGet restore didn't finish correctly, the project might be in a bad state.</source>
-        <target state="new">A circular dependency A -&gt; B -&gt; A was detected during NuGet Restore which caused NuGet to stop restoring.
-Because the NuGet restore didn't finish correctly, the project might be in a bad state.</target>
+        <target state="translated">Se detectó una dependencia circular A -&gt; B -&gt; A durante NuGet Restore, lo que provocó que NuGet dejara de restaurar.
+Debido a que la restauración de NuGet no finalizó correctamente, es posible que el proyecto esté en mal estado.</target>
         <note />
       </trans-unit>
       <trans-unit id="ProjectHotReloadSessionManager_AttachingToProcess">

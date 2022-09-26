@@ -24,37 +24,37 @@
       </trans-unit>
       <trans-unit id="FUTD_AddingInputReferenceCopyMarkers">
         <source>Adding input reference copy markers:</source>
-        <target state="translated">正在添加输入引用副本标记：</target>
+        <target state="translated">正在添加输入引用副本标记:</target>
         <note />
       </trans-unit>
       <trans-unit id="FUTD_AddingNewestImportInput">
         <source>Adding newest import input:</source>
-        <target state="translated">正在添加最新的导入输入：</target>
+        <target state="translated">正在添加最新的导入输入:</target>
         <note />
       </trans-unit>
       <trans-unit id="FUTD_AddingProjectFileInputs">
         <source>Adding project file inputs:</source>
-        <target state="translated">正在添加项目文件输入：</target>
+        <target state="translated">正在添加项目文件输入:</target>
         <note />
       </trans-unit>
       <trans-unit id="FUTD_AddingTypedInputsInSet_2">
         <source>Adding {0} inputs in Set="{1}":</source>
-        <target state="translated">正在 Set="{1}" 中添加 {0} 个输入：</target>
+        <target state="translated">正在 Set="{1}" 中添加 {0} 个输入:</target>
         <note>{0} is an MSBuild item type. {1} is the name of the set.</note>
       </trans-unit>
       <trans-unit id="FUTD_AddingTypedInputs_1">
         <source>Adding {0} inputs:</source>
-        <target state="translated">正在添加 {0} 个输入：</target>
+        <target state="translated">正在添加 {0} 个输入:</target>
         <note>{0} is an MSBuild item type.</note>
       </trans-unit>
       <trans-unit id="FUTD_AddingTypedOutputsInSet_2">
         <source>Adding {0} outputs in Set="{1}":</source>
-        <target state="translated">正在 Set="{1}" 中添加 {0} 个输出：</target>
+        <target state="translated">正在 Set="{1}" 中添加 {0} 个输出:</target>
         <note>{0} is an MSBuild item type. {1} is the name of the set.</note>
       </trans-unit>
       <trans-unit id="FUTD_AddingTypedOutputs_1">
         <source>Adding {0} outputs:</source>
-        <target state="translated">正在添加 {0} 个输出：</target>
+        <target state="translated">正在添加 {0} 个输出:</target>
         <note>{0} is an MSBuild item type.</note>
       </trans-unit>
       <trans-unit id="FUTD_ChangedItemsAddition_4">
@@ -114,7 +114,7 @@
       </trans-unit>
       <trans-unit id="FUTD_ComparingInputOutputTimestamps_1">
         <source>Comparing timestamps of inputs and outputs in Set="{0}":</source>
-        <target state="translated">比较 Set="{0}" 中的输入和输出时间戳：</target>
+        <target state="translated">比较 Set="{0}" 中的输入和输出时间戳:</target>
         <note>Do not translate 'Set' as this name is used in code. {0} is the name of the set.</note>
       </trans-unit>
       <trans-unit id="FUTD_Completed">
@@ -139,7 +139,7 @@
       </trans-unit>
       <trans-unit id="FUTD_DestinationFileTimeAndPath_2">
         <source>Destination {0}: '{1}'</source>
-        <target state="translated">目标 {0}： '{1}'</target>
+        <target state="translated">目标 {0}: '{1}'</target>
         <note>{0} is a datetime. {1} is a file path.</note>
       </trans-unit>
       <trans-unit id="FUTD_DisableFastUpToDateCheckTrue">
