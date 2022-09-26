@@ -416,7 +416,7 @@
                   DisplayName="Custom constants"
                   HelpUrl="https://go.microsoft.com/fwlink/?linkid=2196264"
                   Category="Advanced">
-    <StringProperty.Description>Enter any custom constants for your application in this text box.</StringProperty.Description>
+    <StringProperty.Description>Use this editor to modify custom constants for your application.</StringProperty.Description>
     <StringProperty.ValueEditors>
       <ValueEditor EditorType="NameValueList" />
     </StringProperty.ValueEditors>

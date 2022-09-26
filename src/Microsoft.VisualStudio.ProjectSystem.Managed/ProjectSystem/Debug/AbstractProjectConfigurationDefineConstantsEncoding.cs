@@ -9,7 +9,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
     ///  Converts the single string representation to multiple key, value pairs used
     ///  for defining constants.
     /// </summary>
-    internal static class AbstractProjectConfigurationDefineConstantsEncoding
+    internal class AbstractProjectConfigurationDefineConstantsEncoding
     {
         private static readonly KeyQuotedValuePairListEncoding _encoding = new();
         private static readonly KeyValuePairListEncoding _dispEncoding = new();
