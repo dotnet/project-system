@@ -27,6 +27,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
         }
 
         [ProjectAutoLoad(ProjectLoadCheckpoint.ProjectInitialCapabilitiesEstablished)]
+        // NOTE we use the language service capability here to prevent loading configurations of shared projects.
         [AppliesTo(ProjectCapability.DotNetLanguageService)]
         public Task InitializeAsync()
         {
