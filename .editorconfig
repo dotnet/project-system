@@ -216,6 +216,10 @@ csharp_using_directive_placement = outside_namespace:error
 csharp_prefer_static_local_function = true:warning
 csharp_preferred_modifier_order = public,private,protected,internal,static,extern,new,virtual,abstract,sealed,override,readonly,unsafe,volatile,async:warning
 
+# CSInNull analyzer
+dotnet_diagnostic.CSIsNull001.severity = warning
+dotnet_diagnostic.CSIsNull002.severity = warning
+
 # Dotnet code analysis settings:
 [*.{cs,vb}]
 

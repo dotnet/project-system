@@ -232,6 +232,7 @@
       <!-- We want an explicit item representing the empty value. We can remove this setting
            when the enum provider starts including it by default. -->
       <NameValuePair Name="IncludeEmptyValue" Value="true" />
+      <NameValuePair Name="SearchForEntryPointsInFormsOnly" Value="false" />
     </DynamicEnumProperty.ProviderSettings>
   </DynamicEnumProperty>
 

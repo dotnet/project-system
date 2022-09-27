@@ -2,34 +2,7 @@
 <Project>
 
   <Import Project="..\Directory.Build.targets" />
-
   <Import Project="..\eng\imports\UnitTests.targets" Condition="'$(IsUnitTestProject)' == 'true'" />
   <Import Project="..\eng\imports\IntegrationTests.targets" Condition="'$(IsIntegrationTestProject)' == 'true'" />
-
-  <PropertyGroup>
-    <_CoverageReport>$(ArtifactsTestResultsDir)$(AssemblyName).dll.coverage</_CoverageReport>
-  </PropertyGroup>
-
-  <!-- NOTICE: This relies on the unit test projects producing .coverage files. Currently, unit test projects do not produce .coverage files. -->
-  <Target Name="UploadCodecov" AfterTargets="Test" Condition="'$(UsingCodeCoverage)' == 'true' AND '$(Configuration)' == 'Debug' AND '$(IsUnitTestProject)' == 'true' AND Exists('$(_CoverageReport)')">
-    <PropertyGroup>
-      <_ExecutedCodeCoverage>true</_ExecutedCodeCoverage>
-      <_BranchName Condition="'$(_BranchName)' == ''">$(ghprbTargetBranch)</_BranchName>
-      <_BranchName Condition="'$(_BranchName)' == ''">$(BranchName)</_BranchName>
-    </PropertyGroup>
-
-    <ItemGroup>
-      <_CodecovArgs Include="-f;$(_CoverageReport)" />
-      <_CodecovArgs Include="-r;$(QualifiedRepoName)" Condition="'$(QualifiedRepoName)' != ''" />
-      <_CodecovArgs Include="--pr;$(ghprbPullId)" Condition="'$(ghprbPullId)' != ''" />
-      <_CodecovArgs Include="-b;$(BUILD_NUMBER)" Condition="'$(BUILD_NUMBER)' != ''" />
-      <_CodecovArgs Include="--branch;$(_BranchName)" Condition="'$(_BranchName)' != ''" />
-      <_CodecovArgs Include="-c;$(ghprbActualCommit)" Condition="'$(ghprbActualCommit)' != ''" />
-      <_CodecovArgs Include="-n;$(JOB_NAME)" Condition="'$(JOB_NAME)' != ''" />
-      <_CodecovArgs Include="--flag;$(Configuration)" Condition="'$(Configuration)' != ''" />
-    </ItemGroup>
-
-    <Exec Command="&quot;$(PkgCodecov)&quot; @(_CodecovArgs, ' ')" />
-  </Target>
 
 </Project>

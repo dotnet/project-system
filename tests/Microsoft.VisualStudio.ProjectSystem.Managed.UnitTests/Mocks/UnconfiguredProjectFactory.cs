@@ -55,7 +55,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
             var service = IProjectServiceFactory.Create();
 
-            if (unconfiguredProjectServices == null)
+            if (unconfiguredProjectServices is null)
             {
                 var unconfiguredProjectServicesMock = new Mock<UnconfiguredProjectServices>();
 
@@ -93,7 +93,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
             project.Setup(u => u.GetSuggestedConfiguredProjectAsync()).ReturnsAsync(configuredProject);
 
-            if (projectEncoding != null)
+            if (projectEncoding is not null)
             {
                 project.Setup(u => u.GetFileEncodingAsync()).ReturnsAsync(projectEncoding);
             }

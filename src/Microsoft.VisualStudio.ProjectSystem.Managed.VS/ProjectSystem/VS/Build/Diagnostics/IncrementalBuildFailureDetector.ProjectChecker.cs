@@ -12,14 +12,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build.Diagnostics
     internal sealed partial class IncrementalBuildFailureDetector
     {
         /// <summary>
-        /// Unconfigured project scoped data related to incremental build failure detection.
+        /// Configured project scoped data related to incremental build failure detection.
         /// </summary>
         [AppliesTo(BuildUpToDateCheck.AppliesToExpression)]
         [Export(typeof(IProjectChecker))]
         private sealed class ProjectChecker : IProjectChecker
         {
-            private readonly UnconfiguredProject _project;
-            private readonly IActiveConfiguredValue<IBuildUpToDateCheckValidator> _upToDateCheckValidator;
+            private readonly ConfiguredProject _configuredProject;
+            private readonly IBuildUpToDateCheckValidator _upToDateCheckValidator;
             private readonly IProjectAsynchronousTasksService _projectAsynchronousTasksService;
 
             [ImportMany]
@@ -27,24 +27,24 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build.Diagnostics
 
             [ImportingConstructor]
             public ProjectChecker(
-                UnconfiguredProject project,
+                ConfiguredProject configuredProject,
                 IVsUIService<SVsFeatureFlags, IVsFeatureFlags> featureFlagsService,
-                IActiveConfiguredValue<IBuildUpToDateCheckValidator> upToDateCheckValidator,
-                [Import(ExportContractNames.Scopes.UnconfiguredProject)] IProjectAsynchronousTasksService projectAsynchronousTasksService,
+                IBuildUpToDateCheckValidator upToDateCheckValidator,
+                [Import(ExportContractNames.Scopes.ConfiguredProject)] IProjectAsynchronousTasksService projectAsynchronousTasksService,
                 IVsUIService<SVsOutputWindow, IVsOutputWindow> outputWindow)
             {
-                _project = project;
+                _configuredProject = configuredProject;
                 _upToDateCheckValidator = upToDateCheckValidator;
                 _projectAsynchronousTasksService = projectAsynchronousTasksService;
-                
-                Reporters = new OrderPrecedenceImportCollection<IIncrementalBuildFailureReporter>(projectCapabilityCheckProvider: project);
+
+                Reporters = new OrderPrecedenceImportCollection<IIncrementalBuildFailureReporter>(projectCapabilityCheckProvider: configuredProject);
             }
 
             public void OnProjectBuildCompleted()
             {
-                _project.Services.ThreadingPolicy.RunAndForget(
+                _configuredProject.Services.ThreadingPolicy.RunAndForget(
                     () => CheckAsync(_projectAsynchronousTasksService.UnloadCancellationToken),
-                    unconfiguredProject: _project,
+                    configuredProject: _configuredProject,
                     options: ForkOptions.StartOnThreadPool | ForkOptions.CancelOnUnload | ForkOptions.NoAssistanceMask);
 
                 return;
@@ -53,9 +53,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build.Diagnostics
                 {
                     var sw = Stopwatch.StartNew();
 
-                    IBuildUpToDateCheckValidator validator = _upToDateCheckValidator.Value;
-
-                    if (validator is IBuildUpToDateCheckProvider provider)
+                    if (_upToDateCheckValidator is IBuildUpToDateCheckProvider provider)
                     {
                         if (!await provider.IsUpToDateCheckEnabledAsync(cancellationToken))
                         {
@@ -73,7 +71,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build.Diagnostics
                         return;
                     }
 
-                    (bool isUpToDate, string? failureReason, string? failureDescription) = await validator.ValidateUpToDateAsync(cancellationToken);
+                    (bool isUpToDate, string? failureReason, string? failureDescription) = await _upToDateCheckValidator.ValidateUpToDateAsync(cancellationToken);
 
                     if (isUpToDate)
                     {

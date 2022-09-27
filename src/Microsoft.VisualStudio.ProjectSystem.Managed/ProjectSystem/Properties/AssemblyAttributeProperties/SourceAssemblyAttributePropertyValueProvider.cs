@@ -30,7 +30,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         private Project? GetActiveProject()
         {
             ProjectId? activeProjectId = _getActiveProjectId();
-            if (activeProjectId == null)
+            if (activeProjectId is null)
             {
                 return null;
             }
@@ -44,7 +44,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         public async Task<string?> GetPropertyValueAsync()
         {
             Project? project = GetActiveProject();
-            if (project == null)
+            if (project is null)
             {
                 return null;
             }
@@ -61,18 +61,18 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         public async Task SetPropertyValueAsync(string value)
         {
             Project? project = GetActiveProject();
-            if (project == null)
+            if (project is null)
             {
                 return;
             }
 
             AttributeData? attribute = await GetAttributeAsync(_assemblyAttributeFullName, project);
-            if (attribute == null)
+            if (attribute is null)
             {
                 return;
             }
 
-            if (attribute.ApplicationSyntaxReference == null)
+            if (attribute.ApplicationSyntaxReference is null)
             {
                 return;
             }
@@ -109,7 +109,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         /// </summary>
         private static async Task<AttributeData?> GetAttributeAsync(string assemblyAttributeFullName, Project project)
         {
-            if (project == null)
+            if (project is null)
             {
                 return null;
             }
@@ -117,7 +117,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
             ImmutableArray<AttributeData>? assemblyAttributes = compilation?.Assembly.GetAttributes();
 
             INamedTypeSymbol? attributeTypeSymbol = compilation?.GetTypeByMetadataName(assemblyAttributeFullName);
-            if (attributeTypeSymbol == null)
+            if (attributeTypeSymbol is null)
             {
                 return null;
             }

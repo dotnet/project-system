@@ -1,0 +1,58 @@
+# Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
+
+jobs:
+- job: BuildPullRequest_${{ parameters.BuildConfiguration }}
+  displayName: ${{ parameters.BuildConfiguration }} Configuration
+  timeoutInMinutes: 20
+  variables:
+    BuildConfiguration: ${{ parameters.BuildConfiguration }}
+    ArtifactName: ${{ parameters.ArtifactName }}
+  steps:
+
+  ###################################################################################################################################################################
+  # BUILD REPOSITORY
+  ###################################################################################################################################################################
+
+  # Use a disabled, empty script to display the section header in the pipeline UI.
+  - script:
+    displayName: === Build Repository ===
+    condition: false
+
+  # Runs the full build of the projects in the repository. See Build.proj for details.
+  - script: $(Build.SourcesDirectory)/build.cmd /v:normal /p:Configuration=$(BuildConfiguration) /p:CIBuild=true
+    displayName: Build All Projects
+
+  ###################################################################################################################################################################
+  # PUBLISH BUILD
+  # Steps in this section should contain 'condition: succeededOrFailed()' since these artifacts can be used for analyzing build failures.
+  # https://docs.microsoft.com/azure/devops/pipelines/process/tasks?view=azure-devops&tabs=yaml#task-control-options
+  ###################################################################################################################################################################
+
+  # Use a disabled, empty script to display the section header in the pipeline UI.
+  - script:
+    displayName: === Publish Build ===
+    condition: false
+
+  # Publishes the test results to the Azure Pipeline itself so they can be viewed in the UI.
+  # This needs to be ran after the build, because if the build failed due to a test failure, the test results wouldn't be published.
+  - task: PublishTestResults@2
+    displayName: Publish Test Results
+    inputs:
+      testRunner: XUnit
+      testResultsFiles: $(Build.SourcesDirectory)/artifacts/$(BuildConfiguration)/TestResults/*.xml
+      testRunTitle: Unit Test Results
+    condition: succeededOrFailed()
+
+  # The .artifactignore file filters the artifacts published from a particular folder.
+  # This must be present in the folder we want to publish and be named '.artifactignore'.
+  # See: https://docs.microsoft.com/azure/devops/artifacts/reference/artifactignore?view=azure-devops
+  - powershell: Copy-Item -Path '$(Build.SourcesDirectory)/eng/pipelines/configuration/build.artifactignore' -Destination '$(Build.SourcesDirectory)/artifacts/$(BuildConfiguration)/.artifactignore'
+    displayName: Copy Build Artifact Filter
+    condition: succeededOrFailed()
+
+  # Publishes the artifacts folder contents to the Azure Pipeline for use in other jobs/stages.
+  # This publish is filtered by the .artifactignore in the 'eng' folder. See that file for more details.
+  - publish: $(Build.SourcesDirectory)/artifacts/$(BuildConfiguration)
+    displayName: Publish Build Artifacts
+    artifact: $(ArtifactName)
+    condition: succeededOrFailed()

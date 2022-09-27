@@ -2,9 +2,19 @@
 <xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
   <file datatype="xml" source-language="en" target-language="de" original="../BuildPropertyPage.VisualBasic.xaml">
     <body>
+      <trans-unit id="BoolProperty|DefineDebug|Description">
+        <source>Specify DEBUG as a compilation constant.</source>
+        <target state="translated">Geben Sie DEBUG als Kompilierungskonstante an.</target>
+        <note />
+      </trans-unit>
       <trans-unit id="BoolProperty|DefineDebug|DisplayName">
         <source>Define DEBUG constant</source>
         <target state="translated">DEBUG-Konstante definieren</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="BoolProperty|DefineTrace|Description">
+        <source>Specify TRACE as a compilation constant.</source>
+        <target state="translated">Geben Sie TRACE als Kompilierungskonstante an.</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|DefineTrace|DisplayName">
@@ -20,6 +30,11 @@
       <trans-unit id="BoolProperty|GenerateDocumentationFile|DisplayName">
         <source>Generate XML documentation file</source>
         <target state="translated">XML-Dokumentationsdatei generieren</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="BoolProperty|Optimize|Description">
+        <source>Enable compiler optimizations.</source>
+        <target state="translated">Aktivieren Sie Compileroptimierungen.</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|Optimize|DisplayName">
@@ -45,6 +60,11 @@
       <trans-unit id="BoolProperty|RegisterForComInterop|DisplayName">
         <source>Register for COM interop</source>
         <target state="translated">Für COM-Interop registrieren</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="BoolProperty|RemoveIntegerChecks|Description">
+        <source>Remove integer overflow checking.</source>
+        <target state="translated">Entfernen Sie die Überprüfung auf Ganzzahlüberlauf.</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|RemoveIntegerChecks|DisplayName">
@@ -87,24 +107,9 @@
         <target state="translated">Warnungen</target>
         <note />
       </trans-unit>
-      <trans-unit id="DynamicEnumProperty|DuplicateOrOverlappingCatchBlocks_Readonly|DisplayName">
-        <source>Duplicate or overlapping catch blocks</source>
-        <target state="translated">Doppelte oder überlappende Catch-Blöcke</target>
-        <note />
-      </trans-unit>
       <trans-unit id="DynamicEnumProperty|DuplicateOrOverlappingCatchBlocks|DisplayName">
         <source>Duplicate or overlapping catch blocks</source>
         <target state="translated">Doppelte oder überlappende Catch-Blöcke</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="DynamicEnumProperty|ImplicitConversion_Readonly|Description">
-        <source>Implicit narrowing conversion occurs when there is an implicit data type conversion that is a narrowing conversion. Always 'Error' when 'Option strict' is on.</source>
-        <target state="translated">Die implizite einschränkende Konvertierung tritt auf, wenn eine implizite Datentypkonvertierung vorhanden ist, bei der es sich um eine einschränkende Konvertierung handelt. Immer 'Fehler', wenn 'Option strict' aktiviert ist.</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="DynamicEnumProperty|ImplicitConversion_Readonly|DisplayName">
-        <source>Implicit conversion</source>
-        <target state="translated">Implizite Konvertierung</target>
         <note />
       </trans-unit>
       <trans-unit id="DynamicEnumProperty|ImplicitConversion|Description">
@@ -117,16 +122,6 @@
         <target state="translated">Implizite Konvertierung</target>
         <note />
       </trans-unit>
-      <trans-unit id="DynamicEnumProperty|ImplicitType_Readonly|Description">
-        <source>Implicit object type errors occur when an appropriate type cannot be inferred for a declared variable, so a type of 'Object' is inferred. Always 'Error' when 'Option strict' is on.</source>
-        <target state="translated">Implizite Objekttypfehler treten auf, wenn für eine deklarierte Variable kein geeigneter Typ abgeleitet werden kann, sodass ein Typ von 'Object' abgeleitet wird. Immer 'Fehler', wenn 'Option strict' aktiviert ist.</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="DynamicEnumProperty|ImplicitType_Readonly|DisplayName">
-        <source>Implicit type</source>
-        <target state="translated">Impliziter Typ</target>
-        <note />
-      </trans-unit>
       <trans-unit id="DynamicEnumProperty|ImplicitType|Description">
         <source>Implicit object type errors occur when an appropriate type cannot be inferred for a declared variable, so a type of 'Object' is inferred. Always 'Error' when 'Option strict' is on.</source>
         <target state="translated">Implizite Objekttypfehler treten auf, wenn für eine deklarierte Variable kein geeigneter Typ abgeleitet werden kann, sodass ein Typ von 'Object' abgeleitet wird. Immer 'Fehler', wenn 'Option strict' aktiviert ist.</target>
@@ -137,24 +132,9 @@
         <target state="translated">Impliziter Typ</target>
         <note />
       </trans-unit>
-      <trans-unit id="DynamicEnumProperty|InstanceVariableAccessesSharedMember_Readonly|DisplayName">
-        <source>Instance variable accesses shared member</source>
-        <target state="translated">Instanzvariable greift auf freigegebenen Member zu.</target>
-        <note />
-      </trans-unit>
       <trans-unit id="DynamicEnumProperty|InstanceVariableAccessesSharedMember|DisplayName">
         <source>Instance variable accesses shared member</source>
         <target state="translated">Instanzvariable greift auf freigegebenen Member zu.</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="DynamicEnumProperty|LateBinding_Readonly|Description">
-        <source>An object is late bound when it is assigned to a property or method of a variable that is declared to be of type 'Object'. These operations could fail at run time. Always 'Error' when 'Option strict' is on.</source>
-        <target state="translated">Ein Objekt ist dann eine späte Bindung, wenn es einer Eigenschaft oder Methode einer Variablen zugewiesen wird, die als Typ 'Object' deklariert ist. Bei diesen Vorgängen kann es zur Laufzeit zu Fehlern kommen. Immer 'Fehler', wenn 'Option strict' aktiviert ist.</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="DynamicEnumProperty|LateBinding_Readonly|DisplayName">
-        <source>Late binding</source>
-        <target state="translated">Späte Bindung</target>
         <note />
       </trans-unit>
       <trans-unit id="DynamicEnumProperty|LateBinding|Description">
@@ -177,19 +157,9 @@
         <target state="translated">Ziel-CPU</target>
         <note />
       </trans-unit>
-      <trans-unit id="DynamicEnumProperty|RecursiveOperatorOrPropertyAccess_Readonly|DisplayName">
-        <source>Recursive operator or property access</source>
-        <target state="translated">Rekursiver Operator- oder Eigenschaftenzugriff</target>
-        <note />
-      </trans-unit>
       <trans-unit id="DynamicEnumProperty|RecursiveOperatorOrPropertyAccess|DisplayName">
         <source>Recursive operator or property access</source>
         <target state="translated">Rekursiver Operator- oder Eigenschaftenzugriff</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="DynamicEnumProperty|ReturningIntrinsicValueTypeWithoutReturnValue_Readonly|DisplayName">
-        <source>Function returning intrinsic value type without return value</source>
-        <target state="translated">Funktion gibt systeminternen Werttyp ohne Rückgabewert zurück</target>
         <note />
       </trans-unit>
       <trans-unit id="DynamicEnumProperty|ReturningIntrinsicValueTypeWithoutReturnValue|DisplayName">
@@ -197,29 +167,14 @@
         <target state="translated">Funktion gibt systeminternen Werttyp ohne Rückgabewert zurück</target>
         <note />
       </trans-unit>
-      <trans-unit id="DynamicEnumProperty|ReturningRefTypeWithoutReturnValue_Readonly|DisplayName">
-        <source>Function returning reference type without return value</source>
-        <target state="translated">Funktion gibt Verweistyp ohne Rückgabewert zurück</target>
-        <note />
-      </trans-unit>
       <trans-unit id="DynamicEnumProperty|ReturningRefTypeWithoutReturnValue|DisplayName">
         <source>Function returning reference type without return value</source>
         <target state="translated">Funktion gibt Verweistyp ohne Rückgabewert zurück</target>
         <note />
       </trans-unit>
-      <trans-unit id="DynamicEnumProperty|UnusedLocalVariable_Readonly|DisplayName">
-        <source>Unused local variable</source>
-        <target state="translated">Nicht verwendete lokale Variable</target>
-        <note />
-      </trans-unit>
       <trans-unit id="DynamicEnumProperty|UnusedLocalVariable|DisplayName">
         <source>Unused local variable</source>
         <target state="translated">Nicht verwendete lokale Variable</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="DynamicEnumProperty|UseOfVariablePriorToAssignment_Readonly|DisplayName">
-        <source>Use of variable prior to assignment</source>
-        <target state="translated">Verwendung einer Variablen vor der Zuweisung.</target>
         <note />
       </trans-unit>
       <trans-unit id="DynamicEnumProperty|UseOfVariablePriorToAssignment|DisplayName">

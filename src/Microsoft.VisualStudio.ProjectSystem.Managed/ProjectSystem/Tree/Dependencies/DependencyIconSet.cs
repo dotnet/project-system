@@ -59,7 +59,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies
 
         public bool Equals(DependencyIconSet? other)
         {
-            return other != null
+            return other is not null
                 && Icon.Id == other.Icon.Id
                 && ExpandedIcon.Id == other.ExpandedIcon.Id
                 && UnresolvedIcon.Id == other.UnresolvedIcon.Id

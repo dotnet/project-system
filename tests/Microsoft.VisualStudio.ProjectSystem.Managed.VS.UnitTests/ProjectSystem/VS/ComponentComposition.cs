@@ -104,7 +104,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                             contractsRequiringAppliesTo.Add(import.ImportDefinition.ContractName, contractTypes);
                         }
 
-                        if (null != import.ImportingSiteElementType)
+                        if (import.ImportingSiteElementType is not null)
                         {
                             contractTypes.Add(import.ImportingSiteElementType);
                         }
@@ -153,7 +153,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                 var contractName = assemblyAttribute.ContractName;
                 var contractType = assemblyAttribute.ContractType;
 
-                if (contractName != null || contractType != null)
+                if (contractName is not null || contractType is not null)
                 {
                     AddContractMetadata(contracts, contractName ?? contractType!.FullName, assemblyAttribute.Scope, assemblyAttribute.Provider, assemblyAttribute.Cardinality);
                 }
@@ -254,7 +254,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         private static bool IsAppliesToRequired(ImportDefinitionBinding import)
         {
             Type appliesToView = typeof(IAppliesToMetadataView);
-            return import.MetadataType != null && appliesToView.IsAssignableFrom(import.MetadataType);
+            return import.MetadataType is not null && appliesToView.IsAssignableFrom(import.MetadataType);
         }
     }
 }

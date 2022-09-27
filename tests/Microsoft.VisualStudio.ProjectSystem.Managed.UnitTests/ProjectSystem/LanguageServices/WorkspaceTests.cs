@@ -127,15 +127,14 @@ public class WorkspaceTests
                 },
                 CancellationToken.None);
 
+        // Wait a little while to increase the chance a bug would surface in this test.
+        await Task.Delay(10);
+
         Assert.Equal(0, callCount);
         Assert.Equal(TaskStatus.WaitingForActivation, initializedTask.Status);
 
+        // Only once we have evaluation data should a write operation be scheduled.
         await ApplyEvaluationAsync(workspace);
-
-        Assert.Equal(0, callCount);
-        Assert.Equal(TaskStatus.WaitingForActivation, initializedTask.Status);
-
-        await ApplyBuildAsync(workspace);
 
         await Task.WhenAny(initializedTask, Task.Delay(TimeSpan.FromSeconds(30)));
 
@@ -515,7 +514,7 @@ public class WorkspaceTests
     {
         var buildRuleUpdate = IProjectSubscriptionUpdateFactory.FromJson(
             anyChanges
-            ? $$"""
+            ? """
               {
                   "ProjectChanges": {
                       "CompilerCommandLineArgs": {
@@ -528,7 +527,7 @@ public class WorkspaceTests
                   }
               }
               """
-            : $$"""
+            : """
               {
                   "ProjectChanges": {
                       "CompilerCommandLineArgs": {
@@ -545,7 +544,7 @@ public class WorkspaceTests
         Mock<ICommandLineHandler> commandLineHandler = updateHandler.As<ICommandLineHandler>();
 
         // Other handler kinds should be ignored
-        updateHandler.As<IProjectEvaluationHandler>().SetupGet(o => o.ProjectEvaluationRule).Returns("MyEvaluationRule"); ;
+        updateHandler.As<IProjectEvaluationHandler>().SetupGet(o => o.ProjectEvaluationRule).Returns("MyEvaluationRule");
         updateHandler.As<ISourceItemsHandler>();
 
         if (anyChanges)
@@ -732,8 +731,7 @@ public class WorkspaceTests
         IProjectSubscriptionUpdate? evaluationRuleUpdate = null,
         IProjectSubscriptionUpdate? sourceItemsUpdate = null,
         bool applyBuild = false,
-        IProjectSubscriptionUpdate? buildRuleUpdate = null,
-        CommandLineArgumentsSnapshot? commandLineArgumentsSnapshot = null)
+        IProjectSubscriptionUpdate? buildRuleUpdate = null)
     {
         var commandLineParserService = new Mock<ICommandLineParserService>(MockBehavior.Strict);
         commandLineParserService.Setup(o => o.Parse(It.IsAny<IEnumerable<string>>(), """C:\MyProject""")).Returns(EmptyBuildOptions);
@@ -749,7 +747,8 @@ public class WorkspaceTests
         workspaceProjectContext ??= Mock.Of<IWorkspaceProjectContext>(MockBehavior.Loose);
         workspaceProjectContextFactory ??= IWorkspaceProjectContextFactoryFactory.ImplementCreateProjectContext(delegate { return workspaceProjectContext; });
         faultHandlerService ??= IProjectFaultHandlerServiceFactory.Create();
-        joinableTaskFactory ??= new(new JoinableTaskCollection(new JoinableTaskContext()));
+        JoinableTaskCollection joinableTaskCollection = new(new JoinableTaskContext());
+        joinableTaskFactory ??= new(joinableTaskCollection);
         joinableTaskContextNode ??= JoinableTaskContextNodeFactory.Create();
 
         var workspace = new Workspace(
@@ -763,6 +762,7 @@ public class WorkspaceTests
             dataProgressTrackerService,
             new(() => workspaceProjectContextFactory),
             faultHandlerService,
+            joinableTaskCollection,
             joinableTaskFactory,
             joinableTaskContextNode,
             unloadCancellationToken)
@@ -777,7 +777,7 @@ public class WorkspaceTests
 
         if (applyBuild)
         {
-            await ApplyBuildAsync(workspace, configuredProject, buildRuleUpdate, commandLineArgumentsSnapshot);
+            await ApplyBuildAsync(workspace, configuredProject, buildRuleUpdate);
         }
 
         return workspace;
@@ -844,7 +844,6 @@ public class WorkspaceTests
         Workspace workspace,
         ConfiguredProject? configuredProject = null,
         IProjectSubscriptionUpdate? buildRuleUpdate = null,
-        CommandLineArgumentsSnapshot? commandLineArgumentsSnapshot = null,
         int configuredProjectVersion = 1)
     {
         configuredProject ??= ConfiguredProjectFactory.Create();
@@ -867,9 +866,7 @@ public class WorkspaceTests
             }
             """);
 
-        commandLineArgumentsSnapshot ??= new(ImmutableArray<string>.Empty, isChanged: false);
-
-        var update = WorkspaceUpdate.FromBuild((configuredProject, buildRuleUpdate, commandLineArgumentsSnapshot));
+        var update = WorkspaceUpdate.FromBuild((configuredProject, buildRuleUpdate));
 
         await workspace.OnWorkspaceUpdateAsync(
             IProjectVersionedValueFactory.Create(update, ProjectDataSources.ConfiguredProjectVersion, configuredProjectVersion));

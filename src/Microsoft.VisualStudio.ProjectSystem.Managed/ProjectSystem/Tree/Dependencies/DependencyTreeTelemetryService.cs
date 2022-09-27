@@ -47,7 +47,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies
             _project = project;
             _safeProjectGuidService = safeProjectGuidService;
 
-            if (telemetryService != null)
+            if (telemetryService is not null)
             {
                 _telemetryService = telemetryService;
                 _stateByFramework = new Dictionary<TargetFramework, TelemetryState>();
@@ -60,12 +60,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies
 
         public void InitializeTargetFrameworkRules(ImmutableArray<TargetFramework> targetFrameworks, IReadOnlyCollection<string> rules)
         {
-            if (_stateByFramework == null)
+            if (_stateByFramework is null)
                 return;
 
             lock (_stateUpdateLock)
             {
-                if (_stateByFramework == null)
+                if (_stateByFramework is null)
                     return;
 
                 foreach (TargetFramework targetFramework in targetFrameworks)
@@ -85,12 +85,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies
 
         public void ObserveTargetFrameworkRules(TargetFramework targetFramework, IEnumerable<string> rules)
         {
-            if (_stateByFramework == null)
+            if (_stateByFramework is null)
                 return;
 
             lock (_stateUpdateLock)
             {
-                if (_stateByFramework == null)
+                if (_stateByFramework is null)
                     return;
 
                 if (_stateByFramework.TryGetValue(targetFramework, out TelemetryState telemetryState))
@@ -105,7 +105,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies
 
         public async ValueTask ObserveTreeUpdateCompletedAsync(bool hasUnresolvedDependency)
         {
-            if (_stateByFramework == null)
+            if (_stateByFramework is null)
                 return;
 
             Assumes.NotNull(_telemetryService);
@@ -113,7 +113,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies
             bool observedAllRules;
             lock (_stateUpdateLock)
             {
-                if (_stateByFramework == null)
+                if (_stateByFramework is null)
                     return;
 
                 observedAllRules = _stateByFramework.All(state => state.Value.ObservedAllRules());
@@ -130,16 +130,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies
             {
                 _telemetryService.PostProperties(TelemetryEventName.TreeUpdatedUnresolved, new[]
                 {
-                    (TelemetryPropertyName.TreeUpdatedUnresolvedProject, (object)_projectId),
-                    (TelemetryPropertyName.TreeUpdatedUnresolvedObservedAllRules, observedAllRules)
+                    (TelemetryPropertyName.TreeUpdated.UnresolvedProject, (object)_projectId),
+                    (TelemetryPropertyName.TreeUpdated.UnresolvedObservedAllRules, observedAllRules)
                 });
             }
             else
             {
                 _telemetryService.PostProperties(TelemetryEventName.TreeUpdatedResolved, new[]
                 {
-                    (TelemetryPropertyName.TreeUpdatedResolvedProject, (object)_projectId),
-                    (TelemetryPropertyName.TreeUpdatedResolvedObservedAllRules, observedAllRules)
+                    (TelemetryPropertyName.TreeUpdated.ResolvedProject, (object)_projectId),
+                    (TelemetryPropertyName.TreeUpdated.ResolvedObservedAllRules, observedAllRules)
                 });
             }
 
@@ -167,7 +167,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies
 
         protected override void Dispose(bool disposing)
         {
-            if (disposing && _telemetryService != null && _dependenciesSnapshot != null && _projectId != null)
+            if (disposing && _telemetryService is not null && _dependenciesSnapshot is not null && _projectId is not null)
             {
                 var data = new List<TargetData>();
                 int totalDependencyCount = 0;
@@ -201,13 +201,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies
 
                 _telemetryService.PostProperties(TelemetryEventName.ProjectUnloadDependencies, new (string, object)[]
                 {
-                    (TelemetryPropertyName.ProjectUnloadDependenciesVersion, 2),
-                    (TelemetryPropertyName.ProjectUnloadDependenciesProject, _projectId),
-                    (TelemetryPropertyName.ProjectUnloadProjectAgeMillis, _projectLoadTime.ElapsedMilliseconds),
-                    (TelemetryPropertyName.ProjectUnloadTotalDependencyCount, totalDependencyCount),
-                    (TelemetryPropertyName.ProjectUnloadUnresolvedDependencyCount, unresolvedDependencyCount),
-                    (TelemetryPropertyName.ProjectUnloadTargetFrameworkCount, _dependenciesSnapshot.DependenciesByTargetFramework.Count),
-                    (TelemetryPropertyName.ProjectUnloadDependencyBreakdown, new ComplexPropertyValue(data.ToArray()))
+                    (TelemetryPropertyName.ProjectUnload.DependenciesVersion, 2),
+                    (TelemetryPropertyName.ProjectUnload.DependenciesProject, _projectId),
+                    (TelemetryPropertyName.ProjectUnload.ProjectAgeMillis, _projectLoadTime.ElapsedMilliseconds),
+                    (TelemetryPropertyName.ProjectUnload.TotalDependencyCount, totalDependencyCount),
+                    (TelemetryPropertyName.ProjectUnload.UnresolvedDependencyCount, unresolvedDependencyCount),
+                    (TelemetryPropertyName.ProjectUnload.TargetFrameworkCount, _dependenciesSnapshot.DependenciesByTargetFramework.Count),
+                    (TelemetryPropertyName.ProjectUnload.DependencyBreakdown, new ComplexPropertyValue(data.ToArray()))
                 });
             }
         }

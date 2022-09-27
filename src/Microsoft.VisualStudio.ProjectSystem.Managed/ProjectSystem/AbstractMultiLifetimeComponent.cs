@@ -91,7 +91,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
                 }
             }
 
-            if (instance != null)
+            if (instance is not null)
             {
                 return instance.DisposeAsync();
             }

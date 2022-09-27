@@ -1,5 +1,6 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
+using Microsoft.VisualStudio.ProjectSystem.Properties;
 using Microsoft.VisualStudio.ProjectSystem.UpToDate;
 using Microsoft.VisualStudio.ProjectSystem.VS.Editor;
 using Microsoft.VisualStudio.Shell;
@@ -28,8 +29,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build.Diagnostics
     ///   </para>
     ///   <para>
     ///     This component lives in the global scope. Its single instance listens to solution build events.
-    ///     It then delegates to <see cref="IBuildUpToDateCheckValidator.ValidateUpToDateAsync"/> in the project's
-    ///     active configured scope to determine whether incremental build worked.
+    ///     It then delegates to <see cref="IBuildUpToDateCheckValidator.ValidateUpToDateAsync"/> in the relevant
+    ///     configured project scope to determine whether incremental build worked.
     ///   </para>
     /// </remarks>
     [Export(typeof(IPackageService))]
@@ -41,7 +42,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build.Diagnostics
     {
         private readonly ISolutionBuildManager _solutionBuildEvents;
         private readonly IRunningDocumentTable _rdtEvents;
-        private readonly IProjectServiceAccessor _projectServiceAccessor;
 
         private IAsyncDisposable? _solutionBuildEventsSubscription;
         private IAsyncDisposable? _rdtEventsSubscription;
@@ -53,13 +53,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build.Diagnostics
         public IncrementalBuildFailureDetector(
             ISolutionBuildManager solutionBuildEvents,
             IRunningDocumentTable rdtEvents,
-            IProjectServiceAccessor projectServiceAccessor,
             JoinableTaskContext joinableTaskContext)
             : base(new(joinableTaskContext))
         {
             _solutionBuildEvents = solutionBuildEvents;
             _rdtEvents = rdtEvents;
-            _projectServiceAccessor = projectServiceAccessor;
         }
 
         async Task IPackageService.InitializeAsync(IAsyncServiceProvider _)
@@ -114,11 +112,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build.Diagnostics
                     return HResult.OK;
                 }
 
-                if (IsRelevantBuild(dwAction))
+                if (IsRelevantBuild(dwAction) && pCfgProj is IVsBrowseObjectContext { ConfiguredProject: { } configuredProject })
                 {
-                    UnconfiguredProject? unconfiguredProject = _projectServiceAccessor.GetProjectService().GetUnconfiguredProject(pHierProj, appliesToExpression: BuildUpToDateCheck.AppliesToExpression);
-
-                    IProjectChecker? checker = unconfiguredProject?.Services.ExportProvider.GetExportedValueOrDefault<IProjectChecker>();
+                    IProjectChecker? checker = configuredProject.Services.ExportProvider.GetExportedValueOrDefault<IProjectChecker>();
 
                     checker?.OnProjectBuildCompleted();
                 }

@@ -120,21 +120,23 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             upToDateCheckImplicitConfiguredInput ??= UpToDateCheckImplicitConfiguredInput.CreateEmpty(ProjectConfigurationFactory.Create("testConfiguration"));
 
             _lastSuccessfulBuildStartTime = lastSuccessfulBuildStartTimeUtc;
-            
+
             projectSnapshot ??= new Dictionary<string, IProjectRuleSnapshotModel>();
 
             if (!projectSnapshot.ContainsKey(ConfigurationGeneral.SchemaName))
             {
                 projectSnapshot[ConfigurationGeneral.SchemaName] = new IProjectRuleSnapshotModel
                 {
-                    Properties = ImmutableStringDictionary<string>.EmptyOrdinal
-                        .Add("MSBuildProjectFullPath", _projectPath)
-                        .Add("MSBuildProjectDirectory", _projectDir)
-                        .Add("MSBuildAllProjects", _msBuildAllProjects)
-                        .Add("OutputPath", outDir)
-                        .Add("OutDir", outDir)
-                        .Add(ConfigurationGeneral.DisableFastUpToDateCheckProperty, disableFastUpToDateCheck.ToString())
-                        .Add(ConfigurationGeneral.DisableFastUpToDateCopyAlwaysOptimizationProperty, disableFastUpToDateCopyAlwaysOptimization.ToString())
+                    Properties = new Dictionary<string, string>(StringComparers.PropertyNames)
+                    {
+                        { "MSBuildProjectFullPath", _projectPath },
+                        { "MSBuildProjectDirectory", _projectDir },
+                        { "MSBuildAllProjects", _msBuildAllProjects },
+                        { "OutputPath", outDir },
+                        { "OutDir", outDir },
+                        { ConfigurationGeneral.DisableFastUpToDateCheckProperty, disableFastUpToDateCheck.ToString() },
+                        { ConfigurationGeneral.DisableFastUpToDateCopyAlwaysOptimizationProperty, disableFastUpToDateCopyAlwaysOptimization.ToString() },
+                    }
                 };
             }
 
@@ -144,7 +146,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 sourceSnapshot,
                 itemRemovedFromSourceSnapshot: itemRemovedFromSourceSnapshot);
 
-            if (lastItemsChangedAtUtc != null)
+            if (lastItemsChangedAtUtc is not null)
             {
                 configuredInput = configuredInput.WithLastItemsChangedAtUtc(lastItemsChangedAtUtc.Value);
             }
@@ -276,6 +278,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             await AssertNotUpToDateAsync(
                 "The 'DisableFastUpToDateCheck' property is 'true', not up-to-date.",
                 "Disabled");
+        }
+
+        [Fact]
+        public async Task ValidateUpToDateAsync_True_Disabled()
+        {
+            await SetupAsync(disableFastUpToDateCheck: true);
+
+            await ValidateUpToDateAsync();
         }
 
         [Theory]
@@ -420,15 +430,20 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 // 1. With the item type we are testing, marked CopyAlways.
                 // 2. With a different item type, with no copy specification.
 
-                var items = ImmutableStringDictionary<IImmutableDictionary<string, string>>.EmptyOrdinal
-                    .Add("CopyMe", ImmutableStringDictionary<string>.EmptyOrdinal
-                        .Add("CopyToOutputDirectory", "Always")); // ALWAYS COPY THIS ITEM
+                var items = new Dictionary<string, IImmutableDictionary<string, string>>(StringComparers.ItemNames)
+                {
+                    {
+                        "CopyMe",
+                        ImmutableStringDictionary<string>.EmptyOrdinal
+                            .Add("CopyToOutputDirectory", "Always") // ALWAYS COPY THIS ITEM
+                    }
+                };
 
-                var compileItems = ImmutableStringDictionary<IImmutableDictionary<string, string>>.EmptyOrdinal;
+                var compileItems = new Dictionary<string, IImmutableDictionary<string, string>>(StringComparers.ItemNames);
 
                 ref var items2 = ref (itemType == Compile.SchemaName ? ref items : ref compileItems);
 
-                items2 = items2.Add("OtherInput", ImmutableStringDictionary<string>.EmptyOrdinal);
+                items2.Add("OtherInput", ImmutableStringDictionary<string>.EmptyOrdinal);
 
                 var sourceSnapshot = new Dictionary<string, IProjectRuleSnapshotModel>
                 {
@@ -842,11 +857,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 [CopyUpToDateMarker.SchemaName] = SimpleItems("OutputMarker"),
                 [ResolvedCompilationReference.SchemaName] = new IProjectRuleSnapshotModel
                 {
-                    Items = ImmutableStringDictionary<IImmutableDictionary<string, string>>.EmptyOrdinal
-                        .Add("Reference1", ImmutableStringDictionary<string>.EmptyOrdinal
-                            .Add("CopyUpToDateMarker", "Reference1MarkerPath")
-                            .Add("ResolvedPath", "Reference1ResolvedPath")
-                            .Add("OriginalPath", "Reference1OriginalPath"))
+                    Items = new Dictionary<string, IImmutableDictionary<string, string>>(StringComparers.ItemNames)
+                    {
+                        {
+                            "Reference1",
+                            ImmutableStringDictionary<string>.EmptyOrdinal
+                                .Add("CopyUpToDateMarker", "Reference1MarkerPath")
+                                .Add("ResolvedPath", "Reference1ResolvedPath")
+                                .Add("OriginalPath", "Reference1OriginalPath")
+                        }
+                    }
                 }
             };
 
@@ -883,11 +903,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 [CopyUpToDateMarker.SchemaName] = SimpleItems("OutputMarker"),
                 [ResolvedCompilationReference.SchemaName] = new IProjectRuleSnapshotModel
                 {
-                    Items = ImmutableStringDictionary<IImmutableDictionary<string, string>>.EmptyOrdinal
-                        .Add("Reference1", ImmutableStringDictionary<string>.EmptyOrdinal
-                            .Add("CopyUpToDateMarker", "Reference1MarkerPath")
-                            .Add("ResolvedPath", "Reference1ResolvedPath")
-                            .Add("OriginalPath", "Reference1OriginalPath"))
+                    Items = new Dictionary<string, IImmutableDictionary<string, string>>(StringComparers.ItemNames)
+                    {
+                        {
+                            "Reference1",
+                            ImmutableStringDictionary<string>.EmptyOrdinal
+                                .Add("CopyUpToDateMarker", "Reference1MarkerPath")
+                                .Add("ResolvedPath", "Reference1ResolvedPath")
+                                .Add("OriginalPath", "Reference1OriginalPath")
+                        }
+                    }
                 }
             };
 
@@ -965,11 +990,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 [UpToDateCheckBuilt.SchemaName] = SimpleItems(@"bin\Debug\Built.dll"),
                 [ResolvedCompilationReference.SchemaName] = new IProjectRuleSnapshotModel
                 {
-                    Items = ImmutableStringDictionary<IImmutableDictionary<string, string>>.EmptyOrdinal
-                        .Add("Reference1", ImmutableStringDictionary<string>.EmptyOrdinal
-                            .Add("CopyUpToDateMarker", "Reference1MarkerPath")
-                            .Add("ResolvedPath", resolvedReferencePath)
-                            .Add("OriginalPath", @"..\Project\Reference1OriginalPath"))
+                    Items = new Dictionary<string, IImmutableDictionary<string, string>>(StringComparers.ItemNames)
+                    {
+                        {
+                            "Reference1",
+                            ImmutableStringDictionary<string>.EmptyOrdinal
+                                .Add("CopyUpToDateMarker", "Reference1MarkerPath")
+                                .Add("ResolvedPath", resolvedReferencePath)
+                                .Add("OriginalPath", @"..\Project\Reference1OriginalPath")
+                        }
+                    }
                 }
             };
 
@@ -1890,6 +1920,45 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             }
         }
 
+        [Theory]
+        [InlineData("", 371857150)]
+        [InlineData("Hello, World!", 562640209)]
+        [InlineData("Test", -871204762)]
+        [InlineData("TEst", -2094096442)]
+        [InlineData("Some text", -1076058823)]
+        [InlineData("AAAAAAAAAAAAAAAAAAAAA", 1397387549)]
+        [InlineData("1(*!)#2*$&@_fa!f(#(b$(12", -2128933005)]
+        public void GetStableHashCode_Matches_NetFrameworkX64(string str, int netFrameworkX64HashPrecomputed)
+        {
+            int hash = BuildUpToDateCheck.GetStableHashCode(str);
+
+            Assert.Equal(hash, netFrameworkX64HashPrecomputed);
+        }
+
+        [Fact]
+        public void GetStableHashCode_SameText_SameHash()
+        {
+            string str1 = "SomeText";
+            string str2 = "SomeText";
+
+            int h1 = BuildUpToDateCheck.GetStableHashCode(str1);
+            int h2 = BuildUpToDateCheck.GetStableHashCode(str2);
+
+            Assert.Equal(h1, h2);
+        }
+
+        [Fact]
+        public void GetStableHashCode_DifferentText_DifferentHash()
+        {
+            string str1 = "SomeText";
+            string str2 = "SomeTexT";
+
+            int h1 = BuildUpToDateCheck.GetStableHashCode(str1);
+            int h2 = BuildUpToDateCheck.GetStableHashCode(str2);
+
+            Assert.NotEqual(h1, h2);
+        }
+
         [Fact]
         public async Task IsUpToDateAsync_True_InputNewerThatBuiltOutput_TargetFrameworkDoesNotMatchBuild()
         {
@@ -1943,12 +2012,24 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
             writer.Assert();
 
-            if (telemetryReason != null)
+            if (telemetryReason is not null)
                 AssertTelemetryFailureEvent(telemetryReason, ignoreKinds);
             else
                 Assert.Empty(_telemetryEvents);
 
             Assert.False(isUpToDate, "Expected not up-to-date, but was.");
+
+            if (buildAction == BuildAction.Build)
+            {
+                if (telemetryReason == "Disabled")
+                {
+                    await ValidateUpToDateAsync();
+                }
+                else
+                {
+                    await ValidateNotUpToDateAsync();
+                }
+            }
         }
 
         private async Task AssertUpToDateAsync(string expectedLogOutput, string ignoreKinds = "", string targetFramework = "")
@@ -1956,10 +2037,34 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             var writer = new AssertWriter(_output, expectedLogOutput);
 
             Assert.True(await _buildUpToDateCheck.IsUpToDateAsync(BuildAction.Build, writer, CreateGlobalProperties(ignoreKinds, targetFramework)));
-            
+
             AssertTelemetrySuccessEvent(ignoreKinds);
 
             writer.Assert();
+
+            await ValidateUpToDateAsync();
+        }
+
+        private async Task ValidateUpToDateAsync()
+        {
+            IBuildUpToDateCheckValidator validator = _buildUpToDateCheck;
+
+            (bool isUpToDate, string? failureReason, string? failureDescription) = await validator.ValidateUpToDateAsync();
+
+            Assert.True(isUpToDate);
+            Assert.Null(failureReason);
+            Assert.Null(failureDescription);
+        }
+
+        private async Task ValidateNotUpToDateAsync()
+        {
+            IBuildUpToDateCheckValidator validator = _buildUpToDateCheck;
+
+            (bool isUpToDate, string? failureReason, string? failureDescription) = await validator.ValidateUpToDateAsync();
+
+            Assert.False(isUpToDate);
+            Assert.NotNull(failureReason);
+            Assert.NotNull(failureDescription);
         }
 
         private void AssertTelemetryFailureEvent(string reason, string ignoreKinds)
@@ -1970,31 +2075,31 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             Assert.NotNull(telemetryEvent.Properties);
             Assert.Equal(8, telemetryEvent.Properties.Count);
 
-            var reasonProp = Assert.Single(telemetryEvent.Properties.Where(p => p.propertyName == TelemetryPropertyName.UpToDateCheckFailReason));
+            var reasonProp = Assert.Single(telemetryEvent.Properties.Where(p => p.propertyName == TelemetryPropertyName.UpToDateCheck.FailReason));
             Assert.Equal(reason, reasonProp.propertyValue);
 
-            var durationProp = Assert.Single(telemetryEvent.Properties.Where(p => p.propertyName == TelemetryPropertyName.UpToDateCheckDurationMillis));
+            var durationProp = Assert.Single(telemetryEvent.Properties.Where(p => p.propertyName == TelemetryPropertyName.UpToDateCheck.DurationMillis));
             var duration = Assert.IsType<double>(durationProp.propertyValue);
             Assert.True(duration > 0.0);
 
-            var fileCountProp = Assert.Single(telemetryEvent.Properties.Where(p => p.propertyName == TelemetryPropertyName.UpToDateCheckFileCount));
+            var fileCountProp = Assert.Single(telemetryEvent.Properties.Where(p => p.propertyName == TelemetryPropertyName.UpToDateCheck.FileCount));
             var fileCount = Assert.IsType<int>(fileCountProp.propertyValue);
             Assert.True(fileCount >= 0);
 
-            var configurationCountProp = Assert.Single(telemetryEvent.Properties.Where(p => p.propertyName == TelemetryPropertyName.UpToDateCheckConfigurationCount));
+            var configurationCountProp = Assert.Single(telemetryEvent.Properties.Where(p => p.propertyName == TelemetryPropertyName.UpToDateCheck.ConfigurationCount));
             var configurationCount = Assert.IsType<int>(configurationCountProp.propertyValue);
             Assert.Equal(1, configurationCount);
 
-            var logLevelProp = Assert.Single(telemetryEvent.Properties.Where(p => p.propertyName == TelemetryPropertyName.UpToDateCheckLogLevel));
+            var logLevelProp = Assert.Single(telemetryEvent.Properties.Where(p => p.propertyName == TelemetryPropertyName.UpToDateCheck.LogLevel));
             var logLevel = Assert.IsType<LogLevel>(logLevelProp.propertyValue);
             Assert.Equal(_logLevel, logLevel);
 
-            var ignoreKindsProp = Assert.Single(telemetryEvent.Properties.Where(p => p.propertyName == TelemetryPropertyName.UpToDateCheckIgnoreKinds));
+            var ignoreKindsProp = Assert.Single(telemetryEvent.Properties.Where(p => p.propertyName == TelemetryPropertyName.UpToDateCheck.IgnoreKinds));
             var ignoreKindsStr = Assert.IsType<string>(ignoreKindsProp.propertyValue);
             Assert.Equal(ignoreKinds, ignoreKindsStr);
 
-            Assert.Single(telemetryEvent.Properties.Where(p => p.propertyName == TelemetryPropertyName.UpToDateCheckProject));
-            Assert.Single(telemetryEvent.Properties.Where(p => p.propertyName == TelemetryPropertyName.UpToDateCheckNumber));
+            Assert.Single(telemetryEvent.Properties.Where(p => p.propertyName == TelemetryPropertyName.UpToDateCheck.Project));
+            Assert.Single(telemetryEvent.Properties.Where(p => p.propertyName == TelemetryPropertyName.UpToDateCheck.CheckNumber));
 
             _telemetryEvents.Clear();
         }
@@ -2008,28 +2113,28 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             Assert.NotNull(telemetryEvent.Properties);
             Assert.Equal(7, telemetryEvent.Properties.Count);
 
-            var durationProp = Assert.Single(telemetryEvent.Properties.Where(p => p.propertyName == TelemetryPropertyName.UpToDateCheckDurationMillis));
+            var durationProp = Assert.Single(telemetryEvent.Properties.Where(p => p.propertyName == TelemetryPropertyName.UpToDateCheck.DurationMillis));
             var duration = Assert.IsType<double>(durationProp.propertyValue);
             Assert.True(duration > 0.0);
 
-            var fileCountProp = Assert.Single(telemetryEvent.Properties.Where(p => p.propertyName == TelemetryPropertyName.UpToDateCheckFileCount));
+            var fileCountProp = Assert.Single(telemetryEvent.Properties.Where(p => p.propertyName == TelemetryPropertyName.UpToDateCheck.FileCount));
             var fileCount = Assert.IsType<int>(fileCountProp.propertyValue);
             Assert.True(fileCount >= 0);
 
-            var configurationCountProp = Assert.Single(telemetryEvent.Properties.Where(p => p.propertyName == TelemetryPropertyName.UpToDateCheckConfigurationCount));
+            var configurationCountProp = Assert.Single(telemetryEvent.Properties.Where(p => p.propertyName == TelemetryPropertyName.UpToDateCheck.ConfigurationCount));
             var configurationCount = Assert.IsType<int>(configurationCountProp.propertyValue);
             Assert.True(configurationCount == 1);
 
-            var logLevelProp = Assert.Single(telemetryEvent.Properties.Where(p => p.propertyName == TelemetryPropertyName.UpToDateCheckLogLevel));
+            var logLevelProp = Assert.Single(telemetryEvent.Properties.Where(p => p.propertyName == TelemetryPropertyName.UpToDateCheck.LogLevel));
             var logLevel = Assert.IsType<LogLevel>(logLevelProp.propertyValue);
             Assert.True(logLevel == _logLevel);
 
-            var ignoreKindsProp = Assert.Single(telemetryEvent.Properties.Where(p => p.propertyName == TelemetryPropertyName.UpToDateCheckIgnoreKinds));
+            var ignoreKindsProp = Assert.Single(telemetryEvent.Properties.Where(p => p.propertyName == TelemetryPropertyName.UpToDateCheck.IgnoreKinds));
             var ignoreKindsStr = Assert.IsType<string>(ignoreKindsProp.propertyValue);
             Assert.Equal(ignoreKinds, ignoreKindsStr);
 
-            Assert.Single(telemetryEvent.Properties.Where(p => p.propertyName == TelemetryPropertyName.UpToDateCheckProject));
-            Assert.Single(telemetryEvent.Properties.Where(p => p.propertyName == TelemetryPropertyName.UpToDateCheckNumber));
+            Assert.Single(telemetryEvent.Properties.Where(p => p.propertyName == TelemetryPropertyName.UpToDateCheck.Project));
+            Assert.Single(telemetryEvent.Properties.Where(p => p.propertyName == TelemetryPropertyName.UpToDateCheck.CheckNumber));
 
             _telemetryEvents.Clear();
         }

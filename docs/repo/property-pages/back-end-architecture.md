@@ -69,4 +69,4 @@ At the very bottom of the implementation stack are XAML Rule files, so-called be
 
 These Rule files are where the declarative, metadata-driven aspect of the new property pages comes into play. These files declare page, the page's metadata, its properties, the storage mechanisms to use (i.e. which `IProjectPropertiesProvider` will handle a particular property), and a bunch of other property metadata: documentation links, search terms, descriptions, the property type, whether the value can vary across project configurations, etc.
 
-Adding a new property is largely a matter of defining it in the appropriate XAML file. Adding a new page is a matter of creating a new XAML file and including it in the project as a `PropertyPageSchema` item.
+Adding a new property is largely a matter of defining it in the appropriate XAML file. Adding a new page is a matter of creating a new XAML file and including it in the project as a `PropertyPageSchema` item with the appropriate `Context` metadata.

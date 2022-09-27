@@ -77,9 +77,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
             public int Compare(string x, string y)
             {
                 // sort nulls to the start
-                if (x == null)
-                    return y == null ? 0 : -1;
-                if (y == null)
+                if (x is null)
+                    return y is null ? 0 : -1;
+                if (y is null)
                     return 1;
 
                 var ix = 0;

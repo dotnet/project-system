@@ -30,7 +30,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             _listedValues = new AsyncLazy<ICollection<IEnumValue>>(delegate
             {
                 ILaunchSettings? curSnapshot = profileProvider.CurrentSnapshot;
-                if (curSnapshot != null)
+                if (curSnapshot is not null)
                 {
                     return Task.FromResult(GetEnumeratorEnumValues(curSnapshot));
                 }

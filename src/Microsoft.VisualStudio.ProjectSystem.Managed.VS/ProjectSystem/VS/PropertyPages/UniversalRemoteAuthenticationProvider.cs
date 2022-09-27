@@ -8,7 +8,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
     /// Implementation of IRemoteAuthenticationProvider for the "Universal" authentication type.
     /// </summary>
     [Export(typeof(IRemoteAuthenticationProvider))]
-    [AppliesTo("SupportUniversalAuthentication")]
+    [AppliesTo(ProjectCapability.SupportUniversalAuthentication)]
     [Order(30)]
     internal class UniversalRemoteAuthenticationProvider : IRemoteAuthenticationProvider
     {

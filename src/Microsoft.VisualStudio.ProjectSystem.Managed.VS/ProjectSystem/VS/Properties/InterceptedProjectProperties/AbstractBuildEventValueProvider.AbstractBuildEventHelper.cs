@@ -32,7 +32,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties.InterceptedProjectP
             {
                 // check if value already exists
                 string? unevaluatedPropertyValue = await defaultProperties.GetUnevaluatedPropertyValueAsync(BuildEvent);
-                if (unevaluatedPropertyValue != null)
+                if (unevaluatedPropertyValue is not null)
                 {
                     return (true, unevaluatedPropertyValue);
                 }
@@ -57,7 +57,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties.InterceptedProjectP
             {
                 ProjectTaskElement? execTask = FindExecTaskInTargets(projectXml);
 
-                if (execTask == null)
+                if (execTask is null)
                 {
                     return null;
                 }
@@ -73,7 +73,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties.InterceptedProjectP
             public async Task<bool> TrySetPropertyAsync(string unevaluatedPropertyValue, IProjectProperties defaultProperties)
             {
                 string? currentValue = await defaultProperties.GetUnevaluatedPropertyValueAsync(BuildEvent);
-                if (currentValue == null)
+                if (currentValue is null)
                 {
                     return false;
                 }
@@ -94,7 +94,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties.InterceptedProjectP
                 {
                     ProjectTargetElement? target = FindTargetToRemove(projectXml);
 
-                    if (target != null)
+                    if (target is not null)
                     {
                         projectXml.RemoveChild(target);
                         return;
@@ -133,7 +133,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties.InterceptedProjectP
             {
                 ProjectTaskElement? execTask = FindExecTaskInTargets(projectXml);
 
-                if (execTask != null)
+                if (execTask is not null)
                 {
                     SetExecParameter(execTask, unevaluatedPropertyValue);
                 }

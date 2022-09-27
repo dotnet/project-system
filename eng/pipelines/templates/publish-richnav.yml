@@ -1,0 +1,48 @@
+# Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
+
+jobs:
+- job: PublishRichNav
+  displayName: Publish RichNav
+  timeoutInMinutes: 30
+  # This is a non-critical job, so don't fail the build if it fails.
+  continueOnError: true
+  steps:
+
+  ###################################################################################################################################################################
+  # DOWNLOAD ARTIFACTS
+  ###################################################################################################################################################################
+
+  # Use a disabled, empty script to display the section header in the pipeline UI.
+  - script:
+    displayName: === Download Artifacts ===
+    condition: false
+
+  # Download the build artifacts from the Build job.
+  # The DownloadPipelineArtifact task is used since we can specify the output path. The 'download:' node doesn't allow changes in output location.
+  # The artifacts are downloaded into the Sources directory since RichNav uses both the symbol information and the source code when scanning the Sources directory.
+  - task: DownloadPipelineArtifact@2
+    displayName: Download Build Artifacts
+    inputs:
+      artifact: '$(Build.BuildNumber)'
+      path: $(Build.SourcesDirectory)/artifacts/$(BuildConfiguration)
+
+  ###################################################################################################################################################################
+  # PUBLISH RICHNAV
+  ###################################################################################################################################################################
+
+  # Use a disabled, empty script to display the section header in the pipeline UI.
+  - script:
+    displayName: === Publish RichNav ===
+    condition: false
+
+  # Provides functionality for VS Rich Code Navigation for our repo. It indexes the repository and stores navigation information.
+  # This process discovers the symbol information and relates it to the source files in the repo.
+  # See: https://visualstudio.microsoft.com/services/rich-code-navigation/
+  - task: RichCodeNavIndexer@0
+    displayName: Publish RichNav Information
+    inputs:
+      languages: csharp
+      # We should only upload to RichNav's production environment. The others (internal or development) are for their own use or specific situations.
+      environment: production
+    # This is a non-critical task, so don't fail the build if it fails.
+    continueOnError: true

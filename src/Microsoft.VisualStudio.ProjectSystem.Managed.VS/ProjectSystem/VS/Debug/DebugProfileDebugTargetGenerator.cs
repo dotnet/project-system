@@ -37,7 +37,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             ProjectThreadingService = threadingService;
         }
 
-        public override NamedIdentity DataSourceKey { get; } = new NamedIdentity();
+        public override NamedIdentity DataSourceKey { get; } = new NamedIdentity(nameof(DebugProfileDebugTargetGenerator));
 
         private int _dataSourceVersion;
 
@@ -77,7 +77,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
                     return new ProjectVersionedValue<IReadOnlyList<IEnumValue>>(generatedResult, dataSources);
                 });
 
-            IBroadcastBlock<IProjectVersionedValue<IReadOnlyList<IEnumValue>>> broadcastBlock = DataflowBlockSlim.CreateBroadcastBlock<IProjectVersionedValue<IReadOnlyList<IEnumValue>>>();
+            IBroadcastBlock<IProjectVersionedValue<IReadOnlyList<IEnumValue>>> broadcastBlock = DataflowBlockSlim.CreateBroadcastBlock<IProjectVersionedValue<IReadOnlyList<IEnumValue>>>(nameFormat: "Debug Profiles Broadcast: {1}");
 
             // The interface has two definitions of SourceBlock: one from
             // ILaunchSettingsProvider, and one from IProjectValueDataSource<T> (via
@@ -97,13 +97,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
         {
             if (disposing)
             {
-                if (_launchProfileProviderLink != null)
+                if (_launchProfileProviderLink is not null)
                 {
                     _launchProfileProviderLink.Dispose();
                     _launchProfileProviderLink = null;
                 }
 
-                if (_debugProviderLink != null)
+                if (_debugProviderLink is not null)
                 {
                     _debugProviderLink.Dispose();
                     _debugProviderLink = null;

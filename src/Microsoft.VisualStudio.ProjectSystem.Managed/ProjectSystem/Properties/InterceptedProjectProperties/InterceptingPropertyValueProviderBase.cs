@@ -6,7 +6,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
     /// Base intercepting project property provider that intercepts all the callbacks for a specific property name
     /// on the default <see cref="IProjectPropertiesProvider"/> for validation and/or transformation of the property value.
     /// </summary>
-    public abstract class InterceptingPropertyValueProviderBase : IInterceptingPropertyValueProvider
+    public abstract class InterceptingPropertyValueProviderBase : IInterceptingPropertyValueProvider2
     {
         public virtual Task<string> OnGetEvaluatedPropertyValueAsync(string propertyName, string evaluatedPropertyValue, IProjectProperties defaultProperties)
         {
@@ -21,6 +21,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         public virtual Task<string?> OnSetPropertyValueAsync(string propertyName, string unevaluatedPropertyValue, IProjectProperties defaultProperties, IReadOnlyDictionary<string, string>? dimensionalConditions = null)
         {
             return Task.FromResult<string?>(unevaluatedPropertyValue);
+        }
+
+        public virtual Task<bool> IsValueDefinedInContextAsync(string propertyName, IProjectProperties defaultProperties)
+        {
+            return Task.FromResult(true);
+        }
+
+        internal static async Task<bool> IsValueDefinedInContextMsBuildPropertiesAsync(IProjectProperties defaultProperties, string[] msBuildPropertyNames)
+        {
+            string[] propertiesDefinedInProjectFile = (await defaultProperties.GetDirectPropertyNamesAsync()).ToArray();
+            return !msBuildPropertyNames.Any(name => propertiesDefinedInProjectFile.Contains(name, StringComparers.PropertyNames));
         }
     }
 }

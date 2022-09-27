@@ -19,35 +19,35 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                                                                Func<UnconfiguredProject>? unconfiguredProjectCreator = null)
         {
             var mock = new Mock<IUnconfiguredProjectVsServices>();
-            if (hierarchyCreator != null)
+            if (hierarchyCreator is not null)
             {
                 mock.SetupGet(h => h.VsHierarchy)
                     .Returns(hierarchyCreator);
             }
 
-            var threadingService = threadingServiceCreator == null ? IProjectThreadingServiceFactory.Create() : threadingServiceCreator();
+            var threadingService = threadingServiceCreator is null ? IProjectThreadingServiceFactory.Create() : threadingServiceCreator();
 
             mock.SetupGet(h => h.ThreadingService)
                 .Returns(threadingService);
 
-            if (projectCreator != null)
+            if (projectCreator is not null)
             {
                 mock.SetupGet(h => h.VsProject)
                     .Returns(projectCreator());
             }
 
-            if (configuredProjectCreator != null)
+            if (configuredProjectCreator is not null)
             {
                 mock.SetupGet(h => h.ActiveConfiguredProject)
                     .Returns(configuredProjectCreator);
             }
 
-            if (projectProperties != null)
+            if (projectProperties is not null)
             {
                 mock.SetupGet(h => h.ActiveConfiguredProjectProperties).Returns(projectProperties());
             }
 
-            if (unconfiguredProjectCreator != null)
+            if (unconfiguredProjectCreator is not null)
             {
                 mock.SetupGet(h => h.Project).Returns(unconfiguredProjectCreator());
             }

@@ -93,7 +93,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Subscriptions
                     {
                         AggregateCrossTargetProjectContext? currentAggregateContext = await _provider!.GetCurrentAggregateProjectContextAsync(cancellationToken);
 
-                        if (currentAggregateContext == null)
+                        if (currentAggregateContext is null)
                         {
                             return;
                         }
@@ -101,7 +101,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Subscriptions
                         // Get the target framework to update for this change.
                         TargetFramework? targetFrameworkToUpdate = currentAggregateContext.GetProjectFramework(GetProjectConfiguration(e));
 
-                        if (targetFrameworkToUpdate == null)
+                        if (targetFrameworkToUpdate is null)
                         {
                             return;
                         }

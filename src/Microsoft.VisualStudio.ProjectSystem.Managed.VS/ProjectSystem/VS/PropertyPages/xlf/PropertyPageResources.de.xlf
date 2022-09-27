@@ -52,6 +52,46 @@
         <target state="translated">_Suchen...</target>
         <note />
       </trans-unit>
+      <trans-unit id="ImplicitUsingEditor_AddUsing">
+        <source>Using</source>
+        <target state="translated">Verwendung</target>
+        <note>Refers to the implicit using "includes" that will be added</note>
+      </trans-unit>
+      <trans-unit id="ImplicitUsingEditor_AddUsingButton">
+        <source>Add Using</source>
+        <target state="translated">Hinzufügen mit</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ImplicitUsingEditor_ListItemAlias">
+        <source>Alias</source>
+        <target state="translated">Alias</target>
+        <note>Refers to the implicit using "Alias" text when displayed as a list item</note>
+      </trans-unit>
+      <trans-unit id="ImplicitUsingEditor_ListItemDelete">
+        <source>Delete</source>
+        <target state="translated">Löschen</target>
+        <note>The action of deleting an implicit using list item</note>
+      </trans-unit>
+      <trans-unit id="ImplicitUsingEditor_ListItemIncludes">
+        <source>Using Includes</source>
+        <target state="translated">Verwenden von „Einschließen“</target>
+        <note>Refers to the implicit using "Includes" text when displayed as a list item</note>
+      </trans-unit>
+      <trans-unit id="ImplicitUsingEditor_ListItemIsStatic">
+        <source>Static</source>
+        <target state="translated">Statisch</target>
+        <note>Refers to the implicit using "Static" value when displayed as a list item</note>
+      </trans-unit>
+      <trans-unit id="ImplicitUsingEditor_ListViewAccessibleName">
+        <source>Implicit global usings list</source>
+        <target state="translated">Implizite globale Verwendungsliste</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ImplicitUsingEditor_ShowImportedUsingsButton">
+        <source>Show imported usings</source>
+        <target state="translated">Importierte Verwendungen anzeigen</target>
+        <note />
+      </trans-unit>
       <trans-unit id="InvalidHostName">
         <source>The host name is invalid.</source>
         <target state="translated">Der Hostname ist ungültig.</target>

@@ -56,7 +56,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
                 launchSettingsMock.Setup(t => t.GlobalSettings).Returns(initialGlobalSettings);
             }
 
-            if (activeProfileName != null)
+            if (activeProfileName is not null)
             {
                 var activeLaunchProfile = launchProfiles?.FirstOrDefault(p => p.Name == activeProfileName)
                     ?? new LaunchProfile(name: activeProfileName, commandName: null);
@@ -69,7 +69,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
             settingsProviderMock.Setup(t => t.WaitForFirstSnapshot(It.IsAny<int>())).Returns(Task.FromResult<ILaunchSettings?>(launchSettings));
             settingsProviderMock.SetupGet(t => t.CurrentSnapshot).Returns(launchSettings);
 
-            if (setActiveProfileCallback != null)
+            if (setActiveProfileCallback is not null)
             {
                 settingsProviderMock.Setup(t => t.SetActiveProfileAsync(It.IsAny<string>()))
                     .Returns<string>(v =>
@@ -79,7 +79,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
                     });
             }
 
-            if (updateLaunchSettingsCallback != null)
+            if (updateLaunchSettingsCallback is not null)
             {
                 settingsProviderMock.Setup(t => t.UpdateAndSaveSettingsAsync(It.IsAny<ILaunchSettings>()))
                     .Returns<ILaunchSettings>(v =>

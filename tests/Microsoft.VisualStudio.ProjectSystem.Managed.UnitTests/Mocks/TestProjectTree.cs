@@ -69,7 +69,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
         public IProjectTree Remove(IProjectTree subtree)
         {
             var nodeToRemove = Children.FirstOrDefault(ReferenceEquals, subtree);
-            if (nodeToRemove != null)
+            if (nodeToRemove is not null)
             {
                 Children.Remove(nodeToRemove);
             }

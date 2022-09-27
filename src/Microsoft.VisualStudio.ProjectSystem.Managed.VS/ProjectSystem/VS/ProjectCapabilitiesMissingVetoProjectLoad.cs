@@ -31,7 +31,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         public Task<bool> AllowProjectLoadAsync(bool isNewProject, ProjectConfiguration activeConfiguration, CancellationToken cancellationToken = default)
         {
             ProjectType? projectType = GetCurrentProjectType();
-            if (projectType == null)    // Unrecognized, probably a Shared Project
+            if (projectType is null)    // Unrecognized, probably a Shared Project
                 return TaskResult.True;
 
             foreach (string capability in projectType.Capabilities)

@@ -1,7 +1,10 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
+using Microsoft.Internal.VisualStudio.Shell.Interop;
 using Microsoft.VisualStudio.IO;
 using Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore.Snapshots;
+using Microsoft.VisualStudio.ProjectSystem.VS.UI.InfoBarService;
+using Microsoft.VisualStudio.Telemetry;
 using NuGet.SolutionRestoreManager;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
@@ -84,8 +87,19 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
             return instance;
         }
 
-        private static PackageRestoreDataSource CreateInstance(UnconfiguredProject? project = null, IPackageRestoreUnconfiguredInputDataSource? dataSource = null, IVsSolutionRestoreService3? solutionRestoreService = null)
+        private static PackageRestoreDataSource CreateInstance(
+            UnconfiguredProject? project = null, 
+            IPackageRestoreUnconfiguredInputDataSource? dataSource = null, 
+            IVsSolutionRestoreService3? solutionRestoreService = null,
+            bool featureFlagEnabled = false)
         {
+            var featureFlagServiceMock = new Mock<IVsFeatureFlags>();
+            featureFlagServiceMock.Setup(m => m.IsFeatureEnabled(FeatureFlagNames.EnableNuGetRestoreCycleDetection, false)).Returns(featureFlagEnabled);
+            var vsFeatureFlagsServiceService = new Mock<IVsUIService<SVsFeatureFlags, IVsFeatureFlags>>();
+            vsFeatureFlagsServiceService.SetupGet(m => m.Value).Returns(featureFlagServiceMock.Object);
+
+            var telemetryService = (new Mock<ITelemetryService>()).Object;
+            var infoBarService = (new Mock<IInfoBarService>()).Object;
             project ??= UnconfiguredProjectFactory.CreateWithActiveConfiguredProjectProvider(IProjectThreadingServiceFactory.Create());
             dataSource ??= IPackageRestoreUnconfiguredInputDataSourceFactory.Create();
             IProjectAsynchronousTasksService projectAsynchronousTasksService = IProjectAsynchronousTasksServiceFactory.Create();
@@ -96,6 +110,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
             var sharedJoinableTaskCollection = new PackageRestoreSharedJoinableTaskCollection(IProjectThreadingServiceFactory.Create());
 
             return new PackageRestoreDataSourceMocked(
+                vsFeatureFlagsServiceService.Object,
+                telemetryService,
+                infoBarService,
                 project,
                 dataSource,
                 projectAsynchronousTasksService,

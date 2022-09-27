@@ -1,0 +1,101 @@
+# Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
+
+jobs:
+- job: AnalyzeAPI
+  displayName: Analyze API
+  timeoutInMinutes: 180
+  # This is a non-critical job, so don't fail the build if it fails.
+  continueOnError: true
+  steps:
+
+  ###################################################################################################################################################################
+  # DOWNLOAD ARTIFACTS
+  ###################################################################################################################################################################
+
+  # Use a disabled, empty script to display the section header in the pipeline UI.
+  - script:
+    displayName: === Download Artifacts ===
+    condition: false
+
+  # Download the build artifacts from the Build job.
+  - download: current
+    displayName: Download Build Artifacts
+    artifact: $(Build.BuildNumber)
+    # Only download the necessary files for API validation.
+    patterns: |
+      bin/Dlls/**/Microsoft.VisualStudio.AppDesigner*.pdb
+      bin/Dlls/**/Microsoft.VisualStudio.Editors*.pdb
+      bin/Dlls/**/Microsoft.VisualStudio.Managed*.pdb
+      bin/Dlls/**/Microsoft.VisualStudio.AppDesigner*.dll
+      bin/Dlls/**/Microsoft.VisualStudio.Editors*.dll
+      bin/Dlls/**/Microsoft.VisualStudio.Managed*.dll
+
+  ###################################################################################################################################################################
+  # RUN ANALYSIS
+  ###################################################################################################################################################################
+
+  # Use a disabled, empty script to display the section header in the pipeline UI.
+  - script:
+    displayName: === Run Analysis ===
+    condition: false
+
+  # Scan for the use of undocumented APIs.
+  # YAML reference: https://eng.ms/docs/security-compliance-identity-and-management-scim/security/azure-security/cloudai-security-fundamentals-engineering/security-integration/guardian-wiki/sdl-azdo-extension/apiscan-build-task#v2
+  - task: APIScan@2
+    displayName: Run APIScan
+    inputs:
+      softwareFolder: $(Pipeline.Workspace)/$(Build.BuildNumber)/bin/Dlls
+      softwareName: Dotnet-Project-System
+      # The VisualStudioMinimumVersion variable is written out by the SetVisualStudioMinimumVersionVariable task in the Build stage.
+      softwareVersionNum: $(VisualStudioMinimumVersion)
+      softwareBuildNum: $(Build.BuildId)
+      symbolsFolder: SRV*http://symweb
+      noCopySymbols: true
+      noCopyBinaries: true
+      noDecompress: true
+      isLargeApp: true
+      verbosityLevel: minimal
+      preserveTempFiles: true
+    # APIScan requires an Azure Identity to run. That is provided via an Azure service principal.
+    # - https://microsoft.sharepoint.com/teams/apiscan/APIScan%20User%20Wiki/authentication_using_AAD_identities.aspx
+    # - https://microsoft.sharepoint.com/teams/apiscan/Lists/Contacts%20%20System%20Account%20and%20Wrappers/AllItems.aspx?skipSignal=true
+    # This value is provided from the DotNet-Project-System variable group, defined in the stage variables.
+    env:
+      AzureServicesAuthConnectionString: $(ApiScanConnectionString)
+
+  ###################################################################################################################################################################
+  # PUBLISH RESULTS
+  ###################################################################################################################################################################
+
+  # Use a disabled, empty script to display the section header in the pipeline UI.
+  - script:
+    displayName: === Publish Results ===
+    condition: false
+
+  # Only run this task if UploadTSAResults was specified.
+  - ${{ if eq(variables.UploadTSAResults, true) }}:
+    # Upload the output of the compliance tools to Trust Services Automation (TSA), and create Azure DevOps work items for failures.
+    # TSA overview: https://eng.ms/docs/cloud-ai-platform/developer-services/one-engineering-system-1es/1es-docs/trust-services-automation-tsa/tsa-overview
+    # YAML reference: https://eng.ms/docs/cloud-ai-platform/developer-services/one-engineering-system-1es/1es-docs/trust-services-automation-tsa/tsa-upload-build-task#yaml-reference
+    - task: TSAUpload@2
+      displayName: Upload Results to TSA
+      inputs:
+        GdnPublishTsaOnboard: true
+        # Configures the compliance tool results to process.
+        # Configuration file format:
+        # - https://eng.ms/docs/security-compliance-identity-and-management-scim/security/azure-security/cloudai-security-fundamentals-engineering/security-integration/guardian-wiki/microsoft-guardian/guardian-tsa#tsa-options-file
+        # - https://dev.azure.com/securitytools/SecurityIntegration/_wiki/wikis/Guardian/1409/Guardian-TSA?anchor=tsa-options-file
+        GdnPublishTsaConfigFile: $(Build.SourcesDirectory)/eng/pipelines/configuration/TSAConfig.gdntsa
+        GdnPublishTsaExportedResultsPublishable: true
+      condition: succeededOrFailed()
+
+  # Publishes the results as artifacts to the Azure Pipeline.
+  # YAML reference: https://eng.ms/docs/security-compliance-identity-and-management-scim/security/azure-security/cloudai-security-fundamentals-engineering/security-integration/guardian-wiki/sdl-azdo-extension/publish-security-analysis-logs#v3
+  - task: PublishSecurityAnalysisLogs@3
+    displayName: Publish API Artifacts
+    inputs:
+      ArtifactName: Analysis-API
+      ArtifactType: Container
+      AllTools: true
+      ToolLogsNotFoundAction: Standard
+    condition: succeededOrFailed()

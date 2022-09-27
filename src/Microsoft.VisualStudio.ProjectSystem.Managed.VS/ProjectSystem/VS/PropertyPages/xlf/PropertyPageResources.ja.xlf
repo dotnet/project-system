@@ -52,6 +52,46 @@
         <target state="translated">検索(_F)...</target>
         <note />
       </trans-unit>
+      <trans-unit id="ImplicitUsingEditor_AddUsing">
+        <source>Using</source>
+        <target state="translated">使用中</target>
+        <note>Refers to the implicit using "includes" that will be added</note>
+      </trans-unit>
+      <trans-unit id="ImplicitUsingEditor_AddUsingButton">
+        <source>Add Using</source>
+        <target state="translated">以下を使用して追加する</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ImplicitUsingEditor_ListItemAlias">
+        <source>Alias</source>
+        <target state="translated">エイリアス</target>
+        <note>Refers to the implicit using "Alias" text when displayed as a list item</note>
+      </trans-unit>
+      <trans-unit id="ImplicitUsingEditor_ListItemDelete">
+        <source>Delete</source>
+        <target state="translated">削除</target>
+        <note>The action of deleting an implicit using list item</note>
+      </trans-unit>
+      <trans-unit id="ImplicitUsingEditor_ListItemIncludes">
+        <source>Using Includes</source>
+        <target state="translated">「含む」の使用</target>
+        <note>Refers to the implicit using "Includes" text when displayed as a list item</note>
+      </trans-unit>
+      <trans-unit id="ImplicitUsingEditor_ListItemIsStatic">
+        <source>Static</source>
+        <target state="translated">静的</target>
+        <note>Refers to the implicit using "Static" value when displayed as a list item</note>
+      </trans-unit>
+      <trans-unit id="ImplicitUsingEditor_ListViewAccessibleName">
+        <source>Implicit global usings list</source>
+        <target state="translated">暗黙的な global using リスト</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ImplicitUsingEditor_ShowImportedUsingsButton">
+        <source>Show imported usings</source>
+        <target state="translated">インポートされた usings を表示する</target>
+        <note />
+      </trans-unit>
       <trans-unit id="InvalidHostName">
         <source>The host name is invalid.</source>
         <target state="translated">ホスト名が無効です。</target>

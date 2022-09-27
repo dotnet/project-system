@@ -186,16 +186,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             base.Initialize();
 
             // Create our broadcast block for subscribers to ILaunchSettingsProvider to get new ILaunchSettings information
-            _broadcastBlock = DataflowBlockSlim.CreateBroadcastBlock<ILaunchSettings>();
+            _broadcastBlock = DataflowBlockSlim.CreateBroadcastBlock<ILaunchSettings>(nameFormat: "Launch Settings Broadcast: {1}");
             _changedSourceBlock = _broadcastBlock.SafePublicize();
 
             // Create our broadcast block for subscribers to IVersionedLaunchSettingsProvider to get new ILaunchSettings information
-            _versionedBroadcastBlock = DataflowBlockSlim.CreateBroadcastBlock<IProjectVersionedValue<ILaunchSettings>>();
+            _versionedBroadcastBlock = DataflowBlockSlim.CreateBroadcastBlock<IProjectVersionedValue<ILaunchSettings>>(nameFormat: "Versioned Launch Settings Broadcast: {1}");
             _versionedChangedSourceBlock = _versionedBroadcastBlock.SafePublicize();
 
             // Subscribe to changes to the broadcast block using the idle scheduler. This should filter out a lot of the intermediate
             // states that files can be in.
-            if (_projectSubscriptionService != null)
+            if (_projectSubscriptionService is not null)
             {
                 // The use of AsyncLazy with dataflow can allow state stored in the execution context to leak through. The downstream affect is
                 // calls to say, get properties, may fail. To avoid this, we capture the execution context here, and it will be reapplied when
@@ -230,7 +230,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
                 {
                     ruleSnapshot.Properties.TryGetValue(ProjectDebugger.ActiveDebugProfileProperty, out string activeProfile);
                     ILaunchSettings snapshot = CurrentSnapshot;
-                    if (snapshot == null || !LaunchProfile.IsSameProfileName(activeProfile, snapshot.ActiveProfile?.Name))
+                    if (snapshot is null || !LaunchProfile.IsSameProfileName(activeProfile, snapshot.ActiveProfile?.Name))
                     {
                         // Updates need to be sequenced
                         await _sequentialTaskQueue.ExecuteTask(async () =>
@@ -252,7 +252,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         protected async Task UpdateActiveProfileInSnapshotAsync(string updatedActiveProfileName)
         {
             ILaunchSettings snapshot = CurrentSnapshot;
-            if (snapshot == null || await SettingsFileHasChangedAsync())
+            if (snapshot is null || await SettingsFileHasChangedAsync())
             {
                 await UpdateProfilesAsync(updatedActiveProfileName);
                 return;
@@ -274,7 +274,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             {
                 // If the name of the new active profile wasn't provided we'll continue to use the
                 // current one.
-                if (updatedActiveProfileName == null)
+                if (updatedActiveProfileName is null)
                 {
                     ProjectDebugger props = await _commonProjectServices.ActiveConfiguredProjectProperties.GetProjectDebuggerPropertiesAsync();
                     if (await props.ActiveDebugProfile.GetValueAsync() is IEnumValue activeProfileVal)
@@ -298,7 +298,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
 
                 // If we have a previous snapshot, merge in in-memory profiles
                 ILaunchSettings prevSnapshot = CurrentSnapshot;
-                if (prevSnapshot != null)
+                if (prevSnapshot is not null)
                 {
                     MergeExistingInMemoryProfiles(ref profiles, prevSnapshot.Profiles);
                     MergeExistingInMemoryGlobalSettings(ref globalSettings, prevSnapshot.GlobalSettings);
@@ -318,7 +318,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
                 // However, if we have never created a snapshot it means there is some error in the file and we want
                 // to have the user see that, so we add a dummy profile which will bind to an existing debugger which will
                 // display the error when run
-                if (CurrentSnapshot == null)
+                if (CurrentSnapshot is null)
                 {
                     var errorProfile = new LaunchProfile(
                         name: Resources.NoActionProfileName,
@@ -341,7 +341,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
                     if (profile.IsInMemoryObject() && !string.Equals(profile.CommandName, ErrorProfileCommandName))
                     {
                         // Does it already have one with this name?
-                        if (newProfiles.FirstOrDefault((p1, p2) => LaunchProfile.IsSameProfileName(p1.Name, p2.Name), profile) == null)
+                        if (newProfiles.FirstOrDefault((p1, p2) => LaunchProfile.IsSameProfileName(p1.Name, p2.Name), profile) is null)
                         {
                             // Create a new one from the existing in-memory profile and insert it in the same location, or the end if it
                             // is beyond the end of the list
@@ -481,7 +481,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         protected async Task CheckoutSettingsFileAsync()
         {
             Lazy<ISourceCodeControlIntegration, IOrderPrecedenceMetadataView>? sourceControlIntegration = SourceControlIntegrations.FirstOrDefault();
-            if (sourceControlIntegration?.Value != null)
+            if (sourceControlIntegration?.Value is not null)
             {
                 string fileName = await GetLaunchSettingsFilePathAsync();
 
@@ -547,7 +547,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         /// </summary>
         private void CleanupFileWatcher()
         {
-            if (FileWatcher != null)
+            if (FileWatcher is not null)
             {
                 FileWatcher.Dispose();
                 FileWatcher = null;
@@ -560,7 +560,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         /// </summary>
         private void WatchLaunchSettingsFile()
         {
-            if (FileWatcher == null)
+            if (FileWatcher is null)
             {
                 FileChangeScheduler?.Dispose();
 
@@ -595,7 +595,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             if (disposing)
             {
                 CleanupFileWatcher();
-                if (FileChangeScheduler != null)
+                if (FileChangeScheduler is not null)
                 {
                     FileChangeScheduler.Dispose();
                     FileChangeScheduler = null;
@@ -603,19 +603,19 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
 
                 _sequentialTaskQueue.Dispose();
 
-                if (_versionedBroadcastBlock != null)
+                if (_versionedBroadcastBlock is not null)
                 {
                     _versionedBroadcastBlock.Complete();
                     _versionedBroadcastBlock = null;
                 }
 
-                if (_broadcastBlock != null)
+                if (_broadcastBlock is not null)
                 {
                     _broadcastBlock.Complete();
                     _broadcastBlock = null;
                 }
 
-                if (_projectRuleSubscriptionLink != null)
+                if (_projectRuleSubscriptionLink is not null)
                 {
                     _projectRuleSubscriptionLink.Dispose();
                     _projectRuleSubscriptionLink = null;
@@ -667,7 +667,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         /// </summary>
         public async Task<ILaunchSettings?> WaitForFirstSnapshot(int timeout)
         {
-            if (CurrentSnapshot != null)
+            if (CurrentSnapshot is not null)
             {
                 return CurrentSnapshot;
             }
@@ -706,7 +706,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
                 }
 
                 ImmutableList<ILaunchProfile> profiles;
-                if (existingProfile != null)
+                if (existingProfile is not null)
                 {
                     profiles = currentSettings.Profiles.Remove(existingProfile);
                 }
@@ -745,7 +745,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             {
                 ILaunchSettings currentSettings = await GetSnapshotThrowIfErrorsAsync();
                 ILaunchProfile existingProfile = currentSettings.Profiles.FirstOrDefault(p => LaunchProfile.IsSameProfileName(p.Name, profileName));
-                if (existingProfile != null)
+                if (existingProfile is not null)
                 {
                     ImmutableList<ILaunchProfile> profiles = currentSettings.Profiles.Remove(existingProfile);
 
@@ -901,10 +901,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             // see: https://github.com/dotnet/project-system/issues/2316.
 
             string? folder = null;
-            if (_appDesignerSpecialFileProvider.Value != null)
+            if (_appDesignerSpecialFileProvider.Value is not null)
                 folder = await _appDesignerSpecialFileProvider.Value.GetFileAsync(SpecialFiles.AppDesigner, SpecialFileFlags.FullPath);
 
-            if (folder == null)  // AppDesigner capability not present, or the project has set AppDesignerFolder to empty
+            if (folder is null)  // AppDesigner capability not present, or the project has set AppDesignerFolder to empty
                 folder = Path.GetDirectoryName(_commonProjectServices.Project.FullPath);
 
             return Path.Combine(folder, LaunchSettingsFilename);

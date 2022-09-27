@@ -34,7 +34,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build
             buildManager.Setup(b => b.QueryBuildManagerBusy())
                 .Returns(isBusy);
 
-            if (hierarchyToBuild != null)
+            if (hierarchyToBuild is not null)
             {
                 void onBuildStartedWithReturn(IVsHierarchy[] _, uint[] __, uint ___)
                 {

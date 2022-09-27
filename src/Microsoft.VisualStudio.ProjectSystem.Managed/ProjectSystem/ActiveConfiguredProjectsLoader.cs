@@ -8,7 +8,9 @@ namespace Microsoft.VisualStudio.ProjectSystem
     ///     Force loads the active <see cref="ConfiguredProject"/> objects so that any configured project-level
     ///     services, such as evaluation and build services, are started.
     /// </summary>
-    internal class ActiveConfiguredProjectsLoader : OnceInitializedOnceDisposed
+    [Export(typeof(ActiveConfiguredProjectsLoader))]
+
+    internal class ActiveConfiguredProjectsLoader : ChainedProjectValueDataSourceBase<IEnumerable<ConfiguredProject>>
     {
         private readonly UnconfiguredProject _project;
         private readonly IActiveConfigurationGroupService _activeConfigurationGroupService;
@@ -18,7 +20,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
         [ImportingConstructor]
         public ActiveConfiguredProjectsLoader(UnconfiguredProject project, IActiveConfigurationGroupService activeConfigurationGroupService, IUnconfiguredProjectTasksService tasksService)
-            : base(synchronousDisposal: false)
+            : base(containingProject: project, synchronousDisposal: false)
         {
             _project = project;
             _activeConfigurationGroupService = activeConfigurationGroupService;
@@ -27,6 +29,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
         }
 
         [ProjectAutoLoad(ProjectLoadCheckpoint.ProjectInitialCapabilitiesEstablished)]
+        // NOTE we use the language service capability here to prevent loading configurations of shared projects.
         [AppliesTo(ProjectCapability.DotNetLanguageService)]
         public Task InitializeAsync()
         {
@@ -54,14 +57,43 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
         private async Task OnActiveConfigurationsChangedAsync(IProjectVersionedValue<IConfigurationGroup<ProjectConfiguration>> e)
         {
-            foreach (ProjectConfiguration configuration in e.Value)
+            await GetLoadedProjectsAsync(e);
+        }
+
+        protected override IDisposable? LinkExternalInput(ITargetBlock<IProjectVersionedValue<IEnumerable<ConfiguredProject>>> targetBlock)
+        {
+            IReceivableSourceBlock<IProjectVersionedValue<IConfigurationGroup<ProjectConfiguration>>> sourceBlock = _activeConfigurationGroupService.ActiveConfigurationGroupSource.SourceBlock;
+
+            DisposableValue<ISourceBlock<IProjectVersionedValue<IEnumerable<ConfiguredProject>>>>? transformBlock = sourceBlock.TransformWithNoDelta(TransformAsync);
+
+            transformBlock.Value.LinkTo(targetBlock, DataflowOption.PropagateCompletion);
+
+            return transformBlock;
+        }
+
+        private async Task<IProjectVersionedValue<IEnumerable<ConfiguredProject>>> TransformAsync(IProjectVersionedValue<IConfigurationGroup<ProjectConfiguration>> projectVersionedValue)
+        {
+            List<ConfiguredProject> generatedResult = await GetLoadedProjectsAsync(projectVersionedValue);
+
+            return new ProjectVersionedValue<IEnumerable<ConfiguredProject>>(generatedResult, projectVersionedValue.DataSourceVersions);
+        }
+
+        private async Task<List<ConfiguredProject>> GetLoadedProjectsAsync(IProjectVersionedValue<IConfigurationGroup<ProjectConfiguration>> projectVersionedValue)
+        {
+            List<ConfiguredProject> generatedResult = new List<ConfiguredProject>();
+
+            foreach (ProjectConfiguration configuration in projectVersionedValue.Value)
             {
                 // Make sure we aren't currently unloading, or we don't unload while we load the configuration
-                await _tasksService.LoadedProjectAsync(() =>
+                var loadedConfiguredProject = await _tasksService.LoadedProjectAsync(() =>
                 {
                     return _project.LoadConfiguredProjectAsync(configuration);
                 });
+
+                generatedResult.Add(loadedConfiguredProject);
             }
+
+            return generatedResult;
         }
     }
 }

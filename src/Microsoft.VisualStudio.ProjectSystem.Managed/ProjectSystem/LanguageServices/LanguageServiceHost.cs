@@ -34,8 +34,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices;
 [AppliesTo(ProjectCapability.DotNetLanguageService)]
 internal sealed class LanguageServiceHost : OnceInitializedOnceDisposedUnderLockAsync, IProjectDynamicLoadComponent, IWorkspaceWriter
 {
-    // TODO don't activate in if _vsShellServices.Value.IsInCommandLineMode (https://github.com/dotnet/project-system/issues/3832)
-
     private readonly TaskCompletionSource _firstPrimaryWorkspaceSet = new();
 
     private readonly UnconfiguredProject _unconfiguredProject;
@@ -47,8 +45,14 @@ internal sealed class LanguageServiceHost : OnceInitializedOnceDisposedUnderLock
     private readonly IProjectFaultHandlerService _projectFaultHandler;
     private readonly JoinableTaskCollection _joinableTaskCollection;
     private readonly JoinableTaskFactory _joinableTaskFactory;
+    private readonly ILanguageServiceHostEnvironment? _languageServiceHostEnvironment;
 
     private DisposableBag? _disposables;
+
+    /// <summary>
+    /// Gets the "primary" workspace. Each slice represents a single implicitly active configuration.
+    /// This workspace is from the slice that VS considers "active".
+    /// </summary>
     private Workspace? _primaryWorkspace;
 
     [ImportingConstructor]
@@ -60,7 +64,8 @@ internal sealed class LanguageServiceHost : OnceInitializedOnceDisposedUnderLock
         IUnconfiguredProjectTasksService tasksService,
         ISafeProjectGuidService projectGuidService,
         IProjectThreadingService threadingService,
-        IProjectFaultHandlerService projectFaultHandler)
+        IProjectFaultHandlerService projectFaultHandler,
+        [Import(AllowDefault = true)] ILanguageServiceHostEnvironment? languageServiceHostEnvironment)
         : base(threadingService.JoinableTaskContext)
     {
         _unconfiguredProject = project;
@@ -70,6 +75,7 @@ internal sealed class LanguageServiceHost : OnceInitializedOnceDisposedUnderLock
         _tasksService = tasksService;
         _projectGuidService = projectGuidService;
         _projectFaultHandler = projectFaultHandler;
+        _languageServiceHostEnvironment = languageServiceHostEnvironment;
 
         _joinableTaskCollection = threadingService.JoinableTaskContext.CreateCollection();
         _joinableTaskCollection.DisplayName = "LanguageServiceHostTasks";
@@ -92,8 +98,14 @@ internal sealed class LanguageServiceHost : OnceInitializedOnceDisposedUnderLock
     // Over time the mapping from slice to source changes. We need to have subscriptions for each in that mapping, and create/destroy as they come and go.
     // However if the underlying 'active' configuration changes, that is transparent to us.
 
-    protected override Task InitializeCoreAsync(CancellationToken cancellationToken)
+    protected override async Task InitializeCoreAsync(CancellationToken cancellationToken)
     {
+        if (!await IsEnabledAsync(cancellationToken))
+        {
+            // We are not enabled, so don't perform any initialization.
+            return;
+        }
+
         // We have one "workspace" per "slice".
         //
         // - A "workspace" models the project state that Roslyn needs for a specific configuration.
@@ -122,20 +134,32 @@ internal sealed class LanguageServiceHost : OnceInitializedOnceDisposedUnderLock
                     _unconfiguredProject,
                     ProjectFaultSeverity.LimitedFunctionality),
                 linkOptions: DataflowOption.PropagateCompletion,
-                cancellationToken: cancellationToken)
+                cancellationToken: cancellationToken),
+
+            new DisposableDelegate(() =>
+            {
+                // Dispose all workspaces. Note that this happens within a lock, so we will not race with project updates.
+                foreach ((_, Workspace workspace) in workspaceBySlice)
+                {
+                    workspace.Dispose();
+                }
+            })
         };
 
-        return Task.CompletedTask;
+        return;
 
         async Task OnSlicesChanged(IProjectVersionedValue<(ConfiguredProject ActiveConfiguredProject, ConfigurationSubscriptionSources Sources)> update, CancellationToken cancellationToken)
         {
             ProjectConfiguration activeProjectConfiguration = update.Value.ActiveConfiguredProject.ProjectConfiguration;
-            IReadOnlyDictionary<ProjectConfigurationSlice, IActiveConfigurationSubscriptionSource> sources = update.Value.Sources;
+            ConfigurationSubscriptionSources sources = update.Value.Sources;
 
             // Check off existing slices. An unseen at the end must be disposed.
             var checklist = new Dictionary<ProjectConfigurationSlice, Workspace>(workspaceBySlice);
 
             // TODO currently this loops through each slice, initializing them serially. can we do this in parallel, or can we do the active slice first?
+
+            // Remember the first slice's workspace. We may use it later, if the active workspace is removed.
+            Workspace? firstWorkspace = null;
 
             foreach ((ProjectConfigurationSlice slice, IActiveConfigurationSubscriptionSource source) in sources)
             {
@@ -146,7 +170,7 @@ internal sealed class LanguageServiceHost : OnceInitializedOnceDisposedUnderLock
                     Guid projectGuid = await _projectGuidService.GetProjectGuidAsync(cancellationToken);
 
                     // New slice. Create a workspace for it.
-                    workspace = _workspaceFactory.Create(source, slice, _joinableTaskFactory, projectGuid, cancellationToken);
+                    workspace = _workspaceFactory.Create(source, slice, _joinableTaskCollection, _joinableTaskFactory, projectGuid, cancellationToken);
 
                     if (workspace is null)
                     {
@@ -162,6 +186,8 @@ internal sealed class LanguageServiceHost : OnceInitializedOnceDisposedUnderLock
                     Assumes.True(checklist.Remove(slice));
                 }
 
+                firstWorkspace ??= workspace;
+
                 workspace.IsPrimary = IsPrimaryActiveSlice(slice, activeProjectConfiguration);
 
                 if (workspace.IsPrimary)
@@ -171,18 +197,34 @@ internal sealed class LanguageServiceHost : OnceInitializedOnceDisposedUnderLock
                 }
             }
 
+            bool removedPrimary = false;
+
             // Dispose workspaces for unseen slices
             foreach ((_, Workspace workspace) in checklist)
             {
                 if (ReferenceEquals(_primaryWorkspace, workspace))
                 {
-                    _primaryWorkspace = null;
+                    removedPrimary = true;
                 }
 
                 workspace.IsPrimary = false;
 
                 // Disposes asynchronously on the thread pool, without awaiting completion.
                 workspace.Dispose();
+            }
+
+            if (removedPrimary)
+            {
+                // We removed the primary workspace
+
+                // If we have a new primary workspace, use it.
+                if (firstWorkspace is not null)
+                {
+                    firstWorkspace.IsPrimary = true;
+                }
+
+                // Set the new primary workspace (or theoretically null if no slices exist).
+                _primaryWorkspace = firstWorkspace;
             }
         }
 
@@ -209,14 +251,33 @@ internal sealed class LanguageServiceHost : OnceInitializedOnceDisposedUnderLock
 
     #region IWorkspaceWriter
 
+    public Task<bool> IsEnabledAsync(CancellationToken cancellationToken)
+    {
+        if (_languageServiceHostEnvironment is null)
+        {
+            // Assume enabled when no host environment is available.
+            return TaskResult.True;
+        }
+
+        // Defer to the host environment to determine if we're enabled.
+        return _languageServiceHostEnvironment.IsEnabledAsync(cancellationToken);
+    }
+
     public async Task WhenInitialized(CancellationToken token)
     {
-        await _firstPrimaryWorkspaceSet.Task.WithCancellation(token);
+        await ValidateEnabledAsync(token);
+
+        using (_joinableTaskCollection.Join())
+        {
+            await _firstPrimaryWorkspaceSet.Task.WithCancellation(token);
+        }
     }
 
     public async Task WriteAsync(Func<IWorkspace, Task> action, CancellationToken token)
     {
         token = _tasksService.LinkUnload(token);
+
+        await ValidateEnabledAsync(token);
 
         Workspace workspace = await GetPrimaryWorkspaceAsync(token);
 
@@ -227,6 +288,8 @@ internal sealed class LanguageServiceHost : OnceInitializedOnceDisposedUnderLock
     {
         token = _tasksService.LinkUnload(token);
 
+        await ValidateEnabledAsync(token);
+
         Workspace workspace = await GetPrimaryWorkspaceAsync(token);
 
         return await workspace.WriteAsync(action, token);
@@ -234,6 +297,8 @@ internal sealed class LanguageServiceHost : OnceInitializedOnceDisposedUnderLock
 
     private async Task<Workspace> GetPrimaryWorkspaceAsync(CancellationToken cancellationToken)
     {
+        await ValidateEnabledAsync(cancellationToken);
+
         await WhenProjectLoaded(cancellationToken);
 
         return _primaryWorkspace ?? throw Assumes.Fail("Primary workspace unknown.");
@@ -253,10 +318,18 @@ internal sealed class LanguageServiceHost : OnceInitializedOnceDisposedUnderLock
 
     #endregion
 
-    [ProjectAutoLoad(startAfter: ProjectLoadCheckpoint.AfterLoadInitialConfiguration, completeBy: ProjectLoadCheckpoint.ProjectFactoryCompleted)]
+    [ProjectAutoLoad(
+        startAfter: ProjectLoadCheckpoint.AfterLoadInitialConfiguration,
+        completeBy: ProjectLoadCheckpoint.ProjectFactoryCompleted)]
     [AppliesTo(ProjectCapability.DotNetLanguageService)]
-    public Task AfterLoadInitialConfigurationAsync()
+    public async Task AfterLoadInitialConfigurationAsync()
     {
+        if (!await IsEnabledAsync(_tasksService.UnloadCancellationToken))
+        {
+            // We are not enabled, so don't block project load on our initialization.
+            return;
+        }
+
         // Ensure the project is not considered loaded until our first publication.
         Task result = _tasksService.PrioritizedProjectLoadedInHostAsync(async () =>
         {
@@ -269,8 +342,6 @@ internal sealed class LanguageServiceHost : OnceInitializedOnceDisposedUnderLock
         // While we want make sure it's loaded before PrioritizedProjectLoadedInHost,
         // we don't want to block project factory completion on its load, so fire and forget.
         _projectFaultHandler.Forget(result, _unconfiguredProject, ProjectFaultSeverity.LimitedFunctionality);
-
-        return Task.CompletedTask;
     }
 
     protected override Task DisposeCoreUnderLockAsync(bool initialized)
@@ -280,5 +351,13 @@ internal sealed class LanguageServiceHost : OnceInitializedOnceDisposedUnderLock
         _disposables?.Dispose();
 
         return Task.CompletedTask;
+    }
+
+    private async Task ValidateEnabledAsync(CancellationToken cancellationToken)
+    {
+        if (!await IsEnabledAsync(cancellationToken))
+        {
+            Assumes.Fail("Invalid operation when language services are not enabled.");
+        }
     }
 }

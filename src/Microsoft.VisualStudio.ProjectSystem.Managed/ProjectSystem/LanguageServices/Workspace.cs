@@ -39,15 +39,13 @@ internal sealed class Workspace : OnceInitializedOnceDisposedUnderLockAsync, IWo
     private readonly IDataProgressTrackerService _dataProgressTrackerService;
     private readonly Lazy<IWorkspaceProjectContextFactory> _workspaceProjectContextFactory;
     private readonly IProjectFaultHandlerService _faultHandlerService;
+    private readonly JoinableTaskCollection _joinableTaskCollection;
     private readonly JoinableTaskFactory _joinableTaskFactory;
     private readonly CancellationToken _unloadCancellationToken;
     private readonly string _baseDirectory;
 
-    /// <summary>Completes when the workspace has integrated evaluation data.</summary>
-    private readonly TaskCompletionSource _hasEvaluationData = new(TaskCreationOptions.RunContinuationsAsynchronously);
-
     /// <summary>Completes when the workspace has integrated build data.</summary>
-    private readonly TaskCompletionSource _hasBuildData = new(TaskCreationOptions.RunContinuationsAsynchronously);
+    private readonly TaskCompletionSource _contextCreated = new(TaskCreationOptions.RunContinuationsAsynchronously);
 
     /// <summary>The current state of this workspace.</summary>
     private WorkspaceState _state;
@@ -91,6 +89,7 @@ internal sealed class Workspace : OnceInitializedOnceDisposedUnderLockAsync, IWo
         IDataProgressTrackerService dataProgressTrackerService,
         Lazy<IWorkspaceProjectContextFactory> workspaceProjectContextFactory,
         IProjectFaultHandlerService faultHandlerService,
+        JoinableTaskCollection joinableTaskCollection,
         JoinableTaskFactory joinableTaskFactory,
         JoinableTaskContextNode joinableTaskContextNode,
         CancellationToken unloadCancellationToken)
@@ -106,6 +105,7 @@ internal sealed class Workspace : OnceInitializedOnceDisposedUnderLockAsync, IWo
         _dataProgressTrackerService = dataProgressTrackerService;
         _workspaceProjectContextFactory = workspaceProjectContextFactory;
         _faultHandlerService = faultHandlerService;
+        _joinableTaskCollection = joinableTaskCollection;
         _joinableTaskFactory = joinableTaskFactory;
         _unloadCancellationToken = unloadCancellationToken;
 
@@ -125,8 +125,7 @@ internal sealed class Workspace : OnceInitializedOnceDisposedUnderLockAsync, IWo
     {
         _state = WorkspaceState.Disposed;
 
-        _hasEvaluationData.TrySetCanceled();
-        _hasBuildData.TrySetCanceled();
+        _contextCreated.TrySetCanceled();
 
         _disposableBag.Dispose();
 
@@ -203,8 +202,6 @@ internal sealed class Workspace : OnceInitializedOnceDisposedUnderLockAsync, IWo
             applyFunc: ApplyProjectEvaluation,
             _unloadCancellationToken);
 
-        _hasEvaluationData.TrySetResult();
-
         return;
 
         async Task ProcessInitialEvaluationDataAsync(CancellationToken cancellationToken)
@@ -224,10 +221,7 @@ internal sealed class Workspace : OnceInitializedOnceDisposedUnderLockAsync, IWo
                 // Insufficient data to initialize the language service.
                 _state = WorkspaceState.Failed;
 
-                Exception ex = new("Insufficient project data to initialize the language service.");
-                _hasEvaluationData.TrySetException(ex);
-
-                throw ex;
+                throw new("Insufficient project data to initialize the language service.");
             }
 
             try
@@ -268,6 +262,8 @@ internal sealed class Workspace : OnceInitializedOnceDisposedUnderLockAsync, IWo
                 {
                     await _context.EndBatchAsync();
                 }
+
+                _contextCreated.TrySetResult();
             }
             catch (Exception ex)
             {
@@ -278,7 +274,7 @@ internal sealed class Workspace : OnceInitializedOnceDisposedUnderLockAsync, IWo
                 _context?.Dispose();
 
                 // We will never initialize now. Ensure anyone waiting on initialization sees the error.
-                _hasBuildData.TrySetException(ex);
+                _contextCreated.TrySetException(ex);
 
                 _disposableBag.Dispose();
 
@@ -292,11 +288,6 @@ internal sealed class Workspace : OnceInitializedOnceDisposedUnderLockAsync, IWo
             ContextState contextState,
             CancellationToken cancellationToken)
         {
-            // This is the ConfiguredProject currently bound to the slice owned by this workspace.
-            // It may change over time, such as in response to changing the active configuration,
-            // for example from Debug to Release.
-            ConfiguredProject configuredProject = update.Value.ConfiguredProject;
-
             IComparable version = GetConfiguredProjectVersion(update);
 
             ProcessProjectEvaluationHandlers();
@@ -305,6 +296,11 @@ internal sealed class Workspace : OnceInitializedOnceDisposedUnderLockAsync, IWo
 
             void ProcessProjectEvaluationHandlers()
             {
+                // This is the ConfiguredProject currently bound to the slice owned by this workspace.
+                // It may change over time, such as in response to changing the active configuration,
+                // for example from Debug to Release.
+                ConfiguredProject configuredProject = update.Value.ConfiguredProject;
+
                 foreach (IProjectEvaluationHandler evaluationHandler in _updateHandlers.EvaluationHandlers)
                 {
                     cancellationToken.ThrowIfCancellationRequested();
@@ -375,19 +371,16 @@ internal sealed class Workspace : OnceInitializedOnceDisposedUnderLockAsync, IWo
         Assumes.NotNull(_buildProgressRegistration);
 
         // The Roslyn workspace context is created when the first evaluation data arrives.
-        // It's possible that build data arrives before evaluation data, in which case
-        // the Roslyn context would be null. To prevent problems, we wait for evaluation
-        // data to have been processed at least once before continuing.
-        await _hasEvaluationData.Task;
+        // Upstream caller must ensure that build updates are delayed until the first
+        // evaluation update is processed.
+        Assumes.True(_seenEvaluation);
 
         await OnProjectChangedAsync(
             _buildProgressRegistration,
             update,
-            hasChange: static e => e.Value.BuildRuleUpdate.ProjectChanges[ProjectBuildRuleName].Difference.AnyChanges || e.Value.CommandLineArgumentsSnapshot.IsChanged,
+            hasChange: e => e.Value.BuildRuleUpdate.ProjectChanges[ProjectBuildRuleName].Difference.AnyChanges,
             applyFunc: ApplyProjectBuild,
             _unloadCancellationToken);
-
-        _hasBuildData.TrySetResult();
 
         return;
 
@@ -398,37 +391,37 @@ internal sealed class Workspace : OnceInitializedOnceDisposedUnderLockAsync, IWo
         {
             IProjectChangeDescription projectChange = update.Value.BuildRuleUpdate.ProjectChanges[ProjectBuildRuleName];
 
-            // There should always be some change to publish, as we have already called BeginBatch by this point
-            // TODO understand why the CLA snapshot's changed state differs from the project update, as they are supposed to travel together in sync
-            //Assumes.True(projectChange.Difference.AnyChanges && update.Value.CommandLineArgumentsSnapshot.IsChanged);
-
-            IComparable version = GetConfiguredProjectVersion(update);
-
-            // We just need to pass all options to Roslyn
-            Context.SetOptions(update.Value.CommandLineArgumentsSnapshot.Arguments);
-
-            ProcessCommandLine(version, projectChange.Difference, state, cancellationToken);
+            ProcessCommandLine();
 
             ProcessProjectBuildFailure(projectChange.After);
 
-            void ProcessCommandLine(IComparable version, IProjectChangeDiff differences, ContextState state, CancellationToken cancellationToken)
+            void ProcessCommandLine()
             {
-                if (!differences.AnyChanges)
+                SetContextCommandLine();
+
+                InvokeCommandLineUpdateHandlers();
+
+                void SetContextCommandLine()
                 {
-                    return;
+                    var orderedSource = projectChange.After.Items as IDataWithOriginalSource<KeyValuePair<string, IImmutableDictionary<string, string>>>;
+
+                    Assumes.NotNull(orderedSource);
+
+                    // Pass command line to Roslyn
+                    Context.SetOptions(orderedSource.SourceData.Select(pair => pair.Key).ToImmutableArray());
                 }
 
-                ICommandLineParserService? parser = _commandLineParserServices.FirstOrDefault()?.Value;
-
-                Assumes.Present(parser);
-
-                BuildOptions added = parser.Parse(differences.AddedItems, _baseDirectory);
-                BuildOptions removed = parser.Parse(differences.RemovedItems, _baseDirectory);
-
-                ProcessCommandLineHandlers();
-
-                void ProcessCommandLineHandlers()
+                void InvokeCommandLineUpdateHandlers()
                 {
+                    ICommandLineParserService? parser = _commandLineParserServices.FirstOrDefault()?.Value;
+
+                    Assumes.Present(parser);
+
+                    IComparable version = GetConfiguredProjectVersion(update);
+
+                    BuildOptions added   = parser.Parse(projectChange.Difference.AddedItems,   _baseDirectory);
+                    BuildOptions removed = parser.Parse(projectChange.Difference.RemovedItems, _baseDirectory);
+
                     foreach (ICommandLineHandler commandLineHandler in _updateHandlers.CommandLineHandlers)
                     {
                         cancellationToken.ThrowIfCancellationRequested();
@@ -528,7 +521,7 @@ internal sealed class Workspace : OnceInitializedOnceDisposedUnderLockAsync, IWo
 
         cancellationToken = CancellationTokenSource.CreateLinkedTokenSource(_unloadCancellationToken, cancellationToken).Token;
 
-        await WhenInitialized(cancellationToken);
+        await WhenContextCreated(cancellationToken);
 
         await ExecuteUnderLockAsync(_ => action(this), cancellationToken);
     }
@@ -539,21 +532,24 @@ internal sealed class Workspace : OnceInitializedOnceDisposedUnderLockAsync, IWo
 
         cancellationToken = CancellationTokenSource.CreateLinkedTokenSource(_unloadCancellationToken, cancellationToken).Token;
 
-        await WhenInitialized(cancellationToken);
+        await WhenContextCreated(cancellationToken);
 
         return await ExecuteUnderLockAsync(_ => action(this), cancellationToken);
     }
 
-    private async Task WhenInitialized(CancellationToken cancellationToken)
+    private async Task WhenContextCreated(CancellationToken cancellationToken)
     {
         Verify.NotDisposed(this);
 
-        await _joinableTaskFactory.RunAsync(async () =>
+        // Join the same collection that's used by our dataflow nodes, so that if we are called on
+        // the main thread, we don't block anything that might prohibit dataflow from progressing
+        // this workspace's initialisation (leading to deadlock).
+        using (_joinableTaskCollection.Join())
         {
-            // We only have build data if we also have evaluation data, so this implies both have been integrated.
-            await _hasBuildData.Task.WithCancellation(cancellationToken);
+            // Ensure we have received enough data to create the context.
+            await _contextCreated.Task.WithCancellation(cancellationToken);
 
             Verify.NotDisposed(this);
-        });
+        }
     }
 }

@@ -567,7 +567,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
 
         private static void AssertDefaultOrEmpty(BaseProjectConfigurationDimensionProvider provider, IEnumerable<KeyValuePair<string, string>> result)
         {
-            if (provider.DimensionDefaultValue != null)
+            if (provider.DimensionDefaultValue is not null)
             {
                 Assert.Single(result);
                 Assert.Equal(provider.DimensionName, result.First().Key);

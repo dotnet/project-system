@@ -279,4 +279,33 @@
   <data name="JSWebView2DebuggingAdditionalText" xml:space="preserve">
     <value>(Requires the JavaScript Diagnostics component)</value>
   </data>
+  <data name="ImplicitUsingEditor_AddUsing" xml:space="preserve">
+    <value>Using</value>
+    <comment>Refers to the implicit using "includes" that will be added</comment>
+  </data>
+  <data name="ImplicitUsingEditor_AddUsingButton" xml:space="preserve">
+    <value>Add Using</value>
+  </data>
+  <data name="ImplicitUsingEditor_ListItemIncludes" xml:space="preserve">
+    <value>Using Includes</value>
+    <comment>Refers to the implicit using "Includes" text when displayed as a list item</comment>
+  </data>
+  <data name="ImplicitUsingEditor_ListItemAlias" xml:space="preserve">
+    <value>Alias</value>
+    <comment>Refers to the implicit using "Alias" text when displayed as a list item</comment>
+  </data>
+  <data name="ImplicitUsingEditor_ListItemIsStatic" xml:space="preserve">
+    <value>Static</value>
+    <comment>Refers to the implicit using "Static" value when displayed as a list item</comment>
+  </data>
+  <data name="ImplicitUsingEditor_ListItemDelete" xml:space="preserve">
+    <value>Delete</value>
+    <comment>The action of deleting an implicit using list item</comment>
+  </data>
+  <data name="ImplicitUsingEditor_ListViewAccessibleName" xml:space="preserve">
+    <value>Implicit global usings list</value>
+  </data>
+  <data name="ImplicitUsingEditor_ShowImportedUsingsButton" xml:space="preserve">
+    <value>Show imported usings</value>
+  </data>
 </root>

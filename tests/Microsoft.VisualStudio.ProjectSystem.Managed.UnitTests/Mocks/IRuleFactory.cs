@@ -31,7 +31,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
         {
             var rule = new Mock<IRule>();
 
-            if (properties != null)
+            if (properties is not null)
             {
                 rule.Setup(o => o.GetProperty(It.IsAny<string>()))
                     .Returns((string propertyName) =>
@@ -40,7 +40,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
                     });
             }
 
-            if (schema != null)
+            if (schema is not null)
             {
                 rule.Setup(o => o.Schema)
                     .Returns(schema);

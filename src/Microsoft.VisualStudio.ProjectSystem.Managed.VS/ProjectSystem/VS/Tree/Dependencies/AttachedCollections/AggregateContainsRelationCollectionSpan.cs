@@ -94,7 +94,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedColl
 
             bool? srcConsumed = null;
 
-            for (int itemIndex = 0; Items != null && itemIndex < Items.Count; itemIndex++)
+            for (int itemIndex = 0; Items is not null && itemIndex < Items.Count; itemIndex++)
             {
                 if (srcConsumed != false && !src.MoveNext())
                 {

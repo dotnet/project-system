@@ -122,11 +122,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 return log.Fail("CriticalTasks", nameof(Resources.FUTD_CriticalBuildTasksRunning));
             }
 
-            if (state.IsDisabled)
-            {
-                return log.Fail("Disabled", nameof(Resources.FUTD_DisableFastUpToDateCheckTrue));
-            }
-
             if (validateFirstRun && lastSuccessfulBuildStartTimeUtc is null)
             {
                 // We haven't observed a successful built yet. Therefore we don't know whether the set
@@ -316,7 +311,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
             IEnumerable<(string Path, string? ItemType, bool IsRequired)> CollectDefaultInputs()
             {
-                if (state.MSBuildProjectFullPath != null)
+                if (state.MSBuildProjectFullPath is not null)
                 {
                     log.Verbose(nameof(Resources.FUTD_AddingProjectFileInputs));
                     log.Indent++;
@@ -325,7 +320,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                     yield return (Path: state.MSBuildProjectFullPath, ItemType: null, IsRequired: true);
                 }
 
-                if (state.NewestImportInput != null)
+                if (state.NewestImportInput is not null)
                 {
                     log.Verbose(nameof(Resources.FUTD_AddingNewestImportInput));
                     log.Indent++;
@@ -629,7 +624,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
                 DateTime? sourceTime = timestampCache.GetTimestampUtc(source);
 
-                if (sourceTime != null)
+                if (sourceTime is not null)
                 {
                     log.Indent++;
                     log.Info(nameof(Resources.FUTD_SourceFileTimeAndPath_2), sourceTime, source);
@@ -642,7 +637,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
                 DateTime? destinationTime = timestampCache.GetTimestampUtc(destination);
 
-                if (destinationTime != null)
+                if (destinationTime is not null)
                 {
                     log.Indent++;
                     log.Info(nameof(Resources.FUTD_DestinationFileTimeAndPath_2), destinationTime, destination);
@@ -699,7 +694,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
                     DateTime? sourceTime = timestampCache.GetTimestampUtc(sourcePath);
 
-                    if (sourceTime != null)
+                    if (sourceTime is not null)
                     {
                         log.Info(nameof(Resources.FUTD_SourceFileTimeAndPath_2), sourceTime, sourcePath);
                     }
@@ -711,7 +706,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                     string destinationPath = Path.Combine(outputFullPath, filename);
                     DateTime? destinationTime = timestampCache.GetTimestampUtc(destinationPath);
 
-                    if (destinationTime != null)
+                    if (destinationTime is not null)
                     {
                         log.Info(nameof(Resources.FUTD_DestinationFileTimeAndPath_2), destinationTime, destinationPath);
                     }
@@ -896,6 +891,20 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                             logger.Indent++;
                         }
 
+                        if (implicitState.IsDisabled)
+                        {
+                            if (isValidationRun)
+                            {
+                                // We don't run validation if the FUTDC is disabled. So pretend we're up to date.
+                                return (true, checkedConfigurations);
+                            }
+                            else
+                            {
+                                logger.Fail("Disabled", nameof(Resources.FUTD_DisableFastUpToDateCheckTrue));
+                                return (false, checkedConfigurations);
+                            }
+                        }
+
                         string? path = _configuredProject.UnconfiguredProject.FullPath;
 
                         DateTime? lastSuccessfulBuildStartTimeUtc = path is null
@@ -913,7 +922,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                         {
                             return (false, checkedConfigurations);
                         }
-                        
+
                         if (logConfigurations)
                         {
                             logger.Indent--;

@@ -14,19 +14,19 @@ namespace Microsoft.VisualStudio.ProjectSystem.Build
         {
             var mock = new Mock<IImplicitlyTriggeredBuildManager2>();
 
-            if (onImplicitBuildStart != null)
+            if (onImplicitBuildStart is not null)
             {
                 mock.Setup(t => t.OnBuildStart())
                     .Callback(onImplicitBuildStart);
             }
 
-            if (onImplicitBuildEndOrCancel != null)
+            if (onImplicitBuildEndOrCancel is not null)
             {
                 mock.Setup(t => t.OnBuildEndOrCancel())
                     .Callback(onImplicitBuildEndOrCancel);
             }
 
-            if (onImplictBuildStartWithStartupPaths != null)
+            if (onImplictBuildStartWithStartupPaths is not null)
             {
                 mock.Setup(t => t.OnBuildStart(It.IsAny<ImmutableArray<string>>()))
                     .Callback(onImplictBuildStartWithStartupPaths);

@@ -46,11 +46,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
                     {
                         string? projectPath = hier.GetProjectFilePath();
 
-                        if (projectPath != null)
+                        if (projectPath is not null)
                         {
                             T? export = _projectExportProvider.GetExport<T>(projectPath);
 
-                            if (export != null)
+                            if (export is not null)
                             {
                                 results.Add(export);
                             }
@@ -76,7 +76,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
 
                     string? projectPath = hier?.GetProjectFilePath();
 
-                    if (projectPath != null)
+                    if (projectPath is not null)
                     {
                         results.Add(projectPath);
                     }

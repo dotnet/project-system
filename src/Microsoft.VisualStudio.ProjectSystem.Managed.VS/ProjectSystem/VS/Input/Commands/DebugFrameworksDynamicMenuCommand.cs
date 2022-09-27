@@ -41,7 +41,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
                     foreach (IActiveDebugFrameworkServices activeDebugFramework in activeDebugFrameworks)
                     {
                         List<string>? frameworks = await activeDebugFramework.GetProjectFrameworksAsync();
-                        if (frameworks != null && cmdIndex >= 0 && cmdIndex < frameworks.Count)
+                        if (frameworks is not null && cmdIndex >= 0 && cmdIndex < frameworks.Count)
                         {
                             await activeDebugFramework.SetActiveDebuggingFrameworkPropertyAsync(frameworks[cmdIndex]);
                             handled = true;
@@ -73,7 +73,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
                     {
                         frameworks = await activeDebugFramework.GetProjectFrameworksAsync();
 
-                        if (first == null)
+                        if (first is null)
                         {
                             first = frameworks;
                         }
@@ -94,7 +94,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
                     }
                 });
 
-                if (frameworks == null || frameworks.Count < 2)
+                if (frameworks is null || frameworks.Count < 2)
                 {
                     // Hide and disable the command
                     Visible = false;

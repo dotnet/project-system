@@ -8,25 +8,25 @@ namespace Microsoft.VisualStudio.ProjectSystem
         {
             var mock = new Mock<IUnconfiguredProjectServices>();
 
-            if (asyncTaskService != null)
+            if (asyncTaskService is not null)
             {
                 mock.Setup(s => s.ProjectAsynchronousTasks)
                     .Returns(asyncTaskService);
             }
 
-            if (activeConfiguredProjectProvider != null)
+            if (activeConfiguredProjectProvider is not null)
             {
                 mock.Setup(s => s.ActiveConfiguredProjectProvider)
                     .Returns(activeConfiguredProjectProvider);
             }
 
-            if (projectConfigurationsService != null)
+            if (projectConfigurationsService is not null)
             {
                 mock.Setup(s => s.ProjectConfigurationsService)
                     .Returns(projectConfigurationsService);
             }
 
-            if (projectService != null)
+            if (projectService is not null)
             {
                 mock.Setup(s => s.ProjectService)
                     .Returns(projectService);

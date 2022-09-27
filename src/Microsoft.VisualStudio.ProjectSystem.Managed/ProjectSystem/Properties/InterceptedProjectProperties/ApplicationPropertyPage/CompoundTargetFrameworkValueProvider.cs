@@ -29,6 +29,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         private bool? _useWPFProperty;
         private bool? _useWindowsFormsProperty;
 
+        private static readonly string[] s_msBuildPropertyNames = { TargetFrameworkProperty, TargetPlatformProperty, TargetPlatformVersionProperty, SupportedOSPlatformVersionProperty };
+
         private struct ComplexTargetFramework
         {
             public string? TargetFrameworkMoniker;
@@ -50,11 +52,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
             return await GetStoredComplexTargetFrameworkAsync(configuration);
         }
 
+        public override Task<bool> IsValueDefinedInContextAsync(string propertyName, IProjectProperties defaultProperties)
+        {
+            return IsValueDefinedInContextMsBuildPropertiesAsync(defaultProperties, s_msBuildPropertyNames);
+        }
+
         public override async Task<string?> OnSetPropertyValueAsync(string propertyName, string unevaluatedPropertyValue, IProjectProperties defaultProperties, IReadOnlyDictionary<string, string>? dimensionalConditions = null)
         {
             ComplexTargetFramework storedProperties = await GetStoredPropertiesAsync();
 
-            if (storedProperties.TargetFrameworkMoniker != null)
+            if (storedProperties.TargetFrameworkMoniker is not null)
             {
                 // Changing the Target Framework Moniker
                 if (StringComparers.PropertyLiteralValues.Equals(propertyName, InterceptedTargetFrameworkProperty))
@@ -240,7 +247,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
 
             IImmutableDictionary<string, string>? targetFrameworkProperties = targetFrameworkRuleSnapshot.GetProjectItemProperties(targetFrameworkMoniker);
 
-            if (targetFrameworkProperties != null &&
+            if (targetFrameworkProperties is not null &&
                 targetFrameworkProperties.TryGetValue(SupportedTargetFramework.AliasProperty, out string? targetFrameworkAlias))
             {
                 return targetFrameworkAlias;

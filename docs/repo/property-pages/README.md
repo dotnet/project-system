@@ -21,7 +21,7 @@ To customise or extend the properties displayed for a given project start with t
 And then check these documents for more details:
 
 - [Property Specification](property-specification.md)
-- [Visibility Conditions](visibility-conditions.md)
+- [Property (including visibility) Conditions](property-conditions.md)
 - [Localization](localization.md)
 - [Validating string property values](string-property-validation.md)
 - [Property Value Interception](property-value-interception.md)

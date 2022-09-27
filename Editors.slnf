@@ -1,0 +1,10 @@
+{
+  "solution": {
+    "path": "ProjectSystem.sln",
+    "projects": [
+      "setup\\VisualStudioEditorsSetup\\VisualStudioEditorsSetup.csproj",
+      "src\\Microsoft.VisualStudio.AppDesigner\\Microsoft.VisualStudio.AppDesigner.vbproj",
+      "src\\Microsoft.VisualStudio.Editors\\Microsoft.VisualStudio.Editors.vbproj"
+    ]
+  }
+}

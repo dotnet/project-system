@@ -21,7 +21,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
             {
                 if (obj is LaunchType oth)
                 {
-                    return CommandName?.Equals(oth.CommandName) ?? oth.CommandName == null;
+                    return CommandName?.Equals(oth.CommandName) ?? oth.CommandName is null;
                 }
 
                 return false;

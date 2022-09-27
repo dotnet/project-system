@@ -143,14 +143,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
         {
             if (!_disposedValue)
             {
-                if (disposing && _subscription != null)
+                if (disposing && _subscription is not null)
                 {
                     // Build manager APIs require UI thread access.
                     _threadingService.ExecuteSynchronously(async () =>
                     {
                         await _threadingService.SwitchToUIThread();
 
-                        if (_subscription != null)
+                        if (_subscription is not null)
                         {
                             // Unregister solution build events.
                             await _subscription.DisposeAsync();

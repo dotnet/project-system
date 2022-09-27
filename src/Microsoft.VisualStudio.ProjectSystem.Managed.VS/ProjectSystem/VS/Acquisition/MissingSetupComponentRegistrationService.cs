@@ -31,6 +31,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
 
         private static readonly ImmutableHashSet<string> s_supportedReleaseChannelWorkloads = ImmutableHashSet.Create(StringComparers.WorkloadNames, WasmToolsWorkloadName);
 
+        private readonly object _webComponentIdsDetectedLock = new();
+        private readonly ConcurrentHashSet<string> _webComponentIdsDetected;
         private readonly ConcurrentHashSet<string> _missingRuntimesRegistered = new(StringComparers.WorkloadNames);
         private readonly ConcurrentDictionary<Guid, IConcurrentHashSet<WorkloadDescriptor>> _projectGuidToWorkloadDescriptorsMap;
         private readonly ConcurrentDictionary<Guid, string> _projectGuidToRuntimeDescriptorMap;
@@ -60,6 +62,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             Lazy<IProjectThreadingService> threadHandling,
             IProjectFaultHandlerService projectFaultHandlerService)
         {
+            _webComponentIdsDetected = new();
             _projectGuidToWorkloadDescriptorsMap = new();
             _projectGuidToProjectConfigurationsMap = new();
             _projectGuidToRuntimeDescriptorMap = new();
@@ -76,7 +79,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         {
             get
             {
-                if (_projectPathToProjectConfigurationsMap == null)
+                if (_projectPathToProjectConfigurationsMap is null)
                 {
                     Interlocked.CompareExchange(ref _projectPathToProjectConfigurationsMap, new(), null);
                 }
@@ -106,6 +109,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
 
         private void ClearMissingWorkloadMetadata()
         {
+            _webComponentIdsDetected.Clear();
             _missingRuntimesRegistered.Clear();
             _projectGuidToRuntimeDescriptorMap.Clear();
             _projectGuidToWorkloadDescriptorsMap.Clear();
@@ -122,6 +126,40 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             }
 
             UnregisterProjectConfiguration(projectGuid, project);
+        }
+
+        public void RegisterMissingWebWorkloads(Guid projectGuid, ConfiguredProject project, ISet<WorkloadDescriptor> workloadDescriptors)
+        {
+            if (AreNewComponentIdsToRegister(workloadDescriptors))
+            {
+                return;
+            }
+
+            var workloadDescriptorSet = _projectGuidToWorkloadDescriptorsMap.GetOrAdd(projectGuid, guid => new ConcurrentHashSet<WorkloadDescriptor>());
+            workloadDescriptorSet.AddRange(workloadDescriptors);
+
+            DisplayMissingComponentsPromptIfNeeded(project);
+
+            bool AreNewComponentIdsToRegister(ISet<WorkloadDescriptor> workloadDescriptors)
+            {
+                bool notFound = false;
+                foreach (var workloadDescriptor in workloadDescriptors)
+                {
+                    foreach (var componentId in workloadDescriptor.VisualStudioComponentIds)
+                    {
+                        lock (_webComponentIdsDetectedLock)
+                        {
+                            if (!_webComponentIdsDetected.Contains(componentId))
+                            {
+                                notFound = true;
+                                _webComponentIdsDetected.Add(componentId);
+                            }
+                        }
+                    }
+                }
+
+                return !notFound;
+            }
         }
 
         public void RegisterPossibleMissingSdkRuntimeVersion(Guid projectGuid, ConfiguredProject project, string runtimeVersion)
@@ -142,7 +180,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
 
         public void RegisterProjectConfiguration(Guid projectGuid, ConfiguredProject project)
         {
-            if (project.ProjectConfiguration == null)
+            if (project.ProjectConfiguration is null)
             {
                 const string errorMessage = "Cannot register the project configuration for a null project configuration.";
                 TraceUtilities.TraceError(errorMessage);
@@ -174,14 +212,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         public void UnregisterProjectConfiguration(Guid projectGuid, ConfiguredProject project)
         {
             RemoveConfiguration(projectGuid, project);
-
-            bool displayMissingComponentsPrompt = ShouldDisplayMissingComponentsPrompt();
-            if (displayMissingComponentsPrompt)
-            {
-                var displayMissingComponentsTask = DisplayMissingComponentsPromptAsync();
-
-                _projectFaultHandlerService.Forget(displayMissingComponentsTask, project: project.UnconfiguredProject, ProjectFaultSeverity.Recoverable);
-            }
+            DisplayMissingComponentsPromptIfNeeded(project);
 
             void RemoveConfiguration(Guid projectGuid, ConfiguredProject project)
             {
@@ -195,8 +226,19 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                 {
                     _projectGuidToProjectConfigurationsMap.TryGetValue(projectGuid, out projectConfigurationSet);
                 }
-                
+
                 projectConfigurationSet?.Remove(project.ProjectConfiguration);
+            }
+        }
+
+        private void DisplayMissingComponentsPromptIfNeeded(ConfiguredProject project)
+        {
+            bool displayMissingComponentsPrompt = ShouldDisplayMissingComponentsPrompt();
+            if (displayMissingComponentsPrompt)
+            {
+                var displayMissingComponentsTask = DisplayMissingComponentsPromptAsync();
+
+                _projectFaultHandlerService.Forget(displayMissingComponentsTask, project: project.UnconfiguredProject, ProjectFaultSeverity.Recoverable);
             }
         }
 
@@ -235,16 +277,20 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             }
 
             var setupCompositionService = await _vsSetupCompositionService.GetValueAsync();
+            if (setupCompositionService is null)
+            {
+                return;
+            }
 
             IReadOnlyDictionary<Guid, IReadOnlyCollection<string>>? vsComponentIdsToRegister = ComputeVsComponentIdsToRegister(setupCompositionService);
-            if (vsComponentIdsToRegister == null)
+            if (vsComponentIdsToRegister is null)
             {
                 return;
             }
 
             var serviceBrokerContainer = await _serviceBrokerContainer.GetValueAsync();
             IServiceBroker? serviceBroker = serviceBrokerContainer?.GetFullAccessServiceBroker();
-            if (serviceBroker == null)
+            if (serviceBroker is null)
             {
                 return;
             }
@@ -254,7 +300,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
 
             using (missingWorkloadRegistrationService as IDisposable)
             {
-                if (missingWorkloadRegistrationService != null)
+                if (missingWorkloadRegistrationService is not null)
                 {
                     await missingWorkloadRegistrationService.RegisterMissingComponentsAsync(vsComponentIdsToRegister, cancellationToken: default);
                 }
@@ -381,7 +427,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
 
             if (_solutionCookie != VSConstants.VSCOOKIE_NIL)
             {
-                if (_vsSolution != null)
+                if (_vsSolution is not null)
                 {
                     Verify.HResult(_vsSolution.UnadviseSolutionEvents(_solutionCookie));
                     _solutionCookie = VSConstants.VSCOOKIE_NIL;

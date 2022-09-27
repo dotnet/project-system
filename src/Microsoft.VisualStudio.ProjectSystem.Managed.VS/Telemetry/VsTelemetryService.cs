@@ -51,11 +51,11 @@ namespace Microsoft.VisualStudio.Telemetry
         private void PostTelemetryEvent(TelemetryEvent telemetryEvent)
         {
 #if DEBUG
-            Assumes.True(telemetryEvent.Name.StartsWith(TelemetryEventName.Prefix, StringComparisons.TelemetryEventNames));
+            Assumes.True(telemetryEvent.Name.StartsWith("vs/projectsystem/managed/", StringComparisons.TelemetryEventNames));
 
             foreach (string propertyName in telemetryEvent.Properties.Keys)
             {
-                Assumes.True(propertyName.StartsWith(TelemetryPropertyName.Prefix, StringComparisons.TelemetryEventNames));
+                Assumes.True(propertyName.StartsWith("vs.projectsystem.managed.", StringComparisons.TelemetryEventNames));
             }
 #endif
 

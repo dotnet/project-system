@@ -1,0 +1,103 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!--Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.-->
+<Rule Name="Resource"
+      PageTemplate="generic"
+      PropertyPagesHidden="true"
+      xmlns="http://schemas.microsoft.com/build/2009/properties">
+  <Rule.DataSource>
+    <DataSource HasConfigurationCondition="False"
+                ItemType="Resource"
+                Persistence="ProjectFile"
+                SourceOfDefaultValue="AfterContext" />
+  </Rule.DataSource>
+
+  <DynamicEnumProperty Name="{}{ItemType}"
+                       EnumProvider="ItemTypes" />
+
+  <BoolProperty Name="AutoGen"
+                Visible="false" />
+
+  <EnumProperty Name="CopyToOutputDirectory">
+    <EnumValue Name="Never" />
+    <EnumValue Name="Always" />
+    <EnumValue Name="PreserveNewest" />
+  </EnumProperty>
+
+  <StringProperty Name="CustomTool"
+                  Visible="false">
+    <StringProperty.DataSource>
+      <DataSource HasConfigurationCondition="False"
+                  ItemType="Resource"
+                  PersistedName="Generator"
+                  Persistence="ProjectFile"
+                  SourceOfDefaultValue="AfterContext" />
+    </StringProperty.DataSource>
+  </StringProperty>
+
+  <StringProperty Name="CustomToolNamespace" />
+
+  <StringProperty Name="DependentUpon"
+                  Visible="false">
+    <StringProperty.Metadata>
+      <NameValuePair Name="DoNotCopyAcrossProjects"
+                     Value="true" />
+    </StringProperty.Metadata>
+  </StringProperty>
+
+  <BoolProperty Name="DesignTime"
+                Visible="false" />
+
+  <BoolProperty Name="DesignTimeSharedInput"
+                Visible="false" />
+
+  <StringProperty Name="Generator" />
+
+  <StringProperty Name="LastGenOutput"
+                  Visible="false" />
+
+  <StringProperty Name="Link"
+                  Visible="false">
+    <StringProperty.DataSource>
+      <DataSource PersistenceStyle="Attribute"
+                  SourceOfDefaultValue="AfterContext" />
+    </StringProperty.DataSource>
+    <StringProperty.Metadata>
+      <NameValuePair Name="DoNotCopyAcrossProjects"
+                     Value="true" />
+    </StringProperty.Metadata>
+  </StringProperty>
+
+  <StringProperty Name="NuGetPackageId"
+                  Visible="false">
+    <StringProperty.Metadata>
+      <NameValuePair Name="DoNotCopyAcrossProjects"
+                     Value="true" />
+    </StringProperty.Metadata>
+  </StringProperty>
+
+  <StringProperty Name="SubType"
+                  Visible="false">
+    <StringProperty.DataSource>
+      <DataSource Persistence="DesignTimeItemPropertiesStorage"
+                  ItemType="Resource"
+                  PersistedName="SubType"
+                  HasConfigurationCondition="false"/>
+    </StringProperty.DataSource>
+  </StringProperty>
+
+  <StringProperty Name="TargetPath"
+                  Visible="false">
+    <StringProperty.DataSource>
+      <DataSource PersistenceStyle="Attribute"
+                  SourceOfDefaultValue="AfterContext" />
+    </StringProperty.DataSource>
+    <StringProperty.Metadata>
+      <NameValuePair Name="DoNotCopyAcrossProjects"
+                     Value="true" />
+    </StringProperty.Metadata>
+  </StringProperty>
+
+  <BoolProperty Name="Visible"
+                Visible="false" />
+
+</Rule>

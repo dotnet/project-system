@@ -7,15 +7,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices;
 /// </summary>
 internal sealed class BuildUpdate
 {
-    public BuildUpdate(ConfiguredProject configuredProject, IProjectSubscriptionUpdate buildRuleUpdate, CommandLineArgumentsSnapshot commandLineArgumentsSnapshot)
+    public BuildUpdate(ConfiguredProject configuredProject, IProjectSubscriptionUpdate buildRuleUpdate)
     {
         Requires.NotNull(configuredProject, nameof(configuredProject));
         Requires.NotNull(buildRuleUpdate, nameof(buildRuleUpdate));
-        Requires.NotNull(commandLineArgumentsSnapshot, nameof(commandLineArgumentsSnapshot));
 
         ConfiguredProject = configuredProject;
         BuildRuleUpdate = buildRuleUpdate;
-        CommandLineArgumentsSnapshot = commandLineArgumentsSnapshot;
     }
 
     /// <summary>
@@ -28,6 +26,4 @@ internal sealed class BuildUpdate
     public ConfiguredProject ConfiguredProject { get; }
 
     public IProjectSubscriptionUpdate BuildRuleUpdate { get; }
-
-    public CommandLineArgumentsSnapshot CommandLineArgumentsSnapshot { get; }
 }

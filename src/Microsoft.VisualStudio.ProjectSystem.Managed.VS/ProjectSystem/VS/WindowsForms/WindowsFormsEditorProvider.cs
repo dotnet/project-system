@@ -47,11 +47,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.WindowsForms
             Requires.NotNullOrEmpty(documentMoniker, nameof(documentMoniker));
 
             IProjectSpecificEditorInfo? editor = await GetDefaultEditorAsync(documentMoniker);
-            if (editor == null)
+            if (editor is null)
                 return null;
 
             SubTypeDescriptor? descriptor = await GetSubTypeDescriptorAsync(documentMoniker);
-            if (descriptor == null)
+            if (descriptor is null)
                 return null;
 
             bool isDefaultEditor = await _options.Value.GetUseDesignerByDefaultAsync(descriptor.SubType, descriptor.UseDesignerByDefault);
@@ -64,7 +64,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.WindowsForms
             Requires.NotNullOrEmpty(documentMoniker, nameof(documentMoniker));
 
             SubTypeDescriptor? editorInfo = await GetSubTypeDescriptorAsync(documentMoniker);
-            if (editorInfo == null)
+            if (editorInfo is null)
                 return false;
 
             // 'useGlobalEditor' means use the default editor that is registered for source files
@@ -75,7 +75,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.WindowsForms
         private async Task<IProjectSpecificEditorInfo?> GetDefaultEditorAsync(string documentMoniker)
         {
             IProjectSpecificEditorProvider? defaultProvider = GetDefaultEditorProvider();
-            if (defaultProvider == null)
+            if (defaultProvider is null)
                 return null;
 
             return await defaultProvider.GetSpecificEditorAsync(documentMoniker);
@@ -84,7 +84,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.WindowsForms
         private async Task<SubTypeDescriptor?> GetSubTypeDescriptorAsync(string documentMoniker)
         {
             string? subType = await GetSubTypeAsync(documentMoniker);
-            if (subType != null)
+            if (subType is not null)
             {
                 foreach (SubTypeDescriptor descriptor in s_subTypeDescriptors)
                 {
@@ -99,13 +99,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.WindowsForms
         private async Task<string?> GetSubTypeAsync(string documentMoniker)
         {
             IProjectItemTree? item = await FindCompileItemByMonikerAsync(documentMoniker);
-            if (item == null)
+            if (item is null)
                 return null;
 
             ConfiguredProject? project = await _project.GetSuggestedConfiguredProjectAsync();
 
             IRule? browseObject = GetBrowseObjectProperties(project!, item);
-            if (browseObject == null)
+            if (browseObject is null)
                 return null;
 
             return await browseObject.GetPropertyValueAsync(Compile.SubTypeProperty);

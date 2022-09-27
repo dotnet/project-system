@@ -44,7 +44,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Rules
                     .Element(XName.Get(dataSourceElementName, MSBuildNamespace))
                     ?.Element(XName.Get("DataSource", MSBuildNamespace));
 
-                if (dataSource == null)
+                if (dataSource is null)
                 {
                     throw new Xunit.Sdk.XunitException($"Resolved dependency rule {ruleName} has visible, non-readonly property {property.Attribute("Name")} with no {dataSourceElementName} value.");
                 }

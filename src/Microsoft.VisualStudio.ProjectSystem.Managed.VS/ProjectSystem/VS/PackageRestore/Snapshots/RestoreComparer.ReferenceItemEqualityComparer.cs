@@ -24,7 +24,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
 
             public override int GetHashCode(IVsReferenceItem? obj)
             {
-                if (obj == null)
+                if (obj is null)
                     return 0;
 
                 return obj.Name.GetHashCode();

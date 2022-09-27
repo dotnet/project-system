@@ -15,6 +15,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
         public const string FSharpAppDesigner = FSharp + " & " + AppDesigner;
         public const string CSharpOrVisualBasic = "(" + ProjectCapabilities.CSharp + " | " + ProjectCapabilities.VB + ")";
         public const string CSharpOrVisualBasicLanguageService = CSharpOrVisualBasic + " & " + LanguageService;
+        public const string RazorAndEitherWinFormsOrWpf = "(" + DotNetRazor + "|" + "(" + WindowsForms + "&" + WPF + ")" + ")";
 
         public const string AppDesigner = nameof(AppDesigner);
         public const string AppSettings = nameof(AppSettings);
@@ -33,6 +34,12 @@ namespace Microsoft.VisualStudio.ProjectSystem
         public const string UseProjectEvaluationCache = ProjectCapabilities.UseProjectEvaluationCache;
         public const string SingleTargetBuildForStartupProjects = nameof(SingleTargetBuildForStartupProjects);
         public const string ProjectPropertyInterception = nameof(ProjectPropertyInterception);
+        public const string WindowsForms = nameof(WindowsForms);
+        public const string WPF = nameof(WPF);
+        public const string SupportUniversalAuthentication = nameof(SupportUniversalAuthentication);
+
+        public const string DotNet = ".NET";
+        public const string DotNetRazor = "DotNetCoreRazor";
 
         /// <summary>
         /// Instructs CPS to order tree items according to the <see cref="IProjectTree2.DisplayOrder"/> property first.
@@ -47,9 +54,5 @@ namespace Microsoft.VisualStudio.ProjectSystem
         /// Used by F# projects, for which item order is significant to compilation.
         /// </summary>
         public const string EditableDisplayOrder = nameof(EditableDisplayOrder);
-
-        public const string DotNet = ".NET";
-        public const string WindowsForms = nameof(WindowsForms);
-        public const string WPF = nameof(WPF);
     }
 }

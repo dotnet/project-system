@@ -112,7 +112,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.ProjectImports
                                 // This avoids a race condition between the (locked) changing of _showAllFiles and the (locked) changing
                                 // of _subscriptions. Even if there is a race, the right number of toggles will occur and the end result
                                 // will be correct.
-                                if (_subscriptions == null)
+                                if (_subscriptions is null)
                                 {
                                     SetUpTree();
                                 }
@@ -134,7 +134,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.ProjectImports
                             (currentTree, configuredProjectExports, token) =>
                             {
                                 // Update (make visible) or create a new tree if no prior one exists
-                                IProjectTree tree = currentTree == null
+                                IProjectTree tree = currentTree is null
                                     ? NewTree(Resources.ImportsTreeNodeName, icon: s_rootIcon, flags: s_projectImportsTreeRootFlags)
                                     : currentTree.Value.Tree.SetVisible(true);
 
