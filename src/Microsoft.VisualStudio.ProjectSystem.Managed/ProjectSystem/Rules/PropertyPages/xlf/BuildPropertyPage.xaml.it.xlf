@@ -177,6 +177,16 @@
         <target state="translated">Assegnazione di nome sicuro</target>
         <note />
       </trans-unit>
+      <trans-unit id="DynamicEnumProperty|DefineConstants|Description">
+        <source>Specifies symbols on which to perform conditional compilation. Separate symbols with a semi-colon (';').</source>
+        <target state="new">Specifies symbols on which to perform conditional compilation. Separate symbols with a semi-colon (';').</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="DynamicEnumProperty|DefineConstants|DisplayName">
+        <source>Conditional compilation symbols</source>
+        <target state="new">Conditional compilation symbols</target>
+        <note />
+      </trans-unit>
       <trans-unit id="DynamicEnumProperty|PlatformTarget|Description">
         <source>Specifies the processor to be targeted by the output file. Choose 'Any CPU' to specify that any processor is acceptable, allowing the application to run on the broadest range of hardware.</source>
         <target state="translated">Specifica il processore impostato come destinazione per il file di output. Scegliere 'Any CPU' per specificare che qualsiasi processore è accettabile, in modo da consentire l'esecuzione dell'applicazione nella più ampia gamma di dispositivi hardware.</target>
@@ -430,16 +440,6 @@
       <trans-unit id="StringProperty|BaseOutputPath|DisplayName">
         <source>Base output path</source>
         <target state="translated">Percorso base dell'output</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="StringProperty|DefineConstants|Description">
-        <source>Specifies symbols on which to perform conditional compilation. Separate symbols with a semi-colon (';').</source>
-        <target state="translated">Specifica i simboli su cui eseguire la compilazione condizionale. Separare i simboli con un punto e virgola (';').</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="StringProperty|DefineConstants|DisplayName">
-        <source>Conditional compilation symbols</source>
-        <target state="translated">Simboli di compilazione condizionale</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|DocumentationFile|Description">

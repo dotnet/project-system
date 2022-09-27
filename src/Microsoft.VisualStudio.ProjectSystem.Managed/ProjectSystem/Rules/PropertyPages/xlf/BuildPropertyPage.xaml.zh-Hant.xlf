@@ -177,6 +177,16 @@
         <target state="translated">強式命名</target>
         <note />
       </trans-unit>
+      <trans-unit id="DynamicEnumProperty|DefineConstants|Description">
+        <source>Specifies symbols on which to perform conditional compilation. Separate symbols with a semi-colon (';').</source>
+        <target state="new">Specifies symbols on which to perform conditional compilation. Separate symbols with a semi-colon (';').</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="DynamicEnumProperty|DefineConstants|DisplayName">
+        <source>Conditional compilation symbols</source>
+        <target state="new">Conditional compilation symbols</target>
+        <note />
+      </trans-unit>
       <trans-unit id="DynamicEnumProperty|PlatformTarget|Description">
         <source>Specifies the processor to be targeted by the output file. Choose 'Any CPU' to specify that any processor is acceptable, allowing the application to run on the broadest range of hardware.</source>
         <target state="translated">指定輸出檔案要鎖定的處理器。選擇 'Any CPU' 以指定任何可接受的處理器，讓應用程式在最廣泛的硬體上執行。</target>
@@ -430,16 +440,6 @@
       <trans-unit id="StringProperty|BaseOutputPath|DisplayName">
         <source>Base output path</source>
         <target state="translated">基底輸出路徑</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="StringProperty|DefineConstants|Description">
-        <source>Specifies symbols on which to perform conditional compilation. Separate symbols with a semi-colon (';').</source>
-        <target state="translated">指定要執行條件式編譯的符號。請使用分號 (';') 來分隔符號。</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="StringProperty|DefineConstants|DisplayName">
-        <source>Conditional compilation symbols</source>
-        <target state="translated">條件式編譯符號</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|DocumentationFile|Description">

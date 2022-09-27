@@ -37,12 +37,26 @@
                 SourceOfDefaultValue="AfterContext"
                 HasConfigurationCondition="True" />
   </Rule.DataSource>
-
-  <StringProperty Name="DefineConstants"
+  
+  <DynamicEnumProperty 
+                  Name="DefineConstants" 
                   DisplayName="Conditional compilation symbols"
                   Description="Specifies symbols on which to perform conditional compilation. Separate symbols with a semi-colon (';')."
                   HelpUrl="https://go.microsoft.com/fwlink/?linkid=2147079"
-                  Category="General" />
+                  Category="General">
+    <DynamicEnumProperty.DataSource>
+      <DataSource Persistence="ProjectFileWithInterception"
+                  HasConfigurationCondition="True" />
+    </DynamicEnumProperty.DataSource>
+    <!--<DynamicEnumProperty.ValueEditors>
+      <ValueEditor EditorType="MultiStringSelector">
+        <ValueEditor.Metadata>
+          <NameValuePair Name="TypeDescriptorText" Value="Custom symbols" />
+          <NameValuePair Name="AllowsCustomStrings" Value="True" />
+        </ValueEditor.Metadata>
+      </ValueEditor>
+    </DynamicEnumProperty.ValueEditors>-->
+  </DynamicEnumProperty>
 
   <DynamicEnumProperty Name="PlatformTarget"
                 DisplayName="Platform target"

@@ -177,6 +177,16 @@
         <target state="translated">Nadawanie silnych nazw</target>
         <note />
       </trans-unit>
+      <trans-unit id="DynamicEnumProperty|DefineConstants|Description">
+        <source>Specifies symbols on which to perform conditional compilation. Separate symbols with a semi-colon (';').</source>
+        <target state="new">Specifies symbols on which to perform conditional compilation. Separate symbols with a semi-colon (';').</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="DynamicEnumProperty|DefineConstants|DisplayName">
+        <source>Conditional compilation symbols</source>
+        <target state="new">Conditional compilation symbols</target>
+        <note />
+      </trans-unit>
       <trans-unit id="DynamicEnumProperty|PlatformTarget|Description">
         <source>Specifies the processor to be targeted by the output file. Choose 'Any CPU' to specify that any processor is acceptable, allowing the application to run on the broadest range of hardware.</source>
         <target state="translated">Określa procesor, który ma być docelowo określany przez plik wyjściowy. Wybierz opcję "Dowolny procesor", aby określić, że dowolny procesor jest akceptowalny, co pozwoli aplikacji działać w najszerszym zakresie sprzętu.</target>
@@ -430,16 +440,6 @@
       <trans-unit id="StringProperty|BaseOutputPath|DisplayName">
         <source>Base output path</source>
         <target state="translated">Podstawowa ścieżka wyjściowa</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="StringProperty|DefineConstants|Description">
-        <source>Specifies symbols on which to perform conditional compilation. Separate symbols with a semi-colon (';').</source>
-        <target state="translated">Określa symbole, dla których ma być wykonywana kompilacja warunkowa. Rozdziel symbole średnikami („;”).</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="StringProperty|DefineConstants|DisplayName">
-        <source>Conditional compilation symbols</source>
-        <target state="translated">Symbole kompilacji warunkowej</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|DocumentationFile|Description">

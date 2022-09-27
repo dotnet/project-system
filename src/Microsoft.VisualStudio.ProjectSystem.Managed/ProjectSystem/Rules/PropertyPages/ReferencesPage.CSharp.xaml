@@ -18,6 +18,9 @@
                 HasConfigurationCondition="False" />
   </Rule.DataSource>
 
+  <DynamicEnumProperty Name="Test" EnumProvider="DefineConstantsEnumProvider3" />
+
+  
   <BoolProperty Name="ImplicitUsings"
                 DisplayName="Implicit global usings"
                 Description="Enable implicit global usings to be declared by the project SDK."
