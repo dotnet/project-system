@@ -82,7 +82,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
         [Fact]
         public async Task Dispose_WhenNotInitialized_DoesNotThrow()
         {
-            var project = UnconfiguredProjectFactory.Create();
+            var project = UnconfiguredProjectFactory.CreateWithActiveConfiguredProjectProvider(IProjectThreadingServiceFactory.Create());
 
             var loader = CreateInstance(project, out _);
 
