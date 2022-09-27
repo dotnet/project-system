@@ -415,6 +415,47 @@ namespace Microsoft.VisualStudio.ProjectSystem
         ///     skipping intermediate input and output states, and hence is not suitable for producing or consuming
         ///     deltas.
         /// </summary>
+        /// <typeparam name="TInput">
+        ///     The type of the input value produced by <paramref name="source"/>.
+        /// </typeparam>
+        /// <typeparam name="TOut">
+        ///     The type of value produced by <paramref name="transform"/>.
+        ///  </typeparam>
+        /// <param name="source">
+        ///     The source block whose values are to be transformed.
+        /// </param>
+        /// <param name="transform">
+        ///     The function to execute on each value from <paramref name="source"/>.
+        /// </param>
+        /// <returns>
+        ///     The transformed source block and a disposable value that terminates the link.
+        /// </returns>
+        /// <exception cref="ArgumentNullException">
+        ///     <paramref name="source"/> is <see langword="null"/>.
+        ///     <para>
+        ///         -or-
+        ///     </para>
+        ///     <paramref name="transform"/> is <see langword="null"/>.
+        /// </exception>
+        public static DisposableValue<ISourceBlock<TOut>> TransformWithNoDelta<TInput, TOut>(
+            this ISourceBlock<IProjectVersionedValue<TInput>> source,
+            Func<IProjectVersionedValue<TInput>, Task<TOut>> transform)
+        {
+            Requires.NotNull(source, nameof(source));
+            Requires.NotNull(transform, nameof(transform));
+
+            IPropagatorBlock<IProjectVersionedValue<TInput>, TOut> transformBlock = DataflowBlockSlim.CreateTransformBlock(transform, skipIntermediateInputData: true, skipIntermediateOutputData: true);
+
+            IDisposable link = source.LinkTo(transformBlock, DataflowOption.PropagateCompletion);
+
+            return new DisposableValue<ISourceBlock<TOut>>(transformBlock, link);
+        }
+
+        /// <summary>
+        ///     Creates a source block that produces a transformed value for each value from original source block,
+        ///     skipping intermediate input and output states, and hence is not suitable for producing or consuming
+        ///     deltas.
+        /// </summary>
         /// <typeparam name="TOut">
         ///     The type of value produced by <paramref name="transform"/>.
         ///  </typeparam>
