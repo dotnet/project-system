@@ -130,16 +130,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
             };
         }
 
-        private static async Task<bool> IsWPFApplicationAsync(IProjectProperties defaultProperties)
+        private async Task<bool> IsWPFApplicationAsync(IProjectProperties defaultProperties)
         {
-            string useWPFString = await defaultProperties.GetEvaluatedPropertyValueAsync(PropertyNameProvider.UseWPFProperty);
-            string useWindowsFormsString = await defaultProperties.GetEvaluatedPropertyValueAsync(PropertyNameProvider.UseWindowsFormsProperty);
+            IProjectCapabilitiesScope capabilities = _project.Capabilities;
+
+            bool useWPF = capabilities.Contains(ProjectCapability.WPF);
+            bool useWindowsForms = capabilities.Contains(ProjectCapability.WindowsForms);
             string outputTypeString = await defaultProperties.GetEvaluatedPropertyValueAsync(PropertyNameProvider.OutputTypeMSBuildProperty);
 
-            return bool.TryParse(useWPFString, out bool useWPF)
-                && useWPF
+            return useWPF
                 && StringComparers.PropertyLiteralValues.Equals(outputTypeString, WinExeOutputType)
-                && bool.TryParse(useWindowsFormsString, out bool useWindowsForms)
                 && !useWindowsForms;
         }
 

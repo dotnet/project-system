@@ -20,11 +20,13 @@ internal class WPFValueProvider : InterceptingPropertyValueProviderBase
     internal const string WinExeOutputTypeValue = "WinExe";
 
     private readonly IApplicationXamlFileAccessor _applicationXamlFileAccessor;
+    private readonly UnconfiguredProject _project;
 
     [ImportingConstructor]
-    public WPFValueProvider(IApplicationXamlFileAccessor applicationXamlFileAccessor)
+    public WPFValueProvider(IApplicationXamlFileAccessor applicationXamlFileAccessor, UnconfiguredProject project)
     {
         _applicationXamlFileAccessor = applicationXamlFileAccessor;
+        _project = project;
     }
 
     public override Task<string> OnGetEvaluatedPropertyValueAsync(string propertyName, string evaluatedPropertyValue, IProjectProperties defaultProperties)
@@ -69,16 +71,16 @@ internal class WPFValueProvider : InterceptingPropertyValueProviderBase
         return string.Empty;
     }
 
-    private static async Task<bool> IsWPFApplicationAsync(IProjectProperties defaultProperties)
+    private async Task<bool> IsWPFApplicationAsync(IProjectProperties defaultProperties)
     {
-        string useWPFString = await defaultProperties.GetEvaluatedPropertyValueAsync(PropertyNameProvider.UseWPFProperty);
-        string useWindowsFormsString = await defaultProperties.GetEvaluatedPropertyValueAsync(PropertyNameProvider.UseWindowsFormsProperty);
+        IProjectCapabilitiesScope capabilities = _project.Capabilities;
+
+        bool useWPF = capabilities.Contains(ProjectCapability.WPF);
+        bool useWindowsForms = capabilities.Contains(ProjectCapability.WindowsForms);
         string outputTypeString = await defaultProperties.GetEvaluatedPropertyValueAsync(OutputTypePropertyName);
 
-        return bool.TryParse(useWPFString, out bool useWPF)
-            && useWPF
+        return useWPF
             && StringComparers.PropertyLiteralValues.Equals(outputTypeString, WinExeOutputTypeValue)
-            && bool.TryParse(useWindowsFormsString, out bool useWindowsForms)
             && !useWindowsForms;
     }
 }
