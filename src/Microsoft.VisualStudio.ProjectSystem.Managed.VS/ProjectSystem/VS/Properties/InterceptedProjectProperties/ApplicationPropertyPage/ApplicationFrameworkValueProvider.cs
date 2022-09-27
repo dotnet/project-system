@@ -19,7 +19,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         PropertyNameProvider.MinimumSplashScreenDisplayTimeProperty
     },
     ExportInterceptingPropertyValueProviderFile.ProjectFile)]
-    [AppliesTo(ProjectCapability.VisualBasic)]
+    [AppliesTo(ProjectCapability.WPF + "&" + ProjectCapability.WindowsForms)]
     internal sealed class ApplicationFrameworkValueProvider : InterceptingPropertyValueProviderBase
     {
         private const string EnabledValue = "WindowsForms";

@@ -11,6 +11,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties;
         ShutdownModePropertyName
     },
     ExportInterceptingPropertyValueProviderFile.ProjectFile)]
+[AppliesTo(ProjectCapability.WPF)]
 internal class WPFValueProvider : InterceptingPropertyValueProviderBase
 {
     internal const string StartupURIPropertyName = "StartupURI";
