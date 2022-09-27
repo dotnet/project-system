@@ -1,4 +1,4 @@
-# Property Specification
+﻿# Property Specification
 
 This document details how properties are specified, which controls their appearance and behavior in the Project Properties UI and how they are written to the project file.
 
@@ -71,8 +71,10 @@ The `DataSource` specified here will be applied to all properties, however prope
 - `Persistence` may have several values:
   - `ProjectFile` means that the value will be read and written from the project file directly.
   - `ProjectFileWithInterception` means that a MEF part exists that will handle read/write operations for the property (see below).
+  - `UserFile` means that the value will be read and written from the `.user` file directly.
   - `UserFileWithInterception` is the same as `ProjectFileWithInterception` except we write changes to the project's `.user` file.
-- `HasConfigurationCondition` controls whether the property is intended to be varied by project configuration (e.g. Debug/Release, platform, target framework...). Setting this to true allows varying property values by configuration dimensions.
+  - `LaunchProfile` means that the value will be read and written from the `launchSettings.json` file directly.
+  - `HasConfigurationCondition` controls whether the property is intended to be varied by project configuration (e.g. Debug/Release, platform, target framework...). Setting this to true allows varying property values by configuration dimensions.
 
 ### Categories
 
@@ -334,7 +336,7 @@ The property's `ValueEditor` has `EditorType="Description"` which selects a UI t
 </StringProperty>
 ```
 
-We don't want this property to ever be read from or written to the project file. We intercept these reads and writes by specifying `Persistence="ProjectFileWithInterception"`, and providing the following no-op interceptor. See [Property Value Interception](property-value-interception.md) for more on how and why this works.
+We don't want this property to ever be read from or written to the project file. We intercept these reads and writes by specifying `Persistence="ProjectFileWithInterception"`, and providing the following no-op interceptor. See [Property Value Interception](property-value-interception.md#pseudo-properties) for more on how and why this works.
 
 ```c#
 [ExportInterceptingPropertyValueProvider("MyDescriptionProperty", ExportInterceptingPropertyValueProviderFile.ProjectFile)]
@@ -379,7 +381,7 @@ The editor must specify two metadata values:
 </StringProperty>
 ```
 
-We don't want this property to ever be read from or written to the project file. We intercept these reads and writes by specifying `Persistence="ProjectFileWithInterception"`, and providing the following no-op interceptor. See [Property Value Interception](property-value-interception.md) for more on how and why this works.
+We don't want this property to ever be read from or written to the project file. We intercept these reads and writes by specifying `Persistence="ProjectFileWithInterception"`, and providing the following no-op interceptor. See [Property Value Interception](property-value-interception.md#pseudo-properties) for more on how and why this works.
 
 ```c#
 [ExportInterceptingPropertyValueProvider("MyUrlProperty", ExportInterceptingPropertyValueProviderFile.ProjectFile)]
@@ -416,7 +418,7 @@ The editor must specify two metadata values:
 </StringProperty>
 ```
 
-We don't want this property to ever be read from or written to the project file. We intercept these reads and writes by specifying `Persistence="ProjectFileWithInterception"`, and providing the following no-op interceptor. See [Property Value Interception](property-value-interception.md) for more on how and why this works.
+We don't want this property to ever be read from or written to the project file. We intercept these reads and writes by specifying `Persistence="ProjectFileWithInterception"`, and providing the following no-op interceptor. See [Property Value Interception](property-value-interception.md#pseudo-properties) for more on how and why this works.
 
 ```c#
 [ExportInterceptingPropertyValueProvider("MyCommandProperty", ExportInterceptingPropertyValueProviderFile.ProjectFile)]
@@ -472,7 +474,7 @@ If you wish instead to focus a specific property, you must also specify the `Pro
 </StringProperty>
 ```
 
-We don't want this property to ever be read from or written to the project file. We intercept these reads and writes by specifying `Persistence="ProjectFileWithInterception"`, and providing the following no-op interceptor. See [Property Value Interception](property-value-interception.md) for more on how and why this works.
+We don't want this property to ever be read from or written to the project file. We intercept these reads and writes by specifying `Persistence="ProjectFileWithInterception"`, and providing the following no-op interceptor. See [Property Value Interception](property-value-interception.md#pseudo-properties) for more on how and why this works.
 
 ```c#
 [ExportInterceptingPropertyValueProvider("MyCommandProperty", ExportInterceptingPropertyValueProviderFile.ProjectFile)]
