@@ -169,6 +169,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
                     return IconSet.ExpandedIcon;
                 }
 
+                // TODO update upgradeavailable/deprecation/vulnerability icons
                 switch (DiagnosticLevel)
                 {
                     case DiagnosticLevel.UpgradeAvailable:
@@ -184,7 +185,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
                     default:
                         throw new ArgumentOutOfRangeException();
                 }
-                
             }
         }
 
