@@ -35,7 +35,7 @@ public class WPFValueProviderTests
 
         var defaultProperties = IProjectPropertiesFactory.CreateWithPropertiesAndValues(new Dictionary<string, string?>
         {
-            { WPFValueProvider.UseWPFPropertyName, useWPFPropertyValue },
+            { PropertyNameProvider.UseWPFProperty, useWPFPropertyValue },
             { WPFValueProvider.OutputTypePropertyName, outputTypeValue }
         });
 
@@ -87,8 +87,8 @@ public class WPFValueProviderTests
 
         var defaultProperties = IProjectPropertiesFactory.CreateWithPropertiesAndValues(new Dictionary<string, string?>
         {
-            { WPFValueProvider.UseWPFPropertyName, useWPFPropertyValue },
-            { WPFValueProvider.OutputTypePropertyName, outputTypeValue }
+            { PropertyNameProvider.UseWPFProperty, useWPFPropertyValue },
+            { PropertyNameProvider.OutputTypeMSBuildProperty, outputTypeValue }
         });
 
         var result = await provider.OnSetPropertyValueAsync(propertyName, unevaluatedPropertyValue: "NewValue", defaultProperties);
