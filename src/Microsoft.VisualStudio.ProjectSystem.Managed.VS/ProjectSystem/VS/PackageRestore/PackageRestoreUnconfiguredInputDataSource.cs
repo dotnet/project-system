@@ -59,20 +59,20 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
                 cancellationToken: CancellationToken.None
                 );
 
-            JoinUpstreamDataSources(_activeConfigurationGroupService.ActiveConfiguredProjectGroupSource);
+            JoinUpstreamDataSources(_activeConfigurationGroupService.ActiveConfiguredProjectGroupSource, _loadedActiveConfiguredProjectDataSource);
 
             // Set the link up so that we publish changes to target block
-            transformBlock.LinkTo(targetBlock, DataflowOption.PropagateCompletion);
+            var link = transformBlock.LinkTo(targetBlock, DataflowOption.PropagateCompletion);
 
             return new DisposableBag
             {
                 joinBlock,
-
+                mergeBlock,
+                link,
                 // Link the active configured projects to our join block
                 _activeConfigurationGroupService.ActiveConfiguredProjectGroupSource.SourceBlock.LinkTo(joinBlock, DataflowOption.PropagateCompletion),
             };
         }
-
 
         private PackageRestoreUnconfiguredInput MergeRestoreInputs(RestoreValues restoreValues)
         {

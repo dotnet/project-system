@@ -30,9 +30,9 @@ internal class LoadedActiveConfiguredProjectsDataSource : ChainedProjectValueDat
 
         DisposableValue<ISourceBlock<IProjectVersionedValue<IEnumerable<ConfiguredProject>>>>? transformBlock = sourceBlock.TransformWithNoDelta(TransformAsync);
 
-        transformBlock.Value.LinkTo(targetBlock, DataflowOption.PropagateCompletion);
+        var link = transformBlock.Value.LinkTo(targetBlock, DataflowOption.PropagateCompletion);
 
-        return transformBlock;
+        return link;
     }
 
     private async Task<IProjectVersionedValue<IEnumerable<ConfiguredProject>>> TransformAsync(IProjectVersionedValue<IConfigurationGroup<ProjectConfiguration>> projectVersionedValue)

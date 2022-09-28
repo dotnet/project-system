@@ -2,6 +2,9 @@
 
 namespace Microsoft.VisualStudio.ProjectSystem;
 
+/// <summary>
+/// This block publish data out loaded configuration when active configured project is changed. 
+/// </summary>
 [ProjectSystemContract(ProjectSystemContractScope.UnconfiguredProject, ProjectSystemContractProvider.Private, Cardinality = Composition.ImportCardinality.ExactlyOne)]
 internal interface ILoadedActiveConfiguredProjectDataSource : IProjectValueDataSource<IEnumerable<ConfiguredProject>>
 {
