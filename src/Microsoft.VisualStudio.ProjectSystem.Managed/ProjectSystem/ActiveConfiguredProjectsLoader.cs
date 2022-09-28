@@ -8,9 +8,8 @@ namespace Microsoft.VisualStudio.ProjectSystem
     ///     Force loads the active <see cref="ConfiguredProject"/> objects so that any configured project-level
     ///     services, such as evaluation and build services, are started.
     /// </summary>
-    [Export(typeof(ActiveConfiguredProjectsLoader))]
-
-    internal class ActiveConfiguredProjectsLoader : ChainedProjectValueDataSourceBase<IEnumerable<ConfiguredProject>>
+    [Export(typeof(IActiveConfiguredProjectsLoadedDataSource))]
+    internal class ActiveConfiguredProjectsLoader : ChainedProjectValueDataSourceBase<IEnumerable<ConfiguredProject>>, IActiveConfiguredProjectsLoadedDataSource
     {
         private readonly UnconfiguredProject _project;
         private readonly IActiveConfigurationGroupService _activeConfigurationGroupService;
@@ -34,17 +33,15 @@ namespace Microsoft.VisualStudio.ProjectSystem
         public Task InitializeAsync()
         {
             EnsureInitialized();
+
+            _subscription = _activeConfigurationGroupService.ActiveConfigurationGroupSource.SourceBlock.LinkTo(
+                target: _targetBlock,
+                linkOptions: DataflowOption.PropagateCompletion);
+
             return Task.CompletedTask;
         }
 
         public ITargetBlock<IProjectVersionedValue<IConfigurationGroup<ProjectConfiguration>>> TargetBlock => _targetBlock;
-
-        protected override void Initialize()
-        {
-            _subscription = _activeConfigurationGroupService.ActiveConfigurationGroupSource.SourceBlock.LinkTo(
-                target: _targetBlock,
-                linkOptions: DataflowOption.PropagateCompletion);
-        }
 
         protected override void Dispose(bool disposing)
         {
