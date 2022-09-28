@@ -182,7 +182,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
             {
                 CommandNamePropertyName => profile.CommandName ?? string.Empty,
                 ExecutablePathPropertyName => profile.ExecutablePath ?? string.Empty,
-                CommandLineArgumentsPropertyName => profile.CommandLineArgs ?? string.Empty,
                 WorkingDirectoryPropertyName => profile.WorkingDirectory ?? string.Empty,
                 LaunchBrowserPropertyName => profile.LaunchBrowser ? "true" : "false",
                 LaunchUrlPropertyName => profile.LaunchUrl ?? string.Empty,
