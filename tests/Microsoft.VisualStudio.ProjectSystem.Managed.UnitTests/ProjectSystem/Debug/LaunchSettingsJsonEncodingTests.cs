@@ -60,6 +60,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
                       "web1"
                     ]
                   }
+                },
+                "DateInEnvironmentVariableBugRepro": {
+                  "commandName": "Project",
+                  "environmentVariables": {
+                    "DATE": "2019-07-11T12:00:00"
+                  }
                 }
               },
               "string": "hello",
@@ -75,7 +81,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
 
             var (profiles, globalSettings) = LaunchSettingsJsonEncoding.FromJson(new StringReader(json), _providers);
 
-            Assert.Equal(5, profiles.Length);
+            Assert.Equal(6, profiles.Length);
 
             var profile = profiles[0];
             Assert.Equal("IIS Express", profile.Name);
@@ -148,6 +154,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             Assert.Equal(2, dicObj.Count);
             Assert.Equal("1", dicObj["A"]);
             Assert.Equal("2", dicObj["B"]);
+
+            profile = profiles[5];
+            Assert.Equal("DateInEnvironmentVariableBugRepro", profile.Name);
+            Assert.Equal("Project", profile.CommandName);
+            Assert.Null(profile.WorkingDirectory);
+            Assert.Null(profile.ExecutablePath);
+            Assert.False(profile.LaunchBrowser);
+            Assert.Null(profile.LaunchUrl);
+            Assert.Equal(("DATE", "2019-07-11T12:00:00"), Assert.Single(profile.EnvironmentVariables));
+            Assert.False(profile.IsInMemoryObject());
 
             var roundTrippedJson = LaunchSettingsJsonEncoding.ToJson(profiles, globalSettings);
 
