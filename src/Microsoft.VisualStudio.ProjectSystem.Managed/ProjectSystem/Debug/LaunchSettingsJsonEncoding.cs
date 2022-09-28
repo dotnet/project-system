@@ -356,10 +356,20 @@ internal static class LaunchSettingsJsonEncoding
             ReadObject(property =>
             {
                 builder ??= ImmutableArray.CreateBuilder<(string Name, string Value)>();
-                builder.Add((property, ReadString()));
+                builder.Add((property, ReadEnvironmentVariableString()));
             });
 
             return builder?.ToImmutable() ?? ImmutableArray<(string Name, string Value)>.Empty;
+        }
+
+        string ReadEnvironmentVariableString()
+        {
+            if (!reader.Read())
+            {
+                throw new JsonReaderException($"Cannot read string at {reader.LineNumber}.");
+            }
+
+            return reader.Value!.ToString();
         }
 
         string ReadString()
