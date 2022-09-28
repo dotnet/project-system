@@ -127,15 +127,14 @@ public class WorkspaceTests
                 },
                 CancellationToken.None);
 
+        // Wait a little while to increase the chance a bug would surface in this test.
+        await Task.Delay(10);
+
         Assert.Equal(0, callCount);
         Assert.Equal(TaskStatus.WaitingForActivation, initializedTask.Status);
 
+        // Only once we have evaluation data should a write operation be scheduled.
         await ApplyEvaluationAsync(workspace);
-
-        Assert.Equal(0, callCount);
-        Assert.Equal(TaskStatus.WaitingForActivation, initializedTask.Status);
-
-        await ApplyBuildAsync(workspace);
 
         await Task.WhenAny(initializedTask, Task.Delay(TimeSpan.FromSeconds(30)));
 

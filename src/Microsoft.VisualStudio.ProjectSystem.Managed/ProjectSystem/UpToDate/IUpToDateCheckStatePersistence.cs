@@ -34,7 +34,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
         /// <param name="projectPath">The full path of the project.</param>
         /// <param name="configurationDimensions">The map of dimension names and values that describes the project configuration.</param>
         /// <param name="cancellationToken">Allows cancelling this asynchronous operation.</param>
-        /// <returns>The time as which the last successful build completed (in UTC), or <see langword="null"/> if unknown.</returns>
+        /// <returns>The time as which the last successful build started (in UTC), or <see langword="null"/> if unknown.</returns>
         Task<DateTime?> RestoreLastSuccessfulBuildStateAsync(string projectPath, IImmutableDictionary<string, string> configurationDimensions, CancellationToken cancellationToken);
 
         /// <summary>

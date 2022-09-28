@@ -136,6 +136,24 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
+      <Item ItemId=";DynamicEnumProperty|StartupObject|Description" ItemType="0" PsrId="308" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[Defines the entry point to be called when the application loads. Generally this is set either to the main form in your application or to the 'Main' procedure that should run when the application starts. Class libraries do not define an entry point.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Hiermit wird der Einstiegspunkt definiert, der beim Laden der Anwendung aufgerufen werden soll. Im Allgemeinen wird dies entweder auf das Hauptformular in Ihrer Anwendung oder auf die Main-Prozedur festgelegt, die beim Starten der Anwendung ausgeführt werden soll. Klassenbibliotheken definieren keinen Einstiegspunkt.]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";DynamicEnumProperty|StartupObject|DisplayName" ItemType="0" PsrId="308" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[Startup object]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Startobjekt]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
       <Item ItemId=";DynamicEnumProperty|StartupURI|Description" ItemType="0" PsrId="308" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[Specifies the window that will open when the application loads.]]></Val>
@@ -330,6 +348,15 @@
           <Val><![CDATA[Windows - Retrieve user info through My.User at runtime.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
             <Val><![CDATA[Windows – Ruft zur Laufzeit Benutzerinformationen über My.User ab.]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";StringProperty|CreateOrOpenAppManifest|DisplayName" ItemType="0" PsrId="308" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[Create or open app manifest for Windows settings.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Erstellen oder öffnen Sie das App-Manifest für Windows-Einstellungen.]]></Val>
           </Tgt>
         </Str>
         <Disp Icon="Str" />
