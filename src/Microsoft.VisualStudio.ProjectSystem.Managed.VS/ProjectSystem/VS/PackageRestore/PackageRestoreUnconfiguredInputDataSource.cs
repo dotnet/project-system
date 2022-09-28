@@ -4,7 +4,12 @@ using System.Globalization;
 using System.Threading.Tasks.Dataflow;
 using Microsoft.VisualStudio.ProjectSystem.Utilities;
 using NuGet.SolutionRestoreManager;
+
 using RestoreInfo = Microsoft.VisualStudio.ProjectSystem.IProjectVersionedValue<Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore.PackageRestoreUnconfiguredInput>;
+
+using RestoreValues = System.ValueTuple<
+    System.Collections.Generic.IEnumerable<Microsoft.VisualStudio.ProjectSystem.ConfiguredProject>,
+    System.Collections.Generic.IReadOnlyList<Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore.PackageRestoreConfiguredInput>>;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
 {
@@ -14,13 +19,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
     {
         private readonly UnconfiguredProject _project;
         private readonly IActiveConfigurationGroupService _activeConfigurationGroupService;
+        private readonly ILoadedActiveConfiguredProjectDataSource _loadedActiveConfiguredProjectDataSource;
 
         [ImportingConstructor]
-        public PackageRestoreUnconfiguredInputDataSource(UnconfiguredProject project, IActiveConfigurationGroupService activeConfigurationGroupService)
+        public PackageRestoreUnconfiguredInputDataSource(UnconfiguredProject project, IActiveConfigurationGroupService activeConfigurationGroupService, ILoadedActiveConfiguredProjectDataSource loadedActiveConfiguredProjectDataSource)
             : base(project, synchronousDisposal: false, registerDataSource: false)
         {
             _project = project;
             _activeConfigurationGroupService = activeConfigurationGroupService;
+            _loadedActiveConfiguredProjectDataSource = loadedActiveConfiguredProjectDataSource;
         }
 
         protected override UnconfiguredProject ContainingProject
@@ -40,13 +47,22 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
                 JoinableFactory,
                 _project);
 
-            // Transform all restore data -> combined restore data
-            DisposableValue<ISourceBlock<RestoreInfo>> mergeBlock = joinBlock.TransformWithNoDelta(update => update.Derive(MergeRestoreInputs));
+            IPropagatorBlock<IProjectVersionedValue<RestoreValues>, RestoreInfo> transformBlock
+                = DataflowBlockSlim.CreateTransformBlock<IProjectVersionedValue<RestoreValues>, RestoreInfo>(update => update.Derive(MergeRestoreInputs));
+
+            // Publish when all target frameworks get loaded
+            var mergeBlock = ProjectDataSources.SyncLinkTo(
+                _loadedActiveConfiguredProjectDataSource.SourceBlock.SyncLinkOptions(),
+                joinBlock.SyncLinkOptions(),
+                target: transformBlock,
+                linkOptions: DataflowOption.PropagateCompletion,
+                cancellationToken: CancellationToken.None
+                );
 
             JoinUpstreamDataSources(_activeConfigurationGroupService.ActiveConfiguredProjectGroupSource);
 
             // Set the link up so that we publish changes to target block
-            mergeBlock.Value.LinkTo(targetBlock, DataflowOption.PropagateCompletion);
+            transformBlock.LinkTo(targetBlock, DataflowOption.PropagateCompletion);
 
             return new DisposableBag
             {
@@ -57,8 +73,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
             };
         }
 
-        private PackageRestoreUnconfiguredInput MergeRestoreInputs(IReadOnlyCollection<PackageRestoreConfiguredInput> inputs)
+
+        private PackageRestoreUnconfiguredInput MergeRestoreInputs(RestoreValues restoreValues)
         {
+            IReadOnlyList<PackageRestoreConfiguredInput> inputs = restoreValues.Item2;
+
             // If there are no updates, we have no active configurations
             ProjectRestoreInfo? restoreInfo = null;
             if (inputs.Count != 0)
