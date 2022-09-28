@@ -74,7 +74,7 @@
       </trans-unit>
       <trans-unit id="FUTD_CheckingCopiedOutputFile">
         <source>Checking copied output (UpToDateCheckBuilt with Original property) file:</source>
-        <target state="translated">正在检查复制的输出（使用原始属性生成 UpToDateCheckBuilt）文件：</target>
+        <target state="translated">正在检查复制的输出 (使用原始属性生成 UpToDateCheckBuilt )文件:</target>
         <note>Do not translate UpToDateCheckBuilt or Original.</note>
       </trans-unit>
       <trans-unit id="FUTD_CheckingCopiedOutputFileDestinationNotFound_2">
