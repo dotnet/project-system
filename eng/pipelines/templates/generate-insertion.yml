@@ -27,11 +27,10 @@ jobs:
       # When this isn't provided, the tool sets the --AadAuth flag instead of using --PatAuthEnvVar. The AadAuth doesn't seem to work for this situation.
       AccessToken: $(System.AccessToken)
 
-  # Sets the ShortCommitId variable for the job. Using 10 characters since that will make it incredibly unlikely that there will be a collision.
-  # This is not using isoutput=true since we only need this variable for the next task.
-  # See: https://docs.microsoft.com/azure/devops/pipelines/process/set-variables-scripts?view=azure-devops&tabs=powershell#set-an-output-variable-for-use-in-the-same-job
-  - powershell: Write-Host "##vso[task.setvariable variable=ShortCommitId]$('$(Build.SourceVersion)'.Substring(0,10))"
-    displayName: Set ShortCommitId Variable
+  # Creates the description for the VS Insertion PR and sets it to the InsertionDescription variable. Also sets the ShortCommitId variable based on currentSha.
+  - powershell: . '$(Build.SourcesDirectory)/eng/scripts/GetInsertionPRDescription.ps1' -currentSha '$(Build.SourceVersion)' -repoUrl '$(Build.Repository.Uri)' -projectName '$(Build.DefinitionName)'
+    displayName: Create VS Insertion Description
+    failOnStderr: true
 
   # Creates a VS insertion PR using the Products drop containing the .vsman files.
   # YAML reference: https://devdiv.visualstudio.com/DevDiv/_wiki/wikis/DevDiv.wiki/635/Overview?anchor=**build-pipeline**
@@ -43,15 +42,18 @@ jobs:
       # fatal: 'team/.NET-Project-System/DotNet-Project-System-20220818.3-1' is not a valid branch name
       TeamName: DotNet Project System
       TeamEmail: dotnetdevexproj@microsoft.com
+      # The ShortCommitId is parsed out of the payload name in tagger.yml for use in tagging the appropriate commit in our repo.
+      # This tag is used in GetInsertionPRDescription.ps1 (task above) to create the description for this insertion.
       InsertionPayloadName: 'DotNet-Project-System ($(Build.SourceBranchName):$(Build.BuildNumber):$(ShortCommitId))'
       ComponentJsonValues: Microsoft.VisualStudio.Editors.vsman=https://vsdrop.corp.microsoft.com/file/v1/Products/$(System.TeamProject)/$(Build.Repository.Name)/$(Build.SourceBranchName)/$(Build.BuildNumber);Microsoft.VisualStudio.Editors.vsman,Microsoft.VisualStudio.ProjectSystem.Managed.vsman=https://vsdrop.corp.microsoft.com/file/v1/Products/$(System.TeamProject)/$(Build.Repository.Name)/$(Build.SourceBranchName)/$(Build.BuildNumber);Microsoft.VisualStudio.ProjectSystem.Managed.vsman
       # Setting DefaultConfigValues also sets the PackagePropsValues.
       # See the bottom of the table here: https://devdiv.visualstudio.com/DevDiv/_wiki/wikis/DevDiv.wiki/635/Overview?anchor=**build-pipeline**
       DefaultConfigValues: Microsoft.VisualStudio.AppDesigner=$(PackageVersion),Microsoft.VisualStudio.Editors=$(PackageVersion),Microsoft.VisualStudio.ProjectSystem.Managed=$(PackageVersion),Microsoft.VisualStudio.ProjectSystem.Managed.VS=$(PackageVersion)
       AllowTopicBranchUpdate: true
-      # TODO: This is where a fancy description can be provided. Need to create a mechanism to provide this.
-      # See: https://github.com/dotnet/project-system/issues/8423
-      # InsertionDescription: 'description'
+      # Description logic here:
+      # - https://devdiv.visualstudio.com/Engineering/_git/MicroBuild?path=/src/Tasks/InsertVsPayload/plugin.ps1&version=GBmain&line=25&lineEnd=26&lineStartColumn=1&lineEndColumn=1&lineStyle=plain&_a=contents
+      # - https://devdiv.visualstudio.com/DevDiv/_git/302b028d-413e-471a-af4d-abc68bdc96b8?path=/src/SubmitPullRequest/Program.cs&version=GBmain&_a=contents
+      InsertionDescription: $(InsertionDescription)
       # This is the name of our DevDiv alias.
       InsertionReviewers: '.NET Project System'
       InsertionBuildPolicy: Request Perf DDRITs
