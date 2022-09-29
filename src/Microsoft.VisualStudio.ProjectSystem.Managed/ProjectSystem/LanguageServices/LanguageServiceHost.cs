@@ -296,7 +296,10 @@ internal sealed class LanguageServiceHost : OnceInitializedOnceDisposedUnderLock
     {
         await ValidateEnabledAsync(cancellationToken);
 
-        await WhenProjectLoaded(cancellationToken);
+        using (_joinableTaskCollection.Join())
+        {
+            await WhenProjectLoaded(cancellationToken);
+        }
 
         return _primaryWorkspace ?? throw Assumes.Fail("Primary workspace unknown.");
     }
