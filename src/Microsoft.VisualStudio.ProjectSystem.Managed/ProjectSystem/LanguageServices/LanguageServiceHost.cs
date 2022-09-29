@@ -132,7 +132,8 @@ internal sealed class LanguageServiceHost : OnceInitializedOnceDisposedUnderLock
                 target: DataflowBlockFactory.CreateActionBlock<IProjectVersionedValue<(ConfiguredProject ActiveConfiguredProject, ConfigurationSubscriptionSources Sources)>>(
                     async update => await ExecuteUnderLockAsync(cancellationToken => OnSlicesChanged(update, cancellationToken)),
                     _unconfiguredProject,
-                    ProjectFaultSeverity.LimitedFunctionality),
+                    ProjectFaultSeverity.LimitedFunctionality,
+                    "LanguageServiceHostSlices {0}"),
                 linkOptions: DataflowOption.PropagateCompletion,
                 cancellationToken: cancellationToken),
 
