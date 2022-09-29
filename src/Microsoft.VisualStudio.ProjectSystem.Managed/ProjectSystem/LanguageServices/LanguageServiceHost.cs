@@ -278,8 +278,6 @@ internal sealed class LanguageServiceHost : OnceInitializedOnceDisposedUnderLock
     {
         token = _tasksService.LinkUnload(token);
 
-        await ValidateEnabledAsync(token);
-
         Workspace workspace = await GetPrimaryWorkspaceAsync(token);
 
         await workspace.WriteAsync(action, token);
@@ -288,8 +286,6 @@ internal sealed class LanguageServiceHost : OnceInitializedOnceDisposedUnderLock
     public async Task<T> WriteAsync<T>(Func<IWorkspace, Task<T>> action, CancellationToken token)
     {
         token = _tasksService.LinkUnload(token);
-
-        await ValidateEnabledAsync(token);
 
         Workspace workspace = await GetPrimaryWorkspaceAsync(token);
 
