@@ -19,8 +19,6 @@ internal sealed class LanguageServiceHostEnvironment : ILanguageServiceHostEnvir
         _isEnabled = new(
             async () =>
             {
-                await joinableTaskContext.Factory.SwitchToMainThreadAsync();
-
                 // If VS is running in command line mode (e.g. "devenv.exe /build my.sln"),
                 // the language service host is not enabled. The one exception to this is
                 // when we're populating a solution cache via "/populateSolutionCache".
