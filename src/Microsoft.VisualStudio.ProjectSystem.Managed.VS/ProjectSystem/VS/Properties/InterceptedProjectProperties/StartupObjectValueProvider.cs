@@ -7,7 +7,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties;
 
 // The AppliesTo metadata has no effect given the limitations described in https://github.com/dotnet/project-system/issues/8170.
 [ExportInterceptingPropertyValueProvider(InterceptedStartupObjectProperty, ExportInterceptingPropertyValueProviderFile.ProjectFile)]
-[AppliesTo(ProjectCapability.WPF + "&" + ProjectCapability.WindowsForms)]
+[AppliesTo(ProjectCapability.WPF + "|" + ProjectCapability.WindowsForms)]
 internal class StartupObjectValueProvider : InterceptingPropertyValueProviderBase
 {
     private readonly IMyAppFileAccessor _myAppXmlFileAccessor;

@@ -5,7 +5,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties;
     /// <summary>
     /// Contains constants representing the property names used in the ApplicationPropertyPage folder.
     /// </summary>
-    internal class PropertyNameProvider
+    internal class PropertyNames
     {
         // Project properties
         internal const string UseWPFProperty = "UseWPF";
