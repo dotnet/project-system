@@ -266,10 +266,10 @@ internal sealed class LanguageServiceHost : OnceInitializedOnceDisposedUnderLock
 
     public async Task WhenInitialized(CancellationToken token)
     {
-        await ValidateEnabledAsync(token);
-
         using (_joinableTaskCollection.Join())
         {
+            await ValidateEnabledAsync(token);
+
             await _firstPrimaryWorkspaceSet.Task.WithCancellation(token);
         }
     }
@@ -294,10 +294,10 @@ internal sealed class LanguageServiceHost : OnceInitializedOnceDisposedUnderLock
 
     private async Task<Workspace> GetPrimaryWorkspaceAsync(CancellationToken cancellationToken)
     {
-        await ValidateEnabledAsync(cancellationToken);
-
         using (_joinableTaskCollection.Join())
         {
+            await ValidateEnabledAsync(cancellationToken);
+
             await WhenProjectLoaded(cancellationToken);
         }
 
