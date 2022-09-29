@@ -134,6 +134,10 @@ internal sealed class Workspace : OnceInitializedOnceDisposedUnderLockAsync, IWo
         return Task.CompletedTask;
     }
 
+    /// <summary>
+    /// Adds an object that will be disposed along with this <see cref="Workspace"/> instance.
+    /// </summary>
+    /// <param name="disposable">The object to dispose when this object is disposed.</param>
     public void ChainDisposal(IDisposable disposable)
     {
         Verify.NotDisposed(this);
@@ -141,6 +145,23 @@ internal sealed class Workspace : OnceInitializedOnceDisposedUnderLockAsync, IWo
         _disposableBag.Add(disposable);
     }
 
+    /// <summary>
+    /// Integrates project updates into the workspace.
+    /// </summary>
+    /// <remarks>
+    /// <para>
+    /// This method must always receive an evaluation update first. After that point,
+    /// both evaluation and build updates may arrive in any order, so long as values
+    /// of each type are ordered correctly.
+    /// </para>
+    /// <para>
+    /// Calls must not overlap. This method is not thread-safe. This method is designed
+    /// to be called from a dataflow ActionBlock, which will serialize calls, so we
+    /// needn't perform any locking or protection here.
+    /// </para>
+    /// </remarks>
+    /// <param name="update">The project update to integrate.</param>
+    /// <returns>A task that completes when the update has been integrated.</returns>
     internal async Task OnWorkspaceUpdateAsync(IProjectVersionedValue<WorkspaceUpdate> update)
     {
         Verify.NotDisposed(this);
