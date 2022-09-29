@@ -298,22 +298,22 @@ internal sealed class LanguageServiceHost : OnceInitializedOnceDisposedUnderLock
         {
             await ValidateEnabledAsync(cancellationToken);
 
-            await WhenProjectLoaded(cancellationToken);
+            await WhenProjectLoaded();
         }
 
         return _primaryWorkspace ?? throw Assumes.Fail("Primary workspace unknown.");
-    }
 
-    private async Task WhenProjectLoaded(CancellationToken cancellationToken)
-    {
-        // The active configuration can change multiple times during initialization in cases where we've incorrectly
-        // guessed the configuration via our IProjectConfigurationDimensionsProvider3 implementation.
-        // Wait until that has been determined before we publish the wrong configuration.
-        await _tasksService.PrioritizedProjectLoadedInHost.WithCancellation(cancellationToken);
+        async Task WhenProjectLoaded()
+        {
+            // The active configuration can change multiple times during initialization in cases where we've incorrectly
+            // guessed the configuration via our IProjectConfigurationDimensionsProvider3 implementation.
+            // Wait until that has been determined before we publish the wrong configuration.
+            await _tasksService.PrioritizedProjectLoadedInHost.WithCancellation(cancellationToken);
 
-        // We block project load on initialization of the primary workspace.
-        // Therefore by this point we must have set the primary workspace.
-        System.Diagnostics.Debug.Assert(_firstPrimaryWorkspaceSet.Task is { IsCompleted: true, IsFaulted: false });
+            // We block project load on initialization of the primary workspace.
+            // Therefore by this point we must have set the primary workspace.
+            System.Diagnostics.Debug.Assert(_firstPrimaryWorkspaceSet.Task is { IsCompleted: true, IsFaulted: false });
+        }
     }
 
     #endregion
