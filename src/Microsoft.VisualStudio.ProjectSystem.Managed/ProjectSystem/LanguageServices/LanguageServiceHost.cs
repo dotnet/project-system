@@ -333,10 +333,7 @@ internal sealed class LanguageServiceHost : OnceInitializedOnceDisposedUnderLock
         // Ensure the project is not considered loaded until our first publication.
         Task result = _tasksService.PrioritizedProjectLoadedInHostAsync(async () =>
         {
-            using (_joinableTaskCollection.Join())
-            {
-                await WhenInitialized(_tasksService.UnloadCancellationToken);
-            }
+            await WhenInitialized(_tasksService.UnloadCancellationToken);
         });
 
         // While we want make sure it's loaded before PrioritizedProjectLoadedInHost,
