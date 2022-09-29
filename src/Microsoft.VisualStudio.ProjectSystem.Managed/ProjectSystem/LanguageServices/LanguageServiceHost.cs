@@ -106,6 +106,9 @@ internal sealed class LanguageServiceHost : OnceInitializedOnceDisposedAsync, IP
             return;
         }
 
+        // Ensure we also cancel on project unload
+        cancellationToken = _tasksService.LinkUnload(cancellationToken);
+
         // We have one "workspace" per "slice".
         //
         // - A "workspace" models the project state that Roslyn needs for a specific configuration.
