@@ -208,7 +208,7 @@
     <value>0, 3, 0, 3</value>
   </data>
   <data name="btnPreBuildBuilder.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>10, 0, 10, 0</value>
+    <value>5, 0, 5, 0</value>
   </data>
   <data name="btnPreBuildBuilder.Size" type="System.Drawing.Size, System.Drawing">
     <value>111, 23</value>
@@ -502,7 +502,7 @@
     <value>GrowAndShrink</value>
   </data>
   <data name="$this.MinimumSize" type="System.Drawing.Size, System.Drawing">
-    <value>359, 259</value>
+    <value>718, 500</value>
   </data>
   <data name="$this.Size" type="System.Drawing.Size, System.Drawing">
     <value>418, 536</value>
