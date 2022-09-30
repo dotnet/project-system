@@ -91,7 +91,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         End Function
 
         Friend Sub EnsureMinimumSize()
-            Me.MinimumSize = overarchingTableLayoutPanel.MinimumSize
+            MinimumSize = overarchingTableLayoutPanel.MinimumSize
         End Sub
 
         Private Sub PostBuildBuilderButton_Click(sender As Object, e As EventArgs) Handles btnPostBuildBuilder.Click
