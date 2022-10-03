@@ -4,16 +4,13 @@ using Microsoft.Build.Framework.XamlTypes;
 
 namespace Microsoft.VisualStudio.ProjectSystem.Properties;
 
-[ExportDynamicEnumValuesProvider("DefineConstantsEnumProvider2")]
-[AppliesTo(ProjectCapability.DotNet)]
+[ExportDynamicEnumValuesProvider("DefineConstantsEnumProvider")]
+[AppliesTo(ProjectCapability.CSharpOrFSharp)]
 internal class DefineConstantsEnumProvider : IDynamicEnumValuesProvider, IDynamicEnumValuesGenerator
 {
-    private readonly IProjectProperties _defaultProperties;
-
     [ImportingConstructor]
-    public DefineConstantsEnumProvider(IProjectProperties defaultProperties)
+    public DefineConstantsEnumProvider()
     {
-        _defaultProperties = defaultProperties;
     }
     
     public Task<IDynamicEnumValuesGenerator> GetProviderAsync(IList<NameValuePair>? options)
@@ -21,11 +18,9 @@ internal class DefineConstantsEnumProvider : IDynamicEnumValuesProvider, IDynami
         return Task.FromResult<IDynamicEnumValuesGenerator>(this);
     }
 
-    public async Task<ICollection<IEnumValue>> GetListedValuesAsync()
+    public Task<ICollection<IEnumValue>> GetListedValuesAsync()
     {
-        return DefineConstantsValueProvider.ParseDefinedConstantsFromUnevaluatedValue(await _defaultProperties.GetUnevaluatedPropertyValueAsync(ConfiguredBrowseObject.DefineConstantsProperty) ?? string.Empty)
-            .Select(symbol => (IEnumValue)new PageEnumValue(new EnumValue { Name = symbol, DisplayName = symbol }))
-            .ToList();
+        return Task.FromResult<ICollection<IEnumValue>>(new List<IEnumValue>());
     }
 
     public Task<IEnumValue?> TryCreateEnumValueAsync(string userSuppliedValue)

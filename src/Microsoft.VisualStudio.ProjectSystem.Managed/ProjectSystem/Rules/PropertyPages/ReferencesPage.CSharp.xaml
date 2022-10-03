@@ -17,9 +17,6 @@
                 SourceOfDefaultValue="AfterContext"
                 HasConfigurationCondition="False" />
   </Rule.DataSource>
-
-  <DynamicEnumProperty Name="Test" EnumProvider="DefineConstantsEnumProvider3" />
-
   
   <BoolProperty Name="ImplicitUsings"
                 DisplayName="Implicit global usings"
