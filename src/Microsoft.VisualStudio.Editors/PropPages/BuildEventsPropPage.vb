@@ -90,6 +90,10 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             End If
         End Function
 
+        Friend Sub EnsureMinimumSize()
+            MinimumSize = overarchingTableLayoutPanel.MinimumSize
+        End Sub
+
         Private Sub PostBuildBuilderButton_Click(sender As Object, e As EventArgs) Handles btnPostBuildBuilder.Click
             Dim CommandLineText As String
             CommandLineText = txtPostBuildEventCommandLine.Text
@@ -166,6 +170,9 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Return MacroValue
         End Function
 
+        Private Sub BuildEventsPropPage_SizeChanged(sender As Object, e As EventArgs) Handles MyBase.SizeChanged
+            EnsureMinimumSize()
+        End Sub
     End Class
 
 End Namespace
