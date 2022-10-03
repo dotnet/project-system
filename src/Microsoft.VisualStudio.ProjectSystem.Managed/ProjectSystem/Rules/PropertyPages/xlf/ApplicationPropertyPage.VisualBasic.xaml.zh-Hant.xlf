@@ -59,7 +59,7 @@
       </trans-unit>
       <trans-unit id="Category|Resources|DisplayName">
         <source>Resources</source>
-        <target state="new">Resources</target>
+        <target state="translated">資源</target>
         <note />
       </trans-unit>
       <trans-unit id="Category|WPF|Description">
