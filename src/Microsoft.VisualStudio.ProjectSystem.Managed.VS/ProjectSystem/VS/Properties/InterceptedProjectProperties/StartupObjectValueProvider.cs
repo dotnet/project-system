@@ -21,18 +21,22 @@ internal class StartupObjectValueProvider : InterceptingPropertyValueProviderBas
     internal const string StartupObjectProperty = "StartupObject";
     internal const string RootNamespaceProperty = "RootNamespace";
 
+    private readonly UnconfiguredProject _project;
+
     [ImportingConstructor]
-    public StartupObjectValueProvider(IMyAppFileAccessor myAppXmlFileAccessor)
+    public StartupObjectValueProvider(IMyAppFileAccessor myAppXmlFileAccessor, UnconfiguredProject project)
     {
         _myAppXmlFileAccessor = myAppXmlFileAccessor;
+        _project = project;
     }
 
     public override async Task<string?> OnSetPropertyValueAsync(string propertyName, string unevaluatedPropertyValue, IProjectProperties defaultProperties, IReadOnlyDictionary<string, string>? dimensionalConditions = null)
     {
-        string isWindowsFormsProject = await defaultProperties.GetEvaluatedPropertyValueAsync(UseWinFormsProperty);
+        IProjectCapabilitiesScope capabilities = _project.Capabilities;
+        bool isWindowsForms = capabilities.Contains(ProjectCapability.WindowsForms);
         string rootNameSpace = await defaultProperties.GetEvaluatedPropertyValueAsync(RootNamespaceProperty);
 
-        if (bool.TryParse(isWindowsFormsProject, out bool b) && b)
+        if (isWindowsForms)
         {
             string applicationFrameworkValue = await defaultProperties.GetEvaluatedPropertyValueAsync(ApplicationFrameworkProperty);
 
