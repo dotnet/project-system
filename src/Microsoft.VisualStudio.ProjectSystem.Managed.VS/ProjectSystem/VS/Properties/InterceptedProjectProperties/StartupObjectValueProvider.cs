@@ -43,6 +43,10 @@ internal class StartupObjectValueProvider : InterceptingPropertyValueProviderBas
             if (Equals(applicationFrameworkValue, EnabledValue))
             {
                 // Set the startup object in the myapp file.
+                if(unevaluatedPropertyValue.StartsWith(rootNameSpace + ".", StringComparison.OrdinalIgnoreCase))
+                {
+                    unevaluatedPropertyValue = unevaluatedPropertyValue.Substring((rootNameSpace + ".").Length);
+                }
                 await _myAppXmlFileAccessor.SetMainFormAsync(unevaluatedPropertyValue);
 
                 // And save namespace.My.MyApplication in the project file.
@@ -52,7 +56,8 @@ internal class StartupObjectValueProvider : InterceptingPropertyValueProviderBas
 
         // Else, if it's other than a Windows Forms project, save the StartupObject property in the project file as usual.
         // Or if the ApplicationFramework property is disabled, save the StartupObject property in the project file as usual.
-        return rootNameSpace + "." + unevaluatedPropertyValue;
+        await defaultProperties.SetPropertyValueAsync(StartupObjectProperty, rootNameSpace + "." + unevaluatedPropertyValue);
+        return null;
     }
 
     public override async Task<string> OnGetEvaluatedPropertyValueAsync(string propertyName, string evaluatedPropertyValue, IProjectProperties defaultProperties)
