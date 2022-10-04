@@ -1,7 +1,6 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
-using System.Collections.Generic;
-using Microsoft.VisualStudio.ProjectSystem.Properties;
+using Microsoft.CodeAnalysis.VisualBasic.Syntax;
 
 namespace Microsoft.VisualStudio.ProjectSystem.Debug
 {
@@ -9,42 +8,40 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
     ///  Converts the single string representation to multiple key, value pairs used
     ///  for defining constants.
     /// </summary>
-    internal class AbstractProjectConfigurationDefineConstantsEncoding
+    internal abstract class AbstractProjectConfigurationDefineConstantsEncoding
     {
         private static readonly KeyQuotedValuePairListEncoding _encoding = new();
-        private static readonly KeyValuePairListEncoding _dispEncoding = new();
+        private static readonly KeyValuePairListEncoding _displayEncoding = new();
 
         public static Dictionary<string, string> ParseIntoDictionary(string inputValue)
         {
-            Dictionary<string, string> constantsDict = new Dictionary<string, string>();
-            constantsDict.Clear();
+            Dictionary<string, string> constantsDictionary = new Dictionary<string, string>();
             foreach ((string key, string value) in _encoding.Parse(inputValue))
             {
                 if (!string.IsNullOrEmpty(key))
-                    if (!string.IsNullOrEmpty(key))
-                    {
-                        constantsDict.Add(key, value);
-                    }
+                {
+                    constantsDictionary[key] = value;
+                }
             }
-            return constantsDict;
+            return constantsDictionary;
         }
 
-        public static string Format(Dictionary<string, string> constantsDict)
+        public static string Format(Dictionary<string, string> constantsDictionary)
         {
-            return _encoding.Format(EnumerateConstantsDict(constantsDict));
+            return _encoding.Format(EnumerateConstantsDictionary(constantsDictionary));
         }
 
-        public static string DisplayFormat(Dictionary<string, string> constantsDict)
+        public static string DisplayFormat(Dictionary<string, string> constantsDictionary)
         {
-            return _dispEncoding.Format(EnumerateConstantsDict(constantsDict));
+            return _displayEncoding.Format(EnumerateConstantsDictionary(constantsDictionary));
         }
-        private static IEnumerable<(string key, string value)> EnumerateConstantsDict(Dictionary<string, string> constantsDict)
+
+        private static IEnumerable<(string key, string value)> EnumerateConstantsDictionary(Dictionary<string, string> constantsDictionary)
         {
-            return constantsDict switch
+            return constantsDictionary switch
             {
-                null => Enumerable.Empty<(string key, string value)>(),
-                { Count: 0 } => Enumerable.Empty<(string key, string value)>(),
-                _ => constantsDict.OrderBy(kvp => kvp.Key).Select(kvp => (kvp.Key, kvp.Value))
+                null or  { Count: 0 } => Enumerable.Empty<(string key, string value)>(),
+                _ => constantsDictionary.OrderBy(kvp => kvp.Key).Select(kvp => (kvp.Key, kvp.Value))
             };
         }
     }
