@@ -10,6 +10,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug;
 /// </summary>
 internal sealed class KeyQuotedValuePairListEncoding
 {
+    public static KeyQuotedValuePairListEncoding Instance { get; } = new();
+
     public IEnumerable<(string Name, string Value)> Parse(string input)
     {
         if (string.IsNullOrWhiteSpace(input))

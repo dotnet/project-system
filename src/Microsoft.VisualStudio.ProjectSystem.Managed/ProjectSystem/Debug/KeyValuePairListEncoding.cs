@@ -4,6 +4,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug;
 
 internal sealed class KeyValuePairListEncoding
 {
+    public static KeyValuePairListEncoding Instance { get; } = new();
+
     public IEnumerable<(string Name, string Value)> Parse(string input)
     {
         if (string.IsNullOrWhiteSpace(input))
