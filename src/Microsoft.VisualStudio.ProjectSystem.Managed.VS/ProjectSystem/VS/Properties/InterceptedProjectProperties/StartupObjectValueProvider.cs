@@ -43,9 +43,9 @@ internal class StartupObjectValueProvider : InterceptingPropertyValueProviderBas
             if (Equals(applicationFrameworkValue, EnabledValue))
             {
                 // Set the startup object in the myapp file.
-                if(unevaluatedPropertyValue.StartsWith(rootNameSpace + ".", StringComparison.OrdinalIgnoreCase))
+                if (unevaluatedPropertyValue.StartsWith(rootNameSpace + ".", StringComparison.OrdinalIgnoreCase))
                 {
-                    unevaluatedPropertyValue = unevaluatedPropertyValue.Substring((rootNameSpace + ".").Length);
+                    unevaluatedPropertyValue = unevaluatedPropertyValue.Substring(rootNameSpace.Length + 1);
                 }
                 await _myAppXmlFileAccessor.SetMainFormAsync(unevaluatedPropertyValue);
 
