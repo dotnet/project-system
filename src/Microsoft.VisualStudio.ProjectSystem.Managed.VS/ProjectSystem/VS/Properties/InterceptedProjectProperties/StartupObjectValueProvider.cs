@@ -40,7 +40,7 @@ internal class StartupObjectValueProvider : InterceptingPropertyValueProviderBas
         {
             string applicationFrameworkValue = await defaultProperties.GetEvaluatedPropertyValueAsync(ApplicationFrameworkProperty);
 
-            if (Equals(applicationFrameworkValue, EnabledValue))
+            if (string.Compare(applicationFrameworkValue, EnabledValue) == 0)
             {
                 // Set the startup object in the myapp file.
                 if (unevaluatedPropertyValue.StartsWith(rootNameSpace + ".", StringComparison.OrdinalIgnoreCase))
@@ -65,7 +65,7 @@ internal class StartupObjectValueProvider : InterceptingPropertyValueProviderBas
         // StartupObject can come from the project file or the myapp file.
         string applicationFrameworkValue = await defaultProperties.GetEvaluatedPropertyValueAsync(ApplicationFrameworkProperty);
 
-        if (Equals(applicationFrameworkValue, DisabledValue))
+        if (string.Compare(applicationFrameworkValue, DisabledValue) == 0)
             return evaluatedPropertyValue;
 
         if (string.IsNullOrEmpty(evaluatedPropertyValue))
@@ -79,7 +79,7 @@ internal class StartupObjectValueProvider : InterceptingPropertyValueProviderBas
         // StartupObject can come from the project file or the myapp file.
         string? applicationFrameworkValue = await defaultProperties.GetUnevaluatedPropertyValueAsync(ApplicationFrameworkProperty);
                 
-        if (Equals(applicationFrameworkValue, DisabledValue))
+        if (string.Compare(applicationFrameworkValue, DisabledValue) == 0)
             return unevaluatedPropertyValue;
 
         if (string.IsNullOrEmpty(unevaluatedPropertyValue))
