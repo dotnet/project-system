@@ -1,5 +1,7 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
+using System.Text.RegularExpressions;
+
 namespace Microsoft.VisualStudio.ProjectSystem.Debug;
 
 /// <summary>
@@ -15,66 +17,18 @@ internal sealed class KeyQuotedValuePairListEncoding
             yield break;
         }
 
-        foreach (var entry in ReadEntries(input))
+        input = input.Replace("\"", "") + ",";
+        var regex = new Regex(@"(\S+?\s*)\=(\S+?\s*),");
+
+        foreach (Match match in regex.Matches(input))
         {
-            var (entryKey, entryValue) = SplitEntry(entry);
-            var decodedEntryKey = Decode(entryKey);
-            var decodedEntryValue = Decode(entryValue);
+            string key = match.Groups[1].Value;
+            string value = match.Groups[2].Value;
 
-            if (!string.IsNullOrEmpty(decodedEntryKey))
+            if (!string.IsNullOrEmpty(key))
             {
-                yield return (decodedEntryKey, decodedEntryValue);
+                yield return (Decode(key), Decode(value));
             }
-        }
-
-        static IEnumerable<string> ReadEntries(string rawText)
-        {
-            bool escaped = false;
-            int entryStart = 0;
-            for (int i = 0; i < rawText.Length; i++)
-            {
-                if (rawText[i] == ',' && !escaped)
-                {
-                    yield return rawText.Substring(entryStart, i - entryStart);
-                    entryStart = i + 1;
-                    escaped = false;
-                }
-                else if (rawText[i] == '/')
-                {
-                    escaped = !escaped;
-                }
-                else
-                {
-                    escaped = false;
-                }
-            }
-
-            yield return rawText.Substring(entryStart);
-        }
-
-        static (string EncodedKey, string EncodedValue) SplitEntry(string entry)
-        {
-            bool escaped = false;
-            for (int i = 0; i < entry.Length; i++)
-            {
-                if (entry[i] == '=' && !escaped)
-                {
-                    if (entry.Length > i + 1)
-                    {
-                        return (entry.Substring(0, i), (entry.Substring(i + 1)).Replace("\"", ""));
-                    }
-                }
-                else if (entry[i] == '/')
-                {
-                    escaped = !escaped;
-                }
-                else
-                {
-                    escaped = false;
-                }
-            }
-
-            return (string.Empty, string.Empty);
         }
 
         static string Decode(string value)
