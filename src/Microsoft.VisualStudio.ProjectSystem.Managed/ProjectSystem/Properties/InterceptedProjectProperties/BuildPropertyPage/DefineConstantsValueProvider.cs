@@ -67,7 +67,7 @@ internal class DefineConstantsValueProvider : InterceptingPropertyValueProviderB
 
     public override async Task<bool> IsValueDefinedInContextAsync(string propertyName, IProjectProperties defaultProperties)
     {
-        return await GetUnevaluatedDefineConstantsPropertyValueAsync() is not null; // if we have a non-imported unevaluated value, it's been defined locally.
+        return await GetUnevaluatedDefineConstantsPropertyValueAsync() is null; // if we have a non-imported unevaluated value, it's been defined locally.
     }
 
     public override async Task<string?> OnSetPropertyValueAsync(string propertyName, string unevaluatedPropertyValue, IProjectProperties defaultProperties, IReadOnlyDictionary<string, string>? dimensionalConditions = null)

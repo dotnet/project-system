@@ -52,6 +52,7 @@
         <ValueEditor.Metadata>
           <NameValuePair Name="TypeDescriptorText" Value="Custom symbols" />
           <NameValuePair Name="AllowsCustomStrings" Value="True" />
+          <NameValuePair Name="ShouldDisplayEvaluatedPreview" Value="True" />
         </ValueEditor.Metadata>
       </ValueEditor>
     </StringProperty.ValueEditors>
