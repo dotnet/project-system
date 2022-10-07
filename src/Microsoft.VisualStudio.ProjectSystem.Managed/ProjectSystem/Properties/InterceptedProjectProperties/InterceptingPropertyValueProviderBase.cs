@@ -30,7 +30,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
             return TaskResult.True;
         }
 
-        private protected static async Task<bool> IsValueDefinedInContextMsBuildPropertiesAsync(IProjectProperties defaultProperties, string[] msBuildPropertyNames)
+        private protected static async Task<bool> IsValueDefinedInContextMSBuildPropertiesAsync(IProjectProperties defaultProperties, string[] msBuildPropertyNames)
         {
             IEnumerable<string> enumerable = await defaultProperties.GetDirectPropertyNamesAsync();
             IReadOnlyCollection<string> propertiesDefinedInProjectFile = enumerable is IReadOnlyCollection<string> list ? list : enumerable.ToList();
