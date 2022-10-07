@@ -1,6 +1,8 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
+using System.Text;
 using System.Text.RegularExpressions;
+using System.Windows.Controls.Primitives;
 
 namespace Microsoft.VisualStudio.ProjectSystem.Debug;
 
@@ -19,7 +21,7 @@ internal sealed class KeyQuotedValuePairListEncoding
             yield break;
         }
 
-        input = input.Replace("\"", "") + ",";
+        input = Decode(input);
         var regex = new Regex(@"(\S+?\s*)\=(\S+?\s*),");
 
         foreach (Match match in regex.Matches(input))
@@ -29,11 +31,11 @@ internal sealed class KeyQuotedValuePairListEncoding
 
             if (!string.IsNullOrEmpty(key))
             {
-                yield return (Decode(key), Decode(value));
+                yield return (DecodeCharacters(key), DecodeCharacters(value));
             }
         }
 
-        static string Decode(string value)
+        static string DecodeCharacters(string value)
         {
             return value.Replace("/=", "=").Replace("/,", ",").Replace("//", "/");
         }
@@ -41,11 +43,30 @@ internal sealed class KeyQuotedValuePairListEncoding
 
     public string Format(IEnumerable<(string Name, string Value)> pairs)
     {
-        return string.Join(",", pairs.Select(pair => $"{Encode(pair.Name)}=\"{Encode(pair.Value)}\""));
+        return string.Join(",", pairs.Select(pair => $"{EncodeCharacters(pair.Name)}=\"{EncodeCharacters(pair.Value)}\""));
 
-        static string Encode(string value)
+        static string EncodeCharacters(string value)
         {
             return value.Replace("/", "//").Replace(",", "/,").Replace("=", "/=");
+        }
+    }
+
+    private string Decode(string input)
+    {
+        input += ",";
+        var regex = new Regex(@"(\S+?\s*)\=[\x22](\S+?\s*)[\x22],");
+        if (regex.IsMatch(input))
+        {
+            string decoded = "";
+            foreach (Match match in regex.Matches(input))
+            {
+                decoded += match.Groups[1].Value + "=" + match.Groups[2].Value + ",";
+            }
+            return decoded;
+        }
+        else
+        {
+            return input;
         }
     }
 }

@@ -415,8 +415,8 @@
   <StringProperty Name="DefineConstants"
                   DisplayName="Custom constants"
                   HelpUrl="https://go.microsoft.com/fwlink/?linkid=2196264"
+                  Description="Specifies custom conditional compilation constants for your application."
                   Category="Advanced">
-    <StringProperty.Description>Use this editor to modify custom constants for your application.</StringProperty.Description>
     <StringProperty.ValueEditors>
       <ValueEditor EditorType="NameValueList" />
     </StringProperty.ValueEditors>

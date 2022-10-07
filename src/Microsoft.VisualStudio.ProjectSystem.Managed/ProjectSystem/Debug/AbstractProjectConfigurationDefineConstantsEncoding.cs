@@ -1,5 +1,8 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
+using System.Collections.Generic;
+using System.Windows.Input;
+
 namespace Microsoft.VisualStudio.ProjectSystem.Debug;
 
 /// <summary>
@@ -31,12 +34,13 @@ internal abstract class AbstractProjectConfigurationDefineConstantsEncoding
         return KeyValuePairListEncoding.Instance.Format(EnumerateConstantsDictionary(constantsDictionary));
     }
 
-    private static IEnumerable<(string key, string value)> EnumerateConstantsDictionary(Dictionary<string, string> constantsDictionary)
+    private static IEnumerable<(string Name, string Value)> EnumerateConstantsDictionary(Dictionary<string, string> constantsDictionary)
     {
+
         return constantsDictionary switch
         {
             null or  { Count: 0 } => Enumerable.Empty<(string key, string value)>(),
-            _ => constantsDictionary.OrderBy(kvp => kvp.Key).Select(kvp => (kvp.Key, kvp.Value))
+            _ => constantsDictionary.ToList().Select(kvp => (kvp.Key, kvp.Value))
         };
     }
 }
