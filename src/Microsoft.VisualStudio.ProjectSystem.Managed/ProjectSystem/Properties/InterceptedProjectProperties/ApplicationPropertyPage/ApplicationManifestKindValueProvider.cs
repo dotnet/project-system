@@ -35,7 +35,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
 
         public override Task<bool> IsValueDefinedInContextAsync(string propertyName, IProjectProperties defaultProperties)
         {
-            return IsValueDefinedInContextMsBuildPropertiesAsync(defaultProperties, s_msBuildPropertyNames);
+            return IsValueDefinedInContextMSBuildPropertiesAsync(defaultProperties, s_msBuildPropertyNames);
         }
 
         /// <summary>
