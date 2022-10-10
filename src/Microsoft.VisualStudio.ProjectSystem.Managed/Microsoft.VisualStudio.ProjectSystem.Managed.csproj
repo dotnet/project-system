@@ -15,8 +15,27 @@
     <Summary>Microsoft VisualStudio Managed Project System</Summary>
     <PackageTags>Roslyn Managed Project System VisualStudio</PackageTags>
     <NoWarn>$(NoWarn);NU5125</NoWarn>
+
+    <TargetFramework></TargetFramework>
+    <TargetFrameworks>net472;net6.0</TargetFrameworks>
+
+    <!-- TODO: Remove this when the port to net6.0 is complete -->
+    <NoWarn>$(NoWarn);NU1701;NU1702</NoWarn>
   </PropertyGroup>
 
+  <!-- TODO: Remove this once ILaunchSettingsUIProvider has been removed. -->
+  <ItemGroup Condition="'$(TargetFramework)' == 'net472'">
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
+    <Reference Include="WindowsBase" />
+  </ItemGroup>
+  
+  <!-- TODO: Clean this up. We shouldn't have to remove these in the first place. -->
+  <ItemGroup>
+    <PackageReference Remove="Microsoft.VisualStudio.SDK.EmbedInteropTypes" />
+    <PackageReference Remove="Microsoft.VisualStudio.ImageCatalog" />
+  </ItemGroup>
+  
   <ItemGroup>
     <InternalsVisibleTo Include="Microsoft.VisualStudio.ProjectSystem.Managed.VS" />
     <InternalsVisibleTo Include="Microsoft.VisualStudio.ProjectSystem.Managed.UnitTests" />

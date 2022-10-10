@@ -7,14 +7,7 @@
 
   <ItemGroup>
     <!-- Framework -->
-    <Reference Include="PresentationCore" />
-    <Reference Include="PresentationFramework" />
-    <Reference Include="System" />
-    <Reference Include="System.ComponentModel.Composition" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Xml" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="WindowsBase" />
+
 
     <!-- Infrastructure -->
     <PackageReference Include="MicroBuild.Core.Sentinel"                  PrivateAssets="all" />
@@ -59,8 +52,6 @@
     <PackageReference Include="Microsoft.CodeAnalysis.VisualBasic.CodeStyle"   PrivateAssets="all" />
     <PackageReference Include="Roslyn.Diagnostics.Analyzers"                   PrivateAssets="all" Condition="'$(IsTestProject)' != 'true'" />
 
-    <!-- Framework packages -->
-    <PackageReference Include="Microsoft.IO.Redist" />
     
     <!-- 3rd party -->
     <PackageReference Include="Newtonsoft.Json" />
