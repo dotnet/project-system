@@ -193,6 +193,12 @@ internal sealed class Workspace : OnceInitializedOnceDisposedUnderLockAsync, IWo
             _seenEvaluation = true;
 
             await ProcessInitialEvaluationDataAsync(_unloadCancellationToken);
+
+            // If initialisation failed gracefully, we will have been disposed and should just return here.
+            if (IsDisposed)
+            {
+                return;
+            }
         }
 
         await OnProjectChangedAsync(
@@ -218,10 +224,13 @@ internal sealed class Workspace : OnceInitializedOnceDisposedUnderLockAsync, IWo
 
             if (string.IsNullOrEmpty(languageName) || string.IsNullOrEmpty(binOutputPath) || string.IsNullOrEmpty(projectFilePath))
             {
-                // Insufficient data to initialize the language service.
-                _state = WorkspaceState.Failed;
+                // It's reasonable for a project to exist that doesn't contain enough data to initialize the language
+                // service. For example, the ".ilproj" project is not uncommon and hits this code path.
+                // In such cases, we don't want to throw here as that would fault the project. Instead, we
+                // dispose the workspace tears down the dataflow subscription and clean everything up gracefully.
+                Dispose();
 
-                throw new("Insufficient project data to initialize the language service.");
+                return;
             }
 
             try

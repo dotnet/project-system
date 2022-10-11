@@ -321,17 +321,15 @@ public class WorkspaceTests
             }
             """);
 
-        var task = CreateInstanceAsync(evaluationRuleUpdate: evaluationRuleUpdate);
+        var instance = await CreateInstanceAsync(evaluationRuleUpdate: evaluationRuleUpdate);
 
         if (!empty1 && !empty2 && !empty3)
         {
-            await task;
+            Assert.False(instance.IsDisposed);
         }
         else
         {
-            var ex = await Assert.ThrowsAsync<Exception>(() => task);
-
-            Assert.Equal("Insufficient project data to initialize the language service.", ex.Message);
+            Assert.True(instance.IsDisposed);
         }
     }
 
