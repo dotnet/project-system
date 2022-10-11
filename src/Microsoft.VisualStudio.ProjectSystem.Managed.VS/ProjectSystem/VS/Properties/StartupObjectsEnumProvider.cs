@@ -90,8 +90,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
                 enumValues.AddRange(entryPoints.Select(ep =>
                 {
                     string name = ep.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat.WithGlobalNamespaceStyle(SymbolDisplayGlobalNamespaceStyle.Omitted));
-                    string minimalName = ep.ToDisplayString(SymbolDisplayFormat.MinimallyQualifiedFormat);
-                    return new PageEnumValue(new EnumValue { Name = minimalName, DisplayName = name });
+                    return new PageEnumValue(new EnumValue { Name = name, DisplayName = name });
                 }));
             }
 
