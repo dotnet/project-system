@@ -10,7 +10,7 @@ using Microsoft.VisualStudio.ProjectSystem.Query.Providers;
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
 {
     /// <summary>
-    /// Creates <see cref="IQueryDataProducer{TResult}"/> instances that retrieve launch profile information
+    /// Creates <see cref="IQueryDataProducer{TRequest, TResult}"/> instances that retrieve launch profile information
     /// (see <see cref="ILaunchProfile"/>) for a project.
     /// </summary>
     /// <remarks>

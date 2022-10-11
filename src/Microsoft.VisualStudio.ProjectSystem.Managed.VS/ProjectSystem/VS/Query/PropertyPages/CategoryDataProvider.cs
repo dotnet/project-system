@@ -10,7 +10,7 @@ using Microsoft.VisualStudio.ProjectSystem.Query.Providers;
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
 {
     /// <summary>
-    /// Creates <see cref="IQueryDataProducer{TResult}"/> instances that retrieve category information (<see
+    /// Creates <see cref="IQueryDataProducer{TRequest, TResult}"/> instances that retrieve category information (<see
     /// cref="ICategory"/>).
     /// </summary>
     /// <remarks>

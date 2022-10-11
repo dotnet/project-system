@@ -1,6 +1,5 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
-using Microsoft.CodeAnalysis;
 using Microsoft.VisualStudio.ProjectSystem.Query;
 using Microsoft.VisualStudio.ProjectSystem.Query.Execution;
 using Microsoft.VisualStudio.ProjectSystem.Query.Framework;
@@ -10,11 +9,11 @@ using Microsoft.VisualStudio.ProjectSystem.Query.Providers;
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
 {
     /// <summary>
-    /// MEF entry point that creates <see cref="IQueryDataProducer{TResult}"/> instances to retrieve property
+    /// MEF entry point that creates <see cref="IQueryDataProducer{TRequest, TResult}"/> instances to retrieve property
     /// value editor metadata (see <see cref="IUIEditorMetadataSnapshot"/>).
     /// </summary>
     /// <remarks>
-    /// Responsible for populating <see cref="Metadata"/>. See <see
+    /// Responsible for populating Metadata. See <see
     /// cref="UIEditorMetadataFromValueEditorProducer"/> and <see cref="UIEditorMetadataProducer"/> for the important
     /// logic.
     /// </remarks>

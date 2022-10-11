@@ -9,7 +9,7 @@ using Microsoft.VisualStudio.ProjectSystem.Query.Providers;
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
 {
     /// <summary>
-    /// Creates <see cref="IQueryDataProducer{TResult}"/> instances that retrieve a property's supported
+    /// Creates <see cref="IQueryDataProducer{TRequest, TResult}"/> instances that retrieve a property's supported
     /// values (<see cref="ISupportedValueSnapshot"/>).
     /// </summary>'
     /// <remarks>
