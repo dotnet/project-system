@@ -3,7 +3,7 @@
 using System.Runtime.InteropServices;
 using Microsoft.Win32;
 
-namespace Microsoft.VisualStudio.ProjectSystem.Runtimes
+namespace Microsoft.VisualStudio.ProjectSystem.VS.Acquisition
 {
     internal sealed class NetCoreRuntimeVersionsRegistryReader
     {

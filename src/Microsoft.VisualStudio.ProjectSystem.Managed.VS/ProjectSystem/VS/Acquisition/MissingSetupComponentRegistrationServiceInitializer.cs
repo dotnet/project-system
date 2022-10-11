@@ -2,7 +2,7 @@
 
 using Microsoft.VisualStudio.Shell;
 
-namespace Microsoft.VisualStudio.ProjectSystem.VS
+namespace Microsoft.VisualStudio.ProjectSystem.VS.Acquisition
 {
     /// <summary>
     /// Initializes the exported <see cref="IMissingSetupComponentRegistrationService"/> when the package loads.
