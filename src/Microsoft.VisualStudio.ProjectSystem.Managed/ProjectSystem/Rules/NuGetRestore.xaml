@@ -186,4 +186,8 @@
                   ReadOnly="True"
                   Visible="False" />
 
+  <StringProperty Name="WarningsNotAsErrors"
+                  ReadOnly="True"
+                  Visible="False" />
+
 </Rule>
