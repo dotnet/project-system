@@ -5,10 +5,12 @@
 using Microsoft.VisualStudio.IO;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
 using Microsoft.VisualStudio.ProjectSystem.SpecialFileProviders;
+using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Threading;
 using Microsoft.VisualStudio.Threading.Tasks;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using Task = System.Threading.Tasks.Task;
 
 namespace Microsoft.VisualStudio.ProjectSystem.Debug
 {
@@ -31,7 +33,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
                     services: ProjectServicesFactory.Create(
                         threadingService: threadingService)));
             var projectFaultHandlerService = IProjectFaultHandlerServiceFactory.Create();
-            var joinableTaskContext = new JoinableTaskContext();
+            var joinableTaskContext = ThreadHelper.JoinableTaskContext;
             var provider = new LaunchSettingsUnderTest(project, projectServices, fileSystem ?? new IFileSystemMock(), commonServices, null, specialFilesManager, projectFaultHandlerService, new DefaultLaunchProfileProvider(project), joinableTaskContext);
             return provider;
         }
