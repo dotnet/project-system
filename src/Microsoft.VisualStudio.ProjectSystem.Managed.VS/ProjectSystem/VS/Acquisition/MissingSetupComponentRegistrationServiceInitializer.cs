@@ -2,32 +2,31 @@
 
 using Microsoft.VisualStudio.Shell;
 
-namespace Microsoft.VisualStudio.ProjectSystem.VS.Acquisition
+namespace Microsoft.VisualStudio.ProjectSystem.VS.Acquisition;
+
+/// <summary>
+/// Initializes the exported <see cref="IMissingSetupComponentRegistrationService"/> when the package loads.
+/// </summary>
+[Export(typeof(IPackageService))]
+internal sealed class MissingSetupComponentRegistrationServiceInitializer : IPackageService
 {
-    /// <summary>
-    /// Initializes the exported <see cref="IMissingSetupComponentRegistrationService"/> when the package loads.
-    /// </summary>
-    [Export(typeof(IPackageService))]
-    internal sealed class MissingSetupComponentRegistrationServiceInitializer : IPackageService
+    private readonly IProjectServiceAccessor _projectServiceAccessor;
+
+    [ImportingConstructor]
+    public MissingSetupComponentRegistrationServiceInitializer(IProjectServiceAccessor projectServiceAccessor)
     {
-        private readonly IProjectServiceAccessor _projectServiceAccessor;
+        _projectServiceAccessor = projectServiceAccessor;
+    }
 
-        [ImportingConstructor]
-        public MissingSetupComponentRegistrationServiceInitializer(IProjectServiceAccessor projectServiceAccessor)
-        {
-            _projectServiceAccessor = projectServiceAccessor;
-        }
+    public Task InitializeAsync(IAsyncServiceProvider asyncServiceProvider)
+    {
+        IMissingSetupComponentRegistrationService missingWorkloadRegistrationService = _projectServiceAccessor
+            .GetProjectService()
+            .Services
+            .ExportProvider
+            .GetExport<IMissingSetupComponentRegistrationService>()
+            .Value;
 
-        public Task InitializeAsync(IAsyncServiceProvider asyncServiceProvider)
-        {
-            IMissingSetupComponentRegistrationService missingWorkloadRegistrationService = _projectServiceAccessor
-                .GetProjectService()
-                .Services
-                .ExportProvider
-                .GetExport<IMissingSetupComponentRegistrationService>()
-                .Value;
-
-            return missingWorkloadRegistrationService.InitializeAsync();
-        }
+        return missingWorkloadRegistrationService.InitializeAsync();
     }
 }
