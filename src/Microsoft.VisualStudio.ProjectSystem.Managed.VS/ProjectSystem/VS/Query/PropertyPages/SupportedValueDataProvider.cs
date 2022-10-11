@@ -1,20 +1,19 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
 using Microsoft.VisualStudio.ProjectSystem.Query;
-using Microsoft.VisualStudio.ProjectSystem.Query.ProjectModel;
-using Microsoft.VisualStudio.ProjectSystem.Query.ProjectModel.Implementation;
-using Microsoft.VisualStudio.ProjectSystem.Query.ProjectModel.Metadata;
+using Microsoft.VisualStudio.ProjectSystem.Query.Execution;
+using Microsoft.VisualStudio.ProjectSystem.Query.Framework;
+using Microsoft.VisualStudio.ProjectSystem.Query.Metadata;
 using Microsoft.VisualStudio.ProjectSystem.Query.Providers;
-using Microsoft.VisualStudio.ProjectSystem.Query.QueryExecution;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
 {
     /// <summary>
-    /// Creates <see cref="IQueryDataProducer{TRequest, TResult}"/> instances that retrieve a property's supported
-    /// values (<see cref="ISupportedValue"/>).
+    /// Creates <see cref="IQueryDataProducer{TResult}"/> instances that retrieve a property's supported
+    /// values (<see cref="ISupportedValueSnapshot"/>).
     /// </summary>'
     /// <remarks>
-    /// Responsible for populating <see cref="IUIPropertyValue.SupportedValues"/>.
+    /// Responsible for populating <see cref="IUIPropertyValueSnapshot.SupportedValues"/>.
     /// </remarks>
     [QueryDataProvider(SupportedValueType.TypeName, ProjectModel.ModelName)]
     [RelationshipQueryDataProvider(UIPropertyValueType.TypeName, UIPropertyValueType.SupportedValuesPropertyName)]

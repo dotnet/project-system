@@ -1,12 +1,11 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
 using Microsoft.Build.Framework.XamlTypes;
+using Microsoft.VisualStudio.OLE.Interop;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
 using Microsoft.VisualStudio.ProjectSystem.Query;
-using Microsoft.VisualStudio.ProjectSystem.Query.Frameworks;
-using Microsoft.VisualStudio.ProjectSystem.Query.ProjectModel;
-using Microsoft.VisualStudio.ProjectSystem.Query.ProjectModel.Implementation;
-using Microsoft.VisualStudio.ProjectSystem.Query.QueryExecution;
+using Microsoft.VisualStudio.ProjectSystem.Query.Execution;
+using Microsoft.VisualStudio.ProjectSystem.Query.Framework;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
 {
@@ -45,7 +44,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
         public static IEntityValue CreatePropertyPageValue(IQueryExecutionContext queryExecutionContext, EntityIdentity id, IProjectState cache, QueryProjectPropertiesContext propertiesContext, Rule rule, IPropertyPagePropertiesAvailableStatus requestedProperties)
         {
             Requires.NotNull(rule, nameof(rule));
-            var newPropertyPage = new PropertyPageValue(queryExecutionContext.EntityRuntime, id, new PropertyPagePropertiesAvailableStatus());
+            var newPropertyPage = new PropertyPageSnapshot(queryExecutionContext.EntityRuntime, id, new PropertyPagePropertiesAvailableStatus());
 
             if (requestedProperties.Name)
             {

@@ -3,16 +3,14 @@
 using Microsoft.Build.Framework.XamlTypes;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
 using Microsoft.VisualStudio.ProjectSystem.Query;
-using Microsoft.VisualStudio.ProjectSystem.Query.Frameworks;
-using Microsoft.VisualStudio.ProjectSystem.Query.ProjectModel;
-using Microsoft.VisualStudio.ProjectSystem.Query.ProjectModel.Implementation;
-using Microsoft.VisualStudio.ProjectSystem.Query.QueryExecution;
+using Microsoft.VisualStudio.ProjectSystem.Query.Execution;
+using Microsoft.VisualStudio.ProjectSystem.Query.Framework;
 using Microsoft.VisualStudio.ProjectSystem.VS.Utilities;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
 {
     /// <summary>
-    /// Handles the creation of <see cref="ProjectSystem.Query.ProjectModel.ICategory"/> instances and populating the requested members.
+    /// Handles the creation of <see cref="ICategory"/> instances and populating the requested members.
     /// </summary>
     internal static class CategoryDataProducer
     {
@@ -34,7 +32,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
         public static IEntityValue CreateCategoryValue(IQueryExecutionContext queryExecutionContext, EntityIdentity id, Rule rule, Category category, int order, ICategoryPropertiesAvailableStatus requestedProperties)
         {
             Requires.NotNull(category, nameof(category));
-            var newCategory = new CategoryValue(queryExecutionContext.EntityRuntime, id, new CategoryPropertiesAvailableStatus());
+            var newCategory = new CategorySnapshot(queryExecutionContext.EntityRuntime, id, new CategoryPropertiesAvailableStatus());
 
             if (requestedProperties.DisplayName)
             {

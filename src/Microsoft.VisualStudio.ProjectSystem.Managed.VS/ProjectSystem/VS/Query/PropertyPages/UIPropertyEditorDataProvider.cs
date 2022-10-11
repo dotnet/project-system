@@ -1,21 +1,20 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
 using Microsoft.VisualStudio.ProjectSystem.Query;
-using Microsoft.VisualStudio.ProjectSystem.Query.ProjectModel;
-using Microsoft.VisualStudio.ProjectSystem.Query.ProjectModel.Implementation;
-using Microsoft.VisualStudio.ProjectSystem.Query.ProjectModel.Metadata;
+using Microsoft.VisualStudio.ProjectSystem.Query.Execution;
+using Microsoft.VisualStudio.ProjectSystem.Query.Framework;
+using Microsoft.VisualStudio.ProjectSystem.Query.Metadata;
 using Microsoft.VisualStudio.ProjectSystem.Query.Providers;
-using Microsoft.VisualStudio.ProjectSystem.Query.QueryExecution;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
 {
     /// <summary>
-    /// Creates <see cref="IQueryDataProducer{TRequest, TResult}"/> instances that retrieve UI property value editors
-    /// (<see cref="IUIPropertyEditor"/>).
+    /// Creates <see cref="IQueryDataProducer{TResult}"/> instances that retrieve UI property value editors
+    /// (<see cref="IUIPropertyEditorSnapshot"/>).
     /// </summary>
     /// <remarks>
-    /// Responsible for populating <see cref="IUIProperty.Editors"/>. Can also retrieve a <see
-    /// cref="IUIPropertyEditor"/> based on its ID.
+    /// Responsible for populating <see cref="IUIPropertySnapshot.Editors"/>. Can also retrieve a <see
+    /// cref="IUIPropertyEditorSnapshot"/> based on its ID.
     /// </remarks>
     [QueryDataProvider(UIPropertyEditorType.TypeName, ProjectModel.ModelName)]
     [RelationshipQueryDataProvider(UIPropertyType.TypeName, UIPropertyType.EditorsPropertyName)]

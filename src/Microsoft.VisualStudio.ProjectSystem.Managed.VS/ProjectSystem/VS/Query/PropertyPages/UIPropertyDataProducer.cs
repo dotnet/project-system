@@ -1,13 +1,12 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
 using Microsoft.Build.Framework.XamlTypes;
+using Microsoft.VisualStudio.OLE.Interop;
 using Microsoft.VisualStudio.ProjectSystem.Debug;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
 using Microsoft.VisualStudio.ProjectSystem.Query;
-using Microsoft.VisualStudio.ProjectSystem.Query.Frameworks;
-using Microsoft.VisualStudio.ProjectSystem.Query.ProjectModel;
-using Microsoft.VisualStudio.ProjectSystem.Query.ProjectModel.Implementation;
-using Microsoft.VisualStudio.ProjectSystem.Query.QueryExecution;
+using Microsoft.VisualStudio.ProjectSystem.Query.Execution;
+using Microsoft.VisualStudio.ProjectSystem.Query.Framework;
 using Microsoft.VisualStudio.ProjectSystem.VS.Utilities;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
@@ -35,7 +34,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
         public static IEntityValue CreateUIPropertyValue(IQueryExecutionContext queryExecutionContext, EntityIdentity id, IProjectState cache, QueryProjectPropertiesContext propertiesContext, BaseProperty property, int order, IUIPropertyPropertiesAvailableStatus requestedProperties)
         {
             Requires.NotNull(property, nameof(property));
-            var newUIProperty = new UIPropertyValue(queryExecutionContext.EntityRuntime, id, new UIPropertyPropertiesAvailableStatus());
+            var newUIProperty = new UIPropertySnapshot(queryExecutionContext.EntityRuntime, id, new UIPropertyPropertiesAvailableStatus());
 
             if (requestedProperties.Name)
             {
