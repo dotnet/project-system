@@ -40,12 +40,6 @@
     <Compile Update="ProjectSystem\VS\LanguageServices\VisualBasic\VisualBasicCodeDomProvider.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Update="ProjectSystem\VS\PropertyPages\DebugPropertyPage.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Update="ProjectSystem\VS\PropertyPages\DebugPageControl.xaml.cs">
-      <DependentUpon>DebugPageControl.xaml</DependentUpon>
-    </Compile>
     <Compile Update="ProjectSystem\VS\PropertyPages\GetProfileNameDialog.xaml.cs">
       <DependentUpon>GetProfileNameDialog.xaml</DependentUpon>
     </Compile>
@@ -61,13 +55,6 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>PropertyPageResources.resx</DependentUpon>
     </Compile>
-    <Compile Update="ProjectSystem\VS\PropertyPages\WpfBasedPropertyPage.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Update="ProjectSystem\VS\PropertyPages\WpfBasedPropertyPage.Designer.cs">
-      <DependentUpon>WpfBasedPropertyPage.cs</DependentUpon>
-      <SubType>UserControl</SubType>
-    </Compile>
     <Compile Update="VSResources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -76,15 +63,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Page Include="ProjectSystem\VS\PropertyPages\DebugPageControl.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
     <Page Include="ProjectSystem\VS\PropertyPages\GetProfileNameDialog.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="ProjectSystem\VS\PropertyPages\WatermarkStyle.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -129,7 +108,6 @@
   <!-- Note that the filepath for the file MUST be nested within itself in the destination, as the .g.cs files include the relative nested path. -->
   <!-- See: https://github.com/dotnet/sourcelink/issues/492 -->
   <Target Name="CopyDependentUponXamlFiles" BeforeTargets="CoreCompile">
-    <Copy SourceFiles="ProjectSystem\VS\PropertyPages\DebugPageControl.xaml" DestinationFiles="$(IntermediateOutputPath)\ProjectSystem\VS\PropertyPages\ProjectSystem\VS\PropertyPages\DebugPageControl.xaml" SkipUnchangedFiles="true" />
     <Copy SourceFiles="ProjectSystem\VS\PropertyPages\GetProfileNameDialog.xaml" DestinationFiles="$(IntermediateOutputPath)\ProjectSystem\VS\PropertyPages\ProjectSystem\VS\PropertyPages\GetProfileNameDialog.xaml" SkipUnchangedFiles="true" />
   </Target>
 

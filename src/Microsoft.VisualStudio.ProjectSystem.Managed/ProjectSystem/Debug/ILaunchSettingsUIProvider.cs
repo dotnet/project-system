@@ -14,6 +14,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
     /// Implementations of this interface each contribute an entry to the drop-down list of
     /// launch profiles in the "Debug" project property page.
     /// </remarks>
+    [Obsolete("This interface is obsolete and no longer used for the launch profiles UI. See https://github.com/dotnet/project-system/blob/main/docs/repo/property-pages/how-to-add-a-new-launch-profile-kind.md for more information.")]
     [ProjectSystemContract(ProjectSystemContractScope.UnconfiguredProject, ProjectSystemContractProvider.Private, Cardinality = ImportCardinality.ExactlyOne)]
     public interface ILaunchSettingsUIProvider
     {

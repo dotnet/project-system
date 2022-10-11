@@ -1,5 +1,7 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
+using Microsoft.VisualStudio.Threading;
+
 namespace Microsoft.VisualStudio.ProjectSystem.Properties
 {
     /// <summary>
@@ -25,12 +27,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
 
         public virtual Task<bool> IsValueDefinedInContextAsync(string propertyName, IProjectProperties defaultProperties)
         {
-            return Task.FromResult(true);
+            return TaskResult.True;
         }
 
-        internal static async Task<bool> IsValueDefinedInContextMsBuildPropertiesAsync(IProjectProperties defaultProperties, string[] msBuildPropertyNames)
+        private protected static async Task<bool> IsValueDefinedInContextMSBuildPropertiesAsync(IProjectProperties defaultProperties, string[] msBuildPropertyNames)
         {
-            string[] propertiesDefinedInProjectFile = (await defaultProperties.GetDirectPropertyNamesAsync()).ToArray();
+            IEnumerable<string> enumerable = await defaultProperties.GetDirectPropertyNamesAsync();
+            IReadOnlyCollection<string> propertiesDefinedInProjectFile = enumerable is IReadOnlyCollection<string> list ? list : enumerable.ToList();
             return !msBuildPropertyNames.Any(name => propertiesDefinedInProjectFile.Contains(name, StringComparers.PropertyNames));
         }
     }
