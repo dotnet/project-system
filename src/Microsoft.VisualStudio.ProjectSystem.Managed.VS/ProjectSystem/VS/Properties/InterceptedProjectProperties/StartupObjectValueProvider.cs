@@ -33,56 +33,65 @@ internal class StartupObjectValueProvider : InterceptingPropertyValueProviderBas
     {
         IProjectCapabilitiesScope capabilities = _project.Capabilities;
         bool isWindowsForms = capabilities.Contains(ProjectCapability.WindowsForms);
+        bool isVB = capabilities.Contains(ProjectCapability.VisualBasic);
         string rootNameSpace = await defaultProperties.GetEvaluatedPropertyValueAsync(RootNamespaceProperty);
 
-        if (isWindowsForms)
+        if (isVB)
         {
-            string applicationFrameworkValue = await defaultProperties.GetEvaluatedPropertyValueAsync(ApplicationFrameworkProperty);
-
-            if (string.Compare(applicationFrameworkValue, EnabledValue) == 0)
+            if (isWindowsForms)
             {
-                // Set the startup object in the myapp file.
-                if (unevaluatedPropertyValue.StartsWith(rootNameSpace + ".", StringComparison.OrdinalIgnoreCase))
-                {
-                    unevaluatedPropertyValue = unevaluatedPropertyValue.Substring(rootNameSpace.Length + 1);
-                }
-                await _myAppXmlFileAccessor.SetMainFormAsync(unevaluatedPropertyValue);
+                string applicationFrameworkValue = await defaultProperties.GetEvaluatedPropertyValueAsync(ApplicationFrameworkProperty);
 
-                // And save namespace.My.MyApplication in the project file.
-                await defaultProperties.SetPropertyValueAsync(StartupObjectProperty, rootNameSpace + ".My.MyApplication");
+                if (string.Compare(applicationFrameworkValue, EnabledValue) == 0)
+                {
+                    // Set the startup object in the myapp file.
+                    if (unevaluatedPropertyValue.StartsWith(rootNameSpace + ".", StringComparison.OrdinalIgnoreCase))
+                    {
+                        unevaluatedPropertyValue = unevaluatedPropertyValue.Substring(rootNameSpace.Length + 1);
+                    }
+                    await _myAppXmlFileAccessor.SetMainFormAsync(unevaluatedPropertyValue);
+
+                    // And save namespace.My.MyApplication in the project file.
+                    await defaultProperties.SetPropertyValueAsync(StartupObjectProperty, rootNameSpace + ".My.MyApplication");
+
+                    // We're done saving the property in the correct places, no further action needed.
+                    return null;
+                }
+            }
+            else
+            {
+                // Else, if it's other than a Windows Forms project, save the StartupObject property in the project file as usual.
+                // Or if the ApplicationFramework property is disabled, save the StartupObject property in the project file as usual.
+                return rootNameSpace + "." + unevaluatedPropertyValue;
             }
         }
-
-        // Else, if it's other than a Windows Forms project, save the StartupObject property in the project file as usual.
-        // Or if the ApplicationFramework property is disabled, save the StartupObject property in the project file as usual.
-        await defaultProperties.SetPropertyValueAsync(StartupObjectProperty, rootNameSpace + "." + unevaluatedPropertyValue);
-        return null;
+        // This check can be removed when https://github.com/dotnet/project-system/issues/8170 is addressed.
+        return unevaluatedPropertyValue;
     }
 
     public override async Task<string> OnGetEvaluatedPropertyValueAsync(string propertyName, string evaluatedPropertyValue, IProjectProperties defaultProperties)
     {
         // StartupObject can come from the project file or the myapp file.
         string applicationFrameworkValue = await defaultProperties.GetEvaluatedPropertyValueAsync(ApplicationFrameworkProperty);
+        string rootNameSpace = await defaultProperties.GetEvaluatedPropertyValueAsync(RootNamespaceProperty);
 
         if (string.Compare(applicationFrameworkValue, DisabledValue) == 0)
             return evaluatedPropertyValue;
 
-        if (string.IsNullOrEmpty(evaluatedPropertyValue))
-            return await _myAppXmlFileAccessor.GetMainFormAsync() ?? string.Empty;
-
-        return evaluatedPropertyValue;
+        return (rootNameSpace + "." + await _myAppXmlFileAccessor.GetMainFormAsync()) ?? string.Empty;
     }
 
     public override async Task<string> OnGetUnevaluatedPropertyValueAsync(string propertyName, string unevaluatedPropertyValue, IProjectProperties defaultProperties)
     {
         // StartupObject can come from the project file or the myapp file.
         string? applicationFrameworkValue = await defaultProperties.GetUnevaluatedPropertyValueAsync(ApplicationFrameworkProperty);
-                
+        string rootNameSpace = await defaultProperties.GetEvaluatedPropertyValueAsync(RootNamespaceProperty);
+
         if (string.Compare(applicationFrameworkValue, DisabledValue) == 0)
             return unevaluatedPropertyValue;
 
         if (string.IsNullOrEmpty(unevaluatedPropertyValue))
-            return await _myAppXmlFileAccessor.GetMainFormAsync() ?? string.Empty;
+            return (rootNameSpace + "." + await _myAppXmlFileAccessor.GetMainFormAsync()) ?? string.Empty;
 
         return unevaluatedPropertyValue;
     }
