@@ -11,6 +11,7 @@ Imports System.Text.RegularExpressions
 Imports System.Windows.Forms
 
 Imports Microsoft.VisualStudio.Shell
+Imports Microsoft.VisualStudio.Shell.Interop
 Imports Microsoft.VisualStudio.Telemetry
 
 Namespace Microsoft.VisualStudio.Editors.AppDesCommon
@@ -336,14 +337,14 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
         ''' <param name="hr">error code</param>
         ''' <param name="errorMessage">error message</param>
         Public Sub SetErrorInfo(sp As ServiceProvider, hr As Integer, errorMessage As String)
-            Dim vsUIShell As Interop.IVsUIShell = Nothing
+            Dim vsUIShell As IVsUIShell = Nothing
 
             If sp IsNot Nothing Then
-                vsUIShell = CType(sp.GetService(GetType(Interop.IVsUIShell)), Interop.IVsUIShell)
+                vsUIShell = CType(sp.GetService(GetType(IVsUIShell)), IVsUIShell)
             End If
 
             If vsUIShell Is Nothing AndAlso Not VBPackageInstance IsNot Nothing Then
-                vsUIShell = CType(VBPackageInstance.GetService(GetType(Interop.IVsUIShell)), Interop.IVsUIShell)
+                vsUIShell = CType(VBPackageInstance.GetService(GetType(IVsUIShell)), IVsUIShell)
             End If
 
             If vsUIShell IsNot Nothing Then
@@ -434,8 +435,8 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
                 Optional DefaultFileName As String = Nothing,
                 Optional NeedThrowError As Boolean = False) As ArrayList
 
-            Dim uishell As Interop.IVsUIShell =
-                CType(ServiceProvider.GetService(GetType(Interop.IVsUIShell)), Interop.IVsUIShell)
+            Dim uishell As IVsUIShell =
+                CType(ServiceProvider.GetService(GetType(IVsUIShell)), IVsUIShell)
 
             Dim fileNames As New ArrayList()
 
@@ -451,7 +452,7 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
                 MaxPathName = (AppDesInterop.Win32Constant.MAX_PATH + 1) * VSDPLMAXFILES
             End If
 
-            Dim vsOpenFileName As Interop.VSOPENFILENAMEW()
+            Dim vsOpenFileName As VSOPENFILENAMEW()
 
             Dim defaultName(MaxPathName) As Char
             If DefaultFileName IsNot Nothing Then
@@ -462,7 +463,7 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
             Marshal.Copy(defaultName, 0, stringMemPtr, defaultName.Length)
 
             Try
-                vsOpenFileName = New Interop.VSOPENFILENAMEW(0) {}
+                vsOpenFileName = New VSOPENFILENAMEW(0) {}
                 vsOpenFileName(0).lStructSize = CUInt(Marshal.SizeOf(vsOpenFileName(0)))
                 vsOpenFileName(0).hwndOwner = ParentWindow
                 vsOpenFileName(0).pwzDlgTitle = DialogTitle
