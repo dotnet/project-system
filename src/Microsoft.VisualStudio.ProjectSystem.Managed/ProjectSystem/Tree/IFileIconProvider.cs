@@ -4,7 +4,7 @@ using Microsoft.VisualStudio.Composition;
 using Microsoft.VisualStudio.Imaging;
 using Microsoft.VisualStudio.Imaging.Interop;
 
-namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree
+namespace Microsoft.VisualStudio.ProjectSystem.Tree
 {
     /// <summary>
     /// Provides icons for files based on their file names.
