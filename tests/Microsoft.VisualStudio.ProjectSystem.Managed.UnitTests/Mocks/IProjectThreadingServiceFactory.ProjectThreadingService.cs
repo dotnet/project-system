@@ -1,6 +1,5 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
-using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Threading;
 using Task = System.Threading.Tasks.Task;
 
@@ -14,7 +13,9 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
             public ProjectThreadingService(bool verifyOnUIThread = true) => _verifyOnUIThread = verifyOnUIThread;
 
-            public JoinableTaskContextNode JoinableTaskContext { get; } = new JoinableTaskContextNode(ThreadHelper.JoinableTaskContext);
+#pragma warning disable VSSDK005
+            public JoinableTaskContextNode JoinableTaskContext { get; } = new JoinableTaskContextNode(new JoinableTaskContext());
+#pragma warning restore VSSDK005
 
             public JoinableTaskFactory JoinableTaskFactory => JoinableTaskContext.Factory;
 

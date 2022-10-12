@@ -747,7 +747,9 @@ public class WorkspaceTests
         workspaceProjectContext ??= Mock.Of<IWorkspaceProjectContext>(MockBehavior.Loose);
         workspaceProjectContextFactory ??= IWorkspaceProjectContextFactoryFactory.ImplementCreateProjectContext(delegate { return workspaceProjectContext; });
         faultHandlerService ??= IProjectFaultHandlerServiceFactory.Create();
-        JoinableTaskCollection joinableTaskCollection = new(ThreadHelper.JoinableTaskContext);
+#pragma warning disable VSSDK005
+        JoinableTaskCollection joinableTaskCollection = new(new JoinableTaskContext());
+#pragma warning restore VSSDK005
         joinableTaskFactory ??= new(joinableTaskCollection);
         joinableTaskContextNode ??= JoinableTaskContextNodeFactory.Create();
 
