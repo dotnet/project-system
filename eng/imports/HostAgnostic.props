@@ -36,6 +36,7 @@
 
     <!-- CPS -->
     <PackageReference Include="Microsoft.VisualStudio.ProjectSystem" />
+    <PackageReference Include="Microsoft.VisualStudio.ProjectSystem.Implementation" />
     <PackageReference Include="Microsoft.VisualStudio.ProjectSystem.SDK" />
     <PackageReference Include="Microsoft.VisualStudio.ProjectSystem.Query" />
     <PackageReference Include="Microsoft.VisualStudio.Validation" />
