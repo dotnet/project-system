@@ -42,7 +42,8 @@
     <PackageReference Include="Microsoft.VisualStudio.Threading" />
     <PackageReference Include="Microsoft.VisualStudio.ProjectSystem.SDK.Tools" />
     <PackageReference Include="System.Threading.Tasks.Dataflow" />
-
+    <PackageReference Include="Microsoft.VisualStudio.ProjectServices" />
+    
     <!-- VS MEF -->
     <PackageReference Include="Microsoft.VisualStudio.Composition" />
 

@@ -13,7 +13,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
     /// (<see cref="IPropertyPageSnapshot"/>) for a project.
     /// </summary>
     /// <remarks>
-    /// Responsible for populating <see cref="Microsoft.VisualStudio.ProjectSystem.Query.IProjectSnapshot.PropertyPages"/>. Can also retrieve a <see cref="IPropertyPage"/>
+    /// Responsible for populating <see cref="Microsoft.VisualStudio.ProjectSystem.Query.IProjectSnapshot.PropertyPages"/>. Can also retrieve a <see cref="IPropertyPageSnapshot"/>
     /// based on its ID.
     /// </remarks>
     [QueryDataProvider(PropertyPageType.TypeName, ProjectModel.ModelName)]
