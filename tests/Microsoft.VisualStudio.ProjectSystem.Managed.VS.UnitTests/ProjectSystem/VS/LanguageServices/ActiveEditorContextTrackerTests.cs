@@ -196,9 +196,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
             Assert.Equal("FirstContextId", result);
         }
 
-        private static ActiveEditorContextTracker CreateInstance()
+        private static VsActiveEditorContextTracker CreateInstance()
         {
-            return new ActiveEditorContextTracker(null);
+            return new VsActiveEditorContextTracker(null, new ActiveEditorContextTracker(null));
         }
     }
 }

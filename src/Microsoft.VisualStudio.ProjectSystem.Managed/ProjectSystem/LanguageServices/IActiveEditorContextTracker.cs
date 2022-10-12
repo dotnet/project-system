@@ -23,6 +23,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
     internal interface IActiveEditorContextTracker
     {
         /// <summary>
+        ///     Gets or sets the current shared item context intellisense project name. Can be null.
+        /// </summary>
+        string? ActiveIntellisenseProjectContext { get; set; }
+
+        /// <summary>
         ///     Returns a value indicating whether the specified <see cref="IWorkspaceProjectContext"/> is the active one for the editor.
         /// </summary>
         /// <exception cref="ArgumentNullException">
