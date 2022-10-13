@@ -8,5 +8,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree;
 [ProjectSystemContract(ProjectSystemContractScope.Global, ProjectSystemContractProvider.Private, Cardinality = ImportCardinality.ExactlyOne, Provider = ProjectSystemContractProvider.Private)]
 internal interface IUIImageService
 {
+    /// <summary>
+    /// Returns an image moniker based on the file type.
+    /// </summary>
+    /// <remarks>
+    /// This requires the main thread.
+    /// </remarks>
+    /// <param name="filename"></param>
+    /// <returns></returns>
     ImageMoniker GetImageMonikerForFile(string filename);
 }
