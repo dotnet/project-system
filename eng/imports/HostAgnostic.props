@@ -50,6 +50,9 @@
     <PackageReference Include="Microsoft.CodeAnalysis" />
     <PackageReference Include="Microsoft.CSharp" />
 
+    <!-- Needed to tie-break a potentially misspecified dependency somewhere -->
+    <PackageReference Include="Microsoft.ServiceHub.Framework" />
+
     <!-- Analyzers-->
     <!-- Set PrivateAssets="all" to prevent consumers of our packages from picking up these analyzers transitively. -->
     <PackageReference Include="CSharpIsNullAnalyzer"                           PrivateAssets="all" />
@@ -61,7 +64,7 @@
 
     <!-- Framework packages -->
     <PackageReference Include="Microsoft.IO.Redist" />
-    
+
     <!-- 3rd party -->
     <PackageReference Include="Newtonsoft.Json" />
 

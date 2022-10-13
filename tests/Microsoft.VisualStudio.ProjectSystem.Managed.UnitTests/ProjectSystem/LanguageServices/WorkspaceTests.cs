@@ -5,10 +5,10 @@ using Microsoft.VisualStudio.LanguageServices.ProjectSystem;
 using Microsoft.VisualStudio.ProjectSystem.Utilities;
 using Microsoft.VisualStudio.ProjectSystem.VS;
 using Microsoft.VisualStudio.Threading;
+using Moq.Language.Flow;
 
 #pragma warning disable CA1068 // CancellationToken parameters must come last
 #pragma warning disable VSTHRD012 // Provide JoinableTaskFactory where allowed
-#pragma warning disable CS0618 // Type or member is obsolete
 
 namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices;
 
@@ -237,10 +237,6 @@ public class WorkspaceTests
         unconfiguredProject.SetupGet(o => o.Services).Returns(unconfiguredProjectServices.Object);
 
         var workspaceProjectContext = new Mock<IWorkspaceProjectContext>(MockBehavior.Strict);
-        workspaceProjectContext.Setup(o => o.StartBatch());
-        workspaceProjectContext.SetupSet(o => o.LastDesignTimeBuildSucceeded = false);
-        workspaceProjectContext.Setup(o => o.SetOptions("CommandLineArgsForDesignTimeEvaluation"));
-        workspaceProjectContext.Setup(o => o.EndBatchAsync()).Returns(() => new ValueTask());
 
         var evaluationRuleUpdate = IProjectSubscriptionUpdateFactory.FromJson(
             """
@@ -269,13 +265,11 @@ public class WorkspaceTests
         var workspaceProjectContextFactory = new Mock<IWorkspaceProjectContextFactory>(MockBehavior.Strict);
         workspaceProjectContextFactory.Setup(
             c => c.CreateProjectContextAsync(
-                "LanguageServiceName",
-                $"MSBuildProjectFullPath (net6.0 {projectGuid.ToString("B").ToUpperInvariant()})",
-                "MSBuildProjectFullPath",
                 projectGuid,
+                $"MSBuildProjectFullPath (net6.0 {projectGuid.ToString("B").ToUpperInvariant()})",
+                "LanguageServiceName",
+                It.IsAny<EvaluationData>(),
                 hostObject,
-                "TargetPath",
-                "AssemblyName",
                 It.IsAny<CancellationToken>()))
             .ReturnsAsync(delegate { return workspaceProjectContext.Object; });
 
@@ -285,17 +279,17 @@ public class WorkspaceTests
             workspaceProjectContextFactory: workspaceProjectContextFactory.Object,
             evaluationRuleUpdate: evaluationRuleUpdate);
 
-        workspaceProjectContextFactory.Verify();
-        workspaceProjectContext.Verify();
-        unconfiguredProjectServices.Verify();
-        unconfiguredProject.Verify();
+        workspaceProjectContextFactory.VerifyAll();
+        workspaceProjectContext.VerifyAll();
+        unconfiguredProjectServices.VerifyAll();
+        unconfiguredProject.VerifyAll();
 
         Assert.Same(workspaceProjectContext.Object, workspace.Context);
     }
 
     [Theory]
     [CombinatorialData]
-    public async Task EvaluationUpdate_IncompleteEvaluationDataFailsInitialization(bool empty1, bool empty2, bool empty3)
+    public async Task EvaluationUpdate_IncompleteEvaluationDataFailsInitialization(bool emptyLanguageService, bool emptyFullPath)
     {
         var evaluationRuleUpdate = IProjectSubscriptionUpdateFactory.FromJson(
             $$"""
@@ -303,9 +297,9 @@ public class WorkspaceTests
                 "CurrentState": {
                     "ConfigurationGeneral": {
                         "Properties": {
-                            "LanguageServiceName": "{{(empty1 ? "" : "LanguageServiceName")}}",
-                            "TargetPath": "{{(empty2 ? "" : "TargetPath")}}",
-                            "MSBuildProjectFullPath": "{{(empty3 ? "" : "MSBuildProjectFullPath")}}",
+                            "LanguageServiceName": "{{(emptyLanguageService ? "" : "LanguageServiceName")}}",
+                            "MSBuildProjectFullPath": "{{(emptyFullPath ? "" : "MSBuildProjectFullPath")}}",
+                            "TargetPath": "TargetPath",
                             "AssemblyName": "AssemblyName",
                             "CommandLineArgsForDesignTimeEvaluation": "CommandLineArgsForDesignTimeEvaluation"
                         }
@@ -323,7 +317,7 @@ public class WorkspaceTests
 
         var instance = await CreateInstanceAsync(evaluationRuleUpdate: evaluationRuleUpdate);
 
-        if (!empty1 && !empty2 && !empty3)
+        if (!emptyLanguageService && !emptyFullPath)
         {
             Assert.False(instance.IsDisposed);
         }
@@ -625,32 +619,73 @@ public class WorkspaceTests
     }
 
     [Fact]
-    public async Task ConstructionExceptionCleansUp()
+    public async Task Update_StartBatchThrows()
     {
-        var projectGuid = Guid.NewGuid();
-        object hostObject = new();
         Exception ex = new("Error starting batch");
 
+        Mock<IWorkspaceProjectContext> workspaceProjectContext = new(MockBehavior.Strict);
+
+        // StartBatch throws
+        workspaceProjectContext.Setup(o => o.StartBatch()).Throws(ex);
+
+        // Expect disposal
+        workspaceProjectContext.Setup(o => o.Dispose());
+
+        await EvaluationUpdateThrowsAndDisposesAsync(createProjectContext => createProjectContext.Returns(Task.FromResult(workspaceProjectContext.Object)), ex);
+
+        workspaceProjectContext.VerifyAll();
+    }
+
+    [Fact]
+    public async Task Update_EndBatchAsyncThrows()
+    {
+        Exception ex = new("Error starting batch");
+
+        Mock<IWorkspaceProjectContext> workspaceProjectContext = new(MockBehavior.Strict);
+
+        // EndBatchAsync throws
+        workspaceProjectContext.Setup(o => o.StartBatch());
+        workspaceProjectContext.Setup(o => o.EndBatchAsync()).Throws(ex);
+
+        // Expect disposal
+        workspaceProjectContext.Setup(o => o.Dispose());
+
+        await EvaluationUpdateThrowsAndDisposesAsync(createProjectContext => createProjectContext.Returns(Task.FromResult(workspaceProjectContext.Object)), ex);
+
+        workspaceProjectContext.VerifyAll();
+    }
+
+    [Fact]
+    public async Task ContextInitialization_CreateProjectContextAsyncThrows()
+    {
+        Exception ex = new("Error creating project context");
+
+        // CreateProjectContextAsync throws
+        await EvaluationUpdateThrowsAndDisposesAsync(createProjectContext => createProjectContext.Throws(ex), ex);
+    }
+
+    /// <summary>
+    /// Template for actions on a newly constructed workspace that receives an exception during the initial update.
+    /// Such exceptions should dispose the workspace and propagate to the caller.
+    /// These are product bugs. The exceptions escape and produce NFEs.
+    /// </summary>
+    private async Task EvaluationUpdateThrowsAndDisposesAsync(Action<ISetup<IWorkspaceProjectContextFactory, Task<IWorkspaceProjectContext>>> createContext, Exception exception)
+    {
         Mock<UnconfiguredProjectServices> unconfiguredProjectServices = new(MockBehavior.Strict);
-        unconfiguredProjectServices.SetupGet(o => o.HostObject).Returns(hostObject);
+        unconfiguredProjectServices.SetupGet(o => o.HostObject).Returns(new object());
 
         Mock<UnconfiguredProject> unconfiguredProject = new(MockBehavior.Strict);
         unconfiguredProject.SetupGet(o => o.FullPath).Returns("""C:\MyProject\MyProject.csproj""");
         unconfiguredProject.SetupGet(o => o.Services).Returns(unconfiguredProjectServices.Object);
 
-        Mock<IWorkspaceProjectContext> workspaceProjectContext = new(MockBehavior.Strict);
-        workspaceProjectContext
-            .Setup(o => o.StartBatch())
-            .Throws(ex); // Throw straight away
-        workspaceProjectContext.Setup(o => o.Dispose()); // Must be disposed
+        var workspaceProjectContextFactory = new Mock<IWorkspaceProjectContextFactory>(MockBehavior.Strict);
+        createContext(workspaceProjectContextFactory.SetupCreateProjectContext());
 
         Workspace workspace = await CreateInstanceAsync(
                 unconfiguredProject: unconfiguredProject.Object,
-                projectGuid: projectGuid,
-                workspaceProjectContext: workspaceProjectContext.Object,
+                projectGuid: Guid.NewGuid(),
+                workspaceProjectContextFactory: workspaceProjectContextFactory.Object,
                 applyEvaluation: false);
-
-        IDataProgressTrackerServiceRegistration operationProgress = Mock.Of<IDataProgressTrackerServiceRegistration>();
 
         var sourceItemsUpdate = IProjectSubscriptionUpdateFactory.FromJson(
                 """
@@ -665,20 +700,17 @@ public class WorkspaceTests
                 }
                 """);
 
-        // An exception during context initialization leaves the context in a failed state.
-        Assert.Same(ex, await Assert.ThrowsAsync<Exception>(() => ApplyEvaluationAsync(workspace, sourceItemsUpdate: sourceItemsUpdate)));
+        Assert.False(workspace.IsDisposed);
 
-        workspaceProjectContext.Verify();
-        unconfiguredProjectServices.Verify();
-        unconfiguredProject.Verify();
+        // Exceptions should propagate to the caller
+        Assert.Same(exception, await Assert.ThrowsAsync<Exception>(() => ApplyEvaluationAsync(workspace, sourceItemsUpdate: sourceItemsUpdate)));
 
-        // Receiving another update will fail with a different exception (we cannot test the type as it's internal to vs-validation)
-        Assert.NotSame(ex, await Assert.ThrowsAnyAsync<Exception>(() => ApplyEvaluationAsync(workspace, sourceItemsUpdate: sourceItemsUpdate)));
+        // Exceptions should leave the workspace disposed
+        Assert.True(workspace.IsDisposed);
 
-        // Attempting to write to a failed workspace produces the original exception
-        Assert.Same(ex, await Assert.ThrowsAnyAsync<Exception>(() => workspace.WriteAsync(_ => Task.CompletedTask, CancellationToken.None)));
-
-        Assert.Same(ex, await Assert.ThrowsAnyAsync<Exception>(() => workspace.WriteAsync(_ => Task.FromResult(123), CancellationToken.None)));
+        workspaceProjectContextFactory.VerifyAll();
+        unconfiguredProjectServices.VerifyAll();
+        unconfiguredProject.VerifyAll();
     }
 
     [Theory] // Configurations          Project GUID                               Expected
@@ -692,7 +724,7 @@ public class WorkspaceTests
         string? actualId = null;
 
         var workspaceProjectContextFactory = IWorkspaceProjectContextFactoryFactory.ImplementCreateProjectContext(
-            (_, id, _, _, _, _, _, _) => { actualId = id; return Mock.Of<IWorkspaceProjectContext>(MockBehavior.Loose); });
+            (_, id, _, _, _, _) => { actualId = id; return Mock.Of<IWorkspaceProjectContext>(MockBehavior.Loose); });
 
         var sliceValues = ProjectConfigurationFactory.Create(configuration).Dimensions
             .Remove(ConfigurationGeneral.ConfigurationProperty)
