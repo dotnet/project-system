@@ -38,7 +38,7 @@ internal class AppDotXamlDocument : AppDotXamlDocument.IDebugLockCheck, AppDotXa
     private const char SingleQuote = '\'';
     private const char DoubleQuote = '"';
 
-    private static readonly char[] ClosingAngleBracketHelperCharacters = new[] { SingleQuote, DoubleQuote, '/', '>' };
+    private static readonly char[] s_closingAngleBracketHelperCharacters = new[] { SingleQuote, DoubleQuote, '/', '>' };
 
     private readonly IVsTextLines _vsTextLines;
 
@@ -192,7 +192,7 @@ internal class AppDotXamlDocument : AppDotXamlDocument.IDebugLockCheck, AppDotXa
         while (index < line.Length)
         {
             // Find the next character of interest
-            index = line.IndexOfAny(ClosingAngleBracketHelperCharacters, index);
+            index = line.IndexOfAny(s_closingAngleBracketHelperCharacters, index);
             if (index < 0)
             {
                 return -1;

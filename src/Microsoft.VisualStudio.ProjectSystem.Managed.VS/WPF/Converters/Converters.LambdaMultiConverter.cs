@@ -9,6 +9,7 @@ using System.Windows.Data;
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Utilities
 {
     // Copied from CPS Converters.cs
+
     internal static partial class Converters
     {
         /// <summary>
@@ -19,20 +20,20 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Utilities
         /// <typeparam name="TTo">The destination type, to convert to.</typeparam>
         private sealed class LambdaMultiConverter<TFrom1, TFrom2, TTo> : IMultiValueConverter
         {
-            private readonly Func<TFrom1, TFrom2, TTo> convert;
-            private readonly Func<TTo, (TFrom1, TFrom2)> convertBack;
+            private readonly Func<TFrom1, TFrom2, TTo> _convert;
+            private readonly Func<TTo, (TFrom1, TFrom2)> _convertBack;
 
             public LambdaMultiConverter(Func<TFrom1, TFrom2, TTo> convert, Func<TTo, (TFrom1, TFrom2)> convertBack = null)
             {
-                this.convert = convert;
-                this.convertBack = convertBack;
+                _convert = convert;
+                _convertBack = convertBack;
             }
 
             public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
             {
                 if (values.Length == 2 && TryConvert(values[0], out TFrom1 t1) && TryConvert(values[1], out TFrom2 t2))
                 {
-                    return convert(t1, t2);
+                    return _convert(t1, t2);
                 }
 
                 return DependencyProperty.UnsetValue;
@@ -52,9 +53,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Utilities
 
             public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture)
             {
-                if (convertBack is not null && value is TTo to)
+                if (_convertBack is not null && value is TTo to)
                 {
-                    var values = convertBack(to);
+                    var values = _convertBack(to);
                     return new object[] { values.Item1, values.Item2 };
                 }
 
@@ -71,20 +72,20 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Utilities
         /// <typeparam name="TTo">The destination type, to convert to.</typeparam>
         private sealed class LambdaMultiConverter<TFrom1, TFrom2, TFrom3, TTo> : IMultiValueConverter
         {
-            private readonly Func<TFrom1, TFrom2, TFrom3, TTo> convert;
-            private readonly Func<TTo, (TFrom1, TFrom2, TFrom3)> convertBack;
+            private readonly Func<TFrom1, TFrom2, TFrom3, TTo> _convert;
+            private readonly Func<TTo, (TFrom1, TFrom2, TFrom3)> _convertBack;
 
             public LambdaMultiConverter(Func<TFrom1, TFrom2, TFrom3, TTo> convert, Func<TTo, (TFrom1, TFrom2, TFrom3)> convertBack = null)
             {
-                this.convert = convert;
-                this.convertBack = convertBack;
+                _convert = convert;
+                _convertBack = convertBack;
             }
 
             public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
             {
                 if (values.Length == 3 && TryConvert(values[0], out TFrom1 t1) && TryConvert(values[1], out TFrom2 t2) && TryConvert(values[2], out TFrom3 t3))
                 {
-                    return convert(t1, t2, t3);
+                    return _convert(t1, t2, t3);
                 }
 
                 return DependencyProperty.UnsetValue;
@@ -104,9 +105,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Utilities
 
             public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture)
             {
-                if (convertBack is not null && value is TTo to)
+                if (_convertBack is not null && value is TTo to)
                 {
-                    var values = convertBack(to);
+                    var values = _convertBack(to);
                     return new object[] { values.Item1, values.Item2, values.Item3 };
                 }
 
@@ -124,20 +125,20 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Utilities
         /// <typeparam name="TTo">The destination type, to convert to.</typeparam>
         private sealed class LambdaMultiConverter<TFrom1, TFrom2, TFrom3, TFrom4, TTo> : IMultiValueConverter
         {
-            private readonly Func<TFrom1, TFrom2, TFrom3, TFrom4, TTo> convert;
-            private readonly Func<TTo, (TFrom1, TFrom2, TFrom3, TFrom4)> convertBack;
+            private readonly Func<TFrom1, TFrom2, TFrom3, TFrom4, TTo> _convert;
+            private readonly Func<TTo, (TFrom1, TFrom2, TFrom3, TFrom4)> _convertBack;
 
             public LambdaMultiConverter(Func<TFrom1, TFrom2, TFrom3, TFrom4, TTo> convert, Func<TTo, (TFrom1, TFrom2, TFrom3, TFrom4)> convertBack = null)
             {
-                this.convert = convert;
-                this.convertBack = convertBack;
+                _convert = convert;
+                _convertBack = convertBack;
             }
 
             public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
             {
                 if (values.Length == 4 && TryConvert(values[0], out TFrom1 t1) && TryConvert(values[1], out TFrom2 t2) && TryConvert(values[2], out TFrom3 t3) && TryConvert(values[3], out TFrom4 t4))
                 {
-                    return convert(t1, t2, t3, t4);
+                    return _convert(t1, t2, t3, t4);
                 }
 
                 return DependencyProperty.UnsetValue;
@@ -157,9 +158,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Utilities
 
             public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture)
             {
-                if (convertBack is not null && value is TTo to)
+                if (_convertBack is not null && value is TTo to)
                 {
-                    var values = convertBack(to);
+                    var values = _convertBack(to);
                     return new object[] { values.Item1, values.Item2, values.Item3, values.Item4 };
                 }
 
