@@ -44,6 +44,8 @@
     <PackageReference Include="Microsoft.VisualStudio.ProjectSystem.SDK.Tools" />
     <PackageReference Include="System.Threading.Tasks.Dataflow" />
     
+    <PackageReference Include="Microsoft.Internal.Performance.CodeMarkers.DesignTime" />
+    
     <!-- VS MEF -->
     <PackageReference Include="Microsoft.VisualStudio.Composition" />
 
