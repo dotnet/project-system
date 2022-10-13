@@ -14,9 +14,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree
         private ImmutableDictionary<string, ImageMoniker> _imageMonikerByExtensions = ImmutableDictionary.Create<string, ImageMoniker>(StringComparers.Paths);
 
         [ImportingConstructor]
-        public FileIconProvider(IUIImageService vsImageService)
+        public FileIconProvider(IUIImageService imageService)
         {
-            _imageService = vsImageService;
+            _imageService = imageService;
         }
 
         public ImageMoniker GetFileExtensionImageMoniker(string path)
