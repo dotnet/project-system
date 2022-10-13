@@ -175,19 +175,19 @@ stages:
     - template: templates/analyze-compliance.yml
     - template: templates/analyze-api.yml
 
-  - stage: Localization
-    displayName: Localization
-    # [] clears the dependency on the previous stages allowing parallelism.
-    dependsOn: []
-    variables:
-    # Variable group containing the PATs required for running OneLocBuild.
-    # See: https://devdiv.visualstudio.com/DevDiv/_library?itemType=VariableGroups&view=VariableGroupView&variableGroupId=343&path=OneLocBuildVariables
-    # Variables used:
-    # - BotAccount-dotnet-bot-repo-PAT
-    # - dn-bot-ceapex-package-r
-    - group: OneLocBuildVariables
-    jobs:
-    - template: templates/generate-localization.yml
+- stage: Localization
+  displayName: Localization
+  # [] clears the dependency on the previous stages allowing parallelism.
+  dependsOn: []
+  variables:
+  # Variable group containing the PATs required for running OneLocBuild.
+  # See: https://devdiv.visualstudio.com/DevDiv/_library?itemType=VariableGroups&view=VariableGroupView&variableGroupId=343&path=OneLocBuildVariables
+  # Variables used:
+  # - BotAccount-dotnet-bot-repo-PAT
+  # - dn-bot-ceapex-package-r
+  - group: OneLocBuildVariables
+  jobs:
+  - template: templates/generate-localization.yml
 
 # Run this stage only when specifically requested (via CreateOptimizationData) or when the pipeline was ran on a schedule.
 - ${{ if or(eq(parameters.CreateOptimizationData, true), eq(variables['Build.Reason'], 'Schedule')) }}:
