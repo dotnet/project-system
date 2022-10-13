@@ -1,4 +1,4 @@
-// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
+﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
 using System.Diagnostics;
 using System.Windows;
@@ -13,20 +13,20 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Implementation.PropertyPages.D
     /// </summary>
     internal abstract class PropertyEditorBase : IPropertyEditor
     {
-        private static readonly Lazy<ResourceDictionary> LazyResources;
-        private static readonly Lazy<DataTemplate> LazyGenericPropertyTemplate;
+        private static readonly Lazy<ResourceDictionary> s_lazyResources;
+        private static readonly Lazy<DataTemplate> s_lazyGenericPropertyTemplate;
 
         // DataTemplates must be sourced on the UI thread. We use lazy access here
         // as they will be queried via WPF binding on the UI thread. This allows
         // us to construct the editor on a worker thread.
 
-        private readonly Lazy<DataTemplate>? lazyPropertyDataTemplate;
-        private readonly Lazy<DataTemplate?>? lazyUnconfiguredDataTemplate;
-        private readonly Lazy<DataTemplate?>? lazyConfiguredDataTemplate;
+        private readonly Lazy<DataTemplate>? _lazyPropertyDataTemplate;
+        private readonly Lazy<DataTemplate?>? _lazyUnconfiguredDataTemplate;
+        private readonly Lazy<DataTemplate?>? _lazyConfiguredDataTemplate;
 
         static PropertyEditorBase()
         {
-            LazyResources = new Lazy<ResourceDictionary>(
+            s_lazyResources = new Lazy<ResourceDictionary>(
                 () =>
                 {
                     if (!UriParser.IsKnownScheme("pack"))
@@ -41,10 +41,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Implementation.PropertyPages.D
                 },
                 LazyThreadSafetyMode.ExecutionAndPublication);
 
-            LazyGenericPropertyTemplate = new Lazy<DataTemplate>(
+            s_lazyGenericPropertyTemplate = new Lazy<DataTemplate>(
                 () =>
                 {
-                    var template = (DataTemplate?)LazyResources.Value["GenericPropertyTemplate"];
+                    var template = (DataTemplate?)s_lazyResources.Value["GenericPropertyTemplate"];
                     Assumes.NotNull(template);
                     return template;
                 });
@@ -54,10 +54,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Implementation.PropertyPages.D
         {
             if (propertyDataTemplateName is not null)
             {
-                lazyPropertyDataTemplate = new(() =>
+                _lazyPropertyDataTemplate = new(() =>
                 {
                     UIThreadHelper.VerifyOnUIThread();
-                    var propertyDataTemplate = (DataTemplate?)LazyResources.Value[propertyDataTemplateName];
+                    var propertyDataTemplate = (DataTemplate?)s_lazyResources.Value[propertyDataTemplateName];
                     Assumes.NotNull(propertyDataTemplate);
                     return propertyDataTemplate;
                 });
@@ -65,24 +65,24 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Implementation.PropertyPages.D
 
             if (unconfiguredDataTemplateName is not null)
             {
-                lazyUnconfiguredDataTemplate = new(() =>
+                _lazyUnconfiguredDataTemplate = new(() =>
                 {
                     UIThreadHelper.VerifyOnUIThread();
-                    return (DataTemplate?)LazyResources.Value[unconfiguredDataTemplateName];
+                    return (DataTemplate?)s_lazyResources.Value[unconfiguredDataTemplateName];
                 });
             }
 
             if (configuredDataTemplateName is not null)
             {
-                lazyConfiguredDataTemplate = new(() =>
+                _lazyConfiguredDataTemplate = new(() =>
                 {
                     UIThreadHelper.VerifyOnUIThread();
-                    return (DataTemplate?)LazyResources.Value[configuredDataTemplateName];
+                    return (DataTemplate?)s_lazyResources.Value[configuredDataTemplateName];
                 });
             }
         }
 
-        public static DataTemplate GenericPropertyTemplate => LazyGenericPropertyTemplate.Value;
+        public static DataTemplate GenericPropertyTemplate => s_lazyGenericPropertyTemplate.Value;
 
         public virtual bool ShowUnevaluatedValue => false;
 
@@ -92,7 +92,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Implementation.PropertyPages.D
             get
             {
                 UIThreadHelper.VerifyOnUIThread();
-                return lazyPropertyDataTemplate?.Value;
+                return _lazyPropertyDataTemplate?.Value;
             }
         }
 
@@ -102,7 +102,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Implementation.PropertyPages.D
             get
             {
                 UIThreadHelper.VerifyOnUIThread();
-                return lazyUnconfiguredDataTemplate?.Value;
+                return _lazyUnconfiguredDataTemplate?.Value;
             }
         }
 
@@ -112,7 +112,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Implementation.PropertyPages.D
             get
             {
                 UIThreadHelper.VerifyOnUIThread();
-                return lazyConfiguredDataTemplate?.Value;
+                return _lazyConfiguredDataTemplate?.Value;
             }
         }
 

@@ -15,7 +15,7 @@ internal sealed class PageItemRuleProvider : IRuleObjectProvider
 {
     internal const string RuleName = "PageItemRule";
 
-    private readonly Lazy<List<Rule>> rules = new(CreateRules);
+    private readonly Lazy<List<Rule>> _rules = new(CreateRules);
 
     private static List<Rule> CreateRules()
     {
@@ -43,6 +43,6 @@ internal sealed class PageItemRuleProvider : IRuleObjectProvider
 
     public IReadOnlyCollection<Rule> GetRules()
     {
-        return rules.Value;
+        return _rules.Value;
     }
 }

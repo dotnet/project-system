@@ -63,18 +63,18 @@
     <PackageReference Update="Microsoft.VisualStudio.ProjectSystem.SDK.Tools"                         Version="17.4.38-pre" />
 
     <!-- Roslyn -->
-    <PackageReference Update="Microsoft.Net.Compilers.Toolset"                                        Version="4.3.0-2.final" />
+    <PackageReference Update="Microsoft.Net.Compilers.Toolset"                                        Version="4.4.0-2.final" />
     <PackageReference Update="Microsoft.VisualStudio.LanguageServices"                                Version="4.4.0-2.final" />
     <PackageReference Update="Microsoft.CodeAnalysis"                                                 Version="4.4.0-2.final" />
     <PackageReference Update="Microsoft.VisualStudio.IntegrationTest.Utilities"                       Version="2.6.0-beta1-62113-02" />
     <PackageReference Update="Microsoft.CSharp"                                                       Version="4.7.0" />
 
     <!-- Analyzers -->
-    <PackageReference Update="CSharpIsNullAnalyzer"                                                   Version="0.1.300" />
-    <PackageReference Update="Microsoft.CodeAnalysis.Analyzers"                                       Version="3.3.3" />
-    <PackageReference Update="Microsoft.CodeAnalysis.CSharp.CodeStyle"                                Version="3.11.0" />
-    <PackageReference Update="Microsoft.CodeAnalysis.VisualBasic.CodeStyle"                           Version="3.11.0" />
-    <PackageReference Update="Roslyn.Diagnostics.Analyzers"                                           Version="3.3.2" />
+    <PackageReference Update="CSharpIsNullAnalyzer"                                                   Version="0.1.329" />
+    <PackageReference Update="Microsoft.CodeAnalysis.Analyzers"                                       Version="3.3.4-beta1.22464.1" />
+    <PackageReference Update="Microsoft.CodeAnalysis.CSharp.CodeStyle"                                Version="4.4.0-2.final" />
+    <PackageReference Update="Microsoft.CodeAnalysis.VisualBasic.CodeStyle"                           Version="4.4.0-2.final" />
+    <PackageReference Update="Roslyn.Diagnostics.Analyzers"                                           Version="3.3.4-beta1.22464.1" />
 
     <!-- NuGet -->
     <PackageReference Update="NuGet.VisualStudio"                                                     Version="6.0.0-preview.3.158" />
