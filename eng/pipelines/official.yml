@@ -113,6 +113,11 @@ parameters:
   displayName: Do Not Optimize Assemblies
   type: boolean
   default: false
+# Useful when testing pipeline changes and running compliance is not necessary.
+- name: SkipCompliance
+  displayName: Skip Compliance Validation
+  type: boolean
+  default: false
 # This should only be enabled if we need to create AzDO work items based on Compliance failures.
 - name: UploadTSAResults
   displayName: Create Compliance Work Items
@@ -150,37 +155,39 @@ stages:
   - template: templates/publish-symbols.yml
   - template: templates/publish-richnav.yml
 
-- stage: Compliance
-  displayName: Compliance
-  dependsOn: Build
-  variables:
-  - name: UploadTSAResults
-    value: ${{ parameters.UploadTSAResults }}
-  # Gets the VisualStudioMinimumVersion variable produced by the Build pipeline.
-  # This value is used in the analyze-api.yml template.
-  - name: VisualStudioMinimumVersion
-    value: $[ stageDependencies.Build.BuildOfficialRelease.outputs['SetVisualStudioMinimumVersionVariable.VisualStudioMinimumVersion'] ]
-  # https://devdiv.visualstudio.com/DevDiv/_library?itemType=VariableGroups&view=VariableGroupView&variableGroupId=434&path=DotNet-Project-System
-  # Variables used:
-  # - ApiScanConnectionString
-  - group: DotNet-Project-System
-  jobs:
-  - template: templates/analyze-compliance.yml
-  - template: templates/analyze-api.yml
+# Skip this stage only when specifically requested (via SkipCompliance).
+- ${{ if eq(parameters.SkipCompliance, false) }}:
+  - stage: Compliance
+    displayName: Compliance
+    dependsOn: Build
+    variables:
+    - name: UploadTSAResults
+      value: ${{ parameters.UploadTSAResults }}
+    # Gets the VisualStudioMinimumVersion variable produced by the Build pipeline.
+    # This value is used in the analyze-api.yml template.
+    - name: VisualStudioMinimumVersion
+      value: $[ stageDependencies.Build.BuildOfficialRelease.outputs['SetVisualStudioMinimumVersionVariable.VisualStudioMinimumVersion'] ]
+    # https://devdiv.visualstudio.com/DevDiv/_library?itemType=VariableGroups&view=VariableGroupView&variableGroupId=434&path=DotNet-Project-System
+    # Variables used:
+    # - ApiScanConnectionString
+    - group: DotNet-Project-System
+    jobs:
+    - template: templates/analyze-compliance.yml
+    - template: templates/analyze-api.yml
 
-- stage: Localization
-  displayName: Localization
-  # [] clears the dependency on the previous stages allowing parallelism.
-  dependsOn: []
-  variables:
-  # Variable group containing the PATs required for running OneLocBuild.
-  # See: https://devdiv.visualstudio.com/DevDiv/_library?itemType=VariableGroups&view=VariableGroupView&variableGroupId=343&path=OneLocBuildVariables
-  # Variables used:
-  # - BotAccount-dotnet-bot-repo-PAT
-  # - dn-bot-ceapex-package-r
-  - group: OneLocBuildVariables
-  jobs:
-  - template: templates/generate-localization.yml
+  - stage: Localization
+    displayName: Localization
+    # [] clears the dependency on the previous stages allowing parallelism.
+    dependsOn: []
+    variables:
+    # Variable group containing the PATs required for running OneLocBuild.
+    # See: https://devdiv.visualstudio.com/DevDiv/_library?itemType=VariableGroups&view=VariableGroupView&variableGroupId=343&path=OneLocBuildVariables
+    # Variables used:
+    # - BotAccount-dotnet-bot-repo-PAT
+    # - dn-bot-ceapex-package-r
+    - group: OneLocBuildVariables
+    jobs:
+    - template: templates/generate-localization.yml
 
 # Run this stage only when specifically requested (via CreateOptimizationData) or when the pipeline was ran on a schedule.
 - ${{ if or(eq(parameters.CreateOptimizationData, true), eq(variables['Build.Reason'], 'Schedule')) }}:
