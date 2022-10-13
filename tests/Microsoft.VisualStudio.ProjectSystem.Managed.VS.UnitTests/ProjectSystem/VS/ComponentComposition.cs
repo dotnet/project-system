@@ -204,7 +204,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         {
             if (exception is FileNotFoundException fileNotFound)
             {
-                return fileNotFound.FileName == "Microsoft.VisualStudio.ProjectServices,";
+                return fileNotFound.FileName.StartsWith("Microsoft.VisualStudio.ProjectServices,", StringComparison.Ordinal);
             }
 
             return false;

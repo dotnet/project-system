@@ -62,7 +62,7 @@
     <PackageReference Update="Microsoft.VisualStudio.ProjectSystem.Analyzers"                         Version="17.5.202-pre-g89e17c9f72" />
     <PackageReference Update="Microsoft.VisualStudio.ProjectSystem.Query"                             Version="17.5.202-pre-g89e17c9f72" />
     <PackageReference Update="Microsoft.VisualStudio.ProjectSystem.SDK.Tools"                         Version="17.5.202-pre-g89e17c9f72" />
-    <PackageReference Update="Microsoft.Internal.Performance.CodeMarkers.DesignTime"                  Version="15.8.27812-alpha" />
+
     <!-- Roslyn -->
     <PackageReference Update="Microsoft.Net.Compilers.Toolset"                                        Version="4.3.0-2.final" />
     <PackageReference Update="Microsoft.VisualStudio.LanguageServices"                                Version="4.1.0-2.21558.8" />
