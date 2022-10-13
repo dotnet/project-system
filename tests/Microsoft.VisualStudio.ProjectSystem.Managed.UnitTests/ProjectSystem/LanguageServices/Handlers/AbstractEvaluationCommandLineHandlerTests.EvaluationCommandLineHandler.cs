@@ -22,17 +22,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
 
             public Dictionary<string, IImmutableDictionary<string, string>> Files { get; }
 
-            protected override void AddToContext(IWorkspaceProjectContext context, string fullPath, IImmutableDictionary<string, string> metadata, bool isActiveContext, IProjectDiagnosticOutputService logger)
+            protected override void AddToContext(IWorkspaceProjectContext context, string fullPath, IImmutableDictionary<string, string> metadata, bool isActiveContext, IManagedProjectDiagnosticOutputService logger)
             {
                 Files.Add(fullPath, metadata);
             }
 
-            protected override void RemoveFromContext(IWorkspaceProjectContext context, string fullPath, IProjectDiagnosticOutputService logger)
+            protected override void RemoveFromContext(IWorkspaceProjectContext context, string fullPath, IManagedProjectDiagnosticOutputService logger)
             {
                 Files.Remove(fullPath);
             }
 
-            protected override void UpdateInContext(IWorkspaceProjectContext context, string fullPath, IImmutableDictionary<string, string> previousMetadata, IImmutableDictionary<string, string> currentMetadata, bool isActiveContext, IProjectDiagnosticOutputService logger)
+            protected override void UpdateInContext(IWorkspaceProjectContext context, string fullPath, IImmutableDictionary<string, string> previousMetadata, IImmutableDictionary<string, string> currentMetadata, bool isActiveContext, IManagedProjectDiagnosticOutputService logger)
             {
                 RemoveFromContext(context, fullPath, logger);
                 AddToContext(context, fullPath, currentMetadata, isActiveContext, logger);

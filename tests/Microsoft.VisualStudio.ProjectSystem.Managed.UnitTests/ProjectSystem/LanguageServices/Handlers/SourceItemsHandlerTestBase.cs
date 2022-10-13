@@ -8,7 +8,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
     {
         internal static void Handle(IWorkspaceProjectContext context, ISourceItemsHandler handler, IImmutableDictionary<string, IProjectChangeDescription> projectChanges)
         {
-            handler.Handle(context, 1, projectChanges, new ContextState(), IProjectDiagnosticOutputServiceFactory.Create());
+            handler.Handle(context, 1, projectChanges, new ContextState(), IManagedProjectDiagnosticOutputServiceFactory.Create());
         }
 
         internal abstract ISourceItemsHandler CreateInstance();

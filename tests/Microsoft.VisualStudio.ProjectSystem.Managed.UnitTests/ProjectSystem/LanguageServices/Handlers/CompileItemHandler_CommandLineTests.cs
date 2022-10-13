@@ -26,7 +26,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
 
             var project = UnconfiguredProjectFactory.Create(fullPath: @"C:\Myproject.csproj");
             var context = IWorkspaceProjectContextMockFactory.CreateForSourceFiles(project, onSourceFileAdded, onSourceFileRemoved);
-            var logger = Mock.Of<IProjectDiagnosticOutputService>();
+            var logger = Mock.Of<IManagedProjectDiagnosticOutputService>();
 
             var handler = new CompileItemHandler(project);
             var projectDir = Path.GetDirectoryName(project.FullPath);
@@ -55,7 +55,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
 
             var project = UnconfiguredProjectFactory.Create(fullPath: @"C:\ProjectFolder\Myproject.csproj");
             var context = IWorkspaceProjectContextMockFactory.CreateForSourceFiles(project, onSourceFileAdded, onSourceFileRemoved);
-            var logger = Mock.Of<IProjectDiagnosticOutputService>();
+            var logger = Mock.Of<IManagedProjectDiagnosticOutputService>();
 
             var handler = new CompileItemHandler(project);
             var projectDir = Path.GetDirectoryName(project.FullPath);

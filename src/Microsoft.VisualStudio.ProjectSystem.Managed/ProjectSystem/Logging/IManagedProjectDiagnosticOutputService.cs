@@ -6,7 +6,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS;
 
 /// <summary>
 ///   A service to print out diagnostic messages about project system functionality.
-///   Meant to be used in place of the IProjectDiagnosticOutputService from CPS.
+///   Meant to be used in place of the IManagedProjectDiagnosticOutputService from CPS.
 /// </summary>
 [ProjectSystemContract(ProjectSystemContractScope.ProjectService, ProjectSystemContractProvider.Private, Cardinality = ImportCardinality.OneOrZero)]
 internal interface IManagedProjectDiagnosticOutputService
