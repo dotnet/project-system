@@ -33,7 +33,8 @@ jobs:
     failOnStderr: true
 
   # Creates a VS insertion PR using the Products drop containing the .vsman files.
-  # YAML reference: https://devdiv.visualstudio.com/DevDiv/_wiki/wikis/DevDiv.wiki/635/Overview?anchor=**build-pipeline**
+  # Documentation: https://devdiv.visualstudio.com/DevDiv/_wiki/wikis/DevDiv.wiki/635/Overview?anchor=**build-pipeline**
+  # YAML reference: https://dev.azure.com/devdiv/Engineering/_git/MicroBuild?path=/src/Tasks/InsertVsPayload/task.json
   - task: MicroBuildInsertVsPayload@4
     displayName: Create VS Insertion PR
     inputs:
@@ -49,6 +50,8 @@ jobs:
       # Setting DefaultConfigValues also sets the PackagePropsValues.
       # See the bottom of the table here: https://devdiv.visualstudio.com/DevDiv/_wiki/wikis/DevDiv.wiki/635/Overview?anchor=**build-pipeline**
       DefaultConfigValues: Microsoft.VisualStudio.AppDesigner=$(PackageVersion),Microsoft.VisualStudio.Editors=$(PackageVersion),Microsoft.VisualStudio.ProjectSystem.Managed=$(PackageVersion),Microsoft.VisualStudio.ProjectSystem.Managed.VS=$(PackageVersion)
+      # Sets the assembly version in src\ProductData\AssemblyVersions.tt file in the VS repo.
+      AssemblyVersionsValues: MicrosoftVisualStudioAppDesignerVersion=$(AssemblyVersion),MicrosoftVisualStudioEditorsVersion=$(AssemblyVersion),MicrosoftVisualStudioProjectSystemManagedVersion=$(AssemblyVersion)
       AllowTopicBranchUpdate: true
       # Description logic here:
       # - https://devdiv.visualstudio.com/Engineering/_git/MicroBuild?path=/src/Tasks/InsertVsPayload/plugin.ps1&version=GBmain&line=25&lineEnd=26&lineStartColumn=1&lineEndColumn=1&lineStyle=plain&_a=contents

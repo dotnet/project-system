@@ -251,6 +251,8 @@ stages:
     variables:
       # Gets the PackageVersion variable produced by the Build pipeline.
       PackageVersion: $[ stageDependencies.Build.BuildOfficialRelease.outputs['SetPackageVersion.PackageVersion'] ]
+      # Gets the AssemblyVersion variable produced by the Build pipeline.
+      AssemblyVersion: $[ stageDependencies.Build.BuildOfficialRelease.outputs['SetAssemblyVersion.AssemblyVersion'] ]
       InsertionVSBranch: ${{ parameters.InsertionVSBranch }}
     jobs:
     - template: templates/generate-insertion.yml
