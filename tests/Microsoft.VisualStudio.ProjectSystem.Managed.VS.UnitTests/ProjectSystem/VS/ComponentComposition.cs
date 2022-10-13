@@ -204,7 +204,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         {
             if (exception is FileNotFoundException fileNotFound)
             {
-                return fileNotFound.FileName == "Microsoft.VisualStudio.ProjectServices, Version=15.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a";
+                return fileNotFound.FileName == "Microsoft.VisualStudio.ProjectServices,";
             }
 
             return false;
