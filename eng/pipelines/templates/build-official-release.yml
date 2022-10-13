@@ -109,9 +109,6 @@ jobs:
     # Name is required to reference the variables created within this build step in other stages.
     name: SetAssemblyVersion
 
-  - powershell: Write-Host $(SetAssemblyVersion.AssemblyVersion)
-    displayName: Display AssemblyVersion
-
   # Sets the VisualStudioMinimumVersion variable for the job. This variable is also used by the APIScan job.
   # https://docs.microsoft.com/azure/devops/pipelines/process/set-variables-scripts?view=azure-devops&tabs=powershell#set-variable-properties
   - powershell: Write-Host "##vso[task.setvariable variable=VisualStudioMinimumVersion;isoutput=true]$(. '$(Build.SourcesDirectory)/eng/scripts/GetVisualStudioMinimumVersion.ps1')"
