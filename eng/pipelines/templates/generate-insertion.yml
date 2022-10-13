@@ -32,6 +32,9 @@ jobs:
     displayName: Create VS Insertion Description
     failOnStderr: true
 
+  - powershell: Write-Host $(AssemblyVersion)
+    displayName: Display AssemblyVersion
+
   # Creates a VS insertion PR using the Products drop containing the .vsman files.
   # YAML reference: https://devdiv.visualstudio.com/DevDiv/_wiki/wikis/DevDiv.wiki/635/Overview?anchor=**build-pipeline**
   - task: MicroBuildInsertVsPayload@4
@@ -49,6 +52,7 @@ jobs:
       # Setting DefaultConfigValues also sets the PackagePropsValues.
       # See the bottom of the table here: https://devdiv.visualstudio.com/DevDiv/_wiki/wikis/DevDiv.wiki/635/Overview?anchor=**build-pipeline**
       DefaultConfigValues: Microsoft.VisualStudio.AppDesigner=$(PackageVersion),Microsoft.VisualStudio.Editors=$(PackageVersion),Microsoft.VisualStudio.ProjectSystem.Managed=$(PackageVersion),Microsoft.VisualStudio.ProjectSystem.Managed.VS=$(PackageVersion)
+      # Sets the assembly version in src\ProductData\AssemblyVersions.tt file in the VS repo.
       InsertVersionsValues: MicrosoftVisualStudioAppDesignerVersion=$(AssemblyVersion),MicrosoftVisualStudioEditorsVersion=$(AssemblyVersion),MicrosoftVisualStudioProjectSystemManagedVersion=$(AssemblyVersion)
       AllowTopicBranchUpdate: true
       # Description logic here:
