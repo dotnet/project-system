@@ -2,8 +2,9 @@
 
 using Microsoft.VisualStudio.Imaging;
 using Microsoft.VisualStudio.Imaging.Interop;
+using Microsoft.VisualStudio.ProjectSystem.Tree;
 
-namespace Microsoft.VisualStudio.ProjectSystem.Tree
+namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree
 {
     [Export(typeof(IFileIconProvider))]
     internal sealed class FileIconProvider : IFileIconProvider

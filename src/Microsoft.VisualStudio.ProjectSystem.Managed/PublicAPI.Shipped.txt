@@ -216,3 +216,5 @@ Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections.IR
 Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections.IRelationProvider
 Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections.IRelationProvider.GetContainedByRelationsFor(System.Type! childType) -> System.Collections.Immutable.ImmutableArray<Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections.IRelation!>
 Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections.IRelationProvider.GetContainsRelationsFor(System.Type! parentType) -> System.Collections.Immutable.ImmutableArray<Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections.IRelation!>
+Microsoft.VisualStudio.ProjectSystem.VS.Tree.IFileIconProvider
+Microsoft.VisualStudio.ProjectSystem.VS.Tree.IFileIconProvider.GetFileExtensionImageMoniker(string! path) -> Microsoft.VisualStudio.Imaging.Interop.ImageMoniker
