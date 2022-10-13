@@ -99,7 +99,7 @@ public class WorkspaceTests
                 : workspace.WriteAsync(null!, CancellationToken.None));
     }
 
-    [Theory]
+    [Theory(Skip = "https://github.com/dotnet/project-system/issues/8592")]
     [CombinatorialData]
     public async Task WriteAsync_CompletesWhenDataReceived(bool isGeneric)
     {
