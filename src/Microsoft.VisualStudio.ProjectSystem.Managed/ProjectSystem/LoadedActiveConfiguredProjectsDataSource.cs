@@ -49,10 +49,7 @@ internal class LoadedActiveConfiguredProjectsDataSource : ChainedProjectValueDat
         foreach (ProjectConfiguration configuration in projectVersionedValue.Value)
         {
             // Make sure we aren't currently unloading, or we don't unload while we load the configuration
-            var loadedConfiguredProject = await _tasksService.LoadedProjectAsync(() =>
-            {
-                return _project.LoadConfiguredProjectAsync(configuration);
-            });
+            var loadedConfiguredProject = await _tasksService.LoadedProjectAsync(() => _project.LoadConfiguredProjectAsync(configuration));
 
             generatedResult.Add(loadedConfiguredProject);
         }
