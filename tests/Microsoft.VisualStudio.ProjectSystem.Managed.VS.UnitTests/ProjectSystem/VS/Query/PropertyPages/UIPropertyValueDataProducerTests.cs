@@ -3,7 +3,7 @@
 using Microsoft.Build.Framework.XamlTypes;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
 using Microsoft.VisualStudio.ProjectSystem.Query;
-using Microsoft.VisualStudio.ProjectSystem.Query.ProjectModel.Implementation;
+using Microsoft.VisualStudio.ProjectSystem.Query.Framework;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
 {
@@ -22,7 +22,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
             var id = new EntityIdentity(key: "A", value: "B");
             var configuration = ProjectConfigurationFactory.Create(configuration: "Alpha|Beta|Gamma");
 
-            var result = (UIPropertyValueValue)await UIPropertyValueDataProducer.CreateUIPropertyValueValueAsync(
+            var result = (UIPropertyValueSnapshot)await UIPropertyValueDataProducer.CreateUIPropertyValueValueAsync(
                 entityRuntime,
                 id,
                 configuration,
@@ -46,7 +46,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
             var id = new EntityIdentity(key: "A", value: "B");
             var configuration = ProjectConfigurationFactory.Create(configuration: "Alpha|Beta|Gamma");
 
-            var result = (UIPropertyValueValue)await UIPropertyValueDataProducer.CreateUIPropertyValueValueAsync(
+            var result = (UIPropertyValueSnapshot)await UIPropertyValueDataProducer.CreateUIPropertyValueValueAsync(
                 entityRuntime,
                 id,
                 configuration,
@@ -70,7 +70,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
             var id = new EntityIdentity(key: "A", value: "B");
             var configuration = ProjectConfigurationFactory.Create(configuration: "Alpha|Beta|Gamma");
 
-            var result = (UIPropertyValueValue)await UIPropertyValueDataProducer.CreateUIPropertyValueValueAsync(
+            var result = (UIPropertyValueSnapshot)await UIPropertyValueDataProducer.CreateUIPropertyValueValueAsync(
                 entityRuntime,
                 id,
                 configuration,
@@ -93,7 +93,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
             var id = new EntityIdentity(key: "A", value: "B");
             var configuration = ProjectConfigurationFactory.Create(configuration: "Alpha|Beta|Gamma");
 
-            var result = (UIPropertyValueValue)await UIPropertyValueDataProducer.CreateUIPropertyValueValueAsync(
+            var result = (UIPropertyValueSnapshot)await UIPropertyValueDataProducer.CreateUIPropertyValueValueAsync(
                 entityRuntime,
                 id,
                 configuration,
@@ -117,7 +117,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
             var id = new EntityIdentity(key: "A", value: "B");
             var configuration = ProjectConfigurationFactory.Create(configuration: "Alpha|Beta|Gamma");
 
-            var result = (UIPropertyValueValue)await UIPropertyValueDataProducer.CreateUIPropertyValueValueAsync(
+            var result = (UIPropertyValueSnapshot)await UIPropertyValueDataProducer.CreateUIPropertyValueValueAsync(
                 entityRuntime,
                 id,
                 configuration,

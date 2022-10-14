@@ -2,10 +2,9 @@
 
 using Microsoft.Build.Framework.XamlTypes;
 using Microsoft.VisualStudio.ProjectSystem.Query;
-using Microsoft.VisualStudio.ProjectSystem.Query.Frameworks;
-using Microsoft.VisualStudio.ProjectSystem.Query.ProjectModel.Implementation;
-using Microsoft.VisualStudio.ProjectSystem.Query.ProjectModel.Metadata;
-using Microsoft.VisualStudio.ProjectSystem.Query.QueryExecution;
+using Microsoft.VisualStudio.ProjectSystem.Query.Execution;
+using Microsoft.VisualStudio.ProjectSystem.Query.Framework;
+using Microsoft.VisualStudio.ProjectSystem.Query.Metadata;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
 {
@@ -103,7 +102,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
                     && project.Services.ExportProvider.GetExportedValueOrDefault<IProjectLaunchProfileHandler>() is IProjectLaunchProfileHandler handler)
                 {
                     var returnedLaunchProfiles = new List<IEntityValue>();
-                    if (projectValue.TryGetRelatedEntities(ProjectSystem.Query.ProjectModel.Metadata.ProjectType.LaunchProfilesPropertyName, out IEnumerable<IEntityValue>? exitingProfiles))
+                    if (projectValue.TryGetRelatedEntities(ProjectSystem.Query.Metadata.ProjectType.LaunchProfilesPropertyName, out IEnumerable<IEntityValue>? exitingProfiles))
                     {
                         returnedLaunchProfiles.AddRange(exitingProfiles);
                     }
@@ -138,7 +137,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
                         }
                     }
 
-                    projectValue.SetRelatedEntities(ProjectSystem.Query.ProjectModel.Metadata.ProjectType.LaunchProfilesPropertyName, returnedLaunchProfiles);
+                    projectValue.SetRelatedEntities(ProjectSystem.Query.Metadata.ProjectType.LaunchProfilesPropertyName, returnedLaunchProfiles);
                 }
             }
 
@@ -147,7 +146,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
                 var projectValue = (IEntityValueFromProvider)group.Key;
 
                 var returnedLaunchProfiles = new List<IEntityValue>();
-                if (projectValue.TryGetRelatedEntities(ProjectSystem.Query.ProjectModel.Metadata.ProjectType.LaunchProfilesPropertyName, out IEnumerable<IEntityValue>? exitingProfiles))
+                if (projectValue.TryGetRelatedEntities(ProjectSystem.Query.Metadata.ProjectType.LaunchProfilesPropertyName, out IEnumerable<IEntityValue>? exitingProfiles))
                 {
                     returnedLaunchProfiles.AddRange(exitingProfiles);
                 }
@@ -161,7 +160,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
                     }
                 }
 
-                projectValue.SetRelatedEntities(ProjectSystem.Query.ProjectModel.Metadata.ProjectType.LaunchProfilesPropertyName, returnedLaunchProfiles);
+                projectValue.SetRelatedEntities(ProjectSystem.Query.Metadata.ProjectType.LaunchProfilesPropertyName, returnedLaunchProfiles);
             }
 
             await ResultReceiver.OnRequestProcessFinishedAsync(request);
