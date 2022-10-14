@@ -21,7 +21,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
             get { return LanguageService.SchemaName; }
         }
 
-        public void Handle(IWorkspaceProjectContext context, ProjectConfiguration projectConfiguration, IComparable version, IProjectChangeDescription projectChange, ContextState state, IProjectDiagnosticOutputService logger)
+        public void Handle(IWorkspaceProjectContext context, ProjectConfiguration projectConfiguration, IComparable version, IProjectChangeDescription projectChange, ContextState state, IManagedProjectDiagnosticOutputService logger)
         {
             foreach (string name in projectChange.Difference.ChangedProperties)
             {
@@ -40,7 +40,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
             context.IsPrimary = state.IsActiveConfiguration;
         }
 
-        private static bool TryHandleSpecificProperties(IWorkspaceProjectContext context, string name, string value, IProjectDiagnosticOutputService logger)
+        private static bool TryHandleSpecificProperties(IWorkspaceProjectContext context, string name, string value, IManagedProjectDiagnosticOutputService logger)
         {
             // The language service wants both the intermediate (bin\obj) and output (bin\debug)) paths
             // so that it can automatically hook up project-to-project references. It does this by matching the 

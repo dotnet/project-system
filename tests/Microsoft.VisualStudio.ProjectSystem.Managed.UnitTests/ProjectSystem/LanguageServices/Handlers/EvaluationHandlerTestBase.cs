@@ -18,7 +18,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
         {
             projectConfiguration ??= ProjectConfigurationFactory.Create("Debug|AnyCPU");
 
-            handler.Handle(context, projectConfiguration, 1, projectChange, new ContextState(), IProjectDiagnosticOutputServiceFactory.Create());
+            handler.Handle(context, projectConfiguration, 1, projectChange, new ContextState(), IManagedProjectDiagnosticOutputServiceFactory.Create());
         }
 
         internal abstract IProjectEvaluationHandler CreateInstance();

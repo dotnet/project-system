@@ -102,7 +102,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             Assert.Equal("Line1\r\n    Line2\r\nLine3", logger.Text, ignoreLineEndingDifferences: true);
         }
 
-        private class MockOutputService : IProjectDiagnosticOutputService
+        private class MockOutputService : IManagedProjectDiagnosticOutputService
         {
             public bool IsEnabled { get; set; } = true;
 

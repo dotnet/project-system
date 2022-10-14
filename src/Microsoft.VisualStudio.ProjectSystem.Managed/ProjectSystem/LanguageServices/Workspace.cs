@@ -33,7 +33,7 @@ internal sealed class Workspace : OnceInitializedOnceDisposedUnderLockAsync, IWo
     private readonly UnconfiguredProject _unconfiguredProject;
     private readonly Guid _projectGuid;
     private readonly UpdateHandlers _updateHandlers;
-    private readonly IProjectDiagnosticOutputService _logger;
+    private readonly IManagedProjectDiagnosticOutputService _logger;
     private readonly IActiveEditorContextTracker _activeEditorContextTracker;
     private readonly OrderPrecedenceImportCollection<ICommandLineParserService> _commandLineParserServices;
     private readonly IDataProgressTrackerService _dataProgressTrackerService;
@@ -83,7 +83,7 @@ internal sealed class Workspace : OnceInitializedOnceDisposedUnderLockAsync, IWo
         UnconfiguredProject unconfiguredProject,
         Guid projectGuid,
         UpdateHandlers updateHandlers,
-        IProjectDiagnosticOutputService logger,
+        IManagedProjectDiagnosticOutputService logger,
         IActiveEditorContextTracker activeEditorContextTracker,
         OrderPrecedenceImportCollection<ICommandLineParserService> commandLineParserServices,
         IDataProgressTrackerService dataProgressTrackerService,

@@ -72,6 +72,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "items", "items", "{5204CAC5
 EndProject
 Project("{778DAE3C-4631-46EA-AA77-85C1314464D9}") = "Microsoft.VisualStudio.Editors.UnitTests", "tests\Microsoft.VisualStudio.Editors.UnitTests\Microsoft.VisualStudio.Editors.UnitTests.vbproj", "{A0B3F2BD-C92A-4037-A9F0-4EC484267E75}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Common", "Common", "{2BEDB95B-AAC2-4F6D-92EA-61F07E77887E}"
+	ProjectSection(SolutionItems) = preProject
+		src\Common\BannedSymbols.txt = src\Common\BannedSymbols.txt
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -155,6 +160,7 @@ Global
 		{C16993CC-6063-4447-AE16-BE671AFDE08A} = {7349958E-C619-481F-BB2A-8A4CA2E349D9}
 		{02578366-DFA9-4827-93F7-08E2AE5CE6A4} = {7349958E-C619-481F-BB2A-8A4CA2E349D9}
 		{A0B3F2BD-C92A-4037-A9F0-4EC484267E75} = {7349958E-C619-481F-BB2A-8A4CA2E349D9}
+		{2BEDB95B-AAC2-4F6D-92EA-61F07E77887E} = {1FF0293B-6808-4BB1-8370-1FE222986654}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {6B652C28-D1FD-4885-A0CA-4704C54E78E7}

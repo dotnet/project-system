@@ -381,7 +381,7 @@ public class WorkspaceTests
                     1,
                     It.IsAny<IProjectChangeDescription>(),
                     It.IsAny<ContextState>(),
-                    It.IsAny<IProjectDiagnosticOutputService>()));
+                    It.IsAny<IManagedProjectDiagnosticOutputService>()));
         }
 
         var workspace = await CreateInstanceAsync(
@@ -445,7 +445,7 @@ public class WorkspaceTests
                         1,
                         It.IsAny<IProjectChangeDescription>(),
                         new ContextState(false, true),
-                        It.IsAny<IProjectDiagnosticOutputService>()));
+                        It.IsAny<IManagedProjectDiagnosticOutputService>()));
         }
 
         var workspace = await CreateInstanceAsync(
@@ -491,7 +491,7 @@ public class WorkspaceTests
                         1,
                         It.IsAny<ImmutableDictionary<string, IProjectChangeDescription>>(),
                         new ContextState(false, true),
-                        It.IsAny<IProjectDiagnosticOutputService>()));
+                        It.IsAny<IManagedProjectDiagnosticOutputService>()));
         }
 
         var workspace = await CreateInstanceAsync(
@@ -550,7 +550,7 @@ public class WorkspaceTests
                     It.Is<BuildOptions>(options => options.MetadataReferences.Select(r => r.Reference).SingleOrDefault() == "Added.dll"),
                     It.Is<BuildOptions>(options => options.MetadataReferences.Select(r => r.Reference).SingleOrDefault() == "Removed.dll"),
                     new ContextState(false, true),
-                    It.IsAny<IProjectDiagnosticOutputService>()));
+                    It.IsAny<IManagedProjectDiagnosticOutputService>()));
         }
 
         var parser = ICommandLineParserServiceFactory.CreateCSharp();
@@ -748,7 +748,7 @@ public class WorkspaceTests
         Guid? projectGuid = null,
         UpdateHandlers? updateHandlers = null,
         bool isPrimary = true,
-        IProjectDiagnosticOutputService? logger = null,
+        IManagedProjectDiagnosticOutputService? logger = null,
         IActiveEditorContextTracker? activeWorkspaceProjectContextTracker = null,
         OrderPrecedenceImportCollection<ICommandLineParserService>? commandLineParserServices = null,
         IDataProgressTrackerService? dataProgressTrackerService = null,
@@ -772,7 +772,7 @@ public class WorkspaceTests
         unconfiguredProject ??= UnconfiguredProjectFactory.ImplementFullPath("""C:\MyProject\MyProject.csproj""");
         projectGuid ??= Guid.NewGuid();
         updateHandlers ??= new UpdateHandlers(Array.Empty<ExportFactory<IWorkspaceUpdateHandler>>());
-        logger ??= IProjectDiagnosticOutputServiceFactory.Create();
+        logger ??= IManagedProjectDiagnosticOutputServiceFactory.Create();
         activeWorkspaceProjectContextTracker ??= IActiveEditorContextTrackerFactory.Create();
         commandLineParserServices ??= new(ImportOrderPrecedenceComparer.PreferenceOrder.PreferredComesFirst) { commandLineParserService.Object };
         dataProgressTrackerService ??= IDataProgressTrackerServiceFactory.Create();

@@ -38,7 +38,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         ///     A <see cref="ContextState"/> describing the state of the <see cref="IWorkspaceProjectContext"/>.
         /// </param>
         /// <param name="logger">
-        ///     The <see cref="IProjectDiagnosticOutputService"/> for logging to the log.
+        ///     The <see cref="IManagedProjectDiagnosticOutputService"/> for logging to the log.
         /// </param>
         void Handle(
             IWorkspaceProjectContext context,
@@ -46,6 +46,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
             IComparable version,
             IProjectChangeDescription projectChange,
             ContextState state,
-            IProjectDiagnosticOutputService logger);
+            IManagedProjectDiagnosticOutputService logger);
     }
 }

@@ -4,11 +4,11 @@ using Microsoft.VisualStudio.ProjectSystem.VS;
 
 namespace Microsoft.VisualStudio.ProjectSystem
 {
-    internal static class IProjectDiagnosticOutputServiceFactory
+    internal static class IManagedProjectDiagnosticOutputServiceFactory
     {
-        public static IProjectDiagnosticOutputService Create()
+        public static IManagedProjectDiagnosticOutputService Create()
         {
-            return Mock.Of<IProjectDiagnosticOutputService>();
+            return Mock.Of<IManagedProjectDiagnosticOutputService>();
         }
     }
 }
