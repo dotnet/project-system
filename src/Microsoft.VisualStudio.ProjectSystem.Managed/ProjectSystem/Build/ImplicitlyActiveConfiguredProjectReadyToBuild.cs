@@ -1,6 +1,8 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
-using Microsoft.VisualStudio.Threading.Tasks;
+// .NET Core defines a non-generic TaskCompletionSource but .NETFramework does not.
+// For consistency, always use the one we define.
+using TaskCompletionSource = Microsoft.VisualStudio.Threading.Tasks.TaskCompletionSource;
 
 namespace Microsoft.VisualStudio.ProjectSystem.Build
 {
