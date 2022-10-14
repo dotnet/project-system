@@ -17,7 +17,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
 
             var project = UnconfiguredProjectFactory.Create(fullPath: @"C:\Myproject.csproj");
             var context = IWorkspaceProjectContextMockFactory.CreateForMetadataReferences(project, onReferenceAdded, onReferenceRemoved);
-            var logger = Mock.Of<IProjectDiagnosticOutputService>();
+            var logger = Mock.Of<IManagedProjectDiagnosticOutputService>();
 
             var handler = new MetadataReferenceItemHandler(project);
             var projectDir = Path.GetDirectoryName(project.FullPath);
@@ -46,7 +46,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
 
             var project = UnconfiguredProjectFactory.Create(fullPath: @"C:\ProjectFolder\Myproject.csproj");
             var context = IWorkspaceProjectContextMockFactory.CreateForMetadataReferences(project, onReferenceAdded, onReferenceRemoved);
-            var logger = Mock.Of<IProjectDiagnosticOutputService>();
+            var logger = Mock.Of<IManagedProjectDiagnosticOutputService>();
 
             var handler = new MetadataReferenceItemHandler(project);
             var projectDir = Path.GetDirectoryName(project.FullPath);

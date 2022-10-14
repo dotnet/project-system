@@ -19,7 +19,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore.Snapshots
             IProjectAsynchronousTasksService projectAsynchronousTasksService, 
             IVsSolutionRestoreService3 solutionRestoreService, 
             IFileSystem fileSystem, 
-            IProjectDiagnosticOutputService logger, 
+            IManagedProjectDiagnosticOutputService logger, 
             IVsSolutionRestoreService4 solutionRestoreService4, 
             PackageRestoreSharedJoinableTaskCollection sharedJoinableTaskCollection) 
             : base(featureFlagsService, telemetryService, infoBarService, project, dataSource, projectAsynchronousTasksService, solutionRestoreService, fileSystem, logger, solutionRestoreService4, sharedJoinableTaskCollection)

@@ -35,7 +35,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
 
         public Task<Solution> RenameSymbolAsync(Solution solution, ISymbol symbol, string newName, CancellationToken token = default)
         {
+#pragma warning disable CS0618 // Type or member is obsolete https://github.com/dotnet/project-system/issues/8591
             return RoslynRenamer.Renamer.RenameSymbolAsync(solution, symbol, newName, solution.Workspace.Options, token);
+#pragma warning restore CS0618 // Type or member is obsolete
         }
 
         public bool ApplyChangesToSolution(Workspace ws, Solution renamedSolution)

@@ -83,15 +83,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
                 enumValues.Add(new PageEnumValue(new EnumValue { Name = "", DisplayName = VSResources.StartupObjectNotSet }));
             }
 
-            IEntryPointFinderService? entryPointFinderService = project.LanguageServices.GetService<IEntryPointFinderService>();
+            IEntryPointFinderService? entryPointFinderService = project.Services.GetService<IEntryPointFinderService>();
             IEnumerable<INamedTypeSymbol>? entryPoints = entryPointFinderService?.FindEntryPoints(compilation.GlobalNamespace, _searchForEntryPointsInFormsOnly);
             if (entryPoints is not null)
             {
                 enumValues.AddRange(entryPoints.Select(ep =>
                 {
                     string name = ep.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat.WithGlobalNamespaceStyle(SymbolDisplayGlobalNamespaceStyle.Omitted));
-                    string minimalName = ep.ToDisplayString(SymbolDisplayFormat.MinimallyQualifiedFormat);
-                    return new PageEnumValue(new EnumValue { Name = minimalName, DisplayName = name });
+                    return new PageEnumValue(new EnumValue { Name = name, DisplayName = name });
                 }));
             }
 

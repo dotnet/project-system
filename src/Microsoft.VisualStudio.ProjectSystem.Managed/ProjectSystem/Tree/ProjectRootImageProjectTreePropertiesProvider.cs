@@ -1,6 +1,7 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
 using Microsoft.VisualStudio.ProjectSystem.Imaging;
+using ManagedPriorityOrder = Microsoft.VisualStudio.ProjectSystem.Order;
 
 namespace Microsoft.VisualStudio.ProjectSystem.Tree
 {
@@ -9,7 +10,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree
     /// </summary>
     [Export(typeof(IProjectTreePropertiesProvider))]
     [AppliesTo(ProjectCapability.DotNet)]
-    [Order(Order.Default)]
+    [Order(ManagedPriorityOrder.Default)]
     internal class ProjectRootImageProjectTreePropertiesProvider : IProjectTreePropertiesProvider
     {
         private readonly IProjectCapabilitiesService _capabilities;

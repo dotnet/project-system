@@ -64,7 +64,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
         private readonly IProjectAsynchronousTasksService _projectAsynchronousTasksService;
         private readonly IVsSolutionRestoreService3 _solutionRestoreService;
         private readonly IFileSystem _fileSystem;
-        private readonly IProjectDiagnosticOutputService _logger;
+        private readonly IManagedProjectDiagnosticOutputService _logger;
         private readonly IVsSolutionRestoreService4 _solutionRestoreService4;
         private byte[]? _latestHash;
         private bool _enabled;
@@ -81,7 +81,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
             [Import(ExportContractNames.Scopes.UnconfiguredProject)] IProjectAsynchronousTasksService projectAsynchronousTasksService,
             IVsSolutionRestoreService3 solutionRestoreService,
             IFileSystem fileSystem,
-            IProjectDiagnosticOutputService logger,
+            IManagedProjectDiagnosticOutputService logger,
             IVsSolutionRestoreService4 solutionRestoreService4,
             PackageRestoreSharedJoinableTaskCollection sharedJoinableTaskCollection)
             : base(project, sharedJoinableTaskCollection, synchronousDisposal: true, registerDataSource: false)

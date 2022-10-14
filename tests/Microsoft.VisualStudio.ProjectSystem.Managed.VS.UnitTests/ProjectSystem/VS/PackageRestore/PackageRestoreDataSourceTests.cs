@@ -104,7 +104,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
             dataSource ??= IPackageRestoreUnconfiguredInputDataSourceFactory.Create();
             IProjectAsynchronousTasksService projectAsynchronousTasksService = IProjectAsynchronousTasksServiceFactory.Create();
             solutionRestoreService ??= IVsSolutionRestoreServiceFactory.Create();
-            IProjectDiagnosticOutputService logger = IProjectDiagnosticOutputServiceFactory.Create();
+            IManagedProjectDiagnosticOutputService logger = IManagedProjectDiagnosticOutputServiceFactory.Create();
             IFileSystem fileSystem = IFileSystemFactory.Create();
             var vsSolutionRestoreService4 = IVsSolutionRestoreService4Factory.ImplementRegisterRestoreInfoSourceAsync();
             var sharedJoinableTaskCollection = new PackageRestoreSharedJoinableTaskCollection(IProjectThreadingServiceFactory.Create());

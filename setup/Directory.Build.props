@@ -18,8 +18,6 @@
     <VsixSourceManifestPath>$(MSBuildProjectDirectory)\source.extension.vsixmanifest</VsixSourceManifestPath>
     <!-- This property indicates that the project is a VS Extension project. The SwixBuild plugin expects this value to be set for the AddSBOM task. -->
     <IsVsixProject Condition="Exists('$(VsixSourceManifestPath)')">true</IsVsixProject>
-    <!-- Path to the DependentAssemblyVersions.csv file. Created via CreateDependentAssemblyVersionsCsv. Used for VS Insertions. -->
-    <DependentAssemblyVersionsCsvPath>$(ArtifactsConfigurationDir)DevDivInsertionFiles\DependentAssemblyVersions.csv</DependentAssemblyVersionsCsvPath>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(IsVsixProject)' == 'true'">

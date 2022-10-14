@@ -10,11 +10,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
     /// </summary>
     internal sealed class BatchLogger : IDisposable
     {
-        private readonly IProjectDiagnosticOutputService _outputService;
+        private readonly IManagedProjectDiagnosticOutputService _outputService;
         private StringBuilder? _builder;
         private int _indentLevel;
 
-        public BatchLogger(IProjectDiagnosticOutputService outputService)
+        public BatchLogger(IManagedProjectDiagnosticOutputService outputService)
         {
             Requires.NotNull(outputService, nameof(outputService));
 

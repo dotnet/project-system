@@ -55,7 +55,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties.Controls
             new PropertyMetadata(true, (o, e) => ((CSharpImplicitUsingsControl)o).OnStringListOrSupportedValuesPropertyChanged()));
         
         // Used to suppress event handling during our own updates, breaking infinite loops.
-        private bool updating;
+        private bool _isUpdating;
 
         public CSharpImplicitUsingsControl()
         {
@@ -131,12 +131,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties.Controls
 
         private void OnStringListOrSupportedValuesPropertyChanged()
         {
-            if (updating)
+            if (_isUpdating)
             {
                 return;
             }
 
-            updating = true;
+            _isUpdating = true;
 
             try
             {
@@ -222,13 +222,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties.Controls
             }
             finally
             {
-                updating = false;
+                _isUpdating = false;
             }
         }
 
         public void NotifyPairChanged()
         {
-            if (updating)
+            if (_isUpdating)
             {
                 return;
             }

@@ -26,7 +26,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
             _project = project;
         }
 
-        public void Handle(IWorkspaceProjectContext context, IComparable version, BuildOptions added, BuildOptions removed, ContextState state, IProjectDiagnosticOutputService logger)
+        public void Handle(IWorkspaceProjectContext context, IComparable version, BuildOptions added, BuildOptions removed, ContextState state, IManagedProjectDiagnosticOutputService logger)
         {
             foreach (CommandLineReference reference in removed.MetadataReferences)
             {
@@ -43,7 +43,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
             }
         }
 
-        private void AddToContextIfNotPresent(IWorkspaceProjectContext context, string fullPath, MetadataReferenceProperties properties, IProjectDiagnosticOutputService logger)
+        private void AddToContextIfNotPresent(IWorkspaceProjectContext context, string fullPath, MetadataReferenceProperties properties, IManagedProjectDiagnosticOutputService logger)
         {
             if (_addedPathsWithMetadata.TryGetValue(fullPath, out MetadataReferenceProperties existingProperties))
             {
@@ -64,7 +64,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
             _addedPathsWithMetadata[fullPath] = properties;
         }
 
-        private void RemoveFromContextIfPresent(IWorkspaceProjectContext context, string fullPath, MetadataReferenceProperties properties, IProjectDiagnosticOutputService logger)
+        private void RemoveFromContextIfPresent(IWorkspaceProjectContext context, string fullPath, MetadataReferenceProperties properties, IManagedProjectDiagnosticOutputService logger)
         {
             if (_addedPathsWithMetadata.TryGetValue(fullPath, out MetadataReferenceProperties existingProperties))
             {

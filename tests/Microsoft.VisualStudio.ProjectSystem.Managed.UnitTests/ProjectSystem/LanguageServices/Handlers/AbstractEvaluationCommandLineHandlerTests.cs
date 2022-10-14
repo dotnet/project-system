@@ -377,7 +377,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
             metadata ??= ImmutableDictionary<string, IImmutableDictionary<string, string>>.Empty;
             var previousMetadata = ImmutableDictionary<string, IImmutableDictionary<string, string>>.Empty;
             bool isActiveContext = true;
-            var logger = IProjectDiagnosticOutputServiceFactory.Create();
+            var logger = IManagedProjectDiagnosticOutputServiceFactory.Create();
 
             handler.ApplyProjectEvaluation(context, version, difference, previousMetadata, metadata, isActiveContext, logger);
         }
@@ -385,7 +385,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
         private static void ApplyProjectBuild(IWorkspaceProjectContext context, AbstractEvaluationCommandLineHandler handler, IComparable version, IProjectChangeDiff difference)
         {
             bool isActiveContext = true;
-            var logger = IProjectDiagnosticOutputServiceFactory.Create();
+            var logger = IManagedProjectDiagnosticOutputServiceFactory.Create();
 
             handler.ApplyProjectBuild(context, version, difference, isActiveContext, logger);
         }

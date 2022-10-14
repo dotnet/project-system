@@ -42,9 +42,11 @@ internal class MyAppFileAccessor : IMyAppFileAccessor, IDisposable
           <SaveMySettingsOnExit>true</SaveMySettingsOnExit>
         </MyApplicationData>
         """;
-    
+
     [ImportingConstructor]
+#pragma warning disable RS0030 // Do not used banned APIs
     public MyAppFileAccessor([Import(typeof(SVsServiceProvider))] IServiceProvider serviceProvider,
+#pragma warning restore RS0030 // Do not used banned APIs
         UnconfiguredProject project,
         IProjectThreadingService threadingService,
         IPhysicalProjectTree projectTree)

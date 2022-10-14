@@ -21,7 +21,7 @@ internal class WorkspaceFactory : IWorkspaceFactory
     private readonly UnconfiguredProject _unconfiguredProject;
     private readonly IProjectService _projectService;
     private readonly IProjectThreadingService _threadingService;
-    private readonly IProjectDiagnosticOutputService _logger;
+    private readonly IManagedProjectDiagnosticOutputService _logger;
     private readonly IDataProgressTrackerService _dataProgressTrackerService;
     private readonly IActiveEditorContextTracker _activeWorkspaceProjectContextTracker;
     private readonly IProjectFaultHandlerService _faultHandlerService;
@@ -37,7 +37,7 @@ internal class WorkspaceFactory : IWorkspaceFactory
         IProjectService projectService,
         IProjectThreadingService threadingService,
         IUnconfiguredProjectTasksService tasksService,
-        IProjectDiagnosticOutputService logger,
+        IManagedProjectDiagnosticOutputService logger,
         IDataProgressTrackerService dataProgressTrackerService,
         IActiveEditorContextTracker activeWorkspaceProjectContextTracker,
         IProjectFaultHandlerService faultHandlerService,
