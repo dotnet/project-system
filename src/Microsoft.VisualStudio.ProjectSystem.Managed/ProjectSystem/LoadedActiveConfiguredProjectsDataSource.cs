@@ -46,19 +46,21 @@ internal class LoadedActiveConfiguredProjectsDataSource : ChainedProjectValueDat
 
     private async Task<List<ConfiguredProject>> GetLoadedProjectsAsync(IProjectVersionedValue<IConfigurationGroup<ProjectConfiguration>> projectVersionedValue)
     {
-        return await JoinableFactory.RunAsync(async () =>
-        {
-            List<ConfiguredProject> generatedResult = new List<ConfiguredProject>();
+        return await JoinableFactory.RunAsync(() =>
+            _tasksService.LoadedProjectAsync(async() =>
+                {
+                    List<ConfiguredProject> generatedResult = new List<ConfiguredProject>();
 
-            foreach (ProjectConfiguration configuration in projectVersionedValue.Value)
-            {
-                // Make sure we aren't currently unloading, or we don't unload while we load the configuration
-                var loadedConfiguredProject = await _tasksService.LoadedProjectAsync(() => _project.LoadConfiguredProjectAsync(configuration));
+                    foreach (ProjectConfiguration configuration in projectVersionedValue.Value)
+                    {
+                        // Make sure we aren't currently unloading, or we don't unload while we load the configuration
+                        var loadedConfiguredProject = await _project.LoadConfiguredProjectAsync(configuration);
 
-                generatedResult.Add(loadedConfiguredProject);
-            }
+                        generatedResult.Add(loadedConfiguredProject);
+                    }
 
-            return generatedResult;
-        });
+                    return generatedResult;
+                })
+            );
     }
 }
