@@ -10,7 +10,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedColl
     /// </summary>
     /// <remarks>
     /// <para>
-    /// Implementors will usually want to derive from <see cref="RelatableItemBase"/> rather than implementing
+    /// Implementors will usually want to derive from RelatableItemBase rather than implementing
     /// this interface directly.
     /// </para>
     /// <para>
