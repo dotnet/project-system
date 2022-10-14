@@ -76,6 +76,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
 
         private PackageRestoreUnconfiguredInput MergeRestoreInputs(RestoreValues restoreValues)
         {
+            System.Diagnostics.Debug.Assert(restoreValues.Item1.Count() == restoreValues.Item2.Count());
+
             IReadOnlyList<PackageRestoreConfiguredInput> inputs = restoreValues.Item2;
 
             // If there are no updates, we have no active configurations
