@@ -32,6 +32,8 @@ internal class LoadedActiveConfiguredProjectsDataSource : ChainedProjectValueDat
 
         var link = transformBlock.Value.LinkTo(targetBlock, DataflowOption.PropagateCompletion);
 
+        JoinUpstreamDataSources(_activeConfigurationGroupService.ActiveConfigurationGroupSource);
+
         return link;
     }
 
