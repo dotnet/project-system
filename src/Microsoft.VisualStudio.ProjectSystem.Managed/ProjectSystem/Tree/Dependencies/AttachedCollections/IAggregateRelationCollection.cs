@@ -32,7 +32,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedColl
         /// </summary>
         /// <remarks>
         /// Used by AggregateRelationCollectionSource to trigger changes to its
-        /// IAttachedCollectionSource.HasItems/> property.
+        /// IAttachedCollectionSource.HasItems property.
         /// </remarks>
         event EventHandler HasItemsChanged;
 
