@@ -2,7 +2,8 @@
 
 using Microsoft.Build.Framework.XamlTypes;
 using Microsoft.VisualStudio.ProjectSystem.Query;
-using Microsoft.VisualStudio.ProjectSystem.Query.Framework;
+using Microsoft.VisualStudio.ProjectSystem.Query.Frameworks;
+using Microsoft.VisualStudio.ProjectSystem.Query.ProjectModel.Implementation;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
 {
@@ -17,7 +18,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
             var parentEntity = IEntityWithIdFactory.Create(key: "parentId", value: "aaa");
             var editor = new ValueEditor { EditorType = "My.Editor.Type" };
 
-            var result = (UIPropertyEditorSnapshot)UIPropertyEditorDataProducer.CreateEditorValue(context, parentEntity, editor, properties);
+            var result = (UIPropertyEditorValue)UIPropertyEditorDataProducer.CreateEditorValue(context, parentEntity, editor, properties);
 
             Assert.Equal(expected: "My.Editor.Type", actual: result.Id[ProjectModelIdentityKeys.EditorName]);
         }
@@ -31,7 +32,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
             var id = new EntityIdentity(key: "EditorKey", value: "bbb");
             var editor = new ValueEditor { EditorType = "My.Editor.Type" };
 
-            var result = (UIPropertyEditorSnapshot)UIPropertyEditorDataProducer.CreateEditorValue(context, id, editor, properties);
+            var result = (UIPropertyEditorValue)UIPropertyEditorDataProducer.CreateEditorValue(context, id, editor, properties);
 
             Assert.Equal(expected: "My.Editor.Type", actual: result.Name);
         }
@@ -45,7 +46,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
             var id = new EntityIdentity(key: "EditorKey", value: "bbb");
             var editor = new ValueEditor { EditorType = "My.Editor.Type" };
 
-            var result = (UIPropertyEditorSnapshot)UIPropertyEditorDataProducer.CreateEditorValue(context, id, editor, properties);
+            var result = (UIPropertyEditorValue)UIPropertyEditorDataProducer.CreateEditorValue(context, id, editor, properties);
 
             Assert.Equal(expected: editor, actual: ((IEntityValueFromProvider)result).ProviderState);
         }
@@ -83,7 +84,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
 
             static void assertEqual(IEntityValue entity, string expectedName)
             {
-                var editorEntity = (UIPropertyEditorSnapshot)entity;
+                var editorEntity = (UIPropertyEditorValue)entity;
                 Assert.Equal(expectedName, editorEntity.Name);
             }
         }
@@ -111,7 +112,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
 
             static void assertEqual(IEntityValue entity, string expectedName)
             {
-                var editorEntity = (UIPropertyEditorSnapshot)entity;
+                var editorEntity = (UIPropertyEditorValue)entity;
                 Assert.Equal(expectedName, editorEntity.Name);
             }
         }
@@ -139,7 +140,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
 
             static void assertEqual(IEntityValue entity, string expectedName)
             {
-                var editorEntity = (UIPropertyEditorSnapshot)entity;
+                var editorEntity = (UIPropertyEditorValue)entity;
                 Assert.Equal(expectedName, editorEntity.Name);
             }
         }

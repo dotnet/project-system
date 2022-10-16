@@ -2,7 +2,7 @@
 
 using Microsoft.Build.Framework.XamlTypes;
 using Microsoft.VisualStudio.ProjectSystem.Query;
-using Microsoft.VisualStudio.ProjectSystem.Query.Framework;
+using Microsoft.VisualStudio.ProjectSystem.Query.ProjectModel.Implementation;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
 {
@@ -18,7 +18,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
             var entityRuntime = IEntityRuntimeModelFactory.Create();
             var metadata = new NameValuePair { Name = "Alpha", Value = "AlphaValue" };
            
-            var result = (UIEditorMetadataSnapshot)UIEditorMetadataProducer.CreateMetadataValue(entityRuntime, metadata, properties);
+            var result = (UIEditorMetadataValue)UIEditorMetadataProducer.CreateMetadataValue(entityRuntime, metadata, properties);
 
             Assert.Equal(expected: "Alpha", actual: result.Name);
             Assert.Equal(expected: "AlphaValue", actual: result.Value);
@@ -32,7 +32,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
             var entityRuntime = IEntityRuntimeModelFactory.Create();
             var metadata = new NameValuePair { Name = "Alpha", Value = "AlphaValue" };
 
-            var result = (UIEditorMetadataSnapshot)UIEditorMetadataProducer.CreateMetadataValue(entityRuntime, metadata, properties);
+            var result = (UIEditorMetadataValue)UIEditorMetadataProducer.CreateMetadataValue(entityRuntime, metadata, properties);
 
             Assert.Throws<MissingDataException>(() => result.Name);
             Assert.Throws<MissingDataException>(() => result.Value);
@@ -60,8 +60,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
                 editor,
                 properties);
 
-            Assert.Contains(results, entity => entity is UIEditorMetadataSnapshot { Name: "Alpha", Value: "A" });
-            Assert.Contains(results, entity => entity is UIEditorMetadataSnapshot { Name: "Beta",  Value: "B" });
+            Assert.Contains(results, entity => entity is UIEditorMetadataValue { Name: "Alpha", Value: "A" });
+            Assert.Contains(results, entity => entity is UIEditorMetadataValue { Name: "Beta",  Value: "B" });
         }
     }
 }

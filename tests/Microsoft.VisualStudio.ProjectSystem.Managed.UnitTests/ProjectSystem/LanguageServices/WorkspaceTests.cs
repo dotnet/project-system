@@ -4,9 +4,7 @@ using Microsoft.CodeAnalysis;
 using Microsoft.VisualStudio.LanguageServices.ProjectSystem;
 using Microsoft.VisualStudio.ProjectSystem.Utilities;
 using Microsoft.VisualStudio.ProjectSystem.VS;
-using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Threading;
-using Task = System.Threading.Tasks.Task;
 using Moq.Language.Flow;
 
 #pragma warning disable CA1068 // CancellationToken parameters must come last
@@ -779,9 +777,7 @@ public class WorkspaceTests
         workspaceProjectContext ??= Mock.Of<IWorkspaceProjectContext>(MockBehavior.Loose);
         workspaceProjectContextFactory ??= IWorkspaceProjectContextFactoryFactory.ImplementCreateProjectContext(delegate { return workspaceProjectContext; });
         faultHandlerService ??= IProjectFaultHandlerServiceFactory.Create();
-#pragma warning disable VSSDK005
         JoinableTaskCollection joinableTaskCollection = new(new JoinableTaskContext());
-#pragma warning restore VSSDK005
         joinableTaskFactory ??= new(joinableTaskCollection);
         joinableTaskContextNode ??= JoinableTaskContextNodeFactory.Create();
 
