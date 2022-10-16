@@ -9,7 +9,6 @@ using Microsoft.VisualStudio.Threading;
 using Microsoft.VisualStudio.Threading.Tasks;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using Task = System.Threading.Tasks.Task;
 
 namespace Microsoft.VisualStudio.ProjectSystem.Debug
 {
@@ -32,9 +31,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
                     services: ProjectServicesFactory.Create(
                         threadingService: threadingService)));
             var projectFaultHandlerService = IProjectFaultHandlerServiceFactory.Create();
-#pragma warning disable VSSDK005
             var joinableTaskContext = new JoinableTaskContext();
-#pragma warning restore VSSDK005
             var provider = new LaunchSettingsUnderTest(project, projectServices, fileSystem ?? new IFileSystemMock(), commonServices, null, specialFilesManager, projectFaultHandlerService, new DefaultLaunchProfileProvider(project), joinableTaskContext);
             return provider;
         }

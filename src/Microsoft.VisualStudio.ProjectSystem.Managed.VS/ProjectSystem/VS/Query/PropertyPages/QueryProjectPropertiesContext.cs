@@ -3,7 +3,7 @@
 using System.Diagnostics.CodeAnalysis;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
 using Microsoft.VisualStudio.ProjectSystem.Query;
-using Microsoft.VisualStudio.ProjectSystem.Query.Framework;
+using Microsoft.VisualStudio.ProjectSystem.Query.ProjectModel.Implementation;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
 {

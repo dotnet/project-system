@@ -34,7 +34,7 @@ The Project Query API treats its use of brokered services as an implementation d
 
 Internally, the Project Query API handles serializing the query, sending it across the network, deserializing it, and coordinating the actions of an extensible set of data providers. These data providers are responsible for filling in the requested properties on various entities, creating child entities from their parents, and handling various "actions" that update state in some way. For example, one provider may be responsible for creating project entities representing all the projects in the solution, while a different provider is responsible for filling in the project's name, path, GUID, language, etc. There may be multiple providers that handle the same relationship from a parent to its children or the same action. Among other things, the Project Query API implementation glues together the results of all of these providers to create the final query result.
 
-Please note that internally, setting either a property's evaluated or unevaluated value to null will call `IProjectSnapshot.DeleteAsync` to delete the property.
+Please note that internally, setting either a property's evaluated or unevaluated value to null will call `IProject.DeleteAsync` to delete the property.
 
 ### 5. Standard query data providers
 

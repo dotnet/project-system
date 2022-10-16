@@ -1,8 +1,8 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
 using Microsoft.VisualStudio.ProjectSystem.Properties;
-using Microsoft.VisualStudio.ProjectSystem.Query;
-using Microsoft.VisualStudio.ProjectSystem.Query.Framework;
+using Microsoft.VisualStudio.ProjectSystem.Query.Frameworks;
+using Microsoft.VisualStudio.ProjectSystem.Query.ProjectModel;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
 {
@@ -17,8 +17,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
     /// held past the end of the query.
     /// </para>
     /// <para>
-    /// As an example, consider what needs to occur when we want to retrieve the set of <see cref="IUIPropertyValueSnapshot"/>s
-    /// for a <see cref="IUIPropertySnapshot"/>:
+    /// As an example, consider what needs to occur when we want to retrieve the set of <see cref="IUIPropertyValue"/>s
+    /// for a <see cref="IUIProperty"/>:
     /// <list type="bullet">
     /// <item>Retrieve the set of known configurations from the <see cref="UnconfiguredProject"/>.</item>
     /// <item>For each configuration, get the property page catalog.</item>
@@ -26,7 +26,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
     /// <item>Find the property within the <see cref="IRule"/>.</item>
     /// <item>Retrieve the property value.</item>
     /// </list>
-    /// The <see cref="UIPropertyValueDataProvider"/> produces <see cref="IUIPropertyValueSnapshot"/>s one at a time, and needs
+    /// The <see cref="UIPropertyValueDataProvider"/> produces <see cref="IUIPropertyValue"/>s one at a time, and needs
     /// to do these steps for each one. Given that a query will likely retrieve values for multiple properties on
     /// multiple pages across multiple configurations, introducing caching at key levels in the process can
     /// significantly reduce the amount of work we need to do.

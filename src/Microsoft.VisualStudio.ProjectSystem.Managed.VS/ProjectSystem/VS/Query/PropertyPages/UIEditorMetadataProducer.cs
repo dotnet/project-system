@@ -2,18 +2,19 @@
 
 using Microsoft.Build.Framework.XamlTypes;
 using Microsoft.VisualStudio.ProjectSystem.Query;
-using Microsoft.VisualStudio.ProjectSystem.Query.Framework;
+using Microsoft.VisualStudio.ProjectSystem.Query.ProjectModel;
+using Microsoft.VisualStudio.ProjectSystem.Query.ProjectModel.Implementation;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
 {
     /// <summary>
-    /// Handles the creation of <see cref="IUIEditorMetadataSnapshot"/> instances and populating the requested members.
+    /// Handles the creation of <see cref="IUIEditorMetadata"/> instances and populating the requested members.
     /// </summary>
     internal static class UIEditorMetadataProducer
     {
         public static IEntityValue CreateMetadataValue(IEntityRuntimeModel runtimeModel, NameValuePair metadata, IUIEditorMetadataPropertiesAvailableStatus requestedProperties)
         {
-            var newMetadata = new UIEditorMetadataSnapshot(runtimeModel, new UIEditorMetadataPropertiesAvailableStatus());
+            var newMetadata = new UIEditorMetadataValue(runtimeModel, new UIEditorMetadataPropertiesAvailableStatus());
 
             if (requestedProperties.Name)
             {
