@@ -23,6 +23,11 @@
     <NoWarn>$(NoWarn);NU1701;NU1702</NoWarn>
   </PropertyGroup>
 
+  <!-- TODO: Re-enable nullability and clean up warnings. -->
+  <PropertyGroup Condition="'$(TargetFramework)' == 'net6.0'">
+    <Nullable>annotations</Nullable>
+  </PropertyGroup>
+  
   <!-- TODO: Remove this once ILaunchSettingsUIProvider has been removed. -->
   <ItemGroup Condition="'$(TargetFramework)' == 'net472'">
     <Reference Include="PresentationCore" />
@@ -30,10 +35,14 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   
-  <!-- TODO: Clean this up. We shouldn't have to remove these in the first place. -->
-  <ItemGroup>
+  <!-- TODO: Remove this once ImageMoniker and related types are available in a net6.0-compatible package. -->
+  <ItemGroup Condition="'$(TargetFramework)' == 'net6.0'">
     <PackageReference Remove="Microsoft.VisualStudio.SDK.EmbedInteropTypes" />
     <PackageReference Remove="Microsoft.VisualStudio.ImageCatalog" />
+
+    <Compile Remove="ProjectSystem\CopyPaste\**\*.cs" />
+    <Compile Remove="ProjectSystem\Imaging\**\*.cs" />
+    <Compile Remove="ProjectSystem\Tree\**\*.cs" />
   </ItemGroup>
   
   <ItemGroup>
