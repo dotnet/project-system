@@ -10,6 +10,7 @@ using Microsoft.VisualStudio.Telemetry;
 using NuGet.SolutionRestoreManager;
 using Microsoft.Internal.VisualStudio.Shell.Interop;
 using System.Diagnostics;
+using Microsoft.VisualStudio.ProjectSystem.PackageRestore;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
 {
