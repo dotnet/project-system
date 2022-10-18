@@ -303,8 +303,6 @@ Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections.Re
 Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections.RelatableItemBase.RelatableItemBase(string! name) -> void
 Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections.RelationBase<TParent, TChild>
 Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections.RelationBase<TParent, TChild>.RelationBase() -> void
-Microsoft.VisualStudio.ProjectSystem.VS.Tree.IFileIconProvider
-Microsoft.VisualStudio.ProjectSystem.VS.Tree.IFileIconProvider.GetFileExtensionImageMoniker(string! path) -> Microsoft.VisualStudio.Imaging.Interop.ImageMoniker
 Microsoft.VisualStudio.ProjectSystem.VS.Utilities.FocusAttacher
 Microsoft.VisualStudio.ProjectSystem.VS.Utilities.FocusAttacher.FocusAttacher() -> void
 override Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections.AttachedCollectionItemBase.ToString() -> string!
