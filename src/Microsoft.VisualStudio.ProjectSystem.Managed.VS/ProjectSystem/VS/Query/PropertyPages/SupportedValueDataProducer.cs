@@ -2,18 +2,19 @@
 
 using System.Collections.ObjectModel;
 using Microsoft.VisualStudio.ProjectSystem.Query;
-using Microsoft.VisualStudio.ProjectSystem.Query.Framework;
+using Microsoft.VisualStudio.ProjectSystem.Query.ProjectModel;
+using Microsoft.VisualStudio.ProjectSystem.Query.ProjectModel.Implementation;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
 {
     /// <summary>
-    /// Handles the creation of <see cref="ISupportedValueSnapshot"/> instances and populating the requested members.
+    /// Handles the creation of <see cref="ISupportedValue"/> instances and populating the requested members.
     /// </summary>
     internal static class SupportedValueDataProducer
     {
         public static IEntityValue CreateSupportedValue(IEntityRuntimeModel runtimeModel, ProjectSystem.Properties.IEnumValue enumValue, ISupportedValuePropertiesAvailableStatus requestedProperties)
         {
-            var newSupportedValue = new SupportedValueSnapshot(runtimeModel, new SupportedValuePropertiesAvailableStatus());
+            var newSupportedValue = new SupportedValueValue(runtimeModel, new SupportedValuePropertiesAvailableStatus());
 
             if (requestedProperties.DisplayName)
             {

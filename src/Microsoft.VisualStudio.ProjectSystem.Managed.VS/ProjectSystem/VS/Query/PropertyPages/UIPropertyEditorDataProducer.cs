@@ -3,13 +3,15 @@
 using Microsoft.Build.Framework.XamlTypes;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
 using Microsoft.VisualStudio.ProjectSystem.Query;
-using Microsoft.VisualStudio.ProjectSystem.Query.Execution;
-using Microsoft.VisualStudio.ProjectSystem.Query.Framework;
+using Microsoft.VisualStudio.ProjectSystem.Query.Frameworks;
+using Microsoft.VisualStudio.ProjectSystem.Query.ProjectModel;
+using Microsoft.VisualStudio.ProjectSystem.Query.ProjectModel.Implementation;
+using Microsoft.VisualStudio.ProjectSystem.Query.QueryExecution;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
 {
     /// <summary>
-    /// Handles the creation of <see cref="IUIPropertyEditorSnapshot"/> instances and populating the requested members.
+    /// Handles the creation of <see cref="IUIPropertyEditor"/> instances and populating the requested members.
     /// </summary>
     internal static class UIPropertyEditorDataProducer
     {
@@ -31,7 +33,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
         public static IEntityValue CreateEditorValue(IQueryExecutionContext queryExecutionContext, EntityIdentity identity, ValueEditor editor, IUIPropertyEditorPropertiesAvailableStatus requestedProperties)
         {
             Requires.NotNull(editor, nameof(editor));
-            var newEditorValue = new UIPropertyEditorSnapshot(queryExecutionContext.EntityRuntime, identity, new UIPropertyEditorPropertiesAvailableStatus());
+            var newEditorValue = new UIPropertyEditorValue(queryExecutionContext.EntityRuntime, identity, new UIPropertyEditorPropertiesAvailableStatus());
 
             if (requestedProperties.Name)
             {

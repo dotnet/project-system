@@ -113,6 +113,11 @@ parameters:
   displayName: Do Not Optimize Assemblies
   type: boolean
   default: false
+# Useful when testing pipeline changes and running compliance is not necessary.
+- name: SkipCompliance
+  displayName: Skip Compliance Validation
+  type: boolean
+  default: false
 # This should only be enabled if we need to create AzDO work items based on Compliance failures.
 - name: UploadTSAResults
   displayName: Create Compliance Work Items
@@ -150,23 +155,25 @@ stages:
   - template: templates/publish-symbols.yml
   - template: templates/publish-richnav.yml
 
-- stage: Compliance
-  displayName: Compliance
-  dependsOn: Build
-  variables:
-  - name: UploadTSAResults
-    value: ${{ parameters.UploadTSAResults }}
-  # Gets the VisualStudioMinimumVersion variable produced by the Build pipeline.
-  # This value is used in the analyze-api.yml template.
-  - name: VisualStudioMinimumVersion
-    value: $[ stageDependencies.Build.BuildOfficialRelease.outputs['SetVisualStudioMinimumVersionVariable.VisualStudioMinimumVersion'] ]
-  # https://devdiv.visualstudio.com/DevDiv/_library?itemType=VariableGroups&view=VariableGroupView&variableGroupId=434&path=DotNet-Project-System
-  # Variables used:
-  # - ApiScanConnectionString
-  - group: DotNet-Project-System
-  jobs:
-  - template: templates/analyze-compliance.yml
-  - template: templates/analyze-api.yml
+# Skip this stage only when specifically requested (via SkipCompliance).
+- ${{ if eq(parameters.SkipCompliance, false) }}:
+  - stage: Compliance
+    displayName: Compliance
+    dependsOn: Build
+    variables:
+    - name: UploadTSAResults
+      value: ${{ parameters.UploadTSAResults }}
+    # Gets the VisualStudioMinimumVersion variable produced by the Build pipeline.
+    # This value is used in the analyze-api.yml template.
+    - name: VisualStudioMinimumVersion
+      value: $[ stageDependencies.Build.BuildOfficialRelease.outputs['SetVisualStudioMinimumVersionVariable.VisualStudioMinimumVersion'] ]
+    # https://devdiv.visualstudio.com/DevDiv/_library?itemType=VariableGroups&view=VariableGroupView&variableGroupId=434&path=DotNet-Project-System
+    # Variables used:
+    # - ApiScanConnectionString
+    - group: DotNet-Project-System
+    jobs:
+    - template: templates/analyze-compliance.yml
+    - template: templates/analyze-api.yml
 
 - stage: Localization
   displayName: Localization
@@ -192,7 +199,9 @@ stages:
       displayName: Optimization
       dependsOn:
       - Publish
-      - Compliance
+      # Only include the Compliance stage when it is not skipped.
+      - ${{ if eq(parameters.SkipCompliance, false) }}:
+        - Compliance
       variables:
       - name: visualStudioBootstrapperURI
         # If you set this value to the visualStudioBootstrapperURI parameter directly, it does not resolve correctly. Instead, we set it to a variable and pass that variable into the parameter.
@@ -247,7 +256,9 @@ stages:
     # The Build dependsOn is required for putting that stage's variables into the stageDependencies property bag (for PackageVersion).
     - Build
     - Publish
-    - Compliance
+    # Only include the Compliance stage when it is not skipped.
+    - ${{ if eq(parameters.SkipCompliance, false) }}:
+      - Compliance
     variables:
       # Gets the PackageVersion variable produced by the Build pipeline.
       PackageVersion: $[ stageDependencies.Build.BuildOfficialRelease.outputs['SetPackageVersion.PackageVersion'] ]

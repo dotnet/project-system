@@ -2,21 +2,21 @@
 
 using Microsoft.VisualStudio.Imaging;
 using Microsoft.VisualStudio.Imaging.Interop;
-using Microsoft.VisualStudio.Shell.Interop;
+using Microsoft.VisualStudio.ProjectSystem.Tree;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree
 {
     [Export(typeof(IFileIconProvider))]
     internal sealed class FileIconProvider : IFileIconProvider
     {
-        private readonly IVsUIService<SVsImageService, IVsImageService2> _vsImageService;
+        private readonly IUIImageService _imageService;
 
         private ImmutableDictionary<string, ImageMoniker> _imageMonikerByExtensions = ImmutableDictionary.Create<string, ImageMoniker>(StringComparers.Paths);
 
         [ImportingConstructor]
-        public FileIconProvider(IVsUIService<SVsImageService, IVsImageService2> vsImageService)
+        public FileIconProvider(IUIImageService imageService)
         {
-            _vsImageService = vsImageService;
+            _imageService = imageService;
         }
 
         public ImageMoniker GetFileExtensionImageMoniker(string path)
@@ -29,7 +29,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree
 
             ImageMoniker GetImageMoniker(string _, string p)
             {
-                ImageMoniker imageMoniker = _vsImageService.Value.GetImageMonikerForFile(p);
+                ImageMoniker imageMoniker = _imageService.GetImageMonikerForFile(p);
 
                 if (imageMoniker.Id == -1)
                 {
