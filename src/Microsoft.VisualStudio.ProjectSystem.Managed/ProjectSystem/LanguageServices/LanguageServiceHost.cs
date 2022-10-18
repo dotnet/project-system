@@ -136,6 +136,8 @@ internal sealed class LanguageServiceHost : OnceInitializedOnceDisposedUnderLock
                 linkOptions: DataflowOption.PropagateCompletion,
                 cancellationToken: cancellationToken),
 
+            ProjectDataSources.JoinUpstreamDataSources(_joinableTaskFactory, _projectFaultHandler, _activeConfiguredProjectProvider, _activeConfigurationGroupSubscriptionService),
+
             new DisposableDelegate(() =>
             {
                 // Dispose all workspaces. Note that this happens within a lock, so we will not race with project updates.
