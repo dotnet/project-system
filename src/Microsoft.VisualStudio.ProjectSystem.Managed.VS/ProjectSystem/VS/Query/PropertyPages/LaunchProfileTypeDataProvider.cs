@@ -5,23 +5,22 @@ using Microsoft.VisualStudio.Imaging;
 using Microsoft.VisualStudio.Imaging.Interop;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
 using Microsoft.VisualStudio.ProjectSystem.Query;
-using Microsoft.VisualStudio.ProjectSystem.Query.ProjectModel;
-using Microsoft.VisualStudio.ProjectSystem.Query.ProjectModel.Implementation;
-using Microsoft.VisualStudio.ProjectSystem.Query.ProjectModel.Metadata;
+using Microsoft.VisualStudio.ProjectSystem.Query.Execution;
+using Microsoft.VisualStudio.ProjectSystem.Query.Framework;
+using Microsoft.VisualStudio.ProjectSystem.Query.Metadata;
 using Microsoft.VisualStudio.ProjectSystem.Query.Providers;
-using Microsoft.VisualStudio.ProjectSystem.Query.QueryExecution;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Query.PropertyPages
 {
     /// <summary>
     /// Creates <see cref="IQueryDataProducer{TRequest, TResult}"/> instances that retrieve launch profile type information
-    /// (see <see cref="ILaunchProfileType"/>) for a project.
+    /// (see <see cref="ILaunchProfileTypeSnapshot"/>) for a project.
     /// </summary>
     /// <remarks>
-    /// Responsible for populating <see cref="IProject.LaunchProfiles"/>.
+    /// Responsible for populating <see cref="Microsoft.VisualStudio.ProjectSystem.Query.IProjectSnapshot.LaunchProfiles"/>.
     /// </remarks>
     [QueryDataProvider(LaunchProfileTypeType.TypeName, ProjectModel.ModelName)]
-    [RelationshipQueryDataProvider(ProjectSystem.Query.ProjectModel.Metadata.ProjectType.TypeName, ProjectSystem.Query.ProjectModel.Metadata.ProjectType.LaunchProfileTypesPropertyName)]
+    [RelationshipQueryDataProvider(ProjectSystem.Query.Metadata.ProjectType.TypeName, ProjectSystem.Query.Metadata.ProjectType.LaunchProfileTypesPropertyName)]
     [QueryDataProviderZone(ProjectModelZones.Cps)]
     [Export(typeof(IQueryByRelationshipDataProvider))]
     internal class LaunchProfileTypeDataProvider : QueryDataProviderBase, IQueryByRelationshipDataProvider
@@ -90,7 +89,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query.PropertyPages
 
         private IEntityValue CreateLaunchProfileTypeValue(IEntityRuntimeModel entityRuntime, EntityIdentity identity, string commandName, Rule rule)
         {
-            LaunchProfileTypeValue newLaunchProfileType = new(entityRuntime, identity, new LaunchProfileTypePropertiesAvailableStatus());
+            LaunchProfileTypeSnapshot newLaunchProfileType = new(entityRuntime, identity, new LaunchProfileTypePropertiesAvailableStatus());
 
             if (_properties.CommandName)
             {

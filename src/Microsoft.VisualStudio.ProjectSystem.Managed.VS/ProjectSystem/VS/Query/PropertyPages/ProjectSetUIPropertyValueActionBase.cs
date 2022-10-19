@@ -3,8 +3,8 @@
 using System.Collections.ObjectModel;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
 using Microsoft.VisualStudio.ProjectSystem.Query;
-using Microsoft.VisualStudio.ProjectSystem.Query.Frameworks;
-using Microsoft.VisualStudio.ProjectSystem.Query.QueryExecution;
+using Microsoft.VisualStudio.ProjectSystem.Query.Execution;
+using Microsoft.VisualStudio.ProjectSystem.Query.Framework;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
 {
@@ -29,7 +29,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
         public ProjectSetUIPropertyValueActionBase(
             string pageName,
             string propertyName,
-            ReadOnlyCollection<ProjectSystem.Query.ProjectModelMethods.Actions.ConfigurationDimensionValue> dimensions)
+            ReadOnlyCollection<ProjectSystem.Query.Framework.Actions.ConfigurationDimensionValue> dimensions)
         {
             _coreExecutor = new ProjectSetUIPropertyValueActionCore(
                 pageName,

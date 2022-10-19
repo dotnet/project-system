@@ -1,5 +1,7 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
+using Task = System.Threading.Tasks.Task;
+
 namespace Microsoft.VisualStudio.Threading.Tasks
 {
     public sealed class SequentialTaskExecutorTests : IDisposable
@@ -8,7 +10,9 @@ namespace Microsoft.VisualStudio.Threading.Tasks
 
         public SequentialTaskExecutorTests()
         {
+#pragma warning disable VSSDK005
             _joinableTaskContext = new JoinableTaskContext();
+#pragma warning restore VSSDK005
         }
 
         public void Dispose()
