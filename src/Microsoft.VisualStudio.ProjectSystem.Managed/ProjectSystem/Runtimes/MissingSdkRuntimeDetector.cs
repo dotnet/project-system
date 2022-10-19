@@ -1,5 +1,7 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
+using Microsoft.VisualStudio.ProjectSystem.VS;
+
 namespace Microsoft.VisualStudio.ProjectSystem
 {
     [Export(ExportContractNames.Scopes.ConfiguredProject, typeof(IProjectDynamicLoadComponent))]
@@ -12,20 +14,17 @@ namespace Microsoft.VisualStudio.ProjectSystem
         private bool _enabled;
 
         private readonly ConfiguredProject _project;
-        private readonly ISafeProjectGuidService _projectGuidService;
         private readonly IMissingSetupComponentRegistrationService _missingSetupComponentRegistrationService;
 
         [ImportingConstructor]
         public MissingSdkRuntimeDetector(
             IMissingSetupComponentRegistrationService missingSetupComponentRegistrationService,
             ConfiguredProject configuredProject,
-            ISafeProjectGuidService projectGuidService,
             IProjectThreadingService threadingService)
             : base(threadingService.JoinableTaskContext)
         {
             _missingSetupComponentRegistrationService = missingSetupComponentRegistrationService;
             _project = configuredProject;
-            _projectGuidService = projectGuidService;
         }
 
         public Task LoadAsync()
@@ -49,7 +48,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
         protected override async Task InitializeCoreAsync(CancellationToken cancellationToken)
         {
-            _projectGuid = await _projectGuidService.GetProjectGuidAsync(cancellationToken);
+            _projectGuid = await _project.UnconfiguredProject.GetProjectGuidAsync();
             _missingSetupComponentRegistrationService.RegisterProjectConfiguration(_projectGuid, _project);
             _ = RegisterSdkRuntimeNeededInProjectAsync(_project);
         }

@@ -1,5 +1,7 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
+using Microsoft.VisualStudio.ProjectSystem.VS;
+
 namespace Microsoft.VisualStudio.ProjectSystem.Workloads
 {
     /// <summary>
@@ -11,7 +13,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Workloads
     {
         private readonly ConfiguredProject _project;
         private readonly IMissingSetupComponentRegistrationService _missingSetupComponentRegistrationService;
-        private readonly ISafeProjectGuidService _projectGuidService;
         private readonly IWorkloadDescriptorDataSource _workloadDescriptorDataSource;
         private readonly IProjectFaultHandlerService _projectFaultHandlerService;
         private readonly IProjectSubscriptionService _projectSubscriptionService;
@@ -29,7 +30,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Workloads
             ConfiguredProject project,
             IWorkloadDescriptorDataSource workloadDescriptorDataSource,
             IMissingSetupComponentRegistrationService missingSetupComponentRegistrationService,
-            ISafeProjectGuidService projectGuidService,
             IProjectThreadingService threadingService,
             IProjectFaultHandlerService projectFaultHandlerService,
             IProjectSubscriptionService projectSubscriptionService)
@@ -38,7 +38,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Workloads
             _project = project;
             _workloadDescriptorDataSource = workloadDescriptorDataSource;
             _missingSetupComponentRegistrationService = missingSetupComponentRegistrationService;
-            _projectGuidService = projectGuidService;
             _projectFaultHandlerService = projectFaultHandlerService;
             _projectSubscriptionService = projectSubscriptionService;
         }
@@ -69,7 +68,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Workloads
 
         protected override async Task InitializeCoreAsync(CancellationToken cancellationToken)
         {
-            _projectGuid = await _projectGuidService.GetProjectGuidAsync(cancellationToken);
+            _projectGuid = await _project.UnconfiguredProject.GetProjectGuidAsync();
             _joinedDataSources = ProjectDataSources.JoinUpstreamDataSources(JoinableFactory, _projectFaultHandlerService, _projectSubscriptionService.ProjectSource, _workloadDescriptorDataSource);
 
             _missingSetupComponentRegistrationService.RegisterProjectConfiguration(_projectGuid, _project);
