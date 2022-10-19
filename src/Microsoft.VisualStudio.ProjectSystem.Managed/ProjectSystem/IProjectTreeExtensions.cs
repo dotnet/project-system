@@ -60,9 +60,9 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
             Assumes.NotNull(catalogSnapshot.Value.Project);
 
-            IRule? snapshop = pagesCatalog.BindToContext(properties.Schema.Name, catalogSnapshot.Value.Project.ProjectInstance, properties.ItemType, properties.ItemName);
+            IRule? snapshot = pagesCatalog.BindToContext(properties.Schema.Name, catalogSnapshot.Value.Project.ProjectInstance, properties.ItemType, properties.ItemName);
 
-            return snapshop ?? properties;
+            return snapshot ?? properties;
         }
     }
 }
