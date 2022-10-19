@@ -247,10 +247,7 @@ public class WorkspaceTests
                     "ConfigurationGeneral": {
                         "Properties": {
                             "LanguageServiceName": "LanguageServiceName",
-                            "TargetPath": "TargetPath",
                             "MSBuildProjectFullPath": "MSBuildProjectFullPath",
-                            "AssemblyName": "AssemblyName",
-                            "CommandLineArgsForDesignTimeEvaluation": "CommandLineArgsForDesignTimeEvaluation"
                         }
                     }
                 },
@@ -301,9 +298,6 @@ public class WorkspaceTests
                         "Properties": {
                             "LanguageServiceName": "{{(emptyLanguageService ? "" : "LanguageServiceName")}}",
                             "MSBuildProjectFullPath": "{{(emptyFullPath ? "" : "MSBuildProjectFullPath")}}",
-                            "TargetPath": "TargetPath",
-                            "AssemblyName": "AssemblyName",
-                            "CommandLineArgsForDesignTimeEvaluation": "CommandLineArgsForDesignTimeEvaluation"
                         }
                     }
                 },
@@ -340,10 +334,7 @@ public class WorkspaceTests
                     "ConfigurationGeneral": {
                         "Properties": {
                             "LanguageServiceName": "LanguageServiceName",
-                            "TargetPath": "TargetPath",
                             "MSBuildProjectFullPath": "MSBuildProjectFullPath",
-                            "AssemblyName": "AssemblyName",
-                            "CommandLineArgsForDesignTimeEvaluation": "CommandLineArgsForDesignTimeEvaluation"
                         }
                     }
                 },
@@ -403,10 +394,7 @@ public class WorkspaceTests
                     "ConfigurationGeneral": {
                         "Properties": {
                             "LanguageServiceName": "LanguageServiceName",
-                            "TargetPath": "TargetPath",
                             "MSBuildProjectFullPath": "MSBuildProjectFullPath",
-                            "AssemblyName": "AssemblyName",
-                            "CommandLineArgsForDesignTimeEvaluation": "CommandLineArgsForDesignTimeEvaluation"
                         }
                     }
                 },
@@ -833,10 +821,7 @@ public class WorkspaceTests
                     "ConfigurationGeneral": {
                         "Properties": {
                             "LanguageServiceName": "LanguageServiceName",
-                            "TargetPath": "TargetPath",
                             "MSBuildProjectFullPath": "MSBuildProjectFullPath",
-                            "AssemblyName": "AssemblyName",
-                            "CommandLineArgsForDesignTimeEvaluation": "CommandLineArgsForDesignTimeEvaluation"
                         }
                     }
                 },
@@ -868,7 +853,9 @@ public class WorkspaceTests
             }
             """);
 
-        var update = WorkspaceUpdate.FromEvaluation((configuredProject, evaluationRuleUpdate, sourceItemsUpdate));
+        IProjectSnapshot projectSnapshot = IProjectSnapshot2Factory.Create();
+
+        var update = WorkspaceUpdate.FromEvaluation((configuredProject, projectSnapshot, evaluationRuleUpdate, sourceItemsUpdate));
 
         await workspace.OnWorkspaceUpdateAsync(
             IProjectVersionedValueFactory.Create(update, ProjectDataSources.ConfiguredProjectVersion, configuredProjectVersion));

@@ -1,5 +1,6 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
+using Microsoft.Build.Execution;
 using Microsoft.VisualStudio.LanguageServices.ProjectSystem;
 using Microsoft.VisualStudio.ProjectSystem.OperationProgress;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
@@ -265,7 +266,9 @@ internal sealed class Workspace : OnceInitializedOnceDisposedUnderLockAsync, IWo
 
             try
             {
-                EvaluationDataAdapter evaluationData = new(snapshot.Properties);
+                ProjectInstance projectInstance = evaluationUpdate.Value.ProjectSnapshot.ProjectInstance;
+
+                EvaluationDataAdapter evaluationData = new(projectInstance);
 
                 _contextId = GetWorkspaceProjectContextId(projectFilePath, _projectGuid, _slice);
 
@@ -581,16 +584,16 @@ internal sealed class Workspace : OnceInitializedOnceDisposedUnderLockAsync, IWo
     /// </summary>
     private sealed class EvaluationDataAdapter : EvaluationData
     {
-        private readonly IImmutableDictionary<string, string> _properties;
+        private readonly ProjectInstance _projectInstance;
 
-        public EvaluationDataAdapter(IImmutableDictionary<string, string> properties)
+        public EvaluationDataAdapter(ProjectInstance projectInstance)
         {
-            _properties = properties;
+            _projectInstance = projectInstance;
         }
 
         public override string GetPropertyValue(string name)
         {
-            _properties.TryGetValue(name, out string? value);
+            string? value = _projectInstance.GetProperty(name)?.EvaluatedValue;
 
             // Return the empty string rather than null.
             value ??= "";
