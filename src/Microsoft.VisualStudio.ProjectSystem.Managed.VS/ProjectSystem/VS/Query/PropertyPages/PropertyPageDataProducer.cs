@@ -3,13 +3,15 @@
 using Microsoft.Build.Framework.XamlTypes;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
 using Microsoft.VisualStudio.ProjectSystem.Query;
-using Microsoft.VisualStudio.ProjectSystem.Query.Execution;
-using Microsoft.VisualStudio.ProjectSystem.Query.Framework;
+using Microsoft.VisualStudio.ProjectSystem.Query.Frameworks;
+using Microsoft.VisualStudio.ProjectSystem.Query.ProjectModel;
+using Microsoft.VisualStudio.ProjectSystem.Query.ProjectModel.Implementation;
+using Microsoft.VisualStudio.ProjectSystem.Query.QueryExecution;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
 {
     /// <summary>
-    /// Handles the creation of <see cref="IPropertyPageSnapshot"/> instances and populating the requested members.
+    /// Handles the creation of <see cref="IPropertyPage"/> instances and populating the requested members.
     /// </summary>
     internal static class PropertyPageDataProducer
     {
@@ -43,7 +45,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
         public static IEntityValue CreatePropertyPageValue(IQueryExecutionContext queryExecutionContext, EntityIdentity id, IProjectState cache, QueryProjectPropertiesContext propertiesContext, Rule rule, IPropertyPagePropertiesAvailableStatus requestedProperties)
         {
             Requires.NotNull(rule, nameof(rule));
-            var newPropertyPage = new PropertyPageSnapshot(queryExecutionContext.EntityRuntime, id, new PropertyPagePropertiesAvailableStatus());
+            var newPropertyPage = new PropertyPageValue(queryExecutionContext.EntityRuntime, id, new PropertyPagePropertiesAvailableStatus());
 
             if (requestedProperties.Name)
             {

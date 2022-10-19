@@ -24,7 +24,9 @@ internal class ApplicationXamlFileAccessor : IApplicationXamlFileAccessor
     [ImportingConstructor]
     public ApplicationXamlFileAccessor(
         UnconfiguredProject project,
+#pragma warning disable RS0030 // Do not used banned APIs
         [Import(typeof(SVsServiceProvider))] IServiceProvider serviceProvider,
+#pragma warning restore RS0030 // Do not used banned APIs
         IVsUIService<IVsRunningDocumentTable> runningDocumentTable,
         IProjectThreadingService threadingService)
     {

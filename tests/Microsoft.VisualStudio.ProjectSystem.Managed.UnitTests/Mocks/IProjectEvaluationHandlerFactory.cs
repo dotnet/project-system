@@ -8,7 +8,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
     internal static class IProjectEvaluationHandlerFactory
     {
         public static IProjectEvaluationHandler ImplementHandle(
-            Action<IWorkspaceProjectContext, ProjectConfiguration, IComparable, IProjectChangeDescription, ContextState, IProjectDiagnosticOutputService> action,
+            Action<IWorkspaceProjectContext, ProjectConfiguration, IComparable, IProjectChangeDescription, ContextState, IManagedProjectDiagnosticOutputService> action,
             string? projectEvaluationRule = null)
         {
             var mock = new Mock<IProjectEvaluationHandler>();
@@ -20,7 +20,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
                     It.IsAny<IComparable>(),
                     It.IsAny<IProjectChangeDescription>(),
                     It.IsAny<ContextState>(),
-                    It.IsAny<IProjectDiagnosticOutputService>()))
+                    It.IsAny<IManagedProjectDiagnosticOutputService>()))
                 .Callback(action);
 
             mock.SetupGet(o => o.ProjectEvaluationRule).Returns(projectEvaluationRule ?? "MyEvaluationRule");

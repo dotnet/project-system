@@ -2,7 +2,7 @@
 
 using Microsoft.VisualStudio.ProjectSystem.References;
 
-namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Order
+namespace Microsoft.VisualStudio.ProjectSystem.Tree.Order
 {
     public class TreeItemOrderPropertyProviderTests
     {

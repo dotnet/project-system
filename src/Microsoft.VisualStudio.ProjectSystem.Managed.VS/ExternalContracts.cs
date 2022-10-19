@@ -9,6 +9,8 @@ using Microsoft.VisualStudio.Shell.Interop;
 using NuGet.SolutionRestoreManager;
 using NuGet.VisualStudio;
 
+#pragma warning disable RS0030 // Do not used banned APIs
+
 [assembly: ProjectSystemContract(ProjectSystemContractScope.Global, ProjectSystemContractProvider.Private, Cardinality = ImportCardinality.ExactlyOne, ContractType = typeof(SVsServiceProvider))]
 [assembly: ProjectSystemContract(ProjectSystemContractScope.Global, ProjectSystemContractProvider.Private, Cardinality = ImportCardinality.ExactlyOne, ContractType = typeof(SAsyncServiceProvider))]
 [assembly: ProjectSystemContract(ProjectSystemContractScope.Global, ProjectSystemContractProvider.Private, Cardinality = ImportCardinality.ExactlyOne, ContractType = typeof(VisualStudioWorkspace))]

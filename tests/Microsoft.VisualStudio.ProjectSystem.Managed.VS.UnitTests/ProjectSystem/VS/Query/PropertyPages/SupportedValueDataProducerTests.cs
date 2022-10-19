@@ -1,7 +1,7 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
 using Microsoft.VisualStudio.ProjectSystem.Query;
-using Microsoft.VisualStudio.ProjectSystem.Query.Framework;
+using Microsoft.VisualStudio.ProjectSystem.Query.ProjectModel.Implementation;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
 {
@@ -15,7 +15,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
             var entityRuntime = IEntityRuntimeModelFactory.Create();
             var enumValue = IEnumValueFactory.Create(displayName: "Hello", name: "MyValue");
 
-            var result = (SupportedValueSnapshot)SupportedValueDataProducer.CreateSupportedValue(entityRuntime, enumValue, properties);
+            var result = (SupportedValueValue)SupportedValueDataProducer.CreateSupportedValue(entityRuntime, enumValue, properties);
 
             Assert.Equal(expected: "Hello", actual: result.DisplayName);
             Assert.Equal(expected: "MyValue", actual: result.Value);
@@ -45,7 +45,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
 
             static void assertEqual(IEntityValue entity, string expectedDisplayName, string expectedValue)
             {
-                var supportedValueEntity = (SupportedValueSnapshot)entity;
+                var supportedValueEntity = (SupportedValueValue)entity;
                 Assert.Equal(expectedDisplayName, supportedValueEntity.DisplayName);
                 Assert.Equal(expectedValue, supportedValueEntity.Value);
             }

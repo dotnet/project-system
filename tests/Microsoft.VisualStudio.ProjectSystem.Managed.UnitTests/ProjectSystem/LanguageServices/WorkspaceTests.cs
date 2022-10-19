@@ -4,9 +4,7 @@ using Microsoft.CodeAnalysis;
 using Microsoft.VisualStudio.LanguageServices.ProjectSystem;
 using Microsoft.VisualStudio.ProjectSystem.Utilities;
 using Microsoft.VisualStudio.ProjectSystem.VS;
-using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Threading;
-using Task = System.Threading.Tasks.Task;
 using Moq.Language.Flow;
 
 #pragma warning disable CA1068 // CancellationToken parameters must come last
@@ -381,7 +379,7 @@ public class WorkspaceTests
                     1,
                     It.IsAny<IProjectChangeDescription>(),
                     It.IsAny<ContextState>(),
-                    It.IsAny<IProjectDiagnosticOutputService>()));
+                    It.IsAny<IManagedProjectDiagnosticOutputService>()));
         }
 
         var workspace = await CreateInstanceAsync(
@@ -445,7 +443,7 @@ public class WorkspaceTests
                         1,
                         It.IsAny<IProjectChangeDescription>(),
                         new ContextState(false, true),
-                        It.IsAny<IProjectDiagnosticOutputService>()));
+                        It.IsAny<IManagedProjectDiagnosticOutputService>()));
         }
 
         var workspace = await CreateInstanceAsync(
@@ -491,7 +489,7 @@ public class WorkspaceTests
                         1,
                         It.IsAny<ImmutableDictionary<string, IProjectChangeDescription>>(),
                         new ContextState(false, true),
-                        It.IsAny<IProjectDiagnosticOutputService>()));
+                        It.IsAny<IManagedProjectDiagnosticOutputService>()));
         }
 
         var workspace = await CreateInstanceAsync(
@@ -550,7 +548,7 @@ public class WorkspaceTests
                     It.Is<BuildOptions>(options => options.MetadataReferences.Select(r => r.Reference).SingleOrDefault() == "Added.dll"),
                     It.Is<BuildOptions>(options => options.MetadataReferences.Select(r => r.Reference).SingleOrDefault() == "Removed.dll"),
                     new ContextState(false, true),
-                    It.IsAny<IProjectDiagnosticOutputService>()));
+                    It.IsAny<IManagedProjectDiagnosticOutputService>()));
         }
 
         var parser = ICommandLineParserServiceFactory.CreateCSharp();
@@ -748,7 +746,7 @@ public class WorkspaceTests
         Guid? projectGuid = null,
         UpdateHandlers? updateHandlers = null,
         bool isPrimary = true,
-        IProjectDiagnosticOutputService? logger = null,
+        IManagedProjectDiagnosticOutputService? logger = null,
         IActiveEditorContextTracker? activeWorkspaceProjectContextTracker = null,
         OrderPrecedenceImportCollection<ICommandLineParserService>? commandLineParserServices = null,
         IDataProgressTrackerService? dataProgressTrackerService = null,
@@ -772,16 +770,14 @@ public class WorkspaceTests
         unconfiguredProject ??= UnconfiguredProjectFactory.ImplementFullPath("""C:\MyProject\MyProject.csproj""");
         projectGuid ??= Guid.NewGuid();
         updateHandlers ??= new UpdateHandlers(Array.Empty<ExportFactory<IWorkspaceUpdateHandler>>());
-        logger ??= IProjectDiagnosticOutputServiceFactory.Create();
+        logger ??= IManagedProjectDiagnosticOutputServiceFactory.Create();
         activeWorkspaceProjectContextTracker ??= IActiveEditorContextTrackerFactory.Create();
         commandLineParserServices ??= new(ImportOrderPrecedenceComparer.PreferenceOrder.PreferredComesFirst) { commandLineParserService.Object };
         dataProgressTrackerService ??= IDataProgressTrackerServiceFactory.Create();
         workspaceProjectContext ??= Mock.Of<IWorkspaceProjectContext>(MockBehavior.Loose);
         workspaceProjectContextFactory ??= IWorkspaceProjectContextFactoryFactory.ImplementCreateProjectContext(delegate { return workspaceProjectContext; });
         faultHandlerService ??= IProjectFaultHandlerServiceFactory.Create();
-#pragma warning disable VSSDK005
         JoinableTaskCollection joinableTaskCollection = new(new JoinableTaskContext());
-#pragma warning restore VSSDK005
         joinableTaskFactory ??= new(joinableTaskCollection);
         joinableTaskContextNode ??= JoinableTaskContextNodeFactory.Create();
 

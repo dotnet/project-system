@@ -15,15 +15,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Utilities
         /// <typeparam name="TTo">The destination type, to convert to.</typeparam>
         private sealed class LambdaConverter<TFrom, TTo> : IValueConverter
         {
-            private readonly Func<TFrom, TTo> convert;
-            private readonly Func<TTo, TFrom>? convertBack;
-            private readonly bool convertFromNull;
+            private readonly Func<TFrom, TTo> _convert;
+            private readonly Func<TTo, TFrom>? _convertBack;
+            private readonly bool _convertFromNull;
 
             public LambdaConverter(Func<TFrom, TTo> convert, Func<TTo, TFrom>? convertBack = null, bool convertFromNull = true)
             {
-                this.convert = convert;
-                this.convertBack = convertBack;
-                this.convertFromNull = convertFromNull;
+                _convert = convert;
+                _convertBack = convertBack;
+                _convertFromNull = convertFromNull;
             }
 
             public object? Convert(object? value, Type targetType, object parameter, CultureInfo culture)
@@ -32,12 +32,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Utilities
                 {
                     if (value is TFrom from)
                     {
-                        return convert(from);
+                        return _convert(from);
                     }
 
-                    if (value is null && convertFromNull)
+                    if (value is null && _convertFromNull)
                     {
-                        return convert(default!);
+                        return _convert(default!);
                     }
 
                     return value;
@@ -52,9 +52,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Utilities
             {
                 try
                 {
-                    if (convertBack is not null && value is TTo to)
+                    if (_convertBack is not null && value is TTo to)
                     {
-                        return convertBack(to);
+                        return _convertBack(to);
                     }
 
                     return value;

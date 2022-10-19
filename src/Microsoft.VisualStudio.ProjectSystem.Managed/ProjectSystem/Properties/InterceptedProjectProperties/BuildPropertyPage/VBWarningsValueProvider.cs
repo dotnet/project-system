@@ -74,8 +74,9 @@ internal sealed class VBWarningsValueProvider : InterceptingPropertyValueProvide
         .Add(RecursiveOperatorOrPropertyAccessPropertyName,             ImmutableSortedSet.Create(41998, 42004, 42026))
         .Add(DuplicateOrOverlappingCatchBlocksPropertyName,             ImmutableSortedSet.Create(42029, 42031));
 
-    private const string s_diagnosticIdSeparator = ",";
-    private static readonly string[] s_diagnosticIdSeparators = new[] { s_diagnosticIdSeparator };
+    private const string DiagnosticIdSeparator = ",";
+
+    private static readonly string[] s_diagnosticIdSeparators = new[] { DiagnosticIdSeparator };
 
     public override Task<string> OnGetEvaluatedPropertyValueAsync(string propertyName, string evaluatedPropertyValue, IProjectProperties defaultProperties)
     {
@@ -231,7 +232,7 @@ internal sealed class VBWarningsValueProvider : InterceptingPropertyValueProvide
 
     private static string CreateIdList(ImmutableSortedSet<int> idSet)
     {
-        return string.Join(s_diagnosticIdSeparator, idSet);
+        return string.Join(DiagnosticIdSeparator, idSet);
     }
 
     private async Task<ImmutableSortedSet<int>> GetWarningsAsErrorsIdsAsync(IProjectProperties projectProperties)

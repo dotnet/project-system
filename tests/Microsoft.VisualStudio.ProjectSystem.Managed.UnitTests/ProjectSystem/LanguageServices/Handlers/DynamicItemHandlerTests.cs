@@ -29,7 +29,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
                     }
                     """));
 
-            handler.Handle(context, 1, projectChanges, new ContextState(), IProjectDiagnosticOutputServiceFactory.Create());
+            handler.Handle(context, 1, projectChanges, new ContextState(), IManagedProjectDiagnosticOutputServiceFactory.Create());
 
             Assert.Equal(2, dynamicFiles.Count);
             Assert.Contains(@"C:\File1.razor", dynamicFiles);
@@ -71,7 +71,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
                         }
                         """));
 
-            handler.Handle(context, 1, projectChanges, new ContextState(), IProjectDiagnosticOutputServiceFactory.Create());
+            handler.Handle(context, 1, projectChanges, new ContextState(), IManagedProjectDiagnosticOutputServiceFactory.Create());
 
             Assert.Equal(2, dynamicFiles.Count);
             Assert.Contains(@"C:\File1.razor", dynamicFiles);
@@ -113,7 +113,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
                         }
                         """));
 
-            handler.Handle(context, 1, projectChanges, new ContextState(), IProjectDiagnosticOutputServiceFactory.Create());
+            handler.Handle(context, 1, projectChanges, new ContextState(), IManagedProjectDiagnosticOutputServiceFactory.Create());
 
             Assert.Equal(2, dynamicFiles.Count);
             Assert.Contains(@"C:\File1.razor", dynamicFiles);

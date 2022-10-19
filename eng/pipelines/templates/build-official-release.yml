@@ -102,6 +102,13 @@ jobs:
     # Name is required to reference the variables created within this build step in other stages.
     name: SetPackageVersion
 
+  # Sets the AssemblyVersion variable for the job. This variable is not used by this job; instead, it is consumed by the Insertion job.
+  # https://docs.microsoft.com/azure/devops/pipelines/process/set-variables-scripts?view=azure-devops&tabs=powershell#set-variable-properties
+  - powershell: Write-Host "##vso[task.setvariable variable=AssemblyVersion;isoutput=true]$(NBGV_AssemblyVersion)"
+    displayName: Set AssemblyVersion Variable
+    # Name is required to reference the variables created within this build step in other stages.
+    name: SetAssemblyVersion
+
   # Sets the VisualStudioMinimumVersion variable for the job. This variable is also used by the APIScan job.
   # https://docs.microsoft.com/azure/devops/pipelines/process/set-variables-scripts?view=azure-devops&tabs=powershell#set-variable-properties
   - powershell: Write-Host "##vso[task.setvariable variable=VisualStudioMinimumVersion;isoutput=true]$(. '$(Build.SourcesDirectory)/eng/scripts/GetVisualStudioMinimumVersion.ps1')"

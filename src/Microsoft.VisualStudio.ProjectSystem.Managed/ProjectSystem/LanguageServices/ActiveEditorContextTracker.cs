@@ -1,29 +1,23 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
-using Microsoft.VisualStudio.ProjectSystem.LanguageServices;
 using Microsoft.VisualStudio.ProjectSystem.Utilities;
-using Microsoft.VisualStudio.TextManager.Interop;
 using Microsoft.VisualStudio.Threading;
-using HierarchyId = Microsoft.VisualStudio.Shell.HierarchyId;
 
-namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
+namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 {
     /// <summary>
-    ///     Provides an implementation of <see cref="IActiveEditorContextTracker"/> that tracks the
-    ///     "active" context for the editor by handling the VSHPROPID_ActiveIntellisenseProjectContext
-    ///     hierarchy property.
+    ///     Provides an implementation of <see cref="IActiveEditorContextTracker"/> that tracks the "active" context for the editor.
     /// </summary>
-    [Export(typeof(IActiveIntellisenseProjectProvider))]
     [Export(typeof(IActiveEditorContextTracker))]
-    [ExportProjectNodeComService(typeof(IVsContainedLanguageProjectNameProvider))]
     [AppliesTo(ProjectCapability.DotNetLanguageService)]
-    internal class ActiveEditorContextTracker : IActiveIntellisenseProjectProvider, IVsContainedLanguageProjectNameProvider, IActiveEditorContextTracker
+    internal class ActiveEditorContextTracker : IActiveEditorContextTracker
     {
         private ImmutableList<string> _contexts = ImmutableList<string>.Empty;
         private string? _activeIntellisenseProjectContext;
 
+        // UnconfiguredProject is only included for scoping reasons.
         [ImportingConstructor]
-        public ActiveEditorContextTracker(UnconfiguredProject? project) // For scoping
+        public ActiveEditorContextTracker(UnconfiguredProject? project)
         {
         }
 
@@ -33,25 +27,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
             set { _activeIntellisenseProjectContext = value; }
         }
 
-        public int GetProjectName(uint itemid, out string? pbstrProjectName)
-        {
-            if (itemid == HierarchyId.Nil || itemid == HierarchyId.Selection || itemid == HierarchyId.Empty)
-            {
-                pbstrProjectName = null;
-                return HResult.InvalidArg;
-            }
-
-            pbstrProjectName = ActiveIntellisenseProjectContext;
-
-            return HResult.OK;
-        }
-
         public bool IsActiveEditorContext(string contextId)
         {
             Requires.NotNullOrEmpty(contextId, nameof(contextId));
 
             if (!_contexts.Contains(contextId))
+            {
                 throw new InvalidOperationException($"Context with ID '{contextId}' has not been registered or has already been unregistered.");
+            }
 
             return StringComparers.WorkspaceProjectContextIds.Equals(ActiveIntellisenseProjectContext, contextId);
         }
@@ -71,10 +54,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
             });
 
             if (!changed)
+            {
                 throw new InvalidOperationException($"Context with ID '{contextId}' has already been registered.");
+            }
 
-            return new DisposableDelegate(
-                () => Assumes.True(ThreadingTools.ApplyChangeOptimistically(ref _contexts, contextId, static (projectContexts, contextId) => projectContexts.Remove(contextId))));
+            return new DisposableDelegate(() =>
+                Assumes.True(ThreadingTools.ApplyChangeOptimistically(ref _contexts, contextId, static (projectContexts, contextId) =>
+                    projectContexts.Remove(contextId))));
         }
     }
 }

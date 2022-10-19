@@ -32,7 +32,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices;
 [Export(typeof(IWorkspaceWriter))]
 [Export(ExportContractNames.Scopes.UnconfiguredProject, typeof(IProjectDynamicLoadComponent))]
 [AppliesTo(ProjectCapability.DotNetLanguageService)]
-internal sealed class LanguageServiceHost : OnceInitializedOnceDisposedUnderLockAsync, IProjectDynamicLoadComponent, IWorkspaceWriter
+internal sealed class LanguageServiceHost : OnceInitializedOnceDisposedAsync, IProjectDynamicLoadComponent, IWorkspaceWriter
 {
     private readonly TaskCompletionSource _firstPrimaryWorkspaceSet = new();
 
@@ -130,11 +130,14 @@ internal sealed class LanguageServiceHost : OnceInitializedOnceDisposedUnderLock
                 // We track per-slice data via this source.
                 _activeConfigurationGroupSubscriptionService.SourceBlock.SyncLinkOptions(),
                 target: DataflowBlockFactory.CreateActionBlock<IProjectVersionedValue<(ConfiguredProject ActiveConfiguredProject, ConfigurationSubscriptionSources Sources)>>(
-                    async update => await ExecuteUnderLockAsync(cancellationToken => OnSlicesChanged(update, cancellationToken)),
+                    update => OnSlicesChanged(update, cancellationToken),
                     _unconfiguredProject,
-                    ProjectFaultSeverity.LimitedFunctionality),
+                    ProjectFaultSeverity.LimitedFunctionality,
+                    "LanguageServiceHostSlices {0}"),
                 linkOptions: DataflowOption.PropagateCompletion,
                 cancellationToken: cancellationToken),
+
+            ProjectDataSources.JoinUpstreamDataSources(_joinableTaskFactory, _projectFaultHandler, _activeConfiguredProjectProvider, _activeConfigurationGroupSubscriptionService),
 
             new DisposableDelegate(() =>
             {
@@ -344,7 +347,7 @@ internal sealed class LanguageServiceHost : OnceInitializedOnceDisposedUnderLock
         _projectFaultHandler.Forget(result, _unconfiguredProject, ProjectFaultSeverity.LimitedFunctionality);
     }
 
-    protected override Task DisposeCoreUnderLockAsync(bool initialized)
+    protected override Task DisposeCoreAsync(bool initialized)
     {
         _firstPrimaryWorkspaceSet.TrySetCanceled();
 
