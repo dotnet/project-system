@@ -64,6 +64,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Workloads
 
         protected override async Task InitializeCoreAsync(CancellationToken cancellationToken)
         {
+            // Note we don't use the ISafeProjectGuidService here because it is generally *not*
+            // safe to use within IProjectDynamicLoadComponent.LoadAsync.
             _projectGuid = await _project.UnconfiguredProject.GetProjectGuidAsync();
             _joinedDataSources = ProjectDataSources.JoinUpstreamDataSources(JoinableFactory, _projectFaultHandlerService, _projectSubscriptionService.ProjectSource, _wpfWorkloadDescriptorDataSource);
 
