@@ -23,7 +23,6 @@
   pl/Microsoft.VisualStudio.ProjectSystem.Managed.resources.dll,
   pl/Microsoft.VisualStudio.ProjectSystem.Managed.VS.resources.dll,
   ProjectSelectors.pkgdef,
-  ProjectSystem.clientenabledpkg,
   ProjectSystem.pkgdef,
   pt-BR/Microsoft.VisualStudio.ProjectSystem.Managed.resources.dll,
   pt-BR/Microsoft.VisualStudio.ProjectSystem.Managed.VS.resources.dll,
