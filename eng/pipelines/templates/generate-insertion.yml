@@ -26,9 +26,7 @@ jobs:
   # Create the VS folder and fetch the VS repo Git information into it, excluding the files themselves (only .git history is required).
   # Doing this manual process over the checkout: VS task saves around 3 minutes. See: https://stackoverflow.com/a/43136160/294804
   # The System.AccessToken is required for the clone to occur. See: https://stackoverflow.com/a/56734304/294804
-  # The Git config change is for disabling a warning message because we are fetching a specific commit instead of a branch. See: https://stackoverflow.com/a/36794768/294804
   - powershell: |
-      # git config --global advice.detachedHead false
       $null = New-Item -Path '$(Pipeline.Workspace)' -Name VS -ItemType Directory
       Set-Location '$(Pipeline.Workspace)/VS'
       git init
