@@ -6,7 +6,8 @@ using Microsoft.VisualStudio.ProjectSystem.VS;
 namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
 {
     /// <summary>
-    ///     Handles changes to the project and makes sure the language service is aware of them.
+    ///     Handles changes to project properties defined in the <c>LanguageService.xaml</c> rule,
+    ///     and updates the language service via <see cref="IWorkspaceProjectContext.SetProperty(string, string)"/>.
     /// </summary>
     [Export(typeof(IWorkspaceUpdateHandler))]
     internal class ProjectPropertiesItemHandler : IWorkspaceUpdateHandler, IProjectEvaluationHandler
