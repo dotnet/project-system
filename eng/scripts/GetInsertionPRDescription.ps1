@@ -19,7 +19,6 @@ Set-Location $vsDirectory
 # https://git-scm.com/docs/git-rev-list
 # https://stackoverflow.com/a/1862542/294804
 $vsCommitId = (git rev-list --grep="Insert $projectName" --all -1)
-
 # Gets the subject (title) from the provided commit ID (via vsCommitId). See:
 # - https://stackoverflow.com/a/7293026/294804
 # - https://git-scm.com/docs/git-log#_pretty_formats
@@ -39,17 +38,15 @@ if($LastExitCode -eq 0)
   if($hasPreviousShaShort)
   {
     $previousShaShort = $matches[2]
-    # https://stackoverflow.com/a/41717108/294804
-    $previousSha = (git rev-parse $previousShaShort)
   }
 }
 
-Write-Host "previousSha: $previousSha"
+Write-Host "previousShaShort: $previousShaShort"
 Write-Host "currentSha: $currentSha"
 
 $description = @()
 # Since a previous insertion commit ID was not found, we create a basic description.
-if(-Not $previousSha)
+if(-Not $previousShaShort)
 {
   $description += "Updating $projectName to [$currentShaShort]($repoUrl/commit/$currentSha)"
   $description += '---------------------------------------------------------------------------'
@@ -62,6 +59,9 @@ if(-Not $previousSha)
 }
 
 Set-Location $PSScriptRoot
+# https://stackoverflow.com/a/41717108/294804
+$previousSha = (git rev-parse $previousShaShort)
+
 $description += "Updating $projectName from [$previousShaShort]($repoUrl/commit/$previousSha) to [$currentShaShort]($repoUrl/commit/$currentSha)"
 $description += '---------------------------------------------------------------------------'
 # The 'w' query parameter is for ignoring whitespace.
