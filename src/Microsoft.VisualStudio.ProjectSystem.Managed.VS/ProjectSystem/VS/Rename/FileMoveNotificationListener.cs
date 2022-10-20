@@ -200,7 +200,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
                         {
                             await TaskScheduler.Default;
 
-                            Solution solution = await PublishLatestSolutionAsync(context.CancellationToken);
+                            Solution solution = await RenamerProjectTreeActionHandler.PublishLatestSolutionAsync(
+                                _operationProgressService, 
+                                _workspace,
+                                context.CancellationToken);
 
                             int currentStep = 1;
 
@@ -219,22 +222,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
                         },
                         totalSteps: _actions.Count);
                 });
-
-                async Task<Solution> PublishLatestSolutionAsync(CancellationToken cancellationToken)
-                {
-                    // WORKAROUND: We don't yet have a way to wait for the changes to propagate 
-                    // to Roslyn (tracked by https://github.com/dotnet/project-system/issues/3425), so 
-                    // instead we wait for the IntelliSense stage to finish for the entire solution
-
-                    IVsOperationProgressStatusService operationProgressStatusService = await _operationProgressService.GetValueAsync(cancellationToken);
-
-                    IVsOperationProgressStageStatus stageStatus = operationProgressStatusService.GetStageStatus(CommonOperationProgressStageIds.Intellisense);
-
-                    await stageStatus.WaitForCompletionAsync().WithCancellation(cancellationToken);
-
-                    // The result of that wait, is basically a "new" published Solution, so grab it
-                    return _workspace.CurrentSolution;
-                }
             }
         }
     }
