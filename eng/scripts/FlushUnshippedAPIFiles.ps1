@@ -8,12 +8,16 @@ param ([Parameter(Mandatory=$true)] [string] $projectDirectory)
 Write-Host 'Inputs:'
 Write-Host "projectDirectory: $projectDirectory"
 
-$unshipped = "$projectDirectory\PublicAPI.Unshipped.txt"
-$content = Get-Content $unshipped -Raw
-
-if(-Not [String]::IsNullOrWhiteSpace($content))
+foreach($unshipped in Get-ChildItem -Recurse -Path $projectDirectory "PublicAPI.Unshipped.txt")
 {
-  # Uses AppendAllText instead of Add-Content since that cmdlet adds an empty line at the end of the file.
-  [IO.File]::AppendAllText("$projectDirectory\PublicAPI.Shipped.txt", [Environment]::NewLine + $content)
-  Clear-Content $unshipped
+  $shipped = $unshipped.FullName.Replace('Unshipped', 'Shipped')
+  $content = Get-Content $unshipped.FullName -Raw
+
+  if(-Not [String]::IsNullOrWhiteSpace($content))
+  {
+    Write-Host "Copying $($unshipped.FullName) to $($shipped.FullName)"
+    # Uses AppendAllText instead of Add-Content since that cmdlet adds an empty line at the end of the file.
+    [IO.File]::AppendAllText($shipped, [Environment]::NewLine + $content)
+    Clear-Content $unshipped.FullName
+  }
 }
