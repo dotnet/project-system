@@ -26,6 +26,7 @@
   <!-- TODO: Re-enable nullability and clean up warnings. -->
   <PropertyGroup Condition="'$(TargetFramework)' == 'net6.0-windows'">
     <Nullable>annotations</Nullable>
+    <NoWarn>$(NoWarn);RS0037</NoWarn>
   </PropertyGroup>
   
   <!-- TODO: Remove this once ILaunchSettingsUIProvider has been removed. -->
