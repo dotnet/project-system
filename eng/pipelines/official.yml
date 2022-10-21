@@ -265,5 +265,7 @@ stages:
       # Gets the AssemblyVersion variable produced by the Build pipeline.
       AssemblyVersion: $[ stageDependencies.Build.BuildOfficialRelease.outputs['SetAssemblyVersion.AssemblyVersion'] ]
       InsertionVSBranch: ${{ parameters.InsertionVSBranch }}
+      # Hard-coded assumption that the commit referenced by the previous VS insertion is within the last 100 commits in the $(InsertionVSBranch) of the VS repo.
+      PriorInsertionCommitDepth: 100
     jobs:
     - template: templates/generate-insertion.yml
