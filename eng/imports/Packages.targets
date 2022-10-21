@@ -21,7 +21,7 @@
     <PackageReference Update="EnvDTE"                                                                 Version="17.3.32804.24" />
     <PackageReference Update="Microsoft.Internal.VisualStudio.Interop"                                Version="17.3.32804.24" />
     <PackageReference Update="Microsoft.ServiceHub.Framework"                                         Version="4.0.2048" />
-    <PackageReference Update="Microsoft.VSSDK.BuildTools"                                             Version="17.3.2093" />
+    <PackageReference Update="Microsoft.VSSDK.BuildTools"                                             Version="17.5.18-preview1" />
     <PackageReference Update="Microsoft.VisualStudio.ComponentModelHost"                              Version="17.3.198" />
     <PackageReference Update="Microsoft.VisualStudio.Composition"                                     Version="17.0.46" />
     <PackageReference Update="Microsoft.VisualStudio.Data.Core"                                       Version="17.0.0-preview-2-31223-026" />
