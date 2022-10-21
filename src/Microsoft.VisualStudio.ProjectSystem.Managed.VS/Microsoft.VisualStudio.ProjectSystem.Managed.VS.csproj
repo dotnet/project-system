@@ -25,6 +25,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.VisualStudio.Setup.Configuration.Interop" />
     <PackageReference Include="Microsoft.VisualStudio.HotReload.Components" />
   </ItemGroup>
 
