@@ -4,6 +4,17 @@
       DisplayName="LanguageService"
       PageTemplate="generic"
       xmlns="http://schemas.microsoft.com/build/2009/properties">
+
+  <!--
+      Properties defined in this file are passed to the language service in response to evaluation changes.
+
+      The class Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers.ProjectPropertiesItemHandler
+      passes the values via the IWorkspaceProjectContext.SetProperty(string, string) method.
+
+      Note that Roslyn may also request properties from the project during IWorkspaceProjectContext construction,
+      however that occurs via a different mechanism.
+  -->
+
   <Rule.DataSource>
     <DataSource Persistence="ProjectFile"
                 SourceOfDefaultValue="AfterContext" />
@@ -24,7 +35,7 @@
   <StringProperty Name="TargetRefPath"
                   ReadOnly="True"
                   Visible="False" />
-  
+
   <StringProperty Name="MaxSupportedLangVersion"
                   ReadOnly="True"
                   Visible="False" />
