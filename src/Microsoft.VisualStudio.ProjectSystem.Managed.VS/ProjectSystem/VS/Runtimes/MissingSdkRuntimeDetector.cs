@@ -48,6 +48,8 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
         protected override async Task InitializeCoreAsync(CancellationToken cancellationToken)
         {
+            // Note we don't use the ISafeProjectGuidService here because it is generally *not*
+            // safe to use within IProjectDynamicLoadComponent.LoadAsync.
             _projectGuid = await _project.UnconfiguredProject.GetProjectGuidAsync();
             _missingSetupComponentRegistrationService.RegisterProjectConfiguration(_projectGuid, _project);
             _ = RegisterSdkRuntimeNeededInProjectAsync(_project);

@@ -3,8 +3,36 @@
 jobs:
 - job: GenerateInsertion
   displayName: Generate Insertion
-  timeoutInMinutes: 30
+  timeoutInMinutes: 45
   steps:
+
+  ###################################################################################################################################################################
+  # REPO PREPARATION
+  ###################################################################################################################################################################
+
+  # Use a disabled, empty script to display the section header in the pipeline UI.
+  - script:
+    displayName: === Repo Preparation ===
+    condition: false
+
+  # Checkout the repo itself and apply settings for the process.
+  - checkout: self
+    # Required for using Git commands in the subsequent tasks below. See:
+    # - https://stackoverflow.com/questions/56733922/fatal-could-not-read-password-for-https-organizationnamedev-azure-com-ter#comment108309839_56734304
+    # - https://learn.microsoft.com/azure/devops/pipelines/scripts/git-commands?view=azure-devops&tabs=yaml#allow-scripts-to-access-the-system-token
+    persistCredentials: true
+    # Changes Build.SourcesDirectory from $(Pipeline.Workspace)/s to $(Pipeline.Workspace)/project-system
+    path: project-system
+  # Create the VS folder and fetch the VS repo Git information into it, excluding the files themselves (only .git history is required).
+  # Doing this manual process over the checkout: VS task saves around 3 minutes. See: https://stackoverflow.com/a/43136160/294804
+  # The System.AccessToken is required for the clone to occur. See: https://stackoverflow.com/a/56734304/294804
+  - powershell: |
+      $null = New-Item -Path '$(Pipeline.Workspace)' -Name VS -ItemType Directory
+      Set-Location '$(Pipeline.Workspace)/VS'
+      git init
+      git remote add origin https://$(System.AccessToken)@dev.azure.com/devdiv/DevDiv/_git/VS
+      git fetch --depth $(PriorInsertionCommitDepth) origin $(InsertionVSBranch)
+    displayName: Fetch VS Repo
 
   ###################################################################################################################################################################
   # GENERATE VS INSERTION
@@ -28,7 +56,7 @@ jobs:
       AccessToken: $(System.AccessToken)
 
   # Creates the description for the VS Insertion PR and sets it to the InsertionDescription variable. Also sets the ShortCommitId variable based on currentSha.
-  - powershell: . '$(Build.SourcesDirectory)/eng/scripts/GetInsertionPRDescription.ps1' -currentSha '$(Build.SourceVersion)' -repoUrl '$(Build.Repository.Uri)' -projectName '$(Build.DefinitionName)'
+  - powershell: . '$(Build.SourcesDirectory)/eng/scripts/GetInsertionPRDescription.ps1' -vsDirectory '$(Pipeline.Workspace)/VS/' -currentSha '$(Build.SourceVersion)' -repoUrl '$(Build.Repository.Uri)' -projectName '$(Build.DefinitionName)'
     displayName: Create VS Insertion Description
     failOnStderr: true
 

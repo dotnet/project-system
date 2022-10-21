@@ -9,16 +9,15 @@ Imports System.Web.ClientServices.Providers
 Imports System.Windows.Forms
 Imports System.Windows.Forms.Design
 Imports System.Xml
-
 Imports Microsoft.VisualStudio.Designer.Interfaces
 Imports Microsoft.VisualStudio.Editors.Common
 Imports Microsoft.VisualStudio.Editors.DesignerFramework
 Imports Microsoft.VisualStudio.Editors.Interop
 Imports Microsoft.VisualStudio.Editors.PropertyPages
-Imports Microsoft.VisualStudio.Utilities
 Imports Microsoft.VisualStudio.Shell.Interop
-Imports Microsoft.VSDesigner.VSDesignerPackage
+Imports Microsoft.VisualStudio.Utilities
 Imports Microsoft.VSDesigner
+Imports Microsoft.VSDesigner.VSDesignerPackage
 
 Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
 
@@ -175,13 +174,17 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             _settingsGridView.EditMode = DataGridViewEditMode.EditOnKeystrokeOrF2
             _settingsGridView.Text = "m_SettingsGridView"
             _settingsGridView.DefaultCellStyle.NullValue = ""
+            _settingsGridView.TabIndex = 1
 
             ScopeColumn.Items.Add(DesignTimeSettingInstance.SettingScope.Application)
             ScopeColumn.Items.Add(DesignTimeSettingInstance.SettingScope.User)
 
             SetLinkLabelText()
+            _descriptionLinkLabel.TabIndex = 0
 
             _settingsGridView.ColumnHeadersHeight = _settingsGridView.Rows(0).GetPreferredHeight(0, DataGridViewAutoSizeRowMode.AllCells, False)
+            AddHandler _settingsGridView.KeyDown, AddressOf OnGridKeyDown
+
             _toolbarPanel = New DesignerToolbarPanel With {
                 .Name = "ToolbarPanel",
                 .Text = "ToolbarPanel"
@@ -189,6 +192,17 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             _settingsTableLayoutPanel.Controls.Add(_toolbarPanel, 0, 0)
             _settingsTableLayoutPanel.ResumeLayout()
             ResumeLayout()
+        End Sub
+
+        Private Sub OnGridKeyDown(s As Object, e As KeyEventArgs)
+            If e.KeyCode = Keys.Tab Then
+                ' Tab key shouldn't be used to move us to the next cell. Otherwise we can't leave the grid view without traversing
+                ' the whole table with Tab key (even then, we get stuck at the last cell).
+                ' Tab key should instead get us to the next tab stop, making all the controls accessible by keyboard.
+                ' Moving between cells can be done using arrow keys.
+                _descriptionLinkLabel.Focus()
+                e.Handled = True
+            End If
         End Sub
 
         ''' <summary>
