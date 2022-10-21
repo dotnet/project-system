@@ -7,10 +7,10 @@
 
   <!--
     Copies the contents of PublicAPI.Unshipped.txt into PublicAPI.Shipped.txt on build.
-    It assumes that the project directory contains these files (PublicApiAnalyzers also makes this assumption).
-    Uses AppendAllText instead of Add-Content since that cmdlet adds an empty line at the end of the file.
+    It assumes that the project contains these files (PublicApiAnalyzers also makes this assumption).
+    The script updates all the public API files in a project, so we only want it to run in the outer build.
   -->
-  <Target Name="FlushUnshippedAPI" AfterTargets="Build" Condition="'$(CIBuild)' != 'true'">
+  <Target Name="FlushUnshippedAPI" AfterTargets="Build" Condition="'$(CIBuild)' != 'true' and '$(IsInnerBuild)' != 'true'">
     <Exec ContinueOnError="false" Command="$(PowerShellFile) &quot;$(RepoRoot)eng\scripts\FlushUnshippedAPIFiles.ps1&quot; -projectDirectory &quot;$(MSBuildProjectDirectory)&quot;" />
   </Target>
 
