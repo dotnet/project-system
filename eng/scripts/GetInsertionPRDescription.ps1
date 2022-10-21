@@ -34,7 +34,7 @@ if($LastExitCode -eq 0)
   # See this for how complex branch names can be:
   # - https://stackoverflow.com/a/12093994/294804
   # - https://stackoverflow.com/a/3651867/294804
-  $hasPreviousShaShort = $vsCommitTitle -match 'DotNet-Project-System \([a-zA-Z0-9._-]+:\d+(\.\d+)*:(\w+)\)'
+  $hasPreviousShaShort = $vsCommitTitle -match "$projectName \([a-zA-Z0-9._-]+:\d+(\.\d+)*:(\w+)\)"
   if($hasPreviousShaShort)
   {
     $previousShaShort = $matches[2]
