@@ -2,7 +2,7 @@
 
 using Microsoft.VisualStudio.ProjectSystem;
 using Microsoft.VisualStudio.ProjectSystem.Query;
-using Microsoft.VisualStudio.ProjectSystem.Query.QueryExecution;
+using Microsoft.VisualStudio.ProjectSystem.Query.Execution;
 
 namespace Microsoft.VisualStudio
 {

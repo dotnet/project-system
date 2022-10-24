@@ -20,10 +20,10 @@
     <!-- VS SDK -->
     <PackageReference Update="EnvDTE"                                                                 Version="17.3.32804.24" />
     <PackageReference Update="Microsoft.Internal.VisualStudio.Interop"                                Version="17.3.32804.24" />
-    <PackageReference Update="Microsoft.ServiceHub.Framework"                                         Version="4.0.2048" />
+    <PackageReference Update="Microsoft.ServiceHub.Framework"                                         Version="4.0.4084" />
     <PackageReference Update="Microsoft.VSSDK.BuildTools"                                             Version="17.5.18-preview1" />
     <PackageReference Update="Microsoft.VisualStudio.ComponentModelHost"                              Version="17.3.198" />
-    <PackageReference Update="Microsoft.VisualStudio.Composition"                                     Version="17.0.46" />
+    <PackageReference Update="Microsoft.VisualStudio.Composition"                                     Version="17.4.1-alpha" />
     <PackageReference Update="Microsoft.VisualStudio.Data.Core"                                       Version="17.0.0-preview-2-31223-026" />
     <PackageReference Update="Microsoft.VisualStudio.DataDesign.Common"                               Version="17.0.0-preview-2-31223-026" />
     <PackageReference Update="Microsoft.VisualStudio.Data.Services"                                   Version="17.0.0-preview-2-31223-026" />
@@ -32,7 +32,7 @@
     <PackageReference Update="Microsoft.VisualStudio.Debugger.UI.Interfaces"                          Version="17.4.0-beta.22470.1" />
     <PackageReference Update="Microsoft.VisualStudio.Designer.Interfaces"                             Version="17.3.32804.24" />
     <PackageReference Update="Microsoft.VisualStudio.ImageCatalog"                                    Version="17.3.32804.24" />
-    <PackageReference Update="Microsoft.VisualStudio.Interop"                                         Version="17.3.32804.24" />
+    <PackageReference Update="Microsoft.VisualStudio.Interop"                                         Version="17.4.0-preview-2-32826-307" />
     <PackageReference Update="Microsoft.VisualStudio.ManagedInterfaces"                               Version="8.0.50728" />
     <PackageReference Update="Microsoft.VisualStudio.RpcContracts"                                    Version="17.4.7-alpha" />
     <PackageReference Update="Microsoft.VisualStudio.Settings.15.0"                                   Version="17.3.32804.24" />
@@ -45,7 +45,7 @@
     <PackageReference Update="Microsoft.VisualStudio.TemplateWizardInterface"                         Version="17.3.32804.24" />
     <PackageReference Update="Microsoft.VisualStudio.Threading"                                       Version="17.3.44" />
     <PackageReference Update="Microsoft.VisualStudio.Threading.Analyzers"                             Version="17.3.44" />
-    <PackageReference Update="Microsoft.VisualStudio.Utilities"                                       Version="17.3.32804.24" />
+    <PackageReference Update="Microsoft.VisualStudio.Utilities"                                       Version="17.4.0-preview-3-32908-042" />
     <PackageReference Update="Microsoft.VisualStudio.Validation"                                      Version="17.0.64" />
     <PackageReference Update="Microsoft.VisualStudio.XmlEditor"                                       Version="17.3.32804.24" />
     <PackageReference Update="System.Threading.Tasks.Dataflow"                                        Version="6.0.0" />
@@ -57,11 +57,11 @@
 
     <!-- CPS -->
     <!-- Find versions at https://dev.azure.com/azure-public/vside/_artifacts/feed/vs-impl -->
-    <PackageReference Update="Microsoft.VisualStudio.ProjectSystem"                                   Version="17.4.38-pre" />
-    <PackageReference Update="Microsoft.VisualStudio.ProjectSystem.Analyzers"                         Version="17.4.38-pre" />
-    <PackageReference Update="Microsoft.VisualStudio.ProjectSystem.Query"                             Version="17.4.38-pre" />
-    <PackageReference Update="Microsoft.VisualStudio.ProjectSystem.SDK.Tools"                         Version="17.4.38-pre" />
-
+    <PackageReference Update="Microsoft.VisualStudio.ProjectSystem.SDK"                               Version="17.5.202-pre-g89e17c9f72" />
+    <PackageReference Update="Microsoft.VisualStudio.ProjectSystem.Analyzers"                         Version="17.5.202-pre-g89e17c9f72" />
+    <PackageReference Update="Microsoft.VisualStudio.ProjectSystem.Query"                             Version="17.5.202-pre-g89e17c9f72" />
+    <PackageReference Update="Microsoft.VisualStudio.ProjectSystem.SDK.Tools"                         Version="17.5.202-pre-g89e17c9f72" />
+    
     <!-- Roslyn -->
     <PackageReference Update="Microsoft.Net.Compilers.Toolset"                                        Version="4.4.0-2.final" />
     <PackageReference Update="Microsoft.VisualStudio.LanguageServices"                                Version="4.4.0-2.final" />

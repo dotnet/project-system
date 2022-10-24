@@ -2,9 +2,9 @@
 
 using Microsoft.VisualStudio.ProjectSystem.Properties;
 using Microsoft.VisualStudio.ProjectSystem.Query;
-using Microsoft.VisualStudio.ProjectSystem.Query.Frameworks;
-using Microsoft.VisualStudio.ProjectSystem.Query.ProjectModelMethods.Actions;
-using Microsoft.VisualStudio.ProjectSystem.Query.QueryExecution;
+using Microsoft.VisualStudio.ProjectSystem.Query.Execution;
+using Microsoft.VisualStudio.ProjectSystem.Query.Framework;
+using Microsoft.VisualStudio.ProjectSystem.Query.Framework.Actions;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
 {

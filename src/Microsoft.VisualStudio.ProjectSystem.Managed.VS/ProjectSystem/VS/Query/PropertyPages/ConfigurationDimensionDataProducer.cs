@@ -1,13 +1,12 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
 using Microsoft.VisualStudio.ProjectSystem.Query;
-using Microsoft.VisualStudio.ProjectSystem.Query.ProjectModel;
-using Microsoft.VisualStudio.ProjectSystem.Query.ProjectModel.Implementation;
+using Microsoft.VisualStudio.ProjectSystem.Query.Framework;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
 {
     /// <summary>
-    /// Handles the creation of <see cref="IConfigurationDimension"/> instances and populating the requested
+    /// Handles the creation of <see cref="IConfigurationDimensionSnapshot"/> instances and populating the requested
     /// members.
     /// </summary>
     internal static class ConfigurationDimensionDataProducer
@@ -17,7 +16,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
             KeyValuePair<string, string> projectConfigurationDimension,
             IConfigurationDimensionPropertiesAvailableStatus requestedProperties)
         {
-            var newProjectConfigurationDimension = new ConfigurationDimensionValue(runtimeModel, new ConfigurationDimensionPropertiesAvailableStatus());
+            var newProjectConfigurationDimension = new ConfigurationDimensionSnapshot(runtimeModel, new ConfigurationDimensionPropertiesAvailableStatus());
 
             if (requestedProperties.Name)
             {
