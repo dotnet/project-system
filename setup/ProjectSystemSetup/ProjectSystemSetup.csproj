@@ -73,7 +73,7 @@
   <!-- For additional info, see: https://github.com/dotnet/project-system/issues/6612 -->
   <Target Name="ExcludeLocalizedXamlFilesFromVSIX" AfterTargets="GetVsixSourceItems">
     <ItemGroup>
-      <VSIXSourceItem Remove="$(ArtifactsObjDir)$(_ManagedProjectName)\$(_ManagedProjectName).xlf\**\*.xaml" />
+      <VSIXSourceItem Remove="$(ArtifactsObjDir)$(_ManagedProjectName)\$(TargetFramework)\$(_ManagedProjectName).xlf\**\*.xaml" />
     </ItemGroup>
   </Target>
 
