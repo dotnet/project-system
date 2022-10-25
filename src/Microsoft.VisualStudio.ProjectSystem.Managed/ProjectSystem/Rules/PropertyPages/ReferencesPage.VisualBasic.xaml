@@ -19,24 +19,24 @@
                 HasConfigurationCondition="False" />
   </Rule.DataSource>
 
-  <DynamicEnumProperty Name="ImportedNamespaces"
+  <StringProperty Name="ImportedNamespaces"
                        DisplayName="Import Namespaces"
                        Description="Manage which namespaces to import in your application."
-                       Category="General"
-                       EnumProvider="DotNetImportsEnumProvider">
-    <DynamicEnumProperty.DataSource>
+                       Category="General">
+    <StringProperty.DataSource>
       <DataSource PersistedName="ImportedNamespaces"
                   Persistence="ProjectFileWithInterception"
                   HasConfigurationCondition="False" />
-    </DynamicEnumProperty.DataSource>
-    <DynamicEnumProperty.ValueEditors>
+    </StringProperty.DataSource>
+    <StringProperty.ValueEditors>
       <ValueEditor EditorType="MultiStringSelector">
         <ValueEditor.Metadata>
           <NameValuePair Name="TypeDescriptorText" Value="Imported Namespaces" />
           <NameValuePair Name="AllowsCustomStrings" Value="True" />
+          <NameValuePair Name="ShouldDisplayEvaluatedPreview" Value="True" />
         </ValueEditor.Metadata>
       </ValueEditor>
-    </DynamicEnumProperty.ValueEditors>
-  </DynamicEnumProperty> 
+    </StringProperty.ValueEditors>
+  </StringProperty> 
 
 </Rule>
