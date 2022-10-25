@@ -336,7 +336,7 @@ The property's `ValueEditor` has `EditorType="Description"` which selects a UI t
 </StringProperty>
 ```
 
-We don't want this property to ever be read from or written to the project file. We intercept these reads and writes by specifying `Persistence="ProjectFileWithInterception"`, and providing the following no-op interceptor. See [Property Value Interception](property-value-interception.md) for more on how and why this works.
+We don't want this property to ever be read from or written to the project file. We intercept these reads and writes by specifying `Persistence="ProjectFileWithInterception"`, and providing the following no-op interceptor. See [Property Value Interception](property-value-interception.md#pseudo-properties) for more on how and why this works.
 
 ```c#
 [ExportInterceptingPropertyValueProvider("MyDescriptionProperty", ExportInterceptingPropertyValueProviderFile.ProjectFile)]
@@ -347,7 +347,7 @@ internal sealed class MyDescriptionPropertyValueProvider : NoOpInterceptingPrope
 
 ## Link Actions
 
-It is useful to insert hyperlinks between properties that either link to URLs or perform arbitrary actions. This can be achieved via the `ActionLink` editor type. The underlying property type does not matter, as no value is presented.
+It is useful to insert hyperlinks between properties that either: **link to URLs**, **perform arbitrary actions**, or **focus a property or property page/category**. This can be achieved via the `LinkAction` editor type. The underlying property type does not matter, as no value is presented.
 
 Clicking the hyperlink can either open a URL or invoke a callback.
 
@@ -381,7 +381,7 @@ The editor must specify two metadata values:
 </StringProperty>
 ```
 
-We don't want this property to ever be read from or written to the project file. We intercept these reads and writes by specifying `Persistence="ProjectFileWithInterception"`, and providing the following no-op interceptor. See [Property Value Interception](property-value-interception.md) for more on how and why this works.
+We don't want this property to ever be read from or written to the project file. We intercept these reads and writes by specifying `Persistence="ProjectFileWithInterception"`, and providing the following no-op interceptor. See [Property Value Interception](property-value-interception.md#pseudo-properties) for more on how and why this works.
 
 ```c#
 [ExportInterceptingPropertyValueProvider("MyUrlProperty", ExportInterceptingPropertyValueProviderFile.ProjectFile)]
@@ -418,7 +418,7 @@ The editor must specify two metadata values:
 </StringProperty>
 ```
 
-We don't want this property to ever be read from or written to the project file. We intercept these reads and writes by specifying `Persistence="ProjectFileWithInterception"`, and providing the following no-op interceptor. See [Property Value Interception](property-value-interception.md) for more on how and why this works.
+We don't want this property to ever be read from or written to the project file. We intercept these reads and writes by specifying `Persistence="ProjectFileWithInterception"`, and providing the following no-op interceptor. See [Property Value Interception](property-value-interception.md#pseudo-properties) for more on how and why this works.
 
 ```c#
 [ExportInterceptingPropertyValueProvider("MyCommandProperty", ExportInterceptingPropertyValueProviderFile.ProjectFile)]
@@ -440,6 +440,49 @@ internal sealed class MyCommandActionHandler : ILinkActionHandler
     }
 }
 ```
+
+### Focus a property, property page, or property page category
+
+If a hyperlink should, when clicked, set focus to a property page, property page category, or property, the following template may be used.
+
+The editor must specify at least two metadata values:
+
+- `Action`, with value `Focus`
+- `PropertyPage`, with value being the `Name` attribute of the property page to focus.
+
+If you wish to focus a property page category instead of a property page, you must also specify the `PropertyPageCategory` metadata value.
+
+If you wish instead to focus a specific property, you must also specify the `Property` metadata value (**do not** specify `PropertyPageCategory` in this case).
+
+```xml
+<StringProperty Name="MyCommandProperty"
+                DisplayName="Click me to focus a property page category">
+  <StringProperty.DataSource>
+    <DataSource PersistedName="MyCommandProperty"
+                Persistence="ProjectFileWithInterception"
+                HasConfigurationCondition="False" />
+  </StringProperty.DataSource>
+  <StringProperty.ValueEditors>
+    <ValueEditor EditorType="LinkAction">
+      <ValueEditor.Metadata>
+        <NameValuePair Name="Action" Value="Focus" />
+        <NameValuePair Name="PropertyPage" Value="Build" />
+        <NameValuePair Name="PropertyPageCategory" Value="Output" /> <!-- change metadata to Property to focus property, or remove to focus the Build page -->
+      </ValueEditor.Metadata>
+    </ValueEditor>
+  </StringProperty.ValueEditors>
+</StringProperty>
+```
+
+We don't want this property to ever be read from or written to the project file. We intercept these reads and writes by specifying `Persistence="ProjectFileWithInterception"`, and providing the following no-op interceptor. See [Property Value Interception](property-value-interception.md#pseudo-properties) for more on how and why this works.
+
+```c#
+[ExportInterceptingPropertyValueProvider("MyCommandProperty", ExportInterceptingPropertyValueProviderFile.ProjectFile)]
+internal sealed class MyCommandPropertyValueProvider : NoOpInterceptingPropertyValueProvider
+{
+}
+```
+
 
 ## File Properties
 
