@@ -10,6 +10,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
     internal abstract class AbstractProjectFileOrAssemblyInfoPropertiesProvider : DelegatedProjectPropertiesProviderBase
     {
         private readonly ImmutableArray<Lazy<IInterceptingPropertyValueProvider, IInterceptingPropertyValueProviderMetadata>> _interceptingValueProviders;
+        private readonly UnconfiguredProject _project;
         private readonly Func<ProjectId?> _getActiveProjectId;
         private readonly Workspace _workspace;
         private readonly IProjectThreadingService _threadingService;
@@ -30,6 +31,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
             Requires.NotNull(threadingService, nameof(threadingService));
 
             _interceptingValueProviders = interceptingValueProviders.ToImmutableArray();
+            _project = project;
             _getActiveProjectId = getActiveProjectId;
             _workspace = workspace;
             _threadingService = threadingService;
@@ -44,7 +46,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
             IProjectProperties assemblyInfoProperties = new AssemblyInfoProperties(delegatedProperties, _getActiveProjectId, _workspace, _threadingService);
             return _interceptingValueProviders.IsDefaultOrEmpty ?
                 assemblyInfoProperties :
-                new InterceptedProjectProperties(_interceptingValueProviders, assemblyInfoProperties);
+                new InterceptedProjectProperties(_interceptingValueProviders, assemblyInfoProperties, _project);
         }
     }
 }
