@@ -3,7 +3,7 @@
 using System.Collections;
 using System.Diagnostics;
 
-namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
+namespace Microsoft.VisualStudio.ProjectSystem.PackageRestore
 {
     /// <summary>
     ///     Abstract immutable collection that supports lookup by index and name.

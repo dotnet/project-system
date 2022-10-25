@@ -135,7 +135,8 @@ internal sealed class LanguageServiceHost : OnceInitializedOnceDisposedAsync, IP
                 target: DataflowBlockFactory.CreateActionBlock<IProjectVersionedValue<(ConfiguredProject ActiveConfiguredProject, ConfigurationSubscriptionSources Sources)>>(
                     update => OnSlicesChanged(update, cancellationToken),
                     _unconfiguredProject,
-                    ProjectFaultSeverity.LimitedFunctionality),
+                    ProjectFaultSeverity.LimitedFunctionality,
+                    "LanguageServiceHostSlices {0}"),
                 linkOptions: DataflowOption.PropagateCompletion,
                 cancellationToken: cancellationToken),
 

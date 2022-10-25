@@ -2,17 +2,16 @@
 
 using Microsoft.Build.Framework.XamlTypes;
 using Microsoft.VisualStudio.ProjectSystem.Query;
-using Microsoft.VisualStudio.ProjectSystem.Query.ProjectModel;
-using Microsoft.VisualStudio.ProjectSystem.Query.QueryExecution;
+using Microsoft.VisualStudio.ProjectSystem.Query.Execution;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
 {
     /// <summary>
-    /// Handles retrieving a set of <see cref="IUIEditorMetadata"/> from a <see cref="ValueEditor"/> and reporting the
+    /// Handles retrieving a set of <see cref="IUIEditorMetadataSnapshot"/> from a <see cref="ValueEditor"/> and reporting the
     /// results.
     /// </summary>
     /// <remarks>
-    /// The <see cref="ValueEditor"/> comes from the parent <see cref="IUIPropertyEditor"/>
+    /// The <see cref="ValueEditor"/> comes from the parent <see cref="IUIPropertyEditorSnapshot"/>
     /// </remarks>
     internal class UIEditorMetadataFromValueEditorProducer : QueryDataFromProviderStateProducerBase<ValueEditor>
     {

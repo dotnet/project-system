@@ -2,6 +2,7 @@
 
 using System.Collections;
 using System.Windows.Data;
+using Microsoft.VisualStudio.Shell;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections
 {
@@ -31,8 +32,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedColl
         /// Raised whenever <see cref="HasItems"/> changes.
         /// </summary>
         /// <remarks>
-        /// Used by AggregateRelationCollectionSource to trigger changes to its
-        /// IAttachedCollectionSource.HasItems property.
+        /// Used by <see cref="AggregateRelationCollectionSource"/> to trigger changes to its
+        /// <see cref="IAttachedCollectionSource.HasItems"/> property.
         /// </remarks>
         event EventHandler HasItemsChanged;
 

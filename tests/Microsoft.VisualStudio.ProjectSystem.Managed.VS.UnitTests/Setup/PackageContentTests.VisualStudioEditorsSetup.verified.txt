@@ -28,7 +28,6 @@
   ru/Microsoft.VisualStudio.Editors.resources.dll,
   tr/Microsoft.VisualStudio.AppDesigner.resources.dll,
   tr/Microsoft.VisualStudio.Editors.resources.dll,
-  VisualStudioEditorsSetup.clientenabledpkg,
   VisualStudioEditorsSetup.pkgdef,
   zh-Hans/Microsoft.VisualStudio.AppDesigner.resources.dll,
   zh-Hans/Microsoft.VisualStudio.Editors.resources.dll,

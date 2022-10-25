@@ -1,10 +1,10 @@
 # Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
 # Creates a description for VS Insertion PRs that contains a list of PRs that have been merged between since the previous VS Insertion.
-# The previous VS Insertion relies on finding the last tag in our repo that matches the pattern: insertion/*
+# The previous VS Insertion finds the last commit title in the VS repo that matches the pattern: Insert $projectName
 # This script outputs the description string into the InsertionDescription variable within the Azure Pipeline.
 
-param ([Parameter(Mandatory=$true)] [string] $currentSha, [Parameter(Mandatory=$true)] [string] $repoUrl, [Parameter(Mandatory=$true)] [string] $projectName)
+param ([Parameter(Mandatory=$true)] [string] $vsDirectory, [Parameter(Mandatory=$true)] [string] $currentSha, [Parameter(Mandatory=$true)] [string] $repoUrl, [Parameter(Mandatory=$true)] [string] $projectName)
 
 # Using 10 characters since that will make it incredibly unlikely that there will be a collision.
 # https://stackoverflow.com/a/18134919/294804
@@ -13,15 +13,40 @@ $currentShaShort = $currentSha.Substring(0,10)
 # https://docs.microsoft.com/azure/devops/pipelines/process/set-variables-scripts?view=azure-devops&tabs=powershell#set-an-output-variable-for-use-in-the-same-job
 Write-Host "##vso[task.setvariable variable=ShortCommitId]$currentShaShort"
 
-$description = @()
-# Gets the commit ID of the latest tag that matches insertion/*
+Set-Location $vsDirectory
+# Gets the commit ID of the latest insertion commit that matches "Insert $projectName"
+# --all is required as the fetched Git history may not be the current branch.
 # https://git-scm.com/docs/git-rev-list
 # https://stackoverflow.com/a/1862542/294804
-$previousSha = (git rev-list --tags=insertion/* -1)
-Write-Host "previousSha: $previousSha"
+$vsCommitId = (git rev-list --grep="Insert $projectName" --all -1)
+# Gets the subject (title) from the provided commit ID (via vsCommitId). See:
+# - https://stackoverflow.com/a/7293026/294804
+# - https://git-scm.com/docs/git-log#_pretty_formats
+$vsCommitTitle = (git log -1 --pretty=%s $vsCommitId)
+# If the VS commit ID wasn't found, it'll be empty, causing the above command to throw an error.
+# https://stackoverflow.com/a/48877892/294804
+if($LastExitCode -eq 0)
+{
+  # Parse the short commit ID out of the commit title. See:
+  # - https://stackoverflow.com/a/3697210/294804
+  # - https://stackoverflow.com/a/12001377/294804
+  # Note: Only including alphanumeric and dot, underscore, and hyphen in the branch name.
+  # See this for how complex branch names can be:
+  # - https://stackoverflow.com/a/12093994/294804
+  # - https://stackoverflow.com/a/3651867/294804
+  $hasPreviousShaShort = $vsCommitTitle -match "$projectName \([a-zA-Z0-9._-]+:\d+(\.\d+)*:(\w+)\)"
+  if($hasPreviousShaShort)
+  {
+    $previousShaShort = $matches[2]
+  }
+}
+
+Write-Host "previousShaShort: $previousShaShort"
 Write-Host "currentSha: $currentSha"
-# Since a previous commit ID was not found, we create a basic description.
-if(-Not $previousSha)
+
+$description = @()
+# Since a previous insertion commit ID was not found, we create a basic description.
+if(-Not $previousShaShort)
 {
   $description += "Updating $projectName to [$currentShaShort]($repoUrl/commit/$currentSha)"
   $description += '---------------------------------------------------------------------------'
@@ -32,7 +57,10 @@ if(-Not $previousSha)
   Write-Host "##vso[task.setvariable variable=InsertionDescription]$($description -join '<br>')"
   exit 0
 }
-$previousShaShort = $previousSha.Substring(0,10)
+
+Set-Location $PSScriptRoot
+# https://stackoverflow.com/a/41717108/294804
+$previousSha = (git rev-parse $previousShaShort)
 
 $description += "Updating $projectName from [$previousShaShort]($repoUrl/commit/$previousSha) to [$currentShaShort]($repoUrl/commit/$currentSha)"
 $description += '---------------------------------------------------------------------------'
