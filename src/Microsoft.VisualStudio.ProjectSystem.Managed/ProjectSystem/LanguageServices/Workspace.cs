@@ -33,7 +33,7 @@ internal sealed class Workspace : OnceInitializedOnceDisposedUnderLockAsync, IWo
     private readonly UnconfiguredProject _unconfiguredProject;
     private readonly Guid _projectGuid;
     private readonly UpdateHandlers _updateHandlers;
-    private readonly IProjectDiagnosticOutputService _logger;
+    private readonly IManagedProjectDiagnosticOutputService _logger;
     private readonly IActiveEditorContextTracker _activeEditorContextTracker;
     private readonly OrderPrecedenceImportCollection<ICommandLineParserService> _commandLineParserServices;
     private readonly IDataProgressTrackerService _dataProgressTrackerService;
@@ -83,7 +83,7 @@ internal sealed class Workspace : OnceInitializedOnceDisposedUnderLockAsync, IWo
         UnconfiguredProject unconfiguredProject,
         Guid projectGuid,
         UpdateHandlers updateHandlers,
-        IProjectDiagnosticOutputService logger,
+        IManagedProjectDiagnosticOutputService logger,
         IActiveEditorContextTracker activeEditorContextTracker,
         OrderPrecedenceImportCollection<ICommandLineParserService> commandLineParserServices,
         IDataProgressTrackerService dataProgressTrackerService,
@@ -134,6 +134,10 @@ internal sealed class Workspace : OnceInitializedOnceDisposedUnderLockAsync, IWo
         return Task.CompletedTask;
     }
 
+    /// <summary>
+    /// Adds an object that will be disposed along with this <see cref="Workspace"/> instance.
+    /// </summary>
+    /// <param name="disposable">The object to dispose when this object is disposed.</param>
     public void ChainDisposal(IDisposable disposable)
     {
         Verify.NotDisposed(this);
@@ -141,6 +145,23 @@ internal sealed class Workspace : OnceInitializedOnceDisposedUnderLockAsync, IWo
         _disposableBag.Add(disposable);
     }
 
+    /// <summary>
+    /// Integrates project updates into the workspace.
+    /// </summary>
+    /// <remarks>
+    /// <para>
+    /// This method must always receive an evaluation update first. After that point,
+    /// both evaluation and build updates may arrive in any order, so long as values
+    /// of each type are ordered correctly.
+    /// </para>
+    /// <para>
+    /// Calls must not overlap. This method is not thread-safe. This method is designed
+    /// to be called from a dataflow ActionBlock, which will serialize calls, so we
+    /// needn't perform any locking or protection here.
+    /// </para>
+    /// </remarks>
+    /// <param name="update">The project update to integrate.</param>
+    /// <returns>A task that completes when the update has been integrated.</returns>
     internal async Task OnWorkspaceUpdateAsync(IProjectVersionedValue<WorkspaceUpdate> update)
     {
         Verify.NotDisposed(this);
@@ -174,12 +195,24 @@ internal sealed class Workspace : OnceInitializedOnceDisposedUnderLockAsync, IWo
                     _disposableBag.Add(_buildProgressRegistration);
                 }
 
-                await (update.Value switch
+                try
                 {
-                    { EvaluationUpdate: not null } => OnEvaluationUpdateAsync(update.Derive(u => u.EvaluationUpdate!)),
-                    { BuildUpdate: not null } => OnBuildUpdateAsync(update.Derive(u => u.BuildUpdate!)),
-                    _ => throw Assumes.NotReachable()
-                });
+                    await (update.Value switch
+                    {
+                        { EvaluationUpdate: not null } => OnEvaluationUpdateAsync(update.Derive(u => u.EvaluationUpdate!)),
+                        { BuildUpdate: not null } => OnBuildUpdateAsync(update.Derive(u => u.BuildUpdate!)),
+                        _ => throw Assumes.NotReachable()
+                    });
+                }
+                catch
+                {
+                    // Tear down on any exception
+                    await DisposeAsync();
+
+                    // Exceptions here are product errors, so let the exception escape in order
+                    // to produce an upstream NFE.
+                    throw;
+                }
             });
     }
 
@@ -193,6 +226,12 @@ internal sealed class Workspace : OnceInitializedOnceDisposedUnderLockAsync, IWo
             _seenEvaluation = true;
 
             await ProcessInitialEvaluationDataAsync(_unloadCancellationToken);
+
+            // If initialisation failed gracefully, we will have been disposed and should just return here.
+            if (IsDisposed)
+            {
+                return;
+            }
         }
 
         await OnProjectChangedAsync(
@@ -211,21 +250,23 @@ internal sealed class Workspace : OnceInitializedOnceDisposedUnderLockAsync, IWo
             IProjectRuleSnapshot snapshot = evaluationUpdate.Value.EvaluationRuleUpdate.CurrentState[ConfigurationGeneral.SchemaName];
 
             snapshot.Properties.TryGetValue(ConfigurationGeneral.LanguageServiceNameProperty, out string? languageName);
-            snapshot.Properties.TryGetValue(ConfigurationGeneral.TargetPathProperty, out string? binOutputPath);
             snapshot.Properties.TryGetValue(ConfigurationGeneral.MSBuildProjectFullPathProperty, out string? projectFilePath);
-            snapshot.Properties.TryGetValue(ConfigurationGeneral.AssemblyNameProperty, out string? assemblyName);
-            snapshot.Properties.TryGetValue(ConfigurationGeneral.CommandLineArgsForDesignTimeEvaluationProperty, out string? commandLineArgsForDesignTimeEvaluation);
 
-            if (string.IsNullOrEmpty(languageName) || string.IsNullOrEmpty(binOutputPath) || string.IsNullOrEmpty(projectFilePath))
+            if (string.IsNullOrEmpty(languageName) || string.IsNullOrEmpty(projectFilePath))
             {
-                // Insufficient data to initialize the language service.
-                _state = WorkspaceState.Failed;
+                // It's reasonable for a project to exist that doesn't contain enough data to initialize the language
+                // service. For example, the ".ilproj" project is not uncommon and hits this code path.
+                // In such cases, we don't want to throw here as that would fault the project. Instead, we
+                // dispose the workspace tears down the dataflow subscription and clean everything up gracefully.
+                await DisposeAsync();
 
-                throw new("Insufficient project data to initialize the language service.");
+                return;
             }
 
             try
             {
+                EvaluationDataAdapter evaluationData = new(snapshot.Properties);
+
                 _contextId = GetWorkspaceProjectContextId(projectFilePath, _projectGuid, _slice);
 
                 _disposableBag.Add(_activeEditorContextTracker.RegisterContext(_contextId));
@@ -234,36 +275,16 @@ internal sealed class Workspace : OnceInitializedOnceDisposedUnderLockAsync, IWo
 
                 // Call into Roslyn to initialize language service for this project
                 _context = await _workspaceProjectContextFactory.Value.CreateProjectContextAsync(
-                    languageName,
-                    _contextId,
-                    projectFilePath,
                     _projectGuid,
+                    _contextId,
+                    languageName,
+                    evaluationData,
                     hostObject,
-                    binOutputPath,
-                    assemblyName,
                     cancellationToken);
 
-                _disposableBag.Add(_context);
-
-                // Update additional properties within a batch to avoid thread pool starvation.
-                // https://github.com/dotnet/project-system/issues/8027
-                _context.StartBatch();
-
-                try
-                {
-                    _context.LastDesignTimeBuildSucceeded = false; // By default, turn off diagnostics until the first design time build succeeds for this project.
-
-                    // Pass along any early approximation we have of the command line options
-#pragma warning disable CS0618 // This was obsoleted in favor of the one that takes an array, but here just the string is easier; we'll un-Obsolete this API
-                    _context.SetOptions(commandLineArgsForDesignTimeEvaluation ?? "");
-#pragma warning restore CS0618 // Type or member is obsolete
-                }
-                finally
-                {
-                    await _context.EndBatchAsync();
-                }
-
                 _contextCreated.TrySetResult();
+
+                _disposableBag.Add(_context);
             }
             catch (Exception ex)
             {
@@ -276,9 +297,6 @@ internal sealed class Workspace : OnceInitializedOnceDisposedUnderLockAsync, IWo
                 // We will never initialize now. Ensure anyone waiting on initialization sees the error.
                 _contextCreated.TrySetException(ex);
 
-                _disposableBag.Dispose();
-
-                // Let the exception escape, to unsubscribe data sources.
                 throw;
             }
         }
@@ -467,6 +485,8 @@ internal sealed class Workspace : OnceInitializedOnceDisposedUnderLockAsync, IWo
         Action<IProjectVersionedValue<T>, ContextState, CancellationToken> applyFunc,
         CancellationToken cancellationToken)
     {
+        Assumes.True(_contextCreated.Task.Status == TaskStatus.RanToCompletion);
+
         return ExecuteUnderLockAsync(ApplyProjectChangesUnderLockAsync, cancellationToken);
 
         Task ApplyProjectChangesUnderLockAsync(CancellationToken cancellationToken)
@@ -518,6 +538,7 @@ internal sealed class Workspace : OnceInitializedOnceDisposedUnderLockAsync, IWo
     public async Task WriteAsync(Func<IWorkspace, Task> action, CancellationToken cancellationToken)
     {
         Requires.NotNull(action, nameof(action));
+        Verify.NotDisposed(this);
 
         cancellationToken = CancellationTokenSource.CreateLinkedTokenSource(_unloadCancellationToken, cancellationToken).Token;
 
@@ -529,6 +550,7 @@ internal sealed class Workspace : OnceInitializedOnceDisposedUnderLockAsync, IWo
     public async Task<T> WriteAsync<T>(Func<IWorkspace, Task<T>> action, CancellationToken cancellationToken)
     {
         Requires.NotNull(action, nameof(action));
+        Verify.NotDisposed(this);
 
         cancellationToken = CancellationTokenSource.CreateLinkedTokenSource(_unloadCancellationToken, cancellationToken).Token;
 
@@ -550,6 +572,30 @@ internal sealed class Workspace : OnceInitializedOnceDisposedUnderLockAsync, IWo
             await _contextCreated.Task.WithCancellation(cancellationToken);
 
             Verify.NotDisposed(this);
+        }
+    }
+
+    /// <summary>
+    /// Maps from our property data snapshot to Roslyn's API for accessing the project's
+    /// evaluation data.
+    /// </summary>
+    private sealed class EvaluationDataAdapter : EvaluationData
+    {
+        private readonly IImmutableDictionary<string, string> _properties;
+
+        public EvaluationDataAdapter(IImmutableDictionary<string, string> properties)
+        {
+            _properties = properties;
+        }
+
+        public override string GetPropertyValue(string name)
+        {
+            _properties.TryGetValue(name, out string? value);
+
+            // Return the empty string rather than null.
+            value ??= "";
+
+            return value;
         }
     }
 }

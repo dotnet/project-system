@@ -184,3 +184,5 @@ Microsoft.VisualStudio.ProjectSystem.Debug.ILaunchProfile2.OtherSettings.get -> 
 virtual Microsoft.VisualStudio.ProjectSystem.Properties.InterceptingPropertyValueProviderBase.IsValueDefinedInContextAsync(string! propertyName, Microsoft.VisualStudio.ProjectSystem.Properties.IProjectProperties! defaultProperties) -> System.Threading.Tasks.Task<bool>!
 Microsoft.VisualStudio.ProjectSystem.Properties.IInterceptingPropertyValueProvider2
 Microsoft.VisualStudio.ProjectSystem.Properties.IInterceptingPropertyValueProvider2.IsValueDefinedInContextAsync(string! propertyName, Microsoft.VisualStudio.ProjectSystem.Properties.IProjectProperties! defaultProperties) -> System.Threading.Tasks.Task<bool>!
+Microsoft.VisualStudio.ProjectSystem.VS.Tree.IFileIconProvider
+Microsoft.VisualStudio.ProjectSystem.VS.Tree.IFileIconProvider.GetFileExtensionImageMoniker(string! path) -> Microsoft.VisualStudio.Imaging.Interop.ImageMoniker

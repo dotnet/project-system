@@ -107,7 +107,7 @@
           {
             "name": "addMilestone",
             "parameters": {
-              "milestoneName": "17.4"
+              "milestoneName": "17.5"
             }
           }
         ],
@@ -1686,6 +1686,12 @@
                   "name": "prTargetsBranch",
                   "parameters": {
                     "branchName": "dev17.4-preview2"
+                  }
+                },
+                {
+                  "name": "prTargetsBranch",
+                  "parameters": {
+                    "branchName": "dev17.4.x"
                   }
                 }
               ]

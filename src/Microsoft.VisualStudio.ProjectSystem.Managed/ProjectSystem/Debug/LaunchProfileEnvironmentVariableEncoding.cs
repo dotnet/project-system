@@ -13,21 +13,21 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
     /// </remarks>
     internal static class LaunchProfileEnvironmentVariableEncoding
     {
-        private static readonly KeyValuePairListEncoding _encoding = new();
-        
+        private static readonly KeyValuePairListEncoding s_encoding = new();
+
         public static string Format(ILaunchProfile? profile)
         {
             if (profile is null)
                 return "";
-            
-            return _encoding.Format(profile.EnumerateEnvironmentVariables());
+
+            return s_encoding.Format(profile.EnumerateEnvironmentVariables());
         }
 
         public static void ParseIntoDictionary(string value, Dictionary<string, string> dictionary)
         {
             dictionary.Clear();
-            
-            foreach ((string entryKey, string entryValue) in _encoding.Parse(value))
+
+            foreach ((string entryKey, string entryValue) in s_encoding.Parse(value))
             {
                 if (!string.IsNullOrEmpty(entryKey))
                 {

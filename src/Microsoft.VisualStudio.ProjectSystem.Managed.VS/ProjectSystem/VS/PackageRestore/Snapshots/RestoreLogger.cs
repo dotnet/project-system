@@ -6,7 +6,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
 {
     internal static class RestoreLogger
     {
-        public static void BeginNominateRestore(IProjectDiagnosticOutputService logger, string fullPath, IVsProjectRestoreInfo2 projectRestoreInfo)
+        public static void BeginNominateRestore(IManagedProjectDiagnosticOutputService logger, string fullPath, IVsProjectRestoreInfo2 projectRestoreInfo)
         {
             if (logger.IsEnabled)
             {
@@ -26,7 +26,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
             }
         }
 
-        public static void EndNominateRestore(IProjectDiagnosticOutputService logger, string fullPath)
+        public static void EndNominateRestore(IManagedProjectDiagnosticOutputService logger, string fullPath)
         {
             if (logger.IsEnabled)
             {

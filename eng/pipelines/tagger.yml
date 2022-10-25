@@ -1,0 +1,99 @@
+# Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
+
+# Name: DotNet-Project-System-Tagger
+# URL: https://dev.azure.com/devdiv/DevDiv/_build?definitionId=17277
+
+# Creates a Git tag in our repo when a VS Insertion PR is merged.
+
+###################################################################################################################################################################
+# PIPELINE METADATA
+###################################################################################################################################################################
+
+# Disable CI builds for this pipeline.
+# See: https://docs.microsoft.com/azure/devops/pipelines/yaml-schema/trigger?view=azure-pipelines#examples
+trigger: none
+
+# Disable PR builds for this pipeline.
+# See: https://docs.microsoft.com/azure/devops/pipelines/yaml-schema/pr?view=azure-pipelines#examples
+pr: none
+
+resources:
+  # https://stackoverflow.com/a/63270937/294804
+  # https://learn.microsoft.com/azure/devops/pipelines/repos/multi-repo-checkout?view=azure-devops#triggers
+  repositories:
+  - repository: VS
+    name: VS
+    type: git
+    ref: main
+    trigger:
+      branches:
+        include:
+        - main
+      paths:
+        include:
+        # File containing the package version for Managed/Managed.VS packages.
+        - src/ConfigData/Packages/ProjectSystem/Managed.props
+        # File containing the package version for AppDesigner/Editors packages.
+        - src/ConfigData/Packages/Wizard/packages.props
+
+pool:
+  # Agent Queue: https://devdiv.visualstudio.com/DevDiv/_settings/agentqueues?queueId=3123&view=jobs
+  name: VSEngSS-MicroBuild2022-1ES
+  # Demands Docs: https://docs.microsoft.com/azure/devops/pipelines/process/demands?view=azure-devops&tabs=yaml#manually-entered-demands
+  demands: Cmd
+
+variables:
+  # https://devdiv.visualstudio.com/DevDiv/_wiki/wikis/DevDiv.wiki/26284/Enabling-SBOM-For-Your-Component-Insertion-into-VS?anchor=1.-add-the-%27manifest-generator-task%27-to-your-pipeline
+  Packaging.EnableSBOMSigning: true
+  # Opt out of automatically injecting Codesign Validation into the pipeline. We run Codesign Validation as part of the Compliance pipeline.
+  # See: https://aka.ms/gdn-injection
+  runCodesignValidationInjection: false
+  # Suspend enforcement of NuGet Single Feed Policy. See:
+  # - https://aka.ms/nugetmultifeed
+  # - https://docs.opensource.microsoft.com/tools/nuget_security_analysis/nuget_security_analysis/
+  # - https://docs.opensource.microsoft.com/tools/cg/how-to/nuget-multifeed-configuration/
+  # - https://onebranch.visualstudio.com/OneBranch/_wiki/wikis/OneBranch.wiki/5205/TSG-Build-Broken-Due-to-Using-Multiple-Feeds?anchor=setting-nugetsecurityanalysiswarninglevel-in-cdp
+  NugetSecurityAnalysisWarningLevel: none
+  # Conditionally set the VsCommitId variable based on the VsCommitId parameter.
+  # If the parameter provides a value other than 'Default', it will be used. Otherwise, default to the commit ID of the VS repo.
+  # For conditional variables, see: https://stackoverflow.com/a/70954396/294804
+  # For Build.SourceVersion being set to VS repo commit ID, see: https://learn.microsoft.com/azure/devops/pipelines/repos/multi-repo-checkout?view=azure-devops#triggers
+  ${{ if eq(parameters.VsCommitId, 'Default') }}:
+    VsCommitId: $(Build.SourceVersion)
+  ${{ else }}:
+    VsCommitId: ${{ parameters.VsCommitId }}
+
+parameters:
+- name: VsCommitId
+  displayName: VS Commit ID
+  type: string
+  default: Default
+
+###################################################################################################################################################################
+# STEPS
+###################################################################################################################################################################
+
+steps:
+- checkout: self
+  # Required for using Git commands in the subsequent tasks below. See:
+  # - https://stackoverflow.com/questions/56733922/fatal-could-not-read-password-for-https-organizationnamedev-azure-com-ter#comment108309839_56734304
+  # - https://learn.microsoft.com/azure/devops/pipelines/scripts/git-commands?view=azure-devops&tabs=yaml#allow-scripts-to-access-the-system-token
+  persistCredentials: true
+  # Changes Build.SourcesDirectory from $(Pipeline.Workspace)/s to $(Pipeline.Workspace)/project-system
+  path: project-system
+  # Hard-coded assumption that the commit referenced by the VS insertion is within the last 100 commits to main in the repo.
+  fetchDepth: 100
+# Create the VS folder and fetch the VS repo Git information into it, excluding the files themselves (only .git history is required).
+# Doing this manual process over the checkout: VS task saves around 3 minutes. See: https://stackoverflow.com/a/43136160/294804
+# The System.AccessToken is required for the clone to occur. See: https://stackoverflow.com/a/56734304/294804
+# The Git config change is for disabling a warning message because we are fetching a specific commit instead of a branch. See: https://stackoverflow.com/a/36794768/294804
+- powershell: |
+    git config --global advice.detachedHead false
+    $null = New-Item -Path '$(Pipeline.Workspace)' -Name VS -ItemType Directory
+    Set-Location '$(Pipeline.Workspace)/VS'
+    git init
+    git remote add origin https://$(System.AccessToken)@dev.azure.com/devdiv/DevDiv/_git/VS
+    git fetch --depth 1 origin $(VsCommitId)
+  displayName: Fetch VS Repo
+- powershell: . '$(Build.SourcesDirectory)/eng/scripts/CreateTagFromVSCommitTitle.ps1' -vsDirectory '$(Pipeline.Workspace)/VS/' -vsCommitId '$(VsCommitId)'
+  displayName: Create VS Insertion Tag

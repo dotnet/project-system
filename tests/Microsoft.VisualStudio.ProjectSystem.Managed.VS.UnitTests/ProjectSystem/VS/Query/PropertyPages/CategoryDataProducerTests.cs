@@ -2,8 +2,7 @@
 
 using Microsoft.Build.Framework.XamlTypes;
 using Microsoft.VisualStudio.ProjectSystem.Query;
-using Microsoft.VisualStudio.ProjectSystem.Query.Frameworks;
-using Microsoft.VisualStudio.ProjectSystem.Query.ProjectModel.Implementation;
+using Microsoft.VisualStudio.ProjectSystem.Query.Framework;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
 {
@@ -20,7 +19,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
             var category = new Category { DisplayName = "CategoryDisplayName", Name = "CategoryName" };
             var order = 42;
 
-            var result = (CategoryValue)CategoryDataProducer.CreateCategoryValue(context, parentEntity, rule, category, order, properties);
+            var result = (CategorySnapshot)CategoryDataProducer.CreateCategoryValue(context, parentEntity, rule, category, order, properties);
 
             Assert.Equal(expected: "CategoryDisplayName", actual: result.DisplayName);
             Assert.Equal(expected: "CategoryName", actual: result.Name);
@@ -38,7 +37,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
             var category = new Category { DisplayName = "CategoryDisplayName", Name = "CategoryName" };
             var order = 42;
 
-            var result = (CategoryValue)CategoryDataProducer.CreateCategoryValue(context, parentEntity, rule, category, order, properties);
+            var result = (CategorySnapshot)CategoryDataProducer.CreateCategoryValue(context, parentEntity, rule, category, order, properties);
 
             Assert.Equal(expected: category, actual: ((IEntityValueFromProvider)result).ProviderState);
         }
@@ -54,7 +53,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
             var category = new Category { DisplayName = "CategoryDisplayName", Name = "MyCategoryName" };
             var order = 42;
 
-            var result = (CategoryValue)CategoryDataProducer.CreateCategoryValue(context, parentEntity, rule, category, order, properties);
+            var result = (CategorySnapshot)CategoryDataProducer.CreateCategoryValue(context, parentEntity, rule, category, order, properties);
 
             Assert.True(result.Id.TryGetValue(ProjectModelIdentityKeys.CategoryName, out string? name));
             Assert.Equal(expected: "MyCategoryName", actual: name);
@@ -95,7 +94,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
 
             static void assertEqual(IEntityValue entity, string expectedName, string expectedDisplayName)
             {
-                var categoryEntity = (CategoryValue)entity;
+                var categoryEntity = (CategorySnapshot)entity;
                 Assert.Equal(expectedName, categoryEntity.Name);
                 Assert.Equal(expectedDisplayName, categoryEntity.DisplayName);
             }

@@ -31,17 +31,4 @@
   <!-- Specifies the version number that is used within the 'source.extension.vsixmanifest' files for VSIX packages. -->
   <Target Name="GetVsixVersion" Outputs="$(BuildVersion)" Condition="'$(IsVsixProject)' == 'true'" />
 
-  <!--
-    Generates DependentAssemblyVersions.csv that enables the Roslyn insertion tool to update various assembly versions in the VS repository under src\ProductData.
-    This is used in the RoslynInsertionTool in the file RoslynInsertionTool.AssemblyVersions.cs.
-    See: https://github.com/dotnet/roslyn-tools/tree/main/src/RoslynInsertionTool
-
-    $(AssemblyVersion):                    The version number of both Microsoft.VisualStudio.Editors/Microsoft.VisualStudio.AppDesigner and Microsoft.VisualStudio.ProjectSystem.Managed/Microsoft.VisualStudio.ProjectSystem.Managed.VS.
-    $(DependentAssemblyVersionsCsvPath):   The file location to create the DependentAssemblyVersions.csv file.
-  -->
-  <!-- TODO: This will need to be changed/removed as part of https://github.com/dotnet/project-system/issues/7911 -->
-  <Target Name="CreateDependentAssemblyVersionsCsv" AfterTargets="Build" Condition="'$(CIBuild)' == 'true' AND !Exists('$(DependentAssemblyVersionsCsvPath)')">
-    <Exec ContinueOnError="false" Command="$(PowerShellFile) &quot;$(RepoRoot)eng\scripts\CreateDependentAssemblyVersionsCsv.ps1&quot; -csvPath &quot;$(DependentAssemblyVersionsCsvPath)&quot; -version $(AssemblyVersion)" />
-  </Target>
-
 </Project>

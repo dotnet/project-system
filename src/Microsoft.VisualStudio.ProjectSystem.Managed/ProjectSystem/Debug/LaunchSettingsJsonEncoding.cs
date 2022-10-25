@@ -404,6 +404,7 @@ internal static class LaunchSettingsJsonEncoding
     {
         public CommentSkippingJsonTextReader(TextReader reader) : base(reader)
         {
+            DateParseHandling = DateParseHandling.None;
         }
 
         public override bool Read()

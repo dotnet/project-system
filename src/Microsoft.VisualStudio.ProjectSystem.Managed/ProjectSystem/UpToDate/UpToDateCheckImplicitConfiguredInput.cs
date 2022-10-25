@@ -38,7 +38,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 resolvedAnalyzerReferencePaths: ImmutableArray<string>.Empty,
                 resolvedCompilationReferencePaths: ImmutableArray<string>.Empty,
                 copyReferenceInputs: ImmutableArray<string>.Empty,
-                lastItemsChangedAtUtc: DateTime.MinValue,
+                lastItemsChangedAtUtc: null,
                 lastItemChanges: ImmutableArray<(bool IsAdd, string ItemType, UpToDateCheckInputItem)>.Empty,
                 itemHash: null);
         }

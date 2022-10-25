@@ -3,15 +3,13 @@
 using Microsoft.Build.Framework.XamlTypes;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
 using Microsoft.VisualStudio.ProjectSystem.Query;
-using Microsoft.VisualStudio.ProjectSystem.Query.Frameworks;
-using Microsoft.VisualStudio.ProjectSystem.Query.ProjectModel;
-using Microsoft.VisualStudio.ProjectSystem.Query.ProjectModel.Implementation;
-using Microsoft.VisualStudio.ProjectSystem.Query.QueryExecution;
+using Microsoft.VisualStudio.ProjectSystem.Query.Execution;
+using Microsoft.VisualStudio.ProjectSystem.Query.Framework;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
 {
     /// <summary>
-    /// Handles the creation of <see cref="IUIPropertyValue"/> instances and populating the requested members.
+    /// Handles the creation of <see cref="IUIPropertyValueSnapshot"/> instances and populating the requested members.
     /// </summary>
     internal static class UIPropertyValueDataProducer
     {
@@ -32,7 +30,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
         {
             Requires.NotNull(property, nameof(property));
 
-            var newUIPropertyValue = new UIPropertyValueValue(runtimeModel, id, new UIPropertyValuePropertiesAvailableStatus());
+            var newUIPropertyValue = new UIPropertyValueSnapshot(runtimeModel, id, new UIPropertyValuePropertiesAvailableStatus());
 
             if (requestedProperties.UnevaluatedValue)
             {

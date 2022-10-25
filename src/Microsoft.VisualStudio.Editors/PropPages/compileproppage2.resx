@@ -725,6 +725,9 @@
   </data>
   <data name="WarningsGridView.Location" type="System.Drawing.Point, System.Drawing">
     <value>3, 115</value>
+  <data name="WarningsGridView.MinimumSize" type="System.Drawing.Size, System.Drawing">
+    <value>0, 200</value>
+  </data>
   </data>
   <data name="WarningsGridView.Size" type="System.Drawing.Size, System.Drawing">
     <value>437, 138</value>
@@ -998,6 +1001,9 @@
   </data>
   <data name="$this.Location" type="System.Drawing.Point, System.Drawing">
     <value>12, 13</value>
+  </data>
+  <data name="$this.MinimumSize" type="System.Drawing.Size, System.Drawing">
+    <value>0, 865</value>
   </data>
   <data name="$this.Size" type="System.Drawing.Size, System.Drawing">
     <value>455, 472</value>

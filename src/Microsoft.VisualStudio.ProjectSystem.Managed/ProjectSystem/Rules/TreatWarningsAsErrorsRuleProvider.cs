@@ -16,7 +16,7 @@ internal sealed class TreatWarningsAsErrorsRuleProvider : IRuleObjectProvider
     internal const string RuleName = "TreatWarningsAsErrorsRule";
     internal const string TreatWarningsAsErrorsPropertyName = "TreatWarningsAsErrors";
 
-    private readonly Lazy<List<Rule>> rules = new(CreateRules);
+    private readonly Lazy<List<Rule>> _rules = new(CreateRules);
 
     private static List<Rule> CreateRules()
     {
@@ -50,6 +50,6 @@ internal sealed class TreatWarningsAsErrorsRuleProvider : IRuleObjectProvider
 
     public IReadOnlyCollection<Rule> GetRules()
     {
-        return rules.Value;
+        return _rules.Value;
     }
 }

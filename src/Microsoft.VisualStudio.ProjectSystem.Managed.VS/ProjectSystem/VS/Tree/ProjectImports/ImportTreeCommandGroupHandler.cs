@@ -173,7 +173,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.ProjectImports
         {
             [ImportingConstructor]
             public UIHierarchyWindowCommandSetGroupHandler(
+#pragma warning disable RS0030 // Do not used banned APIs
                 [Import(typeof(SVsServiceProvider))] IServiceProvider serviceProvider,
+#pragma warning restore RS0030 // Do not used banned APIs
                 ConfiguredProject configuredProject,
                 IVsUIService<SVsUIShellOpenDocument, IVsUIShellOpenDocument> uiShellOpenDocument,
                 IVsUIService<SVsExternalFilesManager, IVsExternalFilesManager> externalFilesManager,
@@ -202,7 +204,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.ProjectImports
         {
             [ImportingConstructor]
             public StandardCommandSet97GroupHandler(
+#pragma warning disable RS0030 // Do not used banned APIs
                 [Import(typeof(SVsServiceProvider))] IServiceProvider serviceProvider,
+#pragma warning restore RS0030 // Do not used banned APIs
                 ConfiguredProject configuredProject,
                 IVsUIService<SVsUIShellOpenDocument, IVsUIShellOpenDocument> uiShellOpenDocument,
                 IVsUIService<SVsExternalFilesManager, IVsExternalFilesManager> externalFilesManager,

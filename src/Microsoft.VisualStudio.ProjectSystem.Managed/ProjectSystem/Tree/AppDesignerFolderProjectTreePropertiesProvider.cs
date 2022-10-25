@@ -2,6 +2,7 @@
 
 using Microsoft.VisualStudio.ProjectSystem.Imaging;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
+using ManagedPriorityOrder = Microsoft.VisualStudio.ProjectSystem.Order;
 
 namespace Microsoft.VisualStudio.ProjectSystem.Tree
 {
@@ -12,7 +13,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree
     [Export(typeof(IProjectTreePropertiesProvider))]
     [Export(typeof(IProjectTreeSettingsProvider))]
     [AppliesTo(ProjectCapability.AppDesigner)]
-    [Order(Order.Default)]
+    [Order(ManagedPriorityOrder.Default)]
     internal class AppDesignerFolderProjectTreePropertiesProvider : AbstractSpecialFolderProjectTreePropertiesProvider, IProjectTreeSettingsProvider
     {
         private static readonly ProjectTreeFlags s_defaultFolderFlags = ProjectTreeFlags.Create(ProjectTreeFlags.Common.AppDesignerFolder | ProjectTreeFlags.Common.BubbleUp);
