@@ -25,13 +25,13 @@
     <PackageReference Include="Microsoft.SourceLink.GitHub"         PrivateAssets="all" />
 
     <!-- CPS -->
-    <PackageReference Include="Microsoft.VisualStudio.ProjectSystem.SDK" />
-    <PackageReference Include="Microsoft.VisualStudio.ProjectSystem.Query" />
+    <PackageReference Include="Microsoft.VisualStudio.ProjectSystem" />
+    <PackageReference Include="Microsoft.VisualStudio.ProjectSystem.SDK.Tools" />
+    <PackageReference Include="Microsoft.VisualStudio.ProjectSystem.XamlTypes" Condition="'$(TargetFramework)' == 'net6.0-windows'" />
     <PackageReference Include="Microsoft.VisualStudio.Validation" />
     <PackageReference Include="Microsoft.VisualStudio.Threading" />
-    <PackageReference Include="Microsoft.VisualStudio.ProjectSystem.SDK.Tools" />
     <PackageReference Include="System.Threading.Tasks.Dataflow" />
-    
+
     <!-- VS MEF -->
     <PackageReference Include="Microsoft.VisualStudio.Composition" />
 
