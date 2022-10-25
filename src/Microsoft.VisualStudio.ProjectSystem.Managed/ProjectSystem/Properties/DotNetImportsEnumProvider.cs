@@ -62,7 +62,7 @@ internal class DotNetImportsEnumProvider : IDynamicEnumValuesProvider, IDynamicE
             foreach (INamedTypeSymbol typeMember in namespaceSymbol.GetTypeMembers())
             {
                 if (typeMember.CanBeReferencedByName
-                    && (typeMember.DeclaredAccessibility == Accessibility.Public
+                    && (typeMember.DeclaredAccessibility == Microsoft.CodeAnalysis.Accessibility.Public
                         || SymbolEqualityComparer.Default.Equals(typeMember.ContainingAssembly, compilation.Assembly)
                         || typeMember.ContainingAssembly.GivesAccessTo(compilation.Assembly)))
                 {
