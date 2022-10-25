@@ -48,7 +48,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         public override async Task<bool> IsValueInheritedAsync(string propertyName)
         {
             if (!_valueProviders.TryGetValue(propertyName, out (List<Lazy<IInterceptingPropertyValueProvider, IInterceptingPropertyValueProviderMetadata>> Providers, bool Filtered) propertyValueProviders) || 
-                GetFilteredProvider(propertyName, propertyValueProviders) is not { } valueProvider)
+                GetFilteredProvider(propertyName, propertyValueProviders, _project.Capabilities.AppliesTo) is not { } valueProvider)
             {
                 return await base.IsValueInheritedAsync(propertyName);
             }
@@ -66,7 +66,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         {
             string evaluatedProperty = await base.GetEvaluatedPropertyValueAsync(propertyName);
             if (_valueProviders.TryGetValue(propertyName, out (List<Lazy<IInterceptingPropertyValueProvider, IInterceptingPropertyValueProviderMetadata>> Providers, bool Filtered) propertyValueProviders) &&
-                GetFilteredProvider(propertyName, propertyValueProviders) is { } valueProvider)
+                GetFilteredProvider(propertyName, propertyValueProviders, _project.Capabilities.AppliesTo) is { } valueProvider)
             {
                 evaluatedProperty = await valueProvider.OnGetEvaluatedPropertyValueAsync(propertyName, evaluatedProperty, DelegatedProperties);
             }
@@ -78,7 +78,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         {
             string? unevaluatedProperty = await base.GetUnevaluatedPropertyValueAsync(propertyName);
             if (_valueProviders.TryGetValue(propertyName, out (List<Lazy<IInterceptingPropertyValueProvider, IInterceptingPropertyValueProviderMetadata>> Providers, bool Filtered) propertyValueProviders) &&
-                GetFilteredProvider(propertyName, propertyValueProviders) is { } valueProvider)
+                GetFilteredProvider(propertyName, propertyValueProviders, _project.Capabilities.AppliesTo) is { } valueProvider)
             {
                 unevaluatedProperty = await valueProvider.OnGetUnevaluatedPropertyValueAsync(propertyName, unevaluatedProperty ?? "", DelegatedProperties);
             }
@@ -90,7 +90,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         {
             string? valueToSet;
             if (_valueProviders.TryGetValue(propertyName, out (List<Lazy<IInterceptingPropertyValueProvider, IInterceptingPropertyValueProviderMetadata>> Providers, bool Filtered) propertyValueProviders) &&
-                GetFilteredProvider(propertyName, propertyValueProviders) is { } valueProvider)
+                GetFilteredProvider(propertyName, propertyValueProviders, _project.Capabilities.AppliesTo) is { } valueProvider)
             {
                 valueToSet = await valueProvider.OnSetPropertyValueAsync(propertyName, unevaluatedPropertyValue, DelegatedProperties, dimensionalConditions);
             }
@@ -111,7 +111,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
             ruleAwareProperties?.SetRuleContext(rule);
         }
 
-        private IInterceptingPropertyValueProvider? GetFilteredProvider(string propertyName, (List<Lazy<IInterceptingPropertyValueProvider, IInterceptingPropertyValueProviderMetadata>> Providers, bool Filtered) valueTuple)
+        internal static IInterceptingPropertyValueProvider? GetFilteredProvider(
+            string propertyName,
+            (List<Lazy<IInterceptingPropertyValueProvider, IInterceptingPropertyValueProviderMetadata>> Providers, bool Filtered) valueTuple,
+            Func<string, bool> appliesToEvaluator)
         {
             if (valueTuple.Filtered)
             {
@@ -122,7 +125,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
             {
                 string? appliesToExpression = lazyProvider.Value.GetType().GetCustomAttributes(true).OfType<AppliesToAttribute>().FirstOrDefault()?.AppliesTo;
 
-                return appliesToExpression is not null && !_project.Capabilities.AppliesTo(appliesToExpression);
+                return appliesToExpression is not null && !appliesToEvaluator(appliesToExpression);
             });
 
             valueTuple.Filtered = true;
