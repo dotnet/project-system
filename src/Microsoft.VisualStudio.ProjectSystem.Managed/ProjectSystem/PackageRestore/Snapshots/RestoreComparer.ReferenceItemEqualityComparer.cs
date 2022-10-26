@@ -2,7 +2,7 @@
 
 using NuGet.SolutionRestoreManager;
 
-namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
+namespace Microsoft.VisualStudio.ProjectSystem.PackageRestore
 {
     internal static partial class RestoreComparer
     {

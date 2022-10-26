@@ -2,9 +2,9 @@
 
 using System.Threading.Tasks.Dataflow;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
-using RestoreUpdate = Microsoft.VisualStudio.ProjectSystem.IProjectVersionedValue<Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore.PackageRestoreConfiguredInput>;
+using RestoreUpdate = Microsoft.VisualStudio.ProjectSystem.IProjectVersionedValue<Microsoft.VisualStudio.ProjectSystem.PackageRestore.PackageRestoreConfiguredInput>;
 
-namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
+namespace Microsoft.VisualStudio.ProjectSystem.PackageRestore
 {
     /// <summary>
     ///     Provides an implementation of <see cref="IPackageRestoreConfiguredInputDataSource"/> that combines evaluations results

@@ -2,7 +2,7 @@
 
 using Microsoft.VisualStudio.Composition;
 
-namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
+namespace Microsoft.VisualStudio.ProjectSystem.PackageRestore
 {
     /// <summary>
     ///     Represents the data source of metadata needed for input into restore operations for a <see cref="UnconfiguredProject"/>

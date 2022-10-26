@@ -4,9 +4,9 @@ using System.Globalization;
 using System.Threading.Tasks.Dataflow;
 using Microsoft.VisualStudio.ProjectSystem.Utilities;
 using NuGet.SolutionRestoreManager;
-using RestoreInfo = Microsoft.VisualStudio.ProjectSystem.IProjectVersionedValue<Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore.PackageRestoreUnconfiguredInput>;
+using RestoreInfo = Microsoft.VisualStudio.ProjectSystem.IProjectVersionedValue<Microsoft.VisualStudio.ProjectSystem.PackageRestore.PackageRestoreUnconfiguredInput>;
 
-namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
+namespace Microsoft.VisualStudio.ProjectSystem.PackageRestore
 {
     [Export(typeof(IPackageRestoreUnconfiguredInputDataSource))]
     [AppliesTo(ProjectCapability.PackageReferences)]
@@ -117,7 +117,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
             {
                 ReportUserFault(string.Format(
                         CultureInfo.CurrentCulture,
-                        VSResources.Restore_PropertyWithInconsistentValues,
+                        Resources.Restore_PropertyWithInconsistentValues,
                         propertyName,
                         propertyValue,
                         update.ProjectConfiguration));
@@ -173,7 +173,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
                 {
                     ReportUserFault(string.Format(
                         CultureInfo.CurrentCulture,
-                        VSResources.Restore_DuplicateToolReferenceItems,
+                        Resources.Restore_DuplicateToolReferenceItems,
                         existingReference.Name));
                 }
 
@@ -189,7 +189,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
             {
                 ReportUserFault(string.Format(
                     CultureInfo.CurrentCulture,
-                    VSResources.Restore_EmptyTargetFrameworkMoniker,
+                    Resources.Restore_EmptyTargetFrameworkMoniker,
                     projectConfiguration.Name));
 
                 return false;
