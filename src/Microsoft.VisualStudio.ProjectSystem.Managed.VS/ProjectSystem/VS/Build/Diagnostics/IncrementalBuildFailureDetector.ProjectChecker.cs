@@ -5,7 +5,6 @@ using Microsoft.Internal.VisualStudio.Shell.Interop;
 using Microsoft.VisualStudio.Composition;
 using Microsoft.VisualStudio.ProjectSystem.Build;
 using Microsoft.VisualStudio.ProjectSystem.UpToDate;
-using Microsoft.VisualStudio.Shell.Interop;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Build.Diagnostics
 {
@@ -30,8 +29,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build.Diagnostics
                 ConfiguredProject configuredProject,
                 IVsUIService<SVsFeatureFlags, IVsFeatureFlags> featureFlagsService,
                 IBuildUpToDateCheckValidator upToDateCheckValidator,
-                [Import(ExportContractNames.Scopes.ConfiguredProject)] IProjectAsynchronousTasksService projectAsynchronousTasksService,
-                IVsUIService<SVsOutputWindow, IVsOutputWindow> outputWindow)
+                [Import(ExportContractNames.Scopes.ConfiguredProject)] IProjectAsynchronousTasksService projectAsynchronousTasksService)
             {
                 _configuredProject = configuredProject;
                 _upToDateCheckValidator = upToDateCheckValidator;
