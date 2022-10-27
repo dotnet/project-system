@@ -137,10 +137,6 @@
   <BoolProperty Name="Optimize"
                 Visible="False" />
 
-  <StringProperty Name="OutputAssemblyForDesignTimeEvaluation"
-                  ReadOnly="True"
-                  Visible="False" />
-
   <StringProperty Name="OutputName"
                   Visible="False" />
 
