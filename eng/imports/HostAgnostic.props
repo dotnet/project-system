@@ -61,6 +61,7 @@
   </ItemGroup>
 
   <ItemGroup Condition="'$(IsUnitTestProject)' == 'true'">
+    <PackageReference Include="Microsoft.NET.Test.Sdk" />
     <PackageReference Include="Moq" />
     <PackageReference Include="Verify.Xunit" />
     <PackageReference Include="xunit.analyzers" />
@@ -68,8 +69,11 @@
     <PackageReference Include="xunit.combinatorial" />
     <PackageReference Include="xunit.extensibility.core" />
     <PackageReference Include="xunit.extensibility.execution" />
-    <PackageReference Include="xunit.runner.console" GeneratePathProperty="true" />
-    <PackageReference Include="xunit.runner.visualstudio" GeneratePathProperty="true" />
+    <PackageReference Include="xunit.runner.console" />
+    <PackageReference Include="xunit.runner.visualstudio">
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
     <InternalsVisibleTo Include="DynamicProxyGenAssembly2" Key="$(MoqPublicKey)" />
   </ItemGroup>
 
