@@ -8,8 +8,12 @@
   </PropertyGroup>
 
   <PropertyGroup>
-    <OutDirName Condition="'$(IsUnitTestProject)' == 'true'">UnitTests</OutDirName>
+    <OutDirName Condition="'$(IsUnitTestProject)' == 'true'">UnitTests\$(MSBuildProjectName)</OutDirName>
     <OutDirName Condition="'$(IsIntegrationTestProject)' == 'true'">IntegrationTests</OutDirName>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <UseCommonOutputDirectory Condition="'$(IsUnitTestProject)' == 'true'">false</UseCommonOutputDirectory>
   </PropertyGroup>
 
   <Import Project="..\Directory.Build.props"/>
