@@ -8,7 +8,7 @@
       <TestRunner>dotnet test</TestRunner>
 
       <!-- For Azure DevOps to read as the test results. -->
-      <XmlTestResultsFile>$(TestResultsDirectory)$(TargetName)$(TargetExt).trx</XmlTestResultsFile>
+      <TrxTestResultsFile>$(TestResultsDirectory)$(TargetName)$(TargetExt).trx</TrxTestResultsFile>
       <!-- For people to read the results from the build as needed. -->
       <HtmlTestResultsFile>$(TestResultsDirectory)$(TargetName)$(TargetExt).html</HtmlTestResultsFile>
     </PropertyGroup>
@@ -18,10 +18,10 @@
     <Message Text="$(MSBuildProjectName) -> Running tests..." Importance="High" />
 
     <MakeDir Directories="$(TestResultsDirectory)" />
-    <Delete Files="$(XmlTestResultsFile);$(HtmlTestResultsFile)" />
+    <Delete Files="$(TrxTestResultsFile);$(HtmlTestResultsFile)" />
 
     <!-- xUnit writes to STDERR (test name) and STDOUT (error message, stack). STDERR gets logged as an error.  -->
-    <Exec Command='$(TestRunner) --verbosity quiet --nologo --logger "trx;logfilename=$(XmlTestResultsFile)" --logger "html;logfilename=$(HtmlTestResultsFile)" $(TargetPath)' LogStandardErrorAsError="true" IgnoreExitCode="true">
+    <Exec Command='$(TestRunner) --verbosity quiet --nologo --logger "trx;logfilename=$(TrxTestResultsFile)" --logger "html;logfilename=$(HtmlTestResultsFile)" $(TargetPath)' LogStandardErrorAsError="true" IgnoreExitCode="true">
       <Output TaskParameter="ExitCode" PropertyName="ExitCode" />
     </Exec>
 
