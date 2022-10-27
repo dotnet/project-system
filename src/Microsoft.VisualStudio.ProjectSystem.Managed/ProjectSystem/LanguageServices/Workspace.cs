@@ -285,6 +285,8 @@ internal sealed class Workspace : OnceInitializedOnceDisposedUnderLockAsync, IWo
                     hostObject,
                     cancellationToken);
 
+                evaluationData.Release();
+
                 _contextCreated.TrySetResult();
 
                 _disposableBag.Add(_context);
@@ -584,7 +586,7 @@ internal sealed class Workspace : OnceInitializedOnceDisposedUnderLockAsync, IWo
     /// </summary>
     private sealed class EvaluationDataAdapter : EvaluationData
     {
-        private readonly ProjectInstance _projectInstance;
+        private ProjectInstance? _projectInstance;
 
         public EvaluationDataAdapter(ProjectInstance projectInstance)
         {
@@ -593,12 +595,27 @@ internal sealed class Workspace : OnceInitializedOnceDisposedUnderLockAsync, IWo
 
         public override string GetPropertyValue(string name)
         {
+            if (_projectInstance is null)
+            {
+                throw new ObjectDisposedException(nameof(EvaluationDataAdapter));
+            }
+
             string? value = _projectInstance.GetProperty(name)?.EvaluatedValue;
 
             // Return the empty string rather than null.
             value ??= "";
 
             return value;
+        }
+
+        /// <summary>
+        /// Ensures the inner reference to <see cref="ProjectInstance"/> is cleared,
+        /// so Roslyn cannot accidentally retain a rooted reference to it. It's a large
+        /// object and must be collected as soon as possible.
+        /// </summary>
+        internal void Release()
+        {
+            _projectInstance = null;
         }
     }
 }
