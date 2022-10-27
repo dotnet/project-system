@@ -603,9 +603,7 @@ internal sealed class Workspace : OnceInitializedOnceDisposedUnderLockAsync, IWo
             string? value = _projectInstance.GetProperty(name)?.EvaluatedValue;
 
             // Return the empty string rather than null.
-            value ??= "";
-
-            return value;
+            return value ?? "";
         }
 
         /// <summary>
