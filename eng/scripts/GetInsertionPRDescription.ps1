@@ -66,7 +66,7 @@ $description += "Updating $projectName from [$previousShaShort]($repoUrl/commit/
 $description += '---------------------------------------------------------------------------'
 # The 'w' query parameter is for ignoring whitespace.
 # See: https://stackoverflow.com/a/37145215/294804
-$description += "Included PRs: [View Diff]($repoUrl/compare/$previousSha...$currentSha?w=1)"
+$description += "Included PRs: [View Diff]($repoUrl/compare/$previousSha...$($currentSha)?w=1)"
 $description += ''
 
 # Using quadruple carats as double quotes.
@@ -94,7 +94,20 @@ $commitsClean = $commitsClean -replace '\}\r\n\{',"},`r`n{"
 $commitsJson = $commitsClean | ConvertFrom-Json
 
 # Filter the commits to only PR merges and replace 'subject' with only the PR number.
-$pullRequests = $commitsJson | Where-Object { $isPr = $_.subject -match '^Merge pull request #(\d+) from'; if($isPr) { $_.subject = $matches[1] }; $isPr }
+$pullRequests = $commitsJson | Where-Object {
+  # Matches the title for a PR merge commit.
+  $isPr = $_.subject -match '^Merge pull request #(\d+) from'
+  if(-not $isPr)
+  {
+    # Matches the title for a PR 'squash and merge' commit.
+    $isPr = $_.subject -match '\(#(\d+)\)$'
+  }
+  if($isPr)
+  {
+    $_.subject = $matches[1]
+  }
+  $isPr
+}
 # Create a markdown list item for each PR.
 $description += $pullRequests | ForEach-Object { "- [$($_.subject): $($_.body)]($repoUrl/pull/$($_.subject))" }
 
