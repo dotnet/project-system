@@ -75,7 +75,8 @@ public class WorkspaceFactoryTests
         ConfiguredProject configuredProject = ConfiguredProjectFactory.Create();
         IProjectSubscriptionUpdate evaluationRuleUpdate = IProjectSubscriptionUpdateFactory.CreateEmpty();
         IProjectSubscriptionUpdate sourceItemsUpdate = IProjectSubscriptionUpdateFactory.CreateEmpty();
-        var workspaceUpdate = WorkspaceUpdate.FromEvaluation((configuredProject, evaluationRuleUpdate, sourceItemsUpdate));
+        IProjectSnapshot projectSnapshot = IProjectSnapshot2Factory.Create();
+        var workspaceUpdate = WorkspaceUpdate.FromEvaluation((configuredProject, projectSnapshot, evaluationRuleUpdate, sourceItemsUpdate));
 
         return new ProjectVersionedValue<WorkspaceUpdate>(
             workspaceUpdate,
