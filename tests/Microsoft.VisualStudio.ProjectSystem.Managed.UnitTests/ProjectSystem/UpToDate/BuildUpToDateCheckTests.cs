@@ -154,7 +154,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             _state = new UpToDateCheckConfiguredInput(ImmutableArray.Create(configuredInput));
 
             var subscription = new Mock<BuildUpToDateCheck.ISubscription>(MockBehavior.Strict);
-            
+
             subscription.Setup(s => s.EnsureInitialized());
 
             subscription
@@ -1371,10 +1371,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 Ignoring up-to-date check items with Kind="Ignored"
                 Adding UpToDateCheckOutput outputs:
                     C:\Dev\Solution\Project\Output
-                        Skipping 'C:\Dev\Solution\Project\IgnoredOutput' with ignored Kind="Ignored"
+                    Skipping 'C:\Dev\Solution\Project\IgnoredOutput' with ignored Kind="Ignored"
                 Adding UpToDateCheckBuilt outputs:
                     C:\Dev\Solution\Project\Built
-                        Skipping 'C:\Dev\Solution\Project\IgnoredBuilt.dll' with ignored Kind="Ignored"
+                    Skipping 'C:\Dev\Solution\Project\IgnoredBuilt.dll' with ignored Kind="Ignored"
                 Adding project file inputs:
                     {_projectPath}
                 Adding newest import input:
@@ -1466,17 +1466,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 Ignoring up-to-date check items with Kind="Ignored"
                 Adding UpToDateCheckOutput outputs:
                     C:\Dev\Solution\Project\Output
-                        Skipping 'C:\Dev\Solution\Project\IgnoredOutput' with ignored Kind="Ignored"
+                    Skipping 'C:\Dev\Solution\Project\IgnoredOutput' with ignored Kind="Ignored"
                 Adding UpToDateCheckBuilt outputs:
                     C:\Dev\Solution\Project\Built
-                        Skipping 'C:\Dev\Solution\Project\IgnoredBuilt' with ignored Kind="Ignored"
+                    Skipping 'C:\Dev\Solution\Project\IgnoredBuilt' with ignored Kind="Ignored"
                 Adding project file inputs:
                     {_projectPath}
                 Adding newest import input:
                     {_projectPath}
                 Adding UpToDateCheckInput inputs:
                     C:\Dev\Solution\Project\Input
-                        Skipping 'C:\Dev\Solution\Project\IgnoredInput' with ignored Kind="Ignored"
+                    Skipping 'C:\Dev\Solution\Project\IgnoredInput' with ignored Kind="Ignored"
                 No inputs are newer than earliest output 'C:\Dev\Solution\Project\Output' ({ToLocalTime(outputTime)}). Newest input is 'C:\Dev\Solution\Project\Input' ({ToLocalTime(inputTime)}).
                 Project is up-to-date.
                 """,
