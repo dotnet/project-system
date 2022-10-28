@@ -1342,7 +1342,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 """);
         }
 
-        [Fact]
+        [Fact(Skip = "https://github.com/dotnet/project-system/issues/8642")]
         public async Task IsUpToDateAsync_False_Kinds_InputNewerThanOutput_WithIgnoredKind()
         {
             var projectSnapshot = new Dictionary<string, IProjectRuleSnapshotModel>
@@ -1387,7 +1387,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 ignoreKinds: "Ignored");
         }
 
-        [Fact]
+        [Fact(Skip = "https://github.com/dotnet/project-system/issues/8642")]
         public async Task IsUpToDateAsync_False_Kinds_InputNewerThanOutput_NoKindIgnored()
         {
             var projectSnapshot = new Dictionary<string, IProjectRuleSnapshotModel>
@@ -1437,7 +1437,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 ignoreKinds: "");
         }
 
-        [Fact]
+        [Fact(Skip = "https://github.com/dotnet/project-system/issues/8642")]
         public async Task IsUpToDateAsync_True_Kinds_InputNewerThanOutput_WithIgnoredKind()
         {
             var projectSnapshot = new Dictionary<string, IProjectRuleSnapshotModel>
@@ -1483,7 +1483,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 ignoreKinds: "Ignored");
         }
 
-        [Fact]
+        [Fact(Skip = "https://github.com/dotnet/project-system/issues/8642")]
         public async Task IsUpToDateAsync_True_Kinds_InputNewerThanOutput_NoKindIgnored()
         {
             var projectSnapshot = new Dictionary<string, IProjectRuleSnapshotModel>

@@ -32,6 +32,14 @@
     <PackageReference Include="Microsoft.VisualStudio.Threading" />
     <PackageReference Include="System.Threading.Tasks.Dataflow" />
 
+    <!-- MSBuild -->
+    <!-- Only needed because the CPS builds depend on MSBuild versions that are not available. -->
+    <!-- By specifying the versions ourselves we can avoid restore warnings and errors. -->
+    <!-- TODO: Remove these when CPS consumes packages that are available. -->
+    <PackageReference Include="Microsoft.Build" />
+    <PackageReference Include="Microsoft.Build.Tasks.Core" />
+    <PackageReference Include="Microsoft.Build.Utilities.Core" />
+
     <!-- VS MEF -->
     <PackageReference Include="Microsoft.VisualStudio.Composition" />
 
@@ -61,6 +69,7 @@
   </ItemGroup>
 
   <ItemGroup Condition="'$(IsUnitTestProject)' == 'true'">
+    <PackageReference Include="Microsoft.NET.Test.Sdk" />
     <PackageReference Include="Moq" />
     <PackageReference Include="Verify.Xunit" />
     <PackageReference Include="xunit.analyzers" />
@@ -68,8 +77,11 @@
     <PackageReference Include="xunit.combinatorial" />
     <PackageReference Include="xunit.extensibility.core" />
     <PackageReference Include="xunit.extensibility.execution" />
-    <PackageReference Include="xunit.runner.console" GeneratePathProperty="true" />
-    <PackageReference Include="xunit.runner.visualstudio" GeneratePathProperty="true" />
+    <PackageReference Include="xunit.runner.console" />
+    <PackageReference Include="xunit.runner.visualstudio">
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
     <InternalsVisibleTo Include="DynamicProxyGenAssembly2" Key="$(MoqPublicKey)" />
   </ItemGroup>
 

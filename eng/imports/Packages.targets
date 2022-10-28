@@ -65,6 +65,14 @@
     <PackageReference Update="Microsoft.VisualStudio.ProjectSystem.VS"                                Version="17.5.226-alpha-g9fd5be0a72" />
     <PackageReference Update="Microsoft.VisualStudio.ProjectSystem.XamlTypes"                         Version="17.5.226-alpha-g9fd5be0a72" />
     
+    <!-- MSBuild -->
+    <!-- Only needed because the CPS builds depend on MSBuild versions that are not available. -->
+    <!-- By specifying the versions ourselves we can avoid restore warnings and errors. -->
+    <!-- TODO: Remove these when CPS consumes packages that are available. -->
+    <PackageReference Update="Microsoft.Build" Version="17.4.0-preview-22358-01" />
+    <PackageReference Update="Microsoft.Build.Tasks.Core" Version="17.4.0-preview-22358-01" />
+    <PackageReference Update="Microsoft.Build.Utilities.Core" Version="17.4.0-preview-22358-01" />
+
     <!-- Roslyn -->
     <PackageReference Update="Microsoft.Net.Compilers.Toolset"                                        Version="4.4.0-2.final" />
     <PackageReference Update="Microsoft.VisualStudio.LanguageServices"                                Version="4.4.0-2.final" />
@@ -92,6 +100,7 @@
     <PackageReference Update="Newtonsoft.Json"                                                        Version="13.0.1" />
 
     <!-- Tests -->
+    <PackageReference Update="Microsoft.NET.Test.Sdk"                                                 Version="17.3.2" />
     <PackageReference Update="Moq"                                                                    Version="4.16.1" />
     <PackageReference Update="Verify.Xunit"                                                           Version="14.2.0" />
     <PackageReference Update="xunit"                                                                  Version="2.4.2-pre.13" />
