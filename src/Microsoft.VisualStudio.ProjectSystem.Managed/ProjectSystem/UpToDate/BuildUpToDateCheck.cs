@@ -539,15 +539,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
                 if (log.Level >= LogLevel.Verbose)
                 {
-                    log.Indent++;
-                   
                     foreach (string path in items)
                     {
                         string absolutePath = _configuredProject.UnconfiguredProject.MakeRooted(path);
                         log.Verbose(nameof(Resources.FUTD_SkippingIgnoredKindItem_2), absolutePath, kind);
                     }
-
-                    log.Indent--;
                 }
 
                 return true;
