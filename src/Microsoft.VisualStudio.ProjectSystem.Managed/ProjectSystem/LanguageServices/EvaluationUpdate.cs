@@ -7,13 +7,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices;
 /// </summary>
 internal sealed class EvaluationUpdate
 {
-    public EvaluationUpdate(ConfiguredProject configuredProject, IProjectSubscriptionUpdate evaluationRuleUpdate, IProjectSubscriptionUpdate sourceItemsUpdate)
+    public EvaluationUpdate(ConfiguredProject configuredProject, IProjectSnapshot projectSnapshot, IProjectSubscriptionUpdate evaluationRuleUpdate, IProjectSubscriptionUpdate sourceItemsUpdate)
     {
         Requires.NotNull(configuredProject, nameof(configuredProject));
+        Requires.NotNull(projectSnapshot, nameof(projectSnapshot));
         Requires.NotNull(evaluationRuleUpdate, nameof(evaluationRuleUpdate));
         Requires.NotNull(sourceItemsUpdate, nameof(sourceItemsUpdate));
 
         ConfiguredProject = configuredProject;
+        ProjectSnapshot = projectSnapshot;
         EvaluationRuleUpdate = evaluationRuleUpdate;
         SourceItemsUpdate = sourceItemsUpdate;
     }
@@ -26,6 +28,14 @@ internal sealed class EvaluationUpdate
     /// For example, it changes when switching between Debug and Release configurations.
     /// </remarks>
     public ConfiguredProject ConfiguredProject { get; }
+
+    /// <summary>
+    /// The current MSBuild snapshot of the project. Used only during workspace construction,
+    /// in order to allow Roslyn to request arbitrary properties from the project. Without this,
+    /// we can only serve up properties defined in our rules, which couples the project system
+    /// to Roslyn.
+    /// </summary>
+    public IProjectSnapshot ProjectSnapshot { get; }
 
     public IProjectSubscriptionUpdate EvaluationRuleUpdate { get; }
 
