@@ -18,9 +18,9 @@ jobs:
     displayName: === Build Repository ===
     condition: false
 
-  # Runs the full build of the projects for the ProjectSystem.Core.sln solution.
-  - script: dotnet build $(Build.SourcesDirectory)/ProjectSystem.Core.sln -v:normal -p:Configuration=$(BuildConfiguration) -p:CIBuild=true -t:Restore;Build;Test;Pack
-    displayName: Build Core Projects
+  # Runs the full build of the projects in the repository. See Build.proj for details.
+  - script: $(Build.SourcesDirectory)/build.cmd /v:normal /p:Configuration=$(BuildConfiguration) /p:CIBuild=true
+    displayName: Build All Projects
 
   ###################################################################################################################################################################
   # PUBLISH BUILD
