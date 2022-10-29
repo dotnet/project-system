@@ -1,5 +1,6 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
+using System.Diagnostics.CodeAnalysis;
 using Microsoft.Build.Execution;
 using Microsoft.VisualStudio.LanguageServices.ProjectSystem;
 using Microsoft.VisualStudio.ProjectSystem.OperationProgress;
@@ -595,15 +596,35 @@ internal sealed class Workspace : OnceInitializedOnceDisposedUnderLockAsync, IWo
 
         public override string GetPropertyValue(string name)
         {
-            if (_projectInstance is null)
-            {
-                throw new ObjectDisposedException(nameof(EvaluationDataAdapter));
-            }
+            Validate();
 
             string? value = _projectInstance.GetProperty(name)?.EvaluatedValue;
 
             // Return the empty string rather than null.
             return value ?? "";
+        }
+
+        public override ImmutableArray<string> GetItemValues(string name)
+        {
+            Validate();
+
+            ICollection<ProjectItemInstance> items = _projectInstance.GetItems(itemType: name);
+
+            if (items.Count == 0)
+            {
+                return ImmutableArray<string>.Empty;
+            }
+
+            return items.Select(item => item.EvaluatedInclude).ToImmutableArray();
+        }
+
+        [MemberNotNull(nameof(_projectInstance))]
+        private void Validate()
+        {
+            if (_projectInstance is null)
+            {
+                throw new ObjectDisposedException(nameof(EvaluationDataAdapter));
+            }
         }
 
         /// <summary>
