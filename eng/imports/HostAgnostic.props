@@ -25,6 +25,7 @@
     <!--
       The SourceLink package depends on the repo provider used.
       TODO: Determine a mechanism of switching these depending on the location of the source.
+      https://github.com/dotnet/sourcelink#using-source-link-in-net-projects
     -->
     <!-- <PackageReference Include="Microsoft.SourceLink.GitHub"         PrivateAssets="all" /> -->
     <PackageReference Include="Microsoft.SourceLink.AzureRepos.Git"         PrivateAssets="all" />

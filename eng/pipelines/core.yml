@@ -17,7 +17,7 @@ pr:
 # Activates the pipeline after a PR is merged.
 # See: https://docs.microsoft.com/azure/devops/pipelines/yaml-schema/trigger?view=azure-pipelines#examples
 trigger:
-    branches:
+  branches:
     include:
     - dev/PortToNET6
 
