@@ -128,7 +128,22 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
         public ImmutableDictionary<string, ImmutableArray<UpToDateCheckInputItem>> InputSourceItemsByItemType { get; }
 
+        /// <summary>
+        /// An alphabetically ordered list of the set names present in this project.
+        /// </summary>
+        /// <remarks>
+        /// Does NOT contain <see cref="BuildUpToDateCheck.DefaultSetName"/>.
+        /// </remarks>
         public ImmutableArray<string> SetNames { get; }
+
+
+        /// <summary>
+        /// An alphabetically ordered list of the kind names present in this project.
+        /// </summary>
+        /// <remarks>
+        /// Contains <see cref="BuildUpToDateCheck.DefaultKindName"/>.
+        /// </remarks>
+        public ImmutableArray<string> KindNames { get; }
 
         public ImmutableDictionary<string, ImmutableDictionary<string, ImmutableArray<string>>> UpToDateCheckInputItemsByKindBySetName { get; }
 
@@ -167,6 +182,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             InputSourceItemTypes = ImmutableArray<string>.Empty;
             InputSourceItemsByItemType = ImmutableDictionary.Create<string, ImmutableArray<UpToDateCheckInputItem>>(StringComparers.ItemTypes);
             SetNames = ImmutableArray<string>.Empty;
+            KindNames = ImmutableArray<string>.Empty;
             UpToDateCheckInputItemsByKindBySetName = emptyItemBySetName;
             UpToDateCheckOutputItemsByKindBySetName = emptyItemBySetName;
             UpToDateCheckBuiltItemsByKindBySetName = emptyItemBySetName;
@@ -220,17 +236,34 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             ItemHash = itemHash;
 
             var setNames = new HashSet<string>(BuildUpToDateCheck.SetNameComparer);
-            AddKeys(upToDateCheckInputItemsByKindBySetName);
-            AddKeys(upToDateCheckOutputItemsByKindBySetName);
-            AddKeys(upToDateCheckBuiltItemsByKindBySetName);
+            AddSetNames(upToDateCheckInputItemsByKindBySetName);
+            AddSetNames(upToDateCheckOutputItemsByKindBySetName);
+            AddSetNames(upToDateCheckBuiltItemsByKindBySetName);
             setNames.Remove(BuildUpToDateCheck.DefaultSetName);
             SetNames = setNames.OrderBy(n => n, BuildUpToDateCheck.SetNameComparer).ToImmutableArray();
 
-            void AddKeys(ImmutableDictionary<string, ImmutableDictionary<string, ImmutableArray<string>>> dictionary)
+            var kindNames = new HashSet<string>(BuildUpToDateCheck.KindNameComparer);
+            AddKindNames(upToDateCheckInputItemsByKindBySetName);
+            AddKindNames(upToDateCheckOutputItemsByKindBySetName);
+            AddKindNames(upToDateCheckBuiltItemsByKindBySetName);
+            KindNames = kindNames.OrderBy(n => n, BuildUpToDateCheck.KindNameComparer).ToImmutableArray();
+
+            void AddSetNames(ImmutableDictionary<string, ImmutableDictionary<string, ImmutableArray<string>>> itemsByKindBySetName)
             {
-                foreach ((string key, _) in dictionary)
+                foreach ((string setName, _) in itemsByKindBySetName)
                 {
-                    setNames.Add(key);
+                    setNames.Add(setName);
+                }
+            }
+
+            void AddKindNames(ImmutableDictionary<string, ImmutableDictionary<string, ImmutableArray<string>>> itemsByKindBySetName)
+            {
+                foreach ((_, ImmutableDictionary<string, ImmutableArray<string>> itemsByKind) in itemsByKindBySetName)
+                {
+                    foreach ((string kind, _) in itemsByKind)
+                    {
+                        kindNames.Add(kind);
+                    }
                 }
             }
         }
@@ -411,7 +444,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
                 var itemsByKindBySet = new Dictionary<string, Dictionary<string, HashSet<string>>>(BuildUpToDateCheck.SetNameComparer);
 
-                foreach ((string item, IImmutableDictionary<string, string> metadata) in projectChangeDescription.After.Items)
+                var after = projectChangeDescription.After.Items as IDataWithOriginalSource<KeyValuePair<string, IImmutableDictionary<string, string>>>;
+
+                Assumes.NotNull(after);
+
+                foreach ((string item, IImmutableDictionary<string, string> metadata) in after.SourceData)
                 {
                     if (metadataPredicate is not null && !metadataPredicate(metadata))
                     {
