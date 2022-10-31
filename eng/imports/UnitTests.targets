@@ -1,10 +1,32 @@
 <!-- Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information. -->
 <Project>
 
+  <Target Name="_ComputeTargetFrameworkItemsForInnerTest"
+          Condition="'$(IsCrossTargetingBuild)' == 'true'">
+    <ItemGroup>
+      <_TargetFramework Include="$(TargetFrameworks)" />
+      <!-- Make normalization explicit: Trim; Deduplicate by keeping first occurrence, case insensitive -->
+      <_TargetFrameworkNormalized Include="@(_TargetFramework->Trim()->Distinct())" />
+      <_InnerTestProjects Include="$(MSBuildProjectFile)">
+        <AdditionalProperties>TargetFramework=%(_TargetFrameworkNormalized.Identity)</AdditionalProperties>
+      </_InnerTestProjects>
+    </ItemGroup>
+  </Target>
+
+  <Target Name="DispatchToInnerTests"
+          DependsOnTargets="_ComputeTargetFrameworkItemsForInnerTest"
+          Condition="'$(IsCrossTargetingBuild)' == 'true'">
+    <MSBuild Projects="@(_InnerTestProjects)"
+             Condition="'@(_InnerTestProjects)' != '' "
+             Targets="Test"
+             BuildInParallel="true" />
+  </Target>
+
   <!-- Runs unit tests for a project via 'dotnet test'. -->
-  <Target Name="Test">
+  <Target Name="TestCore"
+          Condition="'$(IsCrossTargetingBuild)' != 'true'">
     <PropertyGroup>
-      <TestResultsDirectory>$(ArtifactsTestResultsDir)</TestResultsDirectory>
+      <TestResultsDirectory>$(ArtifactsTestResultsDir)$(TargetFramework)\</TestResultsDirectory>
       <TestRunner>dotnet test</TestRunner>
 
       <!-- For Azure DevOps to read as the test results. -->
@@ -31,5 +53,8 @@
     <Error Text="Tests failed, see $(HtmlTestResultsFile) for full results." Condition="$(ExitCode) != 0 AND Exists('$(HtmlTestResultsFile)')" File="$(TestRunner)" />
     <Error Text="Attempting to run the test runner '$(TestRunner)' failed with error level $(ExitCode) and failed to produce any results. Use 'build.cmd /diagnostic' and consult 'log\Build.binlog' for more information." Condition="$(ExitCode) != 0 AND !Exists('$(HtmlTestResultsFile)')" File="xUnit" />
   </Target>
+
+  <Target Name="Test"
+          DependsOnTargets="TestCore;DispatchToInnerTests" />
 
 </Project>

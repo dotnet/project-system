@@ -8,9 +8,40 @@
     <RootNamespace>Microsoft.VisualStudio</RootNamespace>
   </PropertyGroup>
 
-  <ItemGroup>
-    <Reference Include="WindowsBase" />
+  <PropertyGroup>
+    <TargetFramework></TargetFramework>
+    <TargetFrameworks>net472;net6.0-windows</TargetFrameworks>
+
+    <!-- TODO: Remove this when the port to net6.0 is complete -->
+    <NoWarn>$(NoWarn);NU1701;NU1702</NoWarn>
+  </PropertyGroup>
+
+  <!-- TODO: Re-enable nullability and clean up warnings. -->
+  <PropertyGroup Condition="'$(TargetFramework)' == 'net6.0-windows'">
+    <Nullable>annotations</Nullable>
+    <NoWarn>$(NoWarn);RS0037</NoWarn>
+  </PropertyGroup>
+
+  <!-- TODO: Remove this once ImageMoniker and related types are available in a net6.0-compatible package. -->
+  <ItemGroup Condition="'$(TargetFramework)' == 'net6.0-windows'">
+    <!--<PackageReference Remove="Microsoft.VisualStudio.SDK.EmbedInteropTypes" />
+    <PackageReference Remove="Microsoft.VisualStudio.ImageCatalog" />-->
+
+    <!--<Compile Remove="ProjectSystem\CopyPaste\**\*.cs" />-->
+    <Compile Remove="ProjectSystem\Imaging\**\*.cs" />
+    <Compile Remove="ProjectSystem\Tree\**\*.cs" />
+
+    <Compile Remove="Mocks\IMockDependenciesViewModelFactory.cs" />
+    <Compile Remove="Mocks\IProjectDependenciesSubTreeProviderFactory.cs" />
+    <Compile Remove="Mocks\MockIDependenciesTreeServices.cs" />
+    <Compile Remove="Mocks\TestDependencyModel.cs" />
+    <Compile Remove="Mocks\IProjectDependenciesSubTreeProviderFactory.cs" />
+    <Compile Remove="Mocks\IProjectImageProviderFactory.cs" />
   </ItemGroup>
+
+  <!-- <ItemGroup>
+    <Reference Include="WindowsBase" />
+  </ItemGroup> -->
 
   <ItemGroup>
     <InternalsVisibleTo Include="Microsoft.VisualStudio.ProjectSystem.Managed.VS.UnitTests" />
