@@ -20,7 +20,7 @@ jobs:
 
   # Allows for accessing the internal AzDO feed (vs-impl-internal) for project restore via Azure Artifacts Credential Provider.
   # See: https://github.com/microsoft/artifacts-credprovider#automatic-usage
-  # Task info: https://docs.microsoft.com/azure/devops/pipelines/tasks/package/nuget-authenticate?view=azure-devops
+  # YAML reference: https://docs.microsoft.com/azure/devops/pipelines/tasks/package/nuget-authenticate?view=azure-devops
   - task: NuGetAuthenticate@1
     displayName: Authenticate NuGet
 

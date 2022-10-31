@@ -64,11 +64,3 @@ stages:
     parameters:
       BuildConfiguration: Release
       ArtifactName: '$(Build.BuildNumber)'
-
-# - stage: PostBuild
-#   displayName: Post-Build
-#   dependsOn: Build
-#   variables:
-#     BuildConfiguration: Release
-#   jobs:
-#   - template: templates/publish-richnav.yml
