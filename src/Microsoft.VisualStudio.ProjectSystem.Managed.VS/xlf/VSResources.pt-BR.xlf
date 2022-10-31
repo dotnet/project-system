@@ -248,21 +248,6 @@ Para depurar esse projeto, adicione um projeto executável a essa solução que 
         <target state="translated">Não mostrar novamente</target>
         <note />
       </trans-unit>
-      <trans-unit id="Restore_PropertyWithInconsistentValues">
-        <source>The value of the '{0}' property is inconsistent between target frameworks. This property must be identical for NuGet restore to function correctly. The value '{1}' from the '{2}' configuration will be used, other target frameworks may fail to pick NuGet assets.</source>
-        <target state="translated">O valor da propriedade '{0}' está inconsistente entre as estruturas de destino. Essa propriedade precisa ser idêntica para que a restauração do NuGet funcione corretamente. O valor '{1}' da configuração '{2}' será usado. Outras estruturas de destino poderão falhar ao escolher ativos do NuGet.</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="Restore_DuplicateToolReferenceItems">
-        <source>The metadata on 'DotNetCliToolReference' item '{0}' is inconsistent between target frameworks. Only the first one will be restored.</source>
-        <target state="translated">Os metadados no item 'DotNetCliToolReference' '{0}' são inconsistentes entre as estruturas de destino. Somente o primeiro será restaurado.</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="Restore_EmptyTargetFrameworkMoniker">
-        <source>The value of the 'TargetFrameworkMoniker' and 'NuGetTargetMoniker' properties in the '{0}' configuration are both empty. This configuration will not contribute to NuGet restore, which may result in restore and build errors.</source>
-        <target state="translated">Os valores das propriedades 'TargetFrameworkMoniker' e 'NuGetTargetMoniker' na configuração '{0}' estão vazios. Essa configuração não contribuirá para a restauração do NuGet, o que poderá resultar em erros de restauração e de build.</target>
-        <note />
-      </trans-unit>
       <trans-unit id="XprojNotSupported">
         <source>Xproj project files are no longer supported. For details on migrating to csproj see https://docs.microsoft.com/dotnet/core/migration/.</source>
         <target state="translated">Não há mais suporte para arquivos de projeto Xproj. Para obter detalhes sobre migração para csproj, consulte https://docs.microsoft.com/dotnet/core/migration/.</target>

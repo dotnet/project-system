@@ -2,7 +2,7 @@
 
 using NuGet.SolutionRestoreManager;
 
-namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
+namespace Microsoft.VisualStudio.ProjectSystem.PackageRestore
 {
     /// <summary>
     ///     Concrete implementation of <see cref="IVsProjectRestoreInfo2"/> that will be passed to

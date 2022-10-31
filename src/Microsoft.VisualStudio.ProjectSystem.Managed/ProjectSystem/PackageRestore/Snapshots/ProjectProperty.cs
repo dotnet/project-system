@@ -3,7 +3,7 @@
 using System.Diagnostics;
 using NuGet.SolutionRestoreManager;
 
-namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
+namespace Microsoft.VisualStudio.ProjectSystem.PackageRestore
 {
     /// <summary>
     ///     Represents a single key/value for a <see cref="IVsTargetFrameworkInfo"/>.

@@ -383,6 +383,21 @@ Questo progetto è stato caricato con il tipo di progetto non corretto, probabil
         <target state="translated">(Nessuno)</target>
         <note>Special value to show in the project property pages when a property has no value.</note>
       </trans-unit>
+      <trans-unit id="Restore_DuplicateToolReferenceItems">
+        <source>The metadata on 'DotNetCliToolReference' item '{0}' is inconsistent between target frameworks. Only the first one will be restored.</source>
+        <target state="new">The metadata on 'DotNetCliToolReference' item '{0}' is inconsistent between target frameworks. Only the first one will be restored.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="Restore_EmptyTargetFrameworkMoniker">
+        <source>The value of the 'TargetFrameworkMoniker' and 'NuGetTargetMoniker' properties in the '{0}' configuration are both empty. This configuration will not contribute to NuGet restore, which may result in restore and build errors.</source>
+        <target state="new">The value of the 'TargetFrameworkMoniker' and 'NuGetTargetMoniker' properties in the '{0}' configuration are both empty. This configuration will not contribute to NuGet restore, which may result in restore and build errors.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="Restore_PropertyWithInconsistentValues">
+        <source>The value of the '{0}' property is inconsistent between target frameworks. This property must be identical for NuGet restore to function correctly. The value '{1}' from the '{2}' configuration will be used, other target frameworks may fail to pick NuGet assets.</source>
+        <target state="new">The value of the '{0}' property is inconsistent between target frameworks. This property must be identical for NuGet restore to function correctly. The value '{1}' from the '{2}' configuration will be used, other target frameworks may fail to pick NuGet assets.</target>
+        <note />
+      </trans-unit>
       <trans-unit id="SdkNodeName">
         <source>SDK</source>
         <target state="translated">SDK</target>

@@ -2,6 +2,7 @@
 
 using Microsoft.Internal.VisualStudio.Shell.Interop;
 using Microsoft.VisualStudio.IO;
+using Microsoft.VisualStudio.ProjectSystem.PackageRestore;
 using Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore.Snapshots;
 using Microsoft.VisualStudio.ProjectSystem.VS.UI.InfoBarService;
 using Microsoft.VisualStudio.Telemetry;
