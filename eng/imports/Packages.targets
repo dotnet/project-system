@@ -15,7 +15,13 @@
     <PackageReference Update="Microsoft.DiaSymReader.Pdb2Pdb"                                         Version="1.1.0-beta2-22320-02" />
     <!-- This package is deprecated. CodecovUploader is now the recommended package. -->
     <PackageReference Update="Codecov"                                                                Version="1.13.0" />
-    <PackageReference Update="Microsoft.SourceLink.GitHub"                                            Version="1.1.1" />
+    <!--
+      The SourceLink package depends on the repo provider used.
+      TODO: Determine a mechanism of switching these depending on the location of the source.
+      https://github.com/dotnet/sourcelink#using-source-link-in-net-projects
+    -->
+    <!-- <PackageReference Update="Microsoft.SourceLink.GitHub"                                            Version="1.1.1" /> -->
+    <PackageReference Update="Microsoft.SourceLink.AzureRepos.Git"                                            Version="1.1.1" />
 
     <!-- VS SDK -->
     <PackageReference Update="EnvDTE"                                                                 Version="17.3.32804.24" />
