@@ -7,7 +7,7 @@ public class InterceptedProjectPropertiesTests
     private const string MockPropertyName = "MockProperty";
     private const string Capability1 = nameof(Capability1);
     private const string Capability2 = nameof(Capability2);
-    private const string Capability3 = nameof(Capability2);
+    private const string Capability3 = nameof(Capability3);
 
     [Fact]
     public void InterceptedProjectProperties_GetValueProviderBasedOnCapability_WithNonEmptyAndEmptyAppliesTo()
@@ -23,7 +23,7 @@ public class InterceptedProjectPropertiesTests
                     new(() => new MockPropertyFilteredInterceptor1(), metadata),
                     new(() => new MockPropertyFilteredInterceptor2(), metadata),
                     new(() => new MockPropertyFilteredInterceptor3(), metadata)
-                }, false);
+                });
       
         Assert.Throws<ArgumentException>(() =>
         {
@@ -37,7 +37,7 @@ public class InterceptedProjectPropertiesTests
             {
                 new(() => new MockPropertyFilteredInterceptor1(), metadata), 
                 new(() => new MockPropertyFilteredInterceptor2(), metadata)
-            }, false);
+            });
         
         Assert.Equal(typeof(MockPropertyFilteredInterceptor1), providersWithNonEmptyAppliesTo.GetFilteredProvider(MockPropertyName, AppliesToFunction(Capability1))?.GetType());
       

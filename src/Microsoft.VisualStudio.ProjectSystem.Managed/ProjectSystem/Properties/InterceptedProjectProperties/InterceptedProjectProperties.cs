@@ -33,7 +33,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
 
                     if (!builder.TryGetValue(propertyName, out Providers? entry))
                     {
-                        entry = new Providers(new List<Lazy<IInterceptingPropertyValueProvider, IInterceptingPropertyValueProviderMetadata>> { valueProvider }, false);
+                        entry = new Providers(new List<Lazy<IInterceptingPropertyValueProvider, IInterceptingPropertyValueProviderMetadata>> { valueProvider });
                         builder.Add(propertyName, entry);
                     }
 
@@ -113,53 +113,34 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
 
     internal class Providers
     {
-        public Providers(List<Lazy<IInterceptingPropertyValueProvider, IInterceptingPropertyValueProviderMetadata>> exports, bool isFiltered)
+        public Providers(List<Lazy<IInterceptingPropertyValueProvider, IInterceptingPropertyValueProviderMetadata>> exports)
         {
             Exports = exports;
-            IsFiltered = isFiltered;
         }
 
         public List<Lazy<IInterceptingPropertyValueProvider, IInterceptingPropertyValueProviderMetadata>> Exports { get; private set; }
-
-        public bool IsFiltered { get; private set; }
 
         public IInterceptingPropertyValueProvider? GetFilteredProvider(
             string propertyName,
             Func<string, bool> appliesToEvaluator)
         {
-            if (IsFiltered)
-            {
-                return ReturnProviderAfterFiltering();
-            }
-
-            Exports.RemoveAll(lazyProvider =>
+            // todo consider caching this based on capability
+            var foundExports = Exports.Where(lazyProvider =>
             {
                 string? appliesToExpression = lazyProvider.Value.GetType()
                     .GetCustomAttributes(typeof(AppliesToAttribute), inherit: true)
                     .OfType<AppliesToAttribute>()
                     .FirstOrDefault()?.AppliesTo;
 
-                return appliesToExpression is not null && !appliesToEvaluator(appliesToExpression);
-            });
+                return appliesToExpression is null || appliesToEvaluator(appliesToExpression);
+            }).ToList();
 
-            Exports = Exports.GroupBy(x => x.Value.GetType())
-                .Select(x => x.First())
-                .ToList();
-
-
-            IsFiltered = true;
-
-            return ReturnProviderAfterFiltering();
-
-            IInterceptingPropertyValueProvider? ReturnProviderAfterFiltering()
+            return foundExports.Count switch
             {
-                return Exports.Count switch
-                {
-                    0 => null,
-                    1 => Exports.First().Value,
-                    _ => throw new ArgumentException($"Duplicate property value providers for same property name: {propertyName}")
-                };
-            }
+                0 => null,
+                1 => foundExports.First().Value,
+                _ => throw new ArgumentException($"Duplicate property value providers for same property name: {propertyName}")
+            };
         }
     }
 }
