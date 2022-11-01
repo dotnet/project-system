@@ -26,7 +26,8 @@ internal class MissingSetupComponentRegistrationService : IMissingSetupComponent
         .Add("v3.0", "Microsoft.NetCore.Component.Runtime.3.1")
         .Add("v3.1", "Microsoft.NetCore.Component.Runtime.3.1")
         .Add("v5.0", "Microsoft.NetCore.Component.Runtime.5.0")
-        .Add("v6.0", "Microsoft.NetCore.Component.Runtime.6.0");
+        .Add("v6.0", "Microsoft.NetCore.Component.Runtime.6.0")
+        .Add("v7.0", "Microsoft.NetCore.Component.Runtime.7.0");
 
     private static readonly ImmutableHashSet<string> s_supportedReleaseChannelWorkloads = ImmutableHashSet.Create(StringComparers.WorkloadNames, WasmToolsWorkloadName);
 
@@ -97,6 +98,10 @@ internal class MissingSetupComponentRegistrationService : IMissingSetupComponent
                 {
                     if (_netCoreRegistryKeyValues is null)
                     {
+                        // Workaround to fix https://devdiv.visualstudio.com/DevDiv/_workitems/edit/1460328
+                        // VS has no information about the packages installed outside VS, and deep detection is not suggested for performance reasons.
+                        // This workaround reads the Registry Key HKLM\SOFTWARE\WOW6432Node\dotnet\Setup\InstalledVersions\x64\sharedfx\Microsoft.NETCore.App
+                        // and get the installed runtime versions from the value names.
                         _netCoreRegistryKeyValues = NetCoreRuntimeVersionsRegistryReader.ReadRuntimeVersionsInstalledInLocalMachine();
                     }
                 }
@@ -163,10 +168,7 @@ internal class MissingSetupComponentRegistrationService : IMissingSetupComponent
 
     public void RegisterPossibleMissingSdkRuntimeVersion(Guid projectGuid, ConfiguredProject project, string runtimeVersion)
     {
-        // Workaround to fix https://devdiv.visualstudio.com/DevDiv/_workitems/edit/1460328
-        // VS has no information about the packages installed outside VS, and deep detection is not suggested for performance reasons.
-        // This workaround reads the Registry Key HKLM\SOFTWARE\WOW6432Node\dotnet\Setup\InstalledVersions\x64\sharedfx\Microsoft.NETCore.App
-        // and get the installed runtime versions from the value names.
+        // Check if the runtime is already installed in VS
         if (!string.IsNullOrEmpty(runtimeVersion) &&
             (RuntimeVersionsInstalledInLocalMachine is null || !RuntimeVersionsInstalledInLocalMachine.Contains(runtimeVersion)) &&
             s_packageVersionToComponentId.TryGetValue(runtimeVersion, value: out string? componentId))
@@ -338,6 +340,13 @@ internal class MissingSetupComponentRegistrationService : IMissingSetupComponent
         return vsComponentIdsToRegister;
     }
 
+    private bool IsSupportedWorkload(string workloadName)
+    {
+        return !string.IsNullOrWhiteSpace(workloadName)
+            && (s_supportedReleaseChannelWorkloads.Contains(workloadName)
+                || _isVSFromPreviewChannel == true);
+    }
+
     private void AddMissingSdkRuntimeComponentIds(IVsSetupCompositionService setupCompositionService, Dictionary<Guid, IReadOnlyCollection<string>> vsComponentIdsToRegister)
     {
         foreach (var (projectGuid, runtimeComponentId) in _projectGuidToRuntimeDescriptorMap)
@@ -356,6 +365,8 @@ internal class MissingSetupComponentRegistrationService : IMissingSetupComponent
             vsComponentIdsToRegister[projectGuid] = runtimeVsComponents.ToImmutableList();
         }
     }
+
+    #region IVsSolutionEvents
 
     public int OnAfterOpenProject(IVsHierarchy pHierarchy, int fAdded)
     {
@@ -409,6 +420,8 @@ internal class MissingSetupComponentRegistrationService : IMissingSetupComponent
         return HResult.OK;
     }
 
+    #endregion
+
     public async Task InitializeAsync(CancellationToken cancellationToken = default)
     {
         await _threadHandling.Value.SwitchToUIThread();
@@ -433,12 +446,5 @@ internal class MissingSetupComponentRegistrationService : IMissingSetupComponent
                 _vsSolution = null;
             }
         }
-    }
-
-    private bool IsSupportedWorkload(string workloadName)
-    {
-        return !string.IsNullOrWhiteSpace(workloadName)
-            && (s_supportedReleaseChannelWorkloads.Contains(workloadName)
-                || _isVSFromPreviewChannel == true);
     }
 }

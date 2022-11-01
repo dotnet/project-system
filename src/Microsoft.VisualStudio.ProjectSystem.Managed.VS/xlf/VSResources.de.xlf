@@ -248,21 +248,6 @@ Um das Projekt zu debuggen, fügen Sie dieser Projektmappe ein ausführbares Pro
         <target state="translated">Nicht mehr anzeigen</target>
         <note />
       </trans-unit>
-      <trans-unit id="Restore_PropertyWithInconsistentValues">
-        <source>The value of the '{0}' property is inconsistent between target frameworks. This property must be identical for NuGet restore to function correctly. The value '{1}' from the '{2}' configuration will be used, other target frameworks may fail to pick NuGet assets.</source>
-        <target state="translated">Der Wert der Eigenschaft "{0}" ist zwischen Zielframeworks inkonsistent. Diese Eigenschaft muss identisch sein, damit die NuGet-Wiederherstellung ordnungsgemäß funktioniert. Der Wert "{1}" aus der {2}-Konfiguration wird verwendet, andere Zielframeworks wählen möglicherweise keine NuGet-Objekte aus.</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="Restore_DuplicateToolReferenceItems">
-        <source>The metadata on 'DotNetCliToolReference' item '{0}' is inconsistent between target frameworks. Only the first one will be restored.</source>
-        <target state="translated">Die Metadaten für das DotNetCliToolReference-Element "{0}" sind zwischen Zielframeworks inkonsistent. Nur das erste Element wird wiederhergestellt.</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="Restore_EmptyTargetFrameworkMoniker">
-        <source>The value of the 'TargetFrameworkMoniker' and 'NuGetTargetMoniker' properties in the '{0}' configuration are both empty. This configuration will not contribute to NuGet restore, which may result in restore and build errors.</source>
-        <target state="translated">Die Werte der Eigenschaften "TargetFrameworkMoniker" und "NuGetTargetMoniker" in der Konfiguration "{0}" sind beide leer. Diese Konfiguration wird bei der NuGet-Wiederherstellung nicht berücksichtigt, was zu Wiederherstellungs- und Buildfehlern führen kann.</target>
-        <note />
-      </trans-unit>
       <trans-unit id="XprojNotSupported">
         <source>Xproj project files are no longer supported. For details on migrating to csproj see https://docs.microsoft.com/dotnet/core/migration/.</source>
         <target state="translated">XPROJ-Projektdateien werden nicht mehr unterstützt. Informationen zur Migration zu CSPROJ-Dateien finden Sie unter https://docs.microsoft.com/dotnet/core/migration/.</target>

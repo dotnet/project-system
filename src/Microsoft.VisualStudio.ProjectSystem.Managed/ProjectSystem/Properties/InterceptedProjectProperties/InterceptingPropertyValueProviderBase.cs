@@ -25,8 +25,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
 
         public virtual async Task<bool> IsValueDefinedInContextAsync(string propertyName, IProjectProperties defaultProperties)
         {
-            var t = await defaultProperties.IsValueInheritedAsync(propertyName);
-            return !await defaultProperties.IsValueInheritedAsync(propertyName);
+            return IsValueDefinedInContextMSBuildPropertiesAsync(defaultProperties, new[]{propertyName});
         }
 
         internal static async Task<bool> IsValueDefinedInContextMSBuildPropertiesAsync(IProjectProperties defaultProperties, string[] msBuildPropertyNames)
