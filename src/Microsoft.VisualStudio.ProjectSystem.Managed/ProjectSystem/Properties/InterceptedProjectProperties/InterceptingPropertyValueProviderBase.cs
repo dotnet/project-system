@@ -27,7 +27,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
 
         public virtual Task<bool> IsValueDefinedInContextAsync(string propertyName, IProjectProperties defaultProperties)
         {
-            return TaskResult.True;
+            return IsValueDefinedInContextMSBuildPropertiesAsync(defaultProperties, new[]{propertyName});
         }
 
         private protected static async Task<bool> IsValueDefinedInContextMSBuildPropertiesAsync(IProjectProperties defaultProperties, string[] msBuildPropertyNames)
