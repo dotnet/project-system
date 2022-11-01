@@ -8,9 +8,9 @@ using Microsoft.VisualStudio.Threading;
 using Microsoft.VisualStudio.ProjectSystem.VS.UI.InfoBarService;
 using Microsoft.VisualStudio.Telemetry;
 using NuGet.SolutionRestoreManager;
-using Microsoft.Internal.VisualStudio.Shell.Interop;
 using System.Diagnostics;
 using Microsoft.VisualStudio.ProjectSystem.PackageRestore;
+using Microsoft.Internal.VisualStudio.Shell.Interop;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
 {

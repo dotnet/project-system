@@ -154,7 +154,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             _state = new UpToDateCheckConfiguredInput(ImmutableArray.Create(configuredInput));
 
             var subscription = new Mock<BuildUpToDateCheck.ISubscription>(MockBehavior.Strict);
-            
+
             subscription.Setup(s => s.EnsureInitialized());
 
             subscription
@@ -1371,10 +1371,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 Ignoring up-to-date check items with Kind="Ignored"
                 Adding UpToDateCheckOutput outputs:
                     C:\Dev\Solution\Project\Output
-                        Skipping 'C:\Dev\Solution\Project\IgnoredOutput' with ignored Kind="Ignored"
+                    Skipping 'C:\Dev\Solution\Project\IgnoredOutput' with ignored Kind="Ignored"
                 Adding UpToDateCheckBuilt outputs:
                     C:\Dev\Solution\Project\Built
-                        Skipping 'C:\Dev\Solution\Project\IgnoredBuilt.dll' with ignored Kind="Ignored"
+                    Skipping 'C:\Dev\Solution\Project\IgnoredBuilt.dll' with ignored Kind="Ignored"
                 Adding project file inputs:
                     {_projectPath}
                 Adding newest import input:
@@ -1419,17 +1419,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             await AssertNotUpToDateAsync(
                 $"""
                 Adding UpToDateCheckOutput outputs:
-                    C:\Dev\Solution\Project\TaggedOutput
                     C:\Dev\Solution\Project\Output
+                    C:\Dev\Solution\Project\TaggedOutput
                 Adding UpToDateCheckBuilt outputs:
-                    C:\Dev\Solution\Project\TaggedBuilt
                     C:\Dev\Solution\Project\Built
+                    C:\Dev\Solution\Project\TaggedBuilt
                 Adding project file inputs:
                     {_projectPath}
                 Adding newest import input:
                     {_projectPath}
                 Adding UpToDateCheckInput inputs:
-                    C:\Dev\Solution\Project\TaggedInput
                     C:\Dev\Solution\Project\Input
                 Input UpToDateCheckInput item 'C:\Dev\Solution\Project\Input' is newer ({ToLocalTime(input1Time)}) than earliest output 'C:\Dev\Solution\Project\Output' ({ToLocalTime(output1Time)}), not up-to-date.
                 """,
@@ -1466,17 +1465,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 Ignoring up-to-date check items with Kind="Ignored"
                 Adding UpToDateCheckOutput outputs:
                     C:\Dev\Solution\Project\Output
-                        Skipping 'C:\Dev\Solution\Project\IgnoredOutput' with ignored Kind="Ignored"
+                    Skipping 'C:\Dev\Solution\Project\IgnoredOutput' with ignored Kind="Ignored"
                 Adding UpToDateCheckBuilt outputs:
                     C:\Dev\Solution\Project\Built
-                        Skipping 'C:\Dev\Solution\Project\IgnoredBuilt' with ignored Kind="Ignored"
+                    Skipping 'C:\Dev\Solution\Project\IgnoredBuilt' with ignored Kind="Ignored"
                 Adding project file inputs:
                     {_projectPath}
                 Adding newest import input:
                     {_projectPath}
                 Adding UpToDateCheckInput inputs:
                     C:\Dev\Solution\Project\Input
-                        Skipping 'C:\Dev\Solution\Project\IgnoredInput' with ignored Kind="Ignored"
+                    Skipping 'C:\Dev\Solution\Project\IgnoredInput' with ignored Kind="Ignored"
                 No inputs are newer than earliest output 'C:\Dev\Solution\Project\Output' ({ToLocalTime(outputTime)}). Newest input is 'C:\Dev\Solution\Project\Input' ({ToLocalTime(inputTime)}).
                 Project is up-to-date.
                 """,
@@ -1493,8 +1492,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 [UpToDateCheckOutput.SchemaName] = ItemsWithMetadata(("Output", "Kind", ""), ("TaggedOutput", "Kind", "Tagged"))
             };
 
-            var itemChangeTime = DateTime.UtcNow.AddMinutes(-7);
-            var inputTime      = DateTime.UtcNow.AddMinutes(-6);
+            var itemChangeTime = DateTime.UtcNow.AddMinutes(-8);
+            var input2Time     = DateTime.UtcNow.AddMinutes(-7);
+            var input1Time     = DateTime.UtcNow.AddMinutes(-6);
             var lastBuildTime  = DateTime.UtcNow.AddMinutes(-5);
             var output4Time    = DateTime.UtcNow.AddMinutes(-4);
             var output3Time    = DateTime.UtcNow.AddMinutes(-3);
@@ -1506,8 +1506,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 lastSuccessfulBuildStartTimeUtc: lastBuildTime,
                 lastItemsChangedAtUtc: itemChangeTime);
 
-            _fileSystem.AddFile(@"C:\Dev\Solution\Project\Input",        inputTime);
-            _fileSystem.AddFile(@"C:\Dev\Solution\Project\TaggedInput",  inputTime);
+            _fileSystem.AddFile(@"C:\Dev\Solution\Project\Input",        input2Time);
+            _fileSystem.AddFile(@"C:\Dev\Solution\Project\TaggedInput",  input1Time);
             _fileSystem.AddFile(@"C:\Dev\Solution\Project\Output",       output4Time);
             _fileSystem.AddFile(@"C:\Dev\Solution\Project\TaggedOutput", output3Time);
             _fileSystem.AddFile(@"C:\Dev\Solution\Project\Built",        output2Time);
@@ -1516,19 +1516,19 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             await AssertUpToDateAsync(
                 $"""
                 Adding UpToDateCheckOutput outputs:
-                    C:\Dev\Solution\Project\TaggedOutput
                     C:\Dev\Solution\Project\Output
+                    C:\Dev\Solution\Project\TaggedOutput
                 Adding UpToDateCheckBuilt outputs:
-                    C:\Dev\Solution\Project\TaggedBuilt
                     C:\Dev\Solution\Project\Built
+                    C:\Dev\Solution\Project\TaggedBuilt
                 Adding project file inputs:
                     {_projectPath}
                 Adding newest import input:
                     {_projectPath}
                 Adding UpToDateCheckInput inputs:
-                    C:\Dev\Solution\Project\TaggedInput
                     C:\Dev\Solution\Project\Input
-                No inputs are newer than earliest output 'C:\Dev\Solution\Project\Output' ({ToLocalTime(output4Time)}). Newest input is 'C:\Dev\Solution\Project\TaggedInput' ({ToLocalTime(inputTime)}).
+                    C:\Dev\Solution\Project\TaggedInput
+                No inputs are newer than earliest output 'C:\Dev\Solution\Project\Output' ({ToLocalTime(output4Time)}). Newest input is 'C:\Dev\Solution\Project\TaggedInput' ({ToLocalTime(input1Time)}).
                 Project is up-to-date.
                 """,
                 ignoreKinds: "");

@@ -4,6 +4,11 @@ using Microsoft.VisualStudio.ProjectSystem.VS;
 
 namespace Microsoft.VisualStudio.ProjectSystem
 {
+    /// <summary>
+    /// Detect during solution load the Net Core runtime version based on the target framework 
+    /// used in a project file and pass this version to a service that can install the
+    /// runtime component if not installed.
+    /// </summary>
     [Export(ExportContractNames.Scopes.ConfiguredProject, typeof(IProjectDynamicLoadComponent))]
     [AppliesTo(ProjectCapability.DotNet)]
     internal class MissingSdkRuntimeDetector : OnceInitializedOnceDisposedAsync, IProjectDynamicLoadComponent
@@ -11,31 +16,31 @@ namespace Microsoft.VisualStudio.ProjectSystem
         private static readonly string s_netCoreTargetFrameworkIdentifier = ".NETCoreApp";
 
         private Guid _projectGuid;
-        private bool _enabled;
 
         private readonly ConfiguredProject _project;
+        private readonly IProjectFaultHandlerService _projectFaultHandlerService;
         private readonly IMissingSetupComponentRegistrationService _missingSetupComponentRegistrationService;
 
         [ImportingConstructor]
         public MissingSdkRuntimeDetector(
             IMissingSetupComponentRegistrationService missingSetupComponentRegistrationService,
             ConfiguredProject configuredProject,
-            IProjectThreadingService threadingService)
+            IProjectThreadingService threadingService,
+            IProjectFaultHandlerService projectFaultHandlerService)
             : base(threadingService.JoinableTaskContext)
         {
             _missingSetupComponentRegistrationService = missingSetupComponentRegistrationService;
             _project = configuredProject;
+            _projectFaultHandlerService = projectFaultHandlerService;
         }
 
         public Task LoadAsync()
         {
-            _enabled = true;
             return InitializeAsync();
         }
 
         public Task UnloadAsync()
         {
-            _enabled = false;
             _missingSetupComponentRegistrationService.UnregisterProjectConfiguration(_projectGuid, _project);
 
             return Task.CompletedTask;
@@ -52,12 +57,12 @@ namespace Microsoft.VisualStudio.ProjectSystem
             // safe to use within IProjectDynamicLoadComponent.LoadAsync.
             _projectGuid = await _project.UnconfiguredProject.GetProjectGuidAsync();
             _missingSetupComponentRegistrationService.RegisterProjectConfiguration(_projectGuid, _project);
-            _ = RegisterSdkRuntimeNeededInProjectAsync(_project);
+            _projectFaultHandlerService.Forget(RegisterSdkNetCoreRuntimeNeededInProjectAsync(_project), _project.UnconfiguredProject);
         }
 
-        private async Task RegisterSdkRuntimeNeededInProjectAsync(ConfiguredProject project)
+        private async Task RegisterSdkNetCoreRuntimeNeededInProjectAsync(ConfiguredProject project)
         {
-            if (_enabled)
+            if (IsInitialized)
             {
                 var projectProperties = project.Services.ExportProvider.GetExportedValue<ProjectProperties>();
 

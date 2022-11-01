@@ -387,18 +387,21 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                     log.Verbose(nameof(Resources.FUTD_AddingTypedInputs_1), UpToDateCheckInput.SchemaName);
                     log.Indent++;
 
-                    foreach ((string kind, ImmutableArray<string> items) in upToDateCheckInputItems)
+                    foreach (string kind in state.KindNames)
                     {
-                        if (ShouldIgnoreItems(kind, items))
+                        if (upToDateCheckInputItems.TryGetValue(kind, out ImmutableArray<string> items))
                         {
-                            continue;
-                        }
+                            if (ShouldIgnoreItems(kind, items))
+                            {
+                                continue;
+                            }
 
-                        foreach (string path in items)
-                        {
-                            string absolutePath = _configuredProject.UnconfiguredProject.MakeRooted(path);
-                            log.VerboseLiteral(absolutePath);
-                            yield return (Path: absolutePath, ItemType: UpToDateCheckInput.SchemaName, IsRequired: true);
+                            foreach (string path in items)
+                            {
+                                string absolutePath = _configuredProject.UnconfiguredProject.MakeRooted(path);
+                                log.VerboseLiteral(absolutePath);
+                                yield return (Path: absolutePath, ItemType: UpToDateCheckInput.SchemaName, IsRequired: true);
+                            }
                         }
                     }
 
@@ -413,18 +416,21 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                     log.Verbose(nameof(Resources.FUTD_AddingTypedOutputs_1), UpToDateCheckOutput.SchemaName);
                     log.Indent++;
 
-                    foreach ((string kind, ImmutableArray<string> items) in upToDateCheckOutputItems)
+                    foreach (string kind in state.KindNames)
                     {
-                        if (ShouldIgnoreItems(kind, items))
+                        if (upToDateCheckOutputItems.TryGetValue(kind, out ImmutableArray<string> items))
                         {
-                            continue;
-                        }
+                            if (ShouldIgnoreItems(kind, items))
+                            {
+                                continue;
+                            }
 
-                        foreach (string path in items)
-                        {
-                            string absolutePath = _configuredProject.UnconfiguredProject.MakeRooted(path);
-                            log.VerboseLiteral(absolutePath);
-                            yield return absolutePath;
+                            foreach (string path in items)
+                            {
+                                string absolutePath = _configuredProject.UnconfiguredProject.MakeRooted(path);
+                                log.VerboseLiteral(absolutePath);
+                                yield return absolutePath;
+                            }
                         }
                     }
 
@@ -436,18 +442,21 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                     log.Verbose(nameof(Resources.FUTD_AddingTypedOutputs_1), UpToDateCheckBuilt.SchemaName);
                     log.Indent++;
 
-                    foreach ((string kind, ImmutableArray<string> items) in upToDateCheckBuiltItems)
+                    foreach (string kind in state.KindNames)
                     {
-                        if (ShouldIgnoreItems(kind, items))
+                        if (upToDateCheckBuiltItems.TryGetValue(kind, out ImmutableArray<string> items))
                         {
-                            continue;
-                        }
+                            if (ShouldIgnoreItems(kind, items))
+                            {
+                                continue;
+                            }
 
-                        foreach (string path in items)
-                        {
-                            string absolutePath = _configuredProject.UnconfiguredProject.MakeRooted(path);
-                            log.VerboseLiteral(absolutePath);
-                            yield return absolutePath;
+                            foreach (string path in items)
+                            {
+                                string absolutePath = _configuredProject.UnconfiguredProject.MakeRooted(path);
+                                log.VerboseLiteral(absolutePath);
+                                yield return absolutePath;
+                            }
                         }
                     }
 
@@ -462,18 +471,21 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                     log.Verbose(nameof(Resources.FUTD_AddingTypedInputsInSet_2), UpToDateCheckInput.SchemaName, setName);
                     log.Indent++;
 
-                    foreach ((string kind, ImmutableArray<string> items) in upToDateCheckInputItems)
+                    foreach (string kind in state.KindNames)
                     {
-                        if (ShouldIgnoreItems(kind, items))
+                        if (upToDateCheckInputItems.TryGetValue(kind, out ImmutableArray<string> items))
                         {
-                            continue;
-                        }
+                            if (ShouldIgnoreItems(kind, items))
+                            {
+                                continue;
+                            }
 
-                        foreach (string path in items)
-                        {
-                            string absolutePath = _configuredProject.UnconfiguredProject.MakeRooted(path);
-                            log.VerboseLiteral(absolutePath);
-                            yield return (Path: absolutePath, ItemType: UpToDateCheckInput.SchemaName, IsRequired: true);
+                            foreach (string path in items)
+                            {
+                                string absolutePath = _configuredProject.UnconfiguredProject.MakeRooted(path);
+                                log.VerboseLiteral(absolutePath);
+                                yield return (Path: absolutePath, ItemType: UpToDateCheckInput.SchemaName, IsRequired: true);
+                            }
                         }
                     }
 
@@ -488,18 +500,21 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                     log.Verbose(nameof(Resources.FUTD_AddingTypedOutputsInSet_2), UpToDateCheckOutput.SchemaName, setName);
                     log.Indent++;
 
-                    foreach ((string kind, ImmutableArray<string> items) in upToDateCheckOutputItems)
+                    foreach (string kind in state.KindNames)
                     {
-                        if (ShouldIgnoreItems(kind, items))
+                        if (upToDateCheckOutputItems.TryGetValue(kind, out ImmutableArray<string> items))
                         {
-                            continue;
-                        }
+                            if (ShouldIgnoreItems(kind, items))
+                            {
+                                continue;
+                            }
 
-                        foreach (string path in items)
-                        {
-                            string absolutePath = _configuredProject.UnconfiguredProject.MakeRooted(path);
-                            log.VerboseLiteral(absolutePath);
-                            yield return absolutePath;
+                            foreach (string path in items)
+                            {
+                                string absolutePath = _configuredProject.UnconfiguredProject.MakeRooted(path);
+                                log.VerboseLiteral(absolutePath);
+                                yield return absolutePath;
+                            }
                         }
                     }
 
@@ -511,18 +526,21 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                     log.Verbose(nameof(Resources.FUTD_AddingTypedOutputsInSet_2), UpToDateCheckBuilt.SchemaName, setName);
                     log.Indent++;
 
-                    foreach ((string kind, ImmutableArray<string> items) in upToDateCheckBuiltItems)
+                    foreach (string kind in state.KindNames)
                     {
-                        if (ShouldIgnoreItems(kind, items))
+                        if (upToDateCheckBuiltItems.TryGetValue(kind, out ImmutableArray<string> items))
                         {
-                            continue;
-                        }
+                            if (ShouldIgnoreItems(kind, items))
+                            {
+                                continue;
+                            }
 
-                        foreach (string path in items)
-                        {
-                            string absolutePath = _configuredProject.UnconfiguredProject.MakeRooted(path);
-                            log.VerboseLiteral(absolutePath);
-                            yield return absolutePath;
+                            foreach (string path in items)
+                            {
+                                string absolutePath = _configuredProject.UnconfiguredProject.MakeRooted(path);
+                                log.VerboseLiteral(absolutePath);
+                                yield return absolutePath;
+                            }
                         }
                     }
 
@@ -539,15 +557,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
                 if (log.Level >= LogLevel.Verbose)
                 {
-                    log.Indent++;
-                   
                     foreach (string path in items)
                     {
                         string absolutePath = _configuredProject.UnconfiguredProject.MakeRooted(path);
                         log.Verbose(nameof(Resources.FUTD_SkippingIgnoredKindItem_2), absolutePath, kind);
                     }
-
-                    log.Indent--;
                 }
 
                 return true;
