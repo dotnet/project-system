@@ -66,6 +66,7 @@ internal sealed class ImportedNamespacesValueProvider : InterceptingPropertyValu
     
     public override async Task<string> OnGetUnevaluatedPropertyValueAsync(string propertyName, string unevaluatedPropertyValue, IProjectProperties defaultProperties)
     {
+        await ((ConfiguredProject2)_configuredProject).EnsureProjectEvaluatedAsync();
         return await GetSelectedImportStringAsync();
     }
 

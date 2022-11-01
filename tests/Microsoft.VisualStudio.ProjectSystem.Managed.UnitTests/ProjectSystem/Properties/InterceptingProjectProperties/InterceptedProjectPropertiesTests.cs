@@ -1,6 +1,5 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
-
 namespace Microsoft.VisualStudio.ProjectSystem.Properties;
 
 public class InterceptedProjectPropertiesTests
@@ -17,27 +16,33 @@ public class InterceptedProjectPropertiesTests
         mockProviderMetadata.Setup(x => x.PropertyNames).Returns(new[] { MockPropertyName });
         var metadata = mockProviderMetadata.Object;
 
-        var providerTupleWithEmptyAndNonEmptyAppliesTo = (Providers: new List<Lazy<IInterceptingPropertyValueProvider, IInterceptingPropertyValueProviderMetadata>>
-        {
-            new(() => new MockPropertyFilteredInterceptor1(), metadata), new(() => new MockPropertyFilteredInterceptor2(), metadata), new(() => new MockPropertyFilteredInterceptor3(), metadata)
-        }, Filtered: false);
-
+        var providersWithEmptyAndNonEmptyAppliesTo =
+            new Providers(
+                new List<Lazy<IInterceptingPropertyValueProvider, IInterceptingPropertyValueProviderMetadata>>
+                {
+                    new(() => new MockPropertyFilteredInterceptor1(), metadata),
+                    new(() => new MockPropertyFilteredInterceptor2(), metadata),
+                    new(() => new MockPropertyFilteredInterceptor3(), metadata)
+                }, false);
+      
         Assert.Throws<ArgumentException>(() =>
         {
-            InterceptedProjectProperties.GetFilteredProvider(MockPropertyName, providerTupleWithEmptyAndNonEmptyAppliesTo, AppliesToFunction(Capability1));
+            providersWithEmptyAndNonEmptyAppliesTo.GetFilteredProvider(MockPropertyName, AppliesToFunction(Capability1));
         });
 
-        Assert.Equal(typeof(MockPropertyFilteredInterceptor3), InterceptedProjectProperties.GetFilteredProvider(MockPropertyName, providerTupleWithEmptyAndNonEmptyAppliesTo, AppliesToFunction(Capability3))?.GetType());
+        Assert.Equal(typeof(MockPropertyFilteredInterceptor3), providersWithEmptyAndNonEmptyAppliesTo.GetFilteredProvider(MockPropertyName, AppliesToFunction(Capability3))?.GetType());
+
+        var providersWithNonEmptyAppliesTo = new Providers(
+            new List<Lazy<IInterceptingPropertyValueProvider, IInterceptingPropertyValueProviderMetadata>>
+            {
+                new(() => new MockPropertyFilteredInterceptor1(), metadata), 
+                new(() => new MockPropertyFilteredInterceptor2(), metadata)
+            }, false);
         
-        var providerTupleWithNonEmptyAppliesTo = (Providers: new List<Lazy<IInterceptingPropertyValueProvider, IInterceptingPropertyValueProviderMetadata>>
-        {
-            new(() => new MockPropertyFilteredInterceptor1(), metadata), new(() => new MockPropertyFilteredInterceptor2(), metadata)
-        }, Filtered: false);    
-        
-        Assert.Equal(typeof(MockPropertyFilteredInterceptor1), InterceptedProjectProperties.GetFilteredProvider(MockPropertyName, providerTupleWithNonEmptyAppliesTo, AppliesToFunction(Capability1))?.GetType());
+        Assert.Equal(typeof(MockPropertyFilteredInterceptor1), providersWithNonEmptyAppliesTo.GetFilteredProvider(MockPropertyName, AppliesToFunction(Capability1))?.GetType());
       
         // filtered tuple should return same value
-        Assert.Equal(typeof(MockPropertyFilteredInterceptor1), InterceptedProjectProperties.GetFilteredProvider(MockPropertyName, providerTupleWithNonEmptyAppliesTo, AppliesToFunction(Capability1))?.GetType());
+        Assert.Equal(typeof(MockPropertyFilteredInterceptor1), providersWithNonEmptyAppliesTo.GetFilteredProvider(MockPropertyName, AppliesToFunction(Capability1))?.GetType());
     }
 
     // mock appliesto evaluation. if empty string, true, otherwise we'll just compare based on value equality.

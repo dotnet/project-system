@@ -52,6 +52,7 @@ internal class DefineConstantsValueProvider : InterceptingPropertyValueProviderB
     // 2. to override IsValueDefinedInContextAsync, as this will always return false
     private async Task<string?> GetUnevaluatedDefineConstantsPropertyValueAsync()
     {
+        await ((ConfiguredProject2)_project).EnsureProjectEvaluatedAsync();
         return await _projectAccessor.OpenProjectForReadAsync(_project, project =>
         {
             project.ReevaluateIfNecessary();

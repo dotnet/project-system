@@ -29,7 +29,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
             return !await defaultProperties.IsValueInheritedAsync(propertyName);
         }
 
-        internal static async Task<bool> IsValueDefinedInContextMsBuildPropertiesAsync(IProjectProperties defaultProperties, string[] msBuildPropertyNames)
+        internal static async Task<bool> IsValueDefinedInContextMSBuildPropertiesAsync(IProjectProperties defaultProperties, string[] msBuildPropertyNames)
         {
             string[] propertiesDefinedInProjectFile = (await defaultProperties.GetDirectPropertyNamesAsync()).ToArray();
             return !msBuildPropertyNames.Any(name => propertiesDefinedInProjectFile.Contains(name, StringComparers.PropertyNames));

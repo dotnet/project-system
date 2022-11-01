@@ -12,7 +12,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
     internal sealed class InterceptedProjectProperties : DelegatedProjectPropertiesBase, IRuleAwareProjectProperties
     {
         private readonly UnconfiguredProject _project;
-        private readonly ImmutableDictionary<string, (List<Lazy<IInterceptingPropertyValueProvider, IInterceptingPropertyValueProviderMetadata>> Providers, bool Filtered)> _valueProviders;
+        private readonly ImmutableDictionary<string, Providers> _valueProviders;
         
         public InterceptedProjectProperties(ImmutableArray<Lazy<IInterceptingPropertyValueProvider, IInterceptingPropertyValueProviderMetadata>> valueProviders, IProjectProperties defaultProperties, UnconfiguredProject project)
             : base(defaultProperties)
@@ -20,8 +20,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
             _project = project;
             Requires.NotNullOrEmpty(valueProviders, nameof(valueProviders));
 
-            ImmutableDictionary<string, (List<Lazy<IInterceptingPropertyValueProvider, IInterceptingPropertyValueProviderMetadata>> Providers, bool Filtered)>.Builder builder = 
-                ImmutableDictionary.CreateBuilder<string, (List<Lazy<IInterceptingPropertyValueProvider, IInterceptingPropertyValueProviderMetadata>> Providers, bool Filtered)>(StringComparers.PropertyNames);
+            ImmutableDictionary<string, Providers>.Builder builder = 
+                ImmutableDictionary.CreateBuilder<string, Providers>(StringComparers.PropertyNames);
             
             foreach (Lazy<IInterceptingPropertyValueProvider, IInterceptingPropertyValueProviderMetadata> valueProvider in valueProviders)
             {
@@ -31,14 +31,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
                 {
                     Requires.Argument(!string.IsNullOrEmpty(propertyName), nameof(valueProvider), "A null or empty property name was found");
 
-                    if (!builder.ContainsKey(propertyName))
+                    if (!builder.TryGetValue(propertyName, out Providers? entry))
                     {
-                        builder.Add(propertyName, (new List<Lazy<IInterceptingPropertyValueProvider, IInterceptingPropertyValueProviderMetadata>> { valueProvider }, false));
+                        entry = new Providers(new List<Lazy<IInterceptingPropertyValueProvider, IInterceptingPropertyValueProviderMetadata>> { valueProvider }, false);
+                        builder.Add(propertyName, entry);
                     }
-                    else
-                    {
-                        builder[propertyName].Providers.Add(valueProvider);
-                    }
+
+                    entry.Exports.Add(valueProvider);
                 }
             }
 
@@ -47,8 +46,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
 
         public override async Task<bool> IsValueInheritedAsync(string propertyName)
         {
-            if (!_valueProviders.TryGetValue(propertyName, out (List<Lazy<IInterceptingPropertyValueProvider, IInterceptingPropertyValueProviderMetadata>> Providers, bool Filtered) propertyValueProviders) || 
-                GetFilteredProvider(propertyName, propertyValueProviders, _project.Capabilities.AppliesTo) is not { } valueProvider)
+            if (!_valueProviders.TryGetValue(propertyName, out Providers? propertyValueProviders) || 
+                propertyValueProviders.GetFilteredProvider(propertyName, _project.Capabilities.AppliesTo) is not { } valueProvider)
             {
                 return await base.IsValueInheritedAsync(propertyName);
             }
@@ -65,8 +64,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         public override async Task<string> GetEvaluatedPropertyValueAsync(string propertyName)
         {
             string evaluatedProperty = await base.GetEvaluatedPropertyValueAsync(propertyName);
-            if (_valueProviders.TryGetValue(propertyName, out (List<Lazy<IInterceptingPropertyValueProvider, IInterceptingPropertyValueProviderMetadata>> Providers, bool Filtered) propertyValueProviders) &&
-                GetFilteredProvider(propertyName, propertyValueProviders, _project.Capabilities.AppliesTo) is { } valueProvider)
+            if (_valueProviders.TryGetValue(propertyName, out Providers? propertyValueProviders) &&
+                propertyValueProviders.GetFilteredProvider(propertyName, _project.Capabilities.AppliesTo) is { } valueProvider)
             {
                 evaluatedProperty = await valueProvider.OnGetEvaluatedPropertyValueAsync(propertyName, evaluatedProperty, DelegatedProperties);
             }
@@ -77,8 +76,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         public override async Task<string?> GetUnevaluatedPropertyValueAsync(string propertyName)
         {
             string? unevaluatedProperty = await base.GetUnevaluatedPropertyValueAsync(propertyName);
-            if (_valueProviders.TryGetValue(propertyName, out (List<Lazy<IInterceptingPropertyValueProvider, IInterceptingPropertyValueProviderMetadata>> Providers, bool Filtered) propertyValueProviders) &&
-                GetFilteredProvider(propertyName, propertyValueProviders, _project.Capabilities.AppliesTo) is { } valueProvider)
+            if (_valueProviders.TryGetValue(propertyName, out Providers? propertyValueProviders) &&
+                propertyValueProviders.GetFilteredProvider(propertyName, _project.Capabilities.AppliesTo) is { } valueProvider)
             {
                 unevaluatedProperty = await valueProvider.OnGetUnevaluatedPropertyValueAsync(propertyName, unevaluatedProperty ?? "", DelegatedProperties);
             }
@@ -89,8 +88,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         public override async Task SetPropertyValueAsync(string propertyName, string unevaluatedPropertyValue, IReadOnlyDictionary<string, string>? dimensionalConditions = null)
         {
             string? valueToSet;
-            if (_valueProviders.TryGetValue(propertyName, out (List<Lazy<IInterceptingPropertyValueProvider, IInterceptingPropertyValueProviderMetadata>> Providers, bool Filtered) propertyValueProviders) &&
-                GetFilteredProvider(propertyName, propertyValueProviders, _project.Capabilities.AppliesTo) is { } valueProvider)
+            if (_valueProviders.TryGetValue(propertyName, out Providers? propertyValueProviders) &&
+                propertyValueProviders.GetFilteredProvider(propertyName, _project.Capabilities.AppliesTo) is { } valueProvider)
             {
                 valueToSet = await valueProvider.OnSetPropertyValueAsync(propertyName, unevaluatedPropertyValue, DelegatedProperties, dimensionalConditions);
             }
@@ -110,34 +109,54 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
             var ruleAwareProperties = DelegatedProperties as IRuleAwareProjectProperties;
             ruleAwareProperties?.SetRuleContext(rule);
         }
+    }
 
-        internal static IInterceptingPropertyValueProvider? GetFilteredProvider(
+    internal class Providers
+    {
+        public Providers(List<Lazy<IInterceptingPropertyValueProvider, IInterceptingPropertyValueProviderMetadata>> exports, bool isFiltered)
+        {
+            Exports = exports;
+            IsFiltered = isFiltered;
+        }
+
+        public List<Lazy<IInterceptingPropertyValueProvider, IInterceptingPropertyValueProviderMetadata>> Exports { get; private set; }
+
+        public bool IsFiltered { get; private set; }
+
+        public IInterceptingPropertyValueProvider? GetFilteredProvider(
             string propertyName,
-            (List<Lazy<IInterceptingPropertyValueProvider, IInterceptingPropertyValueProviderMetadata>> Providers, bool Filtered) valueTuple,
             Func<string, bool> appliesToEvaluator)
         {
-            if (valueTuple.Filtered)
+            if (IsFiltered)
             {
                 return ReturnProviderAfterFiltering();
             }
 
-            valueTuple.Providers.RemoveAll(lazyProvider =>
+            Exports.RemoveAll(lazyProvider =>
             {
-                string? appliesToExpression = lazyProvider.Value.GetType().GetCustomAttributes(true).OfType<AppliesToAttribute>().FirstOrDefault()?.AppliesTo;
+                string? appliesToExpression = lazyProvider.Value.GetType()
+                    .GetCustomAttributes(typeof(AppliesToAttribute), inherit: true)
+                    .OfType<AppliesToAttribute>()
+                    .FirstOrDefault()?.AppliesTo;
 
                 return appliesToExpression is not null && !appliesToEvaluator(appliesToExpression);
             });
 
-            valueTuple.Filtered = true;
+            Exports = Exports.GroupBy(x => x.Value.GetType())
+                .Select(x => x.First())
+                .ToList();
+
+
+            IsFiltered = true;
 
             return ReturnProviderAfterFiltering();
 
             IInterceptingPropertyValueProvider? ReturnProviderAfterFiltering()
             {
-                return valueTuple.Providers.Count switch
+                return Exports.Count switch
                 {
                     0 => null,
-                    1 => valueTuple.Providers.First().Value,
+                    1 => Exports.First().Value,
                     _ => throw new ArgumentException($"Duplicate property value providers for same property name: {propertyName}")
                 };
             }
