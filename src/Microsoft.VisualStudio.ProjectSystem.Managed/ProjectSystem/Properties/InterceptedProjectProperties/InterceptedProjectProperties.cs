@@ -133,7 +133,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
                     .FirstOrDefault()?.AppliesTo;
 
                 return appliesToExpression is null || appliesToEvaluator(appliesToExpression);
-            }).ToList();
+            })
+                .GroupBy(x => x.Value.GetType()) // in case we end up importing multiple of the same provider, which *has happened with TargetFrameworkMoniker* 
+                .Select(x => x.First())
+                .ToList();
 
             return foundExports.Count switch
             {
