@@ -1,11 +1,108 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
+using Microsoft.VisualStudio.ProjectSystem.Debug;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
 using System.Text.RegularExpressions;
+using System.Text;
 
 namespace Microsoft.VisualStudio.ProjectSystem
 {
     public class DefineConstantsPropertyPageProviderTests
     {
+        /* Define Constants Encoding */
+        [Theory]
+        [InlineData("key1=value1", "key1=\"value1\"")]
+        [InlineData("key1=value1,key2=value2", "key1=\"value1\",key2=\"value2\"")]
+        [InlineData("a=b,c=easy,as=123", "a=\"b\",c=\"easy\",as=\"123\"")]
+        [InlineData("key1=value1,key2=value2,key3=value3", "key1=\"value1\",key2=\"value2\",key3=\"value3\"")]
+        [InlineData("something=equals=this", "something=\"equals/=this\"")]
+        [InlineData("oh=hey=there,hi=didnt=see,you=there", "oh=\"hey/=there\",hi=\"didnt/=see\",you=\"there\"")]
+        [InlineData("path=/path/to/somewhere/", "path=\"//path//to//somewhere//\"")]
+        [InlineData("file=/path/is/here/", "file=\"//path//is//here//\"")]
+        [InlineData("files=path=/path/to/somewhere/", "files=\"path/=//path//to//somewhere//\"")]
+        public void DefineConstantsEncodingFormatTest(string input, string expectedOutput)
+        {
+            var formatValue = AbstractProjectConfigurationDefineConstantsEncoding.Format(input);
+            Assert.Equal(expected: expectedOutput, actual: formatValue);
+        }
+
+        [Theory]
+        [InlineData("key1=\"value1\"", "key1=value1")]
+        [InlineData("key1=\"value1\",key2=\"value2\"", "key1=value1,key2=value2")]
+        [InlineData("a=\"b\",c=\"easy\",as=\"123\"", "a=b,c=easy,as=123")]
+        [InlineData("key1=\"value1\",key2=\"value2\",key3=\"value3\"", "key1=value1,key2=value2,key3=value3")]
+        [InlineData("something=\"equals/=this\"", "something=equals/=this")]
+        [InlineData("oh=\"hey/=there\",hi=\"didnt/=see\",you=\"there\"", "oh=hey/=there,hi=didnt/=see,you=there")]
+        [InlineData("path=\"//path//to//somewhere//\"", "path=//path//to//somewhere//")]
+        [InlineData("file=\"//path//is//here//\"", "file=//path//is//here//")]
+        [InlineData("files=\"path/=//path//to//somewhere//\"", "files=path/=//path//to//somewhere//")]
+        public void DefineConstantsEncodingDisplayFormatTest(string input, string expectedOutput)
+        {
+            var formatValue = AbstractProjectConfigurationDefineConstantsEncoding.DisplayFormat(input);
+            Assert.Equal(expected: expectedOutput, actual: formatValue);
+        }
+
+
+        /* Encoding Tests */
+        [Theory]
+        [InlineData("key1=value1", "key1=\"value1\"")]
+        [InlineData("key1=value1,key2=value2", "key1=\"value1\",key2=\"value2\"")]
+        [InlineData("a=b,c=easy,as=123", "a=\"b\",c=\"easy\",as=\"123\"")]
+        [InlineData("key1=value1,key2=value2,key3=value3", "key1=\"value1\",key2=\"value2\",key3=\"value3\"")]
+        [InlineData("something=equals=this", "something=\"equals/=this\"")]
+        [InlineData("oh=hey=there,hi=didnt=see,you=there", "oh=\"hey/=there\",hi=\"didnt/=see\",you=\"there\"")]
+        [InlineData("path=/path/to/somewhere/", "path=\"//path//to//somewhere//\"")]
+        [InlineData("file=/path/is/here/", "file=\"//path//is//here//\"")]
+        [InlineData("files=path=/path/to/somewhere/", "files=\"path/=//path//to//somewhere//\"")]
+        public void KeyValuePairEncodingParseFormatTest(string input, string expectedOutput)
+        {
+            var encodedValue = KeyQuotedValuePairListEncoding.Instance.Parse(input);
+            var formatValue = KeyQuotedValuePairListEncoding.Instance.Format(encodedValue);
+            Assert.Equal(expected: expectedOutput, actual: formatValue);
+        }
+
+        [Theory]
+        [InlineData("key1=\"value1\"", "key1=value1,")]
+        [InlineData("key1=\"value1\",key2=\"value2\"", "key1=value1,key2=value2,")]
+        [InlineData("a=\"b\",c=\"easy\",as=\"123\"", "a=b,c=easy,as=123,")]
+        [InlineData("key1=\"value1\",key2=\"value2\",key3=\"value3\"", "key1=value1,key2=value2,key3=value3,")]
+        [InlineData("something=\"equals/=this\"", "something=equals/=this,")]
+        [InlineData("oh=\"hey/=there\",hi=\"didnt/=see\",you=\"there\"", "oh=hey/=there,hi=didnt/=see,you=there,")]
+        [InlineData("path=\"//path//to//somewhere//\"", "path=//path//to//somewhere//,")]
+        [InlineData("file=\"//path//is//here//\"", "file=//path//is//here//,")]
+        [InlineData("files=\"path/=//path//to//somewhere//\"", "files=path/=//path//to//somewhere//,")]
+        public void KeyValuePairDecodeTest(string input, string expectedOuput)
+        {
+            var decodedValue = KeyQuotedValuePairListEncoding.Instance.Decode(input);
+            Assert.Equal(expected: expectedOuput, actual: decodedValue);
+        }
+
+
+        /* OnSetPropertyValue Tests */
+
+        [Theory]
+        [InlineData("key1=value1", "key1=\"value1\"")]
+        [InlineData("key1=value1,key2=value2", "key1=\"value1\",key2=\"value2\"")]
+        [InlineData("a=b,c=easy,as=123", "a=\"b\",c=\"easy\",as=\"123\"")]
+        [InlineData("key1=value1,key2=value2,key3=value3", "key1=\"value1\",key2=\"value2\",key3=\"value3\"")]
+        [InlineData("something=equals=this", "something=\"equals/=this\"")]
+        [InlineData("oh=hey=there,hi=didnt=see,you=there", "oh=\"hey/=there\",hi=\"didnt/=see\",you=\"there\"")]
+        [InlineData("path=/path/to/somewhere/", "path=\"//path//to//somewhere//\"")]
+        [InlineData("file=/path/is/here/", "file=\"//path//is//here//\"")]
+        [InlineData("files=path=/path/to/somewhere/", "files=\"path/=//path//to//somewhere//\"")]
+        public async Task TestOnSetPropertyValueAsync(string input, string expectedOutput)
+        {
+            var provider = new DefineConstantsValueProvider();
+            var defaultProperties = Mock.Of<IProjectProperties>();
+
+            var setResultValue = await provider.OnSetPropertyValueAsync(DefineConstantsValueProvider.DefineConstantsPropertyName, input, defaultProperties);
+
+            Assert.NotNull(setResultValue);
+            Assert.True(ValidEncoding(setResultValue));
+
+            Assert.Equal(expected: expectedOutput, actual: setResultValue);
+        }
+
+        /* End to end define constants tests */
 
         [Fact]
         public async Task NoConstantsDefined()
@@ -22,20 +119,18 @@ namespace Microsoft.VisualStudio.ProjectSystem
             Assert.Equal(string.Empty, actual: evaluatedResult);
         }
 
-        //valid constants defined
-        [Theory]                 // key value pairs
-        [InlineData(new object[] { new[] { "key1=value1" } })]
-        [InlineData(new object[] { new[] { "key1=value1", "key2=value2" } })]
-        [InlineData(new object[] { new[] { "a=b", "c=easy", "as=123" } })]
-        [InlineData(new object[] { new[] { "key1=value1", "key2=value2", "key3=value3" } })]
-        [InlineData(new object[] { new[] { "something=equals=this" } })]
-        [InlineData(new object[] { new[] { "oh=hey=there", "hi=didnt=see", "you=there" } })]
-        [InlineData(new object[] { new[] { "path=/path/to/somewhere/" } })]
-        [InlineData(new object[] { new[] { "file=/path/is/here/," } })]
-        [InlineData(new object[] { new[] { "files=path=/path/to/somewhere/," } })]
-        public async Task ConstantsDefined(string[] kvp)
+        [Theory]              
+        [InlineData( "key1=value1")]
+        [InlineData( "key1=value1,key2=value2")]
+        [InlineData("a=b,c=easy,as=123")]
+        [InlineData("key1=value1,key2=value2,key3=value3")]
+        [InlineData( "something=equals=this")]
+        [InlineData( "oh=hey=there,hi=didnt=see,you=there")]
+        [InlineData("path=/path/to/somewhere/")]
+        [InlineData( "file=/path/is/here/,")]
+        [InlineData( "files=path=/path/to/somewhere/,")]
+        public async Task ValidConstantsDefined(string input)
         {
-            string input = formatInput(kvp);
             var provider = new DefineConstantsValueProvider();
             var defaultProperties = Mock.Of<IProjectProperties>();
 
@@ -52,36 +147,32 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
         }
 
-        //invalid constants defined
         [Theory]
-        [InlineData(new object[] { new[] { "oop" } })]
-        [InlineData(new object[] { new[] { "oop=" } })]
-        [InlineData(new object[] { new[] { "=oop" } })]
-        [InlineData(new object[] { new[] { "oop=see", "daisy=oh", "well=" } })]
-        [InlineData(new object[] { new[] { "=oop", "daisy=" } })]
-        public async Task InvalidConstantsDefined(string[] kvp)
+        [InlineData( "oop")]
+        [InlineData( "oop=")]
+        [InlineData("=oop")]
+        [InlineData( "oop=see,daisy=oh,well=")]
+        [InlineData("=oop,daisy=")]
+        public async Task InvalidConstantsDefined(string input)
         {
-            string input = formatInput(kvp);
             var provider = new DefineConstantsValueProvider();
             var defaultProperties = Mock.Of<IProjectProperties>();
 
             var setResultValue = await provider.OnSetPropertyValueAsync(DefineConstantsValueProvider.DefineConstantsPropertyName, input, defaultProperties);
 
-            string expectedResult = parseValidInput(kvp);
+            string expectedResult = parseValidInput(input.Split(','));
             Assert.Equal(expected: EncodeOutputFormat(expectedResult, true), actual: setResultValue);
 
             var getResultValue = await provider.OnGetUnevaluatedPropertyValueAsync(DefineConstantsValueProvider.DefineConstantsPropertyName, input, defaultProperties);
             Assert.Equal(expected: EncodeOutputFormat(expectedResult, false), actual: getResultValue);
         }
 
-        //repeated keys defined
         [Theory]
-        [InlineData(new object[] { new[] { "oh=hey", "oh=hello", "oh=hi" } })]
-        [InlineData(new object[] { new[] { "oh=hey", "there=mmm", "oh=hi" } })]
-        [InlineData(new object[] { new[] { "ok=hi", "oh=hi", "oh=3" } })]
-        public async Task RepeatKeysDefined(string[] kvp)
+        [InlineData("oh=hey,oh=hello,oh=hi")]
+        [InlineData("oh=hey,there=mmm,oh=hi")]
+        [InlineData("ok=hi,oh=hi,oh=3")]
+        public async Task RepeatKeysDefined(string input)
         {
-            string input = formatInput(kvp);
             var provider = new DefineConstantsValueProvider();
             var defaultProperties = Mock.Of<IProjectProperties>();
 
@@ -97,12 +188,6 @@ namespace Microsoft.VisualStudio.ProjectSystem
             var getResultValue = await provider.OnGetUnevaluatedPropertyValueAsync(DefineConstantsValueProvider.DefineConstantsPropertyName, input, defaultProperties);
             Assert.NotNull(getResultValue);
             Assert.Equal(expected: EncodeOutputFormat(intendedInput, false), actual: getResultValue);
-        }
-
-
-        private string formatInput(string[] input)
-        {
-            return string.Join(",", input);
         }
 
         private string parseValidInput(string[] input)
@@ -157,37 +242,27 @@ namespace Microsoft.VisualStudio.ProjectSystem
         //parses repeated keys inputted key value pairs
         private string getDefinedRepeat(string input)
         {
-            input += ",";
-            List<KeyValuePair<string, string>> uniqueKeyValuePairs = new List<KeyValuePair<string, string>>();
+            Dictionary<string, string> uniqueKeyValuePairs = new Dictionary<string, string>();
             var regex = new Regex(@"(\S+?\s*)\=(\S+?\s*),");
-            foreach (System.Text.RegularExpressions.Match match in regex.Matches(input))
+            foreach (System.Text.RegularExpressions.Match match in regex.Matches(input+","))
             {
                 string key = match.Groups[1].Value;
-                string value = match.Groups[2].Value;
-                var index = uniqueKeyValuePairs.FindIndex(kvp => kvp.Key == key);
-                if (index >= 0)
-                {
-                    uniqueKeyValuePairs[index] = new KeyValuePair<string, string>(key, value);
-                }
-                else
-                {
-                    uniqueKeyValuePairs.Add(new KeyValuePair<string, string>(key, value));
-                }
+                uniqueKeyValuePairs[key] = match.Groups[2].Value;
             }
 
-            var formattedInput = "";
-            foreach (var kvp in uniqueKeyValuePairs)
+            StringBuilder formattedInput = new();
+            foreach ((string key, string value) in uniqueKeyValuePairs)
             {
-                formattedInput += kvp.Key + "=" + kvp.Value + ",";
+                formattedInput.Append(key).Append('=').Append(value).Append(',');
             }
 
             if (formattedInput.Length > 0)
             {
-                return formattedInput.Remove(formattedInput.Length - 1);           //remove the trailing comma
+                return formattedInput.ToString(0, formattedInput.Length - 1);           //remove the trailing comma
             }
             else
             {
-                return formattedInput;
+                return formattedInput.ToString();
             }
         }
 

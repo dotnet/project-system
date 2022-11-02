@@ -48,7 +48,7 @@ internal sealed class KeyQuotedValuePairListEncoding
         }
     }
 
-    private string Decode(string input)
+    public string Decode(string input)
     {
         input += ",";
         var regex = new Regex(@"(\S+?\s*)\=[\x22](\S+?\s*)[\x22],");

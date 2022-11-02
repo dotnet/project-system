@@ -8,7 +8,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug;
 /// </summary>
 internal abstract class AbstractProjectConfigurationDefineConstantsEncoding
 {
-    public static Dictionary<string, string> ParseIntoDictionary(string inputValue)
+    private static Dictionary<string, string> ParseIntoDictionary(string inputValue)
     {
         Dictionary<string, string> constantsDictionary = new Dictionary<string, string>();
         foreach ((string key, string value) in KeyQuotedValuePairListEncoding.Instance.Parse(inputValue))
@@ -21,13 +21,15 @@ internal abstract class AbstractProjectConfigurationDefineConstantsEncoding
         return constantsDictionary;
     }
 
-    public static string Format(Dictionary<string, string> constantsDictionary)
+    public static string Format(string propertyValue)
     {
+        Dictionary<string, string> constantsDictionary = ParseIntoDictionary(propertyValue);
         return KeyQuotedValuePairListEncoding.Instance.Format(EnumerateConstantsDictionary(constantsDictionary));
     }
 
-    public static string DisplayFormat(Dictionary<string, string> constantsDictionary)
+    public static string DisplayFormat(string propertyValue)
     {
+        Dictionary<string, string> constantsDictionary = ParseIntoDictionary(propertyValue);
         return KeyValuePairListEncoding.Instance.Format(EnumerateConstantsDictionary(constantsDictionary));
     }
 
