@@ -262,7 +262,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
             }
             else
             {
-                return formattedInput.ToString();
+                return "";
             }
         }
 
