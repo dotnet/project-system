@@ -63,13 +63,13 @@
 
     <!-- CPS -->
     <!-- Find versions at https://dev.azure.com/azure-public/vside/_artifacts/feed/vs-impl -->
-    <PackageReference Update="Microsoft.VisualStudio.ProjectSystem"                                   Version="17.5.226-alpha-g9fd5be0a72" />
-    <PackageReference Update="Microsoft.VisualStudio.ProjectSystem.Analyzers"                         Version="17.5.226-alpha-g9fd5be0a72" />
-    <PackageReference Update="Microsoft.VisualStudio.ProjectSystem.Query"                             Version="17.5.226-alpha-g9fd5be0a72" />
-    <PackageReference Update="Microsoft.VisualStudio.ProjectSystem.SDK"                               Version="17.5.226-alpha-g9fd5be0a72" />
-    <PackageReference Update="Microsoft.VisualStudio.ProjectSystem.SDK.Tools"                         Version="17.5.226-alpha-g9fd5be0a72" />
-    <PackageReference Update="Microsoft.VisualStudio.ProjectSystem.VS"                                Version="17.5.226-alpha-g9fd5be0a72" />
-    <PackageReference Update="Microsoft.VisualStudio.ProjectSystem.XamlTypes"                         Version="17.5.226-alpha-g9fd5be0a72" />
+    <PackageReference Update="Microsoft.VisualStudio.ProjectSystem"                                   Version="17.5.235-pre-gc8d486461e" />
+    <PackageReference Update="Microsoft.VisualStudio.ProjectSystem.Analyzers"                         Version="17.5.235-pre-gc8d486461e" />
+    <PackageReference Update="Microsoft.VisualStudio.ProjectSystem.Query"                             Version="17.5.235-pre-gc8d486461e" />
+    <PackageReference Update="Microsoft.VisualStudio.ProjectSystem.SDK"                               Version="17.5.235-pre-gc8d486461e" />
+    <PackageReference Update="Microsoft.VisualStudio.ProjectSystem.SDK.Tools"                         Version="17.5.235-pre-gc8d486461e" />
+    <PackageReference Update="Microsoft.VisualStudio.ProjectSystem.VS"                                Version="17.5.235-pre-gc8d486461e" />
+    <PackageReference Update="Microsoft.VisualStudio.ProjectSystem.XamlTypes"                         Version="17.5.235-pre-gc8d486461e" />
     
     <!-- MSBuild -->
     <!-- Only needed because the CPS builds depend on MSBuild versions that are not available. -->
