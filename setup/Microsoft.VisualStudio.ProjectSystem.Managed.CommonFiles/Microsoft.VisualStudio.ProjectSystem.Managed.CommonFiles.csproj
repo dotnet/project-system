@@ -8,6 +8,10 @@
 
   <Import Project="..\..\eng\imports\VisualStudio.props" />
 
+  <PropertyGroup>
+    <TargetFramework>net472</TargetFramework>
+  </PropertyGroup>
+
   <ItemGroup>
     <!-- Depend on projects producing XAML rules included in this Willow package -->
     <ProjectReference Include="..\..\src\Microsoft.VisualStudio.ProjectSystem.Managed\Microsoft.VisualStudio.ProjectSystem.Managed.csproj" />

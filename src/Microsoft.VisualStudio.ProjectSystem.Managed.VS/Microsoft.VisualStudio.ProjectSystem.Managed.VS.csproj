@@ -6,6 +6,7 @@
   <PropertyGroup>
     <RootNamespace>Microsoft.VisualStudio</RootNamespace>
     <IsManagedProjectSystemProject>true</IsManagedProjectSystemProject>
+    <TargetFramework>net472</TargetFramework>
 
     <!-- VSIX -->
     <GeneratePkgDefFile>true</GeneratePkgDefFile>
