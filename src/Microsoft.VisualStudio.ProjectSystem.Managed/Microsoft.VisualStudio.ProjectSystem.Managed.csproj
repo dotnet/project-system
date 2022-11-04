@@ -17,7 +17,7 @@
     <NoWarn>$(NoWarn);NU5125</NoWarn>
 
     <TargetFramework></TargetFramework>
-    <TargetFrameworks>net472;net6.0-windows</TargetFrameworks>
+    <TargetFrameworks>net472;net6.0</TargetFrameworks>
 
     <!-- TODO: Remove this when the port to net6.0 is complete -->
     <NoWarn>$(NoWarn);NU1701;NU1702</NoWarn>
@@ -31,7 +31,7 @@
   </PropertyGroup>
 
   <!-- TODO: Re-enable nullability and clean up warnings. -->
-  <PropertyGroup Condition="'$(TargetFramework)' == 'net6.0-windows'">
+  <PropertyGroup Condition="'$(TargetFramework)' == 'net6.0'">
     <Nullable>annotations</Nullable>
     <NoWarn>$(NoWarn);RS0037</NoWarn>
   </PropertyGroup>
@@ -44,7 +44,7 @@
   </ItemGroup>
   
   <!-- TODO: Remove this once ImageMoniker and related types are available in a net6.0-compatible package. -->
-  <ItemGroup Condition="'$(TargetFramework)' == 'net6.0-windows'">
+  <ItemGroup Condition="'$(TargetFramework)' == 'net6.0'">
     <PackageReference Remove="Microsoft.VisualStudio.SDK.EmbedInteropTypes" />
     <PackageReference Remove="Microsoft.VisualStudio.ImageCatalog" />
 
@@ -686,9 +686,9 @@
     <AdditionalFiles Include="PublicAPI\net472\*.txt" />
   </ItemGroup>
   
-  <ItemGroup Condition="'$(TargetFramework)' == 'net6.0-windows'">
-    <None Remove="PublicAPI\net6.0-windows\*.txt" />
-    <AdditionalFiles Include="PublicAPI\net6.0-windows\*.txt" />
+  <ItemGroup Condition="'$(TargetFramework)' == 'net6.0'">
+    <None Remove="PublicAPI\net6.0\*.txt" />
+    <AdditionalFiles Include="PublicAPI\net6.0\*.txt" />
   </ItemGroup>
 
   <ItemGroup>

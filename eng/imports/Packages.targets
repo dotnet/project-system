@@ -64,13 +64,13 @@
 
     <!-- CPS -->
     <!-- Find versions at https://dev.azure.com/azure-public/vside/_artifacts/feed/vs-impl -->
-    <PackageReference Update="Microsoft.VisualStudio.ProjectSystem"                                   Version="17.5.226-alpha-g9fd5be0a72" />
-    <PackageReference Update="Microsoft.VisualStudio.ProjectSystem.Analyzers"                         Version="17.5.226-alpha-g9fd5be0a72" />
-    <PackageReference Update="Microsoft.VisualStudio.ProjectSystem.Query"                             Version="17.5.226-alpha-g9fd5be0a72" />
-    <PackageReference Update="Microsoft.VisualStudio.ProjectSystem.SDK"                               Version="17.5.226-alpha-g9fd5be0a72" />
-    <PackageReference Update="Microsoft.VisualStudio.ProjectSystem.SDK.Tools"                         Version="17.5.226-alpha-g9fd5be0a72" />
-    <PackageReference Update="Microsoft.VisualStudio.ProjectSystem.VS"                                Version="17.5.226-alpha-g9fd5be0a72" />
-    <PackageReference Update="Microsoft.VisualStudio.ProjectSystem.XamlTypes"                         Version="17.5.226-alpha-g9fd5be0a72" />
+    <PackageReference Update="Microsoft.VisualStudio.ProjectSystem"                                   Version="17.5.235-pre-gc8d486461e" />
+    <PackageReference Update="Microsoft.VisualStudio.ProjectSystem.Analyzers"                         Version="17.5.235-pre-gc8d486461e" />
+    <PackageReference Update="Microsoft.VisualStudio.ProjectSystem.Query"                             Version="17.5.235-pre-gc8d486461e" />
+    <PackageReference Update="Microsoft.VisualStudio.ProjectSystem.SDK"                               Version="17.5.235-pre-gc8d486461e" />
+    <PackageReference Update="Microsoft.VisualStudio.ProjectSystem.SDK.Tools"                         Version="17.5.235-pre-gc8d486461e" />
+    <PackageReference Update="Microsoft.VisualStudio.ProjectSystem.VS"                                Version="17.5.235-pre-gc8d486461e" />
+    <PackageReference Update="Microsoft.VisualStudio.ProjectSystem.XamlTypes"                         Version="17.5.235-pre-gc8d486461e" />
     
     <!-- MSBuild -->
     <!-- Only needed because the CPS builds depend on MSBuild versions that are not available. -->
@@ -117,7 +117,7 @@
     <PackageReference Update="xunit.extensibility.execution"                                          Version="2.4.2" NoWarn="NU1608" />
     <PackageReference Update="xunit.runner.visualstudio"                                              Version="2.4.5" />
     <PackageReference Update="xunit.runner.console"                                                   Version="2.4.2" />
-    <PackageReference Update="xunit.analyzers"                                                        Version="0.12.0-pre.19"/>
+    <PackageReference Update="xunit.analyzers"                                                        Version="1.0.0"/>
 
     <!-- Integration Tests -->
     <PackageReference Update="MSTest.TestFramework"                                                   Version="2.1.2" />
