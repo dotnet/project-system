@@ -24,9 +24,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Frameworks
 
         protected override EnumCollection Transform(IProjectSubscriptionUpdate input)
         {
-            IProjectRuleSnapshot? configurationGeneral = input.CurrentState[ConfigurationGeneral.SchemaName];
-            
-            string? targetFrameworkIdentifier = configurationGeneral.Properties[ConfigurationGeneral.TargetFrameworkIdentifierProperty];
+            IProjectRuleSnapshot configurationGeneral = input.CurrentState[ConfigurationGeneral.SchemaName];
+
+            string targetFrameworkIdentifier = configurationGeneral.Properties[ConfigurationGeneral.TargetFrameworkIdentifierProperty];
 
             string ruleName;
 
@@ -44,9 +44,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Frameworks
             }
             else
             {
-                string? storedTargetFramework = configurationGeneral.Properties[ConfigurationGeneral.TargetFrameworkProperty];
-                string? storedTargetFrameworkIdentifier = configurationGeneral.Properties[ConfigurationGeneral.TargetFrameworkIdentifierProperty];
-                string? storedTargetFrameworkMoniker = configurationGeneral.Properties[ConfigurationGeneral.TargetFrameworkMonikerProperty];
+                string storedTargetFramework = configurationGeneral.Properties[ConfigurationGeneral.TargetFrameworkProperty];
+                string storedTargetFrameworkIdentifier = configurationGeneral.Properties[ConfigurationGeneral.TargetFrameworkIdentifierProperty];
+                string storedTargetFrameworkMoniker = configurationGeneral.Properties[ConfigurationGeneral.TargetFrameworkMonikerProperty];
 
                 var result = new List<IEnumValue>();
 
@@ -60,7 +60,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Frameworks
                         DisplayName = (!Strings.IsNullOrEmpty(storedTargetFrameworkIdentifier)) ? storedTargetFrameworkIdentifier : storedTargetFramework
                     }));
                 }
-                
+
                 return result;
             }
 
