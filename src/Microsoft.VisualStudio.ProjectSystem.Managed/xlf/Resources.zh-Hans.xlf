@@ -383,6 +383,21 @@ This project was loaded using the wrong project type, likely as a result of rena
         <target state="translated">(无)</target>
         <note>Special value to show in the project property pages when a property has no value.</note>
       </trans-unit>
+      <trans-unit id="Restore_DuplicateToolReferenceItems">
+        <source>The metadata on 'DotNetCliToolReference' item '{0}' is inconsistent between target frameworks. Only the first one will be restored.</source>
+        <target state="translated">"DotNetCliToolReference" 项元数据 {0} 在目标框架之间不一致。将仅还原第一个。</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="Restore_EmptyTargetFrameworkMoniker">
+        <source>The value of the 'TargetFrameworkMoniker' and 'NuGetTargetMoniker' properties in the '{0}' configuration are both empty. This configuration will not contribute to NuGet restore, which may result in restore and build errors.</source>
+        <target state="translated">“{0}”配置中 "TargetFrameworkMoniker" 和 "NuGetTargetMoniker" 属性的值均为空。此配置将影响 NuGet 还原，这可能导致还原和生成错误。</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="Restore_PropertyWithInconsistentValues">
+        <source>The value of the '{0}' property is inconsistent between target frameworks. This property must be identical for NuGet restore to function correctly. The value '{1}' from the '{2}' configuration will be used, other target frameworks may fail to pick NuGet assets.</source>
+        <target state="translated">{0} 属性的值在目标框架之间不一致。此属性必须相同以便 NuGet 还原正常运行。将使用“{2}”配置中的值 {1}，而其他目标框架可能无法选取 NuGet 资产。</target>
+        <note />
+      </trans-unit>
       <trans-unit id="SdkNodeName">
         <source>SDK</source>
         <target state="translated">SDK</target>

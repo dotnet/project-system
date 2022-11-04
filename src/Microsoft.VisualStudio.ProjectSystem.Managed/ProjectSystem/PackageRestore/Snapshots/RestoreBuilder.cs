@@ -3,7 +3,7 @@
 using Microsoft.VisualStudio.ProjectSystem.Properties;
 using NuGet.SolutionRestoreManager;
 
-namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
+namespace Microsoft.VisualStudio.ProjectSystem.PackageRestore
 {
     /// <summary>
     ///     Contains builder methods for creating <see cref="IVsProjectRestoreInfo"/> instances.

@@ -102,13 +102,14 @@ internal class WorkspaceFactory : IWorkspaceFactory
         #region Evaluation data
 
         var evaluationTransformBlock
-            = DataflowBlockSlim.CreateTransformBlock<IProjectVersionedValue<(ConfiguredProject ConfiguredProject, IProjectSubscriptionUpdate EvaluationRuleUpdate, IProjectSubscriptionUpdate SourceItemsUpdate)>, IProjectVersionedValue<WorkspaceUpdate>>
+            = DataflowBlockSlim.CreateTransformBlock<IProjectVersionedValue<(ConfiguredProject ConfiguredProject, IProjectSnapshot ProjectSnapshot, IProjectSubscriptionUpdate EvaluationRuleUpdate, IProjectSubscriptionUpdate SourceItemsUpdate)>, IProjectVersionedValue<WorkspaceUpdate>>
                 (update => update.Derive(WorkspaceUpdate.FromEvaluation));
 
         workspace.ChainDisposal(new DisposableBag
         {
             ProjectDataSources.SyncLinkTo(
                 source.ActiveConfiguredProjectSource.SourceBlock.SyncLinkOptions(),
+                source.ProjectSource.SourceBlock.SyncLinkOptions(),
                 source.ProjectRuleSource.SourceBlock.SyncLinkOptions(DataflowOption.WithRuleNames(updateHandlers.EvaluationRules)),
                 source.SourceItemsRuleSource.SourceBlock.SyncLinkOptions(),
                 target: evaluationTransformBlock,
@@ -117,7 +118,7 @@ internal class WorkspaceFactory : IWorkspaceFactory
 
             evaluationTransformBlock.LinkTo(orderingBlock, DataflowOption.PropagateCompletion),
 
-            ProjectDataSources.JoinUpstreamDataSources(joinableTaskFactory, _projectService.Services.FaultHandler, source.ActiveConfiguredProjectSource, source.ProjectRuleSource, source.SourceItemsRuleSource)
+            ProjectDataSources.JoinUpstreamDataSources(joinableTaskFactory, _projectService.Services.FaultHandler, source.ActiveConfiguredProjectSource, source.ProjectSource, source.ProjectRuleSource, source.SourceItemsRuleSource)
         });
 
         #endregion

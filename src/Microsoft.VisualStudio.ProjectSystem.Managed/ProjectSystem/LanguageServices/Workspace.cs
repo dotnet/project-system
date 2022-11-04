@@ -1,5 +1,7 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
+using System.Diagnostics.CodeAnalysis;
+using Microsoft.Build.Execution;
 using Microsoft.VisualStudio.LanguageServices.ProjectSystem;
 using Microsoft.VisualStudio.ProjectSystem.OperationProgress;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
@@ -268,7 +270,9 @@ internal sealed class Workspace : OnceInitializedOnceDisposedUnderLockAsync, IWo
 
             try
             {
-                EvaluationDataAdapter evaluationData = new(snapshot.Properties);
+                ProjectInstance projectInstance = evaluationUpdate.Value.ProjectSnapshot.ProjectInstance;
+
+                EvaluationDataAdapter evaluationData = new(projectInstance);
 
                 _contextId = GetWorkspaceProjectContextId(projectFilePath, _projectGuid, _slice);
 
@@ -284,6 +288,8 @@ internal sealed class Workspace : OnceInitializedOnceDisposedUnderLockAsync, IWo
                     evaluationData,
                     hostObject,
                     cancellationToken);
+
+                evaluationData.Release();
 
                 _contextCreated.TrySetResult();
 
@@ -584,21 +590,54 @@ internal sealed class Workspace : OnceInitializedOnceDisposedUnderLockAsync, IWo
     /// </summary>
     private sealed class EvaluationDataAdapter : EvaluationData
     {
-        private readonly IImmutableDictionary<string, string> _properties;
+        private ProjectInstance? _projectInstance;
 
-        public EvaluationDataAdapter(IImmutableDictionary<string, string> properties)
+        public EvaluationDataAdapter(ProjectInstance projectInstance)
         {
-            _properties = properties;
+            _projectInstance = projectInstance;
         }
 
         public override string GetPropertyValue(string name)
         {
-            _properties.TryGetValue(name, out string? value);
+            Validate();
+
+            string? value = _projectInstance.GetProperty(name)?.EvaluatedValue;
 
             // Return the empty string rather than null.
-            value ??= "";
+            return value ?? "";
+        }
 
-            return value;
+        public override ImmutableArray<string> GetItemValues(string name)
+        {
+            Validate();
+
+            ICollection<ProjectItemInstance> items = _projectInstance.GetItems(itemType: name);
+
+            if (items.Count == 0)
+            {
+                return ImmutableArray<string>.Empty;
+            }
+
+            return items.Select(item => item.EvaluatedInclude).ToImmutableArray();
+        }
+
+        [MemberNotNull(nameof(_projectInstance))]
+        private void Validate()
+        {
+            if (_projectInstance is null)
+            {
+                throw new ObjectDisposedException(nameof(EvaluationDataAdapter));
+            }
+        }
+
+        /// <summary>
+        /// Ensures the inner reference to <see cref="ProjectInstance"/> is cleared,
+        /// so Roslyn cannot accidentally retain a rooted reference to it. It's a large
+        /// object and must be collected as soon as possible.
+        /// </summary>
+        internal void Release()
+        {
+            _projectInstance = null;
         }
     }
 }
