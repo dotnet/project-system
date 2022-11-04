@@ -36,7 +36,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
         internal static readonly StringComparer SetNameComparer = StringComparers.ItemNames;
         internal static readonly StringComparer KindNameComparer = StringComparers.ItemNames;
 
-        private static ImmutableHashSet<string> NonCompilationItemTypes => ImmutableHashSet<string>.Empty
+        private static readonly ImmutableHashSet<string> s_nonCompilationItemTypes = ImmutableHashSet<string>.Empty
             .WithComparer(StringComparers.ItemTypes)
             .Add(None.SchemaName)
             .Add(Content.SchemaName);
@@ -336,7 +336,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                     //
                     // These items may have CopyToOutputDirectory metadata, which is why we don't exclude them earlier.
                     // The need to schedule a build in order to copy files is handled separately.
-                    if (!NonCompilationItemTypes.Contains(itemType))
+                    if (!s_nonCompilationItemTypes.Contains(itemType))
                     {
                         log.Verbose(nameof(Resources.FUTD_AddingTypedInputs_1), itemType);
                         log.Indent++;
