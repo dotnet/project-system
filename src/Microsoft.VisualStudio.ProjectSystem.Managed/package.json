@@ -4,7 +4,7 @@
   "description": ".NET Project System",
   "repository": {
     "type": "git",
-    "url": "https://devdiv@dev.azure.com/devdiv/DevDiv/_git/dotnet-project-system"
+    "url": "https://devdiv@dev.azure.com/devdiv/DevDiv/_git/dotnet-project-system-Trusted"
   },
   "author": "Microsoft",
   "license": "See LICENSE.md"
