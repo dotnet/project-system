@@ -44,6 +44,7 @@
       <!-- error NU5104: A stable release of a package should not have a prerelease dependency. -->
       <PackageVersion>$(Version)</PackageVersion>
       <NuGetPackageVersion>$(Version)</NuGetPackageVersion>
+      <NPMPackageVersion>$(Version)</NPMPackageVersion>
 
       <!--
         NOTICE: Keep this information here for reference as it is useful to understand how version information is computed.

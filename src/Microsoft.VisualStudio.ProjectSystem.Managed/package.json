@@ -1,8 +1,7 @@
 {
-  "name": "dotnet-project-system",
+  "name": "Microsoft.VisualStudio.ProjectSystem.Managed",
   "version": "0.0.0-placeholder",
   "description": ".NET Project System",
-  "main": "",
   "repository": {
     "type": "git",
     "url": "https://devdiv@dev.azure.com/devdiv/DevDiv/_git/dotnet-project-system"

@@ -23,7 +23,7 @@
     <NoWarn>$(NoWarn);NU1701;NU1702</NoWarn>
   </PropertyGroup>
 
-  <PropertyGroup Condition="'$(TargetFramework)' == 'net6.0-windows'">
+  <PropertyGroup Condition="'$(TargetFramework)' == 'net6.0'">
     <!-- Sets the DependsOn for NPM packaging. We use the designated target to select the files to pack. -->
     <!-- See: https://dev.azure.com/devdiv/DevDiv/_git/vs-green?path=/components&anchor=packaging-components -->
     <StageForNpmPackDependsOn>$(StageForNpmPackDependsOn);AddFilesForNpmPackage</StageForNpmPackDependsOn>
@@ -65,7 +65,7 @@
     <PackageReference Include="Microsoft.VisualStudio.RpcContracts" />
   </ItemGroup>
 
-  <ItemGroup Condition="'$(TargetFramework)' == 'net6.0-windows'">
+  <ItemGroup Condition="'$(TargetFramework)' == 'net6.0'">
     <!-- Package for creating an NPM package during build. -->
     <!-- See: https://dev.azure.com/devdiv/DevDiv/_git/vs-green?path=/components&anchor=packaging-components -->
     <PackageReference Include="Microsoft.VisualStudio.Internal.MicroBuild.NpmPack" PrivateAssets="all" />
@@ -697,14 +697,10 @@
     </None>
   </ItemGroup>
 
-  <Target Name="AddFilesForNpmPackage" DependsOnTargets="Build" Condition="'$(TargetFramework)' == 'net6.0-windows'">
+  <Target Name="AddFilesForNpmPackage" DependsOnTargets="Build" Condition="'$(TargetFramework)' == 'net6.0'">
     <ItemGroup>
-      <NpmContent Include="$(OutDir)Microsoft.VisualStudio.ProjectSystem.Managed.*" />
+      <NpmContent Include="$(OutDir)$(AssemblyName).dll;$(OutDir)$(AssemblyName).pdb;$(OutDir)$(AssemblyName).xml" />
     </ItemGroup>
-  </Target>
-
-  <Target Name="PackNpmPackageMultiFramework" AfterTargets="StageForNpmPack" Condition="'$(TargetFramework)' == 'net6.0-windows'">
-    <CallTarget Targets="NpmPack" />
   </Target>
 
 </Project>
