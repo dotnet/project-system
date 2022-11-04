@@ -288,7 +288,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             await ValidateUpToDateAsync();
         }
 
-        [Theory]
+        [Theory(Skip = "Test is flaky. See: https://devdiv.visualstudio.com/DevDiv/_workitems/edit/1666107")]
         //          ItemType            Optimized  ExpectUpToDate  IsItemTypeCopied
         [InlineData(None.SchemaName,    false,     false,          true)]
         [InlineData(None.SchemaName,    true,      true,           true)]

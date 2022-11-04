@@ -6,7 +6,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-      <!-- Infrastructure -->
+    <!-- Infrastructure -->
     <PackageReference Include="MicroBuild.Core.Sentinel"                  PrivateAssets="all" />
     <!-- Path Property: PkgMicrosoft_VisualStudioEng_MicroBuild_Core -->
     <PackageReference Include="Microsoft.VisualStudioEng.MicroBuild.Core" PrivateAssets="all" GeneratePathProperty="true" />

@@ -1,0 +1,11 @@
+{
+  "name": "Microsoft.VisualStudio.ProjectSystem.Managed",
+  "version": "0.0.0-placeholder",
+  "description": ".NET Project System",
+  "repository": {
+    "type": "git",
+    "url": "https://devdiv@dev.azure.com/devdiv/DevDiv/_git/dotnet-project-system-Trusted"
+  },
+  "author": "Microsoft",
+  "license": "See LICENSE.md"
+}

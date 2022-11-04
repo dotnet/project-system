@@ -27,7 +27,8 @@
 
   <!-- Sets the version numbers for local builds. -->
   <!-- This applies to Nerdbank.GitVersioning targets. It changes the version information after it is set but before it is used to generate assembly info. -->
-  <Target Name="SetLocalBuildVersions" DependsOnTargets="GetBuildVersion" BeforeTargets="GenerateAssemblyNBGVVersionInfo" Condition="'$(CIBuild)' != 'true'">
+  <!-- This was set to BeforeTargets GenerateAssemblyNBGVVersionInfo, but didn't work for multi-target framework Pack operation, which also calls GetBuildVersion. -->
+  <Target Name="SetLocalBuildVersions" AfterTargets="GetBuildVersion" Condition="'$(CIBuild)' != 'true'">
     <PropertyGroup>
       <Version>$(LocalBuildVersion)-dev</Version>
       <!-- https://stackoverflow.com/a/65062/294804 -->
@@ -43,6 +44,7 @@
       <!-- error NU5104: A stable release of a package should not have a prerelease dependency. -->
       <PackageVersion>$(Version)</PackageVersion>
       <NuGetPackageVersion>$(Version)</NuGetPackageVersion>
+      <NPMPackageVersion>$(Version)</NPMPackageVersion>
 
       <!--
         NOTICE: Keep this information here for reference as it is useful to understand how version information is computed.
