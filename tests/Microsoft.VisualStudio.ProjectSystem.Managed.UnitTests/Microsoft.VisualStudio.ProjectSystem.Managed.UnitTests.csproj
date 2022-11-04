@@ -9,7 +9,6 @@
   </PropertyGroup>
 
   <PropertyGroup>
-    <TargetFramework></TargetFramework>
     <TargetFrameworks>net472;net6.0</TargetFrameworks>
 
     <!-- TODO: Remove this when the port to net6.0 is complete -->

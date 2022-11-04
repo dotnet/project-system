@@ -8,6 +8,7 @@
     <!-- The value of RuleInjectionClassName of XamlPropertyRule items defined by this project -->
     <XamlPropertyRuleInjectionClassName>ProjectProperties</XamlPropertyRuleInjectionClassName>
     <IsManagedProjectSystemProject>true</IsManagedProjectSystemProject>
+    <TargetFrameworks>net472;net6.0</TargetFrameworks>
 
     <!-- Nuget -->
     <IsPackable>true</IsPackable>
@@ -15,9 +16,6 @@
     <Summary>Microsoft VisualStudio Managed Project System</Summary>
     <PackageTags>Roslyn Managed Project System VisualStudio</PackageTags>
     <NoWarn>$(NoWarn);NU5125</NoWarn>
-
-    <TargetFramework></TargetFramework>
-    <TargetFrameworks>net472;net6.0</TargetFrameworks>
 
     <!-- TODO: Remove this when the port to net6.0 is complete -->
     <NoWarn>$(NoWarn);NU1701;NU1702</NoWarn>
