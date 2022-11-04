@@ -23,6 +23,13 @@
     <NoWarn>$(NoWarn);NU1701;NU1702</NoWarn>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(TargetFramework)' == 'net6.0-windows'">
+    <!-- Sets the DependsOn for NPM packaging. We use the designated target to select the files to pack. -->
+    <!-- See: https://dev.azure.com/devdiv/DevDiv/_git/vs-green?path=/components&anchor=packaging-components -->
+    <StageForNpmPackDependsOn>$(StageForNpmPackDependsOn);AddFilesForNpmPackage</StageForNpmPackDependsOn>
+    <NpmPackageOutputPath>$(PackageOutputPath)</NpmPackageOutputPath>
+  </PropertyGroup>
+
   <!-- TODO: Re-enable nullability and clean up warnings. -->
   <PropertyGroup Condition="'$(TargetFramework)' == 'net6.0-windows'">
     <Nullable>annotations</Nullable>
@@ -56,6 +63,12 @@
   <ItemGroup>
     <!-- Needed to break assembly conflict on StreamJsonRpc between microsoft.visualstudio.projectsystem.query and microsoft.visualstudio.languageservices -->
     <PackageReference Include="Microsoft.VisualStudio.RpcContracts" />
+  </ItemGroup>
+
+  <ItemGroup Condition="'$(TargetFramework)' == 'net6.0-windows'">
+    <!-- Package for creating an NPM package during build. -->
+    <!-- See: https://dev.azure.com/devdiv/DevDiv/_git/vs-green?path=/components&anchor=packaging-components -->
+    <PackageReference Include="Microsoft.VisualStudio.Internal.MicroBuild.NpmPack" PrivateAssets="all" />
   </ItemGroup>
 
   <!-- Dependencies -->
@@ -683,5 +696,15 @@
       <Generator>MSBuild:Compile</Generator>
     </None>
   </ItemGroup>
+
+  <Target Name="AddFilesForNpmPackage" DependsOnTargets="Build" Condition="'$(TargetFramework)' == 'net6.0-windows'">
+    <ItemGroup>
+      <NpmContent Include="$(OutDir)Microsoft.VisualStudio.ProjectSystem.Managed.*" />
+    </ItemGroup>
+  </Target>
+
+  <Target Name="PackNpmPackageMultiFramework" AfterTargets="StageForNpmPack" Condition="'$(TargetFramework)' == 'net6.0-windows'">
+    <CallTarget Targets="NpmPack" />
+  </Target>
 
 </Project>

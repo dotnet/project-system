@@ -21,7 +21,8 @@
       https://github.com/dotnet/sourcelink#using-source-link-in-net-projects
     -->
     <!-- <PackageReference Update="Microsoft.SourceLink.GitHub"                                            Version="1.1.1" /> -->
-    <PackageReference Update="Microsoft.SourceLink.AzureRepos.Git"                                            Version="1.1.1" />
+    <PackageReference Update="Microsoft.SourceLink.AzureRepos.Git"                                    Version="1.1.1" />
+    <PackageReference Update="Microsoft.VisualStudio.Internal.MicroBuild.NpmPack"                     Version="2.0.87" />
 
     <!-- VS SDK -->
     <PackageReference Update="EnvDTE"                                                                 Version="17.3.32804.24" />

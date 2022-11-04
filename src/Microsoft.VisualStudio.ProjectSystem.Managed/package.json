@@ -1,0 +1,12 @@
+{
+  "name": "dotnet-project-system",
+  "version": "0.0.0-placeholder",
+  "description": ".NET Project System",
+  "main": "",
+  "repository": {
+    "type": "git",
+    "url": "https://devdiv@dev.azure.com/devdiv/DevDiv/_git/dotnet-project-system"
+  },
+  "author": "Microsoft",
+  "license": "See LICENSE.md"
+}
