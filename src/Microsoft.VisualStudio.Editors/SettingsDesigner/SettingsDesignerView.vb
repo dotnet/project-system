@@ -174,13 +174,11 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             _settingsGridView.EditMode = DataGridViewEditMode.EditOnKeystrokeOrF2
             _settingsGridView.Text = "m_SettingsGridView"
             _settingsGridView.DefaultCellStyle.NullValue = ""
-            _settingsGridView.TabIndex = 1
 
             ScopeColumn.Items.Add(DesignTimeSettingInstance.SettingScope.Application)
             ScopeColumn.Items.Add(DesignTimeSettingInstance.SettingScope.User)
 
             SetLinkLabelText()
-            _descriptionLinkLabel.TabIndex = 0
 
             _settingsGridView.ColumnHeadersHeight = _settingsGridView.Rows(0).GetPreferredHeight(0, DataGridViewAutoSizeRowMode.AllCells, False)
             AddHandler _settingsGridView.KeyDown, AddressOf OnGridKeyDown
@@ -270,6 +268,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             resources.ApplyResources(_settingsGridView, "m_SettingsGridView")
             _settingsGridView.Margin = New Padding(14)
             _settingsGridView.Name = "m_SettingsGridView"
+            _settingsGridView.TabStop = True
             '
             'DataGridViewTextBoxColumn1
             '
@@ -304,6 +303,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             resources.ApplyResources(_descriptionLinkLabel, "DescriptionLinkLabel")
             _descriptionLinkLabel.Margin = New Padding(14, 23, 14, 9)
             _descriptionLinkLabel.Name = "DescriptionLinkLabel"
+            _descriptionLinkLabel.DisplayFocusCues = True
             _descriptionLinkLabel.TabStop = True
             '
             'SettingsTableLayoutPanel
@@ -319,6 +319,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             _settingsTableLayoutPanel.RowStyles.Add(New RowStyle)
             _settingsTableLayoutPanel.RowStyles.Add(New RowStyle)
             _settingsTableLayoutPanel.RowStyles.Add(New RowStyle(SizeType.Percent, 100.0!))
+            _settingsTableLayoutPanel.TabStop = True
             '
             'SettingsDesignerView
             '
@@ -1495,6 +1496,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <param name="Designer"></param>
         Private Sub UnregisterMenuCommands(Designer As SettingsDesigner)
             RemoveHandler _settingsGridView.ContextMenuShow, AddressOf Designer.ShowContextMenu
+            RemoveHandler _settingsGridView.KeyDown, AddressOf OnGridKeyDown
         End Sub
 
         ''' <summary>
