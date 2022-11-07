@@ -54,7 +54,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
         protected abstract T GetValue(ConfiguredProject project);
 
-        private void OnActiveConfigurationChanged(object sender, ActiveConfigurationChangedEventArgs e)
+        private void OnActiveConfigurationChanged(object? sender, ActiveConfigurationChangedEventArgs e)
         {
             SetValueForConfiguration(e.NowActive);
         }

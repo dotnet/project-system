@@ -77,7 +77,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                     return targetPath;
                 }
 
-                if (metadata.TryGetValue(None.LinkProperty, out string link) && !string.IsNullOrWhiteSpace(link))
+                if (metadata.TryGetValue(None.LinkProperty, out string? link) && !string.IsNullOrWhiteSpace(link))
                 {
                     return link;
                 }
@@ -87,7 +87,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
             BuildUpToDateCheck.CopyType GetCopyType()
             {
-                if (metadata.TryGetValue(None.CopyToOutputDirectoryProperty, out string value))
+                if (metadata.TryGetValue(None.CopyToOutputDirectoryProperty, out string? value))
                 {
                     if (string.Equals(value, None.CopyToOutputDirectoryValues.Always, StringComparisons.PropertyLiteralValues))
                     {

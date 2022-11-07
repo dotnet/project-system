@@ -28,7 +28,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
 
         private string GetPlatformValue(string value)
         {
-            if (string.IsNullOrEmpty(value) && _configuredProject.ProjectConfiguration.Dimensions.TryGetValue("Platform", out string platform))
+            if (string.IsNullOrEmpty(value) && _configuredProject.ProjectConfiguration.Dimensions.TryGetValue("Platform", out string? platform))
             {
                 value = platform;
             }

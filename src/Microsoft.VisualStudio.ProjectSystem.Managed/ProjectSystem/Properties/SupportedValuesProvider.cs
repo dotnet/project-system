@@ -74,7 +74,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         {
             public static NaturalStringComparer Instance { get; } = new NaturalStringComparer();
 
-            public int Compare(string x, string y)
+            public int Compare(string? x, string? y)
             {
                 // sort nulls to the start
                 if (x is null)

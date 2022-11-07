@@ -46,7 +46,7 @@ namespace Microsoft.VisualStudio.Collections
         //   T:System.ArgumentNullException:
         //     source or keySelector or elementSelector is null.-or- keySelector produces a
         //     key that is null.
-        public static Dictionary<TKey, TElement> ToDictionary<TSource, TKey, TElement>(this IEnumerable<TSource> source, Func<TSource, TKey> keySelector, Func<TSource, TElement> elementSelector, IEqualityComparer<TKey> comparer, bool ignoreDuplicateKeys)
+        public static Dictionary<TKey, TElement> ToDictionary<TSource, TKey, TElement>(this IEnumerable<TSource> source, Func<TSource, TKey> keySelector, Func<TSource, TElement> elementSelector, IEqualityComparer<TKey> comparer, bool ignoreDuplicateKeys) where TKey: notnull
         {
             if (!ignoreDuplicateKeys)
                 return source.ToDictionary(keySelector, elementSelector, comparer);
@@ -59,7 +59,7 @@ namespace Microsoft.VisualStudio.Collections
 
             if (elementSelector is null)
                 throw new ArgumentNullException(nameof(elementSelector));
-
+            
             Dictionary<TKey, TElement> result = new(comparer);
 
             foreach (var item in source)

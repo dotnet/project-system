@@ -35,7 +35,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
         /// Override Equals to handle equivalency correctly. They are equal if the
         /// monikers match
         /// </summary>
-        public override bool Equals(object obj)
+        public override bool Equals(object? obj)
         {
             return obj is TargetFramework targetFramework && Equals(targetFramework);
         }

@@ -164,7 +164,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.PackageRestore
 
         private bool ValidateToolReference(Dictionary<string, IVsReferenceItem> existingReferences, IVsReferenceItem reference)
         {
-            if (existingReferences.TryGetValue(reference.Name, out IVsReferenceItem existingReference))
+            if (existingReferences.TryGetValue(reference.Name, out IVsReferenceItem? existingReference))
             {
                 // CLI tool references are project-wide, so if they have conflicts in names, 
                 // they must have the same metadata, which avoids from having to condition 
