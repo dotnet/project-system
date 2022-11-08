@@ -439,7 +439,7 @@
       </trans-unit>
       <trans-unit id="StringProperty|DefineConstants|DisplayName">
         <source>Conditional compilation symbols</source>
-        <target state="new">Conditional compilation symbols</target>
+        <target state="translated">條件式編譯符號</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|DocumentationFile|Description">
