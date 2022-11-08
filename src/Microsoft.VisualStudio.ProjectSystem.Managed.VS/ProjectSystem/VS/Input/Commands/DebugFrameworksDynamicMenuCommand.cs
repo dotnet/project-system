@@ -3,7 +3,6 @@
 using System.ComponentModel.Design;
 using Microsoft.VisualStudio.Input;
 using Microsoft.VisualStudio.ProjectSystem.Debug;
-using Microsoft.VisualStudio.ProjectSystem.VS.Debug;
 using Microsoft.VisualStudio.Threading;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands

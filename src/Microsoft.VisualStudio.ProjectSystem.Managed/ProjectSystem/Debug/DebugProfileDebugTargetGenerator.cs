@@ -2,10 +2,9 @@
 
 using System.Threading.Tasks.Dataflow;
 using Microsoft.Build.Framework.XamlTypes;
-using Microsoft.VisualStudio.ProjectSystem.Debug;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
 
-namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
+namespace Microsoft.VisualStudio.ProjectSystem.Debug
 {
     /// <summary>
     /// Provides the set of debug profiles to populate the debugger dropdown.  The Property associated

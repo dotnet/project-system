@@ -2,6 +2,7 @@
 
 using EnvDTE;
 using Microsoft.VisualStudio.Buffers.PooledObjects;
+using Microsoft.VisualStudio.ProjectSystem.Debug;
 using Microsoft.VisualStudio.ProjectSystem.VS.Extensibility;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
