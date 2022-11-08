@@ -2,7 +2,7 @@
 
 using Microsoft.VisualStudio.ProjectSystem.Properties.Package;
 
-namespace Microsoft.VisualStudio.ProjectSystem.Properties.InterceptedProjectProperties.PackagePropertyPage
+namespace Microsoft.VisualStudio.ProjectSystem.Properties.InterceptingProjectProperties.PackagePropertyPage
 {
     public class PackageFilePropertyValueProviderBaseTests
     {

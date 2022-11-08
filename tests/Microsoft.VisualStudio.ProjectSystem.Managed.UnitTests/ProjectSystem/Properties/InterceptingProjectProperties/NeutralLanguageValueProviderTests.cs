@@ -2,7 +2,7 @@
 
 using Microsoft.VisualStudio.ProjectSystem.Properties.Package;
 
-namespace Microsoft.VisualStudio.ProjectSystem.Properties.InterceptedProjectProperties
+namespace Microsoft.VisualStudio.ProjectSystem.Properties.InterceptingProjectProperties
 {
     public class NeutralLanguageValueProviderTests
     {

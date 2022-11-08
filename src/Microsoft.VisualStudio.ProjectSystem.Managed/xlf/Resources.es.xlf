@@ -385,17 +385,17 @@ Este proyecto se cargó con el tipo de proyecto incorrecto, probablemente como r
       </trans-unit>
       <trans-unit id="Restore_DuplicateToolReferenceItems">
         <source>The metadata on 'DotNetCliToolReference' item '{0}' is inconsistent between target frameworks. Only the first one will be restored.</source>
-        <target state="new">The metadata on 'DotNetCliToolReference' item '{0}' is inconsistent between target frameworks. Only the first one will be restored.</target>
+        <target state="translated">Los metadatos del elemento "{0}" de "DotNetCliToolReference" no son coherentes entre los marcos de destino. Solo se restaurarán los primeros.</target>
         <note />
       </trans-unit>
       <trans-unit id="Restore_EmptyTargetFrameworkMoniker">
         <source>The value of the 'TargetFrameworkMoniker' and 'NuGetTargetMoniker' properties in the '{0}' configuration are both empty. This configuration will not contribute to NuGet restore, which may result in restore and build errors.</source>
-        <target state="new">The value of the 'TargetFrameworkMoniker' and 'NuGetTargetMoniker' properties in the '{0}' configuration are both empty. This configuration will not contribute to NuGet restore, which may result in restore and build errors.</target>
+        <target state="translated">Los valores de las propiedades "TargetFrameworkMoniker" y "NuGetTargetMoniker" en la configuración de "{0}" están vacíos. Esta configuración no contribuirá a la restauración de NuGet, lo que puede dar lugar a errores de restauración y compilación.</target>
         <note />
       </trans-unit>
       <trans-unit id="Restore_PropertyWithInconsistentValues">
         <source>The value of the '{0}' property is inconsistent between target frameworks. This property must be identical for NuGet restore to function correctly. The value '{1}' from the '{2}' configuration will be used, other target frameworks may fail to pick NuGet assets.</source>
-        <target state="new">The value of the '{0}' property is inconsistent between target frameworks. This property must be identical for NuGet restore to function correctly. The value '{1}' from the '{2}' configuration will be used, other target frameworks may fail to pick NuGet assets.</target>
+        <target state="translated">El valor de la propiedad "{0}" no es coherente entre los marcos de destino. Esta propiedad debe ser idéntica para que la restauración de NuGet funcione correctamente. Se usará el valor "{1}" de la configuración de "{2}"; puede que otros marcos de destino no seleccionen activos NuGet.</target>
         <note />
       </trans-unit>
       <trans-unit id="SdkNodeName">

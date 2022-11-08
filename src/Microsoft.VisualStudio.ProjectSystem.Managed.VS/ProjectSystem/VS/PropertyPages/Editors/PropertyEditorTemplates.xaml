@@ -136,11 +136,13 @@
                             KeyboardNavigation.TabNavigation="Continue"
                             Background="Transparent"
                             MaxHeight="750"
-                            Style="{StaticResource {x:Static vsfx:VsResourceKeys.ThemedDialogListViewStyleKey}}"
                             AutomationProperties.Name="{x:Static propertyPages:PropertyPageResources.ImplicitUsingEditor_ListViewAccessibleName}">
                             <ListView.View>
                                 <GridView ColumnHeaderContainerStyle="{StaticResource {x:Static vsfx:VsResourceKeys.ThemedDialogGridViewColumnHeaderStyleKey}}">
-                                    <GridViewColumn Header="{x:Static propertyPages:PropertyPageResources.ImplicitUsingEditor_ListItemIncludes}" Width="300">
+                                    <GridViewColumn Width="300">
+                                        <GridViewColumn.Header>
+                                            <TextBlock Margin="4 0" Text="{x:Static propertyPages:PropertyPageResources.ImplicitUsingEditor_ListItemIncludes}" />
+                                        </GridViewColumn.Header>
                                         <GridViewColumn.CellTemplate>
                                             <DataTemplate DataType="{x:Type controls:ImplicitUsingModel}">
                                                 <TextBox
@@ -154,7 +156,10 @@
                                             </DataTemplate>
                                         </GridViewColumn.CellTemplate>
                                     </GridViewColumn>
-                                    <GridViewColumn Header="{x:Static propertyPages:PropertyPageResources.ImplicitUsingEditor_ListItemAlias}" Width="200">
+                                    <GridViewColumn Width="200">
+                                        <GridViewColumn.Header>
+                                            <TextBlock Margin="4 0" Text="{x:Static propertyPages:PropertyPageResources.ImplicitUsingEditor_ListItemAlias}" />
+                                        </GridViewColumn.Header>
                                         <GridViewColumn.CellTemplate>
                                             <DataTemplate DataType="{x:Type controls:ImplicitUsingModel}">
                                                 <TextBox
@@ -175,7 +180,10 @@
                                         </GridViewColumn.CellTemplate>
                                     </GridViewColumn>
 
-                                    <GridViewColumn Header="{x:Static propertyPages:PropertyPageResources.ImplicitUsingEditor_ListItemIsStatic}" Width="75">
+                                    <GridViewColumn Width="75">
+                                        <GridViewColumn.Header>
+                                            <TextBlock Margin="4 0" Text="{x:Static propertyPages:PropertyPageResources.ImplicitUsingEditor_ListItemIsStatic}" />
+                                        </GridViewColumn.Header>
                                         <GridViewColumn.CellTemplate>
                                             <DataTemplate DataType="{x:Type controls:ImplicitUsingModel}">
                                                 <CheckBox

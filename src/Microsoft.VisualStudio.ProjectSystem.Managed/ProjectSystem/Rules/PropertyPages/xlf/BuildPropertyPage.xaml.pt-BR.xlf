@@ -433,8 +433,8 @@
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|DefineConstants|Description">
-        <source>Specifies symbols on which to perform conditional compilation. Separate symbols with a semi-colon (';').</source>
-        <target state="translated">Especifica os símbolos nos quais a compilação condicional deve ser executada. Separe os símbolos com um ponto e vírgula (';').</target>
+        <source>Specifies symbols on which to perform conditional compilation.</source>
+        <target state="new">Specifies symbols on which to perform conditional compilation.</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|DefineConstants|DisplayName">

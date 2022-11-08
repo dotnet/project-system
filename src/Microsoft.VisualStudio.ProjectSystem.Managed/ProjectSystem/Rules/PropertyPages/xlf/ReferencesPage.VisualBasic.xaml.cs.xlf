@@ -12,16 +12,6 @@
         <target state="translated">Obecné</target>
         <note />
       </trans-unit>
-      <trans-unit id="DynamicEnumProperty|ImportedNamespaces|Description">
-        <source>Manage which namespaces to import in your application.</source>
-        <target state="translated">Umožňuje spravovat obory názvů, které se mají importovat ve vaší aplikaci.</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="DynamicEnumProperty|ImportedNamespaces|DisplayName">
-        <source>Import Namespaces</source>
-        <target state="translated">Importovat obory názvů</target>
-        <note />
-      </trans-unit>
       <trans-unit id="Rule|References|Description">
         <source>Specifies the project's references and namespace imports.</source>
         <target state="translated">Určuje odkazy projektu a importy oborů názvů.</target>
@@ -30,6 +20,16 @@
       <trans-unit id="Rule|References|DisplayName">
         <source>References</source>
         <target state="translated">Odkazy</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|ImportedNamespaces|Description">
+        <source>Manage which namespaces to import in your application.</source>
+        <target state="new">Manage which namespaces to import in your application.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|ImportedNamespaces|DisplayName">
+        <source>Import Namespaces</source>
+        <target state="new">Import Namespaces</target>
         <note />
       </trans-unit>
     </body>

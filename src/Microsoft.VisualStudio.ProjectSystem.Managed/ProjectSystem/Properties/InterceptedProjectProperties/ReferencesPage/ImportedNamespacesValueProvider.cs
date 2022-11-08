@@ -25,7 +25,7 @@ internal sealed class ImportedNamespacesValueProvider : InterceptingPropertyValu
         _encoding = new KeyValuePairListEncoding();
     }
 
-    private async Task<ImmutableArray<(string Value, bool IsReadOnly)>> GetSelectedImportsAsync()
+    private async Task<ImmutableArray<(string Value, bool IsReadOnly)>> GetProjectImportsAsync()
     {
         ImmutableArray<(string Value, bool IsReadOnly)> existingImports = await _projectAccessor.OpenProjectForReadAsync(_configuredProject, project =>
         {
@@ -38,35 +38,41 @@ internal sealed class ImportedNamespacesValueProvider : InterceptingPropertyValu
 
         return existingImports;
     }
-    
+
     private async Task<string> GetSelectedImportStringAsync()
+    {
+        return _encoding.Format(await GetSelectedImportListAsync());
+    }
+    
+    private async Task<List<(string Import, string IsReadOnly)>> GetSelectedImportListAsync()
     {
         string projectName = Path.GetFileNameWithoutExtension(_configuredProject.UnconfiguredProject.FullPath);
 
-        ImmutableArray<(string Value, bool IsImported)> existingImports = await GetSelectedImportsAsync();
+        ImmutableArray<(string Value, bool IsImported)> existingImports = await GetProjectImportsAsync();
 
-        var selectedImports = existingImports
+        List<(string Import, string IsReadOnly)> selectedImports = existingImports
                 .Where(pair => !string.IsNullOrEmpty(pair.Value))
                 .Select(pair => (Key: pair.Value, Value: pair.IsImported.ToString())).ToList();
 
-        bool containsProjectName = selectedImports.Any(selectedImport => string.Equals(selectedImport.Key, projectName, StringComparison.Ordinal));
+        bool containsProjectName = selectedImports.Any(selectedImport => string.Equals(selectedImport.Import, projectName, StringComparison.Ordinal));
 
         if (!containsProjectName)
         {
-            selectedImports.Add((projectName, Value: bool.TrueString));
+            selectedImports.Add((projectName, IsReadOnly: bool.TrueString));
         }
 
-        return _encoding.Format(selectedImports);
+        return selectedImports;
     }
     
     public override async Task<string> OnGetUnevaluatedPropertyValueAsync(string propertyName, string unevaluatedPropertyValue, IProjectProperties defaultProperties)
     {
+        await ((ConfiguredProject2)_configuredProject).EnsureProjectEvaluatedAsync();
         return await GetSelectedImportStringAsync();
     }
 
     public override async Task<string> OnGetEvaluatedPropertyValueAsync(string propertyName, string evaluatedPropertyValue, IProjectProperties defaultProperties)
     {
-        return await GetSelectedImportStringAsync();
+        return string.Join(",", (await GetSelectedImportListAsync()).Select(pair => pair.Import));
     }
 
     public override async Task<string?> OnSetPropertyValueAsync(string propertyName, string unevaluatedPropertyValue, IProjectProperties defaultProperties, IReadOnlyDictionary<string, string>? dimensionalConditions = null)
@@ -77,7 +83,7 @@ internal sealed class ImportedNamespacesValueProvider : InterceptingPropertyValu
         
         importsToAdd.Remove(Path.GetFileNameWithoutExtension(_configuredProject.UnconfiguredProject.FullPath));
 
-        foreach ((string value, bool _) in await GetSelectedImportsAsync())
+        foreach ((string value, bool _) in await GetProjectImportsAsync())
         {
             if (!importsToAdd.ContainsKey(value))
             {
