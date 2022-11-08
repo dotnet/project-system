@@ -103,23 +103,23 @@
         <note />
       </trans-unit>
       <trans-unit id="FileVersionRevisionTextBox.AccessibleName">
-        <source>Assembly File Verison Revision</source>
-        <target state="translated">Revize verze souboru sestavení</target>
+        <source>Assembly File Version Revision</source>
+        <target state="needs-review-translation">Revize verze souboru sestavení</target>
         <note />
       </trans-unit>
       <trans-unit id="FileVersionBuildTextBox.AccessibleName">
-        <source>Assembly File Verison Build</source>
-        <target state="translated">Build verze souboru sestavení</target>
+        <source>Assembly File Version Build</source>
+        <target state="needs-review-translation">Build verze souboru sestavení</target>
         <note />
       </trans-unit>
       <trans-unit id="FileVersionMinorTextBox.AccessibleName">
-        <source>Assembly File Verison Minor</source>
-        <target state="translated">Podverze souboru sestavení</target>
+        <source>Assembly File Version Minor</source>
+        <target state="needs-review-translation">Podverze souboru sestavení</target>
         <note />
       </trans-unit>
       <trans-unit id="FileVersionMajorTextBox.AccessibleName">
-        <source>Assembly File Verison Major</source>
-        <target state="translated">Hlavní verze souboru sestavení</target>
+        <source>Assembly File Version Major</source>
+        <target state="needs-review-translation">Hlavní verze souboru sestavení</target>
         <note />
       </trans-unit>
       <trans-unit id="PackageRequireLicenseAcceptance.Text">
