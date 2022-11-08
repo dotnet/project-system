@@ -73,15 +73,22 @@ internal class DefineConstantsValueProvider : InterceptingPropertyValueProviderB
 
     public override async Task<string?> OnSetPropertyValueAsync(string propertyName, string unevaluatedPropertyValue, IProjectProperties defaultProperties, IReadOnlyDictionary<string, string>? dimensionalConditions = null)
     {
-        IEnumerable<string> existingConstants =
+        // constants recursively obtained from above in this property's hierarchy (from imported files)
+        IEnumerable<string> innerConstants =
             ParseDefinedConstantsFromUnevaluatedValue(await defaultProperties.GetUnevaluatedPropertyValueAsync(ConfiguredBrowseObject.DefineConstantsProperty) ?? string.Empty);
         
         IEnumerable<string> constantsToWrite = _encoding.Parse(unevaluatedPropertyValue)
             .Select(pair => pair.Name)
-            .Where(x => !existingConstants.Contains(x))
+            .Where(x => !innerConstants.Contains(x))
             .Distinct()
             .ToList();
 
-        return !constantsToWrite.Any() ? null : $"{DefineConstantsRecursivePrefix};" + string.Join(";", constantsToWrite);
+        if (!constantsToWrite.Any())
+        {
+            await defaultProperties.DeletePropertyAsync(propertyName, dimensionalConditions);
+            return null;
+        }
+        
+        return $"{DefineConstantsRecursivePrefix};" + string.Join(";", constantsToWrite);
     }
 }
