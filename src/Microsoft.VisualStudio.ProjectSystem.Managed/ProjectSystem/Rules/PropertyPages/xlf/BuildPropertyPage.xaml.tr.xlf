@@ -433,13 +433,13 @@
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|DefineConstants|Description">
-        <source>Specifies symbols on which to perform conditional compilation. Separate symbols with a semi-colon (';').</source>
-        <target state="translated">Üzerinde koşullu derlemenin gerçekleştirileceği sembolleri belirtir. Sembolleri noktalı virgülle (';') ayırın.</target>
+        <source>Specifies symbols on which to perform conditional compilation.</source>
+        <target state="new">Specifies symbols on which to perform conditional compilation.</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|DefineConstants|DisplayName">
         <source>Conditional compilation symbols</source>
-        <target state="translated">Koşullu derleme sembolleri</target>
+        <target state="new">Conditional compilation symbols</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|DocumentationFile|Description">

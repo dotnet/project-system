@@ -24,6 +24,8 @@ internal class ImplicitUsingsValueProvider : InterceptingPropertyValueProviderBa
 
     private async Task<List<ImplicitUsing>> GetImplicitUsingsAsync()
     {
+        await ((ConfiguredProject2)_configuredProject).EnsureProjectEvaluatedAsync();
+
         List<ImplicitUsing> usings = await _projectAccessor.OpenProjectForReadAsync(_configuredProject, project =>
         {
             return project

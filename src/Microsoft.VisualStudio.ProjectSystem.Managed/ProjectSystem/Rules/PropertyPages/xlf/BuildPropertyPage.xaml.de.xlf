@@ -433,13 +433,13 @@
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|DefineConstants|Description">
-        <source>Specifies symbols on which to perform conditional compilation. Separate symbols with a semi-colon (';').</source>
-        <target state="translated">Hiermit werden Symbole angegeben, für die eine bedingte Kompilierung ausgeführt werden soll. Trennen Sie Symbole durch ein Semikolon (";").</target>
+        <source>Specifies symbols on which to perform conditional compilation.</source>
+        <target state="new">Specifies symbols on which to perform conditional compilation.</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|DefineConstants|DisplayName">
         <source>Conditional compilation symbols</source>
-        <target state="translated">Symbole für bedingte Kompilierung</target>
+        <target state="new">Conditional compilation symbols</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|DocumentationFile|Description">

@@ -13,6 +13,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
         public const string VisualBasicAppDesigner = ProjectCapabilities.VB + " & " + AppDesigner;
         public const string CSharpAppDesigner = ProjectCapabilities.CSharp + " & " + AppDesigner;
         public const string FSharpAppDesigner = FSharp + " & " + AppDesigner;
+        public const string CSharpOrFSharp = "(" + CSharp + " | " + FSharp + ")";
         public const string CSharpOrVisualBasic = "(" + ProjectCapabilities.CSharp + " | " + ProjectCapabilities.VB + ")";
         public const string CSharpOrVisualBasicLanguageService = CSharpOrVisualBasic + " & " + LanguageService;
         public const string RazorAndEitherWinFormsOrWpf = "(" + DotNetRazor + "|" + "(" + WindowsForms + "&" + WPF + ")" + ")";

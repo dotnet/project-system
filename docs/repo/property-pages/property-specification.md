@@ -233,32 +233,33 @@ The property's string value should be encoded with format resembling `A=1,B=2`, 
 
 ### Multi-String Selector Editor
 
-When a property contains a variable number of strings, you can use the `MultiStringSelector` editor on any kind of `EnumProperty` to display a list of checkable/uncheckable strings.
+When a property contains a variable number of strings, you can use the `MultiStringSelector` editor on a StringProperty to display a list of checkable/uncheckable strings.
 
 The `TypeDescriptorText` metadata must be included in order to describe what is actually being selected.
 
 By default, users will not be able to add their own custom strings to the list. To allow custom strings, set the `AllowsCustomStrings` metadata value to True.
 
+To show the evaluated value of the property below the multi-string selector, set the `ShouldDisplayEvaluatedPreview` metadata value to True.
+
 ```xml
-  <DynamicEnumProperty Name="ImportedNamespaces"
+<StringProperty Name="ImportedNamespaces"
                        DisplayName="Import Namespaces"
                        Description="Manage which namespaces to import in your application."
-                       Category="General"
-                       EnumProvider="DotNetImportsEnumProvider">
-    <DynamicEnumProperty.DataSource>
-        <DataSource PersistedName="ImportedNamespaces"
-                    Persistence="ProjectFileWithInterception"
-                    HasConfigurationCondition="False" />
-    </DynamicEnumProperty.DataSource>
-    <DynamicEnumProperty.ValueEditors>
-        <ValueEditor EditorType="MultiStringSelector">
-            <ValueEditor.Metadata>
-                <NameValuePair Name="TypeDescriptorText" Value="Imported Namespaces" />
-                <NameValuePair Name="AllowsCustomStrings" Value="True" />
-            </ValueEditor.Metadata>
-        </ValueEditor>
-    </DynamicEnumProperty.ValueEditors>
-</DynamicEnumProperty>
+                       Category="General">
+    <StringProperty.DataSource>
+      <DataSource PersistedName="ImportedNamespaces"
+                  Persistence="ProjectFileWithInterception"
+                  HasConfigurationCondition="False" />
+    </StringProperty.DataSource>
+    <StringProperty.ValueEditors>
+      <ValueEditor EditorType="MultiStringSelector">
+        <ValueEditor.Metadata>
+          <NameValuePair Name="TypeDescriptorText" Value="Imported Namespaces" />
+          <NameValuePair Name="AllowsCustomStrings" Value="True" />
+        </ValueEditor.Metadata>
+      </ValueEditor>
+    </StringProperty.ValueEditors>
+</StringProperty> 
 ```
 
 This example is taken from the [_Imported Namespaces_](https://github.com/dotnet/project-system/blob/1f860b8c3616a6be551f7a3f90eb54be3b249afd/src/Microsoft.VisualStudio.ProjectSystem.Managed/ProjectSystem/Rules/PropertyPages/ReferencesPage.VisualBasic.xaml#L22) property on the Visual Basic project properties references page.
