@@ -30,8 +30,10 @@ public class WPFValueProviderTests
                 getShutdownModeCalled = true;
                 return Task.FromResult<string?>(shutdownModeValue);
             });
+                
+        var unconfiguredProject = UnconfiguredProjectFactory.Create(@"C:\Test\Path\Here");
 
-        var provider = new WPFValueProvider(applicationXamlFileAccessor);
+        var provider = new WPFValueProvider(applicationXamlFileAccessor, unconfiguredProject);
 
         var defaultProperties = IProjectPropertiesFactory.CreateWithPropertiesAndValues(new Dictionary<string, string?>
         {
@@ -83,7 +85,9 @@ public class WPFValueProviderTests
                 return Task.CompletedTask;
             });
 
-        var provider = new WPFValueProvider(applicationXamlFileAccessor);
+        var unconfiguredProject = UnconfiguredProjectFactory.Create(@"C:\Test\Path\Here");
+
+        var provider = new WPFValueProvider(applicationXamlFileAccessor, unconfiguredProject);
 
         var defaultProperties = IProjectPropertiesFactory.CreateWithPropertiesAndValues(new Dictionary<string, string?>
         {
