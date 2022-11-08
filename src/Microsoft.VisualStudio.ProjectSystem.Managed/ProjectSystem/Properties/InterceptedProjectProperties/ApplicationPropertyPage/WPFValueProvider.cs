@@ -41,7 +41,7 @@ internal class WPFValueProvider : InterceptingPropertyValueProviderBase
 
     public override async Task<string?> OnSetPropertyValueAsync(string propertyName, string unevaluatedPropertyValue, IProjectProperties defaultProperties, IReadOnlyDictionary<string, string>? dimensionalConditions = null)
     {
-        if (await IsWPFApplicationAsync(defaultProperties))
+        if (await IsWpfAndNotWinFormsApplicationAsync(defaultProperties))
         {
             await (propertyName switch
             {
@@ -57,7 +57,7 @@ internal class WPFValueProvider : InterceptingPropertyValueProviderBase
 
     private async Task<string> GetPropertyValueAsync(string propertyName, IProjectProperties defaultProperties)
     {
-        if (await IsWPFApplicationAsync(defaultProperties))
+        if (await IsWpfAndNotWinFormsApplicationAsync(defaultProperties))
         {
             return propertyName switch
             {
@@ -71,7 +71,12 @@ internal class WPFValueProvider : InterceptingPropertyValueProviderBase
         return string.Empty;
     }
 
-    private async Task<bool> IsWPFApplicationAsync(IProjectProperties defaultProperties)
+    /// <summary>
+    /// This method will help us determine if we need to load the files
+    /// where the properties are stored. For WPF, that is the Application.xaml file;
+    /// for WinForms, that is the .myApp file.
+    /// </summary>
+    private async Task<bool> IsWpfAndNotWinFormsApplicationAsync(IProjectProperties defaultProperties)
     {
         IProjectCapabilitiesScope capabilities = _project.Capabilities;
 

@@ -5,25 +5,25 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties;
     /// <summary>
     /// Contains constants representing the property names used in the ApplicationPropertyPage folder.
     /// </summary>
-    internal class PropertyNames
+    internal static class PropertyNames
     {
         // Project properties
-        internal const string UseWPFProperty = "UseWPF";
-        internal const string UseWindowsFormsProperty = "UseWindowsForms";
+        internal const string UseWPF = "UseWPF";
+        internal const string UseWindowsForms = "UseWindowsForms";
 
         // MSBuild properties
-        internal const string ApplicationFrameworkMSBuildProperty = "MyType";
-        internal const string OutputTypeMSBuildProperty = "OutputType";
-        internal const string StartupObjectMSBuildProperty = "StartupObject";
+        internal const string ApplicationFrameworkMSBuild = "MyType";
+        internal const string OutputTypeMSBuild = "OutputType";
+        internal const string StartupObjectMSBuild = "StartupObject";
 
         // Application.myapp properties
-        internal const string ApplicationFrameworkProperty = "UseApplicationFramework";
-        internal const string EnableVisualStylesProperty = "EnableVisualStyles";
-        internal const string SingleInstanceProperty = "SingleInstance";
-        internal const string SaveMySettingsOnExitProperty = "SaveMySettingsOnExit";
-        internal const string HighDpiModeProperty = "HighDpiMode";
-        internal const string AuthenticationModeProperty = "VBAuthenticationMode";
-        internal const string ShutdownModeProperty = "ShutdownMode";
-        internal const string SplashScreenProperty = "SplashScreen";
-        internal const string MinimumSplashScreenDisplayTimeProperty = "MinimumSplashScreenDisplayTime";
+        internal const string ApplicationFramework = "UseApplicationFramework";
+        internal const string EnableVisualStyles = "EnableVisualStyles";
+        internal const string SingleInstance = "SingleInstance";
+        internal const string SaveMySettingsOnExit = "SaveMySettingsOnExit";
+        internal const string HighDpiMode = "HighDpiMode";
+        internal const string AuthenticationMode = "VBAuthenticationMode";
+        internal const string ShutdownMode = "ShutdownMode";
+        internal const string SplashScreen = "SplashScreen";
+        internal const string MinimumSplashScreenDisplayTime = "MinimumSplashScreenDisplayTime";
     }
