@@ -3,11 +3,10 @@
 using System.Collections.ObjectModel;
 using System.Diagnostics.CodeAnalysis;
 using Microsoft.Build.Framework.XamlTypes;
-using Microsoft.VisualStudio.ProjectSystem.Debug;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
 using Microsoft.VisualStudio.Threading;
 
-namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
+namespace Microsoft.VisualStudio.ProjectSystem.Debug
 {
     /// <summary>
     /// Provides the IEnumValue's for the ActiveDebugProfile property. This is what is used to drive
