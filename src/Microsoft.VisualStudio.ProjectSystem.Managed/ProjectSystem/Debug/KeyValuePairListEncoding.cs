@@ -2,11 +2,11 @@
 
 namespace Microsoft.VisualStudio.ProjectSystem.Debug;
 
-internal sealed class KeyValuePairListEncoding
+internal sealed class KeyValuePairListEncoding : StringListEncoding
 {
     public static KeyValuePairListEncoding Instance { get; } = new();
 
-    public IEnumerable<(string Name, string Value)> Parse(string input)
+    public override IEnumerable<(string Name, string Value)> Parse(string input)
     {
         if (string.IsNullOrWhiteSpace(input))
         {
@@ -78,7 +78,7 @@ internal sealed class KeyValuePairListEncoding
         }
     }
 
-    public string Format(IEnumerable<(string Name, string Value)> pairs)
+    public override string Format(IEnumerable<(string Name, string Value)> pairs)
     {
         // Copied from ActiveLaunchProfileEnvironmentVariableValueProvider in the .NET Project System.
         // In future, EnvironmentVariablesNameValueListEncoding should be exported from that code base and imported here.

@@ -6,40 +6,31 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug;
 ///  Converts the single string representation to multiple key, value pairs used
 ///  for defining constants.
 /// </summary>
-internal abstract class AbstractProjectConfigurationDefineConstantsEncoding
+internal abstract class StringListEncoding
 {
-    private static Dictionary<string, string> ParseIntoDictionary(string inputValue)
+    public abstract IEnumerable<(string Name, string Value)> Parse(string input);
+    public abstract string Format(IEnumerable<(string Name, string Value)> pairs);
+
+    public static Dictionary<string, string> ParseIntoDictionary(string inputValue)
     {
-        Dictionary<string, string> constantsDictionary = new Dictionary<string, string>();
+        Dictionary<string, string> dictionary = new Dictionary<string, string>();
         foreach ((string key, string value) in KeyQuotedValuePairListEncoding.Instance.Parse(inputValue))
         {
             if (!string.IsNullOrEmpty(key))
             {
-                constantsDictionary[key] = value;
+                dictionary[key] = value;
             }
         }
-        return constantsDictionary;
+        return dictionary;
     }
 
-    public static string Format(string propertyValue)
-    {
-        Dictionary<string, string> constantsDictionary = ParseIntoDictionary(propertyValue);
-        return KeyQuotedValuePairListEncoding.Instance.Format(EnumerateConstantsDictionary(constantsDictionary));
-    }
-
-    public static string DisplayFormat(string propertyValue)
-    {
-        Dictionary<string, string> constantsDictionary = ParseIntoDictionary(propertyValue);
-        return KeyValuePairListEncoding.Instance.Format(EnumerateConstantsDictionary(constantsDictionary));
-    }
-
-    private static IEnumerable<(string Name, string Value)> EnumerateConstantsDictionary(Dictionary<string, string> constantsDictionary)
+    public static IEnumerable<(string Name, string Value)> EnumerateDictionary(Dictionary<string, string> dictionary)
     {
 
-        return constantsDictionary switch
+        return dictionary switch
         {
-            null or  { Count: 0 } => Enumerable.Empty<(string key, string value)>(),
-            _ => constantsDictionary.ToList().Select(kvp => (kvp.Key, kvp.Value))
+            null or { Count: 0 } => Enumerable.Empty<(string key, string value)>(),
+            _ => dictionary.ToList().Select(kvp => (kvp.Key, kvp.Value))
         };
     }
 }

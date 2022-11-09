@@ -21,7 +21,8 @@ namespace Microsoft.VisualStudio.ProjectSystem
         [InlineData("files=path=/path/to/somewhere/", "files=\"path/=//path//to//somewhere//\"")]
         public void DefineConstantsEncodingFormatTest(string input, string expectedOutput)
         {
-            var formatValue = AbstractProjectConfigurationDefineConstantsEncoding.Format(input);
+            Dictionary<string, string> constantsDictionary = StringListEncoding.ParseIntoDictionary(input);
+            var formatValue = KeyQuotedValuePairListEncoding.Instance.Format(StringListEncoding.EnumerateDictionary(constantsDictionary));
             Assert.Equal(expected: expectedOutput, actual: formatValue);
         }
 
@@ -37,7 +38,8 @@ namespace Microsoft.VisualStudio.ProjectSystem
         [InlineData("files=\"path/=//path//to//somewhere//\"", "files=path/=//path//to//somewhere//")]
         public void DefineConstantsEncodingDisplayFormatTest(string input, string expectedOutput)
         {
-            var formatValue = AbstractProjectConfigurationDefineConstantsEncoding.DisplayFormat(input);
+            Dictionary<string, string> constantsDictionary = StringListEncoding.ParseIntoDictionary(input);
+            var formatValue = KeyValuePairListEncoding.Instance.Format(StringListEncoding.EnumerateDictionary(constantsDictionary));
             Assert.Equal(expected: expectedOutput, actual: formatValue);
         }
 
@@ -129,6 +131,8 @@ namespace Microsoft.VisualStudio.ProjectSystem
         [InlineData("path=/path/to/somewhere/")]
         [InlineData( "file=/path/is/here/,")]
         [InlineData( "files=path=/path/to/somewhere/,")]
+        [InlineData("files=are\\here,")]
+        [InlineData("here=is\\,comma,equals=here\\=now")]
         public async Task ValidConstantsDefined(string input)
         {
             var provider = new DefineConstantsValueProvider();
@@ -262,7 +266,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
             }
             else
             {
-                return "";
+                return string.Empty;
             }
         }
 

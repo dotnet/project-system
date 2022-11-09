@@ -7,11 +7,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug;
 ///  Encoding corresponding a format of keys eith a respective value that
 ///  is surrounded in quotes, ex. key1="value1"
 /// </summary>
-internal sealed class KeyQuotedValuePairListEncoding
+internal sealed class KeyQuotedValuePairListEncoding : StringListEncoding
 {
     public static KeyQuotedValuePairListEncoding Instance { get; } = new();
 
-    public IEnumerable<(string Name, string Value)> Parse(string input)
+    public override IEnumerable<(string Name, string Value)> Parse(string input)
     {
         if (string.IsNullOrWhiteSpace(input))
         {
@@ -38,7 +38,7 @@ internal sealed class KeyQuotedValuePairListEncoding
         }
     }
 
-    public string Format(IEnumerable<(string Name, string Value)> pairs)
+    public override string Format(IEnumerable<(string Name, string Value)> pairs)
     {
         return string.Join(",", pairs.Select(pair => $"{EncodeCharacters(pair.Name)}=\"{EncodeCharacters(pair.Value)}\""));
 
