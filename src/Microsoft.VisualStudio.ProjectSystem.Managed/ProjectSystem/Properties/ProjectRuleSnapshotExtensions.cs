@@ -30,7 +30,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
             Requires.NotNullOrEmpty(ruleName, nameof(ruleName));
             Requires.NotNullOrEmpty(propertyName, nameof(propertyName));
 
-            if (snapshots.TryGetValue(ruleName, out IProjectRuleSnapshot snapshot) && snapshot.Properties.TryGetValue(propertyName, out string value))
+            if (snapshots.TryGetValue(ruleName, out IProjectRuleSnapshot? snapshot) && snapshot.Properties.TryGetValue(propertyName, out string? value))
             {
                 // Similar to MSBuild, we treat the absence of a property the same as an empty property
                 if (!string.IsNullOrEmpty(value))
@@ -63,7 +63,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         {
             Requires.NotNull(snapshots, nameof(snapshots));
 
-            if (snapshots.TryGetValue(ruleName, out IProjectRuleSnapshot result))
+            if (snapshots.TryGetValue(ruleName, out IProjectRuleSnapshot? result))
             {
                 return result;
             }

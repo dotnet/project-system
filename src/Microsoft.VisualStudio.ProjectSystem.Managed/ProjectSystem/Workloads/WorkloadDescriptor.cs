@@ -39,7 +39,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Workloads
                 && VisualStudioComponentIds.SetEquals(other.VisualStudioComponentIds);
         }
 
-        public override bool Equals(object obj)
+        public override bool Equals(object? obj)
         {
             if (obj is WorkloadDescriptor workloadDescriptor)
             {

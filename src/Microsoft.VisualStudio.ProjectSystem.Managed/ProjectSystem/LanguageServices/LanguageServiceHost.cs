@@ -239,7 +239,7 @@ internal sealed class LanguageServiceHost : OnceInitializedOnceDisposedAsync, IP
             // If all slice dimensions are present with the same value in the configuration, then this is a match.
             foreach ((string name, string value) in slice.Dimensions)
             {
-                if (activeProjectConfiguration.Dimensions.TryGetValue(name, out string activeValue) &&
+                if (activeProjectConfiguration.Dimensions.TryGetValue(name, out string? activeValue) &&
                     StringComparers.ConfigurationDimensionValues.Equals(value, activeValue))
                 {
                     continue;

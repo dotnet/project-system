@@ -72,7 +72,7 @@ namespace Microsoft.VisualStudio
             return false;
         }
 
-        public static ImmutableArray<TValue> ToImmutableValueArray<TKey, TValue>(this Dictionary<TKey, TValue> source)
+        public static ImmutableArray<TValue> ToImmutableValueArray<TKey, TValue>(this Dictionary<TKey, TValue> source) where TKey: notnull
         {
             ImmutableArray<TValue>.Builder builder = ImmutableArray.CreateBuilder<TValue>(source.Count);
 

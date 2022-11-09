@@ -4,7 +4,7 @@ using Microsoft;
 
 namespace System.Collections.Concurrent
 {
-    internal class ConcurrentHashSet<T> : IConcurrentHashSet<T>
+    internal class ConcurrentHashSet<T> : IConcurrentHashSet<T> where T: notnull
     {
         private static readonly object s_hashSetObject = new();
 
