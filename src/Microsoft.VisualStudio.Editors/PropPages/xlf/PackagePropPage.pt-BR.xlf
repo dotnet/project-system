@@ -104,22 +104,22 @@
       </trans-unit>
       <trans-unit id="FileVersionRevisionTextBox.AccessibleName">
         <source>Assembly File Version Revision</source>
-        <target state="needs-review-translation">Revisão da Versão do Arquivo do Assembly</target>
+        <target state="new">Assembly File Version Revision</target>
         <note />
       </trans-unit>
       <trans-unit id="FileVersionBuildTextBox.AccessibleName">
         <source>Assembly File Version Build</source>
-        <target state="needs-review-translation">Versão do Build do Arquivo do Assembly</target>
+        <target state="new">Assembly File Version Build</target>
         <note />
       </trans-unit>
       <trans-unit id="FileVersionMinorTextBox.AccessibleName">
         <source>Assembly File Version Minor</source>
-        <target state="needs-review-translation">Versão Secundária do Arquivo do Assembly</target>
+        <target state="new">Assembly File Version Minor</target>
         <note />
       </trans-unit>
       <trans-unit id="FileVersionMajorTextBox.AccessibleName">
         <source>Assembly File Version Major</source>
-        <target state="needs-review-translation">Versão Principal do Arquivo do Assembly</target>
+        <target state="new">Assembly File Version Major</target>
         <note />
       </trans-unit>
       <trans-unit id="PackageRequireLicenseAcceptance.Text">
