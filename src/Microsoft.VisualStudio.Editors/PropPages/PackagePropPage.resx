@@ -1702,7 +1702,7 @@
     <value>4</value>
   </data>
   <data name="FileVersionRevisionTextBox.AccessibleName" xml:space="preserve">
-    <value>Assembly File Verison Revision</value>
+    <value>Assembly File Version Revision</value>
   </data>
   <data name="FileVersionRevisionTextBox.Location" type="System.Drawing.Point, System.Drawing">
     <value>180, 3</value>
@@ -1726,7 +1726,7 @@
     <value>0</value>
   </data>
   <data name="FileVersionBuildTextBox.AccessibleName" xml:space="preserve">
-    <value>Assembly File Verison Build</value>
+    <value>Assembly File Version Build</value>
   </data>
   <data name="FileVersionBuildTextBox.Location" type="System.Drawing.Point, System.Drawing">
     <value>121, 3</value>
@@ -1750,7 +1750,7 @@
     <value>1</value>
   </data>
   <data name="FileVersionMinorTextBox.AccessibleName" xml:space="preserve">
-    <value>Assembly File Verison Minor</value>
+    <value>Assembly File Version Minor</value>
   </data>
   <data name="FileVersionMinorTextBox.Location" type="System.Drawing.Point, System.Drawing">
     <value>62, 3</value>
@@ -1774,7 +1774,7 @@
     <value>2</value>
   </data>
   <data name="FileVersionMajorTextBox.AccessibleName" xml:space="preserve">
-    <value>Assembly File Verison Major</value>
+    <value>Assembly File Version Major</value>
   </data>
   <data name="FileVersionMajorTextBox.Location" type="System.Drawing.Point, System.Drawing">
     <value>3, 3</value>
