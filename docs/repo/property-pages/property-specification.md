@@ -233,13 +233,21 @@ The property's string value should be encoded with format resembling `A=1,B=2`, 
 
 ### Multi-String Selector Editor
 
-When a property contains a variable number of strings, you can use the `MultiStringSelector` editor on a StringProperty to display a list of checkable/uncheckable strings.
+When a property contains a variable number of strings, you can use the `MultiStringSelector` editor on a StringProperty or DynamicEnumProperty to display a list of checkable/uncheckable strings.
 
 The `TypeDescriptorText` metadata must be included in order to describe what is actually being selected.
 
 By default, users will not be able to add their own custom strings to the list. To allow custom strings, set the `AllowsCustomStrings` metadata value to True.
 
 To show the evaluated value of the property below the multi-string selector, set the `ShouldDisplayEvaluatedPreview` metadata value to True.
+
+#### StringProperty vs DynamicEnumProperty
+
+If your multi-string selector control needs to include _non-selected_ items as part of the options, you should use 
+a DynamicEnumProperty instead of a StringProperty. All `SupportedValues` that are not part of the unevaluated value 
+will be added as unchecked list items.
+
+#### Example
 
 ```xml
 <StringProperty Name="ImportedNamespaces"
