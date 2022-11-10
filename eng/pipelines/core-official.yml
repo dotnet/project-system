@@ -28,6 +28,8 @@ pool:
   demands: Cmd
 
 variables:
+  # The configuration for the build is used throughout the various pipelines as the file paths for output contain the build configuration as a folder name.
+  BuildConfiguration: Release
   # https://docs.microsoft.com/dotnet/core/tools/dotnet-environment-variables#dotnet_skip_first_time_experience
   DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true
   # https://docs.microsoft.com/dotnet/core/tools/dotnet-environment-variables#dotnet_nologo
@@ -56,11 +58,4 @@ stages:
 - stage: Build
   displayName: Build
   jobs:
-  - template: templates/build-core.yml
-    parameters:
-      BuildConfiguration: Debug
-      ArtifactName: '$(Build.BuildNumber)-Debug'
-  - template: templates/build-core.yml
-    parameters:
-      BuildConfiguration: Release
-      ArtifactName: '$(Build.BuildNumber)'
+  - template: templates/build-core-official-release.yml
