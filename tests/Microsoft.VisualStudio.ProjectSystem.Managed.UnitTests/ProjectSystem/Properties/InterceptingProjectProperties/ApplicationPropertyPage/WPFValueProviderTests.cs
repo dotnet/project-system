@@ -1,5 +1,7 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
+using Microsoft.VisualStudio.Mocks;
+
 namespace Microsoft.VisualStudio.ProjectSystem.Properties;
 
 public class WPFValueProviderTests
@@ -30,8 +32,12 @@ public class WPFValueProviderTests
                 getShutdownModeCalled = true;
                 return Task.FromResult<string?>(shutdownModeValue);
             });
+
+        IEnumerable<string> capabilities = new List<string> { "UseWPF" };
+
+        var projectcapabilitiesScope = IProjectCapabilitiesScopeFactory.Create(capabilities);
                 
-        var unconfiguredProject = UnconfiguredProjectFactory.Create(@"C:\Test\Path\Here");
+        var unconfiguredProject = UnconfiguredProjectFactory.Create(@"C:\Test\Path\Here", scope: projectcapabilitiesScope);
 
         var provider = new WPFValueProvider(applicationXamlFileAccessor, unconfiguredProject);
 
@@ -85,7 +91,13 @@ public class WPFValueProviderTests
                 return Task.CompletedTask;
             });
 
-        var unconfiguredProject = UnconfiguredProjectFactory.Create(@"C:\Test\Path\Here");
+        IEnumerable<string> capabilities;
+
+        capabilities = (bool.Parse(useWPFPropertyValue) ? new List<string>() {  "UseWPF" } : new List<string>());
+
+        var projectcapabilitiesScope = IProjectCapabilitiesScopeFactory.Create(capabilities);
+
+        var unconfiguredProject = UnconfiguredProjectFactory.Create(@"C:\Test\Path\Here", scope: projectcapabilitiesScope);
 
         var provider = new WPFValueProvider(applicationXamlFileAccessor, unconfiguredProject);
 
