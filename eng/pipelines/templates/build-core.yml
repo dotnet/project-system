@@ -10,6 +10,31 @@ jobs:
   steps:
 
   ###################################################################################################################################################################
+  # PLUGIN INSTALLATION
+  ###################################################################################################################################################################
+
+  # Use a disabled, empty script to display the section header in the pipeline UI.
+  - script:
+    displayName: === Plugin Installation ===
+    condition: false
+
+  # Necessary for signing the assemblies and packages.
+  - task: MicroBuildSigningPlugin@4
+    displayName: Install Signing Plugin
+    inputs:
+      # Build fails if this is set to 'test'.
+      # See: https://github.com/dotnet/project-system/issues/7935
+      signType: real
+      esrpSigning: true
+
+  # Gets the signconfig.xml from the MicroBuild Signing plugin and sets the retry interval to 45 seconds.
+  # This reduces the calls to the signing API (potentially increasing signing speed) and reduces the pipeline log bloat when polling signing completion.
+  - powershell: . '$(Build.SourcesDirectory)/eng/scripts/SetSigningRetryInterval.ps1' -signConfigPath ((Get-ChildItem -Path '$(Build.StagingDirectory)/MicroBuild/Plugins/*/build/signconfig.xml').FullName) -intervalInSeconds 45
+    displayName: Set Signing Interval
+    # This is not a necessary task for the build to be successful.
+    continueOnError: true
+
+  ###################################################################################################################################################################
   # BUILD REPOSITORY
   ###################################################################################################################################################################
 
