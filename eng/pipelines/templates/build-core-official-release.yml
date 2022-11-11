@@ -32,6 +32,10 @@ jobs:
     # This is not a necessary task for the build to be successful.
     continueOnError: true
 
+  # Necessary for building the .swixproj (VSIX package) and .vsmanproj (VS Insertion) projects.
+  - task: MicroBuildSwixPlugin@4
+    displayName: Install Swix Plugin
+
   ###################################################################################################################################################################
   # BUILD REPOSITORY
   ###################################################################################################################################################################
