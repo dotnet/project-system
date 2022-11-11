@@ -17,7 +17,7 @@
   <!-- Adds the appropriate assemblies for signing. -->
   <Target Name="AddAssembliesForSigning" BeforeTargets="SignFiles" Condition="'$(CIBuild)' == 'true'">
     <ItemGroup>
-      <FilesToSign Include="$(ArtifactsBinDir)$(OutDirName)\$(TargetFramework)\$(AssemblyName).dll;$(ArtifactsBinDir)$(OutDirName)\**\$(AssemblyName).resources.dll">
+      <FilesToSign Include="$(ArtifactsBinDir)$(OutDirName)\$(TargetFramework)\$(AssemblyName).dll;$(ArtifactsBinDir)$(OutDirName)\$(TargetFramework)\**\$(AssemblyName).resources.dll">
         <Authenticode>MicrosoftSHA2</Authenticode>
         <StrongName Condition="'$(IsManagedProjectSystemProject)' != 'false'">MsSharedLib72</StrongName>
         <StrongName Condition="'$(IsManagedProjectSystemProject)' == 'false'">67</StrongName>
@@ -33,14 +33,14 @@
     <!-- https://stackoverflow.com/a/8331202/294804 -->
     <!-- https://stackoverflow.com/a/10818869/294804 -->
     <ItemGroup>
-      <ResourceDllsToCopy Include="$(OutputPath)**\$(AssemblyName).resources.dll" />
+      <ResourceDllsToCopy Include="$(OutputPath)$(TargetFramework)\**\$(AssemblyName).resources.dll" />
       <ResourceDllsToCopy2 Include="@(ResourceDllsToCopy)">
         <LanguageDir>$([System.IO.Path]::GetDirectoryName(%(ResourceDllsToCopy.RecursiveDir)))</LanguageDir>
       </ResourceDllsToCopy2>
     </ItemGroup>
 
-    <Copy SourceFiles="$(OutputPath)$(TargetFramework)\$(AssemblyName).dll" DestinationFolder="$(ArtifactsObjDir)\$(TargetFramework)\$(AssemblyName)" />
-    <Copy SourceFiles="@(ResourceDllsToCopy2)" DestinationFolder="$(ArtifactsObjDir)\$(AssemblyName)\%(LanguageDir)" />
+    <Copy SourceFiles="$(OutputPath)$(TargetFramework)\$(AssemblyName).dll" DestinationFolder="$(ArtifactsObjDir)\$(AssemblyName)\$(TargetFramework)" />
+    <Copy SourceFiles="@(ResourceDllsToCopy2)" DestinationFolder="$(ArtifactsObjDir)\$(AssemblyName)\$(TargetFramework)\%(LanguageDir)" />
   </Target>
 
 </Project>
