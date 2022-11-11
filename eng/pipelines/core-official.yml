@@ -57,5 +57,9 @@ variables:
 stages:
 - stage: Build
   displayName: Build
+  variables:
+    # Only used for tracking purposes in MicroBuild tasks.
+    # See: https://devdiv.visualstudio.com/DevDiv/_wiki/wikis/DevDiv.wiki/650/MicroBuild-Signing?anchor=high-level-steps-to-enable-signing
+    TeamName: DotNet-Project-System
   jobs:
   - template: templates/build-core-official-release.yml
