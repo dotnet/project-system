@@ -93,10 +93,10 @@ namespace Microsoft.VisualStudio.ProjectSystem
         [InlineData("files=path=/path/to/somewhere/", "files=\"path/=//path//to//somewhere//\"")]
         public async Task TestOnSetPropertyValueAsync(string input, string expectedOutput)
         {
-            var provider = new DefineConstantsValueProvider();
+            var provider = new DefineConstantsVBValueProvider();
             var defaultProperties = Mock.Of<IProjectProperties>();
 
-            var setResultValue = await provider.OnSetPropertyValueAsync(DefineConstantsValueProvider.DefineConstantsPropertyName, input, defaultProperties);
+            var setResultValue = await provider.OnSetPropertyValueAsync(DefineConstantsVBValueProvider.DefineConstantsPropertyName, input, defaultProperties);
 
             Assert.NotNull(setResultValue);
             Assert.True(ValidEncoding(setResultValue));
@@ -109,14 +109,14 @@ namespace Microsoft.VisualStudio.ProjectSystem
         [Fact]
         public async Task NoConstantsDefined()
         {
-            var provider = new DefineConstantsValueProvider();
-            var defaultProperties = IProjectPropertiesFactory.CreateWithPropertyAndValue(DefineConstantsValueProvider.DefineConstantsPropertyName, string.Empty);
+            var provider = new DefineConstantsVBValueProvider();
+            var defaultProperties = IProjectPropertiesFactory.CreateWithPropertyAndValue(DefineConstantsVBValueProvider.DefineConstantsPropertyName, string.Empty);
 
-            var unevaluatedResult = await provider.OnGetUnevaluatedPropertyValueAsync(DefineConstantsValueProvider.DefineConstantsPropertyName, string.Empty, defaultProperties);
+            var unevaluatedResult = await provider.OnGetUnevaluatedPropertyValueAsync(DefineConstantsVBValueProvider.DefineConstantsPropertyName, string.Empty, defaultProperties);
 
             Assert.Equal(string.Empty, actual: unevaluatedResult);
 
-            var evaluatedResult = await provider.OnGetEvaluatedPropertyValueAsync(DefineConstantsValueProvider.DefineConstantsPropertyName, string.Empty, defaultProperties);
+            var evaluatedResult = await provider.OnGetEvaluatedPropertyValueAsync(DefineConstantsVBValueProvider.DefineConstantsPropertyName, string.Empty, defaultProperties);
 
             Assert.Equal(string.Empty, actual: evaluatedResult);
         }
@@ -135,17 +135,17 @@ namespace Microsoft.VisualStudio.ProjectSystem
         [InlineData("here=is\\,comma,equals=here\\=now")]
         public async Task ValidConstantsDefined(string input)
         {
-            var provider = new DefineConstantsValueProvider();
+            var provider = new DefineConstantsVBValueProvider();
             var defaultProperties = Mock.Of<IProjectProperties>();
 
-            var setResultValue = await provider.OnSetPropertyValueAsync(DefineConstantsValueProvider.DefineConstantsPropertyName, input, defaultProperties);
+            var setResultValue = await provider.OnSetPropertyValueAsync(DefineConstantsVBValueProvider.DefineConstantsPropertyName, input, defaultProperties);
 
             Assert.NotNull(setResultValue);
             Assert.True(ValidEncoding(setResultValue));
 
             Assert.Equal(expected: EncodeOutputFormat(input, true), actual: setResultValue);
 
-            var getResultValue = await provider.OnGetUnevaluatedPropertyValueAsync(DefineConstantsValueProvider.DefineConstantsPropertyName, input, defaultProperties);
+            var getResultValue = await provider.OnGetUnevaluatedPropertyValueAsync(DefineConstantsVBValueProvider.DefineConstantsPropertyName, input, defaultProperties);
             Assert.NotNull(getResultValue);
             Assert.Equal(expected: EncodeOutputFormat(input, false), actual: getResultValue);
 
@@ -159,15 +159,15 @@ namespace Microsoft.VisualStudio.ProjectSystem
         [InlineData("=oop,daisy=")]
         public async Task InvalidConstantsDefined(string input)
         {
-            var provider = new DefineConstantsValueProvider();
+            var provider = new DefineConstantsVBValueProvider();
             var defaultProperties = Mock.Of<IProjectProperties>();
 
-            var setResultValue = await provider.OnSetPropertyValueAsync(DefineConstantsValueProvider.DefineConstantsPropertyName, input, defaultProperties);
+            var setResultValue = await provider.OnSetPropertyValueAsync(DefineConstantsVBValueProvider.DefineConstantsPropertyName, input, defaultProperties);
 
             string expectedResult = parseValidInput(input.Split(','));
             Assert.Equal(expected: EncodeOutputFormat(expectedResult, true), actual: setResultValue);
 
-            var getResultValue = await provider.OnGetUnevaluatedPropertyValueAsync(DefineConstantsValueProvider.DefineConstantsPropertyName, input, defaultProperties);
+            var getResultValue = await provider.OnGetUnevaluatedPropertyValueAsync(DefineConstantsVBValueProvider.DefineConstantsPropertyName, input, defaultProperties);
             Assert.Equal(expected: EncodeOutputFormat(expectedResult, false), actual: getResultValue);
         }
 
@@ -177,10 +177,10 @@ namespace Microsoft.VisualStudio.ProjectSystem
         [InlineData("ok=hi,oh=hi,oh=3")]
         public async Task RepeatKeysDefined(string input)
         {
-            var provider = new DefineConstantsValueProvider();
+            var provider = new DefineConstantsVBValueProvider();
             var defaultProperties = Mock.Of<IProjectProperties>();
 
-            var setResultValue = await provider.OnSetPropertyValueAsync(DefineConstantsValueProvider.DefineConstantsPropertyName, input, defaultProperties);
+            var setResultValue = await provider.OnSetPropertyValueAsync(DefineConstantsVBValueProvider.DefineConstantsPropertyName, input, defaultProperties);
 
             Assert.NotNull(setResultValue);
             Assert.True(ValidEncoding(setResultValue));
@@ -189,7 +189,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
             Assert.Equal(expected: EncodeOutputFormat(intendedInput, true), actual: setResultValue);
 
-            var getResultValue = await provider.OnGetUnevaluatedPropertyValueAsync(DefineConstantsValueProvider.DefineConstantsPropertyName, input, defaultProperties);
+            var getResultValue = await provider.OnGetUnevaluatedPropertyValueAsync(DefineConstantsVBValueProvider.DefineConstantsPropertyName, input, defaultProperties);
             Assert.NotNull(getResultValue);
             Assert.Equal(expected: EncodeOutputFormat(intendedInput, false), actual: getResultValue);
         }
