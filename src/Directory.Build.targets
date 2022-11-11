@@ -33,13 +33,13 @@
     <!-- https://stackoverflow.com/a/8331202/294804 -->
     <!-- https://stackoverflow.com/a/10818869/294804 -->
     <ItemGroup>
-      <ResourceDllsToCopy Include="$(OutputPath)$(TargetFramework)\**\$(AssemblyName).resources.dll" />
+      <ResourceDllsToCopy Include="$(OutputPath)**\$(AssemblyName).resources.dll" />
       <ResourceDllsToCopy2 Include="@(ResourceDllsToCopy)">
         <LanguageDir>$([System.IO.Path]::GetDirectoryName(%(ResourceDllsToCopy.RecursiveDir)))</LanguageDir>
       </ResourceDllsToCopy2>
     </ItemGroup>
 
-    <Copy SourceFiles="$(OutputPath)$(TargetFramework)\$(AssemblyName).dll" DestinationFolder="$(ArtifactsObjDir)\$(AssemblyName)\$(TargetFramework)" />
+    <Copy SourceFiles="$(OutputPath)$(AssemblyName).dll" DestinationFolder="$(ArtifactsObjDir)\$(AssemblyName)\$(TargetFramework)" />
     <Copy SourceFiles="@(ResourceDllsToCopy2)" DestinationFolder="$(ArtifactsObjDir)\$(AssemblyName)\$(TargetFramework)\%(LanguageDir)" />
   </Target>
 
