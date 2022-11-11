@@ -99,14 +99,26 @@ jobs:
     displayName: === Publish Packages ===
     condition: false
 
-  # Publishes the NPM package to the internal AzDO feed (vs-green).
-  # See: https://learn.microsoft.com/en-us/azure/devops/pipelines/tasks/package/npm?view=azure-devops
-  - task: Npm@1
-    displayName: Publish NPM Package
+  # Authenticates the .npmrc file for publishing to the internal AzDO feed.
+  # See: https://learn.microsoft.com/azure/devops/pipelines/tasks/package/npm-authenticate?view=azure-devops
+  - task: npmAuthenticate@0
+    displayName: Authenticate NPM Feed
     inputs:
-      command: 'publish'
-      # Publishes the package based on the package.json found in the selected directory.
-      workingDir: 'src\Microsoft.VisualStudio.ProjectSystem.Managed'
-      publishRegistry: 'useFeed'
-      # vs-green feed: https://dev.azure.com/devdiv/DevDiv/_artifacts/feed/vs-green
-      publishFeed: '0bdbc590-a062-4c3f-b0f6-9383f67865ee/ca5aa6f5-d9c2-4bb3-bc4d-6cabaf73384a'
+      workingFile: $(Build.SourcesDirectory)/src/Microsoft.VisualStudio.ProjectSystem.Managed/.npmrc
+
+  # Publishes the NPM package to the internal AzDO feed.
+  # See: https://docs.npmjs.com/cli/v8/commands/npm-publish
+  - powershell: npm publish ((Get-ChildItem -Path '$(Build.SourcesDirectory)/artifacts/$(BuildConfiguration)/packages/Microsoft.VisualStudio.ProjectSystem.Managed-*.tgz').FullName)
+    displayName: Publish NPM Package
+
+  # # Publishes the NPM package to the internal AzDO feed (vs-green).
+  # # See: https://learn.microsoft.com/en-us/azure/devops/pipelines/tasks/package/npm?view=azure-devops
+  # - task: Npm@1
+  #   displayName: Publish NPM Package
+  #   inputs:
+  #     command: 'publish'
+  #     # Publishes the package based on the package.json found in the selected directory.
+  #     workingDir: 'src\Microsoft.VisualStudio.ProjectSystem.Managed'
+  #     publishRegistry: 'useFeed'
+  #     # vs-green feed: https://dev.azure.com/devdiv/DevDiv/_artifacts/feed/vs-green
+  #     publishFeed: '0bdbc590-a062-4c3f-b0f6-9383f67865ee/ca5aa6f5-d9c2-4bb3-bc4d-6cabaf73384a'
