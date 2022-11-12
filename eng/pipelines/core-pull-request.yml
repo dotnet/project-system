@@ -14,12 +14,9 @@ pr:
     include:
     - dev/PortToNET6
 
-# Activates the pipeline after a PR is merged.
+# Disable CI builds for this pipeline.
 # See: https://docs.microsoft.com/azure/devops/pipelines/yaml-schema/trigger?view=azure-pipelines#examples
-trigger:
-  branches:
-    include:
-    - dev/PortToNET6
+trigger: none
 
 pool:
   # Agent Queue: https://devdiv.visualstudio.com/DevDiv/_settings/agentqueues?queueId=3123&view=jobs

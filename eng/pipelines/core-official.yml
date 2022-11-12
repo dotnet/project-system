@@ -7,19 +7,16 @@
 # PIPELINE METADATA
 ###################################################################################################################################################################
 
-# Activates the pipeline for every commit on a PR.
-# See: https://docs.microsoft.com/azure/devops/pipelines/yaml-schema/pr?view=azure-pipelines
-pr:
-  branches:
-    include:
-    - dev/PortToNET6
-
 # Activates the pipeline after a PR is merged.
 # See: https://docs.microsoft.com/azure/devops/pipelines/yaml-schema/trigger?view=azure-pipelines#examples
 trigger:
   branches:
     include:
     - dev/PortToNET6
+
+# Disable PR builds for this pipeline.
+# See: https://docs.microsoft.com/azure/devops/pipelines/yaml-schema/pr?view=azure-pipelines#examples
+pr: none
 
 pool:
   # Agent Queue: https://devdiv.visualstudio.com/DevDiv/_settings/agentqueues?queueId=3123&view=jobs
