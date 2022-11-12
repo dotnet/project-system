@@ -108,6 +108,6 @@ jobs:
 
   # Publishes the NPM package to the internal AzDO feed.
   # See: https://docs.npmjs.com/cli/v8/commands/npm-publish
-  # Also: https://stackoverflow.com/a/70955939/294804
+  # npmrc doc: https://docs.npmjs.com/cli/v9/using-npm/config#npmrc-files
   - powershell: npm publish --userconfig '$(Build.SourcesDirectory)/src/Microsoft.VisualStudio.ProjectSystem.Managed/.npmrc' ((Get-ChildItem -Path '$(Build.SourcesDirectory)/artifacts/$(BuildConfiguration)/packages/Microsoft.VisualStudio.ProjectSystem.Managed-*.tgz').FullName)
     displayName: Publish NPM Package
