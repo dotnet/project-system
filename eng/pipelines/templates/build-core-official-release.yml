@@ -99,12 +99,16 @@ jobs:
     displayName: === Publish Packages ===
     condition: false
 
+  # The .npmrc file must be in the same folder as the package so it can be picked up by 'npm publish'.
+  - powershell: Copy-Item -Path '$(Build.SourcesDirectory)/src/Microsoft.VisualStudio.ProjectSystem.Managed/.npmrc' -Destination '$(Build.SourcesDirectory)/artifacts/$(BuildConfiguration)/packages/.npmrc'
+    displayName: Copy NPM Config to Packages
+
   # Authenticates the .npmrc file for publishing to the internal AzDO feed.
   # See: https://learn.microsoft.com/azure/devops/pipelines/tasks/package/npm-authenticate?view=azure-devops
   - task: npmAuthenticate@0
     displayName: Authenticate NPM Feed
     inputs:
-      workingFile: $(Build.SourcesDirectory)/src/Microsoft.VisualStudio.ProjectSystem.Managed/.npmrc
+      workingFile: $(Build.SourcesDirectory)/artifacts/$(BuildConfiguration)/packages/.npmrc
 
   # Publishes the NPM package to the internal AzDO feed.
   # See: https://docs.npmjs.com/cli/v8/commands/npm-publish
