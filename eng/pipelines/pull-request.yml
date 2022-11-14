@@ -67,10 +67,11 @@ stages:
       BuildConfiguration: Release
       ArtifactName: '$(Build.BuildNumber)'
 
-- stage: PostBuild
-  displayName: Post-Build
-  dependsOn: Build
-  variables:
-    BuildConfiguration: Release
-  jobs:
-  - template: templates/publish-richnav.yml
+# Disabling RichNav due to an acquisition issue. See: https://dev.azure.com/devdiv/DevDiv/_workitems/edit/1659507
+# - stage: PostBuild
+#   displayName: Post-Build
+#   dependsOn: Build
+#   variables:
+#     BuildConfiguration: Release
+#   jobs:
+#   - template: templates/publish-richnav.yml
