@@ -8,6 +8,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
     /// </summary>
     internal abstract class InterceptedProjectPropertiesProviderBase : DelegatedProjectPropertiesProviderBase
     {
+        private readonly UnconfiguredProject _project;
         private readonly ImmutableArray<Lazy<IInterceptingPropertyValueProvider, IInterceptingPropertyValueProviderMetadata>> _interceptingValueProviders;
 
         protected InterceptedProjectPropertiesProviderBase(
@@ -17,6 +18,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
             IEnumerable<Lazy<IInterceptingPropertyValueProvider, IInterceptingPropertyValueProviderMetadata>> interceptingValueProviders)
             : base(provider, instanceProvider, project)
         {
+            _project = project;
             _interceptingValueProviders = interceptingValueProviders.ToImmutableArray();
         }
 
@@ -28,7 +30,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
 
         protected IProjectProperties InterceptProperties(IProjectProperties defaultProperties)
         {
-            return _interceptingValueProviders.IsDefaultOrEmpty ? defaultProperties : new InterceptedProjectProperties(_interceptingValueProviders, defaultProperties);
+            return _interceptingValueProviders.IsDefaultOrEmpty ? defaultProperties : new InterceptedProjectProperties(_interceptingValueProviders, defaultProperties, _project);
         }
     }
 }

@@ -433,8 +433,8 @@
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|DefineConstants|Description">
-        <source>Specifies symbols on which to perform conditional compilation. Separate symbols with a semi-colon (';').</source>
-        <target state="translated">指定要在其上执行条件编译的符号。使用分号(";")来分隔符号。</target>
+        <source>Specifies symbols on which to perform conditional compilation.</source>
+        <target state="new">Specifies symbols on which to perform conditional compilation.</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|DefineConstants|DisplayName">

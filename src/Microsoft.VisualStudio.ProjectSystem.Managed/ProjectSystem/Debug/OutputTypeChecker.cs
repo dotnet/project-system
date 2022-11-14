@@ -2,7 +2,7 @@
 
 using Microsoft.VisualStudio.ProjectSystem.Properties;
 
-namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
+namespace Microsoft.VisualStudio.ProjectSystem.Debug
 {
     internal class OutputTypeChecker
     {
