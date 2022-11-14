@@ -6,7 +6,7 @@
     <PackageReference Update="MicroBuild.Core.Sentinel"                                               Version="1.0.0" />
     <PackageReference Update="Microsoft.VisualStudioEng.MicroBuild.Core"                              Version="1.0.0" />
     <PackageReference Update="Microsoft.VisualStudioEng.MicroBuild.Plugins.SwixBuild"                 Version="1.1.286" />
-    <PackageReference Update="Nerdbank.Streams"                                                       Version="2.9.87-alpha" />
+    <PackageReference Update="Nerdbank.Streams"                                                       Version="2.9.112" />
     <PackageReference Update="Nerdbank.GitVersioning"                                                 Version="3.5.107" />
     <PackageReference Update="System.IO.Pipelines"                                                    Version="6.0.3" />
     <PackageReference Update="XliffTasks"                                                             Version="1.0.0-beta.20574.1" />
@@ -27,7 +27,7 @@
     <!-- VS SDK -->
     <PackageReference Update="EnvDTE"                                                                 Version="17.3.32804.24" />
     <PackageReference Update="Microsoft.Internal.VisualStudio.Interop"                                Version="17.3.32804.24" />
-    <PackageReference Update="Microsoft.ServiceHub.Framework"                                         Version="4.0.4084" />
+    <PackageReference Update="Microsoft.ServiceHub.Framework"                                         Version="4.1.2052-alpha-g5bed924543" />
     <PackageReference Update="Microsoft.VSSDK.BuildTools"                                             Version="17.5.18-preview1" />
     <PackageReference Update="Microsoft.VisualStudio.ComponentModelHost"                              Version="17.3.198" />
     <PackageReference Update="Microsoft.VisualStudio.Composition"                                     Version="17.4.1-alpha" />
@@ -60,17 +60,17 @@
     <PackageReference Update="VsWebSite.Interop"                                                      Version="16.8.30523.219" />
 
     <!-- https://github.com/dotnet/roslyn/issues/53877 -->
-    <PackageReference Include="StreamJsonRpc"                                                         Version="2.13.21-alpha" />
+    <PackageReference Include="StreamJsonRpc"                                                         Version="2.14.3-alpha" />
 
     <!-- CPS -->
     <!-- Find versions at https://dev.azure.com/azure-public/vside/_artifacts/feed/vs-impl -->
-    <PackageReference Update="Microsoft.VisualStudio.ProjectSystem"                                   Version="17.5.235-pre-gc8d486461e" />
-    <PackageReference Update="Microsoft.VisualStudio.ProjectSystem.Analyzers"                         Version="17.5.235-pre-gc8d486461e" />
-    <PackageReference Update="Microsoft.VisualStudio.ProjectSystem.Query"                             Version="17.5.235-pre-gc8d486461e" />
-    <PackageReference Update="Microsoft.VisualStudio.ProjectSystem.SDK"                               Version="17.5.235-pre-gc8d486461e" />
-    <PackageReference Update="Microsoft.VisualStudio.ProjectSystem.SDK.Tools"                         Version="17.5.235-pre-gc8d486461e" />
-    <PackageReference Update="Microsoft.VisualStudio.ProjectSystem.VS"                                Version="17.5.235-pre-gc8d486461e" />
-    <PackageReference Update="Microsoft.VisualStudio.ProjectSystem.XamlTypes"                         Version="17.5.235-pre-gc8d486461e" />
+    <PackageReference Update="Microsoft.VisualStudio.ProjectSystem"                                   Version="17.5.348-pre" />
+    <PackageReference Update="Microsoft.VisualStudio.ProjectSystem.Analyzers"                         Version="17.5.348-pre" />
+    <PackageReference Update="Microsoft.VisualStudio.ProjectSystem.Query"                             Version="17.5.348-pre" />
+    <PackageReference Update="Microsoft.VisualStudio.ProjectSystem.SDK"                               Version="17.5.348-pre" />
+    <PackageReference Update="Microsoft.VisualStudio.ProjectSystem.SDK.Tools"                         Version="17.5.348-pre" />
+    <PackageReference Update="Microsoft.VisualStudio.ProjectSystem.VS"                                Version="17.5.348-pre" />
+    <PackageReference Update="Microsoft.VisualStudio.ProjectSystem.XamlTypes"                         Version="17.5.348-pre" />
     
     <!-- MSBuild -->
     <!-- Only needed because the CPS builds depend on MSBuild versions that are not available. -->
