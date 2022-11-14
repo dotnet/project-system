@@ -1,7 +1,7 @@
 # Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
-# Name: DotNet-Project-System-Core
-# URL: 
+# Name: dotnet-project-system-Trusted-PR
+# URL: https://dev.azure.com/devdiv/DevDiv/_build?definitionId=17723
 
 ###################################################################################################################################################################
 # PIPELINE METADATA
@@ -14,12 +14,9 @@ pr:
     include:
     - dev/PortToNET6
 
-# Activates the pipeline after a PR is merged.
+# Disable CI builds for this pipeline.
 # See: https://docs.microsoft.com/azure/devops/pipelines/yaml-schema/trigger?view=azure-pipelines#examples
-trigger:
-  branches:
-    include:
-    - dev/PortToNET6
+trigger: none
 
 pool:
   # Agent Queue: https://devdiv.visualstudio.com/DevDiv/_settings/agentqueues?queueId=3123&view=jobs
@@ -56,11 +53,11 @@ stages:
 - stage: Build
   displayName: Build
   jobs:
-  - template: templates/build-core.yml
+  - template: templates/build-pull-request.yml
     parameters:
       BuildConfiguration: Debug
       ArtifactName: '$(Build.BuildNumber)-Debug'
-  - template: templates/build-core.yml
+  - template: templates/build-pull-request.yml
     parameters:
       BuildConfiguration: Release
       ArtifactName: '$(Build.BuildNumber)'

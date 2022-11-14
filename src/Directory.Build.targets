@@ -17,7 +17,7 @@
   <!-- Adds the appropriate assemblies for signing. -->
   <Target Name="AddAssembliesForSigning" BeforeTargets="SignFiles" Condition="'$(CIBuild)' == 'true'">
     <ItemGroup>
-      <FilesToSign Include="$(ArtifactsBinDir)$(OutDirName)\$(AssemblyName).dll;$(ArtifactsBinDir)$(OutDirName)\**\$(AssemblyName).resources.dll">
+      <FilesToSign Include="$(ArtifactsBinDir)$(OutDirName)\$(TargetFramework)\$(AssemblyName).dll;$(ArtifactsBinDir)$(OutDirName)\$(TargetFramework)\**\$(AssemblyName).resources.dll">
         <Authenticode>MicrosoftSHA2</Authenticode>
         <StrongName Condition="'$(IsManagedProjectSystemProject)' != 'false'">MsSharedLib72</StrongName>
         <StrongName Condition="'$(IsManagedProjectSystemProject)' == 'false'">67</StrongName>
@@ -39,8 +39,8 @@
       </ResourceDllsToCopy2>
     </ItemGroup>
 
-    <Copy SourceFiles="$(OutputPath)$(AssemblyName).dll" DestinationFolder="$(ArtifactsObjDir)\$(AssemblyName)" />
-    <Copy SourceFiles="@(ResourceDllsToCopy2)" DestinationFolder="$(ArtifactsObjDir)\$(AssemblyName)\%(LanguageDir)" />
+    <Copy SourceFiles="$(OutputPath)$(AssemblyName).dll" DestinationFolder="$(ArtifactsObjDir)\$(AssemblyName)\$(TargetFramework)" />
+    <Copy SourceFiles="@(ResourceDllsToCopy2)" DestinationFolder="$(ArtifactsObjDir)\$(AssemblyName)\$(TargetFramework)\%(LanguageDir)" />
   </Target>
 
 </Project>

@@ -1,13 +1,40 @@
 # Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
 jobs:
-- job: BuildPullRequest_${{ parameters.BuildConfiguration }}
-  displayName: ${{ parameters.BuildConfiguration }} Configuration
-  timeoutInMinutes: 20
-  variables:
-    BuildConfiguration: ${{ parameters.BuildConfiguration }}
-    ArtifactName: ${{ parameters.ArtifactName }}
+- job: BuildCoreOfficialRelease
+  displayName: Build Core Official Release
+  # We make this timeout more than double the normal amount of build time as signing has a highly variable amount of time to complete.
+  timeoutInMinutes: 90
   steps:
+
+  ###################################################################################################################################################################
+  # PLUGIN INSTALLATION
+  ###################################################################################################################################################################
+
+  # Use a disabled, empty script to display the section header in the pipeline UI.
+  - script:
+    displayName: === Plugin Installation ===
+    condition: false
+
+  # Necessary for signing the assemblies and packages.
+  - task: MicroBuildSigningPlugin@4
+    displayName: Install Signing Plugin
+    inputs:
+      # Build fails if this is set to 'test'.
+      # See: https://github.com/dotnet/project-system/issues/7935
+      signType: real
+      esrpSigning: true
+
+  # Gets the signconfig.xml from the MicroBuild Signing plugin and sets the retry interval to 45 seconds.
+  # This reduces the calls to the signing API (potentially increasing signing speed) and reduces the pipeline log bloat when polling signing completion.
+  - powershell: . '$(Build.SourcesDirectory)/eng/scripts/SetSigningRetryInterval.ps1' -signConfigPath ((Get-ChildItem -Path '$(Build.StagingDirectory)/MicroBuild/Plugins/*/build/signconfig.xml').FullName) -intervalInSeconds 45
+    displayName: Set Signing Interval
+    # This is not a necessary task for the build to be successful.
+    continueOnError: true
+
+  # Necessary for building the .swixproj (VSIX package) and .vsmanproj (VS Insertion) projects.
+  - task: MicroBuildSwixPlugin@4
+    displayName: Install Swix Plugin
 
   ###################################################################################################################################################################
   # BUILD REPOSITORY
@@ -60,5 +87,28 @@ jobs:
   # This publish is filtered by the .artifactignore in the 'eng' folder. See that file for more details.
   - publish: $(Build.SourcesDirectory)/artifacts/$(BuildConfiguration)
     displayName: Publish Build Artifacts
-    artifact: $(ArtifactName)
+    artifact: $(Build.BuildNumber)
     condition: succeededOrFailed()
+
+  ###################################################################################################################################################################
+  # PUBLISH PACKAGES
+  ###################################################################################################################################################################
+
+  # Use a disabled, empty script to display the section header in the pipeline UI.
+  - script:
+    displayName: === Publish Packages ===
+    condition: false
+
+  # Authenticates the .npmrc file for publishing to the internal AzDO feed.
+  # See: https://learn.microsoft.com/azure/devops/pipelines/tasks/package/npm-authenticate?view=azure-devops
+  - task: npmAuthenticate@0
+    displayName: Authenticate NPM Feed
+    inputs:
+      workingFile: $(Build.SourcesDirectory)/src/Microsoft.VisualStudio.ProjectSystem.Managed/.npmrc
+
+  # Publishes the NPM package to the internal AzDO feed.
+  # Feed: https://dev.azure.com/devdiv/DevDiv/_artifacts/feed/vs-green/Npm/microsoft.visualstudio.projectsystem.managed
+  # See: https://docs.npmjs.com/cli/v8/commands/npm-publish
+  # npmrc doc: https://docs.npmjs.com/cli/v9/using-npm/config#npmrc-files
+  - powershell: npm publish --userconfig '$(Build.SourcesDirectory)/src/Microsoft.VisualStudio.ProjectSystem.Managed/.npmrc' ((Get-ChildItem -Path '$(Build.SourcesDirectory)/artifacts/$(BuildConfiguration)/packages/Microsoft.VisualStudio.ProjectSystem.Managed-*.tgz').FullName)
+    displayName: Publish NPM Package

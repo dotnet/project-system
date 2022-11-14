@@ -23,7 +23,7 @@
   <!-- Sets the Experimental attribute on the VSIX manifest to 'false' for builds in CI. -->
   <Target Name="RemoveExperimentalAttributeFromVsixManifest" AfterTargets="DetokenizeVsixManifestFile" Condition="'$(CIBuild)' == 'true'">
     <PropertyGroup>
-      <ObjVsixManifestPath>$(ArtifactsObjDir)$(MSBuildProjectName)\extension.vsixmanifest</ObjVsixManifestPath>
+      <ObjVsixManifestPath>$(ArtifactsObjDir)$(MSBuildProjectName)\$(TargetFramework)\extension.vsixmanifest</ObjVsixManifestPath>
     </PropertyGroup>
     <Exec ContinueOnError="false" Command="$(PowerShellFile) &quot;$(RepoRoot)eng\scripts\RemoveExperimentalAttributeFromVsixManifest.ps1&quot; -manifestPath &quot;$(ObjVsixManifestPath)&quot;" />
   </Target>
