@@ -434,7 +434,7 @@
       </trans-unit>
       <trans-unit id="StringProperty|DefineConstants|Description">
         <source>Specifies symbols on which to perform conditional compilation.</source>
-        <target state="new">Specifies symbols on which to perform conditional compilation.</target>
+        <target state="translated">Określa symbole, na których ma zostać wykonana kompilacja warunkowa.</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|DefineConstants|DisplayName">
