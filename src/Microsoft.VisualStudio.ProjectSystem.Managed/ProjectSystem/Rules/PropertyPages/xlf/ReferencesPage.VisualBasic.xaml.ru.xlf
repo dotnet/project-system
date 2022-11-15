@@ -12,6 +12,16 @@
         <target state="translated">Общие</target>
         <note />
       </trans-unit>
+      <trans-unit id="DynamicEnumProperty|ImportedNamespaces|Description">
+        <source>Manage which namespaces to import in your application.</source>
+        <target state="new">Manage which namespaces to import in your application.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="DynamicEnumProperty|ImportedNamespaces|DisplayName">
+        <source>Import Namespaces</source>
+        <target state="new">Import Namespaces</target>
+        <note />
+      </trans-unit>
       <trans-unit id="Rule|References|Description">
         <source>Specifies the project's references and namespace imports.</source>
         <target state="translated">Определяет ссылки проекта и импорт пространства имен.</target>
@@ -20,16 +30,6 @@
       <trans-unit id="Rule|References|DisplayName">
         <source>References</source>
         <target state="translated">Ссылки</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="StringProperty|ImportedNamespaces|Description">
-        <source>Manage which namespaces to import in your application.</source>
-        <target state="translated">Выбор пространств имен для импорта в приложение.</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="StringProperty|ImportedNamespaces|DisplayName">
-        <source>Import Namespaces</source>
-        <target state="translated">Импортировать пространства имен</target>
         <note />
       </trans-unit>
     </body>
