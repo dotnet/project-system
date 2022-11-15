@@ -104,9 +104,9 @@ stages:
         #   displayName: Download vs-green-server Artifacts
         # - powershell: . '$(Pipeline.Workspace)/CI/Variables-Windows/_pipelines.ps1'
         #   displayName: Set Pipeline Variables
-        sourceBranch: $(resources.pipeline.CI.sourceBranch)
-        sourceCommit: $(resources.pipeline.CI.sourceCommit)
-        runName: $(resources.pipeline.CI.runName)
-        runID: $(resources.pipeline.CI.runID)
-        pipelineID: $(resources.pipeline.CI.pipelineID)
+        sourceBranch: $(Build.SourceBranch)
+        sourceCommit: $(Build.SourceVersion)
+        runName: $(Build.BuildNumber)
+        runID: $(Build.BuildId)
+        pipelineID: $(System.DefinitionId)
         InsertTargetBranch: ${{ parameters.InsertionVSGreenBranch }}
