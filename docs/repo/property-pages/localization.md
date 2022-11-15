@@ -106,6 +106,9 @@ The `PropertyPageSchema` items also need to be updated accordingly:
 </PropertyPageSchema>
 ```
 
+## Notes
+Please note that in a non-default locale, it is not a given that any given `Property` is non-null in a custom editor. Use FallbackValues as necessary.
+
 ## Integrating embedded localized XAML
 
 _To be written_
