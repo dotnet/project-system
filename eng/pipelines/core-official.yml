@@ -19,6 +19,15 @@ trigger:
 pr: none
 
 resources:
+  # pipelines:
+  # - pipeline: CI
+  #   source: vs-green-server
+  #   tags:
+  #   - Real signed
+  #   trigger:
+  #     tags:
+  #     - Real signed
+  #     - auto-insertion
   repositories:
   # This repo is used to create the insertion PR into the vs-green repo.
   - repository: VSCodeExtensionRepo
@@ -85,6 +94,16 @@ stages:
     jobs:
     - template: azure-pipelines/external/component-insertion.yml@VSCodeExtensionRepo
       parameters:
+        VariableInitSteps:
+        - script:
+          displayName: === Empty Init ===
+          condition: false
+        # VariableInitSteps:
+        # - download: CI
+        #   artifact: Variables-Windows
+        #   displayName: Download vs-green-server Artifacts
+        # - powershell: . '$(Pipeline.Workspace)/CI/Variables-Windows/_pipelines.ps1'
+        #   displayName: Set Pipeline Variables
         sourceBranch: $(resources.pipeline.CI.sourceBranch)
         sourceCommit: $(resources.pipeline.CI.sourceCommit)
         runName: $(resources.pipeline.CI.runName)
