@@ -24,12 +24,12 @@
       </trans-unit>
       <trans-unit id="StringProperty|ImportedNamespaces|Description">
         <source>Manage which namespaces to import in your application.</source>
-        <target state="new">Manage which namespaces to import in your application.</target>
+        <target state="translated">Administra los espacios de nombres que se van a importar en la aplicación.</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|ImportedNamespaces|DisplayName">
         <source>Import Namespaces</source>
-        <target state="new">Import Namespaces</target>
+        <target state="translated">Importar espacios de nombres</target>
         <note />
       </trans-unit>
     </body>

@@ -24,12 +24,12 @@
       </trans-unit>
       <trans-unit id="StringProperty|ImportedNamespaces|Description">
         <source>Manage which namespaces to import in your application.</source>
-        <target state="new">Manage which namespaces to import in your application.</target>
+        <target state="translated">애플리케이션에서 가져올 네임스페이스를 관리합니다.</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|ImportedNamespaces|DisplayName">
         <source>Import Namespaces</source>
-        <target state="new">Import Namespaces</target>
+        <target state="translated">네임스페이스 가져오기</target>
         <note />
       </trans-unit>
     </body>
