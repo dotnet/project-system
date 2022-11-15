@@ -156,37 +156,49 @@
       </Item>
       <Item ItemId=";FileVersionBuildTextBox.AccessibleName" ItemType="0" PsrId="308" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Assembly File Verison Build]]></Val>
+          <Val><![CDATA[Assembly File Version Build]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Versionsbuild der Assemblydatei]]></Val>
+            <Val><![CDATA[Build der Assemblydateiversion]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[Assembly File Verison Build]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";FileVersionMajorTextBox.AccessibleName" ItemType="0" PsrId="308" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Assembly File Verison Major]]></Val>
+          <Val><![CDATA[Assembly File Version Major]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Hauptversion der Assembly]]></Val>
+            <Val><![CDATA[Hauptversion der Assemblydatei]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[Assembly File Verison Major]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";FileVersionMinorTextBox.AccessibleName" ItemType="0" PsrId="308" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Assembly File Verison Minor]]></Val>
+          <Val><![CDATA[Assembly File Version Minor]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
             <Val><![CDATA[Nebenversion der Assemblydatei]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[Assembly File Verison Minor]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";FileVersionRevisionTextBox.AccessibleName" ItemType="0" PsrId="308" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Assembly File Verison Revision]]></Val>
+          <Val><![CDATA[Assembly File Version Revision]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Revision der Assemblydateiversion]]></Val>
+            <Val><![CDATA[Revisionsversion der Assemblydatei]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[Assembly File Verison Revision]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
