@@ -219,7 +219,7 @@ We use this on the `LangVersion` property, for example, as this value is intenti
 
 When a property contains a variable number of name/value pairs, you can use the `NameValueList` editor on `StringProperty` to display a two-column grid in the UI that allows users to edit values and add/remove rows.
 
-The property's string value should be encoded with format resembling `A=1,B=2`, using `/` as an escape character if needed. See `LaunchProfileEnvironmentVariableEncoding` in this repo for further details.
+For example:
 
 ```xml
 <StringProperty Name="EnvironmentVariables"
@@ -229,6 +229,43 @@ The property's string value should be encoded with format resembling `A=1,B=2`, 
     <ValueEditor EditorType="NameValueList" />
   </StringProperty.ValueEditors>
 </StringProperty>
+```
+
+#### Encoding
+
+By default, the property's string value will be encoded with format resembling `A=1,B=2`, using `/` as an escape character if needed. See `KeyValuePairListEncoding` in this repo for further details.
+
+A custom encoding can be specified. It must be exported as an instance of `Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages.Designer.INameValuePairListEncoding` with the appropriate MEF metadata:
+
+```xml
+<StringProperty Name="MyProperty">
+  <StringProperty.ValueEditors>
+    <ValueEditor EditorType="NameValueList">
+      <ValueEditor.Metadata>
+        <NameValuePair Name="Encoding" Value="MyEncodingName" />
+      </ValueEditor.Metadata>
+    </ValueEditor>
+  </StringProperty.ValueEditors>
+</StringProperty>
+```
+
+For this to work, there would need to be an equivalent export of the `MyEncodingName` encoding:
+
+```c#
+[Export(typeof(INameValuePairListEncoding))]
+[ExportMetadata("Encoding", "MyEncodingName")]
+internal sealed class MyEncoding : INameValuePairListEncoding
+{
+    public IEnumerable<(string Name, string Value)> Parse(string value)
+    {
+        // TODO
+    }
+
+    public string Format(IEnumerable<(string Name, string Value)> pairs)
+    {
+        // TODO
+    }
+}
 ```
 
 ### Multi-String Selector Editor
