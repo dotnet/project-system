@@ -94,20 +94,12 @@ stages:
     variables:
       # Gets the NPMPackageVersion variable produced by the Build pipeline.
       NPMPackageVersion: $[ stageDependencies.Build.BuildCoreOfficialRelease.outputs['SetNPMPackageVersion.NPMPackageVersion'] ]
-      InsertNpmDependencies: microsoft.visualstudio.projectsystem.managed@$(NPMPackageVersion)
+      # This variable is required by the component-insertion.yml template to insert the NPM package.
+      # The name of this package matches name defined in the package.json.
+      InsertNpmDependencies: '@microsoft/microsoft.visualstudio.projectsystem.managed@$(NPMPackageVersion)'
     jobs:
     - template: azure-pipelines/external/component-insertion.yml@VSCodeExtensionRepo
       parameters:
-        VariableInitSteps:
-        - script:
-          displayName: === Empty Init ===
-          condition: false
-        # VariableInitSteps:
-        # - download: CI
-        #   artifact: Variables-Windows
-        #   displayName: Download vs-green-server Artifacts
-        # - powershell: . '$(Pipeline.Workspace)/CI/Variables-Windows/_pipelines.ps1'
-        #   displayName: Set Pipeline Variables
         sourceBranch: $(Build.SourceBranch)
         sourceCommit: $(Build.SourceVersion)
         runName: $(Build.BuildNumber)
