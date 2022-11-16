@@ -288,9 +288,9 @@ will be added as unchecked list items.
 
 ```xml
 <StringProperty Name="ImportedNamespaces"
-                       DisplayName="Import Namespaces"
-                       Description="Manage which namespaces to import in your application."
-                       Category="General">
+                DisplayName="Import Namespaces"
+                Description="Manage which namespaces to import in your application."
+                Category="General">
     <StringProperty.DataSource>
       <DataSource PersistedName="ImportedNamespaces"
                   Persistence="ProjectFileWithInterception"
