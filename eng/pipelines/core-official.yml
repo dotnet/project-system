@@ -91,6 +91,10 @@ stages:
   - stage: Insertion
     displayName: Insertion
     dependsOn: Build
+    variables:
+      # Gets the NPMPackageVersion variable produced by the Build pipeline.
+      NPMPackageVersion: $[ stageDependencies.Build.BuildCoreOfficialRelease.outputs['SetNPMPackageVersion.NPMPackageVersion'] ]
+      InsertNpmDependencies: microsoft.visualstudio.projectsystem.managed@$(NPMPackageVersion)
     jobs:
     - template: azure-pipelines/external/component-insertion.yml@VSCodeExtensionRepo
       parameters:
