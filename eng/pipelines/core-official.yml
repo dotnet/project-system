@@ -19,15 +19,6 @@ trigger:
 pr: none
 
 resources:
-  # pipelines:
-  # - pipeline: CI
-  #   source: vs-green-server
-  #   tags:
-  #   - Real signed
-  #   trigger:
-  #     tags:
-  #     - Real signed
-  #     - auto-insertion
   repositories:
   # This repo is used to create the insertion PR into the vs-green repo.
   - repository: VSCodeExtensionRepo
