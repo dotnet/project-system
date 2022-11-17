@@ -236,7 +236,7 @@ dotnet_diagnostic.CA2200.severity = none
 dotnet_diagnostic.CA2000.severity = none        # Dispose objects before losing scope (Noisy)
 dotnet_diagnostic.CA1820.severity = warning
 
-# Microsoft.CodeQuality.Analyzers
+# Microsoft.CodeQuality.NetAnalyzers
 dotnet_diagnostic.CA1000.severity = none
 dotnet_diagnostic.CA1001.severity = none
 dotnet_diagnostic.CA1010.severity = none
@@ -278,6 +278,7 @@ dotnet_diagnostic.CA1721.severity = none
 dotnet_diagnostic.CA1724.severity = none
 dotnet_diagnostic.CA1815.severity = none
 dotnet_diagnostic.CA1819.severity = warning
+dotnet_diagnostic.CA1822.severity = warning     # Mark members as static
 dotnet_diagnostic.CA2007.severity = none
 dotnet_diagnostic.CA2211.severity = none
 dotnet_diagnostic.CA2218.severity = none

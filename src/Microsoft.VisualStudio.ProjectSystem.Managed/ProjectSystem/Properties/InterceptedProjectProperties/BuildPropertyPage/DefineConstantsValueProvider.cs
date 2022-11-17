@@ -9,7 +9,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties;
 [AppliesTo(ProjectCapability.CSharpOrFSharp)]
 internal class DefineConstantsValueProvider : InterceptingPropertyValueProviderBase
 {
-    private readonly KeyValuePairListEncoding _encoding = new();
     private readonly IProjectAccessor _projectAccessor;
     private readonly ConfiguredProject _project;
 
@@ -39,7 +38,7 @@ internal class DefineConstantsValueProvider : InterceptingPropertyValueProviderB
             return string.Empty;
         }
 
-        return _encoding.Format(
+        return KeyValuePairListEncoding.Format(
             ParseDefinedConstantsFromUnevaluatedValue(unevaluatedDefineConstantsValue)
                 .Select(symbol => (Key: symbol, Value: bool.FalseString))
         );
@@ -76,8 +75,8 @@ internal class DefineConstantsValueProvider : InterceptingPropertyValueProviderB
         // constants recursively obtained from above in this property's hierarchy (from imported files)
         IEnumerable<string> innerConstants =
             ParseDefinedConstantsFromUnevaluatedValue(await defaultProperties.GetUnevaluatedPropertyValueAsync(ConfiguredBrowseObject.DefineConstantsProperty) ?? string.Empty);
-        
-        IEnumerable<string> constantsToWrite = _encoding.Parse(unevaluatedPropertyValue)
+
+        IEnumerable<string> constantsToWrite = KeyValuePairListEncoding.Parse(unevaluatedPropertyValue)
             .Select(pair => pair.Name)
             .Where(x => !innerConstants.Contains(x))
             .Distinct()
@@ -88,7 +87,7 @@ internal class DefineConstantsValueProvider : InterceptingPropertyValueProviderB
             await defaultProperties.DeletePropertyAsync(propertyName, dimensionalConditions);
             return null;
         }
-        
+
         return $"{DefineConstantsRecursivePrefix};" + string.Join(";", constantsToWrite);
     }
 }
