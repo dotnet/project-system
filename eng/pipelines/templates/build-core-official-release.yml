@@ -117,5 +117,5 @@ jobs:
   # Feed: https://dev.azure.com/devdiv/DevDiv/_artifacts/feed/vs-green/Npm/microsoft.visualstudio.projectsystem.managed
   # See: https://docs.npmjs.com/cli/v8/commands/npm-publish
   # npmrc doc: https://docs.npmjs.com/cli/v9/using-npm/config#npmrc-files
-  - powershell: npm publish --userconfig '$(Build.SourcesDirectory)/src/Microsoft.VisualStudio.ProjectSystem.Managed/.npmrc' ((Get-ChildItem -Path '$(Build.SourcesDirectory)/artifacts/$(BuildConfiguration)/packages/Microsoft.VisualStudio.ProjectSystem.Managed-*.tgz').FullName)
+  - powershell: npm publish --userconfig '$(Build.SourcesDirectory)/src/Microsoft.VisualStudio.ProjectSystem.Managed/.npmrc' ((Get-ChildItem -Path '$(Build.SourcesDirectory)/artifacts/$(BuildConfiguration)/packages/microsoft-microsoft.visualstudio.projectsystem.managed-*.tgz').FullName)
     displayName: Publish NPM Package
