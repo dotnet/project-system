@@ -14,12 +14,12 @@
       </trans-unit>
       <trans-unit id="DynamicEnumProperty|ImportedNamespaces|Description">
         <source>Manage which namespaces to import in your application.</source>
-        <target state="new">Manage which namespaces to import in your application.</target>
+        <target state="translated">Gerencie quais namespaces importar em seu aplicativo.</target>
         <note />
       </trans-unit>
       <trans-unit id="DynamicEnumProperty|ImportedNamespaces|DisplayName">
         <source>Import Namespaces</source>
-        <target state="new">Import Namespaces</target>
+        <target state="translated">Importar Namespaces</target>
         <note />
       </trans-unit>
       <trans-unit id="Rule|References|Description">
