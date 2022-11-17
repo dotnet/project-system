@@ -236,7 +236,7 @@ dotnet_diagnostic.CA2200.severity = none
 dotnet_diagnostic.CA2000.severity = none        # Dispose objects before losing scope (Noisy)
 dotnet_diagnostic.CA1820.severity = warning
 
-# Microsoft.CodeQuality.NetAnalyzers
+# Microsoft.CodeAnalysis.NetAnalyzers
 dotnet_diagnostic.CA1000.severity = none
 dotnet_diagnostic.CA1001.severity = none
 dotnet_diagnostic.CA1010.severity = none
