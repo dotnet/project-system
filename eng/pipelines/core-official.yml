@@ -18,6 +18,13 @@ trigger:
 # See: https://docs.microsoft.com/azure/devops/pipelines/yaml-schema/pr?view=azure-pipelines#examples
 pr: none
 
+resources:
+  repositories:
+  # This repo is used to create the insertion PR into the vs-green repo.
+  - repository: VSCodeExtensionRepo
+    type: git
+    name: vs-green
+
 pool:
   # Agent Queue: https://devdiv.visualstudio.com/DevDiv/_settings/agentqueues?queueId=3123&view=jobs
   name: VSEngSS-MicroBuild2022-1ES
@@ -47,6 +54,16 @@ variables:
   # Variable reference: https://learn.microsoft.com/en-us/azure/devops/pipelines/repos/pipeline-options-for-git?view=azure-devops&tabs=yaml#shallow-fetch
   Agent.Source.Git.ShallowFetchDepth: 0
 
+parameters:
+- name: CreateInsertion
+  displayName: Create vs-green Insertion PR
+  type: boolean
+  default: false
+- name: InsertionVSGreenBranch
+  displayName: vs-green Insertion Branch Name
+  type: string
+  default: main
+
 ###################################################################################################################################################################
 # STAGES
 ###################################################################################################################################################################
@@ -60,3 +77,23 @@ stages:
     TeamName: DotNet-Project-System
   jobs:
   - template: templates/build-core-official-release.yml
+
+- ${{ if eq(parameters.CreateInsertion, true) }}:
+  - stage: Insertion
+    displayName: Insertion
+    dependsOn: Build
+    variables:
+      # Gets the NPMPackageVersion variable produced by the Build pipeline.
+      NPMPackageVersion: $[ stageDependencies.Build.BuildCoreOfficialRelease.outputs['SetNPMPackageVersion.NPMPackageVersion'] ]
+      # This variable is required by the component-insertion.yml template to insert the NPM package.
+      # The name of this package matches name defined in the package.json.
+      InsertNpmDependencies: '@microsoft/microsoft.visualstudio.projectsystem.managed@$(NPMPackageVersion)'
+    jobs:
+    - template: azure-pipelines/external/component-insertion.yml@VSCodeExtensionRepo
+      parameters:
+        sourceBranch: $(Build.SourceBranch)
+        sourceCommit: $(Build.SourceVersion)
+        runName: $(Build.BuildNumber)
+        runID: $(Build.BuildId)
+        pipelineID: $(System.DefinitionId)
+        InsertTargetBranch: ${{ parameters.InsertionVSGreenBranch }}
