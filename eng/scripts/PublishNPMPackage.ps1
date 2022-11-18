@@ -11,7 +11,7 @@ Write-Host "tgzPath: $tgzPath"
 
 $packageFilename = Split-Path -Path $tgzPath -Leaf
 $publishCommand = "npm publish --userconfig ""$npmrcPath"" ""$tgzPath"""
-$publishOutput = (Invoke-Expression $publishCommand) 2>&1
+$publishOutput = Invoke-Expression "$publishCommand 2>&1"
 if ($LastExitCode -ne 0)
 {
   $isPackageAlreadyPublished = $publishOutput | Where-Object { $_ -like '*The feed*already contains file*in package*' }
