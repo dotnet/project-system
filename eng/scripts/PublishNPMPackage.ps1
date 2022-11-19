@@ -19,7 +19,7 @@ if ($LastExitCode -ne 0)
   if($isPackageAlreadyPublished)
   {
     Write-Host "The package '$packageFilename' is already published. Skipping..."
-    return
+    exit 0
   }
 
   Write-Host "##vso[task.logissue type=error]An error occurred while publishing the package '$packageFilename'."
