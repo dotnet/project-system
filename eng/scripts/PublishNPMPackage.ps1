@@ -18,13 +18,11 @@ if ($LastExitCode -ne 0)
   $isPackageAlreadyPublished = $publishOutput | Where-Object { $_ -like '*The feed*already contains file*in package*' }
   if($isPackageAlreadyPublished)
   {
-    Write-Host "The package '$packageFilename' is already published. Skipping."
+    Write-Host "The package '$packageFilename' is already published. Skipping..."
     return
   }
 
-  Write-Host $publishOutput
   Write-Host "##vso[task.logissue type=error]An error occurred while publishing the package '$packageFilename'."
-  return
 }
 
-Write-Host $publishOutput
+$publishOutput
