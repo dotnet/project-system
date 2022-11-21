@@ -693,4 +693,30 @@
     </ItemGroup>
   </Target>
 
+
+  <!-- Adds all the .xaml *and* .targets files under $(VisualStudioXamlRulesDir) to our NuGet package by
+       creating <None> items with the "Pack" metadata set to "true. By putting them in the package they
+       will be available to setup components created in other repos.
+       
+       We need to do this within a target because many of the files we care about are created during the
+       build; e.g. the translated .xaml files. We don't really want those included in the evaluation because
+       they will pop in an out of existence depending on where we are in the build process, and we don't
+       really want them to show up in the Solution Explorer or anywhere else.
+       
+       Note that $(VisualStudioXamlRulesDir) could potentially include includes files from any project in
+       the solution, though at the moment only this project seems to put files there. If other projects
+       start to put files there we will need to do something more sophisticated.
+       
+       Also note that this is implicitly dependent on the CopyXamlRulesToOutputDirectory and
+       CopyDesignTimeTargetsToOutputDirectory targets, which are defined in VisualStudio.XamlRules.targets.
+  -->
+  <Target Name="AddXamlRulesToNuGetPackage" BeforeTargets="_GetPackageFiles">
+    <ItemGroup>
+      <Content Include="$(VisualStudioXamlRulesDir)\**\*.*">
+        <Pack>true</Pack>
+        <PackagePath>content\DesignTimeTargets\</PackagePath>
+      </Content>
+    </ItemGroup>
+  </Target>
+
 </Project>
