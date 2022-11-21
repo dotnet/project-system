@@ -706,6 +706,9 @@
        Note that $(VisualStudioXamlRulesDir) could potentially include includes files from any project in
        the solution, though at the moment only this project seems to put files there. If other projects
        start to put files there we will need to do something more sophisticated.
+       
+       Also note that this is implicitly dependent on the CopyXamlRulesToOutputDirectory and
+       CopyDesignTimeTargetsToOutputDirectory targets, which are defined in VisualStudio.XamlRules.targets.
   -->
   <Target Name="AddXamlRulesToNuGetPackage" BeforeTargets="_GetPackageFiles">
     <ItemGroup>
