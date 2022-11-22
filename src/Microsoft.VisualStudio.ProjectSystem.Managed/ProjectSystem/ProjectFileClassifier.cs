@@ -156,7 +156,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
             return (_programFiles64 is not null && filePath.StartsWith(_programFiles64, StringComparisons.Paths))
                    || filePath.StartsWith(_programFiles86, StringComparisons.Paths)
                    || filePath.StartsWith(_windows, StringComparisons.Paths)
-                   || _nuGetPackageFolders.Any(nugetFolder => filePath.StartsWith(nugetFolder, StringComparisons.Paths))
+                   || _nuGetPackageFolders.Any(static (nuGetFolder, filePath) => filePath.StartsWith(nuGetFolder, StringComparisons.Paths), filePath)
                    || (_vsInstallationDirectory is not null && filePath.StartsWith(_vsInstallationDirectory, StringComparisons.Paths));
         }
     }
