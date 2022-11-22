@@ -690,6 +690,7 @@
   <Target Name="AddFilesForNpmPackage" DependsOnTargets="Build" Condition="'$(TargetFramework)' == 'net6.0'">
     <ItemGroup>
       <NpmContent Include="$(OutDir)$(AssemblyName).dll;$(OutDir)$(AssemblyName).pdb;$(OutDir)$(AssemblyName).xml" />
+      <NpmContent Include="exports.json" />
     </ItemGroup>
   </Target>
 
