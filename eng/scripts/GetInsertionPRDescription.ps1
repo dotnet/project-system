@@ -94,19 +94,24 @@ $commitsClean = $commitsClean -replace '\}\r\n\{',"},`r`n{"
 $commitsJson = $commitsClean | ConvertFrom-Json
 
 # Filter the commits to only PR merges and replace 'subject' with only the PR number.
+# 'return' acts like a 'continue' in a script block. See: https://stackoverflow.com/a/7763698/294804
 $pullRequests = $commitsJson | Where-Object {
   # Matches the title for a PR merge commit.
-  $isPr = $_.subject -match '^Merge pull request #(\d+) from'
-  if(-not $isPr)
-  {
-    # Matches the title for a PR 'squash and merge' commit.
-    $isPr = $_.subject -match '\(#(\d+)\)$'
-  }
-  if($isPr)
+  if($_.subject -match '^Merge pull request #(\d+) from')
   {
     $_.subject = $matches[1]
+    return $true
   }
-  $isPr
+  # Matches the title for a PR 'squash and merge' commit.
+  if($_.subject -match '^(.*) \(#(\d+)\)$')
+  {
+    # 'squash and merge' commits do not have a body. Create the body from the subject.
+    $_.body = $matches[1]
+    $_.subject = $matches[2]
+    return $true
+  }
+
+  return $false
 }
 # Create a markdown list item for each PR.
 $description += $pullRequests | ForEach-Object { "- [$($_.subject): $($_.body)]($repoUrl/pull/$($_.subject))" }

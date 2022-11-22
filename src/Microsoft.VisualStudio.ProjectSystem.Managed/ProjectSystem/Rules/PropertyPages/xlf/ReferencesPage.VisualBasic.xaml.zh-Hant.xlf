@@ -12,6 +12,16 @@
         <target state="translated">一般</target>
         <note />
       </trans-unit>
+      <trans-unit id="DynamicEnumProperty|ImportedNamespaces|Description">
+        <source>Manage which namespaces to import in your application.</source>
+        <target state="translated">管理要在您的應用程式中匯入的命名空間。</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="DynamicEnumProperty|ImportedNamespaces|DisplayName">
+        <source>Import Namespaces</source>
+        <target state="translated">匯入命名空間</target>
+        <note />
+      </trans-unit>
       <trans-unit id="Rule|References|Description">
         <source>Specifies the project's references and namespace imports.</source>
         <target state="translated">指定專案的參考和命名空間匯入。</target>
@@ -20,16 +30,6 @@
       <trans-unit id="Rule|References|DisplayName">
         <source>References</source>
         <target state="translated">參考</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="StringProperty|ImportedNamespaces|Description">
-        <source>Manage which namespaces to import in your application.</source>
-        <target state="new">Manage which namespaces to import in your application.</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="StringProperty|ImportedNamespaces|DisplayName">
-        <source>Import Namespaces</source>
-        <target state="new">Import Namespaces</target>
         <note />
       </trans-unit>
     </body>

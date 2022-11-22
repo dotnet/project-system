@@ -153,7 +153,8 @@ stages:
   jobs:
   - template: templates/publish-assets-and-packages.yml
   - template: templates/publish-symbols.yml
-  - template: templates/publish-richnav.yml
+  # Disabling RichNav due to an acquisition issue. See: https://dev.azure.com/devdiv/DevDiv/_workitems/edit/1659507
+  # - template: templates/publish-richnav.yml
 
 # Skip this stage only when specifically requested (via SkipCompliance).
 - ${{ if eq(parameters.SkipCompliance, false) }}:

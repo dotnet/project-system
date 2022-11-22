@@ -434,7 +434,7 @@
       </trans-unit>
       <trans-unit id="StringProperty|DefineConstants|Description">
         <source>Specifies symbols on which to perform conditional compilation.</source>
-        <target state="new">Specifies symbols on which to perform conditional compilation.</target>
+        <target state="translated">指定要在其上执行条件编译的符号。</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|DefineConstants|DisplayName">

@@ -104,22 +104,22 @@
       </trans-unit>
       <trans-unit id="FileVersionRevisionTextBox.AccessibleName">
         <source>Assembly File Version Revision</source>
-        <target state="new">Assembly File Version Revision</target>
+        <target state="translated">Derleme Dosyası Sürümünü Düzeltme</target>
         <note />
       </trans-unit>
       <trans-unit id="FileVersionBuildTextBox.AccessibleName">
         <source>Assembly File Version Build</source>
-        <target state="new">Assembly File Version Build</target>
+        <target state="translated">Derleme Dosyası Sürümü Derleme</target>
         <note />
       </trans-unit>
       <trans-unit id="FileVersionMinorTextBox.AccessibleName">
         <source>Assembly File Version Minor</source>
-        <target state="new">Assembly File Version Minor</target>
+        <target state="translated">Derleme Dosyası Sürümü Küçük</target>
         <note />
       </trans-unit>
       <trans-unit id="FileVersionMajorTextBox.AccessibleName">
         <source>Assembly File Version Major</source>
-        <target state="new">Assembly File Version Major</target>
+        <target state="translated">Derleme Dosyası Sürümü Büyük</target>
         <note />
       </trans-unit>
       <trans-unit id="PackageRequireLicenseAcceptance.Text">

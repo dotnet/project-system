@@ -2,9 +2,6 @@
 
 namespace Microsoft.VisualStudio.ProjectSystem.Debug;
 
- using System.Collections.Generic;
- using System.Linq;
-
 internal sealed class KeyValuePairListEncoding
 {
     public IEnumerable<(string Name, string Value)> Parse(string input)
