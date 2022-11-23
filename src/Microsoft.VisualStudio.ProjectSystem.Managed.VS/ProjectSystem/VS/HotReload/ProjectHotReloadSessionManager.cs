@@ -322,18 +322,18 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.HotReload
             hotReloadState.Process.Exited -= hotReloadState.OnProcessExited;
         }
 
-        private IDeltaApplier? GetDeltaApplier(HotReloadState hotReloadState)
+        private static IDeltaApplier? GetDeltaApplier(HotReloadState hotReloadState)
         {
             return null;
         }
 
-        private Task<bool> RestartProjectAsync(HotReloadState hotReloadState, CancellationToken cancellationToken)
+        private static Task<bool> RestartProjectAsync(HotReloadState hotReloadState, CancellationToken cancellationToken)
         {
             // TODO: Support restarting the project.
             return TaskResult.False;
         }
 
-        private Task OnAfterChangesAppliedAsync(HotReloadState hotReloadState, CancellationToken cancellationToken)
+        private static Task OnAfterChangesAppliedAsync(HotReloadState hotReloadState, CancellationToken cancellationToken)
         {
             return Task.CompletedTask;
         }
@@ -427,7 +427,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.HotReload
 
             public Task OnAfterChangesAppliedAsync(CancellationToken cancellationToken)
             {
-                return _sessionManager.OnAfterChangesAppliedAsync(this, cancellationToken);
+                return ProjectHotReloadSessionManager.OnAfterChangesAppliedAsync(this, cancellationToken);
             }
 
             public Task<bool> StopProjectAsync(CancellationToken cancellationToken)
@@ -437,12 +437,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.HotReload
 
             public Task<bool> RestartProjectAsync(CancellationToken cancellationToken)
             {
-                return _sessionManager.RestartProjectAsync(this, cancellationToken);
+                return ProjectHotReloadSessionManager.RestartProjectAsync(this, cancellationToken);
             }
 
             public IDeltaApplier? GetDeltaApplier()
             {
-                return _sessionManager.GetDeltaApplier(this);
+                return ProjectHotReloadSessionManager.GetDeltaApplier(this);
             }
         }
     }
