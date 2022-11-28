@@ -142,7 +142,7 @@ internal sealed class VBWarningsValueProvider : InterceptingPropertyValueProvide
         return null;
     }
 
-    private async Task<string> OnGetPropertyValueAsync(string propertyName, IProjectProperties projectProperties)
+    private static async Task<string> OnGetPropertyValueAsync(string propertyName, IProjectProperties projectProperties)
     {
         // <OptionStrict>On</OptionsStrict> forces certain sets of diagnostics to be errors.
         if (propertyName is ImplicitConversionPropertyName or LateBindingPropertyName or ImplicitTypePropertyName
@@ -194,21 +194,21 @@ internal sealed class VBWarningsValueProvider : InterceptingPropertyValueProvide
         return InconsistentValue;
     }
 
-    private async Task SetNoWarnIdsAsync(ImmutableSortedSet<int> updatedNoWarnIds, IProjectProperties defaultProperties, IReadOnlyDictionary<string, string>? dimensionalConditions)
+    private static async Task SetNoWarnIdsAsync(ImmutableSortedSet<int> updatedNoWarnIds, IProjectProperties defaultProperties, IReadOnlyDictionary<string, string>? dimensionalConditions)
     {
         string value = CreateIdList(updatedNoWarnIds);
 
         await defaultProperties.SetPropertyValueAsync(NoWarnPropertyName, value, dimensionalConditions);
     }
 
-    private async Task SetWarningsAsErrorIdsAsync(ImmutableSortedSet<int> updatedWarningsAsErrorIds, IProjectProperties defaultProperties, IReadOnlyDictionary<string, string>? dimensionalConditions)
+    private static async Task SetWarningsAsErrorIdsAsync(ImmutableSortedSet<int> updatedWarningsAsErrorIds, IProjectProperties defaultProperties, IReadOnlyDictionary<string, string>? dimensionalConditions)
     {
         string value = CreateIdList(updatedWarningsAsErrorIds);
 
         await defaultProperties.SetPropertyValueAsync(WarningsAsErrorsPropertyName, value, dimensionalConditions);
     }
 
-    private async Task<ImmutableSortedSet<int>> GetNoWarnIdsAsync(IProjectProperties projectProperties)
+    private static async Task<ImmutableSortedSet<int>> GetNoWarnIdsAsync(IProjectProperties projectProperties)
     {
         string noWarnValue = await projectProperties.GetEvaluatedPropertyValueAsync(NoWarnPropertyName);
 
@@ -235,7 +235,7 @@ internal sealed class VBWarningsValueProvider : InterceptingPropertyValueProvide
         return string.Join(DiagnosticIdSeparator, idSet);
     }
 
-    private async Task<ImmutableSortedSet<int>> GetWarningsAsErrorsIdsAsync(IProjectProperties projectProperties)
+    private static async Task<ImmutableSortedSet<int>> GetWarningsAsErrorsIdsAsync(IProjectProperties projectProperties)
     {
         string warningsAsErrorsValue = await projectProperties.GetEvaluatedPropertyValueAsync(WarningsAsErrorsPropertyName);
 
@@ -273,7 +273,7 @@ internal sealed class VBWarningsValueProvider : InterceptingPropertyValueProvide
         All
     }
 
-    private NumbersInSetResult NumbersInSet(ImmutableSortedSet<int> set, ImmutableSortedSet<int> numbersToCheck)
+    private static NumbersInSetResult NumbersInSet(ImmutableSortedSet<int> set, ImmutableSortedSet<int> numbersToCheck)
     {
         int numbersFound = set.Intersect(numbersToCheck).Count;
 

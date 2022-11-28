@@ -222,12 +222,13 @@ To opt-out of this optimization and preserve the pre-17.2 behaviour, set the `Di
 
 In a large solution with many layers of project references, this feature can avoid many recompilation chain reactions, reducing build times significantly.
 
-In Visual Studio, reference assemblies are not yet supported for non-SDK-style projects. Therefore if you have a solution that mixes both SDK-style and non-SDK-style projects, the interaction between the two projects in steps 4 and 5 above won't happen correctly. What happens instead is that the _referencing_ non-SDK-style project thinks the _referenced_ SDK-style project is up-to-date, so no build is scheduled. This means that the _referenced_ binary is not copied to the _referencing_ project's output directory. From the perspective of the developer, their changes appear to have no effect when running their program.
+Prior to VS 17.5, reference assemblies were not supported for non-SDK-style projects. In a solution that mixes both SDK-style and non-SDK-style projects, the interaction between the two projects in steps 4 and 5 above won't happen correctly. What happens instead is that the _referencing_ non-SDK-style project thinks the _referenced_ SDK-style project is up-to-date, so no build is scheduled. This means that the _referenced_ binary is not copied to the _referencing_ project's output directory. From the perspective of the developer, their changes appear to have no effect when running their program.
 
 If you are experiencing this issue, you may either:
 
-1. Convert all non-SDK-style projects to SDK-style, or
-2. Set `CompileUsingReferenceAssemblies` to `false` for all non-SDK-style projects. Note that you cannot use a `Directory.Build.props` file to achieve this if any SDK-style projects would also pick up that file. The property would need to be conditional, and non-SDK-style projects do not support conditions in these files ([see](https://github.com/dotnet/project-system/issues/4175)).
+1. Upgrade to Visual Studio 17.5 or later (ensuring all developers of your solution also upgrade), or
+2. Convert all non-SDK-style projects to SDK-style, or
+3. Set `CompileUsingReferenceAssemblies` to `false` for all non-SDK-style projects. Note that you cannot use a `Directory.Build.props` file to achieve this if any SDK-style projects would also pick up that file. The property would need to be conditional, and non-SDK-style projects do not support conditions in these files ([see](https://github.com/dotnet/project-system/issues/4175)).
 
 ## Disabling the up-to-date check
 

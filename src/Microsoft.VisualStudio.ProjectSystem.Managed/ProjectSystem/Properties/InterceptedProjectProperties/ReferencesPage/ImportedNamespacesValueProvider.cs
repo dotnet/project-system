@@ -13,7 +13,6 @@ internal sealed class ImportedNamespacesValueProvider : InterceptingPropertyValu
     private readonly IProjectThreadingService _threadingService;
     private readonly IProjectAccessor _projectAccessor;
     private readonly ConcurrentHashSet<string> _specialImports;
-    private readonly KeyValuePairListEncoding _encoding;
     
     [ImportingConstructor]
     public ImportedNamespacesValueProvider(ConfiguredProject configuredProject, IProjectThreadingService threadingService, IProjectAccessor projectAccessor)
@@ -22,7 +21,6 @@ internal sealed class ImportedNamespacesValueProvider : InterceptingPropertyValu
         _threadingService = threadingService;
         _projectAccessor = projectAccessor;
         _specialImports = new ConcurrentHashSet<string>();
-        _encoding = new KeyValuePairListEncoding();
     }
 
     private async Task<ImmutableArray<(string Value, bool IsReadOnly)>> GetProjectImportsAsync()
@@ -41,7 +39,7 @@ internal sealed class ImportedNamespacesValueProvider : InterceptingPropertyValu
 
     private async Task<string> GetSelectedImportStringAsync()
     {
-        return _encoding.Format(await GetSelectedImportListAsync());
+        return KeyValuePairListEncoding.Format(await GetSelectedImportListAsync());
     }
     
     private async Task<List<(string Import, string IsReadOnly)>> GetSelectedImportListAsync()
@@ -77,10 +75,10 @@ internal sealed class ImportedNamespacesValueProvider : InterceptingPropertyValu
 
     public override async Task<string?> OnSetPropertyValueAsync(string propertyName, string unevaluatedPropertyValue, IProjectProperties defaultProperties, IReadOnlyDictionary<string, string>? dimensionalConditions = null)
     {
-        var importsToAdd = _encoding.Parse(unevaluatedPropertyValue)
+        var importsToAdd = KeyValuePairListEncoding.Parse(unevaluatedPropertyValue)
             .Where(pair => bool.TryParse(pair.Value, out bool _))
             .ToDictionary(pair => pair.Name, pair => bool.Parse(pair.Value));
-        
+
         importsToAdd.Remove(Path.GetFileNameWithoutExtension(_configuredProject.UnconfiguredProject.FullPath));
 
         foreach ((string value, bool _) in await GetProjectImportsAsync())

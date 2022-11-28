@@ -56,7 +56,7 @@ namespace Microsoft.VisualStudio
         }
 
         /// <summary>
-        /// Specialisation of <see cref="System.Linq.Enumerable.Any{TSource}(IEnumerable{TSource})"/>
+        /// Specialisation of <see cref="Enumerable.Any{TSource}(IEnumerable{TSource})"/>
         /// that avoids allocation when the sequence is statically known to be an array.
         /// </summary>
         public static bool Any<T>(this T[] array, Func<T, bool> predicate)
@@ -64,6 +64,23 @@ namespace Microsoft.VisualStudio
             foreach (T item in array)
             {
                 if (predicate(item))
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        /// <summary>
+        /// Specialisation of <see cref="Enumerable.Any{TSource}(IEnumerable{TSource})"/>
+        /// that avoids allocation when the sequence is statically known to be an array.
+        /// </summary>
+        public static bool Any<T, TArg>(this T[] array, Func<T, TArg, bool> predicate, TArg arg)
+        {
+            foreach (T item in array)
+            {
+                if (predicate(item, arg))
                 {
                     return true;
                 }
