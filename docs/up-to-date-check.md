@@ -208,8 +208,6 @@ There is one valid use case for `Always`, which is to restore a data file in the
 
 In VS 17.2, we changed the fast up-to-date check to be less strict about `Always` items. With this new behaviour, the check verifies the size and timestamps of the source and destination files. If they differ a build will be scheduled. This change can have a massively positive impact on inner loop productivity, when `Always` items exist.
 
-To opt-out of this optimization and preserve the pre-17.2 behaviour, set the `DisableFastUpToDateCopyAlwaysOptimization` MSBuild property to `true` in your project. Consider also opening an issue on this repo to explain why the optimization doesn't work for you, to give us a chance to improve it further.
-
 ## Reference assemblies and mixed SDK-style/non-SDK-style projects
 
 [Reference assemblies](https://docs.microsoft.com/dotnet/standard/assembly/reference-assemblies) can be used during .NET builds to avoid unnecessary compilation in the following case:
@@ -264,7 +262,6 @@ There are several reasons that a project may fail its up-to-date check and be sc
 | *CopyToOutputDirectoryDestinationNotFound* | A `CopyToOutputDirectory` input file is not present in the output directory. The build will copy it. |
 | *CopyToOutputDirectorySourceNotFound* | A `CopyToOutputDirectory` input file does not exist. A build is scheduled that may either produce this file and copy it, or emit an error about the missing file. |
 | *CopyToOutputDirectorySourceNewer* | A `CopyToOutputDirectory` input file has a newer time stamp than its destination. The build will update the output file. |
-| *CopyAlwaysItemExists* | Since 17.2 we only report this when `DisableFastUpToDateCopyAlwaysOptimization` is set on the project. [More info](#copytooutputdirectory-always-vs-preservenewest). |
 | *Disabled* | The project has `DisableFastUpToDateCheck` set. [More info](#disabling-the-up-to-date-check). |
 | *CriticalTasks* | Critical build tasks are running. This is very uncommon, and is not something the user has control over. |
 | *Exception* | An exception occurred in the implementation of the fast up-to-date check. We schedule a build at this point, as we don't know whether it is safe not to. |

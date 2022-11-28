@@ -81,9 +81,6 @@
   <BoolProperty Name="DisableFastUpToDateCheck"
                 Visible="False" />
 
-  <BoolProperty Name="DisableFastUpToDateCopyAlwaysOptimization"
-                Visible="False" />
-
   <StringProperty Name="DocumentationFile"
                   Visible="False" />
 
