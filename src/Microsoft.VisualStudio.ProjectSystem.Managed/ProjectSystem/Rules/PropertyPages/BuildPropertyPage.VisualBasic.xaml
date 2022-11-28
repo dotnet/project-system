@@ -419,9 +419,9 @@
     <StringProperty.ValueEditors>
       <ValueEditor EditorType="NameValueList">
         <ValueEditor.Metadata>
-          <NameValuePair Name="Encoding" Value="NameQuotedValueListPairEncoding" />
+          <NameValuePair Name="Encoding" Value="Default" />
         </ValueEditor.Metadata>
-    </ValueEditor>
+      </ValueEditor>
     </StringProperty.ValueEditors>
     <StringProperty.Description>Specifies custom conditional compilation constants for your application.</StringProperty.Description>
   </StringProperty>
