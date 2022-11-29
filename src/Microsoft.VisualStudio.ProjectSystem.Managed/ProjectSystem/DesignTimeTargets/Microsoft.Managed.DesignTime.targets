@@ -472,4 +472,59 @@
     </ItemGroup>
   </Target>
 
+  <!--
+    This target collects all the items this project contributes to output directories of referencing projects.
+    Ideally, it excludes any transitive dependencies.
+  -->
+  <Target
+    Name="CollectCopyToOutputDirectoryItemDesignTime"
+    DependsOnTargets="CompileDesignTime;_GetCopyToOutputDirectoryItemsFromThisProject;ResolveAssemblyReferences;ComputeIntermediateSatelliteAssemblies"
+    Returns="@(_CollectedCopyToOutputDirectoryItem)">
+    <ItemGroup>
+
+      <_CollectedCopyToOutputDirectoryItem Include="@(_ThisProjectItemsToCopyToOutputDirectory)" />
+
+      <!-- Output assembly -->
+
+      <_CollectedCopyToOutputDirectoryItem Include="$(TargetPath)">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        <TargetPath>$([System.IO.Path]::GetFileName('$(TargetPath)'))</TargetPath>
+      </_CollectedCopyToOutputDirectoryItem>
+
+      <!-- Debug symbols -->
+
+      <_CollectedCopyToOutputDirectoryItem Include="@(_DebugSymbolsOutputPath->'%(FullPath)')" Condition="'$(_DebugSymbolsProduced)' == 'true' and '$(SkipCopyingSymbolsToOutputDirectory)' != 'true' and '$(CopyOutputSymbolsToOutputDirectory)' != 'false'">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        <TargetPath>$([System.IO.Path]::GetFileName('%(Identity)'))</TargetPath>
+      </_CollectedCopyToOutputDirectoryItem>
+
+      <!-- ReferenceCopyLocalPaths -->
+
+      <_CollectedCopyToOutputDirectoryItem Include="@(ReferenceCopyLocalPaths->'%(Identity)')" Condition="'%(ReferenceCopyLocalPaths.ReferenceSourceTarget)' != 'ProjectReference' AND '%(ReferenceCopyLocalPaths.DestinationSubPath)' != ''">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        <TargetPath>%(ReferenceCopyLocalPaths.DestinationSubPath)</TargetPath>
+      </_CollectedCopyToOutputDirectoryItem>
+
+      <_CollectedCopyToOutputDirectoryItem Include="@(ReferenceCopyLocalPaths->'%(Identity)')" Condition="'%(ReferenceCopyLocalPaths.ReferenceSourceTarget)' != 'ProjectReference' AND '%(ReferenceCopyLocalPaths.DestinationSubPath)' == ''">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        <TargetPath>$([System.IO.Path]::GetFileName('%(Identity)'))</TargetPath>
+      </_CollectedCopyToOutputDirectoryItem>
+
+      <!-- Documentation file -->
+
+      <_CollectedCopyToOutputDirectoryItem Include="@(FinalDocFile->'%(FullPath)')" Condition="'$(_DocumentationFileProduced)' == 'true'">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        <TargetPath>$([System.IO.Path]::GetFileName('%(Identity)'))</TargetPath>
+      </_CollectedCopyToOutputDirectoryItem>
+
+      <!-- Satellite assemblies -->
+
+      <_CollectedCopyToOutputDirectorySatelliteAssemblyItem Include="@(IntermediateSatelliteAssembliesWithTargetPath->'$(OutDir)%(Culture)\$(TargetName).resources.dll')" Condition="'@(IntermediateSatelliteAssembliesWithTargetPath)' != ''">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        <TargetPath>%(Culture)\$(TargetName).resources.dll</TargetPath>
+      </_CollectedCopyToOutputDirectorySatelliteAssemblyItem>
+
+    </ItemGroup>
+  </Target>
+
 </Project>

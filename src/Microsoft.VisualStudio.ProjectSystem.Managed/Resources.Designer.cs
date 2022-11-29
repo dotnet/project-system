@@ -151,6 +151,33 @@ namespace Microsoft.VisualStudio {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to This project appears to be a candidate for build acceleration. To opt in, set the &apos;AccelerateBuildsInVisualStudio&apos; MSBuild property to &apos;true&apos;..
+        /// </summary>
+        internal static string FUTD_AccelerationCandidate {
+            get {
+                return ResourceManager.GetString("FUTD_AccelerationCandidate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Build acceleration is not available for this project because not all transitively referenced projects have provided acceleration data..
+        /// </summary>
+        internal static string FUTD_AccelerationDisabledCopyItemsIncomplete {
+            get {
+                return ResourceManager.GetString("FUTD_AccelerationDisabledCopyItemsIncomplete", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Build acceleration is disabled for this project via the &apos;AccelerateBuildsInVisualStudio&apos; MSBuild property..
+        /// </summary>
+        internal static string FUTD_AccelerationDisabledForProject {
+            get {
+                return ResourceManager.GetString("FUTD_AccelerationDisabledForProject", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Adding input reference copy markers:.
         /// </summary>
         internal static string FUTD_AddingInputReferenceCopyMarkers {
@@ -214,20 +241,65 @@ namespace Microsoft.VisualStudio {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to {0} item added &apos;{1}&apos; (CopyToOutputDirectory={2}, TargetPath=&apos;{3}&apos;).
+        ///   Looks up a localized string similar to Build acceleration copied {0} files..
         /// </summary>
-        internal static string FUTD_ChangedItemsAddition_4 {
+        internal static string FUTD_BuildAccelerationSummary_1 {
             get {
-                return ResourceManager.GetString("FUTD_ChangedItemsAddition_4", resourceCulture);
+                return ResourceManager.GetString("FUTD_BuildAccelerationSummary_1", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to {0} item removed &apos;{1}&apos; (CopyToOutputDirectory={2}, TargetPath=&apos;{3}&apos;).
+        ///   Looks up a localized string similar to {0} item added &apos;{1}&apos;.
         /// </summary>
-        internal static string FUTD_ChangedItemsRemoval_4 {
+        internal static string FUTD_ChangedItemsAddition_2 {
             get {
-                return ResourceManager.GetString("FUTD_ChangedItemsRemoval_4", resourceCulture);
+                return ResourceManager.GetString("FUTD_ChangedItemsAddition_2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0} item removed &apos;{1}&apos;.
+        /// </summary>
+        internal static string FUTD_ChangedItemsRemoval_2 {
+            get {
+                return ResourceManager.GetString("FUTD_ChangedItemsRemoval_2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Checking built output (UpToDateCheckBuilt with Original property) file:.
+        /// </summary>
+        internal static string FUTD_CheckingBuiltOutputFile {
+            get {
+                return ResourceManager.GetString("FUTD_CheckingBuiltOutputFile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Destination &apos;{0}&apos; does not exist for copy from &apos;{1}&apos;, not up-to-date..
+        /// </summary>
+        internal static string FUTD_CheckingBuiltOutputFileDestinationNotFound_2 {
+            get {
+                return ResourceManager.GetString("FUTD_CheckingBuiltOutputFileDestinationNotFound_2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Source is newer than build output destination, not up-to-date..
+        /// </summary>
+        internal static string FUTD_CheckingBuiltOutputFileSourceNewer {
+            get {
+                return ResourceManager.GetString("FUTD_CheckingBuiltOutputFileSourceNewer", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Source &apos;{0}&apos; does not exist for build into target &apos;{1}&apos;, not up-to-date..
+        /// </summary>
+        internal static string FUTD_CheckingBuiltOutputFileSourceNotFound_2 {
+            get {
+                return ResourceManager.GetString("FUTD_CheckingBuiltOutputFileSourceNotFound_2", resourceCulture);
             }
         }
         
@@ -241,47 +313,20 @@ namespace Microsoft.VisualStudio {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Checking copied output (UpToDateCheckBuilt with Original property) file:.
+        ///   Looks up a localized string similar to Source &apos;{0}&apos; does not exist for copy to &apos;{1}&apos;..
         /// </summary>
-        internal static string FUTD_CheckingCopiedOutputFile {
+        internal static string FUTD_CheckingCopyFileSourceNotFound_2 {
             get {
-                return ResourceManager.GetString("FUTD_CheckingCopiedOutputFile", resourceCulture);
+                return ResourceManager.GetString("FUTD_CheckingCopyFileSourceNotFound_2", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Destination &apos;{0}&apos; does not exist for copy from &apos;{1}&apos;, not up-to-date..
+        ///   Looks up a localized string similar to Checking {0} item.
         /// </summary>
-        internal static string FUTD_CheckingCopiedOutputFileDestinationNotFound_2 {
+        internal static string FUTD_CheckingCopyToOutputDirectoryItem_1 {
             get {
-                return ResourceManager.GetString("FUTD_CheckingCopiedOutputFileDestinationNotFound_2", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Source is newer than build output destination, not up-to-date..
-        /// </summary>
-        internal static string FUTD_CheckingCopiedOutputFileSourceNewer {
-            get {
-                return ResourceManager.GetString("FUTD_CheckingCopiedOutputFileSourceNewer", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Source &apos;{0}&apos; does not exist for copy to &apos;{1}&apos;, not up-to-date..
-        /// </summary>
-        internal static string FUTD_CheckingCopiedOutputFileSourceNotFound_2 {
-            get {
-                return ResourceManager.GetString("FUTD_CheckingCopiedOutputFileSourceNotFound_2", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Checking {0} item with CopyToOutputDirectory=&quot;{1}&quot; &apos;{2}&apos;:.
-        /// </summary>
-        internal static string FUTD_CheckingCopyToOutputDirectoryItem_3 {
-            get {
-                return ResourceManager.GetString("FUTD_CheckingCopyToOutputDirectoryItem_3", resourceCulture);
+                return ResourceManager.GetString("FUTD_CheckingCopyToOutputDirectoryItem_1", resourceCulture);
             }
         }
         
@@ -295,11 +340,20 @@ namespace Microsoft.VisualStudio {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to {0} item with CopyToOutputDirectory=&quot;{1}&quot; source &apos;{2}&apos; is newer than destination &apos;{3}&apos;, not up-to-date..
+        ///   Looks up a localized string similar to Checking items to copy to the output directory:.
         /// </summary>
-        internal static string FUTD_CheckingCopyToOutputDirectorySourceNewerThanDestination_4 {
+        internal static string FUTD_CheckingCopyToOutputDirectoryItems {
             get {
-                return ResourceManager.GetString("FUTD_CheckingCopyToOutputDirectorySourceNewerThanDestination_4", resourceCulture);
+                return ResourceManager.GetString("FUTD_CheckingCopyToOutputDirectoryItems", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Item with CopyToOutputDirectory=&quot;{0}&quot; source &apos;{1}&apos; is newer than destination &apos;{2}&apos;, not up-to-date..
+        /// </summary>
+        internal static string FUTD_CheckingCopyToOutputDirectorySourceNewerThanDestination_3 {
+            get {
+                return ResourceManager.GetString("FUTD_CheckingCopyToOutputDirectorySourceNewerThanDestination_3", resourceCulture);
             }
         }
         
@@ -313,11 +367,29 @@ namespace Microsoft.VisualStudio {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Comparing timestamps of copy marker inputs and outputs:.
+        /// </summary>
+        internal static string FUTD_ComparingCopyMarkerTimestamps {
+            get {
+                return ResourceManager.GetString("FUTD_ComparingCopyMarkerTimestamps", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Comparing timestamps of inputs and outputs:.
+        /// </summary>
+        internal static string FUTD_ComparingInputOutputTimestamps {
+            get {
+                return ResourceManager.GetString("FUTD_ComparingInputOutputTimestamps", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Comparing timestamps of inputs and outputs in Set=&quot;{0}&quot;:.
         /// </summary>
-        internal static string FUTD_ComparingInputOutputTimestamps_1 {
+        internal static string FUTD_ComparingInputOutputTimestampsInSet_1 {
             get {
-                return ResourceManager.GetString("FUTD_ComparingInputOutputTimestamps_1", resourceCulture);
+                return ResourceManager.GetString("FUTD_ComparingInputOutputTimestampsInSet_1", resourceCulture);
             }
         }
         
@@ -331,11 +403,20 @@ namespace Microsoft.VisualStudio {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to {0} item with CopyToOutputDirectory=&quot;Always&quot; source (&apos;{1}&apos; {2}, {3} bytes) differs from destination (&apos;{4}&apos; {5}, {6} bytes), not up-to-date..
+        ///   Looks up a localized string similar to Item with CopyToOutputDirectory=&quot;Always&quot; source (&apos;{0}&apos; {1}, {2} bytes) differs from destination (&apos;{3}&apos; {4}, {5} bytes), not up-to-date..
         /// </summary>
-        internal static string FUTD_CopyAlwaysItemsDiffer_7 {
+        internal static string FUTD_CopyAlwaysItemsDiffer_6 {
             get {
-                return ResourceManager.GetString("FUTD_CopyAlwaysItemsDiffer_7", resourceCulture);
+                return ResourceManager.GetString("FUTD_CopyAlwaysItemsDiffer_6", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Copying {0} files to accelerate build:.
+        /// </summary>
+        internal static string FUTD_CopyingFilesToAccelerateBuild_1 {
+            get {
+                return ResourceManager.GetString("FUTD_CopyingFilesToAccelerateBuild_1", resourceCulture);
             }
         }
         
@@ -345,6 +426,15 @@ namespace Microsoft.VisualStudio {
         internal static string FUTD_CriticalBuildTasksRunning {
             get {
                 return ResourceManager.GetString("FUTD_CriticalBuildTasksRunning", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Destination &apos;{0}&apos; does not exist..
+        /// </summary>
+        internal static string FUTD_DestinationDoesNotExist_1 {
+            get {
+                return ResourceManager.GetString("FUTD_DestinationDoesNotExist_1", resourceCulture);
             }
         }
         
@@ -376,6 +466,15 @@ namespace Microsoft.VisualStudio {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Exception copying file, scheduling MSBuild: {0}.
+        /// </summary>
+        internal static string FUTD_ExceptionCopyingFile_1 {
+            get {
+                return ResourceManager.GetString("FUTD_ExceptionCopyingFile_1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The up-to-date check has not yet run for this project. Not up-to-date..
         /// </summary>
         internal static string FUTD_FirstRun {
@@ -385,11 +484,29 @@ namespace Microsoft.VisualStudio {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to From &apos;{0}&apos; to &apos;{1}&apos;..
+        /// </summary>
+        internal static string FUTD_FromTo_2 {
+            get {
+                return ResourceManager.GetString("FUTD_FromTo_2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Ignoring up-to-date check items with Kind=&quot;{0}&quot;.
         /// </summary>
         internal static string FUTD_IgnoringKinds_1 {
             get {
                 return ResourceManager.GetString("FUTD_IgnoringKinds_1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Input marker does not exist..
+        /// </summary>
+        internal static string FUTD_InputMarkerDoesNotExist {
+            get {
+                return ResourceManager.GetString("FUTD_InputMarkerDoesNotExist", resourceCulture);
             }
         }
         
@@ -520,6 +637,15 @@ namespace Microsoft.VisualStudio {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Remembering the need to copy file &apos;{0}&apos; to &apos;{1}&apos;..
+        /// </summary>
+        internal static string FUTD_RememberingCopiedFile_2 {
+            get {
+                return ResourceManager.GetString("FUTD_RememberingCopiedFile_2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Input &apos;{0}&apos; does not exist and is required, not up-to-date..
         /// </summary>
         internal static string FUTD_RequiredInputNotFound_1 {
@@ -556,6 +682,15 @@ namespace Microsoft.VisualStudio {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Skipping copy of CopyToOutputDirectory Always item from &apos;{0}&apos; to &apos;{1}&apos; due to identical file size and last write time..
+        /// </summary>
+        internal static string FUTD_SkippingCopyDueToIdenticalSizeAndWriteTime_2 {
+            get {
+                return ResourceManager.GetString("FUTD_SkippingCopyDueToIdenticalSizeAndWriteTime_2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Skipping &apos;{0}&apos; with ignored Kind=&quot;{1}&quot;.
         /// </summary>
         internal static string FUTD_SkippingIgnoredKindItem_2 {
@@ -565,7 +700,7 @@ namespace Microsoft.VisualStudio {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Source {0}: &apos;{1}&apos;.
+        ///   Looks up a localized string similar to Source      {0}: &apos;{1}&apos;.
         /// </summary>
         internal static string FUTD_SourceFileTimeAndPath_2 {
             get {
@@ -606,6 +741,33 @@ namespace Microsoft.VisualStudio {
         internal static string FUTD_WriteTimeOnOutputMarker_2 {
             get {
                 return ResourceManager.GetString("FUTD_WriteTimeOnOutputMarker_2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Build acceleration data is unavailable for project with target &apos;{0}&apos;..
+        /// </summary>
+        internal static string FUTDC_AccelerationDataMissingForProject_1 {
+            get {
+                return ResourceManager.GetString("FUTDC_AccelerationDataMissingForProject_1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Checking copy items from project &apos;{0}&apos;..
+        /// </summary>
+        internal static string FUTDC_CheckingCopyItemsForProject_1 {
+            get {
+                return ResourceManager.GetString("FUTDC_CheckingCopyItemsForProject_1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Skipping duplicate copy item &apos;{0}&apos; to &apos;{1}&apos;.
+        /// </summary>
+        internal static string FUTDC_SkippingDuplicateCopyItem_2 {
+            get {
+                return ResourceManager.GetString("FUTDC_SkippingDuplicateCopyItem_2", resourceCulture);
             }
         }
         
