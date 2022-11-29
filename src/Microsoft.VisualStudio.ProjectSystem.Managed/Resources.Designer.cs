@@ -331,15 +331,6 @@ namespace Microsoft.VisualStudio {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to {0} item &apos;{1}&apos; has CopyToOutputDirectory set to &apos;Always&apos;, and the project has DisableFastUpToDateCopyAlwaysOptimization set to &apos;true&apos;, not up-to-date..
-        /// </summary>
-        internal static string FUTD_CopyAlwaysItemExists_2 {
-            get {
-                return ResourceManager.GetString("FUTD_CopyAlwaysItemExists_2", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to {0} item with CopyToOutputDirectory=&quot;Always&quot; source (&apos;{1}&apos; {2}, {3} bytes) differs from destination (&apos;{4}&apos; {5}, {6} bytes), not up-to-date..
         /// </summary>
         internal static string FUTD_CopyAlwaysItemsDiffer_7 {
@@ -516,15 +507,6 @@ namespace Microsoft.VisualStudio {
         internal static string FUTD_NoOutputMarkerExists_1 {
             get {
                 return ResourceManager.GetString("FUTD_NoOutputMarkerExists_1", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Optimizing CopyToOutputDirectory=&quot;Always&quot; item. Disable this by setting DisableFastUpToDateCopyAlwaysOptimization to &quot;true&quot;..
-        /// </summary>
-        internal static string FUTD_OptimizingCopyAlwaysItem {
-            get {
-                return ResourceManager.GetString("FUTD_OptimizingCopyAlwaysItem", resourceCulture);
             }
         }
         
