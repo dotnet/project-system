@@ -351,7 +351,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 if (inputSourceItemsByItemTypeBuilder.TryGetValue(itemType, out ImmutableArray<UpToDateCheckInputItem> beforeItems))
                     before = beforeItems;
 
+                projectFileClassifier ??= BuildClassifier();
+
                 var after = projectChange.After.Items
+                    .Where(item => !projectFileClassifier.IsNonModifiable(item.Key))
                     .Select(item => new UpToDateCheckInputItem(path: item.Key, itemType, metadata: item.Value))
                     .ToHashSet(UpToDateCheckInputItem.PathComparer);
 
