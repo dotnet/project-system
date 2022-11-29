@@ -110,7 +110,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             Dictionary<string, IProjectRuleSnapshotModel>? projectSnapshot = null,
             Dictionary<string, IProjectRuleSnapshotModel>? sourceSnapshot = null,
             bool disableFastUpToDateCheck = false,
-            bool disableFastUpToDateCopyAlwaysOptimization = false,
             string outDir = _outputPathRelative,
             DateTime? lastSuccessfulBuildStartTimeUtc = null,
             DateTime? lastItemsChangedAtUtc = null,
@@ -134,8 +133,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                         { "MSBuildAllProjects", _msBuildAllProjects },
                         { "OutputPath", outDir },
                         { "OutDir", outDir },
-                        { ConfigurationGeneral.DisableFastUpToDateCheckProperty, disableFastUpToDateCheck.ToString() },
-                        { ConfigurationGeneral.DisableFastUpToDateCopyAlwaysOptimizationProperty, disableFastUpToDateCopyAlwaysOptimization.ToString() },
+                        { ConfigurationGeneral.DisableFastUpToDateCheckProperty, disableFastUpToDateCheck.ToString() }
                     }
                 };
             }
@@ -289,18 +287,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
         }
 
         [Theory]
-        //          ItemType            Optimized  ExpectUpToDate  IsItemTypeCopied
-        [InlineData(None.SchemaName,    false,     false,          true)]
-        [InlineData(None.SchemaName,    true,      true,           true)]
-        [InlineData(Content.SchemaName, false,     false,          true)]
-        [InlineData(Content.SchemaName, true,      true,           true)]
-        [InlineData(Compile.SchemaName, false,     false,          true)]
-        [InlineData(Compile.SchemaName, true,      true,           true)]
-        [InlineData("EmbeddedResource", false,     false,          true)]
-        [InlineData("EmbeddedResource", true,      true,           true)]
-        [InlineData("RandomItemType",   false,     true,           false)]
-        [InlineData("RandomItemType",   true,      true,           false)]
-        public async Task IsUpToDateAsync_CopyAlwaysItemExists(string itemType, bool optimized, bool expectUpToDate, bool isItemTypeCopied)
+        //          ItemType            IsItemTypeCopied
+        [InlineData(None.SchemaName,    true)]
+        [InlineData(Content.SchemaName, true)]
+        [InlineData(Compile.SchemaName, true)]
+        [InlineData("EmbeddedResource", true)]
+        [InlineData("RandomItemType",   false)]
+        public async Task IsUpToDateAsync_CopyAlwaysItemExists(string itemType, bool isItemTypeCopied)
         {
             var projectSnapshot = new Dictionary<string, IProjectRuleSnapshotModel>
             {
@@ -327,76 +320,50 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             await SetupAsync(
                 projectSnapshot: projectSnapshot,
                 sourceSnapshot: sourceSnapshot,
-                disableFastUpToDateCopyAlwaysOptimization: !optimized,
                 lastSuccessfulBuildStartTimeUtc: lastBuildTime);
 
-            if (expectUpToDate)
+            if (isItemTypeCopied)
             {
-                if (optimized && isItemTypeCopied)
+                if (itemType == Compile.SchemaName)
                 {
-                    if (itemType == Compile.SchemaName)
-                    {
-                        await AssertUpToDateAsync(
-                            $"""
-                            Adding UpToDateCheckBuilt outputs:
-                                {_builtPath}
-                            Adding project file inputs:
-                                {_projectPath}
-                            Adding newest import input:
-                                {_projectPath}
-                            Adding Compile inputs:
-                                C:\Dev\Solution\Project\CopyMe
-                                C:\Dev\Solution\Project\OtherInput
-                            No inputs are newer than earliest output '{_builtPath}' ({ToLocalTime(outputTime)}). Newest input is '{inputPath}' ({ToLocalTime(inputTime)}).
-                            Checking {itemType} item with CopyToOutputDirectory="Always" '{sourcePath}':
-                                Source {ToLocalTime(sourceTime)}: '{sourcePath}'
-                                Destination {ToLocalTime(targetTime)}: '{targetPath}'
-                                Optimizing CopyToOutputDirectory="Always" item. Disable this by setting DisableFastUpToDateCopyAlwaysOptimization to "true".
-                            Project is up-to-date.
-                            """);
-                    }
-                    else if (itemType == "EmbeddedResource")
-                    {
-                        await AssertUpToDateAsync(
-                            $"""
-                            Adding UpToDateCheckBuilt outputs:
-                                {_builtPath}
-                            Adding project file inputs:
-                                {_projectPath}
-                            Adding newest import input:
-                                {_projectPath}
-                            Adding EmbeddedResource inputs:
-                                C:\Dev\Solution\Project\CopyMe
-                            Adding Compile inputs:
-                                C:\Dev\Solution\Project\OtherInput
-                            No inputs are newer than earliest output '{_builtPath}' ({ToLocalTime(outputTime)}). Newest input is '{inputPath}' ({ToLocalTime(inputTime)}).
-                            Checking {itemType} item with CopyToOutputDirectory="Always" '{sourcePath}':
-                                Source {ToLocalTime(sourceTime)}: '{sourcePath}'
-                                Destination {ToLocalTime(targetTime)}: '{targetPath}'
-                                Optimizing CopyToOutputDirectory="Always" item. Disable this by setting DisableFastUpToDateCopyAlwaysOptimization to "true".
-                            Project is up-to-date.
-                            """);
-                    }
-                    else
-                    {
-                        await AssertUpToDateAsync(
-                            $"""
-                            Adding UpToDateCheckBuilt outputs:
-                                {_builtPath}
-                            Adding project file inputs:
-                                {_projectPath}
-                            Adding newest import input:
-                                {_projectPath}
-                            Adding Compile inputs:
-                                C:\Dev\Solution\Project\OtherInput
-                            No inputs are newer than earliest output '{_builtPath}' ({ToLocalTime(outputTime)}). Newest input is '{inputPath}' ({ToLocalTime(inputTime)}).
-                            Checking {itemType} item with CopyToOutputDirectory="Always" '{sourcePath}':
-                                Source {ToLocalTime(sourceTime)}: '{sourcePath}'
-                                Destination {ToLocalTime(targetTime)}: '{targetPath}'
-                                Optimizing CopyToOutputDirectory="Always" item. Disable this by setting DisableFastUpToDateCopyAlwaysOptimization to "true".
-                            Project is up-to-date.
-                            """);
-                    }
+                    await AssertUpToDateAsync(
+                        $"""
+                        Adding UpToDateCheckBuilt outputs:
+                            {_builtPath}
+                        Adding project file inputs:
+                            {_projectPath}
+                        Adding newest import input:
+                            {_projectPath}
+                        Adding Compile inputs:
+                            C:\Dev\Solution\Project\CopyMe
+                            C:\Dev\Solution\Project\OtherInput
+                        No inputs are newer than earliest output '{_builtPath}' ({ToLocalTime(outputTime)}). Newest input is '{inputPath}' ({ToLocalTime(inputTime)}).
+                        Checking {itemType} item with CopyToOutputDirectory="Always" '{sourcePath}':
+                            Source {ToLocalTime(sourceTime)}: '{sourcePath}'
+                            Destination {ToLocalTime(targetTime)}: '{targetPath}'
+                        Project is up-to-date.
+                        """);
+                }
+                else if (itemType == "EmbeddedResource")
+                {
+                    await AssertUpToDateAsync(
+                        $"""
+                        Adding UpToDateCheckBuilt outputs:
+                            {_builtPath}
+                        Adding project file inputs:
+                            {_projectPath}
+                        Adding newest import input:
+                            {_projectPath}
+                        Adding EmbeddedResource inputs:
+                            C:\Dev\Solution\Project\CopyMe
+                        Adding Compile inputs:
+                            C:\Dev\Solution\Project\OtherInput
+                        No inputs are newer than earliest output '{_builtPath}' ({ToLocalTime(outputTime)}). Newest input is '{inputPath}' ({ToLocalTime(inputTime)}).
+                        Checking {itemType} item with CopyToOutputDirectory="Always" '{sourcePath}':
+                            Source {ToLocalTime(sourceTime)}: '{sourcePath}'
+                            Destination {ToLocalTime(targetTime)}: '{targetPath}'
+                        Project is up-to-date.
+                        """);
                 }
                 else
                 {
@@ -411,17 +378,28 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                         Adding Compile inputs:
                             C:\Dev\Solution\Project\OtherInput
                         No inputs are newer than earliest output '{_builtPath}' ({ToLocalTime(outputTime)}). Newest input is '{inputPath}' ({ToLocalTime(inputTime)}).
+                        Checking {itemType} item with CopyToOutputDirectory="Always" '{sourcePath}':
+                            Source {ToLocalTime(sourceTime)}: '{sourcePath}'
+                            Destination {ToLocalTime(targetTime)}: '{targetPath}'
                         Project is up-to-date.
                         """);
                 }
             }
             else
             {
-                Assert.False(optimized);
-
-                await AssertNotUpToDateAsync(
-                    $"{itemType} item '{sourcePath}' has CopyToOutputDirectory set to 'Always', and the project has DisableFastUpToDateCopyAlwaysOptimization set to 'true', not up-to-date.",
-                    "CopyAlwaysItemExists");
+                await AssertUpToDateAsync(
+                    $"""
+                    Adding UpToDateCheckBuilt outputs:
+                        {_builtPath}
+                    Adding project file inputs:
+                        {_projectPath}
+                    Adding newest import input:
+                        {_projectPath}
+                    Adding Compile inputs:
+                        C:\Dev\Solution\Project\OtherInput
+                    No inputs are newer than earliest output '{_builtPath}' ({ToLocalTime(outputTime)}). Newest input is '{inputPath}' ({ToLocalTime(inputTime)}).
+                    Project is up-to-date.
+                    """);
             }
 
             static Dictionary<string, IProjectRuleSnapshotModel> GetSourceSnapshot(string itemType)

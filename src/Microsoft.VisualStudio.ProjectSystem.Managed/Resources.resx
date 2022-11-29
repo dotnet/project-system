@@ -213,10 +213,6 @@ This project was loaded using the wrong project type, likely as a result of rena
   <data name="FUTD_FirstRun" xml:space="preserve">
     <value>The up-to-date check has not yet run for this project. Not up-to-date.</value>
   </data>
-  <data name="FUTD_CopyAlwaysItemExists_2" xml:space="preserve">
-    <value>{0} item '{1}' has CopyToOutputDirectory set to 'Always', and the project has DisableFastUpToDateCopyAlwaysOptimization set to 'true', not up-to-date.</value>
-    <comment>Do not translate 'CopyToOutputDirectory' or 'Always' or 'DisableFastUpToDateCopyAlwaysOptimization' or 'true'. {0} is an MSBuild item type. {1} is a file path.</comment>
-  </data>
   <data name="FUTD_ComparingInputOutputTimestamps_1" xml:space="preserve">
     <value>Comparing timestamps of inputs and outputs in Set="{0}":</value>
     <comment>Do not translate 'Set' as this name is used in code. {0} is the name of the set.</comment>
@@ -360,10 +356,6 @@ This project was loaded using the wrong project type, likely as a result of rena
   </data>
   <data name="FUTD_CheckingCopiedOutputFileSourceNewer" xml:space="preserve">
     <value>Source is newer than build output destination, not up-to-date.</value>
-  </data>
-  <data name="FUTD_OptimizingCopyAlwaysItem" xml:space="preserve">
-    <value>Optimizing CopyToOutputDirectory="Always" item. Disable this by setting DisableFastUpToDateCopyAlwaysOptimization to "true".</value>
-    <comment>Do not translate "CopyToOutputDirectory", "Always", "DisableFastUpToDateCopyAlwaysOptimization" or "true".</comment>
   </data>
   <data name="FUTD_CheckingCopyToOutputDirectoryItem_3" xml:space="preserve">
     <value>Checking {0} item with CopyToOutputDirectory="{1}" '{2}':</value>

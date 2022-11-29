@@ -163,23 +163,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 return false;
             }
 
-            if (state.IsCopyAlwaysOptimizationDisabled)
-            {
-                // By default, we optimize CopyAlways to only copy if the time stamps or file sizes differ.
-                // If we got here, then the user has opted out of that optimisation, and we must fail if any CopyAlways items exist.
-
-                foreach ((string itemType, ImmutableArray<UpToDateCheckInputItem> items) in state.InputSourceItemsByItemType)
-                {
-                    foreach (UpToDateCheckInputItem item in items)
-                    {
-                        if (item.CopyType == CopyType.Always)
-                        {
-                            return log.Fail("CopyAlwaysItemExists", nameof(Resources.FUTD_CopyAlwaysItemExists_2), itemType, _configuredProject.UnconfiguredProject.MakeRooted(item.Path));
-                        }
-                    }
-                }
-            }
-
             return true;
         }
 
@@ -684,14 +667,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                     if (item.CopyType == CopyType.Never)
                     {
                         // Ignore items which are never copied. Only process Always and PreserveNewest items.
-                        //
-                        // Note that if we see Always items, then state.IsTreatCopyAlwaysAsPreserveNewestDisabled must
-                        // be false, as when it is true and any Always item exists, the check returns before this point.
-
                         continue;
                     }
-
-                    System.Diagnostics.Debug.Assert(item.CopyType != CopyType.Always || !state.IsCopyAlwaysOptimizationDisabled);
 
                     string sourcePath = _configuredProject.UnconfiguredProject.MakeRooted(item.Path);
                     string filename = Strings.IsNullOrEmpty(item.TargetPath) ? sourcePath : item.TargetPath;
@@ -738,8 +715,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                     }
                     else if (item.CopyType == CopyType.Always)
                     {
-                        log.Info(nameof(Resources.FUTD_OptimizingCopyAlwaysItem));
-
                         // We have already validated the presence of these files, so we don't expect these to return
                         // false. If one of them does, the corresponding size would be zero, so we would schedule a build.
                         // The odds of both source and destination disappearing between the gathering of the timestamps

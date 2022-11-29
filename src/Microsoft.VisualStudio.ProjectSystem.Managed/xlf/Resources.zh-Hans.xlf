@@ -122,11 +122,6 @@
         <target state="translated">最新检查已在 {0:N1} 毫秒内完成</target>
         <note>{0} is a duration in milliseconds. "ms" refers to "milliseconds". Leave the "{0:N1}" string as-is, for correct formatting of the number.</note>
       </trans-unit>
-      <trans-unit id="FUTD_CopyAlwaysItemExists_2">
-        <source>{0} item '{1}' has CopyToOutputDirectory set to 'Always', and the project has DisableFastUpToDateCopyAlwaysOptimization set to 'true', not up-to-date.</source>
-        <target state="translated">{0} 项'{1}'将 CopyToOutputDirectory 设置为“Always”，并且项目已将 DisableFastUpToDateCopyAlwaysOptimization 设置为“true”，不是最新版本。</target>
-        <note>Do not translate 'CopyToOutputDirectory' or 'Always' or 'DisableFastUpToDateCopyAlwaysOptimization' or 'true'. {0} is an MSBuild item type. {1} is a file path.</note>
-      </trans-unit>
       <trans-unit id="FUTD_CopyAlwaysItemsDiffer_7">
         <source>{0} item with CopyToOutputDirectory="Always" source ('{1}' {2}, {3} bytes) differs from destination ('{4}' {5}, {6} bytes), not up-to-date.</source>
         <target state="translated">具有 CopyToOutputDirectory="Always" 源的 {0} 项('{1}' {2}，{3} 字节)不同于目标('{4}' {5}，{6} 字节)，不是最新版本。</target>
@@ -226,11 +221,6 @@
         <source>Input {1} item '{0}' does not exist, but is not required.</source>
         <target state="translated">输入{1}项'{0}'不存在，但不需要。</target>
         <note>{0} is a file path. {1} is an MSBuild item type.</note>
-      </trans-unit>
-      <trans-unit id="FUTD_OptimizingCopyAlwaysItem">
-        <source>Optimizing CopyToOutputDirectory="Always" item. Disable this by setting DisableFastUpToDateCopyAlwaysOptimization to "true".</source>
-        <target state="translated">正在优化 CopyToOutputDirectory="Always"项。通过将 DisableFastUpToDateCopyAlwaysOptimization 设置为"true"来禁用此功能。</target>
-        <note>Do not translate "CopyToOutputDirectory", "Always", "DisableFastUpToDateCopyAlwaysOptimization" or "true".</note>
       </trans-unit>
       <trans-unit id="FUTD_OutputDoesNotExist_1">
         <source>Output '{0}' does not exist, not up-to-date.</source>
