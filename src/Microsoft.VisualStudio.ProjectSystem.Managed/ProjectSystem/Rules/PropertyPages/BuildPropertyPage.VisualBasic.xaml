@@ -415,15 +415,15 @@
   <StringProperty Name="DefineConstants"
                   DisplayName="Custom constants"
                   HelpUrl="https://go.microsoft.com/fwlink/?linkid=2196264"
-                  Category="Advanced">
+                  Category="Advanced"
+                  Description="Specifies custom conditional compilation constants for your application.">
     <StringProperty.ValueEditors>
       <ValueEditor EditorType="NameValueList">
         <ValueEditor.Metadata>
-          <NameValuePair Name="Encoding" Value="Default" />
+          <NameValuePair Name="Encoding" Value="NameQuotedValuePairListEncoding" />
         </ValueEditor.Metadata>
       </ValueEditor>
     </StringProperty.ValueEditors>
-    <StringProperty.Description>Specifies custom conditional compilation constants for your application.</StringProperty.Description>
   </StringProperty>
 
   <EnumProperty Name="GenerateSerializationAssemblies"

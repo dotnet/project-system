@@ -22,8 +22,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
 
                 if (!string.IsNullOrEmpty(entryKey))
                 {
-                    yield return (entryKey, entryValue);
+                    yield return (DecodeCharacters(entryKey), StripQuotes(DecodeCharacters(entryValue)));
                 }
+            }
+
+            static string DecodeCharacters(string value)
+            {
+                return value.Replace("/=", "=").Replace("/,", ",").Replace("//", "/").Replace("/\"", "\"");
             }
         }
 
@@ -33,49 +38,33 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
 
             static string EncodeCharacters(string value)
             {
-                return value.Replace("/", "//").Replace(",", "/,").Replace("=", "/=");
+                int i = value.Length - 1;
+                while( i > -1)
+                {
+                    if (value[i] == '/' || value[i] == ',' || value[i] == '=' || value[i] == '"')
+                    {
+                        if (i == 0 || value[i-1] != '/')
+                        {
+                            value = value.Insert(i, "/");
+                        }
+                        else if(value[i - 1] == '/')
+                        {
+                            i--;
+                        }
+                    }
+                    i--;
+                }
+                return value;
             }
         }
 
-        public IEnumerable<(string Name, string Value)> Decode(string value)
+        private string StripQuotes(string value)
         {
-            if (string.IsNullOrWhiteSpace(value))
+            if (value.StartsWith("\"") && value.EndsWith("\"") && value.Length >= 2)
             {
-                yield break;
+                return value.Substring(1, value.Length - 2);
             }
-
-            foreach (var entry in ReadEntries(value))
-            {
-                var (entryKey, entryQuotedValue) = SplitEntry(entry);
-                var decodedEntryKey = DecodeCharacters(entryKey);
-                var decodedEntryValue = DecodeCharacters(Unquote(entryQuotedValue));
-
-                if (!string.IsNullOrEmpty(decodedEntryKey))
-                {
-                    yield return (decodedEntryKey, decodedEntryValue);
-                }
-            }
-
-            static string Unquote(string value)
-            {   if (value.Length > 2)
-                {
-                    return value.Substring(1, value.Length - 2);
-                }
-                else
-                {
-                    return string.Empty;
-                }
-            }
-
-            static string DecodeCharacters(string value)
-            {
-                return value.Replace("/=", "=").Replace("/,", ",").Replace("//", "/");
-            }
-        }
-
-        public string DisplayFormat(IEnumerable<(string Name, string Value)> pairs)
-        {
-            return string.Join(",", pairs.Select(pair => $"{pair.Name}={pair.Value}"));
+            return value;
         }
 
         private static IEnumerable<string> ReadEntries(string rawText)
