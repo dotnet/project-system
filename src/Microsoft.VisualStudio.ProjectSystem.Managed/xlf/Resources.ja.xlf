@@ -122,11 +122,6 @@
         <target state="translated">{0:N1} ミリ秒で最新チェックが完了しました</target>
         <note>{0} is a duration in milliseconds. "ms" refers to "milliseconds". Leave the "{0:N1}" string as-is, for correct formatting of the number.</note>
       </trans-unit>
-      <trans-unit id="FUTD_CopyAlwaysItemExists_2">
-        <source>{0} item '{1}' has CopyToOutputDirectory set to 'Always', and the project has DisableFastUpToDateCopyAlwaysOptimization set to 'true', not up-to-date.</source>
-        <target state="translated">{0} 項目 '{1}' は CopyToOutputDirectory が 'Always' に設定され、プロジェクトの DisableFastUpToDateCopyAlwaysOptimization が 'true' に設定され、それは最新の状態ではありません。</target>
-        <note>Do not translate 'CopyToOutputDirectory' or 'Always' or 'DisableFastUpToDateCopyAlwaysOptimization' or 'true'. {0} is an MSBuild item type. {1} is a file path.</note>
-      </trans-unit>
       <trans-unit id="FUTD_CopyAlwaysItemsDiffer_7">
         <source>{0} item with CopyToOutputDirectory="Always" source ('{1}' {2}, {3} bytes) differs from destination ('{4}' {5}, {6} bytes), not up-to-date.</source>
         <target state="translated">CopyToOutputDirectory="Always" ソース ('{1}' {2}, {3} バイト) を持つ{0}項目は、宛先 ('{4}' {5}, {6} バイト) と異なり、最新ではありません。</target>
@@ -226,11 +221,6 @@
         <source>Input {1} item '{0}' does not exist, but is not required.</source>
         <target state="translated">入力 {1} の項目 '{0}' は存在しませんが、必須ではありません。</target>
         <note>{0} is a file path. {1} is an MSBuild item type.</note>
-      </trans-unit>
-      <trans-unit id="FUTD_OptimizingCopyAlwaysItem">
-        <source>Optimizing CopyToOutputDirectory="Always" item. Disable this by setting DisableFastUpToDateCopyAlwaysOptimization to "true".</source>
-        <target state="translated">CopyToOutputDirectory="Always" である項目を最適化しています。DisableFastUpToDateCopyAlwaysOptimization を "true" に設定します。</target>
-        <note>Do not translate "CopyToOutputDirectory", "Always", "DisableFastUpToDateCopyAlwaysOptimization" or "true".</note>
       </trans-unit>
       <trans-unit id="FUTD_OutputDoesNotExist_1">
         <source>Output '{0}' does not exist, not up-to-date.</source>

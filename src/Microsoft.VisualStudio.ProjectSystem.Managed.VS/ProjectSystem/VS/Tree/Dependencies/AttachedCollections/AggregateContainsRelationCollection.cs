@@ -85,8 +85,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedColl
 
         bool IAggregateRelationCollection.HasItems
             => _isMaterialized
-                ? _spans.Any(span => span.Items?.Count > 0)
-                : _spans.Any(span => span.Relation.HasContainedItem(_item));
+                ? _spans.Any(static span => span.Items?.Count > 0)
+                : _spans.Any(static (span, item) => span.Relation.HasContainedItem(item), _item);
 
         int ICollection.Count => _spans.Sum(span => span.Items?.Count ?? 0);
 
@@ -186,7 +186,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedColl
             return -1;
         }
 
-        bool IList.Contains(object value) => value is IRelatableItem item && _spans.Any(span => span.Items?.Contains(item) == true);
+        bool IList.Contains(object value) => value is IRelatableItem item && _spans.Any(static (span, item) => span.Items?.Contains(item) == true, item);
 
         void ICollection.CopyTo(Array array, int index) => throw new NotSupportedException();
         object ICollection.SyncRoot => throw new NotSupportedException();

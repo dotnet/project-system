@@ -122,11 +122,6 @@
         <target state="translated">Kontrola aktuálnosti dokončena za {0:N1} ms</target>
         <note>{0} is a duration in milliseconds. "ms" refers to "milliseconds". Leave the "{0:N1}" string as-is, for correct formatting of the number.</note>
       </trans-unit>
-      <trans-unit id="FUTD_CopyAlwaysItemExists_2">
-        <source>{0} item '{1}' has CopyToOutputDirectory set to 'Always', and the project has DisableFastUpToDateCopyAlwaysOptimization set to 'true', not up-to-date.</source>
-        <target state="translated">Položka {0} z {1} má CopyToOutputDirectory nastaveno na hodnotu Always a projekt má DisableFastUpToDateCopyAlwaysOptimization nastaveno na hodnotu true, není aktuální.</target>
-        <note>Do not translate 'CopyToOutputDirectory' or 'Always' or 'DisableFastUpToDateCopyAlwaysOptimization' or 'true'. {0} is an MSBuild item type. {1} is a file path.</note>
-      </trans-unit>
       <trans-unit id="FUTD_CopyAlwaysItemsDiffer_7">
         <source>{0} item with CopyToOutputDirectory="Always" source ('{1}' {2}, {3} bytes) differs from destination ('{4}' {5}, {6} bytes), not up-to-date.</source>
         <target state="translated">Položka {0} se zdrojem CopyToOutputDirectory=Always ({1} {2}, počet bajtů: {3}) se liší od cíle ({4} {5}, počet bajtů: {6}), není aktuální.</target>
@@ -226,11 +221,6 @@
         <source>Input {1} item '{0}' does not exist, but is not required.</source>
         <target state="translated">Vstupní položka {1} {0} neexistuje, i když je povinná.</target>
         <note>{0} is a file path. {1} is an MSBuild item type.</note>
-      </trans-unit>
-      <trans-unit id="FUTD_OptimizingCopyAlwaysItem">
-        <source>Optimizing CopyToOutputDirectory="Always" item. Disable this by setting DisableFastUpToDateCopyAlwaysOptimization to "true".</source>
-        <target state="translated">Optimalizuje se položka CopyToOutputDirectory=Always. Tuto možnost zakažte nastavením možnosti DisableFastUpToDateCopyAlwaysOptimization na hodnotu true.</target>
-        <note>Do not translate "CopyToOutputDirectory", "Always", "DisableFastUpToDateCopyAlwaysOptimization" or "true".</note>
       </trans-unit>
       <trans-unit id="FUTD_OutputDoesNotExist_1">
         <source>Output '{0}' does not exist, not up-to-date.</source>
