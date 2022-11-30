@@ -36,7 +36,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 upToDateCheckOutputItemsByKindBySetName: ImmutableDictionary<string, ImmutableDictionary<string, ImmutableArray<string>>>.Empty,
                 upToDateCheckBuiltItemsByKindBySetName: ImmutableDictionary<string, ImmutableDictionary<string, ImmutableArray<string>>>.Empty,
                 buildFromInputFileItems: ImmutableArray<(string DestinationRelative, string SourceRelative)>.Empty,
-                copyToOutputDirectoryItems: ImmutableArray<CopyItem>.Empty,
                 resolvedAnalyzerReferencePaths: ImmutableArray<string>.Empty,
                 resolvedCompilationReferencePaths: ImmutableArray<string>.Empty,
                 copyReferenceInputs: ImmutableArray<string>.Empty,
@@ -192,21 +191,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
         /// </remarks>
         public ImmutableArray<(string DestinationRelative, string SourceRelative)> BuiltFromInputFileItems { get; }
 
-        /// <summary>
-        /// The set of items this project contributes to the output directory when it, or a depending project, is built.
-        /// </summary>
-        /// <remarks>
-        /// <para>
-        /// Includes various kinds of files including assemblies content files from this project ONLY.
-        /// </para>
-        /// <para>
-        /// When building, we must obtain the full set of output directory items from this and all transitively referenced projects.
-        /// This collection does not provide that. Use <see cref="ICopyItemAggregator"/> instead. The intent is for the implementation
-        /// of that interface to consume this property.
-        /// </para>
-        /// </remarks>
-        public ImmutableArray<CopyItem> CopyToOutputDirectoryItems { get; }
-
         public ImmutableArray<string> ResolvedAnalyzerReferencePaths { get; }
 
         /// <summary>
@@ -230,6 +214,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
         /// Gets the set of items this project contributes to the output directory when built.
         /// These items are inherited by referencing projects too, transitively.
         /// </summary>
+        /// <remarks>
+        /// <para>
+        /// Includes various kinds of files including assemblies content files from this project ONLY.
+        /// </para>
+        /// <para>
+        /// When building, we must obtain the full set of output directory items from this and all transitively referenced projects.
+        /// This collection does not provide that. Use <see cref="ICopyItemAggregator"/> instead. The intent is for the implementation
+        /// of that interface to consume this property.
+        /// </para>
+        /// </remarks>
         public ProjectCopyData ProjectCopyData { get; }
 
         private UpToDateCheckImplicitConfiguredInput(ProjectConfiguration projectConfiguration)
@@ -247,7 +241,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             UpToDateCheckBuiltItemsByKindBySetName = emptyItemBySetName;
             BuiltFromInputFileItems = ImmutableArray<(string DestinationRelative, string SourceRelative)>.Empty;
             ResolvedAnalyzerReferencePaths = ImmutableArray<string>.Empty;
-            CopyToOutputDirectoryItems = ImmutableArray<CopyItem>.Empty;
             ResolvedCompilationReferencePaths = ImmutableArray<string>.Empty;
             CopyReferenceInputs = ImmutableArray<string>.Empty;
             LastItemChanges = ImmutableArray<(bool IsAdd, string ItemType, string)>.Empty;
@@ -270,7 +263,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             ImmutableDictionary<string, ImmutableDictionary<string, ImmutableArray<string>>> upToDateCheckOutputItemsByKindBySetName,
             ImmutableDictionary<string, ImmutableDictionary<string, ImmutableArray<string>>> upToDateCheckBuiltItemsByKindBySetName,
             ImmutableArray<(string DestinationRelative, string SourceRelative)> buildFromInputFileItems,
-            ImmutableArray<CopyItem> copyToOutputDirectoryItems,
             ImmutableArray<string> resolvedAnalyzerReferencePaths,
             ImmutableArray<string> resolvedCompilationReferencePaths,
             ImmutableArray<string> copyReferenceInputs,
@@ -294,7 +286,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             UpToDateCheckOutputItemsByKindBySetName = upToDateCheckOutputItemsByKindBySetName;
             UpToDateCheckBuiltItemsByKindBySetName = upToDateCheckBuiltItemsByKindBySetName;
             BuiltFromInputFileItems = buildFromInputFileItems;
-            CopyToOutputDirectoryItems = copyToOutputDirectoryItems;
             ResolvedAnalyzerReferencePaths = resolvedAnalyzerReferencePaths;
             ResolvedCompilationReferencePaths = resolvedCompilationReferencePaths;
             CopyReferenceInputs = copyReferenceInputs;
@@ -482,7 +473,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 upToDateCheckOutputItemsByKindBySetName: UpdateItemsByKindBySetName(UpToDateCheckOutputItemsByKindBySetName, jointRuleUpdate, UpToDateCheckOutput.SchemaName, UpToDateCheckOutput.KindProperty, UpToDateCheckOutput.SetProperty),
                 upToDateCheckBuiltItemsByKindBySetName:  UpdateItemsByKindBySetName(UpToDateCheckBuiltItemsByKindBySetName,  jointRuleUpdate, UpToDateCheckBuilt.SchemaName,  UpToDateCheckBuilt.KindProperty,  UpToDateCheckBuilt.SetProperty, metadata => !metadata.TryGetValue(UpToDateCheckBuilt.OriginalProperty, out string source) || string.IsNullOrEmpty(source)),
                 buildFromInputFileItems: UpdateBuildFromInputFileItems(),
-                copyToOutputDirectoryItems: UpdateCopyToOutputDirectoryItems(),
                 resolvedAnalyzerReferencePaths: UpdateResolvedAnalyzerReferencePaths(),
                 resolvedCompilationReferencePaths: resolvedCompilationReferencePaths,
                 copyReferenceInputs: copyReferenceInputs,
@@ -590,25 +580,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                     return BuiltFromInputFileItems;
                 }
             }
-
-            ImmutableArray<CopyItem> UpdateCopyToOutputDirectoryItems()
-            {
-                if (jointRuleUpdate.ProjectChanges.TryGetValue(CopyToOutputDirectoryItem.SchemaName, out IProjectChangeDescription? change) && change.Difference.AnyChanges)
-                {
-                    var copyToOutputDirectoryItemsBuilder = CopyToOutputDirectoryItems.ToBuilder();
-
-                    foreach ((string itemSpec, IImmutableDictionary<string, string> metadata) in change.After.Items)
-                    {
-                        copyToOutputDirectoryItemsBuilder.Add(new CopyItem(itemSpec, metadata));
-                    }
-
-                    return copyToOutputDirectoryItemsBuilder.ToImmutable();
-                }
-                else
-                {
-                    return CopyToOutputDirectoryItems;
-                }
-             }
 
             ImmutableArray<string> UpdateResolvedAnalyzerReferencePaths()
             {
@@ -729,7 +700,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 UpToDateCheckOutputItemsByKindBySetName,
                 UpToDateCheckBuiltItemsByKindBySetName,
                 BuiltFromInputFileItems,
-                CopyToOutputDirectoryItems,
                 ResolvedAnalyzerReferencePaths,
                 ResolvedCompilationReferencePaths,
                 CopyReferenceInputs,
@@ -757,7 +727,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 UpToDateCheckOutputItemsByKindBySetName,
                 UpToDateCheckBuiltItemsByKindBySetName,
                 BuiltFromInputFileItems,
-                CopyToOutputDirectoryItems,
                 ResolvedAnalyzerReferencePaths,
                 ResolvedCompilationReferencePaths,
                 CopyReferenceInputs,

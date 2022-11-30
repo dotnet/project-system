@@ -729,16 +729,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
         {
             string outputFullPath = Path.Combine(state.MSBuildProjectDirectory, state.OutputRelativeOrFullPath);
 
-            bool isLogging = log.Level >= LogLevel.Verbose && state.CopyToOutputDirectoryItems.Length != 0;
-
-            if (isLogging)
-            {
-                log.Verbose(nameof(Resources.FUTD_CheckingCopyToOutputDirectoryItems));
-                log.Indent++;
-            }
+            bool hasItem = false;
 
             foreach ((string sourcePath, string targetPath, CopyType copyType) in copyItems)
             {
+                if (!hasItem)
+                {
+                    log.Verbose(nameof(Resources.FUTD_CheckingCopyToOutputDirectoryItems));
+                    log.Indent++;
+                    hasItem = true;
+                }
+
                 string destinationPath = Path.Combine(outputFullPath, targetPath);
 
                 if (StringComparers.Paths.Equals(sourcePath, destinationPath))
@@ -822,13 +823,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
                     default:
                     {
-                        System.Diagnostics.Debug.Fail($"{nameof(state.CopyToOutputDirectoryItems)} should only contain copyable items.");
+                        System.Diagnostics.Debug.Fail("Project copy items should only contain copyable items.");
                         break;
                     }
                 }
             }
 
-            if (isLogging)
+            if (hasItem)
             {
                 log.Indent--;
             }

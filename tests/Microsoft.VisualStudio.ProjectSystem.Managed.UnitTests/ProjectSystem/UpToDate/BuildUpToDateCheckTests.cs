@@ -1559,10 +1559,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                     $"""
                     Comparing timestamps of inputs and outputs:
                         No build outputs defined.
-                    Checking PreserveNewest item
-                        Source      {ToLocalTime(sourceTime)}: '{sourcePath}'
-                        Destination {ToLocalTime(destinationTime)}: '{destinationPath}'
-                    Remembering the need to copy file '{sourcePath}' to '{destinationPath}'.
+                    Checking items to copy to the output directory:
+                        Checking PreserveNewest item
+                            Source      {ToLocalTime(sourceTime)}: '{sourcePath}'
+                            Destination {ToLocalTime(destinationTime)}: '{destinationPath}'
+                        Remembering the need to copy file '{sourcePath}' to '{destinationPath}'.
                     Copying 1 files to accelerate build:
                         From '{sourcePath}' to '{destinationPath}'.
                     Build acceleration copied 1 files.
@@ -1576,9 +1577,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                     Build acceleration is disabled for this project via the 'AccelerateBuildsInVisualStudio' MSBuild property.
                     Comparing timestamps of inputs and outputs:
                         No build outputs defined.
-                    Checking PreserveNewest item
-                        Source      {ToLocalTime(sourceTime)}: '{sourcePath}'
-                        Destination {ToLocalTime(destinationTime)}: '{destinationPath}'
+                    Checking items to copy to the output directory:
+                        Checking PreserveNewest item
+                            Source      {ToLocalTime(sourceTime)}: '{sourcePath}'
+                            Destination {ToLocalTime(destinationTime)}: '{destinationPath}'
                     Item with CopyToOutputDirectory="PreserveNewest" source '{sourcePath}' is newer than destination '{destinationPath}', not up-to-date.
                     """,
                     "CopyToOutputDirectorySourceNewer");
@@ -1589,9 +1591,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                     $"""
                     Comparing timestamps of inputs and outputs:
                         No build outputs defined.
-                    Checking PreserveNewest item
-                        Source      {ToLocalTime(sourceTime)}: '{sourcePath}'
-                        Destination {ToLocalTime(destinationTime)}: '{destinationPath}'
+                    Checking items to copy to the output directory:
+                        Checking PreserveNewest item
+                            Source      {ToLocalTime(sourceTime)}: '{sourcePath}'
+                            Destination {ToLocalTime(destinationTime)}: '{destinationPath}'
                     Item with CopyToOutputDirectory="PreserveNewest" source '{sourcePath}' is newer than destination '{destinationPath}', not up-to-date.
                     This project appears to be a candidate for build acceleration. To opt in, set the 'AccelerateBuildsInVisualStudio' MSBuild property to 'true'.
                     """,
@@ -1628,10 +1631,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                     $"""
                     Comparing timestamps of inputs and outputs:
                         No build outputs defined.
-                    Checking PreserveNewest item
-                        Source      {ToLocalTime(sourceTime)}: '{sourcePath}'
-                        Destination {ToLocalTime(destinationTime)}: '{destinationPath}'
-                    Remembering the need to copy file 'C:\Dev\Solution\Project\Item1' to 'C:\Dev\Solution\Project\bin\Debug\TargetPath'.
+                    Checking items to copy to the output directory:
+                        Checking PreserveNewest item
+                            Source      {ToLocalTime(sourceTime)}: '{sourcePath}'
+                            Destination {ToLocalTime(destinationTime)}: '{destinationPath}'
+                        Remembering the need to copy file 'C:\Dev\Solution\Project\Item1' to 'C:\Dev\Solution\Project\bin\Debug\TargetPath'.
                     Copying 1 files to accelerate build:
                         From 'C:\Dev\Solution\Project\Item1' to 'C:\Dev\Solution\Project\bin\Debug\TargetPath'.
                     Build acceleration copied 1 files.
@@ -1645,9 +1649,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                     Build acceleration is disabled for this project via the 'AccelerateBuildsInVisualStudio' MSBuild property.
                     Comparing timestamps of inputs and outputs:
                         No build outputs defined.
-                    Checking PreserveNewest item
-                        Source      {ToLocalTime(sourceTime)}: '{sourcePath}'
-                        Destination {ToLocalTime(destinationTime)}: '{destinationPath}'
+                    Checking items to copy to the output directory:
+                        Checking PreserveNewest item
+                            Source      {ToLocalTime(sourceTime)}: '{sourcePath}'
+                            Destination {ToLocalTime(destinationTime)}: '{destinationPath}'
                     Item with CopyToOutputDirectory="PreserveNewest" source '{sourcePath}' is newer than destination '{destinationPath}', not up-to-date.
                     """,
                     "CopyToOutputDirectorySourceNewer");
@@ -1658,9 +1663,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                     $"""
                     Comparing timestamps of inputs and outputs:
                         No build outputs defined.
-                    Checking PreserveNewest item
-                        Source      {ToLocalTime(sourceTime)}: '{sourcePath}'
-                        Destination {ToLocalTime(destinationTime)}: '{destinationPath}'
+                    Checking items to copy to the output directory:
+                        Checking PreserveNewest item
+                            Source      {ToLocalTime(sourceTime)}: '{sourcePath}'
+                            Destination {ToLocalTime(destinationTime)}: '{destinationPath}'
                     Item with CopyToOutputDirectory="PreserveNewest" source '{sourcePath}' is newer than destination '{destinationPath}', not up-to-date.
                     This project appears to be a candidate for build acceleration. To opt in, set the 'AccelerateBuildsInVisualStudio' MSBuild property to 'true'.
                     """,
@@ -1700,10 +1706,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                     $"""
                     Comparing timestamps of inputs and outputs:
                         No build outputs defined.
-                    Checking PreserveNewest item
-                        Source      {ToLocalTime(sourceTime)}: '{sourcePath}'
-                        Destination {ToLocalTime(destinationTime)}: '{destinationPath}'
-                    Remembering the need to copy file '{sourcePath}' to '{destinationPath}'.
+                    Checking items to copy to the output directory:
+                        Checking PreserveNewest item
+                            Source      {ToLocalTime(sourceTime)}: '{sourcePath}'
+                            Destination {ToLocalTime(destinationTime)}: '{destinationPath}'
+                        Remembering the need to copy file '{sourcePath}' to '{destinationPath}'.
                     Copying 1 files to accelerate build:
                         From '{sourcePath}' to '{destinationPath}'.
                     Build acceleration copied 1 files.
@@ -1717,9 +1724,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                     Build acceleration is disabled for this project via the 'AccelerateBuildsInVisualStudio' MSBuild property.
                     Comparing timestamps of inputs and outputs:
                         No build outputs defined.
-                    Checking PreserveNewest item
-                        Source      {ToLocalTime(sourceTime)}: '{sourcePath}'
-                        Destination {ToLocalTime(destinationTime)}: '{destinationPath}'
+                    Checking items to copy to the output directory:
+                        Checking PreserveNewest item
+                            Source      {ToLocalTime(sourceTime)}: '{sourcePath}'
+                            Destination {ToLocalTime(destinationTime)}: '{destinationPath}'
                     Item with CopyToOutputDirectory="PreserveNewest" source '{sourcePath}' is newer than destination '{destinationPath}', not up-to-date.
                     """,
                     "CopyToOutputDirectorySourceNewer");
@@ -1730,9 +1738,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                     $"""
                     Comparing timestamps of inputs and outputs:
                         No build outputs defined.
-                    Checking PreserveNewest item
-                        Source      {ToLocalTime(sourceTime)}: '{sourcePath}'
-                        Destination {ToLocalTime(destinationTime)}: '{destinationPath}'
+                    Checking items to copy to the output directory:
+                        Checking PreserveNewest item
+                            Source      {ToLocalTime(sourceTime)}: '{sourcePath}'
+                            Destination {ToLocalTime(destinationTime)}: '{destinationPath}'
                     Item with CopyToOutputDirectory="PreserveNewest" source '{sourcePath}' is newer than destination '{destinationPath}', not up-to-date.
                     This project appears to be a candidate for build acceleration. To opt in, set the 'AccelerateBuildsInVisualStudio' MSBuild property to 'true'.
                     """,
@@ -1762,7 +1771,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 $"""
                 Comparing timestamps of inputs and outputs:
                     No build outputs defined.
-                Checking PreserveNewest item
+                Checking items to copy to the output directory:
+                    Checking PreserveNewest item
                 Source '{sourcePath}' does not exist, not up-to-date.
                 """,
                 "CopyToOutputDirectorySourceNotFound");
@@ -1795,10 +1805,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                     $"""
                     Comparing timestamps of inputs and outputs:
                         No build outputs defined.
-                    Checking PreserveNewest item
-                        Source      {ToLocalTime(sourceTime)}: '{sourcePath}'
-                        Destination '{destinationPath}' does not exist.
-                    Remembering the need to copy file 'C:\Dev\Solution\Project\Item1' to 'C:\Dev\Solution\Project\bin\Debug\Item1'.
+                    Checking items to copy to the output directory:
+                        Checking PreserveNewest item
+                            Source      {ToLocalTime(sourceTime)}: '{sourcePath}'
+                            Destination '{destinationPath}' does not exist.
+                        Remembering the need to copy file 'C:\Dev\Solution\Project\Item1' to 'C:\Dev\Solution\Project\bin\Debug\Item1'.
                     Copying 1 files to accelerate build:
                         From 'C:\Dev\Solution\Project\Item1' to 'C:\Dev\Solution\Project\bin\Debug\Item1'.
                     Build acceleration copied 1 files.
@@ -1812,9 +1823,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                     Build acceleration is disabled for this project via the 'AccelerateBuildsInVisualStudio' MSBuild property.
                     Comparing timestamps of inputs and outputs:
                         No build outputs defined.
-                    Checking PreserveNewest item
-                        Source      {ToLocalTime(sourceTime)}: '{sourcePath}'
-                        Destination '{destinationPath}' does not exist.
+                    Checking items to copy to the output directory:
+                        Checking PreserveNewest item
+                            Source      {ToLocalTime(sourceTime)}: '{sourcePath}'
+                            Destination '{destinationPath}' does not exist.
                     Destination '{destinationPath}' does not exist, not up-to-date.
                     """,
                     "CopyToOutputDirectoryDestinationNotFound");
@@ -1825,9 +1837,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                     $"""
                     Comparing timestamps of inputs and outputs:
                         No build outputs defined.
-                    Checking PreserveNewest item
-                        Source      {ToLocalTime(sourceTime)}: '{sourcePath}'
-                        Destination '{destinationPath}' does not exist.
+                    Checking items to copy to the output directory:
+                        Checking PreserveNewest item
+                            Source      {ToLocalTime(sourceTime)}: '{sourcePath}'
+                            Destination '{destinationPath}' does not exist.
                     Destination '{destinationPath}' does not exist, not up-to-date.
                     This project appears to be a candidate for build acceleration. To opt in, set the 'AccelerateBuildsInVisualStudio' MSBuild property to 'true'.
                     """,
