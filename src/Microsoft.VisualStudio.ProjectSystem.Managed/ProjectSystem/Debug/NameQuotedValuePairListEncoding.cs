@@ -26,9 +26,70 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
                 }
             }
 
+            static IEnumerable<string> ReadEntries(string rawText)
+            {
+                bool escaped = false;
+                int entryStart = 0;
+                for (int i = 0; i < rawText.Length; i++)
+                {
+                    if (rawText[i] == ',' && !escaped)
+                    {
+                        yield return rawText.Substring(entryStart, i - entryStart);
+                        entryStart = i + 1;
+                        escaped = false;
+                    }
+                    else if (rawText[i] == '/')
+                    {
+                        escaped = !escaped;
+                    }
+                    else
+                    {
+                        escaped = false;
+                    }
+                }
+
+                yield return rawText.Substring(entryStart);
+            }
+
+            static (string EncodedKey, string EncodedValue) SplitEntry(string entry)
+            {
+                bool escaped = false;
+                for (int i = 0; i < entry.Length; i++)
+                {
+                    if (entry[i] == '=' && !escaped)
+                    {
+                        var name = entry.Substring(0, i);
+                        var value = entry.Substring(i + 1);
+                        if (name.Length == 0 || value.Length == 0)
+                        {
+                            throw new FormatException($"Expected valid name value pair.");
+                        }
+                        return (name , value);
+                    }
+                    else if (entry[i] == '/')
+                    {
+                        escaped = !escaped;
+                    }
+                    else
+                    {
+                        escaped = false;
+                    }
+                }
+                throw new FormatException("Expected valid name value pair.");
+            }
+
             static string DecodeCharacters(string value)
             {
                 return value.Replace("/=", "=").Replace("/,", ",").Replace("//", "/").Replace("/\"", "\"");
+            }
+
+            static string StripQuotes(string value)
+            {
+                if (value.StartsWith("\"") && value.EndsWith("\"") && value.Length >= 2)
+                {
+                    return value.Substring(1, value.Length - 2);
+                }
+                return value;
             }
         }
 
@@ -58,60 +119,5 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             }
         }
 
-        private string StripQuotes(string value)
-        {
-            if (value.StartsWith("\"") && value.EndsWith("\"") && value.Length >= 2)
-            {
-                return value.Substring(1, value.Length - 2);
-            }
-            return value;
-        }
-
-        private static IEnumerable<string> ReadEntries(string rawText)
-        {
-            bool escaped = false;
-            int entryStart = 0;
-            for (int i = 0; i < rawText.Length; i++)
-            {
-                if (rawText[i] == ',' && !escaped)
-                {
-                    yield return rawText.Substring(entryStart, i - entryStart);
-                    entryStart = i + 1;
-                    escaped = false;
-                }
-                else if (rawText[i] == '/')
-                {
-                    escaped = !escaped;
-                }
-                else
-                {
-                    escaped = false;
-                }
-            }
-
-            yield return rawText.Substring(entryStart);
-        }
-
-        private static (string EncodedKey, string EncodedValue) SplitEntry(string entry)
-        {
-            bool escaped = false;
-            for (int i = 0; i < entry.Length; i++)
-            {
-                if (entry[i] == '=' && !escaped)
-                {
-                    return (entry.Substring(0, i), entry.Substring(i + 1));
-                }
-                else if (entry[i] == '/')
-                {
-                    escaped = !escaped;
-                }
-                else
-                {
-                    escaped = false;
-                }
-            }
-
-            return (string.Empty, string.Empty);
-        }
     }
 }
