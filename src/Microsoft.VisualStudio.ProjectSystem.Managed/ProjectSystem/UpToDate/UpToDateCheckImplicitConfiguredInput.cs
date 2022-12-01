@@ -244,7 +244,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             ResolvedCompilationReferencePaths = ImmutableArray<string>.Empty;
             CopyReferenceInputs = ImmutableArray<string>.Empty;
             LastItemChanges = ImmutableArray<(bool IsAdd, string ItemType, string)>.Empty;
-            ProjectCopyData = default;
+            ProjectCopyData = new(null, "", ImmutableArray<CopyItem>.Empty, ImmutableArray<string>.Empty);
         }
 
         private UpToDateCheckImplicitConfiguredInput(

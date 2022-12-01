@@ -12,13 +12,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
     [AppliesTo(AppliesToExpression)]
     [Export(typeof(IBuildUpToDateCheckProvider))]
     [Export(typeof(IBuildUpToDateCheckValidator))]
-    [Export(typeof(IBuildUpToDateCheckProviderInternal))]
+    [Export(typeof(IProjectBuildEventListener))]
     [Export(typeof(IActiveConfigurationComponent))]
     [ExportMetadata("BeforeDrainCriticalTasks", true)]
     internal sealed partial class BuildUpToDateCheck
         : IBuildUpToDateCheckProvider2,
           IBuildUpToDateCheckValidator,
-          IBuildUpToDateCheckProviderInternal,
+          IProjectBuildEventListener,
           IActiveConfigurationComponent,
           IDisposable
     {
@@ -36,6 +36,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
         internal static readonly StringComparer SetNameComparer = StringComparers.ItemNames;
         internal static readonly StringComparer KindNameComparer = StringComparers.ItemNames;
 
+        private readonly ISolutionBuildContext _context;
         private readonly IUpToDateCheckConfiguredInputDataSource _inputDataSource;
         private readonly IProjectSystemOptions _projectSystemOptions;
         private readonly ConfiguredProject _configuredProject;
@@ -55,9 +56,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
         private ISubscription _subscription;
         private int _isDisposed;
         private int _checkNumber;
+        private IEnumerable<string>? _lastCopyTargetsFromThisProject;
 
         [ImportingConstructor]
         public BuildUpToDateCheck(
+            ISolutionBuildContext context,
             IUpToDateCheckConfiguredInputDataSource inputDataSource,
             IProjectSystemOptions projectSystemOptions,
             ConfiguredProject configuredProject,
@@ -69,6 +72,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             IUpToDateCheckHost upToDateCheckHost,
             ICopyItemAggregator copyItemAggregator)
         {
+            _context = context;
             _inputDataSource = inputDataSource;
             _projectSystemOptions = projectSystemOptions;
             _configuredProject = configuredProject;
@@ -725,8 +729,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             return true;
         }
 
-        private bool CheckCopyToOutputDirectoryItems(Log log, in TimestampCache timestampCache, UpToDateCheckImplicitConfiguredInput state, IEnumerable<CopyItem> copyItems, ConfiguredFileSystemOperationAggregator fileSystemAggregator, CancellationToken token)
+        private bool CheckCopyToOutputDirectoryItems(Log log, UpToDateCheckImplicitConfiguredInput state, IEnumerable<CopyItem> copyItems, ConfiguredFileSystemOperationAggregator fileSystemAggregator, CancellationToken token)
         {
+            ITimestampCache? timestampCache = _context.CopyItemTimestamps;
+
+            if (timestampCache is null)
+            {
+                // This might be null during validation runs which can start after the last project build.
+                // If it is, we will just skip checking the copy items.
+                return true;
+            }
+
             string outputFullPath = Path.Combine(state.MSBuildProjectDirectory, state.OutputRelativeOrFullPath);
 
             bool hasItem = false;
@@ -837,13 +850,24 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             return true;
         }
 
-        void IBuildUpToDateCheckProviderInternal.NotifyBuildStarting(DateTime buildStartTimeUtc)
+        void IProjectBuildEventListener.NotifyBuildStarting(DateTime buildStartTimeUtc)
         {
             _lastBuildStartTimeUtc = buildStartTimeUtc;
         }
 
-        async Task IBuildUpToDateCheckProviderInternal.NotifyBuildCompletedAsync(bool wasSuccessful, bool isRebuild)
+        async Task IProjectBuildEventListener.NotifyBuildCompletedAsync(bool wasSuccessful, bool isRebuild)
         {
+            if (_lastCopyTargetsFromThisProject is not null)
+            {
+                // The project build has completed. We must assume this project modified its outputs,
+                // so we remove the outputs that were likely modified from our cache. The next requests
+                // for these files will perform a fresh query.
+                _context.CopyItemTimestamps?.ClearTimestamps(_lastCopyTargetsFromThisProject);
+
+                // We don't use this again after clearing the cache, so release it for GC.
+                _lastCopyTargetsFromThisProject = null;
+            }
+
             if (_lastBuildStartTimeUtc == default)
             {
                 // This should not happen
@@ -949,6 +973,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
                 var fileSystemOperations = new FileSystemOperationAggregator(_fileSystem, logger);
 
+                HashSet<string> copyItemPaths = new();
+
                 try
                 {
                     HashSet<string>? ignoreKinds = null;
@@ -1019,11 +1045,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
                         var configuredFileSystemOperations = new ConfiguredFileSystemOperationAggregator(fileSystemOperations, isBuildAccelerationEnabled);
 
+                        string outputFullPath = Path.Combine(implicitState.MSBuildProjectDirectory, implicitState.OutputRelativeOrFullPath);
+
+                        copyItemPaths.UnionWith(implicitState.ProjectCopyData.CopyItems.Select(copyItem => Path.Combine(outputFullPath, copyItem.RelativeTargetPath)));
+
                         if (!CheckGlobalConditions(logger, lastSuccessfulBuildStartTimeUtc, validateFirstRun: !isValidationRun, implicitState) ||
                             !CheckInputsAndOutputs(logger, lastSuccessfulBuildStartTimeUtc, timestampCache, implicitState, ignoreKinds, token) ||
                             !CheckBuiltFromInputFiles(logger, timestampCache, implicitState, token) ||
                             !CheckMarkers(logger, timestampCache, implicitState, isBuildAccelerationEnabled, fileSystemOperations) ||
-                            !CheckCopyToOutputDirectoryItems(logger, timestampCache, implicitState, copyItems, configuredFileSystemOperations, token))
+                            !CheckCopyToOutputDirectoryItems(logger, implicitState, copyItems, configuredFileSystemOperations, token))
                         {
                             return (false, checkedConfigurations);
                         }
@@ -1071,6 +1101,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
                     _lastFailureReason = logger.FailureReason;
                     _lastFailureDescription = logger.FailureDescription;
+
+                    _lastCopyTargetsFromThisProject = copyItemPaths;
                 }
 
                 bool? IsBuildAccelerationEnabled(bool isCopyItemsComplete, UpToDateCheckImplicitConfiguredInput implicitState)

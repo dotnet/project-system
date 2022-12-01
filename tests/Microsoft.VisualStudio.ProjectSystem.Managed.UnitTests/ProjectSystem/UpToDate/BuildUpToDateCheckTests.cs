@@ -42,6 +42,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
         private bool _isCopyItemsComplete = true;
 
         private UpToDateCheckConfiguredInput? _state;
+        private ITimestampCache? _copyItemTimestamps;
 
         public BuildUpToDateCheckTests(ITestOutputHelper output)
         {
@@ -98,7 +99,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             var copyItemAggregator = new Mock<ICopyItemAggregator>(MockBehavior.Strict);
             copyItemAggregator.Setup(o => o.TryGatherCopyItemsForProject(It.IsAny<string>(), It.IsAny<BuildUpToDateCheck.Log>())).Returns(() => (_copyItems, _isCopyItemsComplete));
 
+            _copyItemTimestamps = new ConcurrentTimestampCache(_fileSystem);
+
+            var solutionBuildContext = new Mock<ISolutionBuildContext>(MockBehavior.Strict);
+            solutionBuildContext.SetupGet(o => o.CopyItemTimestamps).Returns(() => _copyItemTimestamps);
+
             _buildUpToDateCheck = new BuildUpToDateCheck(
+                solutionBuildContext.Object,
                 inputDataSource.Object,
                 projectSystemOptions.Object,
                 configuredProject.Object,
@@ -577,15 +584,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 "InputNewerThanEarliestOutput");
 
             // Build (t2)
-            ((IBuildUpToDateCheckProviderInternal)_buildUpToDateCheck).NotifyBuildStarting(buildStartTimeUtc: t2);
-            await ((IBuildUpToDateCheckProviderInternal)_buildUpToDateCheck).NotifyBuildCompletedAsync(wasSuccessful: true, isRebuild: false);
+            ((IProjectBuildEventListener)_buildUpToDateCheck).NotifyBuildStarting(buildStartTimeUtc: t2);
+            await ((IProjectBuildEventListener)_buildUpToDateCheck).NotifyBuildCompletedAsync(wasSuccessful: true, isRebuild: false);
 
             // Modify input (t3)
             _fileSystem.AddFile(_inputPath, t3);
 
             // Rebuild (t4)
-            ((IBuildUpToDateCheckProviderInternal)_buildUpToDateCheck).NotifyBuildStarting(buildStartTimeUtc: t4);
-            await ((IBuildUpToDateCheckProviderInternal)_buildUpToDateCheck).NotifyBuildCompletedAsync(wasSuccessful: true, isRebuild: true);
+            ((IProjectBuildEventListener)_buildUpToDateCheck).NotifyBuildStarting(buildStartTimeUtc: t4);
+            await ((IProjectBuildEventListener)_buildUpToDateCheck).NotifyBuildCompletedAsync(wasSuccessful: true, isRebuild: true);
 
             // Update output (t5)
             _fileSystem.AddFile(_builtPath, t5);
@@ -633,8 +640,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             await SetupAsync(projectSnapshot, sourceSnapshot, lastSuccessfulBuildStartTimeUtc: t1);
 
             // Rebuild (t1)
-            ((IBuildUpToDateCheckProviderInternal)_buildUpToDateCheck).NotifyBuildStarting(buildStartTimeUtc: t1);
-            await ((IBuildUpToDateCheckProviderInternal)_buildUpToDateCheck).NotifyBuildCompletedAsync(wasSuccessful: true, isRebuild: true);
+            ((IProjectBuildEventListener)_buildUpToDateCheck).NotifyBuildStarting(buildStartTimeUtc: t1);
+            await ((IProjectBuildEventListener)_buildUpToDateCheck).NotifyBuildCompletedAsync(wasSuccessful: true, isRebuild: true);
 
             // Run test (t2)
             await AssertUpToDateAsync(
