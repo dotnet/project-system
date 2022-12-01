@@ -2003,11 +2003,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
         {
             var writer = new AssertWriter(_output, expectedLogOutput);
 
-            Assert.True(await _buildUpToDateCheck.IsUpToDateAsync(BuildAction.Build, writer, CreateGlobalProperties(ignoreKinds, targetFramework)));
+            bool isUpToDate = await _buildUpToDateCheck.IsUpToDateAsync(BuildAction.Build, writer, CreateGlobalProperties(ignoreKinds, targetFramework));
+
+            // Check the output message first, as if other checks would fail,
+            // the actual output should explain what's going on.
+            writer.Assert();
+
+            Assert.True(isUpToDate);
 
             AssertTelemetrySuccessEvent(ignoreKinds);
-
-            writer.Assert();
 
             await ValidateUpToDateAsync();
         }
