@@ -472,9 +472,8 @@
     </ItemGroup>
   </Target>
 
-  <!--
-    This target collects all the items this project contributes to output directories of referencing projects.
-    Ideally, it excludes any transitive dependencies.
+  <!-- This target collects all the items this project contributes to output directories of referencing projects.
+       Ideally, it excludes any transitive dependencies.
   -->
   <Target
     Name="CollectCopyToOutputDirectoryItemDesignTime"
@@ -498,7 +497,13 @@
         <TargetPath>$([System.IO.Path]::GetFileName('%(Identity)'))</TargetPath>
       </_CollectedCopyToOutputDirectoryItem>
 
-      <!-- ReferenceCopyLocalPaths -->
+      <!-- ReferenceCopyLocalPaths
+
+           These come from two different sources, hence projecting twice here.
+           We filter out items that come from NuGet packages as there can be very many of them, and we exclude
+           them in the project system anyway, so it's better to drop them here (at the source). These items are
+           expected to be copied during an actual build, and need updating during subsequent incremental builds.
+      -->
 
       <_CollectedCopyToOutputDirectoryItem Include="@(ReferenceCopyLocalPaths->'%(Identity)')" Condition="'%(ReferenceCopyLocalPaths.ReferenceSourceTarget)' != 'ProjectReference' AND '%(ReferenceCopyLocalPaths.DestinationSubPath)' != ''">
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
