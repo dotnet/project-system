@@ -1,6 +1,7 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
 using System.Threading.Tasks.Dataflow;
+using Microsoft.VisualStudio.Composition;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
 using Microsoft.VisualStudio.ProjectSystem.Utilities;
 
@@ -21,27 +22,35 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
         private readonly IProjectItemSchemaService _projectItemSchemaService;
         private readonly IUpToDateCheckStatePersistence? _persistentState;
         private readonly IProjectAsynchronousTasksService _projectAsynchronousTasksService;
+        private readonly ICopyItemAggregator _copyItemAggregator;
 
-        private static ImmutableHashSet<string> ProjectPropertiesSchemas => ImmutableStringHashSet.EmptyOrdinal
+        /// <summary>
+        /// The rules of data we want from <see cref="IProjectSubscriptionService.JointRuleSource"/>.
+        /// </summary>
+        private static ImmutableHashSet<string> JointRuleSchemaNames => ImmutableStringHashSet.EmptyOrdinal
             .Add(ConfigurationGeneral.SchemaName)
             .Add(ResolvedAnalyzerReference.SchemaName)
             .Add(ResolvedCompilationReference.SchemaName)
             .Add(CopyUpToDateMarker.SchemaName)
             .Add(UpToDateCheckInput.SchemaName)
             .Add(UpToDateCheckOutput.SchemaName)
-            .Add(UpToDateCheckBuilt.SchemaName);
+            .Add(UpToDateCheckBuilt.SchemaName)
+            .Add(CopyToOutputDirectoryItem.SchemaName)
+            .Add(ResolvedProjectReference.SchemaName);
 
         [ImportingConstructor]
         public UpToDateCheckImplicitConfiguredInputDataSource(
             ConfiguredProject containingProject,
             IProjectItemSchemaService projectItemSchemaService,
             [Import(ExportContractNames.Scopes.UnconfiguredProject)] IProjectAsynchronousTasksService projectAsynchronousTasksService,
+            ICopyItemAggregator copyItemAggregator,
             [Import(AllowDefault = true)] IUpToDateCheckStatePersistence? persistentState)
             : base(containingProject, synchronousDisposal: false, registerDataSource: false)
         {
             _configuredProject = containingProject;
             _projectItemSchemaService = projectItemSchemaService;
             _projectAsynchronousTasksService = projectAsynchronousTasksService;
+            _copyItemAggregator = copyItemAggregator;
             _persistentState = persistentState;
         }
 
@@ -67,7 +76,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             {
                 // Sync-link various sources to our transform block
                 ProjectDataSources.SyncLinkTo(
-                    source1.SourceBlock.SyncLinkOptions(DataflowOption.WithRuleNames(ProjectPropertiesSchemas)),
+                    source1.SourceBlock.SyncLinkOptions(DataflowOption.WithRuleNames(JointRuleSchemaNames)),
                     source2.SourceBlock.SyncLinkOptions(),
                     source3.SourceBlock.SyncLinkOptions(),
                     source4.SourceBlock.SyncLinkOptions(),
@@ -103,12 +112,18 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
                 int? priorItemHash = state.ItemHash;
                 DateTime? priorLastItemsChangedAtUtc = state.LastItemsChangedAtUtc;
+                ProjectCopyData priorCopyData = state.ProjectCopyData;
 
                 state = state.Update(
                     jointRuleUpdate: e.Value.Item1,
                     sourceItemsUpdate: e.Value.Item2,
                     projectItemSchema: e.Value.Item3,
                     projectCatalogSnapshot: e.Value.Item4);
+
+                if (priorCopyData != state.ProjectCopyData)
+                {
+                    _copyItemAggregator.SetProjectData(state.ProjectCopyData);
+                }
 
                 if (state.ItemHash is not null && _persistentState is not null && (priorItemHash != state.ItemHash || priorLastItemsChangedAtUtc != state.LastItemsChangedAtUtc))
                 {
