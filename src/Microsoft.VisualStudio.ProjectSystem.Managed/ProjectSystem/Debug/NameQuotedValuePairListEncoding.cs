@@ -80,7 +80,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
 
             static string DecodeCharacters(string value)
             {
-                return value.Replace("/=", "=").Replace("/,", ",").Replace("//", "/").Replace("/\"", "\"");
+                
+                return value.Replace("/\"", "\"").Replace("/=", "=").Replace("/,", ",").Replace("//", "/");
             }
 
             static string StripQuotes(string value)
