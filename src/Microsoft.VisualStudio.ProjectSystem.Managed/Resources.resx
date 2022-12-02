@@ -213,7 +213,10 @@ This project was loaded using the wrong project type, likely as a result of rena
   <data name="FUTD_FirstRun" xml:space="preserve">
     <value>The up-to-date check has not yet run for this project. Not up-to-date.</value>
   </data>
-  <data name="FUTD_ComparingInputOutputTimestamps_1" xml:space="preserve">
+  <data name="FUTD_ComparingInputOutputTimestamps" xml:space="preserve">
+    <value>Comparing timestamps of inputs and outputs:</value>
+  </data>
+  <data name="FUTD_ComparingInputOutputTimestampsInSet_1" xml:space="preserve">
     <value>Comparing timestamps of inputs and outputs in Set="{0}":</value>
     <comment>Do not translate 'Set' as this name is used in code. {0} is the name of the set.</comment>
   </data>
@@ -228,6 +231,9 @@ This project was loaded using the wrong project type, likely as a result of rena
     <value>No build outputs defined in Set="{0}".</value>
     <comment>Do not translate 'Set' as this name is used in code. {0} is the name of the set.</comment>
   </data>
+  <data name="FUTD_ComparingCopyMarkerTimestamps" xml:space="preserve">
+    <value>Comparing timestamps of copy marker inputs and outputs:</value>
+  </data>
   <data name="FUTD_SetOfItemsChangedMoreRecentlyThanOutput_2" xml:space="preserve">
     <value>The set of project items was changed more recently ({0}) than the last successful build start time ({1}), not up-to-date.</value>
     <comment>{0} and {1} are datetimes.</comment>
@@ -235,13 +241,13 @@ This project was loaded using the wrong project type, likely as a result of rena
   <data name="FUTD_SetOfChangedItemsIsEmpty" xml:space="preserve">
     <value>The set of changed items is empty.</value>
   </data>
-  <data name="FUTD_ChangedItemsAddition_4" xml:space="preserve">
-    <value>{0} item added '{1}' (CopyToOutputDirectory={2}, TargetPath='{3}')</value>
-    <comment>Do not translate 'CopyToOutputDirectory' or 'TargetPath'. {0} is an MSBuild item type. {1} is a file path. {2} and {3} are metadata values.</comment>
+  <data name="FUTD_ChangedItemsAddition_2" xml:space="preserve">
+    <value>{0} item added '{1}'</value>
+    <comment>{0} is an MSBuild item type. {1} is a file path.</comment>
   </data>
-  <data name="FUTD_ChangedItemsRemoval_4" xml:space="preserve">
-    <value>{0} item removed '{1}' (CopyToOutputDirectory={2}, TargetPath='{3}')</value>
-    <comment>Do not translate 'CopyToOutputDirectory' or 'TargetPath'. {0} is an MSBuild item type. {1} is a file path. {2} and {3} are metadata values.</comment>
+  <data name="FUTD_ChangedItemsRemoval_2" xml:space="preserve">
+    <value>{0} item removed '{1}'</value>
+    <comment>{0} is an MSBuild item type. {1} is a file path.</comment>
   </data>
   <data name="FUTD_RequiredInputNotFound_1" xml:space="preserve">
     <value>Input '{0}' does not exist and is required, not up-to-date.</value>
@@ -335,31 +341,50 @@ This project was loaded using the wrong project type, likely as a result of rena
     <comment>{0} and {2} are file paths. {1} and {3} are datetimes.</comment>
   </data>
   <data name="FUTD_SourceFileTimeAndPath_2" xml:space="preserve">
-    <value>Source {0}: '{1}'</value>
-    <comment>{0} is a datetime. {1} is a file path.</comment>
+    <value>Source      {0}: '{1}'</value>
+    <comment>{0} is a datetime. {1} is a file path. The indentation after "Source" should be coordinated with the value of "Destination" in FUTD_DestinationFileTimeAndPath_2.</comment>
   </data>
   <data name="FUTD_DestinationFileTimeAndPath_2" xml:space="preserve">
     <value>Destination {0}: '{1}'</value>
-    <comment>{0} is a datetime. {1} is a file path.</comment>
+    <comment>{0} is a datetime. {1} is a file path. The indentation after "Destination" should be coordinated with the value of "Source" in FUTD_SourceFileTimeAndPath_2.</comment>
   </data>
-  <data name="FUTD_CheckingCopiedOutputFile" xml:space="preserve">
-    <value>Checking copied output (UpToDateCheckBuilt with Original property) file:</value>
-    <comment>Do not translate UpToDateCheckBuilt or Original.</comment>
+  <data name="FUTD_DestinationDoesNotExist_1" xml:space="preserve">
+    <value>Destination '{0}' does not exist.</value>
+    <comment>{0} is a file path.</comment>
   </data>
-  <data name="FUTD_CheckingCopiedOutputFileSourceNotFound_2" xml:space="preserve">
-    <value>Source '{0}' does not exist for copy to '{1}', not up-to-date.</value>
+  <data name="FUTD_CheckingCopyFileSourceNotFound_2" xml:space="preserve">
+    <value>Source '{0}' does not exist for copy to '{1}'.</value>
     <comment>{0} and {1} are file paths.</comment>
   </data>
-  <data name="FUTD_CheckingCopiedOutputFileDestinationNotFound_2" xml:space="preserve">
+  <data name="FUTD_CheckingBuiltOutputFile" xml:space="preserve">
+    <value>Checking built output (UpToDateCheckBuilt with Original property) file:</value>
+    <comment>Do not translate UpToDateCheckBuilt or Original.</comment>
+  </data>
+  <data name="FUTD_CheckingBuiltOutputFileSourceNotFound_2" xml:space="preserve">
+    <value>Source '{0}' does not exist for build into target '{1}', not up-to-date.</value>
+    <comment>{0} and {1} are file paths.</comment>
+  </data>
+  <data name="FUTD_CheckingBuiltOutputFileDestinationNotFound_2" xml:space="preserve">
     <value>Destination '{0}' does not exist for copy from '{1}', not up-to-date.</value>
     <comment>{0} and {1} are file paths.</comment>
   </data>
-  <data name="FUTD_CheckingCopiedOutputFileSourceNewer" xml:space="preserve">
+  <data name="FUTD_CheckingBuiltOutputFileSourceNewer" xml:space="preserve">
     <value>Source is newer than build output destination, not up-to-date.</value>
   </data>
-  <data name="FUTD_CheckingCopyToOutputDirectoryItem_3" xml:space="preserve">
-    <value>Checking {0} item with CopyToOutputDirectory="{1}" '{2}':</value>
-    <comment>Do not translate CopyToOutputDirectory. {0} is an MSBuild item type. {1} is from an enum of valid values. {2} a file path.</comment>
+  <data name="FUTD_CheckingCopyToOutputDirectoryItems" xml:space="preserve">
+    <value>Checking items to copy to the output directory:</value>
+  </data>
+  <data name="FUTDC_CheckingCopyItemsForProject_1" xml:space="preserve">
+    <value>Checking copy items from project '{0}'.</value>
+    <comment>{0} is a file path.</comment>
+  </data>
+  <data name="FUTDC_SkippingDuplicateCopyItem_2" xml:space="preserve">
+    <value>Skipping duplicate copy item '{0}' to '{1}'</value>
+    <comment>{0} and {1} are file paths.</comment>
+  </data>
+  <data name="FUTD_CheckingCopyToOutputDirectoryItem_1" xml:space="preserve">
+    <value>Checking {0} item</value>
+    <comment>{0} is either the literal "PreserveNewest" or "Always", describing the policy used when copying these items to the output directory.</comment>
   </data>
   <data name="FUTD_CheckingCopyToOutputDirectorySourceNotFound_1" xml:space="preserve">
     <value>Source '{0}' does not exist, not up-to-date.</value>
@@ -369,13 +394,17 @@ This project was loaded using the wrong project type, likely as a result of rena
     <value>Destination '{0}' does not exist, not up-to-date.</value>
     <comment>{0} is a file path.</comment>
   </data>
-  <data name="FUTD_CheckingCopyToOutputDirectorySourceNewerThanDestination_4" xml:space="preserve">
-    <value>{0} item with CopyToOutputDirectory="{1}" source '{2}' is newer than destination '{3}', not up-to-date.</value>
-    <comment>Do not translate CopyToOutputDirectory. {0} is an MSBuild item type. {1} is from an enum of valid values. {2} and {3} are file paths.</comment>
+  <data name="FUTD_BuildAccelerationSummary_1" xml:space="preserve">
+    <value>Build acceleration copied {0} files.</value>
+    <comment>{0} is a non-zero integer.</comment>
   </data>
-  <data name="FUTD_CopyAlwaysItemsDiffer_7" xml:space="preserve">
-    <value>{0} item with CopyToOutputDirectory="Always" source ('{1}' {2}, {3} bytes) differs from destination ('{4}' {5}, {6} bytes), not up-to-date.</value>
-    <comment>Do not translate CopyToOutputDirectory="Always". {0} is an MSBuild item type. {1} and {4} are file paths. {2} and {5} are date times. {3} and {6} are byte counts.</comment>
+  <data name="FUTD_CheckingCopyToOutputDirectorySourceNewerThanDestination_3" xml:space="preserve">
+    <value>Item with CopyToOutputDirectory="{0}" source '{1}' is newer than destination '{2}', not up-to-date.</value>
+    <comment>Do not translate CopyToOutputDirectory. {0} is from an enum of valid values. {1} and {2} are file paths.</comment>
+  </data>
+  <data name="FUTD_CopyAlwaysItemsDiffer_6" xml:space="preserve">
+    <value>Item with CopyToOutputDirectory="Always" source ('{0}' {1}, {2} bytes) differs from destination ('{3}' {4}, {5} bytes), not up-to-date.</value>
+    <comment>Do not translate CopyToOutputDirectory="Always". {0} and {3} are file paths. {1} and {4} are date times. {2} and {5} are byte counts.</comment>
   </data>
   <data name="FUTD_IgnoringKinds_1" xml:space="preserve">
     <value>Ignoring up-to-date check items with Kind="{0}"</value>
@@ -392,6 +421,44 @@ This project was loaded using the wrong project type, likely as a result of rena
   <data name="FUTD_CheckingConfiguration_1" xml:space="preserve">
     <value>Checking configuration {0}:</value>
     <comment>{0} is a description of the project's configuration, such as "Debug|AnyCPU|net6.0".</comment>
+  </data>
+  <data name="FUTD_RememberingCopiedFile_2" xml:space="preserve">
+    <value>Remembering the need to copy file '{0}' to '{1}'.</value>
+    <comment>{0} and {1} are file paths.</comment>
+  </data>
+  <data name="FUTD_CopyingFilesToAccelerateBuild_1" xml:space="preserve">
+    <value>Copying {0} files to accelerate build:</value>
+    <comment>{0} is an integer.</comment>
+  </data>
+  <data name="FUTD_FromTo_2" xml:space="preserve">
+    <value>From '{0}' to '{1}'.</value>
+    <comment>{0} and {1} are file paths.</comment>
+  </data>
+  <data name="FUTD_SkippingCopyDueToIdenticalSizeAndWriteTime_2" xml:space="preserve">
+    <value>Skipping copy of CopyToOutputDirectory Always item from '{0}' to '{1}' due to identical file size and last write time.</value>
+    <comment>Do not translate 'CopyToOutputDirectory' or 'Always'. {0} and {1} are file paths.</comment>
+  </data>
+  <data name="FUTD_ExceptionCopyingFile_1" xml:space="preserve">
+    <value>Exception copying file, scheduling MSBuild: {0}</value>
+    <comment>Do not translate 'Exception' or 'MSBuild'. {0} is an exception message and stack trace.</comment>
+  </data>
+  <data name="FUTD_InputMarkerDoesNotExist" xml:space="preserve">
+    <value>Input marker does not exist.</value>
+  </data>
+  <data name="FUTD_AccelerationDisabledForProject" xml:space="preserve">
+    <value>Build acceleration is disabled for this project via the 'AccelerateBuildsInVisualStudio' MSBuild property.</value>
+    <comment>Do not translate AccelerateBuildsInVisualStudio.</comment>
+  </data>
+  <data name="FUTD_AccelerationCandidate" xml:space="preserve">
+    <value>This project appears to be a candidate for build acceleration. To opt in, set the 'AccelerateBuildsInVisualStudio' MSBuild property to 'true'.</value>
+    <comment>Do not translate 'AccelerateBuildsInVisualStudio' or 'true'.</comment>
+  </data>
+  <data name="FUTD_AccelerationDisabledCopyItemsIncomplete" xml:space="preserve">
+    <value>Build acceleration is not available for this project because not all transitively referenced projects have provided acceleration data.</value>
+  </data>
+  <data name="FUTDC_AccelerationDataMissingForProject_1" xml:space="preserve">
+    <value>Build acceleration data is unavailable for project with target '{0}'.</value>
+    <comment>{0} is a file path.</comment>
   </data>
   <data name="DiagnosticLevel_None" xml:space="preserve">
     <value>None</value>

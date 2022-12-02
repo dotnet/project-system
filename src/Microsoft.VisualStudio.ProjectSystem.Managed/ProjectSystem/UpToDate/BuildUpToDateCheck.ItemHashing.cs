@@ -4,7 +4,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 {
     internal sealed partial class BuildUpToDateCheck
     {
-        public static int ComputeItemHash(ImmutableDictionary<string, ImmutableArray<UpToDateCheckInputItem>> itemsByItemType)
+        public static int ComputeItemHash(ImmutableDictionary<string, ImmutableArray<string>> itemsByItemType)
         {
             int hash = 0;
 
@@ -14,13 +14,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             // This approach also assumes each path is only included once in the data structure. If a path
             // were to exist twice, its hash would be XORed with itself, which produces zero net change.
 
-            foreach ((string itemType, ImmutableArray<UpToDateCheckInputItem> items) in itemsByItemType)
+            foreach ((string itemType, ImmutableArray<string> items) in itemsByItemType)
             {
                 int itemHash = 0;
 
-                foreach (UpToDateCheckInputItem item in items)
+                foreach (string item in items)
                 {
-                    itemHash ^= GetStableHashCode(item.Path);
+                    itemHash ^= GetStableHashCode(item);
                 }
 
                 // Multiply by the item type hash, so that if an item changes type the hash will change.
@@ -33,14 +33,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             return hash;
         }
 
-        ///<summary>
+        /// <summary>
         /// Returns the hash code of the string
-        ///</summary>
+        /// </summary>
         /// <remarks>
         /// Please, do not make changes to this hash algorithm.
-        /// Current hash value is persisted in a file in the .vs folder, 
+        /// Current hash value is persisted in a file in the .vs folder,
         /// changing this algorithm may regress performance and break compatibility.
-        /// 
+        ///
         /// The original code was taken from string.GetHashCode() with some minor changes
         /// https://github.com/microsoft/referencesource/blob/master/mscorlib/system/string.cs
         /// </remarks>

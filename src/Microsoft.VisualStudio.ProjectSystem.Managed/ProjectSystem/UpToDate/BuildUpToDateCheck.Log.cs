@@ -7,7 +7,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 {
     internal sealed partial class BuildUpToDateCheck
     {
-        private sealed class Log
+        internal sealed class Log
         {
             private readonly TextWriter _writer;
             private readonly Stopwatch _stopwatch;
@@ -106,6 +106,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 }
             }
 
+            private void Write(LogLevel level, string resourceName)
+            {
+                if (level <= Level)
+                {
+                    string message = GetResourceString(resourceName);
+
+                    _writer.WriteLine($"{Preamble()}{message} ({_fileName})");
+                }
+            }
+
             private void WriteLiteral(LogLevel level, string message)
             {
                 if (level <= Level)
@@ -130,10 +140,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 }
             }
 
+            public void Minimal(string resourceName) => Write(LogLevel.Minimal, resourceName);
             public void Minimal(string resourceName, params object[] values) => Write(LogLevel.Minimal, resourceName, values);
+
+            public void Info(string resourceName) => Write(LogLevel.Info, resourceName);
             public void Info(string resourceName, object arg0) => Write(LogLevel.Info, resourceName, arg0);
             public void Info(string resourceName, object arg0, object arg1) => Write(LogLevel.Info, resourceName, arg0, arg1);
             public void Info(string resourceName, params object[] values) => Write(LogLevel.Info, resourceName, values);
+
+            public void Verbose(string resourceName) => Write(LogLevel.Verbose, resourceName);
             public void Verbose(string resourceName, object arg0) => Write(LogLevel.Verbose, resourceName, arg0);
             public void Verbose(string resourceName, params object[] values) => Write(LogLevel.Verbose, resourceName, values);
             public void VerboseLiteral(string message) => WriteLiteral(LogLevel.Verbose, message);
