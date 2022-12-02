@@ -477,7 +477,7 @@
   -->
   <Target
     Name="CollectCopyToOutputDirectoryItemDesignTime"
-    DependsOnTargets="CompileDesignTime;_GetCopyToOutputDirectoryItemsFromThisProject;ResolveAssemblyReferences;ComputeIntermediateSatelliteAssemblies"
+    DependsOnTargets="PrepareResourceNames;ComputeIntermediateSatelliteAssemblies;ResolveAssemblyReferences;CompileDesignTime;_GetCopyToOutputDirectoryItemsFromThisProject"
     Returns="@(_CollectedCopyToOutputDirectoryItem)">
     <ItemGroup>
 
@@ -524,10 +524,10 @@
 
       <!-- Satellite assemblies -->
 
-      <_CollectedCopyToOutputDirectorySatelliteAssemblyItem Include="@(IntermediateSatelliteAssembliesWithTargetPath->'$(OutDir)%(Culture)\$(TargetName).resources.dll')" Condition="'@(IntermediateSatelliteAssembliesWithTargetPath)' != ''">
+      <_CollectedCopyToOutputDirectoryItem Include="@(IntermediateSatelliteAssembliesWithTargetPath->'$(TargetDir)%(Culture)\$(TargetName).resources.dll')" Condition="'@(IntermediateSatelliteAssembliesWithTargetPath)' != ''">
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-        <TargetPath>%(Culture)\$(TargetName).resources.dll</TargetPath>
-      </_CollectedCopyToOutputDirectorySatelliteAssemblyItem>
+        <TargetPath>%(IntermediateSatelliteAssembliesWithTargetPath.Culture)\$(TargetName).resources.dll</TargetPath>
+      </_CollectedCopyToOutputDirectoryItem>
 
     </ItemGroup>
   </Target>
