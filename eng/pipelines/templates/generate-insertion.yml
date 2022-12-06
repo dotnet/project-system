@@ -32,8 +32,13 @@ jobs:
       git init
       git remote add origin https://$(System.AccessToken)@dev.azure.com/devdiv/DevDiv/_git/VS
       git fetch --depth $(PriorInsertionCommitDepth) origin $(InsertionVSBranch)
-      Get-ChildItem
     displayName: Fetch VS Repo
+
+  - powershell: |
+      Set-Location '$(Pipeline.Workspace)/VS'
+      Write-Host '$(Pipeline.Workspace)/VS contents:'
+      Get-ChildItem
+    displayName: Check Directory Files
 
   ###################################################################################################################################################################
   # GENERATE VS INSERTION
@@ -56,10 +61,22 @@ jobs:
       # When this isn't provided, the tool sets the --AadAuth flag instead of using --PatAuthEnvVar. The AadAuth doesn't seem to work for this situation.
       AccessToken: $(System.AccessToken)
 
+  - powershell: |
+      Set-Location '$(Pipeline.Workspace)/VS'
+      Write-Host '$(Pipeline.Workspace)/VS contents:'
+      Get-ChildItem
+    displayName: Check Directory Files
+
   # Creates the description for the VS Insertion PR and sets it to the InsertionDescription variable. Also sets the ShortCommitId variable based on currentSha.
   - powershell: . '$(Build.SourcesDirectory)/eng/scripts/GetInsertionPRDescription.ps1' -vsDirectory '$(Pipeline.Workspace)/VS/' -currentSha '$(Build.SourceVersion)' -repoUrl '$(Build.Repository.Uri)' -projectName '$(Build.DefinitionName)'
     displayName: Create VS Insertion Description
     failOnStderr: true
+
+  - powershell: |
+      Set-Location '$(Pipeline.Workspace)/VS'
+      Write-Host '$(Pipeline.Workspace)/VS contents:'
+      Get-ChildItem
+    displayName: Check Directory Files
 
   # Creates a VS insertion PR using the Products drop containing the .vsman files.
   # Documentation: https://devdiv.visualstudio.com/DevDiv/_wiki/wikis/DevDiv.wiki/635/Overview?anchor=**build-pipeline**
@@ -97,3 +114,18 @@ jobs:
       # ##[warning]WARNING: Cannot copy work items from vstfs:///Build/Build/6574299: ArgumentException : 'https://github.com/dotnet/project-system' does not look like an Azure DevOps url
       # Documentation: https://devdiv.visualstudio.com/DevDiv/_wiki/wikis/DevDiv.wiki/634/Link-Work-Items-to-PR
       LinkWorkItemsToPR: false
+
+  - powershell: |
+      Set-Location '$(Pipeline.Workspace)/VS'
+      Write-Host '$(Pipeline.Workspace)/VS contents:'
+      Get-ChildItem
+    displayName: Check Directory Files
+
+  - task: MicroBuildCleanup@1
+    displayName: MicroBuild Cleanup
+
+  - powershell: |
+      Set-Location '$(Pipeline.Workspace)/VS'
+      Write-Host '$(Pipeline.Workspace)/VS contents:'
+      Get-ChildItem
+    displayName: Check Directory Files
