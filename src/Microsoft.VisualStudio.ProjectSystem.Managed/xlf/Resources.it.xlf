@@ -199,7 +199,7 @@
       </trans-unit>
       <trans-unit id="FUTD_DestinationFileTimeAndPath_2">
         <source>Destination {0}: '{1}'</source>
-        <target state="needs-review-translation">{0} di destinazione: '{1}'</target>
+        <target state="translated">{0} di destinazione: '{1}'</target>
         <note>{0} is a datetime. {1} is a file path. The indentation after "Destination" should be coordinated with the value of "Source" in FUTD_SourceFileTimeAndPath_2.</note>
       </trans-unit>
       <trans-unit id="FUTD_DisableFastUpToDateCheckTrue">
@@ -344,7 +344,7 @@
       </trans-unit>
       <trans-unit id="FUTD_SourceFileTimeAndPath_2">
         <source>Source      {0}: '{1}'</source>
-        <target state="needs-review-translation">{0} di origine: '{1}'</target>
+        <target state="new">Source      {0}: '{1}'</target>
         <note>{0} is a datetime. {1} is a file path. The indentation after "Source" should be coordinated with the value of "Destination" in FUTD_DestinationFileTimeAndPath_2.</note>
       </trans-unit>
       <trans-unit id="FUTD_TypedInputModifiedSinceLastSuccessfulBuildStart_4">
