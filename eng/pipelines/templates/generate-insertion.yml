@@ -32,6 +32,7 @@ jobs:
       git init
       git remote add origin https://$(System.AccessToken)@dev.azure.com/devdiv/DevDiv/_git/VS
       git fetch --depth $(PriorInsertionCommitDepth) origin $(InsertionVSBranch)
+      Get-ChildItem
     displayName: Fetch VS Repo
 
   ###################################################################################################################################################################
