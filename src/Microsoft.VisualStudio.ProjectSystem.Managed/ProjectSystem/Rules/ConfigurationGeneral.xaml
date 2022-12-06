@@ -12,6 +12,9 @@
                 SourceOfDefaultValue="AfterContext" />
   </Rule.DataSource>
 
+  <BoolProperty Name="AccelerateBuildsInVisualStudio"
+                Visible="False" />
+
   <StringProperty Name="AddItemTemplatesGuid"
                   Visible="False" />
 

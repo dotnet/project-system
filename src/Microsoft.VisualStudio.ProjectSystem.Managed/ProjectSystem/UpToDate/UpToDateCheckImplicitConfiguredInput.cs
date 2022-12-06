@@ -24,22 +24,25 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 projectConfiguration: projectConfiguration,
                 msBuildProjectFullPath: null,
                 msBuildProjectDirectory: null,
+                projectTargetPath: null,
                 copyUpToDateMarkerItem: null,
                 outputRelativeOrFullPath: null,
                 newestImportInput: null,
                 isDisabled: true,
+                isBuildAccelerationEnabled: false,
                 inputSourceItemTypes: ImmutableArray<string>.Empty,
-                inputSourceItemsByItemType: ImmutableDictionary<string, ImmutableArray<UpToDateCheckInputItem>>.Empty,
+                inputSourceItemsByItemType: ImmutableDictionary<string, ImmutableArray<string>>.Empty,
                 upToDateCheckInputItemsByKindBySetName: ImmutableDictionary<string, ImmutableDictionary<string, ImmutableArray<string>>>.Empty,
                 upToDateCheckOutputItemsByKindBySetName: ImmutableDictionary<string, ImmutableDictionary<string, ImmutableArray<string>>>.Empty,
                 upToDateCheckBuiltItemsByKindBySetName: ImmutableDictionary<string, ImmutableDictionary<string, ImmutableArray<string>>>.Empty,
-                copiedOutputFiles: ImmutableArray<(string DestinationRelative, string SourceRelative)>.Empty,
+                buildFromInputFileItems: ImmutableArray<(string DestinationRelative, string SourceRelative)>.Empty,
                 resolvedAnalyzerReferencePaths: ImmutableArray<string>.Empty,
                 resolvedCompilationReferencePaths: ImmutableArray<string>.Empty,
                 copyReferenceInputs: ImmutableArray<string>.Empty,
                 lastItemsChangedAtUtc: null,
-                lastItemChanges: ImmutableArray<(bool IsAdd, string ItemType, UpToDateCheckInputItem)>.Empty,
-                itemHash: null);
+                lastItemChanges: ImmutableArray<(bool IsAdd, string ItemType, string)>.Empty,
+                itemHash: null,
+                projectCopyData: default);
         }
 
         /// <summary>
@@ -51,12 +54,40 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
         /// </remarks>
         public ProjectConfiguration ProjectConfiguration { get; }
 
+        /// <summary>
+        /// Gets the full path to the project file.
+        /// </summary>
+        /// <remarks>
+        /// Comes from the <c>MSBuildProjectFullPath</c> MSBuild property.
+        /// For example, <c>C:\repos\MySolution\MyProject\MyProject.csproj</c>.
+        /// </remarks>
         public string? MSBuildProjectFullPath { get; }
 
+        /// <summary>
+        /// Gets the full path to the project directory.
+        /// </summary>
+        /// <remarks>
+        /// Comes from the <c>MSBuildProjectDirectory</c> MSBuild property.
+        /// For example, <c>C:\repos\MySolution\MyProject</c>.
+        /// </remarks>
         public string? MSBuildProjectDirectory { get; }
 
-        public string? CopyUpToDateMarkerItem { get; }
+        /// <summary>
+        /// Gets the full path to the project's output file.
+        /// </summary>
+        /// <remarks>
+        /// Comes from the <c>TargetPath</c> MSBuild property.
+        /// For example, <c>C:\repos\MySolution\MyProject\bin\Debug\net6.0\MyProject.dll</c>.
+        /// </remarks>
+        public string? ProjectTargetPath { get; }
 
+        /// <summary>
+        /// Gets the output path of the project, relative to the project directory.
+        /// </summary>
+        /// <remarks>
+        /// Comes from the <c>OutDir</c> MSBuild property, if available, otherwise from the <c>OutputPath</c> MSBuild property.
+        /// For example, <c>bin\Debug\net6.0\</c>.
+        /// </remarks>
         public string? OutputRelativeOrFullPath { get; }
 
         /// <summary>
@@ -82,6 +113,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
         public bool IsDisabled { get; }
 
         /// <summary>
+        /// Gets whether the fast up-to-date check is prohibited from copying files in the case
+        /// that the only reason a project is not up-to-date is due to the need to copy files.
+        /// </summary>
+        /// <remarks>
+        /// Controlled by the <c>AccelerateBuildsInVisualStudio</c> project property.
+        /// <see langword="null"/> when the property is undefined or cannot be parsed as a bool.
+        /// </remarks>
+        public bool? IsBuildAccelerationEnabled { get; }
+
+        /// <summary>
         /// Gets the time at which the set of items changed.
         /// </summary>
         /// <remarks>
@@ -97,7 +138,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
         /// </remarks>
         public DateTime? LastItemsChangedAtUtc { get; }
 
-        public ImmutableArray<(bool IsAdd, string ItemType, UpToDateCheckInputItem Item)> LastItemChanges { get; }
+        public ImmutableArray<(bool IsAdd, string ItemType, string Item)> LastItemChanges { get; }
 
         public int? ItemHash { get; }
 
@@ -109,7 +150,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
         /// </remarks>
         public ImmutableArray<string> InputSourceItemTypes { get; }
 
-        public ImmutableDictionary<string, ImmutableArray<UpToDateCheckInputItem>> InputSourceItemsByItemType { get; }
+        public ImmutableDictionary<string, ImmutableArray<string>> InputSourceItemsByItemType { get; }
 
         /// <summary>
         /// An alphabetically ordered list of the set names present in this project.
@@ -135,13 +176,20 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
         public ImmutableDictionary<string, ImmutableDictionary<string, ImmutableArray<string>>> UpToDateCheckBuiltItemsByKindBySetName { get; }
 
         /// <summary>
-        /// Holds <see cref="UpToDateCheckBuilt"/> items which are copied, not built.
+        /// Holds <see cref="UpToDateCheckBuilt"/> items which are each built from a single input file.
         /// </summary>
         /// <remarks>
+        /// <para>
         /// Projects add to this collection by specifying the <see cref="UpToDateCheckBuilt.OriginalProperty"/>
         /// on <see cref="UpToDateCheckBuilt"/> items.
+        /// </para>
+        /// <para>
+        /// <see cref="UpToDateCheckBuilt"/> items without <see cref="UpToDateCheckBuilt.OriginalProperty"/> metadata
+        /// are treated as regular output items, and are modelled in <see cref="UpToDateCheckBuiltItemsByKindBySetName"/>
+        /// rather than here.
+        /// </para>
         /// </remarks>
-        public ImmutableArray<(string DestinationRelative, string SourceRelative)> CopiedOutputFiles { get; }
+        public ImmutableArray<(string DestinationRelative, string SourceRelative)> BuiltFromInputFileItems { get; }
 
         public ImmutableArray<string> ResolvedAnalyzerReferencePaths { get; }
 
@@ -151,10 +199,32 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
         public ImmutableArray<string> ResolvedCompilationReferencePaths { get; }
 
         /// <summary>
-        /// Holds the set of observed <see cref="CopyUpToDateMarker"/> metadata values from all
+        /// Holds the set of non-empty <see cref="ResolvedCompilationReference.CopyUpToDateMarkerProperty"/> and
+        /// <see cref="ResolvedCompilationReference.ResolvedPathProperty"/> metadata values from all
         /// <see cref="ResolvedCompilationReference"/> items in the project.
         /// </summary>
         public ImmutableArray<string> CopyReferenceInputs { get; }
+
+        /// <summary>
+        /// Gets the relative path to the output marker file.
+        /// </summary>
+        public string? CopyUpToDateMarkerItem { get; }
+
+        /// <summary>
+        /// Gets the set of items this project contributes to the output directory when built.
+        /// These items are inherited by referencing projects too, transitively.
+        /// </summary>
+        /// <remarks>
+        /// <para>
+        /// Includes various kinds of files including assemblies content files from this project ONLY.
+        /// </para>
+        /// <para>
+        /// When building, we must obtain the full set of output directory items from this and all transitively referenced projects.
+        /// This collection does not provide that. Use <see cref="ICopyItemAggregator"/> instead. The intent is for the implementation
+        /// of that interface to consume this property.
+        /// </para>
+        /// </remarks>
+        public ProjectCopyData ProjectCopyData { get; }
 
         private UpToDateCheckImplicitConfiguredInput(ProjectConfiguration projectConfiguration)
         {
@@ -163,58 +233,66 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             ProjectConfiguration = projectConfiguration;
             LastItemsChangedAtUtc = null;
             InputSourceItemTypes = ImmutableArray<string>.Empty;
-            InputSourceItemsByItemType = ImmutableDictionary.Create<string, ImmutableArray<UpToDateCheckInputItem>>(StringComparers.ItemTypes);
+            InputSourceItemsByItemType = ImmutableDictionary.Create<string, ImmutableArray<string>>(StringComparers.ItemTypes);
             SetNames = ImmutableArray<string>.Empty;
             KindNames = ImmutableArray<string>.Empty;
             UpToDateCheckInputItemsByKindBySetName = emptyItemBySetName;
             UpToDateCheckOutputItemsByKindBySetName = emptyItemBySetName;
             UpToDateCheckBuiltItemsByKindBySetName = emptyItemBySetName;
-            CopiedOutputFiles = ImmutableArray<(string DestinationRelative, string SourceRelative)>.Empty;
+            BuiltFromInputFileItems = ImmutableArray<(string DestinationRelative, string SourceRelative)>.Empty;
             ResolvedAnalyzerReferencePaths = ImmutableArray<string>.Empty;
             ResolvedCompilationReferencePaths = ImmutableArray<string>.Empty;
             CopyReferenceInputs = ImmutableArray<string>.Empty;
+            LastItemChanges = ImmutableArray<(bool IsAdd, string ItemType, string)>.Empty;
+            ProjectCopyData = new(null, "", ImmutableArray<CopyItem>.Empty, ImmutableArray<string>.Empty);
         }
 
         private UpToDateCheckImplicitConfiguredInput(
             ProjectConfiguration projectConfiguration,
             string? msBuildProjectFullPath,
             string? msBuildProjectDirectory,
+            string? projectTargetPath,
             string? copyUpToDateMarkerItem,
             string? outputRelativeOrFullPath,
             string? newestImportInput,
             bool isDisabled,
+            bool? isBuildAccelerationEnabled,
             ImmutableArray<string> inputSourceItemTypes,
-            ImmutableDictionary<string, ImmutableArray<UpToDateCheckInputItem>> inputSourceItemsByItemType,
+            ImmutableDictionary<string, ImmutableArray<string>> inputSourceItemsByItemType,
             ImmutableDictionary<string, ImmutableDictionary<string, ImmutableArray<string>>> upToDateCheckInputItemsByKindBySetName,
             ImmutableDictionary<string, ImmutableDictionary<string, ImmutableArray<string>>> upToDateCheckOutputItemsByKindBySetName,
             ImmutableDictionary<string, ImmutableDictionary<string, ImmutableArray<string>>> upToDateCheckBuiltItemsByKindBySetName,
-            ImmutableArray<(string DestinationRelative, string SourceRelative)> copiedOutputFiles,
+            ImmutableArray<(string DestinationRelative, string SourceRelative)> buildFromInputFileItems,
             ImmutableArray<string> resolvedAnalyzerReferencePaths,
             ImmutableArray<string> resolvedCompilationReferencePaths,
             ImmutableArray<string> copyReferenceInputs,
             DateTime? lastItemsChangedAtUtc,
-            ImmutableArray<(bool IsAdd, string ItemType, UpToDateCheckInputItem)> lastItemChanges,
-            int? itemHash)
+            ImmutableArray<(bool IsAdd, string ItemType, string)> lastItemChanges,
+            int? itemHash,
+            ProjectCopyData projectCopyData)
         {
             ProjectConfiguration = projectConfiguration;
             MSBuildProjectFullPath = msBuildProjectFullPath;
             MSBuildProjectDirectory = msBuildProjectDirectory;
+            ProjectTargetPath = projectTargetPath;
             CopyUpToDateMarkerItem = copyUpToDateMarkerItem;
             OutputRelativeOrFullPath = outputRelativeOrFullPath;
             NewestImportInput = newestImportInput;
             IsDisabled = isDisabled;
+            IsBuildAccelerationEnabled = isBuildAccelerationEnabled;
             InputSourceItemTypes = inputSourceItemTypes;
             InputSourceItemsByItemType = inputSourceItemsByItemType;
             UpToDateCheckInputItemsByKindBySetName = upToDateCheckInputItemsByKindBySetName;
             UpToDateCheckOutputItemsByKindBySetName = upToDateCheckOutputItemsByKindBySetName;
             UpToDateCheckBuiltItemsByKindBySetName = upToDateCheckBuiltItemsByKindBySetName;
-            CopiedOutputFiles = copiedOutputFiles;
+            BuiltFromInputFileItems = buildFromInputFileItems;
             ResolvedAnalyzerReferencePaths = resolvedAnalyzerReferencePaths;
             ResolvedCompilationReferencePaths = resolvedCompilationReferencePaths;
             CopyReferenceInputs = copyReferenceInputs;
             LastItemsChangedAtUtc = lastItemsChangedAtUtc;
             LastItemChanges = lastItemChanges;
             ItemHash = itemHash;
+            ProjectCopyData = projectCopyData;
 
             var setNames = new HashSet<string>(BuildUpToDateCheck.SetNameComparer);
             AddSetNames(upToDateCheckInputItemsByKindBySetName);
@@ -262,11 +340,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 return CreateDisabled(ProjectConfiguration);
             }
 
-            string? msBuildProjectFullPath = jointRuleUpdate.CurrentState.GetPropertyOrDefault(ConfigurationGeneral.SchemaName, ConfigurationGeneral.MSBuildProjectFullPathProperty, MSBuildProjectFullPath);
-            string? msBuildProjectDirectory = jointRuleUpdate.CurrentState.GetPropertyOrDefault(ConfigurationGeneral.SchemaName, ConfigurationGeneral.MSBuildProjectDirectoryProperty, MSBuildProjectDirectory);
-            string? msBuildProjectOutputPath = jointRuleUpdate.CurrentState.GetPropertyOrDefault(ConfigurationGeneral.SchemaName, ConfigurationGeneral.OutputPathProperty, OutputRelativeOrFullPath);
-            string? outputRelativeOrFullPath = jointRuleUpdate.CurrentState.GetPropertyOrDefault(ConfigurationGeneral.SchemaName, ConfigurationGeneral.OutDirProperty, msBuildProjectOutputPath);
-            string msBuildAllProjects = jointRuleUpdate.CurrentState.GetPropertyOrDefault(ConfigurationGeneral.SchemaName, ConfigurationGeneral.MSBuildAllProjectsProperty, "");
+            string? msBuildProjectFullPath = jointRuleUpdate.CurrentState.GetPropertyOrDefault(ConfigurationGeneral.SchemaName, ConfigurationGeneral.MSBuildProjectFullPathProperty, defaultValue: MSBuildProjectFullPath);
+            string? msBuildProjectDirectory = jointRuleUpdate.CurrentState.GetPropertyOrDefault(ConfigurationGeneral.SchemaName, ConfigurationGeneral.MSBuildProjectDirectoryProperty, defaultValue: MSBuildProjectDirectory);
+            string? projectTargetPath = jointRuleUpdate.CurrentState.GetPropertyOrDefault(ConfigurationGeneral.SchemaName, ConfigurationGeneral.TargetPathProperty, defaultValue: "");
+            string? projectOutputPath = jointRuleUpdate.CurrentState.GetPropertyOrDefault(ConfigurationGeneral.SchemaName, ConfigurationGeneral.OutputPathProperty, defaultValue: OutputRelativeOrFullPath);
+            string? outputRelativeOrFullPath = jointRuleUpdate.CurrentState.GetPropertyOrDefault(ConfigurationGeneral.SchemaName, ConfigurationGeneral.OutDirProperty, defaultValue: projectOutputPath);
+            string msBuildAllProjects = jointRuleUpdate.CurrentState.GetPropertyOrDefault(ConfigurationGeneral.SchemaName, ConfigurationGeneral.MSBuildAllProjectsProperty, defaultValue: "");
+            bool? isBuildAccelerationEnabled = jointRuleUpdate.CurrentState.GetBooleanPropertyValue(ConfigurationGeneral.SchemaName, ConfigurationGeneral.AccelerateBuildsInVisualStudioProperty);
 
             // The first item in this semicolon-separated list of project files will always be the one
             // with the newest timestamp. As we are only interested in timestamps on these files, we can
@@ -287,16 +367,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
             bool itemTypesChanged = false;
 
-            List<(bool IsAdd, string ItemType, UpToDateCheckInputItem)> lastItemChanges = new();
+            List<(bool IsAdd, string ItemType, string)> lastItemChanges = new();
 
             // If an item type was removed, remove all items of that type
             foreach (string removedItemType in itemTypeDiff.Removed)
             {
                 itemTypesChanged = true;
 
-                if (inputSourceItemsByItemTypeBuilder.TryGetValue(removedItemType, out ImmutableArray<UpToDateCheckInputItem> removedItems))
+                if (inputSourceItemsByItemTypeBuilder.TryGetValue(removedItemType, out ImmutableArray<string> removedItems))
                 {
-                    foreach (UpToDateCheckInputItem item in removedItems)
+                    foreach (string item in removedItems)
                     {
                         lastItemChanges.Add((IsAdd: false, removedItemType, item));
                     }
@@ -327,25 +407,23 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                     continue;
                 }
 
-                ImmutableArray<UpToDateCheckInputItem> before = ImmutableArray<UpToDateCheckInputItem>.Empty;
-                if (inputSourceItemsByItemTypeBuilder.TryGetValue(itemType, out ImmutableArray<UpToDateCheckInputItem> beforeItems))
-                    before = beforeItems;
-
-                projectFileClassifier ??= BuildClassifier();
+                if (!inputSourceItemsByItemTypeBuilder.TryGetValue(itemType, out ImmutableArray<string> before))
+                {
+                    before = ImmutableArray<string>.Empty;
+                }
 
                 var after = projectChange.After.Items
-                    .Where(item => !projectFileClassifier.IsNonModifiable(item.Key))
-                    .Select(item => new UpToDateCheckInputItem(path: item.Key, itemType, metadata: item.Value))
-                    .ToHashSet(UpToDateCheckInputItem.PathComparer);
+                    .Select(item => item.Key)
+                    .ToHashSet(StringComparers.Paths);
 
-                var diff = new SetDiff<UpToDateCheckInputItem>(before, after, UpToDateCheckInputItem.PathComparer);
+                var diff = new SetDiff<string>(before, after, StringComparers.Paths);
 
-                foreach (UpToDateCheckInputItem item in diff.Added)
+                foreach (string item in diff.Added)
                 {
                     lastItemChanges.Add((IsAdd: true, itemType, item));
                 }
 
-                foreach (UpToDateCheckInputItem item in diff.Removed)
+                foreach (string item in diff.Removed)
                 {
                     lastItemChanges.Add((IsAdd: false, itemType, item));
                 }
@@ -354,7 +432,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 itemsChanged = true;
             }
 
-            ImmutableDictionary<string, ImmutableArray<UpToDateCheckInputItem>> inputSourceItemsByItemType = inputSourceItemsByItemTypeBuilder.ToImmutable();
+            ImmutableDictionary<string, ImmutableArray<string>> inputSourceItemsByItemType = inputSourceItemsByItemTypeBuilder.ToImmutable();
 
             int itemHash = BuildUpToDateCheck.ComputeItemHash(inputSourceItemsByItemType);
 
@@ -383,22 +461,25 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 ProjectConfiguration,
                 msBuildProjectFullPath,
                 msBuildProjectDirectory,
+                projectTargetPath,
                 copyUpToDateMarkerItem: UpdateCopyUpToDateMarkerItem(),
                 outputRelativeOrFullPath,
                 newestImportInput,
                 isDisabled: isDisabled,
+                isBuildAccelerationEnabled: isBuildAccelerationEnabled,
                 inputSourceItemTypes: inputSourceItemTypes.ToImmutableArray(),
                 inputSourceItemsByItemType: inputSourceItemsByItemType,
                 upToDateCheckInputItemsByKindBySetName:  UpdateItemsByKindBySetName(UpToDateCheckInputItemsByKindBySetName,  jointRuleUpdate, UpToDateCheckInput.SchemaName,  UpToDateCheckInput.KindProperty,  UpToDateCheckInput.SetProperty),
                 upToDateCheckOutputItemsByKindBySetName: UpdateItemsByKindBySetName(UpToDateCheckOutputItemsByKindBySetName, jointRuleUpdate, UpToDateCheckOutput.SchemaName, UpToDateCheckOutput.KindProperty, UpToDateCheckOutput.SetProperty),
                 upToDateCheckBuiltItemsByKindBySetName:  UpdateItemsByKindBySetName(UpToDateCheckBuiltItemsByKindBySetName,  jointRuleUpdate, UpToDateCheckBuilt.SchemaName,  UpToDateCheckBuilt.KindProperty,  UpToDateCheckBuilt.SetProperty, metadata => !metadata.TryGetValue(UpToDateCheckBuilt.OriginalProperty, out string source) || string.IsNullOrEmpty(source)),
-                copiedOutputFiles: UpdateCopiedItems(),
+                buildFromInputFileItems: UpdateBuildFromInputFileItems(),
                 resolvedAnalyzerReferencePaths: UpdateResolvedAnalyzerReferencePaths(),
                 resolvedCompilationReferencePaths: resolvedCompilationReferencePaths,
                 copyReferenceInputs: copyReferenceInputs,
                 lastItemsChangedAtUtc: lastItemsChangedAtUtc,
                 lastItemChanges.ToImmutableArray(),
-                itemHash);
+                itemHash,
+                projectCopyData: UpdateCopyData());
 
             string? UpdateCopyUpToDateMarkerItem()
             {
@@ -476,11 +557,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 }
             }
 
-            ImmutableArray<(string DestinationRelative, string SourceRelative)> UpdateCopiedItems()
+            ImmutableArray<(string DestinationRelative, string SourceRelative)> UpdateBuildFromInputFileItems()
             {
                 if (jointRuleUpdate.ProjectChanges.TryGetValue(UpToDateCheckBuilt.SchemaName, out IProjectChangeDescription? change) && change.Difference.AnyChanges)
                 {
-                    var copiedOutputFilesBuilder = new Dictionary<string, string>(StringComparers.Paths);
+                    var buildFromInputFileItemsBuilder = new Dictionary<string, string>(StringComparers.Paths);
 
                     foreach ((string destination, IImmutableDictionary<string, string> metadata) in change.After.Items)
                     {
@@ -488,15 +569,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                         {
                             // This file is copied, not built
                             // Remember the `Original` source for later
-                            copiedOutputFilesBuilder[destination] = source;
+                            buildFromInputFileItemsBuilder[destination] = source;
                         }
                     }
 
-                    return copiedOutputFilesBuilder.Select(kvp => (kvp.Key, kvp.Value)).ToImmutableArray();
+                    return buildFromInputFileItemsBuilder.Select(kvp => (kvp.Key, kvp.Value)).ToImmutableArray();
                 }
                 else
                 {
-                    return CopiedOutputFiles;
+                    return BuiltFromInputFileItems;
                 }
             }
 
@@ -560,6 +641,35 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 }
             }
 
+            ProjectCopyData UpdateCopyData()
+            {
+                if (jointRuleUpdate.ProjectChanges.TryGetValue(CopyToOutputDirectoryItem.SchemaName, out IProjectChangeDescription? change1) &&
+                    jointRuleUpdate.ProjectChanges.TryGetValue(ResolvedProjectReference.SchemaName, out IProjectChangeDescription? change2))
+                {
+                    if (change1.Difference.AnyChanges || change2.Difference.AnyChanges)
+                    {
+                        // Register this project's data with the CopyToOutputDirectoryItem tracking service.
+
+                        string targetPath = jointRuleUpdate.CurrentState[ConfigurationGeneral.SchemaName].Properties[ConfigurationGeneral.TargetPathProperty];
+
+                        projectFileClassifier ??= BuildClassifier();
+
+                        ImmutableArray<CopyItem> copyItems = change1.After.Items
+                            .Where(pair => !projectFileClassifier.IsNonModifiable(pair.Key))
+                            .Select(pair => new CopyItem(path: pair.Key, metadata: pair.Value))
+                            .ToImmutableArray();
+
+                        // Exclude any project references for which we do not reference the output assembly.
+                        // This avoids following references to certain "private" project references, such as PrivateP2PCaching.proj in NBGV.
+                        ImmutableArray<string> referenceItems = change2.After.Items.Where(pair => pair.Value.GetBoolProperty(ResolvedProjectReference.ReferenceOutputAssemblyProperty) == true).Select(item => item.Key).ToImmutableArray();
+
+                        return new ProjectCopyData(msBuildProjectFullPath, targetPath, copyItems, referenceItems);
+                    }
+                }
+
+                return ProjectCopyData;
+            }
+
             ProjectFileClassifier BuildClassifier()
             {
                 return new ProjectFileClassifier
@@ -578,22 +688,25 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 ProjectConfiguration,
                 MSBuildProjectFullPath,
                 MSBuildProjectDirectory,
+                ProjectTargetPath,
                 CopyUpToDateMarkerItem,
                 OutputRelativeOrFullPath,
                 NewestImportInput,
                 IsDisabled,
+                IsBuildAccelerationEnabled,
                 InputSourceItemTypes,
                 InputSourceItemsByItemType,
                 UpToDateCheckInputItemsByKindBySetName,
                 UpToDateCheckOutputItemsByKindBySetName,
                 UpToDateCheckBuiltItemsByKindBySetName,
-                CopiedOutputFiles,
+                BuiltFromInputFileItems,
                 ResolvedAnalyzerReferencePaths,
                 ResolvedCompilationReferencePaths,
                 CopyReferenceInputs,
                 lastItemsChangedAtUtc,
                 LastItemChanges,
-                ItemHash);
+                ItemHash,
+                ProjectCopyData);
         }
 
         public UpToDateCheckImplicitConfiguredInput WithRestoredState(int itemHash, DateTime? lastItemsChangedAtUtc)
@@ -602,22 +715,25 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 ProjectConfiguration,
                 MSBuildProjectFullPath,
                 MSBuildProjectDirectory,
+                ProjectTargetPath,
                 CopyUpToDateMarkerItem,
                 OutputRelativeOrFullPath,
                 NewestImportInput,
                 IsDisabled,
+                IsBuildAccelerationEnabled,
                 InputSourceItemTypes,
                 InputSourceItemsByItemType,
                 UpToDateCheckInputItemsByKindBySetName,
                 UpToDateCheckOutputItemsByKindBySetName,
                 UpToDateCheckBuiltItemsByKindBySetName,
-                CopiedOutputFiles,
+                BuiltFromInputFileItems,
                 ResolvedAnalyzerReferencePaths,
                 ResolvedCompilationReferencePaths,
                 CopyReferenceInputs,
                 lastItemsChangedAtUtc,
                 LastItemChanges,
-                itemHash);
+                itemHash,
+                ProjectCopyData);
         }
     }
 }

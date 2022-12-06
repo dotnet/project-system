@@ -109,8 +109,8 @@
     DisplayName="Resource"
     ItemType="Resource" />
 
-  <ItemType Name="None" DisplayName="None"/>
-  <ItemType Name="Content" DisplayName="Content" />
+  <ItemType Name="None" DisplayName="None" UpToDateCheckInput="False" />
+  <ItemType Name="Content" DisplayName="Content" UpToDateCheckInput="False" />
   <ItemType Name="EmbeddedResource" DisplayName="Embedded resource" />
   <ItemType Name="Page" DisplayName="Page" />
   <ItemType Name="ApplicationDefinition" DisplayName="Application definition" />
