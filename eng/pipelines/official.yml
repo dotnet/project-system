@@ -261,6 +261,9 @@ stages:
     - ${{ if eq(parameters.SkipCompliance, false) }}:
       - Compliance
     variables:
+      # Only used for tracking purposes in MicroBuild tasks.
+      # See: https://devdiv.visualstudio.com/DevDiv/_wiki/wikis/DevDiv.wiki/650/MicroBuild-Signing?anchor=high-level-steps-to-enable-signing
+      TeamName: DotNet-Project-System
       # Gets the PackageVersion variable produced by the Build pipeline.
       PackageVersion: $[ stageDependencies.Build.BuildOfficialRelease.outputs['SetPackageVersion.PackageVersion'] ]
       # Gets the AssemblyVersion variable produced by the Build pipeline.

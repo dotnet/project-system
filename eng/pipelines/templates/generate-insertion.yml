@@ -34,12 +34,6 @@ jobs:
       git fetch --depth $(PriorInsertionCommitDepth) origin $(InsertionVSBranch)
     displayName: Fetch VS Repo
 
-  - powershell: |
-      Set-Location '$(Pipeline.Workspace)/VS'
-      Write-Host '$(Pipeline.Workspace)/VS contents:'
-      Get-ChildItem
-    displayName: Check Directory Files
-
   ###################################################################################################################################################################
   # GENERATE VS INSERTION
   ###################################################################################################################################################################
@@ -61,22 +55,10 @@ jobs:
       # When this isn't provided, the tool sets the --AadAuth flag instead of using --PatAuthEnvVar. The AadAuth doesn't seem to work for this situation.
       AccessToken: $(System.AccessToken)
 
-  - powershell: |
-      Set-Location '$(Pipeline.Workspace)/VS'
-      Write-Host '$(Pipeline.Workspace)/VS contents:'
-      Get-ChildItem
-    displayName: Check Directory Files
-
   # Creates the description for the VS Insertion PR and sets it to the InsertionDescription variable. Also sets the ShortCommitId variable based on currentSha.
   - powershell: . '$(Build.SourcesDirectory)/eng/scripts/GetInsertionPRDescription.ps1' -vsDirectory '$(Pipeline.Workspace)/VS/' -currentSha '$(Build.SourceVersion)' -repoUrl '$(Build.Repository.Uri)' -projectName '$(Build.DefinitionName)'
     displayName: Create VS Insertion Description
     failOnStderr: true
-
-  - powershell: |
-      Set-Location '$(Pipeline.Workspace)/VS'
-      Write-Host '$(Pipeline.Workspace)/VS contents:'
-      Get-ChildItem
-    displayName: Check Directory Files
 
   # Creates a VS insertion PR using the Products drop containing the .vsman files.
   # Documentation: https://devdiv.visualstudio.com/DevDiv/_wiki/wikis/DevDiv.wiki/635/Overview?anchor=**build-pipeline**
@@ -116,8 +98,8 @@ jobs:
       LinkWorkItemsToPR: false
 
   - powershell: |
-      Set-Location '$(Pipeline.Workspace)/VS'
-      Write-Host '$(Pipeline.Workspace)/VS contents:'
+      Set-Location '$(Pipeline.Workspace)/project-system/VS'
+      Write-Host '$(Pipeline.Workspace)/project-system/VS contents:'
       Get-ChildItem
     displayName: Check Directory Files
 
@@ -125,7 +107,7 @@ jobs:
     displayName: MicroBuild Cleanup
 
   - powershell: |
-      Set-Location '$(Pipeline.Workspace)/VS'
-      Write-Host '$(Pipeline.Workspace)/VS contents:'
+      Set-Location '$(Pipeline.Workspace)/project-system/VS'
+      Write-Host '$(Pipeline.Workspace)/project-system/VS contents:'
       Get-ChildItem
     displayName: Check Directory Files
