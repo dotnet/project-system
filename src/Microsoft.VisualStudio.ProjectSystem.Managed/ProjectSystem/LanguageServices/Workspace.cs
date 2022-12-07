@@ -546,7 +546,7 @@ internal sealed class Workspace : OnceInitializedOnceDisposedUnderLockAsync, IWo
         Requires.NotNull(action, nameof(action));
         Verify.NotDisposed(this);
 
-        cancellationToken = CancellationTokenSource.CreateLinkedTokenSource(_unloadCancellationToken, cancellationToken).Token;
+        cancellationToken = CancellationTokenExtensions.CombineWith(_unloadCancellationToken, cancellationToken).Token;
 
         await WhenContextCreated(cancellationToken);
 
@@ -558,7 +558,7 @@ internal sealed class Workspace : OnceInitializedOnceDisposedUnderLockAsync, IWo
         Requires.NotNull(action, nameof(action));
         Verify.NotDisposed(this);
 
-        cancellationToken = CancellationTokenSource.CreateLinkedTokenSource(_unloadCancellationToken, cancellationToken).Token;
+        cancellationToken = CancellationTokenExtensions.CombineWith(_unloadCancellationToken, cancellationToken).Token;
 
         await WhenContextCreated(cancellationToken);
 
