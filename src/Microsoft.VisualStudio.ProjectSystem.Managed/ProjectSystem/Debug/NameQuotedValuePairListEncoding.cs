@@ -11,19 +11,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
     {
         public IEnumerable<(string Name, string Value)> Parse(string value)
         {
-            if (string.IsNullOrWhiteSpace(value))
-            {
-                yield break;
-            }
+            Requires.NotNullOrWhiteSpace(value, nameof(value));
 
             foreach (var entry in ReadEntries(value))
             {
                 var (entryKey, entryValue) = SplitEntry(entry);
-
-                if (!string.IsNullOrEmpty(entryKey))
-                {
-                    yield return (DecodeCharacters(entryKey), StripQuotes(DecodeCharacters(entryValue)));
-                }
+                yield return (DecodeCharacters(entryKey), StripQuotes(DecodeCharacters(entryValue)));
             }
 
             static IEnumerable<string> ReadEntries(string rawText)
@@ -64,7 +57,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
                         {
                             throw new FormatException($"Expected valid name value pair.");
                         }
-                        return (name , value);
+                        return (name, value);
                     }
                     else if (entry[i] == '/')
                     {
@@ -80,7 +73,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
 
             static string DecodeCharacters(string value)
             {
-                
+
                 return value.Replace("/\"", "\"").Replace("/=", "=").Replace("/,", ",").Replace("//", "/");
             }
 
@@ -101,15 +94,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             static string EncodeCharacters(string value)
             {
                 int i = value.Length - 1;
-                while( i > -1)
+                while (i > -1)
                 {
                     if (value[i] == '/' || value[i] == ',' || value[i] == '=' || value[i] == '"')
                     {
-                        if (i == 0 || value[i-1] != '/')
+                        if (i == 0 || value[i - 1] != '/')
                         {
                             value = value.Insert(i, "/");
                         }
-                        else if(value[i - 1] == '/')
+                        else if (value[i - 1] == '/')
                         {
                             i--;
                         }
