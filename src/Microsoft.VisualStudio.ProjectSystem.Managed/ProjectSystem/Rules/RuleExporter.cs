@@ -192,7 +192,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Rules
             ///     Represents evaluation items containing marker files indicating that reference projects have out of date references.
             /// </summary>
             [ExportRule(nameof(CopyUpToDateMarker), PropertyPageContexts.ProjectSubscriptionService)]
-            [AppliesTo(ProjectCapability.DotNet + "+ !" + ProjectCapabilities.SharedAssetsProject)]
+            [AppliesTo(BuildUpToDateCheck.AppliesToExpression)]
             [Order(Order.Default)]
             public static int CopyUpToDateMarkerRule;
 
@@ -200,7 +200,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Rules
             ///     Represents the design-time build items containing resolved references path.
             /// </summary>
             [ExportRule(nameof(ResolvedCompilationReference), PropertyPageContexts.ProjectSubscriptionService)]
-            [AppliesTo(ProjectCapability.DotNet + "+ !" + ProjectCapabilities.SharedAssetsProject)]
+            [AppliesTo(BuildUpToDateCheck.AppliesToExpression)]
             [Order(Order.Default)]
             public static int ResolvedCompilationReferencedRule;
 
@@ -208,7 +208,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Rules
             ///     Represents design-time build items containing the input files into the build.
             /// </summary>
             [ExportRule(nameof(UpToDateCheckInput), PropertyPageContexts.ProjectSubscriptionService)]
-            [AppliesTo(ProjectCapability.DotNet + "+ !" + ProjectCapabilities.SharedAssetsProject)]
+            [AppliesTo(BuildUpToDateCheck.AppliesToExpression)]
             [Order(Order.Default)]
             public static int UpToDateCheckInputRule;
 
@@ -216,7 +216,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Rules
             ///     Represents design-time build items containing the output files of the build.
             /// </summary>
             [ExportRule(nameof(UpToDateCheckOutput), PropertyPageContexts.ProjectSubscriptionService)]
-            [AppliesTo(ProjectCapability.DotNet + "+ !" + ProjectCapabilities.SharedAssetsProject)]
+            [AppliesTo(BuildUpToDateCheck.AppliesToExpression)]
             [Order(Order.Default)]
             public static int UpToDateCheckOutputRule;
 
@@ -224,9 +224,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.Rules
             ///     Represents design-time build items containing a mapping between input and the output files of the build.
             /// </summary>
             [ExportRule(nameof(UpToDateCheckBuilt), PropertyPageContexts.ProjectSubscriptionService)]
-            [AppliesTo(ProjectCapability.DotNet + "+ !" + ProjectCapabilities.SharedAssetsProject)]
+            [AppliesTo(BuildUpToDateCheck.AppliesToExpression)]
             [Order(Order.Default)]
             public static int UpToDateCheckBuiltRule;
+
+            /// <summary>
+            ///     Represents design-time build items containing items this project contributes to the output directory.
+            /// </summary>
+            [ExportRule(nameof(CopyToOutputDirectoryItem), PropertyPageContexts.ProjectSubscriptionService)]
+            [AppliesTo(BuildUpToDateCheck.AppliesToExpression)]
+            [Order(Order.Default)]
+            public static int CopyToOutputDirectoryItemRule;
         }
 
         /// <summary>

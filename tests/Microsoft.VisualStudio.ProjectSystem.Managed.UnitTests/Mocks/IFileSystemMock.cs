@@ -40,6 +40,7 @@ namespace Microsoft.VisualStudio.IO
         private readonly HashSet<string> _folders = new(StringComparer.OrdinalIgnoreCase);
 
         private string? _currentDirectory;
+
         public Dictionary<string, FileData> Files { get; } = new Dictionary<string, FileData>(StringComparer.OrdinalIgnoreCase);
 
         public void Create(string path)
@@ -189,11 +190,32 @@ namespace Microsoft.VisualStudio.IO
             throw new NotImplementedException();
         }
 
+        public (long SizeBytes, DateTime WriteTimeUtc)? GetFileSizeAndWriteTimeUtc(string path)
+        {
+            if (Files.TryGetValue(path, out FileData value))
+            {
+                return (value.FileContents?.Length ?? 0, value.LastWriteTimeUtc);
+            }
+
+            return null;
+        }
+
         private FileData GetFileData(string path)
         {
             if (!Files.TryGetValue(path, out FileData fileData))
             {
                 throw new FileNotFoundException();
+            }
+
+            return fileData;
+        }
+
+        private FileData GetOrAddFileData(string path)
+        {
+            if (!Files.TryGetValue(path, out FileData fileData))
+            {
+                fileData = new();
+                Files.Add(path, fileData);
             }
 
             return fileData;

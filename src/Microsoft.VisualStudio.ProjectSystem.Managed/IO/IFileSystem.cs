@@ -50,6 +50,8 @@ namespace Microsoft.VisualStudio.IO
 
         bool TryGetFileSizeBytes(string path, out long result);
 
+        (long SizeBytes, DateTime WriteTimeUtc)? GetFileSizeAndWriteTimeUtc(string path);
+
         bool DirectoryExists(string path);
         void CreateDirectory(string path);
         string GetFullPath(string path);

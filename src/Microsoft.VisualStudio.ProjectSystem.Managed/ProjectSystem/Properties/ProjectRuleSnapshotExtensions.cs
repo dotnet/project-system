@@ -57,6 +57,20 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         }
 
         /// <summary>
+        ///     Gets the bool value of a property, or <see langword="null"/> if it is empty or cannot otherwise be parsed as a bool.
+        /// </summary>
+        public static bool? GetBooleanPropertyValue(this IImmutableDictionary<string, IProjectRuleSnapshot> snapshots, string ruleName, string propertyName)
+        {
+            Requires.NotNull(snapshots, nameof(snapshots));
+            Requires.NotNull(ruleName, nameof(ruleName));
+            Requires.NotNull(propertyName, nameof(propertyName));
+
+            string? value = snapshots.GetPropertyOrDefault(ruleName, propertyName, defaultValue: null);
+
+            return bool.TryParse(value, out bool b) ? b : null;
+        }
+
+        /// <summary>
         ///     Gets the snapshot associated with the specified rule, or an empty snapshot if it does not exist.
         /// </summary>
         public static IProjectRuleSnapshot GetSnapshotOrEmpty(this IImmutableDictionary<string, IProjectRuleSnapshot> snapshots, string ruleName)

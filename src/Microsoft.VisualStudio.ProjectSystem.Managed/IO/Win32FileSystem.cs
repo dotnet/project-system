@@ -115,6 +115,18 @@ namespace Microsoft.VisualStudio.IO
             return false;
         }
 
+        public (long SizeBytes, DateTime WriteTimeUtc)? GetFileSizeAndWriteTimeUtc(string path)
+        {
+            var info = new FileInfo(path);
+
+            if (info.Exists)
+            {
+                return (info.Length, info.LastWriteTimeUtc);
+            }
+
+            return null;
+        }
+
         public bool DirectoryExists(string dirPath)
         {
             return Directory.Exists(dirPath);
