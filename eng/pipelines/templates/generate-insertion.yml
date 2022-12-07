@@ -97,17 +97,6 @@ jobs:
       # Documentation: https://devdiv.visualstudio.com/DevDiv/_wiki/wikis/DevDiv.wiki/634/Link-Work-Items-to-PR
       LinkWorkItemsToPR: false
 
-  - powershell: |
-      Set-Location '$(Pipeline.Workspace)/project-system/VS'
-      Write-Host '$(Pipeline.Workspace)/project-system/VS contents:'
-      Get-ChildItem
-    displayName: Check Directory Files
-
-  - task: MicroBuildCleanup@1
-    displayName: MicroBuild Cleanup
-
-  - powershell: |
-      Set-Location '$(Pipeline.Workspace)/project-system/VS'
-      Write-Host '$(Pipeline.Workspace)/project-system/VS contents:'
-      Get-ChildItem
-    displayName: Check Directory Files
+  # The MicroBuildInsertVsPayload clones the VS repo. This removes the cloned repo after use.
+  - powershell: Remove-Item -Path '$(Pipeline.Workspace)/project-system/VS' -Recurse -Force -ErrorAction Ignore
+    displayName: Clean VS Directory
