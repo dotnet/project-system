@@ -45,6 +45,7 @@ jobs:
 
   # Sets the Products drop for permanent retention. This is the drop that contains the VS insertion data (.vsman files).
   # Overview: https://devdiv.visualstudio.com/DevDiv/_wiki/wikis/DevDiv.wiki/635/Overview
+  # YAML reference: https://dev.azure.com/devdiv/Engineering/_git/MicroBuild?path=/src/Tasks/RetainDrops/task.json
   - task: MicroBuildRetainVstsDrops@1
     displayName: Retain Products Drop
     inputs:

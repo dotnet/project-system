@@ -44,6 +44,7 @@ jobs:
 
   # This creates the Products drop location and uploads the insertion data (.vsman files) for VS insertion.
   # This also includes the bootstrapper files (.exe and .vsman) necessary for OptProf.
+  # YAML reference: https://dev.azure.com/devdiv/Engineering/_git/MicroBuild?path=/src/Tasks/UploadDrop/task.json
   - task: MicroBuildUploadVstsDropFolder@2
     displayName: Publish Insertion Data
     inputs:
