@@ -401,7 +401,7 @@ dotnet_diagnostic.VSTHRD111.severity = none     # Use ConfigureAwait(true).
 dotnet_diagnostic.VSTHRD100.severity = error    # Avoid async void methods
 
 # Microsoft.VisualStudio.SDK.Analyzers
-dotnet_diagnostic.VSSDK006.severity = none      # Check whether the result of GetService calls is null
+dotnet_diagnostic.VSSDK006.severity = warning   # Check whether the result of GetService calls is null
 
 # Microsoft.CodeAnalysis.VisualBasic.CodeStyle/Microsoft.CodeAnalysis.CSharp.CodeStyle
 dotnet_diagnostic.IDE0073.severity = warning      # Enforce file header
