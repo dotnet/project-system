@@ -381,6 +381,7 @@ dotnet_diagnostic.IDE0002.severity = warning      # Simplify (member access)    
 dotnet_diagnostic.IDE0005.severity = warning      # Using directive is unnecessary                using System.Text;
 dotnet_diagnostic.IDE0030.severity = warning      # Use coalesce expression (nullable)            int? y = x.HasValue ? x.Value : 0                   int? y = x ?? 0;
 dotnet_diagnostic.IDE0030WithoutSuggestion.severity = error
+dotnet_diagnostic.IDE0031.severity = warning      # Use null propagation (nullable)
 dotnet_diagnostic.IDE0079.severity = warning      # Unused suppresion
 dotnet_diagnostic.IDE0083.severity = warning      # Use pattern matching
 dotnet_diagnostic.IDE0084.severity = warning      # Use IsNot
@@ -406,3 +407,7 @@ dotnet_diagnostic.VSSDK006.severity = none      # Check whether the result of Ge
 dotnet_diagnostic.IDE0073.severity = warning      # Enforce file header
 file_header_template = Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
+
+# Reduce severity for some VB rules where the risks of changes outweight the benefit
+[*.{vb}]
+dotnet_diagnostic.IDE0031.severity = suggestion   # Use null propagation (nullable)
