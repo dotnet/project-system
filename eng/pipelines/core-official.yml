@@ -97,3 +97,4 @@ stages:
         runID: $(Build.BuildId)
         pipelineID: $(System.DefinitionId)
         InsertTargetBranch: ${{ parameters.InsertionVSGreenBranch }}
+        ComponentSubDir: $(Build.Repository.Name)
