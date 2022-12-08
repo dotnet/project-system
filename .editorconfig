@@ -224,11 +224,11 @@ dotnet_diagnostic.CSIsNull002.severity = warning
 [*.{cs,vb}]
 
 # Microsoft.Analyzers.ManagedCodeAnalysis
-dotnet_diagnostic.CA1801.severity = none        # Review unused parameters
-dotnet_diagnostic.CA1804.severity = none        # Remove unused locals
+dotnet_diagnostic.CA1801.severity = warning     # Review unused parameters
+dotnet_diagnostic.CA1804.severity = warning     # Remove unused locals
 dotnet_diagnostic.CA1806.severity = none        # Do not ignore method results
 dotnet_diagnostic.CA1821.severity = none        # Remove empty Finalizers
-dotnet_diagnostic.CA1823.severity = none        # Avoid unused private fields
+dotnet_diagnostic.CA1823.severity = warning     # Avoid unused private fields
 dotnet_diagnostic.CA1824.severity = none        # Mark assemblies with NeutralResourcesLanguageAttribute
 dotnet_diagnostic.CA2200.severity = none        # Rethrow to preserve stack details
 
