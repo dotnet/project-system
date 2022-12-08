@@ -66,7 +66,9 @@ namespace Microsoft.VisualStudio.Threading.Tasks
         /// <exception cref="ObjectDisposedException">This object has been disposed.</exception>
         public CancellationToken CreateNext(CancellationToken token = default)
         {
+#pragma warning disable RS0030 // Do not used banned APIs (cannot use alternative API here)
             var nextSource = CancellationTokenSource.CreateLinkedTokenSource(token, _superToken);
+#pragma warning restore RS0030 // Do not used banned APIs
 
             // Obtain the token before exchange, as otherwise the CTS may be cancelled before
             // we request the Token, which will result in an ObjectDisposedException.
