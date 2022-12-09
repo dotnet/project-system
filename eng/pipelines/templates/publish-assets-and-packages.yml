@@ -44,6 +44,7 @@ jobs:
 
   # This creates the Products drop location and uploads the insertion data (.vsman files) for VS insertion.
   # This also includes the bootstrapper files (.exe and .vsman) necessary for OptProf.
+  # YAML reference: https://dev.azure.com/devdiv/Engineering/_git/MicroBuild?path=/src/Tasks/UploadDrop/task.json
   - task: MicroBuildUploadVstsDropFolder@2
     displayName: Publish Insertion Data
     inputs:
@@ -54,6 +55,7 @@ jobs:
       # Issue: https://github.com/dotnet/project-system/issues/8431
       # Example of current path: 'Products/[DevDiv]/[dotnet/project-system]/[main]/[x.x]'
       DropName: Products/$(System.TeamProject)/$(Build.Repository.Name)/$(Build.SourceBranchName)/$(Build.BuildNumber)
+      DropRetentionDays: 60
       # When this isn't provided, the tool sets the --AadAuth flag instead of using --PatAuthEnvVar. The AadAuth doesn't seem to work for this situation.
       AccessToken: $(System.AccessToken)
 
