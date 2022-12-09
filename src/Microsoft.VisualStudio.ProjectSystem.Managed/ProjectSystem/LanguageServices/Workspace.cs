@@ -582,6 +582,17 @@ internal sealed class Workspace : OnceInitializedOnceDisposedUnderLockAsync, IWo
     }
 
     /// <summary>
+    /// Called when the dataflow that provides project data to <see cref="OnWorkspaceUpdateAsync(IProjectVersionedValue{WorkspaceUpdate})"/>
+    /// faults for some reason. This allows the workspace to know that no further updates are coming.
+    /// </summary>
+    /// <param name="exception"></param>
+    internal void Fault(Exception exception)
+    {
+        // Ensure we unblock any code waiting for initialization, and surface the error to the caller.
+        _contextCreated.TrySetException(exception);
+    }
+
+    /// <summary>
     /// Maps from our property data snapshot to Roslyn's API for accessing the project's
     /// evaluation data.
     /// </summary>

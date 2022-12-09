@@ -90,6 +90,14 @@ internal class WorkspaceFactory : IWorkspaceFactory
                 severity: ProjectFaultSeverity.LimitedFunctionality,
                 nameFormat: "Workspace update handler {0}");
 
+        // Notify the workspace if the dataflow faults, to avoid hanging during initialization
+        // while waiting for data that won't ever arrive due to the fault.
+        _ = actionBlock.Completion.ContinueWith(
+            task => workspace.Fault(task.Exception),
+            CancellationToken.None,
+            TaskContinuationOptions.OnlyOnFaulted,
+            TaskScheduler.Default);
+
         #region Ordering evaluation before first build
 
         IPropagatorBlock<IProjectVersionedValue<WorkspaceUpdate>, IProjectVersionedValue<WorkspaceUpdate>> orderingBlock
