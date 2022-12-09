@@ -1,7 +1,5 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
-using Microsoft.VisualStudio.LanguageServices.ProjectSystem;
-
 namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 {
     internal readonly struct ContextState
@@ -13,8 +11,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         }
 
         /// <summary>
-        ///     Gets a value indicating whether the <see cref="IWorkspaceProjectContext"/> is the active one for 
-        ///     the editor.
+        ///     Gets a value indicating whether the related language service project serves as the active "context"
+        ///     for the editor.
         /// </summary>
         /// <remarks>
         ///     The "active" context for the editor is the one that Roslyn uses to drive IntelliSense, refactorings
@@ -24,7 +22,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         public bool IsActiveEditorContext { get; }
 
         /// <summary>
-        ///     Gets a value indicating whether the <see cref="IWorkspaceProjectContext"/> is context in the active 
+        ///     Gets a value indicating whether the related language service project is context in the active
         ///     configuration for a project.
         /// </summary>
         /// <remarks>
