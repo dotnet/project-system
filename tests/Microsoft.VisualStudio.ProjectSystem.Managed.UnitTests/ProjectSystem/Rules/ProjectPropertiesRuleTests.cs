@@ -12,27 +12,29 @@ namespace Microsoft.VisualStudio.ProjectSystem.Rules
         public void CategoriesShouldBeDefinedOnFile(string ruleName, string fullPath)
         {
             XElement rule = LoadXamlRule(fullPath, out var namespaceManager);
-            IEnumerable<string> categories = GetCategories();
+            var categories = new HashSet<string>();
+            AddCategories();
+            
             var propertyElements = rule.XPathSelectElements(@"/msb:Rule", namespaceManager).Elements();
 
             // If the page is an extension, we have to check the base page for categories.            
             if (ruleName.Contains(".CSharp"))
-                categories.Union(GetCategories(".CSharp")).Distinct();
-            
+                AddCategories(".CSharp");
+
             else if (ruleName.Contains(".VisualBasic"))
-                categories.Union(GetCategories(".VisualBasic")).Distinct();
-            
+                AddCategories(".VisualBasic");
+
             else if (ruleName.Contains(".FSharp"))
-                categories.Union(GetCategories(".FSharp")).Distinct();
+                AddCategories(".FSharp");
 
             foreach (XElement element in propertyElements)
             {
                 // Skip these xml elements.
-                if (element.Name.LocalName == "Rule.Categories" || element.Name.LocalName == "Rule.DataSource" || element.Name.LocalName == "Rule.Metadata")
+                if (element.Name.LocalName is "Rule.Categories" or "Rule.DataSource" or "Rule.Metadata")
                     continue;
 
                 // Skip if the property is not visible.
-                if (element.Attribute("Visible") is null || element.Attribute("Visible").Value == "False")
+                if (element.Attribute("Visible") is null || bool.TryParse(element.Attribute("Visible").Value, out bool isVisible) )
                     continue;
 
                 var categoryAttribute = element.Attribute("Category");
@@ -45,17 +47,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.Rules
                 Assert.True(categories.Contains(categoryAttribute.Value), $"Rule '{ruleName}' has a property '{element.Attribute("Name").Value}' with a category '{categoryAttribute.Value}' that is not defined in the set of categories. Please add the category to the set of categories in the Rule.Categories.");
             }
 
-            IEnumerable<string> GetCategories(string ruleExtension = "")
+            void AddCategories(string ruleExtension = "")
             {
                 try
                 {
                     XElement baseRule = LoadXamlRule(fullPath.Remove(fullPath.IndexOf(ruleExtension), ruleExtension.Length), out var baseNamespaceManager);
-                    return baseRule.XPathSelectElements(@"/msb:Rule/msb:Rule.Categories/msb:Category", baseNamespaceManager).Select(e => e.Attribute("Name").Value).ToList();
+                    var baseCategories = baseRule.XPathSelectElements(@"/msb:Rule/msb:Rule.Categories/msb:Category", baseNamespaceManager).Select(e => e.Attribute("Name").Value).ToHashSet();
+                    categories.AddRange(baseCategories);
                 } 
                 catch (FileNotFoundException)
                 {
-                    // It's okay if there's no base file, let's just return an empty list.
-                    return new List<string>();
+                    // It's okay if there's no base file, don't add any categories.
                 }
             }
         }
