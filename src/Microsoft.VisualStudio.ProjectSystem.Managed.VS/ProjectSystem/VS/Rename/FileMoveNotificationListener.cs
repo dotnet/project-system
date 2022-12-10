@@ -3,12 +3,16 @@
 using System.Diagnostics.CodeAnalysis;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Rename;
+using Microsoft.CodeAnalysis.Text;
 using Microsoft.VisualStudio.LanguageServices;
 using Microsoft.VisualStudio.OperationProgress;
 using Microsoft.VisualStudio.ProjectSystem.Waiting;
 using Microsoft.VisualStudio.Settings;
+using Microsoft.VisualStudio.Shell;
+using Microsoft.VisualStudio.TextManager.Interop;
 using Microsoft.VisualStudio.Threading;
 using Path = System.IO.Path;
+using RunningDocumentTable = Microsoft.VisualStudio.Shell.RunningDocumentTable;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
 {
@@ -17,6 +21,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
     [AppliesTo(ProjectCapability.CSharpOrVisualBasicLanguageService)]
     internal class FileMoveNotificationListener : IFileMoveNotificationListener
     {
+        private static readonly DocumentRenameOptions s_renameOptions = new();
+
         private readonly UnconfiguredProject _unconfiguredProject;
         private readonly IUserNotificationServices _userNotificationServices;
         private readonly IUnconfiguredProjectVsServices _projectVsServices;
@@ -26,6 +32,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
         private readonly IWaitIndicator _waitService;
         private readonly IRoslynServices _roslynServices;
         private readonly IVsService<SVsSettingsPersistenceManager, ISettingsManager> _settingsManagerService;
+        private readonly IServiceProvider _serviceProvider;
 
         private List<(Renamer.RenameDocumentActionSet Set, string FileName)>? _actions;
 
@@ -39,7 +46,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
             IVsService<SVsOperationProgress, IVsOperationProgressStatusService> operationProgressService,
             IWaitIndicator waitService,
             IRoslynServices roslynServices,
-            IVsService<SVsSettingsPersistenceManager, ISettingsManager> settingsManagerService)
+            IVsService<SVsSettingsPersistenceManager, ISettingsManager> settingsManagerService,
+#pragma warning disable RS0030 // Do not used banned APIs
+            [Import(typeof(SVsServiceProvider))] IServiceProvider serviceProvider)
+#pragma warning restore RS0030 // Do not used banned APIs
         {
             _unconfiguredProject = unconfiguredProject;
             _userNotificationServices = userNotificationServices;
@@ -50,6 +60,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
             _waitService = waitService;
             _roslynServices = roslynServices;
             _settingsManagerService = settingsManagerService;
+            _serviceProvider = serviceProvider;
         }
 
         public async Task OnBeforeFilesMovedAsync(IReadOnlyCollection<IFileMoveItem> items)
@@ -135,11 +146,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
                         continue;
                     }
 
+                    RunningDocumentTable runningDocumentTable = new(_serviceProvider);
+                    RunningDocumentInfo documentInfo = runningDocumentTable.GetDocumentInfo(filenameWithPath);
+                    // Indicates that the document exists in the table.
+                    if (documentInfo.DocCookie != VSConstants.VSCOOKIE_NIL && documentInfo.DocData is IVsTextBuffer textBuffer)
+                    {
+                        // Use the same document but replace it with the text from the text buffer in the running document table.
+                        oldDocument = oldDocument.WithText(SourceText.From(textBuffer.ToString()));
+                    }
+
                     // This is a file item to another directory, it should only detect this a Update Namespace action.
-                    // TODO Upgrade this api to get rid of the exclamation sign
-#pragma warning disable CS0618 // Type or member is obsolete https://github.com/dotnet/project-system/issues/8591
-                    Renamer.RenameDocumentActionSet documentAction = await Renamer.RenameDocumentAsync(oldDocument, null!, documentFolders);
-#pragma warning restore CS0618 // Type or member is obsolete
+                    Renamer.RenameDocumentActionSet documentAction = await Renamer.RenameDocumentAsync(oldDocument, s_renameOptions, null, documentFolders);
 
                     if (documentAction.ApplicableActions.IsEmpty ||
                         documentAction.ApplicableActions.Any(a => !a.GetErrors().IsEmpty))
