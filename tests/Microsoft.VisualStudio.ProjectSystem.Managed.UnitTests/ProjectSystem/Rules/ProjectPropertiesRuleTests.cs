@@ -34,7 +34,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Rules
                     continue;
 
                 // Skip if the property is not visible.
-                if (element.Attribute("Visible") is null || bool.TryParse(element.Attribute("Visible").Value, out bool isVisible) )
+                if (!bool.TryParse(element.Attribute("Visible")?.Value, out bool isVisible) || !isVisible)
                     continue;
 
                 var categoryAttribute = element.Attribute("Category");
