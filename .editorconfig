@@ -230,6 +230,7 @@ dotnet_diagnostic.CA1806.severity = none        # Do not ignore method results
 dotnet_diagnostic.CA1821.severity = none        # Remove empty Finalizers
 dotnet_diagnostic.CA1823.severity = warning     # Avoid unused private fields
 dotnet_diagnostic.CA1824.severity = none        # Mark assemblies with NeutralResourcesLanguageAttribute
+dotnet_diagnostic.CA1851.severity = warning     # Detect multiple enumeration
 dotnet_diagnostic.CA2200.severity = none        # Rethrow to preserve stack details
 
 # Microsoft.NetCore.Analyzers

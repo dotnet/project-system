@@ -56,7 +56,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         Public Shared Function GetSupportedTargetFrameworkMonikers(
                 frameworkMultiTargeting As IVsFrameworkMultiTargeting,
                 project As Project,
-                converter As TypeConverter) As IEnumerable(Of TargetFrameworkMoniker)
+                converter As TypeConverter) As IReadOnlyList(Of TargetFrameworkMoniker)
 
             Dim provider = GetSupportedTargetFrameworksProvider(frameworkMultiTargeting, project, converter)
 
