@@ -161,7 +161,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Rules
         }
 
         /// <summary>
-        ///     Contains rules for the language service implementations.
+        ///     Contains rules for the language service implementations (e.g. implementations of <c>IWorkspaceUpdateHandler</c>).
         /// </summary>
         private static class LanguageServiceRules
         {
