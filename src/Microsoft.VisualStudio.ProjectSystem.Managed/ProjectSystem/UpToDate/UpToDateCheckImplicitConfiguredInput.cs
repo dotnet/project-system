@@ -669,14 +669,25 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
                 static bool IncludeProjectReference(IImmutableDictionary<string, string> metadata)
                 {
-                    // Exclude any project references for which we do not reference the output assembly.
+                    // TODO this filtering is overzealous. In each of these cases, there are subtleties to how
+                    // builds handle the output assembly vs. CopyToOutputDirectory items both of the directly
+                    // referenced project, and of transitively referenced projects. To improve this we need
+                    // more information on the edges of our project reference graph.
+
+                    // Exclude any project reference for which we do not reference the output assembly.
                     if (metadata.GetBoolProperty(ResolvedProjectReference.ReferenceOutputAssemblyProperty) == false)
                     {
                         return false;
                     }
 
-                    // Exclude any project references having Private="false" (aka CopyLocal="No").
+                    // Exclude any project reference having Private="false" (aka CopyLocal="No").
                     if (metadata.GetBoolProperty(ResolvedProjectReference.PrivateProperty) == false)
+                    {
+                        return false;
+                    }
+
+                    // Exclude any project reference having EmbedInteropTypes="true".
+                    if (metadata.GetBoolProperty(ResolvedProjectReference.EmbedInteropTypesProperty) == true)
                     {
                         return false;
                     }
