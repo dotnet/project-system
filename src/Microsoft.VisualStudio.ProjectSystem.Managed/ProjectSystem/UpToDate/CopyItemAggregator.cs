@@ -14,6 +14,7 @@ internal class CopyItemAggregator : ICopyItemAggregator
     public void SetProjectData(ProjectCopyData projectCopyData)
     {
         System.Diagnostics.Debug.Assert(Path.IsPathRooted(projectCopyData.TargetPath));
+        Requires.Argument(!projectCopyData.IsDefault, nameof(projectCopyData), "Must not be default.");
 
         lock (_projectData)
         {
