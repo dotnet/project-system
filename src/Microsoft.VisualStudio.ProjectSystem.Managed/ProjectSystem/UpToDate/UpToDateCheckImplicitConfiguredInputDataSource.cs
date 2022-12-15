@@ -122,7 +122,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
                 if (priorCopyData != state.ProjectCopyData)
                 {
-                    _copyItemAggregator.SetProjectData(state.ProjectCopyData);
+                    // If the FUTDC is disabled, we won't have valid copy items in the snapshot.
+                    if (!state.IsDisabled)
+                    {
+                        _copyItemAggregator.SetProjectData(state.ProjectCopyData);
+                    }
                 }
 
                 if (state.ItemHash is not null && _persistentState is not null && (priorItemHash != state.ItemHash || priorLastItemsChangedAtUtc != state.LastItemsChangedAtUtc))
