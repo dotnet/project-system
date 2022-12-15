@@ -1,6 +1,5 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
-using System.Diagnostics;
 using Microsoft.VisualStudio.Composition;
 
 namespace Microsoft.VisualStudio.ProjectSystem.UpToDate;
@@ -13,22 +12,10 @@ internal class CopyItemAggregator : ICopyItemAggregator
 
     public void SetProjectData(ProjectCopyData projectCopyData)
     {
-        System.Diagnostics.Debug.Assert(Path.IsPathRooted(projectCopyData.TargetPath));
         Requires.Argument(!projectCopyData.IsDefault, nameof(projectCopyData), "Must not be default.");
 
         lock (_projectData)
         {
-            // TODO remove this debug output, or log elsewhere
-            Trace.WriteLine($"*********************** CopyItem data for {projectCopyData.TargetPath}:");
-            foreach (CopyItem copyItem in projectCopyData.CopyItems)
-            {
-                Trace.WriteLine($"  {copyItem.AbsoluteSourcePath} -> {copyItem.RelativeTargetPath} ({copyItem.CopyType})");
-            }
-            foreach (string referencePath in projectCopyData.ReferencedProjectTargetPaths)
-            {
-                Trace.WriteLine($"  References: {referencePath}");
-            }
-
             _projectData[projectCopyData.TargetPath] = projectCopyData;
         }
     }
