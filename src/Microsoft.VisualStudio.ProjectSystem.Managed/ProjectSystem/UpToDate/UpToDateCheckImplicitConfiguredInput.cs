@@ -659,15 +659,41 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                             .Select(pair => new CopyItem(path: pair.Key, metadata: pair.Value))
                             .ToImmutableArray();
 
-                        // Exclude any project references for which we do not reference the output assembly.
-                        // This avoids following references to certain "private" project references, such as PrivateP2PCaching.proj in NBGV.
-                        ImmutableArray<string> referenceItems = change2.After.Items.Where(pair => pair.Value.GetBoolProperty(ResolvedProjectReference.ReferenceOutputAssemblyProperty) == true).Select(item => item.Key).ToImmutableArray();
+                        ImmutableArray<string> referenceItems = change2.After.Items.Where(pair => IncludeProjectReference(pair.Value)).Select(item => item.Key).ToImmutableArray();
 
                         return new ProjectCopyData(msBuildProjectFullPath, targetPath, copyItems, referenceItems);
                     }
                 }
 
                 return ProjectCopyData;
+
+                static bool IncludeProjectReference(IImmutableDictionary<string, string> metadata)
+                {
+                    // TODO this filtering is overzealous. In each of these cases, there are subtleties to how
+                    // builds handle the output assembly vs. CopyToOutputDirectory items both of the directly
+                    // referenced project, and of transitively referenced projects. To improve this we need
+                    // more information on the edges of our project reference graph.
+
+                    // Exclude any project reference for which we do not reference the output assembly.
+                    if (metadata.GetBoolProperty(ResolvedProjectReference.ReferenceOutputAssemblyProperty) == false)
+                    {
+                        return false;
+                    }
+
+                    // Exclude any project reference having Private="false" (aka CopyLocal="No").
+                    if (metadata.GetBoolProperty(ResolvedProjectReference.PrivateProperty) == false)
+                    {
+                        return false;
+                    }
+
+                    // Exclude any project reference having EmbedInteropTypes="true".
+                    if (metadata.GetBoolProperty(ResolvedProjectReference.EmbedInteropTypesProperty) == true)
+                    {
+                        return false;
+                    }
+
+                    return true;
+                }
             }
 
             ProjectFileClassifier BuildClassifier()
