@@ -33,11 +33,21 @@ public class WPFValueProviderTests
                 return Task.FromResult<string?>(shutdownModeValue);
             });
 
-        IEnumerable<string> capabilities = new List<string> { "UseWPF" };
+        IEnumerable<string> capabilities;
 
-        var projectcapabilitiesScope = IProjectCapabilitiesScopeFactory.Create(capabilities);
+        if (bool.TryParse(useWPFPropertyValue, out bool useWPF) && useWPF)
+        {
+            // the capability value is different than the property (WPF vs UseWPF)
+            capabilities = new List<string> { ProjectCapability.WPF };
+        }
+        else
+        {
+            capabilities = new List<string>();
+        }
+
+        var projectCapabilitiesScope = IProjectCapabilitiesScopeFactory.Create(capabilities);
                 
-        var unconfiguredProject = UnconfiguredProjectFactory.Create(@"C:\Test\Path\Here", scope: projectcapabilitiesScope);
+        var unconfiguredProject = UnconfiguredProjectFactory.Create(@"C:\Test\Path\Here", scope: projectCapabilitiesScope);
 
         var provider = new WPFValueProvider(applicationXamlFileAccessor, unconfiguredProject);
 
@@ -93,11 +103,11 @@ public class WPFValueProviderTests
 
         IEnumerable<string> capabilities;
 
-        capabilities = (bool.Parse(useWPFPropertyValue) ? new List<string>() {  "UseWPF" } : new List<string>());
+        capabilities = bool.Parse(useWPFPropertyValue) ? new List<string>() {  ProjectCapability.WPF } : new List<string>();
 
-        var projectcapabilitiesScope = IProjectCapabilitiesScopeFactory.Create(capabilities);
+        var projectCapabilitiesScope = IProjectCapabilitiesScopeFactory.Create(capabilities);
 
-        var unconfiguredProject = UnconfiguredProjectFactory.Create(@"C:\Test\Path\Here", scope: projectcapabilitiesScope);
+        var unconfiguredProject = UnconfiguredProjectFactory.Create(@"C:\Test\Path\Here", scope: projectCapabilitiesScope);
 
         var provider = new WPFValueProvider(applicationXamlFileAccessor, unconfiguredProject);
 
