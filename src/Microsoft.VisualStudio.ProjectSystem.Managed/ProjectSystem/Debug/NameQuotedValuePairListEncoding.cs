@@ -11,12 +11,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
     {
         public IEnumerable<(string Name, string Value)> Parse(string value)
         {
-            Requires.NotNullOrWhiteSpace(value, nameof(value));
-
             foreach (var entry in ReadEntries(value))
             {
                 var (entryKey, entryValue) = SplitEntry(entry);
-                yield return (DecodeCharacters(entryKey), StripQuotes(DecodeCharacters(entryValue)));
+                if (!string.IsNullOrEmpty(entryKey))
+                {
+                    yield return (DecodeCharacters(entryKey), StripQuotes(DecodeCharacters(entryValue)));
+                }
             }
 
             static IEnumerable<string> ReadEntries(string rawText)
@@ -46,6 +47,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
 
             static (string EncodedKey, string EncodedValue) SplitEntry(string entry)
             {
+                if (string.IsNullOrEmpty(entry))
+                {
+                    return (string.Empty, string.Empty);
+                }
                 bool escaped = false;
                 for (int i = 0; i < entry.Length; i++)
                 {
