@@ -11,20 +11,22 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties;
         ShutdownModePropertyName
     },
     ExportInterceptingPropertyValueProviderFile.ProjectFile)]
+[AppliesTo(ProjectCapability.WPF)]
 internal class WPFValueProvider : InterceptingPropertyValueProviderBase
 {
     internal const string StartupURIPropertyName = "StartupURI";
     internal const string ShutdownModePropertyName = "ShutdownMode_WPF";
-    internal const string UseWPFPropertyName = "UseWPF";
     internal const string OutputTypePropertyName = "OutputType";
     internal const string WinExeOutputTypeValue = "WinExe";
 
     private readonly IApplicationXamlFileAccessor _applicationXamlFileAccessor;
+    private readonly UnconfiguredProject _project;
 
     [ImportingConstructor]
-    public WPFValueProvider(IApplicationXamlFileAccessor applicationXamlFileAccessor)
+    public WPFValueProvider(IApplicationXamlFileAccessor applicationXamlFileAccessor, UnconfiguredProject project)
     {
         _applicationXamlFileAccessor = applicationXamlFileAccessor;
+        _project = project;
     }
 
     public override Task<string> OnGetEvaluatedPropertyValueAsync(string propertyName, string evaluatedPropertyValue, IProjectProperties defaultProperties)
@@ -39,7 +41,7 @@ internal class WPFValueProvider : InterceptingPropertyValueProviderBase
 
     public override async Task<string?> OnSetPropertyValueAsync(string propertyName, string unevaluatedPropertyValue, IProjectProperties defaultProperties, IReadOnlyDictionary<string, string>? dimensionalConditions = null)
     {
-        if (await IsWPFApplicationAsync(defaultProperties))
+        if (await IsWpfAndNotWinFormsApplicationAsync(defaultProperties))
         {
             await (propertyName switch
             {
@@ -55,7 +57,7 @@ internal class WPFValueProvider : InterceptingPropertyValueProviderBase
 
     private async Task<string> GetPropertyValueAsync(string propertyName, IProjectProperties defaultProperties)
     {
-        if (await IsWPFApplicationAsync(defaultProperties))
+        if (await IsWpfAndNotWinFormsApplicationAsync(defaultProperties))
         {
             return propertyName switch
             {
@@ -69,13 +71,21 @@ internal class WPFValueProvider : InterceptingPropertyValueProviderBase
         return string.Empty;
     }
 
-    private static async Task<bool> IsWPFApplicationAsync(IProjectProperties defaultProperties)
+    /// <summary>
+    /// This method will help us determine if we need to load the files
+    /// where the properties are stored. For WPF, that is the Application.xaml file;
+    /// for WinForms, that is the .myApp file.
+    /// </summary>
+    private async Task<bool> IsWpfAndNotWinFormsApplicationAsync(IProjectProperties defaultProperties)
     {
-        string useWPFString = await defaultProperties.GetEvaluatedPropertyValueAsync(UseWPFPropertyName);
+        IProjectCapabilitiesScope capabilities = _project.Capabilities;
+
+        bool useWPF = capabilities.Contains(ProjectCapability.WPF);
+        bool useWindowsForms = capabilities.Contains(ProjectCapability.WindowsForms);
         string outputTypeString = await defaultProperties.GetEvaluatedPropertyValueAsync(OutputTypePropertyName);
 
-        return bool.TryParse(useWPFString, out bool useWPF)
-            && useWPF
-            && StringComparers.PropertyLiteralValues.Equals(outputTypeString, WinExeOutputTypeValue);
+        return useWPF
+            && StringComparers.PropertyLiteralValues.Equals(outputTypeString, WinExeOutputTypeValue)
+            && !useWindowsForms;
     }
 }

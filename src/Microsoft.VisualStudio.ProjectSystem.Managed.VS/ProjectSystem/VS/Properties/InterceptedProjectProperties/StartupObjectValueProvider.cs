@@ -6,8 +6,8 @@ using Microsoft.VisualStudio.ProjectSystem.VS.WindowsForms;
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties;
 
 // The AppliesTo metadata has no effect given the limitations described in https://github.com/dotnet/project-system/issues/8170.
-[ExportInterceptingPropertyValueProvider(StartupObjectProperty, ExportInterceptingPropertyValueProviderFile.ProjectFile)]
-[AppliesTo(ProjectCapability.VisualBasic)]
+[ExportInterceptingPropertyValueProvider(InterceptedStartupObjectProperty, ExportInterceptingPropertyValueProviderFile.ProjectFile)]
+[AppliesTo(ProjectCapability.WPF + "|" + ProjectCapability.WindowsForms)]
 internal class StartupObjectValueProvider : InterceptingPropertyValueProviderBase
 {
     private readonly IMyAppFileAccessor _myAppXmlFileAccessor;
@@ -17,6 +17,7 @@ internal class StartupObjectValueProvider : InterceptingPropertyValueProviderBas
     private const string DisabledValue = "WindowsFormsWithCustomSubMain";
 
     internal const string UseWinFormsProperty = "UseWindowsForms";
+    internal const string InterceptedStartupObjectProperty = "StartupObjectVB";
     internal const string StartupObjectProperty = "StartupObject";
     internal const string RootNamespaceProperty = "RootNamespace";
 
