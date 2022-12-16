@@ -1,12 +1,11 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
 using Microsoft.VisualStudio.Composition;
-using Microsoft.VisualStudio.LanguageServices.ProjectSystem;
 
 namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 {
     /// <summary>
-    ///     Tracks the "active" <see cref="IWorkspaceProjectContext"/> for the editor within an <see cref="UnconfiguredProject"/>.
+    ///     Tracks the "active" language service project for the editor within an <see cref="UnconfiguredProject"/>.
     /// </summary>
     /// <remarks>
     ///     <para>
@@ -15,8 +14,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
     ///         of the editor, but can be changed in reaction to other factors.
     ///     </para>
     ///     <para>
-    ///         NOTE: This is distinct from the "active" context for an <see cref="UnconfiguredProject"/> which is
-    ///         tracked via <see cref="IWorkspaceWriter"/>.
+    ///         NOTE: This is distinct from the "active" context for an <see cref="UnconfiguredProject"/>.
     ///     </para>
     /// </remarks>
     [ProjectSystemContract(ProjectSystemContractScope.UnconfiguredProject, ProjectSystemContractProvider.Private, Cardinality = ImportCardinality.ExactlyOne)]
@@ -28,7 +26,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         string? ActiveIntellisenseProjectContext { get; set; }
 
         /// <summary>
-        ///     Returns a value indicating whether the specified <see cref="IWorkspaceProjectContext"/> is the active one for the editor.
+        ///     Returns a value indicating whether the specified language service project is the active one for the editor.
         /// </summary>
         /// <exception cref="ArgumentNullException">
         ///     <paramref name="contextId"/> is <see langword="null" />
@@ -42,7 +40,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         bool IsActiveEditorContext(string contextId);
 
         /// <summary>
-        ///     Registers the <see cref="IWorkspaceProjectContext"/> with the tracker.
+        ///     Registers the language service project with the tracker.
         /// </summary>
         /// <returns>
         ///     An object that, when disposed, unregisters the context.
