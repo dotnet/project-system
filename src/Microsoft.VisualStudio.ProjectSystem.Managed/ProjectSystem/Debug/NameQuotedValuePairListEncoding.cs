@@ -11,8 +11,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
     {
         public IEnumerable<(string Name, string Value)> Parse(string value)
         {
-            Requires.NotNullOrWhiteSpace(value, nameof(value));
-
+            Requires.NotNull(value, nameof(value));
+            if (string.IsNullOrEmpty(value))
+            {
+                yield break;
+            }
             foreach (var entry in ReadEntries(value))
             {
                 var (entryKey, entryValue) = SplitEntry(entry);
