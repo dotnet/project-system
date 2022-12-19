@@ -117,11 +117,6 @@
         <target state="translated">경고를 오류로 처리</target>
         <note />
       </trans-unit>
-      <trans-unit id="BoolProperty|WarningLevelOverridden|DisplayName">
-        <source>WarningLevelOverridden</source>
-        <target state="translated">경고 수준 재정의</target>
-        <note />
-      </trans-unit>
       <trans-unit id="Category|Advanced|Description">
         <source>Advanced settings for the application.</source>
         <target state="translated">응용 프로그램에 대한 고급 설정입니다.</target>
