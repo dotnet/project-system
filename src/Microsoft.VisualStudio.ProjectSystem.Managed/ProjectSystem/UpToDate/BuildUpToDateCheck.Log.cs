@@ -47,6 +47,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                     0 => "FastUpToDate: ",
                     1 => "FastUpToDate:     ",
                     2 => "FastUpToDate:         ",
+                    3 => "FastUpToDate:             ",
                     _ => "FastUpToDate: " + new string(' ', Indent * 4)
                 };
             }
