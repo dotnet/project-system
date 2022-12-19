@@ -1,5 +1,6 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
+using System.Reflection;
 using System.Xml;
 using System.Xml.Linq;
 using System.Xml.XPath;
@@ -8,6 +9,44 @@ namespace Microsoft.VisualStudio.ProjectSystem.Rules
 {
     public sealed class MiscellaneousRuleTests : XamlRuleTestBase
     {
+        private static readonly HashSet<string> s_embeddedRuleNames;
+
+        static MiscellaneousRuleTests()
+        {
+            s_embeddedRuleNames = new(EnumerateEmbeddedTypeNames(), StringComparer.Ordinal);
+
+            static IEnumerable<string> EnumerateEmbeddedTypeNames()
+            {
+                foreach (var type in typeof(RuleExporter).GetNestedTypes(BindingFlags.NonPublic | BindingFlags.Public))
+                {
+                    foreach (var field in type.GetFields(BindingFlags.Public | BindingFlags.Static))
+                    {
+                        foreach (var exportRule in field.GetCustomAttributes<ExportRuleAttribute>())
+                        {
+                            yield return exportRule.RuleName;
+                        }
+                    }
+                }
+            }
+        }
+
+        [Theory]
+        [MemberData(nameof(GetEmbeddedRules))]
+        public void EmbeddedRulesShouldNotHaveVisibleProperties(string ruleName, string fullPath)
+        {
+            // We are not currently able to localize embedded rules. Such rules must not have visible properties,
+            // as all visible values must be localized.
+
+            XElement rule = LoadXamlRule(fullPath);
+
+            foreach (var property in GetProperties(rule))
+            {
+                Assert.False(
+                    IsVisible(property),
+                    $"Property '{Name(property)}' in rule '{ruleName}' should not be visible.");
+            }
+        }
+
         [Theory]
         [MemberData(nameof(GetAllDisplayedRules))]
         public void NonVisiblePropertiesShouldntBeLocalized(string ruleName, string fullPath)
@@ -50,7 +89,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Rules
                     if (string.IsNullOrWhiteSpace(displayName))
                     {
                         throw new Xunit.Sdk.XunitException($"""
-                            Rule {ruleName} has visible property {property.Attribute("Name")} with no DisplayName value.
+                            Rule {ruleName} has visible property {Name(property)} with no DisplayName value.
                             """);
                     }
                 }
@@ -194,6 +233,20 @@ namespace Microsoft.VisualStudio.ProjectSystem.Rules
                 .Concat(ItemRuleTests.GetItemRules())
                 .Concat(DependencyRuleTests.GetDependenciesRules())
                 .Concat(ProjectPropertiesLocalizationRuleTests.GetPropertyPagesRules());
+        }
+
+        public static IEnumerable<object[]> GetEmbeddedRules()
+        {
+            foreach (var rule in GetAllRules())
+            {
+                string ruleName = (string)rule[0];
+                string fullPath = (string)rule[1];
+
+                if (s_embeddedRuleNames.Contains(ruleName))
+                {
+                    yield return rule;
+                }
+            }
         }
 
         private static bool IsVisible(XElement property)
