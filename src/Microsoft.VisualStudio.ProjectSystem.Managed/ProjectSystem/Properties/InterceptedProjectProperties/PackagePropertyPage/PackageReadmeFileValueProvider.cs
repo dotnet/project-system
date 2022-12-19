@@ -28,8 +28,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties.Package
         [ImportingConstructor]
         public PackageReadmeFileValueProvider(
             [Import(ExportContractNames.ProjectItemProviders.SourceFiles)] IProjectItemProvider sourceItemsProvider,
-            UnconfiguredProject unconfiguredProject) :
-            base(PackageReadmeFilePropertyName, sourceItemsProvider, unconfiguredProject)
+            UnconfiguredProject unconfiguredProject)
+            : base(PackageReadmeFilePropertyName, sourceItemsProvider, unconfiguredProject)
         {
         }
     }

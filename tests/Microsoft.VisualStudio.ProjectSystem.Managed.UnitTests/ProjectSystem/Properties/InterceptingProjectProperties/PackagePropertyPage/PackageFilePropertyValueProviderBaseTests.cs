@@ -86,8 +86,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties.InterceptingProjectPro
 
         private class TestValueProvider : PackageFilePropertyValueProviderBase
         {
-            public TestValueProvider(string propertyName, IProjectItemProvider sourceItemsProvider, UnconfiguredProject unconfiguredProject) :
-                base(propertyName, sourceItemsProvider, unconfiguredProject)
+            public TestValueProvider(string propertyName, IProjectItemProvider sourceItemsProvider, UnconfiguredProject unconfiguredProject)
+                : base(propertyName, sourceItemsProvider, unconfiguredProject)
             {
             }
         }

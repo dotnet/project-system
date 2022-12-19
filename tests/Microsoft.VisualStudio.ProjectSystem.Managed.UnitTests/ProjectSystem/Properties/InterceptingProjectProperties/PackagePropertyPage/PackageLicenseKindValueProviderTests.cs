@@ -70,5 +70,4 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
             Assert.Equal(expectedStoredValue, finalStoredValue);
         }
     }
-
 }
