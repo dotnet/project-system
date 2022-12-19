@@ -379,7 +379,7 @@
       </trans-unit>
       <trans-unit id="StringProperty|DefineConstants|Description">
         <source>Specifies custom conditional compilation constants for your application.</source>
-        <target state="new">Specifies custom conditional compilation constants for your application.</target>
+        <target state="translated">Uygulamanız için, özel koşullu derleme sabitlerini belirtir.</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|DefineConstants|DisplayName">

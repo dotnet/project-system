@@ -379,7 +379,7 @@
       </trans-unit>
       <trans-unit id="StringProperty|DefineConstants|Description">
         <source>Specifies custom conditional compilation constants for your application.</source>
-        <target state="new">Specifies custom conditional compilation constants for your application.</target>
+        <target state="translated">アプリケーションのカスタム条件付きコンパイル定数を指定します。</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|DefineConstants|DisplayName">
