@@ -117,11 +117,6 @@
         <target state="translated">Tratar advertencias como errores</target>
         <note />
       </trans-unit>
-      <trans-unit id="BoolProperty|WarningLevelOverridden|DisplayName">
-        <source>WarningLevelOverridden</source>
-        <target state="translated">WarningLevelOverridden</target>
-        <note />
-      </trans-unit>
       <trans-unit id="Category|Advanced|Description">
         <source>Advanced settings for the application.</source>
         <target state="translated">Configuración avanzada de la aplicación.</target>

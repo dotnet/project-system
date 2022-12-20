@@ -12,16 +12,6 @@
         <target state="translated">Automatycznie generowane przekierowania powiązań</target>
         <note />
       </trans-unit>
-      <trans-unit id="BoolProperty|TargetMultipleFrameworks|Description">
-        <source>Build this project for multiple target frameworks.</source>
-        <target state="translated">Kompiluj ten projekt dla wielu platform docelowych.</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="BoolProperty|TargetMultipleFrameworks|DisplayName">
-        <source>Target multiple frameworks</source>
-        <target state="translated">Przeznaczone dla wielu platform</target>
-        <note />
-      </trans-unit>
       <trans-unit id="BoolProperty|UseWPF|Description">
         <source>Enable WPF for this project.</source>
         <target state="translated">Włącz funkcję WPF dla tego projektu.</target>

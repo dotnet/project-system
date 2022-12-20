@@ -12,16 +12,6 @@
         <target state="translated">바인딩 리디렉션 자동 생성</target>
         <note />
       </trans-unit>
-      <trans-unit id="BoolProperty|TargetMultipleFrameworks|Description">
-        <source>Build this project for multiple target frameworks.</source>
-        <target state="translated">여러 대상 프레임워크에 대해 이 프로젝트를 빌드합니다.</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="BoolProperty|TargetMultipleFrameworks|DisplayName">
-        <source>Target multiple frameworks</source>
-        <target state="translated">여러 프레임워크 대상 지정</target>
-        <note />
-      </trans-unit>
       <trans-unit id="BoolProperty|UseWPF|Description">
         <source>Enable WPF for this project.</source>
         <target state="translated">이 프로젝트에 WPF를 사용하도록 설정합니다.</target>

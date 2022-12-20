@@ -117,11 +117,6 @@
         <target state="translated">將警告視為錯誤</target>
         <note />
       </trans-unit>
-      <trans-unit id="BoolProperty|WarningLevelOverridden|DisplayName">
-        <source>WarningLevelOverridden</source>
-        <target state="translated">WarningLevelOverridden</target>
-        <note />
-      </trans-unit>
       <trans-unit id="Category|Advanced|Description">
         <source>Advanced settings for the application.</source>
         <target state="translated">應用程式的進階設定。</target>

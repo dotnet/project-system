@@ -6,8 +6,8 @@
   <!-- TODO (https://github.com/dotnet/fsharp/issues/12102):
        Missing HelpUrl links need to be added.
   -->
-  <EnumProperty Name="Nullable" Category="General" Visible="False" />
-  <BoolProperty Name="AllowUnsafeBlocks" Category="General" Visible="False" />
+  <EnumProperty Name="Nullable" Visible="False" />
+  <BoolProperty Name="AllowUnsafeBlocks" Visible="False" />
 
   <BoolProperty Name="Optimize"
                 DisplayName="Optimize code"
@@ -75,14 +75,14 @@
     <EnumValue Name="embedded" DisplayName="Embedded in DLL/EXE, portable across platforms" />
   </EnumProperty>
 
-  <StringProperty Name="LangVersion" Category="General" Visible="False" />
+  <StringProperty Name="LangVersion" Visible="False" />
 
-  <BoolProperty Name="CheckForOverflowUnderflow" Category="General" Visible="False" />
+  <BoolProperty Name="CheckForOverflowUnderflow" Visible="False" />
 
-  <EnumProperty Name="ErrorReport" Category="General" Visible="False" />
-  <EnumProperty Name="FileAlignment" Category="General" Visible="False" />
+  <EnumProperty Name="ErrorReport" Visible="False" />
+  <EnumProperty Name="FileAlignment" Visible="False" />
 
-  <BoolProperty Name="ProduceReferenceAssembly" Category="General" Visible="False" />
+  <BoolProperty Name="ProduceReferenceAssembly" Visible="False" />
 
 
 </Rule>
