@@ -38,7 +38,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
         private readonly IVsEditorAdaptersFactoryService _editorAdaptersService;
 
         //private List<(Action<Renamer.RenameDocumentActionSet> SetAction, string FileName)>? _actions;
-        private readonly Dictionary<string, Renamer.RenameDocumentActionSet> _renameActions = new();
+        //private readonly Dictionary<string, Renamer.RenameDocumentActionSet> _renameActions = new();
+        //private readonly Dictionary<string, (string Destination, SourceText Text)> _sourceTexts = new();
+
+        private readonly Dictionary<string, (Document Document, SourceText Text)> _sourceTexts = new();
 
         [ImportingConstructor]
         public FileMoveNotificationListener(
@@ -71,6 +74,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
 
         public async Task OnBeforeFilesMovedAsync(IReadOnlyCollection<IFileMoveItem> items)
         {
+            _sourceTexts.Clear();
             Project? project = _workspace.CurrentSolution.Projects
                 .FirstOrDefault(p => StringComparers.Paths.Equals(p.FilePath, _projectVsServices.Project.FullPath));
 
@@ -85,7 +89,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
             //    IEnumerable<IFileMoveItem> itemsToMove = GetFilesToMoveRecursive(item);
             //}
             //_actions = GetNamespaceUpdateActionsAsync;
-            foreach(IFileMoveItem itemToMove in GetFilesToMoveRecursive(items))
+
+            await _projectVsServices.ThreadingService.SwitchToUIThread();
+
+            foreach (IFileMoveItem itemToMove in GetFilesToMoveRecursive(items))
             {
                 Document? currentDocument = project.Documents.FirstOrDefault(d => StringComparers.Paths.Equals(d.FilePath, itemToMove.Source));
                 if (currentDocument is null)
@@ -93,21 +100,38 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
                     continue;
                 }
 
-                //string destinationFileRelative = PathHelper.MakeRelative(Path.GetDirectoryName(project.FilePath), itemToMove.Destination);
+                ////string destinationFileRelative = PathHelper.MakeRelative(Path.GetDirectoryName(project.FilePath), itemToMove.Destination);
 
-                // Get the relative folder path from the project to the destination.
-                string destinationFolderPath = Path.GetDirectoryName(_projectVsServices.Project.MakeRelative(itemToMove.Destination));
-                string[] documentFolders = destinationFolderPath.Split(Delimiter.Path, StringSplitOptions.RemoveEmptyEntries);
+                //// Get the relative folder path from the project to the destination.
+                //string destinationFolderPath = Path.GetDirectoryName(_projectVsServices.Project.MakeRelative(itemToMove.Destination));
+                //string[] documentFolders = destinationFolderPath.Split(Delimiter.Path, StringSplitOptions.RemoveEmptyEntries);
 
-                // This is a file item to another directory, it should only detect this a Update Namespace action.
-                Renamer.RenameDocumentActionSet renameAction = await Renamer.RenameDocumentAsync(currentDocument, s_renameOptions, null, documentFolders);
+                //// This is a file item to another directory, it should only detect this a Update Namespace action.
+                //Renamer.RenameDocumentActionSet renameAction = await Renamer.RenameDocumentAsync(currentDocument, s_renameOptions, null, documentFolders);
 
-                if (renameAction.ApplicableActions.IsEmpty || renameAction.ApplicableActions.Any(a => a.GetErrors().Any()))
+                //if (renameAction.ApplicableActions.IsEmpty || renameAction.ApplicableActions.Any(a => a.GetErrors().Any()))
+                //{
+                //    continue;
+                //}
+
+                //_renameActions.Add(itemToMove.Source, renameAction);
+
+
+
+
+
+
+
+                RunningDocumentTable runningDocumentTable = new(_serviceProvider);
+                RunningDocumentInfo documentInfo = runningDocumentTable.GetDocumentInfo(itemToMove.Source);
+                // Indicates that the document exists in the table.
+                if (documentInfo.DocCookie != VSConstants.VSCOOKIE_NIL &&
+                    documentInfo.DocData is IVsTextBuffer vsTextBuffer &&
+                    _editorAdaptersService.GetDocumentBuffer(vsTextBuffer) is ITextBuffer textBuffer)
                 {
-                    continue;
+                    //_sourceTexts.Add(itemToMove.Source, (itemToMove.Destination, textBuffer.CurrentSnapshot.AsText()));
+                    _sourceTexts.Add(itemToMove.Destination, (currentDocument, textBuffer.CurrentSnapshot.AsText()));
                 }
-
-                _renameActions.Add(itemToMove.Source, renameAction);
             }
 
             //else
@@ -354,7 +378,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
 
         public async Task OnAfterFileMoveAsync()
         {
-            if (_renameActions.Any() && await CheckUserConfirmationAsync())
+            if (_sourceTexts.Any() && await CheckUserConfirmationAsync())
             {
                 ApplyNamespaceUpdateActions();
             }
@@ -398,11 +422,22 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
 
                     // All this is done to simply get a message for the wait service.
                     // TODO: Simply put a message there...
-                    string message = _renameActions.First().Value.ApplicableActions.First().GetDescription();
+                    //string message = _renameActions.First().Value.ApplicableActions.First().GetDescription();
+
+                    //Project? project = _workspace.CurrentSolution.Projects
+                    //    .FirstOrDefault(p => StringComparers.Paths.Equals(p.FilePath, _projectVsServices.Project.FullPath));
+
+                    //if (project is null)
+                    //{
+                    //    return;
+                    //}
+
+
 
                     _waitService.Run(
                         title: "",
-                        message: message,
+                        // TODO: Temporary
+                        message: "Sync namespace to folder structure",
                         allowCancel: true,
                         async context =>
                         {
@@ -412,11 +447,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
 
                             int currentStep = 1;
 
-                            foreach ((string filePath, Renamer.RenameDocumentActionSet action) in _renameActions)
+                            foreach ((string destinationPath, (Document document, SourceText originalText)) in _sourceTexts)
                             {
-                                context.Update(currentStep: currentStep++, progressText: Path.GetFileName(filePath));
+                                Renamer.RenameDocumentActionSet? renameAction = await CreateRenamerAction(destinationPath, originalText);
+                                if(renameAction is null)
+                                {
+                                    continue;
+                                }
 
-                                solution = await action.UpdateSolutionAsync(solution, context.CancellationToken);
+                                context.Update(currentStep: currentStep++, progressText: Path.GetFileName(destinationPath));
+
+                                solution = await renameAction.UpdateSolutionAsync(solution, context.CancellationToken);
                             }
 
                             await _projectVsServices.ThreadingService.SwitchToUIThread();
@@ -425,12 +466,54 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
 
                             System.Diagnostics.Debug.Assert(applied, "ApplyChangesToSolution returned false");
                         },
-                        totalSteps: _renameActions.Count);
-
-                    _renameActions.Clear();
+                        totalSteps: _sourceTexts.Count);
                 });
 
                 return;
+
+                async Task<Renamer.RenameDocumentActionSet?> CreateRenamerAction(string destinationPath, SourceText originalText)
+                {
+                    //Document? currentDocument = project.Documents.FirstOrDefault(d => StringComparers.Paths.Equals(d.FilePath, sourcePath));
+                    //Document? renamedDocument = project.Documents.FirstOrDefault(d => d.Id.Equals(id));
+                    //if (renamedDocument is null)
+                    //{
+                    //    return null;
+                    //}
+                    Project? project = _workspace.CurrentSolution.Projects
+                        .FirstOrDefault(p => StringComparers.Paths.Equals(p.FilePath, _projectVsServices.Project.FullPath));
+
+                    if (project is null)
+                    {
+                        return null;
+                    }
+
+
+                    Document? newDocument = project.Documents.FirstOrDefault(d => StringComparers.Paths.Equals(d.FilePath, destinationPath));
+                    if (newDocument is null)
+                    {
+                        return null;
+                    }
+
+                    // Replace the renamed document's text with original text prior to updating the namespace.
+                    newDocument = newDocument.WithText(originalText);
+                    //_roslynServices.ApplyChangesToSolution(document.Project.Solution.Workspace, document.Project.Solution);
+
+                    //string destinationFileRelative = PathHelper.MakeRelative(Path.GetDirectoryName(project.FilePath), itemToMove.Destination);
+
+                    // Get the relative folder path from the project to the destination.
+                    string destinationFolderPath = Path.GetDirectoryName(_projectVsServices.Project.MakeRelative(destinationPath));
+                    string[] documentFolders = destinationFolderPath.Split(Delimiter.Path, StringSplitOptions.RemoveEmptyEntries);
+
+                    // This is a file item to another directory, it should only detect this a Update Namespace action.
+                    Renamer.RenameDocumentActionSet renameAction = await Renamer.RenameDocumentAsync(newDocument, s_renameOptions, null, documentFolders);
+
+                    if (renameAction.ApplicableActions.IsEmpty || renameAction.ApplicableActions.Any(a => a.GetErrors().Any()))
+                    {
+                        return null;
+                    }
+
+                    return renameAction;
+                }
 
                 async Task<Solution> PublishLatestSolutionAsync(CancellationToken cancellationToken)
                 {
