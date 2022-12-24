@@ -89,22 +89,22 @@
     <PackageReference Update="Newtonsoft.Json"                                                        Version="13.0.1" />
 
     <!-- Tests -->
-    <PackageReference Update="Moq"                                                                    Version="4.16.1" />
-    <PackageReference Update="Verify.Xunit"                                                           Version="14.2.0" />
-    <PackageReference Update="xunit"                                                                  Version="2.4.2-pre.13" />
-    <PackageReference Update="xunit.assert"                                                           Version="2.4.2-pre.13" />
+    <PackageReference Update="Moq"                                                                    Version="4.18.3" />
+    <PackageReference Update="Verify.Xunit"                                                           Version="19.5.0" />
+    <PackageReference Update="xunit"                                                                  Version="2.4.2" />
+    <PackageReference Update="xunit.assert"                                                           Version="2.4.2" />
     <PackageReference Update="xunit.combinatorial"                                                    Version="1.4.1" />
-    <PackageReference Update="xunit.extensibility.core"                                               Version="2.4.2-pre.13" />
-    <PackageReference Update="xunit.extensibility.execution"                                          Version="2.4.2-pre.13" NoWarn="NU1608" />
-    <PackageReference Update="xunit.runner.visualstudio"                                              Version="2.4.3" />
-    <PackageReference Update="xunit.runner.console"                                                   Version="2.4.1" />
-    <PackageReference Update="xunit.analyzers"                                                        Version="0.12.0-pre.19"/>
+    <PackageReference Update="xunit.extensibility.core"                                               Version="2.4.2" />
+    <PackageReference Update="xunit.extensibility.execution"                                          Version="2.4.2" NoWarn="NU1608" />
+    <PackageReference Update="xunit.runner.visualstudio"                                              Version="2.4.5" />
+    <PackageReference Update="xunit.runner.console"                                                   Version="2.4.2" />
+    <PackageReference Update="xunit.analyzers"                                                        Version="1.1.0"/>
 
     <!-- Integration Tests -->
-    <PackageReference Update="MSTest.TestFramework"                                                   Version="2.1.2" />
-    <PackageReference Update="MSTest.TestAdapter"                                                     Version="2.1.2" />
+    <PackageReference Update="MSTest.TestFramework"                                                   Version="3.0.1" />
+    <PackageReference Update="MSTest.TestAdapter"                                                     Version="3.0.1" />
     <PackageReference Update="Microsoft.Test.Apex.VisualStudio"                                       Version="17.0.0-preview-2-31221-277" />
-    <PackageReference Update="Microsoft.TestPlatform"                                                 Version="16.2.0" />
+    <PackageReference Update="Microsoft.TestPlatform"                                                 Version="17.4.1" />
     <PackageReference Update="Microsoft.DotNet.Test.ProjectTemplates.1.x"                             Version="1.0.0-beta2-20170629-269" />
     <PackageReference Update="Microsoft.DotNet.Common.ProjectTemplates.1.x"                           Version="1.0.0-beta2-20170629-269" />
   </ItemGroup>

@@ -2,8 +2,6 @@
 
 using System.IO.Compression;
 using Microsoft.VisualStudio.Utilities;
-using VerifyTests;
-using VerifyXunit;
 
 namespace Microsoft.VisualStudio.Setup
 {
@@ -62,9 +60,9 @@ namespace Microsoft.VisualStudio.Setup
                 "VSSetup",
                 "Insertion",
                 vsixName);
-            
+
             using var archive = ZipFile.OpenRead(vsixPath);
-            
+
             return archive.Entries.Select(entry => entry.FullName).OrderBy(fn => fn);
         }
     }
