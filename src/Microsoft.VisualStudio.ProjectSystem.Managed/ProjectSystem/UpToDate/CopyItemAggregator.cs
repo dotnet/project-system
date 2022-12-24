@@ -20,7 +20,7 @@ internal class CopyItemAggregator : ICopyItemAggregator
         }
     }
 
-    public (IEnumerable<CopyItem> Items, bool IsComplete) TryGatherCopyItemsForProject(string targetPath, BuildUpToDateCheck.Log logger)
+    public (IEnumerable<(string Path, ImmutableArray<CopyItem> CopyItems)> ItemsByProject, bool IsComplete) TryGatherCopyItemsForProject(string targetPath, BuildUpToDateCheck.Log logger)
     {
         // Keep track of all projects we've visited to avoid infinite recursion or duplicated results.
         HashSet<string> explored = new(StringComparers.Paths);
@@ -75,32 +75,16 @@ internal class CopyItemAggregator : ICopyItemAggregator
 
         return (GenerateCopyItems(), isComplete);
 
-        IEnumerable<CopyItem> GenerateCopyItems()
+        IEnumerable<(string Path, ImmutableArray<CopyItem> CopyItems)> GenerateCopyItems()
         {
             if (contributingProjects is null)
             {
                 yield break;
             }
 
-            var set = new HashSet<CopyItem>();
-
             foreach (ProjectCopyData contributingProject in contributingProjects)
             {
-                logger.Verbose(nameof(Resources.FUTDC_CheckingCopyItemsForProject_1), contributingProject.ProjectFullPath ?? contributingProject.TargetPath);
-                logger.Indent++;
-
-                foreach (CopyItem copyItem in contributingProject.CopyItems)
-                {
-                    if (!set.Add(copyItem))
-                    {
-                        logger.Verbose(nameof(Resources.FUTDC_SkippingDuplicateCopyItem_2), copyItem.AbsoluteSourcePath, copyItem.RelativeTargetPath);
-                        continue;
-                    }
-
-                    yield return copyItem;
-                }
-
-                logger.Indent--;
+                yield return (contributingProject.ProjectFullPath ?? contributingProject.TargetPath, contributingProject.CopyItems);
             }
         }
     }

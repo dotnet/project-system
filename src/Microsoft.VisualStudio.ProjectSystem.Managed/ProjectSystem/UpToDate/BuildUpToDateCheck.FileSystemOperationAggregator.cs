@@ -78,7 +78,8 @@ internal sealed partial class BuildUpToDateCheck
                 // we have some copies to perform
 
                 _logger.Info(nameof(Resources.FUTD_CopyingFilesToAccelerateBuild_1), _pendingCopies.Count);
-                _logger.Indent++;
+
+                using Log.Scope _ = _logger.IndentScope();
 
                 foreach ((string source, string destination) in _pendingCopies)
                 {
@@ -126,8 +127,6 @@ internal sealed partial class BuildUpToDateCheck
                         return (Success: false, CopyCount: copyCount);
                     }
                 }
-
-                _logger.Indent--;
             }
 
             return (Success: true, CopyCount: copyCount);

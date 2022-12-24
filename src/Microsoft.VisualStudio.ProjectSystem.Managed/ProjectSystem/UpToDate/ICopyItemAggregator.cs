@@ -30,11 +30,11 @@ internal interface ICopyItemAggregator
     /// <returns>
     /// A tuple comprising:
     /// <list type="number">
-    ///   <item><c>Items</c> a sequence of items that are reachable from the current project.</item>
+    ///   <item><c>Items</c> a sequence of items by project, that are reachable from the current project.</item>
     ///   <item><c>IsComplete</c> indicating whether we have items from all reachable projects.</item>
     /// </list>
     /// </returns>
-    (IEnumerable<CopyItem> Items, bool IsComplete) TryGatherCopyItemsForProject(string targetPath, BuildUpToDateCheck.Log logger);
+    (IEnumerable<(string Path, ImmutableArray<CopyItem> CopyItems)> ItemsByProject, bool IsComplete) TryGatherCopyItemsForProject(string targetPath, BuildUpToDateCheck.Log logger);
 }
 
 /// <summary>

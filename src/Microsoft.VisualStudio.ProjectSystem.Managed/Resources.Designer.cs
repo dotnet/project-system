@@ -754,20 +754,11 @@ namespace Microsoft.VisualStudio {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Checking copy items from project &apos;{0}&apos;..
+        ///   Looks up a localized string similar to Checking copy items from project &apos;{0}&apos;:.
         /// </summary>
         internal static string FUTDC_CheckingCopyItemsForProject_1 {
             get {
                 return ResourceManager.GetString("FUTDC_CheckingCopyItemsForProject_1", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Skipping duplicate copy item &apos;{0}&apos; to &apos;{1}&apos;.
-        /// </summary>
-        internal static string FUTDC_SkippingDuplicateCopyItem_2 {
-            get {
-                return ResourceManager.GetString("FUTDC_SkippingDuplicateCopyItem_2", resourceCulture);
             }
         }
         

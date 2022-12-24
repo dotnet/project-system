@@ -37,14 +37,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 _upToDateCheckConfiguredInput = upToDateCheckConfiguredInput;
                 _ignoreKinds = ignoreKinds;
                 _checkNumber = checkNumber;
+
                 _fileName = Path.GetFileNameWithoutExtension(projectPath);
             }
+
+            public Scope IndentScope() => new(this);
 
             private string Preamble()
             {
                 return Indent switch
                 {
-                    0 => "FastUpToDate: ",
+                    <= 0 => "FastUpToDate: ",
                     1 => "FastUpToDate:     ",
                     2 => "FastUpToDate:         ",
                     3 => "FastUpToDate:             ",
@@ -68,7 +71,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             {
                 if (level <= Level)
                 {
-                    // These are user visible, so we want them in local times so that 
+                    // These are user visible, so we want them in local times so that
                     // they correspond with dates/times that Explorer, etc shows
                     ConvertToLocalTime(ref arg0);
 
@@ -82,7 +85,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             {
                 if (level <= Level)
                 {
-                    // These are user visible, so we want them in local times so that 
+                    // These are user visible, so we want them in local times so that
                     // they correspond with dates/times that Explorer, etc shows
                     ConvertToLocalTime(ref arg0);
                     ConvertToLocalTime(ref arg1);
@@ -97,7 +100,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             {
                 if (level <= Level)
                 {
-                    // These are user visible, so we want them in local times so that 
+                    // These are user visible, so we want them in local times so that
                     // they correspond with dates/times that Explorer, etc shows
                     ConvertToLocalTimes(values);
 
@@ -212,6 +215,22 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 });
 
                 Info(nameof(Resources.FUTD_UpToDate));
+            }
+
+            public readonly struct Scope : IDisposable
+            {
+                private readonly Log _log;
+
+                public Scope(Log log)
+                {
+                    _log = log;
+                    _log.Indent++;
+                }
+
+                public void Dispose()
+                {
+                    _log.Indent--;
+                }
             }
         }
     }
