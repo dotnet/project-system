@@ -94,6 +94,12 @@
                DisplayName="Annotations" />
   </EnumProperty>
 
+  <BoolProperty Name="GenerateAssemblyInfo"
+                DisplayName="Generate assembly info"
+                Description="Transform project properties into assembly attributes during build."
+                HelpUrl="https://go.microsoft.com/fwlink/?linkid=2220622"
+                Category="General" />
+
   <BoolProperty Name="Prefer32Bit"
                 DisplayName="Prefer 32-bit"
                 Description="Run in 32-bit mode on systems that support both 32-bit and 64-bit applications."
