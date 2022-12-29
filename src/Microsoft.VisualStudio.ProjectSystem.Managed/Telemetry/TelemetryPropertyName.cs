@@ -59,6 +59,17 @@ namespace Microsoft.VisualStudio.Telemetry
             ///     This number resets when the project is reloaded.
             /// </summary>
             public const string CheckNumber = "vs.projectsystem.managed.uptodatecheck.checknumber";
+
+            /// <summary>
+            ///     The outcome of the FUTDC's Build Acceleration evaluation.
+            /// </summary>
+            public const string AccelerationResult = "vs.projectsystem.managed.uptodatecheck.accelerationresult";
+
+            /// <summary>
+            ///     The number of files copied as part of Build Acceleration. Zero if disabled or no files were copied.
+            ///     See <see cref="AccelerationResult"/> to understand why the value may be zero.
+            /// </summary>
+            public const string AcceleratedCopyCount = "vs.projectsystem.managed.uptodatecheck.acceleratedcopycount";
         }
 
         public static class TreeUpdated
