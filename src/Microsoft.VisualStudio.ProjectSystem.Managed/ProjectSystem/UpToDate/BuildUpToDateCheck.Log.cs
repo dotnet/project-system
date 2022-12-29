@@ -14,7 +14,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             private readonly TimestampCache _timestampCache;
             private readonly Guid _projectGuid;
             private readonly string _fileName;
-            private readonly ITelemetryService? _telemetryService;
+            private readonly ITelemetryService? _telemetryService; // null for validation runs
             private readonly UpToDateCheckConfiguredInput _upToDateCheckConfiguredInput;
             private readonly string? _ignoreKinds;
             private readonly int _checkNumber;
@@ -192,7 +192,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 return false;
             }
 
-            public void UpToDate()
+            /// <summary>
+            /// Publishes that the project is up-to-date via telemetry and the output window.
+            /// </summary>
+            public void UpToDate(BuildAccelerationResult buildAccelerationResult, int copyCount)
             {
                 Assumes.Null(FailureReason);
                 Assumes.Null(FailureDescription);
@@ -208,11 +211,25 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                     (TelemetryPropertyName.UpToDateCheck.LogLevel, Level),
                     (TelemetryPropertyName.UpToDateCheck.Project, _projectGuid),
                     (TelemetryPropertyName.UpToDateCheck.CheckNumber, _checkNumber),
-                    (TelemetryPropertyName.UpToDateCheck.IgnoreKinds, _ignoreKinds ?? "")
+                    (TelemetryPropertyName.UpToDateCheck.IgnoreKinds, _ignoreKinds ?? ""),
+                    (TelemetryPropertyName.UpToDateCheck.AccelerationResult, buildAccelerationResult),
+                    (TelemetryPropertyName.UpToDateCheck.AcceleratedCopyCount, copyCount)
                 });
 
                 Info(nameof(Resources.FUTD_UpToDate));
             }
+        }
+
+        public enum BuildAccelerationResult
+        {
+            // Disabled, not candidate
+            DisabledNotCandidate,
+            // Disabled, candidate
+            DisabledCandidate,
+            // Enabled, not accelerated
+            EnabledNotAccelerated,
+            // Enabled, accelerated
+            EnabledAccelerated
         }
     }
 }

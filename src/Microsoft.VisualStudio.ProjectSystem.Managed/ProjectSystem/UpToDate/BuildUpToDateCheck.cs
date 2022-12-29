@@ -1078,9 +1078,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                         {
                             logger.Info(nameof(Resources.FUTD_BuildAccelerationSummary_1), copyCount);
                         }
-                    }
 
-                    logger.UpToDate();
+                        logger.UpToDate(fileSystemOperations.AccelerationResult, copyCount);
+                    }
 
                     return (true, checkedConfigurations);
                 }
