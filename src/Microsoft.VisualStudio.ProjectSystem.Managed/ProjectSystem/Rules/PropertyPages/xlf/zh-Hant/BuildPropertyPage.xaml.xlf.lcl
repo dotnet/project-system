@@ -112,6 +112,24 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
+      <Item ItemId=";BoolProperty|GenerateAssemblyInfo|Description" ItemType="0" PsrId="308" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[Transform project properties into assembly attributes during build.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[在建置期間將專案屬性轉換為元件屬性。]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";BoolProperty|GenerateAssemblyInfo|DisplayName" ItemType="0" PsrId="308" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[Generate assembly info]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[產生組件資訊]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
       <Item ItemId=";BoolProperty|GenerateDocumentationFile|Description" ItemType="0" PsrId="308" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[Generate a file containing API documentation.]]></Val>
@@ -228,15 +246,6 @@
           <Val><![CDATA[Treat warnings as errors]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
             <Val><![CDATA[將警告視為錯誤]]></Val>
-          </Tgt>
-        </Str>
-        <Disp Icon="Str" />
-      </Item>
-      <Item ItemId=";BoolProperty|WarningLevelOverridden|DisplayName" ItemType="0" PsrId="308" Leaf="true">
-        <Str Cat="Text">
-          <Val><![CDATA[WarningLevelOverridden]]></Val>
-          <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[WarningLevelOverridden]]></Val>
           </Tgt>
         </Str>
         <Disp Icon="Str" />
