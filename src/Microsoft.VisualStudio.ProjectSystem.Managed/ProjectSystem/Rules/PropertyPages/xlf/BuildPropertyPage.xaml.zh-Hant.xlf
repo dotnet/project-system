@@ -54,12 +54,12 @@
       </trans-unit>
       <trans-unit id="BoolProperty|GenerateAssemblyInfo|Description">
         <source>Transform project properties into assembly attributes during build.</source>
-        <target state="new">Transform project properties into assembly attributes during build.</target>
+        <target state="translated">在建置期間將專案屬性轉換為元件屬性。</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|GenerateAssemblyInfo|DisplayName">
         <source>Generate assembly info</source>
-        <target state="new">Generate assembly info</target>
+        <target state="translated">產生組件資訊</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|GenerateDocumentationFile|Description">
