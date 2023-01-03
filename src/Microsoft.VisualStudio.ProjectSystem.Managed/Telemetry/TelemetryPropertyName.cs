@@ -19,9 +19,23 @@ namespace Microsoft.VisualStudio.Telemetry
             public const string FailReason = "vs.projectsystem.managed.uptodatecheck.fail.reason2";
 
             /// <summary>
-            ///     Indicates the duration of the up-to-date check, in milliseconds.
+            ///     Indicates the duration of the up-to-date check, in milliseconds. Includes wait time and execution time.
             /// </summary>
             public const string DurationMillis = "vs.projectsystem.managed.uptodatecheck.durationmillis";
+
+            /// <summary>
+            ///     Indicates the duration of time between when the check was requested, and when we actually
+            ///     start execution.
+            /// </summary>
+            /// <remarks>
+            ///     During this time we await the latest project data, which can take quite some time.
+            ///     We also acquire a lock, and query the host for the status of the up-to-date check.
+            ///     We report this wait time separately via telemetry in order to properly attribute the source
+            ///     of delays in the up-to-date check. This time is also included in <see cref="DurationMillis"/>
+            ///     for historical reasons. Ideally they would not overlap, but changing that now would
+            ///     make analysis of historical data difficult.
+            /// </remarks>
+            public const string WaitDurationMillis = "vs.projectsystem.managed.uptodatecheck.waitdurationmillis";
 
             /// <summary>
             ///     Indicates the number of file system timestamps that were queried during the up-to-date check.
