@@ -48,7 +48,7 @@
   </PropertyGroup>
 
   <!--
-    Locate the approriate localized xaml resources based on the language ID or name.
+    Locate the appropriate localized xaml resources based on the language ID or name.
 
     The logic here matches the resource manager sufficiently to handle the fixed set of 
     possible VS languages and directories on disk.
