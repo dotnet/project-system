@@ -24,6 +24,9 @@
 
     <!-- Tells CPS which target to run for the Package solution build type -->
     <PackageAction Condition="'$(PackageAction)' == ''">Pack</PackageAction>
+
+    <!-- Disable Build Acceleration for VSIX projects -->
+    <AccelerateBuildsInVisualStudio Condition="'$(IsVsixProject)' == 'true'">false</AccelerateBuildsInVisualStudio>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(AssemblyReferenceTabs)' == '' And '$(UsingMicrosoftNETSdk)' == 'true'">
