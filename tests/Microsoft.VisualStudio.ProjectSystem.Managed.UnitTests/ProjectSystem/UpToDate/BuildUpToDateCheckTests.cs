@@ -2044,7 +2044,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
             Assert.Equal(TelemetryEventName.UpToDateCheckFail, telemetryEvent.EventName);
             Assert.NotNull(telemetryEvent.Properties);
-            Assert.Equal(8, telemetryEvent.Properties.Count);
+            Assert.Equal(9, telemetryEvent.Properties.Count);
 
             var reasonProp = Assert.Single(telemetryEvent.Properties.Where(p => p.propertyName == TelemetryPropertyName.UpToDateCheck.FailReason));
             Assert.Equal(reason, reasonProp.propertyValue);
@@ -2071,6 +2071,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
             Assert.Single(telemetryEvent.Properties.Where(p => p.propertyName == TelemetryPropertyName.UpToDateCheck.Project));
             Assert.Single(telemetryEvent.Properties.Where(p => p.propertyName == TelemetryPropertyName.UpToDateCheck.CheckNumber));
+            Assert.Single(telemetryEvent.Properties.Where(p => p.propertyName == TelemetryPropertyName.UpToDateCheck.AccelerationResult));
 
             _telemetryEvents.Clear();
         }

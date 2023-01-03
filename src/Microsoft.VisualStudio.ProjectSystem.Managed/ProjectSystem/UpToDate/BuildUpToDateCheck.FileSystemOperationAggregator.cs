@@ -21,7 +21,7 @@ internal sealed partial class BuildUpToDateCheck
     ///     MSBuild and perform the copy directly. This can speed up builds by several orders of magnitude.
     /// </para>
     /// </remarks>
-    private sealed class FileSystemOperationAggregator
+    internal sealed class FileSystemOperationAggregator
     {
         private readonly IFileSystem _fileSystem;
         private readonly Log _logger;

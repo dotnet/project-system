@@ -973,6 +973,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
                 var fileSystemOperations = new FileSystemOperationAggregator(_fileSystem, logger);
 
+                logger.FileSystemOperations = fileSystemOperations;
+
                 HashSet<string> copyItemPaths = new();
 
                 try
@@ -1079,7 +1081,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                             logger.Info(nameof(Resources.FUTD_BuildAccelerationSummary_1), copyCount);
                         }
 
-                        logger.UpToDate(fileSystemOperations.AccelerationResult, copyCount);
+                        logger.UpToDate(copyCount);
                     }
 
                     return (true, checkedConfigurations);
