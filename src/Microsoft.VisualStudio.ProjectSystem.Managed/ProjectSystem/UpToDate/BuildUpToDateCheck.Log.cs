@@ -25,6 +25,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
             public string? FailureReason { get; private set; }
             public string? FailureDescription { get; private set; }
+            public FileSystemOperationAggregator? FileSystemOperations { get; set; }
 
             public Log(TextWriter writer, LogLevel requestedLogLevel, Stopwatch stopwatch, TimestampCache timestampCache, string projectPath, Guid projectGuid, ITelemetryService? telemetryService, UpToDateCheckConfiguredInput upToDateCheckConfiguredInput, string? ignoreKinds, int checkNumber)
             {
@@ -163,6 +164,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             /// <returns><see langword="false"/>, which may be returned directly in <see cref="BuildUpToDateCheck"/>.</returns>
             public bool Fail(string reason, string resourceName, params object[] values)
             {
+                Assumes.NotNull(FileSystemOperations);
+
                 _stopwatch.Stop();
 
                 // We may be indented when a failure is identified. Set the indent to zero so
@@ -182,7 +185,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                     (TelemetryPropertyName.UpToDateCheck.LogLevel, Level),
                     (TelemetryPropertyName.UpToDateCheck.Project, _projectGuid),
                     (TelemetryPropertyName.UpToDateCheck.CheckNumber, _checkNumber),
-                    (TelemetryPropertyName.UpToDateCheck.IgnoreKinds, _ignoreKinds ?? "")
+                    (TelemetryPropertyName.UpToDateCheck.IgnoreKinds, _ignoreKinds ?? ""),
+                    (TelemetryPropertyName.UpToDateCheck.AccelerationResult, FileSystemOperations.AccelerationResult)
                 });
 
                 // Remember the failure reason and description for use in IncrementalBuildFailureDetector.
@@ -195,10 +199,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             /// <summary>
             /// Publishes that the project is up-to-date via telemetry and the output window.
             /// </summary>
-            public void UpToDate(BuildAccelerationResult buildAccelerationResult, int copyCount)
+            public void UpToDate(int copyCount)
             {
                 Assumes.Null(FailureReason);
                 Assumes.Null(FailureDescription);
+                Assumes.NotNull(FileSystemOperations);
 
                 _stopwatch.Stop();
 
@@ -212,7 +217,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                     (TelemetryPropertyName.UpToDateCheck.Project, _projectGuid),
                     (TelemetryPropertyName.UpToDateCheck.CheckNumber, _checkNumber),
                     (TelemetryPropertyName.UpToDateCheck.IgnoreKinds, _ignoreKinds ?? ""),
-                    (TelemetryPropertyName.UpToDateCheck.AccelerationResult, buildAccelerationResult),
+                    (TelemetryPropertyName.UpToDateCheck.AccelerationResult, FileSystemOperations.AccelerationResult),
                     (TelemetryPropertyName.UpToDateCheck.AcceleratedCopyCount, copyCount)
                 });
 
