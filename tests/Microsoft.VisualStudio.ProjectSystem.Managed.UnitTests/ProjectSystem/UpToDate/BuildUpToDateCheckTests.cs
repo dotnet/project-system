@@ -2110,7 +2110,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
             Assert.Equal(TelemetryEventName.UpToDateCheckFail, telemetryEvent.EventName);
             Assert.NotNull(telemetryEvent.Properties);
-            Assert.Equal(9, telemetryEvent.Properties.Count);
+            Assert.Equal(10, telemetryEvent.Properties.Count);
 
             var reasonProp = Assert.Single(telemetryEvent.Properties.Where(p => p.propertyName == TelemetryPropertyName.UpToDateCheck.FailReason));
             Assert.Equal(reason, reasonProp.propertyValue);
@@ -2118,6 +2118,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             var durationProp = Assert.Single(telemetryEvent.Properties.Where(p => p.propertyName == TelemetryPropertyName.UpToDateCheck.DurationMillis));
             var duration = Assert.IsType<double>(durationProp.propertyValue);
             Assert.True(duration > 0.0);
+
+            var waitDurationProp = Assert.Single(telemetryEvent.Properties.Where(p => p.propertyName == TelemetryPropertyName.UpToDateCheck.WaitDurationMillis));
+            var waitDuration = Assert.IsType<double>(waitDurationProp.propertyValue);
+            Assert.True(waitDuration > 0.0);
 
             var fileCountProp = Assert.Single(telemetryEvent.Properties.Where(p => p.propertyName == TelemetryPropertyName.UpToDateCheck.FileCount));
             var fileCount = Assert.IsType<int>(fileCountProp.propertyValue);
@@ -2149,11 +2153,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             Assert.Equal(TelemetryEventName.UpToDateCheckSuccess, telemetryEvent.EventName);
 
             Assert.NotNull(telemetryEvent.Properties);
-            Assert.Equal(9, telemetryEvent.Properties.Count);
+            Assert.Equal(10, telemetryEvent.Properties.Count);
 
             var durationProp = Assert.Single(telemetryEvent.Properties.Where(p => p.propertyName == TelemetryPropertyName.UpToDateCheck.DurationMillis));
             var duration = Assert.IsType<double>(durationProp.propertyValue);
             Assert.True(duration > 0.0);
+
+            var waitDurationProp = Assert.Single(telemetryEvent.Properties.Where(p => p.propertyName == TelemetryPropertyName.UpToDateCheck.WaitDurationMillis));
+            var waitDuration = Assert.IsType<double>(waitDurationProp.propertyValue);
+            Assert.True(waitDuration > 0.0);
 
             var fileCountProp = Assert.Single(telemetryEvent.Properties.Where(p => p.propertyName == TelemetryPropertyName.UpToDateCheck.FileCount));
             var fileCount = Assert.IsType<int>(fileCountProp.propertyValue);

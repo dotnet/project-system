@@ -11,6 +11,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
         {
             private readonly TextWriter _writer;
             private readonly Stopwatch _stopwatch;
+            private readonly TimeSpan _waitTime;
             private readonly TimestampCache _timestampCache;
             private readonly Guid _projectGuid;
             private readonly string _fileName;
@@ -27,11 +28,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             public string? FailureDescription { get; private set; }
             public FileSystemOperationAggregator? FileSystemOperations { get; set; }
 
-            public Log(TextWriter writer, LogLevel requestedLogLevel, Stopwatch stopwatch, TimestampCache timestampCache, string projectPath, Guid projectGuid, ITelemetryService? telemetryService, UpToDateCheckConfiguredInput upToDateCheckConfiguredInput, string? ignoreKinds, int checkNumber)
+            public Log(TextWriter writer, LogLevel requestedLogLevel, Stopwatch stopwatch, TimeSpan waitTime, TimestampCache timestampCache, string projectPath, Guid projectGuid, ITelemetryService? telemetryService, UpToDateCheckConfiguredInput upToDateCheckConfiguredInput, string? ignoreKinds, int checkNumber)
             {
                 _writer = writer;
                 Level = requestedLogLevel;
                 _stopwatch = stopwatch;
+                _waitTime = waitTime;
                 _timestampCache = timestampCache;
                 _projectGuid = projectGuid;
                 _telemetryService = telemetryService;
@@ -183,6 +185,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 {
                     (TelemetryPropertyName.UpToDateCheck.FailReason, (object)reason),
                     (TelemetryPropertyName.UpToDateCheck.DurationMillis, _stopwatch.Elapsed.TotalMilliseconds),
+                    (TelemetryPropertyName.UpToDateCheck.WaitDurationMillis, _waitTime.TotalMilliseconds),
                     (TelemetryPropertyName.UpToDateCheck.FileCount, _timestampCache.Count),
                     (TelemetryPropertyName.UpToDateCheck.ConfigurationCount, _upToDateCheckConfiguredInput.ImplicitInputs.Length),
                     (TelemetryPropertyName.UpToDateCheck.LogLevel, Level),
@@ -214,6 +217,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 _telemetryService?.PostProperties(TelemetryEventName.UpToDateCheckSuccess, new[]
                 {
                     (TelemetryPropertyName.UpToDateCheck.DurationMillis, (object)_stopwatch.Elapsed.TotalMilliseconds),
+                    (TelemetryPropertyName.UpToDateCheck.WaitDurationMillis, _waitTime.TotalMilliseconds),
                     (TelemetryPropertyName.UpToDateCheck.FileCount, _timestampCache.Count),
                     (TelemetryPropertyName.UpToDateCheck.ConfigurationCount, _upToDateCheckConfiguredInput.ImplicitInputs.Length),
                     (TelemetryPropertyName.UpToDateCheck.LogLevel, Level),

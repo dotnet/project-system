@@ -951,6 +951,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
             async Task<(bool, ImmutableArray<ProjectConfiguration>)> CheckAsync(UpToDateCheckConfiguredInput state, IUpToDateCheckStatePersistence persistence, CancellationToken token)
             {
+                // The subscription object calls GetLatestVersionAsync for project data, which can take a while.
+                // We separate out the wait time from the overall time, so we can more easily identify when the
+                // wait is long, versus the check's actual execution time.
+                var waitTime = sw.Elapsed;
+
                 token.ThrowIfCancellationRequested();
 
                 // Short-lived cache of timestamp by path
@@ -966,6 +971,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                     logWriter,
                     requestedLogLevel,
                     sw,
+                    waitTime,
                     timestampCache,
                     _configuredProject.UnconfiguredProject.FullPath ?? "",
                     projectGuid,
