@@ -48,10 +48,10 @@ Targets that dynamically change references, source files or compilation options 
 
 If you've determined that your target needs to run in a design-time build, using the above table set `BeforeTargets` to the normal target equivalent of what you are contributing to the build. For example, if a target changes `<Reference>` items, then it should indicate that it runs _before_ `ResolveAssemblyReferences` target:
 
-``` XML
-  <Target Name="AddAdditionalReferences" BeforeTargets="ResolveAssemblyReferences">
-     ...
-  </Target>
+```xml
+<Target Name="AddAdditionalReferences" BeforeTargets="ResolveAssemblyReferences">
+    ...
+</Target>
 ```
 The `AddAdditionalReferences` target will run in both normal builds _and_ design-time builds, leading to consistent results between them.
 
@@ -59,13 +59,13 @@ The `AddAdditionalReferences` target will run in both normal builds _and_ design
 
 Use both the `DesignTimeBuild` (CPS-based projects) and `BuildingProject` (legacy project system) properties to determine whether a target is running in a design-time build or a normal build. This can be used to avoid expensive calculations or work that is only needed for a normal build, helping to keep the IDE responsive.
 
-``` XML
-  <Target Name="AddAdditionalReferences" BeforeTargets="ResolveAssemblyReferences">
-     <PropertyGroup Condition="'$(DesignTimeBuild)' == 'true' OR '$(BuildingProject)' != 'true'">
-         <_AvoidExpensiveCalculation>true</_AvoidExpensiveCalculation>
-     </PropertyGroup>
-     ...
-  </Target>
+```xml
+<Target Name="AddAdditionalReferences" BeforeTargets="ResolveAssemblyReferences">
+    <PropertyGroup Condition="'$(DesignTimeBuild)' == 'true' OR '$(BuildingProject)' != 'true'">
+        <_AvoidExpensiveCalculation>true</_AvoidExpensiveCalculation>
+    </PropertyGroup>
+    ...
+</Target>
 ```
 
 __NOTE:__ The `DesignTimeBuild` property is typically empty (`''`) in normal builds, so avoid comparisons to `'false'`.
@@ -115,6 +115,7 @@ This will cause design-time builds to show up in the build logging tool window. 
 After following the above instructions, open the resulting build log file or Output window (for the new project system).
 
 #### Failing design-time build
+
 For a failing build, look for errors at the end of the log:
 
 ```
@@ -127,8 +128,8 @@ c:\Projects\MyProject\MyProject.csproj(17,5): error : An error occurred!
 
 These errors indicate that a target failed, typically this is due to targets that have not correctly specified their dependencies.
 
-
 #### Slow design-time build
+
 For a slow design-time, look for the target performance summary at end of the log which can indicate long running tasks and targets:
 
 ```
