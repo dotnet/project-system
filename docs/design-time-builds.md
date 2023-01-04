@@ -15,16 +15,30 @@ For performance reasons, and unlike normal builds which call the _Build_ target,
 
 The following design-time targets are called, including any dependencies, during design-time builds in the C#/VB project systems. Other project systems, such as C++ or JavaScript will call different targets. 
 
-Design-Time Target                            | Normal Target                      | Description
-----------------------------------------------|------------------------------------|------------------
-ResolveAssemblyReferencesDesignTime           | ResolveAssemblyReferences          | Resolves `<Reference>` items to their paths.
-ResolveProjectReferencesDesignTime            | ResolveProjectReferences           | Resolves `<ProjectReference>` items to their output paths.
-ResolveComReferencesDesignTime                | ResolveComReferences               | Resolves `<COMReference>` items to their primary interop assemblies (PIA) paths.
-ResolveFrameworkReferencesDesignTime          | ResolveFrameworkReferences         | Resolves `<FrameworkReference>` items to their paths.
-ResolvePackageDependenciesDesignTime          | ResolvePackageDependencies         | Resolves `<PackageReference>` items to their paths.
-CompileDesignTime (new project system)/Compile| Compile                            | Passes command-line arguments, `<Compile>` items and `<Analyzer>` items to the compiler in normal builds, or to the language service in design-time builds.
+Design-Time Target                             | Defined by | Description
+-----------------------------------------------|------------|------------------
+BuiltProjectOutputGroup                        | MSBuild    | 
+CollectAnalyzersDesignTime                     | DNPS       | Returns `Analyzer` items.
+CollectCentralPackageVersions                  | NuGet      | Returns `PackageVersion` items.
+CollectCopyToOutputDirectoryItemDesignTime     | DNPS       | Identifies items the project contributes to the output directory during build. Supports the Fast Up-to-date Check and Build Acceleration.
+CollectFrameworkReferences                     | NuGet      | Returns non-transitive `FrameworkReference` items. Supports package restore.
+CollectPackageDownloads                        | NuGet      | Returns `PackageDownload` items. Supports package restore.
+CollectPackageReferences                       | NuGet      | Returns `PackageReference` items. Supports package restore.
+CollectResolvedCompilationReferencesDesignTime | DNPS       |
+CollectResolvedSDKReferencesDesignTime         | SDK        |
+CollectSuggestedWorkloads                      | DNPS       |
+CollectUpToDateCheckBuiltDesignTime            | DNPS       | Supports the Fast Up-to-date Check.
+CollectUpToDateCheckInputDesignTime            | DNPS       | Supports the Fast Up-to-date Check.
+CollectUpToDateCheckOutputDesignTime           | DNPS       | Supports the Fast Up-to-date Check.
+CompileDesignTime                              | MSBuild    | Passes command-line arguments, `<Compile>` items and `<Analyzer>` items to the compiler in normal builds, or to the language service in design-time builds.
+GenerateSupportedTargetFrameworkAlias          | SDK        | Returns `SupportedTargetFrameworkAlias` items. Supports the Project Properties UI.
+ResolveAssemblyReferencesDesignTime            | MSBuild    | Resolves `Reference` items to their paths. Supports the Dependencies Node.
+ResolveComReferencesDesignTime                 | MSBuild    | Resolves `COMReference` items to their primary interop assemblies (PIA) paths. Supports the Dependencies Node.
+ResolveFrameworkReferencesDesignTime           | MSBuild    | Resolves `FrameworkReference` items to their paths. Supports the Dependencies Node.
+ResolvePackageDependenciesDesignTime           | MSBuild    | Resolves `PackageReference` items to their paths. Supports the Dependencies Node.
+ResolveProjectReferencesDesignTime2            | DNPS       | Resolves `ProjectReference` items to their output paths. Overrides `ResolveProjectReferencesDesignTime` from MSBuild's common targets. Supports the Dependencies Node.
 
-The design-time targets are typically simple wrappers around their normal target equivalents, with customized behavior for design-time builds. 
+Where DNPS is the .NET Project System (this repository).
 
 ## Designing targets for use in design-time builds
 
