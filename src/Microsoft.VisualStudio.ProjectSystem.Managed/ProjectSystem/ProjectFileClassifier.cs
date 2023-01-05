@@ -92,6 +92,12 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
         static ProjectFileClassifier()
         {
+#if NET
+            if (!OperatingSystem.IsWindows())
+            {
+                return;
+            }
+#endif
             s_windows = Environment.GetFolderPath(Environment.SpecialFolder.Windows);
             s_programFiles86 = Environment.GetFolderPath(Environment.SpecialFolder.ProgramFilesX86);
 
