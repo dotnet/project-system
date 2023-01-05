@@ -377,6 +377,11 @@
         <target state="translated">Adres podstawowy biblioteki DLL</target>
         <note />
       </trans-unit>
+      <trans-unit id="StringProperty|DefineConstants|Description">
+        <source>Specifies custom conditional compilation constants for your application.</source>
+        <target state="translated">Określa niestandardowe stałe kompilacji warunkowej dla aplikacji.</target>
+        <note />
+      </trans-unit>
       <trans-unit id="StringProperty|DefineConstants|DisplayName">
         <source>Custom constants</source>
         <target state="translated">Stałe niestandardowe</target>

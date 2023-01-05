@@ -375,12 +375,8 @@ This project was loaded using the wrong project type, likely as a result of rena
     <value>Checking items to copy to the output directory:</value>
   </data>
   <data name="FUTDC_CheckingCopyItemsForProject_1" xml:space="preserve">
-    <value>Checking copy items from project '{0}'.</value>
+    <value>Checking copy items from project '{0}':</value>
     <comment>{0} is a file path.</comment>
-  </data>
-  <data name="FUTDC_SkippingDuplicateCopyItem_2" xml:space="preserve">
-    <value>Skipping duplicate copy item '{0}' to '{1}'</value>
-    <comment>{0} and {1} are file paths.</comment>
   </data>
   <data name="FUTD_CheckingCopyToOutputDirectoryItem_1" xml:space="preserve">
     <value>Checking {0} item</value>

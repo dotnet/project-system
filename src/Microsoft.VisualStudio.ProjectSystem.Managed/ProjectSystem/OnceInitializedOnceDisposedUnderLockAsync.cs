@@ -110,7 +110,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
         {
             Requires.NotNull(action, nameof(action));
 
-            using var source = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken, DisposalToken);
+            using var source = CancellationTokenExtensions.CombineWith(cancellationToken, DisposalToken);
             CancellationToken jointCancellationToken = source.Token;
 
             try
@@ -133,7 +133,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
         {
             Requires.NotNull(action, nameof(action));
 
-            using var source = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken, DisposalToken);
+            using var source = CancellationTokenExtensions.CombineWith(cancellationToken, DisposalToken);
             CancellationToken jointCancellationToken = source.Token;
 
             try

@@ -560,18 +560,18 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
 
             var result = await provider.GetBestGuessDefaultValuesForDimensionsAsync(UnconfiguredProjectFactory.Create());
 
-            Assert.Single(result);
-            Assert.Equal(provider.DimensionName, result.First().Key);
-            Assert.Equal("expected", result.First().Value);
+            (string key, string value) = Assert.Single(result);
+            Assert.Equal(provider.DimensionName, key);
+            Assert.Equal("expected", value);
         }
 
         private static void AssertDefaultOrEmpty(BaseProjectConfigurationDimensionProvider provider, IEnumerable<KeyValuePair<string, string>> result)
         {
             if (provider.DimensionDefaultValue is not null)
             {
-                Assert.Single(result);
-                Assert.Equal(provider.DimensionName, result.First().Key);
-                Assert.Equal(provider.DimensionDefaultValue, result.First().Value);
+                (string key, string value) = Assert.Single(result);
+                Assert.Equal(provider.DimensionName, key);
+                Assert.Equal(provider.DimensionDefaultValue, value);
             }
             else
             {

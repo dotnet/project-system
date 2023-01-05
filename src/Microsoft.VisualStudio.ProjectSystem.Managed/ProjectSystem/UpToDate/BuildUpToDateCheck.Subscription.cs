@@ -73,7 +73,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 Func<UpToDateCheckConfiguredInput, IUpToDateCheckStatePersistence, CancellationToken, Task<(bool UpToDate, ImmutableArray<ProjectConfiguration> CheckedConfigurations)>> func,
                 CancellationToken cancellationToken)
             {
-                using var cts = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken, _disposeTokenSource.Token);
+                using var cts = CancellationTokenExtensions.CombineWith(cancellationToken, _disposeTokenSource.Token);
 
                 CancellationToken token = cts.Token;
 

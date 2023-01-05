@@ -53,7 +53,7 @@ namespace Microsoft.VisualStudio.Setup
 #error Unexpected configuration
 #endif
 
-            // D:\repos\project-system\artifacts\Debug\VSSetup\ProjectSystem.vsix
+            // D:\repos\project-system\artifacts\Debug\VSSetup\Insertion\ProjectSystem.vsix
 
             var vsixPath = Path.Combine(
                 rootPath,
@@ -62,9 +62,9 @@ namespace Microsoft.VisualStudio.Setup
                 "VSSetup",
                 "Insertion",
                 vsixName);
-            
+
             using var archive = ZipFile.OpenRead(vsixPath);
-            
+
             return archive.Entries.Select(entry => entry.FullName).OrderBy(fn => fn);
         }
     }

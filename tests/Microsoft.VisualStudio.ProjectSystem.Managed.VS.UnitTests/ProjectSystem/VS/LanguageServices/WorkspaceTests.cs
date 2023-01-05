@@ -9,6 +9,7 @@ using Task = System.Threading.Tasks.Task;
 using Moq.Language.Flow;
 
 #pragma warning disable CA1068 // CancellationToken parameters must come last
+#pragma warning disable CS1998 // Async method lacks 'await' operators and will run synchronously
 #pragma warning disable VSTHRD012 // Provide JoinableTaskFactory where allowed
 
 namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices;
@@ -651,6 +652,46 @@ public class WorkspaceTests
 
         // CreateProjectContextAsync throws
         await EvaluationUpdateThrowsAndDisposesAsync(createProjectContext => createProjectContext.Throws(ex), ex);
+    }
+
+    [Fact]
+    public async Task Fault_BeforeInitialisation()
+    {
+        var workspace = await CreateInstanceAsync(applyEvaluation: false);
+
+        Task task = workspace.WriteAsync(_ => throw new Exception(), CancellationToken.None);
+
+        Assert.Equal(TaskStatus.WaitingForActivation, task.Status);
+
+        var exception = new Exception();
+
+        workspace.Fault(exception);
+
+        var actualException = await Assert.ThrowsAsync<Exception>(() => task);
+
+        Assert.Same(exception, actualException);
+    }
+
+    [Fact]
+    public async Task Fault_AfterInitialisation()
+    {
+        // Initialised after this call (as we apply evaluation data)
+        var workspace = await CreateInstanceAsync(applyEvaluation: true);
+
+        int count = 0;
+
+        await workspace.WriteAsync(async _ => count++, CancellationToken.None);
+
+        Assert.Equal(1, count);
+
+        // Faulting once initialised won't stop callers from using the workspace.
+        // It only means we won't keep the workspace up to date over time as the project
+        // changes.
+        workspace.Fault(new Exception());
+
+        await workspace.WriteAsync(async _ => count++, CancellationToken.None);
+
+        Assert.Equal(2, count);
     }
 
     /// <summary>

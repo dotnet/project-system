@@ -549,7 +549,7 @@ internal sealed class Workspace : OnceInitializedOnceDisposedUnderLockAsync, IWo
         Requires.NotNull(action, nameof(action));
         Verify.NotDisposed(this);
 
-        cancellationToken = CancellationTokenSource.CreateLinkedTokenSource(_unloadCancellationToken, cancellationToken).Token;
+        cancellationToken = CancellationTokenExtensions.CombineWith(_unloadCancellationToken, cancellationToken).Token;
 
         await WhenContextCreated(cancellationToken);
 
@@ -561,7 +561,7 @@ internal sealed class Workspace : OnceInitializedOnceDisposedUnderLockAsync, IWo
         Requires.NotNull(action, nameof(action));
         Verify.NotDisposed(this);
 
-        cancellationToken = CancellationTokenSource.CreateLinkedTokenSource(_unloadCancellationToken, cancellationToken).Token;
+        cancellationToken = CancellationTokenExtensions.CombineWith(_unloadCancellationToken, cancellationToken).Token;
 
         await WhenContextCreated(cancellationToken);
 
@@ -582,6 +582,17 @@ internal sealed class Workspace : OnceInitializedOnceDisposedUnderLockAsync, IWo
 
             Verify.NotDisposed(this);
         }
+    }
+
+    /// <summary>
+    /// Called when the dataflow that provides project data to <see cref="OnWorkspaceUpdateAsync(IProjectVersionedValue{WorkspaceUpdate})"/>
+    /// faults for some reason. This allows the workspace to know that no further updates are coming.
+    /// </summary>
+    /// <param name="exception"></param>
+    internal void Fault(Exception exception)
+    {
+        // Ensure we unblock any code waiting for initialization, and surface the error to the caller.
+        _contextCreated.TrySetException(exception);
     }
 
     /// <summary>

@@ -52,6 +52,16 @@
         <target state="translated">決定論的</target>
         <note />
       </trans-unit>
+      <trans-unit id="BoolProperty|GenerateAssemblyInfo|Description">
+        <source>Transform project properties into assembly attributes during build.</source>
+        <target state="translated">ビルド中にプロジェクト プロパティをアセンブリ属性に変換します。</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="BoolProperty|GenerateAssemblyInfo|DisplayName">
+        <source>Generate assembly info</source>
+        <target state="translated">アセンブリ情報の生成</target>
+        <note />
+      </trans-unit>
       <trans-unit id="BoolProperty|GenerateDocumentationFile|Description">
         <source>Generate a file containing API documentation.</source>
         <target state="translated">API ドキュメントを含むファイルを生成します。</target>
@@ -115,11 +125,6 @@
       <trans-unit id="BoolProperty|TreatWarningsAsErrors|DisplayName">
         <source>Treat warnings as errors</source>
         <target state="translated">警告をエラーとして扱う</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="BoolProperty|WarningLevelOverridden|DisplayName">
-        <source>WarningLevelOverridden</source>
-        <target state="translated">WarningLevelOverridden</target>
         <note />
       </trans-unit>
       <trans-unit id="Category|Advanced|Description">

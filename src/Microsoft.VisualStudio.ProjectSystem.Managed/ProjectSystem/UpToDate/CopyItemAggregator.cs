@@ -1,6 +1,5 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
-using System.Diagnostics;
 using Microsoft.VisualStudio.Composition;
 
 namespace Microsoft.VisualStudio.ProjectSystem.UpToDate;
@@ -13,26 +12,15 @@ internal class CopyItemAggregator : ICopyItemAggregator
 
     public void SetProjectData(ProjectCopyData projectCopyData)
     {
-        System.Diagnostics.Debug.Assert(Path.IsPathRooted(projectCopyData.TargetPath));
+        Requires.Argument(!projectCopyData.IsDefault, nameof(projectCopyData), "Must not be default.");
 
         lock (_projectData)
         {
-            // TODO remove this debug output, or log elsewhere
-            Trace.WriteLine($"*********************** CopyItem data for {projectCopyData.TargetPath}:");
-            foreach (CopyItem copyItem in projectCopyData.CopyItems)
-            {
-                Trace.WriteLine($"  {copyItem.AbsoluteSourcePath} -> {copyItem.RelativeTargetPath} ({copyItem.CopyType})");
-            }
-            foreach (string referencePath in projectCopyData.ReferencedProjectTargetPaths)
-            {
-                Trace.WriteLine($"  References: {referencePath}");
-            }
-
             _projectData[projectCopyData.TargetPath] = projectCopyData;
         }
     }
 
-    public (IEnumerable<CopyItem> Items, bool IsComplete) TryGatherCopyItemsForProject(string targetPath, BuildUpToDateCheck.Log logger)
+    public (IEnumerable<(string Path, ImmutableArray<CopyItem> CopyItems)> ItemsByProject, bool IsComplete) TryGatherCopyItemsForProject(string targetPath, BuildUpToDateCheck.Log logger)
     {
         // Keep track of all projects we've visited to avoid infinite recursion or duplicated results.
         HashSet<string> explored = new(StringComparers.Paths);
@@ -87,32 +75,16 @@ internal class CopyItemAggregator : ICopyItemAggregator
 
         return (GenerateCopyItems(), isComplete);
 
-        IEnumerable<CopyItem> GenerateCopyItems()
+        IEnumerable<(string Path, ImmutableArray<CopyItem> CopyItems)> GenerateCopyItems()
         {
             if (contributingProjects is null)
             {
                 yield break;
             }
 
-            var set = new HashSet<CopyItem>();
-
             foreach (ProjectCopyData contributingProject in contributingProjects)
             {
-                logger.Verbose(nameof(Resources.FUTDC_CheckingCopyItemsForProject_1), contributingProject.ProjectFullPath ?? contributingProject.TargetPath);
-                logger.Indent++;
-
-                foreach (CopyItem copyItem in contributingProject.CopyItems)
-                {
-                    if (!set.Add(copyItem))
-                    {
-                        logger.Verbose(nameof(Resources.FUTDC_SkippingDuplicateCopyItem_2), copyItem.AbsoluteSourcePath, copyItem.RelativeTargetPath);
-                        continue;
-                    }
-
-                    yield return copyItem;
-                }
-
-                logger.Indent--;
+                yield return (contributingProject.ProjectFullPath ?? contributingProject.TargetPath, contributingProject.CopyItems);
             }
         }
     }

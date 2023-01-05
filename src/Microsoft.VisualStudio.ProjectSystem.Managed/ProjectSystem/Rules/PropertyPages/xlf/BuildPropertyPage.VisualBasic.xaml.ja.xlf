@@ -377,6 +377,11 @@
         <target state="translated">DLL ベース アドレス</target>
         <note />
       </trans-unit>
+      <trans-unit id="StringProperty|DefineConstants|Description">
+        <source>Specifies custom conditional compilation constants for your application.</source>
+        <target state="translated">アプリケーションのカスタム条件付きコンパイル定数を指定します。</target>
+        <note />
+      </trans-unit>
       <trans-unit id="StringProperty|DefineConstants|DisplayName">
         <source>Custom constants</source>
         <target state="translated">カスタム定数</target>

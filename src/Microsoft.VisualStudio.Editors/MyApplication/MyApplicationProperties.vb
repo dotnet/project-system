@@ -217,7 +217,6 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
 
         'The relevant project property names
         Private Const PROJECTPROPERTY_CUSTOMTOOL As String = "CustomTool"
-        Private Const PROJECTPROPERTY_CUSTOMTOOLNAMESPACE As String = "CustomToolNamespace"
 
         'The custom tool name to use for the default resx file in VB projects
         Private Const MYAPPCUSTOMTOOL As String = "MyApplicationCodeGenerator"

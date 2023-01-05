@@ -4,7 +4,7 @@ using Moq.Protected;
 
 namespace Microsoft.VisualStudio.Telemetry
 {
-    public class VsTelemetryServiceTests
+    public class ManagedTelemetryServiceTests
     {
         [Fact]
         public void PostEvent_NullAsEventName_ThrowsArgumentNull()
@@ -170,13 +170,13 @@ namespace Microsoft.VisualStudio.Telemetry
             Assert.Contains(new KeyValuePair<string, object>(TelemetryPropertyName.DesignTimeBuildComplete.Targets, "Compile"), result.Properties);
         }
 
-        private static VsTelemetryService CreateInstance(Action<TelemetryEvent>? action = null)
+        private static ManagedTelemetryService CreateInstance(Action<TelemetryEvent>? action = null)
         {
             if (action is null)
-                return new VsTelemetryService();
+                return new ManagedTelemetryService();
 
             // Override PostEventToSession to avoid actually sending to telemetry
-            var mock = new Mock<VsTelemetryService>();
+            var mock = new Mock<ManagedTelemetryService>();
             mock.Protected().Setup("PostEventToSession", ItExpr.IsAny<TelemetryEvent>())
                 .Callback(action);
 

@@ -15,7 +15,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Rules
         private static class ProjectRules
         {
             /// <summary>
-            ///     Represents the evaluation properties representings source control bindings,
+            ///     Represents the evaluation properties representing source control bindings,
             ///     typically used in projects connected to Team Foundation Source Control.
             /// </summary>
             [ExportRule(nameof(SourceControl), PropertyPageContexts.Invisible)]

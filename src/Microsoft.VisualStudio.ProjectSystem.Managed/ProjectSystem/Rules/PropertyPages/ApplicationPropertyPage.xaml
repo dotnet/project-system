@@ -18,7 +18,7 @@
                 SourceOfDefaultValue="AfterContext"
                 HasConfigurationCondition="False" />
   </Rule.DataSource>
-  
+
   <EnumProperty Name="OutputType"
                 DisplayName="Output type"
                 Description="Specifies the type of application to build."
@@ -32,10 +32,6 @@
   </EnumProperty>
 
   <BoolProperty Name="TargetMultipleFrameworks"
-                DisplayName="Target multiple frameworks"
-                Description="Build this project for multiple target frameworks."
-                HelpUrl="https://go.microsoft.com/fwlink/?linkid=2147236"
-                Category="General"
                 Visible="False">
     <BoolProperty.DataSource>
       <DataSource Persistence="ProjectFileWithInterception"
