@@ -1101,10 +1101,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 }
                 finally
                 {
-                    if (fileSystemOperations.IsAccelerationCandidate)
+                    if (fileSystemOperations.IsAccelerationCandidate && fileSystemOperations.IsAccelerationEnabled is null)
                     {
-                        // We didn't copy anything, but we did find a candidate for build acceleration.
-                        // Log this fact, to help users discover the build acceleration feature.
+                        // We didn't copy anything, but we did find a candidate for build acceleration,
+                        // and the project does not specify AccelerateBuildsInVisualStudio. Log a message to
+                        // let the user know that their project might benefit from Build Acceleration.
                         logger.Minimal(nameof(Resources.FUTD_AccelerationCandidate));
                     }
 
