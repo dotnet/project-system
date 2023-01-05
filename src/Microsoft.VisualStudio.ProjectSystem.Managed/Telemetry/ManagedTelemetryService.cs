@@ -76,7 +76,7 @@ namespace Microsoft.VisualStudio.Telemetry
             }
 
             byte[] inputBytes = Encoding.UTF8.GetBytes(value);
-            using var cryptoServiceProvider = new SHA256CryptoServiceProvider();
+            using var cryptoServiceProvider = SHA256.Create();
             return BitConverter.ToString(cryptoServiceProvider.ComputeHash(inputBytes));
         }
     }
