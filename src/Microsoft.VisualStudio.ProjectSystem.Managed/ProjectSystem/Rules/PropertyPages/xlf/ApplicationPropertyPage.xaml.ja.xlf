@@ -12,16 +12,6 @@
         <target state="translated">バインド リダイレクトの自動生成</target>
         <note />
       </trans-unit>
-      <trans-unit id="BoolProperty|TargetMultipleFrameworks|Description">
-        <source>Build this project for multiple target frameworks.</source>
-        <target state="translated">このプロジェクトを複数のターゲット フレームワーク用にビルドします。</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="BoolProperty|TargetMultipleFrameworks|DisplayName">
-        <source>Target multiple frameworks</source>
-        <target state="translated">複数のフレームワークをターゲットにする</target>
-        <note />
-      </trans-unit>
       <trans-unit id="BoolProperty|UseWPF|Description">
         <source>Enable WPF for this project.</source>
         <target state="translated">このプロジェクトで WPF を有効にします。</target>

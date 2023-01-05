@@ -54,10 +54,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Rules
                 // Remove the "ExcludeFromCurrentConfiguration" element.
                 // This is for internal use and hidden, so we don't expect all items to have it.
                 var excludeFromCurrentConfigurationElement = rule.XPathSelectElement(@"/msb:Rule/msb:BoolProperty[@Name=""ExcludeFromCurrentConfiguration""]", namespaceManager);
-                if (excludeFromCurrentConfigurationElement is not null)
-                {
-                    excludeFromCurrentConfigurationElement.Remove();
-                }
+
+                excludeFromCurrentConfigurationElement?.Remove();
             }
 
             AssertXmlEqual(none, rule);

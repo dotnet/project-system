@@ -12,16 +12,6 @@
         <target state="translated">自动生成绑定重定向</target>
         <note />
       </trans-unit>
-      <trans-unit id="BoolProperty|TargetMultipleFrameworks|Description">
-        <source>Build this project for multiple target frameworks.</source>
-        <target state="translated">为多个目标框架生成此项目。</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="BoolProperty|TargetMultipleFrameworks|DisplayName">
-        <source>Target multiple frameworks</source>
-        <target state="translated">面向多个框架</target>
-        <note />
-      </trans-unit>
       <trans-unit id="BoolProperty|UseWPF|Description">
         <source>Enable WPF for this project.</source>
         <target state="translated">为该项目启用 WPF。</target>

@@ -45,10 +45,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
                     {
                         propertyNameAndValues[k] = v;
 
-                        if (inheritedPropertyNames is not null)
-                        {
-                            inheritedPropertyNames.Remove(k);
-                        }
+                        inheritedPropertyNames?.Remove(k);
 
                         return Task.CompletedTask;
                     });

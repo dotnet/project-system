@@ -43,18 +43,6 @@ jobs:
     displayName: === Generate VS Insertion ===
     condition: false
 
-  # Sets the Products drop for permanent retention. This is the drop that contains the VS insertion data (.vsman files).
-  # Overview: https://devdiv.visualstudio.com/DevDiv/_wiki/wikis/DevDiv.wiki/635/Overview
-  - task: MicroBuildRetainVstsDrops@1
-    displayName: Retain Products Drop
-    inputs:
-      # If the drop name is changed in the Publish job, this name also needs changed.
-      # TODO: Consider making this a pipeline variable.
-      DropNames: Products/$(System.TeamProject)/$(Build.Repository.Name)/$(Build.SourceBranchName)/$(Build.BuildNumber)
-      DropServiceUri: https://devdiv.artifacts.visualstudio.com/DefaultCollection
-      # When this isn't provided, the tool sets the --AadAuth flag instead of using --PatAuthEnvVar. The AadAuth doesn't seem to work for this situation.
-      AccessToken: $(System.AccessToken)
-
   # Creates the description for the VS Insertion PR and sets it to the InsertionDescription variable. Also sets the ShortCommitId variable based on currentSha.
   - powershell: . '$(Build.SourcesDirectory)/eng/scripts/GetInsertionPRDescription.ps1' -vsDirectory '$(Pipeline.Workspace)/VS/' -currentSha '$(Build.SourceVersion)' -repoUrl '$(Build.Repository.Uri)' -projectName '$(Build.DefinitionName)'
     displayName: Create VS Insertion Description
@@ -96,3 +84,7 @@ jobs:
       # ##[warning]WARNING: Cannot copy work items from vstfs:///Build/Build/6574299: ArgumentException : 'https://github.com/dotnet/project-system' does not look like an Azure DevOps url
       # Documentation: https://devdiv.visualstudio.com/DevDiv/_wiki/wikis/DevDiv.wiki/634/Link-Work-Items-to-PR
       LinkWorkItemsToPR: false
+
+  # The MicroBuildInsertVsPayload clones the VS repo. This removes the cloned repo after use.
+  - powershell: Remove-Item -Path '$(Pipeline.Workspace)/project-system/VS' -Recurse -Force -ErrorAction Ignore
+    displayName: Clean VS Directory

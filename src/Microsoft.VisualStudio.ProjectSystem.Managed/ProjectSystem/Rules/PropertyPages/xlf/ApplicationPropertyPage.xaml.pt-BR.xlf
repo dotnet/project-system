@@ -12,16 +12,6 @@
         <target state="translated">Gerar automaticamente redirecionamentos de associação</target>
         <note />
       </trans-unit>
-      <trans-unit id="BoolProperty|TargetMultipleFrameworks|Description">
-        <source>Build this project for multiple target frameworks.</source>
-        <target state="translated">Compilar este projeto para várias estruturas de destino.</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="BoolProperty|TargetMultipleFrameworks|DisplayName">
-        <source>Target multiple frameworks</source>
-        <target state="translated">Direcionar o projeto a várias estruturas</target>
-        <note />
-      </trans-unit>
       <trans-unit id="BoolProperty|UseWPF|Description">
         <source>Enable WPF for this project.</source>
         <target state="translated">Habilita o WPF para este projeto.</target>

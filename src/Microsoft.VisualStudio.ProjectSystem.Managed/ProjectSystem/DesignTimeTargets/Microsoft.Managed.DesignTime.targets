@@ -24,6 +24,9 @@
 
     <!-- Tells CPS which target to run for the Package solution build type -->
     <PackageAction Condition="'$(PackageAction)' == ''">Pack</PackageAction>
+
+    <!-- Disable Build Acceleration for VSIX projects -->
+    <AccelerateBuildsInVisualStudio Condition="'$(IsVsixProject)' == 'true'">false</AccelerateBuildsInVisualStudio>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(AssemblyReferenceTabs)' == '' And '$(UsingMicrosoftNETSdk)' == 'true'">
@@ -45,7 +48,7 @@
   </PropertyGroup>
 
   <!--
-    Locate the approriate localized xaml resources based on the language ID or name.
+    Locate the appropriate localized xaml resources based on the language ID or name.
 
     The logic here matches the resource manager sufficiently to handle the fixed set of 
     possible VS languages and directories on disk.
@@ -481,13 +484,16 @@
     Returns="@(_CollectedCopyToOutputDirectoryItem)">
     <ItemGroup>
 
-      <_CollectedCopyToOutputDirectoryItem Include="@(_ThisProjectItemsToCopyToOutputDirectory)" />
+      <_CollectedCopyToOutputDirectoryItem Include="@(_ThisProjectItemsToCopyToOutputDirectory)">
+        <BuildAccelerationOnly>false</BuildAccelerationOnly>
+      </_CollectedCopyToOutputDirectoryItem>
 
       <!-- Output assembly -->
 
       <_CollectedCopyToOutputDirectoryItem Include="$(TargetPath)">
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         <TargetPath>$([System.IO.Path]::GetFileName('$(TargetPath)'))</TargetPath>
+        <BuildAccelerationOnly>true</BuildAccelerationOnly>
       </_CollectedCopyToOutputDirectoryItem>
 
       <!-- Debug symbols -->
@@ -495,6 +501,7 @@
       <_CollectedCopyToOutputDirectoryItem Include="@(_DebugSymbolsOutputPath->'%(FullPath)')" Condition="'$(_DebugSymbolsProduced)' == 'true' and '$(SkipCopyingSymbolsToOutputDirectory)' != 'true' and '$(CopyOutputSymbolsToOutputDirectory)' != 'false'">
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         <TargetPath>$([System.IO.Path]::GetFileName('%(Identity)'))</TargetPath>
+        <BuildAccelerationOnly>true</BuildAccelerationOnly>
       </_CollectedCopyToOutputDirectoryItem>
 
       <!-- ReferenceCopyLocalPaths
@@ -508,11 +515,13 @@
       <_CollectedCopyToOutputDirectoryItem Include="@(ReferenceCopyLocalPaths->'%(Identity)')" Condition="'%(ReferenceCopyLocalPaths.ReferenceSourceTarget)' != 'ProjectReference' AND '%(ReferenceCopyLocalPaths.DestinationSubPath)' != ''">
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         <TargetPath>%(ReferenceCopyLocalPaths.DestinationSubPath)</TargetPath>
+        <BuildAccelerationOnly>true</BuildAccelerationOnly>
       </_CollectedCopyToOutputDirectoryItem>
 
       <_CollectedCopyToOutputDirectoryItem Include="@(ReferenceCopyLocalPaths->'%(Identity)')" Condition="'%(ReferenceCopyLocalPaths.ReferenceSourceTarget)' != 'ProjectReference' AND '%(ReferenceCopyLocalPaths.DestinationSubPath)' == ''">
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         <TargetPath>$([System.IO.Path]::GetFileName('%(Identity)'))</TargetPath>
+        <BuildAccelerationOnly>true</BuildAccelerationOnly>
       </_CollectedCopyToOutputDirectoryItem>
 
       <!-- Documentation file -->
@@ -520,6 +529,7 @@
       <_CollectedCopyToOutputDirectoryItem Include="@(FinalDocFile->'%(FullPath)')" Condition="'$(_DocumentationFileProduced)' == 'true'">
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         <TargetPath>$([System.IO.Path]::GetFileName('%(Identity)'))</TargetPath>
+        <BuildAccelerationOnly>true</BuildAccelerationOnly>
       </_CollectedCopyToOutputDirectoryItem>
 
       <!-- Satellite assemblies -->
@@ -527,6 +537,7 @@
       <_CollectedCopyToOutputDirectoryItem Include="@(IntermediateSatelliteAssembliesWithTargetPath->'$(TargetDir)%(Culture)\$(TargetName).resources.dll')" Condition="'@(IntermediateSatelliteAssembliesWithTargetPath)' != ''">
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         <TargetPath>%(IntermediateSatelliteAssembliesWithTargetPath.Culture)\$(TargetName).resources.dll</TargetPath>
+        <BuildAccelerationOnly>true</BuildAccelerationOnly>
       </_CollectedCopyToOutputDirectoryItem>
 
     </ItemGroup>

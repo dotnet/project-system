@@ -23,6 +23,8 @@ M:Microsoft.VisualStudio.ProjectSystem.CommonProjectSystemTools.LoadedProject(Mi
 M:Microsoft.VisualStudio.ProjectSystem.CommonProjectSystemTools.LoadedProjectAsync(Microsoft.VisualStudio.ProjectSystem.IProjectAsynchronousTasksService,System.Func{System.Threading.Tasks.Task},System.Boolean); Using IUnconfiguredProjectTasksService.LoadedProjectAsync is unit testable
 M:Microsoft.VisualStudio.ProjectSystem.CommonProjectSystemTools.LoadedProjectAsync`1(Microsoft.VisualStudio.ProjectSystem.IProjectAsynchronousTasksService,System.Func{System.Threading.Tasks.Task{``0}},System.Boolean); Using IUnconfiguredProjectTasksService.LoadedProjectAsync is unit testable
 
+M:System.Threading.CancellationTokenSource.CreateLinkedTokenSource(System.Threading.CancellationToken,System.Threading.CancellationToken); Use Microsoft.VisualStudio.Threading.CancellationTokenExtensions.CombineWith instead
+
 M:System.Threading.Tasks.Task.ConfigureAwait(System.Boolean); "ConfigureAwait(true)" should be removed, and "ConfigureAwait(false)" should be replaced with "await TaskScheduler.Default"
 M:System.Threading.Tasks.Task`1.ConfigureAwait(System.Boolean); "ConfigureAwait(true)" should be removed, and "ConfigureAwait(false)" should be replaced with "await TaskScheduler.Default"
 M:System.Threading.Tasks.ValueTask.ConfigureAwait(System.Boolean); "ConfigureAwait(true)" should be removed, and "ConfigureAwait(false)" should be replaced with "await TaskScheduler.Default"

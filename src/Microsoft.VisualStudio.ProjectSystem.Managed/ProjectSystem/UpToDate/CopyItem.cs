@@ -1,5 +1,7 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
+using Microsoft.VisualStudio.ProjectSystem.Properties;
+
 namespace Microsoft.VisualStudio.ProjectSystem.UpToDate;
 
 /// <summary>
@@ -22,7 +24,12 @@ internal readonly struct CopyItem
     /// </summary>
     public BuildUpToDateCheck.CopyType CopyType { get; }
 
-    public CopyItem(string path, string targetPath, BuildUpToDateCheck.CopyType copyType)
+    /// <summary>
+    /// Gets whether this item should only be checked when Build Acceleration is enabled.
+    /// </summary>
+    public bool IsBuildAccelerationOnly { get; }
+
+    public CopyItem(string path, string targetPath, BuildUpToDateCheck.CopyType copyType, bool isBuildAccelerationOnly)
     {
         Requires.NotNull(targetPath, nameof(targetPath));
         System.Diagnostics.Debug.Assert(Path.IsPathRooted(path), "Path.IsPathRooted(path)");
@@ -31,49 +38,57 @@ internal readonly struct CopyItem
         AbsoluteSourcePath = path;
         RelativeTargetPath = targetPath;
         CopyType = copyType;
+        IsBuildAccelerationOnly = isBuildAccelerationOnly;
     }
 
     public CopyItem(string path, IImmutableDictionary<string, string> metadata)
-        : this(path, GetTargetPath(metadata), GetCopyType(metadata))
+        : this(path, GetTargetPath(metadata), GetCopyType(metadata), GetIsBuildAccelerationOnly(metadata))
     {
     }
 
     private static string GetTargetPath(IImmutableDictionary<string, string> metadata)
     {
-        Assumes.True(metadata.TryGetValue(None.TargetPathProperty, out string? targetPath));
+        Assumes.True(metadata.TryGetValue(CopyToOutputDirectoryItem.TargetPathProperty, out string? targetPath));
         return targetPath;
     }
 
     private static BuildUpToDateCheck.CopyType GetCopyType(IImmutableDictionary<string, string> metadata)
     {
-        Assumes.True(metadata.TryGetValue(Compile.CopyToOutputDirectoryProperty, out string? value));
+        Assumes.True(metadata.TryGetValue(CopyToOutputDirectoryItem.CopyToOutputDirectoryProperty, out string? value));
         return ParseCopyType(value);
+
+        static BuildUpToDateCheck.CopyType ParseCopyType(string value)
+        {
+            if (string.Equals(value, CopyToOutputDirectoryItem.CopyToOutputDirectoryValues.Always, StringComparisons.PropertyLiteralValues))
+            {
+                return BuildUpToDateCheck.CopyType.Always;
+            }
+
+            if (string.Equals(value, CopyToOutputDirectoryItem.CopyToOutputDirectoryValues.PreserveNewest, StringComparisons.PropertyLiteralValues))
+            {
+                return BuildUpToDateCheck.CopyType.PreserveNewest;
+            }
+
+            throw Assumes.Fail($"CopyToOutputDirectory should be Always or PreserveNewest, not {value}");
+        }
     }
 
-    public void Deconstruct(out string path, out string targetPath, out BuildUpToDateCheck.CopyType copyType)
+    private static bool GetIsBuildAccelerationOnly(IImmutableDictionary<string, string> metadata)
+    {
+        Assumes.True(metadata.TryGetBoolProperty(CopyToOutputDirectoryItem.BuildAccelerationOnlyProperty, out bool value));
+        return value;
+    }
+
+    public void Deconstruct(out string path, out string targetPath, out BuildUpToDateCheck.CopyType copyType, out bool isBuildAccelerationOnly)
     {
         path = AbsoluteSourcePath;
         targetPath = RelativeTargetPath;
         copyType = CopyType;
+        isBuildAccelerationOnly = IsBuildAccelerationOnly;
     }
 
     public override string ToString()
     {
         return (Source: AbsoluteSourcePath, Target: RelativeTargetPath, CopyType).ToString();
-    }
-
-    public static BuildUpToDateCheck.CopyType ParseCopyType(string value)
-    {
-        if (string.Equals(value, CopyToOutputDirectoryItem.CopyToOutputDirectoryValues.Always, StringComparisons.PropertyLiteralValues))
-        {
-            return BuildUpToDateCheck.CopyType.Always;
-        }
-
-        if (string.Equals(value, CopyToOutputDirectoryItem.CopyToOutputDirectoryValues.PreserveNewest, StringComparisons.PropertyLiteralValues))
-        {
-            return BuildUpToDateCheck.CopyType.PreserveNewest;
-        }
-
-        throw Assumes.Fail($"CopyToOutputDirectory should be Always or PreserveNewest, not {value}");
     }
 }

@@ -12,16 +12,6 @@
         <target state="translated">Bindungsumleitungen automatisch generieren</target>
         <note />
       </trans-unit>
-      <trans-unit id="BoolProperty|TargetMultipleFrameworks|Description">
-        <source>Build this project for multiple target frameworks.</source>
-        <target state="translated">Hiermit erstellen Sie dieses Projekt für mehrere Zielframeworks.</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="BoolProperty|TargetMultipleFrameworks|DisplayName">
-        <source>Target multiple frameworks</source>
-        <target state="translated">Mehrere Zielframeworks</target>
-        <note />
-      </trans-unit>
       <trans-unit id="BoolProperty|UseWPF|Description">
         <source>Enable WPF for this project.</source>
         <target state="translated">Hiermit wird WPF für dieses Projekt aktiviert.</target>

@@ -38,7 +38,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
         private bool _isTaskQueueEmpty = true;
         private bool _isFastUpToDateCheckEnabledInSettings = true;
         private bool? _isBuildAccelerationEnabled;
-        private IEnumerable<CopyItem> _copyItems = Enumerable.Empty<CopyItem>();
+        private IEnumerable<(string Path, ImmutableArray<CopyItem> CopyItems)> _copyItems = Enumerable.Empty<(string Path, ImmutableArray<CopyItem> CopyItems)>();
         private bool _isCopyItemsComplete = true;
 
         private UpToDateCheckConfiguredInput? _state;
@@ -1543,10 +1543,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
         {
             _isBuildAccelerationEnabled = isBuildAccelerationEnabled;
 
-            var destinationPath = @"C:\Dev\Solution\Project\bin\Debug\Item1";
-            var sourcePath = @"C:\Dev\Solution\Project\Item1";
+            var sourcePath1 = @"C:\Dev\Solution\Project\Item1";
+            var sourcePath2 = @"C:\Dev\Solution\Project\Item2";
+            var destinationPath1 = @"C:\Dev\Solution\Project\bin\Debug\Item1";
+            var destinationPath2 = @"C:\Dev\Solution\Project\bin\Debug\Item2";
 
-            _copyItems = new[] { new CopyItem(sourcePath, "Item1", BuildUpToDateCheck.CopyType.PreserveNewest) };
+            SetCopyItems(
+                new CopyItem(sourcePath1, "Item1", BuildUpToDateCheck.CopyType.PreserveNewest, isBuildAccelerationOnly: false),
+                new CopyItem(sourcePath2, "Item2", BuildUpToDateCheck.CopyType.PreserveNewest, isBuildAccelerationOnly: true));
 
             var itemChangeTime  = DateTime.UtcNow.AddMinutes(-4);
             var lastBuildTime   = DateTime.UtcNow.AddMinutes(-3);
@@ -1557,8 +1561,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 lastSuccessfulBuildStartTimeUtc: lastBuildTime,
                 lastItemsChangedAtUtc: itemChangeTime);
 
-            _fileSystem.AddFile(destinationPath, destinationTime);
-            _fileSystem.AddFile(sourcePath, sourceTime);
+            _fileSystem.AddFile(sourcePath1, sourceTime);
+            _fileSystem.AddFile(sourcePath2, sourceTime);
+            _fileSystem.AddFile(destinationPath1, destinationTime);
+            _fileSystem.AddFile(destinationPath2, destinationTime);
 
             if (isBuildAccelerationEnabled is true)
             {
@@ -1567,13 +1573,19 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                     Comparing timestamps of inputs and outputs:
                         No build outputs defined.
                     Checking items to copy to the output directory:
-                        Checking PreserveNewest item
-                            Source      {ToLocalTime(sourceTime)}: '{sourcePath}'
-                            Destination {ToLocalTime(destinationTime)}: '{destinationPath}'
-                        Remembering the need to copy file '{sourcePath}' to '{destinationPath}'.
-                    Copying 1 files to accelerate build:
-                        From '{sourcePath}' to '{destinationPath}'.
-                    Build acceleration copied 1 files.
+                        Checking copy items from project '{_projectPath}':
+                            Checking PreserveNewest item
+                                Source      {ToLocalTime(sourceTime)}: '{sourcePath1}'
+                                Destination {ToLocalTime(destinationTime)}: '{destinationPath1}'
+                                Remembering the need to copy file '{sourcePath1}' to '{destinationPath1}'.
+                            Checking PreserveNewest item
+                                Source      {ToLocalTime(sourceTime)}: '{sourcePath2}'
+                                Destination {ToLocalTime(destinationTime)}: '{destinationPath2}'
+                                Remembering the need to copy file '{sourcePath2}' to '{destinationPath2}'.
+                    Copying 2 files to accelerate build:
+                        From '{sourcePath1}' to '{destinationPath1}'.
+                        From '{sourcePath2}' to '{destinationPath2}'.
+                    Build acceleration copied 2 files.
                     Project is up-to-date.
                     """);
             }
@@ -1585,10 +1597,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                     Comparing timestamps of inputs and outputs:
                         No build outputs defined.
                     Checking items to copy to the output directory:
-                        Checking PreserveNewest item
-                            Source      {ToLocalTime(sourceTime)}: '{sourcePath}'
-                            Destination {ToLocalTime(destinationTime)}: '{destinationPath}'
-                    Item with CopyToOutputDirectory="PreserveNewest" source '{sourcePath}' is newer than destination '{destinationPath}', not up-to-date.
+                        Checking copy items from project '{_projectPath}':
+                            Checking PreserveNewest item
+                                Source      {ToLocalTime(sourceTime)}: '{sourcePath1}'
+                                Destination {ToLocalTime(destinationTime)}: '{destinationPath1}'
+                    Item with CopyToOutputDirectory="PreserveNewest" source '{sourcePath1}' is newer than destination '{destinationPath1}', not up-to-date.
                     """,
                     "CopyToOutputDirectorySourceNewer");
             }
@@ -1599,10 +1612,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                     Comparing timestamps of inputs and outputs:
                         No build outputs defined.
                     Checking items to copy to the output directory:
-                        Checking PreserveNewest item
-                            Source      {ToLocalTime(sourceTime)}: '{sourcePath}'
-                            Destination {ToLocalTime(destinationTime)}: '{destinationPath}'
-                    Item with CopyToOutputDirectory="PreserveNewest" source '{sourcePath}' is newer than destination '{destinationPath}', not up-to-date.
+                        Checking copy items from project '{_projectPath}':
+                            Checking PreserveNewest item
+                                Source      {ToLocalTime(sourceTime)}: '{sourcePath1}'
+                                Destination {ToLocalTime(destinationTime)}: '{destinationPath1}'
+                    Item with CopyToOutputDirectory="PreserveNewest" source '{sourcePath1}' is newer than destination '{destinationPath1}', not up-to-date.
                     This project appears to be a candidate for build acceleration. To opt in, set the 'AccelerateBuildsInVisualStudio' MSBuild property to 'true'.
                     """,
                     "CopyToOutputDirectorySourceNewer");
@@ -1615,10 +1629,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
         {
             _isBuildAccelerationEnabled = isBuildAccelerationEnabled;
 
-            var destinationPath = @"C:\Dev\Solution\Project\bin\Debug\TargetPath";
-            var sourcePath = @"C:\Dev\Solution\Project\Item1";
+            var sourcePath1 = @"C:\Dev\Solution\Project\Item1";
+            var sourcePath2 = @"C:\Dev\Solution\Project\Item2";
+            var destinationPath1 = @"C:\Dev\Solution\Project\bin\Debug\Item1";
+            var destinationPath2 = @"C:\Dev\Solution\Project\bin\Debug\Item2";
 
-            _copyItems = new[] { new CopyItem(sourcePath, "TargetPath", BuildUpToDateCheck.CopyType.PreserveNewest) };
+            SetCopyItems(
+                new CopyItem(sourcePath1, "Item1", BuildUpToDateCheck.CopyType.PreserveNewest, isBuildAccelerationOnly: false),
+                new CopyItem(sourcePath2, "Item2", BuildUpToDateCheck.CopyType.PreserveNewest, isBuildAccelerationOnly: true));
 
             var itemChangeTime = DateTime.UtcNow.AddMinutes(-4);
             var lastBuildTime = DateTime.UtcNow.AddMinutes(-3);
@@ -1629,8 +1647,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 lastSuccessfulBuildStartTimeUtc: lastBuildTime,
                 lastItemsChangedAtUtc: itemChangeTime);
 
-            _fileSystem.AddFile(destinationPath, destinationTime);
-            _fileSystem.AddFile(sourcePath, sourceTime);
+            _fileSystem.AddFile(sourcePath1, sourceTime);
+            _fileSystem.AddFile(sourcePath2, sourceTime);
+            _fileSystem.AddFile(destinationPath1, destinationTime);
+            _fileSystem.AddFile(destinationPath2, destinationTime);
 
             if (isBuildAccelerationEnabled is true)
             {
@@ -1639,13 +1659,19 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                     Comparing timestamps of inputs and outputs:
                         No build outputs defined.
                     Checking items to copy to the output directory:
-                        Checking PreserveNewest item
-                            Source      {ToLocalTime(sourceTime)}: '{sourcePath}'
-                            Destination {ToLocalTime(destinationTime)}: '{destinationPath}'
-                        Remembering the need to copy file 'C:\Dev\Solution\Project\Item1' to 'C:\Dev\Solution\Project\bin\Debug\TargetPath'.
-                    Copying 1 files to accelerate build:
-                        From 'C:\Dev\Solution\Project\Item1' to 'C:\Dev\Solution\Project\bin\Debug\TargetPath'.
-                    Build acceleration copied 1 files.
+                        Checking copy items from project '{_projectPath}':
+                            Checking PreserveNewest item
+                                Source      {ToLocalTime(sourceTime)}: '{sourcePath1}'
+                                Destination {ToLocalTime(destinationTime)}: '{destinationPath1}'
+                                Remembering the need to copy file '{sourcePath1}' to '{destinationPath1}'.
+                            Checking PreserveNewest item
+                                Source      {ToLocalTime(sourceTime)}: '{sourcePath2}'
+                                Destination {ToLocalTime(destinationTime)}: '{destinationPath2}'
+                                Remembering the need to copy file '{sourcePath2}' to '{destinationPath2}'.
+                    Copying 2 files to accelerate build:
+                        From '{sourcePath1}' to '{destinationPath1}'.
+                        From '{sourcePath2}' to '{destinationPath2}'.
+                    Build acceleration copied 2 files.
                     Project is up-to-date.
                     """);
             }
@@ -1657,10 +1683,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                     Comparing timestamps of inputs and outputs:
                         No build outputs defined.
                     Checking items to copy to the output directory:
-                        Checking PreserveNewest item
-                            Source      {ToLocalTime(sourceTime)}: '{sourcePath}'
-                            Destination {ToLocalTime(destinationTime)}: '{destinationPath}'
-                    Item with CopyToOutputDirectory="PreserveNewest" source '{sourcePath}' is newer than destination '{destinationPath}', not up-to-date.
+                        Checking copy items from project '{_projectPath}':
+                            Checking PreserveNewest item
+                                Source      {ToLocalTime(sourceTime)}: '{sourcePath1}'
+                                Destination {ToLocalTime(destinationTime)}: '{destinationPath1}'
+                    Item with CopyToOutputDirectory="PreserveNewest" source '{sourcePath1}' is newer than destination '{destinationPath1}', not up-to-date.
                     """,
                     "CopyToOutputDirectorySourceNewer");
             }
@@ -1671,10 +1698,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                     Comparing timestamps of inputs and outputs:
                         No build outputs defined.
                     Checking items to copy to the output directory:
-                        Checking PreserveNewest item
-                            Source      {ToLocalTime(sourceTime)}: '{sourcePath}'
-                            Destination {ToLocalTime(destinationTime)}: '{destinationPath}'
-                    Item with CopyToOutputDirectory="PreserveNewest" source '{sourcePath}' is newer than destination '{destinationPath}', not up-to-date.
+                        Checking copy items from project '{_projectPath}':
+                            Checking PreserveNewest item
+                                Source      {ToLocalTime(sourceTime)}: '{sourcePath1}'
+                                Destination {ToLocalTime(destinationTime)}: '{destinationPath1}'
+                    Item with CopyToOutputDirectory="PreserveNewest" source '{sourcePath1}' is newer than destination '{destinationPath1}', not up-to-date.
                     This project appears to be a candidate for build acceleration. To opt in, set the 'AccelerateBuildsInVisualStudio' MSBuild property to 'true'.
                     """,
                     "CopyToOutputDirectorySourceNewer");
@@ -1689,10 +1717,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
             const string outDirSnapshot = "newOutDir";
 
-            var destinationPath = $@"C:\Dev\Solution\Project\{outDirSnapshot}\Item1";
-            var sourcePath = @"C:\Dev\Solution\Project\Item1";
+            var sourcePath1 = @"C:\Dev\Solution\Project\Item1";
+            var sourcePath2 = @"C:\Dev\Solution\Project\Item2";
+            var destinationPath1 = $@"C:\Dev\Solution\Project\{outDirSnapshot}\Item1";
+            var destinationPath2 = $@"C:\Dev\Solution\Project\{outDirSnapshot}\Item2";
 
-            _copyItems = new[] { new CopyItem(sourcePath, "Item1", BuildUpToDateCheck.CopyType.PreserveNewest) };
+            SetCopyItems(
+                new CopyItem(sourcePath1, "Item1", BuildUpToDateCheck.CopyType.PreserveNewest, isBuildAccelerationOnly: false),
+                new CopyItem(sourcePath2, "Item2", BuildUpToDateCheck.CopyType.PreserveNewest, isBuildAccelerationOnly: true));
 
             var itemChangeTime = DateTime.UtcNow.AddMinutes(-4);
             var lastBuildTime = DateTime.UtcNow.AddMinutes(-3);
@@ -1704,8 +1736,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 lastSuccessfulBuildStartTimeUtc: lastBuildTime,
                 lastItemsChangedAtUtc: itemChangeTime);
 
-            _fileSystem.AddFile(destinationPath, destinationTime);
-            _fileSystem.AddFile(sourcePath, sourceTime);
+            _fileSystem.AddFile(destinationPath1, destinationTime);
+            _fileSystem.AddFile(destinationPath2, destinationTime);
+            _fileSystem.AddFile(sourcePath1, sourceTime);
+            _fileSystem.AddFile(sourcePath2, sourceTime);
 
             if (isBuildAccelerationEnabled is true)
             {
@@ -1714,13 +1748,19 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                     Comparing timestamps of inputs and outputs:
                         No build outputs defined.
                     Checking items to copy to the output directory:
-                        Checking PreserveNewest item
-                            Source      {ToLocalTime(sourceTime)}: '{sourcePath}'
-                            Destination {ToLocalTime(destinationTime)}: '{destinationPath}'
-                        Remembering the need to copy file '{sourcePath}' to '{destinationPath}'.
-                    Copying 1 files to accelerate build:
-                        From '{sourcePath}' to '{destinationPath}'.
-                    Build acceleration copied 1 files.
+                        Checking copy items from project '{_projectPath}':
+                            Checking PreserveNewest item
+                                Source      {ToLocalTime(sourceTime)}: '{sourcePath1}'
+                                Destination {ToLocalTime(destinationTime)}: '{destinationPath1}'
+                                Remembering the need to copy file '{sourcePath1}' to '{destinationPath1}'.
+                            Checking PreserveNewest item
+                                Source      {ToLocalTime(sourceTime)}: '{sourcePath2}'
+                                Destination {ToLocalTime(destinationTime)}: '{destinationPath2}'
+                                Remembering the need to copy file '{sourcePath2}' to '{destinationPath2}'.
+                    Copying 2 files to accelerate build:
+                        From '{sourcePath1}' to '{destinationPath1}'.
+                        From '{sourcePath2}' to '{destinationPath2}'.
+                    Build acceleration copied 2 files.
                     Project is up-to-date.
                     """);
             }
@@ -1732,10 +1772,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                     Comparing timestamps of inputs and outputs:
                         No build outputs defined.
                     Checking items to copy to the output directory:
-                        Checking PreserveNewest item
-                            Source      {ToLocalTime(sourceTime)}: '{sourcePath}'
-                            Destination {ToLocalTime(destinationTime)}: '{destinationPath}'
-                    Item with CopyToOutputDirectory="PreserveNewest" source '{sourcePath}' is newer than destination '{destinationPath}', not up-to-date.
+                        Checking copy items from project '{_projectPath}':
+                            Checking PreserveNewest item
+                                Source      {ToLocalTime(sourceTime)}: '{sourcePath1}'
+                                Destination {ToLocalTime(destinationTime)}: '{destinationPath1}'
+                    Item with CopyToOutputDirectory="PreserveNewest" source '{sourcePath1}' is newer than destination '{destinationPath1}', not up-to-date.
                     """,
                     "CopyToOutputDirectorySourceNewer");
             }
@@ -1746,10 +1787,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                     Comparing timestamps of inputs and outputs:
                         No build outputs defined.
                     Checking items to copy to the output directory:
-                        Checking PreserveNewest item
-                            Source      {ToLocalTime(sourceTime)}: '{sourcePath}'
-                            Destination {ToLocalTime(destinationTime)}: '{destinationPath}'
-                    Item with CopyToOutputDirectory="PreserveNewest" source '{sourcePath}' is newer than destination '{destinationPath}', not up-to-date.
+                        Checking copy items from project '{_projectPath}':
+                            Checking PreserveNewest item
+                                Source      {ToLocalTime(sourceTime)}: '{sourcePath1}'
+                                Destination {ToLocalTime(destinationTime)}: '{destinationPath1}'
+                    Item with CopyToOutputDirectory="PreserveNewest" source '{sourcePath1}' is newer than destination '{destinationPath1}', not up-to-date.
                     This project appears to be a candidate for build acceleration. To opt in, set the 'AccelerateBuildsInVisualStudio' MSBuild property to 'true'.
                     """,
                     "CopyToOutputDirectorySourceNewer");
@@ -1759,10 +1801,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
         [Fact]
         public async Task IsUpToDateAsync_False_CopyToOutputDirectory_SourceDoesNotExist()
         {
-            var destinationPath = @"C:\Dev\Solution\Project\bin\Debug\Item1";
-            var sourcePath = @"C:\Dev\Solution\Project\Item1";
+            var sourcePath1 = @"C:\Dev\Solution\Project\Item1";
+            var sourcePath2 = @"C:\Dev\Solution\Project\Item2";
+            var destinationPath1 = @"C:\Dev\Solution\Project\bin\Debug\Item1";
 
-            _copyItems = new[] { new CopyItem(sourcePath, "Item1", BuildUpToDateCheck.CopyType.PreserveNewest) };
+            SetCopyItems(
+                new CopyItem(sourcePath1, "Item1", BuildUpToDateCheck.CopyType.PreserveNewest, isBuildAccelerationOnly: false),
+                new CopyItem(sourcePath2, "Item2", BuildUpToDateCheck.CopyType.PreserveNewest, isBuildAccelerationOnly: true));
 
             var itemChangeTime  = DateTime.UtcNow.AddMinutes(-4);
             var lastBuildTime   = DateTime.UtcNow.AddMinutes(-3);
@@ -1772,15 +1817,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 lastSuccessfulBuildStartTimeUtc: lastBuildTime,
                 lastItemsChangedAtUtc: itemChangeTime);
 
-            _fileSystem.AddFile(destinationPath, destinationTime);
+            _fileSystem.AddFile(destinationPath1, destinationTime);
 
             await AssertNotUpToDateAsync(
                 $"""
                 Comparing timestamps of inputs and outputs:
                     No build outputs defined.
                 Checking items to copy to the output directory:
-                    Checking PreserveNewest item
-                Source '{sourcePath}' does not exist, not up-to-date.
+                    Checking copy items from project '{_projectPath}':
+                        Checking PreserveNewest item
+                Source '{sourcePath1}' does not exist, not up-to-date.
                 """,
                 "CopyToOutputDirectorySourceNotFound");
         }
@@ -1791,10 +1837,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
         {
             _isBuildAccelerationEnabled = isBuildAccelerationEnabled;
 
-            var destinationPath = @"C:\Dev\Solution\Project\bin\Debug\Item1";
-            var sourcePath = @"C:\Dev\Solution\Project\Item1";
+            var sourcePath1 = @"C:\Dev\Solution\Project\Item1";
+            var sourcePath2 = @"C:\Dev\Solution\Project\Item2";
+            var destinationPath1 = @"C:\Dev\Solution\Project\bin\Debug\Item1";
+            var destinationPath2 = @"C:\Dev\Solution\Project\bin\Debug\Item2";
 
-            _copyItems = new[] { new CopyItem(sourcePath, "Item1", BuildUpToDateCheck.CopyType.PreserveNewest) };
+            SetCopyItems(
+                new CopyItem(sourcePath1, "Item1", BuildUpToDateCheck.CopyType.PreserveNewest, isBuildAccelerationOnly: false),
+                new CopyItem(sourcePath2, "Item2", BuildUpToDateCheck.CopyType.PreserveNewest, isBuildAccelerationOnly: true));
 
             var itemChangeTime = DateTime.UtcNow.AddMinutes(-4);
             var lastBuildTime  = DateTime.UtcNow.AddMinutes(-3);
@@ -1804,7 +1854,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 lastSuccessfulBuildStartTimeUtc: lastBuildTime,
                 lastItemsChangedAtUtc: itemChangeTime);
 
-            _fileSystem.AddFile(sourcePath, sourceTime);
+            _fileSystem.AddFile(sourcePath1, sourceTime);
+            _fileSystem.AddFile(sourcePath2, sourceTime);
 
             if (isBuildAccelerationEnabled is true)
             {
@@ -1813,13 +1864,19 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                     Comparing timestamps of inputs and outputs:
                         No build outputs defined.
                     Checking items to copy to the output directory:
-                        Checking PreserveNewest item
-                            Source      {ToLocalTime(sourceTime)}: '{sourcePath}'
-                            Destination '{destinationPath}' does not exist.
-                        Remembering the need to copy file 'C:\Dev\Solution\Project\Item1' to 'C:\Dev\Solution\Project\bin\Debug\Item1'.
-                    Copying 1 files to accelerate build:
-                        From 'C:\Dev\Solution\Project\Item1' to 'C:\Dev\Solution\Project\bin\Debug\Item1'.
-                    Build acceleration copied 1 files.
+                        Checking copy items from project '{_projectPath}':
+                            Checking PreserveNewest item
+                                Source      {ToLocalTime(sourceTime)}: '{sourcePath1}'
+                                Destination '{destinationPath1}' does not exist.
+                                Remembering the need to copy file '{sourcePath1}' to '{destinationPath1}'.
+                            Checking PreserveNewest item
+                                Source      {ToLocalTime(sourceTime)}: '{sourcePath2}'
+                                Destination '{destinationPath2}' does not exist.
+                                Remembering the need to copy file '{sourcePath2}' to '{destinationPath2}'.
+                    Copying 2 files to accelerate build:
+                        From '{sourcePath1}' to '{destinationPath1}'.
+                        From '{sourcePath2}' to '{destinationPath2}'.
+                    Build acceleration copied 2 files.
                     Project is up-to-date.
                     """);
             }
@@ -1831,10 +1888,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                     Comparing timestamps of inputs and outputs:
                         No build outputs defined.
                     Checking items to copy to the output directory:
-                        Checking PreserveNewest item
-                            Source      {ToLocalTime(sourceTime)}: '{sourcePath}'
-                            Destination '{destinationPath}' does not exist.
-                    Destination '{destinationPath}' does not exist, not up-to-date.
+                        Checking copy items from project '{_projectPath}':
+                            Checking PreserveNewest item
+                                Source      {ToLocalTime(sourceTime)}: '{sourcePath1}'
+                                Destination '{destinationPath1}' does not exist.
+                    Destination '{destinationPath1}' does not exist, not up-to-date.
                     """,
                     "CopyToOutputDirectoryDestinationNotFound");
             }
@@ -1845,10 +1903,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                     Comparing timestamps of inputs and outputs:
                         No build outputs defined.
                     Checking items to copy to the output directory:
-                        Checking PreserveNewest item
-                            Source      {ToLocalTime(sourceTime)}: '{sourcePath}'
-                            Destination '{destinationPath}' does not exist.
-                    Destination '{destinationPath}' does not exist, not up-to-date.
+                        Checking copy items from project '{_projectPath}':
+                            Checking PreserveNewest item
+                                Source      {ToLocalTime(sourceTime)}: '{sourcePath1}'
+                                Destination '{destinationPath1}' does not exist.
+                    Destination '{destinationPath1}' does not exist, not up-to-date.
                     This project appears to be a candidate for build acceleration. To opt in, set the 'AccelerateBuildsInVisualStudio' MSBuild property to 'true'.
                     """,
                     "CopyToOutputDirectoryDestinationNotFound");
@@ -1966,6 +2025,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
         #region Test helpers
 
+        private void SetCopyItems(params CopyItem[] items)
+        {
+            _copyItems = new (string Path, ImmutableArray<CopyItem> CopyItems)[]
+            {
+                (_projectPath, items.ToImmutableArray())
+            };
+        }
         private static string ToLocalTime(DateTime time)
         {
             return time.ToLocalTime().ToString("yyyy-MM-dd HH:mm:ss.fff");
@@ -2044,7 +2110,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
             Assert.Equal(TelemetryEventName.UpToDateCheckFail, telemetryEvent.EventName);
             Assert.NotNull(telemetryEvent.Properties);
-            Assert.Equal(8, telemetryEvent.Properties.Count);
+            Assert.Equal(10, telemetryEvent.Properties.Count);
 
             var reasonProp = Assert.Single(telemetryEvent.Properties.Where(p => p.propertyName == TelemetryPropertyName.UpToDateCheck.FailReason));
             Assert.Equal(reason, reasonProp.propertyValue);
@@ -2052,6 +2118,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             var durationProp = Assert.Single(telemetryEvent.Properties.Where(p => p.propertyName == TelemetryPropertyName.UpToDateCheck.DurationMillis));
             var duration = Assert.IsType<double>(durationProp.propertyValue);
             Assert.True(duration > 0.0);
+
+            var waitDurationProp = Assert.Single(telemetryEvent.Properties.Where(p => p.propertyName == TelemetryPropertyName.UpToDateCheck.WaitDurationMillis));
+            var waitDuration = Assert.IsType<double>(waitDurationProp.propertyValue);
+            Assert.True(waitDuration > 0.0);
 
             var fileCountProp = Assert.Single(telemetryEvent.Properties.Where(p => p.propertyName == TelemetryPropertyName.UpToDateCheck.FileCount));
             var fileCount = Assert.IsType<int>(fileCountProp.propertyValue);
@@ -2071,6 +2141,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
             Assert.Single(telemetryEvent.Properties.Where(p => p.propertyName == TelemetryPropertyName.UpToDateCheck.Project));
             Assert.Single(telemetryEvent.Properties.Where(p => p.propertyName == TelemetryPropertyName.UpToDateCheck.CheckNumber));
+            Assert.Single(telemetryEvent.Properties.Where(p => p.propertyName == TelemetryPropertyName.UpToDateCheck.AccelerationResult));
 
             _telemetryEvents.Clear();
         }
@@ -2082,11 +2153,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             Assert.Equal(TelemetryEventName.UpToDateCheckSuccess, telemetryEvent.EventName);
 
             Assert.NotNull(telemetryEvent.Properties);
-            Assert.Equal(7, telemetryEvent.Properties.Count);
+            Assert.Equal(10, telemetryEvent.Properties.Count);
 
             var durationProp = Assert.Single(telemetryEvent.Properties.Where(p => p.propertyName == TelemetryPropertyName.UpToDateCheck.DurationMillis));
             var duration = Assert.IsType<double>(durationProp.propertyValue);
             Assert.True(duration > 0.0);
+
+            var waitDurationProp = Assert.Single(telemetryEvent.Properties.Where(p => p.propertyName == TelemetryPropertyName.UpToDateCheck.WaitDurationMillis));
+            var waitDuration = Assert.IsType<double>(waitDurationProp.propertyValue);
+            Assert.True(waitDuration > 0.0);
 
             var fileCountProp = Assert.Single(telemetryEvent.Properties.Where(p => p.propertyName == TelemetryPropertyName.UpToDateCheck.FileCount));
             var fileCount = Assert.IsType<int>(fileCountProp.propertyValue);
@@ -2106,6 +2181,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
             Assert.Single(telemetryEvent.Properties.Where(p => p.propertyName == TelemetryPropertyName.UpToDateCheck.Project));
             Assert.Single(telemetryEvent.Properties.Where(p => p.propertyName == TelemetryPropertyName.UpToDateCheck.CheckNumber));
+            Assert.Single(telemetryEvent.Properties.Where(p => p.propertyName == TelemetryPropertyName.UpToDateCheck.AcceleratedCopyCount));
+            Assert.Single(telemetryEvent.Properties.Where(p => p.propertyName == TelemetryPropertyName.UpToDateCheck.AccelerationResult));
 
             _telemetryEvents.Clear();
         }

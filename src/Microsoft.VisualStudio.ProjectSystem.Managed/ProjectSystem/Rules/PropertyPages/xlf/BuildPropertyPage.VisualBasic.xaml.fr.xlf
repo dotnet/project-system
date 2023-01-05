@@ -377,6 +377,11 @@
         <target state="translated">Adresse de base de la DLL</target>
         <note />
       </trans-unit>
+      <trans-unit id="StringProperty|DefineConstants|Description">
+        <source>Specifies custom conditional compilation constants for your application.</source>
+        <target state="translated">Spécifie les constantes de compilation conditionnelle personnalisées pour votre application.</target>
+        <note />
+      </trans-unit>
       <trans-unit id="StringProperty|DefineConstants|DisplayName">
         <source>Custom constants</source>
         <target state="translated">Constantes personnalisées</target>

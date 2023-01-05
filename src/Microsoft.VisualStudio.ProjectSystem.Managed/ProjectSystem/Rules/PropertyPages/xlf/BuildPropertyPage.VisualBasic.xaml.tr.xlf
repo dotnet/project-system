@@ -377,6 +377,11 @@
         <target state="translated">DLL temel adresi</target>
         <note />
       </trans-unit>
+      <trans-unit id="StringProperty|DefineConstants|Description">
+        <source>Specifies custom conditional compilation constants for your application.</source>
+        <target state="translated">Uygulamanız için, özel koşullu derleme sabitlerini belirtir.</target>
+        <note />
+      </trans-unit>
       <trans-unit id="StringProperty|DefineConstants|DisplayName">
         <source>Custom constants</source>
         <target state="translated">Özel sabitler</target>

@@ -52,6 +52,16 @@
         <target state="translated">Deterministyczne</target>
         <note />
       </trans-unit>
+      <trans-unit id="BoolProperty|GenerateAssemblyInfo|Description">
+        <source>Transform project properties into assembly attributes during build.</source>
+        <target state="translated">Przekształć właściwości projektu w atrybuty zestawu podczas kompilacji.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="BoolProperty|GenerateAssemblyInfo|DisplayName">
+        <source>Generate assembly info</source>
+        <target state="translated">Generuj informacje o zestawie</target>
+        <note />
+      </trans-unit>
       <trans-unit id="BoolProperty|GenerateDocumentationFile|Description">
         <source>Generate a file containing API documentation.</source>
         <target state="translated">Generuj plik zawierający dokumentację interfejsu API.</target>
@@ -115,11 +125,6 @@
       <trans-unit id="BoolProperty|TreatWarningsAsErrors|DisplayName">
         <source>Treat warnings as errors</source>
         <target state="translated">Traktuj ostrzeżenia jako błędy</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="BoolProperty|WarningLevelOverridden|DisplayName">
-        <source>WarningLevelOverridden</source>
-        <target state="translated">WarningLevelOverridden</target>
         <note />
       </trans-unit>
       <trans-unit id="Category|Advanced|Description">

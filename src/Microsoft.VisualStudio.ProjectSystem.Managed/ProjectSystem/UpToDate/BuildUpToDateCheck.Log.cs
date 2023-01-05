@@ -11,10 +11,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
         {
             private readonly TextWriter _writer;
             private readonly Stopwatch _stopwatch;
+            private readonly TimeSpan _waitTime;
             private readonly TimestampCache _timestampCache;
             private readonly Guid _projectGuid;
             private readonly string _fileName;
-            private readonly ITelemetryService? _telemetryService;
+            private readonly ITelemetryService? _telemetryService; // null for validation runs
             private readonly UpToDateCheckConfiguredInput _upToDateCheckConfiguredInput;
             private readonly string? _ignoreKinds;
             private readonly int _checkNumber;
@@ -25,28 +26,34 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
             public string? FailureReason { get; private set; }
             public string? FailureDescription { get; private set; }
+            public FileSystemOperationAggregator? FileSystemOperations { get; set; }
 
-            public Log(TextWriter writer, LogLevel requestedLogLevel, Stopwatch stopwatch, TimestampCache timestampCache, string projectPath, Guid projectGuid, ITelemetryService? telemetryService, UpToDateCheckConfiguredInput upToDateCheckConfiguredInput, string? ignoreKinds, int checkNumber)
+            public Log(TextWriter writer, LogLevel requestedLogLevel, Stopwatch stopwatch, TimeSpan waitTime, TimestampCache timestampCache, string projectPath, Guid projectGuid, ITelemetryService? telemetryService, UpToDateCheckConfiguredInput upToDateCheckConfiguredInput, string? ignoreKinds, int checkNumber)
             {
                 _writer = writer;
                 Level = requestedLogLevel;
                 _stopwatch = stopwatch;
+                _waitTime = waitTime;
                 _timestampCache = timestampCache;
                 _projectGuid = projectGuid;
                 _telemetryService = telemetryService;
                 _upToDateCheckConfiguredInput = upToDateCheckConfiguredInput;
                 _ignoreKinds = ignoreKinds;
                 _checkNumber = checkNumber;
+
                 _fileName = Path.GetFileNameWithoutExtension(projectPath);
             }
+
+            public Scope IndentScope() => new(this);
 
             private string Preamble()
             {
                 return Indent switch
                 {
-                    0 => "FastUpToDate: ",
+                    <= 0 => "FastUpToDate: ",
                     1 => "FastUpToDate:     ",
                     2 => "FastUpToDate:         ",
+                    3 => "FastUpToDate:             ",
                     _ => "FastUpToDate: " + new string(' ', Indent * 4)
                 };
             }
@@ -67,7 +74,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             {
                 if (level <= Level)
                 {
-                    // These are user visible, so we want them in local times so that 
+                    // These are user visible, so we want them in local times so that
                     // they correspond with dates/times that Explorer, etc shows
                     ConvertToLocalTime(ref arg0);
 
@@ -81,7 +88,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             {
                 if (level <= Level)
                 {
-                    // These are user visible, so we want them in local times so that 
+                    // These are user visible, so we want them in local times so that
                     // they correspond with dates/times that Explorer, etc shows
                     ConvertToLocalTime(ref arg0);
                     ConvertToLocalTime(ref arg1);
@@ -96,7 +103,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             {
                 if (level <= Level)
                 {
-                    // These are user visible, so we want them in local times so that 
+                    // These are user visible, so we want them in local times so that
                     // they correspond with dates/times that Explorer, etc shows
                     ConvertToLocalTimes(values);
 
@@ -162,6 +169,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             /// <returns><see langword="false"/>, which may be returned directly in <see cref="BuildUpToDateCheck"/>.</returns>
             public bool Fail(string reason, string resourceName, params object[] values)
             {
+                Assumes.NotNull(FileSystemOperations);
+
                 _stopwatch.Stop();
 
                 // We may be indented when a failure is identified. Set the indent to zero so
@@ -176,12 +185,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 {
                     (TelemetryPropertyName.UpToDateCheck.FailReason, (object)reason),
                     (TelemetryPropertyName.UpToDateCheck.DurationMillis, _stopwatch.Elapsed.TotalMilliseconds),
+                    (TelemetryPropertyName.UpToDateCheck.WaitDurationMillis, _waitTime.TotalMilliseconds),
                     (TelemetryPropertyName.UpToDateCheck.FileCount, _timestampCache.Count),
                     (TelemetryPropertyName.UpToDateCheck.ConfigurationCount, _upToDateCheckConfiguredInput.ImplicitInputs.Length),
                     (TelemetryPropertyName.UpToDateCheck.LogLevel, Level),
                     (TelemetryPropertyName.UpToDateCheck.Project, _projectGuid),
                     (TelemetryPropertyName.UpToDateCheck.CheckNumber, _checkNumber),
-                    (TelemetryPropertyName.UpToDateCheck.IgnoreKinds, _ignoreKinds ?? "")
+                    (TelemetryPropertyName.UpToDateCheck.IgnoreKinds, _ignoreKinds ?? ""),
+                    (TelemetryPropertyName.UpToDateCheck.AccelerationResult, FileSystemOperations.AccelerationResult)
                 });
 
                 // Remember the failure reason and description for use in IncrementalBuildFailureDetector.
@@ -191,10 +202,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 return false;
             }
 
-            public void UpToDate()
+            /// <summary>
+            /// Publishes that the project is up-to-date via telemetry and the output window.
+            /// </summary>
+            public void UpToDate(int copyCount)
             {
                 Assumes.Null(FailureReason);
                 Assumes.Null(FailureDescription);
+                Assumes.NotNull(FileSystemOperations);
 
                 _stopwatch.Stop();
 
@@ -202,16 +217,47 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 _telemetryService?.PostProperties(TelemetryEventName.UpToDateCheckSuccess, new[]
                 {
                     (TelemetryPropertyName.UpToDateCheck.DurationMillis, (object)_stopwatch.Elapsed.TotalMilliseconds),
+                    (TelemetryPropertyName.UpToDateCheck.WaitDurationMillis, _waitTime.TotalMilliseconds),
                     (TelemetryPropertyName.UpToDateCheck.FileCount, _timestampCache.Count),
                     (TelemetryPropertyName.UpToDateCheck.ConfigurationCount, _upToDateCheckConfiguredInput.ImplicitInputs.Length),
                     (TelemetryPropertyName.UpToDateCheck.LogLevel, Level),
                     (TelemetryPropertyName.UpToDateCheck.Project, _projectGuid),
                     (TelemetryPropertyName.UpToDateCheck.CheckNumber, _checkNumber),
-                    (TelemetryPropertyName.UpToDateCheck.IgnoreKinds, _ignoreKinds ?? "")
+                    (TelemetryPropertyName.UpToDateCheck.IgnoreKinds, _ignoreKinds ?? ""),
+                    (TelemetryPropertyName.UpToDateCheck.AccelerationResult, FileSystemOperations.AccelerationResult),
+                    (TelemetryPropertyName.UpToDateCheck.AcceleratedCopyCount, copyCount)
                 });
 
                 Info(nameof(Resources.FUTD_UpToDate));
             }
+
+            public readonly struct Scope : IDisposable
+            {
+                private readonly Log _log;
+
+                public Scope(Log log)
+                {
+                    _log = log;
+                    _log.Indent++;
+                }
+
+                public void Dispose()
+                {
+                    _log.Indent--;
+                }
+            }
+        }
+
+        public enum BuildAccelerationResult
+        {
+            // Disabled, not candidate
+            DisabledNotCandidate,
+            // Disabled, candidate
+            DisabledCandidate,
+            // Enabled, not accelerated
+            EnabledNotAccelerated,
+            // Enabled, accelerated
+            EnabledAccelerated
         }
     }
 }

@@ -19,9 +19,23 @@ namespace Microsoft.VisualStudio.Telemetry
             public const string FailReason = "vs.projectsystem.managed.uptodatecheck.fail.reason2";
 
             /// <summary>
-            ///     Indicates the duration of the up-to-date check, in milliseconds.
+            ///     Indicates the duration of the up-to-date check, in milliseconds. Includes wait time and execution time.
             /// </summary>
             public const string DurationMillis = "vs.projectsystem.managed.uptodatecheck.durationmillis";
+
+            /// <summary>
+            ///     Indicates the duration of time between when the check was requested, and when we actually
+            ///     start execution.
+            /// </summary>
+            /// <remarks>
+            ///     During this time we await the latest project data, which can take quite some time.
+            ///     We also acquire a lock, and query the host for the status of the up-to-date check.
+            ///     We report this wait time separately via telemetry in order to properly attribute the source
+            ///     of delays in the up-to-date check. This time is also included in <see cref="DurationMillis"/>
+            ///     for historical reasons. Ideally they would not overlap, but changing that now would
+            ///     make analysis of historical data difficult.
+            /// </remarks>
+            public const string WaitDurationMillis = "vs.projectsystem.managed.uptodatecheck.waitdurationmillis";
 
             /// <summary>
             ///     Indicates the number of file system timestamps that were queried during the up-to-date check.
@@ -59,6 +73,17 @@ namespace Microsoft.VisualStudio.Telemetry
             ///     This number resets when the project is reloaded.
             /// </summary>
             public const string CheckNumber = "vs.projectsystem.managed.uptodatecheck.checknumber";
+
+            /// <summary>
+            ///     The outcome of the FUTDC's Build Acceleration evaluation.
+            /// </summary>
+            public const string AccelerationResult = "vs.projectsystem.managed.uptodatecheck.accelerationresult";
+
+            /// <summary>
+            ///     The number of files copied as part of Build Acceleration. Zero if disabled or no files were copied.
+            ///     See <see cref="AccelerationResult"/> to understand why the value may be zero.
+            /// </summary>
+            public const string AcceleratedCopyCount = "vs.projectsystem.managed.uptodatecheck.acceleratedcopycount";
         }
 
         public static class TreeUpdated

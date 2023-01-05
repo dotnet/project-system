@@ -112,6 +112,24 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
+      <Item ItemId=";BoolProperty|GenerateAssemblyInfo|Description" ItemType="0" PsrId="308" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[Transform project properties into assembly attributes during build.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[빌드하는 동안 프로젝트 속성을 어셈블리 특성으로 변환합니다.]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";BoolProperty|GenerateAssemblyInfo|DisplayName" ItemType="0" PsrId="308" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[Generate assembly info]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[어셈블리 정보 생성]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
       <Item ItemId=";BoolProperty|GenerateDocumentationFile|Description" ItemType="0" PsrId="308" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[Generate a file containing API documentation.]]></Val>
@@ -228,15 +246,6 @@
           <Val><![CDATA[Treat warnings as errors]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
             <Val><![CDATA[경고를 오류로 처리]]></Val>
-          </Tgt>
-        </Str>
-        <Disp Icon="Str" />
-      </Item>
-      <Item ItemId=";BoolProperty|WarningLevelOverridden|DisplayName" ItemType="0" PsrId="308" Leaf="true">
-        <Str Cat="Text">
-          <Val><![CDATA[WarningLevelOverridden]]></Val>
-          <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[경고 수준 재정의]]></Val>
           </Tgt>
         </Str>
         <Disp Icon="Str" />

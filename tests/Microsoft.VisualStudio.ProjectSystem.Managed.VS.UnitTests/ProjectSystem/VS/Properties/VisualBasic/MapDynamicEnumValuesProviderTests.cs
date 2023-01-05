@@ -90,10 +90,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties.VisualBasic
 
         private static void VerifySameValue(IEnumerable<IEnumValue> actual, IEnumerable<IEnumValue> expected, bool checkMapNameOnly = false)
         {
-            Assert.Equal(actual.Count(), expected.Count());
-            for (var i = 0; i < actual.Count(); ++i)
+            var actualAsArray = actual.ToArray();
+            var expectedAsArray = expected.ToArray();
+
+            Assert.Equal(actualAsArray.Length, expectedAsArray.Length);
+
+            for (var i = 0; i < actualAsArray.Length; ++i)
             {
-                VerifySameValue(actual.ElementAt(i), expected.ElementAt(i), checkMapNameOnly);
+                VerifySameValue(actualAsArray[i], expectedAsArray[i], checkMapNameOnly);
             }
         }
 
@@ -120,15 +124,18 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties.VisualBasic
 
         private static Dictionary<string, IEnumValue> CreateEnumValueMap(List<string> keys, IEnumerable<PageEnumValue> pageEnumValues)
         {
-            Assert.True(keys.Count == pageEnumValues.Count(), "This is a test authoring error");
+            int index = 0;
+            Dictionary<string, IEnumValue> map = new();
 
-            var dict = new Dictionary<string, IEnumValue>();
-            for (int i = 0; i < keys.Count; i++)
+            foreach (var item in pageEnumValues)
             {
-                dict.Add(keys[i], pageEnumValues.ElementAt(i));
+                map[keys[index]] = item;
+                index++;
             }
 
-            return dict;
+            Assert.Equal(index, keys.Count);
+
+            return map;
         }
     }
 }

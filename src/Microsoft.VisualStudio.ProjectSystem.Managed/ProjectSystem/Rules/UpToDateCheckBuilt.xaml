@@ -12,7 +12,7 @@
   </Rule.DataSource>
 
   <StringProperty Name="Original"
-                  DisplayName="Original" />
+                  Visible="False" />
 
   <StringProperty Name="Set"
                   Visible="False" />
