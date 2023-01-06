@@ -28,7 +28,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.UpToDate
         private readonly ISolutionService _solutionService;
 
         private bool _hasUnsavedChange;
-        private System.IAsyncDisposable? _solutionEventsSubscription;
+        private IAsyncDisposable? _solutionEventsSubscription;
         private string? _cacheFilePath;
         private JoinableTask? _cleanupTask;
 

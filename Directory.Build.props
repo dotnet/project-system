@@ -132,6 +132,8 @@
     <Using Include="System.Collections.Immutable" />
     <!-- There are two namespaces via which MEF attributes are defined. This is the correct one. -->
     <Using Include="System.ComponentModel.Composition" />
+    <!-- Prevent accidental use of Microsoft.VisualStudio.Threading.IAsyncDisposable -->
+    <Using Include="System.IAsyncDisposable" Alias="IAsyncDisposable" />
   </ItemGroup>
 
   <Import Project="eng\imports\LanguageSettings.props" />
