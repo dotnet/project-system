@@ -62,6 +62,9 @@
     <PackageReference Include="Microsoft.VisualStudio.RpcContracts" />
     <!-- NuGet Client apis for Package Restore -->
     <PackageReference Include="NuGet.VisualStudio" />
+    <!-- Path property: PkgMicrosoft_CodeAnalysis_Common -->
+    <!-- The path is needed so we can copy the runtime assembly into the NPM package. -->
+    <PackageReference Include="Microsoft.CodeAnalysis.Common" GeneratePathProperty="true" />
   </ItemGroup>
 
   <ItemGroup Condition="'$(TargetFramework)' == 'net6.0'">
@@ -712,6 +715,8 @@
     <ItemGroup>
       <NpmContent Include="$(OutDir)$(AssemblyName).dll;$(OutDir)$(AssemblyName).pdb;$(OutDir)$(AssemblyName).xml" />
       <NpmContent Include="exports.json" />
+      <!-- We have a runtime dependency on Microsoft.CodeAnalysis.dll in VS Code scenarios. -->
+      <NpmContent Include="$(PkgMicrosoft_CodeAnalysis_Common)\lib\netcoreapp3.1\Microsoft.CodeAnalysis.dll" />
     </ItemGroup>
   </Target>
 
