@@ -29,8 +29,8 @@ namespace Microsoft.VisualStudio.ProjectSystem
     /// </remarks>
     internal sealed class ProjectFileClassifier
     {
-        private static readonly string s_windows;
-        private static readonly string s_programFiles86;
+        private static readonly string? s_windows;
+        private static readonly string? s_programFiles86;
         private static readonly string? s_programFiles64;
         private static readonly string? s_vsInstallationDirectory;
 
@@ -92,6 +92,12 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
         static ProjectFileClassifier()
         {
+#if NET
+            if (!OperatingSystem.IsWindows())
+            {
+                return;
+            }
+#endif
             s_windows = Environment.GetFolderPath(Environment.SpecialFolder.Windows);
             s_programFiles86 = Environment.GetFolderPath(Environment.SpecialFolder.ProgramFilesX86);
 
@@ -155,8 +161,8 @@ namespace Microsoft.VisualStudio.ProjectSystem
         public bool IsNonModifiable(string filePath)
         {
             return (s_programFiles64 is not null && filePath.StartsWith(s_programFiles64, StringComparisons.Paths))
-                || filePath.StartsWith(s_programFiles86, StringComparisons.Paths)
-                || filePath.StartsWith(s_windows, StringComparisons.Paths)
+                || (s_programFiles86 is not null && filePath.StartsWith(s_programFiles86, StringComparisons.Paths))
+                || (s_windows is not null && filePath.StartsWith(s_windows, StringComparisons.Paths))
                 || _nuGetPackageFolders.Any(static (nuGetFolder, filePath) => filePath.StartsWith(nuGetFolder, StringComparisons.Paths), filePath)
                 || (s_vsInstallationDirectory is not null && filePath.StartsWith(s_vsInstallationDirectory, StringComparisons.Paths));
         }
