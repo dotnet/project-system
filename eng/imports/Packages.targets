@@ -41,7 +41,7 @@
     <PackageReference Update="Microsoft.VisualStudio.ImageCatalog"                                    Version="17.3.32804.24" />
     <PackageReference Update="Microsoft.VisualStudio.Interop"                                         Version="17.4.0-preview-2-32826-307" />
     <PackageReference Update="Microsoft.VisualStudio.ManagedInterfaces"                               Version="8.0.50728" />
-    <PackageReference Update="Microsoft.VisualStudio.RpcContracts"                                    Version="17.4.7-alpha" />
+    <PackageReference Update="Microsoft.VisualStudio.RpcContracts"                                    Version="17.5.21" />
     <PackageReference Update="Microsoft.VisualStudio.Settings.15.0"                                   Version="17.3.32804.24" />
     <PackageReference Update="Microsoft.VisualStudio.Setup.Configuration.Interop"                     Version="3.0.4492" />
     <PackageReference Update="Microsoft.VisualStudio.SDK.EmbedInteropTypes"                           Version="15.0.36" />
@@ -50,17 +50,17 @@
     <PackageReference Update="Microsoft.VisualStudio.Shell.Framework"                                 Version="17.3.32804.24" />
     <PackageReference Update="Microsoft.VisualStudio.Telemetry"                                       Version="16.6.7" />
     <PackageReference Update="Microsoft.VisualStudio.TemplateWizardInterface"                         Version="17.3.32804.24" />
-    <PackageReference Update="Microsoft.VisualStudio.Threading"                                       Version="17.4.16-alpha" />
-    <PackageReference Update="Microsoft.VisualStudio.Threading.Analyzers"                             Version="17.4.16-alpha" />
+    <PackageReference Update="Microsoft.VisualStudio.Threading"                                       Version="17.5.10-alpha" />
+    <PackageReference Update="Microsoft.VisualStudio.Threading.Analyzers"                             Version="17.5.10-alpha" />
     <PackageReference Update="Microsoft.VisualStudio.Utilities"                                       Version="17.4.0-preview-3-32908-042" />
-    <PackageReference Update="Microsoft.VisualStudio.Validation"                                      Version="17.0.64" />
+    <PackageReference Update="Microsoft.VisualStudio.Validation"                                      Version="17.0.71" />
     <PackageReference Update="Microsoft.VisualStudio.XmlEditor"                                       Version="17.3.32804.24" />
     <PackageReference Update="System.Threading.Tasks.Dataflow"                                        Version="6.0.0" />
     <PackageReference Update="Microsoft.VSDesigner"                                                   Version="17.0.0-preview-2-31223-026" />
     <PackageReference Update="VsWebSite.Interop"                                                      Version="16.8.30523.219" />
 
     <!-- https://github.com/dotnet/roslyn/issues/53877 -->
-    <PackageReference Include="StreamJsonRpc"                                                         Version="2.14.16-alpha" />
+    <PackageReference Include="StreamJsonRpc"                                                         Version="2.14.20" />
 
     <!-- CPS -->
     <!-- Find versions at https://dev.azure.com/azure-public/vside/_artifacts/feed/vs-impl -->
@@ -82,8 +82,8 @@
 
     <!-- Roslyn -->
     <PackageReference Update="Microsoft.Net.Compilers.Toolset"                                        Version="4.4.0" />
-    <PackageReference Update="Microsoft.VisualStudio.LanguageServices"                                Version="4.5.0-2.22528.3" />
-    <PackageReference Update="Microsoft.CodeAnalysis"                                                 Version="4.5.0-2.22528.3" />
+    <PackageReference Update="Microsoft.VisualStudio.LanguageServices"                                Version="4.6.0-1.23055.1" />
+    <PackageReference Update="Microsoft.CodeAnalysis"                                                 Version="4.6.0-1.23055.1" />
     <PackageReference Update="Microsoft.VisualStudio.IntegrationTest.Utilities"                       Version="2.6.0-beta1-62113-02" />
     <PackageReference Update="Microsoft.CSharp"                                                       Version="4.7.0" />
 
