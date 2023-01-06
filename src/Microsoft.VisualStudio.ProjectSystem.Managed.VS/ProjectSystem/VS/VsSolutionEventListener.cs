@@ -20,7 +20,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
     {
         private readonly IVsUIService<IVsSolution> _solution;
 
-        private TaskCompletionSource _loadedInHost = new();
+        private TaskCompletionSource _loadedInHost = new(TaskCreationOptions.RunContinuationsAsynchronously);
         private IAsyncDisposable? _solutionEventsSubscription;
 
         [ImportingConstructor]
