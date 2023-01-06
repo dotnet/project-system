@@ -15,7 +15,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Acquisition;
 ///     need to improve the development experience.
 /// </summary>
 [Export(typeof(IMissingSetupComponentRegistrationService))]
-internal class MissingSetupComponentRegistrationService : IMissingSetupComponentRegistrationService, IVsSolutionEvents, IDisposable
+internal class MissingSetupComponentRegistrationService : OnceInitializedOnceDisposedAsync, IMissingSetupComponentRegistrationService, IVsSolutionEvents
 {
     private const string WasmToolsWorkloadName = "wasm-tools";
 
@@ -38,16 +38,14 @@ internal class MissingSetupComponentRegistrationService : IMissingSetupComponent
     private readonly ConcurrentDictionary<Guid, string> _projectGuidToRuntimeDescriptorMap;
     private readonly ConcurrentDictionary<Guid, IConcurrentHashSet<ProjectConfiguration>> _projectGuidToProjectConfigurationsMap;
     private readonly IVsService<SVsBrokeredServiceContainer, IBrokeredServiceContainer> _serviceBrokerContainer;
-    private readonly IVsService<IVsSolution> _vsSolutionService;
+    private readonly ISolutionSource _solutionEventsSource;
     private readonly IVsService<SVsSetupCompositionService, IVsSetupCompositionService> _vsSetupCompositionService;
     private readonly Lazy<IVsShellUtilitiesHelper> _shellUtilitiesHelper;
-    private readonly Lazy<IProjectThreadingService> _threadHandling;
     private readonly IProjectFaultHandlerService _projectFaultHandlerService;
     private readonly object _displayPromptLock = new();
 
     private ConcurrentDictionary<string, IConcurrentHashSet<ProjectConfiguration>>? _projectPathToProjectConfigurationsMap;
-    private uint _solutionCookie = VSConstants.VSCOOKIE_NIL;
-    private IVsSolution? _vsSolution;
+    private System.IAsyncDisposable? _solutionEventsSubscription;
     private bool? _isVSFromPreviewChannel;
 
     private readonly object _lock = new();
@@ -56,11 +54,12 @@ internal class MissingSetupComponentRegistrationService : IMissingSetupComponent
     [ImportingConstructor]
     public MissingSetupComponentRegistrationService(
         IVsService<SVsBrokeredServiceContainer, IBrokeredServiceContainer> serviceBrokerContainer,
-        IVsService<SVsSolution, IVsSolution> vsSolutionService,
+        ISolutionSource solutionEventsSource,
         IVsService<SVsSetupCompositionService, IVsSetupCompositionService> vsSetupCompositionService,
         Lazy<IVsShellUtilitiesHelper> vsShellUtilitiesHelper,
-        Lazy<IProjectThreadingService> threadHandling,
-        IProjectFaultHandlerService projectFaultHandlerService)
+        IProjectFaultHandlerService projectFaultHandlerService,
+        JoinableTaskContext joinableTaskContext)
+        : base(new(joinableTaskContext))
     {
         _webComponentIdsDetected = new();
         _projectGuidToWorkloadDescriptorsMap = new();
@@ -68,9 +67,8 @@ internal class MissingSetupComponentRegistrationService : IMissingSetupComponent
         _projectGuidToRuntimeDescriptorMap = new();
 
         _serviceBrokerContainer = serviceBrokerContainer;
-        _vsSolutionService = vsSolutionService;
+        _solutionEventsSource = solutionEventsSource;
         _vsSetupCompositionService = vsSetupCompositionService;
-        _threadHandling = threadHandling;
         _projectFaultHandlerService = projectFaultHandlerService;
         _shellUtilitiesHelper = vsShellUtilitiesHelper;
     }
@@ -422,29 +420,23 @@ internal class MissingSetupComponentRegistrationService : IMissingSetupComponent
 
     #endregion
 
-    public async Task InitializeAsync(CancellationToken cancellationToken = default)
+    Task IMissingSetupComponentRegistrationService.InitializeAsync(CancellationToken cancellationToken)
     {
-        await _threadHandling.Value.SwitchToUIThread();
-
-        _vsSolution = await _vsSolutionService.GetValueAsync();
-
-        Verify.HResult(_vsSolution.AdviseSolutionEvents(this, out _solutionCookie));
+        return InitializeAsync(cancellationToken);
     }
 
-    public void Dispose()
+    protected override async Task InitializeCoreAsync(CancellationToken cancellationToken)
     {
-        _threadHandling.Value.VerifyOnUIThread();
+        _solutionEventsSubscription = await _solutionEventsSource.SubscribeAsync(this, cancellationToken);
+    }
 
+    protected override async Task DisposeCoreAsync(bool initialized)
+    {
         ClearMissingWorkloadMetadata();
 
-        if (_solutionCookie != VSConstants.VSCOOKIE_NIL)
+        if (_solutionEventsSubscription is not null)
         {
-            if (_vsSolution is not null)
-            {
-                Verify.HResult(_vsSolution.UnadviseSolutionEvents(_solutionCookie));
-                _solutionCookie = VSConstants.VSCOOKIE_NIL;
-                _vsSolution = null;
-            }
+            await _solutionEventsSubscription.DisposeAsync();
         }
     }
 }

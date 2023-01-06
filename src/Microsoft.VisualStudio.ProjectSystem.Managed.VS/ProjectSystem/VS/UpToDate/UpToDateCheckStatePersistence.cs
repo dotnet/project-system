@@ -25,41 +25,34 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.UpToDate
 
         private Dictionary<(string ProjectPath, IImmutableDictionary<string, string> ConfigurationDimensions), (int ItemHash, DateTime? ItemsChangedAtUtc, DateTime? LastSuccessfulBuildStartedAtUtc)>? _dataByConfiguredProject;
 
-        private readonly IVsUIService<SVsSolution, IVsSolution> _solution;
+        private readonly ISolutionSource _solutionSource;
 
         private bool _hasUnsavedChange;
-        private uint _cookie = VSConstants.VSCOOKIE_NIL;
+        private System.IAsyncDisposable? _solutionEventsSubscription;
         private string? _cacheFilePath;
         private JoinableTask? _cleanupTask;
 
         [ImportingConstructor]
         public UpToDateCheckStatePersistence(
-            IVsUIService<SVsSolution, IVsSolution> solution,
+            ISolutionSource solutionSource,
             JoinableTaskContext joinableTaskContext)
             : base(new JoinableTaskContextNode(joinableTaskContext))
         {
-            _solution = solution;
+            _solutionSource = solutionSource;
         }
 
         protected override async Task InitializeCoreAsync(CancellationToken cancellationToken)
         {
-            await JoinableFactory.SwitchToMainThreadAsync(cancellationToken);
-
-            Verify.HResult(_solution.Value.AdviseSolutionEvents(this, out _cookie));
+            _solutionEventsSubscription = await _solutionSource.SubscribeAsync(this, cancellationToken);
         }
 
         protected override async Task DisposeCoreUnderLockAsync(bool initialized)
         {
             if (initialized)
             {
-                if (_cookie != VSConstants.VSCOOKIE_NIL)
-                {
-                    await JoinableFactory.SwitchToMainThreadAsync();
+                Assumes.NotNull(_solutionEventsSubscription);
 
-                    Verify.HResult(_solution.Value.UnadviseSolutionEvents(_cookie));
-
-                    _cookie = VSConstants.VSCOOKIE_NIL;
-                }
+                await _solutionEventsSubscription.DisposeAsync();
             }
         }
 
@@ -177,7 +170,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.UpToDate
             {
                 await JoinableFactory.SwitchToMainThreadAsync(cancellationToken);
 
-                var solutionWorkingFolder = _solution.Value as IVsSolutionWorkingFolders;
+                var solutionWorkingFolder = _solutionSource.Solution as IVsSolutionWorkingFolders;
 
                 Assumes.Present(solutionWorkingFolder);
 

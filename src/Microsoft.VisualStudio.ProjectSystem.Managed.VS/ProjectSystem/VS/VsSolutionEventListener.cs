@@ -17,16 +17,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
     [Export(typeof(ISolutionService))]
     internal class VsSolutionEventListener : OnceInitializedOnceDisposedAsync, IVsSolutionEvents, IVsSolutionLoadEvents, IVsPrioritizedSolutionEvents, ILoadedInHostListener, ISolutionService
     {
-        private readonly IVsUIService<IVsSolution> _solution;
+        private readonly ISolutionSource _solutionSource;
 
         private TaskCompletionSource _loadedInHost = new();
-        private uint _cookie = VSConstants.VSCOOKIE_NIL;
+        private System.IAsyncDisposable? _solutionEventsSubscription;
 
         [ImportingConstructor]
-        public VsSolutionEventListener(IVsUIService<SVsSolution, IVsSolution> solution, JoinableTaskContext joinableTaskContext)
+        public VsSolutionEventListener(ISolutionSource solutionSource, JoinableTaskContext joinableTaskContext)
             : base(new JoinableTaskContextNode(joinableTaskContext))
         {
-            _solution = solution;
+            _solutionSource = solutionSource;
         }
 
         public Task LoadedInHost
@@ -43,14 +43,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         {
             await JoinableFactory.SwitchToMainThreadAsync(cancellationToken);
 
-            Verify.HResult(_solution.Value.AdviseSolutionEvents(this, out _cookie));
+            _solutionEventsSubscription = await _solutionSource.SubscribeAsync(this, cancellationToken);
 
             // In the situation where the solution has already been loaded by the time we're 
             // initialized, we need to make sure we set LoadedInHost as we will have missed the 
             // event. This can occur when the first CPS project is loaded due to reload of 
             // an unloaded project or the first CPS project is loaded in the Add New/Existing Project 
             // case.
-            Verify.HResult(_solution.Value.GetProperty((int)__VSPROPID4.VSPROPID_IsSolutionFullyLoaded, out object isFullyLoaded));
+            Verify.HResult(_solutionSource.Solution.GetProperty((int)__VSPROPID4.VSPROPID_IsSolutionFullyLoaded, out object isFullyLoaded));
 
             if ((bool)isFullyLoaded)
             {
@@ -62,15 +62,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         {
             if (initialized)
             {
-                if (_cookie != VSConstants.VSCOOKIE_NIL)
-                {
-                    await JoinableFactory.SwitchToMainThreadAsync();
+                Assumes.NotNull(_solutionEventsSubscription);
 
-                    Verify.HResult(_solution.Value.UnadviseSolutionEvents(_cookie));
+                await JoinableFactory.SwitchToMainThreadAsync();
 
-                    _loadedInHost.TrySetCanceled();
-                    _cookie = VSConstants.VSCOOKIE_NIL;
-                }
+                await _solutionEventsSubscription.DisposeAsync();
+
+                _loadedInHost.TrySetCanceled();
             }
         }
 
