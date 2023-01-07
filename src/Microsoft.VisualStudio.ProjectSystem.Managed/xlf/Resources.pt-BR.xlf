@@ -29,7 +29,7 @@
       </trans-unit>
       <trans-unit id="FUTDC_CheckingCopyItemsForProject_1">
         <source>Checking copy items from project '{0}':</source>
-        <target state="new">Checking copy items from project '{0}':</target>
+        <target state="translated">Verificando itens de cópia do projeto '{0}':</target>
         <note>{0} is a file path.</note>
       </trans-unit>
       <trans-unit id="FUTD_AccelerationCandidate">
