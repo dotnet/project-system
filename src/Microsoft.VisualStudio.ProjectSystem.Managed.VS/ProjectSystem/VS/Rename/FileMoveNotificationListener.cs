@@ -180,6 +180,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
                 await _threadingService.SwitchToUIThread();
                 bool isConfirmed = _userNotificationServices.Confirm(VSResources.UpdateNamespacePromptMessage, out bool disablePromptMessage);
                 await settings.SetValueAsync(VsToolsOptions.OptionPromptNamespaceUpdate, !disablePromptMessage, isMachineLocal: true);
+                // If the user checked the "Don't show again" checkbox, we need to set the namespace enable state based on their selection of Yes/No in the dialog.
+                if (disablePromptMessage)
+                {
+                    await settings.SetValueAsync(VsToolsOptions.OptionEnableNamespaceUpdate, isConfirmed, isMachineLocal: true);
+                }
                 return isConfirmed;
             }
         }
