@@ -4,6 +4,7 @@ using Microsoft.VisualStudio.ProjectSystem.Properties;
 using Microsoft.VisualStudio.Shell.Interop;
 using Microsoft.VisualStudio.Threading;
 using Microsoft.VisualStudio.Threading.Tasks;
+using IAsyncDisposable = System.IAsyncDisposable;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS
 {
@@ -20,7 +21,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         private readonly IVsUIService<IVsSolution> _solution;
 
         private TaskCompletionSource _loadedInHost = new();
-        private uint _cookie = VSConstants.VSCOOKIE_NIL;
+        private IAsyncDisposable? _solutionEventsSubscription;
 
         [ImportingConstructor]
         public VsSolutionEventListener(IVsUIService<SVsSolution, IVsSolution> solution, JoinableTaskContext joinableTaskContext)
@@ -34,6 +35,52 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             get { return _loadedInHost.Task; }
         }
 
+        public IVsSolution Solution
+        {
+            get
+            {
+                JoinableFactory.Context.VerifyIsOnMainThread();
+                return _solution.Value;
+            }
+        }
+
+        public async Task<IAsyncDisposable> SubscribeAsync(IVsSolutionEvents solutionEvents, CancellationToken cancellationToken)
+        {
+            await JoinableFactory.SwitchToMainThreadAsync(cancellationToken);
+
+            IVsSolution solution = _solution.Value;
+
+            Verify.HResult(solution.AdviseSolutionEvents(solutionEvents, out uint cookie));
+
+            return new Subscription(solution, JoinableFactory, cookie);
+        }
+
+        private sealed class Subscription : IAsyncDisposable
+        {
+            private readonly IVsSolution _solution;
+            private readonly JoinableTaskFactory _joinableTaskFactory;
+            private int _cookie;
+
+            public Subscription(IVsSolution solution, JoinableTaskFactory joinableTaskFactory, uint cookie)
+            {
+                _solution = solution;
+                _joinableTaskFactory = joinableTaskFactory;
+                _cookie = unchecked((int)cookie);
+            }
+
+            public async ValueTask DisposeAsync()
+            {
+                uint cookie = unchecked((uint)Interlocked.Exchange(ref _cookie, (int)VSConstants.VSCOOKIE_NIL));
+
+                if (cookie != VSConstants.VSCOOKIE_NIL)
+                {
+                    await _joinableTaskFactory.SwitchToMainThreadAsync();
+
+                    Verify.HResult(_solution.UnadviseSolutionEvents(cookie));
+                }
+            }
+        }
+
         public Task StartListeningAsync()
         {
             return InitializeAsync(CancellationToken.None);
@@ -43,7 +90,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         {
             await JoinableFactory.SwitchToMainThreadAsync(cancellationToken);
 
-            Verify.HResult(_solution.Value.AdviseSolutionEvents(this, out _cookie));
+            _solutionEventsSubscription = await SubscribeAsync(this, cancellationToken);
 
             // In the situation where the solution has already been loaded by the time we're 
             // initialized, we need to make sure we set LoadedInHost as we will have missed the 
@@ -62,15 +109,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         {
             if (initialized)
             {
-                if (_cookie != VSConstants.VSCOOKIE_NIL)
-                {
-                    await JoinableFactory.SwitchToMainThreadAsync();
+                Assumes.NotNull(_solutionEventsSubscription);
 
-                    Verify.HResult(_solution.Value.UnadviseSolutionEvents(_cookie));
+                await JoinableFactory.SwitchToMainThreadAsync();
 
-                    _loadedInHost.TrySetCanceled();
-                    _cookie = VSConstants.VSCOOKIE_NIL;
-                }
+                await _solutionEventsSubscription.DisposeAsync();
+
+                _loadedInHost.TrySetCanceled();
             }
         }
 
