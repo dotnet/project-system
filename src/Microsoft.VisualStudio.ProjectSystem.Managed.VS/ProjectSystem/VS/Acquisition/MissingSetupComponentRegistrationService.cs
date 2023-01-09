@@ -38,7 +38,7 @@ internal class MissingSetupComponentRegistrationService : OnceInitializedOnceDis
     private readonly ConcurrentDictionary<Guid, string> _projectGuidToRuntimeDescriptorMap;
     private readonly ConcurrentDictionary<Guid, IConcurrentHashSet<ProjectConfiguration>> _projectGuidToProjectConfigurationsMap;
     private readonly IVsService<SVsBrokeredServiceContainer, IBrokeredServiceContainer> _serviceBrokerContainer;
-    private readonly ISolutionSource _solutionEventsSource;
+    private readonly ISolutionService _solutionService;
     private readonly IVsService<SVsSetupCompositionService, IVsSetupCompositionService> _vsSetupCompositionService;
     private readonly Lazy<IVsShellUtilitiesHelper> _shellUtilitiesHelper;
     private readonly IProjectFaultHandlerService _projectFaultHandlerService;
@@ -54,7 +54,7 @@ internal class MissingSetupComponentRegistrationService : OnceInitializedOnceDis
     [ImportingConstructor]
     public MissingSetupComponentRegistrationService(
         IVsService<SVsBrokeredServiceContainer, IBrokeredServiceContainer> serviceBrokerContainer,
-        ISolutionSource solutionEventsSource,
+        ISolutionService solutionService,
         IVsService<SVsSetupCompositionService, IVsSetupCompositionService> vsSetupCompositionService,
         Lazy<IVsShellUtilitiesHelper> vsShellUtilitiesHelper,
         IProjectFaultHandlerService projectFaultHandlerService,
@@ -67,7 +67,7 @@ internal class MissingSetupComponentRegistrationService : OnceInitializedOnceDis
         _projectGuidToRuntimeDescriptorMap = new();
 
         _serviceBrokerContainer = serviceBrokerContainer;
-        _solutionEventsSource = solutionEventsSource;
+        _solutionService = solutionService;
         _vsSetupCompositionService = vsSetupCompositionService;
         _projectFaultHandlerService = projectFaultHandlerService;
         _shellUtilitiesHelper = vsShellUtilitiesHelper;
@@ -427,7 +427,7 @@ internal class MissingSetupComponentRegistrationService : OnceInitializedOnceDis
 
     protected override async Task InitializeCoreAsync(CancellationToken cancellationToken)
     {
-        _solutionEventsSubscription = await _solutionEventsSource.SubscribeAsync(this, cancellationToken);
+        _solutionEventsSubscription = await _solutionService.SubscribeAsync(this, cancellationToken);
     }
 
     protected override async Task DisposeCoreAsync(bool initialized)

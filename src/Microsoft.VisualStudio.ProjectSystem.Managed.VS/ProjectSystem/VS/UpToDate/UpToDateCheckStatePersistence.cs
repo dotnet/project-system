@@ -25,7 +25,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.UpToDate
 
         private Dictionary<(string ProjectPath, IImmutableDictionary<string, string> ConfigurationDimensions), (int ItemHash, DateTime? ItemsChangedAtUtc, DateTime? LastSuccessfulBuildStartedAtUtc)>? _dataByConfiguredProject;
 
-        private readonly ISolutionSource _solutionSource;
+        private readonly ISolutionService _solutionService;
 
         private bool _hasUnsavedChange;
         private System.IAsyncDisposable? _solutionEventsSubscription;
@@ -34,16 +34,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.UpToDate
 
         [ImportingConstructor]
         public UpToDateCheckStatePersistence(
-            ISolutionSource solutionSource,
+            ISolutionService solutionService,
             JoinableTaskContext joinableTaskContext)
             : base(new JoinableTaskContextNode(joinableTaskContext))
         {
-            _solutionSource = solutionSource;
+            _solutionService = solutionService;
         }
 
         protected override async Task InitializeCoreAsync(CancellationToken cancellationToken)
         {
-            _solutionEventsSubscription = await _solutionSource.SubscribeAsync(this, cancellationToken);
+            _solutionEventsSubscription = await _solutionService.SubscribeAsync(this, cancellationToken);
         }
 
         protected override async Task DisposeCoreUnderLockAsync(bool initialized)
@@ -170,7 +170,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.UpToDate
             {
                 await JoinableFactory.SwitchToMainThreadAsync(cancellationToken);
 
-                var solutionWorkingFolder = _solutionSource.Solution as IVsSolutionWorkingFolders;
+                var solutionWorkingFolder = _solutionService.Solution as IVsSolutionWorkingFolders;
 
                 Assumes.Present(solutionWorkingFolder);
 
