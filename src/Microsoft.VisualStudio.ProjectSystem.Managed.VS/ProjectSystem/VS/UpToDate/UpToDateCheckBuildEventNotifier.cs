@@ -4,7 +4,6 @@ using Microsoft.VisualStudio.ProjectSystem.UpToDate;
 using Microsoft.VisualStudio.ProjectSystem.VS.Build;
 using Microsoft.VisualStudio.Shell.Interop;
 using Microsoft.VisualStudio.Threading;
-using IAsyncDisposable = System.IAsyncDisposable;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.UpToDate
 {

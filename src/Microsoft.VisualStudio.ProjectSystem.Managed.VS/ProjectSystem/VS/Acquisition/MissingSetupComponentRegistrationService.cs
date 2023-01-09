@@ -45,7 +45,7 @@ internal class MissingSetupComponentRegistrationService : OnceInitializedOnceDis
     private readonly object _displayPromptLock = new();
 
     private ConcurrentDictionary<string, IConcurrentHashSet<ProjectConfiguration>>? _projectPathToProjectConfigurationsMap;
-    private System.IAsyncDisposable? _solutionEventsSubscription;
+    private IAsyncDisposable? _solutionEventsSubscription;
     private bool? _isVSFromPreviewChannel;
 
     private readonly object _lock = new();

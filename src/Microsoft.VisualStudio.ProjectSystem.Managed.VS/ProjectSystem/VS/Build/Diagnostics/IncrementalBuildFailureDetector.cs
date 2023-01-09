@@ -6,7 +6,6 @@ using Microsoft.VisualStudio.ProjectSystem.VS.Editor;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 using Microsoft.VisualStudio.Threading;
-using IAsyncDisposable = System.IAsyncDisposable;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Build.Diagnostics
 {
