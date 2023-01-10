@@ -222,30 +222,38 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.UpToDate
                 return data;
             }
 
-            using var stream = new FileStream(cacheFilePath, FileMode.Open, FileAccess.Read, FileShare.None);
-            using var reader = new BinaryReader(stream, Encoding.UTF8, leaveOpen: true);
-
-            int configuredProjectCount = reader.ReadInt32();
-
-            while (configuredProjectCount-- != 0)
+            try
             {
-                string path = reader.ReadString();
+                using var stream = new FileStream(cacheFilePath, FileMode.Open, FileAccess.Read, FileShare.None);
+                using var reader = new BinaryReader(stream, Encoding.UTF8, leaveOpen: true);
 
-                int dimensionCount = reader.ReadInt32();
-                var dimensions = ImmutableStringDictionary<string>.EmptyOrdinal.ToBuilder();
+                int configuredProjectCount = reader.ReadInt32();
 
-                while (dimensionCount-- != 0)
+                while (configuredProjectCount-- != 0)
                 {
-                    string name = reader.ReadString();
-                    string value = reader.ReadString();
-                    dimensions[name] = value;
+                    string path = reader.ReadString();
+
+                    int dimensionCount = reader.ReadInt32();
+                    var dimensions = ImmutableStringDictionary<string>.EmptyOrdinal.ToBuilder();
+
+                    while (dimensionCount-- != 0)
+                    {
+                        string name = reader.ReadString();
+                        string value = reader.ReadString();
+                        dimensions[name] = value;
+                    }
+
+                    int hash = reader.ReadInt32();
+                    var itemsChangedAtUtc = new DateTime(reader.ReadInt64(), DateTimeKind.Utc);
+                    var lastSuccessfulBuildStartedAtUtc = new DateTime(reader.ReadInt64(), DateTimeKind.Utc);
+
+                    data[(path, dimensions.ToImmutable())] = (hash, itemsChangedAtUtc, lastSuccessfulBuildStartedAtUtc);
                 }
-
-                int hash = reader.ReadInt32();
-                var itemsChangedAtUtc = new DateTime(reader.ReadInt64(), DateTimeKind.Utc);
-                var lastSuccessfulBuildStartedAtUtc = new DateTime(reader.ReadInt64(), DateTimeKind.Utc);
-
-                data[(path, dimensions.ToImmutable())] = (hash, itemsChangedAtUtc, lastSuccessfulBuildStartedAtUtc);
+            }
+            catch (Exception ex) when (ex is IOException or UnauthorizedAccessException or NotSupportedException or ArgumentException)
+            {
+                // Return empty data in case of failure. Assume the whole file is corrupted.
+                return new();
             }
 
             return data;
