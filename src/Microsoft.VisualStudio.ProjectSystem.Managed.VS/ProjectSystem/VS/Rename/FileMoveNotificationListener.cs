@@ -17,6 +17,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
     [AppliesTo(ProjectCapability.CSharpOrVisualBasicLanguageService)]
     internal class FileMoveNotificationListener : IFileMoveNotificationListener
     {
+        private static readonly DocumentRenameOptions s_renameOptions = new();
+
         private readonly UnconfiguredProject _unconfiguredProject;
         private readonly IUserNotificationServices _userNotificationServices;
         private readonly IUnconfiguredProjectVsServices _projectVsServices;
@@ -136,10 +138,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
                     }
 
                     // This is a file item to another directory, it should only detect this a Update Namespace action.
-                    // TODO Upgrade this api to get rid of the exclamation sign
-#pragma warning disable CS0618 // Type or member is obsolete https://github.com/dotnet/project-system/issues/8591
-                    Renamer.RenameDocumentActionSet documentAction = await Renamer.RenameDocumentAsync(oldDocument, null!, documentFolders);
-#pragma warning restore CS0618 // Type or member is obsolete
+                    Renamer.RenameDocumentActionSet documentAction = await Renamer.RenameDocumentAsync(oldDocument, s_renameOptions, null, documentFolders);
 
                     if (documentAction.ApplicableActions.IsEmpty ||
                         documentAction.ApplicableActions.Any(a => !a.GetErrors().IsEmpty))
