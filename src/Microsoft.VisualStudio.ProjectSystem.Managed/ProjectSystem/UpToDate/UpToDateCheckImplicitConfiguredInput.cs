@@ -160,7 +160,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
         /// </remarks>
         public ImmutableArray<string> SetNames { get; }
 
-
         /// <summary>
         /// An alphabetically ordered list of the kind names present in this project.
         /// </summary>

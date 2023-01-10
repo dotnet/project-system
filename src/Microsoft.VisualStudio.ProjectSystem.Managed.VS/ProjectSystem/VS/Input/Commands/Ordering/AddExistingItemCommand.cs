@@ -16,8 +16,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.Ordering
         [ImportingConstructor]
         public AddExistingItemCommand(
             IAddItemDialogService addItemDialogService,
-            OrderAddItemHintReceiver orderAddItemHintReceiver) :
-            base(addItemDialogService, orderAddItemHintReceiver)
+            OrderAddItemHintReceiver orderAddItemHintReceiver)
+            : base(addItemDialogService, orderAddItemHintReceiver)
         {
             _addItemDialogService = addItemDialogService;
         }

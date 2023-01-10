@@ -19,12 +19,12 @@ namespace Microsoft.VisualStudio.Buffers.PooledObjects
             _builder = ImmutableArray.CreateBuilder<T>(size);
         }
 
-        public PooledArray() :
-            this(8)
+        public PooledArray()
+            : this(8)
         { }
 
-        private PooledArray(ObjectPool<PooledArray<T>> pool) :
-            this()
+        private PooledArray(ObjectPool<PooledArray<T>> pool)
+            : this()
         {
             _pool = pool;
         }
