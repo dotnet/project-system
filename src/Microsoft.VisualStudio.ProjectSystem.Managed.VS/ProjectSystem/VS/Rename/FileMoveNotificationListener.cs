@@ -181,6 +181,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
 
                 await settings.SetValueAsync(VsToolsOptions.OptionPromptNamespaceUpdate, !promptNamespaceUpdate, true);
 
+                // If the user checked the "Don't show again" checkbox, we need to set the namespace enable state based on their selection of Yes/No in the dialog.
+                if (promptNamespaceUpdate)
+                {
+                    await settings.SetValueAsync(VsToolsOptions.OptionEnableNamespaceUpdate, confirmation, isMachineLocal: true);
+                }
+
                 return confirmation;
             }
 
