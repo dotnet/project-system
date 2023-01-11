@@ -18,6 +18,9 @@
     <EnumValue Name="PreserveNewest" />
   </EnumProperty>
 
+  <BoolProperty Name="BuildAccelerationOnly"
+                Visible="False" />
+
   <StringProperty Name="TargetPath"
                   Visible="False" />
 

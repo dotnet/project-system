@@ -160,7 +160,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
         /// </remarks>
         public ImmutableArray<string> SetNames { get; }
 
-
         /// <summary>
         /// An alphabetically ordered list of the kind names present in this project.
         /// </summary>
@@ -507,11 +506,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
                 var itemsByKindBySet = new Dictionary<string, Dictionary<string, HashSet<string>>>(BuildUpToDateCheck.SetNameComparer);
 
-                var after = projectChangeDescription.After.Items as IDataWithOriginalSource<KeyValuePair<string, IImmutableDictionary<string, string>>>;
-
-                Assumes.NotNull(after);
-
-                foreach ((string item, IImmutableDictionary<string, string> metadata) in after.SourceData)
+                foreach ((string item, IImmutableDictionary<string, string> metadata) in TryGetOrderedData(projectChangeDescription.After.Items))
                 {
                     if (metadataPredicate is not null && !metadataPredicate(metadata))
                     {
@@ -540,6 +535,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                         pair => pair.Key,
                         pair => pair.Value.ToImmutableArray()),
                     BuildUpToDateCheck.SetNameComparer);
+
+                static IEnumerable<KeyValuePair<string, IImmutableDictionary<string, string>>> TryGetOrderedData(IImmutableDictionary<string, IImmutableDictionary<string, string>> items)
+                {
+                    if (items is IDataWithOriginalSource<KeyValuePair<string, IImmutableDictionary<string, string>>> dataWithOriginalSource)
+                        return dataWithOriginalSource.SourceData;
+
+                    // We couldn't obtain ordered items for some reason.
+                    // This is not a big problem, so just return the items in whatever order
+                    // the backing collection from CPS models them in.
+                    return items;
+                }
 
                 void AddItem(string setName, string kindName, string item)
                 {
@@ -659,15 +665,41 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                             .Select(pair => new CopyItem(path: pair.Key, metadata: pair.Value))
                             .ToImmutableArray();
 
-                        // Exclude any project references for which we do not reference the output assembly.
-                        // This avoids following references to certain "private" project references, such as PrivateP2PCaching.proj in NBGV.
-                        ImmutableArray<string> referenceItems = change2.After.Items.Where(pair => pair.Value.GetBoolProperty(ResolvedProjectReference.ReferenceOutputAssemblyProperty) == true).Select(item => item.Key).ToImmutableArray();
+                        ImmutableArray<string> referenceItems = change2.After.Items.Where(pair => IncludeProjectReference(pair.Value)).Select(item => item.Key).ToImmutableArray();
 
                         return new ProjectCopyData(msBuildProjectFullPath, targetPath, copyItems, referenceItems);
                     }
                 }
 
                 return ProjectCopyData;
+
+                static bool IncludeProjectReference(IImmutableDictionary<string, string> metadata)
+                {
+                    // TODO this filtering is overzealous. In each of these cases, there are subtleties to how
+                    // builds handle the output assembly vs. CopyToOutputDirectory items both of the directly
+                    // referenced project, and of transitively referenced projects. To improve this we need
+                    // more information on the edges of our project reference graph.
+
+                    // Exclude any project reference for which we do not reference the output assembly.
+                    if (metadata.GetBoolProperty(ResolvedProjectReference.ReferenceOutputAssemblyProperty) == false)
+                    {
+                        return false;
+                    }
+
+                    // Exclude any project reference having Private="false" (aka CopyLocal="No").
+                    if (metadata.GetBoolProperty(ResolvedProjectReference.PrivateProperty) == false)
+                    {
+                        return false;
+                    }
+
+                    // Exclude any project reference having EmbedInteropTypes="true".
+                    if (metadata.GetBoolProperty(ResolvedProjectReference.EmbedInteropTypesProperty) == true)
+                    {
+                        return false;
+                    }
+
+                    return true;
+                }
             }
 
             ProjectFileClassifier BuildClassifier()

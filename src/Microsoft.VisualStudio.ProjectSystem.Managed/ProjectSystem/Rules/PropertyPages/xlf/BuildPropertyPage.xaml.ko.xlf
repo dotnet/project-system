@@ -52,6 +52,16 @@
         <target state="translated">결정적</target>
         <note />
       </trans-unit>
+      <trans-unit id="BoolProperty|GenerateAssemblyInfo|Description">
+        <source>Transform project properties into assembly attributes during build.</source>
+        <target state="translated">빌드하는 동안 프로젝트 속성을 어셈블리 특성으로 변환합니다.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="BoolProperty|GenerateAssemblyInfo|DisplayName">
+        <source>Generate assembly info</source>
+        <target state="translated">어셈블리 정보 생성</target>
+        <note />
+      </trans-unit>
       <trans-unit id="BoolProperty|GenerateDocumentationFile|Description">
         <source>Generate a file containing API documentation.</source>
         <target state="translated">API 설명서를 포함하는 파일을 생성합니다.</target>
@@ -115,11 +125,6 @@
       <trans-unit id="BoolProperty|TreatWarningsAsErrors|DisplayName">
         <source>Treat warnings as errors</source>
         <target state="translated">경고를 오류로 처리</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="BoolProperty|WarningLevelOverridden|DisplayName">
-        <source>WarningLevelOverridden</source>
-        <target state="translated">경고 수준 재정의</target>
         <note />
       </trans-unit>
       <trans-unit id="Category|Advanced|Description">

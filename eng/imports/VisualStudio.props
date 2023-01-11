@@ -30,7 +30,10 @@
     <PackageReference Include="Microsoft.VisualStudio.Telemetry" />
     <PackageReference Include="Microsoft.VisualStudio.Utilities" />
     <PackageReference Include="NuGet.VisualStudio" />
-
+    
+    <!-- Roslyn -->
+    <PackageReference Include="Microsoft.VisualStudio.LanguageServices" />
+    
     <!-- Explicitly referenced to prevent upstream packages from bringing in old PIAs -->
     <PackageReference Include="EnvDTE" Pack="false" ExcludeAssets="compile" PrivateAssets="all" />
   </ItemGroup>

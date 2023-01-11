@@ -93,19 +93,13 @@
       </Item>
       <Item ItemId=";FUTDC_CheckingCopyItemsForProject_1" ItemType="0" PsrId="308" InstFlg="true" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Checking copy items from project '{0}'.]]></Val>
+          <Val><![CDATA[Checking copy items from project '{0}':]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[正在檢查從專案 '{0}' 複製項目。]]></Val>
+            <Val><![CDATA[正在檢查來自專案 '{0}' 的複製項目:]]></Val>
           </Tgt>
-        </Str>
-        <Disp Icon="Str" />
-      </Item>
-      <Item ItemId=";FUTDC_SkippingDuplicateCopyItem_2" ItemType="0" PsrId="308" InstFlg="true" Leaf="true">
-        <Str Cat="Text">
-          <Val><![CDATA[Skipping duplicate copy item '{0}' to '{1}']]></Val>
-          <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[正在略過複製項目 '{0}' 到 '{1}']]></Val>
-          </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[Checking copy items from project '{0}'.]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>

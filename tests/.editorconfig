@@ -36,3 +36,6 @@ dotnet_diagnostic.VSTHRD200.severity = none     # Naming stylesNaming styles:  B
 # xunit.analyzers
 dotnet_diagnostic.xUnit1026.severity = none     # Theory methods must use all parameters
 dotnet_diagnostic.xUnit1004.severity = none     # Test methods should not be skipped
+
+# White space rules (experimental)
+dotnet_diagnostic.IDE2001.severity = none       # Allow embedded statements on same line

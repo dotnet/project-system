@@ -1,6 +1,5 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
-using Microsoft.VisualStudio.ProjectSystem.LanguageServices;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
 using Microsoft.VisualStudio.ProjectSystem.UpToDate;
 
@@ -16,7 +15,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Rules
         private static class ProjectRules
         {
             /// <summary>
-            ///     Represents the evaluation properties representings source control bindings,
+            ///     Represents the evaluation properties representing source control bindings,
             ///     typically used in projects connected to Team Foundation Source Control.
             /// </summary>
             [ExportRule(nameof(SourceControl), PropertyPageContexts.Invisible)]
@@ -162,7 +161,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Rules
         }
 
         /// <summary>
-        ///     Contains rules for the <see cref="IWorkspaceUpdateHandler"/> implementations.
+        ///     Contains rules for the language service implementations (e.g. implementations of <c>IWorkspaceUpdateHandler</c>).
         /// </summary>
         private static class LanguageServiceRules
         {

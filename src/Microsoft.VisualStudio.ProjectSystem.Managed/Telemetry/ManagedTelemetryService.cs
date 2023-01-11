@@ -6,7 +6,7 @@ using System.Text;
 namespace Microsoft.VisualStudio.Telemetry
 {
     [Export(typeof(ITelemetryService))]
-    internal class VsTelemetryService : ITelemetryService
+    internal class ManagedTelemetryService : ITelemetryService
     {
         public void PostEvent(string eventName)
         {

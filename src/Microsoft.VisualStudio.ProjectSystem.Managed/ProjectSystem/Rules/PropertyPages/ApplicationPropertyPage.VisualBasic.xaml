@@ -208,6 +208,8 @@
                DisplayName="Shut down only after the last form closes." />
   </EnumProperty>
 
+  <!-- This property has been made temporarily invisible, and is blocked on https://github.com/dotnet/project-system/issues/8286
+       When that is fixed and this property displayed, its suppression should be removed from NonVisiblePropertiesShouldntBeLocalized. -->
   <DynamicEnumProperty Name="SplashScreen"
                        DisplayName="Splash screen"
                        Description="Sets the form to be used as a splash screen for the application."

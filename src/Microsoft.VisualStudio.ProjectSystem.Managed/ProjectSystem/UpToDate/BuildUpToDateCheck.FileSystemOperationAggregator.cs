@@ -21,7 +21,7 @@ internal sealed partial class BuildUpToDateCheck
     ///     MSBuild and perform the copy directly. This can speed up builds by several orders of magnitude.
     /// </para>
     /// </remarks>
-    private sealed class FileSystemOperationAggregator
+    internal sealed class FileSystemOperationAggregator
     {
         private readonly IFileSystem _fileSystem;
         private readonly Log _logger;
@@ -34,6 +34,47 @@ internal sealed partial class BuildUpToDateCheck
         /// log a message to the user suggesting that they enable it.
         /// </summary>
         public bool IsAccelerationCandidate { get; internal set; }
+
+        /// <summary>
+        /// Gets whether build acceleration was enabled in any configuration or not.
+        /// </summary>
+        /// <remarks>
+        ///   <para>
+        ///   <list type="bullet">
+        ///     <item><see langword="null"/> when no value was specified in any configuration.</item>
+        ///     <item><see langword="false"/> if all configurations had it disabled.</item>
+        ///     <item><see langword="true"/> if any configuration had it enabled.</item>
+        ///   </list>
+        ///   </para>
+        ///   <para>
+        ///     When no value is specified (value <see langword="null"/>), build acceleration should
+        ///     be considered disabled (the default behavior). Projects must opt in to this feature.
+        ///   </para>
+        ///   <para>
+        ///     This value is set at the configured level, though We expect all configurations
+        ///     to share the same value, so expose it at this top level.
+        ///   </para>
+        /// </remarks>
+        public bool? IsAccelerationEnabled { get; internal set; }
+
+        public BuildAccelerationResult AccelerationResult
+        {
+            get
+            {
+                if (IsAccelerationEnabled is true)
+                {
+                    if (_pendingCopies is not null)
+                        return BuildAccelerationResult.EnabledAccelerated;
+
+                    return BuildAccelerationResult.EnabledNotAccelerated;
+                }
+
+                if (IsAccelerationCandidate)
+                    return BuildAccelerationResult.DisabledCandidate;
+
+                return BuildAccelerationResult.DisabledNotCandidate;
+            }
+        }
 
         public FileSystemOperationAggregator(IFileSystem fileSystem, Log logger)
         {
@@ -78,7 +119,8 @@ internal sealed partial class BuildUpToDateCheck
                 // we have some copies to perform
 
                 _logger.Info(nameof(Resources.FUTD_CopyingFilesToAccelerateBuild_1), _pendingCopies.Count);
-                _logger.Indent++;
+
+                using Log.Scope _ = _logger.IndentScope();
 
                 foreach ((string source, string destination) in _pendingCopies)
                 {
@@ -126,8 +168,6 @@ internal sealed partial class BuildUpToDateCheck
                         return (Success: false, CopyCount: copyCount);
                     }
                 }
-
-                _logger.Indent--;
             }
 
             return (Success: true, CopyCount: copyCount);
@@ -151,6 +191,17 @@ internal sealed partial class BuildUpToDateCheck
         {
             _parent = parent;
             _isBuildAccelerationEnabled = isBuildAccelerationEnabled;
+
+            if (isBuildAccelerationEnabled is true)
+            {
+                // True if any configuration is enabled
+                _parent.IsAccelerationEnabled = true;
+            }
+            else if (_parent.IsAccelerationEnabled is null && isBuildAccelerationEnabled is false)
+            {
+                // Note an explicit disable
+                _parent.IsAccelerationEnabled = false;
+            }
         }
 
         public bool AddCopy(string source, string destination)

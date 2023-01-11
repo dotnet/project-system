@@ -12,16 +12,6 @@
         <target state="translated">Otomatik olarak, bağlama yeniden yönlendirmeleri oluşturma</target>
         <note />
       </trans-unit>
-      <trans-unit id="BoolProperty|TargetMultipleFrameworks|Description">
-        <source>Build this project for multiple target frameworks.</source>
-        <target state="translated">Bu projeyi birden çok hedef çerçeve için derleyin.</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="BoolProperty|TargetMultipleFrameworks|DisplayName">
-        <source>Target multiple frameworks</source>
-        <target state="translated">Birden çok çerçeveyi hedefle</target>
-        <note />
-      </trans-unit>
       <trans-unit id="BoolProperty|UseWPF|Description">
         <source>Enable WPF for this project.</source>
         <target state="translated">Bu proje için WPF'yi etkinleştirin.</target>

@@ -46,7 +46,6 @@
     <PackageReference Include="Microsoft.VisualStudio.Composition" />
 
     <!-- Roslyn -->
-    <PackageReference Include="Microsoft.VisualStudio.LanguageServices" />
     <PackageReference Include="Microsoft.CodeAnalysis" />
     <PackageReference Include="Microsoft.CSharp" />
 

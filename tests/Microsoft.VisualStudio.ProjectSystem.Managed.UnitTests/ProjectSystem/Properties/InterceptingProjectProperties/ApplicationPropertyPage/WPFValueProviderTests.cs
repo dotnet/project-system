@@ -1,5 +1,7 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
+using Microsoft.VisualStudio.Mocks;
+
 namespace Microsoft.VisualStudio.ProjectSystem.Properties;
 
 public class WPFValueProviderTests
@@ -31,11 +33,27 @@ public class WPFValueProviderTests
                 return Task.FromResult<string?>(shutdownModeValue);
             });
 
-        var provider = new WPFValueProvider(applicationXamlFileAccessor);
+        IEnumerable<string> capabilities;
+
+        if (bool.TryParse(useWPFPropertyValue, out bool useWPF) && useWPF)
+        {
+            // the capability value is different than the property (WPF vs UseWPF)
+            capabilities = new List<string> { ProjectCapability.WPF };
+        }
+        else
+        {
+            capabilities = new List<string>();
+        }
+
+        var projectCapabilitiesScope = IProjectCapabilitiesScopeFactory.Create(capabilities);
+                
+        var unconfiguredProject = UnconfiguredProjectFactory.Create(@"C:\Test\Path\Here", scope: projectCapabilitiesScope);
+
+        var provider = new WPFValueProvider(applicationXamlFileAccessor, unconfiguredProject);
 
         var defaultProperties = IProjectPropertiesFactory.CreateWithPropertiesAndValues(new Dictionary<string, string?>
         {
-            { WPFValueProvider.UseWPFPropertyName, useWPFPropertyValue },
+            { PropertyNames.UseWPF, useWPFPropertyValue },
             { WPFValueProvider.OutputTypePropertyName, outputTypeValue }
         });
 
@@ -83,12 +101,20 @@ public class WPFValueProviderTests
                 return Task.CompletedTask;
             });
 
-        var provider = new WPFValueProvider(applicationXamlFileAccessor);
+        IEnumerable<string> capabilities;
+
+        capabilities = bool.Parse(useWPFPropertyValue) ? new List<string>() {  ProjectCapability.WPF } : new List<string>();
+
+        var projectCapabilitiesScope = IProjectCapabilitiesScopeFactory.Create(capabilities);
+
+        var unconfiguredProject = UnconfiguredProjectFactory.Create(@"C:\Test\Path\Here", scope: projectCapabilitiesScope);
+
+        var provider = new WPFValueProvider(applicationXamlFileAccessor, unconfiguredProject);
 
         var defaultProperties = IProjectPropertiesFactory.CreateWithPropertiesAndValues(new Dictionary<string, string?>
         {
-            { WPFValueProvider.UseWPFPropertyName, useWPFPropertyValue },
-            { WPFValueProvider.OutputTypePropertyName, outputTypeValue }
+            { PropertyNames.UseWPF, useWPFPropertyValue },
+            { PropertyNames.OutputTypeMSBuild, outputTypeValue }
         });
 
         var result = await provider.OnSetPropertyValueAsync(propertyName, unevaluatedPropertyValue: "NewValue", defaultProperties);

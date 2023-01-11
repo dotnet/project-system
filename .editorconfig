@@ -230,6 +230,7 @@ dotnet_diagnostic.CA1806.severity = none        # Do not ignore method results
 dotnet_diagnostic.CA1821.severity = none        # Remove empty Finalizers
 dotnet_diagnostic.CA1823.severity = warning     # Avoid unused private fields
 dotnet_diagnostic.CA1824.severity = none        # Mark assemblies with NeutralResourcesLanguageAttribute
+dotnet_diagnostic.CA1851.severity = warning     # Detect multiple enumeration
 dotnet_diagnostic.CA2200.severity = none        # Rethrow to preserve stack details
 
 # Microsoft.NetCore.Analyzers
@@ -408,6 +409,21 @@ dotnet_diagnostic.VSSDK006.severity = warning   # Check whether the result of Ge
 dotnet_diagnostic.IDE0073.severity = warning      # Enforce file header
 file_header_template = Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
+# White space rules (experimental)
+
+dotnet_style_allow_multiple_blank_lines_experimental = false
+csharp_style_allow_embedded_statements_on_same_line_experimental = false
+csharp_style_allow_blank_lines_between_consecutive_braces_experimental = false
+csharp_style_allow_blank_line_after_colon_in_constructor_initializer_experimental = false
+csharp_style_allow_blank_line_after_token_in_conditional_expression_experimental = false
+csharp_style_allow_blank_line_after_token_in_arrow_expression_clause_experimental = false
+dotnet_diagnostic.IDE2000.severity = warning    # Allow multiple blank lines
+dotnet_diagnostic.IDE2001.severity = warning    # Allow embedded statements on same line
+dotnet_diagnostic.IDE2002.severity = warning    # Allow blank lines between consecutive braces
+dotnet_diagnostic.IDE2003.severity = warning    # Allow blank line after colon in constructor initializer
+dotnet_diagnostic.IDE2004.severity = warning    # Allow blank line after token in conditional expression
+dotnet_diagnostic.IDE2005.severity = warning    # Allow blank line after token in arrow expression clause
+dotnet_diagnostic.IDE2006.severity = warning    # Allow blank line after token in object initializer
 
 # Reduce severity for some VB rules where the risks of changes outweight the benefit
 [*.{vb}]

@@ -60,9 +60,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
                 IProjectThreadingService threadingService,
                 IVsUIService<IVsExtensibility, IVsExtensibility3> extensibility,
                 IVsService<SVsOperationProgress, IVsOperationProgressStatusService> operationProgressService,
-                IVsService<SVsSettingsPersistenceManager, ISettingsManager> settingsManagerService) :
-                base(unconfiguredProject, projectVsServices, workspace, environmentOptions, userNotificationServices, roslynServices, waitService,
-                    vsOnlineServices, projectAsynchronousTasksService, threadingService, extensibility, operationProgressService, settingsManagerService)
+                IVsService<SVsSettingsPersistenceManager, ISettingsManager> settingsManagerService)
+                : base(unconfiguredProject, projectVsServices, workspace, environmentOptions, userNotificationServices, roslynServices, waitService,
+                       vsOnlineServices, projectAsynchronousTasksService, threadingService, extensibility, operationProgressService, settingsManagerService)
             {
             }
 

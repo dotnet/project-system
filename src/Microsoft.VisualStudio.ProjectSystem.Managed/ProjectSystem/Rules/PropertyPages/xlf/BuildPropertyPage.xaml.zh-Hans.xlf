@@ -52,6 +52,16 @@
         <target state="translated">确定性输出</target>
         <note />
       </trans-unit>
+      <trans-unit id="BoolProperty|GenerateAssemblyInfo|Description">
+        <source>Transform project properties into assembly attributes during build.</source>
+        <target state="translated">在生成过程中将项目属性转换为程序集属性。</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="BoolProperty|GenerateAssemblyInfo|DisplayName">
+        <source>Generate assembly info</source>
+        <target state="translated">生成程序集信息</target>
+        <note />
+      </trans-unit>
       <trans-unit id="BoolProperty|GenerateDocumentationFile|Description">
         <source>Generate a file containing API documentation.</source>
         <target state="translated">生成包含 API 文档的文件。</target>
@@ -115,11 +125,6 @@
       <trans-unit id="BoolProperty|TreatWarningsAsErrors|DisplayName">
         <source>Treat warnings as errors</source>
         <target state="translated">将警告视为错误</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="BoolProperty|WarningLevelOverridden|DisplayName">
-        <source>WarningLevelOverridden</source>
-        <target state="translated">WarningLevelOverridden</target>
         <note />
       </trans-unit>
       <trans-unit id="Category|Advanced|Description">

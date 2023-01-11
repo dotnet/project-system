@@ -36,6 +36,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties.InterceptingProjectPro
         [InlineData("\"\"ab\"\"cd=     value1     ", "/\"/\"ab/\"/\"cd=\"     value1     \"")]
         [InlineData("\"\"ab\"\"cd=value1     ", "/\"/\"ab/\"/\"cd=\"value1     \"")]
         [InlineData("\"\"ab\"\"cd=     value1", "/\"/\"ab/\"/\"cd=\"     value1\"")]
+        [InlineData("", "")]
         public void ValidNameQuotedValuePairListEncoding(string input, string expectedOutput)
         {
             NameQuotedValuePairListEncoding _encoding = new();
@@ -70,6 +71,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties.InterceptingProjectPro
         [InlineData("/\"/\"ab/\"/\"cd/\"/\"ef=\"value1\"", new[] { "\"\"ab\"\"cd\"\"ef", "value1" })]
         [InlineData("/\"/\"ab/\"/\"cd=\"value1\"", new[] { "\"\"ab\"\"cd", "value1" })]
         [InlineData("a//bc=\"value1\"", new[] { "a/bc", "value1" })]
+        [InlineData("", new string[0])]
         public void VerifyNameQuotedValuePairListEncoding(string encodedPairs, string[] pairs)
         {
             NameQuotedValuePairListEncoding _encoding = new();
@@ -90,7 +92,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties.InterceptingProjectPro
                 }
             }
         }
-
+        
         [Theory]
         [InlineData("=key1=")]
         [InlineData("=key1")]
@@ -102,12 +104,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties.InterceptingProjectPro
         [InlineData("=")]
         [InlineData("==")]
         [InlineData("===")]
-        [InlineData(",")]
-        [InlineData(",,,")]
         [InlineData("\"")]
         [InlineData("key1,=abcd")]
         [InlineData("key1,=,abcd")]
         [InlineData("=\"\"")]
+        [InlineData(",")]
+        [InlineData(",,,")]
+        [InlineData("    ")]
         public void InvalidNameQuotedValuePairListEncoding(string input)
         {
             NameQuotedValuePairListEncoding _encoding = new();

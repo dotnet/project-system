@@ -26,7 +26,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             End Get
         End Property
 
-        Public Function GetSupportedTargetFrameworks(framework As FrameworkName) As ICollection(Of TargetFrameworkMoniker) Implements ISupportedTargetFrameworksProvider.GetSupportedTargetFrameworks
+        Public Function GetSupportedTargetFrameworks(framework As FrameworkName) As IReadOnlyList(Of TargetFrameworkMoniker) Implements ISupportedTargetFrameworksProvider.GetSupportedTargetFrameworks
 
             Requires.NotNull(framework, NameOf(framework))
 

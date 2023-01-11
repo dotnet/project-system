@@ -162,7 +162,5 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
                 launchProfiles: new[] { profile1.ToLaunchProfile(), profile2.ToLaunchProfile() });
             return launchSettingsProvider;
         }
-
-
     }
 }

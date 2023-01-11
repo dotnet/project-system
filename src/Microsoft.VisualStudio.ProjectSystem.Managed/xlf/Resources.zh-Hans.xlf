@@ -28,14 +28,9 @@
         <note>{0} is a file path.</note>
       </trans-unit>
       <trans-unit id="FUTDC_CheckingCopyItemsForProject_1">
-        <source>Checking copy items from project '{0}'.</source>
-        <target state="translated">正在检查项目“{0}”中的复制项。</target>
+        <source>Checking copy items from project '{0}':</source>
+        <target state="translated">正在检查项目“{0}”中的复制项:</target>
         <note>{0} is a file path.</note>
-      </trans-unit>
-      <trans-unit id="FUTDC_SkippingDuplicateCopyItem_2">
-        <source>Skipping duplicate copy item '{0}' to '{1}'</source>
-        <target state="translated">正在跳过复制项 '{0}' 到 '{1}' 的重复项</target>
-        <note>{0} and {1} are file paths.</note>
       </trans-unit>
       <trans-unit id="FUTD_AccelerationCandidate">
         <source>This project appears to be a candidate for build acceleration. To opt in, set the 'AccelerateBuildsInVisualStudio' MSBuild property to 'true'.</source>

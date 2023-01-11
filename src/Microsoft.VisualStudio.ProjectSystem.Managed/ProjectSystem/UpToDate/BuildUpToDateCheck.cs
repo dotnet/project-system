@@ -146,7 +146,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
                 if (log.Level >= LogLevel.Info)
                 {
-                    log.Indent++;
+                    using Log.Scope _ = log.IndentScope();
 
                     if (state.LastItemChanges.Length == 0)
                     {
@@ -159,8 +159,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                             log.Info(isAdd ? nameof(Resources.FUTD_ChangedItemsAddition_2) : nameof(Resources.FUTD_ChangedItemsRemoval_2), itemType, item);
                         }
                     }
-
-                    log.Indent--;
                 }
 
                 return false;
@@ -176,15 +174,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             // which also includes other items such as project files, compilation items, analyzer references, etc.
 
             log.Info(nameof(Resources.FUTD_ComparingInputOutputTimestamps));
-            log.Indent++;
 
-            // First, validate the relationship between inputs and outputs within the default set.
-            if (!CheckInputsAndOutputs(CollectDefaultInputs(), CollectDefaultOutputs(), timestampCache, DefaultSetName))
+            using (log.IndentScope())
             {
-                return false;
+                // First, validate the relationship between inputs and outputs within the default set.
+                if (!CheckInputsAndOutputs(CollectDefaultInputs(), CollectDefaultOutputs(), timestampCache, DefaultSetName))
+                {
+                    return false;
+                }
             }
-
-            log.Indent--;
 
             // Second, validate the relationships between inputs and outputs in specific sets, if any.
             foreach (string setName in state.SetNames)
@@ -305,25 +303,28 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 if (state.MSBuildProjectFullPath is not null)
                 {
                     log.Verbose(nameof(Resources.FUTD_AddingProjectFileInputs));
-                    log.Indent++;
-                    log.VerboseLiteral(state.MSBuildProjectFullPath);
-                    log.Indent--;
+                    using (log.IndentScope())
+                    {
+                        log.VerboseLiteral(state.MSBuildProjectFullPath);
+                    }
                     yield return (Path: state.MSBuildProjectFullPath, ItemType: null, IsRequired: true);
                 }
 
                 if (state.NewestImportInput is not null)
                 {
                     log.Verbose(nameof(Resources.FUTD_AddingNewestImportInput));
-                    log.Indent++;
-                    log.VerboseLiteral(state.NewestImportInput);
-                    log.Indent--;
+                    using (log.IndentScope())
+                    {
+                        log.VerboseLiteral(state.NewestImportInput);
+                    }
                     yield return (Path: state.NewestImportInput, ItemType: null, IsRequired: true);
                 }
 
                 foreach ((string itemType, ImmutableArray<string> items) in state.InputSourceItemsByItemType)
                 {
                     log.Verbose(nameof(Resources.FUTD_AddingTypedInputs_1), itemType);
-                    log.Indent++;
+
+                    using Log.Scope _ = log.IndentScope();
 
                     foreach (string item in items)
                     {
@@ -331,14 +332,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                         log.VerboseLiteral(absolutePath);
                         yield return (Path: absolutePath, itemType, IsRequired: true);
                     }
-
-                    log.Indent--;
                 }
 
                 if (!state.ResolvedAnalyzerReferencePaths.IsEmpty)
                 {
                     log.Verbose(nameof(Resources.FUTD_AddingTypedInputs_1), ResolvedAnalyzerReference.SchemaName);
-                    log.Indent++;
+
+                    using Log.Scope _ = log.IndentScope();
 
                     foreach (string path in state.ResolvedAnalyzerReferencePaths)
                     {
@@ -346,14 +346,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                         log.VerboseLiteral(absolutePath);
                         yield return (Path: absolutePath, ItemType: ResolvedAnalyzerReference.SchemaName, IsRequired: true);
                     }
-
-                    log.Indent--;
                 }
 
                 if (!state.ResolvedCompilationReferencePaths.IsEmpty)
                 {
                     log.Verbose(nameof(Resources.FUTD_AddingTypedInputs_1), ResolvedCompilationReference.SchemaName);
-                    log.Indent++;
+
+                    using Log.Scope _ = log.IndentScope();
 
                     foreach (string path in state.ResolvedCompilationReferencePaths)
                     {
@@ -361,14 +360,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                         log.VerboseLiteral(path);
                         yield return (Path: path, ItemType: ResolvedCompilationReference.SchemaName, IsRequired: true);
                     }
-
-                    log.Indent--;
                 }
 
                 if (state.UpToDateCheckInputItemsByKindBySetName.TryGetValue(DefaultSetName, out ImmutableDictionary<string, ImmutableArray<string>>? upToDateCheckInputItems))
                 {
                     log.Verbose(nameof(Resources.FUTD_AddingTypedInputs_1), UpToDateCheckInput.SchemaName);
-                    log.Indent++;
+
+                    using Log.Scope _ = log.IndentScope();
 
                     foreach (string kind in state.KindNames)
                     {
@@ -387,8 +385,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                             }
                         }
                     }
-
-                    log.Indent--;
                 }
             }
 
@@ -397,7 +393,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 if (state.UpToDateCheckOutputItemsByKindBySetName.TryGetValue(DefaultSetName, out ImmutableDictionary<string, ImmutableArray<string>>? upToDateCheckOutputItems))
                 {
                     log.Verbose(nameof(Resources.FUTD_AddingTypedOutputs_1), UpToDateCheckOutput.SchemaName);
-                    log.Indent++;
+
+                    using Log.Scope _ = log.IndentScope();
 
                     foreach (string kind in state.KindNames)
                     {
@@ -416,14 +413,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                             }
                         }
                     }
-
-                    log.Indent--;
                 }
 
                 if (state.UpToDateCheckBuiltItemsByKindBySetName.TryGetValue(DefaultSetName, out ImmutableDictionary<string, ImmutableArray<string>>? upToDateCheckBuiltItems))
                 {
                     log.Verbose(nameof(Resources.FUTD_AddingTypedOutputs_1), UpToDateCheckBuilt.SchemaName);
-                    log.Indent++;
+
+                    using Log.Scope _ = log.IndentScope();
 
                     foreach (string kind in state.KindNames)
                     {
@@ -442,8 +438,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                             }
                         }
                     }
-
-                    log.Indent--;
                 }
             }
 
@@ -452,7 +446,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 if (state.UpToDateCheckInputItemsByKindBySetName.TryGetValue(setName, out ImmutableDictionary<string, ImmutableArray<string>>? upToDateCheckInputItems))
                 {
                     log.Verbose(nameof(Resources.FUTD_AddingTypedInputsInSet_2), UpToDateCheckInput.SchemaName, setName);
-                    log.Indent++;
+
+                    using Log.Scope _ = log.IndentScope();
 
                     foreach (string kind in state.KindNames)
                     {
@@ -471,8 +466,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                             }
                         }
                     }
-
-                    log.Indent--;
                 }
             }
 
@@ -481,7 +474,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 if (state.UpToDateCheckOutputItemsByKindBySetName.TryGetValue(setName, out ImmutableDictionary<string, ImmutableArray<string>>? upToDateCheckOutputItems))
                 {
                     log.Verbose(nameof(Resources.FUTD_AddingTypedOutputsInSet_2), UpToDateCheckOutput.SchemaName, setName);
-                    log.Indent++;
+
+                    using Log.Scope _ = log.IndentScope();
 
                     foreach (string kind in state.KindNames)
                     {
@@ -500,14 +494,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                             }
                         }
                     }
-
-                    log.Indent--;
                 }
 
                 if (state.UpToDateCheckBuiltItemsByKindBySetName.TryGetValue(setName, out ImmutableDictionary<string, ImmutableArray<string>>? upToDateCheckBuiltItems))
                 {
                     log.Verbose(nameof(Resources.FUTD_AddingTypedOutputsInSet_2), UpToDateCheckBuilt.SchemaName, setName);
-                    log.Indent++;
+
+                    using Log.Scope _ = log.IndentScope();
 
                     foreach (string kind in state.KindNames)
                     {
@@ -526,8 +519,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                             }
                         }
                     }
-
-                    log.Indent--;
                 }
             }
 
@@ -625,7 +616,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
             log.Info(nameof(Resources.FUTD_ComparingCopyMarkerTimestamps));
 
-            log.Indent++;
+            using Log.Scope _ = log.IndentScope();
 
             string outputMarkerFile = _configuredProject.UnconfiguredProject.MakeRooted(state.CopyUpToDateMarkerItem);
 
@@ -644,30 +635,32 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
             bool inputMarkerExists = false;
 
-            foreach (string inputMarker in state.CopyReferenceInputs)
+            using (log.IndentScope())
             {
-                log.Indent++;
-                log.VerboseLiteral(inputMarker);
-                log.Indent--;
-
-                DateTime? inputMarkerTime = timestampCache.GetTimestampUtc(inputMarker);
-
-                if (inputMarkerTime is null)
+                foreach (string inputMarker in state.CopyReferenceInputs)
                 {
-                    log.Indent += 2;
-                    log.Verbose(nameof(Resources.FUTD_InputMarkerDoesNotExist));
-                    log.Indent -= 2;
-                    continue;
-                }
+                    log.VerboseLiteral(inputMarker);
 
-                inputMarkerExists = true;
+                    DateTime? inputMarkerTime = timestampCache.GetTimestampUtc(inputMarker);
 
-                // See if input marker is newer than output marker
-                if (outputMarkerTime < inputMarkerTime)
-                {
-                    fileSystemOperations.IsAccelerationCandidate = true;
+                    if (inputMarkerTime is null)
+                    {
+                        using (log.IndentScope())
+                        {
+                            log.Verbose(nameof(Resources.FUTD_InputMarkerDoesNotExist));
+                            continue;
+                        }
+                    }
 
-                    return log.Fail("InputMarkerNewerThanOutputMarker", nameof(Resources.FUTD_InputMarkerNewerThanOutputMarker_4), inputMarker, inputMarkerTime, outputMarkerFile, outputMarkerTime);
+                    inputMarkerExists = true;
+
+                    // See if input marker is newer than output marker
+                    if (outputMarkerTime < inputMarkerTime)
+                    {
+                        fileSystemOperations.IsAccelerationCandidate = true;
+
+                        return log.Fail("InputMarkerNewerThanOutputMarker", nameof(Resources.FUTD_InputMarkerNewerThanOutputMarker_4), inputMarker, inputMarkerTime, outputMarkerFile, outputMarkerTime);
+                    }
                 }
             }
 
@@ -675,8 +668,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             {
                 log.Info(nameof(Resources.FUTD_NoInputMarkersExist));
             }
-
-            log.Indent--;
 
             return true;
         }
@@ -696,6 +687,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
                 log.Info(nameof(Resources.FUTD_CheckingBuiltOutputFile), sourcePath);
 
+                using Log.Scope _ = log.IndentScope();
+
                 DateTime? sourceTime = timestampCache.GetTimestampUtc(sourcePath);
 
                 if (sourceTime is null)
@@ -705,9 +698,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                     return log.Fail("CopySourceNotFound", nameof(Resources.FUTD_CheckingBuiltOutputFileSourceNotFound_2), sourcePath, destinationPath);
                 }
 
-                log.Indent++;
                 log.Info(nameof(Resources.FUTD_SourceFileTimeAndPath_2), sourceTime, sourcePath);
-                log.Indent--;
 
                 DateTime? destinationTime = timestampCache.GetTimestampUtc(destinationPath);
 
@@ -716,9 +707,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                     return log.Fail("CopyDestinationNotFound", nameof(Resources.FUTD_CheckingBuiltOutputFileDestinationNotFound_2), destinationPath, sourcePath);
                 }
 
-                log.Indent++;
                 log.Info(nameof(Resources.FUTD_DestinationFileTimeAndPath_2), destinationTime, destinationPath);
-                log.Indent--;
 
                 if (destinationTime < sourceTime)
                 {
@@ -729,7 +718,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             return true;
         }
 
-        private bool CheckCopyToOutputDirectoryItems(Log log, UpToDateCheckImplicitConfiguredInput state, IEnumerable<CopyItem> copyItems, ConfiguredFileSystemOperationAggregator fileSystemAggregator, CancellationToken token)
+        private bool CheckCopyToOutputDirectoryItems(Log log, UpToDateCheckImplicitConfiguredInput state, IEnumerable<(string Path, ImmutableArray<CopyItem> CopyItems)> copyItemsByProject, ConfiguredFileSystemOperationAggregator fileSystemAggregator, bool? isBuildAccelerationEnabled, CancellationToken token)
         {
             ITimestampCache? timestampCache = _context.CopyItemTimestamps;
 
@@ -742,110 +731,124 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
             string outputFullPath = Path.Combine(state.MSBuildProjectDirectory, state.OutputRelativeOrFullPath);
 
-            bool hasItem = false;
+            Log.Scope? scope1 = null;
 
-            foreach ((string sourcePath, string targetPath, CopyType copyType) in copyItems)
+            foreach ((string project, ImmutableArray<CopyItem> copyItems) in copyItemsByProject)
             {
-                if (!hasItem)
+                Log.Scope? scope2 = null;
+
+                foreach ((string sourcePath, string targetPath, CopyType copyType, bool isBuildAccelerationOnly) in copyItems)
                 {
-                    log.Verbose(nameof(Resources.FUTD_CheckingCopyToOutputDirectoryItems));
-                    log.Indent++;
-                    hasItem = true;
-                }
+                    token.ThrowIfCancellationRequested();
 
-                string destinationPath = Path.Combine(outputFullPath, targetPath);
-
-                if (StringComparers.Paths.Equals(sourcePath, destinationPath))
-                {
-                    // This can occur when a project is checking its own items, and the item already
-                    // exists in the output directory.
-                    continue;
-                }
-
-                token.ThrowIfCancellationRequested();
-
-                log.Verbose(nameof(Resources.FUTD_CheckingCopyToOutputDirectoryItem_1), copyType.ToString());
-
-                DateTime? sourceTime = timestampCache.GetTimestampUtc(sourcePath);
-
-                if (sourceTime is null)
-                {
-                    // We don't generally expect the source to be unavailable.
-                    // If this occurs, schedule a build to be on the safe side.
-                    return log.Fail("CopyToOutputDirectorySourceNotFound", nameof(Resources.FUTD_CheckingCopyToOutputDirectorySourceNotFound_1), sourcePath);
-                }
-
-                log.Indent++;
-                log.Verbose(nameof(Resources.FUTD_SourceFileTimeAndPath_2), sourceTime, sourcePath);
-                log.Indent--;
-                DateTime? destinationTime = timestampCache.GetTimestampUtc(destinationPath);
-
-                if (destinationTime is null)
-                {
-                    log.Indent++;
-                    log.Verbose(nameof(Resources.FUTD_DestinationDoesNotExist_1), destinationPath);
-                    log.Indent--;
-
-                    if (!fileSystemAggregator.AddCopy(sourcePath, destinationPath))
+                    if (isBuildAccelerationEnabled is not true && isBuildAccelerationOnly)
                     {
-                        return log.Fail("CopyToOutputDirectoryDestinationNotFound", nameof(Resources.FUTD_CheckingCopyToOutputDirectoryItemDestinationNotFound_1), destinationPath);
+                        // This item should only be checked when build acceleration is enabled.
+                        // For example, we only check referenced output assemblies when enabled.
+                        // When not accelerating builds, checking these is unnecessary overhead.
+                        continue;
                     }
 
-                    continue;
-                }
+                    string destinationPath = Path.Combine(outputFullPath, targetPath);
 
-                log.Indent++;
-                log.Verbose(nameof(Resources.FUTD_DestinationFileTimeAndPath_2), destinationTime, destinationPath);
-                log.Indent--;
-
-                switch (copyType)
-                {
-                    case CopyType.Always:
+                    if (StringComparers.Paths.Equals(sourcePath, destinationPath))
                     {
-                        // We have already validated the presence of these files, so we don't expect these to return
-                        // false. If one of them does, the corresponding size would be zero, so we would schedule a build.
-                        // The odds of both source and destination disappearing between the gathering of the timestamps
-                        // above and these following statements is vanishingly small, and would suggest bigger problems
-                        // such as the entire project directory having been deleted.
-                        _fileSystem.TryGetFileSizeBytes(sourcePath, out long sourceSizeBytes);
-                        _fileSystem.TryGetFileSizeBytes(destinationPath, out long destinationSizeBytes);
+                        // This can occur when a project is checking its own items, and the item already
+                        // exists in the output directory.
+                        continue;
+                    }
 
-                        if (sourceTime != destinationTime || sourceSizeBytes != destinationSizeBytes)
+                    if (scope1 is null)
+                    {
+                        log.Verbose(nameof(Resources.FUTD_CheckingCopyToOutputDirectoryItems));
+                        scope1 = log.IndentScope();
+                    }
+
+                    if (scope2 is null)
+                    {
+                        log.Verbose(nameof(Resources.FUTDC_CheckingCopyItemsForProject_1), project);
+                        scope2 = log.IndentScope();
+                    }
+
+                    log.Verbose(nameof(Resources.FUTD_CheckingCopyToOutputDirectoryItem_1), copyType.ToString());
+
+                    DateTime? sourceTime = timestampCache.GetTimestampUtc(sourcePath);
+
+                    if (sourceTime is null)
+                    {
+                        // We don't generally expect the source to be unavailable.
+                        // If this occurs, schedule a build to be on the safe side.
+                        return log.Fail("CopyToOutputDirectorySourceNotFound", nameof(Resources.FUTD_CheckingCopyToOutputDirectorySourceNotFound_1), sourcePath);
+                    }
+
+                    using Log.Scope _ = log.IndentScope();
+
+                    log.Verbose(nameof(Resources.FUTD_SourceFileTimeAndPath_2), sourceTime, sourcePath);
+
+                    DateTime? destinationTime = timestampCache.GetTimestampUtc(destinationPath);
+
+                    if (destinationTime is null)
+                    {
+                        log.Verbose(nameof(Resources.FUTD_DestinationDoesNotExist_1), destinationPath);
+
+                        if (!fileSystemAggregator.AddCopy(sourcePath, destinationPath))
                         {
-                            if (!fileSystemAggregator.AddCopy(sourcePath, destinationPath))
-                            {
-                                return log.Fail("CopyAlwaysItemDiffers", nameof(Resources.FUTD_CopyAlwaysItemsDiffer_6), sourcePath, sourceTime, sourceSizeBytes, destinationPath, destinationTime, destinationSizeBytes);
-                            }
+                            return log.Fail("CopyToOutputDirectoryDestinationNotFound", nameof(Resources.FUTD_CheckingCopyToOutputDirectoryItemDestinationNotFound_1), destinationPath);
                         }
 
-                        break;
+                        continue;
                     }
 
-                    case CopyType.PreserveNewest:
+                    log.Verbose(nameof(Resources.FUTD_DestinationFileTimeAndPath_2), destinationTime, destinationPath);
+
+                    switch (copyType)
                     {
-                        if (destinationTime < sourceTime)
+                        case CopyType.Always:
                         {
-                            if (!fileSystemAggregator.AddCopy(sourcePath, destinationPath))
+                            // We have already validated the presence of these files, so we don't expect these to return
+                            // false. If one of them does, the corresponding size would be zero, so we would schedule a build.
+                            // The odds of both source and destination disappearing between the gathering of the timestamps
+                            // above and these following statements is vanishingly small, and would suggest bigger problems
+                            // such as the entire project directory having been deleted.
+                            _fileSystem.TryGetFileSizeBytes(sourcePath, out long sourceSizeBytes);
+                            _fileSystem.TryGetFileSizeBytes(destinationPath, out long destinationSizeBytes);
+
+                            if (sourceTime != destinationTime || sourceSizeBytes != destinationSizeBytes)
                             {
-                                return log.Fail("CopyToOutputDirectorySourceNewer", nameof(Resources.FUTD_CheckingCopyToOutputDirectorySourceNewerThanDestination_3), CopyType.PreserveNewest.ToString(), sourcePath, destinationPath);
+                                if (!fileSystemAggregator.AddCopy(sourcePath, destinationPath))
+                                {
+                                    return log.Fail("CopyAlwaysItemDiffers", nameof(Resources.FUTD_CopyAlwaysItemsDiffer_6), sourcePath, sourceTime, sourceSizeBytes, destinationPath, destinationTime, destinationSizeBytes);
+                                }
                             }
+
+                            break;
                         }
 
-                        break;
-                    }
+                        case CopyType.PreserveNewest:
+                        {
+                            if (destinationTime < sourceTime)
+                            {
+                                if (!fileSystemAggregator.AddCopy(sourcePath, destinationPath))
+                                {
+                                    return log.Fail("CopyToOutputDirectorySourceNewer", nameof(Resources.FUTD_CheckingCopyToOutputDirectorySourceNewerThanDestination_3), CopyType.PreserveNewest.ToString(), sourcePath, destinationPath);
+                                }
+                            }
 
-                    default:
-                    {
-                        System.Diagnostics.Debug.Fail("Project copy items should only contain copyable items.");
-                        break;
+                            break;
+                        }
+
+                        default:
+                        {
+                            System.Diagnostics.Debug.Fail("Project copy items should only contain copyable items.");
+                            break;
+                        }
                     }
                 }
+
+                scope2?.Dispose();
             }
 
-            if (hasItem)
-            {
-                log.Indent--;
-            }
+            scope1?.Dispose();
 
             return true;
         }
@@ -948,6 +951,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
             async Task<(bool, ImmutableArray<ProjectConfiguration>)> CheckAsync(UpToDateCheckConfiguredInput state, IUpToDateCheckStatePersistence persistence, CancellationToken token)
             {
+                // The subscription object calls GetLatestVersionAsync for project data, which can take a while.
+                // We separate out the wait time from the overall time, so we can more easily identify when the
+                // wait is long, versus the check's actual execution time.
+                var waitTime = sw.Elapsed;
+
                 token.ThrowIfCancellationRequested();
 
                 // Short-lived cache of timestamp by path
@@ -963,6 +971,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                     logWriter,
                     requestedLogLevel,
                     sw,
+                    waitTime,
                     timestampCache,
                     _configuredProject.UnconfiguredProject.FullPath ?? "",
                     projectGuid,
@@ -972,6 +981,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                     isValidationRun ? -1 : Interlocked.Increment(ref _checkNumber));
 
                 var fileSystemOperations = new FileSystemOperationAggregator(_fileSystem, logger);
+
+                logger.FileSystemOperations = fileSystemOperations;
 
                 HashSet<string> copyItemPaths = new();
 
@@ -1039,7 +1050,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
                         // We may have an incomplete set of copy items.
                         // We check timestamps of whatever items we can find, but only perform acceleration when the full set is available.
-                        (IEnumerable<CopyItem> copyItems, bool isCopyItemsComplete) = _copyItemAggregator.TryGatherCopyItemsForProject(implicitState.ProjectTargetPath, logger);
+                        (IEnumerable<(string Path, ImmutableArray<CopyItem> CopyItems)> copyItemsByProject, bool isCopyItemsComplete) = _copyItemAggregator.TryGatherCopyItemsForProject(implicitState.ProjectTargetPath, logger);
 
                         bool? isBuildAccelerationEnabled = IsBuildAccelerationEnabled(isCopyItemsComplete, implicitState);
 
@@ -1053,7 +1064,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                             !CheckInputsAndOutputs(logger, lastSuccessfulBuildStartTimeUtc, timestampCache, implicitState, ignoreKinds, token) ||
                             !CheckBuiltFromInputFiles(logger, timestampCache, implicitState, token) ||
                             !CheckMarkers(logger, timestampCache, implicitState, isBuildAccelerationEnabled, fileSystemOperations) ||
-                            !CheckCopyToOutputDirectoryItems(logger, implicitState, copyItems, configuredFileSystemOperations, token))
+                            !CheckCopyToOutputDirectoryItems(logger, implicitState, copyItemsByProject, configuredFileSystemOperations, isBuildAccelerationEnabled, token))
                         {
                             return (false, checkedConfigurations);
                         }
@@ -1078,9 +1089,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                         {
                             logger.Info(nameof(Resources.FUTD_BuildAccelerationSummary_1), copyCount);
                         }
-                    }
 
-                    logger.UpToDate();
+                        logger.UpToDate(copyCount);
+                    }
 
                     return (true, checkedConfigurations);
                 }
@@ -1090,10 +1101,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 }
                 finally
                 {
-                    if (fileSystemOperations.IsAccelerationCandidate)
+                    if (fileSystemOperations.IsAccelerationCandidate && fileSystemOperations.IsAccelerationEnabled is null)
                     {
-                        // We didn't copy anything, but we did find a candidate for build acceleration.
-                        // Log this fact, to help users discover the build acceleration feature.
+                        // We didn't copy anything, but we did find a candidate for build acceleration,
+                        // and the project does not specify AccelerateBuildsInVisualStudio. Log a message to
+                        // let the user know that their project might benefit from Build Acceleration.
                         logger.Minimal(nameof(Resources.FUTD_AccelerationCandidate));
                     }
 

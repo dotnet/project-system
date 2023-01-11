@@ -132,7 +132,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
                     Dim supportedTargetFrameworksDescriptor As PropertyDescriptor = GetPropertyDescriptor("SupportedTargetFrameworks")
 
-                    Dim supportedFrameworks As IEnumerable(Of TargetFrameworkMoniker) = TargetFrameworkMoniker.GetSupportedTargetFrameworkMonikers(vsFrameworkMultiTargeting, DTEProject, supportedTargetFrameworksDescriptor?.Converter)
+                    Dim supportedFrameworks As IReadOnlyList(Of TargetFrameworkMoniker) = TargetFrameworkMoniker.GetSupportedTargetFrameworkMonikers(vsFrameworkMultiTargeting, DTEProject, supportedTargetFrameworksDescriptor?.Converter)
 
                     'If the list doesn't contain any tfm, it means the project can't retarget.
                     If Not supportedFrameworks.Any() Then

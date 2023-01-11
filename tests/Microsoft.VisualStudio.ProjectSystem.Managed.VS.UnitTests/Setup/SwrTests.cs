@@ -44,13 +44,13 @@ namespace Microsoft.VisualStudio.Setup
             var ruleFilesByCulture = Directory.EnumerateFiles(rulesPath, "*", SearchOption.AllDirectories)
                 .Select(ParseRepoFile)
                 .Where(pair => pair.Culture is not null)
-                .ToLookup(pair => pair.Culture, pair => pair.File);
+                .ToLookup(pair => pair.Culture!, pair => pair.File);
 
-            var setupCultures = setupFilesByCulture.Select(p => p.Key);
-            var ruleCultures = ruleFilesByCulture.Select(p => p.Key);
+            var setupCultures = setupFilesByCulture.Select(p => p.Key).ToList();
+            var ruleCultures = ruleFilesByCulture.Select(p => p.Key).ToList();
 
             Assert.True(
-                setupCultures.ToHashSet().SetEquals(ruleCultures!),
+                setupCultures.ToHashSet().SetEquals(ruleCultures),
                 "Set of cultures must match.");
 
             var guilty = false;
@@ -61,10 +61,11 @@ namespace Microsoft.VisualStudio.Setup
                 var ruleFiles = ruleFilesByCulture[culture];
 
                 var embeddedRules = RuleServices.GetAllEmbeddedRules()
-                                                .Select(name => name + ".xaml");
+                                                .Select(name => name + ".xaml")
+                                                .ToList();
 
                 // Exclude the ones that are embedded, they won't be installed
-                ruleFiles = ruleFiles.Except(embeddedRules);
+                ruleFiles = ruleFiles.Except(embeddedRules).ToList();
 
                 foreach (var missing in ruleFiles.Except(setupFiles, StringComparer.OrdinalIgnoreCase))
                 {

@@ -28,8 +28,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties.Package
         [ImportingConstructor]
         public PackageLicenseFileValueProvider(
             [Import(ExportContractNames.ProjectItemProviders.SourceFiles)] IProjectItemProvider sourceItemsProvider,
-            UnconfiguredProject unconfiguredProject) :
-            base(PackageLicenseFilePropertyName, sourceItemsProvider, unconfiguredProject)
+            UnconfiguredProject unconfiguredProject)
+            : base(PackageLicenseFilePropertyName, sourceItemsProvider, unconfiguredProject)
         {
         }
     }
