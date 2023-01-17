@@ -18,7 +18,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Waiting
         /// <param name="message">The message to display, or <see langword="null"/> if no change is required.</param>
         /// <param name="currentStep">The current step's (one-based) index, or <see langword="null"/> if no change is required.</param>
         /// <param name="totalSteps">The total number of steps, or <see langword="null"/> if no change is required.</param>
-        /// <param name="progressText">A progress messate display, or <see langword="null"/> if no change is required.</param>
+        /// <param name="progressText">A progress message display, or <see langword="null"/> if no change is required.</param>
         void Update(
             string? message = null,
             int? currentStep = null,
