@@ -29,7 +29,7 @@
       </trans-unit>
       <trans-unit id="FUTDC_CheckingCopyItemsForProject_1">
         <source>Checking copy items from project '{0}':</source>
-        <target state="needs-review-translation">Das Kopieren von Elementen aus dem Projekt "{0}" wird überprüft.</target>
+        <target state="translated">Das Kopieren von Elementen aus dem Projekt „{0}“ wird überprüft:</target>
         <note>{0} is a file path.</note>
       </trans-unit>
       <trans-unit id="FUTD_AccelerationCandidate">

@@ -60,5 +60,4 @@ namespace Microsoft.VisualStudio.ProjectSystem
             return mock.Object;
         }
     }
-
 }

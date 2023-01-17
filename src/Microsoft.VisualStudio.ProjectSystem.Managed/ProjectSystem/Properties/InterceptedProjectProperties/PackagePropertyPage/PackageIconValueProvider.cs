@@ -28,8 +28,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties.Package
         [ImportingConstructor]
         public PackageIconValueProvider(
             [Import(ExportContractNames.ProjectItemProviders.SourceFiles)] IProjectItemProvider sourceItemsProvider,
-            UnconfiguredProject unconfiguredProject) :
-            base(PackageIconPropertyName, sourceItemsProvider, unconfiguredProject)
+            UnconfiguredProject unconfiguredProject)
+            : base(PackageIconPropertyName, sourceItemsProvider, unconfiguredProject)
         {
         }
     }
