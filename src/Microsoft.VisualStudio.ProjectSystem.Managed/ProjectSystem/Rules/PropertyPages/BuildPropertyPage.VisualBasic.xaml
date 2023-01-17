@@ -32,7 +32,7 @@
                 HasConfigurationCondition="True" />
   </Rule.DataSource>
 
-  <StringProperty Name="Output path"
+  <StringProperty Name="OutputPath"
                   DisplayName="Build output path"
                   Category="General"
                   Subtype="directory" />
