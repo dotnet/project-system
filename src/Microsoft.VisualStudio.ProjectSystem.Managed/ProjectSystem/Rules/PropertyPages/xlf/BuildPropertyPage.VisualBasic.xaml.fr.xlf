@@ -387,9 +387,9 @@
         <target state="translated">Constantes personnalisées</target>
         <note />
       </trans-unit>
-      <trans-unit id="StringProperty|Output path|DisplayName">
+      <trans-unit id="StringProperty|OutputPath|DisplayName">
         <source>Build output path</source>
-        <target state="translated">Créer un chemin de sortie</target>
+        <target state="new">Build output path</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|PostBuildEvent|Description">
