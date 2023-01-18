@@ -4,7 +4,7 @@
       Description="Specifies properties that control how the project builds."
       DisplayName="Build"
       PageTemplate="generic"
-      Order="200"
+      Order="300"
       xmlns="http://schemas.microsoft.com/build/2009/properties" >
 
   <Rule.Categories>
