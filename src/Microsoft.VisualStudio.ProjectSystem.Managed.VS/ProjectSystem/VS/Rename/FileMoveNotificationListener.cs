@@ -82,7 +82,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
                 string destinationFolderPath = Path.GetDirectoryName(_unconfiguredProject.MakeRelative(itemToMove.Destination));
                 string[] documentFolders = destinationFolderPath.Split(Delimiter.Path, StringSplitOptions.RemoveEmptyEntries);
 
-                // This is a file item to another directory, it should only detect this a Update Namespace action.
+                // Since this rename only moves the location of the file to another directory, it will use the SyncNamespaceDocumentAction in Roslyn as the rename action within this set.
+                // The logic for selecting this rename action can be found here: https://github.com/dotnet/roslyn/blob/960f375f4825a189937d4bfd9fea8162ecc63177/src/Workspaces/Core/Portable/Rename/Renamer.cs#L133-L136
                 Renamer.RenameDocumentActionSet renameActionSet = await Renamer.RenameDocumentAsync(currentDocument, s_renameOptions, null, documentFolders);
 
                 if (renameActionSet.ApplicableActions.IsEmpty || renameActionSet.ApplicableActions.Any(a => a.GetErrors().Any()))
@@ -140,13 +141,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
                     title: string.Empty,
                     message: _renameMessage!,
                     allowCancel: true,
-                    asyncMethod: context => RunRenameActions(context, runningDocumentTable),
+                    asyncMethod: context => ApplyRenamesAsync(context, runningDocumentTable),
                     totalSteps: _renameActionSets.Count);
             });
 
             return;
 
-            async Task RunRenameActions(IWaitContext context, RunningDocumentTable runningDocumentTable)
+            async Task ApplyRenamesAsync(IWaitContext context, RunningDocumentTable runningDocumentTable)
             {
                 CancellationToken token = context.CancellationToken;
                 await _threadingService.SwitchToUIThread(token);
@@ -160,7 +161,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
                 }
 
                 await TaskScheduler.Default;
-                // WORKAROUND: We don't yet have a way to wait for the changes to propagate to Roslyn (tracked by https://github.com/dotnet/project-system/issues/3425).
+                // WORKAROUND: We don't yet have a way to wait for the changes to propagate to Roslyn, tracked by https://github.com/dotnet/project-system/issues/3425
                 // Instead, we wait for the IntelliSense stage to finish for the entire solution.
                 IVsOperationProgressStatusService statusService = await _operationProgressService.GetValueAsync(token);
                 await statusService.GetStageStatus(CommonOperationProgressStageIds.Intellisense).WaitForCompletionAsync().WithCancellation(token);
@@ -169,10 +170,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
 
                 for (int i = 0; i < _renameActionSets.Count; i++)
                 {
-                    string fileName = Path.GetFileName(_renameActionSets.Keys.ElementAt(i));
-                    context.Update(currentStep: i + 1, progressText: fileName);
+                    string destinationPath = _renameActionSets.Keys.ElementAt(i);
+                    // Display the filename being updated to the user in the progress dialog.
+                    context.Update(currentStep: i + 1, progressText: Path.GetFileName(destinationPath));
 
-                    Renamer.RenameDocumentActionSet renameActionSet = _renameActionSets.Values.ElementAt(i);
+                    Renamer.RenameDocumentActionSet renameActionSet = _renameActionSets[destinationPath];
                     solution = await renameActionSet.UpdateSolutionAsync(solution, token);
                 }
 
@@ -188,7 +190,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
                 bool isEnabled = settings.GetValueOrDefault(VsToolsOptions.OptionEnableNamespaceUpdate, defaultValue: true);
                 bool isPromptEnabled = settings.GetValueOrDefault(VsToolsOptions.OptionPromptNamespaceUpdate, defaultValue: true);
                 // If not enabled, returns false.
-                // If enabled but prompt not enabled, returns true.
+                // If enabled but prompt is not enabled, returns true.
                 // Otherwise, we display the prompt to the user.
                 if (!isEnabled || !isPromptEnabled)
                 {
