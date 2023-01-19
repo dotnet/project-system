@@ -200,13 +200,22 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
             return block.Completion.ContinueWith(_ =>
             {
+                Exception exception = block.Completion.Exception;
+
+                // If the exception is an aggregate over a single inner exception, take the inner message
+                string innerMessage = exception switch
+                {
+                    AggregateException { InnerExceptions: { Count: 1 } inner } => inner[0].Message,
+                    _ => exception.Message
+                };
+
                 var dataSourceException = new AggregateException(
                     string.Format(
                         CultureInfo.CurrentCulture,
                         Resources.DataFlowFaults,
                         block.ToString(),
-                        block.Completion.Exception),
-                    block.Completion.Exception);
+                        innerMessage),
+                    exception);
 
                 try
                 {
