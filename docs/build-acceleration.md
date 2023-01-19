@@ -29,7 +29,7 @@ Consider this example, where a unit test project references a project that in tu
 
 Making a change in _Library 3_ and running the unit test would previously have caused four calls to MSBuild.
 
-With build acceleration enabled MSBuild is called only once, after which VS copies the output of _Library 3_ to all referencing projects
+With build acceleration enabled MSBuild is called only once, after which VS copies the output of _Library 3_ to all referencing projects.
 
 ## Configuration
 
@@ -49,6 +49,8 @@ You may disable build acceleration for specific projects in your solution by red
 
 ## Debugging
 
+### Enable logging
+
 Build acceleration runs with the FUTDC, and outputs details of its operation in the build log. To enable this logging:
 
 > Tools | Options | Projects and Solutions | .NET Core
@@ -60,6 +62,73 @@ Setting _Logging Level_ to a value other than `None` results in messages prefixe
 - `None` disables log output.
 - `Minimal` produces a single message per out-of-date project.
 - `Info` and `Verbose` provide increasingly detailed information about the inner workings of the check, which are useful for debugging.
+
+### Validate builds are accelerated
+
+If build acceleration cannot be enabled for any of the reasons given below, builds continue to work as before but will be slower.
+
+The following prerequisites exist for build acceleration:
+
+- You are running Visual Studio 2022 version 17.5 or later.
+- The project is an SDK-style .NET project.
+- All projects it references (directly and transitively) are also SDK-style .NET projects.
+
+The following steps will validate that build acceleration is working correctly for a given project.
+
+1. Ensure `Verbose` logging is enabled (see [Enable logging](#enable-logging)).
+1. Build the project to make it up-to-date.
+1. Modify source of a referenced project (either a direct reference or transitive reference).
+1. Build the project again.
+
+Looking through the build output with the following points in mind:
+
+- ℹ️ If you see:
+
+   > This project appears to be a candidate for build acceleration. To opt in, set the 'AccelerateBuildsInVisualStudio' MSBuild property to 'true'.
+
+   Then the project does not specify the `AccelerateBuildsInVisualStudio` property, or its value was not `true` or `false`, and the project like it would benefit from build acceleration. If the project cannot use build acceleration for any reason, this message can be suppressed by setting the property to `false` explicitly. See [configuration](#configuration) to learn how to configure build acceleration correctly.
+
+- ⛔ If you see:
+
+   > Build acceleration is disabled for this project via the 'AccelerateBuildsInVisualStudio' MSBuild property.
+
+   Then the `AccelerateBuildsInVisualStudio` property was set to `false`. Even if your build files don't set this explicitly, it could come from a `.props`/`.targets` file within a NuGet package, or be related to the project type (for example, installer projects cannot be accelerated).
+
+- ⛔ If you see:
+
+   > Build acceleration data is unavailable for project with target 'C:\Solution\Project\bin\Debug\Project.dll'.
+
+   Then any project that references the indicated project (directy or transitively) cannot be accelerated. This can happen if the mentioned project uses the legacy `.csproj` format, or for any other project system within Visual Studio that doesn't support build acceleration. Currently only .NET SDK-style projects (loaded with the project system from this GitHub repository) provide the needed data.
+
+- 🗒️ TODO Add validation and output message when reference assemblies are not enabled (https://github.com/dotnet/project-system/issues/8798)
+
+- ✅ You should see a section listing items to copy:
+
+   ```
+   Checking items to copy to the output directory:
+       Checking copy items from project 'C:\Solution\Referenced\Referenced.csproj':
+           Checking PreserveNewest item
+               Source      2023-01-19 15:28:56.882: 'C:\Solution\Referenced\bin\Debug\net7.0\Referenced.dll'
+               Destination 2023-01-19 15:28:37.379: 'C:\Solution\Referencing\bin\Debug\net7.0\Referenced.dll'
+               Remembering the need to copy file 'C:\Solution\Referenced\bin\Debug\net7.0\Referenced.dll' to 'C:\Solution\Referencing\bin\Debug\net7.0\Referenced.dll'.
+       ...
+   ```
+
+   This indicates that build acceleration has identified a set of files to copy.
+
+- ✅ You should see a section indicating that files were copied and the project was up-to-date:
+
+   ```
+   Copying 2 files to accelerate build:
+       From 'C:\Solution\Library1\bin\Debug\net7.0\Library1.dll' to 'C:\Solution\Tests\bin\Debug\net7.0\Library1.dll'.
+       From 'C:\Solution\Library1\bin\Debug\net7.0\Library1.pdb' to 'C:\Solution\Tests\bin\Debug\net7.0\Library1.pdb'.
+   Project is up-to-date.
+   Up-to-date check completed in 8.8 ms
+   ```
+   
+   This indicates that rather than calling MSBuild to build the project, Visual Studio has copied the listed files directly. The check completed quickly, the project is reported as up-to-date, and the next project (if any) can start building.
+
+   ⚠️ Note that the bug described in [Discrepancies between FUTDC logging and build summary](up-to-date-check.md#discrepancies-between-futdc-logging-and-build-summary) may cause the number of succeeded projects to be overstated. This requires changes within Visual Studio, and we hope to fix this in a future release.
 
 ## Limitations
 
