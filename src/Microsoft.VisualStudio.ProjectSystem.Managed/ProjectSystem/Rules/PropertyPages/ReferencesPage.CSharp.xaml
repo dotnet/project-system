@@ -4,7 +4,7 @@
       Description="Settings associated with the C# implicit global usings feature."
       DisplayName="Global Usings"
       PageTemplate="generic"
-      Order="100"
+      Order="200"
       xmlns="http://schemas.microsoft.com/build/2009/properties">
   <Rule.Categories>
     <Category Name="General"
