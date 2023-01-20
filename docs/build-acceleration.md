@@ -53,7 +53,7 @@ You may disable build acceleration for specific projects in your solution by red
 
 Build acceleration runs with the FUTDC, and outputs details of its operation in the build log. To enable this logging:
 
-> Tools | Options | Projects and Solutions | .NET Core
+> Tools | Options | Projects and Solutions | SDK-Style Projects
 
 ![Projects and Solutions, .NET Core options](repo/images/options.png)
 
@@ -65,7 +65,7 @@ Setting _Logging Level_ to a value other than `None` results in messages prefixe
 
 ### Validate builds are accelerated
 
-If build acceleration cannot be enabled for any of the reasons given below, builds continue to work as before but will be slower.
+If build acceleration cannot be enabled for any of the reasons given below, builds continue to work as before.
 
 The following prerequisites exist for build acceleration:
 
@@ -86,7 +86,7 @@ Looking through the build output with the following points in mind:
 
    > This project appears to be a candidate for build acceleration. To opt in, set the 'AccelerateBuildsInVisualStudio' MSBuild property to 'true'.
 
-   Then the project does not specify the `AccelerateBuildsInVisualStudio` property, or its value was not `true` or `false`, and the project like it would benefit from build acceleration. If the project cannot use build acceleration for any reason, this message can be suppressed by setting the property to `false` explicitly. See [configuration](#configuration) to learn how to configure build acceleration correctly.
+   Then the project does not specify the `AccelerateBuildsInVisualStudio` property, or its value was not `true` or `false`, and the project would likely benefit from build acceleration. If the project cannot use build acceleration for any reason, this message can be suppressed by setting the property to `false` explicitly. See [configuration](#configuration) to learn how to configure build acceleration correctly.
 
 - ⛔ If you see:
 
