@@ -107,7 +107,7 @@
           {
             "name": "addMilestone",
             "parameters": {
-              "milestoneName": "17.5"
+              "milestoneName": "17.6"
             }
           }
         ],

@@ -6,8 +6,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.References
 {
     internal class PackageReferenceHandler : AbstractReferenceHandler
     {
-        internal PackageReferenceHandler() :
-            base(ProjectSystemReferenceType.Package)
+        internal PackageReferenceHandler()
+            : base(ProjectSystemReferenceType.Package)
         { }
 
         protected override Task RemoveReferenceAsync(ConfiguredProjectServices services,

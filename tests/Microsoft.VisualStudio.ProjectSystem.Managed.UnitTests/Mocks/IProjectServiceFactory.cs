@@ -31,7 +31,6 @@ namespace Microsoft.VisualStudio.ProjectSystem
             mock.Setup(p => p.Services)
                 .Returns(services);
 
-
             mock.Setup(p => p.LoadedUnconfiguredProjects)
                 .Returns(loadedUnconfiguredProjects);
 

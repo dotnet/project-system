@@ -10,9 +10,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.PackageRestore
     internal class PackageRestoreSharedJoinableTaskCollection : IJoinableTaskScope
     {
         [ImportingConstructor]
-        public PackageRestoreSharedJoinableTaskCollection(IProjectThreadingService threadingService) 
+        public PackageRestoreSharedJoinableTaskCollection(IProjectThreadingService threadingService)
         {
             JoinableTaskCollection = threadingService.JoinableTaskContext.CreateCollection();
+            JoinableTaskCollection.DisplayName = nameof(PackageRestoreSharedJoinableTaskCollection);
             JoinableTaskFactory = threadingService.JoinableTaskContext.CreateFactory(JoinableTaskCollection);
         }
 

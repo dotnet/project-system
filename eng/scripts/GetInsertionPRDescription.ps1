@@ -82,6 +82,9 @@ $commitsString = "[ $($commits | Out-String) ]"
 # Replace the non-commit entry newline with a space.
 # This situation occurs when the commit body contains newlines in it (multiple paragraphs).
 $commitsClean = $commitsString -replace '(?<!\})\r\n',' '
+# Any remaining backslashes need to be escaped as they are part of the commit body/subject.
+# This ignores the natural newlines for the commit entries.
+$commitsClean = $commitsClean -replace '(?!\r\n)\\','\\'
 # Replace any double quotes with a backslash double quote.
 # This situation occurs when commit bodies or commit subjects contain double quotes in them.
 $commitsClean = $commitsClean -replace '"','\"'

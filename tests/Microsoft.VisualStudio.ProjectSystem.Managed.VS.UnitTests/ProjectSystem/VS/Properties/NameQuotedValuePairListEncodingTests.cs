@@ -117,6 +117,5 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties.InterceptingProjectPro
             FormatException exception = Assert.Throws<FormatException>(() => (_encoding.Format(_encoding.Parse(input))));
             Assert.Equal("Expected valid name value pair.", exception.Message);
         }
-       
     }
 }

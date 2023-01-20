@@ -25,41 +25,34 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.UpToDate
 
         private Dictionary<(string ProjectPath, IImmutableDictionary<string, string> ConfigurationDimensions), (int ItemHash, DateTime? ItemsChangedAtUtc, DateTime? LastSuccessfulBuildStartedAtUtc)>? _dataByConfiguredProject;
 
-        private readonly IVsUIService<SVsSolution, IVsSolution> _solution;
+        private readonly ISolutionService _solutionService;
 
         private bool _hasUnsavedChange;
-        private uint _cookie = VSConstants.VSCOOKIE_NIL;
+        private IAsyncDisposable? _solutionEventsSubscription;
         private string? _cacheFilePath;
         private JoinableTask? _cleanupTask;
 
         [ImportingConstructor]
         public UpToDateCheckStatePersistence(
-            IVsUIService<SVsSolution, IVsSolution> solution,
+            ISolutionService solutionService,
             JoinableTaskContext joinableTaskContext)
             : base(new JoinableTaskContextNode(joinableTaskContext))
         {
-            _solution = solution;
+            _solutionService = solutionService;
         }
 
         protected override async Task InitializeCoreAsync(CancellationToken cancellationToken)
         {
-            await JoinableFactory.SwitchToMainThreadAsync(cancellationToken);
-
-            Verify.HResult(_solution.Value.AdviseSolutionEvents(this, out _cookie));
+            _solutionEventsSubscription = await _solutionService.SubscribeAsync(this, cancellationToken);
         }
 
         protected override async Task DisposeCoreUnderLockAsync(bool initialized)
         {
             if (initialized)
             {
-                if (_cookie != VSConstants.VSCOOKIE_NIL)
-                {
-                    await JoinableFactory.SwitchToMainThreadAsync();
+                Assumes.NotNull(_solutionEventsSubscription);
 
-                    Verify.HResult(_solution.Value.UnadviseSolutionEvents(_cookie));
-
-                    _cookie = VSConstants.VSCOOKIE_NIL;
-                }
+                await _solutionEventsSubscription.DisposeAsync();
             }
         }
 
@@ -177,7 +170,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.UpToDate
             {
                 await JoinableFactory.SwitchToMainThreadAsync(cancellationToken);
 
-                var solutionWorkingFolder = _solution.Value as IVsSolutionWorkingFolders;
+                var solutionWorkingFolder = _solutionService.Solution as IVsSolutionWorkingFolders;
 
                 Assumes.Present(solutionWorkingFolder);
 
@@ -229,30 +222,38 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.UpToDate
                 return data;
             }
 
-            using var stream = new FileStream(cacheFilePath, FileMode.Open, FileAccess.Read, FileShare.None);
-            using var reader = new BinaryReader(stream, Encoding.UTF8, leaveOpen: true);
-
-            int configuredProjectCount = reader.ReadInt32();
-
-            while (configuredProjectCount-- != 0)
+            try
             {
-                string path = reader.ReadString();
+                using var stream = new FileStream(cacheFilePath, FileMode.Open, FileAccess.Read, FileShare.None);
+                using var reader = new BinaryReader(stream, Encoding.UTF8, leaveOpen: true);
 
-                int dimensionCount = reader.ReadInt32();
-                var dimensions = ImmutableStringDictionary<string>.EmptyOrdinal.ToBuilder();
+                int configuredProjectCount = reader.ReadInt32();
 
-                while (dimensionCount-- != 0)
+                while (configuredProjectCount-- != 0)
                 {
-                    string name = reader.ReadString();
-                    string value = reader.ReadString();
-                    dimensions[name] = value;
+                    string path = reader.ReadString();
+
+                    int dimensionCount = reader.ReadInt32();
+                    var dimensions = ImmutableStringDictionary<string>.EmptyOrdinal.ToBuilder();
+
+                    while (dimensionCount-- != 0)
+                    {
+                        string name = reader.ReadString();
+                        string value = reader.ReadString();
+                        dimensions[name] = value;
+                    }
+
+                    int hash = reader.ReadInt32();
+                    var itemsChangedAtUtc = new DateTime(reader.ReadInt64(), DateTimeKind.Utc);
+                    var lastSuccessfulBuildStartedAtUtc = new DateTime(reader.ReadInt64(), DateTimeKind.Utc);
+
+                    data[(path, dimensions.ToImmutable())] = (hash, itemsChangedAtUtc, lastSuccessfulBuildStartedAtUtc);
                 }
-
-                int hash = reader.ReadInt32();
-                var itemsChangedAtUtc = new DateTime(reader.ReadInt64(), DateTimeKind.Utc);
-                var lastSuccessfulBuildStartedAtUtc = new DateTime(reader.ReadInt64(), DateTimeKind.Utc);
-
-                data[(path, dimensions.ToImmutable())] = (hash, itemsChangedAtUtc, lastSuccessfulBuildStartedAtUtc);
+            }
+            catch (Exception ex) when (ex is IOException or UnauthorizedAccessException or NotSupportedException or ArgumentException)
+            {
+                // Return empty data in case of failure. Assume the whole file is corrupted.
+                return new();
             }
 
             return data;
