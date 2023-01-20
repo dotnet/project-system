@@ -11,6 +11,7 @@ using Microsoft.VisualStudio.Text;
 using Microsoft.VisualStudio.Threading;
 using Path = System.IO.Path;
 using static System.Diagnostics.Debug;
+using System.Reflection;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
 {
@@ -150,15 +151,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
             async Task ApplyRenamesAsync(IWaitContext context, RunningDocumentTable runningDocumentTable)
             {
                 CancellationToken token = context.CancellationToken;
-                await _threadingService.SwitchToUIThread(token);
-                foreach (string destinationPath in _renameActionSets.Keys)
-                {
-                    // Save the current file to disk if it contains unsaved changes.
-                    // This guarantees that Roslyn will update the correct document contents when the rename actions are applied to the solution.
-                    // This must be done prior to acquiring the latest solution.
-                    // For more details, see: https://devdiv.visualstudio.com/DevDiv/_workitems/edit/1595580
-                    runningDocumentTable.SaveFileIfDirty(destinationPath);
-                }
+                //await _threadingService.SwitchToUIThread(token);
+                //foreach (string destinationPath in _renameActionSets.Keys)
+                //{
+                //    // Save the current file to disk if it contains unsaved changes.
+                //    // This guarantees that Roslyn will update the correct document contents when the rename actions are applied to the solution.
+                //    // This must be done prior to acquiring the latest solution.
+                //    // For more details, see: https://devdiv.visualstudio.com/DevDiv/_workitems/edit/1595580
+                //    runningDocumentTable.SaveFileIfDirty(destinationPath);
+                //}
 
                 await TaskScheduler.Default;
                 // WORKAROUND: We don't yet have a way to wait for the changes to propagate to Roslyn, tracked by https://github.com/dotnet/project-system/issues/3425
@@ -167,6 +168,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
                 await statusService.GetStageStatus(CommonOperationProgressStageIds.Intellisense).WaitForCompletionAsync().WithCancellation(token);
                 // After waiting, a "new" published Solution is available.
                 Solution solution = _workspace.CurrentSolution;
+                _workspace.WorkspaceChanged += _workspace_WorkspaceChanged;
+
+                //await _threadingService.SwitchToUIThread(token);
+                //dynamic test = _workspace;
+                //test.ProcessQueuedWorkOnUIThread();
+
+                //await _threadingService.SwitchToUIThread(token);
+                //typeof(Workspace).GetMethod("ProcessQueuedWorkOnUIThread").Invoke(_workspace, Array.Empty<object>());
 
                 for (int i = 0; i < _renameActionSets.Count; i++)
                 {
@@ -178,9 +187,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
                     solution = await renameActionSet.UpdateSolutionAsync(solution, token);
                 }
 
+                //await _threadingService.SwitchToUIThread(token);
+                //dynamic test = _workspace;
+                //test.ProcessQueuedWorkOnUIThread();
+
+                //Thread.Sleep(2000);
+                _workspace.WorkspaceChanged -= _workspace_WorkspaceChanged;
+
                 await _threadingService.SwitchToUIThread(token);
                 bool areChangesApplied = _roslynServices.ApplyChangesToSolution(_workspace, solution);
-                Assert(areChangesApplied, $"ApplyChangesToSolution returned false");
+                Assert(areChangesApplied, "ApplyChangesToSolution returned false");
             }
 
             async Task<bool> IsEnabledOrConfirmedAsync()
@@ -207,6 +223,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
                 }
                 return isConfirmed;
             }
+        }
+
+        private void _workspace_WorkspaceChanged(object sender, WorkspaceChangeEventArgs e)
+        {
+            var test = e.ProjectId;
+            Assert(false, "_workspace_WorkspaceChanged");
         }
     }
 }
