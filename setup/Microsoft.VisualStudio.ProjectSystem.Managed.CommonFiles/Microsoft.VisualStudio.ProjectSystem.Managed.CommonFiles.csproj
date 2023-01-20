@@ -8,11 +8,6 @@
 
   <Import Project="..\..\eng\imports\VisualStudio.props" />
 
-  <PropertyGroup>
-    <!-- This VSSDK project has custom build steps and should not be accelerated. -->
-    <AccelerateBuildsInVisualStudio>false</AccelerateBuildsInVisualStudio>
-  </PropertyGroup>
-
   <ItemGroup>
     <!-- Depend on projects producing XAML rules included in this Willow package -->
     <ProjectReference Include="..\..\src\Microsoft.VisualStudio.ProjectSystem.Managed\Microsoft.VisualStudio.ProjectSystem.Managed.csproj" />
