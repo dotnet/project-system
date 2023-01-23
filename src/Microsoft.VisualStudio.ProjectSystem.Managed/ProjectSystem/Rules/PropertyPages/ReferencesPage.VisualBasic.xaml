@@ -5,7 +5,10 @@
       DisplayName="References"
       PageTemplate="generic"
       Order="200"
-      xmlns="http://schemas.microsoft.com/build/2009/properties">
+      xmlns="http://schemas.microsoft.com/build/2009/properties"
+      xmlns:xliff="https://github.com/dotnet/xliff-tasks" 
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+      mc:Ignorable="xliff">
 
   <Rule.Categories>
     <Category Name="General"
@@ -32,7 +35,7 @@
     <DynamicEnumProperty.ValueEditors>
       <ValueEditor EditorType="MultiStringSelector">
         <ValueEditor.Metadata>
-          <NameValuePair Name="TypeDescriptorText" Value="Imported Namespaces" />
+          <NameValuePair Name="TypeDescriptorText" Value="Imported Namespaces" xliff:LocalizedProperties="Value" />
           <NameValuePair Name="AllowsCustomStrings" Value="True" />
           <NameValuePair Name="ShouldDisplayEvaluatedPreview" Value="True" />
         </ValueEditor.Metadata>
