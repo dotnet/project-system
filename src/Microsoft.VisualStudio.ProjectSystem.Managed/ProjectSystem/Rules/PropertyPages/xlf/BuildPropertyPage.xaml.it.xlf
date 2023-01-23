@@ -199,8 +199,8 @@
       </trans-unit>
       <trans-unit id="EnumProperty|DebugType|DisplayName">
         <source>Debug symbols</source>
-        <target state="translated">Simboli di debug</target>
-        <note />
+        <target state="needs-review-translation">Simboli di debug</target>
+        <note>="PDB Only" /&gt;</note>
       </trans-unit>
       <trans-unit id="EnumProperty|DebugType|Metadata|SearchTerms">
         <source>debug type</source>
@@ -445,6 +445,11 @@
       <trans-unit id="StringProperty|DefineConstants|DisplayName">
         <source>Conditional compilation symbols</source>
         <target state="translated">Simboli di compilazione condizionale</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|DefineConstants|ValueEditors|ValueEditor|Metadata|TypeDescriptorText|Value">
+        <source>Custom symbols</source>
+        <target state="new">Custom symbols</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|DocumentationFile|Description">

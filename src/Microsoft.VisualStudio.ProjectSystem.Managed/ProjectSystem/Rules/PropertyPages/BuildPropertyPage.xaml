@@ -5,7 +5,10 @@
       DisplayName="Build"
       PageTemplate="generic"
       Order="300"
-      xmlns="http://schemas.microsoft.com/build/2009/properties" >
+      xmlns="http://schemas.microsoft.com/build/2009/properties"
+      xmlns:xliff="https://github.com/dotnet/xliff-tasks" 
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+      mc:Ignorable="xliff">
 
   <Rule.Categories>
     <Category Name="General"
@@ -50,7 +53,7 @@
     <StringProperty.ValueEditors>
       <ValueEditor EditorType="MultiStringSelector">
         <ValueEditor.Metadata>
-          <NameValuePair Name="TypeDescriptorText" Value="Custom symbols" />
+          <NameValuePair Name="TypeDescriptorText" Value="Custom symbols" xliff:LocalizedProperties="Value" />
           <NameValuePair Name="AllowsCustomStrings" Value="True" />
           <NameValuePair Name="ShouldDisplayEvaluatedPreview" Value="True" />
         </ValueEditor.Metadata>
