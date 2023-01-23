@@ -199,7 +199,7 @@
       </trans-unit>
       <trans-unit id="EnumProperty|DebugType|DisplayName">
         <source>Debug symbols</source>
-        <target state="needs-review-translation">デバッグ シンボル</target>
+        <target state="translated">デバッグ シンボル</target>
         <note>="PDB Only" /&gt;</note>
       </trans-unit>
       <trans-unit id="EnumProperty|DebugType|Metadata|SearchTerms">
