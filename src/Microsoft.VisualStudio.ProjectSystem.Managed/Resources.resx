@@ -423,7 +423,7 @@ This project was loaded using the wrong project type, likely as a result of rena
     <comment>{0} and {1} are file paths.</comment>
   </data>
   <data name="FUTD_CopyingFilesToAccelerateBuild_1" xml:space="preserve">
-    <value>Copying {0} files to accelerate build:</value>
+    <value>Copying {0} files to accelerate build (https://aka.ms/vs-build-acceleration):</value>
     <comment>{0} is an integer.</comment>
   </data>
   <data name="FUTD_FromTo_2" xml:space="preserve">
@@ -442,18 +442,18 @@ This project was loaded using the wrong project type, likely as a result of rena
     <value>Input marker does not exist.</value>
   </data>
   <data name="FUTD_AccelerationDisabledForProject" xml:space="preserve">
-    <value>Build acceleration is disabled for this project via the 'AccelerateBuildsInVisualStudio' MSBuild property.</value>
+    <value>Build acceleration is disabled for this project via the 'AccelerateBuildsInVisualStudio' MSBuild property. See https://aka.ms/vs-build-acceleration.</value>
     <comment>Do not translate AccelerateBuildsInVisualStudio.</comment>
   </data>
   <data name="FUTD_AccelerationCandidate" xml:space="preserve">
-    <value>This project appears to be a candidate for build acceleration. To opt in, set the 'AccelerateBuildsInVisualStudio' MSBuild property to 'true'.</value>
+    <value>This project appears to be a candidate for build acceleration. To opt in, set the 'AccelerateBuildsInVisualStudio' MSBuild property to 'true'. See https://aka.ms/vs-build-acceleration.</value>
     <comment>Do not translate 'AccelerateBuildsInVisualStudio' or 'true'.</comment>
   </data>
   <data name="FUTD_AccelerationDisabledCopyItemsIncomplete" xml:space="preserve">
     <value>Build acceleration is not available for this project because not all transitively referenced projects have provided acceleration data.</value>
   </data>
   <data name="FUTDC_AccelerationDataMissingForProject_1" xml:space="preserve">
-    <value>Build acceleration data is unavailable for project with target '{0}'.</value>
+    <value>Build acceleration data is unavailable for project with target '{0}'. See https://aka.ms/vs-build-acceleration.</value>
     <comment>{0} is a file path.</comment>
   </data>
   <data name="DiagnosticLevel_None" xml:space="preserve">
