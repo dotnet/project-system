@@ -189,7 +189,7 @@
       </trans-unit>
       <trans-unit id="EnumProperty|DebugType|DisplayName">
         <source>Debug symbols</source>
-        <target state="needs-review-translation">디버그 기호</target>
+        <target state="translated">디버그 기호</target>
         <note>="PDB Only" /&gt;</note>
       </trans-unit>
       <trans-unit id="EnumProperty|DebugType|Metadata|SearchTerms">

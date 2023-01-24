@@ -189,7 +189,7 @@
       </trans-unit>
       <trans-unit id="EnumProperty|DebugType|DisplayName">
         <source>Debug symbols</source>
-        <target state="needs-review-translation">Símbolos de depuração</target>
+        <target state="translated">Símbolos de depuração</target>
         <note>="PDB Only" /&gt;</note>
       </trans-unit>
       <trans-unit id="EnumProperty|DebugType|Metadata|SearchTerms">

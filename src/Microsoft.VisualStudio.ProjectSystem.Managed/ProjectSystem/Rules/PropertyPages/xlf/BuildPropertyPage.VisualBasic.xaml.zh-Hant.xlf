@@ -189,7 +189,7 @@
       </trans-unit>
       <trans-unit id="EnumProperty|DebugType|DisplayName">
         <source>Debug symbols</source>
-        <target state="needs-review-translation">偵錯符號</target>
+        <target state="translated">偵錯符號</target>
         <note>="PDB Only" /&gt;</note>
       </trans-unit>
       <trans-unit id="EnumProperty|DebugType|Metadata|SearchTerms">
