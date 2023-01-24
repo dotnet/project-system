@@ -285,6 +285,16 @@ a DynamicEnumProperty instead of a StringProperty. All `SupportedValues` that ar
 will be added as unchecked list items.
 
 #### Example
+The xliff namespace can be defined as follows in your Rule definition. 
+An example can be found in [this property page](https://github.com/dotnet/project-system/blob/main/src/Microsoft.VisualStudio.ProjectSystem.Managed/ProjectSystem/Rules/PropertyPages/BuildPropertyPage.xaml).
+
+```xml
+xmlns="http://schemas.microsoft.com/build/2009/properties"
+xmlns:xliff="https://github.com/dotnet/xliff-tasks" 
+xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+mc:Ignorable="xliff"
+```
+
 
 ```xml
 <StringProperty Name="ImportedNamespaces"
