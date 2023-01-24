@@ -2,6 +2,11 @@
 <xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
   <file datatype="xml" source-language="en" target-language="es" original="../VSResources.resx">
     <body>
+      <trans-unit id="BuildAccelerationSummary_2">
+        <source>Visual Studio accelerated {0} project(s), copying {1} file(s). See https://aka.ms/vs-build-acceleration.</source>
+        <target state="new">Visual Studio accelerated {0} project(s), copying {1} file(s). See https://aka.ms/vs-build-acceleration.</target>
+        <note>{0} and {1} are both integer counts.</note>
+      </trans-unit>
       <trans-unit id="DefaultNewProfileName">
         <source>Profile {0}</source>
         <target state="translated">Perfil {0}</target>

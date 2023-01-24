@@ -86,6 +86,91 @@ namespace Microsoft.VisualStudio.Telemetry
             public const string AcceleratedCopyCount = "vs.projectsystem.managed.uptodatecheck.acceleratedcopycount";
         }
 
+        public static class SolutionBuildSummary
+        {
+            /// <summary>
+            ///     Indicates the duration of the solution build, in milliseconds.
+            /// </summary>
+            public const string DurationMillis = "vs.projectsystem.managed.solutionbuildsummary.durationmillis";
+
+            /// <summary>
+            ///     Indicates the total number of projects that participated in the solution build.
+            /// </summary>
+            public const string ProjectCount = "vs.projectsystem.managed.solutionbuildsummary.projectcount";
+
+            /// <summary>
+            ///     Indicates the total number of configured projects that participated in the solution build.
+            ///     This can help understand the impact of multi-targeting projects.
+            /// </summary>
+            public const string ConfiguredProjectCount = "vs.projectsystem.managed.solutionbuildsummary.configuredprojectcount";
+
+            /// <summary>
+            ///     Indicates the number of projects backed by the .NET Project System that were considered up-to-date and therefore skipped.
+            ///     Excludes accelerated projects and those found out-of-date.
+            /// </summary>
+            public const string UpToDateProjectCount = "vs.projectsystem.managed.solutionbuildsummary.uptodateprojectcount";
+
+            /// <summary>
+            ///     Indicates the number of projects backed by the .NET Project System that were considered out-to-date and therefore built.
+            ///     Excludes accelerated projects and those found up-to-date.
+            /// </summary>
+            public const string OutOfDateProjectCount = "vs.projectsystem.managed.solutionbuildsummary.outofdateprojectcount";
+
+            /// <summary>
+            ///     Indicates the number of projects backed by the .NET Project System that were accelerated rather than built,
+            ///     meaning that VS performed the build operation rather than MSBuild.
+            /// </summary>
+            public const string AcceleratedProjectCount = "vs.projectsystem.managed.solutionbuildsummary.acceleratedprojectcount";
+
+            /// <summary>
+            ///     Indicates the number of projects in the solution build that were identified as candidates for acceleration.
+            /// </summary>
+            public const string AccelerationCandidateProjectCount = "vs.projectsystem.managed.solutionbuildsummary.accelerationcandidateprojectcount";
+
+            /// <summary>
+            ///     Indicates the number of files that were copied as part of Build Acceleration.
+            ///     If no projects were accelerated, this value will be zero.
+            /// </summary>
+            public const string AccelerationFileCopyCount = "vs.projectsystem.managed.solutionbuildsummary.accelerationfilecopycount";
+
+            /// <summary>
+            ///     Indicates the number of project for which build acceleration was explicitly enabled.
+            /// </summary>
+            public const string AccelerationEnabledCount = "vs.projectsystem.managed.solutionbuildsummary.accelerationenabledcount";
+
+            /// <summary>
+            ///     Indicates the number of project for which build acceleration was explicitly disabled.
+            /// </summary>
+            public const string AccelerationDisabledCount = "vs.projectsystem.managed.solutionbuildsummary.accelerationdisabledcount";
+
+            /// <summary>
+            ///     Indicates the number of project for which build acceleration was neither explicitly enabled or disabled.
+            /// </summary>
+            public const string AccelerationUnspecifiedCount = "vs.projectsystem.managed.solutionbuildsummary.accelerationunspecifiedcount";
+
+            /// <summary>
+            ///     Indicates the number of file timestamps inspected by the fast up-to-date checks, across all projects in the solution build.
+            /// </summary>
+            public const string FilesCheckedCount = "vs.projectsystem.managed.solutionbuildsummary.filescheckedcount";
+
+            /// <summary>
+            ///     Indicates the amount of time the fast up-to-date check spent waiting for project data to be available via asynchronous dataflow.
+            /// </summary>
+            public const string WaitTimeMillis = "vs.projectsystem.managed.solutionbuildsummary.waittimemillis";
+
+            /// <summary>
+            ///     Indicates the total amount of time spent within the fast up-to-date check across all projects in the solution build.
+            ///     Note that this is the sum of the time spent for each project, however those times may have overlapped during the
+            ///     solution build, and have executed concurrently.
+            /// </summary>
+            public const string CheckTimeMillis = "vs.projectsystem.managed.solutionbuildsummary.checktimemillis";
+
+            /// <summary>
+            ///     Indicates the fast up-to-date check log level selected for the solution build.
+            /// </summary>
+            public const string LogLevel = "vs.projectsystem.managed.solutionbuildsummary.loglevel";
+        }
+
         public static class TreeUpdated
         {
             /// <summary>
