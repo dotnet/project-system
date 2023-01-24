@@ -42,7 +42,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
         private bool _isCopyItemsComplete = true;
 
         private UpToDateCheckConfiguredInput? _state;
-        private ITimestampCache? _copyItemTimestamps;
+        private SolutionBuildContext? _currentSolutionBuildContext;
+        private bool _expectedUpToDate;
 
         public BuildUpToDateCheckTests(ITestOutputHelper output)
         {
@@ -99,13 +100,42 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             var copyItemAggregator = new Mock<ICopyItemAggregator>(MockBehavior.Strict);
             copyItemAggregator.Setup(o => o.TryGatherCopyItemsForProject(It.IsAny<string>(), It.IsAny<BuildUpToDateCheck.Log>())).Returns(() => (_copyItems, _isCopyItemsComplete));
 
-            _copyItemTimestamps = new ConcurrentTimestampCache(_fileSystem);
+            _currentSolutionBuildContext = new SolutionBuildContext(_fileSystem);
 
-            var solutionBuildContext = new Mock<ISolutionBuildContext>(MockBehavior.Strict);
-            solutionBuildContext.SetupGet(o => o.CopyItemTimestamps).Returns(() => _copyItemTimestamps);
+            var solutionBuildContextProvider = new Mock<ISolutionBuildContextProvider>(MockBehavior.Strict);
+            solutionBuildContextProvider.SetupGet(o => o.CurrentSolutionBuildContext).Returns(() => _currentSolutionBuildContext);
+
+            var solutionBuildEventListener = new Mock<ISolutionBuildEventListener>(MockBehavior.Strict);
+            solutionBuildEventListener.Setup(
+                o => o.NotifyProjectChecked(
+                    It.IsAny<bool>(),
+                    It.IsAny<bool?>(),
+                    It.IsAny<BuildAccelerationResult>(),
+                    It.IsAny<int>(),
+                    It.IsAny<int>(),
+                    It.IsAny<int>(),
+                    It.IsAny<TimeSpan>(),
+                    It.IsAny<TimeSpan>(),
+                    It.IsAny<LogLevel>()))
+                .Callback((
+                    bool upToDate,
+                    bool? buildAccelerationEnabled,
+                    BuildAccelerationResult result,
+                    int configurationCount,
+                    int copyCount,
+                    int fileCount,
+                    TimeSpan totalTime,
+                    TimeSpan waitTime,
+                    LogLevel logLevel) =>
+                    {
+                        Assert.Equal(_expectedUpToDate, upToDate);
+                        Assert.Equal(_logLevel, logLevel);
+                        Assert.Equal(_isBuildAccelerationEnabled, buildAccelerationEnabled);
+                    });
 
             _buildUpToDateCheck = new BuildUpToDateCheck(
-                solutionBuildContext.Object,
+                solutionBuildContextProvider.Object,
+                solutionBuildEventListener.Object,
                 inputDataSource.Object,
                 projectSystemOptions.Object,
                 configuredProject.Object,
@@ -2058,6 +2088,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
         private async Task AssertNotUpToDateAsync(string? expectedLogOutput = null, string? telemetryReason = null, BuildAction buildAction = BuildAction.Build, string ignoreKinds = "", string targetFramework = "")
         {
+            _expectedUpToDate = false;
+
             var writer = new AssertWriter(_output, expectedLogOutput ?? "");
 
             var isUpToDate = await _buildUpToDateCheck.IsUpToDateAsync(buildAction, writer, CreateGlobalProperties(ignoreKinds, targetFramework));
@@ -2086,6 +2118,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
         private async Task AssertUpToDateAsync(string expectedLogOutput, string ignoreKinds = "", string targetFramework = "")
         {
+            _expectedUpToDate = true;
+
             var writer = new AssertWriter(_output, expectedLogOutput);
 
             bool isUpToDate = await _buildUpToDateCheck.IsUpToDateAsync(BuildAction.Build, writer, CreateGlobalProperties(ignoreKinds, targetFramework));

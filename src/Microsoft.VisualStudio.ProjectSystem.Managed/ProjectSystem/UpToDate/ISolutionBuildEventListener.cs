@@ -13,7 +13,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate;
 /// We track solution builds to reset various state in the up-to-date check, such as timestamp caches.
 /// </para>
 /// </remarks>
-[ProjectSystemContract(ProjectSystemContractScope.Global, ProjectSystemContractProvider.Private, Cardinality = Composition.ImportCardinality.ExactlyOne)]
+[ProjectSystemContract(ProjectSystemContractScope.ProjectService, ProjectSystemContractProvider.Private, Cardinality = Composition.ImportCardinality.ExactlyOne)]
 internal interface ISolutionBuildEventListener
 {
     /// <summary>
@@ -22,7 +22,32 @@ internal interface ISolutionBuildEventListener
     /// <remarks>
     /// Must be called for both builds for rebuilds.
     /// </remarks>
-    void NotifySolutionBuildStarting(DateTime buildStartTimeUtc);
+    void NotifySolutionBuildStarting();
+
+    /// <summary>
+    /// Called when the up-to-date check for a project completes.
+    /// </summary>
+    /// <remarks>
+    /// Is only called for .NET Project System projects.
+    /// </remarks>
+    void NotifyProjectChecked(
+        bool upToDate,
+        bool? buildAccelerationEnabled,
+        BuildAccelerationResult result,
+        int configurationCount,
+        int copyCount,
+        int fileCount,
+        TimeSpan waitTime,
+        TimeSpan checkTime,
+        LogLevel logLevel);
+
+    /// <summary>
+    /// Called when a project build is starting, after <see cref="NotifyProjectChecked"/>.
+    /// </summary>
+    /// <remarks>
+    /// Must be called for both builds for rebuilds.
+    /// </remarks>
+    void NotifyProjectBuildStarting(bool isRebuild);
 
     /// <summary>
     /// Called when a solution build completes.
@@ -30,5 +55,5 @@ internal interface ISolutionBuildEventListener
     /// <remarks>
     /// Must be called for both builds for rebuilds.
     /// </remarks>
-    void NotifySolutionBuildCompleted();
+    void NotifySolutionBuildCompleted(bool cancelled);
 }
