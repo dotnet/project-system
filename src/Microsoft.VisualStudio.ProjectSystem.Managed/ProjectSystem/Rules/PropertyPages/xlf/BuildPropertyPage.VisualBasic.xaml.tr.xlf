@@ -389,7 +389,7 @@
       </trans-unit>
       <trans-unit id="StringProperty|OutputPath|DisplayName">
         <source>Build output path</source>
-        <target state="new">Build output path</target>
+        <target state="translated">Derleme çıkış yolu</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|PostBuildEvent|Description">
