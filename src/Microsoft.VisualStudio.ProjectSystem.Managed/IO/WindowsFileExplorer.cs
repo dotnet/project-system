@@ -25,7 +25,10 @@ namespace Microsoft.VisualStudio.IO
             if (_fileSystem.PathExists(path))
             {
                 // Tell Explorer to open the parent folder of the item, selecting the item
-                ShellExecute(string.Empty, "explorer.exe", parameters: $"/select,\"{path}\"");
+                ShellExecute(
+                    string.Empty,
+                    Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.System), "explorer.exe"),
+                    parameters: $"/select,\"{path}\"");
             }
             else
             {
