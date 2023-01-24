@@ -70,6 +70,15 @@ namespace Microsoft.VisualStudio {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Visual Studio accelerated {0} project(s), copying {1} file(s). See https://aka.ms/vs-build-acceleration..
+        /// </summary>
+        internal static string BuildAccelerationSummary_2 {
+            get {
+                return ResourceManager.GetString("BuildAccelerationSummary_2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Component (Windows Forms) Designer.
         /// </summary>
         internal static string ComponentEditor_DisplayName {
