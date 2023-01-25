@@ -36,7 +36,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
         internal static readonly StringComparer SetNameComparer = StringComparers.ItemNames;
         internal static readonly StringComparer KindNameComparer = StringComparers.ItemNames;
 
-        private readonly ISolutionBuildContext _context;
+        private readonly ISolutionBuildContextProvider _solutionBuildContextProvider;
+        private readonly ISolutionBuildEventListener _solutionBuildEventListener;
         private readonly IUpToDateCheckConfiguredInputDataSource _inputDataSource;
         private readonly IProjectSystemOptions _projectSystemOptions;
         private readonly ConfiguredProject _configuredProject;
@@ -60,7 +61,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
         [ImportingConstructor]
         public BuildUpToDateCheck(
-            ISolutionBuildContext context,
+            ISolutionBuildContextProvider solutionBuildContextProvider,
+            ISolutionBuildEventListener solutionBuildEventListener,
             IUpToDateCheckConfiguredInputDataSource inputDataSource,
             IProjectSystemOptions projectSystemOptions,
             ConfiguredProject configuredProject,
@@ -72,7 +74,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             IUpToDateCheckHost upToDateCheckHost,
             ICopyItemAggregator copyItemAggregator)
         {
-            _context = context;
+            _solutionBuildContextProvider = solutionBuildContextProvider;
+            _solutionBuildEventListener = solutionBuildEventListener;
             _inputDataSource = inputDataSource;
             _projectSystemOptions = projectSystemOptions;
             _configuredProject = configuredProject;
@@ -720,7 +723,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
         private bool CheckCopyToOutputDirectoryItems(Log log, UpToDateCheckImplicitConfiguredInput state, IEnumerable<(string Path, ImmutableArray<CopyItem> CopyItems)> copyItemsByProject, ConfiguredFileSystemOperationAggregator fileSystemAggregator, bool? isBuildAccelerationEnabled, CancellationToken token)
         {
-            ITimestampCache? timestampCache = _context.CopyItemTimestamps;
+            ITimestampCache? timestampCache = _solutionBuildContextProvider.CurrentSolutionBuildContext?.CopyItemTimestamps;
 
             if (timestampCache is null)
             {
@@ -865,7 +868,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 // The project build has completed. We must assume this project modified its outputs,
                 // so we remove the outputs that were likely modified from our cache. The next requests
                 // for these files will perform a fresh query.
-                _context.CopyItemTimestamps?.ClearTimestamps(_lastCopyTargetsFromThisProject);
+                _solutionBuildContextProvider.CurrentSolutionBuildContext?.CopyItemTimestamps?.ClearTimestamps(_lastCopyTargetsFromThisProject);
 
                 // We don't use this again after clearing the cache, so release it for GC.
                 _lastCopyTargetsFromThisProject = null;
@@ -970,6 +973,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 var logger = new Log(
                     logWriter,
                     requestedLogLevel,
+                    _solutionBuildEventListener,
                     sw,
                     waitTime,
                     timestampCache,
