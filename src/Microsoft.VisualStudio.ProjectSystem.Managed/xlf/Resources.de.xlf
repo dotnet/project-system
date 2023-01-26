@@ -24,7 +24,7 @@
       </trans-unit>
       <trans-unit id="FUTDC_AccelerationDataMissingForProject_1">
         <source>Build acceleration data is unavailable for project with target '{0}'. See https://aka.ms/vs-build-acceleration.</source>
-        <target state="needs-review-translation">Buildbeschleunigungsdaten sind für das Projekt mit dem Ziel "{0}" nicht verfügbar.</target>
+        <target state="new">Build acceleration data is unavailable for project with target '{0}'. See https://aka.ms/vs-build-acceleration.</target>
         <note>{0} is a file path.</note>
       </trans-unit>
       <trans-unit id="FUTDC_CheckingCopyItemsForProject_1">
@@ -34,7 +34,7 @@
       </trans-unit>
       <trans-unit id="FUTD_AccelerationCandidate">
         <source>This project appears to be a candidate for build acceleration. To opt in, set the 'AccelerateBuildsInVisualStudio' MSBuild property to 'true'. See https://aka.ms/vs-build-acceleration.</source>
-        <target state="needs-review-translation">Dieses Projekt scheint ein Kandidat für die Buildbeschleunigung zu sein. Um sich zu entscheiden, legen Sie die MSBuild-Eigenschaft "AccelerateBuildsInVisualStudio" auf "true" fest.</target>
+        <target state="new">This project appears to be a candidate for build acceleration. To opt in, set the 'AccelerateBuildsInVisualStudio' MSBuild property to 'true'. See https://aka.ms/vs-build-acceleration.</target>
         <note>Do not translate 'AccelerateBuildsInVisualStudio' or 'true'.</note>
       </trans-unit>
       <trans-unit id="FUTD_AccelerationDisabledCopyItemsIncomplete">
@@ -44,7 +44,7 @@
       </trans-unit>
       <trans-unit id="FUTD_AccelerationDisabledForProject">
         <source>Build acceleration is disabled for this project via the 'AccelerateBuildsInVisualStudio' MSBuild property. See https://aka.ms/vs-build-acceleration.</source>
-        <target state="needs-review-translation">Die Buildbeschleunigung ist für dieses Projekt über die MSBuild-Eigenschaft "AccelerateBuildsInVisualStudio" deaktiviert.</target>
+        <target state="new">Build acceleration is disabled for this project via the 'AccelerateBuildsInVisualStudio' MSBuild property. See https://aka.ms/vs-build-acceleration.</target>
         <note>Do not translate AccelerateBuildsInVisualStudio.</note>
       </trans-unit>
       <trans-unit id="FUTD_AddingInputReferenceCopyMarkers">
@@ -179,7 +179,7 @@
       </trans-unit>
       <trans-unit id="FUTD_CopyingFilesToAccelerateBuild_1">
         <source>Copying {0} files to accelerate build (https://aka.ms/vs-build-acceleration):</source>
-        <target state="needs-review-translation">{0} Dateien werden kopiert, um den Buildvorgang zu beschleunigen:</target>
+        <target state="new">Copying {0} files to accelerate build (https://aka.ms/vs-build-acceleration):</target>
         <note>{0} is an integer.</note>
       </trans-unit>
       <trans-unit id="FUTD_CriticalBuildTasksRunning">
