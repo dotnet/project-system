@@ -11,7 +11,7 @@ using Microsoft.VisualStudio.Text;
 using Microsoft.VisualStudio.Threading;
 using Path = System.IO.Path;
 using static System.Diagnostics.Debug;
-using System.Reflection;
+//using System.Reflection;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
 {
@@ -137,6 +137,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
             {
                 await _threadingService.SwitchToUIThread();
                 RunningDocumentTable runningDocumentTable = new(_serviceProvider);
+
+                //await ApplyRenamesAsync(CancellationToken.None, runningDocumentTable);
+
                 // Displays a dialog showing the progress of updating the namespaces in the files.
                 _waitService.Run(
                     title: string.Empty,
@@ -149,8 +152,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
             return;
 
             async Task ApplyRenamesAsync(IWaitContext context, RunningDocumentTable runningDocumentTable)
+            //async Task ApplyRenamesAsync(CancellationToken token, RunningDocumentTable runningDocumentTable)
             {
                 CancellationToken token = context.CancellationToken;
+
                 //await _threadingService.SwitchToUIThread(token);
                 //foreach (string destinationPath in _renameActionSets.Keys)
                 //{
@@ -168,7 +173,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
                 await statusService.GetStageStatus(CommonOperationProgressStageIds.Intellisense).WaitForCompletionAsync().WithCancellation(token);
                 // After waiting, a "new" published Solution is available.
                 Solution solution = _workspace.CurrentSolution;
-                _workspace.WorkspaceChanged += _workspace_WorkspaceChanged;
+                //_workspace.WorkspaceChanged += _workspace_WorkspaceChanged;
 
                 //await _threadingService.SwitchToUIThread(token);
                 //dynamic test = _workspace;
@@ -192,7 +197,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
                 //test.ProcessQueuedWorkOnUIThread();
 
                 //Thread.Sleep(2000);
-                _workspace.WorkspaceChanged -= _workspace_WorkspaceChanged;
+                //_workspace.WorkspaceChanged -= _workspace_WorkspaceChanged;
 
                 await _threadingService.SwitchToUIThread(token);
                 bool areChangesApplied = _roslynServices.ApplyChangesToSolution(_workspace, solution);
@@ -225,10 +230,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
             }
         }
 
-        private void _workspace_WorkspaceChanged(object sender, WorkspaceChangeEventArgs e)
-        {
-            var test = e.ProjectId;
-            Assert(false, "_workspace_WorkspaceChanged");
-        }
+        //private void _workspace_WorkspaceChanged(object sender, WorkspaceChangeEventArgs e)
+        //{
+        //    var test = e.ProjectId;
+        //    Assert(false, "_workspace_WorkspaceChanged");
+        //}
     }
 }
