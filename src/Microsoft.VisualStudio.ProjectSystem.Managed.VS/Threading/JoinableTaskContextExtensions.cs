@@ -13,7 +13,7 @@ namespace Microsoft.VisualStudio.Threading
         /// </summary>
         public static void VerifyIsOnMainThread(this JoinableTaskContext joinableTaskContext)
         {
-            Requires.NotNull(joinableTaskContext, nameof(joinableTaskContext));
+            Requires.NotNull(joinableTaskContext);
 
             if (!joinableTaskContext.IsOnMainThread)
             {

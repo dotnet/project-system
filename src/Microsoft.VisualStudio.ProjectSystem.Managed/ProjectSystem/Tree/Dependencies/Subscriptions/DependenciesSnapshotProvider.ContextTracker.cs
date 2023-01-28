@@ -23,10 +23,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Subscriptions
                 Lazy<AggregateCrossTargetProjectContextProvider> contextProvider,
                 IActiveProjectConfigurationRefreshService activeProjectConfigurationRefreshService)
             {
-                Requires.NotNull(targetFrameworkProvider, nameof(targetFrameworkProvider));
-                Requires.NotNull(commonServices, nameof(commonServices));
-                Requires.NotNull(contextProvider, nameof(contextProvider));
-                Requires.NotNull(activeProjectConfigurationRefreshService, nameof(activeProjectConfigurationRefreshService));
+                Requires.NotNull(targetFrameworkProvider);
+                Requires.NotNull(commonServices);
+                Requires.NotNull(contextProvider);
+                Requires.NotNull(activeProjectConfigurationRefreshService);
 
                 _targetFrameworkProvider = targetFrameworkProvider;
                 _commonServices = commonServices;

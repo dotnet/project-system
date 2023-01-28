@@ -713,7 +713,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         ''' <param name="filename">The name of the document</param>
         ''' <returns>The document's cookie, or 0 if it's not in the RDT</returns>
         Private Function GetDocCookie(filename As String) As UInteger
-            Requires.NotNull(filename, NameOf(filename))
+            Requires.NotNull(filename)
 
             Dim docCookie As UInteger = 0
             Dim rdt4 As IVsRunningDocumentTable4 = TryCast(_rdt, IVsRunningDocumentTable4)

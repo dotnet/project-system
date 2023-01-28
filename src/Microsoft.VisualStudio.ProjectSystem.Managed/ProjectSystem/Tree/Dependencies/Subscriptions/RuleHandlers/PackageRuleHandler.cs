@@ -99,9 +99,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Subscriptions.R
             DependenciesChangesBuilder changesBuilder,
             [NotNullWhen(returnValue: true)] out PackageDependencyModel? dependencyModel)
         {
-            Requires.NotNullOrEmpty(itemSpec, nameof(itemSpec));
-            Requires.NotNull(properties, nameof(properties));
-            Requires.NotNull(targetFramework, nameof(targetFramework));
+            Requires.NotNullOrEmpty(itemSpec);
+            Requires.NotNull(properties);
+            Requires.NotNull(targetFramework);
 
             string originalItemSpec;
 

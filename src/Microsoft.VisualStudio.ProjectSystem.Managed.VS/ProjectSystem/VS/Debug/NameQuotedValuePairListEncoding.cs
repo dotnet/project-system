@@ -11,7 +11,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
     {
         public IEnumerable<(string Name, string Value)> Parse(string value)
         {
-            Requires.NotNull(value, nameof(value));
+            Requires.NotNull(value);
             if (string.IsNullOrEmpty(value))
             {
                 yield break;

@@ -20,8 +20,8 @@ namespace Microsoft.VisualStudio
         /// </exception>
         public static bool IsLaterThan(this IComparable source, IComparable comparable)
         {
-            Requires.NotNull(source, nameof(source));
-            Requires.NotNull(comparable, nameof(comparable));
+            Requires.NotNull(source);
+            Requires.NotNull(comparable);
 
             return source.CompareTo(comparable) > 0;
         }
@@ -39,8 +39,8 @@ namespace Microsoft.VisualStudio
         /// </exception>
         public static bool IsLaterThanOrEqualTo(this IComparable source, IComparable comparable)
         {
-            Requires.NotNull(source, nameof(source));
-            Requires.NotNull(comparable, nameof(comparable));
+            Requires.NotNull(source);
+            Requires.NotNull(comparable);
 
             return source.CompareTo(comparable) >= 0;
         }
@@ -58,8 +58,8 @@ namespace Microsoft.VisualStudio
         /// </exception>
         public static bool IsEarlierThan(this IComparable source, IComparable comparable)
         {
-            Requires.NotNull(source, nameof(source));
-            Requires.NotNull(comparable, nameof(comparable));
+            Requires.NotNull(source);
+            Requires.NotNull(comparable);
 
             return source.CompareTo(comparable) < 0;
         }
@@ -77,8 +77,8 @@ namespace Microsoft.VisualStudio
         /// </exception>
         public static bool IsEarlierThanOrEqualTo(this IComparable source, IComparable comparable)
         {
-            Requires.NotNull(source, nameof(source));
-            Requires.NotNull(comparable, nameof(comparable));
+            Requires.NotNull(source);
+            Requires.NotNull(comparable);
 
             return source.CompareTo(comparable) <= 0;
         }

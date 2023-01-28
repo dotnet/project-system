@@ -21,8 +21,8 @@ namespace Microsoft.VisualStudio.ProjectSystem
         /// </summary>
         internal static bool EqualIgnoringTargetFramework(this ProjectConfiguration projectConfiguration1, ProjectConfiguration projectConfiguration2)
         {
-            Requires.NotNull(projectConfiguration1, nameof(projectConfiguration1));
-            Requires.NotNull(projectConfiguration2, nameof(projectConfiguration2));
+            Requires.NotNull(projectConfiguration1);
+            Requires.NotNull(projectConfiguration2);
 
             if (projectConfiguration1.Dimensions.Count != projectConfiguration2.Dimensions.Count)
             {

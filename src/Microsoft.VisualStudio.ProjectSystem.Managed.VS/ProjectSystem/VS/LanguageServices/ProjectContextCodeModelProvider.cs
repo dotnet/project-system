@@ -29,7 +29,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
 
         public CodeModel? GetCodeModel(Project project)
         {
-            Requires.NotNull(project, nameof(project));
+            Requires.NotNull(project);
 
             return _threadingService.ExecuteSynchronously(() =>
             {
@@ -39,7 +39,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
 
         public FileCodeModel? GetFileCodeModel(ProjectItem fileItem)
         {
-            Requires.NotNull(fileItem, nameof(fileItem));
+            Requires.NotNull(fileItem);
 
             return _threadingService.ExecuteSynchronously(() =>
             {

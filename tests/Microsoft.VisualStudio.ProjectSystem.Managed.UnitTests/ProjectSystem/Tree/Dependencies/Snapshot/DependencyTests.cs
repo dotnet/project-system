@@ -16,13 +16,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
                 new Dependency(null!);
             });
 
-            Assert.Throws<ArgumentNullException>("ProviderType", () =>
+            Assert.Throws<ArgumentNullException>("dependencyModel.ProviderType", () =>
             {
                 var dependencyModel = new TestDependencyModel { ProviderType = null!, Id = "Id" };
                 new Dependency(dependencyModel);
             });
 
-            Assert.Throws<ArgumentNullException>("Id", () =>
+            Assert.Throws<ArgumentNullException>("dependencyModel.Id", () =>
             {
                 var dependencyModel = new TestDependencyModel { ProviderType = "providerType", Id = null! };
                 new Dependency(dependencyModel);

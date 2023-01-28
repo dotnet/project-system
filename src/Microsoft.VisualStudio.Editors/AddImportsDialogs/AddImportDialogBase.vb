@@ -16,7 +16,7 @@ Namespace Microsoft.VisualStudio.Editors.AddImports
         Private ReadOnly _serviceProvider As IServiceProvider
 
         Public Sub New(serviceProvider As IServiceProvider)
-            Requires.NotNull(serviceProvider, NameOf(serviceProvider))
+            Requires.NotNull(serviceProvider)
             _serviceProvider = serviceProvider
         End Sub
 

@@ -88,7 +88,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
             Private ReadOnly _customToolValue As String
 
             Public Sub New(customToolValue As String)
-                Requires.NotNull(customToolValue, NameOf(customToolValue))
+                Requires.NotNull(customToolValue)
                 _customToolValue = customToolValue
             End Sub
 
@@ -108,7 +108,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
             Public Sub New(displayName As String, customToolValue As String)
                 MyBase.New(customToolValue)
 
-                Requires.NotNull(displayName, NameOf(displayName))
+                Requires.NotNull(displayName)
                 _displayName = displayName
             End Sub
 
@@ -128,7 +128,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
             Public Sub New(accessibility As AccessModifierType, serviceProvider As IServiceProvider, customToolValue As String)
                 MyBase.New(customToolValue)
 
-                Requires.NotNull(serviceProvider, NameOf(serviceProvider))
+                Requires.NotNull(serviceProvider)
 
                 _accessibility = accessibility
                 _serviceProvider = serviceProvider
@@ -294,9 +294,9 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         '''   default for VB (My.Resources).
         ''' </param>
         Public Sub New(rootDesigner As BaseRootDesigner, serviceProvider As IServiceProvider, projectItem As EnvDTE.ProjectItem, namespaceToOverrideIfCustomToolIsEmpty As String)
-            Requires.NotNull(rootDesigner, NameOf(rootDesigner))
-            Requires.NotNull(projectItem, NameOf(projectItem))
-            Requires.NotNull(serviceProvider, NameOf(serviceProvider))
+            Requires.NotNull(rootDesigner)
+            Requires.NotNull(projectItem)
+            Requires.NotNull(serviceProvider)
 
             _rootDesigner = rootDesigner
             _resxFileProjectItem = projectItem

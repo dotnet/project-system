@@ -21,7 +21,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
         /// <param name="dimensionDefaultValue">The default value of the dimension, for example "AnyCPU".</param>
         protected BaseProjectConfigurationDimensionProvider(IProjectAccessor projectAccessor, string dimensionName, string propertyName, string? dimensionDefaultValue = null)
         {
-            Requires.NotNull(projectAccessor, nameof(projectAccessor));
+            Requires.NotNull(projectAccessor);
 
             ProjectAccessor = projectAccessor;
             DimensionName = dimensionName;
@@ -44,7 +44,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
         /// </remarks>
         private async Task<ImmutableArray<string>> GetOrderedPropertyValuesAsync(UnconfiguredProject project)
         {
-            Requires.NotNull(project, nameof(project));
+            Requires.NotNull(project);
 
             ConfiguredProject? configuredProject = await project.GetSuggestedConfiguredProjectAsync();
 
@@ -61,7 +61,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
         /// <returns>Collection of values for the dimension.</returns>
         private ImmutableArray<string> GetOrderedPropertyValues(Project project)
         {
-            Requires.NotNull(project, nameof(project));
+            Requires.NotNull(project);
 
             string? propertyValue = project.GetProperty(PropertyName)?.EvaluatedValue;
 
@@ -87,7 +87,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
         /// </remarks>
         public virtual async Task<IEnumerable<KeyValuePair<string, string>>> GetDefaultValuesForDimensionsAsync(UnconfiguredProject project)
         {
-            Requires.NotNull(project, nameof(project));
+            Requires.NotNull(project);
 
             ImmutableArray<string> values = await GetOrderedPropertyValuesAsync(project);
             if (values.IsEmpty)
@@ -113,7 +113,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
         /// </remarks>
         public virtual async Task<IEnumerable<KeyValuePair<string, IEnumerable<string>>>> GetProjectConfigurationDimensionsAsync(UnconfiguredProject project)
         {
-            Requires.NotNull(project, nameof(project));
+            Requires.NotNull(project);
 
             ImmutableArray<string> values = await GetOrderedPropertyValuesAsync(project);
             if (values.IsEmpty)
@@ -203,7 +203,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
 
         public virtual Task<IEnumerable<KeyValuePair<string, IEnumerable<string>>>> GetProjectConfigurationDimensionsAsync(Project project)
         {
-            Requires.NotNull(project, nameof(project));
+            Requires.NotNull(project);
 
             ImmutableArray<string> values = GetOrderedPropertyValues(project);
             if (values.IsEmpty)

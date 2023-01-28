@@ -76,7 +76,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
         /// </exception>
         protected AbstractEvaluationCommandLineHandler(UnconfiguredProject project)
         {
-            Requires.NotNull(project, nameof(project));
+            Requires.NotNull(project);
 
             _project = project;
         }

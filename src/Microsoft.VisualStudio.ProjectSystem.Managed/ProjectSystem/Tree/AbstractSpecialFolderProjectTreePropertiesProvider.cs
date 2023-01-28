@@ -40,8 +40,8 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
         public void CalculatePropertyValues(IProjectTreeCustomizablePropertyContext propertyContext, IProjectTreeCustomizablePropertyValues propertyValues)
         {
-            Requires.NotNull(propertyContext, nameof(propertyContext));
-            Requires.NotNull(propertyValues, nameof(propertyValues));
+            Requires.NotNull(propertyContext);
+            Requires.NotNull(propertyValues);
 
             if (!IsSupported)
                 return;

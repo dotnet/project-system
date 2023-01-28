@@ -28,7 +28,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
         Public Function GetSupportedTargetFrameworks(framework As FrameworkName) As IReadOnlyList(Of TargetFrameworkMoniker) Implements ISupportedTargetFrameworksProvider.GetSupportedTargetFrameworks
 
-            Requires.NotNull(framework, NameOf(framework))
+            Requires.NotNull(framework)
 
             Dim frameworks = GetSupportedFrameworkNames(framework)
 

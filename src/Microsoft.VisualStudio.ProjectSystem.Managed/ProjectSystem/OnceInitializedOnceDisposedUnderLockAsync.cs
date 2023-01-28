@@ -68,7 +68,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
         /// </exception>
         protected Task<T> ExecuteUnderLockAsync<T>(Func<CancellationToken, Task<T>> action, CancellationToken cancellationToken = default)
         {
-            Requires.NotNull(action, nameof(action));
+            Requires.NotNull(action);
 
             return ExecuteUnderLockCoreAsync(action, cancellationToken);
         }
@@ -101,14 +101,14 @@ namespace Microsoft.VisualStudio.ProjectSystem
         /// </exception>
         protected Task ExecuteUnderLockAsync(Func<CancellationToken, Task> action, CancellationToken cancellationToken = default)
         {
-            Requires.NotNull(action, nameof(action));
+            Requires.NotNull(action);
 
             return ExecuteUnderLockCoreAsync(action, cancellationToken);
         }
 
         private async Task<T> ExecuteUnderLockCoreAsync<T>(Func<CancellationToken, Task<T>> action, CancellationToken cancellationToken = default)
         {
-            Requires.NotNull(action, nameof(action));
+            Requires.NotNull(action);
 
             using var source = CancellationTokenExtensions.CombineWith(cancellationToken, DisposalToken);
             CancellationToken jointCancellationToken = source.Token;
@@ -131,7 +131,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
         private async Task ExecuteUnderLockCoreAsync(Func<CancellationToken, Task> action, CancellationToken cancellationToken = default)
         {
-            Requires.NotNull(action, nameof(action));
+            Requires.NotNull(action);
 
             using var source = CancellationTokenExtensions.CombineWith(cancellationToken, DisposalToken);
             CancellationToken jointCancellationToken = source.Token;

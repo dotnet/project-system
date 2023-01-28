@@ -17,10 +17,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.Ordering
         /// </summary>
         public static Task MoveAsync(ConfiguredProject configuredProject, IProjectAccessor accessor, ImmutableHashSet<string> previousIncludes, IProjectTree target, OrderingMoveAction action)
         {
-            Requires.NotNull(configuredProject, nameof(configuredProject));
-            Requires.NotNull(accessor, nameof(accessor));
-            Requires.NotNull(previousIncludes, nameof(previousIncludes));
-            Requires.NotNull(target, nameof(target));
+            Requires.NotNull(configuredProject);
+            Requires.NotNull(accessor);
+            Requires.NotNull(previousIncludes);
+            Requires.NotNull(target);
 
             return accessor.OpenProjectForWriteAsync(configuredProject, project =>
             {
@@ -44,8 +44,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.Ordering
         /// </summary>
         public static Task<ImmutableHashSet<string>> GetAllEvaluatedIncludesAsync(ConfiguredProject configuredProject, IProjectAccessor accessor)
         {
-            Requires.NotNull(configuredProject, nameof(configuredProject));
-            Requires.NotNull(accessor, nameof(accessor));
+            Requires.NotNull(configuredProject);
+            Requires.NotNull(accessor);
 
             return accessor.OpenProjectForReadAsync(configuredProject, project =>
                 project.AllEvaluatedItems.Select(x => x.EvaluatedInclude).ToImmutableHashSet(StringComparers.ItemNames));
@@ -77,7 +77,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.Ordering
         /// </summary>
         public static bool CanMoveUp(IProjectTree projectTree)
         {
-            Requires.NotNull(projectTree, nameof(projectTree));
+            Requires.NotNull(projectTree);
 
             return GetSiblingByMoveAction(projectTree, MoveAction.Above) is not null;
         }
@@ -87,8 +87,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.Ordering
         /// </summary>
         public static bool TryMoveUp(Project project, IProjectTree projectTree)
         {
-            Requires.NotNull(project, nameof(project));
-            Requires.NotNull(projectTree, nameof(projectTree));
+            Requires.NotNull(project);
+            Requires.NotNull(projectTree);
 
             return TryMove(project, projectTree, MoveAction.Above);
         }
@@ -98,7 +98,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.Ordering
         /// </summary>
         public static bool CanMoveDown(IProjectTree projectTree)
         {
-            Requires.NotNull(projectTree, nameof(projectTree));
+            Requires.NotNull(projectTree);
 
             return GetSiblingByMoveAction(projectTree, MoveAction.Below) is not null;
         }
@@ -108,8 +108,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.Ordering
         /// </summary>
         public static bool TryMoveDown(Project project, IProjectTree projectTree)
         {
-            Requires.NotNull(project, nameof(project));
-            Requires.NotNull(projectTree, nameof(projectTree));
+            Requires.NotNull(project);
+            Requires.NotNull(projectTree);
 
             return TryMove(project, projectTree, MoveAction.Below);
         }
@@ -119,8 +119,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.Ordering
         /// </summary>
         public static bool TryMoveElementsAbove(Project project, ImmutableArray<ProjectItemElement> elements, IProjectTree target)
         {
-            Requires.NotNull(project, nameof(project));
-            Requires.NotNull(target, nameof(target));
+            Requires.NotNull(project);
+            Requires.NotNull(target);
 
             ProjectItemElement? referenceElement = TryGetReferenceElement(project, target, ImmutableArray<string>.Empty, MoveAction.Above);
             if (referenceElement is null)
@@ -136,8 +136,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.Ordering
         /// </summary>
         public static bool TryMoveElementsBelow(Project project, ImmutableArray<ProjectItemElement> elements, IProjectTree target)
         {
-            Requires.NotNull(project, nameof(project));
-            Requires.NotNull(target, nameof(target));
+            Requires.NotNull(project);
+            Requires.NotNull(target);
 
             ProjectItemElement? referenceElement = TryGetReferenceElement(project, target, ImmutableArray<string>.Empty, MoveAction.Below);
             if (referenceElement is null)
@@ -153,8 +153,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.Ordering
         /// </summary>
         public static bool TryMoveElementsToTop(Project project, ImmutableArray<ProjectItemElement> elements, IProjectTree target)
         {
-            Requires.NotNull(project, nameof(project));
-            Requires.NotNull(target, nameof(target));
+            Requires.NotNull(project);
+            Requires.NotNull(target);
 
             IProjectTree? newTarget = target;
 
@@ -181,8 +181,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.Ordering
         /// </summary>
         public static ImmutableArray<ProjectItemElement> GetItemElements(Project project, IProjectTree projectTree, ImmutableArray<string> excludeIncludes)
         {
-            Requires.NotNull(project, nameof(project));
-            Requires.NotNull(projectTree, nameof(projectTree));
+            Requires.NotNull(project);
+            Requires.NotNull(projectTree);
 
             var includes = GetEvaluatedIncludes(projectTree).Except(excludeIncludes, StringComparers.ItemNames).ToImmutableArray();
             return GetItemElements(project, includes);
@@ -364,7 +364,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.Ordering
         /// <returns>true or false; 'true' if all elements were successfully moved. 'false' if just one element was not moved successfully.</returns>
         private static bool TryMoveElements(ImmutableArray<ProjectItemElement> elements, ProjectItemElement referenceElement, MoveAction moveAction)
         {
-            Requires.NotNull(referenceElement, nameof(referenceElement));
+            Requires.NotNull(referenceElement);
 
             ProjectElementContainer parent = referenceElement.Parent;
             if (parent is null || !elements.Any())

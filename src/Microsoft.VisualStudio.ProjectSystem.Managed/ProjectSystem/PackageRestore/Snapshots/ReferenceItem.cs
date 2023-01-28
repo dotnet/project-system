@@ -15,7 +15,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.PackageRestore
 
         public ReferenceItem(string name, IVsReferenceProperties properties)
         {
-            Requires.NotNullOrEmpty(name, nameof(name));
+            Requires.NotNullOrEmpty(name);
 
             Name = name;
             Properties = properties;

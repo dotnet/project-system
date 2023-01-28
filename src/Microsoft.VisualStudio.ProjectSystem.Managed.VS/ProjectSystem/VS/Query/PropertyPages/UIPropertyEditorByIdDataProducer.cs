@@ -16,8 +16,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
 
         public UIPropertyEditorByIdDataProducer(IUIPropertyEditorPropertiesAvailableStatus properties, IProjectService2 projectService)
         {
-            Requires.NotNull(properties, nameof(properties));
-            Requires.NotNull(projectService, nameof(projectService));
+            Requires.NotNull(properties);
+            Requires.NotNull(projectService);
             _properties = properties;
             _projectService = projectService;
         }

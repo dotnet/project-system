@@ -17,7 +17,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
 
         public CategoryFromRuleDataProducer(ICategoryPropertiesAvailableStatus properties)
         {
-            Requires.NotNull(properties, nameof(properties));
+            Requires.NotNull(properties);
             _properties = properties;
         }
 

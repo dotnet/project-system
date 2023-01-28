@@ -18,7 +18,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
         public TargetFramework(string moniker)
         {
-            Requires.NotNull(moniker, nameof(moniker));
+            Requires.NotNull(moniker);
 
             TargetFrameworkAlias = moniker;
         }

@@ -25,7 +25,7 @@ namespace Microsoft.VisualStudio.Text
 
         public void Append(string value)
         {
-            Requires.NotNull(value, nameof(value));
+            Requires.NotNull(value);
 
             int charIndex = 0;
             while (charIndex < value.Length)

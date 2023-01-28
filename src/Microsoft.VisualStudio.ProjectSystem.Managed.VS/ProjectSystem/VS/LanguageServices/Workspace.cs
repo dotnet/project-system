@@ -543,7 +543,7 @@ internal sealed class Workspace : OnceInitializedOnceDisposedUnderLockAsync, IWo
 
     public async Task WriteAsync(Func<IWorkspace, Task> action, CancellationToken cancellationToken)
     {
-        Requires.NotNull(action, nameof(action));
+        Requires.NotNull(action);
         Verify.NotDisposed(this);
 
         cancellationToken = CancellationTokenExtensions.CombineWith(_unloadCancellationToken, cancellationToken).Token;
@@ -555,7 +555,7 @@ internal sealed class Workspace : OnceInitializedOnceDisposedUnderLockAsync, IWo
 
     public async Task<T> WriteAsync<T>(Func<IWorkspace, Task<T>> action, CancellationToken cancellationToken)
     {
-        Requires.NotNull(action, nameof(action));
+        Requires.NotNull(action);
         Verify.NotDisposed(this);
 
         cancellationToken = CancellationTokenExtensions.CombineWith(_unloadCancellationToken, cancellationToken).Token;

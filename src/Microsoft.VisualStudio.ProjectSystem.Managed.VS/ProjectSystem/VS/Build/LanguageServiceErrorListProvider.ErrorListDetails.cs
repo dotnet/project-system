@@ -101,8 +101,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build
             /// <returns>An absolute path, or the empty string if <paramref name="path"/> invalid.</returns>
             private static string TryMakeRooted(string basePath, string path)
             {
-                Requires.NotNullOrEmpty(basePath, nameof(basePath));
-                Requires.NotNullOrEmpty(path, nameof(path));
+                Requires.NotNullOrEmpty(basePath);
+                Requires.NotNullOrEmpty(path);
 
                 try
                 {

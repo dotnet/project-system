@@ -11,7 +11,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
 
         protected AbstractOpenProjectDesignerCommand(IProjectDesignerService designerService)
         {
-            Requires.NotNull(designerService, nameof(designerService));
+            Requires.NotNull(designerService);
 
             _designerService = designerService;
         }

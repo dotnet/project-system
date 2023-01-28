@@ -33,7 +33,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Commands
 
         public bool TryGetContextMenu(IProjectTree projectItem, out Guid menuCommandGuid, out int menuCommandId)
         {
-            Requires.NotNull(projectItem, nameof(projectItem));
+            Requires.NotNull(projectItem);
 
             if (projectItem.Flags.Contains(DependencyTreeFlags.DependenciesRootNode))
             {
@@ -116,7 +116,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Commands
 
         public bool TryGetMixedItemsContextMenu(IEnumerable<IProjectTree> projectItems, out Guid menuCommandGuid, out int menuCommandId)
         {
-            Requires.NotNull(projectItems, nameof(projectItems));
+            Requires.NotNull(projectItems);
 
             menuCommandGuid = default;
             menuCommandId = default;

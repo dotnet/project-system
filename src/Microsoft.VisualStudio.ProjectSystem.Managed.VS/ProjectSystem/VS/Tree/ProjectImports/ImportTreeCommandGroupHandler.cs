@@ -29,11 +29,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.ProjectImports
             IVsUIService<IVsExternalFilesManager> externalFilesManager,
             IVsUIService<IOleServiceProvider> oleServiceProvider)
         {
-            Requires.NotNull(serviceProvider, nameof(serviceProvider));
-            Requires.NotNull(configuredProject, nameof(configuredProject));
-            Requires.NotNull(uiShellOpenDocument, nameof(uiShellOpenDocument));
-            Requires.NotNull(externalFilesManager, nameof(externalFilesManager));
-            Requires.NotNull(oleServiceProvider, nameof(oleServiceProvider));
+            Requires.NotNull(serviceProvider);
+            Requires.NotNull(configuredProject);
+            Requires.NotNull(uiShellOpenDocument);
+            Requires.NotNull(externalFilesManager);
+            Requires.NotNull(oleServiceProvider);
 
             _serviceProvider = serviceProvider;
             _configuredProject = configuredProject;

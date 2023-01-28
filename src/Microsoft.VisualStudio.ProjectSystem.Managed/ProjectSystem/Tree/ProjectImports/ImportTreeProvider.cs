@@ -346,7 +346,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.ProjectImports
 
         protected override ConfiguredProjectExports GetActiveConfiguredProjectExports(ConfiguredProject newActiveConfiguredProject)
         {
-            Requires.NotNull(newActiveConfiguredProject, nameof(newActiveConfiguredProject));
+            Requires.NotNull(newActiveConfiguredProject);
 
             return GetActiveConfiguredProjectExports<MyConfiguredProjectExports>(newActiveConfiguredProject);
         }

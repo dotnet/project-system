@@ -19,8 +19,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.ConnectionPoint
 
         internal ConnectionPoint(ConnectionPointContainer container, IEventSource<TSinkType> source)
         {
-            Requires.NotNull(container, nameof(container));
-            Requires.NotNull(source, nameof(source));
+            Requires.NotNull(container);
+            Requires.NotNull(source);
 
             _container = container;
             _source = source;
