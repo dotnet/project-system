@@ -11,7 +11,6 @@ using Microsoft.VisualStudio.Text;
 using Microsoft.VisualStudio.Threading;
 using Path = System.IO.Path;
 using static System.Diagnostics.Debug;
-//using System.Reflection;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
 {
@@ -29,7 +28,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
         private readonly IVsService<SVsOperationProgress, IVsOperationProgressStatusService> _operationProgressService;
         private readonly IWaitIndicator _waitService;
         private readonly IRoslynServices _roslynServices;
-        private readonly IServiceProvider _serviceProvider;
         private readonly IVsService<SVsSettingsPersistenceManager, ISettingsManager> _settingsManagerService;
 
         private readonly Dictionary<string, Renamer.RenameDocumentActionSet> _renameActionSets = new();
@@ -45,9 +43,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
             IVsService<SVsOperationProgress, IVsOperationProgressStatusService> operationProgressService,
             IWaitIndicator waitService,
             IRoslynServices roslynServices,
-#pragma warning disable RS0030 // Do not used banned APIs
-            [Import(typeof(SVsServiceProvider))] IServiceProvider serviceProvider,
-#pragma warning restore RS0030 // Do not used banned APIs
             IVsService<SVsSettingsPersistenceManager, ISettingsManager> settingsManagerService)
         {
             _unconfiguredProject = unconfiguredProject;
@@ -57,7 +52,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
             _operationProgressService = operationProgressService;
             _waitService = waitService;
             _roslynServices = roslynServices;
-            _serviceProvider = serviceProvider;
             _settingsManagerService = settingsManagerService;
         }
 
@@ -135,37 +129,22 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
 
             _ = _threadingService.JoinableTaskFactory.RunAsync(async () =>
             {
+                // The wait service requires the main thread to run.
                 await _threadingService.SwitchToUIThread();
-                RunningDocumentTable runningDocumentTable = new(_serviceProvider);
-
-                //await ApplyRenamesAsync(CancellationToken.None, runningDocumentTable);
-
                 // Displays a dialog showing the progress of updating the namespaces in the files.
                 _waitService.Run(
                     title: string.Empty,
                     message: _renameMessage!,
                     allowCancel: true,
-                    asyncMethod: context => ApplyRenamesAsync(context, runningDocumentTable),
+                    asyncMethod: ApplyRenamesAsync,
                     totalSteps: _renameActionSets.Count);
             });
 
             return;
 
-            async Task ApplyRenamesAsync(IWaitContext context, RunningDocumentTable runningDocumentTable)
-            //async Task ApplyRenamesAsync(CancellationToken token, RunningDocumentTable runningDocumentTable)
+            async Task ApplyRenamesAsync(IWaitContext context)
             {
                 CancellationToken token = context.CancellationToken;
-
-                //await _threadingService.SwitchToUIThread(token);
-                //foreach (string destinationPath in _renameActionSets.Keys)
-                //{
-                //    // Save the current file to disk if it contains unsaved changes.
-                //    // This guarantees that Roslyn will update the correct document contents when the rename actions are applied to the solution.
-                //    // This must be done prior to acquiring the latest solution.
-                //    // For more details, see: https://devdiv.visualstudio.com/DevDiv/_workitems/edit/1595580
-                //    runningDocumentTable.SaveFileIfDirty(destinationPath);
-                //}
-
                 await TaskScheduler.Default;
                 // WORKAROUND: We don't yet have a way to wait for the changes to propagate to Roslyn, tracked by https://github.com/dotnet/project-system/issues/3425
                 // Instead, we wait for the IntelliSense stage to finish for the entire solution.
@@ -173,14 +152,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
                 await statusService.GetStageStatus(CommonOperationProgressStageIds.Intellisense).WaitForCompletionAsync().WithCancellation(token);
                 // After waiting, a "new" published Solution is available.
                 Solution solution = _workspace.CurrentSolution;
-                //_workspace.WorkspaceChanged += _workspace_WorkspaceChanged;
-
-                //await _threadingService.SwitchToUIThread(token);
-                //dynamic test = _workspace;
-                //test.ProcessQueuedWorkOnUIThread();
-
-                //await _threadingService.SwitchToUIThread(token);
-                //typeof(Workspace).GetMethod("ProcessQueuedWorkOnUIThread").Invoke(_workspace, Array.Empty<object>());
 
                 for (int i = 0; i < _renameActionSets.Count; i++)
                 {
@@ -191,13 +162,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
                     Renamer.RenameDocumentActionSet renameActionSet = _renameActionSets[destinationPath];
                     solution = await renameActionSet.UpdateSolutionAsync(solution, token);
                 }
-
-                //await _threadingService.SwitchToUIThread(token);
-                //dynamic test = _workspace;
-                //test.ProcessQueuedWorkOnUIThread();
-
-                //Thread.Sleep(2000);
-                //_workspace.WorkspaceChanged -= _workspace_WorkspaceChanged;
 
                 await _threadingService.SwitchToUIThread(token);
                 bool areChangesApplied = _roslynServices.ApplyChangesToSolution(_workspace, solution);
@@ -229,11 +193,5 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
                 return isConfirmed;
             }
         }
-
-        //private void _workspace_WorkspaceChanged(object sender, WorkspaceChangeEventArgs e)
-        //{
-        //    var test = e.ProjectId;
-        //    Assert(false, "_workspace_WorkspaceChanged");
-        //}
     }
 }
