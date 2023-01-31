@@ -115,23 +115,23 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         Private Function OnAfterRenameFiles(cProjects As Integer, cFiles As Integer, rgpProjects() As IVsProject, rgFirstIndices() As Integer, rgszMkOldNames() As String, rgszMkNewNames() As String, rgFlags() As VSRENAMEFILEFLAGS) As Integer Implements IVsTrackProjectDocumentsEvents2.OnAfterRenameFiles
             ' Validate arguments....
             Debug.Assert(rgpProjects IsNot Nothing AndAlso rgpProjects.Length = cProjects, "null rgpProjects or bad-length array")
-            Requires.NotNull(rgpProjects, NameOf(rgpProjects))
+            Requires.NotNull(rgpProjects)
             If rgpProjects.Length <> cProjects Then Throw Common.CreateArgumentException(NameOf(rgpProjects))
 
             Debug.Assert(rgFirstIndices IsNot Nothing AndAlso rgFirstIndices.Length = cProjects, "null rgFirstIndices or bad-length array")
-            Requires.NotNull(rgFirstIndices, NameOf(rgFirstIndices))
+            Requires.NotNull(rgFirstIndices)
             If rgFirstIndices.Length <> cProjects Then Throw Common.CreateArgumentException(NameOf(rgFirstIndices))
 
             Debug.Assert(rgszMkOldNames IsNot Nothing AndAlso rgszMkOldNames.Length = cFiles, "null rgszMkOldNames or bad-length array")
-            Requires.NotNull(rgszMkOldNames, NameOf(rgszMkOldNames))
+            Requires.NotNull(rgszMkOldNames)
             If rgszMkOldNames.Length <> cFiles Then Throw Common.CreateArgumentException(NameOf(rgszMkOldNames))
 
             Debug.Assert(rgszMkNewNames IsNot Nothing AndAlso rgszMkNewNames.Length = cFiles, "null rgszMkNewNames or bad-length array")
-            Requires.NotNull(rgszMkNewNames, NameOf(rgszMkNewNames))
+            Requires.NotNull(rgszMkNewNames)
             If rgszMkNewNames.Length <> cFiles Then Throw Common.CreateArgumentException(NameOf(rgszMkNewNames))
 
             Debug.Assert(rgFlags IsNot Nothing AndAlso rgFlags.Length = cFiles, "null rgFlags or bad-length array")
-            Requires.NotNull(rgFlags, NameOf(rgFlags))
+            Requires.NotNull(rgFlags)
             If rgFlags.Length <> cFiles Then Throw Common.CreateArgumentException(NameOf(rgFlags))
 
             For i As Integer = 0 To cFiles - 1

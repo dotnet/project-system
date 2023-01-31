@@ -13,8 +13,8 @@ namespace Microsoft.VisualStudio.Shell.Interop
         /// </summary>
         public static HierarchyId GetHierarchyId(this IVsProject project, string documentMoniker)
         {
-            Requires.NotNull(project, nameof(project));
-            Requires.NotNullOrEmpty(documentMoniker, nameof(documentMoniker));
+            Requires.NotNull(project);
+            Requires.NotNullOrEmpty(documentMoniker);
 
             var priority = new VSDOCUMENTPRIORITY[1];
             Verify.HResult(project.IsDocumentInProject(documentMoniker, out int isFound, priority, out uint itemId));
@@ -39,7 +39,7 @@ namespace Microsoft.VisualStudio.Shell.Interop
         /// </returns>
         public static IVsWindowFrame? OpenItemWithSpecific(this IVsProject4 project, HierarchyId id, Guid editorType)
         {
-            Requires.NotNull(project, nameof(project));
+            Requires.NotNull(project);
 
             Verify.HResult(project.OpenItemWithSpecific(id, 0, ref editorType, "", VSConstants.LOGVIEWID_Primary, (IntPtr)(-1), out IVsWindowFrame frame));
 

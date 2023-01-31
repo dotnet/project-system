@@ -641,7 +641,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' </summary>
         ''' <param name="AllInitialValues"></param>
         Public Sub SetInitialValues(AllInitialValues As Object())
-            Requires.NotNull(AllInitialValues, NameOf(AllInitialValues))
+            Requires.NotNull(AllInitialValues)
 
             If AllInitialValues.Length = 0 Then
                 Throw Common.CreateArgumentException(NameOf(AllInitialValues))
@@ -1320,7 +1320,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         '''   PropertyControlData.MissingProperty is returned.
         ''' </param>
         Public Shared Sub GetAllPropertyValuesNative(Descriptor As PropertyDescriptor, Extenders As Object(), ByRef Values As Object(), ByRef ValueOrIndeterminate As Object)
-            Requires.NotNull(Extenders, NameOf(Extenders))
+            Requires.NotNull(Extenders)
 
             Dim ReturnValues As Object() = New Object(Extenders.Length - 1) {}
 
@@ -1353,7 +1353,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <param name="Values"></param>
         Public Shared Function GetValueOrIndeterminateFromArray(Values() As Object) As Object
             'Determine if all the values are the same or not
-            Requires.NotNull(Values, NameOf(Values))
+            Requires.NotNull(Values)
 
             If Values.Length = 0 Then
                 Debug.Fail("Bad Values array")

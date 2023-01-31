@@ -9,7 +9,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.PackageRestore
     {
         public static byte[] CalculateHash(ProjectRestoreInfo restoreInfo)
         {
-            Requires.NotNull(restoreInfo, nameof(restoreInfo));
+            Requires.NotNull(restoreInfo);
 
             using var hasher = new IncrementalHasher();
 

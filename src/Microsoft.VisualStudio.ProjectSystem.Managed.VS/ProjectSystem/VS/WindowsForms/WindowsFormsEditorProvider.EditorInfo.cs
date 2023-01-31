@@ -8,8 +8,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.WindowsForms
         {
             public EditorInfo(Guid editor, string displayName, bool isDefaultEditor)
             {
-                Requires.NotEmpty(editor, nameof(editor));
-                Requires.NotNullOrEmpty(displayName, nameof(displayName));
+                Requires.NotEmpty(editor);
+                Requires.NotNullOrEmpty(displayName);
 
                 EditorFactory = editor;
                 DisplayName = displayName;

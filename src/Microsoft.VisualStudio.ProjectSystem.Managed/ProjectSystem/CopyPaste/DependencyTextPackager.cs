@@ -72,7 +72,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.CopyPaste
 
         private static bool IsValidSetOfNodes(IEnumerable<IProjectTree> treeNodes)
         {
-            Requires.NotNull(treeNodes, nameof(treeNodes));
+            Requires.NotNull(treeNodes);
 
             return treeNodes.All(node => node.Flags.Contains(DependencyTreeFlags.Dependency | DependencyTreeFlags.SupportsBrowse));
         }

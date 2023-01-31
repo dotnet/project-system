@@ -18,7 +18,7 @@ namespace Microsoft.VisualStudio.IO
 
         public void OpenContainingFolder(string path)
         {
-            Requires.NotNullOrEmpty(path, nameof(path));
+            Requires.NotNullOrEmpty(path);
 
             // When 'path' doesn't exist, Explorer just opens the default
             // "Quick Access" page, so try to something better than that.
@@ -42,7 +42,7 @@ namespace Microsoft.VisualStudio.IO
 
         public void OpenFolder(string path)
         {
-            Requires.NotNullOrEmpty(path, nameof(path));
+            Requires.NotNullOrEmpty(path);
 
             // Tell Explorer just open the contents of the folder, selecting nothing
             ShellExecute("explore", path);

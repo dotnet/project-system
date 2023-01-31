@@ -22,7 +22,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
         Public Function GetSupportedTargetFrameworks(framework As FrameworkName) As IReadOnlyList(Of TargetFrameworkMoniker) Implements ISupportedTargetFrameworksProvider.GetSupportedTargetFrameworks
 
-            Requires.NotNull(framework, NameOf(framework))
+            Requires.NotNull(framework)
 
             ' CPS-based projects implement a enum property that ends up delegating onto
             ' SupportedTargetFrameworkAliasEnumProvider, which ends up reading from evaluation

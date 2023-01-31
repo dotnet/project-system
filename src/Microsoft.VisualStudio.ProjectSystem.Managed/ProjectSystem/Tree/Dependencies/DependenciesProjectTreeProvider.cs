@@ -424,7 +424,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies
         /// </summary>
         protected override ConfiguredProjectExports GetActiveConfiguredProjectExports(ConfiguredProject newActiveConfiguredProject)
         {
-            Requires.NotNull(newActiveConfiguredProject, nameof(newActiveConfiguredProject));
+            Requires.NotNull(newActiveConfiguredProject);
 
             return GetActiveConfiguredProjectExports<MyConfiguredProjectExports>(newActiveConfiguredProject);
         }
@@ -473,11 +473,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies
 
         public async Task<IRule?> GetBrowseObjectRuleAsync(IDependency dependency, TargetFramework targetFramework, IProjectCatalogSnapshot? catalogs)
         {
-            Requires.NotNull(dependency, nameof(dependency));
+            Requires.NotNull(dependency);
 
             IImmutableDictionary<string, IPropertyPagesCatalog> namedCatalogs = await GetNamedCatalogsAsync();
 
-            Requires.NotNull(namedCatalogs, nameof(namedCatalogs));
+            Requires.NotNull(namedCatalogs);
 
             if (!namedCatalogs.TryGetValue(PropertyPageContexts.BrowseObject, out IPropertyPagesCatalog browseObjectsCatalog))
             {

@@ -36,8 +36,8 @@ internal partial class VsInfoBarService
 
         public void OnActionItemClicked(IVsInfoBarUIElement element, IVsInfoBarActionItem actionItem)
         {
-            Requires.NotNull(element, nameof(element));
-            Requires.NotNull(actionItem, nameof(actionItem));
+            Requires.NotNull(element);
+            Requires.NotNull(actionItem);
 
             InfoBarUI item = _items.First(i => i.Title == actionItem.Text);
             item.Action();
@@ -50,7 +50,7 @@ internal partial class VsInfoBarService
 
         public void OnClosed(IVsInfoBarUIElement element)
         {
-            Requires.NotNull(element, nameof(element));
+            Requires.NotNull(element);
 
             _element.Unadvise(_cookie);
             _onClose(this);

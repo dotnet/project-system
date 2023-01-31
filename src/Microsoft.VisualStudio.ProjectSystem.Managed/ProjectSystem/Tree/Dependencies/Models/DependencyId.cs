@@ -9,8 +9,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Models
 
         public DependencyId(string providerId, string modelId)
         {
-            Requires.NotNull(providerId, nameof(providerId));
-            Requires.NotNull(modelId, nameof(modelId));
+            Requires.NotNull(providerId);
+            Requires.NotNull(modelId);
 
             ProviderId = providerId;
             ModelId = modelId;

@@ -15,9 +15,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
     {
         public static async Task<IEntityValue> CreateUIPropertyValueValueAsync(IEntityValue parent, ProjectConfiguration configuration, ProjectSystem.Properties.IProperty property, IUIPropertyValuePropertiesAvailableStatus requestedProperties)
         {
-            Requires.NotNull(parent, nameof(parent));
-            Requires.NotNull(configuration, nameof(configuration));
-            Requires.NotNull(property, nameof(property));
+            Requires.NotNull(parent);
+            Requires.NotNull(configuration);
+            Requires.NotNull(property);
 
             var identity = new EntityIdentity(
                 ((IEntityWithId)parent).Id,
@@ -28,7 +28,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
 
         public static async Task<IEntityValue> CreateUIPropertyValueValueAsync(IEntityRuntimeModel runtimeModel, EntityIdentity id, ProjectConfiguration configuration, ProjectSystem.Properties.IProperty property, IUIPropertyValuePropertiesAvailableStatus requestedProperties)
         {
-            Requires.NotNull(property, nameof(property));
+            Requires.NotNull(property);
 
             var newUIPropertyValue = new UIPropertyValueSnapshot(runtimeModel, id, new UIPropertyValuePropertiesAvailableStatus());
 

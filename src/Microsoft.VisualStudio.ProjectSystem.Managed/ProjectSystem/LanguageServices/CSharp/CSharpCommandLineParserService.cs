@@ -10,8 +10,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.CSharp
     {
         public BuildOptions Parse(IEnumerable<string> arguments, string baseDirectory)
         {
-            Requires.NotNull(arguments, nameof(arguments));
-            Requires.NotNullOrEmpty(baseDirectory, nameof(baseDirectory));
+            Requires.NotNull(arguments);
+            Requires.NotNullOrEmpty(baseDirectory);
 
             return BuildOptions.FromCommandLineArguments(
                 CSharpCommandLineParser.Default.Parse(arguments, baseDirectory, sdkDirectory: null, additionalReferenceDirectories: null));

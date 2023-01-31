@@ -30,7 +30,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
     {
         public IQueryActionExecutor CreateQueryActionDataTransformer(ExecutableStep executableStep)
         {
-            Requires.NotNull(executableStep, nameof(executableStep));
+            Requires.NotNull(executableStep);
 
             return executableStep.Action switch
             {

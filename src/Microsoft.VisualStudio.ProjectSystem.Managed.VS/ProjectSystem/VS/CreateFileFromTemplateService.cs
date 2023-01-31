@@ -32,8 +32,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         /// <returns>true if file is added successfully.</returns>
         public async Task<bool> CreateFileAsync(string templateFile, string path)
         {
-            Requires.NotNull(templateFile, nameof(templateFile));
-            Requires.NotNullOrEmpty(path, nameof(path));
+            Requires.NotNull(templateFile);
+            Requires.NotNullOrEmpty(path);
 
             string directoryName = Path.GetDirectoryName(path);
             string fileName = Path.GetFileName(path);

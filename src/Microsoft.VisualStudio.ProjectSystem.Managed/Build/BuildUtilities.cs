@@ -20,7 +20,7 @@ namespace Microsoft.VisualStudio.Build
         /// </summary>
         public static bool HasWellKnownConditionsThatAlwaysEvaluateToTrue(ProjectPropertyElement element)
         {
-            Requires.NotNull(element, nameof(element));
+            Requires.NotNull(element);
 
             // We look for known conditions that evaluate to true so that 
             // projects can have patterns where they opt in/out of target 
@@ -46,7 +46,7 @@ namespace Microsoft.VisualStudio.Build
         /// <returns>Requested project property. Null if the property is not present.</returns>
         public static ProjectPropertyElement? GetProperty(ProjectRootElement project, string propertyName)
         {
-            Requires.NotNull(project, nameof(project));
+            Requires.NotNull(project);
 
             return project.Properties
                 .FirstOrDefault(p => string.Equals(p.Name, propertyName, StringComparisons.PropertyNames));
@@ -93,9 +93,9 @@ namespace Microsoft.VisualStudio.Build
         /// <param name="valueToAppend">Value to add to the property.</param>
         public static void AppendPropertyValue(ProjectRootElement project, string evaluatedPropertyValue, string propertyName, string valueToAppend)
         {
-            Requires.NotNull(project, nameof(project));
-            Requires.NotNull(evaluatedPropertyValue, nameof(evaluatedPropertyValue));
-            Requires.NotNullOrEmpty(propertyName, nameof(propertyName));
+            Requires.NotNull(project);
+            Requires.NotNull(evaluatedPropertyValue);
+            Requires.NotNullOrEmpty(propertyName);
 
             ProjectPropertyElement property = GetOrAddProperty(project, propertyName);
             var newValue = PooledStringBuilder.GetInstance();
@@ -122,9 +122,9 @@ namespace Microsoft.VisualStudio.Build
         /// </remarks>
         public static void RemovePropertyValue(ProjectRootElement project, string evaluatedPropertyValue, string propertyName, string valueToRemove)
         {
-            Requires.NotNull(project, nameof(project));
-            Requires.NotNull(evaluatedPropertyValue, nameof(evaluatedPropertyValue));
-            Requires.NotNullOrEmpty(propertyName, nameof(propertyName));
+            Requires.NotNull(project);
+            Requires.NotNull(evaluatedPropertyValue);
+            Requires.NotNullOrEmpty(propertyName);
 
             ProjectPropertyElement property = GetOrAddProperty(project, propertyName);
             var newValue = new StringBuilder();
@@ -168,9 +168,9 @@ namespace Microsoft.VisualStudio.Build
         /// </remarks>
         public static void RenamePropertyValue(ProjectRootElement project, string evaluatedPropertyValue, string propertyName, string? oldValue, string newValue)
         {
-            Requires.NotNull(project, nameof(project));
-            Requires.NotNull(evaluatedPropertyValue, nameof(evaluatedPropertyValue));
-            Requires.NotNullOrEmpty(propertyName, nameof(propertyName));
+            Requires.NotNull(project);
+            Requires.NotNull(evaluatedPropertyValue);
+            Requires.NotNullOrEmpty(propertyName);
 
             ProjectPropertyElement property = GetOrAddProperty(project, propertyName);
             var value = new StringBuilder();
@@ -208,7 +208,7 @@ namespace Microsoft.VisualStudio.Build
         /// <param name="propertyName">Property name.</param>
         public static ProjectPropertyElement GetOrAddProperty(ProjectRootElement project, string propertyName)
         {
-            Requires.NotNull(project, nameof(project));
+            Requires.NotNull(project);
             ProjectPropertyElement? property = GetProperty(project, propertyName);
 
             if (property is not null)

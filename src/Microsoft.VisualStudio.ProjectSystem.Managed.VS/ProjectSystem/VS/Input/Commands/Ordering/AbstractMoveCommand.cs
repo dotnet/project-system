@@ -15,10 +15,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.Ordering
 
         protected AbstractMoveCommand(IPhysicalProjectTree projectTree, SVsServiceProvider serviceProvider, ConfiguredProject configuredProject, IProjectAccessor accessor)
         {
-            Requires.NotNull(projectTree, nameof(projectTree));
-            Requires.NotNull(serviceProvider, nameof(serviceProvider));
-            Requires.NotNull(configuredProject, nameof(configuredProject));
-            Requires.NotNull(accessor, nameof(accessor));
+            Requires.NotNull(projectTree);
+            Requires.NotNull(serviceProvider);
+            Requires.NotNull(configuredProject);
+            Requires.NotNull(accessor);
 
             _projectTree = projectTree;
             _serviceProvider = serviceProvider;

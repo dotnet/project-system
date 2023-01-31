@@ -9,8 +9,8 @@ internal sealed class BuildUpdate
 {
     public BuildUpdate(ConfiguredProject configuredProject, IProjectSubscriptionUpdate buildRuleUpdate)
     {
-        Requires.NotNull(configuredProject, nameof(configuredProject));
-        Requires.NotNull(buildRuleUpdate, nameof(buildRuleUpdate));
+        Requires.NotNull(configuredProject);
+        Requires.NotNull(buildRuleUpdate);
 
         ConfiguredProject = configuredProject;
         BuildRuleUpdate = buildRuleUpdate;

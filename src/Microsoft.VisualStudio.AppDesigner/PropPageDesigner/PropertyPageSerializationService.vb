@@ -57,7 +57,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         ''' <param name="Stream">The stream to load from.</param>
         ''' <returns>The loaded store for resources.</returns>
         Public Overrides Function LoadStore(Stream As Stream) As SerializationStore
-            Requires.NotNull(Stream, NameOf(Stream))
+            Requires.NotNull(Stream)
 
             Return PropertyPageSerializationStore.Load(Stream)
         End Function
@@ -70,8 +70,8 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         ''' <param name="Store">The store to serialize into.</param>
         ''' <param name="Value">The object (must be a Resource instance) to serialize into the store.</param>
         Public Overrides Sub Serialize(Store As SerializationStore, Value As Object)
-            Requires.NotNull(Store, NameOf(Store))
-            Requires.NotNull(Value, NameOf(Value))
+            Requires.NotNull(Store)
+            Requires.NotNull(Value)
 
             If TypeOf Value IsNot PropPageDesignerRootComponent Then
                 Throw AppDesCommon.CreateArgumentException(NameOf(Value))
@@ -100,9 +100,9 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         ''' <param name="OwningObject">The object (must be a Resource instance) whose property (member) you are trying to serialize into the store.</param>
         ''' <param name="Member">The property whose value needs to be serialized into the store.</param>
         Public Overrides Sub SerializeMember(Store As SerializationStore, OwningObject As Object, Member As MemberDescriptor)
-            Requires.NotNull(Store, NameOf(Store))
-            Requires.NotNull(OwningObject, NameOf(OwningObject))
-            Requires.NotNull(Member, NameOf(Member))
+            Requires.NotNull(Store)
+            Requires.NotNull(OwningObject)
+            Requires.NotNull(Member)
 
             Dim OwningResource As PropPageDesignerRootComponent = TryCast(OwningObject, PropPageDesignerRootComponent)
             If OwningObject Is Nothing Then
@@ -145,7 +145,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         ''' <param name="Store">The store to serialize into.</param>
         ''' <returns>The set of components that were deserialized.</returns>
         Public Overrides Function Deserialize(Store As SerializationStore) As ICollection
-            Requires.NotNull(Store, NameOf(Store))
+            Requires.NotNull(Store)
 
             Dim RFStore As PropertyPageSerializationStore = TryCast(Store, PropertyPageSerializationStore)
             If RFStore Is Nothing Then
@@ -164,8 +164,8 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         ''' <param name="Container">The container to add deserialized objects to (or Nothing if none)</param>
         ''' <returns>The list of objects that were deserialized.</returns>
         Public Overrides Function Deserialize(Store As SerializationStore, Container As IContainer) As ICollection
-            Requires.NotNull(Store, NameOf(Store))
-            Requires.NotNull(Container, NameOf(Container))
+            Requires.NotNull(Store)
+            Requires.NotNull(Container)
 
             Dim RFStore As PropertyPageSerializationStore = TryCast(Store, PropertyPageSerializationStore)
             If RFStore Is Nothing Then
@@ -190,8 +190,8 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         ''' <param name="Store">The store to serialize into.</param>
         ''' <param name="Container">The container to add deserialized objects to (or Nothing if none)</param>
         Public Overrides Sub DeserializeTo(Store As SerializationStore, Container As IContainer, ValidateRecycledTypes As Boolean, applyDefaults As Boolean)
-            Requires.NotNull(Store, NameOf(Store))
-            Requires.NotNull(Container, NameOf(Container))
+            Requires.NotNull(Store)
+            Requires.NotNull(Container)
 
             Dim RFStore As PropertyPageSerializationStore = TryCast(Store, PropertyPageSerializationStore)
             If RFStore Is Nothing Then

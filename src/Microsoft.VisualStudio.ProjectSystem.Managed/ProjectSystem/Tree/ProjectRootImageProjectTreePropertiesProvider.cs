@@ -30,8 +30,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree
 
         public void CalculatePropertyValues(IProjectTreeCustomizablePropertyContext propertyContext, IProjectTreeCustomizablePropertyValues propertyValues)
         {
-            Requires.NotNull(propertyContext, nameof(propertyContext));
-            Requires.NotNull(propertyValues, nameof(propertyValues));
+            Requires.NotNull(propertyContext);
+            Requires.NotNull(propertyValues);
 
             if (propertyValues.Flags.Contains(ProjectTreeFlags.Common.ProjectRoot))
             {

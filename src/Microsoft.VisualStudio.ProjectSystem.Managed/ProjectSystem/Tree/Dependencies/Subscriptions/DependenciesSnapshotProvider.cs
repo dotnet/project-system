@@ -384,7 +384,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Subscriptions
     {
         public SnapshotChangedEventArgs(DependenciesSnapshot snapshot, CancellationToken token)
         {
-            Requires.NotNull(snapshot, nameof(snapshot));
+            Requires.NotNull(snapshot);
 
             Snapshot = snapshot;
             Token = token;

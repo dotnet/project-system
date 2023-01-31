@@ -10,9 +10,9 @@ namespace Microsoft.VisualStudio.ProjectSystem
         /// </summary>
         public static string[]? GetLogicalFolderNames(string basePath, string fullPath, IImmutableDictionary<string, string> metadata)
         {
-            Requires.NotNullOrEmpty(basePath, nameof(basePath));
-            Requires.NotNullOrEmpty(fullPath, nameof(fullPath));
-            Requires.NotNull(metadata, nameof(metadata));
+            Requires.NotNullOrEmpty(basePath);
+            Requires.NotNullOrEmpty(fullPath);
+            Requires.NotNull(metadata);
 
             // Roslyn wants the effective set of folders from the source up to, but not including the project 
             // root to handle the cases where linked files have a different path in the tree than what its path 

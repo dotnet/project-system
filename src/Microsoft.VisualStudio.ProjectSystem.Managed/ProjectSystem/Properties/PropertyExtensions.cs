@@ -16,7 +16,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         /// </exception>
         public static async Task<Guid> GetValueAsGuidAsync(this IProperty property)
         {
-            Requires.NotNull(property, nameof(property));
+            Requires.NotNull(property);
 
             string? value = (string?)await property.GetValueAsync();
 

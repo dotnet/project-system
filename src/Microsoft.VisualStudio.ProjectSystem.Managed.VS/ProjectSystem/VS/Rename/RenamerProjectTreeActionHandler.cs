@@ -1,7 +1,6 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
 using System.Globalization;
-using System.Runtime.Remoting.Contexts;
 using EnvDTE;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Rename;
@@ -72,9 +71,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
 
         public override async Task RenameAsync(IProjectTreeActionHandlerContext context, IProjectTree node, string value)
         {
-            Requires.NotNull(context, nameof(Context));
-            Requires.NotNull(node, nameof(node));
-            Requires.NotNullOrEmpty(value, nameof(value));
+            Requires.NotNull(context);
+            Requires.NotNull(node);
+            Requires.NotNullOrEmpty(value);
 
             string? oldFilePath = node.FilePath;
             string oldName = Path.GetFileNameWithoutExtension(oldFilePath);

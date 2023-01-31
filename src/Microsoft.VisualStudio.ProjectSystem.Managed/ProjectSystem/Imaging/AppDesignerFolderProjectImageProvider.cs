@@ -21,7 +21,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Imaging
 
         public ProjectImageMoniker? GetProjectImage(string key)
         {
-            Requires.NotNullOrEmpty(key, nameof(key));
+            Requires.NotNullOrEmpty(key);
 
             return key switch
             {

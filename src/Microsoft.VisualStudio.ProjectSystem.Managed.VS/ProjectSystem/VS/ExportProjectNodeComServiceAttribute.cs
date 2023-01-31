@@ -24,7 +24,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
 
         private static string[] GetIids(Type[] comTypes)
         {
-            Requires.NotNull(comTypes, nameof(comTypes));
+            Requires.NotNull(comTypes);
 
             // Reuse ComServiceIdAttribute's logic for calculating IIDs.
             return comTypes.Select(type => new ComServiceIidAttribute(type))

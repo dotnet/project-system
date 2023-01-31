@@ -19,7 +19,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
         public bool Contains(string capability)
         {
-            Requires.NotNullOrEmpty(capability, nameof(capability));
+            Requires.NotNullOrEmpty(capability);
 
             // Just to check capabilities, requires static state and call context that we cannot influence
             return _project.Capabilities.Contains(capability);

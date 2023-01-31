@@ -26,7 +26,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedColl
 
         public AggregateRelationCollectionSource(object sourceItem, IAggregateRelationCollection? collection = null)
         {
-            _sourceItem = Requires.NotNull(sourceItem, nameof(sourceItem));
+            _sourceItem = Requires.NotNull(sourceItem);
 
             if (collection is not null)
             {
@@ -66,7 +66,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedColl
                 throw new InvalidOperationException("Backing collection has already been provided.");
             }
 
-            _collection = Requires.NotNull(collection, nameof(collection));
+            _collection = Requires.NotNull(collection);
             _collection.HasItemsChanged += delegate
             {
                 PropertyChanged?.Invoke(this, KnownEventArgs.HasItemsPropertyChanged);

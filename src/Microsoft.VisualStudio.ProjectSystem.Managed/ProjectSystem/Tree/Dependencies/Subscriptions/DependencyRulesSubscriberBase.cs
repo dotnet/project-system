@@ -36,7 +36,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Subscriptions
 
         public virtual void AddSubscriptions(AggregateCrossTargetProjectContext projectContext)
         {
-            Requires.NotNull(projectContext, nameof(projectContext));
+            Requires.NotNull(projectContext);
             Assumes.True(IsInitialized);
 
             foreach (ConfiguredProject configuredProject in projectContext.InnerConfiguredProjects)

@@ -740,7 +740,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner.ProjectUtils
         ''' </summary>
         ''' <param name="cc2"></param>
         Friend Function CodeModelToCodeDomTypeAttributes(cc2 As EnvDTE80.CodeClass2) As TypeAttributes
-            Requires.NotNull(cc2, NameOf(cc2))
+            Requires.NotNull(cc2)
 
             Dim returnValue As TypeAttributes
 

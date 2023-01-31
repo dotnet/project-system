@@ -59,8 +59,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.Ordering
         /// </summary>
         public async Task CaptureAsync(OrderingMoveAction action, IProjectTree target, Func<Task> task)
         {
-            Requires.NotNull(target, nameof(target));
-            Requires.NotNull(task, nameof(task));
+            Requires.NotNull(target);
+            Requires.NotNull(task);
 
             _action = action;
             _target = target;

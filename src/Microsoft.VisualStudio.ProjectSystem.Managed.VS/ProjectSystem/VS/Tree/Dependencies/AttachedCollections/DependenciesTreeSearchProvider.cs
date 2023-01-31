@@ -66,8 +66,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedColl
 
         public void Search(IRelationshipSearchParameters parameters, Action<ISearchResult> resultAccumulator)
         {
-            Requires.NotNull(parameters, nameof(parameters));
-            Requires.NotNull(resultAccumulator, nameof(resultAccumulator));
+            Requires.NotNull(parameters);
+            Requires.NotNull(resultAccumulator);
 
             if (_providers.IsEmpty)
             {

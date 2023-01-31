@@ -25,7 +25,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         /// </exception>
         public static void WriteLine(this IManagedProjectDiagnosticOutputService logger, string format, object? argument)
         {
-            Requires.NotNull(logger, nameof(logger));
+            Requires.NotNull(logger);
 
             if (logger.IsEnabled)
             {
@@ -51,7 +51,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         /// </exception>
         public static void WriteLine(this IManagedProjectDiagnosticOutputService logger, string format, object? argument1, object? argument2)
         {
-            Requires.NotNull(logger, nameof(logger));
+            Requires.NotNull(logger);
 
             if (logger.IsEnabled)
             {
@@ -77,7 +77,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         /// </exception>
         public static void WriteLine(this IManagedProjectDiagnosticOutputService logger, string format, object? argument1, object? argument2, object? argument3)
         {
-            Requires.NotNull(logger, nameof(logger));
+            Requires.NotNull(logger);
 
             if (logger.IsEnabled)
             {
@@ -103,7 +103,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         /// </exception>
         public static void WriteLine(this IManagedProjectDiagnosticOutputService logger, string format, params object?[] arguments)
         {
-            Requires.NotNull(logger, nameof(logger));
+            Requires.NotNull(logger);
 
             if (logger.IsEnabled)
             {
