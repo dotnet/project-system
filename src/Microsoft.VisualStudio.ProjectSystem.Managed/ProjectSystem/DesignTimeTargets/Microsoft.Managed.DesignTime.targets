@@ -438,10 +438,12 @@
   <Target Name="CollectResolvedCompilationReferencesDesignTime" DependsOnTargets="CompileDesignTime" Returns="@(ReferencePathWithRefAssemblies)" />
 
   <!-- This target collects all the extra inputs for the up to date check. -->
-  <Target Name="CollectUpToDateCheckInputDesignTime" DependsOnTargets="CompileDesignTime" Returns="@(UpToDateCheckInput)">
+  <Target Name="CollectUpToDateCheckInputDesignTime" DependsOnTargets="CompileDesignTime;ResolveCodeAnalysisRuleSet" Returns="@(UpToDateCheckInput)">
     <ItemGroup>
-      <!-- app.manifest -->
+      <!-- app.manifest, if any -->
       <UpToDateCheckInput Condition=" '$(ApplicationManifest)' != '' " Include="$(ApplicationManifest)" />
+      <!-- .ruleset file, if any -->
+      <UpToDateCheckInput Condition=" '$(ResolvedCodeAnalysisRuleSet)' != '' " Include="$(ResolvedCodeAnalysisRuleSet)" />
     </ItemGroup>
   </Target>
 
