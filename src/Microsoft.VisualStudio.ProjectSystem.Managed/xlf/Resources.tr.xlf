@@ -24,7 +24,7 @@
       </trans-unit>
       <trans-unit id="FUTDC_AccelerationDataMissingForProject_1">
         <source>Build acceleration data is unavailable for project with target '{0}'. See https://aka.ms/vs-build-acceleration.</source>
-        <target state="new">Build acceleration data is unavailable for project with target '{0}'. See https://aka.ms/vs-build-acceleration.</target>
+        <target state="translated">Derleme hızlandırma verileri '{0}' hedefindeki proje için kullanılamıyor. Bkz. https://aka.ms/vs-build-acceleration.</target>
         <note>{0} is a file path.</note>
       </trans-unit>
       <trans-unit id="FUTDC_CheckingCopyItemsForProject_1">
@@ -34,7 +34,7 @@
       </trans-unit>
       <trans-unit id="FUTD_AccelerationCandidate">
         <source>This project appears to be a candidate for build acceleration. To opt in, set the 'AccelerateBuildsInVisualStudio' MSBuild property to 'true'. See https://aka.ms/vs-build-acceleration.</source>
-        <target state="new">This project appears to be a candidate for build acceleration. To opt in, set the 'AccelerateBuildsInVisualStudio' MSBuild property to 'true'. See https://aka.ms/vs-build-acceleration.</target>
+        <target state="translated">Bu proje, derleme hızlandırma için aday gibi görünüyor. Kabul etmek için 'AccelerateBuildsInVisualStudio' MSBuild özelliğini “true” olarak ayarlayın. Bkz. https://aka.ms/vs-build-acceleration.</target>
         <note>Do not translate 'AccelerateBuildsInVisualStudio' or 'true'.</note>
       </trans-unit>
       <trans-unit id="FUTD_AccelerationDisabledCopyItemsIncomplete">
@@ -44,7 +44,7 @@
       </trans-unit>
       <trans-unit id="FUTD_AccelerationDisabledForProject">
         <source>Build acceleration is disabled for this project via the 'AccelerateBuildsInVisualStudio' MSBuild property. See https://aka.ms/vs-build-acceleration.</source>
-        <target state="new">Build acceleration is disabled for this project via the 'AccelerateBuildsInVisualStudio' MSBuild property. See https://aka.ms/vs-build-acceleration.</target>
+        <target state="translated">Derleme hızlandırma, 'AccelerateBuildsInVisualStudio' MSBuild özelliği aracılığıyla bu proje için devre dışı bırakıldı. Bkz. https://aka.ms/vs-build-acceleration.</target>
         <note>Do not translate AccelerateBuildsInVisualStudio.</note>
       </trans-unit>
       <trans-unit id="FUTD_AddingInputReferenceCopyMarkers">
@@ -179,7 +179,7 @@
       </trans-unit>
       <trans-unit id="FUTD_CopyingFilesToAccelerateBuild_1">
         <source>Copying {0} files to accelerate build (https://aka.ms/vs-build-acceleration):</source>
-        <target state="new">Copying {0} files to accelerate build (https://aka.ms/vs-build-acceleration):</target>
+        <target state="translated">Derlemeyi hızlandırmak için {0} dosya kopyalanıyor (https://aka.ms/vs-build-acceleration):</target>
         <note>{0} is an integer.</note>
       </trans-unit>
       <trans-unit id="FUTD_CriticalBuildTasksRunning">
