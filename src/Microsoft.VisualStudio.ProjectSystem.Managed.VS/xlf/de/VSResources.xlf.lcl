@@ -19,6 +19,15 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
+      <Item ItemId=";BuildAccelerationSummary_2" ItemType="0" PsrId="308" InstFlg="true" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[Visual Studio accelerated {0} project(s), copying {1} file(s). See https://aka.ms/vs-build-acceleration.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Visual Studio beschleunigte {0} Projekt(e) und kopierte {1} Datei(en). Siehe https://aka.ms/vs-build-acceleration.]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
       <Item ItemId=";ComponentEditor_DisplayName" ItemType="0" PsrId="308" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[Component (Windows Forms) Designer]]></Val>
@@ -435,36 +444,6 @@
           <Val><![CDATA[Renaming Type from '{0}' to '{1}']]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
             <Val><![CDATA[Der Typ wird von "{0}" in "{1}" umbenannt.]]></Val>
-          </Tgt>
-        </Str>
-        <Disp Icon="Str" />
-      </Item>
-      <Item ItemId=";Restore_DuplicateToolReferenceItems" ItemType="0" PsrId="308" Leaf="true">
-        <Str Cat="Text">
-          <Val><![CDATA[The metadata on 'DotNetCliToolReference' item '{0}' is inconsistent between target frameworks. Only the first one will be restored.]]></Val>
-          <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Die Metadaten für das DotNetCliToolReference-Element "{0}" sind zwischen Zielframeworks inkonsistent. Nur das erste Element wird wiederhergestellt.]]></Val>
-          </Tgt>
-        </Str>
-        <Disp Icon="Str" />
-      </Item>
-      <Item ItemId=";Restore_EmptyTargetFrameworkMoniker" ItemType="0" PsrId="308" Leaf="true">
-        <Str Cat="Text">
-          <Val><![CDATA[The value of the 'TargetFrameworkMoniker' and 'NuGetTargetMoniker' properties in the '{0}' configuration are both empty. This configuration will not contribute to NuGet restore, which may result in restore and build errors.]]></Val>
-          <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Die Werte der Eigenschaften "TargetFrameworkMoniker" und "NuGetTargetMoniker" in der Konfiguration "{0}" sind beide leer. Diese Konfiguration wird bei der NuGet-Wiederherstellung nicht berücksichtigt, was zu Wiederherstellungs- und Buildfehlern führen kann.]]></Val>
-          </Tgt>
-          <Prev Cat="Text">
-            <Val><![CDATA[The value of the 'TargetFrameworkMoniker' property in the '{0}' configuration is empty. This configuration will not contribute to NuGet restore, which may result in restore and build errors.]]></Val>
-          </Prev>
-        </Str>
-        <Disp Icon="Str" />
-      </Item>
-      <Item ItemId=";Restore_PropertyWithInconsistentValues" ItemType="0" PsrId="308" Leaf="true">
-        <Str Cat="Text">
-          <Val><![CDATA[The value of the '{0}' property is inconsistent between target frameworks. This property must be identical for NuGet restore to function correctly. The value '{1}' from the '{2}' configuration will be used, other target frameworks may fail to pick NuGet assets.]]></Val>
-          <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Der Wert der Eigenschaft "{0}" ist zwischen Zielframeworks inkonsistent. Diese Eigenschaft muss identisch sein, damit die NuGet-Wiederherstellung ordnungsgemäß funktioniert. Der Wert "{1}" aus der {2}-Konfiguration wird verwendet, andere Zielframeworks wählen möglicherweise keine NuGet-Objekte aus.]]></Val>
           </Tgt>
         </Str>
         <Disp Icon="Str" />
