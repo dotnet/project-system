@@ -23,8 +23,8 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         ''' <param name="sp"></param>
         ''' <param name="hierarchy"></param>
         Public Sub New(sp As IServiceProvider, hierarchy As IVsHierarchy)
-            Requires.NotNull(sp, NameOf(sp))
-            Requires.NotNull(hierarchy, NameOf(hierarchy))
+            Requires.NotNull(sp)
+            Requires.NotNull(hierarchy)
 
             _serviceProvider = sp
             _hierarchy = hierarchy
@@ -134,7 +134,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         ''' <param name="typeResolutionService"></param>
         ''' <param name="projectOutput"></param>
         Protected Overridable Function AssemblyFromProjectOutput(typeResolutionService As ComponentModel.Design.ITypeResolutionService, projectOutput As String) As System.Reflection.Assembly
-            Requires.NotNull(typeResolutionService, NameOf(typeResolutionService))
+            Requires.NotNull(typeResolutionService)
 
             If typeResolutionService IsNot Nothing Then
                 Try

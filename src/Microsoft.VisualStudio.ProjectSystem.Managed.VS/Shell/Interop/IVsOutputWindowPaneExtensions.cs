@@ -15,7 +15,7 @@ namespace Microsoft.VisualStudio.Shell.Interop
         /// </exception>
         public static void OutputStringNoPump(this IVsOutputWindowPane pane, string pszOutputString)
         {
-            Requires.NotNull(pane, nameof(pane));
+            Requires.NotNull(pane);
 
             if (pane is IVsOutputWindowPaneNoPump noPumpPane)
             {

@@ -23,8 +23,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.FSharp
 
         public BuildOptions Parse(IEnumerable<string> arguments, string baseDirectory)
         {
-            Requires.NotNull(arguments, nameof(arguments));
-            Requires.NotNullOrEmpty(baseDirectory, nameof(baseDirectory));
+            Requires.NotNull(arguments);
+            Requires.NotNullOrEmpty(baseDirectory);
 
             var sourceFiles = new List<CommandLineSourceFile>();
             var metadataReferences = new List<CommandLineReference>();

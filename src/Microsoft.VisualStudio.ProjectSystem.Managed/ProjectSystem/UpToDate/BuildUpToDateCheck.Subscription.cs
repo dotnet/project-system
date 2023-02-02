@@ -60,8 +60,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
             public Subscription(IUpToDateCheckConfiguredInputDataSource inputDataSource, ConfiguredProject configuredProject, IUpToDateCheckHost host, IUpToDateCheckStatePersistence persistence)
             {
-                Requires.NotNull(inputDataSource, nameof(inputDataSource));
-                Requires.NotNull(configuredProject, nameof(configuredProject));
+                Requires.NotNull(inputDataSource);
+                Requires.NotNull(configuredProject);
 
                 _inputDataSource = inputDataSource;
                 _configuredProject = configuredProject;

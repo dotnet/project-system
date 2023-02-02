@@ -10,16 +10,16 @@ namespace Microsoft.VisualStudio.Telemetry
     {
         public void PostEvent(string eventName)
         {
-            Requires.NotNullOrEmpty(eventName, nameof(eventName));
+            Requires.NotNullOrEmpty(eventName);
 
             PostTelemetryEvent(new TelemetryEvent(eventName));
         }
 
         public void PostProperty(string eventName, string propertyName, object propertyValue)
         {
-            Requires.NotNullOrEmpty(eventName, nameof(eventName));
-            Requires.NotNullOrEmpty(propertyName, nameof(propertyName));
-            Requires.NotNull(propertyValue, nameof(propertyValue));
+            Requires.NotNullOrEmpty(eventName);
+            Requires.NotNullOrEmpty(propertyName);
+            Requires.NotNull(propertyValue);
 
             var telemetryEvent = new TelemetryEvent(eventName);
             telemetryEvent.Properties.Add(propertyName, propertyValue);
@@ -29,8 +29,8 @@ namespace Microsoft.VisualStudio.Telemetry
 
         public void PostProperties(string eventName, IEnumerable<(string propertyName, object propertyValue)> properties)
         {
-            Requires.NotNullOrEmpty(eventName, nameof(eventName));
-            Requires.NotNullOrEmpty(properties, nameof(properties));
+            Requires.NotNullOrEmpty(eventName);
+            Requires.NotNullOrEmpty(properties);
 
             var telemetryEvent = new TelemetryEvent(eventName);
             foreach ((string propertyName, object propertyValue) in properties)

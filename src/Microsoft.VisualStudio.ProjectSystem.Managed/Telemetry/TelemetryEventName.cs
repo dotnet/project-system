@@ -77,6 +77,11 @@ namespace Microsoft.VisualStudio.Telemetry
         public const string IncrementalBuildValidationFailureDisplayed = "vs/projectsystem/managed/incrementalbuild/validationfailure/displayed";
 
         /// <summary>
+        ///     Contains a summary of the solution build, from the perspective of the .NET Project System.
+        /// </summary>
+        public const string SolutionBuildSummary = "vs/projectsystem/managed/incrementalbuild/solutionbuildsummary";
+
+        /// <summary>
         ///     Indicates that the NuGet restore detected a cycle.
         /// </summary>
         public const string NuGetRestoreCycleDetected = "vs/projectsystem/managed/nugetrestore/cycledetected";

@@ -46,8 +46,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
                   workspace: workspace,
                   threadingService: threadingService ?? IProjectThreadingServiceFactory.Create())
         {
-            Requires.NotNull(workspace, nameof(workspace));
-            Requires.NotNull(project, nameof(project));
+            Requires.NotNull(workspace);
+            Requires.NotNull(project);
         }
     }
 

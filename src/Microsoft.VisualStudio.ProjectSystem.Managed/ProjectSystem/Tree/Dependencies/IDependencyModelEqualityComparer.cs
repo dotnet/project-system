@@ -22,7 +22,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies
 
         public int GetHashCode(IDependencyModel obj)
         {
-            Requires.NotNull(obj, nameof(obj));
+            Requires.NotNull(obj);
 
             return unchecked(StringComparers.DependencyTreeIds.GetHashCode(obj.Id) * 397 ^
                              StringComparers.DependencyProviderTypes.GetHashCode(obj.ProviderType));

@@ -53,7 +53,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         '**************************************************************************
         Public Sub New(ServiceProvider As IServiceProvider)
             Debug.Assert(ServiceProvider IsNot Nothing, "ServiceProvider is NULL.")
-            Requires.NotNull(ServiceProvider, NameOf(ServiceProvider))
+            Requires.NotNull(ServiceProvider)
 
             _serviceProvider = ServiceProvider
 

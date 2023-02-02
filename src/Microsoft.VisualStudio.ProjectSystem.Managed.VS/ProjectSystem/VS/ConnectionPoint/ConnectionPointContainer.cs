@@ -20,7 +20,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.ConnectionPoint
         internal void AddEventSource<SinkType>(IEventSource<SinkType> source)
             where SinkType : class
         {
-            Requires.NotNull(source, nameof(source));
+            Requires.NotNull(source);
             Verify.Operation(!_connectionPoints.ContainsKey(typeof(SinkType).GUID), "EventSource guid already added to the list of connection points");
 
             _connectionPoints.Add(typeof(SinkType).GUID, new ConnectionPoint<SinkType>(this, source));

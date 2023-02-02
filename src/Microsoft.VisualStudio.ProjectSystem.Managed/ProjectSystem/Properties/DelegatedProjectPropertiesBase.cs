@@ -12,7 +12,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
 
         protected DelegatedProjectPropertiesBase(IProjectProperties properties)
         {
-            Requires.NotNull(properties, nameof(properties));
+            Requires.NotNull(properties);
 
             DelegatedProperties = properties;
         }

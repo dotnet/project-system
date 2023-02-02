@@ -190,7 +190,7 @@
       <trans-unit id="EnumProperty|DebugType|DisplayName">
         <source>Debug symbols</source>
         <target state="translated">デバッグ シンボル</target>
-        <note />
+        <note>="PDB Only" /&gt;</note>
       </trans-unit>
       <trans-unit id="EnumProperty|DebugType|Metadata|SearchTerms">
         <source>debug type</source>
@@ -387,7 +387,7 @@
         <target state="translated">カスタム定数</target>
         <note />
       </trans-unit>
-      <trans-unit id="StringProperty|Output path|DisplayName">
+      <trans-unit id="StringProperty|OutputPath|DisplayName">
         <source>Build output path</source>
         <target state="translated">ビルド出力パス</target>
         <note />

@@ -54,7 +54,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build
 
         public Task<AddMessageResult> AddMessageAsync(TargetGeneratedError error)
         {
-            Requires.NotNull(error, nameof(error));
+            Requires.NotNull(error);
 
             return AddMessageCoreAsync(error);
         }

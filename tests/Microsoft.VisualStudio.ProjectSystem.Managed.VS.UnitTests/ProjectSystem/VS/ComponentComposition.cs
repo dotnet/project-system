@@ -134,7 +134,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
 
         private static Dictionary<string, ContractMetadata> CollectContractMetadata(IEnumerable<Assembly> assemblies)
         {
-            Requires.NotNull(assemblies, nameof(assemblies));
+            Requires.NotNull(assemblies);
             var contracts = new Dictionary<string, ContractMetadata>(StringComparer.Ordinal);
             foreach (Assembly contractAssembly in assemblies)
             {
@@ -146,8 +146,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
 
         private static void ReadContractMetadata(Dictionary<string, ContractMetadata> contracts, Assembly contractAssembly)
         {
-            Requires.NotNull(contracts, nameof(contracts));
-            Requires.NotNull(contractAssembly, nameof(contractAssembly));
+            Requires.NotNull(contracts);
+            Requires.NotNull(contractAssembly);
             foreach (ProjectSystemContractAttribute assemblyAttribute in contractAssembly.GetCustomAttributes<ProjectSystemContractAttribute>())
             {
                 var contractName = assemblyAttribute.ContractName;
@@ -212,8 +212,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
 
         private static void AddContractMetadata(Dictionary<string, ContractMetadata> contracts, string name, ProjectSystemContractScope scope, ProjectSystemContractProvider provider, ImportCardinality cardinality)
         {
-            Requires.NotNull(contracts, nameof(contracts));
-            Requires.NotNullOrEmpty(name, nameof(name));
+            Requires.NotNull(contracts);
+            Requires.NotNullOrEmpty(name);
 
             if (!contracts.TryGetValue(name, out ContractMetadata metadata))
             {

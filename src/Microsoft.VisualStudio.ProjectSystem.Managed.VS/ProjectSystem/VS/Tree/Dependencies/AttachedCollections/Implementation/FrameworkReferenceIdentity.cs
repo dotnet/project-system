@@ -10,8 +10,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedColl
 
         public FrameworkReferenceIdentity(string path, string? profile, string name)
         {
-            Requires.NotNullOrWhiteSpace(path, nameof(path));
-            Requires.NotNullOrWhiteSpace(name, nameof(name));
+            Requires.NotNullOrWhiteSpace(path);
+            Requires.NotNullOrWhiteSpace(name);
 
             Path = path;
             Profile = profile;

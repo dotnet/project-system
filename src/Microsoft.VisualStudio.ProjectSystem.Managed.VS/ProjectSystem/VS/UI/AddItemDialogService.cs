@@ -32,8 +32,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.UI
 
         public Task<bool> ShowAddNewItemDialogAsync(IProjectTree node, string directoryLocalizedName, string templateLocalizedName)
         {
-            Requires.NotNullOrEmpty(directoryLocalizedName, nameof(directoryLocalizedName));
-            Requires.NotNullOrEmpty(templateLocalizedName, nameof(templateLocalizedName));
+            Requires.NotNullOrEmpty(directoryLocalizedName);
+            Requires.NotNullOrEmpty(templateLocalizedName);
 
             return ShowDialogAsync(node,
                __VSADDITEMFLAGS.VSADDITEM_AddNewItems |

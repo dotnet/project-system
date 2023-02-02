@@ -190,7 +190,7 @@
       <trans-unit id="EnumProperty|DebugType|DisplayName">
         <source>Debug symbols</source>
         <target state="translated">Símbolos de depuração</target>
-        <note />
+        <note>="PDB Only" /&gt;</note>
       </trans-unit>
       <trans-unit id="EnumProperty|DebugType|Metadata|SearchTerms">
         <source>debug type</source>
@@ -387,7 +387,7 @@
         <target state="translated">Constantes personalizadas</target>
         <note />
       </trans-unit>
-      <trans-unit id="StringProperty|Output path|DisplayName">
+      <trans-unit id="StringProperty|OutputPath|DisplayName">
         <source>Build output path</source>
         <target state="translated">Construir caminho de saída</target>
         <note />

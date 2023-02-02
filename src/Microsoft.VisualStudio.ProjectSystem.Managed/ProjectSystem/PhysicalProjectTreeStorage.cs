@@ -27,7 +27,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
         public async Task AddFileAsync(string path)
         {
-            Requires.NotNullOrEmpty(path, nameof(path));
+            Requires.NotNullOrEmpty(path);
 
             string fullPath = _project.MakeRooted(path);
 
@@ -38,7 +38,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
         public async Task CreateEmptyFileAsync(string path)
         {
-            Requires.NotNullOrEmpty(path, nameof(path));
+            Requires.NotNullOrEmpty(path);
 
             string fullPath = _project.MakeRooted(path);
 
@@ -51,7 +51,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
         public Task CreateFolderAsync(string path)
         {
-            Requires.NotNullOrEmpty(path, nameof(path));
+            Requires.NotNullOrEmpty(path);
 
             string fullPath = _project.MakeRooted(path);
 
@@ -62,7 +62,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
         public async Task AddFolderAsync(string path)
         {
-            Requires.NotNullOrEmpty(path, nameof(path));
+            Requires.NotNullOrEmpty(path);
 
             string fullPath = _project.MakeRooted(path);
 

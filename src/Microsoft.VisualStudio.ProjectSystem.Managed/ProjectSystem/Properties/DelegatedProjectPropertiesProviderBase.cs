@@ -33,9 +33,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         /// </summary>
         public DelegatedProjectPropertiesProviderBase(IProjectPropertiesProvider provider, IProjectInstancePropertiesProvider instanceProvider, UnconfiguredProject project)
         {
-            Requires.NotNull(provider, nameof(provider));
-            Requires.NotNull(instanceProvider, nameof(instanceProvider));
-            Requires.NotNull(project, nameof(project));
+            Requires.NotNull(provider);
+            Requires.NotNull(instanceProvider);
+            Requires.NotNull(project);
 
             DelegatedProvider = provider;
             DelegatedInstanceProvider = instanceProvider;

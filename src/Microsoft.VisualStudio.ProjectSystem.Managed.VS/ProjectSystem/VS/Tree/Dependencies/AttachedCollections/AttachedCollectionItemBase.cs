@@ -50,7 +50,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedColl
 
         protected AttachedCollectionItemBase(string name)
         {
-            Requires.NotNullOrWhiteSpace(name, nameof(name));
+            Requires.NotNullOrWhiteSpace(name);
 
             _text = name;
         }

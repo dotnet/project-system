@@ -21,10 +21,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
             ISolutionBuildManager vsSolutionBuildManagerService,
             GeneratePackageOnBuildPropertyProvider generatePackageOnBuildPropertyProvider)
         {
-            Requires.NotNull(project, nameof(project));
-            Requires.NotNull(threadingService, nameof(threadingService));
-            Requires.NotNull(vsSolutionBuildManagerService, nameof(vsSolutionBuildManagerService));
-            Requires.NotNull(generatePackageOnBuildPropertyProvider, nameof(generatePackageOnBuildPropertyProvider));
+            Requires.NotNull(project);
+            Requires.NotNull(threadingService);
+            Requires.NotNull(vsSolutionBuildManagerService);
+            Requires.NotNull(generatePackageOnBuildPropertyProvider);
 
             Project = project;
             _threadingService = threadingService;

@@ -22,6 +22,11 @@
         <target state="translated">匯入命名空間</target>
         <note />
       </trans-unit>
+      <trans-unit id="DynamicEnumProperty|ImportedNamespaces|ValueEditors|ValueEditor|Metadata|TypeDescriptorText|Value">
+        <source>Imported Namespaces</source>
+        <target state="new">Imported Namespaces</target>
+        <note />
+      </trans-unit>
       <trans-unit id="Rule|References|Description">
         <source>Specifies the project's references and namespace imports.</source>
         <target state="translated">指定專案的參考和命名空間匯入。</target>

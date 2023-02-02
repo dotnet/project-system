@@ -9,7 +9,7 @@
     <PackageReference Update="Nerdbank.Streams"                                                       Version="2.9.112" />
     <PackageReference Update="Nerdbank.GitVersioning"                                                 Version="3.5.107" />
     <PackageReference Update="System.IO.Pipelines"                                                    Version="6.0.3" />
-    <PackageReference Update="XliffTasks"                                                             Version="1.0.0-beta.20574.1" />
+    <PackageReference Update="Microsoft.DotNet.XliffTasks"                                            Version="1.0.0-beta.23073.2" />
     <!-- This is used for publishing PDBs to the legacy symbol server. It converts portable PDBs to Windows PDBs (embedded). -->
     <!-- https://devdiv.visualstudio.com/DevDiv/_wiki/wikis/DevDiv.wiki/672/Archive-Symbols-with-Symweb?anchor=portable-pdbs -->
     <PackageReference Update="Microsoft.DiaSymReader.Pdb2Pdb"                                         Version="1.1.0-beta2-22320-02" />
@@ -53,7 +53,7 @@
     <PackageReference Update="Microsoft.VisualStudio.Threading"                                       Version="17.5.10-alpha" />
     <PackageReference Update="Microsoft.VisualStudio.Threading.Analyzers"                             Version="17.5.10-alpha" />
     <PackageReference Update="Microsoft.VisualStudio.Utilities"                                       Version="17.4.0-preview-3-32908-042" />
-    <PackageReference Update="Microsoft.VisualStudio.Validation"                                      Version="17.0.71" />
+    <PackageReference Update="Microsoft.VisualStudio.Validation"                                      Version="17.6.4-alpha" />
     <PackageReference Update="Microsoft.VisualStudio.XmlEditor"                                       Version="17.3.32804.24" />
     <PackageReference Update="System.Threading.Tasks.Dataflow"                                        Version="6.0.0" />
     <PackageReference Update="Microsoft.VSDesigner"                                                   Version="17.0.0-preview-2-31223-026" />

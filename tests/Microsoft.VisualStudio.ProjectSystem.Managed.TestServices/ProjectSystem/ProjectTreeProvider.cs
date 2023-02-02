@@ -48,8 +48,8 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
         public IProjectTree? FindByPath(IProjectTree root, string path)
         {
-            Requires.NotNull(root, nameof(root));
-            Requires.NotNullOrEmpty(path, nameof(path));
+            Requires.NotNull(root);
+            Requires.NotNullOrEmpty(path);
 
             foreach (IProjectTree child in root.GetSelfAndDescendentsBreadthFirst())
             {

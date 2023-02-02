@@ -39,7 +39,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Rules
 
             XElement rule = LoadXamlRule(fullPath);
 
-            foreach (var property in GetProperties(rule))
+            foreach (var property in 
+                GetProperties(rule))
             {
                 Assert.False(
                     IsVisible(property),
@@ -214,6 +215,25 @@ namespace Microsoft.VisualStudio.ProjectSystem.Rules
             }
         }
 
+        [Theory]
+        [MemberData(nameof(GetAllRules))]
+        public void PropertyNamesMustNotContainSpaces(string ruleName, string fullPath)
+        {
+            // While MSBuild properties may not contain spaces in their names this restriction doesn't necessarily
+            // apply when the property in the Rule connects to a non-MSBuild DataSource. Currently none of our
+            // properties have names with spaces, so for the moment we'll just keep this test simple.
+            
+            var root = LoadXamlRule(fullPath);
+
+            foreach (var property in GetProperties(root))
+            {
+                var name = property.Attribute("Name")?.Value;
+
+                Assert.NotNull(name);
+                Assert.False(name.Contains(" "), $"Property name '{name}' in rule '{ruleName}' contains a space. This is likely to lead to a runtime exception when accessing the property");
+            }
+        }
+    
         public static IEnumerable<object[]> GetMiscellaneousRules()
         {
             return Project(GetRules(""));

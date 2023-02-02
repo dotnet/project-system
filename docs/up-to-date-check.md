@@ -137,7 +137,7 @@ non-zero, then the check would have determined the project was not up-to-date, r
 
 To debug issues with the up-to-date check, enable its logging.
 
-> Tools | Options | Projects and Solutions | .NET Core
+> Tools | Options | Projects and Solutions | SDK-Style Projects
 
 ![Projects and Solutions, .NET Core options](repo/images/options.png)
 

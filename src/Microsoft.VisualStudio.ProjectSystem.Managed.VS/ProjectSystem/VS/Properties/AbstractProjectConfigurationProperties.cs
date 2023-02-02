@@ -14,8 +14,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
             ProjectProperties projectProperties,
             IProjectThreadingService threadingService)
         {
-            Requires.NotNull(projectProperties, nameof(projectProperties));
-            Requires.NotNull(threadingService, nameof(threadingService));
+            Requires.NotNull(projectProperties);
+            Requires.NotNull(threadingService);
 
             _projectProperties = projectProperties;
             _threadingService = threadingService;

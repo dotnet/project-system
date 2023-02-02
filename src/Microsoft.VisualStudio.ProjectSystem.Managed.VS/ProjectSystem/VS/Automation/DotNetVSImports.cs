@@ -136,7 +136,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
 
         public void OnSinkAdded(_dispImportsEvents sink)
         {
-            Requires.NotNull(sink, nameof(sink));
+            Requires.NotNull(sink);
 
             ImportAdded += new _dispImportsEvents_ImportAddedEventHandler(sink.ImportAdded);
             ImportRemoved += new _dispImportsEvents_ImportRemovedEventHandler(sink.ImportRemoved);

@@ -16,8 +16,8 @@ internal class InfoBarUI
     /// <param name="closeAfterAction"><see langword="true"/> if the information bar should close after <paramref name="action"/> is run.</param>
     public InfoBarUI(string title, InfoBarUIKind kind, Action action, bool closeAfterAction = true)
     {
-        Requires.NotNullOrEmpty(title, nameof(title));
-        Requires.NotNull(action, nameof(action));
+        Requires.NotNullOrEmpty(title);
+        Requires.NotNull(action);
 
         Title = title;
         Kind = kind;

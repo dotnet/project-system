@@ -17,7 +17,7 @@
     <PackageReference Include="Nerdbank.GitVersioning"              PrivateAssets="all" />
     <PackageReference Include="System.IO.Pipelines"                 ExcludeAssets="all" />
     <PackageReference Include="Microsoft.Net.Compilers.Toolset" />
-    <PackageReference Include="XliffTasks"                          PrivateAssets="all" />
+    <PackageReference Include="Microsoft.DotNet.XliffTasks"         PrivateAssets="all" />
     <!-- Path Property: PkgMicrosoft_DiaSymReader_Pdb2Pdb -->
     <PackageReference Include="Microsoft.DiaSymReader.Pdb2Pdb"      ExcludeAssets="all" GeneratePathProperty="true" />
     <!-- Path Property: PkgCodecov -->

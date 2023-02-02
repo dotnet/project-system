@@ -18,9 +18,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.Ordering
         /// </summary>
         public static async Task SelectAsync(ConfiguredProject configuredProject, IServiceProvider serviceProvider, IProjectTree node)
         {
-            Requires.NotNull(configuredProject, nameof(configuredProject));
-            Requires.NotNull(serviceProvider, nameof(serviceProvider));
-            Requires.NotNull(node, nameof(node));
+            Requires.NotNull(configuredProject);
+            Requires.NotNull(serviceProvider);
+            Requires.NotNull(node);
 
             await configuredProject.Services.ProjectService.Services.ThreadingPolicy.SwitchToUIThread();
 
@@ -65,7 +65,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.Ordering
         /// <returns>A reference to an IVsUIHierarchyWindow interface, or <see langword="null"/> if the window isn't available, such as command line mode.</returns>
         private static IVsUIHierarchyWindow? GetUIHierarchyWindow(IServiceProvider serviceProvider, Guid persistenceSlot)
         {
-            Requires.NotNull(serviceProvider, nameof(serviceProvider));
+            Requires.NotNull(serviceProvider);
 
             if (serviceProvider is null)
             {

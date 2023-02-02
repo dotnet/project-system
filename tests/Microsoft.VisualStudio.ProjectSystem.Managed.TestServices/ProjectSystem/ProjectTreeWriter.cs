@@ -12,7 +12,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
         public ProjectTreeWriter(IProjectTree tree, ProjectTreeWriterOptions options)
         {
-            Requires.NotNull(tree, nameof(tree));
+            Requires.NotNull(tree);
 
             _parent = tree;
             _options = options;

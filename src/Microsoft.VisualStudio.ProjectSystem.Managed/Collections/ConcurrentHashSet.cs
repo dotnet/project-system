@@ -39,7 +39,7 @@ namespace System.Collections.Concurrent
 
         public bool AddRange(IEnumerable<T> elements)
         {
-            Requires.NotNull(elements, nameof(elements));
+            Requires.NotNull(elements);
 
             bool changed = false;
             foreach (var element in elements)

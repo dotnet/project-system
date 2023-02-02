@@ -39,12 +39,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Models
             IImmutableDictionary<string, string>? properties,
             bool isVisible = true)
         {
-            Requires.NotNullOrEmpty(caption, nameof(caption));
+            Requires.NotNullOrEmpty(caption);
 
             // IDependencyModel allows original item spec to be null, but we can satisfy a
             // more strict requirement for the dependency types produced internally.
             // External providers may not have a meaningful value, but do not use this type.
-            Requires.NotNullOrEmpty(originalItemSpec, nameof(originalItemSpec));
+            Requires.NotNullOrEmpty(originalItemSpec);
 
             Path = path;
             OriginalItemSpec = originalItemSpec;

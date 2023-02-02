@@ -19,7 +19,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Extensibility
 
         public T? GetExport<T>(string projectFilePath) where T : class
         {
-            Requires.NotNullOrEmpty(projectFilePath, nameof(projectFilePath));
+            Requires.NotNullOrEmpty(projectFilePath);
 
             IProjectService projectService = _projectServiceAccessor.GetProjectService();
 

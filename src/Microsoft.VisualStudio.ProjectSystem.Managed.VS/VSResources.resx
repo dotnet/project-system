@@ -276,6 +276,10 @@ In order to debug this project, add an executable project to this solution which
     <value>WARNING: Potential build performance issue in '{0}'. The project does not appear up-to-date after a successful build: {1}. See https://aka.ms/incremental-build-failure.</value>
     <comment>{0} is the file name of the project. {1} is a description of the failure. The period '.' after {1} is intentional and should be kept.</comment>
   </data>
+  <data name="BuildAccelerationSummary_2" xml:space="preserve">
+    <value>Visual Studio accelerated {0} project(s), copying {1} file(s). See https://aka.ms/vs-build-acceleration.</value>
+    <comment>{0} and {1} are both integer counts.</comment>
+  </data>
   <data name="UpdateNamespacePromptMessage" xml:space="preserve">
     <value>Adjust namespaces for moved files?</value>
   </data>

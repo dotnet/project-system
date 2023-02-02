@@ -44,7 +44,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.WindowsForms
 
         public async Task<IProjectSpecificEditorInfo?> GetSpecificEditorAsync(string documentMoniker)
         {
-            Requires.NotNullOrEmpty(documentMoniker, nameof(documentMoniker));
+            Requires.NotNullOrEmpty(documentMoniker);
 
             IProjectSpecificEditorInfo? editor = await GetDefaultEditorAsync(documentMoniker);
             if (editor is null)
@@ -61,7 +61,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.WindowsForms
 
         public async Task<bool> SetUseGlobalEditorAsync(string documentMoniker, bool useGlobalEditor)
         {
-            Requires.NotNullOrEmpty(documentMoniker, nameof(documentMoniker));
+            Requires.NotNullOrEmpty(documentMoniker);
 
             SubTypeDescriptor? editorInfo = await GetSubTypeDescriptorAsync(documentMoniker);
             if (editorInfo is null)

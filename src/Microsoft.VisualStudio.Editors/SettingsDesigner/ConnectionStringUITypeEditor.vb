@@ -216,8 +216,8 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' there exists sensitive information in the string and whether the user chooses to persist it
         '''</returns>
         Private Shared Function GetConnectionString(ServiceProvider As IServiceProvider, Dialog As IVsDataConnectionDialog, PromptIfContainsSensitiveData As Boolean) As String
-            Requires.NotNull(Dialog, NameOf(Dialog))
-            Requires.NotNull(ServiceProvider, NameOf(ServiceProvider))
+            Requires.NotNull(Dialog)
+            Requires.NotNull(ServiceProvider)
 
             Dim SafeConnectionString As String = Dialog.SafeConnectionString
 

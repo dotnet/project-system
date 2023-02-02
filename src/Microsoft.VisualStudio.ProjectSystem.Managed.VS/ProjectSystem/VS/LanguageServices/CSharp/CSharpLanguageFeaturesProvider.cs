@@ -53,7 +53,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices.CSharp
         /// </exception>
         public string MakeProperIdentifier(string name)
         {
-            Requires.NotNullOrEmpty(name, nameof(name));
+            Requires.NotNullOrEmpty(name);
 
             string identifier = string.Concat(name.Select(c => IsValidIdentifierChar(c) ? c : '_'));
             if (!IsValidFirstIdentifierChar(identifier[0]))
@@ -81,7 +81,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices.CSharp
         /// </exception>
         public string MakeProperNamespace(string name)
         {
-            Requires.NotNullOrEmpty(name, nameof(name));
+            Requires.NotNullOrEmpty(name);
 
             IEnumerable<string> namespaceNames = new LazyStringSplit(name, '.').Select(MakeProperIdentifier);
 
@@ -109,7 +109,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices.CSharp
         /// </exception>
         public string ConcatNamespaces(params string[] namespaceNames)
         {
-            Requires.NotNullEmptyOrNullElements(namespaceNames, nameof(namespaceNames));
+            Requires.NotNullEmptyOrNullElements(namespaceNames);
 
             return string.Join(".", namespaceNames.Where(name => name.Length > 0));
         }
