@@ -6,7 +6,7 @@ using Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Models;
 using Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot;
 using Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Subscriptions.RuleHandlers;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies;
-using EventData = System.Tuple<
+using EventData = System.ValueTuple<
     Microsoft.VisualStudio.ProjectSystem.IProjectSubscriptionUpdate,
     Microsoft.VisualStudio.ProjectSystem.IProjectSharedFoldersSnapshot,
     Microsoft.VisualStudio.ProjectSystem.Properties.IProjectCatalogSnapshot,
