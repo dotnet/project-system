@@ -145,12 +145,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Subscriptions
             }
         }
 
-        [ProjectAutoLoad(ProjectLoadCheckpoint.ProjectFactoryCompleted)]
-        [AppliesTo(ProjectCapability.DependenciesTree)]
-        public Task OnProjectFactoryCompletedAsync()
+        public Task InitializeSubscriptionsAsync()
         {
-            // The project factory is completing.
-
             // Subscribe to project data. Ensure the project doesn't unload during subscription.
             return _tasksService.LoadedProjectAsync(AddInitialSubscriptionsAsync);
 
