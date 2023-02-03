@@ -4,7 +4,7 @@
     <body>
       <trans-unit id="BuildAccelerationSummary_2">
         <source>Visual Studio accelerated {0} project(s), copying {1} file(s). See https://aka.ms/vs-build-acceleration.</source>
-        <target state="new">Visual Studio accelerated {0} project(s), copying {1} file(s). See https://aka.ms/vs-build-acceleration.</target>
+        <target state="translated">Visual Studio에서 가속화된 프로젝트 {0}개, 파일 {1}개 복사. 참조: https://aka.ms/vs-build-acceleration</target>
         <note>{0} and {1} are both integer counts.</note>
       </trans-unit>
       <trans-unit id="DefaultNewProfileName">
