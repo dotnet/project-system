@@ -22,6 +22,11 @@
         <target state="translated">네임스페이스 가져오기</target>
         <note />
       </trans-unit>
+      <trans-unit id="DynamicEnumProperty|ImportedNamespaces|ValueEditors|ValueEditor|Metadata|TypeDescriptorText|Value">
+        <source>Imported Namespaces</source>
+        <target state="new">Imported Namespaces</target>
+        <note />
+      </trans-unit>
       <trans-unit id="Rule|References|Description">
         <source>Specifies the project's references and namespace imports.</source>
         <target state="translated">프로젝트의 참조 및 네임스페이스 가져오기를 지정합니다.</target>

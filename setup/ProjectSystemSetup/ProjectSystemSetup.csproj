@@ -16,9 +16,6 @@
     <ExtensionInstallationFolder>Microsoft\ManagedProjectSystem</ExtensionInstallationFolder>
     <TargetVsixContainerName>$(AssemblyName).vsix</TargetVsixContainerName>
     <TargetVsixContainer>$(VisualStudioSetupInsertionPath)$(TargetVsixContainerName)</TargetVsixContainer>
-
-    <!-- This VSSDK project has custom build steps and should not be accelerated. -->
-    <AccelerateBuildsInVisualStudio>false</AccelerateBuildsInVisualStudio>
   </PropertyGroup>
 
   <!-- Local properties -->

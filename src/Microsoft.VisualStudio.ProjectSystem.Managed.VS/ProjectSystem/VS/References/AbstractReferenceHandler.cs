@@ -15,7 +15,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.References
         internal Task RemoveReferenceAsync(ConfiguredProject configuredProject,
             string itemSpecification)
         {
-            Requires.NotNull(configuredProject, nameof(configuredProject));
+            Requires.NotNull(configuredProject);
             Assumes.Present(configuredProject.Services);
 
             return RemoveReferenceAsync(configuredProject.Services, itemSpecification);
@@ -27,7 +27,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.References
         internal Task AddReferenceAsync(ConfiguredProject configuredProject,
             string itemSpecification)
         {
-            Requires.NotNull(configuredProject, nameof(configuredProject));
+            Requires.NotNull(configuredProject);
             Assumes.Present(configuredProject.Services);
 
             return AddReferenceAsync(configuredProject.Services, itemSpecification);
@@ -38,7 +38,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.References
 
         public Task<IEnumerable<IProjectItem>> GetUnresolvedReferencesAsync(ConfiguredProject selectedConfiguredProject)
         {
-            Requires.NotNull(selectedConfiguredProject, nameof(selectedConfiguredProject));
+            Requires.NotNull(selectedConfiguredProject);
             Assumes.Present(selectedConfiguredProject.Services);
 
             return GetUnresolvedReferencesAsync(selectedConfiguredProject.Services);

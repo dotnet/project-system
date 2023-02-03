@@ -21,7 +21,7 @@ namespace Microsoft.VisualStudio.Composition
         /// <returns>The safely constructed sequence of extensions.</returns>
         internal static IEnumerable<T> ExtensionValues<T>(this OrderPrecedenceImportCollection<T> extensions, bool onlyCreatedValues = false)
         {
-            Requires.NotNull(extensions, nameof(extensions));
+            Requires.NotNull(extensions);
             string traceErrorMessage = "Roslyn project system extension rejected due to exception: {0}";
 
             foreach (Lazy<T> extension in extensions)
@@ -53,7 +53,7 @@ namespace Microsoft.VisualStudio.Composition
 
         public static T? FirstOrDefaultValue<T>(this OrderPrecedenceImportCollection<T> imports, Func<T, bool> predicate) where T : class
         {
-            Requires.NotNull(imports, nameof(imports));
+            Requires.NotNull(imports);
 
             foreach (Lazy<T> import in imports)
             {
@@ -69,7 +69,7 @@ namespace Microsoft.VisualStudio.Composition
 
         public static TImport? FirstOrDefaultValue<TImport, TArg>(this OrderPrecedenceImportCollection<TImport> imports, Func<TImport, TArg, bool> predicate, TArg arg) where TImport : class
         {
-            Requires.NotNull(imports, nameof(imports));
+            Requires.NotNull(imports);
 
             foreach (Lazy<TImport> import in imports)
             {
@@ -85,7 +85,7 @@ namespace Microsoft.VisualStudio.Composition
 
         public static ImmutableArray<T> ToImmutableValueArray<T>(this OrderPrecedenceImportCollection<T> imports)
         {
-            Requires.NotNull(imports, nameof(imports));
+            Requires.NotNull(imports);
 
             ImmutableArray<T>.Builder builder = ImmutableArray.CreateBuilder<T>(imports.Count);
 

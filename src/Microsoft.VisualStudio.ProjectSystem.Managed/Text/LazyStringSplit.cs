@@ -23,7 +23,7 @@ namespace Microsoft.VisualStudio.Text
 
         public LazyStringSplit(string input, char delimiter)
         {
-            Requires.NotNull(input, nameof(input));
+            Requires.NotNull(input);
 
             _input = input;
             _delimiter = delimiter;

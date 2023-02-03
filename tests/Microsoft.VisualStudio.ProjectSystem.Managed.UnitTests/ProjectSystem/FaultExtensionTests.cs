@@ -9,22 +9,30 @@ namespace Microsoft.VisualStudio.ProjectSystem
         [Fact]
         public async Task RegisterFaultHandler_WhenBlockThrows_ReportsFault()
         {
-            Exception result = null!;
-            var faultHandler = IProjectFaultHandlerServiceFactory.ImplementHandleFaultAsync((ex, reportSettings, severity, project) => { result = ex; });
-            var thrownException = new Exception();
+            Exception? result = null;
+            var faultHandlerService = IProjectFaultHandlerServiceFactory.ImplementHandleFaultAsync((ex, reportSettings, severity, project) => { result = ex; });
+            var thrownException = new Exception(message: "Test");
 
             var block = DataflowBlockSlim.CreateActionBlock<string>(value =>
             {
                 throw thrownException;
             });
 
-            var faultTask = FaultExtensions.RegisterFaultHandlerAsync(faultHandler, block, null);
+            var faultTask = faultHandlerService.RegisterFaultHandlerAsync(block, project: null);
 
             await block.SendAsync("Hello");
 
             await faultTask;
 
-            Assert.Equal(result.GetBaseException(), thrownException);
+            Assert.NotNull(result);
+
+            // We don't want to assert the exact exception message as an AggregateException may append further text
+            // to the end.
+            Assert.StartsWith(
+                $"Project system data flow 'DataflowBlockSlim (ActionBlockSlimAsync`1 : {block.GetHashCode()})' closed because of an exception: Test.",
+                result.Message);
+
+            Assert.Same(thrownException, result.GetBaseException());
         }
     }
 }

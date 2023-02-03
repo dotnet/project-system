@@ -16,7 +16,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
 
         public BatchLogger(IManagedProjectDiagnosticOutputService outputService)
         {
-            Requires.NotNull(outputService, nameof(outputService));
+            Requires.NotNull(outputService);
 
             _outputService = outputService;
         }

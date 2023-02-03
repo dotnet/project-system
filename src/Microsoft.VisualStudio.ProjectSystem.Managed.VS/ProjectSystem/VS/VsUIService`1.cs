@@ -20,8 +20,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         [ImportingConstructor]
         public VsUIService([Import(typeof(SVsServiceProvider))] IServiceProvider serviceProvider, JoinableTaskContext joinableTaskContext)
         {
-            Requires.NotNull(serviceProvider, nameof(serviceProvider));
-            Requires.NotNull(joinableTaskContext, nameof(joinableTaskContext));
+            Requires.NotNull(serviceProvider);
+            Requires.NotNull(joinableTaskContext);
 
             _value = new Lazy<T>(() => (T)serviceProvider.GetService(ServiceType));
             _joinableTaskContext = joinableTaskContext;

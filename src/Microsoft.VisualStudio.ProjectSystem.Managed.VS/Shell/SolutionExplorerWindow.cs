@@ -57,7 +57,7 @@ namespace Microsoft.VisualStudio.Shell
 
         private HResult ExpandItem(IVsUIHierarchy uiHierarchy, HierarchyId id, EXPANDFLAGS flags)
         {
-            Requires.NotNull(uiHierarchy, nameof(uiHierarchy));
+            Requires.NotNull(uiHierarchy);
             Requires.Argument(!(id.IsNilOrEmpty || id.IsSelection), nameof(id), "id must not be nil, empty or represent a selection.");
 
             return Invoke(window => window.ExpandItem(uiHierarchy, id, flags));

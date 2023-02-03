@@ -34,7 +34,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
         /// </exception>
         public ActiveConfiguredObjects(ImmutableArray<T> objects, IImmutableSet<string> dimensionNames)
         {
-            Requires.NotNull(dimensionNames, nameof(dimensionNames));
+            Requires.NotNull(dimensionNames);
             Requires.Argument(!objects.IsDefaultOrEmpty, nameof(objects), "Must not be default or empty.");
 
             Objects = objects;

@@ -19,7 +19,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties.VisualBasic
             IDictionary<string, IEnumValue> valueMap,
             ICollection<IEnumValue>? getValues = null)
         {
-            Requires.NotNull(valueMap, nameof(valueMap));
+            Requires.NotNull(valueMap);
 
             _valueMap = valueMap;
             _getValues = getValues;

@@ -14,8 +14,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.Ordering
             IAddItemDialogService addItemDialogService,
             OrderAddItemHintReceiver orderAddItemHintReceiver)
         {
-            Requires.NotNull(addItemDialogService, nameof(addItemDialogService));
-            Requires.NotNull(orderAddItemHintReceiver, nameof(orderAddItemHintReceiver));
+            Requires.NotNull(addItemDialogService);
+            Requires.NotNull(orderAddItemHintReceiver);
 
             _addItemDialogService = addItemDialogService;
             _orderAddItemHintReceiver = orderAddItemHintReceiver;

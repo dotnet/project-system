@@ -1246,7 +1246,7 @@ Namespace Microsoft.VisualStudio.Editors.Common
         ''' </summary>
         ''' <param name="Hierarchy"></param>
         Private Function IsWCFReferenceValidInProject(Hierarchy As IVsHierarchy) As Boolean
-            Requires.NotNull(Hierarchy, NameOf(Hierarchy))
+            Requires.NotNull(Hierarchy)
 
             If TryCast(Hierarchy, WCFReference.Interop.IVsWCFMetadataStorageProvider) IsNot Nothing Then
                 Dim objIsServiceReferenceSupported As Object = Nothing
@@ -1273,7 +1273,7 @@ Namespace Microsoft.VisualStudio.Editors.Common
         ''' </summary>
         ''' <param name="Hierarchy"></param>
         Friend Function IsWebReferenceSupportedByDefaultInProject(Hierarchy As IVsHierarchy) As Boolean
-            Requires.NotNull(Hierarchy, NameOf(Hierarchy))
+            Requires.NotNull(Hierarchy)
 
             Dim objIsReferenceSupported As Object = Nothing
             Try
@@ -1298,7 +1298,7 @@ Namespace Microsoft.VisualStudio.Editors.Common
         ''' </summary>
         ''' <param name="Hierarchy"></param>
         Friend Function IsVbProject(Hierarchy As IVsHierarchy) As Boolean
-            Requires.NotNull(Hierarchy, NameOf(Hierarchy))
+            Requires.NotNull(Hierarchy)
 
             Dim langService As Guid = Guid.Empty
             Try
@@ -1565,7 +1565,7 @@ Namespace Microsoft.VisualStudio.Editors.Common
         End Function
 
         Friend Function GetSecurityZoneOfFile(path As String, serviceProvider As ServiceProvider) As Security.SecurityZone
-            Requires.NotNull(path, NameOf(path))
+            Requires.NotNull(path)
 
             If Not IO.Path.IsPathRooted(path) Then
                 Throw CreateArgumentException(NameOf(path))
@@ -1658,8 +1658,8 @@ Namespace Microsoft.VisualStudio.Editors.Common
             Private Shared ReadOnly s_knownTypes As Type() = {GetType(Size)}
 
             Public Shared Sub Serialize(stream As Stream, value As Object)
-                Requires.NotNull(stream, NameOf(stream))
-                Requires.NotNull(value, NameOf(value))
+                Requires.NotNull(stream)
+                Requires.NotNull(value)
                 Using writer As New BinaryWriter(stream, Encoding.UTF8, leaveOpen:=True)
                     Dim valueType = value.GetType()
                     writer.Write(valueType.AssemblyQualifiedName)
@@ -1669,7 +1669,7 @@ Namespace Microsoft.VisualStudio.Editors.Common
             End Sub
 
             Public Shared Function Deserialize(stream As Stream) As Object
-                Requires.NotNull(stream, NameOf(stream))
+                Requires.NotNull(stream)
                 If stream.Length = 0 Then
                     Throw New SerializationException("The stream contains no content.")
                 End If

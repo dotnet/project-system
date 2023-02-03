@@ -26,14 +26,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.References
 
         public Task<SupportedCheckResult> CanAddProjectReferenceAsync(object referencedProject)
         {
-            Requires.NotNull(referencedProject, nameof(referencedProject));
+            Requires.NotNull(referencedProject);
 
             return s_supported;
         }
 
         public Task<CanAddProjectReferencesResult> CanAddProjectReferencesAsync(IImmutableSet<object> referencedProjects)
         {
-            Requires.NotNullEmptyOrNullElements(referencedProjects, nameof(referencedProjects));
+            Requires.NotNullEmptyOrNullElements(referencedProjects);
 
             IImmutableDictionary<object, SupportedCheckResult> results = ImmutableDictionary.Create<object, SupportedCheckResult>();
 
@@ -47,7 +47,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.References
 
         public Task<SupportedCheckResult> CanBeReferencedAsync(object referencingProject)
         {
-            Requires.NotNull(referencingProject, nameof(referencingProject));
+            Requires.NotNull(referencingProject);
 
             return s_supported;
         }

@@ -26,7 +26,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
 
         public IEnumerable<string> GetImplicitlyActiveDimensions(IEnumerable<string> dimensionNames)
         {
-            Requires.NotNull(dimensionNames, nameof(dimensionNames));
+            Requires.NotNull(dimensionNames);
 
             ImmutableArray<string> builtInDimensions = _builtInImplicitlyActiveDimensions.Value;
 

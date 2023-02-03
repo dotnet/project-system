@@ -4,30 +4,28 @@ using Microsoft.VisualStudio.IO;
 
 namespace Microsoft.VisualStudio.ProjectSystem.UpToDate;
 
-/// <inheritdoc cref="ISolutionBuildContext" />
-[Export(typeof(ISolutionBuildEventListener))]
-[Export(typeof(ISolutionBuildContext))]
-internal sealed class SolutionBuildContext : ISolutionBuildEventListener, ISolutionBuildContext
+/// <summary>
+/// A context for the up-to-date check with the lifetime of the solution build, which
+/// may span multiple project builds.
+/// </summary>
+internal sealed class SolutionBuildContext
 {
-    private readonly IFileSystem _fileSystem;
 
-    public ITimestampCache? CopyItemTimestamps { get; private set; }
+    /// <summary>
+    /// A cache of timestamps for the absolute paths of both source and target of copy items
+    /// across all projects.
+    /// </summary>
+    /// <remarks>
+    /// In large solutions we end up checking many, many copy items. These items get their
+    /// own cache that lasts the duration of the solution build, rather than the default cache
+    /// which only lasts for the project build. This cache has a high hit rate. As project
+    /// builds complete, we clear each project's output items from the cache so that we re-query
+    /// them on the next call.
+    /// </remarks>
+    public ITimestampCache CopyItemTimestamps { get; }
 
-    [ImportingConstructor]
     public SolutionBuildContext(IFileSystem fileSystem)
     {
-        _fileSystem = fileSystem;
-    }
-
-    public void NotifySolutionBuildStarting(DateTime buildStartTimeUtc)
-    {
-        // Initialize a new timestamp cache for both sources and targets of copy items.
-        CopyItemTimestamps = new ConcurrentTimestampCache(_fileSystem);
-    }
-
-    public void NotifySolutionBuildCompleted()
-    {
-        // There may be many items in this collection. We don't have to retain them, so free them here.
-        CopyItemTimestamps = null;
+        CopyItemTimestamps = new ConcurrentTimestampCache(fileSystem);
     }
 }

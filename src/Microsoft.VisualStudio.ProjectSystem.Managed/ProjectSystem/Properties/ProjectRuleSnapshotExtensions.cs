@@ -14,8 +14,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         /// </summary>
         public static string GetPropertyOrEmpty(this IImmutableDictionary<string, string> properties, string name)
         {
-            Requires.NotNull(properties, nameof(properties));
-            Requires.NotNullOrEmpty(name, nameof(name));
+            Requires.NotNull(properties);
+            Requires.NotNullOrEmpty(name);
 
             return properties.GetValueOrDefault(name, string.Empty);
         }
@@ -26,9 +26,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         [return: NotNullIfNotNull(parameterName: "defaultValue")]
         public static string? GetPropertyOrDefault(this IImmutableDictionary<string, IProjectRuleSnapshot> snapshots, string ruleName, string propertyName, string? defaultValue)
         {
-            Requires.NotNull(snapshots, nameof(snapshots));
-            Requires.NotNullOrEmpty(ruleName, nameof(ruleName));
-            Requires.NotNullOrEmpty(propertyName, nameof(propertyName));
+            Requires.NotNull(snapshots);
+            Requires.NotNullOrEmpty(ruleName);
+            Requires.NotNullOrEmpty(propertyName);
 
             if (snapshots.TryGetValue(ruleName, out IProjectRuleSnapshot? snapshot) && snapshot.Properties.TryGetValue(propertyName, out string? value))
             {
@@ -47,9 +47,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         /// </summary>
         public static bool IsPropertyTrue(this IImmutableDictionary<string, IProjectRuleSnapshot> snapshots, string ruleName, string propertyName, bool defaultValue)
         {
-            Requires.NotNull(snapshots, nameof(snapshots));
-            Requires.NotNull(ruleName, nameof(ruleName));
-            Requires.NotNull(propertyName, nameof(propertyName));
+            Requires.NotNull(snapshots);
+            Requires.NotNull(ruleName);
+            Requires.NotNull(propertyName);
 
             string value = snapshots.GetPropertyOrDefault(ruleName, propertyName, defaultValue ? "true" : "false");
 
@@ -61,9 +61,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         /// </summary>
         public static bool? GetBooleanPropertyValue(this IImmutableDictionary<string, IProjectRuleSnapshot> snapshots, string ruleName, string propertyName)
         {
-            Requires.NotNull(snapshots, nameof(snapshots));
-            Requires.NotNull(ruleName, nameof(ruleName));
-            Requires.NotNull(propertyName, nameof(propertyName));
+            Requires.NotNull(snapshots);
+            Requires.NotNull(ruleName);
+            Requires.NotNull(propertyName);
 
             string? value = snapshots.GetPropertyOrDefault(ruleName, propertyName, defaultValue: null);
 
@@ -75,7 +75,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         /// </summary>
         public static IProjectRuleSnapshot GetSnapshotOrEmpty(this IImmutableDictionary<string, IProjectRuleSnapshot> snapshots, string ruleName)
         {
-            Requires.NotNull(snapshots, nameof(snapshots));
+            Requires.NotNull(snapshots);
 
             if (snapshots.TryGetValue(ruleName, out IProjectRuleSnapshot? result))
             {
@@ -87,7 +87,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
 
         public static bool HasChange(this IImmutableDictionary<string, IProjectChangeDescription> changesByRule)
         {
-            Requires.NotNull(changesByRule, nameof(changesByRule));
+            Requires.NotNull(changesByRule);
 
             foreach ((_, IProjectChangeDescription change) in changesByRule)
             {

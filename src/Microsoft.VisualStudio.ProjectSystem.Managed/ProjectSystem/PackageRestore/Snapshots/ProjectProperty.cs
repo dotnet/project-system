@@ -13,7 +13,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.PackageRestore
     {
         public ProjectProperty(string name, string value)
         {
-            Requires.NotNullOrEmpty(name, nameof(name));
+            Requires.NotNullOrEmpty(name);
 
             Name = name;
             Value = value;

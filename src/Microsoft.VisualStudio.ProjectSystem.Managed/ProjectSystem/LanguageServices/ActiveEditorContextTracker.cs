@@ -29,7 +29,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 
         public bool IsActiveEditorContext(string contextId)
         {
-            Requires.NotNullOrEmpty(contextId, nameof(contextId));
+            Requires.NotNullOrEmpty(contextId);
 
             if (!_contexts.Contains(contextId))
             {
@@ -41,7 +41,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 
         public IDisposable RegisterContext(string contextId)
         {
-            Requires.NotNullOrEmpty(contextId, nameof(contextId));
+            Requires.NotNullOrEmpty(contextId);
 
             bool changed = ThreadingTools.ApplyChangeOptimistically(ref _contexts, projectContexts =>
             {

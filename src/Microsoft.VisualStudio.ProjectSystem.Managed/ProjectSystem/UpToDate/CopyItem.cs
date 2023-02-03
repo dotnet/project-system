@@ -31,7 +31,7 @@ internal readonly struct CopyItem
 
     public CopyItem(string path, string targetPath, BuildUpToDateCheck.CopyType copyType, bool isBuildAccelerationOnly)
     {
-        Requires.NotNull(targetPath, nameof(targetPath));
+        Requires.NotNull(targetPath);
         System.Diagnostics.Debug.Assert(Path.IsPathRooted(path), "Path.IsPathRooted(path)");
         System.Diagnostics.Debug.Assert(!Path.IsPathRooted(targetPath), "!Path.IsPathRooted(targetPath)");
 

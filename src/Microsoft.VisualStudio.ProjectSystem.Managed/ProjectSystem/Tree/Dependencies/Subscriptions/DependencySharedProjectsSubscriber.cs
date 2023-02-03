@@ -78,9 +78,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Subscriptions
             TargetFramework targetFramework,
             DependenciesChangesBuilder changesBuilder)
         {
-            Requires.NotNull(sharedFolders, nameof(sharedFolders));
-            Requires.NotNull(targetFramework, nameof(targetFramework));
-            Requires.NotNull(changesBuilder, nameof(changesBuilder));
+            Requires.NotNull(sharedFolders);
+            Requires.NotNull(targetFramework);
+            Requires.NotNull(changesBuilder);
 
             DependenciesSnapshot snapshot = _dependenciesSnapshotProvider.CurrentSnapshot;
             if (!snapshot.DependenciesByTargetFramework.TryGetValue(targetFramework, out TargetedDependenciesSnapshot? targetedSnapshot))

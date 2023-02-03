@@ -322,7 +322,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
 
         private bool ValidateContractAnnotation(string? typeName, string contractName, ComposablePartDefinition part)
         {
-            Requires.NotNull(contractName, nameof(contractName));
+            Requires.NotNull(contractName);
 
             if (typeName is not null && ComponentComposition.Instance.Contracts.ContainsKey(typeName))
             {

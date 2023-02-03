@@ -706,7 +706,7 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";StringProperty|Output path|DisplayName" ItemType="0" PsrId="308" Leaf="true">
+      <Item ItemId=";StringProperty|OutputPath|DisplayName" ItemType="0" PsrId="308" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[Build output path]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">

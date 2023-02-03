@@ -25,10 +25,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
             IProjectThreadingService threadingService)
             : base(delegatedProvider, instanceProvider, project)
         {
-            Requires.NotNull(interceptingValueProviders, nameof(interceptingValueProviders));
-            Requires.NotNull(getActiveProjectId, nameof(getActiveProjectId));
-            Requires.NotNull(workspace, nameof(workspace));
-            Requires.NotNull(threadingService, nameof(threadingService));
+            Requires.NotNull(interceptingValueProviders);
+            Requires.NotNull(getActiveProjectId);
+            Requires.NotNull(workspace);
+            Requires.NotNull(threadingService);
 
             _interceptingValueProviders = interceptingValueProviders.ToImmutableArray();
             _project = project;

@@ -1318,8 +1318,8 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages.WPF
             Private ReadOnly _description As String
 
             Public Sub New(value As String, description As String)
-                Requires.NotNull(value, NameOf(value))
-                Requires.NotNull(description, NameOf(description))
+                Requires.NotNull(value)
+                Requires.NotNull(description)
 
                 _value = value
                 _description = description

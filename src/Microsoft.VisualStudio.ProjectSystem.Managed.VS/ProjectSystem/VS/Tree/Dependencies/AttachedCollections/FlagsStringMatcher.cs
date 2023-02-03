@@ -46,7 +46,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedColl
 
         public bool Matches(string flagsString)
         {
-            Requires.NotNull(flagsString, nameof(flagsString));
+            Requires.NotNull(flagsString);
 
             if (_regex is null)
             {

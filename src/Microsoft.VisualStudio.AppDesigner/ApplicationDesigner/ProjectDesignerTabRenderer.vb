@@ -121,7 +121,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' </summary>
         ''' <param name="owner">The ProjectDesignerTabControl control which owns and contains this control.</param>
         Public Sub New(owner As ProjectDesignerTabControl)
-            Requires.NotNull(owner, NameOf(owner))
+            Requires.NotNull(owner)
 
             _owner = owner
 

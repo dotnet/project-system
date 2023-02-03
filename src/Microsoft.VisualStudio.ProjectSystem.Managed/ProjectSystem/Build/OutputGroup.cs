@@ -15,10 +15,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.Build
         /// </summary>
         internal OutputGroup(string name, string targetName, string displayName, string? description, IImmutableList<KeyValuePair<string, IImmutableDictionary<string, string>>> items, bool successful)
         {
-            Requires.NotNullOrEmpty(name, nameof(name));
-            Requires.NotNullOrEmpty(targetName, nameof(targetName));
-            Requires.NotNullOrEmpty(displayName, nameof(displayName));
-            Requires.NotNull(items, nameof(items));
+            Requires.NotNullOrEmpty(name);
+            Requires.NotNullOrEmpty(targetName);
+            Requires.NotNullOrEmpty(displayName);
+            Requires.NotNull(items);
 
             Name = name;
             TargetName = targetName;

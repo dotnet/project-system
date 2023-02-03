@@ -13,8 +13,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies
         /// </summary>
         public static async Task<string?> GetBrowsePathAsync(UnconfiguredProject project, IProjectTree node)
         {
-            Requires.NotNull(project, nameof(project));
-            Requires.NotNull(node, nameof(node));
+            Requires.NotNull(project);
+            Requires.NotNull(node);
 
             string? path = await GetMaybeRelativeBrowsePathAsync(project, node);
             if (path is null)

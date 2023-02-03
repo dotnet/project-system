@@ -26,8 +26,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         /// </exception>
         public static string? GetMetadataValueOrNull(this BaseProperty property, string metadataName)
         {
-            Requires.NotNull(property, nameof(property));
-            Requires.NotNullOrEmpty(metadataName, nameof(metadataName));
+            Requires.NotNull(property);
+            Requires.NotNullOrEmpty(metadataName);
 
             return property.Metadata.FirstOrDefault(nvp => nvp.Name == metadataName)?.Value;
         }

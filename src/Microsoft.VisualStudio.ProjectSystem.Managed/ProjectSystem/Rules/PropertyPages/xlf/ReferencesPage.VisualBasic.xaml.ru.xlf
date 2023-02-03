@@ -22,6 +22,11 @@
         <target state="translated">Импортировать пространства имен</target>
         <note />
       </trans-unit>
+      <trans-unit id="DynamicEnumProperty|ImportedNamespaces|ValueEditors|ValueEditor|Metadata|TypeDescriptorText|Value">
+        <source>Imported Namespaces</source>
+        <target state="new">Imported Namespaces</target>
+        <note />
+      </trans-unit>
       <trans-unit id="Rule|References|Description">
         <source>Specifies the project's references and namespace imports.</source>
         <target state="translated">Определяет ссылки проекта и импорт пространства имен.</target>

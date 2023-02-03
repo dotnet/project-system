@@ -299,7 +299,7 @@ will be added as unchecked list items.
     <StringProperty.ValueEditors>
       <ValueEditor EditorType="MultiStringSelector">
         <ValueEditor.Metadata>
-          <NameValuePair Name="TypeDescriptorText" Value="Imported Namespaces" />
+          <NameValuePair Name="TypeDescriptorText" Value="Imported Namespaces" xliff:LocalizableProperties="Value" />
           <NameValuePair Name="AllowsCustomStrings" Value="True" />
         </ValueEditor.Metadata>
       </ValueEditor>

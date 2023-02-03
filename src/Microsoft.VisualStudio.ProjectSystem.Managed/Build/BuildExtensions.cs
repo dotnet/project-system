@@ -15,7 +15,7 @@ namespace Microsoft.VisualStudio.Build
         /// </exception>
         public static string GetUnescapedValue(this ProjectPropertyElement element)
         {
-            Requires.NotNull(element, nameof(element));
+            Requires.NotNull(element);
 
             return ProjectCollection.Unescape(element.Value);
         }

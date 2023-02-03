@@ -61,13 +61,18 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.UpToDate
         }
 
         /// <summary>
-        /// Called right before a project configuration starts building.
+        /// Called right before a project configuration starts building. Called even if the project is up-to-date.
         /// </summary>
         int IVsUpdateSolutionEvents2.UpdateProjectCfg_Begin(IVsHierarchy pHierProj, IVsCfg pCfgProj, IVsCfg pCfgSln, uint dwAction, ref int pfCancel)
         {
-            if (IsBuild(dwAction, out _))
+            if (IsBuild(dwAction, out bool isRebuild))
             {
                 IEnumerable<IProjectBuildEventListener>? listeners = FindActiveConfiguredProviders(pHierProj, out _);
+
+                // Notify the solution build listener that a project build is starting.
+                // Note there's no equivalent for build completion, as the fast up-to-date check handles
+                // that for the projects it tracks. We don't need to know when other project types complete.
+                _solutionBuildEventListener.NotifyProjectBuildStarting(isRebuild);
 
                 if (listeners is not null)
                 {
@@ -84,7 +89,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.UpToDate
         }
 
         /// <summary>
-        /// Called right after a project configuration is finished building.
+        /// Called right after a project configuration is finished building. Called even if the project is up-to-date.
         /// </summary>
         int IVsUpdateSolutionEvents2.UpdateProjectCfg_Done(IVsHierarchy pHierProj, IVsCfg pCfgProj, IVsCfg pCfgSln, uint dwAction, int fSuccess, int fCancel)
         {
@@ -148,20 +153,20 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.UpToDate
 
         int IVsUpdateSolutionEvents.UpdateSolution_StartUpdate(ref int pfCancelUpdate)
         {
-            _solutionBuildEventListener.NotifySolutionBuildStarting(DateTime.UtcNow);
+            _solutionBuildEventListener.NotifySolutionBuildStarting();
 
             return HResult.OK;
         }
         int IVsUpdateSolutionEvents.UpdateSolution_Done(int fSucceeded, int fModified, int fCancelCommand)
         {
-            _solutionBuildEventListener.NotifySolutionBuildCompleted();
+            _solutionBuildEventListener.NotifySolutionBuildCompleted(cancelled: false);
 
             return HResult.OK;
         }
 
         int IVsUpdateSolutionEvents.UpdateSolution_Cancel()
         {
-            _solutionBuildEventListener.NotifySolutionBuildCompleted();
+            _solutionBuildEventListener.NotifySolutionBuildCompleted(cancelled: true);
 
             return HResult.OK;
         }

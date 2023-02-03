@@ -11,9 +11,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
     {
         public Dependency(IDependencyModel dependencyModel)
         {
-            Requires.NotNull(dependencyModel, nameof(dependencyModel));
-            Requires.NotNullOrEmpty(dependencyModel.ProviderType, nameof(dependencyModel.ProviderType));
-            Requires.NotNullOrEmpty(dependencyModel.Id, nameof(dependencyModel.Id));
+            Requires.NotNull(dependencyModel);
+            Requires.NotNullOrEmpty(dependencyModel.ProviderType);
+            Requires.NotNullOrEmpty(dependencyModel.Id);
 
             Id = dependencyModel.Id;
 

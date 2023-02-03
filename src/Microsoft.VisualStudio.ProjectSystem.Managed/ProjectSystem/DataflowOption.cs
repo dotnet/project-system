@@ -37,7 +37,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
         /// </exception>
         public static StandardRuleDataflowLinkOptions WithRuleNames(IEnumerable<string> ruleNames)
         {
-            Requires.NotNull(ruleNames, nameof(ruleNames));
+            Requires.NotNull(ruleNames);
 
             return WithRuleNames(ImmutableHashSet.CreateRange(ruleNames));
         }
@@ -52,7 +52,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
         /// </exception>
         public static StandardRuleDataflowLinkOptions WithRuleNames(params string[] ruleNames)
         {
-            Requires.NotNull(ruleNames, nameof(ruleNames));
+            Requires.NotNull(ruleNames);
 
             return WithRuleNames(ImmutableHashSet.Create(ruleNames));
         }
@@ -67,7 +67,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
         /// </exception>
         public static StandardRuleDataflowLinkOptions WithRuleNames(IImmutableSet<string> ruleNames)
         {
-            Requires.NotNull(ruleNames, nameof(ruleNames));
+            Requires.NotNull(ruleNames);
 
             return new StandardRuleDataflowLinkOptions()
             {

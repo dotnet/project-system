@@ -341,8 +341,8 @@ Namespace Microsoft.VisualStudio.Editors.Common
         ''' <param name="editLocks">OUT: Number of edit locks on the document</param>
         ''' <param name="docCookie">OUT: A cookie for the doc, 0 if the doc isn't found in the RDT</param>
         Friend Shared Sub GetDocumentInfo(fileName As String, rdt As IVsRunningDocumentTable, ByRef hierarchy As IVsHierarchy, ByRef readLocks As UInteger, ByRef editLocks As UInteger, ByRef itemid As UInteger, ByRef docCookie As UInteger)
-            Requires.NotNull(fileName, NameOf(fileName))
-            Requires.NotNull(rdt, NameOf(rdt))
+            Requires.NotNull(fileName)
+            Requires.NotNull(rdt)
 
             '
             ' Initialize out parameters...
@@ -625,8 +625,8 @@ Namespace Microsoft.VisualStudio.Editors.Common
         ''' <param name="customToolName">Name of custom tool to look for</param>
         ''' <returns>True if registered, false otherwise</returns>
         Friend Shared Function IsCustomToolRegistered(hierarchy As IVsHierarchy, customToolName As String) As Boolean
-            Requires.NotNull(hierarchy, NameOf(hierarchy))
-            Requires.NotNull(customToolName, NameOf(customToolName))
+            Requires.NotNull(hierarchy)
+            Requires.NotNull(customToolName)
 
             ' All project systems support empty string (= no custom tool)
             If customToolName.Length = 0 Then Return True

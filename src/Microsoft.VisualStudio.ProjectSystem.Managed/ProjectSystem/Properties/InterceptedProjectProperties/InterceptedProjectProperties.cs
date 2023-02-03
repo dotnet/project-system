@@ -18,7 +18,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
             : base(defaultProperties)
         {
             _project = project;
-            Requires.NotNullOrEmpty(valueProviders, nameof(valueProviders));
+            Requires.NotNullOrEmpty(valueProviders);
 
             ImmutableDictionary<string, Providers>.Builder builder = 
                 ImmutableDictionary.CreateBuilder<string, Providers>(StringComparers.PropertyNames);

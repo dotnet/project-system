@@ -19,8 +19,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Subscriptions.R
             string evaluatedRuleName,
             string resolvedRuleName)
         {
-            Requires.NotNullOrWhiteSpace(evaluatedRuleName, nameof(evaluatedRuleName));
-            Requires.NotNullOrWhiteSpace(resolvedRuleName, nameof(resolvedRuleName));
+            Requires.NotNullOrWhiteSpace(evaluatedRuleName);
+            Requires.NotNullOrWhiteSpace(resolvedRuleName);
 
             EvaluatedRuleName = evaluatedRuleName;
             ResolvedRuleName = resolvedRuleName;
@@ -180,8 +180,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Subscriptions.R
             string projectFullPath,
             IImmutableDictionary<string, string> properties)
         {
-            Requires.NotNull(projectFullPath, nameof(projectFullPath));
-            Requires.NotNull(properties, nameof(properties));
+            Requires.NotNull(projectFullPath);
+            Requires.NotNull(properties);
             
             // Check for "IsImplicitlyDefined" metadata, which is available on certain items.
             bool? isImplicitMetadata = properties.GetBoolProperty(ProjectItemMetadata.IsImplicitlyDefined);

@@ -17,7 +17,7 @@ namespace Microsoft.VisualStudio.Buffers.PooledObjects
 
         private PooledStringBuilder(ObjectPool<PooledStringBuilder> pool)
         {
-            Requires.NotNull(pool, nameof(pool));
+            Requires.NotNull(pool);
             _pool = pool;
         }
 

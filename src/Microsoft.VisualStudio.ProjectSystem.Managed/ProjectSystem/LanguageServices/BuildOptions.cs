@@ -32,7 +32,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 
         public static BuildOptions FromCommandLineArguments(CommandLineArguments commandLineArguments)
         {
-            Requires.NotNull(commandLineArguments, nameof(commandLineArguments));
+            Requires.NotNull(commandLineArguments);
 
             return new BuildOptions(
                 commandLineArguments.SourceFiles,

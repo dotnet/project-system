@@ -10,6 +10,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
         internal sealed class Log
         {
             private readonly TextWriter _writer;
+            private readonly ISolutionBuildEventListener _solutionBuildEventListener;
             private readonly Stopwatch _stopwatch;
             private readonly TimeSpan _waitTime;
             private readonly TimestampCache _timestampCache;
@@ -28,10 +29,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             public string? FailureDescription { get; private set; }
             public FileSystemOperationAggregator? FileSystemOperations { get; set; }
 
-            public Log(TextWriter writer, LogLevel requestedLogLevel, Stopwatch stopwatch, TimeSpan waitTime, TimestampCache timestampCache, string projectPath, Guid projectGuid, ITelemetryService? telemetryService, UpToDateCheckConfiguredInput upToDateCheckConfiguredInput, string? ignoreKinds, int checkNumber)
+            public Log(TextWriter writer, LogLevel requestedLogLevel, ISolutionBuildEventListener solutionBuildEventListener, Stopwatch stopwatch, TimeSpan waitTime, TimestampCache timestampCache, string projectPath, Guid projectGuid, ITelemetryService? telemetryService, UpToDateCheckConfiguredInput upToDateCheckConfiguredInput, string? ignoreKinds, int checkNumber)
             {
                 _writer = writer;
                 Level = requestedLogLevel;
+                _solutionBuildEventListener = solutionBuildEventListener;
                 _stopwatch = stopwatch;
                 _waitTime = waitTime;
                 _timestampCache = timestampCache;
@@ -180,6 +182,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 // Minimal logging only includes failures.
                 Minimal(resourceName, values);
 
+                _solutionBuildEventListener.NotifyProjectChecked(
+                    upToDate: false,
+                    buildAccelerationEnabled: FileSystemOperations.IsAccelerationEnabled,
+                    result: FileSystemOperations.AccelerationResult,
+                    configurationCount: _upToDateCheckConfiguredInput.ImplicitInputs.Length,
+                    copyCount: 0,
+                    fileCount: _timestampCache.Count,
+                    waitTime: _waitTime,
+                    checkTime: _stopwatch.Elapsed,
+                    logLevel: Level);
+
                 // Send telemetry.
                 _telemetryService?.PostProperties(TelemetryEventName.UpToDateCheckFail, new[]
                 {
@@ -212,6 +225,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 Assumes.NotNull(FileSystemOperations);
 
                 _stopwatch.Stop();
+
+                _solutionBuildEventListener.NotifyProjectChecked(
+                    upToDate: true,
+                    buildAccelerationEnabled: FileSystemOperations.IsAccelerationEnabled,
+                    result: FileSystemOperations.AccelerationResult,
+                    copyCount: copyCount,
+                    configurationCount: _upToDateCheckConfiguredInput.ImplicitInputs.Length,
+                    fileCount: _timestampCache.Count,
+                    waitTime: _waitTime,
+                    checkTime: _stopwatch.Elapsed,
+                    logLevel: Level);
 
                 // Send telemetry.
                 _telemetryService?.PostProperties(TelemetryEventName.UpToDateCheckSuccess, new[]
@@ -246,18 +270,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                     _log.Indent--;
                 }
             }
-        }
-
-        public enum BuildAccelerationResult
-        {
-            // Disabled, not candidate
-            DisabledNotCandidate,
-            // Disabled, candidate
-            DisabledCandidate,
-            // Enabled, not accelerated
-            EnabledNotAccelerated,
-            // Enabled, accelerated
-            EnabledAccelerated
         }
     }
 }

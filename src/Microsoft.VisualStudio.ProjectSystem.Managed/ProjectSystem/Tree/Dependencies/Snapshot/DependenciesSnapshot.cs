@@ -34,8 +34,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
             ImmutableArray<TargetFramework> targetFrameworks,
             TargetFramework? activeTargetFramework)
         {
-            Requires.NotNull(previousSnapshot, nameof(previousSnapshot));
-            Requires.NotNull(changedTargetFramework, nameof(changedTargetFramework));
+            Requires.NotNull(previousSnapshot);
+            Requires.NotNull(changedTargetFramework);
 
             var builder = previousSnapshot.DependenciesByTargetFramework.ToBuilder();
 
@@ -147,8 +147,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
             TargetFramework activeTargetFramework,
             ImmutableDictionary<TargetFramework, TargetedDependenciesSnapshot> dependenciesByTargetFramework)
         {
-            Requires.NotNull(activeTargetFramework, nameof(activeTargetFramework));
-            Requires.NotNull(dependenciesByTargetFramework, nameof(dependenciesByTargetFramework));
+            Requires.NotNull(activeTargetFramework);
+            Requires.NotNull(dependenciesByTargetFramework);
 
 #if false
             // The validation in this #if/#endif block is sound in theory, however is causing quite a few NFEs.

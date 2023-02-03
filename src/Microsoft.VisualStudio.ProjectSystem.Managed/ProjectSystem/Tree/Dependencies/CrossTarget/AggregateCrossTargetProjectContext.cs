@@ -22,8 +22,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.CrossTarget
             ITargetFrameworkProvider targetFrameworkProvider)
         {
             Requires.Argument(!targetFrameworks.IsDefaultOrEmpty, nameof(targetFrameworks), "Must contain at least one item.");
-            Requires.NotNullOrEmpty(configuredProjectByTargetFramework, nameof(configuredProjectByTargetFramework));
-            Requires.NotNull(activeTargetFramework, nameof(activeTargetFramework));
+            Requires.NotNullOrEmpty(configuredProjectByTargetFramework);
+            Requires.NotNull(activeTargetFramework);
 
             if (!targetFrameworks.Contains(activeTargetFramework))
             {
