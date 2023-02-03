@@ -296,6 +296,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies
                         UnconfiguredProjectAsynchronousTasksService
                             .UnloadCancellationToken.ThrowIfCancellationRequested();
 
+                        await _dependenciesSnapshotProvider.InitializeSubscriptionsAsync();
+
                         lock (SyncObject)
                         {
                             Verify.NotDisposed(this);
