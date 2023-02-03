@@ -449,7 +449,7 @@
       </trans-unit>
       <trans-unit id="StringProperty|DefineConstants|ValueEditors|ValueEditor|Metadata|TypeDescriptorText|Value">
         <source>Custom symbols</source>
-        <target state="new">Custom symbols</target>
+        <target state="translated">Özel semboller</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|DocumentationFile|Description">
