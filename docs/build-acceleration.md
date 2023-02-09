@@ -140,4 +140,4 @@ We recommend enabling build acceleration for all projects in the solution, as de
 
 ## Giving feedback
 
-If you encounter an issue with build acceleration, please [file an issue](https://github.com/dotnet/project-system/issues/new/choose) and we will investigate whether it's something that can be addressed.
+If you encounter an issue with build acceleration, please review the [open issue list](https://github.com/dotnet/project-system/issues?q=is%3Aissue+label%3AFeature-Build-Acceleration) to see whether it already exists. If so you can vote and comment on that issue. Otherwise, [file a new issue](https://github.com/dotnet/project-system/issues/new/choose) and we will investigate whether it's something that can be addressed.
