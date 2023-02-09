@@ -6,9 +6,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
 {
     internal static class ProjectRestoreInfoFactory
     {
-        public static ProjectRestoreInfo Create()
+        public static ProjectRestoreInfo Create(string? msbuildProjectExtensionsPath = null)
         {
-            return new ProjectRestoreInfo(string.Empty, string.Empty, string.Empty,
+            return new ProjectRestoreInfo(msbuildProjectExtensionsPath ?? string.Empty, string.Empty, string.Empty,
                                           RestoreBuilder.EmptyTargetFrameworks,
                                           RestoreBuilder.EmptyReferences);
         }

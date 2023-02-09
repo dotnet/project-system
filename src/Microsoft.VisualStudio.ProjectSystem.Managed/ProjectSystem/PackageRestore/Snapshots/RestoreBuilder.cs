@@ -1,20 +1,19 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
 using Microsoft.VisualStudio.ProjectSystem.Properties;
-using NuGet.SolutionRestoreManager;
 
 namespace Microsoft.VisualStudio.ProjectSystem.PackageRestore
 {
     /// <summary>
-    ///     Contains builder methods for creating <see cref="IVsProjectRestoreInfo"/> instances.
+    ///     Contains builder methods for creating <see cref="ProjectRestoreInfo"/> instances.
     /// </summary>
     internal static class RestoreBuilder
     {
-        public static readonly IVsTargetFrameworks2 EmptyTargetFrameworks = new TargetFrameworks(Enumerable.Empty<IVsTargetFrameworkInfo3>());
-        public static readonly IVsReferenceItems EmptyReferences = new ReferenceItems(Enumerable.Empty<IVsReferenceItem>());
+        public static readonly ImmutableList<TargetFrameworkInfo> EmptyTargetFrameworks = ImmutableList<TargetFrameworkInfo>.Empty;
+        public static readonly ImmutableList<ReferenceItem> EmptyReferences = ImmutableList<ReferenceItem>.Empty;
 
         /// <summary>
-        ///     Converts an immutable dictionary of rule snapshot data into an <see cref="IVsProjectRestoreInfo"/> instance.
+        ///     Converts an immutable dictionary of rule snapshot data into an <see cref="ProjectRestoreInfo"/> instance.
         /// </summary>
         public static ProjectRestoreInfo ToProjectRestoreInfo(IImmutableDictionary<string, IProjectRuleSnapshot> update)
         {
@@ -31,7 +30,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.PackageRestore
             if (targetMoniker.Length == 0)
                 targetMoniker = properties.GetPropertyOrEmpty(NuGetRestore.TargetFrameworkMonikerProperty);
 
-            IVsTargetFrameworkInfo3 frameworkInfo = new TargetFrameworkInfo(
+            TargetFrameworkInfo frameworkInfo = new TargetFrameworkInfo(
                 targetMoniker,
                 ToReferenceItems(frameworkReferences.Items),
                 ToReferenceItems(packageDownloads.Items),
@@ -44,28 +43,28 @@ namespace Microsoft.VisualStudio.ProjectSystem.PackageRestore
                 properties.GetPropertyOrEmpty(NuGetRestore.MSBuildProjectExtensionsPathProperty),
                 properties.GetPropertyOrEmpty(NuGetRestore.ProjectAssetsFileProperty),
                 properties.GetPropertyOrEmpty(NuGetRestore.TargetFrameworksProperty),
-                new TargetFrameworks(new[] { frameworkInfo }),
+                EmptyTargetFrameworks.Add(frameworkInfo),
                 ToReferenceItems(toolReferences.Items));
         }
 
-        private static IVsProjectProperties ToProjectProperties(IImmutableDictionary<string, string> properties)
+        private static ImmutableList<ProjectProperty> ToProjectProperties(IImmutableDictionary<string, string> properties)
         {
-            return new ProjectProperties(properties.Select(v => new ProjectProperty(v.Key, v.Value)));
+            return ImmutableList.CreateRange(properties.Select(x => new ProjectProperty(x.Key, x.Value)));
         }
 
-        private static IVsReferenceItems ToReferenceItems(IImmutableDictionary<string, IImmutableDictionary<string, string>> items)
+        private static ImmutableList<ReferenceItem> ToReferenceItems(IImmutableDictionary<string, IImmutableDictionary<string, string>> items)
         {
-            return new ReferenceItems(items.Select(item => ToReferenceItem(item.Key, item.Value)));
+            return ImmutableList.CreateRange(items.Select(x => ToReferenceItem(x.Key, x.Value)));
         }
 
-        private static IVsReferenceItem ToReferenceItem(string name, IImmutableDictionary<string, string> metadata)
+        private static ReferenceItem ToReferenceItem(string name, IImmutableDictionary<string, string> metadata)
         {
             return new ReferenceItem(name, ToReferenceProperties(metadata));
         }
 
-        private static IVsReferenceProperties ToReferenceProperties(IImmutableDictionary<string, string> metadata)
+        private static ImmutableList<ReferenceProperty> ToReferenceProperties(IImmutableDictionary<string, string> metadata)
         {
-            return new ReferenceProperties(metadata.Select(property => new ReferenceProperty(property.Key, property.Value)));
+            return ImmutableList.CreateRange(metadata.Select(x => new ReferenceProperty(x.Key, x.Value)));
         }
     }
 }

@@ -1,18 +1,15 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
-using NuGet.SolutionRestoreManager;
-
 namespace Microsoft.VisualStudio.ProjectSystem.PackageRestore
 {
     /// <summary>
-    ///     Concrete implementation of <see cref="IVsProjectRestoreInfo2"/> that will be passed to
-    ///     <see cref="IVsSolutionRestoreService3.NominateProjectAsync(string, IVsProjectRestoreInfo2, System.Threading.CancellationToken)"/>.
+    ///     A complete set of restore data for a project.
     /// </summary>
-    internal class ProjectRestoreInfo : IVsProjectRestoreInfo2
+    internal class ProjectRestoreInfo
     {
         // If additional fields/properties are added to this class, please update RestoreHasher
 
-        public ProjectRestoreInfo(string msbuildProjectExtensionsPath, string projectAssetsFilePath, string originalTargetFrameworks, IVsTargetFrameworks2 targetFrameworks, IVsReferenceItems toolReferences)
+        public ProjectRestoreInfo(string msbuildProjectExtensionsPath, string projectAssetsFilePath, string originalTargetFrameworks, ImmutableList<TargetFrameworkInfo> targetFrameworks, ImmutableList<ReferenceItem> toolReferences)
         {
             MSBuildProjectExtensionsPath = msbuildProjectExtensionsPath;
             ProjectAssetsFilePath = projectAssetsFilePath;
@@ -27,15 +24,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.PackageRestore
 
         public string OriginalTargetFrameworks { get; }
 
-        public IVsTargetFrameworks2 TargetFrameworks { get; }
+        public ImmutableList<TargetFrameworkInfo> TargetFrameworks { get; }
 
-        public IVsReferenceItems ToolReferences { get; }
-
-        // We "rename" BaseIntermediatePath to avoid confusion for our usage, 
-        // because it actually represents "MSBuildProjectExtensionsPath"
-        string IVsProjectRestoreInfo2.BaseIntermediatePath
-        {
-            get { return MSBuildProjectExtensionsPath; }
-        }
+        public ImmutableList<ReferenceItem> ToolReferences { get; }
     }
 }

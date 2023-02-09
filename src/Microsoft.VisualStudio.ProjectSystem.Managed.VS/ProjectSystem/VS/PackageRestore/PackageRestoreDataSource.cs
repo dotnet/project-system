@@ -247,7 +247,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
 
             try
             {
-                return await _solutionRestoreService.NominateProjectAsync(_project.FullPath, restoreInfo, cancellationToken);
+                return await _solutionRestoreService.NominateProjectAsync(_project.FullPath, new ProjectRestoreInfoWrapper(restoreInfo), cancellationToken);
             }
             finally
             {

@@ -1,13 +1,12 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
 using Microsoft.VisualStudio.ProjectSystem.VS;
-using NuGet.SolutionRestoreManager;
 
 namespace Microsoft.VisualStudio.ProjectSystem.PackageRestore
 {
     internal static class RestoreLogger
     {
-        public static void BeginNominateRestore(IManagedProjectDiagnosticOutputService logger, string fullPath, IVsProjectRestoreInfo2 projectRestoreInfo)
+        public static void BeginNominateRestore(IManagedProjectDiagnosticOutputService logger, string fullPath, ProjectRestoreInfo projectRestoreInfo)
         {
             if (logger.IsEnabled)
             {
@@ -17,7 +16,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.PackageRestore
                 batch.WriteLine($"BEGIN Nominate Restore for {fullPath}");
                 batch.IndentLevel++;
 
-                batch.WriteLine($"MSBuildProjectExtensionsPath:     {projectRestoreInfo.BaseIntermediatePath}");
+                batch.WriteLine($"MSBuildProjectExtensionsPath:     {projectRestoreInfo.MSBuildProjectExtensionsPath}");
                 batch.WriteLine($"OriginalTargetFrameworks:         {projectRestoreInfo.OriginalTargetFrameworks}");
                 LogTargetFrameworks(batch, projectRestoreInfo.TargetFrameworks);
                 LogReferenceItems(batch, "Tool References", projectRestoreInfo.ToolReferences);
@@ -39,12 +38,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.PackageRestore
             }
         }
 
-        private static void LogTargetFrameworks(BatchLogger logger, IVsTargetFrameworks2 targetFrameworks)
+        private static void LogTargetFrameworks(BatchLogger logger, ImmutableList<TargetFrameworkInfo> targetFrameworks)
         {
             logger.WriteLine($"Target Frameworks ({targetFrameworks.Count})");
             logger.IndentLevel++;
 
-            foreach (IVsTargetFrameworkInfo2 tf in targetFrameworks)
+            foreach (TargetFrameworkInfo tf in targetFrameworks)
             {
                 LogTargetFramework(logger, tf);
             }
@@ -52,7 +51,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.PackageRestore
             logger.IndentLevel--;
         }
 
-        private static void LogTargetFramework(BatchLogger logger, IVsTargetFrameworkInfo2 targetFrameworkInfo)
+        private static void LogTargetFramework(BatchLogger logger, TargetFrameworkInfo targetFrameworkInfo)
         {
             logger.WriteLine(targetFrameworkInfo.TargetFrameworkMoniker);
             logger.IndentLevel++;
@@ -66,21 +65,21 @@ namespace Microsoft.VisualStudio.ProjectSystem.PackageRestore
             logger.IndentLevel--;
         }
 
-        private static void LogProperties(BatchLogger logger, string heading, IVsProjectProperties projectProperties)
+        private static void LogProperties(BatchLogger logger, string heading, ImmutableList<ProjectProperty> projectProperties)
         {
             IEnumerable<string> properties = projectProperties.Cast<ProjectProperty>()
                     .Select(prop => $"{prop.Name}:{prop.Value}");
             logger.WriteLine($"{heading} -- ({string.Join(" | ", properties)})");
         }
 
-        private static void LogReferenceItems(BatchLogger logger, string heading, IVsReferenceItems references)
+        private static void LogReferenceItems(BatchLogger logger, string heading, ImmutableList<ReferenceItem> references)
         {
             logger.WriteLine(heading);
             logger.IndentLevel++;
 
-            foreach (IVsReferenceItem reference in references)
+            foreach (ReferenceItem reference in references)
             {
-                IEnumerable<string> properties = reference.Properties.Cast<IVsReferenceProperty>()
+                IEnumerable<string> properties = reference.Properties.Cast<ReferenceProperty>()
                                                                      .Select(prop => $"{prop.Name}:{prop.Value}");
 
                 logger.WriteLine($"{reference.Name} -- ({string.Join(" | ", properties)})");

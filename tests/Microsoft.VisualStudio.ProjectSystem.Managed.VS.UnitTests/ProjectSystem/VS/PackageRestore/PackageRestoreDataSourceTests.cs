@@ -40,13 +40,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
 
             var instance = CreateInitializedInstance(solutionRestoreService: solutionRestoreService);
 
-            var restoreInfo = ProjectRestoreInfoFactory.Create();
+            var restoreInfo = ProjectRestoreInfoFactory.Create(msbuildProjectExtensionsPath: @"C:\Alpha\Beta");
             var ConfigureInputs = PackageRestoreConfiguredInputFactory.Create(restoreInfo);
             var value = IProjectVersionedValueFactory.Create(new PackageRestoreUnconfiguredInput(restoreInfo, ConfigureInputs!));
 
             await instance.RestoreAsync(value);
 
-            Assert.Same(restoreInfo, result);
+            Assert.NotNull(result);
+            Assert.Equal(expected: restoreInfo.MSBuildProjectExtensionsPath, actual: result.BaseIntermediatePath);
         }
 
         [Fact]
