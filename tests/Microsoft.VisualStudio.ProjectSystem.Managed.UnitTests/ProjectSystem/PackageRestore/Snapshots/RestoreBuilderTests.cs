@@ -1,26 +1,24 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
-using Microsoft.VisualStudio.ProjectSystem.PackageRestore;
+namespace Microsoft.VisualStudio.ProjectSystem.PackageRestore;
 
-namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
+public class RestoreBuilderTests
 {
-    public class RestoreBuilderTests
+    [Fact]
+    public void ToProjectRestoreInfo_WhenItemsAreMissing_ReturnsEmptyItemCollections()
     {
-        [Fact]
-        public void ToProjectRestoreInfo_WhenItemsAreMissing_ReturnsEmptyItemCollections()
-        {
-            var update = IProjectSubscriptionUpdateFactory.CreateEmpty();
+        var update = IProjectSubscriptionUpdateFactory.CreateEmpty();
 
-            var result = RestoreBuilder.ToProjectRestoreInfo(update.CurrentState);
+        var result = RestoreBuilder.ToProjectRestoreInfo(update.CurrentState);
 
-            AssertNoItems(result);
-        }
+        AssertNoItems(result);
+    }
 
-        [Fact]
-        public void ToProjectRestoreInfo_WhenNoItems_ReturnsEmptyItemCollections()
-        {
-            var update = IProjectSubscriptionUpdateFactory.FromJson(
-                """
+    [Fact]
+    public void ToProjectRestoreInfo_WhenNoItems_ReturnsEmptyItemCollections()
+    {
+        var update = IProjectSubscriptionUpdateFactory.FromJson(
+            """
                 {
                     "CurrentState": {
                         "ProjectReference": {
@@ -44,32 +42,32 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
                     }
                 }
                 """);
-            var result = RestoreBuilder.ToProjectRestoreInfo(update.CurrentState);
+        var result = RestoreBuilder.ToProjectRestoreInfo(update.CurrentState);
 
-            AssertNoItems(result);
-        }
+        AssertNoItems(result);
+    }
 
-        [Fact]
-        public void ToProjectRestoreInfo_WhenNuGetRestoreRuleMissing_ReturnsEmpty()
-        {
-            var update = IProjectSubscriptionUpdateFactory.CreateEmpty();
-            var result = RestoreBuilder.ToProjectRestoreInfo(update.CurrentState);
+    [Fact]
+    public void ToProjectRestoreInfo_WhenNuGetRestoreRuleMissing_ReturnsEmpty()
+    {
+        var update = IProjectSubscriptionUpdateFactory.CreateEmpty();
+        var result = RestoreBuilder.ToProjectRestoreInfo(update.CurrentState);
 
-            Assert.Empty(result.MSBuildProjectExtensionsPath);
-            Assert.Empty(result.OriginalTargetFrameworks);
-            Assert.Single(result.TargetFrameworks);
+        Assert.Empty(result.MSBuildProjectExtensionsPath);
+        Assert.Empty(result.OriginalTargetFrameworks);
+        Assert.Single(result.TargetFrameworks);
 
-            var targetFramework = result.TargetFrameworks[0];
+        var targetFramework = result.TargetFrameworks[0];
 
-            Assert.Empty(targetFramework.TargetFrameworkMoniker);
-            Assert.Empty(targetFramework.Properties);
-        }
+        Assert.Empty(targetFramework.TargetFrameworkMoniker);
+        Assert.Empty(targetFramework.Properties);
+    }
 
-        [Fact]
-        public void ToProjectRestoreInfo_RespectsNuGetTargetMonikerIfPresent()
-        {
-            var update = IProjectSubscriptionUpdateFactory.FromJson(
-                """
+    [Fact]
+    public void ToProjectRestoreInfo_RespectsNuGetTargetMonikerIfPresent()
+    {
+        var update = IProjectSubscriptionUpdateFactory.FromJson(
+            """
                 {
                     "CurrentState": {
                         "NuGetRestore": {
@@ -81,17 +79,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
                     }
                 }
                 """);
-            var result = RestoreBuilder.ToProjectRestoreInfo(update.CurrentState);
-            var targetFramework = result.TargetFrameworks[0];
+        var result = RestoreBuilder.ToProjectRestoreInfo(update.CurrentState);
+        var targetFramework = result.TargetFrameworks[0];
 
-            Assert.Equal("UWP, Version=v10", targetFramework.TargetFrameworkMoniker);
-        }
+        Assert.Equal("UWP, Version=v10", targetFramework.TargetFrameworkMoniker);
+    }
 
-        [Fact]
-        public void ToProjectRestoreInfo_SetsCoreProperties()
-        {
-            var update = IProjectSubscriptionUpdateFactory.FromJson(
-                """
+    [Fact]
+    public void ToProjectRestoreInfo_SetsCoreProperties()
+    {
+        var update = IProjectSubscriptionUpdateFactory.FromJson(
+            """
                 {
                     "CurrentState": {
                         "NuGetRestore": {
@@ -104,22 +102,22 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
                     }
                 }
                 """);
-            var result = RestoreBuilder.ToProjectRestoreInfo(update.CurrentState);
+        var result = RestoreBuilder.ToProjectRestoreInfo(update.CurrentState);
 
-            Assert.Equal("C:\\Project\\obj", result.MSBuildProjectExtensionsPath);
-            Assert.Equal("net45", result.OriginalTargetFrameworks);
-            Assert.Single(result.TargetFrameworks);
+        Assert.Equal("C:\\Project\\obj", result.MSBuildProjectExtensionsPath);
+        Assert.Equal("net45", result.OriginalTargetFrameworks);
+        Assert.Single(result.TargetFrameworks);
 
-            var targetFramework = result.TargetFrameworks[0];
+        var targetFramework = result.TargetFrameworks[0];
 
-            Assert.Equal(".NETFramework, Version=v4.5", targetFramework.TargetFrameworkMoniker);
-        }
+        Assert.Equal(".NETFramework, Version=v4.5", targetFramework.TargetFrameworkMoniker);
+    }
 
-        [Fact]
-        public void ToProjectRestoreInfo_WhenEmpty_SetsCorePropertiesToEmpty()
-        {
-            var update = IProjectSubscriptionUpdateFactory.FromJson(
-                """
+    [Fact]
+    public void ToProjectRestoreInfo_WhenEmpty_SetsCorePropertiesToEmpty()
+    {
+        var update = IProjectSubscriptionUpdateFactory.FromJson(
+            """
                 {
                     "CurrentState": {
                         "NuGetRestore": {
@@ -132,22 +130,22 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
                     }
                 }
                 """);
-            var result = RestoreBuilder.ToProjectRestoreInfo(update.CurrentState);
+        var result = RestoreBuilder.ToProjectRestoreInfo(update.CurrentState);
 
-            Assert.Empty(result.MSBuildProjectExtensionsPath);
-            Assert.Empty(result.OriginalTargetFrameworks);
-            Assert.Single(result.TargetFrameworks);
+        Assert.Empty(result.MSBuildProjectExtensionsPath);
+        Assert.Empty(result.OriginalTargetFrameworks);
+        Assert.Single(result.TargetFrameworks);
 
-            var targetFramework = result.TargetFrameworks[0];
+        var targetFramework = result.TargetFrameworks[0];
 
-            Assert.Empty(targetFramework.TargetFrameworkMoniker);
-        }
+        Assert.Empty(targetFramework.TargetFrameworkMoniker);
+    }
 
-        [Fact]
-        public void ToProjectRestoreInfo_SetsTargetFrameworkProperties()
-        {   // All NuGetRestore properties end up in the "target framework" property bag
-            var update = IProjectSubscriptionUpdateFactory.FromJson(
-                """
+    [Fact]
+    public void ToProjectRestoreInfo_SetsTargetFrameworkProperties()
+    {   // All NuGetRestore properties end up in the "target framework" property bag
+        var update = IProjectSubscriptionUpdateFactory.FromJson(
+            """
                 {
                     "CurrentState": {
                         "NuGetRestore": {
@@ -159,21 +157,21 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
                     }
                 }
                 """);
-            var result = RestoreBuilder.ToProjectRestoreInfo(update.CurrentState);
+        var result = RestoreBuilder.ToProjectRestoreInfo(update.CurrentState);
 
-            Assert.Single(result.TargetFrameworks);
+        Assert.Single(result.TargetFrameworks);
 
-            var properties = result.TargetFrameworks[0].Properties;
+        var properties = result.TargetFrameworks[0].Properties;
 
-            AssertContainsProperty("Property", "Value", properties);
-            AssertContainsProperty("AnotherProperty", "AnotherValue", properties);
-        }
+        AssertContainsProperty("Property", "Value", properties);
+        AssertContainsProperty("AnotherProperty", "AnotherValue", properties);
+    }
 
-        [Fact]
-        public void ToProjectRestoreInfo_SetsToolReferences()
-        {
-            var update = IProjectSubscriptionUpdateFactory.FromJson(
-                """
+    [Fact]
+    public void ToProjectRestoreInfo_SetsToolReferences()
+    {
+        var update = IProjectSubscriptionUpdateFactory.FromJson(
+            """
                 {
                     "CurrentState": {
                         "DotNetCliToolReference": {
@@ -192,29 +190,29 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
                     }
                 }
                 """);
-            var result = RestoreBuilder.ToProjectRestoreInfo(update.CurrentState);
-            var references = result.ToolReferences;
+        var result = RestoreBuilder.ToProjectRestoreInfo(update.CurrentState);
+        var references = result.ToolReferences;
 
-            Assert.Equal(3, references.Count);
+        Assert.Equal(3, references.Count);
 
-            var toolReference1 = references.FirstOrDefault(r => r.Name == "ToolReference1");
-            Assert.NotNull(toolReference1);
-            AssertContainsProperty("Version", "1.0.0.0", toolReference1.Properties);
+        var toolReference1 = references.FirstOrDefault(r => r.Name == "ToolReference1");
+        Assert.NotNull(toolReference1);
+        AssertContainsProperty("Version", "1.0.0.0", toolReference1.Properties);
 
-            var toolReference2 = references.FirstOrDefault(r => r.Name == "ToolReference2");
-            Assert.NotNull(toolReference2);
-            AssertContainsProperty("Version", "2.0.0.0", toolReference2.Properties);
+        var toolReference2 = references.FirstOrDefault(r => r.Name == "ToolReference2");
+        Assert.NotNull(toolReference2);
+        AssertContainsProperty("Version", "2.0.0.0", toolReference2.Properties);
 
-            var toolReference3 = references.FirstOrDefault(r => r.Name == "ToolReference3");
-            Assert.NotNull(toolReference3);
-            AssertContainsProperty("Name", "Value", toolReference3.Properties);
-        }
+        var toolReference3 = references.FirstOrDefault(r => r.Name == "ToolReference3");
+        Assert.NotNull(toolReference3);
+        AssertContainsProperty("Name", "Value", toolReference3.Properties);
+    }
 
-        [Fact]
-        public void ToProjectRestoreInfo_SetsPackageReferences()
-        {
-            var update = IProjectSubscriptionUpdateFactory.FromJson(
-                """
+    [Fact]
+    public void ToProjectRestoreInfo_SetsPackageReferences()
+    {
+        var update = IProjectSubscriptionUpdateFactory.FromJson(
+            """
                 {
                     "CurrentState": {
                         "CollectedPackageReference": {
@@ -233,32 +231,32 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
                     }
                 }
                 """);
-            var result = RestoreBuilder.ToProjectRestoreInfo(update.CurrentState);
+        var result = RestoreBuilder.ToProjectRestoreInfo(update.CurrentState);
 
-            Assert.Single(result.TargetFrameworks);
+        Assert.Single(result.TargetFrameworks);
 
-            var references = result.TargetFrameworks[0].PackageReferences;
+        var references = result.TargetFrameworks[0].PackageReferences;
 
-            Assert.Equal(3, references.Count);
+        Assert.Equal(3, references.Count);
 
-            var packageReference1 = references.FirstOrDefault(r => r.Name == "PackageReference1");
-            Assert.NotNull(packageReference1);
-            AssertContainsProperty("Version", "1.0.0.0", packageReference1.Properties);
+        var packageReference1 = references.FirstOrDefault(r => r.Name == "PackageReference1");
+        Assert.NotNull(packageReference1);
+        AssertContainsProperty("Version", "1.0.0.0", packageReference1.Properties);
 
-            var packageReference2 = references.FirstOrDefault(r => r.Name == "PackageReference2");
-            Assert.NotNull(packageReference2);
-            AssertContainsProperty("Version", "2.0.0.0", packageReference2.Properties);
+        var packageReference2 = references.FirstOrDefault(r => r.Name == "PackageReference2");
+        Assert.NotNull(packageReference2);
+        AssertContainsProperty("Version", "2.0.0.0", packageReference2.Properties);
 
-            var packageReference3 = references.FirstOrDefault(r => r.Name == "PackageReference3");
-            Assert.NotNull(packageReference3);
-            AssertContainsProperty("Name", "Value", packageReference3.Properties);
-        }
+        var packageReference3 = references.FirstOrDefault(r => r.Name == "PackageReference3");
+        Assert.NotNull(packageReference3);
+        AssertContainsProperty("Name", "Value", packageReference3.Properties);
+    }
 
-        [Fact]
-        public void ToProjectRestoreInfo_SetsCentralPackageVersions()
-        {
-            var update = IProjectSubscriptionUpdateFactory.FromJson(
-                """
+    [Fact]
+    public void ToProjectRestoreInfo_SetsCentralPackageVersions()
+    {
+        var update = IProjectSubscriptionUpdateFactory.FromJson(
+            """
                 {
                     "CurrentState": {
                         "CollectedPackageVersion": {
@@ -277,34 +275,34 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
                     }
                 }
                 """);
-            var result = RestoreBuilder.ToProjectRestoreInfo(update.CurrentState);
+        var result = RestoreBuilder.ToProjectRestoreInfo(update.CurrentState);
 
-            Assert.Single(result.TargetFrameworks);
+        Assert.Single(result.TargetFrameworks);
 
-            var versions = result.TargetFrameworks[0].CentralPackageVersions;
+        var versions = result.TargetFrameworks[0].CentralPackageVersions;
 
-            Assert.Equal(3, versions.Count);
+        Assert.Equal(3, versions.Count);
 
-            var reference1 = versions.FirstOrDefault(r => r.Name == "Newtonsoft.Json");
-            Assert.NotNull(reference1);
-            AssertContainsProperty("Version", "1.0", reference1.Properties);
+        var reference1 = versions.FirstOrDefault(r => r.Name == "Newtonsoft.Json");
+        Assert.NotNull(reference1);
+        AssertContainsProperty("Version", "1.0", reference1.Properties);
 
-            var reference2 = versions.FirstOrDefault(r => r.Name == "System.IO");
-            Assert.NotNull(reference2);
-            AssertContainsProperty("Version", "2.0", reference2.Properties);
+        var reference2 = versions.FirstOrDefault(r => r.Name == "System.IO");
+        Assert.NotNull(reference2);
+        AssertContainsProperty("Version", "2.0", reference2.Properties);
 
-            var reference3 = versions.FirstOrDefault(r => r.Name == "Microsoft.Extensions");
-            Assert.NotNull(reference3);
-            Assert.Equal("Microsoft.Extensions", reference3.Name);
+        var reference3 = versions.FirstOrDefault(r => r.Name == "Microsoft.Extensions");
+        Assert.NotNull(reference3);
+        Assert.Equal("Microsoft.Extensions", reference3.Name);
 
-            AssertContainsProperty("Version", "3.0", reference3.Properties);
-        }
+        AssertContainsProperty("Version", "3.0", reference3.Properties);
+    }
 
-        [Fact]
-        public void ToProjectRestoreInfo_SetsProjectReferences()
-        {
-            var update = IProjectSubscriptionUpdateFactory.FromJson(
-                """
+    [Fact]
+    public void ToProjectRestoreInfo_SetsProjectReferences()
+    {
+        var update = IProjectSubscriptionUpdateFactory.FromJson(
+            """
                 {
                     "CurrentState": {
                         "ProjectReference": {
@@ -324,33 +322,33 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
                     }
                 }
                 """);
-            var result = RestoreBuilder.ToProjectRestoreInfo(update.CurrentState);
+        var result = RestoreBuilder.ToProjectRestoreInfo(update.CurrentState);
 
-            Assert.Single(result.TargetFrameworks);
+        Assert.Single(result.TargetFrameworks);
 
-            var references = result.TargetFrameworks[0].ProjectReferences;
+        var references = result.TargetFrameworks[0].ProjectReferences;
 
-            Assert.Equal(3, references.Count);
+        Assert.Equal(3, references.Count);
 
-            var reference1 = references.FirstOrDefault(p => p.Name == "..\\Project\\Project1.csproj");
-            Assert.NotNull(reference1);
-            AssertContainsProperty("ProjectFileFullPath", "C:\\Solution\\Project\\Project1.csproj", reference1.Properties);
+        var reference1 = references.FirstOrDefault(p => p.Name == "..\\Project\\Project1.csproj");
+        Assert.NotNull(reference1);
+        AssertContainsProperty("ProjectFileFullPath", "C:\\Solution\\Project\\Project1.csproj", reference1.Properties);
 
-            var reference2 = references.FirstOrDefault(p => p.Name == "..\\Project\\Project2.csproj");
-            Assert.NotNull(reference2);
-            AssertContainsProperty("ProjectFileFullPath", "C:\\Solution\\Project\\Project2.csproj", reference2.Properties);
+        var reference2 = references.FirstOrDefault(p => p.Name == "..\\Project\\Project2.csproj");
+        Assert.NotNull(reference2);
+        AssertContainsProperty("ProjectFileFullPath", "C:\\Solution\\Project\\Project2.csproj", reference2.Properties);
 
-            var reference3 = references.FirstOrDefault(p => p.Name == "..\\Project\\Project3.csproj");
-            Assert.NotNull(reference3);
-            AssertContainsProperty("ProjectFileFullPath", "C:\\Solution\\Project\\Project3.csproj", reference3.Properties);
-            AssertContainsProperty("MetadataName", "MetadataValue", reference3.Properties);
-        }
+        var reference3 = references.FirstOrDefault(p => p.Name == "..\\Project\\Project3.csproj");
+        Assert.NotNull(reference3);
+        AssertContainsProperty("ProjectFileFullPath", "C:\\Solution\\Project\\Project3.csproj", reference3.Properties);
+        AssertContainsProperty("MetadataName", "MetadataValue", reference3.Properties);
+    }
 
-        [Fact]
-        public void ToProjectRestoreInfo_SetsFrameworkReferences()
-        {
-            var update = IProjectSubscriptionUpdateFactory.FromJson(
-                """
+    [Fact]
+    public void ToProjectRestoreInfo_SetsFrameworkReferences()
+    {
+        var update = IProjectSubscriptionUpdateFactory.FromJson(
+            """
                 {
                     "CurrentState": {
                         "CollectedFrameworkReference": {
@@ -365,28 +363,28 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
                     }
                 }
                 """);
-            var result = RestoreBuilder.ToProjectRestoreInfo(update.CurrentState);
+        var result = RestoreBuilder.ToProjectRestoreInfo(update.CurrentState);
 
-            Assert.Single(result.TargetFrameworks);
+        Assert.Single(result.TargetFrameworks);
 
-            var references = result.TargetFrameworks[0].FrameworkReferences;
+        var references = result.TargetFrameworks[0].FrameworkReferences;
 
-            Assert.Equal(2, references.Count);
+        Assert.Equal(2, references.Count);
 
-            var reference1 = references.FirstOrDefault(r => r.Name == "WindowsForms");
-            Assert.NotNull(reference1);
-            Assert.Empty(reference1.Properties);
+        var reference1 = references.FirstOrDefault(r => r.Name == "WindowsForms");
+        Assert.NotNull(reference1);
+        Assert.Empty(reference1.Properties);
 
-            var reference2 = references.FirstOrDefault(r => r.Name == "WPF");
-            Assert.NotNull(reference2);
-            AssertContainsProperty("PrivateAssets", "all", reference2.Properties);
-        }
+        var reference2 = references.FirstOrDefault(r => r.Name == "WPF");
+        Assert.NotNull(reference2);
+        AssertContainsProperty("PrivateAssets", "all", reference2.Properties);
+    }
 
-        [Fact]
-        public void ToProjectRestoreInfo_SetsPackageDownloads()
-        {
-            var update = IProjectSubscriptionUpdateFactory.FromJson(
-                """
+    [Fact]
+    public void ToProjectRestoreInfo_SetsPackageDownloads()
+    {
+        var update = IProjectSubscriptionUpdateFactory.FromJson(
+            """
                 {
                     "CurrentState": {
                         "CollectedPackageDownload": {
@@ -402,53 +400,52 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
                     }
                 }
                 """);
-            var result = RestoreBuilder.ToProjectRestoreInfo(update.CurrentState);
+        var result = RestoreBuilder.ToProjectRestoreInfo(update.CurrentState);
 
-            Assert.Single(result.TargetFrameworks);
+        Assert.Single(result.TargetFrameworks);
 
-            var downloads = result.TargetFrameworks[0].PackageDownloads;
+        var downloads = result.TargetFrameworks[0].PackageDownloads;
 
-            Assert.Equal(2, downloads.Count);
+        Assert.Equal(2, downloads.Count);
 
-            var download1 = downloads.FirstOrDefault(d => d.Name == "NuGet.Common");
-            Assert.NotNull(download1);
-            AssertContainsProperty("Version", "[4.0.0];[5.0.0]", download1.Properties);
+        var download1 = downloads.FirstOrDefault(d => d.Name == "NuGet.Common");
+        Assert.NotNull(download1);
+        AssertContainsProperty("Version", "[4.0.0];[5.0.0]", download1.Properties);
 
-            var download2 = downloads.FirstOrDefault(d => d.Name == "NuGet.Frameworks");
-            Assert.NotNull(download2);
-            AssertContainsProperty("Version", "[4.9.4]", download2.Properties);
-        }
+        var download2 = downloads.FirstOrDefault(d => d.Name == "NuGet.Frameworks");
+        Assert.NotNull(download2);
+        AssertContainsProperty("Version", "[4.9.4]", download2.Properties);
+    }
 
-        private static void AssertContainsProperty(string name, string value, ImmutableList<ProjectProperty> properties)
-        {
-            var property = properties.FirstOrDefault(p => p.Name == name);
+    private static void AssertContainsProperty(string name, string value, ImmutableList<ProjectProperty> properties)
+    {
+        var property = properties.FirstOrDefault(p => p.Name == name);
 
-            Assert.NotNull(property);
-            Assert.Equal(name, property.Name);
-            Assert.Equal(value, property.Value);
-        }
+        Assert.NotNull(property);
+        Assert.Equal(name, property.Name);
+        Assert.Equal(value, property.Value);
+    }
 
-        private static void AssertContainsProperty(string name, string value, ImmutableList<ReferenceProperty> properties)
-        {
-            var property = properties.FirstOrDefault(p => p.Name == name);
+    private static void AssertContainsProperty(string name, string value, ImmutableList<ReferenceProperty> properties)
+    {
+        var property = properties.FirstOrDefault(p => p.Name == name);
 
-            Assert.NotNull(property);
-            Assert.Equal(name, property.Name);
-            Assert.Equal(value, property.Value);
-        }
+        Assert.NotNull(property);
+        Assert.Equal(name, property.Name);
+        Assert.Equal(value, property.Value);
+    }
 
-        private static void AssertNoItems(ProjectRestoreInfo result)
-        {
-            Assert.Empty(result.ToolReferences);
-            Assert.Single(result.TargetFrameworks);
+    private static void AssertNoItems(ProjectRestoreInfo result)
+    {
+        Assert.Empty(result.ToolReferences);
+        Assert.Single(result.TargetFrameworks);
 
-            var targetFramework = result.TargetFrameworks[0];
+        var targetFramework = result.TargetFrameworks[0];
 
-            Assert.Empty(targetFramework.FrameworkReferences);
-            Assert.Empty(targetFramework.PackageDownloads);
-            Assert.Empty(targetFramework.PackageReferences);
-            Assert.Empty(targetFramework.ProjectReferences);
-            Assert.Empty(targetFramework.CentralPackageVersions);
-        }
+        Assert.Empty(targetFramework.FrameworkReferences);
+        Assert.Empty(targetFramework.PackageDownloads);
+        Assert.Empty(targetFramework.PackageReferences);
+        Assert.Empty(targetFramework.ProjectReferences);
+        Assert.Empty(targetFramework.CentralPackageVersions);
     }
 }
