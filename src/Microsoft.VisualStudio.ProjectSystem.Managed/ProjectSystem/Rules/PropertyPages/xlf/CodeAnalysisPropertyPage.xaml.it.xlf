@@ -18,8 +18,8 @@
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|EnforceCodeStyleInBuild|DisplayName">
-        <source>Enforce code style on build (experimental)</source>
-        <target state="translated">Applica stile codice durante la compilazione (sperimentale)</target>
+        <source>Enforce code style on build</source>
+        <target state="needs-review-translation">Applica stile codice durante la compilazione (sperimentale)</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|RunAnalyzersDuringBuild|Description">

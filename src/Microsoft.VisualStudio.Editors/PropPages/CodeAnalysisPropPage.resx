@@ -136,7 +136,7 @@
     <value>5</value>
   </data>
   <data name="EnforceCodeStyleInBuildCheckBox.Text" xml:space="preserve">
-    <value>Enforce CodeStyle on build (experimental)</value>
+    <value>Enforce CodeStyle on build</value>
   </data>
   <data name="&gt;&gt;EnforceCodeStyleInBuildCheckBox.Name" xml:space="preserve">
     <value>EnforceCodeStyleInBuildCheckBox</value>
