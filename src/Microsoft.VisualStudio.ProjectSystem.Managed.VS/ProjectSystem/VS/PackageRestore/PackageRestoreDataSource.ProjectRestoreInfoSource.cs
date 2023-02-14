@@ -6,16 +6,16 @@ using NuGet.SolutionRestoreManager;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
 {
-    internal partial class PackageRestoreDataSource : IVsProjectRestoreInfoSource
+    [Export(typeof(INuGetRestoreService))]
+    [Export(ExportContractNames.Scopes.UnconfiguredProject, typeof(IProjectDynamicLoadComponent))]
+    [AppliesTo(ProjectCapability.PackageReferences)]
+    internal class NuGetRestoreService : OnceInitializedOnceDisposed, INuGetRestoreService, IProjectDynamicLoadComponent, IVsProjectRestoreInfoSource
     {
-        /// <summary>
-        /// Re-usable task that completes when there is a new nomination
-        /// </summary>
-        private TaskCompletionSource<bool>? _whenNominatedTask;
-
-        private bool _restoreStarted;
-
-        private bool _wasSourceBlockContinuationSet;
+        private readonly UnconfiguredProject _project;
+        private readonly IVsSolutionRestoreService3 _solutionRestoreService3;
+        private readonly IVsSolutionRestoreService4 _solutionRestoreService4;
+        private readonly IProjectAsynchronousTasksService _projectAsynchronousTasksService;
+        
 
         /// <summary>
         /// Save the configured project versions that might get nominations.
@@ -23,18 +23,70 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
         private readonly Dictionary<ProjectConfiguration, IComparable> _savedNominatedConfiguredVersion = new();
 
         /// <summary>
-        /// Project Unique Name used by Nuget Nomination.
+        /// Re-usable task that completes when there is a new nomination
         /// </summary>
-        public string Name => _project.FullPath;
+        private TaskCompletionSource<bool>? _whenNominatedTask;
 
-        // True means the project system plans to call NominateProjectAsync in the future.
-        bool IVsProjectRestoreInfoSource.HasPendingNomination => CheckIfHasPendingNomination();
+        private bool _enabled;
+        private bool _restoring;
+        private bool _updatesCompleted;
 
-        // NuGet calls this method to wait project to nominate restoring.
-        // If the project has no pending restore data, it will return a completed task.
-        // Otherwise a task which will be completed once the project nominate the next restore
-        // the task will be cancelled, if the project system decide it no longer need restore (for example: the restore state has no change)
-        // the task will be failed, if the project system runs into a problem, so it cannot get correct data to nominate a restore (DT build failed)
+        [ImportingConstructor]
+        public NuGetRestoreService(
+            UnconfiguredProject project,
+            IVsSolutionRestoreService3 solutionRestoreService3,
+            IVsSolutionRestoreService4 solutionRestoreService4,
+            [Import(ExportContractNames.Scopes.UnconfiguredProject)] IProjectAsynchronousTasksService projectAsynchronousTasksService)
+        {
+            _project = project;
+            _solutionRestoreService3 = solutionRestoreService3;
+            _solutionRestoreService4 = solutionRestoreService4;
+            _projectAsynchronousTasksService = projectAsynchronousTasksService;
+        }
+
+        public async Task<bool> NominateAsync(ProjectRestoreInfo restoreData, IReadOnlyCollection<PackageRestoreConfiguredInput> inputVersions, CancellationToken cancellationToken)
+        {
+            try
+            {
+                _restoring = true;
+                
+                Task<bool> restoreOperation = _solutionRestoreService3.NominateProjectAsync(_project.FullPath, new ProjectRestoreInfoWrapper(restoreData), cancellationToken);
+                
+                SaveNominatedConfiguredVersions(inputVersions);
+
+                return await restoreOperation;
+            }
+            finally
+            {
+                _restoring = false;
+            }
+        }
+
+        public Task UpdateWithoutNominationAsync(IReadOnlyCollection<PackageRestoreConfiguredInput> inputVersions)
+        {
+            SaveNominatedConfiguredVersions(inputVersions);
+
+            return Task.CompletedTask;
+        }
+
+        public void UpdatesComplete()
+        {
+            lock (SyncObject)
+            {
+                _updatesCompleted = true;
+                _whenNominatedTask?.TrySetCanceled();
+            }
+        }
+
+        public void UpdatesFaulted(Exception e)
+        {
+            lock (SyncObject)
+            {
+                _updatesCompleted = true;
+                _whenNominatedTask?.SetException(e);
+            }
+        }
+
         public Task WhenNominated(CancellationToken cancellationToken)
         {
             lock (SyncObject)
@@ -50,77 +102,43 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
                 }
 
                 _whenNominatedTask ??= new TaskCompletionSource<bool>(TaskCreationOptions.RunContinuationsAsynchronously);
-
-                if (!_wasSourceBlockContinuationSet)
-                {
-                    _wasSourceBlockContinuationSet = true;
-
-                    _ = SourceBlock.Completion.ContinueWith(t =>
-                    {
-                        lock (SyncObject)
-                        {
-                            if (t.IsFaulted)
-                            {
-                                _whenNominatedTask?.SetException(t.Exception);
-                            }
-                            else
-                            {
-                                _whenNominatedTask?.TrySetCanceled();
-                            }
-                        }
-                    }, TaskScheduler.Default);
-                }
             }
 
             return _whenNominatedTask.Task.WithCancellation(cancellationToken);
         }
 
-        private void RegisterProjectRestoreInfoSource()
-        {
-            // Register before this project receives any data flows containing possible nominations.
-            // This is needed because we need to register before any nuget restore or before the solution load.
-#pragma warning disable RS0030 // Do not used banned APIs
-            var registerRestoreInfoSourceTask = Task.Run(async () =>
-            {
-                await _solutionRestoreService4.RegisterRestoreInfoSourceAsync(this, _projectAsynchronousTasksService.UnloadCancellationToken);
-            });
-#pragma warning restore RS0030 // Do not used banned APIs
+        public string Name => _project.FullPath;
 
-            _project.Services.FaultHandler.Forget(registerRestoreInfoSourceTask, _project, ProjectFaultSeverity.Recoverable);
+        public bool HasPendingNomination => CheckIfHasPendingNomination();
+
+        public Task LoadAsync()
+        {
+            _enabled = true;
+
+            EnsureInitialized();
+
+            return Task.CompletedTask;
         }
 
-        private bool CheckIfHasPendingNomination()
+        public Task UnloadAsync()
         {
             lock (SyncObject)
             {
-                Assumes.Present(_project.Services.ActiveConfiguredProjectProvider);
-                Assumes.Present(_project.Services.ActiveConfiguredProjectProvider.ActiveConfiguredProject);
+                _enabled = false;
 
-                // Nuget should not wait for projects that failed DTB
-                if (!_enabled || SourceBlock.Completion.IsFaulted || SourceBlock.Completion.IsCompleted)
-                {
-                    return false;
-                }
-
-                // Avoid possible deadlock.
-                // Because RestoreCoreAsync() is called inside a dataflow block it will not be called with new data
-                // until the old task finishes. So, if the project gets nominating restore, it will not get updated data.
-                if (IsPackageRestoreOnGoing())
-                {
-                    return false;
-                }
-
-                ConfiguredProject? activeConfiguredProject = _project.Services.ActiveConfiguredProjectProvider.ActiveConfiguredProject;
-
-                // After the first nomination, we should check the saved nominated version
-                return IsSavedNominationOutOfDate(activeConfiguredProject);
+                _whenNominatedTask?.TrySetCanceled();
             }
+
+            return Task.CompletedTask;
         }
 
-        private bool IsPackageRestoreOnGoing()
+        protected override void Initialize()
         {
-            // If NominateForRestoreAsync() has not finished, return false
-            return _restoreStarted;
+            RegisterProjectRestoreInfoSource();
+        }
+
+        protected override void Dispose(bool disposing)
+        {
         }
 
         private void SaveNominatedConfiguredVersions(IReadOnlyCollection<PackageRestoreConfiguredInput> configuredInputs)
@@ -144,7 +162,35 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
             }
         }
 
-        protected virtual bool IsSavedNominationOutOfDate(ConfiguredProject activeConfiguredProject)
+        private bool CheckIfHasPendingNomination()
+        {
+            lock (SyncObject)
+            {
+                Assumes.Present(_project.Services.ActiveConfiguredProjectProvider);
+                Assumes.Present(_project.Services.ActiveConfiguredProjectProvider.ActiveConfiguredProject);
+
+                // Nuget should not wait for projects that failed DTB
+                if (!_enabled || _updatesCompleted)
+                {
+                    return false;
+                }
+
+                // Avoid possible deadlock.
+                // Because RestoreCoreAsync() is called inside a dataflow block it will not be called with new data
+                // until the old task finishes. So, if the project gets nominating restore, it will not get updated data.
+                if (_restoring)
+                {
+                    return false;
+                }
+
+                ConfiguredProject? activeConfiguredProject = _project.Services.ActiveConfiguredProjectProvider.ActiveConfiguredProject;
+
+                // After the first nomination, we should check the saved nominated version
+                return IsSavedNominationOutOfDate(activeConfiguredProject);
+            }
+        }
+
+        private bool IsSavedNominationOutOfDate(ConfiguredProject activeConfiguredProject)
         {
             if (!_savedNominatedConfiguredVersion.TryGetValue(activeConfiguredProject.ProjectConfiguration,
                     out IComparable latestSavedVersionForActiveConfiguredProject) ||
@@ -152,13 +198,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
             {
                 return true;
             }
-
+            
             if (_savedNominatedConfiguredVersion.Count == 1)
             {
                 return false;
             }
 
-            foreach (var loadedProject in activeConfiguredProject.UnconfiguredProject.LoadedConfiguredProjects)
+            foreach (ConfiguredProject loadedProject in activeConfiguredProject.UnconfiguredProject.LoadedConfiguredProjects)
             {
                 if (_savedNominatedConfiguredVersion.TryGetValue(loadedProject.ProjectConfiguration, out IComparable savedProjectVersion))
                 {
@@ -172,52 +218,18 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
             return false;
         }
 
-        protected virtual bool IsProjectConfigurationVersionOutOfDate(IReadOnlyCollection<PackageRestoreConfiguredInput> configuredInputs)
+        private void RegisterProjectRestoreInfoSource()
         {
-            Assumes.Present(_project.Services.ActiveConfiguredProjectProvider);
-            Assumes.Present(_project.Services.ActiveConfiguredProjectProvider.ActiveConfiguredProject);
-
-            if (configuredInputs is null)
+            // Register before this project receives any data flows containing possible nominations.
+            // This is needed because we need to register before any nuget restore or before the solution load.
+#pragma warning disable RS0030 // Do not used banned APIs
+            var registerRestoreInfoSourceTask = Task.Run(async () =>
             {
-                return false;
-            }
+                await _solutionRestoreService4.RegisterRestoreInfoSourceAsync(this, _projectAsynchronousTasksService.UnloadCancellationToken);
+            });
+#pragma warning restore RS0030 // Do not used banned APIs
 
-            var activeConfiguredProject = _project.Services.ActiveConfiguredProjectProvider.ActiveConfiguredProject;
-
-            IComparable? activeProjectConfigurationVersionFromConfiguredInputs = null;
-            foreach (var configuredInput in configuredInputs)
-            {
-                if (configuredInput.ProjectConfiguration.Equals(activeConfiguredProject.ProjectConfiguration))
-                {
-                    activeProjectConfigurationVersionFromConfiguredInputs = configuredInput.ConfiguredProjectVersion;
-                }
-            }
-
-            if (activeProjectConfigurationVersionFromConfiguredInputs is null ||
-                activeConfiguredProject.ProjectVersion.IsLaterThan(
-                    activeProjectConfigurationVersionFromConfiguredInputs))
-            {
-                return true;
-            }
-
-            if (configuredInputs.Count == 1)
-            {
-                return false;
-            }
-
-            foreach (var loadedProject in activeConfiguredProject.UnconfiguredProject.LoadedConfiguredProjects)
-            {
-                foreach (var configuredInput in configuredInputs)
-                {
-                    if (loadedProject.ProjectConfiguration.Equals(configuredInput.ProjectConfiguration) &&
-                        loadedProject.ProjectVersion.IsLaterThan(configuredInput.ConfiguredProjectVersion))
-                    {
-                        return true;
-                    }
-                }
-            }
-
-            return false;
+            _project.Services.FaultHandler.Forget(registerRestoreInfoSourceTask, _project, ProjectFaultSeverity.Recoverable);
         }
     }
 }

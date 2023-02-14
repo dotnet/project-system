@@ -5,7 +5,6 @@ using Microsoft.VisualStudio.IO;
 using Microsoft.VisualStudio.ProjectSystem.PackageRestore;
 using Microsoft.VisualStudio.ProjectSystem.VS.UI.InfoBarService;
 using Microsoft.VisualStudio.Telemetry;
-using NuGet.SolutionRestoreManager;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore.Snapshots
 {
@@ -18,21 +17,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore.Snapshots
             UnconfiguredProject project, 
             IPackageRestoreUnconfiguredInputDataSource dataSource, 
             IProjectAsynchronousTasksService projectAsynchronousTasksService, 
-            IVsSolutionRestoreService3 solutionRestoreService, 
             IFileSystem fileSystem, 
             IManagedProjectDiagnosticOutputService logger, 
-            IVsSolutionRestoreService4 solutionRestoreService4, 
-            PackageRestoreSharedJoinableTaskCollection sharedJoinableTaskCollection) 
-            : base(featureFlagsService, telemetryService, infoBarService, project, dataSource, projectAsynchronousTasksService, solutionRestoreService, fileSystem, logger, solutionRestoreService4, sharedJoinableTaskCollection)
+            PackageRestoreSharedJoinableTaskCollection sharedJoinableTaskCollection,
+            INuGetRestoreService nuGetRestoreService)
+            : base(featureFlagsService, telemetryService, infoBarService, project, dataSource, projectAsynchronousTasksService, fileSystem, logger, sharedJoinableTaskCollection, nuGetRestoreService)
         {
         }
 
-        protected override bool IsProjectConfigurationVersionOutOfDate(System.Collections.Generic.IReadOnlyCollection<PackageRestoreConfiguredInput>? configuredInputs)
-        {
-            return false;
-        }
-
-        protected override bool IsSavedNominationOutOfDate(ConfiguredProject activeConfiguredProject)
+        protected override bool IsProjectConfigurationVersionOutOfDate(IReadOnlyCollection<PackageRestoreConfiguredInput>? configuredInputs)
         {
             return false;
         }
