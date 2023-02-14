@@ -120,13 +120,6 @@
         <target state="translated">UYARI: '{0}' içinde olası derleme performansı sorunu var. Proje, başarılı bir derlemeden sonra güncel görünmüyor: {1}. Bkz. https://aka.ms/incremental-build-failure.</target>
         <note>{0} is the file name of the project. {1} is a description of the failure. The period '.' after {1} is intentional and should be kept.</note>
       </trans-unit>
-      <trans-unit id="InfoBarMessageNuGetCycleDetected">
-        <source>A circular dependency A -&gt; B -&gt; A was detected during NuGet Restore which caused NuGet to stop restoring.
-Because the NuGet restore didn't finish correctly, the project might be in a bad state.</source>
-        <target state="translated">NuGet Geri Yükleme sırasında NuGet'in geri yükleme işlemini durdurmasına neden olan bir döngüsel bağımlılık A -&gt; B -&gt; A algılandı.
-NuGet geri yüklemesi doğru şekilde tamamlanmadığından proje kötü bir durumda olabilir.</target>
-        <note />
-      </trans-unit>
       <trans-unit id="ProjectHotReloadSessionManager_AttachingToProcess">
         <source>Attaching to process.</source>
         <target state="translated">İşleme ekleniyor.</target>

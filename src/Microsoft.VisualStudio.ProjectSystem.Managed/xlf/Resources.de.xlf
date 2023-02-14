@@ -468,6 +468,13 @@ Dieses Projekt wurde unter Verwendung des falschen Projekttyps geladen, wahrsche
         <target state="translated">Die Werte der Eigenschaften "TargetFrameworkMoniker" und "NuGetTargetMoniker" in der Konfiguration "{0}" sind beide leer. Diese Konfiguration wird bei der NuGet-Wiederherstellung nicht berücksichtigt, was zu Wiederherstellungs- und Buildfehlern führen kann.</target>
         <note />
       </trans-unit>
+      <trans-unit id="Restore_NuGetCycleDetected">
+        <source>A circular dependency A -&gt; B -&gt; A was detected during NuGet Restore which caused NuGet to stop restoring.
+Because the NuGet restore didn't finish correctly, the project might be in a bad state.</source>
+        <target state="new">A circular dependency A -&gt; B -&gt; A was detected during NuGet Restore which caused NuGet to stop restoring.
+Because the NuGet restore didn't finish correctly, the project might be in a bad state.</target>
+        <note />
+      </trans-unit>
       <trans-unit id="Restore_PropertyWithInconsistentValues">
         <source>The value of the '{0}' property is inconsistent between target frameworks. This property must be identical for NuGet restore to function correctly. The value '{1}' from the '{2}' configuration will be used, other target frameworks may fail to pick NuGet assets.</source>
         <target state="translated">Der Wert der Eigenschaft "{0}" ist zwischen Zielframeworks inkonsistent. Diese Eigenschaft muss identisch sein, damit die NuGet-Wiederherstellung ordnungsgemäß funktioniert. Der Wert "{1}" aus der {2}-Konfiguration wird verwendet, andere Zielframeworks wählen möglicherweise keine NuGet-Objekte aus.</target>

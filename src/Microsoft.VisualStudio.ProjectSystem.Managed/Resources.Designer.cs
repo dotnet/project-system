@@ -910,6 +910,16 @@ namespace Microsoft.VisualStudio {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to A circular dependency A -&gt; B -&gt; A was detected during NuGet Restore which caused NuGet to stop restoring.
+        ///Because the NuGet restore didn&apos;t finish correctly, the project might be in a bad state..
+        /// </summary>
+        internal static string Restore_NuGetCycleDetected {
+            get {
+                return ResourceManager.GetString("Restore_NuGetCycleDetected", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The value of the &apos;{0}&apos; property is inconsistent between target frameworks. This property must be identical for NuGet restore to function correctly. The value &apos;{1}&apos; from the &apos;{2}&apos; configuration will be used, other target frameworks may fail to pick NuGet assets..
         /// </summary>
         internal static string Restore_PropertyWithInconsistentValues {
