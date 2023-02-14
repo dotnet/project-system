@@ -2,8 +2,8 @@
 
 using Microsoft.Internal.VisualStudio.Shell.Interop;
 using Microsoft.VisualStudio.IO;
+using Microsoft.VisualStudio.Notifications;
 using Microsoft.VisualStudio.ProjectSystem.PackageRestore;
-using Microsoft.VisualStudio.ProjectSystem.VS.UI.InfoBarService;
 using Microsoft.VisualStudio.Telemetry;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore.Snapshots
@@ -13,7 +13,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore.Snapshots
         public PackageRestoreDataSourceMocked(
             IVsUIService<SVsFeatureFlags, IVsFeatureFlags> featureFlagsService,
             ITelemetryService telemetryService,
-            IInfoBarService infoBarService,
+            INonModalNotificationService nonModelNotificationService,
             UnconfiguredProject project, 
             IPackageRestoreUnconfiguredInputDataSource dataSource, 
             IProjectAsynchronousTasksService projectAsynchronousTasksService, 
@@ -21,7 +21,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore.Snapshots
             IManagedProjectDiagnosticOutputService logger, 
             PackageRestoreSharedJoinableTaskCollection sharedJoinableTaskCollection,
             INuGetRestoreService nuGetRestoreService)
-            : base(featureFlagsService, telemetryService, infoBarService, project, dataSource, projectAsynchronousTasksService, fileSystem, logger, sharedJoinableTaskCollection, nuGetRestoreService)
+            : base(featureFlagsService, telemetryService, nonModelNotificationService, project, dataSource, projectAsynchronousTasksService, fileSystem, logger, sharedJoinableTaskCollection, nuGetRestoreService)
         {
         }
 

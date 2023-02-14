@@ -5,10 +5,9 @@ using System.Threading.Tasks.Dataflow;
 using Microsoft.Internal.Performance;
 using Microsoft.Internal.VisualStudio.Shell.Interop;
 using Microsoft.VisualStudio.Composition;
-using Microsoft.VisualStudio.Imaging;
 using Microsoft.VisualStudio.IO;
+using Microsoft.VisualStudio.Notifications;
 using Microsoft.VisualStudio.ProjectSystem.PackageRestore;
-using Microsoft.VisualStudio.ProjectSystem.VS.UI.InfoBarService;
 using Microsoft.VisualStudio.Telemetry;
 using Microsoft.VisualStudio.Threading;
 
@@ -59,7 +58,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
         private readonly NuGetRestoreCycleDetector _cycleDetector = new();
         private readonly IVsUIService<SVsFeatureFlags, IVsFeatureFlags> _featureFlagsService;
         private readonly ITelemetryService _telemetryService;
-        private readonly IInfoBarService _infoBarService;
+        private readonly INonModalNotificationService _userNotificationService;
         private readonly UnconfiguredProject _project;
         private readonly IPackageRestoreUnconfiguredInputDataSource _dataSource;
         private readonly IProjectAsynchronousTasksService _projectAsynchronousTasksService;
@@ -76,7 +75,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
         public PackageRestoreDataSource(
             IVsUIService<SVsFeatureFlags, IVsFeatureFlags> featureFlagsService,
             ITelemetryService telemetryService,
-            IInfoBarService infoBarService,
+            INonModalNotificationService userNotificationService,
             UnconfiguredProject project,
             IPackageRestoreUnconfiguredInputDataSource dataSource,
             [Import(ExportContractNames.Scopes.UnconfiguredProject)] IProjectAsynchronousTasksService projectAsynchronousTasksService,
@@ -88,7 +87,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
         {
             _featureFlagsService = featureFlagsService;
             _telemetryService = telemetryService;
-            _infoBarService = infoBarService;
+            _userNotificationService = userNotificationService;
             _project = project;
             _dataSource = dataSource;
             _projectAsynchronousTasksService = projectAsynchronousTasksService;
@@ -193,9 +192,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
 
             SendTelemetry();
 
-            await _infoBarService.ShowInfoBarAsync(
+            await _userNotificationService.ShowErrorAsync(
                 VSResources.InfoBarMessageNuGetCycleDetected,
-                KnownMonikers.StatusError,
                 cancellationToken
             );
 

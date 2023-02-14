@@ -2,9 +2,9 @@
 
 using Microsoft.Internal.VisualStudio.Shell.Interop;
 using Microsoft.VisualStudio.IO;
+using Microsoft.VisualStudio.Notifications;
 using Microsoft.VisualStudio.ProjectSystem.PackageRestore;
 using Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore.Snapshots;
-using Microsoft.VisualStudio.ProjectSystem.VS.UI.InfoBarService;
 using Microsoft.VisualStudio.Telemetry;
 using NuGet.SolutionRestoreManager;
 
@@ -196,7 +196,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
             vsFeatureFlagsServiceService.SetupGet(m => m.Value).Returns(featureFlagServiceMock.Object);
 
             var telemetryService = (new Mock<ITelemetryService>()).Object;
-            var infoBarService = (new Mock<IInfoBarService>()).Object;
+            var nonModelNotificationService = (new Mock<INonModalNotificationService>()).Object;
             project ??= UnconfiguredProjectFactory.CreateWithActiveConfiguredProjectProvider(IProjectThreadingServiceFactory.Create());
             dataSource ??= IPackageRestoreUnconfiguredInputDataSourceFactory.Create();
             IProjectAsynchronousTasksService projectAsynchronousTasksService = IProjectAsynchronousTasksServiceFactory.Create();
@@ -208,7 +208,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
             return new PackageRestoreDataSourceMocked(
                 vsFeatureFlagsServiceService.Object,
                 telemetryService,
-                infoBarService,
+                nonModelNotificationService,
                 project,
                 dataSource,
                 projectAsynchronousTasksService,
