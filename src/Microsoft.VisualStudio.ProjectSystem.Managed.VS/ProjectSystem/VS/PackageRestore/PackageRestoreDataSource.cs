@@ -2,7 +2,6 @@
 
 using System.Diagnostics;
 using System.Threading.Tasks.Dataflow;
-using Microsoft.Internal.Performance;
 using Microsoft.Internal.VisualStudio.Shell.Interop;
 using Microsoft.VisualStudio.Composition;
 using Microsoft.VisualStudio.IO;
@@ -229,8 +228,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
             }
             finally
             {
-                CodeMarkers.Instance.CodeMarker(CodeMarkerTimerId.PerfPackageRestoreEnd);
-
                 RestoreLogger.EndNominateRestore(_logger, _project.FullPath);
             }
         }

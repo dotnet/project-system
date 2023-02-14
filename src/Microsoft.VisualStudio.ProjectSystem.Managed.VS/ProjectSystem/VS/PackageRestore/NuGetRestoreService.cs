@@ -1,5 +1,6 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
+using Microsoft.Internal.Performance;
 using Microsoft.VisualStudio.ProjectSystem.PackageRestore;
 using Microsoft.VisualStudio.Threading;
 using NuGet.SolutionRestoreManager;
@@ -57,6 +58,7 @@ internal class NuGetRestoreService : OnceInitializedOnceDisposed, INuGetRestoreS
         }
         finally
         {
+            CodeMarkers.Instance.CodeMarker(CodeMarkerTimerId.PerfPackageRestoreEnd);
             _restoring = false;
         }
     }
