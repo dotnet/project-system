@@ -2,7 +2,6 @@
 
 using System.Diagnostics;
 using System.Threading.Tasks.Dataflow;
-using Microsoft.Internal.VisualStudio.Shell.Interop;
 using Microsoft.VisualStudio.Composition;
 using Microsoft.VisualStudio.IO;
 using Microsoft.VisualStudio.Notifications;
@@ -55,7 +54,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
 
         private readonly Stopwatch _stopwatch = new();
         private readonly NuGetRestoreCycleDetector _cycleDetector = new();
-        private readonly IVsUIService<SVsFeatureFlags, IVsFeatureFlags> _featureFlagsService;
+        private readonly IProjectSystemOptions _projectSystemOptions;
         private readonly ITelemetryService _telemetryService;
         private readonly INonModalNotificationService _userNotificationService;
         private readonly UnconfiguredProject _project;
@@ -72,7 +71,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
 
         [ImportingConstructor]
         public PackageRestoreDataSource(
-            IVsUIService<SVsFeatureFlags, IVsFeatureFlags> featureFlagsService,
+            IProjectSystemOptions projectSystemOptions,
             ITelemetryService telemetryService,
             INonModalNotificationService userNotificationService,
             UnconfiguredProject project,
@@ -84,7 +83,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
             INuGetRestoreService nuGetRestoreService)
             : base(project, sharedJoinableTaskCollection, synchronousDisposal: true, registerDataSource: false)
         {
-            _featureFlagsService = featureFlagsService;
+            _projectSystemOptions = projectSystemOptions;
             _telemetryService = telemetryService;
             _userNotificationService = userNotificationService;
             _project = project;
@@ -173,7 +172,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
         {
             _stopwatch.Start();
 
-            bool enabled = await IsNuGetRestoreCycleDetectionEnabledAsync(cancellationToken);
+            bool enabled = await _projectSystemOptions.GetDetectNuGetRestoreCyclesAsync(cancellationToken);
 
             if (!enabled)
             {
@@ -207,15 +206,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
                     (TelemetryPropertyName.NuGetRestoreCycleDetected.RestoreCyclesDetected, _nuGetRestoreCyclesDetected)
                 });
             }
-        }
-
-        private async Task<bool> IsNuGetRestoreCycleDetectionEnabledAsync(CancellationToken cancellationToken)
-        {
-            await _project.Services.ThreadingPolicy.SwitchToUIThread(cancellationToken);
-
-            IVsFeatureFlags featureFlagsService = _featureFlagsService.Value;
-
-            return featureFlagsService.IsFeatureEnabled(FeatureFlagNames.EnableNuGetRestoreCycleDetection, defaultValue: false);
         }
 
         private async Task<bool> NominateForRestoreAsync(ProjectRestoreInfo restoreInfo, IReadOnlyCollection<PackageRestoreConfiguredInput> versions, CancellationToken cancellationToken)

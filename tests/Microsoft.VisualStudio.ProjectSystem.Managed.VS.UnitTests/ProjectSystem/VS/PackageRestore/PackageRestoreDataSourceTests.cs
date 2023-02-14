@@ -1,6 +1,5 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
-using Microsoft.Internal.VisualStudio.Shell.Interop;
 using Microsoft.VisualStudio.IO;
 using Microsoft.VisualStudio.Notifications;
 using Microsoft.VisualStudio.ProjectSystem.PackageRestore;
@@ -190,10 +189,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
             INuGetRestoreService? nuGetRestoreService = null,
             bool featureFlagEnabled = false)
         {
-            var featureFlagServiceMock = new Mock<IVsFeatureFlags>();
-            featureFlagServiceMock.Setup(m => m.IsFeatureEnabled(FeatureFlagNames.EnableNuGetRestoreCycleDetection, false)).Returns(featureFlagEnabled);
-            var vsFeatureFlagsServiceService = new Mock<IVsUIService<SVsFeatureFlags, IVsFeatureFlags>>();
-            vsFeatureFlagsServiceService.SetupGet(m => m.Value).Returns(featureFlagServiceMock.Object);
+            var projectSystemOptionsMock = new Mock<IProjectSystemOptions>();
+            projectSystemOptionsMock.Setup(o => o.GetDetectNuGetRestoreCyclesAsync(It.IsAny<CancellationToken>())).ReturnsAsync(featureFlagEnabled);
 
             var telemetryService = (new Mock<ITelemetryService>()).Object;
             var nonModelNotificationService = (new Mock<INonModalNotificationService>()).Object;
@@ -206,7 +203,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
             var sharedJoinableTaskCollection = new PackageRestoreSharedJoinableTaskCollection(IProjectThreadingServiceFactory.Create());
 
             return new PackageRestoreDataSourceMocked(
-                vsFeatureFlagsServiceService.Object,
+                projectSystemOptionsMock.Object,
                 telemetryService,
                 nonModelNotificationService,
                 project,
