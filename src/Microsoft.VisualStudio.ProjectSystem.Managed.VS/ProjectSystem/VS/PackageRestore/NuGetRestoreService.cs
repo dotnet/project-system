@@ -15,7 +15,6 @@ internal class NuGetRestoreService : OnceInitializedOnceDisposed, INuGetRestoreS
     private readonly IVsSolutionRestoreService3 _solutionRestoreService3;
     private readonly IVsSolutionRestoreService4 _solutionRestoreService4;
     private readonly IProjectAsynchronousTasksService _projectAsynchronousTasksService;
-    
 
     /// <summary>
     /// Save the configured project versions that might get nominations.
