@@ -1,7 +1,6 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
 using System.Diagnostics;
-using NuGet.SolutionRestoreManager;
 
 namespace Microsoft.VisualStudio.ProjectSystem.PackageRestore
 {
@@ -9,10 +8,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.PackageRestore
     ///     Represents the restore data for a single target framework in <see cref="UnconfiguredProject"/>.
     /// </summary>
     [DebuggerDisplay("TargetFrameworkMoniker = {TargetFrameworkMoniker}")]
-    internal class TargetFrameworkInfo : IVsTargetFrameworkInfo3
+    internal class TargetFrameworkInfo
     {
         // If additional fields/properties are added to this class, please update RestoreHasher
-        public TargetFrameworkInfo(string targetFrameworkMoniker, IVsReferenceItems frameworkReferences, IVsReferenceItems packageDownloads, IVsReferenceItems projectReferences, IVsReferenceItems packageReferences, IVsReferenceItems centralPackageVersions, IVsProjectProperties properties)
+        public TargetFrameworkInfo(string targetFrameworkMoniker, ImmutableArray<ReferenceItem> frameworkReferences, ImmutableArray<ReferenceItem> packageDownloads, ImmutableArray<ReferenceItem> projectReferences, ImmutableArray<ReferenceItem> packageReferences, ImmutableArray<ReferenceItem> centralPackageVersions, ImmutableArray<ProjectProperty> properties)
         {
             TargetFrameworkMoniker = targetFrameworkMoniker;
             FrameworkReferences = frameworkReferences;
@@ -25,16 +24,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.PackageRestore
 
         public string TargetFrameworkMoniker { get; }
 
-        public IVsReferenceItems FrameworkReferences { get; }
+        public ImmutableArray<ReferenceItem> FrameworkReferences { get; }
 
-        public IVsReferenceItems PackageDownloads { get; }
+        public ImmutableArray<ReferenceItem> PackageDownloads { get; }
 
-        public IVsReferenceItems PackageReferences { get; }
+        public ImmutableArray<ReferenceItem> PackageReferences { get; }
 
-        public IVsReferenceItems ProjectReferences { get; }
+        public ImmutableArray<ReferenceItem> ProjectReferences { get; }
 
-        public IVsReferenceItems CentralPackageVersions { get; }
+        public ImmutableArray<ReferenceItem> CentralPackageVersions { get; }
 
-        public IVsProjectProperties Properties { get; }
+        public ImmutableArray<ProjectProperty> Properties { get; }
     }
 }

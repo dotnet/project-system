@@ -27,8 +27,6 @@
   <ItemGroup>
     <!-- Needed to break assembly conflict on StreamJsonRpc between microsoft.visualstudio.projectsystem.query and microsoft.visualstudio.languageservices -->
     <PackageReference Include="Microsoft.VisualStudio.RpcContracts" />
-    <!-- NuGet Client apis for Package Restore -->
-    <PackageReference Include="NuGet.VisualStudio" />
   </ItemGroup>
 
   <!-- Dependencies -->
