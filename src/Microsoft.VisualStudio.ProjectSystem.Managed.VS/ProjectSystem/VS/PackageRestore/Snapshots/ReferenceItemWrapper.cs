@@ -11,18 +11,18 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore;
 ///     interface for NuGet.
 /// </summary>
 [DebuggerDisplay("Name = {Name}")]
-internal class ReferenceItemWrapper : IVsReferenceItem
+internal class VsReferenceItem : IVsReferenceItem
 {
     private readonly ReferenceItem _referenceItem;
 
-    private ReferencePropertiesWrapper? _properties;
+    private VsReferenceProperties? _properties;
 
-    public ReferenceItemWrapper(ReferenceItem referenceItem)
+    public VsReferenceItem(ReferenceItem referenceItem)
     {
         _referenceItem = referenceItem;
     }
 
     public string Name => _referenceItem.Name;
 
-    public IVsReferenceProperties Properties => _properties ??= new ReferencePropertiesWrapper(_referenceItem.Properties);
+    public IVsReferenceProperties Properties => _properties ??= new VsReferenceProperties(_referenceItem.Properties);
 }

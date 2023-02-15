@@ -11,33 +11,33 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore;
 ///     interface for NuGet;
 /// </summary>
 [DebuggerDisplay("TargetFrameworkMoniker = {TargetFrameworkMoniker}")]
-internal class TargetFrameworkInfoWrapper : IVsTargetFrameworkInfo3
+internal class VsTargetFrameworkInfo : IVsTargetFrameworkInfo3
 {
     private readonly TargetFrameworkInfo _targetFrameworkInfo;
     
-    private ReferenceItemsWrapper? _packageDownloads;
-    private ReferenceItemsWrapper? _frameworkReferences;
-    private ReferenceItemsWrapper? _projectReferences;
-    private ReferenceItemsWrapper? _packageReferences;
-    private ReferenceItemsWrapper? _centralPackageVersions;
-    private ProjectPropertiesWrapper? _properties;
+    private VsReferenceItems? _packageDownloads;
+    private VsReferenceItems? _frameworkReferences;
+    private VsReferenceItems? _projectReferences;
+    private VsReferenceItems? _packageReferences;
+    private VsReferenceItems? _centralPackageVersions;
+    private VsProjectProperties? _properties;
 
-    public TargetFrameworkInfoWrapper(TargetFrameworkInfo targetFrameworkInfo)
+    public VsTargetFrameworkInfo(TargetFrameworkInfo targetFrameworkInfo)
     {
         _targetFrameworkInfo = targetFrameworkInfo;
     }
 
-    public IVsReferenceItems PackageDownloads => _packageDownloads ??= new ReferenceItemsWrapper(_targetFrameworkInfo.PackageDownloads);
+    public IVsReferenceItems PackageDownloads => _packageDownloads ??= new VsReferenceItems(_targetFrameworkInfo.PackageDownloads);
 
-    public IVsReferenceItems FrameworkReferences => _frameworkReferences ??= new ReferenceItemsWrapper(_targetFrameworkInfo.FrameworkReferences);
+    public IVsReferenceItems FrameworkReferences => _frameworkReferences ??= new VsReferenceItems(_targetFrameworkInfo.FrameworkReferences);
 
     public string TargetFrameworkMoniker => _targetFrameworkInfo.TargetFrameworkMoniker;
 
-    public IVsReferenceItems ProjectReferences => _projectReferences ??= new ReferenceItemsWrapper(_targetFrameworkInfo.ProjectReferences);
+    public IVsReferenceItems ProjectReferences => _projectReferences ??= new VsReferenceItems(_targetFrameworkInfo.ProjectReferences);
 
-    public IVsReferenceItems PackageReferences => _packageReferences ??= new ReferenceItemsWrapper(_targetFrameworkInfo.PackageReferences);
+    public IVsReferenceItems PackageReferences => _packageReferences ??= new VsReferenceItems(_targetFrameworkInfo.PackageReferences);
 
-    public IVsProjectProperties Properties => _properties ??= new ProjectPropertiesWrapper(_targetFrameworkInfo.Properties);
+    public IVsProjectProperties Properties => _properties ??= new VsProjectProperties(_targetFrameworkInfo.Properties);
 
-    public IVsReferenceItems CentralPackageVersions => _centralPackageVersions ??= new ReferenceItemsWrapper(_targetFrameworkInfo.CentralPackageVersions);
+    public IVsReferenceItems CentralPackageVersions => _centralPackageVersions ??= new VsReferenceItems(_targetFrameworkInfo.CentralPackageVersions);
 }

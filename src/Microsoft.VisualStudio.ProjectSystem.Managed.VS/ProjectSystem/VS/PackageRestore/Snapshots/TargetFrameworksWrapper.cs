@@ -9,10 +9,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore;
 ///     Wraps a collection of <see cref="TargetFrameworkInfo"/> instances to implement the <see cref="IVsTargetFrameworks2"/>
 ///     interface for NuGet.
 /// </summary>
-internal class TargetFrameworksWrapper : ImmutablePropertyCollection<IVsTargetFrameworkInfo2, TargetFrameworkInfo>,  IVsTargetFrameworks2
+internal class VsTargetFrameworks : ImmutablePropertyCollection<IVsTargetFrameworkInfo2, TargetFrameworkInfo>,  IVsTargetFrameworks2
 {
-    public TargetFrameworksWrapper(ImmutableList<TargetFrameworkInfo> targetFrameworks)
-        : base(targetFrameworks, item => item.TargetFrameworkMoniker, item => new TargetFrameworkInfoWrapper(item))
+    public VsTargetFrameworks(ImmutableList<TargetFrameworkInfo> targetFrameworks)
+        : base(targetFrameworks, item => item.TargetFrameworkMoniker, item => new VsTargetFrameworkInfo(item))
     {
     }
 }

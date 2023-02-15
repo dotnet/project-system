@@ -11,11 +11,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore;
 ///     interface for NuGet.
 /// </summary>
 [DebuggerDisplay("{Name}: {Value}")]
-internal class ReferencePropertyWrapper : IVsReferenceProperty
+internal class VsReferenceProperty : IVsReferenceProperty
 {
     private readonly ReferenceProperty _property;
 
-    public ReferencePropertyWrapper(ReferenceProperty property)
+    public VsReferenceProperty(ReferenceProperty property)
     {
         _property = property;
     }

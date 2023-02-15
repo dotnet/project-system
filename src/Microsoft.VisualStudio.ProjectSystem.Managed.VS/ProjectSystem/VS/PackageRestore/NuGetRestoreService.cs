@@ -50,7 +50,7 @@ internal class NuGetRestoreService : OnceInitializedOnceDisposed, INuGetRestoreS
         {
             _restoring = true;
             
-            Task<bool> restoreOperation = _solutionRestoreService3.NominateProjectAsync(_project.FullPath, new ProjectRestoreInfoWrapper(restoreData), cancellationToken);
+            Task<bool> restoreOperation = _solutionRestoreService3.NominateProjectAsync(_project.FullPath, new VsProjectRestoreInfo(restoreData), cancellationToken);
             
             SaveNominatedConfiguredVersions(inputVersions);
 

@@ -9,10 +9,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore;
 ///     Wraps a collection of <see cref="ProjectProperty"/> instances to implement the <see cref="IVsProjectProperties"/>
 ///     interface for NuGet.
 /// </summary>
-internal class ProjectPropertiesWrapper : ImmutablePropertyCollection<IVsProjectProperty, ProjectProperty>, IVsProjectProperties
+internal class VsProjectProperties : ImmutablePropertyCollection<IVsProjectProperty, ProjectProperty>, IVsProjectProperties
 {
-    public ProjectPropertiesWrapper(ImmutableList<ProjectProperty> properties)
-        : base(properties, item => item.Name, item => new ProjectPropertyWrapper(item))
+    public VsProjectProperties(ImmutableList<ProjectProperty> properties)
+        : base(properties, item => item.Name, item => new VsProjectProperty(item))
     {
     }
 }

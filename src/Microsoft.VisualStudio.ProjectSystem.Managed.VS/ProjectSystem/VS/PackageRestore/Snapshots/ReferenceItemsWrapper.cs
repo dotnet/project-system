@@ -9,10 +9,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore;
 ///     Wraps a collection of <see cref="ReferenceItem"/> instances to implement the <see cref="IVsReferenceItems"/>
 ///     interface for NuGet.
 /// </summary>
-internal class ReferenceItemsWrapper : ImmutablePropertyCollection<IVsReferenceItem, ReferenceItem>, IVsReferenceItems
+internal class VsReferenceItems : ImmutablePropertyCollection<IVsReferenceItem, ReferenceItem>, IVsReferenceItems
 {
-    public ReferenceItemsWrapper(ImmutableList<ReferenceItem> referenceItems)
-        : base(referenceItems, item => item.Name, item => new ReferenceItemWrapper(item))
+    public VsReferenceItems(ImmutableList<ReferenceItem> referenceItems)
+        : base(referenceItems, item => item.Name, item => new VsReferenceItem(item))
     {
     }
 }
