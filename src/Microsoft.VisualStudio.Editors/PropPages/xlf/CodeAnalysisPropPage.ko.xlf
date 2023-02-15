@@ -34,7 +34,7 @@
       </trans-unit>
       <trans-unit id="EnforceCodeStyleInBuildCheckBox.Text">
         <source>Enforce CodeStyle on build</source>
-        <target state="needs-review-translation">빌드에 CodeStyle 적용(실험적 기능)</target>
+        <target state="translated">빌드 시 CodeStyle 적용</target>
         <note />
       </trans-unit>
       <trans-unit id="Label1.Text">

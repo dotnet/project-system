@@ -19,7 +19,7 @@
       </trans-unit>
       <trans-unit id="BoolProperty|EnforceCodeStyleInBuild|DisplayName">
         <source>Enforce code style on build</source>
-        <target state="needs-review-translation">Appliquer le style de code lors de la génération (expérimental)</target>
+        <target state="translated">Appliquer un style de code sur une build</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|RunAnalyzersDuringBuild|Description">
