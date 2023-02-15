@@ -20,7 +20,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
             var vsNuGetSolutionRestoreService = IVsSolutionRestoreServiceFactory.ImplementNominateProjectAsync((path, info, ct) => nominateCalled = true);
             var vsNuGetSolutionRestoreService4 = IVsSolutionRestoreService4Factory.Create();
             var projectAsynchronousTasksService = IProjectAsynchronousTasksServiceFactory.Create();
-            var restoreService = new NuGetRestoreService(project, vsNuGetSolutionRestoreService, vsNuGetSolutionRestoreService4, projectAsynchronousTasksService);
+            var faultHandlerService = IProjectFaultHandlerServiceFactory.Create();
+            var restoreService = new NuGetRestoreService(project, vsNuGetSolutionRestoreService, vsNuGetSolutionRestoreService4, projectAsynchronousTasksService, faultHandlerService);
 
             var restoreInfo = ProjectRestoreInfoFactory.Create(msbuildProjectExtensionsPath: @"C:\Alpha\Beta");
             var configuredInputs = PackageRestoreConfiguredInputFactory.Create(restoreInfo);
@@ -39,7 +40,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
             var vsNuGetSolutionRestoreService = IVsSolutionRestoreServiceFactory.ImplementNominateProjectAsync((path, info, ct) => nominateCalled = true);
             var vsNuGetSolutionRestoreService4 = IVsSolutionRestoreService4Factory.Create();
             var projectAsynchronousTasksService = IProjectAsynchronousTasksServiceFactory.Create();
-            var restoreService = new NuGetRestoreService(project, vsNuGetSolutionRestoreService, vsNuGetSolutionRestoreService4, projectAsynchronousTasksService);
+            var faultHandlerService = IProjectFaultHandlerServiceFactory.Create();
+            var restoreService = new NuGetRestoreService(project, vsNuGetSolutionRestoreService, vsNuGetSolutionRestoreService4, projectAsynchronousTasksService, faultHandlerService);
 
             var restoreInfo = ProjectRestoreInfoFactory.Create(msbuildProjectExtensionsPath: @"C:\Alpha\Beta");
             var configuredInputs = PackageRestoreConfiguredInputFactory.Create(restoreInfo);
@@ -49,19 +51,25 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
             Assert.False(nominateCalled);
         }
 
-        [Fact(Skip = "Cannot ensure that RegisterRestoreInfoSourceAsync has been called when LoadAsync completes.")]
+        [Fact]
         public async Task NominateCausesPendingTaskToComplete()
         {
             IVsProjectRestoreInfoSource? restoreSource = null;
-
+            Task? faultHandlerRegisteredTask = null;
+            
             var configuredProject = ConfiguredProjectFactory.Create(projectConfiguration: ProjectConfigurationFactory.Create("Debug|x64"));
             var project = UnconfiguredProjectFactory.Create(fullPath: @"C:\Test\Test.csproj", configuredProject: configuredProject);
             var vsNuGetSolutionRestoreService = IVsSolutionRestoreServiceFactory.Create();
             var vsNuGetSolutionRestoreService4 = IVsSolutionRestoreService4Factory.ImplementRegisterRestoreInfoSourceAsync((source, ct) => restoreSource = source);
             var projectAsynchronousTasksService = IProjectAsynchronousTasksServiceFactory.Create();
-            var restoreService = new NuGetRestoreService(project, vsNuGetSolutionRestoreService, vsNuGetSolutionRestoreService4, projectAsynchronousTasksService);
+            var faultHandlerService = IProjectFaultHandlerServiceFactory.ImplementForget((task, settings, severity, project) => faultHandlerRegisteredTask = task);
+            var restoreService = new NuGetRestoreService(project, vsNuGetSolutionRestoreService, vsNuGetSolutionRestoreService4, projectAsynchronousTasksService, faultHandlerService);
             
             await restoreService.LoadAsync();
+
+            Assert.NotNull(faultHandlerRegisteredTask);
+
+            await faultHandlerRegisteredTask;
 
             Assert.NotNull(restoreSource);
 
@@ -76,19 +84,25 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
             Assert.True(nominationTask.IsCompleted);
         }
 
-        [Fact(Skip = "Cannot ensure that RegisterRestoreInfoSourceAsync has been called when LoadAsync completes.")]
+        [Fact]
         public async Task UpdateCausesPendingTaskToComplete()
         {
             IVsProjectRestoreInfoSource? restoreSource = null;
+            Task? faultHandlerRegisteredTask = null;
 
             var configuredProject = ConfiguredProjectFactory.Create(projectConfiguration: ProjectConfigurationFactory.Create("Debug|x64"));
             var project = UnconfiguredProjectFactory.Create(fullPath: @"C:\Test\Test.csproj", configuredProject: configuredProject);
             var vsNuGetSolutionRestoreService = IVsSolutionRestoreServiceFactory.Create();
             var vsNuGetSolutionRestoreService4 = IVsSolutionRestoreService4Factory.ImplementRegisterRestoreInfoSourceAsync((source, ct) => restoreSource = source);
             var projectAsynchronousTasksService = IProjectAsynchronousTasksServiceFactory.Create();
-            var restoreService = new NuGetRestoreService(project, vsNuGetSolutionRestoreService, vsNuGetSolutionRestoreService4, projectAsynchronousTasksService);
+            var faultHandlerService = IProjectFaultHandlerServiceFactory.ImplementForget((task, settings, severity, project) => faultHandlerRegisteredTask = task);
+            var restoreService = new NuGetRestoreService(project, vsNuGetSolutionRestoreService, vsNuGetSolutionRestoreService4, projectAsynchronousTasksService, faultHandlerService);
 
             await restoreService.LoadAsync();
+
+            Assert.NotNull(faultHandlerRegisteredTask);
+
+            await faultHandlerRegisteredTask;
 
             Assert.NotNull(restoreSource);
 

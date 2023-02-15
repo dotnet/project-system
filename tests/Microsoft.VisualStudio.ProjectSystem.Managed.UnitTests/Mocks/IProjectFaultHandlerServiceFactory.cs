@@ -17,5 +17,14 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
             return mock.Object;
         }
+
+        public static IProjectFaultHandlerService ImplementForget(Action<Task, ErrorReportSettings, ProjectFaultSeverity, UnconfiguredProject?> action)
+        {
+            var mock = new Mock<IProjectFaultHandlerService>();
+            mock.Setup(s => s.RegisterFaultHandler(It.IsAny<Task>(), It.IsAny<ErrorReportSettings>(), It.IsAny<ProjectFaultSeverity>(), It.IsAny<UnconfiguredProject?>()))
+                .Callback(action);
+
+            return mock.Object;
+        }
     }
 }

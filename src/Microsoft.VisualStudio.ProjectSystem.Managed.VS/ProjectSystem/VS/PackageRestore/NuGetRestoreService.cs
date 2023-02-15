@@ -16,6 +16,7 @@ internal class NuGetRestoreService : OnceInitializedOnceDisposed, INuGetRestoreS
     private readonly IVsSolutionRestoreService3 _solutionRestoreService3;
     private readonly IVsSolutionRestoreService4 _solutionRestoreService4;
     private readonly IProjectAsynchronousTasksService _projectAsynchronousTasksService;
+    private readonly IProjectFaultHandlerService _faultHandlerService;
 
     /// <summary>
     /// Save the configured project versions that might get nominations.
@@ -36,12 +37,14 @@ internal class NuGetRestoreService : OnceInitializedOnceDisposed, INuGetRestoreS
         UnconfiguredProject project,
         IVsSolutionRestoreService3 solutionRestoreService3,
         IVsSolutionRestoreService4 solutionRestoreService4,
-        [Import(ExportContractNames.Scopes.UnconfiguredProject)] IProjectAsynchronousTasksService projectAsynchronousTasksService)
+        [Import(ExportContractNames.Scopes.UnconfiguredProject)] IProjectAsynchronousTasksService projectAsynchronousTasksService,
+        IProjectFaultHandlerService faultHandlerService)
     {
         _project = project;
         _solutionRestoreService3 = solutionRestoreService3;
         _solutionRestoreService4 = solutionRestoreService4;
         _projectAsynchronousTasksService = projectAsynchronousTasksService;
+        _faultHandlerService = faultHandlerService;
     }
 
     public async Task<bool> NominateAsync(ProjectRestoreInfo restoreData, IReadOnlyCollection<PackageRestoreConfiguredInput> inputVersions, CancellationToken cancellationToken)
@@ -230,6 +233,6 @@ internal class NuGetRestoreService : OnceInitializedOnceDisposed, INuGetRestoreS
         });
 #pragma warning restore RS0030 // Do not used banned APIs
 
-        _project.Services.FaultHandler.Forget(registerRestoreInfoSourceTask, _project, ProjectFaultSeverity.Recoverable);
+        _faultHandlerService.Forget(registerRestoreInfoSourceTask, _project, ProjectFaultSeverity.Recoverable);
     }
 }
