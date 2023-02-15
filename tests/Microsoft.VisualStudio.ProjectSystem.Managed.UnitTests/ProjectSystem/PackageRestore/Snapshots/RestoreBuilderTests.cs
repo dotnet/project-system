@@ -55,9 +55,8 @@ public class RestoreBuilderTests
 
         Assert.Empty(result.MSBuildProjectExtensionsPath);
         Assert.Empty(result.OriginalTargetFrameworks);
-        Assert.Single(result.TargetFrameworks);
 
-        var targetFramework = result.TargetFrameworks[0];
+        var targetFramework = Assert.Single(result.TargetFrameworks);
 
         Assert.Empty(targetFramework.TargetFrameworkMoniker);
         Assert.Empty(targetFramework.Properties);
@@ -106,9 +105,8 @@ public class RestoreBuilderTests
 
         Assert.Equal("C:\\Project\\obj", result.MSBuildProjectExtensionsPath);
         Assert.Equal("net45", result.OriginalTargetFrameworks);
-        Assert.Single(result.TargetFrameworks);
 
-        var targetFramework = result.TargetFrameworks[0];
+        var targetFramework = Assert.Single(result.TargetFrameworks);
 
         Assert.Equal(".NETFramework, Version=v4.5", targetFramework.TargetFrameworkMoniker);
     }
@@ -134,9 +132,8 @@ public class RestoreBuilderTests
 
         Assert.Empty(result.MSBuildProjectExtensionsPath);
         Assert.Empty(result.OriginalTargetFrameworks);
-        Assert.Single(result.TargetFrameworks);
 
-        var targetFramework = result.TargetFrameworks[0];
+        var targetFramework = Assert.Single(result.TargetFrameworks);
 
         Assert.Empty(targetFramework.TargetFrameworkMoniker);
     }
@@ -159,9 +156,7 @@ public class RestoreBuilderTests
                 """);
         var result = RestoreBuilder.ToProjectRestoreInfo(update.CurrentState);
 
-        Assert.Single(result.TargetFrameworks);
-
-        var properties = result.TargetFrameworks[0].Properties;
+        var properties = Assert.Single(result.TargetFrameworks).Properties;
 
         AssertContainsProperty("Property", "Value", properties);
         AssertContainsProperty("AnotherProperty", "AnotherValue", properties);
@@ -233,9 +228,7 @@ public class RestoreBuilderTests
                 """);
         var result = RestoreBuilder.ToProjectRestoreInfo(update.CurrentState);
 
-        Assert.Single(result.TargetFrameworks);
-
-        var references = result.TargetFrameworks[0].PackageReferences;
+        var references = Assert.Single(result.TargetFrameworks).PackageReferences;
 
         Assert.Equal(3, references.Count);
 
@@ -277,9 +270,7 @@ public class RestoreBuilderTests
                 """);
         var result = RestoreBuilder.ToProjectRestoreInfo(update.CurrentState);
 
-        Assert.Single(result.TargetFrameworks);
-
-        var versions = result.TargetFrameworks[0].CentralPackageVersions;
+        var versions = Assert.Single(result.TargetFrameworks).CentralPackageVersions;
 
         Assert.Equal(3, versions.Count);
 
@@ -324,9 +315,7 @@ public class RestoreBuilderTests
                 """);
         var result = RestoreBuilder.ToProjectRestoreInfo(update.CurrentState);
 
-        Assert.Single(result.TargetFrameworks);
-
-        var references = result.TargetFrameworks[0].ProjectReferences;
+        var references = Assert.Single(result.TargetFrameworks).ProjectReferences;
 
         Assert.Equal(3, references.Count);
 
@@ -365,9 +354,7 @@ public class RestoreBuilderTests
                 """);
         var result = RestoreBuilder.ToProjectRestoreInfo(update.CurrentState);
 
-        Assert.Single(result.TargetFrameworks);
-
-        var references = result.TargetFrameworks[0].FrameworkReferences;
+        var references = Assert.Single(result.TargetFrameworks).FrameworkReferences;
 
         Assert.Equal(2, references.Count);
 
@@ -402,9 +389,7 @@ public class RestoreBuilderTests
                 """);
         var result = RestoreBuilder.ToProjectRestoreInfo(update.CurrentState);
 
-        Assert.Single(result.TargetFrameworks);
-
-        var downloads = result.TargetFrameworks[0].PackageDownloads;
+        var downloads = Assert.Single(result.TargetFrameworks).PackageDownloads;
 
         Assert.Equal(2, downloads.Count);
 
@@ -438,9 +423,7 @@ public class RestoreBuilderTests
     private static void AssertNoItems(ProjectRestoreInfo result)
     {
         Assert.Empty(result.ToolReferences);
-        Assert.Single(result.TargetFrameworks);
-
-        var targetFramework = result.TargetFrameworks[0];
+        var targetFramework = Assert.Single(result.TargetFrameworks);
 
         Assert.Empty(targetFramework.FrameworkReferences);
         Assert.Empty(targetFramework.PackageDownloads);
