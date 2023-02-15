@@ -227,9 +227,9 @@ internal class NuGetRestoreService : OnceInitializedOnceDisposed, INuGetRestoreS
         // Register before this project receives any data flows containing possible nominations.
         // This is needed because we need to register before any nuget restore or before the solution load.
 #pragma warning disable RS0030 // Do not used banned APIs
-        var registerRestoreInfoSourceTask = Task.Run(async () =>
+        var registerRestoreInfoSourceTask = Task.Run(() =>
         {
-            await _solutionRestoreService4.RegisterRestoreInfoSourceAsync(this, _projectAsynchronousTasksService.UnloadCancellationToken);
+            return _solutionRestoreService4.RegisterRestoreInfoSourceAsync(this, _projectAsynchronousTasksService.UnloadCancellationToken);
         });
 #pragma warning restore RS0030 // Do not used banned APIs
 
