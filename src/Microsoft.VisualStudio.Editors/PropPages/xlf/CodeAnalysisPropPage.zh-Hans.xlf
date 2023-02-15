@@ -34,7 +34,7 @@
       </trans-unit>
       <trans-unit id="EnforceCodeStyleInBuildCheckBox.Text">
         <source>Enforce CodeStyle on build</source>
-        <target state="needs-review-translation">在生成上强制实施代码样式(实验性)</target>
+        <target state="translated">在生成时强制执行 CodeStyle</target>
         <note />
       </trans-unit>
       <trans-unit id="Label1.Text">
