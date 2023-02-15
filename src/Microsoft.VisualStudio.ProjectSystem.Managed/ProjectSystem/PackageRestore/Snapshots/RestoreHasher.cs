@@ -40,7 +40,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.PackageRestore
             }
         }
 
-        private static void AppendReferences(IncrementalHasher hasher, ImmutableList<ReferenceItem> references)
+        private static void AppendReferences(IncrementalHasher hasher, ImmutableArray<ReferenceItem> references)
         {
             foreach (ReferenceItem reference in references)
             {

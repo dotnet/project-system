@@ -38,9 +38,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.PackageRestore
             }
         }
 
-        private static void LogTargetFrameworks(BatchLogger logger, ImmutableList<TargetFrameworkInfo> targetFrameworks)
+        private static void LogTargetFrameworks(BatchLogger logger, ImmutableArray<TargetFrameworkInfo> targetFrameworks)
         {
-            logger.WriteLine($"Target Frameworks ({targetFrameworks.Count})");
+            logger.WriteLine($"Target Frameworks ({targetFrameworks.Length})");
             logger.IndentLevel++;
 
             foreach (TargetFrameworkInfo tf in targetFrameworks)
@@ -65,14 +65,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.PackageRestore
             logger.IndentLevel--;
         }
 
-        private static void LogProperties(BatchLogger logger, string heading, ImmutableList<ProjectProperty> projectProperties)
+        private static void LogProperties(BatchLogger logger, string heading, ImmutableArray<ProjectProperty> projectProperties)
         {
             IEnumerable<string> properties = projectProperties.Cast<ProjectProperty>()
                     .Select(prop => $"{prop.Name}:{prop.Value}");
             logger.WriteLine($"{heading} -- ({string.Join(" | ", properties)})");
         }
 
-        private static void LogReferenceItems(BatchLogger logger, string heading, ImmutableList<ReferenceItem> references)
+        private static void LogReferenceItems(BatchLogger logger, string heading, ImmutableArray<ReferenceItem> references)
         {
             logger.WriteLine(heading);
             logger.IndentLevel++;

@@ -188,7 +188,7 @@ public class RestoreBuilderTests
         var result = RestoreBuilder.ToProjectRestoreInfo(update.CurrentState);
         var references = result.ToolReferences;
 
-        Assert.Equal(3, references.Count);
+        Assert.Equal(3, references.Length);
 
         var toolReference1 = references.FirstOrDefault(r => r.Name == "ToolReference1");
         Assert.NotNull(toolReference1);
@@ -230,7 +230,7 @@ public class RestoreBuilderTests
 
         var references = Assert.Single(result.TargetFrameworks).PackageReferences;
 
-        Assert.Equal(3, references.Count);
+        Assert.Equal(3, references.Length);
 
         var packageReference1 = references.FirstOrDefault(r => r.Name == "PackageReference1");
         Assert.NotNull(packageReference1);
@@ -272,7 +272,7 @@ public class RestoreBuilderTests
 
         var versions = Assert.Single(result.TargetFrameworks).CentralPackageVersions;
 
-        Assert.Equal(3, versions.Count);
+        Assert.Equal(3, versions.Length);
 
         var reference1 = versions.FirstOrDefault(r => r.Name == "Newtonsoft.Json");
         Assert.NotNull(reference1);
@@ -317,7 +317,7 @@ public class RestoreBuilderTests
 
         var references = Assert.Single(result.TargetFrameworks).ProjectReferences;
 
-        Assert.Equal(3, references.Count);
+        Assert.Equal(3, references.Length);
 
         var reference1 = references.FirstOrDefault(p => p.Name == "..\\Project\\Project1.csproj");
         Assert.NotNull(reference1);
@@ -356,7 +356,7 @@ public class RestoreBuilderTests
 
         var references = Assert.Single(result.TargetFrameworks).FrameworkReferences;
 
-        Assert.Equal(2, references.Count);
+        Assert.Equal(2, references.Length);
 
         var reference1 = references.FirstOrDefault(r => r.Name == "WindowsForms");
         Assert.NotNull(reference1);
@@ -391,7 +391,7 @@ public class RestoreBuilderTests
 
         var downloads = Assert.Single(result.TargetFrameworks).PackageDownloads;
 
-        Assert.Equal(2, downloads.Count);
+        Assert.Equal(2, downloads.Length);
 
         var download1 = downloads.FirstOrDefault(d => d.Name == "NuGet.Common");
         Assert.NotNull(download1);
@@ -402,7 +402,7 @@ public class RestoreBuilderTests
         AssertContainsProperty("Version", "[4.9.4]", download2.Properties);
     }
 
-    private static void AssertContainsProperty(string name, string value, ImmutableList<ProjectProperty> properties)
+    private static void AssertContainsProperty(string name, string value, ImmutableArray<ProjectProperty> properties)
     {
         var property = properties.FirstOrDefault(p => p.Name == name);
 
@@ -411,7 +411,7 @@ public class RestoreBuilderTests
         Assert.Equal(value, property.Value);
     }
 
-    private static void AssertContainsProperty(string name, string value, ImmutableList<ReferenceProperty> properties)
+    private static void AssertContainsProperty(string name, string value, ImmutableArray<ReferenceProperty> properties)
     {
         var property = properties.FirstOrDefault(p => p.Name == name);
 

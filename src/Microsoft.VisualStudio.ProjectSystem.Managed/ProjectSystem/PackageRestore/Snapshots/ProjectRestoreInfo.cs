@@ -9,7 +9,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.PackageRestore
     {
         // If additional fields/properties are added to this class, please update RestoreHasher
 
-        public ProjectRestoreInfo(string msbuildProjectExtensionsPath, string projectAssetsFilePath, string originalTargetFrameworks, ImmutableList<TargetFrameworkInfo> targetFrameworks, ImmutableList<ReferenceItem> toolReferences)
+        public ProjectRestoreInfo(string msbuildProjectExtensionsPath, string projectAssetsFilePath, string originalTargetFrameworks, ImmutableArray<TargetFrameworkInfo> targetFrameworks, ImmutableArray<ReferenceItem> toolReferences)
         {
             MSBuildProjectExtensionsPath = msbuildProjectExtensionsPath;
             ProjectAssetsFilePath = projectAssetsFilePath;
@@ -24,8 +24,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.PackageRestore
 
         public string OriginalTargetFrameworks { get; }
 
-        public ImmutableList<TargetFrameworkInfo> TargetFrameworks { get; }
+        public ImmutableArray<TargetFrameworkInfo> TargetFrameworks { get; }
 
-        public ImmutableList<ReferenceItem> ToolReferences { get; }
+        public ImmutableArray<ReferenceItem> ToolReferences { get; }
     }
 }

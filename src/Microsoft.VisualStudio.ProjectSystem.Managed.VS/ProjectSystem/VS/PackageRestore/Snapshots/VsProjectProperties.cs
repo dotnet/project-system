@@ -11,7 +11,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore;
 /// </summary>
 internal class VsProjectProperties : ImmutablePropertyCollection<IVsProjectProperty, ProjectProperty>, IVsProjectProperties
 {
-    public VsProjectProperties(ImmutableList<ProjectProperty> properties)
+    public VsProjectProperties(ImmutableArray<ProjectProperty> properties)
         : base(properties, item => item.Name, item => new VsProjectProperty(item))
     {
     }

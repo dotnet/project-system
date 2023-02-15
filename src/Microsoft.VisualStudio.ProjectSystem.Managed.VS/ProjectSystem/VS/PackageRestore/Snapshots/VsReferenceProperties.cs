@@ -11,7 +11,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore;
 /// </summary>
 internal class VsReferenceProperties : ImmutablePropertyCollection<IVsReferenceProperty, ReferenceProperty>, IVsReferenceProperties
 {
-    public VsReferenceProperties(ImmutableList<ReferenceProperty> properties)
+    public VsReferenceProperties(ImmutableArray<ReferenceProperty> properties)
         : base(properties, item => item.Name, item => new VsReferenceProperty(item))
     {
     }

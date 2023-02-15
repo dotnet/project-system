@@ -12,7 +12,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.PackageRestore
     {
         // If additional fields/properties are added to this class, please update RestoreHasher
 
-        public ReferenceItem(string name, ImmutableList<ReferenceProperty> properties)
+        public ReferenceItem(string name, ImmutableArray<ReferenceProperty> properties)
         {
             Requires.NotNullOrEmpty(name);
 
@@ -22,6 +22,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.PackageRestore
 
         public string Name { get; }
 
-        public ImmutableList<ReferenceProperty> Properties { get; }
+        public ImmutableArray<ReferenceProperty> Properties { get; }
     }
 }

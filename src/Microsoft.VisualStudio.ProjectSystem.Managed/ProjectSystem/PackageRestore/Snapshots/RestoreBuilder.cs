@@ -9,8 +9,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.PackageRestore
     /// </summary>
     internal static class RestoreBuilder
     {
-        public static readonly ImmutableList<TargetFrameworkInfo> EmptyTargetFrameworks = ImmutableList<TargetFrameworkInfo>.Empty;
-        public static readonly ImmutableList<ReferenceItem> EmptyReferences = ImmutableList<ReferenceItem>.Empty;
+        public static readonly ImmutableArray<TargetFrameworkInfo> EmptyTargetFrameworks = ImmutableArray<TargetFrameworkInfo>.Empty;
+        public static readonly ImmutableArray<ReferenceItem> EmptyReferences = ImmutableArray<ReferenceItem>.Empty;
 
         /// <summary>
         ///     Converts an immutable dictionary of rule snapshot data into an <see cref="ProjectRestoreInfo"/> instance.
@@ -47,14 +47,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.PackageRestore
                 ToReferenceItems(toolReferences.Items));
         }
 
-        private static ImmutableList<ProjectProperty> ToProjectProperties(IImmutableDictionary<string, string> properties)
+        private static ImmutableArray<ProjectProperty> ToProjectProperties(IImmutableDictionary<string, string> properties)
         {
-            return ImmutableList.CreateRange(properties.Select(x => new ProjectProperty(x.Key, x.Value)));
+            return ImmutableArray.CreateRange(properties.Select(x => new ProjectProperty(x.Key, x.Value)));
         }
 
-        private static ImmutableList<ReferenceItem> ToReferenceItems(IImmutableDictionary<string, IImmutableDictionary<string, string>> items)
+        private static ImmutableArray<ReferenceItem> ToReferenceItems(IImmutableDictionary<string, IImmutableDictionary<string, string>> items)
         {
-            return ImmutableList.CreateRange(items.Select(x => ToReferenceItem(x.Key, x.Value)));
+            return ImmutableArray.CreateRange(items.Select(x => ToReferenceItem(x.Key, x.Value)));
         }
 
         private static ReferenceItem ToReferenceItem(string name, IImmutableDictionary<string, string> metadata)
@@ -62,9 +62,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.PackageRestore
             return new ReferenceItem(name, ToReferenceProperties(metadata));
         }
 
-        private static ImmutableList<ReferenceProperty> ToReferenceProperties(IImmutableDictionary<string, string> metadata)
+        private static ImmutableArray<ReferenceProperty> ToReferenceProperties(IImmutableDictionary<string, string> metadata)
         {
-            return ImmutableList.CreateRange(metadata.Select(x => new ReferenceProperty(x.Key, x.Value)));
+            return ImmutableArray.CreateRange(metadata.Select(x => new ReferenceProperty(x.Key, x.Value)));
         }
     }
 }

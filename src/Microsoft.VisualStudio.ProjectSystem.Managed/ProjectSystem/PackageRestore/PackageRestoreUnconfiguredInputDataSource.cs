@@ -67,8 +67,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.PackageRestore
                 string msbuildProjectExtensionsPath = ResolveMSBuildProjectExtensionsPathConflicts(inputs);
                 string originalTargetFrameworks = ResolveOriginalTargetFrameworksConflicts(inputs);
                 string projectAssetsFilePath = ResolveProjectAssetsFilePathConflicts(inputs);
-                ImmutableList<ReferenceItem> toolReferences = ResolveToolReferenceConflicts(inputs);
-                ImmutableList<TargetFrameworkInfo> targetFrameworks = GetAllTargetFrameworks(inputs);
+                ImmutableArray<ReferenceItem> toolReferences = ResolveToolReferenceConflicts(inputs);
+                ImmutableArray<TargetFrameworkInfo> targetFrameworks = GetAllTargetFrameworks(inputs);
 
                 restoreInfo = new ProjectRestoreInfo(
                     msbuildProjectExtensionsPath,
@@ -125,7 +125,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.PackageRestore
             return propertyValue;
         }
 
-        private ImmutableList<ReferenceItem> ResolveToolReferenceConflicts(IEnumerable<PackageRestoreConfiguredInput> updates)
+        private ImmutableArray<ReferenceItem> ResolveToolReferenceConflicts(IEnumerable<PackageRestoreConfiguredInput> updates)
         {
             var references = new Dictionary<string, ReferenceItem>(StringComparers.ItemNames);
 
@@ -140,15 +140,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.PackageRestore
                 }
             }
 
-            return ImmutableList.CreateRange(references.Values);
+            return ImmutableArray.CreateRange(references.Values);
         }
-        private ImmutableList<TargetFrameworkInfo> GetAllTargetFrameworks(IEnumerable<PackageRestoreConfiguredInput> updates)
+        private ImmutableArray<TargetFrameworkInfo> GetAllTargetFrameworks(IEnumerable<PackageRestoreConfiguredInput> updates)
         {
-            var frameworks = ImmutableList.CreateBuilder<TargetFrameworkInfo>();
+            var frameworks = ImmutableArray.CreateBuilder<TargetFrameworkInfo>();
 
             foreach (PackageRestoreConfiguredInput update in updates)
             {
-                Assumes.True(update.RestoreInfo.TargetFrameworks.Count == 1);
+                Assumes.True(update.RestoreInfo.TargetFrameworks.Length == 1);
 
                 TargetFrameworkInfo framework = update.RestoreInfo.TargetFrameworks[0];
 
