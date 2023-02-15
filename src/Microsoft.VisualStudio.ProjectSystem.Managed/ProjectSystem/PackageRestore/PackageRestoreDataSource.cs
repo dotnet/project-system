@@ -303,11 +303,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
                 {
                     if (t.IsFaulted)
                     {
-                        _nuGetRestoreService.UpdatesFaulted(t.Exception);
+                        _nuGetRestoreService.NotifyFaulted(t.Exception);
                     }
                     else
                     {
-                        _nuGetRestoreService.UpdatesComplete();
+                        _nuGetRestoreService.NotifyComplete();
                     }
                 }, TaskScheduler.Default);
             }

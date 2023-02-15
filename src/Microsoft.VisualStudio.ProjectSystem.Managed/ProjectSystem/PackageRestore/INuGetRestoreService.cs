@@ -54,7 +54,7 @@ internal interface INuGetRestoreService
     /// <remarks>
     ///     Called as a hint that any work waiting for a possible future nomination can be cancelled.
     /// </remarks>
-    void UpdatesComplete();
+    void NotifyComplete();
 
     /// <summary>
     ///     Indicates that there will be no further calls to <see cref="NominateAsync(ProjectRestoreInfo, IReadOnlyCollection{PackageRestoreConfiguredInput}, CancellationToken)"/>
@@ -64,5 +64,5 @@ internal interface INuGetRestoreService
     ///     Called as a hint that any work waiting for a possible future nomination should be failed due to the
     ///     exception <paramref name="e"/>.
     /// </remarks>
-    void UpdatesFaulted(Exception e);
+    void NotifyFaulted(Exception e);
 }

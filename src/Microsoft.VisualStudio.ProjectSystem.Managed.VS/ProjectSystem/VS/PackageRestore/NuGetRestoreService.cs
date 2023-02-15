@@ -70,7 +70,7 @@ internal class NuGetRestoreService : OnceInitializedOnceDisposed, INuGetRestoreS
         return Task.CompletedTask;
     }
 
-    public void UpdatesComplete()
+    public void NotifyComplete()
     {
         lock (SyncObject)
         {
@@ -79,7 +79,7 @@ internal class NuGetRestoreService : OnceInitializedOnceDisposed, INuGetRestoreS
         }
     }
 
-    public void UpdatesFaulted(Exception e)
+    public void NotifyFaulted(Exception e)
     {
         lock (SyncObject)
         {
