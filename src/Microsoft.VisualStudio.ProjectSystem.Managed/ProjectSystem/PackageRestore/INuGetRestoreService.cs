@@ -31,7 +31,7 @@ internal interface INuGetRestoreService
     ///     has completed. The <see cref="Task{TResult}.Result"/> will be <see langword="true"/> if the restore
     ///     ran and completed successfully, and <see langword="false"/> otherwise.
     /// </returns>
-    public Task<bool> NominateAsync(ProjectRestoreInfo restoreData, IReadOnlyCollection<PackageRestoreConfiguredInput> inputVersions, CancellationToken cancellationToken);
+    Task<bool> NominateAsync(ProjectRestoreInfo restoreData, IReadOnlyCollection<PackageRestoreConfiguredInput> inputVersions, CancellationToken cancellationToken);
 
     /// <summary>
     ///     Informs the <see cref="INuGetRestoreService"/> that a newer version of <see cref="ProjectRestoreInfo"/>
@@ -45,7 +45,7 @@ internal interface INuGetRestoreService
     ///     work that may lead to a nomination. On the other hand, if the version information is older then a
     ///     nomination may occur in the near future.
     /// </remarks>
-    public Task UpdateWithoutNominationAsync(IReadOnlyCollection<PackageRestoreConfiguredInput> inputVersions);
+    Task UpdateWithoutNominationAsync(IReadOnlyCollection<PackageRestoreConfiguredInput> inputVersions);
 
     /// <summary>
     ///     Indicates that there will be no further calls to <see cref="NominateAsync(ProjectRestoreInfo, IReadOnlyCollection{PackageRestoreConfiguredInput}, CancellationToken)"/>
