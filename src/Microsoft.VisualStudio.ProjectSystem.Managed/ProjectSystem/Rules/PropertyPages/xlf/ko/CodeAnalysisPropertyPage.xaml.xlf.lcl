@@ -39,10 +39,13 @@
       </Item>
       <Item ItemId=";BoolProperty|EnforceCodeStyleInBuild|DisplayName" ItemType="0" PsrId="308" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Enforce code style on build (experimental)]]></Val>
+          <Val><![CDATA[Enforce code style on build]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[빌드 시 코드 스타일 적용(실험적)]]></Val>
+            <Val><![CDATA[빌드 시 코드 스타일 적용]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[Enforce code style on build (experimental)]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
