@@ -4,7 +4,7 @@
     <body>
       <trans-unit id="BuildAccelerationSummary_2">
         <source>Visual Studio accelerated {0} project(s), copying {1} file(s). See https://aka.ms/vs-build-acceleration.</source>
-        <target state="new">Visual Studio accelerated {0} project(s), copying {1} file(s). See https://aka.ms/vs-build-acceleration.</target>
+        <target state="translated">Služba Visual Studio akcelerovala tento počet projektů: {0} a kopíruje tento počet souborů: {1}. Další informace najdete na: https://aka.ms/vs-build-acceleration.</target>
         <note>{0} and {1} are both integer counts.</note>
       </trans-unit>
       <trans-unit id="DefaultNewProfileName">
@@ -119,13 +119,6 @@
         <source>WARNING: Potential build performance issue in '{0}'. The project does not appear up-to-date after a successful build: {1}. See https://aka.ms/incremental-build-failure.</source>
         <target state="translated">UPOZORNĚNÍ: Potenciální problém s výkonem sestavení v projektu {0}. Projekt se po úspěšném sestavení nezobrazuje jako aktuální: {1}. Viz https://aka.ms/incremental-build-failure.</target>
         <note>{0} is the file name of the project. {1} is a description of the failure. The period '.' after {1} is intentional and should be kept.</note>
-      </trans-unit>
-      <trans-unit id="InfoBarMessageNuGetCycleDetected">
-        <source>A circular dependency A -&gt; B -&gt; A was detected during NuGet Restore which caused NuGet to stop restoring.
-Because the NuGet restore didn't finish correctly, the project might be in a bad state.</source>
-        <target state="translated">Během obnovení NuGet byla zjištěna cyklická závislost A -&gt; B -&gt; A, což způsobilo, že se NuGet přestal obnovovat.
-Vzhledem k tomu, že se obnovení NuGet nedokončilo správně, může být projekt ve špatném stavu.</target>
-        <note />
       </trans-unit>
       <trans-unit id="ProjectHotReloadSessionManager_AttachingToProcess">
         <source>Attaching to process.</source>

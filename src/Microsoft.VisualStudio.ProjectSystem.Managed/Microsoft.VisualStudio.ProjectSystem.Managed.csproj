@@ -60,8 +60,6 @@
   <ItemGroup>
     <!-- Needed to break assembly conflict on StreamJsonRpc between microsoft.visualstudio.projectsystem.query and microsoft.visualstudio.languageservices -->
     <PackageReference Include="Microsoft.VisualStudio.RpcContracts" />
-    <!-- NuGet Client apis for Package Restore -->
-    <PackageReference Include="NuGet.VisualStudio" />
     <!-- Path property: PkgMicrosoft_CodeAnalysis_Common -->
     <!-- The path is needed so we can copy the runtime assembly into the NPM package. -->
     <PackageReference Include="Microsoft.CodeAnalysis.Common" GeneratePathProperty="true" />

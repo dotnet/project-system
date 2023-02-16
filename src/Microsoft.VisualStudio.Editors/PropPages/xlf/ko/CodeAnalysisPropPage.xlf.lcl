@@ -66,10 +66,13 @@
       </Item>
       <Item ItemId=";EnforceCodeStyleInBuildCheckBox.Text" ItemType="0" PsrId="308" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Enforce CodeStyle on build (experimental)]]></Val>
+          <Val><![CDATA[Enforce CodeStyle on build]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[빌드에 CodeStyle 적용(실험적 기능)]]></Val>
+            <Val><![CDATA[빌드 시 CodeStyle 적용]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[Enforce CodeStyle on build (experimental)]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>

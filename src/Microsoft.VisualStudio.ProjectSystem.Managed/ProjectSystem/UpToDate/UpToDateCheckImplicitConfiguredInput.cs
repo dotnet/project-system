@@ -411,8 +411,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                     before = ImmutableArray<string>.Empty;
                 }
 
+                projectFileClassifier ??= BuildClassifier();
+
                 var after = projectChange.After.Items
                     .Select(item => item.Key)
+                    .Where(path => !projectFileClassifier.IsNonModifiable(path))
                     .ToHashSet(StringComparers.Paths);
 
                 var diff = new SetDiff<string>(before, after, StringComparers.Paths);

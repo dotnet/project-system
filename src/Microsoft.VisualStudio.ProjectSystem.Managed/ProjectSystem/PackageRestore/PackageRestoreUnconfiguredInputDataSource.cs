@@ -3,7 +3,6 @@
 using System.Globalization;
 using System.Threading.Tasks.Dataflow;
 using Microsoft.VisualStudio.ProjectSystem.Utilities;
-using NuGet.SolutionRestoreManager;
 using RestoreInfo = Microsoft.VisualStudio.ProjectSystem.IProjectVersionedValue<Microsoft.VisualStudio.ProjectSystem.PackageRestore.PackageRestoreUnconfiguredInput>;
 
 namespace Microsoft.VisualStudio.ProjectSystem.PackageRestore
@@ -31,7 +30,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.PackageRestore
         protected override IDisposable LinkExternalInput(ITargetBlock<RestoreInfo> targetBlock)
         {
             // At a high-level, we want to combine all implicitly active configurations (ie the active config of each TFM) restore data
-            // (via ProjectRestoreUpdate) and combine it into a single IVsProjectRestoreInfo2 instance and publish that. When a change is 
+            // (via ProjectRestoreUpdate) and combine it into a single ProjectRestoreInfo instance and publish that. When a change is 
             // made to a configuration, such as adding a PackageReference, we should react to it and push a new version of our output. If the 
             // active configuration changes, we should react to it, and publish data from the new set of implicitly active configurations.
 
@@ -68,8 +67,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.PackageRestore
                 string msbuildProjectExtensionsPath = ResolveMSBuildProjectExtensionsPathConflicts(inputs);
                 string originalTargetFrameworks = ResolveOriginalTargetFrameworksConflicts(inputs);
                 string projectAssetsFilePath = ResolveProjectAssetsFilePathConflicts(inputs);
-                IVsReferenceItems toolReferences = ResolveToolReferenceConflicts(inputs);
-                IVsTargetFrameworks2 targetFrameworks = GetAllTargetFrameworks(inputs);
+                ImmutableArray<ReferenceItem> toolReferences = ResolveToolReferenceConflicts(inputs);
+                ImmutableArray<TargetFrameworkInfo> targetFrameworks = GetAllTargetFrameworks(inputs);
 
                 restoreInfo = new ProjectRestoreInfo(
                     msbuildProjectExtensionsPath,
@@ -126,13 +125,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.PackageRestore
             return propertyValue;
         }
 
-        private IVsReferenceItems ResolveToolReferenceConflicts(IEnumerable<PackageRestoreConfiguredInput> updates)
+        private ImmutableArray<ReferenceItem> ResolveToolReferenceConflicts(IEnumerable<PackageRestoreConfiguredInput> updates)
         {
-            var references = new Dictionary<string, IVsReferenceItem>(StringComparers.ItemNames);
+            var references = new Dictionary<string, ReferenceItem>(StringComparers.ItemNames);
 
             foreach (PackageRestoreConfiguredInput update in updates)
             {
-                foreach (IVsReferenceItem reference in update.RestoreInfo.ToolReferences)
+                foreach (ReferenceItem reference in update.RestoreInfo.ToolReferences)
                 {
                     if (ValidateToolReference(references, reference))
                     {
@@ -141,17 +140,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.PackageRestore
                 }
             }
 
-            return new ReferenceItems(references.Values);
+            return ImmutableArray.CreateRange(references.Values);
         }
-        private IVsTargetFrameworks2 GetAllTargetFrameworks(IEnumerable<PackageRestoreConfiguredInput> updates)
+        private ImmutableArray<TargetFrameworkInfo> GetAllTargetFrameworks(IEnumerable<PackageRestoreConfiguredInput> updates)
         {
-            var frameworks = new List<IVsTargetFrameworkInfo3>();
+            var frameworks = ImmutableArray.CreateBuilder<TargetFrameworkInfo>();
 
             foreach (PackageRestoreConfiguredInput update in updates)
             {
-                Assumes.True(update.RestoreInfo.TargetFrameworks.Count == 1);
+                Assumes.True(update.RestoreInfo.TargetFrameworks.Length == 1);
 
-                var framework = (IVsTargetFrameworkInfo3)update.RestoreInfo.TargetFrameworks.Item(0);
+                TargetFrameworkInfo framework = update.RestoreInfo.TargetFrameworks[0];
 
                 if (ValidateTargetFramework(update.ProjectConfiguration, framework))
                 {
@@ -159,12 +158,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.PackageRestore
                 }
             }
 
-            return new TargetFrameworks(frameworks);
+            return frameworks.ToImmutable();
         }
 
-        private bool ValidateToolReference(Dictionary<string, IVsReferenceItem> existingReferences, IVsReferenceItem reference)
+        private bool ValidateToolReference(Dictionary<string, ReferenceItem> existingReferences, ReferenceItem reference)
         {
-            if (existingReferences.TryGetValue(reference.Name, out IVsReferenceItem? existingReference))
+            if (existingReferences.TryGetValue(reference.Name, out ReferenceItem? existingReference))
             {
                 // CLI tool references are project-wide, so if they have conflicts in names, 
                 // they must have the same metadata, which avoids from having to condition 
@@ -183,7 +182,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.PackageRestore
             return true;
         }
 
-        private bool ValidateTargetFramework(ProjectConfiguration projectConfiguration, IVsTargetFrameworkInfo3 framework)
+        private bool ValidateTargetFramework(ProjectConfiguration projectConfiguration, TargetFrameworkInfo framework)
         {
             if (framework.TargetFrameworkMoniker.Length == 0)
             {

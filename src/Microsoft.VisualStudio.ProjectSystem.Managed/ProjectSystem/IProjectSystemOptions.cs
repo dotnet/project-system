@@ -51,5 +51,10 @@ namespace Microsoft.VisualStudio.ProjectSystem
         ///     Gets a value indicating if single-target builds should be preferred for startup projects. 
         /// </summary>
         Task<bool> GetPreferSingleTargetBuildsForStartupProjectsAsync(CancellationToken cancellationToken = default);
+
+        /// <summary>
+        ///     Gets a value indicating if the project system should attempt to detect cycles in the NuGet restore process.
+        /// </summary>
+        Task<bool> GetDetectNuGetRestoreCyclesAsync(CancellationToken cancellationToken = default);
     }
 }

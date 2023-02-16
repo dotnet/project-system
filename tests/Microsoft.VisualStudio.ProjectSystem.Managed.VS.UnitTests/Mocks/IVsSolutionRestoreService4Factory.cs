@@ -9,11 +9,15 @@ namespace NuGet.SolutionRestoreManager
             return Mock.Of<IVsSolutionRestoreService4>();
         }
 
-        internal static IVsSolutionRestoreService4 ImplementRegisterRestoreInfoSourceAsync()
+        internal static IVsSolutionRestoreService4 ImplementRegisterRestoreInfoSourceAsync(Action<IVsProjectRestoreInfoSource, CancellationToken>? registerAction = null)
         {
             var mock = new Mock<IVsSolutionRestoreService4>();
 
-            mock.Setup(s => s.RegisterRestoreInfoSourceAsync(It.IsAny<IVsProjectRestoreInfoSource>(), It.IsAny<CancellationToken>()));
+            if (registerAction is not null)
+            {
+                mock.Setup(s => s.RegisterRestoreInfoSourceAsync(It.IsAny<IVsProjectRestoreInfoSource>(), It.IsAny<CancellationToken>()))
+                    .Callback(registerAction);
+            }
 
             return mock.Object;
         }
