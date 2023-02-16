@@ -66,10 +66,13 @@
       </Item>
       <Item ItemId=";EnforceCodeStyleInBuildCheckBox.Text" ItemType="0" PsrId="308" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Enforce CodeStyle on build (experimental)]]></Val>
+          <Val><![CDATA[Enforce CodeStyle on build]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Принудительное применение CodeStyle во время сборки (экспериментальная функция)]]></Val>
+            <Val><![CDATA[Принудительное выполнение CodeStyle в сборке]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[Enforce CodeStyle on build (experimental)]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>

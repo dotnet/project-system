@@ -437,11 +437,19 @@
   <!-- This target collects all the resolved references that are used to actually compile. -->
   <Target Name="CollectResolvedCompilationReferencesDesignTime" DependsOnTargets="CompileDesignTime" Returns="@(ReferencePathWithRefAssemblies)" />
 
+  <PropertyGroup>
+    <CollectUpToDateCheckInputDesignTimeDependsOn>CompileDesignTime</CollectUpToDateCheckInputDesignTimeDependsOn>
+    <!-- F# projects do not have the ResolveCodeAnalysisRuleSet target. -->
+    <CollectUpToDateCheckInputDesignTimeDependsOn Condition="'$(Language)' == 'C#' or '$(Language)' == 'VB'">$(CollectUpToDateCheckInputDesignTimeDependsOn);ResolveCodeAnalysisRuleSet</CollectUpToDateCheckInputDesignTimeDependsOn>
+  </PropertyGroup>
+
   <!-- This target collects all the extra inputs for the up to date check. -->
-  <Target Name="CollectUpToDateCheckInputDesignTime" DependsOnTargets="CompileDesignTime" Returns="@(UpToDateCheckInput)">
+  <Target Name="CollectUpToDateCheckInputDesignTime" DependsOnTargets="$(CollectUpToDateCheckInputDesignTimeDependsOn)" Returns="@(UpToDateCheckInput)">
     <ItemGroup>
-      <!-- app.manifest -->
+      <!-- app.manifest, if any -->
       <UpToDateCheckInput Condition=" '$(ApplicationManifest)' != '' " Include="$(ApplicationManifest)" />
+      <!-- .ruleset file, if any -->
+      <UpToDateCheckInput Condition=" '$(ResolvedCodeAnalysisRuleSet)' != '' " Include="$(ResolvedCodeAnalysisRuleSet)" />
     </ItemGroup>
   </Target>
 

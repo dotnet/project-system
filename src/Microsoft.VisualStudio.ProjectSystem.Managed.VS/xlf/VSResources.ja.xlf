@@ -120,13 +120,6 @@
         <target state="translated">警告: '{0}' でビルド パフォーマンスの問題が発生する可能性があります。プロジェクトは、ビルドが成功した後に最新の状態になりません: {1}。https://aka.ms/incremental-build-failure を参照してください。</target>
         <note>{0} is the file name of the project. {1} is a description of the failure. The period '.' after {1} is intentional and should be kept.</note>
       </trans-unit>
-      <trans-unit id="InfoBarMessageNuGetCycleDetected">
-        <source>A circular dependency A -&gt; B -&gt; A was detected during NuGet Restore which caused NuGet to stop restoring.
-Because the NuGet restore didn't finish correctly, the project might be in a bad state.</source>
-        <target state="translated">NuGet の復元中に循環依存の関係 A -&gt; B -&gt; A が検出されたため、NuGet の復元が停止しました。
-NuGet の復元が正しく終了しなかったため、プロジェクトの状態が正しくない可能性があります。</target>
-        <note />
-      </trans-unit>
       <trans-unit id="ProjectHotReloadSessionManager_AttachingToProcess">
         <source>Attaching to process.</source>
         <target state="translated">プロセスにアタッチしています。</target>

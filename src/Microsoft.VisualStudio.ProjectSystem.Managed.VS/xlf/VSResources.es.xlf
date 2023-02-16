@@ -120,13 +120,6 @@
         <target state="translated">ADVERTENCIA: posible problema de rendimiento de compilación en '{0}'. El proyecto no aparece actualizado después de una compilación correcta: {1}. Ver https://aka.ms/incremental-build-failure.</target>
         <note>{0} is the file name of the project. {1} is a description of the failure. The period '.' after {1} is intentional and should be kept.</note>
       </trans-unit>
-      <trans-unit id="InfoBarMessageNuGetCycleDetected">
-        <source>A circular dependency A -&gt; B -&gt; A was detected during NuGet Restore which caused NuGet to stop restoring.
-Because the NuGet restore didn't finish correctly, the project might be in a bad state.</source>
-        <target state="translated">Se detectó una dependencia circular A -&gt; B -&gt; A durante NuGet Restore, lo que provocó que NuGet dejara de restaurar.
-Debido a que la restauración de NuGet no finalizó correctamente, es posible que el proyecto esté en mal estado.</target>
-        <note />
-      </trans-unit>
       <trans-unit id="ProjectHotReloadSessionManager_AttachingToProcess">
         <source>Attaching to process.</source>
         <target state="translated">Adjuntando al proceso.</target>

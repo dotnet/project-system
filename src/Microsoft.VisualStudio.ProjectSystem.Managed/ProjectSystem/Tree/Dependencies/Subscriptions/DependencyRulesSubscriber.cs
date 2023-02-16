@@ -5,7 +5,7 @@ using Microsoft.VisualStudio.Composition;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
 using Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.CrossTarget;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies;
-using EventData = System.Tuple<
+using EventData = System.ValueTuple<
     Microsoft.VisualStudio.ProjectSystem.IProjectSubscriptionUpdate,
     Microsoft.VisualStudio.ProjectSystem.Properties.IProjectCatalogSnapshot,
     Microsoft.VisualStudio.ProjectSystem.IProjectCapabilitiesSnapshot>;
