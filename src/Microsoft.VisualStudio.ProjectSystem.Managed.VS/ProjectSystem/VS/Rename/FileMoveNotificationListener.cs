@@ -11,6 +11,7 @@ using Microsoft.VisualStudio.Text;
 using Microsoft.VisualStudio.Threading;
 using Path = System.IO.Path;
 using static System.Diagnostics.Debug;
+using static Microsoft.CodeAnalysis.Rename.Renamer;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
 {
@@ -30,7 +31,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
         private readonly IRoslynServices _roslynServices;
         private readonly IVsService<SVsSettingsPersistenceManager, ISettingsManager> _settingsManagerService;
 
-        private readonly Dictionary<string, Renamer.RenameDocumentActionSet> _renameActionSets = new();
+        private readonly Dictionary<string, RenameDocumentActionSet> _renameActionSets = new();
         private string? _renameMessage;
 
         [ImportingConstructor]
@@ -59,6 +60,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
         {
             // Always start with an empty collection when activated.
             _renameActionSets.Clear();
+
             Project? project = _workspace.CurrentSolution.Projects.FirstOrDefault(p => StringComparers.Paths.Equals(p.FilePath, _unconfiguredProject.FullPath));
             if (project is null)
             {
@@ -75,22 +77,23 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
 
                 // Get the relative folder path from the project to the destination.
                 string destinationFolderPath = Path.GetDirectoryName(_unconfiguredProject.MakeRelative(itemToMove.Destination));
-                string[] documentFolders = destinationFolderPath.Split(Delimiter.Path, StringSplitOptions.RemoveEmptyEntries);
+                string[] destinationFolders = destinationFolderPath.Split(Delimiter.Path, StringSplitOptions.RemoveEmptyEntries);
 
                 // Since this rename only moves the location of the file to another directory, it will use the SyncNamespaceDocumentAction in Roslyn as the rename action within this set.
                 // The logic for selecting this rename action can be found here: https://github.com/dotnet/roslyn/blob/960f375f4825a189937d4bfd9fea8162ecc63177/src/Workspaces/Core/Portable/Rename/Renamer.cs#L133-L136
-                Renamer.RenameDocumentActionSet renameActionSet = await Renamer.RenameDocumentAsync(currentDocument, s_renameOptions, null, documentFolders);
-
-                if (renameActionSet.ApplicableActions.IsEmpty || renameActionSet.ApplicableActions.Any(a => a.GetErrors().Any()))
+                RenameDocumentActionSet renameActionSet = await RenameDocumentAsync(currentDocument, s_renameOptions, null, destinationFolders);
+                if (renameActionSet.ApplicableActions.IsEmpty || renameActionSet.ApplicableActions.Any(aa => aa.GetErrors().Any()))
                 {
                     continue;
                 }
-                // Getting the rename message requires an instance of Renamer.RenameDocumentAction.
+
+                // Getting the rename message requires an instance of RenameDocumentAction.
                 // We only need to set this message text once for the lifetime of the class, since it isn't dynamic.
                 // Even though it isn't dynamic, it does get localized appropriately in Roslyn.
                 // The text in English is "Sync namespace to folder structure".
                 _renameMessage ??= renameActionSet.ApplicableActions.First().GetDescription();
-                _renameActionSets.Add(itemToMove.Destination, renameActionSet);
+
+                _renameActionSets.Add(itemToMove.Source, renameActionSet);
             }
 
             return;
@@ -153,14 +156,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
                 // After waiting, a "new" published Solution is available.
                 Solution solution = _workspace.CurrentSolution;
 
-                for (int i = 0; i < _renameActionSets.Count; i++)
+                int currentStep = 1;
+                foreach (KeyValuePair<string, RenameDocumentActionSet> renameActionSet in _renameActionSets)
                 {
-                    string destinationPath = _renameActionSets.Keys.ElementAt(i);
                     // Display the filename being updated to the user in the progress dialog.
-                    context.Update(currentStep: i + 1, progressText: Path.GetFileName(destinationPath));
+                    context.Update(currentStep: currentStep++, progressText: Path.GetFileName(renameActionSet.Key));
 
-                    Renamer.RenameDocumentActionSet renameActionSet = _renameActionSets[destinationPath];
-                    solution = await renameActionSet.UpdateSolutionAsync(solution, token);
+                    solution = await renameActionSet.Value.UpdateSolutionAsync(solution, token);
                 }
 
                 await _threadingService.SwitchToUIThread(token);
