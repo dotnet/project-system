@@ -471,8 +471,8 @@ Questo progetto è stato caricato con il tipo di progetto non corretto, probabil
       <trans-unit id="Restore_NuGetCycleDetected">
         <source>A circular dependency A -&gt; B -&gt; A was detected during NuGet Restore which caused NuGet to stop restoring.
 Because the NuGet restore didn't finish correctly, the project might be in a bad state.</source>
-        <target state="new">A circular dependency A -&gt; B -&gt; A was detected during NuGet Restore which caused NuGet to stop restoring.
-Because the NuGet restore didn't finish correctly, the project might be in a bad state.</target>
+        <target state="translated">Durante il ripristino NuGet è stata rilevata una dipendenza circolare A -&gt; B -&gt; A che ha causato l'arresto del ripristino di NuGet.
+Poiché il ripristino NuGet non è stato completato correttamente, il progetto potrebbe trovarsi in uno stato non valido.</target>
         <note />
       </trans-unit>
       <trans-unit id="Restore_PropertyWithInconsistentValues">
