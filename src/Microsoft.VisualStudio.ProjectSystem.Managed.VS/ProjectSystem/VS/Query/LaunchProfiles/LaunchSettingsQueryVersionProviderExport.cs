@@ -116,7 +116,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
 
         public bool TryGetVersion(string versionKey, out long version)
         {
-            Requires.NotNullOrEmpty(versionKey, nameof(versionKey));
+            Requires.NotNullOrEmpty(versionKey);
             lock (SyncObject)
             {
                 return _versions.TryGetValue(versionKey, out version);

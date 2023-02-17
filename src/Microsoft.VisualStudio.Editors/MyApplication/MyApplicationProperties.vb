@@ -240,7 +240,7 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
             Dim hr As Integer
             Dim obj As Object = Nothing
 
-            Requires.NotNull(ProjectHierarchy, NameOf(ProjectHierarchy))
+            Requires.NotNull(ProjectHierarchy)
 
             _projectHierarchy = ProjectHierarchy
 

@@ -49,9 +49,9 @@ namespace Microsoft.VisualStudio.ProjectSystem
             bool suppressVersionOnlyUpdates = true,
             params string[] ruleNames)
         {
-            Requires.NotNull(source, nameof(source));
-            Requires.NotNull(target, nameof(target));
-            Requires.NotNull(project, nameof(project));
+            Requires.NotNull(source);
+            Requires.NotNull(target);
+            Requires.NotNull(project);
 
             return source.LinkTo(DataflowBlockFactory.CreateActionBlock(target, project, severity),
                                  DataflowOption.PropagateCompletion,
@@ -103,9 +103,9 @@ namespace Microsoft.VisualStudio.ProjectSystem
             bool suppressVersionOnlyUpdates = true,
             IEnumerable<string>? ruleNames = null)
         {
-            Requires.NotNull(source, nameof(source));
-            Requires.NotNull(target, nameof(target));
-            Requires.NotNull(project, nameof(project));
+            Requires.NotNull(source);
+            Requires.NotNull(target);
+            Requires.NotNull(project);
 
             return source.LinkTo(DataflowBlockFactory.CreateActionBlock(target, project, severity),
                                  DataflowOption.PropagateCompletion,
@@ -153,9 +153,9 @@ namespace Microsoft.VisualStudio.ProjectSystem
             bool suppressVersionOnlyUpdates = true,
             params string[] ruleNames)
         {
-            Requires.NotNull(source, nameof(source));
-            Requires.NotNull(target, nameof(target));
-            Requires.NotNull(project, nameof(project));
+            Requires.NotNull(source);
+            Requires.NotNull(target);
+            Requires.NotNull(project);
 
             return source.LinkTo(DataflowBlockFactory.CreateActionBlock(target, project, ProjectFaultSeverity.Recoverable),
                                  DataflowOption.PropagateCompletion,
@@ -207,9 +207,9 @@ namespace Microsoft.VisualStudio.ProjectSystem
             bool suppressVersionOnlyUpdates = true,
             IEnumerable<string>? ruleNames = null)
         {
-            Requires.NotNull(source, nameof(source));
-            Requires.NotNull(target, nameof(target));
-            Requires.NotNull(project, nameof(project));
+            Requires.NotNull(source);
+            Requires.NotNull(target);
+            Requires.NotNull(project);
 
             return source.LinkTo(DataflowBlockFactory.CreateActionBlock(target, project, severity),
                                  DataflowOption.PropagateCompletion,
@@ -250,9 +250,9 @@ namespace Microsoft.VisualStudio.ProjectSystem
             Action<T> target,
             UnconfiguredProject project)
         {
-            Requires.NotNull(source, nameof(source));
-            Requires.NotNull(target, nameof(target));
-            Requires.NotNull(project, nameof(project));
+            Requires.NotNull(source);
+            Requires.NotNull(target);
+            Requires.NotNull(project);
 
             return source.LinkTo(DataflowBlockFactory.CreateActionBlock(target, project, ProjectFaultSeverity.Recoverable),
                                  DataflowOption.PropagateCompletion);
@@ -281,9 +281,9 @@ namespace Microsoft.VisualStudio.ProjectSystem
             Func<T, Task> target,
             UnconfiguredProject project)
         {
-            Requires.NotNull(source, nameof(source));
-            Requires.NotNull(target, nameof(target));
-            Requires.NotNull(project, nameof(project));
+            Requires.NotNull(source);
+            Requires.NotNull(target);
+            Requires.NotNull(project);
 
             return source.LinkTo(DataflowBlockFactory.CreateActionBlock(target, project, ProjectFaultSeverity.Recoverable),
                                  DataflowOption.PropagateCompletion);
@@ -318,8 +318,8 @@ namespace Microsoft.VisualStudio.ProjectSystem
             this ISourceBlock<IProjectVersionedValue<TInput>> source,
             Func<IProjectVersionedValue<TInput>, TOut> transform)
         {
-            Requires.NotNull(source, nameof(source));
-            Requires.NotNull(transform, nameof(transform));
+            Requires.NotNull(source);
+            Requires.NotNull(transform);
 
             IPropagatorBlock<IProjectVersionedValue<TInput>, TOut> transformBlock = DataflowBlockSlim.CreateTransformBlock(transform);
 
@@ -359,8 +359,8 @@ namespace Microsoft.VisualStudio.ProjectSystem
             this ISourceBlock<IProjectVersionedValue<TInput>> source,
             Func<IProjectVersionedValue<TInput>, Task<IEnumerable<TOut>>> transform)
         {
-            Requires.NotNull(source, nameof(source));
-            Requires.NotNull(transform, nameof(transform));
+            Requires.NotNull(source);
+            Requires.NotNull(transform);
 
             IPropagatorBlock<IProjectVersionedValue<TInput>, TOut> transformBlock = DataflowBlockSlim.CreateTransformManyBlock(transform, skipIntermediateInputData: true, skipIntermediateOutputData: true);
 
@@ -400,8 +400,8 @@ namespace Microsoft.VisualStudio.ProjectSystem
             this ISourceBlock<IProjectVersionedValue<TInput>> source,
             Func<IProjectVersionedValue<TInput>, TOut> transform)
         {
-            Requires.NotNull(source, nameof(source));
-            Requires.NotNull(transform, nameof(transform));
+            Requires.NotNull(source);
+            Requires.NotNull(transform);
 
             IPropagatorBlock<IProjectVersionedValue<TInput>, TOut> transformBlock = DataflowBlockSlim.CreateTransformBlock(transform, skipIntermediateInputData: true, skipIntermediateOutputData: true);
 
@@ -441,8 +441,8 @@ namespace Microsoft.VisualStudio.ProjectSystem
             this ISourceBlock<IProjectVersionedValue<TInput>> source,
             Func<IProjectVersionedValue<TInput>, Task<TOut>> transform)
         {
-            Requires.NotNull(source, nameof(source));
-            Requires.NotNull(transform, nameof(transform));
+            Requires.NotNull(source);
+            Requires.NotNull(transform);
 
             IPropagatorBlock<IProjectVersionedValue<TInput>, TOut> transformBlock = DataflowBlockSlim.CreateTransformBlock(transform, skipIntermediateInputData: true, skipIntermediateOutputData: true);
 
@@ -528,8 +528,8 @@ namespace Microsoft.VisualStudio.ProjectSystem
             bool suppressVersionOnlyUpdates,
             IEnumerable<string>? ruleNames = null)
         {
-            Requires.NotNull(source, nameof(source));
-            Requires.NotNull(transform, nameof(transform));
+            Requires.NotNull(source);
+            Requires.NotNull(transform);
 
             IPropagatorBlock<IProjectVersionedValue<IProjectSubscriptionUpdate>, TOut> transformBlock = DataflowBlockSlim.CreateTransformBlock(transform, skipIntermediateInputData: true, skipIntermediateOutputData: true);
 

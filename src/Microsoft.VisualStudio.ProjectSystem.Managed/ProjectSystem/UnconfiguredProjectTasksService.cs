@@ -89,7 +89,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
         public Task<T> PrioritizedProjectLoadedInHostAsync<T>(Func<Task<T>> action)
         {
-            Requires.NotNull(action, nameof(action));
+            Requires.NotNull(action);
 
             _tasksService.UnloadCancellationToken.ThrowIfCancellationRequested();
 
@@ -102,7 +102,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
         public Task PrioritizedProjectLoadedInHostAsync(Func<Task> action)
         {
-            Requires.NotNull(action, nameof(action));
+            Requires.NotNull(action);
 
             _tasksService.UnloadCancellationToken.ThrowIfCancellationRequested();
 

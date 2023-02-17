@@ -40,7 +40,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
 
         public Task OnBeforeExecutingBatchAsync(IReadOnlyList<QueryProcessResult<IEntityValue>> allItems, CancellationToken cancellationToken)
         {
-            Requires.NotNull(allItems, nameof(allItems));
+            Requires.NotNull(allItems);
 
             IEnumerable<UnconfiguredProject> targetProjects = allItems
                 .Select(item => ((IEntityValueFromProvider)item.Result).ProviderState)
@@ -51,7 +51,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
 
         public async Task ReceiveResultAsync(QueryProcessResult<IEntityValue> result)
         {
-            Requires.NotNull(result, nameof(result));
+            Requires.NotNull(result);
             result.Request.QueryExecutionContext.CancellationToken.ThrowIfCancellationRequested();
             if (((IEntityValueFromProvider)result.Result).ProviderState is UnconfiguredProject project)
             {

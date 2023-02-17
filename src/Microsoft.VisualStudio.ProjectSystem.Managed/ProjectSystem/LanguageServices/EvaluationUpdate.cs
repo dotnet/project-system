@@ -9,10 +9,10 @@ internal sealed class EvaluationUpdate
 {
     public EvaluationUpdate(ConfiguredProject configuredProject, IProjectSnapshot projectSnapshot, IProjectSubscriptionUpdate evaluationRuleUpdate, IProjectSubscriptionUpdate sourceItemsUpdate)
     {
-        Requires.NotNull(configuredProject, nameof(configuredProject));
-        Requires.NotNull(projectSnapshot, nameof(projectSnapshot));
-        Requires.NotNull(evaluationRuleUpdate, nameof(evaluationRuleUpdate));
-        Requires.NotNull(sourceItemsUpdate, nameof(sourceItemsUpdate));
+        Requires.NotNull(configuredProject);
+        Requires.NotNull(projectSnapshot);
+        Requires.NotNull(evaluationRuleUpdate);
+        Requires.NotNull(sourceItemsUpdate);
 
         ConfiguredProject = configuredProject;
         ProjectSnapshot = projectSnapshot;

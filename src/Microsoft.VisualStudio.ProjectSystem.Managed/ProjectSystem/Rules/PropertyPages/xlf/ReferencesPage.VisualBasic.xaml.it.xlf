@@ -22,6 +22,11 @@
         <target state="translated">Importa spazi dei nomi</target>
         <note />
       </trans-unit>
+      <trans-unit id="DynamicEnumProperty|ImportedNamespaces|ValueEditors|ValueEditor|Metadata|TypeDescriptorText|Value">
+        <source>Imported Namespaces</source>
+        <target state="translated">Spazi dei nomi importati</target>
+        <note />
+      </trans-unit>
       <trans-unit id="Rule|References|Description">
         <source>Specifies the project's references and namespace imports.</source>
         <target state="translated">Specifica i riferimenti e le importazioni dello spazio dei nomi del progetto.</target>

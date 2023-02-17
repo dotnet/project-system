@@ -16,8 +16,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
         public ProjectSetUnevaluatedUIPropertyValueAction(SetUnevaluatedUIPropertyValue parameter)
             : base(parameter.Page, parameter.Name, parameter.Dimensions)
         {
-            Requires.NotNull(parameter, nameof(parameter));
-            Requires.NotNull(parameter.Dimensions, $"{nameof(parameter)}.{nameof(parameter.Dimensions)}");
+            Requires.NotNull(parameter);
+            Requires.NotNull(parameter.Dimensions);
 
             _parameter = parameter;
         }

@@ -40,7 +40,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedColl
 
         public async Task<IDependenciesTreeConfiguredProjectSearchContext?> ForConfiguredProjectAsync(ConfiguredProject configuredProject, CancellationToken cancellationToken = default)
         {
-            Requires.NotNull(configuredProject, nameof(configuredProject));
+            Requires.NotNull(configuredProject);
 
             IProjectTree targetRootNode;
 

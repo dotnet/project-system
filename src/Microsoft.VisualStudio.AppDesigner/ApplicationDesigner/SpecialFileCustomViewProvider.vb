@@ -144,7 +144,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' <param name="SpecialFileId">The special file ID for IVsProjectSpecialFiles that will be used to
         '''   obtain the document filename</param>
         Public Sub New(DesignerView As ApplicationDesignerView, SpecialFileId As Integer)
-            Requires.NotNull(DesignerView, NameOf(DesignerView))
+            Requires.NotNull(DesignerView)
 
             _specialFileId = SpecialFileId
             _designerView = DesignerView

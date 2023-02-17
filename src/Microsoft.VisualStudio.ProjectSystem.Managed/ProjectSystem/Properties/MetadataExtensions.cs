@@ -14,8 +14,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         /// <returns>The key is item name and the value is the metadata dictionary.</returns>
         public static IImmutableDictionary<string, string>? GetProjectItemProperties(this IProjectRuleSnapshot projectRuleSnapshot, string itemSpec)
         {
-            Requires.NotNull(projectRuleSnapshot, nameof(projectRuleSnapshot));
-            Requires.NotNullOrEmpty(itemSpec, nameof(itemSpec));
+            Requires.NotNull(projectRuleSnapshot);
+            Requires.NotNullOrEmpty(itemSpec);
 
             return projectRuleSnapshot.Items.TryGetValue(itemSpec, out IImmutableDictionary<string, string> properties)
                 ? properties

@@ -22,7 +22,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedColl
         public FrameworkReferenceAssemblyItem(string assemblyName, string? path, string? assemblyVersion, string? fileVersion, FrameworkReferenceIdentity framework)
             : base(assemblyName)
         {
-            Requires.NotNull(framework, nameof(framework));
+            Requires.NotNull(framework);
             AssemblyName = assemblyName;
             Path = path;
             AssemblyVersion = assemblyVersion;

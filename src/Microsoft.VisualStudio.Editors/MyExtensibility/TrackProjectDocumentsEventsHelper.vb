@@ -38,7 +38,7 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
         End Sub
 
         Private Sub New(serviceProvider As IServiceProvider)
-            Requires.NotNull(serviceProvider, NameOf(serviceProvider))
+            Requires.NotNull(serviceProvider)
 
             _serviceProvider = serviceProvider
 

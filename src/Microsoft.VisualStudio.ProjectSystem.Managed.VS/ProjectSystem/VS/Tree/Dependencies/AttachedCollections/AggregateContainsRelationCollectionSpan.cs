@@ -29,8 +29,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedColl
 
         internal AggregateContainsRelationCollectionSpan(AggregateContainsRelationCollection parent, IRelation relation)
         {
-            Requires.NotNull(parent, nameof(parent));
-            Requires.NotNull(relation, nameof(relation));
+            Requires.NotNull(parent);
+            Requires.NotNull(relation);
 
             _parent = parent;
             Relation = relation;

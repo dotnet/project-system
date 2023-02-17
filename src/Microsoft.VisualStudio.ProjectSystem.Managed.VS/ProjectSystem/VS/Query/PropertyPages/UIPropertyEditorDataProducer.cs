@@ -15,8 +15,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
     {
         public static IEntityValue CreateEditorValue(IQueryExecutionContext queryExecutionContext, IEntityValue parent, ValueEditor editor, IUIPropertyEditorPropertiesAvailableStatus requestedProperties)
         {
-            Requires.NotNull(parent, nameof(parent));
-            Requires.NotNull(editor, nameof(editor));
+            Requires.NotNull(parent);
+            Requires.NotNull(editor);
 
             var identity = new EntityIdentity(
                 ((IEntityWithId)parent).Id,
@@ -30,7 +30,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
 
         public static IEntityValue CreateEditorValue(IQueryExecutionContext queryExecutionContext, EntityIdentity identity, ValueEditor editor, IUIPropertyEditorPropertiesAvailableStatus requestedProperties)
         {
-            Requires.NotNull(editor, nameof(editor));
+            Requires.NotNull(editor);
             var newEditorValue = new UIPropertyEditorSnapshot(queryExecutionContext.EntityRuntime, identity, new UIPropertyEditorPropertiesAvailableStatus());
 
             if (requestedProperties.Name)

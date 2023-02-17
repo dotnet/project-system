@@ -28,7 +28,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
             IDependenciesChanges? changes,
             IProjectCatalogSnapshot? catalogs)
         {
-            Requires.NotNull(previousSnapshot, nameof(previousSnapshot));
+            Requires.NotNull(previousSnapshot);
 
             bool anyChanges = false;
 
@@ -163,7 +163,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
             IProjectCatalogSnapshot? catalogs,
             ImmutableArray<IDependency> dependencies)
         {
-            Requires.NotNull(targetFramework, nameof(targetFramework));
+            Requires.NotNull(targetFramework);
             Requires.Argument(!dependencies.IsDefault, nameof(dependencies), "Cannot be default.");
 
             TargetFramework = targetFramework;

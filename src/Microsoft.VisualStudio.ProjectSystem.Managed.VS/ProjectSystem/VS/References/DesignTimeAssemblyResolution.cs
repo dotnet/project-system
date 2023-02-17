@@ -35,7 +35,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.References
         [ImportingConstructor]
         public DesignTimeAssemblyResolution(IUnconfiguredProjectVsServices projectVsServices)
         {
-            Requires.NotNull(projectVsServices, nameof(projectVsServices));
+            Requires.NotNull(projectVsServices);
 
             _projectVsServices = projectVsServices;
         }

@@ -327,7 +327,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         End Sub
 
         Private Sub GetPageInfo(pPageInfo() As PROPPAGEINFO) Implements IPropertyPage2.GetPageInfo, IPropertyPage.GetPageInfo
-            Requires.NotNull(pPageInfo, NameOf(pPageInfo))
+            Requires.NotNull(pPageInfo)
 
             pPageInfo(0).cb = 4 + 4 + 8 + 4 + 4 + 4
             pPageInfo(0).dwHelpContext = HelpContext

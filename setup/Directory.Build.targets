@@ -31,4 +31,13 @@
   <!-- Specifies the version number that is used within the 'source.extension.vsixmanifest' files for VSIX packages. -->
   <Target Name="GetVsixVersion" Outputs="$(BuildVersion)" Condition="'$(IsVsixProject)' == 'true'" />
 
+  <!--
+    Creates the Insertion folder as the full folder path is required to create the .vsix file in CreateVsixContainer.
+    This line will fail in the VsixUtil tool if the folder path does not exist:
+    https://dev.azure.com/devdiv/DevDiv/_git/VSExtensibility?path=/src/product/vssdk/tools/VsixUtil/Packager.cs&version=GBdevelop&line=82&lineEnd=83&lineStartColumn=1&lineEndColumn=1&lineStyle=plain&_a=contents
+  -->
+  <Target Name="CreateInsertionFolder" BeforeTargets="CreateVsixContainer" Condition="'$(IsVsixProject)' == 'true'">
+    <MakeDir Directories="$(VisualStudioSetupInsertionPath)" />
+  </Target>
+
 </Project>

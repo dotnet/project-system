@@ -761,8 +761,8 @@ internal class AppDotXamlDocument : AppDotXamlDocument.IDebugLockCheck, AppDotXa
 
         public BufferLock(IVsTextLines buffer, IDebugLockCheck debugLockCheck)
         {
-            Requires.NotNull(buffer, nameof(buffer));
-            Requires.NotNull(debugLockCheck, nameof(debugLockCheck));
+            Requires.NotNull(buffer);
+            Requires.NotNull(debugLockCheck);
 
             _buffer = buffer;
             _debugLockCheck = debugLockCheck;
@@ -815,9 +815,9 @@ internal class AppDotXamlDocument : AppDotXamlDocument.IDebugLockCheck, AppDotXa
 
         public XamlProperty(IVsTextLines vsTextLines, Location startLocation, Location endLocation, string? unescapedValue, bool definitionIncludesQuotes)
         {
-            Requires.NotNull(vsTextLines, nameof(vsTextLines));
-            Requires.NotNull(startLocation, nameof(startLocation));
-            Requires.NotNull(endLocation, nameof(endLocation));
+            Requires.NotNull(vsTextLines);
+            Requires.NotNull(startLocation);
+            Requires.NotNull(endLocation);
 
             unescapedValue ??= string.Empty;
 

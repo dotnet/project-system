@@ -30,8 +30,8 @@ namespace Microsoft.VisualStudio.ProjectSystem
         /// </exception>
         public static string? GetRootedAddNewItemDirectory(this IProjectTreeProvider provider, IProjectTree target)
         {
-            Requires.NotNull(provider, nameof(provider));
-            Requires.NotNull(target, nameof(target));
+            Requires.NotNull(provider);
+            Requires.NotNull(target);
 
             string? relativePath = provider.GetAddNewItemDirectory(target);
 

@@ -17,8 +17,8 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
         public SetDiff(IEnumerable<T> before, IEnumerable<T> after, IEqualityComparer<T>? equalityComparer = null)
         {
-            Requires.NotNull(before, nameof(before));
-            Requires.NotNull(after, nameof(after));
+            Requires.NotNull(before);
+            Requires.NotNull(after);
 
             equalityComparer ??= EqualityComparer<T>.Default;
 

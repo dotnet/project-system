@@ -3,33 +3,43 @@
 using System.Collections;
 using System.Diagnostics;
 
-namespace Microsoft.VisualStudio.ProjectSystem.PackageRestore
+namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
 {
     /// <summary>
-    ///     Abstract immutable collection that supports lookup by index and name.
+    ///     Abstract immutable collection that supports lookup by index and name. Also supports transforming the
+    ///     input items to provide a collection of "output" items of a different type.
     /// </summary>
+    /// <typeparam name="T">The type of items presented to consumers of the collection</typeparam>
+    /// <typeparam name="U">The type of input items</typeparam>
     [DebuggerDisplay("Count = {Count}")]
-    internal abstract class ImmutablePropertyCollection<T> : IEnumerable<T> where T : class
+    internal abstract class ImmutablePropertyCollection<T, U> : IEnumerable<T> where T : class
     {
         // Data here must be treated as immutable. We use readonly interfaces into mutable backing types
         // for the reduction in memory and improvements in performance.
 
         private readonly IReadOnlyList<T> _items;
         private readonly IReadOnlyDictionary<string, T> _itemsByName;
-
-        protected ImmutablePropertyCollection(IEnumerable<T> items, Func<T, string> keyAccessor)
+        
+        /// <summary>
+        ///     Creates a new instance of <see cref="ImmutablePropertyCollection{T, U}"/>.
+        /// </summary>
+        /// <param name="inputItems">The set of input items</param>
+        /// <param name="keyAccessor">A function for mapping from an input item to a key</param>
+        /// <param name="itemTransformer">A function for mapping an input item to an output item</param>
+        protected ImmutablePropertyCollection(IEnumerable<U> inputItems, Func<U, string> keyAccessor, Func<U, T> itemTransformer)
         {
             // Build a list, to maintain order for index-based lookup.
             var itemList = new List<T>();
-
+            
             // Build a dictionary to support key-based lookup.
             var itemByName = new Dictionary<string, T>();
-
-            foreach (T item in items)
+            
+            foreach (U inputItem in inputItems)
             {
+                T item = itemTransformer(inputItem);
                 itemList.Add(item);
 
-                string key = keyAccessor(item);
+                string key = keyAccessor(inputItem);
 
                 // While the majority of elements (items, properties, metadata) are guaranteed to be unique,
                 // Target Frameworks are not, filter out duplicates - NuGet uses the int-based indexer anyway.

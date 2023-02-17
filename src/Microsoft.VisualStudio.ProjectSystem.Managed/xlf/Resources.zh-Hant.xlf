@@ -23,8 +23,8 @@
         <note>Indicates that a diagnostic (i.e. a compiler warning) should be kept as a warning rather than disabled or promoted to an error.</note>
       </trans-unit>
       <trans-unit id="FUTDC_AccelerationDataMissingForProject_1">
-        <source>Build acceleration data is unavailable for project with target '{0}'.</source>
-        <target state="translated">具有目標 '{0}' 的專案無法使用建置加速資料。</target>
+        <source>Build acceleration data is unavailable for project with target '{0}'. See https://aka.ms/vs-build-acceleration.</source>
+        <target state="new">Build acceleration data is unavailable for project with target '{0}'. See https://aka.ms/vs-build-acceleration.</target>
         <note>{0} is a file path.</note>
       </trans-unit>
       <trans-unit id="FUTDC_CheckingCopyItemsForProject_1">
@@ -33,8 +33,8 @@
         <note>{0} is a file path.</note>
       </trans-unit>
       <trans-unit id="FUTD_AccelerationCandidate">
-        <source>This project appears to be a candidate for build acceleration. To opt in, set the 'AccelerateBuildsInVisualStudio' MSBuild property to 'true'.</source>
-        <target state="translated">此專案似乎是建置加速的候選項目。若要加入，請將 'AccelerateBuildsInVisualStudio' MSBuild 屬性設定為 'true'。</target>
+        <source>This project appears to be a candidate for build acceleration. To opt in, set the 'AccelerateBuildsInVisualStudio' MSBuild property to 'true'. See https://aka.ms/vs-build-acceleration.</source>
+        <target state="new">This project appears to be a candidate for build acceleration. To opt in, set the 'AccelerateBuildsInVisualStudio' MSBuild property to 'true'. See https://aka.ms/vs-build-acceleration.</target>
         <note>Do not translate 'AccelerateBuildsInVisualStudio' or 'true'.</note>
       </trans-unit>
       <trans-unit id="FUTD_AccelerationDisabledCopyItemsIncomplete">
@@ -43,8 +43,8 @@
         <note />
       </trans-unit>
       <trans-unit id="FUTD_AccelerationDisabledForProject">
-        <source>Build acceleration is disabled for this project via the 'AccelerateBuildsInVisualStudio' MSBuild property.</source>
-        <target state="translated">已透過 'AccelerateBuildsInVisualStudio' MSBuild 屬性停用此專案的建置加速。</target>
+        <source>Build acceleration is disabled for this project via the 'AccelerateBuildsInVisualStudio' MSBuild property. See https://aka.ms/vs-build-acceleration.</source>
+        <target state="new">Build acceleration is disabled for this project via the 'AccelerateBuildsInVisualStudio' MSBuild property. See https://aka.ms/vs-build-acceleration.</target>
         <note>Do not translate AccelerateBuildsInVisualStudio.</note>
       </trans-unit>
       <trans-unit id="FUTD_AddingInputReferenceCopyMarkers">
@@ -178,8 +178,8 @@
         <note>Do not translate CopyToOutputDirectory="Always". {0} and {3} are file paths. {1} and {4} are date times. {2} and {5} are byte counts.</note>
       </trans-unit>
       <trans-unit id="FUTD_CopyingFilesToAccelerateBuild_1">
-        <source>Copying {0} files to accelerate build:</source>
-        <target state="translated">正在複製 {0} 個檔案以加速建置:</target>
+        <source>Copying {0} files to accelerate build (https://aka.ms/vs-build-acceleration):</source>
+        <target state="new">Copying {0} files to accelerate build (https://aka.ms/vs-build-acceleration):</target>
         <note>{0} is an integer.</note>
       </trans-unit>
       <trans-unit id="FUTD_CriticalBuildTasksRunning">
@@ -466,6 +466,13 @@ This project was loaded using the wrong project type, likely as a result of rena
       <trans-unit id="Restore_EmptyTargetFrameworkMoniker">
         <source>The value of the 'TargetFrameworkMoniker' and 'NuGetTargetMoniker' properties in the '{0}' configuration are both empty. This configuration will not contribute to NuGet restore, which may result in restore and build errors.</source>
         <target state="translated">'{0}' 組態中 'TargetFrameworkMoniker' 和 'NuGetTargetMoniker' 屬性的值皆為空白。此組態無助於 NuGet 還原，可能導致還原及建置錯誤。</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="Restore_NuGetCycleDetected">
+        <source>A circular dependency A -&gt; B -&gt; A was detected during NuGet Restore which caused NuGet to stop restoring.
+Because the NuGet restore didn't finish correctly, the project might be in a bad state.</source>
+        <target state="new">A circular dependency A -&gt; B -&gt; A was detected during NuGet Restore which caused NuGet to stop restoring.
+Because the NuGet restore didn't finish correctly, the project might be in a bad state.</target>
         <note />
       </trans-unit>
       <trans-unit id="Restore_PropertyWithInconsistentValues">

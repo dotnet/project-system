@@ -2,6 +2,11 @@
 <xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
   <file datatype="xml" source-language="en" target-language="ja" original="../VSResources.resx">
     <body>
+      <trans-unit id="BuildAccelerationSummary_2">
+        <source>Visual Studio accelerated {0} project(s), copying {1} file(s). See https://aka.ms/vs-build-acceleration.</source>
+        <target state="new">Visual Studio accelerated {0} project(s), copying {1} file(s). See https://aka.ms/vs-build-acceleration.</target>
+        <note>{0} and {1} are both integer counts.</note>
+      </trans-unit>
       <trans-unit id="DefaultNewProfileName">
         <source>Profile {0}</source>
         <target state="translated">プロファイル {0}</target>
@@ -114,13 +119,6 @@
         <source>WARNING: Potential build performance issue in '{0}'. The project does not appear up-to-date after a successful build: {1}. See https://aka.ms/incremental-build-failure.</source>
         <target state="translated">警告: '{0}' でビルド パフォーマンスの問題が発生する可能性があります。プロジェクトは、ビルドが成功した後に最新の状態になりません: {1}。https://aka.ms/incremental-build-failure を参照してください。</target>
         <note>{0} is the file name of the project. {1} is a description of the failure. The period '.' after {1} is intentional and should be kept.</note>
-      </trans-unit>
-      <trans-unit id="InfoBarMessageNuGetCycleDetected">
-        <source>A circular dependency A -&gt; B -&gt; A was detected during NuGet Restore which caused NuGet to stop restoring.
-Because the NuGet restore didn't finish correctly, the project might be in a bad state.</source>
-        <target state="translated">NuGet の復元中に循環依存の関係 A -&gt; B -&gt; A が検出されたため、NuGet の復元が停止しました。
-NuGet の復元が正しく終了しなかったため、プロジェクトの状態が正しくない可能性があります。</target>
-        <note />
       </trans-unit>
       <trans-unit id="ProjectHotReloadSessionManager_AttachingToProcess">
         <source>Attaching to process.</source>

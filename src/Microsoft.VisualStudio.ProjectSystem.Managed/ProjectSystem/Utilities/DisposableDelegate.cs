@@ -12,7 +12,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Utilities
 
         public DisposableDelegate(Action onDispose)
         {
-            Requires.NotNull(onDispose, nameof(onDispose));
+            Requires.NotNull(onDispose);
 
             _onDispose = onDispose;
         }

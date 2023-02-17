@@ -22,6 +22,11 @@
         <target state="translated">Ad Alanlarını İçeri Aktar</target>
         <note />
       </trans-unit>
+      <trans-unit id="DynamicEnumProperty|ImportedNamespaces|ValueEditors|ValueEditor|Metadata|TypeDescriptorText|Value">
+        <source>Imported Namespaces</source>
+        <target state="translated">İçeri Aktarılan Ad Alanları</target>
+        <note />
+      </trans-unit>
       <trans-unit id="Rule|References|Description">
         <source>Specifies the project's references and namespace imports.</source>
         <target state="translated">Projenin başvurularını ve ad alanı içeri aktarmalarını belirtir.</target>

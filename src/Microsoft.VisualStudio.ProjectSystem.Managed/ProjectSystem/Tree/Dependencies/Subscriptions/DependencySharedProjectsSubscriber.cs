@@ -6,7 +6,7 @@ using Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Models;
 using Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot;
 using Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Subscriptions.RuleHandlers;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies;
-using EventData = System.Tuple<
+using EventData = System.ValueTuple<
     Microsoft.VisualStudio.ProjectSystem.IProjectSubscriptionUpdate,
     Microsoft.VisualStudio.ProjectSystem.IProjectSharedFoldersSnapshot,
     Microsoft.VisualStudio.ProjectSystem.Properties.IProjectCatalogSnapshot,
@@ -78,9 +78,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Subscriptions
             TargetFramework targetFramework,
             DependenciesChangesBuilder changesBuilder)
         {
-            Requires.NotNull(sharedFolders, nameof(sharedFolders));
-            Requires.NotNull(targetFramework, nameof(targetFramework));
-            Requires.NotNull(changesBuilder, nameof(changesBuilder));
+            Requires.NotNull(sharedFolders);
+            Requires.NotNull(targetFramework);
+            Requires.NotNull(changesBuilder);
 
             DependenciesSnapshot snapshot = _dependenciesSnapshotProvider.CurrentSnapshot;
             if (!snapshot.DependenciesByTargetFramework.TryGetValue(targetFramework, out TargetedDependenciesSnapshot? targetedSnapshot))

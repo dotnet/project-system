@@ -20,8 +20,8 @@ namespace Microsoft.VisualStudio.Shell.Interop
         /// </exception>
         public static void ActivatePane(this IVsOutputWindow outputWindow, Guid paneGuid)
         {
-            Requires.NotNull(outputWindow, nameof(outputWindow));
-            Requires.NotEmpty(paneGuid, nameof(paneGuid));
+            Requires.NotNull(outputWindow);
+            Requires.NotEmpty(paneGuid);
 
             HResult hr = outputWindow.GetPane(ref paneGuid, out IVsOutputWindowPane pane);
             if (hr.IsOK) // Pane found
@@ -39,7 +39,7 @@ namespace Microsoft.VisualStudio.Shell.Interop
         /// </exception>
         public static Guid GetActivePane(this IVsOutputWindow outputWindow)
         {
-            Requires.NotNull(outputWindow, nameof(outputWindow));
+            Requires.NotNull(outputWindow);
 
             if (outputWindow is IVsOutputWindow2 outputWindow2)
             {

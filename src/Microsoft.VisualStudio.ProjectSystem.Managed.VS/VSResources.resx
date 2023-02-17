@@ -276,6 +276,10 @@ In order to debug this project, add an executable project to this solution which
     <value>WARNING: Potential build performance issue in '{0}'. The project does not appear up-to-date after a successful build: {1}. See https://aka.ms/incremental-build-failure.</value>
     <comment>{0} is the file name of the project. {1} is a description of the failure. The period '.' after {1} is intentional and should be kept.</comment>
   </data>
+  <data name="BuildAccelerationSummary_2" xml:space="preserve">
+    <value>Visual Studio accelerated {0} project(s), copying {1} file(s). See https://aka.ms/vs-build-acceleration.</value>
+    <comment>{0} and {1} are both integer counts.</comment>
+  </data>
   <data name="UpdateNamespacePromptMessage" xml:space="preserve">
     <value>Adjust namespaces for moved files?</value>
   </data>
@@ -285,9 +289,5 @@ In order to debug this project, add an executable project to this solution which
   <data name="WPFApp_Xaml_UnexpectedFormat_2" xml:space="preserve">
     <value>The .xaml file was in an unexpected format, near line {0} column {1}.</value>
     <comment>{0} is the line number of the problematic XAML, and {1} is the column.</comment>
-  </data>
-  <data name="InfoBarMessageNuGetCycleDetected" xml:space="preserve">
-    <value>A circular dependency A -&gt; B -&gt; A was detected during NuGet Restore which caused NuGet to stop restoring.
-Because the NuGet restore didn't finish correctly, the project might be in a bad state.</value>
   </data>
 </root>

@@ -33,8 +33,8 @@
         <note />
       </trans-unit>
       <trans-unit id="EnforceCodeStyleInBuildCheckBox.Text">
-        <source>Enforce CodeStyle on build (experimental)</source>
-        <target state="translated">在建置時強制執行 CodeStyle (實驗性)</target>
+        <source>Enforce CodeStyle on build</source>
+        <target state="translated">在組建時強制執行 CodeStyle</target>
         <note />
       </trans-unit>
       <trans-unit id="Label1.Text">

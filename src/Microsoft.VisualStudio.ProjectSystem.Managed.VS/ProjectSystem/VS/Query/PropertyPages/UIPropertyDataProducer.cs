@@ -17,8 +17,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
     {
         public static IEntityValue CreateUIPropertyValue(IQueryExecutionContext queryExecutionContext, IEntityValue parent, IProjectState cache, QueryProjectPropertiesContext propertiesContext, BaseProperty property, int order, IUIPropertyPropertiesAvailableStatus requestedProperties)
         {
-            Requires.NotNull(parent, nameof(parent));
-            Requires.NotNull(property, nameof(property));
+            Requires.NotNull(parent);
+            Requires.NotNull(property);
 
             var identity = new EntityIdentity(
                 ((IEntityWithId)parent).Id,
@@ -32,7 +32,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
 
         public static IEntityValue CreateUIPropertyValue(IQueryExecutionContext queryExecutionContext, EntityIdentity id, IProjectState cache, QueryProjectPropertiesContext propertiesContext, BaseProperty property, int order, IUIPropertyPropertiesAvailableStatus requestedProperties)
         {
-            Requires.NotNull(property, nameof(property));
+            Requires.NotNull(property);
             var newUIProperty = new UIPropertySnapshot(queryExecutionContext.EntityRuntime, id, new UIPropertyPropertiesAvailableStatus());
 
             if (requestedProperties.Name)

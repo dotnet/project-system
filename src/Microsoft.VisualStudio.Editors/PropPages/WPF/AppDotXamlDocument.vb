@@ -108,8 +108,8 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages.WPF
             Private ReadOnly _debugLockCheck As IDebugLockCheck 'Used by the document to verify BufferLock is used when it's needed
 
             Public Sub New(buffer As IVsTextLines, debugLockCheck As IDebugLockCheck)
-                Requires.NotNull(buffer, NameOf(buffer))
-                Requires.NotNull(debugLockCheck, NameOf(debugLockCheck))
+                Requires.NotNull(buffer)
+                Requires.NotNull(debugLockCheck)
 
                 _buffer = buffer
                 _debugLockCheck = debugLockCheck
@@ -167,9 +167,9 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages.WPF
             Private ReadOnly _endLocationPlusOne As Location 'Points to the index *after* the last character in the range, just like IVsTextLines expects
 
             Public Sub New(vsTextLines As IVsTextLines, startLocation As Location, endLocation As Location, unescapedValue As String, definitionIncludesQuotes As Boolean)
-                Requires.NotNull(vsTextLines, NameOf(vsTextLines))
-                Requires.NotNull(startLocation, NameOf(startLocation))
-                Requires.NotNull(endLocation, NameOf(endLocation))
+                Requires.NotNull(vsTextLines)
+                Requires.NotNull(startLocation)
+                Requires.NotNull(endLocation)
 
                 If unescapedValue Is Nothing Then
                     unescapedValue = ""
@@ -289,7 +289,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages.WPF
             Public Sub New(vsTextLines As IVsTextLines, fullyQualifiedPropertyName As String, elementStart As Location, elementEnd As Location)
                 MyBase.New(vsTextLines, elementStart, elementEnd, unescapedValue:="")
 
-                Requires.NotNull(fullyQualifiedPropertyName, NameOf(fullyQualifiedPropertyName))
+                Requires.NotNull(fullyQualifiedPropertyName)
 
                 _fullyQualifiedPropertyName = fullyQualifiedPropertyName
             End Sub
@@ -334,7 +334,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages.WPF
 #Region "Constructor"
 
         Public Sub New(vsTextLines As IVsTextLines)
-            Requires.NotNull(vsTextLines, NameOf(vsTextLines))
+            Requires.NotNull(vsTextLines)
             _vsTextLines = vsTextLines
         End Sub
 

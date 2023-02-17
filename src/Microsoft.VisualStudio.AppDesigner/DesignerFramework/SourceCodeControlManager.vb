@@ -28,7 +28,7 @@ Namespace Microsoft.VisualStudio.Editors.AppDesDesignerFramework
         ''' </summary>
         ''' <param name="sp"></param>
         Public Sub New(sp As IServiceProvider, Hierarchy As IVsHierarchy)
-            Requires.NotNull(sp, NameOf(sp))
+            Requires.NotNull(sp)
 
             _serviceProvider = sp
         End Sub
@@ -132,8 +132,8 @@ Namespace Microsoft.VisualStudio.Editors.AppDesDesignerFramework
         ''' <param name="fileReloaded">Out: Set to true if one or more files were reloaded...</param>
         ''' <remarks>Disallows in memory edits for IVsQueryEditQuerySave2</remarks>
         Public Shared Function QueryEditableFiles(sp As IServiceProvider, files As List(Of String), throwOnFailure As Boolean, checkOnly As Boolean, ByRef fileReloaded As Boolean, Optional allowInMemoryEdits As Boolean = True, Optional allowFileReload As Boolean = True) As Boolean
-            Requires.NotNull(sp, NameOf(sp))
-            Requires.NotNull(files, NameOf(files))
+            Requires.NotNull(sp)
+            Requires.NotNull(files)
 
             If files.Count = 0 Then
                 Return True
@@ -243,8 +243,8 @@ Namespace Microsoft.VisualStudio.Editors.AppDesDesignerFramework
         ''' <param name="files">The set of files to check</param>
         ''' <param name="throwOnFailure">Should we throw if the save fails?</param>
         Public Shared Function QuerySave(sp As IServiceProvider, files As List(Of String), throwOnFailure As Boolean) As Boolean
-            Requires.NotNull(sp, NameOf(sp))
-            Requires.NotNull(files, NameOf(files))
+            Requires.NotNull(sp)
+            Requires.NotNull(files)
 
             If files.Count = 0 Then
                 Return True

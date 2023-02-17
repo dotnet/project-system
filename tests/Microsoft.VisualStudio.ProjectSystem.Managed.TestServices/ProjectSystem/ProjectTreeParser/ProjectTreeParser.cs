@@ -13,7 +13,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
         public ProjectTreeParser(string value)
         {
-            Requires.NotNullOrEmpty(value, nameof(value));
+            Requires.NotNullOrEmpty(value);
 
             _tokenizer = new Tokenizer(new SimpleStringReader(value), Delimiters.Structural);
         }

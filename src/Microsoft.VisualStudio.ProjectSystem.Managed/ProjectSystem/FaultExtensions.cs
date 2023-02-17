@@ -40,7 +40,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
             UnconfiguredProject? project,
             ProjectFaultSeverity severity = ProjectFaultSeverity.Recoverable)
         {
-            Requires.NotNull(faultHandlerService, nameof(faultHandlerService));
+            Requires.NotNull(faultHandlerService);
 
             return faultHandlerService.HandleFaultAsync(ex, s_defaultReportSettings, severity, project);
         }
@@ -67,7 +67,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
             UnconfiguredProject? project,
             ProjectFaultSeverity severity = ProjectFaultSeverity.Recoverable)
         {
-            Requires.NotNull(faultHandlerService, nameof(faultHandlerService));
+            Requires.NotNull(faultHandlerService);
 
             faultHandlerService.RegisterFaultHandler(task, s_defaultReportSettings, severity, project);
         }
@@ -94,7 +94,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
             UnconfiguredProject? project,
             ProjectFaultSeverity severity = ProjectFaultSeverity.Recoverable)
         {
-            Requires.NotNull(faultHandlerService, nameof(faultHandlerService));
+            Requires.NotNull(faultHandlerService);
 
             faultHandlerService.RegisterFaultHandler(task, s_defaultReportSettings, severity, project);
         }
@@ -125,7 +125,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
             ProjectFaultSeverity severity = ProjectFaultSeverity.Recoverable,
             ForkOptions options = ForkOptions.Default)
         {
-            Requires.NotNull(threadingService, nameof(threadingService));
+            Requires.NotNull(threadingService);
 
             // If you do not pass in a project it is not legal to ask the threading service to cancel this operation on project unloading
             if (unconfiguredProject is null)
@@ -162,7 +162,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
             ProjectFaultSeverity severity = ProjectFaultSeverity.Recoverable,
             ForkOptions options = ForkOptions.Default)
         {
-            Requires.NotNull(threadingService, nameof(threadingService));
+            Requires.NotNull(threadingService);
 
             // If you do not pass in a project it is not legal to ask the threading service to cancel this operation on project unloading
             if (configuredProject is null)
@@ -195,18 +195,27 @@ namespace Microsoft.VisualStudio.ProjectSystem
             UnconfiguredProject? project,
             ProjectFaultSeverity severity = ProjectFaultSeverity.Recoverable)
         {
-            Requires.NotNull(faultHandlerService, nameof(faultHandlerService));
-            Requires.NotNull(block, nameof(block));
+            Requires.NotNull(faultHandlerService);
+            Requires.NotNull(block);
 
             return block.Completion.ContinueWith(_ =>
             {
+                Exception exception = block.Completion.Exception;
+
+                // If the exception is an aggregate over a single inner exception, take the inner message
+                string innerMessage = exception switch
+                {
+                    AggregateException { InnerExceptions: { Count: 1 } inner } => inner[0].Message,
+                    _ => exception.Message
+                };
+
                 var dataSourceException = new AggregateException(
                     string.Format(
                         CultureInfo.CurrentCulture,
                         Resources.DataFlowFaults,
                         block.ToString(),
-                        block.Completion.Exception),
-                    block.Completion.Exception);
+                        innerMessage),
+                    exception);
 
                 try
                 {

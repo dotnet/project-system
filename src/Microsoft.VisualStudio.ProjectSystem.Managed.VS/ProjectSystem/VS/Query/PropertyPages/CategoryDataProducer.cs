@@ -16,8 +16,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
     {
         public static IEntityValue CreateCategoryValue(IQueryExecutionContext queryExecutionContext, IEntityValue parent, Rule rule, Category category, int order, ICategoryPropertiesAvailableStatus requestedProperties)
         {
-            Requires.NotNull(parent, nameof(parent));
-            Requires.NotNull(category, nameof(category));
+            Requires.NotNull(parent);
+            Requires.NotNull(category);
 
             var identity = new EntityIdentity(
                 ((IEntityWithId)parent).Id,
@@ -31,7 +31,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
 
         public static IEntityValue CreateCategoryValue(IQueryExecutionContext queryExecutionContext, EntityIdentity id, Rule rule, Category category, int order, ICategoryPropertiesAvailableStatus requestedProperties)
         {
-            Requires.NotNull(category, nameof(category));
+            Requires.NotNull(category);
             var newCategory = new CategorySnapshot(queryExecutionContext.EntityRuntime, id, new CategoryPropertiesAvailableStatus());
 
             if (requestedProperties.DisplayName)

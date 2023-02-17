@@ -15,7 +15,7 @@ namespace Microsoft.VisualStudio.Shell.Interop
         /// </summary>
         public static Guid GetGuidProperty(this IVsHierarchy hierarchy, VsHierarchyPropID property)
         {
-            Requires.NotNull(hierarchy, nameof(hierarchy));
+            Requires.NotNull(hierarchy);
             Verify.HResult(hierarchy.GetGuidProperty(HierarchyId.Root, (int)property, out Guid result));
 
             return result;
@@ -52,7 +52,7 @@ namespace Microsoft.VisualStudio.Shell.Interop
         /// </summary>
         public static int GetProperty<T>(this IVsHierarchy hierarchy, HierarchyId item, VsHierarchyPropID property, T defaultValue, out T? result)
         {
-            Requires.NotNull(hierarchy, nameof(hierarchy));
+            Requires.NotNull(hierarchy);
 
             if (item.IsNilOrEmpty || item.IsSelection)
                 throw new ArgumentException(null, nameof(item));

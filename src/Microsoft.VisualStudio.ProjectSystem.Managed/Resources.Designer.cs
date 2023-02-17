@@ -151,7 +151,7 @@ namespace Microsoft.VisualStudio {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to This project appears to be a candidate for build acceleration. To opt in, set the &apos;AccelerateBuildsInVisualStudio&apos; MSBuild property to &apos;true&apos;..
+        ///   Looks up a localized string similar to This project appears to be a candidate for build acceleration. To opt in, set the &apos;AccelerateBuildsInVisualStudio&apos; MSBuild property to &apos;true&apos;. See https://aka.ms/vs-build-acceleration..
         /// </summary>
         internal static string FUTD_AccelerationCandidate {
             get {
@@ -169,7 +169,7 @@ namespace Microsoft.VisualStudio {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Build acceleration is disabled for this project via the &apos;AccelerateBuildsInVisualStudio&apos; MSBuild property..
+        ///   Looks up a localized string similar to Build acceleration is disabled for this project via the &apos;AccelerateBuildsInVisualStudio&apos; MSBuild property. See https://aka.ms/vs-build-acceleration..
         /// </summary>
         internal static string FUTD_AccelerationDisabledForProject {
             get {
@@ -412,7 +412,7 @@ namespace Microsoft.VisualStudio {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Copying {0} files to accelerate build:.
+        ///   Looks up a localized string similar to Copying {0} files to accelerate build (https://aka.ms/vs-build-acceleration):.
         /// </summary>
         internal static string FUTD_CopyingFilesToAccelerateBuild_1 {
             get {
@@ -745,7 +745,7 @@ namespace Microsoft.VisualStudio {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Build acceleration data is unavailable for project with target &apos;{0}&apos;..
+        ///   Looks up a localized string similar to Build acceleration data is unavailable for project with target &apos;{0}&apos;. See https://aka.ms/vs-build-acceleration..
         /// </summary>
         internal static string FUTDC_AccelerationDataMissingForProject_1 {
             get {
@@ -906,6 +906,16 @@ namespace Microsoft.VisualStudio {
         internal static string Restore_EmptyTargetFrameworkMoniker {
             get {
                 return ResourceManager.GetString("Restore_EmptyTargetFrameworkMoniker", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to A circular dependency A -&gt; B -&gt; A was detected during NuGet Restore which caused NuGet to stop restoring.
+        ///Because the NuGet restore didn&apos;t finish correctly, the project might be in a bad state..
+        /// </summary>
+        internal static string Restore_NuGetCycleDetected {
+            get {
+                return ResourceManager.GetString("Restore_NuGetCycleDetected", resourceCulture);
             }
         }
         

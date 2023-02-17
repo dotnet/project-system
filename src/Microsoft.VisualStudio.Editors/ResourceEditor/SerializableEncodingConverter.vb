@@ -59,7 +59,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' Converts the given value object to the specified destination type.
         ''' </summary>
         Public Overrides Function ConvertTo(Context As ITypeDescriptorContext, Culture As CultureInfo, Value As Object, DestinationType As Type) As Object
-            Requires.NotNull(DestinationType, NameOf(DestinationType))
+            Requires.NotNull(DestinationType)
 
             If DestinationType.Equals(GetType(String)) AndAlso TypeOf Value Is SerializableEncoding Then
                 Dim SerializableEncoding As SerializableEncoding = DirectCast(Value, SerializableEncoding)

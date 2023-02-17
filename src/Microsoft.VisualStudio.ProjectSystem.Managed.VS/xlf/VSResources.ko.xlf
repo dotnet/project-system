@@ -2,6 +2,11 @@
 <xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
   <file datatype="xml" source-language="en" target-language="ko" original="../VSResources.resx">
     <body>
+      <trans-unit id="BuildAccelerationSummary_2">
+        <source>Visual Studio accelerated {0} project(s), copying {1} file(s). See https://aka.ms/vs-build-acceleration.</source>
+        <target state="translated">Visual Studio에서 가속화된 프로젝트 {0}개, 파일 {1}개 복사. 참조: https://aka.ms/vs-build-acceleration</target>
+        <note>{0} and {1} are both integer counts.</note>
+      </trans-unit>
       <trans-unit id="DefaultNewProfileName">
         <source>Profile {0}</source>
         <target state="translated">프로필 {0}</target>
@@ -114,13 +119,6 @@
         <source>WARNING: Potential build performance issue in '{0}'. The project does not appear up-to-date after a successful build: {1}. See https://aka.ms/incremental-build-failure.</source>
         <target state="translated">경고: '{0}'에서의 잠재적 빌드 성능 문제입니다. 빌드가 성공한 후에는 프로젝트가 최신 상태로 표시되지 않습니다. {1}. https://aka.ms/incremental-build-failure를 참조하세요.</target>
         <note>{0} is the file name of the project. {1} is a description of the failure. The period '.' after {1} is intentional and should be kept.</note>
-      </trans-unit>
-      <trans-unit id="InfoBarMessageNuGetCycleDetected">
-        <source>A circular dependency A -&gt; B -&gt; A was detected during NuGet Restore which caused NuGet to stop restoring.
-Because the NuGet restore didn't finish correctly, the project might be in a bad state.</source>
-        <target state="translated">NuGet 복원 중에 순환 종속성 A -&gt; B -&gt; A가 감지되어 NuGet이 복원을 중지했습니다.
-NuGet 복원이 올바르게 완료되지 않았으므로 프로젝트가 잘못된 상태일 수 있습니다.</target>
-        <note />
       </trans-unit>
       <trans-unit id="ProjectHotReloadSessionManager_AttachingToProcess">
         <source>Attaching to process.</source>

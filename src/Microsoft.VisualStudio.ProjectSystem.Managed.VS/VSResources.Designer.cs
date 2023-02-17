@@ -70,6 +70,15 @@ namespace Microsoft.VisualStudio {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Visual Studio accelerated {0} project(s), copying {1} file(s). See https://aka.ms/vs-build-acceleration..
+        /// </summary>
+        internal static string BuildAccelerationSummary_2 {
+            get {
+                return ResourceManager.GetString("BuildAccelerationSummary_2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Component (Windows Forms) Designer.
         /// </summary>
         internal static string ComponentEditor_DisplayName {
@@ -318,16 +327,6 @@ namespace Microsoft.VisualStudio {
         internal static string IncrementalBuildFailureWarningMessage_2 {
             get {
                 return ResourceManager.GetString("IncrementalBuildFailureWarningMessage_2", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to A circular dependency A -&gt; B -&gt; A was detected during NuGet Restore which caused NuGet to stop restoring.
-        ///Because the NuGet restore didn&apos;t finish correctly, the project might be in a bad state..
-        /// </summary>
-        internal static string InfoBarMessageNuGetCycleDetected {
-            get {
-                return ResourceManager.GetString("InfoBarMessageNuGetCycleDetected", resourceCulture);
             }
         }
         

@@ -42,7 +42,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
         private bool _isCopyItemsComplete = true;
 
         private UpToDateCheckConfiguredInput? _state;
-        private ITimestampCache? _copyItemTimestamps;
+        private SolutionBuildContext? _currentSolutionBuildContext;
+        private bool _expectedUpToDate;
 
         public BuildUpToDateCheckTests(ITestOutputHelper output)
         {
@@ -99,13 +100,42 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             var copyItemAggregator = new Mock<ICopyItemAggregator>(MockBehavior.Strict);
             copyItemAggregator.Setup(o => o.TryGatherCopyItemsForProject(It.IsAny<string>(), It.IsAny<BuildUpToDateCheck.Log>())).Returns(() => (_copyItems, _isCopyItemsComplete));
 
-            _copyItemTimestamps = new ConcurrentTimestampCache(_fileSystem);
+            _currentSolutionBuildContext = new SolutionBuildContext(_fileSystem);
 
-            var solutionBuildContext = new Mock<ISolutionBuildContext>(MockBehavior.Strict);
-            solutionBuildContext.SetupGet(o => o.CopyItemTimestamps).Returns(() => _copyItemTimestamps);
+            var solutionBuildContextProvider = new Mock<ISolutionBuildContextProvider>(MockBehavior.Strict);
+            solutionBuildContextProvider.SetupGet(o => o.CurrentSolutionBuildContext).Returns(() => _currentSolutionBuildContext);
+
+            var solutionBuildEventListener = new Mock<ISolutionBuildEventListener>(MockBehavior.Strict);
+            solutionBuildEventListener.Setup(
+                o => o.NotifyProjectChecked(
+                    It.IsAny<bool>(),
+                    It.IsAny<bool?>(),
+                    It.IsAny<BuildAccelerationResult>(),
+                    It.IsAny<int>(),
+                    It.IsAny<int>(),
+                    It.IsAny<int>(),
+                    It.IsAny<TimeSpan>(),
+                    It.IsAny<TimeSpan>(),
+                    It.IsAny<LogLevel>()))
+                .Callback((
+                    bool upToDate,
+                    bool? buildAccelerationEnabled,
+                    BuildAccelerationResult result,
+                    int configurationCount,
+                    int copyCount,
+                    int fileCount,
+                    TimeSpan totalTime,
+                    TimeSpan waitTime,
+                    LogLevel logLevel) =>
+                    {
+                        Assert.Equal(_expectedUpToDate, upToDate);
+                        Assert.Equal(_logLevel, logLevel);
+                        Assert.Equal(_isBuildAccelerationEnabled, buildAccelerationEnabled);
+                    });
 
             _buildUpToDateCheck = new BuildUpToDateCheck(
-                solutionBuildContext.Object,
+                solutionBuildContextProvider.Object,
+                solutionBuildEventListener.Object,
                 inputDataSource.Object,
                 projectSystemOptions.Object,
                 configuredProject.Object,
@@ -754,7 +784,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             {
                 await AssertUpToDateAsync(
                     $"""
-                    Build acceleration is disabled for this project via the 'AccelerateBuildsInVisualStudio' MSBuild property.
+                    Build acceleration is disabled for this project via the 'AccelerateBuildsInVisualStudio' MSBuild property. See https://aka.ms/vs-build-acceleration.
                     Comparing timestamps of inputs and outputs:
                         No build outputs defined.
                     Comparing timestamps of copy marker inputs and outputs:
@@ -825,7 +855,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             {
                 await AssertNotUpToDateAsync(
                    $"""
-                    Build acceleration is disabled for this project via the 'AccelerateBuildsInVisualStudio' MSBuild property.
+                    Build acceleration is disabled for this project via the 'AccelerateBuildsInVisualStudio' MSBuild property. See https://aka.ms/vs-build-acceleration.
                     Comparing timestamps of inputs and outputs:
                         No build outputs defined.
                     Comparing timestamps of copy marker inputs and outputs:
@@ -847,7 +877,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                         Adding input reference copy markers:
                             Reference1OriginalPath
                     Input marker 'Reference1OriginalPath' is newer ({ToLocalTime(originalTime)}) than output marker 'C:\Dev\Solution\Project\OutputMarker' ({ToLocalTime(outputTime)}), not up-to-date.
-                    This project appears to be a candidate for build acceleration. To opt in, set the 'AccelerateBuildsInVisualStudio' MSBuild property to 'true'.
+                    This project appears to be a candidate for build acceleration. To opt in, set the 'AccelerateBuildsInVisualStudio' MSBuild property to 'true'. See https://aka.ms/vs-build-acceleration.
                     """,
                     "InputMarkerNewerThanOutputMarker");
             }
@@ -1601,7 +1631,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                                 Source      {ToLocalTime(sourceTime)}: '{sourcePath2}'
                                 Destination {ToLocalTime(destinationTime)}: '{destinationPath2}'
                                 Remembering the need to copy file '{sourcePath2}' to '{destinationPath2}'.
-                    Copying 2 files to accelerate build:
+                    Copying 2 files to accelerate build (https://aka.ms/vs-build-acceleration):
                         From '{sourcePath1}' to '{destinationPath1}'.
                         From '{sourcePath2}' to '{destinationPath2}'.
                     Build acceleration copied 2 files.
@@ -1612,7 +1642,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             {
                 await AssertNotUpToDateAsync(
                     $"""
-                    Build acceleration is disabled for this project via the 'AccelerateBuildsInVisualStudio' MSBuild property.
+                    Build acceleration is disabled for this project via the 'AccelerateBuildsInVisualStudio' MSBuild property. See https://aka.ms/vs-build-acceleration.
                     Comparing timestamps of inputs and outputs:
                         No build outputs defined.
                     Checking items to copy to the output directory:
@@ -1636,7 +1666,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                                 Source      {ToLocalTime(sourceTime)}: '{sourcePath1}'
                                 Destination {ToLocalTime(destinationTime)}: '{destinationPath1}'
                     Item with CopyToOutputDirectory="PreserveNewest" source '{sourcePath1}' is newer than destination '{destinationPath1}', not up-to-date.
-                    This project appears to be a candidate for build acceleration. To opt in, set the 'AccelerateBuildsInVisualStudio' MSBuild property to 'true'.
+                    This project appears to be a candidate for build acceleration. To opt in, set the 'AccelerateBuildsInVisualStudio' MSBuild property to 'true'. See https://aka.ms/vs-build-acceleration.
                     """,
                     "CopyToOutputDirectorySourceNewer");
             }
@@ -1687,7 +1717,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                                 Source      {ToLocalTime(sourceTime)}: '{sourcePath2}'
                                 Destination {ToLocalTime(destinationTime)}: '{destinationPath2}'
                                 Remembering the need to copy file '{sourcePath2}' to '{destinationPath2}'.
-                    Copying 2 files to accelerate build:
+                    Copying 2 files to accelerate build (https://aka.ms/vs-build-acceleration):
                         From '{sourcePath1}' to '{destinationPath1}'.
                         From '{sourcePath2}' to '{destinationPath2}'.
                     Build acceleration copied 2 files.
@@ -1698,7 +1728,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             {
                 await AssertNotUpToDateAsync(
                     $"""
-                    Build acceleration is disabled for this project via the 'AccelerateBuildsInVisualStudio' MSBuild property.
+                    Build acceleration is disabled for this project via the 'AccelerateBuildsInVisualStudio' MSBuild property. See https://aka.ms/vs-build-acceleration.
                     Comparing timestamps of inputs and outputs:
                         No build outputs defined.
                     Checking items to copy to the output directory:
@@ -1722,7 +1752,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                                 Source      {ToLocalTime(sourceTime)}: '{sourcePath1}'
                                 Destination {ToLocalTime(destinationTime)}: '{destinationPath1}'
                     Item with CopyToOutputDirectory="PreserveNewest" source '{sourcePath1}' is newer than destination '{destinationPath1}', not up-to-date.
-                    This project appears to be a candidate for build acceleration. To opt in, set the 'AccelerateBuildsInVisualStudio' MSBuild property to 'true'.
+                    This project appears to be a candidate for build acceleration. To opt in, set the 'AccelerateBuildsInVisualStudio' MSBuild property to 'true'. See https://aka.ms/vs-build-acceleration.
                     """,
                     "CopyToOutputDirectorySourceNewer");
             }
@@ -1776,7 +1806,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                                 Source      {ToLocalTime(sourceTime)}: '{sourcePath2}'
                                 Destination {ToLocalTime(destinationTime)}: '{destinationPath2}'
                                 Remembering the need to copy file '{sourcePath2}' to '{destinationPath2}'.
-                    Copying 2 files to accelerate build:
+                    Copying 2 files to accelerate build (https://aka.ms/vs-build-acceleration):
                         From '{sourcePath1}' to '{destinationPath1}'.
                         From '{sourcePath2}' to '{destinationPath2}'.
                     Build acceleration copied 2 files.
@@ -1787,7 +1817,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             {
                 await AssertNotUpToDateAsync(
                     $"""
-                    Build acceleration is disabled for this project via the 'AccelerateBuildsInVisualStudio' MSBuild property.
+                    Build acceleration is disabled for this project via the 'AccelerateBuildsInVisualStudio' MSBuild property. See https://aka.ms/vs-build-acceleration.
                     Comparing timestamps of inputs and outputs:
                         No build outputs defined.
                     Checking items to copy to the output directory:
@@ -1811,7 +1841,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                                 Source      {ToLocalTime(sourceTime)}: '{sourcePath1}'
                                 Destination {ToLocalTime(destinationTime)}: '{destinationPath1}'
                     Item with CopyToOutputDirectory="PreserveNewest" source '{sourcePath1}' is newer than destination '{destinationPath1}', not up-to-date.
-                    This project appears to be a candidate for build acceleration. To opt in, set the 'AccelerateBuildsInVisualStudio' MSBuild property to 'true'.
+                    This project appears to be a candidate for build acceleration. To opt in, set the 'AccelerateBuildsInVisualStudio' MSBuild property to 'true'. See https://aka.ms/vs-build-acceleration.
                     """,
                     "CopyToOutputDirectorySourceNewer");
             }
@@ -1892,7 +1922,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                                 Source      {ToLocalTime(sourceTime)}: '{sourcePath2}'
                                 Destination '{destinationPath2}' does not exist.
                                 Remembering the need to copy file '{sourcePath2}' to '{destinationPath2}'.
-                    Copying 2 files to accelerate build:
+                    Copying 2 files to accelerate build (https://aka.ms/vs-build-acceleration):
                         From '{sourcePath1}' to '{destinationPath1}'.
                         From '{sourcePath2}' to '{destinationPath2}'.
                     Build acceleration copied 2 files.
@@ -1903,7 +1933,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             {
                 await AssertNotUpToDateAsync(
                     $"""
-                    Build acceleration is disabled for this project via the 'AccelerateBuildsInVisualStudio' MSBuild property.
+                    Build acceleration is disabled for this project via the 'AccelerateBuildsInVisualStudio' MSBuild property. See https://aka.ms/vs-build-acceleration.
                     Comparing timestamps of inputs and outputs:
                         No build outputs defined.
                     Checking items to copy to the output directory:
@@ -1927,7 +1957,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                                 Source      {ToLocalTime(sourceTime)}: '{sourcePath1}'
                                 Destination '{destinationPath1}' does not exist.
                     Destination '{destinationPath1}' does not exist, not up-to-date.
-                    This project appears to be a candidate for build acceleration. To opt in, set the 'AccelerateBuildsInVisualStudio' MSBuild property to 'true'.
+                    This project appears to be a candidate for build acceleration. To opt in, set the 'AccelerateBuildsInVisualStudio' MSBuild property to 'true'. See https://aka.ms/vs-build-acceleration.
                     """,
                     "CopyToOutputDirectoryDestinationNotFound");
             }
@@ -2058,6 +2088,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
         private async Task AssertNotUpToDateAsync(string? expectedLogOutput = null, string? telemetryReason = null, BuildAction buildAction = BuildAction.Build, string ignoreKinds = "", string targetFramework = "")
         {
+            _expectedUpToDate = false;
+
             var writer = new AssertWriter(_output, expectedLogOutput ?? "");
 
             var isUpToDate = await _buildUpToDateCheck.IsUpToDateAsync(buildAction, writer, CreateGlobalProperties(ignoreKinds, targetFramework));
@@ -2086,6 +2118,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
         private async Task AssertUpToDateAsync(string expectedLogOutput, string ignoreKinds = "", string targetFramework = "")
         {
+            _expectedUpToDate = true;
+
             var writer = new AssertWriter(_output, expectedLogOutput);
 
             bool isUpToDate = await _buildUpToDateCheck.IsUpToDateAsync(BuildAction.Build, writer, CreateGlobalProperties(ignoreKinds, targetFramework));

@@ -15,8 +15,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
     {
         public static IEntityValue CreatePropertyPageValue(IQueryExecutionContext queryExecutionContext, IEntityValue parent, IProjectState cache, QueryProjectPropertiesContext propertiesContext, Rule rule, IPropertyPagePropertiesAvailableStatus requestedProperties)
         {
-            Requires.NotNull(parent, nameof(parent));
-            Requires.NotNull(rule, nameof(rule));
+            Requires.NotNull(parent);
+            Requires.NotNull(rule);
 
             var identity = new EntityIdentity(
                 ((IEntityWithId)parent).Id,
@@ -42,7 +42,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
 
         public static IEntityValue CreatePropertyPageValue(IQueryExecutionContext queryExecutionContext, EntityIdentity id, IProjectState cache, QueryProjectPropertiesContext propertiesContext, Rule rule, IPropertyPagePropertiesAvailableStatus requestedProperties)
         {
-            Requires.NotNull(rule, nameof(rule));
+            Requires.NotNull(rule);
             var newPropertyPage = new PropertyPageSnapshot(queryExecutionContext.EntityRuntime, id, new PropertyPagePropertiesAvailableStatus());
 
             if (requestedProperties.Name)

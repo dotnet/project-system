@@ -34,7 +34,7 @@
                 Category="AllAnalyzers" />
 
   <BoolProperty Name="EnforceCodeStyleInBuild"
-                DisplayName="Enforce code style on build (experimental)"
+                DisplayName="Enforce code style on build"
                 Description="Produce diagnostics about code style on build."
                 HelpUrl="https://go.microsoft.com/fwlink/?linkid=2172995"
                 Category="NetAnalyzers" />

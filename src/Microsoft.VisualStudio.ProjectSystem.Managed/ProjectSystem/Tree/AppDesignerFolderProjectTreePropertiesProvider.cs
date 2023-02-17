@@ -56,8 +56,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree
 
         public void UpdateProjectTreeSettings(IImmutableDictionary<string, IProjectRuleSnapshot> ruleSnapshots, ref IImmutableDictionary<string, string> projectTreeSettings)
         {
-            Requires.NotNull(ruleSnapshots, nameof(ruleSnapshots));
-            Requires.NotNull(projectTreeSettings, nameof(projectTreeSettings));
+            Requires.NotNull(ruleSnapshots);
+            Requires.NotNull(projectTreeSettings);
 
             // Retrieves the <AppDesignerFolder> and <AppDesignerFolderContentsVisibleOnlyInShowAllFiles> properties from the project file
             //

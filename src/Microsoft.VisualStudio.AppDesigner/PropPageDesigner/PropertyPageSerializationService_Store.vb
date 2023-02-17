@@ -400,7 +400,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
                 ''' </summary>
                 ''' <param name="Member">The property (must be a PropertyDescriptor) to be serialized.</param>
                 Public Sub AddPropertyToSerialize(Member As MemberDescriptor)
-                    Requires.NotNull(Member, NameOf(Member))
+                    Requires.NotNull(Member)
 
                     If TypeOf Member Is PropertyDescriptor Then
                         Dim Prop As PropertyDescriptor = DirectCast(Member, PropertyDescriptor)

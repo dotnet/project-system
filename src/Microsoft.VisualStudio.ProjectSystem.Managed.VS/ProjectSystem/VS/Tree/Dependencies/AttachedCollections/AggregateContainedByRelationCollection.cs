@@ -20,7 +20,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedColl
 
         internal AggregateContainedByRelationCollection(List<object> parentItems)
         {
-            Requires.NotNull(parentItems, nameof(parentItems));
+            Requires.NotNull(parentItems);
 
             _parentItems = parentItems;
         }

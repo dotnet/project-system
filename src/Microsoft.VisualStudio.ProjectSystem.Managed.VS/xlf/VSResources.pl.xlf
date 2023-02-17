@@ -2,6 +2,11 @@
 <xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
   <file datatype="xml" source-language="en" target-language="pl" original="../VSResources.resx">
     <body>
+      <trans-unit id="BuildAccelerationSummary_2">
+        <source>Visual Studio accelerated {0} project(s), copying {1} file(s). See https://aka.ms/vs-build-acceleration.</source>
+        <target state="new">Visual Studio accelerated {0} project(s), copying {1} file(s). See https://aka.ms/vs-build-acceleration.</target>
+        <note>{0} and {1} are both integer counts.</note>
+      </trans-unit>
       <trans-unit id="DefaultNewProfileName">
         <source>Profile {0}</source>
         <target state="translated">Profil {0}</target>
@@ -114,13 +119,6 @@
         <source>WARNING: Potential build performance issue in '{0}'. The project does not appear up-to-date after a successful build: {1}. See https://aka.ms/incremental-build-failure.</source>
         <target state="translated">OSTRZEŻENIE: potencjalny problem z wydajnością kompilacji w „{0}”. Projekt wydaje się być nieaktualny po pomyślnej kompilacji: {1}. Zobacz stronę https://aka.ms/incremental-build-failure.</target>
         <note>{0} is the file name of the project. {1} is a description of the failure. The period '.' after {1} is intentional and should be kept.</note>
-      </trans-unit>
-      <trans-unit id="InfoBarMessageNuGetCycleDetected">
-        <source>A circular dependency A -&gt; B -&gt; A was detected during NuGet Restore which caused NuGet to stop restoring.
-Because the NuGet restore didn't finish correctly, the project might be in a bad state.</source>
-        <target state="translated">Zależność cykliczna A -&gt; B -&gt; Podczas przywracania pakietu NuGet wykryto obiekt A, który spowodował zatrzymanie przywracania przez narzędzie NuGet.
-Z powodu nieprawidłowego zakończenia przywracania narzędzia NuGet projekt może być w złym stanie.</target>
-        <note />
       </trans-unit>
       <trans-unit id="ProjectHotReloadSessionManager_AttachingToProcess">
         <source>Attaching to process.</source>
