@@ -19,6 +19,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
     [AppliesTo(ProjectCapability.CSharpOrVisualBasicLanguageService)]
     internal partial class RenamerProjectTreeActionHandler : ProjectTreeActionHandlerBase
     {
+        private static readonly DocumentRenameOptions s_renameOptions = new();
+
         private readonly IEnvironmentOptions _environmentOptions;
         private readonly IUnconfiguredProjectVsServices _projectVsServices;
         private readonly IProjectThreadingService _threadingService;
@@ -165,9 +167,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
             }
 
             // Get the list of possible actions to execute
-#pragma warning disable CS0618 // Type or member is obsolete https://github.com/dotnet/project-system/issues/8591
-            Renamer.RenameDocumentActionSet documentRenameResult = await Renamer.RenameDocumentAsync(oldDocument, newFileWithExtension);
-#pragma warning restore CS0618 // Type or member is obsolete
+            Renamer.RenameDocumentActionSet documentRenameResult = await Renamer.RenameDocumentAsync(oldDocument, s_renameOptions, newFileWithExtension);
 
             // Check if there are any symbols that need to be renamed
             if (documentRenameResult.ApplicableActions.IsEmpty)
