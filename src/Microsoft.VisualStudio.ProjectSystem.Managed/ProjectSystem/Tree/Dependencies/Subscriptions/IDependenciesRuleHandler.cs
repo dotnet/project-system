@@ -2,9 +2,8 @@
 
 using Microsoft.VisualStudio.Composition;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies;
-using Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Subscriptions;
 
-namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.CrossTarget
+namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Subscriptions
 {
     /// <summary>
     /// Implementations of this interface add, update and remove <see cref="IDependencyModel"/> instances in response to
