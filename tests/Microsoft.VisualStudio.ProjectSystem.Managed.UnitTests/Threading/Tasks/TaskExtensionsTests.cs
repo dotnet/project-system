@@ -12,6 +12,18 @@ namespace Microsoft.VisualStudio.Threading.Tasks
 
             var t2 = Task.Delay(10000);
             Assert.False(await t2.TryWaitForCompleteOrTimeoutAsync(20));
+
+            var t3 = Task.Delay(20);
+            Assert.True(await t3.TryWaitForCompleteOrTimeoutAsync(Timeout.Infinite));
+
+            var t4 = Task.FromCanceled(new CancellationToken(canceled: true));
+            await Assert.ThrowsAsync<TaskCanceledException>(() => t4.TryWaitForCompleteOrTimeoutAsync(1000));
+            await Assert.ThrowsAsync<TaskCanceledException>(() => t4.TryWaitForCompleteOrTimeoutAsync(Timeout.Infinite));
+
+            var ex = new Exception();
+            var t5 = Task.FromException(ex);
+            Assert.Same(ex, await Assert.ThrowsAsync<Exception>(() => t5.TryWaitForCompleteOrTimeoutAsync(1000)));
+            Assert.Same(ex, await Assert.ThrowsAsync<Exception>(() => t5.TryWaitForCompleteOrTimeoutAsync(Timeout.Infinite)));
         }
     }
 }
