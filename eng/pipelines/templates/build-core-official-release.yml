@@ -17,6 +17,12 @@ jobs:
     displayName: === SBOM Generation ===
     condition: false
 
+  # Allows for accessing the internal AzDO feed (vs-impl-internal) for project restore via Azure Artifacts Credential Provider.
+  # See: https://github.com/microsoft/artifacts-credprovider#automatic-usage
+  # YAML reference: https://docs.microsoft.com/azure/devops/pipelines/tasks/package/nuget-authenticate?view=azure-devops
+  - task: NuGetAuthenticate@1
+    displayName: Authenticate NuGet
+
   # Only the projects in the 'src' folder are necessary for generating the SBOM.
   - script: $(Build.SourcesDirectory)/build.cmd /v:normal /p:Configuration=$(BuildConfiguration) /p:CIBuild=true /p:Test=false /p:Pack=false /p:TestProjects=false /p:SetupProjects=false
     displayName: Build Src Projects
@@ -70,12 +76,6 @@ jobs:
   - script:
     displayName: === Build Repository ===
     condition: false
-
-  # Allows for accessing the internal AzDO feed (vs-impl-internal) for project restore via Azure Artifacts Credential Provider.
-  # See: https://github.com/microsoft/artifacts-credprovider#automatic-usage
-  # YAML reference: https://docs.microsoft.com/azure/devops/pipelines/tasks/package/nuget-authenticate?view=azure-devops
-  - task: NuGetAuthenticate@1
-    displayName: Authenticate NuGet
 
   # Runs the full build of the projects in the repository. See Build.proj for details.
   - script: $(Build.SourcesDirectory)/build.cmd /v:normal /p:Configuration=$(BuildConfiguration) /p:CIBuild=true
