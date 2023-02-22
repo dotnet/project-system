@@ -714,7 +714,7 @@
       <NpmContent Include="$(OutDir)$(AssemblyName).dll;$(OutDir)$(AssemblyName).pdb;$(OutDir)$(AssemblyName).xml" />
       <NpmContent Include="exports.json" />
       <!-- We have a runtime dependency on Microsoft.CodeAnalysis.dll in VS Code scenarios. -->
-      <NpmContent Include="$(PkgMicrosoft_CodeAnalysis_Common)\lib\netcoreapp3.1\Microsoft.CodeAnalysis.dll" />
+      <NpmContent Include="$(PkgMicrosoft_CodeAnalysis_Common)\lib\net6.0\Microsoft.CodeAnalysis.dll" />
     </ItemGroup>
   </Target>
 
