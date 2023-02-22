@@ -110,7 +110,7 @@ stages:
     # Gets the VisualStudioMinimumVersion variable produced by the Build pipeline.
     # This value is used in the analyze-api.yml template.
     - name: VisualStudioMinimumVersion
-      value: $[ stageDependencies.Build.BuildOfficialRelease.outputs['SetVisualStudioMinimumVersionVariable.VisualStudioMinimumVersion'] ]
+      value: $[ stageDependencies.Build.BuildCoreOfficialRelease.outputs['SetVisualStudioMinimumVersionVariable.VisualStudioMinimumVersion'] ]
     # https://devdiv.visualstudio.com/DevDiv/_library?itemType=VariableGroups&view=VariableGroupView&variableGroupId=434&path=DotNet-Project-System
     # Variables used:
     # - ApiScanConnectionString
