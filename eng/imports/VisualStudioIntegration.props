@@ -9,8 +9,8 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.Test.Apex.VisualStudio" />
-    <PackageReference Include="MSTest.TestFramework" />
     <PackageReference Include="MSTest.TestAdapter" />
+    <PackageReference Include="MSTest.TestFramework" />
 
     <!-- Provides vstest.console.exe -->
     <PackageReference Include="Microsoft.TestPlatform" GeneratePathProperty="true" ExcludeAssets="all" />
