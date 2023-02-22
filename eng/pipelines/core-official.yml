@@ -99,10 +99,35 @@ stages:
   jobs:
   - template: templates/build-core-official-release.yml
 
+# Skip this stage only when specifically requested (via SkipCompliance).
+- ${{ if eq(parameters.SkipCompliance, false) }}:
+  - stage: Compliance
+    displayName: Compliance
+    dependsOn: Build
+    variables:
+    - name: UploadTSAResults
+      value: ${{ parameters.UploadTSAResults }}
+    # Gets the VisualStudioMinimumVersion variable produced by the Build pipeline.
+    # This value is used in the analyze-api.yml template.
+    - name: VisualStudioMinimumVersion
+      value: $[ stageDependencies.Build.BuildOfficialRelease.outputs['SetVisualStudioMinimumVersionVariable.VisualStudioMinimumVersion'] ]
+    # https://devdiv.visualstudio.com/DevDiv/_library?itemType=VariableGroups&view=VariableGroupView&variableGroupId=434&path=DotNet-Project-System
+    # Variables used:
+    # - ApiScanConnectionString
+    - group: DotNet-Project-System
+    jobs:
+    - template: templates/analyze-compliance.yml
+    - template: templates/analyze-api.yml
+
 - ${{ if eq(parameters.CreateInsertion, true) }}:
   - stage: Insertion
     displayName: Insertion
-    dependsOn: Build
+    dependsOn:
+    # The Build dependsOn is required for putting that stage's variables into the stageDependencies property bag (for PackageVersion).
+    - Build
+    # Only include the Compliance stage when it is not skipped.
+    - ${{ if eq(parameters.SkipCompliance, false) }}:
+      - Compliance
     variables:
       # Gets the NPMPackageVersion variable produced by the Build pipeline.
       NPMPackageVersion: $[ stageDependencies.Build.BuildCoreOfficialRelease.outputs['SetNPMPackageVersion.NPMPackageVersion'] ]
