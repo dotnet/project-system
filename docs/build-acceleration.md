@@ -100,6 +100,12 @@ Looking through the build output with the following points in mind:
 
    Then any project that references the indicated project (directy or transitively) cannot be accelerated. This can happen if the mentioned project uses the legacy `.csproj` format, or for any other project system within Visual Studio that doesn't support build acceleration. Currently only .NET SDK-style projects (loaded with the project system from this GitHub repository) provide the needed data.
 
+- ⛔ If you see:
+
+   > This project has enabled build acceleration, but at least one referenced project does not produce reference assemblies. Ensure all referenced projects, both direct and indirect, have the 'ProduceReferenceAssembly' MSBuild property set to 'true'.
+
+   Then build acceleration will not know whether it is safe to copy a modified output DLL from a referenced project or not. We rely on the use of reference assemblies to convey this information. To address this, ensure all referenced projects have the `ProduceReferenceAssembly` property set to `true`. You may like to add this to your `Directory.Build.props` file alongside the `AccelerateBuildsInVisualStudio` property. Note that projects targeting `net5.0` or later produce reference assemblies by default. Projects that target .NET Standard may require this to be specified manually (see https://github.com/dotnet/project-system/issues/8865).
+
 - 🗒️ TODO Add validation and output message when reference assemblies are not enabled (https://github.com/dotnet/project-system/issues/8798)
 
 - ✅ You should see a section listing items to copy:

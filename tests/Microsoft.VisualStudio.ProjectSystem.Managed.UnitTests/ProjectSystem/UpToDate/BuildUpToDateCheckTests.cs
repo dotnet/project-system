@@ -40,6 +40,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
         private bool? _isBuildAccelerationEnabled;
         private IEnumerable<(string Path, ImmutableArray<CopyItem> CopyItems)> _copyItems = Enumerable.Empty<(string Path, ImmutableArray<CopyItem> CopyItems)>();
         private bool _isCopyItemsComplete = true;
+        private bool _allReferencesProduceReferenceAssemblies = true;
 
         private UpToDateCheckConfiguredInput? _state;
         private SolutionBuildContext? _currentSolutionBuildContext;
@@ -98,7 +99,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             var upToDateCheckHost = new Mock<IUpToDateCheckHost>(MockBehavior.Strict);
 
             var copyItemAggregator = new Mock<ICopyItemAggregator>(MockBehavior.Strict);
-            copyItemAggregator.Setup(o => o.TryGatherCopyItemsForProject(It.IsAny<string>(), It.IsAny<BuildUpToDateCheck.Log>())).Returns(() => (_copyItems, _isCopyItemsComplete));
+            copyItemAggregator.Setup(o => o.TryGatherCopyItemsForProject(It.IsAny<string>(), It.IsAny<BuildUpToDateCheck.Log>())).Returns(() => (_copyItems, _isCopyItemsComplete, _allReferencesProduceReferenceAssemblies));
 
             _currentSolutionBuildContext = new SolutionBuildContext(_fileSystem);
 
@@ -735,9 +736,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
         [Theory]
         [CombinatorialData]
-        public async Task IsUpToDateAsync_CopyReference_InputsOlderThanMarkerOutput(bool? isBuildAccelerationEnabled)
+        public async Task IsUpToDateAsync_CopyReference_InputsOlderThanMarkerOutput(bool? isBuildAccelerationEnabled, bool allReferencesProduceReferenceAssemblies)
         {
             _isBuildAccelerationEnabled = isBuildAccelerationEnabled;
+            _allReferencesProduceReferenceAssemblies = allReferencesProduceReferenceAssemblies;
 
             var projectSnapshot = new Dictionary<string, IProjectRuleSnapshotModel>
             {
@@ -773,12 +775,25 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
             if (isBuildAccelerationEnabled is true)
             {
-                await AssertUpToDateAsync(
-                    $"""
-                    Comparing timestamps of inputs and outputs:
-                        No build outputs defined.
-                    Project is up-to-date.
-                    """);
+                if (allReferencesProduceReferenceAssemblies)
+                {
+                    await AssertUpToDateAsync(
+                        $"""
+                        Comparing timestamps of inputs and outputs:
+                            No build outputs defined.
+                        Project is up-to-date.
+                        """);
+                }
+                else
+                {
+                    await AssertUpToDateAsync(
+                        $"""
+                        Comparing timestamps of inputs and outputs:
+                            No build outputs defined.
+                        Project is up-to-date.
+                        This project has enabled build acceleration, but at least one referenced project does not produce reference assemblies. Ensure all referenced projects, both direct and indirect, have the 'ProduceReferenceAssembly' MSBuild property set to 'true'. See https://aka.ms/vs-build-acceleration.
+                        """);
+                }
             }
             else if (isBuildAccelerationEnabled is false)
             {
@@ -1588,9 +1603,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
         [Theory]
         [CombinatorialData]
-        public async Task IsUpToDateAsync_CopyToOutputDirectory_SourceIsNewerThanDestination(bool? isBuildAccelerationEnabled)
+        public async Task IsUpToDateAsync_CopyToOutputDirectory_SourceIsNewerThanDestination(bool? isBuildAccelerationEnabled, bool allReferencesProduceReferenceAssemblies)
         {
             _isBuildAccelerationEnabled = isBuildAccelerationEnabled;
+            _allReferencesProduceReferenceAssemblies = allReferencesProduceReferenceAssemblies;
 
             var sourcePath1 = @"C:\Dev\Solution\Project\Item1";
             var sourcePath2 = @"C:\Dev\Solution\Project\Item2";
@@ -1617,26 +1633,53 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
             if (isBuildAccelerationEnabled is true)
             {
-                await AssertUpToDateAsync(
-                    $"""
-                    Comparing timestamps of inputs and outputs:
-                        No build outputs defined.
-                    Checking items to copy to the output directory:
-                        Checking copy items from project '{_projectPath}':
-                            Checking PreserveNewest item
-                                Source      {ToLocalTime(sourceTime)}: '{sourcePath1}'
-                                Destination {ToLocalTime(destinationTime)}: '{destinationPath1}'
-                                Remembering the need to copy file '{sourcePath1}' to '{destinationPath1}'.
-                            Checking PreserveNewest item
-                                Source      {ToLocalTime(sourceTime)}: '{sourcePath2}'
-                                Destination {ToLocalTime(destinationTime)}: '{destinationPath2}'
-                                Remembering the need to copy file '{sourcePath2}' to '{destinationPath2}'.
-                    Copying 2 files to accelerate build (https://aka.ms/vs-build-acceleration):
-                        From '{sourcePath1}' to '{destinationPath1}'.
-                        From '{sourcePath2}' to '{destinationPath2}'.
-                    Build acceleration copied 2 files.
-                    Project is up-to-date.
-                    """);
+                if (allReferencesProduceReferenceAssemblies)
+                {
+                    await AssertUpToDateAsync(
+                        $"""
+                        Comparing timestamps of inputs and outputs:
+                            No build outputs defined.
+                        Checking items to copy to the output directory:
+                            Checking copy items from project '{_projectPath}':
+                                Checking PreserveNewest item
+                                    Source      {ToLocalTime(sourceTime)}: '{sourcePath1}'
+                                    Destination {ToLocalTime(destinationTime)}: '{destinationPath1}'
+                                    Remembering the need to copy file '{sourcePath1}' to '{destinationPath1}'.
+                                Checking PreserveNewest item
+                                    Source      {ToLocalTime(sourceTime)}: '{sourcePath2}'
+                                    Destination {ToLocalTime(destinationTime)}: '{destinationPath2}'
+                                    Remembering the need to copy file '{sourcePath2}' to '{destinationPath2}'.
+                        Copying 2 files to accelerate build (https://aka.ms/vs-build-acceleration):
+                            From '{sourcePath1}' to '{destinationPath1}'.
+                            From '{sourcePath2}' to '{destinationPath2}'.
+                        Build acceleration copied 2 files.
+                        Project is up-to-date.
+                        """);
+                }
+                else
+                {
+                    await AssertUpToDateAsync(
+                        $"""
+                        Comparing timestamps of inputs and outputs:
+                            No build outputs defined.
+                        Checking items to copy to the output directory:
+                            Checking copy items from project '{_projectPath}':
+                                Checking PreserveNewest item
+                                    Source      {ToLocalTime(sourceTime)}: '{sourcePath1}'
+                                    Destination {ToLocalTime(destinationTime)}: '{destinationPath1}'
+                                    Remembering the need to copy file '{sourcePath1}' to '{destinationPath1}'.
+                                Checking PreserveNewest item
+                                    Source      {ToLocalTime(sourceTime)}: '{sourcePath2}'
+                                    Destination {ToLocalTime(destinationTime)}: '{destinationPath2}'
+                                    Remembering the need to copy file '{sourcePath2}' to '{destinationPath2}'.
+                        Copying 2 files to accelerate build (https://aka.ms/vs-build-acceleration):
+                            From '{sourcePath1}' to '{destinationPath1}'.
+                            From '{sourcePath2}' to '{destinationPath2}'.
+                        Build acceleration copied 2 files.
+                        Project is up-to-date.
+                        This project has enabled build acceleration, but at least one referenced project does not produce reference assemblies. Ensure all referenced projects, both direct and indirect, have the 'ProduceReferenceAssembly' MSBuild property set to 'true'. See https://aka.ms/vs-build-acceleration.
+                        """);
+                }
             }
             else if (isBuildAccelerationEnabled is false)
             {
@@ -1674,9 +1717,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
         [Theory]
         [CombinatorialData]
-        public async Task IsUpToDateAsync_CopyToOutputDirectory_SourceIsNewerThanDestination_TargetPath(bool? isBuildAccelerationEnabled)
+        public async Task IsUpToDateAsync_CopyToOutputDirectory_SourceIsNewerThanDestination_TargetPath(bool? isBuildAccelerationEnabled, bool allReferencesProduceReferenceAssemblies)
         {
             _isBuildAccelerationEnabled = isBuildAccelerationEnabled;
+            _allReferencesProduceReferenceAssemblies = allReferencesProduceReferenceAssemblies;
 
             var sourcePath1 = @"C:\Dev\Solution\Project\Item1";
             var sourcePath2 = @"C:\Dev\Solution\Project\Item2";
@@ -1703,26 +1747,53 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
             if (isBuildAccelerationEnabled is true)
             {
-                await AssertUpToDateAsync(
-                    $"""
-                    Comparing timestamps of inputs and outputs:
-                        No build outputs defined.
-                    Checking items to copy to the output directory:
-                        Checking copy items from project '{_projectPath}':
-                            Checking PreserveNewest item
-                                Source      {ToLocalTime(sourceTime)}: '{sourcePath1}'
-                                Destination {ToLocalTime(destinationTime)}: '{destinationPath1}'
-                                Remembering the need to copy file '{sourcePath1}' to '{destinationPath1}'.
-                            Checking PreserveNewest item
-                                Source      {ToLocalTime(sourceTime)}: '{sourcePath2}'
-                                Destination {ToLocalTime(destinationTime)}: '{destinationPath2}'
-                                Remembering the need to copy file '{sourcePath2}' to '{destinationPath2}'.
-                    Copying 2 files to accelerate build (https://aka.ms/vs-build-acceleration):
-                        From '{sourcePath1}' to '{destinationPath1}'.
-                        From '{sourcePath2}' to '{destinationPath2}'.
-                    Build acceleration copied 2 files.
-                    Project is up-to-date.
-                    """);
+                if (allReferencesProduceReferenceAssemblies)
+                {
+                    await AssertUpToDateAsync(
+                        $"""
+                        Comparing timestamps of inputs and outputs:
+                            No build outputs defined.
+                        Checking items to copy to the output directory:
+                            Checking copy items from project '{_projectPath}':
+                                Checking PreserveNewest item
+                                    Source      {ToLocalTime(sourceTime)}: '{sourcePath1}'
+                                    Destination {ToLocalTime(destinationTime)}: '{destinationPath1}'
+                                    Remembering the need to copy file '{sourcePath1}' to '{destinationPath1}'.
+                                Checking PreserveNewest item
+                                    Source      {ToLocalTime(sourceTime)}: '{sourcePath2}'
+                                    Destination {ToLocalTime(destinationTime)}: '{destinationPath2}'
+                                    Remembering the need to copy file '{sourcePath2}' to '{destinationPath2}'.
+                        Copying 2 files to accelerate build (https://aka.ms/vs-build-acceleration):
+                            From '{sourcePath1}' to '{destinationPath1}'.
+                            From '{sourcePath2}' to '{destinationPath2}'.
+                        Build acceleration copied 2 files.
+                        Project is up-to-date.
+                        """);
+                }
+                else
+                {
+                    await AssertUpToDateAsync(
+                        $"""
+                        Comparing timestamps of inputs and outputs:
+                            No build outputs defined.
+                        Checking items to copy to the output directory:
+                            Checking copy items from project '{_projectPath}':
+                                Checking PreserveNewest item
+                                    Source      {ToLocalTime(sourceTime)}: '{sourcePath1}'
+                                    Destination {ToLocalTime(destinationTime)}: '{destinationPath1}'
+                                    Remembering the need to copy file '{sourcePath1}' to '{destinationPath1}'.
+                                Checking PreserveNewest item
+                                    Source      {ToLocalTime(sourceTime)}: '{sourcePath2}'
+                                    Destination {ToLocalTime(destinationTime)}: '{destinationPath2}'
+                                    Remembering the need to copy file '{sourcePath2}' to '{destinationPath2}'.
+                        Copying 2 files to accelerate build (https://aka.ms/vs-build-acceleration):
+                            From '{sourcePath1}' to '{destinationPath1}'.
+                            From '{sourcePath2}' to '{destinationPath2}'.
+                        Build acceleration copied 2 files.
+                        Project is up-to-date.
+                        This project has enabled build acceleration, but at least one referenced project does not produce reference assemblies. Ensure all referenced projects, both direct and indirect, have the 'ProduceReferenceAssembly' MSBuild property set to 'true'. See https://aka.ms/vs-build-acceleration.
+                        """);
+                }
             }
             else if (isBuildAccelerationEnabled is false)
             {
@@ -1760,9 +1831,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
         [Theory]
         [CombinatorialData]
-        public async Task IsUpToDateAsync_CopyToOutputDirectory_SourceIsNewerThanDestination_CustomOutDir(bool? isBuildAccelerationEnabled)
+        public async Task IsUpToDateAsync_CopyToOutputDirectory_SourceIsNewerThanDestination_CustomOutDir(bool? isBuildAccelerationEnabled, bool allReferencesProduceReferenceAssemblies)
         {
             _isBuildAccelerationEnabled = isBuildAccelerationEnabled;
+            _allReferencesProduceReferenceAssemblies = allReferencesProduceReferenceAssemblies;
 
             const string outDirSnapshot = "newOutDir";
 
@@ -1792,26 +1864,53 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
             if (isBuildAccelerationEnabled is true)
             {
-                await AssertUpToDateAsync(
-                    $"""
-                    Comparing timestamps of inputs and outputs:
-                        No build outputs defined.
-                    Checking items to copy to the output directory:
-                        Checking copy items from project '{_projectPath}':
-                            Checking PreserveNewest item
-                                Source      {ToLocalTime(sourceTime)}: '{sourcePath1}'
-                                Destination {ToLocalTime(destinationTime)}: '{destinationPath1}'
-                                Remembering the need to copy file '{sourcePath1}' to '{destinationPath1}'.
-                            Checking PreserveNewest item
-                                Source      {ToLocalTime(sourceTime)}: '{sourcePath2}'
-                                Destination {ToLocalTime(destinationTime)}: '{destinationPath2}'
-                                Remembering the need to copy file '{sourcePath2}' to '{destinationPath2}'.
-                    Copying 2 files to accelerate build (https://aka.ms/vs-build-acceleration):
-                        From '{sourcePath1}' to '{destinationPath1}'.
-                        From '{sourcePath2}' to '{destinationPath2}'.
-                    Build acceleration copied 2 files.
-                    Project is up-to-date.
-                    """);
+                if (allReferencesProduceReferenceAssemblies)
+                {
+                    await AssertUpToDateAsync(
+                        $"""
+                        Comparing timestamps of inputs and outputs:
+                            No build outputs defined.
+                        Checking items to copy to the output directory:
+                            Checking copy items from project '{_projectPath}':
+                                Checking PreserveNewest item
+                                    Source      {ToLocalTime(sourceTime)}: '{sourcePath1}'
+                                    Destination {ToLocalTime(destinationTime)}: '{destinationPath1}'
+                                    Remembering the need to copy file '{sourcePath1}' to '{destinationPath1}'.
+                                Checking PreserveNewest item
+                                    Source      {ToLocalTime(sourceTime)}: '{sourcePath2}'
+                                    Destination {ToLocalTime(destinationTime)}: '{destinationPath2}'
+                                    Remembering the need to copy file '{sourcePath2}' to '{destinationPath2}'.
+                        Copying 2 files to accelerate build (https://aka.ms/vs-build-acceleration):
+                            From '{sourcePath1}' to '{destinationPath1}'.
+                            From '{sourcePath2}' to '{destinationPath2}'.
+                        Build acceleration copied 2 files.
+                        Project is up-to-date.
+                        """);
+                }
+                else
+                {
+                    await AssertUpToDateAsync(
+                        $"""
+                        Comparing timestamps of inputs and outputs:
+                            No build outputs defined.
+                        Checking items to copy to the output directory:
+                            Checking copy items from project '{_projectPath}':
+                                Checking PreserveNewest item
+                                    Source      {ToLocalTime(sourceTime)}: '{sourcePath1}'
+                                    Destination {ToLocalTime(destinationTime)}: '{destinationPath1}'
+                                    Remembering the need to copy file '{sourcePath1}' to '{destinationPath1}'.
+                                Checking PreserveNewest item
+                                    Source      {ToLocalTime(sourceTime)}: '{sourcePath2}'
+                                    Destination {ToLocalTime(destinationTime)}: '{destinationPath2}'
+                                    Remembering the need to copy file '{sourcePath2}' to '{destinationPath2}'.
+                        Copying 2 files to accelerate build (https://aka.ms/vs-build-acceleration):
+                            From '{sourcePath1}' to '{destinationPath1}'.
+                            From '{sourcePath2}' to '{destinationPath2}'.
+                        Build acceleration copied 2 files.
+                        Project is up-to-date.
+                        This project has enabled build acceleration, but at least one referenced project does not produce reference assemblies. Ensure all referenced projects, both direct and indirect, have the 'ProduceReferenceAssembly' MSBuild property set to 'true'. See https://aka.ms/vs-build-acceleration.
+                        """);
+                }
             }
             else if (isBuildAccelerationEnabled is false)
             {
@@ -1882,9 +1981,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
         [Theory]
         [CombinatorialData]
-        public async Task IsUpToDateAsync_CopyToOutputDirectory_DestinationDoesNotExist(bool? isBuildAccelerationEnabled)
+        public async Task IsUpToDateAsync_CopyToOutputDirectory_DestinationDoesNotExist(bool? isBuildAccelerationEnabled, bool allReferencesProduceReferenceAssemblies)
         {
             _isBuildAccelerationEnabled = isBuildAccelerationEnabled;
+            _allReferencesProduceReferenceAssemblies = allReferencesProduceReferenceAssemblies;
 
             var sourcePath1 = @"C:\Dev\Solution\Project\Item1";
             var sourcePath2 = @"C:\Dev\Solution\Project\Item2";
@@ -1908,26 +2008,53 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
             if (isBuildAccelerationEnabled is true)
             {
-                await AssertUpToDateAsync(
-                    $"""
-                    Comparing timestamps of inputs and outputs:
-                        No build outputs defined.
-                    Checking items to copy to the output directory:
-                        Checking copy items from project '{_projectPath}':
-                            Checking PreserveNewest item
-                                Source      {ToLocalTime(sourceTime)}: '{sourcePath1}'
-                                Destination '{destinationPath1}' does not exist.
-                                Remembering the need to copy file '{sourcePath1}' to '{destinationPath1}'.
-                            Checking PreserveNewest item
-                                Source      {ToLocalTime(sourceTime)}: '{sourcePath2}'
-                                Destination '{destinationPath2}' does not exist.
-                                Remembering the need to copy file '{sourcePath2}' to '{destinationPath2}'.
-                    Copying 2 files to accelerate build (https://aka.ms/vs-build-acceleration):
-                        From '{sourcePath1}' to '{destinationPath1}'.
-                        From '{sourcePath2}' to '{destinationPath2}'.
-                    Build acceleration copied 2 files.
-                    Project is up-to-date.
-                    """);
+                if (allReferencesProduceReferenceAssemblies)
+                {
+                    await AssertUpToDateAsync(
+                        $"""
+                        Comparing timestamps of inputs and outputs:
+                            No build outputs defined.
+                        Checking items to copy to the output directory:
+                            Checking copy items from project '{_projectPath}':
+                                Checking PreserveNewest item
+                                    Source      {ToLocalTime(sourceTime)}: '{sourcePath1}'
+                                    Destination '{destinationPath1}' does not exist.
+                                    Remembering the need to copy file '{sourcePath1}' to '{destinationPath1}'.
+                                Checking PreserveNewest item
+                                    Source      {ToLocalTime(sourceTime)}: '{sourcePath2}'
+                                    Destination '{destinationPath2}' does not exist.
+                                    Remembering the need to copy file '{sourcePath2}' to '{destinationPath2}'.
+                        Copying 2 files to accelerate build (https://aka.ms/vs-build-acceleration):
+                            From '{sourcePath1}' to '{destinationPath1}'.
+                            From '{sourcePath2}' to '{destinationPath2}'.
+                        Build acceleration copied 2 files.
+                        Project is up-to-date.
+                        """);
+                }
+                else
+                {
+                    await AssertUpToDateAsync(
+                        $"""
+                        Comparing timestamps of inputs and outputs:
+                            No build outputs defined.
+                        Checking items to copy to the output directory:
+                            Checking copy items from project '{_projectPath}':
+                                Checking PreserveNewest item
+                                    Source      {ToLocalTime(sourceTime)}: '{sourcePath1}'
+                                    Destination '{destinationPath1}' does not exist.
+                                    Remembering the need to copy file '{sourcePath1}' to '{destinationPath1}'.
+                                Checking PreserveNewest item
+                                    Source      {ToLocalTime(sourceTime)}: '{sourcePath2}'
+                                    Destination '{destinationPath2}' does not exist.
+                                    Remembering the need to copy file '{sourcePath2}' to '{destinationPath2}'.
+                        Copying 2 files to accelerate build (https://aka.ms/vs-build-acceleration):
+                            From '{sourcePath1}' to '{destinationPath1}'.
+                            From '{sourcePath2}' to '{destinationPath2}'.
+                        Build acceleration copied 2 files.
+                        Project is up-to-date.
+                        This project has enabled build acceleration, but at least one referenced project does not produce reference assemblies. Ensure all referenced projects, both direct and indirect, have the 'ProduceReferenceAssembly' MSBuild property set to 'true'. See https://aka.ms/vs-build-acceleration.
+                        """);
+                }
             }
             else if (isBuildAccelerationEnabled is false)
             {

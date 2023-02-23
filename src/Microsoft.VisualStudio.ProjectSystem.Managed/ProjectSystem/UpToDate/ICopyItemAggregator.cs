@@ -30,9 +30,10 @@ internal interface ICopyItemAggregator
     /// <list type="number">
     ///   <item><c>Items</c> a sequence of items by project, that are reachable from the current project.</item>
     ///   <item><c>IsComplete</c> indicating whether we have items from all reachable projects.</item>
+    ///   <item><c>AllReferencesProduceReferenceAssemblies</c> indicating whether all referenced projects produce reference assemblies.</item>
     /// </list>
     /// </returns>
-    (IEnumerable<(string Path, ImmutableArray<CopyItem> CopyItems)> ItemsByProject, bool IsComplete) TryGatherCopyItemsForProject(string targetPath, BuildUpToDateCheck.Log logger);
+    (IEnumerable<(string Path, ImmutableArray<CopyItem> CopyItems)> ItemsByProject, bool IsComplete, bool AllReferencesProduceReferenceAssemblies) TryGatherCopyItemsForProject(string targetPath, BuildUpToDateCheck.Log logger);
 }
 
 /// <summary>
@@ -40,11 +41,13 @@ internal interface ICopyItemAggregator
 /// </summary>
 /// <param name="ProjectFullPath">The full path to the project file (e.g. the <c>.csproj</c> file).</param>
 /// <param name="TargetPath">The full path to the target file (e.g. a <c>.dll</c> file), which should be unique to the configuration.</param>
+/// <param name="ProduceReferenceAssembly">Whether this project produces a reference assembly or not, determined by the <c>ProduceReferenceAssembly</c> MSBuild property.</param>
 /// <param name="CopyItems">The set of items the project provider to the output directory of itself and other projects.</param>
 /// <param name="ReferencedProjectTargetPaths">The target paths resolved from this project's references to other projects.</param>
 internal record struct ProjectCopyData(
     string? ProjectFullPath,
     string TargetPath,
+    bool ProduceReferenceAssembly,
     ImmutableArray<CopyItem> CopyItems,
     ImmutableArray<string> ReferencedProjectTargetPaths)
 {

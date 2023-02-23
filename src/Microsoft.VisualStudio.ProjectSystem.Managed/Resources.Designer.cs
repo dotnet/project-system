@@ -628,6 +628,15 @@ namespace Microsoft.VisualStudio {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to This project has enabled build acceleration, but at least one referenced project does not produce reference assemblies. Ensure all referenced projects, both direct and indirect, have the &apos;ProduceReferenceAssembly&apos; MSBuild property set to &apos;true&apos;. See https://aka.ms/vs-build-acceleration..
+        /// </summary>
+        internal static string FUTD_NotAllReferencesProduceReferenceAssemblies {
+            get {
+                return ResourceManager.GetString("FUTD_NotAllReferencesProduceReferenceAssemblies", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Output &apos;{0}&apos; does not exist, not up-to-date..
         /// </summary>
         internal static string FUTD_OutputDoesNotExist_1 {
