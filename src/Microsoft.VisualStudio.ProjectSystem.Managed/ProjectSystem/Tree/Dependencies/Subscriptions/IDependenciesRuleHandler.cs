@@ -14,8 +14,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Subscriptions
     [ProjectSystemContract(
         ProjectSystemContractScope.UnconfiguredProject,
         ProjectSystemContractProvider.Private,
-        Cardinality = ImportCardinality.ZeroOrMore,
-        ContractName = DependencyRulesSubscriber.DependencyRulesSubscriberContract)]
+        Cardinality = ImportCardinality.ZeroOrMore)]
     internal interface IDependenciesRuleHandler
     {
         /// <summary>
