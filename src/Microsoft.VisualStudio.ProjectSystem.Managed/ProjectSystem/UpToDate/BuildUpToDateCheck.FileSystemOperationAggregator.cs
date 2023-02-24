@@ -57,6 +57,16 @@ internal sealed partial class BuildUpToDateCheck
         /// </remarks>
         public bool? IsAccelerationEnabled { get; internal set; }
 
+        /// <summary>
+        /// Gets whether all referenced projects produce reference assemblies or not.
+        /// </summary>
+        /// <remarks>
+        /// Build acceleration works best when all referenced projects produce reference assemblies.
+        /// This flag allows us to prompt the user when they have enabled build acceleration, but
+        /// they are referencing projects that do not produce reference assemblies.
+        /// </remarks>
+        public bool AllReferencesProduceReferenceAssemblies { get; internal set; } = true;
+
         public BuildAccelerationResult AccelerationResult
         {
             get
@@ -187,7 +197,7 @@ internal sealed partial class BuildUpToDateCheck
         private readonly FileSystemOperationAggregator _parent;
         private readonly bool? _isBuildAccelerationEnabled;
 
-        public ConfiguredFileSystemOperationAggregator(FileSystemOperationAggregator parent, bool? isBuildAccelerationEnabled)
+        public ConfiguredFileSystemOperationAggregator(FileSystemOperationAggregator parent, bool? isBuildAccelerationEnabled, bool referencesProduceReferenceAssemblies)
         {
             _parent = parent;
             _isBuildAccelerationEnabled = isBuildAccelerationEnabled;
@@ -201,6 +211,11 @@ internal sealed partial class BuildUpToDateCheck
             {
                 // Note an explicit disable
                 _parent.IsAccelerationEnabled = false;
+            }
+
+            if (referencesProduceReferenceAssemblies is false)
+            {
+                _parent.AllReferencesProduceReferenceAssemblies = false;
             }
         }
 
