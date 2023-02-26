@@ -138,11 +138,20 @@ Looking through the build output with the following points in mind:
 
 ## Limitations
 
-MSBuild is very configurable, and there are many ways to configure a project that will prevent build acceleration from working correctly. For example, if a project's build defines post-compile steps that are important to the correct functioning of your project, then build acceleration will not correctly reproduce those steps when it bypasses MSBuild.
-
-Note that NuGet packages can modify a project's build in non-obvious ways that may have undesirable interactions with build acceleration.
+MSBuild is very configurable, and there are ways to configure a project that will prevent build acceleration from working correctly. For example, if a project's build has post-compile steps that are important to the correct functioning of your project, then build acceleration will not correctly reproduce those steps when it bypasses MSBuild.
 
 We recommend enabling build acceleration for all projects in the solution, as described above, then monitoring for any unexpected behavior. You can use the log output to verify whether build acceleration is the culprit. If so, disable it for that project.
+
+Some examples of project types for which build acceleration may not work correctly:
+
+- **Installer projects** &mdash; builds must package files into some output file (`.exe`, `.msi`, `.vsix`, ...).
+- **MAUI projects** &mdash; builds must produce a device-specific artifact for deployment.
+
+Even if your solution has such a project, you should still enable build acceleration for all the other projects. Most large solutions have only one or two top-level projects like this, and many library projects that are candidates for acceleration.
+
+Note that NuGet packages can modify a project's build in non-obvious ways that may have undesirable interactions with build acceleration. Theoretically a class library project having a specific NuGet package might not work with build acceleration. We are not aware of any such popular packages at this time.
+
+We aim to automatically identify and disable build acceleration in cases where it won't work. Please let us know of such cases in an issue or discussion on this repo so that we can improve the feature and this documentation.
 
 ## Giving feedback
 
