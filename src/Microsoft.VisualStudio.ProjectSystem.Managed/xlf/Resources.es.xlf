@@ -299,7 +299,7 @@
       </trans-unit>
       <trans-unit id="FUTD_NotAllReferencesProduceReferenceAssemblies">
         <source>This project has enabled build acceleration, but at least one referenced project does not produce reference assemblies. Ensure all referenced projects, both direct and indirect, have the 'ProduceReferenceAssembly' MSBuild property set to 'true'. See https://aka.ms/vs-build-acceleration.</source>
-        <target state="new">This project has enabled build acceleration, but at least one referenced project does not produce reference assemblies. Ensure all referenced projects, both direct and indirect, have the 'ProduceReferenceAssembly' MSBuild property set to 'true'. See https://aka.ms/vs-build-acceleration.</target>
+        <target state="translated">Este proyecto ha habilitado la aceleración de compilación, pero al menos un proyecto al que se hace referencia no produce ensamblados de referencia. Asegúrese de que todos los proyectos a los que se hace referencia, directos e indirectos, tengan la propiedad 'ProduceReferenceAssembly' de MSBuild establecida en 'true'. Consulte https://aka.ms/vs-build-acceleration.</target>
         <note>Do not translate 'ProduceReferenceAssembly' or 'true'.</note>
       </trans-unit>
       <trans-unit id="FUTD_OutputDoesNotExist_1">
