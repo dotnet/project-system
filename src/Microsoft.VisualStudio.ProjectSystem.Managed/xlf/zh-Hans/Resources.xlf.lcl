@@ -592,6 +592,15 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
+      <Item ItemId=";FUTD_NotAllReferencesProduceReferenceAssemblies" ItemType="0" PsrId="308" InstFlg="true" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[This project has enabled build acceleration, but at least one referenced project does not produce reference assemblies. Ensure all referenced projects, both direct and indirect, have the 'ProduceReferenceAssembly' MSBuild property set to 'true'. See https://aka.ms/vs-build-acceleration.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[此项目已启用生成加速，但至少一个引用的项目不会生成引用程序集。请确保所有引用的项目(包括直接项目和间接项目)都将 "ProduceReferenceAssembly" MSBuild 属性设置为 "true"。请参阅 https://aka.ms/vs-build-acceleration。]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
       <Item ItemId=";FUTD_OutputDoesNotExist_1" ItemType="0" PsrId="308" InstFlg="true" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[Output '{0}' does not exist, not up-to-date.]]></Val>
