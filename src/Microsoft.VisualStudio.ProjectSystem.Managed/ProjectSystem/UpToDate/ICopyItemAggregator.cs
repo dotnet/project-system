@@ -35,11 +35,14 @@ internal interface ICopyItemAggregator
 /// </summary>
 /// <param name="ItemsByProject">A sequence of items by project, that are reachable from the current project</param>
 /// <param name="IsComplete">Indicates whether we have items from all reachable projects.</param>
-/// <param name="AllReferencesProduceReferenceAssemblies">Indicates whether all referenced projects produce reference assemblies.</param>
+/// <param name="TargetsWithoutReferenceAssemblies">
+///     A list of target paths for projects that do not produce reference assemblies, or <see langword="null"/> if
+///     all reachable projects do in fact produce reference assemblies.
+/// </param>
 internal record struct CopyItemsResult(
     IEnumerable<(string Path, ImmutableArray<CopyItem> CopyItems)> ItemsByProject,
     bool IsComplete,
-    bool AllReferencesProduceReferenceAssemblies);
+    IReadOnlyList<string>? TargetsWithoutReferenceAssemblies);
 
 /// <summary>
 /// Models the set of copy items a project produces, along with some details about the project.

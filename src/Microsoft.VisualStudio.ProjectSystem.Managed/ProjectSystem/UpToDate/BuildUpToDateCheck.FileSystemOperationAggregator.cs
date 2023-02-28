@@ -58,14 +58,26 @@ internal sealed partial class BuildUpToDateCheck
         public bool? IsAccelerationEnabled { get; internal set; }
 
         /// <summary>
-        /// Gets whether all referenced projects produce reference assemblies or not.
+        /// Gets paths to the target of any projects that do not produce a reference assembly, or
+        /// <see langword="null"/> if none exist.
         /// </summary>
         /// <remarks>
         /// Build acceleration works best when all referenced projects produce reference assemblies.
-        /// This flag allows us to prompt the user when they have enabled build acceleration, but
+        /// This collecting allows us to prompt the user when they have enabled build acceleration, but
         /// they are referencing projects that do not produce reference assemblies.
         /// </remarks>
-        public bool AllReferencesProduceReferenceAssemblies { get; internal set; } = true;
+        public IReadOnlyList<string>? TargetsWithoutReferenceAssemblies => _targetsWithoutReferenceAssemblies;
+
+        private List<string>? _targetsWithoutReferenceAssemblies;
+
+        internal void AddTargetsWithoutReferenceAssemblies(IReadOnlyList<string> targetsWithoutReferenceAssemblies)
+        {
+            if (targetsWithoutReferenceAssemblies is {  Count: > 0 })
+            {
+                _targetsWithoutReferenceAssemblies ??= new();
+                _targetsWithoutReferenceAssemblies.AddRange(targetsWithoutReferenceAssemblies);
+            }
+        }
 
         public BuildAccelerationResult AccelerationResult
         {
@@ -197,7 +209,7 @@ internal sealed partial class BuildUpToDateCheck
         private readonly FileSystemOperationAggregator _parent;
         private readonly bool? _isBuildAccelerationEnabled;
 
-        public ConfiguredFileSystemOperationAggregator(FileSystemOperationAggregator parent, bool? isBuildAccelerationEnabled, bool referencesProduceReferenceAssemblies)
+        public ConfiguredFileSystemOperationAggregator(FileSystemOperationAggregator parent, bool? isBuildAccelerationEnabled, IReadOnlyList<string>? targetsWithoutReferenceAssemblies)
         {
             _parent = parent;
             _isBuildAccelerationEnabled = isBuildAccelerationEnabled;
@@ -213,9 +225,9 @@ internal sealed partial class BuildUpToDateCheck
                 _parent.IsAccelerationEnabled = false;
             }
 
-            if (referencesProduceReferenceAssemblies is false)
+            if (targetsWithoutReferenceAssemblies is not null)
             {
-                _parent.AllReferencesProduceReferenceAssemblies = false;
+                _parent.AddTargetsWithoutReferenceAssemblies(targetsWithoutReferenceAssemblies);
             }
         }
 

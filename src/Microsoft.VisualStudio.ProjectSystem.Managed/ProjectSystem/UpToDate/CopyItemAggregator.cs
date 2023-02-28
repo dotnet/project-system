@@ -38,9 +38,9 @@ internal class CopyItemAggregator : ICopyItemAggregator
         // results is strictly an improvement over ignoring what results we do have.
         bool isComplete = true;
 
-        // Whether all referenced projects have ProduceReferenceAssembly set to true. The originating project
-        // is not included in this check (targetPath).
-        bool allReferencesProduceReferenceAssemblies = true;
+        // Lazily populated list of referenced projects not having ProduceReferenceAssembly set to true.
+        // The originating project is not included in this check (targetPath).
+        List<string>? referencesNotProducingReferenceAssembly = null;
 
         List<ProjectCopyData>? contributingProjects = null;
 
@@ -67,7 +67,8 @@ internal class CopyItemAggregator : ICopyItemAggregator
                 if (!data.ProduceReferenceAssembly && project != targetPath)
                 {
                     // One of the referenced projects does not produce a reference assembly.
-                    allReferencesProduceReferenceAssemblies = false;
+                    referencesNotProducingReferenceAssembly ??= new();
+                    referencesNotProducingReferenceAssembly.Add(data.TargetPath);
                 }
 
                 foreach (string referencedProjectTargetPath in data.ReferencedProjectTargetPaths)
@@ -83,7 +84,7 @@ internal class CopyItemAggregator : ICopyItemAggregator
             }
         }
 
-        return new(GenerateCopyItems(), isComplete, allReferencesProduceReferenceAssemblies);
+        return new(GenerateCopyItems(), isComplete, referencesNotProducingReferenceAssembly);
 
         IEnumerable<(string Path, ImmutableArray<CopyItem> CopyItems)> GenerateCopyItems()
         {
