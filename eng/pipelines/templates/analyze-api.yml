@@ -25,10 +25,10 @@ jobs:
     patterns: |
       bin/Dlls/**/Microsoft.VisualStudio.AppDesigner*.pdb
       bin/Dlls/**/Microsoft.VisualStudio.Editors*.pdb
-      bin/Dlls/**/Microsoft.VisualStudio.Managed*.pdb
+      bin/Dlls/**/Microsoft.VisualStudio.ProjectSystem.Managed*.pdb
       bin/Dlls/**/Microsoft.VisualStudio.AppDesigner*.dll
       bin/Dlls/**/Microsoft.VisualStudio.Editors*.dll
-      bin/Dlls/**/Microsoft.VisualStudio.Managed*.dll
+      bin/Dlls/**/Microsoft.VisualStudio.ProjectSystem.Managed*.dll
 
   ###################################################################################################################################################################
   # RUN ANALYSIS
