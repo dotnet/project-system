@@ -1054,12 +1054,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
                         // We may have an incomplete set of copy items.
                         // We check timestamps of whatever items we can find, but only perform acceleration when the full set is available.
-                        (IEnumerable<(string Path, ImmutableArray<CopyItem> CopyItems)> copyItemsByProject, bool isCopyItemsComplete, bool allReferencesProduceReferenceAssemblies)
-                            = _copyItemAggregator.TryGatherCopyItemsForProject(implicitState.ProjectTargetPath, logger);
+                        CopyItemsResult copyInfo = _copyItemAggregator.TryGatherCopyItemsForProject(implicitState.ProjectTargetPath, logger);
 
-                        bool? isBuildAccelerationEnabled = IsBuildAccelerationEnabled(isCopyItemsComplete, implicitState);
+                        bool? isBuildAccelerationEnabled = IsBuildAccelerationEnabled(copyInfo.IsComplete, implicitState);
 
-                        var configuredFileSystemOperations = new ConfiguredFileSystemOperationAggregator(fileSystemOperations, isBuildAccelerationEnabled, allReferencesProduceReferenceAssemblies);
+                        var configuredFileSystemOperations = new ConfiguredFileSystemOperationAggregator(fileSystemOperations, isBuildAccelerationEnabled, copyInfo.AllReferencesProduceReferenceAssemblies);
 
                         string outputFullPath = Path.Combine(implicitState.MSBuildProjectDirectory, implicitState.OutputRelativeOrFullPath);
 
@@ -1069,7 +1068,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                             !CheckInputsAndOutputs(logger, lastSuccessfulBuildStartTimeUtc, timestampCache, implicitState, ignoreKinds, token) ||
                             !CheckBuiltFromInputFiles(logger, timestampCache, implicitState, token) ||
                             !CheckMarkers(logger, timestampCache, implicitState, isBuildAccelerationEnabled, fileSystemOperations) ||
-                            !CheckCopyToOutputDirectoryItems(logger, implicitState, copyItemsByProject, configuredFileSystemOperations, isBuildAccelerationEnabled, token))
+                            !CheckCopyToOutputDirectoryItems(logger, implicitState, copyInfo.ItemsByProject, configuredFileSystemOperations, isBuildAccelerationEnabled, token))
                         {
                             return (false, checkedConfigurations);
                         }

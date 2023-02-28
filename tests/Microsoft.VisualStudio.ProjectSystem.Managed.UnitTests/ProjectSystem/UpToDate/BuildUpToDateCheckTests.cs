@@ -99,7 +99,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             var upToDateCheckHost = new Mock<IUpToDateCheckHost>(MockBehavior.Strict);
 
             var copyItemAggregator = new Mock<ICopyItemAggregator>(MockBehavior.Strict);
-            copyItemAggregator.Setup(o => o.TryGatherCopyItemsForProject(It.IsAny<string>(), It.IsAny<BuildUpToDateCheck.Log>())).Returns(() => (_copyItems, _isCopyItemsComplete, _allReferencesProduceReferenceAssemblies));
+            copyItemAggregator.Setup(o => o.TryGatherCopyItemsForProject(It.IsAny<string>(), It.IsAny<BuildUpToDateCheck.Log>())).Returns(() => new CopyItemsResult(_copyItems, _isCopyItemsComplete, _allReferencesProduceReferenceAssemblies));
 
             _currentSolutionBuildContext = new SolutionBuildContext(_fileSystem);
 

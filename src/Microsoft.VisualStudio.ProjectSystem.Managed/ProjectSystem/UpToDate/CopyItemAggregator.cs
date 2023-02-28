@@ -20,7 +20,7 @@ internal class CopyItemAggregator : ICopyItemAggregator
         }
     }
 
-    public (IEnumerable<(string Path, ImmutableArray<CopyItem> CopyItems)> ItemsByProject, bool IsComplete, bool AllReferencesProduceReferenceAssemblies) TryGatherCopyItemsForProject(string targetPath, BuildUpToDateCheck.Log logger)
+    public CopyItemsResult TryGatherCopyItemsForProject(string targetPath, BuildUpToDateCheck.Log logger)
     {
         // Keep track of all projects we've visited to avoid infinite recursion or duplicated results.
         HashSet<string> explored = new(StringComparers.Paths);
@@ -83,7 +83,7 @@ internal class CopyItemAggregator : ICopyItemAggregator
             }
         }
 
-        return (GenerateCopyItems(), isComplete, allReferencesProduceReferenceAssemblies);
+        return new(GenerateCopyItems(), isComplete, allReferencesProduceReferenceAssemblies);
 
         IEnumerable<(string Path, ImmutableArray<CopyItem> CopyItems)> GenerateCopyItems()
         {
