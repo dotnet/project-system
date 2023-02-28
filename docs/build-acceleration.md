@@ -98,7 +98,7 @@ Looking through the build output with the following points in mind:
 
    > Build acceleration data is unavailable for project with target 'C:\Solution\Project\bin\Debug\Project.dll'.
 
-   Then any project that references the indicated project (directy or transitively) cannot be accelerated. This can happen if the mentioned project uses the legacy `.csproj` format, or for any other project system within Visual Studio that doesn't support build acceleration. Currently only .NET SDK-style projects (loaded with the project system from this GitHub repository) provide the needed data.
+   Then any project that references the indicated project (directly or transitively) cannot be accelerated. This can happen if the mentioned project uses the legacy `.csproj` format, or for any other project system within Visual Studio that doesn't support build acceleration. Currently only .NET SDK-style projects (loaded with the project system from this GitHub repository) provide the needed data.
 
 - ⛔ If you see:
 
