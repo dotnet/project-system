@@ -10,15 +10,13 @@
 | [17.3][173Branch]   | [![173Build]][173Run]   |                              |                           |
 | [17.4][173Branch]   | [![174Build]][174Run]   | [![174Compliance]][174Run]   | [![174Publish]][174Run]   | [![174Localization]][174Run]
 
-[![Join the chat at https://gitter.im/dotnet/project-system](https://badges.gitter.im/dotnet/project-system.svg)](https://gitter.im/dotnet/project-system?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
-
-This repository contains the .NET Project System for [Visual Studio](https://www.visualstudio.com/vs/) that is written on top of the [Common Project System (CPS)](https://github.com/microsoft/vsprojectsystem) framework. In Visual Studio 2017, Visual Studio 2019, and Visual Studio 2022, this project system is used for .NET Core [SDK-style] (C#, F# and Visual Basic) and Shared Projects (C# and Visual Basic) project types. In the [long term](docs/repo/roadmap.md), this project system will be the basis for all C#, F# and Visual Basic project types. For a list of feature differences between the project systems, see [Feature Comparison](docs/feature-comparison.md).
+This repository contains the .NET Project System for [Visual Studio](https://visualstudio.microsoft.com/vs/) that is written on top of the [Common Project System (CPS)](https://github.com/microsoft/VSProjectSystem) framework. In Visual Studio 2017, Visual Studio 2019, and Visual Studio 2022, this project system is used for .NET Core [SDK-style] (C#, F# and Visual Basic) and Shared Projects (C# and Visual Basic) project types. In the [long term](docs/repo/roadmap.md), this project system will be the basis for all C#, F# and Visual Basic project types. For a list of feature differences between the project systems, see [Feature Comparison](docs/feature-comparison.md).
 
 The legacy C# and Visual Basic project systems (*csproj.dll* and *msvbprj.dll*) first shipped with Visual Studio .NET in 2002. They have served us well but are:
 
 - Native and COM-based
 - Single threaded and bound to the UI thread
-- Hard to extend outside of aggregation via the use of `<ProjectTypeGuids>` and [sub types (flavors)](https://docs.microsoft.com/en-us/visualstudio/extensibility/internals/project-types)
+- Hard to extend outside of aggregation via the use of `<ProjectTypeGuids>` and [sub types (flavors)](https://learn.microsoft.com/visualstudio/extensibility/internals/project-types)
 - Separate implementations for C# and Visual Basic projects
 
 The current .NET Project System is:
@@ -35,14 +33,14 @@ There are many technologies that come together to make up the .NET Project Syste
 
 - [MSBuild](https://github.com/dotnet/msbuild) provides the build engine and file format.
 - [SDK](https://github.com/dotnet/sdk) provides the command-line interface for building, running and interacting with .NET projects, along with the necessary MSBuild tasks and targets.
-- [Common Project System](https://github.com/microsoft/vsprojectsystem) provides the base building blocks for the project system including (but not limited to) project tree, build and debugger coordination and Visual Studio integration.
+- [Common Project System](https://github.com/microsoft/VSProjectSystem) provides the base building blocks for the project system including (but not limited to) project tree, build and debugger coordination and Visual Studio integration.
 - [Roslyn](https://github.com/dotnet/roslyn) provides C# and Visual Basic language support including compilers, IntelliSense, refactorings, analyzers, and code fixes.
 - [Visual F# tools](https://github.com/dotnet/fsharp) provides F# language support.
 
 ![image](docs/repo/images/solution-explorer.png)
 
 ## How do I build the repository?
-This repository is built on .NET Framework and requires the .NET Framework version of [MSBuild](https://docs.microsoft.com/en-us/visualstudio/msbuild/msbuild?view=vs-2022) to build successfully. Additionally, there is a dependency on the [Visual Studio SDK](https://docs.microsoft.com/en-us/visualstudio/extensibility/starting-to-develop-visual-studio-extensions?view=vs-2022) as the .NET Project System is bundled as a Visual Studio Extension for deployment into Visual Studio.
+This repository is built on .NET Framework and requires the .NET Framework version of [MSBuild](https://learn.microsoft.com/visualstudio/msbuild/msbuild?view=vs-2022) to build successfully. Additionally, there is a dependency on the [Visual Studio SDK](https://learn.microsoft.com/visualstudio/extensibility/starting-to-develop-visual-studio-extensions?view=vs-2022) as the .NET Project System is bundled as a Visual Studio Extension for deployment into Visual Studio.
 
 Here is how to acquire the necessary components:
 - Install the latest [Visual Studio](https://visualstudio.microsoft.com/downloads/)
@@ -70,7 +68,7 @@ All the command line arguments provided to **build.cmd** get forwarded to MSBuil
 ## How do I engage and contribute?
 We welcome you to try things out, [file issues](https://github.com/dotnet/project-system/issues), make feature requests, and join us in design conversations. If you are looking for something to work on, take a look at our [help wanted issues](https://github.com/dotnet/project-system/issues?q=is%3Aopen+is%3Aissue+label%3A%22Help+Wanted%22) for a great place to start. Also, check out our [contributing guide](CONTRIBUTING.md).
 
-This project has adopted a code of conduct adapted from the [Contributor Covenant](http://contributor-covenant.org/) to clarify expected behavior in our community. This code of conduct has been [adopted by many other projects](http://contributor-covenant.org/adopters/). For more information, see [Contributors Code of conduct](https://github.com/dotnet/home/blob/master/guidance/be-nice.md).
+This project has adopted a code of conduct adapted from the [Contributor Covenant](https://www.contributor-covenant.org) to clarify expected behavior in our community. This code of conduct has been [adopted by many other projects](https://www.contributor-covenant.org/adopters/). For more information, see [Contributors Code of conduct](https://github.com/dotnet/home/blob/master/guidance/be-nice.md).
 
 <!-- References -->
 

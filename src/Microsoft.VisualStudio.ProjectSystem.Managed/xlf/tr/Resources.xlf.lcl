@@ -592,6 +592,15 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
+      <Item ItemId=";FUTD_NotAllReferencesProduceReferenceAssemblies" ItemType="0" PsrId="308" InstFlg="true" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[This project has enabled build acceleration, but at least one referenced project does not produce reference assemblies. Ensure all referenced projects, both direct and indirect, have the 'ProduceReferenceAssembly' MSBuild property set to 'true'. See https://aka.ms/vs-build-acceleration.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Bu proje derleme hızlandırmasını etkinleştirdi, ancak başvurulan en az bir proje başvuru bütünleştirilmiş kodları üretmez. Hem doğrudan hem de dolaylı başvurulan tüm projelerin 'ProduceReferenceAssembly' MSBuild özelliğinin 'true' olarak ayarlandığından emin olun. Bkz. https://aka.ms/vs-build-acceleration.]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
       <Item ItemId=";FUTD_OutputDoesNotExist_1" ItemType="0" PsrId="308" InstFlg="true" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[Output '{0}' does not exist, not up-to-date.]]></Val>
@@ -873,6 +882,15 @@
           <Val><![CDATA[The value of the 'TargetFrameworkMoniker' and 'NuGetTargetMoniker' properties in the '{0}' configuration are both empty. This configuration will not contribute to NuGet restore, which may result in restore and build errors.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
             <Val><![CDATA['{0}' yapılandırmasındaki 'TargetFrameworkMoniker' ve 'NuGetTargetMoniker' özelliklerinin değeri boş. Bu yapılandırma NuGet geri yüklemesine katkıda bulunmaz, bu da geri yükleme ve derleme hatalarına neden olabilir.]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";Restore_NuGetCycleDetected" ItemType="0" PsrId="308" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[A circular dependency A -> B -> A was detected during NuGet Restore which caused NuGet to stop restoring.]D;]A;Because the NuGet restore didn't finish correctly, the project might be in a bad state.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[NuGet Geri Yükleme sırasında NuGet'in geri yükleme işlemini durdurmasına neden olan bir döngüsel bağımlılık A -> B -> A algılandı.]D;]A;NuGet geri yüklemesi doğru şekilde tamamlanmadığından proje kötü bir durumda olabilir.]]></Val>
           </Tgt>
         </Str>
         <Disp Icon="Str" />

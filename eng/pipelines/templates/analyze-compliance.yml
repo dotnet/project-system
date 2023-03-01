@@ -49,7 +49,7 @@ jobs:
     inputs:
       Path: $(Build.SourcesDirectory)/artifacts/$(BuildConfiguration)/bin/Dlls/
       # Glob Format: https://dev.azure.com/securitytools/SecurityIntegration/_wiki/wikis/Guardian/1378/Glob-Format
-      Targets: '**/Microsoft.VisualStudio.AppDesigner*.dll;**/Microsoft.VisualStudio.Editors*.dll;**/Microsoft.VisualStudio.Managed*.dll'
+      Targets: '**/Microsoft.VisualStudio.AppDesigner*.dll;**/Microsoft.VisualStudio.Editors*.dll;**/Microsoft.VisualStudio.ProjectSystem.Managed*.dll'
     condition: succeededOrFailed()
 
   # Verifies the packages (and files within) are signed appropriately.

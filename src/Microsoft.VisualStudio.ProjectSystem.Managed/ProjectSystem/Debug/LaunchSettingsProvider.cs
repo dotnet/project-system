@@ -663,7 +663,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
 
         /// <summary>
         /// This function blocks until a snapshot is available. It will return null if the timeout occurs
-        /// prior to the snapshot is available. The wait operation will be cancelled if this object is disposed.
+        /// prior to the snapshot is available. The wait operation will be cancelled if this object is disposed or the project is unloaded.
         /// </summary>
         public async Task<ILaunchSettings?> WaitForFirstSnapshot(int timeout)
         {
@@ -672,7 +672,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
                 return CurrentSnapshot;
             }
 
-            if (await _firstSnapshotCompletionSource.Task.TryWaitForCompleteOrTimeoutAsync(timeout))
+            Assumes.Present(_projectServices.ProjectAsynchronousTasks);
+
+            // Ensure we don't hang if the project is unloaded before we get a snapshot
+            Task task = _firstSnapshotCompletionSource.Task.WithCancellation(_projectServices.ProjectAsynchronousTasks.UnloadCancellationToken);
+
+            if (await task.TryWaitForCompleteOrTimeoutAsync(timeout))
             {
                 Assumes.NotNull(CurrentSnapshot);
             }

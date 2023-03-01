@@ -243,7 +243,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             ResolvedCompilationReferencePaths = ImmutableArray<string>.Empty;
             CopyReferenceInputs = ImmutableArray<string>.Empty;
             LastItemChanges = ImmutableArray<(bool IsAdd, string ItemType, string)>.Empty;
-            ProjectCopyData = new(null, "", ImmutableArray<CopyItem>.Empty, ImmutableArray<string>.Empty);
+            ProjectCopyData = new(null, "", false, ImmutableArray<CopyItem>.Empty, ImmutableArray<string>.Empty);
         }
 
         private UpToDateCheckImplicitConfiguredInput(
@@ -653,9 +653,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             ProjectCopyData UpdateCopyData()
             {
                 if (jointRuleUpdate.ProjectChanges.TryGetValue(CopyToOutputDirectoryItem.SchemaName, out IProjectChangeDescription? change1) &&
-                    jointRuleUpdate.ProjectChanges.TryGetValue(ResolvedProjectReference.SchemaName, out IProjectChangeDescription? change2))
+                    jointRuleUpdate.ProjectChanges.TryGetValue(ResolvedProjectReference.SchemaName, out IProjectChangeDescription? change2) &&
+                    jointRuleUpdate.ProjectChanges.TryGetValue(ConfigurationGeneral.SchemaName, out IProjectChangeDescription? change3))
                 {
-                    if (change1.Difference.AnyChanges || change2.Difference.AnyChanges)
+                    if (change1.Difference.AnyChanges || change2.Difference.AnyChanges || change3.Difference.AnyChanges)
                     {
                         // Register this project's data with the CopyToOutputDirectoryItem tracking service.
 
@@ -670,7 +671,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
                         ImmutableArray<string> referenceItems = change2.After.Items.Where(pair => IncludeProjectReference(pair.Value)).Select(item => item.Key).ToImmutableArray();
 
-                        return new ProjectCopyData(msBuildProjectFullPath, targetPath, copyItems, referenceItems);
+                        bool produceReferenceAssembly = change3.After.Properties.GetBoolProperty(ConfigurationGeneral.ProduceReferenceAssemblyProperty) ?? false;
+
+                        return new ProjectCopyData(msBuildProjectFullPath, targetPath, produceReferenceAssembly, copyItems, referenceItems);
                     }
                 }
 

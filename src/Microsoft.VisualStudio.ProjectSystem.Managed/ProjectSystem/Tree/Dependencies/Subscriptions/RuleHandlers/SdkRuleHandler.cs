@@ -1,13 +1,12 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
 using Microsoft.VisualStudio.Imaging;
-using Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.CrossTarget;
 using Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Models;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies;
 
 namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Subscriptions.RuleHandlers
 {
-    [Export(DependencyRulesSubscriber.DependencyRulesSubscriberContract, typeof(IDependenciesRuleHandler))]
+    [Export(typeof(IDependenciesRuleHandler))]
     [Export(typeof(IProjectDependenciesSubTreeProvider))]
     [AppliesTo(ProjectCapability.DependenciesTree)]
     internal class SdkRuleHandler : DependenciesRuleHandlerBase

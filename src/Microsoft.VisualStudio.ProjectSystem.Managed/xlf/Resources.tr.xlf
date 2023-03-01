@@ -297,6 +297,11 @@
         <target state="translated">{1} girişinin '{0}' öğesi yok ancak gerekli değil.</target>
         <note>{0} is a file path. {1} is an MSBuild item type.</note>
       </trans-unit>
+      <trans-unit id="FUTD_NotAllReferencesProduceReferenceAssemblies_1">
+        <source>This project has enabled build acceleration, but not all referenced projects produce a reference assembly. Ensure projects producing the following outputs have the 'ProduceReferenceAssembly' MSBuild property set to 'true': {0}. See https://aka.ms/vs-build-acceleration for more information.</source>
+        <target state="new">This project has enabled build acceleration, but not all referenced projects produce a reference assembly. Ensure projects producing the following outputs have the 'ProduceReferenceAssembly' MSBuild property set to 'true': {0}. See https://aka.ms/vs-build-acceleration for more information.</target>
+        <note>Do not translate 'ProduceReferenceAssembly' or 'true'.</note>
+      </trans-unit>
       <trans-unit id="FUTD_OutputDoesNotExist_1">
         <source>Output '{0}' does not exist, not up-to-date.</source>
         <target state="translated">'{0}' çıkışı yok ve güncel değil.</target>
@@ -471,8 +476,8 @@ Bu proje, muhtemelen proje uzantısının Visual Studio dışında yeniden adlan
       <trans-unit id="Restore_NuGetCycleDetected">
         <source>A circular dependency A -&gt; B -&gt; A was detected during NuGet Restore which caused NuGet to stop restoring.
 Because the NuGet restore didn't finish correctly, the project might be in a bad state.</source>
-        <target state="new">A circular dependency A -&gt; B -&gt; A was detected during NuGet Restore which caused NuGet to stop restoring.
-Because the NuGet restore didn't finish correctly, the project might be in a bad state.</target>
+        <target state="translated">NuGet Geri Yükleme sırasında NuGet'in geri yükleme işlemini durdurmasına neden olan bir döngüsel bağımlılık A -&gt; B -&gt; A algılandı.
+NuGet geri yüklemesi doğru şekilde tamamlanmadığından proje kötü bir durumda olabilir.</target>
         <note />
       </trans-unit>
       <trans-unit id="Restore_PropertyWithInconsistentValues">

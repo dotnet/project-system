@@ -84,10 +84,13 @@
       </Item>
       <Item ItemId=";FUTDC_AccelerationDataMissingForProject_1" ItemType="0" PsrId="308" InstFlg="true" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Build acceleration data is unavailable for project with target '{0}'.]]></Val>
+          <Val><![CDATA[Build acceleration data is unavailable for project with target '{0}'. See https://aka.ms/vs-build-acceleration.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[具有目標 '{0}' 的專案無法使用建置加速資料。]]></Val>
+            <Val><![CDATA[具有目標 '{0}' 的專案無法使用建置加速資料。請參閲 https://aka.ms/vs-build-acceleration。]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[Build acceleration data is unavailable for project with target '{0}'.]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
@@ -105,10 +108,13 @@
       </Item>
       <Item ItemId=";FUTD_AccelerationCandidate" ItemType="0" PsrId="308" InstFlg="true" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[This project appears to be a candidate for build acceleration. To opt in, set the 'AccelerateBuildsInVisualStudio' MSBuild property to 'true'.]]></Val>
+          <Val><![CDATA[This project appears to be a candidate for build acceleration. To opt in, set the 'AccelerateBuildsInVisualStudio' MSBuild property to 'true'. See https://aka.ms/vs-build-acceleration.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[此專案似乎是建置加速的候選項目。若要加入，請將 'AccelerateBuildsInVisualStudio' MSBuild 屬性設定為 'true'。]]></Val>
+            <Val><![CDATA[此專案似乎是建置加速的候選項目。若要加入，請將 'AccelerateBuildsInVisualStudio' MSBuild 屬性設定為 'true'。請參閲 https://aka.ms/vs-build-acceleration。]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[This project appears to be a candidate for build acceleration. To opt in, set the 'AccelerateBuildsInVisualStudio' MSBuild property to 'true'.]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
@@ -123,10 +129,13 @@
       </Item>
       <Item ItemId=";FUTD_AccelerationDisabledForProject" ItemType="0" PsrId="308" InstFlg="true" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Build acceleration is disabled for this project via the 'AccelerateBuildsInVisualStudio' MSBuild property.]]></Val>
+          <Val><![CDATA[Build acceleration is disabled for this project via the 'AccelerateBuildsInVisualStudio' MSBuild property. See https://aka.ms/vs-build-acceleration.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[已透過 'AccelerateBuildsInVisualStudio' MSBuild 屬性停用此專案的建置加速。]]></Val>
+            <Val><![CDATA[已透過 'AccelerateBuildsInVisualStudio' MSBuild 屬性停用此專案的建置加速。請參閲 https://aka.ms/vs-build-acceleration。]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[Build acceleration is disabled for this project via the 'AccelerateBuildsInVisualStudio' MSBuild property.]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
@@ -366,10 +375,13 @@
       </Item>
       <Item ItemId=";FUTD_CopyingFilesToAccelerateBuild_1" ItemType="0" PsrId="308" InstFlg="true" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Copying {0} files to accelerate build:]]></Val>
+          <Val><![CDATA[Copying {0} files to accelerate build (https://aka.ms/vs-build-acceleration):]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[正在複製 {0} 個檔案以加速建置:]]></Val>
+            <Val><![CDATA[複製 {0} 檔案以加速建置 (https://aka.ms/vs-build-acceleration):]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[Copying {0} files to accelerate build:]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
@@ -576,6 +588,15 @@
           <Val><![CDATA[Input {1} item '{0}' does not exist, but is not required.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
             <Val><![CDATA[輸入 {1} 項目 '{0}' 不存在，但並非必要項目。]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";FUTD_NotAllReferencesProduceReferenceAssemblies" ItemType="0" PsrId="308" InstFlg="true" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[This project has enabled build acceleration, but at least one referenced project does not produce reference assemblies. Ensure all referenced projects, both direct and indirect, have the 'ProduceReferenceAssembly' MSBuild property set to 'true'. See https://aka.ms/vs-build-acceleration.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[此專案已啟用組建加速，但至少有一個參考專案未產生參考元件。請確認所有直接和間接參考的專案都已將 'ProduceReferenceAssembly' MSBuild 屬性設定為 'true'。請參閱 https://aka.ms/vs-build-acceleration.]]></Val>
           </Tgt>
         </Str>
         <Disp Icon="Str" />
@@ -861,6 +882,15 @@
           <Val><![CDATA[The value of the 'TargetFrameworkMoniker' and 'NuGetTargetMoniker' properties in the '{0}' configuration are both empty. This configuration will not contribute to NuGet restore, which may result in restore and build errors.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
             <Val><![CDATA['{0}' 組態中 'TargetFrameworkMoniker' 和 'NuGetTargetMoniker' 屬性的值皆為空白。此組態無助於 NuGet 還原，可能導致還原及建置錯誤。]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";Restore_NuGetCycleDetected" ItemType="0" PsrId="308" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[A circular dependency A -> B -> A was detected during NuGet Restore which caused NuGet to stop restoring.]D;]A;Because the NuGet restore didn't finish correctly, the project might be in a bad state.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[NuGet 還原期間偵測到循環相依性 A -> B -> A，導致 NuGet 停止還原。]D;]A;因為 NuGet 還原未正確完成，專案可能狀態不良。]]></Val>
           </Tgt>
         </Str>
         <Disp Icon="Str" />
