@@ -297,9 +297,9 @@
         <target state="translated">El elemento {1} de entrada "{0}" no existe, pero no es necesario.</target>
         <note>{0} is a file path. {1} is an MSBuild item type.</note>
       </trans-unit>
-      <trans-unit id="FUTD_NotAllReferencesProduceReferenceAssemblies">
-        <source>This project has enabled build acceleration, but at least one referenced project does not produce reference assemblies. Ensure all referenced projects, both direct and indirect, have the 'ProduceReferenceAssembly' MSBuild property set to 'true'. See https://aka.ms/vs-build-acceleration.</source>
-        <target state="translated">Este proyecto ha habilitado la aceleración de compilación, pero al menos un proyecto al que se hace referencia no produce ensamblados de referencia. Asegúrese de que todos los proyectos a los que se hace referencia, directos e indirectos, tengan la propiedad 'ProduceReferenceAssembly' de MSBuild establecida en 'true'. Consulte https://aka.ms/vs-build-acceleration.</target>
+      <trans-unit id="FUTD_NotAllReferencesProduceReferenceAssemblies_1">
+        <source>This project has enabled build acceleration, but not all referenced projects produce a reference assembly. Ensure projects producing the following outputs have the 'ProduceReferenceAssembly' MSBuild property set to 'true': {0}. See https://aka.ms/vs-build-acceleration for more information.</source>
+        <target state="new">This project has enabled build acceleration, but not all referenced projects produce a reference assembly. Ensure projects producing the following outputs have the 'ProduceReferenceAssembly' MSBuild property set to 'true': {0}. See https://aka.ms/vs-build-acceleration for more information.</target>
         <note>Do not translate 'ProduceReferenceAssembly' or 'true'.</note>
       </trans-unit>
       <trans-unit id="FUTD_OutputDoesNotExist_1">

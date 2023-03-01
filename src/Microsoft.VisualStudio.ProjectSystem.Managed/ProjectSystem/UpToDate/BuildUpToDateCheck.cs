@@ -1054,12 +1054,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
                         // We may have an incomplete set of copy items.
                         // We check timestamps of whatever items we can find, but only perform acceleration when the full set is available.
-                        (IEnumerable<(string Path, ImmutableArray<CopyItem> CopyItems)> copyItemsByProject, bool isCopyItemsComplete, bool allReferencesProduceReferenceAssemblies)
-                            = _copyItemAggregator.TryGatherCopyItemsForProject(implicitState.ProjectTargetPath, logger);
+                        CopyItemsResult copyInfo = _copyItemAggregator.TryGatherCopyItemsForProject(implicitState.ProjectTargetPath, logger);
 
-                        bool? isBuildAccelerationEnabled = IsBuildAccelerationEnabled(isCopyItemsComplete, implicitState);
+                        bool? isBuildAccelerationEnabled = IsBuildAccelerationEnabled(copyInfo.IsComplete, implicitState);
 
-                        var configuredFileSystemOperations = new ConfiguredFileSystemOperationAggregator(fileSystemOperations, isBuildAccelerationEnabled, allReferencesProduceReferenceAssemblies);
+                        var configuredFileSystemOperations = new ConfiguredFileSystemOperationAggregator(fileSystemOperations, isBuildAccelerationEnabled, copyInfo.TargetsWithoutReferenceAssemblies);
 
                         string outputFullPath = Path.Combine(implicitState.MSBuildProjectDirectory, implicitState.OutputRelativeOrFullPath);
 
@@ -1069,7 +1068,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                             !CheckInputsAndOutputs(logger, lastSuccessfulBuildStartTimeUtc, timestampCache, implicitState, ignoreKinds, token) ||
                             !CheckBuiltFromInputFiles(logger, timestampCache, implicitState, token) ||
                             !CheckMarkers(logger, timestampCache, implicitState, isBuildAccelerationEnabled, fileSystemOperations) ||
-                            !CheckCopyToOutputDirectoryItems(logger, implicitState, copyItemsByProject, configuredFileSystemOperations, isBuildAccelerationEnabled, token))
+                            !CheckCopyToOutputDirectoryItems(logger, implicitState, copyInfo.ItemsByProject, configuredFileSystemOperations, isBuildAccelerationEnabled, token))
                         {
                             return (false, checkedConfigurations);
                         }
@@ -1114,12 +1113,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                         logger.Minimal(nameof(Resources.FUTD_AccelerationCandidate));
                     }
 
-                    if (fileSystemOperations.IsAccelerationEnabled is true && fileSystemOperations.AllReferencesProduceReferenceAssemblies is false)
+                    if (fileSystemOperations.IsAccelerationEnabled is true && fileSystemOperations.TargetsWithoutReferenceAssemblies is { Count: > 0 })
                     {
                         // This project is configured to use build acceleration, but some of its references do not
                         // produce reference assemblies. Log a message to let the user know that they may be able
                         // to improve their build performance by enabling the production of reference assemblies.
-                        logger.Minimal(nameof(Resources.FUTD_NotAllReferencesProduceReferenceAssemblies));
+                        logger.Minimal(nameof(Resources.FUTD_NotAllReferencesProduceReferenceAssemblies_1), string.Join(", ", fileSystemOperations.TargetsWithoutReferenceAssemblies.Select(s => $"'{s}'")));
                     }
 
                     logger.Verbose(nameof(Resources.FUTD_Completed), sw.Elapsed.TotalMilliseconds);

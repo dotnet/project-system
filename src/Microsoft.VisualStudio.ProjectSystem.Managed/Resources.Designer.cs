@@ -628,11 +628,11 @@ namespace Microsoft.VisualStudio {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to This project has enabled build acceleration, but at least one referenced project does not produce reference assemblies. Ensure all referenced projects, both direct and indirect, have the &apos;ProduceReferenceAssembly&apos; MSBuild property set to &apos;true&apos;. See https://aka.ms/vs-build-acceleration..
+        ///   Looks up a localized string similar to This project has enabled build acceleration, but not all referenced projects produce a reference assembly. Ensure projects producing the following outputs have the &apos;ProduceReferenceAssembly&apos; MSBuild property set to &apos;true&apos;: {0}. See https://aka.ms/vs-build-acceleration for more information..
         /// </summary>
-        internal static string FUTD_NotAllReferencesProduceReferenceAssemblies {
+        internal static string FUTD_NotAllReferencesProduceReferenceAssemblies_1 {
             get {
-                return ResourceManager.GetString("FUTD_NotAllReferencesProduceReferenceAssemblies", resourceCulture);
+                return ResourceManager.GetString("FUTD_NotAllReferencesProduceReferenceAssemblies_1", resourceCulture);
             }
         }
         

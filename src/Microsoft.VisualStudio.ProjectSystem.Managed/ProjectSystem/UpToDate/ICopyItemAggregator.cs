@@ -25,16 +25,24 @@ internal interface ICopyItemAggregator
     /// </remarks>
     /// <param name="targetPath">The target path of the project to query from.</param>
     /// <param name="logger">An object for writing log messages.</param>
-    /// <returns>
-    /// A tuple comprising:
-    /// <list type="number">
-    ///   <item><c>Items</c> a sequence of items by project, that are reachable from the current project.</item>
-    ///   <item><c>IsComplete</c> indicating whether we have items from all reachable projects.</item>
-    ///   <item><c>AllReferencesProduceReferenceAssemblies</c> indicating whether all referenced projects produce reference assemblies.</item>
-    /// </list>
-    /// </returns>
-    (IEnumerable<(string Path, ImmutableArray<CopyItem> CopyItems)> ItemsByProject, bool IsComplete, bool AllReferencesProduceReferenceAssemblies) TryGatherCopyItemsForProject(string targetPath, BuildUpToDateCheck.Log logger);
+    /// <returns>A structure containing the results of the operation.</returns>
+    CopyItemsResult TryGatherCopyItemsForProject(string targetPath, BuildUpToDateCheck.Log logger);
 }
+
+/// <summary>
+/// Results of gathering the items that must be copied as part of a project's build
+/// by <see cref="ICopyItemAggregator.TryGatherCopyItemsForProject(string, BuildUpToDateCheck.Log)"/>.
+/// </summary>
+/// <param name="ItemsByProject">A sequence of items by project, that are reachable from the current project</param>
+/// <param name="IsComplete">Indicates whether we have items from all reachable projects.</param>
+/// <param name="TargetsWithoutReferenceAssemblies">
+///     A list of target paths for projects that do not produce reference assemblies, or <see langword="null"/> if
+///     all reachable projects do in fact produce reference assemblies.
+/// </param>
+internal record struct CopyItemsResult(
+    IEnumerable<(string Path, ImmutableArray<CopyItem> CopyItems)> ItemsByProject,
+    bool IsComplete,
+    IReadOnlyList<string>? TargetsWithoutReferenceAssemblies);
 
 /// <summary>
 /// Models the set of copy items a project produces, along with some details about the project.
