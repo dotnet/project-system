@@ -592,11 +592,11 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";FUTD_NotAllReferencesProduceReferenceAssemblies" ItemType="0" PsrId="308" InstFlg="true" Leaf="true">
+      <Item ItemId=";FUTD_NotAllReferencesProduceReferenceAssemblies_1" ItemType="0" PsrId="308" InstFlg="true" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[This project has enabled build acceleration, but at least one referenced project does not produce reference assemblies. Ensure all referenced projects, both direct and indirect, have the 'ProduceReferenceAssembly' MSBuild property set to 'true'. See https://aka.ms/vs-build-acceleration.]]></Val>
+          <Val><![CDATA[This project has enabled build acceleration, but not all referenced projects produce a reference assembly. Ensure projects producing the following outputs have the 'ProduceReferenceAssembly' MSBuild property set to 'true': {0}. See https://aka.ms/vs-build-acceleration for more information.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[このプロジェクトではビルド アクセラレーションが有効になっていますが、少なくとも 1 つの参照プロジェクトで参照アセンブリが生成されていません。直接的および間接的に参照されているすべてのプロジェクトで、'ProduceReferenceAssembly' MSBuild プロパティが 'true' に設定されていることを確認してください。参照: https://aka.ms/vs-build-acceleration]]></Val>
+            <Val><![CDATA[このプロジェクトではビルド アクセラレーションが有効になっていますが、参照されているすべてのプロジェクトで参照アセンブリが生成されるわけではありません。次の出力を生成するプロジェクトで、'ProduceReferenceAssembly' MSBuild プロパティが 'true': {0} に設定されていることを確認します。詳細については、https://aka.ms/vs-build-acceleration を参照してください。]]></Val>
           </Tgt>
         </Str>
         <Disp Icon="Str" />

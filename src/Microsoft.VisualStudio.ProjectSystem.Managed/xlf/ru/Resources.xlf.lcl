@@ -592,11 +592,11 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";FUTD_NotAllReferencesProduceReferenceAssemblies" ItemType="0" PsrId="308" InstFlg="true" Leaf="true">
+      <Item ItemId=";FUTD_NotAllReferencesProduceReferenceAssemblies_1" ItemType="0" PsrId="308" InstFlg="true" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[This project has enabled build acceleration, but at least one referenced project does not produce reference assemblies. Ensure all referenced projects, both direct and indirect, have the 'ProduceReferenceAssembly' MSBuild property set to 'true'. See https://aka.ms/vs-build-acceleration.]]></Val>
+          <Val><![CDATA[This project has enabled build acceleration, but not all referenced projects produce a reference assembly. Ensure projects producing the following outputs have the 'ProduceReferenceAssembly' MSBuild property set to 'true': {0}. See https://aka.ms/vs-build-acceleration for more information.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[В этом проекте включено ускорение сборки, но по крайней мере один указанный проект не создает 	базовые сборки. Убедитесь, что для всех указанных проектов (как прямых, так и косвенных), свойству MSBuild "ProduceReferenceAssembly" присвоено значение "true". Сведения: https://aka.ms/vs-build-acceleration.]]></Val>
+            <Val><![CDATA[В этом проекте включено ускорение сборки, но базовая сборка создается не во всех проектах, на которые ссылается этот проект. Убедитесь, что для проектов, создающих следующие выходные данные, свойство MSBuild "ProduceReferenceAssembly" имеет значение "true": {0}. Дополнительные сведения см. на странице https://aka.ms/vs-build-acceleration.]]></Val>
           </Tgt>
         </Str>
         <Disp Icon="Str" />
