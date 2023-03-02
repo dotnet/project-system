@@ -299,7 +299,7 @@
       </trans-unit>
       <trans-unit id="FUTD_NotAllReferencesProduceReferenceAssemblies_1">
         <source>This project has enabled build acceleration, but not all referenced projects produce a reference assembly. Ensure projects producing the following outputs have the 'ProduceReferenceAssembly' MSBuild property set to 'true': {0}. See https://aka.ms/vs-build-acceleration for more information.</source>
-        <target state="new">This project has enabled build acceleration, but not all referenced projects produce a reference assembly. Ensure projects producing the following outputs have the 'ProduceReferenceAssembly' MSBuild property set to 'true': {0}. See https://aka.ms/vs-build-acceleration for more information.</target>
+        <target state="translated">이 프로젝트는 빌드 가속화를 활성화했지만 모든 참조 프로젝트가 참조 어셈블리를 생성하지는 않습니다. 다음 출력을 생성하는 프로젝트에서 'ProduceReferenceAssembly' MSBuild 속성이 'true'로 설정되었는지 확인합니다. {0} 자세한 내용은 https://aka.ms/vs-build-acceleration을을 참조하세요.</target>
         <note>Do not translate 'ProduceReferenceAssembly' or 'true'.</note>
       </trans-unit>
       <trans-unit id="FUTD_OutputDoesNotExist_1">
