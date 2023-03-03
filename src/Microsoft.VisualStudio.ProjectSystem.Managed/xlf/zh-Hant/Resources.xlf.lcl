@@ -592,11 +592,11 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";FUTD_NotAllReferencesProduceReferenceAssemblies" ItemType="0" PsrId="308" InstFlg="true" Leaf="true">
+      <Item ItemId=";FUTD_NotAllReferencesProduceReferenceAssemblies_1" ItemType="0" PsrId="308" InstFlg="true" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[This project has enabled build acceleration, but at least one referenced project does not produce reference assemblies. Ensure all referenced projects, both direct and indirect, have the 'ProduceReferenceAssembly' MSBuild property set to 'true'. See https://aka.ms/vs-build-acceleration.]]></Val>
+          <Val><![CDATA[This project has enabled build acceleration, but not all referenced projects produce a reference assembly. Ensure projects producing the following outputs have the 'ProduceReferenceAssembly' MSBuild property set to 'true': {0}. See https://aka.ms/vs-build-acceleration for more information.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[此專案已啟用組建加速，但至少有一個參考專案未產生參考元件。請確認所有直接和間接參考的專案都已將 'ProduceReferenceAssembly' MSBuild 屬性設定為 'true'。請參閱 https://aka.ms/vs-build-acceleration.]]></Val>
+            <Val><![CDATA[此專案已啟用建置加速功能，但並非所有參考專案都會產生參考組件。請確認產生下列輸出的專案都將 'ProduceReferenceAssembly' MSBuild 屬性設定為 'true': {0}。如需詳細資訊，請參閱 https://aka.ms/vs-build-acceleration。]]></Val>
           </Tgt>
         </Str>
         <Disp Icon="Str" />
