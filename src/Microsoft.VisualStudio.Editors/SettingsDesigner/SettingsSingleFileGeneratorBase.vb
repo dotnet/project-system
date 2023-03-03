@@ -589,7 +589,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                 fullTypeName = projectRootNamespace & "."
             End If
             
-            If defaultNamespace <> "" Then
+            If defaultNamespace <> "" AndAlso Not defaultNamespace.Equals(MyNamespaceName) Then ' defaultNamespace, if none exists, will come in thru wszDefaultNamespace as My. We don't want to duplicate it.
                 fullTypeName &= defaultNamespace & "."
             End If
 
