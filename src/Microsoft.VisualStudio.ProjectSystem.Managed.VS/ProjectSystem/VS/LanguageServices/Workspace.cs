@@ -166,8 +166,11 @@ internal sealed class Workspace : OnceInitializedOnceDisposedUnderLockAsync, IWo
     /// <returns>A task that completes when the update has been integrated.</returns>
     internal async Task OnWorkspaceUpdateAsync(IProjectVersionedValue<WorkspaceUpdate> update)
     {
-        Verify.NotDisposed(this);
-
+        if (IsDisposed || IsDisposing)
+        {
+            return;
+        }
+        
         await InitializeAsync(_unloadCancellationToken);
 
         Assumes.True(_state is WorkspaceState.Uninitialized or WorkspaceState.Initialized);

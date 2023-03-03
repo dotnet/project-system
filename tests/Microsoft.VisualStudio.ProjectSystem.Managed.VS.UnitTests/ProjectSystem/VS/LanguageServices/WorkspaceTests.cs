@@ -85,9 +85,19 @@ public class WorkspaceTests
 
         await Assert.ThrowsAsync<ObjectDisposedException>(() => workspace.WriteAsync(w => Task.CompletedTask, CancellationToken.None));
         await Assert.ThrowsAsync<ObjectDisposedException>(() => workspace.WriteAsync(w => TaskResult.EmptyString, CancellationToken.None));
-        await Assert.ThrowsAsync<ObjectDisposedException>(() => workspace.OnWorkspaceUpdateAsync(null!));
+        //await Assert.ThrowsAsync<ObjectDisposedException>(() => workspace.OnWorkspaceUpdateAsync(null!));
 
         Assert.Throws<ObjectDisposedException>(() => workspace.ChainDisposal(null!));
+    }
+
+    [Fact]
+    public async Task Dispose_DoesNotTriggerObjectDisposedExceptionsOnUpdate()
+    {
+        var workspace = await CreateInstanceAsync();
+
+        await workspace.DisposeAsync();
+        
+        await workspace.OnWorkspaceUpdateAsync(null!);
     }
 
     [Theory]
