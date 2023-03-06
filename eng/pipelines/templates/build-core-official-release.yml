@@ -8,6 +8,38 @@ jobs:
   steps:
 
   ###################################################################################################################################################################
+  # SBOM GENERATION
+  # This process occurs above plugin installation so that the Src build does not perform signing.
+  ###################################################################################################################################################################
+
+  # Use a disabled, empty script to display the section header in the pipeline UI.
+  - script:
+    displayName: === SBOM Generation ===
+    condition: false
+
+  # Allows for accessing the internal AzDO feed (vs-impl-internal) for project restore via Azure Artifacts Credential Provider.
+  # See: https://github.com/microsoft/artifacts-credprovider#automatic-usage
+  # YAML reference: https://docs.microsoft.com/azure/devops/pipelines/tasks/package/nuget-authenticate?view=azure-devops
+  - task: NuGetAuthenticate@1
+    displayName: Authenticate NuGet
+
+  # Only the projects in the 'src' folder are necessary for generating the SBOM.
+  - script: $(Build.SourcesDirectory)/build.cmd /v:normal /p:Configuration=$(BuildConfiguration) /p:CIBuild=true /p:Test=false /p:Pack=false /p:TestProjects=false /p:SetupProjects=false
+    displayName: Build Src Projects
+
+  # The binlog is set to Build.binlog by default when using build.cmd. We rename it so it isn't overridden by the full build.
+  - powershell: Rename-Item -Path '$(Build.SourcesDirectory)/artifacts/$(BuildConfiguration)/log/Build.binlog' -NewName SrcBuild.binlog
+    displayName: Rename Src Binlog
+
+  # This task both generates the SBOM files and marks the pipeline as compliant.
+  # The SBOM files are needed prior to the full build, as the full build includes them within the .vsman insertion files as part of the SwixBuild (.vsmanproj) process.
+  - task: ManifestGeneratorTask@0
+    displayName: Generate SBOM
+    inputs:
+      BuildDropPath: $(Build.SourcesDirectory)/artifacts/$(BuildConfiguration)/bin/Dlls
+      ManifestDirPath: $(Build.SourcesDirectory)/artifacts/$(BuildConfiguration)/bin
+
+  ###################################################################################################################################################################
   # PLUGIN INSTALLATION
   ###################################################################################################################################################################
 
@@ -45,12 +77,6 @@ jobs:
     displayName: === Build Repository ===
     condition: false
 
-  # Allows for accessing the internal AzDO feed (vs-impl-internal) for project restore via Azure Artifacts Credential Provider.
-  # See: https://github.com/microsoft/artifacts-credprovider#automatic-usage
-  # YAML reference: https://docs.microsoft.com/azure/devops/pipelines/tasks/package/nuget-authenticate?view=azure-devops
-  - task: NuGetAuthenticate@1
-    displayName: Authenticate NuGet
-
   # Runs the full build of the projects in the repository. See Build.proj for details.
   - script: $(Build.SourcesDirectory)/build.cmd /v:normal /p:Configuration=$(BuildConfiguration) /p:CIBuild=true
     displayName: Build All Projects
@@ -61,6 +87,20 @@ jobs:
     displayName: Set NPMPackageVersion Variable
     # Name is required to reference the variables created within this build step in other stages.
     name: SetNPMPackageVersion
+
+  # Sets the VisualStudioMinimumVersion variable for the job. This variable is also used by the APIScan job.
+  # https://docs.microsoft.com/azure/devops/pipelines/process/set-variables-scripts?view=azure-devops&tabs=powershell#set-variable-properties
+  - powershell: Write-Host "##vso[task.setvariable variable=VisualStudioMinimumVersion;isoutput=true]$(. '$(Build.SourcesDirectory)/eng/scripts/GetVisualStudioMinimumVersion.ps1')"
+    displayName: Set VisualStudioMinimumVersion Variable
+    # Name is required to reference the variables created within this build step in other stages.
+    name: SetVisualStudioMinimumVersionVariable
+
+  # Uploads telemetry to MicroBuild about the MicroBuild components used.
+  - task: MicroBuildCleanup@1
+    displayName: Send MicroBuild Telemetry
+    condition: succeededOrFailed()
+    # This is a non-critical task, so don't fail the build if it fails.
+    continueOnError: true
 
   ###################################################################################################################################################################
   # PUBLISH BUILD

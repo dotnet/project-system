@@ -38,6 +38,8 @@ variables:
   DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true
   # https://docs.microsoft.com/dotnet/core/tools/dotnet-environment-variables#dotnet_nologo
   DOTNET_NOLOGO: true
+  # https://devdiv.visualstudio.com/DevDiv/_wiki/wikis/DevDiv.wiki/26284/Enabling-SBOM-For-Your-Component-Insertion-into-VS?anchor=1.-add-the-%27manifest-generator-task%27-to-your-pipeline
+  Packaging.EnableSBOMSigning: true
   # Opt out of automatically injecting Codesign Validation into the pipeline.
   # See: https://aka.ms/gdn-injection
   runCodesignValidationInjection: false
@@ -47,6 +49,12 @@ variables:
   # - https://docs.opensource.microsoft.com/tools/cg/how-to/nuget-multifeed-configuration/
   # - https://onebranch.visualstudio.com/OneBranch/_wiki/wikis/OneBranch.wiki/5205/TSG-Build-Broken-Due-to-Using-Multiple-Feeds?anchor=setting-nugetsecurityanalysiswarninglevel-in-cdp
   NugetSecurityAnalysisWarningLevel: none
+  # Allows CodeQL to run on our Build job.
+  # https://eng.ms/docs/cloud-ai-platform/devdiv/one-engineering-system-1es/1es-docs/codeql/configuring-codeql3000-ado-pipelines
+  Codeql.Enabled: true
+  # Default to skipping auto-injection for CodeQL. It is not skipped in the Build job only.
+  # https://eng.ms/docs/cloud-ai-platform/devdiv/one-engineering-system-1es/1es-docs/codeql/configuring-codeql3000-ado-pipelines#monolithic-repos-and-multistage-pipelines
+  Codeql.SkipTaskAutoInjection: true
   # Sets the fetch depth to no longer be a shallow clone. Nerdbank.GitVersioning requires a non-shallow clone.
   # See:
   # - https://github.com/dotnet/Nerdbank.GitVersioning/issues/423
@@ -63,6 +71,16 @@ parameters:
   displayName: vs-green Insertion Branch Name
   type: string
   default: main
+# Useful when testing pipeline changes and running compliance is not necessary.
+- name: SkipCompliance
+  displayName: Skip Compliance Validation
+  type: boolean
+  default: false
+# This should only be enabled if we need to create AzDO work items based on Compliance failures.
+- name: UploadTSAResults
+  displayName: Create Compliance Work Items
+  type: boolean
+  default: false
 
 ###################################################################################################################################################################
 # STAGES
@@ -75,13 +93,41 @@ stages:
     # Only used for tracking purposes in MicroBuild tasks.
     # See: https://devdiv.visualstudio.com/DevDiv/_wiki/wikis/DevDiv.wiki/650/MicroBuild-Signing?anchor=high-level-steps-to-enable-signing
     TeamName: DotNet-Project-System
+    # Auto-injects the CodeQL task.
+    # https://eng.ms/docs/cloud-ai-platform/devdiv/one-engineering-system-1es/1es-docs/codeql/configuring-codeql3000-ado-pipelines#monolithic-repos-and-multistage-pipelines
+    Codeql.SkipTaskAutoInjection: false
   jobs:
   - template: templates/build-core-official-release.yml
+
+# Skip this stage only when specifically requested (via SkipCompliance).
+- ${{ if eq(parameters.SkipCompliance, false) }}:
+  - stage: Compliance
+    displayName: Compliance
+    dependsOn: Build
+    variables:
+    - name: UploadTSAResults
+      value: ${{ parameters.UploadTSAResults }}
+    # Gets the VisualStudioMinimumVersion variable produced by the Build pipeline.
+    # This value is used in the analyze-api.yml template.
+    - name: VisualStudioMinimumVersion
+      value: $[ stageDependencies.Build.BuildCoreOfficialRelease.outputs['SetVisualStudioMinimumVersionVariable.VisualStudioMinimumVersion'] ]
+    # https://devdiv.visualstudio.com/DevDiv/_library?itemType=VariableGroups&view=VariableGroupView&variableGroupId=434&path=DotNet-Project-System
+    # Variables used:
+    # - ApiScanConnectionString
+    - group: DotNet-Project-System
+    jobs:
+    - template: templates/analyze-compliance.yml
+    - template: templates/analyze-api.yml
 
 - ${{ if eq(parameters.CreateInsertion, true) }}:
   - stage: Insertion
     displayName: Insertion
-    dependsOn: Build
+    dependsOn:
+    # The Build dependsOn is required for putting that stage's variables into the stageDependencies property bag (for PackageVersion).
+    - Build
+    # Only include the Compliance stage when it is not skipped.
+    - ${{ if eq(parameters.SkipCompliance, false) }}:
+      - Compliance
     variables:
       # Gets the NPMPackageVersion variable produced by the Build pipeline.
       NPMPackageVersion: $[ stageDependencies.Build.BuildCoreOfficialRelease.outputs['SetNPMPackageVersion.NPMPackageVersion'] ]
