@@ -164,8 +164,6 @@ internal sealed class Workspace : OnceInitializedOnceDisposedUnderLockAsync, IWo
         // Prevent disposal during the update.
         return ExecuteUnderLockAsync(async token =>
         {
-            Verify.NotDisposed(this);
-
             await InitializeAsync(_unloadCancellationToken);
 
             Assumes.True(_state is WorkspaceState.Uninitialized or WorkspaceState.Initialized);
