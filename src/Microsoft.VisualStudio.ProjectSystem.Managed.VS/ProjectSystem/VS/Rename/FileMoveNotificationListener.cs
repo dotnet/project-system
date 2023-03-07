@@ -9,8 +9,9 @@ using Microsoft.VisualStudio.Settings;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Text;
 using Microsoft.VisualStudio.Threading;
+// Debug collides with Microsoft.VisualStudio.ProjectSystem.VS.Debug
+using DiagDebug = System.Diagnostics.Debug;
 using Path = System.IO.Path;
-using static System.Diagnostics.Debug;
 using static Microsoft.CodeAnalysis.Rename.Renamer;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
@@ -31,7 +32,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
         private readonly IRoslynServices _roslynServices;
         private readonly IVsService<SVsSettingsPersistenceManager, ISettingsManager> _settingsManagerService;
 
-        private readonly Dictionary<string, RenameDocumentActionSet> _renameActionSets = new();
+        // The file-paths are the full disk path of the source file (path prior to moving the item).
+        private readonly Dictionary<string, RenameDocumentActionSet> _renameActionSetByFilePath = new();
         private string? _renameMessage;
 
         [ImportingConstructor]
@@ -58,16 +60,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
 
         public async Task OnBeforeFilesMovedAsync(IReadOnlyCollection<IFileMoveItem> items)
         {
-            // Always start with an empty collection when activated.
-            _renameActionSets.Clear();
-
             Project? project = _workspace.CurrentSolution.Projects.FirstOrDefault(p => StringComparers.Paths.Equals(p.FilePath, _unconfiguredProject.FullPath));
             if (project is null)
             {
                 return;
             }
 
-            foreach (IFileMoveItem itemToMove in GetFilesToMoveRecursive(items))
+            foreach (IFileMoveItem itemToMove in GetFilesToMove(items))
             {
                 Document? currentDocument = project.Documents.FirstOrDefault(d => StringComparers.Paths.Equals(d.FilePath, itemToMove.Source));
                 if (currentDocument is null)
@@ -93,15 +92,19 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
                 // The text in English is "Sync namespace to folder structure".
                 _renameMessage ??= renameActionSet.ApplicableActions.First().GetDescription();
 
-                _renameActionSets.Add(itemToMove.Source, renameActionSet);
+                // Add the full source file-path of the item as the key for the rename action set.
+                _renameActionSetByFilePath.Add(itemToMove.Source, renameActionSet);
             }
 
             return;
 
-            static IEnumerable<IFileMoveItem> GetFilesToMoveRecursive(IEnumerable<IFileMoveItem> items)
+            static IEnumerable<IFileMoveItem> GetFilesToMove(IEnumerable<IFileMoveItem> items)
             {
-                foreach (IFileMoveItem item in items)
+                var itemQueue = new Queue<IFileMoveItem>(items);
+                while(itemQueue.Count > 0)
                 {
+                    IFileMoveItem item = itemQueue.Dequeue();
+
                     // Termination condition
                     if (item is { WithinProject: true, IsFolder: false, IsLinked: false } &&
                         StringComparers.ItemTypes.Equals(item.ItemType, Compile.SchemaName))
@@ -110,13 +113,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
                         continue;
                     }
 
-                    // Recursive folder navigation
+                    // Folder navigation
                     if (item is { IsFolder: true } and ICopyPasteItem copyPasteItem)
                     {
                         IEnumerable<IFileMoveItem> children = copyPasteItem.Children.Select(c => c as IFileMoveItem).WhereNotNull();
-                        foreach (IFileMoveItem child in GetFilesToMoveRecursive(children))
+                        foreach (IFileMoveItem child in children)
                         {
-                            yield return child;
+                            itemQueue.Enqueue(child);
                         }
                     }
                 }
@@ -125,8 +128,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
 
         public async Task OnAfterFileMoveAsync()
         {
-            if (!_renameActionSets.Any() || !await IsEnabledOrConfirmedAsync())
+            if (!_renameActionSetByFilePath.Any() || !await IsEnabledOrConfirmedAsync())
             {
+                // Clear the collection since the user declined (or has disabled) the rename namespace option.
+                _renameActionSetByFilePath.Clear();
                 return;
             }
 
@@ -140,7 +145,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
                     message: _renameMessage!,
                     allowCancel: true,
                     asyncMethod: ApplyRenamesAsync,
-                    totalSteps: _renameActionSets.Count);
+                    totalSteps: _renameActionSetByFilePath.Count);
             });
 
             return;
@@ -157,17 +162,19 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
                 Solution solution = _workspace.CurrentSolution;
 
                 int currentStep = 1;
-                foreach (KeyValuePair<string, RenameDocumentActionSet> renameActionSet in _renameActionSets)
+                foreach ((string filePath, RenameDocumentActionSet renameActionSet) in _renameActionSetByFilePath)
                 {
                     // Display the filename being updated to the user in the progress dialog.
-                    context.Update(currentStep: currentStep++, progressText: Path.GetFileName(renameActionSet.Key));
+                    context.Update(currentStep: currentStep++, progressText: Path.GetFileName(filePath));
 
-                    solution = await renameActionSet.Value.UpdateSolutionAsync(solution, token);
+                    solution = await renameActionSet.UpdateSolutionAsync(solution, token);
                 }
 
                 await _threadingService.SwitchToUIThread(token);
                 bool areChangesApplied = _roslynServices.ApplyChangesToSolution(_workspace, solution);
-                Assert(areChangesApplied, "ApplyChangesToSolution returned false");
+                DiagDebug.Assert(areChangesApplied, "ApplyChangesToSolution returned false");
+                // Clear the collection after it has been processed.
+                _renameActionSetByFilePath.Clear();
             }
 
             async Task<bool> IsEnabledOrConfirmedAsync()
