@@ -22,13 +22,26 @@ namespace Microsoft.VisualStudio.Threading.Tasks
         /// <exception cref="ArgumentOutOfRangeException">
         ///     <paramref name="millisecondsTimeout"/> is a negative number other than -1, which represents an infinite time-out.
         /// </exception>
+        /// <exception cref="TaskCanceledException">
+        ///     <paramref name="task"/> is cancelled.
+        /// </exception>
         public static async Task<bool> TryWaitForCompleteOrTimeoutAsync(this Task task, int millisecondsTimeout)
         {
+            if (millisecondsTimeout == Timeout.Infinite)
+            {
+                await task;
+                return true;
+            }
+
             using var cts = new CancellationTokenSource();
-            if (task != await Task.WhenAny(task, Task.Delay(millisecondsTimeout, cts.Token)))
+
+            var delay = Task.Delay(millisecondsTimeout, cts.Token);
+
+            if (ReferenceEquals(delay, await Task.WhenAny(task, delay)))
             {
                 return false;
             }
+
             cts.Cancel();
             await task;
             return true;

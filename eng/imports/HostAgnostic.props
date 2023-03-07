@@ -7,21 +7,13 @@
 
   <ItemGroup>
     <!-- Infrastructure -->
-    <PackageReference Include="MicroBuild.Core.Sentinel"                  PrivateAssets="all" />
-    <!-- Path Property: PkgMicrosoft_VisualStudioEng_MicroBuild_Core -->
-    <PackageReference Include="Microsoft.VisualStudioEng.MicroBuild.Core" PrivateAssets="all" GeneratePathProperty="true" />
-    <!-- SwixBuild does not have the assets accessed via PackageReference. Instead, they are accessed directly from the NuGet cache on disk via property: PkgMicrosoft_VisualStudioEng_MicroBuild_Plugins_SwixBuild. -->
-    <PackageReference Include="Microsoft.VisualStudioEng.MicroBuild.Plugins.SwixBuild" ExcludeAssets="all" GeneratePathProperty="true" />
-    <PackageReference Include="Nerdbank.Streams"                    ExcludeAssets="all" />
-    <!-- Note: We require Nerdbank.GitVersioning beyond simply generating version numbers. It also produces some assembly information such as AssemblyName and PublicKeyToken into a *.ThisAssembly.cs file. -->
-    <PackageReference Include="Nerdbank.GitVersioning"              PrivateAssets="all" />
-    <PackageReference Include="System.IO.Pipelines"                 ExcludeAssets="all" />
-    <PackageReference Include="Microsoft.Net.Compilers.Toolset" />
-    <PackageReference Include="Microsoft.DotNet.XliffTasks"         PrivateAssets="all" />
-    <!-- Path Property: PkgMicrosoft_DiaSymReader_Pdb2Pdb -->
-    <PackageReference Include="Microsoft.DiaSymReader.Pdb2Pdb"      ExcludeAssets="all" GeneratePathProperty="true" />
     <!-- Path Property: PkgCodecov -->
     <PackageReference Include="Codecov"                             ExcludeAssets="all" GeneratePathProperty="true" />
+    <PackageReference Include="MicroBuild.Core.Sentinel"                  PrivateAssets="all" />
+    <!-- Path Property: PkgMicrosoft_DiaSymReader_Pdb2Pdb -->
+    <PackageReference Include="Microsoft.DiaSymReader.Pdb2Pdb"      ExcludeAssets="all" GeneratePathProperty="true" />
+    <PackageReference Include="Microsoft.DotNet.XliffTasks"         PrivateAssets="all" />
+    <PackageReference Include="Microsoft.Net.Compilers.Toolset" />
     <!--
       The SourceLink package depends on the repo provider used.
       TODO: Determine a mechanism of switching these depending on the location of the source.
@@ -29,13 +21,22 @@
     -->
     <!-- <PackageReference Include="Microsoft.SourceLink.GitHub"         PrivateAssets="all" /> -->
     <PackageReference Include="Microsoft.SourceLink.AzureRepos.Git"         PrivateAssets="all" />
+    <!-- Path Property: PkgMicrosoft_VisualStudioEng_MicroBuild_Core -->
+    <PackageReference Include="Microsoft.VisualStudioEng.MicroBuild.Core" PrivateAssets="all" GeneratePathProperty="true" />
+    <!-- SwixBuild does not have the assets accessed via PackageReference. Instead, they are accessed directly from the NuGet cache on disk via property: PkgMicrosoft_VisualStudioEng_MicroBuild_Plugins_SwixBuild. -->
+    <PackageReference Include="Microsoft.VisualStudioEng.MicroBuild.Plugins.SwixBuild" ExcludeAssets="all" GeneratePathProperty="true" />
+    <!-- Note: We require Nerdbank.GitVersioning beyond simply generating version numbers. It also produces some assembly information such as AssemblyName and PublicKeyToken into a *.ThisAssembly.cs file. -->
+    <PackageReference Include="Nerdbank.GitVersioning"              PrivateAssets="all" />
+    <PackageReference Include="Nerdbank.Streams"                    ExcludeAssets="all" />
+    <PackageReference Include="System.IO.Pipelines"                 ExcludeAssets="all" />
 
     <!-- CPS -->
     <PackageReference Include="Microsoft.VisualStudio.ProjectSystem" />
+    <PackageReference Include="Microsoft.VisualStudio.ProjectSystem.SDK" />
     <PackageReference Include="Microsoft.VisualStudio.ProjectSystem.SDK.Tools" />
     <PackageReference Include="Microsoft.VisualStudio.ProjectSystem.XamlTypes" Condition="'$(TargetFramework)' == 'net6.0'" />
-    <PackageReference Include="Microsoft.VisualStudio.Validation" />
     <PackageReference Include="Microsoft.VisualStudio.Threading" />
+    <PackageReference Include="Microsoft.VisualStudio.Validation" />
     <PackageReference Include="System.Threading.Tasks.Dataflow" />
 
     <!-- MSBuild -->
@@ -50,8 +51,8 @@
     <PackageReference Include="Microsoft.VisualStudio.Composition" />
 
     <!-- Roslyn -->
-    <PackageReference Include="Microsoft.CodeAnalysis" />
     <PackageReference Include="Microsoft.CSharp" />
+    <PackageReference Include="Microsoft.CodeAnalysis" />
 
     <!-- Needed to tie-break a potentially misspecified dependency somewhere -->
     <PackageReference Include="Microsoft.ServiceHub.Framework" />
@@ -59,18 +60,18 @@
     <!-- Analyzers-->
     <!-- Set PrivateAssets="all" to prevent consumers of our packages from picking up these analyzers transitively. -->
     <PackageReference Include="CSharpIsNullAnalyzer"                           PrivateAssets="all" />
-    <PackageReference Include="Microsoft.VisualStudio.ProjectSystem.Analyzers" PrivateAssets="all" />
     <PackageReference Include="Microsoft.CodeAnalysis.Analyzers"               PrivateAssets="all" />
     <PackageReference Include="Microsoft.CodeAnalysis.CSharp.CodeStyle"        PrivateAssets="all" />
     <PackageReference Include="Microsoft.CodeAnalysis.VisualBasic.CodeStyle"   PrivateAssets="all" />
+    <PackageReference Include="Microsoft.VisualStudio.ProjectSystem.Analyzers" PrivateAssets="all" />
     <PackageReference Include="Roslyn.Diagnostics.Analyzers"                   PrivateAssets="all" Condition="'$(IsTestProject)' != 'true'" />
 
     <!-- 3rd party -->
     <PackageReference Include="Newtonsoft.Json" />
 
     <!-- Host-Agnostic Visual Studio -->
-    <PackageReference Include="Microsoft.VisualStudio.SDK.EmbedInteropTypes" />
     <PackageReference Include="Microsoft.VisualStudio.ImageCatalog" />
+    <PackageReference Include="Microsoft.VisualStudio.SDK.EmbedInteropTypes" />
   </ItemGroup>
 
   <ItemGroup Condition="'$(IsUnitTestProject)' == 'true'">
@@ -88,6 +89,7 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
+
     <InternalsVisibleTo Include="DynamicProxyGenAssembly2" Key="$(MoqPublicKey)" />
   </ItemGroup>
 

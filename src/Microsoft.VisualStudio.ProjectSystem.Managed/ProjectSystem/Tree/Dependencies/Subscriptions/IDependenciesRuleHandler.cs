@@ -1,10 +1,8 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
-using Microsoft.VisualStudio.Composition;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies;
-using Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Subscriptions;
 
-namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.CrossTarget
+namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Subscriptions
 {
     /// <summary>
     /// Implementations of this interface add, update and remove <see cref="IDependencyModel"/> instances in response to
@@ -16,8 +14,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.CrossTarget
     [ProjectSystemContract(
         ProjectSystemContractScope.UnconfiguredProject,
         ProjectSystemContractProvider.Private,
-        Cardinality = ImportCardinality.ZeroOrMore,
-        ContractName = DependencyRulesSubscriber.DependencyRulesSubscriberContract)]
+        Cardinality = ImportCardinality.ZeroOrMore)]
     internal interface IDependenciesRuleHandler
     {
         /// <summary>

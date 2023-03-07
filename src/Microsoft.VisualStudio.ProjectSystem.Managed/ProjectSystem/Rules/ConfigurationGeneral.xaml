@@ -164,6 +164,9 @@
   <StringProperty Name="Platform"
                   Visible="False" />
 
+  <StringProperty Name="ProduceReferenceAssembly"
+                  Visible="False" />
+
   <StringProperty Name="ProjectAssetsFile"
                   ReadOnly="true"
                   Visible="False" />

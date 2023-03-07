@@ -24,7 +24,7 @@
       </trans-unit>
       <trans-unit id="FUTDC_AccelerationDataMissingForProject_1">
         <source>Build acceleration data is unavailable for project with target '{0}'. See https://aka.ms/vs-build-acceleration.</source>
-        <target state="new">Build acceleration data is unavailable for project with target '{0}'. See https://aka.ms/vs-build-acceleration.</target>
+        <target state="translated">Les données d’accélération de build ne sont pas disponibles pour le projet avec la cible '{0}'. Voir https://aka.ms/vs-build-acceleration.</target>
         <note>{0} is a file path.</note>
       </trans-unit>
       <trans-unit id="FUTDC_CheckingCopyItemsForProject_1">
@@ -34,7 +34,7 @@
       </trans-unit>
       <trans-unit id="FUTD_AccelerationCandidate">
         <source>This project appears to be a candidate for build acceleration. To opt in, set the 'AccelerateBuildsInVisualStudio' MSBuild property to 'true'. See https://aka.ms/vs-build-acceleration.</source>
-        <target state="new">This project appears to be a candidate for build acceleration. To opt in, set the 'AccelerateBuildsInVisualStudio' MSBuild property to 'true'. See https://aka.ms/vs-build-acceleration.</target>
+        <target state="translated">Ce projet semble être un candidat pour l’accélération de build. Pour y participer, définissez la propriété MSBuild 'AccelerateBuildsInVisualStudio' sur 'true'. Voir https://aka.ms/vs-build-acceleration.</target>
         <note>Do not translate 'AccelerateBuildsInVisualStudio' or 'true'.</note>
       </trans-unit>
       <trans-unit id="FUTD_AccelerationDisabledCopyItemsIncomplete">
@@ -44,7 +44,7 @@
       </trans-unit>
       <trans-unit id="FUTD_AccelerationDisabledForProject">
         <source>Build acceleration is disabled for this project via the 'AccelerateBuildsInVisualStudio' MSBuild property. See https://aka.ms/vs-build-acceleration.</source>
-        <target state="new">Build acceleration is disabled for this project via the 'AccelerateBuildsInVisualStudio' MSBuild property. See https://aka.ms/vs-build-acceleration.</target>
+        <target state="translated">L’accélération de build est désactivée pour ce projet via la propriété MSBuilds 'AccelerateBuildsInVisualStudio'. Voir https://aka.ms/vs-build-acceleration.</target>
         <note>Do not translate AccelerateBuildsInVisualStudio.</note>
       </trans-unit>
       <trans-unit id="FUTD_AddingInputReferenceCopyMarkers">
@@ -179,7 +179,7 @@
       </trans-unit>
       <trans-unit id="FUTD_CopyingFilesToAccelerateBuild_1">
         <source>Copying {0} files to accelerate build (https://aka.ms/vs-build-acceleration):</source>
-        <target state="new">Copying {0} files to accelerate build (https://aka.ms/vs-build-acceleration):</target>
+        <target state="translated">Copie de fichiers {0} pour accélérer la génération (https://aka.ms/vs-build-acceleration) :</target>
         <note>{0} is an integer.</note>
       </trans-unit>
       <trans-unit id="FUTD_CriticalBuildTasksRunning">
@@ -296,6 +296,11 @@
         <source>Input {1} item '{0}' does not exist, but is not required.</source>
         <target state="translated">L''{0}' d’élément de {1} d’entrée n’existe pas, mais n’est pas obligatoire.</target>
         <note>{0} is a file path. {1} is an MSBuild item type.</note>
+      </trans-unit>
+      <trans-unit id="FUTD_NotAllReferencesProduceReferenceAssemblies_1">
+        <source>This project has enabled build acceleration, but not all referenced projects produce a reference assembly. Ensure projects producing the following outputs have the 'ProduceReferenceAssembly' MSBuild property set to 'true': {0}. See https://aka.ms/vs-build-acceleration for more information.</source>
+        <target state="translated">Ce projet a activé l’accélération de build, mais tous les projets référencés ne produisent pas un assembly de référence. Vérifiez que la propriété MSBuild « ProduceReferenceAssembly » des projets produisant les sorties suivantes a la valeur « true » : {0}. Pour plus d’informations, consultez https://aka.ms/vs-build-acceleration.</target>
+        <note>Do not translate 'ProduceReferenceAssembly' or 'true'.</note>
       </trans-unit>
       <trans-unit id="FUTD_OutputDoesNotExist_1">
         <source>Output '{0}' does not exist, not up-to-date.</source>
@@ -471,8 +476,8 @@ Ce projet a été chargé à l'aide d'un type de projet incorrect, probablement 
       <trans-unit id="Restore_NuGetCycleDetected">
         <source>A circular dependency A -&gt; B -&gt; A was detected during NuGet Restore which caused NuGet to stop restoring.
 Because the NuGet restore didn't finish correctly, the project might be in a bad state.</source>
-        <target state="new">A circular dependency A -&gt; B -&gt; A was detected during NuGet Restore which caused NuGet to stop restoring.
-Because the NuGet restore didn't finish correctly, the project might be in a bad state.</target>
+        <target state="translated">Une dépendance circulaire A -&gt; B -&gt; A a été détectée lors de la restauration NuGet, ce qui a entraîné l’arrêt de la restauration de NuGet.
+Étant donné que la restauration NuGet ne s’est pas terminée correctement, le projet est peut-être dans un état incorrect.</target>
         <note />
       </trans-unit>
       <trans-unit id="Restore_PropertyWithInconsistentValues">

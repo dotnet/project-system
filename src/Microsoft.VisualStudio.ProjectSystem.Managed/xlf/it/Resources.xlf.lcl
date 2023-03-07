@@ -592,6 +592,15 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
+      <Item ItemId=";FUTD_NotAllReferencesProduceReferenceAssemblies_1" ItemType="0" PsrId="308" InstFlg="true" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[This project has enabled build acceleration, but not all referenced projects produce a reference assembly. Ensure projects producing the following outputs have the 'ProduceReferenceAssembly' MSBuild property set to 'true': {0}. See https://aka.ms/vs-build-acceleration for more information.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Questo progetto ha abilitato l'accelerazione di compilazione, ma non tutti i progetti a cui si fa riferimento generano un assembly di riferimento. Assicurarsi che la proprietà 'ProduceReferenceAssembly' di MSBuild dei progetti che generano gli output seguenti sia impostata su 'true': {0}. Per altre informazioni, vedere https://aka.ms/vs-build-acceleration.]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
       <Item ItemId=";FUTD_OutputDoesNotExist_1" ItemType="0" PsrId="308" InstFlg="true" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[Output '{0}' does not exist, not up-to-date.]]></Val>
@@ -873,6 +882,15 @@
           <Val><![CDATA[The value of the 'TargetFrameworkMoniker' and 'NuGetTargetMoniker' properties in the '{0}' configuration are both empty. This configuration will not contribute to NuGet restore, which may result in restore and build errors.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
             <Val><![CDATA[I valori delle proprietà 'TargetFrameworkMoniker' e 'NuGetTargetMoniker' nella configurazione '{0}' sono vuoti. Questa configurazione non contribuisce al ripristino di NuGet e questo può comportare errori di ripristino e di compilazione.]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";Restore_NuGetCycleDetected" ItemType="0" PsrId="308" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[A circular dependency A -> B -> A was detected during NuGet Restore which caused NuGet to stop restoring.]D;]A;Because the NuGet restore didn't finish correctly, the project might be in a bad state.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Durante il ripristino NuGet è stata rilevata una dipendenza circolare A -> B -> A che ha causato l'arresto del ripristino di NuGet.]D;]A;Poiché il ripristino NuGet non è stato completato correttamente, il progetto potrebbe trovarsi in uno stato non valido.]]></Val>
           </Tgt>
         </Str>
         <Disp Icon="Str" />

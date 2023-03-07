@@ -3053,7 +3053,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                             With Info
                                 .Guid = SplitInfo(0)
                                 .ProjectFile = SplitInfo(1)
-                                .FilePath = SplitInfo(2)
+                                .FilePath = GetExactPath(SplitInfo(2))
                             End With
                             Files(i) = Info
                         Next
@@ -3067,6 +3067,30 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
 
             ReDim Files(-1)
             Return Files
+        End Function
+
+        ' Converts the provided path to use the same capitalization as the file system. Files dragged
+        ' from Solution Explorer produce drop data having a lower-case path, which we then write to
+        ' in the .resx file. Windows has a case-insensitive file system, but users on other operation
+        ' systems (such as Linux) can hit run-time errors when the case doesn't match. This avoids that.
+        Private Shared Function GetExactPath(path As String) As String
+            If path Is Nothing OrElse (Not File.Exists(path) AndAlso Not Directory.Exists(path)) Then
+                Return path
+            End If
+
+            Try
+                Dim root = System.IO.Path.GetPathRoot(path)
+                Dim parts = path.Substring(root.Length).Split(System.IO.Path.DirectorySeparatorChar, System.IO.Path.AltDirectorySeparatorChar)
+
+                For Each part As String In parts
+                    root = Directory.EnumerateFileSystemEntries(root, part).First()
+                Next
+
+                Return root
+            Catch
+                ' If we hit any issues, just return the path unchanged
+                Return path
+            End Try
         End Function
 
 #End Region

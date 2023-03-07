@@ -42,6 +42,16 @@
         <target state="translated">Général</target>
         <note />
       </trans-unit>
+      <trans-unit id="Category|Resources|Description">
+        <source>Resource settings for the application.</source>
+        <target state="new">Resource settings for the application.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="Category|Resources|DisplayName">
+        <source>Resources</source>
+        <target state="new">Resources</target>
+        <note />
+      </trans-unit>
       <trans-unit id="DynamicEnumProperty|InterceptedTargetFramework|Description">
         <source>Specifies the version of .NET that the application targets. This option can have different values depending on which versions of .NET are installed on your computer.</source>
         <target state="translated">Spécifie la version de .NET ciblée par l'application. Cette option peut avoir des valeurs distinctes, en fonction des versions de .NET installées sur votre ordinateur.</target>

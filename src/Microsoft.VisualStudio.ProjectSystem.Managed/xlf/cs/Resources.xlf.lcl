@@ -84,10 +84,13 @@
       </Item>
       <Item ItemId=";FUTDC_AccelerationDataMissingForProject_1" ItemType="0" PsrId="308" InstFlg="true" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Build acceleration data is unavailable for project with target '{0}'.]]></Val>
+          <Val><![CDATA[Build acceleration data is unavailable for project with target '{0}'. See https://aka.ms/vs-build-acceleration.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Data akcelerace sestavení nejsou pro projekt s cílem {0} k dispozici.]]></Val>
+            <Val><![CDATA[Data akcelerace sestavení nejsou pro projekt s cílem {0} k dispozici. Viz https://aka.ms/vs-build-acceleration.]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[Build acceleration data is unavailable for project with target '{0}'.]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
@@ -105,10 +108,13 @@
       </Item>
       <Item ItemId=";FUTD_AccelerationCandidate" ItemType="0" PsrId="308" InstFlg="true" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[This project appears to be a candidate for build acceleration. To opt in, set the 'AccelerateBuildsInVisualStudio' MSBuild property to 'true'.]]></Val>
+          <Val><![CDATA[This project appears to be a candidate for build acceleration. To opt in, set the 'AccelerateBuildsInVisualStudio' MSBuild property to 'true'. See https://aka.ms/vs-build-acceleration.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Zdá se, že tento projekt je kandidátem na akceleraci sestavení. Pro přihlášení nastavte vlastnost MSBuild AccelerateBuildsInVisualStudio na hodnotu true.]]></Val>
+            <Val><![CDATA[Zdá se, že tento projekt je kandidátem na akceleraci sestavení. Pro přihlášení nastavte vlastnost MSBuild AccelerateBuildsInVisualStudio na hodnotu true. Viz https://aka.ms/vs-build-acceleration.]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[This project appears to be a candidate for build acceleration. To opt in, set the 'AccelerateBuildsInVisualStudio' MSBuild property to 'true'.]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
@@ -123,10 +129,13 @@
       </Item>
       <Item ItemId=";FUTD_AccelerationDisabledForProject" ItemType="0" PsrId="308" InstFlg="true" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Build acceleration is disabled for this project via the 'AccelerateBuildsInVisualStudio' MSBuild property.]]></Val>
+          <Val><![CDATA[Build acceleration is disabled for this project via the 'AccelerateBuildsInVisualStudio' MSBuild property. See https://aka.ms/vs-build-acceleration.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Akcelerace sestavení je pro tento projekt zakázaná prostřednictvím vlastnosti MSBuild AccelerateBuildsInVisualStudio.]]></Val>
+            <Val><![CDATA[Akcelerace sestavení je pro tento projekt zakázaná prostřednictvím vlastnosti MSBuild AccelerateBuildsInVisualStudio. Viz https://aka.ms/vs-build-acceleration.]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[Build acceleration is disabled for this project via the 'AccelerateBuildsInVisualStudio' MSBuild property.]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
@@ -366,10 +375,13 @@
       </Item>
       <Item ItemId=";FUTD_CopyingFilesToAccelerateBuild_1" ItemType="0" PsrId="308" InstFlg="true" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Copying {0} files to accelerate build:]]></Val>
+          <Val><![CDATA[Copying {0} files to accelerate build (https://aka.ms/vs-build-acceleration):]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Kopírování {0} souborů pro zrychlení sestavení:]]></Val>
+            <Val><![CDATA[Kopírují se soubory ({0}) pro zrychlení sestavení (https://aka.ms/vs-build-acceleration):]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[Copying {0} files to accelerate build:]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
@@ -576,6 +588,15 @@
           <Val><![CDATA[Input {1} item '{0}' does not exist, but is not required.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
             <Val><![CDATA[Vstupní položka {1} {0} neexistuje, i když je povinná.]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";FUTD_NotAllReferencesProduceReferenceAssemblies_1" ItemType="0" PsrId="308" InstFlg="true" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[This project has enabled build acceleration, but not all referenced projects produce a reference assembly. Ensure projects producing the following outputs have the 'ProduceReferenceAssembly' MSBuild property set to 'true': {0}. See https://aka.ms/vs-build-acceleration for more information.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Tento projekt povolil akceleraci sestavení, ale ne všechny odkazované projekty vytvářejí referenční sestavení. Zajistěte, aby projekty vytvářející následující výstupy měly vlastnost MSBuild ProduceReferenceAssembly nastavenou na hodnotu true: {0}. Další informace najdete v https://aka.ms/vs-build-acceleration.]]></Val>
           </Tgt>
         </Str>
         <Disp Icon="Str" />
@@ -861,6 +882,15 @@
           <Val><![CDATA[The value of the 'TargetFrameworkMoniker' and 'NuGetTargetMoniker' properties in the '{0}' configuration are both empty. This configuration will not contribute to NuGet restore, which may result in restore and build errors.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
             <Val><![CDATA[Hodnoty vlastností TargetFrameworkMoniker a NuGetTargetMoniker v konfiguraci {0} jsou obě prázdné. Tato konfigurace se nebude podílet na obnovení přes NuGet, což může mít za následek chyby při obnovení a sestavení.]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";Restore_NuGetCycleDetected" ItemType="0" PsrId="308" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[A circular dependency A -> B -> A was detected during NuGet Restore which caused NuGet to stop restoring.]D;]A;Because the NuGet restore didn't finish correctly, the project might be in a bad state.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Během obnovení NuGet byla zjištěna cyklická závislost A -> B -> A, což způsobilo, že se NuGet přestal obnovovat.]D;]A;Vzhledem k tomu, že se obnovení NuGet nedokončilo správně, může být projekt ve špatném stavu.]]></Val>
           </Tgt>
         </Str>
         <Disp Icon="Str" />

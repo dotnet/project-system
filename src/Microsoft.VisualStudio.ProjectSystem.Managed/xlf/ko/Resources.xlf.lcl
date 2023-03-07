@@ -84,10 +84,13 @@
       </Item>
       <Item ItemId=";FUTDC_AccelerationDataMissingForProject_1" ItemType="0" PsrId="308" InstFlg="true" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Build acceleration data is unavailable for project with target '{0}'.]]></Val>
+          <Val><![CDATA[Build acceleration data is unavailable for project with target '{0}'. See https://aka.ms/vs-build-acceleration.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[대상이 '{0}'인 프로젝트에는 빌드 가속 데이터를 사용할 수 없습니다.]]></Val>
+            <Val><![CDATA[대상이 '{0}'인 프로젝트에는 빌드 가속 데이터를 사용할 수 없습니다. https://aka.ms/vs-build-acceleration을 참조하세요.]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[Build acceleration data is unavailable for project with target '{0}'.]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
@@ -105,10 +108,13 @@
       </Item>
       <Item ItemId=";FUTD_AccelerationCandidate" ItemType="0" PsrId="308" InstFlg="true" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[This project appears to be a candidate for build acceleration. To opt in, set the 'AccelerateBuildsInVisualStudio' MSBuild property to 'true'.]]></Val>
+          <Val><![CDATA[This project appears to be a candidate for build acceleration. To opt in, set the 'AccelerateBuildsInVisualStudio' MSBuild property to 'true'. See https://aka.ms/vs-build-acceleration.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[이 프로젝트는 빌드 가속을 위한 후보인 것 같습니다. 옵트인하려면 'AccelerateBuildsInVisualStudio' MSBuild 속성을 'true'로 설정하세요.]]></Val>
+            <Val><![CDATA[이 프로젝트는 빌드 가속의 후보로 보입니다. 옵트인하려면 'AccelerateBuildsInVisualStudio' MSBuild 속성을 'true'로 설정합니다. https://aka.ms/vs-build-acceleration을 참조하세요.]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[This project appears to be a candidate for build acceleration. To opt in, set the 'AccelerateBuildsInVisualStudio' MSBuild property to 'true'.]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
@@ -123,10 +129,13 @@
       </Item>
       <Item ItemId=";FUTD_AccelerationDisabledForProject" ItemType="0" PsrId="308" InstFlg="true" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Build acceleration is disabled for this project via the 'AccelerateBuildsInVisualStudio' MSBuild property.]]></Val>
+          <Val><![CDATA[Build acceleration is disabled for this project via the 'AccelerateBuildsInVisualStudio' MSBuild property. See https://aka.ms/vs-build-acceleration.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA['AccelerateBuildsInVisualStudio' MSBuild 속성을 사용하는 이 프로젝트에 빌드 가속을 사용할 수 없습니다.]]></Val>
+            <Val><![CDATA[이 프로젝트에는 'AccelerateBuildsInVisualStudio' MSBuild 속성을 통해 빌드 가속을 사용할 수 없습니다. https://aka.ms/vs-build-acceleration을 참조하세요.]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[Build acceleration is disabled for this project via the 'AccelerateBuildsInVisualStudio' MSBuild property.]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
@@ -366,10 +375,13 @@
       </Item>
       <Item ItemId=";FUTD_CopyingFilesToAccelerateBuild_1" ItemType="0" PsrId="308" InstFlg="true" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Copying {0} files to accelerate build:]]></Val>
+          <Val><![CDATA[Copying {0} files to accelerate build (https://aka.ms/vs-build-acceleration):]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[빌드 가속을 위해 {0}개의 파일을 복사하는 중:]]></Val>
+            <Val><![CDATA[빌드 가속을 위한 {0} 파일 복사(https://aka.ms/vs-build-acceleration):]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[Copying {0} files to accelerate build:]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
@@ -576,6 +588,15 @@
           <Val><![CDATA[Input {1} item '{0}' does not exist, but is not required.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
             <Val><![CDATA[입력 {1} 항목 '{0}'이(가) 존재하지 않지만 필수는 아닙니다.]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";FUTD_NotAllReferencesProduceReferenceAssemblies_1" ItemType="0" PsrId="308" InstFlg="true" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[This project has enabled build acceleration, but not all referenced projects produce a reference assembly. Ensure projects producing the following outputs have the 'ProduceReferenceAssembly' MSBuild property set to 'true': {0}. See https://aka.ms/vs-build-acceleration for more information.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[이 프로젝트는 빌드 가속화를 활성화했지만 모든 참조 프로젝트가 참조 어셈블리를 생성하지는 않습니다. 다음 출력을 생성하는 프로젝트에서 'ProduceReferenceAssembly' MSBuild 속성이 'true'로 설정되었는지 확인합니다. {0} 자세한 내용은 https://aka.ms/vs-build-acceleration을을 참조하세요.]]></Val>
           </Tgt>
         </Str>
         <Disp Icon="Str" />
@@ -861,6 +882,15 @@
           <Val><![CDATA[The value of the 'TargetFrameworkMoniker' and 'NuGetTargetMoniker' properties in the '{0}' configuration are both empty. This configuration will not contribute to NuGet restore, which may result in restore and build errors.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
             <Val><![CDATA['{0}' 구성의 'TargetFrameworkMoniker' 및 'NuGetTargetMoniker' 속성 값이 둘 다 비어 있습니다. 이 구성은 NuGet 복원에 영향을 주지 않아 복원 및 빌드 오류가 발생할 수 있습니다.]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";Restore_NuGetCycleDetected" ItemType="0" PsrId="308" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[A circular dependency A -> B -> A was detected during NuGet Restore which caused NuGet to stop restoring.]D;]A;Because the NuGet restore didn't finish correctly, the project might be in a bad state.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[NuGet 복원 중에 순환 종속성 A -> B -> A가 감지되어 NuGet이 복원을 중지했습니다.]D;]A;NuGet 복원이 올바르게 완료되지 않았으므로 프로젝트가 잘못된 상태일 수 있습니다.]]></Val>
           </Tgt>
         </Str>
         <Disp Icon="Str" />

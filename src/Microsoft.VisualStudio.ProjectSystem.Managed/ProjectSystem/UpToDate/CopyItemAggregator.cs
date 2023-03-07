@@ -20,7 +20,7 @@ internal class CopyItemAggregator : ICopyItemAggregator
         }
     }
 
-    public (IEnumerable<(string Path, ImmutableArray<CopyItem> CopyItems)> ItemsByProject, bool IsComplete) TryGatherCopyItemsForProject(string targetPath, BuildUpToDateCheck.Log logger)
+    public CopyItemsResult TryGatherCopyItemsForProject(string targetPath, BuildUpToDateCheck.Log logger)
     {
         // Keep track of all projects we've visited to avoid infinite recursion or duplicated results.
         HashSet<string> explored = new(StringComparers.Paths);
@@ -37,6 +37,10 @@ internal class CopyItemAggregator : ICopyItemAggregator
         // for copies, which will trigger builds that would otherwise have been skipped. Using incomplete
         // results is strictly an improvement over ignoring what results we do have.
         bool isComplete = true;
+
+        // Lazily populated list of referenced projects not having ProduceReferenceAssembly set to true.
+        // The originating project is not included in this check (targetPath).
+        List<string>? referencesNotProducingReferenceAssembly = null;
 
         List<ProjectCopyData>? contributingProjects = null;
 
@@ -60,6 +64,13 @@ internal class CopyItemAggregator : ICopyItemAggregator
                     continue;
                 }
 
+                if (!data.ProduceReferenceAssembly && project != targetPath)
+                {
+                    // One of the referenced projects does not produce a reference assembly.
+                    referencesNotProducingReferenceAssembly ??= new();
+                    referencesNotProducingReferenceAssembly.Add(data.TargetPath);
+                }
+
                 foreach (string referencedProjectTargetPath in data.ReferencedProjectTargetPaths)
                 {
                     frontier.Enqueue(referencedProjectTargetPath);
@@ -73,7 +84,7 @@ internal class CopyItemAggregator : ICopyItemAggregator
             }
         }
 
-        return (GenerateCopyItems(), isComplete);
+        return new(GenerateCopyItems(), isComplete, referencesNotProducingReferenceAssembly);
 
         IEnumerable<(string Path, ImmutableArray<CopyItem> CopyItems)> GenerateCopyItems()
         {

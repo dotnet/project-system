@@ -52,16 +52,6 @@
         <target state="translated">Struktura aplikacji</target>
         <note />
       </trans-unit>
-      <trans-unit id="Category|Resources|Description">
-        <source>Resource settings for the application.</source>
-        <target state="translated">Ustawienia zasobów dla aplikacji.</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="Category|Resources|DisplayName">
-        <source>Resources</source>
-        <target state="translated">Zasoby</target>
-        <note />
-      </trans-unit>
       <trans-unit id="Category|WPF|Description">
         <source>Settings specific to WPF applications.</source>
         <target state="translated">Ustawienia specyficzne dla aplikacji WPF.</target>

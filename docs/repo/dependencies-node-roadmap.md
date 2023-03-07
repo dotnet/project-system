@@ -65,6 +65,44 @@ flowchart LR
 
 Bold lines indicate Dataflow subscriptions.
 
+## Class diagram
+
+```mermaid
+---
+title: Dependencies node class diagram
+---
+%% Edit this diagram at: https://mermaid.live/edit
+classDiagram
+    direction TD
+    DependencySharedProjectsSubscriber --|> DependencyRulesSubscriberBase
+    DependencyRulesSubscriberBase ..|> IDependencyRulesSubscriber
+    DependencyRulesSubscriber --|> DependencyRulesSubscriberBase
+    DependenciesSnapshotProvider --o "*" IDependencyRulesSubscriber
+    DependenciesSnapshotProvider --o "*" IProjectDependenciesSubTreeProvider
+    DependenciesProjectTreeProvider --o "1" DependenciesSnapshotProvider
+    DependenciesRuleHandlerBase ..|> IDependenciesRuleHandler
+    DependenciesRuleHandlerBase ..|> IProjectDependenciesSubTreeProvider
+    ____RuleHandler --|> DependenciesRuleHandlerBase 
+    DependencyRulesSubscriber --o "*" IDependenciesRuleHandler
+
+    note for ____RuleHandler "Implementations exist for all reference types.\nAnalyzer, Assembly, Analyzer, COM, Framework, Package, Project, SDK"
+
+    class IDependenciesRuleHandler {
+        EvaluatedRuleName : string
+        ResolvedRuleName : string
+        Handle(...)
+    }
+    class IDependencyRulesSubscriber {
+        DependenciesChanged : event
+        InitializeAsync(...)
+    }
+    class IProjectDependenciesSubTreeProvider {
+        DependenciesChanged : event
+        ProviderType : string
+        CreateRootDependencyNode() : IDependencyModel
+    }
+```
+
 ## The CPS view of top-level dependencies
 
 On the CPS side the project tree is composed of instances of the `IProjectTree` and `IProjectItemTree` interfaces. `IProjectTree` captures the structure of the tree (e.g. it has properties to access the parent and child nodes) and the "UI" aspects of the node&mdash;name, icons, visibility, etc. An `IProjectItemTree` captures all of that but also represents a concrete item within the project like a file, assembly reference, or NuGet package.

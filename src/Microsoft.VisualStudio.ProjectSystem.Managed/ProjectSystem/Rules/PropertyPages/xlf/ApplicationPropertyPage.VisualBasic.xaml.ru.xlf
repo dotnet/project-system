@@ -52,16 +52,6 @@
         <target state="translated">Исполняющая среда</target>
         <note />
       </trans-unit>
-      <trans-unit id="Category|Resources|Description">
-        <source>Resource settings for the application.</source>
-        <target state="translated">Параметры ресурсов для приложения.</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="Category|Resources|DisplayName">
-        <source>Resources</source>
-        <target state="translated">Ресурсы</target>
-        <note />
-      </trans-unit>
       <trans-unit id="Category|WPF|Description">
         <source>Settings specific to WPF applications.</source>
         <target state="translated">Параметры, характерные для приложений WPF.</target>

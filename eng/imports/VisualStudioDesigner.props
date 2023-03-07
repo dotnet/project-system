@@ -10,8 +10,8 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.VisualStudio.Data.Core" />
     <PackageReference Include="Microsoft.VisualStudio.Data.Services" />
-    <PackageReference Include="Microsoft.VisualStudio.DataTools.Interop" />
     <PackageReference Include="Microsoft.VisualStudio.DataDesign.Common" />
+    <PackageReference Include="Microsoft.VisualStudio.DataTools.Interop" />
     <PackageReference Include="Microsoft.VisualStudio.TemplateWizardInterface" />
     <PackageReference Include="Microsoft.VisualStudio.XmlEditor" />
     <PackageReference Include="Microsoft.VSDesigner" />

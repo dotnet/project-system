@@ -52,16 +52,6 @@
         <target state="translated">Uygulama Çerçevesi</target>
         <note />
       </trans-unit>
-      <trans-unit id="Category|Resources|Description">
-        <source>Resource settings for the application.</source>
-        <target state="translated">Uygulamanın kaynak ayarları.</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="Category|Resources|DisplayName">
-        <source>Resources</source>
-        <target state="translated">Kaynaklar</target>
-        <note />
-      </trans-unit>
       <trans-unit id="Category|WPF|Description">
         <source>Settings specific to WPF applications.</source>
         <target state="translated">WPF uygulamalarına özgü ayarlar.</target>

@@ -42,6 +42,16 @@
         <target state="translated">常规</target>
         <note />
       </trans-unit>
+      <trans-unit id="Category|Resources|Description">
+        <source>Resource settings for the application.</source>
+        <target state="new">Resource settings for the application.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="Category|Resources|DisplayName">
+        <source>Resources</source>
+        <target state="new">Resources</target>
+        <note />
+      </trans-unit>
       <trans-unit id="DynamicEnumProperty|InterceptedTargetFramework|Description">
         <source>Specifies the version of .NET that the application targets. This option can have different values depending on which versions of .NET are installed on your computer.</source>
         <target state="translated">指定应用程序面向的 .NET 版本。根据计算机上安装的 .NET 版本，此选项可能具有不同的值。</target>
