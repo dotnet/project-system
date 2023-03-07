@@ -50,7 +50,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
             public TestRenamerProjectTreeActionHandler(
                 UnconfiguredProject unconfiguredProject,
                 IUnconfiguredProjectVsServices projectVsServices,
-                [Import(typeof(VisualStudioWorkspace))] Workspace workspace,
+                [Import(typeof(VisualStudioWorkspace))]Lazy<Workspace> workspace,
                 IEnvironmentOptions environmentOptions,
                 IUserNotificationServices userNotificationServices,
                 IRoslynServices roslynServices,
@@ -108,7 +108,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
 
             var renamer = new TestRenamerProjectTreeActionHandler(unconfiguredProject,
                                                               projectServices,
-                                                              ws,
+                                                              new Lazy<Workspace>(() => ws),
                                                               environmentOptionsFactory,
                                                               userNotificationServices,
                                                               roslynServices,

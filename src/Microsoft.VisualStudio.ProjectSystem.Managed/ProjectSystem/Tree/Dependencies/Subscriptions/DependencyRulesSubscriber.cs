@@ -16,11 +16,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Subscriptions
     [AppliesTo(ProjectCapability.DependenciesTree)]
     internal sealed class DependencyRulesSubscriber : DependencyRulesSubscriberBase<EventData>
     {
-        public const string DependencyRulesSubscriberContract = "DependencyRulesSubscriberContract";
-
         private readonly IDependencyTreeTelemetryService _treeTelemetryService;
 
-        [ImportMany(DependencyRulesSubscriberContract)]
+        [ImportMany]
         private readonly OrderPrecedenceImportCollection<IDependenciesRuleHandler> _handlers;
 
         private (ImmutableArray<IDependenciesRuleHandler> Handlers, string[] EvaluationRuleNames, string[] JointRuleNames)? _state;

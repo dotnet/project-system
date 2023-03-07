@@ -84,10 +84,13 @@
       </Item>
       <Item ItemId=";FUTDC_AccelerationDataMissingForProject_1" ItemType="0" PsrId="308" InstFlg="true" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Build acceleration data is unavailable for project with target '{0}'.]]></Val>
+          <Val><![CDATA[Build acceleration data is unavailable for project with target '{0}'. See https://aka.ms/vs-build-acceleration.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[ビルド アクセラレーション データは、ターゲット '{0}' のプロジェクトでは利用できません。]]></Val>
+            <Val><![CDATA[ビルド アクセラレーション データは、ターゲット '{0}' のプロジェクトでは利用できません。https://aka.ms/vs-build-acceleration を参照してください。]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[Build acceleration data is unavailable for project with target '{0}'.]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
@@ -105,10 +108,13 @@
       </Item>
       <Item ItemId=";FUTD_AccelerationCandidate" ItemType="0" PsrId="308" InstFlg="true" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[This project appears to be a candidate for build acceleration. To opt in, set the 'AccelerateBuildsInVisualStudio' MSBuild property to 'true'.]]></Val>
+          <Val><![CDATA[This project appears to be a candidate for build acceleration. To opt in, set the 'AccelerateBuildsInVisualStudio' MSBuild property to 'true'. See https://aka.ms/vs-build-acceleration.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[このプロジェクトは、ビルド アクセラレーションの候補のようです。オプトインするには、'AccelerateBuildsInVisualStudio' MSBuild プロパティを 'true' に設定します。]]></Val>
+            <Val><![CDATA[このプロジェクトは、ビルド アクセラレーションの候補のようです。オプトインするには、'AccelerateBuildsInVisualStudio' MSBuild プロパティを 'true' に設定します。https://aka.ms/vs-build-acceleration を参照してください。]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[This project appears to be a candidate for build acceleration. To opt in, set the 'AccelerateBuildsInVisualStudio' MSBuild property to 'true'.]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
@@ -123,10 +129,13 @@
       </Item>
       <Item ItemId=";FUTD_AccelerationDisabledForProject" ItemType="0" PsrId="308" InstFlg="true" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Build acceleration is disabled for this project via the 'AccelerateBuildsInVisualStudio' MSBuild property.]]></Val>
+          <Val><![CDATA[Build acceleration is disabled for this project via the 'AccelerateBuildsInVisualStudio' MSBuild property. See https://aka.ms/vs-build-acceleration.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA['AccelerateBuildsInVisualStudio' MSBuild プロパティを介して、このプロジェクトのビルド アクセラレーションが無効になっています。]]></Val>
+            <Val><![CDATA['AccelerateBuildsInVisualStudio' MSBuild プロパティを介して、このプロジェクトのビルド アクセラレーションが無効になっています。https://aka.ms/vs-build-acceleration を参照してください。]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[Build acceleration is disabled for this project via the 'AccelerateBuildsInVisualStudio' MSBuild property.]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
@@ -366,10 +375,13 @@
       </Item>
       <Item ItemId=";FUTD_CopyingFilesToAccelerateBuild_1" ItemType="0" PsrId="308" InstFlg="true" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Copying {0} files to accelerate build:]]></Val>
+          <Val><![CDATA[Copying {0} files to accelerate build (https://aka.ms/vs-build-acceleration):]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[ビルドを高速化するために {0} 個のファイルをコピーしています:]]></Val>
+            <Val><![CDATA[{0} 個のファイルをコピーしてビルドを高速化しています (https://aka.ms/vs-build-acceleration):]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[Copying {0} files to accelerate build:]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
@@ -576,6 +588,15 @@
           <Val><![CDATA[Input {1} item '{0}' does not exist, but is not required.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
             <Val><![CDATA[入力 {1} の項目 '{0}' は存在しませんが、必須ではありません。]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";FUTD_NotAllReferencesProduceReferenceAssemblies_1" ItemType="0" PsrId="308" InstFlg="true" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[This project has enabled build acceleration, but not all referenced projects produce a reference assembly. Ensure projects producing the following outputs have the 'ProduceReferenceAssembly' MSBuild property set to 'true': {0}. See https://aka.ms/vs-build-acceleration for more information.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[このプロジェクトではビルド アクセラレーションが有効になっていますが、参照されているすべてのプロジェクトで参照アセンブリが生成されるわけではありません。次の出力を生成するプロジェクトで、'ProduceReferenceAssembly' MSBuild プロパティが 'true': {0} に設定されていることを確認します。詳細については、https://aka.ms/vs-build-acceleration を参照してください。]]></Val>
           </Tgt>
         </Str>
         <Disp Icon="Str" />
@@ -861,6 +882,15 @@
           <Val><![CDATA[The value of the 'TargetFrameworkMoniker' and 'NuGetTargetMoniker' properties in the '{0}' configuration are both empty. This configuration will not contribute to NuGet restore, which may result in restore and build errors.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
             <Val><![CDATA['{0}' 構成の 'TargetFrameworkMoniker' プロパティおよび 'NuGetTargetMoniker' プロパティの値が両方とも空です。この構成は NuGet の復元には影響しませんが、復元およびビルドのエラーが発生する可能性があります。]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";Restore_NuGetCycleDetected" ItemType="0" PsrId="308" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[A circular dependency A -> B -> A was detected during NuGet Restore which caused NuGet to stop restoring.]D;]A;Because the NuGet restore didn't finish correctly, the project might be in a bad state.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[NuGet の復元中に循環依存の関係 A -> B -> A が検出されたため、NuGet の復元が停止しました。]D;]A;NuGet の復元が正しく終了しなかったため、プロジェクトの状態が正しくない可能性があります。]]></Val>
           </Tgt>
         </Str>
         <Disp Icon="Str" />

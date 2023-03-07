@@ -3,7 +3,6 @@
 #if NETFRAMEWORK
 
 using System.Windows.Controls;
-using Microsoft.VisualStudio.Composition;
 
 namespace Microsoft.VisualStudio.ProjectSystem.Debug
 {

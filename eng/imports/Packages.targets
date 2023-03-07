@@ -3,18 +3,13 @@
 
   <ItemGroup>
     <!-- Infrastructure -->
+    <!-- This package is deprecated. CodecovUploader is now the recommended package. -->
+    <PackageReference Update="Codecov"                                                                Version="1.13.0" />
     <PackageReference Update="MicroBuild.Core.Sentinel"                                               Version="1.0.0" />
-    <PackageReference Update="Microsoft.VisualStudioEng.MicroBuild.Core"                              Version="1.0.0" />
-    <PackageReference Update="Microsoft.VisualStudioEng.MicroBuild.Plugins.SwixBuild"                 Version="1.1.286" />
-    <PackageReference Update="Nerdbank.Streams"                                                       Version="2.9.112" />
-    <PackageReference Update="Nerdbank.GitVersioning"                                                 Version="3.5.107" />
-    <PackageReference Update="System.IO.Pipelines"                                                    Version="6.0.3" />
-    <PackageReference Update="Microsoft.DotNet.XliffTasks"                                            Version="1.0.0-beta.23073.2" />
     <!-- This is used for publishing PDBs to the legacy symbol server. It converts portable PDBs to Windows PDBs (embedded). -->
     <!-- https://devdiv.visualstudio.com/DevDiv/_wiki/wikis/DevDiv.wiki/672/Archive-Symbols-with-Symweb?anchor=portable-pdbs -->
     <PackageReference Update="Microsoft.DiaSymReader.Pdb2Pdb"                                         Version="1.1.0-beta2-22320-02" />
-    <!-- This package is deprecated. CodecovUploader is now the recommended package. -->
-    <PackageReference Update="Codecov"                                                                Version="1.13.0" />
+    <PackageReference Update="Microsoft.DotNet.XliffTasks"                                            Version="1.0.0-beta.23073.2" />
     <!--
       The SourceLink package depends on the repo provider used.
       TODO: Determine a mechanism of switching these depending on the location of the source.
@@ -23,17 +18,21 @@
     <!-- <PackageReference Update="Microsoft.SourceLink.GitHub"                                            Version="1.1.1" /> -->
     <PackageReference Update="Microsoft.SourceLink.AzureRepos.Git"                                    Version="1.1.1" />
     <PackageReference Update="Microsoft.VisualStudio.Internal.MicroBuild.NpmPack"                     Version="2.0.93" />
+    <PackageReference Update="Microsoft.VisualStudioEng.MicroBuild.Core"                              Version="1.0.0" />
+    <PackageReference Update="Microsoft.VisualStudioEng.MicroBuild.Plugins.SwixBuild"                 Version="1.1.286" />
+    <PackageReference Update="Nerdbank.GitVersioning"                                                 Version="3.5.107" />
+    <PackageReference Update="Nerdbank.Streams"                                                       Version="2.9.112" />
+    <PackageReference Update="System.IO.Pipelines"                                                    Version="6.0.3" />
 
     <!-- VS SDK -->
     <PackageReference Update="EnvDTE"                                                                 Version="17.3.32804.24" />
     <PackageReference Update="Microsoft.Internal.VisualStudio.Interop"                                Version="17.3.32804.24" />
     <PackageReference Update="Microsoft.ServiceHub.Framework"                                         Version="4.1.2060-alpha" />
-    <PackageReference Update="Microsoft.VSSDK.BuildTools"                                             Version="17.5.18-preview1" />
     <PackageReference Update="Microsoft.VisualStudio.ComponentModelHost"                              Version="17.3.198" />
     <PackageReference Update="Microsoft.VisualStudio.Composition"                                     Version="17.4.1-alpha" />
     <PackageReference Update="Microsoft.VisualStudio.Data.Core"                                       Version="17.0.0-preview-2-31223-026" />
-    <PackageReference Update="Microsoft.VisualStudio.DataDesign.Common"                               Version="17.0.0-preview-2-31223-026" />
     <PackageReference Update="Microsoft.VisualStudio.Data.Services"                                   Version="17.0.0-preview-2-31223-026" />
+    <PackageReference Update="Microsoft.VisualStudio.DataDesign.Common"                               Version="17.0.0-preview-2-31223-026" />
     <PackageReference Update="Microsoft.VisualStudio.DataTools.Interop"                               Version="17.0.0-preview-2-31223-026" />
     <PackageReference Update="Microsoft.VisualStudio.Debugger.Contracts"                              Version="17.4.0-beta.22470.1" />
     <PackageReference Update="Microsoft.VisualStudio.Debugger.UI.Interfaces"                          Version="17.4.0-beta.22470.1" />
@@ -42,9 +41,9 @@
     <PackageReference Update="Microsoft.VisualStudio.Interop"                                         Version="17.4.0-preview-2-32826-307" />
     <PackageReference Update="Microsoft.VisualStudio.ManagedInterfaces"                               Version="8.0.50728" />
     <PackageReference Update="Microsoft.VisualStudio.RpcContracts"                                    Version="17.5.21" />
+    <PackageReference Update="Microsoft.VisualStudio.SDK.EmbedInteropTypes"                           Version="15.0.36" />
     <PackageReference Update="Microsoft.VisualStudio.Settings.15.0"                                   Version="17.3.32804.24" />
     <PackageReference Update="Microsoft.VisualStudio.Setup.Configuration.Interop"                     Version="3.0.4492" />
-    <PackageReference Update="Microsoft.VisualStudio.SDK.EmbedInteropTypes"                           Version="15.0.36" />
     <PackageReference Update="Microsoft.VisualStudio.Shell.15.0"                                      Version="17.3.32804.24" />
     <PackageReference Update="Microsoft.VisualStudio.Shell.Design"                                    Version="17.3.32804.24" />
     <PackageReference Update="Microsoft.VisualStudio.Shell.Framework"                                 Version="17.3.32804.24" />
@@ -55,6 +54,7 @@
     <PackageReference Update="Microsoft.VisualStudio.Utilities"                                       Version="17.4.0-preview-3-32908-042" />
     <PackageReference Update="Microsoft.VisualStudio.Validation"                                      Version="17.6.4-alpha" />
     <PackageReference Update="Microsoft.VisualStudio.XmlEditor"                                       Version="17.3.32804.24" />
+    <PackageReference Update="Microsoft.VSSDK.BuildTools"                                             Version="17.5.18-preview1" />
     <PackageReference Update="System.Threading.Tasks.Dataflow"                                        Version="6.0.0" />
     <PackageReference Update="Microsoft.VSDesigner"                                                   Version="17.0.0-preview-2-31223-026" />
     <PackageReference Update="VsWebSite.Interop"                                                      Version="16.8.30523.219" />
@@ -81,12 +81,12 @@
     <PackageReference Update="Microsoft.Build.Utilities.Core" Version="17.4.0-preview-22358-01" />
 
     <!-- Roslyn -->
-    <PackageReference Update="Microsoft.Net.Compilers.Toolset"                                        Version="4.4.0" />
-    <PackageReference Update="Microsoft.VisualStudio.LanguageServices"                                Version="4.6.0-2.23125.2" />
     <PackageReference Update="Microsoft.CodeAnalysis"                                                 Version="4.6.0-2.23125.2" />
-    <PackageReference Update="Microsoft.VisualStudio.IntegrationTest.Utilities"                       Version="2.6.0-beta1-62113-02" />
-    <PackageReference Update="Microsoft.CSharp"                                                       Version="4.7.0" />
     <PackageReference Update="Microsoft.CodeAnalysis.Common"                                          Version="4.6.0-2.23125.2" />
+    <PackageReference Update="Microsoft.CSharp"                                                       Version="4.7.0" />
+    <PackageReference Update="Microsoft.Net.Compilers.Toolset"                                        Version="4.4.0" />
+    <PackageReference Update="Microsoft.VisualStudio.IntegrationTest.Utilities"                       Version="2.6.0-beta1-62113-02" />
+    <PackageReference Update="Microsoft.VisualStudio.LanguageServices"                                Version="4.6.0-2.23125.2" />
 
     <!-- Analyzers -->
     <PackageReference Update="CSharpIsNullAnalyzer"                                                   Version="0.1.329" />
@@ -112,21 +112,21 @@
     <PackageReference Update="Moq"                                                                    Version="4.16.1" />
     <PackageReference Update="Verify.Xunit"                                                           Version="14.2.0" />
     <PackageReference Update="xunit"                                                                  Version="2.4.2" />
+    <PackageReference Update="xunit.analyzers"                                                        Version="1.0.0"/>
     <PackageReference Update="xunit.assert"                                                           Version="2.4.2" />
     <PackageReference Update="xunit.combinatorial"                                                    Version="1.5.25" />
     <PackageReference Update="xunit.extensibility.core"                                               Version="2.4.2" />
     <PackageReference Update="xunit.extensibility.execution"                                          Version="2.4.2" NoWarn="NU1608" />
-    <PackageReference Update="xunit.runner.visualstudio"                                              Version="2.4.5" />
     <PackageReference Update="xunit.runner.console"                                                   Version="2.4.2" />
-    <PackageReference Update="xunit.analyzers"                                                        Version="1.0.0"/>
+    <PackageReference Update="xunit.runner.visualstudio"                                              Version="2.4.5" />
 
     <!-- Integration Tests -->
-    <PackageReference Update="MSTest.TestFramework"                                                   Version="2.1.2" />
-    <PackageReference Update="MSTest.TestAdapter"                                                     Version="2.1.2" />
+    <PackageReference Update="Microsoft.DotNet.Common.ProjectTemplates.1.x"                           Version="1.0.0-beta2-20170629-269" />
+    <PackageReference Update="Microsoft.DotNet.Test.ProjectTemplates.1.x"                             Version="1.0.0-beta2-20170629-269" />
     <PackageReference Update="Microsoft.Test.Apex.VisualStudio"                                       Version="17.0.0-preview-2-31221-277" />
     <PackageReference Update="Microsoft.TestPlatform"                                                 Version="16.2.0" />
-    <PackageReference Update="Microsoft.DotNet.Test.ProjectTemplates.1.x"                             Version="1.0.0-beta2-20170629-269" />
-    <PackageReference Update="Microsoft.DotNet.Common.ProjectTemplates.1.x"                           Version="1.0.0-beta2-20170629-269" />
+    <PackageReference Update="MSTest.TestAdapter"                                                     Version="2.1.2" />
+    <PackageReference Update="MSTest.TestFramework"                                                   Version="2.1.2" />
   </ItemGroup>
 
 </Project>
