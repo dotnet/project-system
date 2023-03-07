@@ -570,7 +570,7 @@ internal sealed class Workspace : OnceInitializedOnceDisposedUnderLockAsync, IWo
 
         // Join the same collection that's used by our dataflow nodes, so that if we are called on
         // the main thread, we don't block anything that might prohibit dataflow from progressing
-        // this workspace's initialisation (leading to deadlock).
+        // this workspace's initialization (leading to deadlock).
         using (_joinableTaskCollection.Join())
         {
             // Ensure we have received enough data to create the context.
