@@ -31,7 +31,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
         private readonly IUserNotificationServices _userNotificationServices;
         private readonly IWaitIndicator _waitService;
         private readonly IRoslynServices _roslynServices;
-        private readonly Workspace _workspace;
+        private readonly Lazy<Workspace> _workspace;
         private readonly IVsService<SVsOperationProgress, IVsOperationProgressStatusService> _operationProgressService;
         private readonly IVsService<SVsSettingsPersistenceManager, ISettingsManager> _settingsManagerService;
 
@@ -39,7 +39,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
         public RenamerProjectTreeActionHandler(
             UnconfiguredProject unconfiguredProject,
             IUnconfiguredProjectVsServices projectVsServices,
-            [Import(typeof(VisualStudioWorkspace))] Workspace workspace,
+            [Import(typeof(VisualStudioWorkspace))]Lazy<Workspace> workspace,
             IEnvironmentOptions environmentOptions,
             IUserNotificationServices userNotificationServices,
             IRoslynServices roslynServices,
@@ -155,7 +155,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
             await stageStatus.WaitForCompletionAsync().WithCancellation(cancellationToken);
 
             // The result of that wait, is basically a "new" published Solution, so grab it
-            return _workspace.CurrentSolution;
+            return _workspace.Value.CurrentSolution;
         }
 
         private static async Task<(bool, Renamer.RenameDocumentActionSet?)> GetRenameSymbolsActionsAsync(CodeAnalysis.Project project, string? oldFilePath, string newFileWithExtension)
@@ -220,7 +220,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
         }
 
         private CodeAnalysis.Project? GetCurrentProject() =>
-            _workspace.CurrentSolution.Projects.FirstOrDefault(proj => StringComparers.Paths.Equals(proj.FilePath, _projectVsServices.Project.FullPath));
+            _workspace.Value.CurrentSolution.Projects.FirstOrDefault(proj => StringComparers.Paths.Equals(proj.FilePath, _projectVsServices.Project.FullPath));
 
         private static CodeAnalysis.Document GetDocument(CodeAnalysis.Project project, string? filePath) =>
             project.Documents.FirstOrDefault(d => StringComparers.Paths.Equals(d.FilePath, filePath));
