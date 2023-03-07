@@ -42,6 +42,16 @@
         <target state="translated">全般</target>
         <note />
       </trans-unit>
+      <trans-unit id="Category|Resources|Description">
+        <source>Resource settings for the application.</source>
+        <target state="new">Resource settings for the application.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="Category|Resources|DisplayName">
+        <source>Resources</source>
+        <target state="new">Resources</target>
+        <note />
+      </trans-unit>
       <trans-unit id="DynamicEnumProperty|InterceptedTargetFramework|Description">
         <source>Specifies the version of .NET that the application targets. This option can have different values depending on which versions of .NET are installed on your computer.</source>
         <target state="translated">アプリケーションの対象となる .NET のバージョンを指定します。このオプションには、コンピューターにインストールされている .NET のバージョンに応じて異なる値を指定できます。</target>

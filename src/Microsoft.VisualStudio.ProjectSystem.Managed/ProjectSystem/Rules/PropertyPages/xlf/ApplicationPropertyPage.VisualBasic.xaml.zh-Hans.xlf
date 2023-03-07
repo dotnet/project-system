@@ -52,16 +52,6 @@
         <target state="translated">应用程序框架</target>
         <note />
       </trans-unit>
-      <trans-unit id="Category|Resources|Description">
-        <source>Resource settings for the application.</source>
-        <target state="translated">应用程序的资源设置。</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="Category|Resources|DisplayName">
-        <source>Resources</source>
-        <target state="translated">资源</target>
-        <note />
-      </trans-unit>
       <trans-unit id="Category|WPF|Description">
         <source>Settings specific to WPF applications.</source>
         <target state="translated">特定于 WPF 应用程序的设置。</target>

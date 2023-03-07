@@ -11,11 +11,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.Rules
         [MemberData(nameof(GetPropertyPagesRules))]
         public void CategoriesShouldBeDefinedOnFile(string ruleName, string fullPath)
         {
+            // These are launch profile files and don't use categories, so let's skip them.
+            if (ruleName.Contains("ExecutableDebugPropertyPage") || ruleName.Contains("ProjectDebugPropertyPage"))
+                return;
+
             XElement rule = LoadXamlRule(fullPath, out var namespaceManager);
             var categories = new HashSet<string>();
             AddCategories();
-            
-            var propertyElements = rule.XPathSelectElements(@"/msb:Rule", namespaceManager).Elements();
 
             // If the page is an extension, we have to check the base page for categories.            
             if (ruleName.Contains(".CSharp"))
@@ -27,6 +29,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Rules
             else if (ruleName.Contains(".FSharp"))
                 AddCategories(".FSharp");
 
+            var propertyElements = rule.XPathSelectElements(@"/msb:Rule", namespaceManager).Elements();
             foreach (XElement element in propertyElements)
             {
                 // Skip these xml elements.
@@ -34,7 +37,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Rules
                     continue;
 
                 // Skip if the property is not visible.
-                if (!bool.TryParse(element.Attribute("Visible")?.Value, out bool isVisible) || !isVisible)
+                if (bool.TryParse(element.Attribute("Visible")?.Value, out bool isVisible) && !isVisible)
                     continue;
 
                 var categoryAttribute = element.Attribute("Category");

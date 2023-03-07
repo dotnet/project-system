@@ -12,10 +12,6 @@
     <Category Name="WPF"
               DisplayName="WPF"
               Description="Settings specific to WPF applications." />
-
-    <Category Name="Resources"
-              DisplayName="Resources"
-              Description="Resource settings for the application." />
   </Rule.Categories>
 
   <StringProperty Name="CreateOrOpenAppManifest"

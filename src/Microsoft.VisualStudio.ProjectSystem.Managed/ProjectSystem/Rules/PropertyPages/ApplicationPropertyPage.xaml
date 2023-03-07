@@ -11,6 +11,10 @@
     <Category Name="General"
               DisplayName="General"
               Description="General settings for the application." />
+
+    <Category Name="Resources"
+              DisplayName="Resources"
+              Description="Resource settings for the application." />
   </Rule.Categories>
 
   <Rule.DataSource>
@@ -78,7 +82,8 @@
   </StringProperty>
 
   <StringProperty Name="InstallOtherFrameworks"
-                  DisplayName="Install other frameworks">
+                  DisplayName="Install other frameworks"
+                  Category="General">
     <StringProperty.DataSource>
       <DataSource PersistedName="InstallOtherFrameworks"
                   Persistence="ProjectFileWithInterception"
