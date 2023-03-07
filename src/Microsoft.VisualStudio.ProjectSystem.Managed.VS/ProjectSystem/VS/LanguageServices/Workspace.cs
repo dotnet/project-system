@@ -538,28 +538,34 @@ internal sealed class Workspace : OnceInitializedOnceDisposedUnderLockAsync, IWo
         return update.DataSourceVersions[ProjectDataSources.ConfiguredProjectVersion];
     }
 
-    public async Task WriteAsync(Func<IWorkspace, Task> action, CancellationToken cancellationToken)
+    public Task WriteAsync(Func<IWorkspace, Task> action, CancellationToken cancellationToken)
     {
         Requires.NotNull(action);
-        Verify.NotDisposed(this);
 
         cancellationToken = CancellationTokenExtensions.CombineWith(_unloadCancellationToken, cancellationToken).Token;
 
-        await WhenContextCreated(cancellationToken);
+        return ExecuteUnderLockAsync(async _ =>
+            {
+                await WhenContextCreated(cancellationToken);
 
-        await ExecuteUnderLockAsync(_ => action(this), cancellationToken);
+                await action(this);
+            },
+            cancellationToken);
     }
 
-    public async Task<T> WriteAsync<T>(Func<IWorkspace, Task<T>> action, CancellationToken cancellationToken)
+    public Task<T> WriteAsync<T>(Func<IWorkspace, Task<T>> action, CancellationToken cancellationToken)
     {
         Requires.NotNull(action);
-        Verify.NotDisposed(this);
 
         cancellationToken = CancellationTokenExtensions.CombineWith(_unloadCancellationToken, cancellationToken).Token;
 
-        await WhenContextCreated(cancellationToken);
+        return ExecuteUnderLockAsync(async _ =>
+            {
+                await WhenContextCreated(cancellationToken);
 
-        return await ExecuteUnderLockAsync(_ => action(this), cancellationToken);
+                return await action(this);
+            },
+            cancellationToken);
     }
 
     private async Task WhenContextCreated(CancellationToken cancellationToken)
