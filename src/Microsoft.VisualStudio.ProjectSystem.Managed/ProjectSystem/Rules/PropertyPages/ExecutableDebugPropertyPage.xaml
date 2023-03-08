@@ -31,7 +31,16 @@
 
   <StringProperty Name="CommandLineArguments"
                   DisplayName="Command line arguments"
-                  Description="Command line arguments to pass to the executable." />
+                  Description="Command line arguments to pass to the executable. You may break arguments into multiple lines.">
+    <StringProperty.ValueEditors>
+      <ValueEditor EditorType="MultiLineString">
+        <ValueEditor.Metadata>
+          <NameValuePair Name="UseMonospaceFont" Value="True" />
+          <NameValuePair Name="TextWrapping" Value="Wrap" />
+        </ValueEditor.Metadata>
+      </ValueEditor>
+    </StringProperty.ValueEditors>
+  </StringProperty>
 
   <StringProperty Name="WorkingDirectory"
                   DisplayName="Working directory"
