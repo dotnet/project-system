@@ -66,6 +66,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         [InlineData("this is msbuild: $(UnknownMsbuildProperty) %env1%",                "this is msbuild:  envVariable1", true)]
         [InlineData("this is msbuild: $(UnknownMsbuildProperty) %Unknown%",             "this is msbuild:  %Unknown%", true)]
         [InlineData("this is msbuild: %env3% $(msbuildProperty2) $(msbuildProperty3)",  "this is msbuild: Property6 Property2 Property3", true)]
+        [InlineData("this is msbuild: $(123) $(invalid.name) $( ooo )",                 "this is msbuild: $(123) $(invalid.name) $( ooo )", true)]
         [InlineData(null, null, true)]
         [InlineData(" ", " ", true)]
         public async Task ReplaceTokensInStringTests(string input, string expected, bool expandEnvVars)

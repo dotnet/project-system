@@ -21,8 +21,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         private IActiveDebugFrameworkServices ActiveDebugFrameworkService { get; }
         private IProjectAccessor ProjectAccessor { get; }
 
-        // Regular expression string to extract $(sometoken) elements from a string
-        private static readonly Regex s_matchTokenRegex = new(@"\$\((?<token>[^\)]+)\)", RegexOptions.IgnoreCase);
+        /// <summary>
+        /// Regular expression to match MSBuild <c>$(Property)</c> elements in a string.
+        /// </summary>
+        /// <remarks>
+        /// Valid MSBuild property names begin with an uppercase or lowercase letter or underscore (_);
+        /// valid subsequent characters include alphanumeric characters (letters or digits), underscore, and hyphen (-).
+        /// </remarks>
+        private static readonly Regex s_matchTokenRegex = new(@"\$\((?<token>[a-z_][a-z0-9_-]*)\)", RegexOptions.IgnoreCase);
 
         public async Task<ILaunchProfile> ReplaceTokensInProfileAsync(ILaunchProfile profile)
         {
