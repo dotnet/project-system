@@ -190,6 +190,8 @@ If the text within this editor should be displayed with a monospace (fixed width
 </StringProperty>
 ```
 
+Multi-line strings can optionally set metadata to control text wrapping, where the value corresponds to an enum value of [TextWrapping](https://learn.microsoft.com/dotnet/api/system.windows.textwrapping?view=netframework-4.7.2). Example: `<NameValuePair Name="TextWrapping" Value="Wrap" />`. Text-wrapping defaults to `NoWrap`.
+
 ### Password Strings
 
 A `PasswordBox` control can be used for string properties by specifying `EditorType="PasswordString"`.
