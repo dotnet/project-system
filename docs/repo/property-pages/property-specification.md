@@ -97,6 +97,44 @@ If you wish to assign properties to specific categories, you must declare them u
 - `DisplayName` value will appear in group headings and the navigation tree.
 - `Description` is currently unused.
 
+### Property settings commands
+
+Each property can have one or more "configuration commands." These are the commands shown when clicking on the property gear, and include 
+the ability to set dimensions, reset the property values, or use a single value for all configurations.
+
+By default, these configuration commands are enabled if the Property fulfills certain requirements. However, you may explicitly disable 
+one or more by setting any of the following Property editor metadata to false:
+
+- `SingleValueConfigurationCommandEnabled` &mdash; disables the ability to collapse property values across configurations
+- `DimensionConfigurationCommandEnabled` &mdash; disables the ability to set any dimensions
+- `ResetPropertyValueCommandEnabled` &mdash; disables the ability to reset property value
+
+An example of this is shown below:
+
+```xaml
+  <StringProperty Name="DefineConstants" 
+                       DisplayName="Conditional compilation symbols"
+                       Description="Specifies symbols on which to perform conditional compilation."
+                       HelpUrl="https://go.microsoft.com/fwlink/?linkid=2147079"
+                       Category="General">
+    <StringProperty.DataSource>
+      <DataSource Persistence="ProjectFileWithInterception"
+                  HasConfigurationCondition="True" />
+    </StringProperty.DataSource>
+    <StringProperty.ValueEditors>
+      <ValueEditor EditorType="MultiStringSelector">
+        <ValueEditor.Metadata>
+          <NameValuePair Name="TypeDescriptorText" Value="Custom symbols" xliff:LocalizedProperties="Value" />
+          <NameValuePair Name="AllowsCustomStrings" Value="True" />
+          <NameValuePair Name="ShouldDisplayEvaluatedPreview" Value="True" />
+          
+          <NameValuePair Name="SingleValueConfigurationCommandEnabled" Value="False" /> <!-- disables the ability to collapse property values across configurations -->
+        </ValueEditor.Metadata>
+      </ValueEditor>
+    </StringProperty.ValueEditors>
+  </StringProperty>
+  ```
+
 ### An example property
 
 Here is a complex example of a string property that demonstrates the majority of features we will discuss below.
