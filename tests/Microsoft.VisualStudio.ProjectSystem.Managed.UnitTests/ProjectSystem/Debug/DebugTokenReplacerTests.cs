@@ -8,9 +8,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
     {
         private readonly Dictionary<string, string> _envVars = new(StringComparer.OrdinalIgnoreCase)
         {
-            { "%env1%","envVariable1" },
-            { "%env2%","envVariable2" },
-            { "%env3%","$(msbuildProperty6)" }
+            { "%env1%", "envVariable1" },
+            { "%env2%", "envVariable2" },
+            { "%env3%", "$(msbuildProperty6)" }
         };
 
         private readonly Mock<IEnvironmentHelper> _envHelper;
