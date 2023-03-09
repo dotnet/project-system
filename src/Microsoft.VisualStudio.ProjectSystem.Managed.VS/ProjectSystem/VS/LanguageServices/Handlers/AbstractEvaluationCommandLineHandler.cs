@@ -27,7 +27,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
         // Typically, adds and removes of files found at evaluation time are also found during a design-time build, with the latter also 
         // including generated files. This forces us to remember what files we've already sent to Roslyn to avoid sending duplicate adds
         // or removes of the same file. Due to design-time builds being significantly slower than evaluations, there are also times where 
-        // many evaluations have occured by the time a design-time build based on a past version of the ConfiguredProject has completed.
+        // many evaluations have occurred by the time a design-time build based on a past version of the ConfiguredProject has completed.
         // This can lead to conflicts.
         //
         // A conflict occurs when evaluation or design-time build adds a item that the other removed, or vice versa. 

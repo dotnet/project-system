@@ -10,6 +10,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
     ///     to the compiler during design-time builds.
     /// </summary>
     [Export(typeof(IWorkspaceUpdateHandler))]
+    [PartCreationPolicy(CreationPolicy.NonShared)]
     internal class CompileItemHandler : AbstractEvaluationCommandLineHandler, IWorkspaceUpdateHandler, IProjectEvaluationHandler, ICommandLineHandler
     {
         private readonly UnconfiguredProject _project;
