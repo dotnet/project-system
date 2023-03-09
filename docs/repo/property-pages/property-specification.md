@@ -105,9 +105,9 @@ the ability to set dimensions, reset the property values, or use a single value 
 By default, these configuration commands are enabled if the Property fulfills certain requirements. However, you may explicitly disable 
 one or more by setting any of the following Property editor metadata to false:
 
-- `SingleValueConfigurationCommandEnabled` - disables the ability to collapse property values across configurations
-- `DimensionConfigurationCommandEnabled` - disables the ability to set any dimensions
-- `ResetPropertyValueCommandEnabled` - disables the ability to reset property value
+- `SingleValueConfigurationCommandEnabled` &mdash; disables the ability to collapse property values across configurations
+- `DimensionConfigurationCommandEnabled` &mdash; disables the ability to set any dimensions
+- `ResetPropertyValueCommandEnabled` &mdash; disables the ability to reset property value
 
 An example of this is shown below:
 
