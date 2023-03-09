@@ -56,7 +56,6 @@
           <NameValuePair Name="TypeDescriptorText" Value="Custom symbols" xliff:LocalizedProperties="Value" />
           <NameValuePair Name="AllowsCustomStrings" Value="True" />
           <NameValuePair Name="ShouldDisplayEvaluatedPreview" Value="True" />
-          
           <NameValuePair Name="SingleValueConfigurationCommandEnabled" Value="False" />
         </ValueEditor.Metadata>
       </ValueEditor>
