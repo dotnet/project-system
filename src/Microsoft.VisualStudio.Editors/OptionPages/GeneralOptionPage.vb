@@ -85,7 +85,7 @@ Namespace Microsoft.VisualStudio.Editors.OptionPages
         Protected Overrides Sub OnApply(e As PageApplyEventArgs)
             ' Normally we copy changes from the main instance of the options to the
             ' control's instance. Here we're copying them in the other direction, so we
-            ' need to suspend the normal upates.
+            ' need to suspend the normal updates.
             Using SuspendOptionsControlUpdates()
                 SDKStyleProjectOptionsData.MainInstance.CopyFrom(DataContextOptions)
             End Using
