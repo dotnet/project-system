@@ -126,10 +126,13 @@
       </Item>
       <Item ItemId=";StringProperty|CommandLineArguments|Description" ItemType="0" PsrId="308" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Command line arguments to pass to the executable.]]></Val>
+          <Val><![CDATA[Command line arguments to pass to the executable. You may break arguments into multiple lines.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[要传递到可执行文件的命令行参数。]]></Val>
+            <Val><![CDATA[要传递给可执行文件的命令行参数。可以将参数分成多行。]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[Command line arguments to pass to the executable.]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
