@@ -114,7 +114,7 @@ Namespace Microsoft.VisualStudio.Editors.OptionPages
             ' The main copy of the options has changed. Update the copy used by the
             ' Tools | Options UI, if has been created.
             If _shouldUpdateOptionsControlOnPropertyChange AndAlso _optionsControl IsNot Nothing Then
-                ThreadHelper.JoinableTaskFactory.RunAsync(
+                Dim unused = ThreadHelper.JoinableTaskFactory.RunAsync(
                     Async Function() As Task(Of TaskListItem)
                         Await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync()
                         DataContextOptions.CopyFrom(SDKStyleProjectOptionsData.MainInstance)
