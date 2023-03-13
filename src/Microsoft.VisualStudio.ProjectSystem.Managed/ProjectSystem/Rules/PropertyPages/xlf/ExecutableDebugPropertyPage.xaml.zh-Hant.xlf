@@ -64,7 +64,7 @@
       </trans-unit>
       <trans-unit id="StringProperty|CommandLineArguments|Description">
         <source>Command line arguments to pass to the executable. You may break arguments into multiple lines.</source>
-        <target state="needs-review-translation">要傳遞至可執行檔的命令列引數。</target>
+        <target state="translated">要傳遞給可執行檔的命令列引數。您可以將引數分成多行。</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|CommandLineArguments|DisplayName">
