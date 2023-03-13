@@ -64,7 +64,7 @@
       </trans-unit>
       <trans-unit id="StringProperty|CommandLineArguments|Description">
         <source>Command line arguments to pass to the executable. You may break arguments into multiple lines.</source>
-        <target state="needs-review-translation">실행 파일에 전달할 명령줄 인수입니다.</target>
+        <target state="translated">실행 파일에 전달할 명령줄 인수입니다. 인수를 여러 줄로 나눌 수 있습니다.</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|CommandLineArguments|DisplayName">
