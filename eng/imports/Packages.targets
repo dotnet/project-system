@@ -86,7 +86,7 @@
     <PackageReference Update="Microsoft.VisualStudio.HotReload.Components"                            Version="6.0.0-preview.6.21380.4" />
 
     <!-- 3rd party -->
-    <PackageReference Update="Newtonsoft.Json"                                                        Version="13.0.1" />
+    <PackageReference Update="Newtonsoft.Json"                                                        Version="13.0.3" />
 
     <!-- Tests -->
     <PackageReference Update="Moq"                                                                    Version="4.16.1" />
