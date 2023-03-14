@@ -63,8 +63,8 @@
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|CommandLineArguments|Description">
-        <source>Command line arguments to pass to the executable.</source>
-        <target state="translated">実行可能ファイルに渡すコマンド ライン引数。</target>
+        <source>Command line arguments to pass to the executable. You may break arguments into multiple lines.</source>
+        <target state="translated">実行可能ファイルに渡すコマンド ライン引数。引数を複数行に分割できます。</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|CommandLineArguments|DisplayName">

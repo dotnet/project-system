@@ -28,7 +28,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.Build
             _activeConfiguredProjectProvider.Changed += ActiveConfiguredProject_Changed;
         }
 
-        private void ActiveConfiguredProject_Changed(object? sender, ActiveConfigurationChangedEventArgs e) => GetLatestActivationTask();
+        private void ActiveConfiguredProject_Changed(object sender, ActiveConfigurationChangedEventArgs e)
+        {
+            _ = GetLatestActivationTask();
+        }
 
         public bool IsValidToBuild => GetLatestActivationTask().IsCompleted;
 

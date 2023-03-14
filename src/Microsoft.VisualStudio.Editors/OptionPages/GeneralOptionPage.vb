@@ -85,7 +85,7 @@ Namespace Microsoft.VisualStudio.Editors.OptionPages
         Protected Overrides Sub OnApply(e As PageApplyEventArgs)
             ' Normally we copy changes from the main instance of the options to the
             ' control's instance. Here we're copying them in the other direction, so we
-            ' need to suspend the normal upates.
+            ' need to suspend the normal updates.
             Using SuspendOptionsControlUpdates()
                 SDKStyleProjectOptionsData.MainInstance.CopyFrom(DataContextOptions)
             End Using
@@ -114,7 +114,7 @@ Namespace Microsoft.VisualStudio.Editors.OptionPages
             ' The main copy of the options has changed. Update the copy used by the
             ' Tools | Options UI, if has been created.
             If _shouldUpdateOptionsControlOnPropertyChange AndAlso _optionsControl IsNot Nothing Then
-                ThreadHelper.JoinableTaskFactory.RunAsync(
+                Dim unused = ThreadHelper.JoinableTaskFactory.RunAsync(
                     Async Function() As Task(Of TaskListItem)
                         Await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync()
                         DataContextOptions.CopyFrom(SDKStyleProjectOptionsData.MainInstance)

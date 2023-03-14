@@ -44,12 +44,12 @@
       </trans-unit>
       <trans-unit id="Category|Resources|Description">
         <source>Resource settings for the application.</source>
-        <target state="new">Resource settings for the application.</target>
+        <target state="translated">애플리케이션의 리소스 설정입니다.</target>
         <note />
       </trans-unit>
       <trans-unit id="Category|Resources|DisplayName">
         <source>Resources</source>
-        <target state="new">Resources</target>
+        <target state="translated">리소스</target>
         <note />
       </trans-unit>
       <trans-unit id="DynamicEnumProperty|InterceptedTargetFramework|Description">

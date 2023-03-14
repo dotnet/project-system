@@ -63,8 +63,8 @@
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|CommandLineArguments|Description">
-        <source>Command line arguments to pass to the executable.</source>
-        <target state="translated">Argumentos da linha de comando a serem passados para o executável.</target>
+        <source>Command line arguments to pass to the executable. You may break arguments into multiple lines.</source>
+        <target state="translated">Argumentos de linha de comando a serem passados para o executável. Você pode quebrar argumentos em várias linhas.</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|CommandLineArguments|DisplayName">

@@ -5,10 +5,6 @@ using Microsoft.VisualStudio.ProjectSystem.Utilities;
 
 namespace Microsoft.VisualStudio.ProjectSystem.Debug
 {
-    /// <summary>
-    /// Token replacer can be imported to replace all the msbuild property and environment variable tokens in an ILaunchProfile or
-    /// in an individual string
-    /// </summary>
     [Export(typeof(IDebugTokenReplacer))]
     [AppliesTo(ProjectCapability.LaunchProfiles)]
     internal class DebugTokenReplacer : IDebugTokenReplacer
@@ -28,11 +24,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         // Regular expression string to extract $(sometoken) elements from a string
         private static readonly Regex s_matchTokenRegex = new(@"\$\((?<token>[^\)]+)\)", RegexOptions.IgnoreCase);
 
-        /// <summary>
-        /// Walks the profile and returns a new one where all the tokens have been replaced. Tokens can consist of
-        /// environment variables (%var%), or any msbuild property $(msbuildproperty). Environment variables are
-        /// replaced first, followed by msbuild properties.
-        /// </summary>
         public async Task<ILaunchProfile> ReplaceTokensInProfileAsync(ILaunchProfile profile)
         {
             return await LaunchProfile.ReplaceTokensAsync(
@@ -40,11 +31,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
                 str => ReplaceTokensInStringAsync(str, expandEnvironmentVars: true));
         }
 
-        /// <summary>
-        /// Replaces the tokens and environment variables in a single string. If expandEnvironmentVars
-        /// is true, they are expanded first before replacement happens. If the rawString is null or empty
-        /// it is returned as is.
-        /// </summary>
         public Task<string> ReplaceTokensInStringAsync(string rawString, bool expandEnvironmentVars)
         {
             if (string.IsNullOrWhiteSpace(rawString))
