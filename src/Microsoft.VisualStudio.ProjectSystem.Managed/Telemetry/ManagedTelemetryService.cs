@@ -8,6 +8,9 @@ namespace Microsoft.VisualStudio.Telemetry;
 [Export(typeof(ITelemetryService))]
 internal class ManagedTelemetryService : ITelemetryService
 {
+    private const string EventNamePrefix = "vs/projectsystem/managed/";
+    private const string PropertyNamePrefix = "vs.projectsystem.managed.";
+
     public void PostEvent(string eventName)
     {
         Requires.NotNullOrEmpty(eventName);
@@ -56,11 +59,11 @@ internal class ManagedTelemetryService : ITelemetryService
     private void PostTelemetryEvent(TelemetryEvent telemetryEvent)
     {
 #if DEBUG
-        Assumes.True(telemetryEvent.Name.StartsWith("vs/projectsystem/managed/", StringComparisons.TelemetryEventNames));
+        Assumes.True(telemetryEvent.Name.StartsWith(EventNamePrefix, StringComparisons.TelemetryEventNames));
 
         foreach (string propertyName in telemetryEvent.Properties.Keys)
         {
-            Assumes.True(propertyName.StartsWith("vs.projectsystem.managed.", StringComparisons.TelemetryEventNames));
+            Assumes.True(propertyName.StartsWith(PropertyNamePrefix, StringComparisons.TelemetryEventNames));
         }
 #endif
 
@@ -77,7 +80,7 @@ internal class ManagedTelemetryService : ITelemetryService
         Requires.NotNullOrEmpty(eventName);
         
 #if DEBUG
-        Assumes.True(eventName.StartsWith("vs/projectsystem/managed/", StringComparisons.TelemetryEventNames));
+        Assumes.True(eventName.StartsWith(EventNamePrefix, StringComparisons.TelemetryEventNames));
 #endif
         return new TelemetryOperation(TelemetryService.DefaultSession.StartOperation(eventName));            
     }
@@ -125,7 +128,7 @@ internal class ManagedTelemetryService : ITelemetryService
 #if DEBUG
             foreach ((string propertyName, _) in properties)
             {
-                Assumes.True(propertyName.StartsWith("vs.projectsystem.managed.", StringComparisons.TelemetryEventNames));
+                Assumes.True(propertyName.StartsWith(PropertyNamePrefix, StringComparisons.TelemetryEventNames));
             }
 #endif
 
