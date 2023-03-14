@@ -8,8 +8,10 @@ namespace Microsoft.VisualStudio.Telemetry;
 [Export(typeof(ITelemetryService))]
 internal class ManagedTelemetryService : ITelemetryService
 {
+#if DEBUG
     private const string EventNamePrefix = "vs/projectsystem/managed/";
     private const string PropertyNamePrefix = "vs.projectsystem.managed.";
+#endif
 
     public void PostEvent(string eventName)
     {
