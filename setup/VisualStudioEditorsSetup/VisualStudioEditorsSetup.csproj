@@ -23,7 +23,6 @@
       <Ngen>true</Ngen>
       <NgenArchitecture>All</NgenArchitecture>
       <NgenPriority>3</NgenPriority>
-      <ReferenceOutputAssembly>true</ReferenceOutputAssembly>
     </ProjectReference>
     <ProjectReference Include="..\..\src\Microsoft.VisualStudio.Editors\Microsoft.VisualStudio.Editors.vbproj">
       <Name>Microsoft.VisualStudio.Editors</Name>
@@ -32,7 +31,6 @@
       <Ngen>true</Ngen>
       <NgenArchitecture>All</NgenArchitecture>
       <NgenPriority>3</NgenPriority>
-      <ReferenceOutputAssembly>true</ReferenceOutputAssembly>
     </ProjectReference>
   </ItemGroup>
 
