@@ -170,6 +170,28 @@ namespace Microsoft.VisualStudio.Telemetry
             Assert.Contains(new KeyValuePair<string, object>(TelemetryPropertyName.DesignTimeBuildComplete.Targets, "Compile"), result.Properties);
         }
 
+        [Fact]
+        public void BeginOperation_NullAsEventName_ThrowsArgumentNull()
+        {
+            var service = CreateInstance();
+
+            Assert.Throws<ArgumentNullException>("eventName", () =>
+            {
+                _ = service.BeginOperation(null!);
+            });
+        }
+
+        [Fact]
+        public void BeginOperation_EmptyAsEventName_ThrowsArgument()
+        {
+            var service = CreateInstance();
+
+            Assert.Throws<ArgumentException>("eventName", () =>
+            {
+                _ = service.BeginOperation(string.Empty);
+            });
+        }
+
         private static ManagedTelemetryService CreateInstance(Action<TelemetryEvent>? action = null)
         {
             if (action is null)
