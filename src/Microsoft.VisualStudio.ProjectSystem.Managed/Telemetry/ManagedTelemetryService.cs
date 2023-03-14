@@ -21,7 +21,7 @@ internal class ManagedTelemetryService : ITelemetryService
         Requires.NotNullOrEmpty(propertyName);
         Requires.NotNull(propertyValue);
 
-        var telemetryEvent = new TelemetryEvent(eventName);
+        TelemetryEvent telemetryEvent = new(eventName);
         telemetryEvent.Properties.Add(propertyName, propertyValue);
 
         PostTelemetryEvent(telemetryEvent);
@@ -32,7 +32,7 @@ internal class ManagedTelemetryService : ITelemetryService
         Requires.NotNullOrEmpty(eventName);
         Requires.NotNullOrEmpty(properties);
 
-        var telemetryEvent = new TelemetryEvent(eventName);
+        TelemetryEvent telemetryEvent = new(eventName);
         AddPropertiesToEvent(properties, telemetryEvent);
 
         PostTelemetryEvent(telemetryEvent);
@@ -91,7 +91,7 @@ internal class ManagedTelemetryService : ITelemetryService
         }
 
         byte[] inputBytes = Encoding.UTF8.GetBytes(value);
-        using var cryptoServiceProvider = new SHA256CryptoServiceProvider();
+        using SHA256CryptoServiceProvider cryptoServiceProvider = new();
         return BitConverter.ToString(cryptoServiceProvider.ComputeHash(inputBytes));
     }
 
