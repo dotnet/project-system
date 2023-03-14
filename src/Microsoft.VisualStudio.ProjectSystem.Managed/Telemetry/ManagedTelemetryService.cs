@@ -33,6 +33,13 @@ namespace Microsoft.VisualStudio.Telemetry
             Requires.NotNullOrEmpty(properties);
 
             var telemetryEvent = new TelemetryEvent(eventName);
+            AddPropertiesToEvent(properties, telemetryEvent);
+
+            PostTelemetryEvent(telemetryEvent);
+        }
+
+        private static void AddPropertiesToEvent(IEnumerable<(string propertyName, object propertyValue)> properties, TelemetryEvent telemetryEvent)
+        {
             foreach ((string propertyName, object propertyValue) in properties)
             {
                 if (propertyValue is ComplexPropertyValue complexProperty)
@@ -44,8 +51,6 @@ namespace Microsoft.VisualStudio.Telemetry
                     telemetryEvent.Properties.Add(propertyName, propertyValue);
                 }
             }
-
-            PostTelemetryEvent(telemetryEvent);
         }
 
         private void PostTelemetryEvent(TelemetryEvent telemetryEvent)
@@ -67,6 +72,16 @@ namespace Microsoft.VisualStudio.Telemetry
             TelemetryService.DefaultSession.PostEvent(telemetryEvent);
         }
 
+        public ITelemetryOperation BeginOperation(string eventName)
+        {
+            Requires.NotNullOrEmpty(eventName);
+            
+#if DEBUG
+            Assumes.True(eventName.StartsWith("vs/projectsystem/managed/", StringComparisons.TelemetryEventNames));
+#endif
+            return new TelemetryOperation(TelemetryService.DefaultSession.StartOperation(eventName));            
+        }
+
         public string HashValue(string value)
         {
             // Don't hash PII for internal users since we don't need to.
@@ -79,5 +94,44 @@ namespace Microsoft.VisualStudio.Telemetry
             using var cryptoServiceProvider = new SHA256CryptoServiceProvider();
             return BitConverter.ToString(cryptoServiceProvider.ComputeHash(inputBytes));
         }
+
+        private class TelemetryOperation : ITelemetryOperation
+        {
+            private readonly TelemetryScope<OperationEvent> _scope;
+
+            public TelemetryOperation(TelemetryScope<OperationEvent> scope)
+            {
+                _scope = scope;
+            }
+
+            public void Dispose()
+            {
+#if DEBUG
+                Assumes.True(_scope.IsEnd, $"Failed to call '{nameof(ITelemetryOperation.End)}' on {nameof(ITelemetryOperation)} instance.");
+#endif
+
+                _scope.End(TelemetryResult.None);
+            }
+
+            public void End(TelemetryResult result)
+            {
+                _scope.End(result);
+            }
+
+            public void SetProperties(IEnumerable<(string propertyName, object propertyValue)> properties)
+            {
+                Requires.NotNullOrEmpty(properties);
+                
+#if DEBUG
+                foreach ((string propertyName, _) in properties)
+                {
+                    Assumes.True(propertyName.StartsWith("vs.projectsystem.managed.", StringComparisons.TelemetryEventNames));
+                }
+#endif
+
+                AddPropertiesToEvent(properties, _scope.EndEvent);
+            }
+        }
     }
 }
+
