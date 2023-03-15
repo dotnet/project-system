@@ -1,0 +1,4 @@
+Microsoft.VisualStudio.ProjectSystem.VS.HotReload.IProjectHotReloadNotificationService
+Microsoft.VisualStudio.ProjectSystem.VS.HotReload.IProjectHotReloadNotificationService.HotReloadStateChangedAsync -> Microsoft.VisualStudio.Threading.AsyncEventHandler<bool>!
+Microsoft.VisualStudio.ProjectSystem.VS.HotReload.IProjectHotReloadNotificationService.ProjectIsInHotReload.get -> bool
+Microsoft.VisualStudio.ProjectSystem.VS.HotReload.IProjectHotReloadNotificationService.SetHotReloadStateAsync(bool isInHotReload) -> System.Threading.Tasks.Task!
