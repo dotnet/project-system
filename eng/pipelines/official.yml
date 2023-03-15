@@ -141,7 +141,7 @@ stages:
       timeoutInMinutes: 2
       steps:
       # See: https://stackoverflow.com/a/30524983/294804
-      - powershell: if (-not (git ls-remote --heads https://$(System.AccessToken)@dev.azure.com/devdiv/DevDiv/_git/VS $(InsertionVSBranch))) { Write-Error "The branch name '$(InsertionVSBranch)' is not valid." }
+      - powershell: if (-not (git ls-remote --heads https://$(System.AccessToken)@dev.azure.com/devdiv/DevDiv/_git/VS $(InsertionVSBranch))) { Write-Host "The branch name '$(InsertionVSBranch)' is not valid."; exit 1 }
         displayName: Validate VS Insertion Branch Name
 
 - stage: Build
