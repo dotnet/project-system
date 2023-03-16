@@ -369,12 +369,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.HotReload
                         }
                     }
                 }
-
-                // No more sessions removes the project from hot reload mode
-                if (_activeSessions.Count == 0)
-                {
-                    await _projectHotReloadNotificationService.Value.SetHotReloadStateAsync(isInHotReload: false);
-                }
             }
             catch (Exception ex)
             {
@@ -388,6 +382,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.HotReload
                         HotReloadDiagnosticErrorLevel.Error
                     ),
                     cancellationToken);
+            }
+            finally
+            {
+                // No more sessions removes the project from hot reload mode
+                if (_activeSessions.Count == 0)
+                {
+                    await _projectHotReloadNotificationService.Value.SetHotReloadStateAsync(isInHotReload: false);
+                }
             }
 
             return true;

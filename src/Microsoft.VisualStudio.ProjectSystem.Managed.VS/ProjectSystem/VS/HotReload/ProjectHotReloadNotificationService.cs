@@ -2,39 +2,39 @@
 
 using Microsoft.VisualStudio.Threading;
 
-namespace Microsoft.VisualStudio.ProjectSystem.VS.HotReload
+namespace Microsoft.VisualStudio.ProjectSystem.VS.HotReload;
+
+/// <summary>
+/// MEF Export that can be used to be notified when a project enters and exits hot reload 
+/// </summary>
+[Export(typeof(IProjectHotReloadNotificationService))]
+internal class ProjectHotReloadNotificationService : IProjectHotReloadNotificationService
 {
-    /// <summary>
-    /// MEF Export that can be used to be notified when a project enters and exits hot reload 
-    /// </summary>
-    [Export(typeof(IProjectHotReloadNotificationService))]
-    internal class ProjectHotReloadNotificationService : IProjectHotReloadNotificationService
+    [ImportingConstructor]
+    public ProjectHotReloadNotificationService(UnconfiguredProject _)
     {
-        [ImportingConstructor]
-        public ProjectHotReloadNotificationService(UnconfiguredProject _)
+    }
+
+    public event AsyncEventHandler<bool>? HotReloadStateChangedAsync;
+
+    public bool IsProjectInHotReload { get; private set; }
+
+    public async Task SetHotReloadStateAsync(bool isInHotReload)
+    {
+        IsProjectInHotReload = isInHotReload;
+
+        var localEvent = HotReloadStateChangedAsync;
+        if (localEvent is not null)
         {
-        }
-
-        public event AsyncEventHandler<bool>? HotReloadStateChangedAsync;
-
-        public bool ProjectIsInHotReload { get; private set; }
-
-        public async Task SetHotReloadStateAsync(bool isInHotReload)
-        {
-            ProjectIsInHotReload = isInHotReload;
-
-            var localEvent = HotReloadStateChangedAsync;
-            if (localEvent is not null)
+            try
             {
-                try
-                {
-                    await localEvent.InvokeAsync(this, isInHotReload);
-                }
-                catch (Exception ex)
-                {
-                    System.Diagnostics.Debug.Fail($"HotReloadStartChanged handler threw an exception {ex}");
-                }
+                await localEvent.InvokeAsync(this, isInHotReload);
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.Fail($"HotReloadStartChanged handler threw an exception {ex}");
             }
         }
     }
 }
+
