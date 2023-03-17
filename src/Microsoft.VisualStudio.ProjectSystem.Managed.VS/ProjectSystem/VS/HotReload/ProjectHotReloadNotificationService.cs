@@ -13,6 +13,7 @@ internal class ProjectHotReloadNotificationService : IProjectHotReloadNotificati
     [ImportingConstructor]
     public ProjectHotReloadNotificationService(UnconfiguredProject _)
     {
+        // Importing UnconfiguredProject to ensure this part is in UnconfiguredProject scope
     }
 
     public event AsyncEventHandler<bool>? HotReloadStateChangedAsync;
