@@ -175,7 +175,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.HotReload
                 IProjectFaultHandlerServiceFactory.Create(),
                 activeDebugFrameworkServices,
                 new Lazy<IProjectHotReloadAgent>(() => IProjectHotReloadAgentFactory.Create()),
-                new Lazy<IHotReloadDiagnosticOutputService>(() => IHotReloadDiagnosticOutputServiceFactory.Create(outputServiceCallback)));
+                new Lazy<IHotReloadDiagnosticOutputService>(() => IHotReloadDiagnosticOutputServiceFactory.Create(outputServiceCallback)),
+                new Lazy<IProjectHotReloadNotificationService>(() => IProjectHotReloadNotificationServiceFactory.Create()));
 
             return manager;
         }
