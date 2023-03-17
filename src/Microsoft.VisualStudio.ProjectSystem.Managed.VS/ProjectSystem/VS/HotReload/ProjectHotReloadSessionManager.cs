@@ -354,6 +354,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.HotReload
 
             using AsyncSemaphore.Releaser semaphoreReleaser = await _semaphore.EnterAsync();
 
+            int sessionCountOnEntry = _activeSessions.Count;
+
             try
             {
                 if (_activeSessions.Remove(hotReloadState.Process.Id))
@@ -386,7 +388,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.HotReload
             finally
             {
                 // No more sessions removes the project from hot reload mode
-                if (_activeSessions.Count == 0)
+                if (sessionCountOnEntry == 1 && _activeSessions.Count == 0)
                 {
                     await _projectHotReloadNotificationService.Value.SetHotReloadStateAsync(isInHotReload: false);
                 }
