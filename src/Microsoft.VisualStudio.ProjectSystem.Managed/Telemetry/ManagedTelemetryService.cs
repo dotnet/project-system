@@ -114,8 +114,10 @@ internal class ManagedTelemetryService : ITelemetryService
 #if DEBUG
             Assumes.True(_scope.IsEnd, $"Failed to call '{nameof(ITelemetryOperation.End)}' on {nameof(ITelemetryOperation)} instance.");
 #endif
-
-            _scope.End(TelemetryResult.None);
+            if (!_scope.IsEnd)
+            {
+                _scope.End(TelemetryResult.None);
+            }
         }
 
         public void End(TelemetryResult result)

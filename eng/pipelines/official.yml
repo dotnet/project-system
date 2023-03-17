@@ -129,6 +129,21 @@ parameters:
 ###################################################################################################################################################################
 
 stages:
+# Validate the insertion branch name when necessary.
+- ${{ if eq(parameters.CreateInsertion, true) }}:
+  - stage: Validate
+    displayName: Validate
+    variables:
+      InsertionVSBranch: ${{ parameters.InsertionVSBranch }}
+    jobs:
+    - job: ValidateInsertionInput
+      displayName: Validate Insertion Input
+      timeoutInMinutes: 2
+      steps:
+      # See: https://stackoverflow.com/a/30524983/294804
+      - powershell: if (-not (git ls-remote --heads https://$(System.AccessToken)@dev.azure.com/devdiv/DevDiv/_git/VS $(InsertionVSBranch))) { Write-Host "The branch name '$(InsertionVSBranch)' is not valid."; exit 1 }
+        displayName: Validate VS Insertion Branch Name
+
 - stage: Build
   displayName: Build
   variables:
@@ -139,6 +154,9 @@ stages:
     # Auto-injects the CodeQL task.
     # https://eng.ms/docs/cloud-ai-platform/devdiv/one-engineering-system-1es/1es-docs/codeql/configuring-codeql3000-ado-pipelines#monolithic-repos-and-multistage-pipelines
     Codeql.SkipTaskAutoInjection: false
+  # When manually running an insertion, this allows us to validate the insertion branch name prior to building.
+  ${{ if eq(parameters.CreateInsertion, true) }}:
+    dependsOn: Validate
   jobs:
   - template: templates/build-official-release.yml
 
