@@ -193,6 +193,12 @@ The [Project System Tools](https://github.com/dotnet/project-system-tools) exten
 
 The logs captured by that tool are usually adequate to diagnose build problems. They exclude some detail however, for performance reasons. If more data is required, see [this technique to get full-fidelity logs](https://github.com/dotnet/project-system-tools#getting-higher-fidelity-logs-from-vs).
 
+### Other types of projects
+
+Each project type takes its own approach to incremental builds.
+
+- Visual C++ projects use `.tlog` files, which are described [here](https://learn.microsoft.com/previous-versions/visualstudio/visual-studio-2017/extensibility/visual-cpp-project-extensibility?view=vs-2017#incremental-builds-and-up-to-date-checks).
+
 ---
 
 ## CopyToOutputDirectory Always vs. PreserveNewest
