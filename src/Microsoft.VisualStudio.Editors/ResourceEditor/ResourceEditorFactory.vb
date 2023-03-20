@@ -45,7 +45,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' Provides the (constant) GUID for the subclassed editor factory.
         ''' </summary>
         ''' <remarks>
-        ''' Must overridde the base.  Be sure to use the same GUID on the GUID attribute
+        ''' Must override the base.  Be sure to use the same GUID on the GUID attribute
         '''    attached to the inheriting class.
         ''' </remarks>
         Protected Overrides ReadOnly Property EditorGuid As Guid
