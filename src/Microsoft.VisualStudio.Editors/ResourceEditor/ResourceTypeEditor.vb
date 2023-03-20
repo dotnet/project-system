@@ -269,7 +269,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <param name="ResourceContentFile">The resource file contains the resource item. </param>
         ''' <remarks>
         ''' Default implementation uses a ResXFileRef to automatically load the resource from the file.  Can be
-        '''   overriden if this behavior is insufficient.
+        '''   overridden if this behavior is insufficient.
         ''' Exceptions should be handled by caller.
         '''</remarks>
         Public Overridable Function LoadResourceFromFile(FilePath As String, ResourceContentFile As IResourceContentFile) As Object

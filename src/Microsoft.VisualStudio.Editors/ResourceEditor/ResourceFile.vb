@@ -1625,11 +1625,11 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                                 End If
                             Catch ex As CheckoutException
                                 ' Ignore CheckoutException
-                            Catch ex As Exception When ReportWithoutCrash(ex, "Failed to add reference to assembly contining type", NameOf(ResourceFile))
+                            Catch ex As Exception When ReportWithoutCrash(ex, "Failed to add reference to assembly continuing type", NameOf(ResourceFile))
                                 ' We should ignore the error if the project system failed to do so..
 
                                 ' NOTE: we need consider to prompt the user an waring message. But it could be very annoying if we pop up many message boxes in one transaction.
-                                '  We should consider a global service to collect all warning messages, and show in one dialog box when the transaction is commited.
+                                '  We should consider a global service to collect all warning messages, and show in one dialog box when the transaction is committed.
                             End Try
                         End If
                     End If
