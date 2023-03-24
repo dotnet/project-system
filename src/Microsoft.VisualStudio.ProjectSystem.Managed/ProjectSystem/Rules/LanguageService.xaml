@@ -48,6 +48,10 @@
                   ReadOnly="True"
                   Visible="False" />
 
+  <StringProperty Name="TargetFrameworkIdentifier"
+                  ReadOnly="True"
+                  Visible="False" />
+
   <!--
       Roslyn needs a way to identify which workspace project context a given dependencies tree node relates to.
       Ideally we would store the project context ID on the node itself for Roslyn to query, however we are late
