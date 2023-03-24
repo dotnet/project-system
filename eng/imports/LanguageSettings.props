@@ -2,12 +2,11 @@
 <Project>
 
   <PropertyGroup Condition="'$(Language)' == ''">
-    <Language Condition="'$(MSBuildProjectExtension)' == '.csproj'">C#</Language>
+    <!-- swixproj and vsmanproj are required to resolve as C# for the Nerdbank.GitVersioning mechanism to function properly. -->
+    <Language Condition="'$(MSBuildProjectExtension)' == '.csproj' or '$(MSBuildProjectExtension)' == '.swixproj' or '$(MSBuildProjectExtension)' == '.vsmanproj'">C#</Language>
     <Language Condition="'$(MSBuildProjectExtension)' == '.vbproj'">VB</Language>
     <Language Condition="'$(MSBuildProjectExtension)' == '.fsproj'">F#</Language>
     <Language Condition="'$(MSBuildProjectExtension)' == '.vcxproj'">C++</Language>
-    <Language Condition="'$(MSBuildProjectExtension)' == '.swixproj'">SWiX</Language>
-    <Language Condition="'$(MSBuildProjectExtension)' == '.vsmanproj'">VSMan</Language>
   </PropertyGroup>
 
   <!--

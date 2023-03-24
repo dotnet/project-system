@@ -17,6 +17,13 @@
     <TestArchitectures>x86</TestArchitectures>
   </PropertyGroup>
 
+  <ItemGroup>
+    <!-- There are two namespaces via which MEF attributes are defined. This is the correct one. -->
+    <Using Include="System.ComponentModel.Composition" />
+    <!-- Discourage importing all of Microsoft.VisualStudio.Composition by aliasing the most common type(s) we actually use from that namespace. -->
+    <Using Include="Microsoft.VisualStudio.Composition.ImportCardinality" Alias="ImportCardinality" />
+  </ItemGroup>
+
   <!-- Modify the set of implicit usings -->
   <ItemGroup Condition="$(IsUnitTestProject)">
     <!-- Top two namespaces imported in test code -->

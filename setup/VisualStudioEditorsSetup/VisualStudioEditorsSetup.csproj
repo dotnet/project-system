@@ -17,16 +17,13 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\src\Microsoft.VisualStudio.AppDesigner\Microsoft.VisualStudio.AppDesigner.vbproj">
-      <Name>Microsoft.VisualStudio.AppDesigner</Name>
       <IncludeOutputGroupsInVSIX>BuiltProjectOutputGroup;GetCopyToOutputDirectoryItems;SatelliteDllsProjectOutputGroup</IncludeOutputGroupsInVSIX>
-      <IncludeOutputGroupsInVSIXLocalOnly>DebugSymbolsProjectOutputGroup</IncludeOutputGroupsInVSIXLocalOnly>
-      <Ngen>true</Ngen>
-      <NgenArchitecture>All</NgenArchitecture>
-      <NgenPriority>3</NgenPriority>
     </ProjectReference>
     <ProjectReference Include="..\..\src\Microsoft.VisualStudio.Editors\Microsoft.VisualStudio.Editors.vbproj">
-      <Name>Microsoft.VisualStudio.Editors</Name>
       <IncludeOutputGroupsInVSIX>BuiltProjectOutputGroup;GetCopyToOutputDirectoryItems;SatelliteDllsProjectOutputGroup;PkgdefProjectOutputGroup</IncludeOutputGroupsInVSIX>
+    </ProjectReference>
+    <ProjectReference Update="@(ProjectReference)">
+      <Name>%(Filename)</Name>
       <IncludeOutputGroupsInVSIXLocalOnly>DebugSymbolsProjectOutputGroup</IncludeOutputGroupsInVSIXLocalOnly>
       <Ngen>true</Ngen>
       <NgenArchitecture>All</NgenArchitecture>
@@ -39,12 +36,5 @@
       <Link>ProvideCodeBaseBindingRedirection.cs</Link>
     </Compile>
   </ItemGroup>
-
-  <!-- Builds the associated .vsmanproj to produce a .vsman file for VS insertions. -->
-  <Target Name="VSManifestBuild" AfterTargets="Build">
-    <MSBuild Projects="$(MSBuildThisFileDirectory)Microsoft.VisualStudio.Editors.vsmanproj"
-      Properties="SwixBuildDir=$(PkgMicrosoft_VisualStudioEng_MicroBuild_Plugins_SwixBuild)\build\;MicroBuildCoreDir=$(PkgMicrosoft_VisualStudioEng_MicroBuild_Core)\build\"
-      Targets="Build" />
-  </Target>
 
 </Project>

@@ -9,14 +9,16 @@
   <Import Project="..\..\eng\imports\VisualStudio.props" />
 
   <ItemGroup>
-    <!-- Depend on projects producing XAML rules included in this Willow package -->
-    <ProjectReference Include="..\..\src\Microsoft.VisualStudio.ProjectSystem.Managed\Microsoft.VisualStudio.ProjectSystem.Managed.csproj" />
+    <ProjectReference Include="SetupManifest.vsmanproj" ReferenceOutputAssembly="false" />
   </ItemGroup>
 
-  <Target Name="SwixBuild" AfterTargets="Build">
-    <MSBuild Projects="$(MSBuildThisFileDirectory)$(MSBuildProjectName).swixproj"
-      Properties="BuildVersion=$(BuildVersion);SwixBuildDir=$(PkgMicrosoft_VisualStudioEng_MicroBuild_Plugins_SwixBuild)\build\;MicroBuildCoreDir=$(PkgMicrosoft_VisualStudioEng_MicroBuild_Core)\build\"
-      Targets="Build" />
-  </Target>
+  <!-- Builds the associated .vsmanproj to produce a .vsman file for VS insertions. -->
+  <!-- <Target Name="VSManifestBuild" AfterTargets="Build">
+    <MSBuild Projects="$(MSBuildThisFileDirectory)SetupManifest.vsmanproj" Targets="Restore;Build" />
+  </Target> -->
+
+  <!-- <Target Name="VSManifestRestore" AfterTargets="Restore">
+    <MSBuild Projects="$(MSBuildThisFileDirectory)SetupManifest.vsmanproj" Targets="Restore" />
+  </Target> -->
 
 </Project>

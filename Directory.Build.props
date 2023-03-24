@@ -16,7 +16,7 @@
     <BaseIntermediateOutputPath Condition="'$(BaseIntermediateOutputPath)' == ''">$([System.IO.Path]::GetFullPath('$(ArtifactsObjDir)$(MSBuildProjectName)\'))</BaseIntermediateOutputPath>
     <IntermediateOutputPath>$(BaseIntermediateOutputPath)</IntermediateOutputPath>
     <UseCommonOutputDirectory Condition="'$(UseCommonOutputDirectory)' == ''">true</UseCommonOutputDirectory>
-    <AccelerateBuildsInVisualStudio>true</AccelerateBuildsInVisualStudio>
+    <SBOMFileDestPath>$(OutputPath)</SBOMFileDestPath>
   </PropertyGroup>
 
   <!-- Configuration -->
@@ -58,6 +58,7 @@
     <NoWarn>$(NoWarn);NU5125</NoWarn>
     <!-- Sets deterministic compilation (/deterministic compiler flag) -->
     <Deterministic>true</Deterministic>
+    <AccelerateBuildsInVisualStudio>true</AccelerateBuildsInVisualStudio>
 
     <!-- SourceLink properties -->
     <!-- https://github.com/dotnet/sourcelink#using-source-link-in-net-projects -->
@@ -130,10 +131,6 @@
   <ItemGroup>
     <!-- We use immutable collections extensively and expect no naming conflicts. -->
     <Using Include="System.Collections.Immutable" />
-    <!-- There are two namespaces via which MEF attributes are defined. This is the correct one. -->
-    <Using Include="System.ComponentModel.Composition" />
-    <!-- Discourage importing all of Microsoft.VisualStudio.Composition by aliasing the most common type(s) we actually use from that namespace. -->
-    <Using Include="Microsoft.VisualStudio.Composition.ImportCardinality" Alias="ImportCardinality" />
     <!-- Prevent accidental use of Microsoft.VisualStudio.Threading.IAsyncDisposable -->
     <Using Include="System.IAsyncDisposable" Alias="IAsyncDisposable" />
   </ItemGroup>

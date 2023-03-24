@@ -20,30 +20,23 @@
   <!-- Local properties -->
   <PropertyGroup>
     <_ManagedProjectName>Microsoft.VisualStudio.ProjectSystem.Managed</_ManagedProjectName>
-    <_CommonFilesProjectName>Microsoft.VisualStudio.ProjectSystem.Managed.CommonFiles</_CommonFilesProjectName>
   </PropertyGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\..\src\Microsoft.VisualStudio.ProjectSystem.Managed.VS\Microsoft.VisualStudio.ProjectSystem.Managed.VS.csproj">
-      <Name>Microsoft.VisualStudio.ProjectSystem.Managed.VS</Name>
-      <Ngen>true</Ngen>
-      <NgenPriority>1</NgenPriority>
       <IncludeOutputGroupsInVSIX>BuiltProjectOutputGroup;GetCopyToOutputDirectoryItems;SatelliteDllsProjectOutputGroup;PkgdefProjectOutputGroup</IncludeOutputGroupsInVSIX>
-      <IncludeOutputGroupsInVSIXLocalOnly>DebugSymbolsProjectOutputGroup</IncludeOutputGroupsInVSIXLocalOnly>
     </ProjectReference>
     <ProjectReference Include="..\..\src\$(_ManagedProjectName)\$(_ManagedProjectName).csproj">
-      <Name>$(_ManagedProjectName)</Name>
+      <IncludeOutputGroupsInVSIX>BuiltProjectOutputGroup;GetCopyToOutputDirectoryItems;SatelliteDllsProjectOutputGroup</IncludeOutputGroupsInVSIX>
+    </ProjectReference>
+    <ProjectReference Update="@(ProjectReference)">
+      <Name>%(Filename)</Name>
+      <IncludeOutputGroupsInVSIXLocalOnly>DebugSymbolsProjectOutputGroup</IncludeOutputGroupsInVSIXLocalOnly>
       <Ngen>true</Ngen>
       <NgenPriority>1</NgenPriority>
-      <IncludeOutputGroupsInVSIX>BuiltProjectOutputGroup;GetCopyToOutputDirectoryItems;SatelliteDllsProjectOutputGroup</IncludeOutputGroupsInVSIX>
-      <IncludeOutputGroupsInVSIXLocalOnly>DebugSymbolsProjectOutputGroup</IncludeOutputGroupsInVSIXLocalOnly>
     </ProjectReference>
     <!-- This is included so that F5 debugging works in the repo. It is not included in the setup .vsix package with the Project System assemblies. -->
     <ProjectReference Include="..\VisualStudioEditorsSetup\VisualStudioEditorsSetup.csproj">
-      <Private>false</Private>
-    </ProjectReference>
-    <!-- This is included so the .vsmanproj is guaranteed to have the .json manifest available for CommonFiles, so it can be included as part of the same .vsman file. -->
-    <ProjectReference Include="..\$(_CommonFilesProjectName)\$(_CommonFilesProjectName).csproj">
       <Private>false</Private>
     </ProjectReference>
   </ItemGroup>
@@ -57,13 +50,6 @@
       <Link>ProvideCodeBaseBindingRedirection.cs</Link>
     </Compile>
   </ItemGroup>
-
-  <!-- Builds the associated .vsmanproj to produce a .vsman file for VS insertions. -->
-  <Target Name="VSManifestBuild" AfterTargets="Build">
-    <MSBuild Projects="$(MSBuildThisFileDirectory)Microsoft.VisualStudio.ProjectSystem.Managed.vsmanproj"
-      Properties="CommonFilesProjectName=$(_CommonFilesProjectName);SwixBuildDir=$(PkgMicrosoft_VisualStudioEng_MicroBuild_Plugins_SwixBuild)\build\;MicroBuildCoreDir=$(PkgMicrosoft_VisualStudioEng_MicroBuild_Core)\build\"
-      Targets="Build" />
-  </Target>
 
   <!-- Excludes the localized .xaml files from the VSIX which are added from the GetCopyToOutputDirectoryItems output group. Only the localized .dlls are needed in the VSIX. -->
   <!-- For additional info, see: https://github.com/dotnet/project-system/issues/6612 -->

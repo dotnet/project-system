@@ -15,6 +15,9 @@
     <PublishOutputToSymStore>false</PublishOutputToSymStore>
     <IncludeAssemblyInVSIXContainer>false</IncludeAssemblyInVSIXContainer>
 
+    <VsixOutputPath>$(VisualStudioSetupInsertionPath)</VsixOutputPath>
+    <NoSwixBuildPlugin>true</NoSwixBuildPlugin>
+
     <VsixSourceManifestPath>$(MSBuildProjectDirectory)\source.extension.vsixmanifest</VsixSourceManifestPath>
     <!-- This property indicates that the project is a VS Extension project. The SwixBuild plugin expects this value to be set for the AddSBOM task. -->
     <IsVsixProject Condition="Exists('$(VsixSourceManifestPath)')">true</IsVsixProject>
@@ -41,7 +44,7 @@
     <NgenPriority>3</NgenPriority>
   </PropertyGroup>
 
-  <PropertyGroup Condition="'$(MSBuildProjectExtension)' == '.vsmanproj'">
+  <PropertyGroup Condition="'$(MSBuildProjectExtension)' == '.vsmanproj' or '$(MSBuildProjectExtension)' == '.swixproj'">
     <FinalizeManifest>true</FinalizeManifest>
     <FinalizeSkipLayout>true</FinalizeSkipLayout>
     <IsPackage>true</IsPackage>
