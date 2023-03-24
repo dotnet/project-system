@@ -21,7 +21,7 @@ public class RestoreBuilderTests
             """
                 {
                     "CurrentState": {
-                        "ProjectReference": {
+                        "EvaluatedProjectReference": {
                             "Items" : {}
                         },
                         "PackageReference": {
@@ -296,7 +296,7 @@ public class RestoreBuilderTests
             """
                 {
                     "CurrentState": {
-                        "ProjectReference": {
+                        "EvaluatedProjectReference": {
                             "Items" : {
                                 "..\\Project\\Project1.csproj" : {
                                     "ProjectFileFullPath" : "C:\\Solution\\Project\\Project1.csproj",

@@ -1,0 +1,145 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!-- Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information. -->
+<Rule Name="EvaluatedProjectReference"
+      PageTemplate="generic"
+      xmlns="http://schemas.microsoft.com/build/2009/properties">
+
+  <!--
+  Captures ProjectReference items from evaluation for use in Solution Restore.
+
+  NOTE this rule is identical to ProjectReference.xaml, however it is embedded to allow use in other
+  scenarios, such as C++/CLI projects, where our on-disk rule files are not available at run-time.
+  We are currently unable to embed localized rule files (and ProjectReference is used as a browse
+  object, and therefore must be localized.)
+  -->
+
+  <Rule.DataSource>
+    <DataSource HasConfigurationCondition="False"
+                ItemType="ProjectReference"
+                Persistence="ProjectFile"
+                SourceOfDefaultValue="AfterContext" />
+  </Rule.DataSource>
+
+  <StringListProperty Name="Aliases"
+                      Separator=","
+                      Visible="False">
+    <StringListProperty.DataSource>
+      <DataSource HasConfigurationCondition="False"
+                  ItemType="ProjectReference"
+                  Persistence="ProjectFile"
+                  SourceOfDefaultValue="AfterContext" />
+    </StringListProperty.DataSource>
+  </StringListProperty>
+
+  <StringProperty Name="BrowsePath"
+                  ReadOnly="True"
+                  Visible="False">
+    <StringProperty.DataSource>
+      <DataSource ItemType="ProjectReference"
+                  PersistedName="Identity"
+                  Persistence="Intrinsic"
+                  SourceOfDefaultValue="AfterContext" />
+    </StringProperty.DataSource>
+  </StringProperty>
+
+  <BoolProperty Name="Private"
+                Visible="False">
+    <BoolProperty.DataSource>
+      <DataSource HasConfigurationCondition="False"
+                  ItemType="ProjectReference"
+                  Persistence="ProjectFile"
+                  SourceOfDefaultValue="AfterContext" />
+    </BoolProperty.DataSource>
+  </BoolProperty>
+
+  <BoolProperty Name="CopyLocalSatelliteAssemblies"
+                Visible="False" />
+
+  <StringProperty Name="Culture"
+                  ReadOnly="True"
+                  Visible="False" />
+
+  <StringProperty Name="Description"
+                  ReadOnly="True"
+                  Visible="False" />
+
+  <BoolProperty Name="EmbedInteropTypes"
+                Visible="False">
+    <BoolProperty.DataSource>
+      <DataSource HasConfigurationCondition="False"
+                  ItemType="ProjectReference"
+                  Persistence="ProjectFile"
+                  SourceOfDefaultValue="AfterContext" />
+    </BoolProperty.DataSource>
+  </BoolProperty>
+
+  <StringProperty Name="ExcludeAssets"
+                  Visible="False"/>
+
+  <StringProperty Name="Identity"
+                  ReadOnly="True"
+                  Visible="False">
+    <StringProperty.DataSource>
+      <DataSource PersistedName="{}{Identity}"
+                  SourceOfDefaultValue="AfterContext" />
+    </StringProperty.DataSource>
+  </StringProperty>
+
+  <StringProperty Name="IncludeAssets"
+                  Visible="False" />
+
+  <StringProperty Name="IsImplicitlyDefined"
+                  ReadOnly="True"
+                  Visible="False" />
+
+  <BoolProperty Name="LinkLibraryDependencies"
+                Visible="False" />
+
+  <StringProperty Name="PrivateAssets"
+                  Visible="False" />
+
+  <StringProperty Name="Project"
+                  Visible="False" />
+
+  <StringProperty Name="ProjectFileFullPath"
+                  Visible="False"
+                  ReadOnly="True">
+    <StringProperty.DataSource>
+      <DataSource ItemType="ProjectReference"
+                  PersistedName="FullPath"
+                  Persistence="Intrinsic"
+                  SourceOfDefaultValue="AfterContext" />
+    </StringProperty.DataSource>
+  </StringProperty>
+
+  <StringProperty Name="ReferencedProjectIdentifier"
+                  Visible="False" />
+
+  <BoolProperty Name="ReferenceOutputAssembly"
+                Visible="False" />
+
+  <StringProperty Name="ResolvedPath"
+                  ReadOnly="True"
+                  Visible="False">
+    <StringProperty.DataSource>
+      <DataSource PersistedName="Identity"
+                  SourceOfDefaultValue="AfterContext" />
+    </StringProperty.DataSource>
+  </StringProperty>
+
+  <BoolProperty Name="UseLibraryDependencyInputs"
+                Visible="False" />
+
+  <StringProperty Name="Version"
+                  ReadOnly="True"
+                  Visible="False" />
+
+  <BoolProperty Name="Visible"
+                ReadOnly="True"
+                Visible="False" />
+
+  <BoolProperty Name="TreatAsUsed"
+                ReadOnly="True"
+                Visible="False" />
+
+</Rule>

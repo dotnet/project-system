@@ -7,22 +7,22 @@ using RestoreUpdate = Microsoft.VisualStudio.ProjectSystem.IProjectVersionedValu
 namespace Microsoft.VisualStudio.ProjectSystem.PackageRestore
 {
     /// <summary>
-    ///     Provides an implementation of <see cref="IPackageRestoreConfiguredInputDataSource"/> that combines evaluations results
-    ///     of <see cref="DotNetCliToolReference"/>, <see cref="ProjectReference"/> and project build versions of <see cref="PackageReference"/>
-    ///     into <see cref="PackageRestoreConfiguredInput"/>.
+    ///     Provides an implementation of <see cref="IPackageRestoreConfiguredInputDataSource"/> that combines
+    ///     evaluation and build data into <see cref="PackageRestoreConfiguredInput"/>.
     /// </summary>
     [Export(typeof(IPackageRestoreConfiguredInputDataSource))]
     [AppliesTo(ProjectCapability.PackageReferences)]
     internal class PackageRestoreConfiguredInputDataSource : ChainedProjectValueDataSourceBase<PackageRestoreConfiguredInput>, IPackageRestoreConfiguredInputDataSource
     {
         private static readonly ImmutableHashSet<string> s_rules = Empty.OrdinalIgnoreCaseStringSet
-                                                                        .Add(NuGetRestore.SchemaName)                       // Evaluation
-                                                                        .Add(ProjectReference.SchemaName)                   // Evaluation
-                                                                        .Add(DotNetCliToolReference.SchemaName)             // Evaluation
-                                                                        .Add(CollectedFrameworkReference.SchemaName)        // Project Build
-                                                                        .Add(CollectedPackageDownload.SchemaName)           // Project Build                                                                        
-                                                                        .Add(CollectedPackageVersion.SchemaName)            // Project Build
-                                                                        .Add(CollectedPackageReference.SchemaName);         // Project Build
+            .Add(NuGetRestore.SchemaName)                       // Evaluation
+            .Add(EvaluatedProjectReference.SchemaName)          // Evaluation
+            .Add(DotNetCliToolReference.SchemaName)             // Evaluation
+            .Add(CollectedFrameworkReference.SchemaName)        // Build
+            .Add(CollectedPackageDownload.SchemaName)           // Build
+            .Add(CollectedPackageVersion.SchemaName)            // Build
+            .Add(CollectedPackageReference.SchemaName);         // Build
+
         private readonly UnconfiguredProject _containingProject;
         private readonly IProjectSubscriptionService _projectSubscriptionService;
 
@@ -44,9 +44,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.PackageRestore
             IProjectValueDataSource<IProjectSubscriptionUpdate> source = _projectSubscriptionService.JointRuleSource;
 
             // Transform the changes from evaluation/design-time build -> restore data
-            DisposableValue<ISourceBlock<RestoreUpdate>> transformBlock = source.SourceBlock.TransformWithNoDelta(update => update.Derive(u => CreateRestoreInput(update, u.ProjectConfiguration, u.CurrentState)),
-                                                                                                suppressVersionOnlyUpdates: false,    // We need to coordinate these at the unconfigured-level
-                                                                                                ruleNames: s_rules);
+            DisposableValue<ISourceBlock<RestoreUpdate>> transformBlock = source.SourceBlock.TransformWithNoDelta(
+                update => update.Derive(u => CreateRestoreInput(update, u.ProjectConfiguration, u.CurrentState)),
+                suppressVersionOnlyUpdates: false,    // We need to coordinate these at the unconfigured-level
+                ruleNames: s_rules);
 
             // Set the link up so that we publish changes to target block
             transformBlock.Value.LinkTo(targetBlock, DataflowOption.PropagateCompletion);

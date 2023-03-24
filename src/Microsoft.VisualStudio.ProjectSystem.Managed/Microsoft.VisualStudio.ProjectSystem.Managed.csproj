@@ -157,6 +157,17 @@
       <DataAccess>None</DataAccess>
       <RuleInjection>None</RuleInjection>
     </XamlPropertyRule>
+    <Compile Update="ProjectSystem\Rules\EvaluatedProjectReference.cs">
+      <DependentUpon>EvaluatedProjectReference.xaml</DependentUpon>
+    </Compile>
+    <XamlPropertyRule Include="ProjectSystem\Rules\EvaluatedProjectReference.xaml">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+      <XlfInput>false</XlfInput>
+      <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
+      <SubType>Designer</SubType>
+      <DataAccess>None</DataAccess>
+      <RuleInjection>None</RuleInjection>
+    </XamlPropertyRule>
 
     <!-- SDK Reference -->
     <Compile Update="ProjectSystem\Rules\Dependencies\SdkReference.xaml.cs">
