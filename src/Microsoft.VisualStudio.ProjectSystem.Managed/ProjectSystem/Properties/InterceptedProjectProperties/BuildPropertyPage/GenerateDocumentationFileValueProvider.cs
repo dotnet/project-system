@@ -36,7 +36,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
                 }
             }
 
-            return null;
+            return unevaluatedPropertyValue;
         }
     }
 }

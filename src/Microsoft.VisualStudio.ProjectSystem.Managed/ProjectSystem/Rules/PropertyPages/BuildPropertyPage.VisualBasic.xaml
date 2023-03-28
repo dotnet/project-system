@@ -41,7 +41,11 @@
   <BoolProperty Name="GenerateDocumentationFile"
                 DisplayName="Generate XML documentation file"
                 Description="Specifies whether to generate documentation information."
-                Category="General" />
+                Category="General">
+    <BoolProperty.DataSource>
+      <DataSource HasConfigurationCondition="False" />
+    </BoolProperty.DataSource>
+  </BoolProperty>
 
   <!-- TODO: Condition the visibility on this being a class library -->
   <BoolProperty Name="RegisterForComInterop"
