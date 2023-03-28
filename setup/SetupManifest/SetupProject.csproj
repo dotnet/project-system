@@ -9,7 +9,7 @@
   <Import Project="..\..\eng\imports\VisualStudio.props" />
 
   <ItemGroup>
-    <ProjectReference Include="SetupManifest.vsmanproj" ReferenceOutputAssembly="false" />
+    <ProjectReference Include="SetupManifest.vsmanproj" ReferenceOutputAssembly="false" Targets="Restore;Build" />
   </ItemGroup>
 
   <!-- Builds the associated .vsmanproj to produce a .vsman file for VS insertions. -->
