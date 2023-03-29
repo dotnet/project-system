@@ -28,12 +28,18 @@
   <ItemGroup>
     <ProjectReference Include="..\ProjectSystemSetup\ProjectSystemSetup.csproj" />
     <ProjectReference Include="..\VisualStudioEditorsSetup\VisualStudioEditorsSetup.csproj" />
-    <ProjectReference Include="..\Microsoft.VisualStudio.ProjectSystem.Managed.CommonFiles\Microsoft.VisualStudio.ProjectSystem.Managed.CommonFiles.swixproj" ReferenceOutputAssembly="false" />
+    <ProjectReference Include="..\Microsoft.VisualStudio.ProjectSystem.Managed.CommonFiles\Microsoft.VisualStudio.ProjectSystem.Managed.CommonFiles.swixproj" ReferenceOutputAssembly="false" Targets="Restore;Build" />
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Microsoft.VisualStudio.Internal.MicroBuild.Vsman" />
   </ItemGroup>
+
+  <Target Name="FixGlobalPropertiesToRemove" BeforeTargets="ResolveProjectReferences">
+    <ItemGroup>
+      <_MSBuildProjectReferenceExistent Update="@(_MSBuildProjectReferenceExistent)" RemoveMetadata="GlobalPropertiesToRemove" />
+    </ItemGroup>
+  </Target>
 
   <!-- <Target Name="SWiXProjRestore" AfterTargets="Restore">
     <MSBuild Projects="$(MSBuildThisFileDirectory)..\Microsoft.VisualStudio.ProjectSystem.Managed.CommonFiles\Microsoft.VisualStudio.ProjectSystem.Managed.CommonFiles.swixproj" Targets="Restore" />

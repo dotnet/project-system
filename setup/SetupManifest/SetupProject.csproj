@@ -9,8 +9,15 @@
   <Import Project="..\..\eng\imports\VisualStudio.props" />
 
   <ItemGroup>
+    <!-- <ProjectReference Include="SetupManifest.vsmanproj" ReferenceOutputAssembly="false" SetConfiguration="Configuration=$(Configuration)" Targets="@(Targets)" /> -->
     <ProjectReference Include="SetupManifest.vsmanproj" ReferenceOutputAssembly="false" Targets="Restore;Build" />
   </ItemGroup>
+
+  <Target Name="FixGlobalPropertiesToRemove" BeforeTargets="ResolveProjectReferences">
+    <ItemGroup>
+      <_MSBuildProjectReferenceExistent Update="@(_MSBuildProjectReferenceExistent)" RemoveMetadata="GlobalPropertiesToRemove" />
+    </ItemGroup>
+  </Target>
 
   <!-- Builds the associated .vsmanproj to produce a .vsman file for VS insertions. -->
   <!-- <Target Name="VSManifestBuild" AfterTargets="Build">
