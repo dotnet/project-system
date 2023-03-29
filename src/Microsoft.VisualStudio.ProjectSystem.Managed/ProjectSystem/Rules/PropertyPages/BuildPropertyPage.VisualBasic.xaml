@@ -37,15 +37,31 @@
                   Category="General"
                   Subtype="directory" />
 
-  <!-- TODO: Update this with correct behavior for SDK-style projects -->
   <BoolProperty Name="GenerateDocumentationFile"
                 DisplayName="Generate XML documentation file"
                 Description="Specifies whether to generate documentation information."
+                HelpUrl="https://go.microsoft.com/fwlink/?linkid=2165772"
                 Category="General">
     <BoolProperty.DataSource>
       <DataSource HasConfigurationCondition="False" />
     </BoolProperty.DataSource>
   </BoolProperty>
+
+  <StringProperty Name="DocumentationFile"
+                  DisplayName="XML documentation file path"
+                  Description="Optional path for the API documentation file. Leave blank to use the default location."
+                  HelpUrl="https://go.microsoft.com/fwlink/?linkid=2147081"
+                  Category="General"
+                  Subtype="file">
+    <StringProperty.DataSource>
+      <DataSource HasConfigurationCondition="False" />
+    </StringProperty.DataSource>
+    <StringProperty.Metadata>
+      <NameValuePair Name="VisibilityCondition">
+        <NameValuePair.Value>(has-evaluated-value "Build" "GenerateDocumentationFile" true)</NameValuePair.Value>
+      </NameValuePair>
+    </StringProperty.Metadata>
+  </StringProperty>
 
   <!-- TODO: Condition the visibility on this being a class library -->
   <BoolProperty Name="RegisterForComInterop"

@@ -387,6 +387,16 @@
         <target state="translated">Constantes personalizadas</target>
         <note />
       </trans-unit>
+      <trans-unit id="StringProperty|DocumentationFile|Description">
+        <source>Optional path for the API documentation file. Leave blank to use the default location.</source>
+        <target state="new">Optional path for the API documentation file. Leave blank to use the default location.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|DocumentationFile|DisplayName">
+        <source>XML documentation file path</source>
+        <target state="new">XML documentation file path</target>
+        <note />
+      </trans-unit>
       <trans-unit id="StringProperty|OutputPath|DisplayName">
         <source>Build output path</source>
         <target state="translated">Construir caminho de saída</target>
