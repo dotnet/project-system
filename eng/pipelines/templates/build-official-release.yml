@@ -121,6 +121,7 @@ jobs:
     name: SetVisualStudioMinimumVersionVariable
 
   # Required for the MicroBuildBuildVSBootstrapper task. See description above that task for details.
+  # This should not be installed prior to building the repo as it may interfere with building the swixproj and vsmanproj projects.
   - task: MicroBuildSwixPlugin@4
     displayName: Install Swix Plugin
 
@@ -140,7 +141,7 @@ jobs:
       bootstrapperCoreVersion: latest
       vsMajorVersion: $(SetVisualStudioMinimumVersionVariable.VisualStudioMinimumVersion)
       channelName: int.main
-      manifests: $(Build.SourcesDirectory)/artifacts/$(BuildConfiguration)/VSSetup/Insertion/Microsoft.VisualStudio.ProjectSystem.Managed.vsman
+      manifests: $(Build.SourcesDirectory)/artifacts/$(BuildConfiguration)/VSSetup/Insertion/SetupManifest.vsman
       # Outputting to the Insertion folder allows the bootstrapper to be published to the Products drop, along with our insertion files.
       # The merged .vsman (OverlaidInstallerManifest.vsman) created by the bootstrapper assumes the bootstrapper will be output to the same drop (Products) as the insertion files.
       outputFolder: $(Build.SourcesDirectory)/artifacts/$(BuildConfiguration)/VSSetup/Insertion
