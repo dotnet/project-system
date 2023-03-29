@@ -15,8 +15,11 @@
     <PublishOutputToSymStore>false</PublishOutputToSymStore>
     <IncludeAssemblyInVSIXContainer>false</IncludeAssemblyInVSIXContainer>
 
+    <!-- See: https://dev.azure.com/devdiv/DevDiv/_wiki/wikis/DevDiv.wiki/29786/Common-setup-authoring-recommendations?anchor=recommendations -->
     <VsixOutputPath>$(VisualStudioSetupInsertionPath)</VsixOutputPath>
     <NoSwixBuildPlugin>true</NoSwixBuildPlugin>
+    <!-- See: https://dev.azure.com/devdiv/DevDiv/_wiki/wikis/DevDiv.wiki/29786/Common-setup-authoring-recommendations?anchor=including-sbom-support -->
+    <SBOMFileDestPath>$(ArtifactsBinDir)</SBOMFileDestPath>
 
     <VsixSourceManifestPath>$(MSBuildProjectDirectory)\source.extension.vsixmanifest</VsixSourceManifestPath>
     <!-- This property indicates that the project is a VS Extension project. The SwixBuild plugin expects this value to be set for the AddSBOM task. -->

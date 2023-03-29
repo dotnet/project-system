@@ -1,31 +1,26 @@
 ﻿<!-- Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information. -->
 <Project Sdk="Microsoft.NET.Sdk">
 
-  <!--
-    The purpose of this project is not for building an assembly. It is for building the Microsoft.VisualStudio.ProjectSystem.Managed project as the files from that are a dependency for the .swixproj.
-    Additionally, it ends up running the Nerdbank.GitVersioning mechanism via PackageRestore. This version number is then passed to the .swixproj for as the VSIX version.
-  -->
+  <!-- The purpose of this project is not for building an assembly. It is for building the SetupManifest.vsmanproj project as a vsmanproj cannot be included in a solution file. -->
 
   <Import Project="..\..\eng\imports\VisualStudio.props" />
 
   <ItemGroup>
-    <!-- <ProjectReference Include="SetupManifest.vsmanproj" ReferenceOutputAssembly="false" SetConfiguration="Configuration=$(Configuration)" Targets="@(Targets)" /> -->
     <ProjectReference Include="SetupManifest.vsmanproj" ReferenceOutputAssembly="false" Targets="Restore;Build" />
   </ItemGroup>
 
+  <!--
+    For whatever reason, 'Configuration;Platform' is set as remove properties for the ResolveProjectReferences task.
+    We currently require Configuration to be present so that the output is in the correct location on-disk.
+    This target removes Configuration out of the remove properties list, prior to resolving the project references.
+  -->
   <Target Name="FixGlobalPropertiesToRemove" BeforeTargets="ResolveProjectReferences">
     <ItemGroup>
-      <_MSBuildProjectReferenceExistent Update="@(_MSBuildProjectReferenceExistent)" RemoveMetadata="GlobalPropertiesToRemove" />
+      <_MSBuildProjectReferenceExistent Update="@(_MSBuildProjectReferenceExistent)">
+        <!-- See: https://github.com/dotnet/msbuild/issues/4615 -->
+        <GlobalPropertiesToRemove>$([System.String]::Copy('%(_MSBuildProjectReferenceExistent.GlobalPropertiesToRemove)').Replace('Configuration', ''))</GlobalPropertiesToRemove>
+      </_MSBuildProjectReferenceExistent>
     </ItemGroup>
   </Target>
-
-  <!-- Builds the associated .vsmanproj to produce a .vsman file for VS insertions. -->
-  <!-- <Target Name="VSManifestBuild" AfterTargets="Build">
-    <MSBuild Projects="$(MSBuildThisFileDirectory)SetupManifest.vsmanproj" Targets="Restore;Build" />
-  </Target> -->
-
-  <!-- <Target Name="VSManifestRestore" AfterTargets="Restore">
-    <MSBuild Projects="$(MSBuildThisFileDirectory)SetupManifest.vsmanproj" Targets="Restore" />
-  </Target> -->
 
 </Project>
