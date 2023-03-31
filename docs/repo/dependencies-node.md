@@ -1,6 +1,9 @@
-# Dependencies Node
+# Dependencies node
 
-A high-level overview of this feature is available in [Dependencies Node Roadmap](dependencies-node-roadmap.md).
+This document, along with all other docs in this `repo` folder, are aimed at developers of the `dotnet/project-system` repo, or extenders of the project system for other project types.
+
+- General documentation on the dependencies tree features and diagnosing common problems is available in [Dependencies tree](../dependencies-tree.md).
+- A high-level overview of the implementation of the dependencies tree is available in [Dependencies Node Roadmap](dependencies-node-roadmap.md).
 
 ## Customizing nodes
 

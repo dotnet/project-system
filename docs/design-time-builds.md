@@ -112,7 +112,23 @@ You can force Visual Studio to show the results of a design-time build using the
 2. In Visual Studio, choose the `View > Other Windows > Build Logging` menu item.
 3. Click on the "play" button.
 
-This will cause design-time builds to show up in the build logging tool window. If you have the [MSBuild Binary and Structured Log Viewer](http://msbuildlog.com/) installed, you can double-click on a log to view it in the viewer, otherwise you can right-click and choose `Save As...` to save the log in the new [binary log format](https://github.com/Microsoft/msbuild/wiki/Binary-Log).
+This will cause design-time builds to show up in the build logging tool window. If you have the [MSBuild Structured Log Viewer](https://msbuildlog.com) installed, you can double-click on a log to view it in the viewer, otherwise you can right-click and choose `Save As...` to save the log in the new [binary log format](https://github.com/Microsoft/msbuild/wiki/Binary-Log).
+
+#### Visual Studio 2022 or later
+
+You may use the [Project System Tools](https://github.com/dotnet/project-system-tools#project-system-tools) extension mentioned immediately above, however that extension does not capture all available information. To capture all build information:
+
+1. Open a _Developer Command Prompt_ for the version of Visual Studio you want to use.
+1. Set two environment variables as follows:
+   ```
+   set MSBuildDebugEngine=1
+   set MSBUILDDEBUGPATH=c:\some\path
+   ```
+   You can use whatever path you like for `MSBUILDDEBUGPATH`, but it must be writeable by the current user.
+1. Type `devenv` to start Visual Studio with this configuration.
+1. Open the `MSBUILDDEBUGPATH` path in Windows Explorer to see the captured `.binlog` and other diagnostic files. You can open them using the [MSBuild Structured Log Viewer](https://msbuildlog.com)
+
+For more information, see [this documentation section](https://github.com/dotnet/msbuild/blob/main/documentation/wiki/Building-Testing-and-Debugging-on-Full-Framework-MSBuild.md#logs).
 
 ### Diagnosing failing or slow design-time builds
 
