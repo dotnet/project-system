@@ -128,7 +128,12 @@ You may use the [Project System Tools](https://github.com/dotnet/project-system-
 1. Type `devenv` to start Visual Studio with this configuration.
 1. Open the `MSBUILDDEBUGPATH` path in Windows Explorer to see the captured `.binlog` and other diagnostic files. You can open them using the [MSBuild Structured Log Viewer](https://msbuildlog.com)
 
-For more information, see [this documentation section](https://github.com/dotnet/msbuild/blob/main/documentation/wiki/Building-Testing-and-Debugging-on-Full-Framework-MSBuild.md#logs).
+⚠️ While this environment variable is set, all builds will be logged. It's possible for the number of output logs to be very high.
+
+For more information, see:
+
+- [Providing MSBuild Binary Logs for investigation](https://github.com/dotnet/msbuild/blob/main/documentation/wiki/Providing-Binary-Logs.md)
+- [Further MSBuild documentation on binlogs](https://github.com/dotnet/msbuild/blob/main/documentation/wiki/Building-Testing-and-Debugging-on-Full-Framework-MSBuild.md#logs).
 
 ### Diagnosing failing or slow design-time builds
 
