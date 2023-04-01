@@ -40,4 +40,18 @@
     <MakeDir Directories="$(VisualStudioSetupInsertionPath)" />
   </Target>
 
+  <!-- Overrides the GetVsixPrimaryOutputs from microsoft.visualstudio.internal.microbuild's package, specifically the Vsix.targets file. -->
+  <!-- <Target Name="GetVsixPrimaryOutputs" Condition="'$(CreateVsixContainer)' == 'true'" Returns="@(VsixPrimaryOutputs)">
+    <ItemGroup>
+      <VsixPrimaryOutputs Include="$(TargetVsixContainer)" />
+      <VsixPrimaryOutputs Include="$(VisualStudioSetupInsertionPath)$(VsixManifestPackageId).json">
+        <RelativeUrl Condition="'$(Platform)' != 'AnyCPU'">$(Platform)/</RelativeUrl>
+        <SBOMFileLocation>@(SbomOutput)</SBOMFileLocation>
+        <SBOMFileDestPath>$(SBOMFileDestPath)</SBOMFileDestPath>
+      </VsixPrimaryOutputs>
+    </ItemGroup>
+  </Target> -->
+
+  <Import Project="..\eng\imports\OverrideGetVsixPrimaryOutputs.targets" Condition="'$(IsVsixProject)' == 'true'" />
+
 </Project>

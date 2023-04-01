@@ -9,6 +9,10 @@
     <SuppressFromVsix Include="Microsoft.VisualStudio.XmlEditor.dll" />
   </ItemGroup>
 
+  <ItemGroup>
+    <PackageReference Include="Microsoft.VisualStudio.Internal.MicroBuild" />
+  </ItemGroup>
+
   <PropertyGroup>
     <!-- Prevent the extension.vsixmanifest from each VS Extension project to write to the same output directory, overriding each other's file. This prevents the target CopyVsixManifestFile from the VSSDK.BuildTools from executing. -->
     <CopyVsixManifestToOutput>false</CopyVsixManifestToOutput>
@@ -19,7 +23,7 @@
     <VsixOutputPath>$(VisualStudioSetupInsertionPath)</VsixOutputPath>
     <NoSwixBuildPlugin>true</NoSwixBuildPlugin>
     <!-- See: https://dev.azure.com/devdiv/DevDiv/_wiki/wikis/DevDiv.wiki/29786/Common-setup-authoring-recommendations?anchor=including-sbom-support -->
-    <SBOMFileDestPath>$(ArtifactsBinDir)</SBOMFileDestPath>
+    <SBOMFileDestPath>$(VisualStudioSetupInsertionPath)</SBOMFileDestPath>
 
     <VsixSourceManifestPath>$(MSBuildProjectDirectory)\source.extension.vsixmanifest</VsixSourceManifestPath>
     <!-- This property indicates that the project is a VS Extension project. The SwixBuild plugin expects this value to be set for the AddSBOM task. -->

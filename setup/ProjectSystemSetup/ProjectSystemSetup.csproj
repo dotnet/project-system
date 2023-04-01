@@ -5,6 +5,11 @@
 
   <Import Project="..\..\eng\imports\VisualStudio.props" />
 
+  <!-- Local properties -->
+  <PropertyGroup>
+    <_ManagedProjectName>Microsoft.VisualStudio.ProjectSystem.Managed</_ManagedProjectName>
+  </PropertyGroup>
+
   <PropertyGroup>
     <RootNamespace>Microsoft.VisualStudio</RootNamespace>
     <!-- Note: No idea why ProjectSystem is the AssemblyName instead of using the MSBuildProjectName of ProjectSystemSetup. -->
@@ -15,11 +20,9 @@
     <ExtensionInstallationFolder>Microsoft\ManagedProjectSystem</ExtensionInstallationFolder>
     <TargetVsixContainerName>$(AssemblyName).vsix</TargetVsixContainerName>
     <TargetVsixContainer>$(VisualStudioSetupInsertionPath)$(TargetVsixContainerName)</TargetVsixContainer>
-  </PropertyGroup>
 
-  <!-- Local properties -->
-  <PropertyGroup>
-    <_ManagedProjectName>Microsoft.VisualStudio.ProjectSystem.Managed</_ManagedProjectName>
+    <!-- Set's the JSON manifest name for GetVsixPrimaryOutputs in Directory.Build.targets -->
+    <VsixManifestPackageId>$(_ManagedProjectName)</VsixManifestPackageId>
   </PropertyGroup>
 
   <ItemGroup>
@@ -35,10 +38,25 @@
       <Ngen>true</Ngen>
       <NgenPriority>1</NgenPriority>
     </ProjectReference>
-    <!-- This is included so that F5 debugging works in the repo. It is not included in the setup .vsix package with the Project System assemblies. -->
-    <ProjectReference Include="..\VisualStudioEditorsSetup\VisualStudioEditorsSetup.csproj">
-      <Private>false</Private>
+    <!-- <ProjectReference Include="..\..\src\Microsoft.VisualStudio.ProjectSystem.Managed.VS\Microsoft.VisualStudio.ProjectSystem.Managed.VS.csproj">
+      <Name>Microsoft.VisualStudio.ProjectSystem.Managed.VS</Name>
+      <Ngen>true</Ngen>
+      <NgenPriority>1</NgenPriority>
+      <IncludeOutputGroupsInVSIX>BuiltProjectOutputGroup;GetCopyToOutputDirectoryItems;SatelliteDllsProjectOutputGroup;PkgdefProjectOutputGroup</IncludeOutputGroupsInVSIX>
+      <IncludeOutputGroupsInVSIXLocalOnly>DebugSymbolsProjectOutputGroup</IncludeOutputGroupsInVSIXLocalOnly>
     </ProjectReference>
+    <ProjectReference Include="..\..\src\$(_ManagedProjectName)\$(_ManagedProjectName).csproj">
+      <Name>$(_ManagedProjectName)</Name>
+      <Ngen>true</Ngen>
+      <NgenPriority>1</NgenPriority>
+      <IncludeOutputGroupsInVSIX>BuiltProjectOutputGroup;GetCopyToOutputDirectoryItems;SatelliteDllsProjectOutputGroup</IncludeOutputGroupsInVSIX>
+      <IncludeOutputGroupsInVSIXLocalOnly>DebugSymbolsProjectOutputGroup</IncludeOutputGroupsInVSIXLocalOnly>
+    </ProjectReference> -->
+    <!-- This is included so that F5 debugging works in the repo. It is not included in the setup .vsix package with the Project System assemblies. -->
+    <!-- <ProjectReference Include="..\VisualStudioEditorsSetup\VisualStudioEditorsSetup.csproj">
+      <Private>false</Private>
+      <IncludeOutputGroupsInVSIX></IncludeOutputGroupsInVSIX>
+    </ProjectReference> -->
   </ItemGroup>
 
   <ItemGroup>
@@ -58,5 +76,48 @@
       <VSIXSourceItem Remove="$(ArtifactsObjDir)$(_ManagedProjectName)\$(_ManagedProjectName).xlf\**\*.xaml" />
     </ItemGroup>
   </Target>
+
+  <!-- <Target Name="OverrideGetVsixPrimaryOutputs" BeforeTargets="GetVsixPrimaryOutputs">
+    <Project>
+      <Import Project="..\..\eng\imports\OverrideGetVsixPrimaryOutputs.targets" />
+    </Project>
+  </Target> -->
+
+  <!-- <Target Name="OverrideGetVsixPrimaryOutputs" Condition="'$(CreateVsixContainer)' == 'true'" Returns="@(VsixPrimaryOutputs)" BeforeTargets="GetVsixPrimaryOutputs">
+    <ItemGroup>
+      <VsixPrimaryOutputs Include="$(TargetVsixContainer)" />
+      <VsixPrimaryOutputs Include="$(VisualStudioSetupInsertionPath)$(_VsixManifestPackageId).json">
+        <RelativeUrl Condition="'$(Platform)' != 'AnyCPU'">$(Platform)/</RelativeUrl>
+        <SBOMFileLocation>@(SbomOutput)</SBOMFileLocation>
+        <SBOMFileDestPath>$(SBOMFileDestPath)</SBOMFileDestPath>
+      </VsixPrimaryOutputs>
+    </ItemGroup>
+  </Target> -->
+
+  <!-- <Target Name="OverrideGetVsixPrimaryOutputs_Update" AfterTargets="GetVsixPrimaryOutputs">
+    <PropertyGroup>
+      <CreateVsixContainer>true</CreateVsixContainer>
+    </PropertyGroup>
+  </Target> -->
+
+  <!-- <Target Name="FixVsixPrimaryOutputs" AfterTargets="GetVsixPrimaryOutputs" Outputs="@(VsixPrimaryOutputs)">
+    <ItemGroup>
+      <VsixPrimaryOutputs Remove="$(VisualStudioSetupInsertionPath)$(AssemblyName).json" />
+      <VsixPrimaryOutputs Include="$(VisualStudioSetupInsertionPath)$(_VsixManifestPackageId).json">
+        <SBOMFileLocation>@(SbomOutput)</SBOMFileLocation>
+        <SBOMFileDestPath>$(SBOMFileDestPath)</SBOMFileDestPath>
+      </VsixPrimaryOutputs>
+    </ItemGroup>
+  </Target> -->
+
+  <!-- <Target Name="FixVsixPrimaryOutputs" AfterTargets="GetVsixPrimaryOutputs" Outputs="@(VsixPrimaryOutputs)">
+    <ItemGroup>
+      <VsixPrimaryOutputs Remove="$(VisualStudioSetupInsertionPath)$(AssemblyName).json" />
+      <VsixPrimaryOutputs Include="$(VisualStudioSetupInsertionPath)$(_VsixManifestPackageId).json">
+        <SBOMFileLocation>@(SbomOutput)</SBOMFileLocation>
+        <SBOMFileDestPath>$(SBOMFileDestPath)</SBOMFileDestPath>
+      </VsixPrimaryOutputs>
+    </ItemGroup>
+  </Target> -->
 
 </Project>

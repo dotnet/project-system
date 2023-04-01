@@ -58,13 +58,10 @@ jobs:
     # This is not a necessary task for the build to be successful.
     continueOnError: true
 
-  # https://dev.azure.com/devdiv/DevDiv/_wiki/wikis/DevDiv.wiki/29786/Common-setup-authoring-recommendations?anchor=including-sbom-support
+  # Allows creating SBOM information during the build.
+  # See: https://dev.azure.com/devdiv/DevDiv/_wiki/wikis/DevDiv.wiki/29786/Common-setup-authoring-recommendations?anchor=including-sbom-support
   - task: MicroBuildSbomPlugin@1
     displayName: Install SBOM Plugin
-
-  # # Necessary for building the .swixproj (VSIX package) and .vsmanproj (VS Insertion) projects.
-  # - task: MicroBuildSwixPlugin@4
-  #   displayName: Install Swix Plugin
 
   # This requires the OptimizationInputs via the 'Publish OptimizationInputs drop' step in the release pipeline.
   # To generate ProfilingInputs for the first time, set this input: ShouldSkipOptimize: true

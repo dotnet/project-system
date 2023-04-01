@@ -1,0 +1,15 @@
+<!-- Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information. -->
+<Project>
+
+  <Target Name="GetVsixPrimaryOutputs" Condition="'$(CreateVsixContainer)' == 'true'" Returns="@(VsixPrimaryOutputs)">
+    <ItemGroup>
+      <VsixPrimaryOutputs Include="$(TargetVsixContainer)" />
+      <VsixPrimaryOutputs Include="$(VisualStudioSetupInsertionPath)$(VsixManifestPackageId).json">
+        <RelativeUrl Condition="'$(Platform)' != 'AnyCPU'">$(Platform)/</RelativeUrl>
+        <SBOMFileLocation>@(SbomOutput)</SBOMFileLocation>
+        <SBOMFileDestPath>$(SBOMFileDestPath)</SBOMFileDestPath>
+      </VsixPrimaryOutputs>
+    </ItemGroup>
+  </Target>
+
+</Project>

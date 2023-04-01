@@ -6,7 +6,7 @@
   <!-- <Import Project="$(MicroBuildCoreDir)Microsoft.VisualStudioEng.MicroBuild.Core.props" /> -->
   <!-- <Import Project="$(SwixBuildDir)Microsoft.VisualStudioEng.MicroBuild.Plugins.SwixBuild.props" /> -->
 
-  <PropertyGroup>
+  <!-- <PropertyGroup> -->
     <!--
       Without this, the project attempts to run NuGet restore, but it doesn't have the necessary information to run properly.
       C:\Program Files\Microsoft Visual Studio\2022\Preview\MSBuild\Microsoft\NuGet\17.0\Microsoft.NuGet.targets(198,5):
@@ -17,7 +17,7 @@
     <!-- Manually importing the Directory.Build.props seems to respect the properties such as OutputPath appropriately. Otherwise, things end up in the wrong places. -->
     <!-- <ImportDirectoryBuildProps>false</ImportDirectoryBuildProps>
     <ImportDirectoryBuildTargets>false</ImportDirectoryBuildTargets> -->
-  </PropertyGroup>
+  <!-- </PropertyGroup> -->
 
   <!-- <ItemGroup> -->
     <!-- <MergeManifest Include="$(VisualStudioSetupInsertionPath)$(TargetName).json" SBOMFileLocation="$(ArtifactsBinDir)_manifest\spdx_2.2\manifest.spdx.json" /> -->

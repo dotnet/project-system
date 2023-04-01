@@ -49,12 +49,7 @@
   </Target>
 
   <Target Name="FixProposedSwixInputsPaths" AfterTargets="GetConstructedSwrFilePaths">
-    <!-- <PropertyGroup>
-      <SwrInputsOutputFolder>$([System.IO.Path]::GetDirectoryName(%(SwixInputs.VsixOutputPath)))</SwrInputsOutputFolder>
-    </PropertyGroup> -->
     <ItemGroup>
-      <!-- <SwrInputsToCopy Include="$(SwrInputsOutputFolder)\*.*" /> -->
-
       <FileWrites Remove="%(ProposedSwixInputs.VsixOutputPath)" />
       <FileWrites Remove="%(ProposedSwixInputs.JsonOutputPath)" />
       <FileWrites Remove="%(ProposedSwixInputs.FilesTxtOutputPath)" />
@@ -72,16 +67,6 @@
       <FileWrites Include="%(ProposedSwixInputs.FilesTxtOutputPath)" />
       <MergeManifest Include="@(ProposedSwixInputs->'%(JsonOutputPath)')" />
     </ItemGroup>
-    <!-- <Copy SourceFiles="@(SwrInputsToCopy)" DestinationFolder="$(OutputPath)" />
-    <RemoveDir Directories="$(OutputPath)$(MSBuildProjectName)" /> -->
-    <!-- <ItemGroup>
-      <SwixInputs Update="@(SwixInputs)">
-        <VsixOutputPath>$(OutputPath)$(PackageName).vsix</VsixOutputPath>
-        <JsonOutputPath>$(OutputPath)$(PackageName).json</JsonOutputPath>
-        <FilesTxtOutputPath>$(OutputPath)files.txt</FilesTxtOutputPath>
-        <RelativeUrl></RelativeUrl>
-      </SwixInputs>
-    </ItemGroup> -->
   </Target>
 
 </Project>
