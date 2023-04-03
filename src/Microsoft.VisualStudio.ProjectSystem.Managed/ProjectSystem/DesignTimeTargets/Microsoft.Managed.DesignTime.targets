@@ -408,6 +408,22 @@
   </Target>
 
   <Target
+      Name="ResolveAssemblyReferencesDesignTime2"
+      Returns="@(_ResolvedDesignTimeAssemblyReference)"
+      DependsOnTargets="ResolveProjectReferences;ResolveAssemblyReferences">
+
+    <!-- ResolveAssemblyReferencesDesignTime filters ReferencePath items to exclude P2P references, but we also want to filter out
+         references from PackageReferences and FrameworkReferences. In both cases, the NuGetPackageId metadata is populated,
+         so we use it to filter our such assemblies. https://github.com/dotnet/msbuild/issues/8623 -->
+    <ItemGroup>
+      <_ResolvedDesignTimeAssemblyReference
+        Include="@(ReferencePath)"
+        Condition="'%(ReferencePath.ReferenceSourceTarget)' == 'ResolveAssemblyReference' and '%(ReferencePath.NuGetPackageId)' == ''" />
+    </ItemGroup>
+
+  </Target>
+
+  <Target
     Name="ResolveFrameworkReferencesDesignTime"
     Returns="@(ResolvedFrameworkReference)"
     DependsOnTargets="ResolveFrameworkReferences" />
