@@ -509,7 +509,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
                 var itemsByKindBySet = new Dictionary<string, Dictionary<string, HashSet<string>>>(BuildUpToDateCheck.SetNameComparer);
 
-                foreach ((string item, IImmutableDictionary<string, string> metadata) in TryGetOrderedData(projectChangeDescription.After.Items))
+                foreach ((string item, IImmutableDictionary<string, string> metadata) in projectChangeDescription.After.TryGetOrderedItems())
                 {
                     if (metadataPredicate is not null && !metadataPredicate(metadata))
                     {
@@ -538,17 +538,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                         pair => pair.Key,
                         pair => pair.Value.ToImmutableArray()),
                     BuildUpToDateCheck.SetNameComparer);
-
-                static IEnumerable<KeyValuePair<string, IImmutableDictionary<string, string>>> TryGetOrderedData(IImmutableDictionary<string, IImmutableDictionary<string, string>> items)
-                {
-                    if (items is IDataWithOriginalSource<KeyValuePair<string, IImmutableDictionary<string, string>>> dataWithOriginalSource)
-                        return dataWithOriginalSource.SourceData;
-
-                    // We couldn't obtain ordered items for some reason.
-                    // This is not a big problem, so just return the items in whatever order
-                    // the backing collection from CPS models them in.
-                    return items;
-                }
 
                 void AddItem(string setName, string kindName, string item)
                 {
