@@ -52,6 +52,16 @@
         <target state="translated">32비트 선호</target>
         <note />
       </trans-unit>
+      <trans-unit id="BoolProperty|PublishDocumentationFile|Description">
+        <source>When this property is true, the XML documentation file for the project, if one is generated, is included in the publish output for the project. This property defaults to true.</source>
+        <target state="new">When this property is true, the XML documentation file for the project, if one is generated, is included in the publish output for the project. This property defaults to true.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="BoolProperty|PublishDocumentationFile|DisplayName">
+        <source>Publish documentation file</source>
+        <target state="new">Publish documentation file</target>
+        <note />
+      </trans-unit>
       <trans-unit id="BoolProperty|RegisterForComInterop|Description">
         <source>Specifies whether your managed application will expose a COM object (a COM-callable wrapper) that enables a COM object to interact with the application.</source>
         <target state="translated">관리되는 애플리케이션이 COM 개체가 애플리케이션과 상호 작용할 수 있도록 하는 COM 개체(COM 호출 가능 래퍼)를 노출할지 여부를 지정합니다.</target>
@@ -385,6 +395,16 @@
       <trans-unit id="StringProperty|DefineConstants|DisplayName">
         <source>Custom constants</source>
         <target state="translated">사용자 지정 상수</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|DocumentationFile|Description">
+        <source>Optional path for the API documentation file. Leave blank to use the default location.</source>
+        <target state="new">Optional path for the API documentation file. Leave blank to use the default location.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|DocumentationFile|DisplayName">
+        <source>XML documentation file path</source>
+        <target state="new">XML documentation file path</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|OutputPath|DisplayName">

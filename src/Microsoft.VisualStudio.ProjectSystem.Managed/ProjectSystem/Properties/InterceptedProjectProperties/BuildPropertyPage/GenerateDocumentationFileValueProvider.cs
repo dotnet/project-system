@@ -8,6 +8,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         private readonly ITemporaryPropertyStorage _temporaryPropertyStorage;
 
         private const string DocumentationFileMSBuildProperty = "DocumentationFile";
+        private const string PublishDocumentationFileMSBuildProperty = "PublishDocumentationFile";
         private static readonly string[] s_msBuildPropertyNames = { DocumentationFileMSBuildProperty };
         
         [ImportingConstructor]
@@ -29,6 +30,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
                 {
                     await defaultProperties.SaveValueIfCurrentlySetAsync(DocumentationFileMSBuildProperty, _temporaryPropertyStorage);
                     await defaultProperties.DeletePropertyAsync(DocumentationFileMSBuildProperty);
+                    await defaultProperties.DeletePropertyAsync(PublishDocumentationFileMSBuildProperty);
                 }
                 else
                 {
@@ -36,7 +38,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
                 }
             }
 
-            return null;
+            return unevaluatedPropertyValue;
         }
     }
 }
