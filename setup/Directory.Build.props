@@ -9,15 +9,14 @@
     <SuppressFromVsix Include="Microsoft.VisualStudio.XmlEditor.dll" />
   </ItemGroup>
 
-  <ItemGroup>
-    <PackageReference Include="Microsoft.VisualStudio.Internal.MicroBuild" />
-  </ItemGroup>
-
   <PropertyGroup>
     <!-- Prevent the extension.vsixmanifest from each VS Extension project to write to the same output directory, overriding each other's file. This prevents the target CopyVsixManifestFile from the VSSDK.BuildTools from executing. -->
     <CopyVsixManifestToOutput>false</CopyVsixManifestToOutput>
     <PublishOutputToSymStore>false</PublishOutputToSymStore>
     <IncludeAssemblyInVSIXContainer>false</IncludeAssemblyInVSIXContainer>
+    <!-- During evaluation, Microsoft.VisualStudio.Internal.MicroBuild.targets will attempt to add the VSIX file in $(VisualStudioSetupInsertionPath) to FilesToSign. -->
+    <!-- This will fail to sign files in that location since the files are required to be in OutDir or IntermediateOutputPath for signing. -->
+    <EnableDefaultSignFiles>false</EnableDefaultSignFiles>
 
     <!-- See: https://dev.azure.com/devdiv/DevDiv/_wiki/wikis/DevDiv.wiki/29786/Common-setup-authoring-recommendations?anchor=recommendations -->
     <VsixOutputPath>$(VisualStudioSetupInsertionPath)</VsixOutputPath>
@@ -29,6 +28,10 @@
     <!-- This property indicates that the project is a VS Extension project. The SwixBuild plugin expects this value to be set for the AddSBOM task. -->
     <IsVsixProject Condition="Exists('$(VsixSourceManifestPath)')">true</IsVsixProject>
   </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.VisualStudio.Internal.MicroBuild" />
+  </ItemGroup>
 
   <PropertyGroup Condition="'$(IsVsixProject)' == 'true'">
     <SchemaVersion>2.0</SchemaVersion>
