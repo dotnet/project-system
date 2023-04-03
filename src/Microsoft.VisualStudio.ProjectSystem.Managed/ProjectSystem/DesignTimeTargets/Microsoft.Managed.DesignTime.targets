@@ -50,7 +50,7 @@
   <!--
     Locate the appropriate localized xaml resources based on the language ID or name.
 
-    The logic here matches the resource manager sufficiently to handle the fixed set of 
+    The logic here matches the resource manager sufficiently to handle the fixed set of
     possible VS languages and directories on disk.
 
     We cannot respect the exact probe order of the resource manager as this has to evaluate statically
@@ -144,7 +144,7 @@
     ProjectSubscriptionService - Rules that are invisible except for purposes of programmatic subscribing to project data.
     Invisible                  - A special rule catalog for purposes of programmatic subscribing to project data.
     BrowseObject               - Rules that describe properties that appear in the Properties tool window while an item is selected in Solution Explorer.
-    ConfiguredBrowseObject     - Rules that describe configured project properties. This context currently only supports the Xaml rule to define 
+    ConfiguredBrowseObject     - Rules that describe configured project properties. This context currently only supports the Xaml rule to define
                                  configuration related project level properties.-->
 
   <!-- Common Project System rules that override rules defined in msbuild. These are exact copy of the rules defined in msbuild. -->
@@ -195,7 +195,7 @@
     <PropertyPageSchema Include="$(ManagedXamlNeutralResourcesDirectory)Resource.xaml">
       <Context>File</Context>
     </PropertyPageSchema>
-    
+
     <PropertyPageSchema Include="$(ManagedXamlNeutralResourcesDirectory)PackageVersion.xaml">
       <Context>File</Context>
     </PropertyPageSchema>
@@ -367,7 +367,7 @@
   </ItemGroup>
 
   <!--
-    EmbeddedFiles are source files to be embedded to the PDB. 
+    EmbeddedFiles are source files to be embedded to the PDB.
     We need to set Visible to false in order to not display duplicate entries in project UI.
   -->
   <ItemDefinitionGroup>
@@ -379,7 +379,7 @@
   <!-- Targets -->
 
   <!-- For a newly created project with no packages restored, Design time build complains that there is no ResolvePackageDependenciesDesignTime
-       target, that is available only after restoring the .Net Core SDK targets. This No-op target will satisfy the check and will get overriden
+       target, that is available only after restoring the .NET Core SDK targets. This No-op target will satisfy the check and will get overriden
        once the actual targets are available after package restore-->
   <Target Name="ResolvePackageDependenciesDesignTime" />
   <Target Name="CollectSDKReferencesDesignTime" />

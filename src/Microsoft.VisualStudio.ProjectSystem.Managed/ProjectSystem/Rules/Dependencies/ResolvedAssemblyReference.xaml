@@ -25,7 +25,7 @@
                   SourceOfDefaultValue="AfterContext" />
     </StringListProperty.DataSource>
   </StringListProperty>
-  
+
   <StringProperty Name="BrowsePath"
                   ReadOnly="True"
                   Visible="False">
