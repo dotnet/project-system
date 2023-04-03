@@ -72,7 +72,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
             }
             else
             {
-                return GetPropertyValueAsync(propertyName);
+                return GetPropertyValueAsync(propertyName, defaultProperties);
             }
         }
 
@@ -84,7 +84,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
             }
             else
             {
-                return GetPropertyValueAsync(propertyName);
+                return GetPropertyValueAsync(propertyName, defaultProperties);
             }
         }
 
@@ -254,7 +254,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
             return null;
         }
 
-        private async Task<string> GetPropertyValueAsync(string propertyName)
+        private async Task<string> GetPropertyValueAsync(string propertyName, IProjectProperties defaultProperties)
         {
             string value = propertyName switch
             {
@@ -293,6 +293,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
                     _ => throw new InvalidOperationException($"Invalid value '{value}' for '{propertyName}' property.")
                 };
             }
+            else if (propertyName == SplashScreen)
+            {
+                string rootNamespace = await defaultProperties.GetEvaluatedPropertyValueAsync("RootNamespace");
+                value = rootNamespace + "." + value;
+            }
 
             return value;
         }
@@ -317,6 +322,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
                     "AfterAllFormsClose" => "1",
                     _ => unevaluatedPropertyValue
                 };
+            }
+            else if (propertyName == SplashScreen && !string.IsNullOrEmpty(unevaluatedPropertyValue))
+            {
+                string rootNamespace = await defaultProperties.GetEvaluatedPropertyValueAsync("RootNamespace");
+                unevaluatedPropertyValue = unevaluatedPropertyValue.Replace(rootNamespace + ".", string.Empty);
             }
 
             await (propertyName switch 
