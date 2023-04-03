@@ -2,32 +2,14 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <Import Project="..\..\eng\imports\HostAgnostic.props" />
-  <!-- <Import Project="..\Directory.Build.props" /> -->
-  <!-- <Import Project="$(MicroBuildCoreDir)Microsoft.VisualStudioEng.MicroBuild.Core.props" /> -->
-  <!-- <Import Project="$(SwixBuildDir)Microsoft.VisualStudioEng.MicroBuild.Plugins.SwixBuild.props" /> -->
-
-  <!-- <PropertyGroup> -->
-    <!--
-      Without this, the project attempts to run NuGet restore, but it doesn't have the necessary information to run properly.
-      C:\Program Files\Microsoft Visual Studio\2022\Preview\MSBuild\Microsoft\NuGet\17.0\Microsoft.NuGet.targets(198,5):
-      error : Your project file doesn't list 'win' as a "RuntimeIdentifier".
-      You should add 'win' to the "RuntimeIdentifiers" property in your project file and then re-run NuGet restore.
-    -->
-    <!-- <ResolveNuGetPackages>false</ResolveNuGetPackages> -->
-    <!-- Manually importing the Directory.Build.props seems to respect the properties such as OutputPath appropriately. Otherwise, things end up in the wrong places. -->
-    <!-- <ImportDirectoryBuildProps>false</ImportDirectoryBuildProps>
-    <ImportDirectoryBuildTargets>false</ImportDirectoryBuildTargets> -->
-  <!-- </PropertyGroup> -->
-
-  <!-- <ItemGroup> -->
-    <!-- <MergeManifest Include="$(VisualStudioSetupInsertionPath)$(TargetName).json" SBOMFileLocation="$(ArtifactsBinDir)_manifest\spdx_2.2\manifest.spdx.json" /> -->
-    <!-- NOTE: Even though this .vsix is just a loose set of files (not a project with dependencies), SBOMFileLocation is still included as the SBOM check in the VS insertion will fail without it. -->
-    <!-- <MergeManifest Include="$(VisualStudioSetupInsertionPath)$(CommonFilesProjectName).json" SBOMFileLocation="$(ArtifactsBinDir)_manifest\spdx_2.2\manifest.spdx.json" /> -->
-  <!-- </ItemGroup> -->
 
   <ItemGroup>
     <ProjectReference Include="..\ProjectSystemSetup\ProjectSystemSetup.csproj" />
     <ProjectReference Include="..\VisualStudioEditorsSetup\VisualStudioEditorsSetup.csproj" />
+    <!-- If ReferenceOutputAssembly is not set to false, it will attempt to compile the non-existent DLL. -->
+    <!-- CSC error CS0006: Metadata file 'C:\Code\project-system\artifacts\Release\VSSetup\Insertion\Microsoft.VisualStudio.ProjectSystem.Managed.CommonFiles.dll' could not be found [C:\Code\project-system\setup\SetupManifest\SetupProject.csproj] -->
+    <!-- The CollectManifestsToMerge task in Microsoft.VisualStudio.Internal.MicroBuild.Vsman.targets only specifies Build;Pack;GetVsixPrimaryOutputs to run. -->
+    <!-- If Restore is not run, the Microsoft.VisualStudio.Internal.MicroBuild.Swix package will not be restored. -->
     <ProjectReference Include="..\Microsoft.VisualStudio.ProjectSystem.Managed.CommonFiles\Microsoft.VisualStudio.ProjectSystem.Managed.CommonFiles.swixproj" ReferenceOutputAssembly="false" Targets="Restore;Build" />
   </ItemGroup>
 
@@ -48,12 +30,5 @@
       </_MSBuildProjectReferenceExistent>
     </ItemGroup>
   </Target>
-
-  <!-- <Target Name="SWiXProjRestore" AfterTargets="Restore">
-    <MSBuild Projects="$(MSBuildThisFileDirectory)..\Microsoft.VisualStudio.ProjectSystem.Managed.CommonFiles\Microsoft.VisualStudio.ProjectSystem.Managed.CommonFiles.swixproj" Targets="Restore" />
-  </Target> -->
-
-  <!-- <Import Project="$(MicroBuildCoreDir)Microsoft.VisualStudioEng.MicroBuild.Core.targets" /> -->
-  <!-- <Import Project="$(SwixBuildDir)Microsoft.VisualStudioEng.MicroBuild.Plugins.SwixBuild.targets" /> -->
 
 </Project>

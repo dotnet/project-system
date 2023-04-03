@@ -12,13 +12,10 @@
     <PackageReference Include="Microsoft.VisualStudio.Internal.MicroBuild.Swix" />
   </ItemGroup>
 
+  <!-- ConstructSwrFile in swix.targets in Microsoft.DevDiv.Tasks2 assumes %(GeneratedSwrFiles.PackageName)\%(GeneratedSwrFiles.Differentiator) in the file path. -->
+  <!-- We don't want that as part of this path for our SWIX-based VSIX, so we replace it here. -->
   <Target Name="FixSwixInputsPaths" AfterTargets="ConstructSwrFile">
-    <!-- <PropertyGroup>
-      <SwrInputsOutputFolder>$([System.IO.Path]::GetDirectoryName(%(SwixInputs.VsixOutputPath)))</SwrInputsOutputFolder>
-    </PropertyGroup> -->
     <ItemGroup>
-      <!-- <SwrInputsToCopy Include="$(SwrInputsOutputFolder)\*.*" /> -->
-
       <FileWrites Remove="%(SwixInputs.VsixOutputPath)" />
       <FileWrites Remove="%(SwixInputs.JsonOutputPath)" />
       <FileWrites Remove="%(SwixInputs.FilesTxtOutputPath)" />
@@ -36,18 +33,10 @@
       <FileWrites Include="%(SwixInputs.FilesTxtOutputPath)" />
       <MergeManifest Include="@(SwixInputs->'%(JsonOutputPath)')" />
     </ItemGroup>
-    <!-- <Copy SourceFiles="@(SwrInputsToCopy)" DestinationFolder="$(OutputPath)" />
-    <RemoveDir Directories="$(OutputPath)$(MSBuildProjectName)" /> -->
-    <!-- <ItemGroup>
-      <SwixInputs Update="@(SwixInputs)">
-        <VsixOutputPath>$(OutputPath)$(PackageName).vsix</VsixOutputPath>
-        <JsonOutputPath>$(OutputPath)$(PackageName).json</JsonOutputPath>
-        <FilesTxtOutputPath>$(OutputPath)files.txt</FilesTxtOutputPath>
-        <RelativeUrl></RelativeUrl>
-      </SwixInputs>
-    </ItemGroup> -->
   </Target>
 
+  <!-- GetConstructedSwrFilePaths in swix.targets in Microsoft.DevDiv.Tasks2 assumes %(GeneratedSwrFiles.PackageName)\%(GeneratedSwrFiles.Differentiator) in the file path. -->
+  <!-- We don't want that as part of this path for our SWIX-based VSIX, so we replace it here. -->
   <Target Name="FixProposedSwixInputsPaths" AfterTargets="GetConstructedSwrFilePaths">
     <ItemGroup>
       <FileWrites Remove="%(ProposedSwixInputs.VsixOutputPath)" />

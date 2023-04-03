@@ -38,25 +38,14 @@
       <Ngen>true</Ngen>
       <NgenPriority>1</NgenPriority>
     </ProjectReference>
-    <!-- <ProjectReference Include="..\..\src\Microsoft.VisualStudio.ProjectSystem.Managed.VS\Microsoft.VisualStudio.ProjectSystem.Managed.VS.csproj">
-      <Name>Microsoft.VisualStudio.ProjectSystem.Managed.VS</Name>
-      <Ngen>true</Ngen>
-      <NgenPriority>1</NgenPriority>
-      <IncludeOutputGroupsInVSIX>BuiltProjectOutputGroup;GetCopyToOutputDirectoryItems;SatelliteDllsProjectOutputGroup;PkgdefProjectOutputGroup</IncludeOutputGroupsInVSIX>
-      <IncludeOutputGroupsInVSIXLocalOnly>DebugSymbolsProjectOutputGroup</IncludeOutputGroupsInVSIXLocalOnly>
-    </ProjectReference>
-    <ProjectReference Include="..\..\src\$(_ManagedProjectName)\$(_ManagedProjectName).csproj">
-      <Name>$(_ManagedProjectName)</Name>
-      <Ngen>true</Ngen>
-      <NgenPriority>1</NgenPriority>
-      <IncludeOutputGroupsInVSIX>BuiltProjectOutputGroup;GetCopyToOutputDirectoryItems;SatelliteDllsProjectOutputGroup</IncludeOutputGroupsInVSIX>
-      <IncludeOutputGroupsInVSIXLocalOnly>DebugSymbolsProjectOutputGroup</IncludeOutputGroupsInVSIXLocalOnly>
-    </ProjectReference> -->
     <!-- This is included so that F5 debugging works in the repo. It is not included in the setup .vsix package with the Project System assemblies. -->
-    <!-- <ProjectReference Include="..\VisualStudioEditorsSetup\VisualStudioEditorsSetup.csproj">
-      <Private>false</Private>
-      <IncludeOutputGroupsInVSIX></IncludeOutputGroupsInVSIX>
-    </ProjectReference> -->
+    <!-- <ProjectReference Include="..\VisualStudioEditorsSetup\VisualStudioEditorsSetup.csproj"> -->
+      <!-- <Private>false</Private> -->
+      <!-- In Microsoft.VisualStudio.Internal.MicroBuild in Vsix.targets, it sets IncludeOutputGroupsInVSIX for all project references. -->
+      <!-- This causes the SplitIncludeOutputGroupsInVSIX target in Microsoft.VsSDK.targets in Microsoft.VsSDK.BuildTools to incorrectly include these project references. -->
+      <!-- The Private value set to false is intended to tell Microsoft.VsSDK.targets to not set IncludeOutputGroupsInVSIX. -->
+      <!-- <IncludeOutputGroupsInVSIX></IncludeOutputGroupsInVSIX> -->
+    <!-- </ProjectReference> -->
   </ItemGroup>
 
   <ItemGroup>
@@ -76,48 +65,5 @@
       <VSIXSourceItem Remove="$(ArtifactsObjDir)$(_ManagedProjectName)\$(_ManagedProjectName).xlf\**\*.xaml" />
     </ItemGroup>
   </Target>
-
-  <!-- <Target Name="OverrideGetVsixPrimaryOutputs" BeforeTargets="GetVsixPrimaryOutputs">
-    <Project>
-      <Import Project="..\..\eng\imports\OverrideGetVsixPrimaryOutputs.targets" />
-    </Project>
-  </Target> -->
-
-  <!-- <Target Name="OverrideGetVsixPrimaryOutputs" Condition="'$(CreateVsixContainer)' == 'true'" Returns="@(VsixPrimaryOutputs)" BeforeTargets="GetVsixPrimaryOutputs">
-    <ItemGroup>
-      <VsixPrimaryOutputs Include="$(TargetVsixContainer)" />
-      <VsixPrimaryOutputs Include="$(VisualStudioSetupInsertionPath)$(_VsixManifestPackageId).json">
-        <RelativeUrl Condition="'$(Platform)' != 'AnyCPU'">$(Platform)/</RelativeUrl>
-        <SBOMFileLocation>@(SbomOutput)</SBOMFileLocation>
-        <SBOMFileDestPath>$(SBOMFileDestPath)</SBOMFileDestPath>
-      </VsixPrimaryOutputs>
-    </ItemGroup>
-  </Target> -->
-
-  <!-- <Target Name="OverrideGetVsixPrimaryOutputs_Update" AfterTargets="GetVsixPrimaryOutputs">
-    <PropertyGroup>
-      <CreateVsixContainer>true</CreateVsixContainer>
-    </PropertyGroup>
-  </Target> -->
-
-  <!-- <Target Name="FixVsixPrimaryOutputs" AfterTargets="GetVsixPrimaryOutputs" Outputs="@(VsixPrimaryOutputs)">
-    <ItemGroup>
-      <VsixPrimaryOutputs Remove="$(VisualStudioSetupInsertionPath)$(AssemblyName).json" />
-      <VsixPrimaryOutputs Include="$(VisualStudioSetupInsertionPath)$(_VsixManifestPackageId).json">
-        <SBOMFileLocation>@(SbomOutput)</SBOMFileLocation>
-        <SBOMFileDestPath>$(SBOMFileDestPath)</SBOMFileDestPath>
-      </VsixPrimaryOutputs>
-    </ItemGroup>
-  </Target> -->
-
-  <!-- <Target Name="FixVsixPrimaryOutputs" AfterTargets="GetVsixPrimaryOutputs" Outputs="@(VsixPrimaryOutputs)">
-    <ItemGroup>
-      <VsixPrimaryOutputs Remove="$(VisualStudioSetupInsertionPath)$(AssemblyName).json" />
-      <VsixPrimaryOutputs Include="$(VisualStudioSetupInsertionPath)$(_VsixManifestPackageId).json">
-        <SBOMFileLocation>@(SbomOutput)</SBOMFileLocation>
-        <SBOMFileDestPath>$(SBOMFileDestPath)</SBOMFileDestPath>
-      </VsixPrimaryOutputs>
-    </ItemGroup>
-  </Target> -->
 
 </Project>
