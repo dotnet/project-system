@@ -52,6 +52,16 @@
         <target state="translated">Préférer 32 bits</target>
         <note />
       </trans-unit>
+      <trans-unit id="BoolProperty|PublishDocumentationFile|Description">
+        <source>When this property is true, the XML documentation file for the project, if one is generated, is included in the publish output for the project. This property defaults to true.</source>
+        <target state="new">When this property is true, the XML documentation file for the project, if one is generated, is included in the publish output for the project. This property defaults to true.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="BoolProperty|PublishDocumentationFile|DisplayName">
+        <source>Publish documentation file</source>
+        <target state="new">Publish documentation file</target>
+        <note />
+      </trans-unit>
       <trans-unit id="BoolProperty|RegisterForComInterop|Description">
         <source>Specifies whether your managed application will expose a COM object (a COM-callable wrapper) that enables a COM object to interact with the application.</source>
         <target state="translated">Spécifie si votre application managée exposera un objet COM (wrapper pouvant être appelé par COM) qui permet à un objet COM d’interagir avec l’application.</target>

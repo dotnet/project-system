@@ -63,6 +63,20 @@
     </StringProperty.Metadata>
   </StringProperty>
 
+  <BoolProperty Name="PublishDocumentationFile"
+                DisplayName="Publish documentation file"
+                Description="When this property is true, the XML documentation file for the project, if one is generated, is included in the publish output for the project. This property defaults to true."
+                Category="General">
+    <BoolProperty.DataSource>
+      <DataSource HasConfigurationCondition="False" />
+    </BoolProperty.DataSource>
+    <BoolProperty.Metadata>
+      <NameValuePair Name="VisibilityCondition">
+        <NameValuePair.Value>(has-evaluated-value "Build" "GenerateDocumentationFile" true)</NameValuePair.Value>
+      </NameValuePair>
+    </BoolProperty.Metadata>
+  </BoolProperty>
+
   <!-- TODO: Condition the visibility on this being a class library -->
   <BoolProperty Name="RegisterForComInterop"
                 DisplayName="Register for COM interop"
