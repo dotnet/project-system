@@ -50,10 +50,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Models
 
         public ImageMoniker GetDependenciesRootIcon(DiagnosticLevel maximumDiagnosticLevel)
         {
+            // TODO update upgradeavailable/deprecation/vulnerability icons
             return maximumDiagnosticLevel switch
             {
                 DiagnosticLevel.None => KnownMonikers.ReferenceGroup,
-                _ => KnownMonikers.ReferenceGroupWarning
+                DiagnosticLevel.UpgradeAvailable => KnownMonikers.OfficeWord2013,
+                DiagnosticLevel.Warning => KnownMonikers.ReferenceGroupWarning,
+                DiagnosticLevel.Deprecation => KnownMonikers.OfficeSharePoint2013,
+                DiagnosticLevel.Error => KnownMonikers.ReferenceGroupError,
+                DiagnosticLevel.Vulnerability => KnownMonikers.OfficeExcel2013,
+                _ => throw new ArgumentOutOfRangeException()
             };
         }
     }

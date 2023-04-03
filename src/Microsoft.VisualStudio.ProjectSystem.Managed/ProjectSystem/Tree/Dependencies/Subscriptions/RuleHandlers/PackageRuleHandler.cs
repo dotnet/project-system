@@ -1,6 +1,7 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
 using System.Diagnostics.CodeAnalysis;
+using System.Threading.Tasks.Dataflow;
 using Microsoft.VisualStudio.Buffers.PooledObjects;
 using Microsoft.VisualStudio.Imaging;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
@@ -29,12 +30,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Subscriptions.R
             DependencyTreeFlags.PackageDependencyGroup);
 
         private readonly ITargetFrameworkProvider _targetFrameworkProvider;
+        private readonly IDependencyNugetUpdateBlock _dependencyNugetUpdateBlock;
 
         [ImportingConstructor]
-        public PackageRuleHandler(ITargetFrameworkProvider targetFrameworkProvider)
+        public PackageRuleHandler(ITargetFrameworkProvider targetFrameworkProvider, IDependencyNugetUpdateBlock dependencyNugetUpdateBlock)
             : base(PackageReference.SchemaName, ResolvedPackageReference.SchemaName)
         {
             _targetFrameworkProvider = targetFrameworkProvider;
+            _dependencyNugetUpdateBlock = dependencyNugetUpdateBlock;
         }
 
         public override string ProviderType => ProviderTypeString;
@@ -191,6 +194,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Subscriptions.R
                 dependencyModel = null;
                 return false;
             }
+
+            DiagnosticLevel diagnosticLevel = properties.TryGetValue(ProjectItemMetadata.DiagnosticLevel, out string levelString) 
+                ? Enum.TryParse(levelString, out DiagnosticLevel level) ? level : DiagnosticLevel.None 
+                : DiagnosticLevel.None;
+            Dictionary<string, DiagnosticLevel> packageDiagnosticLevels = _dependencyNugetUpdateBlock.SourceBlock.Receive().Value;
+
+            if (packageDiagnosticLevels.TryGetValue(originalItemSpec, out DiagnosticLevel foundLevel) && foundLevel > diagnosticLevel)
+            {
+                properties = properties.SetItem(ProjectItemMetadata.DiagnosticLevel, foundLevel.ToString());
+            }
+            
 
             bool isImplicit = IsImplicit(projectFullPath, evaluationProperties);
 
