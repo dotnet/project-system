@@ -41,6 +41,7 @@
   </Target>
 
   <!-- This is only needed for VSIX projects as SWIX projects have their own version of the GetVsixPrimaryOutputs target. -->
+  <!-- The override for this for SWIX projects is in Microsoft.VisualStudio.Internal.MicroBuild.Swix.targets. -->
   <Import Project="..\eng\imports\OverrideGetVsixPrimaryOutputs.targets" Condition="'$(IsVsixProject)' == 'true'" />
 
 </Project>
