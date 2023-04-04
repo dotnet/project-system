@@ -5,6 +5,7 @@ using Microsoft.CodeAnalysis;
 using Microsoft.VisualStudio.LanguageServices;
 using Microsoft.VisualStudio.LanguageServices.Implementation.ProjectSystem;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
+using Project = Microsoft.CodeAnalysis.Project;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties.VisualBasic;
 
@@ -14,12 +15,16 @@ internal class SplashScreenEnumProvider : IDynamicEnumValuesProvider
 {
     private readonly Workspace _workspace;
     private readonly UnconfiguredProject _unconfiguredProject;
+    private readonly ProjectProperties _properties;
 
     [ImportingConstructor]
-    public SplashScreenEnumProvider([Import(typeof(VisualStudioWorkspace))] Workspace workspace, UnconfiguredProject unconfiguredProject)
+    public SplashScreenEnumProvider([Import(typeof(VisualStudioWorkspace))] Workspace workspace,
+                                    UnconfiguredProject unconfiguredProject,
+                                    ProjectProperties propertiesProvider)
     {
         _workspace = workspace;
         _unconfiguredProject = unconfiguredProject;
+        _properties = propertiesProvider;
     }
 
     public Task<IDynamicEnumValuesGenerator> GetProviderAsync(IList<NameValuePair>? options)
@@ -35,7 +40,7 @@ internal class SplashScreenEnumProvider : IDynamicEnumValuesProvider
             && bool.TryParse(pair.Value, out bool optionValue)
             && optionValue) ?? false;
 
-        return Task.FromResult<IDynamicEnumValuesGenerator>(new StartupObjectsEnumGenerator(_workspace, _unconfiguredProject, includeEmptyValue, true));
+        return Task.FromResult<IDynamicEnumValuesGenerator>(new SplashScreenEnumGenerator(_workspace, _unconfiguredProject, _properties, includeEmptyValue, true));
     }
 
     internal class SplashScreenEnumGenerator : IDynamicEnumValuesGenerator
@@ -43,13 +48,15 @@ internal class SplashScreenEnumProvider : IDynamicEnumValuesProvider
         public bool AllowCustomValues => false;
         private readonly Workspace _workspace;
         private readonly UnconfiguredProject _unconfiguredProject;
+        private readonly ProjectProperties _properties;
         private readonly bool _includeEmptyValue;
         private readonly bool _searchForEntryPointsInFormsOnly;
 
-        public SplashScreenEnumGenerator(Workspace workspace, UnconfiguredProject unconfiguredProject, bool includeEmptyValue, bool searchForEntryPointsInFormsOnly)
+        public SplashScreenEnumGenerator(Workspace workspace, UnconfiguredProject unconfiguredProject, ProjectProperties properties, bool includeEmptyValue, bool searchForEntryPointsInFormsOnly)
         {
             _workspace = workspace;
             _unconfiguredProject = unconfiguredProject;
+            _properties = properties;
             _includeEmptyValue = includeEmptyValue;
             _searchForEntryPointsInFormsOnly = searchForEntryPointsInFormsOnly;
         }
@@ -81,9 +88,19 @@ internal class SplashScreenEnumProvider : IDynamicEnumValuesProvider
             {
                 enumValues.AddRange(entryPoints.Select(ep =>
                 {
-                    string name = ep.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat.WithGlobalNamespaceStyle(SymbolDisplayGlobalNamespaceStyle.Omitted));
-                    return new PageEnumValue(new EnumValue { Name = name, DisplayName = name });
+                    string displayName = ep.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat.WithGlobalNamespaceStyle(SymbolDisplayGlobalNamespaceStyle.Omitted));
+                    return new PageEnumValue(new EnumValue { Name = ep.Name, DisplayName = displayName });
                 }));
+            }
+
+            // Test: change in the startup object value refreshes the splash screen enum value list.
+            // Remove selected startup object (if any) from the list, as a user should not be able to select it again.
+            ConfigurationGeneral configuration = await _properties.GetConfigurationGeneralPropertiesAsync();
+            object? startupObjectObject = await configuration.StartupObject.GetValueAsync();
+            
+            if (startupObjectObject is string { Length: > 0 } startupObject)
+            {
+                enumValues.RemoveAll(ev => StringComparers.PropertyValues.Equals(ev.Name, startupObject));
             }
 
             return enumValues;
