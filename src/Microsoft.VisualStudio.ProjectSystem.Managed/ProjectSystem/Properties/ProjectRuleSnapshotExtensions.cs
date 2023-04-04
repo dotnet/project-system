@@ -99,5 +99,55 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
 
             return false;
         }
+
+        /// <summary>
+        /// Returns snapshot data in its original order. If the original order cannot be determined, and exception is thrown.
+        /// Requires the snapshot to have come from CPS's build data sources. Evaluation data is currently not orderable.
+        /// </summary>
+        /// <remarks>
+        /// You may use <see cref="TryGetOrderedItems(IProjectRuleSnapshot)"/> instead, which will return unordered data
+        /// rather than throw.
+        /// </remarks>
+        public static IReadOnlyCollection<KeyValuePair<string, IImmutableDictionary<string, string>>> GetOrderedItems(this IProjectRuleSnapshot snapshot)
+        {
+            if (snapshot.Items.Count == 0)
+            {
+                // Some empty snapshot data can leak through here that doesn't implement IDataWithOriginalSource.
+                // Protect against that and return an empty collection. There's no order to empty data, so there's
+                // no behavior issue here.
+                // https://devdiv.visualstudio.com/DevDiv/_workitems/edit/1761872
+                return ImmutableList<KeyValuePair<string, IImmutableDictionary<string, string>>>.Empty;
+            }
+
+            var orderedSource = snapshot.Items as IDataWithOriginalSource<KeyValuePair<string, IImmutableDictionary<string, string>>>;
+
+            // CPS build data is always supposed to implement this interface. If you see this exception, it's
+            // most likely that the snapshot this extension method was called on contains evaluation data, for
+            // which data ordering is currently not supported. If seen on build data however, this is likely
+            // an issue in CPS.
+            Assumes.NotNull(orderedSource);
+
+#pragma warning disable RS0030 // Do not used banned APIs
+            return orderedSource.SourceData;
+#pragma warning restore RS0030 // Do not used banned APIs
+        }
+
+        /// <summary>
+        /// Returns snapshot items in order, if possible.
+        /// If the order cannot be determined, they are returned in a "random" order.
+        /// </summary>
+        public static IEnumerable<KeyValuePair<string, IImmutableDictionary<string, string>>> TryGetOrderedItems(this IProjectRuleSnapshot snapshot)
+        {
+            if (snapshot.Items is IDataWithOriginalSource<KeyValuePair<string, IImmutableDictionary<string, string>>> dataWithOriginalSource)
+            {
+#pragma warning disable RS0030 // Do not used banned APIs
+                return dataWithOriginalSource.SourceData;
+#pragma warning restore RS0030 // Do not used banned APIs
+            }
+
+            // We couldn't obtain ordered items for some reason.
+            // Return the items in whatever order the backing collection from CPS models them in.
+            return snapshot.Items;
+        }
     }
 }

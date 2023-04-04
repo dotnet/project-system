@@ -99,6 +99,8 @@ M:System.Diagnostics.Debugger.Launch(); This should not be used in production co
 
 T:Microsoft.VisualStudio.ProjectSystem.ActiveConfiguredProject`1; Use IActiveConfiguredValue<T>, and handle when Value returns null.
 
+T:Microsoft.VisualStudio.ProjectSystem.IDataWithOriginalSource`1;Use ProjectRuleSnapshotExtensions.GetOrderedItems/TryGetOrderedItems instead.
+
 T:System.Runtime.Serialization.Formatters.Binary.BinaryFormatter;Use a preferred alternative: https://docs.microsoft.com/en-us/dotnet/standard/serialization/binaryformatter-security-guide#preferred-alternatives
 
 T:System.Composition.ImportAttribute; Use System.ComponentModel.Composition.ImportAttribute instead
