@@ -47,6 +47,9 @@ T:Microsoft.VisualStudio.Shell.Interop.SAsyncServiceProvider; Import and use IVs
 
 T:Microsoft.VisualStudio.ProjectSystem.VS.IServiceProviderExtensions; Import and use IVsUIService<T> and IVsUIService<TService, TInterface> which enforce usage on the UI thread and prevent blocking RPC calls from background threads
 
+F:Microsoft.VisualStudio.Threading.TplExtensions.TrueTask; Use TaskResult.True instead
+F:Microsoft.VisualStudio.Threading.TplExtensions.FalseTask; Use TaskResult.False instead
+
 M:Microsoft.VisualStudio.Threading.TplExtensions.Forget(System.Threading.Tasks.Task); Use IProjectFaultHandlerService.Forget to ensure that failed tasks are reported as non-fatal watsons and assigned to the correct component
 M:Microsoft.VisualStudio.Shell.VsTaskLibraryHelper.FileAndForget(System.Threading.Tasks.Task,System.String,System.String,System.Func{System.Exception,System.Boolean}); Use IProjectFaultHandlerService.Forget to ensure that failed tasks are reported as non-fatal watsons and assigned to the correct component
 M:Microsoft.VisualStudio.Shell.VsTaskLibraryHelper.FileAndForget(Microsoft.VisualStudio.Threading.JoinableTask,System.String,System.String,System.Func{System.Exception,System.Boolean}); Use IProjectFaultHandlerService.Forget to ensure that failed tasks are reported as non-fatal watsons and assigned to the correct component
