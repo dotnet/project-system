@@ -51,11 +51,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             .FirstOrDefault(v => LaunchProfile.IsSameProfileName(v.Name, userSuppliedValue));
         }
 
-        internal static ICollection<IEnumValue> GetEnumeratorEnumValues(ILaunchSettings profiles)
+        internal static ICollection<IEnumValue> GetEnumeratorEnumValues(ILaunchSettings launchSettings)
         {
             var result = new Collection<IEnumValue>(
             (
-                from profile in profiles.Profiles
+                from profile in launchSettings.Profiles
                 let value = new EnumValue { Name = profile.Name, DisplayName = EscapeMnemonics(profile.Name) }
                 select (IEnumValue)new PageEnumValue(value)).ToList()
             );
