@@ -119,15 +119,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         [Obsolete("Use GetLaunchSettingsFilePathAsync instead.")]
         public string LaunchSettingsFile => _commonProjectServices.ThreadingService.ExecuteSynchronously(GetLaunchSettingsFilePathAsync);
 
-        /// <summary>
-        /// Returns the active profile. Looks up the value of the ActiveProfile property. If the value doesn't match the
-        /// any of the profiles, the first one is returned
-        /// </summary>
         public ILaunchProfile? ActiveProfile => CurrentSnapshot?.ActiveProfile;
 
-        /// <summary>
-        /// Link to this source block to be notified when the snapshot is changed.
-        /// </summary>
         IReceivableSourceBlock<ILaunchSettings> ILaunchSettingsProvider.SourceBlock
         {
             get
@@ -137,10 +130,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             }
         }
 
-        /// <summary>
-        /// IDebugProfileProvider
-        /// Access to the current set of profile information
-        /// </summary>
         public ILaunchSettings CurrentSnapshot
         {
             get

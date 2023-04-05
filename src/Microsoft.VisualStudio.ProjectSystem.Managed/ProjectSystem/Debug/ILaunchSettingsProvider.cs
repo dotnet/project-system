@@ -10,6 +10,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
     [ProjectSystemContract(ProjectSystemContractScope.UnconfiguredProject, ProjectSystemContractProvider.Private, Cardinality = ImportCardinality.ExactlyOne)]
     public interface ILaunchSettingsProvider
     {
+        /// <summary>
+        /// Link to this source block to be notified when the snapshot is changed.
+        /// </summary>
         /// <remarks>
         /// If the <see cref="ILaunchSettings"/> provided by this block are going to feed
         /// into another data flow block, strongly consider using <see cref="IVersionedLaunchSettingsProvider"/>
@@ -17,11 +20,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         /// </remarks>
         IReceivableSourceBlock<ILaunchSettings> SourceBlock { get; }
 
+        /// <summary>
+        /// Gets the current launch settings snapshot, or <see langword="null"/> if it is not yet available.
+        /// </summary>
         ILaunchSettings? CurrentSnapshot { get; }
 
         [Obsolete("Use ILaunchSettingsProvider2.GetLaunchSettingsFilePathAsync instead.")]
         string LaunchSettingsFile { get; }
 
+        /// <summary>
+        /// Returns the active profile. Equivalent to <c>CurrentSnapshot?.ActiveProfile</c>.
+        /// </summary>
         ILaunchProfile? ActiveProfile { get; }
 
         /// <summary>
