@@ -53,8 +53,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
 
         /// <summary>
         /// Adds the given profile to the list and saves to disk. If a profile with the same
-        /// name exists (case sensitive), it will be replaced with the new profile. If addToFront is
-        /// true the profile will be the first one in the list. This is useful since quite often callers want
+        /// name exists (case sensitive), it will be replaced with the new profile. If <paramref name="addToFront"/> is
+        /// <see langword="true"/> the profile will be the first one in the list. This is useful since quite often callers want
         /// their just added profile to be listed first in the start menu.
         /// </summary>
         Task AddOrUpdateProfileAsync(ILaunchProfile profile, bool addToFront);
@@ -65,19 +65,19 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         Task RemoveProfileAsync(string profileName);
 
         /// <summary>
-        /// Adds or updates the global settings represented by settingName. Saves the
+        /// Adds or updates the global settings represented by <paramref name="settingName"/>. Saves the
         /// updated settings to disk. Note that the settings object must be serializable.
         /// </summary>
         Task AddOrUpdateGlobalSettingAsync(string settingName, object settingContent);
 
         /// <summary>
-        /// Removes the specified global setting and saves the settings to disk
+        /// Removes the specified global setting and saves the settings to disk.
         /// </summary>
         Task RemoveGlobalSettingAsync(string settingName);
 
         /// <summary>
-        /// Sets the active profile. This just sets the property it does not validate that the setting matches an
-        /// existing profile
+        /// Sets the active profile. This just sets the property; it does not validate that the setting matches an
+        /// existing profile.
         /// </summary>
         Task SetActiveProfileAsync(string profileName);
     }
