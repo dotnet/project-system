@@ -76,7 +76,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             return result;
         }
 
-        [return: NotNullIfNotNull("text")]
+        [return: NotNullIfNotNull(nameof(text))]
         private static string? EscapeMnemonics(string? text)
         {
             return text?.Replace("&", "&&");
