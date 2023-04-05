@@ -608,7 +608,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
         /// <param name="unescaped">The string to escape.</param>
         /// <param name="toEscape">The characters to escape in the string.</param>
         /// <returns>The escaped string.</returns>
-        [return: NotNullIfNotNull("unescaped")]
+        [return: NotNullIfNotNull(nameof(unescaped))]
         internal static string? EscapeString(string? unescaped, char[] toEscape)
         {
             if (Strings.IsNullOrWhiteSpace(unescaped))

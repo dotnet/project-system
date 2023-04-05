@@ -23,7 +23,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         /// <summary>
         ///     Gets the value that is associated with the specified rule and property.
         /// </summary>
-        [return: NotNullIfNotNull(parameterName: "defaultValue")]
+        [return: NotNullIfNotNull(parameterName: nameof(defaultValue))]
         public static string? GetPropertyOrDefault(this IImmutableDictionary<string, IProjectRuleSnapshot> snapshots, string ruleName, string propertyName, string? defaultValue)
         {
             Requires.NotNull(snapshots);
