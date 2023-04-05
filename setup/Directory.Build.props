@@ -50,6 +50,11 @@
     <Ngen>true</Ngen>
     <NgenArchitecture>All</NgenArchitecture>
     <NgenPriority>3</NgenPriority>
+
+    <!-- See: https://dev.azure.com/devdiv/DevDiv/_wiki/wikis/DevDiv.wiki/29786/Common-setup-authoring-recommendations?anchor=including-sbom-support -->
+    <SBOMFileDestPath>$(VisualStudioSetupInsertionPath)Sbom\$(MSBuildProjectName)\</SBOMFileDestPath>
+    <!-- MicroBuild.Plugins.Sbom.targets uses this to set the output path (ManifestDirPath) for the GenerateSBOM target. -->
+    <SbomManifestDirPath>$(OutputPath)Sbom\$(MSBuildProjectName)\</SbomManifestDirPath>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(MSBuildProjectExtension)' == '.vsmanproj' or '$(MSBuildProjectExtension)' == '.swixproj'">
@@ -62,11 +67,11 @@
   </PropertyGroup>
 
   <!-- Note: Our .swixproj has no code being deployed in it; thus, it does not need an SBOM. -->
-  <PropertyGroup Condition="'$(IsVsixProject)' == 'true' or '$(MSBuildProjectExtension)' == '.vsmanproj'">
+  <!-- <PropertyGroup Condition="'$(IsVsixProject)' == 'true' or '$(MSBuildProjectExtension)' == '.vsmanproj'"> -->
     <!-- See: https://dev.azure.com/devdiv/DevDiv/_wiki/wikis/DevDiv.wiki/29786/Common-setup-authoring-recommendations?anchor=including-sbom-support -->
-    <SBOMFileDestPath>$(VisualStudioSetupInsertionPath)Sbom\$(MSBuildProjectName)</SBOMFileDestPath>
+    <!-- <SBOMFileDestPath>$(VisualStudioSetupInsertionPath)Sbom\$(MSBuildProjectName)</SBOMFileDestPath> -->
     <!-- MicroBuild.Plugins.Sbom.targets uses this to set the output path (ManifestDirPath) for the GenerateSBOM target. -->
-    <SbomManifestDirPath>$(TargetDir)Sbom\$(MSBuildProjectName)</SbomManifestDirPath>
-  </PropertyGroup>
+    <!-- <SbomManifestDirPath>$(TargetDir)Sbom\$(MSBuildProjectName)</SbomManifestDirPath> -->
+  <!-- </PropertyGroup> -->
 
 </Project>
