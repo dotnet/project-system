@@ -16,9 +16,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
     {
         private readonly AsyncLazy<ICollection<IEnumValue>> _listedValues;
 
-        /// <summary>
-        /// Create a new instance of the class.
-        /// </summary>
         internal DebugProfileEnumValuesGenerator(
             ILaunchSettingsProvider profileProvider,
             IProjectThreadingService threadingService)
@@ -39,25 +36,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             }, threadingService.JoinableTaskFactory);
         }
 
-        /// <summary>
-        /// See <see cref="IDynamicEnumValuesGenerator"/>
-        /// </summary>
         public Task<ICollection<IEnumValue>> GetListedValuesAsync()
         {
             return _listedValues.GetValueAsync();
         }
 
-        /// <summary>
-        /// See <see cref="IDynamicEnumValuesGenerator"/>
-        /// </summary>
         public bool AllowCustomValues
         {
             get { return false; }
         }
 
-        /// <summary>
-        /// See <see cref="IDynamicEnumValuesGenerator"/>
-        /// </summary>
         public async Task<IEnumValue?> TryCreateEnumValueAsync(string userSuppliedValue)
         {
             return (await _listedValues.GetValueAsync())
