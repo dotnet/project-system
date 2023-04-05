@@ -1,6 +1,5 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
-using System.Collections.ObjectModel;
 using System.Diagnostics.CodeAnalysis;
 using Microsoft.Build.Framework.XamlTypes;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
@@ -23,16 +22,18 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             Requires.NotNull(profileProvider);
             Requires.NotNull(threadingService);
 
-            _listedValues = new AsyncLazy<ICollection<IEnumValue>>(delegate
-            {
-                ILaunchSettings? curSnapshot = profileProvider.CurrentSnapshot;
-                if (curSnapshot is not null)
+            _listedValues = new AsyncLazy<ICollection<IEnumValue>>(
+                () =>
                 {
-                    return Task.FromResult(GetEnumeratorEnumValues(curSnapshot));
-                }
+                    ILaunchSettings? snapshot = profileProvider.CurrentSnapshot;
 
-                return Task.FromResult<ICollection<IEnumValue>>(Array.Empty<IEnumValue>());
-            }, threadingService.JoinableTaskFactory);
+                    ICollection<IEnumValue> values = snapshot is null
+                        ? Array.Empty<IEnumValue>()
+                        : GetEnumeratorEnumValues(snapshot);
+
+                    return Task.FromResult(values);
+                },
+                threadingService.JoinableTaskFactory);
         }
 
         public Task<ICollection<IEnumValue>> GetListedValuesAsync()
@@ -51,16 +52,20 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             .FirstOrDefault(v => LaunchProfile.IsSameProfileName(v.Name, userSuppliedValue));
         }
 
-        internal static ICollection<IEnumValue> GetEnumeratorEnumValues(ILaunchSettings launchSettings)
+        internal static ImmutableArray<IEnumValue> GetEnumeratorEnumValues(ILaunchSettings launchSettings)
         {
-            var result = new Collection<IEnumValue>(
-            (
-                from profile in launchSettings.Profiles
-                let value = new EnumValue { Name = profile.Name, DisplayName = EscapeMnemonics(profile.Name) }
-                select (IEnumValue)new PageEnumValue(value)).ToList()
-            );
+            ImmutableArray<IEnumValue>.Builder builder = ImmutableArray.CreateBuilder<IEnumValue>(initialCapacity: launchSettings.Profiles.Count);
 
-            return result;
+            builder.AddRange(launchSettings.Profiles.Select(ToEnumValue));
+
+            return builder.MoveToImmutable();
+
+            static IEnumValue ToEnumValue(ILaunchProfile profile)
+            {
+                var enumValue = new EnumValue { Name = profile.Name, DisplayName = EscapeMnemonics(profile.Name) };
+
+                return new PageEnumValue(enumValue);
+            }
         }
 
         [return: NotNullIfNotNull("text")]
