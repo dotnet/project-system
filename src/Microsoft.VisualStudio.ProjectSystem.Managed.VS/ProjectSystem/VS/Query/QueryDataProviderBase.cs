@@ -10,7 +10,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         {
             _projectService = new Lazy<IProjectService2>(
                 () => (IProjectService2)projectServiceAccessor.GetProjectService(),
-                System.Threading.LazyThreadSafetyMode.PublicationOnly);
+                LazyThreadSafetyMode.PublicationOnly);
         }
 
         protected IProjectService2 ProjectService => _projectService.Value;
