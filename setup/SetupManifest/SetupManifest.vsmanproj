@@ -5,6 +5,7 @@
 
   <PropertyGroup>
     <!-- If this is not set, it will output with the default filename of SetupManifest.vsman. -->
+    <!-- Setting the name of the project to Microsoft.VisualStudio.ProjectSystem.Managed.vsmanproj results in an error on the Restore target in NuGet.targets(151,5): error Ambiguous project name 'Microsoft.VisualStudio.ProjectSystem.Managed' -->
     <TargetFileName>Microsoft.VisualStudio.ProjectSystem.Managed.vsman</TargetFileName>
   </PropertyGroup>
 
@@ -23,7 +24,7 @@
   </ItemGroup>
 
   <!--
-    For whatever reason, 'Configuration;Platform' is set as remove properties for the ResolveProjectReferences task.
+    For whatever reason, 'Configuration;Platform' is set as remove properties for the ResolveProjectReferences target.
     We currently require Configuration to be present so that the output is in the correct location on-disk.
     This target removes Configuration out of the remove properties list, prior to resolving the project references.
   -->
