@@ -52,8 +52,9 @@
     <NgenPriority>3</NgenPriority>
 
     <!-- See: https://dev.azure.com/devdiv/DevDiv/_wiki/wikis/DevDiv.wiki/29786/Common-setup-authoring-recommendations?anchor=including-sbom-support -->
-    <SBOMFileDestPath>$(VisualStudioSetupInsertionPath)Sbom\$(MSBuildProjectName)\</SBOMFileDestPath>
+    <SBOMFileDestPath>$(VisualStudioSetupInsertionPath)</SBOMFileDestPath>
     <!-- MicroBuild.Plugins.Sbom.targets uses this to set the output path (ManifestDirPath) for the GenerateSBOM target. -->
+    <!-- This output, if not separated by a project-specific folder, can hit file conflicts ("manifest.json is being used by another process") because both VSIX extension projects can build in parallel. -->
     <SbomManifestDirPath>$(OutputPath)Sbom\$(MSBuildProjectName)\</SbomManifestDirPath>
   </PropertyGroup>
 
@@ -65,13 +66,5 @@
     <OutputPath>$(VisualStudioSetupInsertionPath)</OutputPath>
     <IntermediateOutputPath>$(VisualStudioSetupIntermediateOutputPath)$(TargetName)\</IntermediateOutputPath>
   </PropertyGroup>
-
-  <!-- Note: Our .swixproj has no code being deployed in it; thus, it does not need an SBOM. -->
-  <!-- <PropertyGroup Condition="'$(IsVsixProject)' == 'true' or '$(MSBuildProjectExtension)' == '.vsmanproj'"> -->
-    <!-- See: https://dev.azure.com/devdiv/DevDiv/_wiki/wikis/DevDiv.wiki/29786/Common-setup-authoring-recommendations?anchor=including-sbom-support -->
-    <!-- <SBOMFileDestPath>$(VisualStudioSetupInsertionPath)Sbom\$(MSBuildProjectName)</SBOMFileDestPath> -->
-    <!-- MicroBuild.Plugins.Sbom.targets uses this to set the output path (ManifestDirPath) for the GenerateSBOM target. -->
-    <!-- <SbomManifestDirPath>$(TargetDir)Sbom\$(MSBuildProjectName)</SbomManifestDirPath> -->
-  <!-- </PropertyGroup> -->
 
 </Project>
