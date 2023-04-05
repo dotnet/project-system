@@ -12,7 +12,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Workloads
     /// 
     /// When the developer takes this action *and* does not have the Web Workload installed in their VS instance the IPA should prompt to install web workload
     /// </summary>
-    [ProjectSystemContract(ProjectSystemContractScope.ConfiguredProject, ProjectSystemContractProvider.Private, Cardinality = Composition.ImportCardinality.ExactlyOne)]
+    [ProjectSystemContract(ProjectSystemContractScope.ConfiguredProject, ProjectSystemContractProvider.Private, Cardinality = ImportCardinality.ExactlyOne)]
     internal interface IWebWorkloadDescriptorDataSource : IProjectValueDataSource<ISet<WorkloadDescriptor>>
     {
     }

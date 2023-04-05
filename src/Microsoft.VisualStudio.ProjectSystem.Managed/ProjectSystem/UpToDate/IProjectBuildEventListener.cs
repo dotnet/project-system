@@ -25,7 +25,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate;
 ///     </item>
 /// </list>
 /// </remarks>
-[ProjectSystemContract(ProjectSystemContractScope.ConfiguredProject, ProjectSystemContractProvider.Private, Cardinality = Composition.ImportCardinality.ExactlyOne)]
+[ProjectSystemContract(ProjectSystemContractScope.ConfiguredProject, ProjectSystemContractProvider.Private, Cardinality = ImportCardinality.ExactlyOne)]
 internal interface IProjectBuildEventListener
 {
     /// <summary>

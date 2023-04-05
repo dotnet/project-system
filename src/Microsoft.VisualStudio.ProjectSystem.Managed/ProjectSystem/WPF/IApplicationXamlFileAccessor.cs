@@ -5,7 +5,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.WPF;
 /// <summary>
 /// Provides access to interesting properties of the Application.xaml file.
 /// </summary>
-[ProjectSystemContract(ProjectSystemContractScope.UnconfiguredProject, ProjectSystemContractProvider.Extension, Cardinality = Composition.ImportCardinality.ExactlyOne)]
+[ProjectSystemContract(ProjectSystemContractScope.UnconfiguredProject, ProjectSystemContractProvider.Extension, Cardinality = ImportCardinality.ExactlyOne)]
 internal interface IApplicationXamlFileAccessor
 {
     /// <summary>
