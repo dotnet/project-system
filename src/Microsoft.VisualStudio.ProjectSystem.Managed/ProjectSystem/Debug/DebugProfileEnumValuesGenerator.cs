@@ -48,8 +48,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
 
         public async Task<IEnumValue?> TryCreateEnumValueAsync(string userSuppliedValue)
         {
-            return (await _listedValues.GetValueAsync())
-            .FirstOrDefault(v => LaunchProfile.IsSameProfileName(v.Name, userSuppliedValue));
+            ICollection<IEnumValue> enumValues = await _listedValues.GetValueAsync();
+
+            return enumValues.FirstOrDefault(v => LaunchProfile.IsSameProfileName(v.Name, userSuppliedValue));
         }
 
         internal static ImmutableArray<IEnumValue> GetEnumeratorEnumValues(ILaunchSettings launchSettings)
