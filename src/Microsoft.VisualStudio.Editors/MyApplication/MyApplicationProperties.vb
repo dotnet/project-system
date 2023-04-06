@@ -87,6 +87,7 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
         ' ApplicationType = 9 ' OBSOLETE
         SaveMySettingsOnExit = 10
         HigDpiMode = 11
+        MinimumSplashScreenDisplayTime = 12
     End Enum
 
     ''' <summary>
@@ -105,6 +106,7 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
         <DispId(MyAppDISPIDs.AuthenticationMode)> Property AuthenticationMode As Integer
         <DispId(MyAppDISPIDs.SplashScreen)> Property SplashScreen As String
         ' <DispId(MyAppDISPIDs.ApplicationType)> Property ApplicationType() As Integer ' OBSOLETE
+        <DispId(MyAppDISPIDs.MinimumSplashScreenDisplayTime)> Property MinimumSplashScreenDisplayTime As Integer
         <DispId(MyAppDISPIDs.SaveMySettingsOnExit)> Property SaveMySettingsOnExit As Boolean
         <DispId(MyAppDISPIDs.HigDpiMode)> Property HighDpiMode As Integer
     End Interface
@@ -194,6 +196,7 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
         Private Const PROPNAME_SaveMySettingsOnExit As String = "SaveMySettingsOnExit"
         Private Const PROPNAME_AuthenticationMode As String = "AuthenticationMode"
         Private Const PROPNAME_SplashScreen As String = "SplashScreen"
+        Private Const PROPNAME_MinimumSplashScreenDisplayTime As String = "MinimumSplashScreenDisplayTime"
         Private Const PROPNAME_HighDpiMode As String = "HighDpiMode"
 
         Private _projectHierarchy As IVsHierarchy
@@ -591,6 +594,21 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
 
                     'Notify users of property change
                     OnPropertyChanged(PROPNAME_SplashScreen)
+                End If
+            End Set
+        End Property
+
+        Friend Property MinimumSplashScreenDisplayTime As Integer Implements IVsMyApplicationProperties.MinimumSplashScreenDisplayTime
+            Get
+                Return _myAppData.MinimumSplashScreenDisplayTime
+            End Get
+            Set
+                If _myAppData.MinimumSplashScreenDisplayTime <> Value Then
+                    CheckOutDocData()
+                    _myAppData.MinimumSplashScreenDisplayTime = Value
+                    FlushToDocData()
+                    'Notify users of property change
+                    OnPropertyChanged(PROPNAME_MinimumSplashScreenDisplayTime)
                 End If
             End Set
         End Property

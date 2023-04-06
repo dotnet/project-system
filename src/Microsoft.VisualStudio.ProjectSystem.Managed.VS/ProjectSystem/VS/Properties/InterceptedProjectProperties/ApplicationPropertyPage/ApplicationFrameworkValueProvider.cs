@@ -60,7 +60,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
             }
             else
             {
-                return await SetPropertyValueAsync(propertyName, unevaluatedPropertyValue, defaultProperties);
+                return await SetPropertyValueAsync(propertyName, unevaluatedPropertyValue);
             }     
         }
 
@@ -297,7 +297,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
             return value;
         }
 
-        private async Task<string?> SetPropertyValueAsync(string propertyName, string unevaluatedPropertyValue, IProjectProperties defaultProperties)
+        private async Task<string?> SetPropertyValueAsync(string propertyName, string unevaluatedPropertyValue)
         {
             // ValueProvider needs to convert string enums to valid values to be saved.
             if (propertyName == AuthenticationMode)
