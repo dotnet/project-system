@@ -62,7 +62,7 @@ jobs:
       # The ShortCommitId is parsed out of the payload name in tagger.yml for use in tagging the appropriate commit in our repo.
       # This tag is used in GetInsertionPRDescription.ps1 (task above) to create the description for this insertion.
       InsertionPayloadName: 'DotNet-Project-System ($(Build.SourceBranchName):$(Build.BuildNumber):$(ShortCommitId))'
-      ComponentJsonValues: Microsoft.VisualStudio.ProjectSystem.Managed.vsman=https://vsdrop.corp.microsoft.com/file/v1/Products/$(System.TeamProject)/$(Build.Repository.Name)/$(Build.SourceBranchName)/$(Build.BuildNumber);Microsoft.VisualStudio.ProjectSystem.Managed.vsman
+      ComponentJsonValues: Microsoft.VisualStudio.ProjectSystem.Managed.vsman=https://vsdrop.corp.microsoft.com/file/v1/Products/$(System.TeamProject)/$(Build.Repository.Name)/$(Build.SourceBranchName)/$(Build.BuildNumber);SetupManifest.vsman
       # Setting DefaultConfigValues also sets the PackagePropsValues.
       # See the bottom of the table here: https://devdiv.visualstudio.com/DevDiv/_wiki/wikis/DevDiv.wiki/635/Overview?anchor=**build-pipeline**
       DefaultConfigValues: Microsoft.VisualStudio.AppDesigner=$(PackageVersion),Microsoft.VisualStudio.Editors=$(PackageVersion),Microsoft.VisualStudio.ProjectSystem.Managed=$(PackageVersion),Microsoft.VisualStudio.ProjectSystem.Managed.VS=$(PackageVersion)

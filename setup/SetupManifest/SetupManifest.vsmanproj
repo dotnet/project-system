@@ -3,11 +3,11 @@
 
   <Import Project="..\..\eng\imports\HostAgnostic.props" />
 
-  <PropertyGroup>
+  <!-- <PropertyGroup> -->
     <!-- If this is not set, it will output with the default filename of SetupManifest.vsman. -->
     <!-- Setting the name of the project to Microsoft.VisualStudio.ProjectSystem.Managed.vsmanproj results in an error on the Restore target in NuGet.targets(151,5): error Ambiguous project name 'Microsoft.VisualStudio.ProjectSystem.Managed' -->
-    <TargetFileName>Microsoft.VisualStudio.ProjectSystem.Managed.vsman</TargetFileName>
-  </PropertyGroup>
+    <!-- <TargetFileName>Microsoft.VisualStudio.ProjectSystem.Managed.vsman</TargetFileName> -->
+  <!-- </PropertyGroup> -->
 
   <ItemGroup>
     <ProjectReference Include="..\ProjectSystemSetup\ProjectSystemSetup.csproj" />
@@ -36,12 +36,5 @@
       </_MSBuildProjectReferenceExistent>
     </ItemGroup>
   </Target>
-
-  <!-- Currently, we insert Microsoft.VisualStudio.ProjectSystem.Managed.vsman. However, I cannot determine how to set that name as the vsman filename for the project. -->
-  <!-- Setting the name of the project to Microsoft.VisualStudio.ProjectSystem.Managed.vsmanproj results in an error on the Restore target in NuGet.targets(151,5): error Ambiguous project name 'Microsoft.VisualStudio.ProjectSystem.Managed' -->
-  <!-- Setting AssemblyName to Microsoft.VisualStudio.ProjectSystem.Managed results in the same error but at the Build.sln level instead of at this project restoration. -->
-  <!-- <Target Name="RenameVsmanFilename" AfterTargets="Build">
-    <Move SourceFiles="OriginalFile.txt" DestinationFiles="TargetFile.txt" />
-  </Target> -->
 
 </Project>
