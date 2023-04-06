@@ -54,12 +54,12 @@
       </trans-unit>
       <trans-unit id="BoolProperty|PublishDocumentationFile|Description">
         <source>When this property is true, the XML documentation file for the project, if one is generated, is included in the publish output for the project. This property defaults to true.</source>
-        <target state="new">When this property is true, the XML documentation file for the project, if one is generated, is included in the publish output for the project. This property defaults to true.</target>
+        <target state="translated">Wenn diese Eigenschaft TRUE ist, wird die XML-Dokumentationsdatei für das Projekt, sofern eine generiert wird, in der Veröffentlichungsausgabe für das Projekt eingeschlossen. Diese Eigenschaft wird standardmäßig auf TRUE festgelegt.</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|PublishDocumentationFile|DisplayName">
         <source>Publish documentation file</source>
-        <target state="new">Publish documentation file</target>
+        <target state="translated">Dokumentationsdatei veröffentlichen</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|RegisterForComInterop|Description">
@@ -399,12 +399,12 @@
       </trans-unit>
       <trans-unit id="StringProperty|DocumentationFile|Description">
         <source>Optional path for the API documentation file. Leave blank to use the default location.</source>
-        <target state="new">Optional path for the API documentation file. Leave blank to use the default location.</target>
+        <target state="translated">Optionaler Pfad für die API-Dokumentationsdatei. Lassen Sie das Feld leer, um den Standardspeicherort zu verwenden.</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|DocumentationFile|DisplayName">
         <source>XML documentation file path</source>
-        <target state="new">XML documentation file path</target>
+        <target state="translated">Dateipfad zur XML-Dokumentation</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|OutputPath|DisplayName">

@@ -399,12 +399,12 @@
       </trans-unit>
       <trans-unit id="StringProperty|DocumentationFile|Description">
         <source>Optional path for the API documentation file. Leave blank to use the default location.</source>
-        <target state="new">Optional path for the API documentation file. Leave blank to use the default location.</target>
+        <target state="translated">Chemin facultatif du fichier de documentation de l'API. Pour utiliser l'emplacement par défaut, n'indiquez rien.</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|DocumentationFile|DisplayName">
         <source>XML documentation file path</source>
-        <target state="new">XML documentation file path</target>
+        <target state="translated">Chemin du fichier de documentation XML</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|OutputPath|DisplayName">

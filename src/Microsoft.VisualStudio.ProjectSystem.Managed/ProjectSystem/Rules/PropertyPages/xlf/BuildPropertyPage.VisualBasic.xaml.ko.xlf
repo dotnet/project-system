@@ -399,12 +399,12 @@
       </trans-unit>
       <trans-unit id="StringProperty|DocumentationFile|Description">
         <source>Optional path for the API documentation file. Leave blank to use the default location.</source>
-        <target state="new">Optional path for the API documentation file. Leave blank to use the default location.</target>
+        <target state="translated">API 설명서 파일의 선택적 경로입니다. 기본 위치를 사용하려면 비워 두세요.</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|DocumentationFile|DisplayName">
         <source>XML documentation file path</source>
-        <target state="new">XML documentation file path</target>
+        <target state="translated">XML 설명서 파일 경로</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|OutputPath|DisplayName">
