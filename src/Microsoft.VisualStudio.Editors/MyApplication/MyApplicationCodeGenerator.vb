@@ -6,7 +6,6 @@ Imports System.ComponentModel
 Imports System.IO
 Imports System.Reflection
 Imports System.Runtime.InteropServices
-
 Imports EnvDTE
 
 Imports Microsoft.VisualStudio.Designer.Interfaces
@@ -229,8 +228,8 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
                 Else
                     Debug.Fail("Unexpected MyApplication.ShutdownMode")
                 End If
-                
-                If IsTargetingDotNetCore(DirectCast(GetService(GetType(IVsHierarchy)), IVsHierarchy))
+
+                If IsTargetingDotNetCore(DirectCast(GetService(GetType(IVsHierarchy)), IVsHierarchy)) Then
                     '    Me.HighDpiMode = HighDpiMode.xxx
                     Dim HighDpiValue As String
                     Select Case MyApplication.HighDpiMode
@@ -249,7 +248,7 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
                     End Select
                     AddFieldAssignment(Constructor, HighDpiModeFieldName, HighDpiModeFieldName, HighDpiValue)
                 End If
-                    
+
                 GeneratedType.Members.Add(Constructor)
 
                 If MyApplication.MainFormNoRootNS <> String.Empty Then
@@ -331,7 +330,7 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
                     End If
                 End If
 
-                If MyApplication.MinimumSplashScreenDisplayTime <> String.Empty Then
+                If IsNumeric(MyApplication.MinimumSplashScreenDisplayTime) Then
                     ' GENERATED CODE:
                     ' Protected Overrides Function OnInitialize(commandLineArgs As System.Collections.ObjectModel.ReadOnlyCollection(Of String)) As Boolean
                     '    Me.MinimumSplashScreenDisplayTime = 5000

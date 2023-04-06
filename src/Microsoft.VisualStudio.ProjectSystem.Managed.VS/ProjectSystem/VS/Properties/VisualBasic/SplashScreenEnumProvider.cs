@@ -88,12 +88,14 @@ internal class SplashScreenEnumProvider : IDynamicEnumValuesProvider
             {
                 enumValues.AddRange(entryPoints.Select(ep =>
                 {
+                    // These values are saved to the myapp file, where they are later used by the MyApplicationCodeGenerator to generate the Designer.vb file that contains the actual code.
+                    // The code generator expects the name of the splash screen value (just the name without the namespace nor the extension) to be passed to it,
+                    // so we get it from the ep.Name (i.e. SplashScreen1), and for the display name we use the fully qualified name (i.e. MyApplication.SplashScreen1.vb).
                     string displayName = ep.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat.WithGlobalNamespaceStyle(SymbolDisplayGlobalNamespaceStyle.Omitted));
                     return new PageEnumValue(new EnumValue { Name = ep.Name, DisplayName = displayName });
                 }));
             }
 
-            // Test: change in the startup object value refreshes the splash screen enum value list.
             // Remove selected startup object (if any) from the list, as a user should not be able to select it again.
             ConfigurationGeneral configuration = await _properties.GetConfigurationGeneralPropertiesAsync();
             object? startupObjectObject = await configuration.StartupObject.GetValueAsync();
