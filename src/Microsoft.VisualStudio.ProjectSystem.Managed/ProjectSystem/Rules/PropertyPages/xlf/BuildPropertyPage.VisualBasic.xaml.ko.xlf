@@ -54,12 +54,12 @@
       </trans-unit>
       <trans-unit id="BoolProperty|PublishDocumentationFile|Description">
         <source>When this property is true, the XML documentation file for the project, if one is generated, is included in the publish output for the project. This property defaults to true.</source>
-        <target state="new">When this property is true, the XML documentation file for the project, if one is generated, is included in the publish output for the project. This property defaults to true.</target>
+        <target state="translated">이 속성이 true이면 프로젝트의 XML 문서 파일이 생성된 경우 프로젝트의 게시 출력에 포함됩니다. 이 속성의 기본값은 true입니다.</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|PublishDocumentationFile|DisplayName">
         <source>Publish documentation file</source>
-        <target state="new">Publish documentation file</target>
+        <target state="translated">문서 파일 게시</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|RegisterForComInterop|Description">
