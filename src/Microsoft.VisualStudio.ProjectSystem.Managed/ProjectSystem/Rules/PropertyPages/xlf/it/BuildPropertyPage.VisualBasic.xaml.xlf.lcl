@@ -106,12 +106,18 @@
       <Item ItemId=";BoolProperty|PublishDocumentationFile|Description" ItemType="0" PsrId="308" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[When this property is true, the XML documentation file for the project, if one is generated, is included in the publish output for the project. This property defaults to true.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Se questa proprietà è true, il file di documentazione XML per il progetto, se generato, viene incluso nell'output di pubblicazione del progetto. L'impostazione predefinita di questa proprietà è true.]]></Val>
+          </Tgt>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";BoolProperty|PublishDocumentationFile|DisplayName" ItemType="0" PsrId="308" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[Publish documentation file]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Pubblicare file di documentazione]]></Val>
+          </Tgt>
         </Str>
         <Disp Icon="Str" />
       </Item>
