@@ -21,6 +21,11 @@
     <!-- See: https://dev.azure.com/devdiv/DevDiv/_wiki/wikis/DevDiv.wiki/29786/Common-setup-authoring-recommendations?anchor=recommendations -->
     <VsixOutputPath>$(VisualStudioSetupInsertionPath)</VsixOutputPath>
     <NoSwixBuildPlugin>true</NoSwixBuildPlugin>
+    <!-- See: https://dev.azure.com/devdiv/DevDiv/_wiki/wikis/DevDiv.wiki/29786/Common-setup-authoring-recommendations?anchor=including-sbom-support -->
+    <SBOMFileDestPath>$(VisualStudioSetupInsertionPath)</SBOMFileDestPath>
+    <!-- MicroBuild.Plugins.Sbom.targets uses this to set the output path (ManifestDirPath) for the GenerateSBOM target. -->
+    <!-- This output, if not separated by a project-specific folder, can hit file conflicts ("manifest.json is being used by another process") because both VSIX extension projects can build in parallel. -->
+    <SbomManifestDirPath>$(OutputPath)Sbom\$(MSBuildProjectName)\</SbomManifestDirPath>
 
     <VsixSourceManifestPath>$(MSBuildProjectDirectory)\source.extension.vsixmanifest</VsixSourceManifestPath>
     <!-- This property indicates that the project is a VS Extension project. The SwixBuild plugin expects this value to be set for the AddSBOM task. -->
@@ -50,12 +55,6 @@
     <Ngen>true</Ngen>
     <NgenArchitecture>All</NgenArchitecture>
     <NgenPriority>3</NgenPriority>
-
-    <!-- See: https://dev.azure.com/devdiv/DevDiv/_wiki/wikis/DevDiv.wiki/29786/Common-setup-authoring-recommendations?anchor=including-sbom-support -->
-    <SBOMFileDestPath>$(VisualStudioSetupInsertionPath)</SBOMFileDestPath>
-    <!-- MicroBuild.Plugins.Sbom.targets uses this to set the output path (ManifestDirPath) for the GenerateSBOM target. -->
-    <!-- This output, if not separated by a project-specific folder, can hit file conflicts ("manifest.json is being used by another process") because both VSIX extension projects can build in parallel. -->
-    <SbomManifestDirPath>$(OutputPath)Sbom\$(MSBuildProjectName)\</SbomManifestDirPath>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(MSBuildProjectExtension)' == '.vsmanproj' or '$(MSBuildProjectExtension)' == '.swixproj'">
