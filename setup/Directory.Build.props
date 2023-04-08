@@ -58,6 +58,8 @@
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(MSBuildProjectExtension)' == '.vsmanproj' or '$(MSBuildProjectExtension)' == '.swixproj'">
+    <!-- Having GenerateAssemblyVersionInfo enabled causes issues with Language requirements in NerdBank.GitVersioning. -->
+    <GenerateAssemblyVersionInfo>false</GenerateAssemblyVersionInfo>
     <FinalizeManifest>true</FinalizeManifest>
     <FinalizeSkipLayout>true</FinalizeSkipLayout>
     <IsPackage>true</IsPackage>
