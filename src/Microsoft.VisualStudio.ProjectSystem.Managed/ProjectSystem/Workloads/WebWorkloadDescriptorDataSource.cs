@@ -27,7 +27,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Workloads
         {
             IReceivableSourceBlock<IProjectVersionedValue<IProjectCapabilitiesSnapshot>> sourceBlock = _configuredProject.Capabilities.SourceBlock;
 
-            DisposableValue<ISourceBlock<IProjectVersionedValue<ISet<WorkloadDescriptor>>>>? transformBlock = sourceBlock.TransformWithNoDelta(transform => transform.Derive(u => CreateWorkloadDescriptor(u)));
+            DisposableValue<ISourceBlock<IProjectVersionedValue<ISet<WorkloadDescriptor>>>> transformBlock = sourceBlock.TransformWithNoDelta(transform => transform.Derive(u => CreateWorkloadDescriptor(u)));
 
             transformBlock.Value.LinkTo(targetBlock, DataflowOption.PropagateCompletion);
 
