@@ -51,12 +51,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Workloads
             }
 
             return workloads;
+
+            static bool WpfDetected(bool dotnetCoreRazor, bool windowsForm, bool wpf) => dotnetCoreRazor && (windowsForm || wpf);
         }
-
-        #region Scenarios to detect
-
-        private static bool WpfDetected(bool dotnetCoreRazor, bool windowsForm, bool wpf) => dotnetCoreRazor && (windowsForm || wpf);
-
-        #endregion
     }
 }
