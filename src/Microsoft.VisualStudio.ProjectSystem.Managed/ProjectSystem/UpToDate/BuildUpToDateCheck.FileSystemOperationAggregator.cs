@@ -63,7 +63,7 @@ internal sealed partial class BuildUpToDateCheck
         /// </summary>
         /// <remarks>
         /// Build acceleration works best when all referenced projects produce reference assemblies.
-        /// This collecting allows us to prompt the user when they have enabled build acceleration, but
+        /// This collection allows us to prompt the user when they have enabled build acceleration, but
         /// they are referencing projects that do not produce reference assemblies.
         /// </remarks>
         public IReadOnlyList<string>? TargetsWithoutReferenceAssemblies => _targetsWithoutReferenceAssemblies;
@@ -72,7 +72,7 @@ internal sealed partial class BuildUpToDateCheck
 
         internal void AddTargetsWithoutReferenceAssemblies(IReadOnlyList<string> targetsWithoutReferenceAssemblies)
         {
-            if (targetsWithoutReferenceAssemblies is {  Count: > 0 })
+            if (targetsWithoutReferenceAssemblies is { Count: > 0 })
             {
                 _targetsWithoutReferenceAssemblies ??= new();
                 _targetsWithoutReferenceAssemblies.AddRange(targetsWithoutReferenceAssemblies);

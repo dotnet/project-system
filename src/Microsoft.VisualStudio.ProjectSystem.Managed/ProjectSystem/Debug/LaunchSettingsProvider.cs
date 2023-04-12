@@ -215,7 +215,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             // Need to use JTF.RunAsync here to ensure that this task can coordinate with others.
             await JoinableFactory.RunAsync(async () =>
             {
-                if (projectSnapshot.Value.Item1.CurrentState.TryGetValue(ProjectDebugger.SchemaName, out IProjectRuleSnapshot ruleSnapshot))
+                if (projectSnapshot.Value.Item1.CurrentState.TryGetValue(ProjectDebugger.SchemaName, out IProjectRuleSnapshot? ruleSnapshot))
                 {
                     ruleSnapshot.Properties.TryGetValue(ProjectDebugger.ActiveDebugProfileProperty, out string activeProfile);
                     ILaunchSettings snapshot = CurrentSnapshot;
