@@ -23,7 +23,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
 
         protected override bool ShouldHandle(IProjectTree node) => true;
 
-        protected override string GetCommandText() =>
-            string.Format(VSResources.PackSelectedProjectCommand, Path.GetFileNameWithoutExtension(Project.FullPath));
+        protected override string GetCommandText()
+            => string.Format(VSResources.PackSelectedProjectCommand, Path.GetFileNameWithoutExtension(Project.FullPath));
     }
 }

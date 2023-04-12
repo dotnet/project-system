@@ -75,14 +75,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             _outputTypeChecker = new OutputTypeChecker(properties);
         }
 
-        private Task<ConfiguredProject?> GetConfiguredProjectForDebugAsync() =>
-            _activeDebugFramework.GetConfiguredProjectForActiveFrameworkAsync();
+        private Task<ConfiguredProject?> GetConfiguredProjectForDebugAsync()
+            => _activeDebugFramework.GetConfiguredProjectForActiveFrameworkAsync();
 
         /// <summary>
         /// This provider handles running the Project and empty commandName (this generally just runs the executable)
         /// </summary>
-        public bool SupportsProfile(ILaunchProfile profile) =>
-            string.IsNullOrWhiteSpace(profile.CommandName) || IsRunProjectCommand(profile) || IsRunExecutableCommand(profile);
+        public bool SupportsProfile(ILaunchProfile profile)
+            => string.IsNullOrWhiteSpace(profile.CommandName) || IsRunProjectCommand(profile) || IsRunExecutableCommand(profile);
 
         /// <summary>
         /// Called just prior to launch to do additional work (put up ui, do special configuration etc).
@@ -137,15 +137,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             return true;
         }
 
-        public async Task<IReadOnlyList<IDebugLaunchSettings>> QueryDebugTargetsForDebugLaunchAsync(DebugLaunchOptions launchOptions, ILaunchProfile activeProfile) =>
-            await QueryDebugTargetsAsync(launchOptions, activeProfile, validateSettings: true) ?? throw new Exception(VSResources.ProjectNotRunnableDirectly);
+        public async Task<IReadOnlyList<IDebugLaunchSettings>> QueryDebugTargetsForDebugLaunchAsync(DebugLaunchOptions launchOptions, ILaunchProfile activeProfile)
+            => await QueryDebugTargetsAsync(launchOptions, activeProfile, validateSettings: true) ?? throw new Exception(VSResources.ProjectNotRunnableDirectly);
 
         /// <summary>
         /// This is called on F5/Ctrl-F5 to return the list of debug targets. What we return depends on the type
         /// of project.
         /// </summary>
-        public async Task<IReadOnlyList<IDebugLaunchSettings>> QueryDebugTargetsAsync(DebugLaunchOptions launchOptions, ILaunchProfile activeProfile) =>
-            await QueryDebugTargetsAsync(launchOptions, activeProfile, validateSettings: false) ?? throw new Exception(VSResources.ProjectNotRunnableDirectly);
+        public async Task<IReadOnlyList<IDebugLaunchSettings>> QueryDebugTargetsAsync(DebugLaunchOptions launchOptions, ILaunchProfile activeProfile)
+            => await QueryDebugTargetsAsync(launchOptions, activeProfile, validateSettings: false) ?? throw new Exception(VSResources.ProjectNotRunnableDirectly);
 
         /// <summary>
         /// Returns <see langword="null"/> if the debug launch settings are <see langword="null"/>. Otherwise, the list of debug launch settings.
@@ -207,11 +207,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             }
         }
 
-        private static bool IsRunExecutableCommand(ILaunchProfile profile) =>
-            string.Equals(profile.CommandName, LaunchSettingsProvider.RunExecutableCommandName, StringComparisons.LaunchProfileCommandNames);
+        private static bool IsRunExecutableCommand(ILaunchProfile profile)
+            => string.Equals(profile.CommandName, LaunchSettingsProvider.RunExecutableCommandName, StringComparisons.LaunchProfileCommandNames);
 
-        private static bool IsRunProjectCommand(ILaunchProfile profile) =>
-            string.Equals(profile.CommandName, LaunchSettingsProvider.RunProjectCommandName, StringComparisons.LaunchProfileCommandNames);
+        private static bool IsRunProjectCommand(ILaunchProfile profile)
+            => string.Equals(profile.CommandName, LaunchSettingsProvider.RunProjectCommandName, StringComparisons.LaunchProfileCommandNames);
 
         private async Task<bool> IsIntegratedConsoleEnabledAsync()
         {
@@ -692,11 +692,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
         /// <summary>
         /// Helper returns the correct debugger engine based on the targeted framework
         /// </summary>
-        internal static Guid GetManagedDebugEngineForFramework(string targetFramework) =>
+        internal static Guid GetManagedDebugEngineForFramework(string targetFramework)
             // The engine depends on the framework
-            IsDotNetCoreFramework(targetFramework) ?
-                DebuggerEngines.ManagedCoreEngine :
-                DebuggerEngines.ManagedOnlyEngine;
+            => IsDotNetCoreFramework(targetFramework)
+                ? DebuggerEngines.ManagedCoreEngine
+                : DebuggerEngines.ManagedOnlyEngine;
 
         /// <summary>
         /// TODO: This is a placeholder until issue https://github.com/dotnet/project-system/issues/423 is addressed.
