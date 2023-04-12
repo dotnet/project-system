@@ -38,12 +38,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Workloads
         {
             var workloads = ImmutableHashSet<WorkloadDescriptor>.Empty;
 
-            bool dotnetCoreRazor = capabilities.IsProjectCapabilityPresent(ProjectCapability.DotNetRazor);
-            bool windowsForm = capabilities.IsProjectCapabilityPresent(ProjectCapability.WindowsForms);
-            bool wpf = capabilities.IsProjectCapabilityPresent(ProjectCapability.WPF);
-
             // Detect all possible scenarios and add the corresponding needed component ids.
-            if (!_componentIdsRequired.Contains(s_webComponentId) && WpfDetected(dotnetCoreRazor, windowsForm, wpf))
+            if (!_componentIdsRequired.Contains(s_webComponentId) && RequiresWebComponent())
             {
                 workloads = workloads.Add(s_webWorkload);
 
@@ -52,7 +48,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.Workloads
 
             return workloads;
 
-            static bool WpfDetected(bool dotnetCoreRazor, bool windowsForm, bool wpf) => dotnetCoreRazor && (windowsForm || wpf);
+            bool RequiresWebComponent()
+            {
+                // DotNetRazor && (WindowsForms || WPF)
+                return capabilities.IsProjectCapabilityPresent(ProjectCapability.DotNetRazor) &&
+                    (capabilities.IsProjectCapabilityPresent(ProjectCapability.WindowsForms) || capabilities.IsProjectCapabilityPresent(ProjectCapability.WPF));
+            }
         }
     }
 }
