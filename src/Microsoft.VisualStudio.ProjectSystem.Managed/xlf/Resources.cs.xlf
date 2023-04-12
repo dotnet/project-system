@@ -153,8 +153,8 @@
         <note>{0} is a file path.</note>
       </trans-unit>
       <trans-unit id="FUTD_ComparingCopyMarkerTimestamps">
-        <source>Comparing timestamps of copy marker inputs and outputs:</source>
-        <target state="translated">Porovnání časových razítek vstupů a výstupů značky kopírování:</target>
+        <source>Comparing timestamps of copy marker inputs and output:</source>
+        <target state="needs-review-translation">Porovnání časových razítek vstupů a výstupů značky kopírování:</target>
         <note />
       </trans-unit>
       <trans-unit id="FUTD_ComparingInputOutputTimestamps">
