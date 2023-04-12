@@ -112,10 +112,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties.Package
             return existingItem?.EvaluatedInclude ?? propertyValue;
         }
 
-        public override Task<string> OnGetUnevaluatedPropertyValueAsync(string propertyName, string unevaluatedPropertyValue, IProjectProperties defaultProperties) =>
-            GetItemIncludeValueAsync(unevaluatedPropertyValue);
+        public override Task<string> OnGetUnevaluatedPropertyValueAsync(string propertyName, string unevaluatedPropertyValue, IProjectProperties defaultProperties)
+            => GetItemIncludeValueAsync(unevaluatedPropertyValue);
 
-        public override Task<string> OnGetEvaluatedPropertyValueAsync(string propertyName, string evaluatedPropertyValue, IProjectProperties defaultProperties) =>
-            GetItemIncludeValueAsync(evaluatedPropertyValue);
+        public override Task<string> OnGetEvaluatedPropertyValueAsync(string propertyName, string evaluatedPropertyValue, IProjectProperties defaultProperties)
+            => GetItemIncludeValueAsync(evaluatedPropertyValue);
     }
 }

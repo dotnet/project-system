@@ -116,8 +116,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.References
 
         private static IProjectSystemUpdateReferenceOperation? CreateCommand(ProjectSystemReferenceUpdate referenceUpdate,
             AbstractReferenceHandler referenceHandler,
-            ConfiguredProject selectedConfiguredProject, CancellationToken cancellationToken) =>
-            referenceUpdate.Action switch
+            ConfiguredProject selectedConfiguredProject, CancellationToken cancellationToken)
+            => referenceUpdate.Action switch
             {
                 ProjectSystemUpdateAction.SetTreatAsUsed => referenceHandler.CreateSetAttributeCommand(
                     selectedConfiguredProject, referenceUpdate),
