@@ -1,6 +1,7 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
 using System.Threading.Tasks.Dataflow;
+using Microsoft.VisualStudio.ProjectSystem.Utilities;
 
 namespace Microsoft.VisualStudio.ProjectSystem.Workloads
 {
@@ -27,9 +28,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.Workloads
 
             DisposableValue<ISourceBlock<IProjectVersionedValue<ISet<WorkloadDescriptor>>>> transformBlock = sourceBlock.TransformWithNoDelta(u => u.Derive(CreateWorkloadDescriptor));
 
-            transformBlock.Value.LinkTo(targetBlock, DataflowOption.PropagateCompletion);
-
-            return transformBlock;
+            return new DisposableBag
+            {
+                transformBlock.Value.LinkTo(targetBlock, DataflowOption.PropagateCompletion),
+                transformBlock,
+                JoinUpstreamDataSources(_configuredProject.Capabilities)
+            };
         }
 
         private ISet<WorkloadDescriptor> CreateWorkloadDescriptor(IProjectCapabilitiesSnapshot capabilities)
