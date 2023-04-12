@@ -1,6 +1,5 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
-using System.Collections.Concurrent;
 using System.Threading.Tasks.Dataflow;
 
 namespace Microsoft.VisualStudio.ProjectSystem.Workloads
@@ -9,12 +8,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.Workloads
     [AppliesTo(ProjectCapability.DotNet)]
     internal class WebWorkloadDescriptorDataSource : ChainedProjectValueDataSourceBase<ISet<WorkloadDescriptor>>, IWebWorkloadDescriptorDataSource
     {
-        private static readonly string s_webWorkloadName = "Web";
-        private static readonly string s_webComponentId = "Microsoft.VisualStudio.Component.Web";
-        private static readonly WorkloadDescriptor s_webWorkload = new(s_webWorkloadName, s_webComponentId);
+        private static readonly WorkloadDescriptor s_webWorkload = new("Web", "Microsoft.VisualStudio.Component.Web");
 
-        private readonly ConcurrentHashSet<string> _componentIdsRequired = new();
         private readonly ConfiguredProject _configuredProject;
+
+        private bool _haveReportedWebWorkload;
 
         [ImportingConstructor]
         public WebWorkloadDescriptorDataSource(ConfiguredProject configuredProject)
@@ -38,12 +36,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.Workloads
         {
             var workloads = ImmutableHashSet<WorkloadDescriptor>.Empty;
 
-            // Detect all possible scenarios and add the corresponding needed component ids.
-            if (!_componentIdsRequired.Contains(s_webComponentId) && RequiresWebComponent())
+            // Note that we only report the web workload once. After that, we report an empty set.
+            // Downstream components only need to be notified once, as they unsubscribe immediately when a missing workload is detected.
+            // TODO revisit this pattern as it seems like we could use fewer dataflow blocks to achieve this, end-to-end.
+            if (!_haveReportedWebWorkload && RequiresWebComponent())
             {
                 workloads = workloads.Add(s_webWorkload);
 
-                _componentIdsRequired.Add(s_webComponentId);
+                _haveReportedWebWorkload = true;
             }
 
             return workloads;
