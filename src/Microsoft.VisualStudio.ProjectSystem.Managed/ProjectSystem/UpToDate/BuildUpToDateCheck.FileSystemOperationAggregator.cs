@@ -72,7 +72,7 @@ internal sealed partial class BuildUpToDateCheck
 
         internal void AddTargetsWithoutReferenceAssemblies(IReadOnlyList<string> targetsWithoutReferenceAssemblies)
         {
-            if (targetsWithoutReferenceAssemblies is {  Count: > 0 })
+            if (targetsWithoutReferenceAssemblies is { Count: > 0 })
             {
                 _targetsWithoutReferenceAssemblies ??= new();
                 _targetsWithoutReferenceAssemblies.AddRange(targetsWithoutReferenceAssemblies);
