@@ -1,5 +1,6 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
+using Microsoft.VisualStudio.ProjectSystem.Utilities;
 using Microsoft.VisualStudio.ProjectSystem.VS;
 
 namespace Microsoft.VisualStudio.ProjectSystem.Workloads
@@ -15,13 +16,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.Workloads
         private readonly IMissingSetupComponentRegistrationService _missingSetupComponentRegistrationService;
         private readonly IWebWorkloadDescriptorDataSource _webWorkloadDescriptorDataSource;
         private readonly IProjectFaultHandlerService _projectFaultHandlerService;
-        private readonly IProjectSubscriptionService _projectSubscriptionService;
 
         private bool _enabled;
         private Guid _projectGuid;
-
-        private IDisposable? _joinedDataSources;
-        private IDisposable? _subscription;
+        private DisposableBag? _subscription;
 
         [ImportingConstructor]
         public WebMissingWorkloadDetector(
@@ -29,15 +27,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.Workloads
             IWebWorkloadDescriptorDataSource webWorkloadDescriptorDataSource,
             IMissingSetupComponentRegistrationService missingSetupComponentRegistrationService,
             IProjectThreadingService threadingService,
-            IProjectFaultHandlerService projectFaultHandlerService,
-            IProjectSubscriptionService projectSubscriptionService)
+            IProjectFaultHandlerService projectFaultHandlerService)
             : base(threadingService.JoinableTaskContext)
         {
             _project = project;
             _webWorkloadDescriptorDataSource = webWorkloadDescriptorDataSource;
             _missingSetupComponentRegistrationService = missingSetupComponentRegistrationService;
             _projectFaultHandlerService = projectFaultHandlerService;
-            _projectSubscriptionService = projectSubscriptionService;
         }
 
         public Task LoadAsync()
@@ -57,7 +53,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Workloads
         protected override Task DisposeCoreAsync(bool initialized)
         {
             _subscription?.Dispose();
-            _joinedDataSources?.Dispose();
 
             return Task.CompletedTask;
         }
@@ -67,26 +62,25 @@ namespace Microsoft.VisualStudio.ProjectSystem.Workloads
             // Note we don't use the ISafeProjectGuidService here because it is generally *not*
             // safe to use within IProjectDynamicLoadComponent.LoadAsync.
             _projectGuid = await _project.UnconfiguredProject.GetProjectGuidAsync();
-            _joinedDataSources = ProjectDataSources.JoinUpstreamDataSources(JoinableFactory, _projectFaultHandlerService, _projectSubscriptionService.ProjectSource, _webWorkloadDescriptorDataSource);
 
-            Action<IProjectVersionedValue<ValueTuple<IProjectSnapshot, ISet<WorkloadDescriptor>>>> action = OnWorkloadDescriptorsComputed;
+            Action<IProjectVersionedValue<ISet<WorkloadDescriptor>>> action = OnWorkloadDescriptorsComputed;
 
-            _subscription = ProjectDataSources.SyncLinkTo(
-                _projectSubscriptionService.ProjectSource.SourceBlock.SyncLinkOptions(),
-                _webWorkloadDescriptorDataSource.SourceBlock.SyncLinkOptions(),
-                    DataflowBlockFactory.CreateActionBlock(action, _project.UnconfiguredProject, ProjectFaultSeverity.LimitedFunctionality),
-                    linkOptions: DataflowOption.PropagateCompletion,
-                    cancellationToken: cancellationToken);
+            _subscription = new()
+            {
+                _webWorkloadDescriptorDataSource.SourceBlock.LinkTo(
+                    DataflowBlockFactory.CreateActionBlock(action, _project.UnconfiguredProject, ProjectFaultSeverity.LimitedFunctionality, nameFormat: $"{nameof(WebMissingWorkloadDetector)} Action: {1}"),
+                    linkOptions: DataflowOption.PropagateCompletion),
+
+                ProjectDataSources.JoinUpstreamDataSources(JoinableFactory, _projectFaultHandlerService, _webWorkloadDescriptorDataSource)
+            };
         }
 
-        private void OnWorkloadDescriptorsComputed(IProjectVersionedValue<(IProjectSnapshot projectSnapshot, ISet<WorkloadDescriptor> workloadDescriptors)> pair)
+        private void OnWorkloadDescriptorsComputed(IProjectVersionedValue<ISet<WorkloadDescriptor>> update)
         {
-            if (!_enabled || pair.Value.workloadDescriptors.Count == 0)
+            if (_enabled && update.Value.Count != 0)
             {
-                return;
+                _missingSetupComponentRegistrationService.RegisterMissingWebWorkloads(_projectGuid, _project, update.Value);
             }
-
-            _missingSetupComponentRegistrationService.RegisterMissingWebWorkloads(_projectGuid, _project, pair.Value.workloadDescriptors);
         }
     }
 }
