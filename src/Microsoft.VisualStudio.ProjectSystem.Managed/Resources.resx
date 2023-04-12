@@ -232,7 +232,7 @@ This project was loaded using the wrong project type, likely as a result of rena
     <comment>Do not translate 'Set' as this name is used in code. {0} is the name of the set.</comment>
   </data>
   <data name="FUTD_ComparingCopyMarkerTimestamps" xml:space="preserve">
-    <value>Comparing timestamps of copy marker inputs and outputs:</value>
+    <value>Comparing timestamps of copy marker inputs and output:</value>
   </data>
   <data name="FUTD_SetOfItemsChangedMoreRecentlyThanOutput_2" xml:space="preserve">
     <value>The set of project items was changed more recently ({0}) than the last successful build start time ({1}), not up-to-date.</value>
