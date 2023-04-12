@@ -694,9 +694,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
         /// </summary>
         internal static Guid GetManagedDebugEngineForFramework(string targetFramework)
             // The engine depends on the framework
-            => IsDotNetCoreFramework(targetFramework) ?
-                DebuggerEngines.ManagedCoreEngine :
-                DebuggerEngines.ManagedOnlyEngine;
+            => IsDotNetCoreFramework(targetFramework)
+                ? DebuggerEngines.ManagedCoreEngine
+                : DebuggerEngines.ManagedOnlyEngine;
 
         /// <summary>
         /// TODO: This is a placeholder until issue https://github.com/dotnet/project-system/issues/423 is addressed.
