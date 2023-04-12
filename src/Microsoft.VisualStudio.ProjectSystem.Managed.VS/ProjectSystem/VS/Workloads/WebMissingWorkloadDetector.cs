@@ -13,7 +13,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Workloads
     {
         private readonly ConfiguredProject _project;
         private readonly IMissingSetupComponentRegistrationService _missingSetupComponentRegistrationService;
-        private readonly IWebWorkloadDescriptorDataSource _wpfWorkloadDescriptorDataSource;
+        private readonly IWebWorkloadDescriptorDataSource _webWorkloadDescriptorDataSource;
         private readonly IProjectFaultHandlerService _projectFaultHandlerService;
         private readonly IProjectSubscriptionService _projectSubscriptionService;
 
@@ -26,7 +26,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Workloads
         [ImportingConstructor]
         public WebMissingWorkloadDetector(
             ConfiguredProject project,
-            IWebWorkloadDescriptorDataSource wpfWorkloadDescriptorDataSource,
+            IWebWorkloadDescriptorDataSource webWorkloadDescriptorDataSource,
             IMissingSetupComponentRegistrationService missingSetupComponentRegistrationService,
             IProjectThreadingService threadingService,
             IProjectFaultHandlerService projectFaultHandlerService,
@@ -34,7 +34,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Workloads
             : base(threadingService.JoinableTaskContext)
         {
             _project = project;
-            _wpfWorkloadDescriptorDataSource = wpfWorkloadDescriptorDataSource;
+            _webWorkloadDescriptorDataSource = webWorkloadDescriptorDataSource;
             _missingSetupComponentRegistrationService = missingSetupComponentRegistrationService;
             _projectFaultHandlerService = projectFaultHandlerService;
             _projectSubscriptionService = projectSubscriptionService;
@@ -67,13 +67,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.Workloads
             // Note we don't use the ISafeProjectGuidService here because it is generally *not*
             // safe to use within IProjectDynamicLoadComponent.LoadAsync.
             _projectGuid = await _project.UnconfiguredProject.GetProjectGuidAsync();
-            _joinedDataSources = ProjectDataSources.JoinUpstreamDataSources(JoinableFactory, _projectFaultHandlerService, _projectSubscriptionService.ProjectSource, _wpfWorkloadDescriptorDataSource);
+            _joinedDataSources = ProjectDataSources.JoinUpstreamDataSources(JoinableFactory, _projectFaultHandlerService, _projectSubscriptionService.ProjectSource, _webWorkloadDescriptorDataSource);
 
             Action<IProjectVersionedValue<ValueTuple<IProjectSnapshot, ISet<WorkloadDescriptor>>>> action = OnWorkloadDescriptorsComputed;
 
             _subscription = ProjectDataSources.SyncLinkTo(
                 _projectSubscriptionService.ProjectSource.SourceBlock.SyncLinkOptions(),
-                _wpfWorkloadDescriptorDataSource.SourceBlock.SyncLinkOptions(),
+                _webWorkloadDescriptorDataSource.SourceBlock.SyncLinkOptions(),
                     DataflowBlockFactory.CreateActionBlock(action, _project.UnconfiguredProject, ProjectFaultSeverity.LimitedFunctionality),
                     linkOptions: DataflowOption.PropagateCompletion,
                     cancellationToken: cancellationToken);
