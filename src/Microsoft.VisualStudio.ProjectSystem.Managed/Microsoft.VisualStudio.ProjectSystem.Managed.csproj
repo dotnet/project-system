@@ -40,14 +40,14 @@
     <Nullable>annotations</Nullable>
     <NoWarn>$(NoWarn);RS0037</NoWarn>
   </PropertyGroup>
-  
+
   <!-- TODO: Remove this once ILaunchSettingsUIProvider has been removed. -->
   <ItemGroup Condition="'$(TargetFramework)' == 'net472'">
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
     <Reference Include="WindowsBase" />
   </ItemGroup>
-  
+
   <ItemGroup>
     <InternalsVisibleTo Include="Microsoft.VisualStudio.ProjectSystem.Managed.VS" />
     <InternalsVisibleTo Include="Microsoft.VisualStudio.ProjectSystem.Managed.VSCode" />
@@ -219,7 +219,7 @@
       <DataAccess>None</DataAccess>
       <RuleInjection>None</RuleInjection>
     </XamlPropertyRule>
-    
+
     <!-- Property Pages -->
     <XamlPropertyRuleNoCodeBehind Include="ProjectSystem\Rules\PropertyPages\ApplicationPropertyPage.xaml" />
     <XamlPropertyRuleNoCodeBehind Include="ProjectSystem\Rules\PropertyPages\ApplicationPropertyPage.CSharp.xaml" />
@@ -371,7 +371,7 @@
       <DataAccess>None</DataAccess>
       <RuleInjection>None</RuleInjection>
     </XamlPropertyRule>
-    
+
     <Compile Update="ProjectSystem\Rules\CollectedPackageReference.cs">
       <DependentUpon>CollectedPackageReference.xaml</DependentUpon>
     </Compile>
@@ -514,7 +514,7 @@
       <DataAccess>None</DataAccess>
       <RuleInjection>None</RuleInjection>
     </XamlPropertyRule>
-    
+
     <Compile Update="ProjectSystem\Rules\SupportedTargetFrameworkAlias.cs">
       <DependentUpon>SupportedTargetFrameworkAlias.xaml</DependentUpon>
     </Compile>
@@ -526,7 +526,7 @@
       <DataAccess>None</DataAccess>
       <RuleInjection>None</RuleInjection>
     </XamlPropertyRule>
-    
+
     <Compile Update="ProjectSystem\Rules\SupportedTargetFramework.cs">
       <DependentUpon>SupportedTargetFramework.xaml</DependentUpon>
     </Compile>
@@ -592,7 +592,7 @@
       <DataAccess>None</DataAccess>
       <RuleInjection>None</RuleInjection>
     </XamlPropertyRule>
-    
+
     <Compile Update="ProjectSystem\Rules\UpToDateCheckBuilt.cs">
       <DependentUpon>UpToDateCheckBuilt.xaml</DependentUpon>
     </Compile>
@@ -697,7 +697,7 @@
     <None Remove="PublicAPI\net472\*.txt" />
     <AdditionalFiles Include="PublicAPI\net472\*.txt" />
   </ItemGroup>
-  
+
   <ItemGroup Condition="'$(TargetFramework)' == 'net6.0'">
     <None Remove="PublicAPI\net6.0\*.txt" />
     <AdditionalFiles Include="PublicAPI\net6.0\*.txt" />
@@ -711,7 +711,6 @@
 
   <Target Name="AddFilesForNpmPackage" DependsOnTargets="Build" Condition="'$(TargetFramework)' == 'net6.0'">
     <ItemGroup>
-      <NpmContent Include="$(OutDir)$(AssemblyName).dll;$(OutDir)$(AssemblyName).pdb;$(OutDir)$(AssemblyName).xml" />
       <NpmContent Include="exports.json" />
       <!-- We have a runtime dependency on Microsoft.CodeAnalysis.dll in VS Code scenarios. -->
       <NpmContent Include="$(PkgMicrosoft_CodeAnalysis_Common)\lib\net6.0\Microsoft.CodeAnalysis.dll" />
@@ -722,16 +721,16 @@
   <!-- Adds all the .xaml *and* .targets files under $(VisualStudioXamlRulesDir) to our NuGet package by
        creating <None> items with the "Pack" metadata set to "true. By putting them in the package they
        will be available to setup components created in other repos.
-       
+
        We need to do this within a target because many of the files we care about are created during the
        build; e.g. the translated .xaml files. We don't really want those included in the evaluation because
        they will pop in an out of existence depending on where we are in the build process, and we don't
        really want them to show up in the Solution Explorer or anywhere else.
-       
+
        Note that $(VisualStudioXamlRulesDir) could potentially include includes files from any project in
        the solution, though at the moment only this project seems to put files there. If other projects
        start to put files there we will need to do something more sophisticated.
-       
+
        Also note that this is implicitly dependent on the CopyXamlRulesToOutputDirectory and
        CopyDesignTimeTargetsToOutputDirectory targets, which are defined in VisualStudio.XamlRules.targets.
   -->
