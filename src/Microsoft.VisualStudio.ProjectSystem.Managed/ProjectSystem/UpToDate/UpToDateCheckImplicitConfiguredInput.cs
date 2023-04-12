@@ -543,7 +543,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 {
                     if (!itemsByKindBySet.TryGetValue(setName, out Dictionary<string, HashSet<string>>? itemsByKind))
                     {
-                        itemsByKindBySet[setName] = itemsByKind = new Dictionary<string, HashSet<string>>(BuildUpToDateCheck.SetNameComparer);
+                        itemsByKindBySet[setName] = itemsByKind = new Dictionary<string, HashSet<string>>(BuildUpToDateCheck.KindNameComparer);
                     }
 
                     if (!itemsByKind.TryGetValue(kindName, out HashSet<string>? items))
