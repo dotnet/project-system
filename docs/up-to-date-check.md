@@ -67,7 +67,7 @@ their names with a semicolon (e.g. `Set="Set1;Set2"`).
 
 It may be desirable for a component within Visual Studio to schedule a build for which only a subset of the up-to-date
 check inputs and outputs should be considered. This can be achieved by adding `Kind` metadata to the relevant items and
-passing the `FastUpToDateCheckIgnoresKinds` global property.
+passing the `FastUpToDateCheckIgnoresKinds` [global property](https://learn.microsoft.com/visualstudio/msbuild/msbuild-properties#global-properties).
 
 For example:
 
@@ -78,17 +78,16 @@ For example:
   <UpToDateCheckOutput Include="MyProject1.dll" Kind="Alpha" />
   <UpToDateCheckOutput Include="MyProject2.dll" />
 </ItemGroup>
-
-<PropertyGroup>
-  <FastUpToDateCheckIgnoresKinds>Alpha</FastUpToDateCheckIgnoresKinds>
-<PropertyGroup>
 ```
 
-If the `FastUpToDateCheckIgnoresKinds` property has a value of `Alpha`, then the fast up-to-date check will only
+If the `FastUpToDateCheckIgnoresKinds` global property has a value of `Alpha`, then the fast up-to-date check will only
 consider `Source2.cs` and `MyProject2.dll`. If the `FastUpToDateCheckIgnoresKinds` property has a different
 value, or is empty, all four items are considered.
 
 Multiple values may be passed for `FastUpToDateCheckIgnoresKinds`, separated by semicolons (`;`).
+
+Note that global properties are not set in project files (such as `.csproj`) but are expected to be passed by components
+of Visual Studio itself. For an example, see `SkipAnalyzersGlobalPropertiesProvider` in this repo.
 
 ### Copied files
 
