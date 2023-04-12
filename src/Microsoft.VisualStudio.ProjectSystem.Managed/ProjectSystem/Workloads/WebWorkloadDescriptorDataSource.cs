@@ -36,7 +36,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Workloads
 
         private ISet<WorkloadDescriptor> CreateWorkloadDescriptor(IProjectCapabilitiesSnapshot projectCapabilitiesSnapshot)
         {
-            var Workloads = ImmutableHashSet<WorkloadDescriptor>.Empty;
+            var workloads = ImmutableHashSet<WorkloadDescriptor>.Empty;
 
             bool dotnetCoreRazor = projectCapabilitiesSnapshot.IsProjectCapabilityPresent(ProjectCapability.DotNetRazor);
             bool windowsForm = projectCapabilitiesSnapshot.IsProjectCapabilityPresent(ProjectCapability.WindowsForms);
@@ -45,12 +45,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.Workloads
             // Detect all possible scenarios and add the corresponding needed component ids.
             if (!_componentIdsRequired.Contains(s_webComponentId) && WpfDetected(dotnetCoreRazor, windowsForm, wpf))
             {
-                Workloads = Workloads.Add(s_webWorkload);
+                workloads = workloads.Add(s_webWorkload);
 
                 _componentIdsRequired.Add(s_webComponentId);
             }
 
-            return Workloads;
+            return workloads;
         }
 
         #region Scenarios to detect
