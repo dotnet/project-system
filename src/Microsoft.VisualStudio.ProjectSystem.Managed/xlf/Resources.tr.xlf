@@ -154,7 +154,7 @@
       </trans-unit>
       <trans-unit id="FUTD_ComparingCopyMarkerTimestamps">
         <source>Comparing timestamps of copy marker inputs and output:</source>
-        <target state="needs-review-translation">Kopya işaretleyici girişlerinin ve çıkışlarının zaman damgalarının karşılaştırılması:</target>
+        <target state="new">Comparing timestamps of copy marker inputs and output:</target>
         <note />
       </trans-unit>
       <trans-unit id="FUTD_ComparingInputOutputTimestamps">
