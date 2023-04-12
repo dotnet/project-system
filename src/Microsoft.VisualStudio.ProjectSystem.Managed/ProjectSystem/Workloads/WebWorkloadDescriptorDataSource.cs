@@ -34,13 +34,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.Workloads
             return transformBlock;
         }
 
-        private ISet<WorkloadDescriptor> CreateWorkloadDescriptor(IProjectCapabilitiesSnapshot projectCapabilitiesSnapshot)
+        private ISet<WorkloadDescriptor> CreateWorkloadDescriptor(IProjectCapabilitiesSnapshot capabilities)
         {
             var workloads = ImmutableHashSet<WorkloadDescriptor>.Empty;
 
-            bool dotnetCoreRazor = projectCapabilitiesSnapshot.IsProjectCapabilityPresent(ProjectCapability.DotNetRazor);
-            bool windowsForm = projectCapabilitiesSnapshot.IsProjectCapabilityPresent(ProjectCapability.WindowsForms);
-            bool wpf = projectCapabilitiesSnapshot.IsProjectCapabilityPresent(ProjectCapability.WPF);
+            bool dotnetCoreRazor = capabilities.IsProjectCapabilityPresent(ProjectCapability.DotNetRazor);
+            bool windowsForm = capabilities.IsProjectCapabilityPresent(ProjectCapability.WindowsForms);
+            bool wpf = capabilities.IsProjectCapabilityPresent(ProjectCapability.WPF);
 
             // Detect all possible scenarios and add the corresponding needed component ids.
             if (!_componentIdsRequired.Contains(s_webComponentId) && WpfDetected(dotnetCoreRazor, windowsForm, wpf))
