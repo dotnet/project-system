@@ -20,6 +20,7 @@
 
     <!-- See: https://dev.azure.com/devdiv/DevDiv/_wiki/wikis/DevDiv.wiki/29786/Common-setup-authoring-recommendations?anchor=recommendations -->
     <VsixOutputPath>$(VisualStudioSetupInsertionPath)</VsixOutputPath>
+    <!-- Ensures that the Microsoft.VisualStudioEng.MicroBuild.Plugins.SwixBuild package it not utilized, even if it is restored/available. -->
     <NoSwixBuildPlugin>true</NoSwixBuildPlugin>
     <!-- See: https://dev.azure.com/devdiv/DevDiv/_wiki/wikis/DevDiv.wiki/29786/Common-setup-authoring-recommendations?anchor=including-sbom-support -->
     <SBOMFileDestPath>$(VisualStudioSetupInsertionPath)</SBOMFileDestPath>
@@ -58,7 +59,7 @@
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(MSBuildProjectExtension)' == '.vsmanproj' or '$(MSBuildProjectExtension)' == '.swixproj'">
-    <!-- Having GenerateAssemblyVersionInfo enabled causes issues with Language requirements in NerdBank.GitVersioning. -->
+    <!-- Having GenerateAssemblyVersionInfo enabled causes issues with Language requirements in Nerdbank.GitVersioning. -->
     <GenerateAssemblyVersionInfo>false</GenerateAssemblyVersionInfo>
     <FinalizeManifest>true</FinalizeManifest>
     <FinalizeSkipLayout>true</FinalizeSkipLayout>

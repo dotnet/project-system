@@ -38,14 +38,6 @@
       <Ngen>true</Ngen>
       <NgenPriority>1</NgenPriority>
     </ProjectReference>
-    <!-- This is included so that F5 debugging works in the repo. It is not included in the setup .vsix package with the Project System assemblies. -->
-    <!-- <ProjectReference Include="..\VisualStudioEditorsSetup\VisualStudioEditorsSetup.csproj"> -->
-      <!-- <Private>false</Private> -->
-      <!-- In Microsoft.VisualStudio.Internal.MicroBuild in Vsix.targets, it sets IncludeOutputGroupsInVSIX for all project references. -->
-      <!-- This causes the SplitIncludeOutputGroupsInVSIX target in Microsoft.VsSDK.targets in Microsoft.VsSDK.BuildTools to incorrectly include these project references. -->
-      <!-- The Private value set to false is intended to tell Microsoft.VsSDK.targets to not set IncludeOutputGroupsInVSIX. -->
-      <!-- <IncludeOutputGroupsInVSIX></IncludeOutputGroupsInVSIX> -->
-    <!-- </ProjectReference> -->
   </ItemGroup>
 
   <ItemGroup>

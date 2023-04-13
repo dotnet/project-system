@@ -3,12 +3,6 @@
 
   <Import Project="..\..\eng\imports\HostAgnostic.props" />
 
-  <!-- <PropertyGroup> -->
-    <!-- If this is not set, it will output with the default filename of SetupManifest.vsman. -->
-    <!-- Setting the name of the project to Microsoft.VisualStudio.ProjectSystem.Managed.vsmanproj results in an error on the Restore target in NuGet.targets(151,5): error Ambiguous project name 'Microsoft.VisualStudio.ProjectSystem.Managed' -->
-    <!-- <TargetFileName>Microsoft.VisualStudio.ProjectSystem.Managed.vsman</TargetFileName> -->
-  <!-- </PropertyGroup> -->
-
   <ItemGroup>
     <ProjectReference Include="..\ProjectSystemSetup\ProjectSystemSetup.csproj" />
     <ProjectReference Include="..\VisualStudioEditorsSetup\VisualStudioEditorsSetup.csproj" />
