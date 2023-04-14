@@ -25,7 +25,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.VisualStudio.Proj
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.VisualStudio.ProjectSystem.IntegrationTests", "tests\Microsoft.VisualStudio.ProjectSystem.IntegrationTests\Microsoft.VisualStudio.ProjectSystem.IntegrationTests.csproj", "{FB209C68-77C0-4EE9-BCA9-0B3D5721C436}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SetupProject", "setup\SetupManifest\SetupProject.csproj", "{CB213A0F-C4D7-4B12-A53B-1E946A2034ED}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Setup", "setup\SetupManifest\Setup.csproj", "{CB213A0F-C4D7-4B12-A53B-1E946A2034ED}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DeployTestDependencies", "tests\DeployTestDependencies\DeployTestDependencies.csproj", "{892500A5-BF6B-4FD5-A7B9-5EEA20EB775F}"
 EndProject

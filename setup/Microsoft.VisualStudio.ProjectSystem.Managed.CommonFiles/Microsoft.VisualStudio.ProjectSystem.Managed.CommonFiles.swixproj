@@ -6,9 +6,6 @@
   <PropertyGroup>
     <!-- This allows passing in MSBuild properties for substitution in SWR files. -->
     <PackagePreprocessorDefinitions>$(PackagePreprocessorDefinitions);VisualStudioXamlRulesDir=$(VisualStudioXamlRulesDir)</PackagePreprocessorDefinitions>
-    <!-- An SBOM is not required for this project as code files are not contained within the resulting VSIX package. -->
-    <!-- However, VS insertion checks to see that every VSIX package has an associated _sbom.json along with the package. So, it is 'required'. -->
-    <!-- <GenerateSBOM>false</GenerateSBOM> -->
   </PropertyGroup>
 
   <ItemGroup>

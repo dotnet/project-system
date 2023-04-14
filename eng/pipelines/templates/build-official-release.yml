@@ -72,6 +72,7 @@ jobs:
     env:
       # The Microsoft.VisualStudio.Internal.MicroBuild.SetupTooling.props assumes this value is set, which sets the ManifestPublishUrl property.
       # The ManifestPublishUrl property is used in the FinalizeManifest target in Microsoft.VisualStudio.Setup.Tools.targets to set the correct drop destination for the VSMan assets (VSIX and sbom.json).
+      # This is normally set via the MicroBuildSwixPlugin task as a pipeline variable. With modern setup authoring, we do not want to run this task prior to the build itself.
       VstsDropNames: Products/$(System.TeamProject)/$(Build.Repository.Name)/$(Build.SourceBranchName)/$(Build.BuildNumber)
 
   # Sets the PackageVersion variable for the job. This variable is not used by this job; instead, it is consumed by the Insertion job.

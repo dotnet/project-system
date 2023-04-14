@@ -127,6 +127,7 @@
   </PropertyGroup>
 
   <!-- Implicit usings -->
+  <!-- See: https://learn.microsoft.com/dotnet/core/project-sdk/msbuild-props#using -->
   <ItemGroup>
     <!-- We use immutable collections extensively and expect no naming conflicts. -->
     <Using Include="System.Collections.Immutable" />

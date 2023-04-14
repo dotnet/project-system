@@ -7,7 +7,7 @@
     <ProjectReference Include="..\ProjectSystemSetup\ProjectSystemSetup.csproj" />
     <ProjectReference Include="..\VisualStudioEditorsSetup\VisualStudioEditorsSetup.csproj" />
     <!-- If ReferenceOutputAssembly is not set to false, it will attempt to compile the non-existent DLL. -->
-    <!-- CSC error CS0006: Metadata file 'C:\Code\project-system\artifacts\Release\VSSetup\Insertion\Microsoft.VisualStudio.ProjectSystem.Managed.CommonFiles.dll' could not be found [C:\Code\project-system\setup\SetupManifest\SetupProject.csproj] -->
+    <!-- CSC error CS0006: Metadata file 'C:\Code\project-system\artifacts\Release\VSSetup\Insertion\Microsoft.VisualStudio.ProjectSystem.Managed.CommonFiles.dll' could not be found [C:\Code\project-system\setup\SetupManifest\Setup.csproj] -->
     <!-- The CollectManifestsToMerge task in Microsoft.VisualStudio.Internal.MicroBuild.Vsman.targets only specifies Build;Pack;GetVsixPrimaryOutputs to run. -->
     <!-- If Restore is not run, the Microsoft.VisualStudio.Internal.MicroBuild.Swix package will not be restored. -->
     <ProjectReference Include="..\Microsoft.VisualStudio.ProjectSystem.Managed.CommonFiles\Microsoft.VisualStudio.ProjectSystem.Managed.CommonFiles.swixproj" ReferenceOutputAssembly="false" Targets="Restore;Build" />
