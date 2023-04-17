@@ -40,4 +40,25 @@
     <MakeDir Directories="$(VisualStudioSetupInsertionPath)" />
   </Target>
 
+  <!--
+    The properties and targets below will add the VSIXSourceItems (files that go in the VSIX) and the VSIX file itself to the item group that tracks when files are up-to-date.
+    This ensures that these files are recognized in VS to force the VS Extension Project to build when the files are changed, such as prior to debugging.
+  -->
+  <PropertyGroup Condition="'$(IsVsixProject)' == 'true'">
+    <CollectUpToDateCheckInputDesignTimeDependsOn>$(CollectUpToDateCheckInputDesignTimeDependsOn);AddUpToDateCheckVSIXSourceItems</CollectUpToDateCheckInputDesignTimeDependsOn>
+    <CollectUpToDateCheckOutputDesignTimeDependsOn>$(CollectUpToDateCheckOutputDesignTimeDependsOn);AddUpToDateCheckTargetVsixContainer</CollectUpToDateCheckOutputDesignTimeDependsOn>
+  </PropertyGroup>
+
+  <Target Name="AddUpToDateCheckVSIXSourceItems" DependsOnTargets="GetVsixSourceItems" Condition="'$(IsVsixProject)' == 'true'">
+    <ItemGroup>
+      <UpToDateCheckInput Include="@(VSIXSourceItem)" Set="VsixItems" />
+    </ItemGroup>
+  </Target>
+
+  <Target Name="AddUpToDateCheckTargetVsixContainer" Condition="'$(IsVsixProject)' == 'true'">
+    <ItemGroup>
+      <UpToDateCheckOutput Include="$(TargetVsixContainer)" Set="VsixItems" />
+    </ItemGroup>
+  </Target>
+
 </Project>
