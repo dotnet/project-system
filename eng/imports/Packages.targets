@@ -11,9 +11,11 @@
     <PackageReference Update="Microsoft.DiaSymReader.Pdb2Pdb"                                         Version="1.1.0-beta2-22320-02" />
     <PackageReference Update="Microsoft.DotNet.XliffTasks"                                            Version="1.0.0-beta.23073.2" />
     <PackageReference Update="Microsoft.SourceLink.GitHub"                                            Version="1.1.1" />
+    <PackageReference Update="Microsoft.VisualStudio.Internal.MicroBuild"                             Version="2.0.115" />
+    <PackageReference Update="Microsoft.VisualStudio.Internal.MicroBuild.Swix"                        Version="2.0.115" />
+    <PackageReference Update="Microsoft.VisualStudio.Internal.MicroBuild.Vsman"                       Version="2.0.115" />
     <PackageReference Update="Microsoft.VisualStudioEng.MicroBuild.Core"                              Version="1.0.0" />
-    <PackageReference Update="Microsoft.VisualStudioEng.MicroBuild.Plugins.SwixBuild"                 Version="1.1.286" />
-    <PackageReference Update="Nerdbank.GitVersioning"                                                 Version="3.5.107" />
+    <PackageReference Update="Nerdbank.GitVersioning"                                                 Version="3.6.79-alpha" />
     <PackageReference Update="Nerdbank.Streams"                                                       Version="2.9.112" />
     <PackageReference Update="System.IO.Pipelines"                                                    Version="6.0.3" />
 

@@ -35,7 +35,7 @@
 
     <ItemGroup>
       <BuildProject Include="$(RepoRoot)src/**/*.csproj;$(RepoRoot)src/**/*.vbproj" Condition="'$(SrcProjects)' == 'true'" />
-      <BuildProject Include="$(RepoRoot)tests/**/*.csproj;$(RepoRoot)src/**/*.vbproj" Condition="'$(TestProjects)' == 'true'" />
+      <BuildProject Include="$(RepoRoot)tests/**/*.csproj;$(RepoRoot)tests/**/*.vbproj" Condition="'$(TestProjects)' == 'true'" />
       <BuildProject Include="$(RepoRoot)setup/**/*.csproj" Condition="'$(SetupProjects)' == 'true'" />
     </ItemGroup>
 

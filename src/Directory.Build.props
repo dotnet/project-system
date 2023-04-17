@@ -1,5 +1,6 @@
 <!-- Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information. -->
 <Project>
+
   <Import Project="..\Directory.Build.props"/>
 
   <PropertyGroup>
@@ -15,4 +16,5 @@
     <Compile Include="..\Common\GlobalAssemblyInfo.cs" Condition="'$(Language)' == 'C#'" />
     <Compile Include="..\Common\GlobalAssemblyInfo.vb" Condition="'$(Language)' == 'VB'" />
   </ItemGroup>
+
 </Project>

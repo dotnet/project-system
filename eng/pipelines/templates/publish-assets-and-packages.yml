@@ -51,6 +51,7 @@ jobs:
       DropFolder: $(Pipeline.Workspace)/$(Build.BuildNumber)/VSSetup/Insertion
       # TODO: Consider using $(GitBuildVersion) instead of $(Build.BuildNumber) as it better correlates the build of the code to the VS insertion.
       # Meaning, instead of VS Insertion -> Pipeline BuildNumber -> Code BuildVersion, it would just be VS Insertion -> Code BuildVersion.
+      # If this is updated, VstsDropNames set in build-official-release.yml would also need to be updated.
       # For GitBuildVersion: https://github.com/dotnet/Nerdbank.GitVersioning/blob/main/doc/cloudbuild.md#automatically-match-cloud-build-numbers-to-to-your-git-version
       # Issue: https://github.com/dotnet/project-system/issues/8431
       # Example of current path: 'Products/[DevDiv]/[dotnet/project-system]/[main]/[x.x]'

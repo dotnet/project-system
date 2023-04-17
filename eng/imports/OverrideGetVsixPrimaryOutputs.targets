@@ -1,0 +1,20 @@
+<!-- Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information. -->
+<Project>
+
+  <!-- Overrides the GetVsixPrimaryOutputs from Microsoft.VisualStudio.Internal.MicroBuild's package, specifically the Vsix.targets file. -->
+  <!-- To fix the VsixPrimaryOutputs item requires this override of the target since the target is specified in the MSBuild task that calls it. -->
+  <!-- The MSBuild task takes the output of the target (via TargetOutputs) from the Returns attribute and sets it to the MergeManifest for creating insertion metadata. -->
+  <Target Name="GetVsixPrimaryOutputs" Condition="'$(CreateVsixContainer)' == 'true'" Returns="@(VsixPrimaryOutputs)">
+    <ItemGroup>
+      <VsixPrimaryOutputs Include="$(TargetVsixContainer)" />
+      <!-- This output was set improperly in the original target, assuming the VSIX container file name was the same as the JSON manifest file. -->
+      <!-- The JSON manifest filename is actually based on the PackageId in the source.extension.vsixmanifest for the project. -->
+      <VsixPrimaryOutputs Include="$(VisualStudioSetupInsertionPath)$(VsixManifestPackageId).json">
+        <RelativeUrl Condition="'$(Platform)' != 'AnyCPU'">$(Platform)/</RelativeUrl>
+        <SBOMFileLocation>@(SbomOutput)</SBOMFileLocation>
+        <SBOMFileDestPath>$(SBOMFileDestPath)</SBOMFileDestPath>
+      </VsixPrimaryOutputs>
+    </ItemGroup>
+  </Target>
+
+</Project>
