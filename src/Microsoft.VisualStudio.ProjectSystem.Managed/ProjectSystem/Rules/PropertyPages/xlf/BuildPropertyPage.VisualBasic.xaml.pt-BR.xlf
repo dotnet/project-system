@@ -52,6 +52,16 @@
         <target state="translated">Prefira 32 bits</target>
         <note />
       </trans-unit>
+      <trans-unit id="BoolProperty|PublishDocumentationFile|Description">
+        <source>When this property is true, the XML documentation file for the project, if one is generated, is included in the publish output for the project. This property defaults to true.</source>
+        <target state="translated">Quando esta propriedade é verdadeira, o arquivo de documentação XML do projeto, se gerado, é incluído na saída de publicação do projeto. Esta propriedade é verdadeira como padrão.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="BoolProperty|PublishDocumentationFile|DisplayName">
+        <source>Publish documentation file</source>
+        <target state="translated">Publicar arquivo de documentação</target>
+        <note />
+      </trans-unit>
       <trans-unit id="BoolProperty|RegisterForComInterop|Description">
         <source>Specifies whether your managed application will expose a COM object (a COM-callable wrapper) that enables a COM object to interact with the application.</source>
         <target state="translated">Especifica se seu aplicativo gerenciado irá expor um objeto COM (um wrapper que pode ser chamado por COM) que permite que um objeto COM interaja com o aplicativo.</target>
@@ -385,6 +395,16 @@
       <trans-unit id="StringProperty|DefineConstants|DisplayName">
         <source>Custom constants</source>
         <target state="translated">Constantes personalizadas</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|DocumentationFile|Description">
+        <source>Optional path for the API documentation file. Leave blank to use the default location.</source>
+        <target state="translated">Caminho opcional para o arquivo de documentação da API. Deixe em branco para usar o local padrão.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|DocumentationFile|DisplayName">
+        <source>XML documentation file path</source>
+        <target state="translated">Caminho do arquivo de documentação XML</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|OutputPath|DisplayName">

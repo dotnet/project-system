@@ -12,7 +12,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Commands
     /// </summary>
     [ExportCommandGroup(VSConstants.CMDSETID.StandardCommandSet16_string)]
     [AppliesTo(ProjectCapability.DependenciesTree)]
-    [Order(ProjectSystem.Order.Default)]
+    [Order(Order.Default)]
     internal sealed class ReferenceManagerCommandHandler : ICommandGroupHandler
     {
         private readonly IReferencesUI _referencesUI;

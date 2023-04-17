@@ -219,11 +219,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
             return isInAutomationFunction != 0;
         }
 
-        private CodeAnalysis.Project? GetCurrentProject() =>
-            _workspace.Value.CurrentSolution.Projects.FirstOrDefault(proj => StringComparers.Paths.Equals(proj.FilePath, _projectVsServices.Project.FullPath));
+        private CodeAnalysis.Project? GetCurrentProject()
+            => _workspace.Value.CurrentSolution.Projects.FirstOrDefault(proj => StringComparers.Paths.Equals(proj.FilePath, _projectVsServices.Project.FullPath));
 
-        private static CodeAnalysis.Document GetDocument(CodeAnalysis.Project project, string? filePath) =>
-            project.Documents.FirstOrDefault(d => StringComparers.Paths.Equals(d.FilePath, filePath));
+        private static CodeAnalysis.Document GetDocument(CodeAnalysis.Project project, string? filePath)
+            => project.Documents.FirstOrDefault(d => StringComparers.Paths.Equals(d.FilePath, filePath));
 
         private async Task<bool> CheckUserConfirmationAsync(string oldFileName)
         {

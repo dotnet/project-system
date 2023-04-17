@@ -598,7 +598,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             //
             // When values exist, they will resemble:
             //
-            //     Comparing timestamps of copy marker inputs and outputs:
+            //     Comparing timestamps of copy marker inputs and output:
             //         Write timestamp on output marker is 2022-11-10 13:42:01.665 on 'C:/Users/drnoakes/source/repos/MyApp/MyApp/obj/Debug/net7.0/MyApp.csproj.CopyComplete'.
             //         Adding input reference copy markers:
             //             C:/Users/drnoakes/source/repos/MyApp/MyLibrary/bin/Debug/net6.0/MyLibrary.dll

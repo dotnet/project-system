@@ -43,7 +43,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
         /// <summary>
         /// Called by CPS to determine whether we can launch
         /// </summary>
-        public override Task<bool> CanLaunchAsync(DebugLaunchOptions launchOptions) => TplExtensions.TrueTask;
+        public override Task<bool> CanLaunchAsync(DebugLaunchOptions launchOptions) => TaskResult.True;
 
         /// <summary>
         /// Called by StartupProjectRegistrar to determine whether this project should appear in the Startup list.

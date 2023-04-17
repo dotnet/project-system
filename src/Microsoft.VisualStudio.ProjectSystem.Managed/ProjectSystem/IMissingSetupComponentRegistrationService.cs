@@ -12,7 +12,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
     internal interface IMissingSetupComponentRegistrationService
     {
         /// <summary>
-        /// Initilize this service.
+        /// Initialize this service.
         /// </summary>
         Task InitializeAsync(CancellationToken cancellationToken = default);
 
@@ -43,7 +43,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
         /// Register a project to be tracked for components to be installed.
         /// </summary>
         /// <remarks>
-        /// This service must be initilized first.
+        /// This service must be initialized first.
         /// </remarks>
         void RegisterProjectConfiguration(Guid projectGuid, ConfiguredProject project);
 

@@ -6,7 +6,6 @@ Imports System.ComponentModel
 Imports System.IO
 Imports System.Reflection
 Imports System.Runtime.InteropServices
-
 Imports EnvDTE
 
 Imports Microsoft.VisualStudio.Designer.Interfaces
@@ -40,6 +39,7 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
         Private Const EnableVisualStylesFieldName As String = "EnableVisualStyles"
         Private Const SaveMySettingsOnExitFieldName As String = "SaveMySettingsOnExit"
         Private Const SplashScreenFieldName As String = "SplashScreen"
+        Private Const MinimumSplashScreenDisplayTimeFieldName As String = "MinimumSplashScreenDisplayTime"
         Private Const HighDpiModeFieldName As String = "HighDpiMode"
 
         Private Const HighDpiMode_DpiUnaware = "DpiUnaware"
@@ -228,8 +228,8 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
                 Else
                     Debug.Fail("Unexpected MyApplication.ShutdownMode")
                 End If
-                
-                If IsTargetingDotNetCore(DirectCast(GetService(GetType(IVsHierarchy)), IVsHierarchy))
+
+                If IsTargetingDotNetCore(DirectCast(GetService(GetType(IVsHierarchy)), IVsHierarchy)) Then
                     '    Me.HighDpiMode = HighDpiMode.xxx
                     Dim HighDpiValue As String
                     Select Case MyApplication.HighDpiMode
@@ -248,7 +248,7 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
                     End Select
                     AddFieldAssignment(Constructor, HighDpiModeFieldName, HighDpiModeFieldName, HighDpiValue)
                 End If
-                    
+
                 GeneratedType.Members.Add(Constructor)
 
                 If MyApplication.MainFormNoRootNS <> String.Empty Then
@@ -329,6 +329,37 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
                         GeneratedType.Members.Add(OnCreateSplashScreen)
                     End If
                 End If
+
+                If IsNumeric(MyApplication.MinimumSplashScreenDisplayTime) Then
+                    ' GENERATED CODE:
+                    ' Protected Overrides Function OnInitialize(commandLineArgs As System.Collections.ObjectModel.ReadOnlyCollection(Of String)) As Boolean
+                    '    Me.MinimumSplashScreenDisplayTime = 5000
+                    '    Return MyBase.OnInitialize(commandLineArgs)
+                    ' End Function
+                    '
+                    Dim OnInitialize As New CodeMemberMethod With {
+                        .Attributes = MemberAttributes.Override Or MemberAttributes.Family,
+                        .ReturnType = New CodeTypeReference(GetType(Boolean)),
+                        .Name = "OnInitialize"
+                    }
+                    AddAttribute(OnInitialize, DebuggerStepThroughAttribute, True)
+                    Dim commandLineArgs As New CodeParameterDeclarationExpression With {
+                                            .Name = "commandLineArgs",
+                                            .Type = New CodeTypeReference(GetType(ObjectModel.ReadOnlyCollection(Of String)))
+                                        }
+                    OnInitialize.Parameters.Add(commandLineArgs)
+                    AddFieldPrimitiveAssignment(OnInitialize, MinimumSplashScreenDisplayTimeFieldName, MyApplication.MinimumSplashScreenDisplayTime)
+                    Dim MyBaseOnInitialize As New CodeMethodInvokeExpression With {
+                                            .Method = New CodeMethodReferenceExpression With {
+                                                .MethodName = "OnInitialize",
+                                                .TargetObject = New CodeBaseReferenceExpression()
+                                            }
+                                        }
+                    MyBaseOnInitialize.Parameters.Add(New CodeArgumentReferenceExpression("commandLineArgs"))
+                    OnInitialize.Statements.Add(New CodeMethodReturnStatement(MyBaseOnInitialize))
+                    GeneratedType.Members.Add(OnInitialize)
+                End If
+
                 ' Add our class to the namespace...
                 MyNamespace.Types.Add(GeneratedType)
 

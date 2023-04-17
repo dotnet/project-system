@@ -4916,7 +4916,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
 #Region "Global Symbol Rename"
 
         ''' <summary>
-        ''' Attemnpts to call global rename on a resource that has been renamed, if a strongly-typed
+        ''' Attempts to call global rename on a resource that has been renamed, if a strongly-typed
         '''   class is being generated for the resx file.
         ''' </summary>
         ''' <param name="OldName">The old name of the resource that was renamed</param>

@@ -211,8 +211,7 @@
                        Description="Sets the form to be used as a splash screen for the application."
                        HelpUrl="https://go.microsoft.com/fwlink/?linkid=2195177"
                        Category="ApplicationFramework"
-                       EnumProvider="StartupObjectsEnumProvider"
-                       Visible="False">
+                       EnumProvider="SplashScreenEnumProvider">
     <DynamicEnumProperty.DataSource>
       <DataSource Persistence="ProjectFileWithInterception"
                   HasConfigurationCondition="False" />
@@ -235,8 +234,7 @@
                 DisplayName="Minimum splash screen display time"
                 Description="Sets the minimum length of time, in milliseconds, for which the splash screen is displayed."
                 HelpUrl="https://go.microsoft.com/fwlink/?linkid=2195289"
-                Category="ApplicationFramework"
-                Visible="False">
+                Category="ApplicationFramework">
     <StringProperty.DataSource>
       <DataSource Persistence="ProjectFileWithInterception"
                   HasConfigurationCondition="False" />

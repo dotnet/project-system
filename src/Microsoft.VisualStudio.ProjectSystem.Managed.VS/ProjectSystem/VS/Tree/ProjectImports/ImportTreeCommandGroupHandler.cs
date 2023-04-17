@@ -168,7 +168,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.ProjectImports
 
         [ExportCommandGroup(CMDSETID.UIHierarchyWindowCommandSet_string)]
         [AppliesTo(ProjectCapability.ProjectImportsTree)]
-        [Order(ProjectSystem.Order.BeforeDefault)]
+        [Order(Order.BeforeDefault)]
         private sealed class UIHierarchyWindowCommandSetGroupHandler : ProjectImportsCommandGroupHandlerBase
         {
             [ImportingConstructor]
@@ -199,7 +199,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.ProjectImports
 
         [ExportCommandGroup(CMDSETID.StandardCommandSet97_string)]
         [AppliesTo(ProjectCapability.ProjectImportsTree)]
-        [Order(ProjectSystem.Order.BeforeDefault)]
+        [Order(Order.BeforeDefault)]
         private sealed class StandardCommandSet97GroupHandler : ProjectImportsCommandGroupHandlerBase
         {
             [ImportingConstructor]

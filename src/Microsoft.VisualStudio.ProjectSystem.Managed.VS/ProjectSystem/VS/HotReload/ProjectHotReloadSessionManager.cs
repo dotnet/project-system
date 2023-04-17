@@ -18,6 +18,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.HotReload
         private readonly IActiveDebugFrameworkServices _activeDebugFrameworkServices;
         private readonly Lazy<IProjectHotReloadAgent> _projectHotReloadAgent;
         private readonly Lazy<IHotReloadDiagnosticOutputService> _hotReloadDiagnosticOutputService;
+        private readonly Lazy<IProjectHotReloadNotificationService> _projectHotReloadNotificationService;
 
         // Protect the state from concurrent access. For example, our Process.Exited event
         // handler may run on one thread while we're still setting up the session on
@@ -37,7 +38,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.HotReload
             IProjectFaultHandlerService projectFaultHandlerService,
             IActiveDebugFrameworkServices activeDebugFrameworkServices,
             Lazy<IProjectHotReloadAgent> projectHotReloadAgent,
-            Lazy<IHotReloadDiagnosticOutputService> hotReloadDiagnosticOutputService)
+            Lazy<IHotReloadDiagnosticOutputService> hotReloadDiagnosticOutputService,
+            Lazy<IProjectHotReloadNotificationService> projectHotReloadNotificationService)
             : base(threadingService.JoinableTaskContext)
         {
             _project = project;
@@ -45,6 +47,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.HotReload
             _activeDebugFrameworkServices = activeDebugFrameworkServices;
             _projectHotReloadAgent = projectHotReloadAgent;
             _hotReloadDiagnosticOutputService = hotReloadDiagnosticOutputService;
+            _projectHotReloadNotificationService = projectHotReloadNotificationService;
         }
 
         public async Task ActivateSessionAsync(int processId, bool runningUnderDebugger, string projectName)
@@ -123,6 +126,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.HotReload
                 {
                     await _pendingSessionState.Session.StartSessionAsync(runningUnderDebugger, cancellationToken: default);
                     _activeSessions.Add(processId, _pendingSessionState);
+
+                    // Addition of the first session, puts the project in hot reload mode
+                    if (_activeSessions.Count == 1)
+                    {
+                        await _projectHotReloadNotificationService.Value.SetHotReloadStateAsync(isInHotReload: true);
+                    }
                 }
 
                 _pendingSessionState = null;
@@ -209,8 +218,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.HotReload
                 && !await OptimizeEnabledInConfiguredProjectForDebugAsync();
         }
 
-        private Task<ConfiguredProject?> GetConfiguredProjectForDebugAsync() =>
-            _activeDebugFrameworkServices.GetConfiguredProjectForActiveFrameworkAsync();
+        private Task<ConfiguredProject?> GetConfiguredProjectForDebugAsync()
+            => _activeDebugFrameworkServices.GetConfiguredProjectForActiveFrameworkAsync();
 
         private async Task<string?> GetDebugFrameworkVersionAsync()
         {
@@ -345,6 +354,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.HotReload
 
             using AsyncSemaphore.Releaser semaphoreReleaser = await _semaphore.EnterAsync();
 
+            int sessionCountOnEntry = _activeSessions.Count;
+
             try
             {
                 if (_activeSessions.Remove(hotReloadState.Process.Id))
@@ -373,6 +384,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.HotReload
                         HotReloadDiagnosticErrorLevel.Error
                     ),
                     cancellationToken);
+            }
+            finally
+            {
+                // No more sessions removes the project from hot reload mode
+                if (sessionCountOnEntry == 1 && _activeSessions.Count == 0)
+                {
+                    await _projectHotReloadNotificationService.Value.SetHotReloadStateAsync(isInHotReload: false);
+                }
             }
 
             return true;

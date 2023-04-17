@@ -262,7 +262,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Order
                 flags: flags,
                 metadata: metadata);
 
-        private static ReferencesProjectTreeCustomizablePropertyValues GetInitialValues() =>
-            new();
+        private static ReferencesProjectTreeCustomizablePropertyValues GetInitialValues()
+            => new();
     }
 }
