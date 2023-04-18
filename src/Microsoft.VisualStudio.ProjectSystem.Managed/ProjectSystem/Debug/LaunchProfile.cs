@@ -178,5 +178,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         {
             return string.Equals(name1, name2, StringComparisons.LaunchProfileNames);
         }
+
+        public override string ToString()
+        {
+            return $"Name={Name ?? "<null>"}, Command={CommandName ?? "<null>"}";
+        }
     }
 }

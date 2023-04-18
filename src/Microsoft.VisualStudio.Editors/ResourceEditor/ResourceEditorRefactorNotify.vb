@@ -11,11 +11,6 @@ Imports Microsoft.VSDesigner.Common
 
 Namespace Microsoft.VisualStudio.Editors.ResourceEditor
 
-    ''' <summary>
-    ''' The editor factory for the resource editor.  The job of this class is
-    '''   simply to create a new resource editor designer when requested by the
-    '''   shell.
-    ''' </summary>
     <CLSCompliant(False),
     Guid("0407F754-C199-403e-B89B-1D8E1FF3DC79"),
     ProvideRefactorNotify(GetType(ResourceEditorRefactorNotify), ".resx", "E24C65DC-7377-472b-9ABA-BC803B73C61A")>

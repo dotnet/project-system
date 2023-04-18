@@ -16,7 +16,6 @@
     <BaseIntermediateOutputPath Condition="'$(BaseIntermediateOutputPath)' == ''">$([System.IO.Path]::GetFullPath('$(ArtifactsObjDir)$(MSBuildProjectName)\'))</BaseIntermediateOutputPath>
     <IntermediateOutputPath>$(BaseIntermediateOutputPath)</IntermediateOutputPath>
     <UseCommonOutputDirectory Condition="'$(UseCommonOutputDirectory)' == ''">true</UseCommonOutputDirectory>
-    <AccelerateBuildsInVisualStudio>true</AccelerateBuildsInVisualStudio>
   </PropertyGroup>
 
   <!-- Configuration -->
@@ -56,6 +55,7 @@
     <NoWarn>$(NoWarn);NU5125</NoWarn>
     <!-- Sets deterministic compilation (/deterministic compiler flag) -->
     <Deterministic>true</Deterministic>
+    <AccelerateBuildsInVisualStudio>true</AccelerateBuildsInVisualStudio>
 
     <!-- SourceLink properties -->
     <!-- https://github.com/dotnet/sourcelink#using-source-link-in-net-projects -->
@@ -125,6 +125,7 @@
   </PropertyGroup>
 
   <!-- Implicit usings -->
+  <!-- See: https://learn.microsoft.com/dotnet/core/project-sdk/msbuild-props#using -->
   <ItemGroup>
     <!-- We use immutable collections extensively and expect no naming conflicts. -->
     <Using Include="System.Collections.Immutable" />

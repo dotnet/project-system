@@ -29,7 +29,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
     /// for a similar interface for intercepting callbacks for properties stored in
     /// MSBuild files.
     /// </remarks>
-    [ProjectSystemContract(ProjectSystemContractScope.UnconfiguredProject, ProjectSystemContractProvider.Extension, Cardinality = Composition.ImportCardinality.ZeroOrMore)]
+    [ProjectSystemContract(ProjectSystemContractScope.UnconfiguredProject, ProjectSystemContractProvider.Extension, Cardinality = ImportCardinality.ZeroOrMore)]
     public interface ILaunchProfileExtensionValueProvider
     {
         /// <summary>

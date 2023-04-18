@@ -13,7 +13,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate;
 /// We track solution builds to reset various state in the up-to-date check, such as timestamp caches.
 /// </para>
 /// </remarks>
-[ProjectSystemContract(ProjectSystemContractScope.ProjectService, ProjectSystemContractProvider.Private, Cardinality = Composition.ImportCardinality.ExactlyOne)]
+[ProjectSystemContract(ProjectSystemContractScope.ProjectService, ProjectSystemContractProvider.Private, Cardinality = ImportCardinality.ExactlyOne)]
 internal interface ISolutionBuildEventListener
 {
     /// <summary>

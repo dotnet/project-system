@@ -423,3 +423,7 @@ Microsoft.VisualStudio.ProjectSystem.VS.HotReload.IProjectHotReloadUpdateApplier
 ~static Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages.PropertyPageResources.ImplicitUsingEditor_ListItemIsStatic.get -> string
 ~static Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages.PropertyPageResources.ImplicitUsingEditor_ListViewAccessibleName.get -> string
 ~static Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages.PropertyPageResources.ImplicitUsingEditor_ShowImportedUsingsButton.get -> string
+Microsoft.VisualStudio.ProjectSystem.VS.HotReload.IProjectHotReloadNotificationService
+Microsoft.VisualStudio.ProjectSystem.VS.HotReload.IProjectHotReloadNotificationService.HotReloadStateChangedAsync -> Microsoft.VisualStudio.Threading.AsyncEventHandler<bool>!
+Microsoft.VisualStudio.ProjectSystem.VS.HotReload.IProjectHotReloadNotificationService.IsProjectInHotReload.get -> bool
+Microsoft.VisualStudio.ProjectSystem.VS.HotReload.IProjectHotReloadNotificationService.SetHotReloadStateAsync(bool isInHotReload) -> System.Threading.Tasks.Task!

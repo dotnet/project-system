@@ -6,23 +6,23 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
     {
         public static void Equal(IDependency expected, IDependency actual)
         {
-            Xunit.Assert.NotNull(actual);
-            Xunit.Assert.NotNull(expected);
+            Assert.NotNull(actual);
+            Assert.NotNull(expected);
 
-            Xunit.Assert.Equal(expected.ProviderType, actual.ProviderType);
-            Xunit.Assert.Equal(expected.Caption, actual.Caption);
-            Xunit.Assert.Equal(expected.OriginalItemSpec, actual.OriginalItemSpec);
-            Xunit.Assert.Equal(expected.FilePath, actual.FilePath);
-            Xunit.Assert.Equal(expected.SchemaName, actual.SchemaName);
-            Xunit.Assert.Equal(expected.SchemaItemType, actual.SchemaItemType);
-            Xunit.Assert.Equal(expected.Resolved, actual.Resolved);
-            Xunit.Assert.Equal(expected.Implicit, actual.Implicit);
-            Xunit.Assert.Equal(expected.Visible, actual.Visible);
-            Xunit.Assert.Equal(expected.IconSet, actual.IconSet);
-            Xunit.Assert.Equal(expected.BrowseObjectProperties, actual.BrowseObjectProperties);
-            Xunit.Assert.Equal(expected.Flags, actual.Flags);
-            Xunit.Assert.Equal(expected.Id, actual.Id);
-            Xunit.Assert.Equal(expected.DiagnosticLevel, actual.DiagnosticLevel);
+            Assert.Equal(expected.ProviderType, actual.ProviderType);
+            Assert.Equal(expected.Caption, actual.Caption);
+            Assert.Equal(expected.OriginalItemSpec, actual.OriginalItemSpec);
+            Assert.Equal(expected.FilePath, actual.FilePath);
+            Assert.Equal(expected.SchemaName, actual.SchemaName);
+            Assert.Equal(expected.SchemaItemType, actual.SchemaItemType);
+            Assert.Equal(expected.Resolved, actual.Resolved);
+            Assert.Equal(expected.Implicit, actual.Implicit);
+            Assert.Equal(expected.Visible, actual.Visible);
+            Assert.Equal(expected.IconSet, actual.IconSet);
+            Assert.Equal(expected.BrowseObjectProperties, actual.BrowseObjectProperties);
+            Assert.Equal(expected.Flags, actual.Flags);
+            Assert.Equal(expected.Id, actual.Id);
+            Assert.Equal(expected.DiagnosticLevel, actual.DiagnosticLevel);
         }
     }
 }

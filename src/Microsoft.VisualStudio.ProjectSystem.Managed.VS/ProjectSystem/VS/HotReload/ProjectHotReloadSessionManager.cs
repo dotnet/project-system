@@ -218,8 +218,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.HotReload
                 && !await OptimizeEnabledInConfiguredProjectForDebugAsync();
         }
 
-        private Task<ConfiguredProject?> GetConfiguredProjectForDebugAsync() =>
-            _activeDebugFrameworkServices.GetConfiguredProjectForActiveFrameworkAsync();
+        private Task<ConfiguredProject?> GetConfiguredProjectForDebugAsync()
+            => _activeDebugFrameworkServices.GetConfiguredProjectForActiveFrameworkAsync();
 
         private async Task<string?> GetDebugFrameworkVersionAsync()
         {

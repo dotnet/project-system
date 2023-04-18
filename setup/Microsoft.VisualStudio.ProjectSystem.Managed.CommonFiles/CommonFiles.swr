@@ -1,8 +1,5 @@
 use vs
 
-package name=Microsoft.VisualStudio.ProjectSystem.Managed.CommonFiles
-        version=$(Version)
-
 vs.localizedResources
   vs.localizedResource language=en-us
                        title="Microsoft VisualStudio Managed Project System Common Files"

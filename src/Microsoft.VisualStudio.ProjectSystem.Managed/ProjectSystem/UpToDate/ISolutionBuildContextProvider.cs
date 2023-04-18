@@ -2,7 +2,7 @@
 
 namespace Microsoft.VisualStudio.ProjectSystem.UpToDate;
 
-[ProjectSystemContract(ProjectSystemContractScope.ProjectService, ProjectSystemContractProvider.Private, Cardinality = Composition.ImportCardinality.ExactlyOne)]
+[ProjectSystemContract(ProjectSystemContractScope.ProjectService, ProjectSystemContractProvider.Private, Cardinality = ImportCardinality.ExactlyOne)]
 internal interface ISolutionBuildContextProvider
 {
     SolutionBuildContext? CurrentSolutionBuildContext { get; }
