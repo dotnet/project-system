@@ -41,6 +41,7 @@ jobs:
       patVariable: $(dn-bot-ceapex-package-r)
       isCreatePrSelected: true
       isAutoCompletePrSelected: false
+      isShouldReusePrSelected: true
 
   ###################################################################################################################################################################
   # PUBLISH ARTIFACTS
