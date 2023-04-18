@@ -14,11 +14,28 @@
     <CopyVsixManifestToOutput>false</CopyVsixManifestToOutput>
     <PublishOutputToSymStore>false</PublishOutputToSymStore>
     <IncludeAssemblyInVSIXContainer>false</IncludeAssemblyInVSIXContainer>
+    <!-- During evaluation, Microsoft.VisualStudio.Internal.MicroBuild.targets will attempt to add the VSIX file in $(VisualStudioSetupInsertionPath) to FilesToSign. -->
+    <!-- This will fail to sign files in that location since the files are required to be in OutDir or IntermediateOutputPath for signing. -->
+    <EnableDefaultSignFiles>false</EnableDefaultSignFiles>
+
+    <!-- See: https://dev.azure.com/devdiv/DevDiv/_wiki/wikis/DevDiv.wiki/29786/Common-setup-authoring-recommendations?anchor=recommendations -->
+    <VsixOutputPath>$(VisualStudioSetupInsertionPath)</VsixOutputPath>
+    <!-- Ensures that the Microsoft.VisualStudioEng.MicroBuild.Plugins.SwixBuild package it not utilized, even if it is restored/available. -->
+    <NoSwixBuildPlugin>true</NoSwixBuildPlugin>
+    <!-- See: https://dev.azure.com/devdiv/DevDiv/_wiki/wikis/DevDiv.wiki/29786/Common-setup-authoring-recommendations?anchor=including-sbom-support -->
+    <SBOMFileDestPath>$(VisualStudioSetupInsertionPath)</SBOMFileDestPath>
+    <!-- MicroBuild.Plugins.Sbom.targets uses this to set the output path (ManifestDirPath) for the GenerateSBOM target. -->
+    <!-- This output, if not separated by a project-specific folder, can hit file conflicts ("manifest.json is being used by another process") because both VSIX extension projects can build in parallel. -->
+    <SbomManifestDirPath>$(OutputPath)Sbom\$(MSBuildProjectName)\</SbomManifestDirPath>
 
     <VsixSourceManifestPath>$(MSBuildProjectDirectory)\source.extension.vsixmanifest</VsixSourceManifestPath>
     <!-- This property indicates that the project is a VS Extension project. The SwixBuild plugin expects this value to be set for the AddSBOM task. -->
     <IsVsixProject Condition="Exists('$(VsixSourceManifestPath)')">true</IsVsixProject>
   </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.VisualStudio.Internal.MicroBuild" />
+  </ItemGroup>
 
   <PropertyGroup Condition="'$(IsVsixProject)' == 'true'">
     <SchemaVersion>2.0</SchemaVersion>
@@ -41,7 +58,9 @@
     <NgenPriority>3</NgenPriority>
   </PropertyGroup>
 
-  <PropertyGroup Condition="'$(MSBuildProjectExtension)' == '.vsmanproj'">
+  <PropertyGroup Condition="'$(MSBuildProjectExtension)' == '.vsmanproj' or '$(MSBuildProjectExtension)' == '.swixproj'">
+    <!-- Having GenerateAssemblyVersionInfo enabled causes issues with Language requirements in Nerdbank.GitVersioning. -->
+    <GenerateAssemblyVersionInfo>false</GenerateAssemblyVersionInfo>
     <FinalizeManifest>true</FinalizeManifest>
     <FinalizeSkipLayout>true</FinalizeSkipLayout>
     <IsPackage>true</IsPackage>

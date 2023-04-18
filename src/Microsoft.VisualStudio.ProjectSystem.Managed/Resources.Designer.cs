@@ -367,7 +367,7 @@ namespace Microsoft.VisualStudio {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Comparing timestamps of copy marker inputs and outputs:.
+        ///   Looks up a localized string similar to Comparing timestamps of copy marker inputs and output:.
         /// </summary>
         internal static string FUTD_ComparingCopyMarkerTimestamps {
             get {

@@ -22,6 +22,7 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
         Private _enableVisualStyles As Boolean
         Private _authenticationMode As Integer
         Private _splashScreenNoRootNS As String 'Splash screen to use (without the root namespace)
+        Private _minimumSplashScreenDisplayTime As Integer
         Private _saveMySettingsOnExit As Boolean 'Whether to save My.Settings on shutdown
         Private _highDpiMode As Integer
 
@@ -102,6 +103,16 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
             End Get
             Set
                 _splashScreenNoRootNS = value
+                IsDirty = True
+            End Set
+        End Property
+
+        Public Property MinimumSplashScreenDisplayTime As Integer
+            Get
+                Return _minimumSplashScreenDisplayTime
+            End Get
+            Set
+                _minimumSplashScreenDisplayTime = Value
                 IsDirty = True
             End Set
         End Property

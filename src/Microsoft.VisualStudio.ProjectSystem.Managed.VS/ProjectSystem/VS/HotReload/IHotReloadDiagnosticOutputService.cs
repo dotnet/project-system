@@ -7,7 +7,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.HotReload
     /// <summary>
     /// Defines a service to print out messages to the Hot Reload output window pane.
     /// </summary>
-    [ProjectSystemContract(ProjectSystemContractScope.ProjectService, ProjectSystemContractProvider.System, Cardinality = Composition.ImportCardinality.OneOrZero)]
+    [ProjectSystemContract(ProjectSystemContractScope.ProjectService, ProjectSystemContractProvider.System, Cardinality = ImportCardinality.OneOrZero)]
     internal interface IHotReloadDiagnosticOutputService
     {
         /// <summary>

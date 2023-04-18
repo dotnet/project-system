@@ -7,7 +7,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Commands
     /// </summary>
     [Export(typeof(IProjectItemContextMenuProvider))]
     [AppliesTo(ProjectCapability.DependenciesTree)]
-    [Order(ProjectSystem.Order.Default)]
+    [Order(Order.Default)]
     internal class DependenciesContextMenuProvider : IProjectItemContextMenuProvider
     {
         private static class Menus

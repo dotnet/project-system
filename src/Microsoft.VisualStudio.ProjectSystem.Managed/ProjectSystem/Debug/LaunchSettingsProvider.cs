@@ -123,15 +123,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         [Obsolete("Use GetLaunchSettingsFilePathAsync instead.")]
         public string LaunchSettingsFile => _commonProjectServices.ThreadingService.ExecuteSynchronously(GetLaunchSettingsFilePathAsync);
 
-        /// <summary>
-        /// Returns the active profile. Looks up the value of the ActiveProfile property. If the value doesn't match the
-        /// any of the profiles, the first one is returned
-        /// </summary>
         public ILaunchProfile? ActiveProfile => CurrentSnapshot?.ActiveProfile;
 
-        /// <summary>
-        /// Link to this source block to be notified when the snapshot is changed.
-        /// </summary>
         IReceivableSourceBlock<ILaunchSettings> ILaunchSettingsProvider.SourceBlock
         {
             get
@@ -141,10 +134,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             }
         }
 
-        /// <summary>
-        /// IDebugProfileProvider
-        /// Access to the current set of profile information
-        /// </summary>
         public ILaunchSettings CurrentSnapshot
         {
             get
@@ -182,7 +171,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
 
         /// <summary>
         /// The LaunchSettingsProvider sinks 2 sets of information:
-        /// 1. Changes to the launchsettings.json file on disk
+        /// 1. Changes to the launchSettings.json file on disk
         /// 2. Changes to the ActiveDebugProfile property in the .user file
         /// </summary>
         protected override void Initialize()
@@ -480,7 +469,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         }
 
         /// <summary>
-        /// Helper to check out the debugsettings.json file
+        /// Helper to check out the launchSettings.json file.
         /// </summary>
         protected async Task CheckoutSettingsFileAsync()
         {
@@ -920,7 +909,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         }
 
         /// <summary>
-        /// Helper retrieves the current snapshot and if there were errors in the launchsettings.json file
+        /// Helper retrieves the current snapshot and if there were errors in the launchSettings.json file
         /// or there isn't a snapshot, it throws an error. There should always be a snapshot of some kind returned.
         /// </summary>
         private async Task<ILaunchSettings> GetSnapshotThrowIfErrorsAsync()

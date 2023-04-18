@@ -3,6 +3,7 @@
 using System.Threading.Tasks.Dataflow;
 using Microsoft.Build.Framework.XamlTypes;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
+using Microsoft.VisualStudio.ProjectSystem.Utilities;
 
 namespace Microsoft.VisualStudio.ProjectSystem.Debug
 {
@@ -15,101 +16,49 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
     [AppliesTo(ProjectCapability.LaunchProfiles)]
     [Export(typeof(IDynamicDebugTargetsGenerator))]
     [ExportMetadata("Name", "DebugProfileProvider")]
-    internal class DebugProfileDebugTargetGenerator : ProjectValueDataSourceBase<IReadOnlyList<IEnumValue>>, IDynamicEnumValuesProvider, IDynamicDebugTargetsGenerator
+    internal class DebugProfileDebugTargetGenerator : ChainedProjectValueDataSourceBase<IReadOnlyList<IEnumValue>>, IDynamicEnumValuesProvider, IDynamicDebugTargetsGenerator
     {
-        private IReceivableSourceBlock<IProjectVersionedValue<IReadOnlyList<IEnumValue>>>? _publicBlock;
-
-        // Represents the link to the launch profiles
-        private IDisposable? _launchProfileProviderLink;
-
-        // Represents the link to our source provider
-        private IDisposable? _debugProviderLink;
+        private readonly IVersionedLaunchSettingsProvider _launchSettingProvider;
+        private readonly IProjectThreadingService _projectThreadingService;
 
         [ImportingConstructor]
         public DebugProfileDebugTargetGenerator(
             UnconfiguredProject project,
             IVersionedLaunchSettingsProvider launchSettingProvider,
             IProjectThreadingService threadingService)
-            : base(project.Services)
+            : base(project, synchronousDisposal: false, registerDataSource: false)
         {
-            LaunchSettingProvider = launchSettingProvider;
-            ProjectThreadingService = threadingService;
+            _launchSettingProvider = launchSettingProvider;
+            _projectThreadingService = threadingService;
         }
 
-        public override NamedIdentity DataSourceKey { get; } = new NamedIdentity(nameof(DebugProfileDebugTargetGenerator));
-
-        private int _dataSourceVersion;
-
-        public override IComparable DataSourceVersion
-        {
-            get { return _dataSourceVersion; }
-        }
-
-        public override IReceivableSourceBlock<IProjectVersionedValue<IReadOnlyList<IEnumValue>>> SourceBlock
-        {
-            get
-            {
-                EnsureInitialized();
-                return _publicBlock!;
-            }
-        }
-
-        private IVersionedLaunchSettingsProvider LaunchSettingProvider { get; }
-        private IProjectThreadingService ProjectThreadingService { get; }
-
-        /// <summary>
-        /// This provides access to the class which creates the list of debugger values..
-        /// </summary>
         public Task<IDynamicEnumValuesGenerator> GetProviderAsync(IList<NameValuePair>? options)
-            => Task.FromResult<IDynamicEnumValuesGenerator>(
-                new DebugProfileEnumValuesGenerator(LaunchSettingProvider, ProjectThreadingService));
-
-        protected override void Initialize()
         {
-            IPropagatorBlock<IProjectVersionedValue<ILaunchSettings>, IProjectVersionedValue<IReadOnlyList<IEnumValue>>> debugProfilesBlock = DataflowBlockSlim.CreateTransformBlock<IProjectVersionedValue<ILaunchSettings>, IProjectVersionedValue<IReadOnlyList<IEnumValue>>>(
-                update =>
-                {
-                    // Compute the new enum values from the profile provider
-                    var generatedResult = DebugProfileEnumValuesGenerator.GetEnumeratorEnumValues(update.Value).ToImmutableList();
-                    _dataSourceVersion++;
-                    ImmutableDictionary<NamedIdentity, IComparable> dataSources = ImmutableDictionary<NamedIdentity, IComparable>.Empty.Add(DataSourceKey, DataSourceVersion);
-                    return new ProjectVersionedValue<IReadOnlyList<IEnumValue>>(generatedResult, dataSources);
-                });
-
-            IBroadcastBlock<IProjectVersionedValue<IReadOnlyList<IEnumValue>>> broadcastBlock = DataflowBlockSlim.CreateBroadcastBlock<IProjectVersionedValue<IReadOnlyList<IEnumValue>>>(nameFormat: "Debug Profiles Broadcast: {1}");
-
-            // The interface has two definitions of SourceBlock: one from
-            // ILaunchSettingsProvider, and one from IProjectValueDataSource<T> (via
-            // IVersionedLaunchSettingsProvider). We need the cast to pick the proper one.
-            _launchProfileProviderLink = ((IProjectValueDataSource<ILaunchSettings>)LaunchSettingProvider).SourceBlock.LinkTo(
-                debugProfilesBlock,
-                linkOptions: DataflowOption.PropagateCompletion);
-
-            JoinUpstreamDataSources(LaunchSettingProvider);
-
-            _debugProviderLink = debugProfilesBlock.LinkTo(broadcastBlock, DataflowOption.PropagateCompletion);
-
-            _publicBlock = broadcastBlock.SafePublicize();
+            return Task.FromResult<IDynamicEnumValuesGenerator>(
+                new DebugProfileEnumValuesGenerator(_launchSettingProvider, _projectThreadingService));
         }
 
-        protected override void Dispose(bool disposing)
+        protected override IDisposable? LinkExternalInput(ITargetBlock<IProjectVersionedValue<IReadOnlyList<IEnumValue>>> targetBlock)
         {
-            if (disposing)
+            var transformBlock = DataflowBlockSlim.CreateTransformBlock<IProjectVersionedValue<ILaunchSettings>, IProjectVersionedValue<IReadOnlyList<IEnumValue>>>(
+                update => update.Derive(Transform));
+
+            // IVersionedLaunchSettingsProvider implements "SourceBlock" in both ILaunchSettingsProvider and IProjectValueDataSource<T>. Cast to the one we need.
+            IProjectValueDataSource<ILaunchSettings> launchSettingsSource = _launchSettingProvider;
+
+            return new DisposableBag
             {
-                if (_launchProfileProviderLink is not null)
-                {
-                    _launchProfileProviderLink.Dispose();
-                    _launchProfileProviderLink = null;
-                }
+                launchSettingsSource.SourceBlock.LinkTo(transformBlock, linkOptions: DataflowOption.PropagateCompletion),
 
-                if (_debugProviderLink is not null)
-                {
-                    _debugProviderLink.Dispose();
-                    _debugProviderLink = null;
-                }
+                transformBlock.LinkTo(targetBlock, DataflowOption.PropagateCompletion),
+
+                JoinUpstreamDataSources(_launchSettingProvider)
+            };
+
+            static IReadOnlyList<IEnumValue> Transform(ILaunchSettings launchSettings)
+            {
+                return DebugProfileEnumValuesGenerator.GetEnumeratorEnumValues(launchSettings);
             }
-
-            base.Dispose(disposing);
         }
     }
 }

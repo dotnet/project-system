@@ -5,7 +5,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.HotReload
     /// <summary>
     /// Tracks and manages the pending and active Hot Reload sessions for the project.
     /// </summary>
-    [ProjectSystemContract(ProjectSystemContractScope.UnconfiguredProject, ProjectSystemContractProvider.Private, Cardinality = Composition.ImportCardinality.ExactlyOne)]
+    [ProjectSystemContract(ProjectSystemContractScope.UnconfiguredProject, ProjectSystemContractProvider.Private, Cardinality = ImportCardinality.ExactlyOne)]
     internal interface IProjectHotReloadSessionManager
     {
         /// <summary>

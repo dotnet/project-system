@@ -1,5 +1,7 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
+#pragma warning disable RS0030 // Do not used banned APIs
+
 namespace Microsoft.VisualStudio.Threading
 {
     /// <summary>
@@ -49,7 +51,7 @@ namespace Microsoft.VisualStudio.Threading
 
         private static class EmptyEnumerableTaskResult<T>
         {
-            public static readonly Task<IEnumerable<T>> Instance = Task.FromResult(System.Linq.Enumerable.Empty<T>());
+            public static readonly Task<IEnumerable<T>> Instance = Task.FromResult(Enumerable.Empty<T>());
         }
     }
 }

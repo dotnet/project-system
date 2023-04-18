@@ -10,7 +10,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Commands
     /// </summary>
     [ProjectCommand(VSConstants.CMDSETID.StandardCommandSet2K_string, (long)VSConstants.VSStd2KCmdID.QUICKOBJECTSEARCH)]
     [AppliesTo(ProjectCapability.PackageReferences)]
-    [Order(ProjectSystem.Order.Default)]
+    [Order(Order.Default)]
     internal sealed class SuppressObjectBrowserForPackageReferenceCommand : AbstractSingleNodeProjectCommand
     {
         protected override Task<CommandStatusResult> GetCommandStatusAsync(IProjectTree node, bool focused, string? commandText, CommandStatus progressiveStatus)

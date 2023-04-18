@@ -45,7 +45,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
                 _unconfiguredProjectVsServices.ThreadingService.RunAndForget(() =>
                 {
                     _unconfiguredProjectVsServices.VsHierarchy.SetProperty(HierarchyId.Root, (int)VsHierarchyPropID.TargetFrameworkMoniker, unevaluatedPropertyValue);
-                    return System.Threading.Tasks.Task.CompletedTask;
+                    return Task.CompletedTask;
                 }, options: ForkOptions.HideLocks | ForkOptions.StartOnMainThread,
                    unconfiguredProject: _unconfiguredProjectVsServices.Project);
             }

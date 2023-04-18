@@ -23,8 +23,6 @@
     <PackageReference Include="Microsoft.SourceLink.AzureRepos.Git"         PrivateAssets="all" />
     <!-- Path Property: PkgMicrosoft_VisualStudioEng_MicroBuild_Core -->
     <PackageReference Include="Microsoft.VisualStudioEng.MicroBuild.Core" PrivateAssets="all" GeneratePathProperty="true" />
-    <!-- SwixBuild does not have the assets accessed via PackageReference. Instead, they are accessed directly from the NuGet cache on disk via property: PkgMicrosoft_VisualStudioEng_MicroBuild_Plugins_SwixBuild. -->
-    <PackageReference Include="Microsoft.VisualStudioEng.MicroBuild.Plugins.SwixBuild" ExcludeAssets="all" GeneratePathProperty="true" />
     <!-- Note: We require Nerdbank.GitVersioning beyond simply generating version numbers. It also produces some assembly information such as AssemblyName and PublicKeyToken into a *.ThisAssembly.cs file. -->
     <PackageReference Include="Nerdbank.GitVersioning"              PrivateAssets="all" />
     <PackageReference Include="Nerdbank.Streams"                    ExcludeAssets="all" />

@@ -52,6 +52,16 @@
         <target state="translated">Preferovat 32bitovou verzi</target>
         <note />
       </trans-unit>
+      <trans-unit id="BoolProperty|PublishDocumentationFile|Description">
+        <source>When this property is true, the XML documentation file for the project, if one is generated, is included in the publish output for the project. This property defaults to true.</source>
+        <target state="translated">Pokud je tato vlastnost nastavena na true, soubor dokumentace XML pro projekt, pokud je vygenerován, se zahrne do výstupu publikování projektu. Výchozí hodnota této vlastnosti je true.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="BoolProperty|PublishDocumentationFile|DisplayName">
+        <source>Publish documentation file</source>
+        <target state="translated">Publikovat soubor dokumentace</target>
+        <note />
+      </trans-unit>
       <trans-unit id="BoolProperty|RegisterForComInterop|Description">
         <source>Specifies whether your managed application will expose a COM object (a COM-callable wrapper) that enables a COM object to interact with the application.</source>
         <target state="translated">Určuje, jestli vaše spravovaná aplikace zveřejní objekt COM (objekt COM volatelný za běhu), který umožňuje objektu COM pracovat s aplikací.</target>
@@ -385,6 +395,16 @@
       <trans-unit id="StringProperty|DefineConstants|DisplayName">
         <source>Custom constants</source>
         <target state="translated">Vlastní konstanty</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|DocumentationFile|Description">
+        <source>Optional path for the API documentation file. Leave blank to use the default location.</source>
+        <target state="translated">Nepovinná cesta pro soubor dokumentace k rozhraní API. Pokud chcete použít výchozí umístění, ponechte ji prázdnou.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|DocumentationFile|DisplayName">
+        <source>XML documentation file path</source>
+        <target state="translated">Generovat soubor dokumentace XML</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|OutputPath|DisplayName">

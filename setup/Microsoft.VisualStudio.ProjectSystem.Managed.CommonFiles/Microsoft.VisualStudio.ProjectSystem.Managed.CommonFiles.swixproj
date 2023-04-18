@@ -1,34 +1,62 @@
 <!-- Copyright (c)  Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information. -->
-<Project>
+<Project Sdk="Microsoft.NET.Sdk">
 
-  <!-- Note: SwixBuild automatically adds the .vsix to FilesToSign via the AddTargetPathToFilesToSign target. -->
-
-  <Import Project="..\Directory.Build.props" />
-  <!-- This currently loads all SwixBuild packages, and multiple packages existing in your NuGet cache breaks the build. -->
-  <Import Project="$(MicroBuildCoreDir)Microsoft.VisualStudioEng.MicroBuild.Core.props" />
-  <!-- <Import Project="$(SwixBuildDir)Microsoft.VisualStudioEng.MicroBuild.Plugins.SwixBuild.props" /> -->
+  <Import Project="..\..\eng\imports\HostAgnostic.props" />
 
   <PropertyGroup>
-    <OutputArchitecture>neutral</OutputArchitecture>
-    <OutputLocalized>false</OutputLocalized>
-    <OutputName>$(MSBuildProjectName)</OutputName>
-    <OutputPath>$(VisualStudioSetupInsertionPath)</OutputPath>
-    <OutputType>vsix</OutputType>
-    <IsPackage>true</IsPackage>
+    <TargetFramework>net472</TargetFramework>
+    <!-- This allows passing in MSBuild properties for substitution in SWR files. -->
+    <PackagePreprocessorDefinitions>$(PackagePreprocessorDefinitions);VisualStudioXamlRulesDir=$(VisualStudioXamlRulesDir)</PackagePreprocessorDefinitions>
   </PropertyGroup>
 
   <ItemGroup>
-    <Package Include="CommonFiles.swr" />
-    <!-- TODO: Remove this for: https://github.com/dotnet/project-system/issues/8268 -->
-    <Package Include="ext.xproj.swr" />
+    <PackageReference Include="Microsoft.VisualStudio.Internal.MicroBuild.Swix" />
   </ItemGroup>
 
-  <PropertyGroup>
-    <PackagePreprocessorDefinitions>$(PackagePreprocessorDefinitions);Version=$(BuildVersion);VisualStudioXamlRulesDir=$(VisualStudioXamlRulesDir)</PackagePreprocessorDefinitions>
-  </PropertyGroup>
+  <!-- ConstructSwrFile in swix.targets in Microsoft.DevDiv.Tasks2 assumes %(GeneratedSwrFiles.PackageName)\%(GeneratedSwrFiles.Differentiator) in the file path. -->
+  <!-- We don't want that as part of this path for our SWIX-based VSIX, so we replace it here. -->
+  <Target Name="FixSwixInputsPaths" AfterTargets="ConstructSwrFile">
+    <ItemGroup>
+      <FileWrites Remove="%(SwixInputs.VsixOutputPath)" />
+      <FileWrites Remove="%(SwixInputs.JsonOutputPath)" />
+      <FileWrites Remove="%(SwixInputs.FilesTxtOutputPath)" />
+      <MergeManifest Remove="@(SwixInputs->'%(JsonOutputPath)')" />
 
-  <!-- This currently loads all SwixBuild packages, and multiple packages existing in your NuGet cache breaks the build. -->
-  <Import Project="$(MicroBuildCoreDir)Microsoft.VisualStudioEng.MicroBuild.Core.targets" />
-  <!-- <Import Project="$(SwixBuildDir)Microsoft.VisualStudioEng.MicroBuild.Plugins.SwixBuild.targets" /> -->
+      <SwixInputs Update="@(SwixInputs)">
+        <VsixOutputPath>$(OutputPath)$(PackageName).vsix</VsixOutputPath>
+        <JsonOutputPath>$(OutputPath)$(PackageName).json</JsonOutputPath>
+        <FilesTxtOutputPath>$(OutputPath)files.txt</FilesTxtOutputPath>
+        <RelativeUrl></RelativeUrl>
+      </SwixInputs>
+
+      <FileWrites Include="%(SwixInputs.VsixOutputPath)" />
+      <FileWrites Include="%(SwixInputs.JsonOutputPath)" />
+      <FileWrites Include="%(SwixInputs.FilesTxtOutputPath)" />
+      <MergeManifest Include="@(SwixInputs->'%(JsonOutputPath)')" />
+    </ItemGroup>
+  </Target>
+
+  <!-- GetConstructedSwrFilePaths in swix.targets in Microsoft.DevDiv.Tasks2 assumes %(GeneratedSwrFiles.PackageName)\%(GeneratedSwrFiles.Differentiator) in the file path. -->
+  <!-- We don't want that as part of this path for our SWIX-based VSIX, so we replace it here. -->
+  <Target Name="FixProposedSwixInputsPaths" AfterTargets="GetConstructedSwrFilePaths">
+    <ItemGroup>
+      <FileWrites Remove="%(ProposedSwixInputs.VsixOutputPath)" />
+      <FileWrites Remove="%(ProposedSwixInputs.JsonOutputPath)" />
+      <FileWrites Remove="%(ProposedSwixInputs.FilesTxtOutputPath)" />
+      <MergeManifest Remove="@(ProposedSwixInputs->'%(JsonOutputPath)')" />
+
+      <ProposedSwixInputs Update="@(ProposedSwixInputs)">
+        <VsixOutputPath>$(OutputPath)$(PackageName).vsix</VsixOutputPath>
+        <JsonOutputPath>$(OutputPath)$(PackageName).json</JsonOutputPath>
+        <FilesTxtOutputPath>$(OutputPath)files.txt</FilesTxtOutputPath>
+        <RelativeUrl></RelativeUrl>
+      </ProposedSwixInputs>
+
+      <FileWrites Include="%(ProposedSwixInputs.VsixOutputPath)" />
+      <FileWrites Include="%(ProposedSwixInputs.JsonOutputPath)" />
+      <FileWrites Include="%(ProposedSwixInputs.FilesTxtOutputPath)" />
+      <MergeManifest Include="@(ProposedSwixInputs->'%(JsonOutputPath)')" />
+    </ItemGroup>
+  </Target>
 
 </Project>

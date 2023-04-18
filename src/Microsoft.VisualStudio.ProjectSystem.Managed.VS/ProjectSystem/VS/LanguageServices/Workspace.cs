@@ -430,12 +430,8 @@ internal sealed class Workspace : OnceInitializedOnceDisposedUnderLockAsync, IWo
 
                 void SetContextCommandLine()
                 {
-                    var orderedSource = projectChange.After.Items as IDataWithOriginalSource<KeyValuePair<string, IImmutableDictionary<string, string>>>;
-
-                    Assumes.NotNull(orderedSource);
-
-                    // Pass command line to Roslyn
-                    Context.SetOptions(orderedSource.SourceData.Select(pair => pair.Key).ToImmutableArray());
+                    // Pass command line to Roslyn, preserving their original order.
+                    Context.SetOptions(projectChange.After.GetOrderedItems().Select(pair => pair.Key).ToImmutableArray());
                 }
 
                 void InvokeCommandLineUpdateHandlers()

@@ -226,6 +226,9 @@
     </BoolProperty.DataSource>
   </BoolProperty>
 
+  <StringProperty Name="StartupObject"
+                  Visible="False" />
+
   <StringProperty Name="SupportedMyApplicationTypes"
                   ReadOnly="True"
                   Visible="False" />

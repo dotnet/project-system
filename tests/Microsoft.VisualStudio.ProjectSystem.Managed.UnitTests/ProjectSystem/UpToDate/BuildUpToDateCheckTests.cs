@@ -802,7 +802,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                     Build acceleration is disabled for this project via the 'AccelerateBuildsInVisualStudio' MSBuild property. See https://aka.ms/vs-build-acceleration.
                     Comparing timestamps of inputs and outputs:
                         No build outputs defined.
-                    Comparing timestamps of copy marker inputs and outputs:
+                    Comparing timestamps of copy marker inputs and output:
                         Write timestamp on output marker is {ToLocalTime(outputTime)} on 'C:\Dev\Solution\Project\OutputMarker'.
                         Adding input reference copy markers:
                             Reference1OriginalPath
@@ -816,7 +816,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                     $"""
                     Comparing timestamps of inputs and outputs:
                         No build outputs defined.
-                    Comparing timestamps of copy marker inputs and outputs:
+                    Comparing timestamps of copy marker inputs and output:
                         Write timestamp on output marker is {ToLocalTime(outputTime)} on 'C:\Dev\Solution\Project\OutputMarker'.
                         Adding input reference copy markers:
                             Reference1OriginalPath
@@ -873,7 +873,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                     Build acceleration is disabled for this project via the 'AccelerateBuildsInVisualStudio' MSBuild property. See https://aka.ms/vs-build-acceleration.
                     Comparing timestamps of inputs and outputs:
                         No build outputs defined.
-                    Comparing timestamps of copy marker inputs and outputs:
+                    Comparing timestamps of copy marker inputs and output:
                         Write timestamp on output marker is {ToLocalTime(outputTime)} on 'C:\Dev\Solution\Project\OutputMarker'.
                         Adding input reference copy markers:
                             Reference1OriginalPath
@@ -887,7 +887,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                    $"""
                     Comparing timestamps of inputs and outputs:
                         No build outputs defined.
-                    Comparing timestamps of copy marker inputs and outputs:
+                    Comparing timestamps of copy marker inputs and output:
                         Write timestamp on output marker is {ToLocalTime(outputTime)} on 'C:\Dev\Solution\Project\OutputMarker'.
                         Adding input reference copy markers:
                             Reference1OriginalPath

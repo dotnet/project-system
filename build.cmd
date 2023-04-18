@@ -36,6 +36,7 @@ if exist "%BinlogPath%" (
         mkdir "%LogDirectory%"
     )
     move "%BinlogPath%" "%LogDirectory%"
+    echo Build Log: %LogDirectory%Build.binlog
 )
 
 exit /b %MSBuildErrorLevel%

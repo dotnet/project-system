@@ -1085,3 +1085,5 @@ Shared My.Resources.GeneralOptionPageResources.General_MultiTargetingSettings_Ti
 Shared My.Resources.GeneralOptionPageResources.General_PreferSingleTargetBuildsOnLaunchDescription() -> String
 Microsoft.VisualStudio.Editors.MyApplication.IVsMyApplicationProperties.HighDpiMode() -> Integer
 Microsoft.VisualStudio.Editors.MyApplication.IVsMyApplicationProperties.HighDpiMode(Value As Integer) -> Void
+Microsoft.VisualStudio.Editors.MyApplication.IVsMyApplicationProperties.MinimumSplashScreenDisplayTime() -> Integer
+Microsoft.VisualStudio.Editors.MyApplication.IVsMyApplicationProperties.MinimumSplashScreenDisplayTime(Value As Integer) -> Void

@@ -6,7 +6,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
     /// A project property provider that intercepts all the callbacks for a specific property name
     /// on the default <see cref="IProjectPropertiesProvider"/> for validation and/or transformation of the property value.
     /// </summary>
-    [ProjectSystemContract(ProjectSystemContractScope.ConfiguredProject, ProjectSystemContractProvider.Extension, Cardinality = Composition.ImportCardinality.ZeroOrMore)]
+    [ProjectSystemContract(ProjectSystemContractScope.ConfiguredProject, ProjectSystemContractProvider.Extension, Cardinality = ImportCardinality.ZeroOrMore)]
     public interface IInterceptingPropertyValueProvider
     {
         /// <summary>

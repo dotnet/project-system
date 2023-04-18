@@ -45,6 +45,12 @@ Note that changes to inputs **must** result in changes to outputs. If this rule 
 have a timestamp after all outputs, which leads the up-to-date check to consider the project out-of-date after building
 indefinitely. This can lead to longer build times.
 
+For the targets above, you can update the `DependsOn` attribute by setting these properties respectively:
+
+- `CollectUpToDateCheckInputDesignTimeDependsOn`
+- `CollectUpToDateCheckOutputDesignTimeDependsOn`
+- `CollectUpToDateCheckBuiltDesignTimeDependsOn`
+
 ### Grouping inputs and outputs into sets
 
 For some advanced scenarios, it's necessary to partition inputs and outputs into groups and consider each separately.
@@ -67,7 +73,7 @@ their names with a semicolon (e.g. `Set="Set1;Set2"`).
 
 It may be desirable for a component within Visual Studio to schedule a build for which only a subset of the up-to-date
 check inputs and outputs should be considered. This can be achieved by adding `Kind` metadata to the relevant items and
-passing the `FastUpToDateCheckIgnoresKinds` global property.
+passing the `FastUpToDateCheckIgnoresKinds` [global property](https://learn.microsoft.com/visualstudio/msbuild/msbuild-properties#global-properties).
 
 For example:
 
@@ -78,17 +84,16 @@ For example:
   <UpToDateCheckOutput Include="MyProject1.dll" Kind="Alpha" />
   <UpToDateCheckOutput Include="MyProject2.dll" />
 </ItemGroup>
-
-<PropertyGroup>
-  <FastUpToDateCheckIgnoresKinds>Alpha</FastUpToDateCheckIgnoresKinds>
-<PropertyGroup>
 ```
 
-If the `FastUpToDateCheckIgnoresKinds` property has a value of `Alpha`, then the fast up-to-date check will only
+If the `FastUpToDateCheckIgnoresKinds` global property has a value of `Alpha`, then the fast up-to-date check will only
 consider `Source2.cs` and `MyProject2.dll`. If the `FastUpToDateCheckIgnoresKinds` property has a different
 value, or is empty, all four items are considered.
 
 Multiple values may be passed for `FastUpToDateCheckIgnoresKinds`, separated by semicolons (`;`).
+
+Note that global properties are not set in project files (such as `.csproj`) but are expected to be passed by components
+of Visual Studio itself. For an example, see `SkipAnalyzersGlobalPropertiesProvider` in this repo.
 
 ### Copied files
 
@@ -192,6 +197,12 @@ The best technique for this is to:
 The [Project System Tools](https://github.com/dotnet/project-system-tools) extension enables capturing binlogs for builds that happen within Visual Studio.
 
 The logs captured by that tool are usually adequate to diagnose build problems. They exclude some detail however, for performance reasons. If more data is required, see [this technique to get full-fidelity logs](https://github.com/dotnet/project-system-tools#getting-higher-fidelity-logs-from-vs).
+
+### Other types of projects
+
+Each project type takes its own approach to incremental builds.
+
+- Visual C++ projects use `.tlog` files, which are described [here](https://learn.microsoft.com/previous-versions/visualstudio/visual-studio-2017/extensibility/visual-cpp-project-extensibility?view=vs-2017#incremental-builds-and-up-to-date-checks).
 
 ---
 
