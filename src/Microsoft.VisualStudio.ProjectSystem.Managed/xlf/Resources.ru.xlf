@@ -154,7 +154,7 @@
       </trans-unit>
       <trans-unit id="FUTD_ComparingCopyMarkerTimestamps">
         <source>Comparing timestamps of copy marker inputs and output:</source>
-        <target state="new">Comparing timestamps of copy marker inputs and output:</target>
+        <target state="translated">Сравнение меток времени входных и выходных данных маркера копирования:</target>
         <note />
       </trans-unit>
       <trans-unit id="FUTD_ComparingInputOutputTimestamps">

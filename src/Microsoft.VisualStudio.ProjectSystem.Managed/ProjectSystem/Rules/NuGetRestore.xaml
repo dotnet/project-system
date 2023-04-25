@@ -53,6 +53,14 @@
                   ReadOnly="True"
                   Visible="False" />
 
+  <StringProperty Name="NuGetAudit"
+                  ReadOnly="True"
+                  Visible="False" />
+
+  <StringProperty Name="NuGetAuditLevel"
+                  ReadOnly="True"
+                  Visible="False" />
+
   <StringProperty Name="NuGetLockFilePath"
                   ReadOnly="True"
                   Visible="False" />

@@ -44,17 +44,28 @@ if($LastExitCode -eq 0)
 Write-Host "previousShaShort: $previousShaShort"
 Write-Host "currentSha: $currentSha"
 
+# See bottom of script on why <br> is used for newline in InsertionDescription.
+$newline = '<br>'
 $description = @()
-# Since a previous insertion commit ID was not found, we create a basic description.
-if(-Not $previousShaShort)
+# If a previous insertion commit ID was not found or is the same as current, we create a basic description.
+if(-Not $previousShaShort -or $previousShaShort -eq $currentShaShort)
 {
   $description += "Updating $projectName to [$currentShaShort]($repoUrl/commit/$currentSha)"
   $description += '---------------------------------------------------------------------------'
-  $description += 'Unable to determine the previous VS insertion.'
-  $description += ''
-  $description += 'PR changelist cannot be computed.'
+  if(-Not $previousShaShort) {
+    $description += 'Unable to determine the previous VS insertion.'
+    $description += ''
+    $description += 'PR changelist cannot be computed.'
+  }
+  else
+  {
+    $description += 'Previous VS insertion commit is the same as current.'
+    $description += ''
+    $description += 'THIS INSERTION CAN BE SAFELY ABORTED.'
+  }
+
   Write-Host "=== DESCRIPTION ===$([Environment]::Newline)$([Environment]::Newline)$($description -join [Environment]::Newline)"
-  Write-Host "##vso[task.setvariable variable=InsertionDescription]$($description -join '<br>')"
+  Write-Host "##vso[task.setvariable variable=InsertionDescription]$($description -join $newline)"
   exit 0
 }
 
@@ -85,9 +96,10 @@ $commitsClean = $commitsString -replace '(?<!\})\r\n',' '
 # Any remaining backslashes need to be escaped as they are part of the commit body/subject.
 # This ignores the natural newlines for the commit entries.
 $commitsClean = $commitsClean -replace '(?!\r\n)\\','\\'
-# Replace any double quotes with a backslash double quote.
+# Replace any double quotes with two sets of backslash double quote.
+# Blackslash double quote is so that it is escaped in JSON. Two sets of double quotes is so that it is escaped in PowerShell for consumption.
 # This situation occurs when commit bodies or commit subjects contain double quotes in them.
-$commitsClean = $commitsClean -replace '"','\"'
+$commitsClean = $commitsClean -replace '"','\"\"'
 # Replace the quadruple carats with double quotes.
 $commitsClean = $commitsClean -replace '\^\^\^\^','"'
 # Add a comma between the end+start of new commit entries. This ensures the last entry won't have a trailing comma.
@@ -119,21 +131,32 @@ $pullRequests = $commitsJson | Where-Object {
 # Create a markdown list item for each PR.
 $description += $pullRequests | ForEach-Object { "- [$($_.subject): $($_.body)]($repoUrl/pull/$($_.subject))" }
 
+# No pull requests were found.
+if($pullRequests.Count -eq 0)
+{
+  $description += "NO PULL REQUESTS DETECTED."
+  $description += ''
+  $description += "See `View Diff` link for individual commit changes."
+}
+
 # 4000 character limit is imposed by Azure Pipelines. See:
 # https://developercommunity.visualstudio.com/t/raise-the-character-limit-for-pull-request-descrip/365708
 # Remove the last line (PR) from the description until it is less than 4000 characters, including the 4 characters for newlines (<br>) (see InsertionDescription output below).
 $characterLimit = 4000
+$newlineCount = ($newline | Measure-Object -Character).Characters
+$ellipsis = '...'
+$ellipsisCount = ($ellipsis | Measure-Object -Character).Characters
 $isTruncated = $false
-while((($description | Measure-Object -Character).Characters + (($description.Count - 1) * 4)) -gt $characterLimit)
+while((($description | Measure-Object -Character).Characters + (($description.Count - 1) * $newlineCount)) -gt $characterLimit)
 {
   $description = $description | Select-Object -SkipLast 1
   $isTruncated = $true
   # Make room for 7 characters: 3 for ellipsis (...) and 4 characters for the newline (<br>).
-  $characterLimit = 3993
+  $characterLimit = $characterLimit - $ellipsisCount - $newlineCount
 }
 if($isTruncated)
 {
-  $description += '...'
+  $description += $ellipsis
 }
 
 # Write out the description into the log for human consumption.
@@ -148,4 +171,4 @@ Write-Host "=== DESCRIPTION ===$([Environment]::Newline)$([Environment]::Newline
 # If we could render newlines, this is how we would need to do it in an Azure Pipelines variable (via '%0D%0A'). See:
 # - https://developercommunity.visualstudio.com/t/multiple-lines-variable-in-build-and-release/365667
 # - https://stackoverflow.com/a/49947273/294804
-Write-Host "##vso[task.setvariable variable=InsertionDescription]$($description -join '<br>')"
+Write-Host "##vso[task.setvariable variable=InsertionDescription]$($description -join $newline)"

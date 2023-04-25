@@ -27,6 +27,7 @@ jobs:
 
   # Runs the localization process on the resource files provided within LocProject.json.
   # Details for the process can be found here: https://ceapex.visualstudio.com/CEINTL/_wiki/wikis/CEINTL.wiki/107/Localization-with-OneLocBuild-Task
+  # YAML reference: https://dev.azure.com/ceapex/CEINTL/_git/OneLocBuild?_a=contents&version=GBmain&path=/src/OneLocBuildTaskExtension/OneLocBuildTask/task.json
   - task: OneLocBuild@2
     displayName: Run OneLocBuild
     inputs:
@@ -41,6 +42,7 @@ jobs:
       patVariable: $(dn-bot-ceapex-package-r)
       isCreatePrSelected: true
       isAutoCompletePrSelected: false
+      isShouldReusePrSelected: true
 
   ###################################################################################################################################################################
   # PUBLISH ARTIFACTS
