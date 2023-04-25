@@ -26,7 +26,12 @@
     <SBOMFileDestPath>$(VisualStudioSetupInsertionPath)</SBOMFileDestPath>
     <!-- MicroBuild.Plugins.Sbom.targets uses this to set the output path (ManifestDirPath) for the GenerateSBOM target. -->
     <!-- This output, if not separated by a project-specific folder, can hit file conflicts ("manifest.json is being used by another process") because both VSIX extension projects can build in parallel. -->
-    <SbomManifestDirPath>$(OutputPath)Sbom\$(MSBuildProjectName)\</SbomManifestDirPath>
+    <!--
+      Additionally, the SbomBuildDropPath (input directory) is specified as the TargetDir, which is the OutputPath of the projects.
+      If we put this content in the OutputPath, if two GenerateSbom tasks are running at the same time (one per project), we'll also get file conflict issues in accessing the manifest.json, since it is in a sub-directory of the input content.
+      To avoid this issue, we'll put the Sbom directory at the base-level bin directory.
+    -->
+    <SbomManifestDirPath>$(ArtifactsBinDir)Sbom\$(MSBuildProjectName)\</SbomManifestDirPath>
 
     <VsixSourceManifestPath>$(MSBuildProjectDirectory)\source.extension.vsixmanifest</VsixSourceManifestPath>
     <!-- This property indicates that the project is a VS Extension project. The SwixBuild plugin expects this value to be set for the AddSBOM task. -->

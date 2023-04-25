@@ -74,6 +74,11 @@ jobs:
       # The ManifestPublishUrl property is used in the FinalizeManifest target in Microsoft.VisualStudio.Setup.Tools.targets to set the correct drop destination for the VSMan assets (VSIX and sbom.json).
       # This is normally set via the MicroBuildSwixPlugin task as a pipeline variable. With modern setup authoring, we do not want to run this task prior to the build itself.
       VstsDropNames: Products/$(System.TeamProject)/$(Build.Repository.Name)/$(Build.SourceBranchName)/$(Build.BuildNumber)
+      # This allows NuGet to retry in situations related to "automatic retry for untrusted root failures."
+      # We are experiencing issues with NuGet package restoration stating, "The author primary signature validity period has expired."
+      # Details on this issue can be found here: https://github.com/dotnet/arcade/issues/13070
+      # Variable reference: https://learn.microsoft.com/en-us/nuget/reference/errors-and-warnings/nu3028#retry-untrusted-root-failures
+      NUGET_EXPERIMENTAL_CHAIN_BUILD_RETRY_POLICY: 3,1000
 
   # Sets the PackageVersion variable for the job. This variable is not used by this job; instead, it is consumed by the Insertion job.
   # https://docs.microsoft.com/azure/devops/pipelines/process/set-variables-scripts?view=azure-devops&tabs=powershell#set-variable-properties

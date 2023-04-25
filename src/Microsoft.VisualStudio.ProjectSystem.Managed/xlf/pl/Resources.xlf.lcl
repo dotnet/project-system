@@ -330,10 +330,13 @@
       </Item>
       <Item ItemId=";FUTD_ComparingCopyMarkerTimestamps" ItemType="0" PsrId="308" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Comparing timestamps of copy marker inputs and outputs:]]></Val>
+          <Val><![CDATA[Comparing timestamps of copy marker inputs and output:]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Porównywanie sygnatur czasowych danych wejściowych i wyjściowych znacznika kopiowania:]]></Val>
+            <Val><![CDATA[Porównywanie znaczników czasu danych wejściowych i wyjściowych znacznika kopiowania:]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[Comparing timestamps of copy marker inputs and outputs:]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
