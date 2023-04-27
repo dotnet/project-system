@@ -246,6 +246,14 @@
         </NameValuePair.Value>
       </NameValuePair>
     </StringProperty.Metadata>
+    <StringProperty.ValueEditors>
+      <ValueEditor EditorType="String">
+        <ValueEditor.Metadata>
+          <NameValuePair Name="EvaluatedValueValidationRegex" Value="^\d*$" />
+          <NameValuePair Name="EvaluatedValueFailedValidationMessage" Value="This property must be an integer number." />
+        </ValueEditor.Metadata>
+      </ValueEditor>
+    </StringProperty.ValueEditors>
   </StringProperty>
 
   <DynamicEnumProperty Name="StartupURI"
