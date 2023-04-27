@@ -450,11 +450,12 @@
                   DisplayName="Custom constants"
                   HelpUrl="https://go.microsoft.com/fwlink/?linkid=2196264"
                   Category="Advanced"
-                  Description="Specifies custom conditional compilation constants for your application.">
+                  Description="Specifies custom conditional compilation constants for your application. Note that values are optional, for the optional behavior leave the value blank. If the value is a string, please add quotation marks around it.">
     <StringProperty.ValueEditors>
       <ValueEditor EditorType="NameValueList">
         <ValueEditor.Metadata>
-          <NameValuePair Name="Encoding" Value="NameQuotedValuePairListEncoding" />
+          <NameValuePair Name="Encoding" Value="VBDefineConstantsEncoding"/>
+          <NameValuePair Name="IsValueRequired" Value="False"/>
         </ValueEditor.Metadata>
       </ValueEditor>
     </StringProperty.ValueEditors>
