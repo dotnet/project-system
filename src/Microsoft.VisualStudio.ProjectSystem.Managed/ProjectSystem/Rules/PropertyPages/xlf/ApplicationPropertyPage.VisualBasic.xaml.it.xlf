@@ -217,6 +217,11 @@
         <target state="translated">Tempo minimo di visualizzazione della schermata iniziale</target>
         <note />
       </trans-unit>
+      <trans-unit id="StringProperty|MinimumSplashScreenDisplayTime|ValueEditors|ValueEditor|Metadata|EvaluatedValueFailedValidationMessage|Value">
+        <source>This property must be an integer number.</source>
+        <target state="new">This property must be an integer number.</target>
+        <note />
+      </trans-unit>
     </body>
   </file>
 </xliff>

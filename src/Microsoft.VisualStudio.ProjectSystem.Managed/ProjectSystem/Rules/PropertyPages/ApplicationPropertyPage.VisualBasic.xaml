@@ -2,7 +2,10 @@
 <!-- Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information. -->
 <Rule Name="Application"
       OverrideMode="Extend"
-      xmlns="http://schemas.microsoft.com/build/2009/properties">
+      xmlns="http://schemas.microsoft.com/build/2009/properties"
+      xmlns:xliff="https://github.com/dotnet/xliff-tasks"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+      mc:Ignorable="xliff">
 
   <Rule.Categories>
     <Category Name="ApplicationFramework"
@@ -250,7 +253,7 @@
       <ValueEditor EditorType="String">
         <ValueEditor.Metadata>
           <NameValuePair Name="EvaluatedValueValidationRegex" Value="^\d*$" />
-          <NameValuePair Name="EvaluatedValueFailedValidationMessage" Value="This property must be an integer number." />
+          <NameValuePair Name="EvaluatedValueFailedValidationMessage" Value="This property must be an integer number." xliff:LocalizedProperties="Value" />
         </ValueEditor.Metadata>
       </ValueEditor>
     </StringProperty.ValueEditors>
