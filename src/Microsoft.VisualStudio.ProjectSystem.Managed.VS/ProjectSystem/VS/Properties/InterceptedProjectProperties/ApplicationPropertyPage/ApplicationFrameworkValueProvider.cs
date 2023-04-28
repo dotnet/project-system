@@ -318,6 +318,27 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
                     _ => unevaluatedPropertyValue
                 };
             }
+            else if (propertyName == MinimumSplashScreenDisplayTime)
+            {
+                if (int.TryParse(unevaluatedPropertyValue, out int value))
+                {
+                    if (value < 0)
+                    {
+                        // Convert negative value to positive.
+                        unevaluatedPropertyValue = (-value).ToString();
+                    }
+                }
+                else
+                {
+                    if (string.IsNullOrEmpty(unevaluatedPropertyValue))
+                    {
+                        // If we get an empty string, we just want to clear the value.
+                        await _myAppXmlFileAccessor.SetMinimumSplashScreenDisplayTimeAsync(null);
+                    }
+
+                    return null;
+                }
+            }
 
             await (propertyName switch 
             {

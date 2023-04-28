@@ -176,5 +176,5 @@ internal class MyAppFileAccessor : IMyAppFileAccessor, IDisposable
 
     public async Task<int?> GetMinimumSplashScreenDisplayTimeAsync() => await GetIntPropertyValueAsync(MinimumSplashScreenDisplayTimeProperty);
 
-    public async Task SetMinimumSplashScreenDisplayTimeAsync(int value) => await SetPropertyAsync(MinimumSplashScreenDisplayTimeProperty, value.ToString());
+    public async Task SetMinimumSplashScreenDisplayTimeAsync(int? value) => await SetPropertyAsync(MinimumSplashScreenDisplayTimeProperty, value.ToString());
 }
