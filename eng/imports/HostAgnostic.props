@@ -39,7 +39,7 @@
     <PackageReference Include="Microsoft.VisualStudio.Threading" />
     <PackageReference Include="Microsoft.VisualStudio.Validation" />
     <PackageReference Include="System.Threading.Tasks.Dataflow" />
-    
+
     <!-- VS MEF -->
     <PackageReference Include="Microsoft.VisualStudio.Composition" />
 
@@ -61,6 +61,7 @@
 
     <!-- Framework packages -->
     <PackageReference Include="Microsoft.IO.Redist" />
+    <PackageReference Include="Microsoft.Build" />
 
     <!-- 3rd party -->
     <PackageReference Include="Newtonsoft.Json" />
@@ -80,7 +81,7 @@
     <PackageReference Include="xunit.extensibility.execution" />
     <PackageReference Include="xunit.runner.console" GeneratePathProperty="true" />
     <PackageReference Include="xunit.runner.visualstudio" GeneratePathProperty="true" />
-    
+
     <InternalsVisibleTo Include="DynamicProxyGenAssembly2" Key="$(MoqPublicKey)" />
   </ItemGroup>
 

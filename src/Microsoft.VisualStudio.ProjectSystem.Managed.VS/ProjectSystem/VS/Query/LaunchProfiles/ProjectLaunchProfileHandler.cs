@@ -230,12 +230,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
         {
             LaunchProfileSnapshot newLaunchProfile = new(queryExecutionContext.EntityRuntime, id, new LaunchProfilePropertiesAvailableStatus());
 
-            if (properties.Name)
+            if (properties.Name && propertiesContext.ItemName is not null)
             {
                 newLaunchProfile.Name = propertiesContext.ItemName;
             }
 
-            if (properties.DisplayName)
+            if (properties.DisplayName && propertiesContext.ItemName is not null)
             {
                 newLaunchProfile.DisplayName = propertiesContext.ItemName;
             }

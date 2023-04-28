@@ -11,7 +11,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build
         /// </summary>
         internal struct ErrorListDetails
         {
-            public string Message { get; set; }
+            public string? Message { get; set; }
 
             public string ProjectFile { get; set; }
 
