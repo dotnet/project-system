@@ -103,7 +103,7 @@ internal class MyAppFileAccessor : IMyAppFileAccessor, IDisposable
         return _myAppDocument;
     }
 
-    private async Task SetPropertyAsync(string propertyName, string value)
+    private async Task SetPropertyAsync(string propertyName, string? value)
     {
         MyAppDocument? myAppDocument = await TryGetMyAppFileAsync();
 
