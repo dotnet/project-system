@@ -320,7 +320,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
             }
             else if (propertyName == MinimumSplashScreenDisplayTime)
             {
-                if (int.TryParse(unevaluatedPropertyValue, out int value))
+                if (short.TryParse(unevaluatedPropertyValue, out short value))
                 {
                     if (value < 0)
                     {
