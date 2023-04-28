@@ -103,7 +103,7 @@ internal class MyAppFileAccessor : IMyAppFileAccessor, IDisposable
         return _myAppDocument;
     }
 
-    private async Task SetPropertyAsync(string propertyName, string value)
+    private async Task SetPropertyAsync(string propertyName, string? value)
     {
         MyAppDocument? myAppDocument = await TryGetMyAppFileAsync();
 
@@ -176,5 +176,5 @@ internal class MyAppFileAccessor : IMyAppFileAccessor, IDisposable
 
     public async Task<int?> GetMinimumSplashScreenDisplayTimeAsync() => await GetIntPropertyValueAsync(MinimumSplashScreenDisplayTimeProperty);
 
-    public async Task SetMinimumSplashScreenDisplayTimeAsync(int value) => await SetPropertyAsync(MinimumSplashScreenDisplayTimeProperty, value.ToString());
+    public async Task SetMinimumSplashScreenDisplayTimeAsync(int? value) => await SetPropertyAsync(MinimumSplashScreenDisplayTimeProperty, value?.ToString());
 }
