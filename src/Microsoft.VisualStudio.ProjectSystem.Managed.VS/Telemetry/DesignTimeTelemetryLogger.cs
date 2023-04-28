@@ -35,15 +35,12 @@ namespace Microsoft.VisualStudio.Telemetry
 
         private void TargetStarted(object sender, TargetStartedEventArgs e)
         {
-            if (e.BuildEventContext is not null)
-            {
-                _targets[e.BuildEventContext.TargetId] = new TargetRecord(e.TargetName, e.Timestamp);
-            }
+            _targets[e.BuildEventContext.TargetId] = new TargetRecord(e.TargetName, e.Timestamp);
         }
 
         private void TargetFinished(object sender, TargetFinishedEventArgs e)
         {
-            if (e.BuildEventContext is not null && _targets.TryGetValue(e.BuildEventContext.TargetId, out TargetRecord record))
+            if (_targets.TryGetValue(e.BuildEventContext.TargetId, out TargetRecord record))
             {
                 record.Ended = e.Timestamp;
             }
