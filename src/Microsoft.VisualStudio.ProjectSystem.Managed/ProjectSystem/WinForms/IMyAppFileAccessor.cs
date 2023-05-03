@@ -106,5 +106,5 @@ internal interface IMyAppFileAccessor
     /// <summary>
     /// Sets the current value of property in the myapp file.
     /// </summary>
-    Task SetMinimumSplashScreenDisplayTimeAsync(int minimumSplashScreenDisplayTime);
+    Task SetMinimumSplashScreenDisplayTimeAsync(int? minimumSplashScreenDisplayTime);
 }

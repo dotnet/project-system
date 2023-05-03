@@ -26,7 +26,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
             _targetBlock = DataflowBlockFactory.CreateActionBlock<IProjectVersionedValue<IConfigurationGroup<ProjectConfiguration>>>(OnActiveConfigurationsChangedAsync, project, ProjectFaultSeverity.LimitedFunctionality);
         }
 
-        [ProjectAutoLoad(ProjectLoadCheckpoint.ProjectInitialCapabilitiesEstablished)]
+        [ProjectAutoLoad(startAfter: ProjectLoadCheckpoint.ProjectInitialCapabilitiesEstablished)]
         // NOTE we use the language service capability here to prevent loading configurations of shared projects.
         [AppliesTo(ProjectCapability.DotNetLanguageService)]
         public Task InitializeAsync()

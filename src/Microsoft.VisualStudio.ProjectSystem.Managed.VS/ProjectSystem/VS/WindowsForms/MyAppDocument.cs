@@ -27,12 +27,15 @@ internal class MyAppDocument
         return element.Value;
     }
 
-    public void SetProperty(string propertyName, string propertyValue)
+    public void SetProperty(string propertyName, string? propertyValue)
     {
         XElement element = _doc.Root.Element(propertyName);
 
         if (element is not null)
+        {
+            propertyValue ??= string.Empty;
             element.Value = propertyValue;
+        }
         else
         {
             element = new XElement(propertyName, propertyValue);
