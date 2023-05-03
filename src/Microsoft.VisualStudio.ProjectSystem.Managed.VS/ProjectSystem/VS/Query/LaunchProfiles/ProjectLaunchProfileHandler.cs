@@ -232,11 +232,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
 
             if (properties.Name)
             {
+                Assumes.NotNull(propertiesContext.ItemName);
                 newLaunchProfile.Name = propertiesContext.ItemName;
             }
 
             if (properties.DisplayName)
             {
+                Assumes.NotNull(propertiesContext.ItemName);
                 newLaunchProfile.DisplayName = propertiesContext.ItemName;
             }
 
