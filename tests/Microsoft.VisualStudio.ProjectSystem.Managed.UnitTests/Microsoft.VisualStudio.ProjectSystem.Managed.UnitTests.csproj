@@ -9,20 +9,20 @@
   </PropertyGroup>
 
   <PropertyGroup>
-    <TargetFrameworks>net472;net6.0</TargetFrameworks>
+    <TargetFrameworks>net472;net7.0</TargetFrameworks>
 
-    <!-- TODO: Remove this when the port to net6.0 is complete -->
+    <!-- TODO: Remove this when the port to net7.0 is complete -->
     <NoWarn>$(NoWarn);NU1701;NU1702</NoWarn>
   </PropertyGroup>
 
   <!-- TODO: Re-enable nullability and clean up warnings. -->
-  <PropertyGroup Condition="'$(TargetFramework)' == 'net6.0'">
+  <PropertyGroup Condition="'$(TargetFramework)' == 'net7.0'">
     <Nullable>annotations</Nullable>
     <NoWarn>$(NoWarn);RS0037</NoWarn>
   </PropertyGroup>
 
-  <!-- TODO: Remove this once ImageMoniker and related types are available in a net6.0-compatible package. -->
-  <ItemGroup Condition="'$(TargetFramework)' == 'net6.0'">
+  <!-- TODO: Remove this once ImageMoniker and related types are available in a net7.0-compatible package. -->
+  <ItemGroup Condition="'$(TargetFramework)' == 'net7.0'">
     <!--<PackageReference Remove="Microsoft.VisualStudio.SDK.EmbedInteropTypes" />
     <PackageReference Remove="Microsoft.VisualStudio.ImageCatalog" />-->
 
