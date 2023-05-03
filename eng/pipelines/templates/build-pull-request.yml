@@ -21,6 +21,12 @@ jobs:
   # Runs the full build of the projects in the repository. See Build.proj for details.
   - script: $(Build.SourcesDirectory)/build.cmd /v:normal /p:Configuration=$(BuildConfiguration) /p:CIBuild=true
     displayName: Build All Projects
+    env:
+      # This allows NuGet to retry in situations related to "automatic retry for untrusted root failures."
+      # We are experiencing issues with NuGet package restoration stating, "The author primary signature validity period has expired."
+      # Details on this issue can be found here: https://github.com/dotnet/arcade/issues/13070
+      # Variable reference: https://learn.microsoft.com/en-us/nuget/reference/errors-and-warnings/nu3028#retry-untrusted-root-failures
+      NUGET_EXPERIMENTAL_CHAIN_BUILD_RETRY_POLICY: 3,1000
 
   ###################################################################################################################################################################
   # PUBLISH BUILD
