@@ -141,7 +141,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build
                     ColumnNumber = errorMessage.ColumnNumber,
                     EndColumnNumber = errorMessage.EndColumnNumber,
                     Code = errorMessage.Code,
-                    Message = errorMessage.Message,
+                    Message = errorMessage.Message ?? string.Empty,
                     Priority = VSTASKPRIORITY.TP_HIGH,
                 };
 
@@ -159,7 +159,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build
                     ColumnNumber = warningMessage.ColumnNumber,
                     EndColumnNumber = warningMessage.EndColumnNumber,
                     Code = warningMessage.Code,
-                    Message = warningMessage.Message,
+                    Message = warningMessage.Message ?? string.Empty,
                     Priority = VSTASKPRIORITY.TP_NORMAL,
                 };
 
@@ -177,7 +177,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build
                     ColumnNumber = criticalMessage.ColumnNumber,
                     EndColumnNumber = criticalMessage.EndColumnNumber,
                     Code = criticalMessage.Code,
-                    Message = criticalMessage.Message,
+                    Message = criticalMessage.Message ?? string.Empty,
                     Priority = VSTASKPRIORITY.TP_LOW,
                 };
 
