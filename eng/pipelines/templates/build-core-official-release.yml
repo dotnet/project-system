@@ -26,6 +26,12 @@ jobs:
   # Only the projects in the 'src' folder are necessary for generating the SBOM.
   - script: $(Build.SourcesDirectory)/build.cmd /v:normal /p:Configuration=$(BuildConfiguration) /p:CIBuild=true /p:Test=false /p:Pack=false /p:TestProjects=false /p:SetupProjects=false
     displayName: Build Src Projects
+    env:
+      # This allows NuGet to retry in situations related to "automatic retry for untrusted root failures."
+      # We are experiencing issues with NuGet package restoration stating, "The author primary signature validity period has expired."
+      # Details on this issue can be found here: https://github.com/dotnet/arcade/issues/13070
+      # Variable reference: https://learn.microsoft.com/en-us/nuget/reference/errors-and-warnings/nu3028#retry-untrusted-root-failures
+      NUGET_EXPERIMENTAL_CHAIN_BUILD_RETRY_POLICY: 3,1000
 
   # The binlog is set to Build.binlog by default when using build.cmd. We rename it so it isn't overridden by the full build.
   - powershell: Rename-Item -Path '$(Build.SourcesDirectory)/artifacts/$(BuildConfiguration)/log/Build.binlog' -NewName SrcBuild.binlog
