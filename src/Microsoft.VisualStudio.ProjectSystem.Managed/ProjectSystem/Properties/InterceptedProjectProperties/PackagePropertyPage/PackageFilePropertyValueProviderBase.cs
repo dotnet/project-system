@@ -82,21 +82,32 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties.Package
                 }
             }
 
-            try
+            // None items outside of the project file cannot be updated.
+            if (existingItem?.PropertiesContext?.IsProjectFile ?? false)
             {
-                // None items outside of the project file cannot be updated.
-                if (existingItem?.PropertiesContext?.IsProjectFile ?? false)
+                if (!isEmptyValue)
                 {
-                    if (!isEmptyValue)
+                    try
                     {
                         await existingItem.SetUnevaluatedIncludeAsync(relativePath);
                     }
-                    else
+                    catch (ArgumentException)
                     {
-                        await existingItem.RemoveAsync();
+                        // The user likely provided an unevaluated MSBuild property that doesn't exist which results in an empty string.
+                        // We cannot set the Include metadata of the None item to an empty string.
+                        // We'll return the current value since the value the user provided is not valid to update the None item.
+                        // See: https://devdiv.visualstudio.com/DevDiv/_workitems/edit/1748809
+                        return existingPropertyValue;
                     }
                 }
                 else
+                {
+                    await existingItem.RemoveAsync();
+                }
+            }
+            else
+            {
+                try
                 {
                     await _sourceItemsProvider.AddAsync(None.SchemaName, relativePath, new Dictionary<string, string>
                     {
@@ -104,15 +115,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties.Package
                         { PackagePathMetadataName, packagePath }
                     });
                 }
+                catch (ArgumentException)
+                {
+                    // The user likely provided an unevaluated MSBuild property that doesn't exist which results in an empty string.
+                    // We cannot set the Include metadata of the None item to an empty string.
+                    // We'll return the current value since the value the user provided is not valid to create the None item.
+                    // See: https://devdiv.visualstudio.com/DevDiv/_workitems/edit/1748809
+                    return existingPropertyValue;
+                }
+            }
 
-                return !isEmptyValue ? CreatePropertyValue(relativePath, packagePath) : string.Empty;
-            }
-            catch
-            {
-                // Something on the CPS side threw. We'll return the current value to avoid making any changes.
-                // See: https://devdiv.visualstudio.com/DevDiv/_workitems/edit/1748809
-                return existingPropertyValue;
-            }
+            return !isEmptyValue ? CreatePropertyValue(relativePath, packagePath) : string.Empty;
         }
 
         private async Task<string> GetItemIncludeValueAsync(string propertyValue)
