@@ -82,28 +82,37 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties.Package
                 }
             }
 
-            // None items outside of the project file cannot be updated.
-            if (existingItem?.PropertiesContext?.IsProjectFile ?? false)
+            try
             {
-                if (!isEmptyValue)
+                // None items outside of the project file cannot be updated.
+                if (existingItem?.PropertiesContext?.IsProjectFile ?? false)
                 {
-                    await existingItem.SetUnevaluatedIncludeAsync(relativePath);
+                    if (!isEmptyValue)
+                    {
+                        await existingItem.SetUnevaluatedIncludeAsync(relativePath);
+                    }
+                    else
+                    {
+                        await existingItem.RemoveAsync();
+                    }
                 }
                 else
                 {
-                    await existingItem.RemoveAsync();
+                    await _sourceItemsProvider.AddAsync(None.SchemaName, relativePath, new Dictionary<string, string>
+                    {
+                        { PackMetadataName, bool.TrueString },
+                        { PackagePathMetadataName, packagePath }
+                    });
                 }
-            }
-            else
-            {
-                await _sourceItemsProvider.AddAsync(None.SchemaName, relativePath, new Dictionary<string, string>
-                {
-                    { PackMetadataName, bool.TrueString },
-                    { PackagePathMetadataName, packagePath }
-                });
-            }
 
-            return !isEmptyValue ? CreatePropertyValue(relativePath, packagePath) : string.Empty;
+                return !isEmptyValue ? CreatePropertyValue(relativePath, packagePath) : string.Empty;
+            }
+            catch
+            {
+                // Something on the CPS side threw. We'll return the current value to avoid making any changes.
+                // See: https://devdiv.visualstudio.com/DevDiv/_workitems/edit/1748809
+                return existingPropertyValue;
+            }
         }
 
         private async Task<string> GetItemIncludeValueAsync(string propertyValue)
