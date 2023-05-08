@@ -10,7 +10,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug;
 internal static class ProjectAndExecutableLaunchHandlerHelpers
 {
     /// <summary>
-    ///   Returns the output directory as specified by the project.
+    ///   Returns the output directory as specified by the project's <c>OutDir</c> property.
+    ///   For example, <c>bin\net8.0\Debug\</c>.
     /// </summary>
     public static async Task<string> GetOutputDirectoryAsync(this ConfiguredProject configuredProject)
     {
