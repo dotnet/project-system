@@ -8,10 +8,24 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug;
 public class ProjectAndExecutableLaunchHandlerHelpersTests
 {
     [Fact]
-    public async Task GetOutputDirectoryAsync_Returns_OutputDirectory()
+    public async Task GetOutputDirectoryAsync_Returns_OutputDirectory_When_FullPath()
     {
         // Arrange
         var expectedOutputDirectory = @"C:\OutputDirectory";
+        var project = CreateConfiguredProject(new() { { "OutDir", expectedOutputDirectory } });
+
+        // Act
+        var outputDirectory = await ProjectAndExecutableLaunchHandlerHelpers.GetOutputDirectoryAsync(project);
+
+        // Assert
+        Assert.Equal(expectedOutputDirectory, outputDirectory);
+    }
+
+    [Fact]
+    public async Task GetOutputDirectoryAsync_Returns_OutputDirectory_When_RelativePath()
+    {
+        // Arrange
+        var expectedOutputDirectory = @"OutputDirectory";
         var project = CreateConfiguredProject(new() { { "OutDir", expectedOutputDirectory } });
 
         // Act

@@ -13,6 +13,9 @@ internal static class ProjectAndExecutableLaunchHandlerHelpers
     ///   Returns the output directory as specified by the project's <c>OutDir</c> property.
     ///   For example, <c>bin\net8.0\Debug\</c>.
     /// </summary>
+    /// <returns>
+    ///   The evaluated value of the <c>OutDir</c> property, or the empty string if the property is not set.
+    /// </returns>
     public static async Task<string> GetOutputDirectoryAsync(this ConfiguredProject configuredProject)
     {
         Assumes.Present(configuredProject.Services.ProjectPropertiesProvider);
@@ -39,7 +42,7 @@ internal static class ProjectAndExecutableLaunchHandlerHelpers
     public static async Task<string> GetDefaultWorkingDirectoryAsync(ConfiguredProject configuredProject, string projectFolderFullPath, IFileSystem fileSystem)
     {
         string defaultWorkingDir = await configuredProject.GetOutputDirectoryAsync();
-        if (string.IsNullOrEmpty(defaultWorkingDir))
+        if (defaultWorkingDir.Length == 0)
         {
             defaultWorkingDir = projectFolderFullPath;
         }
@@ -179,9 +182,9 @@ internal static class ProjectAndExecutableLaunchHandlerHelpers
     ///   </list>
     /// </summary>
     /// <returns>
-    ///   <see langword="null"/> if the command string is <see langword="null"/>. Otherwise, the tuple containing the runnable project information.
+    ///   <see langword="null"/> if the exeToRun string is <see langword="null"/> or empty. Otherwise, the tuple containing the runnable project information.
     /// </returns>
-    public static async Task<(string Command, string Arguments, string WorkingDirectory)?> GetRunnableProjectInformationAsync(
+    public static async Task<(string ExeToRun, string Arguments, string WorkingDirectory)?> GetRunnableProjectInformationAsync(
         ConfiguredProject project,
         IEnvironmentHelper environment,
         IFileSystem fileSystem,
@@ -192,8 +195,8 @@ internal static class ProjectAndExecutableLaunchHandlerHelpers
 
         IProjectProperties properties = project.Services.ProjectPropertiesProvider.GetCommonProperties();
 
-        string? runCommand = await GetTargetCommandAsync(properties, environment, fileSystem, outputTypeChecker, validateSettings);
-        if (string.IsNullOrWhiteSpace(runCommand))
+        string? exeToRun = await GetTargetCommandAsync(properties, environment, fileSystem, outputTypeChecker, validateSettings);
+        if (Strings.IsNullOrWhiteSpace(exeToRun))
         {
             return null;
         }
@@ -207,6 +210,6 @@ internal static class ProjectAndExecutableLaunchHandlerHelpers
 
         string runArguments = await properties.GetEvaluatedPropertyValueAsync("RunArguments");
 
-        return (runCommand!, runArguments, runWorkingDirectory);
+        return (exeToRun, runArguments, runWorkingDirectory);
     }
 }
