@@ -36,7 +36,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
             _solutionService = solutionService;
         }
 
-        [ProjectAutoLoad(completeBy: ProjectLoadCheckpoint.ProjectFactoryCompleted)]
+        [ProjectAutoLoad(startAfter: ProjectLoadCheckpoint.ProjectFactoryCompleted)]
         [AppliesTo(ProjectCapability.DotNet)]
         public Task OnProjectFactoryCompleted()
         {

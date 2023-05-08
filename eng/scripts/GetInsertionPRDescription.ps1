@@ -61,7 +61,7 @@ if(-Not $previousShaShort -or $previousShaShort -eq $currentShaShort)
   {
     $description += 'Previous VS insertion commit is the same as current.'
     $description += ''
-    $description += 'THIS INSERTION CAN BE SAFELY ABORTED.'
+    $description += 'THIS INSERTION CAN BE SAFELY ABANDONED.'
   }
 
   Write-Host "=== DESCRIPTION ===$([Environment]::Newline)$([Environment]::Newline)$($description -join [Environment]::Newline)"
