@@ -10,7 +10,6 @@ using Microsoft.VisualStudio.ProjectSystem.Properties;
 using Microsoft.VisualStudio.ProjectSystem.Utilities;
 using Microsoft.VisualStudio.ProjectSystem.VS.HotReload;
 using Microsoft.VisualStudio.Shell.Interop;
-using Microsoft.VisualStudio.Text;
 using Microsoft.VisualStudio.Threading;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -125,7 +124,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
 
                 IProjectProperties properties = configuredProject.Services.ProjectPropertiesProvider.GetCommonProperties();
 
-                string? runCommand = await GetTargetCommandAsync(properties, validateSettings: true);
+                string? runCommand = await ProjectAndExecutableLaunchHandlerHelpers.GetTargetCommandAsync(properties, _environment, _fileSystem, _outputTypeChecker, validateSettings: true);
                 if (string.IsNullOrWhiteSpace(runCommand))
                 {
                     return false;
@@ -236,31 +235,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
 
             string? executable, arguments;
 
-            string projectFolder = Path.GetDirectoryName(_project.UnconfiguredProject.FullPath) ?? string.Empty;
             ConfiguredProject? configuredProject = await GetConfiguredProjectForDebugAsync();
 
             Assumes.NotNull(configuredProject);
 
             // If no working directory specified in the profile, we default to output directory. If for some reason the output directory
             // is not specified, fall back to the project folder.
-            string defaultWorkingDir = await GetOutputDirectoryAsync(configuredProject);
-            if (string.IsNullOrEmpty(defaultWorkingDir))
-            {
-                defaultWorkingDir = projectFolder;
-            }
-            else
-            {
-                if (!Path.IsPathRooted(defaultWorkingDir))
-                {
-                    defaultWorkingDir = _fileSystem.GetFullPath(Path.Combine(projectFolder, defaultWorkingDir));
-                }
-
-                // If the directory at OutDir doesn't exist, fall back to the project folder
-                if (!_fileSystem.DirectoryExists(defaultWorkingDir))
-                {
-                    defaultWorkingDir = projectFolder;
-                }
-            }
+            string projectFolderFullPath = Path.GetDirectoryName(_project.UnconfiguredProject.FullPath) ?? string.Empty;
+            string defaultWorkingDir = await ProjectAndExecutableLaunchHandlerHelpers.GetDefaultWorkingDirectoryAsync(configuredProject, projectFolderFullPath, _fileSystem);
 
             string? commandLineArgs = resolvedProfile.CommandLineArgs is null
                 ? null
@@ -270,7 +252,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             if (IsRunProjectCommand(resolvedProfile))
             {
                 // Get the executable to run, the arguments and the default working directory
-                (string Command, string Arguments, string WorkingDirectory)? runnableProjectInfo = await GetRunnableProjectInformationAsync(configuredProject, validateSettings);
+                (string, string, string)? runnableProjectInfo = await ProjectAndExecutableLaunchHandlerHelpers.GetRunnableProjectInformationAsync(
+                    configuredProject,
+                    _environment,
+                    _fileSystem,
+                    _outputTypeChecker,
+                    validateSettings);
+
                 if (runnableProjectInfo == null)
                 {
                     return null;
@@ -302,7 +290,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             else
             {
                 // If the working directory is not rooted we assume it is relative to the project directory
-                workingDir = _fileSystem.GetFullPath(Path.Combine(projectFolder, resolvedProfile.WorkingDirectory.Replace("/", "\\")));
+                workingDir = _fileSystem.GetFullPath(Path.Combine(projectFolderFullPath, resolvedProfile.WorkingDirectory.Replace("/", "\\")));
             }
 
             // IF the executable is not rooted, we want to make is relative to the workingDir unless is doesn't contain
@@ -334,7 +322,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
                         }
                         else
                         {
-                            string? fullPathFromEnv = GetFullPathOfExeFromEnvironmentPath(exeName);
+                            string? fullPathFromEnv = ProjectAndExecutableLaunchHandlerHelpers.GetFullPathOfExeFromEnvironmentPath(exeName, _environment, _fileSystem);
                             if (fullPathFromEnv is not null)
                             {
                                 executable = fullPathFromEnv;
@@ -466,100 +454,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             return (options & DebugLaunchOptions.NoDebug) == DebugLaunchOptions.NoDebug;
         }
 
-        /// <summary>
-        /// Queries properties from the project to get information on how to run the application. The returned Tuple contains:
-        /// exeToRun, arguments, workingDir
-        /// </summary>
-        /// <returns><see langword="null"/> if the command string is <see langword="null"/>. Otherwise, the tuple containing the runnable project information.</returns>
-        private async Task<(string Command, string Arguments, string WorkingDirectory)?> GetRunnableProjectInformationAsync(
-            ConfiguredProject configuredProject,
-            bool validateSettings)
-        {
-            Assumes.Present(configuredProject.Services.ProjectPropertiesProvider);
-
-            IProjectProperties properties = configuredProject.Services.ProjectPropertiesProvider.GetCommonProperties();
-
-            string? runCommand = await GetTargetCommandAsync(properties, validateSettings);
-            if (string.IsNullOrWhiteSpace(runCommand))
-            {
-                return null;
-            }
-
-            string runWorkingDirectory = await properties.GetEvaluatedPropertyValueAsync("RunWorkingDirectory");
-            // If the working directory is relative, it will be relative to the project root so make it a full path
-            if (!string.IsNullOrWhiteSpace(runWorkingDirectory) && !Path.IsPathRooted(runWorkingDirectory))
-            {
-                runWorkingDirectory = Path.Combine(Path.GetDirectoryName(_project.UnconfiguredProject.FullPath) ?? string.Empty, runWorkingDirectory);
-            }
-
-            string runArguments = await properties.GetEvaluatedPropertyValueAsync("RunArguments");
-
-            return (runCommand!, runArguments, runWorkingDirectory);
-        }
-
-        /// <summary>
-        /// Returns <see langword="null"/> if it is not a valid debug target. Otherwise, returns the command string for debugging.
-        /// </summary>
-        private async Task<string?> GetTargetCommandAsync(
-            IProjectProperties properties,
-            bool validateSettings)
-        {
-            // First try "RunCommand" property
-            string? runCommand = await GetRunCommandAsync(properties);
-
-            if (Strings.IsNullOrEmpty(runCommand))
-            {
-                // If we're launching for debug purposes, prevent someone F5'ing a class library
-                if (validateSettings && await _outputTypeChecker.IsLibraryAsync())
-                {
-                    return null;
-                }
-
-                // Otherwise, fall back to "TargetPath"
-                runCommand = await properties.GetEvaluatedPropertyValueAsync(ConfigurationGeneral.TargetPathProperty);
-            }
-
-            return runCommand;
-        }
-
-        private async Task<string?> GetRunCommandAsync(IProjectProperties properties)
-        {
-            string runCommand = await properties.GetEvaluatedPropertyValueAsync("RunCommand");
-
-            if (string.IsNullOrEmpty(runCommand))
-            {
-                return null;
-            }
-
-            // If dotnet.exe is used runCommand returns just "dotnet". The debugger is going to require a full path so we need to append the .exe
-            // extension.
-            if (!runCommand.EndsWith(".exe", StringComparisons.Paths))
-            {
-                runCommand += ".exe";
-            }
-
-            // If the path is just the name of an exe like dotnet.exe then we try to find it on the path
-            if (runCommand.IndexOf(Path.DirectorySeparatorChar) == -1)
-            {
-                string? executable = GetFullPathOfExeFromEnvironmentPath(runCommand);
-                if (executable is not null)
-                {
-                    runCommand = executable;
-                }
-            }
-
-            return runCommand;
-        }
-
-        private static async Task<string> GetOutputDirectoryAsync(ConfiguredProject configuredProject)
-        {
-            Assumes.Present(configuredProject.Services.ProjectPropertiesProvider);
-
-            IProjectProperties properties = configuredProject.Services.ProjectPropertiesProvider.GetCommonProperties();
-
-            return await properties.GetEvaluatedPropertyValueAsync(ConfigurationGeneral.OutDirProperty);
-        }
-
         private static async Task<Guid> GetDebuggingEngineAsync(ConfiguredProject configuredProject)
         {
             Assumes.Present(configuredProject.Services.ProjectPropertiesProvider);
@@ -568,38 +462,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             string framework = await properties.GetEvaluatedPropertyValueAsync(ConfigurationGeneral.TargetFrameworkIdentifierProperty);
 
             return GetManagedDebugEngineForFramework(framework);
-        }
-
-        /// <summary>
-        /// Searches the path variable for the first match of exeToSearchFor. Returns
-        /// null if not found.
-        /// </summary>
-        private string? GetFullPathOfExeFromEnvironmentPath(string exeToSearchFor)
-        {
-            string? pathEnv = _environment.GetEnvironmentVariable("Path");
-
-            if (Strings.IsNullOrEmpty(pathEnv))
-            {
-                return null;
-            }
-
-            foreach (string path in new LazyStringSplit(pathEnv, ';'))
-            {
-                // We don't want one bad path entry to derail the search
-                try
-                {
-                    string exePath = Path.Combine(path, exeToSearchFor);
-                    if (_fileSystem.FileExists(exePath))
-                    {
-                        return exePath;
-                    }
-                }
-                catch (ArgumentException)
-                {
-                }
-            }
-
-            return null;
         }
 
         /// <summary>
