@@ -79,7 +79,7 @@ public class WorkspaceFactoryTests
 
         return new ProjectVersionedValue<WorkspaceUpdate>(
             workspaceUpdate,
-            dataSourceVersions: ImmutableDictionary<NamedIdentity, IComparable>.Empty);
+            dataSourceVersions: Empty.ProjectValueVersions);
     }
 
     private static IProjectVersionedValue<WorkspaceUpdate> BuildUpdate()
@@ -90,6 +90,6 @@ public class WorkspaceFactoryTests
 
         return new ProjectVersionedValue<WorkspaceUpdate>(
             workspaceUpdate,
-            dataSourceVersions: ImmutableDictionary<NamedIdentity, IComparable>.Empty);
+            dataSourceVersions: Empty.ProjectValueVersions);
     }
 }
