@@ -4,6 +4,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 17.0.31514.227
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "setup", "setup", "{AC8DB8AE-AC9F-4503-83C6-255B66C318C6}"
+	ProjectSection(SolutionItems) = preProject
+		setup\Microsoft.VisualStudio.ProjectSystem.Managed.CommonFiles\CommonFiles.swr = setup\Microsoft.VisualStudio.ProjectSystem.Managed.CommonFiles\CommonFiles.swr
+		setup\Microsoft.VisualStudio.ProjectSystem.Managed.CommonFiles\ext.xproj.swr = setup\Microsoft.VisualStudio.ProjectSystem.Managed.CommonFiles\ext.xproj.swr
+		setup\Microsoft.VisualStudio.ProjectSystem.Managed.CommonFiles\Microsoft.VisualStudio.ProjectSystem.Managed.CommonFiles.swixproj = setup\Microsoft.VisualStudio.ProjectSystem.Managed.CommonFiles\Microsoft.VisualStudio.ProjectSystem.Managed.CommonFiles.swixproj
+	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ProjectSystemSetup", "setup\ProjectSystemSetup\ProjectSystemSetup.csproj", "{9FBD7EF2-9449-486D-9FDD-FA56160AA8BB}"
 EndProject
