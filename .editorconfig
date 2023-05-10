@@ -390,8 +390,11 @@ dotnet_diagnostic.IDE0079.severity = warning      # Unused suppresion
 dotnet_diagnostic.IDE0083.severity = warning      # Use pattern matching
 dotnet_diagnostic.IDE0084.severity = warning      # Use IsNot
 dotnet_diagnostic.IDE0090.severity = warning      # Use new(...)
+dotnet_diagnostic.IDE0220.severity = warning      # Add explicit cast
 dotnet_diagnostic.IDE1006.severity = warning      # Naming styles                                 Task Open()                                         Task OpenAsync()
 dotnet_diagnostic.IDE1006WithoutSuggestion.severity = suggestion
+
+dotnet_style_prefer_foreach_explicit_cast_in_source = always    # IDE0220: Add explicit cast
 
 # Microsoft.VisualStudio.Threading.Analyzers
 # https://github.com/microsoft/vs-threading/blob/main/doc/analyzers/index.md
