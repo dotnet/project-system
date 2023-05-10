@@ -5,6 +5,8 @@ using System.Text.RegularExpressions;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 
+using Flags = Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.DependencyTreeFlags;
+
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections
 {
     /// <summary>
@@ -24,7 +26,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedColl
         /// <returns><see langword="true"/> if the target was found, otherwise <see langword="false"/>.</returns>
         public static bool TryFindTarget(this IVsHierarchyItem item, [NotNullWhen(returnValue: true)] out string? target)
         {
-            s_targetFlagsRegex ??= new Regex(@"^(?=.*\b" + nameof(DependencyTreeFlags.TargetNode) + @"\b)(?=.*\$TFM:(?<target>[^ ]+)\b).*$", RegexOptions.Compiled | RegexOptions.ExplicitCapture | RegexOptions.CultureInvariant);
+            s_targetFlagsRegex ??= new Regex(@"^(?=.*\b" + nameof(Flags.TargetNode) + @"\b)(?=.*\$TFM:(?<target>[^ ]+)\b).*$", RegexOptions.Compiled | RegexOptions.ExplicitCapture | RegexOptions.CultureInvariant);
 
             for (IVsHierarchyItem? parent = item; parent is not null; parent = parent.Parent)
             {

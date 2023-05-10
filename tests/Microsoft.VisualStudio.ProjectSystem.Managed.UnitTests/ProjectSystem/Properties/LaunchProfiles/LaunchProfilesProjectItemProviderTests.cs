@@ -316,7 +316,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         [Fact]
         public async Task WhenAddingMultipleItems_TheReturnedItemsHaveTheCorrectNames()
         {
-            ImmutableList<ILaunchProfile> newProfiles = ImmutableList<ILaunchProfile>.Empty; ;
+            ImmutableList<ILaunchProfile> newProfiles = ImmutableList<ILaunchProfile>.Empty;
             var launchSettingsProvider = ILaunchSettingsProviderFactory.Create(
                 addOrUpdateProfileCallback: (p, a) =>
                 {
