@@ -2,9 +2,11 @@
 
 namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Subscriptions
 {
+    /// <summary>
+    /// Names of metadata found on project items.
+    /// </summary>
     internal static class ProjectItemMetadata
     {
-        // General Metadata
         public const string Name = "Name";
         public const string Type = "Type";
         public const string Version = "Version";

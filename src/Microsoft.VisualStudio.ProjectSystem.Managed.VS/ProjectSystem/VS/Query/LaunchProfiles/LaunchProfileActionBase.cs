@@ -129,7 +129,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
                                 ImmutableArray<IEntityValue> properties = ImmutableArray.CreateRange(
                                     UIPropertyDataProducer.CreateUIPropertyValues(request.QueryExecutionContext, launchProfileEntity, state.ProjectState, state.PropertiesContext, state.Rule, s_requestedPropertyProperties));
                                 launchProfileEntity.SetRelatedEntities(LaunchProfileType.PropertiesPropertyName, properties);
-                                
+
                                 await PopulateEditorsAndValues(properties);
                             }
 
