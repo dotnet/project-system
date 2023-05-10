@@ -29,32 +29,17 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
         /// <summary>
         ///     Returns a new instance of <see cref="StandardRuleDataflowLinkOptions"/> with
-        ///     <see cref="StandardRuleDataflowLinkOptions.RuleNames"/> set to <paramref name="ruleNames"/>
+        ///     <see cref="StandardRuleDataflowLinkOptions.RuleNames"/> set to <paramref name="ruleName"/>
         ///     and <see cref="DataflowLinkOptions.PropagateCompletion"/> set to <see langword="true"/>.
         /// </summary>
         /// <exception cref="ArgumentNullException">
-        ///     <paramref name="ruleNames"/> is <see langword="null"/>.
+        ///     <paramref name="ruleName"/> is <see langword="null"/>.
         /// </exception>
-        public static StandardRuleDataflowLinkOptions WithRuleNames(IEnumerable<string> ruleNames)
+        public static StandardRuleDataflowLinkOptions WithRuleNames(string ruleName)
         {
-            Requires.NotNull(ruleNames);
+            Requires.NotNull(ruleName);
 
-            return WithRuleNames(ImmutableHashSet.CreateRange(ruleNames));
-        }
-
-        /// <summary>
-        ///     Returns a new instance of <see cref="StandardRuleDataflowLinkOptions"/> with
-        ///     <see cref="StandardRuleDataflowLinkOptions.RuleNames"/> set to <paramref name="ruleNames"/>
-        ///     and <see cref="DataflowLinkOptions.PropagateCompletion"/> set to <see langword="true"/>.
-        /// </summary>
-        /// <exception cref="ArgumentNullException">
-        ///     <paramref name="ruleNames"/> is <see langword="null"/>.
-        /// </exception>
-        public static StandardRuleDataflowLinkOptions WithRuleNames(params string[] ruleNames)
-        {
-            Requires.NotNull(ruleNames);
-
-            return WithRuleNames(ImmutableHashSet.Create(ruleNames));
+            return WithRuleNames(ImmutableHashSet.Create(ruleName));
         }
 
         /// <summary>
@@ -69,10 +54,26 @@ namespace Microsoft.VisualStudio.ProjectSystem
         {
             Requires.NotNull(ruleNames);
 
-            return new StandardRuleDataflowLinkOptions()
+            // This class sets PropagateCompletion by default, so we don't have to set it here again.
+            return new()
             {
-                RuleNames = ruleNames,
-                PropagateCompletion = true,
+                RuleNames = ruleNames
+            };
+        }
+
+        /// <summary>
+        ///     Returns a new instance of <see cref="JointRuleDataflowLinkOptions"/> with
+        ///     <see cref="JointRuleDataflowLinkOptions.EvaluationRuleNames"/> set to <paramref name="evaluationRuleNames"/>,
+        ///     <see cref="JointRuleDataflowLinkOptions.BuildRuleNames"/> set to <paramref name="buildRuleNames"/>
+        ///     and <see cref="DataflowLinkOptions.PropagateCompletion"/> set to <see langword="true"/>.
+        /// </summary>
+        public static JointRuleDataflowLinkOptions WithJointRuleNames(ImmutableHashSet<string> evaluationRuleNames, ImmutableHashSet<string> buildRuleNames)
+        {
+            // This class sets PropagateCompletion by default, so we don't have to set it here again.
+            return new()
+            {
+                EvaluationRuleNames = evaluationRuleNames,
+                BuildRuleNames = buildRuleNames
             };
         }
     }
