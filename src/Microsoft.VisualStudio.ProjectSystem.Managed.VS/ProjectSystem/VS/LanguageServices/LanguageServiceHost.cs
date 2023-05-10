@@ -191,7 +191,7 @@ internal sealed class LanguageServiceHost : OnceInitializedOnceDisposedAsync, IP
 
                 firstWorkspace ??= workspace;
 
-                workspace.IsPrimary = IsPrimaryActiveSlice(slice, activeProjectConfiguration);
+                workspace.IsPrimary = slice.IsPrimaryActiveSlice(activeProjectConfiguration);
 
                 if (workspace.IsPrimary)
                 {
@@ -229,26 +229,6 @@ internal sealed class LanguageServiceHost : OnceInitializedOnceDisposedAsync, IP
                 // Set the new primary workspace (or theoretically null if no slices exist).
                 _primaryWorkspace = firstWorkspace;
             }
-        }
-
-        static bool IsPrimaryActiveSlice(ProjectConfigurationSlice slice, ProjectConfiguration activeProjectConfiguration)
-        {
-            // If all slice dimensions are present with the same value in the configuration, then this is a match.
-            foreach ((string name, string value) in slice.Dimensions)
-            {
-                if (activeProjectConfiguration.Dimensions.TryGetValue(name, out string activeValue) &&
-                    StringComparers.ConfigurationDimensionValues.Equals(value, activeValue))
-                {
-                    continue;
-                }
-
-                // The dimension's value is either unknown, or the value differs. This is not a match.
-                return false;
-            }
-
-            // All dimensions in the slice match the project configuration.
-            // If the slice's configuration is empty, we also return true.
-            return true;
         }
     }
 
