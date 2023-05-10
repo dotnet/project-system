@@ -24,8 +24,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
                     (string entryKey, string entryValue) = SplitPairedEntry(entry);
                     resultingEntry = (DecodeCharacters(entryKey), DecodeCharacters(entryValue));
                 }
-                //if not key value pair entry, tries to parse for single value entry
-                //empty string in the section position signifies single value entry
+                // if not key value pair entry, tries to parse for single value entry
+                // empty string in the section position signifies single value entry
                 catch (FormatException)
                 {
                     resultingEntry = (DecodeCharacters(SplitSingleEntry(entry)), "");
@@ -99,14 +99,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
                     {
                         return entry;
                     }
-                    else if (entry[i] == '/')
-                    {
-                        escaped = !escaped;
-                    }
-                    else
-                    {
-                        escaped = false;
-                    }
+                    escaped = entry[i] == '/' && !escaped;
                 }
                 throw new FormatException("Expected valid name value pair for defining custom constants.");
             }
@@ -119,20 +112,20 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
 
         public string Format(IEnumerable<(string Name, string Value)> pairs)
         {
-            List<string> values = new List<string>();
-            foreach ((string Name, string Value) in pairs)
+            return string.Join(",", pairs.Select(EncodePair));
+
+            static string EncodePair((string Name, string Value) pair)
             {
-                if(string.IsNullOrEmpty(Value))
+                if (string.IsNullOrEmpty(pair.Value))
                 {
-                    values.Add(EncodeCharacters(Name));
+                    return EncodeCharacters(pair.Name);
                 }
                 else
                 {
-                    values.Add($"{EncodeCharacters(Name)}={EncodeCharacters(Value)}");
+                    return $"{EncodeCharacters(pair.Name)}={EncodeCharacters(pair.Value)}";
                 }
             }
-            return string.Join(",", values);
-
+            
             static string EncodeCharacters(string value)
             {
                 int i = value.Length - 1;
