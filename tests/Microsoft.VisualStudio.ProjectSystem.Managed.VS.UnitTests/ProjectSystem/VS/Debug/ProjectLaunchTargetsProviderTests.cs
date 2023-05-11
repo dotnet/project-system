@@ -766,7 +766,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
                 fileSystem!,
                 environment,
                 activeDebugFramework,
-                properties!,
+                new OutputTypeChecker(properties!),
                 threadingService,
                 IVsUIServiceFactory.Create<SVsShellDebugger, IVsDebugger10>(debugger),
                 remoteDebuggerAuthenticationService,

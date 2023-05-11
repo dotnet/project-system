@@ -43,7 +43,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
         private readonly IRemoteDebuggerAuthenticationService _remoteDebuggerAuthenticationService;
         private readonly Lazy<IProjectHotReloadSessionManager> _hotReloadSessionManager;
         private readonly Lazy<IHotReloadOptionService> _debuggerSettings;
-        private readonly OutputTypeChecker _outputTypeChecker;
+        private readonly IOutputTypeChecker _outputTypeChecker;
 
         [ImportingConstructor]
         public ProjectLaunchTargetsProvider(
@@ -53,7 +53,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             IFileSystem fileSystem,
             IEnvironmentHelper environment,
             IActiveDebugFrameworkServices activeDebugFramework,
-            ProjectProperties properties,
+            IOutputTypeChecker outputTypeChecker,
             IProjectThreadingService threadingService,
             IVsUIService<SVsShellDebugger, IVsDebugger10> debugger,
             IRemoteDebuggerAuthenticationService remoteDebuggerAuthenticationService,
@@ -66,13 +66,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             _fileSystem = fileSystem;
             _environment = environment;
             _activeDebugFramework = activeDebugFramework;
+            _outputTypeChecker = outputTypeChecker;
             _threadingService = threadingService;
             _debugger = debugger;
             _remoteDebuggerAuthenticationService = remoteDebuggerAuthenticationService;
             _hotReloadSessionManager = hotReloadSessionManager;
             _debuggerSettings = debuggerSettings;
-
-            _outputTypeChecker = new OutputTypeChecker(properties);
         }
 
         private Task<ConfiguredProject?> GetConfiguredProjectForDebugAsync()
