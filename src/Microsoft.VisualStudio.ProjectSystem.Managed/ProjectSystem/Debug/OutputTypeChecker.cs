@@ -4,10 +4,13 @@ using Microsoft.VisualStudio.ProjectSystem.Properties;
 
 namespace Microsoft.VisualStudio.ProjectSystem.Debug;
 
-internal class OutputTypeChecker
+[Export(typeof(IOutputTypeChecker))]
+[AppliesTo(ProjectCapability.DotNet)]
+internal class OutputTypeChecker : IOutputTypeChecker
 {
     private readonly ProjectProperties _properties;
 
+    [ImportingConstructor]
     public OutputTypeChecker(ProjectProperties properties)
     {
         _properties = properties;
