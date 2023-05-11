@@ -18,13 +18,11 @@ namespace Microsoft.VisualStudio.ProjectSystem
         /// </summary>
         public static DataflowLinkOptions PropagateCompletion
         {
-            get
+            get => new()
             {
-                return new()
-                {
-                    PropagateCompletion = true  // Make sure source block completion and faults flow onto the target block to avoid hangs.
-                };
-            }
+                // Make sure source block completion and faults flow onto the target block to avoid hangs.
+                PropagateCompletion = true
+            };
         }
 
         /// <summary>
