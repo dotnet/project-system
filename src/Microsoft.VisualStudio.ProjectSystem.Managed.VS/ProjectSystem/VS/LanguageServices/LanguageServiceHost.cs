@@ -22,7 +22,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices;
 ///   </item>
 ///   <item>
 ///     To manage operation progress registrations so that IDE features wait for the language service to be initialized,
-///     preventing things like error squigglies appearing during project load.
+///     preventing things like error squiggles appearing during project load.
 ///   </item>
 ///   <item>
 ///     To interrogate the active workspace as part of various IDE features, including acquiring a read or write lock.
@@ -116,7 +116,7 @@ internal sealed class LanguageServiceHost : OnceInitializedOnceDisposedAsync, IP
         // If the user changes the configuration, for example from "Debug" to "Release", we keep the same slices, though
         // the data behind them updates. This allows us to re-use the Roslyn project workspace context, which means
         // Roslyn can avoid throwing away the work it did previously and reparsing everything. It's uncommon for a config
-        // switch to require large amounts of work to be re-done, so this optimisation can be quite impactful.
+        // switch to require large amounts of work to be re-done, so this optimization can be quite impactful.
         //
         // Over time the set of slices may grow or contract, and we track that here.
 
@@ -156,7 +156,7 @@ internal sealed class LanguageServiceHost : OnceInitializedOnceDisposedAsync, IP
             ProjectConfiguration activeProjectConfiguration = update.Value.ActiveConfiguredProject.ProjectConfiguration;
             ConfigurationSubscriptionSources sources = update.Value.Sources;
 
-            // Check off existing slices. An unseen at the end must be disposed.
+            // Check off existing slices. Any unseen at the end must be disposed.
             var checklist = new Dictionary<ProjectConfigurationSlice, Workspace>(workspaceBySlice);
 
             // TODO currently this loops through each slice, initializing them serially. can we do this in parallel, or can we do the active slice first?

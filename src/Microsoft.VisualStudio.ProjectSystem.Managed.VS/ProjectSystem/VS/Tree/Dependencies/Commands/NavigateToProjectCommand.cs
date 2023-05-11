@@ -9,7 +9,7 @@ using Microsoft.VisualStudio.Shell.Interop;
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Commands
 {
     /// <summary>
-    ///     Navigates from a reference to associated project or shared project 
+    ///     Navigates from a reference to associated project or shared project
     ///     in Solution Explorer.
     /// </summary>
     [ProjectCommand(CommandGroup.ManagedProjectSystem, ManagedProjectSystemCommandId.NavigateToProject)]

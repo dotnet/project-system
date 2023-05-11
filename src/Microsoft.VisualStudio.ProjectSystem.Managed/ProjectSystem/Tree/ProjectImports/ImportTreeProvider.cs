@@ -211,7 +211,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.ProjectImports
                             {
                                 var captionByProjectPath = GetCaptionByProjectPath();
 
-                                foreach (IProjectTree2 existingNode in node.Children)
+                                foreach (IProjectTree existingNode in node.Children)
                                 {
                                     Assumes.NotNullOrEmpty(existingNode.FilePath);
 

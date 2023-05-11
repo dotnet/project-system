@@ -11,7 +11,7 @@
                 Persistence="ProjectFile"
                 SourceOfDefaultValue="AfterContext" />
   </Rule.DataSource>
-  
+
   <StringProperty Name="BrowsePath"
                   ReadOnly="True"
                   Visible="False">
@@ -26,7 +26,6 @@
   <StringProperty Name="IsImplicitlyDefined"
                   ReadOnly="True"
                   Visible="False" />
-  
 
   <!-- NOTE this property will never be populated for unresolved items, but is included to make the UI consistent -->
   <StringProperty Name="ResolvedPath"

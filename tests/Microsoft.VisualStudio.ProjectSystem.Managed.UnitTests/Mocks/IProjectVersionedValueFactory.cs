@@ -17,7 +17,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
                 .Returns(value);
 
             mock.SetupGet(p => p.DataSourceVersions)
-                .Returns(ImmutableDictionary<NamedIdentity, IComparable>.Empty);
+                .Returns(Empty.ProjectValueVersions);
 
             return mock.Object;
         }
@@ -42,7 +42,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
             mock.SetupGet(p => p.Value)
                 .Returns(value);
 
-            var dataSourceVersions = ImmutableDictionary<NamedIdentity, IComparable>.Empty.Add(identity, version);
+            var dataSourceVersions = Empty.ProjectValueVersions.Add(identity, version);
 
             mock.SetupGet(p => p.DataSourceVersions)
                 .Returns(dataSourceVersions);

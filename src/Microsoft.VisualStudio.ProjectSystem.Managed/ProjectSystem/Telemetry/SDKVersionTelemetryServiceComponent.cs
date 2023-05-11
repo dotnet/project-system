@@ -2,7 +2,7 @@
 
 using Microsoft.VisualStudio.Telemetry;
 
-namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies
+namespace Microsoft.VisualStudio.ProjectSystem.Telemetry
 {
     /// <summary>
     /// For maintaining light state about the SDK version used in a project

@@ -5,7 +5,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
     internal partial class Tokenizer
     {
         // Represents a self-contained unit within a tokenized string
-        private struct Token
+        private readonly struct Token
         {
             private readonly char _value;
             private readonly bool _isDelimiter;

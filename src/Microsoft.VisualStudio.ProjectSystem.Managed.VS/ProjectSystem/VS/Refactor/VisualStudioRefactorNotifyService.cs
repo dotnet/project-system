@@ -78,7 +78,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Refactor
 
         private Project? TryGetProjectFromPath(string projectPath)
         {
-            foreach (Project project in _dte.Value.Solution.Projects)
+            foreach (Project project in _dte.Value.Solution.Projects.OfType<Project>())
             {
                 string? fullName;
                 try
