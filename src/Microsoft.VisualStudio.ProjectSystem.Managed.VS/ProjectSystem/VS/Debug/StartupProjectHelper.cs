@@ -35,11 +35,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
         /// </summary>
         public ImmutableArray<T> GetExportFromDotNetStartupProjects<T>(string capabilityMatch) where T : class
         {
-            if (_dte.Value.Solution.SolutionBuild.StartupProjects is Array { Length: > 0 } startupProjects)
+            if (_dte.Value.Solution.SolutionBuild.StartupProjects is object[] { Length: > 0 } startupProjects)
             {
                 var results = PooledArray<T>.GetInstance();
 
-                foreach (string projectName in startupProjects)
+                foreach (string projectName in startupProjects.Cast<string>())
                 {
                     _solution.Value.GetProjectOfUniqueName(projectName, out IVsHierarchy hier);
 
@@ -67,11 +67,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
 
         public ImmutableArray<string> GetFullPathsOfStartupProjects()
         {
-            if (_dte.Value.Solution.SolutionBuild.StartupProjects is Array { Length: > 0 } startupProjects)
+            if (_dte.Value.Solution.SolutionBuild.StartupProjects is object[] { Length: > 0 } startupProjects)
             {
                 var results = PooledArray<string>.GetInstance(startupProjects.Length);
 
-                foreach (string projectName in startupProjects)
+                foreach (string projectName in startupProjects.Cast<string>())
                 {
                     _solution.Value.GetProjectOfUniqueName(projectName, out IVsHierarchy hier);
 

@@ -1,7 +1,7 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
 using Microsoft.VisualStudio.ProjectSystem;
-using Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies;
+using Microsoft.VisualStudio.ProjectSystem.Telemetry;
 using Microsoft.VisualStudio.ProjectSystem.VS;
 using static Microsoft.VisualStudio.Telemetry.ITelemetryServiceFactory;
 

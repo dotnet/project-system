@@ -88,7 +88,7 @@ internal class WorkspaceFactory : IWorkspaceFactory
                 target: workspace.OnWorkspaceUpdateAsync,
                 project: _unconfiguredProject,
                 severity: ProjectFaultSeverity.LimitedFunctionality,
-                nameFormat: "Workspace update handler {0}");
+                nameFormat: "Workspace update handler {1}");
 
         // Notify the workspace if the dataflow faults, to avoid hanging during initialization
         // while waiting for data that won't ever arrive due to the fault.

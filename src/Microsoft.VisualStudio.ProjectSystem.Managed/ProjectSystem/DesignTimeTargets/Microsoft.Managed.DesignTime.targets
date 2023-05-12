@@ -367,7 +367,7 @@
   </ItemGroup>
 
   <!--
-    EmbeddedFiles are source files to be embedded to the PDB. 
+    EmbeddedFiles are source files to be embedded to the PDB.
     We need to set Visible to false in order to not display duplicate entries in project UI.
   -->
   <ItemDefinitionGroup>
@@ -378,8 +378,8 @@
 
   <!-- Targets -->
 
-  <!-- For a newly created project with no packages restored, Design time build complains that there is no ResolvePackageDependenciesDesignTime
-       target, that is available only after restoring the .Net Core SDK targets. This No-op target will satisfy the check and will get overriden
+  <!-- For a newly created project with no packages restored, design-time builds complain that there is no ResolvePackageDependenciesDesignTime
+       target, that is available only after restoring the .NET Core SDK targets. This no-op target will satisfy the check and will get overriden
        once the actual targets are available after package restore-->
   <Target Name="ResolvePackageDependenciesDesignTime" />
   <Target Name="CollectSDKReferencesDesignTime" />

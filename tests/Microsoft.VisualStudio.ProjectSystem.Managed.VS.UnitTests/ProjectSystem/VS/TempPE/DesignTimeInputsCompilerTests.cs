@@ -364,7 +364,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
                 changes = _designTimeInputs.Inputs.Select(f => new DesignTimeInputFileChange(f, false));
             }
 
-            _manager.ProcessDataflowChanges(new ProjectVersionedValue<DesignTimeInputSnapshot>(new DesignTimeInputSnapshot(_designTimeInputs.Inputs, _designTimeInputs.SharedInputs, changes, _outputPath), ImmutableDictionary<NamedIdentity, IComparable>.Empty));
+            _manager.ProcessDataflowChanges(new ProjectVersionedValue<DesignTimeInputSnapshot>(new DesignTimeInputSnapshot(_designTimeInputs.Inputs, _designTimeInputs.SharedInputs, changes, _outputPath), Empty.ProjectValueVersions));
         }
 
         public void Dispose()

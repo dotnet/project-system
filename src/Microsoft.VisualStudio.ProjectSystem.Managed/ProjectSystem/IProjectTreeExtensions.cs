@@ -15,7 +15,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
         public static IProjectTree? FindChildWithCaption(this IProjectTree tree, string caption)
         {
             return tree.Children.FirstOrDefault(
-                (child, cap) => string.Equals(cap, child.Caption, StringComparisons.ProjectTreeCaptionIgnoreCase),
+                static (child, cap) => string.Equals(cap, child.Caption, StringComparisons.ProjectTreeCaptionIgnoreCase),
                 caption);
         }
 
