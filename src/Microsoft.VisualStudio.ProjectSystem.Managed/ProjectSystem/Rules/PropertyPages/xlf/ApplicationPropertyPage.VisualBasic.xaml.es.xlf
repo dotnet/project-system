@@ -219,7 +219,7 @@
       </trans-unit>
       <trans-unit id="StringProperty|MinimumSplashScreenDisplayTime|ValueEditors|ValueEditor|Metadata|EvaluatedValueFailedValidationMessage|Value">
         <source>This property must be an integer number.</source>
-        <target state="new">This property must be an integer number.</target>
+        <target state="translated">Esta propiedad debe ser un número entero.</target>
         <note />
       </trans-unit>
     </body>

@@ -2,37 +2,39 @@
 
 using Microsoft.VisualStudio.ProjectSystem.Properties;
 
-namespace Microsoft.VisualStudio.ProjectSystem.Debug
+namespace Microsoft.VisualStudio.ProjectSystem.Debug;
+
+[Export(typeof(IOutputTypeChecker))]
+[AppliesTo(ProjectCapability.DotNet)]
+internal class OutputTypeChecker : IOutputTypeChecker
 {
-    internal class OutputTypeChecker
+    private readonly ProjectProperties _properties;
+
+    [ImportingConstructor]
+    public OutputTypeChecker(ProjectProperties properties)
     {
-        private readonly ProjectProperties _properties;
+        _properties = properties;
+    }
 
-        public OutputTypeChecker(ProjectProperties properties)
-        {
-            _properties = properties;
-        }
+    public Task<bool> IsLibraryAsync() => IsOutputTypeAsync(ConfigurationGeneral.OutputTypeValues.Library);
 
-        public Task<bool> IsLibraryAsync() => IsOutputTypeAsync(ConfigurationGeneral.OutputTypeValues.Library);
+    public Task<bool> IsConsoleAsync() => IsOutputTypeAsync(ConfigurationGeneral.OutputTypeValues.Exe);
 
-        public Task<bool> IsConsoleAsync() => IsOutputTypeAsync(ConfigurationGeneral.OutputTypeValues.Exe);
+    public async Task<bool> IsOutputTypeAsync(string outputType)
+    {
+        IEnumValue? actualOutputType = await GetEvaluatedOutputTypeAsync();
 
-        public async Task<bool> IsOutputTypeAsync(string outputType)
-        {
-            IEnumValue? actualOutputType = await GetEvaluatedOutputTypeAsync();
+        return actualOutputType is not null && StringComparers.PropertyLiteralValues.Equals(actualOutputType.Name, outputType);
+    }
 
-            return actualOutputType is not null && StringComparers.PropertyLiteralValues.Equals(actualOutputType.Name, outputType);
-        }
+    public virtual async Task<IEnumValue?> GetEvaluatedOutputTypeAsync()
+    {
+        // Used by default Windows debugger to figure out whether to add an extra
+        // pause to end of window when CTRL+F5'ing a console application
+        ConfigurationGeneral configuration = await _properties.GetConfigurationGeneralPropertiesAsync();
 
-        public virtual async Task<IEnumValue?> GetEvaluatedOutputTypeAsync()
-        {
-            // Used by default Windows debugger to figure out whether to add an extra
-            // pause to end of window when CTRL+F5'ing a console application
-            ConfigurationGeneral configuration = await _properties.GetConfigurationGeneralPropertiesAsync();
+        var actualOutputType = (IEnumValue?)await configuration.OutputType.GetValueAsync();
 
-            var actualOutputType = (IEnumValue?)await configuration.OutputType.GetValueAsync();
-
-            return actualOutputType;
-        }
+        return actualOutputType;
     }
 }

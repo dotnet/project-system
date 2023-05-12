@@ -8,7 +8,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedColl
 {
     /// <summary>
     /// A search context which decorates an <see cref="DependenciesTreeSearchContext"/> instance
-    /// with project-specific behaviour.
+    /// with project-specific behavior.
     /// </summary>
     internal sealed class DependenciesTreeProjectSearchContext : IDependenciesTreeProjectSearchContext
     {

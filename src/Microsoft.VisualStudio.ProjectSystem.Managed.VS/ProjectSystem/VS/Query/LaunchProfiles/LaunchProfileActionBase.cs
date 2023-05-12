@@ -129,7 +129,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
                                 ImmutableArray<IEntityValue> properties = ImmutableArray.CreateRange(
                                     UIPropertyDataProducer.CreateUIPropertyValues(request.QueryExecutionContext, launchProfileEntity, state.ProjectState, state.PropertiesContext, state.Rule, s_requestedPropertyProperties));
                                 launchProfileEntity.SetRelatedEntities(LaunchProfileType.PropertiesPropertyName, properties);
-                                
+
                                 await PopulateEditorsAndValues(properties);
                             }
 
@@ -167,9 +167,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
 
             static async Task PopulateSupportedValuesAndConfigurations(ImmutableArray<IEntityValue> valueEntities)
             {
-                foreach (IEntityValueFromProvider valueEntity in valueEntities)
+                foreach (IEntityValue valueEntity in valueEntities)
                 {
-                    if (valueEntity.ProviderState is PropertyValueProviderState valueState)
+                    if (valueEntity is IEntityValueFromProvider { ProviderState: PropertyValueProviderState valueState })
                     {
                         // Add supported values to values
                         ImmutableArray<IEntityValue> supportedValues = ImmutableArray.CreateRange(
@@ -185,9 +185,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
 
             static void PopulateEditorMetadata(ImmutableArray<IEntityValue> editors)
             {
-                foreach (IEntityValueFromProvider editorEntity in editors)
+                foreach (IEntityValue editorEntity in editors)
                 {
-                    if (editorEntity.ProviderState is ValueEditor editorState)
+                    if (editorEntity is IEntityValueFromProvider { ProviderState: ValueEditor editorState })
                     {
                         // Add editor metadata to the editor
                         ImmutableArray<IEntityValue> editorMetadata = ImmutableArray.CreateRange(
@@ -199,9 +199,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
 
             async Task PopulateEditorsAndValues(ImmutableArray<IEntityValue> properties)
             {
-                foreach (IEntityValueFromProvider propertyEntity in properties)
+                foreach (IEntityValue propertyEntity in properties)
                 {
-                    if (propertyEntity.ProviderState is PropertyProviderState propertyProviderState)
+                    if (propertyEntity is IEntityValueFromProvider { ProviderState: PropertyProviderState propertyProviderState })
                     {
                         // Add editors to the property
                         ImmutableArray<IEntityValue> editors = ImmutableArray.CreateRange(

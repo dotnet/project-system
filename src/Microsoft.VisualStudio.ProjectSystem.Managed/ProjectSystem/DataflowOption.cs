@@ -20,7 +20,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
         {
             get
             {
-                return new DataflowLinkOptions()
+                return new()
                 {
                     PropagateCompletion = true  // Make sure source block completion and faults flow onto the target block to avoid hangs.
                 };

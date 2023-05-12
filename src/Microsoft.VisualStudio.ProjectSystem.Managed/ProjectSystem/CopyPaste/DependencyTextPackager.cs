@@ -16,6 +16,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.CopyPaste
     internal class DependencyTextPackager : ICopyPackager
     {
         private static readonly ImmutableHashSet<int> s_formats = ImmutableHashSet.Create<int>(ClipboardFormat.CF_TEXT, ClipboardFormat.CF_UNICODETEXT);
+
         private readonly UnconfiguredProject _project;
 
         [ImportingConstructor]
@@ -54,7 +55,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.CopyPaste
                     paths.AppendLine();
                 }
 
-                paths.Append(path); 
+                paths.Append(path);
             }
 
             if (types.Contains(ClipboardFormat.CF_TEXT))

@@ -100,7 +100,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         [ClassData(typeof(ComposablePartDefinitionTestData))]
         public void CertainExportsMustNotBeMarkedWithDynamicCapabilities(Type type)
         {
-            string[] contractsWithFixedCapabilities = new string[] {
+            string[] contractsWithFixedCapabilities =
+            {
                 ExportContractNames.VsTypes.ProjectNodeComExtension,
                 "Microsoft.VisualStudio.ProjectSystem.ConfiguredProject.AutoLoad",
                 "Microsoft.VisualStudio.ProjectSystem.Project.AutoLoad",
