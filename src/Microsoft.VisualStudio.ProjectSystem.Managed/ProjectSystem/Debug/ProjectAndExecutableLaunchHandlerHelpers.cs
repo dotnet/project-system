@@ -152,7 +152,7 @@ internal static class ProjectAndExecutableLaunchHandlerHelpers
         IProjectProperties properties,
         IEnvironmentHelper environment,
         IFileSystem fileSystem,
-        OutputTypeChecker outputTypeChecker,
+        IOutputTypeChecker outputTypeChecker,
         bool validateSettings)
     {
         // First try "RunCommand" property
@@ -188,7 +188,7 @@ internal static class ProjectAndExecutableLaunchHandlerHelpers
         ConfiguredProject project,
         IEnvironmentHelper environment,
         IFileSystem fileSystem,
-        OutputTypeChecker outputTypeChecker,
+        IOutputTypeChecker outputTypeChecker,
         bool validateSettings)
     {
         Assumes.Present(project.Services.ProjectPropertiesProvider);
