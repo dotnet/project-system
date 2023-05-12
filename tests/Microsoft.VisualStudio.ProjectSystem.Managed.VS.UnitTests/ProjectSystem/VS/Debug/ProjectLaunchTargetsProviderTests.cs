@@ -1,10 +1,8 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
-using Microsoft.Build.Framework.XamlTypes;
 using Microsoft.VisualStudio.Debugger.UI.Interfaces.HotReload;
 using Microsoft.VisualStudio.IO;
 using Microsoft.VisualStudio.ProjectSystem.Debug;
-using Microsoft.VisualStudio.ProjectSystem.Properties;
 using Microsoft.VisualStudio.ProjectSystem.Utilities;
 using Microsoft.VisualStudio.ProjectSystem.VS.HotReload;
 using Microsoft.VisualStudio.Shell.Interop;
@@ -173,7 +171,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
 
             var activeProfile = new LaunchProfile(
                 name: "MyApplication",
-                commandName: null, 
+                commandName: null,
                 commandLineArgs: "--someArgs",
                 executablePath: @"c:\test\Project\someapp.exe",
                 environmentVariables: ImmutableArray.Create(("var1", "Value1")));
@@ -202,7 +200,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
                 { "OutDir", outdir }
             };
 
-            var debugger = GetDebugTargetsProvider("exe", properties);
+            var debugger = GetDebugTargetsProvider(ProjectOutputType.Console, properties);
 
             // Exe relative, no working dir
             await _mockFS.WriteAllTextAsync(@"c:\test\project\bin\test.exe", string.Empty);
@@ -320,7 +318,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
                 {"TargetFrameworkIdentifier", @".NETFramework"}
             };
 
-            var debugger = GetDebugTargetsProvider("Library", properties);
+            var debugger = GetDebugTargetsProvider(ProjectOutputType.Library, properties);
 
             var activeProfile = new LaunchProfile("Name", "Project");
 
@@ -339,7 +337,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
                 {"TargetFrameworkIdentifier", @".NETFramework"}
             };
 
-            var debugger = GetDebugTargetsProvider("Library", properties);
+            var debugger = GetDebugTargetsProvider(ProjectOutputType.Library, properties);
 
             var activeProfile = new LaunchProfile("Name", "Project");
 
@@ -358,7 +356,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
                 {"TargetFrameworkIdentifier", @".NETFramework"}
             };
 
-            var debugger = GetDebugTargetsProvider("Library", properties);
+            var debugger = GetDebugTargetsProvider(ProjectOutputType.Library, properties);
 
             var activeProfile = new LaunchProfile("Name", "Project");
 
@@ -379,7 +377,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
 
             await _mockFS.WriteAllTextAsync(@"C:\library.dll", string.Empty);
 
-            var debugger = GetDebugTargetsProvider("Library", properties);
+            var debugger = GetDebugTargetsProvider(ProjectOutputType.Library, properties);
 
             var activeProfile = new LaunchProfile("Name", "Project");
 
@@ -397,7 +395,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
 
             await _mockFS.WriteAllTextAsync(@"C:\library.dll", string.Empty);
 
-            var debugger = GetDebugTargetsProvider("Library", properties);
+            var debugger = GetDebugTargetsProvider(ProjectOutputType.Library, properties);
 
             var activeProfile = new LaunchProfile("Name", "Project");
 
@@ -416,7 +414,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
                 {"TargetFrameworkIdentifier", @".NETFramework"}
             };
 
-            var debugger = GetDebugTargetsProvider("exe", properties);
+            var debugger = GetDebugTargetsProvider(ProjectOutputType.Console, properties);
 
             var activeProfile = new LaunchProfile("Name", "Project");
 
@@ -438,7 +436,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
 
             var scope = IProjectCapabilitiesScopeFactory.Create(capabilities: new string[] { ProjectCapabilities.IntegratedConsoleDebugging });
 
-            var provider = GetDebugTargetsProvider("exe", properties, debugger, scope);
+            var provider = GetDebugTargetsProvider(ProjectOutputType.Console, properties, debugger, scope);
 
             var activeProfile = new LaunchProfile("Name", "Project");
 
@@ -462,7 +460,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
 
             var scope = IProjectCapabilitiesScopeFactory.Create(capabilities: new string[] { ProjectCapabilities.IntegratedConsoleDebugging });
 
-            var provider = GetDebugTargetsProvider("exe", properties, debugger, scope);
+            var provider = GetDebugTargetsProvider(ProjectOutputType.Console, properties, debugger, scope);
 
             var activeProfile = new LaunchProfile("Name", "Project");
 
@@ -484,7 +482,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
                 {"TargetFrameworkIdentifier", @".NETFramework"}
             };
 
-            var provider = GetDebugTargetsProvider("exe", properties, debugger);
+            var provider = GetDebugTargetsProvider(ProjectOutputType.Console, properties, debugger);
 
             var activeProfile = new LaunchProfile("Name", "Project");
 
@@ -495,11 +493,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
         }
 
         [Theory]
-        [InlineData("winexe")]
-        [InlineData("appcontainerexe")]
-        [InlineData("library")]
-        [InlineData("WinMDObj")]
-        public async Task QueryDebugTargetsAsync_NonConsoleAppLaunch_DoesNotIncludeIntegrationConsoleInLaunchOptions(string outputType)
+        [InlineData(ProjectOutputType.Library)]
+        [InlineData(ProjectOutputType.Other)]
+        public async Task QueryDebugTargetsAsync_NonConsoleAppLaunch_DoesNotIncludeIntegrationConsoleInLaunchOptions(ProjectOutputType outputType)
         {
             var debugger = IVsDebugger10Factory.ImplementIsIntegratedConsoleEnabled(enabled: true);
             var properties = new Dictionary<string, string?>
@@ -519,11 +515,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
         }
 
         [Theory]
-        [InlineData("winexe")]
-        [InlineData("appcontainerexe")]
-        [InlineData("library")]
-        [InlineData("WinMDObj")]
-        public async Task QueryDebugTargetsAsync_NonConsoleAppLaunchWithNoDebugger_DoesNotWrapInCmd(string outputType)
+        [InlineData(ProjectOutputType.Library)]
+        [InlineData(ProjectOutputType.Other)]
+        public async Task QueryDebugTargetsAsync_NonConsoleAppLaunchWithNoDebugger_DoesNotWrapInCmd(ProjectOutputType outputType)
         {
             var properties = new Dictionary<string, string?>
             {
@@ -600,7 +594,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
         public async Task CommandLineArgNewLines_AreStripped()
         {
             var provider = GetDebugTargetsProvider(
-                outputType: "dll",
+                outputType: ProjectOutputType.Library,
                 properties: new Dictionary<string, string?>(),
                 debugger: null,
                 scope: null);
@@ -648,7 +642,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
         public async Task CanBeStartupProject_WhenUsingExecutableCommand_AlwaysTrue()
         {
             var provider = GetDebugTargetsProvider(
-                outputType: "dll",
+                outputType: ProjectOutputType.Library,
                 properties: new Dictionary<string, string?>(),
                 debugger: null,
                 scope: null);
@@ -687,7 +681,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
         public async Task CanBeStartupProject_WhenUsingProjectCommand_FalseIfRunCommandAndTargetPathNotSpecified()
         {
             var provider = GetDebugTargetsProvider(
-                outputType: "dll",
+                outputType: ProjectOutputType.Library,
                 properties: new Dictionary<string, string?>(),
                 debugger: null,
                 scope: null);
@@ -698,7 +692,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             Assert.False(canBeStartupProject);
         }
 
-        private ProjectLaunchTargetsProvider GetDebugTargetsProvider(string outputType = "exe", Dictionary<string, string?>? properties = null, IVsDebugger10? debugger = null, IProjectCapabilitiesScope? scope = null)
+        private ProjectLaunchTargetsProvider GetDebugTargetsProvider(ProjectOutputType outputType = ProjectOutputType.Console, Dictionary<string, string?>? properties = null, IVsDebugger10? debugger = null, IProjectCapabilitiesScope? scope = null)
         {
             _mockFS.Create(@"c:\test\Project\someapp.exe");
             _mockFS.CreateDirectory(@"c:\test\Project");
@@ -707,9 +701,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
 
             var project = UnconfiguredProjectFactory.Create(fullPath: _ProjectFile);
 
-            var outputTypeEnum = new PageEnumValue(new EnumValue { Name = outputType });
-            var data = new PropertyPageData(ConfigurationGeneral.SchemaName, ConfigurationGeneral.OutputTypeProperty, outputTypeEnum);
-            var projectProperties = ProjectPropertiesFactory.Create(project, data);
+            var outputTypeChecker = outputType switch
+            {
+                ProjectOutputType.Console => IOutputTypeCheckerFactory.Create(isLibrary: false, isConsole: true),
+                ProjectOutputType.Library => IOutputTypeCheckerFactory.Create(isLibrary: true, isConsole: false),
+                ProjectOutputType.Other => IOutputTypeCheckerFactory.Create(isLibrary: false, isConsole: false),
+                _ => throw new InvalidOperationException($"Unexpected {nameof(ProjectOutputType)}: {outputType}")
+            };
 
             properties ??= new Dictionary<string, string?>
             {
@@ -735,7 +733,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
                 o.Capabilities == capabilitiesScope);
             var environment = IEnvironmentHelperFactory.ImplementGetEnvironmentVariable(_Path);
 
-            return CreateInstance(configuredProject: configuredProject, fileSystem: _mockFS, properties: projectProperties, environment: environment, debugger: debugger);
+            return CreateInstance(configuredProject: configuredProject, fileSystem: _mockFS, typeChecker: outputTypeChecker, environment: environment, debugger: debugger);
         }
 
         private static ProjectLaunchTargetsProvider CreateInstance(
@@ -744,7 +742,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             IFileSystem? fileSystem = null,
             IEnvironmentHelper? environment = null,
             IActiveDebugFrameworkServices? activeDebugFramework = null,
-            ProjectProperties? properties = null,
+            IOutputTypeChecker? typeChecker = null,
             IProjectThreadingService? threadingService = null,
             IVsDebugger10? debugger = null,
             IHotReloadOptionService? hotReloadSettings = null)
@@ -754,6 +752,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             activeDebugFramework ??= IActiveDebugFrameworkServicesFactory.ImplementGetConfiguredProjectForActiveFrameworkAsync(configuredProject);
             threadingService ??= IProjectThreadingServiceFactory.Create();
             debugger ??= IVsDebugger10Factory.ImplementIsIntegratedConsoleEnabled(enabled: false);
+            typeChecker ??= IOutputTypeCheckerFactory.Create();
 
             IUnconfiguredProjectVsServices unconfiguredProjectVsServices = IUnconfiguredProjectVsServicesFactory.Implement(IVsHierarchyFactory.Create);
 
@@ -766,12 +765,22 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
                 fileSystem!,
                 environment,
                 activeDebugFramework,
-                properties!,
+                typeChecker,
                 threadingService,
                 IVsUIServiceFactory.Create<SVsShellDebugger, IVsDebugger10>(debugger),
                 remoteDebuggerAuthenticationService,
                 new Lazy<IProjectHotReloadSessionManager>(IProjectHotReloadSessionManagerFactory.Create),
                 new Lazy<IHotReloadOptionService>(() => hotReloadSettings ?? IHotReloadOptionServiceFactory.Create()));
+        }
+
+        /// <summary>
+        /// Indicates if the project is a library, console app, or something else.
+        /// </summary>
+        public enum ProjectOutputType
+        {
+            Library,
+            Console,
+            Other
         }
     }
 }
