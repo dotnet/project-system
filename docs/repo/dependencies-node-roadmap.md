@@ -1,174 +1,150 @@
-This document describes, at a high level, the design and implementation of the Dependencies node with pointers to the important types.
+﻿This document describes, at a high level, the design and implementation of the Dependencies node with pointers to the important types.
 
 There are two fundamentally different types of dependency for our purposes, and they are handled separately:
 
-||Description|Populated|Displayed via
-|-|:-|:-|:-|
-|[Top-level dependencies](#top-level-dependencies)|Direct dependencies of the project. A single level deep.|Eagerly|CPS's APIs|
-|[Transitive dependencies](#transitive-dependencies)|Dependencies brought by top level dependencies. Arbitrarily deep.|Lazily|Solution Explorer's APIs|
+|                                                     | Description                                                       | Populated | Displayed via            |
+|-----------------------------------------------------|:------------------------------------------------------------------|:----------|:-------------------------|
+| [Top-level dependencies](#top-level-dependencies)   | Direct dependencies of the project. A single level deep.          | Eagerly   | CPS's APIs               |
+| [Transitive dependencies](#transitive-dependencies) | Dependencies brought by top level dependencies. Arbitrarily deep. | Lazily    | Solution Explorer's APIs |
 
 ---
 
 # Top-level dependencies
 
-## Overview
+## Modelling a top-level dependency
 
-Top level dependencies are sourced in two ways in this repo:
+Each top-level dependency in the tree is modelled by an instance of [`IDependency`][IDependency]. These objects are immutable snapshots of the state of a dependency at a point in time.
 
-1. We use MSBuild project evaluation and design-time build to source data about most kinds of dependencies.
+The interface has the following properties:
 
-   |Type|Unresolved item type|Resolved item type|Comment|
-   |:-|:-|:-|:-|
-   |Analyzer|`AnalyzerReference`|`ResolvedAnalyzerReference`|Roslyn analyzers|
-   |Assembly|`Reference`|`ResolvedReference`|DLLs not sourced directly from disk|
-   |COM|`COMReference`|`ResolvedCOMReference`||
-   |Framework|`FrameworkReference`|`ResolvedFrameworkReference`|For .NET Core 2.0+ projects|
-   |Package|`PackageReference`|`ResolvedPackageReference`|NuGet|
-   |Project|`ProjectReference`|`ResolveProjectReference`||
-   |SDK|`SDKReference`|`ResolvedSDKReference`|For extension SDKs, not the .NET SDK|
+- `Id` &mdash; Uniquely identifies the dependency within its group (and slice, for configured dependencies, described below).
+- `Caption` &mdash; Friendly name of the dependency, for use in the UI.
+- `Icon` &mdash; The icon to display in Solution Explorer.
+- `Flags` &mdash; The set of `ProjectTreeFlags` applicable to this dependency.
+- `DiagnosticLevel` &mdash; The severity level of any diagnostic associated with this dependency.
 
-2. We have a dedicated pathway for shared projects, which pulls data from CPS dataflow.
+If a dependency populates data in the _Properties_ window of VS, then it must also implement [`IDependencyWithBrowseObject`][IDependencyWithBrowseObject], which has the following properties:
 
-Additionally, third parties may provide extensions (see [Extensibily model](#extensibility-model) for more information):
+- `UseResolvedReferenceRule` &mdash; Whether the browse object for this dependency represents a resolved reference.
+- `FilePath` &mdash; The resolved path of the dependency, where appropriate.
+- `SchemaName` &mdash; The name of the rule (also known as the schema name) that backs this dependency's browse object.
+- `SchemaItemType` &mdash; The name of MSBuild item type (where relevant) that backs this dependency's browse object.
+- `BrowseObjectProperties` &mdash; The names and values of properties to use in the browse object.
 
-1. The WebTools have their own provider for NPM dependencies.
+## Providing top-level dependencies
 
-## Dependencies sourced via MSBuild items
+There are two varieties of top-level dependency:
 
-This diagram gives an insight into the flow of data through the dependencies tree subsystem for top-level dependencies obtained via MSBuild.
+1. **Configured dependencies** which come from a specific project configuration, such as `Debug|AnyCPU` (or `Debug|AnyCPU|net8.0` if multi-targeting). These dependencies are most likely sourced from MSBuild, where the concept of configuration is embedded.
+
+2. **Unconfigured dependencies** which exist outside of any specific configuration. For example JavaScript/TypeScript projects might use NPM packages, and NPM has no concept of MSBuild configurations.
+
+Snapshots of dependencies are produced via Dataflow blocks, which are then aggregated to produce a single snapshot, from which the top-level nodes in the tree are populated.
+
+The .NET Project System exports MEF components that contribute to the dependencies snapshot. Third parties may do the same, and have their dependencies included in the tree. See [extensibility](#extensibility) for more information on adding other types of dependencies to the tree.
+
+## Configured dependencies
+
+Configured dependencies are provided by exports of [`IDependencySliceSubscriber`][IDependencySliceSubscriber].
+
+These components may subscribe to project data within a given project configuration "slice". The tree always shows data from the active configuration, and slices hide that complexity from consuming code, making things much simpler than they would otherwise be.
+
+### Configured dependencies from MSBuild data
+
+Within the .NET Project System, we export an implementation of [`IDependencySliceSubscriber`][IDependencySliceSubscriber] via the class [`MSBuildDependencySubscriber`][MSBuildDependencySubscriber]. This class produces snapshots of dependencies within a project configuration slice, where those dependencies are sourced from MSBuild items.
+
+Each dependency has a corresponding unresolved (from evaluation) and resolved (from build) MSBuild item. Dependencies coming from MSBuild items are obtained during evaluation, however at that point we do not know whether the claimed dependency is valid and able to be resolved. During the design-time build, dependencies are checked for validity, such as whether they exist and are compatible with the project. If so, they are _resolved_ and a resolved item is produced in the build results. [`MSBuildDependencySubscriber`][MSBuildDependencySubscriber] observes both the unresolved and resolved MSBuild items to determine the state of the dependency.
+
+The set of items supported by [`MSBuildDependencySubscriber`][MSBuildDependencySubscriber] is defined by [`IMSBuildDependencyFactory`][IMSBuildDependencyFactory] exports, and the NET Project System ships factory implementations for the following kinds of MSBuild dependencies:
+
+| Type      | Unresolved item type | Resolved item type           | Comment                              |
+|:----------|:---------------------|:-----------------------------|:-------------------------------------|
+| Analyzer  | `AnalyzerReference`  | `ResolvedAnalyzerReference`  | Roslyn analyzers                     |
+| Assembly  | `Reference`          | `ResolvedReference`          | DLLs not sourced directly from disk  |
+| COM       | `COMReference`       | `ResolvedCOMReference`       |                                      |
+| Framework | `FrameworkReference` | `ResolvedFrameworkReference` | For .NET Core 2.0+ projects          |
+| Package   | `PackageReference`   | `ResolvedPackageReference`   | NuGet packages                       |
+| Project   | `ProjectReference`   | `ResolveProjectReference`    |                                      |
+| SDK       | `SDKReference`       | `ResolvedSDKReference`       | For extension SDKs, not the .NET SDK |
+
+[`MSBuildDependencySubscriber`][MSBuildDependencySubscriber] takes the set of [`IMSBuildDependencyFactory`][IMSBuildDependencyFactory] exports and subscribes to both evaluation (via `ProjectRuleSource`) and build data (via `JointRuleSource`, which also includes evaluation) for the item types they advertise. As Dataflow pushes updates through those data sources for those items, the [`IMSBuildDependencyFactory`][IMSBuildDependencyFactory] exports are used to construct and update the set of `IDependency` objects as necessary.
+
+The abstract class [`MSBuildDependencyFactoryBase`][MSBuildDependencyFactoryBase] exists to make implementing [`IMSBuildDependencyFactory`][IMSBuildDependencyFactory] easier.
+
+### Configured shared project dependencies
+
+Shared projects are not exposed via MSBuild items. CPS provides a separate data source for these items, which we subscribe to in [`SharedProjectDependencySubscriber`][SharedProjectDependencySubscriber].
+
+## Unconfigured dependencies
+
+Dependencies that exist outside of any particular project configuration are provided by exports of [`IDependencySubscriber`][IDependencySubscriber].
+
+The .NET Project System does not currently provide any dependencies via this mechanism, however other project types may use this mechanism to do so. For example, JavaScript/TypeScript projects provide NPM package dependencies, which have no concept of MSBuild project configurations.
+
+## Aggregating dependency snapshots
+
+This diagram outlines how the various MEF exports and Dataflow blocks come together to produce the overall snapshot.
 
 ```mermaid
-flowchart LR
-  subgraph UnconfiguredProject Scope
-    handlers[IDependenciesRuleHandler]
-    subgraph ConfiguredProject Scope
-      direction TB
-      subgraph CPS Data Sources
+flowchart TB
+    subgraph Per Slice
+        direction TB
         evaluation([Evaluation Data])
         design-time-build([Design-time Build Data])
-      end
+    evaluation == "snapshot + delta" ==> MSBuildDependencySubscriber
+    design-time-build == "snapshot + delta" ==> MSBuildDependencySubscriber
+    IMSBuildDependencyFactory -- "import many" -.-> MSBuildDependencySubscriber
+    MSBuildDependencySubscriber -- "implements" -.-> IDependencySliceSubscriber
+    SharedProjectDependencySubscriber -- "implements" -.-> IDependencySliceSubscriber
     end
-    evaluation == "snapshot + delta" ==> DependencyRulesSubscriber
-    design-time-build == "snapshot + delta" ==> DependencyRulesSubscriber
-    handlers -- "import many" -.-> DependencyRulesSubscriber
-    DependencyRulesSubscriber -- "IDependenciesChanges (delta)" --> DependenciesSnapshotProvider
-    IDependenciesTreeViewProvider["IDependenciesTreeViewProvider.BuildTreeAsync"]
-    DependenciesSnapshotProvider == DependenciesSnapshot ==> IDependenciesTreeViewProvider
-    IDependenciesTreeViewProvider -- IProjectTree --> ProjectTreeProviderBase.SubmitTreeUpdateAsync
-  end
+    IDependencySliceSubscriber -- "import many" -.-> DependenciesSnapshotProvider
+    IDependencySubscriber -- "import many" -.-> DependenciesSnapshotProvider
+    DependenciesTreeBuilder["DependenciesTreeBuilder.BuildTreeAsync"]
+    DependenciesSnapshotProvider == DependenciesSnapshot ==> DependenciesTreeBuilder
+    DependenciesTreeBuilder -- IProjectTree --> ProjectTreeProviderBase.SubmitTreeUpdateAsync
+    LegacyDependencySubscriber -- "implements" -.-> IDependencySubscriber
+    IProjectDependenciesSubTreeProvider -- "import many" -.-> LegacyDependencySubscriber
 
-  click handlers "https://github.com/dotnet/project-system/blob/main/src/Microsoft.VisualStudio.ProjectSystem.Managed/ProjectSystem/Tree/Dependencies/CrossTarget/IDependenciesRuleHandler.cs" "Click to view source"
-  click DependencyRulesSubscriber "https://github.com/dotnet/project-system/blob/main/src/Microsoft.VisualStudio.ProjectSystem.Managed/ProjectSystem/Tree/Dependencies/Subscriptions/DependencyRulesSubscriber.cs" "Click to view source"
-  click IDependenciesTreeViewProvider "https://github.com/dotnet/project-system/blob/main/src/src/Microsoft.VisualStudio.ProjectSystem.Managed/ProjectSystem/Tree/Dependencies/IDependenciesTreeViewProvider.cs" "Click to view source"
-  click DependenciesSnapshotProvider "https://github.com/dotnet/project-system/blob/main/src/src/src/Microsoft.VisualStudio.ProjectSystem.Managed/ProjectSystem/Tree/Dependencies/Subscriptions/DependenciesSnapshotProvider.cs" "Click to view source"
+    click IMSBuildDependencyFactory "https://github.com/dotnet/project-system/blob/main/src/Microsoft.VisualStudio.ProjectSystem.Managed/ProjectSystem/Tree/Dependencies/Subscriptions/IMSBuildDependencyFactory.cs" "Click to view source"
+    click MSBuildDependencySubscriber "https://github.com/dotnet/project-system/blob/main/src/Microsoft.VisualStudio.ProjectSystem.Managed/ProjectSystem/Tree/Dependencies/Subscriptions/MSBuildDependencies/MSBuildDependencySubscriber.cs" "Click to view source"
+    click DependenciesTreeBuilder "https://github.com/dotnet/project-system/blob/main/src/Microsoft.VisualStudio.ProjectSystem.Managed/ProjectSystem/Tree/Dependencies/DependenciesTreeBuilder.cs" "Click to view source"
+    click DependenciesSnapshotProvider "https://github.com/dotnet/project-system/blob/main/src/Microsoft.VisualStudio.ProjectSystem.Managed/ProjectSystem/Tree/Dependencies/Subscriptions/DependenciesSnapshotProvider.cs" "Click to view source"
+    click IDependencySubscriber "https://github.com/dotnet/project-system/blob/main/src/Microsoft.VisualStudio.ProjectSystem.Managed/ProjectSystem/Tree/Dependencies/Subscriptions/IDependencySubscriber.cs" "Click to view source"
+    click IDependencySliceSubscriber "https://github.com/dotnet/project-system/blob/main/src/Microsoft.VisualStudio.ProjectSystem.Managed/ProjectSystem/Tree/Dependencies/Subscriptions/IDependencySliceSubscriber.cs" "Click to view source"
+    click SharedProjectDependencySubscriber "https://github.com/dotnet/project-system/blob/main/src/Microsoft.VisualStudio.ProjectSystem.Managed/ProjectSystem/Tree/Dependencies/Subscriptions/SharedProjectDependencySubscriber.cs" "Click to view source"
 ```
 
 Bold lines indicate Dataflow subscriptions.
 
-## Class diagram
+All [`IDependency`][IDependency]s for a given slice in a given project are collected together into a [`DependenciesSnapshotSlice`][DependenciesSnapshotSlice].
 
-```mermaid
----
-title: Dependencies node class diagram
----
-%% Edit this diagram at: https://mermaid.live/edit
-classDiagram
-    direction TD
-    DependencySharedProjectsSubscriber --|> DependencyRulesSubscriberBase
-    DependencyRulesSubscriberBase ..|> IDependencyRulesSubscriber
-    DependencyRulesSubscriber --|> DependencyRulesSubscriberBase
-    DependenciesSnapshotProvider --o "*" IDependencyRulesSubscriber
-    DependenciesSnapshotProvider --o "*" IProjectDependenciesSubTreeProvider
-    DependenciesProjectTreeProvider --o "1" DependenciesSnapshotProvider
-    DependenciesRuleHandlerBase ..|> IDependenciesRuleHandler
-    DependenciesRuleHandlerBase ..|> IProjectDependenciesSubTreeProvider
-    ____RuleHandler --|> DependenciesRuleHandlerBase 
-    DependencyRulesSubscriber --o "*" IDependenciesRuleHandler
+All of those for a given project are, in turn, collected into a [`DependenciesSnapshot`][DependenciesSnapshot].
 
-    note for ____RuleHandler "Implementations exist for all reference types.\nAnalyzer, Assembly, Analyzer, COM, Framework, Package, Project, SDK"
+The [`DependenciesSnapshotProvider`][DependenciesSnapshotProvider] is responsible for providing access to the current [`DependenciesSnapshot`][DependenciesSnapshot] and publishing updates when the snapshot changes.
 
-    class IDependenciesRuleHandler {
-        EvaluatedRuleName : string
-        ResolvedRuleName : string
-        Handle(...)
-    }
-    class IDependencyRulesSubscriber {
-        DependenciesChanged : event
-        InitializeAsync(...)
-    }
-    class IProjectDependenciesSubTreeProvider {
-        DependenciesChanged : event
-        ProviderType : string
-        CreateRootDependencyNode() : IDependencyModel
-    }
-```
+## Constructing the tree
 
-## The CPS view of top-level dependencies
+[`DependenciesTreeProvider`][DependenciesTreeProvider] coordinates the building of the tree. It:
 
-On the CPS side the project tree is composed of instances of the `IProjectTree` and `IProjectItemTree` interfaces. `IProjectTree` captures the structure of the tree (e.g. it has properties to access the parent and child nodes) and the "UI" aspects of the node&mdash;name, icons, visibility, etc. An `IProjectItemTree` captures all of that but also represents a concrete item within the project like a file, assembly reference, or NuGet package.
+- Subscribes to [`DependenciesSnapshot`][DependenciesSnapshot] updates from [`DependenciesSnapshotProvider`][DependenciesSnapshotProvider].
+- Uses [`DependenciesTreeBuilder`][DependenciesTreeBuilder] to walks the existing tree and the snapshot, updating the tree where necessary.
+- Calls into its base method `ProjectTreeProviderBase.SubmitTreeUpdateAsync` when we want to apply changes to the project tree in Solution Explorer.
 
-An `IProjectTree` is immutable. When a part of the tree needs to be updated, we need to replace it and form a new tree.
+The tree itself is represented via `IProjectTree` and `IProjectItemTree` instances, which themselves form an immutable tree. Our provider submits updates to CPS which are them merged ("root grafted" in CPS terminology) into the project tree.
 
-Components wishing to add items to the project tree must implement and export the `IProjectTreeProvider` interface. In practice we implement the interface by deriving from the abstract `ProjectTreeProviderBase` class provided by CPS. In general, we receive events/messages from CPS detailing changes to the project, generate an updated `IProjectTree`, and then pass it back to CPS via `ProjectTreeProviderBase.SubmitTreeUpdateAsync`.
+- `IProjectTree` captures the structure of the tree (e.g. it has properties to access the parent and child nodes) and the "UI" aspects of the node &mdash; name, icons, visibility, etc.
+- `IProjectItemTree` captures everything that `IProjectTree` does but also represents a concrete item within the project like a file, assembly reference, or NuGet package. Importantly, these objects are exposed via DTE.
 
-## The .NET Project System view of top-level dependencies
+Note that for multi-targeting projects, only dependencies within the "primary" configuration (usually the first) are exposed via DTE. DTE predates the concept of multi-targeting and lacks the ability to express multiple implicitly active configurations.
 
-Internally every top-level dependency is represented as an [`IDependency`][IDependency].
+CPS uses the project tree to construct the `IVsHierarchy` view of the project that is consumed by many other components and extensions within VS. This is a standard way of representing data about the project. For more information see the [`IVsHierarchy` interface documentation](https://learn.microsoft.com/en-us/dotnet/api/microsoft.visualstudio.shell.interop.ivshierarchy?view=visualstudiosdk-2022#remarks), however this is not specific to the dependencies tree.
 
-All [`IDependency`][IDependency]s for a given target framework in a given project are collected together into a [`TargetedDependenciesSnapshot`][TargetedDependenciesSnapshot]. All of those for a given project are, in turn, collected into a [`DependenciesSnapshot`][DependenciesSnapshot].
+## Tree operations
 
-The [`DependenciesSnapshotProvider`][DependenciesSnapshotProvider] is responsible for providing access to the current [`DependenciesSnapshot`][DependenciesSnapshot] and firing events when the snapshot has changed.
+In addition to constructing the tree, [`DependenciesTreeProvider`][DependenciesTreeProvider] is responsible for some additional operations on the tree:
 
-Much of the code for the Dependencies node is concerned with creating [`IDependency`][IDependency]s and translating them into new `IProjectTree`s when they change.
-
-## CPS/Project System interaction
-
-Top-level dependencies (e.g., `Reference`, `PackageReference`, `ProjectReference`, and `Analyzer` items in the project file) are represented with `IProjectTree` nodes. This makes it possible for them to be represented in the project's `IVsHierarchy` and, crucially, makes it easier to code the sorts of interactions users expect for these items. For example, a user should be able to right-click on an assembly reference and remove it, or modify the properties of an assembly reference.
-
-> Aside: There are exceptions to this. In practice analyzers are not directly referenced but rather brought in as part of a NuGet package. We still represent all analyzers as `IProjectTree` items directly under the "Analyzers" node. This makes it much easier for the C#/VB language service to add nodes for each diagnostic underneath the analyzer's node, and it makes it easy for the user to find so they can check the severity of the diagnostic and potentially change it using the context menu.
-
-### DependenciesProjectTreeProvider
-
-The primary connection point between CPS and the Dependencies node is the [`DependenciesProjectTreeProvider`][DependenciesProjectTreeProvider], implementing the `IProjectTreeProvider` interface. It is directly responsible for the following:
-
-1. Creating the `IProjectTree` for the "Dependencies" node itself (children are handled elsewhere).
-2. Handling explicit commands to copy or remove a node underneath the "Dependencies" node.
-3. Mapping back and forth between `IProjectTree` instances and paths.
-4. Listening for changes to the set of dependencies via the [`DependenciesSnapshotProvider`][DependenciesSnapshotProvider], delegating to the [`IDependenciesTreeViewProvider`][IDependenciesTreeViewProvider] to rebuild the tree underneath the Dependencies node, and submitting the updated tree back to CPS.
-
-### Generating dependencies
-
-As evaluations and design-time builds occur, CPS pushes project changes through TPL Dataflow blocks (available via `IProjectSubscriptionService`, where `ProjectRuleSource` provides evaluation data, and `JointRuleSource` provides design-time build data).
-
-Various implementations of [`IDependenciesRuleHandler`][IDependenciesRuleHandler] exist, and each specifies the set of rules they wish to handle (e.g. `PackageReference`, `ResolvedProjectReference`, etc.). The abstract class [`DependenciesRuleHandlerBase`][DependenciesRuleHandlerBase] exists to make implementing [`IDependenciesRuleHandler`][IDependenciesRuleHandler] easier.
-
-The [`DependencyRulesSubscriber`][DependencyRulesSubscriber] (implementing [`IDependencyCrossTargetSubscriber`][IDependencyCrossTargetSubscriber]) subscribes via Dataflow to the union of rules specified by the handlers. When updates are received each handler is given a chance to add/update/remove [`IDependencyModel`][IDependencyModel] instances through the builder. Once complete, the `IDependencyCrossTargetSubscriber.DependenciesChanged` event is fired, carrying dependency model changes.
-
-Each project has an instance of [`DependenciesSnapshotProvider`][DependenciesSnapshotProvider] that holds the latest `DependenciesSnapshot` object. It imports `IDependencyCrossTargetSubscriber` implementations (such as `DependencyRulesSubscriber`) and subscribes to their `DependenciesChanged` events. When these events fire, the current snapshot is combined with changes to produce a new snapshot. That snapshot is then propagated via the `DependenciesSnapshotProvider.SnapshotChanged` event.
-
-This `SnapshotChanged` event is then handled by [`DependenciesProjectTreeProvider`][DependenciesProjectTreeProvider] to update the tree.
-
-### Translating snapshots to trees
-
-Most of the work of translating [`IDependency`][IDependency]s to `IProjectTree`s is done by [`DependenciesTreeViewProvider`][DependenciesTreeViewProvider] (implementing [`IDependenciesTreeViewProvider`][IDependenciesTreeViewProvider]). It takes a [`DependenciesSnapshot`][DependenciesSnapshot] and generates the nodes for the target frameworks, the groupings under each framework, (Assemblies, Analyzers, Packages, Projects, etc.), and the top-level nodes under each of those groupings. In the common case that a project has a single target framework it leaves out the framework node entirely and simply hangs the different groupings directly off the `IProjectTree` for the Dependencies node.
-
-The [`DependenciesTreeViewProvider`][DependenciesTreeViewProvider] traverses down the existing `IProjectTree` and the new [`DependenciesSnapshot`][DependenciesSnapshot] in parallel, starting from the Dependencies node itself and proceeding on to target framework, groupings, and then the individual top-level dependencies. Along the way it incrementally generates new `IProjectTree`s as it finds dependencies that have been updated, added, or removed.
-
-[`IDependency`][IDependency]s are not translated directly into `IProjectTree`s. They are first converted to [`IDependencyViewModel`][IDependencyViewModel]s and those in turn become the `IProjectTree`s. This makes it a little easier to create the `IProjectTree`s for targets and groups (e.g. the Assemblies, NuGet, Projects, etc. nodes) which are not themselves [`IDependency`][IDependency]s. In some cases a [`IDependencyModel`][IDependencyModel] may be converted directly to a [`IDependencyViewModel`][IDependencyViewModel].
-
-### Identifiers
-
-#### `IDependencyModel` identifiers
-
-Instances of [`IDependencyModel`][IDependencyModel]s produced by an [`IProjectDependenciesSubTreeProvider`][IProjectDependenciesSubTreeProvider] must have an `Id` propety that's unique to that provider and that project.
-
-For dependencies obtained via MSBuild evaluations (Packages, Assemblies, etc...) the `Id` is just the `OriginalItemSpec`.
-
-#### `IDependency` identifiers
-
-Once a dependency model is integrated into a dependencies snapshot as an [`IDependency`][IDependency], its `Id` will be constructed from the target framework, provider type and model ID. For example: `netstandard2.0/nugetdependency/newtonsoft.json`
-
-This allows the ID to be unique within both the provider and the target framework.
+- Handling explicit commands to copy or remove a node underneath the "Dependencies" node.
+- Mapping back and forth between `IProjectTree` instances and paths.
 
 ---
 
@@ -236,38 +212,53 @@ Most other implementations exist in the NuGet.Client repo on GitHub.
 
 ---
 
-# Extensibility model
+# Extensibility
 
-Project flavors can extend the Dependencies node with additional sub-trees. To do so:
+⚠️ NOTE in 17.7 the dependencies tree code was largely rewritten. Extensibility was a key consideration of that rewrite, however for the time being many of the types discussed above are `internal`. We are working to refine the API before making portions of it public for extension. Until then, extenders may continue to use the legacy extensibility API, which remains supported.
 
-- Implement and export an [`IProjectDependenciesSubTreeProvider`][IProjectDependenciesSubTreeProvider] implementation per sub-tree
-- Provide a custom implementation of [`IDependencyModel`][IDependencyModel]
-- Potentially implement `IProjectTreeProvider` (usually by deriving from `ProjectTreeProviderBase`)
+TODO document the APIs needed to provide custom top-level dependencies, and provide examples.
+
+## Legacy extensibility API
+
+Project extensions may extend the _Dependencies_ node with additional sub-trees. To do so:
+
+- Implement and export an [`IProjectDependenciesSubTreeProvider`][IProjectDependenciesSubTreeProvider] implementation per sub-tree.
+- Provide a custom implementation of [`IDependencyModel`][IDependencyModel].
 
 The _Web Tools Extensions_ project is a good example of a project flavor that does this.
 
+Note that this API will only provide top-level dependencies. To add descendent nodes beneath these top-level dependencies, see [transitive dependencies](#transitive-dependencies).
 
-[IDependenciesRuleHandler]:               /src/Microsoft.VisualStudio.ProjectSystem.Managed/ProjectSystem/Tree/Dependencies/CrossTarget/IDependenciesRuleHandler.cs "IDependenciesRuleHandler.cs"
-[DependenciesProjectTreeProvider]:        /src/Microsoft.VisualStudio.ProjectSystem.Managed/ProjectSystem/Tree/Dependencies/DependenciesProjectTreeProvider.cs "DependenciesProjectTreeProvider.cs"
-[DependenciesTreeViewProvider]:           /src/Microsoft.VisualStudio.ProjectSystem.Managed/ProjectSystem/Tree/Dependencies/DependenciesTreeViewProvider.cs "DependenciesTreeViewProvider.cs"
-[IDependencyModel]:                       /src/Microsoft.VisualStudio.ProjectSystem.Managed/ProjectSystem/Tree/Dependencies/IDependencyModel.cs "IDependencyModel.cs"
-[IDependenciesTreeViewProvider]:          /src/Microsoft.VisualStudio.ProjectSystem.Managed/ProjectSystem/Tree/Dependencies/IDependenciesTreeViewProvider.cs "IDependenciesTreeViewProvider.cs"
-[IProjectDependenciesSubTreeProvider]:    /src/Microsoft.VisualStudio.ProjectSystem.Managed/ProjectSystem/Tree/Dependencies/IProjectDependenciesSubTreeProvider.cs "IProjectDependenciesSubTreeProvider.cs"
-[IDependencyViewModel]:                   /src/Microsoft.VisualStudio.ProjectSystem.Managed/ProjectSystem/Tree/Dependencies/Models/IDependencyViewModel.cs "IDependencyViewModel.cs"
-[DependenciesSnapshot]:                   /src/Microsoft.VisualStudio.ProjectSystem.Managed/ProjectSystem/Tree/Dependencies/Snapshot/DependenciesSnapshot.cs "DependenciesSnapshot.cs"
-[IDependency]:                            /src/Microsoft.VisualStudio.ProjectSystem.Managed/ProjectSystem/Tree/Dependencies/Snapshot/IDependency.cs "IDependency.cs"
-[TargetedDependenciesSnapshot]:           /src/Microsoft.VisualStudio.ProjectSystem.Managed/ProjectSystem/Tree/Dependencies/Snapshot/TargetedDependenciesSnapshot.cs "TargetedDependenciesSnapshot.cs"
-[DependenciesRuleHandlerBase]:            /src/Microsoft.VisualStudio.ProjectSystem.Managed/ProjectSystem/Tree/Dependencies/Subscriptions/RuleHandlers/DependenciesRuleHandlerBase.cs "DependenciesRuleHandlerBase.cs"
-[DependencyRulesSubscriber]:              /src/Microsoft.VisualStudio.ProjectSystem.Managed/ProjectSystem/Tree/Dependencies/Subscriptions/DependencyRulesSubscriber.cs "DependencyRulesSubscriber.cs"
-[DependenciesSnapshotProvider]:           /src/Microsoft.VisualStudio.ProjectSystem.Managed/ProjectSystem/Tree/Dependencies/Subscriptions/DependenciesSnapshotProvider.cs "DependenciesSnapshotProvider.cs"
-[IDependencyCrossTargetSubscriber]:       /src/Microsoft.VisualStudio.ProjectSystem.Managed/ProjectSystem/Tree/Dependencies/Subscriptions/IDependencyCrossTargetSubscriber.cs "IDependencyCrossTargetSubscriber.cs"
-[ProjectRuleHandler]:                     /src/Microsoft.VisualStudio.ProjectSystem.Managed/ProjectSystem/Tree/Dependencies/Subscriptions/ProjectRuleHandler.cs "ProjectRuleHandler.cs"
+## Sibling tree
 
-[IRelation]:                                   /src/Microsoft.VisualStudio.ProjectSystem.Managed.VS/ProjectSystem/VS/Tree/Dependencies/AttachedCollections/IRelation.cs "IRelation.cs"
-[IRelatableItem]:                              /src/Microsoft.VisualStudio.ProjectSystem.Managed.VS/ProjectSystem/VS/Tree/Dependencies/AttachedCollections/IRelatableItem.cs "IRelatableItem.cs"
-[IDependenciesTreeProjectSearchContext]:       /src/Microsoft.VisualStudio.ProjectSystem.Managed.VS/ProjectSystem/VS/Tree/Dependencies/AttachedCollections/IDependenciesTreeProjectSearchContext.cs "IDependenciesTreeProjectSearchContext.cs"
-[IDependenciesTreeConfiguredProjectSearchContext]: /src/Microsoft.VisualStudio.ProjectSystem.Managed.VS/ProjectSystem/VS/Tree/Dependencies/AttachedCollections/IDependenciesTreeConfiguredProjectSearchContext.cs "IDependenciesTreeConfiguredProjectSearchContext.cs"
-[RelatableItemBase]:                           /src/Microsoft.VisualStudio.ProjectSystem.Managed.VS/ProjectSystem/VS/Tree/Dependencies/AttachedCollections/RelatableItemBase.cs "RelatableItemBase.cs"
-[AttachedCollectionItemBase]:                  /src/Microsoft.VisualStudio.ProjectSystem.Managed.VS/ProjectSystem/VS/Tree/Dependencies/AttachedCollections/AttachedCollectionItemBase.cs "AttachedCollectionItemBase.cs"
-[RelationBase]:                                /src/Microsoft.VisualStudio.ProjectSystem.Managed.VS/ProjectSystem/VS/Tree/Dependencies/AttachedCollections/RelationBase.cs "RelationBase.cs"
-[IDependenciesTreeSearchProvider]:             /src/Microsoft.VisualStudio.ProjectSystem.Managed.VS/ProjectSystem/VS/Tree/Dependencies/AttachedCollections/IDependenciesTreeSearchProvider.cs "IDependenciesTreeSearchProvider.cs"
+Alternatively, you could provide your own sibling alongside the _Dependencies_ node by implementing your own `IProjectTreeProvider` "root graft" (usually by deriving from `ProjectTreeProviderBase`). This would be a lot more work and would potentially provide a more confusing experience for users. But it is an option that may make sense in your scenario.
+
+
+[DependenciesTreeBuilder]:                ../../src/Microsoft.VisualStudio.ProjectSystem.Managed/ProjectSystem/Tree/Dependencies/DependenciesTreeBuilder.cs "DependenciesTreeBuilder.cs"
+[DependenciesTreeProvider]:               ../../src/Microsoft.VisualStudio.ProjectSystem.Managed/ProjectSystem/Tree/Dependencies/DependenciesTreeProvider.cs "DependenciesTreeProvider.cs"
+
+[IDependencyModel]:                       ../../src/Microsoft.VisualStudio.ProjectSystem.Managed/ProjectSystem/Tree/Dependencies/IDependencyModel.cs "IDependencyModel.cs"
+[IProjectDependenciesSubTreeProvider]:    ../../src/Microsoft.VisualStudio.ProjectSystem.Managed/ProjectSystem/Tree/Dependencies/IProjectDependenciesSubTreeProvider.cs "IProjectDependenciesSubTreeProvider.cs"
+
+[DependenciesSnapshot]:                   ../../src/Microsoft.VisualStudio.ProjectSystem.Managed/ProjectSystem/Tree/Dependencies/Snapshot/DependenciesSnapshot.cs "DependenciesSnapshot.cs"
+[DependenciesSnapshotSlice]:              ../../src/Microsoft.VisualStudio.ProjectSystem.Managed/ProjectSystem/Tree/Dependencies/Snapshot/DependenciesSnapshotSlice.cs "DependenciesSnapshotSlice.cs"
+[IDependency]:                            ../../src/Microsoft.VisualStudio.ProjectSystem.Managed/ProjectSystem/Tree/Dependencies/Snapshot/IDependency.cs "IDependency.cs"
+[IDependencyWithBrowseObject]:            ../../src/Microsoft.VisualStudio.ProjectSystem.Managed/ProjectSystem/Tree/Dependencies/Snapshot/IDependencyWithBrowseObject.cs "IDependencyWithBrowseObject.cs"
+
+[IMSBuildDependencyFactory]:              ../../src/Microsoft.VisualStudio.ProjectSystem.Managed/ProjectSystem/Tree/Dependencies/Subscriptions/MSBuildDependencies/IMSBuildDependencyFactory.cs "IMSBuildDependencyFactory.cs"
+[MSBuildDependencyFactoryBase]:           ../../src/Microsoft.VisualStudio.ProjectSystem.Managed/ProjectSystem/Tree/Dependencies/Subscriptions/MSBuildDependencies/MSBuildDependencyFactoryBase.cs "MSBuildDependencyFactoryBase.cs"
+[MSBuildDependencySubscriber]:            ../../src/Microsoft.VisualStudio.ProjectSystem.Managed/ProjectSystem/Tree/Dependencies/Subscriptions/MSBuildDependencies/MSBuildDependencySubscriber.cs "MSBuildDependencySubscriber.cs"
+[DependenciesSnapshotProvider]:           ../../src/Microsoft.VisualStudio.ProjectSystem.Managed/ProjectSystem/Tree/Dependencies/Subscriptions/DependenciesSnapshotProvider.cs "DependenciesSnapshotProvider.cs"
+[IDependencySubscriber]:                  ../../src/Microsoft.VisualStudio.ProjectSystem.Managed/ProjectSystem/Tree/Dependencies/Subscriptions/IDependencySubscriber.cs "IDependencySubscriber.cs"
+[IDependencySliceSubscriber]:             ../../src/Microsoft.VisualStudio.ProjectSystem.Managed/ProjectSystem/Tree/Dependencies/Subscriptions/IDependencySliceSubscriber.cs "IDependencySliceSubscriber.cs"
+[SharedProjectDependencySubscriber]:      ../../src/Microsoft.VisualStudio.ProjectSystem.Managed/ProjectSystem/Tree/Dependencies/Subscriptions/SharedProjectDependencySubscriber.cs "SharedProjectDependencySubscriber.cs"
+[DependenciesSnapshotProvider]:           ../../src/Microsoft.VisualStudio.ProjectSystem.Managed/ProjectSystem/Tree/Dependencies/Subscriptions/DependenciesSnapshotProvider.cs "DependenciesSnapshotProvider.cs"
+
+[IRelation]:                                       ../../src/Microsoft.VisualStudio.ProjectSystem.Managed.VS/ProjectSystem/VS/Tree/Dependencies/AttachedCollections/IRelation.cs "IRelation.cs"
+[IRelatableItem]:                                  ../../src/Microsoft.VisualStudio.ProjectSystem.Managed.VS/ProjectSystem/VS/Tree/Dependencies/AttachedCollections/IRelatableItem.cs "IRelatableItem.cs"
+[IDependenciesTreeProjectSearchContext]:           ../../src/Microsoft.VisualStudio.ProjectSystem.Managed.VS/ProjectSystem/VS/Tree/Dependencies/AttachedCollections/IDependenciesTreeProjectSearchContext.cs "IDependenciesTreeProjectSearchContext.cs"
+[IDependenciesTreeConfiguredProjectSearchContext]: ../../src/Microsoft.VisualStudio.ProjectSystem.Managed.VS/ProjectSystem/VS/Tree/Dependencies/AttachedCollections/IDependenciesTreeConfiguredProjectSearchContext.cs "IDependenciesTreeConfiguredProjectSearchContext.cs"
+[RelatableItemBase]:                               ../../src/Microsoft.VisualStudio.ProjectSystem.Managed.VS/ProjectSystem/VS/Tree/Dependencies/AttachedCollections/RelatableItemBase.cs "RelatableItemBase.cs"
+[AttachedCollectionItemBase]:                      ../../src/Microsoft.VisualStudio.ProjectSystem.Managed.VS/ProjectSystem/VS/Tree/Dependencies/AttachedCollections/AttachedCollectionItemBase.cs "AttachedCollectionItemBase.cs"
+[RelationBase]:                                    ../../src/Microsoft.VisualStudio.ProjectSystem.Managed.VS/ProjectSystem/VS/Tree/Dependencies/AttachedCollections/RelationBase.cs "RelationBase.cs"
+[IDependenciesTreeSearchProvider]:                 ../../src/Microsoft.VisualStudio.ProjectSystem.Managed.VS/ProjectSystem/VS/Tree/Dependencies/AttachedCollections/IDependenciesTreeSearchProvider.cs "IDependenciesTreeSearchProvider.cs"

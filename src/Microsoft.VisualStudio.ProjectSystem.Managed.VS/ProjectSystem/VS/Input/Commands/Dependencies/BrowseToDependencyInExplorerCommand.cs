@@ -2,7 +2,7 @@
 
 using Microsoft.VisualStudio.IO;
 using Microsoft.VisualStudio.ProjectSystem.Input;
-using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies;
+using Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
 {

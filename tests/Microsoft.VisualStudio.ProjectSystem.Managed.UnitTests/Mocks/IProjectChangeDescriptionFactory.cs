@@ -8,7 +8,31 @@ namespace Microsoft.VisualStudio.ProjectSystem
     {
         public static IProjectChangeDescription Create()
         {
-            return Mock.Of<IProjectChangeDescription>();
+            return FromJson(
+                """
+                {
+                    "Difference": {
+                        "AnyChanges": false,
+                        "AddedItems": [],
+                        "ChangedItems": [],
+                        "ChangedProperties": [],
+                        "RemovedItems": [],
+                        "RenamedItems": {}
+                    },
+                    "Before": {
+                        "RuleName": "SomeRule",
+                        "EvaluationSucceeded": true,
+                        "Properties" : {},
+                        "Items" : {}
+                    },
+                    "After": {
+                        "RuleName": "SomeRule",
+                        "EvaluationSucceeded": true,
+                        "Properties" : {},
+                        "Items" : {}
+                    }
+                }
+                """);
         }
 
         public static IProjectChangeDescription FromJson(string jsonString)

@@ -1,392 +1,458 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
-using System.Threading.Tasks.Dataflow;
 using Microsoft.VisualStudio.Composition;
-using Microsoft.VisualStudio.ProjectSystem.Properties;
 using Microsoft.VisualStudio.ProjectSystem.Utilities;
-using Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.CrossTarget;
 using Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot;
-using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies;
-using Microsoft.VisualStudio.Threading;
+using Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Legacy;
+using Microsoft.VisualStudio.ProjectSystem;
+using System.Threading.Tasks.Dataflow;
+using Microsoft.VisualStudio.ProjectSystem.Properties;
 
-namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Subscriptions
+namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Subscriptions;
+
+/// <summary>
+/// Provides immutable snapshot of all dependencies within a project, across all types (packages, projects, ...) and slices (target frameworks, ...).
+/// </summary>
+/// <remarks>
+/// Produced snapshots include dependencies gathered via two interfaces:
+/// <list type="bullet">
+///   <item><see cref="IDependencySliceSubscriber"/> for configured (per-slice) dependency types.</item>
+///   <item><see cref="IDependencySubscriber"/> for unconfigured dependency types.</item>
+/// </list>
+/// <para>
+/// This component uses <see cref="IActiveConfigurationGroupSubscriptionService"/> to subscribe to the project's "slices",
+/// creating subscriptions within each slice for each <see cref="IDependencySliceSubscriber"/>.
+/// </para>
+/// <para>
+/// Additionally, any <see cref="IDependencySubscriber"/> is asked to contribute unconfigured dependencies, that exist outside
+/// of any given slice. For example, in JavaScript/TypeScript projects, NPM packages exist outside of any configuration and
+/// are gathered and displayed accordingly.
+/// </para>
+/// <para>
+/// Note the interface <see cref="VS.Tree.Dependencies.IProjectDependenciesSubTreeProvider"/> was used historically as an extension
+/// point for providing dependencies, and is used in web projects for NPM packages. Support for that interface is provided internally
+/// via <see cref="LegacyDependencySubscriber"/> which implements <see cref="IDependencySubscriber"/>.
+/// </para>
+/// </remarks>
+[ProjectSystemContract(ProjectSystemContractScope.UnconfiguredProject, ProjectSystemContractProvider.Private, Cardinality = ImportCardinality.ExactlyOne)]
+[Export(typeof(DependenciesSnapshotProvider))]
+[AppliesTo(ProjectCapability.DependenciesTree)]
+internal sealed class DependenciesSnapshotProvider : OnceInitializedOnceDisposedAsync
 {
-    /// <summary>
-    /// Provides immutable dependencies snapshot for a given project.
-    /// </summary>
-    [ProjectSystemContract(ProjectSystemContractScope.UnconfiguredProject, ProjectSystemContractProvider.Private, Cardinality = ImportCardinality.ExactlyOne)]
-    [Export(typeof(DependenciesSnapshotProvider))]
-    [AppliesTo(ProjectCapability.DependenciesTree)]
-    internal sealed partial class DependenciesSnapshotProvider : OnceInitializedOnceDisposedAsync
+    private readonly UnconfiguredProject _unconfiguredProject;
+    private readonly IUnconfiguredProjectTasksService _tasksService;
+    private readonly IActiveConfigurationGroupSubscriptionService _activeConfigurationGroupSubscriptionService;
+    private readonly IActiveConfiguredProjectProvider _activeConfiguredProjectProvider;
+    private readonly IProjectThreadingService _threadingService;
+    private readonly IProjectFaultHandlerService _projectFaultHandler;
+    private readonly IBroadcastBlock<IProjectVersionedValue<DependenciesSnapshot>> _source;
+    private readonly IReceivableSourceBlock<IProjectVersionedValue<DependenciesSnapshot>> _publicSource;
+    private readonly DisposableBag _disposables;
+
+    [ImportMany] private readonly OrderPrecedenceImportCollection<IDependencySubscriber> _dependencySubscribers;
+    [ImportMany] private readonly OrderPrecedenceImportCollection<IDependencySliceSubscriber> _dependencySliceSubscribers;
+
+    [ImportingConstructor]
+    public DependenciesSnapshotProvider(
+        UnconfiguredProject unconfiguredProject,
+        IUnconfiguredProjectCommonServices commonServices,
+        IUnconfiguredProjectTasksService tasksService,
+        IActiveConfigurationGroupSubscriptionService activeConfigurationGroupSubscriptionService,
+        IActiveConfiguredProjectProvider activeConfiguredProjectProvider,
+        IProjectThreadingService threadingService,
+        IProjectFaultHandlerService projectFaultHandler)
+        : base(commonServices.ThreadingService.JoinableTaskContext)
     {
-        private readonly SemaphoreSlim _contextUpdateGate = new(initialCount: 1);
-        private readonly object _lock = new();
+        _unconfiguredProject = unconfiguredProject;
+        _tasksService = tasksService;
+        _activeConfigurationGroupSubscriptionService = activeConfigurationGroupSubscriptionService;
+        _activeConfiguredProjectProvider = activeConfiguredProjectProvider;
+        _threadingService = threadingService;
+        _projectFaultHandler = projectFaultHandler;
 
-        private readonly SnapshotUpdater _snapshot;
-        private readonly ContextTracker _context;
+        _dependencySubscribers = new OrderPrecedenceImportCollection<IDependencySubscriber>(
+            projectCapabilityCheckProvider: _unconfiguredProject);
 
-        private readonly ITargetFrameworkProvider _targetFrameworkProvider;
-        private readonly IUnconfiguredProjectCommonServices _commonServices;
-        private readonly IUnconfiguredProjectTasksService _tasksService;
-        private readonly IActiveConfiguredProjectSubscriptionService _activeConfiguredProjectSubscriptionService;
-        private readonly IDependencyTreeTelemetryService _dependencyTreeTelemetryService;
+        _dependencySliceSubscribers = new OrderPrecedenceImportCollection<IDependencySliceSubscriber>(
+            projectCapabilityCheckProvider: _unconfiguredProject);
 
-        [ImportMany] private readonly OrderPrecedenceImportCollection<IDependencyCrossTargetSubscriber> _dependencySubscribers;
-        [ImportMany] private readonly OrderPrecedenceImportCollection<IProjectDependenciesSubTreeProvider> _subTreeProviders;
+        _source = DataflowBlockSlim.CreateBroadcastBlock<IProjectVersionedValue<DependenciesSnapshot>>(nameFormat: "DependenciesSnapshot broadcast: {1}", skipIntermediateInputData: true);
+        _publicSource = _source.SafePublicize("DependenciesSnapshot broadcast (public): {1}");
 
-        /// <summary>
-        /// Disposable items to be disposed when this provider is no longer in use.
-        /// </summary>
-        private readonly DisposableBag _disposables;
+        _projectFaultHandler.RegisterFaultHandler(
+            _source,
+            _unconfiguredProject,
+            ProjectFaultSeverity.LimitedFunctionality);
 
-        /// <summary>
-        /// Disposable items related to the current subscriptions. This collection may be replaced
-        /// from time to time (e.g. when target frameworks change).
-        /// </summary>
-        private DisposableBag _subscriptions = new();
+        _disposables = new DisposableBag { new DisposableDelegate(_source.Complete) };
+    }
 
-        /// <summary>
-        /// Lazily populated set of subscribers. May be <see cref="ImmutableArray{T}.IsDefault" /> if <see cref="Subscribers"/>
-        /// has not been called, though once initialized it will not revert to default state.
-        /// </summary>
-        private ImmutableArray<IDependencyCrossTargetSubscriber> _subscribers;
+    public IReceivableSourceBlock<IProjectVersionedValue<DependenciesSnapshot>> Source => _publicSource;
 
-        private bool _isDisposed;
+    internal Task EnsureInitializedAsync()
+    {
+        return InitializeAsync();
+    }
 
-        [ImportingConstructor]
-        public DependenciesSnapshotProvider(
-            IUnconfiguredProjectCommonServices commonServices,
-            Lazy<AggregateCrossTargetProjectContextProvider> contextProvider,
-            IUnconfiguredProjectTasksService tasksService,
-            IActiveConfiguredProjectSubscriptionService activeConfiguredProjectSubscriptionService,
-            IActiveProjectConfigurationRefreshService activeProjectConfigurationRefreshService,
-            ITargetFrameworkProvider targetFrameworkProvider,
-            IDependencyTreeTelemetryService dependencyTreeTelemetryService)
-            : base(commonServices.ThreadingService.JoinableTaskContext)
+    protected override Task DisposeCoreAsync(bool initialized)
+    {
+        _disposables.Dispose();
+
+        return Task.CompletedTask;
+    }
+
+    protected override Task InitializeCoreAsync(CancellationToken cancellationToken)
+    {
+        // Ensure the project doesn't unload during subscription.
+        return _tasksService.LoadedProjectAsync(async () =>
         {
-            _commonServices = commonServices;
-            _tasksService = tasksService;
-            _activeConfiguredProjectSubscriptionService = activeConfiguredProjectSubscriptionService;
-            _targetFrameworkProvider = targetFrameworkProvider;
-            _dependencyTreeTelemetryService = dependencyTreeTelemetryService;
-
-            _dependencySubscribers = new OrderPrecedenceImportCollection<IDependencyCrossTargetSubscriber>(
-                projectCapabilityCheckProvider: commonServices.Project);
-
-            _subTreeProviders = new OrderPrecedenceImportCollection<IProjectDependenciesSubTreeProvider>(
-                ImportOrderPrecedenceComparer.PreferenceOrder.PreferredComesLast,
-                projectCapabilityCheckProvider: commonServices.Project);
-
-            _context = new ContextTracker(targetFrameworkProvider, commonServices, contextProvider, activeProjectConfigurationRefreshService);
-
-            _snapshot = new SnapshotUpdater(commonServices.ThreadingService, tasksService.UnloadCancellationToken);
-
-            _disposables = new DisposableBag { _snapshot, _contextUpdateGate };
-        }
-
-        /// <summary>
-        /// Gets the current immutable dependencies snapshot for the project.
-        /// </summary>
-        /// <remarks>
-        /// Never null.
-        /// </remarks>
-        public DependenciesSnapshot CurrentSnapshot => _snapshot.Current;
-
-        /// <summary>
-        /// Dataflow to monitor the project snapshot changes.
-        /// </summary>
-        public IReceivableSourceBlock<SnapshotChangedEventArgs> SnapshotChangedSource => _snapshot.Source;
-
-        private ImmutableArray<IDependencyCrossTargetSubscriber> Subscribers
-        {
-            get
+            try
             {
-                if (_subscribers.IsDefault)
+                await InitializeAsync();
+            }
+            catch (Exception exception)
+            {
+                _source.Fault(exception);
+                throw;
+            }
+        });
+
+        Task InitializeAsync()
+        {
+            DependenciesSnapshot? lastSnapshot = null;
+
+            // Make a snapshot of these dynamic imports, so that we operate on consistent data.
+            // Note, we don't support dynamic modification of these exports (in response to changing project capabilities).
+            ImmutableArray<IDependencySubscriber> dependencySubscribers = _dependencySubscribers.ToImmutableValueArray();
+            ImmutableArray<IDependencySliceSubscriber> dependencySliceSubscribers = _dependencySliceSubscribers.ToImmutableValueArray();
+
+            // We will create two kinds of subscription, one for unconfigured and one for configured dependencies.
+            // Each subscription contains a Dataflow data source block that we will combine through additional blocks to produce
+            // the final dependency snapshot for the project.
+            //
+            // In the case of configured dependencies, there are some earlier blocks too that determine the set of configuration
+            // slices for which subscriptions should be made. We have one configured subscription per slice, per IDependencySliceSubscriber instance.
+            //
+            // For unconfigured dependencies, we have one subscription per IDependencySubscriber instance.
+
+            ISourceBlock<IProjectVersionedValue<ImmutableDictionary<DependencyGroupType, ImmutableArray<IDependency>>>> unconfiguredSource = SubscribeUnconfigured();
+
+            ISourceBlock<IProjectVersionedValue<ImmutableDictionary<ProjectConfigurationSlice, DependenciesSnapshotSlice>>> configuredSource = SubscribeConfigured();
+
+            var transformBlock = DataflowBlockSlim.CreateTransformBlock<
+                IProjectVersionedValue<(ImmutableDictionary<DependencyGroupType, ImmutableArray<IDependency>> UnconfiguredDependencies, ImmutableDictionary<ProjectConfigurationSlice, DependenciesSnapshotSlice> ConfiguredDependencies, ConfiguredProject ActiveConfiguredProject)>,
+                IProjectVersionedValue<DependenciesSnapshot>>(
+                    u => u.Derive(MergeFinalDependenciesSnapshot),
+                    nameFormat: "Dependencies final merge {1}",
+                    skipIntermediateInputData: true,
+                    skipIntermediateOutputData: true,
+                    cancellationToken: cancellationToken);
+
+            _disposables.Add(
+                ProjectDataSources.SyncLinkTo(
+                    unconfiguredSource.SyncLinkOptions(),
+                    configuredSource.SyncLinkOptions(),
+                    _activeConfiguredProjectProvider.SourceBlock.SyncLinkOptions(),
+                    target: transformBlock,
+                    linkOptions: DataflowOption.PropagateCompletion,
+                    cancellationToken: cancellationToken));
+
+            _disposables.Add(transformBlock.LinkTo(_source, DataflowOption.PropagateCompletion));
+
+            _disposables.Add(ProjectDataSources.JoinUpstreamDataSources(_threadingService.JoinableTaskFactory, _projectFaultHandler, _activeConfiguredProjectProvider));
+
+            return Task.CompletedTask;
+
+            ISourceBlock<IProjectVersionedValue<ImmutableDictionary<DependencyGroupType, ImmutableArray<IDependency>>>> SubscribeUnconfigured()
+            {
+                List<IProjectValueDataSource<ImmutableDictionary<DependencyGroupType, ImmutableArray<IDependency>>>> subscriptions = new();
+
+                foreach (IDependencySubscriber dependencySubscriber in dependencySubscribers)
                 {
-                    lock (_lock)
+                    IProjectValueDataSource<ImmutableDictionary<DependencyGroupType, ImmutableArray<IDependency>>>? subscription = dependencySubscriber.Subscribe();
+
+                    if (subscription is not null)
                     {
-                        if (_isDisposed)
-                        {
-                            throw new ObjectDisposedException(nameof(DependenciesSnapshotProvider));
-                        }
-
-                        if (_subscribers.IsDefault)
-                        {
-                            _subscribers = _dependencySubscribers.ToImmutableValueArray();
-
-                            foreach (IDependencyCrossTargetSubscriber subscriber in _subscribers)
-                            {
-                                subscriber.DependenciesChanged += OnSubscriberDependenciesChanged;
-                            }
-
-                            _disposables.Add(new DisposableDelegate(
-                                () =>
-                                {
-                                    foreach (IDependencyCrossTargetSubscriber subscriber in _subscribers)
-                                    {
-                                        subscriber.DependenciesChanged -= OnSubscriberDependenciesChanged;
-                                    }
-                                }));
-                        }
+                        subscriptions.Add(subscription);
                     }
                 }
 
-                return _subscribers;
-
-                void OnSubscriberDependenciesChanged(object sender, DependencySubscriptionChangedEventArgs e)
+                if (subscriptions.Count == 0)
                 {
-                    if (IsDisposing || IsDisposed)
-                    {
-                        return;
-                    }
-
-                    UpdateDependenciesSnapshot(e.ChangedTargetFramework, e.Changes, e.Catalogs, e.TargetFrameworks, e.ActiveTarget, CancellationToken.None);
-                }
-            }
-        }
-
-        public Task InitializeSubscriptionsAsync()
-        {
-            // Subscribe to project data. Ensure the project doesn't unload during subscription.
-            return _tasksService.LoadedProjectAsync(AddInitialSubscriptionsAsync);
-
-            Task AddInitialSubscriptionsAsync()
-            {
-                // This host object subscribes to configured project evaluation data for its own purposes.
-                SubscribeToConfiguredProjectEvaluation(
-                    _activeConfiguredProjectSubscriptionService,
-                    OnActiveConfiguredProjectEvaluatedAsync);
-
-                // Each of the host's subscribers are initialized.
-                return Task.WhenAll(
-                    Subscribers.Select(
-                        subscriber => subscriber.InitializeSubscriberAsync(this)));
-            }
-
-            async Task OnActiveConfiguredProjectEvaluatedAsync(IProjectVersionedValue<IProjectSubscriptionUpdate> e)
-            {
-                if (IsDisposing || IsDisposed)
-                {
-                    return;
+                    // Optimize the common case where no unconfigured subscriptions exist.
+                    var block = DataflowBlockSlim.CreateBroadcastBlock<IProjectVersionedValue<ImmutableDictionary<DependencyGroupType, ImmutableArray<IDependency>>>>(
+                        nameFormat: "Empty unconfigured dependency broadcast {1}");
+                    block.Post(new ProjectVersionedValue<ImmutableDictionary<DependencyGroupType, ImmutableArray<IDependency>>>(
+                        ImmutableDictionary<DependencyGroupType, ImmutableArray<IDependency>>.Empty,
+                        Empty.ProjectValueVersions));
+                    return block;
                 }
 
-                await OnConfiguredProjectEvaluatedAsync(e);
-            }
-        }
+                // We "unwrap" data from our collection of data sources, such that we have a collection where each data source provides a single value.
+                var unwrapSlicesBlock = new UnwrapCollectionChainedProjectValueDataSource<
+                    ImmutableArray<IProjectValueDataSource<ImmutableDictionary<DependencyGroupType, ImmutableArray<IDependency>>>>,
+                    ImmutableDictionary<DependencyGroupType, ImmutableArray<IDependency>>>(
+                        _unconfiguredProject,
+                        getDataSource: static sources => sources);
+                _disposables.Add(unwrapSlicesBlock);
 
-        protected override async Task InitializeCoreAsync(CancellationToken cancellationToken)
-        {
-            await UpdateProjectContextAndSubscriptionsAsync();
+                unwrapSlicesBlock.Post(
+                    new ProjectVersionedValue<ImmutableArray<IProjectValueDataSource<ImmutableDictionary<DependencyGroupType, ImmutableArray<IDependency>>>>>(
+                        subscriptions.ToImmutableArray(),
+                        Empty.ProjectValueVersions));
 
-            lock (_lock)
-            {
-                if (_isDisposed)
-                {
-                    throw new ObjectDisposedException(nameof(DependenciesSnapshotProvider));
-                }
+                var mergeBlock = DataflowBlockSlim.CreateTransformBlock<
+                    IProjectVersionedValue<IReadOnlyCollection<ImmutableDictionary<DependencyGroupType, ImmutableArray<IDependency>>>>,
+                    IProjectVersionedValue<ImmutableDictionary<DependencyGroupType, ImmutableArray<IDependency>>>>(
+                        transformFunction: u => u.Derive(MergeUnconfiguredDependencies),
+                        nameFormat: "Unconfigured dependencies merge {1}");
 
-                foreach (Lazy<IProjectDependenciesSubTreeProvider, IOrderPrecedenceMetadataView> provider in _subTreeProviders)
-                {
-                    provider.Value.DependenciesChanged += OnSubtreeProviderDependenciesChanged;
-                }
+                _disposables.Add(unwrapSlicesBlock.SourceBlock.LinkTo(mergeBlock, DataflowOption.PropagateCompletion));
 
                 _disposables.Add(
-                    new DisposableDelegate(
-                        () =>
-                        {
-                            foreach (Lazy<IProjectDependenciesSubTreeProvider, IOrderPrecedenceMetadataView> provider in _subTreeProviders)
-                            {
-                                provider.Value.DependenciesChanged -= OnSubtreeProviderDependenciesChanged;
-                            }
-                        }));
-            }
-
-            return;
-
-            void OnSubtreeProviderDependenciesChanged(object? sender, DependenciesChangedEventArgs e)
-            {
-                if (IsDisposing || IsDisposed || !e.Changes.AnyChanges())
-                {
-                    return;
-                }
-
-                TargetFramework targetFramework =
-                    Strings.IsNullOrEmpty(e.TargetShortOrFullName) || TargetFramework.Any.Equals(e.TargetShortOrFullName)
-                        ? TargetFramework.Any
-                        : _targetFrameworkProvider.GetTargetFramework(e.TargetShortOrFullName) ?? TargetFramework.Any;
-
-                UpdateDependenciesSnapshot(targetFramework, e.Changes, catalogs: null, targetFrameworks: default, activeTargetFramework: null, e.Token);
-            }
-        }
-
-        protected override Task DisposeCoreAsync(bool initialized)
-        {
-            DisposeCore();
-
-            return Task.CompletedTask;
-        }
-
-        private void DisposeCore()
-        {
-            lock (_lock)
-            {
-                _isDisposed = true;
-                _subscriptions.Dispose();
-                _disposables.Dispose();
-            }
-        }
-
-        private void UpdateDependenciesSnapshot(
-            TargetFramework changedTargetFramework,
-            IDependenciesChanges? changes,
-            IProjectCatalogSnapshot? catalogs,
-            ImmutableArray<TargetFramework> targetFrameworks,
-            TargetFramework? activeTargetFramework,
-            CancellationToken token)
-        {
-            Assumes.NotNull(_commonServices.Project.FullPath);
-
-            DependenciesSnapshot? updatedSnapshot = _snapshot.TryUpdate(
-                previousSnapshot => DependenciesSnapshot.FromChanges(
-                    previousSnapshot,
-                    changedTargetFramework,
-                    changes,
-                    catalogs,
-                    targetFrameworks,
-                    activeTargetFramework),
-                token);
-
-            if (updatedSnapshot is not null)
-            {
-                _dependencyTreeTelemetryService.ObserveSnapshot(updatedSnapshot);
-            }
-        }
-
-        public async Task<AggregateCrossTargetProjectContext?> GetCurrentAggregateProjectContextAsync(CancellationToken cancellationToken)
-        {
-            if (IsDisposing || IsDisposed)
-            {
-                return null;
-            }
-
-            await InitializeAsync(cancellationToken);
-
-            return _context.Current;
-        }
-
-        public ConfiguredProject? GetConfiguredProject(TargetFramework target)
-        {
-            return _context.Current!.GetInnerConfiguredProject(target);
-        }
-
-        private Task OnConfiguredProjectEvaluatedAsync(IProjectVersionedValue<IProjectSubscriptionUpdate> e)
-        {
-            // If "TargetFrameworks" property has changed, we need to refresh the project context and subscriptions.
-            // If no context exists yet, create one.
-            if (HasTargetFrameworksChanged() || _context.Current is null)
-            {
-                return UpdateProjectContextAndSubscriptionsAsync();
-            }
-
-            return Task.CompletedTask;
-
-            bool HasTargetFrameworksChanged()
-            {
-                // remember actual property value and compare
-                return e.Value.ProjectChanges.TryGetValue(ConfigurationGeneral.SchemaName, out IProjectChangeDescription projectChange) &&
-                       (projectChange.Difference.ChangedProperties.Contains(ConfigurationGeneral.TargetFrameworkProperty) ||
-                        projectChange.Difference.ChangedProperties.Contains(ConfigurationGeneral.TargetFrameworksProperty));
-            }
-        }
-
-        /// <summary>
-        /// Determines whether the current project context object is out of date based on the project's target frameworks.
-        /// If so, a new one is created and subscriptions are updated accordingly.
-        /// </summary>
-        private Task UpdateProjectContextAndSubscriptionsAsync()
-        {
-            // Prevent concurrent project context updates.
-            return _contextUpdateGate.ExecuteWithinLockAsync(JoinableCollection, JoinableFactory, async () =>
-            {
-                AggregateCrossTargetProjectContext? newProjectContext = await _context.TryUpdateCurrentAggregateProjectContextAsync();
-
-                if (newProjectContext is not null)
-                {
-                    _snapshot.TryUpdate(previousSnapshot => previousSnapshot.SetTargets(newProjectContext.TargetFrameworks, newProjectContext.ActiveTargetFramework));
-
-                    // The context changed, so update a few things.
-                    await _tasksService.LoadedProjectAsync(() =>
+                    new DisposableDelegate(() =>
                     {
-                        lock (_lock)
+                        foreach (IProjectValueDataSource<ImmutableDictionary<DependencyGroupType, ImmutableArray<IDependency>>> subscription in subscriptions)
                         {
-                            if (_isDisposed)
-                            {
-                                throw new ObjectDisposedException(nameof(DependenciesSnapshotProvider));
-                            }
-
-                            // Dispose existing subscriptions.
-                            _subscriptions.Dispose();
-                            _subscriptions = new DisposableBag();
-
-                            // Add subscriptions for the configured projects in the new project context.
-                            AddSubscriptions(newProjectContext);
-                        }
-
-                        return Task.CompletedTask;
-                    });
-                }
-            });
-
-            void AddSubscriptions(AggregateCrossTargetProjectContext newProjectContext)
-            {
-                foreach (ConfiguredProject configuredProject in newProjectContext.InnerConfiguredProjects)
-                {
-                    Assumes.Present(configuredProject.Services.ProjectSubscription);
-
-                    SubscribeToConfiguredProjectEvaluation(
-                        configuredProject.Services.ProjectSubscription,
-                        OnConfiguredProjectEvaluatedAsync);
-                }
-
-                foreach (IDependencyCrossTargetSubscriber subscriber in Subscribers)
-                {
-                    subscriber.AddSubscriptions(newProjectContext);
-                }
-
-                _subscriptions.Add(new DisposableDelegate(
-                    () =>
-                    {
-                        foreach (IDependencyCrossTargetSubscriber subscriber in _subscribers)
-                        {
-                            subscriber.ReleaseSubscriptions();
+                            (subscription as IDisposable)?.Dispose();
                         }
                     }));
-            }
-        }
 
-        private void SubscribeToConfiguredProjectEvaluation(
-            IProjectSubscriptionService subscriptionService,
-            Func<IProjectVersionedValue<IProjectSubscriptionUpdate>, Task> action)
-        {
-            _subscriptions.Add(
-                subscriptionService.ProjectRuleSource.SourceBlock.LinkToAsyncAction(
-                    action,
-                    _commonServices.Project,
-                    ruleNames: ConfigurationGeneral.SchemaName));
+                return mergeBlock;
+
+                ImmutableDictionary<DependencyGroupType, ImmutableArray<IDependency>> MergeUnconfiguredDependencies(IReadOnlyCollection<ImmutableDictionary<DependencyGroupType, ImmutableArray<IDependency>>> groups)
+                {
+                    if (groups.Count == 0)
+                    {
+                        // Optimize the common case where there are no unconfigured dependency group types.
+                        return ImmutableDictionary<DependencyGroupType, ImmutableArray<IDependency>>.Empty;
+                    }
+
+                    Dictionary<DependencyGroupType, List<IDependency>> dependenciesByType = new();
+
+                    foreach (ImmutableDictionary<DependencyGroupType, ImmutableArray<IDependency>> update in groups)
+                    {
+                        foreach ((DependencyGroupType type, ImmutableArray<IDependency> dependenciesToAdd) in update)
+                        {
+                            if (!dependenciesByType.TryGetValue(type, out List<IDependency>? dependencies))
+                            {
+                                dependenciesByType.Add(type, dependencies = new());
+                            }
+
+                            dependencies.AddRange(dependenciesToAdd);
+                        }
+                    }
+
+                    return dependenciesByType.ToImmutableDictionary(pair => pair.Key, pair => pair.Value.ToImmutableArray());
+                }
+            }
+
+            ISourceBlock<IProjectVersionedValue<ImmutableDictionary<ProjectConfigurationSlice, DependenciesSnapshotSlice>>> SubscribeConfigured()
+            {
+                Dictionary<ProjectConfigurationSlice, SliceDataSource> dataSourceBySlice = new();
+
+                // We transform from the set of slices to a set of per-slice data sources.
+                var transformBlock = DataflowBlockSlim.CreateTransformBlock<
+                    IProjectVersionedValue<ConfigurationSubscriptionSources>,
+                    IProjectVersionedValue<ImmutableArray<SliceDataSource>>>(
+                        transformFunction: SlicesToDataSources,
+                        nameFormat: "Dependency slices-to-data-sources transform {1}");
+
+                // Link slices into the transform block.
+                _disposables.Add(_activeConfigurationGroupSubscriptionService.SourceBlock.LinkTo(transformBlock, DataflowOption.PropagateCompletion));
+
+                // We "unwrap" data from our collection of data sources, such that we have a collection where each data source provides a single value.
+                var unwrapSlicesBlock = new UnwrapCollectionChainedProjectValueDataSource<
+                    ImmutableArray<SliceDataSource>,
+                    DependenciesSnapshotSlice>(
+                        _unconfiguredProject,
+                        getDataSource: static sources => sources);
+                _disposables.Add(unwrapSlicesBlock);
+
+                // Link transform to unwrap.
+                _disposables.Add(transformBlock.LinkTo(unwrapSlicesBlock, DataflowOption.PropagateCompletion));
+
+                // Merge dependencies across all slices.
+                var mergeBlock = DataflowBlockSlim.CreateTransformBlock<
+                    IProjectVersionedValue<IReadOnlyCollection<DependenciesSnapshotSlice>>,
+                    IProjectVersionedValue<ImmutableDictionary<ProjectConfigurationSlice, DependenciesSnapshotSlice>>>(
+                        static data => data.Derive(
+                            static updates => updates.ToImmutableDictionary(
+                                update => update.Slice,
+                                update => update)),
+                        nameFormat: "Merge dependencies across slices {1}",
+                        skipIntermediateInputData: false);
+
+                _disposables.Add(unwrapSlicesBlock.SourceBlock.LinkTo(mergeBlock, DataflowOption.PropagateCompletion));
+
+                _disposables.Add(ProjectDataSources.JoinUpstreamDataSources(_threadingService.JoinableTaskFactory, _projectFaultHandler, _activeConfigurationGroupSubscriptionService));
+
+                _disposables.Add(
+                    new DisposableDelegate(() =>
+                    {
+                        foreach ((_, SliceDataSource dataSource) in dataSourceBySlice)
+                        {
+                            dataSource.Dispose();
+                        }
+                    }));
+
+                return mergeBlock;
+
+                IProjectVersionedValue<ImmutableArray<SliceDataSource>> SlicesToDataSources(IProjectVersionedValue<ConfigurationSubscriptionSources> update)
+                {
+                    ConfigurationSubscriptionSources sources = update.Value;
+
+                    // Check off existing slices. Any unseen at the end must be disposed.
+                    var checklist = new Dictionary<ProjectConfigurationSlice, SliceDataSource>(dataSourceBySlice);
+
+                    foreach ((ProjectConfigurationSlice slice, IActiveConfigurationSubscriptionSource source) in sources)
+                    {
+                        if (!dataSourceBySlice.TryGetValue(slice, out SliceDataSource dataSource))
+                        {
+                            // New slice.
+                            Assumes.False(checklist.ContainsKey(slice));
+
+                            dataSource = new SliceDataSource(_unconfiguredProject, slice, source, dependencySliceSubscribers);
+
+                            dataSourceBySlice.Add(slice, dataSource);
+                        }
+                        else
+                        {
+                            // We have seen this slice, so remove it from the list we're tracking.
+                            Assumes.True(checklist.Remove(slice));
+                        }
+                    }
+
+                    // Dispose data sources for unseen slices.
+                    foreach ((ProjectConfigurationSlice slice, SliceDataSource dataSource) in checklist)
+                    {
+                        Assumes.True(dataSourceBySlice.Remove(slice));
+
+                        dataSource.Dispose();
+                    }
+
+                    // TODO how often do we get here without changing anything? would it help to cache the prior result?
+                    return update.Derive(u => dataSourceBySlice.Values.ToImmutableArray());
+                }
+            }
+
+            DependenciesSnapshot MergeFinalDependenciesSnapshot(
+                (ImmutableDictionary<DependencyGroupType, ImmutableArray<IDependency>> UnconfiguredDependencies,
+                 ImmutableDictionary<ProjectConfigurationSlice, DependenciesSnapshotSlice> ConfiguredDependencies,
+                 ConfiguredProject ActiveConfiguredProject) update)
+            {
+                ProjectConfiguration activeProjectConfiguration = update.ActiveConfiguredProject.ProjectConfiguration;
+
+                ProjectConfigurationSlice? primarySlice = update.ConfiguredDependencies.Keys.FirstOrDefault(slice => slice.IsPrimaryActiveSlice(activeProjectConfiguration));
+
+                Assumes.NotNull(primarySlice);
+
+                if (lastSnapshot is null)
+                {
+                    lastSnapshot = new DependenciesSnapshot(primarySlice, update.ConfiguredDependencies, update.UnconfiguredDependencies);
+                    return lastSnapshot;
+                }
+
+                lastSnapshot = lastSnapshot.Update(primarySlice, update.ConfiguredDependencies, update.UnconfiguredDependencies);
+                return lastSnapshot;
+            }
         }
     }
 
-    internal sealed class SnapshotChangedEventArgs : EventArgs
+    /// <summary>
+    /// An <see cref="IProjectValueDataSource"/> for all dependency and project data from a given slice.
+    /// </summary>
+    private sealed class SliceDataSource : ChainedProjectValueDataSourceBase<DependenciesSnapshotSlice>
     {
-        public SnapshotChangedEventArgs(DependenciesSnapshot snapshot, CancellationToken token)
-        {
-            Requires.NotNull(snapshot);
+        private readonly ProjectConfigurationSlice _slice;
+        private readonly IActiveConfigurationSubscriptionSource _source;
+        private readonly ImmutableArray<IDependencySliceSubscriber> _dependencySliceSubscribers;
 
-            Snapshot = snapshot;
-            Token = token;
+        public SliceDataSource(UnconfiguredProject unconfiguredProject, ProjectConfigurationSlice slice, IActiveConfigurationSubscriptionSource source, ImmutableArray<IDependencySliceSubscriber> dependencySliceSubscribers)
+            : base(unconfiguredProject, synchronousDisposal: false, registerDataSource: false)
+        {
+            _slice = slice;
+            _source = source;
+            _dependencySliceSubscribers = dependencySliceSubscribers;
         }
 
-        public DependenciesSnapshot Snapshot { get; }
-        public CancellationToken Token { get; }
+        protected override IDisposable? LinkExternalInput(ITargetBlock<IProjectVersionedValue<DependenciesSnapshotSlice>> targetBlock)
+        {
+            // We have two streams of configured data.
+            //
+            // 1. Data about the slices themselves:
+            //    - The active ConfiguredProject within the slice.
+            //    - The IProjectCatalogSnapshot for the configuration, for use when populating browse objects.
+            // 2. The actual dependencies within the slices, sourced from IDependencySliceSubscriber instances.
+
+            DependenciesSnapshotSlice? snapshot = null;
+
+            var disposables = new DisposableBag();
+
+            var sliceSources = ImmutableList.CreateBuilder<ProjectDataSources.SourceBlockAndLink<IProjectValueVersions>>();
+
+            sliceSources.Add(ConfiguredDependencyFilterBlock.TransformSource(_source.ActiveConfiguredProjectSource.SourceBlock, disposables, "Transformed ActiveConfiguredProjectSource {1}").SyncLinkOptions<IProjectValueVersions>());
+            sliceSources.Add(ConfiguredDependencyFilterBlock.TransformSource(_source.ProjectCatalogSource.SourceBlock, disposables, "Transformed ProjectCatalogSource {1}").SyncLinkOptions<IProjectValueVersions>());
+
+            disposables.Add(JoinUpstreamDataSources(_source.ActiveConfiguredProjectSource, _source.ProjectCatalogSource));
+
+            foreach (IDependencySliceSubscriber subscriber in _dependencySliceSubscribers)
+            {
+                IProjectValueDataSource<ImmutableDictionary<DependencyGroupType, ImmutableArray<IDependency>>> subscriptionSource = subscriber.Subscribe(_slice, _source);
+
+                disposables.Add(JoinUpstreamDataSources(subscriptionSource));
+
+                if (subscriptionSource is IDisposable disposable)
+                {
+                    disposables.Add(disposable);
+                }
+
+                sliceSources.Add(ConfiguredDependencyFilterBlock.TransformSource(subscriptionSource.SourceBlock, disposables, "Transformed IDependencySliceSubscriber {1}").SyncLinkOptions<IProjectValueVersions>());
+            }
+
+            var mergeBlock = DataflowBlockSlim.CreateTransformBlock<
+                Tuple<ImmutableList<IProjectValueVersions>, IImmutableDictionary<NamedIdentity, IComparable>>,
+                IProjectVersionedValue<DependenciesSnapshotSlice>>(MergeDataIntoSliceSnapshot);
+
+            disposables.Add(ProjectDataSources.SyncLinkTo(
+                sliceSources.ToImmutable(),
+                mergeBlock,
+                DataflowOption.PropagateCompletion));
+
+            disposables.Add(mergeBlock.LinkTo(targetBlock, DataflowOption.PropagateCompletion));
+
+            return disposables;
+
+            IProjectVersionedValue<DependenciesSnapshotSlice> MergeDataIntoSliceSnapshot(Tuple<ImmutableList<IProjectValueVersions>, IImmutableDictionary<NamedIdentity, IComparable>> tuple)
+            {
+                ImmutableList<IProjectValueVersions> versionedValues = tuple.Item1;
+                IImmutableDictionary<NamedIdentity, IComparable> versions = tuple.Item2;
+
+                Assumes.True(versionedValues.Count >= 2);
+                Assumes.False(versions.ContainsKey(ProjectDataSources.ConfiguredProjectIdentity), $"Update should not contain {nameof(ProjectDataSources.ConfiguredProjectIdentity)}.");
+                Assumes.False(versions.ContainsKey(ProjectDataSources.ConfiguredProjectVersion), $"Update should not contain {nameof(ProjectDataSources.ConfiguredProjectVersion)}.");
+
+                ImmutableList<IProjectValueVersions>.Enumerator enumerator = versionedValues.GetEnumerator();
+
+                Assumes.True(enumerator.MoveNext());
+
+                ConfiguredProject configuredProject = ((IProjectVersionedValue<ConfiguredProject>)enumerator.Current).Value;
+
+                Assumes.True(enumerator.MoveNext());
+
+                IProjectCatalogSnapshot catalogs = ((IProjectVersionedValue<IProjectCatalogSnapshot>)enumerator.Current).Value;
+
+                List<ImmutableDictionary<DependencyGroupType, ImmutableArray<IDependency>>> dependencySliceUpdates = new(versionedValues.Count - 2);
+
+                while (enumerator.MoveNext())
+                {
+                    dependencySliceUpdates.Add(((IProjectVersionedValue<ImmutableDictionary<DependencyGroupType, ImmutableArray<IDependency>>>)enumerator.Current).Value);
+                }
+
+                DependenciesSnapshotSlice.Update(ref snapshot, _slice, configuredProject, catalogs, dependencySliceUpdates);
+
+                return new ProjectVersionedValue<DependenciesSnapshotSlice>(snapshot, versions);
+            }
+        }
     }
 }

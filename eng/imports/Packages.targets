@@ -108,6 +108,7 @@
 
     <!-- 3rd party -->
     <PackageReference Update="Newtonsoft.Json"                                                        Version="13.0.3" />
+    <PackageReference Update="IsExternalInit"                                                         Version="1.0.3" PrivateAssets="all" />
 
     <!-- Tests -->
     <PackageReference Update="Microsoft.NET.Test.Sdk"                                                 Version="17.5.0-preview-20221003-04" />

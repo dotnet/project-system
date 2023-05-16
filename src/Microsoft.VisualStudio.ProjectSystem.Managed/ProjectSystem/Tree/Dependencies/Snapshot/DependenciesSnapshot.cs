@@ -1,211 +1,66 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
-using Microsoft.VisualStudio.ProjectSystem.Properties;
-using Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Models;
-using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies;
-
 namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
 {
     /// <summary>
-    /// Immutable snapshot of all top-level project dependencies across all target frameworks.
+    /// Immutable snapshot of a project's dependencies, both configured and unconfigured.
     /// </summary>
+    /// <remarks>
+    /// Only models top-level (direct) dependencies. No transitive dependencies are included.
+    /// </remarks>
     internal sealed class DependenciesSnapshot
     {
-        #region Factories and private constructor
-
-        public static DependenciesSnapshot Empty { get; } = new DependenciesSnapshot(
-            activeTargetFramework: TargetFramework.Empty,
-            dependenciesByTargetFramework: ImmutableDictionary<TargetFramework, TargetedDependenciesSnapshot>.Empty);
-
-        /// <summary>
-        /// Updates the <see cref="TargetedDependenciesSnapshot"/> corresponding to <paramref name="changedTargetFramework"/>,
-        /// returning either:
-        /// <list type="bullet">
-        ///   <item>An updated <see cref="DependenciesSnapshot"/> object, or</item>
-        ///   <item>the immutable <paramref name="previousSnapshot"/> if no changes were made.</item>
-        /// </list>
-        /// </summary>
-        /// <returns>An updated snapshot, or <paramref name="previousSnapshot"/> if no changes occurred.</returns>
-        public static DependenciesSnapshot FromChanges(
-            DependenciesSnapshot previousSnapshot,
-            TargetFramework changedTargetFramework,
-            IDependenciesChanges? changes,
-            IProjectCatalogSnapshot? catalogs,
-            ImmutableArray<TargetFramework> targetFrameworks,
-            TargetFramework? activeTargetFramework)
+        public DependenciesSnapshot(
+            ProjectConfigurationSlice primarySlice,
+            ImmutableDictionary<ProjectConfigurationSlice, DependenciesSnapshotSlice> dependenciesBySlice,
+            ImmutableDictionary<DependencyGroupType, ImmutableArray<IDependency>> unconfiguredDependenciesByType)
         {
-            Requires.NotNull(previousSnapshot);
-            Requires.NotNull(changedTargetFramework);
+            Requires.Argument(dependenciesBySlice.ContainsKey(primarySlice), nameof(dependenciesBySlice), "Must contain the primary slice.");
 
-            var builder = previousSnapshot.DependenciesByTargetFramework.ToBuilder();
-
-            if (!builder.TryGetValue(changedTargetFramework, out TargetedDependenciesSnapshot? previousTargetedSnapshot))
-            {
-                previousTargetedSnapshot = TargetedDependenciesSnapshot.CreateEmpty(changedTargetFramework, catalogs);
-            }
-
-            bool builderChanged = false;
-
-            var newTargetedSnapshot = TargetedDependenciesSnapshot.FromChanges(
-                previousTargetedSnapshot,
-                changes,
-                catalogs);
-
-            if (!ReferenceEquals(previousTargetedSnapshot, newTargetedSnapshot))
-            {
-                builder[changedTargetFramework] = newTargetedSnapshot;
-                builderChanged = true;
-            }
-
-            SyncTargetFrameworks();
-
-            activeTargetFramework ??= previousSnapshot.ActiveTargetFramework;
-
-            if (builderChanged)
-            {
-                // Dependencies-by-target-framework has changed
-                return new DependenciesSnapshot(
-                    activeTargetFramework,
-                    builder.ToImmutable());
-            }
-
-            if (!activeTargetFramework.Equals(previousSnapshot.ActiveTargetFramework))
-            {
-                // The active target framework changed
-                return new DependenciesSnapshot(
-                    activeTargetFramework,
-                    previousSnapshot.DependenciesByTargetFramework);
-            }
-
-            // Nothing has changed, so return the same snapshot
-            return previousSnapshot;
-
-            void SyncTargetFrameworks()
-            {
-                // Only sync if a the full list of target frameworks has been provided
-                if (targetFrameworks.IsDefault)
-                {
-                    return;
-                }
-
-                // This is a long-winded way of doing this that minimises allocations
-
-                // Ensure all required target frameworks are present
-                foreach (TargetFramework targetFramework in targetFrameworks)
-                {
-                    if (!builder.ContainsKey(targetFramework))
-                    {
-                        builder.Add(targetFramework, TargetedDependenciesSnapshot.CreateEmpty(targetFramework, catalogs));
-                        builderChanged = true;
-                    }
-                }
-
-                // Remove any extra target frameworks
-                if (builder.Count != targetFrameworks.Length)
-                {
-                    // NOTE We need "ToList" here as "Except" is lazy, and attempts to remove from the builder
-                    // while iterating will throw "Collection was modified"
-                    IEnumerable<TargetFramework> targetFrameworksToRemove = builder.Keys.Except(targetFrameworks).ToList();
-
-                    foreach (TargetFramework targetFramework in targetFrameworksToRemove)
-                    {
-                        builder.Remove(targetFramework);
-                    }
-
-                    builderChanged = true;
-                }
-            }
+            PrimarySlice = primarySlice;
+            DependenciesBySlice = dependenciesBySlice;
+            UnconfiguredDependenciesByType = unconfiguredDependenciesByType;
         }
 
-        public DependenciesSnapshot SetTargets(
-            ImmutableArray<TargetFramework> targetFrameworks,
-            TargetFramework activeTargetFramework)
-        {
-            bool activeChanged = !activeTargetFramework.Equals(ActiveTargetFramework);
-
-            ImmutableDictionary<TargetFramework, TargetedDependenciesSnapshot> map = DependenciesByTargetFramework;
-
-            var diff = new SetDiff<TargetFramework>(map.Keys, targetFrameworks);
-
-            map = map.RemoveRange(diff.Removed);
-            map = map.AddRange(
-                diff.Added.Select(
-                    added => new KeyValuePair<TargetFramework, TargetedDependenciesSnapshot>(
-                        added,
-                        TargetedDependenciesSnapshot.CreateEmpty(added, null))));
-
-            if (activeChanged || !ReferenceEquals(map, DependenciesByTargetFramework))
-            {
-                return new DependenciesSnapshot(activeTargetFramework, map);
-            }
-
-            return this;
-        }
-
-        // Internal, for test use -- normal code should use the factory methods
-        internal DependenciesSnapshot(
-            TargetFramework activeTargetFramework,
-            ImmutableDictionary<TargetFramework, TargetedDependenciesSnapshot> dependenciesByTargetFramework)
-        {
-            Requires.NotNull(activeTargetFramework);
-            Requires.NotNull(dependenciesByTargetFramework);
-
-#if false
-            // The validation in this #if/#endif block is sound in theory, however is causing quite a few NFEs.
-            // For example https://github.com/dotnet/project-system/issues/6656.
-            //
-            // We have disabled it for now. The consequence of this test failing is that dependencies added to
-            // the tree are not exposed via extensibility APIs such as DTE/VSLangProj.
-            //
-            // At some point we should revisit how the dependencies tree models its target frameworks, likely
-            // as part of https://github.com/dotnet/project-system/issues/6183.
-
-            // We have seen NFEs where the active target framework is unsupported. Skipping validation in such cases is better than faulting the dataflow.
-            if (!activeTargetFramework.Equals(TargetFramework.Empty) &&
-                !activeTargetFramework.Equals(TargetFramework.Unsupported) &&
-                !dependenciesByTargetFramework.ContainsKey(activeTargetFramework))
-            {
-                string keyNames = dependenciesByTargetFramework.Count == 0
-                    ? "no items"
-                    : string.Join(", ", dependenciesByTargetFramework.Keys.Select(t => $"\"{t.TargetFrameworkMoniker}\""));
-
-                Requires.Argument(
-                    false,
-                    nameof(activeTargetFramework),
-                    $"Value \"{activeTargetFramework.TargetFrameworkMoniker}\" is unexpected. Must be a key in {nameof(dependenciesByTargetFramework)}, which contains {keyNames}.");
-            }
-#endif
-
-            ActiveTargetFramework = activeTargetFramework;
-            DependenciesByTargetFramework = dependenciesByTargetFramework;
-        }
-
-        #endregion
+        /// <summary>
+        /// Gets the slice representing the project's primary configuration.
+        /// </summary>
+        /// <remarks>
+        /// When a project has multiple slices, the primary one is the first in the list.
+        /// This information is used when creating the tree, where we only want one slice's
+        /// dependencies to be made available via DTE/hierarchy APIs. We use the primary slice
+        /// for consistency with other similar APIs.
+        /// </remarks>
+        public ProjectConfigurationSlice PrimarySlice { get; }
 
         /// <summary>
-        /// Gets the active target framework for project.
+        /// Gets per-slice dependency snapshots.
         /// </summary>
-        public TargetFramework ActiveTargetFramework { get; }
+        public ImmutableDictionary<ProjectConfigurationSlice, DependenciesSnapshotSlice> DependenciesBySlice { get; }
 
         /// <summary>
-        /// Gets a dictionary of dependencies by target framework.
+        /// Gets unconfigured dependencies, by their dependency type.
         /// </summary>
-        public ImmutableDictionary<TargetFramework, TargetedDependenciesSnapshot> DependenciesByTargetFramework { get; }
+        public ImmutableDictionary<DependencyGroupType, ImmutableArray<IDependency>> UnconfiguredDependenciesByType { get; }
 
         /// <summary>
-        /// Gets the maximum diagnostic level across all dependencies and targets within the snapshot.
+        /// Gets the maximum diagnostic level across all dependencies within the snapshot.
         /// </summary>
-        public DiagnosticLevel MaximumVisibleDiagnosticLevel
+        /// <remarks>
+        /// This value determines which overlay, if any, to display on the root "Dependencies" node in the
+        /// Solution Explorer, so that warnings and errors can be discovered even when the node is collapsed.
+        /// </remarks>
+        public DiagnosticLevel MaximumDiagnosticLevel
         {
             get
             {
-                DiagnosticLevel max = DiagnosticLevel.None;
+                DiagnosticLevel max = UnconfiguredDependenciesByType.GetMaximumDiagnosticLevel();
 
-                foreach ((_, TargetedDependenciesSnapshot snapshot) in DependenciesByTargetFramework)
+                foreach ((_, DependenciesSnapshotSlice snapshotSlice) in DependenciesBySlice)
                 {
-                    if (snapshot.MaximumVisibleDiagnosticLevel > max)
+                    if (snapshotSlice.MaximumDiagnosticLevel > max)
                     {
-                        max = snapshot.MaximumVisibleDiagnosticLevel;
+                        max = snapshotSlice.MaximumDiagnosticLevel;
                     }
                 }
 
@@ -213,6 +68,109 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
             }
         }
 
-        public override string ToString() => $"{DependenciesByTargetFramework.Count} target framework{(DependenciesByTargetFramework.Count == 1 ? "" : "s")}";
+        public override string ToString() => $"{DependenciesBySlice.Count} slice{(DependenciesBySlice.Count == 1 ? "" : "s")}";
+
+        internal DependenciesSnapshot Update(
+            ProjectConfigurationSlice primarySlice,
+            ImmutableDictionary<ProjectConfigurationSlice, DependenciesSnapshotSlice> configuredDependencies,
+            ImmutableDictionary<DependencyGroupType, ImmutableArray<IDependency>> unconfiguredDependencies)
+        {
+            if (ReferenceEquals(primarySlice, PrimarySlice) &&
+                ReferenceEquals(configuredDependencies, DependenciesBySlice) &&
+                ReferenceEquals(unconfiguredDependencies, UnconfiguredDependenciesByType))
+            {
+                return this;
+            }
+
+            return new(primarySlice, configuredDependencies, unconfiguredDependencies);
+        }
+
+#if DEBUG
+        public override bool Equals(object? obj)
+        {
+            if (ReferenceEquals(this, obj))
+                return true;
+
+            if (obj is not DependenciesSnapshot other)
+                return false;
+
+            if (!Equals(PrimarySlice, other.PrimarySlice))
+                return false;
+
+            if (!CheckBySliceByGroup(DependenciesBySlice, other.DependenciesBySlice))
+                return false;
+
+            if (!CheckByGroup(UnconfiguredDependenciesByType, other.UnconfiguredDependenciesByType))
+                return false;
+
+            return true;
+
+            static bool CheckBySliceByGroup(ImmutableDictionary<ProjectConfigurationSlice, DependenciesSnapshotSlice> a, ImmutableDictionary<ProjectConfigurationSlice, DependenciesSnapshotSlice> b)
+            {
+                if (a.Count != b.Count)
+                    return false;
+                if (!a.Keys.ToHashSet().SetEquals(b.Keys))
+                    return false;
+
+                foreach ((ProjectConfigurationSlice slice, DependenciesSnapshotSlice x) in a)
+                {
+                    DependenciesSnapshotSlice y = b[slice];
+
+                    if (!Equals(x.Slice, y.Slice))
+                        return false;
+                    if (!Equals(x.ConfiguredProject, y.ConfiguredProject))
+                        return false;
+                    if (!Equals(x.Catalogs, y.Catalogs))
+                        return false;
+
+                    if (!CheckByGroup(x.DependenciesByType, y.DependenciesByType))
+                        return false;
+                }
+
+                return true;
+            }
+
+            static bool CheckByGroup(ImmutableDictionary<DependencyGroupType, ImmutableArray<IDependency>> a, ImmutableDictionary<DependencyGroupType, ImmutableArray<IDependency>> b)
+            {
+                if (a.Count != b.Count)
+                    return false;
+                if (!a.Keys.ToHashSet().SetEquals(b.Keys))
+                    return false;
+
+                foreach ((DependencyGroupType groupType, ImmutableArray<IDependency> x) in a)
+                {
+                    ImmutableArray<IDependency> y = b[groupType];
+
+                    if (!CheckDependencies(x, y))
+                        return false;
+                }
+
+                return true;
+
+                static bool CheckDependencies(ImmutableArray<IDependency> a, ImmutableArray<IDependency> b)
+                {
+                    if (a.Length != b.Length)
+                        return false;
+
+                    for (int i = 0; i < a.Length; i++)
+                    {
+                        IDependency x = a[i];
+                        IDependency y = b[i];
+
+                        if (!Equals(x, y))
+                            return false;
+                    }
+
+                    return true;
+                }
+            }
+        }
+
+        public override int GetHashCode()
+        {
+            // Suppress warning, only in debug configuration.
+            return base.GetHashCode();
+        }
+#endif
     }
 }

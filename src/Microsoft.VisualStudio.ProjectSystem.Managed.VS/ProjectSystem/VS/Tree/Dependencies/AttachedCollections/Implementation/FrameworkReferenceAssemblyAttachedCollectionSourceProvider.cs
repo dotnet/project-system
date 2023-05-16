@@ -7,6 +7,8 @@ using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 using Microsoft.VisualStudio.Utilities;
 
+using Flags = Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.DependencyTreeFlags;
+
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections.Implementation
 {
     [AppliesToProject(ProjectCapability.DependenciesTree)]
@@ -19,7 +21,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedColl
 
         [ImportingConstructor]
         public FrameworkReferenceAssemblyAttachedCollectionSourceProvider(IRelationProvider relationProvider)
-            : base(DependencyTreeFlags.FrameworkDependency)
+            : base(Flags.FrameworkDependency)
         {
             _relationProvider = relationProvider;
         }

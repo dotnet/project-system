@@ -25,13 +25,18 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
         private readonly ICopyItemAggregator _copyItemAggregator;
 
         /// <summary>
-        /// The rules of data we want from <see cref="IProjectSubscriptionService.JointRuleSource"/>.
+        /// The set of rules we consume that come from evaluation.
         /// </summary>
-        private static ImmutableHashSet<string> JointRuleSchemaNames => ImmutableStringHashSet.EmptyOrdinal
+        private static ImmutableHashSet<string> EvaluationRuleNames { get; } = ImmutableStringHashSet.EmptyOrdinal
             .Add(ConfigurationGeneral.SchemaName)
+            .Add(CopyUpToDateMarker.SchemaName);
+
+        /// <summary>
+        /// The set of rules we consume that come from design-time build.
+        /// </summary>
+        private static ImmutableHashSet<string> BuildRuleNames { get; } = ImmutableStringHashSet.EmptyOrdinal
             .Add(ResolvedAnalyzerReference.SchemaName)
             .Add(ResolvedCompilationReference.SchemaName)
-            .Add(CopyUpToDateMarker.SchemaName)
             .Add(UpToDateCheckInput.SchemaName)
             .Add(UpToDateCheckOutput.SchemaName)
             .Add(UpToDateCheckBuilt.SchemaName)
@@ -76,7 +81,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             {
                 // Sync-link various sources to our transform block
                 ProjectDataSources.SyncLinkTo(
-                    source1.SourceBlock.SyncLinkOptions(DataflowOption.WithRuleNames(JointRuleSchemaNames)),
+                    source1.SourceBlock.SyncLinkOptions(DataflowOption.WithJointRuleNames(EvaluationRuleNames, BuildRuleNames)),
                     source2.SourceBlock.SyncLinkOptions(),
                     source3.SourceBlock.SyncLinkOptions(),
                     source4.SourceBlock.SyncLinkOptions(),

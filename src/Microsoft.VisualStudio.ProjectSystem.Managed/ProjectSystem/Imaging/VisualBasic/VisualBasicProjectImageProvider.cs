@@ -1,7 +1,5 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
-using Microsoft.VisualStudio.Imaging;
-
 namespace Microsoft.VisualStudio.ProjectSystem.Imaging.VisualBasic
 {
     /// <summary>
@@ -22,8 +20,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Imaging.VisualBasic
 
             return key switch
             {
-                ProjectImageKey.ProjectRoot => KnownMonikers.VBProjectNode.ToProjectSystemType(),
-                ProjectImageKey.SharedItemsImportFile or ProjectImageKey.SharedProjectRoot => KnownMonikers.VBSharedProject.ToProjectSystemType(),
+                ProjectImageKey.ProjectRoot => KnownProjectImageMonikers.VBProjectNode,
+                ProjectImageKey.SharedItemsImportFile or ProjectImageKey.SharedProjectRoot => KnownProjectImageMonikers.VBSharedProject,
                 _ => null
             };
         }

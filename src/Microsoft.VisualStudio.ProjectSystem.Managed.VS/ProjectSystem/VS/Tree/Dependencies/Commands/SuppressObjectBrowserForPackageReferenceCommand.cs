@@ -3,6 +3,8 @@
 using Microsoft.VisualStudio.ProjectSystem.Input;
 using Microsoft.VisualStudio.Threading;
 
+using Flags = Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.DependencyTreeFlags;
+
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Commands
 {
     /// <summary>
@@ -15,7 +17,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Commands
     {
         protected override Task<CommandStatusResult> GetCommandStatusAsync(IProjectTree node, bool focused, string? commandText, CommandStatus progressiveStatus)
         {
-            if (node.Flags.Contains(DependencyTreeFlags.PackageDependency))
+            if (node.Flags.Contains(Flags.PackageDependency))
             {
                 return GetCommandStatusResult.Suppressed;
             }
