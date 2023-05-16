@@ -7,17 +7,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Subscriptions;
 
 internal static class ConfiguredDependencyFilterBlock
 {
-    public static ISourceBlock<IProjectVersionedValue<T>> TransformSource<T>(ISourceBlock<IProjectVersionedValue<T>> source, DisposableBag disposables, string nameFormat)
-    {
-        var transform = DataflowBlockSlim.CreateTransformBlock(
-            static (IProjectVersionedValue<T> o) => o,
-            nameFormat: nameFormat);
-
-        disposables.Add(source.LinkTo(new FilterBlock<T>(transform), DataflowOption.PropagateCompletion));
-
-        return transform;
-    }
-
     /// <summary>
     /// Wraps a target block such that it may be safely combined with blocks from other slices.
     /// </summary>
@@ -35,13 +24,24 @@ internal static class ConfiguredDependencyFilterBlock
     /// components waiting for updates that will never arrive (hang).
     /// </para>
     /// <para>
-    /// This class might go away in future if we introduce an "unwrap" block that's suitable for use with
+    /// This might go away in future if we introduce an "unwrap" block that's suitable for use with
     /// slices. It would build this logic in directly. That would be desirable over this, as currently this
     /// requires all inputs (including potential extenders) to apply this to their data sources in order to
     /// work correctly.
     /// </para>
     /// </remarks>
-    internal sealed class FilterBlock<T> : ITargetBlock<IProjectVersionedValue<T>>
+    public static ISourceBlock<IProjectVersionedValue<T>> TransformSource<T>(ISourceBlock<IProjectVersionedValue<T>> source, DisposableBag disposables, string nameFormat)
+    {
+        var transform = DataflowBlockSlim.CreateTransformBlock(
+            static (IProjectVersionedValue<T> o) => o,
+            nameFormat: nameFormat);
+
+        disposables.Add(source.LinkTo(new FilterBlock<T>(transform), DataflowOption.PropagateCompletion));
+
+        return transform;
+    }
+
+    private sealed class FilterBlock<T> : ITargetBlock<IProjectVersionedValue<T>>
     {
         private readonly ITargetBlock<IProjectVersionedValue<T>> _target;
 
