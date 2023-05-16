@@ -53,7 +53,9 @@ These components may subscribe to project data within a given project configurat
 
 Within the .NET Project System, we export an implementation of [`IDependencySliceSubscriber`][IDependencySliceSubscriber] via the class [`MSBuildDependencySubscriber`][MSBuildDependencySubscriber]. This class produces snapshots of dependencies within a project configuration slice, where those dependencies are sourced from MSBuild items.
 
-Each dependency has a corresponding unresolved (from evaluation) and resolved (from build) MSBuild item. The set of items supported by this subscriber is defined by [`IMSBuildDependencyFactory`][IMSBuildDependencyFactory] exports, and the NET Project System ships factory implementations for the following kinds of MSBuild dependencies:
+Each dependency has a corresponding unresolved (from evaluation) and resolved (from build) MSBuild item. Dependencies coming from MSBuild items are obtained during evaluation, however at that point we do not know whether the claimed dependency is valid and able to be resolved. During the design-time build, dependencies are checked for validity, such as whether they exist and are compatible with the project. If so, they are _resolved_ and a resolved item is produced in the build results. [`MSBuildDependencySubscriber`][MSBuildDependencySubscriber] observes both the unresolved and resolved MSBuild items to determine the state of the dependency.
+
+The set of items supported by [`MSBuildDependencySubscriber`][MSBuildDependencySubscriber] is defined by [`IMSBuildDependencyFactory`][IMSBuildDependencyFactory] exports, and the NET Project System ships factory implementations for the following kinds of MSBuild dependencies:
 
 | Type      | Unresolved item type | Resolved item type           | Comment                              |
 |:----------|:---------------------|:-----------------------------|:-------------------------------------|
