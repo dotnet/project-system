@@ -4,7 +4,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
 {
     internal class PropertyPageData
     {
-        public PropertyPageData(string category, string propertyName, object value, List<object>? setValues = null)
+        public PropertyPageData(string category, string propertyName, object? value, List<object>? setValues = null)
         {
             Category = category;
             PropertyName = propertyName;
@@ -14,7 +14,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
         public string Category { get; }
         public string PropertyName { get; }
-        public object Value { get; }
+        public object? Value { get; }
         public List<object> SetValues { get; }
     }
 }
