@@ -111,10 +111,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
 
             Assert.NotNull(definition);
 
-            // BUG: https://github.com/dotnet/project-system/issues/5519
-            if (definition.Type.FullName == "Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Subscriptions.DependenciesSnapshotProvider")
-                return;
-
             foreach (KeyValuePair<MemberRef?, ExportDefinition> exportDefinitionPair in definition.ExportDefinitions)
             {
                 ExportDefinition export = exportDefinitionPair.Value;

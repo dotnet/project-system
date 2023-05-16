@@ -1,5 +1,7 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
+using Flags = Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.DependencyTreeFlags;
+
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Commands
 {
     /// <summary>
@@ -35,71 +37,71 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Commands
         {
             Requires.NotNull(projectItem);
 
-            if (projectItem.Flags.Contains(DependencyTreeFlags.DependenciesRootNode))
+            if (projectItem.Flags.Contains(Flags.DependenciesRootNode))
             {
                 menuCommandId = Menus.IDM_VS_CTXT_REFERENCEROOT;
             }
-            else if (projectItem.Flags.Contains(DependencyTreeFlags.TargetNode))
+            else if (projectItem.Flags.Contains(Flags.TargetNode))
             {
                 menuCommandId = Menus.IDM_VS_CTXT_DEPENDENCYTARGET;
             }
-            else if (projectItem.Flags.Contains(DependencyTreeFlags.AssemblyDependencyGroup))
+            else if (projectItem.Flags.Contains(Flags.AssemblyDependencyGroup))
             {
                 menuCommandId = Menus.IDM_VS_CTXT_REFERENCE_GROUP;
             }
-            else if (projectItem.Flags.Contains(DependencyTreeFlags.AssemblyDependency))
+            else if (projectItem.Flags.Contains(Flags.AssemblyDependency))
             {
                 menuCommandId = Menus.IDM_VS_CTXT_REFERENCE;
             }
-            else if (projectItem.Flags.Contains(DependencyTreeFlags.PackageDependencyGroup))
+            else if (projectItem.Flags.Contains(Flags.PackageDependencyGroup))
             {
                 menuCommandId = Menus.IDM_VS_CTXT_PACKAGEREFERENCE_GROUP;
             }
-            else if (projectItem.Flags.Contains(DependencyTreeFlags.PackageDependency))
+            else if (projectItem.Flags.Contains(Flags.PackageDependency))
             {
                 menuCommandId = Menus.IDM_VS_CTXT_PACKAGEREFERENCE;
             }
-            else if (projectItem.Flags.Contains(DependencyTreeFlags.ComDependencyGroup))
+            else if (projectItem.Flags.Contains(Flags.ComDependencyGroup))
             {
                 menuCommandId = Menus.IDM_VS_CTXT_COMREFERENCE_GROUP;
             }
-            else if (projectItem.Flags.Contains(DependencyTreeFlags.ComDependency))
+            else if (projectItem.Flags.Contains(Flags.ComDependency))
             {
                 menuCommandId = Menus.IDM_VS_CTXT_COMREFERENCE;
             }
-            else if (projectItem.Flags.Contains(DependencyTreeFlags.ProjectDependencyGroup))
+            else if (projectItem.Flags.Contains(Flags.ProjectDependencyGroup))
             {
                 menuCommandId = Menus.IDM_VS_CTXT_PROJECTREFERENCE_GROUP;
             }
-            else if (projectItem.Flags.Contains(DependencyTreeFlags.ProjectDependency))
+            else if (projectItem.Flags.Contains(Flags.ProjectDependency))
             {
                 menuCommandId = Menus.IDM_VS_CTXT_PROJECTREFERENCE;
             }
-            else if (projectItem.Flags.Contains(DependencyTreeFlags.SharedProjectDependency))
+            else if (projectItem.Flags.Contains(Flags.SharedProjectDependency))
             {
                 menuCommandId = Menus.IDM_VS_CTXT_SHAREDPROJECTREFERENCE;
             }
-            else if (projectItem.Flags.Contains(DependencyTreeFlags.AnalyzerDependencyGroup))
+            else if (projectItem.Flags.Contains(Flags.AnalyzerDependencyGroup))
             {
                 menuCommandId = Menus.IDM_VS_CTXT_ANALYZERREFERENCE_GROUP;
             }
-            else if (projectItem.Flags.Contains(DependencyTreeFlags.AnalyzerDependency))
+            else if (projectItem.Flags.Contains(Flags.AnalyzerDependency))
             {
                 menuCommandId = Menus.IDM_VS_CTXT_ANALYZERREFERENCE;
             }
-            else if (projectItem.Flags.Contains(DependencyTreeFlags.FrameworkDependencyGroup))
+            else if (projectItem.Flags.Contains(Flags.FrameworkDependencyGroup))
             {
                 menuCommandId = Menus.IDM_VS_CTXT_FRAMEWORKREFERENCE_GROUP;
             }
-            else if (projectItem.Flags.Contains(DependencyTreeFlags.FrameworkDependency))
+            else if (projectItem.Flags.Contains(Flags.FrameworkDependency))
             {
                 menuCommandId = Menus.IDM_VS_CTXT_FRAMEWORKREFERENCE;
             }
-            else if (projectItem.Flags.Contains(DependencyTreeFlags.SdkDependencyGroup))
+            else if (projectItem.Flags.Contains(Flags.SdkDependencyGroup))
             {
                 menuCommandId = Menus.IDM_VS_CTXT_SDKREFERENCE_GROUP;
             }
-            else if (projectItem.Flags.Contains(DependencyTreeFlags.SdkDependency))
+            else if (projectItem.Flags.Contains(Flags.SdkDependency))
             {
                 menuCommandId = Menus.IDM_VS_CTXT_SDKREFERENCE;
             }
@@ -132,9 +134,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Commands
 
                 if (!containsProhibited)
                 {
-                    if (item.Flags.Contains(DependencyTreeFlags.DependencyGroup) ||
-                        item.Flags.Contains(DependencyTreeFlags.TargetNode) ||
-                        item.Flags.Contains(DependencyTreeFlags.DependenciesRootNode))
+                    if (item.Flags.Contains(Flags.DependencyGroup) ||
+                        item.Flags.Contains(Flags.TargetNode) ||
+                        item.Flags.Contains(Flags.DependenciesRootNode))
                     {
                         containsProhibited = true;
                     }

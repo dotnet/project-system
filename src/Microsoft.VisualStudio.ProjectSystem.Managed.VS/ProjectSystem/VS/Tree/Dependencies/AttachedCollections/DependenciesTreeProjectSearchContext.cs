@@ -4,6 +4,8 @@ using Microsoft.VisualStudio.ProjectSystem.Properties;
 using Microsoft.VisualStudio.ProjectSystem.Utilities;
 using Microsoft.VisualStudio.Shell;
 
+using Flags = Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.DependencyTreeFlags;
+
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections
 {
     /// <summary>
@@ -44,7 +46,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedColl
 
             IProjectTree targetRootNode;
 
-            if (_dependenciesNode.FindChildWithFlags(DependencyTreeFlags.TargetNode) is null)
+            if (_dependenciesNode.FindChildWithFlags(Flags.TargetNode) is null)
             {
                 // Tree does not show any target nodes
                 targetRootNode = _dependenciesNode;

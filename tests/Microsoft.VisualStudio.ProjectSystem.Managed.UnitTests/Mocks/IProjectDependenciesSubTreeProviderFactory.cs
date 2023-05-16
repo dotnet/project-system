@@ -6,13 +6,12 @@ namespace Microsoft.VisualStudio.ProjectSystem
 {
     internal static class IProjectDependenciesSubTreeProviderFactory
     {
-        public static IProjectDependenciesSubTreeProvider2 Implement(
+        public static IProjectDependenciesSubTreeProvider Implement(
             string? providerType = null,
             IDependencyModel? createRootDependencyNode = null,
-            MockBehavior mockBehavior = MockBehavior.Strict,
-            ProjectTreeFlags? groupNodeFlags = null)
+            MockBehavior mockBehavior = MockBehavior.Strict)
         {
-            var mock = new Mock<IProjectDependenciesSubTreeProvider2>(mockBehavior);
+            var mock = new Mock<IProjectDependenciesSubTreeProvider>(mockBehavior);
 
             if (providerType is not null)
             {
@@ -22,11 +21,6 @@ namespace Microsoft.VisualStudio.ProjectSystem
             if (createRootDependencyNode is not null)
             {
                 mock.Setup(x => x.CreateRootDependencyNode()).Returns(createRootDependencyNode);
-            }
-
-            if (groupNodeFlags is not null)
-            {
-                mock.SetupGet(x => x.GroupNodeFlag).Returns(groupNodeFlags.Value);
             }
 
             return mock.Object;

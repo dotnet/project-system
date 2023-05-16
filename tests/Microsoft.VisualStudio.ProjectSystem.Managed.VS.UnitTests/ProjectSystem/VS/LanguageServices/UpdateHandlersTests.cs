@@ -40,7 +40,7 @@ public sealed class UpdateHandlersTests
     {
         using UpdateHandlers instance = new(new[] { Create("Rule1"), Create("Rule2"), Create("Rule3") });
 
-        Assert.Equal(new[] { "Rule1", "Rule2", "Rule3", "ConfigurationGeneral" }, instance.EvaluationRules);
+        Assert.Equal(ImmutableHashSet.Create("Rule1", "Rule2", "Rule3", "ConfigurationGeneral"), instance.EvaluationRules);
 
         static ExportFactory<IWorkspaceUpdateHandler> Create(string ruleName)
         {

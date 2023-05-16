@@ -3,7 +3,6 @@
 using System.Runtime.InteropServices;
 using System.Text;
 using Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies;
-using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies;
 
 namespace Microsoft.VisualStudio.ProjectSystem.CopyPaste
 {
