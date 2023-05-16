@@ -6,6 +6,8 @@ using Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 
+using Flags = Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.DependencyTreeFlags;
+
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Commands
 {
     /// <summary>
@@ -58,8 +60,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Commands
         private static bool CanNavigateTo(IProjectTree node)
         {
             return node.Flags.ContainsAny(
-                DependencyTreeFlags.ProjectDependency |
-                DependencyTreeFlags.SharedProjectDependency);
+                Flags.ProjectDependency |
+                Flags.SharedProjectDependency);
         }
 
         private async Task NavigateToAsync(IProjectTree node)

@@ -232,5 +232,33 @@ namespace Microsoft.VisualStudio.ProjectSystem
             TaskContinuationOptions.OnlyOnFaulted,
             TaskScheduler.Default);
         }
+
+        /// <summary>
+        ///     Attaches error handling to a block so that if it throws an unhandled exception,
+        ///     the error will be reported to the user.
+        /// </summary>
+        /// <param name="faultHandlerService">
+        ///     The <see cref="IProjectFaultHostHandler"/> that should handle the fault.
+        /// </param>
+        /// <param name="block">
+        ///     The block to attach error handling to.
+        /// </param>
+        /// <param name="project">
+        ///     The project related to the failure, if applicable. Can be <see langword="null"/>.
+        /// </param>
+        /// <param name="severity">
+        ///     The severity of the failure.
+        /// </param>
+        public static void RegisterFaultHandler(
+            this IProjectFaultHandlerService faultHandlerService,
+            IDataflowBlock block,
+            UnconfiguredProject? project,
+            ProjectFaultSeverity severity = ProjectFaultSeverity.Recoverable)
+        {
+            Task task = RegisterFaultHandlerAsync(faultHandlerService, block, project, severity);
+
+            // We don't actually care about the result of reporting the fault if one occurs
+            faultHandlerService.Forget(task, project);
+        }
     }
 }

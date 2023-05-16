@@ -18,7 +18,7 @@ internal sealed class UpdateHandlers : IDisposable
     public ImmutableArray<IProjectEvaluationHandler> EvaluationHandlers { get; }
     public ImmutableArray<ISourceItemsHandler> SourceItemHandlers { get; }
 
-    public ImmutableArray<string> EvaluationRules { get; }
+    public ImmutableHashSet<string> EvaluationRules { get; }
 
     private readonly ExportLifetimeContext<IWorkspaceUpdateHandler>[] _lifetimes;
 
@@ -35,8 +35,7 @@ internal sealed class UpdateHandlers : IDisposable
         EvaluationRules = EvaluationHandlers
             .Select(handler => handler.ProjectEvaluationRule) // Each handler specifies the evaluation rule it wants
             .Append(ConfigurationGeneral.SchemaName) // Needed when creating IWorkspaceProjectContext
-            .Distinct(StringComparers.RuleNames)
-            .ToImmutableArray();
+            .ToImmutableHashSet(StringComparers.RuleNames);
 
         ImmutableArray<T> Create<T>()
         {

@@ -2,6 +2,7 @@
 
 using System.Diagnostics.Contracts;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
+using Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies;
 
 namespace Microsoft.VisualStudio.ProjectSystem
 {
@@ -17,6 +18,20 @@ namespace Microsoft.VisualStudio.ProjectSystem
             return tree.Children.FirstOrDefault(
                 static (child, cap) => string.Equals(cap, child.Caption, StringComparisons.ProjectTreeCaptionIgnoreCase),
                 caption);
+        }
+
+        /// <summary>
+        /// Gets the direct child of <paramref name="tree"/> that represents <paramref name="dependency"/> if
+        /// one exists, otherwise <see langword="null"/>.
+        /// </summary>
+        [Pure]
+        public static IProjectTree? FindChildForDependency(this IProjectTree tree, IDependency dependency)
+        {
+            return tree.Children.FirstOrDefault(
+                static (child, dependency) =>
+                    StringComparers.ItemNames.Equals(dependency.Id, child.BrowseObjectProperties?.ItemName) ||
+                    StringComparers.ProjectTreeCaptionIgnoreCase.Equals(dependency.Caption, child.Caption),
+                dependency);
         }
 
         /// <summary>

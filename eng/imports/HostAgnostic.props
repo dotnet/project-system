@@ -66,6 +66,7 @@
 
     <!-- 3rd party -->
     <PackageReference Include="Newtonsoft.Json" />
+    <PackageReference Include="IsExternalInit" />
 
     <!-- Host-Agnostic Visual Studio -->
     <PackageReference Include="Microsoft.VisualStudio.ImageCatalog" />

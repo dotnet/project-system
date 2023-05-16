@@ -5,6 +5,8 @@ using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Threading;
 using Microsoft.VisualStudio.Utilities;
 
+using Flags = Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.DependencyTreeFlags;
+
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections
 {
     /// <summary>
@@ -95,7 +97,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedColl
             async Task SearchProjectAsync(UnconfiguredProject unconfiguredProject)
             {
                 IUnconfiguredProjectVsServices? projectVsServices = unconfiguredProject.Services.ExportProvider.GetExportedValue<IUnconfiguredProjectVsServices>();
-                IProjectTree? dependenciesNode = projectVsServices?.ProjectTree.CurrentTree?.FindChildWithFlags(DependencyTreeFlags.DependenciesRootNode);
+                IProjectTree? dependenciesNode = projectVsServices?.ProjectTree.CurrentTree?.FindChildWithFlags(Flags.DependenciesRootNode);
 
                 if (projectVsServices is not null && dependenciesNode is not null)
                 {
