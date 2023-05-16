@@ -180,3 +180,10 @@ static readonly Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Depend
 static readonly Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.DependencyTreeFlags.ShowEmptyProviderRootNode -> Microsoft.VisualStudio.ProjectSystem.ProjectTreeFlags
 static readonly Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.DependencyTreeFlags.SupportsRemove -> Microsoft.VisualStudio.ProjectSystem.ProjectTreeFlags
 static readonly Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.DependencyTreeFlags.UnresolvedDependencyFlags -> Microsoft.VisualStudio.ProjectSystem.ProjectTreeFlags
+Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.DependencyTreeFlags
+static readonly Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.DependencyTreeFlags.ResolvedDependencyFlags -> Microsoft.VisualStudio.ProjectSystem.ProjectTreeFlags
+static readonly Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.DependencyTreeFlags.SupportsBrowse -> Microsoft.VisualStudio.ProjectSystem.ProjectTreeFlags
+static readonly Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.DependencyTreeFlags.SupportsFolderBrowse -> Microsoft.VisualStudio.ProjectSystem.ProjectTreeFlags
+static readonly Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.DependencyTreeFlags.SupportsRemove -> Microsoft.VisualStudio.ProjectSystem.ProjectTreeFlags
+static readonly Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.DependencyTreeFlags.UnresolvedDependencyFlags -> Microsoft.VisualStudio.ProjectSystem.ProjectTreeFlags
+Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.DependenciesChangedEventArgs.DependenciesChangedEventArgs(Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.IProjectDependenciesSubTreeProvider provider, Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.IDependenciesChanges changes, System.Threading.CancellationToken token) -> void
