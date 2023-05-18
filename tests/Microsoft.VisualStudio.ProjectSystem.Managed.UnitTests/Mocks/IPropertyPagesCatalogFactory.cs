@@ -47,7 +47,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
             return catalog;
         }
 
-        private static IProperty CreateProperty(string name, object value, List<object>? setValues = null)
+        private static IProperty CreateProperty(string name, object? value, List<object>? setValues = null)
         {
             var property = new Mock<IProperty>();
             property.SetupGet(o => o.Name)
@@ -56,8 +56,8 @@ namespace Microsoft.VisualStudio.ProjectSystem
             property.Setup(o => o.GetValueAsync())
                     .ReturnsAsync(value);
 
-            property.As<IEvaluatedProperty>().Setup(p => p.GetEvaluatedValueAtEndAsync()).ReturnsAsync(value.ToString());
-            property.As<IEvaluatedProperty>().Setup(p => p.GetEvaluatedValueAsync()).ReturnsAsync(value.ToString());
+            property.As<IEvaluatedProperty>().Setup(p => p.GetEvaluatedValueAtEndAsync()).ReturnsAsync(value?.ToString() ?? string.Empty);
+            property.As<IEvaluatedProperty>().Setup(p => p.GetEvaluatedValueAsync()).ReturnsAsync(value?.ToString() ?? string.Empty);
 
             if (setValues is not null)
             {
