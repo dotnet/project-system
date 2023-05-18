@@ -388,8 +388,8 @@
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|DefineConstants|Description">
-        <source>Specifies custom conditional compilation constants for your application.</source>
-        <target state="translated">アプリケーションのカスタム条件付きコンパイル定数を指定します。</target>
+        <source>Specifies custom conditional compilation constants for your application. Note that values are optional, for the optional behavior leave the value blank. If the value is a string, please add quotation marks around it.</source>
+        <target state="needs-review-translation">アプリケーションのカスタム条件付きコンパイル定数を指定します。</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|DefineConstants|DisplayName">

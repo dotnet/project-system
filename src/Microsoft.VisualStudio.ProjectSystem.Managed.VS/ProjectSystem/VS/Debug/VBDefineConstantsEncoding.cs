@@ -6,8 +6,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
 {
 
     [Export(typeof(INameValuePairListEncoding))]
-    [ExportMetadata("Encoding", "NameQuotedValuePairListEncoding")]
-    internal sealed class NameQuotedValuePairListEncoding : INameValuePairListEncoding
+    [ExportMetadata("Encoding", "VBDefineConstantsEncoding")]
+    internal sealed class VBDefineConstantsEncoding : INameValuePairListEncoding
     {
         public IEnumerable<(string Name, string Value)> Parse(string value)
         {
@@ -18,8 +18,20 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             }
             foreach (var entry in ReadEntries(value))
             {
-                var (entryKey, entryValue) = SplitEntry(entry);
-                yield return (DecodeCharacters(entryKey), StripQuotes(DecodeCharacters(entryValue)));
+                (string, string) resultingEntry = ("", "");
+                try
+                {
+                    (string entryKey, string entryValue) = SplitPairedEntry(entry);
+                    resultingEntry = (DecodeCharacters(entryKey), DecodeCharacters(entryValue));
+                }
+                // if not key value pair entry, tries to parse for single value entry
+                // empty string in the section position signifies single value entry
+                catch (FormatException)
+                {
+                    resultingEntry = (DecodeCharacters(SplitSingleEntry(entry)), "");
+                }
+                yield return resultingEntry;
+                
             }
 
             static IEnumerable<string> ReadEntries(string rawText)
@@ -47,7 +59,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
                 yield return rawText.Substring(entryStart);
             }
 
-            static (string EncodedKey, string EncodedValue) SplitEntry(string entry)
+            static (string EncodedKey, string EncodedValue) SplitPairedEntry(string entry)
             {
                 bool escaped = false;
                 for (int i = 0; i < entry.Length; i++)
@@ -58,7 +70,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
                         var value = entry.Substring(i + 1);
                         if (name.Length == 0 || value.Length == 0)
                         {
-                            throw new FormatException($"Expected valid name value pair.");
+                            throw new FormatException($"Expected valid name value pair for defining custom constants.");
                         }
                         return (name, value);
                     }
@@ -71,29 +83,49 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
                         escaped = false;
                     }
                 }
-                throw new FormatException("Expected valid name value pair.");
+                throw new FormatException("Expected valid name value pair for defining custom constants.");
+            }
+
+            static string SplitSingleEntry(string entry)
+            {
+                bool escaped = false;
+                for (int i = 0; i < entry.Length; i++)
+                {
+                    if (entry[i] == '=' && !escaped)
+                    {
+                        throw new FormatException($"Expected valid name value pair for defining custom constants.");
+                    }
+                    else if (i == entry.Length - 1)
+                    {
+                        return entry;
+                    }
+                    escaped = entry[i] == '/' && !escaped;
+                }
+                throw new FormatException("Expected valid name value pair for defining custom constants.");
             }
 
             static string DecodeCharacters(string value)
             {
-
                 return value.Replace("/\"", "\"").Replace("/=", "=").Replace("/,", ",").Replace("//", "/");
-            }
-
-            static string StripQuotes(string value)
-            {
-                if (value.StartsWith("\"") && value.EndsWith("\"") && value.Length >= 2)
-                {
-                    return value.Substring(1, value.Length - 2);
-                }
-                return value;
             }
         }
 
         public string Format(IEnumerable<(string Name, string Value)> pairs)
         {
-            return string.Join(",", pairs.Select(pair => $"{EncodeCharacters(pair.Name)}=\"{EncodeCharacters(pair.Value)}\""));
+            return string.Join(",", pairs.Select(EncodePair));
 
+            static string EncodePair((string Name, string Value) pair)
+            {
+                if (string.IsNullOrEmpty(pair.Value))
+                {
+                    return EncodeCharacters(pair.Name);
+                }
+                else
+                {
+                    return $"{EncodeCharacters(pair.Name)}={EncodeCharacters(pair.Value)}";
+                }
+            }
+            
             static string EncodeCharacters(string value)
             {
                 int i = value.Length - 1;
