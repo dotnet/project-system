@@ -11,7 +11,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
             return Create(UnconfiguredProjectFactory.Create());
         }
 
-        public static ProjectProperties Create(string category, string propertyName, string value)
+        public static ProjectProperties Create(string category, string propertyName, string? value)
         {
             var data = new PropertyPageData(category, propertyName, value);
 

@@ -4,7 +4,6 @@
 
 using Microsoft.VisualStudio.IO;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
-using Microsoft.VisualStudio.ProjectSystem.SpecialFileProviders;
 using Microsoft.VisualStudio.Threading;
 using Microsoft.VisualStudio.Threading.Tasks;
 using Newtonsoft.Json;
@@ -21,7 +20,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             activeProfileValue.Setup(s => s.Name).Returns(activeProfile);
             var debuggerData = new PropertyPageData(ProjectDebugger.SchemaName, ProjectDebugger.ActiveDebugProfileProperty, activeProfileValue.Object);
 
-            var specialFilesManager = IActiveConfiguredValueFactory.ImplementValue<IAppDesignerFolderSpecialFileProvider?>(() => IAppDesignerFolderSpecialFileProviderFactory.ImplementGetFile(appDesignerFolder));
+            var projectProperties = ProjectPropertiesFactory.Create(AppDesigner.SchemaName, AppDesigner.FolderNameProperty, appDesignerFolder);
+            var activeConfigurationProjectProperties = IActiveConfiguredValueFactory.ImplementValue<ProjectProperties?>(() => projectProperties);
             var project = UnconfiguredProjectFactory.Create(fullPath: @"c:\test\Project1\Project1.csproj");
             var properties = ProjectPropertiesFactory.Create(project, new[] { debuggerData });
             var threadingService = IProjectThreadingServiceFactory.Create();
@@ -35,7 +35,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
 #pragma warning disable VSSDK005
             var joinableTaskContext = new JoinableTaskContext();
 #pragma warning restore VSSDK005
-            var provider = new LaunchSettingsUnderTest(project, projectServices, fileSystem ?? new IFileSystemMock(), commonServices, null, specialFilesManager, projectFaultHandlerService, new DefaultLaunchProfileProvider(project), joinableTaskContext);
+            var provider = new LaunchSettingsUnderTest(project, projectServices, fileSystem ?? new IFileSystemMock(), commonServices, null, activeConfigurationProjectProperties, projectFaultHandlerService, new DefaultLaunchProfileProvider(project), joinableTaskContext);
             return provider;
         }
 
@@ -1042,11 +1042,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             IFileSystem fileSystem,
             IUnconfiguredProjectCommonServices commonProjectServices,
             IActiveConfiguredProjectSubscriptionService? projectSubscriptionService,
-            IActiveConfiguredValue<IAppDesignerFolderSpecialFileProvider?> appDesignerFolderSpecialFileProvider,
+            IActiveConfiguredValue<ProjectProperties?> projectProperties,
             IProjectFaultHandlerService projectFaultHandler,
             IDefaultLaunchProfileProvider defaultLaunchProfileProvider,
             JoinableTaskContext joinableTaskContext)
-          : base(project, projectServices, fileSystem, commonProjectServices, projectSubscriptionService, appDesignerFolderSpecialFileProvider, projectFaultHandler, joinableTaskContext)
+          : base(project, projectServices, fileSystem, commonProjectServices, projectSubscriptionService, projectProperties, projectFaultHandler, joinableTaskContext)
         {
             // Block the code from setting up one on the real file system. Since we block, it we need to set up the fileChange scheduler manually
             FileWatcher = new SimpleFileWatcher();

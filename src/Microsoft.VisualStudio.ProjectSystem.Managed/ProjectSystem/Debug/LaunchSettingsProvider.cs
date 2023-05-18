@@ -3,7 +3,6 @@
 using System.Threading.Tasks.Dataflow;
 using Microsoft.VisualStudio.IO;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
-using Microsoft.VisualStudio.ProjectSystem.SpecialFileProviders;
 using Microsoft.VisualStudio.Threading;
 using Microsoft.VisualStudio.Threading.Tasks;
 
@@ -39,7 +38,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         private const string ErrorProfileErrorMessageSettingsKey = "ErrorString";
 
         private readonly UnconfiguredProject _project;
-        private readonly IActiveConfiguredValue<IAppDesignerFolderSpecialFileProvider?> _appDesignerSpecialFileProvider;
+        private readonly IActiveConfiguredValue<ProjectProperties?> _projectProperties;
         private readonly IProjectFaultHandlerService _projectFaultHandler;
         private readonly AsyncLazy<string> _launchSettingsFilePath;
         private readonly IUnconfiguredProjectServices _projectServices;
@@ -64,7 +63,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             IFileSystem fileSystem,
             IUnconfiguredProjectCommonServices commonProjectServices,
             IActiveConfiguredProjectSubscriptionService? projectSubscriptionService,
-            IActiveConfiguredValue<IAppDesignerFolderSpecialFileProvider?> appDesignerSpecialFileProvider,
+            IActiveConfiguredValue<ProjectProperties?> projectProperties,
             IProjectFaultHandlerService projectFaultHandler,
             JoinableTaskContext joinableTaskContext)
             : base(projectServices, synchronousDisposal: false, registerDataSource: false)
@@ -83,7 +82,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             DefaultLaunchProfileProviders = new OrderPrecedenceImportCollection<IDefaultLaunchProfileProvider>(ImportOrderPrecedenceComparer.PreferenceOrder.PreferredComesFirst, project);
 
             _projectSubscriptionService = projectSubscriptionService;
-            _appDesignerSpecialFileProvider = appDesignerSpecialFileProvider;
+            _projectProperties = projectProperties;
             _projectFaultHandler = projectFaultHandler;
             _launchSettingsFilePath = new AsyncLazy<string>(GetLaunchSettingsFilePathNoCacheAsync, commonProjectServices.ThreadingService.JoinableTaskFactory);
 
@@ -898,12 +897,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             // even though it can change over the lifetime of the project. We should fix this and convert to using dataflow
             // see: https://github.com/dotnet/project-system/issues/2316.
 
-            string? folder = null;
-            if (_appDesignerSpecialFileProvider.Value is not null)
-                folder = await _appDesignerSpecialFileProvider.Value.GetFileAsync(SpecialFiles.AppDesigner, SpecialFileFlags.FullPath);
-
-            if (folder is null)  // AppDesigner capability not present, or the project has set AppDesignerFolder to empty
-                folder = Path.GetDirectoryName(_commonProjectServices.Project.FullPath);
+            // Default to the project directory if we're not able to get the AppDesigner folder.
+            string folder = Path.GetDirectoryName(_commonProjectServices.Project.FullPath);
+            
+            if (_projectProperties.Value is not null)
+            {
+                AppDesigner appDesignerProperties = await _projectProperties.Value.GetAppDesignerPropertiesAsync();
+                if (await appDesignerProperties.FolderName.GetValueAsync() is string appDesignerFolderName)
+                {
+                    folder = Path.Combine(folder, appDesignerFolderName);
+                }
+            }
 
             return Path.Combine(folder, LaunchSettingsFilename);
         }
