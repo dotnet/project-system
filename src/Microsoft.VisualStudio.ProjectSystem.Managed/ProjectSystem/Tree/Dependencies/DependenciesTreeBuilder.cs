@@ -236,7 +236,7 @@ internal sealed class DependenciesTreeBuilder
 
                 groupNode = CreateOrUpdateNode(
                     parentNode: dependenciesNode,
-                node: groupNode,
+                    node: groupNode,
                     caption: groupType.Caption,
                     flags: groupType.GroupNodeFlags,
                     icon: GetGroupIcon(dependencies, groupType),

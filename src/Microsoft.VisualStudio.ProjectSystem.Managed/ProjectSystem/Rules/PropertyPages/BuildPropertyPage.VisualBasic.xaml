@@ -450,13 +450,9 @@
                   DisplayName="Custom constants"
                   HelpUrl="https://go.microsoft.com/fwlink/?linkid=2196264"
                   Category="Advanced"
-                  Description="Specifies custom conditional compilation constants for your application.">
+                  Description="Specifies custom conditional compilation constants for your application. Add quotes around values.">
     <StringProperty.ValueEditors>
-      <ValueEditor EditorType="NameValueList">
-        <ValueEditor.Metadata>
-          <NameValuePair Name="Encoding" Value="NameQuotedValuePairListEncoding" />
-        </ValueEditor.Metadata>
-      </ValueEditor>
+      <ValueEditor EditorType="NameValueList" />
     </StringProperty.ValueEditors>
   </StringProperty>
 
