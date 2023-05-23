@@ -26,7 +26,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
         /// <param name="inputItems">The set of input items</param>
         /// <param name="keyAccessor">A function for mapping from an input item to a key</param>
         /// <param name="itemTransformer">A function for mapping an input item to an output item</param>
-        protected ImmutablePropertyCollection(IEnumerable<U> inputItems, Func<U, string> keyAccessor, Func<U, T> itemTransformer)
+        protected ImmutablePropertyCollection(ImmutableArray<U> inputItems, Func<U, string> keyAccessor, Func<U, T> itemTransformer)
         {
             // Build a list, to maintain order for index-based lookup.
             var itemList = new List<T>();
