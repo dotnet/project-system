@@ -47,5 +47,22 @@ namespace Microsoft.VisualStudio
 
             return default;
         }
+
+        public static ImmutableArray<TOutput> ToImmutableArray<TOutput, TKey, TValue>(this IImmutableDictionary<TKey, TValue> dictionary, Func<TKey, TValue, TOutput> factory)
+        {
+            if (dictionary.Count == 0)
+            {
+                return ImmutableArray<TOutput>.Empty;
+            }
+
+            ImmutableArray<TOutput>.Builder builder = ImmutableArray.CreateBuilder<TOutput>(initialCapacity: dictionary.Count);
+
+            foreach ((TKey key, TValue value) in dictionary)
+            {
+                builder.Add(factory(key, value));
+            }
+
+            return builder.MoveToImmutable();
+        }
     }
 }
