@@ -28,6 +28,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
         /// <param name="itemTransformer">A function for mapping an input item to an output item</param>
         protected ImmutablePropertyCollection(ImmutableArray<U> inputItems, Func<U, string> keyAccessor, Func<U, T> itemTransformer)
         {
+            // If the input is empty, don't allocate anything further.
+            if (inputItems.Length == 0)
+            {
+                _items = Array.Empty<T>();
+                _itemsByName = ImmutableDictionary<string, T>.Empty;
+                return;
+            }
+
             // Build a list, to maintain order for index-based lookup.
             var itemList = new List<T>();
             
