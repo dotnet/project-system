@@ -99,8 +99,8 @@ internal static class ProjectAndExecutableLaunchHandlerHelpers
     ///   Returns the path to the executable to run based on the <c>RunCommand</c> property.
     /// </summary>
     /// <remarks>
-    ///   If the returned value is not <see langword="null"/> it is guaranteed to end in ".exe", but it is not
-    ///   guaranteed to be a full path or that the file exists.
+    ///   If the returned value is not <see langword="null"/> it is guaranteed to end in ".exe" (on platforms
+    ///   that use that extension), but it is not guaranteed to be a full path or that the file exists.
     /// </remarks>
     /// <returns>
     ///   <list type="bullet">
@@ -127,7 +127,8 @@ internal static class ProjectAndExecutableLaunchHandlerHelpers
 
         // If dotnet.exe is used runCommand returns just "dotnet". The debugger is going to require a full path so we need to append the .exe
         // extension.
-        if (!runCommand.EndsWith(".exe", StringComparisons.Paths))
+        if (Environment.OSVersion.Platform == PlatformID.Win32NT
+            && !runCommand.EndsWith(".exe", StringComparisons.Paths))
         {
             runCommand += ".exe";
         }
