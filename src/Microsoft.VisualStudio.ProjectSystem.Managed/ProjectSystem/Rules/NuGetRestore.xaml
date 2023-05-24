@@ -198,4 +198,8 @@
                   ReadOnly="True"
                   Visible="False" />
 
+  <StringProperty Name="WindowsTargetPlatformMinVersion"
+                  ReadOnly="True"
+                  Visible="False" />
+
 </Rule>

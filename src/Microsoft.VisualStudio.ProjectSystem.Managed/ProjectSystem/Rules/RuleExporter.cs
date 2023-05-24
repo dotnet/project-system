@@ -112,6 +112,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.Rules
         private static class PackageRestoreRules
         {
             /// <summary>
+            ///     Represents the evaluated <c>ProjectReference</c> items that are passed to restore.
+            /// </summary>
+            [ExportRule(nameof(EvaluatedProjectReference), PropertyPageContexts.ProjectSubscriptionService)]
+            [AppliesTo(ProjectCapabilities.PackageReferences)]
+            [Order(Order.Default)]
+            public static int EvaluatedProjectReferenceRule;
+
+            /// <summary>
             ///     Represents the design-time build items containing CLI tool references (legacy) that are passed to restore.
             /// </summary>
             [ExportRule(nameof(DotNetCliToolReference), PropertyPageContexts.ProjectSubscriptionService)]
