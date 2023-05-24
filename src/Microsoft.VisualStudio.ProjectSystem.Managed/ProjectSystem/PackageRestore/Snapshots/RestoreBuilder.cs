@@ -45,26 +45,23 @@ namespace Microsoft.VisualStudio.ProjectSystem.PackageRestore
                 properties.GetPropertyOrEmpty(NuGetRestore.TargetFrameworksProperty),
                 EmptyTargetFrameworks.Add(frameworkInfo),
                 ToReferenceItems(toolReferences.Items));
-        }
 
-        private static ImmutableArray<ProjectProperty> ToProjectProperties(IImmutableDictionary<string, string> properties)
-        {
-            return ImmutableArray.CreateRange(properties.Select(x => new ProjectProperty(x.Key, x.Value)));
-        }
+            static ImmutableArray<ProjectProperty> ToProjectProperties(IImmutableDictionary<string, string> properties)
+            {
+                return properties.ToImmutableArray(static (key, value) => new ProjectProperty(key, value));
+            }
 
-        private static ImmutableArray<ReferenceItem> ToReferenceItems(IImmutableDictionary<string, IImmutableDictionary<string, string>> items)
-        {
-            return ImmutableArray.CreateRange(items.Select(x => ToReferenceItem(x.Key, x.Value)));
-        }
+            static ImmutableArray<ReferenceItem> ToReferenceItems(IImmutableDictionary<string, IImmutableDictionary<string, string>> items)
+            {
+                return items.ToImmutableArray(static (key, value) => ToReferenceItem(key, value));
 
-        private static ReferenceItem ToReferenceItem(string name, IImmutableDictionary<string, string> metadata)
-        {
-            return new ReferenceItem(name, ToReferenceProperties(metadata));
-        }
+                static ReferenceItem ToReferenceItem(string name, IImmutableDictionary<string, string> metadata)
+                {
+                    var properties = metadata.ToImmutableArray(static (key, value) => new ReferenceProperty(key, value));
 
-        private static ImmutableArray<ReferenceProperty> ToReferenceProperties(IImmutableDictionary<string, string> metadata)
-        {
-            return ImmutableArray.CreateRange(metadata.Select(x => new ReferenceProperty(x.Key, x.Value)));
+                    return new ReferenceItem(name, properties);
+                }
+            }
         }
     }
 }
