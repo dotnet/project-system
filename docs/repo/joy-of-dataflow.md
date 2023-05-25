@@ -18,7 +18,7 @@ Do not use this recipe if the output data can be produced by a 1-to-1 transforma
 4. Override and implement the `Initialize` method. This is where the dataflow block(s) will be created and where you will perform any setup required to start producing data.
     1. Call `base.Initialize()` to ensure the base class is initialized.
     2. Create your dataflow block using one of the `DataflowBlockSlim.Create*` methods. Store this block in a field (typically this is named `_broadcastBlock`).
-    3. Creating the "public" view of the dataflow block using the `SafePublicize()` extension method on the block created in the previous step, and store this block in a field (typically the field is named `_publicBlock`). This is the block that will be exposed to consumers of the data source. The `SafePublicize()` method ensures that consumers cannot fault or complete the block; this would cause the data source to stop producing data, and typically we do not want other code to have control of that.
+    3. Create the "public" view of the dataflow block using the `SafePublicize()` extension method on the block created in the previous step, and store this block in a field (typically the field is named `_publicBlock`). This is the block that will be exposed to consumers of the data source. The `SafePublicize()` method ensures that consumers cannot fault or complete the block; this would cause the data source to stop producing data, and typically we do not want other code to have control of that.
     4. Perform any other setup required to start producing data.
 5. Override and implement the `SourceBlock` property. This should call `EnsureInitialized()` (to guarantee that `Initialize` method is called) and then return the `_publicBlock` field.
 6. Implement your logic for pushing information to the `_broadcastBlock`. Typically this will include:
@@ -30,8 +30,8 @@ Do not use this recipe if the output data can be produced by a 1-to-1 transforma
 ### Examples
 
 - [`LaunchSettingsProvider`](../../src/Microsoft.VisualStudio.ProjectSystem.Managed/ProjectSystem/Debug/LaunchSettingsProvider.cs)
-- [`DesignTimeInputsFileWatcher`](..\../src/Microsoft.VisualStudio.ProjectSystem.Managed.VS/ProjectSystem/VS/TempPE/DesignTimeInputsFileWatcher.cs)
+- [`DesignTimeInputsFileWatcher`](../../src/Microsoft.VisualStudio.ProjectSystem.Managed.VS/ProjectSystem/VS/TempPE/DesignTimeInputsFileWatcher.cs)
 
 ### Remarks
 
-Note that both example not only produce data, they also consume data from other dataflows. However, their output data cannot be produced solely by transforming the inputs, so they are still considered "new" data sources.
+Note that both examples not only produce data, they also consume data from other dataflows. However, their output data cannot be produced solely by transforming the inputs, so they are still considered "new" data sources.
