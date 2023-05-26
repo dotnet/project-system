@@ -708,10 +708,13 @@
       </Item>
       <Item ItemId=";StringProperty|DefineConstants|Description" ItemType="0" PsrId="308" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Specifies custom conditional compilation constants for your application.]]></Val>
+          <Val><![CDATA[Specifies custom conditional compilation constants for your application. Note that values are optional, for the optional behavior leave the value blank. If the value is a string, please add quotation marks around it.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Określa niestandardowe stałe kompilacji warunkowej dla aplikacji.]]></Val>
+            <Val><![CDATA[Określa niestandardowe stałe kompilacji warunkowej dla aplikacji. Należy pamiętać, że wartości są opcjonalne. W przypadku zachowania opcjonalnego pozostaw pustą wartość. Jeśli wartość jest ciągiem, dodaj wokół niej cudzysłowy.]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[Specifies custom conditional compilation constants for your application.]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>

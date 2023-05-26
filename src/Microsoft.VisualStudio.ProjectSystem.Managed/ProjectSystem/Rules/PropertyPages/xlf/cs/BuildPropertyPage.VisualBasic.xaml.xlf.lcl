@@ -708,10 +708,13 @@
       </Item>
       <Item ItemId=";StringProperty|DefineConstants|Description" ItemType="0" PsrId="308" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Specifies custom conditional compilation constants for your application.]]></Val>
+          <Val><![CDATA[Specifies custom conditional compilation constants for your application. Note that values are optional, for the optional behavior leave the value blank. If the value is a string, please add quotation marks around it.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Určuje vlastní konstanty podmíněné kompilace pro vaši aplikaci.]]></Val>
+            <Val><![CDATA[Určuje vlastní konstanty podmíněné kompilace pro vaši aplikaci. Všimněte si, že hodnoty jsou volitelné. Pro nepovinné chování ponechte hodnotu prázdnou. Pokud je hodnota řetězec, přidejte kolem ní uvozovky.]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[Specifies custom conditional compilation constants for your application.]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
