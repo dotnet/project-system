@@ -389,7 +389,7 @@
       </trans-unit>
       <trans-unit id="StringProperty|DefineConstants|Description">
         <source>Specifies custom conditional compilation constants for your application. Note that values are optional, for the optional behavior leave the value blank. If the value is a string, please add quotation marks around it.</source>
-        <target state="new">Specifies custom conditional compilation constants for your application. Note that values are optional, for the optional behavior leave the value blank. If the value is a string, please add quotation marks around it.</target>
+        <target state="translated">為您的應用程式指定自訂條件式編譯常數。請注意，值是選擇性的，對於選擇性行為，請將值留白。如果值是字串，請在周圍加上引號。</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|DefineConstants|DisplayName">

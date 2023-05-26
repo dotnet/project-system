@@ -389,7 +389,7 @@
       </trans-unit>
       <trans-unit id="StringProperty|DefineConstants|Description">
         <source>Specifies custom conditional compilation constants for your application. Note that values are optional, for the optional behavior leave the value blank. If the value is a string, please add quotation marks around it.</source>
-        <target state="new">Specifies custom conditional compilation constants for your application. Note that values are optional, for the optional behavior leave the value blank. If the value is a string, please add quotation marks around it.</target>
+        <target state="translated">Określa niestandardowe stałe kompilacji warunkowej dla aplikacji. Należy pamiętać, że wartości są opcjonalne. W przypadku zachowania opcjonalnego pozostaw pustą wartość. Jeśli wartość jest ciągiem, dodaj wokół niej cudzysłowy.</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|DefineConstants|DisplayName">
