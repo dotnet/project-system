@@ -389,7 +389,7 @@
       </trans-unit>
       <trans-unit id="StringProperty|DefineConstants|Description">
         <source>Specifies custom conditional compilation constants for your application. Note that values are optional, for the optional behavior leave the value blank. If the value is a string, please add quotation marks around it.</source>
-        <target state="new">Specifies custom conditional compilation constants for your application. Note that values are optional, for the optional behavior leave the value blank. If the value is a string, please add quotation marks around it.</target>
+        <target state="translated">Указывает настраиваемые константы компиляции для вашего приложения. Обратите внимание, что это необязательные значения. Для необязательного поведения оставьте это значение пустым. Если значение представляет собой строку, заключите ее в кавычки.</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|DefineConstants|DisplayName">
