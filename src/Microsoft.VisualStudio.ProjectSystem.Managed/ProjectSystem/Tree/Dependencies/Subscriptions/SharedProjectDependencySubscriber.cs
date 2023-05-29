@@ -16,7 +16,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Subscriptions;
 /// for slices upon request.
 /// </remarks>
 [Export(typeof(IDependencySliceSubscriber))]
-[AppliesTo(ProjectCapability.DependenciesTree)]
+[AppliesTo(ProjectCapability.DependenciesTree + " & " + ProjectCapabilities.SharedProjectReferences)]
 internal sealed class SharedProjectDependencySubscriber : IDependencySliceSubscriber
 {
     private readonly UnconfiguredProject _unconfiguredProject;

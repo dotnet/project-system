@@ -3,7 +3,7 @@
 namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Subscriptions.MSBuildDependencies;
 
 [Export(typeof(IMSBuildDependencyFactory))]
-[AppliesTo(ProjectCapability.DependenciesTree)]
+[AppliesTo(ProjectCapability.DependenciesTree + " & " + ProjectCapability.DotNet)] // There's no "FrameworkReferences" capability
 internal sealed class FrameworkDependencyFactory : MSBuildDependencyFactoryBase
 {
     // Framework references were introduced in .NET Core 2.0

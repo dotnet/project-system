@@ -6,7 +6,7 @@ using Microsoft.VisualStudio.ProjectSystem.Properties;
 namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Subscriptions.MSBuildDependencies;
 
 [Export(typeof(IMSBuildDependencyFactory))]
-[AppliesTo(ProjectCapability.DependenciesTree)]
+[AppliesTo(ProjectCapability.DependenciesTree + " & (" + ProjectCapabilities.AssemblyReferences + " | " + ProjectCapabilities.WinRTReferences + ")")]
 internal sealed class AssemblyDependencyFactory : MSBuildDependencyFactoryBase
 {
     private static readonly DependencyFlagCache s_flagCache = new(

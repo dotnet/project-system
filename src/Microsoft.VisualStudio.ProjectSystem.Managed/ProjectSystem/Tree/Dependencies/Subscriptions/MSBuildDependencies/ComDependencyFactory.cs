@@ -3,7 +3,7 @@
 namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Subscriptions.MSBuildDependencies;
 
 [Export(typeof(IMSBuildDependencyFactory))]
-[AppliesTo(ProjectCapability.DependenciesTree)]
+[AppliesTo(ProjectCapability.DependenciesTree + " & " + ProjectCapabilities.ComReferences)]
 internal sealed class ComDependencyFactory : MSBuildDependencyFactoryBase
 {
     private static readonly DependencyFlagCache s_flagCache = new(
