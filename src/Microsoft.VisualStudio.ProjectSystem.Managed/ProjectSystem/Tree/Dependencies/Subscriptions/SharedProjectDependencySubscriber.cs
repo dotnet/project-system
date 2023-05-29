@@ -67,7 +67,7 @@ internal sealed class SharedProjectDependencySubscriber : IDependencySliceSubscr
 
                 transformBlock.LinkTo(targetBlock, DataflowOption.PropagateCompletion),
 
-                JoinUpstreamDataSources(_source.SharedFoldersSource, _source.ActiveConfiguredProjectSource, _source.ProjectCatalogSource)
+                JoinUpstreamDataSources(_source.SharedFoldersSource)
             };
         }
 
