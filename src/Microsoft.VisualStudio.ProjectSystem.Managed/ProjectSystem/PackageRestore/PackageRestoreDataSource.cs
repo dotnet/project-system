@@ -129,7 +129,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
         private async Task<bool> RestoreCoreAsync(PackageRestoreUnconfiguredInput value)
         {
             ProjectRestoreInfo? restoreInfo = value.RestoreInfo;
-            bool success = false;
 
             Assumes.NotNull(restoreInfo);
 
@@ -159,13 +158,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
                 return NominateForRestoreAsync(restoreInfo, value.ConfiguredInputs, _projectAsynchronousTasksService.UnloadCancellationToken);
             });
 
-            _projectAsynchronousTasksService.RegisterAsyncTask(joinableTask,
-                                                                ProjectCriticalOperation.Build | ProjectCriticalOperation.Unload | ProjectCriticalOperation.Rename,
-                                                                registerFaultHandler: true);
+            _projectAsynchronousTasksService.RegisterAsyncTask(
+                joinableTask,
+                operationFlags: ProjectCriticalOperation.Build | ProjectCriticalOperation.Unload | ProjectCriticalOperation.Rename,
+                registerFaultHandler: true);
 
-            success = await joinableTask;
-
-            return success;
+            return await joinableTask;
         }
 
         private async Task<bool> IsCycleDetectedAsync(byte[] hash, CancellationToken cancellationToken)
@@ -190,10 +188,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
 
             SendTelemetry();
 
-            await _userNotificationService.ShowErrorAsync(
-                Resources.Restore_NuGetCycleDetected,
-                cancellationToken
-            );
+            await _userNotificationService.ShowErrorAsync(Resources.Restore_NuGetCycleDetected, cancellationToken);
 
             return true;
 
