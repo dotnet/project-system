@@ -45,11 +45,11 @@
     <PackageReference Update="Microsoft.VisualStudio.RpcContracts"                                    Version="17.7.3-preview" />
     <PackageReference Update="Microsoft.VisualStudio.SDK.EmbedInteropTypes"                           Version="15.0.36" />
     <PackageReference Update="Microsoft.VisualStudio.Settings.15.0"                                   Version="17.3.32804.24" />
-    <PackageReference Update="Microsoft.VisualStudio.Setup.Configuration.Interop"                     Version="3.0.4492" />
+    <PackageReference Update="Microsoft.VisualStudio.Setup.Configuration.Interop"                     Version="3.2.2146" />
     <PackageReference Update="Microsoft.VisualStudio.Shell.15.0"                                      Version="17.3.32804.24" />
     <PackageReference Update="Microsoft.VisualStudio.Shell.Design"                                    Version="17.3.32804.24" />
     <PackageReference Update="Microsoft.VisualStudio.Shell.Framework"                                 Version="17.3.32804.24" />
-    <PackageReference Update="Microsoft.VisualStudio.Telemetry"                                       Version="17.7.10" />
+    <PackageReference Update="Microsoft.VisualStudio.Telemetry"                                       Version="17.7.47" />
     <PackageReference Update="Microsoft.VisualStudio.TemplateWizardInterface"                         Version="17.3.32804.24" />
     <PackageReference Update="Microsoft.VisualStudio.Threading"                                       Version="17.7.4-preview" />
     <PackageReference Update="Microsoft.VisualStudio.Threading.Analyzers"                             Version="17.7.4-preview" />
@@ -66,21 +66,21 @@
 
     <!-- CPS -->
     <!-- Find versions at https://dev.azure.com/azure-public/vside/_artifacts/feed/vs-impl -->
-    <PackageReference Update="Microsoft.VisualStudio.ProjectSystem"                                   Version="17.7.98-pre" />
-    <PackageReference Update="Microsoft.VisualStudio.ProjectSystem.Analyzers"                         Version="17.7.98-pre" />
-    <PackageReference Update="Microsoft.VisualStudio.ProjectSystem.Query"                             Version="17.7.98-pre" />
-    <PackageReference Update="Microsoft.VisualStudio.ProjectSystem.SDK"                               Version="17.7.98-pre" />
-    <PackageReference Update="Microsoft.VisualStudio.ProjectSystem.SDK.Tools"                         Version="17.7.98-pre" />
-    <PackageReference Update="Microsoft.VisualStudio.ProjectSystem.VS"                                Version="17.7.98-pre" />
-    <PackageReference Update="Microsoft.VisualStudio.ProjectSystem.XamlTypes"                         Version="17.7.98-pre" />
+    <PackageReference Update="Microsoft.VisualStudio.ProjectSystem"                                   Version="17.7.165-pre" />
+    <PackageReference Update="Microsoft.VisualStudio.ProjectSystem.Analyzers"                         Version="17.7.165-pre" />
+    <PackageReference Update="Microsoft.VisualStudio.ProjectSystem.Query"                             Version="17.7.165-pre" />
+    <PackageReference Update="Microsoft.VisualStudio.ProjectSystem.SDK"                               Version="17.7.165-pre" />
+    <PackageReference Update="Microsoft.VisualStudio.ProjectSystem.SDK.Tools"                         Version="17.7.165-pre" />
+    <PackageReference Update="Microsoft.VisualStudio.ProjectSystem.VS"                                Version="17.7.165-pre" />
+    <PackageReference Update="Microsoft.VisualStudio.ProjectSystem.XamlTypes"                         Version="17.7.165-pre" />
 
     <!-- MSBuild -->
     <!-- Only needed because the CPS builds depend on MSBuild versions that are not available. -->
     <!-- By specifying the versions ourselves we can avoid restore warnings and errors. -->
     <!-- TODO: Remove these when CPS consumes packages that are available. -->
-    <PackageReference Update="Microsoft.Build" Version="17.4.0" />
-    <PackageReference Update="Microsoft.Build.Tasks.Core" Version="17.4.0" />
-    <PackageReference Update="Microsoft.Build.Utilities.Core" Version="17.4.0" />
+    <PackageReference Update="Microsoft.Build" Version="17.6.0" />
+    <PackageReference Update="Microsoft.Build.Tasks.Core" Version="17.6.0" />
+    <PackageReference Update="Microsoft.Build.Utilities.Core" Version="17.6.0" />
 
     <!-- Roslyn -->
     <PackageReference Update="Microsoft.CodeAnalysis"                                                 Version="4.6.0-2.23125.2" />
