@@ -170,7 +170,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
 
         private async Task<bool> IsCycleDetectedAsync(byte[] hash, CancellationToken cancellationToken)
         {
-            _stopwatch.Start();
+            _stopwatch.Restart();
 
             bool enabled = await _projectSystemOptions.GetDetectNuGetRestoreCyclesAsync(cancellationToken);
 
