@@ -3,11 +3,10 @@
 using System.Threading.Tasks.Dataflow;
 using Microsoft.VisualStudio.Composition;
 using Microsoft.VisualStudio.IO;
-using Microsoft.VisualStudio.ProjectSystem.PackageRestore;
 using Microsoft.VisualStudio.Text;
 using Microsoft.VisualStudio.Threading;
 
-namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
+namespace Microsoft.VisualStudio.ProjectSystem.PackageRestore
 {
     /// <summary>
     ///     Responsible for pushing ("nominating") project data such as referenced packages and

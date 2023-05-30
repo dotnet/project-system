@@ -1,11 +1,9 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
 using Microsoft.VisualStudio.IO;
-using Microsoft.VisualStudio.ProjectSystem.PackageRestore;
-using Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore.Snapshots;
 using Microsoft.VisualStudio.Text;
 
-namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
+namespace Microsoft.VisualStudio.ProjectSystem.PackageRestore
 {
     public class PackageRestoreDataSourceTests
     {
@@ -87,15 +85,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
         }
 
         private static PackageRestoreDataSource CreateInstance(
-            UnconfiguredProject? project = null, 
-            IPackageRestoreUnconfiguredInputDataSource? dataSource = null, 
+            UnconfiguredProject? project = null,
+            IPackageRestoreUnconfiguredInputDataSource? dataSource = null,
             INuGetRestoreService? nuGetRestoreService = null,
             bool featureFlagEnabled = false,
             bool isCycleDetected = false)
         {
             project ??= UnconfiguredProjectFactory.CreateWithActiveConfiguredProjectProvider(IProjectThreadingServiceFactory.Create());
             var sharedJoinableTaskCollection = new PackageRestoreSharedJoinableTaskCollection(IProjectThreadingServiceFactory.Create());
-            
+
             dataSource ??= IPackageRestoreUnconfiguredInputDataSourceFactory.Create();
             IProjectAsynchronousTasksService projectAsynchronousTasksService = IProjectAsynchronousTasksServiceFactory.Create();
             IFileSystem fileSystem = IFileSystemFactory.Create();
