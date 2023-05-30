@@ -919,8 +919,7 @@ namespace Microsoft.VisualStudio {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to A circular dependency A -&gt; B -&gt; A was detected during NuGet Restore which caused NuGet to stop restoring.
-        ///Because the NuGet restore didn&apos;t finish correctly, the project might be in a bad state..
+        ///   Looks up a localized string similar to A NuGet restore loop has been detected in project &apos;{0}&apos;. Further restores have been aborted. The project might be in a bad state..
         /// </summary>
         internal static string Restore_NuGetCycleDetected {
             get {

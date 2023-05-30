@@ -474,16 +474,14 @@ Ten projekt został załadowany przy użyciu nieprawidłowego typu projektu, pra
         <note />
       </trans-unit>
       <trans-unit id="Restore_NuGetCycleDetected">
-        <source>A circular dependency A -&gt; B -&gt; A was detected during NuGet Restore which caused NuGet to stop restoring.
-Because the NuGet restore didn't finish correctly, the project might be in a bad state.</source>
-        <target state="translated">Zależność cykliczna A -&gt; B -&gt; Podczas przywracania pakietu NuGet wykryto obiekt A, który spowodował zatrzymanie przywracania przez narzędzie NuGet.
-Z powodu nieprawidłowego zakończenia przywracania narzędzia NuGet projekt może być w złym stanie.</target>
-        <note />
+        <source>A NuGet restore loop has been detected in project '{0}'. Further restores have been aborted. The project might be in a bad state.</source>
+        <target state="new">A NuGet restore loop has been detected in project '{0}'. Further restores have been aborted. The project might be in a bad state.</target>
+        <note>{0} is a file path.</note>
       </trans-unit>
       <trans-unit id="Restore_PropertyWithInconsistentValues">
         <source>The value of the '{0}' property is inconsistent between target frameworks. This property must be identical for NuGet restore to function correctly. The value '{1}' from the '{2}' configuration will be used, other target frameworks may fail to pick NuGet assets.</source>
-        <target state="translated">Wartość właściwości „{0}” jest niezgodna między platformami docelowymi. Ta właściwość musi być identyczna, aby przywracanie pakietu NuGet działało poprawnie. Zostanie użyta wartość „{1}” z konfiguracji „{2}”, inne platformy docelowe mogą nie móc wybrać zasobów pakietu NuGet.</target>
-        <note />
+        <target state="needs-review-translation">Wartość właściwości „{0}” jest niezgodna między platformami docelowymi. Ta właściwość musi być identyczna, aby przywracanie pakietu NuGet działało poprawnie. Zostanie użyta wartość „{1}” z konfiguracji „{2}”, inne platformy docelowe mogą nie móc wybrać zasobów pakietu NuGet.</target>
+        <note>{0} is a file path.</note>
       </trans-unit>
       <trans-unit id="SdkNodeName">
         <source>SDK</source>

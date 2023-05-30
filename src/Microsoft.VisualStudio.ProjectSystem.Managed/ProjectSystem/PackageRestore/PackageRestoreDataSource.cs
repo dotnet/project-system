@@ -189,7 +189,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
 
             SendTelemetry();
 
-            await _userNotificationService.ShowErrorAsync(Resources.Restore_NuGetCycleDetected, cancellationToken);
+            await _userNotificationService.ShowErrorAsync(
+                message: string.Format(Resources.Restore_NuGetCycleDetected, _project.FullPath),
+                cancellationToken);
 
             return true;
 
