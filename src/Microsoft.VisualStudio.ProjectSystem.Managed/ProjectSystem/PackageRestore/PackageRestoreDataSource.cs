@@ -7,6 +7,7 @@ using Microsoft.VisualStudio.IO;
 using Microsoft.VisualStudio.Notifications;
 using Microsoft.VisualStudio.ProjectSystem.PackageRestore;
 using Microsoft.VisualStudio.Telemetry;
+using Microsoft.VisualStudio.Text;
 using Microsoft.VisualStudio.Threading;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
@@ -63,7 +64,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
         private readonly IFileSystem _fileSystem;
         private readonly IManagedProjectDiagnosticOutputService _logger;
         private readonly INuGetRestoreService _nuGetRestoreService;
-        private byte[]? _latestHash;
+        private Hash? _latestHash;
         private bool _enabled;
         private bool _wasSourceBlockContinuationSet;
         private int _nuGetRestoreSuccesses;
@@ -134,9 +135,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
 
             // Restore service always does work regardless of whether the value we pass 
             // them to actually contains changes, only nominate if there are any.
-            byte[] hash = RestoreHasher.CalculateHash(restoreInfo);
+            Hash hash = RestoreHasher.CalculateHash(restoreInfo);
 
-            if (_latestHash is not null && hash.AsSpan().SequenceEqual(_latestHash))
+            if (_latestHash?.Equals(hash) == true)
             {
                 _stopwatch.Reset();
                 _nuGetRestoreSuccesses++;
@@ -166,7 +167,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
             return await joinableTask;
         }
 
-        private async Task<bool> IsCycleDetectedAsync(byte[] hash, CancellationToken cancellationToken)
+        private async Task<bool> IsCycleDetectedAsync(Hash hash, CancellationToken cancellationToken)
         {
             _stopwatch.Restart();
 

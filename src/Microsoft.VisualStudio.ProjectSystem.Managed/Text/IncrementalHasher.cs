@@ -39,15 +39,70 @@ namespace Microsoft.VisualStudio.Text
             }
         }
 
-        public byte[] GetHashAndReset()
+        public Hash GetHashAndReset()
         {
-            return _hasher.GetHashAndReset();
+            return new(_hasher.GetHashAndReset());
         }
 
         public void Dispose()
         {
             _hasher.Dispose();
             ArrayPool<byte>.Shared.Return(_buffer);
+        }
+    }
+
+    internal readonly struct Hash(byte[] bytes) : IEquatable<Hash>
+    {
+        private readonly byte[] _bytes = bytes;
+
+        public override bool Equals(object obj) => obj is Hash hash && Equals(hash);
+        
+        public bool Equals(Hash other)
+        {
+            byte[] thisBytes = _bytes;
+            byte[] thatBytes = other._bytes;
+
+            if (ReferenceEquals(thisBytes, thatBytes))
+            {
+                return true;
+            }
+
+            if (thisBytes is null || thatBytes is null)
+            {
+                return false;
+            }
+
+            if (thisBytes.Length != thatBytes.Length)
+            {
+                return false;
+            }
+
+            for (int i = 0; i < thisBytes.Length; i++)
+            {
+                if (thisBytes[i] != thatBytes[i])
+                {
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
+        public override int GetHashCode()
+        {
+            const int prime = 0x1000193;
+
+            unchecked
+            {
+                int hash = (int)0x811C9DC5;
+
+                for (int i = 0; i < _bytes.Length; i++)
+                {
+                    hash = (hash ^ _bytes[i]) * prime;
+                }
+
+                return hash;
+            }
         }
     }
 }

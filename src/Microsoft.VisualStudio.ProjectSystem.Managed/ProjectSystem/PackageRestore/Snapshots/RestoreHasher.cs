@@ -6,7 +6,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.PackageRestore
 {
     internal static class RestoreHasher
     {
-        public static byte[] CalculateHash(ProjectRestoreInfo restoreInfo)
+        public static Hash CalculateHash(ProjectRestoreInfo restoreInfo)
         {
             Requires.NotNull(restoreInfo);
 

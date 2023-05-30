@@ -1,5 +1,7 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
+using Microsoft.VisualStudio.Text;
+
 namespace Microsoft.VisualStudio.ProjectSystem.PackageRestore
 {
     // This algorithm is to detect the pattern A -> B -> A -> B -> A in the most recent N values.
@@ -21,8 +23,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.PackageRestore
         private const int Size = 5;
 
         private readonly object _lock = new();
-        private readonly Queue<byte[]> _values = new();
-        private readonly Dictionary<byte[], int> _lookupTable = new();
+        private readonly Queue<Hash> _values = new();
+        private readonly Dictionary<Hash, int> _lookupTable = new();
         private int _counter;
 
         /// <summary>
@@ -31,7 +33,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.PackageRestore
         /// </summary>
         /// <param name="hashValue">This is hashValue that is used to verify if it exists in previous restores</param>
         /// <returns>True if it contains hash1 cycle, otherwise false</returns>
-        public bool ComputeCycleDetection(byte[] hashValue)
+        public bool ComputeCycleDetection(Hash hashValue)
         {
             lock (_lock)
             {
@@ -56,7 +58,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.PackageRestore
 
             return false;
 
-            bool QueueContainsValue(byte[] hashValue)
+            bool QueueContainsValue(Hash hashValue)
             {
                 if (_lookupTable.TryGetValue(hashValue, out int hashCounter) && hashCounter > 0)
                 {
@@ -66,7 +68,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.PackageRestore
             }
         }
 
-        private void Add(byte[] newHashValue)
+        private void Add(Hash newHashValue)
         {
             if (_values.Count >= Size)
             {
