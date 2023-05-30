@@ -12,29 +12,18 @@ namespace Microsoft.VisualStudio.ProjectSystem.PackageRestore
     //                                        |---cycle detected----|
     internal sealed class NuGetRestoreCycleDetector
     {
-        // The fixed size of the queue
-        private readonly int _size = 5;
-
-        private readonly object _lock;
-        private readonly Queue<byte[]> _values;
-        private readonly Dictionary<byte[], int> _lookupTable;
-        private int _counter;
-
         /// <summary>
         ///     Fixed size of the numbers of values to store.
         /// </summary>
         /// <remarks>
         ///     This represents how deep to search for hash cycle.
         /// </remarks>
-        public int Size { get; private set; }
+        private const int Size = 5;
 
-        public NuGetRestoreCycleDetector()
-        {
-            _lock = new object();
-            _values = new Queue<byte[]>();
-            _lookupTable = new Dictionary<byte[], int>();
-            Size = _size;
-        }
+        private readonly object _lock = new();
+        private readonly Queue<byte[]> _values = new();
+        private readonly Dictionary<byte[], int> _lookupTable = new();
+        private int _counter;
 
         /// <summary>
         ///     Validate if hash1 cycle exist. 
