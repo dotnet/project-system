@@ -16,7 +16,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.References
             var hierarchy = IVsHierarchyFactory.ImplementGetProperty(VSConstants.E_INVALIDARG);
             var resolution = CreateInstance(hierarchy);
 
-            var result = resolution.GetTargetFramework(out string _);
+            var result = resolution.GetTargetFramework(out _);
 
             Assert.Equal(VSConstants.E_INVALIDARG, result);
         }
@@ -38,7 +38,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.References
             var hierarchy = IVsHierarchyFactory.ImplementGetProperty(VSConstants.DISP_E_MEMBERNOTFOUND);
             var resolution = CreateInstance(hierarchy);
 
-            var result = resolution.GetTargetFramework(out string _);
+            var result = resolution.GetTargetFramework(out _);
 
             Assert.Equal(VSConstants.S_OK, result);
         }
