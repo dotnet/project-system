@@ -1,10 +1,9 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
 using Microsoft.VisualStudio.IO;
-using Microsoft.VisualStudio.Notifications;
 using Microsoft.VisualStudio.ProjectSystem.PackageRestore;
 using Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore.Snapshots;
-using Microsoft.VisualStudio.Telemetry;
+using Microsoft.VisualStudio.Text;
 using NuGet.SolutionRestoreManager;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
@@ -201,32 +200,33 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
             UnconfiguredProject? project = null, 
             IPackageRestoreUnconfiguredInputDataSource? dataSource = null, 
             INuGetRestoreService? nuGetRestoreService = null,
-            bool featureFlagEnabled = false)
+            bool featureFlagEnabled = false,
+            bool isCycleDetected = false)
         {
+            project ??= UnconfiguredProjectFactory.CreateWithActiveConfiguredProjectProvider(IProjectThreadingServiceFactory.Create());
+            var sharedJoinableTaskCollection = new PackageRestoreSharedJoinableTaskCollection(IProjectThreadingServiceFactory.Create());
+            
+            dataSource ??= IPackageRestoreUnconfiguredInputDataSourceFactory.Create();
+            IProjectAsynchronousTasksService projectAsynchronousTasksService = IProjectAsynchronousTasksServiceFactory.Create();
+            IFileSystem fileSystem = IFileSystemFactory.Create();
+            IManagedProjectDiagnosticOutputService logger = IManagedProjectDiagnosticOutputServiceFactory.Create();
+            nuGetRestoreService ??= INuGetRestoreServiceFactory.Create();
+
             var projectSystemOptionsMock = new Mock<IProjectSystemOptions>();
             projectSystemOptionsMock.Setup(o => o.GetDetectNuGetRestoreCyclesAsync(It.IsAny<CancellationToken>())).ReturnsAsync(featureFlagEnabled);
 
-            var telemetryService = (new Mock<ITelemetryService>()).Object;
-            var nonModelNotificationService = (new Mock<INonModalNotificationService>()).Object;
-            project ??= UnconfiguredProjectFactory.CreateWithActiveConfiguredProjectProvider(IProjectThreadingServiceFactory.Create());
-            dataSource ??= IPackageRestoreUnconfiguredInputDataSourceFactory.Create();
-            IProjectAsynchronousTasksService projectAsynchronousTasksService = IProjectAsynchronousTasksServiceFactory.Create();
-            nuGetRestoreService ??= INuGetRestoreServiceFactory.Create();
-            IManagedProjectDiagnosticOutputService logger = IManagedProjectDiagnosticOutputServiceFactory.Create();
-            IFileSystem fileSystem = IFileSystemFactory.Create();
-            var sharedJoinableTaskCollection = new PackageRestoreSharedJoinableTaskCollection(IProjectThreadingServiceFactory.Create());
+            var cycleDetector = new Mock<IPackageRestoreCycleDetector>();
+            cycleDetector.Setup(o => o.IsCycleDetectedAsync(It.IsAny<Hash>(), It.IsAny<CancellationToken>())).ReturnsAsync(isCycleDetected);
 
             return new PackageRestoreDataSourceMocked(
-                projectSystemOptionsMock.Object,
-                telemetryService,
-                nonModelNotificationService,
                 project,
+                sharedJoinableTaskCollection,
                 dataSource,
                 projectAsynchronousTasksService,
                 fileSystem,
                 logger,
-                sharedJoinableTaskCollection,
-                nuGetRestoreService);
+                nuGetRestoreService,
+                cycleDetector.Object);
         }
     }
 }

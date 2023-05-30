@@ -1,11 +1,14 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
+using System.Diagnostics;
+using Microsoft.VisualStudio.Notifications;
+using Microsoft.VisualStudio.Telemetry;
 using Microsoft.VisualStudio.Text;
 
 namespace Microsoft.VisualStudio.ProjectSystem.PackageRestore;
 
 [Export(typeof(IPackageRestoreCycleDetector))]
-internal sealed class PackageRestoreCycleDetector
+internal sealed class PackageRestoreCycleDetector : IPackageRestoreCycleDetector
 {
     // This algorithm is to detect the pattern A -> B -> A -> B -> A in the most recent N values.
     // To keep track of the most N recent values we are using a queue of fixed size, where:
@@ -24,75 +27,138 @@ internal sealed class PackageRestoreCycleDetector
     /// </remarks>
     private const int Size = 5;
 
+    private readonly Stopwatch _stopwatch = new();
     private readonly object _lock = new();
-    private readonly Queue<Hash> _values = new();
-    private readonly Dictionary<Hash, int> _lookupTable = new();
+    private readonly Queue<Hash> _values = new(capacity: Size);
+    private readonly Dictionary<Hash, int> _lookupTable = new(capacity: Size);
+
+    private readonly ITelemetryService _telemetryService;
+    private readonly INonModalNotificationService _userNotificationService;
+    private readonly IProjectSystemOptions _projectSystemOptions;
+
+    private readonly UnconfiguredProject _unconfiguredProject;
+
+    private Hash? _lastHash;
+    private int _nuGetRestoreSuccesses;
+    private int _nuGetRestoreCyclesDetected;
     private int _counter;
 
-    /// <summary>
-    ///     Validate if hash1 cycle exist. 
-    ///     If no cycle exist, then the hashValue is stored.
-    /// </summary>
-    /// <param name="hashValue">This is hashValue that is used to verify if it exists in previous restores</param>
-    /// <returns>True if it contains hash1 cycle, otherwise false</returns>
-    public bool ComputeCycleDetection(Hash hashValue)
+    [ImportingConstructor]
+    public PackageRestoreCycleDetector(
+        UnconfiguredProject unconfiguredProject,
+        ITelemetryService telemetryService,
+        IProjectSystemOptions projectSystemOptions,
+        INonModalNotificationService userNotificationService)
     {
-        lock (_lock)
+        _unconfiguredProject = unconfiguredProject;
+        _telemetryService = telemetryService;
+        _projectSystemOptions = projectSystemOptions;
+        _userNotificationService = userNotificationService;
+    }
+
+    public async Task<bool> IsCycleDetectedAsync(Hash hash, CancellationToken cancellationToken)
+    {
+        if (!await _projectSystemOptions.GetDetectNuGetRestoreCyclesAsync(cancellationToken))
         {
-            if (QueueContainsValue(hashValue))
-            {
-                _counter++;
+            // Cycle detection has been disabled. Take no further action.
+            return false;
+        }
 
-                // Verify that a hashValue has repeated in almost all cases
-                if (_counter > Size)
-                {
-                    Clear();
-                    return true;
-                }
-            }
-            else
-            {
-                _counter = 0;
-            }
+        // Ensure we have a stopwatch running throughout restores. We will stop it when we either
+        // have two consecutive restores at the same hash, or when we detect a cycle.
+        _stopwatch.Start();
 
-            Add(hashValue);
+        if (IsCycleDetected())
+        {
+            await OnCycleDetectedAsync();
+
+            return true;
         }
 
         return false;
 
-        bool QueueContainsValue(Hash hashValue)
+        bool IsCycleDetected()
         {
-            if (_lookupTable.TryGetValue(hashValue, out int hashCounter) && hashCounter > 0)
+            lock (_lock)
             {
-                return true;
+                if (_lastHash?.Equals(hash) == true)
+                {
+                    _nuGetRestoreSuccesses++;
+                    Reset();
+                    return false;
+                }
+
+                _lastHash = hash;
+
+                if (_lookupTable.TryGetValue(hash, out int hashCounter) && hashCounter > 0)
+                {
+                    _counter++;
+
+                    // Verify that a hashValue has repeated in almost all cases
+                    if (_counter > Size)
+                    {
+                        return true;
+                    }
+                }
+                else
+                {
+                    _counter = 0;
+                }
+
+                if (_values.Count > Size)
+                {
+                    Hash oldestHashValue = _values.Dequeue();
+                    _lookupTable[oldestHashValue]--;
+                }
+
+                _values.Enqueue(hash);
+                if (_lookupTable.ContainsKey(hash))
+                {
+                    _lookupTable[hash]++;
+                }
+                else
+                {
+                    _lookupTable.Add(hash, 1);
+                }
             }
+
             return false;
         }
-    }
 
-    private void Add(Hash newHashValue)
-    {
-        if (_values.Count >= Size)
+        async Task OnCycleDetectedAsync()
         {
-            var oldestHashValue = _values.Dequeue();
-            _lookupTable[oldestHashValue]--;
+            _stopwatch.Stop();
+
+            _nuGetRestoreCyclesDetected++;
+
+            SendTelemetry();
+
+            await _userNotificationService.ShowErrorAsync(
+                message: string.Format(Resources.Restore_NuGetCycleDetected, _unconfiguredProject.FullPath),
+                cancellationToken);
+
+            // Clear out any internal state so that we start fresh on the next project change.
+            // There's a chance the underlying issue will be resolved when we try again, and
+            // we want to give it a chance.
+            Reset();
+
+            void SendTelemetry()
+            {
+                _telemetryService.PostProperties(TelemetryEventName.NuGetRestoreCycleDetected, new[]
+                {
+                    (TelemetryPropertyName.NuGetRestoreCycleDetected.RestoreDurationMillis, (object)_stopwatch.Elapsed.TotalMilliseconds),
+                    (TelemetryPropertyName.NuGetRestoreCycleDetected.RestoreSuccesses, _nuGetRestoreSuccesses),
+                    (TelemetryPropertyName.NuGetRestoreCycleDetected.RestoreCyclesDetected, _nuGetRestoreCyclesDetected)
+                });
+            }
         }
 
-        _values.Enqueue(newHashValue);
-        if (_lookupTable.ContainsKey(newHashValue))
+        void Reset()
         {
-            _lookupTable[newHashValue]++;
+            _stopwatch.Reset();
+            _counter = 0;
+            _values.Clear();
+            _lookupTable.Clear();
         }
-        else
-        {
-            _lookupTable.Add(newHashValue, 1);
-        }
-    }
-
-    public void Clear()
-    {
-        _counter = 0;
-        _values.Clear();
-        _lookupTable.Clear();
     }
 }
