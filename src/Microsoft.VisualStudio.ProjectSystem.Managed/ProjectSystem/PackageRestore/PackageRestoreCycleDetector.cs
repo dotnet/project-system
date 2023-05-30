@@ -4,17 +4,18 @@ using Microsoft.VisualStudio.Text;
 
 namespace Microsoft.VisualStudio.ProjectSystem.PackageRestore;
 
-// This algorithm is to detect the pattern A -> B -> A -> B -> A in the most recent N values.
-// To keep track of the most N recent values we are using a queue of fixed size, where:
-//   The most recent value is inserted at the front in O(1) time, and the oldest value is removed at the 
-// back in O(1) time.
-//   The counter will keep track of how many times values have appeared in the queue consecutively.
-// i.e.
-// A -> B -> C -> A -> B -> D -> X -> Y -> X -> Y -> X -> Y -> X
-//                                        |---cycle detected----|
 [Export(typeof(IPackageRestoreCycleDetector))]
 internal sealed class PackageRestoreCycleDetector
 {
+    // This algorithm is to detect the pattern A -> B -> A -> B -> A in the most recent N values.
+    // To keep track of the most N recent values we are using a queue of fixed size, where:
+    //   The most recent value is inserted at the front in O(1) time, and the oldest value is removed at the 
+    // back in O(1) time.
+    //   The counter will keep track of how many times values have appeared in the queue consecutively.
+    // i.e.
+    // A -> B -> C -> A -> B -> D -> X -> Y -> X -> Y -> X -> Y -> X
+    //                                        |---cycle detected----|
+
     /// <summary>
     ///     Fixed size of the numbers of values to store.
     /// </summary>
