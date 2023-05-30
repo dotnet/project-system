@@ -8,7 +8,13 @@ using Microsoft.VisualStudio.Text;
 namespace Microsoft.VisualStudio.ProjectSystem.PackageRestore;
 
 [Export(typeof(IPackageRestoreCycleDetector))]
-internal sealed class PackageRestoreCycleDetector : IPackageRestoreCycleDetector
+[method: ImportingConstructor]
+internal sealed class PackageRestoreCycleDetector(
+    UnconfiguredProject unconfiguredProject,
+    ITelemetryService telemetryService,
+    IProjectSystemOptions projectSystemOptions,
+    INonModalNotificationService userNotificationService)
+    : IPackageRestoreCycleDetector
 {
     // This algorithm is to detect the pattern A -> B -> A -> B -> A in the most recent N values.
     // To keep track of the most N recent values we are using a queue of fixed size, where:
@@ -32,29 +38,15 @@ internal sealed class PackageRestoreCycleDetector : IPackageRestoreCycleDetector
     private readonly Queue<Hash> _values = new(capacity: Size);
     private readonly Dictionary<Hash, int> _lookupTable = new(capacity: Size);
 
-    private readonly ITelemetryService _telemetryService;
-    private readonly INonModalNotificationService _userNotificationService;
-    private readonly IProjectSystemOptions _projectSystemOptions;
-
-    private readonly UnconfiguredProject _unconfiguredProject;
+    private readonly UnconfiguredProject _unconfiguredProject = unconfiguredProject;
+    private readonly ITelemetryService _telemetryService = telemetryService;
+    private readonly IProjectSystemOptions _projectSystemOptions = projectSystemOptions;
+    private readonly INonModalNotificationService _userNotificationService = userNotificationService;
 
     private Hash? _lastHash;
     private int _nuGetRestoreSuccesses;
     private int _nuGetRestoreCyclesDetected;
     private int _counter;
-
-    [ImportingConstructor]
-    public PackageRestoreCycleDetector(
-        UnconfiguredProject unconfiguredProject,
-        ITelemetryService telemetryService,
-        IProjectSystemOptions projectSystemOptions,
-        INonModalNotificationService userNotificationService)
-    {
-        _unconfiguredProject = unconfiguredProject;
-        _telemetryService = telemetryService;
-        _projectSystemOptions = projectSystemOptions;
-        _userNotificationService = userNotificationService;
-    }
 
     public async Task<bool> IsCycleDetectedAsync(Hash hash, CancellationToken cancellationToken)
     {
