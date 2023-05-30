@@ -148,7 +148,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
 
             _latestHash = hash;
 
-            if (await CycleDetectedAsync(hash, _projectAsynchronousTasksService.UnloadCancellationToken))
+            if (await IsCycleDetectedAsync(hash, _projectAsynchronousTasksService.UnloadCancellationToken))
             {
                 _nuGetRestoreCyclesDetected++;
                 return false;
@@ -168,7 +168,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
             return success;
         }
 
-        private async Task<bool> CycleDetectedAsync(byte[] hash, CancellationToken cancellationToken)
+        private async Task<bool> IsCycleDetectedAsync(byte[] hash, CancellationToken cancellationToken)
         {
             _stopwatch.Start();
 
