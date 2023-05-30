@@ -54,7 +54,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
         //
 
         private readonly Stopwatch _stopwatch = new();
-        private readonly NuGetRestoreCycleDetector _cycleDetector = new();
+        private readonly PackageRestoreCycleDetector _cycleDetector = new();
         private readonly IProjectSystemOptions _projectSystemOptions;
         private readonly ITelemetryService _telemetryService;
         private readonly INonModalNotificationService _userNotificationService;

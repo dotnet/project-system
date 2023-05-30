@@ -12,7 +12,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.PackageRestore
     // i.e.
     // A -> B -> C -> A -> B -> D -> X -> Y -> X -> Y -> X -> Y -> X
     //                                        |---cycle detected----|
-    internal sealed class NuGetRestoreCycleDetector
+    internal sealed class PackageRestoreCycleDetector
     {
         /// <summary>
         ///     Fixed size of the numbers of values to store.
@@ -40,7 +40,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.PackageRestore
                 if (QueueContainsValue(hashValue))
                 {
                     _counter++;
-                    
+
                     // Verify that a hashValue has repeated in almost all cases
                     if (_counter > Size)
                     {
