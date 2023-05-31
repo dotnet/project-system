@@ -108,7 +108,7 @@ namespace Microsoft.VisualStudio.Build
             var project = ProjectRootElementFactory.Create(projectXml);
             BuildUtilities.GetOrAddProperty(project, "MyProperty");
             Assert.Single(project.Properties);
-            AssertEx.CollectionLength(project.PropertyGroups, 2);
+            Assert.Equal(2, project.PropertyGroups.Count);
 
             var group = project.PropertyGroups.First();
             Assert.Single(group.Properties);

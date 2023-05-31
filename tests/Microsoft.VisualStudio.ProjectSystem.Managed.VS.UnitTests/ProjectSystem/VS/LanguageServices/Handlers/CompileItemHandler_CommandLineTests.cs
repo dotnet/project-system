@@ -34,7 +34,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
 
             handler.Handle(context, 10, added: added, removed: empty, new ContextState(isActiveEditorContext: true, isActiveConfiguration: false), logger: logger);
 
-            AssertEx.CollectionLength(sourceFilesPushedToWorkspace, 2);
+            Assert.Equal(2, sourceFilesPushedToWorkspace.Count);
             Assert.Contains(@"C:\file1.cs", sourceFilesPushedToWorkspace);
             Assert.Contains(@"C:\file2.cs", sourceFilesPushedToWorkspace);
 

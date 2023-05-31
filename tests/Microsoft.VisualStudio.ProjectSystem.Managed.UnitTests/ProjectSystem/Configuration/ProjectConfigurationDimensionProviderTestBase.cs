@@ -88,7 +88,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
             var (key, value) = Assert.Single(values);
             Assert.Equal(DimensionName, key);
             string[] dimensionValues = value.ToArray();
-            AssertEx.CollectionLength(dimensionValues, 3);
+            Assert.Equal(3, dimensionValues.Length);
             Assert.Equal("A", dimensionValues[0]);
             Assert.Equal("B", dimensionValues[1]);
             Assert.Equal("C", dimensionValues[2]);

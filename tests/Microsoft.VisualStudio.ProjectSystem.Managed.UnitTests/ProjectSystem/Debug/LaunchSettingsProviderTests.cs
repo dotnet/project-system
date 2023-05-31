@@ -316,7 +316,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
 
             var (profiles, globalSettings) = await provider.ReadSettingsFileFromDiskTestAsync();
 
-            AssertEx.CollectionLength(profiles, 2);
+            Assert.Equal(2, profiles.Count());
 
             var (name, value) = Assert.Single(globalSettings);
             Assert.Equal("iisSettings", name);
@@ -337,9 +337,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             SetJsonSerializationProviders(provider);
 
             var (profiles, globalSettings) = await provider.ReadSettingsFileFromDiskTestAsync();
-            
-            AssertEx.CollectionLength(profiles, 2);
-            
+
+            Assert.Equal(2, profiles.Count());
+
             var (name, value) = Assert.Single(globalSettings);
             Assert.Equal("iisSettings", name);
             Assert.IsType<IISSettingsData>(value);
@@ -436,11 +436,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             await moqFS.WriteAllTextAsync(provider.LaunchSettingsFile, JsonStringWithWebSettings);
             provider.LastSettingsFileSyncTimeTest = moqFS.GetLastFileWriteTimeOrMinValueUtc(provider.LaunchSettingsFile);
             Assert.Equal(provider.LaunchSettingsFile_ChangedTest(), Task.CompletedTask);
-            AssertEx.CollectionLength(provider.CurrentSnapshot.Profiles, 4);
+            Assert.Equal(4, provider.CurrentSnapshot.Profiles.Count);
 
             await moqFS.WriteAllTextAsync(provider.LaunchSettingsFile, JsonStringWithWebSettings);
             await provider.LaunchSettingsFile_ChangedTest();
-            AssertEx.CollectionLength(provider.CurrentSnapshot.Profiles, 2);
+            Assert.Equal(2, provider.CurrentSnapshot.Profiles.Count);
         }
 
         [Fact]
@@ -503,7 +503,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             Assert.Equal(JsonStringWithWebSettings, await moqFS.ReadAllTextAsync(provider.LaunchSettingsFile), ignoreLineEndingDifferences: true);
 
             // Check snapshot
-            AssertEx.CollectionLength(provider.CurrentSnapshot.Profiles, 2);
+            Assert.Equal(2, provider.CurrentSnapshot.Profiles.Count);
             Assert.Single(provider.CurrentSnapshot.GlobalSettings);
             Assert.Equal(123, ((IVersionedLaunchSettings)provider.CurrentSnapshot).Version);
 
@@ -607,7 +607,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             Assert.Equal(!isInMemory, moqFS.FileExists(provider.LaunchSettingsFile));
 
             // Check snapshot
-            AssertEx.CollectionLength(provider.CurrentSnapshot.Profiles, 3);
+            Assert.Equal(3, provider.CurrentSnapshot.Profiles.Count);
             Assert.Equal("Test", provider.CurrentSnapshot.Profiles[expectedIndex].CommandName);
             Assert.Null(provider.CurrentSnapshot.Profiles[expectedIndex].ExecutablePath);
             Assert.True(((IVersionedLaunchSettings)provider.CurrentSnapshot).Version >= 123);
@@ -643,7 +643,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             Assert.Equal(!isInMemory || (isInMemory && !existingIsInMemory), moqFS.FileExists(provider.LaunchSettingsFile));
 
             // Check snapshot
-            AssertEx.CollectionLength(provider.CurrentSnapshot.Profiles, 3);
+            Assert.Equal(3, provider.CurrentSnapshot.Profiles.Count);
             Assert.Equal("test", provider.CurrentSnapshot.Profiles[expectedIndex].Name);
             Assert.Equal("Test", provider.CurrentSnapshot.Profiles[expectedIndex].CommandName);
             Assert.Null(provider.CurrentSnapshot.Profiles[expectedIndex].ExecutablePath);
@@ -684,7 +684,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             Assert.Equal(!isInMemory || (isInMemory && !existingIsInMemory), moqFS.FileExists(provider.LaunchSettingsFile));
 
             // Check snapshot
-            AssertEx.CollectionLength(provider.CurrentSnapshot.Profiles, 3);
+            Assert.Equal(3, provider.CurrentSnapshot.Profiles.Count);
             Assert.Equal("test", provider.CurrentSnapshot.Profiles[expectedIndex].Name);
             Assert.Equal("Test", provider.CurrentSnapshot.Profiles[expectedIndex].CommandName);
             Assert.Equal("c:\\test\\project\\bin\\test.exe", provider.CurrentSnapshot.Profiles[expectedIndex].ExecutablePath);
@@ -717,7 +717,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             Assert.Equal(!isInMemory, moqFS.FileExists(provider.LaunchSettingsFile));
 
             // Check snapshot
-            AssertEx.CollectionLength(provider.CurrentSnapshot.Profiles, 2);
+            Assert.Equal(2, provider.CurrentSnapshot.Profiles.Count);
             Assert.Null(provider.CurrentSnapshot.Profiles.FirstOrDefault(p => p.Name!.Equals("test")));
             Assert.True(((IVersionedLaunchSettings)provider.CurrentSnapshot).Version >= 123);
         }
@@ -747,7 +747,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             Assert.False(moqFS.FileExists(provider.LaunchSettingsFile));
 
             // Check snapshot
-            AssertEx.CollectionLength(provider.CurrentSnapshot.Profiles, 2);
+            Assert.Equal(2, provider.CurrentSnapshot.Profiles.Count);
             Assert.Equal(42, ((IVersionedLaunchSettings)provider.CurrentSnapshot).Version);
         }
 
@@ -775,7 +775,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
 
             // Check disk file was written
             Assert.Equal(!isInMemory, moqFS.FileExists(provider.LaunchSettingsFile));
-            AssertEx.CollectionLength(provider.CurrentSnapshot.GlobalSettings, 2);
+            Assert.Equal(2, provider.CurrentSnapshot.GlobalSettings.Count);
 
             // Check snapshot
             Assert.True(provider.CurrentSnapshot.GlobalSettings.TryGetValue("iisSettings", out object? updatedSettings));
@@ -811,7 +811,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
 
             // Check disk file was written
             Assert.Equal(!isInMemory, moqFS.FileExists(provider.LaunchSettingsFile));
-            AssertEx.CollectionLength(provider.CurrentSnapshot.GlobalSettings, 2);
+            Assert.Equal(2, provider.CurrentSnapshot.GlobalSettings.Count);
 
             // Check snapshot
             Assert.True(provider.CurrentSnapshot.GlobalSettings.TryGetValue("iisSettings", out object? updatedSettings));
@@ -849,7 +849,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             Assert.Equal(!isInMemory || (isInMemory && !existingIsInMemory), moqFS.FileExists(provider.LaunchSettingsFile));
 
             // Check snapshot
-            AssertEx.CollectionLength(provider.CurrentSnapshot.GlobalSettings, 2);
+            Assert.Equal(2, provider.CurrentSnapshot.GlobalSettings.Count);
             Assert.True(provider.CurrentSnapshot.GlobalSettings.TryGetValue("iisSettings", out object? updatedSettings));
             Assert.True(((IISSettingsData)updatedSettings).WindowsAuthentication);
             Assert.True(((IVersionedLaunchSettings)provider.CurrentSnapshot).Version >= 123);
@@ -889,7 +889,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             Assert.Equal(!isInMemory || (isInMemory && !existingIsInMemory), moqFS.FileExists(provider.LaunchSettingsFile));
 
             // Check snapshot
-            AssertEx.CollectionLength(provider.CurrentSnapshot.GlobalSettings, 2);
+            Assert.Equal(2, provider.CurrentSnapshot.GlobalSettings.Count);
             Assert.True(provider.CurrentSnapshot.GlobalSettings.TryGetValue("iisSettings", out object? updatedSettings));
             Assert.True(((IISSettingsData)updatedSettings).WindowsAuthentication);
             Assert.True(((IVersionedLaunchSettings)provider.CurrentSnapshot).Version >= 123);

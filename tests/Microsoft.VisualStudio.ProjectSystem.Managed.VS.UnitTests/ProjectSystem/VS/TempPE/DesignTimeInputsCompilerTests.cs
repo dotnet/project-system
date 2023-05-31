@@ -330,7 +330,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
                 var actualDLLs = _compilationResults.Count - initialCompilations;
                 if (numberOfDLLsExpected != actualDLLs)
                 {
-                    throw new AssertActualExpectedException(numberOfDLLsExpected, actualDLLs, $"Timed out after {TestTimeoutMillisecondsDelay}ms");
+                    throw EqualException.ForMismatchedValues(numberOfDLLsExpected, actualDLLs, $"Timed out after {TestTimeoutMillisecondsDelay}ms");
                 }
             }
         }

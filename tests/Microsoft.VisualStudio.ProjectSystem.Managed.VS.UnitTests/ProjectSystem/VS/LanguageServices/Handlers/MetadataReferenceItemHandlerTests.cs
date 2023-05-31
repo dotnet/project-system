@@ -25,7 +25,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
 
             handler.Handle(context, 10, added: added, removed: empty, new ContextState(isActiveEditorContext: true, isActiveConfiguration: false), logger: logger);
 
-            AssertEx.CollectionLength(referencesPushedToWorkspace, 2);
+            Assert.Equal(2, referencesPushedToWorkspace.Count);
             Assert.Contains(@"C:\Assembly1.dll", referencesPushedToWorkspace);
             Assert.Contains(@"C:\Assembly2.dll", referencesPushedToWorkspace);
 
@@ -54,7 +54,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
 
             handler.Handle(context, 10, added: added, removed: removed, new ContextState(isActiveEditorContext: true, isActiveConfiguration: false), logger: logger);
 
-            AssertEx.CollectionLength(referencesPushedToWorkspace, 3);
+            Assert.Equal(3, referencesPushedToWorkspace.Count);
             Assert.Contains(@"C:\ProjectFolder\Assembly1.dll", referencesPushedToWorkspace);
             Assert.Contains(@"C:\ProjectFolder\Assembly2.dll", referencesPushedToWorkspace);
             Assert.Contains(@"C:\ProjectFolder\Assembly3.dll", referencesPushedToWorkspace);
