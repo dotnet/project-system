@@ -6,7 +6,7 @@ using Microsoft.VisualStudio.ProjectSystem.Query.Execution;
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
 {
     /// <summary>
-    /// Handles retrieving a set of <see cref="IPropertyPageSnapshot"/>s from an <see cref="Microsoft.VisualStudio.ProjectSystem.Query.IProjectSnapshot"/>.
+    /// Handles retrieving a set of <see cref="IPropertyPageSnapshot"/>s from an <see cref="ProjectSystem.Query.IProjectSnapshot"/>.
     /// </summary>
     internal class PropertyPageFromProjectDataProducer : QueryDataFromProviderStateProducerBase<UnconfiguredProject>
     {

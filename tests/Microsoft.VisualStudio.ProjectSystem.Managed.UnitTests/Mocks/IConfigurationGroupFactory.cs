@@ -22,7 +22,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
         private class ConfigurationGroup<T> : List<T>, IConfigurationGroup<T>
         {
-            public IReadOnlyCollection<string> VariantDimensionNames => throw new System.NotImplementedException();
+            public IReadOnlyCollection<string> VariantDimensionNames => throw new NotImplementedException();
         }
     }
 }
