@@ -2,8 +2,6 @@
 
 using System.IO.Compression;
 using Microsoft.VisualStudio.Utilities;
-using VerifyTests;
-using VerifyXunit;
 
 namespace Microsoft.VisualStudio.Setup
 {
@@ -19,7 +17,7 @@ namespace Microsoft.VisualStudio.Setup
         {
             IEnumerable<string> files = GetPackageContents("ProjectSystem.vsix");
             VerifierSettings.ScrubLinesContaining(DigitalSignature, Rels);
-            return Verifier.Verify(files);
+            return Verify(files);
         }
 
         [Fact]
@@ -27,7 +25,7 @@ namespace Microsoft.VisualStudio.Setup
         {
             IEnumerable<string> files = GetPackageContents("VisualStudioEditorsSetup.vsix");
             VerifierSettings.ScrubLinesContaining(DigitalSignature, Rels);
-            return Verifier.Verify(files);
+            return Verify(files);
         }
 
         [Fact]
@@ -38,7 +36,7 @@ namespace Microsoft.VisualStudio.Setup
             // manifest.json is the last line for non-signed builds.
             // It will not contain a comma in this situation, so we need special logic for that.
             VerifierSettings.ScrubLinesWithReplace(s => s.EndsWith("manifest.json") ? "  manifest.json," : s);
-            return Verifier.Verify(files);
+            return Verify(files);
         }
 
         private static IEnumerable<string> GetPackageContents(string vsixName)
