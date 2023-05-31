@@ -480,7 +480,7 @@ Bu proje, muhtemelen proje uzantısının Visual Studio dışında yeniden adlan
       </trans-unit>
       <trans-unit id="Restore_PropertyWithInconsistentValues">
         <source>The value of the '{0}' property is inconsistent between target frameworks. This property must be identical for NuGet restore to function correctly. The value '{1}' from the '{2}' configuration will be used, other target frameworks may fail to pick NuGet assets.</source>
-        <target state="needs-review-translation">'{0}' özelliğinin değeri hedef framework'ler arasında tutarlı değil. Bu özellik, NuGet geri yüklemenin düzgün çalışması için özdeş olmalıdır. '{2}' yapılandırmasından '{1}' değeri kullanılacak, diğer hedef framework'ler NuGet varlıklarını alamayabilir.</target>
+        <target state="translated">'{0}' özelliğinin değeri hedef framework'ler arasında tutarlı değil. Bu özellik, NuGet geri yüklemenin düzgün çalışması için özdeş olmalıdır. '{2}' yapılandırmasından '{1}' değeri kullanılacak, diğer hedef framework'ler NuGet varlıklarını alamayabilir.</target>
         <note>{0} is a file path.</note>
       </trans-unit>
       <trans-unit id="SdkNodeName">
