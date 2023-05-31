@@ -8,89 +8,38 @@ namespace Microsoft.VisualStudio.ProjectSystem.PackageRestore;
 
 public sealed class PackageRestoreCycleDetectorTests
 {
-    [Fact]
-    public async Task NoCycleOnRepeatedValue()
+    [Theory]
+    [InlineData("AAAAAAAAAA",     false)]
+    [InlineData("ABCDEFGHIJ",     false)]
+    [InlineData("ABABABAB",       true)]
+    [InlineData("ABCABABAB",      true)]
+    [InlineData("ABCABDXYXYXYXY", true)]
+    [InlineData("ABCABCABC",      true, Skip = "The implementation cannot detect this pattern, though it should")]
+    public async Task IsCycleDetectedAsync(string sequence, bool isCycleDetected)
     {
         var instance = CreateInstance();
-        var hash = CreateHash(0);
 
-        for (int i = 0; i < 100; i++)
-        {
-            Assert.False(await instance.IsCycleDetectedAsync(hash, CancellationToken.None));
-        }
+        await ValidateAsync(instance, sequence, isCycleDetected);
     }
 
     [Fact]
-    public async Task Cycle_TwoHashes_Detected()
+    public async Task IsCycleDetectedAsync_CycleIgnoredWhenFeatureDisabled()
     {
-        var hash0 = CreateHash(0);
-        var hash1 = CreateHash(1);
-
-        var instance = CreateInstance();
-        Assert.False(await instance.IsCycleDetectedAsync(hash0, CancellationToken.None));
-        Assert.False(await instance.IsCycleDetectedAsync(hash1, CancellationToken.None));
-        Assert.False(await instance.IsCycleDetectedAsync(hash0, CancellationToken.None));
-        Assert.False(await instance.IsCycleDetectedAsync(hash1, CancellationToken.None));
-        Assert.False(await instance.IsCycleDetectedAsync(hash0, CancellationToken.None));
-        Assert.False(await instance.IsCycleDetectedAsync(hash1, CancellationToken.None));
-        Assert.False(await instance.IsCycleDetectedAsync(hash0, CancellationToken.None));
-        Assert.True(await instance.IsCycleDetectedAsync(hash1, CancellationToken.None));
-    }
-
-    [Fact]
-    public async Task Cycle_TwoHashes_IgnoredWhenFeatureDisabled()
-    {
-        var hash0 = CreateHash(0);
-        var hash1 = CreateHash(1);
-
         var instance = CreateInstance(isEnabled: false); // disabled
 
-        Assert.False(await instance.IsCycleDetectedAsync(hash0, CancellationToken.None));
-        Assert.False(await instance.IsCycleDetectedAsync(hash1, CancellationToken.None));
-        Assert.False(await instance.IsCycleDetectedAsync(hash0, CancellationToken.None));
-        Assert.False(await instance.IsCycleDetectedAsync(hash1, CancellationToken.None));
-        Assert.False(await instance.IsCycleDetectedAsync(hash0, CancellationToken.None));
-        Assert.False(await instance.IsCycleDetectedAsync(hash1, CancellationToken.None));
-        Assert.False(await instance.IsCycleDetectedAsync(hash0, CancellationToken.None));
-        Assert.False(await instance.IsCycleDetectedAsync(hash1, CancellationToken.None)); // ignored
+        await ValidateAsync(instance, "ABABABABAB", isCycleDetected: false);
     }
 
-    [Fact]
-    public async Task Cycle_ThreeHashes_Wat()
+    private async Task ValidateAsync(PackageRestoreCycleDetector instance, string sequence, bool isCycleDetected)
     {
-        var hash0 = CreateHash(0);
-        var hash1 = CreateHash(1);
-        var hash2 = CreateHash(2);
+        for (var i = 0; i < sequence.Length; i++)
+        {
+            var hash = CreateHash((byte)sequence[i]);
 
-        var instance = CreateInstance();
+            bool expected = (i == sequence.Length - 1) && isCycleDetected;
 
-        Assert.False(await instance.IsCycleDetectedAsync(hash0, CancellationToken.None));
-        Assert.False(await instance.IsCycleDetectedAsync(hash1, CancellationToken.None));
-        Assert.False(await instance.IsCycleDetectedAsync(hash2, CancellationToken.None));
-        Assert.False(await instance.IsCycleDetectedAsync(hash0, CancellationToken.None));
-        Assert.False(await instance.IsCycleDetectedAsync(hash1, CancellationToken.None));
-        Assert.False(await instance.IsCycleDetectedAsync(hash0, CancellationToken.None));
-        Assert.False(await instance.IsCycleDetectedAsync(hash1, CancellationToken.None));
-        Assert.False(await instance.IsCycleDetectedAsync(hash0, CancellationToken.None));
-        Assert.True(await instance.IsCycleDetectedAsync(hash1, CancellationToken.None));
-    }
-
-    [Fact(Skip = "The implementation cannot detect this pattern, though it should")]
-    public async Task Cycle_ThreeHashes_Detected()
-    {
-        var hash0 = CreateHash(0);
-        var hash1 = CreateHash(1);
-        var hash2 = CreateHash(2);
-
-        var instance = CreateInstance();
-        Assert.False(await instance.IsCycleDetectedAsync(hash0, CancellationToken.None));
-        Assert.False(await instance.IsCycleDetectedAsync(hash1, CancellationToken.None));
-        Assert.False(await instance.IsCycleDetectedAsync(hash2, CancellationToken.None));
-        Assert.False(await instance.IsCycleDetectedAsync(hash0, CancellationToken.None));
-        Assert.False(await instance.IsCycleDetectedAsync(hash1, CancellationToken.None));
-        Assert.False(await instance.IsCycleDetectedAsync(hash2, CancellationToken.None));
-        Assert.False(await instance.IsCycleDetectedAsync(hash0, CancellationToken.None));
-        Assert.True(await instance.IsCycleDetectedAsync(hash1, CancellationToken.None));
+            Assert.Equal(expected, await instance.IsCycleDetectedAsync(hash, CancellationToken.None));
+        }
     }
 
     private static Hash CreateHash(byte b) => new(new[] { b });
