@@ -17,13 +17,16 @@ internal sealed class PackageRestoreCycleDetector(
     : IPackageRestoreCycleDetector
 {
     // This algorithm is to detect the pattern A -> B -> A -> B -> A in the most recent N values.
+    //
     // To keep track of the most N recent values we are using a queue of fixed size, where:
-    //   The most recent value is inserted at the front in O(1) time, and the oldest value is removed at the 
-    // back in O(1) time.
-    //   The counter will keep track of how many times values have appeared in the queue consecutively.
+    //
+    // - The most recent value is inserted at the front in O(1) time, and the oldest value is removed at the
+    //   back in O(1) time.
+    // - The counter will keep track of how many times values have appeared in the queue consecutively.
+    //
     // i.e.
-    // A -> B -> C -> A -> B -> D -> X -> Y -> X -> Y -> X -> Y -> X
-    //                                        |---cycle detected----|
+    //   A -> B -> C -> A -> B -> D -> X -> Y -> X -> Y -> X -> Y
+    //                                |------cycle detected------|
 
     /// <summary>
     ///     Fixed size of the numbers of values to store.
@@ -31,7 +34,7 @@ internal sealed class PackageRestoreCycleDetector(
     /// <remarks>
     ///     This represents how deep to search for hash cycle.
     /// </remarks>
-    private const int Size = 5;
+    private const int Size = 6;
 
     private readonly Stopwatch _stopwatch = new();
     private readonly object _lock = new();
@@ -86,8 +89,8 @@ internal sealed class PackageRestoreCycleDetector(
                 {
                     _counter++;
 
-                    // Verify that a hashValue has repeated in almost all cases
-                    if (_counter > Size)
+                    // Verify that a hash has repeated in almost all cases
+                    if (_counter >= Size)
                     {
                         return true;
                     }
@@ -97,16 +100,17 @@ internal sealed class PackageRestoreCycleDetector(
                     _counter = 0;
                 }
 
-                if (_values.Count > Size)
+                if (_values.Count >= Size)
                 {
-                    Hash oldestHashValue = _values.Dequeue();
-                    _lookupTable[oldestHashValue]--;
+                    Hash oldestHash = _values.Dequeue();
+                    _lookupTable[oldestHash]--;
                 }
 
                 _values.Enqueue(hash);
-                if (_lookupTable.ContainsKey(hash))
+
+                if (_lookupTable.TryGetValue(hash, out int count))
                 {
-                    _lookupTable[hash]++;
+                    _lookupTable[hash] = count + 1;
                 }
                 else
                 {
@@ -123,8 +127,15 @@ internal sealed class PackageRestoreCycleDetector(
 
             _nuGetRestoreCyclesDetected++;
 
-            SendTelemetry();
+            // Send telemetry.
+            _telemetryService.PostProperties(TelemetryEventName.NuGetRestoreCycleDetected, new[]
+            {
+                (TelemetryPropertyName.NuGetRestoreCycleDetected.RestoreDurationMillis, (object)_stopwatch.Elapsed.TotalMilliseconds),
+                (TelemetryPropertyName.NuGetRestoreCycleDetected.RestoreSuccesses, _nuGetRestoreSuccesses),
+                (TelemetryPropertyName.NuGetRestoreCycleDetected.RestoreCyclesDetected, _nuGetRestoreCyclesDetected)
+            });
 
+            // Notify the user.
             await _userNotificationService.ShowErrorAsync(
                 message: string.Format(Resources.Restore_NuGetCycleDetected, _unconfiguredProject.FullPath),
                 cancellationToken);
@@ -133,16 +144,6 @@ internal sealed class PackageRestoreCycleDetector(
             // There's a chance the underlying issue will be resolved when we try again, and
             // we want to give it a chance.
             Reset();
-
-            void SendTelemetry()
-            {
-                _telemetryService.PostProperties(TelemetryEventName.NuGetRestoreCycleDetected, new[]
-                {
-                    (TelemetryPropertyName.NuGetRestoreCycleDetected.RestoreDurationMillis, (object)_stopwatch.Elapsed.TotalMilliseconds),
-                    (TelemetryPropertyName.NuGetRestoreCycleDetected.RestoreSuccesses, _nuGetRestoreSuccesses),
-                    (TelemetryPropertyName.NuGetRestoreCycleDetected.RestoreCyclesDetected, _nuGetRestoreCyclesDetected)
-                });
-            }
         }
 
         void Reset()
