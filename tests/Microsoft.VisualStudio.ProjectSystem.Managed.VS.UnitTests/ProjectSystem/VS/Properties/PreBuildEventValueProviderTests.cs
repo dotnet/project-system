@@ -428,7 +428,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
                 </Project>
                 """.AsProjectRootElement();
             systemUnderTest.SetProperty("       ", root);
-            var stringWriter = new System.IO.StringWriter();
+            var stringWriter = new StringWriter();
             root.Save(stringWriter);
 
             var expected =

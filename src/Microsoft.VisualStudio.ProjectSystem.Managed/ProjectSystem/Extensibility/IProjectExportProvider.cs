@@ -14,7 +14,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Extensibility
         /// UI thread. This is the preferred method for getting access to project specific
         /// exports.
         /// </summary>
-        /// <exception cref="System.ArgumentException"><paramref name="projectFilePath"/> is <see langword="null" /> or empty.</exception>
+        /// <exception cref="ArgumentException"><paramref name="projectFilePath"/> is <see langword="null" /> or empty.</exception>
         T? GetExport<T>(string projectFilePath) where T : class;
     }
 }

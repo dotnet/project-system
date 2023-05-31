@@ -13,7 +13,7 @@ internal static class BindingBehavior
             "UpdatePropertyOnEnterPressed",
             typeof(DependencyProperty),
             typeof(BindingBehavior),
-            new System.Windows.PropertyMetadata(null, OnUpdatePropertyOnEnterPressedPropertyChanged));
+            new PropertyMetadata(null, OnUpdatePropertyOnEnterPressedPropertyChanged));
 
     public static void SetUpdatePropertyOnEnterPressed(DependencyObject dp, DependencyProperty value)
     {

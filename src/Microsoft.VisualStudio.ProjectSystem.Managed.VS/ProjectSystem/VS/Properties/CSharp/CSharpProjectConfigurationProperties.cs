@@ -20,6 +20,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties.CSharp
         {
         }
 
-        public string ErrorReport { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
+        public string ErrorReport { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
     }
 }
