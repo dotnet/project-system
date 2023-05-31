@@ -16,20 +16,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             {
                 yield break;
             }
-            foreach (var entry in ReadEntries(value))
+
+            foreach (string entry in ReadEntries(value))
             {
-                (string, string) resultingEntry = ("", "");
-                try
+                if (!TryParseSplitPairedEntry(entry, out (string, string) resultingEntry)
+                    && !TryParseSingleEntry(entry, out resultingEntry))
                 {
-                    (string entryKey, string entryValue) = SplitPairedEntry(entry);
-                    resultingEntry = (DecodeCharacters(entryKey), DecodeCharacters(entryValue));
+                    throw new FormatException("Expected valid name value pair for defining custom constants.");
                 }
-                // if not key value pair entry, tries to parse for single value entry
-                // empty string in the section position signifies single value entry
-                catch (FormatException)
-                {
-                    resultingEntry = (DecodeCharacters(SplitSingleEntry(entry)), "");
-                }
+
                 yield return resultingEntry;
                 
             }
@@ -59,20 +54,22 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
                 yield return rawText.Substring(entryStart);
             }
 
-            static (string EncodedKey, string EncodedValue) SplitPairedEntry(string entry)
+            static bool TryParseSplitPairedEntry(string entry, out (string, string) result)
             {
                 bool escaped = false;
                 for (int i = 0; i < entry.Length; i++)
                 {
                     if (entry[i] == '=' && !escaped)
                     {
-                        var name = entry.Substring(0, i);
-                        var value = entry.Substring(i + 1);
+                        string name = entry.Substring(0, i);
+                        string value = entry.Substring(i + 1);
                         if (name.Length == 0 || value.Length == 0)
                         {
-                            throw new FormatException($"Expected valid name value pair for defining custom constants.");
+                            break;
                         }
-                        return (name, value);
+                        result = (DecodeCharacters(name), DecodeCharacters(value));
+
+                        return true;
                     }
                     else if (entry[i] == '/')
                     {
@@ -83,25 +80,30 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
                         escaped = false;
                     }
                 }
-                throw new FormatException("Expected valid name value pair for defining custom constants.");
+
+                result = default;
+                return false;
             }
 
-            static string SplitSingleEntry(string entry)
+            static bool TryParseSingleEntry(string entry, out (string, string) result)
             {
                 bool escaped = false;
                 for (int i = 0; i < entry.Length; i++)
                 {
                     if (entry[i] == '=' && !escaped)
                     {
-                        throw new FormatException($"Expected valid name value pair for defining custom constants.");
+                        break;
                     }
                     else if (i == entry.Length - 1)
                     {
-                        return entry;
+                        result = (DecodeCharacters(entry), "");
+                        return true;
                     }
                     escaped = entry[i] == '/' && !escaped;
                 }
-                throw new FormatException("Expected valid name value pair for defining custom constants.");
+
+                result = default;
+                return false;
             }
 
             static string DecodeCharacters(string value)
