@@ -474,16 +474,14 @@ This project was loaded using the wrong project type, likely as a result of rena
         <note />
       </trans-unit>
       <trans-unit id="Restore_NuGetCycleDetected">
-        <source>A circular dependency A -&gt; B -&gt; A was detected during NuGet Restore which caused NuGet to stop restoring.
-Because the NuGet restore didn't finish correctly, the project might be in a bad state.</source>
-        <target state="translated">NuGet 복원 중에 순환 종속성 A -&gt; B -&gt; A가 감지되어 NuGet이 복원을 중지했습니다.
-NuGet 복원이 올바르게 완료되지 않았으므로 프로젝트가 잘못된 상태일 수 있습니다.</target>
-        <note />
+        <source>A NuGet restore loop has been detected in project '{0}'. Further restores have been aborted. The project might be in a bad state.</source>
+        <target state="new">A NuGet restore loop has been detected in project '{0}'. Further restores have been aborted. The project might be in a bad state.</target>
+        <note>{0} is a file path.</note>
       </trans-unit>
       <trans-unit id="Restore_PropertyWithInconsistentValues">
         <source>The value of the '{0}' property is inconsistent between target frameworks. This property must be identical for NuGet restore to function correctly. The value '{1}' from the '{2}' configuration will be used, other target frameworks may fail to pick NuGet assets.</source>
-        <target state="translated">'{0}' 속성 값이 대상 프레임워크 간에 일치하지 않습니다. NuGet 복원이 제대로 작동하려면 이 속성이 같아야 합니다. '{2}' 구성의 '{1}' 값이 사용되며, 다른 대상 프레임워크는 NuGet 자산을 선택하지 못할 수 있습니다.</target>
-        <note />
+        <target state="needs-review-translation">'{0}' 속성 값이 대상 프레임워크 간에 일치하지 않습니다. NuGet 복원이 제대로 작동하려면 이 속성이 같아야 합니다. '{2}' 구성의 '{1}' 값이 사용되며, 다른 대상 프레임워크는 NuGet 자산을 선택하지 못할 수 있습니다.</target>
+        <note>{0} is a file path.</note>
       </trans-unit>
       <trans-unit id="SdkNodeName">
         <source>SDK</source>

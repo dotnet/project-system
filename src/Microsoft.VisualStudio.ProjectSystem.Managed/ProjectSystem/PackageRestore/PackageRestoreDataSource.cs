@@ -1,15 +1,12 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
-using System.Diagnostics;
 using System.Threading.Tasks.Dataflow;
 using Microsoft.VisualStudio.Composition;
 using Microsoft.VisualStudio.IO;
-using Microsoft.VisualStudio.Notifications;
-using Microsoft.VisualStudio.ProjectSystem.PackageRestore;
-using Microsoft.VisualStudio.Telemetry;
+using Microsoft.VisualStudio.Text;
 using Microsoft.VisualStudio.Threading;
 
-namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
+namespace Microsoft.VisualStudio.ProjectSystem.PackageRestore
 {
     /// <summary>
     ///     Responsible for pushing ("nominating") project data such as referenced packages and
@@ -52,46 +49,36 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
         // |_________________________________________|    |_________________________________________|
         //
 
-        private readonly Stopwatch _stopwatch = new();
-        private readonly NuGetRestoreCycleDetector _cycleDetector = new();
-        private readonly IProjectSystemOptions _projectSystemOptions;
-        private readonly ITelemetryService _telemetryService;
-        private readonly INonModalNotificationService _userNotificationService;
+        private readonly IPackageRestoreCycleDetector _cycleDetector;
         private readonly UnconfiguredProject _project;
         private readonly IPackageRestoreUnconfiguredInputDataSource _dataSource;
         private readonly IProjectAsynchronousTasksService _projectAsynchronousTasksService;
         private readonly IFileSystem _fileSystem;
         private readonly IManagedProjectDiagnosticOutputService _logger;
         private readonly INuGetRestoreService _nuGetRestoreService;
-        private byte[]? _latestHash;
+        private Hash? _lastHash;
         private bool _enabled;
         private bool _wasSourceBlockContinuationSet;
-        private int _nuGetRestoreSuccesses;
-        private int _nuGetRestoreCyclesDetected;
 
         [ImportingConstructor]
         public PackageRestoreDataSource(
-            IProjectSystemOptions projectSystemOptions,
-            ITelemetryService telemetryService,
-            INonModalNotificationService userNotificationService,
             UnconfiguredProject project,
+            PackageRestoreSharedJoinableTaskCollection sharedJoinableTaskCollection,
             IPackageRestoreUnconfiguredInputDataSource dataSource,
             [Import(ExportContractNames.Scopes.UnconfiguredProject)] IProjectAsynchronousTasksService projectAsynchronousTasksService,
             IFileSystem fileSystem,
             IManagedProjectDiagnosticOutputService logger,
-            PackageRestoreSharedJoinableTaskCollection sharedJoinableTaskCollection,
-            INuGetRestoreService nuGetRestoreService)
+            INuGetRestoreService nuGetRestoreService,
+            IPackageRestoreCycleDetector cycleDetector)
             : base(project, sharedJoinableTaskCollection, synchronousDisposal: true, registerDataSource: false)
         {
-            _projectSystemOptions = projectSystemOptions;
-            _telemetryService = telemetryService;
-            _userNotificationService = userNotificationService;
             _project = project;
             _dataSource = dataSource;
             _projectAsynchronousTasksService = projectAsynchronousTasksService;
             _fileSystem = fileSystem;
             _logger = logger;
             _nuGetRestoreService = nuGetRestoreService;
+            _cycleDetector = cycleDetector;
         }
 
         protected override IDisposable? LinkExternalInput(ITargetBlock<IProjectVersionedValue<RestoreData>> targetBlock)
@@ -128,84 +115,41 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
 
         private async Task<bool> RestoreCoreAsync(PackageRestoreUnconfiguredInput value)
         {
+            CancellationToken token = _projectAsynchronousTasksService.UnloadCancellationToken;
+
             ProjectRestoreInfo? restoreInfo = value.RestoreInfo;
-            bool success = false;
 
             Assumes.NotNull(restoreInfo);
 
             // Restore service always does work regardless of whether the value we pass 
             // them to actually contains changes, only nominate if there are any.
-            byte[] hash = RestoreHasher.CalculateHash(restoreInfo);
+            Hash hash = RestoreHasher.CalculateHash(restoreInfo);
 
-            if (_latestHash is not null && hash.AsSpan().SequenceEqual(_latestHash))
+            if (await _cycleDetector.IsCycleDetectedAsync(hash, token))
             {
-                _stopwatch.Reset();
-                _nuGetRestoreSuccesses++;
-                _cycleDetector.Clear();
+                _lastHash = hash;
+                return false;
+            }
+
+            if (_lastHash?.Equals(hash) == true)
+            {
                 await _nuGetRestoreService.UpdateWithoutNominationAsync(value.ConfiguredInputs);
                 return true;
             }
 
-            _latestHash = hash;
+            _lastHash = hash;
 
-            if (await CycleDetectedAsync(hash, _projectAsynchronousTasksService.UnloadCancellationToken))
-            {
-                _nuGetRestoreCyclesDetected++;
-                return false;
-            }
-                
             JoinableTask<bool> joinableTask = JoinableFactory.RunAsync(() =>
             {
-                return NominateForRestoreAsync(restoreInfo, value.ConfiguredInputs, _projectAsynchronousTasksService.UnloadCancellationToken);
+                return NominateForRestoreAsync(restoreInfo, value.ConfiguredInputs, token);
             });
 
-            _projectAsynchronousTasksService.RegisterAsyncTask(joinableTask,
-                                                                ProjectCriticalOperation.Build | ProjectCriticalOperation.Unload | ProjectCriticalOperation.Rename,
-                                                                registerFaultHandler: true);
+            _projectAsynchronousTasksService.RegisterAsyncTask(
+                joinableTask,
+                operationFlags: ProjectCriticalOperation.Build | ProjectCriticalOperation.Unload | ProjectCriticalOperation.Rename,
+                registerFaultHandler: true);
 
-            success = await joinableTask;
-
-            return success;
-        }
-
-        private async Task<bool> CycleDetectedAsync(byte[] hash, CancellationToken cancellationToken)
-        {
-            _stopwatch.Start();
-
-            bool enabled = await _projectSystemOptions.GetDetectNuGetRestoreCyclesAsync(cancellationToken);
-
-            if (!enabled)
-            {
-                return false;
-            }
-
-            bool cycleDetected = _cycleDetector.ComputeCycleDetection(hash);
-
-            if (!cycleDetected)
-            {
-                return false;
-            }
-
-            _stopwatch.Stop();
-
-            SendTelemetry();
-
-            await _userNotificationService.ShowErrorAsync(
-                Resources.Restore_NuGetCycleDetected,
-                cancellationToken
-            );
-
-            return true;
-
-            void SendTelemetry()
-            {
-                _telemetryService.PostProperties(TelemetryEventName.NuGetRestoreCycleDetected, new[]
-                {
-                    (TelemetryPropertyName.NuGetRestoreCycleDetected.RestoreDurationMillis, (object)_stopwatch.Elapsed.TotalMilliseconds),
-                    (TelemetryPropertyName.NuGetRestoreCycleDetected.RestoreSuccesses, _nuGetRestoreSuccesses),
-                    (TelemetryPropertyName.NuGetRestoreCycleDetected.RestoreCyclesDetected, _nuGetRestoreCyclesDetected)
-                });
-            }
+            return await joinableTask;
         }
 
         private async Task<bool> NominateForRestoreAsync(ProjectRestoreInfo restoreInfo, IReadOnlyCollection<PackageRestoreConfiguredInput> versions, CancellationToken cancellationToken)

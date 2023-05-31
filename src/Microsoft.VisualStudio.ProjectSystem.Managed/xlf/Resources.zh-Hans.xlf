@@ -474,16 +474,14 @@ This project was loaded using the wrong project type, likely as a result of rena
         <note />
       </trans-unit>
       <trans-unit id="Restore_NuGetCycleDetected">
-        <source>A circular dependency A -&gt; B -&gt; A was detected during NuGet Restore which caused NuGet to stop restoring.
-Because the NuGet restore didn't finish correctly, the project might be in a bad state.</source>
-        <target state="translated">NuGet 还原期间检测到循环依赖项 A -&gt; B -&gt; A，导致 NuGet 停止还原。
-由于 NuGet 还原未正确完成，项目可能处于错误状态。</target>
-        <note />
+        <source>A NuGet restore loop has been detected in project '{0}'. Further restores have been aborted. The project might be in a bad state.</source>
+        <target state="new">A NuGet restore loop has been detected in project '{0}'. Further restores have been aborted. The project might be in a bad state.</target>
+        <note>{0} is a file path.</note>
       </trans-unit>
       <trans-unit id="Restore_PropertyWithInconsistentValues">
         <source>The value of the '{0}' property is inconsistent between target frameworks. This property must be identical for NuGet restore to function correctly. The value '{1}' from the '{2}' configuration will be used, other target frameworks may fail to pick NuGet assets.</source>
-        <target state="translated">{0} 属性的值在目标框架之间不一致。此属性必须相同以便 NuGet 还原正常运行。将使用“{2}”配置中的值 {1}，而其他目标框架可能无法选取 NuGet 资产。</target>
-        <note />
+        <target state="needs-review-translation">{0} 属性的值在目标框架之间不一致。此属性必须相同以便 NuGet 还原正常运行。将使用“{2}”配置中的值 {1}，而其他目标框架可能无法选取 NuGet 资产。</target>
+        <note>{0} is a file path.</note>
       </trans-unit>
       <trans-unit id="SdkNodeName">
         <source>SDK</source>
