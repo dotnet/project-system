@@ -480,7 +480,7 @@ Tento projekt se načetl pomocí nesprávného typu projektu, pravděpodobně v 
       </trans-unit>
       <trans-unit id="Restore_PropertyWithInconsistentValues">
         <source>The value of the '{0}' property is inconsistent between target frameworks. This property must be identical for NuGet restore to function correctly. The value '{1}' from the '{2}' configuration will be used, other target frameworks may fail to pick NuGet assets.</source>
-        <target state="needs-review-translation">Hodnota vlastnosti {0} není konzistentní mezi cílovými architekturami. Tato vlastnost musí být identická, aby správně fungovalo obnovení přes NuGet. Použije se hodnota {1} z konfigurace {2} – jiným cílovým architekturám se nemusí podařit výběr prostředků NuGet.</target>
+        <target state="translated">Hodnota vlastnosti {0} není konzistentní mezi cílovými architekturami. Tato vlastnost musí být identická, aby správně fungovalo obnovení přes NuGet. Použije se hodnota {1} z konfigurace {2} – jiným cílovým architekturám se nemusí podařit výběr prostředků NuGet.</target>
         <note>{0} is a file path.</note>
       </trans-unit>
       <trans-unit id="SdkNodeName">

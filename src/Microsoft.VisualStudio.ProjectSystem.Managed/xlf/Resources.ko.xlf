@@ -480,7 +480,7 @@ This project was loaded using the wrong project type, likely as a result of rena
       </trans-unit>
       <trans-unit id="Restore_PropertyWithInconsistentValues">
         <source>The value of the '{0}' property is inconsistent between target frameworks. This property must be identical for NuGet restore to function correctly. The value '{1}' from the '{2}' configuration will be used, other target frameworks may fail to pick NuGet assets.</source>
-        <target state="needs-review-translation">'{0}' 속성 값이 대상 프레임워크 간에 일치하지 않습니다. NuGet 복원이 제대로 작동하려면 이 속성이 같아야 합니다. '{2}' 구성의 '{1}' 값이 사용되며, 다른 대상 프레임워크는 NuGet 자산을 선택하지 못할 수 있습니다.</target>
+        <target state="translated">'{0}' 속성 값이 대상 프레임워크 간에 일치하지 않습니다. NuGet 복원이 제대로 작동하려면 이 속성이 같아야 합니다. '{2}' 구성의 '{1}' 값이 사용되며, 다른 대상 프레임워크는 NuGet 자산을 선택하지 못할 수 있습니다.</target>
         <note>{0} is a file path.</note>
       </trans-unit>
       <trans-unit id="SdkNodeName">
