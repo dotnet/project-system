@@ -1,20 +1,69 @@
 ﻿<!-- Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information. -->
 <Project Sdk="Microsoft.NET.Sdk">
 
-  <Import Project="..\..\eng\imports\VisualStudioIntegration.props" />
+  <!-- <Import Project="..\..\eng\imports\HostAgnostic.props" /> -->
+  <!-- <Import Project="..\..\eng\imports\VisualStudioIntegration.props" /> -->
 
   <PropertyGroup>
     <RootNamespace>Microsoft.VisualStudio</RootNamespace>
-    <PlatformTarget>x86</PlatformTarget>
+    <!-- <IsManagedProjectSystemProject>true</IsManagedProjectSystemProject> -->
+    <!-- <TargetFramework>net7.0</TargetFramework> -->
+
+    <!-- Nuget -->
+    <!-- <IsPackable>false</IsPackable> -->
+    <PlatformTarget>x64</PlatformTarget>
+    <TargetFramework>net472</TargetFramework>
+
+    <LangVersion>preview</LangVersion>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Features>strict</Features>
+
+    <NoWarn>$(NoWarn);MSB3270</NoWarn>
   </PropertyGroup>
 
+  <!-- <ItemGroup>
+    <PackageReference Include="Microsoft.Test.Performance" PrivateAssets="all" ExcludeAssets="all" />
+  </ItemGroup> -->
+
+  <!-- <ItemGroup>
+    <Compile Include="**\*.cs" Exclude="Assets\**" />
+  </ItemGroup> -->
+
   <ItemGroup>
-    <Compile Include="..\Common\ThrowingTraceListener.cs" Link="Diagnostics\ThrowingTraceListener.cs" />
+    <PackageReference Include="Microsoft.Test.Apex.VisualStudio" Version="17.7.0-preview-2-33716-450" />
+    <!--<PackageReference Include="Microsoft.Test.Apex.VisualStudio.TestExplorer" Version="17.7.0-beta.23272.5" />-->
+    <PackageReference Include="MSTest.TestAdapter" Version="2.1.2" />
+    <PackageReference Include="MSTest.TestFramework" Version="2.1.2" />
+
+    <!-- Provides vstest.console.exe -->
+    <!-- <PackageReference Include="Microsoft.TestPlatform" GeneratePathProperty="true" ExcludeAssets="all" /> -->
+
+    <!--
+      The MediaRecorder package is not defined correctly and does not deploy the VSTestVideoRecorder.exe it requires.
+      Instead, avoid deploying any of its binaries and just run it directly from package folder so that it can probe for its exe.
+    -->
+    <!--
+      TODO: MediaRecorder package is no longer available via non-legacy public feeds. Integration tests should no longer be maintained here.
+      <PackageReference Include="Microsoft.DevDiv.Validation.MediaRecorder" GeneratePathProperty="true" ExcludeAssets="All" />
+    -->
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\DeployIntegrationDependencies\DeployIntegrationDependencies.csproj" ReferenceOutputAssembly="false" />
-    <Compile Include="..\..\src\Microsoft.VisualStudio.ProjectSystem.Managed\ProjectSystem\Imaging\ImageMonikerDebuggerDisplay.cs" Link="ImageMonikerDebuggerDisplay.cs" />
+    <Reference Include="System.ComponentModel.Composition" />
+    <PackageReference Include="Microsoft.VisualStudio.Interop" Version="17.7.36273-preview.2" />
+    <!-- Not sure why but 17.7.3-preview is explicitly needed for the CreateProject_CreateAndBuild test to run. -->
+    <PackageReference Include="Microsoft.VisualStudio.RpcContracts" Version="17.7.3-preview" />
   </ItemGroup>
+
+  <ItemGroup>
+    <!-- There are two namespaces via which MEF attributes are defined. This is the correct one. -->
+    <Using Include="System.ComponentModel.Composition" />
+  </ItemGroup>
+
+  <!-- <ItemGroup>
+    <Compile Include="..\Common\ThrowingTraceListener.cs" Link="Diagnostics\ThrowingTraceListener.cs" />
+    <Compile Include="..\..\src\Microsoft.VisualStudio.ProjectSystem.Managed\ProjectSystem\Imaging\ImageMonikerDebuggerDisplay.cs" Link="ImageMonikerDebuggerDisplay.cs" />
+  </ItemGroup> -->
 
 </Project>

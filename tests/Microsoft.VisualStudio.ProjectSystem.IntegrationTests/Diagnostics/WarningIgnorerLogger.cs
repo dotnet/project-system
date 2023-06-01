@@ -33,10 +33,7 @@ namespace Microsoft.VisualStudio.Diagnostics
         internal void SetTestContext(TestContext context)
         {
             // Set the base TestContext
-            var property = typeof(TestContextLogger).GetProperty("TestContext", BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
-            if (property is null)
-                throw new InvalidOperationException("Unable to find TestContextLogger.TestContext. Has it been renamed?");
-
+            var property = typeof(TestContextLogger).GetProperty("TestContext", BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance) ?? throw new InvalidOperationException("Unable to find TestContextLogger.TestContext. Has it been renamed?");
             property.SetValue(this, context);
         }
 

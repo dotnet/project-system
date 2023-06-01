@@ -143,6 +143,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         }
 
         [TestMethod]
+        [Ignore("The FindReplace call opens the Find & Replace UI, but doesn't actually perform the action. So, no text is updated in the project file.")]
         public void ProjectFileEditor_ReplaceAllWhileEditorLoaded_ReplacementsNotLoaded()
         {
             var solution = VisualStudio.ObjectModel.Solution;
@@ -182,6 +183,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         }
 
         [TestMethod]
+        [Ignore("The FindReplace call opens the Find & Replace UI, but doesn't actually perform the action. So, no text is updated in the project file.")]
         public void ProjectFileEditor_ReplaceAllWhileEditorNotLoaded_ReplacementsLoaded()
         {
             var solution = VisualStudio.ObjectModel.Solution;
@@ -222,7 +224,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         }
 
         [TestMethod]
-        [Ignore("The new find results pain is not exposed via Apex correctly so this test ends up timing out, though you can visually inspect the results while you're waiting if you like")]
+        //[Ignore("The new find results pain is not exposed via Apex correctly so this test ends up timing out, though you can visually inspect the results while you're waiting if you like")]
+        [Ignore("The FindReplace call opens the Find & Replace UI, but doesn't actually perform the action. So, no results are created.")]
         public void ProjectFileEditor_FindAllAfterPropertyChange_FindsProjectFile()
         {
             var solution = VisualStudio.ObjectModel.Solution;
@@ -247,8 +250,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             using (Scope.Enter("Find changed property"))
             {
                 var find = VisualStudio.ObjectModel.Search.FindReplace.FindAll("Library", LookInFilesSearchScopes.EntireSolution);
-                find.WaitForReplaceInFilesCompletion();
-                Assert.AreEqual(find.ReplacedItemCount, 1);
+                find.WaitForFindInFilesCompletion();
+                Assert.AreEqual(find.ResultItemCount, 1);
             }
         }
     }

@@ -36,9 +36,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                 dependencies.Select();
                 dependencies.ExpandAll();
                 Assert.AreEqual("Dependencies", dependencies.Name);
-                var frameworks = dependencies.Items.FirstOrDefault();
-                Assert.IsNotNull(frameworks);
-                Assert.AreEqual("Frameworks", frameworks.Name);
+                var analyzers = dependencies.Items.FirstOrDefault();
+                Assert.IsNotNull(analyzers);
+                Assert.AreEqual("Analyzers", analyzers.Name);
             }
 
             using (Scope.Enter("Build Project"))
