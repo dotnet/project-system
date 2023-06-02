@@ -475,7 +475,7 @@ This project was loaded using the wrong project type, likely as a result of rena
       </trans-unit>
       <trans-unit id="Restore_NuGetCycleDetected">
         <source>A NuGet restore loop has been detected in project '{0}'. Further restores have been aborted. The project might be in a bad state.</source>
-        <target state="new">A NuGet restore loop has been detected in project '{0}'. Further restores have been aborted. The project might be in a bad state.</target>
+        <target state="translated">已在專案 '{0}' 中偵測到 NuGet 還原迴圈。已中止進一步還原。專案可能處於損壞狀態。</target>
         <note>{0} is a file path.</note>
       </trans-unit>
       <trans-unit id="Restore_PropertyWithInconsistentValues">
