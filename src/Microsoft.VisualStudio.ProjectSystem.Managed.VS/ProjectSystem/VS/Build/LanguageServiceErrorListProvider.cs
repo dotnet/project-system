@@ -39,7 +39,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build
 
             _isLspPullDiagnosticsEnabled = new AsyncLazy<bool>(async () =>
             {
-                IVsFeatureFlags? service = await featureFlagsService.GetValueAsync();
+                IVsFeatureFlags service = await featureFlagsService.GetValueAsync();
                 return service.IsFeatureEnabled(LspPullDiagnosticsFeatureFlagName, defaultValue: false);
             }, joinableTaskContext.Factory);
         }
