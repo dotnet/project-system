@@ -18,18 +18,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         internal const string SkipAnalyzersForImplicitlyTriggeredBuildSettingKey = "TextEditor.SkipAnalyzersForImplicitlyTriggeredBuilds";
 
         private readonly IVsService<ISettingsManager> _settingsManager;
-        private readonly IVsUIService<SVsFeatureFlags, IVsFeatureFlags> _featureFlagsService;
-        private readonly IProjectThreadingService _threadingService;
+        private readonly IVsService<SVsFeatureFlags, IVsFeatureFlags> _featureFlagsService;
 
         [ImportingConstructor]
         public ProjectSystemOptions(
             IVsService<SVsSettingsPersistenceManager, ISettingsManager> settingsManager,
-            IVsUIService<SVsFeatureFlags, IVsFeatureFlags> featureFlagsService,
+            IVsService<SVsFeatureFlags, IVsFeatureFlags> featureFlagsService,
             IProjectThreadingService threadingService)
         {
             _settingsManager = settingsManager;
             _featureFlagsService = featureFlagsService;
-            _threadingService = threadingService;
         }
 
         public Task<bool> GetIsFastUpToDateCheckEnabledAsync(CancellationToken cancellationToken)
@@ -78,11 +76,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
 
         public async Task<bool> GetDetectNuGetRestoreCyclesAsync(CancellationToken cancellationToken)
         {
-            await _threadingService.SwitchToUIThread(cancellationToken);
+            IVsFeatureFlags featureFlags = await _featureFlagsService.GetValueAsync(cancellationToken);
 
-            IVsFeatureFlags featureFlagsService = _featureFlagsService.Value;
-
-            return featureFlagsService.IsFeatureEnabled(FeatureFlagNames.EnableNuGetRestoreCycleDetection, defaultValue: false);
+            return featureFlags.IsFeatureEnabled(FeatureFlagNames.EnableNuGetRestoreCycleDetection, defaultValue: false);
         }
     }
 }

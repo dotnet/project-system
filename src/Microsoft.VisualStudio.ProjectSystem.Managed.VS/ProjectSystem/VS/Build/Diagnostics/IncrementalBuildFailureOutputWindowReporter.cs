@@ -15,14 +15,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build.Diagnostics
     internal sealed class IncrementalBuildFailureOutputWindowReporter : IIncrementalBuildFailureReporter
     {
         private readonly UnconfiguredProject _project;
-        private readonly IVsUIService<SVsFeatureFlags, IVsFeatureFlags> _featureFlagsService;
+        private readonly IVsService<SVsFeatureFlags, IVsFeatureFlags> _featureFlagsService;
         private readonly IVsUIService<SVsOutputWindow, IVsOutputWindow> _outputWindow;
         private readonly IProjectSystemOptions _projectSystemOptions;
 
         [ImportingConstructor]
         public IncrementalBuildFailureOutputWindowReporter(
             UnconfiguredProject project,
-            IVsUIService<SVsFeatureFlags, IVsFeatureFlags> featureFlagsService,
+            IVsService<SVsFeatureFlags, IVsFeatureFlags> featureFlagsService,
             IVsUIService<SVsOutputWindow, IVsOutputWindow> outputWindow,
             IProjectSystemOptions projectSystemOptions)
         {
@@ -42,9 +42,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build.Diagnostics
                 return true;
             }
 
-            await _project.Services.ThreadingPolicy.SwitchToUIThread(cancellationToken);
-
-            IVsFeatureFlags featureFlagsService = _featureFlagsService.Value;
+            IVsFeatureFlags featureFlagsService = await _featureFlagsService.GetValueAsync(cancellationToken);
 
             return featureFlagsService.IsFeatureEnabled(FeatureFlagNames.EnableIncrementalBuildFailureOutputLogging, defaultValue: false);
         }
