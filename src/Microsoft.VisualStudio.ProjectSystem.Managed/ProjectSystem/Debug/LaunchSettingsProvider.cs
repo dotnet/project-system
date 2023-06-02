@@ -326,7 +326,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
                 {
                     ILaunchProfile profile = previousProfiles[i];
 
-                    if (profile.IsInMemoryObject() && !string.Equals(profile.CommandName, ErrorProfileCommandName))
+                    if (profile.IsInMemoryObject() && !string.Equals(profile.CommandName, ErrorProfileCommandName, StringComparisons.LaunchProfileCommandNames))
                     {
                         // Does it already have one with this name?
                         if (newProfiles.FirstOrDefault((p1, p2) => LaunchProfile.IsSameProfileName(p1.Name, p2.Name), profile) is null)

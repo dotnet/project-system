@@ -91,7 +91,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
                 && await project.GetProjectLevelPropertyPagesCatalogAsync() is IPropertyPagesCatalog projectCatalog
                 && projectCatalog.GetSchema(propertyPageName) is Rule rule
                 && rule.GetProperty(propertyName) is BaseProperty property
-                && property.ValueEditors.FirstOrDefault(ed => string.Equals(ed.EditorType, editorName)) is ValueEditor editor)
+                && property.ValueEditors.FirstOrDefault(ed => string.Equals(ed.EditorType, editorName, StringComparison.Ordinal)) is ValueEditor editor)
             {
                 IEntityValue editorValue = CreateEditorValue(queryExecutionContext, requestId, editor, properties);
             }
