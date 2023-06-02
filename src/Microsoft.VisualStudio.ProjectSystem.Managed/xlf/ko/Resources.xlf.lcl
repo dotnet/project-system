@@ -889,16 +889,19 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";Restore_NuGetCycleDetected" ItemType="0" PsrId="308" Leaf="true">
+      <Item ItemId=";Restore_NuGetCycleDetected" ItemType="0" PsrId="308" InstFlg="true" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[A circular dependency A -> B -> A was detected during NuGet Restore which caused NuGet to stop restoring.]D;]A;Because the NuGet restore didn't finish correctly, the project might be in a bad state.]]></Val>
+          <Val><![CDATA[A NuGet restore loop has been detected in project '{0}'. Further restores have been aborted. The project might be in a bad state.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[NuGet 복원 중에 순환 종속성 A -> B -> A가 감지되어 NuGet이 복원을 중지했습니다.]D;]A;NuGet 복원이 올바르게 완료되지 않았으므로 프로젝트가 잘못된 상태일 수 있습니다.]]></Val>
+            <Val><![CDATA[프로젝트 '{0}'에서 NuGet 복원 루프가 검색되었습니다. 추가 복원이 중단되었습니다. 프로젝트가 잘못된 상태일 수 있습니다.]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[A circular dependency A -> B -> A was detected during NuGet Restore which caused NuGet to stop restoring.]D;]A;Because the NuGet restore didn't finish correctly, the project might be in a bad state.]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";Restore_PropertyWithInconsistentValues" ItemType="0" PsrId="308" Leaf="true">
+      <Item ItemId=";Restore_PropertyWithInconsistentValues" ItemType="0" PsrId="308" InstFlg="true" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[The value of the '{0}' property is inconsistent between target frameworks. This property must be identical for NuGet restore to function correctly. The value '{1}' from the '{2}' configuration will be used, other target frameworks may fail to pick NuGet assets.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
