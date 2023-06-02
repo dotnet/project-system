@@ -53,6 +53,21 @@ namespace Microsoft.VisualStudio.ProjectSystem
         /// <summary>
         ///     Gets a value indicating if the project system should attempt to detect cycles in the NuGet restore process.
         /// </summary>
-        Task<bool> GetDetectNuGetRestoreCyclesAsync(CancellationToken cancellationToken);
+        ValueTask<bool> IsNuGetRestoreCycleDetectionEnabledAsync(CancellationToken cancellationToken);
+
+        /// <summary>
+        ///     Gets whether incremental build failure detection should write to the output window when failures are detected.
+        /// </summary>
+        ValueTask<bool> IsIncrementalBuildFailureOutputLoggingEnabledAsync(CancellationToken cancellationToken);
+
+        /// <summary>
+        ///     Gets whether incremental build failure detection should send telemetry.
+        /// </summary>
+        ValueTask<bool> IsIncrementalBuildFailureTelemetryEnabledAsync(CancellationToken cancellationToken);
+
+        /// <summary>
+        ///     Gets whether LSP pull diagnostics are enabled.
+        /// </summary>
+        ValueTask<bool> IsLspPullDiagnosticsEnabledAsync(CancellationToken cancellationToken);
     }
 }

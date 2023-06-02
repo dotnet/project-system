@@ -1,7 +1,6 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
 using Microsoft.Build.Framework;
-using Microsoft.Internal.VisualStudio.Shell.Interop;
 using Microsoft.VisualStudio.ProjectSystem.LanguageServices;
 using Microsoft.VisualStudio.Shell.Interop;
 using Microsoft.VisualStudio.Threading;
@@ -10,38 +9,34 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build
 {
     /// <summary>
     ///     An implementation of <see cref="IVsErrorListProvider"/> that delegates onto the language
-    ///     service so that it de-dup warnings and errors between IntelliSense and build.
+    ///     service so that it de-dupes warnings and errors between IntelliSense and build.
     /// </summary>
     [AppliesTo(ProjectCapability.DotNetLanguageService)]
     [Export(typeof(IVsErrorListProvider))]
     [Order(Order.Default)]
     internal partial class LanguageServiceErrorListProvider : IVsErrorListProvider
     {
-        internal const string LspPullDiagnosticsFeatureFlagName = "Lsp.PullDiagnostics";
-
         private readonly UnconfiguredProject _project;
         private readonly IWorkspaceWriter _workspaceWriter;
 
         private readonly AsyncLazy<bool> _isLspPullDiagnosticsEnabled;
 
         /// <remarks>
-        /// <see cref="UnconfiguredProject"/> must be imported in the constructor in order for scope of this class' export to be correct.
+        /// <see cref="UnconfiguredProject"/> must be imported in the constructor in order for scope of this class's export to be correct.
         /// </remarks>
         [ImportingConstructor]
         public LanguageServiceErrorListProvider(
             UnconfiguredProject project,
             IWorkspaceWriter workspaceWriter,
-            IVsService<SVsFeatureFlags, IVsFeatureFlags> featureFlagsService,
+            IProjectSystemOptions projectSystemOptions,
             JoinableTaskContext joinableTaskContext)
         {
             _project = project;
             _workspaceWriter = workspaceWriter;
 
-            _isLspPullDiagnosticsEnabled = new AsyncLazy<bool>(async () =>
-            {
-                IVsFeatureFlags service = await featureFlagsService.GetValueAsync();
-                return service.IsFeatureEnabled(LspPullDiagnosticsFeatureFlagName, defaultValue: false);
-            }, joinableTaskContext.Factory);
+            _isLspPullDiagnosticsEnabled = new AsyncLazy<bool>(
+                async () => await projectSystemOptions.IsLspPullDiagnosticsEnabledAsync(CancellationToken.None),
+                joinableTaskContext.Factory);
         }
 
         public void SuspendRefresh()
@@ -61,7 +56,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build
 
         private async Task<AddMessageResult> AddMessageCoreAsync(TargetGeneratedError error)
         {
-            // We only want to pass compiler, analyzers, etc to the language 
+            // We only want to pass compiler, analyzers, etc to the language
             // service, so we skip tasks that do not have a code
             if (!TryExtractErrorListDetails(error.BuildEventArgs, out ErrorListDetails details) || string.IsNullOrEmpty(details.Code))
                 return AddMessageResult.NotHandled;
@@ -94,7 +89,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build
                         return TaskResult.True;
                     }
                     catch (NotImplementedException)
-                    {   // Language Service doesn't handle it, typically because file 
+                    {   // Language Service doesn't handle it, typically because file
                         // isn't in the project or because it doesn't have line/column
                     }
 

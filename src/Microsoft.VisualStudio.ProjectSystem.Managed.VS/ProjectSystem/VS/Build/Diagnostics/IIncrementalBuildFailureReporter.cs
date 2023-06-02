@@ -18,7 +18,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build.Diagnostics
         /// </remarks>
         /// <param name="cancellationToken">A token whose cancellation marks lost interest in the result of this task.</param>
         /// <returns>A task that resolves to <see langword="true"/> if this reporter is currently enabled, otherwise <see langword="false"/>.</returns>
-        Task<bool> IsEnabledAsync(CancellationToken cancellationToken);
+        ValueTask<bool> IsEnabledAsync(CancellationToken cancellationToken);
 
         /// <summary>
         ///   Reports an incremental build failure for the project in the current scope.
