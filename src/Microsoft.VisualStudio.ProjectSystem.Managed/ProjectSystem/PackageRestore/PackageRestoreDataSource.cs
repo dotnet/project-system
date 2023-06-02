@@ -85,8 +85,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.PackageRestore
         {
             JoinUpstreamDataSources(_dataSource);
 
-            // Take the unconfigured "restore inputs", send them to NuGet, and then return the result of that restore
-            // We make use of TransformMany so that we can opt out of returning
+            // Take the unconfigured "restore inputs", send them to NuGet, and then return the result of that restore.
+            // We make use of TransformMany so that we can opt out of returning.
             DisposableValue<ISourceBlock<IProjectVersionedValue<RestoreData>>> transformBlock = _dataSource.SourceBlock.TransformManyWithNoDelta(RestoreAsync);
 
             transformBlock.Value.LinkTo(targetBlock, DataflowOption.PropagateCompletion);
@@ -94,6 +94,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.PackageRestore
             return transformBlock;
         }
 
+        // internal for testing purposes only -- the only real caller is the transform block
         internal async Task<IEnumerable<IProjectVersionedValue<RestoreData>>> RestoreAsync(IProjectVersionedValue<PackageRestoreUnconfiguredInput> e)
         {
             // No configurations - likely during project close.

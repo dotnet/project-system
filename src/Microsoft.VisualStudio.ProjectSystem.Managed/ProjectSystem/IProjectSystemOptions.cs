@@ -46,7 +46,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
         Task<bool> GetSkipAnalyzersForImplicitlyTriggeredBuildAsync(CancellationToken cancellationToken);
 
         /// <summary>
-        ///     Gets a value indicating if single-target builds should be preferred for startup projects. 
+        ///     Gets a value indicating if single-target builds should be preferred for startup projects.
         /// </summary>
         Task<bool> GetPreferSingleTargetBuildsForStartupProjectsAsync(CancellationToken cancellationToken);
 

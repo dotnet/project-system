@@ -100,9 +100,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.PackageRestore
             IManagedProjectDiagnosticOutputService logger = IManagedProjectDiagnosticOutputServiceFactory.Create();
             nuGetRestoreService ??= INuGetRestoreServiceFactory.Create();
 
-            var projectSystemOptionsMock = new Mock<IProjectSystemOptions>();
-            projectSystemOptionsMock.Setup(o => o.GetDetectNuGetRestoreCyclesAsync(It.IsAny<CancellationToken>())).ReturnsAsync(featureFlagEnabled);
-
             var cycleDetector = new Mock<IPackageRestoreCycleDetector>();
             cycleDetector.Setup(o => o.IsCycleDetectedAsync(It.IsAny<Hash>(), It.IsAny<CancellationToken>())).ReturnsAsync(isCycleDetected);
 
