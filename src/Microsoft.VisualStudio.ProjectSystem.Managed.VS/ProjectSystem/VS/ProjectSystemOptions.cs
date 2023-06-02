@@ -32,32 +32,32 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             _threadingService = threadingService;
         }
 
-        public Task<bool> GetIsFastUpToDateCheckEnabledAsync(CancellationToken cancellationToken = default)
+        public Task<bool> GetIsFastUpToDateCheckEnabledAsync(CancellationToken cancellationToken)
         {
             return GetSettingValueOrDefaultAsync(FastUpToDateEnabledSettingKey, defaultValue: true, cancellationToken);
         }
 
-        public Task<LogLevel> GetFastUpToDateLoggingLevelAsync(CancellationToken cancellationToken = default)
+        public Task<LogLevel> GetFastUpToDateLoggingLevelAsync(CancellationToken cancellationToken)
         {
             return GetSettingValueOrDefaultAsync(FastUpToDateLogLevelSettingKey, defaultValue: LogLevel.None, cancellationToken);
         }
 
-        public Task<bool> GetUseDesignerByDefaultAsync(string designerCategory, bool defaultValue, CancellationToken cancellationToken = default)
+        public Task<bool> GetUseDesignerByDefaultAsync(string designerCategory, bool defaultValue, CancellationToken cancellationToken)
         {
             return GetSettingValueOrDefaultAsync(UseDesignerByDefaultSettingKey + "\\" + designerCategory, defaultValue, cancellationToken);
         }
 
-        public Task SetUseDesignerByDefaultAsync(string designerCategory, bool value, CancellationToken cancellationToken = default)
+        public Task SetUseDesignerByDefaultAsync(string designerCategory, bool value, CancellationToken cancellationToken)
         {
             return SetSettingValueAsync(UseDesignerByDefaultSettingKey + "\\" + designerCategory, value, cancellationToken);
         }
 
-        public Task<bool> GetSkipAnalyzersForImplicitlyTriggeredBuildAsync(CancellationToken cancellationToken = default)
+        public Task<bool> GetSkipAnalyzersForImplicitlyTriggeredBuildAsync(CancellationToken cancellationToken)
         {
             return GetSettingValueOrDefaultAsync(SkipAnalyzersForImplicitlyTriggeredBuildSettingKey, defaultValue: true, cancellationToken);
         }
 
-        public Task<bool> GetPreferSingleTargetBuildsForStartupProjectsAsync(CancellationToken cancellationToken = default)
+        public Task<bool> GetPreferSingleTargetBuildsForStartupProjectsAsync(CancellationToken cancellationToken)
         {
             return GetSettingValueOrDefaultAsync(PreferSingleTargetBuildsForStartupProjects, defaultValue: true, cancellationToken);
         }
@@ -76,7 +76,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             await settingsManager.SetValueAsync(name, value, isMachineLocal: false);
         }
 
-        public async Task<bool> GetDetectNuGetRestoreCyclesAsync(CancellationToken cancellationToken = default)
+        public async Task<bool> GetDetectNuGetRestoreCyclesAsync(CancellationToken cancellationToken)
         {
             await _threadingService.SwitchToUIThread(cancellationToken);
 

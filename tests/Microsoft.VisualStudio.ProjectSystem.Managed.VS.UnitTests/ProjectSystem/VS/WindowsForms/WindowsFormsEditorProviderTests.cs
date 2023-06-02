@@ -308,8 +308,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.WindowsForms
             unconfiguredProject ??= UnconfiguredProjectFactory.Create(configuredProject: project);
             projectTree ??= IPhysicalProjectTreeFactory.Create();
             options ??= IProjectSystemOptionsFactory.Create();
+            var asyncTasks = IProjectAsynchronousTasksServiceFactory.Create();
 
-            var provider = new Mock<WindowsFormsEditorProvider>(unconfiguredProject, projectTree.AsLazy(), options.AsLazy());
+            var provider = new Mock<WindowsFormsEditorProvider>(unconfiguredProject, asyncTasks, projectTree.AsLazy(), options.AsLazy());
             provider.Protected().Setup<IRule?>("GetBrowseObjectProperties", ItExpr.IsAny<ConfiguredProject>(), ItExpr.IsAny<IProjectItemTree>())
                     .Returns((ConfiguredProject configuredProject, IProjectItemTree node) => node.BrowseObjectProperties);
 
