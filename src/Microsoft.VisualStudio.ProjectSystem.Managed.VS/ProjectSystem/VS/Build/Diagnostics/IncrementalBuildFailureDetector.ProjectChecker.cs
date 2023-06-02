@@ -1,7 +1,6 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
 using System.Diagnostics;
-using Microsoft.Internal.VisualStudio.Shell.Interop;
 using Microsoft.VisualStudio.Composition;
 using Microsoft.VisualStudio.ProjectSystem.Build;
 using Microsoft.VisualStudio.ProjectSystem.UpToDate;
@@ -27,7 +26,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build.Diagnostics
             [ImportingConstructor]
             public ProjectChecker(
                 ConfiguredProject configuredProject,
-                IVsUIService<SVsFeatureFlags, IVsFeatureFlags> featureFlagsService,
                 IBuildUpToDateCheckValidator upToDateCheckValidator,
                 [Import(ExportContractNames.Scopes.ConfiguredProject)] IProjectAsynchronousTasksService projectAsynchronousTasksService)
             {
