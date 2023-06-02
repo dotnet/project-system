@@ -54,12 +54,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.WindowsForms
 
             CancellationToken cancellationToken = _projectAsynchronousTasksService.UnloadCancellationToken;
 
-            IProjectSpecificEditorInfo? editor = await GetDefaultEditorAsync(documentMoniker);
-            if (editor is null)
-                return null;
+            (IProjectSpecificEditorInfo? editor, SubTypeDescriptor ? descriptor)
+                = await (GetDefaultEditorAsync(documentMoniker), GetSubTypeDescriptorAsync(documentMoniker, cancellationToken));
 
-            SubTypeDescriptor? descriptor = await GetSubTypeDescriptorAsync(documentMoniker, cancellationToken);
-            if (descriptor is null)
+            if (editor is null || descriptor is null)
                 return null;
 
             bool isDefaultEditor = await _options.Value.GetUseDesignerByDefaultAsync(descriptor.SubType, descriptor.UseDesignerByDefault, cancellationToken);
