@@ -1,6 +1,5 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
-using Microsoft.Internal.VisualStudio.Shell.Interop;
 using Microsoft.VisualStudio.Composition;
 using Microsoft.VisualStudio.Telemetry;
 
@@ -13,29 +12,27 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build.Diagnostics
     [AppliesTo(ProjectCapabilities.AlwaysApplicable)]
     internal sealed class IncrementalBuildFailureTelemetryReporter : IIncrementalBuildFailureReporter
     {
-        private readonly IVsService<SVsFeatureFlags, IVsFeatureFlags> _featureFlagsService;
+        private readonly IProjectSystemOptions _projectSystemOptions;
         private bool _hasBeenReported;
 
         [ImportingConstructor]
         public IncrementalBuildFailureTelemetryReporter(
             UnconfiguredProject _, // scoping
-            IVsService<SVsFeatureFlags, IVsFeatureFlags> featureFlagsService)
+            IProjectSystemOptions projectSystemOptions)
         {
-            _featureFlagsService = featureFlagsService;
+            _projectSystemOptions = projectSystemOptions;
         }
 
-        public async Task<bool> IsEnabledAsync(CancellationToken cancellationToken)
+        public ValueTask<bool> IsEnabledAsync(CancellationToken cancellationToken)
         {
             if (_hasBeenReported)
             {
                 // Only report once per project. If we have previously reported this,
                 // return false.
-                return false;
+                return new ValueTask<bool>(false);
             }
 
-            IVsFeatureFlags featureFlagsService = await _featureFlagsService.GetValueAsync(cancellationToken);
-
-            return featureFlagsService.IsFeatureEnabled(FeatureFlagNames.EnableIncrementalBuildFailureTelemetry, defaultValue: false);
+            return _projectSystemOptions.IsIncrementalBuildFailureTelemetryEnabledAsync(cancellationToken);
         }
 
         public Task ReportFailureAsync(string failureReason, string failureDescription, TimeSpan checkDuration, CancellationToken cancellationToken)

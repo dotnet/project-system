@@ -49,7 +49,7 @@ public sealed class PackageRestoreCycleDetectorTests
         var project = UnconfiguredProjectFactory.CreateWithActiveConfiguredProjectProvider(IProjectThreadingServiceFactory.Create());
 
         var projectSystemOptions = new Mock<IProjectSystemOptions>();
-        projectSystemOptions.Setup(o => o.GetDetectNuGetRestoreCyclesAsync(It.IsAny<CancellationToken>())).ReturnsAsync(isEnabled);
+        projectSystemOptions.Setup(o => o.IsNuGetRestoreCycleDetectionEnabledAsync(It.IsAny<CancellationToken>())).ReturnsAsync(isEnabled);
 
         var telemetryService = new Mock<ITelemetryService>();
         var nonModelNotificationService = new Mock<INonModalNotificationService>();

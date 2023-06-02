@@ -53,7 +53,7 @@ internal sealed class PackageRestoreCycleDetector(
 
     public async Task<bool> IsCycleDetectedAsync(Hash hash, CancellationToken cancellationToken)
     {
-        if (!await _projectSystemOptions.GetDetectNuGetRestoreCyclesAsync(cancellationToken))
+        if (!await _projectSystemOptions.IsNuGetRestoreCycleDetectionEnabledAsync(cancellationToken))
         {
             // Cycle detection has been disabled. Take no further action.
             return false;

@@ -1,6 +1,5 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
-using Microsoft.Internal.VisualStudio.Shell.Interop;
 using Microsoft.VisualStudio.Composition;
 using Microsoft.VisualStudio.Shell.Interop;
 using Microsoft.VisualStudio.Telemetry;
@@ -15,24 +14,21 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build.Diagnostics
     internal sealed class IncrementalBuildFailureOutputWindowReporter : IIncrementalBuildFailureReporter
     {
         private readonly UnconfiguredProject _project;
-        private readonly IVsService<SVsFeatureFlags, IVsFeatureFlags> _featureFlagsService;
         private readonly IVsUIService<SVsOutputWindow, IVsOutputWindow> _outputWindow;
         private readonly IProjectSystemOptions _projectSystemOptions;
 
         [ImportingConstructor]
         public IncrementalBuildFailureOutputWindowReporter(
             UnconfiguredProject project,
-            IVsService<SVsFeatureFlags, IVsFeatureFlags> featureFlagsService,
             IVsUIService<SVsOutputWindow, IVsOutputWindow> outputWindow,
             IProjectSystemOptions projectSystemOptions)
         {
             _project = project;
-            _featureFlagsService = featureFlagsService;
             _outputWindow = outputWindow;
             _projectSystemOptions = projectSystemOptions;
         }
 
-        public async Task<bool> IsEnabledAsync(CancellationToken cancellationToken)
+        public async ValueTask<bool> IsEnabledAsync(CancellationToken cancellationToken)
         {
             LogLevel logLevel = await _projectSystemOptions.GetFastUpToDateLoggingLevelAsync(cancellationToken);
 
@@ -42,9 +38,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build.Diagnostics
                 return true;
             }
 
-            IVsFeatureFlags featureFlagsService = await _featureFlagsService.GetValueAsync(cancellationToken);
-
-            return featureFlagsService.IsFeatureEnabled(FeatureFlagNames.EnableIncrementalBuildFailureOutputLogging, defaultValue: false);
+            return await _projectSystemOptions.IsIncrementalBuildFailureOutputLoggingEnabledAsync(cancellationToken);
         }
 
         public async Task ReportFailureAsync(string failureReason, string failureDescription, TimeSpan checkDuration, CancellationToken cancellationToken)
