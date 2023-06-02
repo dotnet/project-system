@@ -475,7 +475,7 @@ Tento projekt se načetl pomocí nesprávného typu projektu, pravděpodobně v 
       </trans-unit>
       <trans-unit id="Restore_NuGetCycleDetected">
         <source>A NuGet restore loop has been detected in project '{0}'. Further restores have been aborted. The project might be in a bad state.</source>
-        <target state="new">A NuGet restore loop has been detected in project '{0}'. Further restores have been aborted. The project might be in a bad state.</target>
+        <target state="translated">V projektu „{0}“ byla zjištěna smyčka obnovení NuGet. Další obnovení byla přerušena. Projekt může být ve špatném stavu.</target>
         <note>{0} is a file path.</note>
       </trans-unit>
       <trans-unit id="Restore_PropertyWithInconsistentValues">
