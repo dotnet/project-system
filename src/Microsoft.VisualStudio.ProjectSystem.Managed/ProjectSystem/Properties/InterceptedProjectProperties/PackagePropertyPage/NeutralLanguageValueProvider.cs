@@ -10,7 +10,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties.Package
 
         public override async Task<string?> OnSetPropertyValueAsync(string propertyName, string unevaluatedPropertyValue, IProjectProperties defaultProperties, IReadOnlyDictionary<string, string>? dimensionalConditions = null)
         {
-            if (string.Equals(unevaluatedPropertyValue, NoneValue))
+            if (string.Equals(unevaluatedPropertyValue, NoneValue, StringComparison.Ordinal))
             {
                 await defaultProperties.DeletePropertyAsync(NeutralLanguagePropertyName);
                 return null;

@@ -26,7 +26,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
         /// </summary>
         public bool SupportsProfile(ILaunchProfile profile)
         {
-            return string.Equals(profile.CommandName, LaunchSettingsProvider.ErrorProfileCommandName);
+            return string.Equals(profile.CommandName, LaunchSettingsProvider.ErrorProfileCommandName, StringComparisons.LaunchProfileCommandNames);
         }
 
         /// <summary>
