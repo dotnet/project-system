@@ -51,7 +51,8 @@ variables:
   NugetSecurityAnalysisWarningLevel: none
   # Allows CodeQL to run on our Build job.
   # https://eng.ms/docs/cloud-ai-platform/devdiv/one-engineering-system-1es/1es-docs/codeql/configuring-codeql3000-ado-pipelines
-  Codeql.Enabled: true
+  # Note: June 5th, 2023: Disable CodeQL as we suspect it is causing our test runs to fail.
+  Codeql.Enabled: false
   # Default to skipping auto-injection for CodeQL. It is not skipped in the Build job only.
   # https://eng.ms/docs/cloud-ai-platform/devdiv/one-engineering-system-1es/1es-docs/codeql/configuring-codeql3000-ado-pipelines#monolithic-repos-and-multistage-pipelines
   Codeql.SkipTaskAutoInjection: true
