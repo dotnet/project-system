@@ -39,7 +39,7 @@ namespace OneLocBuildSetup
         private static IEnumerable<string> CreateTemplateFiles(string srcPath)
         {
             var esXlfPaths = Directory.GetFiles(srcPath, $"*{SpanishXlfExtension}", SearchOption.AllDirectories);
-            var filePaths = esXlfPaths.Select(es => (esXlfPath: es, xlfPath: es.Replace(SpanishXlfExtension, XlfExtension))).ToArray();
+            var filePaths = esXlfPaths.Select(es => (esXlfPath: es, xlfPath: es.Replace(SpanishXlfExtension, XlfExtension, StringComparison.Ordinal))).ToArray();
             foreach ((string esXlfPath, string xlfPath) in filePaths)
             {
                 Console.WriteLine($"Creating {xlfPath}");
@@ -80,7 +80,7 @@ namespace OneLocBuildSetup
         private static LocItem CreateLocItem(string xlfPath)
         {
             var outputPath = Path.GetDirectoryName(xlfPath) ?? string.Empty;
-            var lclPath = Path.Combine(outputPath, "{Lang}", Path.GetFileName(xlfPath).Replace(XlfExtension, $"{XlfExtension}.lcl"));
+            var lclPath = Path.Combine(outputPath, "{Lang}", Path.GetFileName(xlfPath).Replace(XlfExtension, $"{XlfExtension}.lcl", StringComparison.Ordinal));
             return new LocItem(xlfPath, outputPath, lclPath);
         }
     }
