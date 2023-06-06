@@ -475,7 +475,7 @@ Esse projeto foi carregado usando o tipo de projeto errado, provavelmente como r
       </trans-unit>
       <trans-unit id="Restore_NuGetCycleDetected">
         <source>A NuGet restore loop has been detected in project '{0}'. Further restores have been aborted. The project might be in a bad state.</source>
-        <target state="new">A NuGet restore loop has been detected in project '{0}'. Further restores have been aborted. The project might be in a bad state.</target>
+        <target state="translated">Um loop de restauração do NuGet foi detectado no projeto '{0}'. Outras restaurações foram abortadas. O projeto pode estar em um estado ruim.</target>
         <note>{0} is a file path.</note>
       </trans-unit>
       <trans-unit id="Restore_PropertyWithInconsistentValues">

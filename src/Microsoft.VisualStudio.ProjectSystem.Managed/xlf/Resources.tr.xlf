@@ -475,7 +475,7 @@ Bu proje, muhtemelen proje uzantısının Visual Studio dışında yeniden adlan
       </trans-unit>
       <trans-unit id="Restore_NuGetCycleDetected">
         <source>A NuGet restore loop has been detected in project '{0}'. Further restores have been aborted. The project might be in a bad state.</source>
-        <target state="new">A NuGet restore loop has been detected in project '{0}'. Further restores have been aborted. The project might be in a bad state.</target>
+        <target state="translated">'{0}' projesinde bir NuGet geri yükleme döngüsü algılandı. Diğer geri yükleme işlemleri durduruldu. Proje hatalı bir durumda olabilir.</target>
         <note>{0} is a file path.</note>
       </trans-unit>
       <trans-unit id="Restore_PropertyWithInconsistentValues">
