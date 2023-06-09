@@ -438,6 +438,11 @@
                   HelpUrl="https://aka.ms/csharp-versions"
                   ReadOnly="true"
                   Category="Advanced">
+    <StringProperty.DataSource>
+      <DataSource Persistence="ProjectFile"
+                  SourceOfDefaultValue="AfterContext"
+                  HasConfigurationCondition="False" />
+    </StringProperty.DataSource>
     <StringProperty.ValueEditors>
       <ValueEditor EditorType="String">
         <ValueEditor.Metadata>
