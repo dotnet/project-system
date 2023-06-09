@@ -142,6 +142,24 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
+      <Item ItemId=";StringProperty|CommandLineArgumentsOverriddenWarning|Description" ItemType="0" PsrId="308" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[⚠️ WARNING! This project defines the StartArguments MSBuild property, which overrides any command line arguments specified here. If you wish to define arguments here, you must remove that property from your MSBuild project. Note that it may be defined in a .user file.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[⚠️ AVVISO! Questo progetto definisce la proprietà MSBuild StartArguments, che esegue l'override di tutti gli argomenti della riga di comando specificati qui. Se si desidera definire gli argomenti qui, è necessario rimuovere tale proprietà dal progetto MSBuild. Si noti che può essere definito in un file con estensione user.]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";StringProperty|CommandLineArgumentsOverriddenWarning|DisplayName" ItemType="0" PsrId="308" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[Ignored]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Ignorato]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
       <Item ItemId=";StringProperty|CommandLineArguments|Description" ItemType="0" PsrId="308" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[Command line arguments to pass to the executable. You may break arguments into multiple lines.]]></Val>
