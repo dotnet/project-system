@@ -1,7 +1,7 @@
 # Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
 # Name: DotNet-Project-System-PR
-# URL: https://dev.azure.com/dnceng/public/_build?definitionId=1176
+# URL: https://dev.azure.com/dnceng-public/public/_build?definitionId=32
 
 # Validates commits as part of GitHub pull requests.
 
