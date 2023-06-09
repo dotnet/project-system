@@ -12,11 +12,10 @@
     <PackageReference Update="Microsoft.DotNet.XliffTasks"                                            Version="1.0.0-beta.23073.2" />
     <!--
       The SourceLink package depends on the repo provider used.
-      TODO: Determine a mechanism of switching these depending on the location of the source.
+      The following package is only valid when using from GitHub repo.
       https://github.com/dotnet/sourcelink#using-source-link-in-net-projects
     -->
-    <!-- <PackageReference Update="Microsoft.SourceLink.GitHub"                                            Version="1.1.1" /> -->
-    <PackageReference Update="Microsoft.SourceLink.AzureRepos.Git"                                    Version="1.1.1" />
+    <PackageReference Update="Microsoft.SourceLink.GitHub"                                            Version="1.1.1" />
     <PackageReference Update="Microsoft.VisualStudio.Internal.MicroBuild"                             Version="2.0.115" />
     <PackageReference Update="Microsoft.VisualStudio.Internal.MicroBuild.NpmPack"                     Version="2.0.117" />
     <PackageReference Update="Microsoft.VisualStudio.Internal.MicroBuild.Swix"                        Version="2.0.115" />
