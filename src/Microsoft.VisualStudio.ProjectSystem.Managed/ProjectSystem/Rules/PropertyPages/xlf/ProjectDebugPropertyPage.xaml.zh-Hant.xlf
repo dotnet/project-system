@@ -72,6 +72,16 @@
         <target state="translated">專案</target>
         <note />
       </trans-unit>
+      <trans-unit id="StringProperty|CommandLineArgumentsOverriddenWarning|Description">
+        <source>⚠️ WARNING! This project defines the StartArguments MSBuild property, which overrides any command line arguments specified here. If you wish to define arguments here, you must remove that property from your MSBuild project. Note that it may be defined in a .user file.</source>
+        <target state="new">⚠️ WARNING! This project defines the StartArguments MSBuild property, which overrides any command line arguments specified here. If you wish to define arguments here, you must remove that property from your MSBuild project. Note that it may be defined in a .user file.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|CommandLineArgumentsOverriddenWarning|DisplayName">
+        <source>Ignored</source>
+        <target state="new">Ignored</target>
+        <note />
+      </trans-unit>
       <trans-unit id="StringProperty|CommandLineArguments|Description">
         <source>Command line arguments to pass to the executable. You may break arguments into multiple lines.</source>
         <target state="translated">要傳遞給可執行檔的命令列引數。您可以將引數分成多行。</target>
