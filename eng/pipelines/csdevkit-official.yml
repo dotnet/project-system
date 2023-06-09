@@ -13,7 +13,6 @@ trigger:
   branches:
     include:
     - dev/PortToNET6
-    - csdevkit-release
 
 # Disable PR builds for this pipeline.
 # See: https://docs.microsoft.com/azure/devops/pipelines/yaml-schema/pr?view=azure-pipelines#examples
@@ -99,7 +98,7 @@ stages:
     # https://eng.ms/docs/cloud-ai-platform/devdiv/one-engineering-system-1es/1es-docs/codeql/configuring-codeql3000-ado-pipelines#monolithic-repos-and-multistage-pipelines
     Codeql.SkipTaskAutoInjection: false
   jobs:
-  - template: templates/build-core-official-release.yml
+  - template: templates/build-csdevkit-official-release.yml
 
 # Skip this stage only when specifically requested (via SkipCompliance).
 - ${{ if eq(parameters.SkipCompliance, false) }}:
