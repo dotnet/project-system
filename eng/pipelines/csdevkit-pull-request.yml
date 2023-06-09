@@ -1,9 +1,7 @@
 # Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
-# Name: DotNet-Project-System-PR
-# URL: https://dev.azure.com/dnceng-public/public/_build?definitionId=32
-
-# Validates commits as part of GitHub pull requests.
+# Name: dotnet-project-system-Trusted-PR
+# URL: https://dev.azure.com/devdiv/DevDiv/_build?definitionId=17723
 
 ###################################################################################################################################################################
 # PIPELINE METADATA
@@ -14,13 +12,6 @@
 pr:
   branches:
     include:
-    - main
-    # Our VS alignment branches start with dev (for example: dev17.2.x)
-    - dev*
-    # Any other branches that contain major feature development.
-    - feature/*
-    exclude:
-    # We avoid running PRs targeting C# dev kit feature branch here since it is getting picked up by dev* above
     - dev/PortToNET6
 
 # Disable CI builds for this pipeline.
@@ -28,15 +19,10 @@ pr:
 trigger: none
 
 pool:
-  # The max number of concurrent jobs that can be run in the pool is 820.
-  # https://dnceng.visualstudio.com/public/_settings/agentqueues?queueId=396&view=jobs
-  name: NetCore-Public
+  # Agent Queue: https://devdiv.visualstudio.com/DevDiv/_settings/agentqueues?queueId=3123&view=jobs
+  name: VSEngSS-MicroBuild2022-1ES
   # Demands Docs: https://docs.microsoft.com/azure/devops/pipelines/process/demands?view=azure-devops&tabs=yaml#manually-entered-demands
-  # ImageOverride is used to select the image. See:
-  # - https://dev.azure.com/dnceng/internal/_wiki/wikis/DNCEng%20Services%20Wiki/510/1ES-Hosted-Pools-Migration
-  # - https://dev.azure.com/dnceng/internal/_wiki/wikis/DNCEng%20Services%20Wiki/675/1ESManagedPoolsDesign?anchor=1es-managed-images
-  # Image List: https://helix.dot.net/#1esPools
-  demands: ImageOverride -equals Windows.VS2022Preview.Amd64.Open
+  demands: Cmd
 
 variables:
   # https://docs.microsoft.com/dotnet/core/tools/dotnet-environment-variables#dotnet_skip_first_time_experience
@@ -52,6 +38,12 @@ variables:
   # - https://docs.opensource.microsoft.com/tools/cg/how-to/nuget-multifeed-configuration/
   # - https://onebranch.visualstudio.com/OneBranch/_wiki/wikis/OneBranch.wiki/5205/TSG-Build-Broken-Due-to-Using-Multiple-Feeds?anchor=setting-nugetsecurityanalysiswarninglevel-in-cdp
   NugetSecurityAnalysisWarningLevel: none
+  # Sets the fetch depth to no longer be a shallow clone. Nerdbank.GitVersioning requires a non-shallow clone.
+  # See:
+  # - https://github.com/dotnet/Nerdbank.GitVersioning/issues/423
+  # - https://github.com/dotnet/Nerdbank.GitVersioning/issues/92
+  # Variable reference: https://learn.microsoft.com/en-us/azure/devops/pipelines/repos/pipeline-options-for-git?view=azure-devops&tabs=yaml#shallow-fetch
+  Agent.Source.Git.ShallowFetchDepth: 0
 
 ###################################################################################################################################################################
 # STAGES
@@ -61,20 +53,11 @@ stages:
 - stage: Build
   displayName: Build
   jobs:
-  - template: templates/build-pull-request.yml
+  - template: templates/build-csdevkit-pull-request.yml
     parameters:
       BuildConfiguration: Debug
       ArtifactName: '$(Build.BuildNumber)-Debug'
-  - template: templates/build-pull-request.yml
+  - template: templates/build-csdevkit-pull-request.yml
     parameters:
       BuildConfiguration: Release
       ArtifactName: '$(Build.BuildNumber)'
-
-# Disabling RichNav due to an acquisition issue. See: https://dev.azure.com/devdiv/DevDiv/_workitems/edit/1659507
-# - stage: PostBuild
-#   displayName: Post-Build
-#   dependsOn: Build
-#   variables:
-#     BuildConfiguration: Release
-#   jobs:
-#   - template: templates/publish-richnav.yml
