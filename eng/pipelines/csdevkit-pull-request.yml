@@ -19,15 +19,12 @@ pr:
 trigger: none
 
 pool:
-  # The max number of concurrent jobs that can be run in the pool is 820.
-  # https://dnceng.visualstudio.com/public/_settings/agentqueues?queueId=396&view=jobs
-  name: NetCore-Public
+  # Agent Queue: https://devdiv.visualstudio.com/DevDiv/_settings/agentqueues?queueId=3123&view=jobs
+  name: VSEngSS-MicroBuild2022-1ES
   # Demands Docs: https://docs.microsoft.com/azure/devops/pipelines/process/demands?view=azure-devops&tabs=yaml#manually-entered-demands
-  # ImageOverride is used to select the image. See:
-  # - https://dev.azure.com/dnceng/internal/_wiki/wikis/DNCEng%20Services%20Wiki/510/1ES-Hosted-Pools-Migration
-  # - https://dev.azure.com/dnceng/internal/_wiki/wikis/DNCEng%20Services%20Wiki/675/1ESManagedPoolsDesign?anchor=1es-managed-images
-  # Image List: https://helix.dot.net/#1esPools
-  demands: ImageOverride -equals Windows.VS2022Preview.Amd64.Open
+  demands:
+  - Cmd
+  - Node
 
 variables:
   # https://docs.microsoft.com/dotnet/core/tools/dotnet-environment-variables#dotnet_skip_first_time_experience

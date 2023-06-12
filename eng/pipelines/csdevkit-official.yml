@@ -29,7 +29,9 @@ pool:
   # Agent Queue: https://devdiv.visualstudio.com/DevDiv/_settings/agentqueues?queueId=3123&view=jobs
   name: VSEngSS-MicroBuild2022-1ES
   # Demands Docs: https://docs.microsoft.com/azure/devops/pipelines/process/demands?view=azure-devops&tabs=yaml#manually-entered-demands
-  demands: Cmd
+  demands:
+  - Cmd
+  - Node
 
 variables:
   # The configuration for the build is used throughout the various pipelines as the file paths for output contain the build configuration as a folder name.
