@@ -54,11 +54,11 @@ stages:
 - stage: Build
   displayName: Build
   jobs:
-  - template: templates/build-pull-request.yml
+  - template: templates/build-csdevkit-pull-request.yml
     parameters:
       BuildConfiguration: Debug
       ArtifactName: '$(Build.BuildNumber)-Debug'
-  - template: templates/build-pull-request.yml
+  - template: templates/build-csdevkit-pull-request.yml
     parameters:
       BuildConfiguration: Release
       ArtifactName: '$(Build.BuildNumber)'
