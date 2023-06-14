@@ -124,6 +124,24 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
+      <Item ItemId=";StringProperty|CommandLineArgumentsOverriddenWarning|Description" ItemType="0" PsrId="308" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[⚠️ WARNING! This project defines the StartArguments MSBuild property, which overrides any command line arguments specified here. If you wish to define arguments here, you must remove that property from your MSBuild project. Note that it may be defined in a .user file.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[⚠️ 警告! 此项目定义 StartArguments MSBuild 属性，该属性覆盖此处指定的任何命令行参数。若要在此处定义参数，必须从 MSBuild 项目中删除该属性。请注意，它可以在 .user 文件中定义。]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";StringProperty|CommandLineArgumentsOverriddenWarning|DisplayName" ItemType="0" PsrId="308" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[Ignored]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[已忽略]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
       <Item ItemId=";StringProperty|CommandLineArguments|Description" ItemType="0" PsrId="308" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[Command line arguments to pass to the executable. You may break arguments into multiple lines.]]></Val>
