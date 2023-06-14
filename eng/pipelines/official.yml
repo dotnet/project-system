@@ -19,6 +19,9 @@ trigger:
     - dev*
     # Any other branches that contain major feature development, or require access to the pipeline, prior to merge.
     - feature/*
+    exclude:
+    # We avoid running C# dev kit feature branch here since it is getting picked up by dev* above
+    - dev/PortToNET6
   paths:
     exclude:
     - docs/*
