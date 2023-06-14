@@ -74,12 +74,12 @@
       </trans-unit>
       <trans-unit id="StringProperty|CommandLineArgumentsOverriddenWarning|Description">
         <source>⚠️ WARNING! This project defines the StartArguments MSBuild property, which overrides any command line arguments specified here. If you wish to define arguments here, you must remove that property from your MSBuild project. Note that it may be defined in a .user file.</source>
-        <target state="new">⚠️ WARNING! This project defines the StartArguments MSBuild property, which overrides any command line arguments specified here. If you wish to define arguments here, you must remove that property from your MSBuild project. Note that it may be defined in a .user file.</target>
+        <target state="translated">⚠️ 警告! 此專案會定義 StartArguments MSBuild 屬性，其會覆寫這裡指定的任何命令列引數。如果您想要在這裡定義引數，必須從 MSBuild 專案移除該屬性。請注意，它可以在 .user 檔案中定義。</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|CommandLineArgumentsOverriddenWarning|DisplayName">
         <source>Ignored</source>
-        <target state="new">Ignored</target>
+        <target state="translated">已忽略</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|CommandLineArguments|Description">

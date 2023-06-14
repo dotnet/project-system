@@ -74,12 +74,12 @@
       </trans-unit>
       <trans-unit id="StringProperty|CommandLineArgumentsOverriddenWarning|Description">
         <source>⚠️ WARNING! This project defines the StartArguments MSBuild property, which overrides any command line arguments specified here. If you wish to define arguments here, you must remove that property from your MSBuild project. Note that it may be defined in a .user file.</source>
-        <target state="new">⚠️ WARNING! This project defines the StartArguments MSBuild property, which overrides any command line arguments specified here. If you wish to define arguments here, you must remove that property from your MSBuild project. Note that it may be defined in a .user file.</target>
+        <target state="translated">⚠️ OSTRZEŻENIE! Ten projekt definiuje właściwość StartArguments MSBuild, która zastępuje wszystkie argumenty wiersza polecenia określone w tym miejscu. Jeśli chcesz zdefiniować argumenty w tym miejscu, musisz usunąć tę właściwość z projektu MSBuild. Należy pamiętać, że może ona być zdefiniowana w pliku .user.</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|CommandLineArgumentsOverriddenWarning|DisplayName">
         <source>Ignored</source>
-        <target state="new">Ignored</target>
+        <target state="translated">Ignorowane</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|CommandLineArguments|Description">

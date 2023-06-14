@@ -64,12 +64,12 @@
       </trans-unit>
       <trans-unit id="StringProperty|CommandLineArgumentsOverriddenWarning|Description">
         <source>⚠️ WARNING! This project defines the StartArguments MSBuild property, which overrides any command line arguments specified here. If you wish to define arguments here, you must remove that property from your MSBuild project. Note that it may be defined in a .user file.</source>
-        <target state="new">⚠️ WARNING! This project defines the StartArguments MSBuild property, which overrides any command line arguments specified here. If you wish to define arguments here, you must remove that property from your MSBuild project. Note that it may be defined in a .user file.</target>
+        <target state="translated">⚠️ WARNUNG! Dieses Projekt definiert die MSBuild-Eigenschaft StartArguments, die alle hier angegebenen Befehlszeilenargumente überschreibt. Wenn Sie hier Argumente definieren möchten, müssen Sie diese Eigenschaft aus Ihrem MSBuild-Projekt entfernen. Beachten Sie, dass sie möglicherweise in einer USER-Datei definiert ist.</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|CommandLineArgumentsOverriddenWarning|DisplayName">
         <source>Ignored</source>
-        <target state="new">Ignored</target>
+        <target state="translated">Ignoriert</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|CommandLineArguments|Description">
