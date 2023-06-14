@@ -72,6 +72,16 @@
         <target state="translated">Proyecto</target>
         <note />
       </trans-unit>
+      <trans-unit id="StringProperty|CommandLineArgumentsOverriddenWarning|Description">
+        <source>⚠️ WARNING! This project defines the StartArguments MSBuild property, which overrides any command line arguments specified here. If you wish to define arguments here, you must remove that property from your MSBuild project. Note that it may be defined in a .user file.</source>
+        <target state="translated">⚠️ ¡ADVERTENCIA! Este proyecto define la propiedad StartArguments de MSBuild, que invalida cualquier argumento de la línea de comandos especificado aquí. Si desea definir aquí argumentos, debe quitar esa propiedad del proyecto de MSBuild. Tenga en cuenta que se puede definir en un .archivo usuario.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|CommandLineArgumentsOverriddenWarning|DisplayName">
+        <source>Ignored</source>
+        <target state="translated">Omitido</target>
+        <note />
+      </trans-unit>
       <trans-unit id="StringProperty|CommandLineArguments|Description">
         <source>Command line arguments to pass to the executable. You may break arguments into multiple lines.</source>
         <target state="translated">Argumentos de la línea de comandos que se pasan al ejecutable. Puede dividir argumentos en varias líneas.</target>

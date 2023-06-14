@@ -6,25 +6,25 @@ namespace Microsoft.VisualStudio.ProjectSystem.PackageRestore
 {
     internal static class RestoreHasher
     {
-        public static byte[] CalculateHash(ProjectRestoreInfo restoreInfo)
+        public static Hash CalculateHash(ProjectRestoreInfo restoreInfo)
         {
             Requires.NotNull(restoreInfo);
 
             using var hasher = new IncrementalHasher();
 
-            AppendProperty(hasher, nameof(restoreInfo.ProjectAssetsFilePath),           restoreInfo.ProjectAssetsFilePath);
-            AppendProperty(hasher, nameof(restoreInfo.MSBuildProjectExtensionsPath),    restoreInfo.MSBuildProjectExtensionsPath);
-            AppendProperty(hasher, nameof(restoreInfo.OriginalTargetFrameworks),        restoreInfo.OriginalTargetFrameworks);
+            hasher.AppendProperty(nameof(restoreInfo.ProjectAssetsFilePath),           restoreInfo.ProjectAssetsFilePath);
+            hasher.AppendProperty(nameof(restoreInfo.MSBuildProjectExtensionsPath),    restoreInfo.MSBuildProjectExtensionsPath);
+            hasher.AppendProperty(nameof(restoreInfo.OriginalTargetFrameworks),        restoreInfo.OriginalTargetFrameworks);
 
             foreach (TargetFrameworkInfo framework in restoreInfo.TargetFrameworks)
             {
-                AppendProperty(hasher, nameof(framework.TargetFrameworkMoniker), framework.TargetFrameworkMoniker);
-                AppendFrameworkProperties(hasher, framework);
-                AppendReferences(hasher, framework.ProjectReferences);
-                AppendReferences(hasher, framework.PackageReferences);
-                AppendReferences(hasher, framework.FrameworkReferences);
-                AppendReferences(hasher, framework.PackageDownloads);
-                AppendReferences(hasher, framework.CentralPackageVersions);
+                hasher.AppendProperty(nameof(framework.TargetFrameworkMoniker), framework.TargetFrameworkMoniker);
+                hasher.AppendFrameworkProperties(framework);
+                hasher.AppendReferences(framework.ProjectReferences);
+                hasher.AppendReferences(framework.PackageReferences);
+                hasher.AppendReferences(framework.FrameworkReferences);
+                hasher.AppendReferences(framework.PackageDownloads);
+                hasher.AppendReferences(framework.CentralPackageVersions);
             }
 
             AppendReferences(hasher, restoreInfo.ToolReferences);
@@ -32,7 +32,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.PackageRestore
             return hasher.GetHashAndReset();
         }
 
-        private static void AppendFrameworkProperties(IncrementalHasher hasher, TargetFrameworkInfo framework)
+        private static void AppendFrameworkProperties(this IncrementalHasher hasher, TargetFrameworkInfo framework)
         {
             foreach (ProjectProperty property in framework.Properties)
             {
@@ -40,7 +40,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.PackageRestore
             }
         }
 
-        private static void AppendReferences(IncrementalHasher hasher, ImmutableArray<ReferenceItem> references)
+        private static void AppendReferences(this IncrementalHasher hasher, ImmutableArray<ReferenceItem> references)
         {
             foreach (ReferenceItem reference in references)
             {
@@ -49,7 +49,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.PackageRestore
             }
         }
 
-        private static void AppendReferenceProperties(IncrementalHasher hasher, ReferenceItem reference)
+        private static void AppendReferenceProperties(this IncrementalHasher hasher, ReferenceItem reference)
         {
             foreach (ReferenceProperty property in reference.Properties)
             {
@@ -57,7 +57,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.PackageRestore
             }
         }
 
-        private static void AppendProperty(IncrementalHasher hasher, string name, string value)
+        private static void AppendProperty(this IncrementalHasher hasher, string name, string value)
         {
             hasher.Append(name);
             hasher.Append("|");

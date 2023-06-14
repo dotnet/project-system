@@ -1,4 +1,4 @@
-// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
+﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
 using Newtonsoft.Json;
 
@@ -72,10 +72,10 @@ internal class ImplicitUsingsValueProvider : InterceptingPropertyValueProviderBa
         usingsToSet.RemoveAll(usingToSet => usingToSet.IsReadOnly);
 
         List<ImplicitUsing> existingUsings = await GetImplicitUsingsAsync();
-        
+
         foreach (ImplicitUsing existingUsing in existingUsings)
         {
-            if (!usingsToSet.Any(usingToSet => usingToSet.Include.Equals(existingUsing.Include)))
+            if (!usingsToSet.Any(usingToSet => usingToSet.Include.Equals(existingUsing.Include, StringComparison.Ordinal)))
             {
                 try
                 {

@@ -1,7 +1,6 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
 using Microsoft.Build.Framework;
-using Microsoft.Internal.VisualStudio.Shell.Interop;
 using Microsoft.VisualStudio.ProjectSystem.LanguageServices;
 using Microsoft.VisualStudio.Shell.Interop;
 
@@ -352,13 +351,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build
         {
             workspaceWriter ??= IWorkspaceWriterFactory.Create();
 
-            var featureFlagServiceMock = new Mock<IVsFeatureFlags>();
-            featureFlagServiceMock.Setup(m => m.IsFeatureEnabled(LanguageServiceErrorListProvider.LspPullDiagnosticsFeatureFlagName, false)).Returns(lspPullDiagnosticsFeatureFlag);
-            var vsFeatureFlagsServiceService = new Mock<IVsService<SVsFeatureFlags, IVsFeatureFlags>>();
-            vsFeatureFlagsServiceService.Setup(m => m.GetValueAsync(It.IsAny<CancellationToken>())).Returns(Task.FromResult(featureFlagServiceMock.Object));
+            var projectSystemOptions = new Mock<IProjectSystemOptions>();
+            projectSystemOptions.Setup(m => m.IsLspPullDiagnosticsEnabledAsync(It.IsAny<CancellationToken>())).ReturnsAsync(lspPullDiagnosticsFeatureFlag);
+
             var joinableTaskContext = IProjectThreadingServiceFactory.Create().JoinableTaskContext.Context;
 
-            var provider = new LanguageServiceErrorListProvider(UnconfiguredProjectFactory.Create(), workspaceWriter, vsFeatureFlagsServiceService.Object, joinableTaskContext);
+            var provider = new LanguageServiceErrorListProvider(UnconfiguredProjectFactory.Create(), workspaceWriter, projectSystemOptions.Object, joinableTaskContext);
 
             return provider;
         }

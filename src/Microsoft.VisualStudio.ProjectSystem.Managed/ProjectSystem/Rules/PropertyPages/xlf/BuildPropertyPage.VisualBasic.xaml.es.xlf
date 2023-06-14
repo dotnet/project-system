@@ -388,8 +388,8 @@
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|DefineConstants|Description">
-        <source>Specifies custom conditional compilation constants for your application.</source>
-        <target state="translated">Especifica constantes de compilación condicional personalizadas para la aplicación.</target>
+        <source>Specifies custom conditional compilation constants for your application. Note that values are optional, for the optional behavior leave the value blank. If the value is a string, please add quotation marks around it.</source>
+        <target state="translated">Especifica constantes de compilación condicional personalizadas para la aplicación. Tenga en cuenta que los valores son opcionales; para el comportamiento opcional, deje el valor en blanco. Si el valor es una cadena, agregue comillas alrededor.</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|DefineConstants|DisplayName">

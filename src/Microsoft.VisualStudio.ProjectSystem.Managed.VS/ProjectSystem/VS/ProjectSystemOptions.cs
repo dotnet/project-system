@@ -18,46 +18,44 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         internal const string SkipAnalyzersForImplicitlyTriggeredBuildSettingKey = "TextEditor.SkipAnalyzersForImplicitlyTriggeredBuilds";
 
         private readonly IVsService<ISettingsManager> _settingsManager;
-        private readonly IVsUIService<SVsFeatureFlags, IVsFeatureFlags> _featureFlagsService;
-        private readonly IProjectThreadingService _threadingService;
+        private readonly IVsService<SVsFeatureFlags, IVsFeatureFlags> _featureFlagsService;
 
         [ImportingConstructor]
         public ProjectSystemOptions(
             IVsService<SVsSettingsPersistenceManager, ISettingsManager> settingsManager,
-            IVsUIService<SVsFeatureFlags, IVsFeatureFlags> featureFlagsService,
+            IVsService<SVsFeatureFlags, IVsFeatureFlags> featureFlagsService,
             IProjectThreadingService threadingService)
         {
             _settingsManager = settingsManager;
             _featureFlagsService = featureFlagsService;
-            _threadingService = threadingService;
         }
 
-        public Task<bool> GetIsFastUpToDateCheckEnabledAsync(CancellationToken cancellationToken = default)
+        public Task<bool> GetIsFastUpToDateCheckEnabledAsync(CancellationToken cancellationToken)
         {
             return GetSettingValueOrDefaultAsync(FastUpToDateEnabledSettingKey, defaultValue: true, cancellationToken);
         }
 
-        public Task<LogLevel> GetFastUpToDateLoggingLevelAsync(CancellationToken cancellationToken = default)
+        public Task<LogLevel> GetFastUpToDateLoggingLevelAsync(CancellationToken cancellationToken)
         {
             return GetSettingValueOrDefaultAsync(FastUpToDateLogLevelSettingKey, defaultValue: LogLevel.None, cancellationToken);
         }
 
-        public Task<bool> GetUseDesignerByDefaultAsync(string designerCategory, bool defaultValue, CancellationToken cancellationToken = default)
+        public Task<bool> GetUseDesignerByDefaultAsync(string designerCategory, bool defaultValue, CancellationToken cancellationToken)
         {
             return GetSettingValueOrDefaultAsync(UseDesignerByDefaultSettingKey + "\\" + designerCategory, defaultValue, cancellationToken);
         }
 
-        public Task SetUseDesignerByDefaultAsync(string designerCategory, bool value, CancellationToken cancellationToken = default)
+        public Task SetUseDesignerByDefaultAsync(string designerCategory, bool value, CancellationToken cancellationToken)
         {
             return SetSettingValueAsync(UseDesignerByDefaultSettingKey + "\\" + designerCategory, value, cancellationToken);
         }
 
-        public Task<bool> GetSkipAnalyzersForImplicitlyTriggeredBuildAsync(CancellationToken cancellationToken = default)
+        public Task<bool> GetSkipAnalyzersForImplicitlyTriggeredBuildAsync(CancellationToken cancellationToken)
         {
             return GetSettingValueOrDefaultAsync(SkipAnalyzersForImplicitlyTriggeredBuildSettingKey, defaultValue: true, cancellationToken);
         }
 
-        public Task<bool> GetPreferSingleTargetBuildsForStartupProjectsAsync(CancellationToken cancellationToken = default)
+        public Task<bool> GetPreferSingleTargetBuildsForStartupProjectsAsync(CancellationToken cancellationToken)
         {
             return GetSettingValueOrDefaultAsync(PreferSingleTargetBuildsForStartupProjects, defaultValue: true, cancellationToken);
         }
@@ -76,13 +74,31 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             await settingsManager.SetValueAsync(name, value, isMachineLocal: false);
         }
 
-        public async Task<bool> GetDetectNuGetRestoreCyclesAsync(CancellationToken cancellationToken = default)
+        public ValueTask<bool> IsNuGetRestoreCycleDetectionEnabledAsync(CancellationToken cancellationToken)
         {
-            await _threadingService.SwitchToUIThread(cancellationToken);
+            return IsFlagEnabledAsync(FeatureFlagNames.EnableNuGetRestoreCycleDetection, defaultValue: false, cancellationToken);
+        }
 
-            IVsFeatureFlags featureFlagsService = _featureFlagsService.Value;
+        public ValueTask<bool> IsIncrementalBuildFailureOutputLoggingEnabledAsync(CancellationToken cancellationToken)
+        {
+            return IsFlagEnabledAsync(FeatureFlagNames.EnableIncrementalBuildFailureOutputLogging, defaultValue: false, cancellationToken);
+        }
 
-            return featureFlagsService.IsFeatureEnabled(FeatureFlagNames.EnableNuGetRestoreCycleDetection, defaultValue: false);
+        public ValueTask<bool> IsIncrementalBuildFailureTelemetryEnabledAsync(CancellationToken cancellationToken)
+        {
+            return IsFlagEnabledAsync(FeatureFlagNames.EnableIncrementalBuildFailureTelemetry, defaultValue: false, cancellationToken);
+        }
+
+        public ValueTask<bool> IsLspPullDiagnosticsEnabledAsync(CancellationToken cancellationToken)
+        {
+            return IsFlagEnabledAsync(FeatureFlagNames.LspPullDiagnosticsFeatureFlagName, defaultValue: false, cancellationToken);
+        }
+
+        private async ValueTask<bool> IsFlagEnabledAsync(string featureName, bool defaultValue, CancellationToken cancellationToken)
+        {
+            IVsFeatureFlags featureFlags = await _featureFlagsService.GetValueAsync(cancellationToken);
+
+            return featureFlags.IsFeatureEnabled(featureName, defaultValue);
         }
     }
 }

@@ -896,7 +896,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
         private static bool ConfiguredInputMatchesTargetFramework(UpToDateCheckImplicitConfiguredInput input, string buildTargetFramework)
         {
             return input.ProjectConfiguration.Dimensions.TryGetValue(ConfigurationGeneral.TargetFrameworkProperty, out string? configurationTargetFramework)
-                && buildTargetFramework.Equals(configurationTargetFramework);
+                && buildTargetFramework.Equals(configurationTargetFramework, StringComparisons.ConfigurationDimensionValues);
         }
 
         Task<bool> IBuildUpToDateCheckProvider.IsUpToDateAsync(BuildAction buildAction, TextWriter logWriter, CancellationToken cancellationToken)

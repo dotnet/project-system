@@ -37,7 +37,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
 
             foreach (string platformTarget in new LazyStringSplit(availablePlatformsTargets, ','))
             {
-                result.Add(new PageEnumValue(new EnumValue() { Name = platformTarget, DisplayName = platformTarget.Equals(AnyCpuPlatformName) ? AnyCpuDisplayName : platformTarget }));
+                result.Add(new PageEnumValue(new EnumValue() { Name = platformTarget, DisplayName = platformTarget.Equals(AnyCpuPlatformName, StringComparisons.ConfigurationDimensionValues) ? AnyCpuDisplayName : platformTarget }));
             }
 
             return result;

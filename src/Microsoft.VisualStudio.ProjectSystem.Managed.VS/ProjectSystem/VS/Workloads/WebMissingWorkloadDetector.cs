@@ -68,7 +68,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Workloads
             _subscription = new()
             {
                 _webWorkloadDescriptorDataSource.SourceBlock.LinkTo(
-                    DataflowBlockFactory.CreateActionBlock(action, _project.UnconfiguredProject, ProjectFaultSeverity.LimitedFunctionality, nameFormat: $"{nameof(WebMissingWorkloadDetector)} Action: {1}"),
+                    DataflowBlockFactory.CreateActionBlock(action, _project.UnconfiguredProject, ProjectFaultSeverity.LimitedFunctionality, nameFormat: $"{nameof(WebMissingWorkloadDetector)} Action: {{1}}"),
                     linkOptions: DataflowOption.PropagateCompletion),
 
                 ProjectDataSources.JoinUpstreamDataSources(JoinableFactory, _projectFaultHandlerService, _webWorkloadDescriptorDataSource)

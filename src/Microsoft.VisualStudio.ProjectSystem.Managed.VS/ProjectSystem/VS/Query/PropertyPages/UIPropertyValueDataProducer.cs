@@ -13,7 +13,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
     /// </summary>
     internal static class UIPropertyValueDataProducer
     {
-        public static async Task<IEntityValue> CreateUIPropertyValueValueAsync(IEntityValue parent, ProjectConfiguration configuration, ProjectSystem.Properties.IProperty property, IUIPropertyValuePropertiesAvailableStatus requestedProperties)
+        public static async Task<IEntityValue> CreateUIPropertyValueValueAsync(IEntityValue parent, ProjectConfiguration configuration, IProperty property, IUIPropertyValuePropertiesAvailableStatus requestedProperties)
         {
             Requires.NotNull(parent);
             Requires.NotNull(configuration);
@@ -26,7 +26,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
             return await CreateUIPropertyValueValueAsync(parent.EntityRuntime, identity, configuration, property, requestedProperties);
         }
 
-        public static async Task<IEntityValue> CreateUIPropertyValueValueAsync(IEntityRuntimeModel runtimeModel, EntityIdentity id, ProjectConfiguration configuration, ProjectSystem.Properties.IProperty property, IUIPropertyValuePropertiesAvailableStatus requestedProperties)
+        public static async Task<IEntityValue> CreateUIPropertyValueValueAsync(IEntityRuntimeModel runtimeModel, EntityIdentity id, ProjectConfiguration configuration, IProperty property, IUIPropertyValuePropertiesAvailableStatus requestedProperties)
         {
             Requires.NotNull(property);
 
@@ -111,7 +111,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
                 }
 
                 if (await cache.BindToRuleAsync(configuration, schema.Name, propertiesContext) is IRule rule
-                    && rule.GetProperty(propertyName) is ProjectSystem.Properties.IProperty property)
+                    && rule.GetProperty(propertyName) is IProperty property)
                 {
                     IEntityValue propertyValue = await CreateUIPropertyValueValueAsync(parent, configuration, property, requestedProperties);
                     builder.Add(propertyValue);

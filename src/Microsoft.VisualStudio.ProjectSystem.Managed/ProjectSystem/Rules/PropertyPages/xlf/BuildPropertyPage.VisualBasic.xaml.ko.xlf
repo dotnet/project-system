@@ -388,8 +388,8 @@
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|DefineConstants|Description">
-        <source>Specifies custom conditional compilation constants for your application.</source>
-        <target state="translated">애플리케이션에 대한 사용자 지정 조건부 컴파일 상수를 지정합니다.</target>
+        <source>Specifies custom conditional compilation constants for your application. Note that values are optional, for the optional behavior leave the value blank. If the value is a string, please add quotation marks around it.</source>
+        <target state="translated">애플리케이션에 대한 사용자 지정 조건부 컴파일 상수를 지정합니다. 값은 선택 사항이며 선택적 동작의 경우 값을 비워 둡니다. 값이 문자열인 경우 주위에 따옴표를 추가하세요.</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|DefineConstants|DisplayName">

@@ -21,4 +21,9 @@ internal static class FeatureFlagNames
     /// Enables incremental build to report build failures.
     /// </summary>
     public const string EnableIncrementalBuildFailureTelemetry = "ManagedProjectSystem.EnableIncrementalBuildFailureTelemetry";
+
+    /// <summary>
+    /// When this feature flag is enabled, build diagnostics will be published by CPS and should not be passed to Roslyn.
+    /// </summary>
+    public const string LspPullDiagnosticsFeatureFlagName = "Lsp.PullDiagnostics";
 }

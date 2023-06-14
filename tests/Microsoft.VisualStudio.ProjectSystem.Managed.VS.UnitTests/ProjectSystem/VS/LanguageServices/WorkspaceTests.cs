@@ -3,7 +3,7 @@
 using Microsoft.CodeAnalysis;
 using Microsoft.VisualStudio.LanguageServices.ProjectSystem;
 using Microsoft.VisualStudio.ProjectSystem.Utilities;
-using Microsoft.VisualStudio.ProjectSystem.VS;
+using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Threading;
 using Task = System.Threading.Tasks.Task;
 using Moq.Language.Flow;
@@ -655,7 +655,7 @@ public class WorkspaceTests
     }
 
     [Fact]
-    public async Task Fault_BeforeInitialisation()
+    public async Task Fault_BeforeInitialization()
     {
         var workspace = await CreateInstanceAsync(applyEvaluation: false);
 
@@ -673,9 +673,9 @@ public class WorkspaceTests
     }
 
     [Fact]
-    public async Task Fault_AfterInitialisation()
+    public async Task Fault_AfterInitialization()
     {
-        // Initialised after this call (as we apply evaluation data)
+        // Initialized after this call (as we apply evaluation data)
         var workspace = await CreateInstanceAsync(applyEvaluation: true);
 
         int count = 0;
@@ -684,7 +684,7 @@ public class WorkspaceTests
 
         Assert.Equal(1, count);
 
-        // Faulting once initialised won't stop callers from using the workspace.
+        // Faulting once initialized won't stop callers from using the workspace.
         // It only means we won't keep the workspace up to date over time as the project
         // changes.
         workspace.Fault(new Exception());

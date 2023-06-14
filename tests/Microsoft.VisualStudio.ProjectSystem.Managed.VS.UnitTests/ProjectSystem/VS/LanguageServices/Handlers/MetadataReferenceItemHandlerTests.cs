@@ -2,7 +2,6 @@
 
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.VisualStudio.LanguageServices.ProjectSystem;
-using Microsoft.VisualStudio.ProjectSystem.VS;
 
 namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
 {
@@ -15,7 +14,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
             void onReferenceAdded(string s) => referencesPushedToWorkspace.Add(s);
             void onReferenceRemoved(string s) => referencesPushedToWorkspace.Remove(s);
 
-            var project = UnconfiguredProjectFactory.Create(fullPath: @"C:\Myproject.csproj");
+            var project = UnconfiguredProjectFactory.Create(fullPath: @"C:\MyProject.csproj");
             var context = IWorkspaceProjectContextMockFactory.CreateForMetadataReferences(project, onReferenceAdded, onReferenceRemoved);
             var logger = Mock.Of<IManagedProjectDiagnosticOutputService>();
 
@@ -44,7 +43,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
             void onReferenceAdded(string s) => referencesPushedToWorkspace.Add(s);
             void onReferenceRemoved(string s) => referencesPushedToWorkspace.Remove(s);
 
-            var project = UnconfiguredProjectFactory.Create(fullPath: @"C:\ProjectFolder\Myproject.csproj");
+            var project = UnconfiguredProjectFactory.Create(fullPath: @"C:\ProjectFolder\MyProject.csproj");
             var context = IWorkspaceProjectContextMockFactory.CreateForMetadataReferences(project, onReferenceAdded, onReferenceRemoved);
             var logger = Mock.Of<IManagedProjectDiagnosticOutputService>();
 

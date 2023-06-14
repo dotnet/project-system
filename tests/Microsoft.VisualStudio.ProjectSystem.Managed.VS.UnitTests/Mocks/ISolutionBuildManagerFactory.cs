@@ -51,7 +51,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build
                 }
 
                 buildManager.Setup(b => b.StartUpdateSpecificProjectConfigurations(It.IsAny<IVsHierarchy[]>(), It.IsAny<uint[]>(), It.IsAny<uint>()))
-                    .Callback((System.Action<IVsHierarchy[], uint[], uint>)onBuildStartedWithReturn);
+                    .Callback((Action<IVsHierarchy[], uint[], uint>)onBuildStartedWithReturn);
             }
 
             return buildManager.Object;

@@ -474,16 +474,14 @@ Dieses Projekt wurde unter Verwendung des falschen Projekttyps geladen, wahrsche
         <note />
       </trans-unit>
       <trans-unit id="Restore_NuGetCycleDetected">
-        <source>A circular dependency A -&gt; B -&gt; A was detected during NuGet Restore which caused NuGet to stop restoring.
-Because the NuGet restore didn't finish correctly, the project might be in a bad state.</source>
-        <target state="translated">Eine Ringabhängigkeit A -&gt; B -&gt; Bei der NuGet-Wiederherstellung wurde ein Fehler erkannt, der dazu führte, dass NuGet die Wiederherstellung beendete.
-Da die NuGet-Wiederherstellung nicht ordnungsgemäß abgeschlossen wurde, befindet sich das Projekt möglicherweise in einem fehlerhaften Zustand.</target>
-        <note />
+        <source>A NuGet restore loop has been detected in project '{0}'. Further restores have been aborted. The project might be in a bad state.</source>
+        <target state="translated">Im Projekt "{0}" wurde eine NuGet-Wiederherstellungsschleife erkannt. Weitere Wiederherstellungen wurden abgebrochen. Das Projekt befindet sich möglicherweise in einem fehlerhaften Zustand.</target>
+        <note>{0} is a file path.</note>
       </trans-unit>
       <trans-unit id="Restore_PropertyWithInconsistentValues">
         <source>The value of the '{0}' property is inconsistent between target frameworks. This property must be identical for NuGet restore to function correctly. The value '{1}' from the '{2}' configuration will be used, other target frameworks may fail to pick NuGet assets.</source>
         <target state="translated">Der Wert der Eigenschaft "{0}" ist zwischen Zielframeworks inkonsistent. Diese Eigenschaft muss identisch sein, damit die NuGet-Wiederherstellung ordnungsgemäß funktioniert. Der Wert "{1}" aus der {2}-Konfiguration wird verwendet, andere Zielframeworks wählen möglicherweise keine NuGet-Objekte aus.</target>
-        <note />
+        <note>{0} is a file path.</note>
       </trans-unit>
       <trans-unit id="SdkNodeName">
         <source>SDK</source>

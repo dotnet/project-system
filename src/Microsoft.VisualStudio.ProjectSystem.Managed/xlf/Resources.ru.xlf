@@ -474,16 +474,14 @@ This project was loaded using the wrong project type, likely as a result of rena
         <note />
       </trans-unit>
       <trans-unit id="Restore_NuGetCycleDetected">
-        <source>A circular dependency A -&gt; B -&gt; A was detected during NuGet Restore which caused NuGet to stop restoring.
-Because the NuGet restore didn't finish correctly, the project might be in a bad state.</source>
-        <target state="translated">При выполнении восстановления NuGet была обнаружена циклическая зависимость A -&gt; B -&gt; A, вследствие чего восстановление NuGet было остановлено.
-Поскольку восстановление NuGet не было правильно завершено, проект может находиться в неисправном состоянии.</target>
-        <note />
+        <source>A NuGet restore loop has been detected in project '{0}'. Further restores have been aborted. The project might be in a bad state.</source>
+        <target state="translated">Обнаружен цикл восстановления NuGet в проекте "{0}". Дальнейшие операции восстановления прерваны. Возможно, проект находится в некорректном состоянии.</target>
+        <note>{0} is a file path.</note>
       </trans-unit>
       <trans-unit id="Restore_PropertyWithInconsistentValues">
         <source>The value of the '{0}' property is inconsistent between target frameworks. This property must be identical for NuGet restore to function correctly. The value '{1}' from the '{2}' configuration will be used, other target frameworks may fail to pick NuGet assets.</source>
         <target state="translated">Значение свойства "{0}" не согласовано между целевыми платформами. Для правильной работы функции восстановления NuGet значение этого свойства должно быть одинаковым на всех целевых платформах. Будет использовано значение "{1}" из конфигурации "{2}", на остальных целевых платформах могут возникнуть трудности с получением ресурсов NuGet.</target>
-        <note />
+        <note>{0} is a file path.</note>
       </trans-unit>
       <trans-unit id="SdkNodeName">
         <source>SDK</source>

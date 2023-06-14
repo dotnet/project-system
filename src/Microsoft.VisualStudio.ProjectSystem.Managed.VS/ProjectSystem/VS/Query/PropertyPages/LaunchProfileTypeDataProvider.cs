@@ -17,7 +17,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query.PropertyPages
     /// (see <see cref="ILaunchProfileTypeSnapshot"/>) for a project.
     /// </summary>
     /// <remarks>
-    /// Responsible for populating <see cref="Microsoft.VisualStudio.ProjectSystem.Query.IProjectSnapshot.LaunchProfiles"/>.
+    /// Responsible for populating <see cref="ProjectSystem.Query.IProjectSnapshot.LaunchProfiles"/>.
     /// </remarks>
     [QueryDataProvider(LaunchProfileTypeType.TypeName, ProjectModel.ModelName)]
     [RelationshipQueryDataProvider(ProjectSystem.Query.Metadata.ProjectType.TypeName, ProjectSystem.Query.Metadata.ProjectType.LaunchProfileTypesPropertyName)]

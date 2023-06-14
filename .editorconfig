@@ -353,7 +353,7 @@ dotnet_diagnostic.RS0012.severity = warning
 
 # System.Runtime.Analyzers
 dotnet_diagnostic.CA1305.severity = none        # Specify IFormatProvider
-dotnet_diagnostic.CA1307.severity = none        # Specify StringComparison
+dotnet_diagnostic.CA1307.severity = suggestion  # Specify StringComparison
 dotnet_diagnostic.CA1308.severity = none        # Normalize strings to uppercase
 dotnet_diagnostic.CA1810.severity = none        # Initialize reference type static fields inline
 dotnet_diagnostic.CA1816.severity = none        # Dispose methods should call SuppressFinalize
@@ -436,3 +436,4 @@ dotnet_diagnostic.IDE2006.severity = warning    # Allow blank line after token i
 # Reduce severity for some VB rules where the risks of changes outweight the benefit
 [*.{vb}]
 dotnet_diagnostic.IDE0031.severity = suggestion   # Use null propagation (nullable)
+dotnet_diagnostic.CA1307.severity = suggestion    # Specify StringComparison

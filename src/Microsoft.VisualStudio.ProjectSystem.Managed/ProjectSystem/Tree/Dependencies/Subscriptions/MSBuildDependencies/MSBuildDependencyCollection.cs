@@ -203,7 +203,7 @@ internal sealed class MSBuildDependencyCollection
 
                 void PopulateMissingBuildData()
                 {
-                    Assumes.True(missingBuildCount >= 0);
+                    System.Diagnostics.Debug.Assert(missingBuildCount >= 0, "At least one missing build data is expected.");
 
                     if (missingBuildCount == 0)
                     {

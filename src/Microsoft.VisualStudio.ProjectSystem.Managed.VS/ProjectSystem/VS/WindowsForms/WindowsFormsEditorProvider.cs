@@ -26,13 +26,19 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.WindowsForms
         };
 
         private readonly UnconfiguredProject _project;
+        private readonly IProjectAsynchronousTasksService _projectAsynchronousTasksService;
         private readonly Lazy<IPhysicalProjectTree> _projectTree;
         private readonly Lazy<IProjectSystemOptions> _options;
 
         [ImportingConstructor]
-        public WindowsFormsEditorProvider(UnconfiguredProject project, Lazy<IPhysicalProjectTree> projectTree, Lazy<IProjectSystemOptions> options)
+        public WindowsFormsEditorProvider(
+            UnconfiguredProject project,
+            [Import(ExportContractNames.Scopes.UnconfiguredProject)] IProjectAsynchronousTasksService projectAsynchronousTasksService,
+            Lazy<IPhysicalProjectTree> projectTree,
+            Lazy<IProjectSystemOptions> options)
         {
             _project = project;
+            _projectAsynchronousTasksService = projectAsynchronousTasksService;
             _projectTree = projectTree;
             _options = options;
 
@@ -46,15 +52,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.WindowsForms
         {
             Requires.NotNullOrEmpty(documentMoniker);
 
-            IProjectSpecificEditorInfo? editor = await GetDefaultEditorAsync(documentMoniker);
-            if (editor is null)
+            CancellationToken cancellationToken = _projectAsynchronousTasksService.UnloadCancellationToken;
+
+            (IProjectSpecificEditorInfo? editor, SubTypeDescriptor ? descriptor)
+                = await (GetDefaultEditorAsync(documentMoniker), GetSubTypeDescriptorAsync(documentMoniker, cancellationToken));
+
+            if (editor is null || descriptor is null)
                 return null;
 
-            SubTypeDescriptor? descriptor = await GetSubTypeDescriptorAsync(documentMoniker);
-            if (descriptor is null)
-                return null;
-
-            bool isDefaultEditor = await _options.Value.GetUseDesignerByDefaultAsync(descriptor.SubType, descriptor.UseDesignerByDefault);
+            bool isDefaultEditor = await _options.Value.GetUseDesignerByDefaultAsync(descriptor.SubType, descriptor.UseDesignerByDefault, cancellationToken);
 
             return new EditorInfo(editor.EditorFactory, descriptor.DisplayName, isDefaultEditor);
         }
@@ -63,12 +69,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.WindowsForms
         {
             Requires.NotNullOrEmpty(documentMoniker);
 
-            SubTypeDescriptor? editorInfo = await GetSubTypeDescriptorAsync(documentMoniker);
+            CancellationToken cancellationToken = _projectAsynchronousTasksService.UnloadCancellationToken;
+
+            SubTypeDescriptor? editorInfo = await GetSubTypeDescriptorAsync(documentMoniker, cancellationToken);
             if (editorInfo is null)
                 return false;
 
             // 'useGlobalEditor' means use the default editor that is registered for source files
-            await _options.Value.SetUseDesignerByDefaultAsync(editorInfo.SubType, !useGlobalEditor);
+            await _options.Value.SetUseDesignerByDefaultAsync(editorInfo.SubType, !useGlobalEditor, cancellationToken);
             return true;
         }
 
@@ -81,9 +89,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.WindowsForms
             return await defaultProvider.GetSpecificEditorAsync(documentMoniker);
         }
 
-        private async Task<SubTypeDescriptor?> GetSubTypeDescriptorAsync(string documentMoniker)
+        private async Task<SubTypeDescriptor?> GetSubTypeDescriptorAsync(string documentMoniker, CancellationToken cancellationToken)
         {
-            string? subType = await GetSubTypeAsync(documentMoniker);
+            string? subType = await GetSubTypeAsync(documentMoniker, cancellationToken);
+
             if (subType is not null)
             {
                 foreach (SubTypeDescriptor descriptor in s_subTypeDescriptors)
@@ -96,9 +105,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.WindowsForms
             return null;
         }
 
-        private async Task<string?> GetSubTypeAsync(string documentMoniker)
+        private async Task<string?> GetSubTypeAsync(string documentMoniker, CancellationToken cancellationToken)
         {
-            IProjectItemTree? item = await FindCompileItemByMonikerAsync(documentMoniker);
+            IProjectItemTree? item = await FindCompileItemByMonikerAsync(documentMoniker, cancellationToken);
             if (item is null)
                 return null;
 
@@ -117,9 +126,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.WindowsForms
             return item.GetBrowseObjectPropertiesViaSnapshotIfAvailable(project);
         }
 
-        private async Task<IProjectItemTree?> FindCompileItemByMonikerAsync(string documentMoniker)
+        private async Task<IProjectItemTree?> FindCompileItemByMonikerAsync(string documentMoniker, CancellationToken cancellationToken)
         {
-            IProjectTreeServiceState result = await _projectTree.Value.TreeService.PublishAnyNonLoadingTreeAsync();
+            IProjectTreeServiceState result = await _projectTree.Value.TreeService.PublishAnyNonLoadingTreeAsync(cancellationToken);
 
             if (result.TreeProvider.FindByPath(result.Tree, documentMoniker) is IProjectItemTree treeItem &&
                 treeItem.Parent?.Flags.Contains(ProjectTreeFlags.SourceFile) == false &&

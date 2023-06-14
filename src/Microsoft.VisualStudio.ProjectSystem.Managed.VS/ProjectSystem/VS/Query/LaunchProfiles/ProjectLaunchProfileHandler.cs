@@ -46,7 +46,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
 
                     IProjectState projectState = new LaunchProfileProjectState(_project, _launchSettingsProvider, _launchSettingsTracker);
 
-                    foreach ((int index, ProjectSystem.Debug.ILaunchProfile profile) in launchSettings.Profiles.WithIndices())
+                    foreach ((int index, ILaunchProfile profile) in launchSettings.Profiles.WithIndices())
                     {
                         if (StringComparers.LaunchProfileNames.Equals(profile.Name, desiredProfileName)
                             && !Strings.IsNullOrEmpty(profile.CommandName))
@@ -111,7 +111,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
 
                 IProjectState projectState = new LaunchProfileProjectState(_project, _launchSettingsProvider, _launchSettingsTracker);
 
-                foreach ((int index, ProjectSystem.Debug.ILaunchProfile profile) in launchSettings.Profiles.WithIndices())
+                foreach ((int index, ILaunchProfile profile) in launchSettings.Profiles.WithIndices())
                 {
                     if (!Strings.IsNullOrEmpty(profile.Name)
                         && !Strings.IsNullOrEmpty(profile.CommandName)
@@ -159,7 +159,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
 
             ILaunchSettings launchSettings = await _launchSettingsProvider.WaitForFirstSnapshot(cancellationToken);
 
-            ProjectSystem.Debug.ILaunchProfile? existingProfile = launchSettings.Profiles.FirstOrDefault(p => StringComparers.LaunchProfileNames.Equals(p.Name, currentProfileName));
+            ILaunchProfile? existingProfile = launchSettings.Profiles.FirstOrDefault(p => StringComparers.LaunchProfileNames.Equals(p.Name, currentProfileName));
             if (existingProfile is not null)
             {
                 newProfileName ??= await GetNewProfileNameAsync(cancellationToken);
@@ -204,7 +204,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
 
             ILaunchSettings launchSettings = await _launchSettingsProvider.WaitForFirstSnapshot(cancellationToken);
 
-            ProjectSystem.Debug.ILaunchProfile? existingProfile = launchSettings.Profiles.FirstOrDefault(p => StringComparers.LaunchProfileNames.Equals(p.Name, currentProfileName));
+            ILaunchProfile? existingProfile = launchSettings.Profiles.FirstOrDefault(p => StringComparers.LaunchProfileNames.Equals(p.Name, currentProfileName));
             if (existingProfile is not null)
             {
                 var writableProfile = new WritableLaunchProfile(existingProfile)

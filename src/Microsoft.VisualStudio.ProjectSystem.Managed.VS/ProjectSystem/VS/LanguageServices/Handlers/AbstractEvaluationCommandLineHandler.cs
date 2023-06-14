@@ -2,7 +2,6 @@
 
 using Microsoft.VisualStudio.LanguageServices.ProjectSystem;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
-using Microsoft.VisualStudio.ProjectSystem.VS;
 
 namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
 {

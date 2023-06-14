@@ -3,7 +3,7 @@
 namespace Microsoft.VisualStudio.ProjectSystem.Waiting
 {
     /// <summary>
-    ///     Represents the result of <see cref="IWaitIndicator.Run(string, string, bool, Func{IWaitContext, System.Threading.Tasks.Task}, int)"/>.
+    ///     Represents the result of <see cref="IWaitIndicator.Run(string, string, bool, Func{IWaitContext, Task}, int)"/>.
     /// </summary>
     internal readonly struct WaitIndicatorResult
     {
@@ -25,7 +25,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Waiting
     }
 
     /// <summary>
-    ///     Represents the result of <see cref="IWaitIndicator.Run{T}(string, string, bool, Func{IWaitContext, System.Threading.Tasks.Task{T}}, int)"/>.
+    ///     Represents the result of <see cref="IWaitIndicator.Run{T}(string, string, bool, Func{IWaitContext, Task{T}}, int)"/>.
     /// </summary>
     internal readonly struct WaitIndicatorResult<T>
     {

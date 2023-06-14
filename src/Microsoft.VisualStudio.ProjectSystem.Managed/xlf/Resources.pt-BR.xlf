@@ -474,16 +474,14 @@ Esse projeto foi carregado usando o tipo de projeto errado, provavelmente como r
         <note />
       </trans-unit>
       <trans-unit id="Restore_NuGetCycleDetected">
-        <source>A circular dependency A -&gt; B -&gt; A was detected during NuGet Restore which caused NuGet to stop restoring.
-Because the NuGet restore didn't finish correctly, the project might be in a bad state.</source>
-        <target state="translated">Uma dependência circular A -&gt; B -&gt; A foi detectada durante a Restauração do NuGet, o que fez com que o NuGet parasse de ser restaurado.
-porque a restauração do NuGet não foi concluída corretamente, o projeto pode estar em um estado incorreto.</target>
-        <note />
+        <source>A NuGet restore loop has been detected in project '{0}'. Further restores have been aborted. The project might be in a bad state.</source>
+        <target state="translated">Um loop de restauração do NuGet foi detectado no projeto '{0}'. Outras restaurações foram abortadas. O projeto pode estar em um estado ruim.</target>
+        <note>{0} is a file path.</note>
       </trans-unit>
       <trans-unit id="Restore_PropertyWithInconsistentValues">
         <source>The value of the '{0}' property is inconsistent between target frameworks. This property must be identical for NuGet restore to function correctly. The value '{1}' from the '{2}' configuration will be used, other target frameworks may fail to pick NuGet assets.</source>
         <target state="translated">O valor da propriedade '{0}' está inconsistente entre as estruturas de destino. Essa propriedade precisa ser idêntica para que a restauração do NuGet funcione corretamente. O valor '{1}' da configuração '{2}' será usado. Outras estruturas de destino poderão falhar ao escolher ativos do NuGet.</target>
-        <note />
+        <note>{0} is a file path.</note>
       </trans-unit>
       <trans-unit id="SdkNodeName">
         <source>SDK</source>

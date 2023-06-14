@@ -153,7 +153,7 @@ internal sealed partial class DependenciesTreeProvider : ProjectTreeProviderBase
 
             // Conflate rapid snapshot updates by debouncing events over a short window.
             // This reduces the frequency of tree updates with minimal perceived latency.
-            // TODO is this asynchrony the reason that the tree does not appear populated when the project loads?
+            // TODO is this asynchrony the reason that the tree does not appear populated when the project loads? https://github.com/dotnet/project-system/issues/8949
             _ = _debounce.ScheduleAsyncTask(
                 async cancellationToken =>
                 {
@@ -471,7 +471,7 @@ internal sealed partial class DependenciesTreeProvider : ProjectTreeProviderBase
 
     IProjectItemTree2 IProjectTreeOperations.NewTree(string caption, IProjectPropertiesContext item, IPropertySheet? propertySheet, IRule? browseObjectProperties, ProjectImageMoniker? icon, ProjectImageMoniker? expandedIcon, bool visible, ProjectTreeFlags? flags, bool isLinked, int displayOrder)
     {
-        return NewTree( caption, item, propertySheet, browseObjectProperties, icon, expandedIcon, visible, flags, isLinked, displayOrder);
+        return NewTree(caption, item, propertySheet, browseObjectProperties, icon, expandedIcon, visible, flags, isLinked, displayOrder);
     }
 
     #endregion

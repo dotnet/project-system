@@ -116,7 +116,7 @@ jobs:
   # - MicroBuildSigningPlugin: uses signjson.exe to sign the manifests
   # - MicroBuildSwixPlugin: uses vsman.exe and sets the environment variable ManifestPublishUrl
   # Documentation: https://devdiv.visualstudio.com/DevDiv/_wiki/wikis/DevDiv.wiki/643/How-to-Build-a-Bootstrapper
-  - task: MicroBuildBuildVSBootstrapper@2
+  - task: MicroBuildBuildVSBootstrapper@3
     displayName: Build VS Bootstrapper
     inputs:
       bootstrapperCoreVersion: latest

@@ -10,7 +10,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
 {
     /// <summary>
     /// <para>
-    /// Handles Project Query API actions that target the <see cref="Microsoft.VisualStudio.ProjectSystem.Query.IProjectSnapshot"/>.
+    /// Handles Project Query API actions that target the <see cref="ProjectSystem.Query.IProjectSnapshot"/>.
     /// </para>
     /// <para>
     /// Specifically, this type is responsible for creating the appropriate <see cref="IQueryActionExecutor"/>

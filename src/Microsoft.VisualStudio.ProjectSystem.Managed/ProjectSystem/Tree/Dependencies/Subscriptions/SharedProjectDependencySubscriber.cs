@@ -22,10 +22,7 @@ internal sealed class SharedProjectDependencySubscriber : IDependencySliceSubscr
     private readonly UnconfiguredProject _unconfiguredProject;
 
     [ImportingConstructor]
-    public SharedProjectDependencySubscriber(
-        UnconfiguredProject unconfiguredProject,
-        IProjectThreadingService threadingService,
-        IUnconfiguredProjectTasksService tasksService)
+    public SharedProjectDependencySubscriber(UnconfiguredProject unconfiguredProject)
     {
         _unconfiguredProject = unconfiguredProject;
     }
@@ -70,7 +67,7 @@ internal sealed class SharedProjectDependencySubscriber : IDependencySliceSubscr
 
                 transformBlock.LinkTo(targetBlock, DataflowOption.PropagateCompletion),
 
-                JoinUpstreamDataSources(_source.SharedFoldersSource, _source.ActiveConfiguredProjectSource, _source.ProjectCatalogSource)
+                JoinUpstreamDataSources(_source.SharedFoldersSource)
             };
         }
 

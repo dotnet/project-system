@@ -474,16 +474,14 @@ Tento projekt se načetl pomocí nesprávného typu projektu, pravděpodobně v 
         <note />
       </trans-unit>
       <trans-unit id="Restore_NuGetCycleDetected">
-        <source>A circular dependency A -&gt; B -&gt; A was detected during NuGet Restore which caused NuGet to stop restoring.
-Because the NuGet restore didn't finish correctly, the project might be in a bad state.</source>
-        <target state="translated">Během obnovení NuGet byla zjištěna cyklická závislost A -&gt; B -&gt; A, což způsobilo, že se NuGet přestal obnovovat.
-Vzhledem k tomu, že se obnovení NuGet nedokončilo správně, může být projekt ve špatném stavu.</target>
-        <note />
+        <source>A NuGet restore loop has been detected in project '{0}'. Further restores have been aborted. The project might be in a bad state.</source>
+        <target state="translated">V projektu „{0}“ byla zjištěna smyčka obnovení NuGet. Další obnovení byla přerušena. Projekt může být ve špatném stavu.</target>
+        <note>{0} is a file path.</note>
       </trans-unit>
       <trans-unit id="Restore_PropertyWithInconsistentValues">
         <source>The value of the '{0}' property is inconsistent between target frameworks. This property must be identical for NuGet restore to function correctly. The value '{1}' from the '{2}' configuration will be used, other target frameworks may fail to pick NuGet assets.</source>
         <target state="translated">Hodnota vlastnosti {0} není konzistentní mezi cílovými architekturami. Tato vlastnost musí být identická, aby správně fungovalo obnovení přes NuGet. Použije se hodnota {1} z konfigurace {2} – jiným cílovým architekturám se nemusí podařit výběr prostředků NuGet.</target>
-        <note />
+        <note>{0} is a file path.</note>
       </trans-unit>
       <trans-unit id="SdkNodeName">
         <source>SDK</source>

@@ -17,7 +17,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
         /// <value>
         ///     <see langword="true"/> if the project fast up to date check is enabled; otherwise, <see langword="false"/>
         /// </value>
-        Task<bool> GetIsFastUpToDateCheckEnabledAsync(CancellationToken cancellationToken = default);
+        Task<bool> GetIsFastUpToDateCheckEnabledAsync(CancellationToken cancellationToken);
 
         /// <summary>
         ///     Gets a value indicating the level of fast up to date check logging.
@@ -28,31 +28,46 @@ namespace Microsoft.VisualStudio.ProjectSystem
         /// <value>
         ///     The level of fast up to date check logging.
         /// </value>
-        Task<LogLevel> GetFastUpToDateLoggingLevelAsync(CancellationToken cancellationToken = default);
+        Task<LogLevel> GetFastUpToDateLoggingLevelAsync(CancellationToken cancellationToken);
 
         /// <summary>
         ///     Gets a value indicating whether the designer view is the default editor for the specified designer category.
         /// </summary>
-        Task<bool> GetUseDesignerByDefaultAsync(string designerCategory, bool defaultValue, CancellationToken cancellationToken = default);
+        Task<bool> GetUseDesignerByDefaultAsync(string designerCategory, bool defaultValue, CancellationToken cancellationToken);
 
         /// <summary>
         ///     Sets a value indicating whether the designer view is the default editor for the specified designer category.
         /// </summary>
-        Task SetUseDesignerByDefaultAsync(string designerCategory, bool value, CancellationToken cancellationToken = default);
+        Task SetUseDesignerByDefaultAsync(string designerCategory, bool value, CancellationToken cancellationToken);
 
         /// <summary>
         ///     Gets a value indicating if analyzers should be skipped for implicitly triggered build.
         /// </summary>
-        Task<bool> GetSkipAnalyzersForImplicitlyTriggeredBuildAsync(CancellationToken cancellationToken = default);
+        Task<bool> GetSkipAnalyzersForImplicitlyTriggeredBuildAsync(CancellationToken cancellationToken);
 
         /// <summary>
-        ///     Gets a value indicating if single-target builds should be preferred for startup projects. 
+        ///     Gets a value indicating if single-target builds should be preferred for startup projects.
         /// </summary>
-        Task<bool> GetPreferSingleTargetBuildsForStartupProjectsAsync(CancellationToken cancellationToken = default);
+        Task<bool> GetPreferSingleTargetBuildsForStartupProjectsAsync(CancellationToken cancellationToken);
 
         /// <summary>
         ///     Gets a value indicating if the project system should attempt to detect cycles in the NuGet restore process.
         /// </summary>
-        Task<bool> GetDetectNuGetRestoreCyclesAsync(CancellationToken cancellationToken = default);
+        ValueTask<bool> IsNuGetRestoreCycleDetectionEnabledAsync(CancellationToken cancellationToken);
+
+        /// <summary>
+        ///     Gets whether incremental build failure detection should write to the output window when failures are detected.
+        /// </summary>
+        ValueTask<bool> IsIncrementalBuildFailureOutputLoggingEnabledAsync(CancellationToken cancellationToken);
+
+        /// <summary>
+        ///     Gets whether incremental build failure detection should send telemetry.
+        /// </summary>
+        ValueTask<bool> IsIncrementalBuildFailureTelemetryEnabledAsync(CancellationToken cancellationToken);
+
+        /// <summary>
+        ///     Gets whether LSP pull diagnostics are enabled.
+        /// </summary>
+        ValueTask<bool> IsLspPullDiagnosticsEnabledAsync(CancellationToken cancellationToken);
     }
 }

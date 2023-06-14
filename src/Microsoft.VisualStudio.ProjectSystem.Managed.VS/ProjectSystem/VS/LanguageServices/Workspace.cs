@@ -6,7 +6,6 @@ using Microsoft.VisualStudio.LanguageServices.ProjectSystem;
 using Microsoft.VisualStudio.ProjectSystem.OperationProgress;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
 using Microsoft.VisualStudio.ProjectSystem.Utilities;
-using Microsoft.VisualStudio.ProjectSystem.VS;
 using Microsoft.VisualStudio.Threading;
 
 // .NET Core defines a non-generic TaskCompletionSource but .NETFramework does not.

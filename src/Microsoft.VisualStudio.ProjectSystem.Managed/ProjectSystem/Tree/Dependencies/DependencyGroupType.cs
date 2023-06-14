@@ -10,12 +10,38 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies;
 /// </summary>
 internal sealed class DependencyGroupType : IEquatable<DependencyGroupType>
 {
+    /// <summary>
+    /// Uniquely identifies this dependency type within the dependencies tree.
+    /// </summary>
     public string Id { get; }
+
+    /// <summary>
+    /// The display string to show for the group node in the tree.
+    /// </summary>
     [Localizable(true)]
     public string Caption { get; }
+
+    /// <summary>
+    /// The icon to use for the group node when no special status applies.
+    /// </summary>
     public ProjectImageMoniker NormalGroupIcon { get; }
+
+    /// <summary>
+    /// The icon to use for the group node when a warning exists within the group.
+    /// </summary>
     public ProjectImageMoniker WarningGroupIcon { get; }
+
+    /// <summary>
+    /// The icon to use for the group node when an error exists within the group.
+    /// </summary>
     public ProjectImageMoniker ErrorGroupIcon { get; }
+
+    /// <summary>
+    /// Flags that apply to the group node itself.
+    /// </summary>
+    /// <remarks>
+    /// These flags are not applied to children.
+    /// </remarks>
     public ProjectTreeFlags GroupNodeFlags { get; }
 
     public DependencyGroupType(

@@ -33,12 +33,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
                 value = platform;
             }
 
-            return value.Equals(AnyCpuPlatformName) ? AnyCpuDisplayName : value;
+            return value.Equals(AnyCpuPlatformName, StringComparisons.ConfigurationDimensionValues) ? AnyCpuDisplayName : value;
         }
 
         public override Task<string?> OnSetPropertyValueAsync(string propertyName, string unevaluatedPropertyValue, IProjectProperties defaultProperties, IReadOnlyDictionary<string, string>? dimensionalConditions = null)
         {
-            return Task.FromResult<string?>(unevaluatedPropertyValue.Equals(AnyCpuDisplayName) ? AnyCpuPlatformName : unevaluatedPropertyValue);
+            return Task.FromResult<string?>(unevaluatedPropertyValue.Equals(AnyCpuDisplayName, StringComparisons.ConfigurationDimensionValues) ? AnyCpuPlatformName : unevaluatedPropertyValue);
         }
     }
 }

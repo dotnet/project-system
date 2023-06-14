@@ -62,6 +62,16 @@
         <target state="translated">Исполняемый файл</target>
         <note />
       </trans-unit>
+      <trans-unit id="StringProperty|CommandLineArgumentsOverriddenWarning|Description">
+        <source>⚠️ WARNING! This project defines the StartArguments MSBuild property, which overrides any command line arguments specified here. If you wish to define arguments here, you must remove that property from your MSBuild project. Note that it may be defined in a .user file.</source>
+        <target state="translated">⚠️ ПРЕДУПРЕЖДЕНИЕ! Этот проект определяет свойство StartArguments MSBuild, переопределяющее все указанные здесь аргументы командной строки. Если вы хотите определить здесь аргументы, необходимо удалить это свойство из проекта MSBuild. Обратите внимание, что оно может быть определено в пользовательском файле.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|CommandLineArgumentsOverriddenWarning|DisplayName">
+        <source>Ignored</source>
+        <target state="translated">Пропущено</target>
+        <note />
+      </trans-unit>
       <trans-unit id="StringProperty|CommandLineArguments|Description">
         <source>Command line arguments to pass to the executable. You may break arguments into multiple lines.</source>
         <target state="translated">Аргументы командной строки для передачи исполняемому файлу. Аргументы можно разбить на несколько строк.</target>

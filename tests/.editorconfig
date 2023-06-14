@@ -39,3 +39,5 @@ dotnet_diagnostic.xUnit1004.severity = none     # Test methods should not be ski
 
 # White space rules (experimental)
 dotnet_diagnostic.IDE2001.severity = none       # Allow embedded statements on same line
+
+dotnet_diagnostic.CA1307.severity = suggestion  # Specify StringComparison

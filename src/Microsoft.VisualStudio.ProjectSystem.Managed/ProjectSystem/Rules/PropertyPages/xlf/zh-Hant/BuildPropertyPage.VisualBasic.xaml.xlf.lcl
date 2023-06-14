@@ -708,10 +708,13 @@
       </Item>
       <Item ItemId=";StringProperty|DefineConstants|Description" ItemType="0" PsrId="308" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Specifies custom conditional compilation constants for your application.]]></Val>
+          <Val><![CDATA[Specifies custom conditional compilation constants for your application. Note that values are optional, for the optional behavior leave the value blank. If the value is a string, please add quotation marks around it.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[指定應用程式的自訂條件式編譯常數。]]></Val>
+            <Val><![CDATA[為您的應用程式指定自訂條件式編譯常數。請注意，值是選擇性的，對於選擇性行為，請將值留白。如果值是字串，請在周圍加上引號。]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[Specifies custom conditional compilation constants for your application.]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
