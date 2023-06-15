@@ -53,29 +53,13 @@ jobs:
 
   # Publishes the test results to the Azure Pipeline itself so they can be viewed in the UI.
   # This needs to be ran after the build, because if the build failed due to a test failure, the test results wouldn't be published.
-  # This uploads for .NET Framework run on main branch
   - task: PublishTestResults@2
-    displayName: Publish Test Results (XUnit)
+    displayName: Publish Test Results
     inputs:
       testRunner: VSTest
       testResultsFiles: $(Build.SourcesDirectory)/artifacts/$(BuildConfiguration)/TestResults/**/*.trx
       testRunTitle: Unit Test Results
     condition: succeededOrFailed()
-    # We continue on error because this phase can fail when running tests using dotnet test. Remove when testing combines.
-    continueOnError: true
-
-  # Publishes the test results to the Azure Pipeline itself so they can be viewed in the UI.
-  # This needs to be ran after the build, because if the build failed due to a test failure, the test results wouldn't be published.
-  # This uploads for .NET Core run on C# dev kit branch
-  - task: PublishTestResults@2
-    displayName: Publish Test Results (VSTest)
-    inputs:
-      testRunner: VSTest
-      testResultsFiles: $(Build.SourcesDirectory)/artifacts/$(BuildConfiguration)/TestResults/**/*.trx
-      testRunTitle: Unit Test Results
-    condition: succeededOrFailed()
-    # We continue on error because this phase can fail when running tests using xunit. Remove when testing combines.
-    continueOnError: true
 
   # The .artifactignore file filters the artifacts published from a particular folder.
   # This must be present in the folder we want to publish and be named '.artifactignore'.
