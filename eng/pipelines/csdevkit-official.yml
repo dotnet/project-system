@@ -12,7 +12,7 @@
 trigger:
   branches:
     include:
-    - dev/PortToNET6
+    - main
 
 # Disable PR builds for this pipeline.
 # See: https://docs.microsoft.com/azure/devops/pipelines/yaml-schema/pr?view=azure-pipelines#examples

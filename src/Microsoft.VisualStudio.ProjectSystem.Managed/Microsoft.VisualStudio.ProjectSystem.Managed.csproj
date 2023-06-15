@@ -17,13 +17,6 @@
     <PackageTags>Roslyn Managed Project System VisualStudio</PackageTags>
     <NoWarn>$(NoWarn);NU5125</NoWarn>
 
-    <!-- TODO: Remove this when we merge everything back to dotnet/project-system.
-         We need a package with our .NET 7 build but don't want it to conflict with
-         our official package produced from dotnet/project-system, so here we use
-         a temporary name. Once we merge the changes back everything we need will
-         be in the official package. -->
-    <PackageId>Microsoft.VisualStudio.ProjectSystem.Managed.TemporaryForGreen</PackageId>
-
     <!-- TODO: Remove this when the port to net7.0 is complete -->
     <NoWarn>$(NoWarn);NU1701</NoWarn>
   </PropertyGroup>

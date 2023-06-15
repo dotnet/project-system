@@ -16,7 +16,6 @@
     <PackageReference Include="Microsoft.Net.Compilers.Toolset" />
     <!--
       The SourceLink package depends on the repo provider used.
-      TODO: Determine a mechanism of switching these depending on the location of the source.
       https://github.com/dotnet/sourcelink#using-source-link-in-net-projects
     -->
     <PackageReference Include="Microsoft.SourceLink.GitHub"         PrivateAssets="all" />
@@ -35,14 +34,6 @@
     <PackageReference Include="Microsoft.VisualStudio.Threading" />
     <PackageReference Include="Microsoft.VisualStudio.Validation" />
     <PackageReference Include="System.Threading.Tasks.Dataflow" />
-
-    <!-- MSBuild -->
-    <!-- Only needed because the CPS builds depend on MSBuild versions that are not available. -->
-    <!-- By specifying the versions ourselves we can avoid restore warnings and errors. -->
-    <!-- TODO: Remove these when CPS consumes packages that are available. -->
-    <PackageReference Include="Microsoft.Build" />
-    <PackageReference Include="Microsoft.Build.Tasks.Core" />
-    <PackageReference Include="Microsoft.Build.Utilities.Core" />
 
     <!-- VS MEF -->
     <PackageReference Include="Microsoft.VisualStudio.Composition" />
