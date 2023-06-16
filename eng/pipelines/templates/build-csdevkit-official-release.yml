@@ -172,12 +172,12 @@ jobs:
   - powershell: . '$(Build.SourcesDirectory)/eng/scripts/PublishNPMPackage.ps1' -npmrcPath '$(Build.SourcesDirectory)/src/Microsoft.VisualStudio.ProjectSystem.Managed/.npmrc' -tgzPath ((Get-ChildItem -Path '$(Build.SourcesDirectory)/artifacts/$(BuildConfiguration)/packages/microsoft-microsoft.visualstudio.projectsystem.managed-*.tgz').FullName)
     displayName: Publish NPM Package
 
-  # Publishes the Managed.TemporaryForGreen NuGet package to DevDiv/vs-green (https://dev.azure.com/devdiv/DevDiv/_artifacts/feed/vs-green)
+  # Publishes the Managed NuGet package to DevDiv/vs-green (https://dev.azure.com/devdiv/DevDiv/_artifacts/feed/vs-green)
   - task: NuGetCommand@2
     displayName: Publish NuGet Package
     inputs:
       command: push
-      packagesToPush: $(Build.SourcesDirectory)/artifacts/$(BuildConfiguration)/packages/Microsoft.VisualStudio.ProjectSystem.Managed.TemporaryForGreen.*.nupkg
+      packagesToPush: $(Build.SourcesDirectory)/artifacts/$(BuildConfiguration)/packages/Microsoft.VisualStudio.ProjectSystem.Managed.*.nupkg
       publishVstsFeed: DevDiv/vs-green
       # This allows the task to succeed if duplicate packages exist. Packages cannot be overridden in a feed.
       # See: https://docs.microsoft.com/azure/devops/pipelines/tasks/package/nuget?view=azure-devops#arguments
