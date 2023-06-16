@@ -32,6 +32,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         private bool? _useWindowsFormsProperty;
         private bool? _useWinUIProperty;
         private static readonly string[] s_msBuildPropertyNames = { TargetFrameworkProperty, TargetPlatformProperty, TargetPlatformVersionProperty, SupportedOSPlatformVersionProperty };
+        private static readonly Regex s_versionRegex = new(@"^net(?<version>[0-9.]+)$", RegexOptions.ExplicitCapture);
 
         private struct ComplexTargetFramework
         {
@@ -186,7 +187,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
             }
 
             // Check if the project requires an explicit platform.
-            if (IsNetCore5OrHigher(targetFrameworkAlias, complexTargetFramework.TargetFrameworkIdentifier) && await IsWindowsPlatformNeededAsync())
+            if (IsNetCore5OrHigher(targetFrameworkAlias) && await IsWindowsPlatformNeededAsync())
             {
                 // Ideally we would set the complexTargetFramework.TargetPlatformIdentifier = "Windows",
                 // but we're in a difficult position right now to retrieve the correct TargetPlatformAlias from GetTargetPlatformAliasAsync below,
@@ -212,16 +213,29 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
             return targetFrameworkAlias;
         }
 
-        private static bool IsNetCore5OrHigher(string targetFrameworkAlias, string? targetFrameworkIdentifier)
+        private static bool IsNetCore5OrHigher(string? targetFrameworkAlias)
         {
-            // Converts the target framework alias to a double and checks if it's greater than or equal to 5.0.
-            // First, remove any non-numeric characters. Example: net5.0 => 5.0
-            targetFrameworkAlias = Regex.Replace(targetFrameworkAlias, "[^0-9.]", string.Empty);
-            double.TryParse(targetFrameworkAlias, out double targetFrameworkVersion);
+            // Ideally, we want to use the TargetFrameworkIdentifier and TargetFrameworkVersion;
+            // however, in this case the target framework properties we have are for the currently set value,
+            // not the value we want to set it to (for example, if we go from netcoreapp3.1 to net5.0).
+            // The only property we have that describes the value to be set is the TargetFrameworkAlias which
+            // is passed to this method.
 
-            if (targetFrameworkIdentifier is not null)
-                return targetFrameworkIdentifier.Contains(".NETCoreApp") && targetFrameworkVersion >= 5.0;
+            Match match = s_versionRegex.Match(targetFrameworkAlias);
 
+            if (match.Success)
+            {
+                string versionString = match.Groups["version"].Value;
+
+                if (Version.TryParse(versionString, out Version? version))
+                {
+                    if (version.Major >= 5)
+                    {
+                        // This is a .NET Core app with version greater than five.
+                        return true;
+                    }
+                }
+            }
             return false;
         }
 
@@ -230,19 +244,19 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
             // Checks if the project has either UseWPF or UseWindowsForms properties.
             ConfigurationGeneral configuration = await _properties.GetConfigurationGeneralPropertiesAsync();
             _useWPFProperty = (bool?)await configuration.UseWPF.GetValueAsync();
-            _useWindowsFormsProperty = (bool?)await configuration.UseWindowsForms.GetValueAsync();
-            _useWinUIProperty = (bool?)await configuration.UseWinUI.GetValueAsync();
 
             if (_useWPFProperty is not null)
             {
                 return (bool)_useWPFProperty;
             }
 
+            _useWindowsFormsProperty = (bool?)await configuration.UseWindowsForms.GetValueAsync();
             if (_useWindowsFormsProperty is not null)
             {
                 return (bool)_useWindowsFormsProperty;
             }
 
+            _useWinUIProperty = (bool?)await configuration.UseWinUI.GetValueAsync();
             if (_useWinUIProperty is not null)
             {
                 return (bool)_useWinUIProperty;
