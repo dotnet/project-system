@@ -19,7 +19,7 @@ if not defined MSBuildPath (
 @REM The configuration is not known at this point. It could either use the default from Build.proj or be passed in as an MSBuild argument.
 set "BinlogPath=%~dp0artifacts\Build.binlog"
 @REM https://stackoverflow.com/a/16144756/294804
-"%MSBuildPath%" "%~dp0eng\Build.proj" /m /warnAsError /noLogo /clp:Summary /bl:"%BinlogPath%" %*
+"%MSBuildPath%" "%~dp0eng\Build.proj" /m /warnAsError /noLogo /clp:Summary /bl:"%BinlogPath%" /ll %*
 set MSBuildErrorLevel=%ERRORLEVEL%
 
 @REM Move the binlog into the appropriate configuration directory.
