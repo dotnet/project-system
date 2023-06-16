@@ -10,7 +10,7 @@
     <InstallationPath Condition="'$(IsManagedProjectSystemProject)' == 'false' And '$(InstallationPath)' == ''">Common7\IDE\CommonExtensions\Microsoft\VisualStudio\Editors\$(TargetName).dll</InstallationPath>
   </PropertyGroup>
 
-  <ItemGroup Label="OptProf Configuration" Condition="'$(IsManagedProjectSystemProject)' != 'false'">
+  <ItemGroup Label="OptProf Configuration" Condition="'$(IsManagedProjectSystemProject)' != 'false' And '$(TargetFramework)' == 'net472'">
     <OptProf Include="$(OutputPath)$(AssemblyName).dll">
       <Technology>IBC</Technology>
       <InstallationPath>$(InstallationPath)</InstallationPath>
