@@ -26,7 +26,9 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
             Assert.NotNull(result);
 
-            Assert.Equal(
+            // We don't want to assert the exact exception message as an AggregateException may append further text
+            // to the end.
+            Assert.StartsWith(
                 $"Project system data flow 'DataflowBlockSlim (ActionBlockSlimAsync`1 : {block.GetHashCode()})' closed because of an exception: Test.",
                 result.Message);
 

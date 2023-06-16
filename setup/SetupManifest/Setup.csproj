@@ -5,6 +5,10 @@
 
   <Import Project="..\..\eng\imports\VisualStudio.props" />
 
+  <PropertyGroup>
+    <TargetFramework>net472</TargetFramework>
+  </PropertyGroup>
+
   <ItemGroup>
     <!-- If ReferenceOutputAssembly is not set to false, it will attempt to compile the VSMAN file itself (somehow ends up in the list of Compile items). -->
     <!-- CSC error CS0009: Metadata file 'C:\Code\project-system\artifacts\Release\VSSetup\Insertion\SetupManifest.vsman' could not be opened. Image is too small. [C:\Code\project-system\setup\SetupManifest\Setup.csproj] -->

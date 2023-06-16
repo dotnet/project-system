@@ -6,6 +6,7 @@
   <PropertyGroup>
     <RootNamespace>Microsoft.VisualStudio</RootNamespace>
     <IsManagedProjectSystemProject>true</IsManagedProjectSystemProject>
+    <TargetFramework>net472</TargetFramework>
 
     <!-- VSIX -->
     <GeneratePkgDefFile>true</GeneratePkgDefFile>
@@ -25,8 +26,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.VisualStudio.Setup.Configuration.Interop" />
     <PackageReference Include="Microsoft.VisualStudio.HotReload.Components" />
+    <PackageReference Include="Microsoft.VisualStudio.ProjectSystem.Query" />
+    <PackageReference Include="Microsoft.VisualStudio.ProjectSystem.VS" />
+    <PackageReference Include="Microsoft.VisualStudio.Setup.Configuration.Interop" />
   </ItemGroup>
 
   <ItemGroup>

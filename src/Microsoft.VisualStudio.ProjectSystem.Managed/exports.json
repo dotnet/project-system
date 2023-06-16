@@ -1,0 +1,5 @@
+{
+  "CPS.MEF.Assemblies": [
+    "$(ComponentPath)/Microsoft.VisualStudio.ProjectSystem.Managed.dll"
+  ]
+}

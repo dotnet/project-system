@@ -1,0 +1,12 @@
+{
+  "name": "@microsoft/microsoft.visualstudio.projectsystem.managed",
+  "version": "0.0.0-placeholder",
+  "description": ".NET Project System for Visual Studio Code",
+  "homepage": "https://github.com/dotnet/project-system",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/dotnet/project-system"
+  },
+  "author": "Microsoft",
+  "license": "MIT"
+}

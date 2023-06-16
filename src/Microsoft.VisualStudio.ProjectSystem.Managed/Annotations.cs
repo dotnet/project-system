@@ -2,6 +2,9 @@
 
 // Copied from https://github.com/dotnet/runtime/blob/master/src/libraries/System.Private.CoreLib/src/System/Diagnostics/CodeAnalysis/NullableAttributes.cs
 
+// These are copies of the annotation types in the .NET Core BCL; we define them here so we can use them in .NET Framework.
+#if NETFRAMEWORK
+
 namespace System.Diagnostics.CodeAnalysis
 {
     /// <summary>Specifies that null is allowed as an input even if the corresponding type disallows it.</summary>
@@ -143,3 +146,5 @@ namespace System.Diagnostics.CodeAnalysis
         public string[] Members { get; }
     }
 }
+
+#endif

@@ -96,7 +96,7 @@ internal class ManagedTelemetryService : ITelemetryService
         }
 
         byte[] inputBytes = Encoding.UTF8.GetBytes(value);
-        using SHA256CryptoServiceProvider cryptoServiceProvider = new();
+        using var cryptoServiceProvider = SHA256.Create();
         return BitConverter.ToString(cryptoServiceProvider.ComputeHash(inputBytes));
     }
 

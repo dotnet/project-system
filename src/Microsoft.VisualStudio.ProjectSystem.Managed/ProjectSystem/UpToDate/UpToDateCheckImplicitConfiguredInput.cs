@@ -473,7 +473,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 inputSourceItemsByItemType: inputSourceItemsByItemType,
                 upToDateCheckInputItemsByKindBySetName:  UpdateItemsByKindBySetName(UpToDateCheckInputItemsByKindBySetName,  jointRuleUpdate, UpToDateCheckInput.SchemaName,  UpToDateCheckInput.KindProperty,  UpToDateCheckInput.SetProperty),
                 upToDateCheckOutputItemsByKindBySetName: UpdateItemsByKindBySetName(UpToDateCheckOutputItemsByKindBySetName, jointRuleUpdate, UpToDateCheckOutput.SchemaName, UpToDateCheckOutput.KindProperty, UpToDateCheckOutput.SetProperty),
-                upToDateCheckBuiltItemsByKindBySetName:  UpdateItemsByKindBySetName(UpToDateCheckBuiltItemsByKindBySetName,  jointRuleUpdate, UpToDateCheckBuilt.SchemaName,  UpToDateCheckBuilt.KindProperty,  UpToDateCheckBuilt.SetProperty, metadata => !metadata.TryGetValue(UpToDateCheckBuilt.OriginalProperty, out string source) || string.IsNullOrEmpty(source)),
+                upToDateCheckBuiltItemsByKindBySetName:  UpdateItemsByKindBySetName(UpToDateCheckBuiltItemsByKindBySetName,  jointRuleUpdate, UpToDateCheckBuilt.SchemaName,  UpToDateCheckBuilt.KindProperty,  UpToDateCheckBuilt.SetProperty, metadata => !metadata.TryGetValue(UpToDateCheckBuilt.OriginalProperty, out string? source) || string.IsNullOrEmpty(source)),
                 buildFromInputFileItems: UpdateBuildFromInputFileItems(),
                 resolvedAnalyzerReferencePaths: UpdateResolvedAnalyzerReferencePaths(),
                 resolvedCompilationReferencePaths: resolvedCompilationReferencePaths,
@@ -501,7 +501,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 string setPropertyName,
                 Predicate<IImmutableDictionary<string, string>>? metadataPredicate = null)
             {
-                if (!update.ProjectChanges.TryGetValue(itemSchemaName, out IProjectChangeDescription projectChangeDescription) || !projectChangeDescription.Difference.AnyChanges)
+                if (!update.ProjectChanges.TryGetValue(itemSchemaName, out IProjectChangeDescription? projectChangeDescription) || !projectChangeDescription.Difference.AnyChanges)
                 {
                     // No change in state for this collection. Return the prior data unchanged.
                     return prior;
@@ -563,7 +563,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
                     foreach ((string destination, IImmutableDictionary<string, string> metadata) in change.After.Items)
                     {
-                        if (metadata.TryGetValue(UpToDateCheckBuilt.OriginalProperty, out string source) && !string.IsNullOrEmpty(source))
+                        if (metadata.TryGetValue(UpToDateCheckBuilt.OriginalProperty, out string? source) && !string.IsNullOrEmpty(source))
                         {
                             // This file is copied, not built
                             // Remember the `Original` source for later

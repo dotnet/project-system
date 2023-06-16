@@ -1,0 +1,189 @@
+
+abstract Microsoft.VisualStudio.ProjectSystem.Properties.LaunchSettingsValueProviderBase.GetPropertyValue(string propertyName, Microsoft.VisualStudio.ProjectSystem.Debug.ILaunchSettings launchSettings) -> string
+abstract Microsoft.VisualStudio.ProjectSystem.Properties.LaunchSettingsValueProviderBase.SetPropertyValue(string propertyName, string value, Microsoft.VisualStudio.ProjectSystem.Debug.IWritableLaunchSettings launchSettings) -> bool
+const Microsoft.VisualStudio.ProjectSystem.Debug.UIProfilePropertyName.Arguments = "Arguments" -> string
+const Microsoft.VisualStudio.ProjectSystem.Debug.UIProfilePropertyName.EnvironmentVariables = "EnvironmentVariables" -> string
+const Microsoft.VisualStudio.ProjectSystem.Debug.UIProfilePropertyName.Executable = "Executable" -> string
+const Microsoft.VisualStudio.ProjectSystem.Debug.UIProfilePropertyName.JSWebView2Debugging = "JSWebView2Debugging" -> string
+const Microsoft.VisualStudio.ProjectSystem.Debug.UIProfilePropertyName.LaunchUrl = "LaunchUrl" -> string
+const Microsoft.VisualStudio.ProjectSystem.Debug.UIProfilePropertyName.NativeDebugging = "NativeDebugging" -> string
+const Microsoft.VisualStudio.ProjectSystem.Debug.UIProfilePropertyName.RemoteDebug = "RemoteDebug" -> string
+const Microsoft.VisualStudio.ProjectSystem.Debug.UIProfilePropertyName.SqlDebugging = "SQLDebugging" -> string
+const Microsoft.VisualStudio.ProjectSystem.Debug.UIProfilePropertyName.WorkingDirectory = "WorkingDirectory" -> string
+Microsoft.VisualStudio.ProjectSystem.Configuration.IConfigurationDimensionDescriptionMetadataView
+Microsoft.VisualStudio.ProjectSystem.Configuration.IConfigurationDimensionDescriptionMetadataView.DimensionName.get -> string[]
+Microsoft.VisualStudio.ProjectSystem.Configuration.IConfigurationDimensionDescriptionMetadataView.IsVariantDimension.get -> bool[]
+Microsoft.VisualStudio.ProjectSystem.Debug.IActiveDebugFrameworkServices
+Microsoft.VisualStudio.ProjectSystem.Debug.IActiveDebugFrameworkServices.GetActiveDebuggingFrameworkPropertyAsync() -> System.Threading.Tasks.Task<string>
+Microsoft.VisualStudio.ProjectSystem.Debug.IActiveDebugFrameworkServices.GetConfiguredProjectForActiveFrameworkAsync() -> System.Threading.Tasks.Task<Microsoft.VisualStudio.ProjectSystem.ConfiguredProject>
+Microsoft.VisualStudio.ProjectSystem.Debug.IActiveDebugFrameworkServices.GetProjectFrameworksAsync() -> System.Threading.Tasks.Task<System.Collections.Generic.List<string>>
+Microsoft.VisualStudio.ProjectSystem.Debug.IActiveDebugFrameworkServices.SetActiveDebuggingFrameworkPropertyAsync(string activeFramework) -> System.Threading.Tasks.Task
+Microsoft.VisualStudio.ProjectSystem.Debug.IDebugTokenReplacer
+Microsoft.VisualStudio.ProjectSystem.Debug.IDebugTokenReplacer.ReplaceTokensInProfileAsync(Microsoft.VisualStudio.ProjectSystem.Debug.ILaunchProfile profile) -> System.Threading.Tasks.Task<Microsoft.VisualStudio.ProjectSystem.Debug.ILaunchProfile>
+Microsoft.VisualStudio.ProjectSystem.Debug.IDebugTokenReplacer.ReplaceTokensInStringAsync(string rawString, bool expandEnvironmentVars) -> System.Threading.Tasks.Task<string>
+Microsoft.VisualStudio.ProjectSystem.Debug.IDefaultLaunchProfileProvider
+Microsoft.VisualStudio.ProjectSystem.Debug.IDefaultLaunchProfileProvider.CreateDefaultProfile() -> Microsoft.VisualStudio.ProjectSystem.Debug.ILaunchProfile
+Microsoft.VisualStudio.ProjectSystem.Debug.IJsonSection
+Microsoft.VisualStudio.ProjectSystem.Debug.IJsonSection.JsonSection.get -> string
+Microsoft.VisualStudio.ProjectSystem.Debug.IJsonSection.SerializationType.get -> System.Type
+Microsoft.VisualStudio.ProjectSystem.Debug.ILaunchProfile
+Microsoft.VisualStudio.ProjectSystem.Debug.ILaunchProfile.CommandLineArgs.get -> string
+Microsoft.VisualStudio.ProjectSystem.Debug.ILaunchProfile.CommandName.get -> string
+Microsoft.VisualStudio.ProjectSystem.Debug.ILaunchProfile.EnvironmentVariables.get -> System.Collections.Immutable.ImmutableDictionary<string, string>
+Microsoft.VisualStudio.ProjectSystem.Debug.ILaunchProfile.ExecutablePath.get -> string
+Microsoft.VisualStudio.ProjectSystem.Debug.ILaunchProfile.LaunchBrowser.get -> bool
+Microsoft.VisualStudio.ProjectSystem.Debug.ILaunchProfile.LaunchUrl.get -> string
+Microsoft.VisualStudio.ProjectSystem.Debug.ILaunchProfile.Name.get -> string
+Microsoft.VisualStudio.ProjectSystem.Debug.ILaunchProfile.OtherSettings.get -> System.Collections.Immutable.ImmutableDictionary<string, object>
+Microsoft.VisualStudio.ProjectSystem.Debug.ILaunchProfile.WorkingDirectory.get -> string
+Microsoft.VisualStudio.ProjectSystem.Debug.ILaunchProfile2
+Microsoft.VisualStudio.ProjectSystem.Debug.ILaunchProfile2.EnvironmentVariables.get -> System.Collections.Immutable.ImmutableArray<(string Key, string Value)>
+Microsoft.VisualStudio.ProjectSystem.Debug.ILaunchProfile2.OtherSettings.get -> System.Collections.Immutable.ImmutableArray<(string Key, object Value)>
+Microsoft.VisualStudio.ProjectSystem.Debug.ILaunchSettings
+Microsoft.VisualStudio.ProjectSystem.Debug.ILaunchSettings.ActiveProfile.get -> Microsoft.VisualStudio.ProjectSystem.Debug.ILaunchProfile
+Microsoft.VisualStudio.ProjectSystem.Debug.ILaunchSettings.GetGlobalSetting(string settingsName) -> object
+Microsoft.VisualStudio.ProjectSystem.Debug.ILaunchSettings.GlobalSettings.get -> System.Collections.Immutable.ImmutableDictionary<string, object>
+Microsoft.VisualStudio.ProjectSystem.Debug.ILaunchSettings.Profiles.get -> System.Collections.Immutable.ImmutableList<Microsoft.VisualStudio.ProjectSystem.Debug.ILaunchProfile>
+Microsoft.VisualStudio.ProjectSystem.Debug.ILaunchSettingsProvider
+Microsoft.VisualStudio.ProjectSystem.Debug.ILaunchSettingsProvider.ActiveProfile.get -> Microsoft.VisualStudio.ProjectSystem.Debug.ILaunchProfile
+Microsoft.VisualStudio.ProjectSystem.Debug.ILaunchSettingsProvider.AddOrUpdateGlobalSettingAsync(string settingName, object settingContent) -> System.Threading.Tasks.Task
+Microsoft.VisualStudio.ProjectSystem.Debug.ILaunchSettingsProvider.AddOrUpdateProfileAsync(Microsoft.VisualStudio.ProjectSystem.Debug.ILaunchProfile profile, bool addToFront) -> System.Threading.Tasks.Task
+Microsoft.VisualStudio.ProjectSystem.Debug.ILaunchSettingsProvider.CurrentSnapshot.get -> Microsoft.VisualStudio.ProjectSystem.Debug.ILaunchSettings
+Microsoft.VisualStudio.ProjectSystem.Debug.ILaunchSettingsProvider.LaunchSettingsFile.get -> string
+Microsoft.VisualStudio.ProjectSystem.Debug.ILaunchSettingsProvider.RemoveGlobalSettingAsync(string settingName) -> System.Threading.Tasks.Task
+Microsoft.VisualStudio.ProjectSystem.Debug.ILaunchSettingsProvider.RemoveProfileAsync(string profileName) -> System.Threading.Tasks.Task
+Microsoft.VisualStudio.ProjectSystem.Debug.ILaunchSettingsProvider.SetActiveProfileAsync(string profileName) -> System.Threading.Tasks.Task
+Microsoft.VisualStudio.ProjectSystem.Debug.ILaunchSettingsProvider.SourceBlock.get -> System.Threading.Tasks.Dataflow.IReceivableSourceBlock<Microsoft.VisualStudio.ProjectSystem.Debug.ILaunchSettings>
+Microsoft.VisualStudio.ProjectSystem.Debug.ILaunchSettingsProvider.UpdateAndSaveSettingsAsync(Microsoft.VisualStudio.ProjectSystem.Debug.ILaunchSettings profiles) -> System.Threading.Tasks.Task
+Microsoft.VisualStudio.ProjectSystem.Debug.ILaunchSettingsProvider.WaitForFirstSnapshot(int timeout) -> System.Threading.Tasks.Task<Microsoft.VisualStudio.ProjectSystem.Debug.ILaunchSettings>
+Microsoft.VisualStudio.ProjectSystem.Debug.ILaunchSettingsProvider2
+Microsoft.VisualStudio.ProjectSystem.Debug.ILaunchSettingsProvider2.GetLaunchSettingsFilePathAsync() -> System.Threading.Tasks.Task<string>
+Microsoft.VisualStudio.ProjectSystem.Debug.ILaunchSettingsProvider3
+Microsoft.VisualStudio.ProjectSystem.Debug.ILaunchSettingsProvider3.TryUpdateProfileAsync(string profileName, System.Action<Microsoft.VisualStudio.ProjectSystem.Debug.IWritableLaunchProfile> updateAction) -> System.Threading.Tasks.Task<bool>
+Microsoft.VisualStudio.ProjectSystem.Debug.ILaunchSettingsProvider3.UpdateGlobalSettingsAsync(System.Func<System.Collections.Immutable.ImmutableDictionary<string, object>, System.Collections.Immutable.ImmutableDictionary<string, object>> updateFunction) -> System.Threading.Tasks.Task
+Microsoft.VisualStudio.ProjectSystem.Debug.ILaunchSettingsSerializationProvider
+Microsoft.VisualStudio.ProjectSystem.Debug.IPersistOption
+Microsoft.VisualStudio.ProjectSystem.Debug.IPersistOption.DoNotPersist.get -> bool
+Microsoft.VisualStudio.ProjectSystem.Debug.IWritableLaunchProfile
+Microsoft.VisualStudio.ProjectSystem.Debug.IWritableLaunchProfile.CommandLineArgs.get -> string
+Microsoft.VisualStudio.ProjectSystem.Debug.IWritableLaunchProfile.CommandLineArgs.set -> void
+Microsoft.VisualStudio.ProjectSystem.Debug.IWritableLaunchProfile.CommandName.get -> string
+Microsoft.VisualStudio.ProjectSystem.Debug.IWritableLaunchProfile.CommandName.set -> void
+Microsoft.VisualStudio.ProjectSystem.Debug.IWritableLaunchProfile.EnvironmentVariables.get -> System.Collections.Generic.Dictionary<string, string>
+Microsoft.VisualStudio.ProjectSystem.Debug.IWritableLaunchProfile.ExecutablePath.get -> string
+Microsoft.VisualStudio.ProjectSystem.Debug.IWritableLaunchProfile.ExecutablePath.set -> void
+Microsoft.VisualStudio.ProjectSystem.Debug.IWritableLaunchProfile.LaunchBrowser.get -> bool
+Microsoft.VisualStudio.ProjectSystem.Debug.IWritableLaunchProfile.LaunchBrowser.set -> void
+Microsoft.VisualStudio.ProjectSystem.Debug.IWritableLaunchProfile.LaunchUrl.get -> string
+Microsoft.VisualStudio.ProjectSystem.Debug.IWritableLaunchProfile.LaunchUrl.set -> void
+Microsoft.VisualStudio.ProjectSystem.Debug.IWritableLaunchProfile.Name.get -> string
+Microsoft.VisualStudio.ProjectSystem.Debug.IWritableLaunchProfile.Name.set -> void
+Microsoft.VisualStudio.ProjectSystem.Debug.IWritableLaunchProfile.OtherSettings.get -> System.Collections.Generic.Dictionary<string, object>
+Microsoft.VisualStudio.ProjectSystem.Debug.IWritableLaunchProfile.ToLaunchProfile() -> Microsoft.VisualStudio.ProjectSystem.Debug.ILaunchProfile
+Microsoft.VisualStudio.ProjectSystem.Debug.IWritableLaunchProfile.WorkingDirectory.get -> string
+Microsoft.VisualStudio.ProjectSystem.Debug.IWritableLaunchProfile.WorkingDirectory.set -> void
+Microsoft.VisualStudio.ProjectSystem.Debug.IWritableLaunchSettings
+Microsoft.VisualStudio.ProjectSystem.Debug.IWritableLaunchSettings.ActiveProfile.get -> Microsoft.VisualStudio.ProjectSystem.Debug.IWritableLaunchProfile
+Microsoft.VisualStudio.ProjectSystem.Debug.IWritableLaunchSettings.ActiveProfile.set -> void
+Microsoft.VisualStudio.ProjectSystem.Debug.IWritableLaunchSettings.GlobalSettings.get -> System.Collections.Generic.Dictionary<string, object>
+Microsoft.VisualStudio.ProjectSystem.Debug.IWritableLaunchSettings.Profiles.get -> System.Collections.Generic.List<Microsoft.VisualStudio.ProjectSystem.Debug.IWritableLaunchProfile>
+Microsoft.VisualStudio.ProjectSystem.Debug.IWritableLaunchSettings.ToLaunchSettings() -> Microsoft.VisualStudio.ProjectSystem.Debug.ILaunchSettings
+Microsoft.VisualStudio.ProjectSystem.Debug.IWritablePersistOption
+Microsoft.VisualStudio.ProjectSystem.Debug.IWritablePersistOption.DoNotPersist.get -> bool
+Microsoft.VisualStudio.ProjectSystem.Debug.IWritablePersistOption.DoNotPersist.set -> void
+Microsoft.VisualStudio.ProjectSystem.Debug.UIProfilePropertyName
+Microsoft.VisualStudio.ProjectSystem.Properties.ExportInterceptingPropertyValueProviderAttribute
+Microsoft.VisualStudio.ProjectSystem.Properties.ExportInterceptingPropertyValueProviderAttribute.ExportInterceptingPropertyValueProviderAttribute(string propertyName, Microsoft.VisualStudio.ProjectSystem.Properties.ExportInterceptingPropertyValueProviderFile file) -> void
+Microsoft.VisualStudio.ProjectSystem.Properties.ExportInterceptingPropertyValueProviderAttribute.ExportInterceptingPropertyValueProviderAttribute(string[] propertyNames, Microsoft.VisualStudio.ProjectSystem.Properties.ExportInterceptingPropertyValueProviderFile file) -> void
+Microsoft.VisualStudio.ProjectSystem.Properties.ExportInterceptingPropertyValueProviderAttribute.PropertyNames.get -> string[]
+Microsoft.VisualStudio.ProjectSystem.Properties.ExportInterceptingPropertyValueProviderFile
+Microsoft.VisualStudio.ProjectSystem.Properties.ExportInterceptingPropertyValueProviderFile.ProjectFile = 0 -> Microsoft.VisualStudio.ProjectSystem.Properties.ExportInterceptingPropertyValueProviderFile
+Microsoft.VisualStudio.ProjectSystem.Properties.ExportInterceptingPropertyValueProviderFile.UserFile = 1 -> Microsoft.VisualStudio.ProjectSystem.Properties.ExportInterceptingPropertyValueProviderFile
+Microsoft.VisualStudio.ProjectSystem.Properties.ExportInterceptingPropertyValueProviderFile.UserFileWithXamlDefaults = 2 -> Microsoft.VisualStudio.ProjectSystem.Properties.ExportInterceptingPropertyValueProviderFile
+Microsoft.VisualStudio.ProjectSystem.Properties.ExportLaunchProfileExtensionValueProviderAttribute
+Microsoft.VisualStudio.ProjectSystem.Properties.ExportLaunchProfileExtensionValueProviderAttribute.ExportLaunchProfileExtensionValueProviderAttribute(string propertyName, Microsoft.VisualStudio.ProjectSystem.Properties.ExportLaunchProfileExtensionValueProviderScope scope) -> void
+Microsoft.VisualStudio.ProjectSystem.Properties.ExportLaunchProfileExtensionValueProviderAttribute.ExportLaunchProfileExtensionValueProviderAttribute(string[] propertyNames, Microsoft.VisualStudio.ProjectSystem.Properties.ExportLaunchProfileExtensionValueProviderScope scope) -> void
+Microsoft.VisualStudio.ProjectSystem.Properties.ExportLaunchProfileExtensionValueProviderAttribute.PropertyNames.get -> string[]
+Microsoft.VisualStudio.ProjectSystem.Properties.ExportLaunchProfileExtensionValueProviderScope
+Microsoft.VisualStudio.ProjectSystem.Properties.ExportLaunchProfileExtensionValueProviderScope.GlobalSettings = 1 -> Microsoft.VisualStudio.ProjectSystem.Properties.ExportLaunchProfileExtensionValueProviderScope
+Microsoft.VisualStudio.ProjectSystem.Properties.ExportLaunchProfileExtensionValueProviderScope.LaunchProfile = 0 -> Microsoft.VisualStudio.ProjectSystem.Properties.ExportLaunchProfileExtensionValueProviderScope
+Microsoft.VisualStudio.ProjectSystem.Properties.IGlobalSettingExtensionValueProvider
+Microsoft.VisualStudio.ProjectSystem.Properties.IGlobalSettingExtensionValueProvider.OnGetPropertyValue(string propertyName, System.Collections.Immutable.ImmutableDictionary<string, object> globalSettings, Microsoft.Build.Framework.XamlTypes.Rule rule) -> string
+Microsoft.VisualStudio.ProjectSystem.Properties.IGlobalSettingExtensionValueProvider.OnSetPropertyValue(string propertyName, string propertyValue, System.Collections.Immutable.ImmutableDictionary<string, object> globalSettings, Microsoft.Build.Framework.XamlTypes.Rule rule) -> System.Collections.Immutable.ImmutableDictionary<string, object>
+Microsoft.VisualStudio.ProjectSystem.Properties.IInterceptingPropertyValueProvider
+Microsoft.VisualStudio.ProjectSystem.Properties.IInterceptingPropertyValueProvider.OnGetEvaluatedPropertyValueAsync(string propertyName, string evaluatedPropertyValue, Microsoft.VisualStudio.ProjectSystem.Properties.IProjectProperties defaultProperties) -> System.Threading.Tasks.Task<string>
+Microsoft.VisualStudio.ProjectSystem.Properties.IInterceptingPropertyValueProvider.OnGetUnevaluatedPropertyValueAsync(string propertyName, string unevaluatedPropertyValue, Microsoft.VisualStudio.ProjectSystem.Properties.IProjectProperties defaultProperties) -> System.Threading.Tasks.Task<string>
+Microsoft.VisualStudio.ProjectSystem.Properties.IInterceptingPropertyValueProvider.OnSetPropertyValueAsync(string propertyName, string unevaluatedPropertyValue, Microsoft.VisualStudio.ProjectSystem.Properties.IProjectProperties defaultProperties, System.Collections.Generic.IReadOnlyDictionary<string, string> dimensionalConditions = null) -> System.Threading.Tasks.Task<string>
+Microsoft.VisualStudio.ProjectSystem.Properties.IInterceptingPropertyValueProvider2
+Microsoft.VisualStudio.ProjectSystem.Properties.IInterceptingPropertyValueProvider2.IsValueDefinedInContextAsync(string propertyName, Microsoft.VisualStudio.ProjectSystem.Properties.IProjectProperties defaultProperties) -> System.Threading.Tasks.Task<bool>
+Microsoft.VisualStudio.ProjectSystem.Properties.IInterceptingPropertyValueProviderMetadata
+Microsoft.VisualStudio.ProjectSystem.Properties.IInterceptingPropertyValueProviderMetadata.PropertyNames.get -> string[]
+Microsoft.VisualStudio.ProjectSystem.Properties.ILaunchProfileExtensionValueProvider
+Microsoft.VisualStudio.ProjectSystem.Properties.ILaunchProfileExtensionValueProvider.OnGetPropertyValue(string propertyName, Microsoft.VisualStudio.ProjectSystem.Debug.ILaunchProfile launchProfile, System.Collections.Immutable.ImmutableDictionary<string, object> globalSettings, Microsoft.Build.Framework.XamlTypes.Rule rule) -> string
+Microsoft.VisualStudio.ProjectSystem.Properties.ILaunchProfileExtensionValueProvider.OnSetPropertyValue(string propertyName, string propertyValue, Microsoft.VisualStudio.ProjectSystem.Debug.IWritableLaunchProfile launchProfile, System.Collections.Immutable.ImmutableDictionary<string, object> globalSettings, Microsoft.Build.Framework.XamlTypes.Rule rule) -> void
+Microsoft.VisualStudio.ProjectSystem.Properties.ILaunchProfileExtensionValueProviderMetadata
+Microsoft.VisualStudio.ProjectSystem.Properties.ILaunchProfileExtensionValueProviderMetadata.PropertyNames.get -> string[]
+Microsoft.VisualStudio.ProjectSystem.Properties.InterceptingPropertyValueProviderBase
+Microsoft.VisualStudio.ProjectSystem.Properties.InterceptingPropertyValueProviderBase.InterceptingPropertyValueProviderBase() -> void
+Microsoft.VisualStudio.ProjectSystem.Properties.LaunchSettingsValueProviderBase
+Microsoft.VisualStudio.ProjectSystem.Properties.LaunchSettingsValueProviderBase.LaunchSettingsValueProviderBase(Microsoft.VisualStudio.ProjectSystem.Debug.ILaunchSettingsProvider launchSettingsProvider) -> void
+Microsoft.VisualStudio.ProjectSystem.VS.Extensibility.IProjectExportProvider
+Microsoft.VisualStudio.ProjectSystem.VS.Extensibility.IProjectExportProvider.GetExport<T>(string projectFilePath) -> T
+override Microsoft.VisualStudio.ProjectSystem.Properties.LaunchSettingsValueProviderBase.OnGetEvaluatedPropertyValueAsync(string propertyName, string evaluatedPropertyValue, Microsoft.VisualStudio.ProjectSystem.Properties.IProjectProperties defaultProperties) -> System.Threading.Tasks.Task<string>
+override Microsoft.VisualStudio.ProjectSystem.Properties.LaunchSettingsValueProviderBase.OnGetUnevaluatedPropertyValueAsync(string propertyName, string unevaluatedPropertyValue, Microsoft.VisualStudio.ProjectSystem.Properties.IProjectProperties defaultProperties) -> System.Threading.Tasks.Task<string>
+override Microsoft.VisualStudio.ProjectSystem.Properties.LaunchSettingsValueProviderBase.OnSetPropertyValueAsync(string propertyName, string unevaluatedPropertyValue, Microsoft.VisualStudio.ProjectSystem.Properties.IProjectProperties defaultProperties, System.Collections.Generic.IReadOnlyDictionary<string, string> dimensionalConditions = null) -> System.Threading.Tasks.Task<string>
+virtual Microsoft.VisualStudio.ProjectSystem.Properties.InterceptingPropertyValueProviderBase.IsValueDefinedInContextAsync(string propertyName, Microsoft.VisualStudio.ProjectSystem.Properties.IProjectProperties defaultProperties) -> System.Threading.Tasks.Task<bool>
+virtual Microsoft.VisualStudio.ProjectSystem.Properties.InterceptingPropertyValueProviderBase.OnGetEvaluatedPropertyValueAsync(string propertyName, string evaluatedPropertyValue, Microsoft.VisualStudio.ProjectSystem.Properties.IProjectProperties defaultProperties) -> System.Threading.Tasks.Task<string>
+virtual Microsoft.VisualStudio.ProjectSystem.Properties.InterceptingPropertyValueProviderBase.OnGetUnevaluatedPropertyValueAsync(string propertyName, string unevaluatedPropertyValue, Microsoft.VisualStudio.ProjectSystem.Properties.IProjectProperties defaultProperties) -> System.Threading.Tasks.Task<string>
+virtual Microsoft.VisualStudio.ProjectSystem.Properties.InterceptingPropertyValueProviderBase.OnSetPropertyValueAsync(string propertyName, string unevaluatedPropertyValue, Microsoft.VisualStudio.ProjectSystem.Properties.IProjectProperties defaultProperties, System.Collections.Generic.IReadOnlyDictionary<string, string> dimensionalConditions = null) -> System.Threading.Tasks.Task<string>
+Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.DependenciesChangedEventArgs
+Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.DependenciesChangedEventArgs.Changes.get -> Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.IDependenciesChanges
+Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.DependenciesChangedEventArgs.DependenciesChangedEventArgs(Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.IProjectDependenciesSubTreeProvider provider, string targetShortOrFullName, Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.IDependenciesChanges changes, Microsoft.VisualStudio.ProjectSystem.Properties.IProjectCatalogSnapshot catalogs, System.Collections.Immutable.IImmutableDictionary<Microsoft.VisualStudio.ProjectSystem.NamedIdentity, System.IComparable> dataSourceVersions) -> void
+Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.DependenciesChangedEventArgs.DependenciesChangedEventArgs(Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.IProjectDependenciesSubTreeProvider provider, string targetShortOrFullName, Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.IDependenciesChanges changes, System.Threading.CancellationToken token) -> void
+Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.DependenciesChangedEventArgs.Provider.get -> Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.IProjectDependenciesSubTreeProvider
+Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.DependenciesChangedEventArgs.TargetShortOrFullName.get -> string
+Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.DependenciesChangedEventArgs.Token.get -> System.Threading.CancellationToken
+Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.DependencyTreeFlags
+Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.IDependenciesChanges
+Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.IDependenciesChanges.AddedNodes.get -> System.Collections.Immutable.IImmutableList<Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.IDependencyModel>
+Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.IDependenciesChanges.RemovedNodes.get -> System.Collections.Immutable.IImmutableList<Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.IDependencyModel>
+Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.IDependencyModel
+Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.IDependencyModel.Caption.get -> string
+Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.IDependencyModel.DependencyIDs.get -> System.Collections.Immutable.IImmutableList<string>
+Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.IDependencyModel.ExpandedIcon.get -> Microsoft.VisualStudio.Imaging.Interop.ImageMoniker
+Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.IDependencyModel.Flags.get -> Microsoft.VisualStudio.ProjectSystem.ProjectTreeFlags
+Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.IDependencyModel.Icon.get -> Microsoft.VisualStudio.Imaging.Interop.ImageMoniker
+Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.IDependencyModel.Id.get -> string
+Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.IDependencyModel.Implicit.get -> bool
+Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.IDependencyModel.Name.get -> string
+Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.IDependencyModel.OriginalItemSpec.get -> string
+Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.IDependencyModel.Path.get -> string
+Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.IDependencyModel.Priority.get -> int
+Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.IDependencyModel.Properties.get -> System.Collections.Immutable.IImmutableDictionary<string, string>
+Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.IDependencyModel.ProviderType.get -> string
+Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.IDependencyModel.Resolved.get -> bool
+Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.IDependencyModel.SchemaItemType.get -> string
+Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.IDependencyModel.SchemaName.get -> string
+Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.IDependencyModel.TopLevel.get -> bool
+Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.IDependencyModel.UnresolvedExpandedIcon.get -> Microsoft.VisualStudio.Imaging.Interop.ImageMoniker
+Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.IDependencyModel.UnresolvedIcon.get -> Microsoft.VisualStudio.Imaging.Interop.ImageMoniker
+Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.IDependencyModel.Version.get -> string
+Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.IDependencyModel.Visible.get -> bool
+Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.IProjectDependenciesSubTreeProvider
+Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.IProjectDependenciesSubTreeProvider.CreateRootDependencyNode() -> Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.IDependencyModel
+Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.IProjectDependenciesSubTreeProvider.DependenciesChanged -> System.EventHandler<Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.DependenciesChangedEventArgs>
+Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.IProjectDependenciesSubTreeProvider.ProviderType.get -> string
+Microsoft.VisualStudio.ProjectSystem.VS.Tree.IFileIconProvider
+Microsoft.VisualStudio.ProjectSystem.VS.Tree.IFileIconProvider.GetFileExtensionImageMoniker(string path) -> Microsoft.VisualStudio.Imaging.Interop.ImageMoniker
+static readonly Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.DependencyTreeFlags.DependencyFlags -> Microsoft.VisualStudio.ProjectSystem.ProjectTreeFlags
+static readonly Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.DependencyTreeFlags.ResolvedDependencyFlags -> Microsoft.VisualStudio.ProjectSystem.ProjectTreeFlags
+static readonly Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.DependencyTreeFlags.ShowEmptyProviderRootNode -> Microsoft.VisualStudio.ProjectSystem.ProjectTreeFlags
+static readonly Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.DependencyTreeFlags.SupportsRemove -> Microsoft.VisualStudio.ProjectSystem.ProjectTreeFlags
+static readonly Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.DependencyTreeFlags.UnresolvedDependencyFlags -> Microsoft.VisualStudio.ProjectSystem.ProjectTreeFlags
+Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.DependencyTreeFlags
+static readonly Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.DependencyTreeFlags.ResolvedDependencyFlags -> Microsoft.VisualStudio.ProjectSystem.ProjectTreeFlags
+static readonly Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.DependencyTreeFlags.SupportsBrowse -> Microsoft.VisualStudio.ProjectSystem.ProjectTreeFlags
+static readonly Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.DependencyTreeFlags.SupportsFolderBrowse -> Microsoft.VisualStudio.ProjectSystem.ProjectTreeFlags
+static readonly Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.DependencyTreeFlags.SupportsRemove -> Microsoft.VisualStudio.ProjectSystem.ProjectTreeFlags
+static readonly Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.DependencyTreeFlags.UnresolvedDependencyFlags -> Microsoft.VisualStudio.ProjectSystem.ProjectTreeFlags
+Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.DependenciesChangedEventArgs.DependenciesChangedEventArgs(Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.IProjectDependenciesSubTreeProvider provider, Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.IDependenciesChanges changes, System.Threading.CancellationToken token) -> void

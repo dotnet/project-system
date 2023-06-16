@@ -22,7 +22,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
           IActiveConfigurationComponent,
           IDisposable
     {
-        internal const string AppliesToExpression = $"{ProjectCapability.DotNet} + !{ProjectCapabilities.SharedAssetsProject}";
+        // TODO: Remove the dependency on RunningInVisualStudio when IBuildUpToDateCheckProvider2 is supported in the project system server.
+        internal const string AppliesToExpression = $"{ProjectCapability.DotNet} + !{ProjectCapabilities.SharedAssetsProject} + {ProjectCapabilities.RunningInVisualStudio}";
 
         internal const string FastUpToDateCheckIgnoresKindsGlobalPropertyName = "FastUpToDateCheckIgnoresKinds";
         internal const string TargetFrameworkGlobalPropertyName = "TargetFramework";

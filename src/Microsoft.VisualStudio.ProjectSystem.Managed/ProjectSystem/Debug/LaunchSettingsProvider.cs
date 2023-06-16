@@ -6,6 +6,10 @@ using Microsoft.VisualStudio.ProjectSystem.Properties;
 using Microsoft.VisualStudio.Threading;
 using Microsoft.VisualStudio.Threading.Tasks;
 
+// .NET Core defines a non-generic TaskCompletionSource but .NETFramework does not.
+// For consistency, always use the one we define.
+using TaskCompletionSource = Microsoft.VisualStudio.Threading.Tasks.TaskCompletionSource;
+
 namespace Microsoft.VisualStudio.ProjectSystem.Debug
 {
     /// <summary>
@@ -216,7 +220,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             {
                 if (projectSnapshot.Value.Item1.CurrentState.TryGetValue(ProjectDebugger.SchemaName, out IProjectRuleSnapshot? ruleSnapshot))
                 {
-                    ruleSnapshot.Properties.TryGetValue(ProjectDebugger.ActiveDebugProfileProperty, out string activeProfile);
+                    ruleSnapshot.Properties.TryGetValue(ProjectDebugger.ActiveDebugProfileProperty, out string? activeProfile);
                     ILaunchSettings snapshot = CurrentSnapshot;
                     if (snapshot is null || !LaunchProfile.IsSameProfileName(activeProfile, snapshot.ActiveProfile?.Name))
                     {
@@ -237,7 +241,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         /// Called when the active profile has changed. If there is a current snapshot it just updates that. Otherwise, it creates
         /// a new snapshot
         /// </summary>
-        protected async Task UpdateActiveProfileInSnapshotAsync(string updatedActiveProfileName)
+        protected async Task UpdateActiveProfileInSnapshotAsync(string? updatedActiveProfileName)
         {
             ILaunchSettings snapshot = CurrentSnapshot;
             if (snapshot is null || await SettingsFileHasChangedAsync())
@@ -737,7 +741,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             return _sequentialTaskQueue.ExecuteTask(async () =>
             {
                 ILaunchSettings currentSettings = await GetSnapshotThrowIfErrorsAsync();
-                ILaunchProfile existingProfile = currentSettings.Profiles.FirstOrDefault(p => LaunchProfile.IsSameProfileName(p.Name, profileName));
+                ILaunchProfile? existingProfile = currentSettings.Profiles.FirstOrDefault(p => LaunchProfile.IsSameProfileName(p.Name, profileName));
                 if (existingProfile is not null)
                 {
                     ImmutableList<ILaunchProfile> profiles = currentSettings.Profiles.Remove(existingProfile);

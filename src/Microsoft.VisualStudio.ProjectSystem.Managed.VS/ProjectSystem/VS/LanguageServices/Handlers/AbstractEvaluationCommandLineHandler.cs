@@ -148,7 +148,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
 
         private static bool IsItemInCurrentConfiguration(string includePath, IImmutableDictionary<string, IImmutableDictionary<string, string>> metadata)
         {
-            if (metadata.TryGetValue(includePath, out IImmutableDictionary<string, string> itemMetadata)
+            if (metadata.TryGetValue(includePath, out IImmutableDictionary<string, string>? itemMetadata)
                 && itemMetadata.GetBoolProperty(Compile.ExcludeFromCurrentConfigurationProperty) is true)
             {
                 return false;

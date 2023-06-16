@@ -109,7 +109,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
 
         private static bool TrySetOtherProperty<T>(IWritableLaunchProfile launchProfile, string propertyName, T value, T defaultValue) where T : notnull
         {
-            if (!launchProfile.OtherSettings.TryGetValue(propertyName, out object current))
+            if (!launchProfile.OtherSettings.TryGetValue(propertyName, out object? current))
             {
                 current = defaultValue;
             }

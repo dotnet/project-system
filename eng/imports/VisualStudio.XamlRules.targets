@@ -26,7 +26,10 @@
   </ItemDefinitionGroup>
 
   <!-- Copy XAML rule files and design targets files for testing and setup authoring purposes -->
-  <Target Name="CopyXamlRulesToOutputDirectory" AfterTargets="CopyFilesToOutputDirectory">
+  <!-- Only copy during the net472 build as that prevents multiple (possibly simultaneous) copies,
+       and only VS uses these files. -->
+  <Target Name="CopyXamlRulesToOutputDirectory" AfterTargets="CopyFilesToOutputDirectory"
+          Condition="'$(TargetFramework)' == 'net472'">
     <ItemGroup>
       <_ItemsToCopy Include="@(XamlPropertyRule);@(XamlPropertyRuleNoCodeBehind);@(XamlPropertyProjectItemsSchema);@(DesignTimeTargetsFile)" Condition="'%(CopyToOutputDirectory)' != 'Never'" />
     </ItemGroup>
@@ -43,7 +46,10 @@
   </Target>
 
   <!-- Copy translated XAML rule files for testing and setup authoring purposes -->
-  <Target Name="CopyTranslatedXamlRulesToOutputDirectory" AfterTargets="CopyFilesToOutputDirectory" DependsOnTargets="TranslateSourceFromXlf">
+  <!-- Only copy during the net472 build as that prevents multiple (possibly simultaneous) copies,
+       and only VS uses these files. -->
+  <Target Name="CopyTranslatedXamlRulesToOutputDirectory" AfterTargets="CopyFilesToOutputDirectory" DependsOnTargets="TranslateSourceFromXlf"
+          Condition="'$(TargetFramework)' == 'net472'">
     <ItemGroup>
         <_TranslatedItemsToCopy Include="@(EmbeddedResource)" Condition="'%(EmbeddedResource.XlfSourceFormat)' == 'XamlRule'" />
     </ItemGroup>

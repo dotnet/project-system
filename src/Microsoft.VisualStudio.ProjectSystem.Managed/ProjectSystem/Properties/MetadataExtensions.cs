@@ -17,7 +17,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
             Requires.NotNull(projectRuleSnapshot);
             Requires.NotNullOrEmpty(itemSpec);
 
-            return projectRuleSnapshot.Items.TryGetValue(itemSpec, out IImmutableDictionary<string, string> properties)
+            return projectRuleSnapshot.Items.TryGetValue(itemSpec, out IImmutableDictionary<string, string>? properties)
                 ? properties
                 : null;
         }

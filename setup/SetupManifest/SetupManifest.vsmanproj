@@ -3,6 +3,10 @@
 
   <Import Project="..\..\eng\imports\HostAgnostic.props" />
 
+  <PropertyGroup>
+    <TargetFramework>net472</TargetFramework>
+  </PropertyGroup>
+
   <ItemGroup>
     <ProjectReference Include="..\ProjectSystemSetup\ProjectSystemSetup.csproj" />
     <ProjectReference Include="..\VisualStudioEditorsSetup\VisualStudioEditorsSetup.csproj" />

@@ -7,17 +7,17 @@
 
   <!--
     Copies the contents of PublicAPI.Unshipped.txt into PublicAPI.Shipped.txt on build.
-    It assumes that the project directory contains these files (PublicApiAnalyzers also makes this assumption).
-    Uses AppendAllText instead of Add-Content since that cmdlet adds an empty line at the end of the file.
+    It assumes that the project contains these files (PublicApiAnalyzers also makes this assumption).
+    The script updates all the public API files in a project, so we only want it to run in the outer build.
   -->
-  <Target Name="FlushUnshippedAPI" AfterTargets="Build" Condition="'$(CIBuild)' != 'true'">
+  <Target Name="FlushUnshippedAPI" AfterTargets="Build" Condition="'$(CIBuild)' != 'true' and '$(IsInnerBuild)' != 'true'">
     <Exec ContinueOnError="false" Command="$(PowerShellFile) &quot;$(RepoRoot)eng\scripts\FlushUnshippedAPIFiles.ps1&quot; -projectDirectory &quot;$(MSBuildProjectDirectory)&quot;" />
   </Target>
 
   <!-- Adds the appropriate assemblies for signing. -->
   <Target Name="AddAssembliesForSigning" BeforeTargets="SignFiles" Condition="'$(CIBuild)' == 'true'">
     <ItemGroup>
-      <FilesToSign Include="$(ArtifactsBinDir)$(OutDirName)\$(AssemblyName).dll;$(ArtifactsBinDir)$(OutDirName)\**\$(AssemblyName).resources.dll">
+      <FilesToSign Include="$(ArtifactsBinDir)$(OutDirName)\$(TargetFramework)\$(AssemblyName).dll;$(ArtifactsBinDir)$(OutDirName)\$(TargetFramework)\**\$(AssemblyName).resources.dll">
         <Authenticode>MicrosoftSHA2</Authenticode>
         <StrongName Condition="'$(IsManagedProjectSystemProject)' != 'false'">MsSharedLib72</StrongName>
         <StrongName Condition="'$(IsManagedProjectSystemProject)' == 'false'">67</StrongName>
@@ -39,8 +39,8 @@
       </ResourceDllsToCopy2>
     </ItemGroup>
 
-    <Copy SourceFiles="$(OutputPath)$(AssemblyName).dll" DestinationFolder="$(ArtifactsObjDir)\$(AssemblyName)" />
-    <Copy SourceFiles="@(ResourceDllsToCopy2)" DestinationFolder="$(ArtifactsObjDir)\$(AssemblyName)\%(LanguageDir)" />
+    <Copy SourceFiles="$(OutputPath)$(AssemblyName).dll" DestinationFolder="$(ArtifactsObjDir)\$(AssemblyName)\$(TargetFramework)" />
+    <Copy SourceFiles="@(ResourceDllsToCopy2)" DestinationFolder="$(ArtifactsObjDir)\$(AssemblyName)\$(TargetFramework)\%(LanguageDir)" />
   </Target>
 
 </Project>

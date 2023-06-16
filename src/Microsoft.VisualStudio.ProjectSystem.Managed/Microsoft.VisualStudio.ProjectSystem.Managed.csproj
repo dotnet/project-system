@@ -8,6 +8,7 @@
     <!-- The value of RuleInjectionClassName of XamlPropertyRule items defined by this project -->
     <XamlPropertyRuleInjectionClassName>ProjectProperties</XamlPropertyRuleInjectionClassName>
     <IsManagedProjectSystemProject>true</IsManagedProjectSystemProject>
+    <TargetFrameworks>net472;net7.0</TargetFrameworks>
 
     <!-- Nuget -->
     <IsPackable>true</IsPackable>
@@ -15,18 +16,52 @@
     <Summary>Microsoft VisualStudio Managed Project System</Summary>
     <PackageTags>Roslyn Managed Project System VisualStudio</PackageTags>
     <NoWarn>$(NoWarn);NU5125</NoWarn>
+
+    <!-- TODO: Remove this when the port to net7.0 is complete -->
+    <NoWarn>$(NoWarn);NU1701</NoWarn>
   </PropertyGroup>
+
+  <PropertyGroup Condition="'$(TargetFramework)' == 'net7.0'">
+    <!-- Sets the DependsOn for NPM packaging. We use the designated target to select the files to pack. -->
+    <!-- See: https://dev.azure.com/devdiv/DevDiv/_git/vs-green?path=/components&anchor=packaging-components -->
+    <StageForNpmPackDependsOn>$(StageForNpmPackDependsOn);AddFilesForNpmPackage</StageForNpmPackDependsOn>
+    <NpmPackageOutputPath>$(PackageOutputPath)</NpmPackageOutputPath>
+  </PropertyGroup>
+
+  <!-- TODO: Re-enable nullability and clean up warnings. -->
+  <PropertyGroup Condition="'$(TargetFramework)' == 'net7.0'">
+    <Nullable>annotations</Nullable>
+    <NoWarn>$(NoWarn);RS0037</NoWarn>
+  </PropertyGroup>
+
+  <!-- TODO: Remove this once ILaunchSettingsUIProvider has been removed. -->
+  <ItemGroup Condition="'$(TargetFramework)' == 'net472'">
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
+    <Reference Include="WindowsBase" />
+  </ItemGroup>
 
   <ItemGroup>
     <InternalsVisibleTo Include="Microsoft.VisualStudio.ProjectSystem.Managed.VS" />
+    <InternalsVisibleTo Include="Microsoft.VisualStudio.ProjectSystem.Managed.VSCode" />
     <InternalsVisibleTo Include="Microsoft.VisualStudio.ProjectSystem.Managed.UnitTests" />
     <InternalsVisibleTo Include="Microsoft.VisualStudio.ProjectSystem.Managed.VS.UnitTests" />
+    <InternalsVisibleTo Include="Microsoft.VisualStudio.ProjectSystem.Managed.VSCode.UnitTests" />
     <InternalsVisibleTo Include="DynamicProxyGenAssembly2" Key="$(MoqPublicKey)" />
   </ItemGroup>
 
   <ItemGroup>
     <!-- Needed to break assembly conflict on StreamJsonRpc between microsoft.visualstudio.projectsystem.query and microsoft.visualstudio.languageservices -->
     <PackageReference Include="Microsoft.VisualStudio.RpcContracts" />
+    <!-- Path property: PkgMicrosoft_CodeAnalysis_Common -->
+    <!-- The path is needed so we can copy the runtime assembly into the NPM package. -->
+    <PackageReference Include="Microsoft.CodeAnalysis.Common" GeneratePathProperty="true" />
+  </ItemGroup>
+
+  <ItemGroup Condition="'$(TargetFramework)' == 'net7.0'">
+    <!-- Package for creating an NPM package during build. -->
+    <!-- See: https://dev.azure.com/devdiv/DevDiv/_git/vs-green?path=/components&anchor=packaging-components -->
+    <PackageReference Include="Microsoft.VisualStudio.Internal.MicroBuild.NpmPack" PrivateAssets="all" />
   </ItemGroup>
 
   <!-- Dependencies -->
@@ -188,7 +223,7 @@
       <DataAccess>None</DataAccess>
       <RuleInjection>None</RuleInjection>
     </XamlPropertyRule>
-    
+
     <!-- Property Pages -->
     <XamlPropertyRuleNoCodeBehind Include="ProjectSystem\Rules\PropertyPages\ApplicationPropertyPage.xaml" />
     <XamlPropertyRuleNoCodeBehind Include="ProjectSystem\Rules\PropertyPages\ApplicationPropertyPage.CSharp.xaml" />
@@ -340,7 +375,7 @@
       <DataAccess>None</DataAccess>
       <RuleInjection>None</RuleInjection>
     </XamlPropertyRule>
-    
+
     <Compile Update="ProjectSystem\Rules\CollectedPackageReference.cs">
       <DependentUpon>CollectedPackageReference.xaml</DependentUpon>
     </Compile>
@@ -483,7 +518,7 @@
       <DataAccess>None</DataAccess>
       <RuleInjection>None</RuleInjection>
     </XamlPropertyRule>
-    
+
     <Compile Update="ProjectSystem\Rules\SupportedTargetFrameworkAlias.cs">
       <DependentUpon>SupportedTargetFrameworkAlias.xaml</DependentUpon>
     </Compile>
@@ -495,7 +530,7 @@
       <DataAccess>None</DataAccess>
       <RuleInjection>None</RuleInjection>
     </XamlPropertyRule>
-    
+
     <Compile Update="ProjectSystem\Rules\SupportedTargetFramework.cs">
       <DependentUpon>SupportedTargetFramework.xaml</DependentUpon>
     </Compile>
@@ -561,7 +596,7 @@
       <DataAccess>None</DataAccess>
       <RuleInjection>None</RuleInjection>
     </XamlPropertyRule>
-    
+
     <Compile Update="ProjectSystem\Rules\UpToDateCheckBuilt.cs">
       <DependentUpon>UpToDateCheckBuilt.xaml</DependentUpon>
     </Compile>
@@ -662,9 +697,14 @@
     <DesignTimeTargetsFile Include="ProjectSystem\DesignTimeTargets\*.targets" />
   </ItemGroup>
 
-  <ItemGroup>
-    <AdditionalFiles Include="PublicAPI.Shipped.txt" />
-    <AdditionalFiles Include="PublicAPI.Unshipped.txt" />
+  <ItemGroup Condition="'$(TargetFramework)' == 'net472'">
+    <None Remove="PublicAPI\net472\*.txt" />
+    <AdditionalFiles Include="PublicAPI\net472\*.txt" />
+  </ItemGroup>
+
+  <ItemGroup Condition="'$(TargetFramework)' == 'net7.0'">
+    <None Remove="PublicAPI\net7.0\*.txt" />
+    <AdditionalFiles Include="PublicAPI\net7.0\*.txt" />
   </ItemGroup>
 
   <ItemGroup>
@@ -672,5 +712,39 @@
       <Generator>MSBuild:Compile</Generator>
     </None>
   </ItemGroup>
+
+  <Target Name="AddFilesForNpmPackage" DependsOnTargets="Build" Condition="'$(TargetFramework)' == 'net7.0'">
+    <ItemGroup>
+      <NpmContent Include="exports.json" />
+      <!-- We have a runtime dependency on Microsoft.CodeAnalysis.dll in VS Code scenarios. -->
+      <NpmContent Include="$(PkgMicrosoft_CodeAnalysis_Common)\lib\net6.0\Microsoft.CodeAnalysis.dll" />
+    </ItemGroup>
+  </Target>
+
+
+  <!-- Adds all the .xaml *and* .targets files under $(VisualStudioXamlRulesDir) to our NuGet package by
+       creating <None> items with the "Pack" metadata set to "true. By putting them in the package they
+       will be available to setup components created in other repos.
+
+       We need to do this within a target because many of the files we care about are created during the
+       build; e.g. the translated .xaml files. We don't really want those included in the evaluation because
+       they will pop in an out of existence depending on where we are in the build process, and we don't
+       really want them to show up in the Solution Explorer or anywhere else.
+
+       Note that $(VisualStudioXamlRulesDir) could potentially include includes files from any project in
+       the solution, though at the moment only this project seems to put files there. If other projects
+       start to put files there we will need to do something more sophisticated.
+
+       Also note that this is implicitly dependent on the CopyXamlRulesToOutputDirectory and
+       CopyDesignTimeTargetsToOutputDirectory targets, which are defined in VisualStudio.XamlRules.targets.
+  -->
+  <Target Name="AddXamlRulesToNuGetPackage" BeforeTargets="_GetPackageFiles">
+    <ItemGroup>
+      <Content Include="$(VisualStudioXamlRulesDir)\**\*.*">
+        <Pack>true</Pack>
+        <PackagePath>content\DesignTimeTargets\</PackagePath>
+      </Content>
+    </ItemGroup>
+  </Target>
 
 </Project>

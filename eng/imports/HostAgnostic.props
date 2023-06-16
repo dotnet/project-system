@@ -6,16 +6,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <!-- Framework -->
-    <Reference Include="PresentationCore" />
-    <Reference Include="PresentationFramework" />
-    <Reference Include="System" />
-    <Reference Include="System.ComponentModel.Composition" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Xml" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="WindowsBase" />
-
     <!-- Infrastructure -->
     <!-- Path Property: PkgCodecov -->
     <PackageReference Include="Codecov"                             ExcludeAssets="all" GeneratePathProperty="true" />
@@ -24,6 +14,10 @@
     <PackageReference Include="Microsoft.DiaSymReader.Pdb2Pdb"      ExcludeAssets="all" GeneratePathProperty="true" />
     <PackageReference Include="Microsoft.DotNet.XliffTasks"         PrivateAssets="all" />
     <PackageReference Include="Microsoft.Net.Compilers.Toolset" />
+    <!--
+      The SourceLink package depends on the repo provider used.
+      https://github.com/dotnet/sourcelink#using-source-link-in-net-projects
+    -->
     <PackageReference Include="Microsoft.SourceLink.GitHub"         PrivateAssets="all" />
     <!-- Path Property: PkgMicrosoft_VisualStudioEng_MicroBuild_Core -->
     <PackageReference Include="Microsoft.VisualStudioEng.MicroBuild.Core" PrivateAssets="all" GeneratePathProperty="true" />
@@ -33,13 +27,14 @@
     <PackageReference Include="System.IO.Pipelines"                 ExcludeAssets="all" />
 
     <!-- CPS -->
-    <PackageReference Include="Microsoft.VisualStudio.ProjectSystem.Query" />
+    <PackageReference Include="Microsoft.VisualStudio.ProjectSystem" />
     <PackageReference Include="Microsoft.VisualStudio.ProjectSystem.SDK" />
     <PackageReference Include="Microsoft.VisualStudio.ProjectSystem.SDK.Tools" />
+    <PackageReference Include="Microsoft.VisualStudio.ProjectSystem.XamlTypes" Condition="'$(TargetFramework)' == 'net7.0'" />
     <PackageReference Include="Microsoft.VisualStudio.Threading" />
     <PackageReference Include="Microsoft.VisualStudio.Validation" />
     <PackageReference Include="System.Threading.Tasks.Dataflow" />
-    
+
     <!-- VS MEF -->
     <PackageReference Include="Microsoft.VisualStudio.Composition" />
 
@@ -59,9 +54,6 @@
     <PackageReference Include="Microsoft.VisualStudio.ProjectSystem.Analyzers" PrivateAssets="all" />
     <PackageReference Include="Roslyn.Diagnostics.Analyzers"                   PrivateAssets="all" Condition="'$(IsTestProject)' != 'true'" />
 
-    <!-- Framework packages -->
-    <PackageReference Include="Microsoft.IO.Redist" />
-
     <!-- 3rd party -->
     <PackageReference Include="Newtonsoft.Json" />
     <PackageReference Include="IsExternalInit" />
@@ -72,16 +64,21 @@
   </ItemGroup>
 
   <ItemGroup Condition="'$(IsUnitTestProject)' == 'true'">
+    <PackageReference Include="Microsoft.NET.Test.Sdk" />
     <PackageReference Include="Moq" />
     <PackageReference Include="Verify.Xunit" />
+    <PackageReference Include="xunit" />
     <PackageReference Include="xunit.analyzers" />
     <PackageReference Include="xunit.assert" />
     <PackageReference Include="xunit.combinatorial" />
     <PackageReference Include="xunit.extensibility.core" />
     <PackageReference Include="xunit.extensibility.execution" />
-    <PackageReference Include="xunit.runner.console" GeneratePathProperty="true" />
-    <PackageReference Include="xunit.runner.visualstudio" GeneratePathProperty="true" />
-    
+    <PackageReference Include="xunit.runner.console" />
+    <PackageReference Include="xunit.runner.visualstudio">
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+
     <InternalsVisibleTo Include="DynamicProxyGenAssembly2" Key="$(MoqPublicKey)" />
   </ItemGroup>
 

@@ -55,7 +55,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
                     .Select(catalog.GetSchema)
                     .WhereNotNull()
                     .Where(rule => string.Equals(rule.PageTemplate, "CommandNameBasedDebugger", StringComparison.OrdinalIgnoreCase)
-                            && rule.Metadata.TryGetValue("CommandName", out object pageCommandNameObj))
+                            && rule.Metadata.TryGetValue("CommandName", out object? pageCommandNameObj))
                     .Select(rule => new PageEnumValue(new EnumValue
                     {
                         Name = rule.Name,

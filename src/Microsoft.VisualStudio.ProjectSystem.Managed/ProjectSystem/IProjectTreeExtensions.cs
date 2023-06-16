@@ -70,7 +70,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
                 return properties;
 
             // We let the snapshot be out of date with the "live" project
-            if (!catalogSnapshot.Value.NamedCatalogs.TryGetValue(PropertyPageContexts.BrowseObject, out IPropertyPagesCatalog pagesCatalog))
+            if (!catalogSnapshot.Value.NamedCatalogs.TryGetValue(PropertyPageContexts.BrowseObject, out IPropertyPagesCatalog? pagesCatalog))
                 return properties;
 
             Assumes.NotNull(catalogSnapshot.Value.Project);

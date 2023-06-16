@@ -12,6 +12,7 @@
 
   <PropertyGroup>
     <RootNamespace>Microsoft.VisualStudio</RootNamespace>
+    <TargetFramework>net472</TargetFramework>
 
     <!-- VSIX -->
     <ExtensionInstallationRoot>CommonExtensions</ExtensionInstallationRoot>

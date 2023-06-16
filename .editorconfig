@@ -353,7 +353,7 @@ dotnet_diagnostic.RS0012.severity = warning
 
 # System.Runtime.Analyzers
 dotnet_diagnostic.CA1305.severity = none        # Specify IFormatProvider
-dotnet_diagnostic.CA1307.severity = error       # Specify StringComparison
+dotnet_diagnostic.CA1307.severity = suggestion  # Specify StringComparison
 dotnet_diagnostic.CA1308.severity = none        # Normalize strings to uppercase
 dotnet_diagnostic.CA1810.severity = none        # Initialize reference type static fields inline
 dotnet_diagnostic.CA1816.severity = none        # Dispose methods should call SuppressFinalize
@@ -437,3 +437,9 @@ dotnet_diagnostic.IDE2006.severity = warning    # Allow blank line after token i
 [*.{vb}]
 dotnet_diagnostic.IDE0031.severity = suggestion   # Use null propagation (nullable)
 dotnet_diagnostic.CA1307.severity = suggestion    # Specify StringComparison
+
+# NETCOREUNDONE: Should be removed when obsolete System.Xaml types are moved from Microsoft.VisualStudio.ProjectSystem.XamlTypes into official package
+# Disabling warning for C# files generated from xaml rules
+[artifacts/*/obj/Microsoft.VisualStudio.ProjectSystem.Managed/net7.0/*.cs]
+# CS0618: Type or member is obsolete
+dotnet_diagnostic.CS0618.severity = silent

@@ -10,8 +10,14 @@
     <!-- https://devdiv.visualstudio.com/DevDiv/_wiki/wikis/DevDiv.wiki/672/Archive-Symbols-with-Symweb?anchor=portable-pdbs -->
     <PackageReference Update="Microsoft.DiaSymReader.Pdb2Pdb"                                         Version="1.1.0-beta2-22320-02" />
     <PackageReference Update="Microsoft.DotNet.XliffTasks"                                            Version="1.0.0-beta.23073.2" />
+    <!--
+      The SourceLink package depends on the repo provider used.
+      The following package is only valid when using from GitHub repo.
+      https://github.com/dotnet/sourcelink#using-source-link-in-net-projects
+    -->
     <PackageReference Update="Microsoft.SourceLink.GitHub"                                            Version="1.1.1" />
     <PackageReference Update="Microsoft.VisualStudio.Internal.MicroBuild"                             Version="2.0.115" />
+    <PackageReference Update="Microsoft.VisualStudio.Internal.MicroBuild.NpmPack"                     Version="2.0.117" />
     <PackageReference Update="Microsoft.VisualStudio.Internal.MicroBuild.Swix"                        Version="2.0.115" />
     <PackageReference Update="Microsoft.VisualStudio.Internal.MicroBuild.Vsman"                       Version="2.0.115" />
     <PackageReference Update="Microsoft.VisualStudioEng.MicroBuild.Core"                              Version="1.0.0" />
@@ -39,7 +45,7 @@
     <PackageReference Update="Microsoft.VisualStudio.RpcContracts"                                    Version="17.7.5-preview" />
     <PackageReference Update="Microsoft.VisualStudio.SDK.EmbedInteropTypes"                           Version="15.0.36" />
     <PackageReference Update="Microsoft.VisualStudio.Settings.15.0"                                   Version="17.3.32804.24" />
-    <PackageReference Update="Microsoft.VisualStudio.Setup.Configuration.Interop"                     Version="3.0.4492" />
+    <PackageReference Update="Microsoft.VisualStudio.Setup.Configuration.Interop"                     Version="3.2.2146" />
     <PackageReference Update="Microsoft.VisualStudio.Shell.15.0"                                      Version="17.3.32804.24" />
     <PackageReference Update="Microsoft.VisualStudio.Shell.Design"                                    Version="17.3.32804.24" />
     <PackageReference Update="Microsoft.VisualStudio.Shell.Framework"                                 Version="17.3.32804.24" />
@@ -60,17 +66,21 @@
 
     <!-- CPS -->
     <!-- Find versions at https://dev.azure.com/azure-public/vside/_artifacts/feed/vs-impl -->
-    <PackageReference Update="Microsoft.VisualStudio.ProjectSystem.Analyzers"                         Version="17.5.396-pre" />
-    <PackageReference Update="Microsoft.VisualStudio.ProjectSystem.Query"                             Version="17.5.396-pre" />
-    <PackageReference Update="Microsoft.VisualStudio.ProjectSystem.SDK"                               Version="17.5.396-pre" />
-    <PackageReference Update="Microsoft.VisualStudio.ProjectSystem.SDK.Tools"                         Version="17.5.396-pre" />
+    <PackageReference Update="Microsoft.VisualStudio.ProjectSystem"                                   Version="17.7.294-pre" />
+    <PackageReference Update="Microsoft.VisualStudio.ProjectSystem.Analyzers"                         Version="17.7.294-pre" />
+    <PackageReference Update="Microsoft.VisualStudio.ProjectSystem.Query"                             Version="17.7.294-pre" />
+    <PackageReference Update="Microsoft.VisualStudio.ProjectSystem.SDK"                               Version="17.7.294-pre" />
+    <PackageReference Update="Microsoft.VisualStudio.ProjectSystem.SDK.Tools"                         Version="17.7.294-pre" />
+    <PackageReference Update="Microsoft.VisualStudio.ProjectSystem.VS"                                Version="17.7.294-pre" />
+    <PackageReference Update="Microsoft.VisualStudio.ProjectSystem.XamlTypes"                         Version="17.7.294-pre" />
 
     <!-- Roslyn -->
     <PackageReference Update="Microsoft.CodeAnalysis"                                                 Version="4.7.0-1.final" />
+    <PackageReference Update="Microsoft.CodeAnalysis.Common"                                          Version="4.7.0-1.final" />
     <PackageReference Update="Microsoft.CSharp"                                                       Version="4.7.0" />
     <PackageReference Update="Microsoft.Net.Compilers.Toolset"                                        Version="4.7.0-1.final" />
-    <PackageReference Update="Microsoft.VisualStudio.LanguageServices"                                Version="4.7.0-1.final" />
     <PackageReference Update="Microsoft.VisualStudio.IntegrationTest.Utilities"                       Version="2.6.0-beta1-62113-02" />
+    <PackageReference Update="Microsoft.VisualStudio.LanguageServices"                                Version="4.7.0-1.final" />
 
     <!-- Analyzers -->
     <PackageReference Update="CSharpIsNullAnalyzer"                                                   Version="0.1.329" />
@@ -93,16 +103,17 @@
     <PackageReference Update="IsExternalInit"                                                         Version="1.0.3" PrivateAssets="all" />
 
     <!-- Tests -->
+    <PackageReference Update="Microsoft.NET.Test.Sdk"                                                 Version="17.5.0-preview-20221003-04" />
     <PackageReference Update="Moq"                                                                    Version="4.16.1" />
     <PackageReference Update="Verify.Xunit"                                                           Version="14.2.0" />
-    <PackageReference Update="xunit"                                                                  Version="2.4.2-pre.13" />
-    <PackageReference Update="xunit.analyzers"                                                        Version="0.12.0-pre.19"/>
-    <PackageReference Update="xunit.assert"                                                           Version="2.4.2-pre.13" />
-    <PackageReference Update="xunit.combinatorial"                                                    Version="1.4.1" />
-    <PackageReference Update="xunit.extensibility.core"                                               Version="2.4.2-pre.13" />
-    <PackageReference Update="xunit.extensibility.execution"                                          Version="2.4.2-pre.13" NoWarn="NU1608" />
-    <PackageReference Update="xunit.runner.console"                                                   Version="2.4.1" />
-    <PackageReference Update="xunit.runner.visualstudio"                                              Version="2.4.3" />
+    <PackageReference Update="xunit"                                                                  Version="2.4.2" />
+    <PackageReference Update="xunit.analyzers"                                                        Version="1.0.0"/>
+    <PackageReference Update="xunit.assert"                                                           Version="2.4.2" />
+    <PackageReference Update="xunit.combinatorial"                                                    Version="1.5.25" />
+    <PackageReference Update="xunit.extensibility.core"                                               Version="2.4.2" />
+    <PackageReference Update="xunit.extensibility.execution"                                          Version="2.4.2" NoWarn="NU1608" />
+    <PackageReference Update="xunit.runner.console"                                                   Version="2.4.2" />
+    <PackageReference Update="xunit.runner.visualstudio"                                              Version="2.4.5" />
 
     <!-- Integration Tests -->
     <PackageReference Update="Microsoft.DotNet.Common.ProjectTemplates.1.x"                           Version="1.0.0-beta2-20170629-269" />
