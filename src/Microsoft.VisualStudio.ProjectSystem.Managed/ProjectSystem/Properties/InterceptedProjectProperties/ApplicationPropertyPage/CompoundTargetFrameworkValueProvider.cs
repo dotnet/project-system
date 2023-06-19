@@ -213,7 +213,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
             return targetFrameworkAlias;
         }
 
-        private static bool IsNetCore5OrHigher(string? targetFrameworkAlias)
+        private static bool IsNetCore5OrHigher(string targetFrameworkAlias)
         {
             // Ideally, we want to use the TargetFrameworkIdentifier and TargetFrameworkVersion;
             // however, in this case the target framework properties we have are for the currently set value,
