@@ -336,6 +336,9 @@
 
   <BoolProperty Name="UseWindowsForms"
                 Visible="False" />
+  
+  <BoolProperty Name="UseWinUI"
+                Visible="False" />
 
   <BoolProperty Name="UseWPF"
                 Visible="False" />

@@ -1,5 +1,7 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
+using System.Text.RegularExpressions;
+
 namespace Microsoft.VisualStudio.ProjectSystem.Properties
 {
     /// <summary>
@@ -28,14 +30,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         private readonly ConfiguredProject _configuredProject;
         private bool? _useWPFProperty;
         private bool? _useWindowsFormsProperty;
-
+        private bool? _useWinUIProperty;
         private static readonly string[] s_msBuildPropertyNames = { TargetFrameworkProperty, TargetPlatformProperty, TargetPlatformVersionProperty, SupportedOSPlatformVersionProperty };
+        private static readonly Regex s_versionRegex = new(@"^net(?<version>[0-9.]+)$", RegexOptions.ExplicitCapture);
 
         private struct ComplexTargetFramework
         {
             public string? TargetFrameworkMoniker;
             public string? TargetPlatformIdentifier;
             public string? TargetPlatformVersion;
+            public string? TargetFrameworkIdentifier;
             public string? TargetFramework;
         }
 
@@ -128,11 +132,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
 
         private static async Task<ComplexTargetFramework> GetStoredComplexTargetFrameworkAsync(ConfigurationGeneral configuration)
         {
-            ComplexTargetFramework storedValues = new ComplexTargetFramework
+            var storedValues = new ComplexTargetFramework
             {
                 TargetFrameworkMoniker = (string?)await configuration.TargetFrameworkMoniker.GetValueAsync(),
                 TargetPlatformIdentifier = (string?)await configuration.TargetPlatformIdentifier.GetValueAsync(),
                 TargetPlatformVersion = (string?)await configuration.TargetPlatformVersion.GetValueAsync(),
+                TargetFrameworkIdentifier = (string?)await configuration.TargetFrameworkIdentifier.GetValueAsync(),
                 TargetFramework = (string?)await configuration.TargetFramework.GetValueAsync()
             };
 
@@ -210,7 +215,28 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
 
         private static bool IsNetCore5OrHigher(string targetFrameworkAlias)
         {
-            return targetFrameworkAlias.Contains("5.0") || targetFrameworkAlias.Contains("6.0") || targetFrameworkAlias.Contains("7.0");
+            // Ideally, we want to use the TargetFrameworkIdentifier and TargetFrameworkVersion;
+            // however, in this case the target framework properties we have are for the currently set value,
+            // not the value we want to set it to (for example, if we go from netcoreapp3.1 to net5.0).
+            // The only property we have that describes the value to be set is the TargetFrameworkAlias which
+            // is passed to this method.
+
+            Match match = s_versionRegex.Match(targetFrameworkAlias);
+
+            if (match.Success)
+            {
+                string versionString = match.Groups["version"].Value;
+
+                if (Version.TryParse(versionString, out Version? version))
+                {
+                    if (version.Major >= 5)
+                    {
+                        // This is a .NET Core app with version greater than five.
+                        return true;
+                    }
+                }
+            }
+            return false;
         }
 
         private async Task<bool> IsWindowsPlatformNeededAsync()
@@ -218,16 +244,22 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
             // Checks if the project has either UseWPF or UseWindowsForms properties.
             ConfigurationGeneral configuration = await _properties.GetConfigurationGeneralPropertiesAsync();
             _useWPFProperty = (bool?)await configuration.UseWPF.GetValueAsync();
-            _useWindowsFormsProperty = (bool?)await configuration.UseWindowsForms.GetValueAsync();
 
             if (_useWPFProperty is not null)
             {
                 return (bool)_useWPFProperty;
             }
 
+            _useWindowsFormsProperty = (bool?)await configuration.UseWindowsForms.GetValueAsync();
             if (_useWindowsFormsProperty is not null)
             {
                 return (bool)_useWindowsFormsProperty;
+            }
+
+            _useWinUIProperty = (bool?)await configuration.UseWinUI.GetValueAsync();
+            if (_useWinUIProperty is not null)
+            {
+                return (bool)_useWinUIProperty;
             }
 
             return false;
