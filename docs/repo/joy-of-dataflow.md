@@ -4,15 +4,15 @@ Recipes for doing all sorts of things with System.Threading.Dataflow in the Proj
 
 ## Table of Contents
 
-- [How to create a new data source](#how-to-create-a-new-data-source)
-- [How to filter or transform an existing data source](#how-to-filter-or-transform-an-existing-data-source)
+- [How to create an `IProjectValueDataSource` that produces original data](#how-to-create-an-iprojectvaluedatasource-that-produces-original-data)
+- [How to create an `IProjectValueDataSource` that produces data derived from existing sources](#how-to-create-an-iprojectvaluedatasource-that-produces-data-derived-from-existing-sources)
 
 
-## How to create a new data source
+## How to create an `IProjectValueDataSource` that produces original data
 
-Use this recipe when you want to expose a fundamentally new _type_ of data that isn't available from some existing dataflow.
+Use this recipe when you want to expose a fundamentally new _type_ of data that isn't available from some existing dataflow. Note this is very rare and unlikely to be what you want or need; most of the time you'll want to derive from the output of existing dataflow blocks. See [How to create an `IProjectValueDataSource` that produces data derived from existing sources](#how-to-create-an-iprojectvaluedatasource-that-produces-data-derived-from-existing-sources) for how to do that.
 
-Do not use this recipe if the output data can be produced by a 1-to-1 transformation of an existing dataflow, or by subsetting or filtering an existing dataflow. See [How to filter or transform an existing data source](#how-to-filter-or-transform-an-existing-data-source) instead.
+In practice this approach is used when you want a dataflow exposing the _contents_ of a file that may change over time.
 
 ### Steps
 
@@ -40,7 +40,7 @@ Do not use this recipe if the output data can be produced by a 1-to-1 transforma
 
 Note that both examples not only produce data, they also consume data from other dataflows. However, their output data cannot be produced solely by transforming the inputs, so they are still considered "new" data sources.
 
-## How to filter or transform an existing data source
+## How to create an `IProjectValueDataSource` that produces data derived from existing sources
 
 Use this recipe when you want to expose a subset of the data from an existing dataflow, or when you want to transform the data from an existing dataflow into a different shape.
 
@@ -51,7 +51,7 @@ Use this recipe when you want to expose a subset of the data from an existing da
 3. Override and implement the `LinkExternalInput` method. This is where the dataflow block(s) will be created and where you will perform any setup required to start producing data.
     1. Use `DataflowBlockSlim.CreateTransformBlock` to create a transform block that takes in `IProjectVersionedValue<U>` (where `U` is the input data) and produces `IProjectVersionedValue<T>` (again, `T` is the type of data you want to expose).
     2. Since the intent here is to transfrom data from existing sources the version keys and values for your output data will generally be the same as the input. To avoid boilerplate code around `IProjectVersionedValue<>` handling, pass in the lambda `update => update.Derive(Transform)` for the `transformFunction` parameter of `CreateTransformBlock`. The `Derive` extension method handles calling the `Transform` method (to be defined in a later step) to convert `U`s to `T`s and producing the final `IProjectVersionedValue<>` with the version keys and values copied over.
-    3. Link your input dataflow to the transform block, and the transform block to the `targetBlock` passed in to `LinkExternalInput`. Store the resulting link objects in a `DisposableBag`.
+    3. Using the `LinkTo` extension method, link your input dataflow to the transform block and the transform block to the `targetBlock` passed in to `LinkExternalInput`. Store the resulting link objects in a `DisposableBag`.
     4. Call `JoinUpstreamDataSources` and pass in your input data sources. This links the scheduling of background work across the data flows and helps prevent deadlocks. Storing the resulting object in a `DisposableBag`.
     5. Finally, return the `DisposableBag`. When your dataflow is no longer needed the bag, and all its contents, will be disposed. This will break the links between the blocks as well as the scheduling links to the input data flows.
 4. Finally, define your `Transform` function. This will take in an instance of type `U` and produce exactly one instance of the output type `T`.
