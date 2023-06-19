@@ -4,9 +4,32 @@ Recipes for doing all sorts of things with System.Threading.Dataflow in the Proj
 
 ## Table of Contents
 
-- [How to create an `IProjectValueDataSource` that produces original data](#how-to-create-an-iprojectvaluedatasource-that-produces-original-data)
 - [How to create an `IProjectValueDataSource` that produces data derived from existing sources](#how-to-create-an-iprojectvaluedatasource-that-produces-data-derived-from-existing-sources)
+- [How to create an `IProjectValueDataSource` that produces original data](#how-to-create-an-iprojectvaluedatasource-that-produces-original-data)
 
+## How to create an `IProjectValueDataSource` that produces data derived from existing sources
+
+Use this recipe when you want to expose a subset of the data from an existing dataflow, or when you want to transform the data from an existing dataflow into a different shape.
+
+### Steps
+
+1. Create a new class that derives from the `Microsoft.VisualStudio.ProjectSystem.ChainedProjectValueDataSourceBase<T>` in CPS, where `T` is the type of data you want to expose.
+2. In your `[ImportingConstructor]` import the dataflow you want to transform/filter.
+3. Override and implement the `LinkExternalInput` method. This is where the dataflow block(s) will be created and where you will perform any setup required to start producing data.
+    1. Use `DataflowBlockSlim.CreateTransformBlock` to create a transform block that takes in `IProjectVersionedValue<U>` (where `U` is the input data) and produces `IProjectVersionedValue<T>` (again, `T` is the type of data you want to expose).
+    2. Since the intent here is to transfrom data from existing sources the version keys and values for your output data will generally be the same as the input. To avoid boilerplate code around `IProjectVersionedValue<>` handling, pass in the lambda `update => update.Derive(Transform)` for the `transformFunction` parameter of `CreateTransformBlock`. The `Derive` extension method handles calling the `Transform` method (to be defined in a later step) to convert `U`s to `T`s and producing the final `IProjectVersionedValue<>` with the version keys and values copied over.
+    3. Using the `LinkTo` extension method, link your input dataflow to the transform block and the transform block to the `targetBlock` passed in to `LinkExternalInput`. Store the resulting link objects in a `DisposableBag`.
+    4. Call `JoinUpstreamDataSources` and pass in your input data sources. This links the scheduling of background work across the data flows and helps prevent deadlocks. Storing the resulting object in a `DisposableBag`.
+    5. Finally, return the `DisposableBag`. When your dataflow is no longer needed the bag, and all its contents, will be disposed. This will break the links between the blocks as well as the scheduling links to the input data flows.
+4. Finally, define your `Transform` function. This will take in an instance of type `U` and produce exactly one instance of the output type `T`.
+
+### Examples
+
+- [`DebugProfileDebugTargetGenerator`](../../src/Microsoft.VisualStudio.ProjectSystem.Managed/ProjectSystem/Debug/DebugProfileDebugTargetGenerator.cs): A very simple example that converts a dataflow of launch settings into the list of launch profiles for display to the user.
+
+### Remarks
+
+Sometimes you may want to produce multiple output items for a single input, or zero items. For example, a dataflow that may need to hold production of items until some condition is met. In this case you can use `DataflowBlockSlim.CreateTransformManyBlock` instead of `CreateTransformBlock`, and your `Transform` function will return `IEnumerable<T>` instead of `T`.
 
 ## How to create an `IProjectValueDataSource` that produces original data
 
@@ -40,27 +63,3 @@ In practice this approach is used when you want a dataflow exposing the _content
 
 Note that both examples not only produce data, they also consume data from other dataflows. However, their output data cannot be produced solely by transforming the inputs, so they are still considered "new" data sources.
 
-## How to create an `IProjectValueDataSource` that produces data derived from existing sources
-
-Use this recipe when you want to expose a subset of the data from an existing dataflow, or when you want to transform the data from an existing dataflow into a different shape.
-
-### Steps
-
-1. Create a new class that derives from the `Microsoft.VisualStudio.ProjectSystem.ChainedProjectValueDataSourceBase<T>` in CPS, where `T` is the type of data you want to expose.
-2. In your `[ImportingConstructor]` import the dataflow you want to transform/filter.
-3. Override and implement the `LinkExternalInput` method. This is where the dataflow block(s) will be created and where you will perform any setup required to start producing data.
-    1. Use `DataflowBlockSlim.CreateTransformBlock` to create a transform block that takes in `IProjectVersionedValue<U>` (where `U` is the input data) and produces `IProjectVersionedValue<T>` (again, `T` is the type of data you want to expose).
-    2. Since the intent here is to transfrom data from existing sources the version keys and values for your output data will generally be the same as the input. To avoid boilerplate code around `IProjectVersionedValue<>` handling, pass in the lambda `update => update.Derive(Transform)` for the `transformFunction` parameter of `CreateTransformBlock`. The `Derive` extension method handles calling the `Transform` method (to be defined in a later step) to convert `U`s to `T`s and producing the final `IProjectVersionedValue<>` with the version keys and values copied over.
-    3. Using the `LinkTo` extension method, link your input dataflow to the transform block and the transform block to the `targetBlock` passed in to `LinkExternalInput`. Store the resulting link objects in a `DisposableBag`.
-    4. Call `JoinUpstreamDataSources` and pass in your input data sources. This links the scheduling of background work across the data flows and helps prevent deadlocks. Storing the resulting object in a `DisposableBag`.
-    5. Finally, return the `DisposableBag`. When your dataflow is no longer needed the bag, and all its contents, will be disposed. This will break the links between the blocks as well as the scheduling links to the input data flows.
-4. Finally, define your `Transform` function. This will take in an instance of type `U` and produce exactly one instance of the output type `T`.
-
-
-### Examples
-
-- [`DebugProfileDebugTargetGenerator`](../../src/Microsoft.VisualStudio.ProjectSystem.Managed/ProjectSystem/Debug/DebugProfileDebugTargetGenerator.cs): A very simple example that converts a dataflow of launch settings into the list of launch profiles for display to the user.
-
-### Remarks
-
-Sometimes you may want to produce multiple output items for a single input, or zero items. For example, a dataflow that may need to hold production of items until some condition is met. In this case you can use `DataflowBlockSlim.CreateTransformManyBlock` instead of `CreateTransformBlock`, and your `Transform` function will return `IEnumerable<T>` instead of `T`.
