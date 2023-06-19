@@ -3,7 +3,7 @@
 # Name: DotNet-Project-System
 # URL: https://dev.azure.com/devdiv/DevDiv/_build?definitionId=9675
 
-# Produces the signed product build for insertion into the Visual Studio.
+# Produces the signed product build for insertion into the Visual Studio & Visual Studio Code Extension
 
 ###################################################################################################################################################################
 # PIPELINE METADATA
@@ -19,9 +19,6 @@ trigger:
     - dev*
     # Any other branches that contain major feature development, or require access to the pipeline, prior to merge.
     - feature/*
-    exclude:
-    # We avoid running C# dev kit feature branch here since it is getting picked up by dev* above
-    - dev/PortToNET6
   paths:
     exclude:
     - docs/*
@@ -32,7 +29,7 @@ trigger:
 pr: none
 
 schedules:
-# Runs the pipelines at 4am PST (11am UTC) and creates a VS insertion PR.
+# Runs the pipelines at 4am PST (11am UTC) and creates a VS & vs-green insertion PR.
 # YAML reference: https://docs.microsoft.com/azure/devops/pipelines/yaml-schema/schedules-cron?view=azure-pipelines
 # CRON syntax: https://docs.microsoft.com/azure/devops/pipelines/process/scheduled-triggers?view=azure-devops&tabs=yaml#cron-syntax
 - cron: '0 11 * * *'
@@ -64,6 +61,10 @@ resources:
     name: DartLab.OptProf
     type: git
     ref: refs/heads/main
+  # This repo is used to create the insertion PR into the vs-green repo.
+  - repository: VSCodeExtensionRepo
+    type: git
+    name: vs-green
 
 pool:
   # Agent Queue: https://devdiv.visualstudio.com/DevDiv/_settings/agentqueues?queueId=3123&view=jobs
@@ -96,14 +97,28 @@ variables:
   # Default to skipping auto-injection for CodeQL. It is not skipped in the Build job only.
   # https://eng.ms/docs/cloud-ai-platform/devdiv/one-engineering-system-1es/1es-docs/codeql/configuring-codeql3000-ado-pipelines#monolithic-repos-and-multistage-pipelines
   Codeql.SkipTaskAutoInjection: true
+  # Sets the fetch depth to no longer be a shallow clone. Nerdbank.GitVersioning requires a non-shallow clone.
+  # See:
+  # - https://github.com/dotnet/Nerdbank.GitVersioning/issues/423
+  # - https://github.com/dotnet/Nerdbank.GitVersioning/issues/92
+  # Variable reference: https://learn.microsoft.com/en-us/azure/devops/pipelines/repos/pipeline-options-for-git?view=azure-devops&tabs=yaml#shallow-fetch
+  Agent.Source.Git.ShallowFetchDepth: 0
 
 parameters:
-- name: CreateInsertion
+- name: CreateVSInsertion
   displayName: Create VS Insertion PR
   type: boolean
   default: false
 - name: InsertionVSBranch
   displayName: VS Insertion Branch Name
+  type: string
+  default: main
+- name: CreateVSGreenInsertion
+  displayName: Create vs-green Insertion PR
+  type: boolean
+  default: false
+- name: InsertionVSGreenBranch
+  displayName: vs-green Insertion Branch Name
   type: string
   default: main
 - name: CreateOptimizationData
@@ -132,21 +147,6 @@ parameters:
 ###################################################################################################################################################################
 
 stages:
-# Validate the insertion branch name when necessary.
-- ${{ if eq(parameters.CreateInsertion, true) }}:
-  - stage: Validate
-    displayName: Validate
-    variables:
-      InsertionVSBranch: ${{ parameters.InsertionVSBranch }}
-    jobs:
-    - job: ValidateInsertionInput
-      displayName: Validate Insertion Input
-      timeoutInMinutes: 2
-      steps:
-      # See: https://stackoverflow.com/a/30524983/294804
-      - powershell: if (-not (git ls-remote --heads https://$(System.AccessToken)@dev.azure.com/devdiv/DevDiv/_git/VS $(InsertionVSBranch))) { Write-Host "The branch name '$(InsertionVSBranch)' is not valid."; exit 1 }
-        displayName: Validate VS Insertion Branch Name
-
 - stage: Build
   displayName: Build
   variables:
@@ -157,9 +157,10 @@ stages:
     # Auto-injects the CodeQL task.
     # https://eng.ms/docs/cloud-ai-platform/devdiv/one-engineering-system-1es/1es-docs/codeql/configuring-codeql3000-ado-pipelines#monolithic-repos-and-multistage-pipelines
     Codeql.SkipTaskAutoInjection: false
-  # When manually running an insertion, this allows us to validate the insertion branch name prior to building.
-  ${{ if eq(parameters.CreateInsertion, true) }}:
-    dependsOn: Validate
+    CreateVSInsertion: ${{ parameters.CreateVSInsertion }}
+    InsertionVSBranch: ${{ parameters.InsertionVSBranch }}
+    CreateVSGreenInsertion: ${{ parameters.CreateVSGreenInsertion }}
+    InsertionVSGreenBranch: ${{ parameters.InsertionVSGreenBranch }}
   jobs:
   - template: templates/build-official-release.yml
 
@@ -185,10 +186,8 @@ stages:
     variables:
     - name: UploadTSAResults
       value: ${{ parameters.UploadTSAResults }}
-    # Gets the VisualStudioMinimumVersion variable produced by the Build pipeline.
-    # This value is used in the analyze-api.yml template.
-    - name: VisualStudioMinimumVersion
-      value: $[ stageDependencies.Build.BuildOfficialRelease.outputs['SetVisualStudioMinimumVersionVariable.VisualStudioMinimumVersion'] ]
+    - name: SoftwareVersion
+      value: $[ stageDependencies.Build.BuildOfficialRelease.outputs['SetPackageVersion.PackageVersion'] ]
     # https://devdiv.visualstudio.com/DevDiv/_library?itemType=VariableGroups&view=VariableGroupView&variableGroupId=434&path=DotNet-Project-System
     # Variables used:
     # - ApiScanConnectionString
@@ -267,11 +266,11 @@ stages:
           Set-AzurePipelinesVariable 'previousOptimizationInputsDropName' $dropName
         displayName: Set previousOptimizationInputsDropName variable
 
-# Run this stage only when specifically requested (via CreateInsertion) or when the pipeline was ran on a schedule.
+# Run this stage only when specifically requested (via CreateVSInsertion or CreateVSGreenInsertion) or when the pipeline was ran on a schedule.
 # Conditional insertion syntax:
 # - https://docs.microsoft.com/azure/devops/pipelines/process/expressions?view=azure-devops#conditional-insertion
 # - https://www.andrewhoefling.com/Blog/Post/conditional-insertion-in-azure-pipelines-yaml
-- ${{ if or(eq(parameters.CreateInsertion, true), eq(variables['Build.Reason'], 'Schedule')) }}:
+- ${{ if or(eq(parameters.CreateVSInsertion, true), eq(parameters.CreateVSGreenInsertion, true), eq(variables['Build.Reason'], 'Schedule')) }}:
   - stage: Insertion
     displayName: Insertion
     dependsOn:
@@ -289,5 +288,22 @@ stages:
       InsertionVSBranch: ${{ parameters.InsertionVSBranch }}
       # Hard-coded assumption that the commit referenced by the previous VS insertion is within the last 100 commits in the $(InsertionVSBranch) of the VS repo.
       PriorInsertionCommitDepth: 100
+      # This variable is required by the component-insertion.yml template to insert the NPM package.
+      # The name of this package matches name defined in the package.json.
+      InsertNpmDependencies: '@microsoft/microsoft.visualstudio.projectsystem.managed@$(PackageVersion)'
+      InsertReviewers: '.NET Project System'
     jobs:
-    - template: templates/generate-insertion.yml
+    - ${{ if or(eq(parameters.CreateVSInsertion, true), eq(variables['Build.Reason'], 'Schedule')) }}:    
+      - template: templates/generate-vs-insertion.yml
+
+    - ${{ if or(eq(parameters.CreateVSGreenInsertion, true), eq(variables['Build.Reason'], 'Schedule')) }}:
+      - template: azure-pipelines/external/component-insertion.yml@VSCodeExtensionRepo
+        parameters:
+          sourceBranch: $(Build.SourceBranch)
+          sourceCommit: $(Build.SourceVersion)
+          runName: $(Build.BuildNumber)
+          runID: $(Build.BuildId)
+          pipelineID: $(System.DefinitionId)
+          InsertTargetBranch: ${{ parameters.InsertionVSGreenBranch }}
+          ComponentSubDir: $(Build.Repository.Name)
+          

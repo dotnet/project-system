@@ -8,6 +8,18 @@ jobs:
   steps:
 
   ###################################################################################################################################################################
+  # Validation of insertion branches
+  ###################################################################################################################################################################
+
+  # See: https://stackoverflow.com/a/30524983/294804
+  - powershell: if (-not (git ls-remote --heads https://$(System.AccessToken)@dev.azure.com/devdiv/DevDiv/_git/VS $(InsertionVSBranch))) { Write-Host "The branch name '$(InsertionVSBranch)' is not valid."; exit 1 }
+    displayName: Validate VS Insertion Branch Name
+    condition: eq(variables.CreateVSInsertion, true)
+  - powershell: if (-not (git ls-remote --heads https://$(System.AccessToken)@dev.azure.com/devdiv/DevDiv/_git/vs-green $(InsertionVSGreenBranch))) { Write-Host "The branch name '$(InsertionVSGreenBranch)' is not valid."; exit 1 }
+    displayName: Validate vs-green Insertion Branch Name
+    condition: eq(variables.CreateVSGreenInsertion, true)
+
+  ###################################################################################################################################################################
   # PLUGIN INSTALLATION
   ###################################################################################################################################################################
 
@@ -94,17 +106,17 @@ jobs:
     # Name is required to reference the variables created within this build step in other stages.
     name: SetAssemblyVersion
 
+  # Required for the MicroBuildBuildVSBootstrapper task. See description above that task for details.
+  # This should not be installed prior to building the repo as it may interfere with building the swixproj and vsmanproj projects.
+  - task: MicroBuildSwixPlugin@4
+    displayName: Install Swix Plugin
+
   # Sets the VisualStudioMinimumVersion variable for the job. This variable is also used by the APIScan job.
   # https://docs.microsoft.com/azure/devops/pipelines/process/set-variables-scripts?view=azure-devops&tabs=powershell#set-variable-properties
   - powershell: Write-Host "##vso[task.setvariable variable=VisualStudioMinimumVersion;isoutput=true]$(. '$(Build.SourcesDirectory)/eng/scripts/GetVisualStudioMinimumVersion.ps1')"
     displayName: Set VisualStudioMinimumVersion Variable
     # Name is required to reference the variables created within this build step in other stages.
     name: SetVisualStudioMinimumVersionVariable
-
-  # Required for the MicroBuildBuildVSBootstrapper task. See description above that task for details.
-  # This should not be installed prior to building the repo as it may interfere with building the swixproj and vsmanproj projects.
-  - task: MicroBuildSwixPlugin@4
-    displayName: Install Swix Plugin
 
   # Creates the VS bootstrapper information based on the build's .vsman file.
   # This bootstrapper information is only used for OptProf currently.

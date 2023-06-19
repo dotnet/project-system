@@ -2,7 +2,7 @@
 
 jobs:
 - job: GenerateInsertion
-  displayName: Generate Insertion
+  displayName: Generate VS Insertion
   timeoutInMinutes: 45
   steps:
 
@@ -75,7 +75,7 @@ jobs:
       # - https://devdiv.visualstudio.com/DevDiv/_git/302b028d-413e-471a-af4d-abc68bdc96b8?path=/src/SubmitPullRequest/Program.cs&version=GBmain&_a=contents
       InsertionDescription: $(InsertionDescription)
       # This is the name of our DevDiv alias.
-      InsertionReviewers: '.NET Project System'
+      InsertionReviewers: $(InsertReviewers)
       InsertionBuildPolicy: Request Perf DDRITs
       # This action only works on AzDO repos. This warning occurs if enabled:
       # ##[warning]WARNING: Cannot extract commit details from vstfs:///Build/Build/6574299: ArgumentException : 'https://github.com/dotnet/project-system' does not look like an Azure DevOps url
@@ -85,6 +85,8 @@ jobs:
       # ##[warning]WARNING: Cannot copy work items from vstfs:///Build/Build/6574299: ArgumentException : 'https://github.com/dotnet/project-system' does not look like an Azure DevOps url
       # Documentation: https://devdiv.visualstudio.com/DevDiv/_wiki/wikis/DevDiv.wiki/634/Link-Work-Items-to-PR
       LinkWorkItemsToPR: false
+      # Documentation: https://devdiv.visualstudio.com/DevDiv/_wiki/wikis/DevDiv.wiki/638/Set-AutoComplete-on-an-Insertion
+      InsertAutoComplete: true
 
   # The MicroBuildInsertVsPayload clones the VS repo. This removes the cloned repo after use.
   - powershell: Remove-Item -Path '$(Pipeline.Workspace)/project-system/VS' -Recurse -Force -ErrorAction Ignore
