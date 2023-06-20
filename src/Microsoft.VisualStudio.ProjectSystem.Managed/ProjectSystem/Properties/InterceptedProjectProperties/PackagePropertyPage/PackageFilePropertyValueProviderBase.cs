@@ -54,7 +54,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties.Package
             return await _sourceItemsProvider.GetItemAsync(None.SchemaName, async ni =>
             {
                 string pack = await ni.Metadata.GetEvaluatedPropertyValueAsync(PackMetadataName);
-                // Instead of doing pure equality between a calcuated item's property value and the existing property value,
+                // Instead of doing pure equality between a calculated item's property value and the existing property value,
                 // a user may update the PackagePath of the item and forget to update the property's value to reflect those changes, or vice versa.
                 // If the filename of this packed None item and the filename of the property's value match, consider those to be related to one another.
                 return bool.TryParse(pack, out bool packValue) && packValue &&

@@ -1,5 +1,6 @@
 args
 async
+awaiter
 blazor
 boolean
 cmdid
@@ -16,6 +17,7 @@ enums
 fsscript
 func
 github
+globbing
 guid
 hwnd
 Impl
@@ -56,9 +58,8 @@ typeof
 uint
 unadvise
 ushort
+Usings
 vswhidbey
 xaml
 xmlns
 yyyy
-﻿awaiter
-﻿Usings
