@@ -87,6 +87,71 @@
         <target state="translated">Fichiers projet .NET Core 2015 (*.xproj);*.xproj</target>
         <note />
       </trans-unit>
+      <trans-unit id="Setting_FastUpToDateCheck_Enabled_Title">
+        <source>Don't call MSBuild if a project appears to be up to date</source>
+        <target state="new">Don't call MSBuild if a project appears to be up to date</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="Setting_FastUpToDateCheck_LoggingLevel_Info">
+        <source>Info</source>
+        <target state="new">Info</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="Setting_FastUpToDateCheck_LoggingLevel_Minimal">
+        <source>Minimal</source>
+        <target state="new">Minimal</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="Setting_FastUpToDateCheck_LoggingLevel_None">
+        <source>None</source>
+        <target state="new">None</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="Setting_FastUpToDateCheck_LoggingLevel_Title">
+        <source>Logging Level</source>
+        <target state="new">Logging Level</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="Setting_FastUpToDateCheck_LoggingLevel_Verbose">
+        <source>Verbose</source>
+        <target state="new">Verbose</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="Setting_FileNesting_IgnoreSolutionAndProjectSettings_Title">
+        <source>Ignore solution and project settings</source>
+        <target state="new">Ignore solution and project settings</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="Setting_FileNesting_PreferSingleTargetBuilds_Description">
+        <source>When starting a project that targets multiple .NET frameworks, the build time can be reduced by limiting the build to a single framework</source>
+        <target state="new">When starting a project that targets multiple .NET frameworks, the build time can be reduced by limiting the build to a single framework</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="Setting_FileNesting_PreferSingleTargetBuilds_Title">
+        <source>Prefer single-target builds when starting a project</source>
+        <target state="new">Prefer single-target builds when starting a project</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="Settings_Category_FastUpToDateCheck">
+        <source>Up to Date Checks</source>
+        <target state="new">Up to Date Checks</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="Settings_Category_FileNestingSettings">
+        <source>File Nesting Settings</source>
+        <target state="new">File Nesting Settings</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="Settings_Category_MultiTargetingSettings">
+        <source>Multi-Targeting Settings</source>
+        <target state="new">Multi-Targeting Settings</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="Settings_Category_SdkStyleProjects">
+        <source>SDK-Style Projects</source>
+        <target state="new">SDK-Style Projects</target>
+        <note />
+      </trans-unit>
     </body>
   </file>
 </xliff>
