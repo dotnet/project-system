@@ -18,7 +18,6 @@ namespace Microsoft.VisualStudio.Setup
         private const string _xamlFolderPrefix = @"InstallDir:MSBuild\Microsoft\VisualStudio\Managed";
         private const string _xamlFilePrefix = @"$(VisualStudioXamlRulesDir)";
 
-
         public SwrTests(ITestOutputHelper output) => _output = output;
 
         [Fact]
