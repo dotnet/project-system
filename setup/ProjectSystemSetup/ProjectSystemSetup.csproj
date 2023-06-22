@@ -27,7 +27,6 @@
 
   <ItemGroup>
     <Content Include="UnifiedSettings\ManagedProjectSystem.registration.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       <IncludeInVSIX>true</IncludeInVSIX>
     </Content>
     

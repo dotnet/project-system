@@ -193,18 +193,18 @@
     <value>Prefer single-target builds when starting a project</value>
   </data>
   <data name="Setting_FileNesting_PreferSingleTargetBuilds_Description">
-    <value>When starting a project that targets multiple .NET frameworks, the build time can be reduced by limiting the build to a single framework</value>
+    <value>When starting a project that targets multiple frameworks the build time can be reduced by building only a single one.</value>
   </data>
   <data name="Settings_Category_SdkStyleProjects">
-    <value>SDK-Style Projects</value>
+    <value>SDK-style projects</value>
   </data>
   <data name="Settings_Category_FastUpToDateCheck">
-    <value>Up to Date Checks</value>
+    <value>Up to date checks</value>
   </data>
   <data name="Settings_Category_FileNestingSettings">
-    <value>File Nesting Settings</value>
+    <value>File nesting settings</value>
   </data>
   <data name="Settings_Category_MultiTargetingSettings">
-    <value>Multi-Targeting Settings</value>
+    <value>Multi-targeting settings</value>
   </data> 
 </root>
