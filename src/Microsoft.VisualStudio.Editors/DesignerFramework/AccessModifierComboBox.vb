@@ -83,7 +83,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         ' checked the project system yet)
         ' This field should only be accessed through the CustomToolsRegistered property.
         Private _customToolsRegistered As Boolean?
-        Private Shared _allowEdit As Boolean
+        Private _allowEdit As Boolean
 
 #Region "Nested class CodeGenerator"
 
@@ -451,12 +451,12 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
                            If ResourceView.DsMsgBox(My.Resources.Microsoft_VisualStudio_Editors_Designer.RSE_Err_UpdateADependentFile, MessageBoxButtons.YesNo, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button2, HelpIDs.Err_EditFormResx) = DialogResult.Yes Then
                                 _allowEdit = True
                             End If
-                            Else
-                                _allowEdit = False
                         End If
                         If _allowEdit Then
                             TrySetCustomToolValue(codeGenerator.CustomToolValue)
                         End If
+
+                        _allowEdit = False
                     End If
                     Return
                 End If
