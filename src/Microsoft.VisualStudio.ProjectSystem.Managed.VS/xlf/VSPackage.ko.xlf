@@ -123,8 +123,8 @@
         <note />
       </trans-unit>
       <trans-unit id="Setting_FileNesting_PreferSingleTargetBuilds_Description">
-        <source>When starting a project that targets multiple .NET frameworks, the build time can be reduced by limiting the build to a single framework</source>
-        <target state="new">When starting a project that targets multiple .NET frameworks, the build time can be reduced by limiting the build to a single framework</target>
+        <source>When starting a project that targets multiple frameworks the build time can be reduced by building only a single one.</source>
+        <target state="new">When starting a project that targets multiple frameworks the build time can be reduced by building only a single one.</target>
         <note />
       </trans-unit>
       <trans-unit id="Setting_FileNesting_PreferSingleTargetBuilds_Title">
@@ -133,23 +133,23 @@
         <note />
       </trans-unit>
       <trans-unit id="Settings_Category_FastUpToDateCheck">
-        <source>Up to Date Checks</source>
-        <target state="new">Up to Date Checks</target>
+        <source>Up to date checks</source>
+        <target state="new">Up to date checks</target>
         <note />
       </trans-unit>
       <trans-unit id="Settings_Category_FileNestingSettings">
-        <source>File Nesting Settings</source>
-        <target state="new">File Nesting Settings</target>
+        <source>File nesting settings</source>
+        <target state="new">File nesting settings</target>
         <note />
       </trans-unit>
       <trans-unit id="Settings_Category_MultiTargetingSettings">
-        <source>Multi-Targeting Settings</source>
-        <target state="new">Multi-Targeting Settings</target>
+        <source>Multi-targeting settings</source>
+        <target state="new">Multi-targeting settings</target>
         <note />
       </trans-unit>
       <trans-unit id="Settings_Category_SdkStyleProjects">
-        <source>SDK-Style Projects</source>
-        <target state="new">SDK-Style Projects</target>
+        <source>SDK-style projects</source>
+        <target state="new">SDK-style projects</target>
         <note />
       </trans-unit>
     </body>
