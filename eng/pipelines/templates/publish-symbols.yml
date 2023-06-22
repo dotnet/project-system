@@ -55,7 +55,6 @@ jobs:
       SymbolServerType: TeamServices
       SymbolsProduct: '.NET Project System'
       SymbolsVersion: $(Build.BuildNumber)
-      SymbolsArtifactName: Symbols
     # This is a non-critical task, so don't fail the build if it fails.
     continueOnError: true
 
