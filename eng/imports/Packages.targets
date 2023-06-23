@@ -1,6 +1,8 @@
 <!-- Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information. -->
 <Project>
 
+  <Import Project="Versions.props" />
+
   <ItemGroup>
     <!-- Infrastructure -->
     <!-- This package is deprecated. CodecovUploader is now the recommended package. -->
@@ -66,13 +68,13 @@
 
     <!-- CPS -->
     <!-- Find versions at https://dev.azure.com/azure-public/vside/_artifacts/feed/vs-impl -->
-    <PackageReference Update="Microsoft.VisualStudio.ProjectSystem"                                   Version="17.7.294-pre" />
-    <PackageReference Update="Microsoft.VisualStudio.ProjectSystem.Analyzers"                         Version="17.7.294-pre" />
-    <PackageReference Update="Microsoft.VisualStudio.ProjectSystem.Query"                             Version="17.7.294-pre" />
-    <PackageReference Update="Microsoft.VisualStudio.ProjectSystem.SDK"                               Version="17.7.294-pre" />
-    <PackageReference Update="Microsoft.VisualStudio.ProjectSystem.SDK.Tools"                         Version="17.7.294-pre" />
-    <PackageReference Update="Microsoft.VisualStudio.ProjectSystem.VS"                                Version="17.7.294-pre" />
-    <PackageReference Update="Microsoft.VisualStudio.ProjectSystem.XamlTypes"                         Version="17.7.294-pre" />
+    <PackageReference Update="Microsoft.VisualStudio.ProjectSystem"                                   Version="$(CPSPackageVersion)" />
+    <PackageReference Update="Microsoft.VisualStudio.ProjectSystem.Analyzers"                         Version="$(CPSPackageVersion)" />
+    <PackageReference Update="Microsoft.VisualStudio.ProjectSystem.Query"                             Version="$(CPSPackageVersion)" />
+    <PackageReference Update="Microsoft.VisualStudio.ProjectSystem.SDK"                               Version="$(CPSPackageVersion)" />
+    <PackageReference Update="Microsoft.VisualStudio.ProjectSystem.SDK.Tools"                         Version="$(CPSPackageVersion)" />
+    <PackageReference Update="Microsoft.VisualStudio.ProjectSystem.VS"                                Version="$(CPSPackageVersion)" />
+    <PackageReference Update="Microsoft.VisualStudio.ProjectSystem.XamlTypes"                         Version="$(CPSPackageVersion)" />
 
     <!-- Roslyn -->
     <PackageReference Update="Microsoft.CodeAnalysis"                                                 Version="4.7.0-1.final" />

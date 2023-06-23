@@ -9,7 +9,6 @@
     <!-- Infrastructure -->
     <!-- Path Property: PkgCodecov -->
     <PackageReference Include="Codecov"                             ExcludeAssets="all" GeneratePathProperty="true" />
-    <PackageReference Include="MicroBuild.Core.Sentinel"                  PrivateAssets="all" />
     <!-- Path Property: PkgMicrosoft_DiaSymReader_Pdb2Pdb -->
     <PackageReference Include="Microsoft.DiaSymReader.Pdb2Pdb"      ExcludeAssets="all" GeneratePathProperty="true" />
     <PackageReference Include="Microsoft.DotNet.XliffTasks"         PrivateAssets="all" />

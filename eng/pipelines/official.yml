@@ -65,6 +65,10 @@ resources:
   - repository: VSCodeExtensionRepo
     type: git
     name: vs-green
+  # This repo is used to create the version upgrade PR into the dotnet-project-system-vscode repo.
+  - repository: ProjectSystemVSCodeExtensionRepo
+    type: git
+    name: dotnet-project-system-vscode
 
 pool:
   # Agent Queue: https://devdiv.visualstudio.com/DevDiv/_settings/agentqueues?queueId=3123&view=jobs
@@ -310,4 +314,7 @@ stages:
           InsertTargetBranch: ${{ parameters.InsertionVSGreenBranch }}
           ComponentSubDir: $(Build.Repository.Name)
           SetAutoComplete: false
-          
+
+      - template: eng/pipelines/templates/upgrade-version.yml@ProjectSystemVSCodeExtensionRepo
+        parameters:
+          packageVersion: $(PackageVersion)
