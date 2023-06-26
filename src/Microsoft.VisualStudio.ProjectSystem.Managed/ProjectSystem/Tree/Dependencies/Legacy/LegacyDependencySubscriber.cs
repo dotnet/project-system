@@ -80,7 +80,7 @@ internal sealed class LegacyDependencySubscriber : IDependencySubscriber
                 normalGroupIcon: rootNode.Icon.ToProjectSystemType(),
                 warningGroupIcon: rootNode.UnresolvedIcon.ToProjectSystemType(),
                 errorGroupIcon: rootNode.UnresolvedIcon.ToProjectSystemType(),
-                groupNodeFlags: ProjectTreeFlags.Empty);
+                groupNodeFlags: rootNode.Flags);
 
             _snapshot = ImmutableDictionary<DependencyGroupType, ImmutableArray<IDependency>>.Empty
                 .Add(_dependencyType, ImmutableArray<IDependency>.Empty);
