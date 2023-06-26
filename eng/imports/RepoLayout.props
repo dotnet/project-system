@@ -18,6 +18,7 @@
     <VisualStudioSetupInsertionPath>$(VisualStudioSetupOutputPath)Insertion\</VisualStudioSetupInsertionPath>
     <VisualStudioSetupIntermediateOutputPath>$(ArtifactsConfigurationDir)VSSetup.obj\</VisualStudioSetupIntermediateOutputPath>
     <VisualStudioXamlRulesDir>$(VisualStudioSetupOutputPath)Rules\</VisualStudioXamlRulesDir>
+    <VisualStudioExtensionSetupDir>$(RepoRoot)setup\</VisualStudioExtensionSetupDir>
   </PropertyGroup>
 
 </Project>
