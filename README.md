@@ -3,12 +3,6 @@
 | Release             | Build                   | Compliance                   | Publish                   | Localization
 |---------------------|:-----------------------:|:----------------------------:|:-------------------------:|:-------------------------:
 | [main][MainBranch]  | [![MainBuild]][MainRun] | [![MainCompliance]][MainRun] | [![MainPublish]][MainRun] | [![MainLocalization]][MainRun]
-| [16.11][1611Branch] | [![1611Build]][1611Run] |                              |                           |
-| [17.0][170Branch]   | [![170Build]][170Run]   |                              |                           |
-| [17.1][171Branch]   | [![171Build]][171Run]   |                              |                           |
-| [17.2][172Branch]   | [![172Build]][172Run]   |                              |                           |
-| [17.3][173Branch]   | [![173Build]][173Run]   |                              |                           |
-| [17.4][173Branch]   | [![174Build]][174Run]   | [![174Compliance]][174Run]   | [![174Publish]][174Run]   | [![174Localization]][174Run]
 
 This repository contains the .NET Project System for [Visual Studio](https://visualstudio.microsoft.com/vs/) that is written on top of the [Common Project System (CPS)](https://github.com/microsoft/VSProjectSystem) framework. In Visual Studio 2017, Visual Studio 2019, and Visual Studio 2022, this project system is used for .NET Core [SDK-style] (C#, F# and Visual Basic) and Shared Projects (C# and Visual Basic) project types. In the [long term](docs/repo/roadmap.md), this project system will be the basis for all C#, F# and Visual Basic project types. For a list of feature differences between the project systems, see [Feature Comparison](docs/feature-comparison.md).
 
