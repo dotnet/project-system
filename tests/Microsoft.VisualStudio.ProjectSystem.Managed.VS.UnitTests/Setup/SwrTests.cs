@@ -15,6 +15,9 @@ namespace Microsoft.VisualStudio.Setup
 
         private readonly ITestOutputHelper _output;
 
+        private const string _xamlFolderPrefix = @"InstallDir:MSBuild\Microsoft\VisualStudio\Managed";
+        private const string _xamlFilePrefix = @"$(VisualStudioXamlRulesDir)";
+
         public SwrTests(ITestOutputHelper output) => _output = output;
 
         [Fact]
@@ -86,16 +89,10 @@ namespace Microsoft.VisualStudio.Setup
 
             static (string Culture, string File) ParseSwrFile((string Folder, string File) item)
             {
-                const string folderPrefix = @"InstallDir:MSBuild\Microsoft\VisualStudio\Managed";
-                const string filePrefix = @"$(VisualStudioXamlRulesDir)";
-
-                Assert.StartsWith(folderPrefix, item.Folder);
-                Assert.StartsWith(filePrefix, item.File);
-
-                var culture = item.Folder.Substring(folderPrefix.Length).TrimStart('\\');
+                var culture = item.Folder.Substring(_xamlFolderPrefix.Length).TrimStart('\\');
                 var fileName = culture.Length == 0
-                    ? item.File.Substring(filePrefix.Length)
-                    : item.File.Substring(filePrefix.Length + culture.Length + 1);
+                    ? item.File.Substring(_xamlFilePrefix.Length)
+                    : item.File.Substring(_xamlFilePrefix.Length + culture.Length + 1);
 
                 return (culture, fileName);
             }
@@ -146,7 +143,11 @@ namespace Microsoft.VisualStudio.Setup
                     if (folder is null)
                         throw new FileFormatException("'file' entry appears before a 'folder' entry.");
                     var file = fileMatch.Groups["path"].Value;
-                    yield return (folder, file);
+
+                    if (folder.StartsWith(_xamlFolderPrefix) && file.StartsWith(_xamlFilePrefix))
+                    {
+                        yield return (folder, file);
+                    }
                 }
             }
         }

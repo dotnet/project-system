@@ -2,7 +2,7 @@
     "properties": {
       "projectsAndSolutions.sdkStyleProjects.fastUpToDateCheck.enabled": {
         "type": "boolean",
-        "title": "@Setting_FastUpToDateCheck_Enabled_Title{860A27C0-B665-47F3-BC12-637E16A1050A}",
+        "title": "@Setting_FastUpToDateCheck_Enabled_Title;{860A27C0-B665-47F3-BC12-637E16A1050A}",
         "default": true,
         "requiresRestart": false,
         "migration": {
@@ -16,7 +16,7 @@
       },
       "projectsAndSolutions.sdkStyleProjects.fastUpToDateCheck.loggingLevel": {
         "type": "string",
-        "title": "@Setting_FastUpToDateCheck_LoggingLevel_Title{860A27C0-B665-47F3-BC12-637E16A1050A}",
+        "title": "@Setting_FastUpToDateCheck_LoggingLevel_Title;{860A27C0-B665-47F3-BC12-637E16A1050A}",
         "default": "none",
         "enum": [
           "none",
@@ -25,10 +25,10 @@
           "verbose"
         ],
         "enumItemLabels": [
-          "@Setting_FastUpToDateCheck_LoggingLevel_None{860A27C0-B665-47F3-BC12-637E16A1050A}",
-          "@Setting_FastUpToDateCheck_LoggingLevel_Minimal{860A27C0-B665-47F3-BC12-637E16A1050A}",
-          "@Setting_FastUpToDateCheck_LoggingLevel_Info{860A27C0-B665-47F3-BC12-637E16A1050A}",
-          "@Setting_FastUpToDateCheck_LoggingLevel_Verbose{860A27C0-B665-47F3-BC12-637E16A1050A}"
+          "@Setting_FastUpToDateCheck_LoggingLevel_None;{860A27C0-B665-47F3-BC12-637E16A1050A}",
+          "@Setting_FastUpToDateCheck_LoggingLevel_Minimal;{860A27C0-B665-47F3-BC12-637E16A1050A}",
+          "@Setting_FastUpToDateCheck_LoggingLevel_Info;{860A27C0-B665-47F3-BC12-637E16A1050A}",
+          "@Setting_FastUpToDateCheck_LoggingLevel_Verbose;{860A27C0-B665-47F3-BC12-637E16A1050A}"
         ],
         "requiresRestart": false,
         "migration": {
@@ -60,7 +60,7 @@
       },
       "projectsAndSolutions.sdkStyleProjects.fileNestingSettings.ignoreSolutionAndProjectSettings": {
         "type": "boolean",
-        "title": "@Setting_FileNesting_IgnoreSolutionAndProjectSettings_Title{860A27C0-B665-47F3-BC12-637E16A1050A}",
+        "title": "@Setting_FileNesting_IgnoreSolutionAndProjectSettings_Title;{860A27C0-B665-47F3-BC12-637E16A1050A}",
         "default": false,
         "requiresRestart": false,
         "migration": {
@@ -74,8 +74,8 @@
       },
       "projectsAndSolutions.sdkStyleProjects.multiTargetingSettings.preferSingleTargetBuilds": {
         "type": "boolean",
-        "title": "@Setting_FileNesting_PreferSingleTargetBuilds_Title{860A27C0-B665-47F3-BC12-637E16A1050A}",
-        "description": "@Setting_FileNesting_PreferSingleTargetBuilds_Description{860A27C0-B665-47F3-BC12-637E16A1050A}",
+        "title": "@Setting_FileNesting_PreferSingleTargetBuilds_Title;{860A27C0-B665-47F3-BC12-637E16A1050A}",
+        "description": "@Setting_FileNesting_PreferSingleTargetBuilds_Description;{860A27C0-B665-47F3-BC12-637E16A1050A}",
         "default": false,
         "requiresRestart": false,
         "migration": {
@@ -91,19 +91,19 @@
   
     "categories": {
       "projectsAndSolutions.sdkStyleProjects": {
-        "title": "@Settings_Category_SdkStyleProjects{860A27C0-B665-47F3-BC12-637E16A1050A}"
+        "title": "@Settings_Category_SdkStyleProjects;{860A27C0-B665-47F3-BC12-637E16A1050A}"
       },
       "projectsAndSolutions.sdkStyleProjects.fastUpToDateCheck": {
-        "title": "@Settings_Category_FastUpToDateCheck{860A27C0-B665-47F3-BC12-637E16A1050A}",
+        "title": "@Settings_Category_FastUpToDateCheck;{860A27C0-B665-47F3-BC12-637E16A1050A}",
         "order": 1,
         "additionalKeywords": [ "futd", "up-to-date", "build" ]
       },
       "projectsAndSolutions.sdkStyleProjects.fileNestingSettings": {
-        "title": "@Settings_Category_FileNestingSettings{860A27C0-B665-47F3-BC12-637E16A1050A}",
+        "title": "@Settings_Category_FileNestingSettings;{860A27C0-B665-47F3-BC12-637E16A1050A}",
         "order": 2
       },
       "projectsAndSolutions.sdkStyleProjects.multiTargetingSettings": {
-        "title": "@Settings_Category_MultiTargetingSettings{860A27C0-B665-47F3-BC12-637E16A1050A}",
+        "title": "@Settings_Category_MultiTargetingSettings;{860A27C0-B665-47F3-BC12-637E16A1050A}",
         "order": 3,
         "additionalKeywords": [ "build" ]
       }
