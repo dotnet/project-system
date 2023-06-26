@@ -228,7 +228,7 @@ internal sealed class LegacyDependencySubscriber : IDependencySubscriber
 
             void Post(ImmutableDictionary<DependencyGroupType, ImmutableArray<IDependency>> snapshot)
             {
-                // Caller must ensure calls to not overlap
+                // Caller must ensure calls do not overlap
                 _version++;
                 bool accepted = _broadcastBlock.Post(new ProjectVersionedValue<ImmutableDictionary<DependencyGroupType, ImmutableArray<IDependency>>>(
                     snapshot,
