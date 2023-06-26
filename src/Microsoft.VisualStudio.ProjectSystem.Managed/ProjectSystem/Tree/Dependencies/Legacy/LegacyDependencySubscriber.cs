@@ -80,7 +80,7 @@ internal sealed class LegacyDependencySubscriber : IDependencySubscriber
                 normalGroupIcon: rootNode.Icon.ToProjectSystemType(),
                 warningGroupIcon: rootNode.UnresolvedIcon.ToProjectSystemType(),
                 errorGroupIcon: rootNode.UnresolvedIcon.ToProjectSystemType(),
-                groupNodeFlags: ProjectTreeFlags.Empty);
+                groupNodeFlags: rootNode.Flags);
 
             _snapshot = ImmutableDictionary<DependencyGroupType, ImmutableArray<IDependency>>.Empty
                 .Add(_dependencyType, ImmutableArray<IDependency>.Empty);
@@ -228,7 +228,7 @@ internal sealed class LegacyDependencySubscriber : IDependencySubscriber
 
             void Post(ImmutableDictionary<DependencyGroupType, ImmutableArray<IDependency>> snapshot)
             {
-                // Caller must ensure calls to not overlap
+                // Caller must ensure calls do not overlap
                 _version++;
                 bool accepted = _broadcastBlock.Post(new ProjectVersionedValue<ImmutableDictionary<DependencyGroupType, ImmutableArray<IDependency>>>(
                     snapshot,
