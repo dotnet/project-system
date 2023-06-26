@@ -30,7 +30,6 @@
   ru/Microsoft.VisualStudio.ProjectSystem.Managed.VS.resources.dll,
   tr/Microsoft.VisualStudio.ProjectSystem.Managed.resources.dll,
   tr/Microsoft.VisualStudio.ProjectSystem.Managed.VS.resources.dll,
-  UnifiedSettings/ManagedProjectSystem.registration.json,
   zh-Hans/Microsoft.VisualStudio.ProjectSystem.Managed.resources.dll,
   zh-Hans/Microsoft.VisualStudio.ProjectSystem.Managed.VS.resources.dll,
   zh-Hant/Microsoft.VisualStudio.ProjectSystem.Managed.resources.dll,

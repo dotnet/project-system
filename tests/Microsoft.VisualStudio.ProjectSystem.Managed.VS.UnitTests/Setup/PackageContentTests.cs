@@ -19,7 +19,7 @@ namespace Microsoft.VisualStudio.Setup
         public Task ProjectSystem()
         {
             IEnumerable<string> files = GetPackageContents("ProjectSystem.vsix");
-            VerifierSettings.ScrubLinesContaining(DigitalSignature, Rels);
+            VerifierSettings.ScrubLinesContaining(DigitalSignature, Rels, SettingsRegistrationFileSuffix);
             return Verifier.Verify(files);
         }
 
@@ -27,7 +27,7 @@ namespace Microsoft.VisualStudio.Setup
         public Task VisualStudioEditorsSetup()
         {
             IEnumerable<string> files = GetPackageContents("VisualStudioEditorsSetup.vsix");
-            VerifierSettings.ScrubLinesContaining(DigitalSignature, Rels);
+            VerifierSettings.ScrubLinesContaining(DigitalSignature, Rels, SettingsRegistrationFileSuffix);
             return Verifier.Verify(files);
         }
 
