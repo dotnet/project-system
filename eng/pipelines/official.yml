@@ -306,4 +306,5 @@ stages:
           pipelineID: $(System.DefinitionId)
           InsertTargetBranch: ${{ parameters.InsertionVSGreenBranch }}
           ComponentSubDir: $(Build.Repository.Name)
+          SetAutoComplete: false
           
