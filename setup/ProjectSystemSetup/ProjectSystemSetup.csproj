@@ -27,10 +27,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Content Include="UnifiedSettings\ManagedProjectSystem.registration.json">
-      <IncludeInVSIX>true</IncludeInVSIX>
-    </Content>
-    
     <ProjectReference Include="..\..\src\Microsoft.VisualStudio.ProjectSystem.Managed.VS\Microsoft.VisualStudio.ProjectSystem.Managed.VS.csproj">
       <IncludeOutputGroupsInVSIX>BuiltProjectOutputGroup;GetCopyToOutputDirectoryItems;SatelliteDllsProjectOutputGroup;PkgdefProjectOutputGroup</IncludeOutputGroupsInVSIX>
     </ProjectReference>
