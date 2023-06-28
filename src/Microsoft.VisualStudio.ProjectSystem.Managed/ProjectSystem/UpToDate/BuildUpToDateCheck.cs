@@ -726,12 +726,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
         {
             ITimestampCache? timestampCache = _solutionBuildContextProvider.CurrentSolutionBuildContext?.CopyItemTimestamps;
 
-            if (timestampCache is null)
-            {
-                // This might be null during validation runs which can start after the last project build.
-                // If it is, we will just skip checking the copy items.
-                return true;
-            }
+            Assumes.NotNull(timestampCache);
 
             string outputFullPath = Path.Combine(state.MSBuildProjectDirectory, state.OutputRelativeOrFullPath);
 
@@ -964,6 +959,25 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
                 // Short-lived cache of timestamp by path
                 var timestampCache = new TimestampCache(_fileSystem);
+
+                // Ensure we have a context object for the current solution build.
+                //
+                // Ordinarily, this is created when the SBM calls ISolutionBuildEventListener.NotifySolutionBuildStarting,
+                // and cleared again later when the SBM calls ISolutionBuildEventListener.NotifySolutionBuildCompleted.
+                //
+                // However there are two cases where it may be null here:
+                //
+                // 1. When performing a validation run that continues after the solution build completed, or
+                // 2. When the build occurs in response to debugging (e.g. F5) in which case the SBM calls the
+                //    FUTDC *before* it invokes any solution build events.
+                //
+                // In either case, we construct an event here lazily so that we can correctly test for the
+                // existence of copy items in CheckCopyToOutputDirectoryItems.
+                if (_solutionBuildContextProvider.CurrentSolutionBuildContext is null)
+                {
+                    _solutionBuildEventListener.NotifySolutionBuildStarting();
+                    Assumes.NotNull(_solutionBuildContextProvider.CurrentSolutionBuildContext);
+                }
 
                 globalProperties.TryGetValue(FastUpToDateCheckIgnoresKindsGlobalPropertyName, out string? ignoreKindsString);
 
