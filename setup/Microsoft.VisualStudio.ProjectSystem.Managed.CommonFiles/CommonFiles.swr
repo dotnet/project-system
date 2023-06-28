@@ -657,6 +657,3 @@ folder "InstallDir:MSBuild\Microsoft\VisualStudio\Managed\zh-Hant"
   file source="$(VisualStudioXamlRulesDir)zh-Hant\ResolvedProjectReference.xaml"
   file source="$(VisualStudioXamlRulesDir)zh-Hant\ResolvedSdkReference.xaml"
   file source="$(VisualStudioXamlRulesDir)zh-Hant\SdkReference.xaml"
-
-  folder "Extensions\Microsoft\ManagedProjectSystem\UnifiedSettings"
-    file source="$(VisualStudioExtensionSetupDir)\ProjectSystemSetup\UnifiedSettings\ManagedProjectSystem.registration.json"

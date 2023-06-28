@@ -168,43 +168,4 @@
   <data name="27" xml:space="preserve">
     <value>.NET Core 2015 Project Files (*.xproj);*.xproj</value>
   </data>
-  <data name="Setting_FastUpToDateCheck_Enabled_Title">
-    <value>Don't call MSBuild if a project appears to be up to date</value>
-  </data>
-  <data name="Setting_FastUpToDateCheck_LoggingLevel_Title">
-    <value>Logging Level</value>
-  </data>
-  <data name="Setting_FastUpToDateCheck_LoggingLevel_None">
-    <value>None</value>
-  </data>
-  <data name="Setting_FastUpToDateCheck_LoggingLevel_Minimal">
-    <value>Minimal</value>
-  </data>
-  <data name="Setting_FastUpToDateCheck_LoggingLevel_Info">
-    <value>Info</value>
-  </data>
-  <data name="Setting_FastUpToDateCheck_LoggingLevel_Verbose">
-    <value>Verbose</value>
-  </data>
-  <data name="Setting_FileNesting_IgnoreSolutionAndProjectSettings_Title">
-    <value>Ignore solution and project settings</value>
-  </data>
-  <data name="Setting_FileNesting_PreferSingleTargetBuilds_Title">
-    <value>Prefer single-target builds when starting a project</value>
-  </data>
-  <data name="Setting_FileNesting_PreferSingleTargetBuilds_Description">
-    <value>When starting a project that targets multiple frameworks the build time can be reduced by building only a single one.</value>
-  </data>
-  <data name="Settings_Category_SdkStyleProjects">
-    <value>SDK-style projects</value>
-  </data>
-  <data name="Settings_Category_FastUpToDateCheck">
-    <value>Up to date checks</value>
-  </data>
-  <data name="Settings_Category_FileNestingSettings">
-    <value>File nesting settings</value>
-  </data>
-  <data name="Settings_Category_MultiTargetingSettings">
-    <value>Multi-targeting settings</value>
-  </data> 
 </root>
