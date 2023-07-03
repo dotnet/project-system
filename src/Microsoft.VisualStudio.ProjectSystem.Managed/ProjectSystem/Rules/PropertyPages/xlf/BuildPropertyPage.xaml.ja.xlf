@@ -107,6 +107,16 @@
         <target state="translated">参照アセンブリ</target>
         <note />
       </trans-unit>
+      <trans-unit id="BoolProperty|PublishAot|Description">
+        <source>Enable Ahead-of-Time (AOT) Compilation to generate native machine code for your .NET Core application during the publish process for improved performance and reduced startup time.</source>
+        <target state="new">Enable Ahead-of-Time (AOT) Compilation to generate native machine code for your .NET Core application during the publish process for improved performance and reduced startup time.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="BoolProperty|PublishAot|DisplayName">
+        <source>Publish native AOT</source>
+        <target state="new">Publish native AOT</target>
+        <note />
+      </trans-unit>
       <trans-unit id="BoolProperty|SignAssembly|Description">
         <source>Sign the output assembly to give it a strong name.</source>
         <target state="translated">出力アセンブリに署名して、厳密な名前を付けます。</target>
@@ -172,6 +182,16 @@
         <target state="translated">出力</target>
         <note />
       </trans-unit>
+      <trans-unit id="Category|Publish|Description">
+        <source>Configures options in the publish process.</source>
+        <target state="new">Configures options in the publish process.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="Category|Publish|DisplayName">
+        <source>Publish</source>
+        <target state="new">Publish</target>
+        <note />
+      </trans-unit>
       <trans-unit id="Category|StrongNaming|Description">
         <source>Configures strong name signing of build outputs.</source>
         <target state="translated">ビルド出力の厳密な名前の署名を構成します。</target>
@@ -190,6 +210,16 @@
       <trans-unit id="DynamicEnumProperty|PlatformTarget|DisplayName">
         <source>Platform target</source>
         <target state="translated">プラットフォーム ターゲット</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="DynamicEnumProperty|Trimming|Description">
+        <source>Select the desired .NET trimming option for optimizing your application's deployment size and performance.</source>
+        <target state="new">Select the desired .NET trimming option for optimizing your application's deployment size and performance.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="DynamicEnumProperty|Trimming|DisplayName">
+        <source>Trimming</source>
+        <target state="new">Trimming</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumProperty|DebugType|Description">
