@@ -9,42 +9,31 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties;
 [AppliesTo(ProjectCapability.DotNet)]
 internal class TrimmingEnumProvider : IDynamicEnumValuesProvider
 {
-
-    [ImportingConstructor]
-    public TrimmingEnumProvider()
-    {
-    }
-
     public Task<IDynamicEnumValuesGenerator> GetProviderAsync(IList<NameValuePair>? options)
     {
         return Task.FromResult<IDynamicEnumValuesGenerator>(new TrimmingEnumGenerator());
     }
-}
 
-internal class TrimmingEnumGenerator : IDynamicEnumValuesGenerator
-{
-
-    public bool AllowCustomValues => true;
-
-    public TrimmingEnumGenerator()
+    private class TrimmingEnumGenerator : IDynamicEnumValuesGenerator
     {
-    }
+        public bool AllowCustomValues => true;
 
-    public Task<ICollection<IEnumValue>> GetListedValuesAsync()
-    {
-        List<IEnumValue> enumValues = new()
+        public Task<ICollection<IEnumValue>> GetListedValuesAsync()
+        {
+            List<IEnumValue> enumValues = new()
         {
             new PageEnumValue(new EnumValue { Name = "", DisplayName = "(Default)" }),
             new PageEnumValue(new EnumValue { Name = "none", DisplayName = "None" }),
             new PageEnumValue(new EnumValue { Name = "full", DisplayName = "Full" })
         };
 
-        return Task.FromResult<ICollection<IEnumValue>>(enumValues);
-    }
+            return Task.FromResult<ICollection<IEnumValue>>(enumValues);
+        }
 
-    public Task<IEnumValue?> TryCreateEnumValueAsync(string userSuppliedValue)
-    {
-        var value = new PageEnumValue(new EnumValue { Name = userSuppliedValue, DisplayName = userSuppliedValue });
-        return Task.FromResult<IEnumValue?>(value);
+        public Task<IEnumValue?> TryCreateEnumValueAsync(string userSuppliedValue)
+        {
+            var value = new PageEnumValue(new EnumValue { Name = userSuppliedValue, DisplayName = userSuppliedValue });
+            return Task.FromResult<IEnumValue?>(value);
+        }
     }
 }
