@@ -8,10 +8,10 @@ jobs:
 
     steps:
     - name: Clone the repository
-      uses: actions/checkout@v3
+      uses: actions/checkout@96f53100ba2a5449eb71d2e6604bbcd94b9449b5
 
     - name: Validate Markdown links
-      uses: gaurav-nelson/github-action-markdown-link-check@v1
+      uses: gaurav-nelson/github-action-markdown-link-check@322b2315689b8cc8c65c14a07064ec862e62ee7c
       with:
         use-quiet-mode: 'yes'
         # https://github.com/tcort/markdown-link-check#config-file-format
