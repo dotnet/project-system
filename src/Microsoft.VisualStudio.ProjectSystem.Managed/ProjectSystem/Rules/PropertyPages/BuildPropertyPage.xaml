@@ -394,7 +394,7 @@
   <DynamicEnumProperty Name="Trimming"
                 DisplayName="Trimming"
                 Description="Select the desired .NET trimming option for optimizing your application's deployment size and performance."
-                HelpUrl="https://learn.microsoft.com/dotnet/core/deploying/native-aot/?tabs=net7"
+                HelpUrl="https://go.microsoft.com/fwlink/?linkid=2240879"
                 Category="Publish"
                 EnumProvider="TrimmingEnumProvider"
                 MultipleValuesAllowed="False">
@@ -412,7 +412,7 @@
   <BoolProperty Name="PublishAot"
                 DisplayName="Publish native AOT"
                 Description="Enable Ahead-of-Time (AOT) Compilation to generate native machine code for your .NET Core application during the publish process for improved performance and reduced startup time."
-                HelpUrl="https://learn.microsoft.com/dotnet/core/deploying/native-aot/?tabs=net7"
+                HelpUrl="https://go.microsoft.com/fwlink/?linkid=2240879"
                 Category="Publish">
     <BoolProperty.DataSource>
       <DataSource HasConfigurationCondition="False" />
