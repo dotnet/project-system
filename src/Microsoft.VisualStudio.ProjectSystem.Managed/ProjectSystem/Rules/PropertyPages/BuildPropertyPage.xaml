@@ -184,6 +184,39 @@
                DisplayName="Embedded in DLL/EXE, portable across platforms" />
   </EnumProperty>
 
+  <!-- These bool properties should only be visible for class libraries targeting .NET 8 or higher. -->
+  <BoolProperty Name="IsTrimmable"
+                DisplayName="Trimmable"
+                Description="Marks your assembly as trimmable and enables trim warnings for that project."
+                HelpUrl="https://go.microsoft.com/fwlink/?linkid=2240960"
+                Category="General">
+    <BoolProperty.DataSource>
+      <DataSource HasConfigurationCondition="True"
+                  Persistence="ProjectFileWithInterception" />
+    </BoolProperty.DataSource>
+    <BoolProperty.Metadata>
+      <NameValuePair Name="VisibilityCondition">
+        <NameValuePair.Value>(has-net-core-app-version-or-greater "8.0")</NameValuePair.Value>
+      </NameValuePair>
+    </BoolProperty.Metadata>
+  </BoolProperty>
+
+  <BoolProperty Name="IsAotCompatible"
+                DisplayName="AOT Compatible"
+                Description="Indicates that the library project is AOT compatible."
+                HelpUrl="https://go.microsoft.com/fwlink/?linkid=2240960"
+                Category="General">
+    <BoolProperty.DataSource>
+      <DataSource HasConfigurationCondition="True"
+                  Persistence="ProjectFileWithInterception" />
+    </BoolProperty.DataSource>
+    <BoolProperty.Metadata>
+      <NameValuePair Name="VisibilityCondition">
+        <NameValuePair.Value>(has-net-core-app-version-or-greater "8.0")</NameValuePair.Value>
+      </NameValuePair>
+    </BoolProperty.Metadata>
+  </BoolProperty>
+
   <BoolProperty Name="WarningLevelOverridden"
                 ReadOnly="True"
                 Visible="False">

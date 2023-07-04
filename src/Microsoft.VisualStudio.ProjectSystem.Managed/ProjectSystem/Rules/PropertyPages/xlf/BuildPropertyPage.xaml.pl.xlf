@@ -72,6 +72,26 @@
         <target state="translated">Plik dokumentacji</target>
         <note />
       </trans-unit>
+      <trans-unit id="BoolProperty|IsAotCompatible|Description">
+        <source>Indicates that the library project is AOT compatible.</source>
+        <target state="new">Indicates that the library project is AOT compatible.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="BoolProperty|IsAotCompatible|DisplayName">
+        <source>AOT Compatible</source>
+        <target state="new">AOT Compatible</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="BoolProperty|IsTrimmable|Description">
+        <source>Marks your assembly as trimmable and enables trim warnings for that project.</source>
+        <target state="new">Marks your assembly as trimmable and enables trim warnings for that project.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="BoolProperty|IsTrimmable|DisplayName">
+        <source>Trimmable</source>
+        <target state="new">Trimmable</target>
+        <note />
+      </trans-unit>
       <trans-unit id="BoolProperty|Optimize|Description">
         <source>Enable compiler optimizations for smaller, faster, and more efficient output.</source>
         <target state="translated">Włącz optymalizacje kompilatora dla mniejszych, szybszych i bardziej wydajnych danych wyjściowych.</target>
