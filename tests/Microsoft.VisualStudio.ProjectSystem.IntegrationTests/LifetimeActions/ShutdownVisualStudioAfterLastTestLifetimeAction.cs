@@ -11,7 +11,7 @@ namespace Microsoft.VisualStudio.LifetimeActions
     /// </summary>
     [ProvidesOperationsExtension]
     [Export(typeof(ITestLifetimeAction))]
-    internal class ShutdownVisualStudioAfterLastTestLifetimeAction : ITestLifetimeAction
+    internal sealed class ShutdownVisualStudioAfterLastTestLifetimeAction : ITestLifetimeAction
     {
         private static IntegrationTestBase? _lastTest;
 

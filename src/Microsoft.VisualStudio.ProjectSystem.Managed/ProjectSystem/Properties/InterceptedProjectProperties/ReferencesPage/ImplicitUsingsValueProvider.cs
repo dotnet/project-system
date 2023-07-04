@@ -10,16 +10,14 @@ internal class ImplicitUsingsValueProvider : InterceptingPropertyValueProviderBa
 {
     private readonly IProjectAccessor _projectAccessor;
     private readonly ConfiguredProject _configuredProject;
-    private readonly IProjectThreadingService _threadingService;
 
     private const string UsingItemType = "Using";
 
     [ImportingConstructor]
-    public ImplicitUsingsValueProvider(IProjectAccessor projectAccessor, ConfiguredProject configuredProject, IProjectThreadingService threadingService)
+    public ImplicitUsingsValueProvider(IProjectAccessor projectAccessor, ConfiguredProject configuredProject)
     {
         _projectAccessor = projectAccessor;
         _configuredProject = configuredProject;
-        _threadingService = threadingService;
     }
 
     private async Task<List<ImplicitUsing>> GetImplicitUsingsAsync()
@@ -51,7 +49,7 @@ internal class ImplicitUsingsValueProvider : InterceptingPropertyValueProviderBa
         List<ImplicitUsing> usings = await GetImplicitUsingsAsync();
         return JsonConvert.SerializeObject(usings);
     }
-    
+
     public override Task<string> OnGetEvaluatedPropertyValueAsync(string propertyName, string evaluatedPropertyValue, IProjectProperties defaultProperties)
     {
         return GetImplicitUsingsStringAsync();
@@ -105,7 +103,7 @@ internal class ImplicitUsingsValueProvider : InterceptingPropertyValueProviderBa
                 usingsToSet.Remove(existingUsing);
             }
         }
-        
+
         // Verify we have at least one valid import to add before acquiring a write lock.
         if (usingsToSet.Any(importToAdd => importToAdd.Include.Length > 0))
         {
@@ -124,7 +122,7 @@ internal class ImplicitUsingsValueProvider : InterceptingPropertyValueProviderBa
                                 .Where(i => string.Equals(usingToSet.Include, i.EvaluatedInclude, StringComparisons.ItemNames) && !i.IsImported)
                         );
                     }
-                    
+
                     if (usingToSet.Include.Length > 0 && (usingToSet.Alias is null || usingToSet.Alias.Length > 0))
                     {
                         var usingMetadata = new List<KeyValuePair<string, string>>();
@@ -137,7 +135,7 @@ internal class ImplicitUsingsValueProvider : InterceptingPropertyValueProviderBa
                         {
                             usingMetadata.Add(new KeyValuePair<string, string>("Static", usingToSet.IsStatic.ToString()));
                         }
-                        
+
                         project.AddItem(UsingItemType, usingToSet.Include, usingMetadata);
                     }
                 }

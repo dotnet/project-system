@@ -10,15 +10,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties;
 internal sealed class ImportedNamespacesValueProvider : InterceptingPropertyValueProviderBase
 {
     private readonly ConfiguredProject _configuredProject;
-    private readonly IProjectThreadingService _threadingService;
     private readonly IProjectAccessor _projectAccessor;
     private readonly ConcurrentHashSet<string> _specialImports;
-    
+
     [ImportingConstructor]
-    public ImportedNamespacesValueProvider(ConfiguredProject configuredProject, IProjectThreadingService threadingService, IProjectAccessor projectAccessor)
+    public ImportedNamespacesValueProvider(ConfiguredProject configuredProject, IProjectAccessor projectAccessor)
     {
         _configuredProject = configuredProject;
-        _threadingService = threadingService;
         _projectAccessor = projectAccessor;
         _specialImports = new ConcurrentHashSet<string>();
     }
@@ -41,7 +39,7 @@ internal sealed class ImportedNamespacesValueProvider : InterceptingPropertyValu
     {
         return KeyValuePairListEncoding.Format(await GetSelectedImportListAsync());
     }
-    
+
     private async Task<List<(string Import, string IsReadOnly)>> GetSelectedImportListAsync()
     {
         string projectName = Path.GetFileNameWithoutExtension(_configuredProject.UnconfiguredProject.FullPath);
@@ -61,7 +59,7 @@ internal sealed class ImportedNamespacesValueProvider : InterceptingPropertyValu
 
         return selectedImports;
     }
-    
+
     public override async Task<string> OnGetUnevaluatedPropertyValueAsync(string propertyName, string unevaluatedPropertyValue, IProjectProperties defaultProperties)
     {
         await ((ConfiguredProject2)_configuredProject).EnsureProjectEvaluatedAsync();
@@ -96,10 +94,9 @@ internal sealed class ImportedNamespacesValueProvider : InterceptingPropertyValu
                         {
                             _specialImports.Add(value);
                         }
-                        
+
                         project.RemoveItem(importProjectItem);
                     });
-
                 }
                 catch (Exception ex)
                 {
@@ -110,7 +107,7 @@ internal sealed class ImportedNamespacesValueProvider : InterceptingPropertyValu
                     }
                 }
             }
-            
+
             importsToAdd.Remove(value);
         }
 

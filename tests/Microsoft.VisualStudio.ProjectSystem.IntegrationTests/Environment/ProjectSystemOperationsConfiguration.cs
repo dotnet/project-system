@@ -10,7 +10,7 @@ namespace Microsoft.VisualStudio
 {
     // Heavily based on MsTestOperationsConfiguration, which is only needed so that we can control the CompositionAssemblies
     // to avoid MEF composition errors being output into the test output and making it harder to understand the build log.
-    internal class ProjectSystemOperationsConfiguration : OperationsConfiguration
+    internal sealed class ProjectSystemOperationsConfiguration : OperationsConfiguration
     {
         internal ProjectSystemOperationsConfiguration(TestContext testContext)
         {

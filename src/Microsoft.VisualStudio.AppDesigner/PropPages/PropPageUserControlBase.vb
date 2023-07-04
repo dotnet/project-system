@@ -154,7 +154,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         End Enum
 
         'Used for caching property change notification until after Apply is done
-        Private Class PropertyChange
+        Private NotInheritable Class PropertyChange
             Public ReadOnly DispId As Integer
             Public ReadOnly Source As PropertyChangeSource
 
