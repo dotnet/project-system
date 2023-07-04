@@ -424,6 +424,7 @@
                DisplayName="When the output is updated" />
   </EnumProperty>
 
+  <!-- These Native AOT properties should not be visible for WPF, WinForms, MAUI or class library projects. -->
   <DynamicEnumProperty Name="Trimming"
                 DisplayName="Trimming"
                 Description="Select the desired .NET trimming option for optimizing your application's deployment size and performance."
@@ -437,7 +438,13 @@
     </DynamicEnumProperty.DataSource>
     <DynamicEnumProperty.Metadata>
       <NameValuePair Name="VisibilityCondition">
-        <NameValuePair.Value>(has-net-core-app-version-or-greater "8.0")</NameValuePair.Value>
+        <NameValuePair.Value>
+          (and
+            (has-net-core-app-version-or-greater "8.0")
+            (and
+               (not (has-evaluated-value "Application" "UseWindowsForms" true))
+               (not (has-evaluated-value "Application" "UseWPF" true))))
+        </NameValuePair.Value>
       </NameValuePair>
     </DynamicEnumProperty.Metadata>
   </DynamicEnumProperty>
@@ -455,9 +462,9 @@
         <NameValuePair.Value>
           (and
             (has-net-core-app-version-or-greater "8.0")
-            (or
-              (not (has-project-capability "WinForms"))
-              (not (has-project-capability "WPF"))))
+            (and
+               (not (has-evaluated-value "Application" "UseWindowsForms" true))
+               (not (has-evaluated-value "Application" "UseWPF" true))))
         </NameValuePair.Value>
       </NameValuePair>
     </BoolProperty.Metadata>
