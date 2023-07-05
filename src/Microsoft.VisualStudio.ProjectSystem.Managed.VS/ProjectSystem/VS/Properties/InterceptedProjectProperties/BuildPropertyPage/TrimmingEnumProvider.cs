@@ -16,18 +16,18 @@ internal class TrimmingEnumProvider : IDynamicEnumValuesProvider
 
     private class TrimmingEnumGenerator : IDynamicEnumValuesGenerator
     {
-        public bool AllowCustomValues => true;
-
-        public Task<ICollection<IEnumValue>> GetListedValuesAsync()
-        {
-            List<IEnumValue> enumValues = new()
+        private static readonly List<IEnumValue> s_enumValues = new()
         {
             new PageEnumValue(new EnumValue { Name = "", DisplayName = "(Default)" }),
             new PageEnumValue(new EnumValue { Name = "none", DisplayName = "None" }),
             new PageEnumValue(new EnumValue { Name = "full", DisplayName = "Full" })
         };
 
-            return Task.FromResult<ICollection<IEnumValue>>(enumValues);
+        public bool AllowCustomValues => true;
+
+        public Task<ICollection<IEnumValue>> GetListedValuesAsync()
+        {
+            return Task.FromResult<ICollection<IEnumValue>>(s_enumValues);
         }
 
         public Task<IEnumValue?> TryCreateEnumValueAsync(string userSuppliedValue)
