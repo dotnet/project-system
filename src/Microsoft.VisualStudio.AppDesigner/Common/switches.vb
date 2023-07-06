@@ -143,7 +143,7 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
     ''' <summary>
     ''' Contains predefined switches for enabling/disabling trace output or code instrumentation.
     ''' </summary>
-    Friend Class Switches
+    Friend NotInheritable Class Switches
 
         '------------- Resource Editor -------------
 
@@ -395,7 +395,7 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
         ''' <summary>
         ''' A Switch which has a simple enum value (either as integer or string representation)
         ''' </summary>
-        Public Class EnumSwitch(Of T)
+        Public NotInheritable Class EnumSwitch(Of T)
             Inherits Switch
 
             Public Sub New(DisplayName As String, Description As String)

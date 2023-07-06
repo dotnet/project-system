@@ -1565,7 +1565,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' Helper class for PropertyDescriptorSetValue - detects if a PropertyDescriptor.SetValue
         '''   fails due to a canceled checkout...
         ''' </summary>
-        Private Class PropertyDescriptorSetValueHelper
+        Private NotInheritable Class PropertyDescriptorSetValueHelper
             Private _valueChangedWasFired As Boolean
 
             ''' <summary>

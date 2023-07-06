@@ -209,16 +209,5 @@ namespace Microsoft.VisualStudio.IO
 
             return fileData;
         }
-
-        private FileData GetOrAddFileData(string path)
-        {
-            if (!Files.TryGetValue(path, out FileData fileData))
-            {
-                fileData = new();
-                Files.Add(path, fileData);
-            }
-
-            return fileData;
-        }
     }
 }

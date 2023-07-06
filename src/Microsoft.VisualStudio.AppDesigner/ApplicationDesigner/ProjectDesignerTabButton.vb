@@ -232,7 +232,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         '''<summary>
         ''' custom build accessible object class
         '''</summary>
-        Private Class DesignerTabButtonAccessibleObject
+        Private NotInheritable Class DesignerTabButtonAccessibleObject
             Inherits ButtonBaseAccessibleObject
 
             ' button which this accessible object belongs to

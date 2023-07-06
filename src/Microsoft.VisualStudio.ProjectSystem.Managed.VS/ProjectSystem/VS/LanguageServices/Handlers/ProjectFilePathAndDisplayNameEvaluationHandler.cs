@@ -13,13 +13,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
     [Export(typeof(IWorkspaceUpdateHandler))]
     internal class ProjectFilePathAndDisplayNameEvaluationHandler : IWorkspaceUpdateHandler, IProjectEvaluationHandler
     {
-        private readonly UnconfiguredProject _project;
         private readonly IImplicitlyActiveDimensionProvider _implicitlyActiveDimensionProvider;
 
         [ImportingConstructor]
-        public ProjectFilePathAndDisplayNameEvaluationHandler(UnconfiguredProject project, IImplicitlyActiveDimensionProvider implicitlyActiveDimensionProvider)
+        public ProjectFilePathAndDisplayNameEvaluationHandler(UnconfiguredProject _, IImplicitlyActiveDimensionProvider implicitlyActiveDimensionProvider)
         {
-            _project = project;
             _implicitlyActiveDimensionProvider = implicitlyActiveDimensionProvider;
         }
 
