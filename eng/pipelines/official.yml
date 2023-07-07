@@ -95,6 +95,7 @@ variables:
   # - https://docs.opensource.microsoft.com/tools/cg/how-to/nuget-multifeed-configuration/
   # - https://onebranch.visualstudio.com/OneBranch/_wiki/wikis/OneBranch.wiki/5205/TSG-Build-Broken-Due-to-Using-Multiple-Feeds?anchor=setting-nugetsecurityanalysiswarninglevel-in-cdp
   NugetSecurityAnalysisWarningLevel: none
+  NugetMultiFeedWarnLevel: none
   # Allows CodeQL to run on our Build job.
   # https://eng.ms/docs/cloud-ai-platform/devdiv/one-engineering-system-1es/1es-docs/codeql/configuring-codeql3000-ado-pipelines
   Codeql.Enabled: true
