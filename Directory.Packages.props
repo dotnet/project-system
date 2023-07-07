@@ -1,0 +1,130 @@
+<!-- Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information. -->
+<Project>
+
+  <Import Project="eng\imports\Versions.props" />
+
+  <PropertyGroup>
+    <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <!-- Infrastructure -->
+    <!-- This package is deprecated. CodecovUploader is now the recommended package. -->
+    <PackageVersion Include="Codecov"                                                                Version="1.13.0" />
+    <PackageVersion Include="MicroBuild.Core.Sentinel"                                               Version="1.0.0" />
+    <!-- This is used for publishing PDBs to the legacy symbol server. It converts portable PDBs to Windows PDBs (embedded). -->
+    <!-- https://devdiv.visualstudio.com/DevDiv/_wiki/wikis/DevDiv.wiki/672/Archive-Symbols-with-Symweb?anchor=portable-pdbs -->
+    <PackageVersion Include="Microsoft.DiaSymReader.Pdb2Pdb"                                         Version="1.1.0-beta2-22320-02" />
+    <PackageVersion Include="Microsoft.DotNet.XliffTasks"                                            Version="1.0.0-beta.23073.2" />
+    <!--
+      The SourceLink package depends on the repo provider used.
+      The following package is only valid when using from GitHub repo.
+      https://github.com/dotnet/sourcelink#using-source-link-in-net-projects
+    -->
+    <PackageVersion Include="Microsoft.SourceLink.GitHub"                                            Version="1.1.1" />
+    <PackageVersion Include="Microsoft.VisualStudio.Internal.MicroBuild"                             Version="2.0.115" />
+    <PackageVersion Include="Microsoft.VisualStudio.Internal.MicroBuild.NpmPack"                     Version="2.0.117" />
+    <PackageVersion Include="Microsoft.VisualStudio.Internal.MicroBuild.Swix"                        Version="2.0.115" />
+    <PackageVersion Include="Microsoft.VisualStudio.Internal.MicroBuild.Vsman"                       Version="2.0.115" />
+    <PackageVersion Include="Microsoft.VisualStudioEng.MicroBuild.Core"                              Version="1.0.0" />
+    <PackageVersion Include="Nerdbank.GitVersioning"                                                 Version="3.6.79-alpha" />
+    <PackageVersion Include="Nerdbank.Streams"                                                       Version="2.9.112" />
+    <PackageVersion Include="System.IO.Pipelines"                                                    Version="7.0.0" />
+
+    <!-- VS SDK -->
+    <!-- https://dev.azure.com/azure-public/vside/_artifacts/feed/vssdk -->
+    <PackageVersion Include="EnvDTE"                                                                 Version="17.3.32804.24" />
+    <PackageVersion Include="Microsoft.Internal.VisualStudio.Interop"                                Version="17.3.32804.24" />
+    <PackageVersion Include="Microsoft.ServiceHub.Framework"                                         Version="4.3.36-preview" />
+    <PackageVersion Include="Microsoft.VisualStudio.ComponentModelHost"                              Version="17.3.198" />
+    <PackageVersion Include="Microsoft.VisualStudio.Composition"                                     Version="17.7.9-preview" />
+    <PackageVersion Include="Microsoft.VisualStudio.Data.Core"                                       Version="17.0.0-preview-2-31223-026" />
+    <PackageVersion Include="Microsoft.VisualStudio.Data.Services"                                   Version="17.0.0-preview-2-31223-026" />
+    <PackageVersion Include="Microsoft.VisualStudio.DataDesign.Common"                               Version="17.0.0-preview-2-31223-026" />
+    <PackageVersion Include="Microsoft.VisualStudio.DataTools.Interop"                               Version="17.0.0-preview-2-31223-026" />
+    <PackageVersion Include="Microsoft.VisualStudio.Debugger.Contracts"                              Version="17.4.0-beta.22470.1" />
+    <PackageVersion Include="Microsoft.VisualStudio.Debugger.UI.Interfaces"                          Version="17.4.0-beta.22470.1" />
+    <PackageVersion Include="Microsoft.VisualStudio.Designer.Interfaces"                             Version="17.3.32804.24" />
+    <PackageVersion Include="Microsoft.VisualStudio.ImageCatalog"                                    Version="17.3.32804.24" />
+    <PackageVersion Include="Microsoft.VisualStudio.Interop"                                         Version="17.4.0-preview-2-32826-307" />
+    <PackageVersion Include="Microsoft.VisualStudio.ManagedInterfaces"                               Version="8.0.50728" />
+    <PackageVersion Include="Microsoft.VisualStudio.RpcContracts"                                    Version="17.7.5-preview" />
+    <PackageVersion Include="Microsoft.VisualStudio.SDK.EmbedInteropTypes"                           Version="15.0.36" />
+    <PackageVersion Include="Microsoft.VisualStudio.Settings.15.0"                                   Version="17.3.32804.24" />
+    <PackageVersion Include="Microsoft.VisualStudio.Setup.Configuration.Interop"                     Version="3.2.2146" />
+    <PackageVersion Include="Microsoft.VisualStudio.Shell.15.0"                                      Version="17.3.32804.24" />
+    <PackageVersion Include="Microsoft.VisualStudio.Shell.Design"                                    Version="17.3.32804.24" />
+    <PackageVersion Include="Microsoft.VisualStudio.Shell.Framework"                                 Version="17.3.32804.24" />
+    <PackageVersion Include="Microsoft.VisualStudio.Telemetry"                                       Version="17.7.47" />
+    <PackageVersion Include="Microsoft.VisualStudio.TemplateWizardInterface"                         Version="17.3.32804.24" />
+    <PackageVersion Include="Microsoft.VisualStudio.Threading"                                       Version="17.7.15-preview" />
+    <PackageVersion Include="Microsoft.VisualStudio.Threading.Analyzers"                             Version="17.7.15-preview" />
+    <PackageVersion Include="Microsoft.VisualStudio.Utilities"                                       Version="17.7.36307-preview.2" />
+    <PackageVersion Include="Microsoft.VisualStudio.Validation"                                      Version="17.6.11" />
+    <PackageVersion Include="Microsoft.VisualStudio.XmlEditor"                                       Version="17.3.32804.24" />
+    <PackageVersion Include="Microsoft.VSSDK.BuildTools"                                             Version="17.5.18-preview1" />
+    <PackageVersion Include="System.Threading.Tasks.Dataflow"                                        Version="7.0.0" />
+    <PackageVersion Include="Microsoft.VSDesigner"                                                   Version="17.0.0-preview-2-31223-026" />
+    <PackageVersion Include="VsWebSite.Interop"                                                      Version="16.8.30523.219" />
+
+    <!-- CPS -->
+    <!-- Find versions at https://dev.azure.com/azure-public/vside/_artifacts/feed/vs-impl -->
+    <PackageVersion Include="Microsoft.VisualStudio.ProjectSystem"                                   Version="$(CPSPackageVersion)" />
+    <PackageVersion Include="Microsoft.VisualStudio.ProjectSystem.Analyzers"                         Version="$(CPSPackageVersion)" />
+    <PackageVersion Include="Microsoft.VisualStudio.ProjectSystem.Query"                             Version="$(CPSPackageVersion)" />
+    <PackageVersion Include="Microsoft.VisualStudio.ProjectSystem.SDK"                               Version="$(CPSPackageVersion)" />
+    <PackageVersion Include="Microsoft.VisualStudio.ProjectSystem.SDK.Tools"                         Version="$(CPSPackageVersion)" />
+    <PackageVersion Include="Microsoft.VisualStudio.ProjectSystem.VS"                                Version="$(CPSPackageVersion)" />
+    <PackageVersion Include="Microsoft.VisualStudio.ProjectSystem.XamlTypes"                         Version="$(CPSPackageVersion)" />
+
+    <!-- Roslyn -->
+    <PackageVersion Include="Microsoft.CodeAnalysis"                                                 Version="4.7.0-1.final" />
+    <PackageVersion Include="Microsoft.CodeAnalysis.Common"                                          Version="4.7.0-1.final" />
+    <PackageVersion Include="Microsoft.CSharp"                                                       Version="4.7.0" />
+    <PackageVersion Include="Microsoft.Net.Compilers.Toolset"                                        Version="4.7.0-1.final" />
+    <PackageVersion Include="Microsoft.VisualStudio.IntegrationTest.Utilities"                       Version="2.6.0-beta1-62113-02" />
+    <PackageVersion Include="Microsoft.VisualStudio.LanguageServices"                                Version="4.7.0-1.final" />
+
+    <!-- Analyzers -->
+    <PackageVersion Include="CSharpIsNullAnalyzer"                                                   Version="0.1.329" />
+    <PackageVersion Include="Microsoft.CodeAnalysis.Analyzers"                                       Version="3.3.5-beta1.23165.1" />
+    <PackageVersion Include="Microsoft.CodeAnalysis.CSharp.CodeStyle"                                Version="4.7.0-1.final" />
+    <PackageVersion Include="Microsoft.CodeAnalysis.VisualBasic.CodeStyle"                           Version="4.7.0-1.final" />
+    <PackageVersion Include="Roslyn.Diagnostics.Analyzers"                                           Version="3.3.5-beta1.23165.1" />
+
+    <!-- NuGet -->
+    <PackageVersion Include="NuGet.VisualStudio"                                                     Version="6.0.0-preview.3.158" />
+
+    <!-- Framework packages -->
+    <PackageVersion Include="Microsoft.IO.Redist"                                                    Version="6.0.0" />
+
+    <!-- Hot Reload -->
+    <PackageVersion Include="Microsoft.VisualStudio.HotReload.Components"                            Version="6.0.0-preview.6.21380.4" />
+
+    <!-- 3rd party -->
+    <PackageVersion Include="Newtonsoft.Json"                                                        Version="13.0.3" />
+    <PackageVersion Include="IsExternalInit"                                                         Version="1.0.3" PrivateAssets="all" />
+
+    <!-- Tests -->
+    <PackageVersion Include="Microsoft.NET.Test.Sdk"                                                 Version="17.5.0-preview-20221003-04" />
+    <PackageVersion Include="Moq"                                                                    Version="4.16.1" />
+    <PackageVersion Include="Verify.Xunit"                                                           Version="14.2.0" />
+    <PackageVersion Include="xunit"                                                                  Version="2.4.2" />
+    <PackageVersion Include="xunit.analyzers"                                                        Version="1.0.0"/>
+    <PackageVersion Include="xunit.assert"                                                           Version="2.4.2" />
+    <PackageVersion Include="xunit.combinatorial"                                                    Version="1.5.25" />
+    <PackageVersion Include="xunit.extensibility.core"                                               Version="2.4.2" />
+    <PackageVersion Include="xunit.extensibility.execution"                                          Version="2.4.2" NoWarn="NU1608" />
+    <PackageVersion Include="xunit.runner.console"                                                   Version="2.4.2" />
+    <PackageVersion Include="xunit.runner.visualstudio"                                              Version="2.4.5" />
+
+    <!-- Integration Tests -->
+    <PackageVersion Include="Microsoft.DotNet.Common.ProjectTemplates.1.x"                           Version="1.0.0-beta2-20170629-269" />
+    <PackageVersion Include="Microsoft.DotNet.Test.ProjectTemplates.1.x"                             Version="1.0.0-beta2-20170629-269" />
+    <PackageVersion Include="Microsoft.Test.Apex.VisualStudio"                                       Version="17.0.0-preview-2-31221-277" />
+    <PackageVersion Include="Microsoft.TestPlatform"                                                 Version="16.2.0" />
+    <PackageVersion Include="MSTest.TestAdapter"                                                     Version="2.1.2" />
+    <PackageVersion Include="MSTest.TestFramework"                                                   Version="2.1.2" />
+  </ItemGroup>
+
+</Project>
