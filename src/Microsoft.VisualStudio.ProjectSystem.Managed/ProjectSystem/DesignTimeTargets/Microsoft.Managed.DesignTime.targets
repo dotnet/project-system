@@ -386,6 +386,26 @@
   <Target Name="CollectResolvedSDKReferencesDesignTime" />
   <Target Name="ResolveFrameworkReferences" />
 
+  <!-- Force the CoreCompile target to run in design-time builds.
+       The project system gets the compiler inputs from the CoreCompile target. However, if the target's
+       outputs are up-to-date with respect to its inputs MSBuild won't run the target and we won't get the
+       compiler arguments. The CoreCompile target includes $(NonExistentFile) as an output; by setting it
+       to the path of a non-existent file we can ensure that MSBuild sees the outputs as out-of-date and
+       runs the target.  -->
+  <Target
+    Name="_ComputeNonExistentFilePropertyDesignTime"
+    Condition="'$(DesignTimeBuild)' == 'true'">
+
+    <PropertyGroup>
+      <NonExistentFile>__NonExistentSubDir__\__NonExistentFile__</NonExistentFile>
+    </PropertyGroup>
+  </Target>
+
+  <!-- Ensure _ComputeNonExistentFilePropertyDesignTime runs before CoreCompile. -->
+  <PropertyGroup>
+    <CoreCompileDependsOn>$(CoreCompileDependsOn);_ComputeNonExistentFilePropertyDesignTime</CoreCompileDependsOn>
+  </PropertyGroup>
+  
   <Target
     Name="ResolveProjectReferencesDesignTime2"
     Returns="@(_ProjectReferencesFromRAR2);@(_ProjectReferencesWithoutOutputAssembly)"
