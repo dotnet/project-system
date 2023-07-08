@@ -6,7 +6,7 @@ using Microsoft.Test.Apex.VisualStudio;
 
 namespace Microsoft.VisualStudio
 {
-    internal class ProjectSystemHostConfiguration : VisualStudioHostConfiguration
+    internal sealed class ProjectSystemHostConfiguration : VisualStudioHostConfiguration
     {
         // This combined with TestBase.IncludeReferencedAssembliesInHostComposition set to false, deliberately limit
         // the number of assemblies added to the composition to reduce MEF composition errors in the build log.

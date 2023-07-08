@@ -10,6 +10,9 @@
         "CSharpDesignTimeTargetsPath": "$(VisualStudioXamlRulesDir)Microsoft.CSharp.DesignTime.targets",
         "CPS_DiagnosticRuntime": "1",
         "CPS_MetricsCollection": "1"
+        // Uncomment the following two lines to capture binlogs of all builds, including design-time builds.
+        //"MSBuildDebugEngine": "1",
+        //"MSBUILDDEBUGPATH": "c:\\binlogs"
       }
     },
     "Start (with native debugging)": {

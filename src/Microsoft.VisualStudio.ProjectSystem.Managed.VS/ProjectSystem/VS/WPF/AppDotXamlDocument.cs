@@ -76,14 +76,6 @@ internal class AppDotXamlDocument : AppDotXamlDocument.IDebugLockCheck, AppDotXa
     }
 
     /// <summary>
-    /// Retrieves the text starting at the given point and with the given length
-    /// </summary>
-    private string GetText(Location startLocation, int count)
-    {
-        return GetText(startLocation.LineIndex, startLocation.CharIndex, count);
-    }
-
-    /// <summary>
     /// Retrieves all of the text in the buffer
     /// </summary>
     private string GetAllText()
@@ -294,12 +286,7 @@ internal class AppDotXamlDocument : AppDotXamlDocument.IDebugLockCheck, AppDotXa
     {
         MoveToApplicationRootElement(reader);
         XamlProperty? prop = FindPropertyAsAttributeInCurrentElement(reader, ApplicationElementName, propertyName);
-        if (prop is null)
-        {
-            prop = FindPropertyAsChildElementInCurrentElement(reader, ApplicationElementName, propertyName);
-        }
-
-        return prop;
+        return prop ?? FindPropertyAsChildElementInCurrentElement(reader, ApplicationElementName, propertyName);
     }
 
     private XamlPropertyInAttributeSyntax? FindPropertyAsAttributeInCurrentElement(XmlTextReader reader, string optionalPropertyQualifier, string propertyName)
@@ -411,7 +398,6 @@ internal class AppDotXamlDocument : AppDotXamlDocument.IDebugLockCheck, AppDotXa
             // Found
 
             Location tagStart = new(reader);
-            Location tagEnd = new(reader);
 
             Location? startTagEndingBracketLocation = FindClosingAngleBracket(tagStart);
             if (startTagEndingBracketLocation is null)
@@ -469,7 +455,6 @@ internal class AppDotXamlDocument : AppDotXamlDocument.IDebugLockCheck, AppDotXa
                 }
 
                 // Reader is at location 'x' of </xyz>.  So we want -2 from this location.
-                Location currentPosition2 = new(reader);
                 Location valueEndPlusOne = new Location(reader).Shift(-2);
 
                 // Get the inner text and unescape it.
@@ -499,10 +484,7 @@ internal class AppDotXamlDocument : AppDotXamlDocument.IDebugLockCheck, AppDotXa
 
     private void SetApplicationPropertyValue(string propertyName, string? value)
     {
-        if (value is null)
-        {
-            value = string.Empty;
-        }
+        value ??= string.Empty;
 
         using BufferLock bufferLock = new(_vsTextLines, this);
 
@@ -552,14 +534,6 @@ internal class AppDotXamlDocument : AppDotXamlDocument.IDebugLockCheck, AppDotXa
     /// <summary>
     /// Replace the text at the given location in the buffer with new text.
     /// </summary>
-    private void ReplaceText(Location sourceStart, int sourceLength, string newText)
-    {
-        ((IReplaceText)this).ReplaceText(sourceStart, new Location(sourceStart.LineIndex, sourceStart.CharIndex + sourceLength), newText);
-    }
-
-    /// <summary>
-    /// Replace the text at the given location in the buffer with new text.
-    /// </summary>
     void IReplaceText.ReplaceText(Location sourceStart, Location sourceEnd, string newText)
     {
         IntPtr bstrNewText = Marshal.StringToBSTR(newText);
@@ -573,48 +547,6 @@ internal class AppDotXamlDocument : AppDotXamlDocument.IDebugLockCheck, AppDotXa
         finally
         {
             Marshal.FreeBSTR(bstrNewText);
-        }
-    }
-
-    /// <summary>
-    /// Given the location of the start of an element tag, makes sure that it has an end tag.
-    /// If the element tag is closed by "/>" instead of an end element, it is expanded
-    /// into a start and end tag.
-    /// </summary>
-    /// <param name="tagStartLocation"></param>
-    /// <param name="elementName">The name of the element at the given location</param>
-    private void MakeSureElementHasStartAndEndTag(Location tagStartLocation, string elementName)
-    {
-        if (!"<".Equals(GetText(tagStartLocation, 1), StringComparison.Ordinal))
-        {
-            DiagnosticsDebug.Fail("MakeSureElementHasStartAndEndTags: The start location doesn't point to the start of an element tag");
-            ThrowUnexpectedFormatException(tagStartLocation);
-        }
-
-        Location? startTagEndingBracketLocation = FindClosingAngleBracket(tagStartLocation);
-        if (startTagEndingBracketLocation is null)
-        {
-            ThrowUnexpectedFormatException(tagStartLocation);
-        }
-
-        if (">".Equals(GetText(startTagEndingBracketLocation, 1), StringComparison.Ordinal))
-        {
-            // The element tag is of the <xxx> form.  We assume that there is an ending </xxx> tag, and
-            // we don't need to do anything.
-        }
-        else
-        {
-            // It must be an empty tag of the <xxx/> form.
-            string slashAndEndBracket = "/>";
-            if (!slashAndEndBracket.Equals(GetText(startTagEndingBracketLocation, slashAndEndBracket.Length), StringComparison.Ordinal))
-            {
-                DiagnosticsDebug.Fail("FindClosingAngleBracket returned the wrong location?");
-                ThrowUnexpectedFormatException(startTagEndingBracketLocation);
-            }
-
-            // We need to change <xxx attributes/> into <xxx attributes></xxx>
-            string newText = "></" + elementName + ">";
-            ReplaceText(startTagEndingBracketLocation, slashAndEndBracket.Length, newText);
         }
     }
 
@@ -653,29 +585,6 @@ internal class AppDotXamlDocument : AppDotXamlDocument.IDebugLockCheck, AppDotXa
     private static void ThrowUnexpectedFormatException(Location location)
     {
         throw new XamlReadWriteException(string.Format(VSResources.WPFApp_Xaml_UnexpectedFormat_2, location.LineIndex + 1, location.CharIndex + 1));
-    }
-
-    /// <summary>
-    /// Verify the validity of the Application.xaml file, and throw an exception if
-    /// problems are found.
-    /// </summary>
-    private void VerifyAppXamlIsValidAndThrowIfNot()
-    {
-        using BufferLock bufferLock = new(_vsTextLines, this);
-
-        XmlTextReader reader = CreateXmlTextReader();
-        MoveToApplicationRootElement(reader);
-
-        // Read through the Application element, including any child elements, to
-        // ensure everything is properly closed.
-        // The name of the element to find is irrelevant, as there shouldn't be
-        // any elements following Application.
-        reader.ReadToFollowing("Dummy Element");
-
-        // If we made it to here, the .xaml file should be well-formed enough for us to read
-        // it properly.  As a final check, though, try getting some common properties.
-        GetStartupUri();
-        GetShutdownMode();
     }
 
     void IDebugLockCheck.OnBufferLock()

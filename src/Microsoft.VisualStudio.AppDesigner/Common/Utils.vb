@@ -31,7 +31,7 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
         'Property page GUIDs.  These are used only for sorting the tabs in the project designer, and for providing a
         '  unique ID for SQM.  Both cases are optional (we handle getting property pages with GUIDs we don't recognize).
         'PERF: NOTE: Initializing GUIDs from numeric values as below is a lot faster than initializing from strings.
-        Public Class KnownPropertyPageGuids
+        Public NotInheritable Class KnownPropertyPageGuids
             Public Shared ReadOnly GuidApplicationPage_VB As Guid = New Guid(&H8998E48EUI, &HB89AUS, &H4034US, &HB6, &H6E, &H35, &H3D, &H8C, &H1F, &HDC, &H2E)
             Public Shared ReadOnly GuidApplicationPage_VB_WPF As Guid = New Guid(&HAA1F44UI, &H2BA3US, &H4EAAUS, &HB5, &H4A, &HCE, &H18, &H0, &HE, &H6C, &H5D)
             Public Shared ReadOnly GuidApplicationPage_CS As Guid = New Guid(&H5E9A8AC2UI, &H4F34US, &H4521US, CByte(&H85), CByte(&H8F), CByte(&H4C), CByte(&H24), CByte(&H8B), CByte(&HA3), CByte(&H15), CByte(&H32))
@@ -592,7 +592,7 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
         End Function
 
 #Region "Telemetry"
-        Public Class TelemetryLogger
+        Public NotInheritable Class TelemetryLogger
 
             'A list of known editor guids
             ' Each property page will be reported back to telemetry with the 1-based index in which it is present 
@@ -692,7 +692,7 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
         End Class
 #End Region
 
-        Public Class ObjectSerializer
+        Public NotInheritable Class ObjectSerializer
 
             ' KnownType information is used by DataContractSerializer for serialization of types that it may not know of currently.
             ' Size is used in Bitmap and has issues being recognized in DataContractSerializer for the unit tests of this class.

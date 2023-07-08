@@ -65,4 +65,7 @@
                 ReadOnly="True"
                 Visible="False" />
 
+  <BoolProperty Name="ExcludedAssetsFlow"
+                ReadOnly="true"
+                Visible="false" />
 </Rule>

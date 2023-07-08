@@ -20,23 +20,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.References
 
         private static Mock<IUnresolvedPackageReference>? s_item;
 
-        private static Mock<IPackageReferencesService>? _packageServicesMock1;
-        private static Mock<IAssemblyReferencesService>? _assemblyServicesMock1;
-
-        private static Mock<IPackageReferencesService>? _packageServicesMock2;
-        private static Mock<IAssemblyReferencesService>? _assemblyServicesMock2;
-
-        private static Mock<IPackageReferencesService>? _packageServicesMock3;
-        private static Mock<IAssemblyReferencesService>? _assemblyServicesMock3;
-
         [Fact]
         public async Task GetProjectReferencesAsync_NoValidProjectFound_ThrowsException()
         {
             var referenceCleanupService = Setup();
 
             await Assert.ThrowsAsync<InvalidProjectFileException>(() =>
-                referenceCleanupService.GetProjectReferencesAsync("UnknownProject", CancellationToken.None)
-                );
+                referenceCleanupService.GetProjectReferencesAsync("UnknownProject", CancellationToken.None));
         }
 
         [Fact]
@@ -70,8 +60,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.References
                 new ProjectSystemReferenceUpdate(ProjectSystemUpdateAction.Remove, new ProjectSystemReferenceInfo(ProjectSystemReferenceType.Package, _package3, true));
 
             await Assert.ThrowsAsync<NotImplementedException>(() =>
-                referenceCleanupService.TryUpdateReferenceAsync(_projectPath1, referenceUpdate1, CancellationToken.None)
-                );
+                referenceCleanupService.TryUpdateReferenceAsync(_projectPath1, referenceUpdate1, CancellationToken.None));
         }
 
         [Fact]
@@ -120,24 +109,26 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.References
 
         private static ConfiguredProjectServices CreateConfiguredProjectServicesForProject1()
         {
-            return createConfiguredProjectServicesForProject(new List<(string, string)>
-            {
-                (_projectPath2, PropertySerializer.SimpleTypes.ToString(false)),
-                (_projectPath3, PropertySerializer.SimpleTypes.ToString(false))
-            }, new List<(string, string)>
-            {
-                (_package3 , PropertySerializer.SimpleTypes.ToString(false))
-            }, new List<(string, string)>
-            {
-                (_assembly1, PropertySerializer.SimpleTypes.ToString(false)),
-                (_assembly2, PropertySerializer.SimpleTypes.ToString(false))
-            },
-                out _packageServicesMock1, out _assemblyServicesMock1);
+            return CreateConfiguredProjectServicesForProject(
+                new List<(string, string)>
+                {
+                    (_projectPath2, PropertySerializer.SimpleTypes.ToString(false)),
+                    (_projectPath3, PropertySerializer.SimpleTypes.ToString(false))
+                },
+                new List<(string, string)>
+                {
+                    (_package3 , PropertySerializer.SimpleTypes.ToString(false))
+                },
+                new List<(string, string)>
+                {
+                    (_assembly1, PropertySerializer.SimpleTypes.ToString(false)),
+                    (_assembly2, PropertySerializer.SimpleTypes.ToString(false))
+                });
         }
 
         private static ConfiguredProjectServices CreateConfiguredProjectServicesForProject2()
         {
-            return createConfiguredProjectServicesForProject(
+            return CreateConfiguredProjectServicesForProject(
                 new List<(string, string)>
                 {
                     (_projectPath3, PropertySerializer.SimpleTypes.ToString(true))
@@ -148,23 +139,19 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.References
                     (_assembly1, PropertySerializer.SimpleTypes.ToString(true)),
                     (_assembly2, PropertySerializer.SimpleTypes.ToString(true)),
                     (_assembly3, PropertySerializer.SimpleTypes.ToString(true))
-                },
-                    out _packageServicesMock2, out _assemblyServicesMock2);
+                });
         }
 
         private static ConfiguredProjectServices CreateConfiguredProjectServicesForProject3()
         {
-            return createConfiguredProjectServicesForProject(
+            return CreateConfiguredProjectServicesForProject(
                 new List<(string, string)> { },
                 new List<(string, string)> { },
-                new List<(string, string)> { },
-                out _packageServicesMock3, out _assemblyServicesMock3);
+                new List<(string, string)> { });
         }
 
-        private static ConfiguredProjectServices createConfiguredProjectServicesForProject(
-            List<(string, string)> projects, List<(string, string)> packages, List<(string, string)> assemblies,
-            out Mock<IPackageReferencesService> packageServicesMock,
-            out Mock<IAssemblyReferencesService> assemblyServiceMock)
+        private static ConfiguredProjectServices CreateConfiguredProjectServicesForProject(
+            List<(string, string)> projects, List<(string, string)> packages, List<(string, string)> assemblies)
         {
             var projectReferencesService = new Mock<IBuildDependencyProjectReferencesService>();
             IImmutableSet<IUnresolvedBuildDependencyProjectReference> unresolvedProjectReferences =
@@ -174,13 +161,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.References
             var packageReferencesService = new Mock<IPackageReferencesService>();
             IImmutableSet<IUnresolvedPackageReference> unresolvedPackageReferences = CreateReferences<IUnresolvedPackageReference>(packages);
             packageReferencesService.Setup(c => c.GetUnresolvedReferencesAsync()).ReturnsAsync(unresolvedPackageReferences);
-            packageServicesMock = packageReferencesService;
 
             var assemblyReferencesService = new Mock<IAssemblyReferencesService>();
             IImmutableSet<IUnresolvedAssemblyReference> unresolvedAssemblyReferences =
                 CreateReferences<IUnresolvedAssemblyReference>(assemblies);
             assemblyReferencesService.Setup(c => c.GetUnresolvedReferencesAsync()).ReturnsAsync(unresolvedAssemblyReferences);
-            assemblyServiceMock = assemblyReferencesService;
 
             var configuredProjectServices = ConfiguredProjectServicesFactory.Create(
                 projectReferences: projectReferencesService.Object, packageReferences: packageReferencesService.Object,

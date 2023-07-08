@@ -82,7 +82,7 @@ Namespace Microsoft.VisualStudio.Editors.AppDesInterop
         Public Const UISF_HIDEFOCUS As Integer = &H1
         Public Const UISF_HIDEACCEL As Integer = &H2
 
-        Public Class ConnectionPointCookie
+        Public NotInheritable Class ConnectionPointCookie
             Private _connectionPoint As IConnectionPoint
             Private _connectionPoint2 As ComTypes.IConnectionPoint
             Private _cookie As UInteger

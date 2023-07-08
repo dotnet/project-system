@@ -10,7 +10,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate;
 /// </summary>
 internal sealed class SolutionBuildContext
 {
-
     /// <summary>
     /// A cache of timestamps for the absolute paths of both source and target of copy items
     /// across all projects.

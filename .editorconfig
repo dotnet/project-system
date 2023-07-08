@@ -35,9 +35,6 @@ indent_size = 2
 [*.json]
 indent_size = 2
 
-[*.groovy]
-indent_size = 2
-
 # Dotnet code style settings:
 [*.{cs,vb}]
 # Sort using and Import directives with System.* appearing first
@@ -234,6 +231,7 @@ dotnet_diagnostic.CA1821.severity = none        # Remove empty Finalizers
 dotnet_diagnostic.CA1823.severity = warning     # Avoid unused private fields
 dotnet_diagnostic.CA1824.severity = none        # Mark assemblies with NeutralResourcesLanguageAttribute
 dotnet_diagnostic.CA1851.severity = warning     # Detect multiple enumeration
+dotnet_diagnostic.CA1852.severity = warning     # Seal internal types
 dotnet_diagnostic.CA2200.severity = none        # Rethrow to preserve stack details
 
 # Microsoft.NetCore.Analyzers
@@ -386,6 +384,8 @@ dotnet_diagnostic.IDE0005.severity = warning      # Using directive is unnecessa
 dotnet_diagnostic.IDE0030.severity = warning      # Use coalesce expression (nullable)            int? y = x.HasValue ? x.Value : 0                   int? y = x ?? 0;
 dotnet_diagnostic.IDE0030WithoutSuggestion.severity = error
 dotnet_diagnostic.IDE0031.severity = warning      # Use null propagation (nullable)
+dotnet_diagnostic.IDE0051.severity = warning      # Private member unused
+dotnet_diagnostic.IDE0052.severity = warning      # Remove unread private members
 dotnet_diagnostic.IDE0079.severity = warning      # Unused suppresion
 dotnet_diagnostic.IDE0083.severity = warning      # Use pattern matching
 dotnet_diagnostic.IDE0084.severity = warning      # Use IsNot
