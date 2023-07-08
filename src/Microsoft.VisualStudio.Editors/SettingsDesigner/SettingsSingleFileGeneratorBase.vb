@@ -8,6 +8,7 @@ Imports System.Reflection
 Imports System.Runtime.InteropServices
 
 Imports Microsoft.VisualStudio.Designer.Interfaces
+Imports Microsoft.VisualStudio.Editors.DesignerFramework
 Imports Microsoft.VisualStudio.Editors.Interop
 Imports Microsoft.VisualStudio.OLE.Interop
 Imports Microsoft.VisualStudio.Shell
@@ -115,7 +116,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <param name="pcbOutput"></param>
         ''' <param name="pGenerateProgress"></param>
         Private Function Generate(wszInputFilePath As String, bstrInputFileContents As String, wszDefaultNamespace As String, rgbOutputFileContents() As IntPtr, ByRef pcbOutput As UInteger, pGenerateProgress As IVsGeneratorProgress) As Integer Implements IVsSingleFileGenerator.Generate
-
             Dim BufPtr As IntPtr = IntPtr.Zero
             Try
                 ' get the DesignTimeSettings from the file content
@@ -147,11 +147,12 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                 If isVB Then
                     projectRootNamespace = GetProjectRootNamespace()
                 End If
-
+                
                 ' then get the CodeCompileUnit for this .settings file
                 '
                 Dim generatedClass As CodeTypeDeclaration = Nothing
-                Dim CompileUnit As CodeCompileUnit = Create(DirectCast(GetService(GetType(IVsHierarchy)), IVsHierarchy),
+                Dim CompileUnit As CodeCompileUnit = Create(isVB,
+                                                            DirectCast(GetService(GetType(IVsHierarchy)), IVsHierarchy),
                                                             Settings,
                                                             wszDefaultNamespace,
                                                             wszInputFilePath,
@@ -171,7 +172,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                     ' If this is the "default" settings file, we add the "My" module as well...
                     '
                     If shouldGenerateMyStuff Then
-                        AddMyModule(CompileUnit, projectRootNamespace, wszDefaultNamespace)
+                        AddMyModule(CompileUnit, projectRootNamespace, DesignUtil.GenerateValidLanguageIndependentNamespace(wszDefaultNamespace), isVB)
                     End If
                 End If
 
@@ -234,7 +235,8 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <param name="GeneratedClassVisibility"></param>
         ''' <param name="GenerateVBMyAutoSave"></param>
         ''' <returns>CodeCompileUnit of the given DesignTimeSettings object</returns>
-        Friend Shared Function Create(Hierarchy As IVsHierarchy,
+        Friend Shared Function Create(IsVb as Boolean,
+                                      Hierarchy As IVsHierarchy,
                                       Settings As DesignTimeSettings,
                                       DefaultNamespace As String,
                                       FilePath As String,
@@ -251,7 +253,14 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
 
             ' Create a new namespace to put our class in
             '
-            Dim ns As New CodeNamespace(DesignerFramework.DesignUtil.GenerateValidLanguageIndependentNamespace(DefaultNamespace))
+            Dim ns as CodeNamespace
+            
+            If IsVb Then
+                ns = New CodeNamespace(MyNamespaceName)
+            Else
+                ns = New CodeNamespace(DesignerFramework.DesignUtil.GenerateValidLanguageIndependentNamespace(DefaultNamespace))
+            End If
+            
             CompileUnit.Namespaces.Add(ns)
 
             ' Create the strongly typed settings class
@@ -570,21 +579,24 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' Creates a string representation of the full-type name give the project's root-namespace, the default namespace
         ''' into which we are generating, and the name of the class
         ''' </summary>
-        ''' <param name="projectRootNamespace">project's root namespace (may be String.Empty)</param>
         ''' <param name="defaultNamespace">namespace into which we are generating (may be String.Empty)</param>
         ''' <param name="typeName">the type of the settings-class we are generating</param>
-        Private Shared Function GetFullTypeName(projectRootNamespace As String, defaultNamespace As String, typeName As String) As String
+        Private Shared Function GetFullTypeName(projectRootNamespace As String, defaultNamespace As String, typeName As String, isVb as Boolean) As String
 
             Dim fullTypeName As String = String.Empty
 
             If projectRootNamespace <> "" Then
                 fullTypeName = projectRootNamespace & "."
             End If
-
-            If defaultNamespace <> "" Then
+            
+            If defaultNamespace <> "" AndAlso Not defaultNamespace.Equals(MyNamespaceName) Then ' defaultNamespace, if none exists, will come in thru wszDefaultNamespace as My. We don't want to duplicate it.
                 fullTypeName &= defaultNamespace & "."
             End If
 
+            If isVb And Not fullTypeName.EndsWith("." + MyNamespaceName + ".") Then
+                fullTypeName &= MyNamespaceName + "."
+            End If
+            
             Debug.Assert(typeName <> "", "we shouldn't have an empty type-name when generating a Settings class")
             fullTypeName &= typeName
 
@@ -617,7 +629,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' My.Settings for easy access to typed-settings.
         ''' </summary>
         ''' <param name="Unit"></param>
-        Private Shared Sub AddMyModule(Unit As CodeCompileUnit, projectRootNamespace As String, defaultNamespace As String)
+        Private Shared Sub AddMyModule(Unit As CodeCompileUnit, projectRootNamespace As String, defaultNamespace As String, isVb as Boolean)
 
             Debug.Assert(Unit IsNot Nothing AndAlso Unit.Namespaces.Count = 1 AndAlso Unit.Namespaces(0).Types.Count = 1, "Expected a compile unit with a single namespace containing a single type!")
 
@@ -664,7 +676,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                 .HasSet = False
             }
 
-            Dim fullTypeReference As CodeTypeReference = New CodeTypeReference(GetFullTypeName(projectRootNamespace, defaultNamespace, GeneratedType.Name)) With {
+            Dim fullTypeReference As CodeTypeReference = New CodeTypeReference(GetFullTypeName(projectRootNamespace, defaultNamespace, GeneratedType.Name, isVb)) With {
                 .Options = CodeTypeReferenceOptions.GlobalReference
             }
             SettingProperty.Type = fullTypeReference

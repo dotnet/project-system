@@ -1,10 +1,5 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
-using System;
-using System.ComponentModel.Composition;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
 using System.Threading.Tasks.Dataflow;
 using Microsoft.VisualStudio.ProjectSystem.VS.Automation;
 
@@ -83,7 +78,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
             // Due to that, and to avoid a deadlock when event handlers call back into us
             // while we're still initializing, we avoid firing the events the first time 
             // a value is applied.
-            if (previous != null)
+            if (previous is not null)
             {
                 DesignTimeInputSnapshot currentValue = value.Value;
                 DesignTimeInputSnapshot previousValue = previous.Value;

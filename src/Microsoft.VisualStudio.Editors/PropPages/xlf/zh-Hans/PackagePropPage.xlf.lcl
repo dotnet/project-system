@@ -156,37 +156,49 @@
       </Item>
       <Item ItemId=";FileVersionBuildTextBox.AccessibleName" ItemType="0" PsrId="308" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Assembly File Verison Build]]></Val>
+          <Val><![CDATA[Assembly File Version Build]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[程序集文件版本生成]]></Val>
+            <Val><![CDATA[程序集文件版本内部版本]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[Assembly File Verison Build]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";FileVersionMajorTextBox.AccessibleName" ItemType="0" PsrId="308" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Assembly File Verison Major]]></Val>
+          <Val><![CDATA[Assembly File Version Major]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[程序集文件主要版本]]></Val>
+            <Val><![CDATA[程序集文件版本主要]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[Assembly File Verison Major]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";FileVersionMinorTextBox.AccessibleName" ItemType="0" PsrId="308" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Assembly File Verison Minor]]></Val>
+          <Val><![CDATA[Assembly File Version Minor]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[程序集文件次要版本]]></Val>
+            <Val><![CDATA[程序集文件版本次要]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[Assembly File Verison Minor]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";FileVersionRevisionTextBox.AccessibleName" ItemType="0" PsrId="308" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Assembly File Verison Revision]]></Val>
+          <Val><![CDATA[Assembly File Version Revision]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
             <Val><![CDATA[程序集文件版本修订]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[Assembly File Verison Revision]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
@@ -476,7 +488,7 @@
         <Str Cat="Text">
           <Val><![CDATA[Package Repository Type]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[包存储库类型]]></Val>
+            <Val><![CDATA[包仓库类型]]></Val>
           </Tgt>
         </Str>
         <Disp Icon="Str" />
@@ -485,7 +497,7 @@
         <Str Cat="Text">
           <Val><![CDATA[&Repository type:]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[存储库类型(&R):]]></Val>
+            <Val><![CDATA[仓库类型(&R):]]></Val>
           </Tgt>
         </Str>
         <Disp Icon="Str" />
@@ -494,7 +506,7 @@
         <Str Cat="Text">
           <Val><![CDATA[Package Repository URL]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[包存储库 URL]]></Val>
+            <Val><![CDATA[包仓库 URL]]></Val>
           </Tgt>
         </Str>
         <Disp Icon="Str" />
@@ -503,7 +515,7 @@
         <Str Cat="Text">
           <Val><![CDATA[&Repository URL:]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[存储库 URL (&R):]]></Val>
+            <Val><![CDATA[仓库 URL (&R):]]></Val>
           </Tgt>
         </Str>
         <Disp Icon="Str" />

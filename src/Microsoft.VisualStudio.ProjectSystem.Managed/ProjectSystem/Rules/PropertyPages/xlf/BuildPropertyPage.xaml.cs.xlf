@@ -52,6 +52,16 @@
         <target state="translated">Deterministický</target>
         <note />
       </trans-unit>
+      <trans-unit id="BoolProperty|GenerateAssemblyInfo|Description">
+        <source>Transform project properties into assembly attributes during build.</source>
+        <target state="translated">Transformujte vlastnosti projektu na atributy sestavení během vytváření buildu.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="BoolProperty|GenerateAssemblyInfo|DisplayName">
+        <source>Generate assembly info</source>
+        <target state="translated">Vygenerovat informace o sestavení</target>
+        <note />
+      </trans-unit>
       <trans-unit id="BoolProperty|GenerateDocumentationFile|Description">
         <source>Generate a file containing API documentation.</source>
         <target state="translated">Vygeneruje soubor s dokumentací k rozhraní API.</target>
@@ -60,21 +70,6 @@
       <trans-unit id="BoolProperty|GenerateDocumentationFile|DisplayName">
         <source>Documentation file</source>
         <target state="translated">Soubor dokumentace</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="BoolProperty|ImplicitUsings|Description">
-        <source>Enable implicit global usings to be declared by the project SDK.</source>
-        <target state="new">Enable implicit global usings to be declared by the project SDK.</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="BoolProperty|ImplicitUsings|DisplayName">
-        <source>Implicit global usings</source>
-        <target state="new">Implicit global usings</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="BoolProperty|ImplicitUsings|Metadata|SearchTerms">
-        <source>implicit</source>
-        <target state="new">implicit</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|Optimize|Description">
@@ -94,12 +89,12 @@
       </trans-unit>
       <trans-unit id="BoolProperty|Prefer32Bit|Description">
         <source>Run in 32-bit mode on systems that support both 32-bit and 64-bit applications.</source>
-        <target state="new">Run in 32-bit mode on systems that support both 32-bit and 64-bit applications.</target>
+        <target state="translated">Spustit v 32bitovém režimu v systémech, které podporují 32bitové i 64bitové aplikace.</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|Prefer32Bit|DisplayName">
         <source>Prefer 32-bit</source>
-        <target state="new">Prefer 32-bit</target>
+        <target state="translated">Preferovat 32bitovou verzi</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|ProduceReferenceAssembly|Description">
@@ -134,12 +129,12 @@
       </trans-unit>
       <trans-unit id="Category|Advanced|Description">
         <source>Advanced settings for the application.</source>
-        <target state="new">Advanced settings for the application.</target>
+        <target state="translated">Upřesňující nastavení aplikace.</target>
         <note />
       </trans-unit>
       <trans-unit id="Category|Advanced|DisplayName">
         <source>Advanced</source>
-        <target state="new">Advanced</target>
+        <target state="translated">Upřesnit</target>
         <note />
       </trans-unit>
       <trans-unit id="Category|ErrorsAndWarnings|Description">
@@ -187,6 +182,16 @@
         <target state="translated">Silné názvy</target>
         <note />
       </trans-unit>
+      <trans-unit id="DynamicEnumProperty|PlatformTarget|Description">
+        <source>Specifies the processor to be targeted by the output file. Choose 'Any CPU' to specify that any processor is acceptable, allowing the application to run on the broadest range of hardware.</source>
+        <target state="translated">Určuje procesor, na který má výstupní soubor cílit. Pokud chcete určit, že je přijatelný libovolný procesor, zvolte možnost Jakýkoli procesor, aby se aplikace dala spustit na maximální škále hardwaru.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="DynamicEnumProperty|PlatformTarget|DisplayName">
+        <source>Platform target</source>
+        <target state="translated">Cílová platforma</target>
+        <note />
+      </trans-unit>
       <trans-unit id="EnumProperty|DebugType|Description">
         <source>Specifies the kind of debug symbols produced during build.</source>
         <target state="translated">Určuje druh symbolů ladění vyprodukovaných během sestavování.</target>
@@ -195,7 +200,7 @@
       <trans-unit id="EnumProperty|DebugType|DisplayName">
         <source>Debug symbols</source>
         <target state="translated">Symboly ladění</target>
-        <note />
+        <note>="PDB Only" /&gt;</note>
       </trans-unit>
       <trans-unit id="EnumProperty|DebugType|Metadata|SearchTerms">
         <source>debug type</source>
@@ -232,16 +237,6 @@
         <target state="translated">S hodnotou null</target>
         <note />
       </trans-unit>
-      <trans-unit id="EnumProperty|PlatformTarget|Description">
-        <source>Specifies the processor to be targeted by the output file. Choose 'x86' for any 32-bit Intel-compatible processor, choose 'x64' for any 64-bit Intel-compatible processor, or choose 'Any CPU' to specify that any processor is acceptable. 'Any CPU' is the default value for projects, because it allows the application to run on the broadest range of hardware.</source>
-        <target state="translated">Určuje procesor, na který má výstupní soubor cílit. Zvolte možnost x86 pro libovolný 32bitový procesor kompatibilní s procesorem Intel, možnost x64 pro libovolný 64bitový procesor kompatibilní s procesorem Intel nebo možnost Jakýkoli procesor, která znamená, že je přijatelný jakýkoli procesor. Možnost Jakýkoli procesor je u projektů výchozí hodnota, protože umožňuje spouštění aplikace na nejširší škále hardwaru.</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="EnumProperty|PlatformTarget|DisplayName">
-        <source>Platform target</source>
-        <target state="translated">Cílová platforma</target>
-        <note />
-      </trans-unit>
       <trans-unit id="EnumProperty|RunPostBuildEvent|Description">
         <source>Specifies under which condition the post-build event will be executed.</source>
         <target state="translated">Určuje, pod jakou podmínkou bude událost po sestavení provedena.</target>
@@ -253,8 +248,8 @@
         <note />
       </trans-unit>
       <trans-unit id="EnumProperty|WarningLevel|Description">
-        <source>Specifies the level to display for compiler warnings.</source>
-        <target state="translated">Určuje úroveň upozornění kompilátoru, která se mají zobrazovat.</target>
+        <source>Specifies the level to display for compiler warnings. Higher levels produce more warnings, and include all warnings from lower levels.</source>
+        <target state="translated">Určuje úroveň, která se má zobrazit pro upozornění kompilátoru. Vyšší úrovně generují více upozornění a zahrnují všechna upozornění z nižších úrovní.</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumProperty|WarningLevel|DisplayName">
@@ -347,64 +342,64 @@
         <target state="translated">Upozornění</target>
         <note />
       </trans-unit>
-      <trans-unit id="EnumValue|PlatformTarget.AnyCPU|DisplayName">
-        <source>Any CPU</source>
-        <target state="translated">Jakýkoli procesor</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="EnumValue|PlatformTarget.x64|DisplayName">
-        <source>x64</source>
-        <target state="translated">x64</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="EnumValue|PlatformTarget.x86|DisplayName">
-        <source>x86</source>
-        <target state="translated">x86</target>
-        <note />
-      </trans-unit>
       <trans-unit id="EnumValue|RunPostBuildEvent.Always|DisplayName">
         <source>Always</source>
-        <target state="new">Always</target>
+        <target state="translated">Vždy</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|RunPostBuildEvent.OnBuildSuccess|DisplayName">
         <source>When the build succeeds</source>
-        <target state="new">When the build succeeds</target>
+        <target state="translated">Po úspěšném sestavení</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|RunPostBuildEvent.OnOutputUpdated|DisplayName">
         <source>When the output is updated</source>
-        <target state="new">When the output is updated</target>
+        <target state="translated">Při aktualizaci výstupu</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|WarningLevel.0|DisplayName">
-        <source>0</source>
-        <target state="translated">0</target>
+        <source>0 - Disable all warnings</source>
+        <target state="translated">0 – Zakázat všechna upozornění</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|WarningLevel.1|DisplayName">
-        <source>1</source>
-        <target state="translated">1</target>
+        <source>1 - Severe warning messages</source>
+        <target state="translated">1 – Závažná upozornění</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|WarningLevel.2|DisplayName">
-        <source>2</source>
-        <target state="translated">2</target>
+        <source>2 - Less severe warnings, such as warnings about hiding class members</source>
+        <target state="translated">2 – Méně závažná upozornění, například upozornění na skrytí členů třídy</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|WarningLevel.3|DisplayName">
-        <source>3</source>
-        <target state="translated">3</target>
+        <source>3 - Less severe warnings, such as warnings about expressions that always evaluate to true or false</source>
+        <target state="translated">3 – Méně závažná upozornění, například upozornění na výrazy, které se vždy vyhodnotí jako true nebo false</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|WarningLevel.4|DisplayName">
-        <source>4</source>
-        <target state="translated">4</target>
+        <source>4 - Informational warnings</source>
+        <target state="translated">4 – Informační upozornění</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|WarningLevel.5|DisplayName">
-        <source>5</source>
-        <target state="translated">5</target>
+        <source>5 - Warnings from C# 9</source>
+        <target state="translated">5 – Upozornění z jazyka C# 9</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|WarningLevel.6|DisplayName">
+        <source>6 - Warnings from C# 10</source>
+        <target state="translated">6 – Upozornění z jazyka C# 10</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|WarningLevel.7|DisplayName">
+        <source>7 - Warnings from C# 11</source>
+        <target state="translated">7 – Upozornění z jazyka C# 11</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|WarningLevel.9999|DisplayName">
+        <source>9999 - All warnings</source>
+        <target state="translated">9999 – Všechna upozornění</target>
         <note />
       </trans-unit>
       <trans-unit id="Rule|Build|Description">
@@ -443,13 +438,18 @@
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|DefineConstants|Description">
-        <source>Specifies symbols on which to perform conditional compilation. Separate symbols with a semi-colon (';').</source>
-        <target state="translated">Určuje symboly, u kterých se má provést podmíněná kompilace. Symboly oddělujte středníkem (;).</target>
+        <source>Specifies symbols on which to perform conditional compilation.</source>
+        <target state="translated">Určuje symboly, na kterých se má provést podmíněná kompilace.</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|DefineConstants|DisplayName">
         <source>Conditional compilation symbols</source>
         <target state="translated">Symboly podmíněné kompilace</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|DefineConstants|ValueEditors|ValueEditor|Metadata|TypeDescriptorText|Value">
+        <source>Custom symbols</source>
+        <target state="new">Custom symbols</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|DocumentationFile|Description">
@@ -464,7 +464,7 @@
       </trans-unit>
       <trans-unit id="StringProperty|LangVersion|Description">
         <source>The version of the language available to code in this project.</source>
-        <target state="new">The version of the language available to code in this project.</target>
+        <target state="translated">Verze jazyka, který je v tomto projektu k dispozici pro kódování.</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|LangVersion|DisplayName">

@@ -1,0 +1,162 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
+  <file datatype="xml" source-language="en" target-language="cs" original="../CodeAnalysisPropertyPage.xaml">
+    <body>
+      <trans-unit id="BoolProperty|EnableNETAnalyzers|Description">
+        <source>Run .NET analyzers to help with API usage.</source>
+        <target state="translated">Umožňuje spuštění analyzátorů technologie .NET, které vám pomůžou s využitím rozhraní API.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="BoolProperty|EnableNETAnalyzers|DisplayName">
+        <source>Enable .NET analyzers</source>
+        <target state="translated">Povolit analyzátory technologie .NET</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="BoolProperty|EnforceCodeStyleInBuild|Description">
+        <source>Produce diagnostics about code style on build.</source>
+        <target state="translated">Při sestavení se vyprodukuje diagnostika stylu kódu.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="BoolProperty|EnforceCodeStyleInBuild|DisplayName">
+        <source>Enforce code style on build</source>
+        <target state="translated">Vynutit styl kódu při sestavení</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="BoolProperty|RunAnalyzersDuringBuild|Description">
+        <source>Always run code analysis on build.</source>
+        <target state="translated">Při sestavování se vždy spustí analýza kódu.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="BoolProperty|RunAnalyzersDuringBuild|DisplayName">
+        <source>Run on build</source>
+        <target state="translated">Spustit při sestavování</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="BoolProperty|RunAnalyzersDuringLiveAnalysis|Description">
+        <source>Run code analysis live in the editor as you type.</source>
+        <target state="translated">Umožňuje spuštění analýzy kódu živě v editoru přímo při psaní.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="BoolProperty|RunAnalyzersDuringLiveAnalysis|DisplayName">
+        <source>Run on live analysis</source>
+        <target state="translated">Spustit při živé analýze</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="Category|AllAnalyzers|DisplayName">
+        <source>All analyzers</source>
+        <target state="translated">Všechny analyzátory</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="Category|NetAnalyzers|DisplayName">
+        <source>.NET analyzers</source>
+        <target state="translated">Analyzátory .NET</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumProperty|AnalysisLevel|Description">
+        <source>The set of analyzers that should be run in the project.</source>
+        <target state="translated">Sada analyzátorů, které by se v rámci projektu měly spustit.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumProperty|AnalysisLevel|DisplayName">
+        <source>Analysis level</source>
+        <target state="translated">Úroveň analýzy</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|AnalysisLevel.5.0-all|DisplayName">
+        <source>5.0 All</source>
+        <target state="translated">5.0 – vše</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|AnalysisLevel.5.0-minimum|DisplayName">
+        <source>5.0 Minimum</source>
+        <target state="translated">5.0 – minimum</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|AnalysisLevel.5.0-recommended|DisplayName">
+        <source>5.0 Recommended</source>
+        <target state="translated">5.0 – doporučeno</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|AnalysisLevel.5.0|DisplayName">
+        <source>5.0</source>
+        <target state="translated">5.0</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|AnalysisLevel.6.0-all|DisplayName">
+        <source>6.0 All</source>
+        <target state="translated">6.0 – vše</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|AnalysisLevel.6.0-minimum|DisplayName">
+        <source>6.0 Minimum</source>
+        <target state="translated">6.0 – minimum</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|AnalysisLevel.6.0-recommended|DisplayName">
+        <source>6.0 Recommended</source>
+        <target state="translated">6.0 – doporučeno</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|AnalysisLevel.6.0|DisplayName">
+        <source>6.0</source>
+        <target state="translated">6.0</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|AnalysisLevel.latest-all|DisplayName">
+        <source>Latest All</source>
+        <target state="translated">Nejnovější – vše</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|AnalysisLevel.latest-minimum|DisplayName">
+        <source>Latest Minimum</source>
+        <target state="translated">Nejnovější – minimum</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|AnalysisLevel.latest-recommended|DisplayName">
+        <source>Latest Recommended</source>
+        <target state="translated">Nejnovější – doporučeno</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|AnalysisLevel.latest|DisplayName">
+        <source>Latest</source>
+        <target state="translated">Nejnovější</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|AnalysisLevel.none|DisplayName">
+        <source>None</source>
+        <target state="translated">Žádné</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|AnalysisLevel.preview-all|DisplayName">
+        <source>Preview All</source>
+        <target state="translated">Verze Preview – vše</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|AnalysisLevel.preview-minimum|DisplayName">
+        <source>Preview Minimum</source>
+        <target state="translated">Verze Preview – minimum</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|AnalysisLevel.preview-recommended|DisplayName">
+        <source>Preview Recommended</source>
+        <target state="translated">Verze Preview – doporučeno</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|AnalysisLevel.preview|DisplayName">
+        <source>Preview</source>
+        <target state="translated">Preview</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="Rule|CodeAnalysisPropertyPage|Description">
+        <source>Settings</source>
+        <target state="translated">Nastavení</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="Rule|CodeAnalysisPropertyPage|DisplayName">
+        <source>Code Analysis</source>
+        <target state="translated">Code Analysis</target>
+        <note />
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

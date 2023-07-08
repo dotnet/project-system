@@ -10,10 +10,10 @@
 
   <Rule.Metadata>
     <sys:String x:Key="CommandName">Executable</sys:String>
-    
+
     <!-- KnownImageIds.ImageCatalogGuid -->
     <sys:Guid x:Key="ImageMonikerGuid">AE27A6B0-E345-4288-96DF-5EAF394EE369</sys:Guid>
-    
+
     <!-- KnownImageIds.Execute -->
     <sys:Int32 x:Key="ImageMonikerId">1173</sys:Int32>
   </Rule.Metadata>
@@ -31,7 +31,42 @@
 
   <StringProperty Name="CommandLineArguments"
                   DisplayName="Command line arguments"
-                  Description="Command line arguments to pass to the executable." />
+                  Description="Command line arguments to pass to the executable. You may break arguments into multiple lines.">
+    <StringProperty.ValueEditors>
+      <ValueEditor EditorType="MultiLineString">
+        <ValueEditor.Metadata>
+          <NameValuePair Name="UseMonospaceFont" Value="True" />
+          <NameValuePair Name="TextWrapping" Value="Wrap" />
+        </ValueEditor.Metadata>
+      </ValueEditor>
+    </StringProperty.ValueEditors>
+  </StringProperty>
+
+  <StringProperty Name="StartArguments" Visible="False" ReadOnly="True">
+    <StringProperty.DataSource>
+      <DataSource Persistence="ProjectFile"
+                  SourceOfDefaultValue="AfterContext"
+                  HasConfigurationCondition="False" />
+    </StringProperty.DataSource>
+  </StringProperty>
+
+  <StringProperty Name="CommandLineArgumentsOverriddenWarning"
+                  DisplayName="Ignored"
+                  Description="⚠️ WARNING! This project defines the StartArguments MSBuild property, which overrides any command line arguments specified here. If you wish to define arguments here, you must remove that property from your MSBuild project. Note that it may be defined in a .user file.">
+    <StringProperty.DataSource>
+      <DataSource PersistedName="CommandLineArgumentsOverriddenWarning"
+                  Persistence="ProjectFileWithInterception"
+                  HasConfigurationCondition="False" />
+    </StringProperty.DataSource>
+    <StringProperty.ValueEditors>
+      <ValueEditor EditorType="Description" />
+    </StringProperty.ValueEditors>
+    <StringProperty.Metadata>
+      <NameValuePair Name="VisibilityCondition">
+        <NameValuePair.Value>(ne (unevaluated "Executable" "StartArguments") "")</NameValuePair.Value>
+      </NameValuePair>
+    </StringProperty.Metadata>
+  </StringProperty>
 
   <StringProperty Name="WorkingDirectory"
                   DisplayName="Working directory"
@@ -67,7 +102,11 @@
 
   <StringProperty Name="EnvironmentVariables"
                   DisplayName="Environment variables"
-                  Description="The environment variables to set prior to running the process. Variables are separated by a comma (,) and variables names and values are separated with an equal sign (=). Example: var1=value1,var2=value2,var3=value3. Commas and equal signs appearing within a variable can be escaped using a forward slash (/)."/>
+                  Description="The environment variables to set prior to running the process.">
+    <StringProperty.ValueEditors>
+      <ValueEditor EditorType="NameValueList" />
+    </StringProperty.ValueEditors>
+  </StringProperty>
 
   <BoolProperty Name="NativeDebugging"
                 DisplayName="Enable native code debugging"

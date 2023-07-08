@@ -4,13 +4,23 @@ namespace System.ComponentModel.Composition
 {
     internal static class ExportFactoryFactory
     {
+        public static ExportFactory<T> Implement<T>(Func<T> factory, Action? disposeAction = null)
+        {
+            return new ExportFactory<T>(() =>
+            {
+                T value = factory();
+
+                return Tuple.Create(value, disposeAction ?? delegate { });
+            });
+        }
+
         public static ExportFactory<T> ImplementCreateValueWithAutoDispose<T>(Func<T> factory)
         {
             return new ExportFactory<T>(() =>
             {
                 T value = factory();
 
-                return Tuple.Create<T, Action>(value, () =>
+                return Tuple.Create(value, () =>
                 {
                     if (value is IDisposable disposable)
                         disposable.Dispose();
@@ -24,7 +34,7 @@ namespace System.ComponentModel.Composition
             {
                 T value = factory();
 
-                return Tuple.Create<T, Action>(value, () =>
+                return Tuple.Create(value, () =>
                 {
                     if (value is IDisposable disposable)
                         disposable.Dispose();

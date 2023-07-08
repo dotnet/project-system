@@ -1,10 +1,5 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
-using System;
-using System.Collections.Generic;
-using System.Collections.Immutable;
-using System.ComponentModel.Composition;
-using System.Linq;
 using Microsoft.VisualStudio.Buffers.PooledObjects;
 
 namespace Microsoft.VisualStudio.ProjectSystem.Configuration
@@ -31,7 +26,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
 
         public IEnumerable<string> GetImplicitlyActiveDimensions(IEnumerable<string> dimensionNames)
         {
-            Requires.NotNull(dimensionNames, nameof(dimensionNames));
+            Requires.NotNull(dimensionNames);
 
             ImmutableArray<string> builtInDimensions = _builtInImplicitlyActiveDimensions.Value;
 

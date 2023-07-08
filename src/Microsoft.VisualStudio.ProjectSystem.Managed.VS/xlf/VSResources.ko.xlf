@@ -2,10 +2,23 @@
 <xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
   <file datatype="xml" source-language="en" target-language="ko" original="../VSResources.resx">
     <body>
+      <trans-unit id="BuildAccelerationSummary_2">
+        <source>Visual Studio accelerated {0} project(s), copying {1} file(s). See https://aka.ms/vs-build-acceleration.</source>
+        <target state="translated">Visual Studio에서 가속화된 프로젝트 {0}개, 파일 {1}개 복사. 참조: https://aka.ms/vs-build-acceleration</target>
+        <note>{0} and {1} are both integer counts.</note>
+      </trans-unit>
       <trans-unit id="DefaultNewProfileName">
         <source>Profile {0}</source>
         <target state="translated">프로필 {0}</target>
         <note>Default name for new launch profiles. The {0} is a decimal number chosen to guarantee the name is unique.</note>
+      </trans-unit>
+      <trans-unit id="DontKnowHowToRunProfile_2">
+        <source>The project doesn't know how to run the profile with name '{0}' and command '{1}'.</source>
+        <target state="translated">프로젝트에서 명령 '{1}'을(를) 사용하여 이름이 '{0}'인 프로필을 실행하는 방법을 알지 못 합니다.</target>
+        <note>
+      {0} is the profile name, which comes from the user.
+      {1} is the profile command, which is usually an internal string but is helpful when diagnosing issues here.
+    </note>
       </trans-unit>
       <trans-unit id="FrameworkAssemblyAssemblyNameDescription">
         <source>The name of the framework assembly.</source>
@@ -54,47 +67,47 @@
       </trans-unit>
       <trans-unit id="HotReloadApplyUpdatesFailure">
         <source>Applying updates failed: {0}</source>
-        <target state="new">Applying updates failed: {0}</target>
+        <target state="translated">업데이트를 적용하지 못했습니다. {0}</target>
         <note />
       </trans-unit>
       <trans-unit id="HotReloadApplyUpdatesSuccessful">
         <source>Updates applied successfully.</source>
-        <target state="new">Updates applied successfully.</target>
+        <target state="translated">업데이트가 성공적으로 적용되었습니다.</target>
         <note />
       </trans-unit>
       <trans-unit id="HotReloadErrorsInApplication">
         <source>Errors found in application: </source>
-        <target state="new">Errors found in application: </target>
+        <target state="translated">애플리케이션에서 발견된 오류: </target>
         <note />
       </trans-unit>
       <trans-unit id="HotReloadOutputWindowPaneName">
         <source>Hot Reload</source>
-        <target state="new">Hot Reload</target>
+        <target state="translated">핫 다시 로드</target>
         <note>This is the name given to the Output Window pane responsible for displaying messages related to Hot Reload operations.</note>
       </trans-unit>
       <trans-unit id="HotReloadRestartInProgress">
         <source>Rebuilding and restarting the application since the edits can't be applied dynamically.</source>
-        <target state="new">Rebuilding and restarting the application since the edits can't be applied dynamically.</target>
+        <target state="translated">편집 내용을 동적으로 적용할 수 없으므로 애플리케이션을 다시 빌드하고 다시 시작하세요.</target>
         <note />
       </trans-unit>
       <trans-unit id="HotReloadSendingUpdates">
         <source>Sending updates to running application.</source>
-        <target state="new">Sending updates to running application.</target>
+        <target state="translated">실행 중인 응용 프로그램에 업데이트를 보냅니다.</target>
         <note />
       </trans-unit>
       <trans-unit id="HotReloadStartSession">
         <source>Hot Reload session started.</source>
-        <target state="new">Hot Reload session started.</target>
+        <target state="translated">핫 다시 로드 세션이 시작되었습니다.</target>
         <note />
       </trans-unit>
       <trans-unit id="HotReloadStopSession">
         <source>Hot Reload session complete.</source>
-        <target state="new">Hot Reload session complete.</target>
+        <target state="translated">핫 다시 로드 세션이 완료되었습니다.</target>
         <note />
       </trans-unit>
       <trans-unit id="HotReloadStoppingApplication">
         <source>Stopping application.</source>
-        <target state="new">Stopping application.</target>
+        <target state="translated">응용 프로그램을 중지하는 중입니다.</target>
         <note />
       </trans-unit>
       <trans-unit id="ImportsFromTargetCannotBeDeleted">
@@ -102,43 +115,42 @@
         <target state="translated">{0} - 대상 파일에서 가져옵니다. 이 가져오기는 제거할 수 없습니다.</target>
         <note />
       </trans-unit>
-      <trans-unit id="ProjectHotReloadSessionManager_AttachingToProcess">
-        <source>{0}: Attaching to process '{1}'.</source>
-        <target state="new">{0}: Attaching to process '{1}'.</target>
-        <note>{0} is the Hot Reload session identifier. {1} is the process ID (PID).</note>
+      <trans-unit id="IncrementalBuildFailureWarningMessage_2">
+        <source>WARNING: Potential build performance issue in '{0}'. The project does not appear up-to-date after a successful build: {1}. See https://aka.ms/incremental-build-failure.</source>
+        <target state="translated">경고: '{0}'에서의 잠재적 빌드 성능 문제입니다. 빌드가 성공한 후에는 프로젝트가 최신 상태로 표시되지 않습니다. {1}. https://aka.ms/incremental-build-failure를 참조하세요.</target>
+        <note>{0} is the file name of the project. {1} is a description of the failure. The period '.' after {1} is intentional and should be kept.</note>
       </trans-unit>
-      <trans-unit id="ProjectHotReloadSessionManager_ErrorAttachingToProcess">
-        <source>{0}: Error while attaching to process '{1}':
-{2}
-{3}</source>
-        <target state="new">{0}: Error while attaching to process '{1}':
-{2}
-{3}</target>
-        <note>{0} is the Hot Reload session identifier. {1} is the process ID (PID). {2} is the exception type name. {3} is the exception message.</note>
+      <trans-unit id="ProjectHotReloadSessionManager_AttachingToProcess">
+        <source>Attaching to process.</source>
+        <target state="translated">프로세스에 연결하는 중입니다.</target>
+        <note />
       </trans-unit>
       <trans-unit id="ProjectHotReloadSessionManager_ErrorStoppingTheSession">
-        <source>{0}: Error while stopping the session:
-{1}
-{2}</source>
-        <target state="new">{0}: Error while stopping the session:
-{1}
-{2}</target>
-        <note>{0} is the Hot Reload session identifier. {1} is the exception type name. {2} is the exception message.</note>
+        <source>Error while stopping the session: {0}
+{1}</source>
+        <target state="translated">세션 중지 중 오류 발생: {0}
+{1}</target>
+        <note>{0} is the exception type name. {1} is the exception message.</note>
       </trans-unit>
       <trans-unit id="ProjectHotReloadSessionManager_NoActiveProcess">
-        <source>{0}: Unable to start Hot Reload session: no active process.</source>
-        <target state="new">{0}: Unable to start Hot Reload session: no active process.</target>
-        <note>{0} is the Hot Reload session identifier.</note>
+        <source>Unable to start Hot Reload session: no active process.</source>
+        <target state="translated">핫 다시 로드 세션을 시작할 수 없음: 활성 프로세스가 없습니다.</target>
+        <note />
       </trans-unit>
       <trans-unit id="ProjectHotReloadSessionManager_ProcessAlreadyExited">
-        <source>{0}: The process has already exited.</source>
-        <target state="new">{0}: The process has already exited.</target>
-        <note>{0} is the Hot Reload session identifier.</note>
+        <source>The process has already exited.</source>
+        <target state="translated">프로세스가 이미 종료되었습니다.</target>
+        <note />
       </trans-unit>
       <trans-unit id="ProjectHotReloadSessionManager_ProcessExited">
-        <source>{0}: The process has exited.</source>
-        <target state="new">{0}: The process has exited.</target>
-        <note>{0} is the Hot Reload session identifier.</note>
+        <source>The process has exited.</source>
+        <target state="translated">프로세스가 종료되었습니다.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ProjectHotReloadSessionManager_StartupHooksDisabled">
+        <source>Hot Reload is not available because startup hooks have been disabled, possibly due to trimming.</source>
+        <target state="translated">아마도 트리밍으로 인해 시작 후크가 비활성화되었으므로 핫 다시 로드 사용할 수 없습니다.</target>
+        <note />
       </trans-unit>
       <trans-unit id="RenameSymbolFailed">
         <source>Renaming the code element '{0}' failed.</source>
@@ -153,11 +165,6 @@
       <trans-unit id="ActiveLaunchProfileNotFound">
         <source>There aren't any active launch profiles configured for this project.</source>
         <target state="translated">이 프로젝트에 대해 구성된 활성 시작 프로필이 없습니다.</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="DontKnowHowToRunProfile">
-        <source>The project doesn't know how to run the profile {0}.</source>
-        <target state="translated">프로젝트에서 {0} 프로필을 실행하는 방법을 모릅니다.</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrorInProfilesFile">
@@ -194,24 +201,24 @@ In order to debug this project, add an executable project to this solution which
         <target state="translated">(설정되지 않음)</target>
         <note>Text to display to the user in the property page UI when the "startup object" property is not set.</note>
       </trans-unit>
+      <trans-unit id="UpdateNamespacePromptMessage">
+        <source>Adjust namespaces for moved files?</source>
+        <target state="translated">이동된 파일에 대한 네임스페이스를 조정하시겠습니까?</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="WPFApp_Xaml_CouldntFindRootElement_1">
+        <source>Could not find the expected root element "{0}" in the application definition file.</source>
+        <target state="translated">애플리케이션 정의 파일에서 필요한 루트 요소 "{0}"을(를) 찾을 수 없습니다.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="WPFApp_Xaml_UnexpectedFormat_2">
+        <source>The .xaml file was in an unexpected format, near line {0} column {1}.</source>
+        <target state="translated">.xaml 파일의 줄 {0} 열 {1} 근처에 예기치 않은 형식이 있습니다.</target>
+        <note>{0} is the line number of the problematic XAML, and {1} is the column.</note>
+      </trans-unit>
       <trans-unit id="WorkingDirecotryInvalid">
         <source>The working directory '{0}' specified in the '{1}' debug profile does not exist.</source>
         <target state="translated">'{1}' 디버그 프로필에 지정된 작업 디렉터리 '{0}'이(가) 없습니다.</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="NoMigratedCSProjFound">
-        <source>Expected to find migrated cpsroj in {0}, but did not find any.</source>
-        <target state="translated">{0}에 마이그레이션된 cpsroj가 있어야 하지만 찾을 수 없습니다.</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="EditProjectFileCommand">
-        <source>Edit {0}</source>
-        <target state="translated">{0} 편집</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="NoRunCommandSpecifiedInProject">
-        <source>Unable to run your project. The "RunCommand" property is not defined.</source>
-        <target state="translated">프로젝트를 실행할 수 없습니다. "RunCommand" 속성이 정의되지 않았습니다.</target>
         <note />
       </trans-unit>
       <trans-unit id="MultiTFEditNotSupported">
@@ -234,49 +241,9 @@ In order to debug this project, add an executable project to this solution which
         <target state="translated">프레임워크({0})</target>
         <note />
       </trans-unit>
-      <trans-unit id="OutputWindowPaneTitle">
-        <source>Project</source>
-        <target state="translated">프로젝트</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="PartialSupportedDotNetCoreProject">
-        <source>A newer version of Visual Studio is recommended for projects targeting .NET Core {0}.{1}.</source>
-        <target state="translated">.NET Core {0}.{1}을(를) 대상으로 하는 프로젝트에는 최신 버전의 Visual Studio를 사용하는 것이 좋습니다.</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="NotSupportedDotNetCoreProject">
-        <source>Projects targeting .NET Core {0}.{1} or newer are not supported by this version of Visual Studio.</source>
-        <target state="translated">.NET Core {0}.{1} 이상을 대상으로 하는 프로젝트는 이 버전의 Visual Studio에서 지원되지 않습니다.</target>
-        <note />
-      </trans-unit>
       <trans-unit id="DontShowAgain">
         <source>Don't show again</source>
         <target state="translated">다시 표시 안 함</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="LearnMore">
-        <source>Learn more</source>
-        <target state="translated">자세한 정보</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="OKButtonText">
-        <source>OK</source>
-        <target state="translated">확인</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="Restore_PropertyWithInconsistentValues">
-        <source>The value of the '{0}' property is inconsistent between target frameworks. This property must be identical for NuGet restore to function correctly. The value '{1}' from the '{2}' configuration will be used, other target frameworks may fail to pick NuGet assets.</source>
-        <target state="translated">'{0}' 속성 값이 대상 프레임워크 간에 일치하지 않습니다. NuGet 복원이 제대로 작동하려면 이 속성이 같아야 합니다. '{2}' 구성의 '{1}' 값이 사용되며, 다른 대상 프레임워크는 NuGet 자산을 선택하지 못할 수 있습니다.</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="Restore_DuplicateToolReferenceItems">
-        <source>The metadata on 'DotNetCliToolReference' item '{0}' is inconsistent between target frameworks. Only the first one will be restored.</source>
-        <target state="translated">'DotNetCliToolReference' 항목 '{0}'에 대한 메타데이터가 대상 프레임워크 간에 일치하지 않습니다. 첫 번째 항목만 복원됩니다.</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="Restore_EmptyTargetFrameworkMoniker">
-        <source>The value of the 'TargetFrameworkMoniker' and 'NuGetTargetMoniker' properties in the '{0}' configuration are both empty. This configuration will not contribute to NuGet restore, which may result in restore and build errors.</source>
-        <target state="translated">'{0}' 구성의 'TargetFrameworkMoniker' 및 'NuGetTargetMoniker' 속성 값이 둘 다 비어 있습니다. 이 구성은 NuGet 복원에 영향을 주지 않아 복원 및 빌드 오류가 발생할 수 있습니다.</target>
         <note />
       </trans-unit>
       <trans-unit id="XprojNotSupported">

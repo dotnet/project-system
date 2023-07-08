@@ -1,15 +1,11 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
-using System;
-using System.ComponentModel.Composition;
-using System.IO;
 using System.Runtime.InteropServices;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Flavor;
 using Microsoft.VisualStudio.Shell.Interop;
 using Microsoft.VisualStudio.Threading;
 using IAsyncServiceProvider = Microsoft.VisualStudio.Shell.IAsyncServiceProvider;
-using Task = System.Threading.Tasks.Task;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Xproj
 {
@@ -72,7 +68,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Xproj
         {
             _context.VerifyIsOnMainThread();
 
-            if (_cookie != VSConstants.VSCOOKIE_NIL && _registerProjectTypes != null)
+            if (_cookie != VSConstants.VSCOOKIE_NIL && _registerProjectTypes is not null)
             {
                 Verify.HResult(_registerProjectTypes.UnregisterProjectType(_cookie));
             }

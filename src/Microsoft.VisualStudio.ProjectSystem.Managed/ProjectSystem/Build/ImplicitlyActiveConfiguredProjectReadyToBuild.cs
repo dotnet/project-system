@@ -1,9 +1,8 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
-using System;
-using System.ComponentModel.Composition;
-using System.Threading.Tasks;
-using Microsoft.VisualStudio.Threading.Tasks;
+// .NET Core defines a non-generic TaskCompletionSource but .NETFramework does not.
+// For consistency, always use the one we define.
+using TaskCompletionSource = Microsoft.VisualStudio.Threading.Tasks.TaskCompletionSource;
 
 namespace Microsoft.VisualStudio.ProjectSystem.Build
 {
@@ -29,7 +28,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.Build
             _activeConfiguredProjectProvider.Changed += ActiveConfiguredProject_Changed;
         }
 
-        private void ActiveConfiguredProject_Changed(object sender, ActiveConfigurationChangedEventArgs e) => GetLatestActivationTask();
+        private void ActiveConfiguredProject_Changed(object sender, ActiveConfigurationChangedEventArgs e)
+        {
+            _ = GetLatestActivationTask();
+        }
 
         public bool IsValidToBuild => GetLatestActivationTask().IsCompleted;
 
@@ -67,7 +69,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Build
         {
             ProjectConfiguration? activeConfig = _activeConfiguredProjectProvider.ActiveProjectConfiguration;
 
-            if (activeConfig == null)
+            if (activeConfig is null)
                 return false;
 
             return _configuredProject.ProjectConfiguration.EqualIgnoringTargetFramework(activeConfig);

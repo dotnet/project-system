@@ -1,12 +1,8 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
-using System.Collections.Generic;
-using System.Collections.Immutable;
-using System.Threading.Tasks;
 using Microsoft.VisualStudio.ProjectSystem.Debug;
 using Microsoft.VisualStudio.ProjectSystem.Query;
-using Microsoft.VisualStudio.ProjectSystem.Query.ProjectModel.Implementation;
-using Xunit;
+using Microsoft.VisualStudio.ProjectSystem.Query.Framework;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Query.LaunchProfiles
 {
@@ -34,13 +30,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query.LaunchProfiles
             var newProfileId = await handler.AddLaunchProfileAsync(context, parent, commandName: "Alpha", newProfileName: "Beta");
 
             Assert.NotNull(newProfile);
-            Assert.Equal(expected: "Beta", actual: newProfile!.Name);
-            Assert.Equal(expected: "Alpha", actual: newProfile!.CommandName);
+            Assert.Equal(expected: "Beta", actual: newProfile.Name);
+            Assert.Equal(expected: "Alpha", actual: newProfile.CommandName);
             Assert.Single(profiles);
 
             Assert.NotNull(newProfileId);
-            Assert.Equal(expected: "LaunchProfile", actual: newProfileId![ProjectModelIdentityKeys.SourceItemType]);
-            Assert.Equal(expected: "Beta", actual: newProfileId![ProjectModelIdentityKeys.SourceItemName]);
+            Assert.Equal(expected: "LaunchProfile", actual: newProfileId[ProjectModelIdentityKeys.SourceItemType]);
+            Assert.Equal(expected: "Beta", actual: newProfileId[ProjectModelIdentityKeys.SourceItemName]);
         }
 
         [Fact]
@@ -65,26 +61,26 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query.LaunchProfiles
             var newProfileId = await handler.AddLaunchProfileAsync(context, parent, commandName: "Alpha", newProfileName: null);
 
             Assert.NotNull(newProfile);
-            Assert.Equal(expected: "Alpha", actual: newProfile!.CommandName);
+            Assert.Equal(expected: "Alpha", actual: newProfile.CommandName);
             Assert.NotNull(newProfile.Name);
 
             var firstProfileName = newProfile.Name;
 
             Assert.NotNull(newProfileId);
-            Assert.Equal(expected: "LaunchProfile", actual: newProfileId![ProjectModelIdentityKeys.SourceItemType]);
-            Assert.Equal(expected: newProfile.Name, actual: newProfileId![ProjectModelIdentityKeys.SourceItemName]);
+            Assert.Equal(expected: "LaunchProfile", actual: newProfileId[ProjectModelIdentityKeys.SourceItemType]);
+            Assert.Equal(expected: newProfile.Name, actual: newProfileId[ProjectModelIdentityKeys.SourceItemName]);
 
             newProfileId = await handler.AddLaunchProfileAsync(context, parent, commandName: "Beta", newProfileName: null);
 
             Assert.NotNull(newProfile);
-            Assert.Equal(expected: "Beta", actual: newProfile!.CommandName);
+            Assert.Equal(expected: "Beta", actual: newProfile.CommandName);
             Assert.NotNull(newProfile.Name);
 
             var secondProfileName = newProfile.Name;
 
             Assert.NotNull(newProfileId);
-            Assert.Equal(expected: "LaunchProfile", actual: newProfileId![ProjectModelIdentityKeys.SourceItemType]);
-            Assert.Equal(expected: newProfile.Name, actual: newProfileId![ProjectModelIdentityKeys.SourceItemName]);
+            Assert.Equal(expected: "LaunchProfile", actual: newProfileId[ProjectModelIdentityKeys.SourceItemType]);
+            Assert.Equal(expected: newProfile.Name, actual: newProfileId[ProjectModelIdentityKeys.SourceItemName]);
 
             Assert.NotEqual(firstProfileName, secondProfileName);
 
@@ -122,8 +118,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query.LaunchProfiles
             Assert.Equal(expected: 2, actual: profiles.Count);
 
             Assert.NotNull(duplicatedProfileId);
-            Assert.Equal(expected: "LaunchProfile", actual: duplicatedProfileId![ProjectModelIdentityKeys.SourceItemType]);
-            Assert.Equal(expected: duplicatedProfile.Name, actual: duplicatedProfileId![ProjectModelIdentityKeys.SourceItemName]);
+            Assert.Equal(expected: "LaunchProfile", actual: duplicatedProfileId[ProjectModelIdentityKeys.SourceItemType]);
+            Assert.Equal(expected: duplicatedProfile.Name, actual: duplicatedProfileId[ProjectModelIdentityKeys.SourceItemName]);
         }
 
         [Fact]
@@ -151,15 +147,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query.LaunchProfiles
 
             var duplicatedProfileId = await handler.DuplicateLaunchProfileAsync(context, parent, currentProfileName: "Alpha", newProfileName: null, newProfileCommandName: null);
 
-            Assert.NotNull(duplicatedProfile!.Name);
-            Assert.NotEqual(expected: "Alpha", actual: duplicatedProfile!.Name);
-            Assert.Equal(expected: "Beta", actual: duplicatedProfile!.CommandName);
-            Assert.Equal(expected: @"C:\iguana\aardvark.exe", actual: duplicatedProfile!.ExecutablePath);
+            Assert.NotNull(duplicatedProfile);
+            Assert.NotNull(duplicatedProfile.Name);
+            Assert.NotEqual(expected: "Alpha", actual: duplicatedProfile.Name);
+            Assert.Equal(expected: "Beta", actual: duplicatedProfile.CommandName);
+            Assert.Equal(expected: @"C:\iguana\aardvark.exe", actual: duplicatedProfile.ExecutablePath);
             Assert.Equal(expected: 2, actual: profiles.Count);
 
             Assert.NotNull(duplicatedProfileId);
-            Assert.Equal(expected: "LaunchProfile", actual: duplicatedProfileId![ProjectModelIdentityKeys.SourceItemType]);
-            Assert.Equal(expected: duplicatedProfile.Name, actual: duplicatedProfileId![ProjectModelIdentityKeys.SourceItemName]);
+            Assert.Equal(expected: "LaunchProfile", actual: duplicatedProfileId[ProjectModelIdentityKeys.SourceItemType]);
+            Assert.Equal(expected: duplicatedProfile.Name, actual: duplicatedProfileId[ProjectModelIdentityKeys.SourceItemName]);
         }
 
         [Fact]
@@ -234,8 +231,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query.LaunchProfiles
             Assert.Equal(expected: "Alpha", actual: removedProfileName);
 
             Assert.NotNull(removedProfileId);
-            Assert.Equal(expected: "LaunchProfile", actual: removedProfileId![ProjectModelIdentityKeys.SourceItemType]);
-            Assert.Equal(expected: "Alpha", actual: removedProfileId![ProjectModelIdentityKeys.SourceItemName]);
+            Assert.Equal(expected: "LaunchProfile", actual: removedProfileId[ProjectModelIdentityKeys.SourceItemType]);
+            Assert.Equal(expected: "Alpha", actual: removedProfileId[ProjectModelIdentityKeys.SourceItemName]);
         }
     }
 }

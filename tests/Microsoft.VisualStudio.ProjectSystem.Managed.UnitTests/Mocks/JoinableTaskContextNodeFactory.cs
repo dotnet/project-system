@@ -6,7 +6,9 @@ namespace Microsoft.VisualStudio.Threading
     {
         public static JoinableTaskContextNode Create()
         {
+#pragma warning disable VSSDK005
             var context = new JoinableTaskContext();
+#pragma warning restore VSSDK005
 
             return new JoinableTaskContextNode(context);
         }

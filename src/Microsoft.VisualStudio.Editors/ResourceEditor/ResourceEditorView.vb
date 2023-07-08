@@ -268,10 +268,10 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
 
                 _isInDevice20Project = IsInDevice20Project(rootDesigner)
 
-                AddCodeGeneratorEntry(AccessModifierConverter.Access.Friend, IIf(useVbMyResXCodeGenerator, VBMYCUSTOMTOOL, STANDARDCUSTOMTOOL))
+                AddCodeGeneratorEntry(AccessModifierType.Internal, IIf(useVbMyResXCodeGenerator, VBMYCUSTOMTOOL, STANDARDCUSTOMTOOL))
                 If Not _isInDevice20Project Then
                     ' public generator is not supported in Device 2.0 projects
-                    AddCodeGeneratorEntry(AccessModifierConverter.Access.Public, IIf(useVbMyResXCodeGenerator, VBMYCUSTOMTOOLPUBLIC, STANDARDCUSTOMTOOLPUBLIC))
+                    AddCodeGeneratorEntry(AccessModifierType.Public, IIf(useVbMyResXCodeGenerator, VBMYCUSTOMTOOLPUBLIC, STANDARDCUSTOMTOOLPUBLIC))
                 End If
 
                 If allowNoCodeGeneration Then
@@ -3053,7 +3053,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                             With Info
                                 .Guid = SplitInfo(0)
                                 .ProjectFile = SplitInfo(1)
-                                .FilePath = SplitInfo(2)
+                                .FilePath = GetExactPath(SplitInfo(2))
                             End With
                             Files(i) = Info
                         Next
@@ -3067,6 +3067,30 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
 
             ReDim Files(-1)
             Return Files
+        End Function
+
+        ' Converts the provided path to use the same capitalization as the file system. Files dragged
+        ' from Solution Explorer produce drop data having a lower-case path, which we then write to
+        ' in the .resx file. Windows has a case-insensitive file system, but users on other operation
+        ' systems (such as Linux) can hit run-time errors when the case doesn't match. This avoids that.
+        Private Shared Function GetExactPath(path As String) As String
+            If path Is Nothing OrElse (Not File.Exists(path) AndAlso Not Directory.Exists(path)) Then
+                Return path
+            End If
+
+            Try
+                Dim root = System.IO.Path.GetPathRoot(path)
+                Dim parts = path.Substring(root.Length).Split(System.IO.Path.DirectorySeparatorChar, System.IO.Path.AltDirectorySeparatorChar)
+
+                For Each part As String In parts
+                    root = Directory.EnumerateFileSystemEntries(root, part).First()
+                Next
+
+                Return root
+            Catch
+                ' If we hit any issues, just return the path unchanged
+                Return path
+            End Try
         End Function
 
 #End Region
@@ -3268,7 +3292,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                 If Not String.IsNullOrEmpty(fileExtension) Then
                     Dim isSafe As Boolean = False
 
-                    ' first of all, we check the white list for the resource type. If the extension matches one of them, we won't pop up a warning dialog.
+                    ' first of all, we check the safe list for the resource type. If the extension matches one of them, we won't pop up a warning dialog.
                     Dim safeList As String() = Resource.ResourceTypeEditor.GetSafeFileExtensionList()
                     If safeList IsNot Nothing Then
                         For Each safeExtension As String In safeList
@@ -4892,7 +4916,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
 #Region "Global Symbol Rename"
 
         ''' <summary>
-        ''' Attemnpts to call global rename on a resource that has been renamed, if a strongly-typed
+        ''' Attempts to call global rename on a resource that has been renamed, if a strongly-typed
         '''   class is being generated for the resx file.
         ''' </summary>
         ''' <param name="OldName">The old name of the resource that was renamed</param>

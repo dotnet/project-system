@@ -2,6 +2,11 @@
 <xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
   <file datatype="xml" source-language="en" target-language="cs" original="../DebugPropertyPage.xaml">
     <body>
+      <trans-unit id="Category|General|DisplayName">
+        <source>General</source>
+        <target state="translated">Obecné</target>
+        <note />
+      </trans-unit>
       <trans-unit id="Rule|DebugPropertyPage|Description">
         <source>Debug</source>
         <target state="translated">Ladit</target>
@@ -13,8 +18,8 @@
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|DebugPagePlaceholderDescription|Description">
-        <source>The management of launch profiles has moved to a dedicated dialog. It may be accessed via the link below.</source>
-        <target state="translated">Správa profilů spouštění se přesunula do samostatného okna. Přístup k němu získáte přes níže uvedený odkaz.</target>
+        <source>The management of launch profiles has moved to a dedicated dialog. It may be accessed via the link below, via the Debug menu in the menu bar, or via the Debug Target command on the Standard tool bar.</source>
+        <target state="translated">Správa profilů spuštění se přesunula do vyhrazeného dialogového okna. Přístup k němu můžete získat prostřednictvím odkazu níže, nabídky ladění v řádku nabídek nebo prostřednictvím příkazu Cíl ladění na panelu nástrojů Standard.</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|DebugPagePlaceholderDescription|DisplayName">
@@ -24,7 +29,7 @@
       </trans-unit>
       <trans-unit id="StringProperty|DebugPagePlaceholderDescription|Metadata|SearchTerms">
         <source>arguments;command line;working directory;environment variables;IIS;browser;URL;authentication;remote</source>
-        <target state="new">arguments;command line;working directory;environment variables;IIS;browser;URL;authentication;remote</target>
+        <target state="translated">argumenty;příkazový řádek;pracovní adresář;proměnné prostředí;IIS;prohlížeč;adresa URL;ověřování;vzdálené</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|OpenLaunchProfilesEditor|DisplayName">
@@ -34,7 +39,7 @@
       </trans-unit>
       <trans-unit id="StringProperty|OpenLaunchProfilesEditor|Metadata|SearchTerms">
         <source>arguments;command line;working directory;environment variables;IIS;browser;URL;authentication;remote</source>
-        <target state="new">arguments;command line;working directory;environment variables;IIS;browser;URL;authentication;remote</target>
+        <target state="translated">argumenty;příkazový řádek;pracovní adresář;proměnné prostředí;IIS;prohlížeč;adresa URL;ověřování;vzdálené</target>
         <note />
       </trans-unit>
     </body>

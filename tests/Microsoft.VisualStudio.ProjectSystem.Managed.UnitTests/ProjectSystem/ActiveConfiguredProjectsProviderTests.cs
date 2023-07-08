@@ -1,11 +1,6 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
-using System.Collections.Generic;
-using System.Collections.Immutable;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.VisualStudio.ProjectSystem.Configuration;
-using Xunit;
 
 namespace Microsoft.VisualStudio.ProjectSystem
 {
@@ -98,7 +93,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
             var activeConfigs = ProjectConfigurationFactory.CreateMany(expected.Split(';'));
 
             Assert.NotNull(result);
-            Assert.Equal(activeConfigs.OrderBy(c => c.Name), result!.Objects.OrderBy(c => c.Name));
+            Assert.Equal(activeConfigs.OrderBy(c => c.Name), result.Objects.OrderBy(c => c.Name));
             Assert.Equal(new[] { "TargetFramework" }, result.DimensionNames);
         }
 
@@ -123,7 +118,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
             var result = await provider.GetActiveConfiguredProjectsAsync();
 
             Assert.NotNull(result);
-            Assert.Single(result!.Objects);
+            Assert.Single(result.Objects);
             Assert.Equal(activeConfiguration, result.Objects[0].ProjectConfiguration.Name);
             Assert.Empty(result.DimensionNames);
         }
@@ -140,7 +135,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
                 return Task.FromResult(ConfiguredProjectFactory.ImplementProjectConfiguration(projectConfiguration));
             });
 
-            var dimensionProviders = dimensionNames.Select(name => IActiveConfiguredProjectsDimensionProviderFactory.ImplementDimensionName(name));
+            var dimensionProviders = dimensionNames.Select(IActiveConfiguredProjectsDimensionProviderFactory.ImplementDimensionName);
 
             return CreateInstance(services: services, project: project, dimensionProviders: dimensionProviders);
         }
@@ -152,11 +147,11 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
             var provider = new ActiveConfiguredProjectsProvider(services, project);
 
-            if (dimensionProviders != null)
+            if (dimensionProviders is not null)
             {
                 foreach (var dimensionProvider in dimensionProviders)
                 {
-                    provider.DimensionProviders.Add(dimensionProvider, appliesTo: ProjectCapability.AlwaysAvailable);
+                    provider.DimensionProviders.Add(dimensionProvider, appliesTo: ProjectCapabilities.AlwaysApplicable);
                 }
             }
 

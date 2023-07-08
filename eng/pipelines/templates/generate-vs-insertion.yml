@@ -1,0 +1,93 @@
+# Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
+
+jobs:
+- job: GenerateInsertion
+  displayName: Generate VS Insertion
+  timeoutInMinutes: 45
+  steps:
+
+  ###################################################################################################################################################################
+  # REPO PREPARATION
+  ###################################################################################################################################################################
+
+  # Use a disabled, empty script to display the section header in the pipeline UI.
+  - script:
+    displayName: === Repo Preparation ===
+    condition: false
+
+  # Checkout the repo itself and apply settings for the process.
+  - checkout: self
+    # Required for using Git commands in the subsequent tasks below. See:
+    # - https://stackoverflow.com/questions/56733922/fatal-could-not-read-password-for-https-organizationnamedev-azure-com-ter#comment108309839_56734304
+    # - https://learn.microsoft.com/azure/devops/pipelines/scripts/git-commands?view=azure-devops&tabs=yaml#allow-scripts-to-access-the-system-token
+    persistCredentials: true
+    # Changes Build.SourcesDirectory from $(Pipeline.Workspace)/s to $(Pipeline.Workspace)/project-system
+    path: project-system
+  # Create the VS folder and fetch the VS repo Git information into it, excluding the files themselves (only .git history is required).
+  # Doing this manual process over the checkout: VS task saves around 3 minutes. See: https://stackoverflow.com/a/43136160/294804
+  # The System.AccessToken is required for the clone to occur. See: https://stackoverflow.com/a/56734304/294804
+  - powershell: |
+      $null = New-Item -Path '$(Pipeline.Workspace)' -Name VS -ItemType Directory
+      Set-Location '$(Pipeline.Workspace)/VS'
+      git init
+      git remote add origin https://$(System.AccessToken)@dev.azure.com/devdiv/DevDiv/_git/VS
+      git fetch --depth $(PriorInsertionCommitDepth) origin $(InsertionVSBranch)
+    displayName: Fetch VS Repo
+
+  ###################################################################################################################################################################
+  # GENERATE VS INSERTION
+  ###################################################################################################################################################################
+
+  # Use a disabled, empty script to display the section header in the pipeline UI.
+  - script:
+    displayName: === Generate VS Insertion ===
+    condition: false
+
+  # Creates the description for the VS Insertion PR and sets it to the InsertionDescription variable. Also sets the ShortCommitId variable based on currentSha.
+  - powershell: . '$(Build.SourcesDirectory)/eng/scripts/GetInsertionPRDescription.ps1' -vsDirectory '$(Pipeline.Workspace)/VS/' -currentSha '$(Build.SourceVersion)' -repoUrl '$(Build.Repository.Uri)' -projectName '$(Build.DefinitionName)'
+    displayName: Create VS Insertion Description
+    failOnStderr: true
+
+  # Creates a VS insertion PR using the Products drop containing the .vsman files.
+  # Documentation: https://devdiv.visualstudio.com/DevDiv/_wiki/wikis/DevDiv.wiki/635/Overview?anchor=**build-pipeline**
+  # YAML reference: https://dev.azure.com/devdiv/Engineering/_git/MicroBuild?path=/src/Tasks/InsertVsPayload/task.json
+  - task: MicroBuildInsertVsPayload@4
+    displayName: Create VS Insertion PR
+    inputs:
+      TargetBranch: $(InsertionVSBranch)
+      # Cannot use '.NET' Project System as the branch name is created via this value. It produces an error:
+      # fatal: 'team/.NET-Project-System/DotNet-Project-System-20220818.3-1' is not a valid branch name
+      TeamName: DotNet Project System
+      TeamEmail: dotnetdevexproj@microsoft.com
+      # The ShortCommitId is parsed out of the payload name in tagger.yml for use in tagging the appropriate commit in our repo.
+      # This tag is used in GetInsertionPRDescription.ps1 (task above) to create the description for this insertion.
+      InsertionPayloadName: 'DotNet-Project-System ($(Build.SourceBranchName):$(Build.BuildNumber):$(ShortCommitId))'
+      # Note: The actual filename, SetupManifest.vsman, is different from the mapped value of Microsoft.VisualStudio.ProjectSystem.Managed.vsman, which is in dotnetprojectsystem-components.json.
+      ComponentJsonValues: Microsoft.VisualStudio.ProjectSystem.Managed.vsman=https://vsdrop.corp.microsoft.com/file/v1/Products/$(System.TeamProject)/$(Build.Repository.Name)/$(Build.SourceBranchName)/$(Build.BuildNumber);SetupManifest.vsman
+      # Setting DefaultConfigValues also sets the PackagePropsValues.
+      # See the bottom of the table here: https://devdiv.visualstudio.com/DevDiv/_wiki/wikis/DevDiv.wiki/635/Overview?anchor=**build-pipeline**
+      DefaultConfigValues: Microsoft.VisualStudio.AppDesigner=$(PackageVersion),Microsoft.VisualStudio.Editors=$(PackageVersion),Microsoft.VisualStudio.ProjectSystem.Managed=$(PackageVersion),Microsoft.VisualStudio.ProjectSystem.Managed.VS=$(PackageVersion)
+      # Sets the assembly version in src\ProductData\AssemblyVersions.tt file in the VS repo.
+      AssemblyVersionsValues: MicrosoftVisualStudioAppDesignerVersion=$(AssemblyVersion),MicrosoftVisualStudioEditorsVersion=$(AssemblyVersion),MicrosoftVisualStudioProjectSystemManagedVersion=$(AssemblyVersion)
+      AllowTopicBranchUpdate: true
+      # Description logic here:
+      # - https://devdiv.visualstudio.com/Engineering/_git/MicroBuild?path=/src/Tasks/InsertVsPayload/plugin.ps1&version=GBmain&line=25&lineEnd=26&lineStartColumn=1&lineEndColumn=1&lineStyle=plain&_a=contents
+      # - https://devdiv.visualstudio.com/DevDiv/_git/302b028d-413e-471a-af4d-abc68bdc96b8?path=/src/SubmitPullRequest/Program.cs&version=GBmain&_a=contents
+      InsertionDescription: $(InsertionDescription)
+      # This is the name of our DevDiv alias.
+      InsertionReviewers: $(InsertReviewers)
+      InsertionBuildPolicy: Request Perf DDRITs
+      # This action only works on AzDO repos. This warning occurs if enabled:
+      # ##[warning]WARNING: Cannot extract commit details from vstfs:///Build/Build/6574299: ArgumentException : 'https://github.com/dotnet/project-system' does not look like an Azure DevOps url
+      # Documentation: https://devdiv.visualstudio.com/DevDiv/_wiki/wikis/DevDiv.wiki/631/Copy-Commit-Details-to-PR
+      AddCommitsToPR: false
+      # This action only works on AzDO repos. This warning occurs if enabled:
+      # ##[warning]WARNING: Cannot copy work items from vstfs:///Build/Build/6574299: ArgumentException : 'https://github.com/dotnet/project-system' does not look like an Azure DevOps url
+      # Documentation: https://devdiv.visualstudio.com/DevDiv/_wiki/wikis/DevDiv.wiki/634/Link-Work-Items-to-PR
+      LinkWorkItemsToPR: false
+      # Documentation: https://devdiv.visualstudio.com/DevDiv/_wiki/wikis/DevDiv.wiki/638/Set-AutoComplete-on-an-Insertion
+      InsertAutoComplete: true
+
+  # The MicroBuildInsertVsPayload clones the VS repo. This removes the cloned repo after use.
+  - powershell: Remove-Item -Path '$(Pipeline.Workspace)/project-system/VS' -Recurse -Force -ErrorAction Ignore
+    displayName: Clean VS Directory

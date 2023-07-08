@@ -14,7 +14,8 @@ namespace Microsoft.VisualStudio.ProjectSystem
         public T FromJson(string jsonString)
         {
             var json = JObject.Parse(jsonString);
-            var data = (IJsonModel<T>)json.ToObject(GetType());
+            var data = (IJsonModel<T>?)json.ToObject(GetType());
+            Assumes.NotNull(data);
             return data.ToActualModel();
         }
 

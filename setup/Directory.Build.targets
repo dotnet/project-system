@@ -1,13 +1,68 @@
 <!-- Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information. -->
 <Project>
+
   <Import Project="..\Directory.Build.targets" />
 
-  <!-- 
-    Defining this target will disable the new SDK behavior of implicit transitive project
-    references. This is a fine feature in general but the current implementation breaks VSIX 
-    construction by including a number of projects that should not be included. 
-    https://github.com/dotnet/sdk/issues/1366
-  -->
-  <Target Name="IncludeTransitiveProjectReferences" >
+  <!-- Add the VSIX files from VS Extension projects for signing. -->
+  <Target Name="AddVsixForSigning" DependsOnTargets="CreateVsixContainer" BeforeTargets="SignFiles" Condition="'$(IsVsixProject)' == 'true' AND '$(CIBuild)' == 'true'">
+    <!-- Required to be in either OutDir or IntermediateOutputPath for signing. It'll be copied after signing via the CopyVsixAfterSigning target. -->
+    <!-- https://devdiv.visualstudio.com/DevDiv/_wiki/wikis/DevDiv.wiki/650/MicroBuild-Signing?anchor=modify-your-project-file-to-include-%60filestosign%60-itemgroup -->
+    <Copy SourceFiles="$(VisualStudioSetupInsertionPath)$(AssemblyName).vsix" DestinationFolder="$(OutDir)" />
+    <ItemGroup>
+      <FilesToSign Include="$(OutDir)$(AssemblyName).vsix">
+        <Authenticode>VsixSHA2</Authenticode>
+      </FilesToSign>
+    </ItemGroup>
   </Target>
+
+  <!-- Copies the VSIX files after they've been signed from VS Extension projects to the appropriate output folder. -->
+  <Target Name="CopyVsixAfterSigning" AfterTargets="SignFiles" Condition="'$(IsVsixProject)' == 'true' AND '$(CIBuild)' == 'true'">
+    <Copy SourceFiles="$(OutDir)$(AssemblyName).vsix" DestinationFolder="$(VisualStudioSetupInsertionPath)" />
+  </Target>
+
+  <!-- Sets the Experimental attribute on the VSIX manifest to 'false' for builds in CI. -->
+  <Target Name="RemoveExperimentalAttributeFromVsixManifest" AfterTargets="DetokenizeVsixManifestFile" Condition="'$(CIBuild)' == 'true'">
+    <PropertyGroup>
+      <ObjVsixManifestPath>$(ArtifactsObjDir)$(MSBuildProjectName)\$(TargetFramework)\extension.vsixmanifest</ObjVsixManifestPath>
+    </PropertyGroup>
+    <Exec ContinueOnError="false" Command="$(PowerShellFile) &quot;$(RepoRoot)eng\scripts\RemoveExperimentalAttributeFromVsixManifest.ps1&quot; -manifestPath &quot;$(ObjVsixManifestPath)&quot;" />
+  </Target>
+
+  <!-- Specifies the version number that is used within the 'source.extension.vsixmanifest' files for VSIX packages. -->
+  <Target Name="GetVsixVersion" Outputs="$(BuildVersion)" Condition="'$(IsVsixProject)' == 'true'" />
+
+  <!--
+    Creates the Insertion folder as the full folder path is required to create the .vsix file in CreateVsixContainer.
+    This line will fail in the VsixUtil tool if the folder path does not exist:
+    https://dev.azure.com/devdiv/DevDiv/_git/VSExtensibility?path=/src/product/vssdk/tools/VsixUtil/Packager.cs&version=GBdevelop&line=82&lineEnd=83&lineStartColumn=1&lineEndColumn=1&lineStyle=plain&_a=contents
+  -->
+  <Target Name="CreateInsertionFolder" BeforeTargets="CreateVsixContainer" Condition="'$(IsVsixProject)' == 'true'">
+    <MakeDir Directories="$(VisualStudioSetupInsertionPath)" />
+  </Target>
+
+  <!--
+    The properties and targets below will add the VSIXSourceItems (files that go in the VSIX) and the VSIX file itself to the item group that tracks when files are up-to-date.
+    This ensures that these files are recognized in VS to force the VS Extension Project to build when the files are changed, such as prior to debugging.
+  -->
+  <PropertyGroup Condition="'$(IsVsixProject)' == 'true'">
+    <CollectUpToDateCheckInputDesignTimeDependsOn>$(CollectUpToDateCheckInputDesignTimeDependsOn);AddUpToDateCheckVSIXSourceItems</CollectUpToDateCheckInputDesignTimeDependsOn>
+    <CollectUpToDateCheckOutputDesignTimeDependsOn>$(CollectUpToDateCheckOutputDesignTimeDependsOn);AddUpToDateCheckTargetVsixContainer</CollectUpToDateCheckOutputDesignTimeDependsOn>
+  </PropertyGroup>
+
+  <Target Name="AddUpToDateCheckVSIXSourceItems" DependsOnTargets="GetVsixSourceItems" Condition="'$(IsVsixProject)' == 'true'">
+    <ItemGroup>
+      <UpToDateCheckInput Include="@(VSIXSourceItem)" Set="VsixItems" />
+    </ItemGroup>
+  </Target>
+
+  <Target Name="AddUpToDateCheckTargetVsixContainer" Condition="'$(IsVsixProject)' == 'true'">
+    <ItemGroup>
+      <UpToDateCheckOutput Include="$(TargetVsixContainer)" Set="VsixItems" />
+    </ItemGroup>
+  </Target>
+
+  <!-- This is only needed for VSIX projects as SWIX projects have their own version of the GetVsixPrimaryOutputs target. -->
+  <!-- The override for this for SWIX projects is in Microsoft.VisualStudio.Internal.MicroBuild.Swix.targets. -->
+  <Import Project="..\eng\imports\OverrideGetVsixPrimaryOutputs.targets" Condition="'$(IsVsixProject)' == 'true'" />
+
 </Project>

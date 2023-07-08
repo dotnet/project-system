@@ -1,9 +1,5 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
-using System;
-using System.Collections.Generic;
-using System.Collections.Immutable;
-using System.ComponentModel.Composition;
 using Microsoft.Build.Framework.XamlTypes;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
 
@@ -14,15 +10,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Frameworks
     /// </summary>
     [ExportDynamicEnumValuesProvider("SdkSupportedTargetPlatformIdentifierEnumProvider")]
     [AppliesTo(ProjectCapability.DotNet)]
-    internal class SdkSupportedTargetPlatformIdentifierEnumProvider : SupportedValuesProvider
+    internal class SdkSupportedTargetPlatformIdentifierEnumProvider : SingleRuleSupportedValuesProvider
     {
-        protected override string RuleName => SdkSupportedTargetPlatformIdentifier.SchemaName;
-
         [ImportingConstructor]
         public SdkSupportedTargetPlatformIdentifierEnumProvider(
             ConfiguredProject project,
             IProjectSubscriptionService subscriptionService)
-            : base(project, subscriptionService, useNoneValue: true) { }
+            : base(project, subscriptionService, ruleName: SdkSupportedTargetPlatformIdentifier.SchemaName, useNoneValue: true) { }
 
         protected override IEnumValue ToEnumValue(KeyValuePair<string, IImmutableDictionary<string, string>> item)
         {

@@ -1,0 +1,52 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
+  <file datatype="xml" source-language="en" target-language="pl" original="../ReferencesPage.CSharp.xaml">
+    <body>
+      <trans-unit id="BoolProperty|ImplicitUsings|Description">
+        <source>Enable implicit global usings to be declared by the project SDK.</source>
+        <target state="translated">Włącz niejawne użycia globalne, które mają być deklarowane przez zestaw SDK projektu.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="BoolProperty|ImplicitUsings|DisplayName">
+        <source>Implicit global usings</source>
+        <target state="translated">Niejawne użycia globalne</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="BoolProperty|ImplicitUsings|Metadata|SearchTerms">
+        <source>implicit</source>
+        <target state="translated">niejawne</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="Category|General|Description">
+        <source>Global usings settings for C# projects.</source>
+        <target state="translated">Globalne ustawienia użyć dla projektów w języku C#.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="Category|General|DisplayName">
+        <source>General</source>
+        <target state="translated">Ogólne</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="Rule|References|Description">
+        <source>Settings associated with the C# implicit global usings feature.</source>
+        <target state="translated">Ustawienia skojarzone z funkcją niejawnego globalnego użycia języka C#.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="Rule|References|DisplayName">
+        <source>Global Usings</source>
+        <target state="translated">Użycie globalne</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|ImplicitUsingsEditor|Description">
+        <source>Manage common global usings directives for your project to reference.</source>
+        <target state="translated">Zarządzaj typowymi globalnymi dyrektywami użyć, do których ma odwoływać się projekt.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|ImplicitUsingsEditor|DisplayName">
+        <source>Manage Implicit Global Usings</source>
+        <target state="translated">Zarządzaj niejawnymi użyciami globalnymi</target>
+        <note />
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

@@ -1,6 +1,5 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
-using System.Collections.Immutable;
 using Microsoft.Build.Framework.XamlTypes;
 using Microsoft.VisualStudio.ProjectSystem.Debug;
 
@@ -30,7 +29,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
     /// for a similar interface for intercepting callbacks for properties stored in
     /// MSBuild files.
     /// </remarks>
-    [ProjectSystemContract(ProjectSystemContractScope.UnconfiguredProject, ProjectSystemContractProvider.Extension, Cardinality = Composition.ImportCardinality.ZeroOrMore)]
+    [ProjectSystemContract(ProjectSystemContractScope.UnconfiguredProject, ProjectSystemContractProvider.Extension, Cardinality = ImportCardinality.ZeroOrMore)]
     public interface IGlobalSettingExtensionValueProvider
     {
         /// <summary>

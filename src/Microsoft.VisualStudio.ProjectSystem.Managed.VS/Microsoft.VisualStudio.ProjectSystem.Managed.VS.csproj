@@ -1,40 +1,48 @@
 ﻿<!-- Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information. -->
 <Project Sdk="Microsoft.NET.Sdk">
-  <Import Project="..\..\build\import\VisualStudio.props" />
+
+  <Import Project="..\..\eng\imports\VisualStudio.props" />
+
   <PropertyGroup>
     <RootNamespace>Microsoft.VisualStudio</RootNamespace>
-    
+    <IsManagedProjectSystemProject>true</IsManagedProjectSystemProject>
+    <TargetFramework>net472</TargetFramework>
+
     <!-- VSIX -->
     <GeneratePkgDefFile>true</GeneratePkgDefFile>
     <CreateVsixContainer>false</CreateVsixContainer>
     <UseCodebase>false</UseCodebase>
-    
+
     <!-- Nuget -->
     <IsPackable>true</IsPackable>
     <Description>Microsoft VisualStudio ProjectSystem for Managed Languages Project hosts that interact with VisualStudio interfaces.</Description>
     <Summary>Microsoft VisualStudio Managed Project System VS Components</Summary>
     <PackageTags>Roslyn Managed Project System VisualStudio</PackageTags>
-    <NoWarn>$(NoWarn);NU5125</NoWarn>    
+    <NoWarn>$(NoWarn);NU5125</NoWarn>
   </PropertyGroup>
+
   <ItemGroup>
     <ProjectReference Include="..\Microsoft.VisualStudio.ProjectSystem.Managed\Microsoft.VisualStudio.ProjectSystem.Managed.csproj" />
   </ItemGroup>
+
   <ItemGroup>
     <PackageReference Include="Microsoft.VisualStudio.HotReload.Components" />
+    <PackageReference Include="Microsoft.VisualStudio.ProjectSystem.Query" />
+    <PackageReference Include="Microsoft.VisualStudio.ProjectSystem.VS" />
+    <PackageReference Include="Microsoft.VisualStudio.Setup.Configuration.Interop" />
   </ItemGroup>
+
   <ItemGroup>
     <InternalsVisibleTo Include="Microsoft.VisualStudio.ProjectSystem.Managed.VS.UnitTests" />
     <InternalsVisibleTo Include="DynamicProxyGenAssembly2" Key="$(MoqPublicKey)" />
   </ItemGroup>
+
   <ItemGroup>
     <Compile Update="ProjectSystem\VS\LanguageServices\CSharp\CSharpCodeDomProvider.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Update="ProjectSystem\VS\LanguageServices\VisualBasic\VisualBasicCodeDomProvider.cs">
       <SubType>Component</SubType>
-    </Compile>
-    <Compile Update="ProjectSystem\VS\PropertyPages\DebugPageControl.xaml.cs">
-      <DependentUpon>DebugPageControl.xaml</DependentUpon>
     </Compile>
     <Compile Update="ProjectSystem\VS\PropertyPages\GetProfileNameDialog.xaml.cs">
       <DependentUpon>GetProfileNameDialog.xaml</DependentUpon>
@@ -51,39 +59,24 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>PropertyPageResources.resx</DependentUpon>
     </Compile>
-    <Compile Update="ProjectSystem\VS\PropertyPages\WpfBasedPropertyPage.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Update="ProjectSystem\VS\PropertyPages\WpfBasedPropertyPage.Designer.cs">
-      <DependentUpon>WpfBasedPropertyPage.cs</DependentUpon>
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Update="ProjectSystem\VS\UI\DontShowAgainMessageBox.xaml.cs">
-      <DependentUpon>DontShowAgainMessageBox.xaml</DependentUpon>
-    </Compile>
     <Compile Update="VSResources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>VSResources.resx</DependentUpon>
     </Compile>
   </ItemGroup>
+
   <ItemGroup>
-    <Page Include="ProjectSystem\VS\PropertyPages\DebugPageControl.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="ProjectSystem\VS\PropertyPages\GetProfileNameDialog.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="ProjectSystem\VS\PropertyPages\WatermarkStyle.xaml">
+    <Page Include="ProjectSystem\VS\PropertyPages\Editors\PropertyEditorTemplates.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="ProjectSystem\VS\UI\DontShowAgainMessageBox.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
   </ItemGroup>
+
   <ItemGroup>
     <None Include="**\*.xlf" />
     <EmbeddedResource Update="ProjectSystem\VS\PropertyPages\PropertyPageResources.resx">
@@ -98,14 +91,28 @@
       <MergeWithCTO>true</MergeWithCTO>
     </EmbeddedResource>
   </ItemGroup>
+
   <ItemGroup>
     <VSCTCompile Include="Menus.vsct">
       <ResourceName>Menus.ctmenu</ResourceName>
       <SubType>Designer</SubType>
     </VSCTCompile>
   </ItemGroup>
+
   <ItemGroup>
     <AdditionalFiles Include="PublicAPI.Shipped.txt" />
     <AdditionalFiles Include="PublicAPI.Unshipped.txt" />
   </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="WPF" />
+  </ItemGroup>
+
+  <!-- This is required for SourceLink to find these .xaml files within the generated .g.cs files. -->
+  <!-- Note that the filepath for the file MUST be nested within itself in the destination, as the .g.cs files include the relative nested path. -->
+  <!-- See: https://github.com/dotnet/sourcelink/issues/492 -->
+  <Target Name="CopyDependentUponXamlFiles" BeforeTargets="CoreCompile">
+    <Copy SourceFiles="ProjectSystem\VS\PropertyPages\GetProfileNameDialog.xaml" DestinationFiles="$(IntermediateOutputPath)\ProjectSystem\VS\PropertyPages\ProjectSystem\VS\PropertyPages\GetProfileNameDialog.xaml" SkipUnchangedFiles="true" />
+  </Target>
+
 </Project>

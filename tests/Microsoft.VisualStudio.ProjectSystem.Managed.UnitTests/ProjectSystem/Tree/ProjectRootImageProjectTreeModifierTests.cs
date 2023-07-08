@@ -1,8 +1,6 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
-using System;
 using Microsoft.VisualStudio.ProjectSystem.Imaging;
-using Xunit;
 
 namespace Microsoft.VisualStudio.ProjectSystem.Tree
 {
@@ -16,7 +14,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree
 
             Assert.Throws<ArgumentNullException>("propertyContext", () =>
             {
-                propertiesProvider.CalculatePropertyValues((IProjectTreeCustomizablePropertyContext)null!, propertyValues);
+                propertiesProvider.CalculatePropertyValues(null!, propertyValues);
             });
         }
 
@@ -28,30 +26,36 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree
 
             Assert.Throws<ArgumentNullException>("propertyValues", () =>
             {
-                propertiesProvider.CalculatePropertyValues(propertyContext, (IProjectTreeCustomizablePropertyValues)null!);
+                propertiesProvider.CalculatePropertyValues(propertyContext, null!);
             });
         }
 
         [Theory]
-        [InlineData(@"
-Root (flags: {Unrecognized ProjectRoot})
-", @"
-Root (flags: {Unrecognized ProjectRoot}), Icon: {A140CD9F-FF94-483C-87B1-9EF5BE9F469A 1}, ExpandedIcon: {}
-")]
-        [InlineData(@"
-Root (flags: {Unrecognized ProjectRoot})
-    Folder (flags: {Folder})
-", @"
-Root (flags: {Unrecognized ProjectRoot}), Icon: {A140CD9F-FF94-483C-87B1-9EF5BE9F469A 1}, ExpandedIcon: {}
-    Folder (flags: {Folder})
-")]
-        [InlineData(@"
-Root (flags: {ProjectRoot})
-    Folder (flags: {Folder})
-", @"
-Root (flags: {ProjectRoot}), Icon: {A140CD9F-FF94-483C-87B1-9EF5BE9F469A 1}, ExpandedIcon: {}
-    Folder (flags: {Folder})
-")]
+        [InlineData(
+            """
+            Root (flags: {Unrecognized ProjectRoot})
+            """,
+            """
+            Root (flags: {Unrecognized ProjectRoot}), Icon: {A140CD9F-FF94-483C-87B1-9EF5BE9F469A 1}, ExpandedIcon: {}
+            """)]
+        [InlineData(
+            """
+            Root (flags: {Unrecognized ProjectRoot})
+                Folder (flags: {Folder})
+            """,
+            """
+            Root (flags: {Unrecognized ProjectRoot}), Icon: {A140CD9F-FF94-483C-87B1-9EF5BE9F469A 1}, ExpandedIcon: {}
+                Folder (flags: {Folder})
+            """)]
+        [InlineData(
+            """
+            Root (flags: {ProjectRoot})
+                Folder (flags: {Folder})
+            """,
+            """
+            Root (flags: {ProjectRoot}), Icon: {A140CD9F-FF94-483C-87B1-9EF5BE9F469A 1}, ExpandedIcon: {}
+                Folder (flags: {Folder})
+            """)]
         public void CalculatePropertyValues_ProjectRootAsTree_SetsIconToProjectRoot(string input, string expected)
         {
             var imageProvider = IProjectImageProviderFactory.ImplementGetProjectImage(ProjectImageKey.ProjectRoot, new ProjectImageMoniker(new Guid("{A140CD9F-FF94-483C-87B1-9EF5BE9F469A}"), 1));
@@ -66,25 +70,31 @@ Root (flags: {ProjectRoot}), Icon: {A140CD9F-FF94-483C-87B1-9EF5BE9F469A 1}, Exp
         }
 
         [Theory]
-        [InlineData(@"
-Root (flags: {Unrecognized ProjectRoot})
-", @"
-Root (flags: {Unrecognized ProjectRoot}), Icon: {A140CD9F-FF94-483C-87B1-9EF5BE9F469A 1}, ExpandedIcon: {}
-")]
-        [InlineData(@"
-Root (flags: {Unrecognized ProjectRoot})
-    Folder (flags: {Folder})
-", @"
-Root (flags: {Unrecognized ProjectRoot}), Icon: {A140CD9F-FF94-483C-87B1-9EF5BE9F469A 1}, ExpandedIcon: {}
-    Folder (flags: {Folder})
-")]
-        [InlineData(@"
-Root (flags: {ProjectRoot})
-    Folder (flags: {Folder})
-", @"
-Root (flags: {ProjectRoot}), Icon: {A140CD9F-FF94-483C-87B1-9EF5BE9F469A 1}, ExpandedIcon: {}
-    Folder (flags: {Folder})
-")]
+        [InlineData(
+            """
+            Root (flags: {Unrecognized ProjectRoot})
+            """,
+            """
+            Root (flags: {Unrecognized ProjectRoot}), Icon: {A140CD9F-FF94-483C-87B1-9EF5BE9F469A 1}, ExpandedIcon: {}
+            """)]
+        [InlineData(
+            """
+            Root (flags: {Unrecognized ProjectRoot})
+                Folder (flags: {Folder})
+            """,
+            """
+            Root (flags: {Unrecognized ProjectRoot}), Icon: {A140CD9F-FF94-483C-87B1-9EF5BE9F469A 1}, ExpandedIcon: {}
+                Folder (flags: {Folder})
+            """)]
+        [InlineData(
+            """
+            Root (flags: {ProjectRoot})
+                Folder (flags: {Folder})
+            """,
+            """
+            Root (flags: {ProjectRoot}), Icon: {A140CD9F-FF94-483C-87B1-9EF5BE9F469A 1}, ExpandedIcon: {}
+                Folder (flags: {Folder})
+            """)]
         public void CalculatePropertyValues_WhenSharedProjectRootAsTree_SetsIconToSharedProjectRoot(string input, string expected)
         {
             var capabilities = IProjectCapabilitiesServiceFactory.ImplementsContains(capability =>
@@ -104,20 +114,24 @@ Root (flags: {ProjectRoot}), Icon: {A140CD9F-FF94-483C-87B1-9EF5BE9F469A 1}, Exp
         }
 
         [Theory]
-        [InlineData(@"
-Root (flags: {ProjectRoot})
-    Shared.items (flags: {SharedItemsImportFile})
-", @"
-Root (flags: {ProjectRoot})
-    Shared.items (flags: {SharedItemsImportFile}), Icon: {A140CD9F-FF94-483C-87B1-9EF5BE9F469A 1}, ExpandedIcon: {}
-")]
-        [InlineData(@"
-Root (flags: {ProjectRoot})
-    Shared.items (flags: {SharedItemsImportFile Unrecognized})
-", @"
-Root (flags: {ProjectRoot})
-    Shared.items (flags: {SharedItemsImportFile Unrecognized}), Icon: {A140CD9F-FF94-483C-87B1-9EF5BE9F469A 1}, ExpandedIcon: {}
-")]
+        [InlineData(
+            """
+            Root (flags: {ProjectRoot})
+                Shared.items (flags: {SharedItemsImportFile})
+            """,
+            """
+            Root (flags: {ProjectRoot})
+                Shared.items (flags: {SharedItemsImportFile}), Icon: {A140CD9F-FF94-483C-87B1-9EF5BE9F469A 1}, ExpandedIcon: {}
+            """)]
+        [InlineData(
+            """
+            Root (flags: {ProjectRoot})
+                Shared.items (flags: {SharedItemsImportFile Unrecognized})
+            """,
+            """
+            Root (flags: {ProjectRoot})
+                Shared.items (flags: {SharedItemsImportFile Unrecognized}), Icon: {A140CD9F-FF94-483C-87B1-9EF5BE9F469A 1}, ExpandedIcon: {}
+            """)]
         public void CalculatePropertyValues_WhenSharedItemsImportFileAsTree_SetsIconToSharedItemsImportFile(string input, string expected)
         {
             var capabilities = IProjectCapabilitiesServiceFactory.ImplementsContains(capability =>
@@ -137,22 +151,26 @@ Root (flags: {ProjectRoot})
         }
 
         [Theory]
-        [InlineData(@"
-Root (flags: {ProjectRoot})
-    File (flags: {})
-")]
-        [InlineData(@"
-Root (flags: {ProjectRoot})
-    File (flags: {IncludeInProjectCandidate})
-")]
-        [InlineData(@"
-Root (flags: {ProjectRoot})
-    Folder (flags: {Folder})
-")]
-        [InlineData(@"
-Root (flags: {ProjectRoot})
-    Folder (flags: {Folder IncludeInProjectCandidate})
-")]
+        [InlineData(
+            """
+            Root (flags: {ProjectRoot})
+                File (flags: {})
+            """)]
+        [InlineData(
+            """
+            Root (flags: {ProjectRoot})
+                File (flags: {IncludeInProjectCandidate})
+            """)]
+        [InlineData(
+            """
+            Root (flags: {ProjectRoot})
+                Folder (flags: {Folder})
+            """)]
+        [InlineData(
+            """
+            Root (flags: {ProjectRoot})
+                Folder (flags: {Folder IncludeInProjectCandidate})
+            """)]
         public void CalculatePropertyValues_NonProjectRootAsTree_DoesNotSetIcon(string input)
         {
             var imageProvider = IProjectImageProviderFactory.ImplementGetProjectImage(ProjectImageKey.ProjectRoot, new ProjectImageMoniker(new Guid("{A140CD9F-FF94-483C-87B1-9EF5BE9F469A}"), 1));
@@ -194,12 +212,12 @@ Root (flags: {ProjectRoot})
 
         private static ProjectRootImageProjectTreePropertiesProvider CreateInstance()
         {
-            return CreateInstance((IProjectImageProvider)null!);
+            return CreateInstance(null!);
         }
 
         private static ProjectRootImageProjectTreePropertiesProvider CreateInstance(IProjectImageProvider imageProvider)
         {
-            return CreateInstance((IProjectCapabilitiesService)null!, imageProvider);
+            return CreateInstance(null!, imageProvider);
         }
 
         private static ProjectRootImageProjectTreePropertiesProvider CreateInstance(IProjectCapabilitiesService? capabilities, IProjectImageProvider? imageProvider)

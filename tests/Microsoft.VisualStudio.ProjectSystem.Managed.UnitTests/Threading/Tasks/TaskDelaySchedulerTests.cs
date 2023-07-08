@@ -1,10 +1,6 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
-using System;
-using System.Threading;
 using Microsoft.VisualStudio.ProjectSystem;
-using Xunit;
-using Task = System.Threading.Tasks.Task;
 
 namespace Microsoft.VisualStudio.Threading.Tasks
 {
@@ -56,30 +52,6 @@ namespace Microsoft.VisualStudio.Threading.Tasks
             Assert.False(tasksRun[0]);
             Assert.False(tasksRun[1]);
             Assert.True(tasksRun[2]);
-        }
-
-        [Fact]
-        public async Task RunAsyncTask_SkipsPendingTasks()
-        {
-            using var scheduler = new TaskDelayScheduler(TimeSpan.FromMilliseconds(250), IProjectThreadingServiceFactory.Create(), CancellationToken.None);
-            bool taskRan = false;
-            var task = scheduler.ScheduleAsyncTask(ct =>
-            {
-                taskRan = true;
-                return Task.CompletedTask;
-            });
-
-            bool immediateTaskRan = false;
-            var task2 = scheduler.RunAsyncTask(ct =>
-            {
-                immediateTaskRan = true;
-                return Task.CompletedTask;
-            });
-
-            await task;
-            await task2;
-            Assert.False(taskRan);
-            Assert.True(immediateTaskRan);
         }
 
         [Fact]

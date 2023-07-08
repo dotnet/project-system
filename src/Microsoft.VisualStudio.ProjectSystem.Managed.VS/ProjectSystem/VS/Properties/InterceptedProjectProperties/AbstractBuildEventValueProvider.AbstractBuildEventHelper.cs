@@ -1,8 +1,5 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
-using System;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.Build.Construction;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
 
@@ -35,7 +32,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties.InterceptedProjectP
             {
                 // check if value already exists
                 string? unevaluatedPropertyValue = await defaultProperties.GetUnevaluatedPropertyValueAsync(BuildEvent);
-                if (unevaluatedPropertyValue != null)
+                if (unevaluatedPropertyValue is not null)
                 {
                     return (true, unevaluatedPropertyValue);
                 }
@@ -60,7 +57,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties.InterceptedProjectP
             {
                 ProjectTaskElement? execTask = FindExecTaskInTargets(projectXml);
 
-                if (execTask == null)
+                if (execTask is null)
                 {
                     return null;
                 }
@@ -76,7 +73,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties.InterceptedProjectP
             public async Task<bool> TrySetPropertyAsync(string unevaluatedPropertyValue, IProjectProperties defaultProperties)
             {
                 string? currentValue = await defaultProperties.GetUnevaluatedPropertyValueAsync(BuildEvent);
-                if (currentValue == null)
+                if (currentValue is null)
                 {
                     return false;
                 }
@@ -97,7 +94,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties.InterceptedProjectP
                 {
                     ProjectTargetElement? target = FindTargetToRemove(projectXml);
 
-                    if (target != null)
+                    if (target is not null)
                     {
                         projectXml.RemoveChild(target);
                         return;
@@ -136,7 +133,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties.InterceptedProjectP
             {
                 ProjectTaskElement? execTask = FindExecTaskInTargets(projectXml);
 
-                if (execTask != null)
+                if (execTask is not null)
                 {
                     SetExecParameter(execTask, unevaluatedPropertyValue);
                 }

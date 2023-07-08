@@ -1,8 +1,5 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
-using System;
-using System.ComponentModel.Composition;
-using System.Threading.Tasks;
 using Microsoft.VisualStudio.Shell.Interop;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.UI
@@ -35,8 +32,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.UI
 
         public Task<bool> ShowAddNewItemDialogAsync(IProjectTree node, string directoryLocalizedName, string templateLocalizedName)
         {
-            Requires.NotNullOrEmpty(directoryLocalizedName, nameof(directoryLocalizedName));
-            Requires.NotNullOrEmpty(templateLocalizedName, nameof(templateLocalizedName));
+            Requires.NotNullOrEmpty(directoryLocalizedName);
+            Requires.NotNullOrEmpty(templateLocalizedName);
 
             return ShowDialogAsync(node,
                __VSADDITEMFLAGS.VSADDITEM_AddNewItems |
@@ -58,7 +55,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.UI
         private async Task<bool> ShowDialogAsync(IProjectTree node, __VSADDITEMFLAGS flags, string? localizedDirectoryName = null, string? localizedTemplateName = null)
         {
             string? path = _projectTree.TreeProvider.GetAddNewItemDirectory(node);
-            if (path == null)
+            if (path is null)
                 throw new ArgumentException("Node is marked with DisableAddItemFolder or DisableAddItemRecursiveFolder, call CanAddNewOrExistingItemTo before calling this method.", nameof(node));
 
             await _projectVsServices.ThreadingService.SwitchToUIThread();
@@ -67,7 +64,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.UI
             Guid addItemTemplateGuid = Guid.Empty;  // Let the dialog ask the hierarchy itself
 
             IVsAddProjectItemDlg? addProjectItemDialog = _addProjectItemDialog.Value;
-            if (addProjectItemDialog == null)
+            if (addProjectItemDialog is null)
                 return false;
 
             HResult result = addProjectItemDialog.AddProjectItemDlg(
@@ -92,7 +89,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.UI
 
         public bool CanAddNewOrExistingItemTo(IProjectTree node)
         {
-            return _projectTree.TreeProvider.GetAddNewItemDirectory(node) != null;
+            return _projectTree.TreeProvider.GetAddNewItemDirectory(node) is not null;
         }
     }
 }

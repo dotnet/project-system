@@ -1,15 +1,8 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
-using System;
-using System.Collections.Generic;
-using System.Collections.Immutable;
-using System.ComponentModel.Composition;
-using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
-using System.Threading.Tasks;
 using Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies;
-using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies;
 
 namespace Microsoft.VisualStudio.ProjectSystem.CopyPaste
 {
@@ -22,6 +15,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.CopyPaste
     internal class DependencyTextPackager : ICopyPackager
     {
         private static readonly ImmutableHashSet<int> s_formats = ImmutableHashSet.Create<int>(ClipboardFormat.CF_TEXT, ClipboardFormat.CF_UNICODETEXT);
+
         private readonly UnconfiguredProject _project;
 
         [ImportingConstructor]
@@ -48,7 +42,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.CopyPaste
             foreach (IProjectTree node in selectedNodes)
             {
                 string? path = await DependencyServices.GetBrowsePathAsync(_project, node);
-                if (path == null)
+                if (path is null)
                     continue;
 
                 // Note we leave trailing slashes to mimic what happens with normal folders
@@ -60,7 +54,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.CopyPaste
                     paths.AppendLine();
                 }
 
-                paths.Append(path); 
+                paths.Append(path);
             }
 
             if (types.Contains(ClipboardFormat.CF_TEXT))
@@ -78,7 +72,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.CopyPaste
 
         private static bool IsValidSetOfNodes(IEnumerable<IProjectTree> treeNodes)
         {
-            Requires.NotNull(treeNodes, nameof(treeNodes));
+            Requires.NotNull(treeNodes);
 
             return treeNodes.All(node => node.Flags.Contains(DependencyTreeFlags.Dependency | DependencyTreeFlags.SupportsBrowse));
         }

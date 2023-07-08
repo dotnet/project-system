@@ -1,17 +1,13 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
-using System;
-using System.Threading.Tasks;
 using Microsoft.VisualStudio.ProjectSystem;
-using Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies;
+using Microsoft.VisualStudio.ProjectSystem.Telemetry;
 using Microsoft.VisualStudio.ProjectSystem.VS;
-using Moq;
-using Xunit;
 using static Microsoft.VisualStudio.Telemetry.ITelemetryServiceFactory;
 
 namespace Microsoft.VisualStudio.Telemetry
 {
-    public class SDKVersionTelemetryTests
+    public static class SDKVersionTelemetryTests
     {
         [Fact]
         public static async Task TestCreateComponentSDKVersionDefined()
@@ -19,8 +15,10 @@ namespace Microsoft.VisualStudio.Telemetry
             var guid = Guid.NewGuid();
             var version = "42.42.42.42";
             var (success, result) = await CreateComponentAndGetResult(guid, version);
+            Assert.NotNull(result);
+            Assert.NotNull(result.Properties);
             Assert.True(success);
-            Assert.Equal("vs/projectsystem/managed/sdkversion", result!.EventName);
+            Assert.Equal("vs/projectsystem/managed/sdkversion", result.EventName);
             Assert.Collection(result.Properties,
                 args =>
                 {
@@ -102,7 +100,7 @@ namespace Microsoft.VisualStudio.Telemetry
         private static ISafeProjectGuidService CreateISafeProjectGuidService(Guid guid)
         {
             var mock = new Mock<ISafeProjectGuidService>();
-            mock.Setup(s => s.GetProjectGuidAsync())
+            mock.Setup(s => s.GetProjectGuidAsync(It.IsAny<CancellationToken>()))
                 .ReturnsAsync(guid);
 
             return mock.Object;

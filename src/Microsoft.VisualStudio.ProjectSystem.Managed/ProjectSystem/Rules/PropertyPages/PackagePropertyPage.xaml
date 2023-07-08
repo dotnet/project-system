@@ -14,6 +14,9 @@
     <Category Name="License"
               DisplayName="License"
               Description="Specifies the license for the package." />
+    <Category Name="Symbols"
+              DisplayName="Symbols"
+              Description="Specifies how symbols are added to the package." />
   </Rule.Categories>
 
   <Rule.DataSource>
@@ -36,6 +39,11 @@
       <NameValuePair Name="DependsOn" Value="Application::AssemblyName" />
     </StringProperty.Metadata>
   </StringProperty>
+
+  <StringProperty Name="Title"
+                  DisplayName="Title"
+                  Description="A human-friendly title of the package, typically used in UI displays as on nuget.org and the Package Manager in Visual Studio."
+                  Category="General" />
 
   <StringProperty Name="Version"
                   DisplayName="Package Version"
@@ -151,6 +159,32 @@
                   DisplayName="Release notes"
                   Description="A description of the changes made in this release of the package, often used in UI like the Updates tab of the Visual Studio Package Manager in place of the package description."
                   HelpUrl="https://go.microsoft.com/fwlink/?linkid=2147242"
+                  Category="General">
+    <StringProperty.ValueEditors>
+      <ValueEditor EditorType="MultiLineString" />
+    </StringProperty.ValueEditors>
+  </StringProperty>
+
+  <BoolProperty Name="PackAsTool"
+                DisplayName="Pack as a .NET tool"
+                Description="Packs this project as a special package that contains a console application that may be installed via the &quot;dotnet tool&quot; command."
+                HelpUrl="https://go.microsoft.com/fwlink/?linkid=2193012"
+                Category="General" />
+
+  <StringProperty Name="ToolCommandName"
+                  DisplayName=".NET tool command name"
+                  Description="The command name via which the .NET tool will be invoked on the command line."
+                  Category="General">
+    <StringProperty.Metadata>
+      <NameValuePair Name="VisibilityCondition">
+        <NameValuePair.Value>(has-evaluated-value "Package" "PackAsTool" true)</NameValuePair.Value>
+      </NameValuePair>
+    </StringProperty.Metadata>
+  </StringProperty>
+
+  <StringProperty Name="PackageOutputPath"
+                  DisplayName="Package Output Path"
+                  Description="Determines the output path in which the package will be dropped."
                   Category="General" />
 
   <DynamicEnumProperty Name="NeutralLanguage"
@@ -197,7 +231,6 @@
     </StringProperty.Metadata>
   </StringProperty>
 
-  <!-- TODO add a fwlink for this action URL -->
   <StringProperty Name="ReadAboutSpdxExpressions"
                   DisplayName="Read about SPDX license expressions"
                   Category="License">
@@ -245,5 +278,25 @@
       </NameValuePair>
     </BoolProperty.Metadata>
   </BoolProperty>
+
+  <BoolProperty Name="IncludeSymbols"
+                DisplayName="Produce a symbol package"
+                Description="Create an additional symbol package when the project is packed."
+                Category="Symbols" />
+
+  <EnumProperty Name="SymbolPackageFormat"
+                DisplayName="Symbol package format"
+                Description="Specifies the format of the symbols package."
+                Category="Symbols">
+    <EnumProperty.Metadata>
+      <NameValuePair Name="VisibilityCondition">
+        <NameValuePair.Value>(has-evaluated-value "Package" "IncludeSymbols" true)</NameValuePair.Value>
+      </NameValuePair>
+    </EnumProperty.Metadata>
+    <EnumValue Name="symbols.nupkg"
+               DisplayName="symbols.nupkg (legacy)" />
+    <EnumValue Name="snupkg"
+               DisplayName="snupkg" />
+  </EnumProperty>
 
 </Rule>

@@ -1,19 +1,10 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
-using System;
-using System.Collections.Generic;
-using System.Collections.Immutable;
-using System.IO;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
 using Microsoft.VisualStudio.IO;
 using Microsoft.VisualStudio.LanguageServices.ProjectSystem;
 using Microsoft.VisualStudio.ProjectSystem.LanguageServices;
 using Microsoft.VisualStudio.Telemetry;
 using Microsoft.VisualStudio.Threading.Tasks;
-using Moq;
-using Xunit;
 using Xunit.Sdk;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
@@ -29,7 +20,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
         private readonly DesignTimeInputsCompiler _manager;
 
         // For tracking compilation events that occur, to verify
-        private readonly List<(string OutputFileName, string[] SourceFiles)> _compilationResults = new List<(string, string[])>();
+        private readonly List<(string OutputFileName, string[] SourceFiles)> _compilationResults = new();
         private TaskCompletionSource? _compilationOccurredCompletionSource;
         private int _expectedCompilations;
         private Func<string, ISet<string>, bool> _compilationCallback;
@@ -266,7 +257,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
 
             var telemetryService = ITelemetryServiceFactory.Create();
             var threadingService = IProjectThreadingServiceFactory.Create();
-            var activeWorkspaceProjectContextHost = IActiveWorkspaceProjectContextHostFactory.ImplementProjectContextAccessor(IWorkspaceProjectContextAccessorFactory.Create());
+            var workspaceWriter = IWorkspaceWriterFactory.ImplementProjectContextAccessor(IWorkspaceMockFactory.Create());
             var unconfiguredProject = UnconfiguredProjectFactory.Create(
                 fullPath: Path.Combine(_projectFolder, "MyTestProj.csproj"),
                 projectAsynchronousTasksService: IProjectAsynchronousTasksServiceFactory.Create());
@@ -276,7 +267,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
                         .ReturnsAsync((IWorkspaceProjectContext context, string outputFile, ISet<string> filesToCompile, CancellationToken token) => _compilationCallback(outputFile, filesToCompile));
 
             _manager = new DesignTimeInputsCompiler(unconfiguredProject,
-                                      activeWorkspaceProjectContextHost,
+                                      workspaceWriter,
                                       threadingService,
                                       changeTrackerMock.Object,
                                       compilerMock.Object,
@@ -347,7 +338,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
         private void SendDesignTimeInputs(DesignTimeInputs? inputs = null, string[]? changedFiles = null)
         {
             // Make everything full paths here, to allow for easier test authoring
-            if (inputs != null)
+            if (inputs is not null)
             {
                 inputs = new DesignTimeInputs(inputs.Inputs.Select(f => Path.Combine(_projectFolder, f)), inputs.SharedInputs.Select(f => Path.Combine(_projectFolder, f)));
             }
@@ -364,7 +355,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
             }
 
             IEnumerable<DesignTimeInputFileChange> changes;
-            if (changedFiles != null)
+            if (changedFiles is not null)
             {
                 changes = changedFiles.Select(f => new DesignTimeInputFileChange(Path.Combine(_projectFolder, f), false));
             }
@@ -373,7 +364,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
                 changes = _designTimeInputs.Inputs.Select(f => new DesignTimeInputFileChange(f, false));
             }
 
-            _manager.ProcessDataflowChanges(new ProjectVersionedValue<DesignTimeInputSnapshot>(new DesignTimeInputSnapshot(_designTimeInputs.Inputs, _designTimeInputs.SharedInputs, changes, _outputPath), ImmutableDictionary<NamedIdentity, IComparable>.Empty));
+            _manager.ProcessDataflowChanges(new ProjectVersionedValue<DesignTimeInputSnapshot>(new DesignTimeInputSnapshot(_designTimeInputs.Inputs, _designTimeInputs.SharedInputs, changes, _outputPath), Empty.ProjectValueVersions));
         }
 
         public void Dispose()

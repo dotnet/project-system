@@ -24,9 +24,6 @@ dotnet_diagnostic.CA1825.severity = none        # Avoid zero length allocations 
 dotnet_diagnostic.IDE1006.severity = none       # Naming styles is too noisy as it fires on all async tests
 dotnet_diagnostic.IDE1006WithoutSuggestion.severity = none
 dotnet_diagnostic.IDE0060.severity = none       # Unused parameter rule fires on [MemberData] usage
-dotnet_diagnostic.IDE0067.severity = none	    # Noisy in tests
-dotnet_diagnostic.IDE0068.severity = none       # Noisy in tests
-dotnet_diagnostic.IDE0068.severity = none       # Noisy in tests
 
 # Microsoft.VisualStudio.Threading.Analyzers
 dotnet_diagnostic.VSTHRD001.severity = none     # Await JoinableTaskFactory.SwitchToMainThreadAsync() to switch to the UI thread instead of APIs that can deadlock or require specifying a priority.
@@ -39,3 +36,8 @@ dotnet_diagnostic.VSTHRD200.severity = none     # Naming stylesNaming styles:  B
 # xunit.analyzers
 dotnet_diagnostic.xUnit1026.severity = none     # Theory methods must use all parameters
 dotnet_diagnostic.xUnit1004.severity = none     # Test methods should not be skipped
+
+# White space rules (experimental)
+dotnet_diagnostic.IDE2001.severity = none       # Allow embedded statements on same line
+
+dotnet_diagnostic.CA1307.severity = suggestion  # Specify StringComparison

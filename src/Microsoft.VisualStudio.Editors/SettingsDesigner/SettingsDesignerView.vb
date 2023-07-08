@@ -9,14 +9,14 @@ Imports System.Web.ClientServices.Providers
 Imports System.Windows.Forms
 Imports System.Windows.Forms.Design
 Imports System.Xml
-
 Imports Microsoft.VisualStudio.Designer.Interfaces
 Imports Microsoft.VisualStudio.Editors.Common
 Imports Microsoft.VisualStudio.Editors.DesignerFramework
 Imports Microsoft.VisualStudio.Editors.Interop
 Imports Microsoft.VisualStudio.Editors.PropertyPages
-Imports Microsoft.VisualStudio.Utilities
 Imports Microsoft.VisualStudio.Shell.Interop
+Imports Microsoft.VisualStudio.Utilities
+Imports Microsoft.VSDesigner
 Imports Microsoft.VSDesigner.VSDesignerPackage
 
 Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
@@ -46,8 +46,8 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             Public Sub New(rootDesigner As BaseRootDesigner, serviceProvider As IServiceProvider, projectItem As EnvDTE.ProjectItem, namespaceToOverrideIfCustomToolIsEmpty As String)
                 MyBase.New(rootDesigner, serviceProvider, projectItem, namespaceToOverrideIfCustomToolIsEmpty)
 
-                AddCodeGeneratorEntry(AccessModifierConverter.Access.Friend, SettingsSingleFileGenerator.SingleFileGeneratorName)
-                AddCodeGeneratorEntry(AccessModifierConverter.Access.Public, PublicSettingsSingleFileGenerator.SingleFileGeneratorName)
+                AddCodeGeneratorEntry(AccessModifierType.Internal, SettingsSingleFileGenerator.SingleFileGeneratorName)
+                AddCodeGeneratorEntry(AccessModifierType.Public, PublicSettingsSingleFileGenerator.SingleFileGeneratorName)
 
                 'Make sure both the internal and public custom tool values are "recognized"
                 AddRecognizedCustomToolValue(SettingsSingleFileGenerator.SingleFileGeneratorName)
@@ -87,7 +87,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                     Return _committingChanges
                 End Get
                 Set
-                    _committingChanges = value
+                    _committingChanges = Value
                 End Set
             End Property
         End Class
@@ -181,6 +181,8 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             SetLinkLabelText()
 
             _settingsGridView.ColumnHeadersHeight = _settingsGridView.Rows(0).GetPreferredHeight(0, DataGridViewAutoSizeRowMode.AllCells, False)
+            AddHandler _settingsGridView.KeyDown, AddressOf OnGridKeyDown
+
             _toolbarPanel = New DesignerToolbarPanel With {
                 .Name = "ToolbarPanel",
                 .Text = "ToolbarPanel"
@@ -188,6 +190,17 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             _settingsTableLayoutPanel.Controls.Add(_toolbarPanel, 0, 0)
             _settingsTableLayoutPanel.ResumeLayout()
             ResumeLayout()
+        End Sub
+
+        Private Sub OnGridKeyDown(s As Object, e As KeyEventArgs)
+            If e.KeyCode = Keys.Tab Then
+                ' Tab key shouldn't be used to move us to the next cell. Otherwise we can't leave the grid view without traversing
+                ' the whole table with Tab key (even then, we get stuck at the last cell).
+                ' Tab key should instead get us to the next tab stop, making all the controls accessible by keyboard.
+                ' Moving between cells can be done using arrow keys.
+                _descriptionLinkLabel.Focus()
+                e.Handled = True
+            End If
         End Sub
 
         ''' <summary>
@@ -255,6 +268,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             resources.ApplyResources(_settingsGridView, "m_SettingsGridView")
             _settingsGridView.Margin = New Padding(14)
             _settingsGridView.Name = "m_SettingsGridView"
+            _settingsGridView.TabStop = True
             '
             'DataGridViewTextBoxColumn1
             '
@@ -289,6 +303,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             resources.ApplyResources(_descriptionLinkLabel, "DescriptionLinkLabel")
             _descriptionLinkLabel.Margin = New Padding(14, 23, 14, 9)
             _descriptionLinkLabel.Name = "DescriptionLinkLabel"
+            _descriptionLinkLabel.DisplayFocusCues = True
             _descriptionLinkLabel.TabStop = True
             '
             'SettingsTableLayoutPanel
@@ -304,6 +319,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             _settingsTableLayoutPanel.RowStyles.Add(New RowStyle)
             _settingsTableLayoutPanel.RowStyles.Add(New RowStyle)
             _settingsTableLayoutPanel.RowStyles.Add(New RowStyle(SizeType.Percent, 100.0!))
+            _settingsTableLayoutPanel.TabStop = True
             '
             'SettingsDesignerView
             '
@@ -385,7 +401,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             ' Add the "connection string" pseudo type
             TypeColumn.Items.Add(_typeNameResolver.PersistedSettingTypeNameToTypeDisplayName(SettingsSerializer.CultureInvariantVirtualTypeNameWebReference))
             TypeColumn.Items.Add(_typeNameResolver.PersistedSettingTypeNameToTypeDisplayName(SettingsSerializer.CultureInvariantVirtualTypeNameConnectionString))
-            TypeColumn.Items.Add(My.Resources.Microsoft_VisualStudio_Editors_Designer.SD_ComboBoxItem_BrowseType)
+
             TypeColumn.Width = DpiAwareness.LogicalToDeviceUnits(Handle, TypeColumn.GetPreferredWidth(DataGridViewAutoSizeColumnMode.AllCells, False) + SystemInformation.VerticalScrollBarWidth + InternalComboBoxPadding)
 
             ScopeColumn.Width = DpiAwareness.LogicalToDeviceUnits(Handle, ScopeColumn.GetPreferredWidth(DataGridViewAutoSizeColumnMode.AllCells, False) + SystemInformation.VerticalScrollBarWidth + InternalComboBoxPadding)
@@ -411,6 +427,14 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                 _projectSystemSupportsUserScope = Not ShellUtil.IsWebProject(_hierarchy)
             Else
                 _projectSystemSupportsUserScope = True
+            End If
+
+            ' Do not allow browsing or serializing arbitrary types for .NET Core scenarios.
+            ' We don't currently have a general mechanism to identify types known to both the
+            ' designer (running on .NET Framework) and the application (running on .NET Core).
+            Dim multiTargetService = New MultiTargetService(_hierarchy, VSConstants.VSITEMID_ROOT, False)
+            If (multiTargetService.TargetFrameworkName.Identifier <> ".NETCoreApp") Then
+                TypeColumn.Items.Add(My.Resources.Microsoft_VisualStudio_Editors_Designer.SD_ComboBoxItem_BrowseType)
             End If
 
             Settings = Designer.Settings
@@ -1472,6 +1496,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <param name="Designer"></param>
         Private Sub UnregisterMenuCommands(Designer As SettingsDesigner)
             RemoveHandler _settingsGridView.ContextMenuShow, AddressOf Designer.ShowContextMenu
+            RemoveHandler _settingsGridView.KeyDown, AddressOf OnGridKeyDown
         End Sub
 
         ''' <summary>

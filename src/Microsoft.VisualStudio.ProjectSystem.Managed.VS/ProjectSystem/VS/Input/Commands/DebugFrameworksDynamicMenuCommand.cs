@@ -1,12 +1,6 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
-using System;
-using System.Collections.Generic;
-using System.Collections.Immutable;
-using System.ComponentModel.Composition;
 using System.ComponentModel.Design;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.VisualStudio.Input;
 using Microsoft.VisualStudio.ProjectSystem.Debug;
 using Microsoft.VisualStudio.Threading;
@@ -46,7 +40,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
                     foreach (IActiveDebugFrameworkServices activeDebugFramework in activeDebugFrameworks)
                     {
                         List<string>? frameworks = await activeDebugFramework.GetProjectFrameworksAsync();
-                        if (frameworks != null && cmdIndex >= 0 && cmdIndex < frameworks.Count)
+                        if (frameworks is not null && cmdIndex >= 0 && cmdIndex < frameworks.Count)
                         {
                             await activeDebugFramework.SetActiveDebuggingFrameworkPropertyAsync(frameworks[cmdIndex]);
                             handled = true;
@@ -78,7 +72,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
                     {
                         frameworks = await activeDebugFramework.GetProjectFrameworksAsync();
 
-                        if (first == null)
+                        if (first is null)
                         {
                             first = frameworks;
                         }
@@ -99,7 +93,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
                     }
                 });
 
-                if (frameworks == null || frameworks.Count < 2)
+                if (frameworks is null || frameworks.Count < 2)
                 {
                     // Hide and disable the command
                     Visible = false;

@@ -1,0 +1,227 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
+  <file datatype="xml" source-language="en" target-language="fr" original="../ApplicationPropertyPage.VisualBasic.xaml">
+    <body>
+      <trans-unit id="BoolProperty|EnableVisualStyles|Description">
+        <source>Uses the most current version for the Control Library COMCTL to provide control rendering with modern visual styling.</source>
+        <target state="translated">Utilise la version la plus récente pour la bibliothèque de contrôles COMCTL afin de fournir un rendu de contrôle avec un style visuel moderne.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="BoolProperty|EnableVisualStyles|DisplayName">
+        <source>Windows Visual Styles</source>
+        <target state="translated">Styles visuels Windows XP</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="BoolProperty|SaveMySettingsOnExit|Description">
+        <source>Controls if settings are saved when users shut down their computers.</source>
+        <target state="translated">Vérifie si les paramètres sont enregistrés lorsque les utilisateurs arrêtent leur ordinateur.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="BoolProperty|SaveMySettingsOnExit|DisplayName">
+        <source>Save user settings on exit</source>
+        <target state="translated">Enregistrer les paramètres utilisateur en quittant</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="BoolProperty|SingleInstance|Description">
+        <source>Prevents users from running multiple instances of the application. Default is cleared, which allows multiple instances of the application to be run.</source>
+        <target state="translated">Empêche les utilisateurs d’exécuter plusieurs instances de l’application. La valeur par défaut est effacée, ce qui permet l’exécution de plusieurs instances de l’application.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="BoolProperty|SingleInstance|DisplayName">
+        <source>Single-instance application</source>
+        <target state="translated">Application à instance unique</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="BoolProperty|UseApplicationFramework|Description">
+        <source>Enable the Visual Basic Application Framework for this project. In general, these settings get serialized into the myapp file.</source>
+        <target state="translated">Activez l’infrastructure d’application Visual Basic pour ce projet. En général, ces paramètres sont sérialisés dans le fichier myapp.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="BoolProperty|UseApplicationFramework|DisplayName">
+        <source>Application Framework</source>
+        <target state="translated">Infrastructure d’application</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="Category|ApplicationFramework|Description">
+        <source>Application Framework settings.</source>
+        <target state="translated">Paramètres d’infrastructure d'application.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="Category|ApplicationFramework|DisplayName">
+        <source>Application Framework</source>
+        <target state="translated">Infrastructure d’application</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="Category|WPF|Description">
+        <source>Settings specific to WPF applications.</source>
+        <target state="translated">Paramètres spécifiques aux applications WPF.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="Category|WPF|DisplayName">
+        <source>WPF</source>
+        <target state="translated">WPF</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="DynamicEnumProperty|SplashScreen|Description">
+        <source>Sets the form to be used as a splash screen for the application.</source>
+        <target state="translated">Définit le formulaire à utiliser comme écran de démarrage pour l’application.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="DynamicEnumProperty|SplashScreen|DisplayName">
+        <source>Splash screen</source>
+        <target state="translated">Écran de démarrage</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="DynamicEnumProperty|StartupObject|Description">
+        <source>Defines the entry point to be called when the application loads. Generally this is set either to the main form in your application or to the 'Main' procedure that should run when the application starts. Class libraries do not define an entry point.</source>
+        <target state="translated">Définit le point d'entrée à appeler au chargement de l'application. En règle générale, il s'agit du formulaire principal de votre application ou de la procédure 'Main' qui doit s'exécuter au démarrage de l'application. Les bibliothèques de classes ne définissent pas de point d'entrée.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="DynamicEnumProperty|StartupObject|DisplayName">
+        <source>Startup object</source>
+        <target state="translated">Objet de démarrage</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="DynamicEnumProperty|StartupURI|Description">
+        <source>Specifies the window that will open when the application loads.</source>
+        <target state="translated">Indique la fenêtre qui s’ouvre lorsque l’application se charge.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="DynamicEnumProperty|StartupURI|DisplayName">
+        <source>Startup URI</source>
+        <target state="translated">URI de démarrage</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumProperty|HighDpiMode|Description">
+        <source>Specifies the application-wide HighDpiMode for the application. This setting can be programaticaly overriden through the ApplyApplicationDefaults event.</source>
+        <target state="translated">Indique HighDpiMode à l’échelle de l’application pour l’application. Ce paramètre peut être remplacé par programmation via l’événement ApplyApplicationDefaults.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumProperty|HighDpiMode|DisplayName">
+        <source>High DPI mode</source>
+        <target state="translated">Mode Haute résolution</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumProperty|ShutdownMode_WPF|Description">
+        <source>Specifies when the application should close automatically.</source>
+        <target state="translated">Indique quand l’application doit se fermer automatiquement.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumProperty|ShutdownMode_WPF|DisplayName">
+        <source>Shutdown mode</source>
+        <target state="translated">Mode d’arrêt</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumProperty|ShutdownMode|Description">
+        <source>Indicates which condition causes the application to shut down.</source>
+        <target state="translated">Indique la condition à l’origine de l’arrêt de l’application.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumProperty|ShutdownMode|DisplayName">
+        <source>Shutdown mode</source>
+        <target state="translated">Mode d’arrêt</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumProperty|VBAuthenticationMode|Description">
+        <source>Specifies the method of identifying the logged-on user, when needed.</source>
+        <target state="translated">Spécifie la méthode d’identification de l’utilisateur connecté, si nécessaire.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumProperty|VBAuthenticationMode|DisplayName">
+        <source>Authentication mode</source>
+        <target state="translated">Mode d'authentification</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|HighDpiMode.0|DisplayName">
+        <source>DPI unaware - No scaling and assuming 100% scaling.</source>
+        <target state="translated">Sans prise en charge PPP : aucune mise à l’échelle et mise à l’échelle de 100 %.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|HighDpiMode.1|DisplayName">
+        <source>System aware - Primary monitor's DPI is scale lead.</source>
+        <target state="translated">Prise en charge du système : la résolution PPP du moniteur principal dépend de la mise à l’échelle.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|HighDpiMode.2|DisplayName">
+        <source>Per monitor - DPI detected on-launch and on-change.</source>
+        <target state="translated">Par moniteur : PPP détecté lors du lancement et de la modification.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|HighDpiMode.3|DisplayName">
+        <source>Per monitor V2 - DPI detected on-launch and on-change including child windows</source>
+        <target state="translated">Par moniteur V2 : PPP détecté lors du lancement et de la modification, y compris les fenêtres enfants</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|HighDpiMode.4|DisplayName">
+        <source>DPI unaware, GDI scaled - Like DPI unaware but optimized for non-double-buffered Graphics content.</source>
+        <target state="translated">Sans prise en charge PPP, GDI mis à l’échelle : similaire à Sans prise en charge PPP, mais optimisé pour le contenu graphique non mis en mémoire tampon double.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|ShutdownMode.AfterAllFormsClose|DisplayName">
+        <source>Shut down only after the last form closes.</source>
+        <target state="translated">Arrêter uniquement après la fermeture du dernier formulaire.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|ShutdownMode.AfterMainFormCloses|DisplayName">
+        <source>Shut down when the main form closes.</source>
+        <target state="translated">Arrêter lorsque le formulaire principal se ferme.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|ShutdownMode_WPF.OnExplicitShutdown|DisplayName">
+        <source>On explicit shutdown</source>
+        <target state="translated">Lors de l'arrêt explicite</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|ShutdownMode_WPF.OnLastWindowClose|DisplayName">
+        <source>On last window close</source>
+        <target state="translated">Lors de la fermeture de la dernière fenêtre</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|ShutdownMode_WPF.OnMainWindowClose|DisplayName">
+        <source>On main window close</source>
+        <target state="translated">Lors de la fermeture de la fenêtre principale</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|VBAuthenticationMode.ApplicationDefined|DisplayName">
+        <source>Application-defined - Custom authentication implemented within the application.</source>
+        <target state="translated">Défini par l’application : authentification personnalisée implémentée dans l’application.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|VBAuthenticationMode.Windows|DisplayName">
+        <source>Windows - Retrieve user info through My.User at runtime.</source>
+        <target state="translated">Windows : récupérer les informations utilisateur via My.User au moment de l’exécution.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|CreateOrOpenAppManifest|DisplayName">
+        <source>Create or open app manifest for Windows settings.</source>
+        <target state="translated">Créez ou ouvrez le manifeste de l’application pour les paramètres Windows.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|CreateOrOpenApplicationXaml|Description">
+        <source>Open the Application.xaml file</source>
+        <target state="translated">Ouvrir le fichier Application.xaml</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|CreateOrOpenApplicationXaml|DisplayName">
+        <source>Edit XAML</source>
+        <target state="translated">Modifier XAML</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|MinimumSplashScreenDisplayTime|Description">
+        <source>Sets the minimum length of time, in milliseconds, for which the splash screen is displayed.</source>
+        <target state="translated">Définit la durée minimale, en millisecondes, pendant laquelle l’écran de démarrage s’affiche.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|MinimumSplashScreenDisplayTime|DisplayName">
+        <source>Minimum splash screen display time</source>
+        <target state="translated">Durée minimale d’affichage de l’écran de démarrage</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|MinimumSplashScreenDisplayTime|ValueEditors|ValueEditor|Metadata|EvaluatedValueFailedValidationMessage|Value">
+        <source>This property must be an integer number.</source>
+        <target state="translated">Cette propriété doit être un nombre entier.</target>
+        <note />
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

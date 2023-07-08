@@ -1,8 +1,5 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
-using System;
-using System.Collections.Generic;
-
 namespace Microsoft.VisualStudio
 {
     /// <summary>
@@ -22,14 +19,13 @@ namespace Microsoft.VisualStudio
         public static StringComparer CategoryNames => StringComparer.OrdinalIgnoreCase;
         public static StringComparer ConfigurationDimensionNames => StringComparer.Ordinal;
         public static StringComparer ConfigurationDimensionValues => StringComparer.Ordinal;
-        public static StringComparer DependencyProviderTypes => StringComparer.OrdinalIgnoreCase;
-        public static StringComparer DependencyTreeIds => StringComparer.OrdinalIgnoreCase;
+        public static StringComparer DependencyIds => StringComparer.OrdinalIgnoreCase;
         public static StringComparer ItemNames => StringComparer.OrdinalIgnoreCase;
         public static StringComparer ItemTypes => StringComparer.OrdinalIgnoreCase;
         public static StringComparer TargetNames => StringComparer.OrdinalIgnoreCase;
         public static StringComparer FrameworkIdentifiers => StringComparer.OrdinalIgnoreCase;
         public static StringComparer LibraryNames => StringComparer.Ordinal;
-        public static StringComparer EnvironmentVariables => StringComparer.OrdinalIgnoreCase;
+        public static StringComparer EnvironmentVariableNames => StringComparer.OrdinalIgnoreCase;
         public static StringComparer TelemetryEventNames => StringComparer.Ordinal;
         public static StringComparer NamedExports => StringComparer.OrdinalIgnoreCase;
         public static StringComparer UIPropertyNames => StringComparer.OrdinalIgnoreCase;
@@ -41,6 +37,8 @@ namespace Microsoft.VisualStudio
         public static StringComparer ProjectTreeCaptionIgnoreCase => StringComparer.OrdinalIgnoreCase;
         public static StringComparer LanguageIdentifiers => StringComparer.Ordinal;
         public static StringComparer LanguageIdentifiersIgnoreCase => StringComparer.OrdinalIgnoreCase;
+        public static StringComparer VisualStudioSetupComponentIds => StringComparer.OrdinalIgnoreCase;
+        public static StringComparer WorkloadNames => StringComparer.OrdinalIgnoreCase;
     }
 
     /// <summary>
@@ -59,14 +57,13 @@ namespace Microsoft.VisualStudio
         public static StringComparison RuleNames => StringComparison.OrdinalIgnoreCase;
         public static StringComparison ConfigurationDimensionNames => StringComparison.Ordinal;
         public static StringComparison ConfigurationDimensionValues => StringComparison.Ordinal;
-        public static StringComparison DependencyProviderTypes => StringComparison.OrdinalIgnoreCase;
-        public static StringComparison DependencyTreeIds => StringComparison.OrdinalIgnoreCase;
+        public static StringComparison DependencyIds => StringComparison.OrdinalIgnoreCase;
         public static StringComparison ItemNames => StringComparison.OrdinalIgnoreCase;
         public static StringComparison ItemTypes => StringComparison.OrdinalIgnoreCase;
         public static StringComparison TargetNames => StringComparison.OrdinalIgnoreCase;
         public static StringComparison FrameworkIdentifiers => StringComparison.OrdinalIgnoreCase;
         public static StringComparison LibraryNames => StringComparison.Ordinal;
-        public static StringComparison EnvironmentVariables => StringComparison.OrdinalIgnoreCase;
+        public static StringComparison EnvironmentVariableNames => StringComparison.OrdinalIgnoreCase;
         public static StringComparison TelemetryEventNames => StringComparison.Ordinal;
         public static StringComparison NamedExports => StringComparison.OrdinalIgnoreCase;
         public static StringComparison UIPropertyNames => StringComparison.OrdinalIgnoreCase;
@@ -78,5 +75,7 @@ namespace Microsoft.VisualStudio
         public static StringComparison ProjectTreeCaptionIgnoreCase => StringComparison.OrdinalIgnoreCase;
         public static StringComparison LanguageIdentifiers => StringComparison.Ordinal;
         public static StringComparison LanguageIdentifiersIgnoreCase => StringComparison.OrdinalIgnoreCase;
+        public static StringComparison VisualStudioSetupComponentIds => StringComparison.OrdinalIgnoreCase;
+        public static StringComparison WorkloadNames => StringComparison.OrdinalIgnoreCase;
     }
 }

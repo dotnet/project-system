@@ -1,10 +1,6 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
-using System;
 using System.Collections;
-using System.Collections.Generic;
-using System.Collections.Immutable;
-using System.Threading;
 
 namespace Microsoft.VisualStudio.ProjectSystem.Utilities
 {
@@ -25,7 +21,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Utilities
         {
             ImmutableHashSet<IDisposable>? disposables = Interlocked.Exchange(ref _disposables, null);
 
-            if (disposables != null)
+            if (disposables is not null)
             {
                 foreach (IDisposable? item in disposables)
                 {
@@ -43,7 +39,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Utilities
         /// <param name="disposable">The value to be included in this disposable bag.</param>
         public void Add(IDisposable? disposable)
         {
-            if (disposable == null)
+            if (disposable is null)
             {
                 return;
             }
@@ -53,7 +49,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Utilities
                 ref _disposables,
                 (set, item) =>
                 {
-                    if (set == null)
+                    if (set is null)
                     {
                         shouldDisposeArgument = true;
                         return null!;
@@ -67,37 +63,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Utilities
             {
                 disposable.Dispose();
             }
-        }
-
-        /// <summary>
-        /// Adds objects to this bag, to each be disposed when the bag itself is disposed.
-        /// </summary>
-        public void Add(IEnumerable<IDisposable?> disposables)
-        {
-            Requires.NotNull(disposables, nameof(disposables));
-
-            foreach (IDisposable? disposable in disposables)
-            {
-                Add(disposable);
-            }
-        }
-
-        /// <summary>
-        /// Removes an object from the bag. If done before the bag is disposed, this will prevent
-        /// <paramref name="disposable"/> from being disposed along with the bag itself.
-        /// </summary>
-        /// <param name="disposable">The object to remove.</param>
-        public void Remove(IDisposable? disposable)
-        {
-            if (disposable == null)
-            {
-                return;
-            }
-
-            ImmutableInterlocked.Update(
-                ref _disposables,
-                (set, item) => set?.Remove(item),
-                disposable);
         }
 
         /// <summary>

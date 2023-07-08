@@ -86,6 +86,8 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
         SplashScreen = 8
         ' ApplicationType = 9 ' OBSOLETE
         SaveMySettingsOnExit = 10
+        HigDpiMode = 11
+        MinimumSplashScreenDisplayTime = 12
     End Enum
 
     ''' <summary>
@@ -104,7 +106,9 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
         <DispId(MyAppDISPIDs.AuthenticationMode)> Property AuthenticationMode As Integer
         <DispId(MyAppDISPIDs.SplashScreen)> Property SplashScreen As String
         ' <DispId(MyAppDISPIDs.ApplicationType)> Property ApplicationType() As Integer ' OBSOLETE
+        <DispId(MyAppDISPIDs.MinimumSplashScreenDisplayTime)> Property MinimumSplashScreenDisplayTime As Integer
         <DispId(MyAppDISPIDs.SaveMySettingsOnExit)> Property SaveMySettingsOnExit As Boolean
+        <DispId(MyAppDISPIDs.HigDpiMode)> Property HighDpiMode As Integer
     End Interface
 
     Friend Interface IMyApplicationPropertiesInternal 'Not publicly exposed - for internal use only
@@ -192,6 +196,8 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
         Private Const PROPNAME_SaveMySettingsOnExit As String = "SaveMySettingsOnExit"
         Private Const PROPNAME_AuthenticationMode As String = "AuthenticationMode"
         Private Const PROPNAME_SplashScreen As String = "SplashScreen"
+        Private Const PROPNAME_MinimumSplashScreenDisplayTime As String = "MinimumSplashScreenDisplayTime"
+        Private Const PROPNAME_HighDpiMode As String = "HighDpiMode"
 
         Private _projectHierarchy As IVsHierarchy
         Private WithEvents _myAppDocData As DocData 'The DocData which backs the MyApplication.myapp file
@@ -214,7 +220,6 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
 
         'The relevant project property names
         Private Const PROJECTPROPERTY_CUSTOMTOOL As String = "CustomTool"
-        Private Const PROJECTPROPERTY_CUSTOMTOOLNAMESPACE As String = "CustomToolNamespace"
 
         'The custom tool name to use for the default resx file in VB projects
         Private Const MYAPPCUSTOMTOOL As String = "MyApplicationCodeGenerator"
@@ -238,7 +243,7 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
             Dim hr As Integer
             Dim obj As Object = Nothing
 
-            Requires.NotNull(ProjectHierarchy, NameOf(ProjectHierarchy))
+            Requires.NotNull(ProjectHierarchy)
 
             _projectHierarchy = ProjectHierarchy
 
@@ -593,6 +598,43 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
             End Set
         End Property
 
+        Friend Property MinimumSplashScreenDisplayTime As Integer Implements IVsMyApplicationProperties.MinimumSplashScreenDisplayTime
+            Get
+                Return _myAppData.MinimumSplashScreenDisplayTime
+            End Get
+            Set
+                If _myAppData.MinimumSplashScreenDisplayTime <> Value Then
+                    CheckOutDocData()
+                    _myAppData.MinimumSplashScreenDisplayTime = Value
+                    FlushToDocData()
+                    'Notify users of property change
+                    OnPropertyChanged(PROPNAME_MinimumSplashScreenDisplayTime)
+                End If
+            End Set
+        End Property
+
+        Friend Property HighDpiMode As Integer Implements IMyApplicationPropertiesInternal.HighDpiMode
+            Get
+                Return _myAppData.HighDpiMode
+            End Get
+            Set
+                Select Case Value
+                    Case 0 To 4 ' Valid - continue
+                    Case Else
+                        Throw New ArgumentOutOfRangeException(NameOf(Value))
+                End Select
+
+                If _myAppData.HighDpiMode <> Value Then
+                    CheckOutDocData()
+                    _myAppData.HighDpiMode = Value
+                    FlushToDocData()
+
+                    'Notify users of property change
+                    OnPropertyChanged(PROPNAME_highDpiMode)
+                End If
+            End Set
+        End Property
+
 #End Region
 
         ''' <summary>
@@ -669,9 +711,7 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
             Get
                 'First see if it is already in the project
                 For Each ProjectItem As ProjectItem In ProjectDesignerProjectItem.ProjectItems
-#Disable Warning BC42025 ' Access of shared member, constant member, enum member or nested type through an instance
                     If ProjectItem.FileNames(1).Equals(MyAppFileNameWithPath, StringComparison.OrdinalIgnoreCase) Then
-#Enable Warning BC42025 ' Access of shared member, constant member, enum member or nested type through an instance
                         Return ProjectItem
                     End If
                 Next

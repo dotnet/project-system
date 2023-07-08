@@ -2,8 +2,6 @@
 
 #pragma warning disable RS0030 // Do not used banned APIs (wraps banned APIs)
 
-using System;
-using System.Threading.Tasks;
 using System.Threading.Tasks.Dataflow;
 
 namespace Microsoft.VisualStudio.ProjectSystem
@@ -18,8 +16,8 @@ namespace Microsoft.VisualStudio.ProjectSystem
         /// </summary>
         public static ITargetBlock<TInput> CreateActionBlock<TInput>(Action<TInput> target, UnconfiguredProject project, ProjectFaultSeverity severity = ProjectFaultSeverity.Recoverable, string? nameFormat = null, bool skipIntermediateInputData = false)
         {
-            Requires.NotNull(target, nameof(target));
-            Requires.NotNull(project, nameof(project));
+            Requires.NotNull(target);
+            Requires.NotNull(project);
 
             ITargetBlock<TInput> block = DataflowBlockSlim.CreateActionBlock(target, nameFormat, skipIntermediateInputData: skipIntermediateInputData);
 
@@ -33,8 +31,8 @@ namespace Microsoft.VisualStudio.ProjectSystem
         /// </summary>
         public static ITargetBlock<TInput> CreateActionBlock<TInput>(Func<TInput, Task> target, UnconfiguredProject project, ProjectFaultSeverity severity = ProjectFaultSeverity.Recoverable, string? nameFormat = null, bool skipIntermediateInputData = false)
         {
-            Requires.NotNull(target, nameof(target));
-            Requires.NotNull(project, nameof(project));
+            Requires.NotNull(target);
+            Requires.NotNull(project);
 
             ITargetBlock<TInput> block = DataflowBlockSlim.CreateActionBlock(target, nameFormat, skipIntermediateInputData: skipIntermediateInputData);
 

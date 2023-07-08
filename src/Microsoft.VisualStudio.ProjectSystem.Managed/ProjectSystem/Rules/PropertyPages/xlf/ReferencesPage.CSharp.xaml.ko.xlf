@@ -1,0 +1,52 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
+  <file datatype="xml" source-language="en" target-language="ko" original="../ReferencesPage.CSharp.xaml">
+    <body>
+      <trans-unit id="BoolProperty|ImplicitUsings|Description">
+        <source>Enable implicit global usings to be declared by the project SDK.</source>
+        <target state="translated">프로젝트 SDK에서 선언할 암시적 전체 사용을 사용하도록 설정합니다.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="BoolProperty|ImplicitUsings|DisplayName">
+        <source>Implicit global usings</source>
+        <target state="translated">암시적 전체 사용</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="BoolProperty|ImplicitUsings|Metadata|SearchTerms">
+        <source>implicit</source>
+        <target state="translated">암시적</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="Category|General|Description">
+        <source>Global usings settings for C# projects.</source>
+        <target state="translated">C# 프로젝트에 대한 전역 using 설정입니다.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="Category|General|DisplayName">
+        <source>General</source>
+        <target state="translated">일반</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="Rule|References|Description">
+        <source>Settings associated with the C# implicit global usings feature.</source>
+        <target state="translated">C# 암시적 전역 using 기능과 연결된 설정입니다.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="Rule|References|DisplayName">
+        <source>Global Usings</source>
+        <target state="translated">전역 using</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|ImplicitUsingsEditor|Description">
+        <source>Manage common global usings directives for your project to reference.</source>
+        <target state="translated">참조할 프로젝트에 대한 일반적인 전역 using 지시문을 관리합니다.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|ImplicitUsingsEditor|DisplayName">
+        <source>Manage Implicit Global Usings</source>
+        <target state="translated">암시적 전역 using 관리</target>
+        <note />
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

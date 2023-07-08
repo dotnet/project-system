@@ -686,6 +686,11 @@ Changing this setting will reset the settings in all configurations.</source>
         <target state="translated">注释</target>
         <note>Column names for the string table</note>
       </trans-unit>
+      <trans-unit id="SD_ERR_HelpMessage_SuggestFileOpenWith">
+        <source>If this is not a Settings-Designer file then use 'Open With' to open it in a text editor.</source>
+        <target state="translated">如果这不是 Settings-Designer 文件，则使用“打开方式”在文本编辑器中打开它。</target>
+        <note />
+      </trans-unit>
       <trans-unit id="SingleFileGenerator_FailedToGenerateFile_1Arg">
         <source>Failed to generate file: {0}</source>
         <target state="translated">未能生成文件: {0}</target>

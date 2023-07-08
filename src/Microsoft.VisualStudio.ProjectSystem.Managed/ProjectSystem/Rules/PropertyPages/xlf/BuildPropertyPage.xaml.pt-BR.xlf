@@ -52,6 +52,16 @@
         <target state="translated">Determinístico</target>
         <note />
       </trans-unit>
+      <trans-unit id="BoolProperty|GenerateAssemblyInfo|Description">
+        <source>Transform project properties into assembly attributes during build.</source>
+        <target state="translated">Transforme as propriedades do projeto em atributos de assembly durante a compilação.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="BoolProperty|GenerateAssemblyInfo|DisplayName">
+        <source>Generate assembly info</source>
+        <target state="translated">Gerar informações de assembly</target>
+        <note />
+      </trans-unit>
       <trans-unit id="BoolProperty|GenerateDocumentationFile|Description">
         <source>Generate a file containing API documentation.</source>
         <target state="translated">Gerar um arquivo contendo a documentação da API.</target>
@@ -60,21 +70,6 @@
       <trans-unit id="BoolProperty|GenerateDocumentationFile|DisplayName">
         <source>Documentation file</source>
         <target state="translated">Arquivo da documentação</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="BoolProperty|ImplicitUsings|Description">
-        <source>Enable implicit global usings to be declared by the project SDK.</source>
-        <target state="new">Enable implicit global usings to be declared by the project SDK.</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="BoolProperty|ImplicitUsings|DisplayName">
-        <source>Implicit global usings</source>
-        <target state="new">Implicit global usings</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="BoolProperty|ImplicitUsings|Metadata|SearchTerms">
-        <source>implicit</source>
-        <target state="new">implicit</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|Optimize|Description">
@@ -94,12 +89,12 @@
       </trans-unit>
       <trans-unit id="BoolProperty|Prefer32Bit|Description">
         <source>Run in 32-bit mode on systems that support both 32-bit and 64-bit applications.</source>
-        <target state="new">Run in 32-bit mode on systems that support both 32-bit and 64-bit applications.</target>
+        <target state="translated">Execute no modo de 32 bits em sistemas que suportam aplicativos de 32 bits e 64 bits.</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|Prefer32Bit|DisplayName">
         <source>Prefer 32-bit</source>
-        <target state="new">Prefer 32-bit</target>
+        <target state="translated">Prefira 32 bits</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|ProduceReferenceAssembly|Description">
@@ -134,12 +129,12 @@
       </trans-unit>
       <trans-unit id="Category|Advanced|Description">
         <source>Advanced settings for the application.</source>
-        <target state="new">Advanced settings for the application.</target>
+        <target state="translated">Configurações avançadas do aplicativo.</target>
         <note />
       </trans-unit>
       <trans-unit id="Category|Advanced|DisplayName">
         <source>Advanced</source>
-        <target state="new">Advanced</target>
+        <target state="translated">Avançado</target>
         <note />
       </trans-unit>
       <trans-unit id="Category|ErrorsAndWarnings|Description">
@@ -187,6 +182,16 @@
         <target state="translated">Nome forte</target>
         <note />
       </trans-unit>
+      <trans-unit id="DynamicEnumProperty|PlatformTarget|Description">
+        <source>Specifies the processor to be targeted by the output file. Choose 'Any CPU' to specify that any processor is acceptable, allowing the application to run on the broadest range of hardware.</source>
+        <target state="translated">Especifica o processador a ser direcionado pelo arquivo de saída. Escolha "Qualquer CPU" para especificar que qualquer processador é aceitável, permitindo que o aplicativo seja executado na mais ampla gama de hardware.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="DynamicEnumProperty|PlatformTarget|DisplayName">
+        <source>Platform target</source>
+        <target state="translated">Destino de plataforma</target>
+        <note />
+      </trans-unit>
       <trans-unit id="EnumProperty|DebugType|Description">
         <source>Specifies the kind of debug symbols produced during build.</source>
         <target state="translated">Especifica o tipos de símbolo de depuração produzidos durante a compilação.</target>
@@ -195,7 +200,7 @@
       <trans-unit id="EnumProperty|DebugType|DisplayName">
         <source>Debug symbols</source>
         <target state="translated">Símbolos de depuração</target>
-        <note />
+        <note>="PDB Only" /&gt;</note>
       </trans-unit>
       <trans-unit id="EnumProperty|DebugType|Metadata|SearchTerms">
         <source>debug type</source>
@@ -232,16 +237,6 @@
         <target state="translated">Permite valor nulo</target>
         <note />
       </trans-unit>
-      <trans-unit id="EnumProperty|PlatformTarget|Description">
-        <source>Specifies the processor to be targeted by the output file. Choose 'x86' for any 32-bit Intel-compatible processor, choose 'x64' for any 64-bit Intel-compatible processor, or choose 'Any CPU' to specify that any processor is acceptable. 'Any CPU' is the default value for projects, because it allows the application to run on the broadest range of hardware.</source>
-        <target state="translated">Especifica o processador ao qual o arquivo de saída será direcionado. Escolha 'x86' para processadores compatíveis com Intel de 32 bits, escolha 'x64' para processadores compatíveis com Intel de 64 bits ou escolha 'Qualquer CPU' para especificar que qualquer processador é aceito. 'Qualquer CPU' é o valor padrão para os projetos, pois permite que o aplicativo seja executado em uma variedade de hardwares mais ampla.</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="EnumProperty|PlatformTarget|DisplayName">
-        <source>Platform target</source>
-        <target state="translated">Destino de plataforma</target>
-        <note />
-      </trans-unit>
       <trans-unit id="EnumProperty|RunPostBuildEvent|Description">
         <source>Specifies under which condition the post-build event will be executed.</source>
         <target state="translated">Especifica sob qual condição o evento de pós-build será executado.</target>
@@ -253,8 +248,8 @@
         <note />
       </trans-unit>
       <trans-unit id="EnumProperty|WarningLevel|Description">
-        <source>Specifies the level to display for compiler warnings.</source>
-        <target state="translated">Especifica o nível a ser exibido para avisos do compilador.</target>
+        <source>Specifies the level to display for compiler warnings. Higher levels produce more warnings, and include all warnings from lower levels.</source>
+        <target state="translated">Especifica o nível a ser exibido para avisos do compilador. Níveis mais altos produzem mais avisos e incluem todos os avisos dos níveis mais baixos.</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumProperty|WarningLevel|DisplayName">
@@ -347,64 +342,64 @@
         <target state="translated">Avisos</target>
         <note />
       </trans-unit>
-      <trans-unit id="EnumValue|PlatformTarget.AnyCPU|DisplayName">
-        <source>Any CPU</source>
-        <target state="translated">Qualquer CPU</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="EnumValue|PlatformTarget.x64|DisplayName">
-        <source>x64</source>
-        <target state="translated">x64</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="EnumValue|PlatformTarget.x86|DisplayName">
-        <source>x86</source>
-        <target state="translated">x86</target>
-        <note />
-      </trans-unit>
       <trans-unit id="EnumValue|RunPostBuildEvent.Always|DisplayName">
         <source>Always</source>
-        <target state="new">Always</target>
+        <target state="translated">Sempre</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|RunPostBuildEvent.OnBuildSuccess|DisplayName">
         <source>When the build succeeds</source>
-        <target state="new">When the build succeeds</target>
+        <target state="translated">Quando a construção for bem-sucedida</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|RunPostBuildEvent.OnOutputUpdated|DisplayName">
         <source>When the output is updated</source>
-        <target state="new">When the output is updated</target>
+        <target state="translated">Quando a saída está atualizada</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|WarningLevel.0|DisplayName">
-        <source>0</source>
-        <target state="translated">0</target>
+        <source>0 - Disable all warnings</source>
+        <target state="translated">0 - Desabilitar todos os avisos</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|WarningLevel.1|DisplayName">
-        <source>1</source>
-        <target state="translated">1</target>
+        <source>1 - Severe warning messages</source>
+        <target state="translated">1 - Mensagens de aviso graves</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|WarningLevel.2|DisplayName">
-        <source>2</source>
-        <target state="translated">2</target>
+        <source>2 - Less severe warnings, such as warnings about hiding class members</source>
+        <target state="translated">2 - Avisos menos graves, como avisos sobre como ocultar membros de classe</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|WarningLevel.3|DisplayName">
-        <source>3</source>
-        <target state="translated">3</target>
+        <source>3 - Less severe warnings, such as warnings about expressions that always evaluate to true or false</source>
+        <target state="translated">3 - Avisos menos graves, como avisos sobre expressões que sempre são avaliadas como true ou false</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|WarningLevel.4|DisplayName">
-        <source>4</source>
-        <target state="translated">4</target>
+        <source>4 - Informational warnings</source>
+        <target state="translated">4 - Avisos informativos</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|WarningLevel.5|DisplayName">
-        <source>5</source>
-        <target state="translated">5</target>
+        <source>5 - Warnings from C# 9</source>
+        <target state="translated">5 - Avisos do C# 9</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|WarningLevel.6|DisplayName">
+        <source>6 - Warnings from C# 10</source>
+        <target state="translated">6 - Avisos do C# 10</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|WarningLevel.7|DisplayName">
+        <source>7 - Warnings from C# 11</source>
+        <target state="translated">7 - Avisos do C# 11</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|WarningLevel.9999|DisplayName">
+        <source>9999 - All warnings</source>
+        <target state="translated">9999 - Todos os avisos</target>
         <note />
       </trans-unit>
       <trans-unit id="Rule|Build|Description">
@@ -443,13 +438,18 @@
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|DefineConstants|Description">
-        <source>Specifies symbols on which to perform conditional compilation. Separate symbols with a semi-colon (';').</source>
-        <target state="translated">Especifica os símbolos nos quais a compilação condicional deve ser executada. Separe os símbolos com um ponto e vírgula (';').</target>
+        <source>Specifies symbols on which to perform conditional compilation.</source>
+        <target state="translated">Especifica símbolos nos quais executar a compilação condicional.</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|DefineConstants|DisplayName">
         <source>Conditional compilation symbols</source>
         <target state="translated">Símbolos de compilação condicional</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|DefineConstants|ValueEditors|ValueEditor|Metadata|TypeDescriptorText|Value">
+        <source>Custom symbols</source>
+        <target state="new">Custom symbols</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|DocumentationFile|Description">
@@ -464,7 +464,7 @@
       </trans-unit>
       <trans-unit id="StringProperty|LangVersion|Description">
         <source>The version of the language available to code in this project.</source>
-        <target state="new">The version of the language available to code in this project.</target>
+        <target state="translated">A versão da linguagem disponível para o código neste projeto.</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|LangVersion|DisplayName">

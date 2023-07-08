@@ -1,0 +1,42 @@
+<!-- Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information. -->
+<Project>
+  <PropertyGroup>
+    <!-- Banned symbols are very project-system centric, and not applicable to AppDesigner/Editors -->
+    <BannedSymbolsOptOut>true</BannedSymbolsOptOut>
+  </PropertyGroup>
+
+  <Import Project="VisualStudio.props" />
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.VisualStudio.Data.Core" />
+    <PackageReference Include="Microsoft.VisualStudio.Data.Services" />
+    <PackageReference Include="Microsoft.VisualStudio.DataDesign.Common" />
+    <PackageReference Include="Microsoft.VisualStudio.DataTools.Interop" />
+    <PackageReference Include="Microsoft.VisualStudio.TemplateWizardInterface" />
+    <PackageReference Include="Microsoft.VisualStudio.XmlEditor" />
+    <PackageReference Include="Microsoft.VSDesigner" />
+    <PackageReference Include="VsWebSite.Interop" />
+  </ItemGroup>
+
+  <ItemGroup Condition="'$(Language)' == 'VB'">
+    <Import Include="System" />
+    <Import Include="System.Collections" />
+    <Import Include="System.Collections.Generic" />
+    <Import Include="System.Data" />
+    <Import Include="System.Diagnostics" />
+    <Import Include="System.Linq" />
+    <Import Include="Microsoft.VisualBasic" />
+    <Import Include="VSConstants=Microsoft.VisualStudio.VSConstants" />
+    <Import Include="VSErrorHandler=Microsoft.VisualStudio.ErrorHandler" />
+  </ItemGroup>
+  
+  <ItemGroup>
+    <!-- Framework -->
+    <Reference Include="CustomMarshalers" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Design" />
+    <Reference Include="System.Web.ApplicationServices" />
+    <Reference Include="System.Web.Extensions" />
+  </ItemGroup>
+</Project>

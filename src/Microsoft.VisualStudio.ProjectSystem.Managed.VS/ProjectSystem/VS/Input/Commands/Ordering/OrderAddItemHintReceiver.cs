@@ -1,17 +1,12 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
-using System;
-using System.Collections.Immutable;
-using System.ComponentModel.Composition;
-using System.Linq;
-using System.Threading.Tasks;
-
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.Ordering
 {
     [Export(typeof(IProjectChangeHintReceiver))]
     [Export(typeof(OrderAddItemHintReceiver))]
     [ProjectChangeHintKind(ProjectChangeFileSystemEntityHint.AddedFileAsString)]
     [AppliesTo(ProjectCapability.SortByDisplayOrder + " & " + ProjectCapability.EditableDisplayOrder)]
+    [ProjectSystemContract(ProjectSystemContractScope.ProjectService, ProjectSystemContractProvider.Private)]
     internal class OrderAddItemHintReceiver : IProjectChangeHintReceiver
     {
         private readonly IProjectAccessor _accessor;
@@ -64,8 +59,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.Ordering
         /// </summary>
         public async Task CaptureAsync(OrderingMoveAction action, IProjectTree target, Func<Task> task)
         {
-            Requires.NotNull(target, nameof(target));
-            Requires.NotNull(task, nameof(task));
+            Requires.NotNull(target);
+            Requires.NotNull(task);
 
             _action = action;
             _target = target;
@@ -89,7 +84,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.Ordering
 
         private bool CanMove()
         {
-            return _action != OrderingMoveAction.NoOp && _target != null;
+            return _action != OrderingMoveAction.NoOp && _target is not null;
         }
     }
 }

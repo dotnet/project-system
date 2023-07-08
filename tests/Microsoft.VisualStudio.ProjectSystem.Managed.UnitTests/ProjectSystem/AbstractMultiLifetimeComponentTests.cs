@@ -1,8 +1,5 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
-using System.Threading.Tasks;
-using Xunit;
-
 namespace Microsoft.VisualStudio.ProjectSystem
 {
     public class AbstractMultiLifetimeComponentTests
@@ -160,23 +157,23 @@ namespace Microsoft.VisualStudio.ProjectSystem
         }
 
         [Fact]
-        public void Dispose_WhenNotLoaded_DoesNothing()
+        public async Task DisposeAsync_WhenNotLoaded_DoesNothing()
         {
             var component = CreateInstance();
-            component.Dispose();
+            await component.DisposeAsync();
 
             Assert.True(component.IsDisposed);
         }
 
         [Fact]
-        public async Task Dispose_WhenLoaded_DisposesUnderlyingInstance()
+        public async Task DisposeAsync_WhenLoaded_DisposesUnderlyingInstance()
         {
             var component = CreateInstance();
 
             await component.LoadAsync();
             var instance = await component.WaitForLoadedAsync();
 
-            component.Dispose();
+            await component.DisposeAsync();
 
             Assert.True(instance.IsDisposed);
         }

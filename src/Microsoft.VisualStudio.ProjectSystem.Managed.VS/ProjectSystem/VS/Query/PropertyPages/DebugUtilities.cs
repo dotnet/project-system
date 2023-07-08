@@ -1,6 +1,5 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
-using System.Collections.Generic;
 using Microsoft.Build.Framework.XamlTypes;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
 
@@ -19,9 +18,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
         {
             foreach (string schemaName in projectCatalog.GetPropertyPagesSchemas(itemType: "LaunchProfile"))
             {
-                if (projectCatalog.GetSchema(schemaName) is Rule possibleChildRule
-                    && !possibleChildRule.PropertyPagesHidden
-                    && possibleChildRule.PageTemplate == CommandNameBasedDebuggerPageTemplate)
+                if (projectCatalog.GetSchema(schemaName) is { PropertyPagesHidden: false, PageTemplate: CommandNameBasedDebuggerPageTemplate } possibleChildRule)
                 {
                     yield return possibleChildRule;
                 }

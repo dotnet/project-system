@@ -1,9 +1,5 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.VisualStudio.Text;
 
 namespace Microsoft.VisualStudio.ProjectSystem.Properties.Package
@@ -26,7 +22,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties.Package
             // Ignore the semantic version suffix (e.g. "1.0.0-beta1" => "1.0.0")
             versionStr = new LazyStringSplit(versionStr, '-').First();
 
-            return Version.TryParse(versionStr, out Version version) ? version : DefaultVersion;
+            return Version.TryParse(versionStr, out Version? version) ? version : DefaultVersion;
         }
 
         public override async Task<string> OnGetEvaluatedPropertyValueAsync(string propertyName, string evaluatedPropertyValue, IProjectProperties defaultProperties)
@@ -54,7 +50,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties.Package
             IEnumerable<string> propertyNames = await defaultProperties.GetPropertyNamesAsync();
             if (!propertyNames.Contains(PropertyName))
             {
-                if (Version.TryParse(unevaluatedPropertyValue, out Version version))
+                if (Version.TryParse(unevaluatedPropertyValue, out Version? version))
                 {
                     Version defaultVersion = await GetDefaultVersionAsync(defaultProperties);
                     if (version.Equals(defaultVersion))

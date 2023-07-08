@@ -2,6 +2,11 @@
 <xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
   <file datatype="xml" source-language="en" target-language="it" original="../DebugPropertyPage.xaml">
     <body>
+      <trans-unit id="Category|General|DisplayName">
+        <source>General</source>
+        <target state="translated">Generale</target>
+        <note />
+      </trans-unit>
       <trans-unit id="Rule|DebugPropertyPage|Description">
         <source>Debug</source>
         <target state="translated">Debug</target>
@@ -13,8 +18,8 @@
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|DebugPagePlaceholderDescription|Description">
-        <source>The management of launch profiles has moved to a dedicated dialog. It may be accessed via the link below.</source>
-        <target state="translated">La gestione dei profili di avvio è stata spostata in una finestra di dialogo dedicata. È possibile accedervi tramite il collegamento sottostante.</target>
+        <source>The management of launch profiles has moved to a dedicated dialog. It may be accessed via the link below, via the Debug menu in the menu bar, or via the Debug Target command on the Standard tool bar.</source>
+        <target state="translated">La gestione dei profili di avvio è stata spostata in una finestra di dialogo dedicata. È possibile accedervi tramite il seguente collegamento, tramite il menu di Debug nella barra dei menu o tramite il comando Destinazione di debug sulla barra degli strumenti Standard.</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|DebugPagePlaceholderDescription|DisplayName">

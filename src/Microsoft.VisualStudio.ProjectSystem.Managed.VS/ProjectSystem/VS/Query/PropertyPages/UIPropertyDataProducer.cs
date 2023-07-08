@@ -1,28 +1,24 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
-using System.Collections.Generic;
-using System.Threading.Tasks;
 using Microsoft.Build.Framework.XamlTypes;
 using Microsoft.VisualStudio.ProjectSystem.Debug;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
 using Microsoft.VisualStudio.ProjectSystem.Query;
-using Microsoft.VisualStudio.ProjectSystem.Query.Frameworks;
-using Microsoft.VisualStudio.ProjectSystem.Query.ProjectModel;
-using Microsoft.VisualStudio.ProjectSystem.Query.ProjectModel.Implementation;
-using Microsoft.VisualStudio.ProjectSystem.Query.QueryExecution;
+using Microsoft.VisualStudio.ProjectSystem.Query.Execution;
+using Microsoft.VisualStudio.ProjectSystem.Query.Framework;
 using Microsoft.VisualStudio.ProjectSystem.VS.Utilities;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
 {
     /// <summary>
-    /// Handles the creation of <see cref="IPropertyPage"/> instances and populating the requested members.
+    /// Handles the creation of <see cref="IPropertyPageSnapshot"/> instances and populating the requested members.
     /// </summary>
     internal static class UIPropertyDataProducer
     {
         public static IEntityValue CreateUIPropertyValue(IQueryExecutionContext queryExecutionContext, IEntityValue parent, IProjectState cache, QueryProjectPropertiesContext propertiesContext, BaseProperty property, int order, IUIPropertyPropertiesAvailableStatus requestedProperties)
         {
-            Requires.NotNull(parent, nameof(parent));
-            Requires.NotNull(property, nameof(property));
+            Requires.NotNull(parent);
+            Requires.NotNull(property);
 
             var identity = new EntityIdentity(
                 ((IEntityWithId)parent).Id,
@@ -36,8 +32,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
 
         public static IEntityValue CreateUIPropertyValue(IQueryExecutionContext queryExecutionContext, EntityIdentity id, IProjectState cache, QueryProjectPropertiesContext propertiesContext, BaseProperty property, int order, IUIPropertyPropertiesAvailableStatus requestedProperties)
         {
-            Requires.NotNull(property, nameof(property));
-            var newUIProperty = new UIPropertyValue(queryExecutionContext.EntityRuntime, id, new UIPropertyPropertiesAvailableStatus());
+            Requires.NotNull(property);
+            var newUIProperty = new UIPropertySnapshot(queryExecutionContext.EntityRuntime, id, new UIPropertyPropertiesAvailableStatus());
 
             if (requestedProperties.Name)
             {
@@ -115,6 +111,25 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
                 newUIProperty.VisibilityCondition = visibilityCondition ?? string.Empty;
             }
 
+            if (requestedProperties.DimensionVisibilityCondition)
+            {
+                string? dimensionVisibilityCondition = property.GetMetadataValueOrNull("DimensionVisibilityCondition");
+                newUIProperty.DimensionVisibilityCondition = dimensionVisibilityCondition ?? string.Empty;
+            }
+            
+            
+            if (requestedProperties.ConfiguredValueVisibilityCondition)
+            {
+                string? configuredValueVisibilityCondition = property.GetMetadataValueOrNull("ConfiguredValueVisibilityCondition");
+                newUIProperty.ConfiguredValueVisibilityCondition = configuredValueVisibilityCondition ?? string.Empty;
+            }
+            
+            if (requestedProperties.IsReadOnlyCondition)
+            {
+                string? isReadOnlyCondition = property.GetMetadataValueOrNull("IsReadOnlyCondition");
+                newUIProperty.IsReadOnlyCondition = isReadOnlyCondition ?? string.Empty;
+            }
+            
             ((IEntityValueFromProvider)newUIProperty).ProviderState = new PropertyProviderState(cache, property.ContainingRule, propertiesContext, property.Name);
 
             return newUIProperty;

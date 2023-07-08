@@ -1,7 +1,5 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
-using System.Collections.Generic;
-using System.Collections.Immutable;
 using System.Diagnostics;
 
 namespace Microsoft.VisualStudio.ProjectSystem.Build
@@ -17,10 +15,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.Build
         /// </summary>
         internal OutputGroup(string name, string targetName, string displayName, string? description, IImmutableList<KeyValuePair<string, IImmutableDictionary<string, string>>> items, bool successful)
         {
-            Requires.NotNullOrEmpty(name, nameof(name));
-            Requires.NotNullOrEmpty(targetName, nameof(targetName));
-            Requires.NotNullOrEmpty(displayName, nameof(displayName));
-            Requires.NotNull(items, nameof(items));
+            Requires.NotNullOrEmpty(name);
+            Requires.NotNullOrEmpty(targetName);
+            Requires.NotNullOrEmpty(displayName);
+            Requires.NotNull(items);
 
             Name = name;
             TargetName = targetName;

@@ -1,7 +1,5 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
-using Moq;
-
 namespace Microsoft.VisualStudio.ProjectSystem
 {
     internal static class ConfiguredProjectFactory
@@ -12,7 +10,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
             mock.Setup(c => c.Capabilities).Returns(capabilities!);
             mock.Setup(c => c.ProjectConfiguration).Returns(projectConfiguration!);
             mock.Setup(c => c.Services).Returns(services!);
-            mock.SetupGet(c => c.UnconfiguredProject).Returns(unconfiguredProject! ?? UnconfiguredProjectFactory.Create());
+            mock.SetupGet(c => c.UnconfiguredProject).Returns(unconfiguredProject ?? UnconfiguredProjectFactory.Create());
             return mock.Object;
         }
 

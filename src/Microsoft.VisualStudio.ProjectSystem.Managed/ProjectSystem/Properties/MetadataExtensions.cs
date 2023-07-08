@@ -1,7 +1,5 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
-using System;
-using System.Collections.Immutable;
 using System.Diagnostics.CodeAnalysis;
 
 namespace Microsoft.VisualStudio.ProjectSystem.Properties
@@ -16,10 +14,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         /// <returns>The key is item name and the value is the metadata dictionary.</returns>
         public static IImmutableDictionary<string, string>? GetProjectItemProperties(this IProjectRuleSnapshot projectRuleSnapshot, string itemSpec)
         {
-            Requires.NotNull(projectRuleSnapshot, nameof(projectRuleSnapshot));
-            Requires.NotNullOrEmpty(itemSpec, nameof(itemSpec));
+            Requires.NotNull(projectRuleSnapshot);
+            Requires.NotNullOrEmpty(itemSpec);
 
-            return projectRuleSnapshot.Items.TryGetValue(itemSpec, out IImmutableDictionary<string, string> properties)
+            return projectRuleSnapshot.Items.TryGetValue(itemSpec, out IImmutableDictionary<string, string>? properties)
                 ? properties
                 : null;
         }
@@ -36,7 +34,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         /// <returns><see langword="true"/> if the property was found with a non-empty value, otherwise <see langword="false"/>.</returns>
         public static bool TryGetStringProperty(this IImmutableDictionary<string, string> properties, string key, [NotNullWhen(returnValue: true)] out string? stringValue)
         {
-            if (properties != null &&
+            if (properties is not null &&
                 properties.TryGetValue(key, out stringValue) &&
                 !string.IsNullOrEmpty(stringValue))
             {
@@ -85,7 +83,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         /// <returns>The boolean value if found and successfully parsed as a boolean, otherwise <see langword="null"/>.</returns>
         public static bool? GetBoolProperty(this IImmutableDictionary<string, string> properties, string key)
         {
-            return properties.TryGetBoolProperty(key, out bool value) ? value : (bool?)null;
+            return properties.TryGetBoolProperty(key, out bool value) ? value : null;
         }
 
         /// <summary>
@@ -117,7 +115,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         /// <typeparam name="T">The enum type.</typeparam>
         public static T? GetEnumProperty<T>(this IImmutableDictionary<string, string> properties, string key) where T : struct, Enum
         {
-            return properties.TryGetEnumProperty(key, out T value) ? value : (T?)null;
+            return properties.TryGetEnumProperty(key, out T value) ? value : null;
         }
     }
 }

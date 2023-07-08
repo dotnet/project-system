@@ -44,12 +44,12 @@
       </trans-unit>
       <trans-unit id="BoolProperty|WebView2Debugging|Description">
         <source>Enable JavaScript debugger for Microsoft Edge (Chromium) based WebView2. Requires the JavaScript Diagnostics component.</source>
-        <target state="new">Enable JavaScript debugger for Microsoft Edge (Chromium) based WebView2. Requires the JavaScript Diagnostics component.</target>
+        <target state="translated">啟用適用於 Microsoft Edge (Chromium) 型 WebView2 的 JavaScript 偵錯工具。需要 JavaScript 診斷工具</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|WebView2Debugging|DisplayName">
         <source>Enable WebView2 debugging</source>
-        <target state="new">Enable WebView2 debugging</target>
+        <target state="translated">啟用 WebView2 偵錯</target>
         <note />
       </trans-unit>
       <trans-unit id="DynamicEnumProperty|AuthenticationMode|Description">
@@ -72,9 +72,19 @@
         <target state="translated">專案</target>
         <note />
       </trans-unit>
+      <trans-unit id="StringProperty|CommandLineArgumentsOverriddenWarning|Description">
+        <source>⚠️ WARNING! This project defines the StartArguments MSBuild property, which overrides any command line arguments specified here. If you wish to define arguments here, you must remove that property from your MSBuild project. Note that it may be defined in a .user file.</source>
+        <target state="translated">⚠️ 警告! 此專案會定義 StartArguments MSBuild 屬性，其會覆寫這裡指定的任何命令列引數。如果您想要在這裡定義引數，必須從 MSBuild 專案移除該屬性。請注意，它可以在 .user 檔案中定義。</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|CommandLineArgumentsOverriddenWarning|DisplayName">
+        <source>Ignored</source>
+        <target state="translated">已忽略</target>
+        <note />
+      </trans-unit>
       <trans-unit id="StringProperty|CommandLineArguments|Description">
-        <source>Command line arguments to pass to the executable.</source>
-        <target state="translated">要傳遞至可執行檔的命令列引數。</target>
+        <source>Command line arguments to pass to the executable. You may break arguments into multiple lines.</source>
+        <target state="translated">要傳遞給可執行檔的命令列引數。您可以將引數分成多行。</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|CommandLineArguments|DisplayName">
@@ -83,8 +93,8 @@
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|EnvironmentVariables|Description">
-        <source>The environment variables to set prior to running the process. Variables are separated by a comma (,) and variables names and values are separated with an equal sign (=). Example: var1=value1,var2=value2,var3=value3. Commas and equal signs appearing within a variable can be escaped using a forward slash (/).</source>
-        <target state="translated">執行處理序前要設定的環境變數。變數以逗號 (,) 分隔，變數名稱與值則以等號 (=) 分隔。範例: var1=value1,var2=value2,var3=value3。您可以使用斜線 (/) 逸出變數內顯示的逗號與等號。</target>
+        <source>The environment variables to set prior to running the process.</source>
+        <target state="translated">在執行程序之前要設定的環境變數。</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|EnvironmentVariables|DisplayName">

@@ -2,6 +2,11 @@
 <xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
   <file datatype="xml" source-language="en" target-language="ja" original="../DebugPropertyPage.xaml">
     <body>
+      <trans-unit id="Category|General|DisplayName">
+        <source>General</source>
+        <target state="translated">全般</target>
+        <note />
+      </trans-unit>
       <trans-unit id="Rule|DebugPropertyPage|Description">
         <source>Debug</source>
         <target state="translated">デバッグ</target>
@@ -13,8 +18,8 @@
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|DebugPagePlaceholderDescription|Description">
-        <source>The management of launch profiles has moved to a dedicated dialog. It may be accessed via the link below.</source>
-        <target state="translated">起動プロファイルの管理が専用のダイアログに移動しました。以下のリンクからアクセスすることができます。</target>
+        <source>The management of launch profiles has moved to a dedicated dialog. It may be accessed via the link below, via the Debug menu in the menu bar, or via the Debug Target command on the Standard tool bar.</source>
+        <target state="translated">起動プロファイルの管理は、専用ダイアログに移動しました。このダイアログは、以下のリンク、メニュー バーの [デバッグ] メニュー、または標準ツールバーの [デバッグターゲット] コマンドを介してアクセスできます。</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|DebugPagePlaceholderDescription|DisplayName">

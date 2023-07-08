@@ -331,7 +331,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
             ''' </summary>
             ''' <param name="Value">The component from which we want to serialize stuff.</param>
             Public Sub New(Value As Object)
-                Requires.NotNull(Value, NameOf(Value))
+                Requires.NotNull(Value)
 
                 ' If it is an IComponent, we'll try to get its name from 
                 ' its site
@@ -420,7 +420,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
             ''' </summary>
             ''' <param name="Value">The component from which we want to serialize stuff.</param>
             Friend Sub New(Value As ObjectData)
-                Requires.NotNull(Value, NameOf(Value))
+                Requires.NotNull(Value)
 
                 _objectName = Value.Name
                 _serializedValue = SerializeObject(Value.Value)
@@ -431,8 +431,8 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
             ''' </summary>
             ''' <param name="Value">The component from which we want to serialize stuff.</param>
             Public Sub New(Value As ObjectData, [Property] As PropertyDescriptor)
-                Requires.NotNull(Value, NameOf(Value))
-                Requires.NotNull([Property], NameOf([Property]))
+                Requires.NotNull(Value)
+                Requires.NotNull([Property])
 
                 _objectName = Value.Name
                 _propertyName = [Property].Name

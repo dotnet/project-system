@@ -1,7 +1,7 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
-using System.ComponentModel.Composition;
 using Microsoft.VisualStudio.ProjectSystem.Imaging;
+using ManagedPriorityOrder = Microsoft.VisualStudio.ProjectSystem.Order;
 
 namespace Microsoft.VisualStudio.ProjectSystem.Tree
 {
@@ -10,7 +10,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree
     /// </summary>
     [Export(typeof(IProjectTreePropertiesProvider))]
     [AppliesTo(ProjectCapability.DotNet)]
-    [Order(Order.Default)]
+    [Order(ManagedPriorityOrder.Default)]
     internal class ProjectRootImageProjectTreePropertiesProvider : IProjectTreePropertiesProvider
     {
         private readonly IProjectCapabilitiesService _capabilities;
@@ -30,8 +30,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree
 
         public void CalculatePropertyValues(IProjectTreeCustomizablePropertyContext propertyContext, IProjectTreeCustomizablePropertyValues propertyValues)
         {
-            Requires.NotNull(propertyContext, nameof(propertyContext));
-            Requires.NotNull(propertyValues, nameof(propertyValues));
+            Requires.NotNull(propertyContext);
+            Requires.NotNull(propertyValues);
 
             if (propertyValues.Flags.Contains(ProjectTreeFlags.Common.ProjectRoot))
             {
@@ -47,7 +47,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree
         {
             ProjectImageMoniker? icon = _imageProvider.GetProjectImage(imageKey);
 
-            if (icon != null)
+            if (icon is not null)
             {
                 propertyValues.Icon = icon;
             }

@@ -1,11 +1,6 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
-using Moq;
 
 namespace Microsoft.VisualStudio.ProjectSystem
 {
@@ -60,7 +55,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
             var service = IProjectServiceFactory.Create();
 
-            if (unconfiguredProjectServices == null)
+            if (unconfiguredProjectServices is null)
             {
                 var unconfiguredProjectServicesMock = new Mock<UnconfiguredProjectServices>();
 
@@ -98,7 +93,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
             project.Setup(u => u.GetSuggestedConfiguredProjectAsync()).ReturnsAsync(configuredProject);
 
-            if (projectEncoding != null)
+            if (projectEncoding is not null)
             {
                 project.Setup(u => u.GetFileEncodingAsync()).ReturnsAsync(projectEncoding);
             }

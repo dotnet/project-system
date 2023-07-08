@@ -11,6 +11,7 @@ Imports System.Text.RegularExpressions
 Imports System.Windows.Forms
 
 Imports Microsoft.VisualStudio.Shell
+Imports Microsoft.VisualStudio.Shell.Interop
 Imports Microsoft.VisualStudio.Telemetry
 
 Namespace Microsoft.VisualStudio.Editors.AppDesCommon
@@ -30,7 +31,7 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
         'Property page GUIDs.  These are used only for sorting the tabs in the project designer, and for providing a
         '  unique ID for SQM.  Both cases are optional (we handle getting property pages with GUIDs we don't recognize).
         'PERF: NOTE: Initializing GUIDs from numeric values as below is a lot faster than initializing from strings.
-        Public Class KnownPropertyPageGuids
+        Public NotInheritable Class KnownPropertyPageGuids
             Public Shared ReadOnly GuidApplicationPage_VB As Guid = New Guid(&H8998E48EUI, &HB89AUS, &H4034US, &HB6, &H6E, &H35, &H3D, &H8C, &H1F, &HDC, &H2E)
             Public Shared ReadOnly GuidApplicationPage_VB_WPF As Guid = New Guid(&HAA1F44UI, &H2BA3US, &H4EAAUS, &HB5, &H4A, &HCE, &H18, &H0, &HE, &H6C, &H5D)
             Public Shared ReadOnly GuidApplicationPage_CS As Guid = New Guid(&H5E9A8AC2UI, &H4F34US, &H4521US, CByte(&H85), CByte(&H8F), CByte(&H4C), CByte(&H24), CByte(&H8B), CByte(&HA3), CByte(&H15), CByte(&H32))
@@ -336,14 +337,14 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
         ''' <param name="hr">error code</param>
         ''' <param name="errorMessage">error message</param>
         Public Sub SetErrorInfo(sp As ServiceProvider, hr As Integer, errorMessage As String)
-            Dim vsUIShell As Interop.IVsUIShell = Nothing
+            Dim vsUIShell As IVsUIShell = Nothing
 
             If sp IsNot Nothing Then
-                vsUIShell = CType(sp.GetService(GetType(Interop.IVsUIShell)), Interop.IVsUIShell)
+                vsUIShell = CType(sp.GetService(GetType(IVsUIShell)), IVsUIShell)
             End If
 
             If vsUIShell Is Nothing AndAlso Not VBPackageInstance IsNot Nothing Then
-                vsUIShell = CType(VBPackageInstance.GetService(GetType(Interop.IVsUIShell)), Interop.IVsUIShell)
+                vsUIShell = CType(VBPackageInstance.GetService(GetType(IVsUIShell)), IVsUIShell)
             End If
 
             If vsUIShell IsNot Nothing Then
@@ -434,8 +435,8 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
                 Optional DefaultFileName As String = Nothing,
                 Optional NeedThrowError As Boolean = False) As ArrayList
 
-            Dim uishell As Interop.IVsUIShell =
-                CType(ServiceProvider.GetService(GetType(Interop.IVsUIShell)), Interop.IVsUIShell)
+            Dim uishell As IVsUIShell =
+                CType(ServiceProvider.GetService(GetType(IVsUIShell)), IVsUIShell)
 
             Dim fileNames As New ArrayList()
 
@@ -451,7 +452,7 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
                 MaxPathName = (AppDesInterop.Win32Constant.MAX_PATH + 1) * VSDPLMAXFILES
             End If
 
-            Dim vsOpenFileName As Interop.VSOPENFILENAMEW()
+            Dim vsOpenFileName As VSOPENFILENAMEW()
 
             Dim defaultName(MaxPathName) As Char
             If DefaultFileName IsNot Nothing Then
@@ -462,7 +463,7 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
             Marshal.Copy(defaultName, 0, stringMemPtr, defaultName.Length)
 
             Try
-                vsOpenFileName = New Interop.VSOPENFILENAMEW(0) {}
+                vsOpenFileName = New VSOPENFILENAMEW(0) {}
                 vsOpenFileName(0).lStructSize = CUInt(Marshal.SizeOf(vsOpenFileName(0)))
                 vsOpenFileName(0).hwndOwner = ParentWindow
                 vsOpenFileName(0).pwzDlgTitle = DialogTitle
@@ -591,7 +592,7 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
         End Function
 
 #Region "Telemetry"
-        Public Class TelemetryLogger
+        Public NotInheritable Class TelemetryLogger
 
             'A list of known editor guids
             ' Each property page will be reported back to telemetry with the 1-based index in which it is present 
@@ -691,15 +692,15 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
         End Class
 #End Region
 
-        Public Class ObjectSerializer
+        Public NotInheritable Class ObjectSerializer
 
             ' KnownType information is used by DataContractSerializer for serialization of types that it may not know of currently.
             ' Size is used in Bitmap and has issues being recognized in DataContractSerializer for the unit tests of this class.
             Private Shared ReadOnly s_knownTypes As Type() = {GetType(Size)}
 
             Public Shared Sub Serialize(stream As Stream, value As Object)
-                Requires.NotNull(stream, NameOf(stream))
-                Requires.NotNull(value, NameOf(value))
+                Requires.NotNull(stream)
+                Requires.NotNull(value)
                 Using writer As New BinaryWriter(stream, Encoding.UTF8, leaveOpen:=True)
                     Dim valueType = value.GetType()
                     writer.Write(valueType.AssemblyQualifiedName)
@@ -709,7 +710,7 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
             End Sub
 
             Public Shared Function Deserialize(stream As Stream) As Object
-                Requires.NotNull(stream, NameOf(stream))
+                Requires.NotNull(stream)
                 If stream.Length = 0 Then
                     Throw New SerializationException("The stream contains no content.")
                 End If

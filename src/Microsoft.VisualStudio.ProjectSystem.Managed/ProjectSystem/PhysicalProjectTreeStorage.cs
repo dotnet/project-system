@@ -1,8 +1,5 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
-using System;
-using System.ComponentModel.Composition;
-using System.Threading.Tasks;
 using Microsoft.VisualStudio.IO;
 
 namespace Microsoft.VisualStudio.ProjectSystem
@@ -30,7 +27,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
         public async Task AddFileAsync(string path)
         {
-            Requires.NotNullOrEmpty(path, nameof(path));
+            Requires.NotNullOrEmpty(path);
 
             string fullPath = _project.MakeRooted(path);
 
@@ -41,13 +38,11 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
         public async Task CreateEmptyFileAsync(string path)
         {
-            Requires.NotNullOrEmpty(path, nameof(path));
+            Requires.NotNullOrEmpty(path);
 
             string fullPath = _project.MakeRooted(path);
 
-            using (_fileSystem.Value.Create(fullPath))
-            {
-            }
+            _fileSystem.Value.Create(fullPath);
 
             await _configuredImports.Value.SourceItemsProvider.AddAsync(fullPath);
 
@@ -56,7 +51,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
         public Task CreateFolderAsync(string path)
         {
-            Requires.NotNullOrEmpty(path, nameof(path));
+            Requires.NotNullOrEmpty(path);
 
             string fullPath = _project.MakeRooted(path);
 
@@ -67,7 +62,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
         public async Task AddFolderAsync(string path)
         {
-            Requires.NotNullOrEmpty(path, nameof(path));
+            Requires.NotNullOrEmpty(path);
 
             string fullPath = _project.MakeRooted(path);
 

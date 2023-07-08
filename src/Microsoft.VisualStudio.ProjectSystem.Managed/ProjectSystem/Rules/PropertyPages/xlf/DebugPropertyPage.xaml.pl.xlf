@@ -2,6 +2,11 @@
 <xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
   <file datatype="xml" source-language="en" target-language="pl" original="../DebugPropertyPage.xaml">
     <body>
+      <trans-unit id="Category|General|DisplayName">
+        <source>General</source>
+        <target state="translated">Ogólne</target>
+        <note />
+      </trans-unit>
       <trans-unit id="Rule|DebugPropertyPage|Description">
         <source>Debug</source>
         <target state="translated">Debuguj</target>
@@ -13,8 +18,8 @@
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|DebugPagePlaceholderDescription|Description">
-        <source>The management of launch profiles has moved to a dedicated dialog. It may be accessed via the link below.</source>
-        <target state="translated">Zarządzanie profilami uruchamiania zostało przeniesione do dedykowanego okna dialogowego. Dostęp do niego można uzyskać za pomocą poniższego linku.</target>
+        <source>The management of launch profiles has moved to a dedicated dialog. It may be accessed via the link below, via the Debug menu in the menu bar, or via the Debug Target command on the Standard tool bar.</source>
+        <target state="translated">Zarządzanie profilami uruchamiania zostało przeniesione do dedykowanego okna dialogowego. Dostęp do niego można uzyskać za pomocą poniższego linku, korzystając z menu Debuguj na pasku menu lub za pomocą polecenia Debug Target na standardowym pasku narzędzi.</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|DebugPagePlaceholderDescription|DisplayName">
@@ -24,7 +29,7 @@
       </trans-unit>
       <trans-unit id="StringProperty|DebugPagePlaceholderDescription|Metadata|SearchTerms">
         <source>arguments;command line;working directory;environment variables;IIS;browser;URL;authentication;remote</source>
-        <target state="new">arguments;command line;working directory;environment variables;IIS;browser;URL;authentication;remote</target>
+        <target state="translated">argumenty; wiersz polecenia; katalog roboczy; zmienne środowiskowe; IIS; przeglądarka; adres URL; uwierzytelnianie; zdalne</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|OpenLaunchProfilesEditor|DisplayName">
@@ -34,7 +39,7 @@
       </trans-unit>
       <trans-unit id="StringProperty|OpenLaunchProfilesEditor|Metadata|SearchTerms">
         <source>arguments;command line;working directory;environment variables;IIS;browser;URL;authentication;remote</source>
-        <target state="new">arguments;command line;working directory;environment variables;IIS;browser;URL;authentication;remote</target>
+        <target state="translated">argumenty; wiersz polecenia; katalog roboczy; zmienne środowiskowe; IIS; przeglądarka; adres URL; uwierzytelnianie; zdalne</target>
         <note />
       </trans-unit>
     </body>

@@ -1,10 +1,5 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
-using System.ComponentModel.Composition;
-using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
-
 namespace Microsoft.VisualStudio.ProjectSystem.SpecialFileProviders
 {
     /// <summary>
@@ -29,7 +24,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.SpecialFileProviders
         {
             // First look for the actual AppDesigner folder
             IProjectTree? folder = FindAppDesignerFolder(root);
-            if (folder == null)
+            if (folder is null)
             {
                 // Otherwise, find a location that is a candidate
                 folder = await FindAppDesignerFolderCandidateAsync(provider, root);
@@ -41,7 +36,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.SpecialFileProviders
         protected override async Task<string?> GetDefaultFileAsync(IProjectTreeProvider provider, IProjectTree root)
         {
             string? projectPath = provider.GetRootedAddNewItemDirectory(root);
-            if (projectPath == null)  // Root has DisableAddItem
+            if (projectPath is null)  // Root has DisableAddItem
                 return null;
 
             string? folderName = await GetDefaultAppDesignerFolderNameAsync();
@@ -67,7 +62,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.SpecialFileProviders
         private async Task<IProjectTree?> FindAppDesignerFolderCandidateAsync(IProjectTreeProvider provider, IProjectTree root)
         {
             string? path = await GetDefaultFileAsync(provider, root);
-            if (path == null)
+            if (path is null)
                 return null;
 
             return provider.FindByPath(root, path);

@@ -1,0 +1,7 @@
+# https://docs.github.com/en/communities/using-templates-to-encourage-useful-issues-and-pull-requests/configuring-issue-templates-for-your-repository
+
+blank_issues_enabled: true
+contact_links:
+  - name: Report a problem via the Visual Studio feedback tool
+    url: https://docs.microsoft.com/visualstudio/ide/how-to-report-a-problem-with-visual-studio
+    about: If your issue would benefit from diagnostic data, please follow these instructions.

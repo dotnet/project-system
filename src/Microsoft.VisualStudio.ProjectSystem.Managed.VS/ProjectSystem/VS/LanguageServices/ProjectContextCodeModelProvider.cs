@@ -1,8 +1,5 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
-using System;
-using System.ComponentModel.Composition;
-using System.Threading.Tasks;
 using EnvDTE;
 using Microsoft.VisualStudio.LanguageServices.ProjectSystem;
 using Microsoft.VisualStudio.ProjectSystem.LanguageServices;
@@ -20,19 +17,19 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
     {
         private readonly IProjectThreadingService _threadingService;
         private readonly ICodeModelFactory _codeModelFactory;
-        private readonly IActiveWorkspaceProjectContextHost _projectContextHost;
+        private readonly IWorkspaceWriter _workspaceWriter;
 
         [ImportingConstructor]
-        public ProjectContextCodeModelProvider(IProjectThreadingService threadingService, ICodeModelFactory codeModelFactory, IActiveWorkspaceProjectContextHost projectContextHost)
+        public ProjectContextCodeModelProvider(IProjectThreadingService threadingService, ICodeModelFactory codeModelFactory, IWorkspaceWriter workspaceWriter)
         {
             _threadingService = threadingService;
             _codeModelFactory = codeModelFactory;
-            _projectContextHost = projectContextHost;
+            _workspaceWriter = workspaceWriter;
         }
 
         public CodeModel? GetCodeModel(Project project)
         {
-            Requires.NotNull(project, nameof(project));
+            Requires.NotNull(project);
 
             return _threadingService.ExecuteSynchronously(() =>
             {
@@ -42,7 +39,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
 
         public FileCodeModel? GetFileCodeModel(ProjectItem fileItem)
         {
-            Requires.NotNull(fileItem, nameof(fileItem));
+            Requires.NotNull(fileItem);
 
             return _threadingService.ExecuteSynchronously(() =>
             {
@@ -54,9 +51,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
         {
             await _threadingService.SwitchToUIThread();
 
-            return await _projectContextHost.OpenContextForWriteAsync(accessor =>
+            return await _workspaceWriter.WriteAsync(workspace =>
             {
-                return Task.FromResult(_codeModelFactory.GetCodeModel(accessor.Context, project));
+                return Task.FromResult(_codeModelFactory.GetCodeModel(workspace.Context, project));
             });
         }
 
@@ -64,11 +61,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
         {
             await _threadingService.SwitchToUIThread();
 
-            return await _projectContextHost.OpenContextForWriteAsync(accessor =>
+            return await _workspaceWriter.WriteAsync(workspace =>
             {
                 try
                 {
-                    return Task.FromResult<FileCodeModel?>(_codeModelFactory.GetFileCodeModel(accessor.Context, fileItem));
+                    return Task.FromResult<FileCodeModel?>(_codeModelFactory.GetFileCodeModel(workspace.Context, fileItem));
                 }
                 catch (NotImplementedException)
                 {   // Isn't a file that Roslyn knows about

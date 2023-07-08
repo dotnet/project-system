@@ -1,10 +1,5 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.Composition;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.Build.Framework.XamlTypes;
 using Microsoft.VisualStudio.Threading;
 
@@ -50,17 +45,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
             {
                 var catalogProvider = _configuredProject.Services.PropertyPagesCatalog;
 
-                if (catalogProvider == null)
+                if (catalogProvider is null)
                 {
                     return Array.Empty<IEnumValue>();
                 }
 
                 IPropertyPagesCatalog catalog = await catalogProvider.GetCatalogAsync(PropertyPageContexts.Project);
                 return catalog.GetPropertyPagesSchemas()
-                    .Select(name => catalog.GetSchema(name))
+                    .Select(catalog.GetSchema)
                     .WhereNotNull()
                     .Where(rule => string.Equals(rule.PageTemplate, "CommandNameBasedDebugger", StringComparison.OrdinalIgnoreCase)
-                            && rule.Metadata.TryGetValue("CommandName", out object pageCommandNameObj))
+                            && rule.Metadata.TryGetValue("CommandName", out object? pageCommandNameObj))
                     .Select(rule => new PageEnumValue(new EnumValue
                     {
                         Name = rule.Name,

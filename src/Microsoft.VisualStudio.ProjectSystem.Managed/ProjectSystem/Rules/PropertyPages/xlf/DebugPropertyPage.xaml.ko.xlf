@@ -2,6 +2,11 @@
 <xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
   <file datatype="xml" source-language="en" target-language="ko" original="../DebugPropertyPage.xaml">
     <body>
+      <trans-unit id="Category|General|DisplayName">
+        <source>General</source>
+        <target state="translated">일반</target>
+        <note />
+      </trans-unit>
       <trans-unit id="Rule|DebugPropertyPage|Description">
         <source>Debug</source>
         <target state="translated">디버그</target>
@@ -13,8 +18,8 @@
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|DebugPagePlaceholderDescription|Description">
-        <source>The management of launch profiles has moved to a dedicated dialog. It may be accessed via the link below.</source>
-        <target state="translated">시작 프로필 관리가 전용 대화 상자로 이동했습니다. 아래 링크를 통해 액세스할 수 있습니다.</target>
+        <source>The management of launch profiles has moved to a dedicated dialog. It may be accessed via the link below, via the Debug menu in the menu bar, or via the Debug Target command on the Standard tool bar.</source>
+        <target state="translated">시작 프로필 관리가 전용 대화로 이동되었습니다. 아래 링크, 메뉴 모음의 디버그 메뉴 또는 표준 도구 모음의 디버그 대상 명령을 통해 액세스할 수 있습니다.</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|DebugPagePlaceholderDescription|DisplayName">

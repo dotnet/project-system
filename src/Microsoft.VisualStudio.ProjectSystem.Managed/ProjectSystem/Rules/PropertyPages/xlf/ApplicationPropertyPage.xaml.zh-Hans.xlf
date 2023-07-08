@@ -4,32 +4,12 @@
     <body>
       <trans-unit id="BoolProperty|AutoGenerateBindingRedirects|Description">
         <source>Add binding redirects automatically to App.config.</source>
-        <target state="new">Add binding redirects automatically to App.config.</target>
+        <target state="translated">将绑定重定向自动添加到 App.config。</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|AutoGenerateBindingRedirects|DisplayName">
         <source>Auto-generate binding redirects</source>
-        <target state="new">Auto-generate binding redirects</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="BoolProperty|IsPublishable|Description">
-        <source>Allow publishing outside of Visual Studio, such as via "dotnet publish".</source>
-        <target state="translated">允许在 Visual Studio 外部发布，例如通过“dotnet 发布”。</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="BoolProperty|IsPublishable|DisplayName">
-        <source>Publishing</source>
-        <target state="translated">正在发布</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="BoolProperty|TargetMultipleFrameworks|Description">
-        <source>Build this project for multiple target frameworks.</source>
-        <target state="translated">为多个目标框架生成此项目。</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="BoolProperty|TargetMultipleFrameworks|DisplayName">
-        <source>Target multiple frameworks</source>
-        <target state="translated">面向多个框架</target>
+        <target state="translated">自动生成绑定重定向</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|UseWPF|Description">
@@ -60,16 +40,6 @@
       <trans-unit id="Category|General|DisplayName">
         <source>General</source>
         <target state="translated">常规</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="Category|Packaging|Description">
-        <source>Packaging settings for the application.</source>
-        <target state="translated">应用程序的打包设置。</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="Category|Packaging|DisplayName">
-        <source>Packaging</source>
-        <target state="translated">正在打包</target>
         <note />
       </trans-unit>
       <trans-unit id="Category|Resources|Description">
@@ -109,57 +79,47 @@
       </trans-unit>
       <trans-unit id="DynamicEnumProperty|SupportedOSPlatformVersion|Description">
         <source>Specifies the minimum OS version that the project will run on. When unspecified, the target OS version value is implied. Using an earlier version here requires code to add guards around later version APIs.</source>
-        <target state="new">Specifies the minimum OS version that the project will run on. When unspecified, the target OS version value is implied. Using an earlier version here requires code to add guards around later version APIs.</target>
+        <target state="translated">指定项目将在其上运行的最低 OS 版本。如果未指定，则会隐含目标 OS 版本值。使用此处的早期版本需要代码，以围绕更高版本的 API 添加防护。</target>
         <note />
       </trans-unit>
       <trans-unit id="DynamicEnumProperty|SupportedOSPlatformVersion|DisplayName">
         <source>Supported OS version</source>
-        <target state="new">Supported OS version</target>
+        <target state="translated">受支持的 OS 版本</target>
         <note />
       </trans-unit>
       <trans-unit id="DynamicEnumProperty|SupportedOSPlatformVersion|Metadata|SearchTerms">
         <source>platform</source>
-        <target state="new">platform</target>
+        <target state="translated">平台</target>
         <note />
       </trans-unit>
       <trans-unit id="DynamicEnumProperty|TargetPlatformIdentifier|Description">
         <source>Specifies the operating system that this project will target.</source>
-        <target state="new">Specifies the operating system that this project will target.</target>
+        <target state="translated">指定此项目将面向的操作系统。</target>
         <note />
       </trans-unit>
       <trans-unit id="DynamicEnumProperty|TargetPlatformIdentifier|DisplayName">
         <source>Target OS</source>
-        <target state="new">Target OS</target>
+        <target state="translated">目标 OS</target>
         <note />
       </trans-unit>
       <trans-unit id="DynamicEnumProperty|TargetPlatformIdentifier|Metadata|SearchTerms">
         <source>platform</source>
-        <target state="new">platform</target>
+        <target state="translated">平台</target>
         <note />
       </trans-unit>
       <trans-unit id="DynamicEnumProperty|TargetPlatformVersion|Description">
         <source>Specifies the version of the operating system this project will target.</source>
-        <target state="new">Specifies the version of the operating system this project will target.</target>
+        <target state="translated">指定此项目将面向的操作系统的版本。</target>
         <note />
       </trans-unit>
       <trans-unit id="DynamicEnumProperty|TargetPlatformVersion|DisplayName">
         <source>Target OS version</source>
-        <target state="new">Target OS version</target>
+        <target state="translated">目标操作系统版本</target>
         <note />
       </trans-unit>
       <trans-unit id="DynamicEnumProperty|TargetPlatformVersion|Metadata|SearchTerms">
         <source>platform</source>
-        <target state="new">platform</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="EnumProperty|ApplicationManifestKind|Description">
-        <source>Selects a manifest generation option when the application runs on Windows Vista or later under User Account Control (UAC). Options include a default manifest, no manifest, or a custom manifest provided by your project.</source>
-        <target state="translated">当应用程序在 Windows Vista 或更高版本下的用户帐户控制(UAC)下运行时，选择一个清单生成选项。选项包括默认清单、无清单或由项目提供的自定义清单。</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="EnumProperty|ApplicationManifestKind|DisplayName">
-        <source>Manifest</source>
-        <target state="translated">清单</target>
+        <target state="translated">平台</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumProperty|OutputType|Description">
@@ -180,21 +140,6 @@
       <trans-unit id="EnumProperty|ResourceSpecificationKind|DisplayName">
         <source>Resources</source>
         <target state="translated">资源</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="EnumValue|ApplicationManifestKind.CustomManifest|DisplayName">
-        <source>Use a custom manifest</source>
-        <target state="translated">使用自定义清单</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="EnumValue|ApplicationManifestKind.DefaultManifest|DisplayName">
-        <source>Embed manifest with default settings</source>
-        <target state="translated">嵌入带默认设置的清单</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="EnumValue|ApplicationManifestKind.NoManifest|DisplayName">
-        <source>Create application without a manifest</source>
-        <target state="translated">创建不带清单的应用程序</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|OutputType.Exe|DisplayName">
@@ -242,16 +187,6 @@
         <target state="translated">图标</target>
         <note />
       </trans-unit>
-      <trans-unit id="StringProperty|ApplicationManifestPath|Description">
-        <source>The path to the custom manifest file.</source>
-        <target state="translated">自定义清单文件的路径。</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="StringProperty|ApplicationManifestPath|DisplayName">
-        <source>Manifest path</source>
-        <target state="translated">清单路径</target>
-        <note />
-      </trans-unit>
       <trans-unit id="StringProperty|AssemblyName|Description">
         <source>Specifies the name of the output file that will hold the assembly manifest.</source>
         <target state="translated">指定将包含程序集清单的输出文件的名称。</target>
@@ -290,16 +225,6 @@
       <trans-unit id="StringProperty|TargetFrameworks|Metadata|SearchTerms">
         <source>TFM</source>
         <target state="translated">TFM</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="StringProperty|Win32Resource|Description">
-        <source>Specifies a resource file for the project.</source>
-        <target state="translated">指定项目的资源文件。</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="StringProperty|Win32Resource|DisplayName">
-        <source>Resource file</source>
-        <target state="translated">资源文件</target>
         <note />
       </trans-unit>
     </body>

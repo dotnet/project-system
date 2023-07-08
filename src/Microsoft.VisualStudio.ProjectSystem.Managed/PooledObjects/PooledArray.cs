@@ -1,8 +1,5 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
-using System;
-using System.Collections.Generic;
-using System.Collections.Immutable;
 using System.Diagnostics;
 
 #nullable disable
@@ -22,12 +19,12 @@ namespace Microsoft.VisualStudio.Buffers.PooledObjects
             _builder = ImmutableArray.CreateBuilder<T>(size);
         }
 
-        public PooledArray() :
-            this(8)
+        public PooledArray()
+            : this(8)
         { }
 
-        private PooledArray(ObjectPool<PooledArray<T>> pool) :
-            this()
+        private PooledArray(ObjectPool<PooledArray<T>> pool)
+            : this()
         {
             _pool = pool;
         }
@@ -216,7 +213,7 @@ namespace Microsoft.VisualStudio.Buffers.PooledObjects
         public void Free()
         {
             ObjectPool<PooledArray<T>> pool = _pool;
-            if (pool != null)
+            if (pool is not null)
             {
                 // We do not want to retain (potentially indefinitely) very large builders 
                 // while the chance that we will need their size is diminishingly small.

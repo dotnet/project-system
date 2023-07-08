@@ -1,9 +1,5 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
-using System.Collections.Immutable;
-using System.ComponentModel.Composition;
-using System.Threading.Tasks;
-
 namespace Microsoft.VisualStudio.ProjectSystem.References
 {
     /// <summary>
@@ -30,14 +26,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.References
 
         public Task<SupportedCheckResult> CanAddProjectReferenceAsync(object referencedProject)
         {
-            Requires.NotNull(referencedProject, nameof(referencedProject));
+            Requires.NotNull(referencedProject);
 
             return s_supported;
         }
 
         public Task<CanAddProjectReferencesResult> CanAddProjectReferencesAsync(IImmutableSet<object> referencedProjects)
         {
-            Requires.NotNullEmptyOrNullElements(referencedProjects, nameof(referencedProjects));
+            Requires.NotNullEmptyOrNullElements(referencedProjects);
 
             IImmutableDictionary<object, SupportedCheckResult> results = ImmutableDictionary.Create<object, SupportedCheckResult>();
 
@@ -51,7 +47,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.References
 
         public Task<SupportedCheckResult> CanBeReferencedAsync(object referencingProject)
         {
-            Requires.NotNull(referencingProject, nameof(referencingProject));
+            Requires.NotNull(referencingProject);
 
             return s_supported;
         }

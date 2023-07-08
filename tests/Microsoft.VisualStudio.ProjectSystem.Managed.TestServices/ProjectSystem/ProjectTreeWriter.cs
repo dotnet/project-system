@@ -1,7 +1,5 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
-using System;
-using System.Linq;
 using System.Text;
 
 namespace Microsoft.VisualStudio.ProjectSystem
@@ -14,7 +12,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
         public ProjectTreeWriter(IProjectTree tree, ProjectTreeWriterOptions options)
         {
-            Requires.NotNull(tree, nameof(tree));
+            Requires.NotNull(tree);
 
             _parent = tree;
             _options = options;
@@ -154,7 +152,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
             if (!_options.HasFlag(ProjectTreeWriterOptions.SubType))
                 return;
 
-            if (tree.BrowseObjectProperties != null)
+            if (tree.BrowseObjectProperties is not null)
             {
                 _builder.Append(", SubType: ");
                 _builder.Append(tree.BrowseObjectProperties.GetPropertyValueAsync("SubType").Result);
@@ -217,7 +215,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
         {
             _builder.AppendFormat(", {0}: {{", name);
 
-            if (icon != null)
+            if (icon is not null)
             {
                 _builder.AppendFormat("{1} {2}", name, icon.Guid.ToString("D").ToUpperInvariant(), icon.Id);
             }

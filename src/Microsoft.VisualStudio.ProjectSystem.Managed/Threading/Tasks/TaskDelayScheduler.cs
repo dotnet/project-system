@@ -1,9 +1,6 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
-using System;
-using System.Threading;
 using Microsoft.VisualStudio.ProjectSystem;
-using Task = System.Threading.Tasks.Task;
 
 namespace Microsoft.VisualStudio.Threading.Tasks
 {
@@ -28,17 +25,7 @@ namespace Microsoft.VisualStudio.Threading.Tasks
             _cancellationSeries = new CancellationSeries(originalSourceToken);
         }
 
-        public JoinableTask RunAsyncTask(Func<CancellationToken, Task> operation, CancellationToken token = default)
-        {
-            return ScheduleAsyncTaskInternal(operation, immediate: true, token);
-        }
-
         public JoinableTask ScheduleAsyncTask(Func<CancellationToken, Task> operation, CancellationToken token = default)
-        {
-            return ScheduleAsyncTaskInternal(operation, immediate: false, token);
-        }
-
-        private JoinableTask ScheduleAsyncTaskInternal(Func<CancellationToken, Task> operation, bool immediate, CancellationToken token)
         {
             CancellationToken nextToken = _cancellationSeries.CreateNext(token);
 
@@ -50,21 +37,18 @@ namespace Microsoft.VisualStudio.Threading.Tasks
                     return;
                 }
 
-                if (!immediate)
+                try
                 {
-                    try
-                    {
-                        await Task.Delay(_taskDelayTime, nextToken);
-                    }
-                    catch (OperationCanceledException)
-                    {
-                        return;
-                    }
+                    await Task.Delay(_taskDelayTime, nextToken);
+                }
+                catch (OperationCanceledException)
+                {
+                    return;
+                }
 
-                    if (nextToken.IsCancellationRequested)
-                    {
-                        return;
-                    }
+                if (nextToken.IsCancellationRequested)
+                {
+                    return;
                 }
 
                 await operation(nextToken);

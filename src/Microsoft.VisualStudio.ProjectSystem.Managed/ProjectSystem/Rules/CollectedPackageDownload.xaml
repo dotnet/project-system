@@ -5,7 +5,7 @@
       xmlns="http://schemas.microsoft.com/build/2009/properties">
 
   <!-- Represents the set of <PackageDownload /> items that are gathered during a design-time build to be pushed to Solution Restore service -->
-  
+
   <Rule.DataSource>
     <DataSource HasConfigurationCondition="False"
                 ItemType="PackageDownload"
@@ -16,6 +16,6 @@
   </Rule.DataSource>
 
   <StringProperty Name="Version"
-                  DisplayName="Version" />
+                  Visible="False" />
 
 </Rule>

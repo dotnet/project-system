@@ -1,9 +1,5 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
 using Microsoft.VisualStudio.LanguageServices.ExternalAccess.ProjectSystem.Api;
 
@@ -19,7 +15,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.References
         internal Task RemoveReferenceAsync(ConfiguredProject configuredProject,
             string itemSpecification)
         {
-            Requires.NotNull(configuredProject, nameof(configuredProject));
+            Requires.NotNull(configuredProject);
             Assumes.Present(configuredProject.Services);
 
             return RemoveReferenceAsync(configuredProject.Services, itemSpecification);
@@ -31,7 +27,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.References
         internal Task AddReferenceAsync(ConfiguredProject configuredProject,
             string itemSpecification)
         {
-            Requires.NotNull(configuredProject, nameof(configuredProject));
+            Requires.NotNull(configuredProject);
             Assumes.Present(configuredProject.Services);
 
             return AddReferenceAsync(configuredProject.Services, itemSpecification);
@@ -42,7 +38,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.References
 
         public Task<IEnumerable<IProjectItem>> GetUnresolvedReferencesAsync(ConfiguredProject selectedConfiguredProject)
         {
-            Requires.NotNull(selectedConfiguredProject, nameof(selectedConfiguredProject));
+            Requires.NotNull(selectedConfiguredProject);
             Assumes.Present(selectedConfiguredProject.Services);
 
             return GetUnresolvedReferencesAsync(selectedConfiguredProject.Services);
@@ -74,7 +70,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.References
             var propertyNames = await metadata.GetPropertyNamesAsync();
             string? value = await metadata.GetEvaluatedPropertyValueAsync(ProjectReference.TreatAsUsedProperty);
 
-            return value != null && PropertySerializer.SimpleTypes.ToValue<bool>(value);
+            return value is not null && PropertySerializer.SimpleTypes.ToValue<bool>(value);
         }
 
         private async Task<IProjectItem?> GetProjectItemsAsync(ConfiguredProject selectedConfiguredProject,
@@ -131,7 +127,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.References
         {
             IProjectItem? items = await GetProjectItemsAsync(selectedConfiguredProject, itemSpecification);
 
-            if (items != null)
+            if (items is not null)
             {
                 foreach ((string propertyName, string propertyValue) in projectPropertiesValues)
                 {

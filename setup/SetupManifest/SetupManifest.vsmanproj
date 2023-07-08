@@ -1,0 +1,38 @@
+<!-- Copyright (c)  Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information. -->
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <Import Project="..\..\eng\imports\HostAgnostic.props" />
+
+  <PropertyGroup>
+    <TargetFramework>net472</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\ProjectSystemSetup\ProjectSystemSetup.csproj" />
+    <ProjectReference Include="..\VisualStudioEditorsSetup\VisualStudioEditorsSetup.csproj" />
+    <!-- If ReferenceOutputAssembly is not set to false, it will attempt to compile the non-existent DLL. -->
+    <!-- CSC error CS0006: Metadata file 'C:\Code\project-system\artifacts\Release\VSSetup\Insertion\Microsoft.VisualStudio.ProjectSystem.Managed.CommonFiles.dll' could not be found [C:\Code\project-system\setup\SetupManifest\Setup.csproj] -->
+    <!-- The CollectManifestsToMerge task in Microsoft.VisualStudio.Internal.MicroBuild.Vsman.targets only specifies Build;Pack;GetVsixPrimaryOutputs to run. -->
+    <!-- If Restore is not run, the Microsoft.VisualStudio.Internal.MicroBuild.Swix package will not be restored. -->
+    <ProjectReference Include="..\Microsoft.VisualStudio.ProjectSystem.Managed.CommonFiles\Microsoft.VisualStudio.ProjectSystem.Managed.CommonFiles.swixproj" ReferenceOutputAssembly="false" Targets="Restore;Build" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.VisualStudio.Internal.MicroBuild.Vsman" />
+  </ItemGroup>
+
+  <!--
+    For whatever reason, 'Configuration;Platform' is set as remove properties for the ResolveProjectReferences target.
+    We currently require Configuration to be present so that the output is in the correct location on-disk.
+    This target removes Configuration out of the remove properties list, prior to resolving the project references.
+  -->
+  <Target Name="FixGlobalPropertiesToRemove" BeforeTargets="ResolveProjectReferences">
+    <ItemGroup>
+      <_MSBuildProjectReferenceExistent Update="@(_MSBuildProjectReferenceExistent)">
+        <!-- See: https://github.com/dotnet/msbuild/issues/4615 -->
+        <GlobalPropertiesToRemove>$([System.String]::Copy('%(_MSBuildProjectReferenceExistent.GlobalPropertiesToRemove)').Replace('Configuration', ''))</GlobalPropertiesToRemove>
+      </_MSBuildProjectReferenceExistent>
+    </ItemGroup>
+  </Target>
+
+</Project>

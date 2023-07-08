@@ -1,0 +1,162 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
+  <file datatype="xml" source-language="en" target-language="de" original="../CodeAnalysisPropertyPage.xaml">
+    <body>
+      <trans-unit id="BoolProperty|EnableNETAnalyzers|Description">
+        <source>Run .NET analyzers to help with API usage.</source>
+        <target state="translated">Führen Sie .NET-Diagnoseanalysetool aus, um die API-Nutzung zu unterstützen.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="BoolProperty|EnableNETAnalyzers|DisplayName">
+        <source>Enable .NET analyzers</source>
+        <target state="translated">.NET-Diagnoseanalysetool aktivieren</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="BoolProperty|EnforceCodeStyleInBuild|Description">
+        <source>Produce diagnostics about code style on build.</source>
+        <target state="translated">Erstellen Sie die Diagnose zum Codeformat beim Erstellen.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="BoolProperty|EnforceCodeStyleInBuild|DisplayName">
+        <source>Enforce code style on build</source>
+        <target state="translated">Erzwingen des Codestils beim Build</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="BoolProperty|RunAnalyzersDuringBuild|Description">
+        <source>Always run code analysis on build.</source>
+        <target state="translated">Führen Sie Code Analysis immer beim Erstellen aus.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="BoolProperty|RunAnalyzersDuringBuild|DisplayName">
+        <source>Run on build</source>
+        <target state="translated">Beim Erstellen ausführen</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="BoolProperty|RunAnalyzersDuringLiveAnalysis|Description">
+        <source>Run code analysis live in the editor as you type.</source>
+        <target state="translated">Führen Sie Code Analysis während der Eingabe live im Editor aus.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="BoolProperty|RunAnalyzersDuringLiveAnalysis|DisplayName">
+        <source>Run on live analysis</source>
+        <target state="translated">Bei Liveanalyse ausführen</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="Category|AllAnalyzers|DisplayName">
+        <source>All analyzers</source>
+        <target state="translated">Alle Diagnoseanalysetool</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="Category|NetAnalyzers|DisplayName">
+        <source>.NET analyzers</source>
+        <target state="translated">.NET-Analysetools</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumProperty|AnalysisLevel|Description">
+        <source>The set of analyzers that should be run in the project.</source>
+        <target state="translated">Die Diagnoseanalysetools, die im Projekt ausgeführt werden soll.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumProperty|AnalysisLevel|DisplayName">
+        <source>Analysis level</source>
+        <target state="translated">Analyseebene</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|AnalysisLevel.5.0-all|DisplayName">
+        <source>5.0 All</source>
+        <target state="translated">5,0 Alle</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|AnalysisLevel.5.0-minimum|DisplayName">
+        <source>5.0 Minimum</source>
+        <target state="translated">5,0 Minimum</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|AnalysisLevel.5.0-recommended|DisplayName">
+        <source>5.0 Recommended</source>
+        <target state="translated">5,0 Empfohlen</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|AnalysisLevel.5.0|DisplayName">
+        <source>5.0</source>
+        <target state="translated">5.0</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|AnalysisLevel.6.0-all|DisplayName">
+        <source>6.0 All</source>
+        <target state="translated">6,0 Alle</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|AnalysisLevel.6.0-minimum|DisplayName">
+        <source>6.0 Minimum</source>
+        <target state="translated">6,0 Minimum</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|AnalysisLevel.6.0-recommended|DisplayName">
+        <source>6.0 Recommended</source>
+        <target state="translated">6,0 Empfohlen</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|AnalysisLevel.6.0|DisplayName">
+        <source>6.0</source>
+        <target state="translated">6.0</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|AnalysisLevel.latest-all|DisplayName">
+        <source>Latest All</source>
+        <target state="translated">Neueste alle</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|AnalysisLevel.latest-minimum|DisplayName">
+        <source>Latest Minimum</source>
+        <target state="translated">Neuestes Minimum</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|AnalysisLevel.latest-recommended|DisplayName">
+        <source>Latest Recommended</source>
+        <target state="translated">Neueste empfohlene</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|AnalysisLevel.latest|DisplayName">
+        <source>Latest</source>
+        <target state="translated">Neueste</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|AnalysisLevel.none|DisplayName">
+        <source>None</source>
+        <target state="translated">Keine</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|AnalysisLevel.preview-all|DisplayName">
+        <source>Preview All</source>
+        <target state="translated">Vorschau für alle anzeigen</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|AnalysisLevel.preview-minimum|DisplayName">
+        <source>Preview Minimum</source>
+        <target state="translated">Mindestvorschau</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|AnalysisLevel.preview-recommended|DisplayName">
+        <source>Preview Recommended</source>
+        <target state="translated">Vorschau empfohlen</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|AnalysisLevel.preview|DisplayName">
+        <source>Preview</source>
+        <target state="translated">Vorschau</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="Rule|CodeAnalysisPropertyPage|Description">
+        <source>Settings</source>
+        <target state="translated">Einstellungen</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="Rule|CodeAnalysisPropertyPage|DisplayName">
+        <source>Code Analysis</source>
+        <target state="translated">Code Analysis</target>
+        <note />
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

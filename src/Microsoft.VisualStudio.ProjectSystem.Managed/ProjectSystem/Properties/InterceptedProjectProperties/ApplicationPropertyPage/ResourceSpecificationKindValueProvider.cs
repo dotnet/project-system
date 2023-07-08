@@ -1,9 +1,5 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
-using System.Collections.Generic;
-using System.ComponentModel.Composition;
-using System.Threading.Tasks;
-
 namespace Microsoft.VisualStudio.ProjectSystem.Properties
 {
     [ExportInterceptingPropertyValueProvider(ResourceSpecificationKindProperty, ExportInterceptingPropertyValueProviderFile.ProjectFile)]
@@ -18,10 +14,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         internal const string IconAndManifestValue = "IconAndManifest";
         internal const string ResourceFileValue = "ResourceFile";
 
+        private static readonly string[] s_msBuildPropertyNames = { Win32ResourceMSBuildProperty, ApplicationIconMSBuildProperty, ApplicationManifestMSBuildProperty };
+
         [ImportingConstructor]
         public ResourceSpecificationKindValueProvider(ITemporaryPropertyStorage temporaryPropertyStorage)
         {
             _temporaryPropertyStorage = temporaryPropertyStorage;
+        }
+
+        public override Task<bool> IsValueDefinedInContextAsync(string propertyName, IProjectProperties defaultProperties)
+        {
+            return IsValueDefinedInContextMSBuildPropertiesAsync(defaultProperties, s_msBuildPropertyNames);
         }
 
         public override async Task<string?> OnSetPropertyValueAsync(string propertyName, string unevaluatedPropertyValue, IProjectProperties defaultProperties, IReadOnlyDictionary<string, string>? dimensionalConditions = null)
@@ -32,8 +35,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
 
                 await defaultProperties.SaveValueIfCurrentlySetAsync(Win32ResourceMSBuildProperty, _temporaryPropertyStorage);
                 await defaultProperties.DeletePropertyAsync(Win32ResourceMSBuildProperty);
-                await defaultProperties.RestoreValueIfNotCurrentlySetAsync(ApplicationIconMSBuildProperty, _temporaryPropertyStorage);
-                await defaultProperties.RestoreValueIfNotCurrentlySetAsync(ApplicationManifestMSBuildProperty, _temporaryPropertyStorage);
+                await defaultProperties.RestoreValueIfNotCurrentlySetAsync(ApplicationIconMSBuildProperty, _temporaryPropertyStorage, dimensionalConditions);
+                await defaultProperties.RestoreValueIfNotCurrentlySetAsync(ApplicationManifestMSBuildProperty, _temporaryPropertyStorage, dimensionalConditions);
             }
             else if (StringComparers.PropertyLiteralValues.Equals(unevaluatedPropertyValue, ResourceFileValue))
             {
@@ -43,7 +46,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
                 await defaultProperties.SaveValueIfCurrentlySetAsync(ApplicationManifestMSBuildProperty, _temporaryPropertyStorage);
                 await defaultProperties.DeletePropertyAsync(ApplicationIconMSBuildProperty);
                 await defaultProperties.DeletePropertyAsync(ApplicationManifestMSBuildProperty);
-                await defaultProperties.RestoreValueIfNotCurrentlySetAsync(Win32ResourceMSBuildProperty, _temporaryPropertyStorage);
+                await defaultProperties.RestoreValueIfNotCurrentlySetAsync(Win32ResourceMSBuildProperty, _temporaryPropertyStorage, dimensionalConditions);
             }
 
             return null;

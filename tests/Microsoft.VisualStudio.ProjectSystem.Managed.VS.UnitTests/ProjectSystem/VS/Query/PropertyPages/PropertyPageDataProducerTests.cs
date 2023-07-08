@@ -1,9 +1,7 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
 using Microsoft.Build.Framework.XamlTypes;
-using Microsoft.VisualStudio.ProjectSystem.Query.Frameworks;
-using Microsoft.VisualStudio.ProjectSystem.Query.ProjectModel.Implementation;
-using Xunit;
+using Microsoft.VisualStudio.ProjectSystem.Query.Framework;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
 {
@@ -14,7 +12,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
         {
             var properties = PropertiesAvailableStatusFactory.CreatePropertyPagePropertiesAvailableStatus(includeAllProperties: true);
 
-            var propertyPage = (PropertyPageValue)PropertyPageDataProducer.CreatePropertyPageValue(
+            var propertyPage = (PropertyPageSnapshot)PropertyPageDataProducer.CreatePropertyPageValue(
                 IQueryExecutionContextFactory.Create(),
                 IEntityWithIdFactory.Create(key: "A", value: "B"),
                 IProjectStateFactory.Create(),
@@ -49,7 +47,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
         {
             var properties = PropertiesAvailableStatusFactory.CreatePropertyPagePropertiesAvailableStatus(includeAllProperties: true);
 
-            var propertyPage = (PropertyPageValue)PropertyPageDataProducer.CreatePropertyPageValue(
+            var propertyPage = (PropertyPageSnapshot)PropertyPageDataProducer.CreatePropertyPageValue(
                 IQueryExecutionContextFactory.Create(),
                 IEntityWithIdFactory.Create(key: "ParentKey", value: "ParentValue"),
                 IProjectStateFactory.Create(),

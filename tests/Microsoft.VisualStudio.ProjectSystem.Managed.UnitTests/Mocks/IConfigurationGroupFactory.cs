@@ -1,15 +1,12 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
-using System.Collections.Generic;
-using System.Linq;
-
 namespace Microsoft.VisualStudio.ProjectSystem
 {
     internal static class IConfigurationGroupFactory
     {
         public static IConfigurationGroup<ProjectConfiguration> CreateFromConfigurationNames(params string[] configurationNames)
         {
-            IEnumerable<ProjectConfiguration> configurations = configurationNames.Select(name => ProjectConfigurationFactory.Create(name));
+            IEnumerable<ProjectConfiguration> configurations = configurationNames.Select(ProjectConfigurationFactory.Create);
 
             return Create(configurations);
         }
@@ -25,7 +22,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
         private class ConfigurationGroup<T> : List<T>, IConfigurationGroup<T>
         {
-            public IReadOnlyCollection<string> VariantDimensionNames => throw new System.NotImplementedException();
+            public IReadOnlyCollection<string> VariantDimensionNames => throw new NotImplementedException();
         }
     }
 }

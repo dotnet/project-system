@@ -1,11 +1,10 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
-using System;
-using System.ComponentModel.Composition;
-using System.Threading.Tasks;
+using System.Runtime.InteropServices;
 using Microsoft.VisualStudio.ProjectSystem;
-using Microsoft.VisualStudio.ProjectSystem.VS;
+using Microsoft.VisualStudio.ProjectSystem.Utilities;
 using Microsoft.VisualStudio.ProjectSystem.VS.Interop;
+using Microsoft.VisualStudio.Setup.Configuration;
 
 namespace Microsoft.VisualStudio.Shell.Interop
 {
@@ -60,6 +59,39 @@ namespace Microsoft.VisualStudio.Shell.Interop
             }
 
             return null;
+        }
+
+        public async Task<string?> GetRegistryRootAsync(IVsService<IVsShell> vsShellService)
+        {
+            await _threadingService.SwitchToUIThread();
+
+            IVsShell shell = await vsShellService.GetValueAsync();
+
+            if (ErrorHandler.Succeeded(shell.GetProperty((int)__VSSPROPID.VSSPROPID_VirtualRegistryRoot, out object value)))
+            {
+                return value as string;
+            }
+
+            return null;
+        }
+
+        public async Task<bool> IsVSFromPreviewChannelAsync()
+        {
+            await _threadingService.SwitchToUIThread();
+
+            try
+            {
+                ISetupConfiguration vsSetupConfig = new SetupConfiguration();
+                var setupInstance = vsSetupConfig.GetInstanceForCurrentProcess();
+                // NOTE: this explicit cast is necessary for the subsequent COM QI to succeed. 
+                var setupInstanceCatalog = (ISetupInstanceCatalog)setupInstance;
+                return setupInstanceCatalog.IsPrerelease();
+            }
+            catch (COMException ex)
+            {
+                TraceUtilities.TraceError("Failed to determine whether setup instance catalog is prerelease: {0}", ex.ToString());
+                return false;
+            }
         }
     }
 }

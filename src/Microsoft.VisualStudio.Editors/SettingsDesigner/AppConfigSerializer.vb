@@ -238,9 +238,9 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <param name="AppConfigDocData"></param>
         Friend Shared Sub Serialize(Settings As DesignTimeSettings, typeCache As SettingsTypeCache, valueCache As SettingsValueCache, ClassName As String, NamespaceName As String, AppConfigDocData As DocData, Hierarchy As IVsHierarchy, SynchronizeUserConfig As Boolean)
             Common.Switches.TraceSDSerializeSettings(TraceLevel.Info, "Serializing {0} settings to App.Config", Settings.Count)
-            Requires.NotNull(Settings, NameOf(Settings))
-            Requires.NotNull(NamespaceName, NameOf(NamespaceName))
-            Requires.NotNull(AppConfigDocData, NameOf(AppConfigDocData))
+            Requires.NotNull(Settings)
+            Requires.NotNull(NamespaceName)
+            Requires.NotNull(AppConfigDocData)
 
             If ClassName = "" Then
                 Debug.Fail("Must provide a valid class name!")

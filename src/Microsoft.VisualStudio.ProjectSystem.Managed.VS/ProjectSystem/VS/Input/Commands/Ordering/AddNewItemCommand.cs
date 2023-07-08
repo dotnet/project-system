@@ -1,10 +1,8 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
-using System.ComponentModel.Composition;
 using Microsoft.VisualStudio.Input;
 using Microsoft.VisualStudio.ProjectSystem.Input;
 using Microsoft.VisualStudio.ProjectSystem.VS.UI;
-using Task = System.Threading.Tasks.Task;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.Ordering
 {
@@ -18,8 +16,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.Ordering
         [ImportingConstructor]
         public AddNewItemCommand(
             IAddItemDialogService addItemDialogService,
-            OrderAddItemHintReceiver orderAddItemHintReceiver) :
-            base(addItemDialogService, orderAddItemHintReceiver)
+            OrderAddItemHintReceiver orderAddItemHintReceiver)
+            : base(addItemDialogService, orderAddItemHintReceiver)
         {
             _addItemDialogService = addItemDialogService;
         }

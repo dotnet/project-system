@@ -318,11 +318,11 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
     ''' This handler acts as a place holder command handler when the actual handler which is bound to the
     ''' UI is deleted as the UI is closed.
     ''' </remarks>
-    Friend Class ImposterDesignerMenuCommand
+    Friend Class DummyDesignerMenuCommand
         Inherits DesignerMenuCommand
 
         ''' <summary>
-        ''' Constructs an instance of an ImposterDesignerMenuCommand
+        ''' Constructs an instance of an DummyDesignerMenuCommand
         ''' </summary>
         ''' <param name="commandId">Id of the command.</param>
         ''' <remarks>Sets the command invisible and disabled.</remarks>

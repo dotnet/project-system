@@ -1,27 +1,23 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
-using System.Collections.Generic;
-using System.Threading.Tasks;
 using Microsoft.Build.Framework.XamlTypes;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
 using Microsoft.VisualStudio.ProjectSystem.Query;
-using Microsoft.VisualStudio.ProjectSystem.Query.Frameworks;
-using Microsoft.VisualStudio.ProjectSystem.Query.ProjectModel;
-using Microsoft.VisualStudio.ProjectSystem.Query.ProjectModel.Implementation;
-using Microsoft.VisualStudio.ProjectSystem.Query.QueryExecution;
+using Microsoft.VisualStudio.ProjectSystem.Query.Execution;
+using Microsoft.VisualStudio.ProjectSystem.Query.Framework;
 using Microsoft.VisualStudio.ProjectSystem.VS.Utilities;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
 {
     /// <summary>
-    /// Handles the creation of <see cref="ProjectSystem.Query.ProjectModel.ICategory"/> instances and populating the requested members.
+    /// Handles the creation of <see cref="ICategory"/> instances and populating the requested members.
     /// </summary>
     internal static class CategoryDataProducer
     {
         public static IEntityValue CreateCategoryValue(IQueryExecutionContext queryExecutionContext, IEntityValue parent, Rule rule, Category category, int order, ICategoryPropertiesAvailableStatus requestedProperties)
         {
-            Requires.NotNull(parent, nameof(parent));
-            Requires.NotNull(category, nameof(category));
+            Requires.NotNull(parent);
+            Requires.NotNull(category);
 
             var identity = new EntityIdentity(
                 ((IEntityWithId)parent).Id,
@@ -35,8 +31,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
 
         public static IEntityValue CreateCategoryValue(IQueryExecutionContext queryExecutionContext, EntityIdentity id, Rule rule, Category category, int order, ICategoryPropertiesAvailableStatus requestedProperties)
         {
-            Requires.NotNull(category, nameof(category));
-            var newCategory = new CategoryValue(queryExecutionContext.EntityRuntime, id, new CategoryPropertiesAvailableStatus());
+            Requires.NotNull(category);
+            var newCategory = new CategorySnapshot(queryExecutionContext.EntityRuntime, id, new CategoryPropertiesAvailableStatus());
 
             if (requestedProperties.DisplayName)
             {

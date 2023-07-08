@@ -1,10 +1,6 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
-using System;
-using System.ComponentModel.Composition;
-using System.Threading.Tasks;
 using Microsoft.Build.Framework;
-using Microsoft.Internal.VisualStudio.Shell.Interop;
 using Microsoft.VisualStudio.ProjectSystem.LanguageServices;
 using Microsoft.VisualStudio.Shell.Interop;
 using Microsoft.VisualStudio.Threading;
@@ -13,38 +9,34 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build
 {
     /// <summary>
     ///     An implementation of <see cref="IVsErrorListProvider"/> that delegates onto the language
-    ///     service so that it de-dup warnings and errors between IntelliSense and build.
+    ///     service so that it de-dupes warnings and errors between IntelliSense and build.
     /// </summary>
     [AppliesTo(ProjectCapability.DotNetLanguageService)]
     [Export(typeof(IVsErrorListProvider))]
     [Order(Order.Default)]
     internal partial class LanguageServiceErrorListProvider : IVsErrorListProvider
     {
-        internal const string LspPullDiagnosticsFeatureFlagName = "Lsp.PullDiagnostics";
-
         private readonly UnconfiguredProject _project;
-        private readonly IActiveWorkspaceProjectContextHost _projectContextHost;
+        private readonly IWorkspaceWriter _workspaceWriter;
 
         private readonly AsyncLazy<bool> _isLspPullDiagnosticsEnabled;
 
         /// <remarks>
-        /// <see cref="UnconfiguredProject"/> must be imported in the constructor in order for scope of this class' export to be correct.
+        /// <see cref="UnconfiguredProject"/> must be imported in the constructor in order for scope of this class's export to be correct.
         /// </remarks>
         [ImportingConstructor]
         public LanguageServiceErrorListProvider(
             UnconfiguredProject project,
-            IActiveWorkspaceProjectContextHost projectContextHost,
-            IVsService<SVsFeatureFlags, IVsFeatureFlags> featureFlagsService,
+            IWorkspaceWriter workspaceWriter,
+            IProjectSystemOptions projectSystemOptions,
             JoinableTaskContext joinableTaskContext)
         {
             _project = project;
-            _projectContextHost = projectContextHost;
+            _workspaceWriter = workspaceWriter;
 
-            _isLspPullDiagnosticsEnabled = new AsyncLazy<bool>(async () =>
-            {
-                IVsFeatureFlags? service = await featureFlagsService.GetValueAsync();
-                return service.IsFeatureEnabled(LspPullDiagnosticsFeatureFlagName, defaultValue: false);
-            }, joinableTaskContext.Factory);
+            _isLspPullDiagnosticsEnabled = new AsyncLazy<bool>(
+                async () => await projectSystemOptions.IsLspPullDiagnosticsEnabledAsync(CancellationToken.None),
+                joinableTaskContext.Factory);
         }
 
         public void SuspendRefresh()
@@ -57,14 +49,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build
 
         public Task<AddMessageResult> AddMessageAsync(TargetGeneratedError error)
         {
-            Requires.NotNull(error, nameof(error));
+            Requires.NotNull(error);
 
             return AddMessageCoreAsync(error);
         }
 
         private async Task<AddMessageResult> AddMessageCoreAsync(TargetGeneratedError error)
         {
-            // We only want to pass compiler, analyzers, etc to the language 
+            // We only want to pass compiler, analyzers, etc to the language
             // service, so we skip tasks that do not have a code
             if (!TryExtractErrorListDetails(error.BuildEventArgs, out ErrorListDetails details) || string.IsNullOrEmpty(details.Code))
                 return AddMessageResult.NotHandled;
@@ -76,31 +68,36 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build
                 return AddMessageResult.NotHandled;
             }
 
-            bool? handled = await _projectContextHost.OpenContextForWriteAsync(accessor =>
+            bool handled = false;
+
+            if (await _workspaceWriter.IsEnabledAsync())
             {
-                var errorReporter = (IVsLanguageServiceBuildErrorReporter2)accessor.HostSpecificErrorReporter;
-
-                try
+                handled = await _workspaceWriter.WriteAsync(workspace =>
                 {
-                    errorReporter.ReportError2(details.Message,
-                                               details.Code,
-                                               details.Priority,
-                                               details.LineNumberForErrorList,
-                                               details.ColumnNumberForErrorList,
-                                               details.EndLineNumberForErrorList,
-                                               details.EndColumnNumberForErrorList,
-                                               details.GetFileFullPath(_project.FullPath));
-                    return TaskResult.True;
-                }
-                catch (NotImplementedException)
-                {   // Language Service doesn't handle it, typically because file 
-                    // isn't in the project or because it doesn't have line/column
-                }
+                    var errorReporter = (IVsLanguageServiceBuildErrorReporter2)workspace.HostSpecificErrorReporter;
 
-                return TaskResult.False;
-            });
+                    try
+                    {
+                        errorReporter.ReportError2(details.Message,
+                                                   details.Code,
+                                                   details.Priority,
+                                                   details.LineNumberForErrorList,
+                                                   details.ColumnNumberForErrorList,
+                                                   details.EndLineNumberForErrorList,
+                                                   details.EndColumnNumberForErrorList,
+                                                   details.GetFileFullPath(_project.FullPath));
+                        return TaskResult.True;
+                    }
+                    catch (NotImplementedException)
+                    {   // Language Service doesn't handle it, typically because file
+                        // isn't in the project or because it doesn't have line/column
+                    }
 
-            return handled ?? false ? AddMessageResult.HandledAndStopProcessing : AddMessageResult.NotHandled;
+                    return TaskResult.False;
+                });
+            }
+
+            return handled ? AddMessageResult.HandledAndStopProcessing : AddMessageResult.NotHandled;
         }
 
         public Task ClearMessageFromTargetAsync(string targetName)
@@ -108,14 +105,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build
             return Task.CompletedTask;
         }
 
-        public Task ClearAllAsync()
+        public async Task ClearAllAsync()
         {
-            return _projectContextHost.OpenContextForWriteAsync(accessor =>
+            if (await _workspaceWriter.IsEnabledAsync())
             {
-                ((IVsLanguageServiceBuildErrorReporter2)accessor.HostSpecificErrorReporter).ClearErrors();
+                await _workspaceWriter.WriteAsync(workspace =>
+                {
+                    ((IVsLanguageServiceBuildErrorReporter2)workspace.HostSpecificErrorReporter).ClearErrors();
 
-                return Task.CompletedTask;
-            });
+                    return Task.CompletedTask;
+                });
+            }
         }
 
         /// <summary>

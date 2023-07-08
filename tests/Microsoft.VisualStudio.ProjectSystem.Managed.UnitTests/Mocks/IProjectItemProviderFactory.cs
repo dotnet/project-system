@@ -1,10 +1,6 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
-using System;
-using System.IO;
-using System.Threading.Tasks;
 using Microsoft.VisualStudio.Threading;
-using Moq;
 
 namespace Microsoft.VisualStudio.ProjectSystem
 {
@@ -56,6 +52,15 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
                    return TaskResult.Null<IProjectItem>()!; // TODO remove ! when CPS annotations updated
                });
+
+            return mock.Object;
+        }
+
+        public static IProjectItemProvider GetItemsAsync(Func<IEnumerable<IProjectItem>> action)
+        {
+            var mock = new Mock<IProjectItemProvider>();
+            mock.Setup(p => p.GetItemsAsync(It.IsAny<string>()))
+                .ReturnsAsync(action);
 
             return mock.Object;
         }

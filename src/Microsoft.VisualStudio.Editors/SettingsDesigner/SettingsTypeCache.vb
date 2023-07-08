@@ -137,6 +137,17 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             Dim qualifiedAssemblyName As String = Nothing
 
             If Not String.IsNullOrEmpty(sourceTypeName) Then
+
+                ' The configuration types represent a stable contract, for .NET scenarios pin all these type names to the .NET Framework identities.
+                ' This will ensure that when we create required sections in app.config we'll be able to read them back.
+                ' Note that when the designer moves off of .NET Framework we may need to revisit this.
+                If (_multiTargetService.TargetFrameworkName.Identifier = ".NETCoreApp" AndAlso
+                   (sourceTypeName = "System.Configuration.ApplicationSettingsGroup, System, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" Or
+                    sourceTypeName = "System.Configuration.ClientSettingsSection, System, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" Or
+                    sourceTypeName = "System.Configuration.UserSettingsGroup, System, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089")) Then
+                    Return sourceTypeName
+                End If
+
                 Dim t As Type = _typeResolutionService.GetType(sourceTypeName, False, Not _caseSensitive)
                 If t IsNot Nothing Then
                     qualifiedAssemblyName = _multiTargetService.TypeNameConverter(t)

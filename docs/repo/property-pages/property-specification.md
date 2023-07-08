@@ -13,6 +13,7 @@ Firstly, here are some commits and PRs that provide good examples of common chan
 - [Add search term alias](https://github.com/dotnet/project-system/pull/7041) &mdash; shows how to add additional terms for the purposes of search. These terms will not appear in the UI, but will cause a search operation to match the property. Useful for synonyms and common misspellings.
 - [Add an editor type](https://devdiv.visualstudio.com/DevDiv/_git/CPS/pullrequest/312423) (MS internal) &mdash; Adds a new editor type, which a property may elect to display itself in the UI.
 - [Change a string property to allow multiple lines of text](https://github.com/dotnet/project-system/commit/5a37eb52aeb93ae5f8a13c2cccfde79ae371a9ac) &mdash; Shows using the `MultiLineString` editor so that a property may have more than one line of text entered.
+- [Use editability (IsReadOnlyCondition) conditions in build property pages](https://github.com/dotnet/project-system/pull/8291) &mdash; Shows using the `IsReadOnlyCondition` property condition.
 
 ## XAML Rule Files
 
@@ -24,11 +25,16 @@ Any rule file to be included in the UI must be added to the project's evaluation
 
 ```xml
 <ItemGroup>
-  <PropertyPageSchema Include="$(MSBuildThisFileDirectory)\$(LocaleFolder)MyProjectPropertiesPage.xaml" />
+  <PropertyPageSchema Include="$(MSBuildThisFileDirectory)\$(LocaleFolder)MyProjectPropertiesPage.xaml">
+    <Context>Project</Context>
+  </PropertyPageSchema>
 </ItemGroup>
 ```
 
-Note that rules files contain display strings which must be localised. Depending upon how you produce your package, you will want to make sure that the localised file is included.
+A couple of things to note:
+
+- Rule files contain display strings which must be localised. Depending upon how you produce your package, you will want to make sure that the localised file is included.
+- The "Context" metadata must be set to "Project". Rule files have other uses (unrelated to the property page UI) in other parts of the project system; correct "Context" metadata is important to ensure they are only used as intended.
 
 ### Structure of a XAML rule file
 
@@ -65,6 +71,9 @@ The `DataSource` specified here will be applied to all properties, however prope
 - `Persistence` may have several values:
   - `ProjectFile` means that the value will be read and written from the project file directly.
   - `ProjectFileWithInterception` means that a MEF part exists that will handle read/write operations for the property (see below).
+  - `UserFile` means that the value will be read and written from the `.user` file directly.
+  - `UserFileWithInterception` is the same as `ProjectFileWithInterception` except we write changes to the project's `.user` file.
+  - `LaunchProfile` means that the value will be read and written from the `launchSettings.json` file directly.
 - `HasConfigurationCondition` controls whether the property is intended to be varied by project configuration (e.g. Debug/Release, platform, target framework...). Setting this to true allows varying property values by configuration dimensions.
 
 ### Categories
@@ -88,6 +97,44 @@ If you wish to assign properties to specific categories, you must declare them u
 - `DisplayName` value will appear in group headings and the navigation tree.
 - `Description` is currently unused.
 
+### Property settings commands
+
+Each property can have one or more "configuration commands." These are the commands shown when clicking on the property gear, and include 
+the ability to set dimensions, reset the property values, or use a single value for all configurations.
+
+By default, these configuration commands are enabled if the Property fulfills certain requirements. However, you may explicitly disable 
+one or more by setting any of the following Property editor metadata to false:
+
+- `SingleValueConfigurationCommandEnabled` &mdash; disables the ability to collapse property values across configurations
+- `DimensionConfigurationCommandEnabled` &mdash; disables the ability to set any dimensions
+- `ResetPropertyValueCommandEnabled` &mdash; disables the ability to reset property value
+
+An example of this is shown below:
+
+```xaml
+  <StringProperty Name="DefineConstants" 
+                       DisplayName="Conditional compilation symbols"
+                       Description="Specifies symbols on which to perform conditional compilation."
+                       HelpUrl="https://go.microsoft.com/fwlink/?linkid=2147079"
+                       Category="General">
+    <StringProperty.DataSource>
+      <DataSource Persistence="ProjectFileWithInterception"
+                  HasConfigurationCondition="True" />
+    </StringProperty.DataSource>
+    <StringProperty.ValueEditors>
+      <ValueEditor EditorType="MultiStringSelector">
+        <ValueEditor.Metadata>
+          <NameValuePair Name="TypeDescriptorText" Value="Custom symbols" xliff:LocalizedProperties="Value" />
+          <NameValuePair Name="AllowsCustomStrings" Value="True" />
+          <NameValuePair Name="ShouldDisplayEvaluatedPreview" Value="True" />
+          
+          <NameValuePair Name="SingleValueConfigurationCommandEnabled" Value="False" /> <!-- disables the ability to collapse property values across configurations -->
+        </ValueEditor.Metadata>
+      </ValueEditor>
+    </StringProperty.ValueEditors>
+  </StringProperty>
+  ```
+
 ### An example property
 
 Here is a complex example of a string property that demonstrates the majority of features we will discuss below.
@@ -103,19 +150,30 @@ Here is a complex example of a string property that demonstrates the majority of
     <NameValuePair Name="VisibilityCondition">
       <NameValuePair.Value>(has-evaluated-value "OtherPage" "OtherProperty" "SomeValue")</NameValuePair.Value>
     </NameValuePair>
+    <NameValuePair Name="IsReadOnlyCondition">
+      <NameValuePair.Value>
+          (not
+            (or
+              (has-evaluated-value "Build" "OptionStrict" "On")
+              (has-evaluated-value "Build" "WarningSeverity" "DisableAll")
+            )
+          )
+      </NameValuePair.Value>
+    </NameValuePair>  
   </StringProperty.Metadata>
 </StringProperty>
 ```
 
 Breaking this down:
 
-- The outer element specifies the [property type](#Property-Types) (`StringProperty` in this example).
+- The outer element specifies the [property type](#property-types) (`StringProperty` in this example).
 - `DisplayName` and `Description` are localised values that will appear in the UI.
 - `HelpUrl` is an optional URL that causes a help icon to appear next to the property's name. For Microsoft components, this should be a fwlink, to allow fixing dead links in future.
 - `Category` is an optional string that must match the `Name` of a declared category (see above). If omitted, the property is assigned category `General`.
 - This property defines some optional metadata values:
-  - `DependsOn` (optional) lists properties that may influence this property's values (see [Property Dependencies](#Property-Dependencies))
-  - `VisibilityCondition` (optional) holds an expression that the UI will use to determine whether the property should be visible (see [Visibility Conditions](visibility-conditions.md))
+  - `DependsOn` (optional) lists properties that may influence this property's values (see [Property Dependencies](#property-dependencies))
+  - `VisibilityCondition` (optional) holds an expression that the UI will use to determine whether the property should be visible (see [Visibility and Property Conditions](property-conditions.md))
+  - `IsReadOnlyCondition` (optional) holds an expression that the UI will use to determine whether the property should be read-only (see [Visibility and Property Conditions](property-conditions.md))
 
 ## Property Types
 
@@ -123,7 +181,7 @@ Each property in the system has an associated type. For example, the _Assembly n
 
 In the XAML rule files, properties are specified with an underlying type. These types are [defined by MSBuild](https://github.com/dotnet/msbuild/tree/master/src/Framework/XamlTypes) and are:
 
-- `StringProperty`
+- `StringProperty` (these can be [validated with the use of a regular expression](string-property-validation.md))
 - `StringListProperty`
 - `BoolProperty`
 - `EnumProperty`
@@ -170,6 +228,8 @@ If the text within this editor should be displayed with a monospace (fixed width
 </StringProperty>
 ```
 
+Multi-line strings can optionally set metadata to control text wrapping, where the value corresponds to an enum value of [TextWrapping](https://learn.microsoft.com/dotnet/api/system.windows.textwrapping?view=netframework-4.7.2). Example: `<NameValuePair Name="TextWrapping" Value="Wrap" />`. Text-wrapping defaults to `NoWrap`.
+
 ### Password Strings
 
 A `PasswordBox` control can be used for string properties by specifying `EditorType="PasswordString"`.
@@ -194,6 +254,100 @@ We use this on the `LangVersion` property, for example, as this value is intenti
   </StringProperty.ValueEditors>
 </StringProperty>
 ```
+
+### Name/Value List
+
+When a property contains a variable number of name/value pairs, you can use the `NameValueList` editor on `StringProperty` to display a two-column grid in the UI that allows users to edit values and add/remove rows.
+
+For example:
+
+```xml
+<StringProperty Name="EnvironmentVariables"
+                DisplayName="Environment variables"
+                Description="The environment variables to set prior to running the process.">
+  <StringProperty.ValueEditors>
+    <ValueEditor EditorType="NameValueList" />
+  </StringProperty.ValueEditors>
+</StringProperty>
+```
+
+#### Encoding
+
+By default, the property's string value will be encoded with format resembling `A=1,B=2`, using `/` as an escape character if needed. See `KeyValuePairListEncoding` in this repo for further details.
+
+A custom encoding can be specified. It must be exported as an instance of `Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages.Designer.INameValuePairListEncoding` with the appropriate MEF metadata:
+
+```xml
+<StringProperty Name="MyProperty">
+  <StringProperty.ValueEditors>
+    <ValueEditor EditorType="NameValueList">
+      <ValueEditor.Metadata>
+        <NameValuePair Name="Encoding" Value="MyEncodingName" />
+      </ValueEditor.Metadata>
+    </ValueEditor>
+  </StringProperty.ValueEditors>
+</StringProperty>
+```
+
+For this to work, there would need to be an equivalent export of the `MyEncodingName` encoding:
+
+```c#
+[Export(typeof(INameValuePairListEncoding))]
+[ExportMetadata("Encoding", "MyEncodingName")]
+internal sealed class MyEncoding : INameValuePairListEncoding
+{
+    public IEnumerable<(string Name, string Value)> Parse(string value)
+    {
+        // TODO
+    }
+
+    public string Format(IEnumerable<(string Name, string Value)> pairs)
+    {
+        // TODO
+    }
+}
+```
+
+### Multi-String Selector Editor
+
+When a property contains a variable number of strings, you can use the `MultiStringSelector` editor on a StringProperty or DynamicEnumProperty to display a list of checkable/uncheckable strings.
+
+The `TypeDescriptorText` metadata must be included in order to describe what is actually being selected.
+
+By default, users will not be able to add their own custom strings to the list. To allow custom strings, set the `AllowsCustomStrings` metadata value to True.
+
+To show the evaluated value of the property below the multi-string selector, set the `ShouldDisplayEvaluatedPreview` metadata value to True.
+
+#### StringProperty vs DynamicEnumProperty
+
+If your multi-string selector control needs to include _non-selected_ items as part of the options, you should use 
+a DynamicEnumProperty instead of a StringProperty. All `SupportedValues` that are not part of the unevaluated value 
+will be added as unchecked list items.
+
+#### Example
+
+```xml
+<StringProperty Name="ImportedNamespaces"
+                DisplayName="Import Namespaces"
+                Description="Manage which namespaces to import in your application."
+                Category="General">
+    <StringProperty.DataSource>
+      <DataSource PersistedName="ImportedNamespaces"
+                  Persistence="ProjectFileWithInterception"
+                  HasConfigurationCondition="False" />
+    </StringProperty.DataSource>
+    <StringProperty.ValueEditors>
+      <ValueEditor EditorType="MultiStringSelector">
+        <ValueEditor.Metadata>
+          <NameValuePair Name="TypeDescriptorText" Value="Imported Namespaces" xliff:LocalizableProperties="Value" />
+          <NameValuePair Name="AllowsCustomStrings" Value="True" />
+        </ValueEditor.Metadata>
+      </ValueEditor>
+    </StringProperty.ValueEditors>
+</StringProperty> 
+```
+
+This example is taken from the [_Imported Namespaces_](https://github.com/dotnet/project-system/blob/1f860b8c3616a6be551f7a3f90eb54be3b249afd/src/Microsoft.VisualStudio.ProjectSystem.Managed/ProjectSystem/Rules/PropertyPages/ReferencesPage.VisualBasic.xaml#L22) property on the Visual Basic project properties references page.
 
 ### Custom Editors
 
@@ -268,7 +422,7 @@ The property's `ValueEditor` has `EditorType="Description"` which selects a UI t
 </StringProperty>
 ```
 
-This goes in concert with the export of the corresponding no-op interception code:
+We don't want this property to ever be read from or written to the project file. We intercept these reads and writes by specifying `Persistence="ProjectFileWithInterception"`, and providing the following no-op interceptor. See [Property Value Interception](property-value-interception.md#pseudo-properties) for more on how and why this works.
 
 ```c#
 [ExportInterceptingPropertyValueProvider("MyDescriptionProperty", ExportInterceptingPropertyValueProviderFile.ProjectFile)]
@@ -279,7 +433,7 @@ internal sealed class MyDescriptionPropertyValueProvider : NoOpInterceptingPrope
 
 ## Link Actions
 
-It is useful to insert hyperlinks between properties that either link to URLs or perform arbitrary actions. This can be achieved via the `ActionLink` editor type. The underlying property type does not matter, as no value is presented.
+It is useful to insert hyperlinks between properties that either: **link to URLs**, **perform arbitrary actions**, or **focus a property or property page/category**. This can be achieved via the `LinkAction` editor type. The underlying property type does not matter, as no value is presented.
 
 Clicking the hyperlink can either open a URL or invoke a callback.
 
@@ -313,7 +467,7 @@ The editor must specify two metadata values:
 </StringProperty>
 ```
 
-This goes in concert with the export of the corresponding no-op interception code:
+We don't want this property to ever be read from or written to the project file. We intercept these reads and writes by specifying `Persistence="ProjectFileWithInterception"`, and providing the following no-op interceptor. See [Property Value Interception](property-value-interception.md#pseudo-properties) for more on how and why this works.
 
 ```c#
 [ExportInterceptingPropertyValueProvider("MyUrlProperty", ExportInterceptingPropertyValueProviderFile.ProjectFile)]
@@ -350,7 +504,7 @@ The editor must specify two metadata values:
 </StringProperty>
 ```
 
-This goes in concert with the export of the corresponding no-op interception code:
+We don't want this property to ever be read from or written to the project file. We intercept these reads and writes by specifying `Persistence="ProjectFileWithInterception"`, and providing the following no-op interceptor. See [Property Value Interception](property-value-interception.md#pseudo-properties) for more on how and why this works.
 
 ```c#
 [ExportInterceptingPropertyValueProvider("MyCommandProperty", ExportInterceptingPropertyValueProviderFile.ProjectFile)]
@@ -359,19 +513,62 @@ internal sealed class MyCommandPropertyValueProvider : NoOpInterceptingPropertyV
 }
 ```
 
-The click handler is exported via:
+Because we specified `Action` as `Command`, we must export a matching instance of `ILinkActionHandler` as follows:
 
 ```c#
 [Export(typeof(ILinkActionHandler))]
 [ExportMetadata("CommandName", "MyCommandName")]
 internal sealed class MyCommandActionHandler : ILinkActionHandler
 {
-    public void Handle(ProjectContext projectContext, IReadOnlyDictionary<string, string> editorMetadata)
+    public void Handle(UnconfiguredProject project, IReadOnlyDictionary<string, string> editorMetadata)
     {
         // Handle command invocation
     }
 }
 ```
+
+### Focus a property, property page, or property page category
+
+If a hyperlink should, when clicked, set focus to a property page, property page category, or property, the following template may be used.
+
+The editor must specify at least two metadata values:
+
+- `Action`, with value `Focus`
+- `PropertyPage`, with value being the `Name` attribute of the property page to focus.
+
+If you wish to focus a property page category instead of a property page, you must also specify the `PropertyPageCategory` metadata value.
+
+If you wish instead to focus a specific property, you must also specify the `Property` metadata value (**do not** specify `PropertyPageCategory` in this case).
+
+```xml
+<StringProperty Name="MyCommandProperty"
+                DisplayName="Click me to focus a property page category">
+  <StringProperty.DataSource>
+    <DataSource PersistedName="MyCommandProperty"
+                Persistence="ProjectFileWithInterception"
+                HasConfigurationCondition="False" />
+  </StringProperty.DataSource>
+  <StringProperty.ValueEditors>
+    <ValueEditor EditorType="LinkAction">
+      <ValueEditor.Metadata>
+        <NameValuePair Name="Action" Value="Focus" />
+        <NameValuePair Name="PropertyPage" Value="Build" />
+        <NameValuePair Name="PropertyPageCategory" Value="Output" /> <!-- change metadata to Property to focus property, or remove to focus the Build page -->
+      </ValueEditor.Metadata>
+    </ValueEditor>
+  </StringProperty.ValueEditors>
+</StringProperty>
+```
+
+We don't want this property to ever be read from or written to the project file. We intercept these reads and writes by specifying `Persistence="ProjectFileWithInterception"`, and providing the following no-op interceptor. See [Property Value Interception](property-value-interception.md#pseudo-properties) for more on how and why this works.
+
+```c#
+[ExportInterceptingPropertyValueProvider("MyCommandProperty", ExportInterceptingPropertyValueProviderFile.ProjectFile)]
+internal sealed class MyCommandPropertyValueProvider : NoOpInterceptingPropertyValueProvider
+{
+}
+```
+
 
 ## File Properties
 

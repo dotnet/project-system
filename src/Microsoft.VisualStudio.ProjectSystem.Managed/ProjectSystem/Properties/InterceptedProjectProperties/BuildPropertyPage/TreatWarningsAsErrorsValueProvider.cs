@@ -1,9 +1,5 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
-using System.Collections.Generic;
-using System.ComponentModel.Composition;
-using System.Threading.Tasks;
-
 namespace Microsoft.VisualStudio.ProjectSystem.Properties
 {
     [ExportInterceptingPropertyValueProvider("TreatWarningsAsErrors", ExportInterceptingPropertyValueProviderFile.ProjectFile)]
@@ -13,10 +9,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         private const string WarningsNotAsErrorsProperty = "WarningsNotAsErrors";
         private readonly ITemporaryPropertyStorage _temporaryPropertyStorage;
 
+        private static readonly string[] s_msBuildPropertyNames = { WarningsAsErrorsProperty, WarningsNotAsErrorsProperty };
+        
         [ImportingConstructor]
         public TreatWarningsAsErrorsValueProvider(ITemporaryPropertyStorage temporaryPropertyStorage)
         {
             _temporaryPropertyStorage = temporaryPropertyStorage;
+        }
+
+        public override Task<bool> IsValueDefinedInContextAsync(string propertyName, IProjectProperties defaultProperties)
+        {
+            return IsValueDefinedInContextMSBuildPropertiesAsync(defaultProperties, s_msBuildPropertyNames);
         }
 
         public override async Task<string?> OnSetPropertyValueAsync(string propertyName, string unevaluatedPropertyValue, IProjectProperties defaultProperties, IReadOnlyDictionary<string, string>? dimensionalConditions = null)
@@ -32,7 +35,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
 
             await defaultProperties.SaveValueIfCurrentlySetAsync(removePropertyName, _temporaryPropertyStorage);
             await defaultProperties.DeletePropertyAsync(removePropertyName, dimensionalConditions);
-            await defaultProperties.RestoreValueIfNotCurrentlySetAsync(restorePropertyName, _temporaryPropertyStorage);
+            await defaultProperties.RestoreValueIfNotCurrentlySetAsync(restorePropertyName, _temporaryPropertyStorage, dimensionalConditions);
 
             return unevaluatedPropertyValue;
         }

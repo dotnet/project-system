@@ -1,13 +1,7 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
-using System.Collections.Generic;
-using System.Collections.Immutable;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.VisualStudio.ProjectSystem.Debug;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
-using Moq;
-using Xunit;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
 {
@@ -15,11 +9,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
     {
         private readonly List<ILaunchProfile> _profiles = new()
         {
-            new LaunchProfile { Name = "Profile1", LaunchBrowser = true },
-            new LaunchProfile { Name = "MyCommand" },
-            new LaunchProfile { Name = "Foo" },
-            new LaunchProfile { Name = "Bar" },
-            new LaunchProfile { Name = "Foo & Bar" }
+            new LaunchProfile("Profile1", null, launchBrowser: true),
+            new LaunchProfile("MyCommand", null),
+            new LaunchProfile("Foo", null),
+            new LaunchProfile("Bar", null),
+            new LaunchProfile("Foo & Bar", null)
         };
 
         [Fact]

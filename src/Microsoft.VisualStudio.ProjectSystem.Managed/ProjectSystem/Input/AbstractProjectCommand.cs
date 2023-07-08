@@ -1,8 +1,5 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
-using System;
-using System.Collections.Immutable;
-using System.Threading.Tasks;
 using Microsoft.VisualStudio.Threading;
 
 namespace Microsoft.VisualStudio.ProjectSystem.Input
@@ -21,7 +18,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Input
 
         public Task<CommandStatusResult> GetCommandStatusAsync(IImmutableSet<IProjectTree> nodes, long commandId, bool focused, string? commandText, CommandStatus progressiveStatus)
         {
-            Requires.NotNull(nodes, nameof(nodes));
+            Requires.NotNull(nodes);
 
             foreach (long otherCommandId in _commandIds.Value)
             {
@@ -34,7 +31,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Input
 
         public Task<bool> TryHandleCommandAsync(IImmutableSet<IProjectTree> nodes, long commandId, bool focused, long commandExecuteOptions, IntPtr variantArgIn, IntPtr variantArgOut)
         {
-            Requires.NotNull(nodes, nameof(nodes));
+            Requires.NotNull(nodes);
 
             foreach (long otherCommandId in _commandIds.Value)
             {

@@ -1,6 +1,5 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
-using Microsoft.VisualStudio.ProjectSystem.LanguageServices;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
 using Microsoft.VisualStudio.ProjectSystem.UpToDate;
 
@@ -16,7 +15,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Rules
         private static class ProjectRules
         {
             /// <summary>
-            ///     Represents the evaluation properties representings source control bindings,
+            ///     Represents the evaluation properties representing source control bindings,
             ///     typically used in projects connected to Team Foundation Source Control.
             /// </summary>
             [ExportRule(nameof(SourceControl), PropertyPageContexts.Invisible)]
@@ -41,6 +40,33 @@ namespace Microsoft.VisualStudio.ProjectSystem.Rules
             [AppliesTo(ProjectCapability.DotNet)]
             [Order(Order.Default)]
             public static int SupportedTargetFrameworkRule;
+
+            /// <summary>
+            ///     Represents the evaluation items containing the supported (possible) .NET Core target frameworks
+            ///     for a project.
+            /// </summary>
+            [ExportRule(nameof(SupportedNETCoreAppTargetFramework), PropertyPageContexts.ProjectSubscriptionService)]
+            [AppliesTo(ProjectCapability.DotNet)]
+            [Order(Order.Default)]
+            public static int SupportedNETCoreAppTargetFrameworkRule;
+
+            /// <summary>
+            ///     Represents the evaluation items containing the supported (possible) .NET Framework target frameworks
+            ///     for a project.
+            /// </summary>
+            [ExportRule(nameof(SupportedNETFrameworkTargetFramework), PropertyPageContexts.ProjectSubscriptionService)]
+            [AppliesTo(ProjectCapability.DotNet)]
+            [Order(Order.Default)]
+            public static int SupportedNETFrameworkTargetFrameworkRule;
+
+            /// <summary>
+            ///     Represents the evaluation items containing the supported (possible) .NET Standard target frameworks
+            ///     for a project.
+            /// </summary>
+            [ExportRule(nameof(SupportedNETStandardTargetFramework), PropertyPageContexts.ProjectSubscriptionService)]
+            [AppliesTo(ProjectCapability.DotNet)]
+            [Order(Order.Default)]
+            public static int SupportedNETStandardTargetFrameworkRule;
 
             /// <summary>
             ///     Represents the evaluation items containing the supported (possible) target platforms
@@ -85,6 +111,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.Rules
         /// </summary>
         private static class PackageRestoreRules
         {
+            /// <summary>
+            ///     Represents the evaluated <c>ProjectReference</c> items that are passed to restore.
+            /// </summary>
+            [ExportRule(nameof(EvaluatedProjectReference), PropertyPageContexts.ProjectSubscriptionService)]
+            [AppliesTo(ProjectCapabilities.PackageReferences)]
+            [Order(Order.Default)]
+            public static int EvaluatedProjectReferenceRule;
+
             /// <summary>
             ///     Represents the design-time build items containing CLI tool references (legacy) that are passed to restore.
             /// </summary>
@@ -135,7 +169,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Rules
         }
 
         /// <summary>
-        ///     Contains rules for the <see cref="ApplyChangesToWorkspaceContext"/> component.
+        ///     Contains rules for the language service implementations (e.g. implementations of <c>IWorkspaceUpdateHandler</c>).
         /// </summary>
         private static class LanguageServiceRules
         {
@@ -165,7 +199,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Rules
             ///     Represents evaluation items containing marker files indicating that reference projects have out of date references.
             /// </summary>
             [ExportRule(nameof(CopyUpToDateMarker), PropertyPageContexts.ProjectSubscriptionService)]
-            [AppliesTo(ProjectCapability.DotNet + "+ !" + ProjectCapabilities.SharedAssetsProject)]
+            [AppliesTo(BuildUpToDateCheck.AppliesToExpression)]
             [Order(Order.Default)]
             public static int CopyUpToDateMarkerRule;
 
@@ -173,7 +207,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Rules
             ///     Represents the design-time build items containing resolved references path.
             /// </summary>
             [ExportRule(nameof(ResolvedCompilationReference), PropertyPageContexts.ProjectSubscriptionService)]
-            [AppliesTo(ProjectCapability.DotNet + "+ !" + ProjectCapabilities.SharedAssetsProject)]
+            [AppliesTo(BuildUpToDateCheck.AppliesToExpression)]
             [Order(Order.Default)]
             public static int ResolvedCompilationReferencedRule;
 
@@ -181,7 +215,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Rules
             ///     Represents design-time build items containing the input files into the build.
             /// </summary>
             [ExportRule(nameof(UpToDateCheckInput), PropertyPageContexts.ProjectSubscriptionService)]
-            [AppliesTo(ProjectCapability.DotNet + "+ !" + ProjectCapabilities.SharedAssetsProject)]
+            [AppliesTo(BuildUpToDateCheck.AppliesToExpression)]
             [Order(Order.Default)]
             public static int UpToDateCheckInputRule;
 
@@ -189,7 +223,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Rules
             ///     Represents design-time build items containing the output files of the build.
             /// </summary>
             [ExportRule(nameof(UpToDateCheckOutput), PropertyPageContexts.ProjectSubscriptionService)]
-            [AppliesTo(ProjectCapability.DotNet + "+ !" + ProjectCapabilities.SharedAssetsProject)]
+            [AppliesTo(BuildUpToDateCheck.AppliesToExpression)]
             [Order(Order.Default)]
             public static int UpToDateCheckOutputRule;
 
@@ -197,9 +231,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.Rules
             ///     Represents design-time build items containing a mapping between input and the output files of the build.
             /// </summary>
             [ExportRule(nameof(UpToDateCheckBuilt), PropertyPageContexts.ProjectSubscriptionService)]
-            [AppliesTo(ProjectCapability.DotNet + "+ !" + ProjectCapabilities.SharedAssetsProject)]
+            [AppliesTo(BuildUpToDateCheck.AppliesToExpression)]
             [Order(Order.Default)]
             public static int UpToDateCheckBuiltRule;
+
+            /// <summary>
+            ///     Represents design-time build items containing items this project contributes to the output directory.
+            /// </summary>
+            [ExportRule(nameof(CopyToOutputDirectoryItem), PropertyPageContexts.ProjectSubscriptionService)]
+            [AppliesTo(BuildUpToDateCheck.AppliesToExpression)]
+            [Order(Order.Default)]
+            public static int CopyToOutputDirectoryItemRule;
         }
 
         /// <summary>
@@ -211,6 +253,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.Rules
             [AppliesTo(ProjectCapability.DotNet)]
             [Order(Order.Default)]
             public static int WindowsFormsConfigurationRule;
+        }
+
+        private static class OptionalWorkloadRules
+        {
+            /// <summary>
+            ///     Represents the evaluation items representing optional workloads.
+            /// </summary>
+            [ExportRule(nameof(SuggestedWorkload), PropertyPageContexts.ProjectSubscriptionService)]
+            [AppliesTo(ProjectCapability.DotNet)]
+            [Order(Order.Default)]
+            public static int SuggestedWorkloadRule;
         }
     }
 }

@@ -1,0 +1,42 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
+  <file datatype="xml" source-language="en" target-language="fr" original="../ReferencesPage.VisualBasic.xaml">
+    <body>
+      <trans-unit id="Category|General|Description">
+        <source>References and namespace settings for VB projects.</source>
+        <target state="translated">Paramètres des références et des espaces de noms pour les projets VB.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="Category|General|DisplayName">
+        <source>General</source>
+        <target state="translated">Général</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="DynamicEnumProperty|ImportedNamespaces|Description">
+        <source>Manage which namespaces to import in your application.</source>
+        <target state="translated">Gérer les espaces de noms à importer dans votre application.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="DynamicEnumProperty|ImportedNamespaces|DisplayName">
+        <source>Import Namespaces</source>
+        <target state="translated">Importer des espaces de noms</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="DynamicEnumProperty|ImportedNamespaces|ValueEditors|ValueEditor|Metadata|TypeDescriptorText|Value">
+        <source>Imported Namespaces</source>
+        <target state="new">Imported Namespaces</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="Rule|References|Description">
+        <source>Specifies the project's references and namespace imports.</source>
+        <target state="translated">Indique les importations de références et d’espaces de noms du projet.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="Rule|References|DisplayName">
+        <source>References</source>
+        <target state="translated">Références</target>
+        <note />
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

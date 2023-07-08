@@ -1,17 +1,17 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
-using System.ComponentModel.Composition;
-using System.Threading;
-using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.Rename;
 using Microsoft.VisualStudio.ProjectSystem.LanguageServices;
-using RoslynRenamer = Microsoft.CodeAnalysis.Rename;
+
+using Workspace = Microsoft.CodeAnalysis.Workspace;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS
 {
     [Export(typeof(IRoslynServices))]
     internal class RoslynServices : IRoslynServices
     {
+        private static readonly SymbolRenameOptions s_renameOptions = new();
         private readonly IProjectThreadingService _threadingService;
 
         [ImportingConstructor]
@@ -26,17 +26,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         [ImportMany]
         protected OrderPrecedenceImportCollection<ISyntaxFactsService> SyntaxFactsServicesImpl { get; }
 
-        private ISyntaxFactsService? SyntaxFactsService
-        {
-            get
-            {
-                return SyntaxFactsServicesImpl.FirstOrDefault()?.Value;
-            }
-        }
+        private ISyntaxFactsService? SyntaxFactsService => SyntaxFactsServicesImpl.FirstOrDefault()?.Value;
 
         public Task<Solution> RenameSymbolAsync(Solution solution, ISymbol symbol, string newName, CancellationToken token = default)
         {
-            return RoslynRenamer.Renamer.RenameSymbolAsync(solution, symbol, newName, solution.Workspace.Options, token);
+            return Renamer.RenameSymbolAsync(solution, symbol, s_renameOptions, newName, token);
         }
 
         public bool ApplyChangesToSolution(Workspace ws, Solution renamedSolution)

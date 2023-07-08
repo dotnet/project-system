@@ -1,10 +1,8 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
-using System.Collections.Generic;
-using System.Collections.Immutable;
-using System.ComponentModel.Composition;
 using Microsoft.VisualStudio.ProjectSystem.Imaging;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
+using ManagedPriorityOrder = Microsoft.VisualStudio.ProjectSystem.Order;
 
 namespace Microsoft.VisualStudio.ProjectSystem.Tree
 {
@@ -15,7 +13,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree
     [Export(typeof(IProjectTreePropertiesProvider))]
     [Export(typeof(IProjectTreeSettingsProvider))]
     [AppliesTo(ProjectCapability.AppDesigner)]
-    [Order(Order.Default)]
+    [Order(ManagedPriorityOrder.Default)]
     internal class AppDesignerFolderProjectTreePropertiesProvider : AbstractSpecialFolderProjectTreePropertiesProvider, IProjectTreeSettingsProvider
     {
         private static readonly ProjectTreeFlags s_defaultFolderFlags = ProjectTreeFlags.Create(ProjectTreeFlags.Common.AppDesignerFolder | ProjectTreeFlags.Common.BubbleUp);
@@ -58,8 +56,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree
 
         public void UpdateProjectTreeSettings(IImmutableDictionary<string, IProjectRuleSnapshot> ruleSnapshots, ref IImmutableDictionary<string, string> projectTreeSettings)
         {
-            Requires.NotNull(ruleSnapshots, nameof(ruleSnapshots));
-            Requires.NotNull(projectTreeSettings, nameof(projectTreeSettings));
+            Requires.NotNull(ruleSnapshots);
+            Requires.NotNull(projectTreeSettings);
 
             // Retrieves the <AppDesignerFolder> and <AppDesignerFolderContentsVisibleOnlyInShowAllFiles> properties from the project file
             //

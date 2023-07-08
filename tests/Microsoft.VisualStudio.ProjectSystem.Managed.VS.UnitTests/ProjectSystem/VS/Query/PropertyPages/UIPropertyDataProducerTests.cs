@@ -1,12 +1,8 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
-using System;
-using System.Collections.Generic;
 using Microsoft.Build.Framework.XamlTypes;
 using Microsoft.VisualStudio.ProjectSystem.Query;
-using Microsoft.VisualStudio.ProjectSystem.Query.Frameworks;
-using Microsoft.VisualStudio.ProjectSystem.Query.ProjectModel.Implementation;
-using Xunit;
+using Microsoft.VisualStudio.ProjectSystem.Query.Framework;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
 {
@@ -24,7 +20,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
             var order = 42;
             InitializeFakeRuleForProperty(property);
 
-            var result = (UIPropertyValue)UIPropertyDataProducer.CreateUIPropertyValue(context, parentEntity, cache, QueryProjectPropertiesContext.ProjectFile, property, order, properties);
+            var result = (UIPropertySnapshot)UIPropertyDataProducer.CreateUIPropertyValue(context, parentEntity, cache, QueryProjectPropertiesContext.ProjectFile, property, order, properties);
 
             Assert.Equal(expected: "MyProperty", actual: result.Id[ProjectModelIdentityKeys.UIPropertyName]);
         }
@@ -49,7 +45,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
             };
             InitializeFakeRuleForProperty(property);
 
-            var result = (UIPropertyValue)UIPropertyDataProducer.CreateUIPropertyValue(context, id, cache, QueryProjectPropertiesContext.ProjectFile, property, order: 42, requestedProperties: properties);
+            var result = (UIPropertySnapshot)UIPropertyDataProducer.CreateUIPropertyValue(context, id, cache, QueryProjectPropertiesContext.ProjectFile, property, order: 42, requestedProperties: properties);
 
             Assert.Equal(expected: "A", actual: result.Name);
             Assert.Equal(expected: "Page A", actual: result.DisplayName);
@@ -78,7 +74,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
             rule.Properties.Add(property);
             rule.EndInit();
 
-            var result = (UIPropertyValue)UIPropertyDataProducer.CreateUIPropertyValue(context, id, cache, QueryProjectPropertiesContext.ProjectFile, property, order: 42, requestedProperties: properties);
+            var result = (UIPropertySnapshot)UIPropertyDataProducer.CreateUIPropertyValue(context, id, cache, QueryProjectPropertiesContext.ProjectFile, property, order: 42, requestedProperties: properties);
 
             Assert.IsType<PropertyProviderState>(((IEntityValueFromProvider)result).ProviderState);
         }
@@ -112,7 +108,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
 
             static void assertEqual(IEntityValue entity, string expectedName)
             {
-                var propertyEntity = (UIPropertyValue)entity;
+                var propertyEntity = (UIPropertySnapshot)entity;
                 Assert.Equal(expectedName, propertyEntity.Name);
             }
         }
@@ -130,7 +126,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
                 Metadata = new List<NameValuePair>()
             };
 
-            var result = (UIPropertyValue)UIPropertyDataProducer.CreateUIPropertyValue(context, id, cache, QueryProjectPropertiesContext.ProjectFile, property, order: 42, requestedProperties: properties);
+            var result = (UIPropertySnapshot)UIPropertyDataProducer.CreateUIPropertyValue(context, id, cache, QueryProjectPropertiesContext.ProjectFile, property, order: 42, requestedProperties: properties);
 
             Assert.Equal(expected: "", actual: result.SearchTerms);
         }
@@ -151,7 +147,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
                 }
             };
 
-            var result = (UIPropertyValue)UIPropertyDataProducer.CreateUIPropertyValue(context, id, cache, QueryProjectPropertiesContext.ProjectFile, property, order: 42, requestedProperties: properties);
+            var result = (UIPropertySnapshot)UIPropertyDataProducer.CreateUIPropertyValue(context, id, cache, QueryProjectPropertiesContext.ProjectFile, property, order: 42, requestedProperties: properties);
 
             Assert.Equal(expected: "", actual: result.SearchTerms);
         }
@@ -172,7 +168,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
                 }
             };
 
-            var result = (UIPropertyValue)UIPropertyDataProducer.CreateUIPropertyValue(context, id, cache, QueryProjectPropertiesContext.ProjectFile, property, order: 42, requestedProperties: properties);
+            var result = (UIPropertySnapshot)UIPropertyDataProducer.CreateUIPropertyValue(context, id, cache, QueryProjectPropertiesContext.ProjectFile, property, order: 42, requestedProperties: properties);
 
             Assert.Equal(expected: "Alpha;Beta;Gamma", actual: result.SearchTerms);
         }
@@ -191,7 +187,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
             };
             InitializeFakeRuleForProperty(property);
 
-            var result = (UIPropertyValue)UIPropertyDataProducer.CreateUIPropertyValue(context, id, cache, QueryProjectPropertiesContext.ProjectFile, property, order: 42, requestedProperties: properties);
+            var result = (UIPropertySnapshot)UIPropertyDataProducer.CreateUIPropertyValue(context, id, cache, QueryProjectPropertiesContext.ProjectFile, property, order: 42, requestedProperties: properties);
 
             Assert.Equal(expected: "", actual: result.DependsOn);
         }
@@ -213,7 +209,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
             };
             InitializeFakeRuleForProperty(property);
 
-            var result = (UIPropertyValue)UIPropertyDataProducer.CreateUIPropertyValue(context, id, cache, QueryProjectPropertiesContext.ProjectFile, property, order: 42, requestedProperties: properties);
+            var result = (UIPropertySnapshot)UIPropertyDataProducer.CreateUIPropertyValue(context, id, cache, QueryProjectPropertiesContext.ProjectFile, property, order: 42, requestedProperties: properties);
 
             Assert.Equal(expected: "", actual: result.DependsOn);
         }
@@ -235,7 +231,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
             };
             InitializeFakeRuleForProperty(property);
 
-            var result = (UIPropertyValue)UIPropertyDataProducer.CreateUIPropertyValue(context, id, cache, QueryProjectPropertiesContext.ProjectFile, property, order: 42, requestedProperties: properties);
+            var result = (UIPropertySnapshot)UIPropertyDataProducer.CreateUIPropertyValue(context, id, cache, QueryProjectPropertiesContext.ProjectFile, property, order: 42, requestedProperties: properties);
 
             Assert.Equal(expected: "Alpha;Beta;Gamma", actual: result.DependsOn);
         }
@@ -255,7 +251,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
             };
             InitializeFakeRuleForProperty(property);
 
-            var result = (UIPropertyValue)UIPropertyDataProducer.CreateUIPropertyValue(context, id, cache, QueryProjectPropertiesContext.ProjectFile, property, order: 42, requestedProperties: properties);
+            var result = (UIPropertySnapshot)UIPropertyDataProducer.CreateUIPropertyValue(context, id, cache, QueryProjectPropertiesContext.ProjectFile, property, order: 42, requestedProperties: properties);
 
             Assert.Equal(expected: string.Empty, actual: result.VisibilityCondition);
         }
@@ -279,7 +275,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
             };
             InitializeFakeRuleForProperty(property);
 
-            var result = (UIPropertyValue)UIPropertyDataProducer.CreateUIPropertyValue(context, id, cache, QueryProjectPropertiesContext.ProjectFile, property, order: 42, requestedProperties: properties);
+            var result = (UIPropertySnapshot)UIPropertyDataProducer.CreateUIPropertyValue(context, id, cache, QueryProjectPropertiesContext.ProjectFile, property, order: 42, requestedProperties: properties);
 
             Assert.Equal(expected: "true or false", actual: result.VisibilityCondition);
         }

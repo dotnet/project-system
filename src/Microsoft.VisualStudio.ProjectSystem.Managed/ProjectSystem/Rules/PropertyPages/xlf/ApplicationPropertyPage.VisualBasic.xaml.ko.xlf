@@ -1,0 +1,227 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
+  <file datatype="xml" source-language="en" target-language="ko" original="../ApplicationPropertyPage.VisualBasic.xaml">
+    <body>
+      <trans-unit id="BoolProperty|EnableVisualStyles|Description">
+        <source>Uses the most current version for the Control Library COMCTL to provide control rendering with modern visual styling.</source>
+        <target state="translated">컨트롤 라이브러리 COMCTL의 최신 버전을 사용하여 최신 시각적 스타일 지정을 사용하여 컨트롤 렌더링을 제공합니다.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="BoolProperty|EnableVisualStyles|DisplayName">
+        <source>Windows Visual Styles</source>
+        <target state="translated">Windows 비주얼 스타일</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="BoolProperty|SaveMySettingsOnExit|Description">
+        <source>Controls if settings are saved when users shut down their computers.</source>
+        <target state="translated">사용자가 컴퓨터를 종료할 때 설정이 저장되는지를 제어합니다.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="BoolProperty|SaveMySettingsOnExit|DisplayName">
+        <source>Save user settings on exit</source>
+        <target state="translated">종료 시 사용자 설정 저장</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="BoolProperty|SingleInstance|Description">
+        <source>Prevents users from running multiple instances of the application. Default is cleared, which allows multiple instances of the application to be run.</source>
+        <target state="translated">사용자가 애플리케이션의 여러 인스턴스를 실행하지 못하도록 합니다. 기본값은 선택 취소되어 애플리케이션의 여러 인스턴스를 실행할 수 있습니다.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="BoolProperty|SingleInstance|DisplayName">
+        <source>Single-instance application</source>
+        <target state="translated">단일 인스턴스 애플리케이션</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="BoolProperty|UseApplicationFramework|Description">
+        <source>Enable the Visual Basic Application Framework for this project. In general, these settings get serialized into the myapp file.</source>
+        <target state="translated">이 프로젝트에 Visual Basic Application Framework를 사용하도록 설정합니다. 일반적으로 이러한 설정은 myapp 파일로 직렬화됩니다.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="BoolProperty|UseApplicationFramework|DisplayName">
+        <source>Application Framework</source>
+        <target state="translated">애플리케이션 프레임워크</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="Category|ApplicationFramework|Description">
+        <source>Application Framework settings.</source>
+        <target state="translated">애플리케이션 프레임워크 설정입니다.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="Category|ApplicationFramework|DisplayName">
+        <source>Application Framework</source>
+        <target state="translated">애플리케이션 프레임워크</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="Category|WPF|Description">
+        <source>Settings specific to WPF applications.</source>
+        <target state="translated">WPF 애플리케이션과 관련된 설정입니다.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="Category|WPF|DisplayName">
+        <source>WPF</source>
+        <target state="translated">WPF</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="DynamicEnumProperty|SplashScreen|Description">
+        <source>Sets the form to be used as a splash screen for the application.</source>
+        <target state="translated">애플리케이션의 시작 화면으로 사용할 양식을 설정합니다.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="DynamicEnumProperty|SplashScreen|DisplayName">
+        <source>Splash screen</source>
+        <target state="translated">시작 화면</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="DynamicEnumProperty|StartupObject|Description">
+        <source>Defines the entry point to be called when the application loads. Generally this is set either to the main form in your application or to the 'Main' procedure that should run when the application starts. Class libraries do not define an entry point.</source>
+        <target state="translated">애플리케이션이 로드될 때 호출할 진입점을 정의합니다. 일반적으로 애플리케이션의 기본 양식 또는 애플리케이션이 시작할 때 실행되어야 하는 '기본' 프로시저로 설정됩니다. 클래스 라이브러리는 진입점을 정의하지 않습니다.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="DynamicEnumProperty|StartupObject|DisplayName">
+        <source>Startup object</source>
+        <target state="translated">시작 개체</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="DynamicEnumProperty|StartupURI|Description">
+        <source>Specifies the window that will open when the application loads.</source>
+        <target state="translated">애플리케이션이 로드될 때 열리는 창을 지정합니다.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="DynamicEnumProperty|StartupURI|DisplayName">
+        <source>Startup URI</source>
+        <target state="translated">시작 URI</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumProperty|HighDpiMode|Description">
+        <source>Specifies the application-wide HighDpiMode for the application. This setting can be programaticaly overriden through the ApplyApplicationDefaults event.</source>
+        <target state="translated">애플리케이션에 대한 애플리케이션 전체 HighDpiMode를 지정합니다. 이 설정은 ApplyApplicationDefaults 이벤트를 통해 프로그래밍 방식으로 재정의할 수 있습니다.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumProperty|HighDpiMode|DisplayName">
+        <source>High DPI mode</source>
+        <target state="translated">높은 DPI 모드</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumProperty|ShutdownMode_WPF|Description">
+        <source>Specifies when the application should close automatically.</source>
+        <target state="translated">애플리케이션을 자동으로 닫아야 하는 시기를 지정합니다.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumProperty|ShutdownMode_WPF|DisplayName">
+        <source>Shutdown mode</source>
+        <target state="translated">종료 모드</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumProperty|ShutdownMode|Description">
+        <source>Indicates which condition causes the application to shut down.</source>
+        <target state="translated">애플리케이션이 종료되는 조건을 나타냅니다.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumProperty|ShutdownMode|DisplayName">
+        <source>Shutdown mode</source>
+        <target state="translated">종료 모드</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumProperty|VBAuthenticationMode|Description">
+        <source>Specifies the method of identifying the logged-on user, when needed.</source>
+        <target state="translated">필요한 경우 로그온한 사용자를 식별하는 방법을 지정합니다.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumProperty|VBAuthenticationMode|DisplayName">
+        <source>Authentication mode</source>
+        <target state="translated">인증 모드</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|HighDpiMode.0|DisplayName">
+        <source>DPI unaware - No scaling and assuming 100% scaling.</source>
+        <target state="translated">DPI 인식 안 함 - 크기 조정이 없으며 100% 크기 조정을 가정합니다.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|HighDpiMode.1|DisplayName">
+        <source>System aware - Primary monitor's DPI is scale lead.</source>
+        <target state="translated">시스템 인식 - 기본 모니터의 DPI는 크기 조정 잠재 고객입니다.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|HighDpiMode.2|DisplayName">
+        <source>Per monitor - DPI detected on-launch and on-change.</source>
+        <target state="translated">모니터당 - 시작 시 및 변경 시 DPI가 검색되었습니다.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|HighDpiMode.3|DisplayName">
+        <source>Per monitor V2 - DPI detected on-launch and on-change including child windows</source>
+        <target state="translated">모니터당 V2 - 자식 창을 포함하여 시작 시 및 변경 시 DPI가 검색됨</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|HighDpiMode.4|DisplayName">
+        <source>DPI unaware, GDI scaled - Like DPI unaware but optimized for non-double-buffered Graphics content.</source>
+        <target state="translated">DPI를 인식하지 못함, GDI 크기 조정 - DPI와 마찬가지로 두 번 버퍼링되지 않은 그래픽 콘텐츠에 최적화되어 있습니다.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|ShutdownMode.AfterAllFormsClose|DisplayName">
+        <source>Shut down only after the last form closes.</source>
+        <target state="translated">마지막 양식을 닫은 후에만 종료합니다.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|ShutdownMode.AfterMainFormCloses|DisplayName">
+        <source>Shut down when the main form closes.</source>
+        <target state="translated">기본 양식이 닫히면 종료됩니다.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|ShutdownMode_WPF.OnExplicitShutdown|DisplayName">
+        <source>On explicit shutdown</source>
+        <target state="translated">명시적으로 종료할 때</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|ShutdownMode_WPF.OnLastWindowClose|DisplayName">
+        <source>On last window close</source>
+        <target state="translated">마지막 창을 닫을 때</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|ShutdownMode_WPF.OnMainWindowClose|DisplayName">
+        <source>On main window close</source>
+        <target state="translated">주 창을 닫을 때</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|VBAuthenticationMode.ApplicationDefined|DisplayName">
+        <source>Application-defined - Custom authentication implemented within the application.</source>
+        <target state="translated">애플리케이션 정의 - 애플리케이션 내에서 구현된 사용자 지정 인증입니다.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|VBAuthenticationMode.Windows|DisplayName">
+        <source>Windows - Retrieve user info through My.User at runtime.</source>
+        <target state="translated">Windows - 런타임에 My.User를 통해 사용자 정보를 검색합니다.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|CreateOrOpenAppManifest|DisplayName">
+        <source>Create or open app manifest for Windows settings.</source>
+        <target state="translated">Windows 설정에 대한 앱 매니페스트를 만들거나 엽니다.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|CreateOrOpenApplicationXaml|Description">
+        <source>Open the Application.xaml file</source>
+        <target state="translated">Application.xaml 파일 열기</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|CreateOrOpenApplicationXaml|DisplayName">
+        <source>Edit XAML</source>
+        <target state="translated">XAML 편집</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|MinimumSplashScreenDisplayTime|Description">
+        <source>Sets the minimum length of time, in milliseconds, for which the splash screen is displayed.</source>
+        <target state="translated">시작 화면이 표시되는 최소 시간(밀리초)을 설정합니다.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|MinimumSplashScreenDisplayTime|DisplayName">
+        <source>Minimum splash screen display time</source>
+        <target state="translated">최소 시작 화면 표시 시간</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|MinimumSplashScreenDisplayTime|ValueEditors|ValueEditor|Metadata|EvaluatedValueFailedValidationMessage|Value">
+        <source>This property must be an integer number.</source>
+        <target state="translated">이 속성은 정수여야 합니다.</target>
+        <note />
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

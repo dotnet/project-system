@@ -1,15 +1,11 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
-using System;
-using System.Collections.Generic;
-using System.Collections.Immutable;
-using System.ComponentModel.Composition;
-using System.Linq;
 using Microsoft.Internal.VisualStudio.PlatformUI;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Threading;
 using Microsoft.VisualStudio.Utilities;
-using Task = System.Threading.Tasks.Task;
+
+using Flags = Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.DependencyTreeFlags;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections
 {
@@ -43,6 +39,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedColl
     /// Search results for top-level dependencies occurs via the hierarchy, so those items need not be included here.
     /// </para>
     /// </remarks>
+    [AppliesToProject(ProjectCapability.DependenciesTree)]
     [Export(typeof(ISearchProvider))]
     [Name("DependenciesTreeSearchProvider")]
     [VisualStudio.Utilities.Order(Before = "GraphSearchProvider")]
@@ -71,8 +68,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedColl
 
         public void Search(IRelationshipSearchParameters parameters, Action<ISearchResult> resultAccumulator)
         {
-            Requires.NotNull(parameters, nameof(parameters));
-            Requires.NotNull(resultAccumulator, nameof(resultAccumulator));
+            Requires.NotNull(parameters);
+            Requires.NotNull(resultAccumulator);
 
             if (_providers.IsEmpty)
             {
@@ -100,9 +97,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedColl
             async Task SearchProjectAsync(UnconfiguredProject unconfiguredProject)
             {
                 IUnconfiguredProjectVsServices? projectVsServices = unconfiguredProject.Services.ExportProvider.GetExportedValue<IUnconfiguredProjectVsServices>();
-                IProjectTree? dependenciesNode = projectVsServices?.ProjectTree.CurrentTree?.FindChildWithFlags(DependencyTreeFlags.DependenciesRootNode);
+                IProjectTree? dependenciesNode = projectVsServices?.ProjectTree.CurrentTree?.FindChildWithFlags(Flags.DependenciesRootNode);
 
-                if (projectVsServices != null && dependenciesNode != null)
+                if (projectVsServices is not null && dependenciesNode is not null)
                 {
                     var projectContext = new DependenciesTreeProjectSearchContext(context, unconfiguredProject, dependenciesNode, _hierarchyItemManager, projectVsServices, _relationProvider);
 

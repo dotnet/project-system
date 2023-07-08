@@ -1,12 +1,7 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
 using System.Xml.Linq;
 using System.Xml.XPath;
-using Xunit;
 
 namespace Microsoft.VisualStudio.ProjectSystem.Rules
 {
@@ -18,6 +13,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.Rules
         {
             // Special case for Folder rule which hasn't been split yet, but is in the Items folder. But also its completely different.
             if (ruleName.Equals("Folder", StringComparison.Ordinal))
+            {
+                return;
+            }
+
+            // Special case for PackageVersion, which is an item but not a file so none of the properties on "None" are actually
+            // relevant.
+            if (ruleName.Equals("PackageVersion", StringComparison.Ordinal))
             {
                 return;
             }
@@ -47,7 +49,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.Rules
                 // Remove the "TargetPath" element for these types
                 var targetPathElement = none.XPathSelectElement(@"/msb:Rule/msb:StringProperty[@Name=""TargetPath""]", namespaceManager);
                 Assert.NotNull(targetPathElement);
-                targetPathElement!.Remove();
+                targetPathElement.Remove();
+
+                // Remove the "ExcludeFromCurrentConfiguration" element.
+                // This is for internal use and hidden, so we don't expect all items to have it.
+                var excludeFromCurrentConfigurationElement = rule.XPathSelectElement(@"/msb:Rule/msb:BoolProperty[@Name=""ExcludeFromCurrentConfiguration""]", namespaceManager);
+
+                excludeFromCurrentConfigurationElement?.Remove();
             }
 
             AssertXmlEqual(none, rule);
@@ -144,7 +152,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Rules
             {
                 var attribute = element.Attribute("ItemType");
 
-                if (attribute != null)
+                if (attribute is not null)
                 {
                     Assert.Equal(ruleName, attribute.Value);
                 }
@@ -160,7 +168,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Rules
             foreach (XElement element in rule.Elements())
             {
                 var nameAttribute = element.Attribute("Name");
-                if (nameAttribute == null)
+                if (nameAttribute is null)
                 {
                     continue;
                 }

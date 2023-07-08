@@ -1,0 +1,102 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
+  <file datatype="xml" source-language="en" target-language="fr" original="../ApplicationPropertyPage.CSharp.xaml">
+    <body>
+      <trans-unit id="BoolProperty|IsPublishable|Description">
+        <source>Allow publishing outside of Visual Studio, such as via "dotnet publish".</source>
+        <target state="translated">Autorisez la publication en dehors de Visual Studio, par exemple via « dotnet publish ».</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="BoolProperty|IsPublishable|DisplayName">
+        <source>Publishing</source>
+        <target state="translated">Publication</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="Category|Packaging|Description">
+        <source>Packaging settings for the application.</source>
+        <target state="translated">Paramètres de création de packages de l’application.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="Category|Packaging|DisplayName">
+        <source>Packaging</source>
+        <target state="translated">Création de packages</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="Category|Resources|Description">
+        <source>Resource settings for the application.</source>
+        <target state="translated">Paramètres de ressources de l'application.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="Category|Resources|DisplayName">
+        <source>Win32 Resources</source>
+        <target state="translated">Ressources Win32</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumProperty|ApplicationManifestKind|Description">
+        <source>Selects a manifest generation option when the application runs on Windows Vista or later under User Account Control (UAC). Options include a default manifest, no manifest, or a custom manifest provided by your project.</source>
+        <target state="translated">Sélectionne une option de génération de manifeste quand l'application s'exécute sur Windows Vista ou une version ultérieure sous UAC (contrôle de compte d'utilisateur). Les options incluent la génération d'un manifeste par défaut, la non-génération de manifeste ou la génération d'un manifeste personnalisé fourni par votre projet.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumProperty|ApplicationManifestKind|DisplayName">
+        <source>Manifest</source>
+        <target state="translated">Manifeste</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumProperty|ResourceSpecificationKind|Description">
+        <source>Specifies how application resources will be managed.</source>
+        <target state="translated">Spécifie la façon dont les ressources de l'application sont managées.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumProperty|ResourceSpecificationKind|DisplayName">
+        <source>Resources</source>
+        <target state="translated">Ressources</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|ApplicationManifestKind.CustomManifest|DisplayName">
+        <source>Use a custom manifest</source>
+        <target state="translated">Utiliser un manifeste personnalisé</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|ApplicationManifestKind.DefaultManifest|DisplayName">
+        <source>Embed manifest with default settings</source>
+        <target state="translated">Incorporer les paramètres par défaut dans le fichier manifeste</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|ApplicationManifestKind.NoManifest|DisplayName">
+        <source>Create application without a manifest</source>
+        <target state="translated">Créer une application sans fichier manifeste</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|ResourceSpecificationKind.IconAndManifest|DisplayName">
+        <source>Icon and manifest</source>
+        <target state="translated">Icône et manifeste</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|ResourceSpecificationKind.ResourceFile|DisplayName">
+        <source>Resource file</source>
+        <target state="translated">Fichier de ressources</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|ApplicationManifestPath|Description">
+        <source>The path to the custom manifest file.</source>
+        <target state="translated">Chemin du fichier manifeste personnalisé.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|ApplicationManifestPath|DisplayName">
+        <source>Manifest path</source>
+        <target state="translated">Chemin du manifeste</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|Win32Resource|Description">
+        <source>Specifies a resource file for the project.</source>
+        <target state="translated">Spécifie un fichier de ressources pour le projet.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|Win32Resource|DisplayName">
+        <source>Resource file</source>
+        <target state="translated">Fichier de ressources</target>
+        <note />
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

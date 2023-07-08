@@ -1,7 +1,5 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
-using System;
-using System.Linq;
 using Microsoft.Build.Framework.XamlTypes;
 
 namespace Microsoft.VisualStudio.ProjectSystem.Properties
@@ -28,8 +26,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         /// </exception>
         public static string? GetMetadataValueOrNull(this BaseProperty property, string metadataName)
         {
-            Requires.NotNull(property, nameof(property));
-            Requires.NotNullOrEmpty(metadataName, nameof(metadataName));
+            Requires.NotNull(property);
+            Requires.NotNullOrEmpty(metadataName);
 
             return property.Metadata.FirstOrDefault(nvp => nvp.Name == metadataName)?.Value;
         }

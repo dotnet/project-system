@@ -1,11 +1,10 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
-using System;
-using System.ComponentModel.Composition;
-using System.Threading;
-using System.Threading.Tasks;
 using Microsoft.VisualStudio.Threading;
-using Microsoft.VisualStudio.Threading.Tasks;
+
+// .NET Core defines a non-generic TaskCompletionSource but .NETFramework does not.
+// For consistency, always use the one we define.
+using TaskCompletionSource = Microsoft.VisualStudio.Threading.Tasks.TaskCompletionSource;
 
 namespace Microsoft.VisualStudio.ProjectSystem
 {
@@ -41,7 +40,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
         [AppliesTo(ProjectCapability.DotNet)]
         public Task OnProjectFactoryCompleted()
         {
-            if (_loadedInHostListener != null)
+            if (_loadedInHostListener is not null)
             {
                 return _loadedInHostListener.StartListeningAsync();
             }
@@ -93,7 +92,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
         public Task<T> PrioritizedProjectLoadedInHostAsync<T>(Func<Task<T>> action)
         {
-            Requires.NotNull(action, nameof(action));
+            Requires.NotNull(action);
 
             _tasksService.UnloadCancellationToken.ThrowIfCancellationRequested();
 
@@ -106,7 +105,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
         public Task PrioritizedProjectLoadedInHostAsync(Func<Task> action)
         {
-            Requires.NotNull(action, nameof(action));
+            Requires.NotNull(action);
 
             _tasksService.UnloadCancellationToken.ThrowIfCancellationRequested();
 
@@ -126,7 +125,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
         {
             _prioritizedProjectLoadedInHost.SetResult();
 
-            _threadingService.ExecuteSynchronously(() => _prioritizedTasks.JoinTillEmptyAsync());
+            _threadingService.ExecuteSynchronously(_prioritizedTasks.JoinTillEmptyAsync);
         }
     }
 }

@@ -1,7 +1,5 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
-using System;
-using System.Threading.Tasks;
 using Microsoft.VisualStudio.Shell.Interop;
 using Microsoft.VisualStudio.Threading;
 
@@ -20,9 +18,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.Ordering
         /// </summary>
         public static async Task SelectAsync(ConfiguredProject configuredProject, IServiceProvider serviceProvider, IProjectTree node)
         {
-            Requires.NotNull(configuredProject, nameof(configuredProject));
-            Requires.NotNull(serviceProvider, nameof(serviceProvider));
-            Requires.NotNull(node, nameof(node));
+            Requires.NotNull(configuredProject);
+            Requires.NotNull(serviceProvider);
+            Requires.NotNull(node);
 
             await configuredProject.Services.ProjectService.Services.ThreadingPolicy.SwitchToUIThread();
 
@@ -38,7 +36,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.Ordering
         {
             UseWindow(configuredProject, serviceProvider, (hierarchy, window) =>
             {
-                if (window != null)
+                if (window is not null)
                 {
                     // We need to unselect the item if it is already selected to re-select it correctly.
                     window.ExpandItem(hierarchy, itemId, EXPANDFLAGS.EXPF_UnSelectItem);
@@ -67,9 +65,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.Ordering
         /// <returns>A reference to an IVsUIHierarchyWindow interface, or <see langword="null"/> if the window isn't available, such as command line mode.</returns>
         private static IVsUIHierarchyWindow? GetUIHierarchyWindow(IServiceProvider serviceProvider, Guid persistenceSlot)
         {
-            Requires.NotNull(serviceProvider, nameof(serviceProvider));
+            Requires.NotNull(serviceProvider);
 
-            if (serviceProvider == null)
+            if (serviceProvider is null)
             {
                 throw new ArgumentNullException(nameof(serviceProvider));
             }
@@ -83,14 +81,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.Ordering
 
             try
             {
-                if (ErrorHandler.Succeeded(shell.FindToolWindow(0, ref persistenceSlot, out IVsWindowFrame frame)) && frame != null)
+                if (ErrorHandler.Succeeded(shell.FindToolWindow(0, ref persistenceSlot, out IVsWindowFrame frame)) && frame is not null)
                 {
                     ErrorHandler.ThrowOnFailure(frame.GetProperty((int)__VSFPROPID.VSFPROPID_DocView, out pvar));
                 }
             }
             finally
             {
-                if (pvar != null)
+                if (pvar is not null)
                 {
                     uiHierarchyWindow = (IVsUIHierarchyWindow)pvar;
                 }

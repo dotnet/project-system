@@ -1,9 +1,5 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
-using System;
-using System.ComponentModel.Composition;
-using System.Threading;
-using System.Threading.Tasks;
 using Microsoft.Build.Construction;
 using Microsoft.Build.Evaluation;
 
@@ -28,7 +24,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
         public async Task EnterWriteLockAsync(Func<ProjectCollection, CancellationToken, Task> action, CancellationToken cancellationToken = default)
         {
-            Requires.NotNull(action, nameof(action));
+            Requires.NotNull(action);
 
             await _projectLockService.WriteLockAsync(async access =>
             {
@@ -42,8 +38,8 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
         public Task<TResult> OpenProjectForReadAsync<TResult>(ConfiguredProject project, Func<Project, TResult> action, CancellationToken cancellationToken = default)
         {
-            Requires.NotNull(project, nameof(project));
-            Requires.NotNull(project, nameof(action));
+            Requires.NotNull(project);
+            Requires.NotNull(action);
 
             return _projectLockService.ReadLockAsync(async access =>
             {
@@ -57,8 +53,8 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
         public Task<TResult> OpenProjectForUpgradeableReadAsync<TResult>(ConfiguredProject project, Func<Project, TResult> action, CancellationToken cancellationToken = default)
         {
-            Requires.NotNull(project, nameof(project));
-            Requires.NotNull(project, nameof(action));
+            Requires.NotNull(project);
+            Requires.NotNull(action);
 
             return _projectLockService.UpgradeableReadLockAsync(async access =>
             {
@@ -72,8 +68,8 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
         public Task<TResult> OpenProjectXmlForReadAsync<TResult>(UnconfiguredProject project, Func<ProjectRootElement, TResult> action, CancellationToken cancellationToken = default)
         {
-            Requires.NotNull(project, nameof(project));
-            Requires.NotNull(project, nameof(action));
+            Requires.NotNull(project);
+            Requires.NotNull(action);
 
             return _projectLockService.ReadLockAsync(async access =>
             {
@@ -87,8 +83,8 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
         public async Task OpenProjectXmlForUpgradeableReadAsync(UnconfiguredProject project, Func<ProjectRootElement, CancellationToken, Task> action, CancellationToken cancellationToken = default)
         {
-            Requires.NotNull(project, nameof(project));
-            Requires.NotNull(project, nameof(action));
+            Requires.NotNull(project);
+            Requires.NotNull(action);
 
             await _projectLockService.UpgradeableReadLockAsync(async access =>
             {
@@ -102,8 +98,8 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
         public async Task OpenProjectXmlForWriteAsync(UnconfiguredProject project, Action<ProjectRootElement> action, CancellationToken cancellationToken = default)
         {
-            Requires.NotNull(project, nameof(project));
-            Requires.NotNull(project, nameof(action));
+            Requires.NotNull(project);
+            Requires.NotNull(action);
 
             await _projectLockService.WriteLockAsync(async access =>
             {
@@ -122,8 +118,8 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
         public async Task OpenProjectForWriteAsync(ConfiguredProject project, Action<Project> action, ProjectCheckoutOption option = ProjectCheckoutOption.Checkout, CancellationToken cancellationToken = default)
         {
-            Requires.NotNull(project, nameof(project));
-            Requires.NotNull(project, nameof(action));
+            Requires.NotNull(project);
+            Requires.NotNull(action);
 
             await _projectLockService.WriteLockAsync(async access =>
             {

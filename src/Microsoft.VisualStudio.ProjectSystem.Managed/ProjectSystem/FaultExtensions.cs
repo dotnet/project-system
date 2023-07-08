@@ -2,11 +2,7 @@
 
 #pragma warning disable RS0030 // Do not used banned APIs (we are wrapping them)
 
-using System;
-using System.Collections.Immutable;
 using System.Globalization;
-using System.Threading;
-using System.Threading.Tasks;
 using System.Threading.Tasks.Dataflow;
 
 namespace Microsoft.VisualStudio.ProjectSystem
@@ -44,7 +40,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
             UnconfiguredProject? project,
             ProjectFaultSeverity severity = ProjectFaultSeverity.Recoverable)
         {
-            Requires.NotNull(faultHandlerService, nameof(faultHandlerService));
+            Requires.NotNull(faultHandlerService);
 
             return faultHandlerService.HandleFaultAsync(ex, s_defaultReportSettings, severity, project);
         }
@@ -71,7 +67,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
             UnconfiguredProject? project,
             ProjectFaultSeverity severity = ProjectFaultSeverity.Recoverable)
         {
-            Requires.NotNull(faultHandlerService, nameof(faultHandlerService));
+            Requires.NotNull(faultHandlerService);
 
             faultHandlerService.RegisterFaultHandler(task, s_defaultReportSettings, severity, project);
         }
@@ -98,7 +94,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
             UnconfiguredProject? project,
             ProjectFaultSeverity severity = ProjectFaultSeverity.Recoverable)
         {
-            Requires.NotNull(faultHandlerService, nameof(faultHandlerService));
+            Requires.NotNull(faultHandlerService);
 
             faultHandlerService.RegisterFaultHandler(task, s_defaultReportSettings, severity, project);
         }
@@ -129,7 +125,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
             ProjectFaultSeverity severity = ProjectFaultSeverity.Recoverable,
             ForkOptions options = ForkOptions.Default)
         {
-            Requires.NotNull(threadingService, nameof(threadingService));
+            Requires.NotNull(threadingService);
 
             // If you do not pass in a project it is not legal to ask the threading service to cancel this operation on project unloading
             if (unconfiguredProject is null)
@@ -166,7 +162,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
             ProjectFaultSeverity severity = ProjectFaultSeverity.Recoverable,
             ForkOptions options = ForkOptions.Default)
         {
-            Requires.NotNull(threadingService, nameof(threadingService));
+            Requires.NotNull(threadingService);
 
             // If you do not pass in a project it is not legal to ask the threading service to cancel this operation on project unloading
             if (configuredProject is null)
@@ -199,18 +195,27 @@ namespace Microsoft.VisualStudio.ProjectSystem
             UnconfiguredProject? project,
             ProjectFaultSeverity severity = ProjectFaultSeverity.Recoverable)
         {
-            Requires.NotNull(faultHandlerService, nameof(faultHandlerService));
-            Requires.NotNull(block, nameof(block));
+            Requires.NotNull(faultHandlerService);
+            Requires.NotNull(block);
 
             return block.Completion.ContinueWith(_ =>
             {
+                Exception exception = block.Completion.Exception;
+
+                // If the exception is an aggregate over a single inner exception, take the inner message
+                string innerMessage = exception switch
+                {
+                    AggregateException { InnerExceptions: { Count: 1 } inner } => inner[0].Message,
+                    _ => exception.Message
+                };
+
                 var dataSourceException = new AggregateException(
                     string.Format(
                         CultureInfo.CurrentCulture,
                         Resources.DataFlowFaults,
                         block.ToString(),
-                        block.Completion.Exception),
-                    block.Completion.Exception);
+                        innerMessage),
+                    exception);
 
                 try
                 {
@@ -226,6 +231,34 @@ namespace Microsoft.VisualStudio.ProjectSystem
             CancellationToken.None,
             TaskContinuationOptions.OnlyOnFaulted,
             TaskScheduler.Default);
+        }
+
+        /// <summary>
+        ///     Attaches error handling to a block so that if it throws an unhandled exception,
+        ///     the error will be reported to the user.
+        /// </summary>
+        /// <param name="faultHandlerService">
+        ///     The <see cref="IProjectFaultHostHandler"/> that should handle the fault.
+        /// </param>
+        /// <param name="block">
+        ///     The block to attach error handling to.
+        /// </param>
+        /// <param name="project">
+        ///     The project related to the failure, if applicable. Can be <see langword="null"/>.
+        /// </param>
+        /// <param name="severity">
+        ///     The severity of the failure.
+        /// </param>
+        public static void RegisterFaultHandler(
+            this IProjectFaultHandlerService faultHandlerService,
+            IDataflowBlock block,
+            UnconfiguredProject? project,
+            ProjectFaultSeverity severity = ProjectFaultSeverity.Recoverable)
+        {
+            Task task = RegisterFaultHandlerAsync(faultHandlerService, block, project, severity);
+
+            // We don't actually care about the result of reporting the fault if one occurs
+            faultHandlerService.Forget(task, project);
         }
     }
 }

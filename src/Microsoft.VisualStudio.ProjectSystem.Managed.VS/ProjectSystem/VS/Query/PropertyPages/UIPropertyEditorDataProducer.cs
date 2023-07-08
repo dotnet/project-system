@@ -1,28 +1,22 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.Build.Framework.XamlTypes;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
 using Microsoft.VisualStudio.ProjectSystem.Query;
-using Microsoft.VisualStudio.ProjectSystem.Query.Frameworks;
-using Microsoft.VisualStudio.ProjectSystem.Query.ProjectModel;
-using Microsoft.VisualStudio.ProjectSystem.Query.ProjectModel.Implementation;
-using Microsoft.VisualStudio.ProjectSystem.Query.QueryExecution;
+using Microsoft.VisualStudio.ProjectSystem.Query.Execution;
+using Microsoft.VisualStudio.ProjectSystem.Query.Framework;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
 {
     /// <summary>
-    /// Handles the creation of <see cref="IUIPropertyEditor"/> instances and populating the requested members.
+    /// Handles the creation of <see cref="IUIPropertyEditorSnapshot"/> instances and populating the requested members.
     /// </summary>
     internal static class UIPropertyEditorDataProducer
     {
         public static IEntityValue CreateEditorValue(IQueryExecutionContext queryExecutionContext, IEntityValue parent, ValueEditor editor, IUIPropertyEditorPropertiesAvailableStatus requestedProperties)
         {
-            Requires.NotNull(parent, nameof(parent));
-            Requires.NotNull(editor, nameof(editor));
+            Requires.NotNull(parent);
+            Requires.NotNull(editor);
 
             var identity = new EntityIdentity(
                 ((IEntityWithId)parent).Id,
@@ -36,8 +30,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
 
         public static IEntityValue CreateEditorValue(IQueryExecutionContext queryExecutionContext, EntityIdentity identity, ValueEditor editor, IUIPropertyEditorPropertiesAvailableStatus requestedProperties)
         {
-            Requires.NotNull(editor, nameof(editor));
-            var newEditorValue = new UIPropertyEditorValue(queryExecutionContext.EntityRuntime, identity, new UIPropertyEditorPropertiesAvailableStatus());
+            Requires.NotNull(editor);
+            var newEditorValue = new UIPropertyEditorSnapshot(queryExecutionContext.EntityRuntime, identity, new UIPropertyEditorPropertiesAvailableStatus());
 
             if (requestedProperties.Name)
             {
@@ -97,7 +91,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
                 && await project.GetProjectLevelPropertyPagesCatalogAsync() is IPropertyPagesCatalog projectCatalog
                 && projectCatalog.GetSchema(propertyPageName) is Rule rule
                 && rule.GetProperty(propertyName) is BaseProperty property
-                && property.ValueEditors.FirstOrDefault(ed => string.Equals(ed.EditorType, editorName)) is ValueEditor editor)
+                && property.ValueEditors.FirstOrDefault(ed => string.Equals(ed.EditorType, editorName, StringComparison.Ordinal)) is ValueEditor editor)
             {
                 IEntityValue editorValue = CreateEditorValue(queryExecutionContext, requestId, editor, properties);
             }

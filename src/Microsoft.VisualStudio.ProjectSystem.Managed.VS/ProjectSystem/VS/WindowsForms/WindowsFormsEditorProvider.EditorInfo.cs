@@ -1,7 +1,5 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
-using System;
-
 namespace Microsoft.VisualStudio.ProjectSystem.VS.WindowsForms
 {
     internal partial class WindowsFormsEditorProvider
@@ -10,8 +8,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.WindowsForms
         {
             public EditorInfo(Guid editor, string displayName, bool isDefaultEditor)
             {
-                Requires.NotEmpty(editor, nameof(editor));
-                Requires.NotNullOrEmpty(displayName, nameof(displayName));
+                Requires.NotEmpty(editor);
+                Requires.NotNullOrEmpty(displayName);
 
                 EditorFactory = editor;
                 DisplayName = displayName;

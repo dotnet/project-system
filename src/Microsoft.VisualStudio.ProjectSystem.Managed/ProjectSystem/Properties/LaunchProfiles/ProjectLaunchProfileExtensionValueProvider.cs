@@ -1,7 +1,5 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
-using System;
-using System.Collections.Immutable;
 using System.ComponentModel;
 using Microsoft.Build.Framework.XamlTypes;
 using Microsoft.VisualStudio.ProjectSystem.Debug;
@@ -17,12 +15,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
     /// itself. Those are handled by <see cref="LaunchProfileProjectProperties"/>.
     /// </para>
     /// </summary>
-    /// <remarks>
-    /// Not to be confused with <see cref="ActiveLaunchProfileExtensionValueProvider" />,
-    /// which serves a very similar purpose but reads and writes the _active_ profile
-    /// rather than a particular one, and will go away once the Launch Profiles UI is up
-    /// and running.
-    /// </remarks>
     [ExportLaunchProfileExtensionValueProvider(
         new[]
         {
@@ -71,67 +63,44 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
 
         public void OnSetPropertyValue(string propertyName, string propertyValue, IWritableLaunchProfile launchProfile, ImmutableDictionary<string, object> globalSettings, Rule? rule)
         {
-            switch (propertyName)
+            // TODO: Should the result (success or failure) be ignored?
+            _ = propertyName switch
             {
-                case AuthenticationModePropertyName:
-                    TrySetOtherProperty(launchProfile, LaunchProfileExtensions.RemoteAuthenticationModeProperty, propertyValue, string.Empty);
-                    break;
-
-                case HotReloadEnabledPropertyName:
-                    TrySetOtherProperty(launchProfile, LaunchProfileExtensions.HotReloadEnabledProperty, bool.Parse(propertyValue), true);
-                    break;
-
-                case NativeDebuggingPropertyName:
-                    TrySetOtherProperty(launchProfile, LaunchProfileExtensions.NativeDebuggingProperty, bool.Parse(propertyValue), false);
-                    break;
-
-                case RemoteDebugEnabledPropertyName:
-                    TrySetOtherProperty(launchProfile, LaunchProfileExtensions.RemoteDebugEnabledProperty, bool.Parse(propertyValue), false);
-                    break;
-
-                case RemoteDebugMachinePropertyName:
-                    TrySetOtherProperty(launchProfile, LaunchProfileExtensions.RemoteDebugMachineProperty, propertyValue, string.Empty);
-                    break;
-
-                case SqlDebuggingPropertyName:
-                    TrySetOtherProperty(launchProfile, LaunchProfileExtensions.SqlDebuggingProperty, bool.Parse(propertyValue), false);
-                    break;
-
-                case WebView2DebuggingPropertyName:
-                    TrySetOtherProperty(launchProfile, LaunchProfileExtensions.JSWebView2DebuggingProperty, bool.Parse(propertyValue), false);
-                    break;
-
-                default:
-                    throw new InvalidOperationException($"{nameof(ProjectLaunchProfileExtensionValueProvider)} does not handle property '{propertyName}'.");
-            }
+                AuthenticationModePropertyName => TrySetOtherProperty(launchProfile, LaunchProfileExtensions.RemoteAuthenticationModeProperty, propertyValue, string.Empty),
+                HotReloadEnabledPropertyName =>   TrySetOtherProperty(launchProfile, LaunchProfileExtensions.HotReloadEnabledProperty, bool.Parse(propertyValue), true),
+                NativeDebuggingPropertyName =>    TrySetOtherProperty(launchProfile, LaunchProfileExtensions.NativeDebuggingProperty, bool.Parse(propertyValue), false),
+                RemoteDebugEnabledPropertyName => TrySetOtherProperty(launchProfile, LaunchProfileExtensions.RemoteDebugEnabledProperty, bool.Parse(propertyValue), false),
+                RemoteDebugMachinePropertyName => TrySetOtherProperty(launchProfile, LaunchProfileExtensions.RemoteDebugMachineProperty, propertyValue, string.Empty),
+                SqlDebuggingPropertyName =>       TrySetOtherProperty(launchProfile, LaunchProfileExtensions.SqlDebuggingProperty, bool.Parse(propertyValue), false),
+                WebView2DebuggingPropertyName =>  TrySetOtherProperty(launchProfile, LaunchProfileExtensions.JSWebView2DebuggingProperty, bool.Parse(propertyValue), false),
+                _ => throw new InvalidOperationException($"{nameof(ProjectLaunchProfileExtensionValueProvider)} does not handle property '{propertyName}'."),
+            };
         }
 
         private static T GetOtherProperty<T>(ILaunchProfile launchProfile, string propertyName, T defaultValue)
         {
-            if (launchProfile.OtherSettings is null)
+            if (launchProfile.TryGetSetting(propertyName, out object? value))
             {
-                return defaultValue;
-            }
-
-            if (launchProfile.OtherSettings.TryGetValue(propertyName, out object? value) &&
-                value is T b)
-            {
-                return b;
-            }
-            else if (value is string s &&
-                TypeDescriptor.GetConverter(typeof(T)) is TypeConverter converter &&
-                converter.CanConvertFrom(typeof(string)))
-            {
-                try
+                if (value is T b)
                 {
-                    if (converter.ConvertFromString(s) is T o)
-                    {
-                        return o;
-                    }
+                    return b;
                 }
-                catch (Exception)
+
+                if (value is string s &&
+                    TypeDescriptor.GetConverter(typeof(T)) is TypeConverter converter &&
+                    converter.CanConvertFrom(typeof(string)))
                 {
-                    // ignore bad data in the json file and just let them have the default value
+                    try
+                    {
+                        if (converter.ConvertFromString(s) is T o)
+                        {
+                            return o;
+                        }
+                    }
+                    catch (Exception)
+                    {
+                        // ignore bad data in the json file and just let them have the default value
+                    }
                 }
             }
 
@@ -140,7 +109,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
 
         private static bool TrySetOtherProperty<T>(IWritableLaunchProfile launchProfile, string propertyName, T value, T defaultValue) where T : notnull
         {
-            if (!launchProfile.OtherSettings.TryGetValue(propertyName, out object current))
+            if (!launchProfile.OtherSettings.TryGetValue(propertyName, out object? current))
             {
                 current = defaultValue;
             }

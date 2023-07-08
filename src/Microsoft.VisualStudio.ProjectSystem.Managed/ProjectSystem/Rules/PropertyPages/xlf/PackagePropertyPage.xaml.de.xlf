@@ -12,6 +12,26 @@
         <target state="translated">Beim Erstellen NuGet-Paket generieren</target>
         <note />
       </trans-unit>
+      <trans-unit id="BoolProperty|IncludeSymbols|Description">
+        <source>Create an additional symbol package when the project is packed.</source>
+        <target state="translated">Erstellt ein zusätzliches Symbolpaket, wenn das Projekt gepackt ist.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="BoolProperty|IncludeSymbols|DisplayName">
+        <source>Produce a symbol package</source>
+        <target state="translated">Symbolpaket erstellen</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="BoolProperty|PackAsTool|Description">
+        <source>Packs this project as a special package that contains a console application that may be installed via the "dotnet tool" command.</source>
+        <target state="translated">Packt dieses Projekt als spezielles Paket, das eine Konsolenanwendung enthält, die über dem „dotnet tool“-Befehl installiert werden kann.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="BoolProperty|PackAsTool|DisplayName">
+        <source>Pack as a .NET tool</source>
+        <target state="translated">Packen als .NET-Tool</target>
+        <note />
+      </trans-unit>
       <trans-unit id="BoolProperty|PackageRequireLicenseAcceptance|Description">
         <source>Prompt the user to accept the license when installing this package.</source>
         <target state="translated">Hiermit wird der Benutzer bei der Installation dieses Pakets zum Akzeptieren der Lizenz aufgefordert.</target>
@@ -42,6 +62,16 @@
         <target state="translated">Lizenz</target>
         <note />
       </trans-unit>
+      <trans-unit id="Category|Symbols|Description">
+        <source>Specifies how symbols are added to the package.</source>
+        <target state="translated">Gibt an, wie Dem Paket Symbole hinzugefügt werden.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="Category|Symbols|DisplayName">
+        <source>Symbols</source>
+        <target state="translated">Symbole</target>
+        <note />
+      </trans-unit>
       <trans-unit id="DynamicEnumProperty|NeutralLanguage|DisplayName">
         <source>Assembly neutral language</source>
         <target state="translated">Neutrale Sprache der Assembly</target>
@@ -57,6 +87,16 @@
         <target state="translated">Paketlizenz</target>
         <note />
       </trans-unit>
+      <trans-unit id="EnumProperty|SymbolPackageFormat|Description">
+        <source>Specifies the format of the symbols package.</source>
+        <target state="translated">Gibt das Format des Symbolpakets an.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumProperty|SymbolPackageFormat|DisplayName">
+        <source>Symbol package format</source>
+        <target state="translated">Symbolpaketformat</target>
+        <note />
+      </trans-unit>
       <trans-unit id="EnumValue|PackageLicenseKind.Expression|DisplayName">
         <source>SPDX License Expression</source>
         <target state="translated">SPDX-Lizenzausdruck</target>
@@ -70,6 +110,16 @@
       <trans-unit id="EnumValue|PackageLicenseKind.None|DisplayName">
         <source>None</source>
         <target state="translated">Keine</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|SymbolPackageFormat.snupkg|DisplayName">
+        <source>snupkg</source>
+        <target state="translated">SNUPKG</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|SymbolPackageFormat.symbols.nupkg|DisplayName">
+        <source>symbols.nupkg (legacy)</source>
+        <target state="translated">symbols.nupkg (Legacy)</target>
         <note />
       </trans-unit>
       <trans-unit id="Rule|Package|Description">
@@ -129,12 +179,12 @@
       </trans-unit>
       <trans-unit id="StringProperty|PackageIcon|Description">
         <source>The icon image for the package. Image file size is limited to 1 MB. Supported file formats include JPEG and PNG. An image resolution of 128x128 is recommended.</source>
-        <target state="new">The icon image for the package. Image file size is limited to 1 MB. Supported file formats include JPEG and PNG. An image resolution of 128x128 is recommended.</target>
+        <target state="translated">Das Symbolbild für das Paket. Die Größe der Bilddatei ist auf 1 MB beschränkt. Zu den unterstützten Dateiformaten gehören JPEG und PNG. Es wird eine Bildauflösung von 128x128 empfohlen.</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|PackageIcon|DisplayName">
         <source>Icon</source>
-        <target state="new">Icon</target>
+        <target state="translated">Symbol</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|PackageId|Description">
@@ -162,6 +212,16 @@
         <target state="translated">Lizenzdatei</target>
         <note />
       </trans-unit>
+      <trans-unit id="StringProperty|PackageOutputPath|Description">
+        <source>Determines the output path in which the package will be dropped.</source>
+        <target state="translated">Bestimmt den Ausgabepfad, in dem das Paket gelöscht wird.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|PackageOutputPath|DisplayName">
+        <source>Package Output Path</source>
+        <target state="translated">Paketausgabepfad</target>
+        <note />
+      </trans-unit>
       <trans-unit id="StringProperty|PackageProjectUrl|Description">
         <source>A URL for the package's home page, often shown in UI displays as well as nuget.org.</source>
         <target state="translated">Eine URL für die Homepage des NuGet-Pakets, die häufig in der Benutzeroberfläche und auf nuget.org angezeigt wird.</target>
@@ -174,12 +234,12 @@
       </trans-unit>
       <trans-unit id="StringProperty|PackageReadmeFile|Description">
         <source>The README document for the package. Must be a Markdown (.md) file.</source>
-        <target state="new">The README document for the package. Must be a Markdown (.md) file.</target>
+        <target state="translated">Das README-Dokument für das Paket. Muss eine Markdown- Datei (.md) sein.</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|PackageReadmeFile|DisplayName">
         <source>README</source>
-        <target state="new">README</target>
+        <target state="translated">INFODATEI</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|PackageReleaseNotes|Description">
@@ -230,6 +290,26 @@
       <trans-unit id="StringProperty|RepositoryUrl|DisplayName">
         <source>Repository URL</source>
         <target state="translated">Repository-URL</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|Title|Description">
+        <source>A human-friendly title of the package, typically used in UI displays as on nuget.org and the Package Manager in Visual Studio.</source>
+        <target state="translated">Ein benutzerfreundlicher Titel des Pakets, der normalerweise in Der Benutzeroberfläche verwendet wird, z. B. auf nuget.org und der Paket-Manager in Visual Studio.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|Title|DisplayName">
+        <source>Title</source>
+        <target state="translated">Titel</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|ToolCommandName|Description">
+        <source>The command name via which the .NET tool will be invoked on the command line.</source>
+        <target state="translated">Der Befehlsname, über den das .NET-Tool in der Befehlszeile aufgerufen wird.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|ToolCommandName|DisplayName">
+        <source>.NET tool command name</source>
+        <target state="translated">Befehlsname des .NET-Tools</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|Version|Description">

@@ -1,7 +1,6 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
 using Microsoft.VisualStudio.ProjectSystem.LanguageServices;
-using Moq;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS
 {
@@ -12,7 +11,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             var mock = new Mock<IRoslynServices>();
 
             mock.Setup(h => h.IsValidIdentifier(It.IsAny<string>()))
-                .Returns<string>(name => syntaxFactsService.IsValidIdentifier(name));
+                .Returns<string>(syntaxFactsService.IsValidIdentifier);
 
             return mock.Object;
         }

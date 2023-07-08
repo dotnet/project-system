@@ -1,13 +1,8 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
 using System.Text.RegularExpressions;
 using Microsoft.VisualStudio.ProjectSystem.Rules;
 using Microsoft.VisualStudio.Utilities;
-using Xunit;
 using Xunit.Abstractions;
 
 namespace Microsoft.VisualStudio.Setup
@@ -48,14 +43,14 @@ namespace Microsoft.VisualStudio.Setup
 
             var ruleFilesByCulture = Directory.EnumerateFiles(rulesPath, "*", SearchOption.AllDirectories)
                 .Select(ParseRepoFile)
-                .Where(pair => pair.Culture != null)
-                .ToLookup(pair => pair.Culture, pair => pair.File);
+                .Where(pair => pair.Culture is not null)
+                .ToLookup(pair => pair.Culture!, pair => pair.File);
 
-            var setupCultures = setupFilesByCulture.Select(p => p.Key);
-            var ruleCultures = ruleFilesByCulture.Select(p => p.Key);
+            var setupCultures = setupFilesByCulture.Select(p => p.Key).ToList();
+            var ruleCultures = ruleFilesByCulture.Select(p => p.Key).ToList();
 
             Assert.True(
-                setupCultures.ToHashSet().SetEquals(ruleCultures!),
+                setupCultures.ToHashSet().SetEquals(ruleCultures),
                 "Set of cultures must match.");
 
             var guilty = false;
@@ -66,10 +61,11 @@ namespace Microsoft.VisualStudio.Setup
                 var ruleFiles = ruleFilesByCulture[culture];
 
                 var embeddedRules = RuleServices.GetAllEmbeddedRules()
-                                                .Select(name => name + ".xaml");
+                                                .Select(name => name + ".xaml")
+                                                .ToList();
 
                 // Exclude the ones that are embedded, they won't be installed
-                ruleFiles = ruleFiles.Except(embeddedRules);
+                ruleFiles = ruleFiles.Except(embeddedRules).ToList();
 
                 foreach (var missing in ruleFiles.Except(setupFiles, StringComparer.OrdinalIgnoreCase))
                 {
@@ -147,7 +143,7 @@ namespace Microsoft.VisualStudio.Setup
                 var fileMatch = _swrFilePattern.Match(line);
                 if (fileMatch.Success)
                 {
-                    if (folder == null)
+                    if (folder is null)
                         throw new FileFormatException("'file' entry appears before a 'folder' entry.");
                     var file = fileMatch.Groups["path"].Value;
                     yield return (folder, file);

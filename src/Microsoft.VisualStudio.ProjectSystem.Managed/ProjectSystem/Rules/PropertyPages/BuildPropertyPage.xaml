@@ -4,8 +4,11 @@
       Description="Specifies properties that control how the project builds."
       DisplayName="Build"
       PageTemplate="generic"
-      Order="200"
-      xmlns="http://schemas.microsoft.com/build/2009/properties" >
+      Order="300"
+      xmlns="http://schemas.microsoft.com/build/2009/properties"
+      xmlns:xliff="https://github.com/dotnet/xliff-tasks" 
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+      mc:Ignorable="xliff">
 
   <Rule.Categories>
     <Category Name="General"
@@ -26,7 +29,7 @@
     <Category Name="StrongNaming"
               Description="Configures strong name signing of build outputs."
               DisplayName="Strong naming" />
-    
+
     <Category Name="Advanced"
               DisplayName="Advanced"
               Description="Advanced settings for the application." />
@@ -37,25 +40,40 @@
                 SourceOfDefaultValue="AfterContext"
                 HasConfigurationCondition="True" />
   </Rule.DataSource>
+  
+  <StringProperty Name="DefineConstants" 
+                       DisplayName="Conditional compilation symbols"
+                       Description="Specifies symbols on which to perform conditional compilation."
+                       HelpUrl="https://go.microsoft.com/fwlink/?linkid=2147079"
+                       Category="General">
+    <StringProperty.DataSource>
+      <DataSource Persistence="ProjectFileWithInterception"
+                  HasConfigurationCondition="True" />
+    </StringProperty.DataSource>
+    <StringProperty.ValueEditors>
+      <ValueEditor EditorType="MultiStringSelector">
+        <ValueEditor.Metadata>
+          <NameValuePair Name="TypeDescriptorText" Value="Custom symbols" xliff:LocalizedProperties="Value" />
+          <NameValuePair Name="AllowsCustomStrings" Value="True" />
+          <NameValuePair Name="ShouldDisplayEvaluatedPreview" Value="True" />
+          <NameValuePair Name="SingleValueConfigurationCommandEnabled" Value="False" />
+        </ValueEditor.Metadata>
+      </ValueEditor>
+    </StringProperty.ValueEditors>
+  </StringProperty>
 
-  <StringProperty Name="DefineConstants"
-                  DisplayName="Conditional compilation symbols"
-                  Description="Specifies symbols on which to perform conditional compilation. Separate symbols with a semi-colon (';')."
-                  HelpUrl="https://go.microsoft.com/fwlink/?linkid=2147079"
-                  Category="General" />
-
-  <EnumProperty Name="PlatformTarget"
+  <DynamicEnumProperty Name="PlatformTarget"
                 DisplayName="Platform target"
-                Description="Specifies the processor to be targeted by the output file. Choose 'x86' for any 32-bit Intel-compatible processor, choose 'x64' for any 64-bit Intel-compatible processor, or choose 'Any CPU' to specify that any processor is acceptable. 'Any CPU' is the default value for projects, because it allows the application to run on the broadest range of hardware."
+                Description="Specifies the processor to be targeted by the output file. Choose 'Any CPU' to specify that any processor is acceptable, allowing the application to run on the broadest range of hardware."
                 HelpUrl="https://go.microsoft.com/fwlink/?linkid=2147129"
-                Category="General">
-    <EnumValue Name="AnyCPU"
-               DisplayName="Any CPU" />
-    <EnumValue Name="x64"
-               DisplayName="x64" />
-    <EnumValue Name="x86"
-               DisplayName="x86" />
-  </EnumProperty>
+                Category="General"
+                EnumProvider="PlatformTargetEnumProvider"
+                MultipleValuesAllowed="False">
+    <DynamicEnumProperty.DataSource>
+      <DataSource Persistence="ProjectFileWithInterception"
+                  HasConfigurationCondition="False" />
+    </DynamicEnumProperty.DataSource>
+  </DynamicEnumProperty>
 
   <EnumProperty Name="Nullable"
                 DisplayName="Nullable"
@@ -80,22 +98,11 @@
                DisplayName="Annotations" />
   </EnumProperty>
 
-  <BoolProperty Name="ImplicitUsings"
-                DisplayName="Implicit global usings"
-                Description="Enable implicit global usings to be declared by the project SDK."
-                Category="General">
-    <BoolProperty.DataSource>
-      <DataSource Persistence="ProjectFileWithInterception"
-                  SourceOfDefaultValue="AfterContext"
-                  HasConfigurationCondition="False" />
-    </BoolProperty.DataSource>
-    <BoolProperty.Metadata>
-      <NameValuePair Name="SearchTerms" Value="implicit" />
-      <NameValuePair Name="VisibilityCondition">
-        <NameValuePair.Value>(has-csharp-lang-version-or-greater "10")</NameValuePair.Value>
-      </NameValuePair>
-    </BoolProperty.Metadata>
-  </BoolProperty>
+  <BoolProperty Name="GenerateAssemblyInfo"
+                DisplayName="Generate assembly info"
+                Description="Transform project properties into assembly attributes during build."
+                HelpUrl="https://go.microsoft.com/fwlink/?linkid=2220622"
+                Category="General" />
 
   <BoolProperty Name="Prefer32Bit"
                 DisplayName="Prefer 32-bit"
@@ -110,7 +117,7 @@
         <NameValuePair.Value>
           (and
             (has-net-framework)
-            (has-evaluated-value "Build" "PlatformTarget" "AnyCPU")
+            (has-evaluated-value "Build" "PlatformTarget" "Any CPU")
             (or
               (has-evaluated-value "Application" "OutputType" "Exe")
               (has-evaluated-value "Application" "OutputType" "WinExe")
@@ -146,14 +153,13 @@
     </BoolProperty.Metadata>
   </BoolProperty>
 
-  <!-- TODO create fwlink for this HelpUrl, and find or create a better documentation source -->
   <EnumProperty Name="DebugType"
                 DisplayName="Debug symbols"
                 Description="Specifies the kind of debug symbols produced during build."
-                HelpUrl="https://github.com/dotnet/roslyn/blob/main/docs/compilers/CSharp/CommandLine.md"
+                HelpUrl="https://go.microsoft.com/fwlink/?linkid=2173089"
                 Category="General">
     <EnumProperty.DataSource>
-      <DataSource HasConfigurationCondition="False"
+      <DataSource HasConfigurationCondition="True"
                   Persistence="ProjectFileWithInterception" />
     </EnumProperty.DataSource>
     <EnumProperty.Metadata>
@@ -174,25 +180,47 @@
                DisplayName="Embedded in DLL/EXE, portable across platforms" />
   </EnumProperty>
 
+  <BoolProperty Name="WarningLevelOverridden"
+                ReadOnly="True"
+                Visible="False">
+    <BoolProperty.DataSource>
+      <DataSource HasConfigurationCondition="True"
+                  Persistence="ProjectFileWithInterception" />
+    </BoolProperty.DataSource>
+  </BoolProperty>
+
   <EnumProperty Name="WarningLevel"
                 DisplayName="Warning level"
-                Description="Specifies the level to display for compiler warnings."
+                Description="Specifies the level to display for compiler warnings. Higher levels produce more warnings, and include all warnings from lower levels."
                 HelpUrl="https://go.microsoft.com/fwlink/?linkid=2146798"
                 Category="ErrorsAndWarnings">
+    <EnumProperty.Metadata>
+      <NameValuePair Name="EditabilityCondition">
+        <NameValuePair.Value>
+          (has-evaluated-value "Build" "WarningLevelOverridden" false)
+        </NameValuePair.Value>
+      </NameValuePair>
+    </EnumProperty.Metadata>
     <EnumValue Name="0"
-               DisplayName="0" />
+               DisplayName="0 - Disable all warnings" />
     <EnumValue Name="1"
-               DisplayName="1" />
+               DisplayName="1 - Severe warning messages" />
     <EnumValue Name="2"
-               DisplayName="2" />
+               DisplayName="2 - Less severe warnings, such as warnings about hiding class members" />
     <EnumValue Name="3"
-               DisplayName="3" />
+               DisplayName="3 - Less severe warnings, such as warnings about expressions that always evaluate to true or false" />
     <EnumValue Name="4"
-               DisplayName="4" />
+               DisplayName="4 - Informational warnings" />
     <EnumValue Name="5"
-               DisplayName="5" />
+               DisplayName="5 - Warnings from C# 9" />
+    <EnumValue Name="6"
+               DisplayName="6 - Warnings from C# 10" />
+    <EnumValue Name="7"
+               DisplayName="7 - Warnings from C# 11" />
+    <EnumValue Name="9999"
+               DisplayName="9999 - All warnings" />
   </EnumProperty>
-
+  
   <StringProperty Name="NoWarn"
                   DisplayName="Suppress specific warnings"
                   Description="Blocks the compiler from generating the specified warnings. Separate multiple warning numbers with a comma (',') or semicolon (';')."
@@ -203,7 +231,7 @@
                 HelpUrl="https://go.microsoft.com/fwlink/?linkid=2147301"
                 DisplayName="Treat warnings as errors"
                 Description="Instruct the compiler to treat warnings as errors."
-                Category="ErrorsAndWarnings" >
+                Category="ErrorsAndWarnings">
     <BoolProperty.DataSource>
       <DataSource Persistence="ProjectFileWithInterception" />
     </BoolProperty.DataSource>
@@ -217,7 +245,9 @@
     <StringProperty.Metadata>
       <NameValuePair Name="DependsOn" Value="Build::TreatWarningsAsErrors" />
       <NameValuePair Name="VisibilityCondition">
-        <NameValuePair.Value>(has-evaluated-value "Build" "TreatWarningsAsErrors" false)</NameValuePair.Value>
+        <NameValuePair.Value>
+          (has-evaluated-value "Build" "TreatWarningsAsErrors" false)
+        </NameValuePair.Value>
       </NameValuePair>
     </StringProperty.Metadata>
   </StringProperty>
@@ -230,7 +260,9 @@
     <StringProperty.Metadata>
       <NameValuePair Name="DependsOn" Value="Build::TreatWarningsAsErrors" />
       <NameValuePair Name="VisibilityCondition">
-        <NameValuePair.Value>(has-evaluated-value "Build" "TreatWarningsAsErrors" true)</NameValuePair.Value>
+        <NameValuePair.Value>
+          (has-evaluated-value "Build" "TreatWarningsAsErrors" true)
+        </NameValuePair.Value>
       </NameValuePair>
     </StringProperty.Metadata>
   </StringProperty>

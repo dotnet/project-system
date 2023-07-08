@@ -1,12 +1,20 @@
 <!-- Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information. -->
 <Project>
+
   <Import Project="..\Directory.Build.props"/>
 
   <PropertyGroup>
-    <!-- Prevent vsix manifests from being copied to the shared output directory, makes build more deterministic -->
+    <!--
+      Prevents the VSSDK.BuildTools from trying to interpret every project as a VS Extension project.
+      This error occurs without this property:
+        VSSDK1039: Source.extension.vsixmanifest file not found in project 'Microsoft.VisualStudio.ProjectSystem.Managed.VS'/'Microsoft.VisualStudio.Editors'.
+    -->
     <CopyVsixManifestToOutput>false</CopyVsixManifestToOutput>
-    
-    <!-- Workaround: https://github.com/dotnet/sdk/issues/12739 -->
-    <ImportFrameworkWinFXTargets>true</ImportFrameworkWinFXTargets>
   </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include="..\Common\GlobalAssemblyInfo.cs" Condition="'$(Language)' == 'C#'" />
+    <Compile Include="..\Common\GlobalAssemblyInfo.vb" Condition="'$(Language)' == 'VB'" />
+  </ItemGroup>
+
 </Project>

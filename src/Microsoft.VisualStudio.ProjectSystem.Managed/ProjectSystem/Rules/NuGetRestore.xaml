@@ -13,6 +13,14 @@
                   ReadOnly="True"
                   Visible="False" />
 
+  <StringProperty Name="CentralPackageTransitivePinningEnabled"
+                  ReadOnly="True"
+                  Visible="False" />
+
+  <StringProperty Name="CentralPackageVersionOverrideEnabled"
+                  ReadOnly="True"
+                  Visible="False" />
+
   <StringProperty Name="CLRSupport"
                   ReadOnly="True"
                   Visible="False" />
@@ -42,6 +50,14 @@
                   Visible="False" />
 
   <StringProperty Name="NoWarn"
+                  ReadOnly="True"
+                  Visible="False" />
+
+  <StringProperty Name="NuGetAudit"
+                  ReadOnly="True"
+                  Visible="False" />
+
+  <StringProperty Name="NuGetAuditLevel"
                   ReadOnly="True"
                   Visible="False" />
 
@@ -175,6 +191,14 @@
                   Visible="False" />
 
   <StringProperty Name="WarningsAsErrors"
+                  ReadOnly="True"
+                  Visible="False" />
+
+  <StringProperty Name="WarningsNotAsErrors"
+                  ReadOnly="True"
+                  Visible="False" />
+
+  <StringProperty Name="WindowsTargetPlatformMinVersion"
                   ReadOnly="True"
                   Visible="False" />
 

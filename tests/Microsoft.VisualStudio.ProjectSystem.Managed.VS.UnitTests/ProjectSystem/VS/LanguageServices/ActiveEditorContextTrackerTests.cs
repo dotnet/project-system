@@ -1,8 +1,7 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
-using System;
+using Microsoft.VisualStudio.ProjectSystem.LanguageServices;
 using Microsoft.VisualStudio.Shell;
-using Xunit;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
 {
@@ -27,28 +26,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
             Assert.Throws<ArgumentException>("contextId", () =>
             {
                 instance.RegisterContext(string.Empty);
-            });
-        }
-
-        [Fact]
-        public void UnregisterContext_NullAsContextId_ThrowsArgumentNull()
-        {
-            var instance = CreateInstance();
-
-            Assert.Throws<ArgumentNullException>("contextId", () =>
-            {
-                instance.UnregisterContext(null!);
-            });
-        }
-
-        [Fact]
-        public void UnregisterContext_EmptyAsContextId_ThrowsArgument()
-        {
-            var instance = CreateInstance();
-
-            Assert.Throws<ArgumentException>("contextId", () =>
-            {
-                instance.UnregisterContext(string.Empty);
             });
         }
 
@@ -91,24 +68,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
         }
 
         [Fact]
-        public void UnregisteredContext_NotRegisteredContextAsContextId_ThrowsInvalidOperation()
-        {
-            var instance = CreateInstance();
-
-            Assert.Throws<InvalidOperationException>(() =>
-            {
-                instance.UnregisterContext("NotRegistered");
-            });
-        }
-
-        [Fact]
         public void UnregisterContext_RegisteredContextAsContextId_CanUnregister()
         {
             var instance = CreateInstance();
 
-            instance.RegisterContext("ContextId");
+            var registration = instance.RegisterContext("ContextId");
 
-            instance.UnregisterContext("ContextId");
+            registration.Dispose();
 
             // Should be unregistered
             Assert.Throws<InvalidOperationException>(() => instance.IsActiveEditorContext("ContextId"));
@@ -231,9 +197,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
             Assert.Equal("FirstContextId", result);
         }
 
-        private static ActiveEditorContextTracker CreateInstance()
+        private static VsActiveEditorContextTracker CreateInstance()
         {
-            return new ActiveEditorContextTracker((UnconfiguredProject?)null);
+            return new VsActiveEditorContextTracker(null, new ActiveEditorContextTracker(null));
         }
     }
 }

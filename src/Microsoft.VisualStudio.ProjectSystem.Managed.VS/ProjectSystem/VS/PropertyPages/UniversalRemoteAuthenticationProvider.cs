@@ -1,7 +1,5 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
-using System;
-using System.ComponentModel.Composition;
 using Microsoft.VisualStudio.ProjectSystem.Debug;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
@@ -10,7 +8,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
     /// Implementation of IRemoteAuthenticationProvider for the "Universal" authentication type.
     /// </summary>
     [Export(typeof(IRemoteAuthenticationProvider))]
-    [AppliesTo("SupportUniversalAuthentication")]
+    [AppliesTo(ProjectCapability.SupportUniversalAuthentication)]
     [Order(30)]
     internal class UniversalRemoteAuthenticationProvider : IRemoteAuthenticationProvider
     {

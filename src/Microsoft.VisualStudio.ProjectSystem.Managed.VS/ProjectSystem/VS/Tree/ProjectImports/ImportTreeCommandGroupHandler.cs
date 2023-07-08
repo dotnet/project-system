@@ -1,12 +1,6 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
-using System;
-using System.Collections.Generic;
-using System.Collections.Immutable;
-using System.ComponentModel.Composition;
-using System.Linq;
 using System.Runtime.ExceptionServices;
-using System.Threading.Tasks;
 using Microsoft.VisualStudio.ProjectSystem.Tree.ProjectImports;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
@@ -35,11 +29,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.ProjectImports
             IVsUIService<IVsExternalFilesManager> externalFilesManager,
             IVsUIService<IOleServiceProvider> oleServiceProvider)
         {
-            Requires.NotNull(serviceProvider, nameof(serviceProvider));
-            Requires.NotNull(configuredProject, nameof(configuredProject));
-            Requires.NotNull(uiShellOpenDocument, nameof(uiShellOpenDocument));
-            Requires.NotNull(externalFilesManager, nameof(externalFilesManager));
-            Requires.NotNull(oleServiceProvider, nameof(oleServiceProvider));
+            Requires.NotNull(serviceProvider);
+            Requires.NotNull(configuredProject);
+            Requires.NotNull(uiShellOpenDocument);
+            Requires.NotNull(externalFilesManager);
+            Requires.NotNull(oleServiceProvider);
 
             _serviceProvider = serviceProvider;
             _configuredProject = configuredProject;
@@ -120,7 +114,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.ProjectImports
                         _externalFilesManager.Value.TransferDocument(item.FilePath, item.FilePath, windowFrame);
 
                         // Show the document window
-                        if (windowFrame != null)
+                        if (windowFrame is not null)
                         {
                             ErrorHandler.ThrowOnFailure(windowFrame.Show());
                         }
@@ -159,7 +153,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.ProjectImports
                 }
             }
 
-            if (exceptions != null)
+            if (exceptions is not null)
             {
                 if (exceptions.Count == 1)
                 {
@@ -174,12 +168,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.ProjectImports
 
         [ExportCommandGroup(CMDSETID.UIHierarchyWindowCommandSet_string)]
         [AppliesTo(ProjectCapability.ProjectImportsTree)]
-        [Order(ProjectSystem.Order.BeforeDefault)]
+        [Order(Order.BeforeDefault)]
         private sealed class UIHierarchyWindowCommandSetGroupHandler : ProjectImportsCommandGroupHandlerBase
         {
             [ImportingConstructor]
             public UIHierarchyWindowCommandSetGroupHandler(
+#pragma warning disable RS0030 // Do not used banned APIs
                 [Import(typeof(SVsServiceProvider))] IServiceProvider serviceProvider,
+#pragma warning restore RS0030 // Do not used banned APIs
                 ConfiguredProject configuredProject,
                 IVsUIService<SVsUIShellOpenDocument, IVsUIShellOpenDocument> uiShellOpenDocument,
                 IVsUIService<SVsExternalFilesManager, IVsExternalFilesManager> externalFilesManager,
@@ -203,12 +199,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.ProjectImports
 
         [ExportCommandGroup(CMDSETID.StandardCommandSet97_string)]
         [AppliesTo(ProjectCapability.ProjectImportsTree)]
-        [Order(ProjectSystem.Order.BeforeDefault)]
+        [Order(Order.BeforeDefault)]
         private sealed class StandardCommandSet97GroupHandler : ProjectImportsCommandGroupHandlerBase
         {
             [ImportingConstructor]
             public StandardCommandSet97GroupHandler(
+#pragma warning disable RS0030 // Do not used banned APIs
                 [Import(typeof(SVsServiceProvider))] IServiceProvider serviceProvider,
+#pragma warning restore RS0030 // Do not used banned APIs
                 ConfiguredProject configuredProject,
                 IVsUIService<SVsUIShellOpenDocument, IVsUIShellOpenDocument> uiShellOpenDocument,
                 IVsUIService<SVsExternalFilesManager, IVsExternalFilesManager> externalFilesManager,

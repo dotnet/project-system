@@ -1,8 +1,5 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
-using System.Collections.Generic;
-using Moq;
-
 namespace Microsoft.VisualStudio.ProjectSystem
 {
     internal static class IProjectServiceFactory
@@ -16,7 +13,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
             mock.Setup(p => p.Services)
                    .Returns(services);
 
-            if (scope != null)
+            if (scope is not null)
             {
                 mock.Setup(p => p.LoadedUnconfiguredProjects)
                     .Returns(new[] { UnconfiguredProjectFactory.Create(scope: scope, configuredProject: configuredProject) });
@@ -33,7 +30,6 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
             mock.Setup(p => p.Services)
                 .Returns(services);
-
 
             mock.Setup(p => p.LoadedUnconfiguredProjects)
                 .Returns(loadedUnconfiguredProjects);

@@ -1,39 +1,49 @@
 ﻿<!-- Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information. -->
 <Project Sdk="Microsoft.NET.Sdk">
-  <Import Project="..\..\build\import\VisualStudioDesigner.props" />
+
+  <!-- Note: VSIX signing is handled via AddVsixForSigning in Directory.Build.targets. -->
+
+  <Import Project="..\..\eng\imports\VisualStudioDesigner.props" />
+
+  <!-- Local properties -->
+  <PropertyGroup>
+    <_EditorsProjectName>Microsoft.VisualStudio.Editors</_EditorsProjectName>
+  </PropertyGroup>
+
   <PropertyGroup>
     <RootNamespace>Microsoft.VisualStudio</RootNamespace>
-    <PublishOutputToSymStore>false</PublishOutputToSymStore>
-    
+    <TargetFramework>net472</TargetFramework>
+
     <!-- VSIX -->
-    <IncludeAssemblyInVSIXContainer>false</IncludeAssemblyInVSIXContainer>
     <ExtensionInstallationRoot>CommonExtensions</ExtensionInstallationRoot>
     <ExtensionInstallationFolder>Microsoft\VisualStudio\Editors</ExtensionInstallationFolder>
+    <TargetVsixContainerName>$(AssemblyName).vsix</TargetVsixContainerName>
+    <TargetVsixContainer>$(VisualStudioSetupInsertionPath)$(TargetVsixContainerName)</TargetVsixContainer>
 
-    <!-- VS Setup -->
-    <VisualStudioInsertionComponent>Microsoft.VisualStudio.Editors</VisualStudioInsertionComponent>
+    <!-- Set's the JSON manifest name for GetVsixPrimaryOutputs in Directory.Build.targets -->
+    <VsixManifestPackageId>$(_EditorsProjectName)</VsixManifestPackageId>
   </PropertyGroup>
+
   <ItemGroup>
     <ProjectReference Include="..\..\src\Microsoft.VisualStudio.AppDesigner\Microsoft.VisualStudio.AppDesigner.vbproj">
-      <Name>Microsoft.VisualStudio.AppDesigner</Name>
       <IncludeOutputGroupsInVSIX>BuiltProjectOutputGroup;GetCopyToOutputDirectoryItems;SatelliteDllsProjectOutputGroup</IncludeOutputGroupsInVSIX>
-      <IncludeOutputGroupsInVSIXLocalOnly>DebugSymbolsProjectOutputGroup</IncludeOutputGroupsInVSIXLocalOnly>
-      <Ngen>true</Ngen>
-      <NgenArchitecture>All</NgenArchitecture>
-      <NgenPriority>3</NgenPriority>
     </ProjectReference>
-    <ProjectReference Include="..\..\src\Microsoft.VisualStudio.Editors\Microsoft.VisualStudio.Editors.vbproj">
-      <Name>Microsoft.VisualStudio.Editors</Name>
+    <ProjectReference Include="..\..\src\$(_EditorsProjectName)\$(_EditorsProjectName).vbproj">
       <IncludeOutputGroupsInVSIX>BuiltProjectOutputGroup;GetCopyToOutputDirectoryItems;SatelliteDllsProjectOutputGroup;PkgdefProjectOutputGroup</IncludeOutputGroupsInVSIX>
+    </ProjectReference>
+    <ProjectReference Update="@(ProjectReference)">
+      <Name>%(Filename)</Name>
       <IncludeOutputGroupsInVSIXLocalOnly>DebugSymbolsProjectOutputGroup</IncludeOutputGroupsInVSIXLocalOnly>
       <Ngen>true</Ngen>
       <NgenArchitecture>All</NgenArchitecture>
       <NgenPriority>3</NgenPriority>
     </ProjectReference>
   </ItemGroup>
+
   <ItemGroup>
     <Compile Include="..\Common\ProvideCodeBaseBindingRedirection.cs">
       <Link>ProvideCodeBaseBindingRedirection.cs</Link>
     </Compile>
   </ItemGroup>
+
 </Project>

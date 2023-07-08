@@ -37,6 +37,11 @@
         <target state="translated">最新检查</target>
         <note />
       </trans-unit>
+      <trans-unit id="General_MultiTargetingSettings_Title">
+        <source>Multi-Targeting Settings</source>
+        <target state="translated">多目标设置</target>
+        <note />
+      </trans-unit>
       <trans-unit id="General_NestingIgnoreSolutionAndProjectProfiles">
         <source>Ignore solution and project settings</source>
         <target state="translated">忽略解决方案和项目设置</target>
@@ -45,6 +50,16 @@
       <trans-unit id="General_NestingSettings_Title">
         <source>File Nesting Settings</source>
         <target state="translated">文件嵌套设置</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="General_PreferSingleTargetBuildsOnLaunch">
+        <source>Prefer single-target builds when starting a project.</source>
+        <target state="translated">启动项目时首选单目标生成。</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="General_PreferSingleTargetBuildsOnLaunchDescription">
+        <source>When starting a project that targets multiple .NET frameworks, the build time can be reduced by limiting the build to a single framework.</source>
+        <target state="translated">启动面向多个 .NET Framework 的项目时，可以通过将生成限制为单个框架来缩短生成时间。</target>
         <note />
       </trans-unit>
     </body>

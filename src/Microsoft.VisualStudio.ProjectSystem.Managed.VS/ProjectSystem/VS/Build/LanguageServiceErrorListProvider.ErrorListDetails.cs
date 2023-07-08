@@ -1,6 +1,5 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
-using System;
 using Microsoft.VisualStudio.Shell.Interop;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Build
@@ -12,7 +11,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build
         /// </summary>
         internal struct ErrorListDetails
         {
-            public string Message { get; set; }
+            public string? Message { get; set; }
 
             public string ProjectFile { get; set; }
 
@@ -102,8 +101,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build
             /// <returns>An absolute path, or the empty string if <paramref name="path"/> invalid.</returns>
             private static string TryMakeRooted(string basePath, string path)
             {
-                Requires.NotNullOrEmpty(basePath, nameof(basePath));
-                Requires.NotNullOrEmpty(path, nameof(path));
+                Requires.NotNullOrEmpty(basePath);
+                Requires.NotNullOrEmpty(path);
 
                 try
                 {

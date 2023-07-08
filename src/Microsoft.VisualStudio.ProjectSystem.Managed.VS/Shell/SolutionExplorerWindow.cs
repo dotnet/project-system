@@ -1,7 +1,5 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
-using System;
-using System.ComponentModel.Composition;
 using Microsoft.VisualStudio.Composition;
 using Microsoft.VisualStudio.ProjectSystem;
 using Microsoft.VisualStudio.ProjectSystem.VS;
@@ -41,7 +39,7 @@ namespace Microsoft.VisualStudio.Shell
             get
             {
                 _threadingService.VerifyOnUIThread();
-                return _solutionExplorer.Value != null;
+                return _solutionExplorer.Value is not null;
             }
         }
 
@@ -59,7 +57,7 @@ namespace Microsoft.VisualStudio.Shell
 
         private HResult ExpandItem(IVsUIHierarchy uiHierarchy, HierarchyId id, EXPANDFLAGS flags)
         {
-            Requires.NotNull(uiHierarchy, nameof(uiHierarchy));
+            Requires.NotNull(uiHierarchy);
             Requires.Argument(!(id.IsNilOrEmpty || id.IsSelection), nameof(id), "id must not be nil, empty or represent a selection.");
 
             return Invoke(window => window.ExpandItem(uiHierarchy, id, flags));
@@ -70,7 +68,7 @@ namespace Microsoft.VisualStudio.Shell
             _threadingService.VerifyOnUIThread();
 
             IVsUIHierarchyWindow2? window = _solutionExplorer.Value;
-            if (window == null)
+            if (window is null)
             {
                 throw new InvalidOperationException("Solution Explorer is not available in command-line mode.");
             }
@@ -80,7 +78,7 @@ namespace Microsoft.VisualStudio.Shell
 
         private static IVsUIHierarchyWindow2? GetUIHierarchyWindow(IVsUIService<IVsUIShell> shell, Guid persistenceSlot)
         {
-            if (ErrorHandler.Succeeded(shell.Value.FindToolWindow(0, ref persistenceSlot, out IVsWindowFrame? frame)) && frame != null)
+            if (ErrorHandler.Succeeded(shell.Value.FindToolWindow(0, ref persistenceSlot, out IVsWindowFrame? frame)) && frame is not null)
             {
                 ErrorHandler.ThrowOnFailure(frame.GetProperty((int)__VSFPROPID.VSFPROPID_DocView, out object? view));
 

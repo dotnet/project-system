@@ -1,11 +1,6 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
-using System.Collections.Generic;
-using System.Collections.Immutable;
-using System.Threading;
-using System.Threading.Tasks;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
-using Moq;
 
 namespace Microsoft.VisualStudio.ProjectSystem
 {
@@ -22,7 +17,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
                 .Setup(o => o.GetCatalogAsync(It.IsAny<string>(), CancellationToken.None))
                 .Returns((string name, CancellationToken token) => Task.FromResult(catalogsByContext[name]));
 
-            if (memoryOnlyCatalog != null)
+            if (memoryOnlyCatalog is not null)
             {
                 catalogProvider
                     .Setup(o => o.GetMemoryOnlyCatalog(It.IsAny<string>()))

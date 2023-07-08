@@ -1,12 +1,7 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
-using System;
-using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
-using System.IO;
-using System.Linq;
 using System.Text;
-using System.Text.RegularExpressions;
 
 namespace Microsoft.VisualStudio.IO
 {
@@ -22,7 +17,6 @@ namespace Microsoft.VisualStudio.IO
         {
             public string? FileContents;
             public DateTime LastWriteTimeUtc = DateTime.MaxValue;
-            public Encoding FileEncoding = Encoding.Default;
 
             public void SetLastWriteTime()
             {
@@ -46,16 +40,12 @@ namespace Microsoft.VisualStudio.IO
         private readonly HashSet<string> _folders = new(StringComparer.OrdinalIgnoreCase);
 
         private string? _currentDirectory;
-        private string? _tempFile;
 
         public Dictionary<string, FileData> Files { get; } = new Dictionary<string, FileData>(StringComparer.OrdinalIgnoreCase);
 
-        public Stream Create(string path)
+        public void Create(string path)
         {
-            WriteAllText(path, "");
-
-            // Caller does not check the return value.
-            return null!;
+            _ = WriteAllTextAsync(path, "");
         }
 
         public void AddFile(string path, DateTime? lastWriteTime = null)
@@ -63,7 +53,6 @@ namespace Microsoft.VisualStudio.IO
             Files[path] = new FileData
             {
                 FileContents = "",
-                FileEncoding = Encoding.UTF8,
                 LastWriteTimeUtc = lastWriteTime ?? DateTime.UtcNow
             };
         }
@@ -71,57 +60,6 @@ namespace Microsoft.VisualStudio.IO
         public void AddFolder(string path)
         {
             _folders.Add(path);
-        }
-
-        public void SetDirectoryAttribute(string path, FileAttributes newAttribute)
-        {
-        }
-
-        public IEnumerable<string> EnumerateDirectories(string path)
-        {
-            return _folders.Where(folderPath =>
-            {
-                if (!folderPath.StartsWith(path, StringComparison.OrdinalIgnoreCase) || folderPath.Equals(path, StringComparison.OrdinalIgnoreCase))
-                    return false;
-
-                var offset = folderPath[path.Length] == Path.DirectorySeparatorChar
-                    ? path.Length + 1
-                    : path.Length;
-
-                return folderPath.IndexOf(Path.DirectorySeparatorChar, offset) == -1;
-            });
-        }
-
-        public IEnumerable<string> EnumerateDirectories(string path, string searchPattern, SearchOption searchOption)
-        {
-            return EnumerateDirectories(path);
-        }
-
-        // SearchOption is ignored and always considered fully recursive.
-        // Now supports search patterns
-        public IEnumerable<string> EnumerateFiles(string path, string searchPattern, SearchOption searchOption)
-        {
-            var files = Files.Keys.Where(filePath => filePath.StartsWith(path));
-
-            // Need to handle at least simple wildcards. *.* and *.ext
-            if (string.IsNullOrEmpty(searchPattern))
-            {
-                return files;
-            }
-            else
-            {
-                var regex = new Regex(WildcardToRegex(searchPattern), RegexOptions.IgnoreCase);
-                return files.Where(filePath => regex.IsMatch(Path.GetFileName(filePath)));
-            }
-        }
-
-        // Convert the wildcard to a regex
-        public static string WildcardToRegex(string pattern)
-        {
-            return "^" +
-               Regex.Escape(pattern)
-                   .Replace("\\*", ".*")
-                   .Replace("\\?", ".") + "$";
         }
 
         public bool FileExists(string path)
@@ -148,14 +86,9 @@ namespace Microsoft.VisualStudio.IO
             _currentDirectory = directory;
         }
 
-        public string GetCurrentDirectory()
-        {
-            return _currentDirectory!;
-        }
-
         public string GetFullPath(string path)
         {
-            if (_currentDirectory != null)
+            if (_currentDirectory is not null)
             {
                 var pathRoot = Path.GetPathRoot(path);
                 if (pathRoot == @"\")
@@ -188,27 +121,22 @@ namespace Microsoft.VisualStudio.IO
             }
         }
 
-        public string ReadAllText(string path)
+        public Task<string> ReadAllTextAsync(string path)
         {
-            if (!FileExists(path))
-            {
-                throw new FileNotFoundException();
-            }
-            return Files[path].FileContents!;
+            return Task.FromResult(GetFileData(path).FileContents!);
         }
 
-        public void WriteAllText(string path, string content)
+        public Stream OpenTextStream(string path)
         {
-            WriteAllText(path, content, Encoding.Default);
+            return new MemoryStream(Encoding.UTF8.GetBytes(GetFileData(path).FileContents!));
         }
 
-        public void WriteAllText(string path, string content, Encoding encoding)
+        public Task WriteAllTextAsync(string path, string content)
         {
             if (Files.TryGetValue(path, out FileData data))
             {
                 // This makes sure each write to the file increases the timestamp
                 data.FileContents = content;
-                data.FileEncoding = encoding;
                 data.SetLastWriteTime();
             }
             else
@@ -216,10 +144,11 @@ namespace Microsoft.VisualStudio.IO
                 Files[path] = new FileData
                 {
                     FileContents = content,
-                    FileEncoding = encoding,
                     LastWriteTimeUtc = DateTime.UtcNow
                 };
             }
+
+            return Task.CompletedTask;
         }
 
         public DateTime GetLastFileWriteTimeOrMinValueUtc(string path)
@@ -244,45 +173,41 @@ namespace Microsoft.VisualStudio.IO
             return false;
         }
 
-        public void RemoveDirectory(string directoryPath, bool recursive)
+        public bool TryGetFileSizeBytes(string path, out long result)
         {
-            bool found = _folders.Remove(directoryPath);
-            if (!found)
+            if (Files.TryGetValue(path, out FileData value))
             {
-                throw new DirectoryNotFoundException();
+                result = value.FileContents?.Length ?? 0;
+                return true;
             }
 
-            if (recursive)
-            {
-                foreach (var item in Files.Where(file => file.Key.StartsWith(directoryPath)).ToList())
-                {
-                    Files.Remove(item.Key);
-                }
-            }
-        }
-
-        public void SetTempFile(string tempFile)
-        {
-            _tempFile = tempFile;
-        }
-
-        public string GetTempDirectoryOrFileName()
-        {
-            return _tempFile!;
-        }
-
-        public void WriteAllBytes(string path, byte[] bytes)
-        {
-        }
-
-        public long FileLength(string filename)
-        {
-            return ReadAllText(filename).Length;
+            result = default;
+            return false;
         }
 
         public bool PathExists(string path)
         {
             throw new NotImplementedException();
+        }
+
+        public (long SizeBytes, DateTime WriteTimeUtc)? GetFileSizeAndWriteTimeUtc(string path)
+        {
+            if (Files.TryGetValue(path, out FileData value))
+            {
+                return (value.FileContents?.Length ?? 0, value.LastWriteTimeUtc);
+            }
+
+            return null;
+        }
+
+        private FileData GetFileData(string path)
+        {
+            if (!Files.TryGetValue(path, out FileData fileData))
+            {
+                throw new FileNotFoundException();
+            }
+
+            return fileData;
         }
     }
 }

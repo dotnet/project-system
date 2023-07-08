@@ -1,16 +1,16 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
-using System.Threading;
-using System.Threading.Tasks;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
 using Microsoft.VisualStudio.ProjectSystem.Utilities;
 using Microsoft.VisualStudio.Shell;
+
+using Flags = Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.DependencyTreeFlags;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections
 {
     /// <summary>
     /// A search context which decorates an <see cref="DependenciesTreeSearchContext"/> instance
-    /// with project-specific behaviour.
+    /// with project-specific behavior.
     /// </summary>
     internal sealed class DependenciesTreeProjectSearchContext : IDependenciesTreeProjectSearchContext
     {
@@ -42,18 +42,18 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedColl
 
         public async Task<IDependenciesTreeConfiguredProjectSearchContext?> ForConfiguredProjectAsync(ConfiguredProject configuredProject, CancellationToken cancellationToken = default)
         {
-            Requires.NotNull(configuredProject, nameof(configuredProject));
+            Requires.NotNull(configuredProject);
 
             IProjectTree targetRootNode;
 
-            if (_dependenciesNode.FindChildWithFlags(DependencyTreeFlags.TargetNode) == null)
+            if (_dependenciesNode.FindChildWithFlags(Flags.TargetNode) is null)
             {
                 // Tree does not show any target nodes
                 targetRootNode = _dependenciesNode;
             }
             else
             {
-                if (configuredProject.Services.ProjectSubscription == null)
+                if (configuredProject.Services.ProjectSubscription is null)
                 {
                     return null;
                 }
@@ -68,7 +68,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedColl
 
                 IProjectTree? targetNode = _dependenciesNode.FindChildWithFlags(ProjectTreeFlags.Create("$TFM:" + tf));
 
-                if (targetNode == null)
+                if (targetNode is null)
                 {
                     TraceUtilities.TraceError("Should not fail to find the target node.");
                     return null;

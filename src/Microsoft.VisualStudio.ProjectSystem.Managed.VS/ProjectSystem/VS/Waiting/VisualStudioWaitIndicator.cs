@@ -1,10 +1,5 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
-using System;
-using System.ComponentModel.Composition;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
 using Microsoft.VisualStudio.ProjectSystem.Waiting;
 using Microsoft.VisualStudio.Shell.Interop;
 using Microsoft.VisualStudio.Threading;
@@ -25,16 +20,40 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Waiting
             _waitDialogFactoryService = waitDialogFactoryService;
         }
 
-        public WaitIndicatorResult<T> Run<T>(string title, string message, bool allowCancel, Func<CancellationToken, Task<T>> asyncMethod) where T : class?
+        public WaitIndicatorResult Run(string title, string message, bool allowCancel, Func<IWaitContext, Task> asyncMethod, int totalSteps = 0)
         {
             _joinableTaskContext.VerifyIsOnMainThread();
 
-            using IWaitContext waitContext = StartWait(title, message, allowCancel);
+            using IWaitContext waitContext = new VisualStudioWaitContext(_waitDialogFactoryService.Value, title, message, allowCancel, totalSteps);
 
             try
             {
 #pragma warning disable VSTHRD102 // Deliberate usage  
-                T result = _joinableTaskContext.Factory.Run(() => asyncMethod(waitContext.CancellationToken));
+                _joinableTaskContext.Factory.Run(() => asyncMethod(waitContext));
+#pragma warning restore VSTHRD102
+
+                return WaitIndicatorResult.Completed;
+            }
+            catch (OperationCanceledException)
+            {
+                return WaitIndicatorResult.Cancelled;
+            }
+            catch (AggregateException aggregate) when (aggregate.InnerExceptions.All(e => e is OperationCanceledException))
+            {
+                return WaitIndicatorResult.Cancelled;
+            }
+        }
+
+        public WaitIndicatorResult<T> Run<T>(string title, string message, bool allowCancel, Func<IWaitContext, Task<T>> asyncMethod, int totalSteps = 0)
+        {
+            _joinableTaskContext.VerifyIsOnMainThread();
+
+            using IWaitContext waitContext = new VisualStudioWaitContext(_waitDialogFactoryService.Value, title, message, allowCancel, totalSteps);
+
+            try
+            {
+#pragma warning disable VSTHRD102 // Deliberate usage  
+                T result = _joinableTaskContext.Factory.Run(() => asyncMethod(waitContext));
 #pragma warning restore VSTHRD102
 
                 return WaitIndicatorResult<T>.FromResult(result);
@@ -47,11 +66,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Waiting
             {
                 return WaitIndicatorResult<T>.Cancelled;
             }
-        }
-
-        private IWaitContext StartWait(string title, string message, bool allowCancel)
-        {
-            return new VisualStudioWaitContext(_waitDialogFactoryService.Value, title, message, allowCancel);
         }
     }
 }

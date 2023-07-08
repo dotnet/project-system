@@ -1,7 +1,5 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
-using System;
-using System.Collections.Generic;
 using System.Collections.Specialized;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections
@@ -31,8 +29,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedColl
 
         internal AggregateContainsRelationCollectionSpan(AggregateContainsRelationCollection parent, IRelation relation)
         {
-            Requires.NotNull(parent, nameof(parent));
-            Requires.NotNull(relation, nameof(relation));
+            Requires.NotNull(parent);
+            Requires.NotNull(relation);
 
             _parent = parent;
             Relation = relation;
@@ -96,7 +94,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedColl
 
             bool? srcConsumed = null;
 
-            for (int itemIndex = 0; Items != null && itemIndex < Items.Count; itemIndex++)
+            for (int itemIndex = 0; Items is not null && itemIndex < Items.Count; itemIndex++)
             {
                 if (srcConsumed != false && !src.MoveNext())
                 {

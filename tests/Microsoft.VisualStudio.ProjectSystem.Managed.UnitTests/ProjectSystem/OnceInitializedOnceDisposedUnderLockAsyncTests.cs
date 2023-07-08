@@ -1,10 +1,6 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
-using System;
-using System.Threading;
-using System.Threading.Tasks;
 using Microsoft.VisualStudio.Threading;
-using Xunit;
 
 namespace Microsoft.VisualStudio.ProjectSystem
 {
@@ -15,9 +11,9 @@ namespace Microsoft.VisualStudio.ProjectSystem
         {
             var instance = CreateInstance();
 
-            Assert.Throws<ArgumentNullException>(() =>
+            Assert.ThrowsAsync<ArgumentNullException>(() =>
             {
-                instance.ExecuteUnderLockAsync(null!, CancellationToken.None);
+                return instance.ExecuteUnderLockAsync(null!, CancellationToken.None);
             });
         }
 
@@ -26,9 +22,9 @@ namespace Microsoft.VisualStudio.ProjectSystem
         {
             var instance = CreateInstance();
 
-            Assert.Throws<ArgumentNullException>(() =>
+            Assert.ThrowsAsync<ArgumentNullException>(() =>
             {
-                instance.ExecuteUnderLockAsync<string>(null!, CancellationToken.None);
+                return instance.ExecuteUnderLockAsync<string>(null!, CancellationToken.None);
             });
         }
 
@@ -277,9 +273,9 @@ namespace Microsoft.VisualStudio.ProjectSystem
             var firstRelease = new AsyncManualResetEvent();
             var disposeEntered = new AsyncManualResetEvent();
 
-            ConcreteOnceInitializedOnceDisposedUnderLockAsync? instance = null;
+            ConcreteOnceInitializedOnceDisposedUnderLockAsync? instance;
 
-            Task firstAction() => instance!.ExecuteUnderLockAsync(async (ct) =>
+            Task firstAction() => instance.ExecuteUnderLockAsync(async (ct) =>
             {
                 firstEntered.Set();
                 await firstRelease.WaitAsync();
@@ -291,7 +287,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
                 return Task.CompletedTask;
             });
 
-            Task disposeAction() => Task.Run(instance!.DisposeAsync);
+            Task disposeAction() => Task.Run(instance.DisposeAsync);
 
             await AssertNoOverlap(firstAction, disposeAction, firstEntered, firstRelease, disposeEntered);
         }
@@ -303,9 +299,9 @@ namespace Microsoft.VisualStudio.ProjectSystem
             var firstRelease = new AsyncManualResetEvent();
             var disposeEntered = new AsyncManualResetEvent();
 
-            ConcreteOnceInitializedOnceDisposedUnderLockAsync? instance = null;
+            ConcreteOnceInitializedOnceDisposedUnderLockAsync? instance;
 
-            Task firstAction() => instance!.ExecuteUnderLockAsync(async (ct) =>
+            Task firstAction() => instance.ExecuteUnderLockAsync(async (ct) =>
             {
                 firstEntered.Set();
                 await firstRelease.WaitAsync();
@@ -319,7 +315,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
                 return Task.CompletedTask;
             });
 
-            Task disposeAction() => Task.Run(instance!.DisposeAsync);
+            Task disposeAction() => Task.Run(instance.DisposeAsync);
 
             await AssertNoOverlap(firstAction, disposeAction, firstEntered, firstRelease, disposeEntered);
         }

@@ -1,0 +1,102 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
+  <file datatype="xml" source-language="en" target-language="zh-Hant" original="../ApplicationPropertyPage.CSharp.xaml">
+    <body>
+      <trans-unit id="BoolProperty|IsPublishable|Description">
+        <source>Allow publishing outside of Visual Studio, such as via "dotnet publish".</source>
+        <target state="translated">允許在 Visual Studio 以外發佈，例如透過「dotnet publish」。</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="BoolProperty|IsPublishable|DisplayName">
+        <source>Publishing</source>
+        <target state="translated">發行</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="Category|Packaging|Description">
+        <source>Packaging settings for the application.</source>
+        <target state="translated">應用程式的封裝設定。</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="Category|Packaging|DisplayName">
+        <source>Packaging</source>
+        <target state="translated">封裝</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="Category|Resources|Description">
+        <source>Resource settings for the application.</source>
+        <target state="translated">應用程式的資源設定。</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="Category|Resources|DisplayName">
+        <source>Win32 Resources</source>
+        <target state="translated">Win32 資源</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumProperty|ApplicationManifestKind|Description">
+        <source>Selects a manifest generation option when the application runs on Windows Vista or later under User Account Control (UAC). Options include a default manifest, no manifest, or a custom manifest provided by your project.</source>
+        <target state="translated">選取當應用程式在 Windows Vista 或更新版本上之使用者帳戶控制 (UAC) 下執行時的資訊清單產選項。這些選項包括 [預設資訊清單]、[無資訊清單] 或 [專案提供的自訂資訊清單]。</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumProperty|ApplicationManifestKind|DisplayName">
+        <source>Manifest</source>
+        <target state="translated">資訊清單</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumProperty|ResourceSpecificationKind|Description">
+        <source>Specifies how application resources will be managed.</source>
+        <target state="translated">指定要應用程式資源的管理方式。</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumProperty|ResourceSpecificationKind|DisplayName">
+        <source>Resources</source>
+        <target state="translated">資源</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|ApplicationManifestKind.CustomManifest|DisplayName">
+        <source>Use a custom manifest</source>
+        <target state="translated">使用自訂資訊清單</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|ApplicationManifestKind.DefaultManifest|DisplayName">
+        <source>Embed manifest with default settings</source>
+        <target state="translated">用預設設定嵌入資訊清單</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|ApplicationManifestKind.NoManifest|DisplayName">
+        <source>Create application without a manifest</source>
+        <target state="translated">建立無資訊清單應用程式</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|ResourceSpecificationKind.IconAndManifest|DisplayName">
+        <source>Icon and manifest</source>
+        <target state="translated">圖示與資訊清單</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|ResourceSpecificationKind.ResourceFile|DisplayName">
+        <source>Resource file</source>
+        <target state="translated">資源檔案</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|ApplicationManifestPath|Description">
+        <source>The path to the custom manifest file.</source>
+        <target state="translated">自訂資訊清單檔案的路徑。</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|ApplicationManifestPath|DisplayName">
+        <source>Manifest path</source>
+        <target state="translated">資訊清單路徑</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|Win32Resource|Description">
+        <source>Specifies a resource file for the project.</source>
+        <target state="translated">指定專案的資源檔案。</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|Win32Resource|DisplayName">
+        <source>Resource file</source>
+        <target state="translated">資源檔</target>
+        <note />
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

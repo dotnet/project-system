@@ -70,6 +70,15 @@ namespace Microsoft.VisualStudio {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Visual Studio accelerated {0} project(s), copying {1} file(s). See https://aka.ms/vs-build-acceleration..
+        /// </summary>
+        internal static string BuildAccelerationSummary_2 {
+            get {
+                return ResourceManager.GetString("BuildAccelerationSummary_2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Component (Windows Forms) Designer.
         /// </summary>
         internal static string ComponentEditor_DisplayName {
@@ -106,11 +115,11 @@ namespace Microsoft.VisualStudio {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The project doesn&apos;t know how to run the profile {0}..
+        ///   Looks up a localized string similar to The project doesn&apos;t know how to run the profile with name &apos;{0}&apos; and command &apos;{1}&apos;..
         /// </summary>
-        internal static string DontKnowHowToRunProfile {
+        internal static string DontKnowHowToRunProfile_2 {
             get {
-                return ResourceManager.GetString("DontKnowHowToRunProfile", resourceCulture);
+                return ResourceManager.GetString("DontKnowHowToRunProfile_2", resourceCulture);
             }
         }
         
@@ -120,15 +129,6 @@ namespace Microsoft.VisualStudio {
         internal static string DontShowAgain {
             get {
                 return ResourceManager.GetString("DontShowAgain", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Edit {0}.
-        /// </summary>
-        internal static string EditProjectFileCommand {
-            get {
-                return ResourceManager.GetString("EditProjectFileCommand", resourceCulture);
             }
         }
         
@@ -322,11 +322,11 @@ namespace Microsoft.VisualStudio {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Learn more.
+        ///   Looks up a localized string similar to WARNING: Potential build performance issue in &apos;{0}&apos;. The project does not appear up-to-date after a successful build: {1}. See https://aka.ms/incremental-build-failure..
         /// </summary>
-        internal static string LearnMore {
+        internal static string IncrementalBuildFailureWarningMessage_2 {
             get {
-                return ResourceManager.GetString("LearnMore", resourceCulture);
+                return ResourceManager.GetString("IncrementalBuildFailureWarningMessage_2", resourceCulture);
             }
         }
         
@@ -349,51 +349,6 @@ namespace Microsoft.VisualStudio {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Expected to find migrated cpsroj in {0}, but did not find any..
-        /// </summary>
-        internal static string NoMigratedCSProjFound {
-            get {
-                return ResourceManager.GetString("NoMigratedCSProjFound", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Unable to run your project. The &quot;RunCommand&quot; property is not defined..
-        /// </summary>
-        internal static string NoRunCommandSpecifiedInProject {
-            get {
-                return ResourceManager.GetString("NoRunCommandSpecifiedInProject", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Projects targeting .NET Core {0}.{1} or newer are not supported by this version of Visual Studio..
-        /// </summary>
-        internal static string NotSupportedDotNetCoreProject {
-            get {
-                return ResourceManager.GetString("NotSupportedDotNetCoreProject", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to OK.
-        /// </summary>
-        internal static string OKButtonText {
-            get {
-                return ResourceManager.GetString("OKButtonText", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Project.
-        /// </summary>
-        internal static string OutputWindowPaneTitle {
-            get {
-                return ResourceManager.GetString("OutputWindowPaneTitle", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to &amp;Pack.
         /// </summary>
         internal static string PackCommand {
@@ -412,16 +367,7 @@ namespace Microsoft.VisualStudio {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to A newer version of Visual Studio is recommended for projects targeting .NET Core {0}.{1}..
-        /// </summary>
-        internal static string PartialSupportedDotNetCoreProject {
-            get {
-                return ResourceManager.GetString("PartialSupportedDotNetCoreProject", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to {0}: Attaching to process &apos;{1}&apos;..
+        ///   Looks up a localized string similar to Attaching to process..
         /// </summary>
         internal static string ProjectHotReloadSessionManager_AttachingToProcess {
             get {
@@ -430,20 +376,8 @@ namespace Microsoft.VisualStudio {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to {0}: Error while attaching to process &apos;{1}&apos;:
-        ///{2}
-        ///{3}.
-        /// </summary>
-        internal static string ProjectHotReloadSessionManager_ErrorAttachingToProcess {
-            get {
-                return ResourceManager.GetString("ProjectHotReloadSessionManager_ErrorAttachingToProcess", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to {0}: Error while stopping the session:
-        ///{1}
-        ///{2}.
+        ///   Looks up a localized string similar to Error while stopping the session: {0}
+        ///{1}.
         /// </summary>
         internal static string ProjectHotReloadSessionManager_ErrorStoppingTheSession {
             get {
@@ -452,7 +386,7 @@ namespace Microsoft.VisualStudio {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to {0}: Unable to start Hot Reload session: no active process..
+        ///   Looks up a localized string similar to Unable to start Hot Reload session: no active process..
         /// </summary>
         internal static string ProjectHotReloadSessionManager_NoActiveProcess {
             get {
@@ -461,7 +395,7 @@ namespace Microsoft.VisualStudio {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to {0}: The process has already exited..
+        ///   Looks up a localized string similar to The process has already exited..
         /// </summary>
         internal static string ProjectHotReloadSessionManager_ProcessAlreadyExited {
             get {
@@ -470,11 +404,20 @@ namespace Microsoft.VisualStudio {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to {0}: The process has exited..
+        ///   Looks up a localized string similar to The process has exited..
         /// </summary>
         internal static string ProjectHotReloadSessionManager_ProcessExited {
             get {
                 return ResourceManager.GetString("ProjectHotReloadSessionManager_ProcessExited", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Hot Reload is not available because startup hooks have been disabled, possibly due to trimming..
+        /// </summary>
+        internal static string ProjectHotReloadSessionManager_StartupHooksDisabled {
+            get {
+                return ResourceManager.GetString("ProjectHotReloadSessionManager_StartupHooksDisabled", resourceCulture);
             }
         }
         
@@ -526,38 +469,20 @@ namespace Microsoft.VisualStudio {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The metadata on &apos;DotNetCliToolReference&apos; item &apos;{0}&apos; is inconsistent between target frameworks. Only the first one will be restored..
-        /// </summary>
-        internal static string Restore_DuplicateToolReferenceItems {
-            get {
-                return ResourceManager.GetString("Restore_DuplicateToolReferenceItems", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to The value of the &apos;TargetFrameworkMoniker&apos; and &apos;NuGetTargetMoniker&apos; properties in the &apos;{0}&apos; configuration are both empty. This configuration will not contribute to NuGet restore, which may result in restore and build errors..
-        /// </summary>
-        internal static string Restore_EmptyTargetFrameworkMoniker {
-            get {
-                return ResourceManager.GetString("Restore_EmptyTargetFrameworkMoniker", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to The value of the &apos;{0}&apos; property is inconsistent between target frameworks. This property must be identical for NuGet restore to function correctly. The value &apos;{1}&apos; from the &apos;{2}&apos; configuration will be used, other target frameworks may fail to pick NuGet assets..
-        /// </summary>
-        internal static string Restore_PropertyWithInconsistentValues {
-            get {
-                return ResourceManager.GetString("Restore_PropertyWithInconsistentValues", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to (Not set).
         /// </summary>
         internal static string StartupObjectNotSet {
             get {
                 return ResourceManager.GetString("StartupObjectNotSet", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Adjust namespaces for moved files?.
+        /// </summary>
+        internal static string UpdateNamespacePromptMessage {
+            get {
+                return ResourceManager.GetString("UpdateNamespacePromptMessage", resourceCulture);
             }
         }
         
@@ -585,6 +510,24 @@ namespace Microsoft.VisualStudio {
         internal static string WorkingDirecotryInvalid {
             get {
                 return ResourceManager.GetString("WorkingDirecotryInvalid", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Could not find the expected root element &quot;{0}&quot; in the application definition file..
+        /// </summary>
+        internal static string WPFApp_Xaml_CouldntFindRootElement_1 {
+            get {
+                return ResourceManager.GetString("WPFApp_Xaml_CouldntFindRootElement_1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The .xaml file was in an unexpected format, near line {0} column {1}..
+        /// </summary>
+        internal static string WPFApp_Xaml_UnexpectedFormat_2 {
+            get {
+                return ResourceManager.GetString("WPFApp_Xaml_UnexpectedFormat_2", resourceCulture);
             }
         }
         

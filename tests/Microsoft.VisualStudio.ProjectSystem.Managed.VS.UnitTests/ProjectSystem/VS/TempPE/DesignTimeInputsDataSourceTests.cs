@@ -1,9 +1,5 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using Xunit;
-
 // Nullable annotations don't add a lot of value to this class, and until https://github.com/dotnet/roslyn/issues/33199 is fixed
 // MemberData doesn't work anyway
 #nullable disable
@@ -19,16 +15,18 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
                 // A single design time input
                 new object[]
                 {
-                    @"""CurrentState"": {
-                        ""Compile"": {
-                            ""Items"": { 
-                                ""File1.cs"": {
-                                    ""DesignTime"": true,
-                                    ""FullPath"": ""C:\\Project\\File1.cs""
+                    """
+                    "CurrentState": {
+                        "Compile": {
+                            "Items": { 
+                                "File1.cs": {
+                                    "DesignTime": true,
+                                    "FullPath": "C:\\Project\\File1.cs"
                                 }
                             }
                         }
-                    }",
+                    }
+                    """,
                     new string[] { "C:\\Project\\File1.cs" },
                     new string[] { }
                 },
@@ -36,19 +34,21 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
                 // A single design time input, and a normal file
                 new object[]
                 {
-                    @"""CurrentState"": {
-                        ""Compile"": {
-                            ""Items"": { 
-                                ""File1.cs"": {
-                                    ""DesignTime"": true,
-                                    ""FullPath"": ""C:\\Project\\File1.cs""
+                    """
+                    "CurrentState": {
+                        "Compile": {
+                            "Items": { 
+                                "File1.cs": {
+                                    "DesignTime": true,
+                                    "FullPath": "C:\\Project\\File1.cs"
                                 },
-                                ""File2.cs"": {
-                                    ""FullPath"": ""C:\\Project\\File2.cs""
+                                "File2.cs": {
+                                    "FullPath": "C:\\Project\\File2.cs"
                                 }
                             }
                         }
-                    }",
+                    }
+                    """,
                     new string[] { "C:\\Project\\File1.cs" },
                     new string[] { }
                 },
@@ -56,20 +56,22 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
                 // A single design time input, and a single shared design time input
                 new object[]
                 {
-                    @"""CurrentState"": {
-                        ""Compile"": {
-                            ""Items"": { 
-                                ""File1.cs"": {
-                                    ""DesignTime"": true,
-                                    ""FullPath"": ""C:\\Project\\File1.cs""
+                    """
+                    "CurrentState": {
+                        "Compile": {
+                            "Items": { 
+                                "File1.cs": {
+                                    "DesignTime": true,
+                                    "FullPath": "C:\\Project\\File1.cs"
                                 },
-                                ""File2.cs"": {
-                                    ""DesignTimeSharedInput"": true,
-                                    ""FullPath"": ""C:\\Project\\File2.cs""
+                                "File2.cs": {
+                                    "DesignTimeSharedInput": true,
+                                    "FullPath": "C:\\Project\\File2.cs"
                                 }
                             }
                         }
-                    }",
+                    }
+                    """,
                     new string[] { "C:\\Project\\File1.cs" },
                     new string[] { "C:\\Project\\File2.cs" }
                 },
@@ -77,17 +79,19 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
                 // A file that is both a design time and shared design time input
                 new object[]
                 {
-                    @"""CurrentState"": {
-                        ""Compile"": {
-                            ""Items"": { 
-                                ""File1.cs"": {
-                                    ""DesignTime"": true,
-                                    ""DesignTimeSharedInput"": true,
-                                    ""FullPath"": ""C:\\Project\\File1.cs""
+                    """
+                    "CurrentState": {
+                        "Compile": {
+                            "Items": { 
+                                "File1.cs": {
+                                    "DesignTime": true,
+                                    "DesignTimeSharedInput": true,
+                                    "FullPath": "C:\\Project\\File1.cs"
                                 }
                             }
                         }
-                    }",
+                    }
+                    """,
                     new string[] { "C:\\Project\\File1.cs" },
                     new string[] { "C:\\Project\\File1.cs" }
                 },
@@ -95,17 +99,19 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
                 // A design time input that is a linked file, and hence ignored
                 new object[]
                 {
-                    @"""CurrentState"": {
-                        ""Compile"": {
-                            ""Items"": { 
-                                ""File1.cs"": {
-                                    ""DesignTime"": true,
-                                    ""Link"": ""foo"",
-                                    ""FullPath"": ""C:\\Project\\File1.cs""
+                    """
+                    "CurrentState": {
+                        "Compile": {
+                            "Items": { 
+                                "File1.cs": {
+                                    "DesignTime": true,
+                                    "Link": "foo",
+                                    "FullPath": "C:\\Project\\File1.cs"
                                 }
                             }
                         }
-                    }",
+                    }
+                    """,
                     new string[] { },
                     new string[] { }
                 },
@@ -118,13 +124,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
         {
             using DesignTimeInputsDataSource dataSource = CreateDesignTimeInputsDataSource(out ProjectValueDataSource<IProjectSubscriptionUpdate> sourceItemsRuleSource);
 
-            const string defaultProjectConfig = @"""ProjectConfiguration"": {
-                                                    ""Name"": ""Debug|AnyCPU"",
-                                                    ""Dimensions"": {
-                                                        ""Configuration"": ""Debug"",
-                                                        ""Platform"": ""AnyCPU""
-                                                    }
-                                                }";
+            const string defaultProjectConfig =
+                """
+                "ProjectConfiguration": {
+                    "Name": "Debug|AnyCPU",
+                    "Dimensions": {
+                        "Configuration": "Debug",
+                        "Platform": "AnyCPU"
+                    }
+                }
+                """;
 
             // Create a block to receive the results of the block under test
             DesignTimeInputs inputs = null;

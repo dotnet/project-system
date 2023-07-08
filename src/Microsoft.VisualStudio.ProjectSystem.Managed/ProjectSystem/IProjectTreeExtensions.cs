@@ -2,6 +2,7 @@
 
 using System.Diagnostics.Contracts;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
+using Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies;
 
 namespace Microsoft.VisualStudio.ProjectSystem
 {
@@ -15,8 +16,22 @@ namespace Microsoft.VisualStudio.ProjectSystem
         public static IProjectTree? FindChildWithCaption(this IProjectTree tree, string caption)
         {
             return tree.Children.FirstOrDefault(
-                (child, cap) => string.Equals(cap, child.Caption, StringComparisons.ProjectTreeCaptionIgnoreCase),
+                static (child, cap) => string.Equals(cap, child.Caption, StringComparisons.ProjectTreeCaptionIgnoreCase),
                 caption);
+        }
+
+        /// <summary>
+        /// Gets the direct child of <paramref name="tree"/> that represents <paramref name="dependency"/> if
+        /// one exists, otherwise <see langword="null"/>.
+        /// </summary>
+        [Pure]
+        public static IProjectTree? FindChildForDependency(this IProjectTree tree, IDependency dependency)
+        {
+            return tree.Children.FirstOrDefault(
+                static (child, dependency) =>
+                    StringComparers.ItemNames.Equals(dependency.Id, child.BrowseObjectProperties?.ItemName) ||
+                    StringComparers.ProjectTreeCaptionIgnoreCase.Equals(dependency.Caption, child.Caption),
+                dependency);
         }
 
         /// <summary>
@@ -51,18 +66,18 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
             IRule? properties = node.BrowseObjectProperties;
 
-            if (properties?.Schema == null || !project.Services.PropertyPagesCatalog.SourceBlock.TryReceive(null, out IProjectVersionedValue<IProjectCatalogSnapshot>? catalogSnapshot))
+            if (properties?.Schema is null || !project.Services.PropertyPagesCatalog.SourceBlock.TryReceive(null, out IProjectVersionedValue<IProjectCatalogSnapshot>? catalogSnapshot))
                 return properties;
 
             // We let the snapshot be out of date with the "live" project
-            if (!catalogSnapshot.Value.NamedCatalogs.TryGetValue(PropertyPageContexts.BrowseObject, out IPropertyPagesCatalog pagesCatalog))
+            if (!catalogSnapshot.Value.NamedCatalogs.TryGetValue(PropertyPageContexts.BrowseObject, out IPropertyPagesCatalog? pagesCatalog))
                 return properties;
 
             Assumes.NotNull(catalogSnapshot.Value.Project);
 
-            IRule? snapshop = pagesCatalog.BindToContext(properties.Schema.Name, catalogSnapshot.Value.Project.ProjectInstance, properties.ItemType, properties.ItemName);
+            IRule? snapshot = pagesCatalog.BindToContext(properties.Schema.Name, catalogSnapshot.Value.Project.ProjectInstance, properties.ItemType, properties.ItemName);
 
-            return snapshop ?? properties;
+            return snapshot ?? properties;
         }
     }
 }

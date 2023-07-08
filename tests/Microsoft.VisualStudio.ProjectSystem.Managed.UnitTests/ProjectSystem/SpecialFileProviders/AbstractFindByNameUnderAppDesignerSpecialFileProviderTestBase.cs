@@ -1,10 +1,6 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
-using System.IO;
-using System.Threading.Tasks;
-using Moq;
 using Moq.Protected;
-using Xunit;
 
 namespace Microsoft.VisualStudio.ProjectSystem.SpecialFileProviders
 {
@@ -20,9 +16,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.SpecialFileProviders
         [Fact]
         public async Task GetFileAsync_WhenNoAppDesigner_ReturnsPathUnderAppDesigner()
         {
-            var tree = ProjectTreeParser.Parse($@"
-Project (flags: {{ProjectRoot}}), FilePath: ""C:\Project\Project.csproj""
-");
+            var tree = ProjectTreeParser.Parse(
+                $$"""
+                Project (flags: {ProjectRoot}), FilePath: "C:\Project\Project.csproj"
+                """);
             var specialFilesManager = ISpecialFilesManagerFactory.ImplementGetFile(@"C:\Project\Properties");
             var provider = CreateInstance(specialFilesManager, tree);
 
@@ -34,10 +31,11 @@ Project (flags: {{ProjectRoot}}), FilePath: ""C:\Project\Project.csproj""
         [Fact]
         public async Task GetFileAsync_WhenAppDesigner_ReturnsPathUnderAppDesigner()
         {
-            var tree = ProjectTreeParser.Parse($@"
-Project (flags: {{ProjectRoot}}), FilePath: ""C:\Project\Project.csproj""
-    Properties (flags: {{FileSystemEntity Folder AppDesignerFolder}}), FilePath: ""C:\Project\Properties""
-");
+            var tree = ProjectTreeParser.Parse(
+                $$"""
+                Project (flags: {ProjectRoot}), FilePath: "C:\Project\Project.csproj"
+                    Properties (flags: {FileSystemEntity Folder AppDesignerFolder}), FilePath: "C:\Project\Properties"
+                """);
             var specialFilesManager = ISpecialFilesManagerFactory.ImplementGetFile(@"C:\Project\Properties");
             var provider = CreateInstance(specialFilesManager, tree);
 
@@ -49,9 +47,10 @@ Project (flags: {{ProjectRoot}}), FilePath: ""C:\Project\Project.csproj""
         [Fact]
         public async Task GetFileAsync_WhenAppDesignerNotSupported_ReturnsPathUnderProjectRoot()
         {   // AppDesigner is turned off
-            var tree = ProjectTreeParser.Parse($@"
-Project (flags: {{ProjectRoot}}), FilePath: ""C:\Project\Project.csproj""
-");
+            var tree = ProjectTreeParser.Parse(
+                $$"""
+                Project (flags: {ProjectRoot}), FilePath: "C:\Project\Project.csproj"
+                """);
             var specialFilesManager = ISpecialFilesManagerFactory.ImplementGetFile(null);
 
             var provider = CreateInstance(specialFilesManager, tree);
@@ -64,11 +63,12 @@ Project (flags: {{ProjectRoot}}), FilePath: ""C:\Project\Project.csproj""
         [Fact]
         public async Task GetFileAsync_WhenAppDesignerWithFile_ReturnsPath()
         {
-            var tree = ProjectTreeParser.Parse($@"
-Project (flags: {{ProjectRoot}}), FilePath: ""C:\Project\Project.csproj""
-    Properties (flags: {{FileSystemEntity Folder AppDesignerFolder}}), FilePath: ""C:\Project\Properties""
-        {_fileName} (flags: {{FileSystemEntity FileOnDisk}}), FilePath: ""C:\Project\Properties\{_fileName}""
-");
+            var tree = ProjectTreeParser.Parse(
+                $$"""
+                Project (flags: {ProjectRoot}), FilePath: "C:\Project\Project.csproj"
+                    Properties (flags: {FileSystemEntity Folder AppDesignerFolder}), FilePath: "C:\Project\Properties"
+                        {{_fileName}} (flags: {FileSystemEntity FileOnDisk}), FilePath: "C:\Project\Properties\{{_fileName}}"
+                """);
             var specialFilesManager = ISpecialFilesManagerFactory.ImplementGetFile(@"C:\Project\Properties");
             var provider = CreateInstance(specialFilesManager, tree);
 
@@ -80,11 +80,12 @@ Project (flags: {{ProjectRoot}}), FilePath: ""C:\Project\Project.csproj""
         [Fact]
         public async Task GetFileAsync_WhenAppDesignerButRootWithFile_ReturnsPath()
         {
-            var tree = ProjectTreeParser.Parse($@"
-Project (flags: {{ProjectRoot}}), FilePath: ""C:\Project\Project.csproj""
-    Properties (flags: {{FileSystemEntity Folder AppDesignerFolder}}), FilePath: ""C:\Project\Properties""
-    {_fileName} (flags: {{FileSystemEntity FileOnDisk}}), FilePath: ""C:\Project\{_fileName}""
-");
+            var tree = ProjectTreeParser.Parse(
+                $$"""
+                Project (flags: {ProjectRoot}), FilePath: "C:\Project\Project.csproj"
+                    Properties (flags: {FileSystemEntity Folder AppDesignerFolder}), FilePath: "C:\Project\Properties"
+                    {{_fileName}} (flags: {FileSystemEntity FileOnDisk}), FilePath: "C:\Project\{{_fileName}}"
+                """);
             var specialFilesManager = ISpecialFilesManagerFactory.ImplementGetFile(@"C:\Project\Properties");
             var provider = CreateInstance(specialFilesManager, tree);
 
@@ -96,10 +97,11 @@ Project (flags: {{ProjectRoot}}), FilePath: ""C:\Project\Project.csproj""
         [Fact]
         public async Task GetFileAsync_WhenRootWithFile_ReturnsPath()
         {
-            var tree = ProjectTreeParser.Parse($@"
-Project (flags: {{ProjectRoot}}), FilePath: ""C:\Project\Project.csproj""
-    {_fileName} (flags: {{FileSystemEntity FileOnDisk}}), FilePath: ""C:\Project\{_fileName}""
-");
+            var tree = ProjectTreeParser.Parse(
+                $$"""
+                Project (flags: {ProjectRoot}), FilePath: "C:\Project\Project.csproj"
+                    {{_fileName}} (flags: {FileSystemEntity FileOnDisk}), FilePath: "C:\Project\{{_fileName}}"
+                """);
             var specialFilesManager = ISpecialFilesManagerFactory.ImplementGetFile(null);
 
             var provider = CreateInstance(specialFilesManager, tree);
@@ -112,10 +114,11 @@ Project (flags: {{ProjectRoot}}), FilePath: ""C:\Project\Project.csproj""
         [Fact]
         public async Task GetFileAsync_WhenTreeWithFolderSameName_ReturnsPath()
         {
-            var tree = ProjectTreeParser.Parse($@"
-Project (flags: {{ProjectRoot}}), FilePath: ""C:\Project\Project.csproj""
-    {_fileName} (flags: {{FileSystemEntity Folder}}), FilePath: ""C:\Project\{_fileName}""
-");
+            var tree = ProjectTreeParser.Parse(
+                $$"""
+                Project (flags: {ProjectRoot}), FilePath: "C:\Project\Project.csproj"
+                    {{_fileName}} (flags: {FileSystemEntity Folder}), FilePath: "C:\Project\{{_fileName}}"
+                """);
 
             var specialFilesManager = ISpecialFilesManagerFactory.ImplementGetFile(null);
             var provider = CreateInstance(specialFilesManager, tree);
@@ -128,10 +131,11 @@ Project (flags: {{ProjectRoot}}), FilePath: ""C:\Project\Project.csproj""
         [Fact]
         public async Task GetFileAsync_WhenTreeWithFolderSameName_ThrowsIfCreateIfNotExist()
         {
-            var tree = ProjectTreeParser.Parse($@"
-Project (flags: {{ProjectRoot}}), FilePath: ""C:\Project\Project.csproj""
-    {_fileName} (flags: {{FileSystemEntity Folder}}), FilePath: ""C:\Project\{_fileName}""
-");
+            var tree = ProjectTreeParser.Parse(
+                $$"""
+                Project (flags: {ProjectRoot}), FilePath: "C:\Project\Project.csproj"
+                    {{_fileName}} (flags: {FileSystemEntity Folder}), FilePath: "C:\Project\{{_fileName}}"
+                """);
 
             var specialFilesManager = ISpecialFilesManagerFactory.ImplementGetFile(null);
             var provider = CreateInstance(specialFilesManager, tree);
@@ -145,10 +149,11 @@ Project (flags: {{ProjectRoot}}), FilePath: ""C:\Project\Project.csproj""
         [Fact]
         public async Task GetFileAsync_WhenTreeWithExcludedFile_IsAddedToProjectIfCreateIfNotExist()
         {
-            var tree = ProjectTreeParser.Parse($@"
-Project (flags: {{ProjectRoot}}), FilePath: ""C:\Project\Project.csproj""
-    {_fileName} (flags: {{FileSystemEntity FileOnDisk IncludeInProjectCandidate}}), FilePath: ""C:\Project\{_fileName}""
-");
+            var tree = ProjectTreeParser.Parse(
+                $$"""
+                Project (flags: {ProjectRoot}), FilePath: "C:\Project\Project.csproj"
+                    {{_fileName}} (flags: {FileSystemEntity FileOnDisk IncludeInProjectCandidate}), FilePath: "C:\Project\{{_fileName}}"
+                """);
             int callCount = 0;
             var storage = IPhysicalProjectTreeStorageFactory.ImplementAddFileAsync(path => callCount++);
             var specialFilesManager = ISpecialFilesManagerFactory.ImplementGetFile(null);
@@ -163,10 +168,11 @@ Project (flags: {{ProjectRoot}}), FilePath: ""C:\Project\Project.csproj""
         [Fact]
         public async Task GetFileAsync_WhenTreeWithExistentFile_ReturnsPathIfCreateIfNotExist()
         {
-            var tree = ProjectTreeParser.Parse($@"
-Project (flags: {{ProjectRoot}}), FilePath: ""C:\Project\Project.csproj""
-    {_fileName} (flags: {{FileSystemEntity FileOnDisk}}), FilePath: ""C:\Project\{_fileName}""
-");
+            var tree = ProjectTreeParser.Parse(
+                $$"""
+                Project (flags: {ProjectRoot}), FilePath: "C:\Project\Project.csproj"
+                    {{_fileName}} (flags: {FileSystemEntity FileOnDisk}), FilePath: "C:\Project\{{_fileName}}"
+                """);
             var physicalProjectTree = IPhysicalProjectTreeFactory.Create(currentTree: tree);
             var specialFilesManager = ISpecialFilesManagerFactory.ImplementGetFile(null);
             var provider = CreateInstance(specialFilesManager, physicalProjectTree);
@@ -179,9 +185,10 @@ Project (flags: {{ProjectRoot}}), FilePath: ""C:\Project\Project.csproj""
         [Fact]
         public async Task GetFileAsync_WhenTreeWithNoFile_IsCreatedIfCreateIfNotExist()
         {
-            var tree = ProjectTreeParser.Parse($@"
-Project (flags: {{ProjectRoot}}), FilePath: ""C:\Project\Project.csproj""
-");
+            var tree = ProjectTreeParser.Parse(
+                $$"""
+                Project (flags: {ProjectRoot}), FilePath: "C:\Project\Project.csproj"
+                """);
 
             int callCount = 0;
             var storage = IPhysicalProjectTreeStorageFactory.ImplementCreateEmptyFileAsync(path => callCount++);
@@ -197,10 +204,11 @@ Project (flags: {{ProjectRoot}}), FilePath: ""C:\Project\Project.csproj""
         [Fact]
         public async Task GetFileAsync_WhenTreeWithMissingFile_IsCreatedIfCreateIfNotExist()
         {
-            var tree = ProjectTreeParser.Parse($@"
-Project (flags: {{ProjectRoot}}), FilePath: ""C:\Project\Project.csproj""
-    {_fileName} (flags: {{}}), FilePath: ""C:\Project\{_fileName}""
-");
+            var tree = ProjectTreeParser.Parse(
+                $$"""
+                Project (flags: {ProjectRoot}), FilePath: "C:\Project\Project.csproj"
+                    {{_fileName}} (flags: {}), FilePath: "C:\Project\{{_fileName}}"
+                """);
             int callCount = 0;
             var storage = IPhysicalProjectTreeStorageFactory.ImplementCreateEmptyFileAsync(path => callCount++);
             var specialFilesManager = ISpecialFilesManagerFactory.ImplementGetFile(null);
@@ -227,13 +235,13 @@ Project (flags: {{ProjectRoot}}), FilePath: ""C:\Project\Project.csproj""
             object[] arguments = new object[3 + additionalArguments.Length];
             arguments[0] = specialFilesManager;
             arguments[1] = projectTree;
-            arguments[2] = (ICreateFileFromTemplateService)null!;
+            arguments[2] = null!;
             additionalArguments.CopyTo(arguments, 3);
 
             // We override CreateFileAsync to call the CreateEmptyFileAsync which makes writting tests in the base easier
             var mock = new Mock<T>(arguments);
             mock.Protected().Setup<Task>("CreateFileCoreAsync", ItExpr.IsAny<string>())
-                .Returns<string>(path => projectTree.TreeStorage.CreateEmptyFileAsync(path));
+                .Returns<string>(projectTree.TreeStorage.CreateEmptyFileAsync);
 
             mock.CallBase = true;
 

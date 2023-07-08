@@ -1,7 +1,6 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
 using Microsoft.VisualStudio.ProjectSystem.Properties;
-using Moq;
 
 namespace Microsoft.VisualStudio.ProjectSystem
 {
@@ -9,7 +8,31 @@ namespace Microsoft.VisualStudio.ProjectSystem
     {
         public static IProjectChangeDescription Create()
         {
-            return Mock.Of<IProjectChangeDescription>();
+            return FromJson(
+                """
+                {
+                    "Difference": {
+                        "AnyChanges": false,
+                        "AddedItems": [],
+                        "ChangedItems": [],
+                        "ChangedProperties": [],
+                        "RemovedItems": [],
+                        "RenamedItems": {}
+                    },
+                    "Before": {
+                        "RuleName": "SomeRule",
+                        "EvaluationSucceeded": true,
+                        "Properties" : {},
+                        "Items" : {}
+                    },
+                    "After": {
+                        "RuleName": "SomeRule",
+                        "EvaluationSucceeded": true,
+                        "Properties" : {},
+                        "Items" : {}
+                    }
+                }
+                """);
         }
 
         public static IProjectChangeDescription FromJson(string jsonString)
@@ -27,7 +50,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
         public override IProjectChangeDescription ToActualModel()
         {
-            return new ActualModel(After, Before, Difference);
+            return new ActualModel(After.ToActualModel(), Before.ToActualModel(), Difference);
         }
 
         private sealed class ActualModel : IProjectChangeDescription

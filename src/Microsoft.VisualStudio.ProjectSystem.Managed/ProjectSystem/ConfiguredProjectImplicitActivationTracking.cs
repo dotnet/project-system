@@ -1,7 +1,5 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
-using System.ComponentModel.Composition;
-
 namespace Microsoft.VisualStudio.ProjectSystem
 {
     /// <summary>
@@ -22,17 +20,20 @@ namespace Microsoft.VisualStudio.ProjectSystem
         private readonly IProjectThreadingService _threadingService;
         private readonly ConfiguredProject _project;
         private readonly IActiveConfigurationGroupService _activeConfigurationGroupService;
+        private readonly IDataProgressTrackerService _dataProgressTrackerService;
 
         [ImportingConstructor]
         public ConfiguredProjectImplicitActivationTracking(
             IProjectThreadingService threadingService,
             ConfiguredProject project,
-            IActiveConfigurationGroupService activeConfigurationGroupService)
+            IActiveConfigurationGroupService activeConfigurationGroupService,
+            IDataProgressTrackerService dataProgressTrackerService)
             : base(threadingService.JoinableTaskContext)
         {
             _threadingService = threadingService;
             _project = project;
             _activeConfigurationGroupService = activeConfigurationGroupService;
+            _dataProgressTrackerService = dataProgressTrackerService;
 
             Components = new OrderPrecedenceImportCollection<IImplicitlyActiveConfigurationComponent>(projectCapabilityCheckProvider: project);
         }
@@ -46,6 +47,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
                 _threadingService,
                 _project,
                 _activeConfigurationGroupService,
+                _dataProgressTrackerService,
                 Components);
         }
     }

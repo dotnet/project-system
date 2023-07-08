@@ -1,10 +1,5 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.Composition;
-using System.Threading.Tasks;
-
 namespace Microsoft.VisualStudio.ProjectSystem.Properties
 {
     [ExportInterceptingPropertyValueProvider(PackageLicenseKindProperty, ExportInterceptingPropertyValueProviderFile.ProjectFile)]
@@ -34,8 +29,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
 
                 await defaultProperties.SaveValueIfCurrentlySetAsync(PackageLicenseFileMSBuildProperty, _temporaryPropertyStorage);
                 await defaultProperties.DeletePropertyAsync(PackageLicenseFileMSBuildProperty);
-                await defaultProperties.RestoreValueIfNotCurrentlySetAsync(PackageLicenseExpressionMSBuildProperty, _temporaryPropertyStorage);
-                await defaultProperties.RestoreValueIfNotCurrentlySetAsync(PackageRequireLicenseAcceptanceMSBuildProperty, _temporaryPropertyStorage);
+                await defaultProperties.RestoreValueIfNotCurrentlySetAsync(PackageLicenseExpressionMSBuildProperty, _temporaryPropertyStorage, dimensionalConditions);
+                await defaultProperties.RestoreValueIfNotCurrentlySetAsync(PackageRequireLicenseAcceptanceMSBuildProperty, _temporaryPropertyStorage, dimensionalConditions);
             }
             else if (StringComparers.PropertyLiteralValues.Equals(unevaluatedPropertyValue, FileValue))
             {
@@ -43,8 +38,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
 
                 await defaultProperties.SaveValueIfCurrentlySetAsync(PackageLicenseExpressionMSBuildProperty, _temporaryPropertyStorage);
                 await defaultProperties.DeletePropertyAsync(PackageLicenseExpressionMSBuildProperty);
-                await defaultProperties.RestoreValueIfNotCurrentlySetAsync(PackageLicenseFileMSBuildProperty, _temporaryPropertyStorage);
-                await defaultProperties.RestoreValueIfNotCurrentlySetAsync(PackageRequireLicenseAcceptanceMSBuildProperty, _temporaryPropertyStorage);
+                await defaultProperties.RestoreValueIfNotCurrentlySetAsync(PackageLicenseFileMSBuildProperty, _temporaryPropertyStorage, dimensionalConditions);
+                await defaultProperties.RestoreValueIfNotCurrentlySetAsync(PackageRequireLicenseAcceptanceMSBuildProperty, _temporaryPropertyStorage, dimensionalConditions);
             }
             else if (StringComparers.PropertyLiteralValues.Equals(unevaluatedPropertyValue, NoneValue))
             {

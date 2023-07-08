@@ -1,8 +1,5 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
-using System;
-using System.IO;
-
 namespace Microsoft.VisualStudio.IO
 {
     /// <summary>
@@ -29,14 +26,14 @@ namespace Microsoft.VisualStudio.IO
                 Filter = fileFilter
             };
 
-            if (handler != null)
+            if (handler is not null)
             {
                 _fileWatcher.Created += handler;
                 _fileWatcher.Deleted += handler;
                 _fileWatcher.Changed += handler;
             }
 
-            if (renameHandler != null)
+            if (renameHandler is not null)
             {
                 _fileWatcher.Renamed += renameHandler;
             }
@@ -48,17 +45,17 @@ namespace Microsoft.VisualStudio.IO
 
         public void Dispose()
         {
-            if (_fileWatcher != null)
+            if (_fileWatcher is not null)
             {
                 _fileWatcher.EnableRaisingEvents = false;
-                if (_handler != null)
+                if (_handler is not null)
                 {
                     _fileWatcher.Created -= _handler;
                     _fileWatcher.Deleted -= _handler;
                     _fileWatcher.Changed -= _handler;
                     _handler = null;
                 }
-                if (_renameHandler != null)
+                if (_renameHandler is not null)
                 {
                     _fileWatcher.Renamed -= _renameHandler;
                     _renameHandler = null;

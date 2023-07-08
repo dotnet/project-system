@@ -1,7 +1,5 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
-using Moq;
-
 namespace Microsoft.VisualStudio.ProjectSystem
 {
     internal static class IUnconfiguredProjectCommonServicesFactory
@@ -12,23 +10,23 @@ namespace Microsoft.VisualStudio.ProjectSystem
         {
             var mock = new Mock<IUnconfiguredProjectCommonServices>();
 
-            if (project != null)
+            if (project is not null)
                 mock.Setup(s => s.Project)
                     .Returns(project);
 
-            if (threadingService != null)
+            if (threadingService is not null)
                 mock.Setup(s => s.ThreadingService)
                     .Returns(threadingService);
 
-            if (configuredProject != null)
+            if (configuredProject is not null)
                 mock.Setup(s => s.ActiveConfiguredProject)
                     .Returns(configuredProject);
 
-            if (projectProperties != null)
+            if (projectProperties is not null)
                 mock.Setup(s => s.ActiveConfiguredProjectProperties)
                     .Returns(projectProperties);
 
-            if (projectAccessor != null)
+            if (projectAccessor is not null)
                 mock.Setup(s => s.ProjectAccessor)
                     .Returns(projectAccessor);
 

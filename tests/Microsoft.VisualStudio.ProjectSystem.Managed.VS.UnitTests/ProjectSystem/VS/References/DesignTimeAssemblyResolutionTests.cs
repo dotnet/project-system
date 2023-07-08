@@ -5,7 +5,6 @@ using Microsoft.VisualStudio.Shell.Interop;
 using VSLangProj;
 using VSLangProj110;
 using VSLangProj80;
-using Xunit;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.References
 {
@@ -17,9 +16,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.References
             var hierarchy = IVsHierarchyFactory.ImplementGetProperty(VSConstants.E_INVALIDARG);
             var resolution = CreateInstance(hierarchy);
 
-            var result = resolution.GetTargetFramework(out string _);
+            var result = resolution.GetTargetFramework(out _);
 
-            Assert.Equal(result, VSConstants.E_INVALIDARG);
+            Assert.Equal(VSConstants.E_INVALIDARG, result);
         }
 
         [Fact]
@@ -39,7 +38,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.References
             var hierarchy = IVsHierarchyFactory.ImplementGetProperty(VSConstants.DISP_E_MEMBERNOTFOUND);
             var resolution = CreateInstance(hierarchy);
 
-            var result = resolution.GetTargetFramework(out string _);
+            var result = resolution.GetTargetFramework(out _);
 
             Assert.Equal(VSConstants.S_OK, result);
         }
@@ -88,7 +87,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.References
         {
             var resolution = CreateInstance();
 
-            var result = resolution.ResolveAssemblyPathInTargetFx((string[]?)null, 1, new VsResolvedAssemblyPath[1], out uint resolvedAssemblyPaths);
+            var result = resolution.ResolveAssemblyPathInTargetFx(null, 1, new VsResolvedAssemblyPath[1], out uint resolvedAssemblyPaths);
 
             Assert.Equal(VSConstants.E_INVALIDARG, result);
             Assert.Equal(0u, resolvedAssemblyPaths);
@@ -110,7 +109,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.References
         {
             var resolution = CreateInstance();
 
-            var result = resolution.ResolveAssemblyPathInTargetFx(new string[] { "mscorlib" }, 1, (VsResolvedAssemblyPath[]?)null, out uint resolvedAssemblyPaths);
+            var result = resolution.ResolveAssemblyPathInTargetFx(new string[] { "mscorlib" }, 1, null, out uint resolvedAssemblyPaths);
 
             Assert.Equal(VSConstants.E_INVALIDARG, result);
             Assert.Equal(0u, resolvedAssemblyPaths);

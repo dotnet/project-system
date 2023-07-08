@@ -1,11 +1,5 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
-using System;
-using System.Collections.Generic;
-using System.Collections.Immutable;
-using System.ComponentModel.Composition;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.VisualStudio.Buffers.PooledObjects;
 using Microsoft.VisualStudio.ProjectSystem.Configuration;
 
@@ -102,7 +96,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
         {
             ActiveConfiguredObjects<ProjectConfiguration>? configurations = await GetActiveProjectConfigurationsAsync();
 
-            if (configurations == null)
+            if (configurations is null)
             {
                 return null;
             }
@@ -123,7 +117,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
         {
             ProjectConfiguration? activeSolutionConfiguration = _services.ActiveConfiguredProjectProvider?.ActiveProjectConfiguration;
 
-            if (activeSolutionConfiguration == null)
+            if (activeSolutionConfiguration is null)
             {
                 return null;
             }
@@ -156,7 +150,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
         private IImmutableSet<string> GetDimensionNames()
         {
-            ImmutableHashSet<string>.Builder builder = ImmutableHashSet.CreateBuilder(StringComparers.ConfigurationDimensionNames);
+            ImmutableHashSet<string>.Builder builder = ImmutableHashSet.CreateBuilder<string>(StringComparers.ConfigurationDimensionNames);
 
             foreach (Lazy<IActiveConfiguredProjectsDimensionProvider> dimensionProvider in DimensionProviders)
             {
@@ -175,7 +169,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
                     continue;
                 }
 
-                if (!configuration.Dimensions.TryGetValue(dimensionName, out string otherDimensionValue) ||
+                if (!configuration.Dimensions.TryGetValue(dimensionName, out string? otherDimensionValue) ||
                     !string.Equals(dimensionValue, otherDimensionValue, StringComparisons.ConfigurationDimensionNames))
                 {
                     return false;

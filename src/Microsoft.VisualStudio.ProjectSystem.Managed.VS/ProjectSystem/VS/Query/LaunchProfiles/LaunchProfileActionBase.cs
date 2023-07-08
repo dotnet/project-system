@@ -1,16 +1,10 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
-using System.Collections.Generic;
-using System.Collections.Immutable;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
 using Microsoft.Build.Framework.XamlTypes;
 using Microsoft.VisualStudio.ProjectSystem.Query;
-using Microsoft.VisualStudio.ProjectSystem.Query.Frameworks;
-using Microsoft.VisualStudio.ProjectSystem.Query.ProjectModel.Implementation;
-using Microsoft.VisualStudio.ProjectSystem.Query.ProjectModel.Metadata;
-using Microsoft.VisualStudio.ProjectSystem.Query.QueryExecution;
+using Microsoft.VisualStudio.ProjectSystem.Query.Execution;
+using Microsoft.VisualStudio.ProjectSystem.Query.Framework;
+using Microsoft.VisualStudio.ProjectSystem.Query.Metadata;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
 {
@@ -65,6 +59,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
             s_requestedPropertyProperties.RequireProperty(UIPropertyType.SearchTermsPropertyName);
             s_requestedPropertyProperties.RequireProperty(UIPropertyType.TypePropertyName);
             s_requestedPropertyProperties.RequireProperty(UIPropertyType.VisibilityConditionPropertyName);
+            s_requestedPropertyProperties.RequireProperty(UIPropertyType.DimensionVisibilityConditionPropertyName);
+            s_requestedPropertyProperties.RequireProperty(UIPropertyType.ConfiguredValueVisibilityConditionPropertyName);
+            s_requestedPropertyProperties.RequireProperty(UIPropertyType.IsReadOnlyConditionPropertyName);
             s_requestedPropertyProperties.Freeze();
 
             s_requestedEditorProperties = new UIPropertyEditorPropertiesAvailableStatus();
@@ -82,6 +79,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
             s_requestedValueProperties.RequireProperty(UIPropertyValueType.EvaluatedValuePropertyName);
             s_requestedValueProperties.RequireProperty(UIPropertyValueType.SupportedValuesPropertyName);
             s_requestedValueProperties.RequireProperty(UIPropertyValueType.UnevaluatedValuePropertyName);
+            s_requestedValueProperties.RequireProperty(UIPropertyValueType.ValueDefinedInContextPropertyName);
             s_requestedValueProperties.Freeze();
 
             s_requestedSupportedValueProperties = new SupportedValuePropertiesAvailableStatus();
@@ -104,7 +102,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
                     && project.Services.ExportProvider.GetExportedValueOrDefault<IProjectLaunchProfileHandler>() is IProjectLaunchProfileHandler handler)
                 {
                     var returnedLaunchProfiles = new List<IEntityValue>();
-                    if (projectValue.TryGetRelatedEntities(ProjectSystem.Query.ProjectModel.Metadata.ProjectType.LaunchProfilesPropertyName, out IEnumerable<IEntityValue>? exitingProfiles))
+                    if (projectValue.TryGetRelatedEntities(ProjectSystem.Query.Metadata.ProjectType.LaunchProfilesPropertyName, out IEnumerable<IEntityValue>? exitingProfiles))
                     {
                         returnedLaunchProfiles.AddRange(exitingProfiles);
                     }
@@ -113,13 +111,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
                     {
                         if (await handler.RetrieveLaunchProfileEntityAsync(request.QueryExecutionContext, addedProfileId, s_requestedLaunchProfileProperties) is IEntityValue launchProfileEntity)
                         {
-                            if (launchProfileEntity is IEntityValueFromProvider launchProfileEntityFromProvider
-                                && launchProfileEntityFromProvider.ProviderState is ContextAndRuleProviderState state)
+                            if (launchProfileEntity is IEntityValueFromProvider { ProviderState: ContextAndRuleProviderState state })
                             {
                                 // This is a bit of a hack. We can safely assume that we should update the query
                                 // with the entity for the new launch profile. However, there is no way for us to
                                 // know which properties or child entities are desired. Here we make the somewhat
-                                // arbitrary decision to include the categories and properties, but not the propery
+                                // arbitrary decision to include the categories and properties, but not the property
                                 // values. We already requested the non-entity properties when creating the entity
                                 // for the launch profile.
 
@@ -132,7 +129,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
                                 ImmutableArray<IEntityValue> properties = ImmutableArray.CreateRange(
                                     UIPropertyDataProducer.CreateUIPropertyValues(request.QueryExecutionContext, launchProfileEntity, state.ProjectState, state.PropertiesContext, state.Rule, s_requestedPropertyProperties));
                                 launchProfileEntity.SetRelatedEntities(LaunchProfileType.PropertiesPropertyName, properties);
-                                
+
                                 await PopulateEditorsAndValues(properties);
                             }
 
@@ -140,7 +137,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
                         }
                     }
 
-                    projectValue.SetRelatedEntities(ProjectSystem.Query.ProjectModel.Metadata.ProjectType.LaunchProfilesPropertyName, returnedLaunchProfiles);
+                    projectValue.SetRelatedEntities(ProjectSystem.Query.Metadata.ProjectType.LaunchProfilesPropertyName, returnedLaunchProfiles);
                 }
             }
 
@@ -149,7 +146,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
                 var projectValue = (IEntityValueFromProvider)group.Key;
 
                 var returnedLaunchProfiles = new List<IEntityValue>();
-                if (projectValue.TryGetRelatedEntities(ProjectSystem.Query.ProjectModel.Metadata.ProjectType.LaunchProfilesPropertyName, out IEnumerable<IEntityValue>? exitingProfiles))
+                if (projectValue.TryGetRelatedEntities(ProjectSystem.Query.Metadata.ProjectType.LaunchProfilesPropertyName, out IEnumerable<IEntityValue>? exitingProfiles))
                 {
                     returnedLaunchProfiles.AddRange(exitingProfiles);
                 }
@@ -163,16 +160,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
                     }
                 }
 
-                projectValue.SetRelatedEntities(ProjectSystem.Query.ProjectModel.Metadata.ProjectType.LaunchProfilesPropertyName, returnedLaunchProfiles);
+                projectValue.SetRelatedEntities(ProjectSystem.Query.Metadata.ProjectType.LaunchProfilesPropertyName, returnedLaunchProfiles);
             }
 
             await ResultReceiver.OnRequestProcessFinishedAsync(request);
 
             static async Task PopulateSupportedValuesAndConfigurations(ImmutableArray<IEntityValue> valueEntities)
             {
-                foreach (IEntityValueFromProvider valueEntity in valueEntities)
+                foreach (IEntityValue valueEntity in valueEntities)
                 {
-                    if (valueEntity.ProviderState is PropertyValueProviderState valueState)
+                    if (valueEntity is IEntityValueFromProvider { ProviderState: PropertyValueProviderState valueState })
                     {
                         // Add supported values to values
                         ImmutableArray<IEntityValue> supportedValues = ImmutableArray.CreateRange(
@@ -188,9 +185,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
 
             static void PopulateEditorMetadata(ImmutableArray<IEntityValue> editors)
             {
-                foreach (IEntityValueFromProvider editorEntity in editors)
+                foreach (IEntityValue editorEntity in editors)
                 {
-                    if (editorEntity.ProviderState is ValueEditor editorState)
+                    if (editorEntity is IEntityValueFromProvider { ProviderState: ValueEditor editorState })
                     {
                         // Add editor metadata to the editor
                         ImmutableArray<IEntityValue> editorMetadata = ImmutableArray.CreateRange(
@@ -202,9 +199,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
 
             async Task PopulateEditorsAndValues(ImmutableArray<IEntityValue> properties)
             {
-                foreach (IEntityValueFromProvider propertyEntity in properties)
+                foreach (IEntityValue propertyEntity in properties)
                 {
-                    if (propertyEntity.ProviderState is PropertyProviderState propertyProviderState)
+                    if (propertyEntity is IEntityValueFromProvider { ProviderState: PropertyProviderState propertyProviderState })
                     {
                         // Add editors to the property
                         ImmutableArray<IEntityValue> editors = ImmutableArray.CreateRange(

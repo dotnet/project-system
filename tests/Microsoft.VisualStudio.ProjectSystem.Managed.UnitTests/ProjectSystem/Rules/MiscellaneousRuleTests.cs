@@ -1,32 +1,74 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
+using System.Reflection;
+using System.Xml;
 using System.Xml.Linq;
 using System.Xml.XPath;
-using Xunit;
 
 namespace Microsoft.VisualStudio.ProjectSystem.Rules
 {
     public sealed class MiscellaneousRuleTests : XamlRuleTestBase
     {
+        private static readonly HashSet<string> s_embeddedRuleNames;
+
+        static MiscellaneousRuleTests()
+        {
+            s_embeddedRuleNames = new(EnumerateEmbeddedTypeNames(), StringComparer.Ordinal);
+
+            static IEnumerable<string> EnumerateEmbeddedTypeNames()
+            {
+                foreach (var type in typeof(RuleExporter).GetNestedTypes(BindingFlags.NonPublic | BindingFlags.Public))
+                {
+                    foreach (var field in type.GetFields(BindingFlags.Public | BindingFlags.Static))
+                    {
+                        foreach (var exportRule in field.GetCustomAttributes<ExportRuleAttribute>())
+                        {
+                            yield return exportRule.RuleName;
+                        }
+                    }
+                }
+            }
+        }
+
+        [Theory]
+        [MemberData(nameof(GetEmbeddedRules))]
+        public void EmbeddedRulesShouldNotHaveVisibleProperties(string ruleName, string fullPath)
+        {
+            // We are not currently able to localize embedded rules. Such rules must not have visible properties,
+            // as all visible values must be localized.
+
+            XElement rule = LoadXamlRule(fullPath);
+
+            foreach (var property in 
+                GetProperties(rule))
+            {
+                Assert.False(
+                    IsVisible(property),
+                    $"Property '{Name(property)}' in rule '{ruleName}' should not be visible.");
+            }
+        }
+
         [Theory]
         [MemberData(nameof(GetAllDisplayedRules))]
         public void NonVisiblePropertiesShouldntBeLocalized(string ruleName, string fullPath)
         {
             XElement rule = LoadXamlRule(fullPath);
 
-            foreach (XElement element in rule.Elements())
+            foreach (var property in GetProperties(rule))
             {
-                var visibleAttribute = element.Attribute("Visible");
-
-                if (visibleAttribute?.Value.Equals("false", StringComparison.OrdinalIgnoreCase) == true)
+                if (!IsVisible(property) && Name(property) is not ("SplashScreen" or "MinimumSplashScreenDisplayTime"))
                 {
-                    Assert.Null(element.Attribute("DisplayName"));
-                    Assert.Null(element.Attribute("Description"));
-                    Assert.Null(element.Attribute("Category"));
+                    AssertAttributeNotPresent(property, "DisplayName");
+                    AssertAttributeNotPresent(property, "Description");
+                    AssertAttributeNotPresent(property, "Category");
                 }
+            }
+
+            static void AssertAttributeNotPresent(XElement element, string attributeName)
+            {
+                Assert.True(
+                    element.Attribute(attributeName) is null,
+                    userMessage: $"{attributeName} should not be present:\n{element}");
             }
         }
 
@@ -41,19 +83,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.Rules
 
             foreach (var property in GetProperties(rule))
             {
-                // Properties are visible by default
-                string visibleValue = property.Attribute("Visible")?.Value ?? "true";
-
-                Assert.True(bool.TryParse(visibleValue, out bool visible));
-
-                if (!visible)
-                    continue;
-
-                string? displayName = property.Attribute("DisplayName")?.Value;
-
-                if (string.IsNullOrWhiteSpace(displayName))
+                if (IsVisible(property))
                 {
-                    throw new Xunit.Sdk.XunitException($"Rule {ruleName} has visible property {property.Attribute("Name")} with no DisplayName value.");
+                    string? displayName = property.Attribute("DisplayName")?.Value;
+
+                    if (string.IsNullOrWhiteSpace(displayName))
+                    {
+                        throw new Xunit.Sdk.XunitException($"""
+                            Rule {ruleName} has visible property {Name(property)} with no DisplayName value.
+                            """);
+                    }
                 }
             }
         }
@@ -62,15 +101,31 @@ namespace Microsoft.VisualStudio.ProjectSystem.Rules
         [MemberData(nameof(GetAllRules))]
         public void PropertyDescriptionMustEndWithFullStop(string ruleName, string fullPath)
         {
-            XElement rule = LoadXamlRule(fullPath);
+            XElement rule = LoadXamlRule(fullPath, out XmlNamespaceManager namespaceManager);
 
             foreach (var property in GetProperties(rule))
             {
+                // <Rule>
+                //   <StringProperty>
+                //     <StringProperty.ValueEditors>
+                //       <ValueEditor EditorType="LinkAction">
+
+                var linkActionEditors = property.XPathSelectElements(@"./msb:StringProperty.ValueEditors/msb:ValueEditor[@EditorType=""LinkAction""]", namespaceManager);
+
+                if (linkActionEditors.Any())
+                {
+                    // LinkAction items use the description in hyperlink or button text.
+                    // Neither of these needs to end with a full stop.
+                    continue;
+                }
+
                 string? description = property.Attribute("Description")?.Value;
 
                 if (description?.EndsWith(".") == false)
                 {
-                    throw new Xunit.Sdk.XunitException($"Rule {ruleName} has visible property {property.Attribute("Name")} with description not ending in a period.");
+                    throw new Xunit.Sdk.XunitException($"""
+                        Rule {ruleName} has visible property {property.Attribute("Name")} with description not ending in a period.
+                        """);
                 }
             }
         }
@@ -98,7 +153,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Rules
             var sourceType = dataSource?.Attribute("SourceType");
             var msBuildTarget = dataSource?.Attribute("MSBuildTarget");
 
-            if (sourceType != null)
+            if (sourceType is not null)
             {
                 if (sourceType.Value == "TargetResults")
                 {
@@ -121,10 +176,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.Rules
 
             var dataSource = root.XPathSelectElement(@"/msb:Rule/msb:Rule.DataSource/msb:DataSource", namespaceManager);
 
-            var sourceType = dataSource?.Attribute("SourceType");
+            var sourceType = dataSource?.Attribute("SourceType")?.Value;
             var itemType = dataSource?.Attribute("ItemType");
 
-            if (sourceType?.Value == "Item")
+            if (sourceType == "Item")
             {
                 // An item type must be specified
                 Assert.NotNull(itemType);
@@ -137,24 +192,48 @@ namespace Microsoft.VisualStudio.ProjectSystem.Rules
         {
             var root = LoadXamlRule(fullPath, out var namespaceManager);
 
+            // Get the top-level data source element
             var dataSource = root.XPathSelectElement(@"/msb:Rule/msb:Rule.DataSource/msb:DataSource", namespaceManager);
 
-            var itemType = dataSource?.Attribute("ItemType");
-            if (itemType != null)
+            // If the top level defines an ItemType, all properties must specify a matching ItemType.
+            var ruleItemType = dataSource?.Attribute("ItemType")?.Value;
+
+            if (ruleItemType is not null)
             {
                 foreach (var property in GetProperties(root))
                 {
                     var element = GetDataSource(property);
 
-                    var propertyItemType = element?.Attribute("ItemType");
-                    if (propertyItemType != null)
+                    var propertyItemType = element?.Attribute("ItemType")?.Value;
+                    if (propertyItemType is not null)
                     {
-                        Assert.Equal(itemType?.Value, propertyItemType.Value);
+                        Assert.True(
+                            StringComparer.Ordinal.Equals(ruleItemType, propertyItemType),
+                            $"""Property data source has item type '{propertyItemType}' but the rule data source has item type '{ruleItemType} which does not match'.""");
                     }
                 }
             }
         }
 
+        [Theory]
+        [MemberData(nameof(GetAllRules))]
+        public void PropertyNamesMustNotContainSpaces(string ruleName, string fullPath)
+        {
+            // While MSBuild properties may not contain spaces in their names this restriction doesn't necessarily
+            // apply when the property in the Rule connects to a non-MSBuild DataSource. Currently none of our
+            // properties have names with spaces, so for the moment we'll just keep this test simple.
+            
+            var root = LoadXamlRule(fullPath);
+
+            foreach (var property in GetProperties(root))
+            {
+                var name = property.Attribute("Name")?.Value;
+
+                Assert.NotNull(name);
+                Assert.False(name.Contains(" "), $"Property name '{name}' in rule '{ruleName}' contains a space. This is likely to lead to a runtime exception when accessing the property");
+            }
+        }
+    
         public static IEnumerable<object[]> GetMiscellaneousRules()
         {
             return Project(GetRules(""));
@@ -164,14 +243,45 @@ namespace Microsoft.VisualStudio.ProjectSystem.Rules
         {
             return GetMiscellaneousRules()
                 .Concat(ItemRuleTests.GetBrowseObjectItemRules())
-                .Concat(DependencyRuleTests.GetDependenciesRules());
+                .Concat(DependencyRuleTests.GetDependenciesRules())
+                .Concat(ProjectPropertiesLocalizationRuleTests.GetPropertyPagesRules());
         }
 
         public static IEnumerable<object[]> GetAllRules()
         {
             return GetMiscellaneousRules()
                 .Concat(ItemRuleTests.GetItemRules())
-                .Concat(DependencyRuleTests.GetDependenciesRules());
+                .Concat(DependencyRuleTests.GetDependenciesRules())
+                .Concat(ProjectPropertiesLocalizationRuleTests.GetPropertyPagesRules());
+        }
+
+        public static IEnumerable<object[]> GetEmbeddedRules()
+        {
+            foreach (var rule in GetAllRules())
+            {
+                string ruleName = (string)rule[0];
+                string fullPath = (string)rule[1];
+
+                if (s_embeddedRuleNames.Contains(ruleName))
+                {
+                    yield return rule;
+                }
+            }
+        }
+
+        private static bool IsVisible(XElement property)
+        {
+            // Properties are visible by default
+            string visibleValue = property.Attribute("Visible")?.Value ?? bool.TrueString;
+
+            Assert.True(bool.TryParse(visibleValue, out bool isVisible));
+
+            return isVisible;
+        }
+
+        private static string Name(XElement rule)
+        {
+            return rule.Attribute("Name")?.Value ?? throw new Xunit.Sdk.XunitException($"Rule must have a name.\n{rule}");
         }
     }
 }

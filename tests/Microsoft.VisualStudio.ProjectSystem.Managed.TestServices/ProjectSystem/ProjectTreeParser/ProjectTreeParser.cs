@@ -1,7 +1,5 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
-using System;
-using System.Collections.Immutable;
 using static Microsoft.VisualStudio.ProjectSystem.Tokenizer;
 
 namespace Microsoft.VisualStudio.ProjectSystem
@@ -15,7 +13,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
         public ProjectTreeParser(string value)
         {
-            Requires.NotNullOrEmpty(value, nameof(value));
+            Requires.NotNullOrEmpty(value);
 
             _tokenizer = new Tokenizer(new SimpleStringReader(value), Delimiters.Structural);
         }
@@ -47,7 +45,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
             {
                 current = ReadNextProjectItem(current);
 
-            } while (current != null);
+            } while (current is not null);
 
             return root;
         }
@@ -66,7 +64,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
                 indent++;
             }
 
-            if (parent == null)
+            if (parent is null)
                 throw FormatException(ProjectTreeFormatError.MultipleRoots, "Encountered another project root, when tree can only have one.");
 
             MutableProjectTree tree = ReadProjectItem();

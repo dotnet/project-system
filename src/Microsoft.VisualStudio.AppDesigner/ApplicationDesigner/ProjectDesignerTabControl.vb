@@ -581,7 +581,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         '''   b) has flatstyle
         '''   c) shows a border only when the mouse hovers over it
         ''' </summary>
-        Private Class ImageButton
+        Private NotInheritable Class ImageButton
             Inherits Button
 
             Public Sub New()
@@ -633,7 +633,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         '''<summary>
         ''' custom build accessible object class
         '''</summary>
-        Private Class DesignerTabControlAccessibleObject
+        Private NotInheritable Class DesignerTabControlAccessibleObject
             Inherits ControlAccessibleObject
 
             ' button which this accessible object belongs to

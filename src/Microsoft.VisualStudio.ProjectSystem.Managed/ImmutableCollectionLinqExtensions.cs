@@ -1,10 +1,5 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
-using System;
-using System.Collections.Generic;
-using System.Collections.Immutable;
-using System.Diagnostics.CodeAnalysis;
-
 namespace Microsoft.VisualStudio
 {
     internal static class ImmutableCollectionLinqExtensions
@@ -42,19 +37,7 @@ namespace Microsoft.VisualStudio
             return false;
         }
 
-        public static bool Any<T>(this ImmutableArray<T> source, Func<T, bool> predicate)
-        {
-            foreach (T obj in source)
-            {
-                if (predicate(obj))
-                    return true;
-            }
-
-            return false;
-        }
-
-        [return: MaybeNull]
-        public static T FirstOrDefault<T, TArg>(this ImmutableArray<T> source, Func<T, TArg, bool> predicate, TArg arg)
+        public static T? FirstOrDefault<T, TArg>(this ImmutableArray<T> source, Func<T, TArg, bool> predicate, TArg arg)
         {
             foreach (T obj in source)
             {
@@ -62,7 +45,24 @@ namespace Microsoft.VisualStudio
                     return obj;
             }
 
-            return default!;
+            return default;
+        }
+
+        public static ImmutableArray<TOutput> ToImmutableArray<TOutput, TKey, TValue>(this IImmutableDictionary<TKey, TValue> dictionary, Func<TKey, TValue, TOutput> factory)
+        {
+            if (dictionary.Count == 0)
+            {
+                return ImmutableArray<TOutput>.Empty;
+            }
+
+            ImmutableArray<TOutput>.Builder builder = ImmutableArray.CreateBuilder<TOutput>(initialCapacity: dictionary.Count);
+
+            foreach ((TKey key, TValue value) in dictionary)
+            {
+                builder.Add(factory(key, value));
+            }
+
+            return builder.MoveToImmutable();
         }
     }
 }

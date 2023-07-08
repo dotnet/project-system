@@ -4,11 +4,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 {
     internal sealed partial class BuildUpToDateCheck
     {
+        /// <summary>
+        /// Potential values for the <c>CopyToOutputDirectory</c> metadata on items.
+        /// </summary>
         internal enum CopyType
         {
-            CopyNever,
-            CopyIfNewer,
-            CopyAlways
+            PreserveNewest,
+            Always
         }
     }
 }

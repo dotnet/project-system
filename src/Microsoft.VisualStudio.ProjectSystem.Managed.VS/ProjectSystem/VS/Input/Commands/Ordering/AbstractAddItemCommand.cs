@@ -1,10 +1,7 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
-using System;
-using System.Threading.Tasks;
 using Microsoft.VisualStudio.ProjectSystem.Input;
 using Microsoft.VisualStudio.ProjectSystem.VS.UI;
-using Task = System.Threading.Tasks.Task;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.Ordering
 {
@@ -17,8 +14,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.Ordering
             IAddItemDialogService addItemDialogService,
             OrderAddItemHintReceiver orderAddItemHintReceiver)
         {
-            Requires.NotNull(addItemDialogService, nameof(addItemDialogService));
-            Requires.NotNull(orderAddItemHintReceiver, nameof(orderAddItemHintReceiver));
+            Requires.NotNull(addItemDialogService);
+            Requires.NotNull(orderAddItemHintReceiver);
 
             _addItemDialogService = addItemDialogService;
             _orderAddItemHintReceiver = orderAddItemHintReceiver;
@@ -32,7 +29,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.Ordering
         {
             IProjectTree? nodeToAddTo = GetNodeToAddTo(node);
 
-            if (nodeToAddTo != null && _addItemDialogService.CanAddNewOrExistingItemTo(nodeToAddTo) && CanAdd(node))
+            if (nodeToAddTo is not null && _addItemDialogService.CanAddNewOrExistingItemTo(nodeToAddTo) && CanAdd(node))
             {
                 return GetCommandStatusResult.Handled(commandText, CommandStatus.Enabled);
             }
@@ -48,7 +45,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.Ordering
         {
             IProjectTree? nodeToAddTo = GetNodeToAddTo(node);
 
-            if (nodeToAddTo == null)
+            if (nodeToAddTo is null)
             {
                 return false;
             }
@@ -63,19 +60,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.Ordering
 
         private IProjectTree? GetNodeToAddTo(IProjectTree node)
         {
-            IProjectTree? target;
-            switch (Action)
+            return Action switch
             {
-                case OrderingMoveAction.MoveAbove:
-                case OrderingMoveAction.MoveBelow:
-                    target = node.Parent;
-                    break;
-                default:
-                    target = node;
-                    break;
-            }
-
-            return target;
+                OrderingMoveAction.MoveAbove or OrderingMoveAction.MoveBelow => node.Parent,
+                _ => node,
+            };
         }
     }
 }

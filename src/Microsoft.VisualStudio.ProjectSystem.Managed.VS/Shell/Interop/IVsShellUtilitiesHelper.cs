@@ -1,10 +1,6 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
-using System;
-using System.Threading.Tasks;
-using Microsoft.VisualStudio.Composition;
 using Microsoft.VisualStudio.ProjectSystem;
-using Microsoft.VisualStudio.ProjectSystem.VS;
 using Microsoft.VisualStudio.ProjectSystem.VS.Interop;
 
 namespace Microsoft.VisualStudio.Shell.Interop
@@ -21,5 +17,15 @@ namespace Microsoft.VisualStudio.Shell.Interop
         /// Returns the local app data folder as defined by <see cref="__VSSPROPID4.VSSPROPID_LocalAppDataDir"/>.
         /// </summary>
         Task<string?> GetLocalAppDataFolderAsync(IVsService<IVsShell> vsShellService);
+
+        /// <summary>
+        /// Returns the virtual registry root as defined by <see cref="__VSSPROPID.VSSPROPID_VirtualRegistryRoot"/>.
+        /// </summary>
+        Task<string?> GetRegistryRootAsync(IVsService<IVsShell> vsShellService);
+
+        /// <summary>
+        /// Determines whether Visual Studio was installed from a preview channel.
+        /// </summary>
+        Task<bool> IsVSFromPreviewChannelAsync();
     }
 }

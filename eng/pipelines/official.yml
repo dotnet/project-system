@@ -1,0 +1,314 @@
+# Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
+
+# Name: DotNet-Project-System
+# URL: https://dev.azure.com/devdiv/DevDiv/_build?definitionId=9675
+
+# Produces the signed product build for insertion into the Visual Studio & Visual Studio Code Extension
+
+###################################################################################################################################################################
+# PIPELINE METADATA
+###################################################################################################################################################################
+
+# Activates the pipeline after a PR is merged.
+# See: https://docs.microsoft.com/azure/devops/pipelines/yaml-schema/trigger?view=azure-pipelines
+trigger:
+  branches:
+    include:
+    - main
+    # Our VS alignment branches start with dev (for example: dev17.2.x)
+    - dev*
+    # Any other branches that contain major feature development, or require access to the pipeline, prior to merge.
+    - feature/*
+  paths:
+    exclude:
+    - docs/*
+    - README.md
+
+# Disable PR builds for this pipeline.
+# See: https://docs.microsoft.com/azure/devops/pipelines/yaml-schema/pr?view=azure-pipelines#examples
+pr: none
+
+schedules:
+# Runs the pipelines at 4am PST (11am UTC) and creates a VS & vs-green insertion PR.
+# YAML reference: https://docs.microsoft.com/azure/devops/pipelines/yaml-schema/schedules-cron?view=azure-pipelines
+# CRON syntax: https://docs.microsoft.com/azure/devops/pipelines/process/scheduled-triggers?view=azure-devops&tabs=yaml#cron-syntax
+- cron: '0 11 * * *'
+  displayName: Daily 4am PT Build with Insertion
+  branches:
+    include:
+    - main
+
+resources:
+  # These DartLab pipelines and repositories are only used by the Optimization stage.
+  pipelines:
+  # This name is the default value for the 'dartLabBuildResourceName' parameter in single-runsettings.yml.
+  - pipeline: DartLab
+    project: DevDiv
+    source: DartLab
+    branch: main
+  # This name is the default value for the 'dartLabOptProfBuildResourceName' parameter in single-runsettings.yml.
+  - pipeline: DartLab.OptProf
+    source: DartLab.OptProf
+    branch: main
+  repositories:
+  # This name is the default value for the 'dartLabTemplatesResourceName 'parameter in single-runsettings.yml.
+  - repository: DartLabTemplates
+    name: DartLab.Templates
+    type: git
+    ref: refs/heads/main
+  # This name is used to access the single-runsettings.yml template.
+  - repository: DartLabOptProfTemplates
+    name: DartLab.OptProf
+    type: git
+    ref: refs/heads/main
+  # This repo is used to create the insertion PR into the vs-green repo.
+  - repository: VSCodeExtensionRepo
+    type: git
+    name: vs-green
+  # This repo is used to create the version upgrade PR into the dotnet-project-system-vscode repo.
+  - repository: ProjectSystemVSCodeExtensionRepo
+    type: git
+    name: dotnet-project-system-vscode
+
+pool:
+  # Agent Queue: https://devdiv.visualstudio.com/DevDiv/_settings/agentqueues?queueId=3123&view=jobs
+  name: VSEngSS-MicroBuild2022-1ES
+  # Demands Docs: https://docs.microsoft.com/azure/devops/pipelines/process/demands?view=azure-devops&tabs=yaml#manually-entered-demands
+  demands: Cmd
+
+# Note: Only add pipeline variables if they apply to most of the stages/jobs.
+variables:
+  # The configuration for the build is used throughout the various pipelines as the file paths for output contain the build configuration as a folder name.
+  BuildConfiguration: Release
+  # https://docs.microsoft.com/dotnet/core/tools/dotnet-environment-variables#dotnet_skip_first_time_experience
+  DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true
+  # https://docs.microsoft.com/dotnet/core/tools/dotnet-environment-variables#dotnet_nologo
+  DOTNET_NOLOGO: true
+  # https://devdiv.visualstudio.com/DevDiv/_wiki/wikis/DevDiv.wiki/26284/Enabling-SBOM-For-Your-Component-Insertion-into-VS?anchor=1.-add-the-%27manifest-generator-task%27-to-your-pipeline
+  Packaging.EnableSBOMSigning: true
+  # Opt out of automatically injecting Codesign Validation into the pipeline. We run Codesign Validation as part of the Compliance pipeline.
+  # See: https://aka.ms/gdn-injection
+  runCodesignValidationInjection: false
+  # Allows CodeQL to run on our Build job.
+  # https://eng.ms/docs/cloud-ai-platform/devdiv/one-engineering-system-1es/1es-docs/codeql/configuring-codeql3000-ado-pipelines
+  Codeql.Enabled: true
+  # Work-around for CodeQL failing with dotnet test. See https://twcsecurityassurance.visualstudio.com/Semmle/_workitems/edit/24228
+  Codeql.CLIVersion: 2.13.4
+  Codeql.CLIHash: 892670c6323510b53c25363e301c64f35ecff02000820d0ebc081ee51fc4b2b6 // sha256 hash for windows CLI
+  # Default to skipping auto-injection for CodeQL. It is not skipped in the Build job only.
+  # https://eng.ms/docs/cloud-ai-platform/devdiv/one-engineering-system-1es/1es-docs/codeql/configuring-codeql3000-ado-pipelines#monolithic-repos-and-multistage-pipelines
+  Codeql.SkipTaskAutoInjection: true
+  # Sets the fetch depth to no longer be a shallow clone. Nerdbank.GitVersioning requires a non-shallow clone.
+  # See:
+  # - https://github.com/dotnet/Nerdbank.GitVersioning/issues/423
+  # - https://github.com/dotnet/Nerdbank.GitVersioning/issues/92
+  # Variable reference: https://learn.microsoft.com/en-us/azure/devops/pipelines/repos/pipeline-options-for-git?view=azure-devops&tabs=yaml#shallow-fetch
+  Agent.Source.Git.ShallowFetchDepth: 0
+
+parameters:
+- name: CreateVSInsertion
+  displayName: Create VS Insertion PR
+  type: boolean
+  default: false
+- name: InsertionVSBranch
+  displayName: VS Insertion Branch Name
+  type: string
+  default: main
+- name: CreateVSGreenInsertion
+  displayName: Create vs-green Insertion PR
+  type: boolean
+  default: false
+- name: InsertionVSGreenBranch
+  displayName: vs-green Insertion Branch Name
+  type: string
+  default: main
+- name: CreateOptimizationData
+  displayName: Create Optimization Data
+  type: boolean
+  default: false
+# This should only be enabled when generating optimization data for the first time.
+# See details in the Build job for the MicroBuildOptProfPlugin task.
+- name: SkipOptimize
+  displayName: Do Not Optimize Assemblies
+  type: boolean
+  default: false
+# Useful when testing pipeline changes and running compliance is not necessary.
+- name: SkipCompliance
+  displayName: Skip Compliance Validation
+  type: boolean
+  default: false
+# This should only be enabled if we need to create AzDO work items based on Compliance failures.
+- name: UploadTSAResults
+  displayName: Create Compliance Work Items
+  type: boolean
+  default: false
+
+###################################################################################################################################################################
+# STAGES
+###################################################################################################################################################################
+
+stages:
+- stage: Build
+  displayName: Build
+  variables:
+    SkipOptimize: ${{ parameters.SkipOptimize }}
+    # Only used for tracking purposes in MicroBuild tasks.
+    # See: https://devdiv.visualstudio.com/DevDiv/_wiki/wikis/DevDiv.wiki/650/MicroBuild-Signing?anchor=high-level-steps-to-enable-signing
+    TeamName: DotNet-Project-System
+    # Auto-injects the CodeQL task.
+    # https://eng.ms/docs/cloud-ai-platform/devdiv/one-engineering-system-1es/1es-docs/codeql/configuring-codeql3000-ado-pipelines#monolithic-repos-and-multistage-pipelines
+    Codeql.SkipTaskAutoInjection: false
+    CreateVSInsertion: ${{ parameters.CreateVSInsertion }}
+    InsertionVSBranch: ${{ parameters.InsertionVSBranch }}
+    CreateVSGreenInsertion: ${{ parameters.CreateVSGreenInsertion }}
+    InsertionVSGreenBranch: ${{ parameters.InsertionVSGreenBranch }}
+  jobs:
+  - template: templates/build-official-release.yml
+
+- stage: Publish
+  displayName: Publish
+  dependsOn: Build
+  variables:
+  # https://devdiv.visualstudio.com/DevDiv/_library?itemType=VariableGroups&view=VariableGroupView&variableGroupId=434&path=DotNet-Project-System
+  # Variables used:
+  # - SymbolsUncPath
+  - group: DotNet-Project-System
+  jobs:
+  - template: templates/publish-assets-and-packages.yml
+  - template: templates/publish-symbols.yml
+  # Disabling RichNav due to an acquisition issue. See: https://dev.azure.com/devdiv/DevDiv/_workitems/edit/1659507
+  # - template: templates/publish-richnav.yml
+
+# Skip this stage only when specifically requested (via SkipCompliance).
+- ${{ if eq(parameters.SkipCompliance, false) }}:
+  - stage: Compliance
+    displayName: Compliance
+    dependsOn: Build
+    variables:
+    - name: UploadTSAResults
+      value: ${{ parameters.UploadTSAResults }}
+    - name: SoftwareVersion
+      value: $[ stageDependencies.Build.BuildOfficialRelease.outputs['SetPackageVersion.PackageVersion'] ]
+    # https://devdiv.visualstudio.com/DevDiv/_library?itemType=VariableGroups&view=VariableGroupView&variableGroupId=434&path=DotNet-Project-System
+    # Variables used:
+    # - ApiScanConnectionString
+    - group: DotNet-Project-System
+    jobs:
+    - template: templates/analyze-compliance.yml
+    - template: templates/analyze-api.yml
+
+- stage: Localization
+  displayName: Localization
+  # [] clears the dependency on the previous stages allowing parallelism.
+  dependsOn: []
+  variables:
+  # Variable group containing the PATs required for running OneLocBuild.
+  # See: https://devdiv.visualstudio.com/DevDiv/_library?itemType=VariableGroups&view=VariableGroupView&variableGroupId=343&path=OneLocBuildVariables
+  # Variables used:
+  # - BotAccount-dotnet-bot-repo-PAT
+  # - dn-bot-ceapex-package-r
+  - group: OneLocBuildVariables
+  jobs:
+  - template: templates/generate-localization.yml
+
+# Run this stage only when specifically requested (via CreateOptimizationData) or when the pipeline was ran on a schedule.
+- ${{ if or(eq(parameters.CreateOptimizationData, true), eq(variables['Build.Reason'], 'Schedule')) }}:
+  # This template is provided by the DartLabOptProfTemplates repo, declared in the repositories section (top of this file).
+  # It is a stage template, defining our entire Optimization stage.
+  - template: \templates\stages\visual-studio\single-runsettings.yml@DartLabOptProfTemplates
+    parameters:
+      name: Optimization
+      displayName: Optimization
+      dependsOn:
+      - Publish
+      # Only include the Compliance stage when it is not skipped.
+      - ${{ if eq(parameters.SkipCompliance, false) }}:
+        - Compliance
+      variables:
+      - name: visualStudioBootstrapperURI
+        # If you set this value to the visualStudioBootstrapperURI parameter directly, it does not resolve correctly. Instead, we set it to a variable and pass that variable into the parameter.
+        # For parameter, variable, and expression syntax/usage, see:
+        # - https://docs.microsoft.com/azure/devops/pipelines/process/variables?view=azure-devops&tabs=yaml%2Cbatch#understand-variable-syntax
+        # - https://docs.microsoft.com/azure/devops/pipelines/process/expressions?view=azure-devops
+        # - https://docs.microsoft.com/azure/devops/pipelines/process/runtime-parameters?view=azure-devops&tabs=script#how-can-i-use-variables-inside-of-templates
+        # For variables across stages, see:
+        # - https://docs.microsoft.com/azure/devops/pipelines/process/variables?view=azure-devops&tabs=yaml%2Cbatch#use-outputs-in-a-different-stage
+        # - https://arunksingh16.medium.com/azure-devops-share-variable-across-stages-9bca85abfe8a
+        # - https://stackoverflow.com/a/57488169/294804
+        # - https://github.com/microsoft/azure-pipelines-tasks/issues/4743
+        value: $[ stageDependencies.Publish.PublishAssetsAndPackages.outputs['UpdateRunSettings.visualStudioBootstrapperURI'] ]
+      runSettingsURI: https://vsdrop.corp.microsoft.com/file/v1/RunSettings/$(System.TeamProject)/dotnet/project-system/$(Build.SourceBranchName)/$(Build.BuildId);OptProf.runsettings
+      # This variable is set during the 'Update RunSettings' (UpdateRunSettings.ps1) step in the publish-assets-and-packages.yml.
+      # This variable is expanded when it is used: https://docs.microsoft.com/azure/devops/pipelines/process/variables?view=azure-devops&tabs=yaml%2Cbatch#macro-syntax-variables
+      visualStudioBootstrapperURI: $(visualStudioBootstrapperURI)
+      # The output of the optimization process. The first half of the path is provided to the DropNamePrefix input in the 'Install OptProf Plugin' (MicroBuildOptProfPlugin) step in build-official-release.yml.
+      optOptimizationInputsDropName: OptimizationInputs/$(System.TeamProject)/$(Build.Repository.Name)/$(Build.SourceVersion)/$(Build.BuildId)/$(System.StageAttempt)
+      testLabPoolName: VS-Platform
+      previousOptimizationInputsDropName: $(previousOptimizationInputsDropName)
+      prePublishOptimizationInputsDropStepList:
+      # This extracts the Metadata.json file information from the OptProf artifact in the build and sets the drop name to the previousOptimizationInputsDropName variable.
+      # The previousOptimizationInputsDropName variable enables LKG (Last Known Good) support.
+      # See LKG support for details: https://devdiv.visualstudio.com/DevDiv/_wiki/wikis/DevDiv.wiki/29053/Enabling-LKG-support
+      # This PowerShell script needs to be written in this YAML file directly as the job that runs this task does not have access to files on-disk (it does not perform a checkout).
+      - powershell: |
+          $artifactParameters = @{
+            InstanceURL = 'https://dev.azure.com/devdiv'
+            ProjectName = 'DevDiv'
+            BuildID = '$(Build.BuildId)'
+            ArtifactName = 'OptProf'
+            OAuthAccessToken = (ConvertTo-SecureString '$(System.AccessToken)' -AsPlainText -Force)
+          }
+          $artifact = Get-BuildArtifact @artifactParameters
+          $containerName = $artifact.Resource.Data -Split '/' | Select-Object -Last 1
+          $metadataString = Read-BuildArtifactFile @artifactParameters -FileName (Join-Path $containerName 'Metadata.json')
+          $dropName = ($metadataString | ConvertFrom-Json).OptimizationData
+
+          Write-Host "previousOptimizationInputsDropName: $dropName"
+          Set-AzurePipelinesVariable 'previousOptimizationInputsDropName' $dropName
+        displayName: Set previousOptimizationInputsDropName variable
+
+# Run this stage only when specifically requested (via CreateVSInsertion or CreateVSGreenInsertion) or when the pipeline was ran on a schedule.
+# Conditional insertion syntax:
+# - https://docs.microsoft.com/azure/devops/pipelines/process/expressions?view=azure-devops#conditional-insertion
+# - https://www.andrewhoefling.com/Blog/Post/conditional-insertion-in-azure-pipelines-yaml
+- ${{ if or(eq(parameters.CreateVSInsertion, true), eq(parameters.CreateVSGreenInsertion, true), eq(variables['Build.Reason'], 'Schedule')) }}:
+  - stage: Insertion
+    displayName: Insertion
+    dependsOn:
+    # The Build dependsOn is required for putting that stage's variables into the stageDependencies property bag (for PackageVersion).
+    - Build
+    - Publish
+    # Only include the Compliance stage when it is not skipped.
+    - ${{ if eq(parameters.SkipCompliance, false) }}:
+      - Compliance
+    variables:
+      # Gets the PackageVersion variable produced by the Build pipeline.
+      PackageVersion: $[ stageDependencies.Build.BuildOfficialRelease.outputs['SetPackageVersion.PackageVersion'] ]
+      # Gets the AssemblyVersion variable produced by the Build pipeline.
+      AssemblyVersion: $[ stageDependencies.Build.BuildOfficialRelease.outputs['SetAssemblyVersion.AssemblyVersion'] ]
+      InsertionVSBranch: ${{ parameters.InsertionVSBranch }}
+      # Hard-coded assumption that the commit referenced by the previous VS insertion is within the last 100 commits in the $(InsertionVSBranch) of the VS repo.
+      PriorInsertionCommitDepth: 100
+      # This variable is required by the component-insertion.yml template to insert the NPM package.
+      # The name of this package matches name defined in the package.json.
+      InsertNpmDependencies: '@microsoft/microsoft.visualstudio.projectsystem.managed@$(PackageVersion)'
+      InsertReviewers: '.NET Project System'
+    jobs:
+    - ${{ if or(eq(parameters.CreateVSInsertion, true), eq(variables['Build.Reason'], 'Schedule')) }}:    
+      - template: templates/generate-vs-insertion.yml
+
+    - ${{ if or(eq(parameters.CreateVSGreenInsertion, true), eq(variables['Build.Reason'], 'Schedule')) }}:
+      - template: azure-pipelines/external/component-insertion.yml@VSCodeExtensionRepo
+        parameters:
+          sourceBranch: $(Build.SourceBranch)
+          sourceCommit: $(Build.SourceVersion)
+          runName: $(Build.BuildNumber)
+          runID: $(Build.BuildId)
+          pipelineID: $(System.DefinitionId)
+          InsertTargetBranch: ${{ parameters.InsertionVSGreenBranch }}
+          ComponentSubDir: $(Build.Repository.Name)
+          SetAutoComplete: false
+
+      - template: eng/pipelines/templates/upgrade-version.yml@ProjectSystemVSCodeExtensionRepo
+        parameters:
+          packageVersion: $(PackageVersion)

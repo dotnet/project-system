@@ -1,7 +1,5 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
-using System.IO;
-using System.Threading.Tasks;
 using Microsoft.VisualStudio.Threading;
 
 namespace Microsoft.VisualStudio.ProjectSystem.SpecialFileProviders
@@ -30,7 +28,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.SpecialFileProviders
         protected override Task<string?> GetDefaultFileAsync(IProjectTreeProvider provider, IProjectTree root)
         {
             string? projectPath = provider.GetRootedAddNewItemDirectory(root);
-            if (projectPath == null)  // Root has DisableAddItem
+            if (projectPath is null)  // Root has DisableAddItem
                 return TaskResult.Null<string>();
 
             string path = Path.Combine(projectPath, _fileName);

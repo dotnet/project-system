@@ -1,9 +1,5 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
-using System;
-using System.Diagnostics.CodeAnalysis;
-using Microsoft.VisualStudio.ProjectSystem;
-using Microsoft.VisualStudio.ProjectSystem.Properties;
 using Microsoft.VisualStudio.ProjectSystem.VS;
 using Microsoft.VisualStudio.ProjectSystem.VS.Utilities;
 
@@ -19,7 +15,7 @@ namespace Microsoft.VisualStudio.Shell.Interop
         /// </summary>
         public static Guid GetGuidProperty(this IVsHierarchy hierarchy, VsHierarchyPropID property)
         {
-            Requires.NotNull(hierarchy, nameof(hierarchy));
+            Requires.NotNull(hierarchy);
             Verify.HResult(hierarchy.GetGuidProperty(HierarchyId.Root, (int)property, out Guid result));
 
             return result;
@@ -28,8 +24,7 @@ namespace Microsoft.VisualStudio.Shell.Interop
         /// <summary>
         ///     Gets the value of the specified property if the hierarchy supports it, or throws an exception if there was an error.
         /// </summary>
-        [return: MaybeNull]
-        public static T GetProperty<T>(this IVsHierarchy hierarchy, VsHierarchyPropID property, T defaultValue = default)
+        public static T? GetProperty<T>(this IVsHierarchy hierarchy, VsHierarchyPropID property, T? defaultValue = default)
         {
             return GetProperty(hierarchy, HierarchyId.Root, property, defaultValue);
         }
@@ -37,12 +32,9 @@ namespace Microsoft.VisualStudio.Shell.Interop
         /// <summary>
         ///     Gets the value of the specified property of the specified item if the hierarchy supports it, or throws an exception if there was an error.
         /// </summary>
-        [return: MaybeNull]
-        public static T GetProperty<T>(this IVsHierarchy hierarchy, HierarchyId item, VsHierarchyPropID property, T defaultValue = default)
+        public static T? GetProperty<T>(this IVsHierarchy hierarchy, HierarchyId item, VsHierarchyPropID property, T? defaultValue = default)
         {
-#pragma warning disable CS8717 // Needs https://github.com/dotnet/roslyn/issues/38638
-            Verify.HResult(GetProperty(hierarchy, item, property, defaultValue, out T result));
-#pragma warning restore CS8717
+            Verify.HResult(GetProperty(hierarchy, item, property, defaultValue, out T? result));
 
             return result;
         }
@@ -50,19 +42,17 @@ namespace Microsoft.VisualStudio.Shell.Interop
         /// <summary>
         ///     Gets the value of the specified property if the hierarchy supports it, or returns a HRESULT if there was an error.
         /// </summary>
-        public static int GetProperty<T>(this IVsHierarchy hierarchy, VsHierarchyPropID property, T defaultValue, [MaybeNull]out T result)
+        public static int GetProperty<T>(this IVsHierarchy hierarchy, VsHierarchyPropID property, T? defaultValue, out T? result)
         {
-#pragma warning disable CS8717 // Needs https://github.com/dotnet/roslyn/issues/38638
             return GetProperty(hierarchy, HierarchyId.Root, property, defaultValue, out result);
-#pragma warning restore CS8717 
         }
 
         /// <summary>
         ///     Gets the value of the specified property of the specified item if the hierarchy supports it, or returns a HRESULT if there was an error.
         /// </summary>
-        public static int GetProperty<T>(this IVsHierarchy hierarchy, HierarchyId item, VsHierarchyPropID property, T defaultValue, [MaybeNull] out T result)
+        public static int GetProperty<T>(this IVsHierarchy hierarchy, HierarchyId item, VsHierarchyPropID property, T defaultValue, out T? result)
         {
-            Requires.NotNull(hierarchy, nameof(hierarchy));
+            Requires.NotNull(hierarchy);
 
             if (item.IsNilOrEmpty || item.IsSelection)
                 throw new ArgumentException(null, nameof(item));
@@ -83,27 +73,6 @@ namespace Microsoft.VisualStudio.Shell.Interop
 
             result = default!;
             return hr;
-        }
-
-        /// <summary>
-        /// Convenient way to get to the UnconfiguredProject from the hierarchy
-        /// </summary>
-        public static UnconfiguredProject? GetUnconfiguredProject(this IVsHierarchy hierarchy)
-        {
-            UIThreadHelper.VerifyOnUIThread();
-
-            var context = hierarchy as IVsBrowseObjectContext;
-
-            if (context == null)
-            {
-                EnvDTE.Project? dteProject = hierarchy.GetDTEProject();
-                if (dteProject != null)
-                {
-                    context = dteProject.Object as IVsBrowseObjectContext;
-                }
-            }
-
-            return context?.UnconfiguredProject;
         }
 
         /// <summary>

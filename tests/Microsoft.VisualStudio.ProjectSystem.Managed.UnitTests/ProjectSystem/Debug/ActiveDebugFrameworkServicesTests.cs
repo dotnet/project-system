@@ -1,10 +1,6 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
-using System.Collections.Immutable;
-using System.Threading.Tasks;
 using Microsoft.VisualStudio.ProjectSystem.Debug;
-using Moq;
-using Xunit;
 
 namespace Microsoft.VisualStudio.ProjectSystem.Input.Commands
 {
@@ -26,7 +22,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Input.Commands
             var result = await debugFrameworkSvcs.GetProjectFrameworksAsync();
 
             Assert.NotNull(result);
-            Assert.Equal(expectedOrder.Length, result!.Count);
+            Assert.Equal(expectedOrder.Length, result.Count);
             for (int i = 0; i < result.Count; i++)
             {
                 Assert.Equal(expectedOrder[i], result[i]);
@@ -101,7 +97,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Input.Commands
             var debugFrameworkSvcs = new ActiveDebugFrameworkServices(projectConfigProvider.Object, commonServices);
             var activeConfiguredProject = await debugFrameworkSvcs.GetConfiguredProjectForActiveFrameworkAsync();
             Assert.NotNull(activeConfiguredProject);
-            Assert.Equal(selectedConfigFramework, activeConfiguredProject!.ProjectConfiguration.Dimensions.GetValueOrDefault("TargetFramework"));
+            Assert.Equal(selectedConfigFramework, activeConfiguredProject.ProjectConfiguration.Dimensions.GetValueOrDefault("TargetFramework"));
         }
     }
 }

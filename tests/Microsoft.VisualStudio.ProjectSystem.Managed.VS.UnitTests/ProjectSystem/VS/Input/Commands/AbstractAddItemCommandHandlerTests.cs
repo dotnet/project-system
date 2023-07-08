@@ -1,12 +1,7 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
-using System;
-using System.Collections.Immutable;
-using System.Threading.Tasks;
 using Microsoft.VisualStudio.ProjectSystem.VS.UI;
 using Microsoft.VisualStudio.Shell.Interop;
-using Moq;
-using Xunit;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
 {
@@ -17,9 +12,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
         {
             var command = CreateInstance();
 
-            Assert.Throws<ArgumentNullException>("nodes", () =>
+            Assert.ThrowsAsync<ArgumentNullException>("nodes", () =>
             {
-                command.GetCommandStatusAsync(null!, TestAddItemCommand.CommandId, true, "commandText", CommandStatus.Enabled);
+                return command.GetCommandStatusAsync(null!, TestAddItemCommand.CommandId, true, "commandText", CommandStatus.Enabled);
             });
         }
 
@@ -28,9 +23,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
         {
             var command = CreateInstance();
 
-            var tree = ProjectTreeParser.Parse(@"
-Root (flags: {ProjectRoot})
-");
+            var tree = ProjectTreeParser.Parse(
+                """
+                Root (flags: {ProjectRoot})
+                """);
 
             var nodes = ImmutableHashSet.Create(tree);
 
@@ -44,9 +40,10 @@ Root (flags: {ProjectRoot})
         {
             var command = CreateInstance(capability: "IncorrectCapability");
 
-            var tree = ProjectTreeParser.Parse(@"
-Root (flags: {ProjectRoot})
-");
+            var tree = ProjectTreeParser.Parse(
+                """
+                Root (flags: {ProjectRoot})
+                """);
 
             var nodes = ImmutableHashSet.Create(tree);
 
@@ -60,10 +57,11 @@ Root (flags: {ProjectRoot})
         {
             var command = CreateInstance();
 
-            var tree = ProjectTreeParser.Parse(@"
-Root (flags: {ProjectRoot})
-    Properties (flags: {Folder AppDesignerFolder})
-");
+            var tree = ProjectTreeParser.Parse(
+                """
+                Root (flags: {ProjectRoot})
+                    Properties (flags: {Folder AppDesignerFolder})
+                """);
 
             var nodes = ImmutableHashSet.Create(tree, tree.Children[0]);
 
@@ -77,14 +75,15 @@ Root (flags: {ProjectRoot})
         {
             var command = CreateInstance();
 
-            var tree = ProjectTreeParser.Parse(@"
-Root (flags: {ProjectRoot})
-    Code (flags: {Folder})
-");
+            var tree = ProjectTreeParser.Parse(
+                """
+                Root (flags: {ProjectRoot})
+                    Code (flags: {Folder})
+                """);
 
             var nodes = ImmutableHashSet.Create(tree.Children[0]);
 
-            var result = await command.GetCommandStatusAsync(nodes, TestAddItemCommand.CommandId, true, "commandText", (CommandStatus)0);
+            var result = await command.GetCommandStatusAsync(nodes, TestAddItemCommand.CommandId, true, "commandText", 0);
 
             Assert.True(result.Handled);
             Assert.Equal("commandText", result.CommandText);
@@ -96,10 +95,11 @@ Root (flags: {ProjectRoot})
         {
             var command = CreateInstance();
 
-            var tree = ProjectTreeParser.Parse(@"
-Root (flags: {ProjectRoot})
-    Code (flags: {Folder})
-");
+            var tree = ProjectTreeParser.Parse(
+                """
+                Root (flags: {ProjectRoot})
+                    Code (flags: {Folder})
+                """);
 
             var nodes = ImmutableHashSet.Create(tree.Children[0]);
 
@@ -127,10 +127,11 @@ Root (flags: {ProjectRoot})
 
             var command = CreateInstance(addItemDialogService: addItemDialogService);
 
-            var tree = ProjectTreeParser.Parse(@"
-Root (flags: {ProjectRoot})
-    Properties (flags: {Folder AppDesignerFolder})
-");
+            var tree = ProjectTreeParser.Parse(
+                """
+                Root (flags: {ProjectRoot})
+                    Properties (flags: {Folder AppDesignerFolder})
+                """);
 
             var nodes = ImmutableHashSet.Create(tree.Children[0]);
 
@@ -149,10 +150,11 @@ Root (flags: {ProjectRoot})
 
             var command = CreateInstance(addItemDialogService);
 
-            var tree = ProjectTreeParser.Parse(@"
-Root (flags: {ProjectRoot})
-    Code (flags: {Folder})
-");
+            var tree = ProjectTreeParser.Parse(
+                """
+                Root (flags: {ProjectRoot})
+                    Code (flags: {Folder})
+                """);
 
             var nodes = ImmutableHashSet.Create(tree.Children[0]);
 

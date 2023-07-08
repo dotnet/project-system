@@ -1,0 +1,15 @@
+{
+    "codebaseName": "dotnet-project-system",
+    "notificationAliases": [
+        "dotnetdevexproj@microsoft.com"
+    ],
+    "codebaseAdmins": [
+        "REDMOND\\tomescht",
+        "REDMOND\\kvenkatrajan"
+    ],
+    "instanceUrl": "https://devdiv.visualstudio.com",
+    "projectName": "DevDiv",
+    "areaPath": "DevDiv\\NET Tools\\Project",
+    "iterationPath": "DevDiv",
+    "allTools": true
+}

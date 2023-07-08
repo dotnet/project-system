@@ -1,0 +1,42 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
+  <file datatype="xml" source-language="en" target-language="cs" original="../ReferencesPage.VisualBasic.xaml">
+    <body>
+      <trans-unit id="Category|General|Description">
+        <source>References and namespace settings for VB projects.</source>
+        <target state="translated">Odkazy a nastavení oboru názvů pro projekty VB.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="Category|General|DisplayName">
+        <source>General</source>
+        <target state="translated">Obecné</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="DynamicEnumProperty|ImportedNamespaces|Description">
+        <source>Manage which namespaces to import in your application.</source>
+        <target state="translated">Umožňuje spravovat obory názvů, které se mají importovat ve vaší aplikaci.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="DynamicEnumProperty|ImportedNamespaces|DisplayName">
+        <source>Import Namespaces</source>
+        <target state="translated">Importovat obory názvů</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="DynamicEnumProperty|ImportedNamespaces|ValueEditors|ValueEditor|Metadata|TypeDescriptorText|Value">
+        <source>Imported Namespaces</source>
+        <target state="new">Imported Namespaces</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="Rule|References|Description">
+        <source>Specifies the project's references and namespace imports.</source>
+        <target state="translated">Určuje odkazy projektu a importy oborů názvů.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="Rule|References|DisplayName">
+        <source>References</source>
+        <target state="translated">Odkazy</target>
+        <note />
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

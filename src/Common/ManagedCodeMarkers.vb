@@ -11,7 +11,7 @@ Namespace Microsoft.Internal.Performance
         ' Singleton access
         Public Shared ReadOnly Instance As CodeMarkers = New CodeMarkers()
 
-        Private Class NativeMethods
+        Private NotInheritable Class NativeMethods
 
             ' Add a private constructor to prevent compiler from generating a default constructor (FxCop warning CA1812)
             Private Sub New()

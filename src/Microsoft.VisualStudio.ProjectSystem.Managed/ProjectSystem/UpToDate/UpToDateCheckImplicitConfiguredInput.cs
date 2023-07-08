@@ -1,9 +1,5 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
-using System;
-using System.Collections.Generic;
-using System.Collections.Immutable;
-using System.Linq;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
 using Microsoft.VisualStudio.Text;
 
@@ -17,14 +13,81 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
     /// </remarks>
     internal sealed class UpToDateCheckImplicitConfiguredInput
     {
-        public static UpToDateCheckImplicitConfiguredInput Empty { get; } = new();
+        public static UpToDateCheckImplicitConfiguredInput CreateEmpty(ProjectConfiguration projectConfiguration)
+        {
+            return new UpToDateCheckImplicitConfiguredInput(projectConfiguration);
+        }
 
+        public static UpToDateCheckImplicitConfiguredInput CreateDisabled(ProjectConfiguration projectConfiguration)
+        {
+            return new UpToDateCheckImplicitConfiguredInput(
+                projectConfiguration: projectConfiguration,
+                msBuildProjectFullPath: null,
+                msBuildProjectDirectory: null,
+                projectTargetPath: null,
+                copyUpToDateMarkerItem: null,
+                outputRelativeOrFullPath: null,
+                newestImportInput: null,
+                isDisabled: true,
+                isBuildAccelerationEnabled: false,
+                inputSourceItemTypes: ImmutableArray<string>.Empty,
+                inputSourceItemsByItemType: ImmutableDictionary<string, ImmutableArray<string>>.Empty,
+                upToDateCheckInputItemsByKindBySetName: ImmutableDictionary<string, ImmutableDictionary<string, ImmutableArray<string>>>.Empty,
+                upToDateCheckOutputItemsByKindBySetName: ImmutableDictionary<string, ImmutableDictionary<string, ImmutableArray<string>>>.Empty,
+                upToDateCheckBuiltItemsByKindBySetName: ImmutableDictionary<string, ImmutableDictionary<string, ImmutableArray<string>>>.Empty,
+                buildFromInputFileItems: ImmutableArray<(string DestinationRelative, string SourceRelative)>.Empty,
+                resolvedAnalyzerReferencePaths: ImmutableArray<string>.Empty,
+                resolvedCompilationReferencePaths: ImmutableArray<string>.Empty,
+                copyReferenceInputs: ImmutableArray<string>.Empty,
+                lastItemsChangedAtUtc: null,
+                lastItemChanges: ImmutableArray<(bool IsAdd, string ItemType, string)>.Empty,
+                itemHash: null,
+                projectCopyData: default);
+        }
+
+        /// <summary>
+        /// Gets the project configuration for this configured data snapshot.
+        /// </summary>
+        /// <remarks>
+        /// Useful when a project multi-targets and we want to differentiate targets in log output.
+        /// <see langword="null"/> when the up-to-date check is disabled.
+        /// </remarks>
+        public ProjectConfiguration ProjectConfiguration { get; }
+
+        /// <summary>
+        /// Gets the full path to the project file.
+        /// </summary>
+        /// <remarks>
+        /// Comes from the <c>MSBuildProjectFullPath</c> MSBuild property.
+        /// For example, <c>C:\repos\MySolution\MyProject\MyProject.csproj</c>.
+        /// </remarks>
         public string? MSBuildProjectFullPath { get; }
 
+        /// <summary>
+        /// Gets the full path to the project directory.
+        /// </summary>
+        /// <remarks>
+        /// Comes from the <c>MSBuildProjectDirectory</c> MSBuild property.
+        /// For example, <c>C:\repos\MySolution\MyProject</c>.
+        /// </remarks>
         public string? MSBuildProjectDirectory { get; }
 
-        public string? CopyUpToDateMarkerItem { get; }
+        /// <summary>
+        /// Gets the full path to the project's output file.
+        /// </summary>
+        /// <remarks>
+        /// Comes from the <c>TargetPath</c> MSBuild property.
+        /// For example, <c>C:\repos\MySolution\MyProject\bin\Debug\net6.0\MyProject.dll</c>.
+        /// </remarks>
+        public string? ProjectTargetPath { get; }
 
+        /// <summary>
+        /// Gets the output path of the project, relative to the project directory.
+        /// </summary>
+        /// <remarks>
+        /// Comes from the <c>OutDir</c> MSBuild property, if available, otherwise from the <c>OutputPath</c> MSBuild property.
+        /// For example, <c>bin\Debug\net6.0\</c>.
+        /// </remarks>
         public string? OutputRelativeOrFullPath { get; }
 
         /// <summary>
@@ -34,7 +97,30 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
         /// </summary>
         public string? NewestImportInput { get; }
 
+        /// <summary>
+        /// Gets whether the fast up-to-date check has been disabled for this project.
+        /// </summary>
+        /// <remarks>
+        /// <para>
+        /// Customers disable the fast up-to-date check by setting the <c>DisableFastUpToDateCheck</c>
+        /// project property to <c>true</c>.
+        /// </para>
+        /// <para>
+        /// When <see langword="true"/>, other properties on this snapshot will not be used, and so
+        /// are not populated.
+        /// </para>
+        /// </remarks>
         public bool IsDisabled { get; }
+
+        /// <summary>
+        /// Gets whether the fast up-to-date check is prohibited from copying files in the case
+        /// that the only reason a project is not up-to-date is due to the need to copy files.
+        /// </summary>
+        /// <remarks>
+        /// Controlled by the <c>AccelerateBuildsInVisualStudio</c> project property.
+        /// <see langword="null"/> when the property is undefined or cannot be parsed as a bool.
+        /// </remarks>
+        public bool? IsBuildAccelerationEnabled { get; }
 
         /// <summary>
         /// Gets the time at which the set of items changed.
@@ -45,24 +131,42 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
         /// last added or removed from the project.
         /// </para>
         /// <para>
-        /// This property is not updated until after the first query occurs. Until that time it will
-        /// equal <see cref="DateTime.MinValue"/> which represents the fact that we do not know when
-        /// the set of items was last changed, so we cannot base any decisions on this data property.
+        /// This property is not set until the set of items is observed changing. Until that time it will
+        /// be <see langword="null"/>, representing the fact that the value is unknown and we cannot base
+        /// any decisions on this data property.
         /// </para>
         /// </remarks>
-        public DateTime LastItemsChangedAtUtc { get; }
+        public DateTime? LastItemsChangedAtUtc { get; }
 
-        public ImmutableArray<(bool IsAdd, string ItemType, string Path, string? TargetPath, BuildUpToDateCheck.CopyType CopyType)> LastItemChanges { get; }
+        public ImmutableArray<(bool IsAdd, string ItemType, string Item)> LastItemChanges { get; }
 
         public int? ItemHash { get; }
 
-        public bool WasStateRestored { get; }
+        /// <summary>
+        /// Gets the set of source item types known to be up-to-date check inputs.
+        /// </summary>
+        /// <remarks>
+        /// Items of these types are available in <see cref="InputSourceItemsByItemType"/>.
+        /// </remarks>
+        public ImmutableArray<string> InputSourceItemTypes { get; }
 
-        public ImmutableArray<string> ItemTypes { get; }
+        public ImmutableDictionary<string, ImmutableArray<string>> InputSourceItemsByItemType { get; }
 
-        public ImmutableDictionary<string, ImmutableArray<(string Path, string? TargetPath, BuildUpToDateCheck.CopyType CopyType)>> ItemsByItemType { get; }
-
+        /// <summary>
+        /// An alphabetically ordered list of the set names present in this project.
+        /// </summary>
+        /// <remarks>
+        /// Does NOT contain <see cref="BuildUpToDateCheck.DefaultSetName"/>.
+        /// </remarks>
         public ImmutableArray<string> SetNames { get; }
+
+        /// <summary>
+        /// An alphabetically ordered list of the kind names present in this project.
+        /// </summary>
+        /// <remarks>
+        /// Contains <see cref="BuildUpToDateCheck.DefaultKindName"/>.
+        /// </remarks>
+        public ImmutableArray<string> KindNames { get; }
 
         public ImmutableDictionary<string, ImmutableDictionary<string, ImmutableArray<string>>> UpToDateCheckInputItemsByKindBySetName { get; }
 
@@ -71,134 +175,153 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
         public ImmutableDictionary<string, ImmutableDictionary<string, ImmutableArray<string>>> UpToDateCheckBuiltItemsByKindBySetName { get; }
 
         /// <summary>
-        /// Holds <see cref="UpToDateCheckBuilt"/> items which are copied, not built.
+        /// Holds <see cref="UpToDateCheckBuilt"/> items which are each built from a single input file.
         /// </summary>
         /// <remarks>
+        /// <para>
         /// Projects add to this collection by specifying the <see cref="UpToDateCheckBuilt.OriginalProperty"/>
         /// on <see cref="UpToDateCheckBuilt"/> items.
+        /// </para>
+        /// <para>
+        /// <see cref="UpToDateCheckBuilt"/> items without <see cref="UpToDateCheckBuilt.OriginalProperty"/> metadata
+        /// are treated as regular output items, and are modelled in <see cref="UpToDateCheckBuiltItemsByKindBySetName"/>
+        /// rather than here.
+        /// </para>
         /// </remarks>
-        public ImmutableArray<(string DestinationRelative, string SourceRelative)> CopiedOutputFiles { get; }
+        public ImmutableArray<(string DestinationRelative, string SourceRelative)> BuiltFromInputFileItems { get; }
 
         public ImmutableArray<string> ResolvedAnalyzerReferencePaths { get; }
 
+        /// <summary>
+        /// Absolute (rooted) paths to <see cref="ResolvedCompilationReference"/> items in the project.
+        /// </summary>
         public ImmutableArray<string> ResolvedCompilationReferencePaths { get; }
 
         /// <summary>
-        /// Holds the set of observed <see cref="CopyUpToDateMarker"/> metadata values from all
+        /// Holds the set of non-empty <see cref="ResolvedCompilationReference.CopyUpToDateMarkerProperty"/> and
+        /// <see cref="ResolvedCompilationReference.ResolvedPathProperty"/> metadata values from all
         /// <see cref="ResolvedCompilationReference"/> items in the project.
         /// </summary>
         public ImmutableArray<string> CopyReferenceInputs { get; }
 
         /// <summary>
-        /// Contains files such as:
-        /// <list type="bullet">
-        ///   <item>Potential <c>.editorconfig</c> paths</item>
-        ///   <item>Potential <c>global.json</c> paths</item>
-        ///   <item>Potential <c>Directory.Build.props</c> paths</item>
-        ///   <item>Potential <c>Directory.Build.targets</c> paths</item>
-        ///   <item><c>project.assets.json</c></item>
-        /// </list>
-        /// <para>
-        /// We need all <em>potential</em> paths for files which may start affecting build if they were to be added.
-        /// Any files not found on disk have MinValue dates.
-        /// </para>
+        /// Gets the relative path to the output marker file.
         /// </summary>
-        /// <remarks>
-        /// The <see cref="DateTime"/> values here do not update dynamically.
-        /// </remarks>
-        public IImmutableDictionary<string, DateTime> AdditionalDependentFileTimes { get; }
+        public string? CopyUpToDateMarkerItem { get; }
 
         /// <summary>
-        /// Gets the time at which the set of items with non-<see cref="DateTime.MinValue"/> times
-        /// in <see cref="AdditionalDependentFileTimes"/> changed (files added or removed).
+        /// Gets the set of items this project contributes to the output directory when built.
+        /// These items are inherited by referencing projects too, transitively.
         /// </summary>
         /// <remarks>
         /// <para>
-        /// This property is not updated until after the first query occurs. Until that time it will
-        /// equal <see cref="DateTime.MinValue"/> which represents the fact that we do not know when
-        /// the set of items was last added or removed, so we cannot base any decisions on this data
-        /// property.
+        /// Includes various kinds of files including assemblies content files from this project ONLY.
+        /// </para>
+        /// <para>
+        /// When building, we must obtain the full set of output directory items from this and all transitively referenced projects.
+        /// This collection does not provide that. Use <see cref="ICopyItemAggregator"/> instead. The intent is for the implementation
+        /// of that interface to consume this property.
         /// </para>
         /// </remarks>
-        public DateTime LastAdditionalDependentFileTimesChangedAtUtc { get; }
+        public ProjectCopyData ProjectCopyData { get; }
 
-        private UpToDateCheckImplicitConfiguredInput()
+        private UpToDateCheckImplicitConfiguredInput(ProjectConfiguration projectConfiguration)
         {
             var emptyItemBySetName = ImmutableDictionary.Create<string, ImmutableDictionary<string, ImmutableArray<string>>>(BuildUpToDateCheck.SetNameComparer);
 
-            LastItemsChangedAtUtc = DateTime.MinValue;
-            ItemTypes = ImmutableArray<string>.Empty;
-            ItemsByItemType = ImmutableDictionary.Create<string, ImmutableArray<(string Path, string? TargetPath, BuildUpToDateCheck.CopyType CopyType)>>(StringComparers.ItemTypes);
+            ProjectConfiguration = projectConfiguration;
+            LastItemsChangedAtUtc = null;
+            InputSourceItemTypes = ImmutableArray<string>.Empty;
+            InputSourceItemsByItemType = ImmutableDictionary.Create<string, ImmutableArray<string>>(StringComparers.ItemTypes);
             SetNames = ImmutableArray<string>.Empty;
+            KindNames = ImmutableArray<string>.Empty;
             UpToDateCheckInputItemsByKindBySetName = emptyItemBySetName;
             UpToDateCheckOutputItemsByKindBySetName = emptyItemBySetName;
             UpToDateCheckBuiltItemsByKindBySetName = emptyItemBySetName;
-            CopiedOutputFiles = ImmutableArray<(string DestinationRelative, string SourceRelative)>.Empty;
+            BuiltFromInputFileItems = ImmutableArray<(string DestinationRelative, string SourceRelative)>.Empty;
             ResolvedAnalyzerReferencePaths = ImmutableArray<string>.Empty;
             ResolvedCompilationReferencePaths = ImmutableArray<string>.Empty;
             CopyReferenceInputs = ImmutableArray<string>.Empty;
-            AdditionalDependentFileTimes = ImmutableDictionary.Create<string, DateTime>(StringComparers.Paths);
-            LastAdditionalDependentFileTimesChangedAtUtc = DateTime.MinValue;
-            WasStateRestored = false;
+            LastItemChanges = ImmutableArray<(bool IsAdd, string ItemType, string)>.Empty;
+            ProjectCopyData = new(null, "", false, ImmutableArray<CopyItem>.Empty, ImmutableArray<string>.Empty);
         }
 
         private UpToDateCheckImplicitConfiguredInput(
+            ProjectConfiguration projectConfiguration,
             string? msBuildProjectFullPath,
             string? msBuildProjectDirectory,
+            string? projectTargetPath,
             string? copyUpToDateMarkerItem,
             string? outputRelativeOrFullPath,
             string? newestImportInput,
             bool isDisabled,
-            ImmutableArray<string> itemTypes,
-            ImmutableDictionary<string, ImmutableArray<(string, string?, BuildUpToDateCheck.CopyType)>> itemsByItemType,
+            bool? isBuildAccelerationEnabled,
+            ImmutableArray<string> inputSourceItemTypes,
+            ImmutableDictionary<string, ImmutableArray<string>> inputSourceItemsByItemType,
             ImmutableDictionary<string, ImmutableDictionary<string, ImmutableArray<string>>> upToDateCheckInputItemsByKindBySetName,
             ImmutableDictionary<string, ImmutableDictionary<string, ImmutableArray<string>>> upToDateCheckOutputItemsByKindBySetName,
             ImmutableDictionary<string, ImmutableDictionary<string, ImmutableArray<string>>> upToDateCheckBuiltItemsByKindBySetName,
-            ImmutableArray<(string DestinationRelative, string SourceRelative)> copiedOutputFiles,
+            ImmutableArray<(string DestinationRelative, string SourceRelative)> buildFromInputFileItems,
             ImmutableArray<string> resolvedAnalyzerReferencePaths,
             ImmutableArray<string> resolvedCompilationReferencePaths,
             ImmutableArray<string> copyReferenceInputs,
-            IImmutableDictionary<string, DateTime> additionalDependentFileTimes,
-            DateTime lastAdditionalDependentFileTimesChangedAtUtc,
-            DateTime lastItemsChangedAtUtc,
-            ImmutableArray<(bool IsAdd, string ItemType, string Path, string? TargetPath, BuildUpToDateCheck.CopyType CopyType)> lastItemChanges,
+            DateTime? lastItemsChangedAtUtc,
+            ImmutableArray<(bool IsAdd, string ItemType, string)> lastItemChanges,
             int? itemHash,
-            bool wasStateRestored)
+            ProjectCopyData projectCopyData)
         {
+            ProjectConfiguration = projectConfiguration;
             MSBuildProjectFullPath = msBuildProjectFullPath;
             MSBuildProjectDirectory = msBuildProjectDirectory;
+            ProjectTargetPath = projectTargetPath;
             CopyUpToDateMarkerItem = copyUpToDateMarkerItem;
             OutputRelativeOrFullPath = outputRelativeOrFullPath;
             NewestImportInput = newestImportInput;
             IsDisabled = isDisabled;
-            ItemTypes = itemTypes;
-            ItemsByItemType = itemsByItemType;
+            IsBuildAccelerationEnabled = isBuildAccelerationEnabled;
+            InputSourceItemTypes = inputSourceItemTypes;
+            InputSourceItemsByItemType = inputSourceItemsByItemType;
             UpToDateCheckInputItemsByKindBySetName = upToDateCheckInputItemsByKindBySetName;
             UpToDateCheckOutputItemsByKindBySetName = upToDateCheckOutputItemsByKindBySetName;
             UpToDateCheckBuiltItemsByKindBySetName = upToDateCheckBuiltItemsByKindBySetName;
-            CopiedOutputFiles = copiedOutputFiles;
+            BuiltFromInputFileItems = buildFromInputFileItems;
             ResolvedAnalyzerReferencePaths = resolvedAnalyzerReferencePaths;
             ResolvedCompilationReferencePaths = resolvedCompilationReferencePaths;
             CopyReferenceInputs = copyReferenceInputs;
             LastItemsChangedAtUtc = lastItemsChangedAtUtc;
-            AdditionalDependentFileTimes = additionalDependentFileTimes;
-            LastAdditionalDependentFileTimesChangedAtUtc = lastAdditionalDependentFileTimesChangedAtUtc;
             LastItemChanges = lastItemChanges;
             ItemHash = itemHash;
-            WasStateRestored = wasStateRestored;
+            ProjectCopyData = projectCopyData;
 
             var setNames = new HashSet<string>(BuildUpToDateCheck.SetNameComparer);
-            AddKeys(upToDateCheckInputItemsByKindBySetName);
-            AddKeys(upToDateCheckOutputItemsByKindBySetName);
-            AddKeys(upToDateCheckBuiltItemsByKindBySetName);
+            AddSetNames(upToDateCheckInputItemsByKindBySetName);
+            AddSetNames(upToDateCheckOutputItemsByKindBySetName);
+            AddSetNames(upToDateCheckBuiltItemsByKindBySetName);
             setNames.Remove(BuildUpToDateCheck.DefaultSetName);
             SetNames = setNames.OrderBy(n => n, BuildUpToDateCheck.SetNameComparer).ToImmutableArray();
 
-            void AddKeys(ImmutableDictionary<string, ImmutableDictionary<string, ImmutableArray<string>>> dictionary)
+            var kindNames = new HashSet<string>(BuildUpToDateCheck.KindNameComparer);
+            AddKindNames(upToDateCheckInputItemsByKindBySetName);
+            AddKindNames(upToDateCheckOutputItemsByKindBySetName);
+            AddKindNames(upToDateCheckBuiltItemsByKindBySetName);
+            KindNames = kindNames.OrderBy(n => n, BuildUpToDateCheck.KindNameComparer).ToImmutableArray();
+
+            void AddSetNames(ImmutableDictionary<string, ImmutableDictionary<string, ImmutableArray<string>>> itemsByKindBySetName)
             {
-                foreach ((string key, _) in dictionary)
+                foreach ((string setName, _) in itemsByKindBySetName)
                 {
-                    setNames.Add(key);
+                    setNames.Add(setName);
+                }
+            }
+
+            void AddKindNames(ImmutableDictionary<string, ImmutableDictionary<string, ImmutableArray<string>>> itemsByKindBySetName)
+            {
+                foreach ((_, ImmutableDictionary<string, ImmutableArray<string>> itemsByKind) in itemsByKindBySetName)
+                {
+                    foreach ((string kind, _) in itemsByKind)
+                    {
+                        kindNames.Add(kind);
+                    }
                 }
             }
         }
@@ -206,195 +329,58 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
         public UpToDateCheckImplicitConfiguredInput Update(
             IProjectSubscriptionUpdate jointRuleUpdate,
             IProjectSubscriptionUpdate sourceItemsUpdate,
-            IProjectSnapshot2 projectSnapshot,
             IProjectItemSchema projectItemSchema,
             IProjectCatalogSnapshot projectCatalogSnapshot)
         {
             bool isDisabled = jointRuleUpdate.CurrentState.IsPropertyTrue(ConfigurationGeneral.SchemaName, ConfigurationGeneral.DisableFastUpToDateCheckProperty, defaultValue: false);
 
-            string? msBuildProjectFullPath = jointRuleUpdate.CurrentState.GetPropertyOrDefault(ConfigurationGeneral.SchemaName, ConfigurationGeneral.MSBuildProjectFullPathProperty, MSBuildProjectFullPath);
-            string? msBuildProjectDirectory = jointRuleUpdate.CurrentState.GetPropertyOrDefault(ConfigurationGeneral.SchemaName, ConfigurationGeneral.MSBuildProjectDirectoryProperty, MSBuildProjectDirectory);
-            string? msBuildProjectOutputPath = jointRuleUpdate.CurrentState.GetPropertyOrDefault(ConfigurationGeneral.SchemaName, ConfigurationGeneral.OutputPathProperty, OutputRelativeOrFullPath);
-            string? outputRelativeOrFullPath = jointRuleUpdate.CurrentState.GetPropertyOrDefault(ConfigurationGeneral.SchemaName, ConfigurationGeneral.OutDirProperty, msBuildProjectOutputPath);
-            string nuGetPackageFolders = jointRuleUpdate.CurrentState.GetPropertyOrDefault(ConfigurationGeneral.SchemaName, ConfigurationGeneral.NuGetPackageFoldersProperty, "");
-            string msBuildAllProjects = jointRuleUpdate.CurrentState.GetPropertyOrDefault(ConfigurationGeneral.SchemaName, ConfigurationGeneral.MSBuildAllProjectsProperty, "");
-
-            // We identify non-modifiable inputs (i.e. anything in Program Files, the VS install dir, or NuGet cache folders)
-            // and exclude them from the set of inputs we scan when an up-to-date query is made.
-            //
-            // For a .NET 5 xUnit project, this cuts the number of file timestamps checked from 187 to 17. Most of those are
-            // reference assemblies for the framework, which clearly aren't expected to change over time.
-            var projectFileClassifier = new ProjectFileClassifier
+            if (isDisabled)
             {
-                NuGetPackageFolders = nuGetPackageFolders
-            };
+                return CreateDisabled(ProjectConfiguration);
+            }
+
+            string? msBuildProjectFullPath = jointRuleUpdate.CurrentState.GetPropertyOrDefault(ConfigurationGeneral.SchemaName, ConfigurationGeneral.MSBuildProjectFullPathProperty, defaultValue: MSBuildProjectFullPath);
+            string? msBuildProjectDirectory = jointRuleUpdate.CurrentState.GetPropertyOrDefault(ConfigurationGeneral.SchemaName, ConfigurationGeneral.MSBuildProjectDirectoryProperty, defaultValue: MSBuildProjectDirectory);
+            string? projectTargetPath = jointRuleUpdate.CurrentState.GetPropertyOrDefault(ConfigurationGeneral.SchemaName, ConfigurationGeneral.TargetPathProperty, defaultValue: "");
+            string? projectOutputPath = jointRuleUpdate.CurrentState.GetPropertyOrDefault(ConfigurationGeneral.SchemaName, ConfigurationGeneral.OutputPathProperty, defaultValue: OutputRelativeOrFullPath);
+            string? outputRelativeOrFullPath = jointRuleUpdate.CurrentState.GetPropertyOrDefault(ConfigurationGeneral.SchemaName, ConfigurationGeneral.OutDirProperty, defaultValue: projectOutputPath);
+            string msBuildAllProjects = jointRuleUpdate.CurrentState.GetPropertyOrDefault(ConfigurationGeneral.SchemaName, ConfigurationGeneral.MSBuildAllProjectsProperty, defaultValue: "");
+            bool? isBuildAccelerationEnabled = jointRuleUpdate.CurrentState.GetBooleanPropertyValue(ConfigurationGeneral.SchemaName, ConfigurationGeneral.AccelerateBuildsInVisualStudioProperty);
 
             // The first item in this semicolon-separated list of project files will always be the one
             // with the newest timestamp. As we are only interested in timestamps on these files, we can
             // save memory and time by only considering this first path (dotnet/project-system#4333).
             string? newestImportInput = new LazyStringSplit(msBuildAllProjects, ';').FirstOrDefault();
 
-            ImmutableArray<string> resolvedAnalyzerReferencePaths;
-            if (jointRuleUpdate.ProjectChanges.TryGetValue(ResolvedAnalyzerReference.SchemaName, out IProjectChangeDescription change) && change.Difference.AnyChanges)
-            {
-                resolvedAnalyzerReferencePaths = change.After.Items
-                    .Select(item => item.Value[ResolvedAnalyzerReference.ResolvedPathProperty])
-                    .Where(path => !projectFileClassifier.IsNonModifiable(path))
-                    .Distinct(StringComparers.Paths)
-                    .ToImmutableArray();
-            }
-            else
-            {
-                resolvedAnalyzerReferencePaths = ResolvedAnalyzerReferencePaths;
-            }
+            ProjectFileClassifier? projectFileClassifier = null;
 
-            ImmutableDictionary<string, ImmutableDictionary<string, ImmutableArray<string>>> upToDateCheckInputItemsByKindBySetName;
-            if (jointRuleUpdate.ProjectChanges.TryGetValue(UpToDateCheckInput.SchemaName, out change) && change.Difference.AnyChanges)
-            {
-                upToDateCheckInputItemsByKindBySetName = BuildItemsByKindBySetName(change, UpToDateCheckInput.KindProperty, UpToDateCheckInput.SetProperty);
-            }
-            else
-            {
-                upToDateCheckInputItemsByKindBySetName = UpToDateCheckInputItemsByKindBySetName;
-            }
-
-            ImmutableDictionary<string, ImmutableDictionary<string, ImmutableArray<string>>> upToDateCheckOutputItemsByKindBySetName;
-            if (sourceItemsUpdate.ProjectChanges.TryGetValue(UpToDateCheckOutput.SchemaName, out change) && change.Difference.AnyChanges)
-            {
-                upToDateCheckOutputItemsByKindBySetName = BuildItemsByKindBySetName(change, UpToDateCheckOutput.KindProperty, UpToDateCheckOutput.SetProperty);
-            }
-            else if (jointRuleUpdate.ProjectChanges.TryGetValue(UpToDateCheckOutput.SchemaName, out change) && change.Difference.AnyChanges)
-            {
-                upToDateCheckOutputItemsByKindBySetName = BuildItemsByKindBySetName(change, UpToDateCheckOutput.KindProperty, UpToDateCheckOutput.SetProperty);
-            }
-            else
-            {
-                upToDateCheckOutputItemsByKindBySetName = UpToDateCheckOutputItemsByKindBySetName;
-            }
-
-            string? copyUpToDateMarkerItem;
-            if (jointRuleUpdate.ProjectChanges.TryGetValue(CopyUpToDateMarker.SchemaName, out change) && change.Difference.AnyChanges)
-            {
-                copyUpToDateMarkerItem = change.After.Items.Count == 1 ? change.After.Items.Single().Key : null;
-            }
-            else
-            {
-                copyUpToDateMarkerItem = CopyUpToDateMarkerItem;
-            }
-
-            ImmutableArray<string> resolvedCompilationReferencePaths;
-            ImmutableArray<string> copyReferenceInputs;
-            if (jointRuleUpdate.ProjectChanges.TryGetValue(ResolvedCompilationReference.SchemaName, out change) && change.Difference.AnyChanges)
-            {
-                HashSet<string> resolvedCompilationReferencePathsBuilder = new(StringComparers.Paths);
-                HashSet<string> copyReferenceInputsBuilder = new(StringComparers.Paths);
-
-                foreach (IImmutableDictionary<string, string> itemMetadata in change.After.Items.Values)
-                {
-                    string originalPath = itemMetadata[ResolvedCompilationReference.OriginalPathProperty];
-                    string resolvedPath = itemMetadata[ResolvedCompilationReference.ResolvedPathProperty];
-                    string copyReferenceInput = itemMetadata[CopyUpToDateMarker.SchemaName];
-
-                    if (!projectFileClassifier.IsNonModifiable(resolvedPath))
-                    {
-                        resolvedCompilationReferencePathsBuilder.Add(resolvedPath);
-                    }
-
-                    if (!string.IsNullOrWhiteSpace(originalPath))
-                    {
-                        copyReferenceInputsBuilder.Add(originalPath);
-                    }
-
-                    if (!string.IsNullOrWhiteSpace(copyReferenceInput))
-                    {
-                        copyReferenceInputsBuilder.Add(copyReferenceInput);
-                    }
-                }
-
-                resolvedCompilationReferencePaths = resolvedCompilationReferencePathsBuilder.ToImmutableArray();
-                copyReferenceInputs = copyReferenceInputsBuilder.ToImmutableArray();
-            }
-            else
-            {
-                resolvedCompilationReferencePaths = ResolvedCompilationReferencePaths;
-                copyReferenceInputs = CopyReferenceInputs;
-            }
-
-            ImmutableDictionary<string, ImmutableDictionary<string, ImmutableArray<string>>> upToDateCheckBuiltItemsByKindBySetName;
-            ImmutableArray<(string DestinationRelative, string SourceRelative)> copiedOutputFiles;
-            if (jointRuleUpdate.ProjectChanges.TryGetValue(UpToDateCheckBuilt.SchemaName, out change) && change.Difference.AnyChanges)
-            {
-                var itemsByKindBySet = new Dictionary<string, Dictionary<string, HashSet<string>>>(BuildUpToDateCheck.SetNameComparer);
-                var copiedOutputFilesBuilder = new Dictionary<string, string>(StringComparers.Paths);
-
-                foreach ((string destination, IImmutableDictionary<string, string> metadata) in change.After.Items)
-                {
-                    if (metadata.TryGetValue(UpToDateCheckBuilt.OriginalProperty, out string source) && !string.IsNullOrEmpty(source))
-                    {
-                        // This file is copied, not built
-                        // Remember the `Original` source for later
-                        copiedOutputFilesBuilder[destination] = source;
-                    }
-                    else
-                    {
-                        // This file is built, not copied
-                        string setName = metadata.GetStringProperty(UpToDateCheckBuilt.SetProperty) ?? BuildUpToDateCheck.DefaultSetName;
-                        string kindName = metadata.GetStringProperty(UpToDateCheckBuilt.KindProperty) ?? BuildUpToDateCheck.DefaultKindName;
-
-                        if (!itemsByKindBySet.TryGetValue(setName, out Dictionary<string, HashSet<string>> itemsByKind))
-                        {
-                            itemsByKindBySet[setName] = itemsByKind = new Dictionary<string, HashSet<string>>(BuildUpToDateCheck.KindNameComparer);
-                        }
-
-                        if (!itemsByKind.TryGetValue(kindName, out HashSet<string> items))
-                        {
-                            itemsByKind[kindName] = items = new HashSet<string>(StringComparers.ItemNames);
-                        }
-
-                        items.Add(destination);
-                    }
-                }
-
-                upToDateCheckBuiltItemsByKindBySetName = itemsByKindBySet.ToImmutableDictionary(
-                    pair => pair.Key,
-                    pair => pair.Value.ToImmutableDictionary(
-                        pair => pair.Key,
-                        pair => pair.Value.ToImmutableArray()),
-                    BuildUpToDateCheck.SetNameComparer);
-                copiedOutputFiles = copiedOutputFilesBuilder.Select(kvp => (kvp.Key, kvp.Value)).ToImmutableArray();
-            }
-            else
-            {
-                upToDateCheckBuiltItemsByKindBySetName = UpToDateCheckBuiltItemsByKindBySetName;
-                copiedOutputFiles = CopiedOutputFiles;
-            }
-
-            var itemTypes = projectItemSchema
+            // Not all item types are up-to-date check inputs. Filter to the set that are.
+            var inputSourceItemTypes = projectItemSchema
                 .GetKnownItemTypes()
                 .Where(itemType => projectItemSchema.GetItemType(itemType).UpToDateCheckInput)
                 .ToHashSet(StringComparers.ItemTypes);
 
-            var itemTypeDiff = new SetDiff<string>(ItemTypes, itemTypes, StringComparers.ItemTypes);
+            var itemTypeDiff = new SetDiff<string>(InputSourceItemTypes, inputSourceItemTypes, StringComparers.ItemTypes);
 
-            var itemsByItemTypeBuilder = ItemsByItemType.ToBuilder();
+            var inputSourceItemsByItemTypeBuilder = InputSourceItemsByItemType.ToBuilder();
 
             bool itemTypesChanged = false;
 
-            List<(bool IsAdd, string ItemType, string Path, string? TargetPath, BuildUpToDateCheck.CopyType)> changes = new();
+            List<(bool IsAdd, string ItemType, string)> lastItemChanges = new();
 
             // If an item type was removed, remove all items of that type
             foreach (string removedItemType in itemTypeDiff.Removed)
             {
                 itemTypesChanged = true;
 
-                if (itemsByItemTypeBuilder.TryGetValue(removedItemType, out var removedItems))
+                if (inputSourceItemsByItemTypeBuilder.TryGetValue(removedItemType, out ImmutableArray<string> removedItems))
                 {
-                    foreach ((string path, string? targetPath, BuildUpToDateCheck.CopyType copyType) in removedItems)
+                    foreach (string item in removedItems)
                     {
-                        changes.Add((false, removedItemType, path, targetPath, copyType));
+                        lastItemChanges.Add((IsAdd: false, removedItemType, item));
                     }
 
-                    itemsByItemTypeBuilder.Remove(removedItemType);
+                    inputSourceItemsByItemTypeBuilder.Remove(removedItemType);
                 }
             }
 
@@ -404,49 +390,55 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
             foreach ((string schemaName, IProjectChangeDescription projectChange) in sourceItemsUpdate.ProjectChanges)
             {
-                // ProjectChanges is keyed by the rule name which is usually the same as the item type, but not always (eg, in auto-generated rules)
+                if ((!projectChange.Difference.AnyChanges && !itemTypesChanged) ||
+                   (projectChange.After.Items.Count == 0 && projectChange.Difference.RemovedItems.Count == 0))
+                {
+                    continue;
+                }
+
+                // Rule name (schema name) is usually the same as its item type, but not always (eg: auto-generated rules)
                 string? itemType = null;
-                if (projectCatalogSnapshot.NamedCatalogs.TryGetValue(PropertyPageContexts.File, out IPropertyPagesCatalog fileCatalog))
+                if (projectCatalogSnapshot.NamedCatalogs.TryGetValue(PropertyPageContexts.File, out IPropertyPagesCatalog? fileCatalog))
                     itemType = fileCatalog.GetSchema(schemaName)?.DataSource.ItemType;
 
-                if (itemType == null)
+                if (itemType is null || !inputSourceItemTypes.Contains(itemType))
+                {
                     continue;
-                if (!itemTypes.Contains(itemType))
-                    continue;
-                if (!itemTypesChanged && !projectChange.Difference.AnyChanges)
-                    continue;
-                if (projectChange.After.Items.Count == 0)
-                    continue;
+                }
 
-                ImmutableArray<(string Path, string? TargetPath, BuildUpToDateCheck.CopyType)> before = ImmutableArray<(string Path, string? TargetPath, BuildUpToDateCheck.CopyType)>.Empty;
-                if (itemsByItemTypeBuilder.TryGetValue(itemType, out ImmutableArray<(string Path, string? TargetPath, BuildUpToDateCheck.CopyType CopyType)> beforeItems))
-                    before = beforeItems;
+                if (!inputSourceItemsByItemTypeBuilder.TryGetValue(itemType, out ImmutableArray<string> before))
+                {
+                    before = ImmutableArray<string>.Empty;
+                }
+
+                projectFileClassifier ??= BuildClassifier();
 
                 var after = projectChange.After.Items
-                    .Select(item => (Path: item.Key, TargetPath: GetTargetPath(item.Value), CopyType: GetCopyType(item.Value)))
-                    .ToHashSet(BuildUpToDateCheck.ItemComparer.Instance);
+                    .Select(item => item.Key)
+                    .Where(path => !projectFileClassifier.IsNonModifiable(path))
+                    .ToHashSet(StringComparers.Paths);
 
-                var diff = new SetDiff<(string, string?, BuildUpToDateCheck.CopyType)>(before, after, BuildUpToDateCheck.ItemComparer.Instance);
+                var diff = new SetDiff<string>(before, after, StringComparers.Paths);
 
-                foreach ((string path, string? targetPath, BuildUpToDateCheck.CopyType copyType) in diff.Added)
+                foreach (string item in diff.Added)
                 {
-                    changes.Add((true, itemType, path, targetPath, copyType));
+                    lastItemChanges.Add((IsAdd: true, itemType, item));
                 }
 
-                foreach ((string path, string? targetPath, BuildUpToDateCheck.CopyType copyType) in diff.Removed)
+                foreach (string item in diff.Removed)
                 {
-                    changes.Add((false, itemType, path, targetPath, copyType));
+                    lastItemChanges.Add((IsAdd: false, itemType, item));
                 }
 
-                itemsByItemTypeBuilder[itemType] = after.ToImmutableArray();
+                inputSourceItemsByItemTypeBuilder[itemType] = after.ToImmutableArray();
                 itemsChanged = true;
             }
 
-            ImmutableDictionary<string, ImmutableArray<(string Path, string? TargetPath, BuildUpToDateCheck.CopyType CopyType)>> itemsByItemType = itemsByItemTypeBuilder.ToImmutable();
+            ImmutableDictionary<string, ImmutableArray<string>> inputSourceItemsByItemType = inputSourceItemsByItemTypeBuilder.ToImmutable();
 
-            int itemHash = BuildUpToDateCheck.ComputeItemHash(itemsByItemType);
+            int itemHash = BuildUpToDateCheck.ComputeItemHash(inputSourceItemsByItemType);
 
-            DateTime lastItemsChangedAtUtc = LastItemsChangedAtUtc;
+            DateTime? lastItemsChangedAtUtc = LastItemsChangedAtUtc;
 
             if (itemHash != ItemHash && ItemHash != null)
             {
@@ -456,7 +448,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 // actually changes.
                 lastItemsChangedAtUtc = DateTime.UtcNow;
             }
-            else if (itemsChanged && !ItemTypes.IsEmpty)
+            else if (itemsChanged && !InputSourceItemTypes.IsEmpty)
             {
                 // When we previously had zero item types, we can surmise that the project has just been loaded. In such
                 // a case it is not correct to assume that the items changed, and so we do not update the timestamp.
@@ -465,106 +457,69 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 lastItemsChangedAtUtc = DateTime.UtcNow;
             }
 
-            DateTime lastAdditionalDependentFileTimesChangedAtUtc = GetLastTimeAdditionalDependentFilesAddedOrRemoved();
+            (ImmutableArray<string> resolvedCompilationReferencePaths, ImmutableArray<string> copyReferenceInputs) = UpdateResolvedCompilationReferences();
 
             return new(
+                ProjectConfiguration,
                 msBuildProjectFullPath,
                 msBuildProjectDirectory,
-                copyUpToDateMarkerItem,
+                projectTargetPath,
+                copyUpToDateMarkerItem: UpdateCopyUpToDateMarkerItem(),
                 outputRelativeOrFullPath,
                 newestImportInput,
                 isDisabled: isDisabled,
-                itemTypes: itemTypes.ToImmutableArray(),
-                itemsByItemType: itemsByItemType,
-                upToDateCheckInputItemsByKindBySetName: upToDateCheckInputItemsByKindBySetName,
-                upToDateCheckOutputItemsByKindBySetName: upToDateCheckOutputItemsByKindBySetName,
-                upToDateCheckBuiltItemsByKindBySetName: upToDateCheckBuiltItemsByKindBySetName,
-                copiedOutputFiles: copiedOutputFiles,
-                resolvedAnalyzerReferencePaths: resolvedAnalyzerReferencePaths,
+                isBuildAccelerationEnabled: isBuildAccelerationEnabled,
+                inputSourceItemTypes: inputSourceItemTypes.ToImmutableArray(),
+                inputSourceItemsByItemType: inputSourceItemsByItemType,
+                upToDateCheckInputItemsByKindBySetName:  UpdateItemsByKindBySetName(UpToDateCheckInputItemsByKindBySetName,  jointRuleUpdate, UpToDateCheckInput.SchemaName,  UpToDateCheckInput.KindProperty,  UpToDateCheckInput.SetProperty),
+                upToDateCheckOutputItemsByKindBySetName: UpdateItemsByKindBySetName(UpToDateCheckOutputItemsByKindBySetName, jointRuleUpdate, UpToDateCheckOutput.SchemaName, UpToDateCheckOutput.KindProperty, UpToDateCheckOutput.SetProperty),
+                upToDateCheckBuiltItemsByKindBySetName:  UpdateItemsByKindBySetName(UpToDateCheckBuiltItemsByKindBySetName,  jointRuleUpdate, UpToDateCheckBuilt.SchemaName,  UpToDateCheckBuilt.KindProperty,  UpToDateCheckBuilt.SetProperty, metadata => !metadata.TryGetValue(UpToDateCheckBuilt.OriginalProperty, out string? source) || string.IsNullOrEmpty(source)),
+                buildFromInputFileItems: UpdateBuildFromInputFileItems(),
+                resolvedAnalyzerReferencePaths: UpdateResolvedAnalyzerReferencePaths(),
                 resolvedCompilationReferencePaths: resolvedCompilationReferencePaths,
                 copyReferenceInputs: copyReferenceInputs,
-                additionalDependentFileTimes: projectSnapshot.AdditionalDependentFileTimes,
-                lastAdditionalDependentFileTimesChangedAtUtc: lastAdditionalDependentFileTimesChangedAtUtc,
                 lastItemsChangedAtUtc: lastItemsChangedAtUtc,
-                changes.ToImmutableArray(),
+                lastItemChanges.ToImmutableArray(),
                 itemHash,
-                WasStateRestored);
+                projectCopyData: UpdateCopyData());
 
-            DateTime GetLastTimeAdditionalDependentFilesAddedOrRemoved()
+            string? UpdateCopyUpToDateMarkerItem()
             {
-                var lastExistingAdditionalDependentFiles = AdditionalDependentFileTimes.Where(pair => pair.Value != DateTime.MinValue)
-                    .Select(pair => pair.Key)
-                    .ToImmutableHashSet();
-
-                IEnumerable<string> currentExistingAdditionalDependentFiles = projectSnapshot.AdditionalDependentFileTimes
-                    .Where(pair => pair.Value != DateTime.MinValue)
-                    .Select(pair => pair.Key);
-
-                bool additionalDependentFilesChanged = !lastExistingAdditionalDependentFiles.SetEquals(currentExistingAdditionalDependentFiles);
-
-                return additionalDependentFilesChanged && !lastExistingAdditionalDependentFiles.IsEmpty ? DateTime.UtcNow : LastAdditionalDependentFileTimesChangedAtUtc;
-            }
-
-            static BuildUpToDateCheck.CopyType GetCopyType(IImmutableDictionary<string, string> itemMetadata)
-            {
-                if (itemMetadata.TryGetValue(Compile.CopyToOutputDirectoryProperty, out string value))
+                if (jointRuleUpdate.ProjectChanges.TryGetValue(CopyUpToDateMarker.SchemaName, out IProjectChangeDescription? change) && change.Difference.AnyChanges)
                 {
-                    if (string.Equals(value, Compile.CopyToOutputDirectoryValues.Always, StringComparisons.PropertyLiteralValues))
-                    {
-                        return BuildUpToDateCheck.CopyType.CopyAlways;
-                    }
-
-                    if (string.Equals(value, Compile.CopyToOutputDirectoryValues.PreserveNewest, StringComparisons.PropertyLiteralValues))
-                    {
-                        return BuildUpToDateCheck.CopyType.CopyIfNewer;
-                    }
+                    return change.After.Items.Count == 1 ? change.After.Items.Single().Key : null;
                 }
 
-                return BuildUpToDateCheck.CopyType.CopyNever;
+                return CopyUpToDateMarkerItem;
             }
 
-            static string? GetTargetPath(IImmutableDictionary<string, string> itemMetadata)
+            static ImmutableDictionary<string, ImmutableDictionary<string, ImmutableArray<string>>> UpdateItemsByKindBySetName(
+                ImmutableDictionary<string, ImmutableDictionary<string, ImmutableArray<string>>> prior,
+                IProjectSubscriptionUpdate update,
+                string itemSchemaName,
+                string kindPropertyName,
+                string setPropertyName,
+                Predicate<IImmutableDictionary<string, string>>? metadataPredicate = null)
             {
-                // "Link" is an optional path and file name under which the item should be copied.
-                // It allows a source file to be moved to a different relative path, or to be renamed.
-                //
-                // From the perspective of the FUTD check, it is only relevant on CopyToOutputDirectory items.
-                //
-                // Two properties can provide this feature: "Link" and "TargetPath".
-                //
-                // If specified, "TargetPath" metadata controls the path of the target file, relative to the output
-                // folder.
-                //
-                // "Link" controls the location under the project in Solution Explorer where the item appears.
-                // If "TargetPath" is not specified, then "Link" can also serve the role of "TargetPath".
-                //
-                // If both are specified, we only use "TargetPath". The use case for specifying both is wanting
-                // to control the location of the item in Solution Explorer, as well as in the output directory.
-                // The former is not relevant to us here.
-
-                if (itemMetadata.TryGetValue(None.TargetPathProperty, out string? targetPath) && !string.IsNullOrWhiteSpace(targetPath))
+                if (!update.ProjectChanges.TryGetValue(itemSchemaName, out IProjectChangeDescription? projectChangeDescription) || !projectChangeDescription.Difference.AnyChanges)
                 {
-                    return targetPath;
+                    // No change in state for this collection. Return the prior data unchanged.
+                    return prior;
                 }
 
-                if (itemMetadata.TryGetValue(None.LinkProperty, out string link) && !string.IsNullOrWhiteSpace(link))
-                {
-                    return link;
-                }
-
-                return null;
-            }
-
-            static ImmutableDictionary<string, ImmutableDictionary<string, ImmutableArray<string>>> BuildItemsByKindBySetName(IProjectChangeDescription projectChangeDescription, string kindPropertyName, string setPropertyName)
-            {
                 var itemsByKindBySet = new Dictionary<string, Dictionary<string, HashSet<string>>>(BuildUpToDateCheck.SetNameComparer);
 
-                foreach ((string item, IImmutableDictionary<string, string> metadata) in projectChangeDescription.After.Items)
+                foreach ((string item, IImmutableDictionary<string, string> metadata) in projectChangeDescription.After.TryGetOrderedItems())
                 {
+                    if (metadataPredicate is not null && !metadataPredicate(metadata))
+                    {
+                        continue;
+                    }
+
                     string? setNames = metadata.GetStringProperty(setPropertyName);
                     string kindName = metadata.GetStringProperty(kindPropertyName) ?? BuildUpToDateCheck.DefaultKindName;
 
-                    if (setNames != null)
+                    if (setNames is not null)
                     {
                         foreach (string setName in new LazyStringSplit(setNames, ';'))
                         {
@@ -588,7 +543,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 {
                     if (!itemsByKindBySet.TryGetValue(setName, out Dictionary<string, HashSet<string>>? itemsByKind))
                     {
-                        itemsByKindBySet[setName] = itemsByKind = new Dictionary<string, HashSet<string>>(BuildUpToDateCheck.SetNameComparer);
+                        itemsByKindBySet[setName] = itemsByKind = new Dictionary<string, HashSet<string>>(BuildUpToDateCheck.KindNameComparer);
                     }
 
                     if (!itemsByKind.TryGetValue(kindName, out HashSet<string>? items))
@@ -599,90 +554,213 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                     items.Add(item);
                 }
             }
+
+            ImmutableArray<(string DestinationRelative, string SourceRelative)> UpdateBuildFromInputFileItems()
+            {
+                if (jointRuleUpdate.ProjectChanges.TryGetValue(UpToDateCheckBuilt.SchemaName, out IProjectChangeDescription? change) && change.Difference.AnyChanges)
+                {
+                    var buildFromInputFileItemsBuilder = new Dictionary<string, string>(StringComparers.Paths);
+
+                    foreach ((string destination, IImmutableDictionary<string, string> metadata) in change.After.Items)
+                    {
+                        if (metadata.TryGetValue(UpToDateCheckBuilt.OriginalProperty, out string? source) && !string.IsNullOrEmpty(source))
+                        {
+                            // This file is copied, not built
+                            // Remember the `Original` source for later
+                            buildFromInputFileItemsBuilder[destination] = source;
+                        }
+                    }
+
+                    return buildFromInputFileItemsBuilder.Select(kvp => (kvp.Key, kvp.Value)).ToImmutableArray();
+                }
+                else
+                {
+                    return BuiltFromInputFileItems;
+                }
+            }
+
+            ImmutableArray<string> UpdateResolvedAnalyzerReferencePaths()
+            {
+                if (jointRuleUpdate.ProjectChanges.TryGetValue(ResolvedAnalyzerReference.SchemaName, out IProjectChangeDescription? change) && change.Difference.AnyChanges)
+                {
+                    projectFileClassifier ??= BuildClassifier();
+
+                    return change.After.Items
+                        .Select(item => item.Value[ResolvedAnalyzerReference.ResolvedPathProperty])
+                        .Where(path => !projectFileClassifier.IsNonModifiable(path))
+                        .Distinct(StringComparers.Paths)
+                        .ToImmutableArray();
+                }
+
+                return ResolvedAnalyzerReferencePaths;
+            }
+
+            (ImmutableArray<string> ResolvedCompilationReferencePaths, ImmutableArray<string> CopyReferenceInputs) UpdateResolvedCompilationReferences()
+            {
+                if (jointRuleUpdate.ProjectChanges.TryGetValue(ResolvedCompilationReference.SchemaName, out IProjectChangeDescription? change) && change.Difference.AnyChanges)
+                {
+                    // We identify non-modifiable inputs (i.e. anything in Program Files, the VS install dir, or NuGet cache folders)
+                    // and exclude them from the set of inputs we scan when an up-to-date query is made.
+                    //
+                    // For a .NET 5 xUnit project, this cuts the number of file timestamps checked from 187 to 17. Most of those are
+                    // reference assemblies for the framework, which clearly aren't expected to change over time.
+                    projectFileClassifier ??= BuildClassifier();
+
+                    HashSet<string> resolvedCompilationReferencePathsBuilder = new(StringComparers.Paths);
+                    HashSet<string> copyReferenceInputsBuilder = new(StringComparers.Paths);
+
+                    foreach (IImmutableDictionary<string, string> itemMetadata in change.After.Items.Values)
+                    {
+                        string originalPath = itemMetadata[ResolvedCompilationReference.OriginalPathProperty];
+                        string resolvedPath = itemMetadata[ResolvedCompilationReference.ResolvedPathProperty];
+                        string copyReferenceInput = itemMetadata[CopyUpToDateMarker.SchemaName];
+
+                        if (!projectFileClassifier.IsNonModifiable(resolvedPath))
+                        {
+                            resolvedCompilationReferencePathsBuilder.Add(resolvedPath);
+                        }
+
+                        if (!string.IsNullOrWhiteSpace(originalPath))
+                        {
+                            copyReferenceInputsBuilder.Add(originalPath);
+                        }
+
+                        if (!string.IsNullOrWhiteSpace(copyReferenceInput))
+                        {
+                            copyReferenceInputsBuilder.Add(copyReferenceInput);
+                        }
+                    }
+
+                    return (resolvedCompilationReferencePathsBuilder.ToImmutableArray(), copyReferenceInputsBuilder.ToImmutableArray());
+                }
+                else
+                {
+                    return (ResolvedCompilationReferencePaths, CopyReferenceInputs);
+                }
+            }
+
+            ProjectCopyData UpdateCopyData()
+            {
+                if (jointRuleUpdate.ProjectChanges.TryGetValue(CopyToOutputDirectoryItem.SchemaName, out IProjectChangeDescription? change1) &&
+                    jointRuleUpdate.ProjectChanges.TryGetValue(ResolvedProjectReference.SchemaName, out IProjectChangeDescription? change2) &&
+                    jointRuleUpdate.ProjectChanges.TryGetValue(ConfigurationGeneral.SchemaName, out IProjectChangeDescription? change3))
+                {
+                    if (change1.Difference.AnyChanges || change2.Difference.AnyChanges || change3.Difference.AnyChanges)
+                    {
+                        // Register this project's data with the CopyToOutputDirectoryItem tracking service.
+
+                        string targetPath = jointRuleUpdate.CurrentState[ConfigurationGeneral.SchemaName].Properties[ConfigurationGeneral.TargetPathProperty];
+
+                        projectFileClassifier ??= BuildClassifier();
+
+                        ImmutableArray<CopyItem> copyItems = change1.After.Items
+                            .Where(pair => !projectFileClassifier.IsNonModifiable(pair.Key))
+                            .Select(pair => new CopyItem(path: pair.Key, metadata: pair.Value))
+                            .ToImmutableArray();
+
+                        ImmutableArray<string> referenceItems = change2.After.Items.Where(pair => IncludeProjectReference(pair.Value)).Select(item => item.Key).ToImmutableArray();
+
+                        bool produceReferenceAssembly = change3.After.Properties.GetBoolProperty(ConfigurationGeneral.ProduceReferenceAssemblyProperty) ?? false;
+
+                        return new ProjectCopyData(msBuildProjectFullPath, targetPath, produceReferenceAssembly, copyItems, referenceItems);
+                    }
+                }
+
+                return ProjectCopyData;
+
+                static bool IncludeProjectReference(IImmutableDictionary<string, string> metadata)
+                {
+                    // TODO this filtering is overzealous. In each of these cases, there are subtleties to how
+                    // builds handle the output assembly vs. CopyToOutputDirectory items both of the directly
+                    // referenced project, and of transitively referenced projects. To improve this we need
+                    // more information on the edges of our project reference graph.
+
+                    // Exclude any project reference for which we do not reference the output assembly.
+                    if (metadata.GetBoolProperty(ResolvedProjectReference.ReferenceOutputAssemblyProperty) == false)
+                    {
+                        return false;
+                    }
+
+                    // Exclude any project reference having Private="false" (aka CopyLocal="No").
+                    if (metadata.GetBoolProperty(ResolvedProjectReference.PrivateProperty) == false)
+                    {
+                        return false;
+                    }
+
+                    // Exclude any project reference having EmbedInteropTypes="true".
+                    if (metadata.GetBoolProperty(ResolvedProjectReference.EmbedInteropTypesProperty) == true)
+                    {
+                        return false;
+                    }
+
+                    return true;
+                }
+            }
+
+            ProjectFileClassifier BuildClassifier()
+            {
+                return new ProjectFileClassifier
+                {
+                    NuGetPackageFolders = jointRuleUpdate.CurrentState.GetPropertyOrDefault(ConfigurationGeneral.SchemaName, ConfigurationGeneral.NuGetPackageFoldersProperty, "")
+                };
+            }
         }
 
         /// <summary>
         /// For unit tests only.
         /// </summary>
-        internal UpToDateCheckImplicitConfiguredInput WithLastItemsChangedAtUtc(DateTime lastItemsChangedAtUtc)
+        internal UpToDateCheckImplicitConfiguredInput WithLastItemsChangedAtUtc(DateTime? lastItemsChangedAtUtc)
         {
             return new(
+                ProjectConfiguration,
                 MSBuildProjectFullPath,
                 MSBuildProjectDirectory,
+                ProjectTargetPath,
                 CopyUpToDateMarkerItem,
                 OutputRelativeOrFullPath,
                 NewestImportInput,
                 IsDisabled,
-                ItemTypes,
-                ItemsByItemType,
+                IsBuildAccelerationEnabled,
+                InputSourceItemTypes,
+                InputSourceItemsByItemType,
                 UpToDateCheckInputItemsByKindBySetName,
                 UpToDateCheckOutputItemsByKindBySetName,
                 UpToDateCheckBuiltItemsByKindBySetName,
-                CopiedOutputFiles,
+                BuiltFromInputFileItems,
                 ResolvedAnalyzerReferencePaths,
                 ResolvedCompilationReferencePaths,
                 CopyReferenceInputs,
-                AdditionalDependentFileTimes,
-                LastAdditionalDependentFileTimesChangedAtUtc,
                 lastItemsChangedAtUtc,
                 LastItemChanges,
                 ItemHash,
-                WasStateRestored);
+                ProjectCopyData);
         }
 
-        /// <summary>
-        /// For unit tests only.
-        /// </summary>
-        internal UpToDateCheckImplicitConfiguredInput WithLastAdditionalDependentFilesChangedAtUtc(DateTime lastAdditionalDependentFileTimesChangedAtUtc)
+        public UpToDateCheckImplicitConfiguredInput WithRestoredState(int itemHash, DateTime? lastItemsChangedAtUtc)
         {
             return new(
+                ProjectConfiguration,
                 MSBuildProjectFullPath,
                 MSBuildProjectDirectory,
+                ProjectTargetPath,
                 CopyUpToDateMarkerItem,
                 OutputRelativeOrFullPath,
                 NewestImportInput,
                 IsDisabled,
-                ItemTypes,
-                ItemsByItemType,
+                IsBuildAccelerationEnabled,
+                InputSourceItemTypes,
+                InputSourceItemsByItemType,
                 UpToDateCheckInputItemsByKindBySetName,
                 UpToDateCheckOutputItemsByKindBySetName,
                 UpToDateCheckBuiltItemsByKindBySetName,
-                CopiedOutputFiles,
+                BuiltFromInputFileItems,
                 ResolvedAnalyzerReferencePaths,
                 ResolvedCompilationReferencePaths,
                 CopyReferenceInputs,
-                AdditionalDependentFileTimes,
-                lastAdditionalDependentFileTimesChangedAtUtc,
-                LastItemsChangedAtUtc,
-                LastItemChanges,
-                ItemHash,
-                WasStateRestored);
-        }
-
-        public UpToDateCheckImplicitConfiguredInput WithRestoredState(int itemHash, DateTime lastInputsChangedAtUtc)
-        {
-            return new(
-                MSBuildProjectFullPath,
-                MSBuildProjectDirectory,
-                CopyUpToDateMarkerItem,
-                OutputRelativeOrFullPath,
-                NewestImportInput,
-                IsDisabled,
-                ItemTypes,
-                ItemsByItemType,
-                UpToDateCheckInputItemsByKindBySetName,
-                UpToDateCheckOutputItemsByKindBySetName,
-                UpToDateCheckBuiltItemsByKindBySetName,
-                CopiedOutputFiles,
-                ResolvedAnalyzerReferencePaths,
-                ResolvedCompilationReferencePaths,
-                CopyReferenceInputs,
-                AdditionalDependentFileTimes,
-                LastAdditionalDependentFileTimesChangedAtUtc,
-                lastInputsChangedAtUtc,
+                lastItemsChangedAtUtc,
                 LastItemChanges,
                 itemHash,
-                wasStateRestored: true);
+                ProjectCopyData);
         }
     }
 }

@@ -11,6 +11,8 @@
     <Category Name="General"
               Description="General"
               DisplayName="General" />
+    <Category Name="Misc"
+              DisplayName="Misc" />
   </Rule.Categories>
 
   <Rule.DataSource>
@@ -388,6 +390,9 @@
   </StringProperty>
 
   <StringProperty Name="TargetFSharpCoreVersion"
+                  Visible="False" />
+  
+  <StringProperty Name="ActiveDebugProfile"
                   Visible="False" />
 
   <StringProperty Name="URL"

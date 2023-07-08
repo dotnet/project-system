@@ -34,7 +34,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
             _activeConfiguredProjectProvider.Changed += OnActiveConfigurationChanged;
 
             ConfiguredProject? configuredProject = _activeConfiguredProjectProvider.ActiveConfiguredProject;
-            if (configuredProject == null)
+            if (configuredProject is null)
             {
                 _threadingService.ExecuteSynchronously(async () =>
                 {
@@ -54,7 +54,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
         protected abstract T GetValue(ConfiguredProject project);
 
-        private void OnActiveConfigurationChanged(object sender, ActiveConfigurationChangedEventArgs e)
+        private void OnActiveConfigurationChanged(object? sender, ActiveConfigurationChangedEventArgs e)
         {
             SetValueForConfiguration(e.NowActive);
         }

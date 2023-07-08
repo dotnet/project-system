@@ -686,6 +686,11 @@ Změnou tohoto nastavení dojde k resetování nastavení ve všech konfigurací
         <target state="translated">Komentář</target>
         <note>Column names for the string table</note>
       </trans-unit>
+      <trans-unit id="SD_ERR_HelpMessage_SuggestFileOpenWith">
+        <source>If this is not a Settings-Designer file then use 'Open With' to open it in a text editor.</source>
+        <target state="translated">Pokud se nejedná o soubor Návrháře nastavení, otevřete ho v textovém editoru pomocí příkazu Otevřít v programu.</target>
+        <note />
+      </trans-unit>
       <trans-unit id="SingleFileGenerator_FailedToGenerateFile_1Arg">
         <source>Failed to generate file: {0}</source>
         <target state="translated">Generování souboru selhalo: {0}</target>

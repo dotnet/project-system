@@ -1,17 +1,11 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
-using System;
-using System.Collections.Generic;
-using System.Collections.Immutable;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.VisualStudio.ProjectSystem.Debug;
 using Microsoft.VisualStudio.Threading;
-using Moq;
 
 namespace Microsoft.VisualStudio.ProjectSystem
 {
-    internal class ILaunchSettingsProviderFactory
+    internal static class ILaunchSettingsProviderFactory
     {
         /// <summary>
         /// Creates a mock <see cref="ILaunchSettingsProvider"/> for testing purposes.
@@ -62,10 +56,10 @@ namespace Microsoft.VisualStudio.ProjectSystem
                 launchSettingsMock.Setup(t => t.GlobalSettings).Returns(initialGlobalSettings);
             }
 
-            if (activeProfileName != null)
+            if (activeProfileName is not null)
             {
                 var activeLaunchProfile = launchProfiles?.FirstOrDefault(p => p.Name == activeProfileName)
-                    ?? new LaunchProfile { Name = activeProfileName };
+                    ?? new LaunchProfile(name: activeProfileName, commandName: null);
                 launchSettingsMock.Setup(t => t.ActiveProfile).Returns(activeLaunchProfile);
             }
 
@@ -75,7 +69,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
             settingsProviderMock.Setup(t => t.WaitForFirstSnapshot(It.IsAny<int>())).Returns(Task.FromResult<ILaunchSettings?>(launchSettings));
             settingsProviderMock.SetupGet(t => t.CurrentSnapshot).Returns(launchSettings);
 
-            if (setActiveProfileCallback != null)
+            if (setActiveProfileCallback is not null)
             {
                 settingsProviderMock.Setup(t => t.SetActiveProfileAsync(It.IsAny<string>()))
                     .Returns<string>(v =>
@@ -85,7 +79,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
                     });
             }
 
-            if (updateLaunchSettingsCallback != null)
+            if (updateLaunchSettingsCallback is not null)
             {
                 settingsProviderMock.Setup(t => t.UpdateAndSaveSettingsAsync(It.IsAny<ILaunchSettings>()))
                     .Returns<ILaunchSettings>(v =>

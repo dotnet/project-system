@@ -31,8 +31,8 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         ''' <param name="SelectedConfigName">The selected configuration in the drop-down combobox.  Empty string indicates "All Configurations".</param>
         ''' <param name="SelectedPlatformName">The selected platform in the drop-down combobox.  Empty string indicates "All Platforms".</param>
         Public Sub New(VsCfgProvider As IVsCfgProvider2, Objects() As Object, Values() As Object, SelectedConfigName As String, SelectedPlatformName As String)
-            Requires.NotNull(Values, NameOf(Values))
-            Requires.NotNull(Objects, NameOf(Objects))
+            Requires.NotNull(Values)
+            Requires.NotNull(Objects)
 
             If Values.Length <> Objects.Length Then
                 Debug.Fail("Bad array length returned from GetPropertyMultipleValues()")

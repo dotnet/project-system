@@ -1,43 +1,27 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
-using System;
 using Microsoft.VisualStudio.Shell.Interop;
-using Moq;
-using Xunit;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Waiting
 {
-    public class VisualStudioWaitContextTests
+    public static class VisualStudioWaitContextTests
     {
         [Fact]
-        public static void SetPropertyAllowCancel_Test()
+        public static void CancellationToken()
         {
-            string title = "Test001";
-            string message = "Testing001";
-            bool isCancelable = true;
-            var context = Create(title, message, isCancelable);
-            Assert.True(context.AllowCancel);
-            context.AllowCancel = false;
-            Assert.False(context.AllowCancel);
-        }
+            var cancellable = Create("Title", "Message", allowCancel: true);
 
-        [Fact]
-        public static void SetPropertyMessage_Test()
-        {
-            string title = "Test001";
-            string message = "Testing001";
-            bool isCancelable = true;
-            var context = Create(title, message, isCancelable);
-            Assert.Equal(message, context.Message);
-            var message2 = "Testing002";
-            context.Message = message2;
-            Assert.Equal(message2, context.Message);
+            Assert.True(cancellable.CancellationToken.CanBeCanceled);
+
+            var nonCancellable = Create("Title", "Message", allowCancel: false);
+
+            Assert.False(nonCancellable.CancellationToken.CanBeCanceled);
         }
 
         [Fact]
         public static void CreateWrongType_Test()
         {
-            Assert.Throws<ArgumentNullException>(() => _ = CreateWrongType(string.Empty, string.Empty, false));
+            Assert.ThrowsAny<Exception>(() => _ = CreateWrongType(string.Empty, string.Empty, false));
         }
 
         private delegate void CreateInstanceCallback(out IVsThreadedWaitDialog2 ppIVsThreadedWaitDialog);

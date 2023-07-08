@@ -1,12 +1,9 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
-using System;
 using System.Runtime.InteropServices;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
-using Xunit;
-using Task = System.Threading.Tasks.Task;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
 {
@@ -33,10 +30,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
 
             var designerService = CreateInstance(vsProjectDesignerPageService);
 
-            Assert.Throws<InvalidOperationException>(() =>
-            {
-                designerService.ShowProjectDesignerAsync();
-            });
+            Assert.ThrowsAsync<InvalidOperationException>(designerService.ShowProjectDesignerAsync);
         }
 
         [Fact]
@@ -51,10 +45,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
 
             var designerService = CreateInstance(projectVsServices, vsProjectDesignerPageService);
 
-            await Assert.ThrowsAsync<COMException>(() =>
-            {
-                return designerService.ShowProjectDesignerAsync();
-            });
+            await Assert.ThrowsAsync<COMException>(designerService.ShowProjectDesignerAsync);
         }
 
         [Fact]
@@ -69,10 +60,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
 
             var designerService = CreateInstance(projectVsServices, vsProjectDesignerPageService);
 
-            await Assert.ThrowsAsync<COMException>(() =>
-            {
-                return designerService.ShowProjectDesignerAsync();
-            });
+            await Assert.ThrowsAsync<COMException>(designerService.ShowProjectDesignerAsync);
         }
 
         [Fact]
@@ -92,10 +80,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
 
             var designerService = CreateInstance(projectVsServices, vsProjectDesignerPageService);
 
-            await Assert.ThrowsAsync<COMException>(() =>
-            {
-                return designerService.ShowProjectDesignerAsync();
-            });
+            await Assert.ThrowsAsync<COMException>(designerService.ShowProjectDesignerAsync);
         }
 
         [Fact]
@@ -109,7 +94,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
             hierarchy.ImplementGetGuid(VsHierarchyPropID.ProjectDesignerEditor, result: editorGuid);
 
             var project = (IVsProject4)hierarchy;
-            project.ImplementOpenItemWithSpecific(editorGuid, VSConstants.LOGVIEWID_Primary, (IVsWindowFrame?)null);
+            project.ImplementOpenItemWithSpecific(editorGuid, VSConstants.LOGVIEWID_Primary, null);
 
             var projectVsServices = IUnconfiguredProjectVsServicesFactory.Implement(() => hierarchy, () => project);
 
@@ -136,10 +121,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
 
             var designerService = CreateInstance(projectVsServices, vsProjectDesignerPageService);
 
-            await Assert.ThrowsAsync<COMException>(() =>
-            {
-                return designerService.ShowProjectDesignerAsync();
-            });
+            await Assert.ThrowsAsync<COMException>(designerService.ShowProjectDesignerAsync);
         }
 
         [Fact]
@@ -168,7 +150,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
 
         private static ProjectDesignerService CreateInstance(IVsProjectDesignerPageService vsProjectDesignerPageService)
         {
-            return CreateInstance((IUnconfiguredProjectVsServices?)null, vsProjectDesignerPageService);
+            return CreateInstance(null, vsProjectDesignerPageService);
         }
 
         private static ProjectDesignerService CreateInstance(IUnconfiguredProjectVsServices? projectVsServices, IVsProjectDesignerPageService? vsProjectDesignerPageService)

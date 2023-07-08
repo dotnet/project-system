@@ -1,13 +1,9 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
-using System.Collections.Immutable;
-using System.Threading.Tasks;
 using Microsoft.Build.Framework.XamlTypes;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
 using Microsoft.VisualStudio.ProjectSystem.Query;
-using Microsoft.VisualStudio.ProjectSystem.Query.ProjectModel.Implementation;
-using Moq;
-using Xunit;
+using Microsoft.VisualStudio.ProjectSystem.Query.Framework;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
 {
@@ -26,7 +22,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
             var id = new EntityIdentity(key: "A", value: "B");
             var configuration = ProjectConfigurationFactory.Create(configuration: "Alpha|Beta|Gamma");
 
-            var result = (UIPropertyValueValue)await UIPropertyValueDataProducer.CreateUIPropertyValueValueAsync(
+            var result = (UIPropertyValueSnapshot)await UIPropertyValueDataProducer.CreateUIPropertyValueValueAsync(
                 entityRuntime,
                 id,
                 configuration,
@@ -50,7 +46,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
             var id = new EntityIdentity(key: "A", value: "B");
             var configuration = ProjectConfigurationFactory.Create(configuration: "Alpha|Beta|Gamma");
 
-            var result = (UIPropertyValueValue)await UIPropertyValueDataProducer.CreateUIPropertyValueValueAsync(
+            var result = (UIPropertyValueSnapshot)await UIPropertyValueDataProducer.CreateUIPropertyValueValueAsync(
                 entityRuntime,
                 id,
                 configuration,
@@ -74,7 +70,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
             var id = new EntityIdentity(key: "A", value: "B");
             var configuration = ProjectConfigurationFactory.Create(configuration: "Alpha|Beta|Gamma");
 
-            var result = (UIPropertyValueValue)await UIPropertyValueDataProducer.CreateUIPropertyValueValueAsync(
+            var result = (UIPropertyValueSnapshot)await UIPropertyValueDataProducer.CreateUIPropertyValueValueAsync(
                 entityRuntime,
                 id,
                 configuration,
@@ -97,7 +93,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
             var id = new EntityIdentity(key: "A", value: "B");
             var configuration = ProjectConfigurationFactory.Create(configuration: "Alpha|Beta|Gamma");
 
-            var result = (UIPropertyValueValue)await UIPropertyValueDataProducer.CreateUIPropertyValueValueAsync(
+            var result = (UIPropertyValueSnapshot)await UIPropertyValueDataProducer.CreateUIPropertyValueValueAsync(
                 entityRuntime,
                 id,
                 configuration,
@@ -121,7 +117,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
             var id = new EntityIdentity(key: "A", value: "B");
             var configuration = ProjectConfigurationFactory.Create(configuration: "Alpha|Beta|Gamma");
 
-            var result = (UIPropertyValueValue)await UIPropertyValueDataProducer.CreateUIPropertyValueValueAsync(
+            var result = (UIPropertyValueSnapshot)await UIPropertyValueDataProducer.CreateUIPropertyValueValueAsync(
                 entityRuntime,
                 id,
                 configuration,

@@ -1,0 +1,45 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!-- Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information. -->
+<Rule Name="References"
+      Description="Specifies the project's references and namespace imports."
+      DisplayName="References"
+      PageTemplate="generic"
+      Order="200"
+      xmlns="http://schemas.microsoft.com/build/2009/properties"
+      xmlns:xliff="https://github.com/dotnet/xliff-tasks" 
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+      mc:Ignorable="xliff">
+
+  <Rule.Categories>
+    <Category Name="General"
+              DisplayName="General"
+              Description="References and namespace settings for VB projects." />
+  </Rule.Categories>
+
+  <Rule.DataSource>
+    <DataSource Persistence="ProjectFile"
+                SourceOfDefaultValue="AfterContext"
+                HasConfigurationCondition="False" />
+  </Rule.DataSource>
+
+  <DynamicEnumProperty Name="ImportedNamespaces"
+                       DisplayName="Import Namespaces"
+                       Description="Manage which namespaces to import in your application."
+                       Category="General"
+                       EnumProvider="DotNetImportsEnumProvider">
+    <DynamicEnumProperty.DataSource>
+      <DataSource PersistedName="ImportedNamespaces"
+                  Persistence="ProjectFileWithInterception"
+                  HasConfigurationCondition="False" />
+    </DynamicEnumProperty.DataSource>
+    <DynamicEnumProperty.ValueEditors>
+      <ValueEditor EditorType="MultiStringSelector">
+        <ValueEditor.Metadata>
+          <NameValuePair Name="TypeDescriptorText" Value="Imported Namespaces" xliff:LocalizedProperties="Value" />
+          <NameValuePair Name="AllowsCustomStrings" Value="True" />
+          <NameValuePair Name="ShouldDisplayEvaluatedPreview" Value="True" />
+        </ValueEditor.Metadata>
+      </ValueEditor>
+    </DynamicEnumProperty.ValueEditors>
+  </DynamicEnumProperty> 
+</Rule>

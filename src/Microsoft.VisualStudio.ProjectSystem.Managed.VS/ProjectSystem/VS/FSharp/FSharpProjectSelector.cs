@@ -1,7 +1,5 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
-using System;
-using System.ComponentModel.Composition;
 using System.Runtime.InteropServices;
 using System.Xml;
 using System.Xml.Linq;
@@ -10,7 +8,6 @@ using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 using Microsoft.VisualStudio.Threading;
 using IAsyncServiceProvider = Microsoft.VisualStudio.Shell.IAsyncServiceProvider;
-using Task = System.Threading.Tasks.Task;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.FSharp
 {
@@ -56,8 +53,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.FSharp
 
             // If the project has either a Project-level SDK attribute or an Import-level SDK attribute, we'll open it with the new project system.
             // Check both namespace-qualified and unqualified forms to include projects with and without the xmlns attribute.
-            bool hasProjectElementWithSdkAttribute = doc.XPathSelectElement("/msb:Project[@Sdk]", nsm) != null || doc.XPathSelectElement("/Project[@Sdk]") != null;
-            bool hasImportElementWithSdkAttribute = doc.XPathSelectElement("/*/msb:Import[@Sdk]", nsm) != null || doc.XPathSelectElement("/*/Import[@Sdk]") != null;
+            bool hasProjectElementWithSdkAttribute = doc.XPathSelectElement("/msb:Project[@Sdk]", nsm) is not null || doc.XPathSelectElement("/Project[@Sdk]") is not null;
+            bool hasImportElementWithSdkAttribute = doc.XPathSelectElement("/*/msb:Import[@Sdk]", nsm) is not null || doc.XPathSelectElement("/*/Import[@Sdk]") is not null;
 
             if (hasProjectElementWithSdkAttribute || hasImportElementWithSdkAttribute)
             {

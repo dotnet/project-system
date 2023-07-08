@@ -1,9 +1,6 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
-using System.Collections.Generic;
-using System.Collections.Immutable;
-using System.ComponentModel.Composition;
-using System.Threading.Tasks;
+using System.Text.RegularExpressions;
 
 namespace Microsoft.VisualStudio.ProjectSystem.Properties
 {
@@ -21,7 +18,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
             TargetPlatformVersionProperty
         },
         ExportInterceptingPropertyValueProviderFile.ProjectFile)]
-    internal sealed class ComplexTargetFrameworkValueProvider : InterceptingPropertyValueProviderBase
+    internal sealed class CompoundTargetFrameworkValueProvider : InterceptingPropertyValueProviderBase
     {
         private const string InterceptedTargetFrameworkProperty = "InterceptedTargetFramework";
         private const string TargetPlatformProperty = ConfigurationGeneral.TargetPlatformIdentifierProperty;
@@ -31,46 +28,77 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
 
         private readonly ProjectProperties _properties;
         private readonly ConfiguredProject _configuredProject;
+        private bool? _useWPFProperty;
+        private bool? _useWindowsFormsProperty;
+        private bool? _useWinUIProperty;
+        private static readonly string[] s_msBuildPropertyNames = { TargetFrameworkProperty, TargetPlatformProperty, TargetPlatformVersionProperty, SupportedOSPlatformVersionProperty };
+        private static readonly Regex s_versionRegex = new(@"^net(?<version>[0-9.]+)$", RegexOptions.ExplicitCapture);
 
         private struct ComplexTargetFramework
         {
             public string? TargetFrameworkMoniker;
             public string? TargetPlatformIdentifier;
             public string? TargetPlatformVersion;
+            public string? TargetFrameworkIdentifier;
             public string? TargetFramework;
         }
 
         [ImportingConstructor]
-        public ComplexTargetFrameworkValueProvider(ProjectProperties properties, ConfiguredProject configuredProject)
+        public CompoundTargetFrameworkValueProvider(ProjectProperties properties, ConfiguredProject configuredProject)
         {
             _properties = properties;
             _configuredProject = configuredProject;
         }
 
-        public override async Task<string?> OnSetPropertyValueAsync(string propertyName, string unevaluatedPropertyValue, IProjectProperties defaultProperties, IReadOnlyDictionary<string, string>? dimensionalConditions = null)
+        private async Task<ComplexTargetFramework> GetStoredPropertiesAsync()
         {
             ConfigurationGeneral configuration = await _properties.GetConfigurationGeneralPropertiesAsync();
-            ComplexTargetFramework storedValues = await GetStoredComplexTargetFrameworkAsync(configuration);
+            return await GetStoredComplexTargetFrameworkAsync(configuration);
+        }
 
-            if (storedValues.TargetFrameworkMoniker != null)
+        public override Task<bool> IsValueDefinedInContextAsync(string propertyName, IProjectProperties defaultProperties)
+        {
+            return IsValueDefinedInContextMSBuildPropertiesAsync(defaultProperties, s_msBuildPropertyNames);
+        }
+
+        public override async Task<string?> OnSetPropertyValueAsync(string propertyName, string unevaluatedPropertyValue, IProjectProperties defaultProperties, IReadOnlyDictionary<string, string>? dimensionalConditions = null)
+        {
+            ComplexTargetFramework storedProperties = await GetStoredPropertiesAsync();
+
+            if (storedProperties.TargetFrameworkMoniker is not null)
             {
+                // Changing the Target Framework Moniker
                 if (StringComparers.PropertyLiteralValues.Equals(propertyName, InterceptedTargetFrameworkProperty))
                 {
-                    storedValues.TargetFrameworkMoniker = unevaluatedPropertyValue;
+                    // Delete stored platform properties
+                    storedProperties.TargetPlatformIdentifier = null;
+                    storedProperties.TargetPlatformVersion = null;
+                    await ResetPlatformPropertiesAsync(defaultProperties);
+
+                    storedProperties.TargetFrameworkMoniker = unevaluatedPropertyValue;
                 }
+
+                // Changing the Target Platform Identifier
                 else if (StringComparers.PropertyLiteralValues.Equals(propertyName, TargetPlatformProperty))
                 {
-                    if (unevaluatedPropertyValue != storedValues.TargetPlatformIdentifier)
+                    if (unevaluatedPropertyValue != storedProperties.TargetPlatformIdentifier)
                     {
-                        storedValues.TargetPlatformIdentifier = unevaluatedPropertyValue;
+                        // Delete stored platform properties
+                        storedProperties.TargetPlatformIdentifier = null;
+                        storedProperties.TargetPlatformVersion = null;
                         await ResetPlatformPropertiesAsync(defaultProperties);
+
+                        storedProperties.TargetPlatformIdentifier = unevaluatedPropertyValue;
                     }
                 }
+
+                // Changing the Target Platform Version
                 else if (StringComparers.PropertyLiteralValues.Equals(propertyName, TargetPlatformVersionProperty))
                 {
-                    storedValues.TargetPlatformVersion = unevaluatedPropertyValue;
+                    storedProperties.TargetPlatformVersion = unevaluatedPropertyValue;
                 }
-                await defaultProperties.SetPropertyValueAsync(TargetFrameworkProperty, await ComputeValueAsync(storedValues));
+
+                await defaultProperties.SetPropertyValueAsync(TargetFrameworkProperty, await ComputeValueAsync(storedProperties));
             }
 
             return null;
@@ -104,11 +132,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
 
         private static async Task<ComplexTargetFramework> GetStoredComplexTargetFrameworkAsync(ConfigurationGeneral configuration)
         {
-            ComplexTargetFramework storedValues = new ComplexTargetFramework
+            var storedValues = new ComplexTargetFramework
             {
                 TargetFrameworkMoniker = (string?)await configuration.TargetFrameworkMoniker.GetValueAsync(),
                 TargetPlatformIdentifier = (string?)await configuration.TargetPlatformIdentifier.GetValueAsync(),
                 TargetPlatformVersion = (string?)await configuration.TargetPlatformVersion.GetValueAsync(),
+                TargetFrameworkIdentifier = (string?)await configuration.TargetFrameworkIdentifier.GetValueAsync(),
                 TargetFramework = (string?)await configuration.TargetFramework.GetValueAsync()
             };
 
@@ -129,8 +158,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
 
         /// <summary>
         /// Combines the three values that make up the TargetFramework property.
-        /// I.e. { net5.0, windows, 10.0 } => net5.0-windows10.0
-        /// { net5.0, null, null } => net5.0
+        /// In order to save the correct value, we make calls to retrieve the alias for the target framework and platform 
+        /// (.NET 5.0 => net5.0, .NET Core 3.1 => netcoreapp3.1, Windows => windows).
+        /// Examples: 
+        /// { .NET 5.0, Windows, 10.0 } => net5.0-windows10.0
+        /// { .NET 5.0, null, null } => net5.0
         /// { null, null, null } => String.Empty
         /// </summary>
         /// <param name="complexTargetFramework">A struct with each property.</param>
@@ -154,7 +186,19 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
                 }
             }
 
-            if (!string.IsNullOrEmpty(complexTargetFramework.TargetPlatformIdentifier) && complexTargetFramework.TargetPlatformIdentifier != null)
+            // Check if the project requires an explicit platform.
+            if (IsNetCore5OrHigher(targetFrameworkAlias) && await IsWindowsPlatformNeededAsync())
+            {
+                // Ideally we would set the complexTargetFramework.TargetPlatformIdentifier = "Windows",
+                // but we're in a difficult position right now to retrieve the correct TargetPlatformAlias from GetTargetPlatformAliasAsync below,
+                // reason being it calls for the previous TargetFramework, not the new one that is being set.
+                // Therefore, in the case where we are going from a TargetFramework with no need of platform, like netcoreapp3.1,
+                // to one that does, like net5.0, we would be querying the list of TargetPlatformAlias for netcoreapp3.1 and get an empty list.
+                // I have to revisit this approach, but for now we can pass the TargetPlatformAlias that should be.
+                return targetFrameworkAlias + "-windows" + complexTargetFramework.TargetPlatformVersion;
+            }
+
+            if (!Strings.IsNullOrEmpty(complexTargetFramework.TargetPlatformIdentifier))
             {
                 string targetPlatformAlias = await GetTargetPlatformAliasAsync(complexTargetFramework.TargetPlatformIdentifier);
 
@@ -167,6 +211,58 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
             }
 
             return targetFrameworkAlias;
+        }
+
+        private static bool IsNetCore5OrHigher(string targetFrameworkAlias)
+        {
+            // Ideally, we want to use the TargetFrameworkIdentifier and TargetFrameworkVersion;
+            // however, in this case the target framework properties we have are for the currently set value,
+            // not the value we want to set it to (for example, if we go from netcoreapp3.1 to net5.0).
+            // The only property we have that describes the value to be set is the TargetFrameworkAlias which
+            // is passed to this method.
+
+            Match match = s_versionRegex.Match(targetFrameworkAlias);
+
+            if (match.Success)
+            {
+                string versionString = match.Groups["version"].Value;
+
+                if (Version.TryParse(versionString, out Version? version))
+                {
+                    if (version.Major >= 5)
+                    {
+                        // This is a .NET Core app with version greater than five.
+                        return true;
+                    }
+                }
+            }
+            return false;
+        }
+
+        private async Task<bool> IsWindowsPlatformNeededAsync()
+        {
+            // Checks if the project has either UseWPF or UseWindowsForms properties.
+            ConfigurationGeneral configuration = await _properties.GetConfigurationGeneralPropertiesAsync();
+            _useWPFProperty = (bool?)await configuration.UseWPF.GetValueAsync();
+
+            if (_useWPFProperty is not null)
+            {
+                return (bool)_useWPFProperty;
+            }
+
+            _useWindowsFormsProperty = (bool?)await configuration.UseWindowsForms.GetValueAsync();
+            if (_useWindowsFormsProperty is not null)
+            {
+                return (bool)_useWindowsFormsProperty;
+            }
+
+            _useWinUIProperty = (bool?)await configuration.UseWinUI.GetValueAsync();
+            if (_useWinUIProperty is not null)
+            {
+                return (bool)_useWinUIProperty;
+            }
+
+            return false;
         }
 
         /// <summary>
@@ -183,7 +279,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
 
             IImmutableDictionary<string, string>? targetFrameworkProperties = targetFrameworkRuleSnapshot.GetProjectItemProperties(targetFrameworkMoniker);
 
-            if (targetFrameworkProperties != null &&
+            if (targetFrameworkProperties is not null &&
                 targetFrameworkProperties.TryGetValue(SupportedTargetFramework.AliasProperty, out string? targetFrameworkAlias))
             {
                 return targetFrameworkAlias;

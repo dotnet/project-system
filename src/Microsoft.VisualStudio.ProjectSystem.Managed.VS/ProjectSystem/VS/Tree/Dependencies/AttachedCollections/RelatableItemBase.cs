@@ -35,13 +35,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedColl
             IRelationProvider relationProvider,
             [NotNullWhen(returnValue: true)] out AggregateContainsRelationCollection? relationCollection)
         {
-            if (_containsCollection == null && AggregateContainsRelationCollection.TryCreate(this, relationProvider, out AggregateContainsRelationCollection? collection))
+            if (_containsCollection is null && AggregateContainsRelationCollection.TryCreate(this, relationProvider, out AggregateContainsRelationCollection? collection))
             {
                 _containsCollection = collection;
             }
 
             relationCollection = _containsCollection;
-            return relationCollection != null;
+            return relationCollection is not null;
         }
 
         bool IRelatableItem.TryGetProjectNode(IProjectTree targetRootNode, IRelatableItem item, [NotNullWhen(returnValue: true)] out IProjectTree? projectTree)

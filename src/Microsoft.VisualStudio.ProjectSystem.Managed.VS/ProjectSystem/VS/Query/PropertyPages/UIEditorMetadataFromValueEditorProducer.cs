@@ -1,20 +1,17 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
-using System.Collections.Generic;
-using System.Threading.Tasks;
 using Microsoft.Build.Framework.XamlTypes;
 using Microsoft.VisualStudio.ProjectSystem.Query;
-using Microsoft.VisualStudio.ProjectSystem.Query.ProjectModel;
-using Microsoft.VisualStudio.ProjectSystem.Query.QueryExecution;
+using Microsoft.VisualStudio.ProjectSystem.Query.Execution;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
 {
     /// <summary>
-    /// Handles retrieving a set of <see cref="IUIEditorMetadata"/> from a <see cref="ValueEditor"/> and reporting the
+    /// Handles retrieving a set of <see cref="IUIEditorMetadataSnapshot"/> from a <see cref="ValueEditor"/> and reporting the
     /// results.
     /// </summary>
     /// <remarks>
-    /// The <see cref="ValueEditor"/> comes from the parent <see cref="IUIPropertyEditor"/>
+    /// The <see cref="ValueEditor"/> comes from the parent <see cref="IUIPropertyEditorSnapshot"/>
     /// </remarks>
     internal class UIEditorMetadataFromValueEditorProducer : QueryDataFromProviderStateProducerBase<ValueEditor>
     {

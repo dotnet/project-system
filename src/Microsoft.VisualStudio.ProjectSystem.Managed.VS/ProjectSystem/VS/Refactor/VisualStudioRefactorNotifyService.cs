@@ -1,9 +1,5 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.Composition;
-using System.Linq;
 using EnvDTE;
 using Microsoft.VisualStudio.ProjectSystem.Refactor;
 using Microsoft.VisualStudio.Shell.Interop;
@@ -27,7 +23,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Refactor
         public void OnBeforeGlobalSymbolRenamed(string projectPath, IEnumerable<string> filePaths, string rqName, string newName)
         {
             IVsHierarchy? projectHierarchy = GetProjectHierarchy(projectPath);
-            if (projectHierarchy == null)
+            if (projectHierarchy is null)
             {
                 return;
             }
@@ -50,7 +46,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Refactor
         public void OnAfterGlobalSymbolRenamed(string projectPath, IEnumerable<string> filePaths, string rqName, string newName)
         {
             IVsHierarchy? projectHierarchy = GetProjectHierarchy(projectPath);
-            if (projectHierarchy == null)
+            if (projectHierarchy is null)
             {
                 return;
             }
@@ -72,7 +68,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Refactor
         private IVsHierarchy? GetProjectHierarchy(string projectPath)
         {
             Project? project = TryGetProjectFromPath(projectPath);
-            if (project == null)
+            if (project is null)
             {
                 return null;
             }
@@ -82,7 +78,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Refactor
 
         private Project? TryGetProjectFromPath(string projectPath)
         {
-            foreach (Project project in _dte.Value.Solution.Projects)
+            foreach (Project project in _dte.Value.Solution.Projects.OfType<Project>())
             {
                 string? fullName;
                 try

@@ -1,9 +1,5 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
-using System.Collections.Generic;
-using System.ComponentModel.Composition;
-using System.Threading.Tasks;
-
 namespace Microsoft.VisualStudio.ProjectSystem.Properties
 {
     /// <summary>
@@ -29,10 +25,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         private const string CustomManifestValue = "CustomManifest";
         private readonly ITemporaryPropertyStorage _temporaryPropertyStorage;
 
+        private static readonly string[] s_msBuildPropertyNames = { NoManifestMSBuildProperty, ApplicationManifestMSBuildProperty };
+        
         [ImportingConstructor]
         public ApplicationManifestKindValueProvider(ITemporaryPropertyStorage temporaryPropertyStorage)
         {
             _temporaryPropertyStorage = temporaryPropertyStorage;
+        }
+
+        public override Task<bool> IsValueDefinedInContextAsync(string propertyName, IProjectProperties defaultProperties)
+        {
+            return IsValueDefinedInContextMSBuildPropertiesAsync(defaultProperties, s_msBuildPropertyNames);
         }
 
         /// <summary>
@@ -100,7 +103,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
             {
                 _temporaryPropertyStorage.AddOrUpdatePropertyValue(ApplicationManifestKindProperty, CustomManifestValue);
 
-                await defaultProperties.RestoreValueIfNotCurrentlySetAsync(ApplicationManifestMSBuildProperty, _temporaryPropertyStorage);
+                await defaultProperties.RestoreValueIfNotCurrentlySetAsync(ApplicationManifestMSBuildProperty, _temporaryPropertyStorage, dimensionalConditions);
                 await defaultProperties.DeletePropertyAsync(NoManifestMSBuildProperty);
             }
 

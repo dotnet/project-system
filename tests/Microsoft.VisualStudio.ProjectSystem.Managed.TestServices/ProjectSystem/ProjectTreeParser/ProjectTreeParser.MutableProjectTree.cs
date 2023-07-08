@@ -1,9 +1,6 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
-using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
 
 namespace Microsoft.VisualStudio.ProjectSystem
@@ -68,7 +65,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
                 get
                 {
                     MutableProjectTree root = this;
-                    while (root.Parent != null)
+                    while (root.Parent is not null)
                     {
                         root = root.Parent;
                     }
@@ -195,21 +192,21 @@ namespace Microsoft.VisualStudio.ProjectSystem
             bool IProjectTree.TryFindImmediateChild(string caption, out IProjectTree subtree)
             {
                 subtree = Children.FirstOrDefault(c => c.Caption == caption);
-                return subtree != null;
+                return subtree is not null;
             }
 
             public IProjectTree SetProperties(string? caption = null, string? filePath = null, IRule? browseObjectProperties = null, ProjectImageMoniker? icon = null, ProjectImageMoniker? expandedIcon = null, bool? visible = null, ProjectTreeFlags? flags = null, IProjectPropertiesContext? context = null, IPropertySheet? propertySheet = null, bool? isLinked = null, bool resetFilePath = false, bool resetBrowseObjectProperties = false, bool resetIcon = false, bool resetExpandedIcon = false)
             {
-                if (caption != null)
+                if (caption is not null)
                     Caption = caption;
 
-                if (filePath != null)
+                if (filePath is not null)
                     FilePath = filePath;
 
                 if (visible != null)
                     Visible = visible.Value;
 
-                if (flags != null)
+                if (flags is not null)
                     Flags = flags.Value;
 
                 return this;

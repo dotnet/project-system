@@ -1,10 +1,8 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
-using System;
 #if DEBUG
 using System.Diagnostics;
 #endif
-using System.Threading;
 
 namespace Microsoft.VisualStudio.Threading.Tasks
 {
@@ -42,7 +40,7 @@ namespace Microsoft.VisualStudio.Threading.Tasks
         ~CancellationSeries()
         {
             Debug.Assert(
-                Environment.HasShutdownStarted || _cts == null,
+                Environment.HasShutdownStarted || _cts is null,
                 "Instance of CancellationSeries not disposed before being finalized",
                 "Stack at construction:{0}{1}",
                 Environment.NewLine,
@@ -68,7 +66,9 @@ namespace Microsoft.VisualStudio.Threading.Tasks
         /// <exception cref="ObjectDisposedException">This object has been disposed.</exception>
         public CancellationToken CreateNext(CancellationToken token = default)
         {
+#pragma warning disable RS0030 // Do not used banned APIs (cannot use alternative API here)
             var nextSource = CancellationTokenSource.CreateLinkedTokenSource(token, _superToken);
+#pragma warning restore RS0030 // Do not used banned APIs
 
             // Obtain the token before exchange, as otherwise the CTS may be cancelled before
             // we request the Token, which will result in an ObjectDisposedException.
@@ -77,7 +77,7 @@ namespace Microsoft.VisualStudio.Threading.Tasks
 
             CancellationTokenSource? priorSource = Interlocked.Exchange(ref _cts, nextSource);
 
-            if (priorSource == null)
+            if (priorSource is null)
             {
                 nextSource.Dispose();
 
@@ -106,7 +106,7 @@ namespace Microsoft.VisualStudio.Threading.Tasks
 
             CancellationTokenSource? source = Interlocked.Exchange(ref _cts, null);
 
-            if (source == null)
+            if (source is null)
             {
                 // Already disposed
                 return;

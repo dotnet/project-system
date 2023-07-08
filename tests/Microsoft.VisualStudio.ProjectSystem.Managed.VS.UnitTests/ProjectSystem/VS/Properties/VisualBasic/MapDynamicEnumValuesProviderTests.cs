@@ -1,13 +1,8 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.Build.Framework.XamlTypes;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
 using VSLangProj;
-using Xunit;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties.VisualBasic
 {
@@ -84,7 +79,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties.VisualBasic
         private static void VerifySameValue(IEnumValue? actual, IEnumValue expected, bool checkMapNameOnly = false)
         {
             Assert.NotNull(actual);
-            Assert.Equal(expected.Name, actual!.Name);
+            Assert.Equal(expected.Name, actual.Name);
 
             if (!checkMapNameOnly)
             {
@@ -95,10 +90,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties.VisualBasic
 
         private static void VerifySameValue(IEnumerable<IEnumValue> actual, IEnumerable<IEnumValue> expected, bool checkMapNameOnly = false)
         {
-            Assert.Equal(actual.Count(), expected.Count());
-            for (var i = 0; i < actual.Count(); ++i)
+            var actualAsArray = actual.ToArray();
+            var expectedAsArray = expected.ToArray();
+
+            Assert.Equal(actualAsArray.Length, expectedAsArray.Length);
+
+            for (var i = 0; i < actualAsArray.Length; ++i)
             {
-                VerifySameValue(actual.ElementAt(i), expected.ElementAt(i), checkMapNameOnly);
+                VerifySameValue(actualAsArray[i], expectedAsArray[i], checkMapNameOnly);
             }
         }
 
@@ -117,23 +116,26 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties.VisualBasic
 
         private static IEnumerable<PageEnumValue> CreateEnumValueInstances(List<Tuple<string, string, bool>> pageEnumValues)
         {
-            foreach (var item in pageEnumValues)
+            foreach ((string name, string displayName, bool isDefault) in pageEnumValues)
             {
-                yield return CreateEnumValueInstance(item.Item1, item.Item2, item.Item3);
+                yield return CreateEnumValueInstance(name, displayName, isDefault);
             }
         }
 
         private static Dictionary<string, IEnumValue> CreateEnumValueMap(List<string> keys, IEnumerable<PageEnumValue> pageEnumValues)
         {
-            Assert.True(keys.Count == pageEnumValues.Count(), "This is a test authoring error");
+            int index = 0;
+            Dictionary<string, IEnumValue> map = new();
 
-            var dict = new Dictionary<string, IEnumValue>();
-            for (int i = 0; i < keys.Count; i++)
+            foreach (var item in pageEnumValues)
             {
-                dict.Add(keys[i], pageEnumValues.ElementAt(i));
+                map[keys[index]] = item;
+                index++;
             }
 
-            return dict;
+            Assert.Equal(index, keys.Count);
+
+            return map;
         }
     }
 }

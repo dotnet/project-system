@@ -1,6 +1,5 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
-using System;
 using System.Collections;
 using System.ComponentModel;
 using Microsoft.VisualStudio.ProjectSystem.VS.Utilities;
@@ -27,9 +26,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedColl
 
         public AggregateRelationCollectionSource(object sourceItem, IAggregateRelationCollection? collection = null)
         {
-            _sourceItem = Requires.NotNull(sourceItem, nameof(sourceItem));
+            _sourceItem = Requires.NotNull(sourceItem);
 
-            if (collection != null)
+            if (collection is not null)
             {
                 SetCollection(collection);
             }
@@ -51,7 +50,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedColl
         bool IAttachedCollectionSource.HasItems => _collection?.HasItems == true;
 
         // We are updating items until they are provided
-        bool IAsyncAttachedCollectionSource.IsUpdatingHasItems => _collection == null;
+        bool IAsyncAttachedCollectionSource.IsUpdatingHasItems => _collection is null;
 
         /// <summary>
         /// Sets the backing collection for this source, for cases where that collection was not available at the time
@@ -62,12 +61,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedColl
         /// </exception>
         public void SetCollection(IAggregateRelationCollection collection)
         {
-            if (_collection != null)
+            if (_collection is not null)
             {
                 throw new InvalidOperationException("Backing collection has already been provided.");
             }
 
-            _collection = Requires.NotNull(collection, nameof(collection));
+            _collection = Requires.NotNull(collection);
             _collection.HasItemsChanged += delegate
             {
                 PropertyChanged?.Invoke(this, KnownEventArgs.HasItemsPropertyChanged);

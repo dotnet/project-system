@@ -6,7 +6,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
     Friend Interface ISupportedTargetFrameworksProvider
 
-        Function GetSupportedTargetFrameworks(framework As FrameworkName) As ICollection(Of TargetFrameworkMoniker)
+        Function GetSupportedTargetFrameworks(framework As FrameworkName) As IReadOnlyList(Of TargetFrameworkMoniker)
 
     End Interface
 

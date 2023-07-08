@@ -1,6 +1,5 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
-using System;
 using System.Runtime.InteropServices;
 using Microsoft.VisualStudio.ProjectSystem.VS;
 using IOleServiceProvider = Microsoft.VisualStudio.OLE.Interop.IServiceProvider;
@@ -14,7 +13,7 @@ namespace Microsoft.VisualStudio.Shell
 
         public ServiceProviderToOleServiceProviderAdapter(IServiceProvider serviceProvider)
         {
-            Requires.NotNull(serviceProvider, nameof(serviceProvider));
+            Requires.NotNull(serviceProvider);
 
             _serviceProvider = serviceProvider;
         }
@@ -38,12 +37,12 @@ namespace Microsoft.VisualStudio.Shell
 #pragma warning disable RS0030 // Do not used banned APIs (deliberately adapting)
             service = _serviceProvider.GetService(serviceType);
 #pragma warning restore RS0030 // Do not used banned APIs
-            return service != null;
+            return service is not null;
         }
 
         private static HResult GetComInterfaceForObject(object instance, Guid iid, out IntPtr ppvObject)
         {
-            Requires.NotNull(instance, nameof(instance));
+            Requires.NotNull(instance);
 
             IntPtr unknown = Marshal.GetIUnknownForObject(instance);
             if (iid.Equals(VSConstants.IID_IUnknown))

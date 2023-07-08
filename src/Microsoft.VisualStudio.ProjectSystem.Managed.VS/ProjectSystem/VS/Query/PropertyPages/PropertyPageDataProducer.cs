@@ -1,27 +1,22 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.Build.Framework.XamlTypes;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
 using Microsoft.VisualStudio.ProjectSystem.Query;
-using Microsoft.VisualStudio.ProjectSystem.Query.Frameworks;
-using Microsoft.VisualStudio.ProjectSystem.Query.ProjectModel;
-using Microsoft.VisualStudio.ProjectSystem.Query.ProjectModel.Implementation;
-using Microsoft.VisualStudio.ProjectSystem.Query.QueryExecution;
+using Microsoft.VisualStudio.ProjectSystem.Query.Execution;
+using Microsoft.VisualStudio.ProjectSystem.Query.Framework;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
 {
     /// <summary>
-    /// Handles the creation of <see cref="IPropertyPage"/> instances and populating the requested members.
+    /// Handles the creation of <see cref="IPropertyPageSnapshot"/> instances and populating the requested members.
     /// </summary>
     internal static class PropertyPageDataProducer
     {
         public static IEntityValue CreatePropertyPageValue(IQueryExecutionContext queryExecutionContext, IEntityValue parent, IProjectState cache, QueryProjectPropertiesContext propertiesContext, Rule rule, IPropertyPagePropertiesAvailableStatus requestedProperties)
         {
-            Requires.NotNull(parent, nameof(parent));
-            Requires.NotNull(rule, nameof(rule));
+            Requires.NotNull(parent);
+            Requires.NotNull(rule);
 
             var identity = new EntityIdentity(
                 ((IEntityWithId)parent).Id,
@@ -47,8 +42,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
 
         public static IEntityValue CreatePropertyPageValue(IQueryExecutionContext queryExecutionContext, EntityIdentity id, IProjectState cache, QueryProjectPropertiesContext propertiesContext, Rule rule, IPropertyPagePropertiesAvailableStatus requestedProperties)
         {
-            Requires.NotNull(rule, nameof(rule));
-            var newPropertyPage = new PropertyPageValue(queryExecutionContext.EntityRuntime, id, new PropertyPagePropertiesAvailableStatus());
+            Requires.NotNull(rule);
+            var newPropertyPage = new PropertyPageSnapshot(queryExecutionContext.EntityRuntime, id, new PropertyPagePropertiesAvailableStatus());
 
             if (requestedProperties.Name)
             {
@@ -90,8 +85,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
                 queryExecutionContext.ReportInputDataVersion(versionKey, versionNumber);
 
                 if (await project.GetProjectLevelPropertyPagesCatalogAsync() is IPropertyPagesCatalog projectCatalog
-                    && projectCatalog.GetSchema(propertyPageName) is Rule rule
-                    && !rule.PropertyPagesHidden)
+                    && projectCatalog.GetSchema(propertyPageName) is { PropertyPagesHidden: false } rule)
                 {
                     IProjectState projectState = new PropertyPageProjectState(project);
                     IEntityValue propertyPageValue = CreatePropertyPageValue(queryExecutionContext, id, projectState, propertiesContext, rule, requestedProperties);
@@ -121,9 +115,20 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
                 QueryProjectPropertiesContext propertiesContext = new QueryProjectPropertiesContext(isProjectFile: true, project.FullPath, itemType: null, itemName: null);
                 foreach (string schemaName in projectCatalog.GetProjectLevelPropertyPagesSchemas())
                 {
-                    if (projectCatalog.GetSchema(schemaName) is Rule rule
-                        && !rule.PropertyPagesHidden)
+                    if (projectCatalog.GetSchema(schemaName) is { PropertyPagesHidden: false } rule)
                     {
+                        if (rule.Name is "RazorGeneral" or "RazorExtension")
+                        {
+                            // Some versions of the .NET SDK include a Razor property page that appears
+                            // in the UI. This page is not intended for display.
+                            //
+                            // We cannot remove this page from existing versions of the SDK, so have to
+                            // explicitly exclude it from query results so that it doesn't appear in any
+                            // UI.
+
+                            continue;
+                        }
+
                         IEntityValue propertyPageValue = CreatePropertyPageValue(queryExecutionContext, parent, projectState, propertiesContext, rule, requestedProperties: requestedProperties);
                         yield return propertyPageValue;
                     }

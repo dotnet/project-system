@@ -1,3 +1,4 @@
+<!-- Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information. -->
 <!--
 
   This file contains Visual Studio and designer-related properties and items for managed projects.
@@ -20,22 +21,24 @@
     <!--This property sets the default output types supported by the project system.-->
     <SupportedOutputTypes Condition="'$(SupportedOutputTypes)' == ''">Exe;WinExe;Library</SupportedOutputTypes>
     <SuppressOutOfDateMessageOnBuild Condition="'$(SuppressOutOfDateMessageOnBuild)' == ''">true</SuppressOutOfDateMessageOnBuild>
-    
+
     <!-- Tells CPS which target to run for the Package solution build type -->
     <PackageAction Condition="'$(PackageAction)' == ''">Pack</PackageAction>
+
+    <!-- Disable Build Acceleration for VSIX projects -->
+    <AccelerateBuildsInVisualStudio Condition="'$(IsVsixProject)' == 'true'">false</AccelerateBuildsInVisualStudio>
   </PropertyGroup>
-  
+
   <PropertyGroup Condition="'$(AssemblyReferenceTabs)' == '' And '$(UsingMicrosoftNETSdk)' == 'true'">
-    
+
     <!-- You cannot choose individual framework assemblies in .NET Core/.NET Standard, and AssemblyFoldersEx
          is not supported, so completely opt out of the Assembly category in Reference Manager by default. -->
     <AssemblyReferenceTabs>0</AssemblyReferenceTabs>
-    
+
     <!-- However, .NET Framework supports choosing individual framework assemblies, so opt into that tab  -->
     <AssemblyReferenceTabs Condition="'$(TargetFrameworkIdentifier)' == '.NETFramework'">TAB_ASSEMBLY_FRAMEWORK</AssemblyReferenceTabs>
-  
-  </PropertyGroup>
 
+  </PropertyGroup>
 
   <!--
     Rule files that don't need localization go in the neutral directory to save duplicating files into each language
@@ -45,7 +48,7 @@
   </PropertyGroup>
 
   <!--
-    Locate the approriate localized xaml resources based on the language ID or name.
+    Locate the appropriate localized xaml resources based on the language ID or name.
 
     The logic here matches the resource manager sufficiently to handle the fixed set of 
     possible VS languages and directories on disk.
@@ -91,9 +94,10 @@
     <ProjectCapability Include="DependenciesTree" />
     <ProjectCapability Include="ProjectImportsTree" />
     <ProjectCapability Include="LaunchProfiles" />
-    <ProjectCapability Include="NoGeneralDependentFileIcon"/>
-    <ProjectCapability Include="PackageReferences" Condition="'$(RestoreProjectStyle)' == 'PackageReference'"/>
-    
+    <ProjectCapability Include="NoGeneralDependentFileIcon" />
+    <ProjectCapability Include="ProjectPropertyInterception" />
+    <ProjectCapability Include="PackageReferences" Condition="'$(RestoreProjectStyle)' == 'PackageReference'" />
+
     <!--
       List of capabilities below is adding back common capabilities defined in imported targets.
       We disabled them with the property DefineCommonCapabilities=false to get rid of default
@@ -101,7 +105,7 @@
     -->
     <ProjectCapability Include="
                           AssemblyReferences;
-                          ProjectReferences;                          
+                          ProjectReferences;
                           WinRTReferences;
                           OutputGroups;
                           AllTargetOutputGroups;
@@ -118,11 +122,11 @@
     <ProjectCapability Include="COMReferences" Condition="'$(TargetFrameworkIdentifier)' == '.NETFramework' Or ('$(TargetFrameworkIdentifier)' == '.NETCoreApp' And '$(_TargetFrameworkVersionWithoutV)' >= '3.0')" />
 
     <!-- Settings page capability -->
-    <ProjectCapability Include="AppSettings" Condition="'$(TargetFrameworkIdentifier)' == '.NETFramework' Or '$(UseWPF)' == 'true' Or '$(UseWindowsForms)' == 'true' "/>
+    <ProjectCapability Include="AppSettings" Condition="'$(TargetFrameworkIdentifier)' == '.NETFramework' Or '$(UseWPF)' == 'true' Or '$(UseWindowsForms)' == 'true' " />
 
     <!-- Publish capability enables the Publish command for the Project -->
-    <ProjectCapability Include="Publish"/>
-    <ProjectCapability Include="FolderPublish"/>
+    <ProjectCapability Include="Publish" />
+    <ProjectCapability Include="FolderPublish" />
 
     <!-- All Microsoft.NET.Sdk Exe projects, except WPF and WinForms exes, can be published to app service -->
     <ProjectCapability Include="AppServicePublish" Condition="'$(OutputType)' == 'Exe'" />
@@ -130,8 +134,18 @@
     <!-- Capabilities for WPF and WinForms -->
     <ProjectCapability Include="WPF" Condition="'$(UseWPF)' == 'true'" />
     <ProjectCapability Include="WindowsForms" Condition="'$(UseWindowsForms)' == 'true'" />
-    <ProjectCapability Include="DataSourceWindow" Condition="'$(TargetFrameworkIdentifier)' == '.NETFramework' Or ('$(TargetFrameworkIdentifier)' == '.NETCoreApp' And '$(_TargetFrameworkVersionWithoutV)' >= '3.0')"/>
+    <ProjectCapability Include="DataSourceWindow" Condition="'$(TargetFrameworkIdentifier)' == '.NETFramework' Or ('$(TargetFrameworkIdentifier)' == '.NETCoreApp' And '$(_TargetFrameworkVersionWithoutV)' >= '3.0')" />
   </ItemGroup>
+
+  <!-- List of well known rule Contexts that determine which catalog the rule shows up in CPS:
+    File                       - Rules that apply at a per-item level, or at the project level to apply defaults to project items.
+    Project                    - Rules that apply only at the project level.
+    PropertySheet              - Rules that apply only to property sheets.
+    ProjectSubscriptionService - Rules that are invisible except for purposes of programmatic subscribing to project data.
+    Invisible                  - A special rule catalog for purposes of programmatic subscribing to project data.
+    BrowseObject               - Rules that describe properties that appear in the Properties tool window while an item is selected in Solution Explorer.
+    ConfiguredBrowseObject     - Rules that describe configured project properties. This context currently only supports the Xaml rule to define 
+                                 configuration related project level properties.-->
 
   <!-- Common Project System rules that override rules defined in msbuild. These are exact copy of the rules defined in msbuild. -->
   <ItemGroup Condition="'$(DefineCommonManagedItemSchemas)' == 'true'">
@@ -150,6 +164,10 @@
       <Context>BrowseObject</Context>
     </PropertyPageSchema>
 
+    <PropertyPageSchema Include="$(ManagedXamlResourcesDirectory)Resource.BrowseObject.xaml;">
+      <Context>BrowseObject</Context>
+    </PropertyPageSchema>
+
     <PropertyPageSchema Include="$(ManagedXamlNeutralResourcesDirectory)Content.xaml">
       <Context>File</Context>
     </PropertyPageSchema>
@@ -157,7 +175,7 @@
     <PropertyPageSchema Include="$(ManagedXamlResourcesDirectory)Content.BrowseObject.xaml">
       <Context>BrowseObject</Context>
     </PropertyPageSchema>
-    
+
     <PropertyPageSchema Include="$(ManagedXamlNeutralResourcesDirectory)EmbeddedResource.xaml">
       <Context>File</Context>
     </PropertyPageSchema>
@@ -174,6 +192,14 @@
       <Context>File</Context>
     </PropertyPageSchema>
 
+    <PropertyPageSchema Include="$(ManagedXamlNeutralResourcesDirectory)Resource.xaml">
+      <Context>File</Context>
+    </PropertyPageSchema>
+    
+    <PropertyPageSchema Include="$(ManagedXamlNeutralResourcesDirectory)PackageVersion.xaml">
+      <Context>File</Context>
+    </PropertyPageSchema>
+
     <PropertyPageSchema Include="$(ManagedXamlResourcesDirectory)None.BrowseObject.xaml">
       <Context>BrowseObject</Context>
     </PropertyPageSchema>
@@ -187,6 +213,10 @@
     </PropertyPageSchema>
 
     <PropertyPageSchema Include="$(ManagedXamlResourcesDirectory)BuildPropertyPage.xaml">
+      <Context>Project</Context>
+    </PropertyPageSchema>
+
+    <PropertyPageSchema Include="$(ManagedXamlResourcesDirectory)CodeAnalysisPropertyPage.xaml">
       <Context>Project</Context>
     </PropertyPageSchema>
 
@@ -246,6 +276,18 @@
       <Context>Project</Context>
     </PropertyPageSchema>
 
+    <PropertyPageSchema Include="$(ManagedXamlNeutralResourcesDirectory)SupportedNETCoreAppTargetFramework.xaml">
+      <Context>Project</Context>
+    </PropertyPageSchema>
+
+    <PropertyPageSchema Include="$(ManagedXamlNeutralResourcesDirectory)SupportedNETStandardTargetFramework.xaml">
+      <Context>Project</Context>
+    </PropertyPageSchema>
+
+    <PropertyPageSchema Include="$(ManagedXamlNeutralResourcesDirectory)SupportedNETFrameworkTargetFramework.xaml">
+      <Context>Project</Context>
+    </PropertyPageSchema>
+
   </ItemGroup>
 
   <ItemGroup Condition="'$(DefineCommonManagedReferenceSchemas)' == 'true'">
@@ -275,7 +317,7 @@
     <PropertyPageSchema Include="$(ManagedXamlResourcesDirectory)ResolvedFrameworkReference.xaml">
       <Context>ProjectSubscriptionService;BrowseObject</Context>
     </PropertyPageSchema>
-    
+
     <!-- Project references -->
     <PropertyPageSchema Include="$(ManagedXamlResourcesDirectory)ProjectReference.xaml">
       <Context>Project;BrowseObject</Context>
@@ -315,10 +357,10 @@
 
   <!-- List of external files that trigger re-evaluation & design-time builds when they are added or removed, or edited -->
   <ItemGroup>
-    
-    <!-- Potential Editor config locations, we only want to trigger design-time builds on removal/addition and not edits  -->
-    <AdditionalDesignTimeBuildInput Include="@(PotentialEditorConfigFiles)" ContentSensitive="false" />   
-  
+
+    <!-- Potential Editor config locations, we only want to trigger design-time builds on removal/addition and not edits -->
+    <AdditionalDesignTimeBuildInput Include="@(PotentialEditorConfigFiles)" ContentSensitive="false" />
+
   </ItemGroup>
 
   <!-- Find all potential locations of "global.json" starting from the Solution directory and walking backwards -->
@@ -329,7 +371,7 @@
   </ItemGroup>
 
   <!--
-    EmbeddedFiles are source files to be embedded to the PDB. 
+    EmbeddedFiles are source files to be embedded to the PDB.
     We need to set Visible to false in order to not display duplicate entries in project UI.
   -->
   <ItemDefinitionGroup>
@@ -340,8 +382,8 @@
 
   <!-- Targets -->
 
-  <!-- For a newly created project with no packages restored, Design time build complains that there is no ResolvePackageDependenciesDesignTime
-       target, that is available only after restoring the .Net Core SDK targets. This No-op target will satisfy the check and will get overriden
+  <!-- For a newly created project with no packages restored, design-time builds complain that there is no ResolvePackageDependenciesDesignTime
+       target, that is available only after restoring the .NET Core SDK targets. This no-op target will satisfy the check and will get overriden
        once the actual targets are available after package restore-->
   <Target Name="ResolvePackageDependenciesDesignTime" />
   <Target Name="CollectSDKReferencesDesignTime" />
@@ -378,6 +420,12 @@
        sent to NuGet to be restored.-->
   <Target Name="CollectPackageReferences" Returns="@(PackageReference)" />
 
+  <!-- This target is used to collect the SuggestedWorkload items in the project.-->
+  <Target Name="CollectSuggestedWorkloads"
+          Returns="@(SuggestedWorkload)"
+          DependsOnTargets="GetSuggestedWorkloads"
+          Condition="'@(MissingWorkloadPack)' != '' And '$(UsingMicrosoftNETSdk)' == 'true'" />
+
   <!-- Validates that the correct properties have been set for design-time compiles  -->
   <Target Name="_CheckCompileDesignTimePrerequisite">
 
@@ -393,34 +441,125 @@
   <!-- This target collects all the resolved references that are used to actually compile. -->
   <Target Name="CollectResolvedCompilationReferencesDesignTime" DependsOnTargets="CompileDesignTime" Returns="@(ReferencePathWithRefAssemblies)" />
 
+  <PropertyGroup Condition="'$(CollectUpToDateCheckInputDesignTimeDependsOn)' == ''">
+    <CollectUpToDateCheckInputDesignTimeDependsOn>CompileDesignTime</CollectUpToDateCheckInputDesignTimeDependsOn>
+    <!-- F# projects do not have the ResolveCodeAnalysisRuleSet target. -->
+    <CollectUpToDateCheckInputDesignTimeDependsOn Condition="'$(Language)' == 'C#' or '$(Language)' == 'VB'">$(CollectUpToDateCheckInputDesignTimeDependsOn);ResolveCodeAnalysisRuleSet</CollectUpToDateCheckInputDesignTimeDependsOn>
+  </PropertyGroup>
+
   <!-- This target collects all the extra inputs for the up to date check. -->
-  <Target Name="CollectUpToDateCheckInputDesignTime" DependsOnTargets="CompileDesignTime" Returns="@(UpToDateCheckInput)" />
+  <Target Name="CollectUpToDateCheckInputDesignTime" DependsOnTargets="$(CollectUpToDateCheckInputDesignTimeDependsOn)" Returns="@(UpToDateCheckInput)">
+    <ItemGroup>
+      <!-- app.manifest, if any -->
+      <UpToDateCheckInput Condition=" '$(ApplicationManifest)' != '' " Include="$(ApplicationManifest)" />
+      <!-- .ruleset file, if any -->
+      <UpToDateCheckInput Condition=" '$(ResolvedCodeAnalysisRuleSet)' != '' " Include="$(ResolvedCodeAnalysisRuleSet)" />
+    </ItemGroup>
+  </Target>
+
+  <PropertyGroup Condition="'$(CollectUpToDateCheckOutputDesignTimeDependsOn)' == ''">
+    <CollectUpToDateCheckOutputDesignTimeDependsOn>CompileDesignTime</CollectUpToDateCheckOutputDesignTimeDependsOn>
+  </PropertyGroup>
 
   <!-- This target collects all the extra outputs for the up to date check. -->
-  <Target Name="CollectUpToDateCheckOutputDesignTime" DependsOnTargets="CompileDesignTime" Returns="@(UpToDateCheckOutput)" />
+  <Target Name="CollectUpToDateCheckOutputDesignTime" DependsOnTargets="$(CollectUpToDateCheckOutputDesignTimeDependsOn)" Returns="@(UpToDateCheckOutput)" />
 
+  <PropertyGroup Condition="'$(CollectUpToDateCheckBuiltDesignTimeDependsOn)' == ''">
+    <CollectUpToDateCheckBuiltDesignTimeDependsOn>CompileDesignTime</CollectUpToDateCheckBuiltDesignTimeDependsOn>
+  </PropertyGroup>
+ 
   <!-- This target collects all the things built by the project for the up to date check. -->
   <!-- See CopyFileToOutputDirectory target -->
-  <Target Name="CollectUpToDateCheckBuiltDesignTime" DependsOnTargets="CompileDesignTime" Returns="@(UpToDateCheckBuilt)">
+  <Target Name="CollectUpToDateCheckBuiltDesignTime" DependsOnTargets="$(CollectUpToDateCheckBuiltDesignTimeDependsOn)" Returns="@(UpToDateCheckBuilt)">
     <ItemGroup>
       <!-- Assembly output, bin and obj -->
-      <UpToDateCheckBuilt Condition="'$(CopyBuildOutputToOutputDirectory)' != 'false' and '$(SkipCopyBuildProduct)' != 'true'" Include="$(TargetPath)"/>
-      <UpToDateCheckBuilt Include="@(IntermediateAssembly)"/>
+      <UpToDateCheckBuilt Condition="'$(CopyBuildOutputToOutputDirectory)' != 'false' and '$(SkipCopyBuildProduct)' != 'true'" Include="$(TargetPath)" />
+      <UpToDateCheckBuilt Include="@(IntermediateAssembly)" />
 
       <!-- Documentation file, bin and obj -->
-      <UpToDateCheckBuilt Condition="'$(_DocumentationFileProduced)'=='true'" Include="@(FinalDocFile)"/>
-      <UpToDateCheckBuilt Condition="'$(_DocumentationFileProduced)'=='true'" Include="@(DocFileItem)"/>
+      <UpToDateCheckBuilt Condition="'$(_DocumentationFileProduced)'=='true'" Include="@(FinalDocFile)" />
+      <UpToDateCheckBuilt Condition="'$(_DocumentationFileProduced)'=='true'" Include="@(DocFileItem)" />
 
       <!-- Symbols, bin and obj -->
-      <UpToDateCheckBuilt Condition="'$(_DebugSymbolsProduced)'=='true'" Include="@(_DebugSymbolsIntermediatePath)"/>
-      <UpToDateCheckBuilt Condition="'$(_DebugSymbolsProduced)'=='true' and '$(SkipCopyingSymbolsToOutputDirectory)' != 'true' and '$(CopyOutputSymbolsToOutputDirectory)' != 'false'" Include="@(_DebugSymbolsOutputPath)"/>
+      <UpToDateCheckBuilt Condition="'$(_DebugSymbolsProduced)'=='true'" Include="@(_DebugSymbolsIntermediatePath)" />
+      <UpToDateCheckBuilt Condition="'$(_DebugSymbolsProduced)'=='true' and '$(SkipCopyingSymbolsToOutputDirectory)' != 'true' and '$(CopyOutputSymbolsToOutputDirectory)' != 'false'" Include="@(_DebugSymbolsOutputPath)" />
 
       <!-- app.config -->
       <!-- The property AppConfig, created in PrepareForBuild, is used instead of AppConfigWithTargetPath because GenerateSupportedRuntime
            rewrites AppConfigWithTargetPath to point to the intermediate filename. This is needed because Fast up-to-date needs to compare
-           the timestamp of the source filename (AppConfig) with destination filename. 
-           https://github.com/microsoft/msbuild/blob/64c8e4a18e7cf7f064fbad304ea7ed877cdaa0a1/src/Tasks/Microsoft.Common.CurrentVersion.targets#L1109-L1122 -->
-      <UpToDateCheckBuilt Condition=" '@(AppConfigWithTargetPath)' != '' " Include="@(AppConfigWithTargetPath->'$(OutDir)%(TargetPath)')" Original="$(AppConfig)"/>
+           the timestamp of the source filename (AppConfig) with destination filename.
+           https://github.com/dotnet/msbuild/blob/d2f9dbccd913c5612fd3a3cb78b2524fbcb023da/src/Tasks/Microsoft.Common.CurrentVersion.targets#L1152-L1165
+           We skip this check if AppConfig is empty, which occurs for .NET Framework console apps. See https://github.com/dotnet/project-system/issues/6758.
+      -->
+      <UpToDateCheckBuilt Condition=" '@(AppConfigWithTargetPath)' != '' and '$(AppConfig)' != '' " Include="@(AppConfigWithTargetPath->'$(OutDir)%(TargetPath)')" Original="$(AppConfig)" />
+    </ItemGroup>
+  </Target>
+
+  <!-- This target collects all the items this project contributes to output directories of referencing projects.
+       Ideally, it excludes any transitive dependencies.
+  -->
+  <Target
+    Name="CollectCopyToOutputDirectoryItemDesignTime"
+    DependsOnTargets="PrepareResourceNames;ComputeIntermediateSatelliteAssemblies;ResolveAssemblyReferences;CompileDesignTime;_GetCopyToOutputDirectoryItemsFromThisProject"
+    Returns="@(_CollectedCopyToOutputDirectoryItem)">
+    <ItemGroup>
+
+      <_CollectedCopyToOutputDirectoryItem Include="@(_ThisProjectItemsToCopyToOutputDirectory)">
+        <BuildAccelerationOnly>false</BuildAccelerationOnly>
+      </_CollectedCopyToOutputDirectoryItem>
+
+      <!-- Output assembly -->
+
+      <_CollectedCopyToOutputDirectoryItem Include="$(TargetPath)">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        <TargetPath>$([System.IO.Path]::GetFileName('$(TargetPath)'))</TargetPath>
+        <BuildAccelerationOnly>true</BuildAccelerationOnly>
+      </_CollectedCopyToOutputDirectoryItem>
+
+      <!-- Debug symbols -->
+
+      <_CollectedCopyToOutputDirectoryItem Include="@(_DebugSymbolsOutputPath->'%(FullPath)')" Condition="'$(_DebugSymbolsProduced)' == 'true' and '$(SkipCopyingSymbolsToOutputDirectory)' != 'true' and '$(CopyOutputSymbolsToOutputDirectory)' != 'false'">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        <TargetPath>$([System.IO.Path]::GetFileName('%(Identity)'))</TargetPath>
+        <BuildAccelerationOnly>true</BuildAccelerationOnly>
+      </_CollectedCopyToOutputDirectoryItem>
+
+      <!-- ReferenceCopyLocalPaths
+
+           These come from two different sources, hence projecting twice here.
+           We filter out items that come from NuGet packages as there can be very many of them, and we exclude
+           them in the project system anyway, so it's better to drop them here (at the source). These items are
+           expected to be copied during an actual build, and need updating during subsequent incremental builds.
+      -->
+
+      <_CollectedCopyToOutputDirectoryItem Include="@(ReferenceCopyLocalPaths->'%(Identity)')" Condition="'%(ReferenceCopyLocalPaths.ReferenceSourceTarget)' != 'ProjectReference' AND '%(ReferenceCopyLocalPaths.DestinationSubPath)' != ''">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        <TargetPath>%(ReferenceCopyLocalPaths.DestinationSubPath)</TargetPath>
+        <BuildAccelerationOnly>true</BuildAccelerationOnly>
+      </_CollectedCopyToOutputDirectoryItem>
+
+      <_CollectedCopyToOutputDirectoryItem Include="@(ReferenceCopyLocalPaths->'%(Identity)')" Condition="'%(ReferenceCopyLocalPaths.ReferenceSourceTarget)' != 'ProjectReference' AND '%(ReferenceCopyLocalPaths.DestinationSubPath)' == ''">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        <TargetPath>$([System.IO.Path]::GetFileName('%(Identity)'))</TargetPath>
+        <BuildAccelerationOnly>true</BuildAccelerationOnly>
+      </_CollectedCopyToOutputDirectoryItem>
+
+      <!-- Documentation file -->
+
+      <_CollectedCopyToOutputDirectoryItem Include="@(FinalDocFile->'%(FullPath)')" Condition="'$(_DocumentationFileProduced)' == 'true'">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        <TargetPath>$([System.IO.Path]::GetFileName('%(Identity)'))</TargetPath>
+        <BuildAccelerationOnly>true</BuildAccelerationOnly>
+      </_CollectedCopyToOutputDirectoryItem>
+
+      <!-- Satellite assemblies -->
+
+      <_CollectedCopyToOutputDirectoryItem Include="@(IntermediateSatelliteAssembliesWithTargetPath->'$(TargetDir)%(Culture)\$(TargetName).resources.dll')" Condition="'@(IntermediateSatelliteAssembliesWithTargetPath)' != ''">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        <TargetPath>%(IntermediateSatelliteAssembliesWithTargetPath.Culture)\$(TargetName).resources.dll</TargetPath>
+        <BuildAccelerationOnly>true</BuildAccelerationOnly>
+      </_CollectedCopyToOutputDirectoryItem>
+
     </ItemGroup>
   </Target>
 

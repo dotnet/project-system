@@ -10,6 +10,7 @@ Imports System.Resources
 Imports System.Windows.Forms
 Imports System.Xml
 
+Imports Microsoft.Internal.VisualStudio.Shell.Interop
 Imports Microsoft.VisualStudio.Designer.Interfaces
 Imports Microsoft.VisualStudio.Editors.Common
 Imports Microsoft.VisualStudio.Shell
@@ -91,7 +92,23 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ' If it is true, we are adding a collection of resources to the file
         Private _inBatchAdding As Boolean
 
+        ' Despite the name, the MultiTargetService does not support projects that target
+        ' multiple frameworks. Rather, it is meant to support projects targeting an older
+        ' version of the .NET Framework than the one in use by VS, and a large part of its
+        ' job is to translate the .NET Framework 4.x types known to VS into .NET Framework
+        ' 2.x/3.x types to be persisted into the .resx file for use by the application at
+        ' run time. It largely assumes that VS is running on the newest .NET Framework,
+        ' and thus will inherently understand (thanks to type forwarding) any 2.x/3.x
+        ' types it comes across.
+        ' This completely falls over when the project is targeting anything newer than
+        ' .NET Framework 4.x. The service will translate the Framework types known to VS
+        ' into equivalent .NET Core type, the designer will persist those in the .resx
+        ' file, and then promptly fail when reading them back. Instead, we should use and
+        ' persist the "native" types, on the assumption that they will be understood by
+        ' the .NET Core process at run time.
+        ' We will need to revisit this if/when VS moves to run on .NET Core.
         Private ReadOnly _multiTargetService As MultiTargetService
+        Private ReadOnly _useCurrentProcessFrameworkForTypes As Boolean = False
 
         Private ReadOnly _allowMOTW As Boolean
 #End Region
@@ -137,6 +154,16 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                     If Interop.NativeMethods.Succeeded(hr) AndAlso Not pUnk = IntPtr.Zero Then
                         _resxService = DirectCast(System.Runtime.InteropServices.Marshal.GetObjectForIUnknown(pUnk), IResXResourceService)
                         System.Runtime.InteropServices.Marshal.Release(pUnk)
+                    End If
+                End If
+
+                ' If we're in the context of a .NET project using the CPS-based project system
+                ' then use VS types rather than project types on the assumption that the project
+                ' is .NET Core-based.
+                If hierarchy.IsCapabilityMatch("CPS & .NET") Then
+                    Dim featureFlags = ServiceProvider.GetService(Of SVsFeatureFlags, IVsFeatureFlags)(throwOnFailure:=False)
+                    If featureFlags IsNot Nothing Then
+                        _useCurrentProcessFrameworkForTypes = featureFlags.IsFeatureEnabled("ResourceDesigner.UseImprovedTypeResolution", defaultValue:=False)
                     End If
                 End If
             End If
@@ -482,6 +509,11 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
 #If DEBUG Then
             Debug.Assert(_resources.Count = ResourcesCountOld + 1)
 #End If
+
+            If Not _isLoadingResourceFile Then
+                ResourceEditorTelemetry.OnResourceAdded(NewResource.FriendlyValueTypeName)
+            End If
+
         End Sub
 
         ''' <summary>
@@ -516,6 +548,9 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             If DisposeResource Then
                 Resource.Dispose()
             End If
+
+            ResourceEditorTelemetry.OnResourceRemoved(Resource.FriendlyValueTypeName)
+
         End Sub
 
         ''' <summary>
@@ -697,6 +732,9 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                 '  this way, because Undo/Redo on a name will change the component's site's name only, and we
                 '  need to pick up on those changes in order to reflect the change in the Resource itself.
                 Resource.IComponent_Site.Name = NewName
+
+                ResourceEditorTelemetry.OnResourceRenamed(Resource.FriendlyValueTypeName)
+
             Else
                 Debug.Fail("Trying to rename component that's not in the resource file")
             End If
@@ -772,11 +810,15 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <param name="e">Event args</param>
         Private Sub ComponentChangeService_ComponentChanged(sender As Object, e As ComponentChangedEventArgs) Handles _componentChangeService.ComponentChanged
             If TypeOf e.Component IsNot Resource Then
-                Debug.Fail("Got component rename event for a component that isn't a resource")
+                Debug.Fail("Got component change event for a component that isn't a resource")
                 Exit Sub
             End If
 
-            View.OnResourceTouched(DirectCast(e.Component, Resource))
+            Dim resource = DirectCast(e.Component, Resource)
+
+            View.OnResourceTouched(resource)
+
+            ResourceEditorTelemetry.OnResourceChanged(resource.FriendlyValueTypeName)
 
         End Sub
 
@@ -812,7 +854,9 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
 
         Public Function TypeNameConverter(runtimeType As Type) As String
             Debug.Assert(runtimeType IsNot Nothing, "runtimeType cannot be Nothing!")
-            If _multiTargetService Is Nothing Then
+
+            If _useCurrentProcessFrameworkForTypes OrElse
+                _multiTargetService Is Nothing Then
                 Return runtimeType.AssemblyQualifiedName
             Else
                 Return _multiTargetService.TypeNameConverter(runtimeType)
@@ -898,7 +942,10 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                 End If
             Finally
                 _isLoadingResourceFile = False
+
+                ResourceEditorTelemetry.OnResourcesLoaded(_resources, _resourceFileMetadata.Count)
             End Try
+
         End Sub
 
         ''' <summary>
@@ -1578,11 +1625,11 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                                 End If
                             Catch ex As CheckoutException
                                 ' Ignore CheckoutException
-                            Catch ex As Exception When ReportWithoutCrash(ex, "Failed to add reference to assembly contining type", NameOf(ResourceFile))
+                            Catch ex As Exception When ReportWithoutCrash(ex, "Failed to add reference to assembly containing type", NameOf(ResourceFile))
                                 ' We should ignore the error if the project system failed to do so..
 
                                 ' NOTE: we need consider to prompt the user an waring message. But it could be very annoying if we pop up many message boxes in one transaction.
-                                '  We should consider a global service to collect all warning messages, and show in one dialog box when the transaction is commited.
+                                '  We should consider a global service to collect all warning messages, and show in one dialog box when the transaction is committed.
                             End Try
                         End If
                     End If

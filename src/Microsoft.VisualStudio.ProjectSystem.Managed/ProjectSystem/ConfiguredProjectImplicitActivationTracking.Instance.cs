@@ -1,11 +1,7 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
 using System.Threading.Tasks.Dataflow;
+using Microsoft.VisualStudio.ProjectSystem.OperationProgress;
 
 namespace Microsoft.VisualStudio.ProjectSystem
 {
@@ -16,21 +12,25 @@ namespace Microsoft.VisualStudio.ProjectSystem
             private readonly ConfiguredProject _project;
             private readonly IActiveConfigurationGroupService _activeConfigurationGroupService;
             private readonly ITargetBlock<IProjectVersionedValue<(IProjectCapabilitiesSnapshot, IConfigurationGroup<ProjectConfiguration>)>> _targetBlock;
+            private readonly IDataProgressTrackerService _dataProgressTrackerService;
             private readonly OrderPrecedenceImportCollection<IImplicitlyActiveConfigurationComponent> _components;
 
             private IReadOnlyCollection<IImplicitlyActiveConfigurationComponent> _activeComponents = Array.Empty<IImplicitlyActiveConfigurationComponent>();
             private IDisposable? _subscription;
+            private IDataProgressTrackerServiceRegistration? _dataProgressTrackerRegistration;
 
             public ConfiguredProjectImplicitActivationTrackingInstance(
                 IProjectThreadingService threadingService,
                 ConfiguredProject project,
                 IActiveConfigurationGroupService activeConfigurationGroupService,
+                IDataProgressTrackerService dataProgressTrackerService,
                 OrderPrecedenceImportCollection<IImplicitlyActiveConfigurationComponent> components)
                 : base(threadingService.JoinableTaskContext)
             {
                 _project = project;
                 _activeConfigurationGroupService = activeConfigurationGroupService;
                 _targetBlock = DataflowBlockFactory.CreateActionBlock<IProjectVersionedValue<(IProjectCapabilitiesSnapshot, IConfigurationGroup<ProjectConfiguration>)>>(OnChangeAsync, project.UnconfiguredProject, ProjectFaultSeverity.LimitedFunctionality);
+                _dataProgressTrackerService = dataProgressTrackerService;
                 _components = components;
             }
 
@@ -41,6 +41,8 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
             protected override Task InitializeCoreAsync(CancellationToken cancellationToken)
             {
+                _dataProgressTrackerRegistration = _dataProgressTrackerService.RegisterForIntelliSense(this, _project, nameof(ConfiguredProjectImplicitActivationTrackingInstance));
+
                 _subscription = ProjectDataSources.SyncLinkTo(
                     _project.Capabilities.SourceBlock.SyncLinkOptions(),
                     _activeConfigurationGroupService.ActiveConfigurationGroupSource.SourceBlock.SyncLinkOptions(),
@@ -53,6 +55,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
             protected override Task DisposeCoreAsync(bool initialized)
             {
+                _dataProgressTrackerRegistration?.Dispose();
                 _subscription?.Dispose();
                 _targetBlock.Complete();
 
@@ -87,6 +90,8 @@ namespace Microsoft.VisualStudio.ProjectSystem
                 await ActivateAsync(diff.Added);
 
                 _activeComponents = futureComponents;
+
+                _dataProgressTrackerRegistration?.NotifyOutputDataCalculated(e.DataSourceVersions);
             }
 
             private static Task DeactivateAsync(IEnumerable<IImplicitlyActiveConfigurationComponent> services)

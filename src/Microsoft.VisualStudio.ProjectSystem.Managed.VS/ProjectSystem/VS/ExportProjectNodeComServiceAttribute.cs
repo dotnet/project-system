@@ -1,9 +1,5 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
-using System;
-using System.ComponentModel.Composition;
-using System.Linq;
-
 namespace Microsoft.VisualStudio.ProjectSystem.VS
 {
     /// <summary>
@@ -28,7 +24,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
 
         private static string[] GetIids(Type[] comTypes)
         {
-            Requires.NotNull(comTypes, nameof(comTypes));
+            Requires.NotNull(comTypes);
 
             // Reuse ComServiceIdAttribute's logic for calculating IIDs.
             return comTypes.Select(type => new ComServiceIidAttribute(type))

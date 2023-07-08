@@ -1,42 +1,46 @@
 ﻿<!-- Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information. -->
 <Project Sdk="Microsoft.NET.Sdk">
-  <Import Project="..\..\build\import\VisualStudio.props" />
+
+  <!-- Note: VSIX signing is handled via AddVsixForSigning in Directory.Build.targets. -->
+
+  <Import Project="..\..\eng\imports\VisualStudio.props" />
+
+  <!-- Local properties -->
+  <PropertyGroup>
+    <_ManagedProjectName>Microsoft.VisualStudio.ProjectSystem.Managed</_ManagedProjectName>
+  </PropertyGroup>
+
   <PropertyGroup>
     <RootNamespace>Microsoft.VisualStudio</RootNamespace>
+    <!-- Note: No idea why ProjectSystem is the AssemblyName instead of using the MSBuildProjectName of ProjectSystemSetup. -->
     <AssemblyName>ProjectSystem</AssemblyName>
-    <PublishOutputToSymStore>false</PublishOutputToSymStore>
+    <TargetFramework>net472</TargetFramework>
 
     <!-- VSIX -->
-    <IncludeAssemblyInVSIXContainer>false</IncludeAssemblyInVSIXContainer>
     <ExtensionInstallationRoot>Extensions</ExtensionInstallationRoot>
     <ExtensionInstallationFolder>Microsoft\ManagedProjectSystem</ExtensionInstallationFolder>
+    <TargetVsixContainerName>$(AssemblyName).vsix</TargetVsixContainerName>
+    <TargetVsixContainer>$(VisualStudioSetupInsertionPath)$(TargetVsixContainerName)</TargetVsixContainer>
 
-    <!-- VS Insertion -->
-    <VisualStudioInsertionComponent>Microsoft.VisualStudio.ProjectSystem.Managed</VisualStudioInsertionComponent>
+    <!-- Set's the JSON manifest name for GetVsixPrimaryOutputs in Directory.Build.targets -->
+    <VsixManifestPackageId>$(_ManagedProjectName)</VsixManifestPackageId>
   </PropertyGroup>
-  <ItemGroup>
-    <PackageReference Include="RoslynDependencies.ProjectSystem.OptimizationData" />
-  </ItemGroup>
+
   <ItemGroup>
     <ProjectReference Include="..\..\src\Microsoft.VisualStudio.ProjectSystem.Managed.VS\Microsoft.VisualStudio.ProjectSystem.Managed.VS.csproj">
-      <Name>Microsoft.VisualStudio.ProjectSystem.Managed.VS</Name>
-      <Ngen>True</Ngen>
-      <NgenPriority>1</NgenPriority>
       <IncludeOutputGroupsInVSIX>BuiltProjectOutputGroup;GetCopyToOutputDirectoryItems;SatelliteDllsProjectOutputGroup;PkgdefProjectOutputGroup</IncludeOutputGroupsInVSIX>
-      <IncludeOutputGroupsInVSIXLocalOnly>DebugSymbolsProjectOutputGroup</IncludeOutputGroupsInVSIXLocalOnly>
     </ProjectReference>
-    <ProjectReference Include="..\..\src\Microsoft.VisualStudio.ProjectSystem.Managed\Microsoft.VisualStudio.ProjectSystem.Managed.csproj">
-      <Name>Microsoft.VisualStudio.ProjectSystem.Managed</Name>
-      <Ngen>True</Ngen>
-      <NgenPriority>1</NgenPriority>
+    <ProjectReference Include="..\..\src\$(_ManagedProjectName)\$(_ManagedProjectName).csproj">
       <IncludeOutputGroupsInVSIX>BuiltProjectOutputGroup;GetCopyToOutputDirectoryItems;SatelliteDllsProjectOutputGroup</IncludeOutputGroupsInVSIX>
-      <IncludeOutputGroupsInVSIXLocalOnly>DebugSymbolsProjectOutputGroup</IncludeOutputGroupsInVSIXLocalOnly>
     </ProjectReference>
-    <ProjectReference Include="..\VisualStudioEditorsSetup\VisualStudioEditorsSetup.csproj">
-      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
-      <Private>False</Private>
+    <ProjectReference Update="@(ProjectReference)">
+      <Name>%(Filename)</Name>
+      <IncludeOutputGroupsInVSIXLocalOnly>DebugSymbolsProjectOutputGroup</IncludeOutputGroupsInVSIXLocalOnly>
+      <Ngen>true</Ngen>
+      <NgenPriority>1</NgenPriority>
     </ProjectReference>
   </ItemGroup>
+
   <ItemGroup>
     <Content Include="ProjectSelectors.pkgdef">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -46,4 +50,13 @@
       <Link>ProvideCodeBaseBindingRedirection.cs</Link>
     </Compile>
   </ItemGroup>
+
+  <!-- Excludes the localized .xaml files from the VSIX which are added from the GetCopyToOutputDirectoryItems output group. Only the localized .dlls are needed in the VSIX. -->
+  <!-- For additional info, see: https://github.com/dotnet/project-system/issues/6612 -->
+  <Target Name="ExcludeLocalizedXamlFilesFromVSIX" AfterTargets="GetVsixSourceItems">
+    <ItemGroup>
+      <VSIXSourceItem Remove="$(ArtifactsObjDir)$(_ManagedProjectName)\$(TargetFramework)\$(_ManagedProjectName).xlf\**\*.xaml" />
+    </ItemGroup>
+  </Target>
+
 </Project>

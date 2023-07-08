@@ -1,9 +1,5 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.Composition;
-using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.VisualStudio.LanguageServices;
 using Microsoft.VisualStudio.ProjectSystem.LanguageServices;
@@ -27,23 +23,23 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
             [Import(ContractNames.ProjectPropertyProviders.ProjectFile)] IProjectInstancePropertiesProvider instanceProvider,
             [ImportMany(ContractNames.ProjectPropertyProviders.ProjectFile)]IEnumerable<Lazy<IInterceptingPropertyValueProvider, IInterceptingPropertyValueProviderMetadata>> interceptingValueProviders,
             UnconfiguredProject project,
-            IActiveWorkspaceProjectContextHost projectContextHost,
+            IWorkspaceWriter workspaceWriter,
             VisualStudioWorkspace workspace,
             IProjectThreadingService threadingService)
             : base(delegatedProvider, instanceProvider, interceptingValueProviders, project,
-                  getActiveProjectId: () => GetProjectId(threadingService, projectContextHost),
+                  getActiveProjectId: () => GetProjectId(threadingService, workspaceWriter),
                   workspace: workspace,
                   threadingService: threadingService)
         {
         }
 
-        private static ProjectId? GetProjectId(IProjectThreadingService threadingService, IActiveWorkspaceProjectContextHost projectContextHost)
+        private static ProjectId? GetProjectId(IProjectThreadingService threadingService, IWorkspaceWriter workspaceWriter)
         {
             return threadingService.ExecuteSynchronously(() =>
             {
-                return projectContextHost.OpenContextForWriteAsync(accessor =>
+                return workspaceWriter.WriteAsync(workspace =>
                 {
-                    return Task.FromResult(accessor.Context.Id);
+                    return Task.FromResult(workspace.Context.Id);
                 });
             });
         }

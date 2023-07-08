@@ -1,7 +1,5 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
-using System.ComponentModel.Composition;
-
 namespace Microsoft.VisualStudio.ProjectSystem.Tree
 {
     /// <summary>
@@ -16,7 +14,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree
             // Package content items always come in as linked items, so to reduce
             // the number of items we look at, we limit ourselves to them
             if (propertyValues.Flags.Contains(ProjectTreeFlags.LinkedItem) &&
-                propertyContext.Metadata != null &&
+                propertyContext.Metadata is not null &&
                 propertyContext.Metadata.TryGetValue(None.NuGetPackageIdProperty, out string packageId) && packageId.Length > 0)
             {
                 propertyValues.Flags |= ProjectTreeFlags.UserReadOnly;

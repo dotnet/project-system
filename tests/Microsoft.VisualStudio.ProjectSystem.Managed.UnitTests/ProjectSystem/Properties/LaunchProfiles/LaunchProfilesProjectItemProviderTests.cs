@@ -1,11 +1,6 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
-using System;
-using System.Collections.Generic;
-using System.Collections.Immutable;
-using System.Threading.Tasks;
 using Microsoft.VisualStudio.ProjectSystem.Debug;
-using Xunit;
 
 namespace Microsoft.VisualStudio.ProjectSystem.Properties
 {
@@ -154,7 +149,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
             var item = await itemProvider.GetItemAsync(context);
 
             Assert.NotNull(item);
-            Assert.Equal("Profile2", item!.EvaluatedInclude);
+            Assert.Equal("Profile2", item.EvaluatedInclude);
         }
 
         [Fact]
@@ -201,7 +196,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
             var item = await itemProvider.GetItemAsync(context);
 
             Assert.NotNull(item);
-            Assert.Equal("Profile2", item!.EvaluatedInclude);
+            Assert.Equal("Profile2", item.EvaluatedInclude);
         }
 
         [Fact]
@@ -233,7 +228,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
 
             Assert.Collection(items,
                 item => Assert.Equal("Profile3", item!.EvaluatedInclude),
-                item => Assert.Null(item),
+                Assert.Null,
                 item => Assert.Equal("Profile1", item!.EvaluatedInclude));
         }
 
@@ -252,7 +247,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
             var item = await itemProvider.FindItemByNameAsync("Profile2");
 
             Assert.NotNull(item);
-            Assert.Equal(expected: "Profile2", actual: item!.EvaluatedInclude);
+            Assert.Equal(expected: "Profile2", actual: item.EvaluatedInclude);
         }
 
         [Fact]
@@ -305,7 +300,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
                 getProfilesCallback: initialProfiles =>
                 {
                     Assert.NotNull(newProfile);
-                    return initialProfiles.Add(newProfile!);
+                    return initialProfiles.Add(newProfile);
                 });
 
             var itemProvider = new LaunchProfileProjectItemProvider(
@@ -321,7 +316,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         [Fact]
         public async Task WhenAddingMultipleItems_TheReturnedItemsHaveTheCorrectNames()
         {
-            ImmutableList<ILaunchProfile> newProfiles = ImmutableList<ILaunchProfile>.Empty; ;
+            ImmutableList<ILaunchProfile> newProfiles = ImmutableList<ILaunchProfile>.Empty;
             var launchSettingsProvider = ILaunchSettingsProviderFactory.Create(
                 addOrUpdateProfileCallback: (p, a) =>
                 {
@@ -461,7 +456,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
 
             Assert.NotNull(projectItem);
 
-            Assert.Equal(expected: "Profile2", actual: projectItem!.EvaluatedInclude);
+            Assert.Equal(expected: "Profile2", actual: projectItem.EvaluatedInclude);
         }
 
         [Fact]
@@ -480,7 +475,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
 
             Assert.NotNull(projectItem);
 
-            Assert.Equal(expected: "Profile2", actual: projectItem!.UnevaluatedInclude);
+            Assert.Equal(expected: "Profile2", actual: projectItem.UnevaluatedInclude);
         }
 
         [Fact]
@@ -499,7 +494,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
 
             Assert.NotNull(projectItem);
 
-            Assert.Equal(expected: LaunchProfileProjectItemProvider.ItemType, actual: projectItem!.ItemType);
+            Assert.Equal(expected: LaunchProfileProjectItemProvider.ItemType, actual: projectItem.ItemType);
         }
 
         [Fact]
@@ -518,8 +513,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
 
             Assert.NotNull(projectItem);
 
-            Assert.Equal(expected: string.Empty, actual: projectItem!.EvaluatedIncludeAsFullPath);
-            Assert.Equal(expected: string.Empty, actual: projectItem!.EvaluatedIncludeAsRelativePath);
+            Assert.Equal(expected: string.Empty, actual: projectItem.EvaluatedIncludeAsFullPath);
+            Assert.Equal(expected: string.Empty, actual: projectItem.EvaluatedIncludeAsRelativePath);
         }
 
         [Fact]
@@ -575,7 +570,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
                 launchSettingsProvider);
 
             var projectItem = await itemProvider.FindItemByNameAsync("Profile2");
-            var propertiesContext = projectItem!.PropertiesContext;
+            var propertiesContext = projectItem!.PropertiesContext!;
 
             Assert.Equal(expected: @"C:\alpha\beta\gamma.csproj", actual: propertiesContext.File);
             Assert.True(propertiesContext.IsProjectFile);

@@ -34,7 +34,9 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
             WriteElementStringRaw("EnableVisualStyles", "", Xml.XmlConvert.ToString(CType(o.EnableVisualStyles, Boolean)))
             WriteElementStringRaw("AuthenticationMode", "", Xml.XmlConvert.ToString(CType(o.AuthenticationMode, Integer)))
             WriteElementString("SplashScreen", "", o.SplashScreenNoRootNS)
+            WriteElementStringRaw("MinimumSplashScreenDisplayTime", "", Xml.XmlConvert.ToString(CType(o.MinimumSplashScreenDisplayTime, Integer)))
             WriteElementStringRaw("SaveMySettingsOnExit", "", Xml.XmlConvert.ToString(CType(o.SaveMySettingsOnExit, Boolean)))
+            WriteElementStringRaw("HighDpiMpde", "", Xml.XmlConvert.ToString(CType(o.HighDpiMode, Boolean)))
             WriteEndElement(o)
         End Sub 'Write2_MyApplicationData
 
@@ -95,7 +97,7 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
 
             Dim o As MyApplicationData
             o = New MyApplicationData()
-            Dim paramsRead(8) As Boolean
+            Dim paramsRead(10) As Boolean
 
             While Reader.MoveToNextAttribute()
                 If Not IsXmlnsAttribute(Reader.Name) Then
@@ -151,6 +153,14 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
                         o.SaveMySettingsOnExit = Xml.XmlConvert.ToBoolean(Reader.ReadElementString())
                         paramsRead(8) = True
 
+                    ElseIf Not paramsRead(9) AndAlso Reader.LocalName = _id13_HighDpiMode AndAlso Reader.NamespaceURI = _id2_Item Then
+                        o.HighDpiMode = Xml.XmlConvert.ToInt32(Reader.ReadElementString())
+                        paramsRead(9) = True
+
+                    ElseIf Not paramsRead(10) AndAlso Reader.LocalName = _id14_MinimumSplashScreenDisplayTime AndAlso Reader.NamespaceURI = _id2_Item Then
+                        o.MinimumSplashScreenDisplayTime = Xml.XmlConvert.ToInt32(Reader.ReadElementString())
+                        paramsRead(10) = True
+
                     Else
                         UnknownNode(CType(o, Object))
                     End If
@@ -199,6 +209,8 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
         Private _id7_EnableVisualStyles As String '
         Private _id8_AuthenticationMode As String
         Private _id12_SaveMySettingsOnExit As String
+        Private _id13_HighDpiMode As String
+        Private _id14_MinimumSplashScreenDisplayTime As String
 
         Protected Overrides Sub InitIDs()
 
@@ -223,6 +235,10 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
             _id8_AuthenticationMode = Reader.NameTable.Add("AuthenticationMode")
 
             _id12_SaveMySettingsOnExit = Reader.NameTable.Add("SaveMySettingsOnExit")
+
+            _id13_HighDpiMode = Reader.NameTable.Add("HighDpiMode")
+
+            _id14_MinimumSplashScreenDisplayTime = Reader.NameTable.Add("MinimumSplashScreenDisplayTime")
         End Sub 'InitIDs 
 
         Private _publicMethods As Hashtable

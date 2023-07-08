@@ -1,8 +1,5 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
-using System;
-using Xunit;
-
 namespace Microsoft.VisualStudio.ProjectSystem.VS
 {
     public class ProjectLoggingExtensionsTests
@@ -105,7 +102,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             Assert.Equal("Line1\r\n    Line2\r\nLine3", logger.Text, ignoreLineEndingDifferences: true);
         }
 
-        private class MockOutputService : IProjectDiagnosticOutputService
+        private class MockOutputService : IManagedProjectDiagnosticOutputService
         {
             public bool IsEnabled { get; set; } = true;
 

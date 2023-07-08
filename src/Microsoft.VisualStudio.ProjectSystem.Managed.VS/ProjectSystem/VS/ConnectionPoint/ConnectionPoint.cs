@@ -1,7 +1,5 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
-using System;
-using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using Microsoft.VisualStudio.OLE.Interop;
 
@@ -21,8 +19,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.ConnectionPoint
 
         internal ConnectionPoint(ConnectionPointContainer container, IEventSource<TSinkType> source)
         {
-            Requires.NotNull(container, nameof(container));
-            Requires.NotNull(source, nameof(source));
+            Requires.NotNull(container);
+            Requires.NotNull(source);
 
             _container = container;
             _source = source;

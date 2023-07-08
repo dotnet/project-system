@@ -1,0 +1,437 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
+  <file datatype="xml" source-language="en" target-language="zh-Hans" original="../BuildPropertyPage.VisualBasic.xaml">
+    <body>
+      <trans-unit id="BoolProperty|DefineDebug|Description">
+        <source>Specify DEBUG as a compilation constant.</source>
+        <target state="translated">将 DEBUG 指定为编译常量。</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="BoolProperty|DefineDebug|DisplayName">
+        <source>Define DEBUG constant</source>
+        <target state="translated">定义 DEBUG 常量</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="BoolProperty|DefineTrace|Description">
+        <source>Specify TRACE as a compilation constant.</source>
+        <target state="translated">将 TRACE 指定为编译常量。</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="BoolProperty|DefineTrace|DisplayName">
+        <source>Define TRACE constant</source>
+        <target state="translated">定义 TRACE 常量</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="BoolProperty|GenerateDocumentationFile|Description">
+        <source>Specifies whether to generate documentation information.</source>
+        <target state="translated">指定是否生成文档信息。</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="BoolProperty|GenerateDocumentationFile|DisplayName">
+        <source>Generate XML documentation file</source>
+        <target state="translated">生成 XML 文档文件</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="BoolProperty|Optimize|Description">
+        <source>Enable compiler optimizations.</source>
+        <target state="translated">启用编译器优化。</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="BoolProperty|Optimize|DisplayName">
+        <source>Enable optimizations</source>
+        <target state="translated">启用优化</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="BoolProperty|Prefer32Bit|Description">
+        <source>Run in 32-bit mode on systems that support both 32-bit and 64-bit applications.</source>
+        <target state="translated">在同时支持 32 位和 64 位应用程序的系统上以 32 位模式运行。</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="BoolProperty|Prefer32Bit|DisplayName">
+        <source>Prefer 32-bit</source>
+        <target state="translated">首选 32 位</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="BoolProperty|PublishDocumentationFile|Description">
+        <source>When this property is true, the XML documentation file for the project, if one is generated, is included in the publish output for the project. This property defaults to true.</source>
+        <target state="translated">当此属性为 true 时，项目的 XML 文档文件如果生成，则包含在项目的发布输出中。此属性默认为 true。</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="BoolProperty|PublishDocumentationFile|DisplayName">
+        <source>Publish documentation file</source>
+        <target state="translated">发布文档文件</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="BoolProperty|RegisterForComInterop|Description">
+        <source>Specifies whether your managed application will expose a COM object (a COM-callable wrapper) that enables a COM object to interact with the application.</source>
+        <target state="translated">指定托管应用程序是否将公开 COM 对象(可调用 COM 的包装器)，使 COM 对象能够与应用程序交互。</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="BoolProperty|RegisterForComInterop|DisplayName">
+        <source>Register for COM interop</source>
+        <target state="translated">注册 COM 互操作</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="BoolProperty|RemoveIntegerChecks|Description">
+        <source>Remove integer overflow checking.</source>
+        <target state="translated">移除整数溢出检查。</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="BoolProperty|RemoveIntegerChecks|DisplayName">
+        <source>Remove integer overflow checks</source>
+        <target state="translated">不做整数溢出检查</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="Category|Advanced|Description">
+        <source>Advanced settings for the application.</source>
+        <target state="translated">应用程序的高级设置。</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="Category|Advanced|DisplayName">
+        <source>Advanced</source>
+        <target state="translated">高级</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="Category|Events|Description">
+        <source>Configures custom events that run before and after build.</source>
+        <target state="translated">配置生成之前和之后运行的自定义事件。</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="Category|Events|DisplayName">
+        <source>Events</source>
+        <target state="translated">事件</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="Category|General|DisplayName">
+        <source>General</source>
+        <target state="translated">常规</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="Category|Options|DisplayName">
+        <source>Options</source>
+        <target state="translated">选项</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="Category|Warnings|DisplayName">
+        <source>Warnings</source>
+        <target state="translated">警告</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="DynamicEnumProperty|DuplicateOrOverlappingCatchBlocks|DisplayName">
+        <source>Duplicate or overlapping catch blocks</source>
+        <target state="translated">重复或重叠的 catch 块</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="DynamicEnumProperty|ImplicitConversion|Description">
+        <source>Implicit narrowing conversion occurs when there is an implicit data type conversion that is a narrowing conversion. Always 'Error' when 'Option strict' is on.</source>
+        <target state="translated">当存在属于收缩转换的隐式数据类型转换时，会发生隐式收缩转换。当 “Option strict” 启用时，始终为 “Error”。</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="DynamicEnumProperty|ImplicitConversion|DisplayName">
+        <source>Implicit conversion</source>
+        <target state="translated">隐式转换</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="DynamicEnumProperty|ImplicitType|Description">
+        <source>Implicit object type errors occur when an appropriate type cannot be inferred for a declared variable, so a type of 'Object' is inferred. Always 'Error' when 'Option strict' is on.</source>
+        <target state="translated">当无法为声明的变量推断适当的类型时，会发生隐式对象类型错误，因此会推断 “Object” 的类型。当 “Option strict” 启用时，始终为 “Error”。</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="DynamicEnumProperty|ImplicitType|DisplayName">
+        <source>Implicit type</source>
+        <target state="translated">隐式类型</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="DynamicEnumProperty|InstanceVariableAccessesSharedMember|DisplayName">
+        <source>Instance variable accesses shared member</source>
+        <target state="translated">实例变量访问共享成员</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="DynamicEnumProperty|LateBinding|Description">
+        <source>An object is late bound when it is assigned to a property or method of a variable that is declared to be of type 'Object'. These operations could fail at run time. Always 'Error' when 'Option strict' is on.</source>
+        <target state="translated">将对象分配给声明为 “Object” 类型的变量的属性或方法时，该对象将处于晚期绑定状态。这些操作可能会在运行时失败。在启用 “Option strict” 时始终为 “Error”。</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="DynamicEnumProperty|LateBinding|DisplayName">
+        <source>Late binding</source>
+        <target state="translated">晚期绑定</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="DynamicEnumProperty|PlatformTarget|Description">
+        <source>Specifies the processor to be targeted by the output file. Choose 'Any CPU' to specify that any processor is acceptable, allowing the application to run on the broadest range of hardware.</source>
+        <target state="translated">指定输出文件的目标处理器。选择“任何 CPU”以指定任何处理器都是可接受的，从而允许应用程序在最广泛范围的硬件上运行。</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="DynamicEnumProperty|PlatformTarget|DisplayName">
+        <source>Target CPU</source>
+        <target state="translated">目标 CPU</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="DynamicEnumProperty|RecursiveOperatorOrPropertyAccess|DisplayName">
+        <source>Recursive operator or property access</source>
+        <target state="translated">递归运算符或属性访问</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="DynamicEnumProperty|ReturningIntrinsicValueTypeWithoutReturnValue|DisplayName">
+        <source>Function returning intrinsic value type without return value</source>
+        <target state="translated">函数返回了不返回值的固有值类型</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="DynamicEnumProperty|ReturningRefTypeWithoutReturnValue|DisplayName">
+        <source>Function returning reference type without return value</source>
+        <target state="translated">函数返回了不返回值的引用类型</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="DynamicEnumProperty|UnusedLocalVariable|DisplayName">
+        <source>Unused local variable</source>
+        <target state="translated">未使用的局部变量</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="DynamicEnumProperty|UseOfVariablePriorToAssignment|DisplayName">
+        <source>Use of variable prior to assignment</source>
+        <target state="translated">在赋值前使用变量</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumProperty|DebugType|Description">
+        <source>Specifies the kind of debug symbols produced during build.</source>
+        <target state="translated">指定内部版本期间生成的调试符号类型。</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumProperty|DebugType|DisplayName">
+        <source>Debug symbols</source>
+        <target state="translated">调试符号</target>
+        <note>="PDB Only" /&gt;</note>
+      </trans-unit>
+      <trans-unit id="EnumProperty|DebugType|Metadata|SearchTerms">
+        <source>debug type</source>
+        <target state="translated">调试类型</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumProperty|GenerateSerializationAssemblies|DisplayName">
+        <source>Generate serialization assemblies</source>
+        <target state="translated">生成序列化程序集</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumProperty|OptionCompare|Description">
+        <source>Specifies the type of string comparison to use.</source>
+        <target state="translated">指定要使用的字符串比较的类型。</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumProperty|OptionCompare|DisplayName">
+        <source>Option compare</source>
+        <target state="translated">选项比较</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumProperty|OptionExplicit|Description">
+        <source>Specifies whether to require explicit declaration of variables.</source>
+        <target state="translated">指定是否需要显式声明变量。</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumProperty|OptionExplicit|DisplayName">
+        <source>Option explicit</source>
+        <target state="translated">选项显式</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumProperty|OptionInfer|Description">
+        <source>Specifies whether to allow local type inference in variable declarations.</source>
+        <target state="translated">指定是否允许变量声明中的局部类型推理。</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumProperty|OptionInfer|DisplayName">
+        <source>Option infer</source>
+        <target state="translated">选项推断</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumProperty|OptionStrict|Description">
+        <source>Specifies whether to enforce strict type semantics.</source>
+        <target state="translated">指定是否强制实施严格类型语义。</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumProperty|OptionStrict|DisplayName">
+        <source>Option strict</source>
+        <target state="translated">选项严格</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumProperty|RunPostBuildEvent|Description">
+        <source>Specifies under which condition the post-build event will be executed.</source>
+        <target state="translated">指定何种条件下将执行生成后事件。</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumProperty|RunPostBuildEvent|DisplayName">
+        <source>When to run the post-build event</source>
+        <target state="translated">何时运行生成后事件</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumProperty|WarningSeverity|DisplayName">
+        <source>Warning severity</source>
+        <target state="translated">警告严重性</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|DebugType.embedded|DisplayName">
+        <source>Embedded in DLL/EXE, portable across platforms</source>
+        <target state="translated">嵌入到 DLL/EXE 中，可跨平台移植</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|DebugType.full|DisplayName">
+        <source>PDB file, current platform</source>
+        <target state="translated">PDB 文件，当前平台</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|DebugType.none|DisplayName">
+        <source>No symbols are emitted</source>
+        <target state="translated">未发出任何符号</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|DebugType.portable|DisplayName">
+        <source>PDB file, portable across platforms</source>
+        <target state="translated">PDB 文件，可跨平台移植</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|GenerateSerializationAssemblies.Auto|DisplayName">
+        <source>Auto</source>
+        <target state="translated">自动</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|GenerateSerializationAssemblies.Off|DisplayName">
+        <source>Off</source>
+        <target state="translated">关</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|GenerateSerializationAssemblies.On|DisplayName">
+        <source>On</source>
+        <target state="translated">开</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|OptionCompare.Binary|DisplayName">
+        <source>Binary</source>
+        <target state="translated">二进制</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|OptionCompare.Text|DisplayName">
+        <source>Text</source>
+        <target state="translated">文本</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|OptionExplicit.Off|DisplayName">
+        <source>Off</source>
+        <target state="translated">关</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|OptionExplicit.On|DisplayName">
+        <source>On</source>
+        <target state="translated">开</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|OptionInfer.Off|DisplayName">
+        <source>Off</source>
+        <target state="translated">关</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|OptionInfer.On|DisplayName">
+        <source>On</source>
+        <target state="translated">开</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|OptionStrict.Off|DisplayName">
+        <source>Off</source>
+        <target state="translated">关</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|OptionStrict.On|DisplayName">
+        <source>On</source>
+        <target state="translated">开</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|RunPostBuildEvent.Always|DisplayName">
+        <source>Always</source>
+        <target state="translated">始终</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|RunPostBuildEvent.OnBuildSuccess|DisplayName">
+        <source>When the build succeeds</source>
+        <target state="translated">生成成功时</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|RunPostBuildEvent.OnOutputUpdated|DisplayName">
+        <source>When the output is updated</source>
+        <target state="translated">更新输出时</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|WarningSeverity.AllAsErrors|DisplayName">
+        <source>Treat all warnings as errors</source>
+        <target state="translated">将所有警告视为错误</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|WarningSeverity.DisableAll|DisplayName">
+        <source>Disable all warnings</source>
+        <target state="translated">禁用所有警告。</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|WarningSeverity.Individual|DisplayName">
+        <source>Set warning severities individually</source>
+        <target state="translated">单独设置警告严重性</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="Rule|Build|Description">
+        <source>Specifies properties that control how the project builds.</source>
+        <target state="translated">指定控制如何生成项目的属性。</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="Rule|Build|DisplayName">
+        <source>Compile</source>
+        <target state="translated">编译</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|BaseAddress|DisplayName">
+        <source>DLL base address</source>
+        <target state="translated">DLL 基址</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|DefineConstants|Description">
+        <source>Specifies custom conditional compilation constants for your application. Note that values are optional, for the optional behavior leave the value blank. If the value is a string, please add quotation marks around it.</source>
+        <target state="translated">指定应用程序的自定义条件编译常量。请注意，值是可选的，对于可选行为，请将值留空。如果值是字符串，请在它两边添加引号。</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|DefineConstants|DisplayName">
+        <source>Custom constants</source>
+        <target state="translated">自定义常量</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|DocumentationFile|Description">
+        <source>Optional path for the API documentation file. Leave blank to use the default location.</source>
+        <target state="translated">API 文档文件的可选路径。若要使用默认位置，请保留为空。</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|DocumentationFile|DisplayName">
+        <source>XML documentation file path</source>
+        <target state="translated">XML 文档文件路径</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|OutputPath|DisplayName">
+        <source>Build output path</source>
+        <target state="translated">生成输出路径</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|PostBuildEvent|Description">
+        <source>Specifies commands that run after the build completes. Does not run if the build failed. Use 'call' to invoke .bat files. A non-zero exit code will fail the build.</source>
+        <target state="translated">指定生成完成后运行的命令。如果生成失败，则不运行。请使用“调用”来调用 .bat 文件。非零退出代码将导致生成失败。</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|PostBuildEvent|DisplayName">
+        <source>Post-build event</source>
+        <target state="translated">生成后事件</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|PreBuildEvent|Description">
+        <source>Specifies commands that run before the build starts. Does not run if the project is up-to-date. A non-zero exit code will fail the build before it runs.</source>
+        <target state="translated">指定生成开始前运行的命令。如果项目是最新的，则不运行。非零退出代码将在生成运行前导致生成失败。</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|PreBuildEvent|DisplayName">
+        <source>Pre-build event</source>
+        <target state="translated">预生成事件</target>
+        <note />
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

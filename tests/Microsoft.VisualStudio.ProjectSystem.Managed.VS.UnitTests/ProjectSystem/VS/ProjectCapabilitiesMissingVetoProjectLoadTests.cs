@@ -1,10 +1,5 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
-using System;
-using System.Threading;
-using System.Threading.Tasks;
-using Xunit;
-
 namespace Microsoft.VisualStudio.ProjectSystem.VS
 {
     public class ProjectCapabilitiesMissingVetoProjectLoadTests
@@ -25,7 +20,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                 return veto.AllowProjectLoadAsync(true, ProjectConfigurationFactory.Create("Debug|AnyCPU"), CancellationToken.None);
             });
 
-            Assert.Equal(result.HResult, VSConstants.E_FAIL);
+            Assert.Equal(VSConstants.E_FAIL, result.HResult);
         }
 
         [Theory]

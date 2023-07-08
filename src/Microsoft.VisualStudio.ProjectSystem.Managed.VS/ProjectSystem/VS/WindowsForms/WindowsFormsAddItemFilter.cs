@@ -1,7 +1,5 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
-using System;
-using System.ComponentModel.Composition;
 using Microsoft.VisualStudio.Shell.Interop;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.WindowsForms
@@ -32,7 +30,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.WindowsForms
             pfFilter = 0;
 
             var project = _project;
-            if (project == null)
+            if (project is null)
             {
                 return HResult.Unexpected;
             }

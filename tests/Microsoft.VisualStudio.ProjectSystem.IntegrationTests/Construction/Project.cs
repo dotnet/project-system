@@ -1,10 +1,6 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
-using System;
 using System.Collections;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
 using System.Xml.Linq;
 using Microsoft.Test.Apex.VisualStudio.Solution;
 
@@ -50,7 +46,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                 "PropertyGroup",
                 new XElement("TargetFrameworks", TargetFrameworks)));
 
-            if (_referencedProjects != null)
+            if (_referencedProjects is not null)
             {
                 XElement.Add(new XElement(
                     "ItemGroup",
@@ -59,7 +55,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                         new XAttribute("Include", $"..\\{p.RelativeProjectFilePath}")))));
             }
 
-            if (_assemblyReferences != null)
+            if (_assemblyReferences is not null)
             {
                 XElement.Add(new XElement(
                     "ItemGroup",
@@ -68,7 +64,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                         new XAttribute("Include", p.Name)))));
             }
 
-            if (_packageReferences != null)
+            if (_packageReferences is not null)
             {
                 XElement.Add(new XElement(
                     "ItemGroup",
@@ -84,7 +80,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
 
             XElement.Save(Path.Combine(solutionRoot, RelativeProjectFilePath));
 
-            if (_files != null)
+            if (_files is not null)
             {
                 foreach (var file in _files)
                 {

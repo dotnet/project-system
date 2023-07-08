@@ -44,12 +44,12 @@
       </trans-unit>
       <trans-unit id="BoolProperty|WebView2Debugging|Description">
         <source>Enable JavaScript debugger for Microsoft Edge (Chromium) based WebView2. Requires the JavaScript Diagnostics component.</source>
-        <target state="new">Enable JavaScript debugger for Microsoft Edge (Chromium) based WebView2. Requires the JavaScript Diagnostics component.</target>
+        <target state="translated">Microsoft Edge(Chromium) 기반 WebView2용 JavaScript 디버거를 사용합니다. JavaScript 진단 구성 요소가 필요합니다.</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|WebView2Debugging|DisplayName">
         <source>Enable WebView2 debugging</source>
-        <target state="new">Enable WebView2 debugging</target>
+        <target state="translated">WebView2 디버깅 사용</target>
         <note />
       </trans-unit>
       <trans-unit id="DynamicEnumProperty|AuthenticationMode|Description">
@@ -72,9 +72,19 @@
         <target state="translated">프로젝트</target>
         <note />
       </trans-unit>
+      <trans-unit id="StringProperty|CommandLineArgumentsOverriddenWarning|Description">
+        <source>⚠️ WARNING! This project defines the StartArguments MSBuild property, which overrides any command line arguments specified here. If you wish to define arguments here, you must remove that property from your MSBuild project. Note that it may be defined in a .user file.</source>
+        <target state="translated">⚠️ 경고! 이 프로젝트는 StartArguments MSBuild 속성을 정의하며, 이로 인해 여기에 지정된 명령줄 인수가 재정의됩니다. 여기에서 인수를 정의하려면 MSBuild 프로젝트에서 해당 속성을 제거해야 합니다. 이는 .user 파일에서 정의할 수 있습니다.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|CommandLineArgumentsOverriddenWarning|DisplayName">
+        <source>Ignored</source>
+        <target state="translated">무시됨</target>
+        <note />
+      </trans-unit>
       <trans-unit id="StringProperty|CommandLineArguments|Description">
-        <source>Command line arguments to pass to the executable.</source>
-        <target state="translated">실행 파일에 전달할 명령줄 인수입니다.</target>
+        <source>Command line arguments to pass to the executable. You may break arguments into multiple lines.</source>
+        <target state="translated">실행 파일에 전달할 명령줄 인수입니다. 인수를 여러 줄로 나눌 수 있습니다.</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|CommandLineArguments|DisplayName">
@@ -83,8 +93,8 @@
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|EnvironmentVariables|Description">
-        <source>The environment variables to set prior to running the process. Variables are separated by a comma (,) and variables names and values are separated with an equal sign (=). Example: var1=value1,var2=value2,var3=value3. Commas and equal signs appearing within a variable can be escaped using a forward slash (/).</source>
-        <target state="translated">프로세스를 실행하기 전에 설정할 환경 변수입니다. 변수는 쉼표(,)로 구분하고 변수 이름과 값은 등호(=)로 구분합니다(예: var1=value1,var2=value2,var3=value3). 변수 내에 나타나는 쉼표와 등호는 슬래시(/)로 이스케이프할 수 있습니다.</target>
+        <source>The environment variables to set prior to running the process.</source>
+        <target state="translated">프로세스를 실행하기 전에 설정할 환경 변수입니다.</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|EnvironmentVariables|DisplayName">

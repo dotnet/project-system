@@ -1,7 +1,5 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
-using System;
-using System.Collections.Generic;
 using Microsoft.Test.Apex;
 using Microsoft.Test.Apex.Providers;
 using Microsoft.Test.Apex.Services.Logging;
@@ -12,7 +10,7 @@ namespace Microsoft.VisualStudio
 {
     // Heavily based on MsTestOperationsConfiguration, which is only needed so that we can control the CompositionAssemblies
     // to avoid MEF composition errors being output into the test output and making it harder to understand the build log.
-    internal class ProjectSystemOperationsConfiguration : OperationsConfiguration
+    internal sealed class ProjectSystemOperationsConfiguration : OperationsConfiguration
     {
         internal ProjectSystemOperationsConfiguration(TestContext testContext)
         {

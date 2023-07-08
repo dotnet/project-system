@@ -1,11 +1,8 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
-using System;
 using Microsoft.Build.Framework.XamlTypes;
 using Microsoft.VisualStudio.ProjectSystem.Query;
-using Microsoft.VisualStudio.ProjectSystem.Query.Frameworks;
-using Microsoft.VisualStudio.ProjectSystem.Query.ProjectModel.Implementation;
-using Xunit;
+using Microsoft.VisualStudio.ProjectSystem.Query.Framework;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
 {
@@ -20,7 +17,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
             var parentEntity = IEntityWithIdFactory.Create(key: "parentId", value: "aaa");
             var editor = new ValueEditor { EditorType = "My.Editor.Type" };
 
-            var result = (UIPropertyEditorValue)UIPropertyEditorDataProducer.CreateEditorValue(context, parentEntity, editor, properties);
+            var result = (UIPropertyEditorSnapshot)UIPropertyEditorDataProducer.CreateEditorValue(context, parentEntity, editor, properties);
 
             Assert.Equal(expected: "My.Editor.Type", actual: result.Id[ProjectModelIdentityKeys.EditorName]);
         }
@@ -34,7 +31,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
             var id = new EntityIdentity(key: "EditorKey", value: "bbb");
             var editor = new ValueEditor { EditorType = "My.Editor.Type" };
 
-            var result = (UIPropertyEditorValue)UIPropertyEditorDataProducer.CreateEditorValue(context, id, editor, properties);
+            var result = (UIPropertyEditorSnapshot)UIPropertyEditorDataProducer.CreateEditorValue(context, id, editor, properties);
 
             Assert.Equal(expected: "My.Editor.Type", actual: result.Name);
         }
@@ -48,7 +45,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
             var id = new EntityIdentity(key: "EditorKey", value: "bbb");
             var editor = new ValueEditor { EditorType = "My.Editor.Type" };
 
-            var result = (UIPropertyEditorValue)UIPropertyEditorDataProducer.CreateEditorValue(context, id, editor, properties);
+            var result = (UIPropertyEditorSnapshot)UIPropertyEditorDataProducer.CreateEditorValue(context, id, editor, properties);
 
             Assert.Equal(expected: editor, actual: ((IEntityValueFromProvider)result).ProviderState);
         }
@@ -86,7 +83,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
 
             static void assertEqual(IEntityValue entity, string expectedName)
             {
-                var editorEntity = (UIPropertyEditorValue)entity;
+                var editorEntity = (UIPropertyEditorSnapshot)entity;
                 Assert.Equal(expectedName, editorEntity.Name);
             }
         }
@@ -114,7 +111,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
 
             static void assertEqual(IEntityValue entity, string expectedName)
             {
-                var editorEntity = (UIPropertyEditorValue)entity;
+                var editorEntity = (UIPropertyEditorSnapshot)entity;
                 Assert.Equal(expectedName, editorEntity.Name);
             }
         }
@@ -142,7 +139,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
 
             static void assertEqual(IEntityValue entity, string expectedName)
             {
-                var editorEntity = (UIPropertyEditorValue)entity;
+                var editorEntity = (UIPropertyEditorSnapshot)entity;
                 Assert.Equal(expectedName, editorEntity.Name);
             }
         }

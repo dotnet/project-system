@@ -1,10 +1,6 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
-using System;
-using System.IO;
-using System.Threading.Tasks;
 using Microsoft.VisualStudio.IO;
-using Xunit;
 
 namespace Microsoft.VisualStudio.ProjectSystem
 {
@@ -17,7 +13,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
             await Assert.ThrowsAsync<ArgumentNullException>("path", () =>
             {
-                return storage.AddFileAsync((string?)null!);
+                return storage.AddFileAsync(null!);
             });
         }
 
@@ -39,7 +35,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
             await Assert.ThrowsAsync<ArgumentNullException>("path", () =>
             {
-                return storage.CreateEmptyFileAsync((string?)null!);
+                return storage.CreateEmptyFileAsync(null!);
             });
         }
 
@@ -61,7 +57,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
             await Assert.ThrowsAsync<ArgumentNullException>("path", async () =>
             {
-                await storage.CreateFolderAsync((string?)null!);
+                await storage.CreateFolderAsync(null!);
             });
         }
 
@@ -83,7 +79,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
             await Assert.ThrowsAsync<ArgumentNullException>("path", async () =>
             {
-                await storage.AddFolderAsync((string?)null!);
+                await storage.AddFolderAsync(null!);
             });
         }
 
@@ -103,7 +99,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
         {
             string? result = null;
             var project = UnconfiguredProjectFactory.Create(fullPath: @"C:\Project\Project.csproj");
-            var fileSystem = IFileSystemFactory.ImplementCreate((path) => { result = path; return new MemoryStream(); });
+            var fileSystem = IFileSystemFactory.ImplementCreate((path) => { result = path; });
 
             var storage = CreateInstance(fileSystem: fileSystem, project: project);
 
@@ -244,7 +240,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
         {
             var project = UnconfiguredProjectFactory.Create(fullPath: projectPath);
             string? result = null;
-            var fileSystem = IFileSystemFactory.ImplementCreate(path => { result = path; return new MemoryStream(); });
+            var fileSystem = IFileSystemFactory.ImplementCreate(path => { result = path; });
 
             var storage = CreateInstance(fileSystem: fileSystem, project: project);
 

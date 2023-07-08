@@ -1,13 +1,6 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
-using System;
-using System.Collections.Generic;
-using System.Collections.Immutable;
-using System.ComponentModel.Composition;
 using System.Diagnostics;
-using System.IO;
-using System.Threading;
-using System.Threading.Tasks;
 using System.Threading.Tasks.Dataflow;
 using Microsoft.VisualStudio.IO;
 using Microsoft.VisualStudio.LanguageServices.ProjectSystem;
@@ -25,7 +18,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
         private static readonly TimeSpan s_compilationDelayTime = TimeSpan.FromMilliseconds(500);
 
         private readonly UnconfiguredProject _project;
-        private readonly IActiveWorkspaceProjectContextHost _activeWorkspaceProjectContextHost;
+        private readonly IWorkspaceWriter _workspaceWriter;
         private readonly IProjectThreadingService _threadingService;
         private readonly IDesignTimeInputsChangeTracker _changeTracker;
         private readonly ITempPECompiler _compiler;
@@ -41,7 +34,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
 
         [ImportingConstructor]
         public DesignTimeInputsCompiler(UnconfiguredProject project,
-                                        IActiveWorkspaceProjectContextHost activeWorkspaceProjectContextHost,
+                                        IWorkspaceWriter workspaceWriter,
                                         IProjectThreadingService threadingService,
                                         IDesignTimeInputsChangeTracker changeTracker,
                                         ITempPECompiler compiler,
@@ -50,7 +43,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
             : base(threadingService.JoinableTaskContext)
         {
             _project = project;
-            _activeWorkspaceProjectContextHost = activeWorkspaceProjectContextHost;
+            _workspaceWriter = workspaceWriter;
             _threadingService = threadingService;
             _changeTracker = changeTracker;
             _compiler = compiler;
@@ -99,7 +92,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
 
         protected override async Task DisposeCoreAsync(bool initialized)
         {
-            if (_compileActionBlock != null)
+            if (_compileActionBlock is not null)
             {
                 // This will stop our blocks taking any more input
                 _compileActionBlock.Complete();
@@ -117,7 +110,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
             int compileCount = 0;
             int initialQueueLength = _queue.Count;
             var compileStopWatch = Stopwatch.StartNew();
-            return _activeWorkspaceProjectContextHost.OpenContextForWriteAsync(async accessor =>
+            return _workspaceWriter.WriteAsync(async workspace =>
             {
                 while (true)
                 {
@@ -135,7 +128,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
 
                     // Grab the next file to compile off the queue
                     QueueItem? item = _queue.Pop();
-                    if (item == null)
+                    if (item is null)
                     {
                         break;
                     }
@@ -144,7 +137,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
                     string outputFileName = GetOutputFileName(item.FileName, item.TempPEOutputPath);
                     try
                     {
-                        if (await CompileDesignTimeInputAsync(accessor.Context, item.FileName, outputFileName, item.SharedInputs, item.IgnoreFileWriteTime, token))
+                        if (await CompileDesignTimeInputAsync(workspace.Context, item.FileName, outputFileName, item.SharedInputs, item.IgnoreFileWriteTime, token))
                         {
                             compileCount++;
                         }
@@ -163,17 +156,18 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
                 }
 
                 LogTelemetry(cancelled: token.IsCancellationRequested);
-            });
+            },
+            token);
 
             void LogTelemetry(bool cancelled)
             {
                 compileStopWatch!.Stop();
                 _telemetryService.PostProperties(TelemetryEventName.TempPEProcessQueue, new[]
                 {
-                    ( TelemetryPropertyName.TempPECompileCount,        (object)compileCount),
-                    ( TelemetryPropertyName.TempPEInitialQueueLength,  initialQueueLength),
-                    ( TelemetryPropertyName.TempPECompileWasCancelled, cancelled),
-                    ( TelemetryPropertyName.TempPECompileDuration,     compileStopWatch.ElapsedMilliseconds)
+                    ( TelemetryPropertyName.TempPE.CompileCount,        (object)compileCount),
+                    ( TelemetryPropertyName.TempPE.InitialQueueLength,  initialQueueLength),
+                    ( TelemetryPropertyName.TempPE.CompileWasCancelled, cancelled),
+                    ( TelemetryPropertyName.TempPE.CompileDuration,     compileStopWatch.ElapsedMilliseconds)
                 });
             }
         }
@@ -201,16 +195,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
 
             string outputFileName = GetOutputFileNameFromRelativePath(relativeFileName, tempPEOutputPath);
             // make sure the file is up to date
-            bool compiled = await _activeWorkspaceProjectContextHost.OpenContextForWriteAsync(accessor =>
+            bool compiled = await _workspaceWriter.WriteAsync(workspace =>
             {
-                return CompileDesignTimeInputAsync(accessor.Context, fileName, outputFileName, sharedInputs, ignoreFileWriteTime: false);
+                return CompileDesignTimeInputAsync(workspace.Context, fileName, outputFileName, sharedInputs, ignoreFileWriteTime: false);
             });
 
             if (compiled)
             {
                 _telemetryService.PostProperties(TelemetryEventName.TempPECompileOnDemand, new[]
                 {
-                    ( TelemetryPropertyName.TempPEInitialQueueLength, (object)initialQueueLength)
+                    ( TelemetryPropertyName.TempPE.InitialQueueLength, (object)initialQueueLength)
                 });
             }
 

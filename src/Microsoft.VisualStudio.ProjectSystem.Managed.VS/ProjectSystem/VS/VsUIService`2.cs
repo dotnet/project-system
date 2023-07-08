@@ -2,8 +2,6 @@
 
 #pragma warning disable RS0030 // Do not used banned APIs (wrapping IServiceProvider)
 
-using System;
-using System.ComponentModel.Composition;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Threading;
 

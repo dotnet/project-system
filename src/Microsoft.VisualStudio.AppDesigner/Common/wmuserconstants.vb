@@ -4,7 +4,7 @@ Imports Microsoft.VisualStudio.Editors.AppDesInterop
 
 Namespace Microsoft.VisualStudio.Editors.AppDesCommon
 
-    Friend Class WmUserConstants
+    Friend NotInheritable Class WmUserConstants
         Public Const WM_REFPAGE_REFERENCES_REFRESH As Integer = Win32Constant.WM_USER + 21
         Public Const WM_REFPAGE_IMPORTCHANGED As Integer = Win32Constant.WM_USER + 22
         Public Const WM_REFPAGE_IMPORTS_REFRESH As Integer = Win32Constant.WM_USER + 24

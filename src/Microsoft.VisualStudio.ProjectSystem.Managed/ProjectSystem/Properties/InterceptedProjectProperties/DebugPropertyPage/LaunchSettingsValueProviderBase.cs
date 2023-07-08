@@ -1,9 +1,5 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
-using System;
-using System.Collections.Generic;
-using System.Threading;
-using System.Threading.Tasks;
 using Microsoft.VisualStudio.ProjectSystem.Debug;
 
 namespace Microsoft.VisualStudio.ProjectSystem.Properties
@@ -45,9 +41,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
 
         public override async Task<string?> OnSetPropertyValueAsync(string propertyName, string unevaluatedPropertyValue, IProjectProperties defaultProperties, IReadOnlyDictionary<string, string>? dimensionalConditions = null)
         {
-            // Infinite timeout means this will not actually be null.
-            ILaunchSettings? launchSettings = await _launchSettingsProvider.WaitForFirstSnapshot(Timeout.Infinite);
-            Assumes.NotNull(launchSettings);
+            ILaunchSettings launchSettings = await _launchSettingsProvider.WaitForFirstSnapshot();
 
             IWritableLaunchSettings writableLaunchSettings = launchSettings.ToWritableLaunchSettings();
             if (SetPropertyValue(propertyName, unevaluatedPropertyValue, writableLaunchSettings))
@@ -63,9 +57,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
 
         private async Task<string> GetPropertyValueAsync(string propertyName)
         {
-            // Infinite timeout means this will not actually be null.
-            ILaunchSettings? launchSettings = await _launchSettingsProvider.WaitForFirstSnapshot(Timeout.Infinite);
-            Assumes.NotNull(launchSettings);
+            ILaunchSettings launchSettings = await _launchSettingsProvider.WaitForFirstSnapshot();
 
             return GetPropertyValue(propertyName, launchSettings) ?? string.Empty;
         }

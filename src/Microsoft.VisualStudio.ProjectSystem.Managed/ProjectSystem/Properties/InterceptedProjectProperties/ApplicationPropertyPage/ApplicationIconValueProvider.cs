@@ -1,9 +1,5 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
-using System.Collections.Generic;
-using System.ComponentModel.Composition;
-using System.IO;
-using System.Threading.Tasks;
 using Microsoft.VisualStudio.IO;
 
 namespace Microsoft.VisualStudio.ProjectSystem.Properties.Package
@@ -75,7 +71,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties.Package
 
             string existingPropertyValue = await defaultProperties.GetEvaluatedPropertyValueAsync(ConfigurationGeneral.ApplicationIconProperty);
             IProjectItem? existingItem = await GetExistingContentItemAsync(existingPropertyValue);
-            if (existingItem != null)
+            if (existingItem is not null)
             {
                 await existingItem.SetUnevaluatedIncludeAsync(propertyValue);
             }
@@ -89,17 +85,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties.Package
 
         private async Task<IProjectItem?> GetExistingContentItemAsync(string existingPropertyValue)
         {
-            foreach (IProjectItem item in await _sourceItemsProvider.GetItemsAsync(Content.SchemaName))
-            {
+            return await _sourceItemsProvider.GetItemAsync(Content.SchemaName, ci =>
                 // If the filename of this item and the filename of the property's value match, consider those to be related to one another.
-                if (item.PropertiesContext.IsProjectFile &&
-                    Path.GetFileName(item.EvaluatedInclude).Equals(Path.GetFileName(existingPropertyValue), StringComparisons.PropertyLiteralValues))
-                {
-                    return item;
-                }
-            }
-
-            return null;
+                ci.PropertiesContext is { IsProjectFile: true } && Path.GetFileName(ci.EvaluatedInclude).Equals(Path.GetFileName(existingPropertyValue), StringComparisons.PropertyLiteralValues));
         }
     }
 }

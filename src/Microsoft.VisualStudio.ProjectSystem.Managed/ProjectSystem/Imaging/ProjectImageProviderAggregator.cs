@@ -1,7 +1,5 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
-using System;
-using System.ComponentModel.Composition;
 using Microsoft.VisualStudio.Composition;
 
 namespace Microsoft.VisualStudio.ProjectSystem.Imaging
@@ -26,13 +24,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.Imaging
 
         public ProjectImageMoniker? GetProjectImage(string key)
         {
-            Requires.NotNullOrEmpty(key, nameof(key));
+            Requires.NotNullOrEmpty(key);
 
             foreach (Lazy<IProjectImageProvider> provider in ImageProviders)
             {
                 ProjectImageMoniker? image = provider.Value.GetProjectImage(key);
 
-                if (image != null)
+                if (image is not null)
                 {
                     return image;
                 }

@@ -1,0 +1,42 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
+  <file datatype="xml" source-language="en" target-language="ko" original="../ReferencesPage.VisualBasic.xaml">
+    <body>
+      <trans-unit id="Category|General|Description">
+        <source>References and namespace settings for VB projects.</source>
+        <target state="translated">VB 프로젝트에 대한 참조 및 네임스페이스 설정입니다.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="Category|General|DisplayName">
+        <source>General</source>
+        <target state="translated">일반</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="DynamicEnumProperty|ImportedNamespaces|Description">
+        <source>Manage which namespaces to import in your application.</source>
+        <target state="translated">애플리케이션에서 가져올 네임스페이스를 관리합니다.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="DynamicEnumProperty|ImportedNamespaces|DisplayName">
+        <source>Import Namespaces</source>
+        <target state="translated">네임스페이스 가져오기</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="DynamicEnumProperty|ImportedNamespaces|ValueEditors|ValueEditor|Metadata|TypeDescriptorText|Value">
+        <source>Imported Namespaces</source>
+        <target state="new">Imported Namespaces</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="Rule|References|Description">
+        <source>Specifies the project's references and namespace imports.</source>
+        <target state="translated">프로젝트의 참조 및 네임스페이스 가져오기를 지정합니다.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="Rule|References|DisplayName">
+        <source>References</source>
+        <target state="translated">참조</target>
+        <note />
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

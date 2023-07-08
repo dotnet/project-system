@@ -1,7 +1,5 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
-using System;
-using System.Threading.Tasks;
 using Microsoft.Build.Evaluation;
 using Microsoft.VisualStudio.ProjectSystem.Input;
 using Microsoft.VisualStudio.Shell;
@@ -17,10 +15,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.Ordering
 
         protected AbstractMoveCommand(IPhysicalProjectTree projectTree, SVsServiceProvider serviceProvider, ConfiguredProject configuredProject, IProjectAccessor accessor)
         {
-            Requires.NotNull(projectTree, nameof(projectTree));
-            Requires.NotNull(serviceProvider, nameof(serviceProvider));
-            Requires.NotNull(configuredProject, nameof(configuredProject));
-            Requires.NotNull(accessor, nameof(accessor));
+            Requires.NotNull(projectTree);
+            Requires.NotNull(serviceProvider);
+            Requires.NotNull(configuredProject);
+            Requires.NotNull(accessor);
 
             _projectTree = projectTree;
             _serviceProvider = serviceProvider;

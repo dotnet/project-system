@@ -686,6 +686,11 @@ Se si modifica questa impostazione, verranno ripristinate le impostazioni in tut
         <target state="translated">Commento</target>
         <note>Column names for the string table</note>
       </trans-unit>
+      <trans-unit id="SD_ERR_HelpMessage_SuggestFileOpenWith">
+        <source>If this is not a Settings-Designer file then use 'Open With' to open it in a text editor.</source>
+        <target state="translated">Se non è un file Settings-Designer, usare 'Apri con' per aprirlo in un editor di testo.</target>
+        <note />
+      </trans-unit>
       <trans-unit id="SingleFileGenerator_FailedToGenerateFile_1Arg">
         <source>Failed to generate file: {0}</source>
         <target state="translated">Non è stato possibile generare il file: {0}</target>

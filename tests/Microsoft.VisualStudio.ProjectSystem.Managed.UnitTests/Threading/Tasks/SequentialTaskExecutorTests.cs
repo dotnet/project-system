@@ -1,19 +1,30 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
-using System;
-using System.Collections.Generic;
-using Xunit;
 using Task = System.Threading.Tasks.Task;
 
 namespace Microsoft.VisualStudio.Threading.Tasks
 {
-    public class SequentialTaskExecutorTests
+    public sealed class SequentialTaskExecutorTests : IDisposable
     {
+        private readonly JoinableTaskContext _joinableTaskContext;
+
+        public SequentialTaskExecutorTests()
+        {
+#pragma warning disable VSSDK005
+            _joinableTaskContext = new JoinableTaskContext();
+#pragma warning restore VSSDK005
+        }
+
+        public void Dispose()
+        {
+            _joinableTaskContext.Dispose();
+        }
+
         [Fact]
         public async Task EnsureTasksAreRunInOrder()
         {
             const int NumberOfTasks = 25;
-            var sequencer = new SequentialTaskExecutor();
+            var sequencer = new SequentialTaskExecutor(new(_joinableTaskContext), "UnitTests");
 
             var tasks = new List<Task>();
             var sequences = new List<int>();
@@ -31,7 +42,7 @@ namespace Microsoft.VisualStudio.Threading.Tasks
                 }));
             }
 
-            await Task.WhenAll(tasks.ToArray());
+            await Task.WhenAll(tasks);
             for (int i = 0; i < NumberOfTasks; i++)
             {
                 Assert.Equal(i, sequences[i]);
@@ -39,10 +50,38 @@ namespace Microsoft.VisualStudio.Threading.Tasks
         }
 
         [Fact]
+        public async Task EnsureTasksAreRunInOrderWithReturnValues()
+        {
+            const int NumberOfTasks = 25;
+            var sequencer = new SequentialTaskExecutor(new(_joinableTaskContext), "UnitTests");
+
+            var tasks = new List<Task<int>>();
+            for (int i = 0; i < NumberOfTasks; i++)
+            {
+                int num = i;
+                tasks.Add(sequencer.ExecuteTask(async () =>
+                {
+                    async Task<int> func()
+                    {
+                        await Task.Delay(1);
+                        return num;
+                    }
+                    return await func();
+                }));
+            }
+
+            await Task.WhenAll(tasks);
+            for (int i = 0; i < NumberOfTasks; i++)
+            {
+                Assert.Equal(i, tasks[i].Result);
+            }
+        }
+
+        [Fact]
         public async Task EnsureNestedCallsAreExecutedDirectly()
         {
             const int NumberOfTasks = 10;
-            var sequencer = new SequentialTaskExecutor();
+            var sequencer = new SequentialTaskExecutor(new(_joinableTaskContext), "UnitTests");
 
             var tasks = new List<Task>();
             var sequences = new List<int>();
@@ -63,7 +102,7 @@ namespace Microsoft.VisualStudio.Threading.Tasks
                 }));
             }
 
-            await Task.WhenAll(tasks.ToArray());
+            await Task.WhenAll(tasks);
             for (int i = 0; i < NumberOfTasks; i++)
             {
                 Assert.Equal(i, sequences[i]);
@@ -73,16 +112,16 @@ namespace Microsoft.VisualStudio.Threading.Tasks
         [Fact]
         public void CallToDisposedObjectShouldThrow()
         {
-            var sequencer = new SequentialTaskExecutor();
+            var sequencer = new SequentialTaskExecutor(new(_joinableTaskContext), "UnitTests");
             sequencer.Dispose();
-            Assert.Throws<ObjectDisposedException>(() => { sequencer.ExecuteTask(() => Task.CompletedTask); });
+            Assert.ThrowsAsync<ObjectDisposedException>(() => sequencer.ExecuteTask(() => Task.CompletedTask));
         }
 
         [Fact]
         public async Task EnsureTasksCancelledWhenDisposed()
         {
             const int NumberOfTasks = 10;
-            var sequencer = new SequentialTaskExecutor();
+            var sequencer = new SequentialTaskExecutor(new(_joinableTaskContext), "UnitTests");
 
             var tasks = new List<Task>();
             for (int i = 0; i < NumberOfTasks; i++)
@@ -102,7 +141,7 @@ namespace Microsoft.VisualStudio.Threading.Tasks
 
             try
             {
-                await Task.WhenAll(tasks.ToArray());
+                await Task.WhenAll(tasks);
             }
             catch (OperationCanceledException)
             {

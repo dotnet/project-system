@@ -1,8 +1,5 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using Microsoft.Build.Framework;
 using Microsoft.VisualStudio.Buffers.PooledObjects;
 
@@ -38,12 +35,16 @@ namespace Microsoft.VisualStudio.Telemetry
 
         private void TargetStarted(object sender, TargetStartedEventArgs e)
         {
-            _targets[e.BuildEventContext.TargetId] = new TargetRecord(e.TargetName, e.Timestamp);
+            if (e.BuildEventContext is not null)
+            {
+                _targets[e.BuildEventContext.TargetId] = new TargetRecord(e.TargetName, e.Timestamp);
+            }
         }
 
         private void TargetFinished(object sender, TargetFinishedEventArgs e)
         {
-            if (_targets.TryGetValue(e.BuildEventContext.TargetId, out TargetRecord record))
+            if (e.BuildEventContext is not null
+                && _targets.TryGetValue(e.BuildEventContext.TargetId, out TargetRecord record))
             {
                 record.Ended = e.Timestamp;
             }
@@ -68,8 +69,8 @@ namespace Microsoft.VisualStudio.Telemetry
 
             _telemetryService.PostProperties(TelemetryEventName.DesignTimeBuildComplete, new[]
             {
-                (TelemetryPropertyName.DesignTimeBuildCompleteSucceeded, (object)_succeeded),
-                (TelemetryPropertyName.DesignTimeBuildCompleteTargets, targetResults)
+                (TelemetryPropertyName.DesignTimeBuildComplete.Succeeded, (object)_succeeded),
+                (TelemetryPropertyName.DesignTimeBuildComplete.Targets, targetResults)
             });
         }
     }

@@ -1,11 +1,8 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
-using System;
 using System.Collections;
-using System.Collections.Immutable;
 using System.Collections.Specialized;
 using System.Diagnostics.CodeAnalysis;
-using System.Linq;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections
 {
@@ -88,8 +85,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedColl
 
         bool IAggregateRelationCollection.HasItems
             => _isMaterialized
-                ? _spans.Any(span => span.Items?.Count > 0)
-                : _spans.Any(span => span.Relation.HasContainedItem(_item));
+                ? _spans.Any(static span => span.Items?.Count > 0)
+                : _spans.Any(static (span, item) => span.Relation.HasContainedItem(item), _item);
 
         int ICollection.Count => _spans.Sum(span => span.Items?.Count ?? 0);
 
@@ -111,7 +108,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedColl
         {
             foreach (AggregateContainsRelationCollectionSpan span in _spans)
             {
-                if (span.Items != null)
+                if (span.Items is not null)
                 {
                     foreach (IRelatableItem item in span.Items)
                     {
@@ -129,7 +126,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedColl
                 {
                     foreach (AggregateContainsRelationCollectionSpan span in _spans)
                     {
-                        if (span.Items == null)
+                        if (span.Items is null)
                         {
                             continue;
                         }
@@ -163,7 +160,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedColl
 
                 foreach (AggregateContainsRelationCollectionSpan span in _spans)
                 {
-                    if (span.Items == null)
+                    if (span.Items is null)
                     {
                         continue;
                     }
@@ -189,7 +186,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedColl
             return -1;
         }
 
-        bool IList.Contains(object value) => value is IRelatableItem item && _spans.Any(span => span.Items?.Contains(item) == true);
+        bool IList.Contains(object value) => value is IRelatableItem item && _spans.Any(static (span, item) => span.Items?.Contains(item) == true, item);
 
         void ICollection.CopyTo(Array array, int index) => throw new NotSupportedException();
         object ICollection.SyncRoot => throw new NotSupportedException();

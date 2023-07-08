@@ -1,10 +1,8 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
-using System;
 using Microsoft.VisualStudio.ProjectSystem.LanguageServices;
 using Microsoft.VisualStudio.Shell.Interop;
 using Microsoft.VisualStudio.TextManager.Interop;
-using Xunit;
 using IOleAsyncServiceProvider = Microsoft.VisualStudio.Shell.Interop.COMAsyncServiceProvider.IAsyncServiceProvider;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
@@ -97,7 +95,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
             IVsContainedLanguageFactory? containedLanguageFactory = null,
             IVsHierarchy? hierarchy = null,
             ProjectProperties? properties = null,
-            IActiveWorkspaceProjectContextHost? projectContextHost = null)
+            IWorkspaceWriter? workspaceWriter = null)
         {
             var serviceProvider = IOleAsyncServiceProviderFactory.ImplementQueryServiceAsync(containedLanguageFactory, new Guid(LanguageServiceId));
 
@@ -107,20 +105,20 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
             projectVsServices.ImplementThreadingService(IProjectThreadingServiceFactory.Create());
             projectVsServices.ImplementActiveConfiguredProjectProperties(properties);
 
-            return CreateInstance(serviceProvider, projectVsServices.Object, projectContextHost);
+            return CreateInstance(serviceProvider, projectVsServices.Object, workspaceWriter);
         }
 
         private static VsContainedLanguageComponentsFactory CreateInstance(
             IOleAsyncServiceProvider? serviceProvider = null,
             IUnconfiguredProjectVsServices? projectVsServices = null,
-            IActiveWorkspaceProjectContextHost? projectContextHost = null)
+            IWorkspaceWriter? workspaceWriter = null)
         {
             projectVsServices ??= IUnconfiguredProjectVsServicesFactory.Create();
-            projectContextHost ??= IActiveWorkspaceProjectContextHostFactory.Create();
+            workspaceWriter ??= IWorkspaceWriterFactory.Create();
 
             return new VsContainedLanguageComponentsFactory(IVsServiceFactory.Create<SAsyncServiceProvider, IOleAsyncServiceProvider>(serviceProvider!),
                                                             projectVsServices,
-                                                            projectContextHost);
+                                                            workspaceWriter);
         }
     }
 }

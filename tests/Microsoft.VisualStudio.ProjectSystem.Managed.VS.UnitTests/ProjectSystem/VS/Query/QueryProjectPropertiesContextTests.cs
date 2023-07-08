@@ -1,8 +1,6 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
-using System.Collections.Generic;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
-using Xunit;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
 {
@@ -25,7 +23,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
             Assert.False(a.GetHashCode() == b.GetHashCode());
         }
 
-        public static IEnumerable<IProjectPropertiesContext[]> ContextsThatAreEqual()
+        public static IEnumerable<object[]> ContextsThatAreEqual()
         {
             return new QueryProjectPropertiesContext[][]
             {

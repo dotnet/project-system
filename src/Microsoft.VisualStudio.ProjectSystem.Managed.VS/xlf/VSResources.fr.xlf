@@ -2,10 +2,23 @@
 <xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
   <file datatype="xml" source-language="en" target-language="fr" original="../VSResources.resx">
     <body>
+      <trans-unit id="BuildAccelerationSummary_2">
+        <source>Visual Studio accelerated {0} project(s), copying {1} file(s). See https://aka.ms/vs-build-acceleration.</source>
+        <target state="translated">Visual Studio a accéléré {0} projet(s), copié {1} fichier(s). Voir https://aka.ms/vs-build-acceleration.</target>
+        <note>{0} and {1} are both integer counts.</note>
+      </trans-unit>
       <trans-unit id="DefaultNewProfileName">
         <source>Profile {0}</source>
         <target state="translated">Profil {0}</target>
         <note>Default name for new launch profiles. The {0} is a decimal number chosen to guarantee the name is unique.</note>
+      </trans-unit>
+      <trans-unit id="DontKnowHowToRunProfile_2">
+        <source>The project doesn't know how to run the profile with name '{0}' and command '{1}'.</source>
+        <target state="translated">Le projet ne sait pas comment exécuter le profil avec le nom « {0} » et la « {1} » de commandes.</target>
+        <note>
+      {0} is the profile name, which comes from the user.
+      {1} is the profile command, which is usually an internal string but is helpful when diagnosing issues here.
+    </note>
       </trans-unit>
       <trans-unit id="FrameworkAssemblyAssemblyNameDescription">
         <source>The name of the framework assembly.</source>
@@ -54,47 +67,47 @@
       </trans-unit>
       <trans-unit id="HotReloadApplyUpdatesFailure">
         <source>Applying updates failed: {0}</source>
-        <target state="new">Applying updates failed: {0}</target>
+        <target state="translated">Échec de l’application des mises à jour : {0}</target>
         <note />
       </trans-unit>
       <trans-unit id="HotReloadApplyUpdatesSuccessful">
         <source>Updates applied successfully.</source>
-        <target state="new">Updates applied successfully.</target>
+        <target state="translated">Mises à jour correctement appliquées</target>
         <note />
       </trans-unit>
       <trans-unit id="HotReloadErrorsInApplication">
         <source>Errors found in application: </source>
-        <target state="new">Errors found in application: </target>
+        <target state="translated">Erreurs détectées dans l’application :</target>
         <note />
       </trans-unit>
       <trans-unit id="HotReloadOutputWindowPaneName">
         <source>Hot Reload</source>
-        <target state="new">Hot Reload</target>
+        <target state="translated">Rechargement à chaud</target>
         <note>This is the name given to the Output Window pane responsible for displaying messages related to Hot Reload operations.</note>
       </trans-unit>
       <trans-unit id="HotReloadRestartInProgress">
         <source>Rebuilding and restarting the application since the edits can't be applied dynamically.</source>
-        <target state="new">Rebuilding and restarting the application since the edits can't be applied dynamically.</target>
+        <target state="translated">Reconstruction et redémarrage de l’application, car les modifications ne peuvent pas être appliquées de manière dynamique.</target>
         <note />
       </trans-unit>
       <trans-unit id="HotReloadSendingUpdates">
         <source>Sending updates to running application.</source>
-        <target state="new">Sending updates to running application.</target>
+        <target state="translated">Envoi de mises à jour à l’application en cours d’exécution</target>
         <note />
       </trans-unit>
       <trans-unit id="HotReloadStartSession">
         <source>Hot Reload session started.</source>
-        <target state="new">Hot Reload session started.</target>
+        <target state="translated">Session de rechargement à chaud démarrée</target>
         <note />
       </trans-unit>
       <trans-unit id="HotReloadStopSession">
         <source>Hot Reload session complete.</source>
-        <target state="new">Hot Reload session complete.</target>
+        <target state="translated">Session de rechargement à chaud terminée</target>
         <note />
       </trans-unit>
       <trans-unit id="HotReloadStoppingApplication">
         <source>Stopping application.</source>
-        <target state="new">Stopping application.</target>
+        <target state="translated">Arrêt de l'application</target>
         <note />
       </trans-unit>
       <trans-unit id="ImportsFromTargetCannotBeDeleted">
@@ -102,43 +115,42 @@
         <target state="translated">{0} - L'importation provient du fichier cible. Impossible de supprimer cette importation.</target>
         <note />
       </trans-unit>
-      <trans-unit id="ProjectHotReloadSessionManager_AttachingToProcess">
-        <source>{0}: Attaching to process '{1}'.</source>
-        <target state="new">{0}: Attaching to process '{1}'.</target>
-        <note>{0} is the Hot Reload session identifier. {1} is the process ID (PID).</note>
+      <trans-unit id="IncrementalBuildFailureWarningMessage_2">
+        <source>WARNING: Potential build performance issue in '{0}'. The project does not appear up-to-date after a successful build: {1}. See https://aka.ms/incremental-build-failure.</source>
+        <target state="translated">AVERTISSEMENT : problème potentiel de performances de build dans '{0}'. Le projet n’apparaît pas à jour après une build réussie : {1}. Voir https://aka.ms/incremental-build-failure</target>
+        <note>{0} is the file name of the project. {1} is a description of the failure. The period '.' after {1} is intentional and should be kept.</note>
       </trans-unit>
-      <trans-unit id="ProjectHotReloadSessionManager_ErrorAttachingToProcess">
-        <source>{0}: Error while attaching to process '{1}':
-{2}
-{3}</source>
-        <target state="new">{0}: Error while attaching to process '{1}':
-{2}
-{3}</target>
-        <note>{0} is the Hot Reload session identifier. {1} is the process ID (PID). {2} is the exception type name. {3} is the exception message.</note>
+      <trans-unit id="ProjectHotReloadSessionManager_AttachingToProcess">
+        <source>Attaching to process.</source>
+        <target state="translated">Attachement au processus</target>
+        <note />
       </trans-unit>
       <trans-unit id="ProjectHotReloadSessionManager_ErrorStoppingTheSession">
-        <source>{0}: Error while stopping the session:
-{1}
-{2}</source>
-        <target state="new">{0}: Error while stopping the session:
-{1}
-{2}</target>
-        <note>{0} is the Hot Reload session identifier. {1} is the exception type name. {2} is the exception message.</note>
+        <source>Error while stopping the session: {0}
+{1}</source>
+        <target state="translated">Erreur lors de l’arrêt de la session : {0}
+{1}</target>
+        <note>{0} is the exception type name. {1} is the exception message.</note>
       </trans-unit>
       <trans-unit id="ProjectHotReloadSessionManager_NoActiveProcess">
-        <source>{0}: Unable to start Hot Reload session: no active process.</source>
-        <target state="new">{0}: Unable to start Hot Reload session: no active process.</target>
-        <note>{0} is the Hot Reload session identifier.</note>
+        <source>Unable to start Hot Reload session: no active process.</source>
+        <target state="translated">Impossible de démarrer la session de rechargement à chaud : aucun processus actif.</target>
+        <note />
       </trans-unit>
       <trans-unit id="ProjectHotReloadSessionManager_ProcessAlreadyExited">
-        <source>{0}: The process has already exited.</source>
-        <target state="new">{0}: The process has already exited.</target>
-        <note>{0} is the Hot Reload session identifier.</note>
+        <source>The process has already exited.</source>
+        <target state="translated">Le processus est déjà terminé.</target>
+        <note />
       </trans-unit>
       <trans-unit id="ProjectHotReloadSessionManager_ProcessExited">
-        <source>{0}: The process has exited.</source>
-        <target state="new">{0}: The process has exited.</target>
-        <note>{0} is the Hot Reload session identifier.</note>
+        <source>The process has exited.</source>
+        <target state="translated">Le processus s'est arrêté.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ProjectHotReloadSessionManager_StartupHooksDisabled">
+        <source>Hot Reload is not available because startup hooks have been disabled, possibly due to trimming.</source>
+        <target state="translated">Le rechargement à chaud n’est pas disponible, car les hooks de démarrage ont été désactivés, probablement en raison d’un rognage.</target>
+        <note />
       </trans-unit>
       <trans-unit id="RenameSymbolFailed">
         <source>Renaming the code element '{0}' failed.</source>
@@ -153,11 +165,6 @@
       <trans-unit id="ActiveLaunchProfileNotFound">
         <source>There aren't any active launch profiles configured for this project.</source>
         <target state="translated">Aucun profil de lancement actif n'est configuré pour ce projet.</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="DontKnowHowToRunProfile">
-        <source>The project doesn't know how to run the profile {0}.</source>
-        <target state="translated">Le projet ne sait pas comment exécuter le profil {0}.</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrorInProfilesFile">
@@ -194,24 +201,24 @@ Pour déboguer ce projet, ajoutez à cette solution un projet exécutable qui fa
         <target state="translated">(Non défini)</target>
         <note>Text to display to the user in the property page UI when the "startup object" property is not set.</note>
       </trans-unit>
+      <trans-unit id="UpdateNamespacePromptMessage">
+        <source>Adjust namespaces for moved files?</source>
+        <target state="translated">Ajuster les espaces de noms pour les fichiers déplacés ?</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="WPFApp_Xaml_CouldntFindRootElement_1">
+        <source>Could not find the expected root element "{0}" in the application definition file.</source>
+        <target state="translated">Impossible de trouver l'élément racine attendu "{0}" dans le fichier de définition d'application.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="WPFApp_Xaml_UnexpectedFormat_2">
+        <source>The .xaml file was in an unexpected format, near line {0} column {1}.</source>
+        <target state="translated">Le fichier .xaml était dans un format inattendu, vers la ligne {0} colonne {1}.</target>
+        <note>{0} is the line number of the problematic XAML, and {1} is the column.</note>
+      </trans-unit>
       <trans-unit id="WorkingDirecotryInvalid">
         <source>The working directory '{0}' specified in the '{1}' debug profile does not exist.</source>
         <target state="translated">Le répertoire de travail '{0}' spécifié dans le profil de débogage '{1}' n'existe pas.</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="NoMigratedCSProjFound">
-        <source>Expected to find migrated cpsroj in {0}, but did not find any.</source>
-        <target state="translated">Fichier cpsroj migré attendu dans {0}, mais celui-ci est introuvable.</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="EditProjectFileCommand">
-        <source>Edit {0}</source>
-        <target state="translated">Modifier {0}</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="NoRunCommandSpecifiedInProject">
-        <source>Unable to run your project. The "RunCommand" property is not defined.</source>
-        <target state="translated">Impossible d'exécuter votre projet. La propriété "RunCommand" n'est pas définie.</target>
         <note />
       </trans-unit>
       <trans-unit id="MultiTFEditNotSupported">
@@ -234,49 +241,9 @@ Pour déboguer ce projet, ajoutez à cette solution un projet exécutable qui fa
         <target state="translated">Framework ({0})</target>
         <note />
       </trans-unit>
-      <trans-unit id="OutputWindowPaneTitle">
-        <source>Project</source>
-        <target state="translated">Projet</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="PartialSupportedDotNetCoreProject">
-        <source>A newer version of Visual Studio is recommended for projects targeting .NET Core {0}.{1}.</source>
-        <target state="translated">Une version plus récente de Visual Studio est recommandée pour les projets qui ciblent .NET Core {0}.{1}.</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="NotSupportedDotNetCoreProject">
-        <source>Projects targeting .NET Core {0}.{1} or newer are not supported by this version of Visual Studio.</source>
-        <target state="translated">Les projets qui ciblent .NET Core {0}.{1} ou version supérieure ne sont pas pris en charge par cette version de Visual Studio.</target>
-        <note />
-      </trans-unit>
       <trans-unit id="DontShowAgain">
         <source>Don't show again</source>
         <target state="translated">Ne plus afficher</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="LearnMore">
-        <source>Learn more</source>
-        <target state="translated">En savoir plus</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="OKButtonText">
-        <source>OK</source>
-        <target state="translated">OK</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="Restore_PropertyWithInconsistentValues">
-        <source>The value of the '{0}' property is inconsistent between target frameworks. This property must be identical for NuGet restore to function correctly. The value '{1}' from the '{2}' configuration will be used, other target frameworks may fail to pick NuGet assets.</source>
-        <target state="translated">La valeur de la propriété « {0} » n'est pas cohérente entre frameworks cibles. Cette propriété doit être identique pour que la restauration NuGet fonctionne correctement. La valeur « {1} » de la configuration « {2} » sera utilisée, mais d'autres frameworks cibles risquent de ne pas pouvoir sélectionner de ressources NuGet.</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="Restore_DuplicateToolReferenceItems">
-        <source>The metadata on 'DotNetCliToolReference' item '{0}' is inconsistent between target frameworks. Only the first one will be restored.</source>
-        <target state="translated">Les métadonnées sur l'élément DotNetCliToolReference « {0} » ne sont pas cohérentes entre frameworks cibles. Seule la première instance sera restaurée.</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="Restore_EmptyTargetFrameworkMoniker">
-        <source>The value of the 'TargetFrameworkMoniker' and 'NuGetTargetMoniker' properties in the '{0}' configuration are both empty. This configuration will not contribute to NuGet restore, which may result in restore and build errors.</source>
-        <target state="translated">Les valeurs des propriétés 'TargetFrameworkMoniker' et 'NuGetTargetMoniker' dans la configuration '{0}' sont vides. Cette configuration ne contribue pas à la restauration NuGet, ce qui peut entraîner des erreurs de restauration et des erreurs de build.</target>
         <note />
       </trans-unit>
       <trans-unit id="XprojNotSupported">

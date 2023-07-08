@@ -436,7 +436,7 @@ Namespace Microsoft.VisualStudio.Editors.AppDesDesignerFramework
             ''' A toplevel control is needed to handle SystemEvents. When the control is hosted in a native window, there will be no parent WinForm control.
             ''' Form could handle this correctly. However, for some reason, we couldn't use it here. We have to create a customized class to make a non-form topLevel control.
             ''' </summary>
-            Private Class TopLevelControl
+            Private NotInheritable Class TopLevelControl
                 Inherits Control
 
                 ''' <summary>

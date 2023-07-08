@@ -1,7 +1,5 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
-using System.Threading.Tasks;
-
 namespace Microsoft.VisualStudio.ProjectSystem.SpecialFileProviders
 {
     /// <summary>
@@ -9,7 +7,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.SpecialFileProviders
     ///     that find their special file by file name under the AppDesigner folder, falling back
     ///     to the root folder if it doesn't exist.
     /// </summary>
-    internal class AbstractFindByNameUnderAppDesignerSpecialFileProvider : AbstractFindByNameSpecialFileProvider
+    internal abstract class AbstractFindByNameUnderAppDesignerSpecialFileProvider : AbstractFindByNameSpecialFileProvider
     {
         private readonly ISpecialFilesManager _specialFilesManager;
 
@@ -23,10 +21,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.SpecialFileProviders
         {
             // Search AppDesigner folder first if it exists
             IProjectTree? appDesignerFolder = await GetAppDesignerFolderAsync(provider, root);
-            if (appDesignerFolder != null)
+            if (appDesignerFolder is not null)
             {
                 IProjectTree? node = await base.FindFileAsync(provider, appDesignerFolder);
-                if (node != null)
+                if (node is not null)
                     return node;
             }
 
@@ -38,7 +36,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.SpecialFileProviders
         {
             // AppDesigner folder first if it exists
             string? appDesignerPath = await GetAppDesignerFolderPathAsync();
-            if (appDesignerPath != null)
+            if (appDesignerPath is not null)
             {
                 return GetDefaultFile(appDesignerPath);
             }
@@ -50,7 +48,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.SpecialFileProviders
         private async Task<IProjectTree?> GetAppDesignerFolderAsync(IProjectTreeProvider provider, IProjectTree root)
         {
             string? appDesignerPath = await GetAppDesignerFolderPathAsync();
-            if (appDesignerPath == null)
+            if (appDesignerPath is null)
                 return null;
 
             return provider.FindByPath(root, appDesignerPath);

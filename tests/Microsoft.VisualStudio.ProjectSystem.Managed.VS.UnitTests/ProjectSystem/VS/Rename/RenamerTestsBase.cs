@@ -1,9 +1,6 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
 //using System;
-using System;
-using System.ComponentModel.Composition;
-using System.Threading.Tasks;
 using EnvDTE;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Text;
@@ -13,7 +10,6 @@ using Microsoft.VisualStudio.ProjectSystem.Refactor;
 using Microsoft.VisualStudio.ProjectSystem.Waiting;
 using Microsoft.VisualStudio.Settings;
 using Microsoft.VisualStudio.Shell.Interop;
-using Moq;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
 {
@@ -54,22 +50,23 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
             public TestRenamerProjectTreeActionHandler(
                 UnconfiguredProject unconfiguredProject,
                 IUnconfiguredProjectVsServices projectVsServices,
-                [Import(typeof(VisualStudioWorkspace))] Workspace workspace,
+                [Import(typeof(VisualStudioWorkspace))]Lazy<Workspace> workspace,
                 IEnvironmentOptions environmentOptions,
                 IUserNotificationServices userNotificationServices,
                 IRoslynServices roslynServices,
                 IWaitIndicator waitService,
                 IVsOnlineServices vsOnlineServices,
+                [Import(ExportContractNames.Scopes.UnconfiguredProject)] IProjectAsynchronousTasksService projectAsynchronousTasksService,
                 IProjectThreadingService threadingService,
                 IVsUIService<IVsExtensibility, IVsExtensibility3> extensibility,
                 IVsService<SVsOperationProgress, IVsOperationProgressStatusService> operationProgressService,
-                IVsService<SVsSettingsPersistenceManager, ISettingsManager> settingsManagerService) :
-                base(unconfiguredProject, projectVsServices, workspace, environmentOptions, userNotificationServices, roslynServices, waitService,
-                    vsOnlineServices, threadingService, extensibility, operationProgressService, settingsManagerService)
+                IVsService<SVsSettingsPersistenceManager, ISettingsManager> settingsManagerService)
+                : base(unconfiguredProject, projectVsServices, workspace, environmentOptions, userNotificationServices, roslynServices, waitService,
+                       vsOnlineServices, projectAsynchronousTasksService, threadingService, extensibility, operationProgressService, settingsManagerService)
             {
             }
 
-            protected override async Task CPSRenameAsync(IProjectTreeActionHandlerContext context, IProjectTree node, string value)
+            protected override async Task CpsFileRenameAsync(IProjectTreeActionHandlerContext context, IProjectTree node, string value)
             {
                 await Task.CompletedTask;
             }
@@ -97,6 +94,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
 
             var environmentOptionsFactory = IEnvironmentOptionsFactory.Implement((string category, string page, string property, bool defaultValue) => { return true; });
             var waitIndicator = (new Mock<IWaitIndicator>()).Object;
+            var projectAsynchronousTasksService = IProjectAsynchronousTasksServiceFactory.Create();
             var projectThreadingService = IProjectThreadingServiceFactory.Create();
             var refactorNotifyService = (new Mock<IRefactorNotifyService>()).Object;
             var extensibility = new Mock<IVsUIService<IVsExtensibility, IVsExtensibility3>>().Object;
@@ -110,12 +108,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
 
             var renamer = new TestRenamerProjectTreeActionHandler(unconfiguredProject,
                                                               projectServices,
-                                                              ws,
+                                                              new Lazy<Workspace>(() => ws),
                                                               environmentOptionsFactory,
                                                               userNotificationServices,
                                                               roslynServices,
                                                               waitIndicator,
                                                               vsOnlineServices,
+                                                              projectAsynchronousTasksService,
                                                               projectThreadingService,
                                                               extensibility,
                                                               operationProgressMock,

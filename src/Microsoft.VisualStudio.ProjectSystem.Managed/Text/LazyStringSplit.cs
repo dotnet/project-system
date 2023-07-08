@@ -1,8 +1,6 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
-using System;
 using System.Collections;
-using System.Collections.Generic;
 
 namespace Microsoft.VisualStudio.Text
 {
@@ -25,7 +23,7 @@ namespace Microsoft.VisualStudio.Text
 
         public LazyStringSplit(string input, char delimiter)
         {
-            Requires.NotNull(input, nameof(input));
+            Requires.NotNull(input);
 
             _input = input;
             _delimiter = delimiter;
@@ -119,7 +117,7 @@ namespace Microsoft.VisualStudio.Text
         ///     This extension method has special knowledge of the <see cref="LazyStringSplit"/> type and
         ///     can compute its result without allocation.
         /// </remarks>
-        /// <inheritdoc cref="System.Linq.Enumerable.FirstOrDefault{TSource}(IEnumerable{TSource})"/>
+        /// <inheritdoc cref="Enumerable.FirstOrDefault{TSource}(IEnumerable{TSource})"/>
         public static string? FirstOrDefault(this LazyStringSplit lazyStringSplit)
         {
             LazyStringSplit.Enumerator enumerator = lazyStringSplit.GetEnumerator();

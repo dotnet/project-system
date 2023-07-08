@@ -1,6 +1,5 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
-using System;
 using Microsoft.VisualStudio.ProjectSystem.VS;
 
 namespace Microsoft.VisualStudio.Shell.Interop
@@ -21,8 +20,8 @@ namespace Microsoft.VisualStudio.Shell.Interop
         /// </exception>
         public static void ActivatePane(this IVsOutputWindow outputWindow, Guid paneGuid)
         {
-            Requires.NotNull(outputWindow, nameof(outputWindow));
-            Requires.NotEmpty(paneGuid, nameof(paneGuid));
+            Requires.NotNull(outputWindow);
+            Requires.NotEmpty(paneGuid);
 
             HResult hr = outputWindow.GetPane(ref paneGuid, out IVsOutputWindowPane pane);
             if (hr.IsOK) // Pane found
@@ -40,7 +39,7 @@ namespace Microsoft.VisualStudio.Shell.Interop
         /// </exception>
         public static Guid GetActivePane(this IVsOutputWindow outputWindow)
         {
-            Requires.NotNull(outputWindow, nameof(outputWindow));
+            Requires.NotNull(outputWindow);
 
             if (outputWindow is IVsOutputWindow2 outputWindow2)
             {

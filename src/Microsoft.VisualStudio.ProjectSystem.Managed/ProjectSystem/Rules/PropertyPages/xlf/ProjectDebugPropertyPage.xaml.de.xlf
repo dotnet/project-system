@@ -44,12 +44,12 @@
       </trans-unit>
       <trans-unit id="BoolProperty|WebView2Debugging|Description">
         <source>Enable JavaScript debugger for Microsoft Edge (Chromium) based WebView2. Requires the JavaScript Diagnostics component.</source>
-        <target state="new">Enable JavaScript debugger for Microsoft Edge (Chromium) based WebView2. Requires the JavaScript Diagnostics component.</target>
+        <target state="translated">Aktivieren Sie den JavaScript-Debugger für Microsoft Edge (Chrom)-basierte WebView2. Erfordert die JavaScript-Diagnose Komponente.</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|WebView2Debugging|DisplayName">
         <source>Enable WebView2 debugging</source>
-        <target state="new">Enable WebView2 debugging</target>
+        <target state="translated">WebView2-Debugging aktivieren</target>
         <note />
       </trans-unit>
       <trans-unit id="DynamicEnumProperty|AuthenticationMode|Description">
@@ -72,9 +72,19 @@
         <target state="translated">Projekt</target>
         <note />
       </trans-unit>
+      <trans-unit id="StringProperty|CommandLineArgumentsOverriddenWarning|Description">
+        <source>⚠️ WARNING! This project defines the StartArguments MSBuild property, which overrides any command line arguments specified here. If you wish to define arguments here, you must remove that property from your MSBuild project. Note that it may be defined in a .user file.</source>
+        <target state="translated">⚠️ WARNUNG! Dieses Projekt definiert die MSBuild-Eigenschaft StartArguments, die alle hier angegebenen Befehlszeilenargumente überschreibt. Wenn Sie hier Argumente definieren möchten, müssen Sie diese Eigenschaft aus Ihrem MSBuild-Projekt entfernen. Beachten Sie, dass sie möglicherweise in einer USER-Datei definiert ist.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|CommandLineArgumentsOverriddenWarning|DisplayName">
+        <source>Ignored</source>
+        <target state="translated">Ignoriert</target>
+        <note />
+      </trans-unit>
       <trans-unit id="StringProperty|CommandLineArguments|Description">
-        <source>Command line arguments to pass to the executable.</source>
-        <target state="translated">Befehlszeilenargumente, die an die ausführbare Datei übergeben werden sollen.</target>
+        <source>Command line arguments to pass to the executable. You may break arguments into multiple lines.</source>
+        <target state="translated">Befehlszeilenargumente, die an die ausführbare Datei übergeben werden sollen. Argumente können in mehrere Zeilen aufgeteilt werden.</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|CommandLineArguments|DisplayName">
@@ -83,8 +93,8 @@
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|EnvironmentVariables|Description">
-        <source>The environment variables to set prior to running the process. Variables are separated by a comma (,) and variables names and values are separated with an equal sign (=). Example: var1=value1,var2=value2,var3=value3. Commas and equal signs appearing within a variable can be escaped using a forward slash (/).</source>
-        <target state="translated">Die Umgebungsvariablen, die vor dem Ausführen des Prozesses festgelegt werden sollen. Variablen werden durch ein Komma (,) getrennt, und Variablennamen und Werte werden durch ein Gleichheitszeichen (=) getrennt. Beispiel: var1=wert1,var2=wert2,var3=wert3. Kommas und Gleichheitszeichen innerhalb einer Variablen können mit einem Schrägstrich (/) als Escapezeichen versehen werden.</target>
+        <source>The environment variables to set prior to running the process.</source>
+        <target state="translated">Die Umgebungsvariablen, die vor dem Ausführen des Prozesses festgelegt werden sollen.</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|EnvironmentVariables|DisplayName">

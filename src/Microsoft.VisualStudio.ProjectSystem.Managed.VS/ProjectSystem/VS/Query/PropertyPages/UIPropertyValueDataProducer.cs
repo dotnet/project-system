@@ -1,29 +1,23 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
-using System.Collections.Generic;
-using System.Collections.Immutable;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.Build.Framework.XamlTypes;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
 using Microsoft.VisualStudio.ProjectSystem.Query;
-using Microsoft.VisualStudio.ProjectSystem.Query.Frameworks;
-using Microsoft.VisualStudio.ProjectSystem.Query.ProjectModel;
-using Microsoft.VisualStudio.ProjectSystem.Query.ProjectModel.Implementation;
-using Microsoft.VisualStudio.ProjectSystem.Query.QueryExecution;
+using Microsoft.VisualStudio.ProjectSystem.Query.Execution;
+using Microsoft.VisualStudio.ProjectSystem.Query.Framework;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
 {
     /// <summary>
-    /// Handles the creation of <see cref="IUIPropertyValue"/> instances and populating the requested members.
+    /// Handles the creation of <see cref="IUIPropertyValueSnapshot"/> instances and populating the requested members.
     /// </summary>
     internal static class UIPropertyValueDataProducer
     {
-        public static async Task<IEntityValue> CreateUIPropertyValueValueAsync(IEntityValue parent, ProjectConfiguration configuration, ProjectSystem.Properties.IProperty property, IUIPropertyValuePropertiesAvailableStatus requestedProperties)
+        public static async Task<IEntityValue> CreateUIPropertyValueValueAsync(IEntityValue parent, ProjectConfiguration configuration, IProperty property, IUIPropertyValuePropertiesAvailableStatus requestedProperties)
         {
-            Requires.NotNull(parent, nameof(parent));
-            Requires.NotNull(configuration, nameof(configuration));
-            Requires.NotNull(property, nameof(property));
+            Requires.NotNull(parent);
+            Requires.NotNull(configuration);
+            Requires.NotNull(property);
 
             var identity = new EntityIdentity(
                 ((IEntityWithId)parent).Id,
@@ -32,11 +26,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
             return await CreateUIPropertyValueValueAsync(parent.EntityRuntime, identity, configuration, property, requestedProperties);
         }
 
-        public static async Task<IEntityValue> CreateUIPropertyValueValueAsync(IEntityRuntimeModel runtimeModel, EntityIdentity id, ProjectConfiguration configuration, ProjectSystem.Properties.IProperty property, IUIPropertyValuePropertiesAvailableStatus requestedProperties)
+        public static async Task<IEntityValue> CreateUIPropertyValueValueAsync(IEntityRuntimeModel runtimeModel, EntityIdentity id, ProjectConfiguration configuration, IProperty property, IUIPropertyValuePropertiesAvailableStatus requestedProperties)
         {
-            Requires.NotNull(property, nameof(property));
+            Requires.NotNull(property);
 
-            var newUIPropertyValue = new UIPropertyValueValue(runtimeModel, id, new UIPropertyValuePropertiesAvailableStatus());
+            var newUIPropertyValue = new UIPropertyValueSnapshot(runtimeModel, id, new UIPropertyValuePropertiesAvailableStatus());
 
             if (requestedProperties.UnevaluatedValue)
             {
@@ -61,6 +55,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
                     IStringListProperty stringListProperty => await stringListProperty.GetValueAsStringCollectionAsync(),
                     _ => await property.GetValueAsync()
                 };
+            }
+
+            if (requestedProperties.ValueDefinedInContext)
+            {
+                newUIPropertyValue.ValueDefinedInContext = await property.IsDefinedInContextAsync();
             }
 
             ((IEntityValueFromProvider)newUIPropertyValue).ProviderState = new PropertyValueProviderState(configuration, property);
@@ -112,7 +111,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
                 }
 
                 if (await cache.BindToRuleAsync(configuration, schema.Name, propertiesContext) is IRule rule
-                    && rule.GetProperty(propertyName) is ProjectSystem.Properties.IProperty property)
+                    && rule.GetProperty(propertyName) is IProperty property)
                 {
                     IEntityValue propertyValue = await CreateUIPropertyValueValueAsync(parent, configuration, property, requestedProperties);
                     builder.Add(propertyValue);

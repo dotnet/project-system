@@ -1,10 +1,6 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
-using System;
-using System.Collections.Generic;
-using System.Collections.Immutable;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
-using Xunit;
 
 namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 {
@@ -34,9 +30,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 [Compile.SchemaName] = SimpleItems("ItemPath1", "ItemPath2")
             };
 
-            var state = UpToDateCheckImplicitConfiguredInput.Empty;
+            var state = UpToDateCheckImplicitConfiguredInput.CreateEmpty(ProjectConfigurationFactory.Create("testConfiguration"));
 
-            Assert.Equal(DateTime.MinValue, state.LastItemsChangedAtUtc);
+            Assert.Null(state.LastItemsChangedAtUtc);
 
             // Initial change does NOT set LastItemsChangedAtUtc
             state = UpdateState(
@@ -44,12 +40,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 projectSnapshot,
                 sourceSnapshot1);
 
-            Assert.Equal(DateTime.MinValue, state.LastItemsChangedAtUtc);
+            Assert.Null(state.LastItemsChangedAtUtc);
 
             // Broadcasting an update with no change to items does NOT set LastItemsChangedAtUtc
             state = UpdateState(state);
 
-            Assert.Equal(DateTime.MinValue, state.LastItemsChangedAtUtc);
+            Assert.Null(state.LastItemsChangedAtUtc);
 
             // Broadcasting changed items DOES set LastItemsChangedAtUtc
             state = UpdateState(
@@ -57,33 +53,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 projectSnapshot,
                 sourceSnapshot2);
 
-            Assert.NotEqual(DateTime.MinValue, state.LastItemsChangedAtUtc);
-        }
-
-        [Fact]
-        public void Update_InitialItemDataDoesNotUpdateLastAdditionalDependentFileTimesChangedAtUtc()
-        {
-            var dependentTime = DateTime.UtcNow.AddMinutes(-1);
-            var dependentPath = @"C:\Dev\Solution\Project\Dependent";
-            var dependentTimeFiles = ImmutableDictionary.Create<string, DateTime>(StringComparers.Paths).Add(dependentPath, dependentTime);
-
-            var state = UpToDateCheckImplicitConfiguredInput.Empty;
-            Assert.Equal(DateTime.MinValue, state.LastAdditionalDependentFileTimesChangedAtUtc);
-
-            // Initial change does NOT set LastAdditionalDependentFileTimesChangedAtUtc
-            state = UpdateState(state, dependentFileTimes: dependentTimeFiles);
-
-            Assert.Equal(DateTime.MinValue, state.LastAdditionalDependentFileTimesChangedAtUtc);
-
-            // Broadcasting an update with same Additional Dependent Files does NOT set LastAdditionalDependentFileTimesChangedAtUtc
-            state = UpdateState(state, dependentFileTimes: dependentTimeFiles);
-
-            Assert.Equal(DateTime.MinValue, state.LastAdditionalDependentFileTimesChangedAtUtc);
-
-            // Broadcasting removing Additional Dependent Files DOES set LastAdditionalDependentFileTimesChangedAtUtc
-            state = UpdateState(state, dependentFileTimes: ImmutableDictionary.Create<string, DateTime>(StringComparers.Paths));
-
-            Assert.InRange((DateTime.UtcNow - state.LastAdditionalDependentFileTimesChangedAtUtc).TotalSeconds, 0, 10);
+            Assert.NotNull(state.LastItemsChangedAtUtc);
         }
     }
 }

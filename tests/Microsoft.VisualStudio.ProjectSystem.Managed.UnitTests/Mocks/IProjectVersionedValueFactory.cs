@@ -1,9 +1,5 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
-using System;
-using System.Collections.Immutable;
-using Moq;
-
 namespace Microsoft.VisualStudio.ProjectSystem
 {
     internal static class IProjectVersionedValueFactory
@@ -21,7 +17,20 @@ namespace Microsoft.VisualStudio.ProjectSystem
                 .Returns(value);
 
             mock.SetupGet(p => p.DataSourceVersions)
-                .Returns(ImmutableDictionary<NamedIdentity, IComparable>.Empty);
+                .Returns(Empty.ProjectValueVersions);
+
+            return mock.Object;
+        }
+
+        internal static IProjectVersionedValue<T> Create<T>(T value, IImmutableDictionary<NamedIdentity, IComparable> dataSourceVersions)
+        {
+            var mock = new Mock<IProjectVersionedValue<T>>();
+
+            mock.SetupGet(p => p.Value)
+                .Returns(value);
+
+            mock.SetupGet(p => p.DataSourceVersions)
+                .Returns(dataSourceVersions);
 
             return mock.Object;
         }
@@ -33,7 +42,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
             mock.SetupGet(p => p.Value)
                 .Returns(value);
 
-            var dataSourceVersions = ImmutableDictionary<NamedIdentity, IComparable>.Empty.Add(identity, version);
+            var dataSourceVersions = Empty.ProjectValueVersions.Add(identity, version);
 
             mock.SetupGet(p => p.DataSourceVersions)
                 .Returns(dataSourceVersions);

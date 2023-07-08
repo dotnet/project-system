@@ -12,6 +12,9 @@
                 SourceOfDefaultValue="AfterContext" />
   </Rule.DataSource>
 
+  <BoolProperty Name="AccelerateBuildsInVisualStudio"
+                Visible="False" />
+
   <StringProperty Name="AddItemTemplatesGuid"
                   Visible="False" />
 
@@ -79,14 +82,7 @@
   </EnumProperty>
 
   <BoolProperty Name="DisableFastUpToDateCheck"
-                Visible="False">
-    <BoolProperty.DataSource>
-      <DataSource HasConfigurationCondition="False"
-                  PersistedName="DisableFastUpToDateCheck"
-                  Persistence="ProjectFile"
-                  SourceOfDefaultValue="AfterContext" />
-    </BoolProperty.DataSource>
-  </BoolProperty>
+                Visible="False" />
 
   <StringProperty Name="DocumentationFile"
                   Visible="False" />
@@ -168,6 +164,9 @@
   <StringProperty Name="Platform"
                   Visible="False" />
 
+  <StringProperty Name="ProduceReferenceAssembly"
+                  Visible="False" />
+
   <StringProperty Name="ProjectAssetsFile"
                   ReadOnly="true"
                   Visible="False" />
@@ -226,6 +225,9 @@
                   SourceOfDefaultValue="AfterContext" />
     </BoolProperty.DataSource>
   </BoolProperty>
+
+  <StringProperty Name="StartupObject"
+                  Visible="False" />
 
   <StringProperty Name="SupportedMyApplicationTypes"
                   ReadOnly="True"
@@ -332,6 +334,15 @@
                   ReadOnly="True"
                   Visible="False" />
 
+  <BoolProperty Name="UseWindowsForms"
+                Visible="False" />
+  
+  <BoolProperty Name="UseWinUI"
+                Visible="False" />
+
+  <BoolProperty Name="UseWPF"
+                Visible="False" />
+
   <StringProperty Name="VCInstallDir"
                   Visible="False" />
 
@@ -347,4 +358,12 @@
   <StringProperty Name="WinRTReferenceTabs"
                   Visible="False" />
 
+  <StringProperty Name="StartupHookSupport"
+                  Visible="False" >
+    <StringProperty.DataSource>
+      <DataSource HasConfigurationCondition="False"
+                  Persistence="ProjectFile"
+                  SourceOfDefaultValue="AfterContext" />
+    </StringProperty.DataSource>
+  </StringProperty>
 </Rule>

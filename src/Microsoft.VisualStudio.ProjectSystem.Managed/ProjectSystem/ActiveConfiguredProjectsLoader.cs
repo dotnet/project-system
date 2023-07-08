@@ -1,8 +1,5 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
-using System;
-using System.ComponentModel.Composition;
-using System.Threading.Tasks;
 using System.Threading.Tasks.Dataflow;
 
 namespace Microsoft.VisualStudio.ProjectSystem
@@ -11,6 +8,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
     ///     Force loads the active <see cref="ConfiguredProject"/> objects so that any configured project-level
     ///     services, such as evaluation and build services, are started.
     /// </summary>
+
     internal class ActiveConfiguredProjectsLoader : OnceInitializedOnceDisposed
     {
         private readonly UnconfiguredProject _project;
@@ -21,7 +19,6 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
         [ImportingConstructor]
         public ActiveConfiguredProjectsLoader(UnconfiguredProject project, IActiveConfigurationGroupService activeConfigurationGroupService, IUnconfiguredProjectTasksService tasksService)
-            : base(synchronousDisposal: false)
         {
             _project = project;
             _activeConfigurationGroupService = activeConfigurationGroupService;
@@ -29,7 +26,8 @@ namespace Microsoft.VisualStudio.ProjectSystem
             _targetBlock = DataflowBlockFactory.CreateActionBlock<IProjectVersionedValue<IConfigurationGroup<ProjectConfiguration>>>(OnActiveConfigurationsChangedAsync, project, ProjectFaultSeverity.LimitedFunctionality);
         }
 
-        [ProjectAutoLoad(ProjectLoadCheckpoint.ProjectInitialCapabilitiesEstablished)]
+        [ProjectAutoLoad(startAfter: ProjectLoadCheckpoint.ProjectInitialCapabilitiesEstablished)]
+        // NOTE we use the language service capability here to prevent loading configurations of shared projects.
         [AppliesTo(ProjectCapability.DotNetLanguageService)]
         public Task InitializeAsync()
         {
@@ -37,7 +35,10 @@ namespace Microsoft.VisualStudio.ProjectSystem
             return Task.CompletedTask;
         }
 
-        public ITargetBlock<IProjectVersionedValue<IConfigurationGroup<ProjectConfiguration>>> TargetBlock => _targetBlock;
+        /// <summary>
+        /// Exposed for unit testing only.
+        /// </summary>
+        internal ITargetBlock<IProjectVersionedValue<IConfigurationGroup<ProjectConfiguration>>> TargetBlock => _targetBlock;
 
         protected override void Initialize()
         {

@@ -3,6 +3,7 @@
 <Rule Name="ResolvedCompilationReference"
       PageTemplate="generic"
       xmlns="http://schemas.microsoft.com/build/2009/properties">
+
   <Rule.DataSource>
     <DataSource HasConfigurationCondition="False"
                 ItemType="ReferencePathWithRefAssemblies"
@@ -22,7 +23,7 @@
 
   <StringProperty Name="ResolvedPath"
                   ReadOnly="True"
-                  DisplayName="Resolved Path">
+                  Visible="False">
     <StringProperty.DataSource>
       <DataSource PersistedName="Identity"
                   SourceOfDefaultValue="AfterContext" />

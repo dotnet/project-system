@@ -22,7 +22,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedColl
         public FrameworkReferenceAssemblyItem(string assemblyName, string? path, string? assemblyVersion, string? fileVersion, FrameworkReferenceIdentity framework)
             : base(assemblyName)
         {
-            Requires.NotNull(framework, nameof(framework));
+            Requires.NotNull(framework);
             AssemblyName = assemblyName;
             Path = path;
             AssemblyVersion = assemblyVersion;
@@ -38,7 +38,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedColl
 
         public override object? GetBrowseObject() => new BrowseObject(this);
 
-        private sealed class BrowseObject : BrowseObjectBase
+        private sealed class BrowseObject : LocalizableProperties
         {
             private readonly FrameworkReferenceAssemblyItem _item;
 
@@ -54,7 +54,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedColl
 
             [BrowseObjectDisplayName(nameof(VSResources.FrameworkAssemblyPathDisplayName))]
             [BrowseObjectDescription(nameof(VSResources.FrameworkAssemblyPathDescription))]
-            public string Path => _item.Path != null
+            public string Path => _item.Path is not null
                 ? System.IO.Path.GetFullPath(System.IO.Path.Combine(_item.Framework.Path, _item.Path))
                 : "";
 

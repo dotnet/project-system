@@ -1,9 +1,5 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.Composition;
-using System.Threading.Tasks;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
 using Microsoft.VisualStudio.Shell;
 
@@ -49,7 +45,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
                 _unconfiguredProjectVsServices.ThreadingService.RunAndForget(() =>
                 {
                     _unconfiguredProjectVsServices.VsHierarchy.SetProperty(HierarchyId.Root, (int)VsHierarchyPropID.TargetFrameworkMoniker, unevaluatedPropertyValue);
-                    return System.Threading.Tasks.Task.CompletedTask;
+                    return Task.CompletedTask;
                 }, options: ForkOptions.HideLocks | ForkOptions.StartOnMainThread,
                    unconfiguredProject: _unconfiguredProjectVsServices.Project);
             }

@@ -1,35 +1,12 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
-using System;
-using System.Threading.Tasks;
 using Microsoft.VisualStudio.ProjectSystem.Debug;
 using Microsoft.VisualStudio.Shell.Interop;
-using Xunit;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
 {
     public class StartupProjectRegistrarTests
     {
-        [Fact]
-        public void Dispose_WhenNotInitialized_DoesNotThrow()
-        {
-            var registrar = CreateInstance();
-
-            registrar.Dispose();
-
-            Assert.True(registrar.IsDisposed);
-        }
-
-        [Fact]
-        public async Task Disposed_WhenInitialized_DoesNotThrow()
-        {
-            var registrar = await CreateInitializedInstanceAsync();
-
-            registrar.Dispose();
-
-            Assert.True(registrar.IsDisposed);
-        }
-
         [Fact]
         public async Task DisposeAsync_WhenNotInitialized_DoesNotThrow()
         {
@@ -41,7 +18,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
         }
 
         [Fact]
-        public async Task DisposedAsync_WhenInitialized_DoesNotThrow()
+        public async Task DisposeAsync_WhenInitialized_DoesNotThrow()
         {
             var registrar = await CreateInitializedInstanceAsync();
 
@@ -213,7 +190,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             var instance = new StartupProjectRegistrar(
                 project,
                 IUnconfiguredProjectTasksServiceFactory.Create(),
-                IVsServiceFactory.Create<SVsStartupProjectsListService, IVsStartupProjectsListService?>(vsStartupProjectsListService!),
+                IVsServiceFactory.Create<SVsStartupProjectsListService, IVsStartupProjectsListService>(vsStartupProjectsListService!),
                 threadingService ?? IProjectThreadingServiceFactory.Create(),
                 projectGuidService ?? ISafeProjectGuidServiceFactory.ImplementGetProjectGuidAsync(Guid.NewGuid()),
                 projectSubscriptionService ?? IActiveConfiguredProjectSubscriptionServiceFactory.Create(),

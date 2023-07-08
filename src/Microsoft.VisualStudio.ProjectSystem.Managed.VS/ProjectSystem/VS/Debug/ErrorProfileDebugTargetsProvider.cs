@@ -1,10 +1,5 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.Composition;
-using System.IO;
-using System.Threading.Tasks;
 using Microsoft.VisualStudio.ProjectSystem.Debug;
 using ExportOrder = Microsoft.VisualStudio.ProjectSystem.OrderAttribute;
 
@@ -31,7 +26,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
         /// </summary>
         public bool SupportsProfile(ILaunchProfile profile)
         {
-            return string.Equals(profile.CommandName, LaunchSettingsProvider.ErrorProfileCommandName);
+            return string.Equals(profile.CommandName, LaunchSettingsProvider.ErrorProfileCommandName, StringComparisons.LaunchProfileCommandNames);
         }
 
         /// <summary>
@@ -58,7 +53,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
         /// </summary>
         public Task<IReadOnlyList<IDebugLaunchSettings>> QueryDebugTargetsAsync(DebugLaunchOptions launchOptions, ILaunchProfile activeProfile)
         {
-            if (activeProfile.OtherSettings != null &&
+            if (activeProfile.OtherSettings is not null &&
                 activeProfile.OtherSettings.TryGetValue("ErrorString", out object? objErrorString) &&
                 objErrorString is string errorString)
             {

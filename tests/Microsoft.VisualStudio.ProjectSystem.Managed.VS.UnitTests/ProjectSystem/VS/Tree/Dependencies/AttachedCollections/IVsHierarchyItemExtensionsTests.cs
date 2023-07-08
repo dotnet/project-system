@@ -2,8 +2,6 @@
 
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
-using Moq;
-using Xunit;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections
 {
@@ -36,7 +34,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedColl
 
             var result = item.TryFindTarget(out string? actualConfiguration);
 
-            Assert.Equal(actualConfiguration != null, result);
+            Assert.Equal(actualConfiguration is not null, result);
             Assert.Equal(expectedConfiguration, actualConfiguration);
         }
 

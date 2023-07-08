@@ -1,8 +1,8 @@
 # __Well Known Project Properties, Items and Item Metadata__
 
-There are two types of properties, items and item metadata that are stored in MSBuild project, targets and props files. 
+There are two types of properties, items and item metadata that are stored in MSBuild project, targets and props files.
 
-- [Build  Properties, Items and Item  Metadata](#build-properties-items-and-item-metadata)
+- [Build Properties, Items and Item Metadata](#build-properties-items-and-item-metadata)
 
 - [Design-Time Properties, Items and Item Metadata](#design-time-properties-items-and-item-metadata)
 
@@ -120,7 +120,7 @@ Specifies whether `CoreCompile` should skip compiler execution.
 | _true_                | CoreCompile will not call the Csc.exe or Vbc.exe executables.|
 | _false_ or empty ('') | CoreCompile will call the Csc.exe or Vbc.exe executables.|
 
-This property is helpful when used with the [ProvideCommandLineArgs](#providecommandlineargs_(bool)) property.
+This property is helpful when used with the [ProvideCommandLineArgs](#providecommandlineargs-bool) property.
 
 ##### __Example__
 ``` XML

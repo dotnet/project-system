@@ -1,3 +1,4 @@
+<!-- Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information. -->
 <!--
 
   This file contains Visual Studio and designer-related properties and items for C# projects.
@@ -21,13 +22,13 @@
     <DesignerFunctionVisibility Condition="'$(DesignerFunctionVisibility)' == ''">Private</DesignerFunctionVisibility>
     <DesignerVariableNaming Condition="'$(DesignerVariableNaming)' == ''">Camel</DesignerVariableNaming>
     <DesignerHiddenCodeGeneration Condition="'$(DesignerHiddenCodeGeneration)' == ''">Declarations</DesignerHiddenCodeGeneration>
-  
+
     <!-- Turn off rules and capabilities that are defined in MSBuild so that we can import our own below -->
     <DefineCSharpItemSchemas>false</DefineCSharpItemSchemas>
   </PropertyGroup>
 
   <ItemGroup>
-    <PropertyPageSchema Include="$(ManagedXamlResourcesDirectory)ProjectItemsSchema.CSharp.xaml;"/>
+    <PropertyPageSchema Include="$(ManagedXamlResourcesDirectory)ProjectItemsSchema.CSharp.xaml;" />
 
     <ProjectCapability Include="
                           CSharp;
@@ -38,7 +39,19 @@
   </ItemGroup>
 
   <ItemGroup Condition="'$(DefineCommonManagedItemSchemas)' == 'true'">
-    
+
+    <PropertyPageSchema Include="$(ManagedXamlResourcesDirectory)ApplicationPropertyPage.CSharp.xaml">
+      <Context>Project</Context>
+    </PropertyPageSchema>
+
+    <PropertyPageSchema Include="$(ManagedXamlResourcesDirectory)BuildPropertyPage.CSharp.xaml">
+      <Context>Project</Context>
+    </PropertyPageSchema>
+
+    <PropertyPageSchema Include="$(ManagedXamlResourcesDirectory)ReferencesPage.CSharp.xaml">
+      <Context>Project</Context>
+    </PropertyPageSchema>
+
     <PropertyPageSchema Include="$(ManagedXamlNeutralResourcesDirectory)EditorConfigFiles.xaml">
       <Context>File</Context>
     </PropertyPageSchema>
@@ -46,10 +59,24 @@
     <PropertyPageSchema Include="$(ManagedXamlResourcesDirectory)EditorConfigFiles.BrowseObject.xaml">
       <Context>BrowseObject</Context>
     </PropertyPageSchema>
-    
+
   </ItemGroup>
-  
+
   <!-- Targets -->
+
+  <!--
+    Backwards compatibility workaround for https://devdiv.visualstudio.com/DevDiv/_workitems/edit/1803616/.
+    Razor is dependent on RazorSourceGenerator.razorencconfig during design-time build in order to behave correctly.
+    The SDK conditionally includes this config file, however with the current global properties that are set,
+    the condition is not met and config file will not be included. This workaround ensures the config file is included during design-time build.
+    Tracking item to remove the workaround: https://devdiv.visualstudio.com/DevDiv/_workitems/edit/1806334.
+  -->
+  <Target Name="_FixRazorEditorConfigFiles" AfterTargets="_PrepareRazorSourceGenerators">
+    <ItemGroup>
+      <EditorConfigFiles Remove="$(RazorEncConfigFile)" Condition="'$(DesignTimeBuild)' == 'true'"/>
+      <EditorConfigFiles Include="$(RazorEncConfigFile)" Condition="'$(DesignTimeBuild)' == 'true'"/>
+    </ItemGroup>
+  </Target>
 
   <!-- Returns Csc command-line arguments for the language service -->
   <Target Name="CompileDesignTime"
@@ -58,9 +85,9 @@
           Condition="'$(IsCrossTargetingBuild)' != 'true'">
 
     <ItemGroup>
-      <_CompilerCommandLineArgs Include="@(CscCommandLineArgs)"/>
+      <_CompilerCommandLineArgs Include="@(CscCommandLineArgs)" />
     </ItemGroup>
-      
+
   </Target>
 
 </Project>

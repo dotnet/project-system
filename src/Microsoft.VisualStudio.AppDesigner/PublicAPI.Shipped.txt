@@ -455,6 +455,7 @@ Microsoft.VisualStudio.Editors.PropertyPages.PropertyControlData.New(id As Integ
 Microsoft.VisualStudio.Editors.PropertyPages.PropertyControlData.ObjectsPropertyDescriptorsArray() -> System.ComponentModel.PropertyDescriptorCollection()
 Microsoft.VisualStudio.Editors.PropertyPages.PropertyControlData.PropDesc -> System.ComponentModel.PropertyDescriptor
 Microsoft.VisualStudio.Editors.PropertyPages.PropertyControlData.PropertyName() -> String
+Microsoft.VisualStudio.Editors.PropertyPages.PropertyControlData.PropertyName(value As String) -> Void
 Microsoft.VisualStudio.Editors.PropertyPages.PropertyControlData.PropPage() -> Microsoft.VisualStudio.Editors.PropertyPages.PropPageUserControlBase
 Microsoft.VisualStudio.Editors.PropertyPages.PropertyControlData.SetCallback -> Microsoft.VisualStudio.Editors.PropertyPages.PropertyControlData.SetDelegate
 Microsoft.VisualStudio.Editors.PropertyPages.PropertyControlData.SetControlValue(value As Object) -> Void
@@ -1082,3 +1083,6 @@ VSThemedLinkLabel.New() -> Void
 VSThemedLinkLabel.SetThemedColor(vsUIShell5 As Microsoft.VisualStudio.Shell.Interop.IVsUIShell5, supportsTheming As Boolean) -> Void
 VSThemedLinkLabel.SetThemedColor(vsUIShell5 As Microsoft.VisualStudio.Shell.Interop.IVsUIShell5) -> Void
 Microsoft.VisualStudio.Editors.PropertyPages.HiddenIfMissingPropertyControlData.New(id As Integer, name As String, formControl As System.Windows.Forms.Control, setter As Microsoft.VisualStudio.Editors.PropertyPages.PropertyControlData.SetDelegate, getter As Microsoft.VisualStudio.Editors.PropertyPages.PropertyControlData.GetDelegate, flags As Microsoft.VisualStudio.Editors.PropertyPages.ControlDataFlags, assocControls As System.Windows.Forms.Control()) -> Void
+Overrides VSThemedLinkLabel.ShowFocusCues() -> Boolean
+VSThemedLinkLabel.DisplayFocusCues() -> Boolean
+VSThemedLinkLabel.DisplayFocusCues(value As Boolean) -> Void

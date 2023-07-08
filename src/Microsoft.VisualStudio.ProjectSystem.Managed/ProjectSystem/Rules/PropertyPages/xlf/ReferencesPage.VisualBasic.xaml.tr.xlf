@@ -1,0 +1,42 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
+  <file datatype="xml" source-language="en" target-language="tr" original="../ReferencesPage.VisualBasic.xaml">
+    <body>
+      <trans-unit id="Category|General|Description">
+        <source>References and namespace settings for VB projects.</source>
+        <target state="translated">Visual Basic projeleri için başvurular ve ad alanı ayarları.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="Category|General|DisplayName">
+        <source>General</source>
+        <target state="translated">Genel</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="DynamicEnumProperty|ImportedNamespaces|Description">
+        <source>Manage which namespaces to import in your application.</source>
+        <target state="translated">Uygulamanıza aktarılacak ad alanlarını yönetin.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="DynamicEnumProperty|ImportedNamespaces|DisplayName">
+        <source>Import Namespaces</source>
+        <target state="translated">Ad Alanlarını İçeri Aktar</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="DynamicEnumProperty|ImportedNamespaces|ValueEditors|ValueEditor|Metadata|TypeDescriptorText|Value">
+        <source>Imported Namespaces</source>
+        <target state="translated">İçeri Aktarılan Ad Alanları</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="Rule|References|Description">
+        <source>Specifies the project's references and namespace imports.</source>
+        <target state="translated">Projenin başvurularını ve ad alanı içeri aktarmalarını belirtir.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="Rule|References|DisplayName">
+        <source>References</source>
+        <target state="translated">Başvurular</target>
+        <note />
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

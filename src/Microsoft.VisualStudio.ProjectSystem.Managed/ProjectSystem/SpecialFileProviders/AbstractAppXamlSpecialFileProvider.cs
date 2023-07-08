@@ -1,8 +1,5 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
-using System.Linq;
-using System.Threading.Tasks;
-
 namespace Microsoft.VisualStudio.ProjectSystem.SpecialFileProviders
 {
     /// <summary>
@@ -20,7 +17,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.SpecialFileProviders
         {
             // First look for the actual App.xaml first
             IProjectTree? node = FindAppXamlFile(root);
-            if (node == null)
+            if (node is null)
             {
                 // Otherwise, find a candidate that we might be able to add to the project
                 node = await base.FindFileAsync(provider, root);

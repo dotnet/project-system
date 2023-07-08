@@ -1,7 +1,5 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
-using System;
-using System.ComponentModel.Composition;
 using Microsoft.VisualStudio.ProjectSystem.VS.ConnectionPoint;
 using Microsoft.VisualStudio.ProjectSystem.VS.TempPE;
 using VSLangProj;
@@ -81,7 +79,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
                     // We don't need to thread switch here because if the caller is on the UI thread then everything is fine
                     // and if the caller is on a background thread, switching us to the UI thread doesn't provide any guarantees to it.
                     // It would mean the bridges state can't change, but it only reads the state once, and thats not our responsibility anyway.
-                    return _threadingService.ExecuteSynchronously(() => bridge.GetDesignTimeOutputMonikersAsync());
+                    return _threadingService.ExecuteSynchronously(bridge.GetDesignTimeOutputMonikersAsync);
                 }
 
                 throw new NotImplementedException();

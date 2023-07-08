@@ -1,7 +1,5 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
-using System;
-
 namespace Microsoft.VisualStudio.Shell.Interop
 {
     /// <summary>
@@ -17,15 +15,15 @@ namespace Microsoft.VisualStudio.Shell.Interop
         /// </exception>
         public static void OutputStringNoPump(this IVsOutputWindowPane pane, string pszOutputString)
         {
-            Requires.NotNull(pane, nameof(pane));
+            Requires.NotNull(pane);
 
             if (pane is IVsOutputWindowPaneNoPump noPumpPane)
             {
-                noPumpPane.OutputStringNoPump(pszOutputString);
+                noPumpPane.OutputStringNoPump(pszOutputString + Environment.NewLine);
             }
             else
             {
-                Verify.HResult(pane.OutputStringThreadSafe(pszOutputString));
+                Verify.HResult(pane.OutputStringThreadSafe(pszOutputString + Environment.NewLine));
             }
         }
     }

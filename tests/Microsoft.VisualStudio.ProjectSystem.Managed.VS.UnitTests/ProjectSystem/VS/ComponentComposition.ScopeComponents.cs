@@ -2,21 +2,24 @@
 
 #pragma warning disable IDE0051 // Remove unused private members
 
-using System.Composition;
+using ImportAttribute = System.Composition.ImportAttribute;
+using ExportAttribute = System.Composition.ExportAttribute;
+using SharedAttribute = System.Composition.SharedAttribute;
+using SharingBoundaryAttribute = System.Composition.SharingBoundaryAttribute;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS
 {
     internal partial class ComponentComposition
     {
         // These components solely exist so that the MEF composition for 
-        // these tests can see the "scopes" that used within CPS.
+        // these tests can see the "scopes" used within CPS.
 
         [Export]
         private class GlobalScope
         {
             [Import]
             [SharingBoundary(ExportContractNames.Scopes.ProjectService)]
-            private ExportFactory<IProjectService>? ProjectServiceFactory { get; set; }
+            private System.Composition.ExportFactory<IProjectService>? ProjectServiceFactory { get; set; }
         }
 
         [Export(typeof(IProjectService))]

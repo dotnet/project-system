@@ -686,6 +686,11 @@ La modification de ce paramètre réinitialise les paramètres dans toutes les c
         <target state="translated">Commentaire</target>
         <note>Column names for the string table</note>
       </trans-unit>
+      <trans-unit id="SD_ERR_HelpMessage_SuggestFileOpenWith">
+        <source>If this is not a Settings-Designer file then use 'Open With' to open it in a text editor.</source>
+        <target state="translated">S’il ne s’agit pas d’un fichier Settings-Designer, utilisez « Ouvrir avec » pour l’ouvrir dans un éditeur de texte.</target>
+        <note />
+      </trans-unit>
       <trans-unit id="SingleFileGenerator_FailedToGenerateFile_1Arg">
         <source>Failed to generate file: {0}</source>
         <target state="translated">Échec de génération du fichier : {0}</target>

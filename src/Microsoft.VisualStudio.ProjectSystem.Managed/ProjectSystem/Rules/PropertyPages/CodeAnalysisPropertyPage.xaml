@@ -1,0 +1,89 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!-- Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information. -->
+<Rule Name="CodeAnalysisPropertyPage"
+      Description="Settings"
+      DisplayName="Code Analysis"
+      PageTemplate="generic"
+      Order="500"
+      xmlns="http://schemas.microsoft.com/build/2009/properties">
+
+  <Rule.Categories>
+    <Category Name="AllAnalyzers"
+              DisplayName="All analyzers" />
+
+    <Category Name="NetAnalyzers"
+              DisplayName=".NET analyzers" />
+  </Rule.Categories>
+
+  <Rule.DataSource>
+    <DataSource Persistence="ProjectFile"
+                SourceOfDefaultValue="AfterContext"
+                HasConfigurationCondition="False" />
+  </Rule.DataSource>
+
+  <BoolProperty Name="RunAnalyzersDuringBuild"
+                DisplayName="Run on build"
+                Description="Always run code analysis on build."
+                HelpUrl="https://go.microsoft.com/fwlink/?linkid=2173147"
+                Category="AllAnalyzers" />
+
+  <BoolProperty Name="RunAnalyzersDuringLiveAnalysis"
+                DisplayName="Run on live analysis"
+                Description="Run code analysis live in the editor as you type."
+                HelpUrl="https://go.microsoft.com/fwlink/?linkid=2173147"
+                Category="AllAnalyzers" />
+
+  <BoolProperty Name="EnforceCodeStyleInBuild"
+                DisplayName="Enforce code style on build"
+                Description="Produce diagnostics about code style on build."
+                HelpUrl="https://go.microsoft.com/fwlink/?linkid=2172995"
+                Category="NetAnalyzers" />
+
+  <BoolProperty Name="EnableNETAnalyzers"
+                DisplayName="Enable .NET analyzers"
+                Description="Run .NET analyzers to help with API usage."
+                HelpUrl="https://go.microsoft.com/fwlink/?linkid=2173090"
+                Category="NetAnalyzers" />
+
+  <EnumProperty Name="AnalysisLevel"
+                DisplayName="Analysis level"
+                Description="The set of analyzers that should be run in the project."
+                HelpUrl="https://go.microsoft.com/fwlink/?linkid=2173091"
+                Category="NetAnalyzers">
+    <EnumValue Name="none"
+               DisplayName="None" />
+    <EnumValue Name="latest"
+               DisplayName="Latest" />
+    <EnumValue Name="latest-minimum"
+               DisplayName="Latest Minimum" />
+    <EnumValue Name="latest-recommended"
+               DisplayName="Latest Recommended" />
+    <EnumValue Name="latest-all"
+               DisplayName="Latest All" />
+    <EnumValue Name="preview"
+               DisplayName="Preview" />
+    <EnumValue Name="preview-minimum"
+               DisplayName="Preview Minimum" />
+    <EnumValue Name="preview-recommended"
+               DisplayName="Preview Recommended" />
+    <EnumValue Name="preview-all"
+               DisplayName="Preview All" />
+    <EnumValue Name="5.0"
+               DisplayName="5.0" />
+    <EnumValue Name="5.0-minimum"
+               DisplayName="5.0 Minimum" />
+    <EnumValue Name="5.0-recommended"
+               DisplayName="5.0 Recommended" />
+    <EnumValue Name="5.0-all"
+               DisplayName="5.0 All" />
+    <EnumValue Name="6.0"
+               DisplayName="6.0" />
+    <EnumValue Name="6.0-minimum"
+               DisplayName="6.0 Minimum" />
+    <EnumValue Name="6.0-recommended"
+               DisplayName="6.0 Recommended" />
+    <EnumValue Name="6.0-all"
+               DisplayName="6.0 All" />
+  </EnumProperty>
+
+</Rule>

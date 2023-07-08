@@ -12,6 +12,26 @@
         <target state="translated">빌드 시 NuGet 패키지 생성</target>
         <note />
       </trans-unit>
+      <trans-unit id="BoolProperty|IncludeSymbols|Description">
+        <source>Create an additional symbol package when the project is packed.</source>
+        <target state="translated">프로젝트가 압축되면 추가 기호 패키지를 생성합니다.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="BoolProperty|IncludeSymbols|DisplayName">
+        <source>Produce a symbol package</source>
+        <target state="translated">기호 패키지 생성</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="BoolProperty|PackAsTool|Description">
+        <source>Packs this project as a special package that contains a console application that may be installed via the "dotnet tool" command.</source>
+        <target state="translated">이 프로젝트를 "dotnet tool" 명령을 통해 설치할 수 있는 콘솔 앱이 들어 있는 특별 패키지로 압축합니다.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="BoolProperty|PackAsTool|DisplayName">
+        <source>Pack as a .NET tool</source>
+        <target state="translated">.NET 도구로 압축</target>
+        <note />
+      </trans-unit>
       <trans-unit id="BoolProperty|PackageRequireLicenseAcceptance|Description">
         <source>Prompt the user to accept the license when installing this package.</source>
         <target state="translated">이 패키지를 설치할 때 사용자에게 이 라이선스에 동의하라는 메시지를 표시합니다.</target>
@@ -42,6 +62,16 @@
         <target state="translated">라이선스</target>
         <note />
       </trans-unit>
+      <trans-unit id="Category|Symbols|Description">
+        <source>Specifies how symbols are added to the package.</source>
+        <target state="translated">패키지에 기호를 추가하는 방법을 지정합니다.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="Category|Symbols|DisplayName">
+        <source>Symbols</source>
+        <target state="translated">기호</target>
+        <note />
+      </trans-unit>
       <trans-unit id="DynamicEnumProperty|NeutralLanguage|DisplayName">
         <source>Assembly neutral language</source>
         <target state="translated">어셈블리 중립 언어</target>
@@ -57,6 +87,16 @@
         <target state="translated">패키지 라이선스</target>
         <note />
       </trans-unit>
+      <trans-unit id="EnumProperty|SymbolPackageFormat|Description">
+        <source>Specifies the format of the symbols package.</source>
+        <target state="translated">기호 패키지의 형식을 지정합니다.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumProperty|SymbolPackageFormat|DisplayName">
+        <source>Symbol package format</source>
+        <target state="translated">기호 패키지 형식</target>
+        <note />
+      </trans-unit>
       <trans-unit id="EnumValue|PackageLicenseKind.Expression|DisplayName">
         <source>SPDX License Expression</source>
         <target state="translated">SPDX 라이선스 식</target>
@@ -70,6 +110,16 @@
       <trans-unit id="EnumValue|PackageLicenseKind.None|DisplayName">
         <source>None</source>
         <target state="translated">없음</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|SymbolPackageFormat.snupkg|DisplayName">
+        <source>snupkg</source>
+        <target state="translated">snupkg</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|SymbolPackageFormat.symbols.nupkg|DisplayName">
+        <source>symbols.nupkg (legacy)</source>
+        <target state="translated">symbols.nupkg (레거시)</target>
         <note />
       </trans-unit>
       <trans-unit id="Rule|Package|Description">
@@ -129,12 +179,12 @@
       </trans-unit>
       <trans-unit id="StringProperty|PackageIcon|Description">
         <source>The icon image for the package. Image file size is limited to 1 MB. Supported file formats include JPEG and PNG. An image resolution of 128x128 is recommended.</source>
-        <target state="new">The icon image for the package. Image file size is limited to 1 MB. Supported file formats include JPEG and PNG. An image resolution of 128x128 is recommended.</target>
+        <target state="translated">패키지의 아이콘 이미지입니다. 이미지 파일 크기는 1MB로 제한됩니다. 지원되는 파일 형식에는 JPEG 및 PNG가 포함됩니다. 128x128의 이미지 해상도를 권장합니다.</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|PackageIcon|DisplayName">
         <source>Icon</source>
-        <target state="new">Icon</target>
+        <target state="translated">아이콘</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|PackageId|Description">
@@ -162,6 +212,16 @@
         <target state="translated">라이선스 파일</target>
         <note />
       </trans-unit>
+      <trans-unit id="StringProperty|PackageOutputPath|Description">
+        <source>Determines the output path in which the package will be dropped.</source>
+        <target state="translated">패키지를 삭제할 출력 경로를 결정합니다.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|PackageOutputPath|DisplayName">
+        <source>Package Output Path</source>
+        <target state="translated">패키지 출력 경로</target>
+        <note />
+      </trans-unit>
       <trans-unit id="StringProperty|PackageProjectUrl|Description">
         <source>A URL for the package's home page, often shown in UI displays as well as nuget.org.</source>
         <target state="translated">nuget.org뿐만 아니라 종종 UI 표시에 표시되는 패키지 홈페이지의 URL입니다.</target>
@@ -174,12 +234,12 @@
       </trans-unit>
       <trans-unit id="StringProperty|PackageReadmeFile|Description">
         <source>The README document for the package. Must be a Markdown (.md) file.</source>
-        <target state="new">The README document for the package. Must be a Markdown (.md) file.</target>
+        <target state="translated">패키지에 대한 추가 정보 문서. Markdown(.md) 파일이어야 합니다.</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|PackageReadmeFile|DisplayName">
         <source>README</source>
-        <target state="new">README</target>
+        <target state="translated">추가 정보</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|PackageReleaseNotes|Description">
@@ -230,6 +290,26 @@
       <trans-unit id="StringProperty|RepositoryUrl|DisplayName">
         <source>Repository URL</source>
         <target state="translated">리포지토리 URL</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|Title|Description">
+        <source>A human-friendly title of the package, typically used in UI displays as on nuget.org and the Package Manager in Visual Studio.</source>
+        <target state="translated">일반적으로 UI에서 사용되는 패키지 타이틀은 Visual Studio에서 nuget.org 및 패키지 관리자와 같이 표시됩니다.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|Title|DisplayName">
+        <source>Title</source>
+        <target state="translated">제목</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|ToolCommandName|Description">
+        <source>The command name via which the .NET tool will be invoked on the command line.</source>
+        <target state="translated">명령줄에서 .NET 도구를 호출할 명령 이름입니다.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|ToolCommandName|DisplayName">
+        <source>.NET tool command name</source>
+        <target state="translated">.NET 도구 명령 이름</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|Version|Description">

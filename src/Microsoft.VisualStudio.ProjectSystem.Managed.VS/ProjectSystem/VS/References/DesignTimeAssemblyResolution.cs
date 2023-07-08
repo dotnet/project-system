@@ -1,10 +1,5 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.Composition;
-using System.IO;
-using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using EnvDTE;
@@ -40,14 +35,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.References
         [ImportingConstructor]
         public DesignTimeAssemblyResolution(IUnconfiguredProjectVsServices projectVsServices)
         {
-            Requires.NotNull(projectVsServices, nameof(projectVsServices));
+            Requires.NotNull(projectVsServices);
 
             _projectVsServices = projectVsServices;
         }
 
         public int GetTargetFramework(out string? ppTargetFramework)
         {
-            if (_projectVsServices == null)
+            if (_projectVsServices is null)
             {
                 ppTargetFramework = null;
                 return HResult.Unexpected;
@@ -58,7 +53,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.References
 
         public int ResolveAssemblyPathInTargetFx(string?[]? prgAssemblySpecs, uint cAssembliesToResolve, VsResolvedAssemblyPath[]? prgResolvedAssemblyPaths, out uint pcResolvedAssemblyPaths)
         {
-            if (prgAssemblySpecs == null || cAssembliesToResolve == 0 || prgResolvedAssemblyPaths == null || cAssembliesToResolve != prgAssemblySpecs.Length || cAssembliesToResolve != prgResolvedAssemblyPaths.Length)
+            if (prgAssemblySpecs is null || cAssembliesToResolve == 0 || prgResolvedAssemblyPaths is null || cAssembliesToResolve != prgAssemblySpecs.Length || cAssembliesToResolve != prgResolvedAssemblyPaths.Length)
             {
                 pcResolvedAssemblyPaths = 0;
                 return HResult.InvalidArg;
@@ -70,7 +65,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.References
                 return HResult.InvalidArg;
             }
 
-            if (_projectVsServices == null)
+            if (_projectVsServices is null)
             {
                 pcResolvedAssemblyPaths = 0;
                 return HResult.Unexpected;
@@ -90,7 +85,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.References
             for (int i = 0; i < assemblyName.Length; i++)
             {
                 string? resolvedPath = FindResolvedAssemblyPath(references, assemblyName[i]);
-                if (resolvedPath != null)
+                if (resolvedPath is not null)
                 {
                     assemblyPaths[resolvedReferencesCount] = new VsResolvedAssemblyPath()
                     {
@@ -116,11 +111,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.References
             if (references.TryGetValue(assemblyName.Name, out ResolvedReference reference))
             {
                 // If the caller didn't specify a version, than they only want to match on name
-                if (assemblyName.Version == null)
+                if (assemblyName.Version is null)
                     return reference.ResolvedPath;
 
                 // If the reference is the same or higher than the requested version, then we consider it a match
-                if (reference.Version != null && reference.Version >= assemblyName.Version)
+                if (reference.Version is not null && reference.Version >= assemblyName.Version)
                     return reference.ResolvedPath;
             }
 
@@ -132,7 +127,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.References
             var resolvedReferences = new Dictionary<string, ResolvedReference>(StringComparer.Ordinal);
 
             VSProject? project = GetVSProject();
-            if (project != null)
+            if (project is not null)
             {
                 foreach (Reference3 reference in project.References.OfType<Reference3>())
                 {

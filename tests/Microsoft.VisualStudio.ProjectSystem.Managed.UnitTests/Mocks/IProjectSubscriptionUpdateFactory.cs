@@ -1,10 +1,6 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
-using System.Collections.Generic;
-using System.Collections.Immutable;
-using System.Linq;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
-using Moq;
 
 namespace Microsoft.VisualStudio.ProjectSystem
 {
@@ -15,11 +11,6 @@ namespace Microsoft.VisualStudio.ProjectSystem
             return IProjectVersionedValueFactory.Create(Mock.Of<IProjectSubscriptionUpdate>());
         }
 
-        public static IProjectSubscriptionUpdate Create()
-        {
-            return Mock.Of<IProjectSubscriptionUpdate>();
-        }
-
         public static IProjectSubscriptionUpdate Implement(
             IDictionary<string, IProjectRuleSnapshot>? currentState = null,
             IDictionary<string, IProjectChangeDescription>? projectChanges = null,
@@ -27,27 +18,24 @@ namespace Microsoft.VisualStudio.ProjectSystem
         {
             var mock = new Mock<IProjectSubscriptionUpdate>(mockBehavior);
 
-            if (currentState != null)
-            {
-                mock.Setup(x => x.CurrentState).Returns(currentState.ToImmutableDictionary());
-            }
+            mock.Setup(x => x.CurrentState).Returns(currentState?.ToImmutableDictionary() ?? ImmutableDictionary<string, IProjectRuleSnapshot>.Empty);
 
-            if (projectChanges != null)
-            {
-                mock.Setup(x => x.ProjectChanges).Returns(projectChanges.ToImmutableDictionary());
-            }
+            mock.Setup(x => x.ProjectChanges).Returns(projectChanges?.ToImmutableDictionary() ?? ImmutableDictionary<string, IProjectChangeDescription>.Empty);
 
             return mock.Object;
         }
 
         public static IProjectSubscriptionUpdate CreateEmpty()
         {
-            return FromJson(@"
-{
-    ""CurrentState"": {
-    }
-}
-");
+            return FromJson(
+                """
+                {
+                    "CurrentState": {
+                    },
+                    "ProjectChanges": {
+                    }
+                }
+                """);
         }
 
         public static IProjectSubscriptionUpdate FromJson(string jsonString)
@@ -69,16 +57,16 @@ namespace Microsoft.VisualStudio.ProjectSystem
             IImmutableDictionary<string, IProjectChangeDescription> projectChanges;
             ProjectConfiguration projectConfiguration;
 
-            if (CurrentState != null)
+            if (CurrentState is not null)
             {
-                currentState = CurrentState.Select(x => new KeyValuePair<string, IProjectRuleSnapshot>(x.Key, x.Value)).ToImmutableDictionary();
+                currentState = CurrentState.Select(x => new KeyValuePair<string, IProjectRuleSnapshot>(x.Key, x.Value.ToActualModel())).ToImmutableDictionary();
             }
             else
             {
                 currentState = ImmutableDictionary<string, IProjectRuleSnapshot>.Empty;
             }
 
-            if (ProjectChanges != null)
+            if (ProjectChanges is not null)
             {
                 projectChanges = ProjectChanges.Select(x => new KeyValuePair<string, IProjectChangeDescription>(x.Key, x.Value.ToActualModel())).ToImmutableDictionary();
             }
@@ -87,7 +75,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
                 projectChanges = ImmutableDictionary<string, IProjectChangeDescription>.Empty;
             }
 
-            if (ProjectConfiguration != null)
+            if (ProjectConfiguration is not null)
             {
                 projectConfiguration = ProjectConfiguration.ToActualModel();
             }

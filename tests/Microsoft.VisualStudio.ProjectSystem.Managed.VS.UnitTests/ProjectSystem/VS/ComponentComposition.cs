@@ -1,9 +1,5 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
 using System.Reflection;
 using Microsoft.VisualStudio.Composition;
 using Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices;
@@ -108,7 +104,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                             contractsRequiringAppliesTo.Add(import.ImportDefinition.ContractName, contractTypes);
                         }
 
-                        if (null != import.ImportingSiteElementType)
+                        if (import.ImportingSiteElementType is not null)
                         {
                             contractTypes.Add(import.ImportingSiteElementType);
                         }
@@ -138,7 +134,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
 
         private static Dictionary<string, ContractMetadata> CollectContractMetadata(IEnumerable<Assembly> assemblies)
         {
-            Requires.NotNull(assemblies, nameof(assemblies));
+            Requires.NotNull(assemblies);
             var contracts = new Dictionary<string, ContractMetadata>(StringComparer.Ordinal);
             foreach (Assembly contractAssembly in assemblies)
             {
@@ -150,14 +146,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
 
         private static void ReadContractMetadata(Dictionary<string, ContractMetadata> contracts, Assembly contractAssembly)
         {
-            Requires.NotNull(contracts, nameof(contracts));
-            Requires.NotNull(contractAssembly, nameof(contractAssembly));
+            Requires.NotNull(contracts);
+            Requires.NotNull(contractAssembly);
             foreach (ProjectSystemContractAttribute assemblyAttribute in contractAssembly.GetCustomAttributes<ProjectSystemContractAttribute>())
             {
                 var contractName = assemblyAttribute.ContractName;
                 var contractType = assemblyAttribute.ContractType;
 
-                if (contractName != null || contractType != null)
+                if (contractName is not null || contractType is not null)
                 {
                     AddContractMetadata(contracts, contractName ?? contractType!.FullName, assemblyAttribute.Scope, assemblyAttribute.Provider, assemblyAttribute.Cardinality);
                 }
@@ -208,7 +204,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         {
             if (exception is FileNotFoundException fileNotFound)
             {
-                return fileNotFound.FileName == "Microsoft.VisualStudio.ProjectServices, Version=15.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a";
+                return fileNotFound.FileName.StartsWith("Microsoft.VisualStudio.ProjectServices,", StringComparison.Ordinal);
             }
 
             return false;
@@ -216,8 +212,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
 
         private static void AddContractMetadata(Dictionary<string, ContractMetadata> contracts, string name, ProjectSystemContractScope scope, ProjectSystemContractProvider provider, ImportCardinality cardinality)
         {
-            Requires.NotNull(contracts, nameof(contracts));
-            Requires.NotNullOrEmpty(name, nameof(name));
+            Requires.NotNull(contracts);
+            Requires.NotNullOrEmpty(name);
 
             if (!contracts.TryGetValue(name, out ContractMetadata metadata))
             {
@@ -258,7 +254,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         private static bool IsAppliesToRequired(ImportDefinitionBinding import)
         {
             Type appliesToView = typeof(IAppliesToMetadataView);
-            return import.MetadataType != null && appliesToView.IsAssignableFrom(appliesToView);
+            return import.MetadataType is not null && appliesToView.IsAssignableFrom(import.MetadataType);
         }
     }
 }

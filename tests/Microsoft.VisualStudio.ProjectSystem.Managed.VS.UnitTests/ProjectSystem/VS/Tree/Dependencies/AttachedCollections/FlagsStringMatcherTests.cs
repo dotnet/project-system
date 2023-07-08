@@ -1,8 +1,6 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
-using System;
 using System.Text.RegularExpressions;
-using Xunit;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections
 {
@@ -13,7 +11,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedColl
         {
             var detector = new FlagsStringMatcher(ProjectTreeFlags.Empty);
 
-            Assert.Throws<ArgumentNullException>(() => detector.Matches((string)null!));
+            Assert.Throws<ArgumentNullException>(() => detector.Matches(null!));
         }
 
         [Theory]

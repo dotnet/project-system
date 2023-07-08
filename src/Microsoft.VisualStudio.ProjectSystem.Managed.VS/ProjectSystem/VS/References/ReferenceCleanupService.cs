@@ -1,12 +1,5 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
-using System;
-using System.Collections.Generic;
-using System.Collections.Immutable;
-using System.ComponentModel.Composition;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
 using Microsoft.Build.Exceptions;
 using Microsoft.VisualStudio.LanguageServices.ExternalAccess.ProjectSystem.Api;
 
@@ -16,7 +9,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.References
     internal class ReferenceCleanupService : IProjectSystemReferenceCleanupService2
     {
         private static readonly Dictionary<ProjectSystemReferenceType, AbstractReferenceHandler> s_mapReferenceTypeToHandler =
-            new Dictionary<ProjectSystemReferenceType, AbstractReferenceHandler>
+            new()
             {
                 { ProjectSystemReferenceType.Project, new ProjectReferenceHandler() },
                 { ProjectSystemReferenceType.Package, new PackageReferenceHandler() },
@@ -85,7 +78,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.References
 
             var references = new List<ProjectSystemReferenceInfo>();
 
-            foreach (var keyValuePair in s_mapReferenceTypeToHandler.Where(h => h.Value != null))
+            foreach (var keyValuePair in s_mapReferenceTypeToHandler.Where(h => h.Value is not null))
             {
                 references.AddRange(await keyValuePair.Value.GetReferencesAsync(selectedConfiguredProject, cancellationToken));
             }
@@ -113,7 +106,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.References
             var referenceHandler = s_mapReferenceTypeToHandler[referenceUpdate.ReferenceInfo.ReferenceType];
 
             IProjectSystemUpdateReferenceOperation? command = null;
-            if (referenceHandler != null)
+            if (referenceHandler is not null)
             {
                 command = CreateCommand(referenceUpdate, referenceHandler, activeConfiguredProject, cancellationToken);
             }
@@ -123,8 +116,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.References
 
         private static IProjectSystemUpdateReferenceOperation? CreateCommand(ProjectSystemReferenceUpdate referenceUpdate,
             AbstractReferenceHandler referenceHandler,
-            ConfiguredProject selectedConfiguredProject, CancellationToken cancellationToken) =>
-            referenceUpdate.Action switch
+            ConfiguredProject selectedConfiguredProject, CancellationToken cancellationToken)
+            => referenceUpdate.Action switch
             {
                 ProjectSystemUpdateAction.SetTreatAsUsed => referenceHandler.CreateSetAttributeCommand(
                     selectedConfiguredProject, referenceUpdate),

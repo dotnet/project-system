@@ -1110,7 +1110,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
 
 #If DEBUG Then
                     If NewCurrentPanel.CustomViewProvider IsNot Nothing Then
-                        'New panel has a custom view provider, so IVsWindowFrame.Show won�t have been called.
+                        'New panel has a custom view provider, so IVsWindowFrame.Show won't have been called.
                     Else
                         If NewCurrentPanel.PropertyPageInfo IsNot Nothing AndAlso NewCurrentPanel.PropertyPageInfo.LoadException IsNot Nothing Then
                             'There was an error loading the page, so IVsWindowFrame.Show() would not have been called

@@ -1,6 +1,5 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
-using System;
 using System.Diagnostics.CodeAnalysis;
 
 namespace Microsoft.VisualStudio.ProjectSystem
@@ -30,13 +29,13 @@ namespace Microsoft.VisualStudio.ProjectSystem
     /// </remarks>
     internal sealed class ProjectFileClassifier
     {
-        private readonly string _windows;
-        private readonly string _programFiles86;
-        private readonly string? _programFiles64;
-        private readonly string? _vsInstallationDirectory;
+        private static readonly string? s_windows;
+        private static readonly string? s_programFiles86;
+        private static readonly string? s_programFiles64;
+        private static readonly string? s_vsInstallationDirectory;
 
         private string[] _nuGetPackageFolders = Array.Empty<string>();
-        private string? _nuGetPackageFoldersString;
+        private string _nuGetPackageFoldersString = "";
         private string? _projectExtensionsPath;
 
         /// <summary>
@@ -62,7 +61,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
         /// <summary>
         /// Gets and sets the paths found in the <c>NuGetPackageFolders</c> property value for this project.
-        /// Project files under any of these folders are considered non-modifiable.
+        /// Project files under any of these folders are considered non-modifiable. May be empty.
         /// </summary>
         /// <remarks>
         /// This value is used by both <see cref="IsNonUserEditable"/> and <see cref="IsNonModifiable"/>.
@@ -73,33 +72,45 @@ namespace Microsoft.VisualStudio.ProjectSystem
         /// </remarks>
         public string NuGetPackageFolders
         {
+            get => _nuGetPackageFoldersString;
             set
             {
-                Requires.NotNull(value, nameof(value));
+                Requires.NotNull(value);
 
                 if (!string.Equals(_nuGetPackageFoldersString, value, StringComparisons.Paths))
                 {
                     _nuGetPackageFoldersString = value;
                     _nuGetPackageFolders = value.Split(Delimiter.Semicolon, StringSplitOptions.RemoveEmptyEntries);
+
+                    for (int i = 0; i < _nuGetPackageFolders.Length; i++)
+                    {
+                        EnsureTrailingSlash(ref _nuGetPackageFolders[i]);
+                    }
                 }
             }
         }
 
-        public ProjectFileClassifier()
+        static ProjectFileClassifier()
         {
-            _windows = Environment.GetFolderPath(Environment.SpecialFolder.Windows);
-            _programFiles86 = Environment.GetFolderPath(Environment.SpecialFolder.ProgramFilesX86);
+#if NET
+            if (!OperatingSystem.IsWindows())
+            {
+                return;
+            }
+#endif
+            s_windows = Environment.GetFolderPath(Environment.SpecialFolder.Windows);
+            s_programFiles86 = Environment.GetFolderPath(Environment.SpecialFolder.ProgramFilesX86);
 
             // In a 32-bit process, SpecialFolder.ProgramFiles returns the 32-bit path.
             // The 64-bit path is available via an environment variable however.
-            _programFiles64 = Environment.GetEnvironmentVariable("ProgramW6432");
+            s_programFiles64 = Environment.GetEnvironmentVariable("ProgramW6432");
 
-            _vsInstallationDirectory = GetVSInstallationDirectory();
+            s_vsInstallationDirectory = GetVSInstallationDirectory();
 
-            EnsureTrailingSlash(ref _windows);
-            EnsureTrailingSlash(ref _programFiles86);
-            EnsureTrailingSlash(ref _programFiles64);
-            EnsureTrailingSlash(ref _vsInstallationDirectory);
+            EnsureTrailingSlash(ref s_windows);
+            EnsureTrailingSlash(ref s_programFiles86);
+            EnsureTrailingSlash(ref s_programFiles64);
+            EnsureTrailingSlash(ref s_vsInstallationDirectory);
 
             return;
 
@@ -139,7 +150,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
         public bool IsNonUserEditable(string filePath)
         {
             return IsNonModifiable(filePath)
-                   || (ProjectExtensionsPath != null && filePath.StartsWith(ProjectExtensionsPath, StringComparisons.Paths));
+                || (_projectExtensionsPath is not null && filePath.StartsWith(_projectExtensionsPath, StringComparisons.Paths));
         }
 
         /// <summary>
@@ -149,11 +160,11 @@ namespace Microsoft.VisualStudio.ProjectSystem
         /// <returns><see langword="true"/> if the file is non-modifiable, otherwise <see langword="false"/>.</returns>
         public bool IsNonModifiable(string filePath)
         {
-            return (_programFiles64 != null && filePath.StartsWith(_programFiles64, StringComparisons.Paths))
-                   || filePath.StartsWith(_programFiles86, StringComparisons.Paths)
-                   || filePath.StartsWith(_windows, StringComparisons.Paths)
-                   || _nuGetPackageFolders.Any(nugetFolder => filePath.StartsWith(nugetFolder, StringComparisons.Paths))
-                   || (_vsInstallationDirectory != null && filePath.StartsWith(_vsInstallationDirectory, StringComparisons.Paths));
+            return (s_programFiles64 is not null && filePath.StartsWith(s_programFiles64, StringComparisons.Paths))
+                || (s_programFiles86 is not null && filePath.StartsWith(s_programFiles86, StringComparisons.Paths))
+                || (s_windows is not null && filePath.StartsWith(s_windows, StringComparisons.Paths))
+                || _nuGetPackageFolders.Any(static (nuGetFolder, filePath) => filePath.StartsWith(nuGetFolder, StringComparisons.Paths), filePath)
+                || (s_vsInstallationDirectory is not null && filePath.StartsWith(s_vsInstallationDirectory, StringComparisons.Paths));
         }
     }
 }

@@ -1,9 +1,5 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
-using System;
-using System.Collections.Immutable;
-using Xunit;
-
 namespace Microsoft.VisualStudio.ProjectSystem
 {
     public class FileItemServicesTests
@@ -82,7 +78,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
         public void GetLogicalFolderNames_Returns(string basePath, string fullPath, string link, params string[] expected)
         {
             var metadata = ImmutableDictionary<string, string>.Empty;
-            if (link != null)
+            if (link is not null)
             {
                 metadata = metadata.SetItem(Compile.LinkProperty, link);
             }

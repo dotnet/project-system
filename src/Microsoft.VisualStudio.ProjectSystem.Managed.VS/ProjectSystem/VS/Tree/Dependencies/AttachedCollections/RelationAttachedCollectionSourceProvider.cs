@@ -1,7 +1,5 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
-using System.Collections.Generic;
-using System.ComponentModel.Composition;
 using Microsoft.Internal.VisualStudio.PlatformUI;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Utilities;
@@ -37,9 +35,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedColl
             }
             else if (relationName == KnownRelationships.ContainedBy)
             {
-                if (item is IRelatableItem relatableItem && relatableItem.ContainedByCollection != null)
+                if (item is IRelatableItem { ContainedByCollection: { } containedByCollection } relatableItem)
                 {
-                    return new AggregateRelationCollectionSource(relatableItem, relatableItem.ContainedByCollection);
+                    return new AggregateRelationCollectionSource(relatableItem, containedByCollection);
                 }
             }
 
@@ -55,7 +53,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedColl
                 // scoping.
                 yield return Relationships.Contains;
 
-                if (relatableItem.ContainedByCollection != null)
+                if (relatableItem.ContainedByCollection is not null)
                 {
                     yield return Relationships.ContainedBy;
                 }

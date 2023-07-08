@@ -1,14 +1,6 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
-using System;
-using System.Collections.Generic;
-using System.Collections.Immutable;
-using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.VisualStudio.Threading.Tasks;
-using Moq;
-using Xunit;
 using Xunit.Sdk;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
@@ -284,45 +276,62 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
         {
             _intermediateOutputPath = intermediateOutputPath ?? _intermediateOutputPath;
 
-            var ruleUpdate = @"{
-                                      ""ProjectChanges"": {
-                                          ""ConfigurationGeneral"": {
-                                              ""Difference"": {
-                                                  ""ChangedProperties"": [ ";
+            var ruleUpdate =
+                """
+                {
+                    "ProjectChanges": {
+                        "ConfigurationGeneral": {
+                            "Difference": {
+                                "ChangedProperties": [
+
+                """;
 
             if (_lastIntermediateOutputPath != _intermediateOutputPath)
             {
-                ruleUpdate += @"                        ""IntermediateOutputPath"",";
+                ruleUpdate +=
+                    """
+                                        "IntermediateOutputPath",
+
+                    """;
             }
+
             // root namespace and project folder have changed if its the first time we've sent inputs
-            if (_lastIntermediateOutputPath == null)
+            if (_lastIntermediateOutputPath is null)
             {
-                ruleUpdate += @"                        ""ProjectDir"",
-                                                        ""RootNamespace""";
+                ruleUpdate +=
+                    """
+                                       "ProjectDir",
+                                       "RootNamespace"
+
+                    """;
             }
+
             ruleUpdate = ruleUpdate.TrimEnd(',');
-            ruleUpdate += @"                      ]
-                                              },
-                                              ""After"": {
-                                                  ""Properties"": {
-                                                      ""ProjectDir"": """ + _projectFolder.Replace("\\", "\\\\") + @""",
-                                                      ""IntermediateOutputPath"": """ + _intermediateOutputPath.Replace("\\", "\\\\") + @""",
-                                                      ""RootNamespace"": ""MyNamespace""
-                                                  }
-                                              }
-                                          }
-                                      }
-                                  }";
+            ruleUpdate +=
+                $$"""
+                                ]
+                            },
+                            "After": {
+                                "Properties": {
+                                    "ProjectDir": "{{_projectFolder.Replace("\\", "\\\\")}}",
+                                    "IntermediateOutputPath": "{{_intermediateOutputPath.Replace("\\", "\\\\")}}",
+                                    "RootNamespace": "MyNamespace"
+                                }
+                            }
+                        }
+                    }
+                }
+                """;
             IProjectSubscriptionUpdate subscriptionUpdate = IProjectSubscriptionUpdateFactory.FromJson(ruleUpdate);
 
             _lastIntermediateOutputPath = _intermediateOutputPath;
 
-            _changeTracker.ProcessDataflowChanges(new ProjectVersionedValue<ValueTuple<DesignTimeInputs, IProjectSubscriptionUpdate>>(new ValueTuple<DesignTimeInputs, IProjectSubscriptionUpdate>(inputs, subscriptionUpdate), ImmutableDictionary<NamedIdentity, IComparable>.Empty));
+            _changeTracker.ProcessDataflowChanges(new ProjectVersionedValue<ValueTuple<DesignTimeInputs, IProjectSubscriptionUpdate>>(new ValueTuple<DesignTimeInputs, IProjectSubscriptionUpdate>(inputs, subscriptionUpdate), Empty.ProjectValueVersions));
         }
 
         private void SendFileChange(params string[] files)
         {
-            _changeTracker.ProcessFileChangeNotification(new ProjectVersionedValue<string[]>(files, ImmutableDictionary<NamedIdentity, IComparable>.Empty));
+            _changeTracker.ProcessFileChangeNotification(new ProjectVersionedValue<string[]>(files, Empty.ProjectValueVersions));
         }
 
         public void Dispose()

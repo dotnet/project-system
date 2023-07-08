@@ -1,7 +1,5 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
-using System;
-
 namespace Microsoft.VisualStudio
 {
     /// <summary>
@@ -22,8 +20,8 @@ namespace Microsoft.VisualStudio
         /// </exception>
         public static bool IsLaterThan(this IComparable source, IComparable comparable)
         {
-            Requires.NotNull(source, nameof(source));
-            Requires.NotNull(comparable, nameof(comparable));
+            Requires.NotNull(source);
+            Requires.NotNull(comparable);
 
             return source.CompareTo(comparable) > 0;
         }
@@ -41,8 +39,8 @@ namespace Microsoft.VisualStudio
         /// </exception>
         public static bool IsLaterThanOrEqualTo(this IComparable source, IComparable comparable)
         {
-            Requires.NotNull(source, nameof(source));
-            Requires.NotNull(comparable, nameof(comparable));
+            Requires.NotNull(source);
+            Requires.NotNull(comparable);
 
             return source.CompareTo(comparable) >= 0;
         }
@@ -60,8 +58,8 @@ namespace Microsoft.VisualStudio
         /// </exception>
         public static bool IsEarlierThan(this IComparable source, IComparable comparable)
         {
-            Requires.NotNull(source, nameof(source));
-            Requires.NotNull(comparable, nameof(comparable));
+            Requires.NotNull(source);
+            Requires.NotNull(comparable);
 
             return source.CompareTo(comparable) < 0;
         }
@@ -79,8 +77,8 @@ namespace Microsoft.VisualStudio
         /// </exception>
         public static bool IsEarlierThanOrEqualTo(this IComparable source, IComparable comparable)
         {
-            Requires.NotNull(source, nameof(source));
-            Requires.NotNull(comparable, nameof(comparable));
+            Requires.NotNull(source);
+            Requires.NotNull(comparable);
 
             return source.CompareTo(comparable) <= 0;
         }

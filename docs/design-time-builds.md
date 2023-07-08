@@ -15,16 +15,30 @@ For performance reasons, and unlike normal builds which call the _Build_ target,
 
 The following design-time targets are called, including any dependencies, during design-time builds in the C#/VB project systems. Other project systems, such as C++ or JavaScript will call different targets. 
 
-Design-Time Target                            | Normal Target                      | Description
-----------------------------------------------|------------------------------------|------------------
-ResolveAssemblyReferencesDesignTime           | ResolveAssemblyReferences          | Resolves `<Reference>` items to their paths.
-ResolveProjectReferencesDesignTime            | ResolveProjectReferences           | Resolves `<ProjectReference>` items to their output paths.
-ResolveComReferencesDesignTime                | ResolveComReferences               | Resolves `<COMReference>` items to their primary interop assemblies (PIA) paths.
-ResolveFrameworkReferencesDesignTime          | ResolveFrameworkReferences         | Resolves `<FrameworkReference>` items to their paths.
-ResolvePackageDependenciesDesignTime          | ResolvePackageDependencies         | Resolves `<PackageReference>` items to their paths.
-CompileDesignTime (new project system)/Compile| Compile                            | Passes command-line arguments, `<Compile>` items and `<Analyzer>` items to the compiler in normal builds, or to the language service in design-time builds.
+Design-Time Target                             | Defined by | Description
+-----------------------------------------------|------------|------------------
+BuiltProjectOutputGroup                        | MSBuild    | 
+CollectAnalyzersDesignTime                     | DNPS       | Returns `Analyzer` items.
+CollectCentralPackageVersions                  | NuGet      | Returns `PackageVersion` items.
+CollectCopyToOutputDirectoryItemDesignTime     | DNPS       | Identifies items the project contributes to the output directory during build. Supports the Fast Up-to-date Check and Build Acceleration.
+CollectFrameworkReferences                     | NuGet      | Returns non-transitive `FrameworkReference` items. Supports package restore.
+CollectPackageDownloads                        | NuGet      | Returns `PackageDownload` items. Supports package restore.
+CollectPackageReferences                       | NuGet      | Returns `PackageReference` items. Supports package restore.
+CollectResolvedCompilationReferencesDesignTime | DNPS       |
+CollectResolvedSDKReferencesDesignTime         | SDK        |
+CollectSuggestedWorkloads                      | DNPS       |
+CollectUpToDateCheckBuiltDesignTime            | DNPS       | Supports the Fast Up-to-date Check.
+CollectUpToDateCheckInputDesignTime            | DNPS       | Supports the Fast Up-to-date Check.
+CollectUpToDateCheckOutputDesignTime           | DNPS       | Supports the Fast Up-to-date Check.
+CompileDesignTime                              | MSBuild    | Passes command-line arguments, `<Compile>` items and `<Analyzer>` items to the compiler in normal builds, or to the language service in design-time builds.
+GenerateSupportedTargetFrameworkAlias          | SDK        | Returns `SupportedTargetFrameworkAlias` items. Supports the Project Properties UI.
+ResolveAssemblyReferencesDesignTime            | MSBuild    | Resolves `Reference` items to their paths. Supports the Dependencies Node.
+ResolveComReferencesDesignTime                 | MSBuild    | Resolves `COMReference` items to their primary interop assemblies (PIA) paths. Supports the Dependencies Node.
+ResolveFrameworkReferencesDesignTime           | MSBuild    | Resolves `FrameworkReference` items to their paths. Supports the Dependencies Node.
+ResolvePackageDependenciesDesignTime           | MSBuild    | Resolves `PackageReference` items to their paths. Supports the Dependencies Node.
+ResolveProjectReferencesDesignTime2            | DNPS       | Resolves `ProjectReference` items to their output paths. Overrides `ResolveProjectReferencesDesignTime` from MSBuild's common targets. Supports the Dependencies Node.
 
-The design-time targets are typically simple wrappers around their normal target equivalents, with customized behavior for design-time builds. 
+Where DNPS is the .NET Project System (this repository).
 
 ## Designing targets for use in design-time builds
 
@@ -34,24 +48,28 @@ Targets that dynamically change references, source files or compilation options 
 
 If you've determined that your target needs to run in a design-time build, using the above table set `BeforeTargets` to the normal target equivalent of what you are contributing to the build. For example, if a target changes `<Reference>` items, then it should indicate that it runs _before_ `ResolveAssemblyReferences` target:
 
-``` XML
-  <Target Name="AddAdditionalReferences" BeforeTargets="ResolveAssemblyReferences">
-     ...
-  </Target>
+```xml
+<Target Name="AddAdditionalReferences" BeforeTargets="ResolveAssemblyReferences">
+    ...
+</Target>
 ```
 The `AddAdditionalReferences` target will run in both normal builds _and_ design-time builds, leading to consistent results between them.
 
 ### Determining whether a target is running in a design-time build
 
-Use both the `DesignTimeBuild` (CPS-based projects) and `BuildingProject` (legacy project system) properties to determine whether a target is running in a design-time build or a normal build. This can be used to avoid expensive calculations or work that is only needed for a normal build, helping to keep the IDE responsive.
+Checking if a target is running in a design-time build can be used to avoid expensive calculations or work that is only needed for a normal build, helping to keep the IDE responsive.
 
-``` XML
-  <Target Name="AddAdditionalReferences" BeforeTargets="ResolveAssemblyReferences">
-     <PropertyGroup Condition="'$(DesignTimeBuild)' == 'true' OR '$(BuildingProject)' != 'true'">
-         <_AvoidExpensiveCalculation>true</_AvoidExpensiveCalculation>
-     </PropertyGroup>
-     ...
-  </Target>
+Different project systems use different properties to distinguish between design-time builds and normal builds. For example, the .NET Project System in this repo builds on top of the Common Project System (CPS) components, and CPS-based project systems set the `DesignTimeBuild` property. However, non-SDK-style C# and VB projects generally use what we call the "legacy" project system, and it uses the `BuildingProject` property.
+
+As such, you should make use of both the `DesignTimeBuild` and `BuildingProject` properties to determine whether a target is running in a design-time build or a normal build: 
+
+```xml
+<Target Name="AddAdditionalReferences" BeforeTargets="ResolveAssemblyReferences">
+    <PropertyGroup Condition="'$(DesignTimeBuild)' == 'true' OR '$(BuildingProject)' != 'true'">
+        <_AvoidExpensiveCalculation>true</_AvoidExpensiveCalculation>
+    </PropertyGroup>
+    ...
+</Target>
 ```
 
 __NOTE:__ The `DesignTimeBuild` property is typically empty (`''`) in normal builds, so avoid comparisons to `'false'`.
@@ -90,17 +108,39 @@ You can force Visual Studio to show the results of a design-time build using the
 
 #### Visual Studio 2017 or later
 
-1. Install the [Project System Tools](https://marketplace.visualstudio.com/items?itemName=VisualStudioProductTeam.ProjectSystemTools) extension
+1. Install the [Project System Tools](https://github.com/dotnet/project-system-tools#project-system-tools) extension
 2. In Visual Studio, choose the `View > Other Windows > Build Logging` menu item.
 3. Click on the "play" button.
 
-This will cause design-time builds to show up in the build logging tool window. If you have the [MSBuild Binary and Structured Log Viewer](http://msbuildlog.com/) installed, you can double-click on a log to view it in the viewer, otherwise you can right-click and choose `Save As...` to save the log in the new [binary log format](https://github.com/Microsoft/msbuild/wiki/Binary-Log).
+This will cause design-time builds to show up in the build logging tool window. If you have the [MSBuild Structured Log Viewer](https://msbuildlog.com) installed, you can double-click on a log to view it in the viewer, otherwise you can right-click and choose `Save As...` to save the log in the new [binary log format](https://github.com/Microsoft/msbuild/wiki/Binary-Log).
+
+#### Visual Studio 2022 or later
+
+You may use the [Project System Tools](https://github.com/dotnet/project-system-tools#project-system-tools) extension mentioned immediately above, however that extension does not capture all available information. To capture all build information:
+
+1. Open a _Developer Command Prompt_ for the version of Visual Studio you want to use.
+1. Set two environment variables as follows:
+   ```
+   set MSBuildDebugEngine=1
+   set MSBUILDDEBUGPATH=c:\some\path
+   ```
+   You can use whatever path you like for `MSBUILDDEBUGPATH`, but it must be writeable by the current user.
+1. Type `devenv` to start Visual Studio with this configuration.
+1. Open the `MSBUILDDEBUGPATH` path in Windows Explorer to see the captured `.binlog` and other diagnostic files. You can open them using the [MSBuild Structured Log Viewer](https://msbuildlog.com)
+
+⚠️ While this environment variable is set, all builds will be logged. It's possible for the number of output logs to be very high.
+
+For more information, see:
+
+- [Providing MSBuild Binary Logs for investigation](https://github.com/dotnet/msbuild/blob/main/documentation/wiki/Providing-Binary-Logs.md)
+- [Further MSBuild documentation on binlogs](https://github.com/dotnet/msbuild/blob/main/documentation/wiki/Building-Testing-and-Debugging-on-Full-Framework-MSBuild.md#logs).
 
 ### Diagnosing failing or slow design-time builds
 
 After following the above instructions, open the resulting build log file or Output window (for the new project system).
 
 #### Failing design-time build
+
 For a failing build, look for errors at the end of the log:
 
 ```
@@ -113,8 +153,8 @@ c:\Projects\MyProject\MyProject.csproj(17,5): error : An error occurred!
 
 These errors indicate that a target failed, typically this is due to targets that have not correctly specified their dependencies.
 
-
 #### Slow design-time build
+
 For a slow design-time, look for the target performance summary at end of the log which can indicate long running tasks and targets:
 
 ```

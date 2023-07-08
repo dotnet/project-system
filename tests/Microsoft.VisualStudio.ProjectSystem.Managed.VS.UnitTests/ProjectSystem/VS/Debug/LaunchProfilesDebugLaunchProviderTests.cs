@@ -1,11 +1,6 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
-using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 using Microsoft.VisualStudio.ProjectSystem.Debug;
-using Moq;
-using Xunit;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
 {
@@ -42,9 +37,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
 
             _launchSettingsProviderMoq.Setup(x => x.ActiveProfile).Returns(() => _activeProfile);
             _launchSettingsProviderMoq.Setup(x => x.WaitForFirstSnapshot(It.IsAny<int>())).Returns(() =>
-                _activeProfile != null ?
-                    Task.FromResult((ILaunchSettings?)new LaunchSettings(new List<ILaunchProfile> { _activeProfile }, null, _activeProfile.Name)) :
-                    Task.FromResult((ILaunchSettings?)new LaunchSettings()));
+                _activeProfile is not null
+                    ? Task.FromResult((ILaunchSettings?)new LaunchSettings(new List<ILaunchProfile> { _activeProfile }, null, _activeProfile.Name))
+                    : Task.FromResult((ILaunchSettings?)LaunchSettings.Empty));
         }
 
         [Fact]
@@ -62,10 +57,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
         public void GetLaunchTargetsProviderForProfileTestsAsync()
         {
             var provider = CreateInstance();
-            Assert.Equal(_mockWebProvider.Object, provider.GetLaunchTargetsProvider(new LaunchProfile { Name = "test", CommandName = "IISExpress" }));
-            Assert.Equal(_mockDockerProvider.Object, provider.GetLaunchTargetsProvider(new LaunchProfile { Name = "test", CommandName = "Docker" }));
-            Assert.Equal(_mockExeProvider.Object, provider.GetLaunchTargetsProvider(new LaunchProfile { Name = "test", CommandName = "Project" }));
-            Assert.Null(provider.GetLaunchTargetsProvider(new LaunchProfile { Name = "test", CommandName = "IIS" }));
+            Assert.Equal(_mockWebProvider.Object, provider.GetLaunchTargetsProvider(new LaunchProfile("test", "IISExpress")));
+            Assert.Equal(_mockDockerProvider.Object, provider.GetLaunchTargetsProvider(new LaunchProfile("test", "Docker")));
+            Assert.Equal(_mockExeProvider.Object, provider.GetLaunchTargetsProvider(new LaunchProfile("test", "Project")));
+            Assert.Null(provider.GetLaunchTargetsProvider(new LaunchProfile("test", "IIS")));
         }
 
         [Fact]
@@ -73,15 +68,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
         {
             var provider = CreateInstance();
 
-            _activeProfile = new LaunchProfile { Name = "test", CommandName = "IISExpress" };
+            _activeProfile = new LaunchProfile("test", "IISExpress");
             var result = await provider.QueryDebugTargetsAsync(0);
             Assert.Equal(_webProviderSettings, result);
 
-            _activeProfile = new LaunchProfile { Name = "test", CommandName = "Docker" };
+            _activeProfile = new LaunchProfile("test", "Docker");
             result = await provider.QueryDebugTargetsAsync(0);
             Assert.Equal(_dockerProviderSettings, result);
 
-            _activeProfile = new LaunchProfile { Name = "test", CommandName = "Project" };
+            _activeProfile = new LaunchProfile("test", "Project");
             result = await provider.QueryDebugTargetsAsync(0);
             Assert.Equal(_exeProviderSettings, result);
         }
@@ -99,7 +94,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
         public async Task QueryDebugTargetsAsync_WhenNoInstalledProvider_Throws()
         {
             var provider = CreateInstance();
-            _activeProfile = new LaunchProfile { Name = "NoActionProfile", CommandName = "SomeOtherExtension" };
+            _activeProfile = new LaunchProfile("NoActionProfile", "SomeOtherExtension");
 
             await Assert.ThrowsAsync<Exception>(() => provider.QueryDebugTargetsAsync(0));
         }

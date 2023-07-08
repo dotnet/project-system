@@ -1,0 +1,102 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<!-- Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information. -->
+<Rule Name="Application"
+      OverrideMode="Extend"
+      xmlns="http://schemas.microsoft.com/build/2009/properties">
+
+  <Rule.Categories>
+    <Category Name="Resources"
+              DisplayName="Win32 Resources"
+              Description="Resource settings for the application." />
+    <Category Name="Packaging"
+              DisplayName="Packaging"
+              Description="Packaging settings for the application." />
+  </Rule.Categories>
+
+  <EnumProperty Name="ResourceSpecificationKind"
+                DisplayName="Resources"
+                Description="Specifies how application resources will be managed."
+                Category="Resources">
+    <EnumProperty.DataSource>
+      <DataSource PersistedName="ResourceSpecificationKind"
+                  Persistence="ProjectFileWithInterception"
+                  HasConfigurationCondition="False" />
+    </EnumProperty.DataSource>
+    <EnumValue Name="IconAndManifest"
+               DisplayName="Icon and manifest" />
+    <EnumValue Name="ResourceFile"
+               DisplayName="Resource file" />
+  </EnumProperty>
+
+  <EnumProperty Name="ApplicationManifestKind"
+                DisplayName="Manifest"
+                Description="Selects a manifest generation option when the application runs on Windows Vista or later under User Account Control (UAC). Options include a default manifest, no manifest, or a custom manifest provided by your project."
+                Category="Resources">
+    <EnumProperty.DataSource>
+      <DataSource PersistedName="ApplicationManifestKind"
+                  Persistence="ProjectFileWithInterception"
+                  HasConfigurationCondition="False" />
+    </EnumProperty.DataSource>
+    <EnumProperty.Metadata>
+      <NameValuePair Name="DependsOn" Value="Application::ResourceSpecificationKind" />
+      <NameValuePair Name="VisibilityCondition">
+        <NameValuePair.Value>(has-evaluated-value "Application" "ResourceSpecificationKind" "IconAndManifest")</NameValuePair.Value>
+      </NameValuePair>
+    </EnumProperty.Metadata>
+    <EnumValue Name="DefaultManifest"
+               DisplayName="Embed manifest with default settings" />
+    <EnumValue Name="NoManifest"
+               DisplayName="Create application without a manifest" />
+    <EnumValue Name="CustomManifest"
+               DisplayName="Use a custom manifest" />
+  </EnumProperty>
+
+  <StringProperty Name="ApplicationManifestPath"
+                  DisplayName="Manifest path"
+                  Description="The path to the custom manifest file."
+                  Category="Resources"
+                  Subtype="file">
+    <StringProperty.DataSource>
+      <DataSource PersistedName="ApplicationManifestPath"
+                  Persistence="ProjectFileWithInterception"
+                  HasConfigurationCondition="False" />
+    </StringProperty.DataSource>
+    <StringProperty.Metadata>
+      <NameValuePair Name="DependsOn" Value="Application::ResourceSpecificationKind;Application::ApplicationManifestKind" />
+      <NameValuePair Name="VisibilityCondition">
+        <NameValuePair.Value>
+          (and 
+            (has-evaluated-value "Application" "ApplicationManifestKind" "CustomManifest")
+            (has-evaluated-value "Application" "ResourceSpecificationKind" "IconAndManifest"))
+        </NameValuePair.Value>
+      </NameValuePair>
+    </StringProperty.Metadata>
+  </StringProperty>
+
+  <StringProperty Name="Win32Resource"
+                  DisplayName="Resource file"
+                  Description="Specifies a resource file for the project."
+                  HelpUrl="https://go.microsoft.com/fwlink/?linkid=2147078"
+                  Category="Resources">
+    <StringProperty.ValueEditors>
+      <ValueEditor EditorType="FilePath">
+        <ValueEditor.Metadata>
+          <NameValuePair Name="FileTypeFilter" Value="Win32 resource files (*.res)|*.res|All files (*.*)|*.*" />
+        </ValueEditor.Metadata>
+      </ValueEditor>
+    </StringProperty.ValueEditors>
+    <StringProperty.Metadata>
+      <NameValuePair Name="DependsOn" Value="Application::ResourceSpecificationKind" />
+      <NameValuePair Name="VisibilityCondition">
+        <NameValuePair.Value>(has-evaluated-value "Application" "ResourceSpecificationKind" "ResourceFile")</NameValuePair.Value>
+      </NameValuePair>
+    </StringProperty.Metadata>
+  </StringProperty>
+
+  <BoolProperty Name="IsPublishable"
+                DisplayName="Publishing"
+                Description="Allow publishing outside of Visual Studio, such as via &quot;dotnet publish&quot;."
+                HelpUrl="https://go.microsoft.com/fwlink/?linkid=2165975"
+                Category="Packaging" />
+
+</Rule>

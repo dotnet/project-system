@@ -56,6 +56,11 @@
                   ReadOnly="True"
                   Visible="false" />
 
+  <!-- Specifies a version to use for this package reference and overrides any version specified in a central package management file. -->
+  <StringProperty Name="VersionOverride"
+                  ReadOnly="True"
+                  Visible="False" />
+
   <BoolProperty Name="Visible"
                 ReadOnly="True"
                 Visible="False" />

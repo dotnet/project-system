@@ -1,8 +1,5 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
-using System;
-using System.ComponentModel.Composition;
-using System.Threading.Tasks;
 using Microsoft.VisualStudio.ProjectSystem.LanguageServices;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
 using Microsoft.VisualStudio.Shell;
@@ -19,17 +16,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
     {
         private readonly IVsService<IOleAsyncServiceProvider> _serviceProvider;
         private readonly IUnconfiguredProjectVsServices _projectVsServices;
-        private readonly IActiveWorkspaceProjectContextHost _projectContextHost;
+        private readonly IWorkspaceWriter _workspaceWriter;
         private readonly AsyncLazy<IVsContainedLanguageFactory?> _containedLanguageFactory;
 
         [ImportingConstructor]
         public VsContainedLanguageComponentsFactory(IVsService<SAsyncServiceProvider, IOleAsyncServiceProvider> serviceProvider,
                                                     IUnconfiguredProjectVsServices projectVsServices,
-                                                    IActiveWorkspaceProjectContextHost projectContextHost)
+                                                    IWorkspaceWriter workspaceWriter)
         {
             _serviceProvider = serviceProvider;
             _projectVsServices = projectVsServices;
-            _projectContextHost = projectContextHost;
+            _workspaceWriter = workspaceWriter;
 
             _containedLanguageFactory = new AsyncLazy<IVsContainedLanguageFactory?>(GetContainedLanguageFactoryAsync, projectVsServices.ThreadingService.JoinableTaskFactory);
         }
@@ -44,12 +41,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
                 return GetContainedLanguageFactoryForFileAsync(filePath);
             });
 
-            return (hierarchy == null || containedLanguageFactory == null) ? HResult.Fail : HResult.OK;
+            return (hierarchy is null || containedLanguageFactory is null) ? HResult.Fail : HResult.OK;
         }
 
         private async Task<(HierarchyId itemid, IVsHierarchy? hierarchy, IVsContainedLanguageFactory? containedLanguageFactory)> GetContainedLanguageFactoryForFileAsync(string filePath)
         {
-            await _projectContextHost.PublishAsync();
+            await _workspaceWriter.WhenInitialized();
 
             await _projectVsServices.ThreadingService.SwitchToUIThread();
 
@@ -62,7 +59,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
 
             IVsContainedLanguageFactory? containedLanguageFactory = await _containedLanguageFactory.GetValueAsync();
 
-            if (containedLanguageFactory == null)
+            if (containedLanguageFactory is null)
                 return (HierarchyId.Nil, null, null);
 
             return (itemid, _projectVsServices.VsHierarchy, containedLanguageFactory);

@@ -1,12 +1,7 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
 using System.Reflection;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
-using Xunit;
 
 namespace Microsoft.VisualStudio.ProjectSystem.Rules
 {
@@ -20,14 +15,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.Rules
 
             MemberInfo member = typeof(RuleExporter).GetField(name);
 
-            Assert.True(member != null, $"Rule '{fullPath}' has not been exported by {nameof(RuleExporter)}. Export this rule from a member called {name}.");
+            Assert.True(member is not null, $"Rule '{fullPath}' has not been exported by {nameof(RuleExporter)}. Export this rule from a member called {name}.");
         }
 
         [Theory]
         [MemberData(nameof(GetAllExportedMembers))]
         public void ExportedRulesMustBeStaticFields(MemberInfo member)
         {
-            Assert.True(member is FieldInfo field && field.IsStatic, $"'{GetTypeQualifiedName(member)}' must be a static field.");
+            Assert.True(member is FieldInfo { IsStatic: true }, $"'{GetTypeQualifiedName(member)}' must be a static field.");
         }
 
         [Theory]
@@ -36,7 +31,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Rules
         {
             var attribute = member.GetCustomAttribute<AppliesToAttribute>();
 
-            Assert.True(attribute != null, $"'{GetTypeQualifiedName(member)}' must be marked with [AppliesTo]");
+            Assert.True(attribute is not null, $"'{GetTypeQualifiedName(member)}' must be marked with [AppliesTo]");
         }
 
         [Theory]
@@ -64,10 +59,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.Rules
             foreach (MemberInfo member in members)
             {
                 var attribute = member.GetCustomAttribute<AppliesToAttribute>();
-                if (attribute == null)
+                if (attribute is null)
                     continue; // Another test will catch this
 
-                if (appliesTo == null)
+                if (appliesTo is null)
                 {
                     appliesTo = attribute.AppliesTo;
                 }
@@ -113,7 +108,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Rules
 
             using Stream stream = assembly.GetManifestResourceStream(attribute.XamlResourceStreamName);
 
-            Assert.True(stream != null, $"The rule '{attribute.XamlResourceStreamName}' indicated by '{GetTypeQualifiedName(member)}' does not exist in assembly '{attribute.XamlResourceAssemblyName}'.");
+            Assert.True(stream is not null, $"The rule '{attribute.XamlResourceStreamName}' indicated by '{GetTypeQualifiedName(member)}' does not exist in assembly '{attribute.XamlResourceAssemblyName}'.");
         }
 
         private static string GetTypeQualifiedName(MemberInfo member)
@@ -144,7 +139,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Rules
             }
         }
 
-        private static IEnumerable<object[]> GetAllRules()
+        public static IEnumerable<object[]> GetAllRules()
         {
             return Project(GetRules(suffix: string.Empty, recursive: true));
         }

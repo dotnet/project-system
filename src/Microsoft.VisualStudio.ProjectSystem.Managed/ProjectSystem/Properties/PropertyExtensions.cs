@@ -1,8 +1,5 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
-using System;
-using System.Threading.Tasks;
-
 namespace Microsoft.VisualStudio.ProjectSystem.Properties
 {
     /// <summary>
@@ -19,7 +16,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         /// </exception>
         public static async Task<Guid> GetValueAsGuidAsync(this IProperty property)
         {
-            Requires.NotNull(property, nameof(property));
+            Requires.NotNull(property);
 
             string? value = (string?)await property.GetValueAsync();
 

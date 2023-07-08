@@ -12,26 +12,6 @@
         <target state="translated">Bindungsumleitungen automatisch generieren</target>
         <note />
       </trans-unit>
-      <trans-unit id="BoolProperty|IsPublishable|Description">
-        <source>Allow publishing outside of Visual Studio, such as via "dotnet publish".</source>
-        <target state="translated">Hiermit wird die Veröffentlichung außerhalb von Visual Studio zugelassen, z. B. über "dotnet publish".</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="BoolProperty|IsPublishable|DisplayName">
-        <source>Publishing</source>
-        <target state="translated">Veröffentlichung</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="BoolProperty|TargetMultipleFrameworks|Description">
-        <source>Build this project for multiple target frameworks.</source>
-        <target state="translated">Hiermit erstellen Sie dieses Projekt für mehrere Zielframeworks.</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="BoolProperty|TargetMultipleFrameworks|DisplayName">
-        <source>Target multiple frameworks</source>
-        <target state="translated">Mehrere Zielframeworks</target>
-        <note />
-      </trans-unit>
       <trans-unit id="BoolProperty|UseWPF|Description">
         <source>Enable WPF for this project.</source>
         <target state="translated">Hiermit wird WPF für dieses Projekt aktiviert.</target>
@@ -60,16 +40,6 @@
       <trans-unit id="Category|General|DisplayName">
         <source>General</source>
         <target state="translated">Allgemein</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="Category|Packaging|Description">
-        <source>Packaging settings for the application.</source>
-        <target state="translated">Paketeinstellungen für die Anwendung.</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="Category|Packaging|DisplayName">
-        <source>Packaging</source>
-        <target state="translated">Paketerstellung</target>
         <note />
       </trans-unit>
       <trans-unit id="Category|Resources|Description">
@@ -109,17 +79,17 @@
       </trans-unit>
       <trans-unit id="DynamicEnumProperty|SupportedOSPlatformVersion|Description">
         <source>Specifies the minimum OS version that the project will run on. When unspecified, the target OS version value is implied. Using an earlier version here requires code to add guards around later version APIs.</source>
-        <target state="new">Specifies the minimum OS version that the project will run on. When unspecified, the target OS version value is implied. Using an earlier version here requires code to add guards around later version APIs.</target>
+        <target state="translated">Gibt die Mindest-Betriebssystemversion an, auf der das Projekt ausgeführt wird. Bei Nichtangabe wird der Wert der Zielbetriebssystem-Version impliziert. Die Verwendung einer früheren Version erfordert Code zum Hinzufügen von Guards um spätere Versions-APIs.</target>
         <note />
       </trans-unit>
       <trans-unit id="DynamicEnumProperty|SupportedOSPlatformVersion|DisplayName">
         <source>Supported OS version</source>
-        <target state="new">Supported OS version</target>
+        <target state="translated">Unterstützte Betriebssystemversion</target>
         <note />
       </trans-unit>
       <trans-unit id="DynamicEnumProperty|SupportedOSPlatformVersion|Metadata|SearchTerms">
         <source>platform</source>
-        <target state="new">platform</target>
+        <target state="translated">Plattform</target>
         <note />
       </trans-unit>
       <trans-unit id="DynamicEnumProperty|TargetPlatformIdentifier|Description">
@@ -152,16 +122,6 @@
         <target state="translated">Plattform</target>
         <note />
       </trans-unit>
-      <trans-unit id="EnumProperty|ApplicationManifestKind|Description">
-        <source>Selects a manifest generation option when the application runs on Windows Vista or later under User Account Control (UAC). Options include a default manifest, no manifest, or a custom manifest provided by your project.</source>
-        <target state="translated">Hiermit wird eine Option zum Generieren von Manifesten ausgewählt, wenn die Anwendung unter Windows Vista oder höher mit aktivierter Benutzerkontensteuerung (UAC) ausgeführt wird. Zu den Optionen gehören ein Standardmanifest, kein Manifest oder ein benutzerdefiniertes Manifest, das von Ihrem Projekt bereitgestellt wird.</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="EnumProperty|ApplicationManifestKind|DisplayName">
-        <source>Manifest</source>
-        <target state="translated">Manifest</target>
-        <note />
-      </trans-unit>
       <trans-unit id="EnumProperty|OutputType|Description">
         <source>Specifies the type of application to build.</source>
         <target state="translated">Hiermit wird der Typ der zu erstellenden Anwendung angegeben.</target>
@@ -180,21 +140,6 @@
       <trans-unit id="EnumProperty|ResourceSpecificationKind|DisplayName">
         <source>Resources</source>
         <target state="translated">Ressourcen</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="EnumValue|ApplicationManifestKind.CustomManifest|DisplayName">
-        <source>Use a custom manifest</source>
-        <target state="translated">Benutzerdefiniertes Manifest verwenden</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="EnumValue|ApplicationManifestKind.DefaultManifest|DisplayName">
-        <source>Embed manifest with default settings</source>
-        <target state="translated">Manifest mit Standardeinstellungen einbetten</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="EnumValue|ApplicationManifestKind.NoManifest|DisplayName">
-        <source>Create application without a manifest</source>
-        <target state="translated">Anwendung ohne Manifest erstellen</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|OutputType.Exe|DisplayName">
@@ -242,16 +187,6 @@
         <target state="translated">Symbol</target>
         <note />
       </trans-unit>
-      <trans-unit id="StringProperty|ApplicationManifestPath|Description">
-        <source>The path to the custom manifest file.</source>
-        <target state="translated">Der Pfad zur benutzerdefinierten Manifestdatei.</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="StringProperty|ApplicationManifestPath|DisplayName">
-        <source>Manifest path</source>
-        <target state="translated">Manifestpfad</target>
-        <note />
-      </trans-unit>
       <trans-unit id="StringProperty|AssemblyName|Description">
         <source>Specifies the name of the output file that will hold the assembly manifest.</source>
         <target state="translated">Hiermit wird der Name der Ausgabedatei angegeben, die das Assemblymanifest enthält.</target>
@@ -290,16 +225,6 @@
       <trans-unit id="StringProperty|TargetFrameworks|Metadata|SearchTerms">
         <source>TFM</source>
         <target state="translated">TFM</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="StringProperty|Win32Resource|Description">
-        <source>Specifies a resource file for the project.</source>
-        <target state="translated">Hiermit wird eine Ressourcendatei für das Projekt angegeben.</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="StringProperty|Win32Resource|DisplayName">
-        <source>Resource file</source>
-        <target state="translated">Ressourcendatei</target>
         <note />
       </trans-unit>
     </body>

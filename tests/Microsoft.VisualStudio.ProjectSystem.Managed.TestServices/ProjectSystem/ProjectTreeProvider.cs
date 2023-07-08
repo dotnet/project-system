@@ -1,9 +1,5 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
-using System;
-using System.Collections.Immutable;
-using System.IO;
-using System.Threading.Tasks;
 using System.Threading.Tasks.Dataflow;
 
 namespace Microsoft.VisualStudio.ProjectSystem
@@ -52,8 +48,8 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
         public IProjectTree? FindByPath(IProjectTree root, string path)
         {
-            Requires.NotNull(root, nameof(root));
-            Requires.NotNullOrEmpty(path, nameof(path));
+            Requires.NotNull(root);
+            Requires.NotNullOrEmpty(path);
 
             foreach (IProjectTree child in root.GetSelfAndDescendentsBreadthFirst())
             {

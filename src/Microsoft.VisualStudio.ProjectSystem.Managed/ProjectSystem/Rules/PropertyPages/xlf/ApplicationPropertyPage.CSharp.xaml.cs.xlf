@@ -1,0 +1,102 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
+  <file datatype="xml" source-language="en" target-language="cs" original="../ApplicationPropertyPage.CSharp.xaml">
+    <body>
+      <trans-unit id="BoolProperty|IsPublishable|Description">
+        <source>Allow publishing outside of Visual Studio, such as via "dotnet publish".</source>
+        <target state="translated">Umožňuje publikovat mimo Visual Studio, například prostřednictvím „dotnet publish“.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="BoolProperty|IsPublishable|DisplayName">
+        <source>Publishing</source>
+        <target state="translated">Publikování</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="Category|Packaging|Description">
+        <source>Packaging settings for the application.</source>
+        <target state="translated">Nastavení balení pro aplikaci.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="Category|Packaging|DisplayName">
+        <source>Packaging</source>
+        <target state="translated">Balení</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="Category|Resources|Description">
+        <source>Resource settings for the application.</source>
+        <target state="translated">Nastavení prostředků pro aplikaci</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="Category|Resources|DisplayName">
+        <source>Win32 Resources</source>
+        <target state="translated">Prostředky Win32</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumProperty|ApplicationManifestKind|Description">
+        <source>Selects a manifest generation option when the application runs on Windows Vista or later under User Account Control (UAC). Options include a default manifest, no manifest, or a custom manifest provided by your project.</source>
+        <target state="translated">Vybere možnost generování manifestu, když je aplikace spuštěná v systému Windows Vista nebo novějším se zapnutým Řízením uživatelských účtů (UAC). Možnosti zahrnují výchozí manifest, žádný manifest nebo vlastní manifest poskytnutý vaším projektem.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumProperty|ApplicationManifestKind|DisplayName">
+        <source>Manifest</source>
+        <target state="translated">Manifest</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumProperty|ResourceSpecificationKind|Description">
+        <source>Specifies how application resources will be managed.</source>
+        <target state="translated">Určuje, jak se budou spravovat prostředky aplikace.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumProperty|ResourceSpecificationKind|DisplayName">
+        <source>Resources</source>
+        <target state="translated">Prostředky</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|ApplicationManifestKind.CustomManifest|DisplayName">
+        <source>Use a custom manifest</source>
+        <target state="translated">Použít vlastní manifest</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|ApplicationManifestKind.DefaultManifest|DisplayName">
+        <source>Embed manifest with default settings</source>
+        <target state="translated">Vložit manifest s výchozím nastavením</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|ApplicationManifestKind.NoManifest|DisplayName">
+        <source>Create application without a manifest</source>
+        <target state="translated">Vytvořit aplikaci bez manifestu</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|ResourceSpecificationKind.IconAndManifest|DisplayName">
+        <source>Icon and manifest</source>
+        <target state="translated">Ikona a manifest</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|ResourceSpecificationKind.ResourceFile|DisplayName">
+        <source>Resource file</source>
+        <target state="translated">Soubor prostředků</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|ApplicationManifestPath|Description">
+        <source>The path to the custom manifest file.</source>
+        <target state="translated">Cesta k souboru vlastního manifestu</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|ApplicationManifestPath|DisplayName">
+        <source>Manifest path</source>
+        <target state="translated">Cesta k manifestu</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|Win32Resource|Description">
+        <source>Specifies a resource file for the project.</source>
+        <target state="translated">Určuje soubor prostředku pro projekt.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|Win32Resource|DisplayName">
+        <source>Resource file</source>
+        <target state="translated">Soubor prostředků</target>
+        <note />
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

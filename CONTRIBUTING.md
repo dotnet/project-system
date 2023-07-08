@@ -18,6 +18,6 @@ For additional information, see the following:
 
 # IntelliCode
 
-To provide better IntelliSense results when working with this project in Visual Studio 2019 you can [add our IntelliCode model](https://docs.microsoft.com/en-us/visualstudio/intellicode/share-models#add-a-custom-model) to your installation.
+To provide better IntelliSense results when working with this project in Visual Studio 2019 or later, you can [add our IntelliCode model](https://docs.microsoft.com/en-us/visualstudio/intellicode/share-models#add-a-custom-model) to your installation.
 
 https://prod.intellicode.vsengsaas.visualstudio.com/get?m=A17F43B28B8B4488B7A89D27F33E1BB6
