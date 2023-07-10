@@ -6,9 +6,6 @@
 
 #### Notable Files
 - [RepoLayout.props](imports\RepoLayout.props): Contains properties for paths to the directories within the repo itself.
-- [Packages.targets](imports\Packages.targets): Contains the `RestoreSources` (package feeds) and `PackageReference` nodes utilized by the repo. The `PackageReference` nodes contain the versions of the packages used by the repo, and does not *Include* the packages; they only *Update* them.
-  - This file primarily works with [HostAgnostic.props](imports\HostAgnostic.props) which is the file that actually *Includes* many of these packages in the build pipeline.
-  - *Potential change*: This file may be replaced with a `Directory.Packages.props` file within: https://github.com/dotnet/project-system/issues/8238
 
 ### `pipelines`
 - This directory is only used by Azure Pipelines and is not read by anything else in the repo.
