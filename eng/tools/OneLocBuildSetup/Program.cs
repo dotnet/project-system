@@ -15,7 +15,7 @@ namespace OneLocBuildSetup
     [SuppressMessage("ReSharper", "SuggestVarOrType_BuiltInTypes")]
     [SuppressMessage("ReSharper", "SuggestVarOrType_Elsewhere")]
     [SuppressMessage("ReSharper", "InconsistentNaming")]
-    internal class Program
+    internal sealed class Program
     {
         private const string XlfExtension = ".xlf";
         // Spanish language files have no special meaning. Any language can be used as a template file for OneLocBuild.

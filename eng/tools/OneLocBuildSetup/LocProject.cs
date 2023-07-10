@@ -2,9 +2,9 @@
 
 namespace OneLocBuildSetup
 {
-    internal record LocProject(Project[] Projects);
+    internal sealed record LocProject(Project[] Projects);
 
-    internal record Project(LocItem[] LocItems, string LanguageSet = "VS_Main_Languages");
+    internal sealed record Project(LocItem[] LocItems, string LanguageSet = "VS_Main_Languages");
 
-    internal record LocItem(string SourceFile, string OutputPath, string LclFile, string Languages = "", string CopyOption = "LangIDOnName");
+    internal sealed record LocItem(string SourceFile, string OutputPath, string LclFile, string Languages = "", string CopyOption = "LangIDOnName");
 }

@@ -4,7 +4,7 @@ using CommandLine;
 
 namespace OneLocBuildSetup
 {
-    internal class Arguments
+    internal sealed class Arguments
     {
         [Option('r', "repo", Required = true, HelpText = "The repository's root path.")]
         public string RepositoryPath { get; set; } = string.Empty;
