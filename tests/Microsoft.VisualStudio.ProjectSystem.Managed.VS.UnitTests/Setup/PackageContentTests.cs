@@ -12,13 +12,14 @@ namespace Microsoft.VisualStudio.Setup
     {
         // These files are only added as part of signing.
         private const string DigitalSignature = "package/services/digital-signature";
+        private const string SettingsRegistrationFileSuffix = "ManagedProjectSystem.registration.json";
         private const string Rels = "_rels/.rels";
 
         [Fact]
         public Task ProjectSystem()
         {
             IEnumerable<string> files = GetPackageContents("ProjectSystem.vsix");
-            VerifierSettings.ScrubLinesContaining(DigitalSignature, Rels);
+            VerifierSettings.ScrubLinesContaining(DigitalSignature, Rels, SettingsRegistrationFileSuffix);
             return Verifier.Verify(files);
         }
 
@@ -26,7 +27,7 @@ namespace Microsoft.VisualStudio.Setup
         public Task VisualStudioEditorsSetup()
         {
             IEnumerable<string> files = GetPackageContents("VisualStudioEditorsSetup.vsix");
-            VerifierSettings.ScrubLinesContaining(DigitalSignature, Rels);
+            VerifierSettings.ScrubLinesContaining(DigitalSignature, Rels, SettingsRegistrationFileSuffix);
             return Verifier.Verify(files);
         }
 
@@ -35,6 +36,7 @@ namespace Microsoft.VisualStudio.Setup
         {
             IEnumerable<string> files = GetPackageContents("Microsoft.VisualStudio.ProjectSystem.Managed.CommonFiles.vsix");
             VerifierSettings.ScrubLinesContaining(DigitalSignature);
+            VerifierSettings.ScrubLinesContaining(SettingsRegistrationFileSuffix);
             // manifest.json is the last line for non-signed builds.
             // It will not contain a comma in this situation, so we need special logic for that.
             VerifierSettings.ScrubLinesWithReplace(s => s.EndsWith("manifest.json") ? "  manifest.json," : s);
