@@ -103,7 +103,7 @@
 
     <!-- 3rd party -->
     <PackageVersion Include="Newtonsoft.Json"                                                        Version="13.0.3" />
-    <PackageVersion Include="IsExternalInit"                                                         Version="1.0.3" PrivateAssets="all" />
+    <PackageVersion Include="IsExternalInit"                                                         Version="1.0.3" />
 
     <!-- Tests -->
     <PackageVersion Include="Microsoft.NET.Test.Sdk"                                                 Version="17.5.0-preview-20221003-04" />
@@ -114,7 +114,7 @@
     <PackageVersion Include="xunit.assert"                                                           Version="2.4.2" />
     <PackageVersion Include="xunit.combinatorial"                                                    Version="1.5.25" />
     <PackageVersion Include="xunit.extensibility.core"                                               Version="2.4.2" />
-    <PackageVersion Include="xunit.extensibility.execution"                                          Version="2.4.2" NoWarn="NU1608" />
+    <PackageVersion Include="xunit.extensibility.execution"                                          Version="2.4.2" />
     <PackageVersion Include="xunit.runner.console"                                                   Version="2.4.2" />
     <PackageVersion Include="xunit.runner.visualstudio"                                              Version="2.4.5" />
 
