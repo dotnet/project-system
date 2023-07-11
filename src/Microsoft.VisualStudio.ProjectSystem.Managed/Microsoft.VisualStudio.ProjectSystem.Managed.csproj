@@ -523,7 +523,6 @@
       <DependentUpon>SupportedTargetFrameworkAlias.xaml</DependentUpon>
     </Compile>
     <XamlPropertyRule Include="ProjectSystem\Rules\SupportedTargetFrameworkAlias.xaml">
-      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
       <XlfInput>false</XlfInput>
       <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
       <SubType>Designer</SubType>
