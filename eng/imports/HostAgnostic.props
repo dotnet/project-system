@@ -55,7 +55,7 @@
 
     <!-- 3rd party -->
     <PackageReference Include="Newtonsoft.Json" />
-    <PackageReference Include="IsExternalInit" />
+    <PackageReference Include="IsExternalInit" PrivateAssets="all" />
 
     <!-- Host-Agnostic Visual Studio -->
     <PackageReference Include="Microsoft.VisualStudio.ImageCatalog" />
