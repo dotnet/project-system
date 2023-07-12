@@ -7,17 +7,17 @@
       <Namespace>Microsoft.VisualStudio.ProjectSystem</Namespace>
       <RuleInjectionClassName>$(XamlPropertyRuleInjectionClassName)</RuleInjectionClassName>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      <XlfOutputItem>EmbeddedResource</XlfOutputItem>
+      <XlfOutputItem>_TranslatedXamlRule</XlfOutputItem>
       <LogicalName>XamlRuleToCode:%(Filename)%(Extension)</LogicalName>
     </XamlPropertyRule>
     <XamlPropertyRuleNoCodeBehind>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      <XlfOutputItem>EmbeddedResource</XlfOutputItem>
+      <XlfOutputItem>_TranslatedXamlRule</XlfOutputItem>
       <LogicalName>XamlRuleToCode:%(Filename)%(Extension)</LogicalName>
     </XamlPropertyRuleNoCodeBehind>
     <XamlPropertyProjectItemsSchema>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      <XlfOutputItem>EmbeddedResource</XlfOutputItem>
+      <XlfOutputItem>_TranslatedXamlRule</XlfOutputItem>
       <LogicalName>XamlRuleToCode:%(Filename)%(Extension)</LogicalName>
     </XamlPropertyProjectItemsSchema>
     <DesignTimeTargetsFile>
@@ -25,9 +25,20 @@
     </DesignTimeTargetsFile>
   </ItemDefinitionGroup>
 
+  <!-- Embed translated XAML rule files but don't copy the EmbeddedResource item to the output.
+       We'll handle that ourselves in CopyTranslatedXamlRulesToOutputDirectory so we can adjust the file name. -->
+  <Target Name="CreateEmbeddedResourceForTranslatedXamlRules"
+          AfterTargets="TranslateSourceFromXlf">
+    <ItemGroup>
+      <EmbeddedResource Include="@(_TranslatedXamlRule)">
+        <CopyToOutputDirectory>False</CopyToOutputDirectory>
+      </EmbeddedResource>
+    </ItemGroup>
+  </Target>
+
   <!-- Copy XAML rule files and design targets files for testing and setup authoring purposes -->
   <!-- Only copy during the net472 build as that prevents multiple (possibly simultaneous) copies,
-       and only VS uses these files. -->
+       and only VS uses these files from the output directory. -->
   <Target Name="CopyXamlRulesToOutputDirectory" AfterTargets="CopyFilesToOutputDirectory"
           Condition="'$(TargetFramework)' == 'net472'">
     <ItemGroup>
@@ -47,15 +58,11 @@
 
   <!-- Copy translated XAML rule files for testing and setup authoring purposes -->
   <!-- Only copy during the net472 build as that prevents multiple (possibly simultaneous) copies,
-       and only VS uses these files. -->
+       and only VS uses these files from the output directory. -->
   <Target Name="CopyTranslatedXamlRulesToOutputDirectory" AfterTargets="CopyFilesToOutputDirectory" DependsOnTargets="TranslateSourceFromXlf"
           Condition="'$(TargetFramework)' == 'net472'">
-    <ItemGroup>
-        <_TranslatedItemsToCopy Include="@(EmbeddedResource)" Condition="'%(EmbeddedResource.XlfSourceFormat)' == 'XamlRule'" />
-    </ItemGroup>
-
-    <Copy SourceFiles="@(_TranslatedItemsToCopy)"
-          DestinationFiles="@(_TranslatedItemsToCopy->'$(VisualStudioXamlRulesDir)%(XlfLanguage)\$([System.IO.Path]::GetFileName('%(XlfSource)'))')"
+    <Copy SourceFiles="@(_TranslatedXamlRule)"
+          DestinationFiles="@(_TranslatedXamlRule->'$(VisualStudioXamlRulesDir)%(XlfLanguage)\$([System.IO.Path]::GetFileName('%(XlfSource)'))')"
           SkipUnchangedFiles="$(SkipCopyUnchangedFiles)"
           OverwriteReadOnlyFiles="$(OverwriteReadOnlyFiles)"
           Retries="$(CopyRetryCount)"
