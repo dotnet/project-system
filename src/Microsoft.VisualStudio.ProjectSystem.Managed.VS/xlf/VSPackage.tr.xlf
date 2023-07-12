@@ -89,67 +89,67 @@
       </trans-unit>
       <trans-unit id="Setting_FastUpToDateCheck_Enabled_Title">
         <source>Don't call MSBuild if a project appears to be up to date</source>
-        <target state="new">Don't call MSBuild if a project appears to be up to date</target>
+        <target state="translated">Bir proje güncel görünüyorsa MSBuild’i çağırmayın</target>
         <note />
       </trans-unit>
       <trans-unit id="Setting_FastUpToDateCheck_LoggingLevel_Info">
         <source>Info</source>
-        <target state="new">Info</target>
+        <target state="translated">Bilgi</target>
         <note />
       </trans-unit>
       <trans-unit id="Setting_FastUpToDateCheck_LoggingLevel_Minimal">
         <source>Minimal</source>
-        <target state="new">Minimal</target>
+        <target state="translated">En az</target>
         <note />
       </trans-unit>
       <trans-unit id="Setting_FastUpToDateCheck_LoggingLevel_None">
         <source>None</source>
-        <target state="new">None</target>
+        <target state="translated">Hiçbiri</target>
         <note />
       </trans-unit>
       <trans-unit id="Setting_FastUpToDateCheck_LoggingLevel_Title">
         <source>Logging Level</source>
-        <target state="new">Logging Level</target>
+        <target state="translated">Günlük Kaydı Düzeyi</target>
         <note />
       </trans-unit>
       <trans-unit id="Setting_FastUpToDateCheck_LoggingLevel_Verbose">
         <source>Verbose</source>
-        <target state="new">Verbose</target>
+        <target state="translated">Ayrıntılı</target>
         <note />
       </trans-unit>
       <trans-unit id="Setting_FileNesting_IgnoreSolutionAndProjectSettings_Title">
         <source>Ignore solution and project settings</source>
-        <target state="new">Ignore solution and project settings</target>
+        <target state="translated">Çözüm ve proje ayarlarını yoksay</target>
         <note />
       </trans-unit>
       <trans-unit id="Setting_FileNesting_PreferSingleTargetBuilds_Description">
         <source>When starting a project that targets multiple frameworks the build time can be reduced by building only a single one.</source>
-        <target state="new">When starting a project that targets multiple frameworks the build time can be reduced by building only a single one.</target>
+        <target state="translated">Birden çok çerçeveyi hedefleyen bir proje başlatılırken derlemeyi tek bir çerçeveyle sınırlayarak derleme süresi azaltılabilir.</target>
         <note />
       </trans-unit>
       <trans-unit id="Setting_FileNesting_PreferSingleTargetBuilds_Title">
         <source>Prefer single-target builds when starting a project</source>
-        <target state="new">Prefer single-target builds when starting a project</target>
+        <target state="translated">Proje başlatırken tek hedefli derlemeleri tercih edin</target>
         <note />
       </trans-unit>
       <trans-unit id="Settings_Category_FastUpToDateCheck">
         <source>Up to date checks</source>
-        <target state="new">Up to date checks</target>
+        <target state="translated">Güncellik denetimleri</target>
         <note />
       </trans-unit>
       <trans-unit id="Settings_Category_FileNestingSettings">
         <source>File nesting settings</source>
-        <target state="new">File nesting settings</target>
+        <target state="translated">İç içe dosya yerleştirme ayarları</target>
         <note />
       </trans-unit>
       <trans-unit id="Settings_Category_MultiTargetingSettings">
         <source>Multi-targeting settings</source>
-        <target state="new">Multi-targeting settings</target>
+        <target state="translated">Çoklu hedefleme ayarları</target>
         <note />
       </trans-unit>
       <trans-unit id="Settings_Category_SdkStyleProjects">
         <source>SDK-style projects</source>
-        <target state="new">SDK-style projects</target>
+        <target state="translated">SDK stili projeler</target>
         <note />
       </trans-unit>
     </body>
