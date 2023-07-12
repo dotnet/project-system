@@ -89,67 +89,67 @@
       </trans-unit>
       <trans-unit id="Setting_FastUpToDateCheck_Enabled_Title">
         <source>Don't call MSBuild if a project appears to be up to date</source>
-        <target state="new">Don't call MSBuild if a project appears to be up to date</target>
+        <target state="translated">Não chame o MSBuild se um projeto parecer estar atualizado.</target>
         <note />
       </trans-unit>
       <trans-unit id="Setting_FastUpToDateCheck_LoggingLevel_Info">
         <source>Info</source>
-        <target state="new">Info</target>
+        <target state="translated">Informações</target>
         <note />
       </trans-unit>
       <trans-unit id="Setting_FastUpToDateCheck_LoggingLevel_Minimal">
         <source>Minimal</source>
-        <target state="new">Minimal</target>
+        <target state="translated">Mínimo</target>
         <note />
       </trans-unit>
       <trans-unit id="Setting_FastUpToDateCheck_LoggingLevel_None">
         <source>None</source>
-        <target state="new">None</target>
+        <target state="translated">Nenhum</target>
         <note />
       </trans-unit>
       <trans-unit id="Setting_FastUpToDateCheck_LoggingLevel_Title">
         <source>Logging Level</source>
-        <target state="new">Logging Level</target>
+        <target state="translated">Nível de Log</target>
         <note />
       </trans-unit>
       <trans-unit id="Setting_FastUpToDateCheck_LoggingLevel_Verbose">
         <source>Verbose</source>
-        <target state="new">Verbose</target>
+        <target state="translated">Detalhado</target>
         <note />
       </trans-unit>
       <trans-unit id="Setting_FileNesting_IgnoreSolutionAndProjectSettings_Title">
         <source>Ignore solution and project settings</source>
-        <target state="new">Ignore solution and project settings</target>
+        <target state="translated">Ignorar configurações de projeto e solução</target>
         <note />
       </trans-unit>
       <trans-unit id="Setting_FileNesting_PreferSingleTargetBuilds_Description">
         <source>When starting a project that targets multiple frameworks the build time can be reduced by building only a single one.</source>
-        <target state="new">When starting a project that targets multiple frameworks the build time can be reduced by building only a single one.</target>
+        <target state="translated">Ao iniciar um projeto direcionado a várias estruturas, o tempo de compilação pode ser reduzido compilando apenas uma estrutura.</target>
         <note />
       </trans-unit>
       <trans-unit id="Setting_FileNesting_PreferSingleTargetBuilds_Title">
         <source>Prefer single-target builds when starting a project</source>
-        <target state="new">Prefer single-target builds when starting a project</target>
+        <target state="translated">Prefira compilações de destino único ao iniciar um projeto.</target>
         <note />
       </trans-unit>
       <trans-unit id="Settings_Category_FastUpToDateCheck">
         <source>Up to date checks</source>
-        <target state="new">Up to date checks</target>
+        <target state="translated">Verificações atualizadas</target>
         <note />
       </trans-unit>
       <trans-unit id="Settings_Category_FileNestingSettings">
         <source>File nesting settings</source>
-        <target state="new">File nesting settings</target>
+        <target state="translated">Configurações de aninhamento de arquivo</target>
         <note />
       </trans-unit>
       <trans-unit id="Settings_Category_MultiTargetingSettings">
         <source>Multi-targeting settings</source>
-        <target state="new">Multi-targeting settings</target>
+        <target state="translated">Configurações de segmentação múltipla</target>
         <note />
       </trans-unit>
       <trans-unit id="Settings_Category_SdkStyleProjects">
         <source>SDK-style projects</source>
-        <target state="new">SDK-style projects</target>
+        <target state="translated">Projetos no estilo de SDK</target>
         <note />
       </trans-unit>
     </body>

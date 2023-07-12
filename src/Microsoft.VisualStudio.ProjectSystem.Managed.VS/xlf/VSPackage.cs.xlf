@@ -89,67 +89,67 @@
       </trans-unit>
       <trans-unit id="Setting_FastUpToDateCheck_Enabled_Title">
         <source>Don't call MSBuild if a project appears to be up to date</source>
-        <target state="new">Don't call MSBuild if a project appears to be up to date</target>
+        <target state="translated">Nevolat MSBuild, pokud se projekt jeví jako aktuální</target>
         <note />
       </trans-unit>
       <trans-unit id="Setting_FastUpToDateCheck_LoggingLevel_Info">
         <source>Info</source>
-        <target state="new">Info</target>
+        <target state="translated">Informační</target>
         <note />
       </trans-unit>
       <trans-unit id="Setting_FastUpToDateCheck_LoggingLevel_Minimal">
         <source>Minimal</source>
-        <target state="new">Minimal</target>
+        <target state="translated">Minimální</target>
         <note />
       </trans-unit>
       <trans-unit id="Setting_FastUpToDateCheck_LoggingLevel_None">
         <source>None</source>
-        <target state="new">None</target>
+        <target state="translated">Žádná</target>
         <note />
       </trans-unit>
       <trans-unit id="Setting_FastUpToDateCheck_LoggingLevel_Title">
         <source>Logging Level</source>
-        <target state="new">Logging Level</target>
+        <target state="translated">Úroveň protokolování</target>
         <note />
       </trans-unit>
       <trans-unit id="Setting_FastUpToDateCheck_LoggingLevel_Verbose">
         <source>Verbose</source>
-        <target state="new">Verbose</target>
+        <target state="translated">Podrobná</target>
         <note />
       </trans-unit>
       <trans-unit id="Setting_FileNesting_IgnoreSolutionAndProjectSettings_Title">
         <source>Ignore solution and project settings</source>
-        <target state="new">Ignore solution and project settings</target>
+        <target state="translated">Ignorovat nastavení řešení a projektů</target>
         <note />
       </trans-unit>
       <trans-unit id="Setting_FileNesting_PreferSingleTargetBuilds_Description">
         <source>When starting a project that targets multiple frameworks the build time can be reduced by building only a single one.</source>
-        <target state="new">When starting a project that targets multiple frameworks the build time can be reduced by building only a single one.</target>
+        <target state="translated">Při zahajování projektu, který cílí na více architektur, je možné zkrátit dobu sestavení vytvořením pouze jednoho projektu.</target>
         <note />
       </trans-unit>
       <trans-unit id="Setting_FileNesting_PreferSingleTargetBuilds_Title">
         <source>Prefer single-target builds when starting a project</source>
-        <target state="new">Prefer single-target builds when starting a project</target>
+        <target state="translated">Při spuštění projektu upřednostňovat sestavení s jedním cílem</target>
         <note />
       </trans-unit>
       <trans-unit id="Settings_Category_FastUpToDateCheck">
         <source>Up to date checks</source>
-        <target state="new">Up to date checks</target>
+        <target state="translated">Kontroly aktuálnosti</target>
         <note />
       </trans-unit>
       <trans-unit id="Settings_Category_FileNestingSettings">
         <source>File nesting settings</source>
-        <target state="new">File nesting settings</target>
+        <target state="translated">Nastavení vnořování souborů</target>
         <note />
       </trans-unit>
       <trans-unit id="Settings_Category_MultiTargetingSettings">
         <source>Multi-targeting settings</source>
-        <target state="new">Multi-targeting settings</target>
+        <target state="translated">Nastavení vícenásobného cílení</target>
         <note />
       </trans-unit>
       <trans-unit id="Settings_Category_SdkStyleProjects">
         <source>SDK-style projects</source>
-        <target state="new">SDK-style projects</target>
+        <target state="translated">Projekty stylu sady SDK</target>
         <note />
       </trans-unit>
     </body>

@@ -89,67 +89,67 @@
       </trans-unit>
       <trans-unit id="Setting_FastUpToDateCheck_Enabled_Title">
         <source>Don't call MSBuild if a project appears to be up to date</source>
-        <target state="new">Don't call MSBuild if a project appears to be up to date</target>
+        <target state="translated">프로젝트가 최신으로 표시되는 경우 MSBuild를 호출하지 않음</target>
         <note />
       </trans-unit>
       <trans-unit id="Setting_FastUpToDateCheck_LoggingLevel_Info">
         <source>Info</source>
-        <target state="new">Info</target>
+        <target state="translated">정보</target>
         <note />
       </trans-unit>
       <trans-unit id="Setting_FastUpToDateCheck_LoggingLevel_Minimal">
         <source>Minimal</source>
-        <target state="new">Minimal</target>
+        <target state="translated">최소</target>
         <note />
       </trans-unit>
       <trans-unit id="Setting_FastUpToDateCheck_LoggingLevel_None">
         <source>None</source>
-        <target state="new">None</target>
+        <target state="translated">없음</target>
         <note />
       </trans-unit>
       <trans-unit id="Setting_FastUpToDateCheck_LoggingLevel_Title">
         <source>Logging Level</source>
-        <target state="new">Logging Level</target>
+        <target state="translated">로깅 수준</target>
         <note />
       </trans-unit>
       <trans-unit id="Setting_FastUpToDateCheck_LoggingLevel_Verbose">
         <source>Verbose</source>
-        <target state="new">Verbose</target>
+        <target state="translated">자세한 정보 표시</target>
         <note />
       </trans-unit>
       <trans-unit id="Setting_FileNesting_IgnoreSolutionAndProjectSettings_Title">
         <source>Ignore solution and project settings</source>
-        <target state="new">Ignore solution and project settings</target>
+        <target state="translated">솔루션 및 프로젝트 설정 무시</target>
         <note />
       </trans-unit>
       <trans-unit id="Setting_FileNesting_PreferSingleTargetBuilds_Description">
         <source>When starting a project that targets multiple frameworks the build time can be reduced by building only a single one.</source>
-        <target state="new">When starting a project that targets multiple frameworks the build time can be reduced by building only a single one.</target>
+        <target state="translated">여러 프레임워크를 대상으로 하는 프로젝트를 시작할 때 빌드 시간은 단일 프레임워크만 빌드하여 줄일 수 있습니다.</target>
         <note />
       </trans-unit>
       <trans-unit id="Setting_FileNesting_PreferSingleTargetBuilds_Title">
         <source>Prefer single-target builds when starting a project</source>
-        <target state="new">Prefer single-target builds when starting a project</target>
+        <target state="translated">프로젝트를 시작할 때 단일 대상 빌드 선호</target>
         <note />
       </trans-unit>
       <trans-unit id="Settings_Category_FastUpToDateCheck">
         <source>Up to date checks</source>
-        <target state="new">Up to date checks</target>
+        <target state="translated">최신 검사</target>
         <note />
       </trans-unit>
       <trans-unit id="Settings_Category_FileNestingSettings">
         <source>File nesting settings</source>
-        <target state="new">File nesting settings</target>
+        <target state="translated">파일 중첩 설정</target>
         <note />
       </trans-unit>
       <trans-unit id="Settings_Category_MultiTargetingSettings">
         <source>Multi-targeting settings</source>
-        <target state="new">Multi-targeting settings</target>
+        <target state="translated">다중 대상 지정 설정</target>
         <note />
       </trans-unit>
       <trans-unit id="Settings_Category_SdkStyleProjects">
         <source>SDK-style projects</source>
-        <target state="new">SDK-style projects</target>
+        <target state="translated">SDK 스타일 프로젝트</target>
         <note />
       </trans-unit>
     </body>

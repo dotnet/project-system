@@ -89,67 +89,67 @@
       </trans-unit>
       <trans-unit id="Setting_FastUpToDateCheck_Enabled_Title">
         <source>Don't call MSBuild if a project appears to be up to date</source>
-        <target state="new">Don't call MSBuild if a project appears to be up to date</target>
+        <target state="translated">Non chiama MSBuild se un progetto sembra aggiornato</target>
         <note />
       </trans-unit>
       <trans-unit id="Setting_FastUpToDateCheck_LoggingLevel_Info">
         <source>Info</source>
-        <target state="new">Info</target>
+        <target state="translated">Informazioni</target>
         <note />
       </trans-unit>
       <trans-unit id="Setting_FastUpToDateCheck_LoggingLevel_Minimal">
         <source>Minimal</source>
-        <target state="new">Minimal</target>
+        <target state="translated">Minimo</target>
         <note />
       </trans-unit>
       <trans-unit id="Setting_FastUpToDateCheck_LoggingLevel_None">
         <source>None</source>
-        <target state="new">None</target>
+        <target state="translated">Nessuno</target>
         <note />
       </trans-unit>
       <trans-unit id="Setting_FastUpToDateCheck_LoggingLevel_Title">
         <source>Logging Level</source>
-        <target state="new">Logging Level</target>
+        <target state="translated">Livello di registrazione</target>
         <note />
       </trans-unit>
       <trans-unit id="Setting_FastUpToDateCheck_LoggingLevel_Verbose">
         <source>Verbose</source>
-        <target state="new">Verbose</target>
+        <target state="translated">Dettagliato</target>
         <note />
       </trans-unit>
       <trans-unit id="Setting_FileNesting_IgnoreSolutionAndProjectSettings_Title">
         <source>Ignore solution and project settings</source>
-        <target state="new">Ignore solution and project settings</target>
+        <target state="translated">Ignora impostazioni della soluzione e del progetto</target>
         <note />
       </trans-unit>
       <trans-unit id="Setting_FileNesting_PreferSingleTargetBuilds_Description">
         <source>When starting a project that targets multiple frameworks the build time can be reduced by building only a single one.</source>
-        <target state="new">When starting a project that targets multiple frameworks the build time can be reduced by building only a single one.</target>
+        <target state="translated">Quando si avvia un progetto destinato a più framework, è possibile ridurre il tempo di compilazione limitando la compilazione a un singolo framework.</target>
         <note />
       </trans-unit>
       <trans-unit id="Setting_FileNesting_PreferSingleTargetBuilds_Title">
         <source>Prefer single-target builds when starting a project</source>
-        <target state="new">Prefer single-target builds when starting a project</target>
+        <target state="translated">Preferire le compilazioni a destinazione singola all'avvio di un progetto</target>
         <note />
       </trans-unit>
       <trans-unit id="Settings_Category_FastUpToDateCheck">
         <source>Up to date checks</source>
-        <target state="new">Up to date checks</target>
+        <target state="translated">Controlli aggiornamenti</target>
         <note />
       </trans-unit>
       <trans-unit id="Settings_Category_FileNestingSettings">
         <source>File nesting settings</source>
-        <target state="new">File nesting settings</target>
+        <target state="translated">Impostazioni di annidamento file</target>
         <note />
       </trans-unit>
       <trans-unit id="Settings_Category_MultiTargetingSettings">
         <source>Multi-targeting settings</source>
-        <target state="new">Multi-targeting settings</target>
+        <target state="translated">Impostazioni multi-targeting</target>
         <note />
       </trans-unit>
       <trans-unit id="Settings_Category_SdkStyleProjects">
         <source>SDK-style projects</source>
-        <target state="new">SDK-style projects</target>
+        <target state="translated">Progetti di tipo SDK</target>
         <note />
       </trans-unit>
     </body>
