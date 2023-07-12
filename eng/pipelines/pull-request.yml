@@ -11,14 +11,7 @@
 
 # Activates the pipeline for every commit on a PR.
 # See: https://docs.microsoft.com/azure/devops/pipelines/yaml-schema/pr?view=azure-pipelines
-pr:
-  branches:
-    include:
-    - main
-    # Our VS alignment branches start with dev (for example: dev17.2.x)
-    - dev*
-    # Any other branches that contain major feature development.
-    - feature/*
+pr: ['*']
 
 # Disable CI builds for this pipeline.
 # See: https://docs.microsoft.com/azure/devops/pipelines/yaml-schema/trigger?view=azure-pipelines#examples
