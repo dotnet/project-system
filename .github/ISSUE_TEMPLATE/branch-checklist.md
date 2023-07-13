@@ -26,6 +26,5 @@ _Descriptions of these steps can be found in the team OneNote._
 - [ ] Update [version.json](https://github.com/dotnet/project-system/blob/main/version.json) (via `"version"`) to match the version of VS, if needed
     - [ ] In new branch: https://github.com/dotnet/project-system/blob/dev17.❓.x/version.json
     - [ ] In `main`: https://github.com/dotnet/project-system/blob/main/version.json
-- [ ] For running manual insertions, queue them up within the [DotNet-Project-System pipeline](https://devdiv.visualstudio.com/DevDiv/_build?definitionId=9675&_a=summary) and enter the appropriate `VS Insertion Branch Name`
-- [ ] Update [README.md](https://github.com/dotnet/project-system/blob/main/README.md) (in `main`) if we need new badges
+- [ ] To run manual insertions, use the [DotNet-Project-System pipeline](https://devdiv.visualstudio.com/DevDiv/_build?definitionId=9675&_a=summary). Enter the GitHub branch as _Branch/tag_, the VS branch as _VS Insertion Branch Name_, and check _Create VS Insertion PR_.
 - [ ] Update [MSFTBot milestone tracking](https://aka.ms/fabricbotconfig)
