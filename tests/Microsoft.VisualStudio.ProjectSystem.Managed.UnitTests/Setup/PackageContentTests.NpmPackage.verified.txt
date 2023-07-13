@@ -2,5 +2,18 @@
   exports.json,
   Microsoft.CodeAnalysis.dll,
   Microsoft.VisualStudio.ProjectSystem.Managed.dll,
-  package.json
+  package.json,
+  cs\Microsoft.VisualStudio.ProjectSystem.Managed.resources.dll,
+  de\Microsoft.VisualStudio.ProjectSystem.Managed.resources.dll,
+  es\Microsoft.VisualStudio.ProjectSystem.Managed.resources.dll,
+  fr\Microsoft.VisualStudio.ProjectSystem.Managed.resources.dll,
+  it\Microsoft.VisualStudio.ProjectSystem.Managed.resources.dll,
+  ja\Microsoft.VisualStudio.ProjectSystem.Managed.resources.dll,
+  ko\Microsoft.VisualStudio.ProjectSystem.Managed.resources.dll,
+  pl\Microsoft.VisualStudio.ProjectSystem.Managed.resources.dll,
+  pt-BR\Microsoft.VisualStudio.ProjectSystem.Managed.resources.dll,
+  ru\Microsoft.VisualStudio.ProjectSystem.Managed.resources.dll,
+  tr\Microsoft.VisualStudio.ProjectSystem.Managed.resources.dll,
+  zh-Hans\Microsoft.VisualStudio.ProjectSystem.Managed.resources.dll,
+  zh-Hant\Microsoft.VisualStudio.ProjectSystem.Managed.resources.dll
 ]

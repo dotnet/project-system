@@ -712,11 +712,14 @@
     </None>
   </ItemGroup>
 
-  <Target Name="AddFilesForNpmPackage" DependsOnTargets="Build" Condition="'$(TargetFramework)' == 'net7.0'">
+  <Target Name="AddFilesForNpmPackage" DependsOnTargets="Build;SatelliteDllsProjectOutputGroup" Condition="'$(TargetFramework)' == 'net7.0'">
     <ItemGroup>
       <NpmContent Include="exports.json" />
       <!-- We have a runtime dependency on Microsoft.CodeAnalysis.dll in VS Code scenarios. -->
       <NpmContent Include="$(PkgMicrosoft_CodeAnalysis_Common)\lib\net6.0\Microsoft.CodeAnalysis.dll" />
+      <NpmContent Include="@(SatelliteDllsProjectOutputGroupOutput)">
+        <PackagePath>%(SatelliteDllsProjectOutputGroupOutput.TargetPath)</PackagePath>
+      </NpmContent>
     </ItemGroup>
   </Target>
 
