@@ -107,7 +107,7 @@
           {
             "name": "addMilestone",
             "parameters": {
-              "milestoneName": "17.7"
+              "milestoneName": "17.8"
             }
           }
         ],
@@ -1710,6 +1710,96 @@
             "name": "addMilestone",
             "parameters": {
               "milestoneName": "17.4"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "taskType": "trigger",
+      "capabilityId": "IssueResponder",
+      "subCapability": "PullRequestResponder",
+      "version": "1.0",
+      "config": {
+        "conditions": {
+          "operator": "and",
+          "operands": [
+            {
+              "name": "isAction",
+              "parameters": {
+                "action": "merged"
+              }
+            },
+            {
+              "operator": "or",
+              "operands": [
+                {
+                  "name": "prTargetsBranch",
+                  "parameters": {
+                    "branchName": "dev17.5-x"
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        "eventType": "pull_request",
+        "eventNames": [
+          "pull_request",
+          "issues",
+          "project_card"
+        ],
+        "taskName": "Milestone tracking - 17.5",
+        "actions": [
+          {
+            "name": "addMilestone",
+            "parameters": {
+              "milestoneName": "17.5"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "taskType": "trigger",
+      "capabilityId": "IssueResponder",
+      "subCapability": "PullRequestResponder",
+      "version": "1.0",
+      "config": {
+        "conditions": {
+          "operator": "and",
+          "operands": [
+            {
+              "name": "isAction",
+              "parameters": {
+                "action": "merged"
+              }
+            },
+            {
+              "operator": "or",
+              "operands": [
+                {
+                  "name": "prTargetsBranch",
+                  "parameters": {
+                    "branchName": "dev17.7-x"
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        "eventType": "pull_request",
+        "eventNames": [
+          "pull_request",
+          "issues",
+          "project_card"
+        ],
+        "taskName": "Milestone tracking - 17.7",
+        "actions": [
+          {
+            "name": "addMilestone",
+            "parameters": {
+              "milestoneName": "17.7"
             }
           }
         ]
