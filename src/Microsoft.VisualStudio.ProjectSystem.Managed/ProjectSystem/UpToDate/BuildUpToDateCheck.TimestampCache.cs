@@ -6,7 +6,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 {
     internal sealed partial class BuildUpToDateCheck
     {
-        internal readonly struct TimestampCache
+        internal readonly struct TimestampCache : ITimestampCache
         {
             private readonly Dictionary<string, DateTime> _timestampCache = new(StringComparers.Paths);
             private readonly IFileSystem _fileSystem;
@@ -41,6 +41,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 }
 
                 return time;
+            }
+
+            public void ClearTimestamps(IEnumerable<string> paths)
+            {
+                // This should never be called.
+                throw new NotImplementedException();
             }
         }
     }

@@ -722,12 +722,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             return true;
         }
 
-        private bool CheckCopyToOutputDirectoryItems(Log log, UpToDateCheckImplicitConfiguredInput state, IEnumerable<(string Path, ImmutableArray<CopyItem> CopyItems)> copyItemsByProject, ConfiguredFileSystemOperationAggregator fileSystemAggregator, bool? isBuildAccelerationEnabled, CancellationToken token)
+        private bool CheckCopyToOutputDirectoryItems(Log log, UpToDateCheckImplicitConfiguredInput state, IEnumerable<(string Path, ImmutableArray<CopyItem> CopyItems)> copyItemsByProject, ConfiguredFileSystemOperationAggregator fileSystemAggregator, ITimestampCache copyItemTimestampCache, bool? isBuildAccelerationEnabled, CancellationToken token)
         {
-            ITimestampCache? timestampCache = _solutionBuildContextProvider.CurrentSolutionBuildContext?.CopyItemTimestamps;
-
-            Assumes.NotNull(timestampCache);
-
             string outputFullPath = Path.Combine(state.MSBuildProjectDirectory, state.OutputRelativeOrFullPath);
 
             Log.Scope? scope1 = null;
@@ -771,7 +767,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
                     log.Verbose(nameof(Resources.FUTD_CheckingCopyToOutputDirectoryItem_1), copyType.ToString());
 
-                    DateTime? sourceTime = timestampCache.GetTimestampUtc(sourcePath);
+                    DateTime? sourceTime = copyItemTimestampCache.GetTimestampUtc(sourcePath);
 
                     if (sourceTime is null)
                     {
@@ -784,7 +780,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
                     log.Verbose(nameof(Resources.FUTD_SourceFileTimeAndPath_2), sourceTime, sourcePath);
 
-                    DateTime? destinationTime = timestampCache.GetTimestampUtc(destinationPath);
+                    DateTime? destinationTime = copyItemTimestampCache.GetTimestampUtc(destinationPath);
 
                     if (destinationTime is null)
                     {
@@ -958,26 +954,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 token.ThrowIfCancellationRequested();
 
                 // Short-lived cache of timestamp by path
-                var timestampCache = new TimestampCache(_fileSystem);
+                TimestampCache timestampCache = new(_fileSystem);
 
-                // Ensure we have a context object for the current solution build.
-                //
-                // Ordinarily, this is created when the SBM calls ISolutionBuildEventListener.NotifySolutionBuildStarting,
-                // and cleared again later when the SBM calls ISolutionBuildEventListener.NotifySolutionBuildCompleted.
-                //
-                // However there are two cases where it may be null here:
-                //
-                // 1. When performing a validation run that continues after the solution build completed, or
-                // 2. When the build occurs in response to debugging (e.g. F5) in which case the SBM calls the
-                //    FUTDC *before* it invokes any solution build events.
-                //
-                // In either case, we construct an event here lazily so that we can correctly test for the
-                // existence of copy items in CheckCopyToOutputDirectoryItems.
-                if (_solutionBuildContextProvider.CurrentSolutionBuildContext is null)
-                {
-                    _solutionBuildEventListener.NotifySolutionBuildStarting();
-                    Assumes.NotNull(_solutionBuildContextProvider.CurrentSolutionBuildContext);
-                }
+                // For copy items, we share a timestamp cache across the solution build.
+                // It's constructed when the SBM calls IVsUpdateSolutionEvents.UpdateSolution_Begin,
+                // and cleared when the SBM calls IVsUpdateSolutionEvents.UpdateSolution_Done.
+                // If the FUTDC is called outside those events, the CurrentSolutionBuildContext will
+                // be null, so we share the same short-lived cache. This can happen when performing
+                // validation runs, which can occur after the solution build has completed.
+                ITimestampCache copyItemTimestampCache = _solutionBuildContextProvider.CurrentSolutionBuildContext?.CopyItemTimestamps ?? timestampCache;
 
                 globalProperties.TryGetValue(FastUpToDateCheckIgnoresKindsGlobalPropertyName, out string? ignoreKindsString);
 
@@ -1083,7 +1068,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                             !CheckInputsAndOutputs(logger, lastSuccessfulBuildStartTimeUtc, timestampCache, implicitState, ignoreKinds, token) ||
                             !CheckBuiltFromInputFiles(logger, timestampCache, implicitState, token) ||
                             !CheckMarkers(logger, timestampCache, implicitState, isBuildAccelerationEnabled, fileSystemOperations) ||
-                            !CheckCopyToOutputDirectoryItems(logger, implicitState, copyInfo.ItemsByProject, configuredFileSystemOperations, isBuildAccelerationEnabled, token))
+                            !CheckCopyToOutputDirectoryItems(logger, implicitState, copyInfo.ItemsByProject, configuredFileSystemOperations, copyItemTimestampCache, isBuildAccelerationEnabled, token))
                         {
                             return (false, checkedConfigurations);
                         }

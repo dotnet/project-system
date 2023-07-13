@@ -151,12 +151,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.UpToDate
             return null;
         }
 
-        int IVsUpdateSolutionEvents.UpdateSolution_StartUpdate(ref int pfCancelUpdate)
+        int IVsUpdateSolutionEvents.UpdateSolution_Begin(ref int pfCancelUpdate)
         {
             _solutionBuildEventListener.NotifySolutionBuildStarting();
 
             return HResult.OK;
         }
+
         int IVsUpdateSolutionEvents.UpdateSolution_Done(int fSucceeded, int fModified, int fCancelCommand)
         {
             _solutionBuildEventListener.NotifySolutionBuildCompleted(cancelled: false);
@@ -174,7 +175,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.UpToDate
         #region IVsUpdateSolutionEvents stubs
 
         int IVsUpdateSolutionEvents.OnActiveProjectCfgChange(IVsHierarchy pIVsHierarchy) => HResult.OK;
-        int IVsUpdateSolutionEvents.UpdateSolution_Begin(ref int pfCancelUpdate) => HResult.OK;
+        int IVsUpdateSolutionEvents.UpdateSolution_StartUpdate(ref int pfCancelUpdate) => HResult.OK;
 
         int IVsUpdateSolutionEvents2.OnActiveProjectCfgChange(IVsHierarchy pIVsHierarchy) => HResult.OK;
         int IVsUpdateSolutionEvents2.UpdateSolution_Begin(ref int pfCancelUpdate) => HResult.OK;
