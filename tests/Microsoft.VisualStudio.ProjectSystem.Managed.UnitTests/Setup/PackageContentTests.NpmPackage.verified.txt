@@ -1,0 +1,6 @@
+﻿[
+  exports.json,
+  Microsoft.CodeAnalysis.dll,
+  Microsoft.VisualStudio.ProjectSystem.Managed.dll,
+  package.json
+]
