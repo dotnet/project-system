@@ -722,11 +722,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             return true;
         }
 
-        private bool CheckCopyToOutputDirectoryItems(Log log, UpToDateCheckImplicitConfiguredInput state, IEnumerable<(string Path, ImmutableArray<CopyItem> CopyItems)> copyItemsByProject, ConfiguredFileSystemOperationAggregator fileSystemAggregator, bool? isBuildAccelerationEnabled, CancellationToken token)
+        private bool CheckCopyToOutputDirectoryItems(Log log, UpToDateCheckImplicitConfiguredInput state, IEnumerable<(string Path, ImmutableArray<CopyItem> CopyItems)> copyItemsByProject, ConfiguredFileSystemOperationAggregator fileSystemAggregator, bool? isBuildAccelerationEnabled, SolutionBuildContext solutionBuildContext, CancellationToken token)
         {
-            ITimestampCache? timestampCache = _solutionBuildContextProvider.CurrentSolutionBuildContext?.CopyItemTimestamps;
-
-            Assumes.NotNull(timestampCache);
+            ITimestampCache timestampCache = solutionBuildContext.CopyItemTimestamps;
 
             string outputFullPath = Path.Combine(state.MSBuildProjectDirectory, state.OutputRelativeOrFullPath);
 
@@ -973,10 +971,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 //
                 // In either case, we construct an event here lazily so that we can correctly test for the
                 // existence of copy items in CheckCopyToOutputDirectoryItems.
-                if (_solutionBuildContextProvider.CurrentSolutionBuildContext is null)
+                SolutionBuildContext? solutionBuildContext = _solutionBuildContextProvider.CurrentSolutionBuildContext;
+                if (solutionBuildContext is null)
                 {
                     _solutionBuildEventListener.NotifySolutionBuildStarting();
-                    Assumes.NotNull(_solutionBuildContextProvider.CurrentSolutionBuildContext);
+                    solutionBuildContext = _solutionBuildContextProvider.CurrentSolutionBuildContext;
+                    Assumes.NotNull(solutionBuildContext);
                 }
 
                 globalProperties.TryGetValue(FastUpToDateCheckIgnoresKindsGlobalPropertyName, out string? ignoreKindsString);
@@ -1083,7 +1083,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                             !CheckInputsAndOutputs(logger, lastSuccessfulBuildStartTimeUtc, timestampCache, implicitState, ignoreKinds, token) ||
                             !CheckBuiltFromInputFiles(logger, timestampCache, implicitState, token) ||
                             !CheckMarkers(logger, timestampCache, implicitState, isBuildAccelerationEnabled, fileSystemOperations) ||
-                            !CheckCopyToOutputDirectoryItems(logger, implicitState, copyInfo.ItemsByProject, configuredFileSystemOperations, isBuildAccelerationEnabled, token))
+                            !CheckCopyToOutputDirectoryItems(logger, implicitState, copyInfo.ItemsByProject, configuredFileSystemOperations, isBuildAccelerationEnabled, solutionBuildContext, token))
                         {
                             return (false, checkedConfigurations);
                         }
