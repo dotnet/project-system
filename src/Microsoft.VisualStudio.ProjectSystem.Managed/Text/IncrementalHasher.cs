@@ -72,20 +72,7 @@ namespace Microsoft.VisualStudio.Text
                 return false;
             }
 
-            if (thisBytes.Length != thatBytes.Length)
-            {
-                return false;
-            }
-
-            for (int i = 0; i < thisBytes.Length; i++)
-            {
-                if (thisBytes[i] != thatBytes[i])
-                {
-                    return false;
-                }
-            }
-
-            return true;
+            return thisBytes.AsSpan().SequenceEqual(thatBytes.AsSpan());
         }
 
         public override int GetHashCode()
