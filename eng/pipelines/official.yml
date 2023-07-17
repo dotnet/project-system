@@ -89,12 +89,6 @@ variables:
   # Opt out of automatically injecting Codesign Validation into the pipeline. We run Codesign Validation as part of the Compliance pipeline.
   # See: https://aka.ms/gdn-injection
   runCodesignValidationInjection: false
-  # Suspend enforcement of NuGet Single Feed Policy. See:
-  # - https://aka.ms/nugetmultifeed
-  # - https://docs.opensource.microsoft.com/tools/nuget_security_analysis/nuget_security_analysis/
-  # - https://docs.opensource.microsoft.com/tools/cg/how-to/nuget-multifeed-configuration/
-  # - https://onebranch.visualstudio.com/OneBranch/_wiki/wikis/OneBranch.wiki/5205/TSG-Build-Broken-Due-to-Using-Multiple-Feeds?anchor=setting-nugetsecurityanalysiswarninglevel-in-cdp
-  NugetSecurityAnalysisWarningLevel: none
   # Allows CodeQL to run on our Build job.
   # https://eng.ms/docs/cloud-ai-platform/devdiv/one-engineering-system-1es/1es-docs/codeql/configuring-codeql3000-ado-pipelines
   Codeql.Enabled: true
