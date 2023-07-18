@@ -144,10 +144,11 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                 '   appropriate code.
                 '
                 Dim projectRootNamespace As String = String.Empty
+
                 If isVB Then
                     projectRootNamespace = GetProjectRootNamespace()
                 End If
-                
+
                 ' then get the CodeCompileUnit for this .settings file
                 '
                 Dim generatedClass As CodeTypeDeclaration = Nothing
@@ -254,9 +255,15 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             ' Create a new namespace to put our class in
             '
             Dim ns as CodeNamespace
-            
+
             If IsVb Then
-                ns = New CodeNamespace(MyNamespaceName)
+                ' Check if the project has a custom namespace; if so, use it in the creation of the CompileUnit.
+                If DefaultNamespace IsNot String.Empty Then
+                    ns = New CodeNamespace(DefaultNamespace)
+                Else
+                    ns = New CodeNamespace(MyNamespaceName)
+                End If
+
             Else
                 ns = New CodeNamespace(DesignerFramework.DesignUtil.GenerateValidLanguageIndependentNamespace(DefaultNamespace))
             End If
@@ -1093,4 +1100,4 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
 #End Region
 
     End Class
-End Namespace
+End namespace
