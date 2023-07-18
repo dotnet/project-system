@@ -18,7 +18,7 @@ internal class TrimmingEnumProvider : IDynamicEnumValuesProvider
     {
         private static readonly List<IEnumValue> s_enumValues = new()
         {
-            new PageEnumValue(new EnumValue { Name = "", DisplayName = "(Default)" }),
+            new PageEnumValue(new EnumValue { Name = string.Empty, DisplayName = "(Default)" }),
             new PageEnumValue(new EnumValue { Name = "none", DisplayName = "None" }),
             new PageEnumValue(new EnumValue { Name = "full", DisplayName = "Full" })
         };
