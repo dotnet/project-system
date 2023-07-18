@@ -265,7 +265,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                 End If
 
             Else
-                ns = New CodeNamespace(DesignerFramework.DesignUtil.GenerateValidLanguageIndependentNamespace(DefaultNamespace))
+                ns = New CodeNamespace(DesignUtil.GenerateValidLanguageIndependentNamespace(DefaultNamespace))
             End If
             
             CompileUnit.Namespaces.Add(ns)
@@ -595,8 +595,8 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             If projectRootNamespace <> "" Then
                 fullTypeName = projectRootNamespace & "."
             End If
-            
-            If defaultNamespace <> "" AndAlso Not defaultNamespace.Equals(MyNamespaceName) Then ' defaultNamespace, if none exists, will come in thru wszDefaultNamespace as My. We don't want to duplicate it.
+
+            If defaultNamespace <> "" AndAlso Not defaultNamespace.Equals(MyNamespaceName, StringComparison.Ordinal) Then ' defaultNamespace, if none exists, will come in thru wszDefaultNamespace as My. We don't want to duplicate it.
                 fullTypeName &= defaultNamespace & "."
             End If
 
@@ -683,7 +683,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                 .HasSet = False
             }
 
-            Dim fullTypeReference As CodeTypeReference = New CodeTypeReference(GetFullTypeName(projectRootNamespace, defaultNamespace, GeneratedType.Name, isVb)) With {
+            Dim fullTypeReference As New CodeTypeReference(GetFullTypeName(projectRootNamespace, defaultNamespace, GeneratedType.Name, isVb)) With {
                 .Options = CodeTypeReferenceOptions.GlobalReference
             }
             SettingProperty.Type = fullTypeReference
