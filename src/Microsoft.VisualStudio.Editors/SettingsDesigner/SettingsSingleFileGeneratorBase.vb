@@ -144,10 +144,11 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                 '   appropriate code.
                 '
                 Dim projectRootNamespace As String = String.Empty
+
                 If isVB Then
                     projectRootNamespace = GetProjectRootNamespace()
                 End If
-                
+
                 ' then get the CodeCompileUnit for this .settings file
                 '
                 Dim generatedClass As CodeTypeDeclaration = Nothing
@@ -254,11 +255,17 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             ' Create a new namespace to put our class in
             '
             Dim ns as CodeNamespace
-            
+
             If IsVb Then
-                ns = New CodeNamespace(MyNamespaceName)
+                ' Check if the project has a custom namespace; if so, use it in the creation of the CompileUnit.
+                If DefaultNamespace IsNot String.Empty Then
+                    ns = New CodeNamespace(DefaultNamespace)
+                Else
+                    ns = New CodeNamespace(MyNamespaceName)
+                End If
+
             Else
-                ns = New CodeNamespace(DesignerFramework.DesignUtil.GenerateValidLanguageIndependentNamespace(DefaultNamespace))
+                ns = New CodeNamespace(DesignUtil.GenerateValidLanguageIndependentNamespace(DefaultNamespace))
             End If
             
             CompileUnit.Namespaces.Add(ns)
@@ -588,8 +595,8 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             If projectRootNamespace <> "" Then
                 fullTypeName = projectRootNamespace & "."
             End If
-            
-            If defaultNamespace <> "" AndAlso Not defaultNamespace.Equals(MyNamespaceName) Then ' defaultNamespace, if none exists, will come in thru wszDefaultNamespace as My. We don't want to duplicate it.
+
+            If defaultNamespace <> "" AndAlso Not defaultNamespace.Equals(MyNamespaceName, StringComparison.Ordinal) Then ' defaultNamespace, if none exists, will come in thru wszDefaultNamespace as My. We don't want to duplicate it.
                 fullTypeName &= defaultNamespace & "."
             End If
 
@@ -676,7 +683,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                 .HasSet = False
             }
 
-            Dim fullTypeReference As CodeTypeReference = New CodeTypeReference(GetFullTypeName(projectRootNamespace, defaultNamespace, GeneratedType.Name, isVb)) With {
+            Dim fullTypeReference As New CodeTypeReference(GetFullTypeName(projectRootNamespace, defaultNamespace, GeneratedType.Name, isVb)) With {
                 .Options = CodeTypeReferenceOptions.GlobalReference
             }
             SettingProperty.Type = fullTypeReference
@@ -1093,4 +1100,4 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
 #End Region
 
     End Class
-End Namespace
+End namespace
