@@ -43,6 +43,7 @@ variables:
   # See: https://aka.ms/gdn-injection
   runCodesignValidationInjection: false
   Codeql.Enabled: false
+  skipComponentGovernanceDetection: true
   
 ###################################################################################################################################################################
 # STEPS
