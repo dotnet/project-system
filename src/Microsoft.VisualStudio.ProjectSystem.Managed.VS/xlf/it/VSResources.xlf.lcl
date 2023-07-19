@@ -19,6 +19,15 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
+      <Item ItemId=";BuildAccelerationSummary_2" ItemType="0" PsrId="308" InstFlg="true" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[Visual Studio accelerated {0} project(s), copying {1} file(s). See https://aka.ms/vs-build-acceleration.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Visual Studio ha accelerato i progetti {0}, copiando {1} file. Vedi https://aka.ms/vs-build-acceleration.]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
       <Item ItemId=";ComponentEditor_DisplayName" ItemType="0" PsrId="308" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[Component (Windows Forms) Designer]]></Val>
@@ -274,18 +283,6 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";InfoBarMessageNuGetCycleDetected" ItemType="0" PsrId="308" Leaf="true">
-        <Str Cat="Text">
-          <Val><![CDATA[A circular dependency A -> B -> A was detected during NuGet Restore which caused NuGet to stop restoring.]D;]A;Because the NuGet restore didn't finish correctly, the project might be in a bad state.]]></Val>
-          <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Durante il ripristino NuGet è stata rilevata una dipendenza circolare A -> B -> A che ha causato l'arresto del ripristino di NuGet.]D;]A;Poiché il ripristino NuGet non è stato completato correttamente, il progetto potrebbe trovarsi in uno stato non valido.]]></Val>
-          </Tgt>
-          <Prev Cat="Text">
-            <Val><![CDATA[A circular dependency A -> B -> A was detected during NuGet Restore which caused NuGet to stop restoring.]D;]A;Because the NuGet restore didn't finish correctly, the project might be in a bad state.]D;]A;]D;]A;This might be caused because one or more projects have a package that sets AssetTargetFallback, not supported for this scenario, which caused certain PackageReference to be included.]D;]A;]D;]A;NuGet Error NU1108]]></Val>
-          </Prev>
-        </Str>
-        <Disp Icon="Str" />
-      </Item>
       <Item ItemId=";MultiTFEditNotSupported" ItemType="0" PsrId="308" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[Editing of multiple target framework is not supported.]]></Val>
@@ -435,36 +432,6 @@
           <Val><![CDATA[Renaming Type from '{0}' to '{1}']]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
             <Val><![CDATA[Ridenominazione del tipo da '{0}' a '{1}']]></Val>
-          </Tgt>
-        </Str>
-        <Disp Icon="Str" />
-      </Item>
-      <Item ItemId=";Restore_DuplicateToolReferenceItems" ItemType="0" PsrId="308" Leaf="true">
-        <Str Cat="Text">
-          <Val><![CDATA[The metadata on 'DotNetCliToolReference' item '{0}' is inconsistent between target frameworks. Only the first one will be restored.]]></Val>
-          <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[I metadati dell'elemento '{0}' di 'DotNetCliToolReference' non sono coerenti tra i framework di destinazione. Verrà ripristinato solo il primo.]]></Val>
-          </Tgt>
-        </Str>
-        <Disp Icon="Str" />
-      </Item>
-      <Item ItemId=";Restore_EmptyTargetFrameworkMoniker" ItemType="0" PsrId="308" Leaf="true">
-        <Str Cat="Text">
-          <Val><![CDATA[The value of the 'TargetFrameworkMoniker' and 'NuGetTargetMoniker' properties in the '{0}' configuration are both empty. This configuration will not contribute to NuGet restore, which may result in restore and build errors.]]></Val>
-          <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[I valori delle proprietà 'TargetFrameworkMoniker' e 'NuGetTargetMoniker' nella configurazione '{0}' sono vuoti. Questa configurazione non contribuisce al ripristino di NuGet e questo può comportare errori di ripristino e di compilazione.]]></Val>
-          </Tgt>
-          <Prev Cat="Text">
-            <Val><![CDATA[The value of the 'TargetFrameworkMoniker' property in the '{0}' configuration is empty. This configuration will not contribute to NuGet restore, which may result in restore and build errors.]]></Val>
-          </Prev>
-        </Str>
-        <Disp Icon="Str" />
-      </Item>
-      <Item ItemId=";Restore_PropertyWithInconsistentValues" ItemType="0" PsrId="308" Leaf="true">
-        <Str Cat="Text">
-          <Val><![CDATA[The value of the '{0}' property is inconsistent between target frameworks. This property must be identical for NuGet restore to function correctly. The value '{1}' from the '{2}' configuration will be used, other target frameworks may fail to pick NuGet assets.]]></Val>
-          <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Il valore della proprietà '{0}' non è coerente tra i framework di destinazione. Questa proprietà deve essere identica affinché il ripristino NuGet funzioni correttamente. Verrà usato il valore '{1}' della configurazione '{2}'. Altri framework di destinazione potrebbero non riuscire a selezionare gli asset NuGet.]]></Val>
           </Tgt>
         </Str>
         <Disp Icon="Str" />
