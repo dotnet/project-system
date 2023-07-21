@@ -196,7 +196,7 @@
     </BoolProperty.DataSource>
     <BoolProperty.Metadata>
       <NameValuePair Name="VisibilityCondition">
-        <NameValuePair.Value>(has-net-core-app-version-or-greater "8.0")</NameValuePair.Value>
+        <NameValuePair.Value>(and (has-net-core-app-version-or-greater "8.0") (has-project-capability "NativeAOTProperties"))</NameValuePair.Value>
       </NameValuePair>
     </BoolProperty.Metadata>
   </BoolProperty>
@@ -212,7 +212,7 @@
     </BoolProperty.DataSource>
     <BoolProperty.Metadata>
       <NameValuePair Name="VisibilityCondition">
-        <NameValuePair.Value>(has-net-core-app-version-or-greater "8.0")</NameValuePair.Value>
+        <NameValuePair.Value>(and (has-net-core-app-version-or-greater "8.0") (has-project-capability "NativeAOTProperties"))</NameValuePair.Value>
       </NameValuePair>
     </BoolProperty.Metadata>
   </BoolProperty>
