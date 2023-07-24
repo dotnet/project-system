@@ -9,6 +9,7 @@ using Xunit.Abstractions;
 
 #pragma warning disable IDE0055
 #pragma warning disable IDE0058
+#pragma warning disable CS0649 // Field is never assigned to
 
 namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 {
@@ -37,6 +38,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
         // Values returned by mocks that may be modified in test cases as needed
         private bool _isTaskQueueEmpty = true;
         private bool _isFastUpToDateCheckEnabledInSettings = true;
+        private bool _isBuildAccelerationEnabledInSettings;
         private bool? _isBuildAccelerationEnabled;
         private IEnumerable<(string Path, ImmutableArray<CopyItem> CopyItems)> _copyItems = Enumerable.Empty<(string Path, ImmutableArray<CopyItem> CopyItems)>();
         private bool _isCopyItemsComplete = true;
@@ -62,6 +64,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 .ReturnsAsync(_logLevel);
             projectSystemOptions.Setup(o => o.GetIsFastUpToDateCheckEnabledAsync(It.IsAny<CancellationToken>()))
                 .ReturnsAsync(() => _isFastUpToDateCheckEnabledInSettings);
+            projectSystemOptions.Setup(o => o.IsBuildAccelerationEnabledByDefaultAsync(It.IsAny<CancellationToken>()))
+                .ReturnsAsync(() => _isBuildAccelerationEnabledInSettings);
 
             var projectCommonServices = IProjectCommonServicesFactory.CreateWithDefaultThreadingPolicy();
             var jointRuleSource = new ProjectValueDataSource<IProjectSubscriptionUpdate>(projectCommonServices);
@@ -251,6 +255,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
             await AssertUpToDateAsync(
                 """
+                Build acceleration is not enabled for this project. See https://aka.ms/vs-build-acceleration.
                 Comparing timestamps of inputs and outputs:
                     No build outputs defined.
                 Project is up-to-date.
@@ -268,6 +273,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
             await AssertUpToDateAsync(
                 """
+                Build acceleration is not enabled for this project. See https://aka.ms/vs-build-acceleration.
                 Comparing timestamps of inputs and outputs:
                     No build outputs defined.
                 Project is up-to-date.
@@ -277,6 +283,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
             await AssertNotUpToDateAsync(
                 $"""
+                Build acceleration is not enabled for this project. See https://aka.ms/vs-build-acceleration.
                 Critical build tasks are running, not up-to-date.
                 """,
                 "CriticalTasks");
@@ -309,6 +316,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
             await AssertNotUpToDateAsync(
                 $"""
+                Build acceleration is not enabled for this project. See https://aka.ms/vs-build-acceleration.
                 The set of project items was changed more recently ({ToLocalTime(itemChangedTime)}) than the last successful build start time ({ToLocalTime(lastBuildTime)}), not up-to-date.
                     Compile item added 'ItemPath1'
                     Compile item added 'ItemPath2'
@@ -348,6 +356,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
             await AssertNotUpToDateAsync(
                 $"""
+                Build acceleration is not enabled for this project. See https://aka.ms/vs-build-acceleration.
                 Comparing timestamps of inputs and outputs:
                     Adding UpToDateCheckBuilt outputs:
                         {_builtPath}
@@ -385,6 +394,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
             await AssertUpToDateAsync(
                 $"""
+                Build acceleration is not enabled for this project. See https://aka.ms/vs-build-acceleration.
                 Comparing timestamps of inputs and outputs:
                     Adding UpToDateCheckBuilt outputs:
                         {_builtPath}
@@ -411,6 +421,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
             await AssertNotUpToDateAsync(
                 $"""
+                Build acceleration is not enabled for this project. See https://aka.ms/vs-build-acceleration.
                 The set of project items was changed more recently ({ToLocalTime(itemChangeTime)}) than the last successful build start time ({ToLocalTime(lastBuildTime)}), not up-to-date.
                     Compile item removed 'Input.cs'
                 """,
@@ -444,6 +455,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
             await AssertNotUpToDateAsync(
                 $"""
+                Build acceleration is not enabled for this project. See https://aka.ms/vs-build-acceleration.
                 Comparing timestamps of inputs and outputs:
                     Adding UpToDateCheckBuilt outputs:
                         {_builtPath}
@@ -487,6 +499,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
             await AssertNotUpToDateAsync(
                 $"""
+                Build acceleration is not enabled for this project. See https://aka.ms/vs-build-acceleration.
                 Comparing timestamps of inputs and outputs:
                     Adding UpToDateCheckBuilt outputs:
                         {_builtPath}
@@ -533,6 +546,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
             await AssertNotUpToDateAsync(
                 $"""
+                Build acceleration is not enabled for this project. See https://aka.ms/vs-build-acceleration.
                 Comparing timestamps of inputs and outputs:
                     Adding UpToDateCheckBuilt outputs:
                         {_builtPath}
@@ -555,6 +569,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             // Run check again (t5)
             await AssertNotUpToDateAsync(
                 $"""
+                Build acceleration is not enabled for this project. See https://aka.ms/vs-build-acceleration.
                 Comparing timestamps of inputs and outputs:
                     Adding UpToDateCheckBuilt outputs:
                         {_builtPath}
@@ -601,6 +616,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
             await AssertNotUpToDateAsync(
                 $"""
+                Build acceleration is not enabled for this project. See https://aka.ms/vs-build-acceleration.
                 Comparing timestamps of inputs and outputs:
                     Adding UpToDateCheckBuilt outputs:
                         {_builtPath}
@@ -631,6 +647,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             // Run check again (t6)
             await AssertUpToDateAsync(
                 $"""
+                Build acceleration is not enabled for this project. See https://aka.ms/vs-build-acceleration.
                 Comparing timestamps of inputs and outputs:
                     Adding UpToDateCheckBuilt outputs:
                         {_builtPath}
@@ -677,6 +694,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             // Run test (t2)
             await AssertUpToDateAsync(
                 $"""
+                Build acceleration is not enabled for this project. See https://aka.ms/vs-build-acceleration.
                 Comparing timestamps of inputs and outputs:
                     Adding UpToDateCheckBuilt outputs:
                         {_builtPath}
@@ -720,6 +738,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
             await AssertNotUpToDateAsync(
                 $"""
+                Build acceleration is not enabled for this project. See https://aka.ms/vs-build-acceleration.
                 Comparing timestamps of inputs and outputs:
                     Adding UpToDateCheckOutput outputs:
                         C:\Dev\Solution\Project\Output
@@ -779,6 +798,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 {
                     await AssertUpToDateAsync(
                         $"""
+                        Build acceleration is enabled for this project via the 'AccelerateBuildsInVisualStudio' MSBuild property. See https://aka.ms/vs-build-acceleration.
                         Comparing timestamps of inputs and outputs:
                             No build outputs defined.
                         Project is up-to-date.
@@ -788,6 +808,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 {
                     await AssertUpToDateAsync(
                         $"""
+                        Build acceleration is enabled for this project via the 'AccelerateBuildsInVisualStudio' MSBuild property. See https://aka.ms/vs-build-acceleration.
                         Comparing timestamps of inputs and outputs:
                             No build outputs defined.
                         Project is up-to-date.
@@ -814,6 +835,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             {
                 await AssertUpToDateAsync(
                     $"""
+                    Build acceleration is not enabled for this project. See https://aka.ms/vs-build-acceleration.
                     Comparing timestamps of inputs and outputs:
                         No build outputs defined.
                     Comparing timestamps of copy marker inputs and output:
@@ -885,6 +907,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             {
                 await AssertNotUpToDateAsync(
                    $"""
+                    Build acceleration is not enabled for this project. See https://aka.ms/vs-build-acceleration.
                     Comparing timestamps of inputs and outputs:
                         No build outputs defined.
                     Comparing timestamps of copy marker inputs and output:
@@ -924,6 +947,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
             await AssertNotUpToDateAsync(
                 $"""
+                Build acceleration is not enabled for this project. See https://aka.ms/vs-build-acceleration.
                 Comparing timestamps of inputs and outputs:
                     Adding UpToDateCheckBuilt outputs:
                         {_builtPath}
@@ -976,6 +1000,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
             await AssertNotUpToDateAsync(
                 $"""
+                Build acceleration is not enabled for this project. See https://aka.ms/vs-build-acceleration.
                 Comparing timestamps of inputs and outputs:
                     Adding UpToDateCheckBuilt outputs:
                         {_builtPath}
@@ -1015,6 +1040,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
             await AssertNotUpToDateAsync(
                 $"""
+                Build acceleration is not enabled for this project. See https://aka.ms/vs-build-acceleration.
                 Comparing timestamps of inputs and outputs:
                     Adding UpToDateCheckBuilt outputs:
                         {_builtPath}
@@ -1055,6 +1081,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
             await AssertNotUpToDateAsync(
                 $"""
+                Build acceleration is not enabled for this project. See https://aka.ms/vs-build-acceleration.
                 Comparing timestamps of inputs and outputs:
                     Adding UpToDateCheckBuilt outputs:
                         {_builtPath}
@@ -1103,6 +1130,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
             await AssertUpToDateAsync(
                 $"""
+                Build acceleration is not enabled for this project. See https://aka.ms/vs-build-acceleration.
                 Comparing timestamps of inputs and outputs:
                     Adding UpToDateCheckBuilt outputs:
                         {_builtPath}
@@ -1157,6 +1185,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
             await AssertNotUpToDateAsync(
                 $"""
+                Build acceleration is not enabled for this project. See https://aka.ms/vs-build-acceleration.
                 Comparing timestamps of inputs and outputs:
                     Adding UpToDateCheckBuilt outputs:
                         {_builtPath}
@@ -1208,6 +1237,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
             await AssertNotUpToDateAsync(
                 $"""
+                Build acceleration is not enabled for this project. See https://aka.ms/vs-build-acceleration.
                 Comparing timestamps of inputs and outputs:
                     Adding UpToDateCheckBuilt outputs:
                         {_builtPath}
@@ -1256,6 +1286,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
             await AssertUpToDateAsync(
                 $"""
+                Build acceleration is not enabled for this project. See https://aka.ms/vs-build-acceleration.
                 Comparing timestamps of inputs and outputs:
                     Adding UpToDateCheckBuilt outputs:
                         {_builtPath}
@@ -1293,6 +1324,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
             await AssertUpToDateAsync(
                 $"""
+                Build acceleration is not enabled for this project. See https://aka.ms/vs-build-acceleration.
                 Comparing timestamps of inputs and outputs:
                     Adding UpToDateCheckBuilt outputs:
                         {_builtPath}
@@ -1336,6 +1368,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             await AssertNotUpToDateAsync(
                 $"""
                 Ignoring up-to-date check items with Kind="Ignored"
+                Build acceleration is not enabled for this project. See https://aka.ms/vs-build-acceleration.
                 Comparing timestamps of inputs and outputs:
                     Adding UpToDateCheckOutput outputs:
                         C:\Dev\Solution\Project\Output
@@ -1386,6 +1419,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
             await AssertNotUpToDateAsync(
                 $"""
+                Build acceleration is not enabled for this project. See https://aka.ms/vs-build-acceleration.
                 Comparing timestamps of inputs and outputs:
                     Adding UpToDateCheckOutput outputs:
                         C:\Dev\Solution\Project\Output
@@ -1432,6 +1466,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             await AssertUpToDateAsync(
                 $"""
                 Ignoring up-to-date check items with Kind="Ignored"
+                Build acceleration is not enabled for this project. See https://aka.ms/vs-build-acceleration.
                 Comparing timestamps of inputs and outputs:
                     Adding UpToDateCheckOutput outputs:
                         C:\Dev\Solution\Project\Output
@@ -1485,6 +1520,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
             await AssertUpToDateAsync(
                 $"""
+                Build acceleration is not enabled for this project. See https://aka.ms/vs-build-acceleration.
                 Comparing timestamps of inputs and outputs:
                     Adding UpToDateCheckOutput outputs:
                         C:\Dev\Solution\Project\Output
@@ -1531,6 +1567,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
             await AssertNotUpToDateAsync(
                 $"""
+                Build acceleration is not enabled for this project. See https://aka.ms/vs-build-acceleration.
                 Comparing timestamps of inputs and outputs:
                     No build outputs defined.
                 Checking built output ({UpToDateCheckBuilt.SchemaName} with {UpToDateCheckBuilt.OriginalProperty} property) file:
@@ -1560,6 +1597,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
             await AssertNotUpToDateAsync(
                 $"""
+                Build acceleration is not enabled for this project. See https://aka.ms/vs-build-acceleration.
                 Comparing timestamps of inputs and outputs:
                     No build outputs defined.
                 Checking built output ({UpToDateCheckBuilt.SchemaName} with {UpToDateCheckBuilt.OriginalProperty} property) file:
@@ -1592,6 +1630,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
             await AssertNotUpToDateAsync(
                 $"""
+                Build acceleration is not enabled for this project. See https://aka.ms/vs-build-acceleration.
                 Comparing timestamps of inputs and outputs:
                     No build outputs defined.
                 Checking built output ({UpToDateCheckBuilt.SchemaName} with {UpToDateCheckBuilt.OriginalProperty} property) file:
@@ -1637,6 +1676,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 {
                     await AssertUpToDateAsync(
                         $"""
+                        Build acceleration is enabled for this project via the 'AccelerateBuildsInVisualStudio' MSBuild property. See https://aka.ms/vs-build-acceleration.
                         Comparing timestamps of inputs and outputs:
                             No build outputs defined.
                         Checking items to copy to the output directory:
@@ -1660,6 +1700,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 {
                     await AssertUpToDateAsync(
                         $"""
+                        Build acceleration is enabled for this project via the 'AccelerateBuildsInVisualStudio' MSBuild property. See https://aka.ms/vs-build-acceleration.
                         Comparing timestamps of inputs and outputs:
                             No build outputs defined.
                         Checking items to copy to the output directory:
@@ -1701,6 +1742,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             {
                 await AssertNotUpToDateAsync(
                     $"""
+                    Build acceleration is not enabled for this project. See https://aka.ms/vs-build-acceleration.
                     Comparing timestamps of inputs and outputs:
                         No build outputs defined.
                     Checking items to copy to the output directory:
@@ -1751,6 +1793,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 {
                     await AssertUpToDateAsync(
                         $"""
+                        Build acceleration is enabled for this project via the 'AccelerateBuildsInVisualStudio' MSBuild property. See https://aka.ms/vs-build-acceleration.
                         Comparing timestamps of inputs and outputs:
                             No build outputs defined.
                         Checking items to copy to the output directory:
@@ -1774,6 +1817,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 {
                     await AssertUpToDateAsync(
                         $"""
+                        Build acceleration is enabled for this project via the 'AccelerateBuildsInVisualStudio' MSBuild property. See https://aka.ms/vs-build-acceleration.
                         Comparing timestamps of inputs and outputs:
                             No build outputs defined.
                         Checking items to copy to the output directory:
@@ -1815,6 +1859,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             {
                 await AssertNotUpToDateAsync(
                     $"""
+                    Build acceleration is not enabled for this project. See https://aka.ms/vs-build-acceleration.
                     Comparing timestamps of inputs and outputs:
                         No build outputs defined.
                     Checking items to copy to the output directory:
@@ -1868,6 +1913,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 {
                     await AssertUpToDateAsync(
                         $"""
+                        Build acceleration is enabled for this project via the 'AccelerateBuildsInVisualStudio' MSBuild property. See https://aka.ms/vs-build-acceleration.
                         Comparing timestamps of inputs and outputs:
                             No build outputs defined.
                         Checking items to copy to the output directory:
@@ -1891,6 +1937,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 {
                     await AssertUpToDateAsync(
                         $"""
+                        Build acceleration is enabled for this project via the 'AccelerateBuildsInVisualStudio' MSBuild property. See https://aka.ms/vs-build-acceleration.
                         Comparing timestamps of inputs and outputs:
                             No build outputs defined.
                         Checking items to copy to the output directory:
@@ -1932,6 +1979,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             {
                 await AssertNotUpToDateAsync(
                     $"""
+                    Build acceleration is not enabled for this project. See https://aka.ms/vs-build-acceleration.
                     Comparing timestamps of inputs and outputs:
                         No build outputs defined.
                     Checking items to copy to the output directory:
@@ -1969,6 +2017,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
             await AssertNotUpToDateAsync(
                 $"""
+                Build acceleration is not enabled for this project. See https://aka.ms/vs-build-acceleration.
                 Comparing timestamps of inputs and outputs:
                     No build outputs defined.
                 Checking items to copy to the output directory:
@@ -2012,6 +2061,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 {
                     await AssertUpToDateAsync(
                         $"""
+                        Build acceleration is enabled for this project via the 'AccelerateBuildsInVisualStudio' MSBuild property. See https://aka.ms/vs-build-acceleration.
                         Comparing timestamps of inputs and outputs:
                             No build outputs defined.
                         Checking items to copy to the output directory:
@@ -2035,6 +2085,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 {
                     await AssertUpToDateAsync(
                         $"""
+                        Build acceleration is enabled for this project via the 'AccelerateBuildsInVisualStudio' MSBuild property. See https://aka.ms/vs-build-acceleration.
                         Comparing timestamps of inputs and outputs:
                             No build outputs defined.
                         Checking items to copy to the output directory:
@@ -2076,6 +2127,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             {
                 await AssertNotUpToDateAsync(
                     $"""
+                    Build acceleration is not enabled for this project. See https://aka.ms/vs-build-acceleration.
                     Comparing timestamps of inputs and outputs:
                         No build outputs defined.
                     Checking items to copy to the output directory:

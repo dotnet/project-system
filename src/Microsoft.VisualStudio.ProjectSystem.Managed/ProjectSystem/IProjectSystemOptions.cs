@@ -66,6 +66,12 @@ namespace Microsoft.VisualStudio.ProjectSystem
         ValueTask<bool> IsIncrementalBuildFailureTelemetryEnabledAsync(CancellationToken cancellationToken);
 
         /// <summary>
+        ///     Gets whether Build Acceleration should be enabled when a project does not explicitly opt in
+        ///     or out via the <c>AccelerateBuildsInVisualStudio</c> MSBuild property.
+        /// </summary>
+        ValueTask<bool> IsBuildAccelerationEnabledByDefaultAsync(CancellationToken cancellationToken);
+
+        /// <summary>
         ///     Gets whether LSP pull diagnostics are enabled.
         /// </summary>
         ValueTask<bool> IsLspPullDiagnosticsEnabledAsync(CancellationToken cancellationToken);

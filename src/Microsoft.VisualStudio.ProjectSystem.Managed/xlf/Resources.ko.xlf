@@ -82,6 +82,21 @@
         <target state="translated">{0} 출력 추가:</target>
         <note>{0} is an MSBuild item type.</note>
       </trans-unit>
+      <trans-unit id="FUTD_BuildAccelerationEnabledViaFeatureFlag">
+        <source>Build acceleration is enabled for this project via a feature flag. See "Tools | Options | Environment | Preview Features" to control this setting. See https://aka.ms/vs-build-acceleration.</source>
+        <target state="new">Build acceleration is enabled for this project via a feature flag. See "Tools | Options | Environment | Preview Features" to control this setting. See https://aka.ms/vs-build-acceleration.</target>
+        <note>"Tools | Options | Environment | Preview Features" references UI labels that must be made to match the equivalent values in each culture.</note>
+      </trans-unit>
+      <trans-unit id="FUTD_BuildAccelerationEnabledViaProperty">
+        <source>Build acceleration is enabled for this project via the 'AccelerateBuildsInVisualStudio' MSBuild property. See https://aka.ms/vs-build-acceleration.</source>
+        <target state="new">Build acceleration is enabled for this project via the 'AccelerateBuildsInVisualStudio' MSBuild property. See https://aka.ms/vs-build-acceleration.</target>
+        <note>Do not translate 'AccelerateBuildsInVisualStudio'.</note>
+      </trans-unit>
+      <trans-unit id="FUTD_BuildAccelerationIsNotEnabledForThisProject">
+        <source>Build acceleration is not enabled for this project. See https://aka.ms/vs-build-acceleration.</source>
+        <target state="new">Build acceleration is not enabled for this project. See https://aka.ms/vs-build-acceleration.</target>
+        <note />
+      </trans-unit>
       <trans-unit id="FUTD_BuildAccelerationSummary_1">
         <source>Build acceleration copied {0} files.</source>
         <target state="translated">빌드 가속이 {0}개의 파일을 복사했습니다.</target>

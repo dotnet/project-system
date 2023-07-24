@@ -89,6 +89,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             return IsFlagEnabledAsync(FeatureFlagNames.EnableIncrementalBuildFailureTelemetry, defaultValue: false, cancellationToken);
         }
 
+        public ValueTask<bool> IsBuildAccelerationEnabledByDefaultAsync(CancellationToken cancellationToken)
+        {
+            return IsFlagEnabledAsync(FeatureFlagNames.EnableBuildAccelerationByDefault, defaultValue: false, cancellationToken);
+        }
+
         public ValueTask<bool> IsLspPullDiagnosticsEnabledAsync(CancellationToken cancellationToken)
         {
             return IsFlagEnabledAsync(FeatureFlagNames.LspPullDiagnosticsFeatureFlagName, defaultValue: false, cancellationToken);

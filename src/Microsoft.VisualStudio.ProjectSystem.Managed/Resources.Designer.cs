@@ -241,6 +241,33 @@ namespace Microsoft.VisualStudio {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Build acceleration is enabled for this project via a feature flag. See &quot;Tools | Options | Environment | Preview Features&quot; to control this setting. See https://aka.ms/vs-build-acceleration..
+        /// </summary>
+        internal static string FUTD_BuildAccelerationEnabledViaFeatureFlag {
+            get {
+                return ResourceManager.GetString("FUTD_BuildAccelerationEnabledViaFeatureFlag", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Build acceleration is enabled for this project via the &apos;AccelerateBuildsInVisualStudio&apos; MSBuild property. See https://aka.ms/vs-build-acceleration..
+        /// </summary>
+        internal static string FUTD_BuildAccelerationEnabledViaProperty {
+            get {
+                return ResourceManager.GetString("FUTD_BuildAccelerationEnabledViaProperty", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Build acceleration is not enabled for this project. See https://aka.ms/vs-build-acceleration..
+        /// </summary>
+        internal static string FUTD_BuildAccelerationIsNotEnabledForThisProject {
+            get {
+                return ResourceManager.GetString("FUTD_BuildAccelerationIsNotEnabledForThisProject", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Build acceleration copied {0} files..
         /// </summary>
         internal static string FUTD_BuildAccelerationSummary_1 {

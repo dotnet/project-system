@@ -460,6 +460,17 @@ This project was loaded using the wrong project type, likely as a result of rena
     <value>Build acceleration data is unavailable for project with target '{0}'. See https://aka.ms/vs-build-acceleration.</value>
     <comment>{0} is a file path.</comment>
   </data>
+  <data name="FUTD_BuildAccelerationEnabledViaFeatureFlag" xml:space="preserve">
+    <value>Build acceleration is enabled for this project via a feature flag. See "Tools | Options | Environment | Preview Features" to control this setting. See https://aka.ms/vs-build-acceleration.</value>
+    <comment>"Tools | Options | Environment | Preview Features" references UI labels that must be made to match the equivalent values in each culture.</comment>
+  </data>
+  <data name="FUTD_BuildAccelerationEnabledViaProperty" xml:space="preserve">
+    <value>Build acceleration is enabled for this project via the 'AccelerateBuildsInVisualStudio' MSBuild property. See https://aka.ms/vs-build-acceleration.</value>
+    <comment>Do not translate 'AccelerateBuildsInVisualStudio'.</comment>
+  </data>
+  <data name="FUTD_BuildAccelerationIsNotEnabledForThisProject" xml:space="preserve">
+    <value>Build acceleration is not enabled for this project. See https://aka.ms/vs-build-acceleration.</value>
+  </data>
   <data name="DiagnosticLevel_None" xml:space="preserve">
     <value>None</value>
     <comment>Indicates that a diagnostic (i.e. a compiler warning) should be disabled.</comment>
