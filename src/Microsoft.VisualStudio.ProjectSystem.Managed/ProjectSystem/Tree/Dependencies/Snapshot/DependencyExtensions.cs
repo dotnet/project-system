@@ -25,13 +25,13 @@ internal static class DependencyExtensions
         return max;
     }
 
-    public static DiagnosticLevel GetDiagnosticLevel(this IImmutableDictionary<string, string> properties)
+    public static DiagnosticLevel GetDiagnosticLevel(this IImmutableDictionary<string, string> properties, DiagnosticLevel defaultLevel = DiagnosticLevel.None)
     {
         string? levelString = properties.GetStringProperty(ProjectItemMetadata.DiagnosticLevel);
 
         if (string.IsNullOrWhiteSpace(levelString))
         {
-            return DiagnosticLevel.None;
+            return defaultLevel;
         }
 
         if (StringComparer.OrdinalIgnoreCase.Equals(levelString, "Warning"))

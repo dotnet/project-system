@@ -180,10 +180,11 @@ internal abstract class MSBuildDependencyFactoryBase : IMSBuildDependencyFactory
     /// </summary>
     /// <param name="isResolved"><see langword="true"/> if the dependency is resolved, <see langword="false"/> if it is unresolved, or <see langword="null"/> if the status is not yet determined.</param>
     /// <param name="properties">The properties of the item.</param>
+    /// <param name="defaultLevel">The diagnostic level to use when the property is either missing or empty. Intended to receive a dependency's current diagnostic level when an evaluation-only update is being processed.</param>
     /// <returns></returns>
-    protected internal virtual DiagnosticLevel GetDiagnosticLevel(bool? isResolved, IImmutableDictionary<string, string> properties)
+    protected internal virtual DiagnosticLevel GetDiagnosticLevel(bool? isResolved, IImmutableDictionary<string, string> properties, DiagnosticLevel defaultLevel = DiagnosticLevel.None)
     {
-        return (isResolved, properties.GetDiagnosticLevel()) switch
+        return (isResolved, properties.GetDiagnosticLevel(defaultLevel)) switch
         {
             (false, DiagnosticLevel.None) => DiagnosticLevel.Warning,
             (_, DiagnosticLevel level) => level
@@ -380,7 +381,7 @@ internal abstract class MSBuildDependencyFactoryBase : IMSBuildDependencyFactory
             bool? isResolved = isEvaluationOnlySnapshot ? dependency.IsResolved : false;
 
             bool isImplicit = IsImplicit(projectFullPath, properties);
-            DiagnosticLevel diagnosticLevel = GetDiagnosticLevel(isResolved, properties);
+            DiagnosticLevel diagnosticLevel = GetDiagnosticLevel(isResolved, properties, defaultLevel: dependency.DiagnosticLevel);
             string caption = GetUnresolvedCaption(itemSpec, properties);
             ProjectImageMoniker icon = GetIcon(isImplicit, diagnosticLevel);
             ProjectTreeFlags flags = UpdateTreeFlags(itemSpec, FlagCache.Get(isResolved ?? true, isImplicit));
