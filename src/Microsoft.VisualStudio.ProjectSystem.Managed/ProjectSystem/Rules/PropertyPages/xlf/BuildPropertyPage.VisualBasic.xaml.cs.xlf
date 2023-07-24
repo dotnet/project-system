@@ -304,7 +304,7 @@
       </trans-unit>
       <trans-unit id="EnumValue|OptionCompare.Binary|DisplayName">
         <source>Binary</source>
-        <target state="translated">Binární</target>
+        <target state="translated">Binary</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|OptionCompare.Text|DisplayName">
@@ -314,32 +314,32 @@
       </trans-unit>
       <trans-unit id="EnumValue|OptionExplicit.Off|DisplayName">
         <source>Off</source>
-        <target state="translated">Vypnuto</target>
+        <target state="translated">Off</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|OptionExplicit.On|DisplayName">
         <source>On</source>
-        <target state="translated">Zapnuto</target>
+        <target state="translated">On</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|OptionInfer.Off|DisplayName">
         <source>Off</source>
-        <target state="translated">Vypnuto</target>
+        <target state="translated">Off</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|OptionInfer.On|DisplayName">
         <source>On</source>
-        <target state="translated">Zapnuto</target>
+        <target state="translated">On</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|OptionStrict.Off|DisplayName">
         <source>Off</source>
-        <target state="translated">Vypnuto</target>
+        <target state="translated">Off</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|OptionStrict.On|DisplayName">
         <source>On</source>
-        <target state="translated">Zapnuto</target>
+        <target state="translated">On</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|RunPostBuildEvent.Always|DisplayName">

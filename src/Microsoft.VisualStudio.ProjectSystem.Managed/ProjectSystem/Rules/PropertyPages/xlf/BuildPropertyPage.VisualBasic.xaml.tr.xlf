@@ -304,42 +304,42 @@
       </trans-unit>
       <trans-unit id="EnumValue|OptionCompare.Binary|DisplayName">
         <source>Binary</source>
-        <target state="translated">İkili</target>
+        <target state="translated">Binary</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|OptionCompare.Text|DisplayName">
         <source>Text</source>
-        <target state="translated">Metin</target>
+        <target state="translated">Text</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|OptionExplicit.Off|DisplayName">
         <source>Off</source>
-        <target state="translated">Kapalı</target>
+        <target state="translated">Off</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|OptionExplicit.On|DisplayName">
         <source>On</source>
-        <target state="translated">Açık</target>
+        <target state="translated">On</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|OptionInfer.Off|DisplayName">
         <source>Off</source>
-        <target state="translated">Kapalı</target>
+        <target state="translated">Off</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|OptionInfer.On|DisplayName">
         <source>On</source>
-        <target state="translated">Açık</target>
+        <target state="translated">On</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|OptionStrict.Off|DisplayName">
         <source>Off</source>
-        <target state="translated">Kapalı</target>
+        <target state="translated">Off</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|OptionStrict.On|DisplayName">
         <source>On</source>
-        <target state="translated">Açık</target>
+        <target state="translated">On</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|RunPostBuildEvent.Always|DisplayName">
