@@ -126,6 +126,7 @@ internal sealed class ImportedNamespacesValueProvider : InterceptingPropertyValu
             });
         }
 
-        return await GetSelectedImportStringAsync();
+        // We're setting Import items, so this property shouldn't actually be set in the project file 
+        return null;
     }
 }
