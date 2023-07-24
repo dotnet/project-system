@@ -94,7 +94,7 @@ variables:
   Codeql.Enabled: true
   # Work-around for CodeQL failing with dotnet test. See https://twcsecurityassurance.visualstudio.com/Semmle/_workitems/edit/24228
   Codeql.CLIVersion: 2.13.4
-  Codeql.CLIHash: 892670c6323510b53c25363e301c64f35ecff02000820d0ebc081ee51fc4b2b6 // sha256 hash for windows CLI
+  Codeql.CLIHash: 892670c6323510b53c25363e301c64f35ecff02000820d0ebc081ee51fc4b2b6
   # Default to skipping auto-injection for CodeQL. It is not skipped in the Build job only.
   # https://eng.ms/docs/cloud-ai-platform/devdiv/one-engineering-system-1es/1es-docs/codeql/configuring-codeql3000-ado-pipelines#monolithic-repos-and-multistage-pipelines
   Codeql.SkipTaskAutoInjection: true
