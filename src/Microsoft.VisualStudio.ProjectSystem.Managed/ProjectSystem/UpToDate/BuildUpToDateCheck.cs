@@ -1071,7 +1071,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                         // We check timestamps of whatever items we can find, but only perform acceleration when the full set is available.
                         CopyItemsResult copyInfo = _copyItemAggregator.TryGatherCopyItemsForProject(implicitState.ProjectTargetPath, logger);
 
-                        bool? isBuildAccelerationEnabled = IsBuildAccelerationEnabled(copyInfo.IsComplete, implicitState);
+                        bool? isBuildAccelerationEnabled = await IsBuildAccelerationEnabledAsync(copyInfo.IsComplete, implicitState);
 
                         var configuredFileSystemOperations = new ConfiguredFileSystemOperationAggregator(fileSystemOperations, isBuildAccelerationEnabled, copyInfo.TargetsWithoutReferenceAssemblies);
 
@@ -1144,31 +1144,62 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                     _lastCopyTargetsFromThisProject = copyItemPaths;
                 }
 
-                bool? IsBuildAccelerationEnabled(bool isCopyItemsComplete, UpToDateCheckImplicitConfiguredInput implicitState)
+                async ValueTask<bool?> IsBuildAccelerationEnabledAsync(bool isCopyItemsComplete, UpToDateCheckImplicitConfiguredInput implicitState)
                 {
-                    // Build acceleration requires both being enabled in the project, and having a full set of copy items
-                    // across all projects in the reference graph.
+                    // Build acceleration requires both:
+                    //
+                    // 1. being enabled, either in the project or via feature flags, and
+                    // 2. having a full set of copy items.
+                    //
+                    // Being explicitly disabled in the project overrides any feature flag.
 
-                    switch (implicitState.IsBuildAccelerationEnabled)
+                    // Start with the preference specified in the project.
+                    bool? isEnabledInProject = implicitState.IsBuildAccelerationEnabled;
+
+                    bool isEnabled;
+
+                    if (isEnabledInProject is null)
                     {
-                        case null:
+                        // No value has been specified in the project. Look to the feature flag to determine
+                        // the default behavior in this case.
+
+                        if (await _projectSystemOptions.IsBuildAccelerationEnabledByDefaultAsync(cancellationToken))
                         {
+                            // The user has opted-in via feature flag. Set this to true and carry on with further checks.
+                            logger.Info(nameof(Resources.FUTD_BuildAccelerationEnabledViaFeatureFlag));
+                            isEnabled = true;
+                        }
+                        else
+                        {
+                            logger.Verbose(nameof(Resources.FUTD_BuildAccelerationIsNotEnabledForThisProject));
                             return null;
                         }
-                        case false:
+                    }
+                    else
+                    {
+                        isEnabled = isEnabledInProject.Value;
+                    }
+
+                    if (isEnabled)
+                    {
+                        if (isCopyItemsComplete)
                         {
-                            logger.Info(nameof(Resources.FUTD_AccelerationDisabledForProject));
-                            return false;
+                            logger.Info(isEnabledInProject is null
+                                ? nameof(Resources.FUTD_BuildAccelerationEnabledViaFeatureFlag)
+                                : nameof(Resources.FUTD_BuildAccelerationEnabledViaProperty));
+                            return true;
                         }
-                        case true when !isCopyItemsComplete:
+                        else
                         {
                             logger.Info(nameof(Resources.FUTD_AccelerationDisabledCopyItemsIncomplete));
                             return false;
                         }
-                        default:
-                        {
-                            return true;
-                        }
+                    }
+                    else
+                    {
+                        // The project explicitly opts out.
+                        logger.Info(nameof(Resources.FUTD_AccelerationDisabledForProject));
+                        return false;
                     }
                 }
             }

@@ -23,6 +23,12 @@ internal static class FeatureFlagNames
     public const string EnableIncrementalBuildFailureTelemetry = "ManagedProjectSystem.EnableIncrementalBuildFailureTelemetry";
 
     /// <summary>
+    /// Controls whether Build Acceleration should be enabled when a project does not explicitly opt in
+    /// or out via the <c>AccelerateBuildsInVisualStudio</c> MSBuild property.
+    /// </summary>
+    public const string EnableBuildAccelerationByDefault = "ManagedProjectSystem.EnableBuildAccelerationByDefault";
+
+    /// <summary>
     /// When this feature flag is enabled, build diagnostics will be published by CPS and should not be passed to Roslyn.
     /// </summary>
     public const string LspPullDiagnosticsFeatureFlagName = "Lsp.PullDiagnostics";
