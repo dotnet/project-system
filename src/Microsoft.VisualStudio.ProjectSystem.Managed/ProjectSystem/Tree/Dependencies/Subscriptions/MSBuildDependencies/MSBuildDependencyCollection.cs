@@ -88,7 +88,7 @@ internal sealed class MSBuildDependencyCollection
             if (evaluationProjectChange.Difference.AddedItems.Count is 0 &&
                 evaluationProjectChange.Difference.ChangedItems.Count is 0 &&
                 buildProjectChange?.Difference.AddedItems.Count is 0 or null &&
-                buildProjectChange?.Difference.AddedItems.Count is 0 or null)
+                buildProjectChange?.Difference.ChangedItems.Count is 0 or null)
             {
                 // Nothing added or changed. Return early.
                 return;
