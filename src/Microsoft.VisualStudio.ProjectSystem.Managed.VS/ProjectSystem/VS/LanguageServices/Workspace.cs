@@ -158,66 +158,63 @@ internal sealed class Workspace : OnceInitializedOnceDisposedUnderLockAsync, IWo
     /// both evaluation and build updates may arrive in any order, so long as values
     /// of each type are ordered correctly.
     /// </para>
-    /// <para>
-    /// Calls must not overlap. This method is not thread-safe. This method is designed
-    /// to be called from a dataflow ActionBlock, which will serialize calls, so we
-    /// needn't perform any locking or protection here.
-    /// </para>
     /// </remarks>
     /// <param name="update">The project update to integrate.</param>
     /// <returns>A task that completes when the update has been integrated.</returns>
-    internal async Task OnWorkspaceUpdateAsync(IProjectVersionedValue<WorkspaceUpdate> update)
+    internal Task OnWorkspaceUpdateAsync(IProjectVersionedValue<WorkspaceUpdate> update)
     {
-        Verify.NotDisposed(this);
+        // Prevent disposal during the update.
+        return ExecuteUnderLockAsync(async token =>
+        {
+            await InitializeAsync(_unloadCancellationToken);
 
-        await InitializeAsync(_unloadCancellationToken);
+            Assumes.True(_state is WorkspaceState.Uninitialized or WorkspaceState.Initialized);
 
-        Assumes.True(_state is WorkspaceState.Uninitialized or WorkspaceState.Initialized);
+            await _joinableTaskFactory.RunAsync(ApplyUpdateWithinLockAsync);
+        });
 
-        await _joinableTaskFactory.RunAsync(
-            async () =>
+        async Task ApplyUpdateWithinLockAsync()
+        {
+            // We will always receive an evaluation update before the first build update.
+
+            if (TryTransition(WorkspaceState.Uninitialized, WorkspaceState.Initialized))
             {
-                // Calls never overlap. No synchronisation is needed here.
-                // We can receive either evaluation OR build data first.
+                // Note that we create operation progress registrations using the first primary (active) configuration
+                // within the slice. Over time this may change, but we keep the same registration to the first seen.
 
-                if (TryTransition(WorkspaceState.Uninitialized, WorkspaceState.Initialized))
+                ConfiguredProject configuredProject = update.Value switch
                 {
-                    // Note that we create operation progress registrations using the first primary (active) configuration
-                    // within the slice. Over time this may change, but we keep the same registration to the first seen.
+                    { EvaluationUpdate: EvaluationUpdate update } => update.ConfiguredProject,
+                    { BuildUpdate: BuildUpdate update } => update.ConfiguredProject,
+                    _ => throw Assumes.NotReachable()
+                };
 
-                    ConfiguredProject configuredProject = update.Value switch
-                    {
-                        { EvaluationUpdate: EvaluationUpdate update } => update.ConfiguredProject,
-                        { BuildUpdate: BuildUpdate update } => update.ConfiguredProject,
-                        _ => throw Assumes.NotReachable()
-                    };
+                _evaluationProgressRegistration = _dataProgressTrackerService.RegisterForIntelliSense(this, configuredProject, "LanguageServiceHost.Workspace.Evaluation");
+                _buildProgressRegistration = _dataProgressTrackerService.RegisterForIntelliSense(this, configuredProject, "LanguageServiceHost.Workspace.ProjectBuild");
 
-                    _evaluationProgressRegistration = _dataProgressTrackerService.RegisterForIntelliSense(this, configuredProject, "LanguageServiceHost.Workspace.Evaluation");
-                    _buildProgressRegistration = _dataProgressTrackerService.RegisterForIntelliSense(this, configuredProject, "LanguageServiceHost.Workspace.ProjectBuild");
+                _disposableBag.Add(_evaluationProgressRegistration);
+                _disposableBag.Add(_buildProgressRegistration);
+            }
 
-                    _disposableBag.Add(_evaluationProgressRegistration);
-                    _disposableBag.Add(_buildProgressRegistration);
-                }
-
-                try
+            try
+            {
+                await (update.Value switch
                 {
-                    await (update.Value switch
-                    {
-                        { EvaluationUpdate: not null } => OnEvaluationUpdateAsync(update.Derive(u => u.EvaluationUpdate!)),
-                        { BuildUpdate: not null } => OnBuildUpdateAsync(update.Derive(u => u.BuildUpdate!)),
-                        _ => throw Assumes.NotReachable()
-                    });
-                }
-                catch
-                {
-                    // Tear down on any exception
-                    await DisposeAsync();
+                    { EvaluationUpdate: not null } => OnEvaluationUpdateAsync(update.Derive(u => u.EvaluationUpdate!)),
+                    { BuildUpdate: not null } => OnBuildUpdateAsync(update.Derive(u => u.BuildUpdate!)),
+                    _ => throw Assumes.NotReachable()
+                });
+            }
+            catch
+            {
+                // Tear down on any exception
+                await DisposeAsync();
 
-                    // Exceptions here are product errors, so let the exception escape in order
-                    // to produce an upstream NFE.
-                    throw;
-                }
-            });
+                // Exceptions here are product errors, so let the exception escape in order
+                // to produce an upstream NFE.
+                throw;
+            }
+        }
     }
 
     private async Task OnEvaluationUpdateAsync(IProjectVersionedValue<EvaluationUpdate> evaluationUpdate)
@@ -539,28 +536,34 @@ internal sealed class Workspace : OnceInitializedOnceDisposedUnderLockAsync, IWo
         return update.DataSourceVersions[ProjectDataSources.ConfiguredProjectVersion];
     }
 
-    public async Task WriteAsync(Func<IWorkspace, Task> action, CancellationToken cancellationToken)
+    public Task WriteAsync(Func<IWorkspace, Task> action, CancellationToken cancellationToken)
     {
         Requires.NotNull(action);
-        Verify.NotDisposed(this);
 
         cancellationToken = CancellationTokenExtensions.CombineWith(_unloadCancellationToken, cancellationToken).Token;
 
-        await WhenContextCreated(cancellationToken);
+        return ExecuteUnderLockAsync(async _ =>
+            {
+                await WhenContextCreated(cancellationToken);
 
-        await ExecuteUnderLockAsync(_ => action(this), cancellationToken);
+                await action(this);
+            },
+            cancellationToken);
     }
 
-    public async Task<T> WriteAsync<T>(Func<IWorkspace, Task<T>> action, CancellationToken cancellationToken)
+    public Task<T> WriteAsync<T>(Func<IWorkspace, Task<T>> action, CancellationToken cancellationToken)
     {
         Requires.NotNull(action);
-        Verify.NotDisposed(this);
 
         cancellationToken = CancellationTokenExtensions.CombineWith(_unloadCancellationToken, cancellationToken).Token;
 
-        await WhenContextCreated(cancellationToken);
+        return ExecuteUnderLockAsync(async _ =>
+            {
+                await WhenContextCreated(cancellationToken);
 
-        return await ExecuteUnderLockAsync(_ => action(this), cancellationToken);
+                return await action(this);
+            },
+            cancellationToken);
     }
 
     private async Task WhenContextCreated(CancellationToken cancellationToken)
@@ -569,7 +572,7 @@ internal sealed class Workspace : OnceInitializedOnceDisposedUnderLockAsync, IWo
 
         // Join the same collection that's used by our dataflow nodes, so that if we are called on
         // the main thread, we don't block anything that might prohibit dataflow from progressing
-        // this workspace's initialisation (leading to deadlock).
+        // this workspace's initialization (leading to deadlock).
         using (_joinableTaskCollection.Join())
         {
             // Ensure we have received enough data to create the context.
