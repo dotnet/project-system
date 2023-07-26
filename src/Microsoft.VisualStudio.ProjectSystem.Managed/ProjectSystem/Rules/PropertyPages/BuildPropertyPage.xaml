@@ -26,6 +26,10 @@
               Description="Configures custom events that run before and after build."
               DisplayName="Events" />
 
+    <Category Name="Publish"
+              DisplayName="Publish"
+              Description="Configures options in the publish process." />
+    
     <Category Name="StrongNaming"
               Description="Configures strong name signing of build outputs."
               DisplayName="Strong naming" />
@@ -179,6 +183,39 @@
     <EnumValue Name="embedded"
                DisplayName="Embedded in DLL/EXE, portable across platforms" />
   </EnumProperty>
+
+  <!-- These bool properties should only be visible for class libraries targeting .NET 8 or higher. -->
+  <BoolProperty Name="IsTrimmable"
+                DisplayName="Trimmable"
+                Description="Marks your assembly as trimmable and enables trim warnings for that project."
+                HelpUrl="https://go.microsoft.com/fwlink/?linkid=2240960"
+                Category="General">
+    <BoolProperty.DataSource>
+      <DataSource HasConfigurationCondition="True"
+                  Persistence="ProjectFileWithInterception" />
+    </BoolProperty.DataSource>
+    <BoolProperty.Metadata>
+      <NameValuePair Name="VisibilityCondition">
+        <NameValuePair.Value>(and (has-net-core-app-version-or-greater "8.0") (has-project-capability "NativeAOTProperties"))</NameValuePair.Value>
+      </NameValuePair>
+    </BoolProperty.Metadata>
+  </BoolProperty>
+
+  <BoolProperty Name="IsAotCompatible"
+                DisplayName="AOT Compatible"
+                Description="Indicates that the library project is AOT compatible."
+                HelpUrl="https://go.microsoft.com/fwlink/?linkid=2240960"
+                Category="General">
+    <BoolProperty.DataSource>
+      <DataSource HasConfigurationCondition="True"
+                  Persistence="ProjectFileWithInterception" />
+    </BoolProperty.DataSource>
+    <BoolProperty.Metadata>
+      <NameValuePair Name="VisibilityCondition">
+        <NameValuePair.Value>(and (has-net-core-app-version-or-greater "8.0") (has-project-capability "NativeAOTProperties"))</NameValuePair.Value>
+      </NameValuePair>
+    </BoolProperty.Metadata>
+  </BoolProperty>
 
   <BoolProperty Name="WarningLevelOverridden"
                 ReadOnly="True"
@@ -386,6 +423,52 @@
     <EnumValue Name="OnOutputUpdated"
                DisplayName="When the output is updated" />
   </EnumProperty>
+
+  <!-- These Native AOT properties should not be visible for WPF, WinForms, MAUI or class library projects. -->
+  <DynamicEnumProperty Name="Trimming"
+                DisplayName="Trimming"
+                Description="Select the desired .NET trimming option for optimizing your application's deployment size and performance."
+                HelpUrl="https://go.microsoft.com/fwlink/?linkid=2240879"
+                Category="Publish"
+                EnumProvider="TrimmingEnumProvider"
+                MultipleValuesAllowed="False">
+    <DynamicEnumProperty.DataSource>
+      <DataSource HasConfigurationCondition="False"
+                  Persistence="ProjectFileWithInterception"/>
+    </DynamicEnumProperty.DataSource>
+    <DynamicEnumProperty.Metadata>
+      <NameValuePair Name="VisibilityCondition">
+        <NameValuePair.Value>
+          (and
+            (has-net-core-app-version-or-greater "8.0")
+            (and
+               (not (has-evaluated-value "Application" "UseWindowsForms" true))
+               (not (has-evaluated-value "Application" "UseWPF" true))))
+        </NameValuePair.Value>
+      </NameValuePair>
+    </DynamicEnumProperty.Metadata>
+  </DynamicEnumProperty>
+
+  <BoolProperty Name="PublishAot"
+                DisplayName="Publish native AOT"
+                Description="Enable Ahead-of-Time (AOT) Compilation to generate native machine code for your .NET Core application during the publish process for improved performance and reduced startup time."
+                HelpUrl="https://go.microsoft.com/fwlink/?linkid=2240879"
+                Category="Publish">
+    <BoolProperty.DataSource>
+      <DataSource HasConfigurationCondition="False" />
+    </BoolProperty.DataSource>
+    <BoolProperty.Metadata>
+      <NameValuePair Name="VisibilityCondition">
+        <NameValuePair.Value>
+          (and
+            (has-net-core-app-version-or-greater "8.0")
+            (and
+               (not (has-evaluated-value "Application" "UseWindowsForms" true))
+               (not (has-evaluated-value "Application" "UseWPF" true))))
+        </NameValuePair.Value>
+      </NameValuePair>
+    </BoolProperty.Metadata>
+  </BoolProperty>
 
   <BoolProperty Name="SignAssembly"
                 Description="Sign the output assembly to give it a strong name."

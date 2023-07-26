@@ -79,7 +79,7 @@ internal class SplashScreenEnumProvider : IDynamicEnumValuesProvider
             List<IEnumValue> enumValues = new();
             if (_includeEmptyValue)
             {
-                enumValues.Add(new PageEnumValue(new EnumValue { Name = "", DisplayName = VSResources.StartupObjectNotSet }));
+                enumValues.Add(new PageEnumValue(new EnumValue { Name = string.Empty, DisplayName = VSResources.StartupObjectNotSet }));
             }
 
             IEntryPointFinderService? entryPointFinderService = project.Services.GetService<IEntryPointFinderService>();
