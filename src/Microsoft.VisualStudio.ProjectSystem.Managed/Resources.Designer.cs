@@ -196,15 +196,6 @@ namespace Microsoft.VisualStudio {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Adding project file inputs:.
-        /// </summary>
-        internal static string FUTD_AddingProjectFileInputs {
-            get {
-                return ResourceManager.GetString("FUTD_AddingProjectFileInputs", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Adding {0} inputs:.
         /// </summary>
         internal static string FUTD_AddingTypedInputs_1 {

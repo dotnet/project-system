@@ -304,17 +304,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
             IEnumerable<(string Path, string? ItemType, bool IsRequired)> CollectDefaultInputs()
             {
-                if (state.MSBuildProjectFullPath is not null)
-                {
-                    log.Verbose(nameof(Resources.FUTD_AddingProjectFileInputs));
-                    using (log.IndentScope())
-                    {
-                        log.VerboseLiteral(state.MSBuildProjectFullPath);
-                    }
-                    yield return (Path: state.MSBuildProjectFullPath, ItemType: null, IsRequired: true);
-                }
-
-                if (state.NewestImportInput is not null && !StringComparers.Paths.Equals(state.NewestImportInput, state.MSBuildProjectFullPath))
+                if (state.NewestImportInput is not null)
                 {
                     log.Verbose(nameof(Resources.FUTD_AddingNewestImportInput));
                     using (log.IndentScope())

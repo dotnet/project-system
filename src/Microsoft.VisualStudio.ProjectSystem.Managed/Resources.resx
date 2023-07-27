@@ -296,9 +296,6 @@ This project was loaded using the wrong project type, likely as a result of rena
     <value>In Set="{4}", no inputs are newer than earliest output '{0}' ({1}). Newest input is '{2}' ({3}).</value>
     <comment>Do not translate 'Set' as this name is used in code. {0} and {2} are file paths. {1} and {2} are datetimes. {4} is the name of the set.</comment>
   </data>
-  <data name="FUTD_AddingProjectFileInputs" xml:space="preserve">
-    <value>Adding project file inputs:</value>
-  </data>
   <data name="FUTD_AddingNewestImportInput" xml:space="preserve">
     <value>Adding newest import input:</value>
   </data>

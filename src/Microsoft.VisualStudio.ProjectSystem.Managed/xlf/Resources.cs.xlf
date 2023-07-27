@@ -57,11 +57,6 @@
         <target state="translated">Přidává se nejnovější vstup importu:</target>
         <note />
       </trans-unit>
-      <trans-unit id="FUTD_AddingProjectFileInputs">
-        <source>Adding project file inputs:</source>
-        <target state="translated">Přidávají se vstupy souborů projektů:</target>
-        <note />
-      </trans-unit>
       <trans-unit id="FUTD_AddingTypedInputsInSet_2">
         <source>Adding {0} inputs in Set="{1}":</source>
         <target state="translated">Přidávají se vstupy {0} v sadě="{1}":</target>
