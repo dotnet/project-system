@@ -84,17 +84,17 @@
       </trans-unit>
       <trans-unit id="FUTD_BuildAccelerationEnabledViaFeatureFlag">
         <source>Build acceleration is enabled for this project via a feature flag. See "Tools | Options | Environment | Preview Features" to control this setting. See https://aka.ms/vs-build-acceleration.</source>
-        <target state="new">Build acceleration is enabled for this project via a feature flag. See "Tools | Options | Environment | Preview Features" to control this setting. See https://aka.ms/vs-build-acceleration.</target>
+        <target state="translated">A aceleração de build está habilitada para este projeto por meio de um sinalizador de recurso. Consulte "Ferramentas | Opções | Ambiente | Visualizar Recursos" para controlar essa configuração. Consulte https://aka.ms/vs-build-acceleration.</target>
         <note>"Tools | Options | Environment | Preview Features" references UI labels that must be made to match the equivalent values in each culture.</note>
       </trans-unit>
       <trans-unit id="FUTD_BuildAccelerationEnabledViaProperty">
         <source>Build acceleration is enabled for this project via the 'AccelerateBuildsInVisualStudio' MSBuild property. See https://aka.ms/vs-build-acceleration.</source>
-        <target state="new">Build acceleration is enabled for this project via the 'AccelerateBuildsInVisualStudio' MSBuild property. See https://aka.ms/vs-build-acceleration.</target>
+        <target state="translated">A aceleração de compilação está desabilitada para este projeto por meio da propriedade MSBuild "AccelerateBuildsInVisualStudio". Consulte https://aka.ms/vs-build-acceleration.</target>
         <note>Do not translate 'AccelerateBuildsInVisualStudio'.</note>
       </trans-unit>
       <trans-unit id="FUTD_BuildAccelerationIsNotEnabledForThisProject">
         <source>Build acceleration is not enabled for this project. See https://aka.ms/vs-build-acceleration.</source>
-        <target state="new">Build acceleration is not enabled for this project. See https://aka.ms/vs-build-acceleration.</target>
+        <target state="translated">A aceleração de build não está habilitada para este projeto. Consulte https://aka.ms/vs-build-acceleration.</target>
         <note />
       </trans-unit>
       <trans-unit id="FUTD_BuildAccelerationSummary_1">

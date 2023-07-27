@@ -84,17 +84,17 @@
       </trans-unit>
       <trans-unit id="FUTD_BuildAccelerationEnabledViaFeatureFlag">
         <source>Build acceleration is enabled for this project via a feature flag. See "Tools | Options | Environment | Preview Features" to control this setting. See https://aka.ms/vs-build-acceleration.</source>
-        <target state="new">Build acceleration is enabled for this project via a feature flag. See "Tools | Options | Environment | Preview Features" to control this setting. See https://aka.ms/vs-build-acceleration.</target>
+        <target state="translated">Przyspieszanie kompilacji jest włączone dla tego projektu za pośrednictwem flagi funkcji. Zobacz sekcję „Narzędzia | Opcje | Środowisko | Funkcje w wersji zapoznawczej”, aby sterować tym ustawieniem. Zobacz https://aka.ms/vs-build-acceleration.</target>
         <note>"Tools | Options | Environment | Preview Features" references UI labels that must be made to match the equivalent values in each culture.</note>
       </trans-unit>
       <trans-unit id="FUTD_BuildAccelerationEnabledViaProperty">
         <source>Build acceleration is enabled for this project via the 'AccelerateBuildsInVisualStudio' MSBuild property. See https://aka.ms/vs-build-acceleration.</source>
-        <target state="new">Build acceleration is enabled for this project via the 'AccelerateBuildsInVisualStudio' MSBuild property. See https://aka.ms/vs-build-acceleration.</target>
+        <target state="translated">Przyspieszanie kompilacji jest włączone dla tego projektu za pośrednictwem właściwości „AccelerateBuildsInVisualStudio” platformy MSBuild. Zobacz https://aka.ms/vs-build-acceleration.</target>
         <note>Do not translate 'AccelerateBuildsInVisualStudio'.</note>
       </trans-unit>
       <trans-unit id="FUTD_BuildAccelerationIsNotEnabledForThisProject">
         <source>Build acceleration is not enabled for this project. See https://aka.ms/vs-build-acceleration.</source>
-        <target state="new">Build acceleration is not enabled for this project. See https://aka.ms/vs-build-acceleration.</target>
+        <target state="translated">Przyspieszanie kompilacji nie jest włączone dla tego projektu. Zobacz https://aka.ms/vs-build-acceleration.</target>
         <note />
       </trans-unit>
       <trans-unit id="FUTD_BuildAccelerationSummary_1">

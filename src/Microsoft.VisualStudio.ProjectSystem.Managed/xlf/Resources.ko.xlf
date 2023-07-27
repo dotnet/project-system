@@ -84,17 +84,17 @@
       </trans-unit>
       <trans-unit id="FUTD_BuildAccelerationEnabledViaFeatureFlag">
         <source>Build acceleration is enabled for this project via a feature flag. See "Tools | Options | Environment | Preview Features" to control this setting. See https://aka.ms/vs-build-acceleration.</source>
-        <target state="new">Build acceleration is enabled for this project via a feature flag. See "Tools | Options | Environment | Preview Features" to control this setting. See https://aka.ms/vs-build-acceleration.</target>
+        <target state="translated">기능 플래그를 통해 이 프로젝트에 대해 빌드 가속화가 활성화되었습니다. 이 설정을 제어하려면 "도구 | 옵션 | 환경 | 미리보기 기능"을 참조하세요. https://aka.ms/vs-build-acceleration을 참조하세요.</target>
         <note>"Tools | Options | Environment | Preview Features" references UI labels that must be made to match the equivalent values in each culture.</note>
       </trans-unit>
       <trans-unit id="FUTD_BuildAccelerationEnabledViaProperty">
         <source>Build acceleration is enabled for this project via the 'AccelerateBuildsInVisualStudio' MSBuild property. See https://aka.ms/vs-build-acceleration.</source>
-        <target state="new">Build acceleration is enabled for this project via the 'AccelerateBuildsInVisualStudio' MSBuild property. See https://aka.ms/vs-build-acceleration.</target>
+        <target state="translated">'AccelerateBuildsInVisualStudio' MSBuild 속성을 통해 이 프로젝트에 빌드 가속이 활성화됩니다. https://aka.ms/vs-build-acceleration을 참조하세요.</target>
         <note>Do not translate 'AccelerateBuildsInVisualStudio'.</note>
       </trans-unit>
       <trans-unit id="FUTD_BuildAccelerationIsNotEnabledForThisProject">
         <source>Build acceleration is not enabled for this project. See https://aka.ms/vs-build-acceleration.</source>
-        <target state="new">Build acceleration is not enabled for this project. See https://aka.ms/vs-build-acceleration.</target>
+        <target state="translated">이 프로젝트에 대해 빌드 가속이 활성화되어 있지 않습니다. https://aka.ms/vs-build-acceleration을 참조하세요.</target>
         <note />
       </trans-unit>
       <trans-unit id="FUTD_BuildAccelerationSummary_1">
