@@ -1,6 +1,6 @@
 ﻿# Up-to-date Check
 
-The Project System's _Fast Up-to-date Check_ (FUTDC) saves developers time by quickly assessing whether a project needs to be
+The Project System's _Fast Up-to-Date Check_ (FUTDC) saves developers time by quickly assessing whether a project needs to be
 built or not. If not, Visual Studio can avoid a comparatively expensive call to MSBuild.
 
 The check compares timestamps between the project's inputs and its outputs. If any input is newer than one of the
