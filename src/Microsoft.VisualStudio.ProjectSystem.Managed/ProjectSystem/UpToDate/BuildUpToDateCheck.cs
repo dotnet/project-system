@@ -314,7 +314,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                     yield return (Path: state.MSBuildProjectFullPath, ItemType: null, IsRequired: true);
                 }
 
-                if (state.NewestImportInput is not null)
+                if (state.NewestImportInput is not null && !StringComparers.Paths.Equals(state.NewestImportInput, state.MSBuildProjectFullPath))
                 {
                     log.Verbose(nameof(Resources.FUTD_AddingNewestImportInput));
                     using (log.IndentScope())
