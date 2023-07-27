@@ -338,6 +338,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             // The first item in this semicolon-separated list of project files will always be the one
             // with the newest timestamp. As we are only interested in timestamps on these files, we can
             // save memory and time by only considering this first path (dotnet/project-system#4333).
+            // Note that we cannot exclude this path using the ProjectFileClassifier, as doing so may
+            // miss other imports of interest.
             string? newestImportInput = new LazyStringSplit(msBuildAllProjects, ';').FirstOrDefault();
 
             ProjectFileClassifier? projectFileClassifier = null;
