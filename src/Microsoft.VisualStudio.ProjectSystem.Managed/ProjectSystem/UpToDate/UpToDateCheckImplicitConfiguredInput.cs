@@ -613,7 +613,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                     {
                         string originalPath = itemMetadata[ResolvedCompilationReference.OriginalPathProperty];
                         string resolvedPath = itemMetadata[ResolvedCompilationReference.ResolvedPathProperty];
-                        string copyReferenceInput = itemMetadata[CopyUpToDateMarker.SchemaName];
+                        string copyReferenceInput = itemMetadata[ResolvedCompilationReference.CopyUpToDateMarkerProperty];
 
                         if (!projectFileClassifier.IsNonModifiable(resolvedPath))
                         {
