@@ -29,7 +29,7 @@ Namespace Microsoft.VisualStudio.Editors.VBAttributeEditor
             _serviceProvider = sp
         End Sub
 
-        Public Function CreateSecurityElementFromXmlElement(element As XmlElement) As SecurityElement
+        Public Shared Function CreateSecurityElementFromXmlElement(element As XmlElement) As SecurityElement
 
             ' Create the new security element
             Dim securityElement As New SecurityElement(element.Name)
@@ -49,7 +49,7 @@ Namespace Microsoft.VisualStudio.Editors.VBAttributeEditor
             Return securityElement
         End Function
 
-        Public Function LoadPermissionSet(strPermissionSet As String) As PermissionSet
+        Public Shared Function LoadPermissionSet(strPermissionSet As String) As PermissionSet
 
             ' Load the XML
             Dim document As New XmlDocument With {
