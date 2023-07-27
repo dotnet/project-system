@@ -159,15 +159,15 @@
     </PropertyPageSchema>
 
     <!-- Files/Folders -->
-    <PropertyPageSchema Include="$(ManagedXamlNeutralResourcesDirectory)Compile.xaml;">
+    <PropertyPageSchema Include="$(ManagedXamlNeutralResourcesDirectory)Compile.xaml">
       <Context>File</Context>
     </PropertyPageSchema>
 
-    <PropertyPageSchema Include="$(ManagedXamlResourcesDirectory)Compile.BrowseObject.xaml;">
+    <PropertyPageSchema Include="$(ManagedXamlResourcesDirectory)Compile.BrowseObject.xaml">
       <Context>BrowseObject</Context>
     </PropertyPageSchema>
 
-    <PropertyPageSchema Include="$(ManagedXamlResourcesDirectory)Resource.BrowseObject.xaml;">
+    <PropertyPageSchema Include="$(ManagedXamlResourcesDirectory)Resource.BrowseObject.xaml">
       <Context>BrowseObject</Context>
     </PropertyPageSchema>
 
