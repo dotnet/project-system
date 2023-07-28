@@ -98,6 +98,10 @@ variables:
   # Default to skipping auto-injection for CodeQL. It is not skipped in the Build job only.
   # https://eng.ms/docs/cloud-ai-platform/devdiv/one-engineering-system-1es/1es-docs/codeql/configuring-codeql3000-ado-pipelines#monolithic-repos-and-multistage-pipelines
   Codeql.SkipTaskAutoInjection: true
+  # Enable reporting CodeQL issues via TSA.
+  # See: https://devdiv.visualstudio.com/DevDiv/_wiki/wikis/DevDiv.wiki/3212/TSA-Onboarding
+  Codeql.TSAEnabled: true
+  Codeql.TSAOptionsPath: $(Build.SourcesDirectory)/eng/pipelines/configuration/TSAConfig.gdntsa
   # Sets the fetch depth to no longer be a shallow clone. Nerdbank.GitVersioning requires a non-shallow clone.
   # See:
   # - https://github.com/dotnet/Nerdbank.GitVersioning/issues/423
