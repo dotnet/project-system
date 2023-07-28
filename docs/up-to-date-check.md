@@ -1,16 +1,45 @@
 ﻿# Up-to-date Check
 
-The Project System's _Fast Up-to-date Check_ saves developers time by quickly assessing whether a project needs to be
+The Project System's _Fast Up-to-Date Check_ (FUTDC) saves developers time by quickly assessing whether a project needs to be
 built or not. If not, Visual Studio can avoid a comparatively expensive call to MSBuild.
 
-At a superficial level, the check compares timestamps between the project's inputs and its outputs. For more
-information on how it works in detail, see [this document](repo/up-to-date-check-implementation.md).
+The check compares timestamps between the project's inputs and its outputs. If any input is newer than one of the
+outputs, the project is considered out-of-date and will be built. There are other conditions that can lead to
+builds, but the most common cases relate to file system timestamps.
 
 Note that the _fast_ up-to-date check is intended to speed up the majority of cases where a build is not required,
 yet it cannot reliably cover all cases correctly. Where necessary, it errs on the side of caution as triggering a
 redundant build is better than not triggering a required build. MSBuild performs its own checks, so even if the 
 fast up-to-date check incorrectly determines the project is out-of-date, MSBuild may still not perform a full
 build.
+
+## Default inputs and outputs
+
+The FUTDC determines the input and output files to use from the project itself.
+
+Input items are specified via MSBuild items in evaluation data. The set of item types considered as inputs is
+controlled by [CPS's `ProjectSchemaDefinitions`](https://github.com/microsoft/VSProjectSystem/blob/master/doc/extensibility/custom_item_types.md).
+All `<ItemType>` entries that do not specify `UpToDateCheckInput="false"` will be treated as input items that
+contribute to the primary output of the project. As an example, the definitions for C# projects are given
+[here](https://github.com/dotnet/project-system/blob/70cb71d8e9bc682dbe66e591224c7dcaf5967b48/src/Microsoft.VisualStudio.ProjectSystem.Managed/ProjectSystem/Rules/Items/ProjectItemsSchema.CSharp.xaml#L12-L14)
+and [here](https://github.com/dotnet/project-system/blob/70cb71d8e9bc682dbe66e591224c7dcaf5967b48/src/Microsoft.VisualStudio.ProjectSystem.Managed/ProjectSystem/Rules/Items/ProjectItemsSchema.xaml#L112-L118).
+Note how `None` and `Content` items have `UpToDateCheckInput` set to `false`, meaning they are ignored by the FUTDC.
+Project systems may customize these item types to meet their needs.
+
+The primary output of the project is determined by the `OutputPath` MSBuild property. If that property is not
+defined, `OutDir` is used instead.
+
+Additional inputs are obtained from design-time build results:
+
+- `ResolvedAnalyzerReference` (sourced from the `CollectAnalyzersDesignTime` target, with the file identified in `ResolvedPath` item metadata)
+- `ResolvedCompilationReference` (via `CollectResolvedCompilationReferencesDesignTime` target, with files identified via `ResolvedPath`, `OriginalPath` and `CopyUpToDateMarker` item metadata)
+- `CopyToOutputDirectoryItem` (via `CollectCopyToOutputDirectoryItemDesignTime` target, with source path from the item spec and target path from `TargetPath` item metadata)
+- `UpToDateCheckInput` (via `CollectUpToDateCheckInputDesignTime` target, discussed below)
+
+Additional outputs are obtained from design-time build results:
+
+- `UpToDateCheckOutput` (via `CollectUpToDateCheckOutputDesignTime` target, discussed below)
+- `UpToDateCheckBuilt` (via `CollectUpToDateCheckBuiltDesignTime` target, discussed below)
 
 ## Customization
 
