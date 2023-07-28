@@ -398,8 +398,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 Comparing timestamps of inputs and outputs:
                     Adding UpToDateCheckBuilt outputs:
                         {_builtPath}
-                    Adding project file inputs:
-                        {_projectPath}
                     Adding newest import input:
                         {_projectPath}
                     Adding Compile inputs:
@@ -459,8 +457,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 Comparing timestamps of inputs and outputs:
                     Adding UpToDateCheckBuilt outputs:
                         {_builtPath}
-                    Adding project file inputs:
-                        {_projectPath}
                     Adding newest import input:
                         {_projectPath}
                     Adding Compile inputs:
@@ -503,8 +499,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 Comparing timestamps of inputs and outputs:
                     Adding UpToDateCheckBuilt outputs:
                         {_builtPath}
-                    Adding project file inputs:
-                        {_projectPath}
                     Adding newest import input:
                         {_projectPath}
                     Adding Compile inputs:
@@ -550,8 +544,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 Comparing timestamps of inputs and outputs:
                     Adding UpToDateCheckBuilt outputs:
                         {_builtPath}
-                    Adding project file inputs:
-                        {_projectPath}
                     Adding newest import input:
                         {_projectPath}
                     Adding Compile inputs:
@@ -573,8 +565,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 Comparing timestamps of inputs and outputs:
                     Adding UpToDateCheckBuilt outputs:
                         {_builtPath}
-                    Adding project file inputs:
-                        {_projectPath}
                     Adding newest import input:
                         {_projectPath}
                     Adding Compile inputs:
@@ -620,8 +610,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 Comparing timestamps of inputs and outputs:
                     Adding UpToDateCheckBuilt outputs:
                         {_builtPath}
-                    Adding project file inputs:
-                        {_projectPath}
                     Adding newest import input:
                         {_projectPath}
                     Adding Compile inputs:
@@ -651,8 +639,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 Comparing timestamps of inputs and outputs:
                     Adding UpToDateCheckBuilt outputs:
                         {_builtPath}
-                    Adding project file inputs:
-                        {_projectPath}
                     Adding newest import input:
                         {_projectPath}
                     Adding Compile inputs:
@@ -698,8 +684,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 Comparing timestamps of inputs and outputs:
                     Adding UpToDateCheckBuilt outputs:
                         {_builtPath}
-                    Adding project file inputs:
-                        {_projectPath}
                     Adding newest import input:
                         {_projectPath}
                     Adding Compile inputs:
@@ -742,8 +726,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 Comparing timestamps of inputs and outputs:
                     Adding UpToDateCheckOutput outputs:
                         C:\Dev\Solution\Project\Output
-                    Adding project file inputs:
-                        {_projectPath}
                     Adding newest import input:
                         {_projectPath}
                     Adding Compile inputs:
@@ -951,8 +933,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 Comparing timestamps of inputs and outputs:
                     Adding UpToDateCheckBuilt outputs:
                         {_builtPath}
-                    Adding project file inputs:
-                        {_projectPath}
                     Adding newest import input:
                         {_projectPath}
                     Adding ResolvedAnalyzerReference inputs:
@@ -1004,8 +984,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 Comparing timestamps of inputs and outputs:
                     Adding UpToDateCheckBuilt outputs:
                         {_builtPath}
-                    Adding project file inputs:
-                        {_projectPath}
                     Adding newest import input:
                         {_projectPath}
                     Adding ResolvedCompilationReference inputs:
@@ -1044,8 +1022,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 Comparing timestamps of inputs and outputs:
                     Adding UpToDateCheckBuilt outputs:
                         {_builtPath}
-                    Adding project file inputs:
-                        {_projectPath}
                     Adding newest import input:
                         {_projectPath}
                     Adding UpToDateCheckInput inputs:
@@ -1085,8 +1061,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 Comparing timestamps of inputs and outputs:
                     Adding UpToDateCheckBuilt outputs:
                         {_builtPath}
-                    Adding project file inputs:
-                        {_projectPath}
                     Adding newest import input:
                         {_projectPath}
                     No inputs are newer than earliest output '{_builtPath}' ({ToLocalTime(outputTime)}). Newest input is '{_projectPath}' ({ToLocalTime(_projectFileTimeUtc)}).
@@ -1134,8 +1108,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 Comparing timestamps of inputs and outputs:
                     Adding UpToDateCheckBuilt outputs:
                         {_builtPath}
-                    Adding project file inputs:
-                        {_projectPath}
                     Adding newest import input:
                         {_projectPath}
                     No inputs are newer than earliest output '{_builtPath}' ({ToLocalTime(outputTime1)}). Newest input is '{_projectPath}' ({ToLocalTime(_projectFileTimeUtc)}).
@@ -1189,8 +1161,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 Comparing timestamps of inputs and outputs:
                     Adding UpToDateCheckBuilt outputs:
                         {_builtPath}
-                    Adding project file inputs:
-                        {_projectPath}
                     Adding newest import input:
                         {_projectPath}
                     No inputs are newer than earliest output '{_builtPath}' ({ToLocalTime(outputTime1)}). Newest input is '{_projectPath}' ({ToLocalTime(_projectFileTimeUtc)}).
@@ -1241,8 +1211,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 Comparing timestamps of inputs and outputs:
                     Adding UpToDateCheckBuilt outputs:
                         {_builtPath}
-                    Adding project file inputs:
-                        {_projectPath}
                     Adding newest import input:
                         {_projectPath}
                     No inputs are newer than earliest output '{_builtPath}' ({ToLocalTime(outputTime1)}). Newest input is '{_projectPath}' ({ToLocalTime(_projectFileTimeUtc)}).
@@ -1290,8 +1258,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 Comparing timestamps of inputs and outputs:
                     Adding UpToDateCheckBuilt outputs:
                         {_builtPath}
-                    Adding project file inputs:
-                        {_projectPath}
                     Adding newest import input:
                         {_projectPath}
                     No inputs are newer than earliest output '{_builtPath}' ({ToLocalTime(buildTime)}). Newest input is '{_projectPath}' ({ToLocalTime(_projectFileTimeUtc)}).
@@ -1328,8 +1294,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 Comparing timestamps of inputs and outputs:
                     Adding UpToDateCheckBuilt outputs:
                         {_builtPath}
-                    Adding project file inputs:
-                        {_projectPath}
                     Adding newest import input:
                         {_projectPath}
                     No inputs are newer than earliest output '{_builtPath}' ({ToLocalTime(outputTime)}). Newest input is '{_projectPath}' ({ToLocalTime(_projectFileTimeUtc)}).
@@ -1376,8 +1340,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                     Adding UpToDateCheckBuilt outputs:
                         C:\Dev\Solution\Project\Built
                         Skipping 'C:\Dev\Solution\Project\IgnoredBuilt.dll' with ignored Kind="Ignored"
-                    Adding project file inputs:
-                        {_projectPath}
                     Adding newest import input:
                         {_projectPath}
                     Adding UpToDateCheckInput inputs:
@@ -1427,8 +1389,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                     Adding UpToDateCheckBuilt outputs:
                         C:\Dev\Solution\Project\Built
                         C:\Dev\Solution\Project\TaggedBuilt
-                    Adding project file inputs:
-                        {_projectPath}
                     Adding newest import input:
                         {_projectPath}
                     Adding UpToDateCheckInput inputs:
@@ -1474,8 +1434,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                     Adding UpToDateCheckBuilt outputs:
                         C:\Dev\Solution\Project\Built
                         Skipping 'C:\Dev\Solution\Project\IgnoredBuilt' with ignored Kind="Ignored"
-                    Adding project file inputs:
-                        {_projectPath}
                     Adding newest import input:
                         {_projectPath}
                     Adding UpToDateCheckInput inputs:
@@ -1528,8 +1486,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                     Adding UpToDateCheckBuilt outputs:
                         C:\Dev\Solution\Project\Built
                         C:\Dev\Solution\Project\TaggedBuilt
-                    Adding project file inputs:
-                        {_projectPath}
                     Adding newest import input:
                         {_projectPath}
                     Adding UpToDateCheckInput inputs:

@@ -57,11 +57,6 @@
         <target state="translated">正在新增最新的匯入輸入:</target>
         <note />
       </trans-unit>
-      <trans-unit id="FUTD_AddingProjectFileInputs">
-        <source>Adding project file inputs:</source>
-        <target state="translated">正在新增專案檔案輸入:</target>
-        <note />
-      </trans-unit>
       <trans-unit id="FUTD_AddingTypedInputsInSet_2">
         <source>Adding {0} inputs in Set="{1}":</source>
         <target state="translated">正在 Set="{1}" 中新增 {0} 輸入:</target>

@@ -22,7 +22,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
         {
             return new UpToDateCheckImplicitConfiguredInput(
                 projectConfiguration: projectConfiguration,
-                msBuildProjectFullPath: null,
                 msBuildProjectDirectory: null,
                 projectTargetPath: null,
                 copyUpToDateMarkerItem: null,
@@ -53,15 +52,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
         /// <see langword="null"/> when the up-to-date check is disabled.
         /// </remarks>
         public ProjectConfiguration ProjectConfiguration { get; }
-
-        /// <summary>
-        /// Gets the full path to the project file.
-        /// </summary>
-        /// <remarks>
-        /// Comes from the <c>MSBuildProjectFullPath</c> MSBuild property.
-        /// For example, <c>C:\repos\MySolution\MyProject\MyProject.csproj</c>.
-        /// </remarks>
-        public string? MSBuildProjectFullPath { get; }
 
         /// <summary>
         /// Gets the full path to the project directory.
@@ -248,7 +238,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
         private UpToDateCheckImplicitConfiguredInput(
             ProjectConfiguration projectConfiguration,
-            string? msBuildProjectFullPath,
             string? msBuildProjectDirectory,
             string? projectTargetPath,
             string? copyUpToDateMarkerItem,
@@ -271,7 +260,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             ProjectCopyData projectCopyData)
         {
             ProjectConfiguration = projectConfiguration;
-            MSBuildProjectFullPath = msBuildProjectFullPath;
             MSBuildProjectDirectory = msBuildProjectDirectory;
             ProjectTargetPath = projectTargetPath;
             CopyUpToDateMarkerItem = copyUpToDateMarkerItem;
@@ -339,7 +327,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 return CreateDisabled(ProjectConfiguration);
             }
 
-            string? msBuildProjectFullPath = jointRuleUpdate.CurrentState.GetPropertyOrDefault(ConfigurationGeneral.SchemaName, ConfigurationGeneral.MSBuildProjectFullPathProperty, defaultValue: MSBuildProjectFullPath);
+            string? msBuildProjectFullPath = jointRuleUpdate.CurrentState.GetPropertyOrDefault(ConfigurationGeneral.SchemaName, ConfigurationGeneral.MSBuildProjectFullPathProperty, defaultValue: null);
             string? msBuildProjectDirectory = jointRuleUpdate.CurrentState.GetPropertyOrDefault(ConfigurationGeneral.SchemaName, ConfigurationGeneral.MSBuildProjectDirectoryProperty, defaultValue: MSBuildProjectDirectory);
             string? projectTargetPath = jointRuleUpdate.CurrentState.GetPropertyOrDefault(ConfigurationGeneral.SchemaName, ConfigurationGeneral.TargetPathProperty, defaultValue: "");
             string? projectOutputPath = jointRuleUpdate.CurrentState.GetPropertyOrDefault(ConfigurationGeneral.SchemaName, ConfigurationGeneral.OutputPathProperty, defaultValue: OutputRelativeOrFullPath);
@@ -350,6 +338,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             // The first item in this semicolon-separated list of project files will always be the one
             // with the newest timestamp. As we are only interested in timestamps on these files, we can
             // save memory and time by only considering this first path (dotnet/project-system#4333).
+            // Note that we cannot exclude this path using the ProjectFileClassifier, as doing so may
+            // miss other imports of interest.
             string? newestImportInput = new LazyStringSplit(msBuildAllProjects, ';').FirstOrDefault();
 
             ProjectFileClassifier? projectFileClassifier = null;
@@ -461,7 +451,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
             return new(
                 ProjectConfiguration,
-                msBuildProjectFullPath,
                 msBuildProjectDirectory,
                 projectTargetPath,
                 copyUpToDateMarkerItem: UpdateCopyUpToDateMarkerItem(),
@@ -713,7 +702,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
         {
             return new(
                 ProjectConfiguration,
-                MSBuildProjectFullPath,
                 MSBuildProjectDirectory,
                 ProjectTargetPath,
                 CopyUpToDateMarkerItem,
@@ -740,7 +728,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
         {
             return new(
                 ProjectConfiguration,
-                MSBuildProjectFullPath,
                 MSBuildProjectDirectory,
                 ProjectTargetPath,
                 CopyUpToDateMarkerItem,
