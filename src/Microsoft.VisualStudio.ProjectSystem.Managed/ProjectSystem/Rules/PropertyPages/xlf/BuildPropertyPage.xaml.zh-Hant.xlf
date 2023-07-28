@@ -74,22 +74,22 @@
       </trans-unit>
       <trans-unit id="BoolProperty|IsAotCompatible|Description">
         <source>Indicates that the library project is AOT compatible.</source>
-        <target state="new">Indicates that the library project is AOT compatible.</target>
+        <target state="translated">表示程式庫專案和 AOT 相容。</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|IsAotCompatible|DisplayName">
         <source>AOT Compatible</source>
-        <target state="new">AOT Compatible</target>
+        <target state="translated">和 AOT 不相容</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|IsTrimmable|Description">
         <source>Marks your assembly as trimmable and enables trim warnings for that project.</source>
-        <target state="new">Marks your assembly as trimmable and enables trim warnings for that project.</target>
+        <target state="translated">將您的組件標示為可修剪，並啟用該專案的修剪警告。</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|IsTrimmable|DisplayName">
         <source>Trimmable</source>
-        <target state="new">Trimmable</target>
+        <target state="translated">可修剪</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|Optimize|Description">
@@ -129,12 +129,12 @@
       </trans-unit>
       <trans-unit id="BoolProperty|PublishAot|Description">
         <source>Enable Ahead-of-Time (AOT) Compilation to generate native machine code for your .NET Core application during the publish process for improved performance and reduced startup time.</source>
-        <target state="new">Enable Ahead-of-Time (AOT) Compilation to generate native machine code for your .NET Core application during the publish process for improved performance and reduced startup time.</target>
+        <target state="translated">啟用預先 (AOT) 編譯，以在發佈流程期間為您的 .NET Core 應用程式產生原生機器程式碼，以提升效能並縮短啟動時間。</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|PublishAot|DisplayName">
         <source>Publish native AOT</source>
-        <target state="new">Publish native AOT</target>
+        <target state="translated">發佈原生 AOT</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|SignAssembly|Description">
@@ -204,12 +204,12 @@
       </trans-unit>
       <trans-unit id="Category|Publish|Description">
         <source>Configures options in the publish process.</source>
-        <target state="new">Configures options in the publish process.</target>
+        <target state="translated">設定發佈流程中的選項。</target>
         <note />
       </trans-unit>
       <trans-unit id="Category|Publish|DisplayName">
         <source>Publish</source>
-        <target state="new">Publish</target>
+        <target state="translated">發佈</target>
         <note />
       </trans-unit>
       <trans-unit id="Category|StrongNaming|Description">
@@ -234,12 +234,12 @@
       </trans-unit>
       <trans-unit id="DynamicEnumProperty|Trimming|Description">
         <source>Select the desired .NET trimming option for optimizing your application's deployment size and performance.</source>
-        <target state="new">Select the desired .NET trimming option for optimizing your application's deployment size and performance.</target>
+        <target state="translated">選取所需的 .NET 修剪選項，以將應用程式的部署大小與效能最佳化。</target>
         <note />
       </trans-unit>
       <trans-unit id="DynamicEnumProperty|Trimming|DisplayName">
         <source>Trimming</source>
-        <target state="new">Trimming</target>
+        <target state="translated">修剪</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumProperty|DebugType|Description">
@@ -499,7 +499,7 @@
       </trans-unit>
       <trans-unit id="StringProperty|DefineConstants|ValueEditors|ValueEditor|Metadata|TypeDescriptorText|Value">
         <source>Custom symbols</source>
-        <target state="new">Custom symbols</target>
+        <target state="translated">自訂符號</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|DocumentationFile|Description">

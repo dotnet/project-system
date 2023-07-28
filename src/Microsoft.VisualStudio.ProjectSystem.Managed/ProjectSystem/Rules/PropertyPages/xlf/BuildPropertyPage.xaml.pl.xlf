@@ -74,22 +74,22 @@
       </trans-unit>
       <trans-unit id="BoolProperty|IsAotCompatible|Description">
         <source>Indicates that the library project is AOT compatible.</source>
-        <target state="new">Indicates that the library project is AOT compatible.</target>
+        <target state="translated">Wskazuje, że projekt biblioteki jest zgodny z opcją kompilacji z wyprzedzeniem.</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|IsAotCompatible|DisplayName">
         <source>AOT Compatible</source>
-        <target state="new">AOT Compatible</target>
+        <target state="translated">Zgodne z opcją kompilacji z wyprzedzeniem</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|IsTrimmable|Description">
         <source>Marks your assembly as trimmable and enables trim warnings for that project.</source>
-        <target state="new">Marks your assembly as trimmable and enables trim warnings for that project.</target>
+        <target state="translated">Oznacza zestaw jako możliwy do przycinania i włącza ostrzeżenia przycinania dla tego projektu.</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|IsTrimmable|DisplayName">
         <source>Trimmable</source>
-        <target state="new">Trimmable</target>
+        <target state="translated">Z możliwością przycinania</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|Optimize|Description">
@@ -129,12 +129,12 @@
       </trans-unit>
       <trans-unit id="BoolProperty|PublishAot|Description">
         <source>Enable Ahead-of-Time (AOT) Compilation to generate native machine code for your .NET Core application during the publish process for improved performance and reduced startup time.</source>
-        <target state="new">Enable Ahead-of-Time (AOT) Compilation to generate native machine code for your .NET Core application during the publish process for improved performance and reduced startup time.</target>
+        <target state="translated">Włącz kompilację z wyprzedzeniem (AOT), aby wygenerować natywny kod maszynowy dla aplikacji .NET Core podczas procesu publikowania, aby zwiększyć wydajność i skrócić czas uruchamiania.</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|PublishAot|DisplayName">
         <source>Publish native AOT</source>
-        <target state="new">Publish native AOT</target>
+        <target state="translated">Publikuj natywne kompilacje z wyprzedzeniem</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|SignAssembly|Description">
@@ -204,12 +204,12 @@
       </trans-unit>
       <trans-unit id="Category|Publish|Description">
         <source>Configures options in the publish process.</source>
-        <target state="new">Configures options in the publish process.</target>
+        <target state="translated">Konfiguruje opcje w procesie publikowania.</target>
         <note />
       </trans-unit>
       <trans-unit id="Category|Publish|DisplayName">
         <source>Publish</source>
-        <target state="new">Publish</target>
+        <target state="translated">Publikuj</target>
         <note />
       </trans-unit>
       <trans-unit id="Category|StrongNaming|Description">
@@ -234,12 +234,12 @@
       </trans-unit>
       <trans-unit id="DynamicEnumProperty|Trimming|Description">
         <source>Select the desired .NET trimming option for optimizing your application's deployment size and performance.</source>
-        <target state="new">Select the desired .NET trimming option for optimizing your application's deployment size and performance.</target>
+        <target state="translated">Wybierz żądaną opcję przycinania platformy .NET, aby zoptymalizować rozmiar i wydajność wdrożenia aplikacji.</target>
         <note />
       </trans-unit>
       <trans-unit id="DynamicEnumProperty|Trimming|DisplayName">
         <source>Trimming</source>
-        <target state="new">Trimming</target>
+        <target state="translated">Przycinanie</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumProperty|DebugType|Description">
@@ -499,7 +499,7 @@
       </trans-unit>
       <trans-unit id="StringProperty|DefineConstants|ValueEditors|ValueEditor|Metadata|TypeDescriptorText|Value">
         <source>Custom symbols</source>
-        <target state="new">Custom symbols</target>
+        <target state="translated">Symbole niestandardowe</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|DocumentationFile|Description">
