@@ -1,5 +1,9 @@
 {
+    "tsaVersion": "TsaV2",
+    "codebase": "NewOrUpdate",
     "codebaseName": "dotnet-project-system",
+    "tsaStamp": "DevDiv",
+    "tsaEnvironment": "PROD",
     "notificationAliases": [
         "dotnetdevexproj@microsoft.com"
     ],
