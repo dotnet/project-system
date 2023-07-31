@@ -196,7 +196,11 @@
     </BoolProperty.DataSource>
     <BoolProperty.Metadata>
       <NameValuePair Name="VisibilityCondition">
-        <NameValuePair.Value>(and (has-net-core-app-version-or-greater "8.0") (has-project-capability "NativeAOTProperties"))</NameValuePair.Value>
+        <NameValuePair.Value>
+          (and
+          (has-project-capability "NativeAOTProperties")
+          (has-evaluated-value "Application" "OutputType" "Library"))
+        </NameValuePair.Value>
       </NameValuePair>
     </BoolProperty.Metadata>
   </BoolProperty>
@@ -212,7 +216,11 @@
     </BoolProperty.DataSource>
     <BoolProperty.Metadata>
       <NameValuePair Name="VisibilityCondition">
-        <NameValuePair.Value>(and (has-net-core-app-version-or-greater "8.0") (has-project-capability "NativeAOTProperties"))</NameValuePair.Value>
+        <NameValuePair.Value>
+          (and
+          (has-project-capability "NativeAOTProperties")
+          (has-evaluated-value "Application" "OutputType" "Library"))
+        </NameValuePair.Value>
       </NameValuePair>
     </BoolProperty.Metadata>
   </BoolProperty>
@@ -424,7 +432,7 @@
                DisplayName="When the output is updated" />
   </EnumProperty>
 
-  <!-- These Native AOT properties should not be visible for WPF, WinForms, MAUI or class library projects. -->
+  <!-- These Native AOT properties should not be visible for class library projects. -->
   <DynamicEnumProperty Name="Trimming"
                 DisplayName="Trimming"
                 Description="Select the desired .NET trimming option for optimizing your application's deployment size and performance."
@@ -440,10 +448,8 @@
       <NameValuePair Name="VisibilityCondition">
         <NameValuePair.Value>
           (and
-            (has-net-core-app-version-or-greater "8.0")
-            (and
-               (not (has-evaluated-value "Application" "UseWindowsForms" true))
-               (not (has-evaluated-value "Application" "UseWPF" true))))
+          (has-project-capability "NativeAOTProperties")
+          (not (has-evaluated-value "Application" "OutputType" "Library")))
         </NameValuePair.Value>
       </NameValuePair>
     </DynamicEnumProperty.Metadata>
@@ -461,10 +467,8 @@
       <NameValuePair Name="VisibilityCondition">
         <NameValuePair.Value>
           (and
-            (has-net-core-app-version-or-greater "8.0")
-            (and
-               (not (has-evaluated-value "Application" "UseWindowsForms" true))
-               (not (has-evaluated-value "Application" "UseWPF" true))))
+          (has-project-capability "NativeAOTProperties")
+          (not (has-evaluated-value "Application" "OutputType" "Library")))
         </NameValuePair.Value>
       </NameValuePair>
     </BoolProperty.Metadata>
