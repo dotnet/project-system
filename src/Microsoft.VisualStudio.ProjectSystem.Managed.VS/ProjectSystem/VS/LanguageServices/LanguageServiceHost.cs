@@ -1,5 +1,6 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
+using System.Threading.Tasks.Dataflow;
 using Microsoft.VisualStudio.Composition;
 using Microsoft.VisualStudio.LanguageServices.ProjectSystem; // Roslyn
 using Microsoft.VisualStudio.ProjectSystem.Utilities;
@@ -125,6 +126,36 @@ internal sealed class LanguageServiceHost : OnceInitializedOnceDisposedAsync, IP
 
         var workspaceBySlice = new Dictionary<ProjectConfigurationSlice, Workspace>();
 
+        ITargetBlock<IProjectVersionedValue<(ConfiguredProject ActiveConfiguredProject, ConfigurationSubscriptionSources Sources)>> actionBlock
+            = DataflowBlockFactory.CreateActionBlock<IProjectVersionedValue<(ConfiguredProject ActiveConfiguredProject, ConfigurationSubscriptionSources Sources)>>(
+                update => OnSlicesChanged(update, cancellationToken),
+                _unconfiguredProject,
+                ProjectFaultSeverity.LimitedFunctionality,
+                nameFormat: "LanguageServiceHostSlices {1}");
+
+        // Establish fault handling for the block that handles data updates.
+        _ = actionBlock.Completion.ContinueWith(
+            completion =>
+            {
+                // Attempt to unwrap a single exception where possible.
+                Exception ex = completion.Exception.Flatten() switch
+                {
+                    AggregateException { InnerExceptions: { Count: 1 } inner } => inner[0],
+                    AggregateException exception => exception
+                };
+
+                // If we experience an exception while processing an update, we must fault anyone waiting on
+                // the primary workspace to prevent hangs. Note that if the first primary workspace has already
+                // been observed, then this does nothing.
+                _firstPrimaryWorkspaceSet.TrySetException(ex);
+
+                // Report the exception as an NFE that limits the functionality of the project.
+                _ = _projectFaultHandler.ReportFaultAsync(ex, _unconfiguredProject, ProjectFaultSeverity.LimitedFunctionality);
+            },
+            CancellationToken.None,
+            TaskContinuationOptions.OnlyOnFaulted,
+            TaskScheduler.Default);
+
         _disposables = new()
         {
             ProjectDataSources.SyncLinkTo(
@@ -132,11 +163,7 @@ internal sealed class LanguageServiceHost : OnceInitializedOnceDisposedAsync, IP
                 _activeConfiguredProjectProvider.ActiveConfiguredProjectBlock.SyncLinkOptions(),
                 // We track per-slice data via this source.
                 _activeConfigurationGroupSubscriptionService.SourceBlock.SyncLinkOptions(),
-                target: DataflowBlockFactory.CreateActionBlock<IProjectVersionedValue<(ConfiguredProject ActiveConfiguredProject, ConfigurationSubscriptionSources Sources)>>(
-                    update => OnSlicesChanged(update, cancellationToken),
-                    _unconfiguredProject,
-                    ProjectFaultSeverity.LimitedFunctionality,
-                    nameFormat: "LanguageServiceHostSlices {1}"),
+                target: actionBlock,
                 linkOptions: DataflowOption.PropagateCompletion,
                 cancellationToken: cancellationToken),
 
