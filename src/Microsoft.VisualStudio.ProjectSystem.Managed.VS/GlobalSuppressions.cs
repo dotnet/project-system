@@ -11,6 +11,7 @@ using System.Diagnostics.CodeAnalysis;
 [assembly: SuppressMessage("ApiDesign", "RS0030:Do not used banned APIs", Justification = "https://github.com/dotnet/roslyn-analyzers/issues/3295", Scope = "member", Target = "~M:Microsoft.VisualStudio.ProjectSystem.VS.TempPE.DesignTimeInputsChangeTracker.Initialize")]
 [assembly: SuppressMessage("ApiDesign", "RS0030:Do not used banned APIs", Justification = "https://github.com/dotnet/roslyn-analyzers/issues/3295", Scope = "member", Target = "~M:Microsoft.VisualStudio.ProjectSystem.VS.TempPE.DesignTimeInputsFileWatcher.Initialize")]
 
+// https://github.com/dotnet/roslyn-analyzers/issues/5521
 [assembly: SuppressMessage("ApiDesign", "RS0041:Public members should not use oblivious types", Justification = "Generated Code", Scope = "member", Target = "~P:Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages.PropertyPageResources.AddBtn")]
 [assembly: SuppressMessage("ApiDesign", "RS0041:Public members should not use oblivious types", Justification = "Generated Code", Scope = "member", Target = "~P:Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages.PropertyPageResources.AllFiles")]
 [assembly: SuppressMessage("ApiDesign", "RS0041:Public members should not use oblivious types", Justification = "Generated Code", Scope = "member", Target = "~P:Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages.PropertyPageResources.ApplicationArguments")]
@@ -70,6 +71,7 @@ using System.Diagnostics.CodeAnalysis;
 
 [assembly: SuppressMessage("Design", "CA1036:Override methods on comparable types", Justification = "<Pending>", Scope = "type", Target = "~T:Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections.AttachedCollectionItemBase")]
 
+// https://github.com/microsoft/vs-threading/issues/1222
 [assembly: SuppressMessage("Style", "VSTHRD200:Use \"Async\" suffix for async methods", Justification = "This is a When method, such as Task.WhenAll, which doesn't use Async suffix.", Scope = "member", Target = "~M:Microsoft.VisualStudio.ProjectSystem.LanguageServices.IWorkspaceWriter.WhenInitialized(System.Threading.CancellationToken)~System.Threading.Tasks.Task")]
 [assembly: SuppressMessage("Style", "VSTHRD200:Use \"Async\" suffix for async methods", Justification = "This is a When method, such as Task.WhenAll, which doesn't use Async suffix.", Scope = "member", Target = "~M:Microsoft.VisualStudio.ProjectSystem.LanguageServices.Workspace.WhenContextCreated(System.Threading.CancellationToken)~System.Threading.Tasks.Task")]
 [assembly: SuppressMessage("Style", "VSTHRD200:Use \"Async\" suffix for async methods", Justification = "This is a When method, such as Task.WhenAll, which doesn't use Async suffix.", Scope = "member", Target = "~M:Microsoft.VisualStudio.ProjectSystem.LanguageServices.LanguageServiceHost.WhenProjectLoaded(System.Threading.CancellationToken)~System.Threading.Tasks.Task")]
