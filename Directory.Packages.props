@@ -28,14 +28,14 @@
     <PackageVersion Include="Microsoft.VisualStudio.Internal.MicroBuild.Vsman"                       Version="2.0.115" />
     <PackageVersion Include="Microsoft.VisualStudioEng.MicroBuild.Core"                              Version="1.0.0" />
     <PackageVersion Include="Nerdbank.GitVersioning"                                                 Version="3.6.79-alpha" />
-    <PackageVersion Include="Nerdbank.Streams"                                                       Version="2.9.112" />
+    <PackageVersion Include="Nerdbank.Streams"                                                       Version="2.10.69" />
     <PackageVersion Include="System.IO.Pipelines"                                                    Version="7.0.0" />
 
     <!-- VS SDK -->
     <!-- https://dev.azure.com/azure-public/vside/_artifacts/feed/vssdk -->
     <PackageVersion Include="EnvDTE"                                                                 Version="17.3.32804.24" />
     <PackageVersion Include="Microsoft.Internal.VisualStudio.Interop"                                Version="17.3.32804.24" />
-    <PackageVersion Include="Microsoft.ServiceHub.Framework"                                         Version="4.3.36-preview" />
+    <PackageVersion Include="Microsoft.ServiceHub.Framework"                                         Version="4.3.57" />
     <PackageVersion Include="Microsoft.VisualStudio.ComponentModelHost"                              Version="17.3.198" />
     <PackageVersion Include="Microsoft.VisualStudio.Composition"                                     Version="17.7.9-preview" />
     <PackageVersion Include="Microsoft.VisualStudio.Data.Core"                                       Version="17.0.0-preview-2-31223-026" />
@@ -55,7 +55,7 @@
     <PackageVersion Include="Microsoft.VisualStudio.Shell.15.0"                                      Version="17.3.32804.24" />
     <PackageVersion Include="Microsoft.VisualStudio.Shell.Design"                                    Version="17.3.32804.24" />
     <PackageVersion Include="Microsoft.VisualStudio.Shell.Framework"                                 Version="17.3.32804.24" />
-    <PackageVersion Include="Microsoft.VisualStudio.Telemetry"                                       Version="17.7.47" />
+    <PackageVersion Include="Microsoft.VisualStudio.Telemetry"                                       Version="17.8.9" />
     <PackageVersion Include="Microsoft.VisualStudio.TemplateWizardInterface"                         Version="17.3.32804.24" />
     <PackageVersion Include="Microsoft.VisualStudio.Threading"                                       Version="17.7.15-preview" />
     <PackageVersion Include="Microsoft.VisualStudio.Threading.Analyzers"                             Version="17.7.15-preview" />
