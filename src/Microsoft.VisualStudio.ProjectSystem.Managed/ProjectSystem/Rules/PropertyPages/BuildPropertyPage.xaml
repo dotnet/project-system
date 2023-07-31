@@ -198,8 +198,8 @@
       <NameValuePair Name="VisibilityCondition">
         <NameValuePair.Value>
           (and
-          (has-project-capability "NativeAOTProperties")
-          (has-evaluated-value "Application" "OutputType" "Library"))
+            (has-project-capability "NativeAOTProperties")
+            (has-evaluated-value "Application" "OutputType" "Library"))
         </NameValuePair.Value>
       </NameValuePair>
     </BoolProperty.Metadata>
@@ -218,8 +218,8 @@
       <NameValuePair Name="VisibilityCondition">
         <NameValuePair.Value>
           (and
-          (has-project-capability "NativeAOTProperties")
-          (has-evaluated-value "Application" "OutputType" "Library"))
+            (has-project-capability "NativeAOTProperties")
+            (has-evaluated-value "Application" "OutputType" "Library"))
         </NameValuePair.Value>
       </NameValuePair>
     </BoolProperty.Metadata>
