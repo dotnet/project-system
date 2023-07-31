@@ -212,6 +212,6 @@ internal class WorkspaceFactory : IWorkspaceFactory
                 // If we got here, we return the input item unchanged (just wrapped in an array).
                 return new[] { input };
             },
-            new ExecutionDataflowBlockOptions { NameFormat = "Workspace update ordering {0}" });
+            new ExecutionDataflowBlockOptions { NameFormat = "Workspace update ordering {1}" });
     }
 }
