@@ -69,6 +69,16 @@ internal sealed class Workspace : OnceInitializedOnceDisposedUnderLockAsync, IWo
     /// <summary>Whether we have seen evaluation data yet.</summary>
     private bool _seenEvaluation;
 
+    /// <summary>
+    /// Stores any exception observed within <see cref="OnWorkspaceUpdateAsync"/> for inspection during heap analysis.
+    /// </summary>
+    /// <remarks>
+    /// If an exception occurs when processing updates, this object disposes itself. In such cases it would be very helpful
+    /// to be able to see the exception that caused the to occur in heap dumps. This field retains such an exception, purely
+    /// for such debugging.
+    /// </remarks>
+    private Exception? _updateException;
+
     /// <summary>Gets whether this workspace represents the primary active configuration.</summary>
     public bool IsPrimary { get; internal set; }
 
@@ -208,8 +218,11 @@ internal sealed class Workspace : OnceInitializedOnceDisposedUnderLockAsync, IWo
                         _ => throw Assumes.NotReachable()
                     });
                 }
-                catch
+                catch (Exception ex)
                 {
+                    // Store the exception to assist with dump analysis.
+                    _updateException = ex;
+
                     // Tear down on any exception
                     await DisposeAsync();
 
