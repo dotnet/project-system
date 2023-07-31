@@ -42,6 +42,21 @@ public class WorkspaceTests
     }
 
     [Fact]
+    public async Task ChainDisposal_DisposesArgumentIfAlreadyDisposed()
+    {
+        var workspace = await CreateInstanceAsync();
+
+        await workspace.DisposeAsync();
+
+        var disposable = new Mock<IDisposable>(MockBehavior.Strict);
+        disposable.Setup(o => o.Dispose());
+
+        workspace.ChainDisposal(disposable.Object);
+
+        disposable.VerifyAll();
+    }
+
+    [Fact]
     public async Task Dispose_ClearsPrimary()
     {
         var workspace = await CreateInstanceAsync();
@@ -85,8 +100,6 @@ public class WorkspaceTests
         await Assert.ThrowsAsync<ObjectDisposedException>(() => workspace.WriteAsync(w => Task.CompletedTask, CancellationToken.None));
         await Assert.ThrowsAsync<ObjectDisposedException>(() => workspace.WriteAsync(w => TaskResult.EmptyString, CancellationToken.None));
         await Assert.ThrowsAsync<ObjectDisposedException>(() => workspace.OnWorkspaceUpdateAsync(null!));
-
-        Assert.Throws<ObjectDisposedException>(() => workspace.ChainDisposal(null!));
     }
 
     [Theory]
