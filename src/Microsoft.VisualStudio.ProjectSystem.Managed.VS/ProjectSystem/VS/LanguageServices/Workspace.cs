@@ -141,10 +141,14 @@ internal sealed class Workspace : OnceInitializedOnceDisposedUnderLockAsync, IWo
     /// <summary>
     /// Adds an object that will be disposed along with this <see cref="Workspace"/> instance.
     /// </summary>
+    /// <remarks>
+    /// If this <see cref="Workspace"/> has already been disposed, <paramref name="disposable"/> will
+    /// be disposed immediately.
+    /// </remarks>
     /// <param name="disposable">The object to dispose when this object is disposed.</param>
     public void ChainDisposal(IDisposable disposable)
     {
-        Verify.NotDisposed(this);
+        // NOTE we intentionally don't Verify.NotDisposed here, as that can cause hangs during workspace construction
 
         _disposableBag.Add(disposable);
     }
