@@ -136,7 +136,7 @@ internal sealed class LanguageServiceHost : OnceInitializedOnceDisposedAsync, IP
                     update => OnSlicesChanged(update, cancellationToken),
                     _unconfiguredProject,
                     ProjectFaultSeverity.LimitedFunctionality,
-                    "LanguageServiceHostSlices {0}"),
+                    nameFormat: "LanguageServiceHostSlices {1}"),
                 linkOptions: DataflowOption.PropagateCompletion,
                 cancellationToken: cancellationToken),
 
