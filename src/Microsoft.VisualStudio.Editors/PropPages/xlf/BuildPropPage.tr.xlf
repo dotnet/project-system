@@ -7,6 +7,16 @@
         <target state="translated">5</target>
         <note />
       </trans-unit>
+      <trans-unit id="errorsAndWarningsGroupBox.Text">
+        <source>Errors and warnings</source>
+        <target state="new">Errors and warnings</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="generalGroupBox.Text">
+        <source>General</source>
+        <target state="new">General</target>
+        <note />
+      </trans-unit>
       <trans-unit id="lblConditionalCompilationSymbols.Text">
         <source>Conditional compilation s&amp;ymbols:</source>
         <target state="translated">Koşullu derleme s&amp;embolleri:</target>
@@ -17,24 +27,9 @@
         <target state="translated">Null A&amp;tanabilir:</target>
         <note />
       </trans-unit>
-      <trans-unit id="outputLabel.Text">
+      <trans-unit id="outputGroupBox.Text">
         <source>Output</source>
-        <target state="translated">Çıkış</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="generalLabel.Text">
-        <source>General</source>
-        <target state="translated">Genel</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="treatWarningsAsErrorsLabel.Text">
-        <source>Treat warnings as errors</source>
-        <target state="translated">Uyarıları hata olarak değerlendir</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="errorsAndWarningsLabel.Text">
-        <source>Errors and warnings</source>
-        <target state="translated">Hatalar ve uyarılar</target>
+        <target state="new">Output</target>
         <note />
       </trans-unit>
       <trans-unit id="chkRegisterForCOM.Text">
@@ -145,6 +140,11 @@
       <trans-unit id="chkDefineDebug.Text">
         <source>Define DEB&amp;UG constant</source>
         <target state="translated">DEB&amp;UG sabit değerini tanımlayın</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="treatWarningsAsErrorsGroupBox.Text">
+        <source>Treat warnings as errors</source>
+        <target state="new">Treat warnings as errors</target>
         <note />
       </trans-unit>
       <trans-unit id="txtSpecificWarnings.AccessibleName">
