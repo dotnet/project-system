@@ -7,16 +7,6 @@
         <target state="translated">5</target>
         <note />
       </trans-unit>
-      <trans-unit id="errorsAndWarningsGroupBox.Text">
-        <source>Errors and warnings</source>
-        <target state="new">Errors and warnings</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="generalGroupBox.Text">
-        <source>General</source>
-        <target state="new">General</target>
-        <note />
-      </trans-unit>
       <trans-unit id="lblConditionalCompilationSymbols.Text">
         <source>Conditional compilation s&amp;ymbols:</source>
         <target state="translated">조건부 컴파일 기호(&amp;Y):</target>
@@ -29,7 +19,22 @@
       </trans-unit>
       <trans-unit id="outputGroupBox.Text">
         <source>Output</source>
-        <target state="new">Output</target>
+        <target state="translated">출력</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="generalGroupBox.Text">
+        <source>General</source>
+        <target state="translated">일반</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="treatWarningsAsErrorsGroupBox.Text">
+        <source>Treat warnings as errors</source>
+        <target state="translated">경고를 오류로 처리</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="errorsAndWarningsGroupBox.Text">
+        <source>Errors and warnings</source>
+        <target state="translated">오류 및 경고</target>
         <note />
       </trans-unit>
       <trans-unit id="chkRegisterForCOM.Text">
@@ -140,11 +145,6 @@
       <trans-unit id="chkDefineDebug.Text">
         <source>Define DEB&amp;UG constant</source>
         <target state="translated">DEBUG 상수 정의(&amp;U)</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="treatWarningsAsErrorsGroupBox.Text">
-        <source>Treat warnings as errors</source>
-        <target state="new">Treat warnings as errors</target>
         <note />
       </trans-unit>
       <trans-unit id="txtSpecificWarnings.AccessibleName">

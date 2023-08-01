@@ -7,16 +7,6 @@
         <target state="translated">5</target>
         <note />
       </trans-unit>
-      <trans-unit id="errorsAndWarningsGroupBox.Text">
-        <source>Errors and warnings</source>
-        <target state="new">Errors and warnings</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="generalGroupBox.Text">
-        <source>General</source>
-        <target state="new">General</target>
-        <note />
-      </trans-unit>
       <trans-unit id="lblConditionalCompilationSymbols.Text">
         <source>Conditional compilation s&amp;ymbols:</source>
         <target state="translated">Обознач&amp;ения условной компиляции:</target>
@@ -29,7 +19,22 @@
       </trans-unit>
       <trans-unit id="outputGroupBox.Text">
         <source>Output</source>
-        <target state="new">Output</target>
+        <target state="translated">Выходные данные</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="generalGroupBox.Text">
+        <source>General</source>
+        <target state="translated">Общие</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="treatWarningsAsErrorsGroupBox.Text">
+        <source>Treat warnings as errors</source>
+        <target state="translated">Обрабатывать предупреждения как ошибки</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="errorsAndWarningsGroupBox.Text">
+        <source>Errors and warnings</source>
+        <target state="translated">Ошибки и предупреждения</target>
         <note />
       </trans-unit>
       <trans-unit id="chkRegisterForCOM.Text">
@@ -140,11 +145,6 @@
       <trans-unit id="chkDefineDebug.Text">
         <source>Define DEB&amp;UG constant</source>
         <target state="translated">Определить константу DEB&amp;UG</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="treatWarningsAsErrorsGroupBox.Text">
-        <source>Treat warnings as errors</source>
-        <target state="new">Treat warnings as errors</target>
         <note />
       </trans-unit>
       <trans-unit id="txtSpecificWarnings.AccessibleName">
