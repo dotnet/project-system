@@ -27,7 +27,8 @@ internal class MissingSetupComponentRegistrationService : OnceInitializedOnceDis
         .Add("v3.1", "Microsoft.NetCore.Component.Runtime.3.1")
         .Add("v5.0", "Microsoft.NetCore.Component.Runtime.5.0")
         .Add("v6.0", "Microsoft.NetCore.Component.Runtime.6.0")
-        .Add("v7.0", "Microsoft.NetCore.Component.Runtime.7.0");
+        .Add("v7.0", "Microsoft.NetCore.Component.Runtime.7.0")
+        .Add("v8.0", "Microsoft.NetCore.Component.Runtime.8.0");
 
     private static readonly ImmutableHashSet<string> s_supportedReleaseChannelWorkloads = ImmutableHashSet.Create(StringComparers.WorkloadNames, WasmToolsWorkloadName);
 
