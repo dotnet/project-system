@@ -22,6 +22,7 @@ github
 globbing
 guid
 hwnd
+ilproj
 impl
 intelli
 intellisense
@@ -64,6 +65,7 @@ unescapes
 ushort
 usings
 vswhidbey
+watson
 xaml
 xmlns
 yyyy
