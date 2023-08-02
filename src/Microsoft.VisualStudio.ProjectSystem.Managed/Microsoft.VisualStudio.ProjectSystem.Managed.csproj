@@ -637,6 +637,18 @@
       <RuleInjection>None</RuleInjection>
     </XamlPropertyRule>
 
+    <Compile Update="ProjectSystem\Rules\BuildAccelerationIncompatiblePackage.cs">
+      <DependentUpon>BuildAccelerationIncompatiblePackage.xaml</DependentUpon>
+    </Compile>
+    <XamlPropertyRule Include="ProjectSystem\Rules\BuildAccelerationIncompatiblePackage.xaml">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+      <SubType>Designer</SubType>
+      <XlfInput>false</XlfInput>
+      <DataAccess>None</DataAccess>
+      <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
+      <RuleInjection>None</RuleInjection>
+    </XamlPropertyRule>
+
     <Compile Update="ProjectSystem\Rules\WindowsFormsConfiguration.cs">
       <DependentUpon>WindowsFormsConfiguration.xaml</DependentUpon>
     </Compile>

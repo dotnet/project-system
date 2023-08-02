@@ -29,7 +29,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
         /// </summary>
         private static ImmutableHashSet<string> EvaluationRuleNames { get; } = ImmutableStringHashSet.EmptyOrdinal
             .Add(ConfigurationGeneral.SchemaName)
-            .Add(CopyUpToDateMarker.SchemaName);
+            .Add(CopyUpToDateMarker.SchemaName)
+            .Add(PackageReference.SchemaName);
 
         /// <summary>
         /// The set of rules we consume that come from design-time build.
@@ -37,11 +38,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
         private static ImmutableHashSet<string> BuildRuleNames { get; } = ImmutableStringHashSet.EmptyOrdinal
             .Add(ResolvedAnalyzerReference.SchemaName)
             .Add(ResolvedCompilationReference.SchemaName)
+            .Add(ResolvedProjectReference.SchemaName)
             .Add(UpToDateCheckInput.SchemaName)
             .Add(UpToDateCheckOutput.SchemaName)
             .Add(UpToDateCheckBuilt.SchemaName)
             .Add(CopyToOutputDirectoryItem.SchemaName)
-            .Add(ResolvedProjectReference.SchemaName);
+            .Add(BuildAccelerationIncompatiblePackage.SchemaName);
 
         [ImportingConstructor]
         public UpToDateCheckImplicitConfiguredInputDataSource(

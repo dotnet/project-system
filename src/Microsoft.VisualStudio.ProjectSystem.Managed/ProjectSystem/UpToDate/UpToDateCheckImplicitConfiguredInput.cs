@@ -38,6 +38,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 resolvedAnalyzerReferencePaths: ImmutableArray<string>.Empty,
                 resolvedCompilationReferencePaths: ImmutableArray<string>.Empty,
                 copyReferenceInputs: ImmutableArray<string>.Empty,
+                presentBuildAccelerationIncompatiblePackages: ImmutableArray<string>.Empty,
                 lastItemsChangedAtUtc: null,
                 lastItemChanges: ImmutableArray<(bool IsAdd, string ItemType, string)>.Empty,
                 itemHash: null,
@@ -195,6 +196,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
         public ImmutableArray<string> CopyReferenceInputs { get; }
 
         /// <summary>
+        /// Gets the set of packages present in this project that are known to be incompatible with Build Acceleration.
+        /// </summary>
+        /// <remarks>
+        /// When this collection is non-empty, Build Acceleration will be disabled.
+        /// We track the item specs so that we can include relevant details in log output.
+        /// Most projects will not have any entries here.
+        /// </remarks>
+        public ImmutableArray<string> PresentBuildAccelerationIncompatiblePackages { get; }
+
+        /// <summary>
         /// Gets the relative path to the output marker file.
         /// </summary>
         public string? CopyUpToDateMarkerItem { get; }
@@ -232,6 +243,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             ResolvedAnalyzerReferencePaths = ImmutableArray<string>.Empty;
             ResolvedCompilationReferencePaths = ImmutableArray<string>.Empty;
             CopyReferenceInputs = ImmutableArray<string>.Empty;
+            PresentBuildAccelerationIncompatiblePackages = ImmutableArray<string>.Empty;
             LastItemChanges = ImmutableArray<(bool IsAdd, string ItemType, string)>.Empty;
             ProjectCopyData = new(null, "", false, ImmutableArray<CopyItem>.Empty, ImmutableArray<string>.Empty);
         }
@@ -254,6 +266,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             ImmutableArray<string> resolvedAnalyzerReferencePaths,
             ImmutableArray<string> resolvedCompilationReferencePaths,
             ImmutableArray<string> copyReferenceInputs,
+            ImmutableArray<string> presentBuildAccelerationIncompatiblePackages,
             DateTime? lastItemsChangedAtUtc,
             ImmutableArray<(bool IsAdd, string ItemType, string)> lastItemChanges,
             int? itemHash,
@@ -276,6 +289,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             ResolvedAnalyzerReferencePaths = resolvedAnalyzerReferencePaths;
             ResolvedCompilationReferencePaths = resolvedCompilationReferencePaths;
             CopyReferenceInputs = copyReferenceInputs;
+            PresentBuildAccelerationIncompatiblePackages = presentBuildAccelerationIncompatiblePackages;
             LastItemsChangedAtUtc = lastItemsChangedAtUtc;
             LastItemChanges = lastItemChanges;
             ItemHash = itemHash;
@@ -467,6 +481,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 resolvedAnalyzerReferencePaths: UpdateResolvedAnalyzerReferencePaths(),
                 resolvedCompilationReferencePaths: resolvedCompilationReferencePaths,
                 copyReferenceInputs: copyReferenceInputs,
+                presentBuildAccelerationIncompatiblePackages: UpdatePresentBuildAccelerationIncompatiblePackages(),
                 lastItemsChangedAtUtc: lastItemsChangedAtUtc,
                 lastItemChanges.ToImmutableArray(),
                 itemHash,
@@ -565,6 +580,35 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 else
                 {
                     return BuiltFromInputFileItems;
+                }
+            }
+
+            ImmutableArray<string> UpdatePresentBuildAccelerationIncompatiblePackages()
+            {
+                if (jointRuleUpdate.ProjectChanges.TryGetValue(PackageReference.SchemaName, out IProjectChangeDescription? packageReferenceChange) &&
+                    jointRuleUpdate.ProjectChanges.TryGetValue(BuildAccelerationIncompatiblePackage.SchemaName, out IProjectChangeDescription? incompatiblePackageChange) &&
+                    (packageReferenceChange.Difference.AnyChanges || incompatiblePackageChange.Difference.AnyChanges))
+                {
+                    ImmutableArray<string>.Builder? builder = null;
+
+                    foreach ((string incompatiblePackage, _) in incompatiblePackageChange.After.Items)
+                    {
+                        if (packageReferenceChange.After.Items.ContainsKey(incompatiblePackage))
+                        {
+                            builder ??= ImmutableArray.CreateBuilder<string>(initialCapacity: 1);
+                            builder.Add(incompatiblePackage);
+                        }
+                    }
+
+                    return builder is null
+                        ? ImmutableArray<string>.Empty
+                        : builder.Capacity == builder.Count
+                            ? builder.MoveToImmutable()
+                            : builder.ToImmutable();
+                }
+                else
+                {
+                    return PresentBuildAccelerationIncompatiblePackages;
                 }
             }
 
@@ -718,6 +762,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 ResolvedAnalyzerReferencePaths,
                 ResolvedCompilationReferencePaths,
                 CopyReferenceInputs,
+                PresentBuildAccelerationIncompatiblePackages,
                 lastItemsChangedAtUtc,
                 LastItemChanges,
                 ItemHash,
@@ -744,6 +789,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 ResolvedAnalyzerReferencePaths,
                 ResolvedCompilationReferencePaths,
                 CopyReferenceInputs,
+                PresentBuildAccelerationIncompatiblePackages,
                 lastItemsChangedAtUtc,
                 LastItemChanges,
                 itemHash,
