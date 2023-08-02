@@ -1136,12 +1136,28 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
                 async ValueTask<bool?> IsBuildAccelerationEnabledAsync(bool isCopyItemsComplete, UpToDateCheckImplicitConfiguredInput implicitState)
                 {
-                    // Build acceleration requires both:
+                    // Build acceleration requires:
                     //
                     // 1. being enabled, either in the project or via feature flags, and
-                    // 2. having a full set of copy items.
+                    // 2. having a full set of copy items, and
+                    // 3. not having any project references known to be incompatible with Build Acceleration.
                     //
                     // Being explicitly disabled in the project overrides any feature flag.
+
+                    if (implicitState.PresentBuildAccelerationIncompatiblePackages.Any())
+                    {
+                        // At least one package reference exists that is incompatible with build acceleration.
+
+                        // Check the log level to avoid the allocating string.Join unless needed.
+                        if (logger.Level >= LogLevel.Info)
+                        {
+                            logger.Info(
+                                nameof(Resources.BuildAccelerationDisabledDueToIncompatiblePackageReferences_1),
+                                string.Join(", ", implicitState.PresentBuildAccelerationIncompatiblePackages.Select(id => $"'{id}'")));
+                        }
+
+                        return false;
+                    }
 
                     // Start with the preference specified in the project.
                     bool? isEnabledInProject = implicitState.IsBuildAccelerationEnabled;

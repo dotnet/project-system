@@ -79,6 +79,15 @@ namespace Microsoft.VisualStudio {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Build acceleration has been disabled for this project due to known incompatible NuGet package reference(s) {0}. See https://aka.ms/vs-build-acceleration..
+        /// </summary>
+        internal static string BuildAccelerationDisabledDueToIncompatiblePackageReferences_1 {
+            get {
+                return ResourceManager.GetString("BuildAccelerationDisabledDueToIncompatiblePackageReferences_1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to COM.
         /// </summary>
         internal static string ComNodeName {

@@ -24,10 +24,12 @@
 
     <!-- Tells CPS which target to run for the Package solution build type -->
     <PackageAction Condition="'$(PackageAction)' == ''">Pack</PackageAction>
-
-    <!-- Disable Build Acceleration for VSIX projects -->
-    <AccelerateBuildsInVisualStudio Condition="'$(IsVsixProject)' == 'true'">false</AccelerateBuildsInVisualStudio>
   </PropertyGroup>
+
+  <ItemGroup>
+    <!-- Disable Build Acceleration for VSIX projects -->
+    <BuildAccelerationIncompatiblePackage Include="Microsoft.VSSDK.BuildTools" />
+  </ItemGroup>
 
   <PropertyGroup Condition="'$(AssemblyReferenceTabs)' == '' And '$(UsingMicrosoftNETSdk)' == 'true'">
 
@@ -493,6 +495,12 @@
       <UpToDateCheckBuilt Condition=" '@(AppConfigWithTargetPath)' != '' and '$(AppConfig)' != '' " Include="@(AppConfigWithTargetPath->'$(OutDir)%(TargetPath)')" Original="$(AppConfig)" />
     </ItemGroup>
   </Target>
+
+  <!-- Collect packages that are incompatible with Build Acceleration. -->
+  <PropertyGroup Condition="'$(CollectBuildAccelerationIncompatiblePackageDesignTimeDependsOn)' == ''">
+    <CollectBuildAccelerationIncompatiblePackageDesignTimeDependsOn></CollectBuildAccelerationIncompatiblePackageDesignTimeDependsOn>
+  </PropertyGroup>
+  <Target Name="CollectBuildAccelerationIncompatiblePackageDesignTime" DependsOnTargets="$(CollectBuildAccelerationIncompatiblePackageDesignTimeDependsOn)" Returns="@(BuildAccelerationIncompatiblePackage)" />
 
   <!-- This target collects all the items this project contributes to output directories of referencing projects.
        Ideally, it excludes any transitive dependencies.

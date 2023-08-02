@@ -242,6 +242,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.Rules
             [AppliesTo(BuildUpToDateCheck.AppliesToExpression)]
             [Order(Order.Default)]
             public static int CopyToOutputDirectoryItemRule;
+
+            /// <summary>
+            ///     Represents design-time build items containing the identities of packages known to be incompatible with Build Acceleration.
+            /// </summary>
+            [ExportRule(nameof(BuildAccelerationIncompatiblePackage), PropertyPageContexts.ProjectSubscriptionService)]
+            [AppliesTo(BuildUpToDateCheck.AppliesToExpression)]
+            [Order(Order.Default)]
+            public static int BuildAccelerationIncompatiblePackageRule;
         }
 
         /// <summary>

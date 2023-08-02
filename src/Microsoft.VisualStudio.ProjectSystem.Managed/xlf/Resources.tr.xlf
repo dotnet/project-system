@@ -2,6 +2,11 @@
 <xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
   <file datatype="xml" source-language="en" target-language="tr" original="../Resources.resx">
     <body>
+      <trans-unit id="BuildAccelerationDisabledDueToIncompatiblePackageReferences_1">
+        <source>Build acceleration has been disabled for this project due to known incompatible NuGet package reference(s) {0}. See https://aka.ms/vs-build-acceleration.</source>
+        <target state="new">Build acceleration has been disabled for this project due to known incompatible NuGet package reference(s) {0}. See https://aka.ms/vs-build-acceleration.</target>
+        <note>{0} is a comma-separated list of NuGet package names.</note>
+      </trans-unit>
       <trans-unit id="DataFlowFaults">
         <source>Project system data flow '{0}' closed because of an exception: {1}.</source>
         <target state="translated">Proje sistem veri akışı '{0}', bir özel durum nedeniyle kapatıldı: {1}.</target>

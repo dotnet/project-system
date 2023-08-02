@@ -39,7 +39,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
         private bool _isTaskQueueEmpty = true;
         private bool _isFastUpToDateCheckEnabledInSettings = true;
         private bool _isBuildAccelerationEnabledInSettings;
-        private bool? _isBuildAccelerationEnabled;
+        private bool? _isBuildAccelerationEnabledInProject;
+        private bool? _expectedIsBuildAccelerationEnabled;
         private IEnumerable<(string Path, ImmutableArray<CopyItem> CopyItems)> _copyItems = Enumerable.Empty<(string Path, ImmutableArray<CopyItem> CopyItems)>();
         private bool _isCopyItemsComplete = true;
         private IReadOnlyList<string>? _targetsWithoutReferenceAssemblies;
@@ -135,7 +136,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                     {
                         Assert.Equal(_expectedUpToDate, upToDate);
                         Assert.Equal(_logLevel, logLevel);
-                        Assert.Equal(_isBuildAccelerationEnabled, buildAccelerationEnabled);
+                        Assert.Equal(_expectedIsBuildAccelerationEnabled, buildAccelerationEnabled);
                     });
 
             _buildUpToDateCheck = new BuildUpToDateCheck(
@@ -183,7 +184,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                         { "OutputPath", outDir },
                         { "OutDir", outDir },
                         { ConfigurationGeneral.DisableFastUpToDateCheckProperty, disableFastUpToDateCheck.ToString() },
-                        { ConfigurationGeneral.AccelerateBuildsInVisualStudioProperty, _isBuildAccelerationEnabled?.ToString() ?? "" }
+                        { ConfigurationGeneral.AccelerateBuildsInVisualStudioProperty, _isBuildAccelerationEnabledInProject?.ToString() ?? "" }
                     }
                 };
             }
@@ -737,9 +738,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
         [Theory]
         [CombinatorialData]
-        public async Task IsUpToDateAsync_CopyReference_InputsOlderThanMarkerOutput(bool? isBuildAccelerationEnabled, bool allReferencesProduceReferenceAssemblies)
+        public async Task IsUpToDateAsync_CopyReference_InputsOlderThanMarkerOutput(bool? isBuildAccelerationEnabledInProject, bool allReferencesProduceReferenceAssemblies)
         {
-            _isBuildAccelerationEnabled = isBuildAccelerationEnabled;
+            _isBuildAccelerationEnabledInProject = isBuildAccelerationEnabledInProject;
+            _expectedIsBuildAccelerationEnabled = isBuildAccelerationEnabledInProject;
+
             _targetsWithoutReferenceAssemblies = allReferencesProduceReferenceAssemblies ? null : new[] { "WithoutReferenceAssembly1", "WithoutReferenceAssembly2" };
 
             var projectSnapshot = new Dictionary<string, IProjectRuleSnapshotModel>
@@ -774,7 +777,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             _fileSystem.AddFile("Reference1MarkerPath", markerTime);
             _fileSystem.AddFile("Reference1OriginalPath", originalTime);
 
-            if (isBuildAccelerationEnabled is true)
+            if (isBuildAccelerationEnabledInProject is true)
             {
                 if (allReferencesProduceReferenceAssemblies)
                 {
@@ -798,7 +801,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                         """);
                 }
             }
-            else if (isBuildAccelerationEnabled is false)
+            else if (isBuildAccelerationEnabledInProject is false)
             {
                 await AssertUpToDateAsync(
                     $"""
@@ -813,7 +816,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                     Project is up-to-date.
                     """);
             }
-            else if (isBuildAccelerationEnabled is null)
+            else if (isBuildAccelerationEnabledInProject is null)
             {
                 await AssertUpToDateAsync(
                     $"""
@@ -833,7 +836,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
         [Theory]
         [InlineData(null)]
         [InlineData(false)]
-        public async Task IsUpToDateAsync_False_CopyReference_InputNewerThanMarkerOutput(bool? isBuildAccelerationEnabled)
+        public async Task IsUpToDateAsync_False_CopyReference_InputNewerThanMarkerOutput(bool? isBuildAccelerationEnabledInProject)
         {
             var projectSnapshot = new Dictionary<string, IProjectRuleSnapshotModel>
             {
@@ -856,7 +859,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             var lastBuildTime = DateTime.UtcNow.AddMinutes(-5);
 
             // We only check copy markers when build acceleration is disabled (null or false).
-            _isBuildAccelerationEnabled = isBuildAccelerationEnabled;
+            _isBuildAccelerationEnabledInProject = isBuildAccelerationEnabledInProject;
+            _expectedIsBuildAccelerationEnabled = isBuildAccelerationEnabledInProject;
 
             await SetupAsync(projectSnapshot: projectSnapshot, lastSuccessfulBuildStartTimeUtc: lastBuildTime);
 
@@ -870,10 +874,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             _fileSystem.AddFile("Reference1MarkerPath", markerTime);
             _fileSystem.AddFile("Reference1OriginalPath", originalTime);
 
-            if (isBuildAccelerationEnabled is false)
+            if (isBuildAccelerationEnabledInProject is false)
             {
                 await AssertNotUpToDateAsync(
-                   $"""
+                    $"""
                     Build acceleration is disabled for this project via the 'AccelerateBuildsInVisualStudio' MSBuild property. See https://aka.ms/vs-build-acceleration.
                     Comparing timestamps of inputs and outputs:
                         No build outputs defined.
@@ -885,10 +889,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                     """,
                     "InputMarkerNewerThanOutputMarker");
             }
-            else if (isBuildAccelerationEnabled is null)
+            else if (isBuildAccelerationEnabledInProject is null)
             {
                 await AssertNotUpToDateAsync(
-                   $"""
+                    $"""
                     Build acceleration is not enabled for this project. See https://aka.ms/vs-build-acceleration.
                     Comparing timestamps of inputs and outputs:
                         No build outputs defined.
@@ -1598,9 +1602,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
         [Theory]
         [CombinatorialData]
-        public async Task IsUpToDateAsync_CopyToOutputDirectory_SourceIsNewerThanDestination(bool? isBuildAccelerationEnabled, bool allReferencesProduceReferenceAssemblies)
+        public async Task IsUpToDateAsync_CopyToOutputDirectory_SourceIsNewerThanDestination(bool? isBuildAccelerationEnabledInProject, bool allReferencesProduceReferenceAssemblies)
         {
-            _isBuildAccelerationEnabled = isBuildAccelerationEnabled;
+            _isBuildAccelerationEnabledInProject = isBuildAccelerationEnabledInProject;
+            _expectedIsBuildAccelerationEnabled = isBuildAccelerationEnabledInProject;
             _targetsWithoutReferenceAssemblies = allReferencesProduceReferenceAssemblies ? null : new[] { "WithoutReferenceAssembly1", "WithoutReferenceAssembly2" };
 
             var sourcePath1 = @"C:\Dev\Solution\Project\Item1";
@@ -1626,7 +1631,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             _fileSystem.AddFile(destinationPath1, destinationTime);
             _fileSystem.AddFile(destinationPath2, destinationTime);
 
-            if (isBuildAccelerationEnabled is true)
+            if (isBuildAccelerationEnabledInProject is true)
             {
                 if (allReferencesProduceReferenceAssemblies)
                 {
@@ -1678,7 +1683,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                         """);
                 }
             }
-            else if (isBuildAccelerationEnabled is false)
+            else if (isBuildAccelerationEnabledInProject is false)
             {
                 await AssertNotUpToDateAsync(
                     $"""
@@ -1694,7 +1699,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                     """,
                     "CopyToOutputDirectorySourceNewer");
             }
-            else if (isBuildAccelerationEnabled is null)
+            else if (isBuildAccelerationEnabledInProject is null)
             {
                 await AssertNotUpToDateAsync(
                     $"""
@@ -1715,9 +1720,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
         [Theory]
         [CombinatorialData]
-        public async Task IsUpToDateAsync_CopyToOutputDirectory_SourceIsNewerThanDestination_TargetPath(bool? isBuildAccelerationEnabled, bool allReferencesProduceReferenceAssemblies)
+        public async Task IsUpToDateAsync_CopyToOutputDirectory_SourceIsNewerThanDestination_TargetPath(bool? isBuildAccelerationEnabledInProject, bool allReferencesProduceReferenceAssemblies)
         {
-            _isBuildAccelerationEnabled = isBuildAccelerationEnabled;
+            _isBuildAccelerationEnabledInProject = isBuildAccelerationEnabledInProject;
+            _expectedIsBuildAccelerationEnabled = isBuildAccelerationEnabledInProject;
             _targetsWithoutReferenceAssemblies = allReferencesProduceReferenceAssemblies ? null : new[] { "WithoutReferenceAssembly1", "WithoutReferenceAssembly2" };
 
             var sourcePath1 = @"C:\Dev\Solution\Project\Item1";
@@ -1743,7 +1749,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             _fileSystem.AddFile(destinationPath1, destinationTime);
             _fileSystem.AddFile(destinationPath2, destinationTime);
 
-            if (isBuildAccelerationEnabled is true)
+            if (isBuildAccelerationEnabledInProject is true)
             {
                 if (allReferencesProduceReferenceAssemblies)
                 {
@@ -1795,7 +1801,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                         """);
                 }
             }
-            else if (isBuildAccelerationEnabled is false)
+            else if (isBuildAccelerationEnabledInProject is false)
             {
                 await AssertNotUpToDateAsync(
                     $"""
@@ -1811,7 +1817,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                     """,
                     "CopyToOutputDirectorySourceNewer");
             }
-            else if (isBuildAccelerationEnabled is null)
+            else if (isBuildAccelerationEnabledInProject is null)
             {
                 await AssertNotUpToDateAsync(
                     $"""
@@ -1832,9 +1838,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
         [Theory]
         [CombinatorialData]
-        public async Task IsUpToDateAsync_CopyToOutputDirectory_SourceIsNewerThanDestination_CustomOutDir(bool? isBuildAccelerationEnabled, bool allReferencesProduceReferenceAssemblies)
+        public async Task IsUpToDateAsync_CopyToOutputDirectory_SourceIsNewerThanDestination_CustomOutDir(bool? isBuildAccelerationEnabledInProject, bool allReferencesProduceReferenceAssemblies)
         {
-            _isBuildAccelerationEnabled = isBuildAccelerationEnabled;
+            _isBuildAccelerationEnabledInProject = isBuildAccelerationEnabledInProject;
+            _expectedIsBuildAccelerationEnabled = isBuildAccelerationEnabledInProject;
             _targetsWithoutReferenceAssemblies = allReferencesProduceReferenceAssemblies ? null : new[] { "WithoutReferenceAssembly1", "WithoutReferenceAssembly2" };
 
             const string outDirSnapshot = "newOutDir";
@@ -1863,7 +1870,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             _fileSystem.AddFile(sourcePath1, sourceTime);
             _fileSystem.AddFile(sourcePath2, sourceTime);
 
-            if (isBuildAccelerationEnabled is true)
+            if (isBuildAccelerationEnabledInProject is true)
             {
                 if (allReferencesProduceReferenceAssemblies)
                 {
@@ -1915,7 +1922,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                         """);
                 }
             }
-            else if (isBuildAccelerationEnabled is false)
+            else if (isBuildAccelerationEnabledInProject is false)
             {
                 await AssertNotUpToDateAsync(
                     $"""
@@ -1931,7 +1938,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                     """,
                     "CopyToOutputDirectorySourceNewer");
             }
-            else if (isBuildAccelerationEnabled is null)
+            else if (isBuildAccelerationEnabledInProject is null)
             {
                 await AssertNotUpToDateAsync(
                     $"""
@@ -1984,11 +1991,34 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 "CopyToOutputDirectorySourceNotFound");
         }
 
+        [Fact]
+        public async Task BuildAcceleration_DisabledDueToIncompatibleProjectReference()
+        {
+            var projectSnapshot = new Dictionary<string, IProjectRuleSnapshotModel>
+            {
+                [BuildAccelerationIncompatiblePackage.SchemaName] = SimpleItems("IncompatibleWithBuildAcceleration", "AnotherIncompatiblePackages"),
+                [PackageReference.SchemaName] = SimpleItems("NormalPackage", "IncompatibleWithBuildAcceleration")
+            };
+
+            await SetupAsync(projectSnapshot: projectSnapshot);
+
+            _expectedIsBuildAccelerationEnabled = false;
+
+            await AssertNotUpToDateAsync(
+                """
+                Build acceleration has been disabled for this project due to known incompatible NuGet package reference(s) 'IncompatibleWithBuildAcceleration'. See https://aka.ms/vs-build-acceleration.
+                The up-to-date check has not yet run for this project. Not up-to-date.
+                """,
+                "FirstRun",
+                skipValidation: true);
+        }
+
         [Theory]
         [CombinatorialData]
-        public async Task IsUpToDateAsync_CopyToOutputDirectory_DestinationDoesNotExist(bool? isBuildAccelerationEnabled, bool allReferencesProduceReferenceAssemblies)
+        public async Task IsUpToDateAsync_CopyToOutputDirectory_DestinationDoesNotExist(bool? isBuildAccelerationEnabledInProject, bool allReferencesProduceReferenceAssemblies)
         {
-            _isBuildAccelerationEnabled = isBuildAccelerationEnabled;
+            _isBuildAccelerationEnabledInProject = isBuildAccelerationEnabledInProject;
+            _expectedIsBuildAccelerationEnabled = isBuildAccelerationEnabledInProject;
             _targetsWithoutReferenceAssemblies = allReferencesProduceReferenceAssemblies ? null : new[] { "WithoutReferenceAssembly1", "WithoutReferenceAssembly2" };
 
             var sourcePath1 = @"C:\Dev\Solution\Project\Item1";
@@ -2011,7 +2041,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             _fileSystem.AddFile(sourcePath1, sourceTime);
             _fileSystem.AddFile(sourcePath2, sourceTime);
 
-            if (isBuildAccelerationEnabled is true)
+            if (isBuildAccelerationEnabledInProject is true)
             {
                 if (allReferencesProduceReferenceAssemblies)
                 {
@@ -2063,7 +2093,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                         """);
                 }
             }
-            else if (isBuildAccelerationEnabled is false)
+            else if (isBuildAccelerationEnabledInProject is false)
             {
                 await AssertNotUpToDateAsync(
                     $"""
@@ -2079,7 +2109,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                     """,
                     "CopyToOutputDirectoryDestinationNotFound");
             }
-            else if (isBuildAccelerationEnabled is null)
+            else if (isBuildAccelerationEnabledInProject is null)
             {
                 await AssertNotUpToDateAsync(
                     $"""
@@ -2216,12 +2246,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 (_projectPath, items.ToImmutableArray())
             };
         }
+
         private static string ToLocalTime(DateTime time)
         {
             return time.ToLocalTime().ToString("yyyy-MM-dd HH:mm:ss.fff");
         }
 
-        private async Task AssertNotUpToDateAsync(string? expectedLogOutput = null, string? telemetryReason = null, BuildAction buildAction = BuildAction.Build, string ignoreKinds = "", string targetFramework = "")
+        private async Task AssertNotUpToDateAsync(string? expectedLogOutput = null, string? telemetryReason = null, BuildAction buildAction = BuildAction.Build, string ignoreKinds = "", string targetFramework = "", bool skipValidation = false)
         {
             _expectedUpToDate = false;
 
@@ -2238,7 +2269,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
             Assert.False(isUpToDate, "Expected not up-to-date, but was.");
 
-            if (buildAction == BuildAction.Build)
+            if (!skipValidation && buildAction == BuildAction.Build)
             {
                 if (telemetryReason == "Disabled")
                 {

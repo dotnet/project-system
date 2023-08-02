@@ -47,6 +47,25 @@ To enable it in your solution, add or edit a top-level [`Directory.Build.props`]
 
 You may disable build acceleration for specific projects in your solution by redefining the `AccelerateBuildsInVisualStudio` property as `false` in those projects.
 
+### Disabling Build Acceleration for projects referencing specific NuGet packages
+
+While rare, it's possible for a NuGet package to include `.props` and/or `.targets` files that customise the build in a way that's not compatible with Build Acceleration. Ideally such packages would also set `AccelerateBuildsInVisualStudio` to `false`, however that's not always an option.
+
+To address this situation, you can specify the names of NuGet packages that, when present in a project, will disable Build Acceleration.
+
+For example, if `MyPackage` is known to be incompatible with Build Acceleration, adding a `BuildAccelerationIncompatiblePackage` item  to your `Directory.Build.props` will automatically cause Build Acceleration to be disabled for any project that references that `MyPackage`:
+
+```xml
+<Project>
+  <PropertyGroup>
+    <AccelerateBuildsInVisualStudio>true</AccelerateBuildsInVisualStudio>
+  </PropertyGroup>
+  <ItemGroup>
+    <BuildAccelerationIncompatiblePackage Include="MyPackage" />
+  </ItemGroup>
+</Project>
+```
+
 ## Debugging
 
 ### Enable logging

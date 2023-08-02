@@ -468,6 +468,10 @@ This project was loaded using the wrong project type, likely as a result of rena
   <data name="FUTD_BuildAccelerationIsNotEnabledForThisProject" xml:space="preserve">
     <value>Build acceleration is not enabled for this project. See https://aka.ms/vs-build-acceleration.</value>
   </data>
+  <data name="BuildAccelerationDisabledDueToIncompatiblePackageReferences_1" xml:space="preserve">
+    <value>Build acceleration has been disabled for this project due to known incompatible NuGet package reference(s) {0}. See https://aka.ms/vs-build-acceleration.</value>
+    <comment>{0} is a comma-separated list of NuGet package names.</comment>
+  </data>
   <data name="DiagnosticLevel_None" xml:space="preserve">
     <value>None</value>
     <comment>Indicates that a diagnostic (i.e. a compiler warning) should be disabled.</comment>
