@@ -17,22 +17,22 @@
         <target state="translated">Acepta v&amp;lores NULL:</target>
         <note />
       </trans-unit>
-      <trans-unit id="outputLabel.Text">
+      <trans-unit id="outputGroupBox.Text">
         <source>Output</source>
         <target state="translated">Salida</target>
         <note />
       </trans-unit>
-      <trans-unit id="generalLabel.Text">
+      <trans-unit id="generalGroupBox.Text">
         <source>General</source>
         <target state="translated">General</target>
         <note />
       </trans-unit>
-      <trans-unit id="treatWarningsAsErrorsLabel.Text">
+      <trans-unit id="treatWarningsAsErrorsGroupBox.Text">
         <source>Treat warnings as errors</source>
         <target state="translated">Tratar advertencias como errores</target>
         <note />
       </trans-unit>
-      <trans-unit id="errorsAndWarningsLabel.Text">
+      <trans-unit id="errorsAndWarningsGroupBox.Text">
         <source>Errors and warnings</source>
         <target state="translated">Errores y advertencias</target>
         <note />

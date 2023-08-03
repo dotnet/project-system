@@ -17,22 +17,22 @@
         <target state="translated">Null 許容(&amp;B):</target>
         <note />
       </trans-unit>
-      <trans-unit id="outputLabel.Text">
+      <trans-unit id="outputGroupBox.Text">
         <source>Output</source>
         <target state="translated">出力</target>
         <note />
       </trans-unit>
-      <trans-unit id="generalLabel.Text">
+      <trans-unit id="generalGroupBox.Text">
         <source>General</source>
         <target state="translated">全般</target>
         <note />
       </trans-unit>
-      <trans-unit id="treatWarningsAsErrorsLabel.Text">
+      <trans-unit id="treatWarningsAsErrorsGroupBox.Text">
         <source>Treat warnings as errors</source>
         <target state="translated">警告をエラーとして扱う</target>
         <note />
       </trans-unit>
-      <trans-unit id="errorsAndWarningsLabel.Text">
+      <trans-unit id="errorsAndWarningsGroupBox.Text">
         <source>Errors and warnings</source>
         <target state="translated">エラーおよび警告</target>
         <note />

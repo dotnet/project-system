@@ -17,22 +17,22 @@
         <target state="translated">Null 허용(&amp;B):</target>
         <note />
       </trans-unit>
-      <trans-unit id="outputLabel.Text">
+      <trans-unit id="outputGroupBox.Text">
         <source>Output</source>
         <target state="translated">출력</target>
         <note />
       </trans-unit>
-      <trans-unit id="generalLabel.Text">
+      <trans-unit id="generalGroupBox.Text">
         <source>General</source>
         <target state="translated">일반</target>
         <note />
       </trans-unit>
-      <trans-unit id="treatWarningsAsErrorsLabel.Text">
+      <trans-unit id="treatWarningsAsErrorsGroupBox.Text">
         <source>Treat warnings as errors</source>
         <target state="translated">경고를 오류로 처리</target>
         <note />
       </trans-unit>
-      <trans-unit id="errorsAndWarningsLabel.Text">
+      <trans-unit id="errorsAndWarningsGroupBox.Text">
         <source>Errors and warnings</source>
         <target state="translated">오류 및 경고</target>
         <note />

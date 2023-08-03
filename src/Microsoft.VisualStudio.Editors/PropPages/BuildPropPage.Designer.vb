@@ -28,18 +28,14 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         Friend WithEvents txtXMLDocumentationFile As System.Windows.Forms.TextBox
         Friend WithEvents btnAdvanced As System.Windows.Forms.Button
         Friend WithEvents overarchingTableLayoutPanel As System.Windows.Forms.TableLayoutPanel
-        Friend WithEvents generalHeaderTableLayoutPanel As System.Windows.Forms.TableLayoutPanel
-        Friend WithEvents generalLabel As System.Windows.Forms.Label
-        Friend WithEvents generalLineLabel As System.Windows.Forms.Label
+        Friend WithEvents generalTableLayoutPanel As System.Windows.Forms.TableLayoutPanel
         Friend WithEvents errorsAndWarningsTableLayoutPanel As System.Windows.Forms.TableLayoutPanel
-        Friend WithEvents errorsAndWarningsLineLabel As System.Windows.Forms.Label
-        Friend WithEvents errorsAndWarningsLabel As System.Windows.Forms.Label
         Friend WithEvents treatWarningsAsErrorsTableLayoutPanel As System.Windows.Forms.TableLayoutPanel
-        Friend WithEvents treatWarningsAsErrorsLineLabel As System.Windows.Forms.Label
-        Friend WithEvents treatWarningsAsErrorsLabel As System.Windows.Forms.Label
         Friend WithEvents outputTableLayoutPanel As System.Windows.Forms.TableLayoutPanel
-        Friend WithEvents outputLineLabel As System.Windows.Forms.Label
-        Friend WithEvents outputLabel As System.Windows.Forms.Label
+        Friend WithEvents generalGroupBox As SeparatorGroupBox
+        Friend WithEvents errorsAndWarningsGroupBox As SeparatorGroupBox
+        Friend WithEvents treatWarningsAsErrorsGroupBox As SeparatorGroupBox
+        Friend WithEvents outputGroupBox As SeparatorGroupBox
         Friend WithEvents lblSGenOption As System.Windows.Forms.Label
         Friend WithEvents cboSGenOption As System.Windows.Forms.ComboBox
         Private _components As System.ComponentModel.IContainer
@@ -81,24 +77,24 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Me.btnAdvanced = New System.Windows.Forms.Button()
             Me.overarchingTableLayoutPanel = New System.Windows.Forms.TableLayoutPanel()
             Me.outputTableLayoutPanel = New System.Windows.Forms.TableLayoutPanel()
-            Me.outputLineLabel = New System.Windows.Forms.Label()
-            Me.outputLabel = New System.Windows.Forms.Label()
-            Me.generalHeaderTableLayoutPanel = New System.Windows.Forms.TableLayoutPanel()
-            Me.generalLineLabel = New System.Windows.Forms.Label()
-            Me.generalLabel = New System.Windows.Forms.Label()
+            Me.generalGroupBox = New SeparatorGroupBox()
+            Me.errorsAndWarningsGroupBox = New SeparatorGroupBox()
+            Me.treatWarningsAsErrorsGroupBox = New SeparatorGroupBox()
+            Me.outputGroupBox = New SeparatorGroupBox()
+            Me.generalTableLayoutPanel = New System.Windows.Forms.TableLayoutPanel()
             Me.treatWarningsAsErrorsTableLayoutPanel = New System.Windows.Forms.TableLayoutPanel()
-            Me.treatWarningsAsErrorsLineLabel = New System.Windows.Forms.Label()
-            Me.treatWarningsAsErrorsLabel = New System.Windows.Forms.Label()
             Me.errorsAndWarningsTableLayoutPanel = New System.Windows.Forms.TableLayoutPanel()
-            Me.errorsAndWarningsLineLabel = New System.Windows.Forms.Label()
-            Me.errorsAndWarningsLabel = New System.Windows.Forms.Label()
             Me.lblSGenOption = New System.Windows.Forms.Label()
             Me.cboSGenOption = New System.Windows.Forms.ComboBox()
             Me.lblNullable = New System.Windows.Forms.Label()
             Me.cboNullable = New System.Windows.Forms.ComboBox()
             Me.overarchingTableLayoutPanel.SuspendLayout()
+            Me.generalGroupBox.SuspendLayout()
             Me.outputTableLayoutPanel.SuspendLayout()
-            Me.generalHeaderTableLayoutPanel.SuspendLayout()
+            Me.errorsAndWarningsGroupBox.SuspendLayout()
+            Me.treatWarningsAsErrorsGroupBox.SuspendLayout()
+            Me.outputGroupBox.SuspendLayout()
+            Me.generalTableLayoutPanel.SuspendLayout()
             Me.treatWarningsAsErrorsTableLayoutPanel.SuspendLayout()
             Me.errorsAndWarningsTableLayoutPanel.SuspendLayout()
             Me.SuspendLayout()
@@ -116,13 +112,13 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             'chkDefineDebug
             '
             resources.ApplyResources(Me.chkDefineDebug, "chkDefineDebug")
-            Me.overarchingTableLayoutPanel.SetColumnSpan(Me.chkDefineDebug, 3)
+            Me.generalTableLayoutPanel.SetColumnSpan(Me.chkDefineDebug, 3)
             Me.chkDefineDebug.Name = "chkDefineDebug"
             '
             'chkDefineTrace
             '
             resources.ApplyResources(Me.chkDefineTrace, "chkDefineTrace")
-            Me.overarchingTableLayoutPanel.SetColumnSpan(Me.chkDefineTrace, 3)
+            Me.generalTableLayoutPanel.SetColumnSpan(Me.chkDefineTrace, 3)
             Me.chkDefineTrace.Name = "chkDefineTrace"
             '
             'lblPlatformTarget
@@ -140,19 +136,19 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             'chkPrefer32Bit
             '
             resources.ApplyResources(Me.chkPrefer32Bit, "chkPrefer32Bit")
-            Me.overarchingTableLayoutPanel.SetColumnSpan(Me.chkPrefer32Bit, 3)
+            Me.generalTableLayoutPanel.SetColumnSpan(Me.chkPrefer32Bit, 3)
             Me.chkPrefer32Bit.Name = "chkPrefer32Bit"
             '
             'chkAllowUnsafeCode
             '
             resources.ApplyResources(Me.chkAllowUnsafeCode, "chkAllowUnsafeCode")
-            Me.overarchingTableLayoutPanel.SetColumnSpan(Me.chkAllowUnsafeCode, 3)
+            Me.generalTableLayoutPanel.SetColumnSpan(Me.chkAllowUnsafeCode, 3)
             Me.chkAllowUnsafeCode.Name = "chkAllowUnsafeCode"
             '
             'chkOptimizeCode
             '
             resources.ApplyResources(Me.chkOptimizeCode, "chkOptimizeCode")
-            Me.overarchingTableLayoutPanel.SetColumnSpan(Me.chkOptimizeCode, 3)
+            Me.generalTableLayoutPanel.SetColumnSpan(Me.chkOptimizeCode, 3)
             Me.chkOptimizeCode.Name = "chkOptimizeCode"
             '
             'lblWarningLevel
@@ -181,7 +177,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             'rbWarningNone
             '
             resources.ApplyResources(Me.rbWarningNone, "rbWarningNone")
-            Me.overarchingTableLayoutPanel.SetColumnSpan(Me.rbWarningNone, 3)
+            Me.treatWarningsAsErrorsTableLayoutPanel.SetColumnSpan(Me.rbWarningNone, 3)
             Me.rbWarningNone.Name = "rbWarningNone"
             '
             'rbWarningSpecific
@@ -192,7 +188,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             'rbWarningAll
             '
             resources.ApplyResources(Me.rbWarningAll, "rbWarningAll")
-            Me.overarchingTableLayoutPanel.SetColumnSpan(Me.rbWarningAll, 3)
+            Me.treatWarningsAsErrorsTableLayoutPanel.SetColumnSpan(Me.rbWarningAll, 3)
             Me.rbWarningAll.Name = "rbWarningAll"
             '
             'txtSpecificWarnings
@@ -223,7 +219,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             'chkRegisterForCOM
             '
             resources.ApplyResources(Me.chkRegisterForCOM, "chkRegisterForCOM")
-            Me.overarchingTableLayoutPanel.SetColumnSpan(Me.chkRegisterForCOM, 3)
+            Me.outputTableLayoutPanel.SetColumnSpan(Me.chkRegisterForCOM, 3)
             Me.chkRegisterForCOM.Name = "chkRegisterForCOM"
             '
             'txtXMLDocumentationFile
@@ -239,119 +235,83 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             'overarchingTableLayoutPanel
             '
             resources.ApplyResources(Me.overarchingTableLayoutPanel, "overarchingTableLayoutPanel")
-            Me.overarchingTableLayoutPanel.Controls.Add(Me.outputTableLayoutPanel, 0, 16)
-            Me.overarchingTableLayoutPanel.Controls.Add(Me.generalHeaderTableLayoutPanel, 0, 0)
-            Me.overarchingTableLayoutPanel.Controls.Add(Me.treatWarningsAsErrorsTableLayoutPanel, 0, 12)
-            Me.overarchingTableLayoutPanel.Controls.Add(Me.errorsAndWarningsTableLayoutPanel, 0, 9)
-            Me.overarchingTableLayoutPanel.Controls.Add(Me.chkRegisterForCOM, 0, 19)
-            Me.overarchingTableLayoutPanel.Controls.Add(Me.chkXMLDocumentationFile, 0, 18)
-            Me.overarchingTableLayoutPanel.Controls.Add(Me.txtXMLDocumentationFile, 1, 18)
-            Me.overarchingTableLayoutPanel.Controls.Add(Me.btnOutputPathBrowse, 2, 17)
-            Me.overarchingTableLayoutPanel.Controls.Add(Me.txtOutputPath, 1, 17)
-            Me.overarchingTableLayoutPanel.Controls.Add(Me.lblOutputPath, 0, 17)
-            Me.overarchingTableLayoutPanel.Controls.Add(Me.rbWarningSpecific, 0, 15)
-            Me.overarchingTableLayoutPanel.Controls.Add(Me.txtSpecificWarnings, 1, 15)
-            Me.overarchingTableLayoutPanel.Controls.Add(Me.rbWarningAll, 0, 14)
-            Me.overarchingTableLayoutPanel.Controls.Add(Me.rbWarningNone, 0, 13)
-            Me.overarchingTableLayoutPanel.Controls.Add(Me.txtSupressWarnings, 1, 11)
-            Me.overarchingTableLayoutPanel.Controls.Add(Me.lblSupressWarnings, 0, 11)
-            Me.overarchingTableLayoutPanel.Controls.Add(Me.cboWarningLevel, 1, 10)
-            Me.overarchingTableLayoutPanel.Controls.Add(Me.lblWarningLevel, 0, 10)
-            Me.overarchingTableLayoutPanel.Controls.Add(Me.cboPlatformTarget, 1, 4)
-            Me.overarchingTableLayoutPanel.Controls.Add(Me.chkOptimizeCode, 0, 8)
-            Me.overarchingTableLayoutPanel.Controls.Add(Me.chkAllowUnsafeCode, 0, 7)
-            Me.overarchingTableLayoutPanel.Controls.Add(Me.chkPrefer32Bit, 0, 6)
-            Me.overarchingTableLayoutPanel.Controls.Add(Me.chkDefineTrace, 0, 3)
-            Me.overarchingTableLayoutPanel.Controls.Add(Me.chkDefineDebug, 0, 2)
-            Me.overarchingTableLayoutPanel.Controls.Add(Me.txtConditionalCompilationSymbols, 1, 1)
-            Me.overarchingTableLayoutPanel.Controls.Add(Me.lblConditionalCompilationSymbols, 0, 1)
-            Me.overarchingTableLayoutPanel.Controls.Add(Me.lblPlatformTarget, 0, 4)
-            Me.overarchingTableLayoutPanel.Controls.Add(Me.lblSGenOption, 0, 20)
-            Me.overarchingTableLayoutPanel.Controls.Add(Me.cboSGenOption, 1, 20)
-            Me.overarchingTableLayoutPanel.Controls.Add(Me.btnAdvanced, 2, 21)
-            Me.overarchingTableLayoutPanel.Controls.Add(Me.lblNullable, 0, 5)
-            Me.overarchingTableLayoutPanel.Controls.Add(Me.cboNullable, 1, 5)
+            Me.overarchingTableLayoutPanel.Controls.Add(Me.generalGroupBox, 0, 0)
+            Me.overarchingTableLayoutPanel.Controls.Add(Me.errorsAndWarningsGroupBox, 0, 1)
+            Me.overarchingTableLayoutPanel.Controls.Add(Me.treatWarningsAsErrorsGroupBox, 0, 2)
+            Me.overarchingTableLayoutPanel.Controls.Add(Me.outputGroupBox, 0, 3)
             Me.overarchingTableLayoutPanel.Name = "overarchingTableLayoutPanel"
             '
-            'outputTableLayoutPanel
+            'generalTableLayoutPanel
             '
-            resources.ApplyResources(Me.outputTableLayoutPanel, "outputTableLayoutPanel")
-            Me.overarchingTableLayoutPanel.SetColumnSpan(Me.outputTableLayoutPanel, 3)
-            Me.outputTableLayoutPanel.Controls.Add(Me.outputLineLabel, 1, 0)
-            Me.outputTableLayoutPanel.Controls.Add(Me.outputLabel, 0, 0)
-            Me.outputTableLayoutPanel.Name = "outputTableLayoutPanel"
-            '
-            'outputLineLabel
-            '
-            Me.outputLineLabel.AccessibleRole = System.Windows.Forms.AccessibleRole.Separator
-            resources.ApplyResources(Me.outputLineLabel, "outputLineLabel")
-            Me.outputLineLabel.BackColor = System.Drawing.SystemColors.ControlDark
-            Me.outputLineLabel.Name = "outputLineLabel"
-            '
-            'outputLabel
-            '
-            resources.ApplyResources(Me.outputLabel, "outputLabel")
-            Me.outputLabel.Name = "outputLabel"
-            '
-            'generalHeaderTableLayoutPanel
-            '
-            resources.ApplyResources(Me.generalHeaderTableLayoutPanel, "generalHeaderTableLayoutPanel")
-            Me.overarchingTableLayoutPanel.SetColumnSpan(Me.generalHeaderTableLayoutPanel, 3)
-            Me.generalHeaderTableLayoutPanel.Controls.Add(Me.generalLineLabel, 1, 0)
-            Me.generalHeaderTableLayoutPanel.Controls.Add(Me.generalLabel, 0, 0)
-            Me.generalHeaderTableLayoutPanel.Name = "generalHeaderTableLayoutPanel"
-            '
-            'generalLineLabel
-            '
-            Me.generalLineLabel.AccessibleRole = System.Windows.Forms.AccessibleRole.Separator
-            resources.ApplyResources(Me.generalLineLabel, "generalLineLabel")
-            Me.generalLineLabel.BackColor = System.Drawing.SystemColors.ControlDark
-            Me.generalLineLabel.Name = "generalLineLabel"
-            '
-            'generalLabel
-            '
-            resources.ApplyResources(Me.generalLabel, "generalLabel")
-            Me.generalLabel.Name = "generalLabel"
-            '
-            'treatWarningsAsErrorsTableLayoutPanel
-            '
-            resources.ApplyResources(Me.treatWarningsAsErrorsTableLayoutPanel, "treatWarningsAsErrorsTableLayoutPanel")
-            Me.overarchingTableLayoutPanel.SetColumnSpan(Me.treatWarningsAsErrorsTableLayoutPanel, 3)
-            Me.treatWarningsAsErrorsTableLayoutPanel.Controls.Add(Me.treatWarningsAsErrorsLineLabel, 1, 0)
-            Me.treatWarningsAsErrorsTableLayoutPanel.Controls.Add(Me.treatWarningsAsErrorsLabel, 0, 0)
-            Me.treatWarningsAsErrorsTableLayoutPanel.Name = "treatWarningsAsErrorsTableLayoutPanel"
-            '
-            'treatWarningsAsErrorsLineLabel
-            '
-            Me.treatWarningsAsErrorsLineLabel.AccessibleRole = System.Windows.Forms.AccessibleRole.Separator
-            resources.ApplyResources(Me.treatWarningsAsErrorsLineLabel, "treatWarningsAsErrorsLineLabel")
-            Me.treatWarningsAsErrorsLineLabel.BackColor = System.Drawing.SystemColors.ControlDark
-            Me.treatWarningsAsErrorsLineLabel.Name = "treatWarningsAsErrorsLineLabel"
-            '
-            'treatWarningsAsErrorsLabel
-            '
-            resources.ApplyResources(Me.treatWarningsAsErrorsLabel, "treatWarningsAsErrorsLabel")
-            Me.treatWarningsAsErrorsLabel.Name = "treatWarningsAsErrorsLabel"
+            resources.ApplyResources(Me.generalTableLayoutPanel, "generalTableLayoutPanel")
+            Me.generalTableLayoutPanel.Controls.Add(Me.txtConditionalCompilationSymbols, 1, 0)
+            Me.generalTableLayoutPanel.Controls.Add(Me.lblConditionalCompilationSymbols, 0, 0)
+            Me.generalTableLayoutPanel.Controls.Add(Me.chkDefineDebug, 0, 1)
+            Me.generalTableLayoutPanel.Controls.Add(Me.chkDefineTrace, 0, 2)
+            Me.generalTableLayoutPanel.Controls.Add(Me.lblPlatformTarget, 0, 3)
+            Me.generalTableLayoutPanel.Controls.Add(Me.cboPlatformTarget, 1, 3)
+            Me.generalTableLayoutPanel.Controls.Add(Me.lblNullable, 0, 4)
+            Me.generalTableLayoutPanel.Controls.Add(Me.cboNullable, 1, 4)
+            Me.generalTableLayoutPanel.Controls.Add(Me.chkPrefer32Bit, 0, 5)
+            Me.generalTableLayoutPanel.Controls.Add(Me.chkAllowUnsafeCode, 0, 6)
+            Me.generalTableLayoutPanel.Controls.Add(Me.chkOptimizeCode, 0, 7)
+            Me.generalTableLayoutPanel.Name = "generalTableLayoutPanel"
             '
             'errorsAndWarningsTableLayoutPanel
             '
             resources.ApplyResources(Me.errorsAndWarningsTableLayoutPanel, "errorsAndWarningsTableLayoutPanel")
-            Me.overarchingTableLayoutPanel.SetColumnSpan(Me.errorsAndWarningsTableLayoutPanel, 3)
-            Me.errorsAndWarningsTableLayoutPanel.Controls.Add(Me.errorsAndWarningsLineLabel, 1, 0)
-            Me.errorsAndWarningsTableLayoutPanel.Controls.Add(Me.errorsAndWarningsLabel, 0, 0)
+            Me.errorsAndWarningsTableLayoutPanel.Controls.Add(Me.txtSupressWarnings, 1, 1)
+            Me.errorsAndWarningsTableLayoutPanel.Controls.Add(Me.lblSupressWarnings, 0, 1)
+            Me.errorsAndWarningsTableLayoutPanel.Controls.Add(Me.cboWarningLevel, 1, 0)
+            Me.errorsAndWarningsTableLayoutPanel.Controls.Add(Me.lblWarningLevel, 0, 0)
             Me.errorsAndWarningsTableLayoutPanel.Name = "errorsAndWarningsTableLayoutPanel"
             '
-            'errorsAndWarningsLineLabel
+            'treatWarningsAsErrorsTableLayoutPanel
             '
-            Me.errorsAndWarningsLineLabel.AccessibleRole = System.Windows.Forms.AccessibleRole.Separator
-            resources.ApplyResources(Me.errorsAndWarningsLineLabel, "errorsAndWarningsLineLabel")
-            Me.errorsAndWarningsLineLabel.BackColor = System.Drawing.SystemColors.ControlDark
-            Me.errorsAndWarningsLineLabel.Name = "errorsAndWarningsLineLabel"
+            resources.ApplyResources(Me.treatWarningsAsErrorsTableLayoutPanel, "treatWarningsAsErrorsTableLayoutPanel")
+            Me.treatWarningsAsErrorsTableLayoutPanel.Controls.Add(Me.rbWarningNone, 0, 0)
+            Me.treatWarningsAsErrorsTableLayoutPanel.Controls.Add(Me.rbWarningAll, 0, 1)
+            Me.treatWarningsAsErrorsTableLayoutPanel.Controls.Add(Me.rbWarningSpecific, 0, 2)
+            Me.treatWarningsAsErrorsTableLayoutPanel.Controls.Add(Me.txtSpecificWarnings, 1, 2)
+            Me.treatWarningsAsErrorsTableLayoutPanel.Name = "treatWarningsAsErrorsTableLayoutPanel"
             '
-            'errorsAndWarningsLabel
+            'outputTableLayoutPanel
             '
-            resources.ApplyResources(Me.errorsAndWarningsLabel, "errorsAndWarningsLabel")
-            Me.errorsAndWarningsLabel.Name = "errorsAndWarningsLabel"
+            resources.ApplyResources(Me.outputTableLayoutPanel, "outputTableLayoutPanel")
+            Me.outputTableLayoutPanel.Controls.Add(Me.lblOutputPath, 0, 0)
+            Me.outputTableLayoutPanel.Controls.Add(Me.txtOutputPath, 1, 0)
+            Me.outputTableLayoutPanel.Controls.Add(Me.btnOutputPathBrowse, 2, 0)
+            Me.outputTableLayoutPanel.Controls.Add(Me.chkXMLDocumentationFile, 0, 1)
+            Me.outputTableLayoutPanel.Controls.Add(Me.txtXMLDocumentationFile, 1, 1)
+            Me.outputTableLayoutPanel.Controls.Add(Me.chkRegisterForCOM, 0, 2)
+            Me.outputTableLayoutPanel.Controls.Add(Me.lblSGenOption, 0, 3)
+            Me.outputTableLayoutPanel.Controls.Add(Me.cboSGenOption, 1, 3)
+            Me.outputTableLayoutPanel.Controls.Add(Me.btnAdvanced, 2, 4)
+            Me.outputTableLayoutPanel.Name = "outputTableLayoutPanel"
+            '
+            'generalGroupBox
+            '
+            resources.ApplyResources(Me.generalGroupBox, "generalGroupBox")
+            Me.generalGroupBox.Controls.Add(Me.generalTableLayoutPanel)
+            Me.generalGroupBox.Name = "generalGroupBox"
+            '
+            'errorsAndWarningsGroupBox
+            '
+            resources.ApplyResources(Me.errorsAndWarningsGroupBox, "errorsAndWarningsGroupBox")
+            Me.errorsAndWarningsGroupBox.Controls.Add(Me.errorsAndWarningsTableLayoutPanel)
+            Me.errorsAndWarningsGroupBox.Name = "errorsAndWarningsGroupBox"
+            '
+            'treatWarningsAsErrorsGroupBox
+            '
+            resources.ApplyResources(Me.treatWarningsAsErrorsGroupBox, "treatWarningsAsErrorsGroupBox")
+            Me.treatWarningsAsErrorsGroupBox.Controls.Add(Me.treatWarningsAsErrorsTableLayoutPanel)
+            Me.treatWarningsAsErrorsGroupBox.Name = "treatWarningsAsErrorsGroupBox"
+            '
+            'outputGroupBox
+            '
+            resources.ApplyResources(Me.outputGroupBox, "outputGroupBox")
+            Me.outputGroupBox.Controls.Add(Me.outputTableLayoutPanel)
+            Me.outputGroupBox.Name = "outputGroupBox"
             '
             'lblSGenOption
             '
@@ -387,12 +347,20 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Me.overarchingTableLayoutPanel.PerformLayout()
             Me.outputTableLayoutPanel.ResumeLayout(False)
             Me.outputTableLayoutPanel.PerformLayout()
-            Me.generalHeaderTableLayoutPanel.ResumeLayout(False)
-            Me.generalHeaderTableLayoutPanel.PerformLayout()
+            Me.outputGroupBox.ResumeLayout(False)
+            Me.outputGroupBox.PerformLayout()
+            Me.generalGroupBox.ResumeLayout(False)
+            Me.generalGroupBox.PerformLayout()
+            Me.generalTableLayoutPanel.ResumeLayout(False)
+            Me.generalTableLayoutPanel.PerformLayout()
             Me.treatWarningsAsErrorsTableLayoutPanel.ResumeLayout(False)
             Me.treatWarningsAsErrorsTableLayoutPanel.PerformLayout()
+            Me.treatWarningsAsErrorsGroupBox.ResumeLayout(False)
+            Me.treatWarningsAsErrorsGroupBox.PerformLayout()
             Me.errorsAndWarningsTableLayoutPanel.ResumeLayout(False)
             Me.errorsAndWarningsTableLayoutPanel.PerformLayout()
+            Me.errorsAndWarningsGroupBox.ResumeLayout(False)
+            Me.errorsAndWarningsGroupBox.PerformLayout()
             Me.ResumeLayout(False)
             Me.PerformLayout()
 

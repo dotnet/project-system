@@ -17,22 +17,22 @@
         <target state="translated">可為 Null(&amp;B):</target>
         <note />
       </trans-unit>
-      <trans-unit id="outputLabel.Text">
+      <trans-unit id="outputGroupBox.Text">
         <source>Output</source>
         <target state="translated">輸出</target>
         <note />
       </trans-unit>
-      <trans-unit id="generalLabel.Text">
+      <trans-unit id="generalGroupBox.Text">
         <source>General</source>
         <target state="translated">一般</target>
         <note />
       </trans-unit>
-      <trans-unit id="treatWarningsAsErrorsLabel.Text">
+      <trans-unit id="treatWarningsAsErrorsGroupBox.Text">
         <source>Treat warnings as errors</source>
         <target state="translated">將警告視為錯誤</target>
         <note />
       </trans-unit>
-      <trans-unit id="errorsAndWarningsLabel.Text">
+      <trans-unit id="errorsAndWarningsGroupBox.Text">
         <source>Errors and warnings</source>
         <target state="translated">錯誤和警告</target>
         <note />
