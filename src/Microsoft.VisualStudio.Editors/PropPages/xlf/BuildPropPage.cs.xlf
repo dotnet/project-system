@@ -19,22 +19,22 @@
       </trans-unit>
       <trans-unit id="outputGroupBox.Text">
         <source>Output</source>
-        <target state="translated">Výstup</target>
+        <target state="new">Output</target>
         <note />
       </trans-unit>
       <trans-unit id="generalGroupBox.Text">
         <source>General</source>
-        <target state="translated">Obecné</target>
+        <target state="new">General</target>
         <note />
       </trans-unit>
       <trans-unit id="treatWarningsAsErrorsGroupBox.Text">
         <source>Treat warnings as errors</source>
-        <target state="translated">Zpracovávat upozornění jako chyby</target>
+        <target state="new">Treat warnings as errors</target>
         <note />
       </trans-unit>
       <trans-unit id="errorsAndWarningsGroupBox.Text">
         <source>Errors and warnings</source>
-        <target state="translated">Chyby a upozornění</target>
+        <target state="new">Errors and warnings</target>
         <note />
       </trans-unit>
       <trans-unit id="chkRegisterForCOM.Text">
