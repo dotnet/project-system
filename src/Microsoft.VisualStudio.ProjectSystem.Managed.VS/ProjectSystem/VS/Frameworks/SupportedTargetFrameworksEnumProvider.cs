@@ -16,10 +16,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Frameworks
         protected override string[] RuleNames => new[] { SupportedNETCoreAppTargetFramework.SchemaName, SupportedNETFrameworkTargetFramework.SchemaName, SupportedNETStandardTargetFramework.SchemaName, ConfigurationGeneral.SchemaName };
 
         [ImportingConstructor]
-        public SupportedTargetFrameworksEnumProvider(
-            ConfiguredProject project,
-            IProjectSubscriptionService subscriptionService)
-            : base(project, subscriptionService) {
+        public SupportedTargetFrameworksEnumProvider(ConfiguredProject project, IProjectSubscriptionService subscriptionService)
+            : base(project, subscriptionService)
+        {
         }
 
         protected override EnumCollection Transform(IProjectSubscriptionUpdate input)
