@@ -92,8 +92,12 @@
       <DataSource Persistence="ProjectFileWithInterception"
                   HasConfigurationCondition="False" />
     </EnumProperty.DataSource>
-    <EnumValue Name="On" DisplayName="On" />
-    <EnumValue Name="Off" DisplayName="Off" />
+    <EnumValue Name="On" DisplayName="On">
+      <!-- On: This is a VB keyword and should not be translated -->
+    </EnumValue>
+    <EnumValue Name="Off" DisplayName="Off">
+      <!-- Off: This is a VB keyword and should not be translated -->
+    </EnumValue>
   </EnumProperty>
 
   <EnumProperty Name="OptionStrict"
@@ -105,8 +109,12 @@
       <DataSource Persistence="ProjectFileWithInterception"
                   HasConfigurationCondition="False" />
     </EnumProperty.DataSource>
-    <EnumValue Name="On" DisplayName="On" />
-    <EnumValue Name="Off" DisplayName="Off" />
+    <EnumValue Name="On" DisplayName="On">
+      <!-- On: This is a VB keyword and should not be translated -->
+    </EnumValue>
+    <EnumValue Name="Off" DisplayName="Off">
+      <!-- Off: This is a VB keyword and should not be translated -->
+    </EnumValue>
   </EnumProperty>
 
   <EnumProperty Name="OptionCompare"
@@ -118,8 +126,12 @@
       <DataSource Persistence="ProjectFileWithInterception"
                   HasConfigurationCondition="False" />
     </EnumProperty.DataSource>
-    <EnumValue Name="Binary" DisplayName="Binary" />
-    <EnumValue Name="Text" DisplayName="Text" />
+    <EnumValue Name="Binary" DisplayName="Binary">
+      <!-- Binary: This is a VB keyword and should not be translated -->
+    </EnumValue>
+    <EnumValue Name="Text" DisplayName="Text">
+      <!-- Text: This is a VB keyword and should not be translated -->
+    </EnumValue>
   </EnumProperty>
 
   <EnumProperty Name="OptionInfer"
@@ -131,8 +143,12 @@
       <DataSource Persistence="ProjectFileWithInterception"
                   HasConfigurationCondition="False" />
     </EnumProperty.DataSource>
-    <EnumValue Name="On" DisplayName="On" />
-    <EnumValue Name="Off" DisplayName="Off" />
+    <EnumValue Name="On" DisplayName="On">
+      <!-- On: This is a VB keyword and should not be translated -->
+    </EnumValue>
+    <EnumValue Name="Off" DisplayName="Off">
+      <!-- Off: This is a VB keyword and should not be translated -->
+    </EnumValue>
   </EnumProperty>
 
   <DynamicEnumProperty Name="PlatformTarget"

@@ -611,7 +611,7 @@
         <Str Cat="Text">
           <Val><![CDATA[Off]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[关]]></Val>
+            <Val><![CDATA[Off]]></Val>
           </Tgt>
         </Str>
         <Disp Icon="Str" />

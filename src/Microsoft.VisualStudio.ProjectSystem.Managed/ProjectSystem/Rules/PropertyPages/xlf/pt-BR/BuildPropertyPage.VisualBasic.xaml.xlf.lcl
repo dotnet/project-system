@@ -557,7 +557,7 @@
         <Str Cat="Text">
           <Val><![CDATA[Binary]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Binário]]></Val>
+            <Val><![CDATA[Binary]]></Val>
           </Tgt>
         </Str>
         <Disp Icon="Str" />
@@ -566,7 +566,7 @@
         <Str Cat="Text">
           <Val><![CDATA[Text]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Texto]]></Val>
+            <Val><![CDATA[Text]]></Val>
           </Tgt>
         </Str>
         <Disp Icon="Str" />
@@ -575,7 +575,7 @@
         <Str Cat="Text">
           <Val><![CDATA[Off]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Desligado]]></Val>
+            <Val><![CDATA[Off]]></Val>
           </Tgt>
         </Str>
         <Disp Icon="Str" />
@@ -584,7 +584,7 @@
         <Str Cat="Text">
           <Val><![CDATA[On]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Ligado]]></Val>
+            <Val><![CDATA[On]]></Val>
           </Tgt>
         </Str>
         <Disp Icon="Str" />
@@ -593,7 +593,7 @@
         <Str Cat="Text">
           <Val><![CDATA[Off]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Desligado]]></Val>
+            <Val><![CDATA[Off]]></Val>
           </Tgt>
         </Str>
         <Disp Icon="Str" />
@@ -602,7 +602,7 @@
         <Str Cat="Text">
           <Val><![CDATA[On]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Ligado]]></Val>
+            <Val><![CDATA[On]]></Val>
           </Tgt>
         </Str>
         <Disp Icon="Str" />
@@ -611,7 +611,7 @@
         <Str Cat="Text">
           <Val><![CDATA[Off]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Desligado]]></Val>
+            <Val><![CDATA[Off]]></Val>
           </Tgt>
         </Str>
         <Disp Icon="Str" />
@@ -620,7 +620,7 @@
         <Str Cat="Text">
           <Val><![CDATA[On]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Ligado]]></Val>
+            <Val><![CDATA[On]]></Val>
           </Tgt>
         </Str>
         <Disp Icon="Str" />

@@ -554,7 +554,7 @@
         <Str Cat="Text">
           <Val><![CDATA[Binary]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Binär]]></Val>
+            <Val><![CDATA[Binary]]></Val>
           </Tgt>
         </Str>
         <Disp Icon="Str" />
@@ -572,7 +572,7 @@
         <Str Cat="Text">
           <Val><![CDATA[Off]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Aus]]></Val>
+            <Val><![CDATA[Off]]></Val>
           </Tgt>
         </Str>
         <Disp Icon="Str" />
@@ -581,7 +581,7 @@
         <Str Cat="Text">
           <Val><![CDATA[On]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Ein]]></Val>
+            <Val><![CDATA[On]]></Val>
           </Tgt>
         </Str>
         <Disp Icon="Str" />
@@ -590,7 +590,7 @@
         <Str Cat="Text">
           <Val><![CDATA[Off]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Aus]]></Val>
+            <Val><![CDATA[Off]]></Val>
           </Tgt>
         </Str>
         <Disp Icon="Str" />
@@ -599,7 +599,7 @@
         <Str Cat="Text">
           <Val><![CDATA[On]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Ein]]></Val>
+            <Val><![CDATA[On]]></Val>
           </Tgt>
         </Str>
         <Disp Icon="Str" />
@@ -608,7 +608,7 @@
         <Str Cat="Text">
           <Val><![CDATA[Off]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Aus]]></Val>
+            <Val><![CDATA[Off]]></Val>
           </Tgt>
         </Str>
         <Disp Icon="Str" />
@@ -617,7 +617,7 @@
         <Str Cat="Text">
           <Val><![CDATA[On]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Aktiviert]]></Val>
+            <Val><![CDATA[On]]></Val>
           </Tgt>
         </Str>
         <Disp Icon="Str" />
