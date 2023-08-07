@@ -145,7 +145,7 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";errorsAndWarningsLabel.Text" ItemType="0" PsrId="308" Leaf="true">
+      <Item ItemId=";errorsAndWarningsGroupBox.Text" ItemType="0" PsrId="308" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[Errors and warnings]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
@@ -154,7 +154,7 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";generalLabel.Text" ItemType="0" PsrId="308" Leaf="true">
+      <Item ItemId=";generalGroupBox.Text" ItemType="0" PsrId="308" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[General]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
@@ -226,7 +226,7 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";outputLabel.Text" ItemType="0" PsrId="308" Leaf="true">
+      <Item ItemId=";outputGroupBox.Text" ItemType="0" PsrId="308" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[Output]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
@@ -262,7 +262,7 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";treatWarningsAsErrorsLabel.Text" ItemType="0" PsrId="308" Leaf="true">
+      <Item ItemId=";treatWarningsAsErrorsGroupBox.Text" ItemType="0" PsrId="308" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[Treat warnings as errors]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">

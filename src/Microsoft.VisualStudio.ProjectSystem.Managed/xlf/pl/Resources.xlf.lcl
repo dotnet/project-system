@@ -28,6 +28,15 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
+      <Item ItemId=";BuildAccelerationDisabledDueToIncompatiblePackageReferences_1" ItemType="0" PsrId="308" InstFlg="true" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[Build acceleration has been disabled for this project due to known incompatible NuGet package reference(s) {0}. See https://aka.ms/vs-build-acceleration.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Przyspieszanie kompilacji zostało wyłączone dla tego projektu z powodu znanych niezgodnych odwołań do pakietu NuGet {0}. Zobacz stronę https://aka.ms/vs-build-acceleration.]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
       <Item ItemId=";ComNodeName" ItemType="0" PsrId="308" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[COM]]></Val>
@@ -153,15 +162,6 @@
           <Val><![CDATA[Adding newest import input:]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
             <Val><![CDATA[Dodawanie najnowszych danych wejściowych importu:]]></Val>
-          </Tgt>
-        </Str>
-        <Disp Icon="Str" />
-      </Item>
-      <Item ItemId=";FUTD_AddingProjectFileInputs" ItemType="0" PsrId="308" Leaf="true">
-        <Str Cat="Text">
-          <Val><![CDATA[Adding project file inputs:]]></Val>
-          <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Dodawanie danych wejściowych pliku projektu:]]></Val>
           </Tgt>
         </Str>
         <Disp Icon="Str" />
