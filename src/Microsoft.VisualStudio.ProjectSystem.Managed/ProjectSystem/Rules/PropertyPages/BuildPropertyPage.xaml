@@ -45,11 +45,11 @@
                 HasConfigurationCondition="True" />
   </Rule.DataSource>
   
-  <StringProperty Name="DefineConstants" 
-                       DisplayName="Conditional compilation symbols"
-                       Description="Specifies symbols on which to perform conditional compilation."
-                       HelpUrl="https://go.microsoft.com/fwlink/?linkid=2147079"
-                       Category="General">
+  <StringProperty Name="DefineConstants"
+                  DisplayName="Conditional compilation symbols"
+                  Description="Specifies symbols on which to perform conditional compilation."
+                  HelpUrl="https://go.microsoft.com/fwlink/?linkid=2147079"
+                  Category="General">
     <StringProperty.DataSource>
       <DataSource Persistence="ProjectFileWithInterception"
                   HasConfigurationCondition="True" />
@@ -67,12 +67,12 @@
   </StringProperty>
 
   <DynamicEnumProperty Name="PlatformTarget"
-                DisplayName="Platform target"
-                Description="Specifies the processor to be targeted by the output file. Choose 'Any CPU' to specify that any processor is acceptable, allowing the application to run on the broadest range of hardware."
-                HelpUrl="https://go.microsoft.com/fwlink/?linkid=2147129"
-                Category="General"
-                EnumProvider="PlatformTargetEnumProvider"
-                MultipleValuesAllowed="False">
+                       DisplayName="Platform target"
+                       Description="Specifies the processor to be targeted by the output file. Choose 'Any CPU' to specify that any processor is acceptable, allowing the application to run on the broadest range of hardware."
+                       HelpUrl="https://go.microsoft.com/fwlink/?linkid=2147129"
+                       Category="General"
+                       EnumProvider="PlatformTargetEnumProvider"
+                       MultipleValuesAllowed="False">
     <DynamicEnumProperty.DataSource>
       <DataSource Persistence="ProjectFileWithInterception"
                   HasConfigurationCondition="False" />
@@ -125,9 +125,7 @@
             (or
               (has-evaluated-value "Application" "OutputType" "Exe")
               (has-evaluated-value "Application" "OutputType" "WinExe")
-              (has-evaluated-value "Application" "OutputType" "AppContainerExe")
-            )
-          )
+              (has-evaluated-value "Application" "OutputType" "AppContainerExe")))
         </NameValuePair.Value>
       </NameValuePair>
     </BoolProperty.Metadata>
@@ -434,12 +432,12 @@
 
   <!-- These Native AOT properties should not be visible for class library projects. -->
   <DynamicEnumProperty Name="Trimming"
-                DisplayName="Trimming"
-                Description="Select the desired .NET trimming option for optimizing your application's deployment size and performance."
-                HelpUrl="https://go.microsoft.com/fwlink/?linkid=2240879"
-                Category="Publish"
-                EnumProvider="TrimmingEnumProvider"
-                MultipleValuesAllowed="False">
+                       DisplayName="Trimming"
+                       Description="Select the desired .NET trimming option for optimizing your application's deployment size and performance."
+                       HelpUrl="https://go.microsoft.com/fwlink/?linkid=2240879"
+                       Category="Publish"
+                       EnumProvider="TrimmingEnumProvider"
+                       MultipleValuesAllowed="False">
     <DynamicEnumProperty.DataSource>
       <DataSource HasConfigurationCondition="False"
                   Persistence="ProjectFileWithInterception"/>
@@ -448,8 +446,8 @@
       <NameValuePair Name="VisibilityCondition">
         <NameValuePair.Value>
           (and
-          (has-project-capability "NativeAOTProperties")
-          (not (has-evaluated-value "Application" "OutputType" "Library")))
+            (has-project-capability "NativeAOTProperties")
+            (not (has-evaluated-value "Application" "OutputType" "Library")))
         </NameValuePair.Value>
       </NameValuePair>
     </DynamicEnumProperty.Metadata>
@@ -467,8 +465,8 @@
       <NameValuePair Name="VisibilityCondition">
         <NameValuePair.Value>
           (and
-          (has-project-capability "NativeAOTProperties")
-          (not (has-evaluated-value "Application" "OutputType" "Library")))
+            (has-project-capability "NativeAOTProperties")
+            (not (has-evaluated-value "Application" "OutputType" "Library")))
         </NameValuePair.Value>
       </NameValuePair>
     </BoolProperty.Metadata>
