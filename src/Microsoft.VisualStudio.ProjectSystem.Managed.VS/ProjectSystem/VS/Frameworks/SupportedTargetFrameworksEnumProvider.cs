@@ -27,19 +27,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Frameworks
 
             string? targetFrameworkIdentifier = configurationGeneral.Properties.GetStringProperty(ConfigurationGeneral.TargetFrameworkIdentifierProperty);
 
-            string ruleName;
-
             if (StringComparers.FrameworkIdentifiers.Equals(targetFrameworkIdentifier, TargetFrameworkIdentifiers.NetCoreApp))
             {
-                ruleName = SupportedNETCoreAppTargetFramework.SchemaName;
+                return GetSupportedTargetFrameworksFromItems(SupportedNETCoreAppTargetFramework.SchemaName);
             }
             else if (StringComparers.FrameworkIdentifiers.Equals(targetFrameworkIdentifier, TargetFrameworkIdentifiers.NetFramework))
             {
-                ruleName = SupportedNETFrameworkTargetFramework.SchemaName;
+                return GetSupportedTargetFrameworksFromItems(SupportedNETFrameworkTargetFramework.SchemaName);
             }
             else if (StringComparers.FrameworkIdentifiers.Equals(targetFrameworkIdentifier, TargetFrameworkIdentifiers.NetStandard))
             {
-                ruleName = SupportedNETStandardTargetFramework.SchemaName;
+                return GetSupportedTargetFrameworksFromItems(SupportedNETStandardTargetFramework.SchemaName);
             }
             else
             {
@@ -63,14 +61,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Frameworks
                 return Array.Empty<IEnumValue>();
             }
 
-            IProjectRuleSnapshot snapshot = input.CurrentState[ruleName];
+            EnumCollection GetSupportedTargetFrameworksFromItems(string ruleName)
+            {
+                IProjectRuleSnapshot snapshot = input.CurrentState[ruleName];
 
-            int capacity = snapshot.Items.Count;
-            var list = new List<IEnumValue>(capacity);
+                int capacity = snapshot.Items.Count;
+                var list = new List<IEnumValue>(capacity);
 
-            list.AddRange(snapshot.Items.Select(ToEnumValue));
-            list.Sort(SortValues); // TODO: This is a hotfix for item ordering. Remove this when completing: https://github.com/dotnet/project-system/issues/7025
-            return list;
+                list.AddRange(snapshot.Items.Select(ToEnumValue));
+                list.Sort(SortValues); // TODO: This is a hotfix for item ordering. Remove this when completing: https://github.com/dotnet/project-system/issues/7025
+                return list;
+            }
         }
 
         protected override IEnumValue ToEnumValue(KeyValuePair<string, IImmutableDictionary<string, string>> item)
