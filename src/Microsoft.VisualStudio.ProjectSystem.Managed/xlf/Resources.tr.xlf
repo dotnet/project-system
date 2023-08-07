@@ -4,7 +4,7 @@
     <body>
       <trans-unit id="BuildAccelerationDisabledDueToIncompatiblePackageReferences_1">
         <source>Build acceleration has been disabled for this project due to known incompatible NuGet package reference(s) {0}. See https://aka.ms/vs-build-acceleration.</source>
-        <target state="new">Build acceleration has been disabled for this project due to known incompatible NuGet package reference(s) {0}. See https://aka.ms/vs-build-acceleration.</target>
+        <target state="translated">Bilinen uyumsuz {0} NuGet paketi başvuruları nedeniyle derleme hızlandırma bu proje için devre dışı bırakıldı. Şu sayfaya bakın: https://aka.ms/vs-build-acceleration.</target>
         <note>{0} is a comma-separated list of NuGet package names.</note>
       </trans-unit>
       <trans-unit id="DataFlowFaults">
