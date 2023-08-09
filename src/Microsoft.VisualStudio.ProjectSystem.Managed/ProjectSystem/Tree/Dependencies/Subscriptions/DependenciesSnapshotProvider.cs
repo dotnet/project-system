@@ -8,6 +8,11 @@ using Microsoft.VisualStudio.ProjectSystem;
 using System.Threading.Tasks.Dataflow;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
 
+using DependenciesSnapshotInput = (
+    System.Collections.Immutable.ImmutableDictionary<Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.DependencyGroupType, System.Collections.Immutable.ImmutableArray<Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.IDependency>> UnconfiguredDependencies,
+    System.Collections.Immutable.ImmutableDictionary<Microsoft.VisualStudio.ProjectSystem.ProjectConfigurationSlice, Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot.DependenciesSnapshotSlice> ConfiguredDependencies,
+    Microsoft.VisualStudio.ProjectSystem.ConfiguredProject ActiveConfiguredProject);
+
 namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Subscriptions;
 
 /// <summary>
@@ -139,10 +144,10 @@ internal sealed class DependenciesSnapshotProvider : OnceInitializedOnceDisposed
 
             ISourceBlock<IProjectVersionedValue<ImmutableDictionary<ProjectConfigurationSlice, DependenciesSnapshotSlice>>> configuredSource = SubscribeConfigured();
 
-            var transformBlock = DataflowBlockSlim.CreateTransformBlock<
-                IProjectVersionedValue<(ImmutableDictionary<DependencyGroupType, ImmutableArray<IDependency>> UnconfiguredDependencies, ImmutableDictionary<ProjectConfigurationSlice, DependenciesSnapshotSlice> ConfiguredDependencies, ConfiguredProject ActiveConfiguredProject)>,
+            var transformBlock = DataflowBlockSlim.CreateTransformManyBlock<
+                IProjectVersionedValue<DependenciesSnapshotInput>,
                 IProjectVersionedValue<DependenciesSnapshot>>(
-                    u => u.Derive(MergeFinalDependenciesSnapshot),
+                    MergeFinalDependenciesSnapshot,
                     nameFormat: "Dependencies final merge {1}",
                     skipIntermediateInputData: true,
                     skipIntermediateOutputData: true,
@@ -336,25 +341,32 @@ internal sealed class DependenciesSnapshotProvider : OnceInitializedOnceDisposed
                 }
             }
 
-            DependenciesSnapshot MergeFinalDependenciesSnapshot(
-                (ImmutableDictionary<DependencyGroupType, ImmutableArray<IDependency>> UnconfiguredDependencies,
-                 ImmutableDictionary<ProjectConfigurationSlice, DependenciesSnapshotSlice> ConfiguredDependencies,
-                 ConfiguredProject ActiveConfiguredProject) update)
+            IEnumerable<IProjectVersionedValue<DependenciesSnapshot>> MergeFinalDependenciesSnapshot(IProjectVersionedValue<DependenciesSnapshotInput> input)
             {
+                DependenciesSnapshotInput update = input.Value;
+
                 ProjectConfiguration activeProjectConfiguration = update.ActiveConfiguredProject.ProjectConfiguration;
 
                 ProjectConfigurationSlice? primarySlice = update.ConfiguredDependencies.Keys.FirstOrDefault(slice => slice.IsPrimaryActiveSlice(activeProjectConfiguration));
 
-                Assumes.NotNull(primarySlice);
+                if (primarySlice is null)
+                {
+                    // We cannot tell which slice is primary, so don't return any snapshot just yet. A future update will restore this state.
+                    // This is rare, but NFE data shows it can happen. It's not possible to sync link these streams reliably, as we remove
+                    // all configured-project versions from per-slice data.
+                    yield break;
+                }
 
                 if (lastSnapshot is null)
                 {
                     lastSnapshot = new DependenciesSnapshot(primarySlice, update.ConfiguredDependencies, update.UnconfiguredDependencies);
-                    return lastSnapshot;
+                }
+                else
+                {
+                    lastSnapshot = lastSnapshot.Update(primarySlice, update.ConfiguredDependencies, update.UnconfiguredDependencies);
                 }
 
-                lastSnapshot = lastSnapshot.Update(primarySlice, update.ConfiguredDependencies, update.UnconfiguredDependencies);
-                return lastSnapshot;
+                yield return new ProjectVersionedValue<DependenciesSnapshot>(lastSnapshot, input.DataSourceVersions);
             }
         }
     }
