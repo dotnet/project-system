@@ -678,11 +678,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                     jointRuleUpdate.ProjectChanges.TryGetValue(ResolvedProjectReference.SchemaName, out IProjectChangeDescription? change2) &&
                     jointRuleUpdate.ProjectChanges.TryGetValue(ConfigurationGeneral.SchemaName, out IProjectChangeDescription? change3))
                 {
-                    if (change1.Difference.AnyChanges || change2.Difference.AnyChanges || change3.Difference.AnyChanges)
+                    if ((change1.Difference.AnyChanges || change2.Difference.AnyChanges || change3.Difference.AnyChanges) &&
+                        change3.After.Properties.TryGetStringProperty(ConfigurationGeneral.TargetPathProperty, out string? targetPath))
                     {
                         // Register this project's data with the CopyToOutputDirectoryItem tracking service.
-
-                        string targetPath = jointRuleUpdate.CurrentState[ConfigurationGeneral.SchemaName].Properties[ConfigurationGeneral.TargetPathProperty];
 
                         projectFileClassifier ??= BuildClassifier();
 
