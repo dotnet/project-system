@@ -28,6 +28,15 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
+      <Item ItemId=";BuildAccelerationDisabledDueToIncompatiblePackageReferences_1" ItemType="0" PsrId="308" InstFlg="true" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[Build acceleration has been disabled for this project due to known incompatible NuGet package reference(s) {0}. See https://aka.ms/vs-build-acceleration.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[알려진 호환되지 않는 NuGet 패키지 참조 {0}(으)로 인해 이 프로젝트에 빌드 가속을 사용할 수 없습니다. https://aka.ms/vs-build-acceleration을 참조하세요.]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
       <Item ItemId=";ComNodeName" ItemType="0" PsrId="308" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[COM]]></Val>
@@ -153,15 +162,6 @@
           <Val><![CDATA[Adding newest import input:]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
             <Val><![CDATA[최신 가져오기 입력 추가:]]></Val>
-          </Tgt>
-        </Str>
-        <Disp Icon="Str" />
-      </Item>
-      <Item ItemId=";FUTD_AddingProjectFileInputs" ItemType="0" PsrId="308" Leaf="true">
-        <Str Cat="Text">
-          <Val><![CDATA[Adding project file inputs:]]></Val>
-          <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[프로젝트 파일 입력 추가:]]></Val>
           </Tgt>
         </Str>
         <Disp Icon="Str" />
