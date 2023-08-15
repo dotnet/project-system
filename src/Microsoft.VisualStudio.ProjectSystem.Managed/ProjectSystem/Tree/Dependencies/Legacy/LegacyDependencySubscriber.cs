@@ -122,7 +122,16 @@ internal sealed class LegacyDependencySubscriber : IDependencySubscriber
 
             if (anyChanges)
             {
-                _snapshot = _snapshot.SetItem(_dependencyType, _dependencyById.Values.ToImmutableArray());
+                if (_dependencyById.Count == 0)
+                {
+                    // No dependencies exist, so remove it from the snapshot to prevent us displaying an
+                    // empty group node with no children.
+                    _snapshot = _snapshot.Remove(_dependencyType);
+                }
+                else
+                {
+                    _snapshot = _snapshot.SetItem(_dependencyType, _dependencyById.Values.ToImmutableArray());
+                }
             }
 
             return _snapshot;
