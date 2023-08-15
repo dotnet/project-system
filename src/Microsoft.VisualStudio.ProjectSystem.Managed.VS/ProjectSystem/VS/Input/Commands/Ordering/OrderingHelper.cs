@@ -122,7 +122,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.Ordering
             Requires.NotNull(project);
             Requires.NotNull(target);
 
-            ProjectItemElement? referenceElement = TryGetReferenceElement(project, target, ImmutableArray<string>.Empty, MoveAction.Above);
+            ProjectItemElement? referenceElement = TryGetReferenceElement(project, target, [], MoveAction.Above);
             if (referenceElement is null)
             {
                 return false;
@@ -139,7 +139,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.Ordering
             Requires.NotNull(project);
             Requires.NotNull(target);
 
-            ProjectItemElement? referenceElement = TryGetReferenceElement(project, target, ImmutableArray<string>.Empty, MoveAction.Below);
+            ProjectItemElement? referenceElement = TryGetReferenceElement(project, target, [], MoveAction.Below);
             if (referenceElement is null)
             {
                 return false;
@@ -436,11 +436,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.Ordering
             if (referenceProjectTree is not null)
             {
                 // The reference element is the element for which moved items will be above or below it.
-                ProjectItemElement? referenceElement = TryGetReferenceElement(project, referenceProjectTree, ImmutableArray<string>.Empty, moveAction);
+                ProjectItemElement? referenceElement = TryGetReferenceElement(project, referenceProjectTree, [], moveAction);
 
                 if (referenceElement is not null)
                 {
-                    ImmutableArray<ProjectItemElement> elements = GetItemElements(project, projectTree, ImmutableArray<string>.Empty);
+                    ImmutableArray<ProjectItemElement> elements = GetItemElements(project, projectTree, []);
                     return TryMoveElements(elements, referenceElement, moveAction);
                 }
             }

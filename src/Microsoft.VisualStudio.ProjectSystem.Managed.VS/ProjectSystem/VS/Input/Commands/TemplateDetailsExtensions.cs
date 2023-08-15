@@ -37,7 +37,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
         {
             if (!map.TryGetValue(commandId, out ImmutableArray<TemplateDetails> list))
             {
-                list = ImmutableArray<TemplateDetails>.Empty;
+                list = [];
             }
 
             list = list.Add(new TemplateDetails(capability, dirNamePackage, Convert.ToUInt32(dirNameId), templateNamePackage, Convert.ToUInt32(templateNameId)));

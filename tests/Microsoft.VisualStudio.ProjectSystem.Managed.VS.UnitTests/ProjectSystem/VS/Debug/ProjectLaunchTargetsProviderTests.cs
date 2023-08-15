@@ -725,7 +725,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             var configuredProjectServices = Mock.Of<ConfiguredProjectServices>(o =>
                 o.ProjectPropertiesProvider == delegateProvider);
 
-            var capabilitiesScope = scope ?? IProjectCapabilitiesScopeFactory.Create(capabilities: Enumerable.Empty<string>());
+            var capabilitiesScope = scope ?? IProjectCapabilitiesScopeFactory.Create(capabilities: []);
 
             var configuredProject = Mock.Of<ConfiguredProject>(o =>
                 o.UnconfiguredProject == project &&

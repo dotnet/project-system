@@ -32,7 +32,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
             // If the input is empty, don't allocate anything further.
             if (inputItems.Length == 0)
             {
-                _itemByIndex = Array.Empty<T>();
+                _itemByIndex = [];
                 _itemsByName = ImmutableDictionary<string, T>.Empty;
                 return;
             }

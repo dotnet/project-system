@@ -163,7 +163,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
 
             if (snapshot.Profiles.Count == 0)
             {
-                return Enumerable.Empty<IProjectItem>();
+                return [];
             }
 
             return snapshot.Profiles.Select(p => new ProjectItem(p.Name ?? string.Empty, _project.FullPath, this));

@@ -34,7 +34,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
         private static readonly string? s_programFiles64;
         private static readonly string? s_vsInstallationDirectory;
 
-        private string[] _nuGetPackageFolders = Array.Empty<string>();
+        private string[] _nuGetPackageFolders = [];
         private string _nuGetPackageFoldersString = "";
         private string? _projectExtensionsPath;
 

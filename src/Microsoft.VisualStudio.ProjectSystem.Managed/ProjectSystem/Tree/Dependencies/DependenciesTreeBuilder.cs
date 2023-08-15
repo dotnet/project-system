@@ -16,7 +16,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies;
 [Export]
 internal sealed class DependenciesTreeBuilder
 {
-    private static ImmutableDictionary<ProjectConfigurationSlice, ProjectTreeFlags> s_flagsByConfigurationSlice = ImmutableDictionary<ProjectConfigurationSlice, ProjectTreeFlags>.Empty;
+    private static ImmutableDictionary<ProjectConfigurationSlice, ProjectTreeFlags> s_flagsByConfigurationSlice = [];
 
     private readonly UnconfiguredProject _unconfiguredProject;
 

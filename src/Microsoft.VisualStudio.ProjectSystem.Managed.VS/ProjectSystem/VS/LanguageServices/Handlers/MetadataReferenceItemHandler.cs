@@ -114,7 +114,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
         {
             if (aliases.Length == 1 && aliases[0] == MetadataReferenceProperties.GlobalAlias)
             {
-                return ImmutableArray<string>.Empty;
+                return [];
             }
 
             return aliases;

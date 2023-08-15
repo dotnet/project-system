@@ -37,7 +37,7 @@ internal class DotNetImportsEnumProvider : IDynamicEnumValuesProvider, IDynamicE
 
         if (compilation is null)
         {
-            return Enumerable.Empty<string>();
+            return [];
         }
 
         List<string> namespaceNames = new List<string>();

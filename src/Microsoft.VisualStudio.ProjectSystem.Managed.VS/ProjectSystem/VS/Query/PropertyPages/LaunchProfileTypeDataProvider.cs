@@ -59,7 +59,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query.PropertyPages
                 return createLaunchProfileTypeValues();
             }
 
-            return Enumerable.Empty<IEntityValue>();
+            return [];
 
             IEnumerable<IEntityValue> createLaunchProfileTypeValues()
             {

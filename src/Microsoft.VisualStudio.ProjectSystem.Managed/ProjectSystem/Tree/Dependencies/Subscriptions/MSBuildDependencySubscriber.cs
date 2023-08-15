@@ -100,7 +100,7 @@ internal sealed class MSBuildDependencySubscriber : OnceInitializedOnceDisposed,
         private readonly ImmutableHashSet<string> _evaluationRuleNames;
         private readonly ImmutableHashSet<string> _buildRuleNames;
 
-        private ImmutableDictionary<DependencyGroupType, ImmutableArray<IDependency>> _dependenciesByGroupType = ImmutableDictionary<DependencyGroupType, ImmutableArray<IDependency>>.Empty;
+        private ImmutableDictionary<DependencyGroupType, ImmutableArray<IDependency>> _dependenciesByGroupType = [];
 
         public Source(
             UnconfiguredProject unconfiguredProject,

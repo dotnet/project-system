@@ -18,9 +18,9 @@ namespace Microsoft.VisualStudio.ProjectSystem
         {
             var mock = new Mock<IProjectSubscriptionUpdate>(mockBehavior);
 
-            mock.Setup(x => x.CurrentState).Returns(currentState?.ToImmutableDictionary() ?? ImmutableDictionary<string, IProjectRuleSnapshot>.Empty);
+            mock.Setup(x => x.CurrentState).Returns(currentState?.ToImmutableDictionary() ?? []);
 
-            mock.Setup(x => x.ProjectChanges).Returns(projectChanges?.ToImmutableDictionary() ?? ImmutableDictionary<string, IProjectChangeDescription>.Empty);
+            mock.Setup(x => x.ProjectChanges).Returns(projectChanges?.ToImmutableDictionary() ?? []);
 
             return mock.Object;
         }

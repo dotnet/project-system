@@ -83,7 +83,7 @@ internal sealed class LegacyDependencySubscriber : IDependencySubscriber
                 groupNodeFlags: rootNode.Flags);
 
             _snapshot = ImmutableDictionary<DependencyGroupType, ImmutableArray<IDependency>>.Empty
-                .Add(_dependencyType, ImmutableArray<IDependency>.Empty);
+                .Add(_dependencyType, []);
         }
 
         public ImmutableDictionary<DependencyGroupType, ImmutableArray<IDependency>> Update(IDependenciesChanges changes)
@@ -186,7 +186,7 @@ internal sealed class LegacyDependencySubscriber : IDependencySubscriber
             // Publish an empty snapshot so we don't block downstream consumers if subtree providers don't publish
             // dependencies, or if they delay for a while before doing so.
             _broadcastBlock.Post(new ProjectVersionedValue<ImmutableDictionary<DependencyGroupType, ImmutableArray<IDependency>>>(
-                ImmutableDictionary<DependencyGroupType, ImmutableArray<IDependency>>.Empty,
+                [],
                 Empty.ProjectValueVersions.Add(DataSourceKey, _version)));
 
             _publicBlock = _broadcastBlock.SafePublicize();

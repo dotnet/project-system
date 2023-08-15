@@ -170,7 +170,7 @@ namespace Microsoft.VisualStudio.Buffers.PooledObjects
         {
             if (Count == 0)
             {
-                return ImmutableArray<U>.Empty;
+                return [];
             }
 
             var tmp = PooledArray<U>.GetInstance(Count);

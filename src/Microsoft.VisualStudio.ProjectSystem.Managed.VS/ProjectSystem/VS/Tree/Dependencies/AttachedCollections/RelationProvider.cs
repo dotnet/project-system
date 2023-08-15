@@ -6,8 +6,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedColl
     internal sealed class RelationProvider : IRelationProvider
     {
         private readonly IEnumerable<IRelation> _allRelations;
-        private ImmutableDictionary<Type, ImmutableArray<IRelation>> _containsRelationsByTypes = ImmutableDictionary<Type, ImmutableArray<IRelation>>.Empty;
-        private ImmutableDictionary<Type, ImmutableArray<IRelation>> _containedByRelationsByTypes = ImmutableDictionary<Type, ImmutableArray<IRelation>>.Empty;
+        private ImmutableDictionary<Type, ImmutableArray<IRelation>> _containsRelationsByTypes = [];
+        private ImmutableDictionary<Type, ImmutableArray<IRelation>> _containedByRelationsByTypes = [];
 
         [ImportingConstructor]
         public RelationProvider([ImportMany] IEnumerable<IRelation> allRelations)

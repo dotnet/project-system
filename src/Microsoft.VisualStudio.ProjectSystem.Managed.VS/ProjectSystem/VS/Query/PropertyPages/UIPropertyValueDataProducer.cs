@@ -21,7 +21,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
 
             var identity = new EntityIdentity(
                 ((IEntityWithId)parent).Id,
-                Enumerable.Empty<KeyValuePair<string, string>>());
+                []);
 
             return await CreateUIPropertyValueValueAsync(parent.EntityRuntime, identity, configuration, property, requestedProperties);
         }
@@ -99,7 +99,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
                 }
                 else
                 {
-                    configurations = Enumerable.Empty<ProjectConfiguration>();
+                    configurations = [];
                 }
             }
 

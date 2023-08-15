@@ -5,7 +5,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
     [Export(typeof(ITemporaryPropertyStorage))]
     internal sealed class TemporaryPropertyStorage : ITemporaryPropertyStorage
     {
-        private ImmutableDictionary<string, string> _properties = ImmutableDictionary<string, string>.Empty;
+        private ImmutableDictionary<string, string> _properties = [];
 
         /// <remarks>
         /// We only need <paramref name="project"/> to force the creation of one of these per

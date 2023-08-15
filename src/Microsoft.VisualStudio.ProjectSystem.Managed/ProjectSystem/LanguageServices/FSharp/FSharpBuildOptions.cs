@@ -11,7 +11,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.FSharp
                                   ImmutableArray<CommandLineReference> metadataReferences,
                                   ImmutableArray<CommandLineAnalyzerReference> analyzerReferences,
                                   ImmutableArray<string> compileOptions)
-            : base(sourceFiles, additionalFiles, metadataReferences, analyzerReferences, ImmutableArray<string>.Empty)
+            : base(sourceFiles, additionalFiles, metadataReferences, analyzerReferences, [])
         {
             CompileOptions = compileOptions;
         }

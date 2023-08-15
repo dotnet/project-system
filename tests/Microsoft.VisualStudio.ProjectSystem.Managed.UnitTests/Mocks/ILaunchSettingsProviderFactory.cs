@@ -40,7 +40,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
                 ? launchProfiles.ToImmutableList()
                 : ImmutableList<ILaunchProfile>.Empty;
 
-            var initialGlobalSettings = globalSettings ?? ImmutableDictionary<string, object>.Empty;
+            var initialGlobalSettings = globalSettings ?? [];
 
             if (getProfilesCallback is not null)
             {

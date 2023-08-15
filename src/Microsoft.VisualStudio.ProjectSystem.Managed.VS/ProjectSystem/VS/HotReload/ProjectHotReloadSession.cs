@@ -206,7 +206,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.HotReload
             {
                 return await _deltaApplier.GetCapabilitiesAsync(cancellationToken);
             }
-            return ImmutableArray<string>.Empty;
+            return [];
         }
 
         public ValueTask ReportDiagnosticsAsync(ImmutableArray<ManagedHotReloadDiagnostic> diagnostics, CancellationToken cancellationToken)

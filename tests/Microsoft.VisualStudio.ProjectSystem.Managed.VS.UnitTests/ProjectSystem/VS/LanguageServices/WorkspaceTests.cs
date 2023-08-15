@@ -17,11 +17,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices;
 public class WorkspaceTests
 {
     private static BuildOptions EmptyBuildOptions { get; } = new BuildOptions(
-            sourceFiles: ImmutableArray<CommandLineSourceFile>.Empty,
-            additionalFiles: ImmutableArray<CommandLineSourceFile>.Empty,
-            metadataReferences: ImmutableArray<CommandLineReference>.Empty,
-            analyzerReferences: ImmutableArray<CommandLineAnalyzerReference>.Empty,
-            analyzerConfigFiles: ImmutableArray<string>.Empty);
+            sourceFiles: [],
+            additionalFiles: [],
+            metadataReferences: [],
+            analyzerReferences: [],
+            analyzerConfigFiles: []);
 
     [Fact]
     public async Task Dispose_DisposesChainedDisposables()
@@ -812,7 +812,7 @@ public class WorkspaceTests
         slice ??= ProjectConfigurationSlice.Create(ImmutableStringDictionary<string>.EmptyOrdinal.Add("TargetFramework", "net6.0"));
         unconfiguredProject ??= UnconfiguredProjectFactory.ImplementFullPath("""C:\MyProject\MyProject.csproj""");
         projectGuid ??= Guid.NewGuid();
-        updateHandlers ??= new UpdateHandlers(Array.Empty<ExportFactory<IWorkspaceUpdateHandler>>());
+        updateHandlers ??= new UpdateHandlers([]);
         logger ??= IManagedProjectDiagnosticOutputServiceFactory.Create();
         activeWorkspaceProjectContextTracker ??= IActiveEditorContextTrackerFactory.Create();
         commandLineParserServices ??= new(ImportOrderPrecedenceComparer.PreferenceOrder.PreferredComesFirst) { commandLineParserService.Object };

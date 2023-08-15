@@ -90,7 +90,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
                 return createLaunchProfileValues(launchSettings);
             }
 
-            return Enumerable.Empty<IEntityValue>();
+            return [];
 
             IEnumerable<IEntityValue> createLaunchProfileValues(ILaunchSettings launchSettings)
             {

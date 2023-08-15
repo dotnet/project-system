@@ -67,7 +67,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
 
             if (Strings.IsNullOrEmpty(propertyValue))
             {
-                return ImmutableArray<string>.Empty;
+                return [];
             }
             else
             {
@@ -92,7 +92,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
             ImmutableArray<string> values = await GetOrderedPropertyValuesAsync(project);
             if (values.IsEmpty)
             {
-                return Enumerable.Empty<KeyValuePair<string, string>>();
+                return [];
             }
             else
             {
@@ -118,7 +118,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
             ImmutableArray<string> values = await GetOrderedPropertyValuesAsync(project);
             if (values.IsEmpty)
             {
-                return Enumerable.Empty<KeyValuePair<string, IEnumerable<string>>>();
+                return [];
             }
             else
             {
@@ -140,7 +140,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
             if (defaultValue is not null)
                 return new[] { new KeyValuePair<string, string>(DimensionName, defaultValue) };
 
-            return Enumerable.Empty<KeyValuePair<string, string>>();
+            return [];
         }
 
         /// <summary>

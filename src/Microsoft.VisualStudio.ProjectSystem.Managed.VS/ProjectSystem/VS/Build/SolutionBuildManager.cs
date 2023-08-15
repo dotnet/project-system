@@ -143,7 +143,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build
 
             if (count == 0)
             {
-                return Array.Empty<IVsHierarchy>();
+                return [];
             }
 
             // Get all of the dependent projects, and add them to our list

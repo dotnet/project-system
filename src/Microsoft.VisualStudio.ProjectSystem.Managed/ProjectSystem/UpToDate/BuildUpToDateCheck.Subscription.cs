@@ -51,7 +51,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             /// </summary>
             private IDisposable? _link;
 
-            private ImmutableArray<ProjectConfiguration> _lastCheckedConfigurations = ImmutableArray<ProjectConfiguration>.Empty;
+            private ImmutableArray<ProjectConfiguration> _lastCheckedConfigurations = [];
 
             /// <summary>
             /// Cancelled when this instance is disposed.

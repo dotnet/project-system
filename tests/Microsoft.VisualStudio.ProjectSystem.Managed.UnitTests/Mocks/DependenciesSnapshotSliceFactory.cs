@@ -8,7 +8,7 @@ internal static class DependenciesSnapshotSliceFactory
 {
     public static DependenciesSnapshotSlice Create(ProjectConfigurationSlice slice, ImmutableDictionary<DependencyGroupType, ImmutableArray<IDependency>>? dependenciesByType = null)
     {
-        dependenciesByType ??= ImmutableDictionary<DependencyGroupType, ImmutableArray<IDependency>>.Empty;
+        dependenciesByType ??= [];
 
         DependenciesSnapshotSlice ? dependenciesSnapshotSlice = null;
 

@@ -107,7 +107,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
                 return createPropertyPageValuesAsync();
             }
 
-            return Enumerable.Empty<IEntityValue>();
+            return [];
 
             IEnumerable<IEntityValue> createPropertyPageValuesAsync()
             {

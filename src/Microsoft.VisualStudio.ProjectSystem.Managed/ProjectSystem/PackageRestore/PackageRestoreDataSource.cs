@@ -101,7 +101,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.PackageRestore
             // Check if out of date to prevent extra restore under some conditions.
             if (!_enabled || e.Value.RestoreInfo is null || IsProjectConfigurationVersionOutOfDate(e.Value.ConfiguredInputs))
             {
-                return Enumerable.Empty<IProjectVersionedValue<RestoreData>>();
+                return [];
             }
 
             bool succeeded = await RestoreCoreAsync(e.Value);

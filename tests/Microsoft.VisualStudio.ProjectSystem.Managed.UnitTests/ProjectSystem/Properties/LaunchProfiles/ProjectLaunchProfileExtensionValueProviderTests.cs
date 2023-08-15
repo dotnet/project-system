@@ -6,7 +6,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
 {
     public class ProjectLaunchProfileExtensionValueProviderTests
     {
-        private static readonly ImmutableDictionary<string, object> EmptyGlobalSettings = ImmutableDictionary<string, object>.Empty;
+        private static readonly ImmutableDictionary<string, object> EmptyGlobalSettings = [];
 
         [Fact]
         public void AuthenticationMode_OnGetPropertyValueAsync_GetsModeFromActiveProfile()

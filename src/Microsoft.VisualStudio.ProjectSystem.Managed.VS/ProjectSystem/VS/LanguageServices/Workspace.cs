@@ -638,7 +638,7 @@ internal sealed class Workspace : OnceInitializedOnceDisposedUnderLockAsync, IWo
 
             if (items.Count == 0)
             {
-                return ImmutableArray<string>.Empty;
+                return [];
             }
 
             return items.Select(item => item.EvaluatedInclude).ToImmutableArray();

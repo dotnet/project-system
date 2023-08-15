@@ -188,7 +188,7 @@ internal sealed class DependenciesSnapshotProvider : OnceInitializedOnceDisposed
                     var block = DataflowBlockSlim.CreateBroadcastBlock<IProjectVersionedValue<ImmutableDictionary<DependencyGroupType, ImmutableArray<IDependency>>>>(
                         nameFormat: "Empty unconfigured dependency broadcast {1}");
                     block.Post(new ProjectVersionedValue<ImmutableDictionary<DependencyGroupType, ImmutableArray<IDependency>>>(
-                        ImmutableDictionary<DependencyGroupType, ImmutableArray<IDependency>>.Empty,
+                        [],
                         Empty.ProjectValueVersions));
                     return block;
                 }
@@ -230,7 +230,7 @@ internal sealed class DependenciesSnapshotProvider : OnceInitializedOnceDisposed
                     if (groups.Count == 0)
                     {
                         // Optimize the common case where there are no unconfigured dependency group types.
-                        return ImmutableDictionary<DependencyGroupType, ImmutableArray<IDependency>>.Empty;
+                        return [];
                     }
 
                     Dictionary<DependencyGroupType, List<IDependency>> dependenciesByType = new();

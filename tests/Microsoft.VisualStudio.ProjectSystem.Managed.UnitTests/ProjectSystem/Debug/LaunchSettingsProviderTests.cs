@@ -764,7 +764,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
 
             var testSettings = new Mock<ILaunchSettings>();
             testSettings.Setup(m => m.GlobalSettings).Returns(globalSettings);
-            testSettings.Setup(m => m.Profiles).Returns(ImmutableList<ILaunchProfile>.Empty);
+            testSettings.Setup(m => m.Profiles).Returns([]);
 
             provider.SetCurrentSnapshot(testSettings.Object);
             provider.SetNextVersionTest(123);
@@ -796,7 +796,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
 
             var testSettings = new Mock<ILaunchSettings>();
             testSettings.Setup(m => m.GlobalSettings).Returns(globalSettings);
-            testSettings.Setup(m => m.Profiles).Returns(ImmutableList<ILaunchProfile>.Empty);
+            testSettings.Setup(m => m.Profiles).Returns([]);
 
             provider.SetCurrentSnapshot(testSettings.Object);
             provider.SetNextVersionTest(123);
@@ -836,7 +836,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
 
             var testSettings = new Mock<ILaunchSettings>();
             testSettings.Setup(m => m.GlobalSettings).Returns(globalSettings);
-            testSettings.Setup(m => m.Profiles).Returns(ImmutableList<ILaunchProfile>.Empty);
+            testSettings.Setup(m => m.Profiles).Returns([]);
 
             provider.SetCurrentSnapshot(testSettings.Object);
             provider.SetNextVersionTest(123);
@@ -872,7 +872,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
 
             var testSettings = new Mock<ILaunchSettings>();
             testSettings.Setup(m => m.GlobalSettings).Returns(globalSettings);
-            testSettings.Setup(m => m.Profiles).Returns(ImmutableList<ILaunchProfile>.Empty);
+            testSettings.Setup(m => m.Profiles).Returns([]);
 
             provider.SetCurrentSnapshot(testSettings.Object);
             provider.SetNextVersionTest(123);
@@ -906,7 +906,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
 
             var testSettings = new Mock<ILaunchSettings>();
             testSettings.Setup(m => m.GlobalSettings).Returns(globalSettings);
-            testSettings.Setup(m => m.Profiles).Returns(ImmutableList<ILaunchProfile>.Empty);
+            testSettings.Setup(m => m.Profiles).Returns([]);
             var versionedTestSettings = testSettings.As<IVersionedLaunchSettings>();
             versionedTestSettings.Setup(m => m.Version).Returns(42);
 
@@ -936,7 +936,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
 
             var testSettings = new Mock<ILaunchSettings>();
             testSettings.Setup(m => m.GlobalSettings).Returns(globalSettings);
-            testSettings.Setup(m => m.Profiles).Returns(ImmutableList<ILaunchProfile>.Empty);
+            testSettings.Setup(m => m.Profiles).Returns([]);
 
             provider.SetCurrentSnapshot(testSettings.Object);
             provider.SetNextVersionTest(123);

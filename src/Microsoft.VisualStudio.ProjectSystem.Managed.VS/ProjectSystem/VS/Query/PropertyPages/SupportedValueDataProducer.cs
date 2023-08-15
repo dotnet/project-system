@@ -37,7 +37,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
                 return createSupportedValues(enumValues);
             }
 
-            return Enumerable.Empty<IEntityValue>();
+            return [];
 
             IEnumerable<IEntityValue> createSupportedValues(ReadOnlyCollection<ProjectSystem.Properties.IEnumValue> enumValues)
             {

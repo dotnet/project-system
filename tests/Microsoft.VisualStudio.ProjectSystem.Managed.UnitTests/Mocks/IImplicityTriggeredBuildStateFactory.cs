@@ -12,7 +12,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Managed.Build
                 .Returns(implicitBuild);
 
             mock.SetupGet(state => state.StartupProjectFullPaths)
-                .Returns(startupProjects?.ToImmutableArray() ?? ImmutableArray<string>.Empty);
+                .Returns(startupProjects?.ToImmutableArray() ?? []);
 
             return mock.Object;
         }

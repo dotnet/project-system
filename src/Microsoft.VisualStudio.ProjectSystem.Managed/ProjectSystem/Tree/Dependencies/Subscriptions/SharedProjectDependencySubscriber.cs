@@ -76,7 +76,7 @@ internal sealed class SharedProjectDependencySubscriber : IDependencySliceSubscr
             // TODO allocate less when nothing important actually changes -- update, don't just remove and re-add
 
             ImmutableDictionary<DependencyGroupType, ImmutableArray<IDependency>> dependenciesByGroupType
-                = ImmutableDictionary<DependencyGroupType, ImmutableArray<IDependency>>.Empty;
+                = [];
 
             _dependencies.Clear();
 

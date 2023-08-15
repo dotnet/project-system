@@ -123,7 +123,7 @@ namespace Microsoft.VisualStudio.Telemetry
 
             Assert.Throws<ArgumentException>("properties", () =>
             {
-                service.PostProperties("event1", Enumerable.Empty<(string propertyName, object propertyValue)>());
+                service.PostProperties("event1", []);
             });
         }
 

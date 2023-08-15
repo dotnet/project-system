@@ -41,7 +41,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
         private bool _isBuildAccelerationEnabledInSettings;
         private bool? _isBuildAccelerationEnabledInProject;
         private bool? _expectedIsBuildAccelerationEnabled;
-        private IEnumerable<(string Path, ImmutableArray<CopyItem> CopyItems)> _copyItems = Enumerable.Empty<(string Path, ImmutableArray<CopyItem> CopyItems)>();
+        private IEnumerable<(string Path, ImmutableArray<CopyItem> CopyItems)> _copyItems = [];
         private bool _isCopyItemsComplete = true;
         private IReadOnlyList<string>? _targetsWithoutReferenceAssemblies;
 

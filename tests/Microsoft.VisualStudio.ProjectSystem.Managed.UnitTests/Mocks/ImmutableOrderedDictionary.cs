@@ -8,7 +8,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         : IImmutableDictionary<TKey, TValue>,
           IDataWithOriginalSource<KeyValuePair<TKey, TValue>>
     {
-        public static ImmutableOrderedDictionary<TKey, TValue> Empty { get; } = new(Enumerable.Empty<KeyValuePair<TKey, TValue>>());
+        public static ImmutableOrderedDictionary<TKey, TValue> Empty { get; } = new([]);
 
         private readonly Dictionary<TKey, TValue> _dic;
 

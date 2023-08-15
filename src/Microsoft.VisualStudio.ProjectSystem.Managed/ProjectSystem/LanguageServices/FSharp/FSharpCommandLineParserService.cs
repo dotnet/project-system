@@ -74,9 +74,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.FSharp
 
             return new FSharpBuildOptions(
                     sourceFiles: sourceFiles.ToImmutableArray(),
-                    additionalFiles: ImmutableArray<CommandLineSourceFile>.Empty,
+                    additionalFiles: [],
                     metadataReferences: metadataReferences.ToImmutableArray(),
-                    analyzerReferences: ImmutableArray<CommandLineAnalyzerReference>.Empty,
+                    analyzerReferences: [],
                     compileOptions: commandLineOptions.ToImmutableArray());
         }
 

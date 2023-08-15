@@ -20,7 +20,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         /// Paths of temporary workspaces to delete when the test fixture completes.
         /// Each path is a root, so should be deleted recursively.
         /// </summary>
-        private ImmutableList<string> _rootPaths = ImmutableList<string>.Empty;
+        private ImmutableList<string> _rootPaths = [];
 
         /// <summary>
         /// Verifies that the "Dependencies" node of <paramref name="project"/> has a structure that

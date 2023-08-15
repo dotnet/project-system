@@ -62,7 +62,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
                 return results.ToImmutableAndFree();
             }
 
-            return ImmutableArray<T>.Empty;
+            return [];
         }
 
         public ImmutableArray<string> GetFullPathsOfStartupProjects()
@@ -86,7 +86,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
                 return results.ToImmutableAndFree();
             }
 
-            return ImmutableArray<string>.Empty;
+            return [];
         }
     }
 }

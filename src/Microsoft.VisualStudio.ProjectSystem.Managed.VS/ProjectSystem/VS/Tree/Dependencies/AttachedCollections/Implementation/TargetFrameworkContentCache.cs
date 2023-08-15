@@ -8,7 +8,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedColl
     [Export(typeof(ITargetFrameworkContentCache))]
     internal sealed class TargetFrameworkContentCache : ITargetFrameworkContentCache
     {
-        private ImmutableDictionary<FrameworkReferenceIdentity, ImmutableArray<FrameworkReferenceAssemblyItem>> _cache = ImmutableDictionary<FrameworkReferenceIdentity, ImmutableArray<FrameworkReferenceAssemblyItem>>.Empty;
+        private ImmutableDictionary<FrameworkReferenceIdentity, ImmutableArray<FrameworkReferenceAssemblyItem>> _cache = [];
 
         public ImmutableArray<FrameworkReferenceAssemblyItem> GetContents(FrameworkReferenceIdentity framework)
         {
@@ -26,7 +26,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedColl
                 }
                 catch
                 {
-                    return ImmutableArray<FrameworkReferenceAssemblyItem>.Empty;
+                    return [];
                 }
 
                 ImmutableArray<FrameworkReferenceAssemblyItem>.Builder results = ImmutableArray.CreateBuilder<FrameworkReferenceAssemblyItem>();

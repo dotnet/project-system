@@ -52,7 +52,7 @@ namespace Microsoft.VisualStudio
         {
             if (dictionary.Count == 0)
             {
-                return ImmutableArray<TOutput>.Empty;
+                return [];
             }
 
             ImmutableArray<TOutput>.Builder builder = ImmutableArray.CreateBuilder<TOutput>(initialCapacity: dictionary.Count);

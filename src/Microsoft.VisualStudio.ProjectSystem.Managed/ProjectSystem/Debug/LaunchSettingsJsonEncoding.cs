@@ -217,8 +217,8 @@ internal static class LaunchSettingsJsonEncoding
         });
 
         return (
-            profiles?.ToImmutable() ?? ImmutableArray<LaunchProfile>.Empty,
-            otherSettings?.ToImmutable() ?? ImmutableArray<(string Name, object Value)>.Empty);
+            profiles?.ToImmutable() ?? [],
+            otherSettings?.ToImmutable() ?? []);
 
         LaunchProfile ReadProfile(string name)
         {
@@ -228,7 +228,7 @@ internal static class LaunchSettingsJsonEncoding
             string? workingDirectory = null;
             bool launchBrowser = false;
             string? launchUrl = null;
-            ImmutableArray<(string Name, string Value)> environmentVariables = ImmutableArray<(string Name, string Value)>.Empty;
+            ImmutableArray<(string Name, string Value)> environmentVariables = [];
             ImmutableArray<(string Name, object Value)>.Builder? otherSettings = null;
 
             ReadObject(property =>
@@ -292,7 +292,7 @@ internal static class LaunchSettingsJsonEncoding
                 launchBrowser: launchBrowser,
                 launchUrl: launchUrl,
                 environmentVariables: environmentVariables,
-                otherSettings: otherSettings?.ToImmutable() ?? ImmutableArray<(string Name, object Value)>.Empty);
+                otherSettings: otherSettings?.ToImmutable() ?? []);
         }
 
         object? ReadCustomProfileSetting(string propertyName)
@@ -359,7 +359,7 @@ internal static class LaunchSettingsJsonEncoding
                 builder.Add((property, ReadString()));
             });
 
-            return builder?.ToImmutable() ?? ImmutableArray<(string Name, string Value)>.Empty;
+            return builder?.ToImmutable() ?? [];
         }
 
         string ReadString()

@@ -51,7 +51,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
                 return createEditorValues();
             }
 
-            return Enumerable.Empty<IEntityValue>();
+            return [];
 
             IEnumerable<IEntityValue> createEditorValues()
             {

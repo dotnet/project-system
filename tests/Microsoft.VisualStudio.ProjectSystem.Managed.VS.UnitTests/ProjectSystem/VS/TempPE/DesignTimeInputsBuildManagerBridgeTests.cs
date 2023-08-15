@@ -67,7 +67,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
 
             Assert.Equal("Resources1.Designer.cs", _lastCompiledFile);
             Assert.Equal("C:\\TempPE", _lastOutputPath);
-            Assert.Equal(ImmutableHashSet<string>.Empty, _lastSharedInputs);
+            Assert.Equal([], _lastSharedInputs);
         }
 
         public DesignTimeInputsBuildManagerBridgeTests()
